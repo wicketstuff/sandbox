@@ -1,0 +1,84 @@
+<html>
+<body>
+  <wicket:border>
+    <h2>Add or Modify Wicket add-on</h2><br/>
+    <form wicket:id="form">
+      <table>
+        <tr>
+          <td><b>name:</b></td>
+          <td>
+            <input wicket:id="personname" type="text" size="40" value="" />
+          </td>
+        </tr>
+        <tr>
+          <td><b>email:</b></td>
+          <td>
+            <input wicket:id="email" type="text" size="40" value="" />
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">&nbsp;</td>
+        </tr>
+        <tr>
+          <td colspan="2" bgcolor="#eeeeee">
+            <b>plugin</b>
+          </td>
+        </tr>
+        <tr>
+          <td><b>plugin name:</b></td>
+          <td>
+            <input wicket:id="name" type="text" size="40" value="" />
+          </td>
+        </tr>
+        <tr>
+          <td><b>version:</b></td>
+          <td>
+            <input wicket:id="version" type="text" size="15" value="" />
+          </td>
+        </tr>
+        <tr>
+          <td><b>Wicket version:</b></td>
+          <td>
+            <input wicket:id="wicketVersion" type="text" size="15" value="" />
+          </td>
+        </tr>
+        <tr>
+          <td><b>license:</b></td>
+          <td>
+            <select wicket:id="license">
+              <option>LGPL</option>
+            </select>
+            &nbsp;<b>Other license:</b>
+            <input wicket:id="otherLicense" type="text" size="15" value="" />
+          </td>
+        </tr>
+        <tr>
+          <td valign="top"><b>description:</b></td>
+          <td>
+            <textarea wicket:id="description" rows="10" cols="40"></textarea>
+          </td>
+        </tr>
+        <tr>
+          <td><b>homepage:</b></td>
+          <td>
+            <input wicket:id="homepage" type="text" size="40" value="" />
+          </td>
+        </tr>
+        <tr>
+          <td><b>URL download:</b></td>
+          <td>
+            <input wicket:id="downloadUrl" type="text" size="40" value="" />
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2" align="center">
+            <br/>
+            <input type="submit" name="accept" value="accept" />
+            <input type="submit" name="reject" value="reject" />
+          </td>
+        </tr>
+      </table>
+    </form>  
+  </wicket:border>
+</body>
+</html>

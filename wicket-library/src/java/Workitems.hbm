@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd" >
+
+<hibernate-mapping package="wicket.addons.hibernate">
+	<class name="Workitems" table="workitems">
+		<id
+			column="id"
+			name="Id"
+			type="integer"
+		>
+			<generator class="identity" />
+		</id>
+		<property
+			column="created"
+			length="19"
+			name="Created"
+			not-null="true"
+			type="timestamp"
+		 />
+		<property
+			column="requester"
+			length="45"
+			name="Requester"
+			not-null="false"
+			type="string"
+		 />
+		<property
+			column="requesterEmail"
+			length="60"
+			name="RequesterEmail"
+			not-null="false"
+			type="string"
+		 />
+		<property
+			column="description"
+			length="255"
+			name="Description"
+			not-null="true"
+			type="string"
+		 />
+		<property
+			column="ownerId"
+			length="10"
+			name="OwnerId"
+			not-null="false"
+			type="integer"
+		 />
+		<property
+			column="lastModified"
+			length="19"
+			name="LastModified"
+			not-null="true"
+			type="timestamp"
+		 />
+		<property
+			column="workItemGroupId"
+			length="10"
+			name="WorkItemGroupId"
+			not-null="false"
+			type="integer"
+		 />
+		<property
+			column="status"
+			length="10"
+			name="Status"
+			not-null="true"
+			type="integer"
+		 />
+		<property
+			column="priority"
+			length="10"
+			name="Priority"
+			not-null="true"
+			type="integer"
+		 />
+		<property
+			column="headline"
+			length="80"
+			name="Headline"
+			not-null="true"
+			type="string"
+		 />
+	</class>
+</hibernate-mapping>

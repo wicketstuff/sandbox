@@ -1,0 +1,41 @@
+<html>
+<body>
+  <wicket:border>
+    <h2>Add or modify a category</h2><br/>
+    <form wicket:id="form">
+      <table>
+        <tr>
+          <td><b>Category name:</b></td>
+          <td>
+            <input wicket:id="categoryName" name="categoryName" type="text" size="40" value="" />
+          </td>
+        </tr>
+        <tr>
+          <td valign="top"><b>description:</b></td>
+          <td>
+            <textarea wicket:id="description" name="description" rows="10" cols="40"></textarea>
+          </td>
+        </tr>
+        <tr>
+          <td><b>Creator's name:</b></td>
+          <td>
+            <input wicket:id="owner" name="name" type="text" size="40" value="" />
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2"><span wicket:id="deleteNote" style="color: red">Note: you can not delete the category, because it has add-ons referring to it.</span>&nbsp;</td>
+        </tr>
+        <tr>
+          <td colspan="2" align="center">
+            <input type="submit" name="save" value="Save" />
+            &nbsp;
+            <input type="reset" value="Reset" />
+            &nbsp;
+            <input wicket:id="delete" type="submit" name="delete" value="Delete" />
+          </td>
+        </tr>
+      </table>
+    </form>  
+  </wicket:border>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<html>
+<body>
+  <wicket:border>
+    <div id="contentnorightsidebar">
+      <h2>Categories</h2><br/>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Login name</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Last login</th>
+            <th>Deactivated</th>
+            <th>Deleted</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr wicket:id="rows" class="even">
+            <td><a wicket:id="loginnameLink"><span wicket:id="loginname">dummy</span></a></td>
+            <td><a wicket:id="nameLink"><span wicket:id="name">Peter Sunshine</span></a></td>
+            <td><a wicket:id="emailLink"><span wicket:id="email">pshine@yahoo.com</span></a></td>
+            <td><a wicket:id="lastLoginLink"><span wicket:id="lastLogin">2004-12-28</span></a></td>
+            <td><a wicket:id="deactivatedLink"><span wicket:id="deactivated">&nbsp;</span></a></td>
+            <td><a wicket:id="deletedLink"><span wicket:id="deleted">&nbsp;</span></a></td>
+          </tr>
+        </tbody>
+      </table>
+      <br/>
+      <a wicket:id="new" href="#">Add a new user</a>
+    </div>
+  </wicket:border>
+</body>
+</html>

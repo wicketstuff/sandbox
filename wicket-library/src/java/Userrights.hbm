@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd" >
+
+<hibernate-mapping package="wicket.addons.hibernate">
+	<class name="Userrights" table="userrights">
+		<id
+			column="id"
+			name="Id"
+			type="integer"
+		>
+			<generator class="identity" />
+		</id>
+		<property
+			column="description"
+			length="100"
+			name="Description"
+			not-null="false"
+			type="string"
+		 />
+		<property
+			column="name"
+			length="30"
+			name="Name"
+			not-null="true"
+			type="string"
+		 />
+	</class>
+</hibernate-mapping>

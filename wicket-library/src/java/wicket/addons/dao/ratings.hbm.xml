@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping
+    PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
+
+<hibernate-mapping>
+
+    <class name="wicket.addons.dao.Rating" table="RATINGS">
+
+        <id name="id" type="int" unsaved-value="0" >
+            <generator class="identity"/>
+        </id>
+
+        <property name="createDate" column="CREATEDATE" type="timestamp" not-null="true"/>
+        <property name="rating" type="int" not-null="true"/>
+        <property name="comment" column="COMMENT" length="255" not-null="true"/>
+
+        <many-to-one name="user" class="wicket.addons.dao.User" column="userId" not-null="true"/>
+        <many-to-one name="addon" class="wicket.addons.dao.Addon" column="addonId" not-null="true"/>
+        
+    </class>
+
+</hibernate-mapping>

@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd" >
+
+<hibernate-mapping package="wicket.addons.hibernate">
+	<class name="Ratings" table="ratings">
+		<id
+			column="id"
+			name="Id"
+			type="integer"
+		>
+			<generator class="identity" />
+		</id>
+		<property
+			column="userId"
+			length="10"
+			name="UserId"
+			not-null="true"
+			type="integer"
+		 />
+		<property
+			column="comment"
+			length="100"
+			name="Comment"
+			not-null="true"
+			type="string"
+		 />
+		<property
+			column="createDate"
+			length="19"
+			name="CreateDate"
+			not-null="true"
+			type="timestamp"
+		 />
+		<property
+			column="rating"
+			length="10"
+			name="Rating"
+			not-null="true"
+			type="integer"
+		 />
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,46 @@
+<html>
+<body>
+  <wicket:panel>
+	  <span wicket:id="feedback"/>
+		<form wicket:id="signInForm">
+      <table>
+        <tr>
+          <td>
+            <b>Username:</b>
+          </td>
+          <td>
+            <input wicket:id="username" name="loginname" type="text" size="40" value="" />
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>Password:</b>
+          </td>
+          <td>
+            <input wicket:id="password" name="password" type="password" size="40" value="" />
+          </td>
+        </tr>
+	  		<tr wicket:id="rememberMeRow">
+          <td>
+          </td>
+          <td>
+            <input wicket:id="rememberMe" name="remember" type="checkbox"/> remember me
+          </td>
+        </tr>
+	  		<tr>
+          <td>
+          </td>
+          <td>
+            <br/>
+            <i>
+              note I: when selecting "remember me", make sure your browser accepts persistent cookies.<br/>
+            </i>
+          </td>
+        </tr>
+      </table>
+      <br/>
+      <input type="submit" name="submit" value="submit" />
+		</form>
+  </wicket:panel>
+</body>
+</html>

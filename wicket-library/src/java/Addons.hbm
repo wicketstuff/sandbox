@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd" >
+
+<hibernate-mapping package="wicket.addons.hibernate">
+	<class name="Addons" table="addons">
+		<id
+			column="id"
+			name="Id"
+			type="integer"
+		>
+			<generator class="identity" />
+		</id>
+		<property
+			column="license"
+			length="45"
+			name="License"
+			not-null="true"
+			type="string"
+		 />
+		<property
+			column="description"
+			name="Description"
+			not-null="true"
+			type="string"
+		 />
+		<property
+			column="ownerId"
+			length="10"
+			name="OwnerId"
+			not-null="true"
+			type="integer"
+		 />
+		<property
+			column="homepage"
+			length="200"
+			name="Homepage"
+			not-null="true"
+			type="string"
+		 />
+		<property
+			column="lastModified"
+			length="19"
+			name="LastModified"
+			not-null="true"
+			type="timestamp"
+		 />
+		<property
+			column="createTime"
+			length="19"
+			name="CreateTime"
+			not-null="true"
+			type="timestamp"
+		 />
+		<property
+			column="WicketVersion"
+			length="45"
+			name="WicketVersion"
+			not-null="true"
+			type="string"
+		 />
+		<property
+			column="categoryId"
+			length="10"
+			name="CategoryId"
+			not-null="true"
+			type="integer"
+		 />
+		<property
+			column="name"
+			length="45"
+			name="Name"
+			not-null="true"
+			type="string"
+		 />
+		<property
+			column="version"
+			length="20"
+			name="Version"
+			not-null="true"
+			type="string"
+		 />
+	</class>
+</hibernate-mapping>
