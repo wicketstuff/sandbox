@@ -32,14 +32,14 @@
                 <body>
                     <section name="Dependencies">
                         <p> These are the various dependencies required by 
-                            Wicket.</p>
+                            ${pom.name}.</p>
                         <p> If you're using maven to build your project and 
                             just want to know what dependencies to add to your 
                             POM, just scroll down to the <a 
                             href="#pomDependencies">next section</a>. </p>
                         <subsection name="Required JARS">
                             <p>The following list of JAR dependencies are 
-                                required in order to be able to use Wicket. 
+                                required in order to be able to use ${pom.name}. 
                                 These dependencies are also needed in the build 
                                 process.</p>
                             <table>
@@ -48,8 +48,8 @@
                                     <th>Description</th>
                                 </tr>
                                 <tr>
-                                    <td>wicket-${pom.currentVersion}.jar</td>
-                                    <td>The main Wicket classes</td>
+                                    <td><a href="${pom.url}">${maven.final.name}.jar</a></td>
+                                    <td>${pom.name}.</td>
                                 </tr>
                                 <j:forEach var="lib" items="${pom.artifacts}">
                                     <j:set var="dep" value="${lib.dependency}"/>
@@ -70,7 +70,7 @@
                         <subsection name="Optional JARs">
                             <p>The following JAR dependencies are optional. 
                                 This means that depending on your situation you 
-                                might need (one of) these jars to use Wicket to 
+                                might need (one of) these jars to use ${pom.name} to 
                                 the fullest.</p>
                             <table>
                                 <tr>
@@ -95,8 +95,8 @@
                         </subsection>
                         <subsection name="Build JARs">
                             <p>The following depenencies are only used when you 
-                                are building Wicket yourself. These libraries 
-                                are not necessary to create Wicket 
+                                are building ${pom.name} yourself. These libraries 
+                                are not necessary to create ${pom.name}
                                 applications.</p>
                             <table>
                                 <tr>
@@ -126,20 +126,20 @@
                             href="http://maven.apache.org">maven</a> to build 
                             your project then you can simply cut and paste the 
                             following dependencies into your project.xml.</p>
-                        <p> Note that if you are reading this on the Wicket 
+                        <p> Note that if you are reading this on the ${pom.name} 
                             website then the version numbers reflect what is 
                             currently in CVS, not necessarily what versions are 
                             in use in the distribution that you have 
                             downloaded. In particular, the version number for 
-                            Wicket itself may not reflect a version currently 
+                            ${pom.name} itself may not reflect a version currently 
                             available in the maven repository. </p>
                         <p> If you are reading this from the documentation that 
                             came bundled with a particular distribution of 
-                            Wicket then you can use these values without 
+                            ${pom.name} then you can use these values without 
                             modification. </p>
                         <source><![CDATA[<dependency>
-    <groupId>wicket</groupId>
-    <artifactId>wicket</artifactId>
+    <groupId>${pom.groupId}</groupId>
+    <artifactId>${pom.artifactId}</artifactId>
     <version>${pom.currentVersion}</version>
 </dependency>]]>
 <j:forEach var="lib" items="${pom.artifacts}"
