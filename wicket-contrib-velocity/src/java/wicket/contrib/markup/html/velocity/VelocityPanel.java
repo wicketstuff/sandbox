@@ -1,6 +1,6 @@
 /*
- * $Id$
- * $Revision$ $Date$
+ * $Id$ $Revision:
+ * 1.1 $ $Date$
  * 
  * ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -33,7 +33,7 @@ import wicket.WicketRuntimeException;
 import wicket.markup.ComponentTag;
 import wicket.markup.MarkupStream;
 import wicket.markup.html.WebComponent;
-import wicket.model.MapModel;
+import wicket.model.Model;
 import wicket.util.resource.IStringResource;
 import wicket.util.string.Strings;
 
@@ -80,7 +80,7 @@ public final class VelocityPanel extends WebComponent
 	 *            MapModel with variables that can be substituted by Velocity
 	 */
 	public VelocityPanel(final String name, final IStringResource templateResource,
-			final MapModel model)
+			final Model model)
 	{
 		super(name, model);
 		this.templateResource = templateResource;
@@ -148,8 +148,8 @@ public final class VelocityPanel extends WebComponent
 		final Reader templateReader = getTemplateReader();
 		if (templateReader != null)
 		{
-			final MapModel mapModel = (MapModel) getModel();
-			final Map map = (mapModel != null) ? (Map)mapModel.getObject(this) : null;
+			// Get model as a map
+			final Map map = (Map)getModelObject();
 
 			// create a Velocity context object using the model if set
 			final VelocityContext ctx = new VelocityContext(map);

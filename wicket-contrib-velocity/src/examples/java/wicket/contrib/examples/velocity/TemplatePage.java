@@ -25,7 +25,6 @@ import wicket.contrib.markup.html.velocity.VelocityPanel;
 import wicket.markup.html.form.Form;
 import wicket.markup.html.form.TextArea;
 import wicket.markup.html.panel.FeedbackPanel;
-import wicket.model.MapModel;
 import wicket.model.Model;
 import wicket.model.PropertyModel;
 import wicket.util.resource.StringBufferResource;
@@ -38,7 +37,7 @@ import wicket.util.resource.StringBufferResource;
 public class TemplatePage extends WicketExamplePage
 {
 	/** context to be used by the template. */
-	private final MapModel templateContext;
+	private final Model templateContext;
 
 	/** the current template contents. */
 	private StringBufferResource template = new StringBufferResource();
@@ -66,7 +65,7 @@ public class TemplatePage extends WicketExamplePage
 	{
 		HashMap map = new HashMap();
 		map.put("persons", VelocityTemplateApplication.getPersons());
-		templateContext = MapModel.valueOf(map);
+		templateContext = Model.valueOf(map);
 
 		add(new TemplateForm("templateForm"));
 		add(new VelocityPanel("templatePanel", template, templateContext));
