@@ -58,7 +58,7 @@ public final class ImagePopupLink extends Link
 		final CD cd = (CD)getModelObject();
 		ImageResource imgResource = new ImageResource()
 		{
-			public IResourceStream getResource()
+			public IResourceStream getResourceStream()
 			{
 				DynamicImageResource img = new DynamicImageResource()
 				{
@@ -67,7 +67,7 @@ public final class ImagePopupLink extends Link
 						return cd.getImage();
 					}
 				};
-				return img.getResource();
+				return img.getResourceStream();
 			}
 		};
 		getRequestCycle().setResponsePage(new ImagePopup(imgResource));
