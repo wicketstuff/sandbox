@@ -3,7 +3,7 @@
 <project>
   <pomVersion>3</pomVersion>
   <groupId>wicket-stuff</groupId>
-  <id>wicket-contrib-data-hibernate-2.1</id>
+  <id>wicket-contrib-data-hibernate-3.0</id>
   <name>Wicket Contrib Data Hibernate 3.0</name>
   <currentVersion>1.0</currentVersion>
   <inceptionYear>2004</inceptionYear>
