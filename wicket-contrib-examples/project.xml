@@ -3,7 +3,7 @@
 <project>
   <groupId>wicket-stuff</groupId>
   <id>wicket-contrib-examples</id>
-  <currentVersion>SNAPSHOT</currentVersion>
+  <currentVersion>1.0</currentVersion>
   <package>wicket.contrib.examples</package>
   <inceptionYear>2004</inceptionYear>
   <description>Examples for web framework Wicket.</description>
@@ -14,7 +14,7 @@
     <dependency>
       <groupId>wicket</groupId>
       <artifactId>wicket</artifactId>
-      <version>SNAPSHOT</version>
+      <version>1.0.0-rc1</version>
       <properties>
         <eclipse.dependency>true</eclipse.dependency>
         <war.bundle>true</war.bundle>
@@ -23,7 +23,7 @@
     <dependency>
       <groupId>wicket</groupId>
       <artifactId>wicket-extensions</artifactId>
-      <version>SNAPSHOT</version>
+      <version>1.0.0-rc1</version>
       <properties>
         <eclipse.dependency>true</eclipse.dependency>
         <war.bundle>true</war.bundle>
@@ -32,7 +32,7 @@
     <dependency>
   	  <groupId>wicket-stuff</groupId>
   	  <id>wicket-contrib-data-hibernate-2.1</id>
-      <version>SNAPSHOT</version>
+      <version>1.0</version>
       <properties>
         <eclipse.dependency>true</eclipse.dependency>
         <war.bundle>true</war.bundle>
@@ -41,7 +41,7 @@
     <dependency>
   	  <groupId>wicket-stuff</groupId>
   	  <id>wicket-contrib-data</id>
-      <version>SNAPSHOT</version>
+      <version>1.0</version>
       <properties>
         <eclipse.dependency>true</eclipse.dependency>
         <war.bundle>true</war.bundle>
