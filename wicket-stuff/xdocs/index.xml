@@ -7,14 +7,9 @@
 	<body>
 		<section name="Welcome to Wicket Stuff">
 			<p>
-				The Wicket Stuff project provides additional components to the core components
-				supplied by the <a href="http://wicket.sourceforge.net">Wicket</a> framework.
-				The components are either license incompatible with Wicket, or are depending on
-				another framework and thus demanding another release schedule than the core
-				Wicket project.
-			</p>
-			<p>
-				Components offered by this project include:
+				The Wicket Stuff project provides additional Java web components to the core 
+				components supplied by the <a href="http://wicket.sourceforge.net">Wicket</a> 
+				framework. Components offered by this project include:
 			</p>
 			<ul>
 				<li>Hibernate (2.1 and 3) components</li>
