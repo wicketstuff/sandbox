@@ -25,7 +25,7 @@ import wicket.markup.html.image.resource.ImageResource;
 import wicket.markup.html.link.Link;
 import wicket.markup.html.link.PopupSettings;
 import wicket.model.IModel;
-import wicket.util.resource.IResource;
+import wicket.util.resource.IResourceStream;
 
 /**
  * Link that displays the image of a cd in a popup window that resizes to fit.
@@ -58,7 +58,7 @@ public final class ImagePopupLink extends Link
 		final CD cd = (CD)getModelObject();
 		ImageResource imgResource = new ImageResource()
 		{
-			public IResource getResource()
+			public IResourceStream getResource()
 			{
 				DynamicImageResource img = new DynamicImageResource()
 				{

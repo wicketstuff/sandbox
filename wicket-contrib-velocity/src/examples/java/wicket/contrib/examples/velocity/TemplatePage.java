@@ -27,7 +27,7 @@ import wicket.markup.html.form.TextArea;
 import wicket.markup.html.panel.FeedbackPanel;
 import wicket.model.Model;
 import wicket.model.PropertyModel;
-import wicket.util.resource.StringBufferResource;
+import wicket.util.resource.StringBufferResourceStream;
 
 /**
  * Template example page.
@@ -40,7 +40,7 @@ public class TemplatePage extends WicketExamplePage
 	private final Model templateContext;
 
 	/** the current template contents. */
-	private StringBufferResource template = new StringBufferResource();
+	private StringBufferResourceStream template = new StringBufferResourceStream();
 	{
 		template.append("<fieldset>\n");
 		template.append(" <legend>persons</legend>\n");

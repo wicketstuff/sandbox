@@ -34,12 +34,12 @@ import wicket.markup.ComponentTag;
 import wicket.markup.MarkupStream;
 import wicket.markup.html.WebComponent;
 import wicket.model.Model;
-import wicket.util.resource.IStringResource;
+import wicket.util.resource.IStringResourceStream;
 import wicket.util.string.Strings;
 
 /**
  * Panel that displays the result of rendering a Velocity template. The template
- * itself can be any IStringResource implementation, of which there are a number
+ * itself can be any IStringResourceStream implementation, of which there are a number
  * of convenient implementations in wicket.util. The model can be any normal
  * Wicket MapModel.
  * 
@@ -52,7 +52,7 @@ public final class VelocityPanel extends WebComponent
 	private boolean escapeHtml = false;
 
 	/** Velocity template resource */
-	private final IStringResource templateResource;
+	private final IStringResourceStream templateResource;
 
 	/**
 	 * Whether any velocity exception should be trapped and displayed on the
@@ -79,7 +79,7 @@ public final class VelocityPanel extends WebComponent
 	 * @param model
 	 *            MapModel with variables that can be substituted by Velocity
 	 */
-	public VelocityPanel(final String name, final IStringResource templateResource,
+	public VelocityPanel(final String name, final IStringResourceStream templateResource,
 			final Model model)
 	{
 		super(name, model);
