@@ -12,6 +12,7 @@
 	        <item name="News" href="/News.html"/>
             <item name="License" href="/license.html"/>
             <item name="Javadoc" href="/apidocs/index.html"  target="_blank" class="newwindow"/>
+	        <item name="Dependencies" href="/dependencies.html"/>
 	    </menu>
 
 	    <menu name="Related projects">
