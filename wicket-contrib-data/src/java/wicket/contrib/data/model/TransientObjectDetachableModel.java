@@ -57,6 +57,7 @@ public abstract class TransientObjectDetachableModel extends AbstractDetachableM
 	 */
 	protected final void onAttach()
 	{
+		this.setObject(load());
 	}
 
 	/**
