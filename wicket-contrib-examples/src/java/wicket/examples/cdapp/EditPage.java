@@ -1,20 +1,19 @@
 /*
- * $Id$
- * $Revision$
+ * $Id$ $Revision$
  * $Date$
- *
- * ====================================================================
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *  http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
+ * ==================================================================== Licensed
+ * under the Apache License, Version 2.0 (the "License"); you may not use this
+ * file except in compliance with the License. You may obtain a copy of the
+ * License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 package wicket.examples.cdapp;
 
@@ -44,7 +43,6 @@ import wicket.markup.html.link.Link;
 import wicket.markup.html.panel.FeedbackPanel;
 import wicket.model.IModel;
 import wicket.model.PropertyModel;
-import wicket.util.resource.IResource;
 
 
 /**
@@ -57,9 +55,12 @@ public final class EditPage extends CdAppBasePage
 	/** Logger. */
 	private static Log log = LogFactory.getLog(SearchPage.class);
 
-	/** static image resource from this package; references image 'questionmark.gif'. */
-	private static final StaticImageResource IMG_UNKNOWN = StaticImageResource.get(
-			EditPage.class.getPackage(), "questionmark.gif", null, null);
+	/**
+	 * static image resource from this package; references image
+	 * 'questionmark.gif'.
+	 */
+	private static final StaticImageResource IMG_UNKNOWN = StaticImageResource.get(EditPage.class
+			.getPackage(), "questionmark.gif", null, null);
 
 	/** model for one cd. */
 	private final PersistentObjectModel cdModel;
@@ -75,24 +76,30 @@ public final class EditPage extends CdAppBasePage
 		/**
 		 * Construct.
 		 * 
-		 * @param name component name
-		 * @param validationErrorHandler error handler
-		 * @param cdModel the model
+		 * @param name
+		 *            component name
+		 * @param validationErrorHandler
+		 *            error handler
+		 * @param cdModel
+		 *            the model
 		 */
 		public DetailForm(String name, IFeedback validationErrorHandler,
 				PersistentObjectModel cdModel)
 		{
 			super(name, cdModel, validationErrorHandler);
-			RequiredTextField titleField = new RequiredTextField("title", new PropertyModel(cdModel, "title"));
+			RequiredTextField titleField = new RequiredTextField("title", new PropertyModel(
+					cdModel, "title"));
 			titleField.add(LengthValidator.max(50));
 			add(titleField);
-			RequiredTextField performersField = new RequiredTextField("performers", new PropertyModel(cdModel, "performers"));
+			RequiredTextField performersField = new RequiredTextField("performers",
+					new PropertyModel(cdModel, "performers"));
 			performersField.add(LengthValidator.max(50));
 			add(performersField);
 			TextField labelField = new TextField("label", new PropertyModel(cdModel, "label"));
 			labelField.add(LengthValidator.max(50));
 			add(labelField);
-			RequiredTextField yearField = new RequiredTextField("year", new PropertyModel(cdModel, "year"));
+			RequiredTextField yearField = new RequiredTextField("year", new PropertyModel(cdModel,
+					"year"));
 			yearField.add(IntegerValidator.POSITIVE_INT);
 			add(yearField);
 			add(new Link("cancelButton")
@@ -132,11 +139,12 @@ public final class EditPage extends CdAppBasePage
 	private final class ImageUploadForm extends UploadForm
 	{
 		private FileUploadField uploadField;
-		
+
 		/**
 		 * Construct.
+		 * 
 		 * @param name
-		 * @param cdModel 
+		 * @param cdModel
 		 */
 		public ImageUploadForm(String name, PersistentObjectModel cdModel)
 		{
@@ -148,9 +156,13 @@ public final class EditPage extends CdAppBasePage
 		{
 			// get the uploaded file
 			FileUpload upload = uploadField.getFileUpload();
-			CD cd = (CD)getModelObject();
-			cd.setImage(upload.getBytes());
-			getCdDao().save(cd);
+			if (upload != null)
+			{
+				CD cd = (CD)getModelObject();
+				cd.setImage(upload.getBytes());
+				thumbnailImage.setImageResource(getThumbnail());
+				getCdDao().save(cd);
+			}
 		}
 	}
 
@@ -161,6 +173,7 @@ public final class EditPage extends CdAppBasePage
 	{
 		/**
 		 * Construct.
+		 * 
 		 * @param name
 		 * @param cdModel
 		 */
@@ -176,6 +189,7 @@ public final class EditPage extends CdAppBasePage
 		{
 			CD cd = (CD)getModelObject();
 			cd.setImage(null);
+			thumbnailImage.setImageResource(getThumbnail());
 			getCdDao().save(cd);
 		}
 
@@ -189,10 +203,15 @@ public final class EditPage extends CdAppBasePage
 		}
 	}
 
+	private Image thumbnailImage;
+
 	/**
 	 * Constructor.
-	 * @param searchCDPage the search page to navigate back to
-	 * @param id the id of the cd to edit
+	 * 
+	 * @param searchCDPage
+	 *            the search page to navigate back to
+	 * @param id
+	 *            the id of the cd to edit
 	 */
 	public EditPage(final SearchPage searchCDPage, Long id)
 	{
@@ -205,44 +224,46 @@ public final class EditPage extends CdAppBasePage
 		add(new DetailForm("detailForm", feedback, cdModel));
 		add(new ImageUploadForm("imageUpload", cdModel));
 
-		// create an image resource that displays a question mark when no image is
-		// set on the cd, or displays a thumbnail of the cd's image when there is one
-		ImageResource thumbImgResource = new ImageResource()
-		{
-			public IResource getResource()
-			{
-				final CD cd = (CD)cdModel.getObject(null);
-				if (cd.getImage() == null)
-				{
-					return IMG_UNKNOWN.getResource();
-				}
-				else
-				{
-					DynamicImageResource img = new DynamicImageResource()
-					{
-						protected byte[] getImageData()
-						{
-							return cd.getImage();
-						}
-					};
-					ThumbnailImageResource res =
-						new ThumbnailImageResource(img, 100);
-					return res.getResource();
-				}
-			}
-		};
+		getThumbnail();
 
 		// create a link that displays the full image in a popup page
 		ImagePopupLink popupImageLink = new ImagePopupLink("popupImageLink", cdModel);
 
 		// create an image using the image resource
-		popupImageLink.add(new Image("cdimage", thumbImgResource));
+		popupImageLink.add(thumbnailImage = new Image("cdimage", getThumbnail()));
 
 		// add the link to the original image
 		add(popupImageLink);
 
 		// add link for deleting the image
 		add(new DeleteImageLink("deleteImageLink", cdModel));
+	}
+
+	/**
+	 * 
+	 */
+	private ImageResource getThumbnail()
+	{
+		// create an image resource that displays a question mark when no image
+		// is
+		// set on the cd, or displays a thumbnail of the cd's image when there
+		// is one
+		final CD cd = (CD)cdModel.getObject(null);
+		if (cd.getImage() == null)
+		{
+			return IMG_UNKNOWN;
+		}
+		else
+		{
+			DynamicImageResource img = new DynamicImageResource()
+			{
+				protected byte[] getImageData()
+				{
+					return cd.getImage();
+				}
+			};
+			return new ThumbnailImageResource(img, 100);
+		}
 	}
 
 	/**
