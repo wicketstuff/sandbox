@@ -14,7 +14,7 @@
 			<ul>
 				<li>Hibernate (2.1 and 3) components</li>
 				<li><a href="/wicket-contrib-fvalidate/index.html">fValidate integration</a></li>
-				<li>Spring integration components</li>
+				<li><a href="/wicket-contrib-spring/index.html">Spring integration</a> components</li>
 				<li><a href="/wicket-contrib-groovy/index.html">Groovy integration components</a></li>
 				<li><a href="/wicket-velocity-panel/index.html">Velocity Panel</a></li>
 			</ul>
