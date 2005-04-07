@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <document>
 	<properties>
-		<title>Velocity Panel</title>
+		<title>Home</title>
 	</properties>
-	<meta name="keyword" content="wicket, web, j2ee, java, components" />
+	<meta name="keyword" content="wicket, web, j2ee, java, components, velocity, jakarta" />
 	<body>
 		<section name="Welcome to Velocity Panel">
 			<p>

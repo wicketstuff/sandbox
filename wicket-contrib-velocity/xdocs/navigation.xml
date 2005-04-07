@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
-<project name="Wicket Stuff">
-	<title>Wicket Stuff</title>
+<project name="Velocity Panel">
+	<title>Velocity Panel</title>
 	<body>
 	    <links>
 	      <item name="Wicket"  href="http://wicket.sourceforge.net/"/>
