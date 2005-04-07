@@ -15,10 +15,10 @@
 	    </menu>
 	    <menu name="Projects">
 	    	<item name="Velocity Panel" href="/wicket-velocity-panel/index.html"/>
+	    	<item name="fValidate Integration" href="/wicket-contrib-fvalidate/index.html"/>
 <!-- 
 	    	<item name="Hibernate2 Integration" href="/wicket-contrib-hibernate-2.1/index.html"/>
 	    	<item name="Hibernate3 Integration" href="/wicket-contrib-hibernate-3.0/index.html"/>
-	    	<item name="fValidate Integration" href="/wicket-contrib-fValidate/index.html"/>
 	    	<item name="Groovy Integration" href="/wicket-contrib-groovy/index.html"/>
 	    	<item name="Spring Integration" href="/wicket-contrib-spring/index.html"/>
 -->
