@@ -7,38 +7,51 @@
 	<body>
 		<section name="Welcome to Wicket Stuff">
 			<p>
-				The Wicket Stuff project provides additional Java web components to the core 
-				components supplied by the <a href="http://wicket.sourceforge.net">Wicket</a> 
+				The Wicket Stuff project provides additional Java web components to the core
+				components supplied by the
+				<a href="http://wicket.sourceforge.net">Wicket</a>
 				framework. Components offered by this project include:
 			</p>
 			<ul>
 				<li>Hibernate (2.1 and 3) components</li>
-				<li><a href="/wicket-contrib-fvalidate/index.html">fValidate integration</a></li>
-				<li><a href="/wicket-contrib-spring/index.html">Spring integration</a> components</li>
-				<li><a href="/wicket-contrib-groovy/index.html">Groovy integration components</a></li>
-				<li><a href="/wicket-velocity-panel/index.html">Velocity Panel</a></li>
+				<li>
+					<a href="/wicket-contrib-fvalidate/index.html">fValidate integration</a>
+				</li>
+				<li>
+					<a href="/wicket-contrib-spring/index.html">Spring integration</a>
+					components
+				</li>
+				<li>
+					<a href="/wicket-contrib-groovy/index.html">Groovy integration components</a>
+				</li>
+				<li>
+					<a href="/wicket-velocity-panel/index.html">Velocity Panel</a>
+				</li>
 			</ul>
 			<p>
-				<a href="http://wicket.sourceforge.net">Wicket</a> is a Java web application 
-				framework that takes simplicity, separation of concerns and ease of development
-				to a whole new level.
+				<a href="http://wicket.sourceforge.net">Wicket</a>
+				is a Java web application framework that takes simplicity, separation of concerns
+				and ease of development to a whole new level.
 			</p>
 			<p>
 				The Wicket Stuff project provides non-core components to the Wicket project. By
 				non-core we mean that the Wicket project should focus on being a very focussed
-				framework, not distracted by development of other frameworks, such as 
-				<a href="http://www.hibernate.org">Hibernate</a> or 
-				<a href="http://www.springframework.com">Spring</a>. This enables the core developers
-				to focus on creating a first class framework, and the other developers to create many
-				components, that the core couldn't foresee to maintain.
+				framework, not distracted by development of other frameworks, such as
+				<a href="http://www.hibernate.org">Hibernate</a>
+				or
+				<a href="http://www.springframework.com">Spring</a>
+				. This enables the core developers to focus on creating a first class framework, and
+				the other developers to create many components, that the core couldn't foresee to
+				maintain.
 			</p>
 		</section>
 		<section name="Latest News">
 			<subsection name="March 22, 2005 - Wicket Stuff was accepted by SourceForge">
 				<p>
 					The Wicket team wishes to thank the SourceForge team for accepting Wicket Stuff
-					as a project on the SourceForge servers. This allows <a href="http://wicket.sourceforge.net">Wicket</a> to grow
-					further beyond our dreams.
+					as a project on the SourceForge servers. This allows
+					<a href="http://wicket.sourceforge.net">Wicket</a>
+					to grow further beyond our dreams.
 				</p>
 			</subsection>
 			<p>
@@ -50,21 +63,38 @@
 		<section name="Special Thanks">
 			<p>
 				The Wicket Stuff development team would like to thank the following partners for
-				supporting Open Source in general and Wicket in particular. 
+				supporting Open Source in general and Wicket in particular.
 			</p>
-<!-- 
-			<a href="http://www.yourkit.com" target="_blank" class="logoLink">
+			<!-- 
+				<a href="http://www.yourkit.com" target="_blank" class="logoLink">
 				<img alt="YourKit" src="images/yip_logo.gif" />
-			</a>
-			<a href="http://www.cenqua.com" target="_blank" class="logoLink">
+				</a>
+				<a href="http://www.cenqua.com" target="_blank" class="logoLink">
 				<img alt="Clover"
-					src="http://www.cenqua.com/clover/doc/skin/images/clover_logo.gif" />
-			</a>
--->
+				src="http://www.cenqua.com/clover/doc/skin/images/clover_logo.gif" />
+				</a>
+			-->
 			<a href="http://www.sourceforge.net" target="_blank" class="logoLink">
 				<img alt="SourceForge.net"
 					src="http://sourceforge.net/sflogo.php?group_id=119783&amp;type=1" />
 			</a>
+			<p>
+				<!-- Begin Nedstat Basic code -->
+				<!-- Title: Wicket - Home -->
+				<!-- URL: http://wicket.sourceforge.net/ -->
+				<script language="JavaScript" type="text/javascript"
+					src="http://m1.nedstatbasic.net/basic.js">
+				</script>
+				<script language="JavaScript" type="text/javascript" src="nedstat.js"></script>
+				<noscript>
+					<a target="_blank" href="http://www.nedstatbasic.net/stats?ADVPTgfnZ+AVbykuC57QGTi6FnJw">
+						<img src="http://m1.nedstatbasic.net/n?id=ADVPTgfnZ+AVbykuC57QGTi6FnJw" border="0" width="18" height="18" alt="Nedstat Basic - Free web site statistics Personal homepage website counter" />
+					</a>
+					<br />
+						<a target="_blank" href="http://www.nedstatbasic.net/">Free counter</a>
+				</noscript>
+				<!-- End Nedstat Basic code -->
+			</p>
 		</section>
 	</body>
 </document>
