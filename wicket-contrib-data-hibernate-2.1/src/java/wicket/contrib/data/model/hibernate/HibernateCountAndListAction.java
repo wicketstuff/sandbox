@@ -114,7 +114,7 @@ public class HibernateCountAndListAction implements ISelectCountAndListAction,
 	{
 		try
 		{
-			Query query = getCountQuery();
+			Query query = getCountQuery(sessionDelegate.getSession());
 			setParameters(query, queryObject);
 			List countResult = query.list();
 			return (Integer) countResult.get(0);
@@ -136,7 +136,7 @@ public class HibernateCountAndListAction implements ISelectCountAndListAction,
 	{
 		try
 		{
-			Query query = getQuery();
+			Query query = getQuery(sessionDelegate.getSession());
 			setParameters(query, queryObject);
 			query.setFirstResult(startFromRow);
 			query.setMaxResults(numberOfRows);
@@ -165,15 +165,14 @@ public class HibernateCountAndListAction implements ISelectCountAndListAction,
 
 	/**
 	 * Get the named select query.
+	 * @param session hibernate session
 	 * @return the named select query
 	 */
-	protected Query getQuery()
+	protected Query getQuery(Session session)
 	{
 		Query query;
 		try
 		{
-
-			Session session = sessionDelegate.getSession();
 			query = session.getNamedQuery(queryName);
 			List orderColumns = getOrderColumns();
 			if (!orderColumns.isEmpty())
@@ -203,14 +202,14 @@ public class HibernateCountAndListAction implements ISelectCountAndListAction,
 
 	/**
 	 * Get the named count query.
+	 * @param session hibernate session
 	 * @return the named count query
 	 */
-	protected Query getCountQuery()
+	protected Query getCountQuery(Session session)
 	{
 		Query query;
 		try
 		{
-			Session session = sessionDelegate.getSession();
 			query = session.getNamedQuery(countQueryName);
 		}
 		catch (HibernateException e)
