@@ -7,12 +7,13 @@
 	<name>Velocity Panel</name>
 	<currentVersion>1.0</currentVersion>
 	<organization>
-		<name>Wicket developers</name>
-		<url>http://wicket.sourceforge.net</url>
-		<logo>http://sourceforge.net/sflogo.php?group_id=134391&amp;type=1</logo>
+		<name>Wicket Stuff</name>
+		<url>http://wicket-stuff.sourceforge.net</url>
+		<logo>/images/wicket-stuff.png</logo>
 	</organization>
 	<inceptionYear>2005</inceptionYear>
 	<package>wicket</package>
+	<logo>/images/projectLogo.png</logo>
 	<description>
 		The Velocity Panel component allows you to use Velocity (http://jakarta.apache.org/velocity)
 		macros in your Wicket applications.

@@ -1,7 +1,6 @@
-.clear,br,#projectLogo,#organizationLogo,#poweredBy {
+.clear,br {
 	display: none;
 }
-
 body {
 	background-color: white;
 	background-image: url('body-bg.png');
@@ -36,12 +35,7 @@ div {
 	padding-left: 1px;
 	padding-right: 1px;
 }
-
 #banner {
-	display: none;
-}
-
-#breadcrumbs {
 	height: 182px;
 	background-color: white;
 	background-image: url('banner-bg.png');
@@ -51,6 +45,24 @@ div {
 	padding-top: 60px;
 	padding-left: 150px;
 	margin-bottom: -42px;
+}
+#organizationLogo {
+	position : absolute;
+	top : 95px;
+	left : 25px;
+}
+#projectLogo {
+	position : absolute;
+	top : 23px;
+	left : 87px;
+}
+#poweredBy {
+	display : none;
+}
+#breadcrumbs {
+	position : absolute;
+	top : 70px;
+	left : 150px;
 }
 
 div .xright {
