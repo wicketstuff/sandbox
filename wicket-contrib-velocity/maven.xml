@@ -11,6 +11,5 @@
 				<include name="**/*"/>
 			</fileset>
 		</ant:copy>
-		<ant:copy todir="${maven.build.dir}/docs/images" file="${maven.multiproject.basedir}/wicket-stuff/xdocs/images/wicket-stuff.png" />
     </postGoal>
 </project>
