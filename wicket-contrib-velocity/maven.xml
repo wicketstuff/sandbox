@@ -10,6 +10,9 @@
 			<fileset dir="${maven.multiproject.basedir}/wicket-stuff/xdocs/style">
 				<include name="**/*"/>
 			</fileset>
+			<fileset dir="xdocs/style">
+				<include name="**/*"/>
+			</fileset>
 		</ant:copy>
     </postGoal>
 </project>
