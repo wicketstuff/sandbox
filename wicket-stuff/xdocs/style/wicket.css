@@ -1,6 +1,7 @@
 .clear,br {
 	display: none;
 }
+
 body {
 	background-color: white;
 	background-image: url('body-bg.png');
@@ -35,6 +36,7 @@ div {
 	padding-left: 1px;
 	padding-right: 1px;
 }
+
 #banner {
 	height: 182px;
 	background-color: white;
@@ -48,13 +50,13 @@ div {
 }
 #organizationLogo {
 	position : absolute;
-	top : 95px;
-	left : 25px;
+	top : 27px;
+	left : 86px;
 }
 #projectLogo {
 	position : absolute;
-	top : 23px;
-	left : 87px;
+	top : 95px;
+	left : 25px;
 }
 #poweredBy {
 	display : none;
@@ -62,7 +64,7 @@ div {
 #breadcrumbs {
 	position : absolute;
 	top : 70px;
-	left : 150px;
+	left : 151px;
 }
 
 div .xright {
@@ -141,7 +143,7 @@ div#footer div.xright {
 }
 
 h1,h2,h3,h4,h5,h6,h7,h8 {
-	color:  #A67411;  //#E9601A;
+	color: #E9601A;
 }
 
 h2 {
@@ -162,13 +164,13 @@ a {
 }
 
 dt {
-	color: #A67411;
+	color: #E9601A;
 	font-weight : bold;
 }
 
 dt a {
 	text-decoration: none;
-	color: #A67411;
+	color: #E9601A;
 }
 dd {
 	margin-left : 0;

@@ -7,9 +7,9 @@
 	<groupId>wicket-stuff</groupId>
 	<currentVersion>1.0</currentVersion>
 	<organization>
-		<name>Wicket developers</name>
+		<name>Wicket</name>
 		<url>http://wicket.sourceforge.net</url>
-		<logo>/images/organizationLogo.png</logo>
+		<logo>/style/logo-bg.png</logo>
 	</organization>
 	<inceptionYear>2005</inceptionYear>
 	<package>wicket</package>
