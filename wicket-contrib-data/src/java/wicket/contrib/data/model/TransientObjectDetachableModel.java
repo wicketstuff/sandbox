@@ -104,6 +104,6 @@ public abstract class TransientObjectDetachableModel extends AbstractDetachableM
 	 */
 	public final Object getNestedModel()
 	{
-		return null;
+		return tempModelObject;
 	}
 }

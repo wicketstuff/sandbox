@@ -114,7 +114,7 @@ public class PersistentObjectModel extends AbstractDetachableModel
 	 */
 	public Object getNestedModel()
 	{
-		return idModel;
+		return object;
 	}
 
 	/**
