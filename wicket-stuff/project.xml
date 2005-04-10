@@ -7,13 +7,13 @@
 	<groupId>wicket-stuff</groupId>
 	<currentVersion>1.0</currentVersion>
 	<organization>
-		<name>Wicket</name>
-		<url>http://wicket.sourceforge.net</url>
-		<logo>/style/logo-bg.png</logo>
+		<name>Wicket Stuff</name>
+		<url>http://wicket-stuff.sourceforge.net</url>
+		<logo>/images/projectLogo.png</logo>
 	</organization>
 	<inceptionYear>2005</inceptionYear>
 	<package>wicket</package>
-	<logo>/images/projectLogo.png</logo>
+	<logo>/images/empty.png</logo>
 	<description>
 		The Wicket Stuff project makes third party components available using the Wicket web
 		component framework. Subprojects of this project contain integrations for Spring, Groovy,
