@@ -4,15 +4,16 @@
 	<pomVersion>3</pomVersion>
 	<groupId>wicket-stuff</groupId>
 	<id>wicket-contrib-fvalidate</id>
-	<name>Wicket Contrib fValidate</name>
+	<name>Wicket fValidate Integration</name>
 	<currentVersion>1.0</currentVersion>
 	<inceptionYear>2005</inceptionYear>
 	<organization>
-		<name>Wicket developers</name>
-		<url>http://wicket.sourceforge.net</url>
-		<logo>http://sourceforge.net/sflogo.php?group_id=134391&amp;type=1</logo>
+		<name>Wicket Stuff</name>
+		<url>http://wicket-stuff.sourceforge.net</url>
+		<logo>http://wicket-stuff.sourceforge.net/images/projectLogo.png</logo>
 	</organization>
 	<package>wicket</package>
+	<logo>/images/projectLogo.png</logo>
 	<description>
 		Contains extensions of the Wicket form components that work with the javascript validation framework fValidate..
 	</description>

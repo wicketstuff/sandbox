@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
-<project name="Wicket Stuff">
-	<title>Wicket Stuff</title>
+<project name="fValidate Integration">
+	<title>fValidate Integration</title>
 	<body>
 	    <links>
 	      <item name="Wicket"  href="http://wicket.sourceforge.net/"/>
 	      <item name="Stuff"  href="http://wicket-stuff.sourceforge.net/"/>
 	    </links>
 	
-	    <menu name="Wicket Contrib fValidate">
+	    <menu name="fValidate Integration">
 	        <item name="Home" href="/index.html"/>
 	        <item name="News" href="/News.html"/>
             <item name="License" href="/license.html"/>

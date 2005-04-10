@@ -1,18 +1,18 @@
 <?xml version="1.0"?>
 <document>
 	<properties>
-		<title>Wicket Contrib fValidate</title>
+		<title>Home</title>
 	</properties>
 	<meta name="keyword" content="wicket, web, j2ee, java, components, fValidate" />
 	<body>
-		<section name="Welcome to Wicket Contrib fValidate">
+		<section name="Welcome to Wicket fValidate Integration">
 			<p>
 				Contains extensions of the Wicket form components
 				that work with the javascript validation framework
 				<a href="http://www.peterbailey.net/fValidate/">fValidate</a>.				
 			</p>
 			<p>
-				The Wicket Contrib fValidate is part of the
+				The Wicket fValidate Integration project is part of the
 				<a href="/index.html">Wicket Stuff</a>
 				project. This Wicket powered project provides non-core components to the Wicket
 				project.
