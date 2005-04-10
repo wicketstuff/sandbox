@@ -9,7 +9,7 @@
 	<organization>
 		<name>Wicket Stuff</name>
 		<url>http://wicket-stuff.sourceforge.net</url>
-		<logo>http://wicket-stuff.sourceforge.net/images/wicket-stuff.png</logo>
+		<logo>http://wicket-stuff.sourceforge.net/images/projectLogo.png</logo>
 	</organization>
 	<inceptionYear>2005</inceptionYear>
 	<package>wicket</package>
