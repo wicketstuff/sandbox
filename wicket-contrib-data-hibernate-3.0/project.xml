@@ -52,7 +52,7 @@
     <dependency>
       <groupId>hibernate</groupId>
       <artifactId>hibernate</artifactId>
-      <version>3.0rc1</version>
+      <version>3.0</version>
     </dependency>
     <dependency>
       <groupId>wicket</groupId>
