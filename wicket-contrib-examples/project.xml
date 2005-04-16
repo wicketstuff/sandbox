@@ -72,7 +72,7 @@
     </dependency>
     <dependency>
   	  <groupId>wicket-stuff</groupId>
-  	  <id>wicket-contrib-data-hibernate-2.1</id>
+  	  <artifactId>wicket-contrib-data-hibernate-2.1</artifactId>
       <version>1.0</version>
       <properties>
         <eclipse.dependency>true</eclipse.dependency>
@@ -81,7 +81,7 @@
     </dependency>
     <dependency>
   	  <groupId>wicket-stuff</groupId>
-  	  <id>wicket-contrib-data</id>
+  	  <artifactId>wicket-contrib-data</artifactId>
       <version>1.0</version>
       <properties>
         <eclipse.dependency>true</eclipse.dependency>
