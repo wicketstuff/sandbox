@@ -10,7 +10,10 @@
 
 <fieldset><legend>Edit <span wicket:id="cdTitle">(cd title)</span></legend>
 
-<div id="detailBox">
+<table>
+ <tr>
+  <td>
+
   <table>
 	<tbody>
 		<form wicket:id="detailForm">
@@ -41,29 +44,30 @@
 		</form>
 	</tbody>
   </table>
-</div>
 
-<fieldset id="imageFieldset">
-  <legend>image</legend>
-	<div id="imageBox">
-	  <div id="imageDisplayBox">
-	  <table width="100%" height="100%"><tr><td align="center" valign = "vcenter">
-	   <a href="#" wicket:id="popupImageLink"><img wicket:id="cdimage"/></a>
-	   </td></tr></table>
-	  <span id="removeImage">
-	  <p>
-	    <a href="#" wicket:id="deleteImageLink"><img src="cdapp/delete.gif"></a>
-	  </p>
-	  </span>
-	  </div>
-	  <div>
-	  	<form wicket:id="imageUpload">
-	  		<input wicket:id="file" type="file"/>
-	  		<input type="submit" value="upload"/>
-	  	</form>
-	  </div>
-	</div>
-</fieldset>
+</td>
+<td>
+
+  <div id="imageDisplayBox">
+  <table width="100%" height="100%"><tr><td align="center" valign = "middle">
+   <a href="#" wicket:id="popupImageLink"><img wicket:id="cdimage"/></a>
+   </td></tr></table>
+  <span id="removeImage">
+  <p>
+    <a href="#" wicket:id="deleteImageLink"><img src="cdapp/delete.gif"></a>
+  </p>
+  </span>
+  </div>
+  <div>
+  	<form wicket:id="imageUpload">
+  		<input wicket:id="file" type="file"/>
+  		<input type="submit" value="upload"/>
+  	</form>
+  </div>
+
+</td>
+</tr>
+</table>
 
 </fieldset>
 

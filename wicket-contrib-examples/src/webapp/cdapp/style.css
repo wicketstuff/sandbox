@@ -103,20 +103,6 @@ input, select, label  {
  display: inline !important;
 }
 
-#detailBox {
-	width: 1%;
-	float: left;
-	margin: 5px;
-}
-
-#imageFieldset {
-	margin-left: 300px;
-}
-
-#imageBox {
-	margin: 5px;
-}
-
 #imageDisplayBox {
 	border-color: navy;
 	border-style: dotted;
