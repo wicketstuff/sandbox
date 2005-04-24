@@ -21,8 +21,8 @@ package wicket.examples;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import wicket.markup.html.form.encryption.NoCrypt;
 import wicket.protocol.http.WebApplication;
+import wicket.util.crypt.NoCrypt;
 
 /**
  * WicketServlet class for hello world example.
