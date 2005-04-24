@@ -19,7 +19,6 @@
 package wicket.addons;
 
 import java.text.DecimalFormat;
-import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -29,6 +28,7 @@ import wicket.addons.admin.AddOrModifyUser;
 import wicket.addons.dao.Addon;
 import wicket.addons.dao.AddonDaoImpl;
 import wicket.addons.dao.Rating;
+import wicket.addons.dao.User;
 import wicket.addons.utils.RatingChart;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.link.IPageLink;
@@ -85,7 +85,7 @@ public final class RatingDetails extends BaseHtmlPage /* AuthenticateHtmlPage */
                 {
 					public Page getPage()
 					{
-						return new RateIt(addon);
+						return new RateIt(addonId);
 					}
 
 					public Class getPageIdentity()
@@ -93,24 +93,25 @@ public final class RatingDetails extends BaseHtmlPage /* AuthenticateHtmlPage */
 						return RateIt.class;
 					}
                 }));
-        
-        // Lazy loading ratings with addon.getRatings() fails because the 
-        // session used to load the addon object has already been closed
-        final List comments = dao.getRatingsByAddon(addon);
-        
-        add(new ListView("comments", comments)
+
+        dao.initialize(addon.getRatings());
+        add(new ListView("comments", addon.getRatings())
                 {
 					protected void populateItem(ListItem listItem)
 					{
-					    final Rating comment = (Rating)listItem.getModelObject();
+					    Rating rating = (Rating)listItem.getModelObject();
+					    rating = (Rating) dao.load(rating);
 					    
-					    listItem.add(new Label("date", new Model(comment.getCreateDate())));
+					    listItem.add(new Label("date", new Model(rating.getCreateDate())));
 					    
+					    dao.initialize(rating.getAddon().getOwner());
+					    final User owner = rating.getAddon().getOwner();
+					    final int ownerId = owner.getId();
 					    final PageLink user = new PageLink("user", new IPageLink()
 					            {
 									public Page getPage()
 									{
-										return new AddOrModifyUser(comment.getAddon().getOwner());
+										return new AddOrModifyUser(ownerId);
 									}
 		
 									public Class getPageIdentity()
@@ -120,10 +121,10 @@ public final class RatingDetails extends BaseHtmlPage /* AuthenticateHtmlPage */
 					            });
 					    
 					    listItem.add(user);
-					    user.add(new Label("username", comment.getAddon().getOwner().getNickname()));
+					    user.add(new Label("username", owner.getNickname()));
 
-					    listItem.add(new Label("rating", new Model(new Integer(comment.getRating()))));
-					    listItem.add(new Label("comment", comment.getComment()));
+					    listItem.add(new Label("rating", new Model(new Integer(rating.getRating()))));
+					    listItem.add(new Label("comment", rating.getComment()));
 					}
                 });
     }

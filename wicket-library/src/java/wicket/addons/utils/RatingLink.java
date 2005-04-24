@@ -82,7 +82,7 @@ public class RatingLink extends Panel
 		{
 			public Page getPage()
 			{
-				return new RateIt(addon);
+				return new RateIt(addon.getId());
 			}
 
 			public Class getPageIdentity()

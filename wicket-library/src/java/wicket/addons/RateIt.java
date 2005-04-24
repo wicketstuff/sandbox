@@ -37,10 +37,11 @@ public final class RateIt extends BaseHtmlPage /* AuthenticateHtmlPage */
      * Constructor
      * @param parameters
       */
-    public RateIt(final Addon addon)
+    public RateIt(final int addonId)
     {
         super(null, "Wicket-Addons: Rate an addon");
    
+        final Addon addon = (Addon)getAddonDao().load(Addon.class, new Integer(addonId));
         add(new Label("name", addon.getName()));
         
         // Create and add feedback panel to page

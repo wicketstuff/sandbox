@@ -95,7 +95,7 @@ public final class Users extends BaseHtmlPage /* AuthenticateHtmlPage */
 	            {
 	                public Page getPage()
 	                {
-	                    return new AddOrModifyUser(user);
+	                    return new AddOrModifyUser(user.getId());
 	                }
 	
 	                public Class getPageIdentity()

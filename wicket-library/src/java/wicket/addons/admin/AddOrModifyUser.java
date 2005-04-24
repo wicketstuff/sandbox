@@ -41,20 +41,25 @@ public final class AddOrModifyUser extends BaseHtmlPage /* AuthenticateHtmlPage 
      */
     public AddOrModifyUser()
     {
-        this(null);
+        this(-1);
     }
     
     /**
      * Constructor
      * @param parameters
       */
-    public AddOrModifyUser(User user)
+    public AddOrModifyUser(final int userId)
     {
         super(null, "Wicket-Addons: Category Request Form");
         
-        if (user == null)
+        final User user;
+        if (userId <= 0)
         {
             user = new User();
+        }
+        else
+        {
+            user = (User)getAddonDao().load(User.class, new Integer(userId));
         }
         
         // Create and add feedback panel to page
