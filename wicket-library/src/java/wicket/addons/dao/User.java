@@ -25,7 +25,7 @@ import java.sql.Timestamp;
 /**
  * @author Juergen Donnerstag
  */
-public class User implements Serializable, LastModified, Deleted
+public class User implements Serializable, ILastModified, IDeleted, IIdentifiable
 {
     private int id;
 

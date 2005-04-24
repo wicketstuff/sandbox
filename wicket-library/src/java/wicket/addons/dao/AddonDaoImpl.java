@@ -23,13 +23,12 @@ import java.sql.Timestamp;
 import java.util.Iterator;
 import java.util.List;
 
-import net.sf.hibernate.HibernateException;
-import net.sf.hibernate.Query;
-import net.sf.hibernate.Session;
-
-import org.springframework.orm.hibernate.HibernateCallback;
-import org.springframework.orm.hibernate.HibernateTemplate;
-import org.springframework.orm.hibernate.support.HibernateDaoSupport;
+import org.hibernate.HibernateException;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.springframework.orm.hibernate3.HibernateCallback;
+import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 
 /**
@@ -387,23 +386,23 @@ public final class AddonDaoImpl extends HibernateDaoSupport
     
     public void delete(final Object object)
     {
-        if (object instanceof Deleted)
+        if (object instanceof IDeleted)
         {
-            ((Deleted)object).setDeleted(new Timestamp(System.currentTimeMillis()));
+            ((IDeleted)object).setDeleted(new Timestamp(System.currentTimeMillis()));
 
             // LastModified nur updaten wenn NULL
-            if ((object instanceof LastModified) && (((LastModified)object).getLastModified() == null))
+            if ((object instanceof ILastModified) && (((ILastModified)object).getLastModified() == null))
             {
-                ((LastModified)object).setLastModified(new Timestamp(System.currentTimeMillis()));
+                ((ILastModified)object).setLastModified(new Timestamp(System.currentTimeMillis()));
             }
 
             getHibernateTemplate().saveOrUpdate(object);            
             return;
         }
             
-        if (object instanceof LastModified)
+        if (object instanceof ILastModified)
         {
-            ((LastModified)object).setLastModified(new Timestamp(System.currentTimeMillis()));
+            ((ILastModified)object).setLastModified(new Timestamp(System.currentTimeMillis()));
         }
         
         getHibernateTemplate().delete(object);
@@ -411,9 +410,9 @@ public final class AddonDaoImpl extends HibernateDaoSupport
     
     public void saveOrUpdate(final Object object)
     {
-        if (object instanceof LastModified)
+        if (object instanceof ILastModified)
         {
-            ((LastModified)object).setLastModified(new Timestamp(System.currentTimeMillis()));
+            ((ILastModified)object).setLastModified(new Timestamp(System.currentTimeMillis()));
         }
         
         getHibernateTemplate().saveOrUpdate(object);
@@ -424,8 +423,23 @@ public final class AddonDaoImpl extends HibernateDaoSupport
         return getHibernateTemplate().load(clazz, id);
     }
     
+    public Object load(final IIdentifiable obj)
+    {
+        return getHibernateTemplate().load(obj.getClass(), new Integer(obj.getId()));
+    }
+
     public void update(final Object object)
     {
         getHibernateTemplate().update(object);
+    }
+    
+    public void initialize(final Object object)
+    {
+        getHibernateTemplate().initialize(object);
+    }
+    
+    public void merge(final Object object)
+    {
+        getHibernateTemplate().merge(object);
     }
 }

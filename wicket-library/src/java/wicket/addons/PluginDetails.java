@@ -49,16 +49,18 @@ public final class PluginDetails extends BaseHtmlPage /* AuthenticateHtmlPage */
      * Constructor
      * @param parameters
       */
-    public PluginDetails(Addon addon)
+    public PluginDetails(final int addonId)
     {
         super(null, "Wicket-Addons: Addon-Details");
 
-        if (addon == null)
+        final Addon addon;
+        if (addonId == 0)
         {
             addon = new Addon();
         }
         else
         {
+            addon = (Addon)getAddonDao().load(Addon.class, new Integer(addonId));
             final String key = ((WebSession)this.getSession()).getHttpSession().getId() + "-" + addon.getId();
             if (!visits.containsKey(key))
             {
@@ -77,14 +79,12 @@ public final class PluginDetails extends BaseHtmlPage /* AuthenticateHtmlPage */
         add(new ExternalLink("reportUpdate", "xxx.html", "report-update"));
 
         add(new RatingLink("ratingLink", addon, getAddonDao()));
-        
-        final Addon addon_ = addon;
 
         final Link comments = new PageLink("comments", new IPageLink()
 		        {
 		            public Page getPage()
 		            {
-		                return new Comments(addon_);
+		                return new Comments(addonId);
 		            }
 		            
 		            public Class getPageIdentity()

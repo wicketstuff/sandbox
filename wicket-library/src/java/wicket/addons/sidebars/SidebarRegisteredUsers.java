@@ -59,7 +59,7 @@ public final class SidebarRegisteredUsers extends Panel
         }
 
         BeanFactory fac = ((AddonApplication)this.getApplication()).getBeanFactory();
-        UserDaoImpl dao = (UserDaoImpl) fac.getBean("UserDao");
+        UserDaoImpl dao = (UserDaoImpl) fac.getBean("UserDaoTarget");
         numberOfRegisteredUsers = dao.getNumberOfRegisteredUsers();
         nextUpdate = System.currentTimeMillis() + updateIntervall;
         return numberOfRegisteredUsers;

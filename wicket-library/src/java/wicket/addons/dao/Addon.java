@@ -25,7 +25,7 @@ import java.util.List;
 /**
  * @author Juergen Donnerstag
  */
-public class Addon implements Serializable
+public class Addon implements Serializable, IIdentifiable
 {
 	private int id;
 

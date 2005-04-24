@@ -80,7 +80,7 @@ public final class AddOrModifyCategory extends BaseHtmlPage /* AuthenticateHtmlP
         {
             super(componentName, feedback);
             
-            this.category = category;
+            this.category = (Category)getAddonDao().load(category);
             
             add(new TextField("categoryName", new PropertyModel(category, "name")));
             add(new TextArea("description", new PropertyModel(category, "description")));

@@ -24,7 +24,7 @@ import java.sql.Timestamp;
 /**
  * @author Juergen Donnerstag
  */
-public class News implements Serializable, LastModified
+public class News implements Serializable, ILastModified, IIdentifiable
 {
     private int id;
 

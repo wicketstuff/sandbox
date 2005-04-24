@@ -74,7 +74,7 @@ public final class RatingList extends BaseHtmlPage /* AuthenticateHtmlPage */
                         {
 							public Page getPage()
 							{
-								return new PluginDetails(addon);
+								return new PluginDetails(addon.getId());
 							}
 
 							public Class getPageIdentity()

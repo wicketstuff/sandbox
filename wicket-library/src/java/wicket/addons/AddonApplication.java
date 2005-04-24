@@ -123,7 +123,7 @@ public class AddonApplication extends WebApplication
     
 	public final User authenticate(final String username, final String password)
 	{
-        final UserDaoImpl dao = (UserDaoImpl) getBeanFactory().getBean("UserDao");
+        final UserDaoImpl dao = (UserDaoImpl) getBeanFactory().getBean("UserDaoTarget");
         return dao.login(username, null, password);
 	}
 	

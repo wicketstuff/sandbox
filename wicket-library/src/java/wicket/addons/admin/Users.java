@@ -81,7 +81,7 @@ public final class Users extends BaseHtmlPage /* AuthenticateHtmlPage */
     /**
      * @see wicket.Component#onRender(wicket.RequestCycle)
      */
-    protected void onBeginRender()
+    protected void onBeginRequest()
     {
         final List users = getUserDao().getUsers();
         this.table.setModelObject(users);

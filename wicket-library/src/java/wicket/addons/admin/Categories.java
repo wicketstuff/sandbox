@@ -79,7 +79,7 @@ public final class Categories extends BaseHtmlPage /* AuthenticateHtmlPage */
     /**
      * @see wicket.Component#onRender(wicket.RequestCycle)
      */
-    protected void onBeginRender()
+    protected void onBeginRequest()
     {
         final List categories = getAddonDao().getCountByCategory();
         this.table.setModelObject(categories);

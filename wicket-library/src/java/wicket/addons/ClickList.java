@@ -75,7 +75,7 @@ public final class ClickList extends BaseHtmlPage /* AuthenticateHtmlPage */
                         {
 							public Page getPage()
 							{
-								return new PluginDetails(addon);
+								return new PluginDetails(addon.getId());
 							}
 
 							public Class getPageIdentity()

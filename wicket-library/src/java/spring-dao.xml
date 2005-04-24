@@ -17,8 +17,14 @@
     <property name="username"><value>${jdbc.username}</value></property>
     <property name="password"><value>${jdbc.password}</value></property>  
   </bean>
-  
-  <bean id="mySessionFactory" class="org.springframework.orm.hibernate.LocalSessionFactoryBean">
+ 
+  <bean id="myTransactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory"/>
+    </property>
+  </bean>
+
+  <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
     <property name="mappingResources">
       <list>
           <value>wicket/addons/dao/users.hbm.xml</value>
@@ -32,7 +38,7 @@
     </property>
     <property name="hibernateProperties">
       <props>
-          <prop key="hibernate.dialect">net.sf.hibernate.dialect.MySQLDialect</prop>
+          <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
           <prop key="hibernate.show_sql">true</prop>
       </props>
     </property>
@@ -41,18 +47,33 @@
     </property>
   </bean>
 
-  <bean id="UserDao" class="wicket.addons.dao.UserDaoImpl">
+  <bean id="UserDaoTarget" class="wicket.addons.dao.UserDaoImpl">
     <property name="sessionFactory">
-        <ref bean="mySessionFactory"/>
+        <ref bean="sessionFactory"/>
     </property>
   </bean>
 
-  <bean id="AddonDao" class="wicket.addons.dao.AddonDaoImpl">
+  <bean id="AddonDaoTarget" class="wicket.addons.dao.AddonDaoImpl">
     <property name="sessionFactory">
-        <ref bean="mySessionFactory"/>
+        <ref bean="sessionFactory"/>
     </property>
   </bean>
-  
+
+  <bean id="myProductService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+    <property name="transactionManager">
+      <ref bean="myTransactionManager"/>
+    </property>
+    <property name="target">
+      <ref bean="UserDaoTarget"/>
+    </property>
+    <property name="transactionAttributes">
+      <props>
+        <prop key="increasePrice*">PROPAGATION_REQUIRED</prop>
+        <prop key="someOtherBusinessMethod">PROPAGATION_MANDATORY</prop>
+      </props>
+    </property>
+  </bean>
+
   <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
     <property name="host"><value>smtp.gmail.com</value></property>
     <property name="port"><value>465</value></property>
@@ -65,5 +86,5 @@
       <property name="from"><value>wicket-addon@mycompany.com</value></property>
       <property name="subject"><value>Wicker-Addon</value></property>
   </bean>  
-  
+
 </beans>

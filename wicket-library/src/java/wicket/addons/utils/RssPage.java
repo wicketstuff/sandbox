@@ -65,7 +65,7 @@ public class RssPage extends WebPage
 	 * 
 	 * @return Markup type for HTML
 	 */
-	protected final String getMarkupType()
+	public final String getMarkupType()
 	{
 		return "rss";
 	}

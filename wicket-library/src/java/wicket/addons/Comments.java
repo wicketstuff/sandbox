@@ -44,38 +44,38 @@ public final class Comments extends BaseHtmlPage /* AuthenticateHtmlPage */
      * Constructor
      * @param parameters
      */
-    public Comments(final Addon addon)
+    public Comments(final int addonId)
     {
         super(null, "Addon specific comments");
 
-        this.addon = addon;
+        this.addon = (Addon)getAddonDao().load(Addon.class, new Integer(addonId));
         
         add(new Label("addonName", addon.getName()));
         add(new PageLink("addComment", new IPageLink() 
-		        {
-		            public Page getPage()
-		            {
-		                return new AddComment(addon);
-		            }
-		            
-		            public Class getPageIdentity()
-		            {
-		                return AddComment.class;
-		            }
-		        }));
+        {
+            public Page getPage()
+            {
+                return new AddComment(addon);
+            }
+            
+            public Class getPageIdentity()
+            {
+                return AddComment.class;
+            }
+        }));
         
         add(new PageLink("details", new IPageLink() 
-                {
-                    public Page getPage()
-                    {
-                        return new PluginDetails(addon);
-                    }
-                    
-                    public Class getPageIdentity()
-                    {
-                        return PluginDetails.class;
-                    }
-                }));
+        {
+            public Page getPage()
+            {
+                return new PluginDetails(addonId);
+            }
+            
+            public Class getPageIdentity()
+            {
+                return PluginDetails.class;
+            }
+        }));
 
         final List comments = new CommentsDataList();
         final PageableListView commentListView = new PageableListView("comments", comments, 10)
@@ -92,6 +92,14 @@ public final class Comments extends BaseHtmlPage /* AuthenticateHtmlPage */
         add(new PagedTableNavigator("pageNavigation2", commentListView ));
     }
     
+    protected void onBeginRequest()
+    {
+        if (addon != null)
+        {
+            getAddonDao().update(addon);
+        }
+    }
+    
     public class CommentsDataList extends AbstractList implements Serializable
     {
 		/**
@@ -99,7 +107,6 @@ public final class Comments extends BaseHtmlPage /* AuthenticateHtmlPage */
 		 */
 		public int size()
 		{
-		    getAddonDao().update(addon);
 		    return addon.getComments().size();
 		}
 
@@ -108,7 +115,6 @@ public final class Comments extends BaseHtmlPage /* AuthenticateHtmlPage */
 		 */
 		public Object get(int index)
 		{
-		    getAddonDao().update(addon);
 		    return addon.getComments().get(index);
 		}
     }

@@ -78,7 +78,7 @@ public final class AddOrModifyAddon extends BaseHtmlPage /* AuthenticateHtmlPage
         public AddonSubmitForm(final String componentName, final FeedbackPanel feedback, final Addon addon)
         {
             super(componentName, feedback);
-            this.addon = addon;
+            this.addon = (Addon)getAddonDao().load(addon);
             
             add(new TextField("personname", new Model("")));
             add(new TextField("email", new Model("")));

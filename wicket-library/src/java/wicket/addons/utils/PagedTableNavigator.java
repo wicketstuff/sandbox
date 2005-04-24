@@ -59,7 +59,7 @@ public class PagedTableNavigator extends Panel
         // Add additional page links
         prevLink = new PageableListViewNavigationIncrementLink("prev", table, -1)
         {
-            public void onBeginRender()
+            public void onBeginRequest()
             {
                 setVisible(table.getCurrentPage() > 0);
             }
@@ -67,7 +67,7 @@ public class PagedTableNavigator extends Panel
         
         nextLink = new PageableListViewNavigationIncrementLink("next", table, 1)
         {
-            public void onBeginRender()
+            public void onBeginRequest()
             {
                 setVisible(table.getCurrentPage() < (table.getPageCount() - 1));
             }

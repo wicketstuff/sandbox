@@ -55,7 +55,7 @@ public final class NewAndUpdatedAddons extends BaseHtmlPage /* AuthenticateHtmlP
      */
     public NewAndUpdatedAddons(final PageParameters parameters)
     {
-        super(parameters, "Appfuse Homepage");
+        super(parameters, "New and updated add-ons");
         
         add(new SelectForm("categoryForm", null));
         
@@ -64,7 +64,8 @@ public final class NewAndUpdatedAddons extends BaseHtmlPage /* AuthenticateHtmlP
         {
             public void populateItem(final ListItem listItem)
             {
-                final AddonListEntry value = new AddonListEntry("info", (Addon)listItem.getModelObject());
+                final Addon addon = (Addon)listItem.getModelObject();
+                final AddonListEntry value = new AddonListEntry("info", addon);
                 listItem.add(value);
             }
         };
@@ -160,6 +161,7 @@ public final class NewAndUpdatedAddons extends BaseHtmlPage /* AuthenticateHtmlP
             this.firstIndex = updatedAddons.getStartIndex();
             this.pageSize = updatedAddons.getRowsPerPage();
             final List data = getAddonDao().getUpdatedAddons(firstIndex, pageSize, categoryId, sortId);
+            getAddonDao().initialize(data);
             return data;
 		}
     }

@@ -24,7 +24,7 @@ import java.sql.Timestamp;
 /**
  * @author Juergen Donnerstag
  */
-public class Category implements Serializable, LastModified, Deleted
+public class Category implements Serializable, ILastModified, IDeleted, IIdentifiable
 {
     private int id;
 

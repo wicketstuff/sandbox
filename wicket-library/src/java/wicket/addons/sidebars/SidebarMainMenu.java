@@ -24,15 +24,13 @@ import wicket.addons.Contact;
 import wicket.addons.Home;
 import wicket.addons.Login;
 import wicket.addons.NewAndUpdatedAddons;
+import wicket.addons.RedirectPage;
 import wicket.addons.Register;
 import wicket.addons.Search;
 import wicket.addons.WicketLinks;
 import wicket.markup.html.WebMarkupContainer;
-import wicket.markup.html.WebPage;
 import wicket.markup.html.link.BookmarkablePageLink;
-import wicket.markup.html.link.Link;
 import wicket.markup.html.panel.Panel;
-import wicket.protocol.http.WebRequestCycle;
 
 /**
  * @author Juergen Donnerstag
@@ -70,24 +68,13 @@ public final class SidebarMainMenu extends Panel
         logout.setVisible(false);
         add(logout);
         
-        final Link logoutLink = new Link("Logout")
-        {
-            public void onClick()
-            {
-                // Log-out the user and return to Homepage
-                getSession().invalidate();
-                WebRequestCycle cycle = (WebRequestCycle)getRequestCycle();
-                cycle.getResponse().redirect(((WebPage)getPage()).urlFor("0", getApplication().getPages().getHomePage(), null));
-            }
-        };
-        
-        logout.add(logoutLink);
+        logout.add(new BookmarkablePageLink("Logout", RedirectPage.class));
     }
     
     /**
      * @see wicket.Component#render()
      */
-    public void onBeginRender()
+    public void onBeginRequest()
     {
         final boolean loggedIn = ((BaseHtmlPage)getPage()).isUserSignedIn();
         login.setVisible(!loggedIn);

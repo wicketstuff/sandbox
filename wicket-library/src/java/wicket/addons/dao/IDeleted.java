@@ -23,7 +23,7 @@ import java.sql.Timestamp;
 /**
  * @author Juergen Donnerstag
  */
-public interface Deleted
+public interface IDeleted
 {
     /**
      * @return Returns the deleted.

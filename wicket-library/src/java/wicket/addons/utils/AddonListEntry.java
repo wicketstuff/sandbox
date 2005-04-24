@@ -79,7 +79,7 @@ public class AddonListEntry extends Panel
         {
             public Page getPage()
             {
-                return new PluginDetails(addon);
+                return new PluginDetails(addon.getId());
             }
             
             public Class getPageIdentity()
@@ -95,7 +95,7 @@ public class AddonListEntry extends Panel
 		        {
 		            public Page getPage()
 		            {
-		                return new Comments(addon);
+		                return new Comments(addon.getId());
 		            }
 		            
 		            public Class getPageIdentity()

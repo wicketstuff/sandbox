@@ -60,7 +60,7 @@ public final class SidebarTopClicks extends Panel
 					            {
 									public Page getPage()
 									{
-										return new PluginDetails(addon);
+										return new PluginDetails(addon.getId());
 									}
 
 									public Class getPageIdentity()

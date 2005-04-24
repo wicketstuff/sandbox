@@ -18,12 +18,10 @@
  */
 package wicket.addons.dao;
 
+import java.sql.Timestamp;
 import java.util.List;
 
-import net.sf.hibernate.Hibernate;
-import net.sf.hibernate.type.Type;
-
-import org.springframework.orm.hibernate.support.HibernateDaoSupport;
+import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 
 /**
@@ -34,8 +32,7 @@ public final class UserDaoImpl extends HibernateDaoSupport
     public final List loadUserByNickname(final String nickname) 
     {
         return getHibernateTemplate().find(
-            "from User user where user.nickname=?", nickname,
-            Hibernate.STRING);
+            "from User user where user.nickname=?", nickname);
     }
 
     public final List getUsers() 
@@ -59,20 +56,19 @@ public final class UserDaoImpl extends HibernateDaoSupport
         {
             users = getHibernateTemplate().find(
                 	"from User u where (u.nickname=?) AND ((u.email=?)) AND (u.deactivated is null) AND (u.lastModified is not null)",
-                	new Object[] { nickname, email }, 
-                	new Type[] { Hibernate.STRING, Hibernate.STRING } );
+                	new Object[] { nickname, email });
         }
         else if ((nickname != null) && (nickname.trim().length() > 0))
         {
             users = getHibernateTemplate().find(
                 	"from User u where (u.nickname=?) AND (u.deactivated is null) AND (u.lastModified is not null)",
-                	nickname, Hibernate.STRING);
+                	nickname);
         }
         else if ((email != null) && (email.trim().length() > 0))
         {
             users = getHibernateTemplate().find(
                 	"from User u where (u.email=?) AND (u.deactivated is null) AND (u.lastModified is not null)",
-                	email, Hibernate.STRING);
+                	email);
         }        
         else
         {
@@ -91,6 +87,11 @@ public final class UserDaoImpl extends HibernateDaoSupport
         final User user = (User)users.get(0);
         if (user != null)
         {
+            if (user.getLastModified() == null)
+            {
+                user.setLastModified(new Timestamp(0));
+            }
+            
             if ((password == null) && (user.getPassword() == null))
             {
                 // prevent accidental ...

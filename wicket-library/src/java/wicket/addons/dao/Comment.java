@@ -24,7 +24,7 @@ import java.sql.Timestamp;
 /**
  * @author Juergen Donnerstag
  */
-public class Comment implements Serializable
+public class Comment implements Serializable, IIdentifiable
 {
     private int id;
 

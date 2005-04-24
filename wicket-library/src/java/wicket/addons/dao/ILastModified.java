@@ -23,7 +23,7 @@ import java.sql.Timestamp;
 /**
  * @author Juergen Donnerstag
  */
-public interface LastModified
+public interface ILastModified
 {
     /**
      * @return Returns the lastModified.

@@ -24,7 +24,7 @@ import java.sql.Timestamp;
 /**
  * @author Juergen Donnerstag
  */
-public class Click implements Serializable
+public class Click implements Serializable, IIdentifiable
 {
 	private int id;
 

@@ -64,7 +64,7 @@ public final class AddComment extends BaseHtmlPage /* AuthenticateHtmlPage */
         {
             super(componentName, feedback);
             
-            this.addon = addon;
+            this.addon = (Addon)getAddonDao().load(addon);
         }
         
         /**

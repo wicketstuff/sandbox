@@ -48,15 +48,16 @@ public final class RatingDetails extends BaseHtmlPage /* AuthenticateHtmlPage */
      * Constructor
      * @param parameters
       */
-    public RatingDetails(final Addon addon)
+    public RatingDetails(final int addonId)
     {
         super(null, "Wicket-Addons: Rating Details");
         
+        final Addon addon = (Addon)getAddonDao().load(Addon.class, new Integer(addonId));
         final PageLink details = new PageLink("details", new IPageLink()
                 {
 					public Page getPage()
 					{
-						return new PluginDetails(addon);
+						return new PluginDetails(addonId);
 					}
 
 					public Class getPageIdentity()

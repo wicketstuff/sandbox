@@ -20,8 +20,14 @@ package wicket.addons;
 import java.util.Locale;
 
 import wicket.Application;
+import wicket.IRequestCycleFactory;
+import wicket.Request;
+import wicket.RequestCycle;
+import wicket.Response;
+import wicket.Session;
 import wicket.addons.dao.User;
 import wicket.addons.utils.UserCount;
+import wicket.protocol.http.WebRequest;
 import wicket.protocol.http.WebSession;
 
 /**
@@ -37,6 +43,15 @@ public final class AddonSession extends WebSession
     // If true, the sidebar "top rated" will be shown, else "top clicks"
     private boolean topRated = true;
     
+    // we are using a modified RequestCycleFactory
+	private static IRequestCycleFactory requestCycleFactory = new IRequestCycleFactory()
+	{
+		public RequestCycle newRequestCycle(Session session, Request request, Response response)
+		{
+			return new AddonRequestCycle((WebSession)session, (WebRequest)request, response);
+		}
+		
+	};
     
 	/**
 	 * Constructor
@@ -73,10 +88,10 @@ public final class AddonSession extends WebSession
                 {
                     setLocale(new Locale(user.getLocale()));
                 }
-            }
 
-            this.userId = user.getId();
-            this.nickname = user.getNickname();
+	            this.userId = user.getId();
+	            this.nickname = user.getNickname();
+            }
         }
 
         return isSignedIn();
@@ -111,5 +126,14 @@ public final class AddonSession extends WebSession
 	public void toggleTopRated()
 	{
 	    this.topRated = !this.topRated;
+	}
+
+	/**
+	 * @see wicket.protocol.http.WebSession#getRequestCycleFactory()
+	 */
+	// TODO shouldn't this factory be in Application ?!?!
+	protected IRequestCycleFactory getRequestCycleFactory()
+	{
+		return requestCycleFactory;
 	}
 }

@@ -24,7 +24,7 @@ import java.sql.Timestamp;
 /**
  * @author Juergen Donnerstag
  */
-public class Rating implements Serializable
+public class Rating implements Serializable, IIdentifiable
 {
 	private int id;
 

@@ -67,13 +67,13 @@ public class BaseHtmlPage extends WebPage
     public AddonDaoImpl getAddonDao()
     {
         BeanFactory fac = ((AddonApplication)this.getApplication()).getBeanFactory();
-        return (AddonDaoImpl) fac.getBean("AddonDao");
+        return (AddonDaoImpl) fac.getBean("AddonDaoTarget");
     }
     
     public UserDaoImpl getUserDao()
     {
         BeanFactory fac = ((AddonApplication)this.getApplication()).getBeanFactory();
-        return (UserDaoImpl) fac.getBean("UserDao");
+        return (UserDaoImpl) fac.getBean("UserDaoTarget");
     }
     
     public AddonSession getAddonSession()
@@ -107,7 +107,7 @@ public class BaseHtmlPage extends WebPage
     /**
      * @see wicket.Component#onRender(wicket.RequestCycle)
      */
-    protected void onBeginRender()
+    protected void onBeginRequest()
     {
         // increase number per page downloads per hour
         int hour = (int)((System.currentTimeMillis() / 1000 / 60 / 60) % pagesPerHour.length);

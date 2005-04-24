@@ -101,7 +101,7 @@ public final class AddOrModifyNews extends BaseHtmlPage /* AuthenticateHtmlPage 
         {
             super(componentName, feedback);
             
-            this.news = news;
+            this.news = (News)getAddonDao().load(news);
             
             add(new TextField("headline", new PropertyModel(news, "headline")));
             add(new TextArea("message", new PropertyModel(news, "message")));
