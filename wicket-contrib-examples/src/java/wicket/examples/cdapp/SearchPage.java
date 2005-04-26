@@ -242,7 +242,7 @@ public class SearchPage extends CdAppBasePage
 		 */
 		public boolean isVersioned()
 		{
-			return true; // we don't want this list to be versioned.
+			return true;
 		}
 
 		/**

@@ -49,6 +49,18 @@ public class CdApplication extends WicketExampleApplication implements ISessionF
 	private final SessionFactory sessionFactory;
 
 	/**
+	 * custom request cycle factory.
+	 */
+	private IRequestCycleFactory requestCycleFactory = new IRequestCycleFactory()
+	{
+		public RequestCycle newRequestCycle(Session session, Request request, Response response)
+		{
+			return new CdAppRequestCycle((WebSession)session, (WebRequest)request, response, sessionFactory);
+		}
+		
+	};
+
+	/**
 	 * Constructor
 	 */
 	public CdApplication()
@@ -74,15 +86,6 @@ public class CdApplication extends WicketExampleApplication implements ISessionF
 
 		setSessionFactory(this);
 	}
-
-	private IRequestCycleFactory requestCycleFactory = new IRequestCycleFactory()
-	{
-		public RequestCycle newRequestCycle(Session session, Request request, Response response)
-		{
-			return new CdAppRequestCycle((WebSession)session, (WebRequest)request, response, sessionFactory);
-		}
-		
-	};
 
 	/**
 	 * @see wicket.ISessionFactory#newSession()
