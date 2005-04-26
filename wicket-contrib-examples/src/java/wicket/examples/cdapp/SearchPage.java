@@ -24,6 +24,7 @@ import net.sf.hibernate.HibernateException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import wicket.AttributeModifier;
 import wicket.IFeedback;
 import wicket.PageParameters;
 import wicket.RequestCycle;
@@ -262,7 +263,11 @@ public class SearchPage extends CdAppBasePage
 					.getYear().toString() : "")));
 
 			// add a delete link for each found record
-			item.add(new DeleteLink("delete", id));
+			DeleteLink deleteLink = new DeleteLink("delete", id);
+			// add confirm script to link
+			deleteLink.add(new AttributeModifier("onclick", true,
+					new Model("if(!confirm('delete cd " + cd.getTitle() + " ?')) return false;")));
+			item.add(deleteLink);
 		}
 	}
 

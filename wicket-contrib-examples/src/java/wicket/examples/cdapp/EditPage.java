@@ -129,7 +129,7 @@ public final class EditPage extends CdAppBasePage
 
 			if (isNew)
 			{
-				// if it was a new cd, start with a fresh page
+				// if it is a new cd, start with a fresh page
 				SearchPage searchPage = new SearchPage();
 				searchPage.setInfoMessageForNextRendering("cd " + cd.getTitle() + " created");
 				setResponsePage(searchPage);
@@ -252,7 +252,7 @@ public final class EditPage extends CdAppBasePage
 	}
 
 	/**
-	 * 
+	 * Gets either the cd's thumbnail image, or a special question mark image.
 	 */
 	private ImageResource getThumbnail()
 	{
