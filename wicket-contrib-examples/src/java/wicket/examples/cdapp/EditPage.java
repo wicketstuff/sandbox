@@ -43,6 +43,7 @@ import wicket.markup.html.link.Link;
 import wicket.markup.html.panel.FeedbackPanel;
 import wicket.model.IModel;
 import wicket.model.PropertyModel;
+import wicket.util.lang.Bytes;
 
 
 /**
@@ -116,20 +117,29 @@ public final class EditPage extends CdAppBasePage
 		 */
 		public void onSubmit()
 		{
+			modelChanging();
+
 			CD cd = (CD)getModelObject();
 			boolean isNew = (cd.getId() == null);
 			// note that, as we used the Ognl property model, the fields are
 			// allready updated
 			getCdDao().save(cd);
-			// set message for search page to display on next rendering
-			searchCDPage.setInfoMessageForNextRendering("cd " + cd.getTitle() + " saved");
+
+			modelChanged();
 
 			if (isNew)
 			{
-				// if it was a new cd, set the search page to page 1
-				searchCDPage.setCurrentResultPageToFirst();
+				// if it was a new cd, start with a fresh page
+				SearchPage searchPage = new SearchPage();
+				searchPage.setInfoMessageForNextRendering("cd " + cd.getTitle() + " created");
+				setResponsePage(searchPage);
 			}
-			setResponsePage(searchCDPage); // navigate back to search page
+			else
+			{
+				// set message for search page to display on next rendering
+				searchCDPage.setInfoMessageForNextRendering("cd " + cd.getTitle() + " saved");
+				setResponsePage(searchCDPage); // navigate back to search page
+			}
 		}
 	}
 
@@ -222,7 +232,9 @@ public final class EditPage extends CdAppBasePage
 		FeedbackPanel feedback = new FeedbackPanel("feedback");
 		add(feedback);
 		add(new DetailForm("detailForm", feedback, cdModel));
-		add(new ImageUploadForm("imageUpload", cdModel));
+		ImageUploadForm imageUploadForm = new ImageUploadForm("imageUpload", cdModel);
+		imageUploadForm.setMaxSize(Bytes.kilobytes(50));
+		add(imageUploadForm);
 
 		getThumbnail();
 
@@ -245,9 +257,7 @@ public final class EditPage extends CdAppBasePage
 	private ImageResource getThumbnail()
 	{
 		// create an image resource that displays a question mark when no image
-		// is
-		// set on the cd, or displays a thumbnail of the cd's image when there
-		// is one
+		// is set on the cd, or displays a thumbnail of the cd's image when there is one
 		final CD cd = (CD)cdModel.getObject(null);
 		if (cd.getImage() == null)
 		{

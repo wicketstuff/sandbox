@@ -19,6 +19,8 @@ package wicket.examples.cdapp;
 
 import java.util.List;
 
+import net.sf.hibernate.HibernateException;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -26,6 +28,7 @@ import wicket.IFeedback;
 import wicket.PageParameters;
 import wicket.RequestCycle;
 import wicket.examples.cdapp.model.CD;
+import wicket.examples.cdapp.model.CdDao;
 import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.form.Form;
@@ -86,10 +89,13 @@ public class SearchPage extends CdAppBasePage
 		super();
 		final int rowsPerPage = 8;
 		searchModel = new SearchModel(rowsPerPage);
-		FeedbackPanel feedback = new FeedbackPanel("feedback");
-		searchForm = new SearchForm("searchForm", feedback);
+
+		FeedbackPanel pageFeedback = new FeedbackPanel("feedback");
+		searchForm = new SearchForm("searchForm", pageFeedback);
 		add(searchForm);
-		add(feedback);
+
+		add(pageFeedback);
+		setFeedback(pageFeedback);
 		resultsListView = new SearchCDResultsListView("results", searchModel, rowsPerPage);
 		add(resultsListView);
 		WebMarkupContainer resultsTableHeader = new WebMarkupContainer("resultsHeader")
@@ -136,7 +142,7 @@ public class SearchPage extends CdAppBasePage
 	{
 		if (infoMessageForNextRendering != null)
 		{
-			searchForm.setMessage(infoMessageForNextRendering);
+			SearchPage.this.info(infoMessageForNextRendering);
 			infoMessageForNextRendering = null;
 		}
 	}
@@ -164,12 +170,12 @@ public class SearchPage extends CdAppBasePage
 		 * 
 		 * @param componentName
 		 *            Name of the form component
-		 * @param errorHandler
-		 *            the error handler
+		 * @param feedback
+		 *            the feedback handler
 		 */
-		public SearchForm(final String componentName, final IFeedback errorHandler)
+		public SearchForm(final String componentName, final IFeedback feedback)
 		{
-			super(componentName, errorHandler);
+			super(componentName, feedback);
 			add(new TextField("search", new PropertyModel(this, "search")));
 		}
 
@@ -208,12 +214,6 @@ public class SearchPage extends CdAppBasePage
 		{
 			this.search = search;
 		}
-
-		/** hack to get message displayed. */
-		void setMessage(String msg)
-		{
-			get("search").info(msg);
-		}
 	}
 
 	/**
@@ -234,6 +234,14 @@ public class SearchPage extends CdAppBasePage
 		public SearchCDResultsListView(String componentName, IModel model, int pageSizeInCells)
 		{
 			super(componentName, model, pageSizeInCells);
+		}
+
+		/**
+		 * @see wicket.Component#isVersioned()
+		 */
+		public boolean isVersioned()
+		{
+			return true; // we don't want this list to be versioned.
 		}
 
 		/**
@@ -307,9 +315,32 @@ public class SearchPage extends CdAppBasePage
 		public void onClick()
 		{
 			final Long id = (Long)getModelObject();
-			getCdDao().delete(id);
-			info(" cd deleted");
-			// SearchPage.this.modelChangedStructure();
+
+			CdDao cdDao = getCdDao();
+			CD cd = null;
+			try
+			{
+				cd = cdDao.load(id);
+			}
+			catch (HibernateException e)
+			{
+				// For some reason (back button, concurrent acces?) the object does not exist
+				// anymore. Report an error and return
+				SearchPage.this.error("could not delete cd with id " + id +
+						"; it was not found in the database");
+				return;
+			}
+
+			// inform the list component that a change in its model is about to happen
+			resultsListView.modelChanging();
+
+			getCdDao().delete(cd);
+
+			// infor the list component that a change in its model has happened
+			resultsListView.modelChanged();
+
+			SearchPage.this.info(" cd deleted");
+
 		}
 	}
 

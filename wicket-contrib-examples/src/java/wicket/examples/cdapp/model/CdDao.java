@@ -45,21 +45,15 @@ public final class CdDao
 	 * Load a cd with the given id
 	 * @param id the cd's id
 	 * @return the cd
+	 * @throws HibernateException 
 	 */
-	public CD load(final Long id)
+	public CD load(final Long id) throws HibernateException
 	{
 		if (id == null)
 		{
 			throw new NullPointerException("id must be not null");
 		}
-		try
-		{
-			return (CD)hibernateSession.load(CD.class, id);
-		}
-		catch (HibernateException e)
-		{
-			throw new WicketRuntimeException(e);
-		}
+		return (CD)hibernateSession.load(CD.class, id);
 	}
 
 	/**
@@ -138,7 +132,8 @@ public final class CdDao
 		try
 		{
 			tx = hibernateSession.beginTransaction();
-			hibernateSession.delete(load(id));
+			CD loaded = load(id);
+			hibernateSession.delete(loaded);
 			tx.commit();
 		}
 		catch (HibernateException e)

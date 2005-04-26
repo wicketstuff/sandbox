@@ -30,18 +30,17 @@ import wicket.Request;
 import wicket.RequestCycle;
 import wicket.Response;
 import wicket.Session;
+import wicket.examples.WicketExampleApplication;
 import wicket.examples.cdapp.util.DatabaseUtil;
-import wicket.protocol.http.WebApplication;
 import wicket.protocol.http.WebRequest;
 import wicket.protocol.http.WebSession;
-import wicket.util.time.Duration;
 
 /**
  * Wicket test application.
  * 
  * @author Eelco Hillenius
  */
-public class CdApplication extends WebApplication implements ISessionFactory
+public class CdApplication extends WicketExampleApplication implements ISessionFactory
 {
 	/** Logger. */
 	private static Log log = LogFactory.getLog(CdApplication.class);
@@ -54,6 +53,7 @@ public class CdApplication extends WebApplication implements ISessionFactory
 	 */
 	public CdApplication()
 	{
+		super();
 		try
 		{
 			final Configuration configuration = new Configuration();
@@ -71,16 +71,6 @@ public class CdApplication extends WebApplication implements ISessionFactory
 		ApplicationSettings settings = getSettings();
 		settings.setThrowExceptionOnMissingResource(false);
 		getPages().setHomePage(Home.class);
-		if (!Boolean.getBoolean("cache-templates"))
-		{
-			Duration pollFreq = Duration.ONE_SECOND;
-			settings.setResourcePollFrequency(pollFreq);
-			log.info("template caching is INACTIVE");
-		}
-		else
-		{
-			log.info("template caching is ACTIVE");
-		}
 
 		setSessionFactory(this);
 	}

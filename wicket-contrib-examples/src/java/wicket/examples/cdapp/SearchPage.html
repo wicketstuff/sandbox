@@ -8,11 +8,13 @@
 
 <span wicket:id="mainNavigation" />
 
-<form wicket:id="searchForm">
-<fieldset><legend>Search</legend> <input wicket:id="search" type="text"
-	size="20" /> <input type="submit" value="search" class="mediumButton" />
+<fieldset>
+ 	<legend>Search</legend> 
+ 	<form wicket:id="searchForm" class="inline">
+ 		<input wicket:id="search" type="text" size="20" />
+ 		<input type="submit" value="search" class="mediumButton" />
+	</form>
 </fieldset>
-</form>
 
 <div>
 <table id="resultstable">
@@ -48,7 +50,7 @@
 			<td wicket:id="year" class="number"><span wicket:id="year">(year)</span>
 			</td>
 			<td><a href="#" class="delete" wicket:id="delete"> <img
-				src="cdapp/delete.gif" border="0" /> </a></td>
+				src="cdapp/delete.gif" alt="delete" border="0" /> </a></td>
 		</tr>
 	</tbody>
 </table>
@@ -62,10 +64,10 @@
 </ul>
 </div>
 
-<div id="">
+<div>
 	<input type="button" wicket:id="newCdLink" value="new cd" class="mediumButton"/>
 </div>
 
-<div><span wicket:id="feedback"/></div>
+<div><span wicket:id="feedback">page feedback comes here</span></div>
 </body>
 </html>
