@@ -117,15 +117,11 @@ public final class EditPage extends CdAppBasePage
 		 */
 		public void onSubmit()
 		{
-			modelChanging();
-
 			CD cd = (CD)getModelObject();
 			boolean isNew = (cd.getId() == null);
 			// note that, as we used the Ognl property model, the fields are
 			// allready updated
 			getCdDao().save(cd);
-
-			modelChanged();
 
 			if (isNew)
 			{
