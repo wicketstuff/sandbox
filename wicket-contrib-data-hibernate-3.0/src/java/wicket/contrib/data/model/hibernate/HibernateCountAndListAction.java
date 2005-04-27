@@ -300,7 +300,7 @@ public class HibernateCountAndListAction implements ISelectCountAndListAction,
 	}
 
 	/** Wrapper class for ordering. */
-	protected static class Order
+	protected static class Order implements Serializable
 	{
 		/** order by field. */
 		String field;
