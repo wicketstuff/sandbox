@@ -28,6 +28,7 @@ import wicket.contrib.data.model.hibernate.HibernateCountAndListAction;
 import wicket.examples.cdapp.util.HibernateSessionDelegate;
 import wicket.model.AbstractDetachableModel;
 import wicket.model.AbstractReadOnlyDetachableModel;
+import wicket.model.IModel;
 
 /**
  * Model that keeps a (current) search argument, and uses a pageable list as
@@ -109,9 +110,9 @@ public final class SearchModel extends AbstractReadOnlyDetachableModel
 	/**
 	 * @see wicket.model.IModel#getNestedModel()
 	 */
-	public Object getNestedModel()
+	public IModel getNestedModel()
 	{
-		return list;
+		return null;
 	}
 
 	/**

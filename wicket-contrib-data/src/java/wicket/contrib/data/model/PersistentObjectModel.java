@@ -112,9 +112,9 @@ public class PersistentObjectModel extends AbstractDetachableModel
 	/**
 	 * @see wicket.model.IModel#getNestedModel()
 	 */
-	public Object getNestedModel()
+	public IModel getNestedModel()
 	{
-		return object;
+		return null;
 	}
 
 	/**
