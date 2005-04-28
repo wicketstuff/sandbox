@@ -240,7 +240,8 @@ public class HibernateObjectModel extends PersistentObjectModel
 					}
 					catch (InstantiationException e)
 					{
-						throw new WicketRuntimeException(e);
+						throw new WicketRuntimeException(
+								"unable to create an object of type " + objectClass + ": ", e);
 					}
 					catch (IllegalAccessException e)
 					{
