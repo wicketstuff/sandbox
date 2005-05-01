@@ -10,6 +10,7 @@
 package wicket.contrib.markup.html.form.fvalidate;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.Iterator;
 
 import wicket.markup.html.form.FormComponent;
@@ -142,7 +143,7 @@ public class ValidationSpecResolver implements IValidationSpecResolver
 		{
 			// TODO fValidate 'custom' could be used here.
 			// However fValidate does not make it clear how this would be
-			// used. Should find that our sometime if there is demand for it
+			// used. Should find that out sometime if there is demand for it
 		}
 	}
 
@@ -169,7 +170,12 @@ public class ValidationSpecResolver implements IValidationSpecResolver
 			{
 				spec.setCode("number|0");
 				spec.setErrorMsg("not a valid number");
-			}	
+			}
+		}
+		else if(Date.class.isAssignableFrom(type))
+		{
+			spec.setCode("date|mm/dd/yyyy");
+			spec.setErrorMsg("not a valid date; use format mm/dd/yyyy");
 		}
 	}
 }
