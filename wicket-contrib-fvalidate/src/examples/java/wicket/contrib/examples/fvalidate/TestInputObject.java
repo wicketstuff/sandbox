@@ -34,8 +34,6 @@ public final class TestInputObject implements Serializable
 
 	private Date dateProperty = new Date();
 
-	private Integer integerInRangeProperty = new Integer(50);
-
 	/**
 	 * Gets dateProperty.
 	 * @return dateProperty
@@ -109,20 +107,11 @@ public final class TestInputObject implements Serializable
 	}
 
 	/**
-	 * Gets integerInRangeProperty.
-	 * @return integerInRangeProperty
+	 * @see java.lang.Object#toString()
 	 */
-	public Integer getIntegerInRangeProperty()
+	public String toString()
 	{
-		return integerInRangeProperty;
-	}
-
-	/**
-	 * Sets integerInRangeProperty.
-	 * @param integerInRangeProperty integerInRangeProperty
-	 */
-	public void setIntegerInRangeProperty(Integer integerInRangeProperty)
-	{
-		this.integerInRangeProperty = integerInRangeProperty;
+		return "TestInputObject{string=" + stringProperty + ",integer=" + integerProperty +
+			",double=" + doubleProperty + ",date=" + dateProperty + "}";
 	}
 }
