@@ -18,8 +18,13 @@
  */
 package wicket.contrib.examples.fvalidate;
 
+import java.util.Locale;
+
 import wicket.ApplicationSettings;
+import wicket.ISessionFactory;
+import wicket.Session;
 import wicket.protocol.http.WebApplication;
+import wicket.protocol.http.WebSession;
 import wicket.util.time.Duration;
 
 /**
@@ -27,7 +32,7 @@ import wicket.util.time.Duration;
  *
  * @author Eelco Hillenius
  */
-public class FValidateFormInputApplication extends WebApplication
+public class FValidateFormInputApplication extends WebApplication implements ISessionFactory
 {
     /**
      * Constructor.
@@ -40,5 +45,26 @@ public class FValidateFormInputApplication extends WebApplication
 
         // show ?? markers when a message resource is not found
         settings.setThrowExceptionOnMissingResource(false);
+
+		// use our custom session
+		setSessionFactory(this);
     }
+
+	/**
+	 * @see wicket.ISessionFactory#newSession()
+	 */
+	public Session newSession()
+	{
+		// gets our custom session that pins down the US locale
+		return new WebSession(this)
+		{
+			/**
+			 * @see wicket.Session#getLocale()
+			 */
+			public Locale getLocale()
+			{
+				return Locale.US;
+			}
+		};
+	}
 }
