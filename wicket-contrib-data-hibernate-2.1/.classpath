@@ -7,7 +7,10 @@
 	<classpathentry kind="var" path="MAVEN_REPO/cglib/jars/cglib-full-2.0.2.jar"/>
 	<classpathentry kind="var" path="MAVEN_REPO/odmg/jars/odmg-3.0.jar"/>
 	<classpathentry kind="var" path="MAVEN_REPO/commons-logging/jars/commons-logging-1.0.4.jar"/>
-	<classpathentry kind="var" path="MAVEN_REPO/hibernate/jars/hibernate-2.1.6.jar"/>
+	<classpathentry sourcepath="/JAVA_SRC_JARS/hibernate-2.1.6-src.jar" kind="var" path="MAVEN_REPO/hibernate/jars/hibernate-2.1.6.jar">
+		<attributes>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="var" path="MAVEN_REPO/asm/jars/asm-util-1.4.3.jar"/>
 	<classpathentry kind="var" path="MAVEN_REPO/asm/jars/asm-1.4.3.jar"/>
 	<classpathentry kind="src" path="/wicket"/>
