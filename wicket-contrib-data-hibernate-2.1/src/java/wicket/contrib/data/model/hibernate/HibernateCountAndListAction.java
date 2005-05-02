@@ -183,7 +183,7 @@ public class HibernateCountAndListAction implements ISelectCountAndListAction,
 				{
 					Order order = (Order) i.next();
 					String direction = (order.ascending) ? "ASC" : "DESC";
-					b.append("upper(cd.").append(order.field).append(") ").append(
+					b.append("upper(").append(order.field).append(") ").append(
 							direction);
 					if (i.hasNext())
 					{
