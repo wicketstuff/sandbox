@@ -20,6 +20,9 @@ package wicket.contrib.data.model.hibernate;
 
 import java.io.Serializable;
 
+import net.sf.hibernate.proxy.HibernateProxy;
+import net.sf.hibernate.proxy.HibernateProxyHelper;
+import net.sf.hibernate.proxy.LazyInitializer;
 import wicket.WicketRuntimeException;
 import wicket.contrib.data.model.PersistentObjectModel;
 import wicket.model.IModel;
@@ -33,6 +36,9 @@ import wicket.model.Model;
  */
 public class HibernateObjectModel extends PersistentObjectModel
 {
+	/** whether to 'unproxy' the objects after loading. */
+	private boolean unproxy = false;
+
 	/** class of the Hibernate object to load. */
 	private final Class objectClass;
 
@@ -200,7 +206,17 @@ public class HibernateObjectModel extends PersistentObjectModel
 		}
 		else
 		{
-			return getSelectObjectAction().execute(id);
+			Object loaded = getSelectObjectAction().execute(id);
+
+			if(getUnproxy() && loaded instanceof HibernateProxy)
+			{
+				HibernateProxy proxy = (HibernateProxy)loaded;
+				LazyInitializer lazyInitializer = HibernateProxyHelper.getLazyInitializer(proxy);
+				Object implementation = lazyInitializer.getImplementation();
+				return implementation;
+			}
+
+			return loaded;
 		}
 	}
 
@@ -211,6 +227,26 @@ public class HibernateObjectModel extends PersistentObjectModel
 	public Class getObjectClass()
 	{
 		return objectClass;
+	}
+
+	/**
+	 * Gets whether the loaded object should be unproxied.
+	 * @return whether the loaded object should be unproxied
+	 */
+	public boolean getUnproxy()
+	{
+		return unproxy;
+	}
+
+	/**
+	 * Sets whether the loaded object should be unproxied.
+	 * @param unproxy whether the loaded object should be unproxied
+	 * @return This
+	 */
+	public HibernateObjectModel setUnproxy(boolean unproxy)
+	{
+		this.unproxy = unproxy;
+		return this;
 	}
 
 	/**
