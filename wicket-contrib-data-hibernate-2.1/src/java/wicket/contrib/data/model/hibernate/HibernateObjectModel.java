@@ -51,7 +51,7 @@ public class HibernateObjectModel extends PersistentObjectModel
 	private final boolean createNewObjectWhenIdIsNull;
 
 	/** Handler that is called when the id is null. */
-	private final NullIdHandler nullIdHandler;
+	private NullIdHandler nullIdHandler;
 
 	/**
 	 * Construct with a model that provides the id.
@@ -202,7 +202,7 @@ public class HibernateObjectModel extends PersistentObjectModel
 	{
 		if (id == null)
 		{
-			return nullIdHandler.getObjectForNullId();
+			return getNullIdHandler().getObjectForNullId();
 		}
 		else
 		{
@@ -247,6 +247,24 @@ public class HibernateObjectModel extends PersistentObjectModel
 	{
 		this.unproxy = unproxy;
 		return this;
+	}
+
+	/**
+	 * Gets the handler that is called when the id is null.
+	 * @return the handler that is called when the id is null
+	 */
+	public NullIdHandler getNullIdHandler()
+	{
+		return nullIdHandler;
+	}
+
+	/**
+	 * Sets the handler that is called when the id is null.
+	 * @param nullIdHandler the handler that is called when the id is null
+	 */
+	public void setNullIdHandler(NullIdHandler nullIdHandler)
+	{
+		this.nullIdHandler = nullIdHandler;
 	}
 
 	/**
