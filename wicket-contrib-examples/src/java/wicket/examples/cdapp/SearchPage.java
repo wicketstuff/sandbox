@@ -96,7 +96,6 @@ public class SearchPage extends CdAppBasePage
 		add(searchForm);
 
 		add(pageFeedback);
-		setFeedback(pageFeedback);
 		resultsListView = new SearchCDResultsListView("results", searchModel, rowsPerPage);
 		add(resultsListView);
 		WebMarkupContainer resultsTableHeader = new WebMarkupContainer("resultsHeader")
