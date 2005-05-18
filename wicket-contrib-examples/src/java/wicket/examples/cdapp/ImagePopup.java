@@ -19,8 +19,8 @@
 package wicket.examples.cdapp;
 
 import wicket.markup.html.WebPage;
+import wicket.markup.html.WebResource;
 import wicket.markup.html.image.Image;
-import wicket.markup.html.image.resource.ImageResource;
 
 /**
  * Displays the an image using the provided image resource.
@@ -33,7 +33,7 @@ public final class ImagePopup extends WebPage
 	 * Construct.
 	 * @param imageResource the image resource to display
 	 */
-	public ImagePopup(ImageResource imageResource)
+	public ImagePopup(WebResource imageResource)
 	{
 		super();
 		add(new Image("image", imageResource));

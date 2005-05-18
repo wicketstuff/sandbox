@@ -20,8 +20,8 @@ package wicket.examples.cdapp;
 
 import wicket.Page;
 import wicket.examples.cdapp.model.CD;
+import wicket.markup.html.WebResource;
 import wicket.markup.html.image.resource.DynamicImageResource;
-import wicket.markup.html.image.resource.ImageResource;
 import wicket.markup.html.link.Link;
 import wicket.markup.html.link.PopupSettings;
 import wicket.model.IModel;
@@ -56,7 +56,7 @@ public final class ImagePopupLink extends Link
 	public void onClick()
 	{
 		final CD cd = (CD)getModelObject();
-		ImageResource imgResource = new ImageResource()
+		WebResource imgResource = new WebResource()
 		{
 			public IResourceStream getResourceStream()
 			{

@@ -26,6 +26,7 @@ import wicket.contrib.data.model.hibernate.HibernateObjectModel;
 import wicket.examples.cdapp.model.CD;
 import wicket.examples.cdapp.util.HibernateSessionDelegate;
 import wicket.extensions.markup.html.image.resource.ThumbnailImageResource;
+import wicket.markup.html.WebResource;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.form.Form;
 import wicket.markup.html.form.RequiredTextField;
@@ -37,8 +38,7 @@ import wicket.markup.html.form.validation.IntegerValidator;
 import wicket.markup.html.form.validation.LengthValidator;
 import wicket.markup.html.image.Image;
 import wicket.markup.html.image.resource.DynamicImageResource;
-import wicket.markup.html.image.resource.ImageResource;
-import wicket.markup.html.image.resource.StaticImageResource;
+import wicket.markup.html.image.resource.StaticResource;
 import wicket.markup.html.link.Link;
 import wicket.markup.html.panel.FeedbackPanel;
 import wicket.model.IModel;
@@ -60,7 +60,7 @@ public final class EditPage extends CdAppBasePage
 	 * static image resource from this package; references image
 	 * 'questionmark.gif'.
 	 */
-	private static final StaticImageResource IMG_UNKNOWN = StaticImageResource.get(EditPage.class
+	private static final StaticResource IMG_UNKNOWN = StaticResource.get(EditPage.class
 			.getPackage(), "questionmark.gif", null, null);
 
 	/** model for one cd. */
@@ -254,7 +254,7 @@ public final class EditPage extends CdAppBasePage
 	/**
 	 * Gets either the cd's thumbnail image, or a special question mark image.
 	 */
-	private ImageResource getThumbnail()
+	private WebResource getThumbnail()
 	{
 		// create an image resource that displays a question mark when no image
 		// is set on the cd, or displays a thumbnail of the cd's image when there is one
