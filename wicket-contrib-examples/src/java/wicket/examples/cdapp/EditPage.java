@@ -107,8 +107,6 @@ public final class EditPage extends CdAppBasePage
 			{
 				public void onClick()
 				{
-					// put search page in front of the queue again
-					searchCDPage.getPageMap().put(searchCDPage);
 					setResponsePage(searchCDPage);
 				}
 			});
@@ -136,8 +134,6 @@ public final class EditPage extends CdAppBasePage
 			{
 				// set message for search page to display on next rendering
 				searchCDPage.setInfoMessageForNextRendering("cd " + cd.getTitle() + " saved");
-				// put search page in front of the queue again
-				searchCDPage.getPageMap().put(searchCDPage);
 				setResponsePage(searchCDPage); // navigate back to search page
 			}
 		}
