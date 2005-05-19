@@ -342,7 +342,7 @@ public final class AddonDaoImpl extends HibernateDaoSupport
             	case 1: sql += "license"; break;
             	case 2: sql += "createTime desc"; break;
             	case 3: sql += "lastModified desc"; break;
-            	case 4: sql += "rating desc"; break;
+            	case 4: sql += "averageRating desc"; break;
             	case 5: sql += "popularity desc"; break;
             }
         }

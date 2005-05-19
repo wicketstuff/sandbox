@@ -88,7 +88,7 @@ public final class AddOrModifyUser extends BaseHtmlPage /* AuthenticateHtmlPage 
         {
             super(componentName, feedback);
             
-            this.user = (User)getAddonDao().load(user);
+            this.user = user;
             
             add(new TextField("loginname", new PropertyModel(user, "nickname")));
             add(new TextField("firstname", new PropertyModel(user, "firstname")));

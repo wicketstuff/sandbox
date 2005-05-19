@@ -37,22 +37,23 @@ public final class AddComment extends BaseHtmlPage /* AuthenticateHtmlPage */
      * Constructor
      * @param parameters
       */
-    public AddComment(final Addon addon)
+    public AddComment(final int addonId)
     {
         super(null, "Wicket-Addons: Add comment");
         
+        final Addon addon = (Addon) getAddonDao().load(Addon.class, new Integer(addonId));
         add(new Label("addonName", addon.getName()));
         
         // Create and add feedback panel to page
         final FeedbackPanel feedback = new FeedbackPanel("feedback");
         //add(feedback);
         
-        add(new AddCommentForm("form", feedback, addon));
+        add(new AddCommentForm("form", feedback, addon.getId()));
     }
 
     public final class AddCommentForm extends Form
     {
-        private final Addon addon;
+        private final int addonId;
         
         /**
          * Constructor
@@ -60,11 +61,11 @@ public final class AddComment extends BaseHtmlPage /* AuthenticateHtmlPage */
          * @param book Book model
          * @param feedback Feedback component that shows errors
          */
-        public AddCommentForm(final String componentName, final FeedbackPanel feedback, final Addon addon)
+        public AddCommentForm(final String componentName, final FeedbackPanel feedback, final int addonId)
         {
             super(componentName, feedback);
             
-            this.addon = (Addon)getAddonDao().load(addon);
+            this.addonId = addonId;
         }
         
         /**
@@ -73,6 +74,8 @@ public final class AddComment extends BaseHtmlPage /* AuthenticateHtmlPage */
          */
         public final void onSubmit()
         {
+            final Addon addon = (Addon) getAddonDao().load(Addon.class, new Integer(addonId));
+            
             final Comment comment = new Comment();
             
             final RequestCycle cycle = getRequestCycle();

@@ -42,7 +42,7 @@ import wicket.model.PropertyModel;
  */
 public class AddonListEntry extends Panel
 {
-    private final Addon addon;
+    private final int addonId;
     
     /**
      * Constructor
@@ -51,7 +51,7 @@ public class AddonListEntry extends Panel
     public AddonListEntry(final String componentName, final Addon addon)
     {
         super(componentName);
-        this.addon = addon;
+        this.addonId = addon.getId();
 
         add(new Label("name", new PropertyModel(addon, "name")));
         add(new Label("license", new PropertyModel(addon, "license")));
@@ -79,7 +79,7 @@ public class AddonListEntry extends Panel
         {
             public Page getPage()
             {
-                return new PluginDetails(addon.getId());
+                return new PluginDetails(addonId);
             }
             
             public Class getPageIdentity()
@@ -92,17 +92,17 @@ public class AddonListEntry extends Panel
         add(new RatingLink("ratingLink", addon, dao));
 
         final Link comments = new PageLink("comments", new IPageLink()
-		        {
-		            public Page getPage()
-		            {
-		                return new Comments(addon.getId());
-		            }
-		            
-		            public Class getPageIdentity()
-		            {
-		                return Comments.class;
-		            }
-		        });
+        {
+            public Page getPage()
+            {
+                return new Comments(addonId);
+            }
+            
+            public Class getPageIdentity()
+            {
+                return Comments.class;
+            }
+        });
         
         add(comments);
         final Integer commentCount = ((BaseHtmlPage)getRequestCycle().getResponsePage()).getAddonDao().getCommentCount(addon);

@@ -24,7 +24,6 @@ import wicket.Page;
 import wicket.addons.dao.Addon;
 import wicket.addons.dao.AddonDaoImpl;
 import wicket.addons.utils.CategoryDropDownChoice;
-import wicket.addons.utils.PagedTableNavigator;
 import wicket.addons.utils.CategoryDropDownChoice.CategoryOption;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.form.Form;
@@ -32,6 +31,7 @@ import wicket.markup.html.link.IPageLink;
 import wicket.markup.html.link.PageLink;
 import wicket.markup.html.list.ListItem;
 import wicket.markup.html.list.PageableListView;
+import wicket.markup.html.list.PageableListViewNavigator;
 import wicket.markup.html.panel.FeedbackPanel;
 import wicket.model.Model;
 
@@ -91,8 +91,8 @@ public final class ClickList extends BaseHtmlPage /* AuthenticateHtmlPage */
         };
 
         add(listing);
-        add(new PagedTableNavigator("pageTableNav1", listing));
-        add(new PagedTableNavigator("pageTableNav2", listing));
+        add(new PageableListViewNavigator("pageTableNav1", listing));
+        add(new PageableListViewNavigator("pageTableNav2", listing));
     }
 
     public final class RatingListForm extends Form

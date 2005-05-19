@@ -28,13 +28,13 @@ import wicket.addons.dao.Addon;
 import wicket.addons.utils.AbstractDataList;
 import wicket.addons.utils.AddonListEntry;
 import wicket.addons.utils.CategoryDropDownChoice;
-import wicket.addons.utils.PagedTableNavigator;
 import wicket.addons.utils.CategoryDropDownChoice.CategoryOption;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.form.DropDownChoice;
 import wicket.markup.html.form.Form;
 import wicket.markup.html.list.ListItem;
 import wicket.markup.html.list.PageableListView;
+import wicket.markup.html.list.PageableListViewNavigator;
 import wicket.markup.html.panel.FeedbackPanel;
 import wicket.model.Model;
 import wicket.model.PropertyModel;
@@ -72,8 +72,8 @@ public final class NewAndUpdatedAddons extends BaseHtmlPage /* AuthenticateHtmlP
 
         add(updatedAddons);
         add(new Label("addonCount", new PropertyModel(new Model(model), "size")));
-        add(new PagedTableNavigator("pageTableNav1", updatedAddons));
-        add(new PagedTableNavigator("pageTableNav2", updatedAddons));
+        add(new PageableListViewNavigator("pageTableNav1", updatedAddons));
+        add(new PageableListViewNavigator("pageTableNav2", updatedAddons));
     }
     
     public final class SelectForm extends Form

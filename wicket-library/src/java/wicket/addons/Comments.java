@@ -26,19 +26,19 @@ import wicket.Page;
 import wicket.addons.dao.Addon;
 import wicket.addons.dao.Comment;
 import wicket.addons.utils.CommentListEntry;
-import wicket.addons.utils.PagedTableNavigator;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.link.IPageLink;
 import wicket.markup.html.link.PageLink;
 import wicket.markup.html.list.ListItem;
 import wicket.markup.html.list.PageableListView;
+import wicket.markup.html.list.PageableListViewNavigator;
 
 /**
  * @author Juergen Donnerstag
  */
 public final class Comments extends BaseHtmlPage /* AuthenticateHtmlPage */
 {
-    private final Addon addon;
+    private final int addonId;
     
     /**
      * Constructor
@@ -48,14 +48,16 @@ public final class Comments extends BaseHtmlPage /* AuthenticateHtmlPage */
     {
         super(null, "Addon specific comments");
 
-        this.addon = (Addon)getAddonDao().load(Addon.class, new Integer(addonId));
+        this.addonId = addonId;
+        
+        final Addon addon = (Addon)getAddonDao().load(Addon.class, new Integer(addonId));
         
         add(new Label("addonName", addon.getName()));
         add(new PageLink("addComment", new IPageLink() 
         {
             public Page getPage()
             {
-                return new AddComment(addon);
+                return new AddComment(addonId);
             }
             
             public Class getPageIdentity()
@@ -88,16 +90,8 @@ public final class Comments extends BaseHtmlPage /* AuthenticateHtmlPage */
         };
 
         add(commentListView);
-        add(new PagedTableNavigator("pageNavigation1", commentListView));
-        add(new PagedTableNavigator("pageNavigation2", commentListView ));
-    }
-    
-    protected void onBeginRequest()
-    {
-        if (addon != null)
-        {
-            getAddonDao().update(addon);
-        }
+        add(new PageableListViewNavigator("pageNavigation1", commentListView));
+        add(new PageableListViewNavigator("pageNavigation2", commentListView ));
     }
     
     public class CommentsDataList extends AbstractList implements Serializable
@@ -107,6 +101,7 @@ public final class Comments extends BaseHtmlPage /* AuthenticateHtmlPage */
 		 */
 		public int size()
 		{
+	        final Addon addon = (Addon)getAddonDao().load(Addon.class, new Integer(addonId));
 		    return addon.getComments().size();
 		}
 
@@ -115,6 +110,7 @@ public final class Comments extends BaseHtmlPage /* AuthenticateHtmlPage */
 		 */
 		public Object get(int index)
 		{
+	        final Addon addon = (Addon)getAddonDao().load(Addon.class, new Integer(addonId));
 		    return addon.getComments().get(index);
 		}
     }
