@@ -53,36 +53,24 @@ public final class CdAppRequestCycle extends WebRequestCycle
 	}
 
 	/**
-	 * @see wicket.RequestCycle#onBeginRequest()
-	 */
-	protected void onBeginRequest()
-	{
-		try
-		{
-			session = sessionFactory.openSession();
-		}
-		catch (HibernateException e)
-		{
-			throw new RuntimeException(e);
-		}
-	}
-
-	/**
 	 * @see wicket.RequestCycle#onEndRequest()
 	 */
 	protected void onEndRequest()
 	{
-		try
+		if(session != null)
 		{
-			session.close();
-		}
-		catch (HibernateException e)
-		{
-			throw new RuntimeException(e);
-		}
-		finally
-		{
-			session = null;
+			try
+			{
+				session.close();
+			}
+			catch (HibernateException e)
+			{
+				throw new RuntimeException(e);
+			}
+			finally
+			{
+				session = null;
+			}
 		}
 	}
 
@@ -92,6 +80,18 @@ public final class CdAppRequestCycle extends WebRequestCycle
 	 */
 	public Session getHibernateSession()
 	{
+		if(session == null)
+		{
+			try
+			{
+				// lazy load the session
+				session = sessionFactory.openSession();
+			}
+			catch (HibernateException e)
+			{
+				throw new RuntimeException(e);
+			}
+		}
 		return session;
 	}
 }
