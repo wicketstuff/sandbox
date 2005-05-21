@@ -26,7 +26,7 @@ import org.apache.commons.logging.LogFactory;
 import wicket.Page;
 import wicket.addons.admin.AddOrModifyUser;
 import wicket.addons.dao.Addon;
-import wicket.addons.dao.AddonDaoImpl;
+import wicket.addons.dao.IAddonDao;
 import wicket.addons.dao.Rating;
 import wicket.addons.dao.User;
 import wicket.addons.utils.RatingChart;
@@ -69,7 +69,7 @@ public final class RatingDetails extends BaseHtmlPage /* AuthenticateHtmlPage */
         add(details);
         details.add(new Label("addon", addon.getName()));
         
-        final AddonDaoImpl dao = this.getAddonDao();
+        final IAddonDao dao = this.getAddonDao();
 
         final Object[] rateCountAndAverage = dao.getRatingCountAndAverage(addon);
         final Integer ratingCount = (Integer)rateCountAndAverage[0];

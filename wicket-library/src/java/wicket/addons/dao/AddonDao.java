@@ -34,7 +34,7 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 /**
  * @author Juergen Donnerstag
  */
-public final class AddonDaoImpl extends HibernateDaoSupport
+public final class AddonDao extends HibernateDaoSupport implements IAddonDao
 {
     public final List getCountByCategory() 
     {

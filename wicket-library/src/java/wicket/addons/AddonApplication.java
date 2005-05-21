@@ -27,9 +27,9 @@ import org.springframework.core.io.ClassPathResource;
 
 import wicket.ISessionFactory;
 import wicket.Session;
-import wicket.addons.dao.AddonDaoImpl;
+import wicket.addons.dao.AddonDao;
 import wicket.addons.dao.User;
-import wicket.addons.dao.UserDaoImpl;
+import wicket.addons.dao.UserDao;
 import wicket.addons.utils.UserCount;
 import wicket.protocol.http.WebApplication;
 import wicket.util.time.Duration;
@@ -102,9 +102,9 @@ public class AddonApplication extends WebApplication
         return beanFactory;
     }
     
-    public AddonDaoImpl getAddonDao()
+    public AddonDao getAddonDao()
     {
-        return (AddonDaoImpl) getBeanFactory().getBean("AddonDao");
+        return (AddonDao) getBeanFactory().getBean("AddonDao");
     }
     
     /**
@@ -123,7 +123,7 @@ public class AddonApplication extends WebApplication
     
 	public final User authenticate(final String username, final String password)
 	{
-        final UserDaoImpl dao = (UserDaoImpl) getBeanFactory().getBean("UserDaoTarget");
+        final UserDao dao = (UserDao) getBeanFactory().getBean("UserDaoTarget");
         return dao.login(username, null, password);
 	}
 	

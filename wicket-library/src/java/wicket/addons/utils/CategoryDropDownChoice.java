@@ -23,8 +23,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import wicket.addons.dao.AddonDaoImpl;
 import wicket.addons.dao.Category;
+import wicket.addons.dao.IAddonDao;
 import wicket.markup.html.form.DropDownChoice;
 import wicket.markup.html.form.model.ChoiceList;
 import wicket.model.Model;
@@ -38,7 +38,7 @@ public class CategoryDropDownChoice extends DropDownChoice
      * Constructor
      * @param parameters
       */
-    public CategoryDropDownChoice(final String id, final AddonDaoImpl dao)
+    public CategoryDropDownChoice(final String id, final IAddonDao dao)
     {
         super(id, new Model(""), new ChoiceList(new ArrayList()));
         

@@ -29,7 +29,7 @@ import org.springframework.beans.factory.BeanFactory;
 
 import wicket.PageParameters;
 import wicket.RequestCycle;
-import wicket.addons.dao.AddonDaoImpl;
+import wicket.addons.dao.AddonDao;
 import wicket.addons.dao.Category;
 import wicket.markup.html.form.DropDownChoice;
 import wicket.markup.html.form.Form;
@@ -58,7 +58,7 @@ public final class AddonsPerCategory extends BaseHtmlPage /* AuthenticateHtmlPag
     private final List loadCategoryCount()
     {
         BeanFactory fac = ((AddonApplication)RequestCycle.get().getApplication()).getBeanFactory();
-        AddonDaoImpl dao = (AddonDaoImpl) fac.getBean("AddonDao");
+        AddonDao dao = (AddonDao) fac.getBean("AddonDao");
         return dao.getCountByCategory();
     }
     

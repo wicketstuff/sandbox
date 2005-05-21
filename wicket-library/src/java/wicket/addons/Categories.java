@@ -23,8 +23,8 @@ import java.util.AbstractList;
 import java.util.List;
 
 import wicket.PageParameters;
-import wicket.addons.dao.AddonDaoImpl;
 import wicket.addons.dao.Category;
+import wicket.addons.dao.IAddonDao;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.list.ListItem;
 import wicket.markup.html.list.ListView;
@@ -104,7 +104,7 @@ public final class Categories extends BaseHtmlPage /* AuthenticateHtmlPage */
             return categoryCount;
         }
 
-        final AddonDaoImpl dao = this.getAddonDao();
+        final IAddonDao dao = this.getAddonDao();
         nextUpdate = System.currentTimeMillis() + updateIntervall;
         
         return dao.getCountByCategory();

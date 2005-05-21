@@ -47,19 +47,25 @@
     </property>
   </bean>
 
-  <bean id="UserDaoTarget" class="wicket.addons.dao.UserDaoImpl">
+  <bean id="UserDaoTarget" class="wicket.addons.dao.UserDao">
     <property name="sessionFactory">
         <ref bean="sessionFactory"/>
     </property>
+    <!-- property name="transactionManager">
+        <ref local="transactionManager"/>
+    </property -->    
   </bean>
 
-  <bean id="AddonDaoTarget" class="wicket.addons.dao.AddonDaoImpl">
+  <bean id="AddonDaoTarget" class="wicket.addons.dao.AddonDao">
     <property name="sessionFactory">
         <ref bean="sessionFactory"/>
     </property>
+    <!-- property name="transactionManager">
+        <ref local="transactionManager"/>
+    </property -->    
   </bean>
-
-  <bean id="myProductService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+<!--
+  <bean id="transactionInterceptor" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
     <property name="transactionManager">
       <ref bean="myTransactionManager"/>
     </property>
@@ -72,6 +78,26 @@
         <prop key="someOtherBusinessMethod">PROPAGATION_MANDATORY</prop>
       </props>
     </property>
+  </bean>
+-->
+  <bean id="UserDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+    <property name="proxyInterfaces">
+      <value>wicket.addons.dao.IUserDao</value>
+    </property>
+    <property name="interceptorNames">
+      <!-- value>transactionInterceptor,UserDaoTarget</value -->
+      <value>UserDaoTarget</value>
+    </property>  
+  </bean>
+
+  <bean id="AddonDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+    <property name="proxyInterfaces">
+      <value>wicket.addons.dao.IAddonDao</value>
+    </property>
+    <property name="interceptorNames">
+      <!-- value>transactionInterceptor,AddonDaoTarget</value -->
+      <value>AddonDaoTarget</value>
+    </property>  
   </bean>
 
   <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">

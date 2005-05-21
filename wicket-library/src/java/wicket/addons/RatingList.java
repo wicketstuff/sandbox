@@ -23,7 +23,7 @@ import java.util.List;
 
 import wicket.Page;
 import wicket.addons.dao.Addon;
-import wicket.addons.dao.AddonDaoImpl;
+import wicket.addons.dao.IAddonDao;
 import wicket.addons.utils.CategoryDropDownChoice;
 import wicket.addons.utils.CategoryDropDownChoice.CategoryOption;
 import wicket.markup.html.basic.Label;
@@ -51,7 +51,7 @@ public final class RatingList extends BaseHtmlPage /* AuthenticateHtmlPage */
     {
         super(null, "Addon specific comments");
 
-        final AddonDaoImpl dao = this.getAddonDao();
+        final IAddonDao dao = this.getAddonDao();
 
         // Create and add feedback panel to page
         final FeedbackPanel feedback = new FeedbackPanel("feedback");
@@ -104,7 +104,7 @@ public final class RatingList extends BaseHtmlPage /* AuthenticateHtmlPage */
          * @param book Book model
          * @param feedback Feedback component that shows errors
          */
-        public RatingListForm(final String componentName, final FeedbackPanel feedback, final AddonDaoImpl dao)
+        public RatingListForm(final String componentName, final FeedbackPanel feedback, final IAddonDao dao)
         {
             super(componentName, feedback);
             

@@ -20,7 +20,7 @@ package wicket.addons;
 
 import java.util.List;
 
-import wicket.addons.dao.AddonDaoImpl;
+import wicket.addons.dao.IAddonDao;
 import wicket.addons.dao.Rating;
 import wicket.addons.dao.User;
 import wicket.markup.html.basic.Label;
@@ -40,7 +40,7 @@ public final class MyRatings extends BaseHtmlPage /* AuthenticateHtmlPage */
     public MyRatings()
     {
         super(null, "Wicket-Addons: Ratings");
-        final AddonDaoImpl dao = this.getAddonDao();
+        final IAddonDao dao = this.getAddonDao();
         final User user = (User)dao.load(User.class, new Integer(this.getAddonSession().getUserId()));
         final List myRatings = dao.getMyRatings(user);
         

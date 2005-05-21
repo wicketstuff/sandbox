@@ -22,7 +22,7 @@ import org.springframework.beans.factory.BeanFactory;
 
 import wicket.addons.AddonApplication;
 import wicket.addons.BaseHtmlPage;
-import wicket.addons.dao.UserDaoImpl;
+import wicket.addons.dao.UserDao;
 import wicket.addons.utils.UserCount;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.panel.Panel;
@@ -59,7 +59,7 @@ public final class SidebarRegisteredUsers extends Panel
         }
 
         BeanFactory fac = ((AddonApplication)this.getApplication()).getBeanFactory();
-        UserDaoImpl dao = (UserDaoImpl) fac.getBean("UserDaoTarget");
+        UserDao dao = (UserDao) fac.getBean("UserDaoTarget");
         numberOfRegisteredUsers = dao.getNumberOfRegisteredUsers();
         nextUpdate = System.currentTimeMillis() + updateIntervall;
         return numberOfRegisteredUsers;

@@ -24,8 +24,8 @@ import org.springframework.beans.factory.BeanFactory;
 import wicket.Component;
 import wicket.MarkupContainer;
 import wicket.PageParameters;
-import wicket.addons.dao.AddonDaoImpl;
-import wicket.addons.dao.UserDaoImpl;
+import wicket.addons.dao.IAddonDao;
+import wicket.addons.dao.IUserDao;
 import wicket.markup.html.WebPage;
 
 /**
@@ -64,16 +64,16 @@ public class BaseHtmlPage extends WebPage
         border.addRightSidebar();
     }
     
-    public AddonDaoImpl getAddonDao()
+    public IAddonDao getAddonDao()
     {
         BeanFactory fac = ((AddonApplication)this.getApplication()).getBeanFactory();
-        return (AddonDaoImpl) fac.getBean("AddonDaoTarget");
+        return (IAddonDao) fac.getBean("AddonDao");
     }
     
-    public UserDaoImpl getUserDao()
+    public IUserDao getUserDao()
     {
         BeanFactory fac = ((AddonApplication)this.getApplication()).getBeanFactory();
-        return (UserDaoImpl) fac.getBean("UserDaoTarget");
+        return (IUserDao) fac.getBean("UserDao");
     }
     
     public AddonSession getAddonSession()

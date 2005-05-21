@@ -26,7 +26,7 @@ import wicket.addons.BaseHtmlPage;
 import wicket.addons.PluginDetails;
 import wicket.addons.RatingList;
 import wicket.addons.dao.Addon;
-import wicket.addons.dao.AddonDaoImpl;
+import wicket.addons.dao.IAddonDao;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.link.IPageLink;
 import wicket.markup.html.link.PageLink;
@@ -47,7 +47,7 @@ public final class SidebarTopRated extends Panel
     {
         super(componentName);
         
-        final AddonDaoImpl dao = page.getAddonDao();
+        final IAddonDao dao = page.getAddonDao();
         final List top5 = dao.getTop5AddonsByRating();
         add(new ListView("rows", top5)
                 {

@@ -27,7 +27,7 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 /**
  * @author Juergen Donnerstag
  */
-public final class UserDaoImpl extends HibernateDaoSupport
+public final class UserDao extends HibernateDaoSupport implements IUserDao
 {
     public final List loadUserByNickname(final String nickname) 
     {

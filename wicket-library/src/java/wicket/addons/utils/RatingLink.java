@@ -24,7 +24,7 @@ import wicket.Page;
 import wicket.addons.RateIt;
 import wicket.addons.RatingDetails;
 import wicket.addons.dao.Addon;
-import wicket.addons.dao.AddonDaoImpl;
+import wicket.addons.dao.IAddonDao;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.link.IPageLink;
 import wicket.markup.html.link.PageLink;
@@ -41,7 +41,7 @@ public class RatingLink extends Panel
 	 * 
 	 * @param parameters
 	 */
-	public RatingLink(final String componentName, final Addon addon, final AddonDaoImpl dao)
+	public RatingLink(final String componentName, final Addon addon, final IAddonDao dao)
 	{
 		super(componentName);
 

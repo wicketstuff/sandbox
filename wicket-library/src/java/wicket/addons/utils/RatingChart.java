@@ -24,7 +24,7 @@ import java.util.List;
 import wicket.RequestCycle;
 import wicket.addons.BaseHtmlPage;
 import wicket.addons.dao.Addon;
-import wicket.addons.dao.AddonDaoImpl;
+import wicket.addons.dao.IAddonDao;
 import wicket.markup.html.list.ListItem;
 import wicket.markup.html.list.ListView;
 import wicket.markup.html.panel.Panel;
@@ -42,7 +42,7 @@ public class RatingChart extends Panel
     {
         super(componentName);
         
-        final AddonDaoImpl dao = ((BaseHtmlPage)RequestCycle.get().getResponsePage()).getAddonDao();
+        final IAddonDao dao = ((BaseHtmlPage)RequestCycle.get().getResponsePage()).getAddonDao();
 
         final Object[] rateCountAndAverage = dao.getRatingCountAndAverage(addon);
         final int ratingCount = ((Integer)rateCountAndAverage[0]).intValue();

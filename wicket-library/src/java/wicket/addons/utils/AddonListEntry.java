@@ -27,7 +27,7 @@ import wicket.addons.BaseHtmlPage;
 import wicket.addons.Comments;
 import wicket.addons.PluginDetails;
 import wicket.addons.dao.Addon;
-import wicket.addons.dao.AddonDaoImpl;
+import wicket.addons.dao.IAddonDao;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.link.ExternalLink;
 import wicket.markup.html.link.IPageLink;
@@ -88,7 +88,7 @@ public class AddonListEntry extends Panel
             }
         }));
         
-        final AddonDaoImpl dao = ((BaseHtmlPage)RequestCycle.get().getResponsePage()).getAddonDao();
+        final IAddonDao dao = ((BaseHtmlPage)RequestCycle.get().getResponsePage()).getAddonDao();
         add(new RatingLink("ratingLink", addon, dao));
 
         final Link comments = new PageLink("comments", new IPageLink()
