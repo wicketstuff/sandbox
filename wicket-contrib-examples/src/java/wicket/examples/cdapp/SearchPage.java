@@ -262,10 +262,7 @@ public class SearchPage extends CdAppBasePage
 					.getYear().toString() : "")));
 
 			// add a delete link for each found record
-			DeleteLink deleteLink = new DeleteLink("delete", id);
-			// add confirm script to link
-			deleteLink.add(new AttributeModifier("onclick", true,
-					new Model("if(!confirm('delete cd " + cd.getTitle() + " ?')) return false;")));
+			DeleteLink deleteLink = new DeleteLink("delete", cd);
 			item.add(deleteLink);
 		}
 	}
@@ -303,14 +300,14 @@ public class SearchPage extends CdAppBasePage
 		/**
 		 * Construct.
 		 * 
-		 * @param name
-		 *            name of the component
-		 * @param id
-		 *            the id of the cd
+		 * @param name name of the component
+		 * @param cd the cd
 		 */
-		public DeleteLink(String name, Long id)
+		public DeleteLink(String name, CD cd)
 		{
-			super(name, new Model(id));
+			super(name, new Model(cd.getId()));
+			String msg = "if(!confirm('delete cd " + cd.getTitle() +" ?')) return false;";
+			add(new AttributeModifier("onclick", true, new Model(msg)));
 		}
 
 		/**
