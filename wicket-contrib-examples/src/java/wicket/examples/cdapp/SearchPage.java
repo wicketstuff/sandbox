@@ -168,14 +168,14 @@ public class SearchPage extends CdAppBasePage
 		/**
 		 * Constructor
 		 * 
-		 * @param componentName
-		 *            Name of the form component
+		 * @param id
+		 *            id of the form component
 		 * @param feedback
 		 *            the feedback handler
 		 */
-		public SearchForm(final String componentName, final IFeedback feedback)
+		public SearchForm(final String id, final IFeedback feedback)
 		{
-			super(componentName, feedback);
+			super(id, feedback);
 			add(new TextField("search", new PropertyModel(this, "search")));
 		}
 
@@ -224,16 +224,16 @@ public class SearchPage extends CdAppBasePage
 		/**
 		 * Construct.
 		 * 
-		 * @param componentName
-		 *            name of the component
+		 * @param id
+		 *            id of the component
 		 * @param model
 		 *            the model
 		 * @param pageSizeInCells
 		 *            page size
 		 */
-		public SearchCDResultsListView(String componentName, IModel model, int pageSizeInCells)
+		public SearchCDResultsListView(String id, IModel model, int pageSizeInCells)
 		{
-			super(componentName, model, pageSizeInCells);
+			super(id, model, pageSizeInCells);
 		}
 
 		/**
@@ -354,14 +354,14 @@ public class SearchPage extends CdAppBasePage
 		/**
 		 * Construct.
 		 * 
-		 * @param componentName
+		 * @param id
 		 *            name of component
 		 * @param field
 		 *            order by field
 		 */
-		public SortLink(String componentName, String field)
+		public SortLink(String id, String field)
 		{
-			super(componentName);
+			super(id);
 			this.field = field;
 		}
 
@@ -385,14 +385,14 @@ public class SearchPage extends CdAppBasePage
 		/**
 		 * Construct.
 		 * 
-		 * @param componentName
+		 * @param id
 		 *            the name of the component
 		 * @param table
 		 *            the table
 		 */
-		public CDTableNavigation(String componentName, PageableListView table)
+		public CDTableNavigation(String id, PageableListView table)
 		{
-			super(componentName, table);
+			super(id, table);
 		}
 
 		/**
