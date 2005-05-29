@@ -19,238 +19,30 @@
 package wicket.addons.dao;
 
 import java.io.Serializable;
-import java.sql.Date;
-import java.sql.Timestamp;
+import java.util.Date;
+
+import wicket.addons.dao.base.BaseUser;
 
 /**
  * @author Juergen Donnerstag
  */
-public class User implements Serializable, ILastModified, IDeleted, IIdentifiable
+public class User extends BaseUser implements Serializable, ILastModified, IDeleted, IIdentifiable
 {
-    private int id;
+	public String getNameLastNameFirst()
+	{
+		return getLastname() + ", " + getFirstname();
+	}
 
-    private String nickname;
-
-    private String firstname;
-
-    private String lastname;
-
-    private String email;
-
-    private String locale;
-
-    private String password;
-
-    private Timestamp lastModified;
-
-    private Timestamp deleted;
-
-    private Date lastLogin;
-
-    private Date deactivated;
-
-    public User()
-    {
-        ; // empty
-    }
-
-    /**
-     * @return Returns the email.
-     */
-    public String getEmail()
-    {
-        return email;
-    }
-
-    /**
-     * @param email
-     *            The email to set.
-     */
-    public void setEmail(String email)
-    {
-        this.email = email;
-    }
-
-    /**
-     * @return Returns the firstname.
-     */
-    public String getFirstname()
-    {
-        return firstname;
-    }
+	public String getNameFirstNameFirst()
+	{
+		return getFirstname() + getLastname();
+	}
     
-    public String getNameLastNameFirst()
-    {
-        return lastname + ", " + firstname;
-    }
-    
-    public String getNameFirstNameFirst()
-    {
-        return firstname + lastname;
-    }
-
-    /**
-     * @param firstname
-     *            The firstname to set.
-     */
-    public void setFirstname(String firstname)
-    {
-        this.firstname = firstname;
-    }
-
-    /**
-     * @return Returns the id.
-     */
-    public int getId()
-    {
-        return id;
-    }
-
-    /**
-     * @param id
-     *            The id to set.
-     */
-    public void setId(int id)
-    {
-        this.id = id;
-    }
-
-    /**
-     * @return Returns the lastname.
-     */
-    public String getLastname()
-    {
-        return lastname;
-    }
-
-    /**
-     * @param lastname
-     *            The lastname to set.
-     */
-    public void setLastname(String lastname)
-    {
-        this.lastname = lastname;
-    }
-
-    /**
-     * @return Returns the locale.
-     */
-    public String getLocale()
-    {
-        return locale;
-    }
-
-    /**
-     * @param locale
-     *            The locale to set.
-     */
-    public void setLocale(String locale)
-    {
-        this.locale = locale;
-    }
-
-    /**
-     * @return Returns the nickname.
-     */
-    public String getNickname()
-    {
-        return nickname;
-    }
-
-    /**
-     * @param nickname
-     *            The nickname to set.
-     */
-    public void setNickname(String nickname)
-    {
-        this.nickname = nickname;
-    }
-
-    /**
-     * @return Returns the password.
-     */
-    public String getPassword()
-    {
-        return password;
-    }
-
-    /**
-     * @param password
-     *            The password to set.
-     */
-    public void setPassword(String password)
-    {
-        this.password = password;
-    }
-
-    /**
-     * @return Returns the lastModified.
-     */
-    public Timestamp getLastModified()
-    {
-        return lastModified;
-    }
-
-    /**
-     * @param lastModified
-     *            The lastModified to set.
-     */
-    public void setLastModified(Timestamp lastModified)
-    {
-        this.lastModified = lastModified;
-    }
-
-    /**
-     * @return Returns the lastLogin.
-     */
-    public Date getLastLogin()
-    {
-        return lastLogin;
-    }
-
-    /**
-     * @param lastLogin
-     *            The lastLogin to set.
-     */
-    public void setLastLogin(Date lastLogin)
-    {
-        this.lastLogin = lastLogin;
-    }
-
-    /**
-     * @return Returns the deactivated.
-     */
-    public Date getDeactivated()
-    {
-        return deactivated;
-    }
-
-    /**
-     * @param deactivated
-     *            The deactivated to set.
-     */
-    public void setDeactivated(Date deactivated)
-    {
-        this.deactivated = deactivated;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see wicket.addons.dao.Deleted#getDeleted()
-     */
-    public Timestamp getDeleted()
-    {
-        return deleted;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see wicket.addons.dao.Deleted#setDeleted(java.sql.Timestamp)
-     */
-    public void setDeleted(Timestamp deleted)
-    {
-        this.deleted = deleted;
-    }
+	protected void initialize () 
+	{
+	    if (getLastModified() == null)
+	    {
+	        setLastModified(new Date(System.currentTimeMillis()));
+	    }
+	}
 }

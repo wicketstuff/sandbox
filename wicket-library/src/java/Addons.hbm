@@ -1,85 +1,49 @@
 <?xml version="1.0"?>
-<!DOCTYPE hibernate-mapping PUBLIC
-	"-//Hibernate/Hibernate Mapping DTD//EN"
-	"http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd" >
+<!DOCTYPE hibernate-mapping
+    PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
-<hibernate-mapping package="wicket.addons.hibernate">
-	<class name="Addons" table="addons">
-		<id
-			column="id"
-			name="Id"
-			type="integer"
-		>
-			<generator class="identity" />
-		</id>
-		<property
-			column="license"
-			length="45"
-			name="License"
-			not-null="true"
-			type="string"
-		 />
-		<property
-			column="description"
-			name="Description"
-			not-null="true"
-			type="string"
-		 />
-		<property
-			column="ownerId"
-			length="10"
-			name="OwnerId"
-			not-null="true"
-			type="integer"
-		 />
-		<property
-			column="homepage"
-			length="200"
-			name="Homepage"
-			not-null="true"
-			type="string"
-		 />
-		<property
-			column="lastModified"
-			length="19"
-			name="LastModified"
-			not-null="true"
-			type="timestamp"
-		 />
-		<property
-			column="createTime"
-			length="19"
-			name="CreateTime"
-			not-null="true"
-			type="timestamp"
-		 />
-		<property
-			column="WicketVersion"
-			length="45"
-			name="WicketVersion"
-			not-null="true"
-			type="string"
-		 />
-		<property
-			column="categoryId"
-			length="10"
-			name="CategoryId"
-			not-null="true"
-			type="integer"
-		 />
-		<property
-			column="name"
-			length="45"
-			name="Name"
-			not-null="true"
-			type="string"
-		 />
-		<property
-			column="version"
-			length="20"
-			name="Version"
-			not-null="true"
-			type="string"
-		 />
-	</class>
+<hibernate-mapping>
+
+    <class name="wicket.addons.dao.Addon" table="ADDONS">
+
+        <id name="id" type="int" unsaved-value="0" >
+            <generator class="identity"/>
+        </id>
+
+        <property name="name" column="NAME" type="string" length="45" not-null="true"/>
+        <property name="license" column="LICENSE" type="string" length="45" not-null="true"/>
+        <property name="createTime" column="CREATETIME" type="timestamp" not-null="true"/>
+        <property name="lastModified" column="LASTMODIFIED" type="timestamp" not-null="true"/>
+        <property name="homepage" column="HOMEPAGE" type="string" length="200" not-null="false"/>
+        <property name="downloadUrl" column="DOWNLOADURL" type="string" length="80" not-null="true"/>
+        <property name="version" column="VERSION" type="string" length="20" not-null="false"/>
+        <property name="wicketVersion" column="WICKETVERSION" type="string" length="45" not-null="false"/>
+        <property name="description" column="DESCRIPTION" type="string" length="255" not-null="false"/>
+        <property name="enabled" column="ENABLED" type="int" not-null="true"/>
+        <property name="averageRating" column="AVERAGERATING" type="double" not-null="true"/>
+        <property name="clicksLast24H" column="CLICKSLAST24H" type="int" not-null="true"/>
+        <property name="clicksLastWeek" column="CLICKSLASTWEEK" type="int" not-null="true"/>
+        <property name="clicksLastMonth" column="CLICKSLASTMONTH" type="int" not-null="true"/>
+        <property name="clicksAll" column="CLICKSALL" type="int" not-null="true"/>
+
+        <many-to-one name="category" class="wicket.addons.dao.Category" column="categoryId" not-null="true" />
+        <many-to-one name="owner" class="wicket.addons.dao.User" column="ownerId" not-null="true"/>
+
+        <bag name="comments" order-by="lastModified desc" lazy="true" >
+          <key column="addonId"/>
+          <one-to-many class="wicket.addons.dao.Comment"/>
+        </bag>
+
+        <bag name="ratings" order-by="createDate desc" lazy="true" >
+          <key column="addonId"/>
+          <one-to-many class="wicket.addons.dao.Rating"/>
+        </bag>
+
+        <bag name="clicks" lazy="true" >
+          <key column="addonId"/>
+          <one-to-many class="wicket.addons.dao.Click"/>
+        </bag>
+    </class>
+
 </hibernate-mapping>

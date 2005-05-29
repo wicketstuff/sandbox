@@ -19,91 +19,21 @@
 package wicket.addons.dao;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.util.Date;
+
+import wicket.addons.dao.base.BaseComment;
 
 /**
  * @author Juergen Donnerstag
  */
-public class Comment implements Serializable, IIdentifiable
+public class Comment extends BaseComment implements Serializable, IIdentifiable, ILastModified
 {
-    private int id;
+	protected void initialize () 
+	{
+	    if (getLastModified() == null)
+	    {
+	        setLastModified(new Date(System.currentTimeMillis()));
+	    }
+	}
 
-    private User user;
-    
-    private Addon addon;
-
-    private Timestamp lastModified = new Timestamp(System.currentTimeMillis()); 
-
-    private String comment;
-
-	/**
-	 * @return Returns the addon.
-	 */
-	public Addon getAddon()
-	{
-		return addon;
-	}
-	/**
-	 * @param addon The addon to set.
-	 */
-	public void setAddon(Addon addon)
-	{
-		this.addon = addon;
-	}
-	/**
-	 * @return Returns the comment.
-	 */
-	public String getComment()
-	{
-		return comment;
-	}
-	/**
-	 * @param comment The comment to set.
-	 */
-	public void setComment(String comment)
-	{
-		this.comment = comment;
-	}
-	/**
-	 * @return Returns the id.
-	 */
-	public int getId()
-	{
-		return id;
-	}
-	/**
-	 * @param id The id to set.
-	 */
-	public void setId(int id)
-	{
-		this.id = id;
-	}
-	/**
-	 * @return Returns the lastModified.
-	 */
-	public Timestamp getLastModified()
-	{
-		return lastModified;
-	}
-	/**
-	 * @param lastModified The lastModified to set.
-	 */
-	public void setLastModified(Timestamp lastModified)
-	{
-		this.lastModified = lastModified;
-	}
-	/**
-	 * @return Returns the user.
-	 */
-	public User getUser()
-	{
-		return user;
-	}
-	/**
-	 * @param user The user to set.
-	 */
-	public void setUser(User user)
-	{
-		this.user = user;
-	}
 }

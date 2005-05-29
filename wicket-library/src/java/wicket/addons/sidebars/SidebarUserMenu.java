@@ -18,8 +18,8 @@
  */
 package wicket.addons.sidebars;
 
-import wicket.addons.Profile;
 import wicket.addons.MyRatings;
+import wicket.addons.Profile;
 import wicket.markup.html.link.BookmarkablePageLink;
 import wicket.markup.html.panel.Panel;
 

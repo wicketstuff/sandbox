@@ -4,7 +4,7 @@
 	"http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd" >
 
 <hibernate-mapping package="wicket.addons.hibernate">
-	<class name="Userrights" table="userrights">
+	<class name="Userright" table="userrights">
 		<id
 			column="id"
 			name="Id"

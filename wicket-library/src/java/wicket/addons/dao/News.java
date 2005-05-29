@@ -19,91 +19,20 @@
 package wicket.addons.dao;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.util.Date;
+
+import wicket.addons.dao.base.BaseNews;
 
 /**
  * @author Juergen Donnerstag
  */
-public class News implements Serializable, ILastModified, IIdentifiable
+public class News extends BaseNews implements Serializable, ILastModified, IIdentifiable
 {
-    private int id;
-
-    private String headline;
-
-    private String message;
-
-    private Timestamp lastModified = new Timestamp(System.currentTimeMillis());
-
-    public News()
-    {
-        ; // empty
-    }
-
-    /**
-     * @return Returns the headline.
-     */
-    public String getHeadline()
-    {
-        return headline;
-    }
-
-    /**
-     * @param headline
-     *            The headline to set.
-     */
-    public void setHeadline(String headline)
-    {
-        this.headline = headline;
-    }
-
-    /**
-     * @return Returns the id.
-     */
-    public int getId()
-    {
-        return id;
-    }
-
-    /**
-     * @param id
-     *            The id to set.
-     */
-    public void setId(int id)
-    {
-        this.id = id;
-    }
-
-    /**
-     * @return Returns the lastModified.
-     */
-    public Timestamp getLastModified()
-    {
-        return lastModified;
-    }
-
-    /**
-     * @param lastModified
-     *            The lastModified to set.
-     */
-    public void setLastModified(Timestamp lastModified)
-    {
-        this.lastModified = lastModified;
-    }
-
-    /**
-     * @return Returns the message.
-     */
-    public String getMessage()
-    {
-        return message;
-    }
-
-    /**
-     * @param message
-     *            The message to set.
-     */
-    public void setMessage(String message)
-    {
-        this.message = message;
-    }
+	protected void initialize () 
+	{
+	    if (getLastModified() == null)
+	    {
+	        setLastModified(new Date(System.currentTimeMillis()));
+	    }
+	}
 }

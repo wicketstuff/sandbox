@@ -1,36 +1,20 @@
 <?xml version="1.0"?>
-<!DOCTYPE hibernate-mapping PUBLIC
-	"-//Hibernate/Hibernate Mapping DTD//EN"
-	"http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd" >
+<!DOCTYPE hibernate-mapping
+    PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
-<hibernate-mapping package="wicket.addons.hibernate">
-	<class name="News" table="news">
-		<id
-			column="id"
-			name="Id"
-			type="integer"
-		>
-			<generator class="identity" />
-		</id>
-		<property
-			column="message"
-			name="Message"
-			not-null="true"
-			type="string"
-		 />
-		<property
-			column="lastModified"
-			length="19"
-			name="LastModified"
-			not-null="true"
-			type="timestamp"
-		 />
-		<property
-			column="headline"
-			length="120"
-			name="Headline"
-			not-null="true"
-			type="string"
-		 />
-	</class>
+<hibernate-mapping>
+
+    <class name="wicket.addons.dao.News" table="NEWS">
+
+        <id name="id" type="int" unsaved-value="0" >
+            <generator class="identity"/>
+        </id>
+
+        <property name="headline" column="HEADLINE" type="string" length="120" not-null="true"/>
+        <property name="message" column="MESSAGE" type="string" length="255" not-null="false"/>
+        <property name="lastModified" column="LASTMODIFIED" type="timestamp" not-null="true"/>
+
+    </class>
+
 </hibernate-mapping>

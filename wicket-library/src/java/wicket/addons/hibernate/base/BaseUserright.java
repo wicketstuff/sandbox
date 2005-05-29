@@ -15,7 +15,7 @@ import java.io.Serializable;
  * @hibernate.class
  *  table="userrights"
  */
-public abstract class BaseUserrights  implements Serializable {
+public abstract class BaseUserright  implements Serializable {
 
 	public static String PROP_DESCRIPTION = "Description";
 	public static String PROP_NAME = "Name";
@@ -33,14 +33,14 @@ public abstract class BaseUserrights  implements Serializable {
 
 
 	// constructors
-	public BaseUserrights () {
+	public BaseUserright () {
 		initialize();
 	}
 
 	/**
 	 * Constructor for primary key
 	 */
-	public BaseUserrights (java.lang.Integer _id) {
+	public BaseUserright (java.lang.Integer _id) {
 		this.setId(_id);
 		initialize();
 	}
@@ -48,7 +48,7 @@ public abstract class BaseUserrights  implements Serializable {
 	/**
 	 * Constructor for required fields
 	 */
-	public BaseUserrights (
+	public BaseUserright (
 		java.lang.Integer _id,
 		java.lang.String _name) {
 
@@ -115,9 +115,9 @@ public abstract class BaseUserrights  implements Serializable {
 
 	public boolean equals (Object obj) {
 		if (null == obj) return false;
-		if (!(obj instanceof wicket.addons.hibernate.base.BaseUserrights)) return false;
+		if (!(obj instanceof wicket.addons.hibernate.base.BaseUserright)) return false;
 		else {
-			wicket.addons.hibernate.base.BaseUserrights mObj = (wicket.addons.hibernate.base.BaseUserrights) obj;
+			wicket.addons.hibernate.base.BaseUserright mObj = (wicket.addons.hibernate.base.BaseUserright) obj;
 			if (null == this.getId() || null == mObj.getId()) return false;
 			else return (this.getId().equals(mObj.getId()));
 		}

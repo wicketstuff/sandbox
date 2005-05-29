@@ -19,104 +19,21 @@
 package wicket.addons.dao;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.util.Date;
+
+import wicket.addons.dao.base.BaseClick;
 
 /**
  * @author Juergen Donnerstag
  */
-public class Click implements Serializable, IIdentifiable
+public class Click extends BaseClick implements Serializable, IIdentifiable
 {
-	private int id;
-
-	private Addon addon;
-
-	private Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-
-	private String sessionId;
-	private String remoteIPAddress;
-
-	/**
-	 * @return Returns the addon.
-	 */
-	public Addon getAddon()
+	protected void initialize () 
 	{
-		return addon;
+	    if (getTimestamp() == null)
+	    {
+	        setTimestamp(new Date(System.currentTimeMillis()));
+	    }
 	}
 
-	/**
-	 * @param addon
-	 *           The addon to set.
-	 */
-	public void setAddon(Addon addon)
-	{
-		this.addon = addon;
-	}
-
-	/**
-	 * @return Returns the id.
-	 */
-	public int getId()
-	{
-		return id;
-	}
-
-	/**
-	 * @param id
-	 *           The id to set.
-	 */
-	public void setId(int id)
-	{
-		this.id = id;
-	}
-
-	/**
-	 * @return Returns the lastModified.
-	 */
-	public Timestamp getTimestamp()
-	{
-		return timestamp;
-	}
-
-	/**
-	 * @param lastModified
-	 *           The lastModified to set.
-	 */
-	public void setTimestamp(final Timestamp timestamp)
-	{
-		this.timestamp = timestamp;
-	}
-
-	/**
-	 * @return Returns the remoteIPAddress.
-	 */
-	public String getRemoteIPAddress()
-	{
-		return remoteIPAddress;
-	}
-
-	/**
-	 * @param remoteIPAddress
-	 *           The remoteIPAddress to set.
-	 */
-	public void setRemoteIPAddress(String remoteIPAddress)
-	{
-		this.remoteIPAddress = remoteIPAddress;
-	}
-
-	/**
-	 * @return Returns the sessionId.
-	 */
-	public String getSessionId()
-	{
-		return sessionId;
-	}
-
-	/**
-	 * @param sessionId
-	 *           The sessionId to set.
-	 */
-	public void setSessionId(String sessionId)
-	{
-		this.sessionId = sessionId;
-	}
 }

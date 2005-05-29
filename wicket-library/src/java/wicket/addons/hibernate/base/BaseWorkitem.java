@@ -15,7 +15,7 @@ import java.io.Serializable;
  * @hibernate.class
  *  table="workitems"
  */
-public abstract class BaseWorkitems  implements Serializable {
+public abstract class BaseWorkitem  implements Serializable {
 
 	public static String PROP_STATUS = "Status";
 	public static String PROP_LAST_MODIFIED = "LastModified";
@@ -49,14 +49,14 @@ public abstract class BaseWorkitems  implements Serializable {
 
 
 	// constructors
-	public BaseWorkitems () {
+	public BaseWorkitem () {
 		initialize();
 	}
 
 	/**
 	 * Constructor for primary key
 	 */
-	public BaseWorkitems (java.lang.Integer _id) {
+	public BaseWorkitem (java.lang.Integer _id) {
 		this.setId(_id);
 		initialize();
 	}
@@ -64,7 +64,7 @@ public abstract class BaseWorkitems  implements Serializable {
 	/**
 	 * Constructor for required fields
 	 */
-	public BaseWorkitems (
+	public BaseWorkitem (
 		java.lang.Integer _id,
 		java.util.Date _created,
 		java.lang.String _description,
@@ -269,9 +269,9 @@ public abstract class BaseWorkitems  implements Serializable {
 
 	public boolean equals (Object obj) {
 		if (null == obj) return false;
-		if (!(obj instanceof wicket.addons.hibernate.base.BaseWorkitems)) return false;
+		if (!(obj instanceof wicket.addons.hibernate.base.BaseWorkitem)) return false;
 		else {
-			wicket.addons.hibernate.base.BaseWorkitems mObj = (wicket.addons.hibernate.base.BaseWorkitems) obj;
+			wicket.addons.hibernate.base.BaseWorkitem mObj = (wicket.addons.hibernate.base.BaseWorkitem) obj;
 			if (null == this.getId() || null == mObj.getId()) return false;
 			else return (this.getId().equals(mObj.getId()));
 		}

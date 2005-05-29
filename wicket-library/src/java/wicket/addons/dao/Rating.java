@@ -19,124 +19,12 @@
 package wicket.addons.dao;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
+
+import wicket.addons.dao.base.BaseRating;
 
 /**
  * @author Juergen Donnerstag
  */
-public class Rating implements Serializable, IIdentifiable
+public class Rating extends BaseRating implements Serializable, IIdentifiable
 {
-	private int id;
-
-	private User user;
-
-	private Addon addon;
-
-	private Timestamp createDate = new Timestamp(System.currentTimeMillis());
-
-	private String comment;
-
-	private int rating;
-
-	/**
-	 * @return Returns the addon.
-	 */
-	public Addon getAddon()
-	{
-		return addon;
-	}
-
-	/**
-	 * @param addon
-	 *           The addon to set.
-	 */
-	public void setAddon(Addon addon)
-	{
-		this.addon = addon;
-	}
-
-	/**
-	 * @return Returns the comment.
-	 */
-	public String getComment()
-	{
-		return comment;
-	}
-
-	/**
-	 * @param comment
-	 *           The comment to set.
-	 */
-	public void setComment(String comment)
-	{
-		this.comment = comment;
-	}
-
-	/**
-	 * @return Returns the createDate.
-	 */
-	public Timestamp getCreateDate()
-	{
-		return createDate;
-	}
-
-	/**
-	 * @param createDate
-	 *           The createDate to set.
-	 */
-	public void setCreateDate(Timestamp createDate)
-	{
-		this.createDate = createDate;
-	}
-
-	/**
-	 * @return Returns the id.
-	 */
-	public int getId()
-	{
-		return id;
-	}
-
-	/**
-	 * @param id
-	 *           The id to set.
-	 */
-	public void setId(int id)
-	{
-		this.id = id;
-	}
-
-	/**
-	 * @return Returns the rating.
-	 */
-	public int getRating()
-	{
-		return rating;
-	}
-
-	/**
-	 * @param rating
-	 *           The rating to set.
-	 */
-	public void setRating(int rating)
-	{
-		this.rating = rating;
-	}
-
-	/**
-	 * @return Returns the user.
-	 */
-	public User getUser()
-	{
-		return user;
-	}
-
-	/**
-	 * @param user
-	 *           The user to set.
-	 */
-	public void setUser(User user)
-	{
-		this.user = user;
-	}
 }

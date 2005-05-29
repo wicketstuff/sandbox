@@ -4,7 +4,7 @@
 	"http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd" >
 
 <hibernate-mapping package="wicket.addons.hibernate">
-	<class name="Workitems" table="workitems">
+	<class name="Workitem" table="workitems">
 		<id
 			column="id"
 			name="Id"

@@ -80,13 +80,18 @@
     </property>
   </bean>
 -->
+
+  <bean id="hibernateInterceptor" class="org.springframework.orm.hibernate3.HibernateInterceptor">
+    <property name="sessionFactory"><ref bean="sessionFactory"/></property>
+  </bean>
+  
   <bean id="UserDao" class="org.springframework.aop.framework.ProxyFactoryBean">
     <property name="proxyInterfaces">
       <value>wicket.addons.dao.IUserDao</value>
     </property>
     <property name="interceptorNames">
       <!-- value>transactionInterceptor,UserDaoTarget</value -->
-      <value>UserDaoTarget</value>
+      <value>hibernateInterceptor,UserDaoTarget</value>
     </property>  
   </bean>
 

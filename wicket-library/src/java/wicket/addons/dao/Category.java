@@ -19,25 +19,15 @@
 package wicket.addons.dao;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.util.Date;
+
+import wicket.addons.dao.base.BaseCategory;
 
 /**
  * @author Juergen Donnerstag
  */
-public class Category implements Serializable, ILastModified, IDeleted, IIdentifiable
+public class Category extends BaseCategory implements Serializable, ILastModified, IDeleted, IIdentifiable
 {
-    private int id;
-
-    private String name;
-
-    private String description;
-
-    private Timestamp lastModified;
-
-    private Timestamp deleted;
-
-    private int createdBy;
-
     private int count = -1;
     
     public Category()
@@ -46,92 +36,9 @@ public class Category implements Serializable, ILastModified, IDeleted, IIdentif
     }
 
     /**
-     * @return Returns the createdBy.
-     */
-    public int getCreatedBy()
-    {
-        return createdBy;
-    }
-
-    /**
-     * @param createdBy
-     *            The createdBy to set.
-     */
-    public void setCreatedBy(int createdBy)
-    {
-        this.createdBy = createdBy;
-    }
-
-    /**
-     * @return Returns the description.
-     */
-    public String getDescription()
-    {
-        return description;
-    }
-
-    /**
-     * @param description
-     *            The description to set.
-     */
-    public void setDescription(String description)
-    {
-        this.description = description;
-    }
-
-    /**
-     * @return Returns the id.
-     */
-    public int getId()
-    {
-        return id;
-    }
-
-    /**
-     * @param id
-     *            The id to set.
-     */
-    public void setId(int id)
-    {
-        this.id = id;
-    }
-
-    /**
-     * @return Returns the lastModified.
-     */
-    public Timestamp getLastModified()
-    {
-        return lastModified;
-    }
-
-    /**
-     * @param lastModified
-     *            The lastModified to set.
-     */
-    public void setLastModified(Timestamp lastModified)
-    {
-        this.lastModified = lastModified;
-    }
-
-    /**
-     * @return Returns the name.
-     */
-    public String getName()
-    {
-        return name;
-    }
-
-    /**
-     * @param name
-     *            The name to set.
-     */
-    public void setName(String name)
-    {
-        this.name = name;
-    }
-    /**
      * @return Returns the count.
      */
+    // TODO I guess it is an error that 'count' is not table attribute
     public int getCount()
     {
         return count;
@@ -143,23 +50,17 @@ public class Category implements Serializable, ILastModified, IDeleted, IIdentif
     {
         this.count = count;
     }
-    /**
-     * @return Returns the deleted.
-     */
-    public Timestamp getDeleted()
-    {
-        return deleted;
-    }
-    /**
-     * @param deleted The deleted to set.
-     */
-    public void setDeleted(Timestamp deleted)
-    {
-        this.deleted = deleted;
-    }
     
     public String toString()
     {
-        return name + " (" + count + ")";
+        return getName() + " (" + getCount() + ")";
     }
+    
+	protected void initialize () 
+	{
+	    if (getLastModified() == null)
+	    {
+	        setLastModified(new Date(System.currentTimeMillis()));
+	    }
+	}
 }

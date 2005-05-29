@@ -18,7 +18,7 @@
  */
 package wicket.addons.dao;
 
-import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * @author Juergen Donnerstag
@@ -28,10 +28,10 @@ public interface IDeleted
     /**
      * @return Returns the deleted.
      */
-    public abstract Timestamp getDeleted();
+    public abstract Date getDeleted();
 
     /**
      * @param deleted The deleted to set.
      */
-    public abstract void setDeleted(Timestamp deleted);
+    public abstract void setDeleted(Date deleted);
 }

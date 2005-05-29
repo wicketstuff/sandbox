@@ -1,51 +1,22 @@
 <?xml version="1.0"?>
-<!DOCTYPE hibernate-mapping PUBLIC
-	"-//Hibernate/Hibernate Mapping DTD//EN"
-	"http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd" >
+<!DOCTYPE hibernate-mapping
+    PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
-<hibernate-mapping package="wicket.addons.hibernate">
-	<class name="Categories" table="categories">
-		<id
-			column="id"
-			name="Id"
-			type="integer"
-		>
-			<generator class="identity" />
-		</id>
-		<property
-			column="deleted"
-			length="19"
-			name="Deleted"
-			not-null="false"
-			type="timestamp"
-		 />
-		<property
-			column="description"
-			length="255"
-			name="Description"
-			not-null="false"
-			type="string"
-		 />
-		<property
-			column="lastModified"
-			length="19"
-			name="LastModified"
-			not-null="false"
-			type="timestamp"
-		 />
-		<property
-			column="createdBy"
-			length="10"
-			name="CreatedBy"
-			not-null="true"
-			type="integer"
-		 />
-		<property
-			column="name"
-			length="40"
-			name="Name"
-			not-null="true"
-			type="string"
-		 />
-	</class>
+<hibernate-mapping>
+
+    <class name="wicket.addons.dao.Category" table="CATEGORIES">
+
+        <id name="id" type="int" unsaved-value="0" >
+            <generator class="identity"/>
+        </id>
+
+        <property name="name" column="NAME" type="string" length="40" not-null="true"/>
+        <property name="description" column="DESCRIPTION" type="string" length="255" not-null="false"/>
+        <property name="lastModified" column="LASTMODIFIED" type="timestamp" not-null="true"/>
+        <property name="deleted" column="DELETED" type="timestamp" not-null="false"/>
+        <property name="createdBy" column="CREATEDBY" type="int" not-null="true"/>
+
+    </class>
+
 </hibernate-mapping>

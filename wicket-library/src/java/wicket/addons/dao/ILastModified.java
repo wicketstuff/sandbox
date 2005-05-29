@@ -18,7 +18,7 @@
  */
 package wicket.addons.dao;
 
-import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * @author Juergen Donnerstag
@@ -28,11 +28,11 @@ public interface ILastModified
     /**
      * @return Returns the lastModified.
      */
-    public abstract Timestamp getLastModified();
+    public abstract Date getLastModified();
 
     /**
      * @param lastModified
      *            The lastModified to set.
      */
-    public abstract void setLastModified(Timestamp lastModified);
+    public abstract void setLastModified(Date lastModified);
 }

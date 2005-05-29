@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping
+    PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+    <class name="wicket.addons.dao.Click" table="CLICKS">
+
+        <id name="id" type="int" unsaved-value="0" >
+            <generator class="identity"/>
+        </id>
+
+        <property name="timestamp" column="TIMESTAMP" type="timestamp" not-null="true"/>
+        <property name="sessionId" column="SESSIONID" type="string" length="40" not-null="false"/>
+        <property name="remoteIPAddress" column="REMOTEIPADDRESS" type="string" length="18" not-null="false"/>
+
+        <many-to-one name="addon" class="wicket.addons.dao.Addon" column="addonId" not-null="true"/>
+        
+    </class>
+
+</hibernate-mapping>

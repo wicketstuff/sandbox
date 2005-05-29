@@ -1,93 +1,27 @@
 <?xml version="1.0"?>
-<!DOCTYPE hibernate-mapping PUBLIC
-	"-//Hibernate/Hibernate Mapping DTD//EN"
-	"http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd" >
+<!DOCTYPE hibernate-mapping
+    PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
-<hibernate-mapping package="wicket.addons.hibernate">
-	<class name="Users" table="users">
-		<id
-			column="id"
-			name="Id"
-			type="integer"
-		>
-			<generator class="identity" />
-		</id>
-		<property
-			column="deleted"
-			length="19"
-			name="Deleted"
-			not-null="false"
-			type="timestamp"
-		 />
-		<property
-			column="password"
-			length="45"
-			name="Password"
-			not-null="true"
-			type="string"
-		 />
-		<property
-			column="locale"
-			length="10"
-			name="Locale"
-			not-null="false"
-			type="string"
-		 />
-		<property
-			column="lastname"
-			length="45"
-			name="Lastname"
-			not-null="false"
-			type="string"
-		 />
-		<property
-			column="nickname"
-			length="20"
-			name="Nickname"
-			not-null="true"
-			type="string"
-		 />
-		<property
-			column="deactivated"
-			length="19"
-			name="Deactivated"
-			not-null="false"
-			type="timestamp"
-		 />
-		<property
-			column="firstname"
-			length="30"
-			name="Firstname"
-			not-null="false"
-			type="string"
-		 />
-		<property
-			column="lastModified"
-			length="19"
-			name="LastModified"
-			not-null="true"
-			type="timestamp"
-		 />
-		<property
-			column="email"
-			length="60"
-			name="Email"
-			not-null="true"
-			type="string"
-		 />
-		<property
-			column="lastLogin"
-			length="19"
-			name="LastLogin"
-			not-null="false"
-			type="timestamp"
-		 />
-		<property
-			column="admin"
-			length="10"
-			name="Admin"
-			not-null="false"
-			type="integer"
-		 />
-	</class>
+<hibernate-mapping>
+
+    <class name="wicket.addons.dao.User" table="USERS">
+
+        <id name="id" type="int" unsaved-value="0" >
+            <generator class="identity"/>
+        </id>
+
+        <property name="nickname" column="NICKNAME" type="string" length="20" not-null="true"/>
+        <property name="firstname" column="FIRSTNAME" type="string" length="30" not-null="false"/>
+        <property name="lastname" column="LASTNAME" type="string" length="45" not-null="false"/>
+        <property name="email" column="EMAIL" type="string" length="60" not-null="false"/>
+        <property name="locale" column="LOCALE" type="string" length="10" not-null="false"/>
+        <property name="password" column="PASSWORD" type="string" length="45" not-null="false"/>
+        <property name="lastModified" column="LASTMODIFIED" type="timestamp" not-null="true"/>
+        <property name="deleted" column="DELETED" type="timestamp" not-null="false"/>
+        <property name="lastLogin" column="LASTLOGIN" type="timestamp" not-null="false"/>
+        <property name="deactivated" column="DEACTIVATED" type="timestamp" not-null="false"/>
+
+    </class>
+
 </hibernate-mapping>
