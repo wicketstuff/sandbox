@@ -73,7 +73,7 @@
     <dependency>
   	  <groupId>wicket-stuff</groupId>
   	  <artifactId>wicket-contrib-data-hibernate-2.1</artifactId>
-      <version>1.0</version>
+      <version>SNAPSHOT</version>
       <properties>
         <eclipse.dependency>true</eclipse.dependency>
         <war.bundle>true</war.bundle>
@@ -82,7 +82,7 @@
     <dependency>
   	  <groupId>wicket-stuff</groupId>
   	  <artifactId>wicket-contrib-data</artifactId>
-      <version>1.0</version>
+      <version>SNAPSHOT</version>
       <properties>
         <eclipse.dependency>true</eclipse.dependency>
         <war.bundle>true</war.bundle>
