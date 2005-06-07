@@ -46,6 +46,18 @@
 			</p>
 		</section>
 		<section name="Latest News">
+			<subsection name="June 7, 2005 - Wicket 1.0 available for download">
+				<p>
+					The Wicket development team has made the 1.0 final release available for
+					immediate download. This release marks a huge milestone in the development
+					cycle of Wicket. Go to the <a href="Download.html">downloads page</a> to
+					download Wicket 1.0!
+				</p>
+				<p>
+					We are preparing a media campaign for Wicket 1.0. So you may find us in
+					the media soon. Keep an eye out for Wicket!
+				</p>
+			</subsection>
 			<subsection name="April 17, 2005 - Kick Start Your Wicket Development!">
 				<p>
 					The <a href="/wicket-kickstart/index.html">Kick Start</a> project gives you
