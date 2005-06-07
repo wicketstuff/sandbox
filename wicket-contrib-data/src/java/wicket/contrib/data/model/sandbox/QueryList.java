@@ -3,6 +3,11 @@ package wicket.contrib.data.model.sandbox;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * A list that formats its ordering information into an SQL string.
+ * 
+ * @author Phil Kulak
+ */
 public abstract class QueryList extends OrderedPageableList
 {
 	protected final List getItems(int start, int max, List ordering)
