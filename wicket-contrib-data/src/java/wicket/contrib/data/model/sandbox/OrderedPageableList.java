@@ -63,9 +63,6 @@ public abstract class OrderedPageableList extends UnimplementedList
 	 * 
 	 * @param windowSize
 	 *            the number of elements loaded at one time
-	 * @param detachable
-	 *            if true, the window will be deleted and refreshed on each
-	 *            request
 	 */
 	public OrderedPageableList(int windowSize)
 	{
