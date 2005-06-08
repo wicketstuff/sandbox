@@ -17,6 +17,7 @@ public class HibernateQueryList extends QueryList
 	private IHibernateSessionDelegate sessionDelegate;
 	private String listQuery;
 	private String countQuery;
+	private boolean useQueryCache;
 	
 	/**
 	 * Creates a new list.
@@ -25,13 +26,15 @@ public class HibernateQueryList extends QueryList
 	 * @param listQuery a string query that will return the full list of items
 	 * @param countQuery a string query that will return a single integer
 	 *                   for the total number of items
+	 * @param useQueryCache use the query cache for each query?
 	 */
 	public HibernateQueryList(IHibernateSessionDelegate sessionDelegate, 
-			String listQuery, String countQuery)
+			String listQuery, String countQuery, boolean useQueryCache)
 	{
 		this.sessionDelegate = sessionDelegate;
 		this.listQuery = listQuery;
 		this.countQuery = countQuery;
+		this.useQueryCache = useQueryCache;
 	}
 
 	/**
@@ -41,11 +44,13 @@ public class HibernateQueryList extends QueryList
 	 * @param listQuery a string query that will return the full list of items
 	 * @param countQuery a string query that will return a single integer
 	 *                   for the total number of items
+	 * @param useQueryCache use the query cache for each query?
 	 */
 	public HibernateQueryList(SessionFactory sessionFactory, 
-			String listQuery, String countQuery)
+			String listQuery, String countQuery, boolean useQueryCache)
 	{
-		this(new HibernateSessionDelegate(sessionFactory), listQuery, countQuery);
+		this(new HibernateSessionDelegate(sessionFactory), 
+				listQuery, countQuery, useQueryCache);
 	}
 
 	protected List getItems(int start, int max, String orderBy)
@@ -54,6 +59,7 @@ public class HibernateQueryList extends QueryList
 				.createQuery(listQuery + orderBy)
 				.setFirstResult(start)
 				.setMaxResults(max)
+				.setCacheable(useQueryCache)
 				.list();
 	}
 
@@ -61,6 +67,7 @@ public class HibernateQueryList extends QueryList
 	{
 		return ((Integer) sessionDelegate.getSession()
 				.createQuery(countQuery)
+				.setCacheable(useQueryCache)
 				.uniqueResult())
 				.intValue();
 	}
