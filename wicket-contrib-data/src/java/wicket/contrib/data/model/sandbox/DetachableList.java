@@ -1,7 +1,6 @@
 package wicket.contrib.data.model.sandbox;
 
 import wicket.Component;
-import wicket.model.AbstractDetachableModel;
 import wicket.model.IModel;
 
 /**
@@ -9,7 +8,7 @@ import wicket.model.IModel;
  * 
  * @author Phil Kulak
  */
-public class DetachableList extends AbstractDetachableModel
+public class DetachableList implements IModel
 {
 	private OrderedPageableList list;
 
@@ -31,21 +30,17 @@ public class DetachableList extends AbstractDetachableModel
 		return null;
 	}
 
-	protected void onAttach()
-	{
-	}
-
-	protected void onDetach()
+	public void detach()
 	{
 		list.onDetach();
 	}
 
-	protected Object onGetObject(Component component)
+	public Object getObject(Component component)
 	{
 		return list;
 	}
 
-	protected void onSetObject(Component component, Object object)
+	public void setObject(Component component, Object object)
 	{
 		throw new UnsupportedOperationException(
 				"setting the internal object is not supported");
