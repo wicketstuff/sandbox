@@ -1,11 +1,13 @@
 package wicket.contrib.data.model.sandbox;
 
+import java.io.Serializable;
+
 /**
  * A simple class to hold the ordering information of one field in a list.
  * 
  * @author Phil Kulak
  */
-public class ListOrder
+public class ListOrder implements Serializable
 {
 	private boolean ascending = true;
 
