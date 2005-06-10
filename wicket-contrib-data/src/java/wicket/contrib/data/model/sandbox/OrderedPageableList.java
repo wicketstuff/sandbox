@@ -91,18 +91,18 @@ public abstract class OrderedPageableList extends UnimplementedList
 	 */
 	public OrderedPageableList addOrder(String field)
 	{
+        // Detach the object since it's state needs to be reloaded.
+        onDetach();
+        
 		ListOrder order = new ListOrder(field);
 		int i = ordering.indexOf(order);
 
 		if (i != -1)
-		{
 			((ListOrder) ordering.get(i)).switchOrder();
-		}
 		else
-		{
 			ordering.add(order);
-		}
-		return this;
+		
+        return this;
 	}
 
 	/**
@@ -124,18 +124,12 @@ public abstract class OrderedPageableList extends UnimplementedList
 	public final Object get(int index)
 	{
 		if (window == null)
-		{
 			resetWindow(index);
-		}
 
 		if (index > size())
-		{
 			throw new IndexOutOfBoundsException("Index greater then size - 1");
-		}
 		if (index < 0)
-		{
 			throw new IndexOutOfBoundsException("Index less than zero.");
-		}
 
 		int relativeIndex = index - windowStart;
 
@@ -153,9 +147,8 @@ public abstract class OrderedPageableList extends UnimplementedList
 	public final int size()
 	{
 		if (totalElements == -1)
-		{
 			totalElements = getCount();
-		}
+
 		return totalElements;
 	}
 
