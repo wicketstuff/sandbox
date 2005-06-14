@@ -283,4 +283,12 @@ public class PageableList extends UnimplementedList
 	{
 		return index % pageSize;
 	}
+
+	/**
+	 * @see java.lang.Object#toString()
+	 */
+	public String toString()
+	{
+		return "PageableList{current page index=" + currentPageStartIndex + ",pagesize=" + pageSize + "}";
+	}
 }
