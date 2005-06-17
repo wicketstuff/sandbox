@@ -59,7 +59,7 @@ public abstract class OrderedPageableList extends UnimplementedList
 	}
 
 	/**
-	 * Creates a list with the given window size and detachable status.
+	 * Creates a list with the given window size.
 	 * 
 	 * @param windowSize
 	 *            the number of elements loaded at one time
@@ -102,7 +102,9 @@ public abstract class OrderedPageableList extends UnimplementedList
 		else
 			ordering.add(order);
 		
-        return this;
+		// Reset the state since the query has changed.
+		onDetach();
+		return this;
 	}
 
 	/**
@@ -126,7 +128,7 @@ public abstract class OrderedPageableList extends UnimplementedList
 		if (window == null)
 			resetWindow(index);
 
-		if (index > size())
+		if (index >= size())
 			throw new IndexOutOfBoundsException("Index greater then size - 1");
 		if (index < 0)
 			throw new IndexOutOfBoundsException("Index less than zero.");
@@ -164,6 +166,7 @@ public abstract class OrderedPageableList extends UnimplementedList
 	public void onDetach()
 	{
 		window = null;
+		totalElements = -1;
 	}
 
 	private void resetWindow(int start)
