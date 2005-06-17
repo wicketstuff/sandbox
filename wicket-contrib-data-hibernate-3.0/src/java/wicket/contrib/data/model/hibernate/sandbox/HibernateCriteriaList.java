@@ -5,14 +5,11 @@ import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 
 import wicket.contrib.data.model.sandbox.OrderedPageableList;
 import wicket.contrib.data.model.sandbox.ListOrder;
-
-import wicket.contrib.data.model.hibernate.IHibernateSessionDelegate;
 
 /**
  * A scrolling list that builds on a DetatchedCriteria query provided by a base
@@ -22,34 +19,12 @@ import wicket.contrib.data.model.hibernate.IHibernateSessionDelegate;
  */
 public abstract class HibernateCriteriaList extends OrderedPageableList
 {
-	private IHibernateSessionDelegate sessionDelegate;
-	
-	/**
-	 * Creates a HibernateCriteriaList using the session delegate.
-	 * 
-	 * @param sessionDelegate the session source
-	 */
-	public HibernateCriteriaList(IHibernateSessionDelegate sessionDelegate)
-	{
-		this.sessionDelegate = sessionDelegate;
-	}
-	
-	/**
-	 * Creates a HibernateCriteriaList using the session factory.
-	 * 
-	 * @param factory used to create a session delegate
-	 */
-	public HibernateCriteriaList(SessionFactory factory)
-	{
-		this.sessionDelegate = new HibernateSessionDelegate(factory);
-	}
-	
 	/**
 	 * @see wicket.contrib.data.model.sandbox.OrderedPageableList#getCount()
 	 */
 	public int getCount()
 	{
-		return ((Integer) getBaseCriteria(sessionDelegate.getSession())
+		return ((Integer) getBaseCriteria(getSession())
 				.setProjection(Projections.rowCount())
 				.uniqueResult()).intValue();
 	}
@@ -59,7 +34,7 @@ public abstract class HibernateCriteriaList extends OrderedPageableList
 	 */
 	public List getItems(int start, int max, List ordering)
 	{
-		return getOrderedCriteria(sessionDelegate.getSession(), ordering)
+		return getOrderedCriteria(getSession(), ordering)
 				.setFirstResult(start)
 				.setMaxResults(max).list();
 	}
@@ -72,6 +47,14 @@ public abstract class HibernateCriteriaList extends OrderedPageableList
 	 * @return a base query for the list
 	 */
 	protected abstract Criteria getBaseCriteria(Session session);
+	
+	/**
+	 * Override this to return a session that this class can run queries
+	 * against.
+	 * 
+	 * @return a Hibernate session
+	 */
+	protected abstract Session getSession();
 
 	/**
 	 * Adds the orderings to the base query.

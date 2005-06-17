@@ -2,9 +2,8 @@ package wicket.contrib.data.model.hibernate.sandbox;
 
 import java.util.List;
 
-import org.hibernate.SessionFactory;
+import org.hibernate.Session;
 
-import wicket.contrib.data.model.hibernate.IHibernateSessionDelegate;
 import wicket.contrib.data.model.sandbox.QueryList;
 
 /**
@@ -12,9 +11,8 @@ import wicket.contrib.data.model.sandbox.QueryList;
  * 
  * @author Phil Kulak
  */
-public class HibernateQueryList extends QueryList
+public abstract class HibernateQueryList extends QueryList
 {
-	private IHibernateSessionDelegate sessionDelegate;
 	private String listQuery;
 	private String countQuery;
 	private boolean useQueryCache;
@@ -22,40 +20,22 @@ public class HibernateQueryList extends QueryList
 	/**
 	 * Creates a new list.
 	 * 
-	 * @param sessionDelegate the session source for the list
 	 * @param listQuery a string query that will return the full list of items
 	 * @param countQuery a string query that will return a single integer
 	 *                   for the total number of items
 	 * @param useQueryCache use the query cache for each query?
 	 */
-	public HibernateQueryList(IHibernateSessionDelegate sessionDelegate, 
-			String listQuery, String countQuery, boolean useQueryCache)
+	public HibernateQueryList(String listQuery, String countQuery, 
+			boolean useQueryCache)
 	{
-		this.sessionDelegate = sessionDelegate;
 		this.listQuery = listQuery;
 		this.countQuery = countQuery;
 		this.useQueryCache = useQueryCache;
 	}
 
-	/**
-	 * Creates a new list.
-	 * 
-	 * @param sessionFactory a factory to be wrapped in a delegate
-	 * @param listQuery a string query that will return the full list of items
-	 * @param countQuery a string query that will return a single integer
-	 *                   for the total number of items
-	 * @param useQueryCache use the query cache for each query?
-	 */
-	public HibernateQueryList(SessionFactory sessionFactory, 
-			String listQuery, String countQuery, boolean useQueryCache)
-	{
-		this(new HibernateSessionDelegate(sessionFactory), 
-				listQuery, countQuery, useQueryCache);
-	}
-
 	protected List getItems(int start, int max, String orderBy)
 	{
-		return sessionDelegate.getSession()
+		return getSession()
 				.createQuery(listQuery + orderBy)
 				.setFirstResult(start)
 				.setMaxResults(max)
@@ -65,10 +45,17 @@ public class HibernateQueryList extends QueryList
 
 	protected int getCount()
 	{
-		return ((Integer) sessionDelegate.getSession()
+		return ((Integer) getSession()
 				.createQuery(countQuery)
 				.setCacheable(useQueryCache)
 				.uniqueResult())
 				.intValue();
 	}
+	
+	/**
+	 * Override this to provide a session that queries can be run against.
+	 * 
+	 * @return a Hibernate session
+	 */
+	protected abstract Session getSession();
 }
