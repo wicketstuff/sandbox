@@ -13,7 +13,7 @@ public class DetachableList implements IModel
 	private OrderedPageableList list;
 
 	/**
-	 * Wraps an [@link wicket.contrib.data.model.sandbox.OrderedPageableList}.
+	 * Wraps an {@link wicket.contrib.data.model.sandbox.OrderedPageableList}.
 	 * 
 	 * @param list the list to wrap
 	 */
@@ -22,9 +22,6 @@ public class DetachableList implements IModel
 		this.list = list;
 	}
 	
-	/**
-	 * @see wicket.model.AbstractDetachableModel#getNestedModel()
-	 */
 	public IModel getNestedModel()
 	{
 		return null;
@@ -44,5 +41,16 @@ public class DetachableList implements IModel
 	{
 		throw new UnsupportedOperationException(
 				"setting the internal object is not supported");
+	}
+	
+	/**
+	 * Wrapper for {@link wicket.contrib.data.model.sandbox.OrderedPageableList#addOrder(String)}
+	 * 
+	 * @param field the field to order by
+	 * @return itself to support chaining
+	 */
+	public DetachableList addOrder(String field) {
+		list.addOrder(field);
+		return this;
 	}
 }

@@ -96,11 +96,16 @@ public abstract class OrderedPageableList extends UnimplementedList
         
 		ListOrder order = new ListOrder(field);
 		int i = ordering.indexOf(order);
-
+		
+		// If it exists, remove it and swap it's ordering.
 		if (i != -1)
-			((ListOrder) ordering.get(i)).switchOrder();
-		else
-			ordering.add(order);
+		{
+			order = (ListOrder) ordering.remove(i);
+			order.switchOrder();
+		}
+		
+		// Add the ordering to the top.
+		ordering.add(0, order);
 		
 		// Reset the state since the query has changed.
 		onDetach();
