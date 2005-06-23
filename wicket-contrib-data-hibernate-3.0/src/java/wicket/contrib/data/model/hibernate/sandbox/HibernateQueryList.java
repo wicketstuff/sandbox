@@ -2,8 +2,6 @@ package wicket.contrib.data.model.hibernate.sandbox;
 
 import java.util.List;
 
-import org.hibernate.Session;
-
 import wicket.contrib.data.model.hibernate.IHibernateSessionDelegate;
 import wicket.contrib.data.model.sandbox.QueryList;
 
@@ -32,6 +30,35 @@ public class HibernateQueryList extends QueryList
 	{
 		this.listQuery = listQuery;
 		this.countQuery = countQuery;
+		this.sessionDelegate = sessionDelegate;
+	}
+	
+	/**
+	 * Creates a new list by extrapolating the count query from the list query. This
+	 * simply creates a select clause ("SELECT COUNT(*) ") and appends it to the 
+	 * from of the list query or replaces the current select clause if it exists. This
+	 * is apropriate for most queries. 
+	 * 
+	 * @param listQuery a string query that will return the full list of items
+	 * @param sessionDelegate the session delegate 	 
+	 */
+	public HibernateQueryList(String listQuery, IHibernateSessionDelegate sessionDelegate) {
+		String lowerListQuery = listQuery.toLowerCase();
+		String trimmedListQuery = listQuery;
+		
+		// Remove the select clause if needed.
+		if (lowerListQuery.trim().startsWith("select"))
+		{
+			int fromIndex = lowerListQuery.indexOf("from");
+			if (fromIndex == -1)
+			{
+				throw new IllegalArgumentException("Invalid HQL: " + listQuery);
+			}
+			trimmedListQuery = listQuery.substring(fromIndex);
+		}
+		
+		this.listQuery = listQuery;
+		this.countQuery = "SELECT COUNT(*) " + trimmedListQuery;
 		this.sessionDelegate = sessionDelegate;
 	}
 	
