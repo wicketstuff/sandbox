@@ -53,4 +53,24 @@ public class DetachableList implements IModel
 		list.addOrder(field);
 		return this;
 	}
+	
+	/**
+	 * A convenience method for gettign the underlying list.
+	 * 
+	 * @return the backing list
+	 */
+	public OrderedPageableList getList() {
+		return list;
+	}
+	
+	/**
+	 * Returns a link that changes the ordering of the given field.
+	 * 
+	 * @param id the id of the link
+	 * @param field the field to order on
+	 * @return a new link
+	 */
+	public OrderByLink getOrderByLink(String id, String field) {
+		return new OrderByLink(id, this, field);
+	}
 }

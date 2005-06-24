@@ -24,6 +24,11 @@ import wicket.contrib.data.model.UnimplementedList;
  * selects for each request.
  * </p>
  * <p>
+ * By default, the max number of orderings retained is two. For more efficient
+ * query cache utilization, set this to one, or zero to disable ordering
+ * completely.
+ * </p>
+ * <p>
  * Not all {@link java.util.List}methods are supported. Unsupported methods
  * will throw {@link java.lang.IllegalStateException}s.
  * </p>
@@ -49,10 +54,12 @@ public abstract class OrderedPageableList extends UnimplementedList
 	private int totalElements = -1;
 
 	private List ordering = new ArrayList(3);
+	
+	private int orderingMaxFields = 2;
 
 	/**
 	 * Default constructor. A detachable list is created with a default window
-	 * size of 10.
+	 * size of 10, not retaining past orderings.
 	 */
 	public OrderedPageableList()
 	{
@@ -68,6 +75,23 @@ public abstract class OrderedPageableList extends UnimplementedList
 	{
 		this.windowSize = windowSize;
 	}
+	
+	/**
+	 * Creates a list with the given window size.
+	 * 
+	 * @param windowSize
+	 *            the number of elements loaded at one time
+	 * @param orderingMaxFields
+	 *            the max number of fields to retain in the ordering list
+	 */
+	public OrderedPageableList(int windowSize, int orderingMaxFields) {
+		this(windowSize);
+		if (orderingMaxFields < 0) {
+			throw new IllegalArgumentException(
+				"Max fields for ordering must be a non-negative integer.");
+		}
+		this.orderingMaxFields = orderingMaxFields;
+	}
 
 	/**
 	 * Returns items starting from the start index, with size no greater then
@@ -76,7 +100,7 @@ public abstract class OrderedPageableList extends UnimplementedList
 	 * @param start the index to start at
 	 * @param max the maximum elements to return
 	 * @param ordering the list of orderings to use                  
-	 * @return
+	 * @return all the items in the current window
 	 */
 	protected abstract List getItems(int start, int max, List ordering);
 
@@ -88,12 +112,16 @@ public abstract class OrderedPageableList extends UnimplementedList
 	/**
 	 * Adds an ordering to the end of the list. If the field already exists, the
 	 * direction is switched.
+	 * 
+	 * @param field the field to order by
+	 * @return itself to allow chaining
 	 */
 	public OrderedPageableList addOrder(String field)
 	{
-        // Detach the object since it's state needs to be reloaded.
-        onDetach();
-        
+		if (orderingMaxFields == 0) {
+			return this;
+		}
+		
 		ListOrder order = new ListOrder(field);
 		int i = ordering.indexOf(order);
 		
@@ -102,6 +130,10 @@ public abstract class OrderedPageableList extends UnimplementedList
 		{
 			order = (ListOrder) ordering.remove(i);
 			order.switchOrder();
+		}
+
+		if (ordering.size() == orderingMaxFields) {
+			ordering.remove(orderingMaxFields - 1);
 		}
 		
 		// Add the ordering to the top.
@@ -172,6 +204,17 @@ public abstract class OrderedPageableList extends UnimplementedList
 	{
 		window = null;
 		totalElements = -1;
+	}
+	
+	/**
+	 * Returns a link that changes the ordering of the given field.
+	 * 
+	 * @param id the id of the link
+	 * @param field the field to order on
+	 * @return a new link
+	 */
+	public OrderByLink getOrderByLink(String id, String field) {
+		return new OrderByLink(id, this, field);
 	}
 
 	private void resetWindow(int start)
