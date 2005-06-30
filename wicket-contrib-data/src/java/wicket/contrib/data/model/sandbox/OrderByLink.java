@@ -10,53 +10,33 @@ import wicket.model.IModel;
 import wicket.model.Model;
 
 /**
- * A link that changes the ordering on a field of an
+ * A link that changes the ordering on a field of an OrderedPageableList.
+ * The ordered list is searched for as the first sibling or child model
+ * object in the component tree.
  * 
- * @{link wicket.contrib.data.model.sandbox.OrderedPageableList}
  * @author Phil Kulak
  */
 public class OrderByLink extends Link
 {
-	private static final int UP = 0;
+	private static final Integer UP = new Integer(0);
 
-	private static final int DOWN = 1;
+	private static final Integer DOWN = new Integer(1);
 
-	private static final int NONE = 2;
+	private static final Integer NONE = new Integer(2);
 
 	private String field;
-
-	private int state = NONE;
 
 	/**
 	 * Constructor. The list will be wrapped in a simple model.
 	 * 
 	 * @param id
 	 *            the id of the link
-	 * @param list
-	 *            the list to change ordering on
 	 * @param field
 	 *            the field of the list
 	 */
-	public OrderByLink(String id, OrderedPageableList list, String field)
+	public OrderByLink(String id, String field)
 	{
-		super(id, new Model(list));
-		this.field = field;
-		add(new AttributeModifier("class", true, new AttribModel()));
-	}
-
-	/**
-	 * Constructor.
-	 * 
-	 * @param id
-	 *            the id of the link
-	 * @param listModel
-	 *            the model that contains the list to change ordering on
-	 * @param field
-	 *            the field of the list
-	 */
-	public OrderByLink(String id, IModel listModel, String field)
-	{
-		super(id, listModel);
+		super(id, new Model(NONE));
 		this.field = field;
 		add(new AttributeModifier("class", true, new AttribModel()));
 	}
@@ -66,7 +46,7 @@ public class OrderByLink extends Link
 	 */
 	public void onClick()
 	{
-		((OrderedPageableList) getModelObject()).addOrder(field);
+		findList().addOrder(field);
 
 		// Switch our state.
 		switchState();
@@ -93,7 +73,7 @@ public class OrderByLink extends Link
 	 */
 	public void reset()
 	{
-		this.state = NONE;
+		setModelObject(NONE);
 	}
 
 	/**
@@ -101,14 +81,38 @@ public class OrderByLink extends Link
 	 */
 	private void switchState()
 	{
-		if (state == NONE || state == UP)
+		Integer state = (Integer) getModelObject();
+
+		if (state.equals(NONE) || state.equals(UP))
 		{
-			state = DOWN;
+			setModelObject(DOWN);
 		}
 		else
 		{
-			state = UP;
+			setModelObject(UP);
 		}
+	}
+	
+	private OrderedPageableList findList() {
+		WebMarkupContainer parent = (WebMarkupContainer) getParent();
+		
+		// Look at all siblings.
+		return (OrderedPageableList) parent.visitChildren(new IVisitor()
+		{
+			public Object component(Component component)
+			{
+				IModel model = component.getModel();
+				if (model instanceof DetachableList)
+				{
+					return model.getObject(OrderByLink.this);
+				}
+				if (model instanceof OrderedPageableList)
+				{
+					return model;
+				}
+				return null;
+			}
+		});
 	}
 
 	/**
@@ -129,15 +133,13 @@ public class OrderByLink extends Link
 		 */
 		public Object getObject(Component arg0)
 		{
-			switch (state)
-			{
-				case UP:
-					return "orderUp";
-				case DOWN:
-					return "orderDown";
-				default:
-					return "orderNone";
-			}
+			Integer state = (Integer) OrderByLink.this.getModelObject();
+			if (state.equals(UP))
+				return "orderUp";
+			if (state.equals(DOWN))
+				return "orderDown";
+			else
+				return "orderNone";
 		}
 
 		/**
