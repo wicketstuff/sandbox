@@ -19,14 +19,29 @@
 
 package wicket.addons;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.BeanFactory;
 
-import wicket.Component;
-import wicket.MarkupContainer;
 import wicket.PageParameters;
 import wicket.addons.dao.IAddonDao;
 import wicket.addons.dao.IUserDao;
+import wicket.addons.sidebars.SidebarAdminMenu;
+import wicket.addons.sidebars.SidebarHostedBy;
+import wicket.addons.sidebars.SidebarMainMenu;
+import wicket.addons.sidebars.SidebarNews;
+import wicket.addons.sidebars.SidebarRSS;
+import wicket.addons.sidebars.SidebarRegisteredUsers;
+import wicket.addons.sidebars.SidebarTopClicks;
+import wicket.addons.sidebars.SidebarTopRated;
+import wicket.addons.sidebars.SidebarUserMenu;
 import wicket.markup.html.WebPage;
+import wicket.markup.html.basic.Label;
+import wicket.markup.html.list.ListItem;
+import wicket.markup.html.list.ListView;
+import wicket.markup.html.panel.Panel;
+import wicket.model.PropertyModel;
 
 /**
  * Ensures that user is authenticated in session.  If no user is signed in, a sign
@@ -42,26 +57,104 @@ import wicket.markup.html.WebPage;
  */
 public class BaseHtmlPage extends WebPage
 {
+    public static final String PAGE_SPECIFIC_HEADER = "pageSpecificHeader";
+
+    private final ListView sidebarLeft;
+    
 	final protected PageParameters parameters;
-    final protected AddonApplicationBorder border;
+    //final protected AddonApplicationBorder border;
 
     final private static int[] pagesPerHour = new int[7 * 24];
 
     /**
      * Constructor
      */
-    public BaseHtmlPage(final PageParameters parameters, final String pageTitle, final AddonApplicationBorder border)
-    {
-    	this.parameters = parameters;
-    	
-        this.border = border;
-        super.add(border);
-    }
-
     public BaseHtmlPage(final PageParameters parameters, final String pageTitle)
     {
         this(parameters, pageTitle, new AddonApplicationBorder("border", pageTitle));
-        border.addRightSidebar();
+    }
+
+    public BaseHtmlPage(final PageParameters parameters, final String pageTitle, final AddonApplicationBorder border)
+    {
+        this.parameters = parameters;
+        
+        add(new Label("username", new PropertyModel(this, "nickname")));
+        
+        // Sidebar Left
+        List sidebarLeftData = new ArrayList();
+        sidebarLeftData.add(new SidebarMainMenu("sidebarLeftContent"));
+        
+        if (((AddonApplication)getApplication()).getAdminEnabled() == true)
+        {
+            sidebarLeftData.add(new SidebarAdminMenu("sidebarLeftContent"));
+        }
+
+        if (((AddonSession)getSession()).getUserId() > 0)
+        {
+            sidebarLeftData.add(new SidebarUserMenu("sidebarLeftContent"));
+        }
+        
+        sidebarLeftData.add(new SidebarRegisteredUsers("sidebarLeftContent"));
+        sidebarLeftData.add(new SidebarRSS("sidebarLeftContent"));
+        sidebarLeftData.add(new SidebarHostedBy("sidebarLeftContent"));
+        
+        // Add table of existing comments
+        sidebarLeft = new ListView("sidebarsLeft", sidebarLeftData)
+        {
+            public void populateItem(final ListItem listItem)
+            {
+                final Panel value = (Panel) listItem.getModelObject();
+                listItem.add(value);
+            }
+            
+        	protected void renderItem(final ListItem listItem, final boolean lastItem)
+        	{
+        	    if (listItem.getModelObject() instanceof SidebarUserMenu)
+        	    {
+        	        final boolean loggedIn = ((BaseHtmlPage)getPage()).getAddonSession().isSignedIn();
+        	        listItem.setVisible(loggedIn);
+        	    }
+        	    
+        		super.renderItem(listItem);
+        	}
+        };
+
+        add(sidebarLeft);
+ 
+        addRightSidebar();
+    }
+
+    public String getNickname()
+    {
+        final String name = getAddonSession().getUserLogonName();
+
+        if (name == null)
+        {
+            return null;
+        }
+        
+        return "User: " + name;
+    }
+    
+    protected void addRightSidebar()
+    {
+        // Sidebar Right
+        List sidebarRightData = new ArrayList();
+        sidebarRightData.add(new SidebarTopRated("sidebarRightContent", this));
+        sidebarRightData.add(new SidebarTopClicks("sidebarRightContent", this));
+        sidebarRightData.add(new SidebarNews("sidebarRightContent"));
+        
+        // Add table of existing comments
+        final ListView sidebarRight = new ListView("sidebarsRight", sidebarRightData)
+        {
+            public void populateItem(final ListItem listItem)
+            {
+                final Panel value = (Panel) listItem.getModelObject();
+                listItem.add(value);
+            }
+        };
+
+        add(sidebarRight);
     }
     
     public IAddonDao getAddonDao()
@@ -85,19 +178,7 @@ public class BaseHtmlPage extends WebPage
     {
         return getAddonSession().isSignedIn();
     }
-    
-    /**
-     * Adding children to instances of this class causes those children to
-     * be added to the border child instead.  
-     * @see com.voicetribe.wicket.Container#add(com.voicetribe.wicket.Component)
-     */
-    public MarkupContainer add(final Component child)
-    {
-        // Add children of the page to the page's border component
-        border.add(child);
-        return this;
-    }
-    
+
     public final int getPageDownloadsPerHour(final int hoursBack)
     {
         int hour = (int)(((System.currentTimeMillis() / 1000 / 60 / 60) - hoursBack) % pagesPerHour.length);

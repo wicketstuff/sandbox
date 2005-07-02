@@ -253,5 +253,5 @@ public class AddonApplicationBorder extends Border
         
         return authenticator.getUser();
     }
-*/    
+*/        
 }

@@ -4,10 +4,6 @@
   
 <html xmlns="http://www.w3.org/1999/xhtml">
 
-  <!-- The [border] might as well include the <head>. This now becomes
-		   the global (application) header section.
-  -->
-  <wicket:border>
     <head>
 		  <!-- HTTP 1.1 -->
 		  <meta http-equiv="Cache-Control" content="no-store"/>
@@ -44,7 +40,7 @@
       </div>
 
       <div id="content">
-        <wicket:body/>
+        <wicket:child/>
       </div>
 
       <div id="sidebarleft">
@@ -59,8 +55,4 @@
         </div>
       </div>
     </body>
-  </wicket:border>
 </html>
-
-
-
