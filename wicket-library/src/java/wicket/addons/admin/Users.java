@@ -76,6 +76,8 @@ public final class Users extends BaseHtmlPage /* AuthenticateHtmlPage */
         add(table);
         
         add(new PageLink("new", AddOrModifyUser.class));
+        
+        get("sidebarsRight").setVisible(false);
     }
     
     /**
@@ -110,7 +112,7 @@ public final class Users extends BaseHtmlPage /* AuthenticateHtmlPage */
                 label ="&nbsp;";
             }
             
-            add(new Label(componentName, label));
+            add(new Label(componentName, label).setShouldEscapeModelStrings(false));
         }
     }
 }

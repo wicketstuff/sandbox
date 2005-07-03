@@ -98,8 +98,8 @@ html>body .sidebarright-block {
 #contentnorightsidebar {
 	background-color:#fff;
 	margin-top: 10px;
-	margin-left: 175px;
-	margin-right: 10px;
+	margin-left: 10px;
+	margin-right: -175px;
 	}
 
 /* for debug */

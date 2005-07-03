@@ -27,6 +27,7 @@ import org.springframework.beans.factory.BeanFactory;
 import wicket.PageParameters;
 import wicket.addons.dao.IAddonDao;
 import wicket.addons.dao.IUserDao;
+import wicket.addons.dao.User;
 import wicket.addons.sidebars.SidebarAdminMenu;
 import wicket.addons.sidebars.SidebarHostedBy;
 import wicket.addons.sidebars.SidebarMainMenu;
@@ -173,7 +174,12 @@ public class BaseHtmlPage extends WebPage
     {
         return (AddonSession)this.getSession();
     }
-   
+
+    public User getUser()
+    {
+        return (User)getAddonDao().load(User.class, new Integer(getAddonSession().getUserId()));
+    }
+    
     public boolean isUserSignedIn()
     {
         return getAddonSession().isSignedIn();

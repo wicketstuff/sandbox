@@ -82,6 +82,8 @@ public final class AddOrModifyNews extends BaseHtmlPage /* AuthenticateHtmlPage 
         final ContentNews value = new ContentNews("news", news);
         
         previewRegion.add(value);
+        
+        get("sidebarsRight").setVisible(false);
     }
 
     /**
