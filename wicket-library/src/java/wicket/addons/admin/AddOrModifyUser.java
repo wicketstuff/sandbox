@@ -137,7 +137,7 @@ public final class AddOrModifyUser extends BaseHtmlPage /* AuthenticateHtmlPage 
                 getAddonDao().delete(user);
             }
             
-            cycle.setResponsePage(new Categories(null));
+            cycle.setResponsePage(new Users(null));
         }
     }
     

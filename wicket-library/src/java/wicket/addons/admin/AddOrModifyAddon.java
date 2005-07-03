@@ -62,6 +62,8 @@ public final class AddOrModifyAddon extends BaseHtmlPage /* AuthenticateHtmlPage
         //add(feedback);
         
         add(new AddonSubmitForm("form", feedback, addon));
+        
+        get("sidebarsRight").setVisible(false);
     }
 
     public final class AddonSubmitForm extends Form

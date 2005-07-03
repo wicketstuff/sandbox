@@ -64,16 +64,18 @@ public final class Categories extends BaseHtmlPage /* AuthenticateHtmlPage */
                 
                 final Category value = (Category) listItem.getModelObject();
 
-                listItem.add(new MyPageLink("name", value, value.getName()));
-                listItem.add(new MyPageLink("description", value, value.getDescription()));
-                listItem.add(new MyPageLink("modified", value, value.getLastModified()));
-                listItem.add(new MyPageLink("noOfAddons", value, new Integer(value.getCount())));
+                listItem.add(new MyPageLink("name", value.getId(), value.getName()));
+                listItem.add(new MyPageLink("description", value.getId(), value.getDescription()));
+                listItem.add(new MyPageLink("modified", value.getId(), value.getLastModified()));
+                listItem.add(new MyPageLink("noOfAddons", value.getId(), new Integer(value.getCount())));
             }
         };
 
         add(table);
         
         add(new PageLink("newCategory", AddOrModifyCategory.class));
+        
+        get("sidebarsRight").setVisible(false);
     }
     
     /**
@@ -87,13 +89,13 @@ public final class Categories extends BaseHtmlPage /* AuthenticateHtmlPage */
     
     private class MyPageLink extends PageLink
     {
-        public MyPageLink(final String componentName, final Category category, final Serializable value)
+        public MyPageLink(final String componentName, final int categoryId, final Serializable value)
         {
             super(componentName + "Link", new IPageLink()
 	            {
 	                public Page getPage()
 	                {
-	                    return new AddOrModifyCategory(category);
+	                    return new AddOrModifyCategory(categoryId);
 	                }
 	
 	                public Class getPageIdentity()
