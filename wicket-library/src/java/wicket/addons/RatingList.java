@@ -108,7 +108,7 @@ public final class RatingList extends BaseHtmlPage /* AuthenticateHtmlPage */
         {
             super(componentName, feedback);
             
-            categories = new CategoryDropDownChoice("categories", dao);
+            categories = new CategoryDropDownChoice("categories", dao, -1);
             add(categories);
         }
         

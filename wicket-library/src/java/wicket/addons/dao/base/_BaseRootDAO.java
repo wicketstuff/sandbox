@@ -5,7 +5,6 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.Map;
 
 import org.hibernate.Criteria;
@@ -205,9 +204,9 @@ public abstract class _BaseRootDAO extends HibernateDaoSupport
 			Query q = session.getNamedQuery(name);
 			if (null != params)
 			{
-				for (Iterator i = params.entrySet().iterator(); i.hasNext();)
+				for (Object data : params.entrySet())
 				{
-					Map.Entry entry = (Map.Entry)i.next();
+				    Map.Entry entry = (Map.Entry) data;
 					setParameterValue(q, (String)entry.getKey(), entry.getValue());
 				}
 			}

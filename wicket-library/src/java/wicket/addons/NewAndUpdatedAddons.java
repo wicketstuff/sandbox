@@ -38,6 +38,7 @@ import wicket.markup.html.list.PageableListViewNavigator;
 import wicket.markup.html.panel.FeedbackPanel;
 import wicket.model.Model;
 import wicket.model.PropertyModel;
+import wicket.util.string.StringValueConversionException;
 
 /**
  * @author Juergen Donnerstag
@@ -56,6 +57,18 @@ public final class NewAndUpdatedAddons extends BaseHtmlPage /* AuthenticateHtmlP
     public NewAndUpdatedAddons(final PageParameters parameters)
     {
         super(parameters, "New and updated add-ons");
+        
+        if ((parameters != null) && (parameters.containsKey("category")))
+        {
+            try
+            {
+                this.categoryId = parameters.getInt("category");
+            }
+            catch (StringValueConversionException ex)
+            {
+                ; // silently ignore
+            }
+        }
         
         add(new SelectForm("categoryForm", null));
         
@@ -85,7 +98,7 @@ public final class NewAndUpdatedAddons extends BaseHtmlPage /* AuthenticateHtmlP
         {
             super(componentName, feedback);
             
-            categories = new CategoryDropDownChoice("categories", getAddonDao());
+            categories = new CategoryDropDownChoice("categories", getAddonDao(), categoryId);
             add(categories);
             
             final List sortOptions = new ArrayList();

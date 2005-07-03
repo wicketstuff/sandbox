@@ -113,6 +113,11 @@ public final class AddonSession extends WebSession
 		return this.userId;
 	}
 	
+	public void setUserLogonName(final String name)
+	{
+	    this.nickname = name;
+	}
+	
 	public String getUserLogonName()
 	{
 	    return this.nickname;

@@ -8,7 +8,18 @@
     <form wicket:id="form">
       <input type="text" name="query" size="30" value="">
       <input type="submit" value="go">
-    </form>  
+    </form>
+    
+    <span wicket:id="results">
+      <b><span wicket:id="name">Struts Console</span></b>	 
+			<span wicket:id="category">J2EE development platform</span> (<span wicket:id="score">1.0</span>)<br/>
+
+			Version <span wicket:id="version">4.7</span> <span wicket:id="description">The Struts Console ...</span>
+      <br/>
+			<a wicket:id="details" href="#">more</a>
+      <br/>
+			<br/>
+    </span>      
   </wicket:extend>
 </body>
 </html>

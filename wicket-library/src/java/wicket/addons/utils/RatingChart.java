@@ -50,9 +50,9 @@ public class RatingChart extends Panel
         final List chartData = dao.getRatingChartData(addon);
 
         int maxCount = -1;
-        for (int i=0; i < chartData.size(); i++)
+        for (Object data : chartData)
         {
-            final Object[] ratingAndCount = (Object[])chartData.get(i);
+            final Object[] ratingAndCount = (Object[])data;
             final int count = ((Integer)ratingAndCount[1]).intValue();
             if (count > maxCount)
             {

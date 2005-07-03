@@ -38,7 +38,7 @@ public class CategoryDropDownChoice extends DropDownChoice
      * Constructor
      * @param parameters
       */
-    public CategoryDropDownChoice(final String id, final IAddonDao dao)
+    public CategoryDropDownChoice(final String id, final IAddonDao dao, final int categoryId)
     {
         super(id, new Model(""), new ChoiceList(new ArrayList()));
         
@@ -55,6 +55,16 @@ public class CategoryDropDownChoice extends DropDownChoice
         }
 
         ((ChoiceList)this.getChoices()).addAll(categoryOptions);
+        
+        for (Object data : categoryOptions)
+        {
+            final CategoryOption option = (CategoryOption) data;
+            if (option.getCategoryId() == categoryId)
+            {
+                setModelObject(option);
+                break;
+            }
+        }
     }
     
 	public class CategoryOption implements Serializable

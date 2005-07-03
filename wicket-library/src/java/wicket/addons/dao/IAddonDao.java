@@ -77,4 +77,8 @@ public interface IAddonDao
 	public abstract void initialize(final Object object);
 
 	public abstract void merge(final Object object);
+
+    public abstract void changePassword(final int userId, final String password);
+
+    public abstract List searchAddon(final String searchText, int maxCount);
 }

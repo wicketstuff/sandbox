@@ -23,8 +23,10 @@ import java.sql.Timestamp;
 import java.util.Iterator;
 import java.util.List;
 
+import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.HibernateTemplate;
@@ -185,6 +187,13 @@ public final class AddonDao extends HibernateDaoSupport implements IAddonDao
                     }
                 }
             );
+    }
+    
+    public void changePassword(final int userId, final String password)
+    {
+        final User user = (User) getHibernateTemplate().get(User.class, new Integer(userId));
+        user.setPassword(password);
+        saveOrUpdate(user);
     }
     
     public void updateAddonAvgRating()
@@ -441,5 +450,29 @@ public final class AddonDao extends HibernateDaoSupport implements IAddonDao
     public void merge(final Object object)
     {
         getHibernateTemplate().merge(object);
+    }
+    
+    public List searchAddon(final String searchText, final int maxCount)
+    {
+        final HibernateTemplate hibernateTemplate = new HibernateTemplate(this.getSessionFactory());
+        final String match = "MATCH (name, description) AGAINST (?)";
+        final String sqlStmt = "select {addon.*}, " + match + " as score from Addons addon where " + match;
+        
+        return (List) hibernateTemplate.execute(
+                new HibernateCallback() 
+                {
+                    public Object doInHibernate(Session session) throws HibernateException 
+                    {
+            	        final SQLQuery query = session.createSQLQuery(sqlStmt);
+            	        query.addEntity("addon", Addon.class);
+            	        query.addScalar("score", Hibernate.DOUBLE);
+            	        query.setString(0, searchText);
+            	        query.setString(1, searchText);
+            	        query.setMaxResults(maxCount);
+                        return query.list();
+                    }
+                }
+            );
+        
     }
 }

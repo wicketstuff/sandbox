@@ -16,7 +16,7 @@
         <property name="lastname" column="LASTNAME" type="string" length="45" not-null="false"/>
         <property name="email" column="EMAIL" type="string" length="60" not-null="false"/>
         <property name="locale" column="LOCALE" type="string" length="10" not-null="false"/>
-        <property name="password" column="PASSWORD" type="string" length="45" not-null="false"/>
+        <!-- property name="password" column="PASSWORD" type="string" length="45" not-null="false"/ -->
         <property name="lastModified" column="LASTMODIFIED" type="timestamp" not-null="true"/>
         <property name="deleted" column="DELETED" type="timestamp" not-null="false"/>
         <property name="lastLogin" column="LASTLOGIN" type="timestamp" not-null="false"/>

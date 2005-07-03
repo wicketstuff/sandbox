@@ -94,16 +94,17 @@ public final class UserDao extends HibernateDaoSupport implements IUserDao
             
             if ((password == null) && (user.getPassword() == null))
             {
-                // prevent accidental ...
-                user.setPassword(null);
+                return user;
+            }
+            
+            if ((password == null) && (user.getPassword() != null) && (user.getPassword().length() == 0))
+            {
                 return user;
             }
 
             if ((password != null) && (user.getPassword() != null) 
                     && password.equals(user.getPassword()))
             {
-                // prevent accidental ...
-                user.setPassword(null);
                 return user;
             }
         }

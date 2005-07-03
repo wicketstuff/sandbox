@@ -56,23 +56,6 @@ public final class Categories extends BaseHtmlPage /* AuthenticateHtmlPage */
         // TODO make it a detachable model
         this.table = new ListView("table", (List)null)
         {
-/*            
-        	protected IModel getListItemModel(final IModel listViewModel, final int index)
-        	{
-                final int size = ((List)listViewModel.getObject(null)).size();
-                final int idx;
-                if ((index % 2) == 0)
-                {
-                    idx = index / 2;
-                }
-                else
-                {
-                    idx = (size + index) / 2;
-                }
-                
-        		return new ListItemModel(listViewModel, idx);
-        	}
-*/            
             protected void populateItem(ListItem listItem)
             {
                 final Category category = (Category)listItem.getModelObject();
@@ -80,7 +63,7 @@ public final class Categories extends BaseHtmlPage /* AuthenticateHtmlPage */
                 final int mod = listItem.getIndex() % 2;
                 String text = (mod == 0 ? "<tr>" : "");
                 
-                final String href = getPage().urlFor("0", AddonsPerCategory.class, new PageParameters("category=" + category.getId()));
+                final String href = getPage().urlFor("0", NewAndUpdatedAddons.class, new PageParameters("category=" + category.getId()));
                 text += "<td width=\"50%\"><a class=\"lm\" href=\"" + href + "\">" + category.getName() + "  (" + category.getCount() + ")</a></td>";
                     
                 if ((mod != 0) || (categoryCount.size() == (listItem.getIndex() + 1)) && ((categoryCount.size() % 2) != 0))
@@ -115,7 +98,6 @@ public final class Categories extends BaseHtmlPage /* AuthenticateHtmlPage */
      */
     protected void onBeginRequest()
     {
-        // TODO strange; onBeginRequest() wir nicht bei BookmarkableLinks aufgerufen
         categoryCount = new AlternatingList(loadCategoryCount());
 
         // TODO the model could be detachable
