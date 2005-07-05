@@ -2,9 +2,11 @@ package wicket.contrib.data.model.sandbox;
 
 import wicket.AttributeModifier;
 import wicket.Component;
+import wicket.WicketRuntimeException;
 import wicket.contrib.data.model.sandbox.OrderedPageableList;
 import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.link.Link;
+import wicket.markup.html.list.ListView;
 import wicket.model.AbstractModel;
 import wicket.model.IModel;
 import wicket.model.Model;
@@ -27,7 +29,7 @@ public class OrderByLink extends Link
 	private String field;
 
 	/**
-	 * Constructor. The list will be wrapped in a simple model.
+	 * Constructor.
 	 * 
 	 * @param id
 	 *            the id of the link
@@ -46,7 +48,20 @@ public class OrderByLink extends Link
 	 */
 	public void onClick()
 	{
-		findList().addOrder(field);
+        ListView list = findList();
+        if (list == null)
+        {
+            throw new WicketRuntimeException("No ListView with a DetachableList model " +
+        		"could be found as a sibling for this link.");
+        }
+        
+        OrderedPageableList listModel = (OrderedPageableList) list.getModelObject();
+		
+        // Add the ordering to the list.
+        listModel.addOrder(field);
+        
+        // Clear the items so they get redrawn.
+        list.removeAll();
 
 		// Switch our state.
 		switchState();
@@ -93,24 +108,18 @@ public class OrderByLink extends Link
 		}
 	}
 	
-	private OrderedPageableList findList() {
+	private ListView findList() {
 		WebMarkupContainer parent = (WebMarkupContainer) getParent();
 		
 		// Look at all siblings.
-		return (OrderedPageableList) parent.visitChildren(new IVisitor()
+		return (ListView) parent.visitChildren(ListView.class, new IVisitor()
 		{
 			public Object component(Component component)
 			{
-				IModel model = component.getModel();
-				if (model instanceof DetachableList)
-				{
-					return model.getObject(OrderByLink.this);
+				if (component.getModelObject() instanceof OrderedPageableList) {
+                    return component;
 				}
-				if (model instanceof OrderedPageableList)
-				{
-					return model;
-				}
-				return null;
+                return CONTINUE_TRAVERSAL;
 			}
 		});
 	}
