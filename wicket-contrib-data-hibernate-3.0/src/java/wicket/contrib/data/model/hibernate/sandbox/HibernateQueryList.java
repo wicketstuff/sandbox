@@ -98,32 +98,4 @@ public class HibernateQueryList extends QueryList
 				.uniqueResult())
 				.intValue();
 	}
-	
-	/**
-	 * @see java.util.List#remove(java.lang.Object)
-	 */
-	public boolean remove(Object object)
-	{
-		if (sessionDelegate instanceof IHibernateDaoDelegate)
-		{
-			((IHibernateDaoDelegate) sessionDelegate).delete(object);
-			
-			// Make sure we aren't looking at stale data.
-			onDetach();
-			return true;
-		}
-		throw new IllegalStateException("The session delegate must be " +
-			"an instance of IHibernateDaoDelegate to support object " +
-			"removal.");
-	}
-	
-	/**
-	 * @see java.util.List#remove(int)
-	 */
-	public Object remove(int index)
-	{
-		Object object = get(index);
-		remove(get(index));
-		return object;
-	}
 }
