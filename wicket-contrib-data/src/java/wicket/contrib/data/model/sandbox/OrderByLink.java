@@ -53,7 +53,9 @@ public class OrderByLink extends Link
         OrderedPageableList listModel = (OrderedPageableList) list.getModelObject();
 		
         // Add the ordering to the list.
+        list.modelChanging();
         listModel.addOrder(field);
+        list.modelChanged();
         
         // Clear the items so they get redrawn.
         list.removeAll();
