@@ -1,9 +1,14 @@
 package wicket.contrib.data.model.sandbox;
 
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 import java.util.ArrayList;
 import java.util.List;
 
 import wicket.contrib.data.model.UnimplementedList;
+import wicket.contrib.data.model.hibernate.IHibernateSessionDelegate;
 
 /**
  * A List that behaves like a pageable object. It works with a count and a
@@ -43,7 +48,7 @@ import wicket.contrib.data.model.UnimplementedList;
  * @author Phil Kulak
  * @author Eelco Hillenius
  */
-public abstract class OrderedPageableList extends UnimplementedList
+public abstract class OrderedPageableList extends UnimplementedList implements Externalizable
 {
 	private List window = null;
 
@@ -56,6 +61,22 @@ public abstract class OrderedPageableList extends UnimplementedList
 	private List ordering = new ArrayList(3);
 	
 	private int orderingMaxFields = 2;
+    
+	public void writeExternal(ObjectOutput out) throws IOException
+	{
+		out.writeInt(windowStart);
+        out.writeInt(windowSize);
+        out.writeObject(ordering);
+        out.writeInt(orderingMaxFields);
+	}
+
+	public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException
+	{
+		windowStart = in.readInt();
+        windowSize = in.readInt();
+        ordering = in.readObject();
+        orderingMaxFields = in.readObject();
+	}
 
 	/**
 	 * Default constructor. A detachable list is created with a default window
