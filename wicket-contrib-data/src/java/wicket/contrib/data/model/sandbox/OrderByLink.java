@@ -2,7 +2,6 @@ package wicket.contrib.data.model.sandbox;
 
 import wicket.AttributeModifier;
 import wicket.Component;
-import wicket.WicketRuntimeException;
 import wicket.contrib.data.model.sandbox.OrderedPageableList;
 import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.link.Link;
@@ -13,8 +12,6 @@ import wicket.model.Model;
 
 /**
  * A link that changes the ordering on a field of an OrderedPageableList.
- * The ordered list is searched for as the first sibling or child model
- * object in the component tree.
  * 
  * @author Phil Kulak
  */
@@ -27,6 +24,8 @@ public class OrderByLink extends Link
 	private static final Integer NONE = new Integer(2);
 
 	private String field;
+	
+	private ListView list;
 
 	/**
 	 * Constructor.
@@ -35,11 +34,14 @@ public class OrderByLink extends Link
 	 *            the id of the link
 	 * @param field
 	 *            the field of the list
+	 * @param list
+	 *            the ListView that contains an OrderedPageableList           
 	 */
-	public OrderByLink(String id, String field)
+	public OrderByLink(String id, String field, ListView list)
 	{
 		super(id, new Model(NONE));
 		this.field = field;
+		this.list = list;
 		add(new AttributeModifier("class", true, new AttribModel()));
 	}
 
@@ -48,13 +50,6 @@ public class OrderByLink extends Link
 	 */
 	public void onClick()
 	{
-        ListView list = findList();
-        if (list == null)
-        {
-            throw new WicketRuntimeException("No ListView with a DetachableList model " +
-        		"could be found as a sibling for this link.");
-        }
-        
         OrderedPageableList listModel = (OrderedPageableList) list.getModelObject();
 		
         // Add the ordering to the list.
@@ -106,22 +101,6 @@ public class OrderByLink extends Link
 		{
 			setModelObject(UP);
 		}
-	}
-	
-	private ListView findList() {
-		WebMarkupContainer parent = (WebMarkupContainer) getParent();
-		
-		// Look at all siblings.
-		return (ListView) parent.visitChildren(ListView.class, new IVisitor()
-		{
-			public Object component(Component component)
-			{
-				if (component.getModelObject() instanceof OrderedPageableList) {
-                    return component;
-				}
-                return CONTINUE_TRAVERSAL;
-			}
-		});
 	}
 
 	/**
