@@ -6,7 +6,9 @@ import wicket.contrib.data.model.hibernate.IHibernateSessionDelegate;
 import wicket.contrib.data.model.sandbox.QueryList;
 
 /**
- * A list class that can be instantiated using HQL.
+ * A list class that can be instantiated using HQL. If the session delegate you
+ * use implements IHibernateDaoDelegate, this list will support remove
+ * operations.
  * 
  * @author Phil Kulak
  */
@@ -23,7 +25,7 @@ public class HibernateQueryList extends QueryList
 	 * @param listQuery a string query that will return the full list of items
 	 * @param countQuery a string query that will return a single integer
 	 *                   for the total number of items
-	 * @param sessionDelegate the session delegate 	 
+	 * @param sessionDelegate the session delegate
 	 */
 	public HibernateQueryList(String listQuery, String countQuery, 
             IHibernateSessionDelegate sessionDelegate)
@@ -95,5 +97,33 @@ public class HibernateQueryList extends QueryList
 				.setCacheable(useQueryCache)
 				.uniqueResult())
 				.intValue();
+	}
+	
+	/**
+	 * @see java.util.List#remove(java.lang.Object)
+	 */
+	public boolean remove(Object object)
+	{
+		if (sessionDelegate instanceof IHibernateDaoDelegate)
+		{
+			((IHibernateDaoDelegate) sessionDelegate).delete(object);
+			
+			// Make sure we aren't looking at stale data.
+			onDetach();
+			return true;
+		}
+		throw new IllegalStateException("The session delegate must be " +
+			"an instance of IHibernateDaoDelegate to support object " +
+			"removal.");
+	}
+	
+	/**
+	 * @see java.util.List#remove(int)
+	 */
+	public Object remove(int index)
+	{
+		Object object = get(index);
+		remove(get(index));
+		return object;
 	}
 }
