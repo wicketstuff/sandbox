@@ -2,8 +2,8 @@ package wicket.contrib.data.model.sandbox;
 
 import wicket.AttributeModifier;
 import wicket.Component;
+import wicket.MarkupContainer;
 import wicket.contrib.data.model.sandbox.OrderedPageableList;
-import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.link.Link;
 import wicket.markup.html.list.ListView;
 import wicket.model.AbstractModel;
@@ -64,7 +64,7 @@ public class OrderByLink extends Link
 		switchState();
 
 		// Reset all other links in this container.
-		WebMarkupContainer parent = (WebMarkupContainer) getParent();
+		MarkupContainer parent = getParent();
 
 		parent.visitChildren(OrderByLink.class, new IVisitor()
 		{
