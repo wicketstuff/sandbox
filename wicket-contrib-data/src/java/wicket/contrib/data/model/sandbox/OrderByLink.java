@@ -63,7 +63,7 @@ public class OrderByLink extends Link
 		// Switch our state.
 		switchState();
 
-		// Reset all other links in this container.
+		// Reset all other links that use the same list.
 		MarkupContainer parent = getParent();
 
 		parent.visitChildren(OrderByLink.class, new IVisitor()
@@ -71,7 +71,7 @@ public class OrderByLink extends Link
 			public Object component(Component child)
 			{
 				OrderByLink link = (OrderByLink) child;
-				if (link != OrderByLink.this)
+				if (link != OrderByLink.this && OrderByLink.this.usesSameList(link))
 				{
 					link.reset();
 				}
@@ -87,7 +87,28 @@ public class OrderByLink extends Link
 	{
 		setModelObject(NONE);
 	}
-
+	
+	/**
+	 * Does this link point to the same list?
+	 * 
+	 * @param rhs the link to check
+	 * @return true if rhs operates on the same list as this link
+	 */
+	public boolean usesSameList(OrderByLink rhs)
+	{
+		return list == rhs.getList();
+	}
+	
+	/**
+	 * Returns the list this link operates on.
+	 * 
+	 * @return the ListView used by this link
+	 */
+	public ListView getList()
+	{
+		return list;
+	}
+	
 	/**
 	 * Switches the state of this link.
 	 */
