@@ -110,10 +110,12 @@ public class AddonListEntry extends Panel
 
         if (addon.getCreateTime().before(addon.getLastModified()))
         {
+            // TODO avoid fixed url path
             add(new ExternalImage("image", new Model("addons/images/updated.gif")));
         }
         else
         {
+            // TODO avoid fixed url path
             add(new ExternalImage("image", new Model("addons/images/new.gif")));
         }
     }

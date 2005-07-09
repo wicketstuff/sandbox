@@ -19,7 +19,6 @@
 package wicket.addons.hibernate;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import wicket.addons.hibernate.base.BaseAddon;
 
@@ -28,16 +27,4 @@ import wicket.addons.hibernate.base.BaseAddon;
  */
 public class Addon extends BaseAddon implements Serializable, IIdentifiable, ILastModified
 {
-	protected void initialize () 
-	{
-	    if (getLastModified() == null)
-	    {
-	        setLastModified(new Date(System.currentTimeMillis()));
-	    }
-	    
-		if (getCreateTime() == null)
-		{
-			setCreateTime(new Date(System.currentTimeMillis()));
-		}
-	}
 }
