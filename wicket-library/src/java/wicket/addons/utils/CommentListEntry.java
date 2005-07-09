@@ -20,7 +20,7 @@ package wicket.addons.utils;
 
 import java.text.SimpleDateFormat;
 
-import wicket.addons.dao.Comment;
+import wicket.addons.hibernate.Comment;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.panel.Panel;
 

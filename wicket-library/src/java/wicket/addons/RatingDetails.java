@@ -19,16 +19,17 @@
 package wicket.addons;
 
 import java.text.DecimalFormat;
+import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import wicket.Page;
 import wicket.addons.admin.AddOrModifyUser;
-import wicket.addons.dao.Addon;
-import wicket.addons.dao.IAddonDao;
-import wicket.addons.dao.Rating;
-import wicket.addons.dao.User;
+import wicket.addons.hibernate.Addon;
+import wicket.addons.hibernate.IAddonDao;
+import wicket.addons.hibernate.Rating;
+import wicket.addons.hibernate.User;
 import wicket.addons.utils.RatingChart;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.link.IPageLink;
@@ -95,7 +96,7 @@ public final class RatingDetails extends BaseHtmlPage /* AuthenticateHtmlPage */
                 }));
 
         dao.initialize(addon.getRatings());
-        add(new ListView("comments", addon.getRatings())
+        add(new ListView("comments", (List)addon.getRatings())
                 {
 					protected void populateItem(ListItem listItem)
 					{

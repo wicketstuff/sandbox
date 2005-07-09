@@ -25,8 +25,8 @@ import java.util.Map;
 import org.apache.commons.collections.LRUMap;
 
 import wicket.Page;
-import wicket.addons.dao.Addon;
-import wicket.addons.dao.Click;
+import wicket.addons.hibernate.Addon;
+import wicket.addons.hibernate.Click;
 import wicket.addons.utils.ExternalImage;
 import wicket.addons.utils.RatingLink;
 import wicket.markup.html.basic.Label;

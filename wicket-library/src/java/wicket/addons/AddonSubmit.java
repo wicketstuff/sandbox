@@ -18,59 +18,33 @@
  */
 package wicket.addons;
 
-import java.util.Map;
-
 import wicket.PageParameters;
-import wicket.RequestCycle;
-import wicket.markup.html.form.Form;
-import wicket.markup.html.panel.FeedbackPanel;
+import wicket.addons.hibernate.Addon;
+import wicket.addons.utils.AddOrModifyAddonPanel;
 
 /**
  * @author Juergen Donnerstag
  */
 public final class AddonSubmit extends BaseHtmlPage /* AuthenticateHtmlPage */
 {
-    /**
-     * Constructor
-     * @param parameters
-      */
-    public AddonSubmit(final PageParameters parameters)
-    {
-        super(parameters, "Wicket-Addons: Add-on Submit Form");
-        
-        // Create and add feedback panel to page
-        final FeedbackPanel feedback = new FeedbackPanel("feedback");
-        //add(feedback);
-        
-        add(new AddonSubmitForm("form", feedback));
-    }
+	/**
+	 * Constructor
+	 * 
+	 * @param parameters
+	 */
+	public AddonSubmit(final PageParameters parameters)
+	{
+		super(parameters, "Wicket-Addons: Add-on Submit Form");
 
-    public final class AddonSubmitForm extends Form
-    {
-        /**
-         * Constructor
-         * @param componentName Name of form
-         * @param book Book model
-         * @param feedback Feedback component that shows errors
-         */
-        public AddonSubmitForm(final String componentName, final FeedbackPanel feedback)
+		add(new AddOrModifyAddonPanel("addonPanel", getAddonDao(), 0)
         {
-            super(componentName, feedback);
-        }
-        
-        /**
-         * Show the resulting valid edit
-         * @param cycle The request cycle
-         */
-        public final void onSubmit()
-        {
-            final RequestCycle cycle = getRequestCycle();
-            final Map params = cycle.getRequest().getParameterMap();
-            final String name = (String)params.get("name");
-            final String email = (String)params.get("email");
-            final String text = (String)params.get("description");
-            
-            cycle.setResponsePage(newPage(getApplication().getPages().getHomePage()));
-        }
-    }
+			public void onSubmit(Addon addon)
+			{
+			    addon.setEnabled(0);
+			    getAddonDao().saveOrUpdate(addon);
+			    
+				setResponsePage(newPage(getApplication().getPages().getHomePage()));
+			}
+        });
+	}
 }

@@ -5,7 +5,7 @@
 
 <hibernate-mapping>
 
-    <class name="wicket.addons.dao.Category" table="CATEGORIES">
+    <class name="wicket.addons.hibernate.Category" table="CATEGORIES">
 
         <id name="id" type="int" unsaved-value="0" >
             <generator class="identity"/>
@@ -16,7 +16,7 @@
         <property name="lastModified" column="LASTMODIFIED" type="timestamp" not-null="true"/>
         <property name="deleted" column="DELETED" type="timestamp" not-null="false"/>
 
-        <many-to-one name="createdBy" class="wicket.addons.dao.User" column="createdBy" not-null="true"/>
+        <many-to-one name="createdBy" class="wicket.addons.hibernate.User" column="createdBy" not-null="true"/>
 
     </class>
 

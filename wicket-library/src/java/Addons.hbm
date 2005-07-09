@@ -5,7 +5,7 @@
 
 <hibernate-mapping>
 
-    <class name="wicket.addons.dao.Addon" table="ADDONS">
+    <class name="wicket.addons.hibernate.Addon" table="ADDONS">
 
         <id name="id" type="int" unsaved-value="0" >
             <generator class="identity"/>
@@ -27,22 +27,22 @@
         <property name="clicksLastMonth" column="CLICKSLASTMONTH" type="int" not-null="true"/>
         <property name="clicksAll" column="CLICKSALL" type="int" not-null="true"/>
 
-        <many-to-one name="category" class="wicket.addons.dao.Category" column="categoryId" not-null="true" />
-        <many-to-one name="owner" class="wicket.addons.dao.User" column="ownerId" not-null="true"/>
+        <many-to-one name="category" class="wicket.addons.hibernate.Category" column="categoryId" not-null="true" />
+        <many-to-one name="owner" class="wicket.addons.hibernate.User" column="ownerId" not-null="true"/>
 
         <bag name="comments" order-by="lastModified desc" lazy="true" >
           <key column="addonId"/>
-          <one-to-many class="wicket.addons.dao.Comment"/>
+          <one-to-many class="wicket.addons.hibernate.Comment"/>
         </bag>
 
         <bag name="ratings" order-by="createDate desc" lazy="true" >
           <key column="addonId"/>
-          <one-to-many class="wicket.addons.dao.Rating"/>
+          <one-to-many class="wicket.addons.hibernate.Rating"/>
         </bag>
 
         <bag name="clicks" lazy="true" >
           <key column="addonId"/>
-          <one-to-many class="wicket.addons.dao.Click"/>
+          <one-to-many class="wicket.addons.hibernate.Click"/>
         </bag>
     </class>
 

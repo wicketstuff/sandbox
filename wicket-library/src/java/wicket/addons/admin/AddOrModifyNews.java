@@ -26,7 +26,7 @@ import wicket.RequestCycle;
 import wicket.addons.BaseHtmlPage;
 import wicket.addons.ContentNews;
 import wicket.addons.Home;
-import wicket.addons.dao.News;
+import wicket.addons.hibernate.News;
 import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.form.Form;
 import wicket.markup.html.form.TextArea;

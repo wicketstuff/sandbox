@@ -20,8 +20,11 @@ package wicket.addons;
 
 import java.util.List;
 
+import wicket.Page;
 import wicket.PageParameters;
-import wicket.addons.dao.News;
+import wicket.addons.hibernate.News;
+import wicket.markup.html.link.IPageLink;
+import wicket.markup.html.link.PageLink;
 import wicket.markup.html.list.ListItem;
 import wicket.markup.html.list.ListView;
 
@@ -31,6 +34,11 @@ import wicket.markup.html.list.ListView;
  */
 public final class Home extends BaseHtmlPage /* AuthenticateHtmlPage */
 {
+    private static final int NUMBER_OF_NEWS_PER_PAGE = 10;
+    
+    private final ListView newsList;
+    private int newsIndex = 0;
+            
     public Home()
     {
         this(null);
@@ -47,16 +55,56 @@ public final class Home extends BaseHtmlPage /* AuthenticateHtmlPage */
         StringResourceModel model = new StringResourceModel("heading.welcome", this, null);
         add(new Label("heading", model.getString()));
 */        
-        final List newsData = this.getAddonDao().getNews(0, 10);
+        final List newsData = this.getAddonDao().getNews(newsIndex, NUMBER_OF_NEWS_PER_PAGE);
         
         // News
-        add(new ListView("newsList", newsData)
+        newsList = new ListView("newsList", newsData)
         {
             public void populateItem(final ListItem listItem)
             {
                 final ContentNews value = new ContentNews("news",(News)listItem.getModelObject());
                 listItem.add(value);
             }
-        });
+        };
+        
+        add(newsList);
+        
+        add(new PageLink("older", new OlderPageLink(NUMBER_OF_NEWS_PER_PAGE)));
+        add(new PageLink("newer", new OlderPageLink(-NUMBER_OF_NEWS_PER_PAGE)));
+        
+        get("newer").setVisible(false);
+        if (newsData.size() < NUMBER_OF_NEWS_PER_PAGE)
+        {
+            get("older").setVisible(false);
+        }
+    }
+	
+    private class OlderPageLink implements IPageLink
+    {
+        private int offset;
+        
+        public OlderPageLink(final int offset)
+        {
+            this.offset = offset;
+        }
+        
+		public Page getPage()
+		{
+		    newsIndex = newsIndex + offset;
+	        final List newsData = getAddonDao().getNews(newsIndex, NUMBER_OF_NEWS_PER_PAGE);
+		    newsList.modelChanging();
+		    newsList.setModelObject(newsData);
+	        
+            get("older").setVisible(newsData.size() == NUMBER_OF_NEWS_PER_PAGE);
+            get("newer").setVisible(newsIndex >= NUMBER_OF_NEWS_PER_PAGE);
+	        
+		    newsList.modelChanged();
+			return Home.this;
+		}
+
+		public Class getPageIdentity()
+		{
+			return this.getClass();
+		}
     }
 }

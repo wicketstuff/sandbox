@@ -2,6 +2,7 @@ package wicket.addons.hibernate;
 
 import wicket.addons.hibernate.base.BaseUserright;
 
+
 /**
  * This is the object class that relates to the userrights table.
  * Any customizations belong here.

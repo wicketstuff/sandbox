@@ -4,12 +4,20 @@
     <h2>Plugin search</h2>
     <br/>
     <span wicket:id="feedback" />
-    <b>query:</b>
-    <form wicket:id="form">
-      <input type="text" name="query" size="30" value="">
+    <b>Query (MySQL FULLTEXT):</b>
+    <form wicket:id="formFullText">
+      <input type="text" wicket:id="query" size="30" value="">
       <input type="submit" value="go">
     </form>
     
+    <br/>
+    <b>Query by name:</b>
+    <form wicket:id="formByName">
+      <input type="text" wicket:id="query" size="30" value="">
+      <input type="submit" value="go">
+    </form>
+    
+    <br/>
     <span wicket:id="results">
       <b><span wicket:id="name">Struts Console</span></b>	 
 			<span wicket:id="category">J2EE development platform</span> (<span wicket:id="score">1.0</span>)<br/>
@@ -19,7 +27,8 @@
 			<a wicket:id="details" href="#">more</a>
       <br/>
 			<br/>
-    </span>      
+    </span>
+    <span wicket:id="nothingFound"><p bgcolor="#eeeeee">Sorry, but not match was found.<br/>Note: we are using MySql's FULLTEXT search. Please see http://www.mysql.com/FULLTEXT.html for more details</p></span>
   </wicket:extend>
 </body>
 </html>

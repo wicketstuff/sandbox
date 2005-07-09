@@ -23,9 +23,11 @@ import java.util.AbstractList;
 import java.util.List;
 
 import wicket.PageParameters;
-import wicket.addons.dao.Category;
-import wicket.addons.dao.IAddonDao;
+import wicket.addons.hibernate.Category;
+import wicket.addons.hibernate.IAddonDao;
 import wicket.markup.html.basic.Label;
+import wicket.markup.html.link.BookmarkablePageLink;
+import wicket.markup.html.link.Link;
 import wicket.markup.html.list.ListItem;
 import wicket.markup.html.list.ListView;
 
@@ -38,8 +40,10 @@ public final class Categories extends BaseHtmlPage /* AuthenticateHtmlPage */
     private static long updateIntervall = 10 * 1000; // every 10 seconds
     private static long nextUpdate;
     private static List categoryCount;
-
+    private static int allCategoryCount;
+    
     private ListView table;
+    private Label allCount;
 
     /**
      * Constructor
@@ -78,6 +82,12 @@ public final class Categories extends BaseHtmlPage /* AuthenticateHtmlPage */
         };
         
         add(this.table);
+        
+        final Link hrefAll = new BookmarkablePageLink("allHref", NewAndUpdatedAddons.class, new PageParameters("category=-1"));
+        add(hrefAll);
+        
+        this.allCount = new Label("allCount", Integer.toString(allCategoryCount));
+        hrefAll.add(allCount);
     }
     
     private List loadCategoryCount()
@@ -89,8 +99,16 @@ public final class Categories extends BaseHtmlPage /* AuthenticateHtmlPage */
 
         final IAddonDao dao = this.getAddonDao();
         nextUpdate = System.currentTimeMillis() + updateIntervall;
+
+        allCategoryCount = 0;
+        List data = dao.getCountByCategory();
+        for (Object obj : data)
+        {
+            Category cat = (Category) obj;
+            allCategoryCount += cat.getCount();
+        }
         
-        return dao.getCountByCategory();
+        return data;
     }
     
     /**
@@ -101,7 +119,13 @@ public final class Categories extends BaseHtmlPage /* AuthenticateHtmlPage */
         categoryCount = new AlternatingList(loadCategoryCount());
 
         // TODO the model could be detachable
+        table.modelChanging();
         table.setModelObject(categoryCount);
+        table.modelChanged();
+        
+        allCount.modelChanging();
+        allCount.setModelObject(Integer.toString(allCategoryCount));
+        allCount.modelChanged();
     }
     
     class AlternatingList extends AbstractList implements Serializable

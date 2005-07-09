@@ -22,8 +22,8 @@ import java.text.DecimalFormat;
 import java.util.List;
 
 import wicket.Page;
-import wicket.addons.dao.Addon;
-import wicket.addons.dao.IAddonDao;
+import wicket.addons.hibernate.Addon;
+import wicket.addons.hibernate.IAddonDao;
 import wicket.addons.utils.CategoryDropDownChoice;
 import wicket.addons.utils.CategoryDropDownChoice.CategoryOption;
 import wicket.markup.html.basic.Label;
