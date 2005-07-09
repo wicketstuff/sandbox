@@ -25,7 +25,6 @@ import wicket.MarkupContainer;
 import wicket.addons.hibernate.Addon;
 import wicket.addons.hibernate.Category;
 import wicket.addons.hibernate.IAddonDao;
-import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.border.Border;
 import wicket.markup.html.form.DropDownChoice;
 import wicket.markup.html.form.Form;
@@ -33,9 +32,8 @@ import wicket.markup.html.form.TextArea;
 import wicket.markup.html.form.TextField;
 import wicket.markup.html.form.model.ChoiceList;
 import wicket.markup.html.form.model.IChoice;
-import wicket.markup.html.form.model.IChoiceList;
 import wicket.markup.html.panel.FeedbackPanel;
-import wicket.model.IModel;
+import wicket.model.Model;
 import wicket.model.PropertyModel;
 
 /**
@@ -87,8 +85,7 @@ public abstract class AddOrModifyAddonPanel extends Border
         final private Addon addon;
         final private IAddonDao dao;
         private String otherLicense;
-        private String personName;
-        private String email;
+        private Category category;
         
         /**
          * Constructor
@@ -102,8 +99,6 @@ public abstract class AddOrModifyAddonPanel extends Border
             this.dao = dao;
             this.addon = addon;
             
-            add(new TextField("personname", new PropertyModel(this, "personName")));
-            add(new TextField("email", new PropertyModel(this, "email")));
             add(new TextField("name", new PropertyModel(addon, "name")));
             add(new TextArea("description", new PropertyModel(addon, "description")));
             add(new TextField("homepage", new PropertyModel(addon, "homepage")));
@@ -116,9 +111,7 @@ public abstract class AddOrModifyAddonPanel extends Border
             add(new DropDownChoice("license", new PropertyModel(addon, "license"), licenseList));
             
             final List categoryList = dao.getCategories();
-            add(new CategoryDropDownChoice("category", new FaultTolerantPropertyModel(addon, "category.name"), categoryList));
-            
-            add(new WebMarkupContainer("header").setVisible(false));
+            add(new CategoryDropDownChoice("category", addon, categoryList));
         }
 
         public void setOtherLicense(final String license)
@@ -144,26 +137,6 @@ public abstract class AddOrModifyAddonPanel extends Border
             
             AddOrModifyAddonPanel.this.onSubmit(addon);
         }
-        
-		public String getEmail()
-		{
-			return email;
-		}
-		
-		public void setEmail(String email)
-		{
-			this.email = email;
-		}
-		
-		public String getPersonName()
-		{
-			return personName;
-		}
-		
-		public void setPersonName(String personName)
-		{
-			this.personName = personName;
-		}
     }
     
     private class FaultTolerantPropertyModel extends PropertyModel
@@ -205,10 +178,20 @@ public abstract class AddOrModifyAddonPanel extends Border
 		 * Construct.
 		 * @param id component id
 		 */
-		public CategoryDropDownChoice(final String id, final IModel model, final List categories)
+		public CategoryDropDownChoice(final String id, final Addon addon, final List categories)
 		{
-			super(id, model, (IChoiceList)null);
+			super(id);
 
+			final Category category = addon.getCategory();
+            if (category == null)
+            {
+                setModel(new Model(""));
+            }
+            else
+            {
+                setModel(new Model(category.getName()));
+            }
+            
 			// use a custom implementation of choices, as we want to display
 			// the choices localized
 			ChoiceList categoriesChoiceList = new ChoiceList(categories)
@@ -219,25 +202,6 @@ public abstract class AddOrModifyAddonPanel extends Border
 				}
 			};
 			setChoices(categoriesChoiceList);
-		}
-
-		/**
-		 * @see wicket.markup.html.form.DropDownChoice#wantOnSelectionChangedNotifications()
-		 */
-		protected boolean wantOnSelectionChangedNotifications()
-		{
-			// we want roundtrips when a the user selects another item
-			return true;
-		}
-
-		/**
-		 * @see wicket.markup.html.form.DropDownChoice#onSelectionChanged(java.lang.Object)
-		 */
-		public void onSelectionChanged(Object newSelection)
-		{
-			// note that we don't have to do anything here, as our property model allready
-			// calls FormInput.setLocale when the model is updated
-			// setLocale((Locale)newSelection); // so we don't need to do this
 		}
 	}
 
@@ -276,7 +240,7 @@ public abstract class AddOrModifyAddonPanel extends Border
 		 */
 		public String getId()
 		{
-			return Integer.toString(category.getId());
+			return Integer.toString(this.index);
 		}
 
 		/**

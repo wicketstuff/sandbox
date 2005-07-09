@@ -20,11 +20,13 @@ package wicket.addons.admin;
 
 import java.util.Map;
 
+import wicket.Page;
 import wicket.PageParameters;
 import wicket.RequestCycle;
 import wicket.addons.BaseHtmlPage;
 import wicket.addons.hibernate.Addon;
 import wicket.addons.hibernate.Category;
+import wicket.addons.user.MyAddons;
 import wicket.addons.utils.AddOrModifyAddonPanel;
 
 /**
@@ -32,23 +34,27 @@ import wicket.addons.utils.AddOrModifyAddonPanel;
  */
 public final class AddOrModifyAddon extends BaseHtmlPage /* AuthenticateHtmlPage */
 {
-    public AddOrModifyAddon()
+    private Page returnPage;
+    
+    public AddOrModifyAddon(final Page returnPage)
     {
-        this((Addon)null);
+        this(null, returnPage);
     }
     
     public AddOrModifyAddon(final PageParameters parameters)
     {
-        this((Addon)null);
+        this(null, null);
     }
     
     /**
      * Constructor
      * @param parameters
       */
-    public AddOrModifyAddon(Addon addon)
+    public AddOrModifyAddon(Addon addon, final Page returnPage)
     {
         super(null, "Wicket-Addons: Add-on Submit Form");
+        
+        this.returnPage = returnPage;
         
         if (addon == null)
         {
@@ -69,8 +75,12 @@ public final class AddOrModifyAddon extends BaseHtmlPage /* AuthenticateHtmlPage
                     addon.setOwner(getUser());
                     getAddonDao().saveOrUpdate(addon);
                 }
+                else if ("delete".equals(params.get("delete")))
+                {
+                    getAddonDao().delete(addon);
+                }
 
-                setResponsePage(new Addons(null));
+                setResponsePage(returnPage == null ? new MyAddons() : returnPage);
             }
         });
         

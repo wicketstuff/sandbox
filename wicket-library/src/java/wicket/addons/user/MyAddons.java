@@ -63,17 +63,17 @@ public final class MyAddons extends BaseHtmlPage /* AuthenticateHtmlPage */
                 
                 final Addon value = (Addon) listItem.getModelObject();
 
-                listItem.add(new MyPageLink("name", value, value.getName()));
-                listItem.add(new MyPageLink("category", value, value.getCategory().getName()));
-                listItem.add(new MyPageLink("modified", value, value.getLastModified()));
-                listItem.add(new MyPageLink("homepage", value, value.getHomepage()));
-                listItem.add(new MyPageLink("description", value, MyAddons.this.getDescription(value)));
+                listItem.add(new MyPageLink("name", value, value.getName() + " (" + value.getVersion() + ")", MyAddons.this));
+                listItem.add(new MyPageLink("category", value, value.getCategory().getName(), MyAddons.this));
+                listItem.add(new MyPageLink("modified", value, value.getLastModified(), MyAddons.this));
+                listItem.add(new MyPageLink("homepage", value, value.getHomepage(), MyAddons.this));
+                listItem.add(new MyPageLink("description", value, MyAddons.this.getDescription(value), MyAddons.this));
             }
         };
 
         add(table);
         
-        add(new PageLink("new", AddOrModifyAddon.class));
+        add(new PageLink("new", new AddOrModifyAddon(this)));
         
         get("sidebarsRight").setVisible(false);
     }
@@ -110,13 +110,13 @@ public final class MyAddons extends BaseHtmlPage /* AuthenticateHtmlPage */
     
     private class MyPageLink extends PageLink
     {
-        public MyPageLink(final String componentName, final Addon addon, final Serializable value)
+        public MyPageLink(final String componentName, final Addon addon, final Serializable value, final Page page)
         {
             super(componentName + "Link", new IPageLink()
 	            {
 	                public Page getPage()
 	                {
-	                    return new AddOrModifyAddon(addon);
+	                    return new AddOrModifyAddon(addon, page);
 	                }
 	
 	                public Class getPageIdentity()
