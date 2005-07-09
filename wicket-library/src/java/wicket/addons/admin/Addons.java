@@ -67,17 +67,15 @@ public final class Addons extends BaseHtmlPage /* AuthenticateHtmlPage */
                 
                 final Addon value = (Addon) listItem.getModelObject();
 
-                listItem.add(new MyPageLink("name", value, value.getName()));
-                listItem.add(new MyPageLink("category", value, value.getCategory().getName()));
-                listItem.add(new MyPageLink("modified", value, value.getLastModified()));
-                listItem.add(new MyPageLink("homepage", value, value.getHomepage()));
-                listItem.add(new MyPageLink("description", value, Addons.this.getDescription(value)));
+                listItem.add(new MyPageLink("name", value, value.getName() + " (" + value.getVersion() + ")", Addons.this));
+                listItem.add(new MyPageLink("category", value, value.getCategory().getName(), Addons.this));
+                listItem.add(new MyPageLink("modified", value, value.getLastModified(), Addons.this));
+                listItem.add(new MyPageLink("homepage", value, value.getHomepage(), Addons.this));
+                listItem.add(new MyPageLink("description", value, Addons.this.getDescription(value), Addons.this));
             }
         };
 
         add(table);
-        
-        add(new PageLink("new", AddOrModifyAddon.class));
         
         get("sidebarsRight").setVisible(false);
     }
@@ -115,13 +113,13 @@ public final class Addons extends BaseHtmlPage /* AuthenticateHtmlPage */
     
     private class MyPageLink extends PageLink
     {
-        public MyPageLink(final String componentName, final Addon addon, final Serializable value)
+        public MyPageLink(final String componentName, final Addon addon, final Serializable value, final Page page)
         {
             super(componentName + "Link", new IPageLink()
 	            {
 	                public Page getPage()
 	                {
-	                    return new AddOrModifyAddon(addon);
+	                    return new AddOrModifyAddon(addon, page);
 	                }
 	
 	                public Class getPageIdentity()
