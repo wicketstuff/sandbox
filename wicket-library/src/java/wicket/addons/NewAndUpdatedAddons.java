@@ -48,7 +48,7 @@ public final class NewAndUpdatedAddons extends BaseHtmlPage /* AuthenticateHtmlP
     private final PageableListView updatedAddons;
     private final AddonDataList model;
     private int categoryId = -1;
-    private int sortId = 0;
+    private int sortId = 3;
     
     /**
      * Constructor
@@ -108,7 +108,7 @@ public final class NewAndUpdatedAddons extends BaseHtmlPage /* AuthenticateHtmlP
             sortOptions.add(new SortOption("sort on date modified", 3));
             sortOptions.add(new SortOption("sort on rating", 4));
             sortOptions.add(new SortOption("sort on popularity/clicks", 5));
-            sortDDC = new DropDownChoice("sort", new Model((Serializable)sortOptions.get(3)), sortOptions);
+            sortDDC = new DropDownChoice("sort", new Model((Serializable)sortOptions.get(sortId)), sortOptions);
             add(sortDDC);
         }
         

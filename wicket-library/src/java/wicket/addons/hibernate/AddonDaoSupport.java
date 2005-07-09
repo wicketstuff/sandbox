@@ -19,6 +19,7 @@
 package wicket.addons.hibernate;
 
 import java.io.Serializable;
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.Iterator;
 import java.util.List;
@@ -426,7 +427,12 @@ public final class AddonDaoSupport extends HibernateDaoSupport implements IAddon
     {
         if (object instanceof ILastModified)
         {
-            ((ILastModified)object).setLastModified(new Timestamp(System.currentTimeMillis()));
+            ((ILastModified)object).setLastModified(new Date(System.currentTimeMillis()));
+        }
+        
+        if (object instanceof Addon)
+        {
+            ((Addon)object).setCreateTime(((Addon)object).getLastModified());
         }
         
         getHibernateTemplate().saveOrUpdate(object);
