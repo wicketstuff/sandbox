@@ -24,9 +24,8 @@ import java.util.List;
 import wicket.AttributeModifier;
 import wicket.Page;
 import wicket.PageParameters;
-import wicket.addons.AddonApplicationBorderWithoutRightSidebar;
 import wicket.addons.BaseHtmlPage;
-import wicket.addons.dao.Category;
+import wicket.addons.hibernate.Category;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.link.IPageLink;
 import wicket.markup.html.link.PageLink;
@@ -39,7 +38,7 @@ import wicket.model.Model;
  */
 public final class Categories extends BaseHtmlPage /* AuthenticateHtmlPage */
 {
-    private static final String PAGE_TITLE = "Wicket-Addons: Maintaine categories";
+    private static final String PAGE_TITLE = "Wicket-Addons: Maintain categories";
 
     private ListView table;
     
@@ -49,7 +48,7 @@ public final class Categories extends BaseHtmlPage /* AuthenticateHtmlPage */
       */
     public Categories(final PageParameters parameters)
     {
-        super(parameters, PAGE_TITLE, new AddonApplicationBorderWithoutRightSidebar("border", PAGE_TITLE));
+        super(parameters, PAGE_TITLE);
         
         final List categories = getAddonDao().getCountByCategory();
         

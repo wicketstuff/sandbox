@@ -24,7 +24,7 @@ import java.util.List;
 
 import wicket.PageParameters;
 import wicket.RequestCycle;
-import wicket.addons.dao.Addon;
+import wicket.addons.hibernate.Addon;
 import wicket.addons.utils.AbstractDataList;
 import wicket.addons.utils.AddonListEntry;
 import wicket.addons.utils.CategoryDropDownChoice;

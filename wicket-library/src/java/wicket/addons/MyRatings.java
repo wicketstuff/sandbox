@@ -20,9 +20,9 @@ package wicket.addons;
 
 import java.util.List;
 
-import wicket.addons.dao.IAddonDao;
-import wicket.addons.dao.Rating;
-import wicket.addons.dao.User;
+import wicket.addons.hibernate.IAddonDao;
+import wicket.addons.hibernate.Rating;
+import wicket.addons.hibernate.User;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.list.ListItem;
 import wicket.markup.html.list.ListView;

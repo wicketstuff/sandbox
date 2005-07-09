@@ -21,20 +21,21 @@ package wicket.addons;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import wicket.IFeedback;
 import wicket.Page;
 import wicket.PageParameters;
-import wicket.RequestCycle;
-import wicket.addons.dao.Addon;
+import wicket.addons.hibernate.Addon;
+import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.form.Form;
+import wicket.markup.html.form.TextField;
 import wicket.markup.html.link.IPageLink;
 import wicket.markup.html.link.PageLink;
 import wicket.markup.html.list.ListItem;
 import wicket.markup.html.list.ListView;
 import wicket.markup.html.panel.FeedbackPanel;
+import wicket.model.PropertyModel;
 
 /**
  * @author Juergen Donnerstag
@@ -42,6 +43,7 @@ import wicket.markup.html.panel.FeedbackPanel;
 public final class Search extends BaseHtmlPage /* AuthenticateHtmlPage */
 {
     private List results = new ArrayList();
+    private final WebMarkupContainer nothingFound;
     
     /**
      * Constructor
@@ -54,25 +56,41 @@ public final class Search extends BaseHtmlPage /* AuthenticateHtmlPage */
         final FeedbackPanel feedback = new FeedbackPanel("feedback");
         add(feedback);
 
-        add(new SearchForm("form", feedback));
+        add(new SearchFullTextForm("formFullText", feedback));
+
+        add(new SearchForm("formByName", feedback));
         
         add(new ListView("results", results)
         {
 			protected void populateItem(ListItem item)
 			{
-			    final AddonAndScore addon = (AddonAndScore) item.getModelObject();
+			    final Object modelObject = item.getModelObject();
+			    final Addon addon;
+			    final double score;
 			    
-			    item.add(new Label("score", "" + addon.getScore()));
-			    item.add(new Label("name", addon.getAddon().getName()));
-			    item.add(new Label("category", addon.getAddon().getCategory().getName()));
-			    item.add(new Label("version", addon.getAddon().getVersion()));
-			    item.add(new Label("description", addon.getAddon().getDescription()));
+			    if (modelObject instanceof AddonAndScore)
+			    {
+				    final AddonAndScore addonAndScore = (AddonAndScore) modelObject;
+				    addon = addonAndScore.getAddon();
+				    score = addonAndScore.getScore();
+			    }
+			    else
+			    {
+			        addon = (Addon) modelObject;
+			        score = 1;
+			    }
+			    
+			    item.add(new Label("score", "" + score));
+			    item.add(new Label("name", addon.getName()));
+			    item.add(new Label("category", addon.getCategory().getName()));
+			    item.add(new Label("version", addon.getVersion()));
+			    item.add(new Label("description", addon.getDescription()));
 
 		        item.add(new PageLink("details", new IPageLink()
 		        {
 		            public Page getPage()
 		            {
-		                return new PluginDetails(addon.getAddon().getId());
+		                return new PluginDetails(addon.getId());
 		            }
 		            
 		            public Class getPageIdentity()
@@ -82,19 +100,37 @@ public final class Search extends BaseHtmlPage /* AuthenticateHtmlPage */
 		        }));
 			}
         });
+        
+        this.nothingFound = new WebMarkupContainer("nothingFound");
+        this.nothingFound.setVisible(false);
+        add(this.nothingFound);
     }
 
-    public final class SearchForm extends Form
+    public final class SearchFullTextForm extends Form
     {
+        private String searchText;
+        
         /**
          * Constructor
          * @param componentName Name of form
          * @param book Book model
          * @param feedback Feedback component that shows errors
          */
-        public SearchForm(final String componentName, final IFeedback feedback)
+        public SearchFullTextForm(final String componentName, final IFeedback feedback)
         {
             super(componentName, feedback);
+            
+            add(new TextField("query", new PropertyModel(this, "searchText")));
+        }
+        
+        public String getSearchText()
+        {
+            return searchText;
+        }
+        
+        public void setSearchText(final String text)
+        {
+            this.searchText = text;
         }
         
         /**
@@ -103,14 +139,12 @@ public final class Search extends BaseHtmlPage /* AuthenticateHtmlPage */
          */
         public final void onSubmit()
         {
-            final RequestCycle cycle = getRequestCycle();
-            
+            Search.this.nothingFound.setVisible(false);
             Search.this.get("results").modelChanging();
             
             // This is an example on how to get input from an <input>
             // even without a Wicket TextField. 
-            final Map params = cycle.getRequest().getParameterMap();
-            final String searchText = (String)params.get("query"); // the "name" of the input field
+            final String searchText = getSearchText();
             if ((searchText != null) && (searchText.trim().length() > 0))
             {
                 final List data = getAddonDao().searchAddon(searchText, 20);
@@ -120,6 +154,8 @@ public final class Search extends BaseHtmlPage /* AuthenticateHtmlPage */
                     final AddonAndScore addon = new AddonAndScore((Object[]) obj);
                     results.add(addon);
                 }
+                
+                Search.this.nothingFound.setVisible(data.size() == 0);
             }
             else
             {
@@ -127,8 +163,62 @@ public final class Search extends BaseHtmlPage /* AuthenticateHtmlPage */
             }
 
             Search.this.get("results").modelChanged();
+        }
+    }
+
+    public final class SearchForm extends Form
+    {
+        private String searchText;
+        
+        /**
+         * Constructor
+         * @param componentName Name of form
+         * @param book Book model
+         * @param feedback Feedback component that shows errors
+         */
+        public SearchForm(final String componentName, final IFeedback feedback)
+        {
+            super(componentName, feedback);
             
-            // setResponsePage(newPage(getApplication().getPages().getHomePage()));
+            add(new TextField("query", new PropertyModel(this, "searchText")));
+        }
+        
+        public String getSearchText()
+        {
+            return searchText;
+        }
+        
+        public void setSearchText(final String text)
+        {
+            this.searchText = text;
+        }
+        
+        /**
+         * Show the resulting valid edit
+         * @param cycle The request cycle
+         */
+        public final void onSubmit()
+        {
+            Search.this.nothingFound.setVisible(false);
+            Search.this.get("results").modelChanging();
+            
+            // This is an example on how to get input from an <input>
+            // even without a Wicket TextField. 
+            final String searchText = getSearchText();
+            if ((searchText != null) && (searchText.trim().length() > 0))
+            {
+                final List data = getAddonDao().getAddonsByName(searchText, 20);
+                results.clear();
+                results.addAll(data);
+                
+                Search.this.nothingFound.setVisible(data.size() == 0);
+            }
+            else
+            {
+                results.clear();
+            }
+
+            Search.this.get("results").modelChanged();
         }
     }
     

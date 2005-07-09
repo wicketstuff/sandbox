@@ -21,7 +21,7 @@ package wicket.addons;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
-import wicket.addons.dao.News;
+import wicket.addons.hibernate.News;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.panel.Panel;
 import wicket.model.PropertyModel;

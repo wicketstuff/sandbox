@@ -40,6 +40,6 @@ public final class SidebarAdminMenu extends Panel
         add(new BookmarkablePageLink("users", wicket.addons.admin.Users.class));
         add(new BookmarkablePageLink("categories", wicket.addons.admin.Categories.class));
         add(new BookmarkablePageLink("news", wicket.addons.admin.AddOrModifyNews.class));
-        add(new BookmarkablePageLink("addons", wicket.addons.admin.AddOrModifyAddon.class));
+        add(new BookmarkablePageLink("addons", wicket.addons.admin.Addons.class));
     }
 }

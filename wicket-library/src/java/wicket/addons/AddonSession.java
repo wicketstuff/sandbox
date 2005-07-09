@@ -25,7 +25,7 @@ import wicket.Request;
 import wicket.RequestCycle;
 import wicket.Response;
 import wicket.Session;
-import wicket.addons.dao.User;
+import wicket.addons.hibernate.User;
 import wicket.addons.utils.UserCount;
 import wicket.protocol.http.WebRequest;
 import wicket.protocol.http.WebSession;

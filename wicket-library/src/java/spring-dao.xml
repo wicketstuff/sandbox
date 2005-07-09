@@ -27,13 +27,13 @@
   <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
     <property name="mappingResources">
       <list>
-          <value>wicket/addons/dao/users.hbm.xml</value>
-          <value>wicket/addons/dao/addons.hbm.xml</value>
-          <value>wicket/addons/dao/categories.hbm.xml</value>
-          <value>wicket/addons/dao/news.hbm.xml</value>
-          <value>wicket/addons/dao/comments.hbm.xml</value>
-          <value>wicket/addons/dao/ratings.hbm.xml</value>
-          <value>wicket/addons/dao/clicks.hbm.xml</value>
+          <value>users.hbm</value>
+          <value>addons.hbm</value>
+          <value>categories.hbm</value>
+          <value>news.hbm</value>
+          <value>comments.hbm</value>
+          <value>ratings.hbm</value>
+          <value>clicks.hbm</value>
       </list>
     </property>
     <property name="hibernateProperties">
@@ -47,7 +47,7 @@
     </property>
   </bean>
 
-  <bean id="UserDaoTarget" class="wicket.addons.dao.UserDao">
+  <bean id="UserDaoTarget" class="wicket.addons.hibernate.UserDaoSupport">
     <property name="sessionFactory">
         <ref bean="sessionFactory"/>
     </property>
@@ -56,7 +56,7 @@
     </property -->    
   </bean>
 
-  <bean id="AddonDaoTarget" class="wicket.addons.dao.AddonDao">
+  <bean id="AddonDaoTarget" class="wicket.addons.hibernate.AddonDaoSupport">
     <property name="sessionFactory">
         <ref bean="sessionFactory"/>
     </property>
@@ -64,7 +64,16 @@
         <ref local="transactionManager"/>
     </property -->    
   </bean>
-<!--
+
+  <bean id="AddonDAOTarget" class="wicket.addons.hibernate.dao.AddonDAOImpl">
+    <property name="sessionFactory">
+        <ref bean="sessionFactory"/>
+    </property>
+    <!-- property name="transactionManager">
+        <ref local="transactionManager"/>
+    </property -->    
+  </bean>
+  <!--
   <bean id="transactionInterceptor" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
     <property name="transactionManager">
       <ref bean="myTransactionManager"/>
@@ -87,7 +96,7 @@
   
   <bean id="UserDao" class="org.springframework.aop.framework.ProxyFactoryBean">
     <property name="proxyInterfaces">
-      <value>wicket.addons.dao.IUserDao</value>
+      <value>wicket.addons.hibernate.IUserDao</value>
     </property>
     <property name="interceptorNames">
       <!-- value>transactionInterceptor,UserDaoTarget</value -->
@@ -97,11 +106,21 @@
 
   <bean id="AddonDao" class="org.springframework.aop.framework.ProxyFactoryBean">
     <property name="proxyInterfaces">
-      <value>wicket.addons.dao.IAddonDao</value>
+      <value>wicket.addons.hibernate.IAddonDao</value>
     </property>
     <property name="interceptorNames">
       <!-- value>transactionInterceptor,AddonDaoTarget</value -->
       <value>AddonDaoTarget</value>
+    </property>  
+  </bean>
+
+  <bean id="AddonDAO" class="org.springframework.aop.framework.ProxyFactoryBean">
+    <property name="proxyInterfaces">
+      <value>wicket.addons.hibernate.dao.AddonDAO</value>
+    </property>
+    <property name="interceptorNames">
+      <!-- value>transactionInterceptor,AddonDaoTarget</value -->
+      <value>AddonDAOTarget</value>
     </property>  
   </bean>
 

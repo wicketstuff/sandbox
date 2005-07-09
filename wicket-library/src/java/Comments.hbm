@@ -5,7 +5,7 @@
 
 <hibernate-mapping>
 
-    <class name="wicket.addons.dao.Comment" table="COMMENTS">
+    <class name="wicket.addons.hibernate.Comment" table="COMMENTS">
 
         <id name="id" type="int" unsaved-value="0" >
             <generator class="identity"/>
@@ -14,8 +14,8 @@
         <property name="lastModified" column="LASTMODIFIED" type="timestamp" not-null="true"/>
         <property name="comment" column="COMMENT" type="string" length="255" not-null="true"/>
 
-        <many-to-one name="user" class="wicket.addons.dao.User" column="userId" not-null="true"/>
-        <many-to-one name="addon" class="wicket.addons.dao.Addon" column="addonId" not-null="true"/>
+        <many-to-one name="user" class="wicket.addons.hibernate.User" column="userId" not-null="true"/>
+        <many-to-one name="addon" class="wicket.addons.hibernate.Addon" column="addonId" not-null="true"/>
         
     </class>
 

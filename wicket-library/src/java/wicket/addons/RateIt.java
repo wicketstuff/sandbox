@@ -21,9 +21,9 @@ package wicket.addons;
 import java.util.Map;
 
 import wicket.RequestCycle;
-import wicket.addons.dao.Addon;
-import wicket.addons.dao.Rating;
-import wicket.addons.dao.User;
+import wicket.addons.hibernate.Addon;
+import wicket.addons.hibernate.Rating;
+import wicket.addons.hibernate.User;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.form.Form;
 import wicket.markup.html.panel.FeedbackPanel;

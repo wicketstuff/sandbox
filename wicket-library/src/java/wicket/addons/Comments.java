@@ -23,8 +23,8 @@ import java.util.AbstractList;
 import java.util.List;
 
 import wicket.Page;
-import wicket.addons.dao.Addon;
-import wicket.addons.dao.Comment;
+import wicket.addons.hibernate.Addon;
+import wicket.addons.hibernate.Comment;
 import wicket.addons.utils.CommentListEntry;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.link.IPageLink;
@@ -111,7 +111,7 @@ public final class Comments extends BaseHtmlPage /* AuthenticateHtmlPage */
 		public Object get(int index)
 		{
 	        final Addon addon = (Addon)getAddonDao().load(Addon.class, new Integer(addonId));
-		    return addon.getComments().get(index);
+		    return ((List)addon.getComments()).get(index);
 		}
     }
 }

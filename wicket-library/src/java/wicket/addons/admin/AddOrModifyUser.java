@@ -22,7 +22,7 @@ import java.util.Map;
 
 import wicket.RequestCycle;
 import wicket.addons.BaseHtmlPage;
-import wicket.addons.dao.User;
+import wicket.addons.hibernate.User;
 import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.form.Form;
 import wicket.markup.html.form.PasswordTextField;

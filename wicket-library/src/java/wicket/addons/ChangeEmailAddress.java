@@ -18,7 +18,7 @@
  */
 package wicket.addons;
 
-import wicket.addons.dao.User;
+import wicket.addons.hibernate.User;
 import wicket.markup.html.form.Form;
 import wicket.markup.html.form.TextField;
 import wicket.markup.html.panel.FeedbackPanel;

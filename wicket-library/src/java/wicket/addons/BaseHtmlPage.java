@@ -25,9 +25,9 @@ import java.util.List;
 import org.springframework.beans.factory.BeanFactory;
 
 import wicket.PageParameters;
-import wicket.addons.dao.IAddonDao;
-import wicket.addons.dao.IUserDao;
-import wicket.addons.dao.User;
+import wicket.addons.hibernate.IAddonDao;
+import wicket.addons.hibernate.IUserDao;
+import wicket.addons.hibernate.User;
 import wicket.addons.sidebars.SidebarAdminMenu;
 import wicket.addons.sidebars.SidebarHostedBy;
 import wicket.addons.sidebars.SidebarMainMenu;
@@ -63,19 +63,10 @@ public class BaseHtmlPage extends WebPage
     private final ListView sidebarLeft;
     
 	final protected PageParameters parameters;
-    //final protected AddonApplicationBorder border;
 
     final private static int[] pagesPerHour = new int[7 * 24];
 
-    /**
-     * Constructor
-     */
     public BaseHtmlPage(final PageParameters parameters, final String pageTitle)
-    {
-        this(parameters, pageTitle, new AddonApplicationBorder("border", pageTitle));
-    }
-
-    public BaseHtmlPage(final PageParameters parameters, final String pageTitle, final AddonApplicationBorder border)
     {
         this.parameters = parameters;
         

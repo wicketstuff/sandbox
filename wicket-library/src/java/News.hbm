@@ -5,7 +5,7 @@
 
 <hibernate-mapping>
 
-    <class name="wicket.addons.dao.News" table="NEWS">
+    <class name="wicket.addons.hibernate.News" table="NEWS">
 
         <id name="id" type="int" unsaved-value="0" >
             <generator class="identity"/>

@@ -18,9 +18,13 @@
  */
 package wicket.addons.sidebars;
 
+import wicket.Page;
 import wicket.addons.MyRatings;
 import wicket.addons.Profile;
+import wicket.addons.user.MyAddons;
 import wicket.markup.html.link.BookmarkablePageLink;
+import wicket.markup.html.link.IPageLink;
+import wicket.markup.html.link.PageLink;
 import wicket.markup.html.panel.Panel;
 
 /**
@@ -38,5 +42,18 @@ public final class SidebarUserMenu extends Panel
 
         add(new BookmarkablePageLink("ratings", MyRatings.class));
         add(new BookmarkablePageLink("profile", Profile.class));
+        add(new PageLink("myAddons", new IPageLink()
+        {
+			public Page getPage()
+			{
+				return new MyAddons();
+			}
+
+			public Class getPageIdentity()
+			{
+				return MyAddons.class;
+			}
+    
+        }));
     }
 }

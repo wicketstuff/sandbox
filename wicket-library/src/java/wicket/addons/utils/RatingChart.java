@@ -23,8 +23,8 @@ import java.util.List;
 
 import wicket.RequestCycle;
 import wicket.addons.BaseHtmlPage;
-import wicket.addons.dao.Addon;
-import wicket.addons.dao.IAddonDao;
+import wicket.addons.hibernate.Addon;
+import wicket.addons.hibernate.IAddonDao;
 import wicket.markup.html.list.ListItem;
 import wicket.markup.html.list.ListView;
 import wicket.markup.html.panel.Panel;

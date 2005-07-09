@@ -1,0 +1,92 @@
+<html>
+<body>
+  <wicket:border>
+    <form wicket:id="form">
+      <table>
+        <tr wicket:id="header">
+          <td colspan="2" bgcolor="#eeeeee">
+            <b>some info about you</b><br/>
+            <small>- welcome "Anonymous": you don't have to fill out you name and/or email</small><br/>
+            <small>- your name and/or email will not be visible on the site</small><br/>
+          </td>
+        </tr>
+        <tr>
+          <td><b>name:</b></td>
+          <td>
+            <input wicket:id="personname" type="text" size="40" value="" />
+          </td>
+        </tr>
+        <tr>
+          <td><b>email:</b></td>
+          <td>
+            <input wicket:id="email" type="text" size="40" value="" />
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">&nbsp;</td>
+        </tr>
+        <tr>
+          <td colspan="2" bgcolor="#eeeeee">
+            <b>plugin</b>
+          </td>
+        </tr>
+        <tr>
+          <td><b>plugin name:</b></td>
+          <td>
+            <input wicket:id="name" type="text" size="40" value="" />
+          </td>
+        </tr>
+        <tr>
+          <td><b>version:</b></td>
+          <td>
+            <input wicket:id="version" type="text" size="15" value="" />
+          </td>
+        </tr>
+        <tr>
+          <td><b>Wicket version:</b></td>
+          <td>
+            <input wicket:id="wicketVersion" type="text" size="15" value="" />
+          </td>
+        </tr>
+        <tr>
+          <td><b>license:</b></td>
+          <td>
+            <select wicket:id="license">
+              <option>LGPL</option>
+            </select>
+            &nbsp;<b>Other license:</b>
+            <input wicket:id="otherLicense" type="text" size="15" value="" />
+          </td>
+        </tr>
+        <tr>
+          <td><b>category:</b></td>
+          <td>
+            <select wicket:id="category">
+              <option>panel component</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top"><b>description:</b></td>
+          <td>
+            <textarea wicket:id="description" rows="10" cols="40"></textarea>
+          </td>
+        </tr>
+        <tr>
+          <td><b>homepage:</b></td>
+          <td>
+            <input wicket:id="homepage" type="text" size="40" value="" />
+          </td>
+        </tr>
+        <tr>
+          <td><b>URL download:</b></td>
+          <td>
+            <input wicket:id="downloadUrl" type="text" size="40" value="" />
+          </td>
+        </tr>
+        <wicket:body/>
+      </table>
+    </form>  
+  </wicket:border>
+</body>
+</html>
