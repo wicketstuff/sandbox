@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+
+<project name="benchmark" basedir=".">
+    <property file="build.properties"/>
+
+    <property name="src.dir" value="src"/>
+    <property name="build.dir" value="webapp/WEB-INF/classes"/>
+    <property name="name" value="benchmark"/>
+
+    <path id="master-classpath">
+        <fileset dir="webapp/WEB-ING/lib/">
+            <include name="*.jar"/>
+        </fileset>
+        <!-- We need the servlet and JSP API classes: -->
+        <fileset dir="${tomcat.home}/common/lib">
+            <include name="servlet-api.jar"/>
+         	<include name="jsp-api.jar"/>
+        </fileset>
+        <pathelement path="${build.dir}"/>
+    </path>
+
+    <target name="build" description="Compile main source tree java files">
+        <mkdir dir="${build.dir}"/>
+        <javac destdir="${build.dir}" target="1.5" debug="true"
+               deprecation="false" optimize="false" failonerror="true">
+            <src path="${src.dir}"/>
+            <classpath refid="master-classpath"/>
+        </javac>
+    </target>
+
+    <target name="deploy" depends="build" description="Deploy application">
+        <copy todir="${tomcat.home}/webapps/${name}" preservelastmodified="true">
+            <fileset dir="webapp/"/>
+        </copy>
+    </target>
+
+    <taskdef name="reload" classname="org.apache.catalina.ant.ReloadTask">
+        <classpath>
+            <path location="${tomcat.home}/server/lib/catalina-ant.jar"/>
+        </classpath>
+    </taskdef>
+
+    <target name="reload" description="Reload application in Tomcat">
+        <reload url="${tomcat.manager.url}"
+                 username="${tomcat.manager.username}"
+                 password="${tomcat.manager.password}"
+                 path="/${name}"/>
+    </target>
+
+</project>
