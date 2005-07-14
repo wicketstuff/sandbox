@@ -1,0 +1,71 @@
+<html xmlns:wicket="http://wicket.sourceforge.net/namespace">
+<head>
+  <title>Intentional Network - Prayer Item Create</title>
+  <link rel="stylesheet" href="nav.css" type="text/css" />
+  <link rel="stylesheet" href="pray.css" type="text/css" />
+</head>
+<body>
+  <wicket:panel>
+ 
+  <span wicket:id="feedback" />  
+  <table>
+	<tbody>
+		<form wicket:id="detailForm">
+		<tr>
+			<td><label for="subject">Subject</label></td>
+      <td><input wicket:id="subject" type="text" size="40" /></td>
+		</tr>
+		<tr>
+			<td><label for="prayerGroup">Group</label></td>
+      <td>
+        <select wicket:id="prayerGroup">
+          <option>Personal</option>
+          <option>Family</option>
+          <option>Church</option>
+        </select>
+      </td>		
+    </tr>
+		<tr>
+			<td><label for="status">Status</label></td>
+      <td>
+        <select wicket:id="status">
+          <option>Open</option>
+          <option>Answered</option>
+        </select>
+      </td>		
+    </tr>
+		<tr>
+			<td><label for="type">Type</label></td>
+      <td>
+        <select wicket:id="type">
+          <option>Request</option>
+          <option>Thanks</option>
+          <option>Praise</option>
+        </select>
+      </td>		
+    </tr>
+		<tr>
+			<td><label for="body">Body</label></td>
+			<td>
+        <textarea wicket:id="body" size="40" > 
+          This is where the main prayer item text goes. 
+          The quick brown fox jumped over the lazy dog. 
+          Now is the time for all good men to come to the aid of their 
+          country.
+        </textarea>
+      </td>
+		</tr>
+		<tr>
+			<td colspan="2">
+      <div class="buttons">
+        <input type="submit" value="save" />
+      </div>
+			</td>
+		</tr>
+		</form>
+	</tbody>
+  </table>
+
+  </wicket:panel>
+</body>
+</html>
