@@ -169,13 +169,6 @@ public abstract class OrderedPageableList extends UnimplementedList
 			throw new IndexOutOfBoundsException("Index greater then size - 1");
 		if (index < 0)
 			throw new IndexOutOfBoundsException("Index less than zero.");
-		
-		if (index >= window.size())
-			throw new IndexOutOfBoundsException("The count query has returned a " +
-				"number different then the amount of records in the data set. If this " +
-				"exception was thrown after adding an ordering, check that the " +
-				"ordering didn't introduce an inner join that reduced the size " +
-				"of the record set.");
 
 		int relativeIndex = index - windowStart;
 
@@ -184,6 +177,15 @@ public abstract class OrderedPageableList extends UnimplementedList
 			resetWindow(index);
 			relativeIndex = 0;
 		}
+		
+		if (relativeIndex >= window.size())
+			throw new IndexOutOfBoundsException("The count query has returned a " +
+				"number greater then the amount of records in the data set or " +
+				"get() has been called for a row that doesn't exist. If this " +
+				"exception was thrown after adding an ordering, check that the " +
+				"ordering didn't introduce an inner join that reduced the size " +
+				"of the record set. ");
+		
 		return window.get(relativeIndex);
 	}
 
