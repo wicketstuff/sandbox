@@ -1,7 +1,10 @@
 package wicket.contrib.data.model.sandbox;
 
+import java.util.ArrayList;
+
 import wicket.Component;
 import wicket.model.IModel;
+import wicket.model.Model;
 
 /**
  * A detachable wrapper for a OrderedPageableList.
@@ -10,6 +13,8 @@ import wicket.model.IModel;
  */
 public class DetachableList implements IModel
 {
+	/** Useful for building an empty ListView **/
+	public final static IModel EMPTY_LIST = new Model(new ArrayList(0));
 	private OrderedPageableList list;
 
 	/**
