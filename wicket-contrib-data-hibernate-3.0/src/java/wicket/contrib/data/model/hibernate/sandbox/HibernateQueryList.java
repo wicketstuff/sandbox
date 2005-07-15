@@ -2,13 +2,13 @@ package wicket.contrib.data.model.hibernate.sandbox;
 
 import java.util.List;
 
-import wicket.contrib.data.model.hibernate.IHibernateSessionDelegate;
+import org.hibernate.Session;
+
+import wicket.contrib.data.model.hibernate.sandbox.IHibernateDao.IHibernateCallback;
 import wicket.contrib.data.model.sandbox.QueryList;
 
 /**
- * A list class that can be instantiated using HQL. If the session delegate you
- * use implements IHibernateDaoDelegate, this list will support remove
- * operations.
+ * A list class that can be instantiated using HQL.
  * 
  * @author Phil Kulak
  */
@@ -17,7 +17,7 @@ public class HibernateQueryList extends QueryList
 	private String listQuery;
 	private String countQuery;
 	private boolean useQueryCache = true;
-    private IHibernateSessionDelegate sessionDelegate;
+    private IHibernateDao dao;
     
 	/**
 	 * Creates a new list using the Hibernate query cache.
@@ -25,14 +25,14 @@ public class HibernateQueryList extends QueryList
 	 * @param listQuery a string query that will return the full list of items
 	 * @param countQuery a string query that will return a single integer
 	 *                   for the total number of items
-	 * @param sessionDelegate the session delegate
+	 * @param dao the Hibernate dao
 	 */
 	public HibernateQueryList(String listQuery, String countQuery, 
-            IHibernateSessionDelegate sessionDelegate)
+			IHibernateDao dao)
 	{
 		this.listQuery = listQuery;
 		this.countQuery = countQuery;
-		this.sessionDelegate = sessionDelegate;
+		this.dao = dao;
 	}
 	
 	/**
@@ -42,9 +42,9 @@ public class HibernateQueryList extends QueryList
 	 * is apropriate for most queries. 
 	 * 
 	 * @param listQuery a string query that will return the full list of items
-	 * @param sessionDelegate the session delegate 	 
+	 * @param dao the Hibernate dao 	 
 	 */
-	public HibernateQueryList(String listQuery, IHibernateSessionDelegate sessionDelegate) {
+	public HibernateQueryList(String listQuery, IHibernateDao dao) {
 		String lowerListQuery = listQuery.toLowerCase();
 		String trimmedListQuery = listQuery;
 		
@@ -61,7 +61,7 @@ public class HibernateQueryList extends QueryList
 		
 		this.listQuery = listQuery;
 		this.countQuery = "SELECT COUNT(*) " + trimmedListQuery;
-		this.sessionDelegate = sessionDelegate;
+		this.dao = dao;
 	}
 	
 	/**
@@ -70,32 +70,41 @@ public class HibernateQueryList extends QueryList
 	 * @param listQuery a string query that will return the full list of items
 	 * @param countQuery a string query that will return a single integer
 	 *                   for the total number of items
-	 * @param sessionDelegate the session delegate
+	 * @param dao the Hibernate dao
 	 * @param useQueryCache use the query cache for each query?
 	 */
 	public HibernateQueryList(String listQuery, String countQuery, 
-            IHibernateSessionDelegate sessionDelegate, boolean useQueryCache)
+			IHibernateDao dao, boolean useQueryCache)
 	{
-        this(listQuery, countQuery, sessionDelegate);
+        this(listQuery, countQuery, dao);
         this.useQueryCache = useQueryCache;
 	}
 
-	protected List getItems(int start, int max, String orderBy)
+	protected List getItems(final int start, final int max, final String orderBy)
 	{
-		return sessionDelegate.getSession()
-				.createQuery(listQuery + orderBy)
-				.setFirstResult(start)
-				.setMaxResults(max)
-				.setCacheable(useQueryCache)
-				.list();
+		return (List) dao.execute(new IHibernateCallback()
+		{
+			public Object execute(Session session)
+			{
+				return session.createQuery(listQuery + orderBy)
+					.setFirstResult(start)
+					.setMaxResults(max)
+					.setCacheable(useQueryCache)
+					.list();
+			}
+		});
 	}
 
 	protected int getCount()
 	{
-		return ((Integer) sessionDelegate.getSession()
-				.createQuery(countQuery)
-				.setCacheable(useQueryCache)
-				.uniqueResult())
-				.intValue();
+		return ((Integer) dao.execute(new IHibernateCallback()
+		{
+			public Object execute(Session session)
+			{
+				return session.createQuery(countQuery)
+						.setCacheable(useQueryCache)
+						.uniqueResult();
+			}
+		})).intValue();
 	}
 }
