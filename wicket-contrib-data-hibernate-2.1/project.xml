@@ -65,7 +65,7 @@
     <dependency>
       <groupId>wicket</groupId>
       <artifactId>wicket</artifactId>
-      <version>1.0.0-rc3</version>
+      <version>1.0</version>
       <properties>
         <eclipse.dependency>true</eclipse.dependency>
       </properties>
@@ -73,7 +73,7 @@
     <dependency>
       <groupId>wicket-stuff</groupId>
       <artifactId>wicket-contrib-data</artifactId>
-      <version>1.0.1</version>
+      <version>1.0.2</version>
       <properties>
         <eclipse.dependency>true</eclipse.dependency>
       </properties>

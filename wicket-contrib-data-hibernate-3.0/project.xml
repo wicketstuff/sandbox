@@ -5,7 +5,7 @@
   <groupId>wicket-stuff</groupId>
   <id>wicket-contrib-data-hibernate-3.0</id>
   <name>Wicket Contrib Data Hibernate 3.0</name>
-  <currentVersion>1.0.1</currentVersion>
+  <currentVersion>1.0.2</currentVersion>
   <inceptionYear>2004</inceptionYear>
   <package>wicket-stuff</package>
   <logo>/images/logo.gif</logo>
@@ -73,7 +73,7 @@
     <dependency>
       <groupId>wicket</groupId>
       <artifactId>wicket</artifactId>
-      <version>1.0.0-rc3</version>
+      <version>1.0</version>
       <properties>
         <eclipse.dependency>true</eclipse.dependency>
       </properties>
@@ -81,7 +81,7 @@
     <dependency>
       <groupId>wicket-stuff</groupId>
       <artifactId>wicket-contrib-data</artifactId>
-      <version>SNAPSHOT</version>
+      <version>1.0.2</version>
       <properties>
         <eclipse.dependency>true</eclipse.dependency>
       </properties>
