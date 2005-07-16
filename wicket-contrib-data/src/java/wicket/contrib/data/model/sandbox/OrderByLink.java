@@ -64,7 +64,7 @@ public class OrderByLink extends Link
 		switchState();
 
 		// Reset all other links that use the same list.
-		MarkupContainer parent = getParent();
+		MarkupContainer parent = getPage();
 
 		parent.visitChildren(OrderByLink.class, new IVisitor()
 		{
