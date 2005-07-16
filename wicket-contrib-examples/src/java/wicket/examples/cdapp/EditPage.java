@@ -151,10 +151,11 @@ public final class EditPage extends CdAppBasePage
 		 * 
 		 * @param name
 		 * @param cdModel
+		 * @param feedback
 		 */
-		public ImageUploadForm(String name, PersistentObjectModel cdModel)
+		public ImageUploadForm(String name, PersistentObjectModel cdModel, IFeedback feedback)
 		{
-			super(name, cdModel, null);
+			super(name, cdModel, feedback);
 			add(uploadField = new FileUploadField("file"));
 		}
 
@@ -228,8 +229,8 @@ public final class EditPage extends CdAppBasePage
 		FeedbackPanel feedback = new FeedbackPanel("feedback");
 		add(feedback);
 		add(new DetailForm("detailForm", feedback, cdModel));
-		ImageUploadForm imageUploadForm = new ImageUploadForm("imageUpload", cdModel);
-		imageUploadForm.setMaxSize(Bytes.kilobytes(50));
+		ImageUploadForm imageUploadForm = new ImageUploadForm("imageUpload", cdModel, feedback);
+		imageUploadForm.setMaxSize(Bytes.kilobytes(200));
 		add(imageUploadForm);
 
 		getThumbnail();
