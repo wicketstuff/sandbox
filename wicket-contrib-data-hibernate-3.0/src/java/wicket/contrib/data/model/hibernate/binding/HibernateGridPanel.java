@@ -16,6 +16,17 @@ import wicket.model.IModel;
 import wicket.model.PropertyModel;
 import wicket.util.string.Strings;
 
+/**
+ * A panel that browses and edits a list of Hibernate objects. Each row
+ * maintains an "edit" status that can be toggled by the user. By default, all
+ * string fields are turned into text boxes on edit, booleans are turned into
+ * check boxes, everything else is a label, and all columns are sortable.
+ * The column names are also taken directly from the property names of the
+ * class and show up in the order they are defined in the class. This can all
+ * be changed, however, by supplying you own list of {@link IColumn}s.
+ * 
+ * @author Phil Kulak
+ */
 public class HibernateGridPanel extends Panel {
 	private List columns;
 	private IHibernateDao dao;
