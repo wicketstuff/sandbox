@@ -38,7 +38,7 @@ public class HibernateQueryList extends QueryList
 	/**
 	 * Creates a new list by extrapolating the count query from the list query. This
 	 * simply creates a select clause ("SELECT COUNT(*) ") and appends it to the 
-	 * from of the list query or replaces the current select clause if it exists. This
+	 * front of the list query or replaces the current select clause if it exists. This
 	 * is apropriate for most queries. 
 	 * 
 	 * @param listQuery a string query that will return the full list of items
