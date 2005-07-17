@@ -4,24 +4,37 @@ import wicket.markup.html.form.FormComponent;
 import wicket.markup.html.form.validation.IValidator;
 
 /**
- * Used for any inline component that needs to be able to add validators
- * to itself.
+ * Used for any inline component that needs to be able to add validators to
+ * itself.
  * 
  * @author Phil Kulak
  */
-public abstract class InlineValidatingComponent extends InlineComponent {
+public abstract class InlineValidatingComponent extends InlineComponent
+{
 	private FormComponent formComponent;
-	
-	public InlineValidatingComponent(String id) {
+
+	/**
+	 * @param id
+	 *            the id of this component
+	 */
+	public InlineValidatingComponent(String id)
+	{
 		super(id);
 	}
-	
-	public InlineValidatingComponent add(IValidator validator) {
+
+	/**
+	 * @param validator
+	 *            the validator to add
+	 * @return itself to allow chaining
+	 */
+	public InlineValidatingComponent add(IValidator validator)
+	{
 		formComponent.add(validator);
 		return this;
 	}
-	
-	protected void setFormComponent(FormComponent formComponent) {
+
+	protected void setFormComponent(FormComponent formComponent)
+	{
 		this.formComponent = formComponent;
 		add(formComponent);
 	}

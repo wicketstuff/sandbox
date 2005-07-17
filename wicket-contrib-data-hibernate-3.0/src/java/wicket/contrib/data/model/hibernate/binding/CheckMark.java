@@ -8,25 +8,43 @@ import wicket.model.IModel;
 import wicket.util.string.StringValueConversionException;
 import wicket.util.string.Strings;
 
-public class CheckMark extends Image {
-	public static final StaticResource CHECK_MARK =
-		StaticResource.get(CheckMark.class.getPackage(), "checkMark.gif");
-	
-	public CheckMark(String id, IModel model) {
+/**
+ * A read-only check box.
+ * 
+ * @author Phil Kulak
+ */
+public class CheckMark extends Image
+{
+	/** the image of a check mark */
+	public static final StaticResource IMAGE = StaticResource.get(CheckMark.class
+			.getPackage(), "checkMark.gif");
+
+	public CheckMark(String id, IModel model)
+	{
 		super(id, model);
 	}
 
-	public boolean isVisible() {
+	/**
+	 * A check mark is visible under the same circumstances that a check box is
+	 * checked.
+	 * 
+	 * @return true if the check mark is visible
+	 */
+	public boolean isVisible()
+	{
 		String value = this.getModelObjectAsString();
-		try	{
+		try
+		{
 			return Strings.isTrue(value);
-		} catch (StringValueConversionException e) {
-			throw new WicketRuntimeException("Invalid boolean value \""
-				+ value + "\"", e);
+		}
+		catch (StringValueConversionException e)
+		{
+			throw new WicketRuntimeException("Invalid boolean value \"" + value + "\"", e);
 		}
 	}
 
-	protected Resource getImageResource() {
-		return CHECK_MARK;
+	protected Resource getImageResource()
+	{
+		return IMAGE;
 	}
 }

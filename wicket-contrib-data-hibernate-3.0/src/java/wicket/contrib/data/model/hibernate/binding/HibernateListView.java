@@ -12,21 +12,37 @@ import wicket.model.IModel;
  * 
  * @author Phil Kulak
  */
-public abstract class HibernateListView extends PageableListView {
+public abstract class HibernateListView extends PageableListView
+{
 	private IHibernateDao dao;
-	
-	public HibernateListView(String id, IModel model, int rowsPerPage,
-			IHibernateDao dao) {
+
+	/**
+	 * @param id
+	 *            the id of the list view
+	 * @param model
+	 *            the list wrapped in a model
+	 * @param rowsPerPage
+	 *            the number of rows to display per page
+	 * @param dao
+	 *            the dao to use to interact with Hibernate
+	 */
+	public HibernateListView(String id, IModel model, int rowsPerPage, IHibernateDao dao)
+	{
 		super(id, model, rowsPerPage);
 		this.dao = dao;
 	}
 
-	public final IModel getListItemModel(IModel listViewModel, int index) {
+	public final IModel getListItemModel(IModel listViewModel, int index)
+	{
 		Object object = ((List) listViewModel.getObject(this)).get(index);
 		return new HibernateModel(object, dao);
 	}
-	
-	public IHibernateDao getHibernateDao() {
+
+	/**
+	 * @return the Hibernate dao currently being used by this list view
+	 */
+	public IHibernateDao getHibernateDao()
+	{
 		return dao;
 	}
 }

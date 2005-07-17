@@ -11,47 +11,86 @@ import wicket.markup.html.list.ListItem;
  * 
  * @author Phil Kulak
  */
-public abstract class InlineComponent extends WebMarkupContainer {
-	
-	public InlineComponent(String id) {
+public abstract class InlineComponent extends WebMarkupContainer
+{
+
+	/**
+	 * @param id
+	 *            the id of this component
+	 */
+	public InlineComponent(String id)
+	{
 		super(id);
 	}
 
-	protected boolean isEdit() {
+	/**
+	 * @return true if this component is currently being edited
+	 */
+	protected boolean isEdit()
+	{
 		return isEdit(this);
 	}
-	
-	public static boolean isEdit(Component component) {
+
+	/**
+	 * @param component
+	 *            the component to check
+	 * @return true if the component is currently being edited
+	 */
+	public static boolean isEdit(Component component)
+	{
 		return findForm(component).isEditModel(findListItem(component).getModel());
 	}
-	
-	public static HibernateGridView findForm(Component component) {
-		HibernateGridView form = (HibernateGridView) component.findParent(HibernateGridView.class);
-		if (form == null) {
-			throw new WicketRuntimeException("An inline component must be a " +
-				"child of a ListViewForm.");
+
+	/**
+	 * @param component
+	 *            the component to start the search from
+	 * @return the first HibernateGridView parent found
+	 */
+	public static HibernateGridView findForm(Component component)
+	{
+		HibernateGridView form = (HibernateGridView) component
+				.findParent(HibernateGridView.class);
+		if (form == null)
+		{
+			throw new WicketRuntimeException("An inline component must be a "
+					+ "child of a ListViewForm.");
 		}
 		return form;
 	}
-	
-	public static ListItem findListItem(Component component) {
+
+	/**
+	 * This method finds the parent ListView that is closest to the first parent
+	 * HibernateGridView. This allows a component to be nested arbitrarilly deep
+	 * in lists, but still be aware of its edit status.
+	 * 
+	 * @param component
+	 *            the component to start the search from
+	 * @return the ListItem containing the model for this row
+	 */
+	public static ListItem findListItem(Component component)
+	{
 		ListItem item = findListItemRec(component);
-		
-		if (item == null) {
-			throw new WicketRuntimeException("A suitable ListItem could not " +
-				"be found in the component tree.");
+
+		if (item == null)
+		{
+			throw new WicketRuntimeException("A suitable ListItem could not "
+					+ "be found in the component tree.");
 		}
 		return item;
 	}
-	
-	private static ListItem findListItemRec(Component component) {
+
+	private static ListItem findListItemRec(Component component)
+	{
 		ListItem item = null;
-		
-		while ((component = component.getParent()) != null) {
-			if (component instanceof ListItem) {
+
+		while ((component = component.getParent()) != null)
+		{
+			if (component instanceof ListItem)
+			{
 				item = (ListItem) component;
 			}
-			else if (component instanceof HibernateGridView) {
+			else if (component instanceof HibernateGridView)
+			{
 				return item;
 			}
 		}
