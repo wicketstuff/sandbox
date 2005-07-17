@@ -1,6 +1,5 @@
 package wicket.contrib.data.model.hibernate.binding;
 
-
 import wicket.markup.html.form.CheckBox;
 import wicket.model.IModel;
 
@@ -9,18 +8,30 @@ import wicket.model.IModel;
  * 
  * @author Phil Kulak
  */
-public class InlineCheckBox extends InlineValidatingComponent {
-	public InlineCheckBox(String id, IModel model) {
+public class InlineCheckBox extends InlineValidatingComponent
+{
+	/**
+	 * @param id
+	 *            the id of this component
+	 * @param model
+	 *            the model for this component
+	 */
+	public InlineCheckBox(String id, IModel model)
+	{
 		super(id);
-		
-		setFormComponent(new CheckBox(("checkBox"), model) {
-			public boolean isVisible() {
+
+		setFormComponent(new CheckBox(("checkBox"), model)
+		{
+			public boolean isVisible()
+			{
 				return isEdit();
 			}
 		});
-		
-		add(new CheckMark("image", model) {
-			public boolean isVisible() {
+
+		add(new CheckMark("image", model)
+		{
+			public boolean isVisible()
+			{
 				return super.isVisible() && !isEdit();
 			}
 		});
