@@ -46,6 +46,15 @@
 			</p>
 		</section>
 		<section name="Latest News">
+			<subsection name="Juli 17, 2005 - Wicket 1.0.1 available for download">
+				<p>
+					The Wicket development team has made the first maintenance release
+					of the Wicket 1.0 project available: Wicket 1.0.1 is now available
+					for download. A new release of the <a href="/kickstart">Kickstart</a>
+					project has also been made available to kickstart your bug free
+					Wicket development.
+				</p>
+			</subsection>
 			<subsection name="June 7, 2005 - Wicket 1.0 available for download">
 				<p>
 					The Wicket development team has made the 1.0 final release available for
