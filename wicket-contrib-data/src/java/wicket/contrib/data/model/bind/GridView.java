@@ -119,9 +119,10 @@ public abstract class GridView extends Form
     public static void deleteRowModel(Component component)
     {
         ListItem item = findListItem(component);
-        item.modelChanging();
-        findGridView(component).delete(item.getModelObject());
-        item.modelChanged();
+        GridView grid = findGridView(component);
+        
+        grid.delete(item.getModelObject());
+        grid.getListView().removeAll();
     }
     
     public static void removeEdit(Component component)
