@@ -2,12 +2,12 @@
 
 <project>
   <groupId>wicket-stuff</groupId>
-  <id>wicket-contrib-examples</id>
+  <id>wicket-contrib-beanedit</id>
   <currentVersion>1.0</currentVersion>
-  <package>wicket.contrib.examples</package>
+  <package>net.sf.ipn</package>
   <inceptionYear>2004</inceptionYear>
-  <description>Examples for web framework Wicket.</description>
-  <shortDescription>Examples for web framework Wicket.</shortDescription>
+  <description>Bean Editing for web framework Wicket.</description>
+  <shortDescription>Bean Editing for web framework Wicket.</shortDescription>
   <versions>
   </versions>
   <dependencies>
@@ -55,7 +55,7 @@
     <dependency>
       <groupId>wicket</groupId>
       <artifactId>wicket</artifactId>
-      <version>1.0.0-rc1</version>
+      <version>SNAPSHOT</version>
       <properties>
         <eclipse.dependency>true</eclipse.dependency>
         <war.bundle>true</war.bundle>
@@ -64,15 +64,6 @@
     <dependency>
       <groupId>wicket</groupId>
       <artifactId>wicket-extensions</artifactId>
-      <version>1.0.0-rc1</version>
-      <properties>
-        <eclipse.dependency>true</eclipse.dependency>
-        <war.bundle>true</war.bundle>
-      </properties>
-    </dependency>
-    <dependency>
-  	  <groupId>wicket-stuff</groupId>
-  	  <artifactId>wicket-contrib-data-hibernate-2.1</artifactId>
       <version>SNAPSHOT</version>
       <properties>
         <eclipse.dependency>true</eclipse.dependency>
@@ -85,14 +76,6 @@
       <version>SNAPSHOT</version>
       <properties>
         <eclipse.dependency>true</eclipse.dependency>
-        <war.bundle>true</war.bundle>
-      </properties>
-    </dependency>
-    <dependency>
-      <groupId>hibernate</groupId>
-      <artifactId>hibernate</artifactId>
-      <version>2.1.6</version>
-      <properties>
         <war.bundle>true</war.bundle>
       </properties>
     </dependency>
@@ -124,41 +107,6 @@
       <groupId>hsqldb</groupId>
       <artifactId>hsqldb</artifactId>
       <version>1.7.2.2</version>
-      <properties>
-        <war.bundle>true</war.bundle>
-      </properties>
-    </dependency>
-    <dependency>
-      <groupId>cglib</groupId>
-      <artifactId>cglib-full</artifactId>
-      <version>2.0.2</version>
-      <properties>
-        <war.bundle>true</war.bundle>
-      </properties>
-    </dependency>
-    <dependency>
-      <groupId>commons-fileupload</groupId>
-      <artifactId>commons-fileupload</artifactId>
-      <version>1.0</version>
-      <url>http://jakarta.apache.org/commons/beanutils/</url>
-      <properties>
-        <war.bundle>true</war.bundle>
-      </properties>
-    </dependency>
-    <dependency>
-      <groupId>asm</groupId>
-      <artifactId>asm-util</artifactId>
-      <version>1.4.3</version>
-      <type>jar</type>
-      <properties>
-        <war.bundle>true</war.bundle>
-      </properties>
-    </dependency>
-    <dependency>
-      <groupId>asm</groupId>
-      <artifactId>asm</artifactId>
-      <version>1.4.3</version>
-      <type>jar</type>
       <properties>
         <war.bundle>true</war.bundle>
       </properties>
