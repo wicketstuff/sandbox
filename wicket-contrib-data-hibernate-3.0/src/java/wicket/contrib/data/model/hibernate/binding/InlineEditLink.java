@@ -34,7 +34,7 @@ public class InlineEditLink extends Link
 		{
 			protected Resource getImageResource()
 			{
-				if (InlineComponent.isEdit(this))
+				if (GridView.isEdit(this))
 				{
 					return CANCEL;
 				}
@@ -47,7 +47,7 @@ public class InlineEditLink extends Link
 		{
 			protected String getAttributeValue()
 			{
-				if (InlineComponent.isEdit(InlineEditLink.this))
+				if (GridView.isEdit(InlineEditLink.this))
 				{
 					return "Cancel";
 				}
@@ -63,16 +63,13 @@ public class InlineEditLink extends Link
 	 */
 	public void onClick()
 	{
-		if (InlineComponent.isEdit(this))
+		if (GridView.isEdit(this))
 		{
-			InlineComponent.findForm(this).removeEditModel();
+			GridView.removeEdit(this);
 		}
 		else
 		{
-			HibernateGridView form = InlineComponent.findForm(this);
-			ListItem listItem = InlineComponent.findListItem(this);
-
-			form.setEditModel(listItem.getModel());
+			GridView.setEdit(this);
 		}
 	}
 }

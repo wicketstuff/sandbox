@@ -29,6 +29,6 @@ public class InlineSubmitButton extends ImageButton
 	 */
 	public boolean isVisible()
 	{
-		return InlineComponent.isEdit(this);
+		return GridView.isEdit(this);
 	}
 }

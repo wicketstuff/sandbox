@@ -37,21 +37,6 @@ public class InlineDeleteLink extends Link
 	 */
 	public void onClick()
 	{
-		final HibernateGridView form = InlineComponent.findForm(this);
-		final ListItem item = InlineComponent.findListItem(this);
-		final IHibernateDao dao = form.getListView().getHibernateDao();
-
-		item.modelChanging();
-
-		dao.execute(new IHibernateCallback()
-		{
-			public Object execute(Session session)
-			{
-				session.delete(item.getModelObject());
-				return null;
-			}
-		});
-
-		item.modelChanged();
+		GridView.deleteRowModel(this);
 	}
 }
