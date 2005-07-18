@@ -17,15 +17,19 @@ public class HibernateDataSource implements IDataSource
 {
 	private IHibernateDao dao;
 	private OrderedList list;
+	private Class entity;
 	
-	public HibernateDataSource(String entityName, IHibernateDao dao)
+	public HibernateDataSource(Class entity, IHibernateDao dao)
 	{
-		list = new HibernateQueryList("FROM " + entityName + " e", dao);
+		list = new HibernateQueryList("FROM " + entity.getName() + " e", dao);
 		this.dao = dao;
+		this.entity = entity;
 	}
 	
-	public HibernateDataSource(OrderedList list, IHibernateDao dao)
+	public HibernateDataSource(Class entity, OrderedList list, 
+			IHibernateDao dao)
 	{
+		this.entity = entity;
 		this.list = list;
 		this.dao = dao;
 	}
@@ -73,9 +77,8 @@ public class HibernateDataSource implements IDataSource
 				return session.getSessionFactory();
 			}
 		});
-		
-		Class entityClass = list.get(0).getClass();
-		ClassMetadata meta = factory.getClassMetadata(entityClass);
+
+		ClassMetadata meta = factory.getClassMetadata(entity);
 		
 		String[] propNames = meta.getPropertyNames();
 		List columns = new ArrayList(propNames.length);
