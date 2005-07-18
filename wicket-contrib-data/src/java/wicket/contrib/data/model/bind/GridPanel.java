@@ -1,14 +1,11 @@
-package wicket.contrib.data.model.hibernate.binding;
+package wicket.contrib.data.model.bind;
 
-import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
-import org.hibernate.metadata.ClassMetadata;
-import org.hibernate.type.Type;
-
 import wicket.Component;
-import wicket.contrib.data.model.hibernate.sandbox.HibernateQueryList;
-import wicket.contrib.data.model.hibernate.sandbox.IHibernateDao;
+import wicket.IFeedback;
+import wicket.contrib.data.model.bind.IDataSource.EntityField;
 import wicket.markup.html.list.ListItem;
 import wicket.markup.html.list.ListView;
 import wicket.markup.html.panel.Panel;
@@ -31,65 +28,54 @@ import wicket.util.string.Strings;
  * 
  * @author Phil Kulak
  */
-public class HibernateGridPanel extends Panel
+public class GridPanel extends Panel
 {
 	private List columns;
 
-	private IHibernateDao dao;
-
-	private String entityName;
+	private IDataSource dataSource;
+	
+	private int perPage;
 
 	/**
 	 * @param id
 	 *            the id of this panel
-	 * @param entityName
-	 *            the fully qualified class name of the object to load
-	 * @param dao
-	 *            the dao for the panel to use to interact with Hibernate
 	 */
-	public HibernateGridPanel(String id, String entityName, IHibernateDao dao)
+	public GridPanel(String id, IDataSource dataSource)
 	{
-		super(id);
-		this.columns = makeColumns(dao.getSessionFactory().getClassMetadata(entityName));
-		this.dao = dao;
-		this.entityName = entityName;
-		init();
+		this(id, dataSource, 15, null, null);
 	}
 
 	/**
 	 * @param id
 	 *            the id of this panel
-	 * @param entityName
-	 *            the fully qualified class name of the object to load
-	 * @param dao
-	 *            the dao for the panel to use to interact with Hibernate
 	 * @param columns
 	 *            a custom list of columns
 	 */
-	public HibernateGridPanel(String id, String entityName, IHibernateDao dao,
-			List columns)
+	public GridPanel(String id, IDataSource dataSource, int perPage, 
+			List columns, IFeedback feedback)
 	{
 		super(id);
-		this.columns = columns;
-		this.dao = dao;
-		this.entityName = entityName;
-		init();
-	}
-
-	private void init()
-	{
-		IModel items = new HibernateQueryList("FROM " + entityName + " e", dao)
-				.getDetachableModel();
-
-		add(new LocalGridView(items));
-	}
-
-	private class LocalGridView extends HibernateGridView
-	{
-
-		public LocalGridView(IModel items)
+		
+		if (columns == null)
 		{
-			super("form", items, null, 10, dao);
+			this.columns = makeColumns(dataSource.getFields());
+		}
+		else
+		{
+			this.columns = columns;
+		}
+		
+		this.dataSource = dataSource;
+		this.perPage = perPage;
+		add(new LocalGridView(feedback));
+	}
+
+	private class LocalGridView extends GridView
+	{
+
+		public LocalGridView(IFeedback feedback)
+		{
+			super("form", dataSource, feedback, perPage);
 			add(new Orderings(getListView()));
 		}
 
@@ -110,13 +96,14 @@ public class HibernateGridPanel extends Panel
 		{
 			super("columns", columns);
 			this.model = model;
+			setOptimizeItemRemoval(true);
 		}
 
 		protected void populateItem(ListItem item)
 		{
 			IColumn col = (IColumn) item.getModelObject();
-			Component component = col.getComponent("column", new PropertyModel(model, col
-					.getModelPath()));
+			Component component = col.getComponent("column",
+				new PropertyModel(model, col.getModelPath()));
 
 			component.setRenderBodyOnly(true);
 			item.add(component);
@@ -156,27 +143,25 @@ public class HibernateGridPanel extends Panel
 		return Strings.capitalize(s);
 	}
 
-	private List makeColumns(ClassMetadata meta)
+	private List makeColumns(List fields)
 	{
-		String[] propNames = meta.getPropertyNames();
-		List columns = new ArrayList(propNames.length);
-
-		for (int i = 0; i < propNames.length; i++)
+		for (Iterator i = fields.iterator(); i.hasNext();)
 		{
-			String prop = propNames[i];
-			Type type = meta.getPropertyType(prop);
+			EntityField field = (EntityField) i.next();
+			Class clazz = field.getClass();
+			String name = field.getName();
 
-			if (type.getReturnedClass().isAssignableFrom(String.class))
+			if (clazz.isAssignableFrom(String.class))
 			{
-				columns.add(new TextFieldColumn(makeColHeading(prop), prop));
+				columns.add(new TextFieldColumn(makeColHeading(name), name));
 			}
-			else if (type.getReturnedClass().isAssignableFrom(Boolean.class))
+			else if (clazz.isAssignableFrom(Boolean.class))
 			{
-				columns.add(new CheckBoxColumn(makeColHeading(prop), prop));
+				columns.add(new CheckBoxColumn(makeColHeading(name), name));
 			}
 			else
 			{
-				columns.add(new LabelColumn(makeColHeading(prop), prop));
+				columns.add(new LabelColumn(makeColHeading(name), name));
 			}
 		}
 

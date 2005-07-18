@@ -1,10 +1,11 @@
-package wicket.contrib.data.model.hibernate.binding;
+package wicket.contrib.data.model.bind;
 
 import java.util.List;
 
 import wicket.Component;
 import wicket.IFeedback;
 import wicket.WicketRuntimeException;
+import wicket.contrib.data.model.sandbox.DetachableList;
 import wicket.markup.html.form.Form;
 import wicket.markup.html.list.ListItem;
 import wicket.markup.html.list.PageableListView;
@@ -26,23 +27,23 @@ public abstract class GridView extends Form
 	public static final IModel EMPTY_MODEL = new Model();
 
 	private FormList listView;
+	
+	private IDataSource dataSource;
 
 	/**
 	 * @param id
 	 *            the id of the form
-	 * @param list
-	 *            the list of items wrapped in a model
 	 * @param feedback
 	 *            a feedback panel
 	 * @param perPage
 	 *            the number of items to display per page
-	 * @param dao
-	 *            the dao to use to interact with Hibernate
 	 */
-	public GridView(String id, IModel list, IFeedback feedback, int perPage)
+	public GridView(String id, IDataSource dataSource, IFeedback feedback, 
+			int perPage)
 	{
 		super(id, EMPTY_MODEL, feedback);
-		listView = new FormList(list, perPage);
+		this.dataSource = dataSource;
+		listView = new FormList(new DetachableList(dataSource.getList()), perPage);
 		add(listView);
 	}
 
@@ -62,21 +63,24 @@ public abstract class GridView extends Form
 	 */
 	protected abstract void populateItem(ListItem item);
     
-    protected abstract IModel getListItemModel(Object object);
+    public void onSubmit()
+    {
+    	dataSource.update(getModelObject());
+    	removeEditModel();
+    }
     
-    public abstract void onSubmit();
-    
-    protected abstract void delete(Object object);
+    private void delete(Object object)
+    {
+    	dataSource.delete(object);
+    	removeEditModel();
+    }
 
-	/**
-	 * This class is private because it delegates all it's functionality to the
-	 * ListViewForm so that users don't even have to be aware of it.
-	 */
 	private final class FormList extends PageableListView
 	{
 		public FormList(IModel model, int perPage)
 		{
 			super("rows", model, perPage);
+			System.out.println("Setting optimized item removal.");
 			setOptimizeItemRemoval(true);
 		}
 
@@ -88,26 +92,46 @@ public abstract class GridView extends Form
         public IModel getListItemModel(IModel listViewModel, int index)
     	{
     		Object object = ((List) listViewModel.getObject(this)).get(index);
-            return GridView.this.getListItemModel(object);
+            return dataSource.wrap(object);
     	}
+	}
+	
+	public static String getResourceId(Component component)
+	{
+		GridView gridView = findGridView(component);
+		GridPanel gridPanel = (GridPanel) gridView.findParent(GridPanel.class);
+		
+		if (gridPanel != null)
+		{
+			return gridPanel.getId();
+		}
+		else
+		{
+			return gridView.getId();
+		}
+	}
+	
+	public static Object getRowModel(Component component)
+	{
+		return findListItem(component).getModelObject();
 	}
     
     public static void deleteRowModel(Component component)
     {
         ListItem item = findListItem(component);
         item.modelChanging();
-        findForm(component).delete(item.getModelObject());
+        findGridView(component).delete(item.getModelObject());
         item.modelChanged();
     }
     
     public static void removeEdit(Component component)
     {
-        findForm(component).removeEditModel();
+        findGridView(component).removeEditModel();
     }
     
     public static void setEdit(Component component)
     {
-        findForm(component).setEditModel(findListItem(component).getModel());
+        findGridView(component).setEditModel(findListItem(component).getModel());
     }
     
 	/**
@@ -117,7 +141,7 @@ public abstract class GridView extends Form
 	 */
 	public static boolean isEdit(Component component)
 	{
-		return findForm(component).isEditModel(findListItem(component).getModel());
+		return findGridView(component).isEditModel(findListItem(component).getModel());
 	}
     
 	/**
@@ -125,7 +149,7 @@ public abstract class GridView extends Form
 	 *            the component to start the search from
 	 * @return the first HibernateGridView parent found
 	 */
-	private static GridView findForm(Component component)
+	public static GridView findGridView(Component component)
 	{
 		GridView form = (GridView) component
 				.findParent(GridView.class);
@@ -146,7 +170,7 @@ public abstract class GridView extends Form
 	 *            the component to start the search from
 	 * @return the ListItem containing the model for this row
 	 */
-	private static ListItem findListItem(Component component)
+	public static ListItem findListItem(Component component)
 	{
 		ListItem item = findListItemRec(component);
 

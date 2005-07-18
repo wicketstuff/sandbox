@@ -21,15 +21,6 @@ public interface IHibernateDao extends Serializable
 	public Object execute(IHibernateCallback callback);
 	
 	/**
-	 * This method is NOT used to get a session. Any reading or writing to
-	 * the database is handled through execute so that individual
-	 * implementations can handle all the session and exception handling.
-	 * 
-	 * @return a session factory
-	 */
-	public SessionFactory getSessionFactory();
-	
-	/**
 	 * Passed into the execute method of IHibernateDao.
 	 */
 	public interface IHibernateCallback

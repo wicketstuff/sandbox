@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import org.hibernate.EntityMode;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.proxy.HibernateProxy;
 import org.hibernate.proxy.LazyInitializer;
@@ -48,8 +49,16 @@ public class HibernateModel implements IModel
 		{
 			entityName = model.getClass().getName();
 		}
+		
+		SessionFactory factory = (SessionFactory) dao.execute(new IHibernateCallback()
+		{
+			public Object execute(Session session)
+			{
+				return session.getSessionFactory();
+			}
+		});
 
-		ClassMetadata meta = dao.getSessionFactory().getClassMetadata(entityName);
+		ClassMetadata meta = factory.getClassMetadata(entityName);
 
 		// Set all the values.
 		this.dao = dao;
