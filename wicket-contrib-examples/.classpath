@@ -22,5 +22,6 @@
 	<classpathentry kind="var" path="MAVEN_REPO/commons-logging/jars/commons-logging-1.0.4.jar"/>
 	<classpathentry kind="src" path="/wicket-contrib-data"/>
 	<classpathentry kind="src" path="/wicket-contrib-data-hibernate-2.1"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/wicket-contrib-navmenu"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
