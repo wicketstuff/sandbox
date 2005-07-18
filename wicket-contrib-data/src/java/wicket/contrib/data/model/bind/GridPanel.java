@@ -1,5 +1,6 @@
 package wicket.contrib.data.model.bind;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -145,26 +146,27 @@ public class GridPanel extends Panel
 
 	private List makeColumns(List fields)
 	{
+		List cols = new ArrayList(fields.size());
 		for (Iterator i = fields.iterator(); i.hasNext();)
 		{
 			EntityField field = (EntityField) i.next();
-			Class clazz = field.getClass();
+			Class clazz = field.getClazz();
 			String name = field.getName();
 
 			if (clazz.isAssignableFrom(String.class))
 			{
-				columns.add(new TextFieldColumn(makeColHeading(name), name));
+				cols.add(new TextFieldColumn(makeColHeading(name), name));
 			}
 			else if (clazz.isAssignableFrom(Boolean.class))
 			{
-				columns.add(new CheckBoxColumn(makeColHeading(name), name));
+				cols.add(new CheckBoxColumn(makeColHeading(name), name));
 			}
 			else
 			{
-				columns.add(new LabelColumn(makeColHeading(name), name));
+				cols.add(new LabelColumn(makeColHeading(name), name));
 			}
 		}
 
-		return columns;
+		return cols;
 	}
 }
