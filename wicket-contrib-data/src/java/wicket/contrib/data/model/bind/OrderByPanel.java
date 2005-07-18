@@ -1,6 +1,5 @@
-package wicket.contrib.data.model.hibernate.binding;
+package wicket.contrib.data.model.bind;
 
-import wicket.contrib.data.model.sandbox.OrderByLink;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.list.ListView;
 import wicket.markup.html.panel.Panel;

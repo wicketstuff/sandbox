@@ -1,7 +1,7 @@
-package wicket.contrib.data.model.hibernate.binding;
+package wicket.contrib.data.model.bind;
 
 /**
- * A convenient place to extends from to create new {@link IColumn}s.
+ * A convenient place to extend from to create new {@link IColumn}s.
  * 
  * @author Phil Kulak
  */
@@ -16,7 +16,8 @@ public abstract class AbstractColumn implements IColumn
 	private boolean allowOrderBy = true;
 
 	/**
-	 * Constructor that sets the orderByPath to the modelPath.
+	 * Constructor that sets the orderByPath to the modelPath. Call
+	 * {@link #setOrderByPath(String)} to change this default behavior.
 	 * 
 	 * @param displayName
 	 *            the name that will be displayed as the header for this column

@@ -1,4 +1,4 @@
-package wicket.contrib.data.model.hibernate.binding;
+package wicket.contrib.data.model.bind;
 
 import wicket.AttributeModifier;
 import wicket.Resource;
@@ -49,9 +49,9 @@ public class InlineEditLink extends Link
 			{
 				if (GridView.isEdit(InlineEditLink.this))
 				{
-					return "Cancel";
+					return getCancelAlt();
 				}
-				return "Edit";
+				return getEditAlt();
 			}
 		}));
 
@@ -71,5 +71,19 @@ public class InlineEditLink extends Link
 		{
 			GridView.setEdit(this);
 		}
+	}
+	
+	protected String getCancelAlt()
+	{
+		return getApplication().getLocalizer().getString(
+			GridView.getResourceId(this) + ".cancelAlt", getPage(), null, null,
+			null, "Cancel");
+	}
+	
+	protected String getEditAlt()
+	{
+		return getApplication().getLocalizer().getString(
+			GridView.getResourceId(this) + ".editAlt", getPage(), null, null,
+			null, "Edit");
 	}
 }

@@ -1,8 +1,9 @@
-package wicket.contrib.data.model.sandbox;
+package wicket.contrib.data.model.bind;
 
 import wicket.AttributeModifier;
 import wicket.Component;
 import wicket.MarkupContainer;
+import wicket.contrib.data.model.sandbox.OrderedList;
 import wicket.contrib.data.model.sandbox.OrderedPageableList;
 import wicket.markup.html.link.Link;
 import wicket.markup.html.list.ListView;
@@ -50,7 +51,7 @@ public class OrderByLink extends Link
 	 */
 	public void onClick()
 	{
-        OrderedPageableList listModel = (OrderedPageableList) list.getModelObject();
+        OrderedList listModel = (OrderedList) list.getModelObject();
 		
         // Add the ordering to the list.
         list.modelChanging();
@@ -146,11 +147,11 @@ public class OrderByLink extends Link
 		{
 			Integer state = (Integer) OrderByLink.this.getModelObject();
 			if (state.equals(UP))
-				return "orderUp";
+				return "wicket_orderUp";
 			if (state.equals(DOWN))
-				return "orderDown";
+				return "wicket_orderDown";
 			else
-				return "orderNone";
+				return "wicket_orderNone";
 		}
 
 		/**

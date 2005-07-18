@@ -1,4 +1,4 @@
-package wicket.contrib.data.model.hibernate.binding;
+package wicket.contrib.data.model.bind;
 
 import wicket.Resource;
 import wicket.WicketRuntimeException;

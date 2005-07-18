@@ -44,6 +44,7 @@ import wicket.contrib.data.model.UnimplementedList;
  * @author Eelco Hillenius
  */
 public abstract class OrderedPageableList extends UnimplementedList
+		implements OrderedList
 {
 	private List window = null;
 
@@ -140,7 +141,7 @@ public abstract class OrderedPageableList extends UnimplementedList
 		ordering.add(0, order);
 		
 		// Reset the state since the query has changed.
-		onDetach();
+		detach();
 		return this;
 	}
 
@@ -209,7 +210,7 @@ public abstract class OrderedPageableList extends UnimplementedList
 		return new DetachableList(this);
 	}
 
-	public void onDetach()
+	public void detach()
 	{
 		window = null;
 		totalElements = -1;

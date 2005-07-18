@@ -7,7 +7,7 @@ import wicket.model.IModel;
 import wicket.model.Model;
 
 /**
- * A detachable wrapper for a OrderedPageableList.
+ * A detachable wrapper for an OrderedList.
  * 
  * @author Phil Kulak
  */
@@ -15,14 +15,14 @@ public class DetachableList implements IModel
 {
 	/** Useful for building an empty ListView **/
 	public final static IModel EMPTY_LIST = new Model(new ArrayList(0));
-	private OrderedPageableList list;
+	private OrderedList list;
 
 	/**
 	 * Wraps an {@link wicket.contrib.data.model.sandbox.OrderedPageableList}.
 	 * 
 	 * @param list the list to wrap
 	 */
-	public DetachableList(OrderedPageableList list)
+	public DetachableList(OrderedList list)
 	{
 		this.list = list;
 	}
@@ -34,7 +34,7 @@ public class DetachableList implements IModel
 
 	public void detach()
 	{
-		list.onDetach();
+		list.detach();
 	}
 
 	public Object getObject(Component component)
@@ -49,22 +49,11 @@ public class DetachableList implements IModel
 	}
 	
 	/**
-	 * Wrapper for {@link wicket.contrib.data.model.sandbox.OrderedPageableList#addOrder(String)}
-	 * 
-	 * @param field the field to order by
-	 * @return itself to support chaining
-	 */
-	public DetachableList addOrder(String field) {
-		list.addOrder(field);
-		return this;
-	}
-	
-	/**
 	 * A convenience method for gettign the underlying list.
 	 * 
 	 * @return the backing list
 	 */
-	public OrderedPageableList getList() {
+	public OrderedList getList() {
 		return list;
 	}
 }

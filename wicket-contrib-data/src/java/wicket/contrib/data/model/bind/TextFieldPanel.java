@@ -1,6 +1,5 @@
-package wicket.contrib.data.model.hibernate.binding;
+package wicket.contrib.data.model.bind;
 
-import wicket.markup.html.panel.Panel;
 import wicket.model.IModel;
 
 /**
@@ -8,13 +7,13 @@ import wicket.model.IModel;
  * 
  * @author Phil Kulak
  */
-public class TextFieldPanel extends Panel
+public class TextFieldPanel extends InlineValidatingPanel
 {
 	public TextFieldPanel(String id, IModel model)
 	{
 		super(id);
 		InlineTextField field = new InlineTextField("inlineTextField", model);
 		field.setRenderBodyOnly(true);
-		add(field);
+		setComponent(field);
 	}
 }

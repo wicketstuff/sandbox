@@ -1,4 +1,4 @@
-package wicket.contrib.data.model.hibernate.binding;
+package wicket.contrib.data.model.bind;
 
 import wicket.Component;
 import wicket.model.IModel;
@@ -9,7 +9,7 @@ import wicket.model.IModel;
  * 
  * @author Phil Kulak
  */
-public class TextFieldColumn extends AbstractColumn
+public class TextFieldColumn extends ValidatingColumn
 {
 	public TextFieldColumn(String displayName, String ognlPath)
 	{
@@ -18,6 +18,6 @@ public class TextFieldColumn extends AbstractColumn
 
 	public Component getComponent(String id, IModel model)
 	{
-		return new TextFieldPanel(id, model);
+		return prepare(new TextFieldPanel(id, model));
 	}
 }

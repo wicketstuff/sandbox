@@ -1,4 +1,4 @@
-package wicket.contrib.data.model.hibernate.binding;
+package wicket.contrib.data.model.bind;
 
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.form.TextField;

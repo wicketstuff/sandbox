@@ -1,4 +1,4 @@
-package wicket.contrib.data.model.hibernate.binding;
+package wicket.contrib.data.model.bind;
 
 import wicket.markup.html.form.CheckBox;
 import wicket.model.IModel;

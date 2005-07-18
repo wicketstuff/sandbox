@@ -24,12 +24,4 @@ public abstract class HibernateDaoSupport implements IHibernateDao
 	{
 		return callback.execute(getSession());
 	}
-
-	/**
-	 * @see wicket.contrib.data.model.hibernate.sandbox.IHibernateDao#getSessionFactory()
-	 */
-	public SessionFactory getSessionFactory()
-	{
-		return getSession().getSessionFactory();
-	}
 }
