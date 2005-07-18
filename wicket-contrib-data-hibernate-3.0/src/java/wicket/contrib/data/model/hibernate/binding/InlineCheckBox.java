@@ -24,7 +24,7 @@ public class InlineCheckBox extends InlineValidatingComponent
 		{
 			public boolean isVisible()
 			{
-				return isEdit();
+				return GridView.isEdit(this);
 			}
 		});
 
@@ -32,7 +32,7 @@ public class InlineCheckBox extends InlineValidatingComponent
 		{
 			public boolean isVisible()
 			{
-				return super.isVisible() && !isEdit();
+				return super.isVisible() && !GridView.isEdit(this);
 			}
 		});
 	}

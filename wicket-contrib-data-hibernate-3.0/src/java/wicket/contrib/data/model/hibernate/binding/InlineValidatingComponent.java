@@ -1,5 +1,6 @@
 package wicket.contrib.data.model.hibernate.binding;
 
+import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.form.FormComponent;
 import wicket.markup.html.form.validation.IValidator;
 
@@ -9,7 +10,7 @@ import wicket.markup.html.form.validation.IValidator;
  * 
  * @author Phil Kulak
  */
-public abstract class InlineValidatingComponent extends InlineComponent
+public abstract class InlineValidatingComponent extends WebMarkupContainer
 {
 	private FormComponent formComponent;
 

@@ -81,13 +81,13 @@ public class HibernateGridPanel extends Panel
 		IModel items = new HibernateQueryList("FROM " + entityName + " e", dao)
 				.getDetachableModel();
 
-		add(new GridView(items));
+		add(new LocalGridView(items));
 	}
 
-	private class GridView extends HibernateGridView
+	private class LocalGridView extends HibernateGridView
 	{
 
-		public GridView(IModel items)
+		public LocalGridView(IModel items)
 		{
 			super("form", items, null, 10, dao);
 			add(new Orderings(getListView()));

@@ -27,7 +27,7 @@ public class InlineTextField extends InlineValidatingComponent
 		{
 			public boolean isVisible()
 			{
-				return isEdit();
+				return GridView.isEdit(this);
 			}
 		});
 
@@ -35,7 +35,7 @@ public class InlineTextField extends InlineValidatingComponent
 		{
 			public boolean isVisible()
 			{
-				return !isEdit();
+				return !GridView.isEdit(this);
 			}
 		});
 	}
