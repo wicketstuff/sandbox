@@ -10,13 +10,13 @@ import org.hibernate.type.Type;
 
 import wicket.contrib.data.model.bind.IDataSource;
 import wicket.contrib.data.model.hibernate.sandbox.IHibernateDao.IHibernateCallback;
-import wicket.contrib.data.model.sandbox.OrderedList;
+import wicket.contrib.data.model.sandbox.IOrderedList;
 import wicket.model.IModel;
 
 public class HibernateDataSource implements IDataSource
 {
 	private IHibernateDao dao;
-	private OrderedList list;
+	private IOrderedList list;
 	private Class entity;
 	
 	public HibernateDataSource(Class entity, IHibernateDao dao)
@@ -26,7 +26,7 @@ public class HibernateDataSource implements IDataSource
 		this.entity = entity;
 	}
 	
-	public HibernateDataSource(Class entity, OrderedList list, 
+	public HibernateDataSource(Class entity, IOrderedList list, 
 			IHibernateDao dao)
 	{
 		this.entity = entity;
@@ -34,7 +34,7 @@ public class HibernateDataSource implements IDataSource
 		this.dao = dao;
 	}
 
-	public OrderedList getList()
+	public IOrderedList getList()
 	{
 		return list;
 	}
