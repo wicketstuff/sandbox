@@ -62,6 +62,17 @@ public class HibernateDataSource implements IDataSource
 			}
 		});
 	}
+	
+	public List findAll(final Class c)
+	{
+		return (List) dao.execute(new IHibernateCallback()
+		{
+			public Object execute(Session session)
+			{
+				return session.createCriteria(c).list();
+			}
+		});
+	}
 
 	public IModel wrap(Object entity)
 	{
@@ -87,7 +98,19 @@ public class HibernateDataSource implements IDataSource
 		{
 			String prop = propNames[i];
 			Type type = meta.getPropertyType(prop);
-			columns.add(new EntityField(prop, type.getReturnedClass()));
+			
+			// Get the type;
+			int fieldType = EntityField.FIELD;
+			if (type.isCollectionType())
+			{
+				fieldType = EntityField.COLLECTION;
+			}
+			else if (type.isEntityType())
+			{
+				fieldType = EntityField.ENTITY;
+			}
+			
+			columns.add(new EntityField(prop, type.getReturnedClass(), fieldType));
 		}
 		return columns;
 	}

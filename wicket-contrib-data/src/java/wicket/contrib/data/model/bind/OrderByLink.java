@@ -4,7 +4,6 @@ import wicket.AttributeModifier;
 import wicket.Component;
 import wicket.MarkupContainer;
 import wicket.contrib.data.model.sandbox.IOrderedList;
-import wicket.contrib.data.model.sandbox.OrderedPageableList;
 import wicket.markup.html.link.Link;
 import wicket.markup.html.list.ListView;
 import wicket.model.AbstractModel;
