@@ -4,7 +4,7 @@ import java.util.List;
 
 import wicket.model.IDetachable;
 
-public interface OrderedList extends IDetachable, List
+public interface IOrderedList extends IDetachable, List
 {
 	public OrderedPageableList addOrder(String field);
 	

@@ -41,12 +41,11 @@ import wicket.contrib.data.model.UnimplementedList;
  * </p>
  * 
  * @author Phil Kulak
- * @author Eelco Hillenius
  */
 public abstract class OrderedPageableList extends UnimplementedList
 		implements OrderedList
 {
-	private List window = null;
+	private LisIOrderedListnull;
 
 	private int windowStart = 0;
 

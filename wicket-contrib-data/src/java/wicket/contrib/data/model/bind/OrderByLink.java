@@ -3,7 +3,7 @@ package wicket.contrib.data.model.bind;
 import wicket.AttributeModifier;
 import wicket.Component;
 import wicket.MarkupContainer;
-import wicket.contrib.data.model.sandbox.OrderedList;
+import wicket.contrib.data.model.sandbox.IOrderedList;
 import wicket.contrib.data.model.sandbox.OrderedPageableList;
 import wicket.markup.html.link.Link;
 import wicket.markup.html.list.ListView;
@@ -51,7 +51,7 @@ public class OrderByLink extends Link
 	 */
 	public void onClick()
 	{
-        OrderedList listModel = (OrderedList) list.getModelObject();
+        IOrderedList listModel = (IOrderedList) list.getModelObject();
 		
         // Add the ordering to the list.
         list.modelChanging();

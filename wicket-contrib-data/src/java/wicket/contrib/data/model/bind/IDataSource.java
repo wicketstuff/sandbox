@@ -2,12 +2,12 @@ package wicket.contrib.data.model.bind;
 
 import java.util.List;
 
-import wicket.contrib.data.model.sandbox.OrderedList;
+import wicket.contrib.data.model.sandbox.IOrderedList;
 import wicket.model.IModel;
 
 public interface IDataSource
 {
-	public OrderedList getList();
+	public IOrderedList getList();
 	
 	public void update(Object entity);
 	

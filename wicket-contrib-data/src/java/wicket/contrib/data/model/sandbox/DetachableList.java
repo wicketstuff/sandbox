@@ -15,14 +15,14 @@ public class DetachableList implements IModel
 {
 	/** Useful for building an empty ListView **/
 	public final static IModel EMPTY_LIST = new Model(new ArrayList(0));
-	private OrderedList list;
+	private IOrderedList list;
 
 	/**
 	 * Wraps an {@link wicket.contrib.data.model.sandbox.OrderedPageableList}.
 	 * 
 	 * @param list the list to wrap
 	 */
-	public DetachableList(OrderedList list)
+	public DetachableList(IOrderedList list)
 	{
 		this.list = list;
 	}
@@ -53,7 +53,7 @@ public class DetachableList implements IModel
 	 * 
 	 * @return the backing list
 	 */
-	public OrderedList getList() {
+	public IOrderedList getList() {
 		return list;
 	}
 }
