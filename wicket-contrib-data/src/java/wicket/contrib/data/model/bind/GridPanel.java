@@ -43,7 +43,7 @@ public class GridPanel extends Panel
 	 */
 	public GridPanel(String id, IDataSource dataSource)
 	{
-		this(id, dataSource, 15, null, null);
+		this(id, dataSource, 10, null, null);
 	}
 
 	/**
@@ -73,7 +73,11 @@ public class GridPanel extends Panel
 		{
 			this.columns = columns;
 		}
-		add(new LocalGridView(feedback));
+		
+		LocalGridView gView = new LocalGridView(feedback);
+		
+		add(gView);
+		add(new PageNav("pageNav", gView.getListView()));
 	}
 
 	private class LocalGridView extends GridView

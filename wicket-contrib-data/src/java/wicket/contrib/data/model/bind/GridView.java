@@ -67,12 +67,14 @@ public abstract class GridView extends Form
     {
     	dataSource.update(getModelObject());
     	removeEditModel();
+    	getListView().removeAll();
     }
     
     private void delete(Object object)
     {
     	dataSource.delete(object);
     	removeEditModel();
+    	getListView().removeAll();
     }
 
 	private final class FormList extends PageableListView
@@ -205,11 +207,11 @@ public abstract class GridView extends Form
 	 */
 	protected boolean isEditModel(IModel model)
 	{
-		if (getModelObject() == null)
+		if (getModel() == EMPTY_MODEL)
 		{
 			return false;
 		}
-		return model.getObject(this).equals(getModelObject());
+		return model.equals(getModel());
 	}
 
 	/**
@@ -219,6 +221,7 @@ public abstract class GridView extends Form
 	protected void setEditModel(IModel model)
 	{
 		setModel(model);
+		getListView().removeAll();
 	}
 
 	/**
@@ -227,5 +230,6 @@ public abstract class GridView extends Form
 	protected void removeEditModel()
 	{
 		setModel(EMPTY_MODEL);
+		getListView().removeAll();
 	}
 }

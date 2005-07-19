@@ -5,6 +5,7 @@ import wicket.WicketRuntimeException;
 import wicket.markup.html.StaticResource;
 import wicket.markup.html.image.Image;
 import wicket.model.IModel;
+import wicket.model.Model;
 import wicket.util.string.StringValueConversionException;
 import wicket.util.string.Strings;
 
@@ -22,6 +23,11 @@ public class CheckMark extends Image
 	public CheckMark(String id, IModel model)
 	{
 		super(id, model);
+	}
+	
+	public CheckMark(String id, Boolean checked)
+	{
+		super(id, new Model(checked));
 	}
 
 	/**
