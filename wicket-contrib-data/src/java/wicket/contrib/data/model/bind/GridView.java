@@ -80,7 +80,6 @@ public abstract class GridView extends Form
 		public FormList(IModel model, int perPage)
 		{
 			super("rows", model, perPage);
-			System.out.println("Setting optimized item removal.");
 			setOptimizeItemRemoval(true);
 		}
 
