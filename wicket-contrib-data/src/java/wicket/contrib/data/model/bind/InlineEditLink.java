@@ -41,7 +41,6 @@ public class InlineEditLink extends Link
 			}
 		};
 
-		// TODO these strings should be externalized
 		image.add(new AttributeModifier("alt", true, new AttributeModel()
 		{
 			protected String getAttributeValue()

@@ -66,6 +66,16 @@ public class HibernateModel implements IModel
 		this.id = meta.getIdentifier(model, EntityMode.POJO);
 		this.model = model;
 	}
+	
+	public Serializable getId()
+	{
+		return id;
+	}
+	
+	public Class getClazz()
+	{
+		return clazz;
+	}
 
 	/**
 	 * @see wicket.model.IModel#getNestedModel()
@@ -113,5 +123,15 @@ public class HibernateModel implements IModel
 				return session.load(clazz, id);
 			}
 		});
+	}
+	
+	public boolean equals(Object rhs)
+	{
+		if (rhs instanceof HibernateModel)
+		{
+			HibernateModel hm = (HibernateModel) rhs;
+			return hm.getClazz().equals(clazz) && hm.getId().equals(id);
+		}
+		return false;
 	}
 }
