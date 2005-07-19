@@ -1,6 +1,7 @@
 package wicket.contrib.data.model.bind;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -15,17 +16,14 @@ import wicket.model.PropertyModel;
 import wicket.util.string.Strings;
 
 /**
- * A panel that browses and edits a list of Hibernate objects. Each row
+ * A panel that browses and edits a list of objects. Each row
  * maintains an "edit" status that can be toggled by the user. By default, all
  * string fields are turned into text boxes on edit, booleans are turned into
- * check boxes, everything else is a label, and all columns are sortable. The
- * column names are also taken directly from the property names of the class and
- * show up in the order they are defined in the class. This can all be changed,
- * however, by supplying you own list of {@link IColumn}s.
- * 
- * TODO Move some of the data needed at construction into user overridable 
- * methods ncluding stuff not incorperated yet, like an IFeedback, perPage, 
- * a custom list of objects, and a custom buttons panel.
+ * check boxes, associations are turned into selects, everything else is 
+ * a turned into label, and all columns are sortable. The column names are also 
+ * taken directly from the property names of the class and show up in the order 
+ * they are defined in the class. This can all be changed, however, by 
+ * supplying your own list of {@link IColumn}s.
  * 
  * @author Phil Kulak
  */
@@ -40,6 +38,8 @@ public class GridPanel extends Panel
 	/**
 	 * @param id
 	 *            the id of this panel
+	 * @param dataSource
+	 *            the dataSource to use to modify and select data
 	 */
 	public GridPanel(String id, IDataSource dataSource)
 	{
@@ -49,13 +49,21 @@ public class GridPanel extends Panel
 	/**
 	 * @param id
 	 *            the id of this panel
+	 * @param dataSource
+	 *            the dataSource to use to modify and select data
+	 * @param perPage
+	 *            the number or rows to display per page
 	 * @param columns
 	 *            a custom list of columns
+	 * @param feedback
+	 *            the feedback collector to use for validation errors
 	 */
 	public GridPanel(String id, IDataSource dataSource, int perPage, 
 			List columns, IFeedback feedback)
 	{
 		super(id);
+		this.dataSource = dataSource;
+		this.perPage = perPage;
 		
 		if (columns == null)
 		{
@@ -65,9 +73,6 @@ public class GridPanel extends Panel
 		{
 			this.columns = columns;
 		}
-		
-		this.dataSource = dataSource;
-		this.perPage = perPage;
 		add(new LocalGridView(feedback));
 	}
 
@@ -152,18 +157,34 @@ public class GridPanel extends Panel
 			EntityField field = (EntityField) i.next();
 			Class clazz = field.getClazz();
 			String name = field.getName();
-
-			if (clazz.isAssignableFrom(String.class))
+			int type = field.getType();
+			
+			if (type == EntityField.FIELD)
 			{
-				cols.add(new TextFieldColumn(makeColHeading(name), name));
+				if (clazz.isAssignableFrom(String.class))
+				{
+					cols.add(new TextFieldColumn(makeColHeading(name), name));
+				}
+				else if (clazz.isAssignableFrom(Boolean.class))
+				{
+					cols.add(new CheckBoxColumn(makeColHeading(name), name));
+				}
+				else
+				{
+					cols.add(new LabelColumn(makeColHeading(name), name));
+				}
 			}
-			else if (clazz.isAssignableFrom(Boolean.class))
+			else if (type == EntityField.ENTITY)
 			{
-				cols.add(new CheckBoxColumn(makeColHeading(name), name));
-			}
-			else
-			{
-				cols.add(new LabelColumn(makeColHeading(name), name));
+				List allEntities = dataSource.findAll(clazz);
+				Object firstEntity = allEntities.get(0);
+				
+				if (firstEntity instanceof Comparable)
+				{
+					Collections.sort(allEntities);
+				}
+				
+				cols.add(new DropDownChoiceColumn(makeColHeading(name), name, allEntities));
 			}
 		}
 

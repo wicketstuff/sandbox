@@ -5,7 +5,6 @@ import wicket.Resource;
 import wicket.markup.html.StaticResource;
 import wicket.markup.html.image.Image;
 import wicket.markup.html.link.Link;
-import wicket.markup.html.list.ListItem;
 
 /**
  * A link that toggles the edit status of its list item.

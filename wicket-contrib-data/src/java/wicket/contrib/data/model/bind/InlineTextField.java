@@ -12,7 +12,6 @@ import wicket.model.IModel;
  */
 public class InlineTextField extends InlineValidatingComponent
 {
-
 	/**
 	 * @param id
 	 *            the id of the the InlineTextField
