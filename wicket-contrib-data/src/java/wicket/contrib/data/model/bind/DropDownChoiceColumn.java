@@ -1,6 +1,5 @@
 package wicket.contrib.data.model.bind;
 
-import java.util.Collection;
 import java.util.List;
 
 import wicket.Component;
@@ -13,9 +12,9 @@ import wicket.model.IModel;
  */
 public class DropDownChoiceColumn extends ValidatingColumn
 {
-	private Collection choices;
+	private List choices;
 	
-	public DropDownChoiceColumn(String displayName, String ognlPath, Collection choices)
+	public DropDownChoiceColumn(String displayName, String ognlPath, List choices)
 	{
 		super(displayName, ognlPath);
 		this.choices = choices;
@@ -23,6 +22,6 @@ public class DropDownChoiceColumn extends ValidatingColumn
 	
 	public Component getComponent(String id, IModel model)
 	{
-		return prepare(new DropDownChoicePanel(id, model, choices));
+		return prepare(new DropDownChoicePanel(id, makePropertyModel(model), choices));
 	}
 }

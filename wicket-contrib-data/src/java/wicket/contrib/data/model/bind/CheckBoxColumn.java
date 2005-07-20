@@ -17,6 +17,6 @@ public class CheckBoxColumn extends AbstractColumn
 
 	public Component getComponent(String id, IModel model)
 	{
-		return new CheckBoxPanel(id, model);
+		return new CheckBoxPanel(id, makePropertyModel(model));
 	}
 }

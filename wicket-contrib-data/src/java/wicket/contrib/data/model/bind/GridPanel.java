@@ -12,7 +12,6 @@ import wicket.markup.html.list.ListItem;
 import wicket.markup.html.list.ListView;
 import wicket.markup.html.panel.Panel;
 import wicket.model.IModel;
-import wicket.model.PropertyModel;
 import wicket.util.string.Strings;
 
 /**
@@ -91,9 +90,6 @@ public class GridPanel extends Panel
 
 		protected void populateItem(ListItem item)
 		{
-			item.add(new InlineDeleteLink("delete"));
-			item.add(new InlineEditLink("edit"));
-			item.add(new InlineSubmitButton("save"));
 			item.add(new Columns(item.getModel()));
 		}
 	}
@@ -112,8 +108,7 @@ public class GridPanel extends Panel
 		protected void populateItem(ListItem item)
 		{
 			IColumn col = (IColumn) item.getModelObject();
-			Component component = col.getComponent("column",
-				new PropertyModel(model, col.getModelPath()));
+			Component component = col.getComponent("column", model);
 
 			component.setRenderBodyOnly(true);
 			item.add(component);
@@ -156,6 +151,12 @@ public class GridPanel extends Panel
 	private List makeColumns(List fields)
 	{
 		List cols = new ArrayList(fields.size());
+		
+		// Add the edit and delete links.
+		cols.add(new MultiColumn()
+			.add(new EditColumn())
+			.add(new DeleteColumn()));
+		
 		for (Iterator i = fields.iterator(); i.hasNext();)
 		{
 			EntityField field = (EntityField) i.next();

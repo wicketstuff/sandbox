@@ -1,6 +1,6 @@
 package wicket.contrib.data.model.bind;
 
-import java.util.Collection;
+import java.util.List;
 
 import wicket.model.IModel;
 
@@ -11,7 +11,7 @@ import wicket.model.IModel;
  */
 public class DropDownChoicePanel extends InlineValidatingPanel
 {
-	public DropDownChoicePanel(String id, IModel model, Collection choices)
+	public DropDownChoicePanel(String id, IModel model, List choices)
 	{
 		super(id);
 		InlineDropDownChoice choice = new InlineDropDownChoice(
