@@ -18,6 +18,6 @@ public class TextFieldColumn extends ValidatingColumn
 
 	public Component getComponent(String id, IModel model)
 	{
-		return prepare(new TextFieldPanel(id, makePropertyModel(model)));
+		return prepare(new TextFieldPanel(id, makePropertyModel(model)), model);
 	}
 }
