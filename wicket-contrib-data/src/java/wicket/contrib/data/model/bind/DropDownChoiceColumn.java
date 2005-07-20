@@ -22,6 +22,8 @@ public class DropDownChoiceColumn extends ValidatingColumn
 	
 	public Component getComponent(String id, IModel model)
 	{
-		return prepare(new DropDownChoicePanel(id, makePropertyModel(model), choices));
+		return prepare(
+			new DropDownChoicePanel(id, makePropertyModel(model), choices), 
+			model);
 	}
 }

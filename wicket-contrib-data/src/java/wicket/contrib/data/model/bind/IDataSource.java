@@ -38,6 +38,9 @@ public interface IDataSource
 	public List findAll(Class c);
 	
 	/**
+	 * Wraps the give object in an IModel. The model returned MUST properly
+	 * override equals(), otherwise row editing will not be supported.
+	 * 
 	 * @param entity the object to wrap
 	 * @return the object wraped in a detachable model
 	 */

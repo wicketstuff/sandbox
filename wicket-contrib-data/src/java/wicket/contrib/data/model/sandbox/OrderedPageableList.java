@@ -117,7 +117,7 @@ public abstract class OrderedPageableList extends UnimplementedList
 	 * @param field the field to order by
 	 * @return itself to allow chaining
 	 */
-	public OrderedPageableList addOrder(String field)
+	public IOrderedList addOrder(String field)
 	{
 		if (orderingMaxFields == 0) {
 			return this;
@@ -148,7 +148,7 @@ public abstract class OrderedPageableList extends UnimplementedList
 	/**
 	 * Removes the ordering on the given field.
 	 */
-	public OrderedPageableList removeOrder(String field)
+	public IOrderedList removeOrder(String field)
 	{
 		ordering.remove(new ListOrder(field));
 		return this;

@@ -13,8 +13,6 @@ import wicket.model.Model;
  */
 public class DetachableList implements IModel
 {
-	/** Useful for building an empty ListView **/
-	public final static IModel EMPTY_LIST = new Model(new ArrayList(0));
 	private IOrderedList list;
 
 	/**
