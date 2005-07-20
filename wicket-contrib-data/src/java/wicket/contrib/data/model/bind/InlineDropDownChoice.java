@@ -1,6 +1,6 @@
 package wicket.contrib.data.model.bind;
 
-import java.util.Collection;
+import java.util.List;
 
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.form.DropDownChoice;
@@ -13,7 +13,7 @@ import wicket.model.IModel;
  */
 public class InlineDropDownChoice extends InlineValidatingComponent
 {
-	public InlineDropDownChoice(String id, IModel model, Collection choices)
+	public InlineDropDownChoice(String id, IModel model, List choices)
 	{
 		super(id);
 		setFormComponent(new DropDownChoice("dropDownChoice", model, choices)

@@ -1,7 +1,5 @@
 package wicket.contrib.data.model.bind;
 
-import java.util.Map;
-
 import wicket.markup.html.StaticResource;
 import wicket.markup.html.image.Image;
 import wicket.markup.html.link.Link;

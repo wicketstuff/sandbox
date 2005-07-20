@@ -1,5 +1,8 @@
 package wicket.contrib.data.model.bind;
 
+import wicket.model.IModel;
+import wicket.model.PropertyModel;
+
 /**
  * A convenient place to extend from to create new {@link IColumn}s.
  * 
@@ -26,6 +29,16 @@ public abstract class AbstractColumn implements IColumn
 	 */
 	public AbstractColumn(String displayName, String modelPath)
 	{
+		if (modelPath == null)
+		{
+			setAllowOrderBy(false);
+		}
+		
+		if(displayName == null)
+		{
+			displayName = "";
+		}
+		
 		this.displayName = displayName;
 		this.modelPath = modelPath;
 		this.orderByPath = modelPath;
@@ -72,5 +85,10 @@ public abstract class AbstractColumn implements IColumn
 	public String getOrderByPath()
 	{
 		return orderByPath;
+	}
+	
+	protected PropertyModel makePropertyModel(IModel model)
+	{
+		return new PropertyModel(model, getModelPath());
 	}
 }
