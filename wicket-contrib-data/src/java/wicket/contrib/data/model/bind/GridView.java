@@ -63,9 +63,9 @@ public abstract class GridView extends Form
 	 */
 	protected abstract void populateItem(ListItem item);
     
-    public void onSubmit()
+    private void merge()
     {
-    	dataSource.update(getModelObject());
+    	dataSource.merge(getModelObject());
     	removeEditModel();
     	getListView().removeAll();
     }
@@ -134,6 +134,16 @@ public abstract class GridView extends Form
     public static void setEdit(Component component)
     {
         findGridView(component).setEditModel(findListItem(component).getModel());
+    }
+    
+    /**
+     * Saves the modified row to the database.
+     * 
+     * @param component any component under the form
+     */
+    public static void mergeEdit(Component component)
+    {
+    	findGridView(component).merge();
     }
     
 	/**

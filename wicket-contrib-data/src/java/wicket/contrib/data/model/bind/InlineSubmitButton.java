@@ -16,12 +16,16 @@ public class InlineSubmitButton extends ImageButton
 			.getPackage(), "save.gif");
 
 	/**
-	 * @param id
-	 *            the id of the button
+	 * @param id the id of the button
 	 */
 	public InlineSubmitButton(String id)
 	{
 		super(id, SAVE);
+	}
+	
+	public void onSubmit()
+	{
+		GridView.mergeEdit(this);
 	}
 
 	/**
