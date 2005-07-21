@@ -20,9 +20,9 @@ public interface IDataSource
 	public IOrderedList getList();
 	
 	/**
-	 * Updates the persistent state of the given object.
+	 * Saves or updates the persistent state of the given object.
 	 */
-	public void update(Object entity);
+	public void merge(Object entity);
 	
 	/**
 	 * Deletes the object from the database.
@@ -38,7 +38,7 @@ public interface IDataSource
 	public List findAll(Class c);
 	
 	/**
-	 * Wraps the give object in an IModel. The model returned MUST properly
+	 * Wraps the given object in an IModel. The model returned MUST properly
 	 * override equals(), otherwise row editing will not be supported.
 	 * 
 	 * @param entity the object to wrap
@@ -49,7 +49,7 @@ public interface IDataSource
 	/**
 	 * @return a list of {@link EntityField}s for the object
 	 */
-	public List getFields();
+	public List/*<EntityField>*/ getFields();
 	
 	/**
 	 * A class loosly based on Hibernate's Type object, but not dependent on

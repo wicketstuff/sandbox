@@ -39,7 +39,7 @@ public class HibernateDataSource implements IDataSource
 		return list;
 	}
 
-	public void update(final Object entity)
+	public void merge(final Object entity)
 	{
 		dao.execute(new IHibernateCallback()
 		{
