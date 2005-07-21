@@ -1,5 +1,8 @@
 package wicket.contrib.data.model.bind;
 
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -34,15 +37,28 @@ public abstract class ValidatingColumn extends AbstractColumn
 	{
 		for (Iterator i = validators.iterator(); i.hasNext();)
 		{
-			AbstractValidator validator = (AbstractValidator) i.next();
+			final AbstractValidator validator = (AbstractValidator) i.next();
 			
 			// Build the resource key.
-			String resourceKey = model.getClass().getName() + "."
+			final String resourceKey = model.getClass().getName() + "."
 				+ getModelPath() + "." + validator.getClass().getName();
-			
-			validator.setResourceKey(resourceKey);
-			
-			panel.add(validator);
+
+			IValidator proxiedValidator = (IValidator) Proxy.newProxyInstance(validator
+					.getClass().getClassLoader(), new Class[] {IValidator.class},
+					new InvocationHandler()
+					{
+						public Object invoke(Object proxy, Method method, Object[] args)
+								throws Throwable
+						{
+							if (method.getName().equals("resourceKey"))
+							{
+								return resourceKey;
+							}
+							return method.invoke(validator, args);
+						}
+					});
+
+			panel.add(proxiedValidator);
 		}
 		return panel;
 	}
