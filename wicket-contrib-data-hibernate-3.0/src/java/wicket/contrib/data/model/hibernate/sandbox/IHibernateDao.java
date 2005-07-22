@@ -3,7 +3,6 @@ package wicket.contrib.data.model.hibernate.sandbox;
 import java.io.Serializable;
 
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 
 /**
  * An interface to support interaction with Hibernate.

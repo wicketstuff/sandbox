@@ -1,7 +1,6 @@
 package wicket.contrib.data.model.hibernate.sandbox;
 
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 
 /**
  * A support class if you don't want to worry about handling execute callbacks
