@@ -1,10 +1,7 @@
 package wicket.contrib.data.model.sandbox;
 
-import java.util.ArrayList;
-
 import wicket.Component;
 import wicket.model.IModel;
-import wicket.model.Model;
 
 /**
  * A detachable wrapper for an OrderedList.

@@ -13,7 +13,7 @@ import wicket.model.IModel;
 
 /**
  * A column that can have validators added to it. Any subclass must call
- * {@link #prepare(InlineValidatingPanel)} before returning a component
+ * {@link #prepare(InlineValidatingPanel, IModel)} before returning a component
  * from {@link IColumn#getComponent(String, wicket.model.IModel)}.
  * 
  * @author Phil Kulak
