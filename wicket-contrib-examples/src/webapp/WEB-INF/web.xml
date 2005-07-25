@@ -27,6 +27,16 @@
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 
+    <servlet>
+        <servlet-name>VelocityTemplateApplication</servlet-name>
+        <servlet-class>wicket.protocol.http.WicketServlet</servlet-class>
+        <init-param>
+          <param-name>applicationClassName</param-name>
+          <param-value>wicket.contrib.examples.velocity.VelocityTemplateApplication</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
 	<servlet-mapping>
 		<servlet-name>cdapp</servlet-name>
 		<url-pattern>/cdapp/*</url-pattern>
@@ -36,6 +46,11 @@
 		<servlet-name>NavMenuApplication</servlet-name>
 		<url-pattern>/navmenu/*</url-pattern>
 	</servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>VelocityTemplateApplication</servlet-name>
+        <url-pattern>/velocitytemplate/*</url-pattern>
+    </servlet-mapping>
 	
 	<welcome-file-list>
 	<welcome-file>index.html</welcome-file>

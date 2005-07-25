@@ -2,7 +2,6 @@
 <head>
     <title>Wicket Contrib Examples - Template Page</title>
 	<link rel="stylesheet" type="text/css" href="style.css"/>
-	<link rel="stylesheet" type="text/css" href="velocity/style.css"/>
 </head>
 <body>
 
@@ -19,6 +18,10 @@
  	</p>
  </div>
 
+<table cellpadding="5px">
+ <tr>
+  <td valign="top" height="100%">
+  
  <div id="templateInputBox">
     <form wicket:id="templateForm">
       <fieldset>
@@ -32,6 +35,9 @@
       </fieldset>
      </form>   
  </div>
+ 
+  </td>
+  <td valign="top" height="100%">
 
  <div id="templateOutputBox">
   <fieldset>
@@ -39,6 +45,10 @@
 	<span wicket:id="templatePanel">Template output will be put here</span>
   </fieldset>
  </div>
+ 
+  </td>
+ </tr>
+</table>
 
  <div>
 	<span wicket:id="feedback"/>
