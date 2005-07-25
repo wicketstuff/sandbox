@@ -89,6 +89,15 @@
       </properties>
     </dependency>
     <dependency>
+  	  <groupId>wicket-stuff</groupId>
+  	  <artifactId>wicket-velocity-panel</artifactId>
+      <version>1.0</version>
+      <properties>
+        <eclipse.dependency>true</eclipse.dependency>
+        <war.bundle>true</war.bundle>
+      </properties>
+    </dependency>
+    <dependency>
       <groupId>hibernate</groupId>
       <artifactId>hibernate</artifactId>
       <version>2.1.6</version>
@@ -171,6 +180,17 @@
         <war.bundle>true</war.bundle>
       </properties>
     </dependency>
+		<dependency>
+			<groupId>velocity</groupId>
+			<artifactId>velocity</artifactId>
+			<version>1.4</version>
+			<properties>
+				<war.bundle>true</war.bundle>
+				<wicket.group>required</wicket.group>
+				<wicket.description>The supported version of Velocity.</wicket.description>
+			</properties>
+			<url>http://jakarta.apache.org/velocity</url>
+		</dependency>
   </dependencies>
   <build>
     <sourceDirectory>src/java</sourceDirectory>

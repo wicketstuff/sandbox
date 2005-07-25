@@ -20,8 +20,8 @@ package wicket.contrib.examples.velocity;
 import java.util.HashMap;
 
 import wicket.PageParameters;
-import wicket.contrib.examples.WicketExamplePage;
 import wicket.contrib.markup.html.velocity.VelocityPanel;
+import wicket.examples.WicketExamplePage;
 import wicket.markup.html.form.Form;
 import wicket.markup.html.form.TextArea;
 import wicket.markup.html.panel.FeedbackPanel;
