@@ -24,7 +24,7 @@ package wicket.contrib.database;
  */
 public abstract class DatabaseDao
 {
-	DatabaseSession session;
+	private DatabaseSession session;
 
 	/**
 	 * @param session
