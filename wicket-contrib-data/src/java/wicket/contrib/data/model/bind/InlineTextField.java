@@ -30,7 +30,7 @@ public class InlineTextField extends InlineValidatingComponent
 			}
 		});
 
-		add(new Label("label", (String) model.getObject(this))
+		add(new Label("label", model)
 		{
 			public boolean isVisible()
 			{

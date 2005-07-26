@@ -15,7 +15,7 @@ public class LabelPanel extends Panel
 	public LabelPanel(String id, IModel model)
 	{
 		super(id);
-		Label label = new Label("label", model.getObject(this).toString());
+		Label label = new Label("label", model);
 		label.setRenderBodyOnly(true);
 		add(label);
 	}
