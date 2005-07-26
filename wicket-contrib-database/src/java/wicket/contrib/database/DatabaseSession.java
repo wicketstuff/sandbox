@@ -1,6 +1,6 @@
 /*
- * $Id$ $Revision:
- * 1.43 $ $Date$
+ * $Id$
+ * $Revision$ $Date$
  * 
  * ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -18,7 +18,8 @@
 package wicket.contrib.database;
 
 /**
- * Thin wrapper around database session for abstraction.
+ * Abstraction for database sessions. Any database implementation must be able
+ * to perform at least these basic functions.
  * 
  * @author Jonathan Locke
  */
