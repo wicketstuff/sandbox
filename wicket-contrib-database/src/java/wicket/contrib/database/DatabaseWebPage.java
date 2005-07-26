@@ -46,17 +46,33 @@ public class DatabaseWebPage extends WebPage
 		return cycle.getDatabaseSession();
 	}
 	
-	protected IModel load(Class c, Long id)
+	protected IModel newModel(Class c, Long id)
 	{
 		return new DatabaseObjectModel(getDatabaseSession(), c, id);
 	}
 	
-	protected IModel load(Class c)
+	protected IModel newModel(Class c)
 	{
 		try
 		{
-			final Long id = new Long(parameters.getLong("id"));
-			return new DatabaseObjectModel(getDatabaseSession(), c, id);
+			return newModel(c, new Long(parameters.getLong("id")));
+		}
+		catch (StringValueConversionException e)
+		{
+			throw new DatabaseException(e);
+		}
+	}
+	
+	protected Object load(Class c, Long id)
+	{
+		return getDatabaseSession().load(c, id);
+	}
+	
+	protected Object load(Class c)
+	{
+		try
+		{
+			return load(c, new Long(parameters.getLong("id")));
 		}
 		catch (StringValueConversionException e)
 		{
