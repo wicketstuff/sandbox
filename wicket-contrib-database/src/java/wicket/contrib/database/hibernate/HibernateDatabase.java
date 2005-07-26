@@ -1,6 +1,6 @@
 /*
- * $Id$ $Revision:
- * 1.43 $ $Date$
+ * $Id$
+ * $Revision$ $Date$
  * 
  * ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -28,11 +28,13 @@ import org.apache.commons.logging.LogFactory;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.impl.SessionFactoryImpl;
 
 import wicket.WicketRuntimeException;
+import wicket.contrib.database.AbstractEntity;
 import wicket.contrib.database.Database;
 import wicket.contrib.database.DatabaseSession;
 
@@ -77,6 +79,16 @@ public class HibernateDatabase extends Database
 	public DatabaseSession newDatabaseSession()
 	{
 		return new HibernateDatabaseSession(hibernateSessionFactory.openSession());
+	}
+
+	/**
+	 * @return Default annotation configuration for a Hibernate 3 database
+	 */
+	protected AnnotationConfiguration newAnnotationConfiguration()
+	{
+		final AnnotationConfiguration configuration = new AnnotationConfiguration();
+		configuration.addAnnotatedClass(AbstractEntity.class);
+		return configuration;
 	}
 
 	/**
