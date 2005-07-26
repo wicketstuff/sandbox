@@ -28,7 +28,7 @@ public class InlineCheckBox extends InlineValidatingComponent
 			}
 		});
 
-		add(new CheckMark("image", (Boolean) model.getObject(this))
+		add(new CheckMark("image", model)
 		{
 			public boolean isVisible()
 			{

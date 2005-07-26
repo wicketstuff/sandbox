@@ -24,7 +24,7 @@ public class InlineDropDownChoice extends InlineValidatingComponent
 			}
 		});
 		
-		add(new Label("label", model.getObject(this).toString())
+		add(new Label("label", model)
 		{
 			public boolean isVisible()
 			{
