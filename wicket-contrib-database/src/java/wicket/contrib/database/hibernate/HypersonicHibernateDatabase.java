@@ -45,12 +45,12 @@ public class HypersonicHibernateDatabase extends HibernateDatabase
 	}
 
 	/**
-	 * @return Default annotation configuration for a hypersonic hibernate 3.1
+	 * @return Default annotation configuration for a hypersonic hibernate 3
 	 *         database
 	 */
-	protected AnnotationConfiguration getAnnotationConfiguration()
+	protected AnnotationConfiguration newAnnotationConfiguration()
 	{
-		final AnnotationConfiguration configuration = new AnnotationConfiguration();
+		final AnnotationConfiguration configuration = super.newAnnotationConfiguration();
 		configuration.setProperty("hibernate.show_sql", "true");
 		configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.HSQLDialect");
 		configuration.setProperty("hibernate.connection.driver_class", "org.hsqldb.jdbcDriver");
