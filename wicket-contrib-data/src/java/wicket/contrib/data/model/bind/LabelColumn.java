@@ -17,6 +17,6 @@ public class LabelColumn extends AbstractColumn
 
 	public Component getComponent(String id, IModel model)
 	{
-		return new LabelPanel(id, model);
+		return new LabelPanel(id, makePropertyModel(model));
 	}
 }
