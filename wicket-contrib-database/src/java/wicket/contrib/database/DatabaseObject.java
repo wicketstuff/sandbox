@@ -27,14 +27,14 @@ import javax.persistence.Id;
  * Base class for persistent entities.
  */
 @Entity
-public abstract class AbstractEntity implements Cloneable, Serializable
+public abstract class DatabaseObject implements Cloneable, Serializable
 {
 	private Long id;
 
 	/**
 	 * Construct.
 	 */
-	public AbstractEntity()
+	public DatabaseObject()
 	{
 	}
 
@@ -90,11 +90,11 @@ public abstract class AbstractEntity implements Cloneable, Serializable
 	 */
 	public boolean equals(Object obj)
 	{
-		if (obj instanceof AbstractEntity)
+		if (obj instanceof DatabaseObject)
 		{
 			if (id != null)
 			{
-				return id.equals(((AbstractEntity)obj).id);
+				return id.equals(((DatabaseObject)obj).id);
 			}
 			else
 			{
