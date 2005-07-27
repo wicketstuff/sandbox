@@ -34,7 +34,7 @@ import org.hibernate.dialect.Dialect;
 import org.hibernate.impl.SessionFactoryImpl;
 
 import wicket.WicketRuntimeException;
-import wicket.contrib.database.AbstractEntity;
+import wicket.contrib.database.DatabaseObject;
 import wicket.contrib.database.Database;
 import wicket.contrib.database.DatabaseSession;
 
@@ -87,7 +87,7 @@ public class HibernateDatabase extends Database
 	protected AnnotationConfiguration newAnnotationConfiguration()
 	{
 		final AnnotationConfiguration configuration = new AnnotationConfiguration();
-		configuration.addAnnotatedClass(AbstractEntity.class);
+		configuration.addAnnotatedClass(DatabaseObject.class);
 		return configuration;
 	}
 
