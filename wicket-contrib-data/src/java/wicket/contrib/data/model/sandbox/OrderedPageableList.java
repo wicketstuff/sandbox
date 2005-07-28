@@ -1,14 +1,16 @@
 package wicket.contrib.data.model.sandbox;
 
+import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
 
-import wicket.contrib.data.model.UnimplementedList;
-
 /**
- * A List that behaves like a pageable object. It works with a count and a
- * window. The count is used for the total number of elements that are available
- * for this list, and the window is used for the currently loaded elements.
+ * <p>
+ * A read-only List that behaves like a pageable object. It works with a count 
+ * and a window. The count is used for the total number of elements that are 
+ * available for this list, and the window is used for the currently loaded 
+ * elements.
+ * </p>
  * <p>
  * This list figures out what elements need to be loaded when asked for
  * elements. The actual loading of the count and elements is delegated to
@@ -29,10 +31,6 @@ import wicket.contrib.data.model.UnimplementedList;
  * completely.
  * </p>
  * <p>
- * Not all {@link java.util.List}methods are supported. Unsupported methods
- * will throw {@link java.lang.IllegalStateException}s.
- * </p>
- * <p>
  * NOTE: this list is meant for specific situations, like backing up
  * {@link wicket.markup.html.list.PageableListView}s, that use sequential
  * addressing of the list. Random access is inefficient, as a number of rows
@@ -43,7 +41,7 @@ import wicket.contrib.data.model.UnimplementedList;
  * @author Phil Kulak
  * @author Eelco Hillenius
  */
-public abstract class OrderedPageableList extends UnimplementedList
+public abstract class OrderedPageableList extends AbstractList
 		implements IOrderedList
 {
 	private List window = null;
