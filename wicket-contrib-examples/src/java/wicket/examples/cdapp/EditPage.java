@@ -34,7 +34,6 @@ import wicket.markup.html.form.RequiredTextField;
 import wicket.markup.html.form.TextField;
 import wicket.markup.html.form.upload.FileUpload;
 import wicket.markup.html.form.upload.FileUploadField;
-import wicket.markup.html.form.upload.UploadForm;
 import wicket.markup.html.form.validation.IntegerValidator;
 import wicket.markup.html.form.validation.LengthValidator;
 import wicket.markup.html.image.Image;
@@ -142,7 +141,7 @@ public final class EditPage extends CdAppBasePage
 	/**
 	 * Form for uploading an image and attaching that image to the cd.
 	 */
-	private final class ImageUploadForm extends UploadForm
+	private final class ImageUploadForm extends Form
 	{
 		private FileUploadField uploadField;
 
@@ -156,6 +155,11 @@ public final class EditPage extends CdAppBasePage
 		public ImageUploadForm(String name, PersistentObjectModel cdModel, IFeedback feedback)
 		{
 			super(name, cdModel, feedback);
+
+			// set this form to multipart mode
+			setMultiPart(true);
+
+			// add the actual upload field
 			add(uploadField = new FileUploadField("file"));
 		}
 
