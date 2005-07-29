@@ -27,7 +27,7 @@ import javax.persistence.Id;
  * Base class for persistent entities.
  */
 @Entity
-public abstract class DatabaseObject implements Cloneable, Serializable
+public abstract class DatabaseObject implements Serializable
 {
 	private Long id;
 
@@ -61,21 +61,6 @@ public abstract class DatabaseObject implements Cloneable, Serializable
 	}
 
 	/**
-	 * @see java.lang.Object#clone()
-	 */
-	public Object clone()
-	{
-		try
-		{
-			return super.clone();
-		}
-		catch (CloneNotSupportedException e)
-		{
-			throw new RuntimeException(e);
-		}
-	}
-
-	/**
 	 * @see java.lang.Object#toString()
 	 */
 	public String toString()
@@ -88,17 +73,17 @@ public abstract class DatabaseObject implements Cloneable, Serializable
 	/**
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
-	public boolean equals(Object obj)
+	public boolean equals(Object that)
 	{
-		if (obj instanceof DatabaseObject)
+		if (that instanceof DatabaseObject)
 		{
 			if (id != null)
 			{
-				return id.equals(((DatabaseObject)obj).id);
+				return id.equals(((DatabaseObject)that).id);
 			}
 			else
 			{
-				return super.equals(obj);
+				return super.equals(that);
 			}
 		}
 		else
@@ -114,7 +99,7 @@ public abstract class DatabaseObject implements Cloneable, Serializable
 	{
 		if (id != null)
 		{
-			return getClass().hashCode() + id.hashCode();
+			return id.hashCode();
 		}
 		return super.hashCode();
 	}

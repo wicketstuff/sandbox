@@ -144,11 +144,25 @@ public class HibernateDatabaseSession extends DatabaseSession
 		{
 			public void run()
 			{
+				hibernateSession.save(object);
+			}
+		});
+	}
+
+	/**
+	 * @see wicket.contrib.database.DatabaseSession#saveOrUpdate(java.lang.Object)
+	 */
+	public void saveOrUpdate(final Object object)
+	{
+		transaction(new Runnable()
+		{
+			public void run()
+			{
 				hibernateSession.saveOrUpdate(object);
 			}
 		});
 	}
-	
+
 	/**
 	 * Executes a command within a transaction.
 	 * 
@@ -182,9 +196,9 @@ public class HibernateDatabaseSession extends DatabaseSession
 			throw new DatabaseException(e);
 		}
 	}
-
+	
 	/**
-	 * @param object The object to update
+	 * @see wicket.contrib.database.DatabaseSession#update(java.lang.Object)
 	 */
 	public void update(final Object object)
 	{

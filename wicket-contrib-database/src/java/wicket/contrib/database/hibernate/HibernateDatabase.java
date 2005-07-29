@@ -34,8 +34,8 @@ import org.hibernate.dialect.Dialect;
 import org.hibernate.impl.SessionFactoryImpl;
 
 import wicket.WicketRuntimeException;
-import wicket.contrib.database.DatabaseObject;
 import wicket.contrib.database.Database;
+import wicket.contrib.database.DatabaseObject;
 import wicket.contrib.database.DatabaseSession;
 
 
@@ -148,19 +148,9 @@ public class HibernateDatabase extends Database
 		List<String> temp = new ArrayList<String>();
 		for (int i = 0; i < drops.length; i++)
 		{
-			if (includeAlterFlag)
+			if (drops[i].toLowerCase().trim().startsWith("alter") == includeAlterFlag)
 			{
-				if (drops[i].toLowerCase().trim().startsWith("alter"))
-				{
-					temp.add(drops[i]);
-				}
-			}
-			else
-			{
-				if (!drops[i].toLowerCase().trim().startsWith("alter"))
-				{
-					temp.add(drops[i]);
-				}
+				temp.add(drops[i]);
 			}
 		}
 		return (String[])temp.toArray(new String[temp.size()]);

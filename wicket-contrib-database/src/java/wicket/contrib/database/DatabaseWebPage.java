@@ -108,8 +108,18 @@ public class DatabaseWebPage extends WebPage
 		getDatabaseSession().evict(object);
 	}
 	
+	protected void saveOrUpdate(Object object)
+	{
+		getDatabaseSession().saveOrUpdate(object);
+	}
+	
 	protected void save(Object object)
 	{
 		getDatabaseSession().save(object);
+	}
+	
+	protected void update(Object object)
+	{
+		getDatabaseSession().update(object);
 	}
 }
