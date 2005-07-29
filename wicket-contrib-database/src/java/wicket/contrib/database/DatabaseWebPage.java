@@ -58,7 +58,12 @@ public class DatabaseWebPage extends WebPage
 		DatabaseWebRequestCycle cycle = (DatabaseWebRequestCycle)getRequestCycle();
 		return cycle.getDatabaseSession();
 	}
-	
+
+	protected DatabaseDao newDao(final Class c)
+	{
+		return getDatabaseSession().newDao(c);
+	}
+
 	protected IModel newModel(Class c, Long id)
 	{
 		return new DatabaseObjectModel(getDatabaseSession(), c, id);
