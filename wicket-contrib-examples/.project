@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>wicket-contrib-examples</name>
-	<comment>Example for web framework Wicket.</comment>
+	<name>wicket-contrib-data-examples</name>
+	<comment></comment>
 	<projects>
 	</projects>
 	<buildSpec>
@@ -13,6 +13,5 @@
 	</buildSpec>
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
-		<nature>com.sysdeo.eclipse.tomcat.tomcatnature</nature>
 	</natures>
 </projectDescription>

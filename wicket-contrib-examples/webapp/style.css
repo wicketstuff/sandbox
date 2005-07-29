@@ -1,0 +1,139 @@
+body {
+	background-color: white;
+	background-image: url('wicket-logo.png');
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	background-position: 96% 96%;
+	font-family: 'Lucida Sans', 'Helvetica', 'Sans-serif', 'sans';
+	font-size: 9pt;
+	line-height: 1.8em;
+	padding: 10px 10px 10px 10px;
+	margin: 10px 10px 10px 10px;
+}
+
+h1,h2,h3,h4,h5,h6,h7,h8 {
+	color: #E9601A;
+}
+
+.feedbackPanelERROR {
+	color: red;
+	list-style: circle;
+	font-weight: bold;
+}
+
+.feedbackPanelINFO {
+	color: green;
+	list-style: circle;
+	font-weight: bold;
+}
+
+#hellomessage {
+	font-size: 30pt;
+}
+
+#titleblock {
+	background: #DEDEDE;
+	color: white;
+	font-weight: bold;
+	border-bottom: solid #E9601A;
+	border-width: thin;
+	padding: 2px 2px 2px 6px;	
+}
+
+h2 {
+	font-size: 1.25em;
+}
+
+h3 {
+	font-size: 1em;
+}
+
+a {
+	color: #6F6F6F;
+	text-decoration: underline;
+}
+
+img {
+	border: none;
+}
+
+pre {
+	font-family: 'Lucida Sans', 'Helvetica', 'Sans serif', 'sans';
+}
+
+img {
+	border: 0px;
+}
+
+/**
+ * Wicket Panel
+ */
+table.wicket_decorated {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: inherit;
+}
+
+table.wicket_decorated thead td {
+    font-weight: bold;
+    background: #DEDEDE;
+    border: solid;
+    border-color: #999999;
+    border-width: 1px;
+}
+
+table.wicket_decorated tbody td {
+    border: solid;
+    border-color: #999999;
+    border-width: 1px;
+    padding: 2px 5px 2px 5px;
+}
+
+table.wicket_decorated table td {
+    border-width: 0px;
+}
+
+input.inline, select.inline {
+	font-family: verdana;
+    font-size: 12px;
+	border: 1px solid #AAA;
+}
+
+a.wicket_orderNone, a.wicket_orderUp, a.wicket_orderDown {
+	color: inherit;
+	margin-right: 3px;
+	padding-right: 8px;
+	text-decoration: none;
+	background-position: right;
+	background-repeat: no-repeat;
+	display: block;
+}
+
+a.wicket_orderNone {
+	background-image: url(orderNone.gif);
+}
+
+a.wicket_orderUp {
+	background-image: url(orderUp.gif);
+}
+
+a.wicket_orderDown {
+	background-image: url(orderDown.gif);
+}
+
+/**
+ * Page navigation.
+ */
+.pageNavigation {
+	font-family: Arial, Helvetica, sans-serif;
+	margin-bottom: 20px;
+}
+
+.pageNavigation a {
+	text-decoration: none;
+}
+
+.activePage {
+    font-weight: bold;
+    font-size: 16px;
+}
