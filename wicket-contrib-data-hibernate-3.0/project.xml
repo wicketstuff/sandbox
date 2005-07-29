@@ -18,6 +18,20 @@
       <email>eelco12 at users.sourceforge.net</email>
     </developer>
   </developers>
+  <developers>
+    <developer>
+      <name>Phil Kulak</name>
+      <id>pkulak</id>
+      <email>pkulak at users.sourceforge.net</email>
+    </developer>
+  </developers>
+  <developers>
+    <developer>
+      <name>Jonathan Carlson</name>
+      <id>joncrlsn</id>
+      <email>joncrlsn at users.sourceforge.net</email>
+    </developer>
+  </developers>
   <contributors>
   </contributors>
   <dependencies>
@@ -35,24 +49,24 @@
       <version>2.1</version>
     </dependency>
     <dependency>
-      <groupId>cglib</groupId>
-      <artifactId>cglib-full</artifactId>
-      <version>2.0.2</version>
-    </dependency>
-    <dependency>
-      <groupId>odmg</groupId>
-      <artifactId>odmg</artifactId>
-      <version>3.0</version>
-    </dependency>
-    <dependency>
       <groupId>commons-logging</groupId>
       <artifactId>commons-logging</artifactId>
       <version>1.0.4</version>
     </dependency>
     <dependency>
+      <groupId>cglib</groupId>
+      <artifactId>cglib-nodep</artifactId>
+      <version>2.1_2</version>
+    </dependency>
+    <dependency>
       <groupId>hibernate</groupId>
       <artifactId>hibernate</artifactId>
-      <version>3.0.1</version>
+      <version>3.0.5</version>
+    </dependency>
+    <dependency>
+      <groupId>hibernate</groupId>
+      <artifactId>antlr</artifactId>
+      <version>2.7.5H3</version>
     </dependency>
     <dependency>
       <groupId>commons-logging</groupId>
@@ -73,7 +87,7 @@
     <dependency>
       <groupId>wicket</groupId>
       <artifactId>wicket</artifactId>
-      <version>1.0</version>
+      <version>SNAPSHOT</version>
       <properties>
         <eclipse.dependency>true</eclipse.dependency>
       </properties>
@@ -81,22 +95,10 @@
     <dependency>
       <groupId>wicket-stuff</groupId>
       <artifactId>wicket-contrib-data</artifactId>
-      <version>1.0.2</version>
+      <version>SNAPSHOT</version>
       <properties>
         <eclipse.dependency>true</eclipse.dependency>
       </properties>
-    </dependency>
-    <dependency>
-      <groupId>asm</groupId>
-      <artifactId>asm-util</artifactId>
-      <version>1.4.3</version>
-      <type>jar</type>
-    </dependency>
-    <dependency>
-      <groupId>asm</groupId>
-      <artifactId>asm</artifactId>
-      <version>1.4.3</version>
-      <type>jar</type>
     </dependency>
   </dependencies>
   <build>
