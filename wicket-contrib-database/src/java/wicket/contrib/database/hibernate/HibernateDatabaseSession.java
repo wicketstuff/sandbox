@@ -68,25 +68,33 @@ public class HibernateDatabaseSession extends DatabaseSession
 		if (hibernateSession != null)
 		{
 			hibernateSession.flush();
-			if (transaction != null)
+			try
 			{
-				if (rollbackException != null)
+				if (transaction != null)
 				{
-					rollback(rollbackException);
-				}
-				else
-				{
-					try
+					if (rollbackException != null)
 					{
-						transaction.commit();
+						rollback(rollbackException);
+						throw new DatabaseException(rollbackException);
 					}
-					catch (HibernateException e)
+					else
 					{
-						rollback(e);
+						try
+						{
+							transaction.commit();
+						}
+						catch (HibernateException e)
+						{
+							rollback(e);
+							throw new DatabaseException(e);
+						}
 					}
 				}
 			}
-			hibernateSession.close();
+			finally
+			{
+				hibernateSession.close();
+			}
 		}
 	}
 
@@ -211,6 +219,7 @@ public class HibernateDatabaseSession extends DatabaseSession
 			catch (HibernateException e)
 			{
 				rollback(e);
+				throw new DatabaseException(e);
 			}
 		}
 		else
@@ -228,6 +237,7 @@ public class HibernateDatabaseSession extends DatabaseSession
 				catch (HibernateException e)
 				{
 					rollbackException = e;
+					throw new DatabaseException(e);
 				}
 			}
 		}
@@ -264,6 +274,5 @@ public class HibernateDatabaseSession extends DatabaseSession
 			}
 		}
 		log.error(e.getMessage());
-		throw new DatabaseException(e);
 	}
 }
