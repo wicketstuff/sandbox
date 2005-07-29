@@ -1,9 +1,0 @@
-work
-target
-build
-velocity.log
-*.backup
-cdapp.lck
-cdapp.log
-cdapp.properties
-cdapp.script
