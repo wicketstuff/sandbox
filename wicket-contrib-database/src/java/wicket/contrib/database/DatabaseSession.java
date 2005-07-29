@@ -71,7 +71,23 @@ public abstract class DatabaseSession
 	 * @param object
 	 *            The object to save
 	 */
+	public abstract void saveOrUpdate(final Object object);
+
+	/**
+	 * Creates an object
+	 * 
+	 * @param object
+	 *            The object to save
+	 */
 	public abstract void save(final Object object);
+
+	/**
+	 * Updates an existing object
+	 * 
+	 * @param object
+	 *            The object to update
+	 */
+	public abstract void update(final Object object);
 
 	/**
 	 * Deletes an object.
