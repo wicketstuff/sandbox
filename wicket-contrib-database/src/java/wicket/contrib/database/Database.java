@@ -27,6 +27,9 @@ public abstract class Database
 {
 	/** Log. */
 	private static Log log = LogFactory.getLog(Database.class);
+	
+	/** Default transaction semantics for sessions on this database */
+	private DatabaseSession.TransactionSemantics defaultTransactionSemantics = DatabaseSession.TRANSACT_REQUESTS;
 
 	/**
 	 * Drops and recreates database tables
@@ -34,7 +37,24 @@ public abstract class Database
 	public abstract void formatTables();
 	
 	/**
+	 * @return Returns the defaultTransactionSemantics.
+	 */
+	public final DatabaseSession.TransactionSemantics getDefaultTransactionSemantics()
+	{
+		return defaultTransactionSemantics;
+	}
+
+	/**
 	 * @return Subclass of HibernateDatabaseSession depending on type of database;
 	 */
 	public abstract DatabaseSession newDatabaseSession();
+
+	/**
+	 * @param defaultTransactionSemantics The defaultTransactionSemantics to set.
+	 */
+	public final void setDefaultTransactionSemantics(
+			DatabaseSession.TransactionSemantics defaultTransactionSemantics)
+	{
+		this.defaultTransactionSemantics = defaultTransactionSemantics;
+	}
 }

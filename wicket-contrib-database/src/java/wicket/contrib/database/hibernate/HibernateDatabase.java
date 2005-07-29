@@ -78,7 +78,7 @@ public class HibernateDatabase extends Database
 	 */
 	public DatabaseSession newDatabaseSession()
 	{
-		return new HibernateDatabaseSession(hibernateSessionFactory.openSession());
+		return new HibernateDatabaseSession(this, hibernateSessionFactory.openSession());
 	}
 
 	/**

@@ -25,9 +25,66 @@ package wicket.contrib.database;
  */
 public abstract class DatabaseSession
 {
-	public DatabaseSession()
+	public static final TransactionSemantics TRANSACT_OPERATIONS = new TransactionSemantics();
+	public static final TransactionSemantics TRANSACT_REQUESTS = new TransactionSemantics();
+	private TransactionSemantics transactionSemantics;
+	
+	public static class TransactionSemantics { }
+
+	public DatabaseSession(final Database database)
 	{
+		setTransactionSemantics(database.getDefaultTransactionSemantics());
 	}
+
+	/**
+	 * Close this session
+	 */
+	public abstract void close();
+
+	/**
+	 * Deletes an object.
+	 * 
+	 * @param c
+	 *            The class of object to delete
+	 * @param id
+	 *            The object id to delete
+	 */
+	public abstract void delete(final Class c, final Long id);
+
+	/**
+	 * Deletes an object.
+	 * 
+	 * @param object
+	 *            Object to delete
+	 */
+	public abstract void delete(Object object);
+
+	/**
+	 * Evict object from persistence cache
+	 * 
+	 * @param object
+	 *            Object to evict
+	 */
+	public abstract void evict(Object object);
+
+	/**
+	 * @return Returns the transactionSemantics.
+	 */
+	public final TransactionSemantics getTransactionSemantics()
+	{
+		return transactionSemantics;
+	}
+
+	/**
+	 * Load the object with the given id
+	 * 
+	 * @param c
+	 *            The class of object to load
+	 * @param id
+	 *            The object's id
+	 * @return The object
+	 */
+	public abstract Object load(final Class c, final Long id);
 
 	/**
 	 * Get an instance of a DAO class
@@ -55,15 +112,12 @@ public abstract class DatabaseSession
 	}
 
 	/**
-	 * Load the object with the given id
+	 * Creates an object
 	 * 
-	 * @param c
-	 *            The class of object to load
-	 * @param id
-	 *            The object's id
-	 * @return The object
+	 * @param object
+	 *            The object to save
 	 */
-	public abstract Object load(final Class c, final Long id);
+	public abstract void save(final Object object);
 
 	/**
 	 * Creates an object or updates it if it already exists
@@ -74,12 +128,12 @@ public abstract class DatabaseSession
 	public abstract void saveOrUpdate(final Object object);
 
 	/**
-	 * Creates an object
-	 * 
-	 * @param object
-	 *            The object to save
+	 * @param transactionSemantics The transactionSemantics to set.
 	 */
-	public abstract void save(final Object object);
+	public final void setTransactionSemantics(TransactionSemantics transactionSemantics)
+	{
+		this.transactionSemantics = transactionSemantics;
+	}
 
 	/**
 	 * Updates an existing object
@@ -88,35 +142,4 @@ public abstract class DatabaseSession
 	 *            The object to update
 	 */
 	public abstract void update(final Object object);
-
-	/**
-	 * Deletes an object.
-	 * 
-	 * @param object
-	 *            Object to delete
-	 */
-	public abstract void delete(Object object);
-
-	/**
-	 * Deletes an object.
-	 * 
-	 * @param c
-	 *            The class of object to delete
-	 * @param id
-	 *            The object id to delete
-	 */
-	public abstract void delete(final Class c, final Long id);
-
-	/**
-	 * Evict object from persistence cache
-	 * 
-	 * @param object
-	 *            Object to evict
-	 */
-	public abstract void evict(Object object);
-
-	/**
-	 * Close this session
-	 */
-	public abstract void close();
 }
