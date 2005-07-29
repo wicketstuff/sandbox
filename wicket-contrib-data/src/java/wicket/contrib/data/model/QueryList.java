@@ -1,4 +1,4 @@
-package wicket.contrib.data.model.sandbox;
+package wicket.contrib.data.model;
 
 import java.util.Iterator;
 import java.util.List;
@@ -11,6 +11,23 @@ import java.util.List;
 public abstract class QueryList extends OrderedPageableList
 {
 	protected final List getItems(int start, int max, List ordering)
+	{
+		return getItems(start, max, makeOrderBy(ordering));
+	}
+	
+	protected final List getAllItems(List ordering)
+	{
+		return getAllItems(makeOrderBy(ordering));
+	}
+	
+	protected abstract List getItems(int start, int max, String orderBy);
+	
+	protected List getAllItems(String orderBy)
+	{
+		return null;
+	}
+	
+	protected String makeOrderBy(List ordering)
 	{
 		StringBuffer orderBy = new StringBuffer();
 		if (ordering.size() > 0)
@@ -28,8 +45,6 @@ public abstract class QueryList extends OrderedPageableList
 				addComma = true;
 			}
 		}
-		return getItems(start, max, orderBy.toString());
+		return orderBy.toString();
 	}
-	
-	protected abstract List getItems(int start, int max, String orderBy);
 }

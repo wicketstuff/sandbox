@@ -1,4 +1,4 @@
-package wicket.contrib.data.model.sandbox;
+package wicket.contrib.data.model;
 
 import wicket.Component;
 import wicket.WicketRuntimeException;

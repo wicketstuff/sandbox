@@ -1,17 +1,18 @@
 package wicket.contrib.data.model.bind;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
 import wicket.Component;
 import wicket.IFeedback;
-import wicket.contrib.data.model.bind.IDataSource.EntityField;
+import wicket.contrib.data.model.OrderedPageableList;
+import wicket.contrib.data.model.bind.IObjectDataSource.EntityField;
 import wicket.markup.html.list.ListItem;
 import wicket.markup.html.list.ListView;
 import wicket.markup.html.panel.Panel;
 import wicket.model.IModel;
+import wicket.util.convert.Converter;
 import wicket.util.string.Strings;
 
 /**
@@ -30,9 +31,11 @@ public class GridPanel extends Panel
 {
 	private List columns;
 
-	private IDataSource dataSource;
+	private IListDataSource dataSource;
 	
 	private int perPage;
+	
+	private LocalGridView gView;
 
 	/**
 	 * @param id
@@ -40,7 +43,7 @@ public class GridPanel extends Panel
 	 * @param dataSource
 	 *            the dataSource to use to modify and select data
 	 */
-	public GridPanel(String id, IDataSource dataSource)
+	public GridPanel(String id, IListDataSource dataSource)
 	{
 		this(id, dataSource, 10, null, null);
 	}
@@ -57,7 +60,7 @@ public class GridPanel extends Panel
 	 * @param feedback
 	 *            the feedback collector to use for validation errors
 	 */
-	public GridPanel(String id, IDataSource dataSource, int perPage, 
+	public GridPanel(String id, IListDataSource dataSource, int perPage, 
 			List columns, IFeedback feedback)
 	{
 		super(id);
@@ -73,10 +76,16 @@ public class GridPanel extends Panel
 			this.columns = columns;
 		}
 		
-		LocalGridView gView = new LocalGridView(feedback);
-		
-		add(gView);
+		add(gView = new LocalGridView(feedback));
 		add(new PageNav("pageNav", gView.getListView()));
+	}
+	
+	/**
+	 * @see GridView#setList(List)
+	 */
+	public void setList(OrderedPageableList list)
+	{
+		gView.setList(list);
 	}
 
 	private class LocalGridView extends GridView
@@ -166,9 +175,12 @@ public class GridPanel extends Panel
 			
 			if (type == EntityField.FIELD)
 			{
-				if (clazz.isAssignableFrom(String.class))
+				// Are we able to convert the given type?
+				if (getConverter() instanceof Converter &&
+						((Converter) getConverter()).get(clazz) != null)
 				{
-					cols.add(new TextFieldColumn(makeColHeading(name), name));
+					cols.add(new TextFieldColumn(makeColHeading(name), name)
+						.setType(clazz));
 				}
 				else if (clazz.isAssignableFrom(Boolean.class))
 				{
@@ -182,13 +194,10 @@ public class GridPanel extends Panel
 			else if (type == EntityField.ENTITY)
 			{
 				List allEntities = dataSource.findAll(clazz);
-				Object firstEntity = allEntities.get(0);
-				
-				if (firstEntity instanceof Comparable)
+				if (allEntities instanceof OrderedPageableList)
 				{
-					Collections.sort(allEntities);
+					((OrderedPageableList) allEntities).setUsePaging(false);
 				}
-				
 				cols.add(new DropDownChoiceColumn(makeColHeading(name), name, allEntities));
 			}
 		}

@@ -39,7 +39,7 @@ public interface IColumn extends Serializable
 	 * the row. It's up to the column to decide how to map itself to a field(s).
 	 * 
 	 * @param id
-	 *            the the returned component should use
+	 *            the id the returned component should use
 	 * @param model
 	 *            the model the returned component should use
 	 * @return a component representing each data cell for this column
