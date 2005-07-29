@@ -1,8 +1,10 @@
-package wicket.contrib.data.model.sandbox;
+package wicket.contrib.data.model;
 
 import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
+
+import wicket.model.IDetachable;
 
 /**
  * <p>
@@ -17,7 +19,7 @@ import java.util.List;
  * subclasses. Ordering is supported through the add/remove ordering methods.
  * </p>
  * <p>
- * Detachable operation is supported by {@link #getDetachableModel()}, however,
+ * Detachable operation is supported by {@link DetachableList}, however,
  * for expensive queries (such as search) it may be advisable to set the window
  * several times larger than the paging size and not use detaching so that the
  * search is rerun less often. Also note tha this class is most efficient when
@@ -42,7 +44,7 @@ import java.util.List;
  * @author Eelco Hillenius
  */
 public abstract class OrderedPageableList extends AbstractList
-		implements IOrderedList
+		implements IDetachable
 {
 	private List window = null;
 
@@ -55,41 +57,51 @@ public abstract class OrderedPageableList extends AbstractList
 	private List ordering = new ArrayList(3);
 	
 	private int orderingMaxFields = 2;
-
-	/**
-	 * Default constructor. A detachable list is created with a default window
-	 * size of 10, not retaining past orderings.
-	 */
-	public OrderedPageableList()
+	
+	private boolean usePaging = true;
+	
+	/** a handy replacement when Collections.EMPTY_LIST just won't do. **/
+	public static final OrderedPageableList EMPTY_LIST = new OrderedPageableList()
 	{
-	}
+		protected List getItems(int start, int max, List ordering)
+		{
+			return null;
+		}
 
+		protected int getCount()
+		{
+			return 0;
+		}
+	};
+	
 	/**
-	 * Creates a list with the given window size.
-	 * 
-	 * @param windowSize
-	 *            the number of elements loaded at one time
+	 * @param windowSize the new size of the pageing window
+	 * @return itself to allow chaining
 	 */
-	public OrderedPageableList(int windowSize)
+	public OrderedPageableList setWindowSize(int windowSize)
 	{
 		this.windowSize = windowSize;
+		return this;
 	}
 	
 	/**
-	 * Creates a list with the given window size.
-	 * 
-	 * @param windowSize
-	 *            the number of elements loaded at one time
-	 * @param orderingMaxFields
-	 *            the max number of fields to retain in the ordering list
+	 * @param orderingMaxFields the maximum number of orderings to remember
+	 * @return itself to allow chaining
 	 */
-	public OrderedPageableList(int windowSize, int orderingMaxFields) {
-		this(windowSize);
-		if (orderingMaxFields < 0) {
-			throw new IllegalArgumentException(
-				"Max fields for ordering must be a non-negative integer.");
-		}
+	public OrderedPageableList setOrderingMaxFields(int orderingMaxFields)
+	{
 		this.orderingMaxFields = orderingMaxFields;
+		return this;
+	}
+	
+	/**
+	 * @param usePaging false to have this list fetch all items when any one is needed
+	 * @return itself to allow chaining
+	 */
+	public OrderedPageableList setUsePaging(boolean usePaging)
+	{
+		this.usePaging = usePaging;
+		return this;
 	}
 
 	/**
@@ -102,9 +114,32 @@ public abstract class OrderedPageableList extends AbstractList
 	 * @return all the items in the current window
 	 */
 	protected abstract List getItems(int start, int max, List ordering);
+	
+	/**
+	 * Override this method to return all items in the list. This doesn't have
+	 * to be implemented. If it isn't, {@link #getCount()} will be called when
+	 * all the items need to be loaded.
+	 * 
+	 * @param ordering the list of orderings to use
+	 * @return all items
+	 */
+	protected List getAllItems(List ordering)
+	{
+		return null;
+	}
+	
+	private int getCountInternal()
+	{
+		if (!usePaging)
+		{
+			resetWindow(0);
+			return window.size();
+		}
+		return getCount();
+	}
 
 	/**
-	 * Returns the total elements.
+	 * @return the total elements.
 	 */
 	protected abstract int getCount();
 
@@ -115,7 +150,7 @@ public abstract class OrderedPageableList extends AbstractList
 	 * @param field the field to order by
 	 * @return itself to allow chaining
 	 */
-	public IOrderedList addOrder(String field)
+	public OrderedPageableList addOrder(String field)
 	{
 		if (orderingMaxFields == 0) {
 			return this;
@@ -146,7 +181,7 @@ public abstract class OrderedPageableList extends AbstractList
 	/**
 	 * Removes the ordering on the given field.
 	 */
-	public IOrderedList removeOrder(String field)
+	public OrderedPageableList removeOrder(String field)
 	{
 		ordering.remove(new ListOrder(field));
 		return this;
@@ -171,7 +206,7 @@ public abstract class OrderedPageableList extends AbstractList
 
 		int relativeIndex = index - windowStart;
 
-		if (relativeIndex < 0 || relativeIndex >= windowSize)
+		if (relativeIndex < 0 || relativeIndex >= window.size())
 		{
 			resetWindow(index);
 			relativeIndex = 0;
@@ -194,18 +229,9 @@ public abstract class OrderedPageableList extends AbstractList
 	public final int size()
 	{
 		if (totalElements == -1)
-			totalElements = getCount();
+			totalElements = getCountInternal();
 
 		return totalElements;
-	}
-
-	/**
-	 * A convenience method for obtaining a DetachableModel containing this
-	 * list.
-	 */
-	public DetachableList getDetachableModel()
-	{
-		return new DetachableList(this);
 	}
 
 	public void detach()
@@ -216,7 +242,20 @@ public abstract class OrderedPageableList extends AbstractList
 
 	private void resetWindow(int start)
 	{
-		windowStart = start;
-		window = getItems(windowStart, windowSize, ordering);
+		if (usePaging)
+		{
+			windowStart = start;
+			window = getItems(windowStart, windowSize, ordering);
+		}
+		else
+		{
+			windowStart = 0;
+			window = getAllItems(ordering);
+			
+			if (window == null)
+			{
+				window = getItems(0, size(), ordering);
+			}
+		}
 	}
 }

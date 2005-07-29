@@ -34,4 +34,13 @@ public class InlineValidatingPanel extends Panel
 		component.add(validator);
 		return this;
 	}
+	
+	/**
+	 * Sets the type for the inner form component.
+	 */
+	public InlineValidatingPanel setType(Class c)
+	{
+		component.setType(c);
+		return this;
+	}
 }

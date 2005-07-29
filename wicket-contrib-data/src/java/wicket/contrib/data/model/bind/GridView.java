@@ -5,7 +5,7 @@ import java.util.List;
 import wicket.Component;
 import wicket.IFeedback;
 import wicket.WicketRuntimeException;
-import wicket.contrib.data.model.sandbox.DetachableList;
+import wicket.contrib.data.model.DetachableList;
 import wicket.markup.html.form.Form;
 import wicket.markup.html.list.ListItem;
 import wicket.markup.html.list.PageableListView;
@@ -28,7 +28,7 @@ public abstract class GridView extends Form
 
 	private FormList listView;
 	
-	private IDataSource dataSource;
+	private IListDataSource dataSource;
 
 	/**
 	 * @param id
@@ -38,7 +38,7 @@ public abstract class GridView extends Form
 	 * @param perPage
 	 *            the number of items to display per page
 	 */
-	public GridView(String id, IDataSource dataSource, IFeedback feedback, 
+	public GridView(String id, IListDataSource dataSource, IFeedback feedback, 
 			int perPage)
 	{
 		super(id, EMPTY_MODEL, feedback);
@@ -53,6 +53,18 @@ public abstract class GridView extends Form
 	public PageableListView getListView()
 	{
 		return listView;
+	}
+	
+	/**
+	 * Resets the list being used by the panel. The new list must contain the
+	 * same entities as the one created on initialization.
+	 * 
+	 * @param list the list to set
+	 */
+	public void setList(List list)
+	{
+		listView.setModelObject(list);
+		listView.removeAll();
 	}
 
 	/**
@@ -163,12 +175,11 @@ public abstract class GridView extends Form
 	 */
 	public static GridView findGridView(Component component)
 	{
-		GridView form = (GridView) component
-				.findParent(GridView.class);
+		GridView form = (GridView) component.findParent(GridView.class);
 		if (form == null)
 		{
 			throw new WicketRuntimeException("An inline component must be a "
-					+ "child of a ListViewForm.");
+					+ "child of a GridView.");
 		}
 		return form;
 	}

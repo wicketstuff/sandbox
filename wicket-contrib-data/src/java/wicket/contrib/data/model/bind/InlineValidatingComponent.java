@@ -3,6 +3,7 @@ package wicket.contrib.data.model.bind;
 import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.form.FormComponent;
 import wicket.markup.html.form.validation.IValidator;
+import wicket.markup.html.form.validation.TypeValidator;
 
 /**
  * Used for any inline component that needs to be able to add validators to
@@ -31,6 +32,22 @@ public abstract class InlineValidatingComponent extends WebMarkupContainer
 	public InlineValidatingComponent add(IValidator validator)
 	{
 		formComponent.add(validator);
+		return this;
+	}
+	
+	/**
+	 * @param c the class type of the component
+	 * @return itselft to allow chaining
+	 */
+	public InlineValidatingComponent setType(final Class c)
+	{
+		formComponent.add(new TypeValidator(c)
+		{
+			protected String resourceKey(FormComponent formComponent)
+			{
+				return formComponent.getForm().getId() + ".conversionError." + c.getName();
+			}
+		});
 		return this;
 	}
 

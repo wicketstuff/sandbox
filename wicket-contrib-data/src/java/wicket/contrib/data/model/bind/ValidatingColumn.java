@@ -21,6 +21,7 @@ import wicket.model.IModel;
 public abstract class ValidatingColumn extends AbstractColumn
 {
 	private List validators = new ArrayList();
+	private Class type;
 	
 	public ValidatingColumn(String displayName, String modelPath)
 	{
@@ -60,6 +61,20 @@ public abstract class ValidatingColumn extends AbstractColumn
 
 			panel.add(proxiedValidator);
 		}
+		
+		if (type != null)
+		{
+			panel.setType(type);
+		}
 		return panel;
+	}
+	
+	/**
+	 * Sets the conversion type for this component.
+	 */
+	public ValidatingColumn setType(Class type)
+	{
+		this.type = type;
+		return this;
 	}
 }
