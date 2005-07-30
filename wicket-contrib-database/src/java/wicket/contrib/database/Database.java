@@ -29,7 +29,7 @@ public abstract class Database
 	private static Log log = LogFactory.getLog(Database.class);
 	
 	/** Default transaction semantics for sessions on this database */
-	private DatabaseSession.TransactionSemantics defaultTransactionSemantics = DatabaseSession.TRANSACT_REQUESTS;
+	private DatabaseSession.TransactionScope defaultTransactionSemantics = DatabaseSession.TRANSACT_REQUESTS;
 
 	/**
 	 * Drops and recreates database tables
@@ -39,7 +39,7 @@ public abstract class Database
 	/**
 	 * @return Returns the defaultTransactionSemantics.
 	 */
-	public final DatabaseSession.TransactionSemantics getDefaultTransactionSemantics()
+	public final DatabaseSession.TransactionScope getDefaultTransactionSemantics()
 	{
 		return defaultTransactionSemantics;
 	}
@@ -53,7 +53,7 @@ public abstract class Database
 	 * @param defaultTransactionSemantics The defaultTransactionSemantics to set.
 	 */
 	public final void setDefaultTransactionSemantics(
-			DatabaseSession.TransactionSemantics defaultTransactionSemantics)
+			DatabaseSession.TransactionScope defaultTransactionSemantics)
 	{
 		this.defaultTransactionSemantics = defaultTransactionSemantics;
 	}
