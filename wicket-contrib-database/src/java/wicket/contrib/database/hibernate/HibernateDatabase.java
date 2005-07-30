@@ -88,6 +88,7 @@ public class HibernateDatabase extends Database
 	{
 		final AnnotationConfiguration configuration = new AnnotationConfiguration();
 		configuration.addAnnotatedClass(DatabaseObject.class);
+		configuration.setProperty("hibernate.jdbc.use_streams_for_binary", "true");
 		return configuration;
 	}
 
