@@ -1,0 +1,27 @@
+<wicket:extend>
+ <span wicket:id="feedback"/>
+ <form wicket:id="form" action="">
+  <fieldset>
+   <legend>New Album</legend>
+   <table>
+    <tr>
+     <td>Artist:</td>
+     <td><input type="text" wicket:id="artist"/></td>
+    </tr><tr>
+     <td>Title:</td>
+     <td><input type="text" wicket:id="title"/></td>
+    </tr><tr>
+     <td>Date:</td>
+     <td><input type="text" wicket:id="date"/></td>
+    </tr><tr>
+     <td>Category:</td>
+     <td><select wicket:id="category"></select></td>
+    </tr>
+   </table>
+   <p>
+    <input type="submit" value="Submit"/>
+    <input type="submit" value="Cancel" wicket:id="cancel"/>
+   </p>
+  </fieldset>
+ </form>
+</wicket:extend>
