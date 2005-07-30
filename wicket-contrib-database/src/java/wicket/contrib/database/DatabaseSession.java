@@ -25,11 +25,11 @@ package wicket.contrib.database;
  */
 public abstract class DatabaseSession
 {
-	public static final TransactionSemantics TRANSACT_OPERATIONS = new TransactionSemantics();
-	public static final TransactionSemantics TRANSACT_REQUESTS = new TransactionSemantics();
-	private TransactionSemantics transactionSemantics;
+	public static final TransactionScope TRANSACT_OPERATIONS = new TransactionScope();
+	public static final TransactionScope TRANSACT_REQUESTS = new TransactionScope();
+	private TransactionScope transactionSemantics;
 	
-	public static class TransactionSemantics { }
+	public static class TransactionScope { }
 
 	public DatabaseSession(final Database database)
 	{
@@ -70,7 +70,7 @@ public abstract class DatabaseSession
 	/**
 	 * @return Returns the transactionSemantics.
 	 */
-	public final TransactionSemantics getTransactionSemantics()
+	public final TransactionScope getTransactionSemantics()
 	{
 		return transactionSemantics;
 	}
@@ -130,7 +130,7 @@ public abstract class DatabaseSession
 	/**
 	 * @param transactionSemantics The transactionSemantics to set.
 	 */
-	public final void setTransactionSemantics(TransactionSemantics transactionSemantics)
+	public final void setTransactionSemantics(TransactionScope transactionSemantics)
 	{
 		this.transactionSemantics = transactionSemantics;
 	}
