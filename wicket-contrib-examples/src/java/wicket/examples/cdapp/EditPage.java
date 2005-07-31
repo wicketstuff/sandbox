@@ -170,7 +170,7 @@ public final class EditPage extends CdAppBasePage
 			if (upload != null)
 			{
 				CD cd = (CD)getModelObject();
-				cd.setImage(upload.getBytes());
+				cd.setImageBytes(upload.getBytes());
 				thumbnailImage.setImageResource(getThumbnail());
 				getCdDao().save(cd);
 			}
@@ -270,7 +270,7 @@ public final class EditPage extends CdAppBasePage
 			{
 				protected byte[] getImageData()
 				{
-					return cd.getImage();
+					return cd.getImageBytes();
 				}
 			};
 			return new ThumbnailImageResource(img, 100);

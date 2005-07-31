@@ -55,7 +55,8 @@ public final class ImagePopupLink extends Link
 	 */
 	public void onClick()
 	{
-		final CD cd = (CD)getModelObject();
+		CD cd = (CD)getModelObject();
+		final byte[] image = cd.getImageBytes();
 		WebResource imgResource = new WebResource()
 		{
 			public IResourceStream getResourceStream()
@@ -64,7 +65,7 @@ public final class ImagePopupLink extends Link
 				{
 					protected byte[] getImageData()
 					{
-						return cd.getImage();
+						return image;
 					}
 				};
 				return img.getResourceStream();
