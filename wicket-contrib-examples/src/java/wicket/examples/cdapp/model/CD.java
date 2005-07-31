@@ -18,11 +18,20 @@
  */
 package wicket.examples.cdapp.model;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.Blob;
+import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+
+import org.hibernate.Hibernate;
+
+import wicket.util.io.Streams;
 
 /**
  * @author Eelco Hillenius
@@ -34,7 +43,7 @@ public class CD extends Entity
 	private String label;
 	private String description;
 	private Integer rating;
-	private byte[] image;
+	private Blob image;
 
 	private Integer year;
 	private List tracks;
@@ -285,7 +294,7 @@ public class CD extends Entity
 	 * Gets the image.
 	 * @return image
 	 */
-	public final byte[] getImage()
+	public Blob getImage()
 	{
 		return image;
 	}
@@ -294,10 +303,43 @@ public class CD extends Entity
 	 * Sets the image.
 	 * @param image image
 	 */
-	public final void setImage(byte[] image)
+	public void setImage(Blob image)
 	{
 		this.image = image;
 	}
+
+	/**
+	 * Sets the image.
+	 * @param image image
+	 */
+	public void setImageBytes(byte[] image)
+	{
+		setImage(Hibernate.createBlob(image));
+	}
+
+	/**
+	 * Gets the blob as a byte array.
+	 * @return the blob as a byte array
+	 */
+	public byte[] getImageBytes()  
+    {  
+         try  
+         {  
+              Blob image = getImage();  
+              InputStream in = image.getBinaryStream();  
+              ByteArrayOutputStream out = new ByteArrayOutputStream();  
+              Streams.copy(in, out);   
+              return out.toByteArray();  
+         }  
+         catch (SQLException e)  
+         {  
+              throw new RuntimeException(e);  
+         }  
+         catch (IOException e)  
+         {  
+              throw new RuntimeException(e);  
+         }  
+    } 
 
 	/**
 	 * set the available ratings for cd's
