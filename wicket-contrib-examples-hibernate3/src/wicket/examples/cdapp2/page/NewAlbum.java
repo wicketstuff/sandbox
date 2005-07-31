@@ -14,6 +14,12 @@ import wicket.markup.html.panel.FeedbackPanel;
 import wicket.model.CompoundPropertyModel;
 import wicket.model.IModel;
 
+/**
+ * Our page to handle creating a new album. This is not set up to handle
+ * editing a form since that is done from the list itself.
+ * 
+ * @author Phil Kulak
+ */
 public class NewAlbum extends CdPage {
 	public NewAlbum() {
 		super("New Album");
@@ -43,7 +49,7 @@ public class NewAlbum extends CdPage {
 				public void onSubmit() {
 					setResponsePage(new BrowseAlbums());
 				}
-			}.setImmediate(true));
+			}.setImmediate(true)); // so the form isn't validated
 		}
 		
 		@Override

@@ -13,6 +13,11 @@ import wicket.markup.html.panel.FeedbackPanel;
 import wicket.model.CompoundPropertyModel;
 import wicket.util.value.ValueMap;
 
+/**
+ * The main and entry page for the application.
+ * 
+ * @author Phil Kulak
+ */
 public class BrowseAlbums extends CdPage {
 	GridPanel gridPanel;
 	
@@ -25,6 +30,8 @@ public class BrowseAlbums extends CdPage {
 		super("Browse Albums");
 		IListDataSource ds = new HibernateDataSource(Album.class, COMPONENT_DAO);
 		
+        // We have a feedback panel for our grid and our search form, each of
+        // which is contained in it's own form.
 		FeedbackPanel pageFeedback = new FeedbackPanel("pageFeedback");
 		FeedbackPanel gridFeedback = new FeedbackPanel("gridFeedback");
 		add(pageFeedback);
@@ -45,6 +52,8 @@ public class BrowseAlbums extends CdPage {
 			super("searchForm", new CompoundPropertyModel(new ValueMap()), null);
 			add(new TextField("term"));
 			
+            // Replaces the backing list with one that only contains the results
+            // of the search.
 			add(new Button("submit") {
 				@Override
 				public void onSubmit() {
@@ -53,6 +62,7 @@ public class BrowseAlbums extends CdPage {
 				}
 			});
 			
+            // Restors the GridPanel to it's origonal state.
 			add(new Button("clear") {
 				@Override
 				public void onSubmit() {
