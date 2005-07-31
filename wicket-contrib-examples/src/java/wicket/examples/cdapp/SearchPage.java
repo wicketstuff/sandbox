@@ -400,7 +400,7 @@ public class SearchPage extends CdAppBasePage
 		protected void populateItem(final LoopItem iteration)
 		{
 			final PageableListViewNavigationLink link = new PageableListViewNavigationLink(
-					"pageLink", pageableListView, iteration.getIteration());
+					"pageLink", pageable, iteration.getIteration());
 
 			if (iteration.getIteration() > 0)
 			{

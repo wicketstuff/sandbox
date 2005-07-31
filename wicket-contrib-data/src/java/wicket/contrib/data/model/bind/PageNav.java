@@ -23,7 +23,7 @@ public class PageNav extends PageableListViewNavigation
 		int page = loopItem.getIteration();
 
 		PageableListViewNavigationLink link = new PageableListViewNavigationLink(
-			"pageLink", pageableListView, page);
+			"pageLink", pageable, page);
 		
 		// Set the surrounding tags when this link is active.
 		link.setBeforeDisabledLink("<span class=\"activePage\">[");
@@ -37,8 +37,8 @@ public class PageNav extends PageableListViewNavigation
 	}
 
 	public boolean isVisible() {
-		int pageCount = pageableListView.getPageCount();
-		int currentPage = pageableListView.getCurrentPage();
+		int pageCount = pageable.getPageCount();
+		int currentPage = pageable.getCurrentPage();
 		return pageCount > 1 || currentPage > pageCount - 1;
 	}
 }
