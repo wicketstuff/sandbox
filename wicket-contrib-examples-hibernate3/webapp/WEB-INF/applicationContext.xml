@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName">
+			<value>org.hsqldb.jdbcDriver</value>
+		</property>
+		<property name="url">
+			<value>jdbc:hsqldb:cdApp</value>
+		</property>
+		<property name="username">
+			<value>sa</value>
+		</property>
+		<property name="password">
+			<value></value>
+		</property>
+	</bean>
+
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+        <property name="hibernateProperties">
+          <props>
+            <prop key="hibernate.dialect">org.hibernate.dialect.HSQLDialect</prop>
+            <prop key="hibernate.show_sql">true</prop>
+            <prop key="hibernate.use_outer_join">true</prop>
+            <prop key="hibernate.dbcp.maxActive">10</prop>
+            <prop key="hibernate.dbcp.maxIdle">10</prop>
+            <prop key="hibernate.dbcp.maxWait">-1</prop>
+            <prop key="hibernate.dbcp.whenExhaustedAction">1</prop>
+            <prop key="hibernate.dbcp.testOnBorrow">true</prop>
+            <prop key="hibernate.dbcp.testOnReturn">false</prop>
+            <prop key="hibernate.dbcp.ps.maxActive">10</prop>
+            <prop key="hibernate.dbcp.ps.maxIdle">10</prop>
+            <prop key="hibernate.dbcp.ps.maxWait">1000 * 60 * 30</prop>
+            <prop key="hibernate.dbcp.ps.whenExhaustedAction">1</prop>
+            <prop key="hbm2ddl.auto">create-drop</prop>
+            <prop key="cache.use_second_level_cache">false</prop>
+          </props>
+       </property>
+       <property name="annotatedClasses">
+	      <list>
+      		<value>wicket.examples.cdapp2.model.Category</value>
+        	<value>wicket.examples.cdapp2.model.Album</value>
+        	<value>wicket.examples.cdapp2.model.Track</value>
+          </list>
+       </property>
+       <property name="dataSource" ref="dataSource"/>
+    </bean>
+    
+    <!-- Data Access Objects -->
+    <bean id="dao" class="wicket.examples.cdapp2.model.Dao">
+       <property name="sessionFactory" ref="sessionFactory"/>
+       <property name="componentDao" ref="componentDao"/>
+    </bean>
+    
+    <bean id="componentDao" class="wicket.examples.cdapp2.CdComponentDao"/>
+    
+    <bean id="databaseMaker" class="wicket.examples.cdapp2.DatabaseCreatingBean">
+    	<property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+</beans>

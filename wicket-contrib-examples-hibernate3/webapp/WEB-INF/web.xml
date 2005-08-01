@@ -7,6 +7,30 @@
 
 	<display-name>Wicket Contrib CDApp Example</display-name>
 
+	<context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>
+            /WEB-INF/applicationContext.xml
+        </param-value>
+    </context-param>
+    
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+    
+    <filter>
+        <filter-name>OpenSessionInView</filter-name>
+        <filter-class>org.springframework.orm.hibernate3.support.OpenSessionInViewFilter</filter-class>
+        <init-param>
+             <param-name>singleSession</param-name>
+             <param-value>true</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>OpenSessionInView</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
 	<servlet>
 		<servlet-name>cdapp2</servlet-name>
 		<servlet-class>wicket.protocol.http.WicketServlet</servlet-class>
