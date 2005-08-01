@@ -3,30 +3,36 @@ package wicket.examples.cdapp2.model;
 import java.util.List;
 
 import org.hibernate.Session;
+import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import static wicket.examples.cdapp2.CdRequestCycle.COMPONENT_DAO;
 
 import wicket.contrib.data.model.OrderedPageableList;
 import wicket.contrib.data.model.QueryList;
 import wicket.contrib.data.model.hibernate.HibernateQueryList;
+import wicket.contrib.data.model.hibernate.IHibernateDao.IHibernateCallback;
+import wicket.examples.cdapp2.CdComponentDao;
 
 /**
- * A data access object that is meant to be created and destroyed on each
- * request. It's probably a better design to make this a singleton, but that's
- * best done with the help of Spring or EJB's and (for now) outside the scope
- * of this application.
+ * Our one and only DAO for this application. This is a Spring-managed bean.
  * 
  * @author Phil Kulak
  */
-public class Dao {
-	private Session session;
-
-	public Dao(final Session session) {
-		this.session = session;
+public class Dao extends HibernateDaoSupport {
+	private CdComponentDao componentDao;
+	
+	@Override
+	public void initDao() {
+		getHibernateTemplate().setFlushMode(HibernateTemplate.FLUSH_EAGER);
 	}
 	
+	public void setComponentDao(CdComponentDao componentDao) {
+		this.componentDao = componentDao;
+	}
+
 	public void merge(final Object entity) {
-		session.saveOrUpdate(entity);
+		getHibernateTemplate().saveOrUpdate(entity);
 	}
 	
 	public OrderedPageableList findAllCategories() {
@@ -58,21 +64,27 @@ public class Dao {
 		}
 		
 		@Override
-		protected List getItems(int start, int max, String orderBy) {
-			return COMPONENT_DAO.getSession()
-				.createQuery(listQuery + orderBy)
-				.setString("term", term)
-				.setFirstResult(start)
-				.setMaxResults(max)
-				.list();
+		protected List getItems(final int start, final int max, final String orderBy) {
+			return (List) COMPONENT_DAO.execute(new IHibernateCallback() {
+				public Object execute(Session session) {
+					return session.createQuery(listQuery + orderBy)
+						.setString("term", term)
+						.setFirstResult(start)
+						.setMaxResults(max)
+						.list();
+				}
+			});
 		}
 	
 		@Override
 		protected int getCount() {
-			return (Integer) COMPONENT_DAO.getSession()
-				.createQuery(countQuery)
-				.setString("term", term)
-				.uniqueResult();
+			return (Integer) COMPONENT_DAO.execute(new IHibernateCallback() {
+				public Object execute(Session session) {
+					return session.createQuery(countQuery)
+						.setString("term", term)
+						.uniqueResult();
+				}
+			});
 		}
 	}
 }
