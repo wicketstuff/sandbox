@@ -9,5 +9,6 @@
 	<classpathentry kind="var" path="MAVEN_REPO/hibernate/jars/hibernate-3.0.1.jar"/>
 	<classpathentry kind="src" path="/wicket"/>
 	<classpathentry kind="src" path="/wicket-contrib-data"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/wicket-contrib-dataview"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
