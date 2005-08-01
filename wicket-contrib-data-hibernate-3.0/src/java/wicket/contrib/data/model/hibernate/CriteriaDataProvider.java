@@ -9,6 +9,12 @@ import org.hibernate.criterion.Projections;
 
 import wicket.contrib.dataview.providers.SortParam;
 
+/**
+ * A {@Link wicket.contrib.dataview.IDataProvider} with support for criteria
+ * queries. 
+ * 
+ * @author Phil Kulak
+ */
 public abstract class CriteriaDataProvider extends HibernateDataProvider
 {
 
@@ -27,9 +33,24 @@ public abstract class CriteriaDataProvider extends HibernateDataProvider
 	{
 		return count(session).setProjection(Projections.rowCount()).uniqueResult();
 	}
-
+	
+	/**
+	 * Returns a criteria query for a list of the objects. Do not set first or 
+	 * max results or any or the orderings, that will be taken care of later.
+	 * 
+	 * @param session
+	 * @return a list of objects
+	 */
 	protected abstract Criteria list(Session session);
 
+	/**
+	 * Returns a criteria query with as many rows as are present when 
+	 * {@Link #list(Session)} is called. Do not set any projections, that will
+	 * be taken care of later.
+	 * 
+	 * @param session
+	 * @return a list of objects
+	 */
 	protected abstract Criteria count(Session session);
 
 	private Criteria addOrdering(Criteria criteria)
