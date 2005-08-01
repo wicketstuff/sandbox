@@ -8,6 +8,11 @@ import wicket.contrib.data.model.hibernate.IHibernateDao.IHibernateCallback;
 import wicket.contrib.dataview.providers.SortableDataProvider;
 import wicket.model.IModel;
 
+/**
+ * A data provider for working with Hibernate 3.
+ * 
+ * @author Phil Kulak
+ */
 public abstract class HibernateDataProvider extends SortableDataProvider
 {
 	IHibernateDao hibernateDao;
