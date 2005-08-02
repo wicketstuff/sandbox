@@ -10,6 +10,7 @@ import org.hibernate.proxy.HibernateProxy;
 import org.hibernate.proxy.LazyInitializer;
 
 import wicket.Component;
+import wicket.WicketRuntimeException;
 import wicket.contrib.data.model.hibernate.IHibernateDao;
 import wicket.contrib.data.model.hibernate.IHibernateDao.IHibernateCallback;
 import wicket.model.IModel;
@@ -39,11 +40,13 @@ public class HibernateModel implements IModel
 	{
 		// Get the name of the object.
 		String entityName = "";
+		Object unproxiedModel = model;
 		if (model instanceof HibernateProxy)
 		{
 			HibernateProxy proxy = (HibernateProxy) model;
 			LazyInitializer lazyInitializer = proxy.getHibernateLazyInitializer();
 			entityName = lazyInitializer.getEntityName();
+			unproxiedModel = lazyInitializer.getImplementation();
 		}
 		else
 		{
@@ -63,8 +66,14 @@ public class HibernateModel implements IModel
 		// Set all the values.
 		this.dao = dao;
 		this.clazz = meta.getMappedClass(EntityMode.POJO);
-		this.id = meta.getIdentifier(model, EntityMode.POJO);
+		this.id = meta.getIdentifier(unproxiedModel, EntityMode.POJO);
 		this.model = model;
+		
+		if (id == null)
+		{
+			 throw new WicketRuntimeException("Could not get primary key for: "  +
+				 entityName);
+		}
 	}
 	
 	public Serializable getId()
