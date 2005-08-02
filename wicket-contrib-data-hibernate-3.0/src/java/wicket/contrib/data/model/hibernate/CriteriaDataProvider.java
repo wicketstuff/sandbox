@@ -7,7 +7,8 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 
-import wicket.contrib.dataview.providers.SortParam;
+import wicket.contrib.dataview.sort.SortParam;
+
 
 /**
  * A {@Link wicket.contrib.dataview.IDataProvider} with support for criteria

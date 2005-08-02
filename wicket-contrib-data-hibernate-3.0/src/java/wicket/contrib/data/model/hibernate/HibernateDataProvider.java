@@ -5,7 +5,7 @@ import java.util.Iterator;
 import org.hibernate.Session;
 
 import wicket.contrib.data.model.hibernate.IHibernateDao.IHibernateCallback;
-import wicket.contrib.dataview.providers.SortableDataProvider;
+import wicket.contrib.dataview.sort.SortableDataProvider;
 import wicket.model.IModel;
 
 /**
