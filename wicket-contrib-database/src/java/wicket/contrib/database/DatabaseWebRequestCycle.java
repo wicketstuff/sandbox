@@ -17,8 +17,6 @@
  */
 package wicket.contrib.database;
 
-import org.hibernate.HibernateException;
-
 import wicket.Response;
 import wicket.protocol.http.WebRequest;
 import wicket.protocol.http.WebRequestCycle;
@@ -77,10 +75,6 @@ public final class DatabaseWebRequestCycle extends WebRequestCycle
 			try
 			{
 				databaseSession.close();
-			}
-			catch (HibernateException e)
-			{
-				throw new RuntimeException(e);
 			}
 			finally
 			{
