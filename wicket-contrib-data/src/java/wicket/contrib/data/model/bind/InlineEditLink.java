@@ -2,7 +2,7 @@ package wicket.contrib.data.model.bind;
 
 import wicket.AttributeModifier;
 import wicket.Resource;
-import wicket.markup.html.StaticResource;
+import wicket.markup.html.PackageResource;
 import wicket.markup.html.image.Image;
 import wicket.markup.html.link.Link;
 
@@ -14,11 +14,11 @@ import wicket.markup.html.link.Link;
 public class InlineEditLink extends Link
 {
 	/** an image for a cancel button */
-	public static final StaticResource CANCEL = StaticResource.get(InlineEditLink.class
+	public static final PackageResource CANCEL = PackageResource.get(InlineEditLink.class
 			.getPackage(), "cancel.gif");
 
 	/** an image for an edit button */
-	public static final StaticResource EDIT = StaticResource.get(InlineEditLink.class
+	public static final PackageResource EDIT = PackageResource.get(InlineEditLink.class
 			.getPackage(), "edit.gif");
 
 	/**
