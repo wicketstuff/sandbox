@@ -12,7 +12,11 @@ import wicket.contrib.dataview.sort.SortParam;
 
 /**
  * A {@Link wicket.contrib.dataview.IDataProvider} with support for criteria
- * queries. 
+ * queries. This makes it dead easy to implement a DataProvider since there
+ * is only one abstract method to implement. Paging and ordering are built
+ * using that base criteria. If you would like to make your count query more
+ * efficiant (for example, by removing unnecessary joins), consider extending
+ * {@link HibernateDataProvider} instead, which will give you that control.
  * 
  * @author Phil Kulak
  */
@@ -51,8 +55,8 @@ public abstract class CriteriaDataProvider extends HibernateDataProvider
 	
 	/**
 	 * Returns a criteria that will return every item with no pagination or
-	 * ordering set up. This base criteria will be used to set projections
-	 * and limits.
+	 * ordering set up. This base criteria will be used to set projections,
+	 * limits, and orderings.
 	 * 
 	 * @param sesion the session to use to build the criteria
 	 * @return a base criteria that will return all entities
