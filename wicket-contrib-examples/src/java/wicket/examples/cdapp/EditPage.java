@@ -26,7 +26,7 @@ import wicket.contrib.data.model.hibernate.HibernateObjectModel;
 import wicket.examples.cdapp.model.CD;
 import wicket.examples.cdapp.util.HibernateSessionDelegate;
 import wicket.extensions.markup.html.image.resource.ThumbnailImageResource;
-import wicket.markup.html.StaticResource;
+import wicket.markup.html.PackageResource;
 import wicket.markup.html.WebResource;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.form.Form;
@@ -59,8 +59,8 @@ public final class EditPage extends CdAppBasePage
 	 * static resource from this package; references image
 	 * 'questionmark.gif'.
 	 */
-	private static final StaticResource IMG_UNKNOWN =
-		StaticResource.get(EditPage.class.getPackage(), "questionmark.gif");
+	private static final PackageResource IMG_UNKNOWN =
+		PackageResource.get(EditPage.class.getPackage(), "questionmark.gif");
 
 	/** model for one cd. */
 	private final PersistentObjectModel cdModel;
