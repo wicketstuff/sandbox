@@ -18,7 +18,6 @@ import wicket.contrib.dataview.sort.SortParam;
  */
 public abstract class CriteriaDataProvider extends HibernateDataProvider
 {
-
 	public CriteriaDataProvider(IHibernateDao hibernateDao)
 	{
 		super(hibernateDao);
@@ -26,33 +25,14 @@ public abstract class CriteriaDataProvider extends HibernateDataProvider
 
 	protected Iterator iterator(int first, int count, Session session)
 	{
-		return addOrdering(list(session)).setFirstResult(first).setMaxResults(count)
+		return addOrdering(allItems(session)).setFirstResult(first).setMaxResults(count)
 				.list().iterator();
 	}
 
 	protected Object size(Session session)
 	{
-		return count(session).setProjection(Projections.rowCount()).uniqueResult();
+		return allItems(session).setProjection(Projections.rowCount()).uniqueResult();
 	}
-	
-	/**
-	 * Returns a criteria query for a list of the objects. Do not set first or 
-	 * max results or any or the orderings, that will be taken care of later.
-	 * 
-	 * @param session
-	 * @return a list of objects
-	 */
-	protected abstract Criteria list(Session session);
-
-	/**
-	 * Returns a criteria query with as many rows as are present when 
-	 * {@Link #list(Session)} is called. Do not set any projections, that will
-	 * be taken care of later.
-	 * 
-	 * @param session
-	 * @return a list of objects
-	 */
-	protected abstract Criteria count(Session session);
 
 	private Criteria addOrdering(Criteria criteria)
 	{
@@ -68,4 +48,14 @@ public abstract class CriteriaDataProvider extends HibernateDataProvider
 		return param.isAscending() ? Order.asc(param.getProperty()) : Order.desc(param
 				.getProperty());
 	}
+	
+	/**
+	 * Returns a criteria that will return every item with no pagination or
+	 * ordering set up. This base criteria will be used to set projections
+	 * and limits.
+	 * 
+	 * @param sesion the session to use to build the criteria
+	 * @return a base criteria that will return all entities
+	 */
+	protected abstract Criteria allItems(Session sesion);
 }
