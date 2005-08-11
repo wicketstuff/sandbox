@@ -2,7 +2,7 @@ package wicket.contrib.data.model.bind;
 
 import wicket.Resource;
 import wicket.WicketRuntimeException;
-import wicket.markup.html.StaticResource;
+import wicket.markup.html.PackageResource;
 import wicket.markup.html.image.Image;
 import wicket.model.IModel;
 import wicket.model.Model;
@@ -17,7 +17,7 @@ import wicket.util.string.Strings;
 public class CheckMark extends Image
 {
 	/** the image of a check mark */
-	public static final StaticResource IMAGE = StaticResource.get(CheckMark.class
+	public static final PackageResource IMAGE = PackageResource.get(CheckMark.class
 			.getPackage(), "checkMark.gif");
 
 	public CheckMark(String id, IModel model)

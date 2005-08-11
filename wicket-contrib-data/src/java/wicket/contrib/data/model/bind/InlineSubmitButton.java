@@ -1,6 +1,6 @@
 package wicket.contrib.data.model.bind;
 
-import wicket.markup.html.StaticResource;
+import wicket.markup.html.PackageResource;
 import wicket.markup.html.form.ImageButton;
 
 /**
@@ -12,7 +12,7 @@ import wicket.markup.html.form.ImageButton;
 public class InlineSubmitButton extends ImageButton
 {
 	/** an image representing a save button */
-	public static final StaticResource SAVE = StaticResource.get(InlineSubmitButton.class
+	public static final PackageResource SAVE = PackageResource.get(InlineSubmitButton.class
 			.getPackage(), "save.gif");
 
 	/**

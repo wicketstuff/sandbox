@@ -1,6 +1,6 @@
 package wicket.contrib.data.model.bind;
 
-import wicket.markup.html.StaticResource;
+import wicket.markup.html.PackageResource;
 import wicket.markup.html.image.Image;
 import wicket.markup.html.link.Link;
 import wicket.model.IModel;
@@ -16,7 +16,7 @@ import wicket.util.string.Strings;
 public class InlineDeleteLink extends Link
 {
 	/** the image representing this link */
-	public static final StaticResource DELETE = StaticResource.get(InlineEditLink.class
+	public static final PackageResource DELETE = PackageResource.get(InlineEditLink.class
 			.getPackage(), "delete.gif");
 
 	/**
