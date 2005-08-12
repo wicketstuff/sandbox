@@ -15,7 +15,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package wicket.contrib.database;
+package wicket.contrib.database.hibernate;
 
 import java.io.Serializable;
 
@@ -27,14 +27,14 @@ import javax.persistence.Id;
  * Base class for persistent entities.
  */
 @Entity
-public abstract class DatabaseObject implements Serializable
+public abstract class HibernateDatabaseObject implements Serializable
 {
 	private Long id;
 
 	/**
 	 * Construct.
 	 */
-	public DatabaseObject()
+	public HibernateDatabaseObject()
 	{
 	}
 
@@ -75,11 +75,11 @@ public abstract class DatabaseObject implements Serializable
 	 */
 	public boolean equals(Object that)
 	{
-		if (that instanceof DatabaseObject)
+		if (that instanceof HibernateDatabaseObject)
 		{
 			if (id != null)
 			{
-				return id.equals(((DatabaseObject)that).id);
+				return id.equals(((HibernateDatabaseObject)that).id);
 			}
 			else
 			{
