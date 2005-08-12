@@ -58,8 +58,8 @@ public abstract class CriteriaDataProvider extends HibernateDataProvider
 	 * ordering set up. This base criteria will be used to set projections,
 	 * limits, and orderings.
 	 * 
-	 * @param sesion the session to use to build the criteria
+	 * @param session the session to use to build the criteria
 	 * @return a base criteria that will return all entities
 	 */
-	protected abstract Criteria allItems(Session sesion);
+	protected abstract Criteria allItems(Session session);
 }
