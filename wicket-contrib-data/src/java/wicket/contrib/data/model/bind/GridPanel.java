@@ -5,7 +5,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import wicket.Component;
-import wicket.IFeedback;
 import wicket.contrib.data.model.OrderedPageableList;
 import wicket.contrib.data.model.bind.IObjectDataSource.EntityField;
 import wicket.markup.html.list.ListItem;
@@ -45,7 +44,7 @@ public class GridPanel extends Panel
 	 */
 	public GridPanel(String id, IListDataSource dataSource)
 	{
-		this(id, dataSource, 10, null, null);
+		this(id, dataSource, 10, null);
 	}
 
 	/**
@@ -61,7 +60,7 @@ public class GridPanel extends Panel
 	 *            the feedback collector to use for validation errors
 	 */
 	public GridPanel(String id, IListDataSource dataSource, int perPage, 
-			List columns, IFeedback feedback)
+			List columns)
 	{
 		super(id);
 		this.dataSource = dataSource;
@@ -76,7 +75,7 @@ public class GridPanel extends Panel
 			this.columns = columns;
 		}
 		
-		add(gView = new LocalGridView(feedback));
+		add(gView = new LocalGridView());
 		add(new PageNav("pageNav", gView.getListView()));
 	}
 	
@@ -91,9 +90,9 @@ public class GridPanel extends Panel
 	private class LocalGridView extends GridView
 	{
 
-		public LocalGridView(IFeedback feedback)
+		public LocalGridView()
 		{
-			super("form", dataSource, feedback, perPage);
+			super("form", dataSource, perPage);
 			add(new Orderings(getListView()));
 		}
 
