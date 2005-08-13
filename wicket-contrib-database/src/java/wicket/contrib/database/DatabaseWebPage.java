@@ -66,6 +66,10 @@ public class DatabaseWebPage extends WebPage
 
 	protected IModel newModel(Class c, Long id)
 	{
+		if (id == -1)
+		{
+			return null;
+		}
 		return new DatabaseObjectModel(getDatabaseSession(), c, id);
 	}
 	
@@ -83,6 +87,10 @@ public class DatabaseWebPage extends WebPage
 	
 	protected Object load(Class c, Long id)
 	{
+		if (id == -1)
+		{
+			return null;
+		}
 		return getDatabaseSession().load(c, id);
 	}
 	
@@ -100,7 +108,10 @@ public class DatabaseWebPage extends WebPage
 	
 	protected void delete(Class c, Long id)
 	{
-		getDatabaseSession().delete(c, id);
+		if (id != -1)
+		{
+			getDatabaseSession().delete(c, id);
+		}
 	}
 	
 	protected void delete(Object object)
