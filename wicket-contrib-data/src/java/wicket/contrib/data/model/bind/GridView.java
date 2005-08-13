@@ -3,7 +3,6 @@ package wicket.contrib.data.model.bind;
 import java.util.List;
 
 import wicket.Component;
-import wicket.IFeedback;
 import wicket.WicketRuntimeException;
 import wicket.contrib.data.model.DetachableList;
 import wicket.markup.html.form.Form;
@@ -38,10 +37,9 @@ public abstract class GridView extends Form
 	 * @param perPage
 	 *            the number of items to display per page
 	 */
-	public GridView(String id, IListDataSource dataSource, IFeedback feedback, 
-			int perPage)
+	public GridView(String id, IListDataSource dataSource, int perPage)
 	{
-		super(id, EMPTY_MODEL, feedback);
+		super(id, EMPTY_MODEL);
 		this.dataSource = dataSource;
 		listView = new FormList(new DetachableList(dataSource.getList()), perPage);
 		add(listView);
