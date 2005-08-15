@@ -24,11 +24,11 @@ import org.apache.commons.logging.LogFactory;
 import org.hibernate.HibernateException;
 
 import wicket.AttributeModifier;
-import wicket.IFeedback;
 import wicket.PageParameters;
 import wicket.RequestCycle;
 import wicket.examples.cdapp.model.CD;
 import wicket.examples.cdapp.model.CdDao;
+import wicket.feedback.IFeedback;
 import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.form.Form;
@@ -91,7 +91,7 @@ public class SearchPage extends CdAppBasePage
 		searchModel = new SearchModel(rowsPerPage);
 
 		FeedbackPanel pageFeedback = new FeedbackPanel("feedback");
-		searchForm = new SearchForm("searchForm", pageFeedback);
+		searchForm = new SearchForm("searchForm");
 		add(searchForm);
 
 		add(pageFeedback);
@@ -169,12 +169,10 @@ public class SearchPage extends CdAppBasePage
 		 * 
 		 * @param id
 		 *            id of the form component
-		 * @param feedback
-		 *            the feedback handler
 		 */
-		public SearchForm(final String id, final IFeedback feedback)
+		public SearchForm(final String id)
 		{
-			super(id, feedback);
+			super(id);
 			add(new TextField("search", new PropertyModel(this, "search")));
 		}
 

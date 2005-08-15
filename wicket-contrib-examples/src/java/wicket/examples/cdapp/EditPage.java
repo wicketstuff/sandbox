@@ -1,6 +1,5 @@
 /*
- * $Id$ $Revision$
- * $Date$
+ * $Id$ $Revision$ $Date$
  * 
  * ==================================================================== Licensed
  * under the Apache License, Version 2.0 (the "License"); you may not use this
@@ -20,7 +19,6 @@ package wicket.examples.cdapp;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import wicket.IFeedback;
 import wicket.contrib.data.model.PersistentObjectModel;
 import wicket.contrib.data.model.hibernate.HibernateObjectModel;
 import wicket.examples.cdapp.model.CD;
@@ -56,11 +54,10 @@ public final class EditPage extends CdAppBasePage
 	private static Log log = LogFactory.getLog(SearchPage.class);
 
 	/**
-	 * static resource from this package; references image
-	 * 'questionmark.gif'.
+	 * static resource from this package; references image 'questionmark.gif'.
 	 */
-	private static final PackageResource IMG_UNKNOWN =
-		PackageResource.get(EditPage.class.getPackage(), "questionmark.gif");
+	private static final PackageResource IMG_UNKNOWN = PackageResource.get(EditPage.class
+			.getPackage(), "questionmark.gif");
 
 	/** model for one cd. */
 	private final PersistentObjectModel cdModel;
@@ -78,15 +75,12 @@ public final class EditPage extends CdAppBasePage
 		 * 
 		 * @param name
 		 *            component name
-		 * @param validationErrorHandler
-		 *            error handler
 		 * @param cdModel
 		 *            the model
 		 */
-		public DetailForm(String name, IFeedback validationErrorHandler,
-				PersistentObjectModel cdModel)
+		public DetailForm(String name, PersistentObjectModel cdModel)
 		{
-			super(name, cdModel, validationErrorHandler);
+			super(name, cdModel);
 			RequiredTextField titleField = new RequiredTextField("title", new PropertyModel(
 					cdModel, "title"));
 			titleField.add(LengthValidator.max(50));
@@ -150,11 +144,10 @@ public final class EditPage extends CdAppBasePage
 		 * 
 		 * @param name
 		 * @param cdModel
-		 * @param feedback
 		 */
-		public ImageUploadForm(String name, PersistentObjectModel cdModel, IFeedback feedback)
+		public ImageUploadForm(String name, PersistentObjectModel cdModel)
 		{
-			super(name, cdModel, feedback);
+			super(name, cdModel);
 
 			// set this form to multipart mode
 			setMultiPart(true);
@@ -232,8 +225,8 @@ public final class EditPage extends CdAppBasePage
 		add(new Label("cdTitle", new TitleModel(cdModel)));
 		FeedbackPanel feedback = new FeedbackPanel("feedback");
 		add(feedback);
-		add(new DetailForm("detailForm", feedback, cdModel));
-		ImageUploadForm imageUploadForm = new ImageUploadForm("imageUpload", cdModel, feedback);
+		add(new DetailForm("detailForm", cdModel));
+		ImageUploadForm imageUploadForm = new ImageUploadForm("imageUpload", cdModel);
 		imageUploadForm.setMaxSize(Bytes.kilobytes(200));
 		add(imageUploadForm);
 
@@ -258,7 +251,8 @@ public final class EditPage extends CdAppBasePage
 	private WebResource getThumbnail()
 	{
 		// create an image resource that displays a question mark when no image
-		// is set on the cd, or displays a thumbnail of the cd's image when there is one
+		// is set on the cd, or displays a thumbnail of the cd's image when
+		// there is one
 		final CD cd = (CD)cdModel.getObject(null);
 		if (cd.getImage() == null)
 		{

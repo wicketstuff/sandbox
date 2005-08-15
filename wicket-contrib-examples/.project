@@ -8,7 +8,8 @@
     <project>wicket-extensions</project>
     <project>wicket-contrib-data-hibernate-3.0</project>
     <project>wicket-contrib-data</project>
-    <project>wicket-velocity-panel</project>
+    <project>wicket-contrib-velocity</project>
+    <project>wicket-contrib-navmenu</project>
   </projects>
   <buildSpec>
     <buildCommand>
