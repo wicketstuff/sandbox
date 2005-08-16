@@ -142,7 +142,7 @@ public class HibernateModel implements IModel, Comparable
 			return ((Comparable) getId()).compareTo((Comparable) model.getId());
 		}
 		
-		return getClass().getName().compareTo(model.getClass().getName());
+		return getClazz().getName().compareTo(model.getClazz().getName());
 	}
 	
 	public boolean equals(Object rhs)
@@ -150,13 +150,13 @@ public class HibernateModel implements IModel, Comparable
 		if (rhs instanceof HibernateModel)
 		{
 			HibernateModel hm = (HibernateModel) rhs;
-			return hm.getClazz().equals(getClass()) && hm.getId().equals(getId());
+			return hm.getClazz().equals(getClazz()) && hm.getId().equals(getId());
 		}
 		return false;
 	}
 	
 	public int hashCode()
 	{
-		return clazz.getName().hashCode() ^ id.hashCode();
+		return getClazz().getName().hashCode() ^ getId().hashCode();
 	}
 }
