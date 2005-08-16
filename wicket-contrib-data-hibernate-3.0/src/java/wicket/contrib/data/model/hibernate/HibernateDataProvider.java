@@ -5,7 +5,6 @@ import java.util.Iterator;
 import org.hibernate.Session;
 
 import wicket.contrib.data.model.hibernate.IHibernateDao.IHibernateCallback;
-import wicket.contrib.dataview.IUniqueIdProvider;
 import wicket.contrib.dataview.sort.SortableDataProvider;
 import wicket.model.IModel;
 
@@ -15,7 +14,6 @@ import wicket.model.IModel;
  * @author Phil Kulak
  */
 public abstract class HibernateDataProvider extends SortableDataProvider
-		implements IUniqueIdProvider
 {
 	IHibernateDao hibernateDao;
 
@@ -27,11 +25,6 @@ public abstract class HibernateDataProvider extends SortableDataProvider
 	public IModel model(Object object)
 	{
 		return new HibernateModel(object, hibernateDao);
-	}
-
-	public String uniqueId(Object object)
-	{
-		return ((HibernateModel) model(object)).getId().toString();
 	}
 
 	public Iterator iterator(final int first, final int count)
