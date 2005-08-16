@@ -20,7 +20,7 @@ import wicket.model.IModel;
  * 
  * @author Phil Kulak
  */
-public class HibernateModel implements IModel
+public class HibernateModel implements IModel, Comparable
 {
 	private IHibernateDao dao;
 
@@ -134,13 +134,29 @@ public class HibernateModel implements IModel
 		});
 	}
 	
+	public int compareTo(Object rhs)
+	{
+		HibernateModel model = (HibernateModel) rhs;
+		
+		if (!getId().equals(model.getId())) {
+			return ((Comparable) getId()).compareTo((Comparable) model.getId());
+		}
+		
+		return getClass().getName().compareTo(model.getClass().getName());
+	}
+	
 	public boolean equals(Object rhs)
 	{
 		if (rhs instanceof HibernateModel)
 		{
 			HibernateModel hm = (HibernateModel) rhs;
-			return hm.getClazz().equals(clazz) && hm.getId().equals(id);
+			return hm.getClazz().equals(getClass()) && hm.getId().equals(getId());
 		}
 		return false;
+	}
+	
+	public int hashCode()
+	{
+		return clazz.getName().hashCode() ^ id.hashCode();
 	}
 }
