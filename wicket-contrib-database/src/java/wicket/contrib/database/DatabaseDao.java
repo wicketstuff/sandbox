@@ -25,6 +25,15 @@ package wicket.contrib.database;
 public abstract class DatabaseDao
 {
 	private DatabaseSession session;
+	
+	/**
+	 * Constructor
+	 * @param session Database session for this DAO
+	 */
+	public DatabaseDao(DatabaseSession session)
+	{
+		setSession(session);
+	}
 
 	/**
 	 * @param session

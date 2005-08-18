@@ -87,31 +87,6 @@ public abstract class DatabaseSession
 	public abstract Object load(final Class c, final Long id);
 
 	/**
-	 * Get an instance of a DAO class
-	 * 
-	 * @param c
-	 *            The class of DAO
-	 * @return The DAO
-	 */
-	public DatabaseDao newDao(final Class c)
-	{
-		try
-		{
-			DatabaseDao dao = (DatabaseDao)c.newInstance();
-			dao.setSession(this);
-			return dao;
-		}
-		catch (InstantiationException e)
-		{
-			throw new DatabaseException(e);
-		}
-		catch (IllegalAccessException e)
-		{
-			throw new DatabaseException(e);
-		}
-	}
-
-	/**
 	 * Creates an object
 	 * 
 	 * @param object
