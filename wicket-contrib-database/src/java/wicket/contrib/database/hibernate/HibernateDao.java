@@ -28,6 +28,7 @@ import org.hibernate.Session;
 
 import wicket.contrib.database.DatabaseDao;
 import wicket.contrib.database.DatabaseException;
+import wicket.contrib.database.DatabaseSession;
 
 
 /**
@@ -37,6 +38,17 @@ public abstract class HibernateDao extends DatabaseDao
 {
 	/** Used for logging. */
 	private static Log log = LogFactory.getLog(HibernateDao.class);
+	
+	/**
+	 * Constructor
+	 * 
+	 * @param session
+	 *            Database session for this DAO
+	 */
+	public HibernateDao(DatabaseSession session)
+	{
+		super(session);
+	}
 	
 	/**
 	 * @param type

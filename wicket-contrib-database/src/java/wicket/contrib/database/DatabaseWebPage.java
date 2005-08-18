@@ -59,11 +59,6 @@ public class DatabaseWebPage extends WebPage
 		return cycle.getDatabaseSession();
 	}
 
-	protected DatabaseDao newDao(final Class c)
-	{
-		return getDatabaseSession().newDao(c);
-	}
-
 	protected IModel newModel(Class c, Long id)
 	{
 		if (id == -1)
