@@ -6,7 +6,8 @@ not be supported. I am more in favor of the ajax approach for this
 kind of functionalitity.
 
 If you have serious plans of using this, and want to help supporting
-this project, please send me or on of the mailing lists an email.
+this project, please send me or on of the mailing lists an email. Or otherwise
+just copy and paste for your own needs.
 
 Things to be improved:
 * create a form adapter (for stuff like onsubmit="return validateForm(this, false, false, false, true, 16);")
