@@ -4,8 +4,8 @@ import wicket.AttributeModifier;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.list.Loop;
 import wicket.markup.html.list.PageableListView;
-import wicket.markup.html.list.PageableListViewNavigation;
-import wicket.markup.html.list.PageableListViewNavigationLink;
+import wicket.markup.html.navigation.paging.PagingNavigation;
+import wicket.markup.html.navigation.paging.PagingNavigationLink;
 import wicket.model.Model;
 
 /**
@@ -13,7 +13,7 @@ import wicket.model.Model;
  * 
  * @author Phil Kulak
  */
-public class PageNav extends PageableListViewNavigation
+public class PageNav extends PagingNavigation
 {
 	public PageNav(String id, PageableListView pageableListView) {
 		super(id, pageableListView);
@@ -22,7 +22,7 @@ public class PageNav extends PageableListViewNavigation
 	protected void populateItem(Loop.LoopItem loopItem) {
 		int page = loopItem.getIteration();
 
-		PageableListViewNavigationLink link = new PageableListViewNavigationLink(
+		PagingNavigationLink link = new PagingNavigationLink(
 			"pageLink", pageable, page);
 		
 		// Set the surrounding tags when this link is active.
