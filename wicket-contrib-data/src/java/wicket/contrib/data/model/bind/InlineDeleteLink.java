@@ -16,8 +16,7 @@ import wicket.util.string.Strings;
 public class InlineDeleteLink extends Link
 {
 	/** the image representing this link */
-	public static final PackageResource DELETE = PackageResource.get(InlineEditLink.class
-			.getPackage(), "delete.gif");
+	public static final PackageResource DELETE = PackageResource.get(InlineEditLink.class, "delete.gif");
 
 	/**
 	 * @param id

@@ -14,12 +14,10 @@ import wicket.markup.html.link.Link;
 public class InlineEditLink extends Link
 {
 	/** an image for a cancel button */
-	public static final PackageResource CANCEL = PackageResource.get(InlineEditLink.class
-			.getPackage(), "cancel.gif");
+	public static final PackageResource CANCEL = PackageResource.get(InlineEditLink.class, "cancel.gif");
 
 	/** an image for an edit button */
-	public static final PackageResource EDIT = PackageResource.get(InlineEditLink.class
-			.getPackage(), "edit.gif");
+	public static final PackageResource EDIT = PackageResource.get(InlineEditLink.class, "edit.gif");
 
 	/**
 	 * @param id

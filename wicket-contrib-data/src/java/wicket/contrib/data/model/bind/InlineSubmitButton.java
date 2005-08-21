@@ -12,8 +12,7 @@ import wicket.markup.html.form.ImageButton;
 public class InlineSubmitButton extends ImageButton
 {
 	/** an image representing a save button */
-	public static final PackageResource SAVE = PackageResource.get(InlineSubmitButton.class
-			.getPackage(), "save.gif");
+	public static final PackageResource SAVE = PackageResource.get(InlineSubmitButton.class, "save.gif");
 
 	/**
 	 * @param id the id of the button
