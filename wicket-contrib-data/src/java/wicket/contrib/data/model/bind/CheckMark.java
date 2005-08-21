@@ -17,8 +17,7 @@ import wicket.util.string.Strings;
 public class CheckMark extends Image
 {
 	/** the image of a check mark */
-	public static final PackageResource IMAGE = PackageResource.get(CheckMark.class
-			.getPackage(), "checkMark.gif");
+	public static final PackageResource IMAGE = PackageResource.get(CheckMark.class, "checkMark.gif");
 
 	public CheckMark(String id, IModel model)
 	{

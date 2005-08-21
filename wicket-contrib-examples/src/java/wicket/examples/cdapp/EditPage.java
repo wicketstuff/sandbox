@@ -56,8 +56,7 @@ public final class EditPage extends CdAppBasePage
 	/**
 	 * static resource from this package; references image 'questionmark.gif'.
 	 */
-	private static final PackageResource IMG_UNKNOWN = PackageResource.get(EditPage.class
-			.getPackage(), "questionmark.gif");
+	private static final PackageResource IMG_UNKNOWN = PackageResource.get(EditPage.class, "questionmark.gif");
 
 	/** model for one cd. */
 	private final PersistentObjectModel cdModel;

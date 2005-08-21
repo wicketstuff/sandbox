@@ -28,7 +28,6 @@ import wicket.PageParameters;
 import wicket.RequestCycle;
 import wicket.examples.cdapp.model.CD;
 import wicket.examples.cdapp.model.CdDao;
-import wicket.feedback.IFeedback;
 import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.form.Form;
