@@ -36,8 +36,8 @@ import wicket.markup.html.form.TextField;
 import wicket.markup.html.link.Link;
 import wicket.markup.html.list.ListItem;
 import wicket.markup.html.list.PageableListView;
-import wicket.markup.html.list.PageableListViewNavigation;
-import wicket.markup.html.list.PageableListViewNavigationLink;
+import wicket.markup.html.navigation.paging.PagingNavigation;
+import wicket.markup.html.navigation.paging.PagingNavigationLink;
 import wicket.markup.html.panel.FeedbackPanel;
 import wicket.model.IModel;
 import wicket.model.Model;
@@ -377,7 +377,7 @@ public class SearchPage extends CdAppBasePage
 	/**
 	 * Custom table navigation class that adds extra labels.
 	 */
-	private static class CDTableNavigation extends PageableListViewNavigation
+	private static class CDTableNavigation extends PagingNavigation
 	{
 		/**
 		 * Construct.
@@ -397,7 +397,7 @@ public class SearchPage extends CdAppBasePage
 		 */
 		protected void populateItem(final LoopItem iteration)
 		{
-			final PageableListViewNavigationLink link = new PageableListViewNavigationLink(
+			final PagingNavigationLink link = new PagingNavigationLink(
 					"pageLink", pageable, iteration.getIteration());
 
 			if (iteration.getIteration() > 0)
