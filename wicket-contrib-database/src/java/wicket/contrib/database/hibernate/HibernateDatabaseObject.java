@@ -19,14 +19,9 @@ package wicket.contrib.database.hibernate;
 
 import java.io.Serializable;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratorType;
-import javax.persistence.Id;
-
 /**
  * Base class for persistent entities.
  */
-@Entity
 public abstract class HibernateDatabaseObject implements Serializable
 {
 	private Long id;
@@ -43,11 +38,18 @@ public abstract class HibernateDatabaseObject implements Serializable
 	 * 
 	 * @return the unique identifier.
 	 */
-	@Id(generate = GeneratorType.AUTO)
 	public final Long getId()
 	{
 		return id;
 	}
+    
+    /**
+     * @return True if the object has not yet been assigned a valid id
+     */
+    public final boolean isNew()
+    {
+        return getId() == null || getId() == -1;
+    }
 
 	/**
 	 * Sets the unique identifier.
@@ -79,11 +81,11 @@ public abstract class HibernateDatabaseObject implements Serializable
 		{
 			if (id != null)
 			{
-				return id.equals(((HibernateDatabaseObject)that).id);
+				return id.equals((((HibernateDatabaseObject)that).id));
 			}
 			else
 			{
-				return super.equals(that);
+				return null == (((HibernateDatabaseObject)that).id);
 			}
 		}
 		else
