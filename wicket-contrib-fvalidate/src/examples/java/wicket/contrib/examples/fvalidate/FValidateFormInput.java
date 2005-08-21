@@ -21,11 +21,11 @@ package wicket.contrib.examples.fvalidate;
 import java.util.Date;
 import java.util.Locale;
 
-import wicket.IFeedback;
 import wicket.PageParameters;
 import wicket.Session;
 import wicket.contrib.examples.WicketExamplePage;
 import wicket.contrib.markup.html.form.fvalidate.FValidateTextField;
+import wicket.feedback.IFeedback;
 import wicket.markup.html.form.Form;
 import wicket.markup.html.form.validation.RequiredValidator;
 import wicket.markup.html.panel.FeedbackPanel;
@@ -47,7 +47,7 @@ public class FValidateFormInput extends WicketExamplePage
 		Session.get().setLocale(Locale.ENGLISH);
 		FeedbackPanel feedback = new FeedbackPanel("feedback");
 		add(feedback);
-		add(new InputForm("inputForm", feedback));
+		add(new InputForm("inputForm"));
 	}
 
 	/** Form for input. */
@@ -58,9 +58,9 @@ public class FValidateFormInput extends WicketExamplePage
 		 * @param name componentnaam
 		 * @param feedback error handler
 		 */
-		public InputForm(String name, IFeedback feedback)
+		public InputForm(String name)
 		{
-			super(name, new CompoundPropertyModel(new TestInputObject()), feedback);
+			super(name, new CompoundPropertyModel(new TestInputObject()));
 
 			FValidateTextField stringInput = new FValidateTextField("stringProperty");
 			stringInput.add(RequiredValidator.getInstance());
