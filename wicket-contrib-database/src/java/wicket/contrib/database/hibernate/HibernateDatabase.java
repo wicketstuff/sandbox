@@ -46,11 +46,11 @@ public class HibernateDatabase extends Database
 	/** Log. */
 	private static Log log = LogFactory.getLog(HibernateDatabase.class);
 
-	/** The one and only Hibernate session factory for this web application. */
-	private SessionFactory hibernateSessionFactory;
-
 	/** The configuration for this Hibernate database */
 	private Configuration configuration;
+
+	/** The one and only Hibernate session factory for this web application. */
+	private SessionFactory hibernateSessionFactory;
 
 	/**
 	 * Construct.
@@ -70,25 +70,6 @@ public class HibernateDatabase extends Database
 		{
 			throw new RuntimeException(e);
 		}
-	}
-
-	/**
-	 * @see wicket.contrib.database.Database#newDatabaseSession()
-	 */
-	public DatabaseSession newDatabaseSession()
-	{
-		return new HibernateDatabaseSession(this, hibernateSessionFactory.openSession());
-	}
-
-	/**
-	 * @return Default annotation configuration for a Hibernate 3 database
-	 */
-	protected AnnotationConfiguration newAnnotationConfiguration()
-	{
-		final AnnotationConfiguration configuration = new AnnotationConfiguration();
-		configuration.addAnnotatedClass(HibernateDatabaseObject.class);
-		configuration.setProperty("hibernate.jdbc.use_streams_for_binary", "true");
-		return configuration;
 	}
 
 	/**
@@ -135,25 +116,21 @@ public class HibernateDatabase extends Database
 	}
 
 	/**
-	 * Filter statements on start of statement.
-	 * 
-	 * @param drops
-	 *            statements
-	 * @param includeAlterFlag
-	 *            if true, everything that starts with alter, else the inverse
-	 * @return part of the input
+	 * @see wicket.contrib.database.Database#newDatabaseSession()
 	 */
-	private String[] splitAlterTables(String[] drops, boolean includeAlterFlag)
+	public DatabaseSession newDatabaseSession()
 	{
-		List<String> temp = new ArrayList<String>();
-		for (int i = 0; i < drops.length; i++)
-		{
-			if (drops[i].toLowerCase().trim().startsWith("alter") == includeAlterFlag)
-			{
-				temp.add(drops[i]);
-			}
-		}
-		return (String[])temp.toArray(new String[temp.size()]);
+		return new HibernateDatabaseSession(this, hibernateSessionFactory.openSession());
+	}
+
+	/**
+	 * @return Default annotation configuration for a Hibernate 3 database
+	 */
+	protected AnnotationConfiguration newAnnotationConfiguration()
+	{
+		final AnnotationConfiguration configuration = new AnnotationConfiguration();
+		configuration.setProperty("hibernate.jdbc.use_streams_for_binary", "true");
+		return configuration;
 	}
 
 	/**
@@ -184,5 +161,27 @@ public class HibernateDatabase extends Database
 				log.error(e.getMessage());
 			}
 		}
+	}
+
+	/**
+	 * Filter statements on start of statement.
+	 * 
+	 * @param drops
+	 *            statements
+	 * @param includeAlterFlag
+	 *            if true, everything that starts with alter, else the inverse
+	 * @return part of the input
+	 */
+	private String[] splitAlterTables(String[] drops, boolean includeAlterFlag)
+	{
+		List<String> temp = new ArrayList<String>();
+		for (int i = 0; i < drops.length; i++)
+		{
+			if (drops[i].toLowerCase().trim().startsWith("alter") == includeAlterFlag)
+			{
+				temp.add(drops[i]);
+			}
+		}
+		return (String[])temp.toArray(new String[temp.size()]);
 	}
 }
