@@ -41,12 +41,12 @@ public class AutoCompleteTextFieldBorder extends Border {
 	}
 	
 	
-	private static final PackageResourceReference DEFAULT_INDICATOR = new PackageResourceReference(AutoCompleteTextField.class, "indicator.gif");
+	private static final PackageResourceReference DEFAULT_INDICATOR = new PackageResourceReference(AutoCompleteTextFieldBorder.class, "indicator.gif");
 	
-	private static final PackageResourceReference PROTOTYPE = new PackageResourceReference(AutoCompleteTextField.class, "prototype-1.4.0_pre2.js");
-	private static final PackageResourceReference SCRIPTACULOUS_UTIL = new PackageResourceReference(AutoCompleteTextField.class, "scriptaculous/util.js");
-	private static final PackageResourceReference SCRIPTACULOUS_CONTROLS = new PackageResourceReference(AutoCompleteTextField.class, "scriptaculous/controls.js");
-	private static final PackageResourceReference SCRIPTACULOUS_EFFECTS = new PackageResourceReference(AutoCompleteTextField.class, "scriptaculous/effects.js");
+	private static final PackageResourceReference PROTOTYPE = new PackageResourceReference(AutoCompleteTextFieldBorder.class, "prototype-1.4.0_pre2.js");
+	private static final PackageResourceReference SCRIPTACULOUS_UTIL = new PackageResourceReference(AutoCompleteTextFieldBorder.class, "scriptaculous/util.js");
+	private static final PackageResourceReference SCRIPTACULOUS_CONTROLS = new PackageResourceReference(AutoCompleteTextFieldBorder.class, "scriptaculous/controls.js");
+	private static final PackageResourceReference SCRIPTACULOUS_EFFECTS = new PackageResourceReference(AutoCompleteTextFieldBorder.class, "scriptaculous/effects.js");
 	
 	public AutoCompleteTextFieldBorder(String id, Class responsePage, TextField input) {
 		super(id);
