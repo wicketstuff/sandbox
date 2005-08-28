@@ -25,7 +25,6 @@ import wicket.PageParameters;
 import wicket.Session;
 import wicket.contrib.examples.WicketExamplePage;
 import wicket.contrib.markup.html.form.fvalidate.FValidateTextField;
-import wicket.feedback.IFeedback;
 import wicket.markup.html.form.Form;
 import wicket.markup.html.form.validation.RequiredValidator;
 import wicket.markup.html.panel.FeedbackPanel;
@@ -56,7 +55,6 @@ public class FValidateFormInput extends WicketExamplePage
 		/**
 		 * Construct.
 		 * @param name componentnaam
-		 * @param feedback error handler
 		 */
 		public InputForm(String name)
 		{
