@@ -50,7 +50,7 @@ public class CdApplication extends WicketExampleApplication implements ISessionF
 	/**
 	 * custom request cycle factory.
 	 */
-	private IRequestCycleFactory requestCycleFactory = new IRequestCycleFactory()
+	private transient IRequestCycleFactory requestCycleFactory = new IRequestCycleFactory()
 	{
 		public RequestCycle newRequestCycle(Session session, Request request, Response response)
 		{
