@@ -19,13 +19,13 @@ package wicket.examples.cdapp;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import wicket.Resource;
 import wicket.contrib.data.model.PersistentObjectModel;
 import wicket.contrib.data.model.hibernate.HibernateObjectModel;
 import wicket.examples.cdapp.model.CD;
 import wicket.examples.cdapp.util.HibernateSessionDelegate;
 import wicket.extensions.markup.html.image.resource.ThumbnailImageResource;
 import wicket.markup.html.PackageResource;
-import wicket.markup.html.WebResource;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.form.Form;
 import wicket.markup.html.form.RequiredTextField;
@@ -56,7 +56,7 @@ public final class EditPage extends CdAppBasePage
 	/**
 	 * static resource from this package; references image 'questionmark.gif'.
 	 */
-	private static final PackageResource IMG_UNKNOWN = PackageResource.get(EditPage.class, "questionmark.gif");
+	private static Resource IMG_UNKNOWN;
 
 	/** model for one cd. */
 	private final PersistentObjectModel cdModel;
@@ -247,7 +247,7 @@ public final class EditPage extends CdAppBasePage
 	/**
 	 * Gets either the cd's thumbnail image, or a special question mark image.
 	 */
-	private WebResource getThumbnail()
+	private Resource getThumbnail()
 	{
 		// create an image resource that displays a question mark when no image
 		// is set on the cd, or displays a thumbnail of the cd's image when
@@ -255,6 +255,10 @@ public final class EditPage extends CdAppBasePage
 		final CD cd = (CD)cdModel.getObject(null);
 		if (cd.getImage() == null)
 		{
+			if(IMG_UNKNOWN == null)
+			{
+				 IMG_UNKNOWN = PackageResource.get(EditPage.class, "questionmark.gif").setCacheable(false);
+			}
 			return IMG_UNKNOWN;
 		}
 		else
@@ -266,7 +270,7 @@ public final class EditPage extends CdAppBasePage
 					return cd.getImageBytes();
 				}
 			};
-			return new ThumbnailImageResource(img, 100);
+			return new ThumbnailImageResource(img, 100).setCacheable(false);
 		}
 	}
 
