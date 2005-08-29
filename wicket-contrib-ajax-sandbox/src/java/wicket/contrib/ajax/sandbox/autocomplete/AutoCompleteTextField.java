@@ -151,7 +151,7 @@ public abstract class AutoCompleteTextField extends TextField {
 			addJsReference(container, SCRIPTACULOUS_CONTROLS);
 		}
 		
-	    private void addJsReference(HtmlHeaderContainer container, PackageResourceReference ref) {
+	    protected void addJsReference(HtmlHeaderContainer container, PackageResourceReference ref) {
 			container.getResponse().write("<script type='text/javascript' src='" + container.getPage().urlFor(ref.getPath()) + "'></script>\n");
 		}
 	
