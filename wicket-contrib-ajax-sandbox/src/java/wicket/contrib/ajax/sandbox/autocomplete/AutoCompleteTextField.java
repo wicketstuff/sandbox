@@ -7,14 +7,14 @@ import java.util.Properties;
 import wicket.Application;
 import wicket.AttributeModifier;
 import wicket.Component;
-import wicket.IEventRequestListener;
 import wicket.IInitializer;
 import wicket.contrib.ajax.sandbox.autocomplete.misc.IdPathAttributeModifier;
 import wicket.contrib.ajax.sandbox.autocomplete.misc.PrependAttributeModifier;
 import wicket.markup.ComponentTag;
 import wicket.markup.html.HtmlHeaderContainer;
 import wicket.markup.html.PackageResourceReference;
-import wicket.markup.html.ajax.AbstractEventRequestHandler;
+import wicket.markup.html.ajax.AbstractAjaxHandler;
+import wicket.markup.html.ajax.IAjaxListener;
 import wicket.markup.html.form.FormComponent;
 import wicket.markup.html.form.TextField;
 import wicket.markup.html.image.Image;
@@ -103,7 +103,7 @@ public abstract class AutoCompleteTextField extends TextField {
 //		}
 		
 		String updateId = getPath() + "_update";
-        String callbackUrl = urlFor(IEventRequestListener.class) + "&id=" + handler.getId();
+        String callbackUrl = urlFor(IAjaxListener.class) + "&id=" + handler.getId();
 
 		// the actual autocomplete dropdown div container
         write("<div class='auto_complete' id='" + updateId + "'></div>\n");
@@ -138,7 +138,7 @@ public abstract class AutoCompleteTextField extends TextField {
 		return hash.toString();
 	}
 	
-	private class AutoCompleteEventRequestHandler extends AbstractEventRequestHandler {
+	private class AutoCompleteEventRequestHandler extends AbstractAjaxHandler {
 
 		FormComponent formComponent;
 		
