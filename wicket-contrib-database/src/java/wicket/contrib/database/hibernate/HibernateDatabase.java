@@ -174,7 +174,7 @@ public class HibernateDatabase extends Database
 	 */
 	private String[] splitAlterTables(String[] drops, boolean includeAlterFlag)
 	{
-		List<String> temp = new ArrayList<String>();
+		List temp = new ArrayList();
 		for (int i = 0; i < drops.length; i++)
 		{
 			if (drops[i].toLowerCase().trim().startsWith("alter") == includeAlterFlag)
