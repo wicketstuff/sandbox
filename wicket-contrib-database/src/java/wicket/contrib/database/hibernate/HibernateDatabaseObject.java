@@ -48,7 +48,7 @@ public abstract class HibernateDatabaseObject implements Serializable
      */
     public final boolean isNew()
     {
-        return getId() == null || getId() == -1;
+        return getId() == null || getId().longValue() == -1;
     }
 
 	/**

@@ -61,7 +61,7 @@ public class DatabaseWebPage extends WebPage
 
 	protected IModel newModel(Class c, Long id)
 	{
-		if (id == -1)
+		if (id.longValue() == -1)
 		{
 			return null;
 		}
@@ -82,7 +82,7 @@ public class DatabaseWebPage extends WebPage
 	
 	protected Object load(Class c, Long id)
 	{
-		if (id == -1)
+		if (id.longValue() == -1)
 		{
 			return null;
 		}
