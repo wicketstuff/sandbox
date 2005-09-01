@@ -100,6 +100,15 @@
 		</dependency>
 		<dependency>
 			<groupId>wicket-stuff</groupId>
+			<artifactId>wicket-contrib-freemarker</artifactId>
+			<version>1.0</version>
+			<properties>
+				<eclipse.dependency>true</eclipse.dependency>
+				<war.bundle>true</war.bundle>
+			</properties>
+		</dependency>
+		<dependency>
+			<groupId>wicket-stuff</groupId>
 			<artifactId>wicket-contrib-navmenu</artifactId>
 			<version>1.0</version>
 			<properties>
@@ -188,6 +197,19 @@
 				</wicket.description>
 			</properties>
 			<url>http://jakarta.apache.org/velocity</url>
+		</dependency>
+		<dependency>
+			<groupId>freemarker</groupId>
+			<artifactId>freemarker</artifactId>
+			<version>2.3.3</version>
+			<properties>
+				<war.bundle>true</war.bundle>
+				<wicket.group>required</wicket.group>
+				<wicket.description>
+					The supported version of Freemarker.
+				</wicket.description>
+			</properties>
+			<url>http://freemarker.sourceforge.net</url>
 		</dependency>
 	</dependencies>
 	<build>
