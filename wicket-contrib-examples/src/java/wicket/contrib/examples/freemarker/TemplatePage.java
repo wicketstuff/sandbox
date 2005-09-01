@@ -80,7 +80,7 @@ public class TemplatePage extends WicketExamplePage {
 	/**
 	 * Sets the current template contents.
 	 * 
-	 * @param template the current template contents
+	 * @param templateContents the current template contents
 	 */
 	public final void setTemplate(String templateContents) {
 		template.clear();
