@@ -22,17 +22,15 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 
+import wicket.AjaxHandler;
 import wicket.Application;
 import wicket.AttributeModifier;
-import wicket.Component;
 import wicket.IInitializer;
 import wicket.contrib.ajax.sandbox.autocomplete.misc.IdPathAttributeModifier;
 import wicket.contrib.ajax.sandbox.autocomplete.misc.PrependAttributeModifier;
 import wicket.markup.ComponentTag;
 import wicket.markup.html.HtmlHeaderContainer;
 import wicket.markup.html.PackageResourceReference;
-import wicket.markup.html.ajax.AbstractAjaxHandler;
-import wicket.markup.html.ajax.IAjaxListener;
 import wicket.markup.html.form.FormComponent;
 import wicket.markup.html.form.TextField;
 import wicket.model.Model;
@@ -120,13 +118,12 @@ public abstract class AutoCompleteTextField extends TextField {
 //		}
 		
 		String updateId = getPath() + "_update";
-        String callbackUrl = urlFor(IAjaxListener.class) + "&id=" + handler.getId();
 
 		// the actual autocomplete dropdown div container
         write("<div class='auto_complete' id='" + updateId + "'></div>\n");
 		// call the Ajax.Autocomplete javascript control 
         write("<script type='text/javascript'>");
-        write("new Ajax.Autocompleter('" + getPath() + "', '" + updateId + "', '" + callbackUrl + "', " + jsHash(options) + ");");
+        write("new Ajax.Autocompleter('" + getPath() + "', '" + updateId + "', '" + handler.getCallbackUrl() + "', " + jsHash(options) + ");");
         write("</script>\n");
     }
 
@@ -155,11 +152,11 @@ public abstract class AutoCompleteTextField extends TextField {
 		return hash.toString();
 	}
 	
-	private class AutoCompleteEventRequestHandler extends AbstractAjaxHandler {
+	private class AutoCompleteEventRequestHandler extends AjaxHandler {
 
 		FormComponent formComponent;
 		
-		public void printHeadInitContribution(HtmlHeaderContainer container)
+		protected void renderHeadInitContribution(HtmlHeaderContainer container)
 		{
 			// TODO ensure that other components don't add these same javascript includes
 			addJsReference(container, PROTOTYPE);
@@ -172,25 +169,11 @@ public abstract class AutoCompleteTextField extends TextField {
 			container.getResponse().write("<script type='text/javascript' src='" + container.getPage().urlFor(ref.getPath()) + "'></script>\n");
 		}
 	
-	     public void bind(Component component) {
-            if (!(component instanceof FormComponent)) {
-                throw new IllegalArgumentException(
-                        "this handler can only be bound to form components");
-            }
-
-            if (formComponent != null) {
-                throw new IllegalStateException(
-                        "this kind of handler cannot be attached to "
-                                + "multiple components; it is allready attached to component "
-                                + formComponent + ", but component "
-                                + component + " wants to be attached too");
-
-            }
-
-            this.formComponent = (FormComponent) component;
+	     public void onBind() {
+            this.formComponent = (FormComponent) getComponent();
         }
 	
-        public void onComponentTag(Component component, ComponentTag tag) {
+        public void onComponentTag(ComponentTag tag) {
         }
 
         protected IResourceStream getResponse() {
