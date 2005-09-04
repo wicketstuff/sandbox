@@ -70,7 +70,7 @@ public class MenuRow extends Panel
 		div.add(ul);
 		add(div);
 
-		addToHeader(new StyleSheetReference("cssStyleResource", style.getStyleSheetResource()));
+		add(new StyleSheetReference("cssStyleResource", style.getStyleSheetResource()));
 	}
 
 	/**
