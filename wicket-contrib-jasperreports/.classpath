@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src/java"/>
+	<classpathentry kind="src" path="src/examples/java"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="var" path="MAVEN_REPO/ognl/jars/ognl-2.6.7.jar"/>
+	<classpathentry kind="var" path="MAVEN_REPO/servletapi/jars/servletapi-2.3.jar"/>
+	<classpathentry kind="var" path="MAVEN_REPO/concurrent/jars/concurrent-1.3.3.jar"/>
+	<classpathentry kind="var" path="MAVEN_REPO/commons-logging/jars/commons-logging-1.0.4.jar"/>
+	<classpathentry kind="src" path="/wicket"/>
+	<classpathentry sourcepath="/JAVA_SRC_JARS/jasperreports-1.0.1-src.jar" kind="var" path="MAVEN_REPO/jasperreports/jars/jasperreports-1.0.1.jar"/>
+	<classpathentry kind="var" path="MAVEN_REPO/commons-digester/jars/commons-digester-1.6.jar"/>
+	<classpathentry kind="var" path="MAVEN_REPO/commons-collections/jars/commons-collections-3.1.jar"/>
+	<classpathentry kind="var" path="MAVEN_REPO/commons-beanutils/jars/commons-beanutils-1.7.0.jar"/>
+	<classpathentry kind="var" path="MAVEN_REPO/itext/jars/itext-1.1.jar"/>
+	<classpathentry kind="output" path="src/examples/webapp/WEB-INF/temp/classes"/>
+</classpath>
