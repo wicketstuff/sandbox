@@ -31,6 +31,7 @@ import wicket.contrib.ajax.sandbox.autocomplete.misc.PrependAttributeModifier;
 import wicket.markup.ComponentTag;
 import wicket.markup.html.HtmlHeaderContainer;
 import wicket.markup.html.PackageResourceReference;
+import wicket.markup.html.ajax.scriptaculous.ScriptaculousAjaxHandler;
 import wicket.markup.html.form.FormComponent;
 import wicket.markup.html.form.TextField;
 import wicket.model.Model;
@@ -152,22 +153,9 @@ public abstract class AutoCompleteTextField extends TextField {
 		return hash.toString();
 	}
 	
-	private class AutoCompleteEventRequestHandler extends AjaxHandler {
+	private class AutoCompleteEventRequestHandler extends ScriptaculousAjaxHandler {
 
 		FormComponent formComponent;
-		
-		protected void renderHeadInitContribution(HtmlHeaderContainer container)
-		{
-			// TODO ensure that other components don't add these same javascript includes
-			addJsReference(container, PROTOTYPE);
-			addJsReference(container, SCRIPTACULOUS_UTIL);
-			addJsReference(container, SCRIPTACULOUS_EFFECTS);
-			addJsReference(container, SCRIPTACULOUS_CONTROLS);
-		}
-		
-	    protected void addJsReference(HtmlHeaderContainer container, PackageResourceReference ref) {
-			container.getResponse().write("<script type='text/javascript' src='" + container.getPage().urlFor(ref.getPath()) + "'></script>\n");
-		}
 	
 	     public void onBind() {
             this.formComponent = (FormComponent) getComponent();
