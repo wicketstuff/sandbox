@@ -18,49 +18,72 @@
  */
 package wicket.contrib.jasperreports;
 
+import java.io.File;
 import java.io.InputStream;
-import java.util.Map;
+import java.net.URL;
 
-import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
-import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import wicket.WicketRuntimeException;
-import wicket.resource.DynamicByteArrayResource;
 
 /**
  * TODO docme.
- *
+ * 
  * @author Eelco Hillenius
  */
-public abstract class PDFResource extends DynamicByteArrayResource
+public class JasperReportsPDFResource extends JasperReportsResource
 {
+
 	/**
-	 * default constructor
+	 * Construct without a report. You must provide a report before you can use
+	 * this resource.
 	 */
-	public PDFResource()
+	public JasperReportsPDFResource()
 	{
 		super();
 	}
 
 	/**
-	 * Gets the data stream.
-	 * @return the data stream
+	 * Construct.
+	 * 
+	 * @param report
+	 *            the report input stream
 	 */
-	protected abstract InputStream getReportInputStream();
+	public JasperReportsPDFResource(InputStream report)
+	{
+		super(report);
+	}
 
 	/**
-	 * Gets the report parameters.
-	 * @return report parameters
+	 * Construct.
+	 * 
+	 * @param report
+	 *            the report input stream
 	 */
-	protected abstract Map getReportParameters();
+	public JasperReportsPDFResource(URL report)
+	{
+		super(report);
+	}
 
 	/**
-	 * Gets the datasource if any for filling this report.
-	 * @return the datasource if any for filling this report
+	 * Construct.
+	 * 
+	 * @param report
+	 *            the report input stream
 	 */
-	protected abstract JRDataSource getReportDataSource();
+	public JasperReportsPDFResource(File report)
+	{
+		super(report);
+	}
+
+	/**
+	 * @see wicket.resource.DynamicByteArrayResource#getContentType()
+	 */
+	public String getContentType()
+	{
+		return "application/pdf";
+	}
 
 	/**
 	 * @see wicket.resource.DynamicByteArrayResource#getData()
@@ -69,23 +92,12 @@ public abstract class PDFResource extends DynamicByteArrayResource
 	{
 		try
 		{
-			InputStream reportInputStream = getReportInputStream();
-			Map reportParameters = getReportParameters();
-			JRDataSource reportDataSource = getReportDataSource();
-			JasperPrint print = JasperFillManager.fillReport(reportInputStream, reportParameters, reportDataSource);
+			JasperPrint print = newJasperPrint();
 			return JasperExportManager.exportReportToPdf(print);
 		}
 		catch (JRException e)
 		{
 			throw new WicketRuntimeException(e);
 		}
-	}
-	
-	/**
-	 * @see wicket.resource.DynamicByteArrayResource#getContentType()
-	 */
-	public String getContentType()
-	{
-		return "application/pdf";
 	}
 }

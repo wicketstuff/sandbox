@@ -28,6 +28,7 @@
 package servlets;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
@@ -79,12 +80,14 @@ public class PdfServlet extends HttpServlet
 
 		try
 		{
-			bytes = 
-				JasperRunManager.runReportToPdf(
-					reportFile.getPath(), 
-					parameters, 
-					new ExampleDataSource()
-					);
+//			bytes = 
+//				JasperRunManager.runReportToPdf(
+//					reportFile.getPath(), 
+//					parameters, 
+//					new ExampleDataSource()
+//					);
+			bytes = JasperRunManager.runReportToPdf(new FileInputStream(reportFile), parameters,
+					new ExampleDataSource());
 		}
 		catch (JRException e)
 		{
