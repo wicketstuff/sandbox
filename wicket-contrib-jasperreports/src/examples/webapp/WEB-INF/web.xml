@@ -7,11 +7,6 @@
 
 	<display-name>Wicket JasperReports Examples</display-name>
 
-	<servlet>
-		<servlet-name>PdfServlet</servlet-name>
-		<servlet-class>servlets.PdfServlet</servlet-class>
-	</servlet>
-
     <servlet>
         <servlet-name>JasperReportsApplication</servlet-name>
         <servlet-class>wicket.protocol.http.WicketServlet</servlet-class>
@@ -21,11 +16,6 @@
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
-
-	<servlet-mapping>
-		<servlet-name>PdfServlet</servlet-name>
-		<url-pattern>/servlets/pdf</url-pattern>
-	</servlet-mapping>
 
     <servlet-mapping>
         <servlet-name>JasperReportsApplication</servlet-name>
