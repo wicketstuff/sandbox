@@ -13,5 +13,5 @@
 	<classpathentry kind="var" path="MAVEN_REPO/commons-collections/jars/commons-collections-3.1.jar"/>
 	<classpathentry kind="var" path="MAVEN_REPO/commons-beanutils/jars/commons-beanutils-1.7.0.jar"/>
 	<classpathentry kind="var" path="MAVEN_REPO/itext/jars/itext-1.1.jar"/>
-	<classpathentry kind="output" path="src/examples/webapp/WEB-INF/temp/classes"/>
+	<classpathentry kind="output" path="target/classes"/>
 </classpath>
