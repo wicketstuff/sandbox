@@ -19,6 +19,7 @@ public class CustomLayoutAjaxAutocompleteExamplePageContribution extends CustomL
 		List results = new ArrayList();
 		results.add(new CustomResultObject("ryan.gif", "Ryan Sonnek", "ryan@youremail.com"));
 		results.add(new CustomResultObject("billy.gif", "Bill Gates", "bill.gates@microsoft.com"));
+		results.add(new CustomResultObject("janet.gif", "Janet Someone", "janet@thethirdwheel.com"));
 		return new ListView("entries", results) {
 
 			protected void populateItem(ListItem item) {
@@ -29,7 +30,7 @@ public class CustomLayoutAjaxAutocompleteExamplePageContribution extends CustomL
 			}
 		};
 	}
-	
+
 	private class CustomResultObject {
 
 		private final String name;
