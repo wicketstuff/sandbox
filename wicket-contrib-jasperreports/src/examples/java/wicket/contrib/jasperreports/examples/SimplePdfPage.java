@@ -19,18 +19,15 @@
 package wicket.contrib.jasperreports.examples;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.ServletContext;
 
-import net.sf.jasperreports.engine.JRDataSource;
 import wicket.contrib.examples.WicketExamplePage;
-import wicket.contrib.jasperreports.PDFReport;
-import wicket.contrib.jasperreports.PDFResource;
+import wicket.contrib.jasperreports.JasperReportsPDFReport;
+import wicket.contrib.jasperreports.JasperReportsPDFResource;
+import wicket.contrib.jasperreports.JasperReportsResource;
 import wicket.protocol.http.WebApplication;
 
 /**
@@ -40,41 +37,26 @@ import wicket.protocol.http.WebApplication;
  */
 public class SimplePdfPage extends WicketExamplePage
 {
-    /**
-     * Constructor.
-     */
-    public SimplePdfPage()
-    {
-		try
-		{
-			ServletContext context = ((WebApplication)getApplication()).getWicketServlet().getServletContext();
-			File reportFile = new File(context.getRealPath("/reports/example.jasper"));
-			final Map parameters = new HashMap();
-			parameters.put("ReportTitle", "Address Report");
-			parameters.put("BaseDir", reportFile.getParentFile());
-			final FileInputStream inputStream = new FileInputStream(reportFile);
-			PDFResource pdfResource = new PDFResource()
-			{
-				protected InputStream getReportInputStream()
-				{
-					return inputStream;
-				}
+	/**
+	 * Constructor.
+	 */
+	public SimplePdfPage()
+	{
+		ServletContext context = ((WebApplication) getApplication()).getWicketServlet()
+				.getServletContext();
+		final File reportFile = new File(context.getRealPath("/reports/example.jasper"));
+		final Map parameters = new HashMap();
+		JasperReportsResource pdfResource = new JasperReportsPDFResource(reportFile)
+				.setReportParameters(parameters).setReportDataSource(
+						new ExampleDataSource());
+		add(new JasperReportsPDFReport("report", pdfResource));
+	}
 
-				protected Map getReportParameters()
-				{
-					return parameters;
-				}
-
-				protected JRDataSource getReportDataSource()
-				{
-					return null;
-				}
-			};
-			add(new PDFReport("report", pdfResource));
-		}
-		catch (FileNotFoundException e)
-		{
-			throw new RuntimeException(e);
-		}
-    }
+	/**
+	 * @see wicket.Component#isVersioned()
+	 */
+	public boolean isVersioned()
+	{
+		return false;
+	}
 }
