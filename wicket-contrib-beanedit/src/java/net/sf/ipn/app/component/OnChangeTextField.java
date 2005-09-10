@@ -63,7 +63,7 @@ public class OnChangeTextField extends TextField implements IOnChangeListener
 		final String url = urlFor(IOnChangeListener.class);
 
 		// NOTE: do not encode the url as that would give invalid JavaScript
-		tag.put("onChange", "location.href='" + url + "&" + getPath() + "=' + this.value;");
+		tag.put("onChange", "location.href='" + url + "&" + getInputName() + "=' + this.value;");
 
 		super.onComponentTag(tag);
 	}
