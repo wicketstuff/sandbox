@@ -20,13 +20,13 @@ package wicket.contrib.markup.html.navmenu;
 
 import wicket.AttributeModifier;
 import wicket.Component;
-import wicket.extensions.markup.html.resources.StyleSheetReference;
 import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.link.BookmarkablePageLink;
 import wicket.markup.html.list.ListItem;
 import wicket.markup.html.list.ListView;
 import wicket.markup.html.panel.Panel;
+import wicket.markup.html.resources.StyleSheetReference;
 import wicket.model.IModel;
 import wicket.model.Model;
 
