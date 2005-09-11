@@ -31,6 +31,7 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.util.JRLoader;
 import wicket.WicketRuntimeException;
+import wicket.protocol.http.WebResponse;
 import wicket.resource.DynamicByteArrayResource;
 
 /**
@@ -70,6 +71,14 @@ public abstract class JasperReportsResource extends DynamicByteArrayResource
 
 	/** the connection provider if any for filling this report. */
 	private IDatabaseConnectionProvider connectionProvider;
+
+	/**
+	 * When set, a header 'Content-Disposition: attachment;
+	 * filename="${fileName}"' will be added to the response, resulting in a
+	 * download dialog. No magical extensions are added, so you should make sure
+	 * the file has the extension you want yourself.
+	 */
+	private String fileName;
 
 	/**
 	 * Construct without a report. You must provide a report before you can use
@@ -233,6 +242,35 @@ public abstract class JasperReportsResource extends DynamicByteArrayResource
 	}
 
 	/**
+	 * Gets the file name. When set, a header 'Content-Disposition: attachment;
+	 * filename="${fileName}"' will be added to the response, resulting in a
+	 * download dialog. No magical extensions are added, so you should make sure
+	 * the file has the extension you want yourself.
+	 * 
+	 * @return the file name
+	 */
+	public String getFileName()
+	{
+		return fileName;
+	}
+
+	/**
+	 * Sets the file name. When set, a header 'Content-Disposition: attachment;
+	 * filename="${fileName}"' will be added to the response, resulting in a
+	 * download dialog. No magical extensions are added, so you should make sure
+	 * the file has the extension you want yourself.
+	 * 
+	 * @param fileName
+	 *            the file name
+	 * @return This
+	 */
+	public final JasperReportsResource setFileName(String fileName)
+	{
+		this.fileName = fileName;
+		return this;
+	}
+
+	/**
 	 * Creates a new {@link JasperPrint} instance. This instance is specific for
 	 * this render, but it not yet designated for one output format only.
 	 * 
@@ -252,22 +290,41 @@ public abstract class JasperReportsResource extends DynamicByteArrayResource
 		}
 		else
 		{
-			IDatabaseConnectionProvider connectionProvider = getConnectionProvider();
-			
+			IDatabaseConnectionProvider connectionProvider = null;
 			try
 			{
 				connectionProvider = getConnectionProvider();
 				if (connectionProvider == null)
 				{
+					throw new IllegalStateException(
+							"JasperReportsResources must either have a JRDataSource, "
+									+ "or a JDBC Connection provided");
 				}
-				jasperPrint = JasperFillManager.fillReport(jasperReport, reportParameters,
-						reportDataSource);
+				jasperPrint = JasperFillManager.fillReport(jasperReport,
+						reportParameters, connectionProvider.get());
 			}
 			finally
 			{
-				
+				if (connectionProvider != null)
+				{
+					connectionProvider.release();
+				}
 			}
 		}
 		return jasperPrint;
+	}
+
+	/**
+	 * @see wicket.markup.html.WebResource#setHeaders(wicket.protocol.http.WebResponse)
+	 */
+	protected void setHeaders(WebResponse response)
+	{
+		super.setHeaders(response);
+		String fileName = getFileName();
+		if (fileName != null)
+		{
+			response.setHeader("Content-Disposition", "attachment; filename=\""
+					+ fileName + "\"");
+		}
 	}
 }

@@ -49,6 +49,7 @@ public class PdfLinkPage extends WicketExamplePage
 		JasperReportsResource pdfResource = new JasperReportsPDFResource(reportFile)
 				.setReportParameters(parameters).setReportDataSource(
 						new ExampleDataSource());
+		pdfResource.setFileName("report.pdf");
 		add(new ResourceLink("linkToPdf", pdfResource));
 	}
 

@@ -34,7 +34,6 @@ import wicket.WicketRuntimeException;
  */
 public class JasperReportsPDFResource extends JasperReportsResource
 {
-
 	/**
 	 * Construct without a report. You must provide a report before you can use
 	 * this resource.
