@@ -23,12 +23,13 @@ import wicket.markup.ComponentTag;
 import wicket.markup.html.WebComponent;
 
 /**
- * Component for displaying a jasper report. Must be attached to either a frame-
- * or an iframe tag.
+ * Component for embedding a jasper report in a page. This component must be
+ * attached to either a frame- or an iframe tag. If you don't want to embed the
+ * report, but have a link to it instead, use {@link wicket.ResourceReference}.
  * 
  * @author Eelco Hillenius
  */
-public final class JasperReportsPDFReport extends WebComponent implements
+public final class EmbeddedJasperReportsReport extends WebComponent implements
 		IResourceListener
 {
 	/** the report resource. */
@@ -42,7 +43,7 @@ public final class JasperReportsPDFReport extends WebComponent implements
 	 * @param resource
 	 *            the resource
 	 */
-	public JasperReportsPDFReport(String id, JasperReportsResource resource)
+	public EmbeddedJasperReportsReport(String id, JasperReportsResource resource)
 	{
 		super(id);
 		this.resource = resource;
