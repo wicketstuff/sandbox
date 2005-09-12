@@ -62,6 +62,11 @@ public class HibernateModel implements IModel, Comparable
 		});
 
 		ClassMetadata meta = factory.getClassMetadata(entityName);
+		
+		if (meta == null) {
+			throw new WicketRuntimeException("A mapping for the class: " + 
+				entityName + " could not be found.");
+		}
 
 		// Set all the values.
 		this.dao = dao;
