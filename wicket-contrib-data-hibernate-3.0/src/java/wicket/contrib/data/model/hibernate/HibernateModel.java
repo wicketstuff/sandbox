@@ -27,6 +27,8 @@ public class HibernateModel implements IModel, Comparable
 	private Class clazz;
 
 	private Serializable id;
+	
+	private boolean unproxy;
 
 	private transient Object model;
 	
@@ -36,8 +38,21 @@ public class HibernateModel implements IModel, Comparable
 	 * @param model the object to wrap
 	 * @param dao the data access object for this model to use
 	 */
-	public HibernateModel(Object model, IHibernateDao dao)
+	public HibernateModel(Object model, IHibernateDao dao) {
+		this(model, dao, false);
+	}
+	
+	/**
+	 * Constructor that wraps any mapped Hibernate class.
+	 * 
+	 * @param model the object to wrap
+	 * @param dao the data access object for this model to use
+	 * @param unproxy whether or not to unproxy object on getObject()
+	 */
+	public HibernateModel(Object model, IHibernateDao dao, boolean unproxy)
 	{
+		this.unproxy = unproxy;
+		
 		// Get the name of the object.
 		String entityName = "";
 		Object unproxiedModel = model;
@@ -107,6 +122,11 @@ public class HibernateModel implements IModel, Comparable
 		if (model == null)
 		{
 			attach();
+		}
+		if (unproxy && model instanceof HibernateProxy)
+		{
+			HibernateProxy proxy = (HibernateProxy) model;
+			return proxy.getHibernateLazyInitializer().getImplementation();
 		}
 		return model;
 	}
