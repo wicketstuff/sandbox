@@ -18,17 +18,23 @@
  */
 package wicket.contrib.jasperreports;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.net.URL;
 import java.sql.Connection;
 import java.util.Map;
 
+import net.sf.jasperreports.engine.JRAbstractExporter;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.export.JRPdfExporter;
+import net.sf.jasperreports.engine.export.JRRtfExporter;
 import net.sf.jasperreports.engine.util.JRLoader;
 import wicket.WicketRuntimeException;
 import wicket.protocol.http.WebResponse;
@@ -39,7 +45,7 @@ import wicket.resource.DynamicByteArrayResource;
  * 
  * @author Eelco Hillenius
  */
-public abstract class JasperReportsResource extends DynamicByteArrayResource
+public class JasperReportsResource extends DynamicByteArrayResource
 {
 	/**
 	 * Provides JDBC connection.
@@ -60,6 +66,70 @@ public abstract class JasperReportsResource extends DynamicByteArrayResource
 		void release();
 	}
 
+	/**
+	 * Provides the exporter to use.
+	 */
+	public static interface IExporterFactory extends Serializable
+	{
+		/**
+		 * Gets a new intance of {@link JRAbstractExporter}.
+		 * 
+		 * @return a new exporter instance
+		 */
+		JRAbstractExporter newExporter();
+
+		/**
+		 * The content type, like 'application/pdf' for pdfs.
+		 * 
+		 * @return the content type string
+		 */
+		String getContentType();
+	}
+
+	/**
+	 * Exporter factory for PDF output.
+	 */
+	public static final IExporterFactory PDF_EXPORTER = new IExporterFactory()
+	{
+		/**
+		 * @see wicket.contrib.jasperreports.JasperReportsResource.IExporterFactory#newExporter()
+		 */
+		public JRAbstractExporter newExporter()
+		{
+			return new JRPdfExporter();
+		}
+
+		/**
+		 * @see wicket.contrib.jasperreports.JasperReportsResource.IExporterFactory#getContentType()
+		 */
+		public String getContentType()
+		{
+			return "application/pdf";
+		}
+	};
+
+	/**
+	 * Exporter factory for rtf output.
+	 */
+	public static final IExporterFactory RTF_EXPORTER = new IExporterFactory()
+	{
+		/**
+		 * @see wicket.contrib.jasperreports.JasperReportsResource.IExporterFactory#newExporter()
+		 */
+		public JRAbstractExporter newExporter()
+		{
+			return new JRRtfExporter();
+		}
+
+		/**
+		 * @see wicket.contrib.jasperreports.JasperReportsResource.IExporterFactory#getContentType()
+		 */
+		public String getContentType()
+		{
+			return "application/rtf";
+		}
+	};
+
 	/** the compiled report this resource references. */
 	private JasperReport jasperReport;
 
@@ -71,6 +141,9 @@ public abstract class JasperReportsResource extends DynamicByteArrayResource
 
 	/** the connection provider if any for filling this report. */
 	private IDatabaseConnectionProvider connectionProvider;
+
+	/** factory that provides exporter instances. */
+	private IExporterFactory exporterFactory = PDF_EXPORTER;
 
 	/**
 	 * When set, a header 'Content-Disposition: attachment;
@@ -242,6 +315,26 @@ public abstract class JasperReportsResource extends DynamicByteArrayResource
 	}
 
 	/**
+	 * Sets the exporter factory. An {@link IExporterFactory} is a factory that
+	 * provides intances of {@link JRAbstractExporter} that are used to generate
+	 * output. The default factory is {@link JasperReportsResource#PDF_EXPORTER},
+	 * which outputs PDF.
+	 * 
+	 * @param exporterFactory
+	 *            the exporter factory
+	 * @return This
+	 */
+	public final JasperReportsResource setExporterFactory(IExporterFactory exporterFactory)
+	{
+		if (exporterFactory == null)
+		{
+			throw new NullPointerException("argument exporterFactory must be not null");
+		}
+		this.exporterFactory = exporterFactory;
+		return this;
+	}
+
+	/**
 	 * Gets the file name. When set, a header 'Content-Disposition: attachment;
 	 * filename="${fileName}"' will be added to the response, resulting in a
 	 * download dialog. No magical extensions are added, so you should make sure
@@ -268,6 +361,47 @@ public abstract class JasperReportsResource extends DynamicByteArrayResource
 	{
 		this.fileName = fileName;
 		return this;
+	}
+
+	/**
+	 * @see wicket.resource.DynamicByteArrayResource#getContentType()
+	 */
+	public String getContentType()
+	{
+		return exporterFactory.getContentType();
+	}
+
+	/**
+	 * Gets the binary data by getting a new instance of JasperPrint and an
+	 * exporter for generating the output.
+	 * 
+	 * @return the binary data
+	 * 
+	 * @see wicket.resource.DynamicByteArrayResource#getData()
+	 */
+	protected byte[] getData()
+	{
+		try
+		{
+			// get a print instance for exporting
+			JasperPrint print = newJasperPrint();
+
+			// get a fresh instance of an exporter for this report
+			JRAbstractExporter exporter = exporterFactory.newExporter();
+
+			// prepare a stream to trap the exporter's output
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			exporter.setParameter(JRExporterParameter.JASPER_PRINT, print);
+			exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, baos);
+
+			// execute the export and return the trapped result
+			exporter.exportReport();
+			return baos.toByteArray();
+		}
+		catch (JRException e)
+		{
+			throw new WicketRuntimeException(e);
+		}
 	}
 
 	/**
@@ -325,6 +459,7 @@ public abstract class JasperReportsResource extends DynamicByteArrayResource
 		{
 			response.setHeader("Content-Disposition", "attachment; filename=\""
 					+ fileName + "\"");
+
 		}
 	}
 }
