@@ -25,7 +25,6 @@ import java.util.Map;
 import javax.servlet.ServletContext;
 
 import wicket.contrib.examples.WicketExamplePage;
-import wicket.contrib.jasperreports.JasperReportsPDFResource;
 import wicket.contrib.jasperreports.JasperReportsResource;
 import wicket.markup.html.link.ResourceLink;
 import wicket.protocol.http.WebApplication;
@@ -35,22 +34,30 @@ import wicket.protocol.http.WebApplication;
  * 
  * @author Eelco Hillenius
  */
-public class PdfLinkPage extends WicketExamplePage
+public class ReportLinksPage extends WicketExamplePage
 {
 	/**
 	 * Constructor.
 	 */
-	public PdfLinkPage()
+	public ReportLinksPage()
 	{
 		ServletContext context = ((WebApplication) getApplication()).getWicketServlet()
 				.getServletContext();
 		final File reportFile = new File(context.getRealPath("/reports/example.jasper"));
 		final Map parameters = new HashMap();
-		JasperReportsResource pdfResource = new JasperReportsPDFResource(reportFile)
+
+		JasperReportsResource pdfResource = new JasperReportsResource(reportFile)
 				.setReportParameters(parameters).setReportDataSource(
 						new ExampleDataSource());
 		pdfResource.setFileName("report.pdf");
 		add(new ResourceLink("linkToPdf", pdfResource));
+
+		JasperReportsResource rtfResource = new JasperReportsResource(reportFile)
+		.setReportParameters(parameters).setReportDataSource(
+				new ExampleDataSource());
+		rtfResource.setExporterFactory(JasperReportsResource.RTF_EXPORTER);
+		rtfResource.setFileName("report.rtf");
+		add(new ResourceLink("linkToRtf", rtfResource));
 	}
 
 	/**

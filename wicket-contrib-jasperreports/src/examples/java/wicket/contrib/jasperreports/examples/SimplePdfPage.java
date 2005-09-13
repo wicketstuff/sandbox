@@ -26,7 +26,6 @@ import javax.servlet.ServletContext;
 
 import wicket.contrib.examples.WicketExamplePage;
 import wicket.contrib.jasperreports.EmbeddedJasperReportsReport;
-import wicket.contrib.jasperreports.JasperReportsPDFResource;
 import wicket.contrib.jasperreports.JasperReportsResource;
 import wicket.protocol.http.WebApplication;
 
@@ -46,7 +45,7 @@ public class SimplePdfPage extends WicketExamplePage
 				.getServletContext();
 		final File reportFile = new File(context.getRealPath("/reports/example.jasper"));
 		final Map parameters = new HashMap();
-		JasperReportsResource pdfResource = new JasperReportsPDFResource(reportFile)
+		JasperReportsResource pdfResource = new JasperReportsResource(reportFile)
 				.setReportParameters(parameters).setReportDataSource(
 						new ExampleDataSource());
 		add(new EmbeddedJasperReportsReport("report", pdfResource));
