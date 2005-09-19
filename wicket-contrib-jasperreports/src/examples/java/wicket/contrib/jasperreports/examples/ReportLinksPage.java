@@ -55,9 +55,23 @@ public class ReportLinksPage extends WicketExamplePage
 		JasperReportsResource rtfResource = new JasperReportsResource(reportFile)
 		.setReportParameters(parameters).setReportDataSource(
 				new ExampleDataSource());
-		rtfResource.setExporterFactory(JasperReportsResource.RTF_EXPORTER);
+		rtfResource.setExporterFactory(JasperReportsResource.newRtfExporter());
 		rtfResource.setFileName("report.rtf");
 		add(new ResourceLink("linkToRtf", rtfResource));
+
+		JasperReportsResource htmlResource = new JasperReportsResource(reportFile)
+		.setReportParameters(parameters).setReportDataSource(
+				new ExampleDataSource());
+		htmlResource.setExporterFactory(JasperReportsResource.newHtmlExporter());
+		htmlResource.setFileName("report.html");
+		add(new ResourceLink("linkToHtml", htmlResource));
+
+		JasperReportsResource textResource = new JasperReportsResource(reportFile)
+		.setReportParameters(parameters).setReportDataSource(
+				new ExampleDataSource());
+		textResource.setExporterFactory(JasperReportsResource.newTextExporter(100, 100));
+		textResource.setFileName("report.txt");
+		add(new ResourceLink("linkToText", textResource));
 	}
 
 	/**
