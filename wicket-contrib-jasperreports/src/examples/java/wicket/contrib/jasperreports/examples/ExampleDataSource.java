@@ -95,7 +95,9 @@ public class ExampleDataSource implements JRDataSource
 	{
 		index++;
 
-		return (index < data.length);
+		boolean hasNext = (index < data.length);
+		if (!hasNext) index = -1; // reset index for the next round
+		return hasNext;
 	}
 
 

@@ -29,11 +29,11 @@ import wicket.markup.html.WebComponent;
  * 
  * @author Eelco Hillenius
  */
-public final class EmbeddedJasperReportsReport extends WebComponent implements
+public final class EmbeddedJRReport extends WebComponent implements
 		IResourceListener
 {
 	/** the report resource. */
-	private final JasperReportsResource resource;
+	private final JRResource resource;
 
 	/**
 	 * Construcxt.
@@ -43,7 +43,7 @@ public final class EmbeddedJasperReportsReport extends WebComponent implements
 	 * @param resource
 	 *            the resource
 	 */
-	public EmbeddedJasperReportsReport(String id, JasperReportsResource resource)
+	public EmbeddedJRReport(String id, JRResource resource)
 	{
 		super(id);
 		this.resource = resource;
