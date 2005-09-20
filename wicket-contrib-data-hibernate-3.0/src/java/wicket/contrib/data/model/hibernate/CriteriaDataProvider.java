@@ -4,10 +4,7 @@ import java.util.Iterator;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
-
-import wicket.contrib.dataview.sort.SortParam;
 
 
 /**
@@ -36,21 +33,6 @@ public abstract class CriteriaDataProvider extends HibernateDataProvider
 	protected Object size(Session session)
 	{
 		return allItems(session).setProjection(Projections.rowCount()).uniqueResult();
-	}
-
-	private Criteria addOrdering(Criteria criteria)
-	{
-		for (Iterator i = getSortList().iterator(); i.hasNext();)
-		{
-			criteria.addOrder(makeOrder((SortParam) i.next()));
-		}
-		return criteria;
-	}
-
-	private Order makeOrder(SortParam param)
-	{
-		return param.isAscending() ? Order.asc(param.getProperty()) : Order.desc(param
-				.getProperty());
 	}
 	
 	/**
