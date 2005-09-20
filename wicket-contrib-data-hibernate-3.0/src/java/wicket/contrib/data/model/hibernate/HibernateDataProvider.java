@@ -10,6 +10,7 @@ import wicket.contrib.data.model.hibernate.IHibernateDao.IHibernateCallback;
 import wicket.contrib.dataview.sort.SortParam;
 import wicket.contrib.dataview.sort.SortableDataProvider;
 import wicket.model.IModel;
+import wicket.model.Model;
 
 /**
  * A data provider for working with Hibernate 3.
@@ -18,9 +19,14 @@ import wicket.model.IModel;
  */
 public abstract class HibernateDataProvider extends SortableDataProvider
 {
-	IHibernateDao hibernateDao;
-
+	IModel hibernateDao;
+	
 	public HibernateDataProvider(IHibernateDao hibernateDao)
+	{
+		this.hibernateDao = new Model(hibernateDao);
+	}
+
+	public HibernateDataProvider(IModel hibernateDao)
 	{
 		this.hibernateDao = hibernateDao;
 	}
@@ -32,7 +38,7 @@ public abstract class HibernateDataProvider extends SortableDataProvider
 
 	public Iterator iterator(final int first, final int count)
 	{
-		return (Iterator) hibernateDao.execute(new IHibernateCallback()
+		return (Iterator) getHibernateDao().execute(new IHibernateCallback()
 		{
 			public Object execute(Session session)
 			{
@@ -43,7 +49,7 @@ public abstract class HibernateDataProvider extends SortableDataProvider
 
 	public int size()
 	{
-		Integer result = (Integer) hibernateDao.execute(new IHibernateCallback()
+		Integer result = (Integer) getHibernateDao().execute(new IHibernateCallback()
 		{
 			public Object execute(Session session)
 			{
@@ -118,6 +124,10 @@ public abstract class HibernateDataProvider extends SortableDataProvider
 	{
 		return param.isAscending() ? Order.asc(param.getProperty()) : Order.desc(param
 				.getProperty());
+	}
+	
+	private IHibernateDao getHibernateDao() {
+		return (IHibernateDao) hibernateDao.getObject(null);
 	}
 
 	protected abstract Iterator iterator(int first, int count, Session session);

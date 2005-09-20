@@ -14,6 +14,7 @@ import wicket.WicketRuntimeException;
 import wicket.contrib.data.model.hibernate.IHibernateDao;
 import wicket.contrib.data.model.hibernate.IHibernateDao.IHibernateCallback;
 import wicket.model.IModel;
+import wicket.model.Model;
 
 /**
  * Wraps a Hibernate object.
@@ -22,7 +23,7 @@ import wicket.model.IModel;
  */
 public class HibernateModel implements IModel, Comparable
 {
-	private IHibernateDao dao;
+	private IModel dao;
 
 	private Class clazz;
 
@@ -39,6 +40,16 @@ public class HibernateModel implements IModel, Comparable
 	 * @param dao the data access object for this model to use
 	 */
 	public HibernateModel(Object model, IHibernateDao dao) {
+		this(model, new Model(dao), false);
+	}
+	
+	/**
+	 * Constructor that wraps any mapped Hibernate class.
+	 * 
+	 * @param model the object to wrap
+	 * @param dao the data access object for this model to use
+	 */
+	public HibernateModel(Object model, IModel dao) {
 		this(model, dao, false);
 	}
 	
@@ -51,7 +62,20 @@ public class HibernateModel implements IModel, Comparable
 	 */
 	public HibernateModel(Object model, IHibernateDao dao, boolean unproxy)
 	{
+		this(model, new Model(dao), unproxy);
+	}
+	
+	/**
+	 * Constructor that wraps any mapped Hibernate class.
+	 * 
+	 * @param model the object to wrap
+	 * @param dao the data access object for this model to use
+	 * @param unproxy whether or not to unproxy object on getObject()
+	 */
+	public HibernateModel(Object model, IModel dao, boolean unproxy)
+	{
 		this.unproxy = unproxy;
+		this.dao = dao;
 		
 		// Get the name of the object.
 		String entityName = "";
@@ -68,7 +92,7 @@ public class HibernateModel implements IModel, Comparable
 			entityName = model.getClass().getName();
 		}
 		
-		SessionFactory factory = (SessionFactory) dao.execute(new IHibernateCallback()
+		SessionFactory factory = (SessionFactory) getDao().execute(new IHibernateCallback()
 		{
 			public Object execute(Session session)
 			{
@@ -84,7 +108,6 @@ public class HibernateModel implements IModel, Comparable
 		}
 
 		// Set all the values.
-		this.dao = dao;
 		this.clazz = meta.getMappedClass(EntityMode.POJO);
 		this.id = meta.getIdentifier(unproxiedModel, EntityMode.POJO);
 		this.model = model;
@@ -150,7 +173,7 @@ public class HibernateModel implements IModel, Comparable
 
 	private void attach()
 	{
-		model = dao.execute(new IHibernateCallback()
+		model = getDao().execute(new IHibernateCallback()
 		{
 			public Object execute(Session session)
 			{
@@ -183,5 +206,9 @@ public class HibernateModel implements IModel, Comparable
 	public int hashCode()
 	{
 		return getClazz().getName().hashCode() ^ getId().hashCode();
+	}
+	
+	private IHibernateDao getDao() {
+		return (IHibernateDao) dao.getObject(null);
 	}
 }
