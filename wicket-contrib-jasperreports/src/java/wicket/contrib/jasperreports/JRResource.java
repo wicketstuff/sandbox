@@ -21,7 +21,6 @@ package wicket.contrib.jasperreports;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.InputStream;
-import java.io.Serializable;
 import java.net.URL;
 import java.sql.Connection;
 import java.util.Map;
@@ -33,12 +32,11 @@ import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.export.JRHtmlExporter;
-import net.sf.jasperreports.engine.export.JRPdfExporter;
-import net.sf.jasperreports.engine.export.JRRtfExporter;
-import net.sf.jasperreports.engine.export.JRTextExporter;
-import net.sf.jasperreports.engine.export.JRTextExporterParameter;
 import net.sf.jasperreports.engine.util.JRLoader;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import wicket.WicketRuntimeException;
 import wicket.protocol.http.WebResponse;
 import wicket.resource.DynamicByteArrayResource;
@@ -48,8 +46,11 @@ import wicket.resource.DynamicByteArrayResource;
  * 
  * @author Eelco Hillenius
  */
-public class JasperReportsResource extends DynamicByteArrayResource
+public abstract class JRResource extends DynamicByteArrayResource
 {
+	/** logger. */
+	private static Log log = LogFactory.getLog(JRResource.class);
+
 	/**
 	 * Provides JDBC connection.
 	 */
@@ -69,135 +70,6 @@ public class JasperReportsResource extends DynamicByteArrayResource
 		void release();
 	}
 
-	/**
-	 * Provides the exporter to use.
-	 */
-	public static interface IExporterFactory extends Serializable
-	{
-		/**
-		 * Gets a new intance of {@link JRAbstractExporter}.
-		 * 
-		 * @return a new exporter instance
-		 */
-		JRAbstractExporter newExporter();
-
-		/**
-		 * The content type, like 'application/pdf' for pdfs.
-		 * 
-		 * @return the content type string
-		 */
-		String getContentType();
-	}
-
-	/**
-	 * Gets a new PDF exporter factory.
-	 * @return a PDF exporter factory
-	 */
-	public static final IExporterFactory newPdfExporter()
-	{
-		return new IExporterFactory()
-		{
-			/**
-			 * @see wicket.contrib.jasperreports.JasperReportsResource.IExporterFactory#newExporter()
-			 */
-			public JRAbstractExporter newExporter()
-			{
-				return new JRPdfExporter();
-			}
-
-			/**
-			 * @see wicket.contrib.jasperreports.JasperReportsResource.IExporterFactory#getContentType()
-			 */
-			public String getContentType()
-			{
-				return "application/pdf";
-			}
-		};
-	}
-
-	/**
-	 * Gets a new RTF exporter factory.
-	 * @return a RTF exporter factory
-	 */
-	public static final IExporterFactory newRtfExporter()
-	{
-		return new IExporterFactory()
-		{
-			/**
-			 * @see wicket.contrib.jasperreports.JasperReportsResource.IExporterFactory#newExporter()
-			 */
-			public JRAbstractExporter newExporter()
-			{
-				return new JRRtfExporter();
-			}
-
-			/**
-			 * @see wicket.contrib.jasperreports.JasperReportsResource.IExporterFactory#getContentType()
-			 */
-			public String getContentType()
-			{
-				return "text/rtf";
-			}
-		};
-	}
-
-	/**
-	 * Gets a new HTML exporter factory.
-	 * @return a HTML exporter factory
-	 */
-	public static final IExporterFactory newHtmlExporter()
-	{
-		return new IExporterFactory()
-		{
-			/**
-			 * @see wicket.contrib.jasperreports.JasperReportsResource.IExporterFactory#newExporter()
-			 */
-			public JRAbstractExporter newExporter()
-			{
-				return new JRHtmlExporter();
-			}
-
-			/**
-			 * @see wicket.contrib.jasperreports.JasperReportsResource.IExporterFactory#getContentType()
-			 */
-			public String getContentType()
-			{
-				return "text/html";
-			}
-		};
-	}
-
-	/**
-	 * Gets a new text exporter factory.
-	 * @param width the page width
-	 * @param height the page height
-	 * @return a text exporter factory
-	 */
-	public static final IExporterFactory newTextExporter(final int width, final int height)
-	{
-		return new IExporterFactory()
-		{
-			/**
-			 * @see wicket.contrib.jasperreports.JasperReportsResource.IExporterFactory#newExporter()
-			 */
-			public JRAbstractExporter newExporter()
-			{
-				JRTextExporter exporter = new JRTextExporter();
-				exporter.setParameter(JRTextExporterParameter.PAGE_WIDTH, new Integer(width));
-				exporter.setParameter(JRTextExporterParameter.PAGE_HEIGHT, new Integer(height));
-				return exporter;
-			}
-
-			/**
-			 * @see wicket.contrib.jasperreports.JasperReportsResource.IExporterFactory#getContentType()
-			 */
-			public String getContentType()
-			{
-				return "text/plain";
-			}
-		};
-	}
-
 	/** the compiled report this resource references. */
 	private JasperReport jasperReport;
 
@@ -209,9 +81,6 @@ public class JasperReportsResource extends DynamicByteArrayResource
 
 	/** the connection provider if any for filling this report. */
 	private IDatabaseConnectionProvider connectionProvider;
-
-	/** factory that provides exporter instances. */
-	private IExporterFactory exporterFactory;
 
 	/**
 	 * When set, a header 'Content-Disposition: attachment;
@@ -225,7 +94,7 @@ public class JasperReportsResource extends DynamicByteArrayResource
 	 * Construct without a report. You must provide a report before you can use
 	 * this resource.
 	 */
-	public JasperReportsResource()
+	public JRResource()
 	{
 		super();
 		setCacheable(false);
@@ -237,27 +106,7 @@ public class JasperReportsResource extends DynamicByteArrayResource
 	 * @param report
 	 *            the report input stream
 	 */
-	public JasperReportsResource(InputStream report)
-	{
-		super();
-		setCacheable(false);
-		try
-		{
-			jasperReport = (JasperReport) JRLoader.loadObject(report);
-		}
-		catch (JRException e)
-		{
-			throw new WicketRuntimeException(e);
-		}
-	}
-
-	/**
-	 * Construct.
-	 * 
-	 * @param report
-	 *            the report input stream
-	 */
-	public JasperReportsResource(URL report)
+	public JRResource(InputStream report)
 	{
 		super();
 		setCacheable(false);
@@ -277,7 +126,27 @@ public class JasperReportsResource extends DynamicByteArrayResource
 	 * @param report
 	 *            the report input stream
 	 */
-	public JasperReportsResource(File report)
+	public JRResource(URL report)
+	{
+		super();
+		setCacheable(false);
+		try
+		{
+			jasperReport = (JasperReport) JRLoader.loadObject(report);
+		}
+		catch (JRException e)
+		{
+			throw new WicketRuntimeException(e);
+		}
+	}
+
+	/**
+	 * Construct.
+	 * 
+	 * @param report
+	 *            the report input stream
+	 */
+	public JRResource(File report)
 	{
 		super();
 		setCacheable(false);
@@ -329,7 +198,7 @@ public class JasperReportsResource extends DynamicByteArrayResource
 	 *            report parameters
 	 * @return This
 	 */
-	public final JasperReportsResource setReportParameters(Map reportParameters)
+	public final JRResource setReportParameters(Map reportParameters)
 	{
 		this.reportParameters = reportParameters;
 		return this;
@@ -352,7 +221,7 @@ public class JasperReportsResource extends DynamicByteArrayResource
 	 *            the datasource if any for filling this report
 	 * @return This
 	 */
-	public JasperReportsResource setReportDataSource(JRDataSource reportDataSource)
+	public JRResource setReportDataSource(JRDataSource reportDataSource)
 	{
 		this.reportDataSource = reportDataSource;
 		return this;
@@ -375,39 +244,11 @@ public class JasperReportsResource extends DynamicByteArrayResource
 	 *            the connection provider if any for filling this report
 	 * @return This
 	 */
-	public final JasperReportsResource setConnectionProvider(
+	public final JRResource setConnectionProvider(
 			IDatabaseConnectionProvider connectionProvider)
 	{
 		this.connectionProvider = connectionProvider;
 		return this;
-	}
-
-	/**
-	 * Sets the exporter factory. An {@link IExporterFactory} is a factory that
-	 * provides intances of {@link JRAbstractExporter} that are used to generate
-	 * output. The default factory is a PDF exporter factory.
-	 * 
-	 * @param exporterFactory
-	 *            the exporter factory
-	 * @return This
-	 */
-	public final JasperReportsResource setExporterFactory(IExporterFactory exporterFactory)
-	{
-		if (exporterFactory == null)
-		{
-			throw new NullPointerException("argument exporterFactory must be not null");
-		}
-		this.exporterFactory = exporterFactory;
-		return this;
-	}
-
-	private final IExporterFactory getExporterFactory()
-	{
-		if (exporterFactory == null)
-		{
-			exporterFactory = newPdfExporter();
-		}
-		return exporterFactory;
 	}
 
 	/**
@@ -433,19 +274,17 @@ public class JasperReportsResource extends DynamicByteArrayResource
 	 *            the file name
 	 * @return This
 	 */
-	public final JasperReportsResource setFileName(String fileName)
+	public final JRResource setFileName(String fileName)
 	{
 		this.fileName = fileName;
 		return this;
 	}
 
 	/**
-	 * @see wicket.resource.DynamicByteArrayResource#getContentType()
+	 * Called by getData to obtain an exporter instance.
+	 * @return an exporter instance
 	 */
-	public String getContentType()
-	{
-		return getExporterFactory().getContentType();
-	}
+	protected abstract JRAbstractExporter newExporter();
 
 	/**
 	 * Gets the binary data by getting a new instance of JasperPrint and an
@@ -459,11 +298,12 @@ public class JasperReportsResource extends DynamicByteArrayResource
 	{
 		try
 		{
+			long t1 = System.currentTimeMillis();
 			// get a print instance for exporting
 			JasperPrint print = newJasperPrint();
 
 			// get a fresh instance of an exporter for this report
-			JRAbstractExporter exporter = getExporterFactory().newExporter();
+			JRAbstractExporter exporter = newExporter();
 
 			// prepare a stream to trap the exporter's output
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -472,7 +312,14 @@ public class JasperReportsResource extends DynamicByteArrayResource
 
 			// execute the export and return the trapped result
 			exporter.exportReport();
-			return baos.toByteArray();
+			byte[] data = baos.toByteArray();
+			if (log.isDebugEnabled())
+			{
+				long t2 = System.currentTimeMillis();
+				log.debug("loaded report data; bytes: "
+						+ data.length + " in " + (t2 - t1) + " miliseconds");
+			}
+			return data;
 		}
 		catch (JRException e)
 		{

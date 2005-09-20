@@ -19,13 +19,17 @@
 package wicket.contrib.jasperreports.examples;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.servlet.ServletContext;
 
 import wicket.contrib.examples.WicketExamplePage;
-import wicket.contrib.jasperreports.JasperReportsResource;
+import wicket.contrib.jasperreports.JRCsvResource;
+import wicket.contrib.jasperreports.JRHtmlResource;
+import wicket.contrib.jasperreports.JRImageResource;
+import wicket.contrib.jasperreports.JRPdfResource;
+import wicket.contrib.jasperreports.JRResource;
+import wicket.contrib.jasperreports.JRRtfResource;
+import wicket.contrib.jasperreports.JRTextResource;
 import wicket.markup.html.link.ResourceLink;
 import wicket.protocol.http.WebApplication;
 
@@ -44,34 +48,30 @@ public class ReportLinksPage extends WicketExamplePage
 		ServletContext context = ((WebApplication) getApplication()).getWicketServlet()
 				.getServletContext();
 		final File reportFile = new File(context.getRealPath("/reports/example.jasper"));
-		final Map parameters = new HashMap();
 
-		JasperReportsResource pdfResource = new JasperReportsResource(reportFile)
-				.setReportParameters(parameters).setReportDataSource(
-						new ExampleDataSource());
-		pdfResource.setFileName("report.pdf");
+		JRResource pdfResource = new JRPdfResource(reportFile)
+				.setReportDataSource(new ExampleDataSource());
 		add(new ResourceLink("linkToPdf", pdfResource));
 
-		JasperReportsResource rtfResource = new JasperReportsResource(reportFile)
-		.setReportParameters(parameters).setReportDataSource(
-				new ExampleDataSource());
-		rtfResource.setExporterFactory(JasperReportsResource.newRtfExporter());
-		rtfResource.setFileName("report.rtf");
+		JRResource rtfResource = new JRRtfResource(reportFile)
+				.setReportDataSource(new ExampleDataSource());
 		add(new ResourceLink("linkToRtf", rtfResource));
 
-		JasperReportsResource htmlResource = new JasperReportsResource(reportFile)
-		.setReportParameters(parameters).setReportDataSource(
-				new ExampleDataSource());
-		htmlResource.setExporterFactory(JasperReportsResource.newHtmlExporter());
-		htmlResource.setFileName("report.html");
+		JRResource htmlResource = new JRHtmlResource(reportFile)
+				.setReportDataSource(new ExampleDataSource());
 		add(new ResourceLink("linkToHtml", htmlResource));
 
-		JasperReportsResource textResource = new JasperReportsResource(reportFile)
-		.setReportParameters(parameters).setReportDataSource(
-				new ExampleDataSource());
-		textResource.setExporterFactory(JasperReportsResource.newTextExporter(100, 100));
-		textResource.setFileName("report.txt");
+		JRResource textResource = new JRTextResource(reportFile)
+				.setReportDataSource(new ExampleDataSource());
 		add(new ResourceLink("linkToText", textResource));
+
+		JRResource imageResource = new JRImageResource(reportFile)
+				.setReportDataSource(new ExampleDataSource());
+		add(new ResourceLink("linkToImage", imageResource));
+
+		JRResource csvResource = new JRCsvResource(reportFile)
+				.setReportDataSource(new ExampleDataSource());
+		add(new ResourceLink("linkToCsv", csvResource));
 	}
 
 	/**
