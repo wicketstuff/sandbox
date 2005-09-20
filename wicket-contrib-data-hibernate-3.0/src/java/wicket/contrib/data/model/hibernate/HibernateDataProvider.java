@@ -2,7 +2,9 @@ package wicket.contrib.data.model.hibernate;
 
 import java.util.Iterator;
 
+import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.Order;
 
 import wicket.contrib.data.model.hibernate.IHibernateDao.IHibernateCallback;
 import wicket.contrib.dataview.sort.SortParam;
@@ -95,6 +97,27 @@ public abstract class HibernateDataProvider extends SortableDataProvider
 	protected String getSqlOrderBy()
 	{
 		return getSqlOrderBy(null);
+	}
+	
+	/**
+	 * Adds all the current orderings to the criteria.
+	 * 
+	 * @param criteria the criteria to add the orderings to
+	 * @return the criteria with the added orderings
+	 */
+	protected final Criteria addOrdering(Criteria criteria)
+	{
+		for (Iterator i = getSortList().iterator(); i.hasNext();)
+		{
+			criteria.addOrder(makeOrder((SortParam) i.next()));
+		}
+		return criteria;
+	}
+
+	private Order makeOrder(SortParam param)
+	{
+		return param.isAscending() ? Order.asc(param.getProperty()) : Order.desc(param
+				.getProperty());
 	}
 
 	protected abstract Iterator iterator(int first, int count, Session session);
