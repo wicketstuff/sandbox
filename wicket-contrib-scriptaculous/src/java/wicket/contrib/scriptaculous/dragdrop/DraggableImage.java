@@ -1,7 +1,7 @@
 package wicket.contrib.scriptaculous.dragdrop;
 
+import wicket.contrib.scriptaculous.ScriptaculousAjaxHandler;
 import wicket.markup.ComponentTag;
-import wicket.markup.html.ajax.scriptaculous.ScriptaculousAjaxHandler;
 import wicket.markup.html.image.Image;
 import wicket.util.resource.IResourceStream;
 import wicket.util.resource.StringBufferResourceStream;

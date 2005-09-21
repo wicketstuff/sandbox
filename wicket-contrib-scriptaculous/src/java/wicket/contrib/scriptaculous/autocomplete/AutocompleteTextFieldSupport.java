@@ -1,10 +1,10 @@
 package wicket.contrib.scriptaculous.autocomplete;
 
 import wicket.ResourceReference;
+import wicket.contrib.scriptaculous.ScriptaculousAjaxHandler;
 import wicket.markup.ComponentTag;
 import wicket.markup.html.HtmlHeaderContainer;
 import wicket.markup.html.PackageResourceReference;
-import wicket.markup.html.ajax.scriptaculous.ScriptaculousAjaxHandler;
 import wicket.markup.html.form.TextField;
 import wicket.util.resource.IResourceStream;
 import wicket.util.resource.StringBufferResourceStream;
