@@ -18,13 +18,8 @@
  */
 package wicket.contrib.scriptaculous.autocomplete;
 
-import wicket.ResourceReference;
-import wicket.markup.ComponentTag;
-import wicket.markup.html.HtmlHeaderContainer;
-import wicket.markup.html.PackageResourceReference;
 import wicket.markup.html.ajax.scriptaculous.ScriptaculousAjaxHandler;
 import wicket.markup.html.form.FormComponent;
-import wicket.markup.html.form.TextField;
 import wicket.util.resource.IResourceStream;
 import wicket.util.resource.StringBufferResourceStream;
 
@@ -32,7 +27,7 @@ import wicket.util.resource.StringBufferResourceStream;
  *
  * @author <a href="mailto:wireframe6464@users.sourceforge.net">Ryan Sonnek</a>
  */
-public abstract class AjaxAutocompleteTextField extends TextField {
+public abstract class AjaxAutocompleteTextField extends AutocompleteTextFieldSupport {
     private final AutocompleteEventHandler handler;
 
     public AjaxAutocompleteTextField(String id) {
@@ -43,49 +38,14 @@ public abstract class AjaxAutocompleteTextField extends TextField {
 
     protected abstract String[] getResults(String input);
 
-    protected void onComponentTag(ComponentTag tag) {
-        super.onComponentTag(tag);
-        tag.put("id", getId());
-        tag.put("autocomplete", "off");
-    }
-
     protected void onRender() {
         super.onRender();
 
-        String autocompleteId = getId() + "_autocomplete";
-        getResponse().write("<div class=\"auto_complete\" id=\"" + autocompleteId  + "\"></div>");
-        getResponse().write("<script type=\"text/javascript\">new Ajax.Autocompleter('" + getId() + "', '" + autocompleteId + "', '" + handler.getCallbackUrl() + "', {})</script>");
+        getResponse().write("<script type=\"text/javascript\">new Ajax.Autocompleter('" + getId() + "', '" + getAutocompleteId() + "', '" + handler.getCallbackUrl() + "', {})</script>");
     }
 
-    protected ResourceReference getCss() {
-    	return new PackageResourceReference(AutocompleteTextField.class, "style.css");
-    }
 
     private class AutocompleteEventHandler extends ScriptaculousAjaxHandler {
-        public final void renderHeadContribution(HtmlHeaderContainer container) {
-        	addCssReference(container, getCss());
-        }
-
-        private void addCssReference(HtmlHeaderContainer container, ResourceReference ref) {
-            String url = container.getPage().urlFor(ref.getPath());
-            String s =
-                "\t<link rel=\"stylesheet\" type=\"text/css\" href=\"" + url + "\"/>\n";
-            write(container, s);
-        }
-
-        /**
-         * Writes the given string to the header container.
-         * @param container the header container
-         * @param s the string to write
-         */
-        private void write(HtmlHeaderContainer container, String s) {
-            container.getResponse().write(s);
-        }
-
-        /**
-         */
-        public void onComponentTag(ComponentTag tag) {
-        }
 
         protected IResourceStream getResponse() {
             StringBufferResourceStream s = new StringBufferResourceStream();
