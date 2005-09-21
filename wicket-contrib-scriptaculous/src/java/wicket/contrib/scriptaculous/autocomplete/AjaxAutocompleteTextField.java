@@ -18,7 +18,7 @@
  */
 package wicket.contrib.scriptaculous.autocomplete;
 
-import wicket.markup.html.ajax.scriptaculous.ScriptaculousAjaxHandler;
+import wicket.contrib.scriptaculous.ScriptaculousAjaxHandler;
 import wicket.markup.html.form.FormComponent;
 import wicket.util.resource.IResourceStream;
 import wicket.util.resource.StringBufferResourceStream;
