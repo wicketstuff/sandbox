@@ -20,7 +20,7 @@ public class CustomLayoutAjaxAutocompleteExamplePageContribution extends CustomL
 		results.add(new CustomResultObject("ryan.gif", "Ryan Sonnek", "ryan@youremail.com"));
 		results.add(new CustomResultObject("billy.gif", "Bill Gates", "bill.gates@microsoft.com"));
 		results.add(new CustomResultObject("janet.gif", "Janet Someone", "janet@thethirdwheel.com"));
-		return new ListView("entries", results) {
+		return new ListView("entry", results) {
 
 			protected void populateItem(ListItem item) {
 				CustomResultObject result = (CustomResultObject) item.getModelObject();
