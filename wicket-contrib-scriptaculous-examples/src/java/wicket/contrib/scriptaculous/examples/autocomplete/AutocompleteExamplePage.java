@@ -1,14 +1,14 @@
-package wicket.contrib.scriptaculous.examples;
+package wicket.contrib.scriptaculous.examples.autocomplete;
 
-import wicket.contrib.scriptaculous.autocomplete.CustomLayoutAjaxAutocompleteTextField;
+import wicket.contrib.scriptaculous.autocomplete.AutocompleteTextField;
 import wicket.markup.html.WebPage;
 import wicket.markup.html.form.Button;
 import wicket.markup.html.form.Form;
 import wicket.model.CompoundPropertyModel;
 
-public class CustomLayoutAjaxAutocompleteExamplePage extends WebPage {
+public class AutocompleteExamplePage extends WebPage {
 
-	public CustomLayoutAjaxAutocompleteExamplePage() {
+	public AutocompleteExamplePage() {
 		super();
 		add(new AutocompleteExampleForm("searchForm"));
 	}
@@ -32,7 +32,12 @@ public class CustomLayoutAjaxAutocompleteExamplePage extends WebPage {
 		public AutocompleteExampleForm(String id) {
 			super(id, new CompoundPropertyModel(new EmailSearchCommand()));
 
-			add(new CustomLayoutAjaxAutocompleteTextField("emailAddress", CustomLayoutAjaxAutocompleteExamplePageContribution.class));
+			String[] results = new String[] {
+					"ryan sonnek"
+					, "bill gates"
+					, "alan johnson"
+			};
+			add(new AutocompleteTextField("emailAddress", results));
 			add(new Button("submitButton"));
 		}
 

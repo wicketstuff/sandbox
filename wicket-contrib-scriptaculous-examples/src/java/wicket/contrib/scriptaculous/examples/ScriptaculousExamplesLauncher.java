@@ -7,7 +7,7 @@ import org.mortbay.jetty.servlet.ServletHttpContext;
 
 import wicket.protocol.http.WicketServlet;
 
-public class AutocompleteExamplesLauncher {
+public class ScriptaculousExamplesLauncher {
 
 	public static void main(String[] args) throws Exception {
         SocketListener listener = new SocketListener();
@@ -16,7 +16,7 @@ public class AutocompleteExamplesLauncher {
 
         Server jettyServer = new Server();
         jettyServer.addListener(listener);
-        jettyServer.addContext(createContext("/autocompleteExamples", AutocompleteExamplesApplication.class, "Autocomplete Examples"));
+        jettyServer.addContext(createContext("/scriptaculousExamples", ScriptaculousExamplesApplication.class, "Autocomplete Examples"));
         jettyServer.start();
 	}
 
@@ -24,7 +24,7 @@ public class AutocompleteExamplesLauncher {
         ServletHttpContext httpContext = new ServletHttpContext();
         httpContext.setContextPath(path);
 
-        //lklevan: this is important, otherwise form posts get redirected and don't work
+        //this is important, otherwise form posts get redirected and don't work
         httpContext.setRedirectNullPath(false);
 
         ServletHolder holder = httpContext.addServlet("Wicket", "/*", WicketServlet.class.getName());
