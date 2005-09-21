@@ -1,4 +1,4 @@
-package wicket.contrib.scriptaculous.examples;
+package wicket.contrib.scriptaculous.examples.autocomplete;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package wicket.contrib.scriptaculous.examples;
+package wicket.contrib.scriptaculous.examples.autocomplete;
 
 import wicket.contrib.scriptaculous.autocomplete.AjaxAutocompleteTextField;
 import wicket.markup.html.WebPage;
