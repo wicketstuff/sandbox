@@ -18,20 +18,13 @@
  */
 package wicket.contrib.scriptaculous.autocomplete;
 
-import wicket.ResourceReference;
 import wicket.markup.ComponentTag;
-import wicket.markup.html.HtmlHeaderContainer;
-import wicket.markup.html.PackageResourceReference;
-import wicket.markup.html.ajax.scriptaculous.ScriptaculousAjaxHandler;
-import wicket.markup.html.form.TextField;
-import wicket.util.resource.IResourceStream;
-import wicket.util.resource.StringBufferResourceStream;
 
 /**
  *
  * @author <a href="mailto:wireframe6464@users.sourceforge.net">Ryan Sonnek</a>
  */
-public class AutocompleteTextField extends TextField {
+public class AutocompleteTextField extends AutocompleteTextFieldSupport {
 
 	private final String[] results;
 
@@ -39,7 +32,6 @@ public class AutocompleteTextField extends TextField {
         super(id);
 
 		this.results = results;
-        add(new AutocompleteEventHandler());
     }
 
     protected void onComponentTag(ComponentTag tag) {
@@ -51,9 +43,7 @@ public class AutocompleteTextField extends TextField {
     protected void onRender() {
         super.onRender();
 
-        String autocompleteId = getId() + "_autocomplete";
-        getResponse().write("<div class=\"auto_complete\" id=\"" + autocompleteId  + "\"></div>");
-        getResponse().write("<script type=\"text/javascript\">new Autocompleter.Local('" + getId() + "', '" + autocompleteId + "', " + buildResults() + ", {})</script>");
+        getResponse().write("<script type=\"text/javascript\">new Autocompleter.Local('" + getId() + "', '" + getAutocompleteId() + "', " + buildResults() + ", {})</script>");
     }
 
     private String buildResults() {
@@ -67,39 +57,4 @@ public class AutocompleteTextField extends TextField {
     	result += ")";
     	return result;
 	}
-
-	protected ResourceReference getCss() {
-    	return new PackageResourceReference(AutocompleteTextField.class, "style.css");
-    }
-
-
-    public void renderHead(HtmlHeaderContainer container) {
-		super.renderHead(container);
-
-		addCssReference(container, getCss());
-    }
-
-    private void addCssReference(HtmlHeaderContainer container, ResourceReference ref) {
-        String url = container.getPage().urlFor(ref.getPath());
-        String s =
-            "\t<link rel=\"stylesheet\" type=\"text/css\" href=\"" + url + "\"/>\n";
-        write(container, s);
-    }
-
-    /**
-     * Writes the given string to the header container.
-     * @param container the header container
-     * @param s the string to write
-     */
-    private void write(HtmlHeaderContainer container, String s) {
-        container.getResponse().write(s);
-    }
-
-
-    private class AutocompleteEventHandler extends ScriptaculousAjaxHandler {
-        protected IResourceStream getResponse() {
-            StringBufferResourceStream s = new StringBufferResourceStream();
-            return s;
-        }
-    }
 }
