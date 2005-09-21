@@ -33,6 +33,11 @@
   	</license>
   </licenses>
   <versions>
+  	<version>
+  	  <id>0.1</id>
+  	  <name>0.1</name>
+  	  <tag>WC_DOJO_R_0_1</tag>
+  	</version>
   </versions>
   <mailingLists>
     <mailingList>
