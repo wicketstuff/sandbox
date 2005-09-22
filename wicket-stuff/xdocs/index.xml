@@ -36,7 +36,7 @@
 			</p>
 			<p>
 				The Wicket Stuff project provides non-core components to the Wicket project. By
-				non-core we mean that the Wicket project should focus on being a very focussed
+				non-core we mean that the Wicket project should focus on being a very focused
 				framework, not distracted by development of other frameworks, such as
 				<a href="http://www.hibernate.org">Hibernate</a>
 				or
