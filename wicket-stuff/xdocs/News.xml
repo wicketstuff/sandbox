@@ -11,6 +11,14 @@
 				<a href="http://wicket.sourceforge.net">front page</a>
 				.
 			</p>
+			<subsection name="September 22, 2005 - Dojo Toolkit support added">
+			    <p>
+			    	We have published the first release of the Dojo toolkit on Wicket
+			    	integration. This first release only consists of the Ajax handler,
+			    	allowing you to create your own custom Wicket Ajax components based
+			    	on the excellent Dojo toolkit.
+			    </p>
+			</subsection>
 			<subsection name="June 7, 2005 - Wicket 1.0 available for download">
 				<p>
 					The Wicket development team has made the 1.0 final release available for
