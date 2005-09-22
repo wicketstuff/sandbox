@@ -13,6 +13,7 @@
 				framework. Components offered by this project include:
 			</p>
 			<ul>
+				<li><a href="http://www.dojotoolkit.org">Dojo Toolkit</a> AJAX components integration</li>
 				<li>Hibernate (2.1 and 3) components</li>
 				<li>
 					<a href="/wicket-contrib-fvalidate/index.html">fValidate integration</a>
@@ -46,6 +47,14 @@
 			</p>
 		</section>
 		<section name="Latest News">
+			<subsection name="September 22, 2005 - Dojo Toolkit support added">
+			    <p>
+			    	We have published the first release of the Dojo toolkit on Wicket
+			    	integration. This first release only consists of the Ajax handler,
+			    	allowing you to create your own custom Wicket Ajax components based
+			    	on the excellent Dojo toolkit.
+			    </p>
+			</subsection>
 			<subsection name="Juli 17, 2005 - Wicket 1.0.1 available for download">
 				<p>
 					The Wicket development team has made the first maintenance release

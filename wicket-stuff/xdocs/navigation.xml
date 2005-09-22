@@ -15,6 +15,7 @@
 	    </menu>
 	    <menu name="Projects">
 	    	<item name="Kick Start" href="/wicket-kickstart/index.html"/>
+	    	<item name="Dojo Toolkit" href="/wicket-contrib-dojo/index.html"/>
 	    	<item name="Velocity Panel" href="/wicket-velocity-panel/index.html"/>
 	    	<item name="Spring Integration" href="/wicket-contrib-spring/index.html"/>
 	    	<item name="Groovy Integration" href="/wicket-contrib-groovy/index.html"/>
