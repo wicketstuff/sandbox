@@ -8,20 +8,27 @@ import wicket.util.resource.StringBufferResourceStream;
 
 public class DraggableImage extends Image {
 
-    public DraggableImage(String id, String img) {
-        super(id, img);
+    private final String style;
+    private final String id;
+
+    public DraggableImage(String wicketId, String id, String img, String style) {
+        super(wicketId, img);
+        this.id = id;
+        this.style = style;
+
         add(new JavascriptBindingEventHandler());
     }
 
     protected void onRender() {
         super.onRender();
 
-        getResponse().write("<script type=\"text/javascript\">new Draggable('" + getId() + "', {revert:true})</script>");
+        getResponse().write("<script type=\"text/javascript\">new Draggable('" + id + "', {revert:true})</script>");
     }
 
     protected void onComponentTag(ComponentTag tag) {
         super.onComponentTag(tag);
-        tag.put("id", getId());
+        tag.put("id", id);
+        tag.put("class", style);
     }
 
     /**
