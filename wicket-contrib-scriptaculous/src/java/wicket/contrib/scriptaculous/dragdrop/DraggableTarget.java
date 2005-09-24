@@ -4,20 +4,22 @@ import wicket.PageParameters;
 import wicket.contrib.scriptaculous.ScriptaculousAjaxHandler;
 import wicket.markup.ComponentTag;
 import wicket.markup.html.WebMarkupContainer;
+import wicket.util.resource.IResourceStream;
 
 public class DraggableTarget extends WebMarkupContainer {
 
     private final Class pageContribution;
-    private final String draggableClass;
+    private String draggableClass;
 
-    public DraggableTarget(String id, String draggableClass, Class pageContribution) {
+    public DraggableTarget(String id, Class pageContribution) {
         super(id);
-
-        this.draggableClass = draggableClass;
         this.pageContribution = pageContribution;
 
+		add(new JavascriptBindingHandler());
+    }
 
-		add(ScriptaculousAjaxHandler.JAVASCRIPT_BINDING_HANDLER);
+    public void accepts(DraggableImage image) {
+    	this.draggableClass = image.getDraggableStyle();
     }
 
     protected void onRender() {
@@ -43,4 +45,12 @@ public class DraggableTarget extends WebMarkupContainer {
         super.onComponentTag(tag);
         tag.put("id", getId());
     }
+    
+	private class JavascriptBindingHandler extends ScriptaculousAjaxHandler {
+
+		protected IResourceStream getResponse() {
+			return null;
+		}
+
+	}
 }
