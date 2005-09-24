@@ -3,7 +3,6 @@ package wicket.contrib.scriptaculous.dragdrop;
 import wicket.contrib.scriptaculous.ScriptaculousAjaxHandler;
 import wicket.markup.ComponentTag;
 import wicket.markup.html.image.Image;
-import wicket.util.resource.IResourceStream;
 
 public class DraggableImage extends Image {
 
@@ -15,7 +14,7 @@ public class DraggableImage extends Image {
         this.id = id;
         this.draggableStyle = draggableStyle;
 
-		add(new JavascriptBindingHandler());
+		add(ScriptaculousAjaxHandler.newJavascriptBindingHandler());
     }
 
     protected void onRender() {
@@ -33,12 +32,4 @@ public class DraggableImage extends Image {
     public String getDraggableStyle() {
     	return draggableStyle;
     }
-
-	private class JavascriptBindingHandler extends ScriptaculousAjaxHandler {
-
-		protected IResourceStream getResponse() {
-			return null;
-		}
-
-	}
 }

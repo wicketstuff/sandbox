@@ -24,6 +24,7 @@ import wicket.IInitializer;
 import wicket.markup.html.HtmlHeaderContainer;
 import wicket.markup.html.PackageResource;
 import wicket.markup.html.PackageResourceReference;
+import wicket.util.resource.IResourceStream;
 
 /**
  * Handles event requests using 'script.aculo.us'.
@@ -38,6 +39,15 @@ import wicket.markup.html.PackageResourceReference;
 public abstract class ScriptaculousAjaxHandler
 	extends AjaxHandler implements IInitializer
 {
+	public static ScriptaculousAjaxHandler newJavascriptBindingHandler() {
+		return new ScriptaculousAjaxHandler() {
+
+			protected IResourceStream getResponse() {
+				return null;
+			}
+			
+		};
+	}
 	/**
 	 * Construct.
 	 */
