@@ -4,8 +4,6 @@ import wicket.PageParameters;
 import wicket.contrib.scriptaculous.ScriptaculousAjaxHandler;
 import wicket.markup.ComponentTag;
 import wicket.markup.html.WebMarkupContainer;
-import wicket.util.resource.IResourceStream;
-import wicket.util.resource.StringBufferResourceStream;
 
 public class DraggableTarget extends WebMarkupContainer {
 
@@ -19,7 +17,7 @@ public class DraggableTarget extends WebMarkupContainer {
         this.pageContribution = pageContribution;
 
 
-        add(new JavascriptBindingEventHandler());
+		add(ScriptaculousAjaxHandler.JAVASCRIPT_BINDING_HANDLER);
     }
 
     protected void onRender() {
@@ -44,15 +42,5 @@ public class DraggableTarget extends WebMarkupContainer {
     protected void onComponentTag(ComponentTag tag) {
         super.onComponentTag(tag);
         tag.put("id", getId());
-    }
-
-    /**
-     * event handler to make sure that scriptaculous javascript files get included.
-     */
-    private class JavascriptBindingEventHandler extends ScriptaculousAjaxHandler {
-        protected IResourceStream getResponse() {
-            StringBufferResourceStream s = new StringBufferResourceStream();
-            return s;
-        }
     }
 }
