@@ -19,6 +19,7 @@ package wicket.contrib.scriptaculous;
 
 import wicket.Application;
 import wicket.IInitializer;
+import wicket.util.resource.IResourceStream;
 
 /**
  * Initializer for components in the Wicket-Scriptaculous integration library.
@@ -29,6 +30,12 @@ public class Initializer implements IInitializer {
 	 */
 	public void init(Application application) {
 		// implement the ajax handlers using dummy implementations
-		ScriptaculousAjaxHandler.JAVASCRIPT_BINDING_HANDLER.init(application);
+		new ScriptaculousAjaxHandler() {
+
+			protected IResourceStream getResponse() {
+				return null;
+			}
+
+		}.init(application);
 	}
 }
