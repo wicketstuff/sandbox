@@ -13,14 +13,12 @@ public class CustomLayoutAjaxAutocompleteExamplePageContribution extends CustomL
 
 	public CustomLayoutAjaxAutocompleteExamplePageContribution(PageParameters parameters) {
 		super(parameters);
-	}
 
-	protected ListView buildListView(String input) {
 		List results = new ArrayList();
 		results.add(new CustomResultObject("ryan.gif", "Ryan Sonnek", "ryan@youremail.com"));
 		results.add(new CustomResultObject("billy.gif", "Bill Gates", "bill.gates@microsoft.com"));
 		results.add(new CustomResultObject("janet.gif", "Janet Someone", "janet@thethirdwheel.com"));
-		return new ListView("entry", results) {
+		add(new ListView("entry", results) {
 
 			protected void populateItem(ListItem item) {
 				CustomResultObject result = (CustomResultObject) item.getModelObject();
@@ -28,7 +26,7 @@ public class CustomLayoutAjaxAutocompleteExamplePageContribution extends CustomL
 				item.add(new Label("name", result.getName()));
 				item.add(new Label("email", result.getEmail()));
 			}
-		};
+		});
 	}
 
 	private class CustomResultObject {
@@ -57,8 +55,6 @@ public class CustomLayoutAjaxAutocompleteExamplePageContribution extends CustomL
 		{
 			return name;
 		}
-
-
 	}
 }
 
