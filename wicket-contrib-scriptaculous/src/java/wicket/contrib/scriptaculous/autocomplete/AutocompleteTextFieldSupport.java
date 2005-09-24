@@ -6,8 +6,6 @@ import wicket.markup.ComponentTag;
 import wicket.markup.html.HtmlHeaderContainer;
 import wicket.markup.html.PackageResourceReference;
 import wicket.markup.html.form.TextField;
-import wicket.util.resource.IResourceStream;
-import wicket.util.resource.StringBufferResourceStream;
 
 /**
  * support class for all autocomplete text fields.
@@ -19,7 +17,7 @@ public class AutocompleteTextFieldSupport extends TextField {
 
     public AutocompleteTextFieldSupport(String id) {
         super(id);
-        add(new JavascriptBindingEventHandler());
+		add(ScriptaculousAjaxHandler.JAVASCRIPT_BINDING_HANDLER);
     }
 
     protected void onComponentTag(ComponentTag tag) {
@@ -65,16 +63,5 @@ public class AutocompleteTextFieldSupport extends TextField {
 
     protected final String getAutocompleteId() {
         return getId() + "_autocomplete";
-    }
-
-
-    /**
-     * event handler to make sure that scriptaculous javascript files get included.
-     */
-    private class JavascriptBindingEventHandler extends ScriptaculousAjaxHandler {
-        protected IResourceStream getResponse() {
-            StringBufferResourceStream s = new StringBufferResourceStream();
-            return s;
-        }
     }
 }

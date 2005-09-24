@@ -18,6 +18,7 @@
  */
 package wicket.contrib.scriptaculous.autocomplete;
 
+import wicket.contrib.scriptaculous.ScriptaculousAjaxHandler;
 import wicket.markup.ComponentTag;
 
 /**
