@@ -1,7 +1,6 @@
 /*
- * $Id$
- * $Revision$
- * $Date$
+ * $Id$ $Revision:
+ * 1.2 $ $Date$
  * 
  * ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -36,13 +35,13 @@ import wicket.markup.html.PackageResourceReference;
  * @see <a href="http://dojotoolkit.org/">Dojo</a>
  * @author Eelco Hillenius
  */
-public abstract class DojoAjaxHandler extends AjaxHandler implements
-		IInitializer {
-
+public abstract class DojoAjaxHandler extends AjaxHandler implements IInitializer
+{
 	/**
 	 * Construct.
 	 */
-	public DojoAjaxHandler() {
+	public DojoAjaxHandler()
+	{
 	}
 
 	/**
@@ -51,7 +50,8 @@ public abstract class DojoAjaxHandler extends AjaxHandler implements
 	 * @param application
 	 *            The application
 	 */
-	public void init(Application application) {
+	public void init(Application application)
+	{
 		PackageResource.bind(application, DojoAjaxHandler.class, "dojo.js");
 	}
 
@@ -61,17 +61,18 @@ public abstract class DojoAjaxHandler extends AjaxHandler implements
 	 * @param container
 	 *            the header container
 	 */
-	protected final void renderHeadInitContribution(
-			HtmlHeaderContainer container) {
+	protected final void renderHeadInitContribution(HtmlHeaderContainer container)
+	{
 		// add our basic javascript needs to the header
-		addJsReference(container, new PackageResourceReference(Application
-				.get(), DojoAjaxHandler.class, "dojo.js"));
+		addJsReference(container, new PackageResourceReference(Application.get(),
+				DojoAjaxHandler.class, "dojo.js"));
 	}
 
 	/**
 	 * @see AjaxHandler#getImplementationId()
 	 */
-	protected final String getImplementationId() {
+	protected final String getImplementationId()
+	{
 		return "DojoImpl";
 	}
 }

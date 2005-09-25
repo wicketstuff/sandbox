@@ -1,6 +1,6 @@
 /*
- * $Id$
- * $Revision$ $Date$
+ * $Id$ $Revision$
+ * $Date$
  * 
  * ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -26,14 +26,18 @@ import wicket.util.resource.IResourceStream;
  * 
  * @author Eelco Hillenius
  */
-public class Initializer implements IInitializer {
+public class Initializer implements IInitializer
+{
 	/**
 	 * @see wicket.IInitializer#init(wicket.Application)
 	 */
-	public void init(Application application) {
+	public void init(Application application)
+	{
 		// for ajax initialization
-		new DojoAjaxHandler() {
-			protected IResourceStream getResponse() {
+		new DojoAjaxHandler()
+		{
+			protected IResourceStream getResponse()
+			{
 				return null;
 			}
 		}.init(application);
