@@ -61,7 +61,7 @@ public abstract class DojoAjaxHandler extends AjaxHandler implements IInitialize
 	 * @param container
 	 *            the header container
 	 */
-	protected final void renderHeadInitContribution(HtmlHeaderContainer container)
+	protected void renderHeadInitContribution(HtmlHeaderContainer container)
 	{
 		// add our basic javascript needs to the header
 		addJsReference(container, new PackageResourceReference(Application.get(),
