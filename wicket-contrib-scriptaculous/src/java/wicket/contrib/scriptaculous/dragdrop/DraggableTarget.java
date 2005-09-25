@@ -25,6 +25,12 @@ public class DraggableTarget extends WebMarkupContainer {
         super.onRender();
 
         String url = this.getPage().urlFor(null, pageContribution, new PageParameters());
+        getResponse().write("<script type=\"text/javascript\">new Ajax.Updater('" + getId() + "', '"+ url + "', " +
+                " { " +
+                " evalScripts:true, " +
+                " asynchronous:true" +
+                " })" +
+        "</script>\n");
         getResponse().write("<script type=\"text/javascript\">Droppables.add('"+ getId() + "', " +
                 " {accept:'" + draggableClass + "', " +
                 " onDrop:function(element){ " +
@@ -37,7 +43,7 @@ public class DraggableTarget extends WebMarkupContainer {
                         " asynchronous:true" +
                         " }" +
                 ")}, " +
-                " hoverclass:'" + getId() +"-active'})</script>");
+                " hoverclass:'" + getId() +"-active'})</script>\n");
     }
 
     protected void onComponentTag(ComponentTag tag) {
