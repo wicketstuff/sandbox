@@ -19,6 +19,7 @@
 package wicket.contrib.markup.html.form.validation;
 
 import wicket.Component;
+import wicket.WicketRuntimeException;
 import wicket.contrib.dojo.DojoAjaxHandler;
 import wicket.feedback.IFeedback;
 import wicket.markup.ComponentTag;
@@ -50,16 +51,11 @@ public final class ValidationAjaxHandler extends DojoAjaxHandler
 	 */
 	public ValidationAjaxHandler(String eventName)
 	{
+		if (eventName == null)
+		{
+			throw new NullPointerException("argument eventName must be not null");
+		}
 		this.eventName = eventName;
-	}
-
-	/**
-	 * Gets the name of the event to attach to.
-	 * @return the name of the event to attach to
-	 */
-	public final String getEventName()
-	{
-		return eventName;
 	}
 
 	/**
@@ -87,14 +83,27 @@ public final class ValidationAjaxHandler extends DojoAjaxHandler
 	/**
 	 * Attaches the event handler for the given component to the given tag.
 	 * @param tag
-	 *            The tag to attache
+	 *            The tag to attach
 	 */
 	public final void onComponentTag(final ComponentTag tag)
 	{
 		final ValueMap attributes = tag.getAttributes();
 		final String attributeValue =
 			"javascript:validate('" + getCallbackUrl() + "', '" + formComponent.getInputName() + "', this);";
-		attributes.put(getEventName(), attributeValue);
+		attributes.put(eventName, attributeValue);
+	}
+
+	/**
+	 * @see wicket.AjaxHandler#onBind()
+	 */
+	protected void onBind()
+	{
+		Component c = getComponent();
+		if (!(c instanceof FormComponent))
+		{
+			throw new WicketRuntimeException("this handler must be bound to FormComponents");
+		}
+		this.formComponent = (FormComponent)c;
 	}
 
 	/**
