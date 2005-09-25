@@ -16,9 +16,10 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package wicket.contrib.dojo;
+package wicket.contrib.markup.html.form.validation;
 
 import wicket.Component;
+import wicket.contrib.dojo.DojoAjaxHandler;
 import wicket.feedback.IFeedback;
 import wicket.markup.ComponentTag;
 import wicket.markup.html.HtmlHeaderContainer;
