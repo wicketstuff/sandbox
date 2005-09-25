@@ -1,5 +1,6 @@
 /*
- * $Id$ $Revision$ $Date$
+ * $Id$
+ * $Revision$ $Date$
  * 
  * ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -31,23 +32,25 @@ import wicket.util.value.ValueMap;
  * to do custom handling like persisting the change to a database.
  * <p>
  * An example:
+ * 
  * <pre>
- *	addTicketOptionForm.add(new ListView("ticketOptionsList",
- *			new PropertyModel(activityModel, "ticketOptions")) {
- *
- *		protected void populateItem(ListItem item) {
- *			final TicketOption ticketOption = (TicketOption) item
- *					.getModelObject();
- *			...
- *			item.add(new ImmediateCheckBox("available") {
- *				@Override
- *				protected void onAjaxModelUpdated() {
- *					Activity activity = (Activity)ActivityDetailsPage.this.getModelObject();
- *					getActivityDao().update(activity);
- *				}
- *			});
- *		...
+ *  	addTicketOptionForm.add(new ListView(&quot;ticketOptionsList&quot;,
+ *  			new PropertyModel(activityModel, &quot;ticketOptions&quot;)) {
+ *  
+ *  		protected void populateItem(ListItem item) {
+ *  			final TicketOption ticketOption = (TicketOption) item
+ *  					.getModelObject();
+ *  			...
+ *  			item.add(new ImmediateCheckBox(&quot;available&quot;) {
+ *  				@Override
+ *  				protected void onAjaxModelUpdated() {
+ *  					Activity activity = (Activity)ActivityDetailsPage.this.getModelObject();
+ *  					getActivityDao().update(activity);
+ *  				}
+ *  			});
+ *  		...
  * </pre>
+ * 
  * </p>
  * 
  * @author Eelco Hillenius
@@ -94,9 +97,6 @@ public class ImmediateCheckBox extends CheckBox
 		/** checkbox this handler is attached to. */
 		private ImmediateCheckBox checkBox;
 
-		/** name of javascript function. */
-		private String functionName;
-
 		/**
 		 * Construct.
 		 */
@@ -105,21 +105,19 @@ public class ImmediateCheckBox extends CheckBox
 		}
 
 		/**
-		 * @see wicket.AjaxHandler#renderHeadContribution(wicket.markup.html.HtmlHeaderContainer)
+		 * @see wicket.AjaxHandler#renderHeadInitContribution(wicket.markup.html.HtmlHeaderContainer)
 		 */
-		public final void renderHeadContribution(HtmlHeaderContainer container)
+		public final void renderHeadInitContribution(HtmlHeaderContainer container)
 		{
+			super.renderHeadInitContribution(container);
 			StringBuffer s = new StringBuffer(
-					"\t<script language=\"JavaScript\" type=\"text/javascript\">\n")
-					.append("\tfunction ")
-					.append(functionName)
-					.append("(componentUrl, componentPath, val) { \n")
-					.append("\t\tdojo.io.bind({\n")
-					.append(
-							"\t\t\turl: componentUrl + '&' + componentPath + '=' + val,\n")
-					.append("\t\t\tmimetype: \"text/plain\",\n").append(
-							"\t\t\tload: function(type, data, evt) {}\n" + "\t\t});\n" + "\t}\n")
-					.append("\t</script>\n");
+					"\t<script language=\"JavaScript\" type=\"text/javascript\">\n").append(
+					"\tfunction immediateCheckBox(componentUrl, componentPath, val) { \n").append(
+					"\t\tdojo.io.bind({\n").append(
+					"\t\t\turl: componentUrl + '&' + componentPath + '=' + val,\n").append(
+					"\t\t\tmimetype: \"text/plain\",\n").append(
+					"\t\t\tload: function(type, data, evt) {}\n" + "\t\t});\n" + "\t}\n").append(
+					"\t</script>\n");
 
 			container.getResponse().write(s.toString());
 		}
@@ -133,9 +131,9 @@ public class ImmediateCheckBox extends CheckBox
 		public final void onComponentTag(final ComponentTag tag)
 		{
 			final ValueMap attributes = tag.getAttributes();
-			final String attributeValue = new StringBuffer("javascript:").append(functionName)
-					.append("('").append(getCallbackUrl()).append("', '").append(
-							checkBox.getInputName()).append("', this.checked);").toString();
+			final String attributeValue = new StringBuffer("javascript:immediateCheckBox('")
+					.append(getCallbackUrl()).append("', '").append(checkBox.getInputName())
+					.append("', this.checked);").toString();
 			attributes.put("onclick", attributeValue);
 		}
 
@@ -145,7 +143,6 @@ public class ImmediateCheckBox extends CheckBox
 		protected void onBind()
 		{
 			this.checkBox = (ImmediateCheckBox)getComponent();
-			this.functionName = "ImmediateCheckBox" + checkBox.getId();
 		}
 
 		/**
