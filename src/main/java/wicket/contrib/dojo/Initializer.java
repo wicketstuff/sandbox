@@ -22,20 +22,18 @@ import wicket.IInitializer;
 import wicket.util.resource.IResourceStream;
 
 /**
- * Initializer for components in wicket core library.
+ * Initializer for components in wicket dojo library.
+ * 
+ * @author Eelco Hillenius
  */
-public class Initializer implements IInitializer
-{
+public class Initializer implements IInitializer {
 	/**
 	 * @see wicket.IInitializer#init(wicket.Application)
 	 */
-	public void init(Application application)
-	{
-		// implement the ajax handlers using dummy implementations
-		new DojoAjaxHandler()
-		{
-			protected IResourceStream getResponse()
-			{
+	public void init(Application application) {
+		// for ajax initialization
+		new DojoAjaxHandler() {
+			protected IResourceStream getResponse() {
 				return null;
 			}
 		}.init(application);
