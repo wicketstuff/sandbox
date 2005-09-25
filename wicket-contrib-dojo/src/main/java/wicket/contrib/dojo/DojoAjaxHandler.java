@@ -18,9 +18,6 @@
  */
 package wicket.contrib.dojo;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import wicket.AjaxHandler;
 import wicket.Application;
 import wicket.IInitializer;
@@ -41,8 +38,6 @@ import wicket.markup.html.PackageResourceReference;
  */
 public abstract class DojoAjaxHandler extends AjaxHandler implements
 		IInitializer {
-	/** log. */
-	private static Log log = LogFactory.getLog(DojoAjaxHandler.class);
 
 	/**
 	 * Construct.
