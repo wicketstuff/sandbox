@@ -29,6 +29,13 @@ public class DragDropExamplePageContribution extends DragDropPageContribution {
 	}
 
 	private void addProductToCart() {
+		//simulate server processing
+		//allow scriptaculous indicator to display
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		getCartItems().add(getInputValue());
 	}
 
