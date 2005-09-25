@@ -73,7 +73,7 @@ public abstract class ScriptaculousAjaxHandler
 	 * Let this handler print out the needed header contributions.
 	 * @param container
 	 */
-	protected final void renderHeadInitContribution(HtmlHeaderContainer container)
+	protected void renderHeadInitContribution(HtmlHeaderContainer container)
 	{
 		// add our basic javascript needs to the header
 		Application application = Application.get();
