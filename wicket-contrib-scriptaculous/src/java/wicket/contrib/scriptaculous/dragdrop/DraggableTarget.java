@@ -1,6 +1,7 @@
 package wicket.contrib.scriptaculous.dragdrop;
 
 import wicket.PageParameters;
+import wicket.contrib.scriptaculous.Indicator;
 import wicket.contrib.scriptaculous.ScriptaculousAjaxHandler;
 import wicket.markup.ComponentTag;
 import wicket.markup.html.WebMarkupContainer;
@@ -9,6 +10,7 @@ public class DraggableTarget extends WebMarkupContainer {
 
     private final Class pageContribution;
     private String draggableClass;
+	private String indicatorId;
 
     public DraggableTarget(String id, Class pageContribution) {
         super(id);
@@ -19,6 +21,10 @@ public class DraggableTarget extends WebMarkupContainer {
 
     public void accepts(DraggableImage image) {
     	this.draggableClass = image.getDraggableStyle();
+    }
+
+    public void setIndicator(Indicator indicator) {
+    	this.indicatorId = indicator.getId();
     }
 
     protected void onRender() {
@@ -35,10 +41,12 @@ public class DraggableTarget extends WebMarkupContainer {
                 " {accept:'" + draggableClass + "', " +
                 " onDrop:function(element){ " +
                     " new Ajax.Updater('" + getId() + "', '"+ url + "', " +
-                        " { " +
-//                        " onLoading:function(request){ Element.show('indicator')}, " +
-//                        " onComplete:function(request){Element.hide('indicator')}, " +
-                        " parameters:'id=' + encodeURIComponent(element.id), " +
+                        " { ");
+        if (null != indicatorId) {
+        	getResponse().write(" onLoading:function(request){ Element.show('indicator')}, " +
+                  " onComplete:function(request){Element.hide('indicator')}, ");
+        }
+        getResponse().write(" parameters:'id=' + encodeURIComponent(element.id), " +
                         " evalScripts:true, " +
                         " asynchronous:true" +
                         " }" +

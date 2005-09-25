@@ -3,6 +3,7 @@ package wicket.contrib.scriptaculous.examples.dragdrop;
 import java.util.ArrayList;
 import java.util.List;
 
+import wicket.contrib.scriptaculous.Indicator;
 import wicket.contrib.scriptaculous.dragdrop.DraggableImage;
 import wicket.contrib.scriptaculous.dragdrop.DraggableTarget;
 import wicket.markup.html.WebPage;
@@ -12,9 +13,9 @@ import wicket.markup.html.list.ListView;
 public class DragDropExamplePage extends WebPage {
 
 	public DragDropExamplePage() {
+		Indicator indicator = new Indicator();
 		final DraggableTarget cart = new DraggableTarget("cart", DragDropExamplePageContribution.class);
-
-		add(cart);
+		cart.setIndicator(indicator);
 
 		List results = new ArrayList();
 		results.add(new CustomResultObject("product_123", "product.png"));
@@ -31,6 +32,8 @@ public class DragDropExamplePage extends WebPage {
 			}
 		});
 
+		add(cart);
+		add(indicator);
 	}
 
 	public class CustomResultObject {
