@@ -29,9 +29,10 @@ import wicket.model.IModel;
 import wicket.model.Model;
 
 /**
- * Model for one Hibernate Object. It will load the object with the session that is
- * provided by the given instance of
+ * Model for one Hibernate Object. It will load the object with the session that
+ * is provided by the given instance of
  * {@link wicket.contrib.data.model.hibernate.IHibernateSessionDelegate}.
+ * 
  * @author Eelco Hillenius
  */
 public class HibernateObjectModel extends PersistentObjectModel
@@ -43,22 +44,27 @@ public class HibernateObjectModel extends PersistentObjectModel
 	private final Class objectClass;
 
 	/**
-	 * property for special, but very common, case for handling null ids. If true, this
-	 * model tries to construct a new (empty) one, that can be used to receive input (set
-	 * properties etc). If false, null will be returned (and Ognl will probably throw an
-	 * exception if no further action is taken).
+	 * property for special, but very common, case for handling null ids. If
+	 * true, this model tries to construct a new (empty) one, that can be used
+	 * to receive input (set properties etc). If false, null will be returned
+	 * (and Ognl will probably throw an exception if no further action is
+	 * taken).
 	 */
 	private final boolean createNewObjectWhenIdIsNull;
 
 	/** Handler that is called when the id is null. */
-	private NullIdHandler nullIdHandler;
+	private INullIdHandler nullIdHandler;
 
 	/**
 	 * Construct with a model that provides the id.
-	 * @param idModel the model that provides the id
-	 * @param sessionDelegate delegate that provides instances of
+	 * 
+	 * @param idModel
+	 *            the model that provides the id
+	 * @param sessionDelegate
+	 *            delegate that provides instances of
 	 *            {@link org.hibernate.Session}.
-	 * @param objectClass class of the Hibernate object to load.
+	 * @param objectClass
+	 *            class of the Hibernate object to load.
 	 */
 	public HibernateObjectModel(IModel idModel, Class objectClass,
 			IHibernateSessionDelegate sessionDelegate)
@@ -68,10 +74,14 @@ public class HibernateObjectModel extends PersistentObjectModel
 
 	/**
 	 * Construct with an id.
-	 * @param id the object's id; will be wrapped in a {@link Model}
-	 * @param sessionDelegate delegate that provides instances of
+	 * 
+	 * @param id
+	 *            the object's id; will be wrapped in a {@link Model}
+	 * @param sessionDelegate
+	 *            delegate that provides instances of
 	 *            {@link org.hibernate.Session}.
-	 * @param objectClass class of the Hibernate object to load.
+	 * @param objectClass
+	 *            class of the Hibernate object to load.
 	 */
 	public HibernateObjectModel(Serializable id, Class objectClass,
 			IHibernateSessionDelegate sessionDelegate)
@@ -81,15 +91,20 @@ public class HibernateObjectModel extends PersistentObjectModel
 
 	/**
 	 * Construct with a model that provides the id.
-	 * @param idModel the model that provides the id
-	 * @param sessionDelegate delegate that provides instances of
+	 * 
+	 * @param idModel
+	 *            the model that provides the id
+	 * @param sessionDelegate
+	 *            delegate that provides instances of
 	 *            {@link org.hibernate.Session}.
-	 * @param objectClass class of the Hibernate object to load.
-	 * @param createNewObjectWhenIdIsNull property for special, but very common, case for
-	 *            handling null ids. If true, this model tries to construct a new (empty)
-	 *            one, that can be used to receive input (set properties etc). If false,
-	 *            null will be returned (and Ognl will probably throw an exception if no
-	 *            further action is taken).
+	 * @param objectClass
+	 *            class of the Hibernate object to load.
+	 * @param createNewObjectWhenIdIsNull
+	 *            property for special, but very common, case for handling null
+	 *            ids. If true, this model tries to construct a new (empty) one,
+	 *            that can be used to receive input (set properties etc). If
+	 *            false, null will be returned (and Ognl will probably throw an
+	 *            exception if no further action is taken).
 	 */
 	public HibernateObjectModel(IModel idModel, Class objectClass,
 			IHibernateSessionDelegate sessionDelegate, boolean createNewObjectWhenIdIsNull)
@@ -103,15 +118,20 @@ public class HibernateObjectModel extends PersistentObjectModel
 
 	/**
 	 * Construct with an id.
-	 * @param id the object's id; will be wrapped in a {@link Model}
-	 * @param sessionDelegate delegate that provides instances of
+	 * 
+	 * @param id
+	 *            the object's id; will be wrapped in a {@link Model}
+	 * @param sessionDelegate
+	 *            delegate that provides instances of
 	 *            {@link org.hibernate.Session}.
-	 * @param objectClass class of the Hibernate object to load.
-	 * @param createNewObjectWhenIdIsNull property for special, but very common, case for
-	 *            handling null ids. If true, this model tries to construct a new (empty)
-	 *            one, that can be used to receive input (set properties etc). If false,
-	 *            null will be returned (and Ognl will probably throw an exception if no
-	 *            further action is taken).
+	 * @param objectClass
+	 *            class of the Hibernate object to load.
+	 * @param createNewObjectWhenIdIsNull
+	 *            property for special, but very common, case for handling null
+	 *            ids. If true, this model tries to construct a new (empty) one,
+	 *            that can be used to receive input (set properties etc). If
+	 *            false, null will be returned (and Ognl will probably throw an
+	 *            exception if no further action is taken).
 	 */
 	public HibernateObjectModel(Serializable id, Class objectClass,
 			IHibernateSessionDelegate sessionDelegate, boolean createNewObjectWhenIdIsNull)
@@ -125,44 +145,59 @@ public class HibernateObjectModel extends PersistentObjectModel
 
 	/**
 	 * Construct with a model that provides the id.
-	 * @param idModel the model that provides the id
-	 * @param sessionDelegate delegate that provides instances of
+	 * 
+	 * @param idModel
+	 *            the model that provides the id
+	 * @param sessionDelegate
+	 *            delegate that provides instances of
 	 *            {@link org.hibernate.Session}.
-	 * @param objectClass class of the Hibernate object to load.
-	 * @param nullIdHandler Handler that is called when the id is null
+	 * @param objectClass
+	 *            class of the Hibernate object to load.
+	 * @param nullIdHandler
+	 *            Handler that is called when the id is null
 	 */
 	public HibernateObjectModel(IModel idModel, Class objectClass,
-			IHibernateSessionDelegate sessionDelegate, NullIdHandler nullIdHandler)
+			IHibernateSessionDelegate sessionDelegate, INullIdHandler nullIdHandler)
 	{
 		super(idModel, new HibernateSelectObjectAction(objectClass, sessionDelegate));
 		checkConstructorFields(objectClass, sessionDelegate, nullIdHandler);
 		this.objectClass = objectClass;
-		this.createNewObjectWhenIdIsNull = false; // we use the prodived nullIdHandler
+		this.createNewObjectWhenIdIsNull = false; // we use the prodived
+		// nullIdHandler
 		this.nullIdHandler = nullIdHandler;
 	}
 
 	/**
 	 * Construct with an id.
-	 * @param id the object's id; will be wrapped in a {@link Model}
-	 * @param sessionDelegate delegate that provides instances of
+	 * 
+	 * @param id
+	 *            the object's id; will be wrapped in a {@link Model}
+	 * @param sessionDelegate
+	 *            delegate that provides instances of
 	 *            {@link org.hibernate.Session}.
-	 * @param objectClass class of the Hibernate object to load.
-	 * @param nullIdHandler Handler that is called when the id is null
+	 * @param objectClass
+	 *            class of the Hibernate object to load.
+	 * @param nullIdHandler
+	 *            Handler that is called when the id is null
 	 */
 	public HibernateObjectModel(Serializable id, Class objectClass,
-			IHibernateSessionDelegate sessionDelegate, NullIdHandler nullIdHandler)
+			IHibernateSessionDelegate sessionDelegate, INullIdHandler nullIdHandler)
 	{
 		super(id, new HibernateSelectObjectAction(objectClass, sessionDelegate));
 		checkConstructorFields(objectClass, sessionDelegate, nullIdHandler);
 		this.objectClass = objectClass;
-		this.createNewObjectWhenIdIsNull = false; // we use the prodived nullIdHandler
+		this.createNewObjectWhenIdIsNull = false; // we use the prodived
+		// nullIdHandler
 		this.nullIdHandler = nullIdHandler;
 	}
 
 	/**
 	 * Check whether the fields are not null.
-	 * @param objectClass the object class
-	 * @param sessionDelegate the session delegate
+	 * 
+	 * @param objectClass
+	 *            the object class
+	 * @param sessionDelegate
+	 *            the session delegate
 	 */
 	private void checkConstructorFields(Class objectClass,
 			IHibernateSessionDelegate sessionDelegate)
@@ -179,12 +214,16 @@ public class HibernateObjectModel extends PersistentObjectModel
 
 	/**
 	 * Check whether the fields are not null.
-	 * @param objectClass the object class
-	 * @param sessionDelegate the session delegate
-	 * @param nullIdHandler the null id handler
+	 * 
+	 * @param objectClass
+	 *            the object class
+	 * @param sessionDelegate
+	 *            the session delegate
+	 * @param nullIdHandler
+	 *            the null id handler
 	 */
 	private void checkConstructorFields(Class objectClass,
-			IHibernateSessionDelegate sessionDelegate, NullIdHandler nullIdHandler)
+			IHibernateSessionDelegate sessionDelegate, INullIdHandler nullIdHandler)
 	{
 		checkConstructorFields(objectClass, sessionDelegate);
 		if (nullIdHandler == null)
@@ -194,9 +233,10 @@ public class HibernateObjectModel extends PersistentObjectModel
 	}
 
 	/**
-	 * Loads an object using the SelectObjectAction and the id. If the id is null,
-	 * the set nullIdHandler will be used to get an object.
-	 * @see wicket.contrib.data.model.PersistentObjectModel#loadObject(java.io.Serializable)
+	 * Loads an object using the SelectObjectAction and the id. If the id is
+	 * null, the set nullIdHandler will be used to get an object.
+	 * 
+	 * @see PersistentObjectModel#loadObject(java.io.Serializable)
 	 */
 	public Object loadObject(Serializable id)
 	{
@@ -208,9 +248,9 @@ public class HibernateObjectModel extends PersistentObjectModel
 		{
 			Object loaded = getSelectObjectAction().execute(id);
 
-			if(getUnproxy() && loaded instanceof HibernateProxy)
+			if (getUnproxy() && loaded instanceof HibernateProxy)
 			{
-				HibernateProxy proxy = (HibernateProxy)loaded;
+				HibernateProxy proxy = (HibernateProxy) loaded;
 				LazyInitializer lazyInitializer = proxy.getHibernateLazyInitializer();
 				Object implementation = lazyInitializer.getImplementation();
 				return implementation;
@@ -222,6 +262,7 @@ public class HibernateObjectModel extends PersistentObjectModel
 
 	/**
 	 * Gets the class of the Hibernate object to load.
+	 * 
 	 * @return the class of the Hibernate object to load
 	 */
 	public Class getObjectClass()
@@ -231,24 +272,28 @@ public class HibernateObjectModel extends PersistentObjectModel
 
 	/**
 	 * Gets the handler that is called when the id is null.
+	 * 
 	 * @return the handler that is called when the id is null
 	 */
-	public NullIdHandler getNullIdHandler()
+	public INullIdHandler getNullIdHandler()
 	{
 		return nullIdHandler;
 	}
 
 	/**
 	 * Sets the handler that is called when the id is null.
-	 * @param nullIdHandler the handler that is called when the id is null
+	 * 
+	 * @param nullIdHandler
+	 *            the handler that is called when the id is null
 	 */
-	public void setNullIdHandler(NullIdHandler nullIdHandler)
+	public void setNullIdHandler(INullIdHandler nullIdHandler)
 	{
 		this.nullIdHandler = nullIdHandler;
 	}
 
 	/**
 	 * Gets whether the loaded object should be unproxied.
+	 * 
 	 * @return whether the loaded object should be unproxied
 	 */
 	public boolean getUnproxy()
@@ -258,7 +303,9 @@ public class HibernateObjectModel extends PersistentObjectModel
 
 	/**
 	 * Sets whether the loaded object should be unproxied.
-	 * @param unproxy whether the loaded object should be unproxied
+	 * 
+	 * @param unproxy
+	 *            whether the loaded object should be unproxied
 	 * @return This
 	 */
 	public HibernateObjectModel setUnproxy(boolean unproxy)
@@ -269,43 +316,42 @@ public class HibernateObjectModel extends PersistentObjectModel
 
 	/**
 	 * The default handler; if property createNewObjectWhenIdIsNull of
-	 * HibernateObjectModel is true, a new instance is created using it's default
-	 * constructor and returned, if createNewObjectWhenIdIsNull is false, null is
-	 * returned.
+	 * HibernateObjectModel is true, a new instance is created using it's
+	 * default constructor and returned, if createNewObjectWhenIdIsNull is
+	 * false, null is returned.
 	 */
-	private final class DefaultNullIdHandler implements NullIdHandler
+	private final class DefaultNullIdHandler extends NullIdHandler
 	{
-		/** keep reference for redirects etc. */
-		private transient Object dummy;
 
 		/**
 		 * Gets the object that is to be used when the id is null.
+		 * 
 		 * @return the object that is to be used when the id is null
 		 */
-		public Object getObjectForNullId()
+		public Serializable doGetObjectForNullId()
 		{
-			if (createNewObjectWhenIdIsNull) // create a new one
+			if (createNewObjectWhenIdIsNull)
 			{
-				if(dummy == null)
+				try
 				{
-					try
-					{
-						this.dummy = objectClass.newInstance();
-					}
-					catch (InstantiationException e)
+					if (!Serializable.class.isAssignableFrom(objectClass))
 					{
 						throw new WicketRuntimeException(
-								"unable to create an object of type " + objectClass + ": ", e);
+								"only serializable classes can be used with this strategy");
 					}
-					catch (IllegalAccessException e)
-					{
-						throw new WicketRuntimeException(e);
-					}
+					return (Serializable) objectClass.newInstance();
 				}
-				return dummy;
+				catch (InstantiationException e)
+				{
+					throw new WicketRuntimeException(
+							"unable to create an object of type " + objectClass + ": ", e);
+				}
+				catch (IllegalAccessException e)
+				{
+					throw new WicketRuntimeException(e);
+				}
 			}
 			else
-			// return null; fat chance this will result in an Ognl exception!
 			{
 				return null;
 			}
@@ -315,12 +361,44 @@ public class HibernateObjectModel extends PersistentObjectModel
 	/**
 	 * Handler that is called when the id is null.
 	 */
-	public interface NullIdHandler extends Serializable
+	public static interface INullIdHandler extends Serializable
 	{
 		/**
 		 * Gets the object that is to be used when the id is null.
+		 * 
 		 * @return the object that is to be used when the id is null
 		 */
 		Object getObjectForNullId();
+	}
+
+	/**
+	 * Abstract implementation that caches the transient object once it is
+	 * created.
+	 */
+	public static abstract class NullIdHandler implements INullIdHandler
+	{
+
+		/** the cached object. */
+		private Serializable object;
+
+		/**
+		 * @see wicket.contrib.data.model.hibernate.HibernateObjectModel.INullIdHandler#getObjectForNullId()
+		 */
+		public final Object getObjectForNullId()
+		{
+			if (object == null)
+			{
+				object = doGetObjectForNullId();
+			}
+			return object;
+		}
+
+		/**
+		 * Gets the object that is to be used when the id is null. This will be
+		 * called whenever there is no cached object.
+		 * 
+		 * @return the object that is to be used when the id is null
+		 */
+		protected abstract Serializable doGetObjectForNullId();
 	}
 }
