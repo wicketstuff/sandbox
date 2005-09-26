@@ -20,7 +20,7 @@ public class DraggableTarget extends WebMarkupContainer {
     }
 
     public void accepts(DraggableImage image) {
-    	this.draggableClass = image.getDraggableStyle();
+    	this.draggableClass = image.getId();
     }
 
     public void setIndicator(Indicator indicator) {

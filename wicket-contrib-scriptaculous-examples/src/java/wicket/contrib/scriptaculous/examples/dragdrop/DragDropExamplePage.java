@@ -25,7 +25,7 @@ public class DragDropExamplePage extends WebPage {
 			protected void populateItem(ListItem item) {
 				CustomResultObject result = (CustomResultObject) item.getModelObject();
 
-				DraggableImage image = new DraggableImage("product", result.getId(), result.getImage(), "products");
+				DraggableImage image = new DraggableImage("product", result.getId(), result.getImage());
 				cart.accepts(image);
 
 				item.add(image);
