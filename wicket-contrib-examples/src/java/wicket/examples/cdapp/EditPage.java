@@ -16,6 +16,8 @@
  */
 package wicket.examples.cdapp;
 
+import java.sql.Blob;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -35,7 +37,7 @@ import wicket.markup.html.form.upload.FileUploadField;
 import wicket.markup.html.form.validation.IntegerValidator;
 import wicket.markup.html.form.validation.LengthValidator;
 import wicket.markup.html.image.Image;
-import wicket.markup.html.image.resource.DynamicImageResource;
+import wicket.markup.html.image.resource.BlobImageResource;
 import wicket.markup.html.link.Link;
 import wicket.markup.html.panel.FeedbackPanel;
 import wicket.model.IModel;
@@ -263,11 +265,11 @@ public final class EditPage extends CdAppBasePage
 		}
 		else
 		{
-			DynamicImageResource img = new DynamicImageResource()
+			BlobImageResource img = new BlobImageResource()
 			{
-				protected byte[] getImageData()
+				protected Blob getBlob()
 				{
-					return cd.getImageBytes();
+					return cd.getImage();
 				}
 			};
 			return new ThumbnailImageResource(img, 100).setCacheable(false);
