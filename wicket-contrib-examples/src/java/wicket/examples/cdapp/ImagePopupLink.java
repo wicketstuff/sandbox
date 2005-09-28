@@ -18,10 +18,12 @@
  */
 package wicket.examples.cdapp;
 
+import java.sql.Blob;
+
 import wicket.Page;
 import wicket.examples.cdapp.model.CD;
 import wicket.markup.html.WebResource;
-import wicket.markup.html.image.resource.DynamicImageResource;
+import wicket.markup.html.image.resource.BlobImageResource;
 import wicket.markup.html.link.Link;
 import wicket.markup.html.link.PopupSettings;
 import wicket.model.IModel;
@@ -55,17 +57,16 @@ public final class ImagePopupLink extends Link
 	 */
 	public void onClick()
 	{
-		CD cd = (CD)getModelObject();
-		final byte[] image = cd.getImageBytes();
 		WebResource imgResource = new WebResource()
 		{
 			public IResourceStream getResourceStream()
 			{
-				DynamicImageResource img = new DynamicImageResource()
+				BlobImageResource img = new BlobImageResource()
 				{
-					protected byte[] getImageData()
+					protected Blob getBlob()
 					{
-						return image;
+						CD cd = (CD)getModelObject();
+						return cd.getImage();
 					}
 				};
 				return img.getResourceStream();
