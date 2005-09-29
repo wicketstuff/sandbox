@@ -2,7 +2,7 @@
 
 <project>
   <pomVersion>3</pomVersion>
-  <groupId>wicket</groupId>
+  <groupId>wicket-stuff</groupId>
   <id>wicket-contrib-dojo</id>
   <name>Wicket Dojo Support</name>
   <currentVersion>0.1</currentVersion>
