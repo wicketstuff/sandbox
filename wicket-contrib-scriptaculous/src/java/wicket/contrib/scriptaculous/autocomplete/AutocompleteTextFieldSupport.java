@@ -48,7 +48,7 @@ public class AutocompleteTextFieldSupport extends TextField {
         container.getResponse().write(s);
     }
 
-    private ResourceReference getCss() {
+    protected ResourceReference getCss() {
         return new PackageResourceReference(AutocompleteTextFieldSupport.class, "style.css");
     }
 
