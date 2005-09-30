@@ -92,7 +92,7 @@ public class ImmediateCheckBox extends CheckBox
 	 * Ajax handler that immediately updates the attached component when the
 	 * onclick event happens.
 	 */
-	private static class ImmediateUpdateAjaxHandler extends DojoAjaxHandler
+	public static class ImmediateUpdateAjaxHandler extends DojoAjaxHandler
 	{
 		/** checkbox this handler is attached to. */
 		private ImmediateCheckBox checkBox;
