@@ -36,21 +36,17 @@ public final class TabsStyle
 	/**
 	 * Class for the first level (level 0) of this style.
 	 */
-	private final static class Level0 extends MenuRowStyle
+	private static final class Level0 extends MenuRowStyle
 	{
-		static
-		{
-			new PackageResourceReference(Application.get(), TabsStyle.class, "folders/active.gif");
-			new PackageResourceReference(Application.get(), TabsStyle.class, "folders/hover.gif");
-			new PackageResourceReference(Application.get(), TabsStyle.class, "folders/selected.gif");
-			new PackageResourceReference(Application.get(), TabsStyle.class, "folders/unselected.gif");
-		}
-
 		/**
 		 * Construct.
 		 */
 		private Level0()
 		{
+			new PackageResourceReference(Application.get(), TabsStyle.class, "folders/active.gif");
+			new PackageResourceReference(Application.get(), TabsStyle.class, "folders/hover.gif");
+			new PackageResourceReference(Application.get(), TabsStyle.class, "folders/selected.gif");
+			new PackageResourceReference(Application.get(), TabsStyle.class, "folders/unselected.gif");
 			setStyleSheetResource(new PackageResourceReference(Application.get(), TabsStyle.class, "tabs-folders.css"));
 			setRowCSSClass("wicketNavmenuTabsLevel0");
 		}
@@ -59,7 +55,7 @@ public final class TabsStyle
 	/**
 	 * Class for the second level (level 1) of this style.
 	 */
-	private final static class Level1 extends MenuRowStyle
+	private static final class Level1 extends MenuRowStyle
 	{
 		/**
 		 * Construct.
