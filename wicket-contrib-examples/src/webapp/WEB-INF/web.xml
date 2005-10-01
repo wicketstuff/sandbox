@@ -7,6 +7,8 @@
 
 	<display-name>Wicket Contrib Examples</display-name>
 
+	<distributable />
+
 	<servlet>
 		<servlet-name>cdapp</servlet-name>
 		<servlet-class>wicket.protocol.http.WicketServlet</servlet-class>
