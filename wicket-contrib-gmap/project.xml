@@ -89,7 +89,7 @@
         <dependency>
             <groupId>wicket</groupId>
             <artifactId>wicket</artifactId>
-            <version>1.1-rc1</version>
+            <version>SNAPSHOT</version>
             <properties>
                 <eclipse.dependency>true</eclipse.dependency>
                 <war.bundle>true</war.bundle>
