@@ -85,17 +85,60 @@
             <email>syca at users.sourceforge.net</email>
         </contributor>
     </contributors>
-    <dependencies>
-        <dependency>
-            <groupId>wicket</groupId>
-            <artifactId>wicket</artifactId>
-            <version>SNAPSHOT</version>
-            <properties>
-                <eclipse.dependency>true</eclipse.dependency>
-                <war.bundle>true</war.bundle>
-            </properties>
-        </dependency>
-    </dependencies>
+  <dependencies>
+    <dependency>
+      <groupId>ognl</groupId>
+      <artifactId>ognl</artifactId>
+      <version>2.6.7</version>
+      <properties>
+        <wicket.group>required</wicket.group>
+        <wicket.description>Used for introspection.</wicket.description>
+        <war.bundle>true</war.bundle>
+      </properties>
+    </dependency>
+    <dependency>
+      <groupId>servletapi</groupId>
+      <artifactId>servletapi</artifactId>
+      <version>2.3</version>
+      <properties>
+        <wicket.group>compile</wicket.group>
+        <wicket.description>Compile time only, is supplied by your application server.</wicket.description>
+        <war.bundle>false</war.bundle>
+      </properties>
+    </dependency>
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+      <version>1.0.4</version>
+      <properties>
+        <wicket.group>required</wicket.group>
+        <wicket.description>This library enables us to give you the choice of logging toolkit (JDK, Log4j, etc.)</wicket.description>
+        <war.bundle>true</war.bundle>
+      </properties>
+    </dependency>
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <version>1.2.11</version>
+      <url>http://logging.apache.org/log4j</url>
+      <properties>
+        <wicket.group>optional</wicket.group>
+        <wicket.description>If you use JDK style logging, this library is optional.</wicket.description>
+        <war.bundle>true</war.bundle>
+      </properties>
+    </dependency>
+    <dependency>
+      <groupId>wicket</groupId>
+      <artifactId>wicket</artifactId>
+      <version>1.1-rc2</version>
+      <properties>
+        <wicket.group>required</wicket.group>
+        <wicket.description>This is the wicket library</wicket.description>
+        <eclipse.dependency>true</eclipse.dependency>
+        <war.bundle>true</war.bundle>
+      </properties>
+    </dependency>
+  </dependencies>
     <build>
         <sourceDirectory>src/java</sourceDirectory>
         <resources>
