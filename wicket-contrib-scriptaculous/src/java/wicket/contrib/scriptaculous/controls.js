@@ -1,42 +1,12 @@
 // Copyright (c) 2005 Thomas Fuchs (http://script.aculo.us, http://mir.aculo.us)
 //           (c) 2005 Ivan Krstic (http://blogs.law.harvard.edu/ivan)
 //           (c) 2005 Jon Tirsen (http://www.tirsen.com)
+// Contributors:
+//  Richard Livsey
+//  Rahul Bhargava
+//  Rob Wills
 // 
-// Permission is hereby granted, free of charge, to any person obtaining
-// a copy of this software and associated documentation files (the
-// "Software"), to deal in the Software without restriction, including
-// without limitation the rights to use, copy, modify, merge, publish,
-// distribute, sublicense, and/or sell copies of the Software, and to
-// permit persons to whom the Software is furnished to do so, subject to
-// the following conditions:
-// 
-// The above copyright notice and this permission notice shall be
-// included in all copies or substantial portions of the Software.
-// 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-// NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-// LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-// OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-// WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-Element.collectTextNodesIgnoreClass = function(element, ignoreclass) {
-  var children = $(element).childNodes;
-  var text     = "";
-  var classtest = new RegExp("^([^ ]+ )*" + ignoreclass+ "( [^ ]+)*$","i");
-
-  for (var i = 0; i < children.length; i++) {
-    if(children[i].nodeType==3) {
-      text+=children[i].nodeValue;
-    } else {
-      if((!children[i].className.match(classtest)) && children[i].hasChildNodes())
-        text += Element.collectTextNodesIgnoreClass(children[i], ignoreclass);
-    }
-  }
-
-  return text;
-}
+// See scriptaculous.js for full license.
 
 // Autocompleter.Base handles all the autocompletion functionality 
 // that's independent of the data source for autocompletion. This
@@ -88,10 +58,7 @@ Autocompleter.Base.prototype = {
     function(element, update){ 
       if(!update.style.position || update.style.position=='absolute') {
         update.style.position = 'absolute';
-        var offsets = Position.cumulativeOffset(element);
-        update.style.left = offsets[0] + 'px';
-        update.style.top  = (offsets[1] + element.offsetHeight) + 'px';
-        update.style.width = element.offsetWidth + 'px';
+        Position.clone(element, update, {setHeight: false, offsetTop: element.offsetHeight});
       }
       new Effect.Appear(update,{duration:0.15});
     };
@@ -102,6 +69,8 @@ Autocompleter.Base.prototype = {
       this.options.tokens = new Array(this.options.tokens);
 
     this.observer = null;
+    
+    this.element.setAttribute('autocomplete','off');
 
     Element.hide(this.update);
 
@@ -114,7 +83,7 @@ Autocompleter.Base.prototype = {
     if(!this.iefix && (navigator.appVersion.indexOf('MSIE')>0) && (Element.getStyle(this.update, 'position')=='absolute')) {
       new Insertion.After(this.update, 
        '<iframe id="' + this.update.id + '_iefix" '+
-       'style="display:none;filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);" ' +
+       'style="display:none;position:absolute;filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);" ' +
        'src="javascript:false;" frameborder="0" scrolling="no"></iframe>');
       this.iefix = $(this.update.id+'_iefix');
     }
@@ -149,6 +118,7 @@ Autocompleter.Base.prototype = {
        case Event.KEY_ESC:
          this.hide();
          this.active = false;
+         Event.stop(event);
          return;
        case Event.KEY_LEFT:
        case Event.KEY_RIGHT:
@@ -235,12 +205,13 @@ Autocompleter.Base.prototype = {
   selectEntry: function() {
     this.active = false;
     this.updateElement(this.getCurrentEntry());
-    this.element.focus();
   },
 
   updateElement: function(selectedElement) {
-    if (this.options.updateElement)
-      return(this.options.updateElement(selectedElement));
+    if (this.options.updateElement) {
+      this.options.updateElement(selectedElement);
+      return;
+    }
 
     var value = Element.collectTextNodesIgnoreClass(selectedElement, 'informal');
     var lastTokenPos = this.findLastToken();
@@ -252,7 +223,11 @@ Autocompleter.Base.prototype = {
       this.element.value = newValue + value;
     } else {
       this.element.value = value;
-    } 
+    }
+    this.element.focus();
+    
+    if (this.options.afterUpdateElement)
+      this.options.afterUpdateElement(this.element, selectedElement);
   },
 
   updateChoices: function(choices) {
@@ -323,8 +298,7 @@ Object.extend(Object.extend(Ajax.Autocompleter.prototype, Autocompleter.Base.pro
   initialize: function(element, update, url, options) {
 	  this.baseInitialize(element, update, options);
     this.options.asynchronous  = true;
-    this.options.onComplete    = this.onComplete.bind(this)
-    this.options.method        = 'post';
+    this.options.onComplete    = this.onComplete.bind(this);
     this.options.defaultParams = this.options.parameters || null;
     this.url                   = url;
   },
@@ -462,6 +436,7 @@ Autocompleter.Local.prototype = Object.extend(new Autocompleter.Base(), {
 //            (default: the id of the element to edit plus '-inplaceeditor')
 
 Ajax.InPlaceEditor = Class.create();
+Ajax.InPlaceEditor.defaultHighlightColor = "#FFFF99";
 Ajax.InPlaceEditor.prototype = {
   initialize: function(element, url, options) {
     this.url = url;
@@ -471,16 +446,26 @@ Ajax.InPlaceEditor.prototype = {
       okText: "ok",
       cancelText: "cancel",
       savingText: "Saving...",
+      clickToEditText: "Click to edit",
       okText: "ok",
       rows: 1,
+      onComplete: function(transport, element) {
+        new Effect.Highlight(element, {startcolor: this.options.highlightcolor});
+      },
       onFailure: function(transport) {
-        alert("Error communicating with the server: " + transport.responseText);
+        alert("Error communicating with the server: " + transport.responseText.stripTags());
       },
       callback: function(form) {
         return Form.serialize(form);
       },
-      hoverClassName: 'inplaceeditor-hover',
-      externalControl:	null
+      handleLineBreaks: true,
+      loadingText: 'Loading...',
+      savingClassName: 'inplaceeditor-saving',
+      formClassName: 'inplaceeditor-form',
+      highlightcolor: Ajax.InPlaceEditor.defaultHighlightColor,
+      highlightendcolor: "#FFFFFF",
+      externalControl:	null,
+      ajaxOptions: {}
     }, options || {});
 
     if(!this.options.formId && this.element.id) {
@@ -495,6 +480,13 @@ Ajax.InPlaceEditor.prototype = {
       this.options.externalControl = $(this.options.externalControl);
     }
     
+    this.originalBackground = Element.getStyle(this.element, 'background-color');
+    if (!this.originalBackground) {
+      this.originalBackground = "transparent";
+    }
+    
+    this.element.title = this.options.clickToEditText;
+    
     this.onclickListener = this.enterEditMode.bindAsEventListener(this);
     this.mouseoverListener = this.enterHover.bindAsEventListener(this);
     this.mouseoutListener = this.leaveHover.bindAsEventListener(this);
@@ -503,6 +495,8 @@ Ajax.InPlaceEditor.prototype = {
     Event.observe(this.element, 'mouseout', this.mouseoutListener);
     if (this.options.externalControl) {
       Event.observe(this.options.externalControl, 'click', this.onclickListener);
+      Event.observe(this.options.externalControl, 'mouseover', this.mouseoverListener);
+      Event.observe(this.options.externalControl, 'mouseout', this.mouseoutListener);
     }
   },
   enterEditMode: function() {
@@ -516,10 +510,16 @@ Ajax.InPlaceEditor.prototype = {
     Element.hide(this.element);
     this.form = this.getForm();
     this.element.parentNode.insertBefore(this.form, this.element);
+    Field.focus(this.editField);
+    // stop the event to avoid a page refresh in Safari
+    if (arguments.length > 1) {
+      Event.stop(arguments[0]);
+    }
   },
   getForm: function() {
     form = document.createElement("form");
     form.id = this.options.formId;
+    Element.addClassName(form, this.options.formClassName)
     form.onsubmit = this.onSubmit.bind(this);
 
     this.createEditField(form);
@@ -541,32 +541,61 @@ Ajax.InPlaceEditor.prototype = {
     form.appendChild(cancelLink);
     return form;
   },
+  hasHTMLLineBreaks: function(string) {
+    if (!this.options.handleLineBreaks) return false;
+    return string.match(/<br/i) || string.match(/<p>/i);
+  },
+  convertHTMLLineBreaks: function(string) {
+    return string.replace(/<br>/gi, "\n").replace(/<br\/>/gi, "\n").replace(/<\/p>/gi, "\n").replace(/<p>/gi, "");
+  },
   createEditField: function(form) {
-    if (this.options.rows == 1) {
+    if (this.options.rows == 1 && !this.hasHTMLLineBreaks(this.getText())) {
       this.options.textarea = false;
       var textField = document.createElement("input");
       textField.type = "text";
       textField.name = "value";
       textField.value = this.getText();
+      textField.style.backgroundColor = this.options.highlightcolor;
       var size = this.options.size || this.options.cols || 0;
       if (size != 0)
         textField.size = size;
       form.appendChild(textField);
+      this.editField = textField;
     } else {
       this.options.textarea = true;
       var textArea = document.createElement("textarea");
       textArea.name = "value";
-      textArea.value = this.getText();
+      textArea.value = this.convertHTMLLineBreaks(this.getText());
       textArea.rows = this.options.rows;
       textArea.cols = this.options.cols || 40;
       form.appendChild(textArea);
+      this.editField = textArea;
     }
   },
   getText: function() {
-    return this.element.innerHTML;
+    if (this.options.loadTextURL) {
+      this.loadExternalText();
+      return this.options.loadingText;
+    } else {
+      return this.element.innerHTML;
+    }
+  },
+  loadExternalText: function() {
+    new Ajax.Request(
+      this.options.loadTextURL,
+      {
+        asynchronous: true,
+        onComplete: this.onLoadedExternalText.bind(this)
+      }
+    );
+  },
+  onLoadedExternalText: function(transport) {
+    this.form.value.value = transport.responseText.stripTags();
   },
   onclickCancel: function() {
     this.onComplete();
+    this.leaveEditMode();
+    return false;
   },
   onFailure: function(transport) {
     this.options.onFailure(transport);
@@ -575,10 +604,6 @@ Ajax.InPlaceEditor.prototype = {
       this.oldInnerHTML = null;
     }
     return false;
-    if (this.oldInnerHTML) {
-      this.element.innerHTML = this.oldInnerHTML;
-      this.oldInnerHTML = null;
-    }
   },
   onSubmit: function() {
     this.saving = true;
@@ -589,13 +614,17 @@ Ajax.InPlaceEditor.prototype = {
         failure: null
       },
       this.url,
-      {
-        parameters: this.options.callback(this.form, this.form.value.value),
+      Object.extend({
+        parameters: this.options.callback(this.form, this.editField.value),
         onComplete: this.onComplete.bind(this),
         onFailure: this.onFailure.bind(this)
-      }
+      }, this.options.ajaxOptions)
     );
     this.onLoading();
+    // stop the event to avoid a page refresh in Safari
+    if (arguments.length > 1) {
+      Event.stop(arguments[0]);
+    }
     return false;
   },
   onLoading: function() {
@@ -607,6 +636,8 @@ Ajax.InPlaceEditor.prototype = {
   showSaving: function() {
     this.oldInnerHTML = this.element.innerHTML;
     this.element.innerHTML = this.options.savingText;
+    Element.addClassName(this.element, this.options.savingClassName);
+    this.element.style.backgroundColor = this.originalBackground;
     Element.show(this.element);
   },
   removeForm: function() {
@@ -617,9 +648,9 @@ Ajax.InPlaceEditor.prototype = {
   },
   enterHover: function() {
     if (this.saving) return;
-    if (this.options.backgroundColor) {
-      this.oldBackground = this.element.style.backgroundColor;
-      this.element.style.backgroundColor = this.options.backgroundColor;
+    this.element.style.backgroundColor = this.options.highlightcolor;
+    if (this.effect) {
+      this.effect.cancel();
     }
     Element.addClassName(this.element, this.options.hoverClassName)
   },
@@ -628,25 +659,30 @@ Ajax.InPlaceEditor.prototype = {
       this.element.style.backgroundColor = this.oldBackground;
     }
     Element.removeClassName(this.element, this.options.hoverClassName)
+    if (this.saving) return;
+    this.effect = new Effect.Highlight(this.element, {
+      startcolor: this.options.highlightcolor,
+      endcolor: this.options.highlightendcolor,
+      restorecolor: this.originalBackground
+    });
   },
   leaveEditMode: function() {
-    if(this.savingText) {
-      Element.remove(this.savingText);
-      this.savingText = null;
-    }
+    Element.removeClassName(this.element, this.options.savingClassName);
     this.removeForm();
     this.leaveHover();
+    this.element.style.backgroundColor = this.originalBackground;
     Element.show(this.element);
     if (this.options.externalControl) {
       Element.show(this.options.externalControl);
     }
     this.editing = false;
+    this.saving = false;
+    this.oldInnerHTML = null;
     this.onLeaveEditMode();
   },
-  onComplete: function() {
+  onComplete: function(transport) {
     this.leaveEditMode();
-    this.oldInnerHTML = null;
-    this.saving = false;
+    this.options.onComplete.bind(this)(transport, this.element);
   },
   onEnterEditMode: function() {},
   onLeaveEditMode: function() {},
@@ -660,6 +696,8 @@ Ajax.InPlaceEditor.prototype = {
     Event.stopObserving(this.element, 'mouseout', this.mouseoutListener);
     if (this.options.externalControl) {
       Event.stopObserving(this.options.externalControl, 'click', this.onclickListener);
+      Event.stopObserving(this.options.externalControl, 'mouseover', this.mouseoverListener);
+      Event.stopObserving(this.options.externalControl, 'mouseout', this.mouseoutListener);
     }
   }
 };

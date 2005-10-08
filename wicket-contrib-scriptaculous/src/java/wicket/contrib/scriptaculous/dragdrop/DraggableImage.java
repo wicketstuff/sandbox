@@ -18,12 +18,12 @@ public class DraggableImage extends Image {
     protected void onRender() {
         super.onRender();
 
-        getResponse().write("<script type=\"text/javascript\">new Draggable('" + id + "', {revert:true})</script>");
+        getResponse().write("\n<script type=\"text/javascript\">new Draggable('" + id + "', {revert:true})</script>");
     }
 
     protected void onComponentTag(ComponentTag tag) {
         super.onComponentTag(tag);
         tag.put("id", id);
-        tag.put("class", id);
+        tag.put("class", getId());
     }
 }
