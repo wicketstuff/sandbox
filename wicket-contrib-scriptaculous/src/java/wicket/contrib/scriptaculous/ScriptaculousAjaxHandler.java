@@ -45,7 +45,7 @@ public abstract class ScriptaculousAjaxHandler
 			protected IResourceStream getResponse() {
 				return null;
 			}
-			
+
 		};
 	}
 	/**
@@ -65,8 +65,9 @@ public abstract class ScriptaculousAjaxHandler
 		PackageResource.bind(application, ScriptaculousAjaxHandler.class, "controls.js");
 		PackageResource.bind(application, ScriptaculousAjaxHandler.class, "dragdrop.js");
 		PackageResource.bind(application, ScriptaculousAjaxHandler.class, "effects.js");
-		PackageResource.bind(application, ScriptaculousAjaxHandler.class, "scriptaculous.js");
 		PackageResource.bind(application, ScriptaculousAjaxHandler.class, "util.js");
+		PackageResource.bind(application, ScriptaculousAjaxHandler.class, "unittest.js");
+        PackageResource.bind(application, ScriptaculousAjaxHandler.class, "scriptaculous.js");
 	}
 
 	/**
@@ -79,16 +80,10 @@ public abstract class ScriptaculousAjaxHandler
 		Application application = Application.get();
 		addJsReference(container, new PackageResourceReference(application,
 				ScriptaculousAjaxHandler.class, "prototype.js"));
-		addJsReference(container, new PackageResourceReference(application,
-				ScriptaculousAjaxHandler.class, "controls.js"));
-		addJsReference(container, new PackageResourceReference(application,
-				ScriptaculousAjaxHandler.class, "dragdrop.js"));
-		addJsReference(container, new PackageResourceReference(application,
-				ScriptaculousAjaxHandler.class, "effects.js"));
-		addJsReference(container, new PackageResourceReference(application,
-				ScriptaculousAjaxHandler.class, "scriptaculous.js"));
-		addJsReference(container, new PackageResourceReference(application,
-				ScriptaculousAjaxHandler.class, "util.js"));
+        addJsReference(container, new PackageResourceReference(application,
+                ScriptaculousAjaxHandler.class, "scriptaculous.js"));
+        addJsReference(container, new PackageResourceReference(application,
+                        ScriptaculousAjaxHandler.class, "unittest.js"));
 	}
 
 	/**
