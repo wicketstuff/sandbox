@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+	<!-- 
+		allow the user of properties from application.properties 
+	     throughout this configuration file
+	-->
+	<bean id="placeholderConfig"
+	      class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+	    <property name="location"><value>classpath:application.properties</value></property>
+	    <property name="systemPropertiesModeName"><value>SYSTEM_PROPERTIES_MODE_OVERRIDE</value></property>
+	</bean>
+
+	<!-- configure a simple pooled datasource -->
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName"><value>${jdbc.driver}</value></property>
+		<property name="url"><value>${jdbc.url}</value></property>
+		<property name="username"><value>${jdbc.username}</value></property>
+		<property name="password"><value>${jdbc.password}</value></property>
+	</bean>
+
+	<!-- setup hibernate session factory -->
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="dataSource"><ref local="dataSource"/></property>
+		<property name="mappingResources">
+			<list>
+				<value>Contact.hbm.xml</value>
+			</list>
+		</property>
+		
+		<property name="schemaUpdate" value="true"/>
+		
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">${hibernate.dialect}</prop>
+				<prop key="hibernate.connection.pool_size">5</prop>
+				<prop key="hibernate.show_sql">true</prop>		
+				<prop key="hibernate.cglib.use_reflection_optimizer">true</prop>	
+            	<prop key="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</prop>
+            	<prop key="hibernate.hibernate.cache.use_query_cache">true</prop> 									
+			</props>
+		</property>
+	</bean>
+	
+	<!-- setup transaction manager	-->
+    <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+       <property name="sessionFactory"><ref bean="sessionFactory"/></property>
+    </bean>
+	
+	<!--
+		setup contact dao
+	-->
+	<bean id="contactDaoTarget" class="wicket.contrib.phonebook.HibernateContactDao">
+		<property name="sessionFactory"><ref local="sessionFactory"/></property>
+	</bean>		
+	
+	<!-- this is a transactional proxy for contact dao which ensures proper transaction handling -->
+	<bean id="contactDao" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager" ref="transactionManager"/>
+		<property name="target" ref="contactDaoTarget"/>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="save">PROPAGATION_REQUIRED</prop>
+				<prop key="delete">PROPAGATION_REQUIRED</prop>
+				<prop key="*">PROPAGATION_REQUIRED,readOnly</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<!-- setup wicket application -->
+	<bean id="wicketApplication" class="wicket.contrib.phonebook.web.PhonebookApplication">
+		<property name="contactDao" ref="contactDao"/>
+	</bean> 	
+	
+</beans>
