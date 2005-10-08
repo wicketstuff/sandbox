@@ -74,17 +74,10 @@
     </mailingLists>
     <developers>
         <developer>
-            <name>Eelco Hillenius</name>
-            <id>eelco12</id>
-            <email>eelco12 at users.sourceforge.net</email>
-        </developer>
-    </developers>
-    <contributors>
-        <contributor>
             <name>Iulian Costan</name>
             <email>syca at users.sourceforge.net</email>
-        </contributor>
-    </contributors>
+        </developer>
+    </developers>
   <dependencies>
     <dependency>
       <groupId>ognl</groupId>
