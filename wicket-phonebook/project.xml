@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project>
+  <pomVersion>3</pomVersion>
+  <groupId>wicket-stuff</groupId>
+  <id>phonebook</id>
+  <name>Wicket Phonebook Example</name>
+  <currentVersion>1.0-SNAPSHOT</currentVersion>
+  <inceptionYear>2005</inceptionYear>
+  <package>wicket.contrib.phonebook</package>
+  
+  <versions>
+  </versions>
+  <developers>
+    <developer>
+      <name>Igor Vaynberg</name>
+      <id>ivaynberg</id>
+      <email>ivaynberg at users.sourceforge.net</email>
+    </developer>
+  </developers>
+  
+  <contributors>
+  </contributors>
+  
+  <dependencies>
+
+    <dependency>
+      <groupId>hsqldb</groupId>
+      <artifactId>hsqldb</artifactId>
+      <version>1.7.3.3</version>
+      <properties><war.bundle>true</war.bundle></properties>
+    </dependency>
+
+    <dependency>
+      <groupId>dom4j</groupId>
+      <artifactId>dom4j</artifactId>
+      <version>1.4</version>
+      <properties><war.bundle>true</war.bundle></properties>
+    </dependency>
+    <dependency>
+      <groupId>commons-collections</groupId>
+      <artifactId>commons-collections</artifactId>
+      <version>2.1</version>
+      <properties><war.bundle>true</war.bundle></properties>
+    </dependency>
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+      <version>1.0.4</version>
+      <properties><war.bundle>true</war.bundle></properties>
+    </dependency>
+    <dependency>
+      <groupId>cglib</groupId>
+      <artifactId>cglib-nodep</artifactId>
+      <version>2.1_2</version>
+      <properties><war.bundle>true</war.bundle></properties>
+    </dependency>
+    <dependency>
+      <groupId>hibernate</groupId>
+      <artifactId>hibernate</artifactId>
+      <version>3.0.5</version>
+      <properties><war.bundle>true</war.bundle></properties>
+    </dependency>
+    <dependency>
+      <groupId>hibernate</groupId>
+      <artifactId>antlr</artifactId>
+      <version>2.7.5H3</version>
+      <properties><war.bundle>true</war.bundle></properties>
+    </dependency>
+    
+    <dependency>
+      <groupId>ehcache</groupId>
+      <artifactId>ehcache</artifactId>
+      <version>1.1</version>
+      <type>jar</type>
+      <properties><war.bundle>true</war.bundle></properties>
+    </dependency>
+    
+    <dependency>
+      <groupId>ognl</groupId>
+      <artifactId>ognl</artifactId>
+      <version>2.6.7</version>
+      <type>jar</type>
+      <properties><war.bundle>true</war.bundle></properties>
+    </dependency>
+    
+    <dependency>
+      <groupId>wicket</groupId>
+      <artifactId>wicket</artifactId>
+      <version>1.1-rc2</version>
+      <properties><war.bundle>true</war.bundle></properties>
+    </dependency>
+    
+    <dependency>
+      <groupId>springframework</groupId>
+      <artifactId>spring</artifactId>
+      <version>1.2.5</version>
+      <type>jar</type>
+      <properties><war.bundle>true</war.bundle></properties>
+    </dependency>
+
+    <dependency>
+      <groupId>jetty</groupId>
+      <artifactId>jetty</artifactId>
+      <version>4.2.9</version>
+      <type>jar</type>
+      <properties><war.bundle>falase</war.bundle></properties>
+    </dependency>
+    
+    <dependency>
+      <groupId>jetty</groupId>
+      <artifactId>jasper-runtime</artifactId>
+      <version>4.2.20RC0</version>
+      <type>jar</type>
+      <properties><war.bundle>falase</war.bundle></properties>
+    </dependency>
+    
+    <dependency>
+      <groupId>jetty</groupId>
+      <artifactId>jasper-compiler</artifactId>
+      <version>4.2.20RC0</version>
+      <type>jar</type>
+      <properties><war.bundle>falase</war.bundle></properties>
+    </dependency>
+    
+    <dependency>
+      <groupId>servletapi</groupId>
+      <artifactId>servletapi</artifactId>
+      <version>2.3</version>
+      <type>jar</type>
+      <properties><war.bundle>falase</war.bundle></properties>
+    </dependency>
+    
+    <dependency>
+      <groupId>commons-dbcp</groupId>
+      <artifactId>commons-dbcp</artifactId>
+      <version>1.2.1</version>
+      <type>jar</type>
+      <properties><war.bundle>true</war.bundle></properties>
+    </dependency>
+
+    <dependency>
+      <groupId>commons-pool</groupId>
+      <artifactId>commons-pool</artifactId>
+      <version>1.2</version>
+      <type>jar</type>
+      <properties><war.bundle>true</war.bundle></properties>
+    </dependency>
+
+  <dependency>
+    <id>jta</id>
+    <jar>lib/jta.jar</jar>
+    <properties><war.bundle>true</war.bundle></properties>
+    
+   </dependency>
+
+    <dependency>
+      <id>wicket-contrib-dataview</id>
+      <jar>lib/wicket-contrib-dataview-0.9.1.jar</jar>
+      <properties><war.bundle>true</war.bundle></properties>
+      
+    </dependency>
+    
+
+  </dependencies>
+
+  <build>
+    <sourceDirectory>src/java</sourceDirectory>
+    <resources>
+      <resource>
+        <directory>src/conf</directory>
+        <includes>
+           <include>**</include>
+        </includes>
+      </resource>
+      <resource>
+        <directory>src/java</directory>
+        <includes>
+          <include>**</include>
+        </includes>
+        <excludes>
+          <exclude>**/*.java</exclude>
+        </excludes>
+        <filtering>false</filtering>
+      </resource>
+    </resources>
+  </build>
+  <properties/>
+</project>
