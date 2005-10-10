@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>wicket-contrib-easywizard-examples</name>
+	<comment>The Wicket Contrib GMap. Wicket component for &lt;a href=&quot;http://maps.google.com/&quot;&gt;Google Map&lt;/a&gt;.</comment>
+	<projects>
+		<project>wicket</project>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>org.eclipse.jdt.core.javabuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>org.eclipse.jdt.core.javanature</nature>
+	</natures>
+</projectDescription>
