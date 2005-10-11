@@ -73,4 +73,10 @@
 		<property name="contactDao" ref="contactDao"/>
 	</bean> 	
 	
+	<!-- setup data generator that will add some data into the db when the app startsup -->
+	<bean id="dataGenerator" class="wicket.contrib.phonebook.DataGenerator">
+		<property name="contactDao" ref="contactDao"/>
+		<property name="count" value="35"/>
+	</bean>
+	
 </beans>
