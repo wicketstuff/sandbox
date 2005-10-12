@@ -1,3 +1,17 @@
+/*
+ * ====================================================================
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package wicket.contrib.tinymce;
 
 import org.apache.commons.logging.Log;
@@ -46,7 +60,7 @@ public class TinyMCEInitializer implements IInitializer {
     private void initFromJar(Application application) {
         ZipFile zipFile = null;
         try {
-            String basePath = scope.getResource(scope.getSimpleName() + ".class").getPath();
+            String basePath = scope.getResource(Strings.afterLast(scope.getName(), '.') + ".class").getPath();
             String jarFilePath = new URL(Strings.beforeLast(basePath, '!')).getPath();
             zipFile = new ZipFile(jarFilePath);
         } catch (IOException e) {
@@ -56,10 +70,10 @@ public class TinyMCEInitializer implements IInitializer {
             throw new RuntimeException(e);
         }
 
-        Enumeration<? extends ZipEntry> entries = zipFile.entries();
+        Enumeration entries = zipFile.entries();
         while (entries.hasMoreElements()) {
-            ZipEntry zipEntry = entries.nextElement();
-            if (zipEntry.getName().contains(TINY_MCE)) {
+            ZipEntry zipEntry = (ZipEntry) entries.nextElement();
+            if (zipEntry.getName().indexOf(TINY_MCE) > 0) {
                 String name = zipEntry.getName();
                 bindResource(application, name);
             }
@@ -81,7 +95,8 @@ public class TinyMCEInitializer implements IInitializer {
 
     private void recursiveInitialization(Application application, File dir) {
         File[] files = dir.listFiles();
-        for (File file : files) {
+        for (int i = 0; i < files.length; i++) {
+            File file = files[i];
             if (file.isDirectory()) {
                 recursiveInitialization(application, file);
             } else {
