@@ -14,12 +14,20 @@
  */
 package wicket.contrib.tinymce.settings;
 
+import java.io.Serializable;
+
 /**
  * @author Iulian-Corneliu COSTAN
  */
-public abstract class Button extends Enum {
+public abstract class Enum implements Serializable {
 
-    protected Button(String name) {
-        super(name);
+    private String name;
+
+    protected Enum(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
     }
 }
