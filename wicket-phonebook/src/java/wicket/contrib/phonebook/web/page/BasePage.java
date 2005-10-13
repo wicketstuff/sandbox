@@ -23,11 +23,16 @@ import wicket.contrib.phonebook.web.PhonebookApplication;
 import wicket.markup.html.WebPage;
 
 /**
- * 
- * @author igor
+ * Extends {@link WebPage} in order to provide the {@link #getContactDao}
+ * method.
  *
+ * @author igor
  */
 public class BasePage extends WebPage {
+	/**
+	 * Gets the Contact DAO instance.
+	 * @return The Contact DAO instance.
+	 */
 	protected ContactDao getContactDao() {
 		return PhonebookApplication.getInstance().getContactDao();
 	}

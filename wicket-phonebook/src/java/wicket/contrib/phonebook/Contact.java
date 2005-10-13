@@ -19,9 +19,9 @@
 package wicket.contrib.phonebook;
 
 /**
+ * Contact details. This is the business object that we persist to the DB.
  * 
  * @author igor
- *
  */
 public class Contact {
 	private long id;

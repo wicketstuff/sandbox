@@ -39,15 +39,21 @@ import wicket.model.IModel;
 import wicket.model.Model;
 
 /**
- * 
+ * Display a Pageable List of Contacts.
+ *
  * @author igor
- * 
  */
 public class ListContactsPage extends BasePage {
-	public ListContactsPage() {
+	/**
+	 * Constructor. Having this constructor public means that the page is
+	 * 'bookmarkable' and hence can be called/ created from anywhere.
+	 */
+    	public ListContactsPage() {
 
 		add(new Link("createLink") {
-
+			/**
+			 * Go to the Edit page when the link is clicked, passing an empty Contact details
+			 */
 			public void onClick() {
 				setResponsePage(new EditContactPage(getPage(), 0));
 			}
@@ -56,22 +62,26 @@ public class ListContactsPage extends BasePage {
 
 		List columns = new ArrayList();
 
+		/*
+		 * First column is a composite column, created by extending
+		 * AbstractColumn in order to add a UserActionsPanel as the
+		 * cell contents.
+		 */
 		columns.add(new AbstractColumn(new Model("Actions")) {
 
-			public void populateItem(ListItem cellItem, String componentId,
-					IModel model) {
+			public void populateItem(ListItem cellItem, String componentId, IModel model) {
 				final Contact contact = (Contact) model.getObject(cellItem);
 				cellItem.add(new UserActionsPanel(componentId, contact));
 			}
 
 		});
 
-		columns.add(new PropertyColumn(new Model("First Name"), "firstname",
-				"firstname"));
-		columns.add(new PropertyColumn(new Model("Last Name"), "lastname",
-				"lastname"));
-		columns.add(new PropertyColumn(new Model("Phone Number"), "phone",
-				"phone"));
+		/*
+		 * Use PropertyColumn to provide the 'normal' columns.
+		 */
+		columns.add(new PropertyColumn(new Model("First Name"), "firstname", "firstname"));
+		columns.add(new PropertyColumn(new Model("Last Name"), "lastname", "lastname"));
+		columns.add(new PropertyColumn(new Model("Phone Number"), "phone", "phone"));
 		columns.add(new PropertyColumn(new Model("Email"), "email", "email"));
 
 		// set up data provider and default sort for the data table
@@ -96,6 +106,13 @@ public class ListContactsPage extends BasePage {
 			return PhonebookApplication.getInstance().getContactDao();
 		}
 
+		/**
+		 * Gets an iterator for the subset of total data.
+		 *
+		 * @param first first row of data
+		 * @param count minumum number of elements to retrieve
+		 * @return iterator capable of iterating over {first, first+count} items
+		 */
 		public Iterator iterator(int first, int count) {
 			SortParam sp = getSort();
 			QueryParam qp = null;
@@ -108,19 +125,31 @@ public class ListContactsPage extends BasePage {
 			return getDao().find(qp);
 		}
 
+		/**
+		 * Gets total number of items in the collection.
+		 *
+		 * @return total item count
+		 */
 		public int size() {
 			return getDao().count();
 		}
 
+		/**
+		 * Converts the object in the collection to its model representation.
+		 * A good place to wrap the object in a detachable model.
+		 *
+		 * @param object The object that needs to be wrapped
+		 * @return The model representation of the object
+		 */
 		public IModel model(Object object) {
 			return new DetachableContactModel((Contact) object);
 		}
 	};
 
 	/**
-	 * 
+	 * Provides a composite User Actions panel for the Actions column.
+	 *
 	 * @author igor
-	 * 
 	 */
 	private static class UserActionsPanel extends Panel {
 
@@ -129,7 +158,9 @@ public class ListContactsPage extends BasePage {
 			final long contactId = contact.getId();
 
 			add(new Link("editLink") {
-
+				/**
+				 * Go to the Edit page, passing this page and the id of the Contact involved.
+				 */
 				public void onClick() {
 					setResponsePage(new EditContactPage(getPage(), contactId));
 				}
@@ -137,7 +168,9 @@ public class ListContactsPage extends BasePage {
 			});
 
 			add(new Link("deleteLink") {
-
+				/**
+				 * Go to the Delete page, passing this page and the id of the Contact involved. 
+				 */
 				public void onClick() {
 					setResponsePage(new DeleteContactPage(getPage(), contactId));
 				}

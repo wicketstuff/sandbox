@@ -21,6 +21,7 @@ import java.net.URL;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.BasicConfigurator;
 import org.mortbay.jetty.Server;
 
 /**
@@ -48,6 +49,7 @@ public class Start
 	 */
 	public static void main(String[] args)
 	{
+        BasicConfigurator.configure();
         Server jettyServer = null;
 		try
 		{
