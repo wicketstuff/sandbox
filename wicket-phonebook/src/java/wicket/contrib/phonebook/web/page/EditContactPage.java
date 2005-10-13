@@ -30,13 +30,22 @@ import wicket.markup.html.panel.FeedbackPanel;
 import wicket.model.CompoundPropertyModel;
 
 /**
- * 
+ * Edit the Contact.  Display details if an existing contact, then persist
+ * them if saved.
  * @author igor
  *
  */
 public class EditContactPage extends BasePage {
 	private Page backPage;
 	
+	/**
+	 * Constructor.  Create or edit the contact.
+	 * Note that if you don't need the page to be bookmarkable,
+	 * you can use whatever constructor you need, such as is done here.
+	 *
+	 * @param backPage The page that the user was on before coming here
+	 * @param contactId The id of the Contact to edit, or 0 for a new contact.
+	 */
 	public EditContactPage(Page backPage, final long contactId) {
 		this.backPage=backPage;
 		Contact contact=
@@ -62,9 +71,12 @@ public class EditContactPage extends BasePage {
 	}
 	
 	/**
-	 * 
-	 * @author igor
+	 * Form to allow Contact detail editing.
+	 * Note the use of an internal Contact instance, rather than using the one
+	 * passed in the constructor, which ensures that any partial updates as a
+	 * result of validation failure do not alter the caller's instance.
 	 *
+	 * @author igor
 	 */
 	private abstract class ContactForm extends Form {
 		private final Contact bean=new Contact();

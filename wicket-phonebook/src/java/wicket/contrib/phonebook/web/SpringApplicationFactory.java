@@ -28,9 +28,11 @@ import wicket.protocol.http.WebApplication;
 import wicket.protocol.http.WicketServlet;
 
 /**
- * 
- * @author igor
+ * Uses Spring to obtain the 'wicketApplication' Web Application.
+ * Spring will create & initialise the various instances required according to the
+ * configuration defined in the <tt>applicationContext.xml</tt> file.
  *
+ * @author igor
  */
 public class SpringApplicationFactory implements IWebApplicationFactory {
 

@@ -24,9 +24,13 @@ import wicket.model.AbstractReadOnlyDetachableModel;
 import wicket.model.IModel;
 
 /**
- * 
- * @author igor
+ * Detatchable, read-only Contact model.
+ * Ensures that memory used to load the contact details is immediately freed
+ * rather than held in the session.
+ * Typically used by <tt>List</tt>-type pages, where multiple elements are
+ * loaded at a time.
  *
+ * @author igor
  */
 public class DetachableContactModel extends AbstractReadOnlyDetachableModel {
 	private long id;
@@ -43,19 +47,35 @@ public class DetachableContactModel extends AbstractReadOnlyDetachableModel {
 		}
 		this.id=id;
 	}
-	
+
+	/**
+	 * Returns null to indicate there is no nested model.
+	 * @return Null
+	 */
 	public IModel getNestedModel() {
 		return null;
 	}
 
+
+	/**
+	 * Uses the DAO to load the required contact when the model is attatched to the request.
+	 */
 	protected void onAttach() {
 		contact=PhonebookApplication.getInstance().getContactDao().load(id);
 	}
 
+	/**
+	 * Clear the reference to the contact when the model is detatched.
+	 */
 	protected void onDetach() {
 		contact=null;
 	}
 
+	/**
+	 * Called after attatch to return the detatchable object.
+	 * @param component  The component asking for the object
+	 * @return The detatchable object.
+	 */
 	protected Object onGetObject(Component component) {
 		return contact;
 	}

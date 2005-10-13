@@ -22,15 +22,41 @@ package wicket.contrib.phonebook;
 import java.util.Iterator;
 
 /**
- * 
- * @author igor
+ * The implementation-independent DAO interface.
+ * Defines the operations required to be supported by an implementation.
  *
+ * @author igor
  */
 public interface ContactDao {
+	/**
+	 * Load a {@link Contact} from the DB, given it's <tt>id</tt>.
+	 * @param id The id of the Contact to load.
+	 * @return Contact
+	 */
 	Contact load(long id);
+	
+	/**
+	 * Save the contact to the DB
+	 * @param contact
+	 */
 	void save(Contact contact);
+	
+	/**
+	 * Delete a {@link Contact} from the DB, given it's <tt>id</tt>.
+	 * @param id The id of the Contact to delete.
+	 */
 	void delete(long id);
 	
+	/**
+	 * Query the DB, using the supplied query details.
+	 * @param qp Query Paramaters to use.
+	 * @return The results of the query as an Iterator.
+	 */
 	Iterator find(QueryParam qp);
+	
+	/**
+	 * Return the number of Contacts in the DB.
+	 * @return count
+	 */
 	int count();
 }
