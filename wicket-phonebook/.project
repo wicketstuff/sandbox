@@ -5,8 +5,6 @@
   <comment>
   </comment>
   <projects>
-    <project>jta</project>
-    <project>wicket-contrib-dataview</project>
   </projects>
   <buildSpec>
     <buildCommand>
