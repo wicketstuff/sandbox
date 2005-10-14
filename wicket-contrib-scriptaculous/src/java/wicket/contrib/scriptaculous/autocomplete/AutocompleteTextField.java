@@ -18,8 +18,8 @@
  */
 package wicket.contrib.scriptaculous.autocomplete;
 
-import wicket.contrib.scriptaculous.ScriptaculousAjaxHandler;
 import wicket.markup.ComponentTag;
+import wicket.markup.html.HtmlHeaderContainer;
 
 /**
  *
@@ -41,10 +41,17 @@ public class AutocompleteTextField extends AutocompleteTextFieldSupport {
         tag.put("autocomplete", "off");
     }
 
-    protected void onRender() {
-        super.onRender();
+    public void renderHead(HtmlHeaderContainer container) {
+        super.renderHead(container);
 
-        getResponse().write("<script type=\"text/javascript\">new Autocompleter.Local('" + getId() + "', '" + getAutocompleteId() + "', " + buildResults() + ", {})</script>");
+        container.getResponse().write("<script type=\"text/javascript\">\n" +
+                        "var myrules = { \n" +
+                        "\t'#" + getId() + "' : function(el){ \n" +
+                        "\t\tnew Autocompleter.Local('" + getId() + "', '" + getAutocompleteId() + "', " + buildResults() + ", {});\n" +
+                        "\t} \n" +
+                        "} \n" +
+                        "Behaviour.register(myrules);\n" +
+                        "</script>\n");
     }
 
     private String buildResults() {

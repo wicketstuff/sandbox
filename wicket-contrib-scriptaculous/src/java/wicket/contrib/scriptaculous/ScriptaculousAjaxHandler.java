@@ -68,6 +68,7 @@ public abstract class ScriptaculousAjaxHandler
 		PackageResource.bind(application, ScriptaculousAjaxHandler.class, "util.js");
 		PackageResource.bind(application, ScriptaculousAjaxHandler.class, "unittest.js");
         PackageResource.bind(application, ScriptaculousAjaxHandler.class, "scriptaculous.js");
+        PackageResource.bind(application, ScriptaculousAjaxHandler.class, "behavior.js");
 	}
 
 	/**
@@ -83,7 +84,7 @@ public abstract class ScriptaculousAjaxHandler
         addJsReference(container, new PackageResourceReference(application,
                 ScriptaculousAjaxHandler.class, "scriptaculous.js"));
         addJsReference(container, new PackageResourceReference(application,
-                        ScriptaculousAjaxHandler.class, "unittest.js"));
+                        ScriptaculousAjaxHandler.class, "behavior.js"));
 	}
 
 	/**
