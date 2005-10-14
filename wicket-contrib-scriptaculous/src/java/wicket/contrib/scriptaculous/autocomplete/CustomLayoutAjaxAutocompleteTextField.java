@@ -19,6 +19,7 @@
 package wicket.contrib.scriptaculous.autocomplete;
 
 import wicket.PageParameters;
+import wicket.markup.html.HtmlHeaderContainer;
 
 /**
  * Autocomplete text field that allows for customized layout of autocomplete entries.
@@ -35,12 +36,19 @@ public class CustomLayoutAjaxAutocompleteTextField extends AutocompleteTextField
 		this.page = page;
     }
 
-    protected void onRender() {
-        super.onRender();
+    public void renderHead(HtmlHeaderContainer container) {
+        super.renderHead(container);
 
         PageParameters parameters = new PageParameters();
         parameters.put("fieldName", this.getId());
         String url = this.getPage().urlFor(null, page, parameters);
-        getResponse().write("<script type=\"text/javascript\">new Ajax.Autocompleter('" + getId() + "', '" + getAutocompleteId() + "', '" + url + "', {})</script>");
+        container.getResponse().write("<script type=\"text/javascript\">\n" +
+                        "var myrules = { \n" +
+                        "\t'#" + getId() + "' : function(el){ \n" +
+                        "\t\tnew Ajax.Autocompleter('" + getId() + "', '" + getAutocompleteId() + "', '" + url + "', {});\n" +
+                        "\t} \n" +
+                        "} \n" +
+                        "Behaviour.register(myrules);\n" +
+                        "</script>\n");
     }
 }

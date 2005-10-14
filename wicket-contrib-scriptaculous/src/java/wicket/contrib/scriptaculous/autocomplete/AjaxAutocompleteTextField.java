@@ -19,6 +19,7 @@
 package wicket.contrib.scriptaculous.autocomplete;
 
 import wicket.contrib.scriptaculous.ScriptaculousAjaxHandler;
+import wicket.markup.html.HtmlHeaderContainer;
 import wicket.markup.html.form.FormComponent;
 import wicket.util.resource.IResourceStream;
 import wicket.util.resource.StringBufferResourceStream;
@@ -38,12 +39,18 @@ public abstract class AjaxAutocompleteTextField extends AutocompleteTextFieldSup
 
     protected abstract String[] getResults(String input);
 
-    protected void onRender() {
-        super.onRender();
+    public void renderHead(HtmlHeaderContainer container) {
+        super.renderHead(container);
 
-        getResponse().write("<script type=\"text/javascript\">new Ajax.Autocompleter('" + getId() + "', '" + getAutocompleteId() + "', '" + handler.getCallbackUrl() + "', {})</script>");
+        container.getResponse().write("<script type=\"text/javascript\">\n" +
+                        "var myrules = { \n" +
+                        "\t'#" + getId() + "' : function(el){ \n" +
+                        "\t\tnew Ajax.Autocompleter('" + getId() + "', '" + getAutocompleteId() + "', '" + handler.getCallbackUrl() + "', {});\n" +
+                        "\t} \n" +
+                        "} \n" +
+                        "Behaviour.register(myrules);\n" +
+                        "</script>\n");
     }
-
 
     private class AutocompleteEventHandler extends ScriptaculousAjaxHandler {
 
