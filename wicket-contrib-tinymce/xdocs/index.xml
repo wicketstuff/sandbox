@@ -1,17 +1,45 @@
 <?xml version="1.0"?>
 <document>
     <properties>
-        <title>Home</title>
+        <title>Wicket TinyMCE Panel</title>
     </properties>
     <meta name="keyword" content="wicket, web, j2ee, java, components, editor"/>
     <body>
-        <section name="Welcome to the Wicket Tinymce Panel">
+        <section name="Welcome to the Wicket TinyMCE Panel">
             <p>
-                The Wicket TinyMCE Panel
+                TinyMCE Wicket panel allows you to use <a href="http://tinymce.moxiecode.com">TinyMCE</a> editor in your web page.
+                Please see below how to integrate it.
+            </p>
+            <p>
+                <b>java code:</b>
+                <pre><i>
+                    ...
+                    TinyMCESettings settings =
+                        new TinyMCESettings(TinyMCESettings.Theme.advanced);
+                    settings.setToolbarLocation(TinyMCESettings.Location.top);
+                    settings.setStatusbarLocation(TinyMCESettings.Location.bottom);
+
+                    Control control = new Control(Control.DefaultButton.numlist,
+                        Control.Toolbar.first, Control.Position.before);
+                    settings.addControl(control);
+
+                    add(new TinyMCEPanel("tinyMCE", settings));
+                    ...
+                </i></pre>
+                <b>html markup:</b>
+                <pre><i>
+                    ...
+                    &lt;span wicket:id="tinyMCE"&gt;tinyMCE&lt;/span&gt;
+
+                    &lt;textarea wicket:id="ta" id="ta" name="ta" rows="30" style="width: 100%"&gt;
+                        some text
+                    &lt;/textarea&gt;
+                    ...
+                </i></pre>
             </p>
             <p>
                 The Wicket Contrib TinyMCE Panel is part of the
-                <a href="/index.html">Wicket Stuff</a>project.
+                <a href="/index.html">Wicket Stuff</a> project.
                 This Wicket powered project provides non-core components to the Wicket project.
             </p>
         </section>
@@ -39,25 +67,23 @@
                 <img alt="SourceForge.net" src="http://sourceforge.net/sflogo.php?group_id=134391"/>
             </a>
             <p>
-                <!-- Begin Nedstat Basic code -->
-                <!-- Title: Wicket Contrib TinyMCE - Home -->
-                <!-- URL: http://wicket-stuff.sourceforge.net/wicket-contrib-tinymce -->
-                <script language="JavaScript" type="text/javascript" src="http://m1.nedstatbasic.net/basic.js">
+                <!-- Begin Webstats4U code -->
+                <!-- Title: Wicket TinyMCE Panel -->
+                <!-- URL: http://wicket-stuff.sourceforge.net/wicket-contrib-tinymce/index.html -->
+                <script language="JavaScript" type="text/javascript" src="http://m1.webstats4u.com/m.js">
                 </script>
-                <script language="JavaScript" type="text/javascript" src="nedstat.js">
+                <script language="JavaScript" type="text/javascript">
+                <!--
+                 webstats4u("ADlFjAAJw4OAecA8ZEsHEdgxhD9Q", 0);
+                // -->
                 </script>
                 <noscript>
-                    <a target="_blank" href="http://www.nedstatbasic.net/stats?ADVPYwcPXDR5hBHfkiIkhRqJvYUw">
-                        <img
-                                src="http://m1.nedstatbasic.net/n?id=ADVPYwcPXDR5hBHfkiIkhRqJvYUw"
-                                border="0" width="18" height="18"
-                                alt="Nedstat Basic - Free web site statistics
-				Personal homepage website counter"/>
-                    </a>
-                    <br/>
-                    <a target="_blank" href="http://www.nedstatbasic.net/">Free counter</a>
+                <a target="_blank" href="http://www.webstats4u.com/stats?ADlFjAAJw4OAecA8ZEsHEdgxhD9Q"><img
+                src="http://m1.webstats4u.com/n?id=ADlFjAAJw4OAecA8ZEsHEdgxhD9Q"
+                border="0" width="18" height="18" alt="Webstats4U - Free web site statistics Personal homepage website counter"/></a><br/>
+                <a target="_blank" href="http://www.webstats4u.com/">Free counter</a>
                 </noscript>
-                <!-- End Nedstat Basic code -->
+                <!-- End Webstats4U code -->
             </p>
         </section>
     </body>
