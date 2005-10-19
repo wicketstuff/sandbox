@@ -20,7 +20,9 @@ package wicket.contrib.markup.html.navmenu;
 
 import wicket.AttributeModifier;
 import wicket.Component;
+import wicket.ResourceReference;
 import wicket.WicketRuntimeException;
+import wicket.markup.html.WebComponent;
 import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.list.ListItem;
 import wicket.markup.html.list.ListView;
@@ -137,7 +139,15 @@ public class MenuRow extends Panel
 		div.add(ul);
 		add(div);
 
-		add(new StyleSheetReference("cssStyleResource", style.getStyleSheetResource()));
+		ResourceReference styleSheetResource = style.getStyleSheetResource();
+		if (styleSheetResource != null)
+		{
+			add(new StyleSheetReference("cssStyleResource", styleSheetResource));
+		}
+		else
+		{
+			add(new WebComponent("cssStyleResource").setVisible(false));
+		}
 	}
 
 	/**
