@@ -25,6 +25,9 @@ import wicket.ResourceReference;
 /**
  * Groups style elements for a navigation menu row, so that we don't have to
  * provide custom markup all the time.
+ * <p>
+ * Note that if a menu item provides a custom item panel, some of these
+ * properties might not be used depending on that implementation.
  * 
  * @author Eelco Hillenius
  */
@@ -56,7 +59,7 @@ public class MenuRowStyle implements Serializable
 	 *            the menu row component
 	 * @return the CSS class for the given menu item
 	 */
-	protected String getItemCSSClass(MenuItem menuItem, MenuRow menuRow)
+	public String getItemCSSClass(MenuItem menuItem, MenuRow menuRow)
 	{
 		MenuRowModel rowModel = (MenuRowModel)menuRow.getModel();
 		boolean active = (rowModel.isPartOfCurrentSelection(menuRow.getPage(), menuItem));
@@ -85,9 +88,9 @@ public class MenuRowStyle implements Serializable
 	}
 
 	/**
-	 * Gets the cssClass.
+	 * Gets the CSS class for the row.
 	 * 
-	 * @return cssClass
+	 * @return css class
 	 */
 	public final String getRowCSSClass()
 	{
@@ -95,10 +98,10 @@ public class MenuRowStyle implements Serializable
 	}
 
 	/**
-	 * Sets the cssClass.
+	 * Sets the CSS class for the row.
 	 * 
 	 * @param cssClass
-	 *            cssClass
+	 *            css class
 	 */
 	public final void setRowCSSClass(String cssClass)
 	{
@@ -106,9 +109,9 @@ public class MenuRowStyle implements Serializable
 	}
 
 	/**
-	 * Gets the rowClass.
+	 * Gets the CSS class for the container.
 	 * 
-	 * @return rowClass
+	 * @return css class
 	 */
 	public final String getContainerCSSClass()
 	{
@@ -116,13 +119,13 @@ public class MenuRowStyle implements Serializable
 	}
 
 	/**
-	 * Sets the rowClass.
+	 * Sets the CSS class for the container.
 	 * 
-	 * @param rowClass
-	 *            rowClass
+	 * @param cssClass
+	 *            css class
 	 */
-	public final void setContainerCSSClass(String rowClass)
+	public final void setContainerCSSClass(String cssClass)
 	{
-		this.containerCSSClass = rowClass;
+		this.containerCSSClass = cssClass;
 	}
 }
