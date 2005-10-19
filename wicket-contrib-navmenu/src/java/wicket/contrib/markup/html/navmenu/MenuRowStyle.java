@@ -23,9 +23,9 @@ import java.io.Serializable;
 import wicket.ResourceReference;
 
 /**
- * Groups style elements for a navigation menu row, so that we don't have to provide
- * custom markup all the time.
- *
+ * Groups style elements for a navigation menu row, so that we don't have to
+ * provide custom markup all the time.
+ * 
  * @author Eelco Hillenius
  */
 public class MenuRowStyle implements Serializable
@@ -47,20 +47,25 @@ public class MenuRowStyle implements Serializable
 	}
 
 	/**
-	 * Gets the CSS class for the given menu item, to be attached e.g. to an li element.
-	 * @param menuItem the menu item
-	 * @param menuRow the menu row component
+	 * Gets the CSS class for the given menu item, to be attached e.g. to an li
+	 * element.
+	 * 
+	 * @param menuItem
+	 *            the menu item
+	 * @param menuRow
+	 *            the menu row component
 	 * @return the CSS class for the given menu item
 	 */
 	protected String getItemCSSClass(MenuItem menuItem, MenuRow menuRow)
 	{
 		MenuRowModel rowModel = (MenuRowModel)menuRow.getModel();
 		boolean active = (rowModel.isPartOfCurrentSelection(menuRow.getPage(), menuItem));
-		return (active) ? "selectedTab" : null;		
+		return (active) ? "selectedTab" : null;
 	}
 
 	/**
 	 * Gets the style.
+	 * 
 	 * @return style
 	 */
 	public final ResourceReference getStyleSheetResource()
@@ -70,7 +75,9 @@ public class MenuRowStyle implements Serializable
 
 	/**
 	 * Sets the style.
-	 * @param style style
+	 * 
+	 * @param style
+	 *            style
 	 */
 	public final void setStyleSheetResource(ResourceReference style)
 	{
@@ -79,6 +86,7 @@ public class MenuRowStyle implements Serializable
 
 	/**
 	 * Gets the cssClass.
+	 * 
 	 * @return cssClass
 	 */
 	public final String getRowCSSClass()
@@ -88,7 +96,9 @@ public class MenuRowStyle implements Serializable
 
 	/**
 	 * Sets the cssClass.
-	 * @param cssClass cssClass
+	 * 
+	 * @param cssClass
+	 *            cssClass
 	 */
 	public final void setRowCSSClass(String cssClass)
 	{
@@ -97,6 +107,7 @@ public class MenuRowStyle implements Serializable
 
 	/**
 	 * Gets the rowClass.
+	 * 
 	 * @return rowClass
 	 */
 	public final String getContainerCSSClass()
@@ -106,7 +117,9 @@ public class MenuRowStyle implements Serializable
 
 	/**
 	 * Sets the rowClass.
-	 * @param rowClass rowClass
+	 * 
+	 * @param rowClass
+	 *            rowClass
 	 */
 	public final void setContainerCSSClass(String rowClass)
 	{

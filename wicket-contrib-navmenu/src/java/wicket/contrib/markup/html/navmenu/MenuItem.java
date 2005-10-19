@@ -27,7 +27,7 @@ import wicket.RequestCycle;
 
 /**
  * Represents an entry in a page navigation menu.
- *
+ * 
  * @author Eelco Hillenius
  */
 public final class MenuItem extends DefaultMutableTreeNode
@@ -51,9 +51,13 @@ public final class MenuItem extends DefaultMutableTreeNode
 
 	/**
 	 * Construct.
-	 * @param label label of the menu item
-	 * @param pageClass class of the page
-	 * @param pageParameters optional page parameters
+	 * 
+	 * @param label
+	 *            label of the menu item
+	 * @param pageClass
+	 *            class of the page
+	 * @param pageParameters
+	 *            optional page parameters
 	 */
 	public MenuItem(String label, Class pageClass, PageParameters pageParameters)
 	{
@@ -65,7 +69,9 @@ public final class MenuItem extends DefaultMutableTreeNode
 
 	/**
 	 * Checks whether the given (current) request may use this item.
-	 * @param requestCycle the (current) request cycle
+	 * 
+	 * @param requestCycle
+	 *            the (current) request cycle
 	 * @return true if this item should be visible
 	 */
 	public boolean checkAccess(RequestCycle requestCycle)
@@ -75,6 +81,7 @@ public final class MenuItem extends DefaultMutableTreeNode
 
 	/**
 	 * Gets the label of the menu item.
+	 * 
 	 * @return the label of the menu item
 	 */
 	public String getLabel()
@@ -84,7 +91,9 @@ public final class MenuItem extends DefaultMutableTreeNode
 
 	/**
 	 * Sets the label of the menu item.
-	 * @param label the label of the menu item
+	 * 
+	 * @param label
+	 *            the label of the menu item
 	 */
 	public void setLabel(String label)
 	{
@@ -93,6 +102,7 @@ public final class MenuItem extends DefaultMutableTreeNode
 
 	/**
 	 * Gets the class of the page.
+	 * 
 	 * @return the class of the page
 	 */
 	public Class getPageClass()
@@ -102,7 +112,9 @@ public final class MenuItem extends DefaultMutableTreeNode
 
 	/**
 	 * Sets the class of the page.
-	 * @param pageClass the class of the page
+	 * 
+	 * @param pageClass
+	 *            the class of the page
 	 */
 	public void setPageClass(Class pageClass)
 	{
@@ -111,6 +123,7 @@ public final class MenuItem extends DefaultMutableTreeNode
 
 	/**
 	 * Gets the optional page parameters.
+	 * 
 	 * @return the page parameters
 	 */
 	public PageParameters getPageParameters()
@@ -120,14 +133,16 @@ public final class MenuItem extends DefaultMutableTreeNode
 
 	/**
 	 * Sets the page parameters.
-	 * @param pageParameters the page parameters
+	 * 
+	 * @param pageParameters
+	 *            the page parameters
 	 */
 	public void setPageParameters(PageParameters pageParameters)
 	{
 		this.pageParameters = pageParameters;
 	}
 
-	
+
 	/**
 	 * @see javax.swing.tree.DefaultMutableTreeNode#add(javax.swing.tree.MutableTreeNode)
 	 */
@@ -138,7 +153,8 @@ public final class MenuItem extends DefaultMutableTreeNode
 	}
 
 	/**
-	 * @see javax.swing.tree.DefaultMutableTreeNode#insert(javax.swing.tree.MutableTreeNode, int)
+	 * @see javax.swing.tree.DefaultMutableTreeNode#insert(javax.swing.tree.MutableTreeNode,
+	 *      int)
 	 */
 	public void insert(MutableTreeNode newChild, int childIndex)
 	{
@@ -157,7 +173,9 @@ public final class MenuItem extends DefaultMutableTreeNode
 
 	/**
 	 * Checks whether the given node is not null and of the correct type.
-	 * @param treeNode node to check
+	 * 
+	 * @param treeNode
+	 *            node to check
 	 */
 	private void check(TreeNode treeNode)
 	{
@@ -167,9 +185,9 @@ public final class MenuItem extends DefaultMutableTreeNode
 		}
 		if (!(treeNode instanceof MenuItem))
 		{
-			throw new IllegalArgumentException("argument must be of type " +
-					MenuItem.class.getName() + " (but is of type " +
-					treeNode.getClass().getName() + ")");
+			throw new IllegalArgumentException("argument must be of type "
+					+ MenuItem.class.getName() + " (but is of type "
+					+ treeNode.getClass().getName() + ")");
 		}
 	}
 

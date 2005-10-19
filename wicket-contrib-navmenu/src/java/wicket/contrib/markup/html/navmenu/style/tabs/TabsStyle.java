@@ -24,6 +24,8 @@ import wicket.markup.html.PackageResourceReference;
 
 /**
  * Style that renders tabs.
+ * 
+ * @author Eelco Hillenius
  */
 public final class TabsStyle
 {
@@ -46,8 +48,10 @@ public final class TabsStyle
 			new PackageResourceReference(Application.get(), TabsStyle.class, "folders/active.gif");
 			new PackageResourceReference(Application.get(), TabsStyle.class, "folders/hover.gif");
 			new PackageResourceReference(Application.get(), TabsStyle.class, "folders/selected.gif");
-			new PackageResourceReference(Application.get(), TabsStyle.class, "folders/unselected.gif");
-			setStyleSheetResource(new PackageResourceReference(Application.get(), TabsStyle.class, "tabs-folders.css"));
+			new PackageResourceReference(Application.get(), TabsStyle.class,
+					"folders/unselected.gif");
+			setStyleSheetResource(new PackageResourceReference(Application.get(), TabsStyle.class,
+					"tabs-folders.css"));
 			setRowCSSClass("wicketNavmenuTabsLevel0");
 		}
 	}
@@ -62,7 +66,8 @@ public final class TabsStyle
 		 */
 		private Level1()
 		{
-			setStyleSheetResource(new PackageResourceReference(Application.get(), TabsStyle.class, "tabs-folders.css"));
+			setStyleSheetResource(new PackageResourceReference(Application.get(), TabsStyle.class,
+					"tabs-folders.css"));
 			setContainerCSSClass("wicketNavmenuTabsLevel1Border");
 			setRowCSSClass("wicketNavmenuTabsLevel1");
 		}

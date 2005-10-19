@@ -29,7 +29,7 @@ import wicket.model.IModel;
 
 /**
  * Menu model for one row.
- *
+ * 
  * @author Eelco Hillenius
  */
 public class MenuRowModel extends AbstractReadOnlyDetachableModel
@@ -45,8 +45,11 @@ public class MenuRowModel extends AbstractReadOnlyDetachableModel
 
 	/**
 	 * Construct.
-	 * @param menuModel menu model
-	 * @param level the level in the menu, 0..n-1
+	 * 
+	 * @param menuModel
+	 *            menu model
+	 * @param level
+	 *            the level in the menu, 0..n-1
 	 */
 	public MenuRowModel(MenuModel menuModel, int level)
 	{
@@ -56,9 +59,13 @@ public class MenuRowModel extends AbstractReadOnlyDetachableModel
 
 	/**
 	 * Whether the given menu item is part of the currently selected path
-	 * @param currentPage the current page
-	 * @param menuItem the menu item
-	 * @return true if the given menu item is part of the currently selected path
+	 * 
+	 * @param currentPage
+	 *            the current page
+	 * @param menuItem
+	 *            the menu item
+	 * @return true if the given menu item is part of the currently selected
+	 *         path
 	 */
 	public boolean isPartOfCurrentSelection(Page currentPage, MenuItem menuItem)
 	{

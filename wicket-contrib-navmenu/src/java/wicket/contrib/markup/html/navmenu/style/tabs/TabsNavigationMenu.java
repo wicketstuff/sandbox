@@ -25,6 +25,7 @@ import wicket.markup.html.panel.Panel;
 
 /**
  * Two-level navigation menu with a tabs style.
+ * 
  * @author Eelco Hillenius
  */
 public final class TabsNavigationMenu extends Panel
@@ -34,8 +35,11 @@ public final class TabsNavigationMenu extends Panel
 
 	/**
 	 * Construct.
-	 * @param id component id
-	 * @param model the model
+	 * 
+	 * @param id
+	 *            component id
+	 * @param model
+	 *            the model
 	 */
 	public TabsNavigationMenu(String id, MenuModel model)
 	{

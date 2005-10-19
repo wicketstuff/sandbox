@@ -32,7 +32,7 @@ import wicket.model.Model;
 
 /**
  * One row of a menu. Starts by 0 (zero).
- *
+ * 
  * @author Eelco Hillenius
  */
 public class MenuRow extends Panel
@@ -42,9 +42,13 @@ public class MenuRow extends Panel
 
 	/**
 	 * Construct.
-	 * @param id component id
-	 * @param model row model
-	 * @param style row style
+	 * 
+	 * @param id
+	 *            component id
+	 * @param model
+	 *            row model
+	 * @param style
+	 *            row style
 	 */
 	public MenuRow(final String id, final MenuRowModel model, final MenuRowStyle style)
 	{
@@ -88,6 +92,7 @@ public class MenuRow extends Panel
 	{
 		/**
 		 * Construct.
+		 * 
 		 * @param id
 		 * @param model
 		 */
