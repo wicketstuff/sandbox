@@ -28,13 +28,14 @@ import wicket.Page;
 
 /**
  * Model that holds the tree model of a navigation menu.
- *
+ * 
  * @author Eelco Hillenius
  */
 public class MenuModel extends DefaultTreeModel
 {
 	/**
 	 * Construct.
+	 * 
 	 * @param menuItem
 	 */
 	public MenuModel(MenuItem menuItem)
@@ -44,9 +45,13 @@ public class MenuModel extends DefaultTreeModel
 
 	/**
 	 * Whether the given menu item is part of the currently selected path
-	 * @param currentPage the current page
-	 * @param menuItem the menu item
-	 * @return true if the given menu item is part of the currently selected path
+	 * 
+	 * @param currentPage
+	 *            the current page
+	 * @param menuItem
+	 *            the menu item
+	 * @return true if the given menu item is part of the currently selected
+	 *         path
 	 */
 	public boolean isPartOfCurrentSelection(Page currentPage, MenuItem menuItem)
 	{
@@ -65,16 +70,18 @@ public class MenuModel extends DefaultTreeModel
 		}
 		if (!(root instanceof MenuItem))
 		{
-			throw new IllegalArgumentException("argument must be of type " +
-					MenuItem.class.getName() + " (but is of type " +
-					root.getClass().getName() + ")");
+			throw new IllegalArgumentException("argument must be of type "
+					+ MenuItem.class.getName() + " (but is of type " + root.getClass().getName()
+					+ ")");
 		}
 		super.setRoot(root);
 	}
 
 	/**
 	 * Gets the tree path to the currently selected menu item.
-	 * @param currentPage the current page
+	 * 
+	 * @param currentPage
+	 *            the current page
 	 * @return the tree path to the currently selected menu item
 	 */
 	protected MenuTreePath getCurrentSelection(Page currentPage)
@@ -82,7 +89,7 @@ public class MenuModel extends DefaultTreeModel
 		Class currentPageClass = currentPage.getClass();
 		DefaultMutableTreeNode root = (DefaultMutableTreeNode)getRoot();
 		MenuTreePath currentPath = null;
-	
+
 		Enumeration all = root.breadthFirstEnumeration();
 		while (all.hasMoreElements())
 		{

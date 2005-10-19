@@ -1,15 +1,37 @@
+/*
+ * $Id$
+ * $Revision$
+ * $Date$
+ * 
+ * ==============================================================================
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package wicket.contrib.markup.html.navmenu;
 
 import javax.swing.tree.TreePath;
 
 /**
  * Custom tree path.
+ * 
+ * @author Eelco Hillenius
  */
 public final class MenuTreePath extends TreePath
 {
 	/**
 	 * Construct.
-	 * @param path the path
+	 * 
+	 * @param path
+	 *            the path
 	 */
 	public MenuTreePath(Object[] path)
 	{
@@ -18,7 +40,9 @@ public final class MenuTreePath extends TreePath
 
 	/**
 	 * Checks whether the given node is part of this path.
-	 * @param menuItem the node
+	 * 
+	 * @param menuItem
+	 *            the node
 	 * @return true when the given node is part of the path
 	 */
 	public boolean isPartOfPath(MenuItem menuItem)
@@ -34,7 +58,7 @@ public final class MenuTreePath extends TreePath
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
 }
