@@ -21,8 +21,6 @@ package wicket.contrib.markup.html.navmenu;
 import wicket.AttributeModifier;
 import wicket.Component;
 import wicket.markup.html.WebMarkupContainer;
-import wicket.markup.html.basic.Label;
-import wicket.markup.html.link.BookmarkablePageLink;
 import wicket.markup.html.list.ListItem;
 import wicket.markup.html.list.ListView;
 import wicket.markup.html.panel.Panel;
@@ -37,8 +35,36 @@ import wicket.model.Model;
  */
 public class MenuRow extends Panel
 {
+	/**
+	 * Listview for a menu row.
+	 */
+	private final class RowListView extends ListView
+	{
+		/**
+		 * Construct.
+		 * 
+		 * @param id
+		 * @param model
+		 */
+		public RowListView(String id, IModel model)
+		{
+			super(id, model);
+			setOptimizeItemRemoval(false);
+		}
+
+		/**
+		 * @see wicket.markup.html.list.ListView#populateItem(wicket.markup.html.list.ListItem)
+		 */
+		protected void populateItem(ListItem item)
+		{
+			final MenuItem menuItem = (MenuItem)item.getModelObject();
+			final Panel itemPanel = menuItem.newItemPanel("itemPanel", MenuRow.this);
+			item.add(itemPanel);
+		}
+	}
+
 	/** this row's style. */
-	protected final MenuRowStyle style;
+	private final MenuRowStyle style;
 
 	/**
 	 * Construct.
@@ -86,41 +112,12 @@ public class MenuRow extends Panel
 	}
 
 	/**
-	 * Listview for a menu row.
+	 * Gets the row style.
+	 * 
+	 * @return row style
 	 */
-	private final class RowListView extends ListView
+	public final MenuRowStyle getRowStyle()
 	{
-		/**
-		 * Construct.
-		 * 
-		 * @param id
-		 * @param model
-		 */
-		public RowListView(String id, IModel model)
-		{
-			super(id, model);
-			setOptimizeItemRemoval(false);
-		}
-
-		/**
-		 * @see wicket.markup.html.list.ListView#populateItem(wicket.markup.html.list.ListItem)
-		 */
-		protected void populateItem(ListItem item)
-		{
-			final MenuItem menuItem = (MenuItem)item.getModelObject();
-			final String label = menuItem.getLabel();
-			final BookmarkablePageLink pageLink = new BookmarkablePageLink("link", menuItem
-					.getPageClass(), menuItem.getPageParameters());
-			pageLink.setAutoEnable(false);
-			pageLink.add(new Label("label", label));
-			item.add(pageLink);
-			item.add(new AttributeModifier("class", true, new Model()
-			{
-				public Object getObject(final Component component)
-				{
-					return style.getItemCSSClass(menuItem, MenuRow.this);
-				}
-			}));
-		}
+		return style;
 	}
 }
