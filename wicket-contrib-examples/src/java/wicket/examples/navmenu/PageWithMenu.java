@@ -20,7 +20,7 @@ package wicket.examples.navmenu;
 
 import wicket.Component;
 import wicket.MarkupContainer;
-import wicket.contrib.markup.html.navmenu.MenuBorder;
+import wicket.contrib.markup.html.navmenu.style.tabs.TabsMenuBorder;
 import wicket.markup.html.WebPage;
 import wicket.markup.html.border.Border;
 
@@ -40,7 +40,7 @@ public abstract class PageWithMenu extends WebPage
 	public PageWithMenu()
 	{
 		super();
-		this.border = new MenuBorder("menuBorder", NavMenuApplication.getMenu());
+		this.border = new TabsMenuBorder("menuBorder", NavMenuApplication.getMenu());
 		super.add(border);
 	}
 
