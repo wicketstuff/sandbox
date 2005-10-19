@@ -20,6 +20,7 @@ package wicket.contrib.markup.html.navmenu;
 
 import wicket.AttributeModifier;
 import wicket.Component;
+import wicket.WicketRuntimeException;
 import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.list.ListItem;
 import wicket.markup.html.list.ListView;
@@ -58,7 +59,17 @@ public class MenuRow extends Panel
 		protected void populateItem(ListItem item)
 		{
 			final MenuItem menuItem = (MenuItem)item.getModelObject();
+
 			final Panel itemPanel = menuItem.newItemPanel("itemPanel", MenuRow.this);
+			if (itemPanel == null)
+			{
+				throw new WicketRuntimeException("item panel must be not-null");
+			}
+			if (!"itemPanel".equals(itemPanel.getId()))
+			{
+				throw new WicketRuntimeException("item panel must have id 'itemPanel' assigned");
+			}
+
 			itemPanel.setRenderBodyOnly(true);
 			item.add(itemPanel);
 		}
