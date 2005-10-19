@@ -79,7 +79,21 @@ public class MenuRow extends Panel
 	private final MenuRowStyle style;
 
 	/**
-	 * Construct.
+	 * Construct using a default style.
+	 * 
+	 * @param id
+	 *            component id
+	 * @param model
+	 *            row model
+	 * @see MenuRowStyle
+	 */
+	public MenuRow(final String id, final MenuRowModel model)
+	{
+		this(id, model, new MenuRowStyle());
+	}
+
+	/**
+	 * Construct using the provided row style.
 	 * 
 	 * @param id
 	 *            component id
@@ -91,6 +105,16 @@ public class MenuRow extends Panel
 	public MenuRow(final String id, final MenuRowModel model, final MenuRowStyle style)
 	{
 		super(id, model);
+
+		if (model == null)
+		{
+			throw new NullPointerException("argument model may not be null");
+		}
+		if (style == null)
+		{
+			throw new NullPointerException("argument style may not be null");
+		}
+
 		this.style = style;
 		WebMarkupContainer div = new WebMarkupContainer("div");
 		div.add(new AttributeModifier("class", true, new Model())
@@ -100,6 +124,7 @@ public class MenuRow extends Panel
 				return style.getContainerCSSClass();
 			}
 		});
+
 		WebMarkupContainer ul = new WebMarkupContainer("ul");
 		ul.add(new AttributeModifier("class", true, new Model()
 		{
