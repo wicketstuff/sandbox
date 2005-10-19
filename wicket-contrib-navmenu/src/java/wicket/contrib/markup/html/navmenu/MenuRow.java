@@ -59,6 +59,7 @@ public class MenuRow extends Panel
 		{
 			final MenuItem menuItem = (MenuItem)item.getModelObject();
 			final Panel itemPanel = menuItem.newItemPanel("itemPanel", MenuRow.this);
+			itemPanel.setRenderBodyOnly(true);
 			item.add(itemPanel);
 		}
 	}

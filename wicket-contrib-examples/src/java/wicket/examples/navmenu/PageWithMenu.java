@@ -32,7 +32,7 @@ import wicket.markup.html.border.Border;
 public abstract class PageWithMenu extends WebPage
 {
 	/** Border. */
-	private Border border;
+	private Border menuBorder;
 
 	/**
 	 * Constructor.
@@ -40,8 +40,8 @@ public abstract class PageWithMenu extends WebPage
 	public PageWithMenu()
 	{
 		super();
-		this.border = new TabsMenuBorder("menuBorder", NavMenuApplication.getMenu());
-		super.add(border);
+		this.menuBorder = new TabsMenuBorder("menuBorder", NavMenuApplication.getMenu());
+		super.add(menuBorder);
 	}
 
 	/**
@@ -51,7 +51,7 @@ public abstract class PageWithMenu extends WebPage
 	public MarkupContainer add(final Component child)
 	{
 		// Add children of the page to the page's border component
-		border.add(child);
+		menuBorder.add(child);
 		return this;
 	}
 
@@ -60,7 +60,7 @@ public abstract class PageWithMenu extends WebPage
 	 */
 	public boolean autoAdd(Component component)
 	{
-		return border.autoAdd(component);
+		return menuBorder.autoAdd(component);
 	}
 	
 	/**
@@ -68,7 +68,7 @@ public abstract class PageWithMenu extends WebPage
 	 */
 	public void removeAll()
 	{
-		border.removeAll();
+		menuBorder.removeAll();
 	}
 
 	/**
@@ -76,6 +76,6 @@ public abstract class PageWithMenu extends WebPage
 	 */
 	public MarkupContainer replace(Component child)
 	{
-		return border.replace(child);
+		return menuBorder.replace(child);
 	}
 }
