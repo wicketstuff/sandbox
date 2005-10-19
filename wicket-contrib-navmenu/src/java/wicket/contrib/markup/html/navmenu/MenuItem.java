@@ -22,16 +22,54 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
 
+import wicket.AttributeModifier;
+import wicket.Component;
 import wicket.PageParameters;
 import wicket.RequestCycle;
+import wicket.markup.html.basic.Label;
+import wicket.markup.html.link.BookmarkablePageLink;
+import wicket.markup.html.panel.Panel;
+import wicket.model.Model;
 
 /**
  * Represents an entry in a page navigation menu.
  * 
  * @author Eelco Hillenius
  */
-public final class MenuItem extends DefaultMutableTreeNode
+public class MenuItem extends DefaultMutableTreeNode
 {
+	/**
+	 * Default panel for items.
+	 */
+	protected class ItemPanel extends Panel
+	{
+		/**
+		 * Construct.
+		 * 
+		 * @param id
+		 *            component id
+		 * @param row
+		 *            the row
+		 */
+		public ItemPanel(final String id, final MenuRow row)
+		{
+			super(id);
+			final String label = getLabel();
+			final BookmarkablePageLink pageLink = new BookmarkablePageLink("link", getPageClass(),
+					getPageParameters());
+			pageLink.setAutoEnable(false);
+			pageLink.add(new Label("label", label));
+			add(pageLink);
+			add(new AttributeModifier("class", true, new Model()
+			{
+				public Object getObject(final Component component)
+				{
+					return row.getRowStyle().getItemCSSClass(MenuItem.this, row);
+				}
+			}));
+		}
+	}
+
 	/** label of the menu item. */
 	private String label;
 
@@ -146,7 +184,7 @@ public final class MenuItem extends DefaultMutableTreeNode
 	/**
 	 * @see javax.swing.tree.DefaultMutableTreeNode#add(javax.swing.tree.MutableTreeNode)
 	 */
-	public void add(MutableTreeNode newChild)
+	public final void add(MutableTreeNode newChild)
 	{
 		check(newChild);
 		super.add(newChild);
@@ -156,7 +194,7 @@ public final class MenuItem extends DefaultMutableTreeNode
 	 * @see javax.swing.tree.DefaultMutableTreeNode#insert(javax.swing.tree.MutableTreeNode,
 	 *      int)
 	 */
-	public void insert(MutableTreeNode newChild, int childIndex)
+	public final void insert(MutableTreeNode newChild, int childIndex)
 	{
 		check(newChild);
 		super.insert(newChild, childIndex);
@@ -165,10 +203,33 @@ public final class MenuItem extends DefaultMutableTreeNode
 	/**
 	 * @see javax.swing.tree.DefaultMutableTreeNode#setParent(javax.swing.tree.MutableTreeNode)
 	 */
-	public void setParent(MutableTreeNode newParent)
+	public final void setParent(MutableTreeNode newParent)
 	{
 		check(newParent);
 		super.setParent(newParent);
+	}
+
+	/**
+	 * Gets a new panel to display the actual menu link. Override this when you
+	 * want something specific other than [link[label]].
+	 * 
+	 * @param panelId
+	 *            the id of the panel. MUST BE USED WHEN CONSTRUCTING THE PANEL
+	 * @param row
+	 *            the parent menu row
+	 * @return the panel instance
+	 */
+	public Panel newItemPanel(String panelId, MenuRow row)
+	{
+		return new ItemPanel(panelId, row);
+	}
+
+	/**
+	 * @see java.lang.Object#toString()
+	 */
+	public String toString()
+	{
+		return "MenuItem{pageClass=" + getPageClass() + "}";
 	}
 
 	/**
@@ -189,13 +250,5 @@ public final class MenuItem extends DefaultMutableTreeNode
 					+ MenuItem.class.getName() + " (but is of type "
 					+ treeNode.getClass().getName() + ")");
 		}
-	}
-
-	/**
-	 * @see java.lang.Object#toString()
-	 */
-	public String toString()
-	{
-		return "MenuItem{pageClass=" + getPageClass() + "}";
 	}
 }
