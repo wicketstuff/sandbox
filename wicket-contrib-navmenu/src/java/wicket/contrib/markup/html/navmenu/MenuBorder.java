@@ -16,27 +16,29 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package wicket.examples.navmenu;
+package wicket.contrib.markup.html.navmenu;
 
-import wicket.contrib.markup.html.navmenu.MenuModel;
 import wicket.contrib.markup.html.navmenu.style.tabs.TabsNavigationMenu;
 import wicket.markup.html.border.Border;
 
 /**
- * Border component that holds the menu.
+ * Border component that renders the menu using a provided menu model.
+ * 
  * @author Eelco Hillenius
  */
 public class MenuBorder extends Border
 {
 	/**
 	 * Construct.
+	 * 
 	 * @param id
-	 * @param currentPageClass 
+	 *            component id
+	 * @param model
+	 *            the menu model
 	 */
-	public MenuBorder(String id, Class currentPageClass)
+	public MenuBorder(String id, MenuModel model)
 	{
 		super(id);
-		MenuModel model = NavMenuApplication.getMenu();
 		add(new TabsNavigationMenu("navmenu", model));
 	}
 }
