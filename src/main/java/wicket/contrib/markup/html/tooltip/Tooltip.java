@@ -19,13 +19,16 @@ import wicket.Component;
  * http://www.texsoft.it/index.php?c=software&m=sw.js.htmltooltip&l=it
  * 
  * In short this is a fully customizable Javascript-HTML-Layout Wicket Tooltip.
- * What does it do? Well you you make a MVOTooltip.java (My Very Own Tooltip)
+ * What does it do? Well you make a MVOTooltip.java (My Very Own Tooltip)
  * which extends Tooltip.java, and write the corresponding MVOTooltip.html 
- * as if it were the HTML for a panel, you can make you're very owh cusomized tooltip. 
+ * as if it were the HTML for a panel, you can make you're very own cusomized tooltip. 
  *
- *TODO: usage example
+ *for usage examples see:
+ *http://www.jroller.com/page/ruudmarco?entry=tooltip_tutioral_part_one
+ *http://www.jroller.com/comments/ruudmarco/Weblog/tooltip_tutioral_part_2_dynamic
  * 
- * 
+ * Note: Using setter methods afeter construction probably wont do much good, 
+ * because instance fields are used to render AttributeModifiers in the initTooltip() method.
  */
 
 public class Tooltip extends Panel
@@ -82,7 +85,7 @@ public class Tooltip extends Panel
 	 * @param id Component id
 	 * @param target Target component bound to Tooltip
 	 * @param x X offset from target's upperleft corner
-	 * @param y offset 
+	 * @param y Y offset from target's upperleft corner
 	 * 
 	 * NOTE: IE seems to take y as the offset from target's top and FF from target's bottom
 	 */
@@ -102,7 +105,7 @@ public class Tooltip extends Panel
 	 * @param id Component id
 	 * @param target Target component bound to Tooltip
 	 * @param x X offset from target's upperleft corner
-	 * @param y offset 
+	 * @param y Y offset from target's upperleft corner
 	 * 
 	 * NOTE: IE seems to take y as the offset from target's top and FF from target's bottom
 	 */
@@ -124,6 +127,7 @@ public class Tooltip extends Panel
 	private void initTooltip()
 	{
 		String targetId = target.getId();
+		//add the javascript file
 		add(new JavaScriptReference("tooltipMain", Tooltip.class, "tooltip.js"));
 		
 		//add id attributes for javascript identification to both tooltip and parent
@@ -193,7 +197,9 @@ public class Tooltip extends Panel
 	}
 
 	/**
-	 * @author Ruud & Marco
+	 * @author Ruud Booltink
+	 * @author Marco van de Haar
+	 * 
 	 * AttributeModifier that appends the new value to the current value if an old value
 	 * exists. If it does not exist, it sets the new value.
 	 */
