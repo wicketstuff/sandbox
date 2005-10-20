@@ -18,12 +18,14 @@
  */
 package wicket.contrib.phonebook;
 
+import java.io.Serializable;
+
 /**
  * Contact details. This is the business object that we persist to the DB.
  * 
  * @author igor
  */
-public class Contact {
+public class Contact implements Serializable {
 	private long id;
 	private String firstname;
 	private String lastname;
