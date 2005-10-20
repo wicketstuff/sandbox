@@ -67,9 +67,10 @@ public class HibernateContactDao implements ContactDao {
 	 * Save the contact to the DB
 	 * 
 	 * @param contact
+	 * @return persistent instance of contact
 	 */
-	public void save(Contact contact) {
-		getSession().merge(contact);
+	public Contact save(Contact contact) {
+		return (Contact) getSession().merge(contact);
 	}
 
 	/**
@@ -93,7 +94,7 @@ public class HibernateContactDao implements ContactDao {
 
 		StringBuffer hql = new StringBuffer("from Contact c ");
 		if (qp.hasSort()) {
-			hql.append("order by c.").append(qp.getSort()).append(
+			hql.append("order by upper(c.").append(qp.getSort()).append(") ").append(
 					(qp.isSortAsc()) ? " asc" : " desc");
 		}
 		return getSession().createQuery(hql.toString()).setFirstResult(
