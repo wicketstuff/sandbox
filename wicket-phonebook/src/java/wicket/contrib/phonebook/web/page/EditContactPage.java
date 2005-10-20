@@ -30,101 +30,59 @@ import wicket.markup.html.panel.FeedbackPanel;
 import wicket.model.CompoundPropertyModel;
 
 /**
- * Edit the Contact.  Display details if an existing contact, then persist
- * them if saved.
+ * Edit the Contact. Display details if an existing contact, then persist them
+ * if saved.
+ * 
  * @author igor
- *
+ * 
  */
 public class EditContactPage extends BasePage {
 	private Page backPage;
-	
+
 	/**
-	 * Constructor.  Create or edit the contact.
-	 * Note that if you don't need the page to be bookmarkable,
-	 * you can use whatever constructor you need, such as is done here.
-	 *
-	 * @param backPage The page that the user was on before coming here
-	 * @param contactId The id of the Contact to edit, or 0 for a new contact.
+	 * Constructor. Create or edit the contact. Note that if you don't need the
+	 * page to be bookmarkable, you can use whatever constructor you need, such
+	 * as is done here.
+	 * 
+	 * @param backPage
+	 *            The page that the user was on before coming here
+	 * @param contactId
+	 *            The id of the Contact to edit, or 0 for a new contact.
 	 */
 	public EditContactPage(Page backPage, final long contactId) {
-		this.backPage=backPage;
-		Contact contact=
-			(contactId==0)?null:getContactDao().load(contactId);
-		
-		add(new FeedbackPanel("feedback"));
-		
-		add(new ContactForm("contactForm", contact) {
+		this.backPage = backPage;
+		Contact contact = (contactId == 0) ? new Contact() : getContactDao()
+				.load(contactId);
 
-			protected void onSave() {
-				Contact contact=
-					(contactId==0)?new Contact():getContactDao().load(contactId);
-				applyFormChanges(contact);
+		add(new FeedbackPanel("feedback"));
+
+		Form form = new Form("contactForm", new CompoundPropertyModel(contact));
+		add(form);
+
+		form.add(new RequiredTextField("firstname")
+				.add(LengthValidator.max(32)));
+
+		form
+				.add(new RequiredTextField("lastname").add(LengthValidator
+						.max(32)));
+
+		form.add(new RequiredTextField("phone").add(LengthValidator.max(16)));
+
+		form.add(new TextField("email").add(LengthValidator.max(128)).add(
+				EmailAddressPatternValidator.getInstance()));
+
+		form.add(new Button("cancel") {
+			protected void onSubmit() {
+				setResponsePage(EditContactPage.this.backPage);
+			}
+		}.setDefaultFormProcessing(false));
+
+		form.add(new Button("save") {
+			protected void onSubmit() {
+				Contact contact = (Contact) getForm().getModelObject();
 				getContactDao().save(contact);
 				setResponsePage(EditContactPage.this.backPage);
 			}
-
-			protected void onCancel() {
-				setResponsePage(EditContactPage.this.backPage);
-			}
-			
 		});
-	}
-	
-	/**
-	 * Form to allow Contact detail editing.
-	 * Note the use of an internal Contact instance, rather than using the one
-	 * passed in the constructor, which ensures that any partial updates as a
-	 * result of validation failure do not alter the caller's instance.
-	 *
-	 * @author igor
-	 */
-	private abstract class ContactForm extends Form {
-		private final Contact bean=new Contact();
-		
-		public ContactForm(String id, Contact contact) {
-			super(id);
-			if (contact!=null) {
-				beanFromTo(contact, bean);
-			}
-			
-			setModel(new CompoundPropertyModel(bean));
-			
-			add(new RequiredTextField("firstname")
-					.add(LengthValidator.max(32)));
-			
-			add(new RequiredTextField("lastname")
-					.add(LengthValidator.max(32)));
-			
-			add(new RequiredTextField("phone")
-					.add(LengthValidator.max(16)));
-			
-			add(new TextField("email")
-					.add(LengthValidator.max(128))
-					.add(EmailAddressPatternValidator.getInstance()));
-			
-			add(new Button("cancel") {
-				protected void onSubmit() {
-					onCancel();
-				}
-			}.setDefaultFormProcessing(false));
-		}
-		
-		private void beanFromTo(Contact src, Contact dst) {
-			dst.setFirstname(src.getFirstname());
-			dst.setLastname(src.getLastname());
-			dst.setEmail(src.getEmail());
-			dst.setPhone(src.getPhone());
-		}
-		
-		public void applyFormChanges(Contact dst) {
-			beanFromTo(bean, dst);
-		}
-		
-		protected void onSubmit() {
-			onSave();
-		}
-		
-		protected abstract void onSave();
-		protected abstract void onCancel();
 	}
 }

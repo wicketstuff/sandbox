@@ -38,8 +38,9 @@ public interface ContactDao {
 	/**
 	 * Save the contact to the DB
 	 * @param contact
+	 * @return persistent instance of contact
 	 */
-	void save(Contact contact);
+	Contact save(Contact contact);
 	
 	/**
 	 * Delete a {@link Contact} from the DB, given it's <tt>id</tt>.
