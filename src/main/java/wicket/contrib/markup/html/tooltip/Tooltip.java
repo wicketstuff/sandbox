@@ -126,20 +126,23 @@ public class Tooltip extends Panel
 	 */
 	private void initTooltip()
 	{
-		String targetId = target.getId();
+		
+		String targetHTMLID = target.getPath();
+		String HTMLID = "id" + "_" + targetHTMLID;
+		
 		//add the javascript file
 		add(new JavaScriptReference("tooltipMain", Tooltip.class, "tooltip.js"));
 		
 		//add id attributes for javascript identification to both tooltip and parent
-		add(new AttributeModifier("id", true, new Model(id)));
-		target.add(new AttributeModifier("id", true, new Model(targetId)));
+		add(new AttributeModifier("id" , true, new Model(HTMLID)));
+		target.add(new AttributeModifier("id", true, new Model(targetHTMLID)));
 		
 		//add necessary style to component tag
 		add(new AppendAttributeModifier("style", true, new Model("visibility:hidden; z-index:2; position:absolute")));
 		
 		//add mousehandler functions to target
-		AppendAttributeModifier onMouseOverMod = new AppendAttributeModifier("onmouseover", true, new Model("xstooltip_show('" + id + "', '" + targetId + "', " + offsetX + ", " + offsetY + ");"));  
-		AppendAttributeModifier onMouseOutMod = new AppendAttributeModifier("onmouseout", true, new Model("xstooltip_hide('" + id + "');"));
+		AppendAttributeModifier onMouseOverMod = new AppendAttributeModifier("onmouseover", true, new Model("xstooltip_show('" + HTMLID + "', '" + targetHTMLID + "', " + offsetX + ", " + offsetY + ");"));  
+		AppendAttributeModifier onMouseOutMod = new AppendAttributeModifier("onmouseout", true, new Model("xstooltip_hide('" + HTMLID + "');"));
 		target.add(onMouseOverMod);
 		target.add(onMouseOutMod);
 	}
