@@ -13,33 +13,34 @@ import wicket.AttributeModifier;
 import wicket.Component;
 
 /**
- * @author Marco & Ruud
+ * 
  * 
  * based on textsoft.it's multy-line html tooltip tutorial: 
- * http://www.texsoft.it/index.php?c=software&m=sw.js.htmltooltip&l=it
+ * <a href="http://www.texsoft.it/index.php?c=software&m=sw.js.htmltooltip&l=it">texsoft.it's Tooltip tutoroial</a><br/>
  * 
  * In short this is a fully customizable Javascript-HTML-Layout Wicket Tooltip.
- * What does it do? Well you make a MVOTooltip.java (My Very Own Tooltip)
- * which extends Tooltip.java, and write the corresponding MVOTooltip.html 
- * as if it were the HTML for a panel, you can make you're very own cusomized tooltip. 
+ * What does it do? Well you make a MVOTooltip.java (My Very Own Tooltip)<br/>
+ * which extends Tooltip.java, and write the corresponding MVOTooltip.html<br/> 
+ * as if it were the HTML for a panel, you can make you're very own cusomized tooltip.<br/> 
  *
- *for usage examples see:
- *http://www.jroller.com/page/ruudmarco?entry=tooltip_tutioral_part_one
- *http://www.jroller.com/comments/ruudmarco/Weblog/tooltip_tutioral_part_2_dynamic
- * 
- * Note: Using setter methods afeter construction probably wont do much good, 
- * because instance fields are used to render AttributeModifiers in the initTooltip() method.
+ * Note: Using setter methods afeter construction probably wont do much good, <br/>
+ * because instance fields are used to render AttributeModifiers in the initTooltip() method.<br/>
+ *
+ *for usage examples see: <br/>
+ *<a href="http://www.jroller.com/page/ruudmarco?entry=tooltip_tutioral_part_one">Tutorial 1: Static Tooltip</a><br/>
+ *<a href="http://www.jroller.com/comments/ruudmarco/Weblog/tooltip_tutioral_part_2_dynamic">Tutorial 2: Dynamic Tooltip</a>
+ * @author Marco & Ruud
  */
 
 public class Tooltip extends Panel
 {
 	private final Component target; //component which tooltip should react to
-	private int offsetX; // X offset from target's upperleft corner
-	private int offsetY; //Y offset from target's top
+	private final int offsetX; // X offset from target's upperleft corner
+	private final int offsetY; //Y offset from target's top
 	
 	//z-index for HTML comopnent. Default = 2. 
 	//Can be set to custom value if user's page requires tooltip to have higher z-index.
-	private int zIndex = 2;
+	private final int zIndex = 2;
 
 	private final String id;
 	
@@ -82,12 +83,12 @@ public class Tooltip extends Panel
 	
 	/**
 	 * constructor with custom x and y offsets
+	 * NOTE: IE seems to take y as the offset from target's top and FF from target's bottom
 	 * @param id Component id
 	 * @param target Target component bound to Tooltip
 	 * @param x X offset from target's upperleft corner
 	 * @param y Y offset from target's upperleft corner
-	 * 
-	 * NOTE: IE seems to take y as the offset from target's top and FF from target's bottom
+	 *
 	 */
 	public Tooltip(String id, Component target, int x, int y)
 	{
@@ -148,35 +149,7 @@ public class Tooltip extends Panel
 	}
 	
 	/**
-	 * should set the offset, problem is that offsets are rendered 
-	 * in attributemodifiers?!?
-	 * @param x
-	 */
-	public void setOffsetX(int x)
-	{
-		this.offsetX = x;
-	}
-
-	/**
-	 * should set the offset, problem is that offsets are rendered 
-	 * in attributemodifiers?!?
-	 * @param y
-	 */
-	public void setOffsetY(int y)
-	{
-		this.offsetY = y;
-	}
-	
-	/**
-	 * @param z
-	 */
-	public void setZIndex(int z)
-	{
-		this.zIndex = z;
-	}
-	
-	/**
-	 * @return
+	 * @return x-offset
 	 */
 	public int getOffsetX()
 	{
@@ -184,7 +157,7 @@ public class Tooltip extends Panel
 	}
 
 	/**
-	 * @return
+	 * @return y-offset
 	 */
 	public int getOffsetY()
 	{
@@ -192,7 +165,7 @@ public class Tooltip extends Panel
 	}
 
 	/**
-	 * @return
+	 * @return z-index
 	 */
 	public int getZIndex()
 	{
@@ -200,11 +173,10 @@ public class Tooltip extends Panel
 	}
 
 	/**
-	 * @author Ruud Booltink
-	 * @author Marco van de Haar
-	 * 
 	 * AttributeModifier that appends the new value to the current value if an old value
 	 * exists. If it does not exist, it sets the new value.
+	 * @author Ruud Booltink
+	 * @author Marco van de Haar
 	 */
 	private final static class AppendAttributeModifier extends AttributeModifier
 	{
