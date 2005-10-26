@@ -1,7 +1,6 @@
 package wicket.contrib.examples.tinymce;
 
 import wicket.contrib.examples.WicketExamplePage;
-import wicket.contrib.tinymce.TinyMCEPanel;
 import wicket.markup.html.link.Link;
 
 /**
