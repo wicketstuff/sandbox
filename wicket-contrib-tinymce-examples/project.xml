@@ -167,7 +167,7 @@
 		<dependency>
 			<groupId>wicket-stuff</groupId>
 			<artifactId>wicket-contrib-tinymce</artifactId>
-			<version>SNAPSHOT</version>
+			<version>1.0</version>
 			<properties>
 				<war.bundle>true</war.bundle>
 				<eclipse.dependency>true</eclipse.dependency>
