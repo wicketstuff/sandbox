@@ -11,30 +11,35 @@
                 Please see below how to integrate it.
             </p>
             <p>
-                <b>java code:</b>
+                <b>java:</b>
                 <pre><i>
-                    ...
                     TinyMCESettings settings =
                         new TinyMCESettings(TinyMCESettings.Theme.advanced);
+
+                    // few TinyMce editor settings
                     settings.setToolbarLocation(TinyMCESettings.Location.top);
                     settings.setStatusbarLocation(TinyMCESettings.Location.bottom);
 
-                    Control control = new Control(Control.DefaultButton.numlist,
-                        Control.Toolbar.first, Control.Position.before);
-                    settings.addControl(control);
+                    // add default buttons
+                    settings.add(TinyMCESettings.newdocument,
+                        TinyMCESettings.Toolbar.first, TinyMCESettings.Position.before);
+                    settings.add(TinyMCESettings.separator,
+                        TinyMCESettings.Toolbar.first, TinyMCESettings.Position.before);
+
+                    // add plugin's button
+                    SavePlugin savePlugin = new SavePlugin();
+                    settings.add(savePlugin.getSaveButton(),
+                        TinyMCESettings.Toolbar.first, TinyMCESettings.Position.before);
 
                     add(new TinyMCEPanel("tinyMCE", settings));
-                    ...
                 </i></pre>
-                <b>html markup:</b>
+                <b>html:</b>
                 <pre><i>
-                    ...
                     &lt;span wicket:id="tinyMCE"&gt;tinyMCE&lt;/span&gt;
 
                     &lt;textarea wicket:id="ta" id="ta" name="ta" rows="30" style="width: 100%"&gt;
                         some text
                     &lt;/textarea&gt;
-                    ...
                 </i></pre>
             </p>
             <p>
