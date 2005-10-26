@@ -17,7 +17,7 @@ package wicket.contrib.tinymce.settings;
 /**
  * @author Iulian-Corneliu COSTAN
  */
-public abstract class Button extends Enum {
+public class Button extends wicket.contrib.tinymce.settings.Enum {
 
     protected Button(String name) {
         super(name);

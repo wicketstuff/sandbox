@@ -1,6 +1,9 @@
 package wicket.contrib.tinymce.settings;
 
 import junit.framework.TestCase;
+import wicket.contrib.tinymce.settings.SavePlugin;
+import wicket.contrib.tinymce.settings.DateTimePlugin;
+import wicket.contrib.tinymce.settings.TinyMCESettings;
 
 /**
  * @author Iulian-Corneliu COSTAN
@@ -9,6 +12,16 @@ public class TinyMCESettingsTest extends TestCase {
 
     private TinyMCESettings settings;
     private StringBuffer buffer;
+
+    protected void setUp() throws Exception {
+        settings = new TinyMCESettings();
+        buffer = new StringBuffer();
+    }
+
+    protected void tearDown() throws Exception {
+        settings = null;
+        buffer = null;
+    }
 
     public void testAddStatusbarLocation() throws Exception {
         settings.setStatusbarLocation(TinyMCESettings.Location.top);
@@ -44,21 +57,31 @@ public class TinyMCESettingsTest extends TestCase {
 
     public void testAddHorizontalResizing() throws Exception {
         settings.setHorizontalResizing(true);
-        settings.addHorizontalLocation(buffer);
+        settings.addHorizontalResizing(buffer);
 
         assertTrue(buffer.capacity() > 0);
         assertEquals(",\n\ttheme_advanced_resize_horizontal : true", buffer.toString());
     }
 
-    //todo more tests
+    public void testAddPlugins() throws Exception {
+        SavePlugin savePlugin = new SavePlugin();
+        DateTimePlugin dateTimePlugin = new DateTimePlugin();
 
-    protected void setUp() throws Exception {
-        settings = new TinyMCESettings();
-        buffer = new StringBuffer();
+        settings.register(savePlugin);
+        settings.register(dateTimePlugin);
+
+        settings.addPlugins(buffer);
+
+        assertTrue(buffer.capacity() > 0);
+        assertEquals(",\n\tplugins : \"save, insertdatetime\"", buffer.toString());
     }
 
-    protected void tearDown() throws Exception {
-        settings = null;
-        buffer = null;
+    public void testAdd() throws Exception {
+        SavePlugin savePlugin = new SavePlugin();
+        settings.register(savePlugin);
+        assertNotNull(settings.getPlugins());
+        assertEquals(1, settings.getPlugins().size());
+        settings.add(savePlugin.getSaveButton(), TinyMCESettings.Toolbar.first, TinyMCESettings.Position.before);
+        assertEquals(1, settings.getPlugins().size());
     }
 }
