@@ -35,11 +35,7 @@ public class TinyMCEPanel extends Panel {
     public TinyMCEPanel(final String id, final TinyMCESettings settings) {
         super(id);
 
-        if (TinyMCESettings.Theme.simple.equals(settings.getTheme())) {
-            add(new JavaScriptReference("tinymce", TinyMCEPanel.class, "tiny_mce/tiny_mce.js"));
-        } else {
-            add(new JavaScriptReference("tinymce", TinyMCEPanel.class, "tiny_mce/tiny_mce_src.js"));
-        }
+        add(new JavaScriptReference("tinymce", TinyMCEPanel.class, "tiny_mce/tiny_mce_src.js"));
         add(new WebComponent("initScript") {
 
             protected void onComponentTagBody(final MarkupStream markupStream, final ComponentTag openTag) {

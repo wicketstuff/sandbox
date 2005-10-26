@@ -14,35 +14,26 @@
  */
 package wicket.contrib.tinymce.settings;
 
-import java.io.Serializable;
-
 /**
+ * Base class for all plugins.
+ *
  * @author Iulian-Corneliu COSTAN
  */
-class Plugin extends Enum {
+public abstract class Plugin extends wicket.contrib.tinymce.settings.Enum {
 
-    public static final Plugin advhr = new Plugin("advhr");
-    public static final Plugin advimage = new Plugin("advimage");
-    public static final Plugin advlink = new Plugin("advlink");
-    public static final Plugin contextmenu = new Plugin("contextmenu");
-    public static final Plugin emotions = new Plugin("emotions");
-    public static final Plugin flash = new Plugin("flash");
-    public static final Plugin autosave = new Plugin("autosave");
-    public static final Plugin iespell = new Plugin("iespell");
-    public static final Plugin insertdatetime = new Plugin("insertdatetime");
-    public static final Plugin paste = new Plugin("paste");
-    public static final Plugin preview = new Plugin("preview");
-    public static final Plugin print = new Plugin("print");
-    public static final Plugin save = new Plugin("save");
-    public static final Plugin noneditable = new Plugin("noneditable");
-    public static final Plugin searchreplace = new Plugin("searchreplace");
-    public static final Plugin table = new Plugin("table");
-    public static final Plugin zoom = new Plugin("zoom");
-    public static final Plugin directinality = new Plugin("directinality");
-    public static final Plugin fullscreen = new Plugin("fullscreen");
-    public static final Plugin inlinepopups = new Plugin("inlinepopups");
+    // types of plugins: w/o buttons, w/ buttons, w/ standard props, w/ private props
 
-    private Plugin(String name) {
+    protected Plugin(String name) {
         super(name);
+    }
+
+    // implemented by subclasses
+    String defineProperties() {
+        return null;
+    }
+
+    // implemented by subclasses
+    String getExtension() {
+        return null;
     }
 }

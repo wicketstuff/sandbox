@@ -16,14 +16,14 @@ package wicket.contrib.tinymce.settings;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
+import org.apache.commons.collections.set.ListOrderedSet;
 
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
+ * Settings class for TinyMCE editor.
+ *
  * @author Iulian-Corneliu COSTAN
  */
 public class TinyMCESettings implements Serializable {
@@ -36,7 +36,7 @@ public class TinyMCESettings implements Serializable {
     private boolean verticalResizing;
     private boolean horizontalResizing;
 
-    private List plugins;
+    private Set plugins;
     private List controls;
 
     public TinyMCESettings() {
@@ -55,7 +55,7 @@ public class TinyMCESettings implements Serializable {
         this.mode = mode;
         this.theme = theme;
         controls = new LinkedList();
-        plugins = new LinkedList();
+        plugins = new ListOrderedSet();
     }
 
     public void setToolbarLocation(Location toolbarLocation) {
@@ -78,26 +78,31 @@ public class TinyMCESettings implements Serializable {
         this.horizontalResizing = horizontalResizing;
     }
 
-    public Theme getTheme() {
-        return theme;
+    public void add(Button button, Toolbar toolbar, Position position) {
+        controls.add(new Control(button, toolbar, position));
     }
 
-    public void addControl(Control control) {
-        controls.add(control);
+    public void add(PluginButton button, Toolbar toolbar, Position position) {
+        register(button.getPlugin());
+        controls.add(new Control(button, toolbar, position));
     }
 
-//    public void addControl(PluginControl control) {
-//        plugins.add(control.getPlugin());
-//        controls.add(control);
-//    }
+    public void register(Plugin plugin) {
+        plugins.add(plugin);
+    }
 
+    // used in testing
+    Set getPlugins() {
+        return plugins;
+    }
+
+    //todo change access
     public String toJavaScript() {
         if (Theme.simple.equals(theme)) {
             return getSimpleSettings();
         } else {
             return getAdvancedSettings();
         }
-
     }
 
     private String getAdvancedSettings() {
@@ -107,6 +112,9 @@ public class TinyMCESettings implements Serializable {
         buffer.append("\n\tmode : ").append("\"").append(mode.getName()).append("\"");
         // theme
         buffer.append(",\n\t").append("theme : ").append("\"").append(theme.getName()).append("\"");
+
+        // plugins
+        addPlugins(buffer);
 
         // add additional controls
         addButtons1_Before(buffer);
@@ -123,73 +131,90 @@ public class TinyMCESettings implements Serializable {
 
         // resizing
         addVerticalResizing(buffer);
-        addHorizontalLocation(buffer);
+        addHorizontalResizing(buffer);
 
         return buffer.toString();
     }
 
+    void addPlugins(StringBuffer buffer) {
+        if (plugins.size() > 0) {
+            String value = enumAsString(plugins);
+            buffer.append(",\n\t").append("plugins : ") .append("\"").append(value).append("\"");
+        }
+    }
+
     private void addButtons1_Before(StringBuffer buffer) {
-        ControlPredicate predicate = new ControlPredicate(Control.Toolbar.first, Control.Position.before);
+        ControlPredicate predicate = new ControlPredicate(Toolbar.first, Position.before);
         Collection result = CollectionUtils.select(controls, predicate);
         if (result.size() > 0) {
-            buffer.append(",\n\t").append("theme_advanced_buttons1_add_before : ") .append("\"").append(collectionAsString(result)).append("\"");
+            buffer.append(",\n\t").append("theme_advanced_buttons1_add_before : ") .append("\"").append(controlsAsString(result)).append("\"");
         }
     }
 
     private void addButtons1_After(StringBuffer buffer) {
-        ControlPredicate predicate = new ControlPredicate(Control.Toolbar.first, Control.Position.after);
+        ControlPredicate predicate = new ControlPredicate(Toolbar.first, Position.after);
         Collection result = CollectionUtils.select(controls, predicate);
         if (result.size() > 0) {
-            buffer.append(",\n\t").append("theme_advanced_buttons1_add : ") .append("\"").append(collectionAsString(result)).append("\"");
+            buffer.append(",\n\t").append("theme_advanced_buttons1_add : ") .append("\"").append(controlsAsString(result)).append("\"");
         }
     }
 
     private void addButtons2_Before(StringBuffer buffer) {
-        ControlPredicate predicate = new ControlPredicate(Control.Toolbar.second, Control.Position.before);
+        ControlPredicate predicate = new ControlPredicate(Toolbar.second, Position.before);
         Collection result = CollectionUtils.select(controls, predicate);
         if (result.size() > 0) {
-            buffer.append(",\n\t").append("theme_advanced_buttons2_add_before: ") .append("\"").append(collectionAsString(result)).append("\"");
+            buffer.append(",\n\t").append("theme_advanced_buttons2_add_before: ") .append("\"").append(controlsAsString(result)).append("\"");
         }
     }
 
     private void addButtons2_After(StringBuffer buffer) {
-        ControlPredicate predicate = new ControlPredicate(Control.Toolbar.second, Control.Position.after);
+        ControlPredicate predicate = new ControlPredicate(Toolbar.second, Position.after);
         Collection result = CollectionUtils.select(controls, predicate);
         if (result.size() > 0) {
-            buffer.append(",\n\t").append("theme_advanced_buttons2_add : ").append("\"").append(collectionAsString(result)).append("\"");
+            buffer.append(",\n\t").append("theme_advanced_buttons2_add : ").append("\"").append(controlsAsString(result)).append("\"");
         }
     }
 
     private void addButtons3_Before(StringBuffer buffer) {
-        ControlPredicate predicate = new ControlPredicate(Control.Toolbar.third, Control.Position.before);
+        ControlPredicate predicate = new ControlPredicate(Toolbar.third, Position.before);
         Collection result = CollectionUtils.select(controls, predicate);
         if (result.size() > 0) {
-            buffer.append(",\n\t").append("theme_advanced_buttons3_add_before : ").append("\"").append(collectionAsString(result)).append("\"");
+            buffer.append(",\n\t").append("theme_advanced_buttons3_add_before : ").append("\"").append(controlsAsString(result)).append("\"");
         }
     }
 
     private void addButtons3_After(StringBuffer buffer) {
-        ControlPredicate predicate = new ControlPredicate(Control.Toolbar.third, Control.Position.after);
+        ControlPredicate predicate = new ControlPredicate(Toolbar.third, Position.after);
         Collection result = CollectionUtils.select(controls, predicate);
         if (result.size() > 0) {
-            buffer.append(",\n\t").append("theme_advanced_buttons3_add : ").append("\"").append(collectionAsString(result)).append("\"");
+            buffer.append(",\n\t").append("theme_advanced_buttons3_add : ").append("\"").append(controlsAsString(result)).append("\"");
         }
     }
 
-    private String collectionAsString(Collection controls) {
-        StringBuffer buffer = new StringBuffer();
+    private String controlsAsString(Collection controls) {
+        List buttons = new ArrayList();
         Iterator iterator = controls.iterator();
         while (iterator.hasNext()) {
             Control control = (Control) iterator.next();
+            buttons.add(control.getButton());
+        }
+        return enumAsString(buttons);
+    }
+
+    private String enumAsString(Collection enums) {
+        StringBuffer buffer = new StringBuffer();
+        Iterator iterator = enums.iterator();
+        while (iterator.hasNext()) {
+            wicket.contrib.tinymce.settings.Enum enumObject = (Enum) iterator.next();
             if (buffer.length() > 0) {
                 buffer.append(", ");
             }
-            buffer.append(control.getButton().toString());
+            buffer.append(enumObject.getName());
         }
         return buffer.toString();
     }
 
-    void addHorizontalLocation(StringBuffer buffer) {
+    void addHorizontalResizing(StringBuffer buffer) {
         String value = horizontalResizing ? Boolean.TRUE.toString() : Boolean.FALSE.toString();
         buffer.append(",\n\t").append("theme_advanced_resize_horizontal : ").append(value);
     }
@@ -231,10 +256,10 @@ public class TinyMCESettings implements Serializable {
 
     private class ControlPredicate implements Predicate {
 
-        private Control.Toolbar toolbar;
-        private Control.Position position;
+        private Toolbar toolbar;
+        private Position position;
 
-        public ControlPredicate(Control.Toolbar toolbar, Control.Position position) {
+        public ControlPredicate(Toolbar toolbar, Position position) {
             this.toolbar = toolbar;
             this.position = position;
         }
@@ -285,4 +310,64 @@ public class TinyMCESettings implements Serializable {
         }
     }
 
+    public static class Position extends Enum {
+
+        public static final Position before = new Position("before");
+        public static final Position after = new Position("after");
+
+        public Position(String name) {
+            super(name);
+        }
+    }
+
+    public static class Toolbar extends Enum {
+
+        public static final Toolbar first = new Toolbar("first");
+        public static final Toolbar second = new Toolbar("second");
+        public static final Toolbar third = new Toolbar("third");
+
+        public Toolbar(String name) {
+            super(name);
+        }
+    }
+
+    public static final Button bold = new Button("bold");
+    public static final Button italic = new Button("italic");
+    public static final Button underline = new Button("underline");
+    public static final Button strikethrough = new Button("strikethrough");
+    public static final Button justifyleft = new Button("justifyleft");
+    public static final Button justifycenter = new Button("justifycenter");
+    public static final Button justifyright = new Button("justifyright");
+    public static final Button justifyfull = new Button("justifyfull");
+    public static final Button styleselect = new Button("styleselect");
+    public static final Button formatselect = new Button("formatselect");
+    public static final Button bullist = new Button("bullist");
+    public static final Button numlist = new Button("numlist");
+    public static final Button outdent = new Button("outdent");
+    public static final Button indent = new Button("indent");
+    public static final Button undo = new Button("undo");
+    public static final Button redo = new Button("redo");
+    public static final Button link = new Button("link");
+    public static final Button unlink = new Button("unlink");
+    public static final Button anchor = new Button("anchor");
+    public static final Button image = new Button("image");
+    public static final Button cleanup = new Button("cleanup");
+    public static final Button help = new Button("help");
+    public static final Button code = new Button("code");
+    public static final Button hr = new Button("hr");
+    public static final Button removeformat = new Button("removeformat");
+    public static final Button visualaid = new Button("visualaid");
+    public static final Button sub = new Button("sub");
+    public static final Button sup = new Button("sup");
+    public static final Button charmap = new Button("charmap");
+    public static final Button separator = new Button("separator");
+
+    // others
+    public static final Button newdocument = new Button("newdocument");
+    public static final Button cut = new Button("cut");
+    public static final Button copy = new Button("copy");
+    public static final Button fontselect = new Button("fontselect");
+    public static final Button fontsizeselect = new Button("fontsizeselect");
+    public static final Button forecolor = new Button("forecolor");
+    public static final Button backcolor = new Button("backcolor");
 }
