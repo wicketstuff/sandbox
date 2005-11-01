@@ -22,17 +22,17 @@ import java.text.DecimalFormat;
 import java.util.List;
 
 import wicket.Page;
-import wicket.addons.hibernate.Addon;
-import wicket.addons.hibernate.IAddonDao;
+import wicket.addons.db.Addon;
+import wicket.addons.db.Category;
+import wicket.addons.services.AddonService;
 import wicket.addons.utils.CategoryDropDownChoice;
-import wicket.addons.utils.CategoryDropDownChoice.CategoryOption;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.form.Form;
 import wicket.markup.html.link.IPageLink;
 import wicket.markup.html.link.PageLink;
 import wicket.markup.html.list.ListItem;
 import wicket.markup.html.list.PageableListView;
-import wicket.markup.html.list.PageableListViewNavigator;
+import wicket.markup.html.navigation.paging.PagingNavigator;
 import wicket.markup.html.panel.FeedbackPanel;
 import wicket.model.Model;
 
@@ -51,15 +51,15 @@ public final class RatingList extends BaseHtmlPage /* AuthenticateHtmlPage */
     {
         super(null, "Addon specific comments");
 
-        final IAddonDao dao = this.getAddonDao();
+        final AddonService addonService = this.getAddonService();
 
         // Create and add feedback panel to page
         final FeedbackPanel feedback = new FeedbackPanel("feedback");
-        //add(feedback);
+        add(feedback);
 
-        add(new RatingListForm("form", feedback, dao));
+        add(new RatingListForm("form", addonService));
         
-        final List listingData = dao.getAddonsByRating(0, -1);
+        final List listingData = addonService.getAddonsByRating(0, null);
         listing = new PageableListView("listing", listingData, 30)
         {
             public void populateItem(final ListItem listItem)
@@ -74,7 +74,7 @@ public final class RatingList extends BaseHtmlPage /* AuthenticateHtmlPage */
                         {
 							public Page getPage()
 							{
-								return new PluginDetails(addon.getId());
+								return new PluginDetails(addon);
 							}
 
 							public Class getPageIdentity()
@@ -90,8 +90,8 @@ public final class RatingList extends BaseHtmlPage /* AuthenticateHtmlPage */
         };
 
         add(listing);
-        add(new PageableListViewNavigator("pageTableNav1", listing));
-        add(new PageableListViewNavigator("pageTableNav2", listing));
+        add(new PagingNavigator("pageTableNav1", listing));
+        add(new PagingNavigator("pageTableNav2", listing));
     }
 
     public final class RatingListForm extends Form
@@ -101,14 +101,12 @@ public final class RatingList extends BaseHtmlPage /* AuthenticateHtmlPage */
         /**
          * Constructor
          * @param componentName Name of form
-         * @param book Book model
-         * @param feedback Feedback component that shows errors
          */
-        public RatingListForm(final String componentName, final FeedbackPanel feedback, final IAddonDao dao)
+        public RatingListForm(final String componentName, final AddonService addonService)
         {
-            super(componentName, feedback);
+            super(componentName);
             
-            categories = new CategoryDropDownChoice("categories", dao, -1);
+            categories = new CategoryDropDownChoice("categories", null);
             add(categories);
         }
         
@@ -119,8 +117,8 @@ public final class RatingList extends BaseHtmlPage /* AuthenticateHtmlPage */
          */
         public final void onSubmit()
         {
-            final int categoryId = ((CategoryOption)categories.getModelObject()).getCategoryId();
-            listing.setModelObject(getAddonDao().getAddonsByRating(0, categoryId));
+            final Category category = null; //((CategoryOption)categories.getModelObject()).getCategoryId();
+            listing.setModelObject(getAddonService().getAddonsByRating(0, category));
             listing.removeAll();
             getRequestCycle().setResponsePage(getPage());
         }

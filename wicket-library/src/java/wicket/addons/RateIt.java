@@ -21,9 +21,9 @@ package wicket.addons;
 import java.util.Map;
 
 import wicket.RequestCycle;
-import wicket.addons.hibernate.Addon;
-import wicket.addons.hibernate.Rating;
-import wicket.addons.hibernate.User;
+import wicket.addons.db.Addon;
+import wicket.addons.db.Rating;
+import wicket.addons.db.User;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.form.Form;
 import wicket.markup.html.panel.FeedbackPanel;
@@ -37,17 +37,16 @@ public final class RateIt extends BaseHtmlPage /* AuthenticateHtmlPage */
      * Constructor
      * @param parameters
       */
-    public RateIt(final int addonId)
+    public RateIt(final Addon addon)
     {
         super(null, "Wicket-Addons: Rate an addon");
    
-        final Addon addon = (Addon)getAddonDao().load(Addon.class, new Integer(addonId));
         add(new Label("name", addon.getName()));
         
         // Create and add feedback panel to page
         final FeedbackPanel feedback = new FeedbackPanel("feedback");
         
-        add(new RateItForm("form", feedback, addon));
+        add(new RateItForm("form", addon));
     }
 
     public final class RateItForm extends Form
@@ -57,12 +56,10 @@ public final class RateIt extends BaseHtmlPage /* AuthenticateHtmlPage */
         /**
          * Constructor
          * @param componentName Name of form
-         * @param book Book model
-         * @param feedback Feedback component that shows errors
          */
-        public RateItForm(final String componentName, final FeedbackPanel feedback, final Addon addon)
+        public RateItForm(final String componentName, final Addon addon)
         {
-            super(componentName, feedback);
+            super(componentName);
             
             this.addon = addon;
             add(new Label("name", addon.getName()));
@@ -75,17 +72,17 @@ public final class RateIt extends BaseHtmlPage /* AuthenticateHtmlPage */
          */
         public final void onSubmit()
         {
-            final Rating rating = new Rating();
+            final Rating rating = Rating.Factory.newInstance();
             
             final RequestCycle cycle = getRequestCycle();
             final Map params = cycle.getRequest().getParameterMap();
             
             rating.setComment((String)params.get("comment"));
             rating.setAddon(addon);
-            rating.setUser((User)getUserDao().getUsers().get(0));
+            rating.setUser((User)getUserService().getUsers(0, 1).get(0));
             rating.setRating(Integer.valueOf((String)params.get("rating")).intValue());
             
-            getAddonDao().saveOrUpdate(rating);
+    		ServiceLocator.instance().getRatingService().addRating(rating);
             
             cycle.setResponsePage(newPage(getApplication().getPages().getHomePage()));
         }

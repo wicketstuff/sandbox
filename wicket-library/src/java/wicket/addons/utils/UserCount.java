@@ -28,6 +28,7 @@ import javax.servlet.http.HttpSessionListener;
 import wicket.RequestCycle;
 import wicket.addons.AddonSession;
 import wicket.addons.BaseHtmlPage;
+import wicket.addons.db.User;
 import wicket.protocol.http.WebSession;
 import EDU.oswego.cs.dl.util.concurrent.ConcurrentHashMap;
 
@@ -44,10 +45,10 @@ public class UserCount implements Serializable, HttpSessionListener
     /** A map of all userIds and there sessions 
      * (allow for users to be logged in more than once 
      */
-    private static Map loggedInUserIds = new ConcurrentHashMap();
+    private static Map loggedInUsers = new ConcurrentHashMap();
 
-    /** gets increased with each change to loggedInUserIds. This allows to 
-     * update cached copies of loggedInUserIds, which is unmodifiable.
+    /** gets increased with each change to loggedInUsers. This allows to 
+     * update cached copies of loggedInUsers, which is unmodifiable.
      */
     private static int modificationId;
 
@@ -57,16 +58,16 @@ public class UserCount implements Serializable, HttpSessionListener
      * @param evt HttpSessionEvent
      * @return the userId
      */
-    private int getUserId(final HttpSessionEvent evt)
+    private User getUser(final HttpSessionEvent evt)
     {
         // Get Wicket Session object
         final AddonSession session = ((AddonSession)evt.getSession().getAttribute("session"));
         if (session == null)
         {
-            return 0;
+            return null;
         }
         
-        return session.getUserId();
+        return session.getUser();
     }
     
     /**
@@ -80,7 +81,7 @@ public class UserCount implements Serializable, HttpSessionListener
     public void sessionCreated(HttpSessionEvent evt)
     {
         // Add the user to the list of logged-on users
-        addUser(getUserId(evt), evt.getSession().getId());
+        addUser(getUser(evt), evt.getSession().getId());
     }
     
    /**
@@ -92,7 +93,7 @@ public class UserCount implements Serializable, HttpSessionListener
      public synchronized void sessionDestroyed(HttpSessionEvent evt) 
      {
          // Remove the user from the list of logged-on users
-         removeUser(-1, evt.getSession().getId());
+         removeUser(null, evt.getSession().getId());
      }
 
      /**
@@ -101,7 +102,7 @@ public class UserCount implements Serializable, HttpSessionListener
       * 
       * @param userId The user id
       */
-     public final synchronized static void addUser(final int userId)
+     public final synchronized static void addUser(final User user)
      {
          WebSession session = (WebSession)RequestCycle.get().getSession();
          if (session == null)
@@ -110,7 +111,7 @@ public class UserCount implements Serializable, HttpSessionListener
          }
          
          String sessionId = session.getHttpSession().getId();
-         addUser(userId, sessionId);
+         addUser(user, sessionId);
      }
      
      /**
@@ -120,7 +121,7 @@ public class UserCount implements Serializable, HttpSessionListener
       * @param userId The user id
       * @param sessionId The session id
       */
-     public final synchronized static void addUser(final int userId, final String sessionId)
+     public final synchronized static void addUser(final User user, final String sessionId)
      {
          // register users not logged in as well
          if (sessionId == null)
@@ -128,9 +129,9 @@ public class UserCount implements Serializable, HttpSessionListener
              return;
          }
          
-         if (loggedInUserIds.get(sessionId) == null)
+         if (loggedInUsers.get(sessionId) == null)
          {
-             loggedInUserIds.put(sessionId, new Integer(userId));
+             loggedInUsers.put(sessionId, user);
              modificationId ++;
          }
      }
@@ -141,19 +142,19 @@ public class UserCount implements Serializable, HttpSessionListener
       * @param userId The user id
       * @param sessionId The session id
       */
-     public final synchronized static void removeUser(final int userId, final String sessionId)
+     public final synchronized static void removeUser(final User user, final String sessionId)
      {
          if (sessionId == null)
          {
              return;
          }
          
-         if ((userId > 0) && (((Integer)loggedInUserIds.get(sessionId)).intValue() != userId))
+         if ((user != null) && !loggedInUsers.get(sessionId).equals(user))
          {
              return;
          }
          
-         if (loggedInUserIds.remove(sessionId) != null)
+         if (loggedInUsers.remove(sessionId) != null)
          {
              modificationId ++;
          }
@@ -167,8 +168,8 @@ public class UserCount implements Serializable, HttpSessionListener
       */
      public final static void removeUser(final RequestCycle cycle)
      {
-         final int userId = ((BaseHtmlPage)cycle.getResponsePage()).getAddonSession().getUserId();
-         if (userId <= 0)
+         final User user = ((BaseHtmlPage)cycle.getResponsePage()).getUser();
+         if (user == null)
          {
              return;
          }
@@ -180,7 +181,7 @@ public class UserCount implements Serializable, HttpSessionListener
          }
          
          String sessionId = session.getHttpSession().getId();
-         removeUser(userId, sessionId);
+         removeUser(user, sessionId);
      }
      
     /**
@@ -190,16 +191,16 @@ public class UserCount implements Serializable, HttpSessionListener
      */
     final public static Integer getUserCount()
     {
-        return new Integer(loggedInUserIds.size());
+        return new Integer(loggedInUsers.size());
     }
     
     /**
      * 
      * @return
      */
-    final public static Map getLoggedInUserIds()
+    final public static Map getLoggedInUsers()
     {
-        return Collections.unmodifiableMap(loggedInUserIds);
+        return Collections.unmodifiableMap(loggedInUsers);
     }
     
     /**

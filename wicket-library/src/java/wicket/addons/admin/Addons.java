@@ -21,15 +21,11 @@ package wicket.addons.admin;
 import java.io.Serializable;
 import java.util.List;
 
-import org.springframework.beans.factory.BeanFactory;
-
 import wicket.AttributeModifier;
 import wicket.Page;
 import wicket.PageParameters;
-import wicket.addons.AddonApplication;
 import wicket.addons.BaseHtmlPage;
-import wicket.addons.hibernate.Addon;
-import wicket.addons.hibernate.dao.AddonDAO;
+import wicket.addons.db.Addon;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.link.IPageLink;
 import wicket.markup.html.link.PageLink;
@@ -56,7 +52,6 @@ public final class Addons extends BaseHtmlPage /* AuthenticateHtmlPage */
         
         final List addons = getAddons();
         
-        // Add table of existing comments
         this.table = new ListView("rows", addons)
         {
             public void populateItem(final ListItem listItem)
@@ -69,7 +64,7 @@ public final class Addons extends BaseHtmlPage /* AuthenticateHtmlPage */
 
                 listItem.add(new MyPageLink("name", value, value.getName() + " (" + value.getVersion() + ")", Addons.this));
                 listItem.add(new MyPageLink("category", value, value.getCategory().getName(), Addons.this));
-                listItem.add(new MyPageLink("modified", value, value.getLastModified(), Addons.this));
+                listItem.add(new MyPageLink("modified", value, value.getLastUpdated(), Addons.this));
                 listItem.add(new MyPageLink("homepage", value, value.getHomepage(), Addons.this));
                 listItem.add(new MyPageLink("description", value, Addons.this.getDescription(value), Addons.this));
             }
@@ -98,8 +93,7 @@ public final class Addons extends BaseHtmlPage /* AuthenticateHtmlPage */
     
     private List getAddons()
     {
-        final BeanFactory fac = ((AddonApplication)this.getApplication()).getBeanFactory();
-        return ((AddonDAO) fac.getBean("AddonDAO")).findAll("name");
+        return getAddonService().getAddonsSortedByName(0, 99);
     }
     
     /**
@@ -134,7 +128,7 @@ public final class Addons extends BaseHtmlPage /* AuthenticateHtmlPage */
                 label ="&nbsp;";
             }
             
-            add(new Label(componentName, label).setShouldEscapeModelStrings(false));
+            add(new Label(componentName, label).setEscapeModelStrings(false));
         }
     }
 }

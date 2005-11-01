@@ -25,7 +25,7 @@ import wicket.Request;
 import wicket.RequestCycle;
 import wicket.Response;
 import wicket.Session;
-import wicket.addons.hibernate.User;
+import wicket.addons.db.User;
 import wicket.addons.utils.UserCount;
 import wicket.protocol.http.WebRequest;
 import wicket.protocol.http.WebSession;
@@ -35,10 +35,7 @@ import wicket.protocol.http.WebSession;
  */
 public final class AddonSession extends WebSession
 {
-    // > 0, than logged in
-    private int userId;
-    
-    private String nickname;
+    private User user;
 
     // If true, the sidebar "top rated" will be shown, else "top clicks"
     private boolean topRated = true;
@@ -50,7 +47,6 @@ public final class AddonSession extends WebSession
 		{
 			return new AddonRequestCycle((WebSession)session, (WebRequest)request, response);
 		}
-		
 	};
     
 	/**
@@ -76,21 +72,18 @@ public final class AddonSession extends WebSession
 	 */
 	public final boolean authenticate(final String username, final String password)
 	{
-        if (userId == 0)
+        if (user == null)
         {
-            final User user = ((AddonApplication)getApplication()).authenticate(username, password);
+            user = ((AddonApplication)getApplication()).authenticate(username, password);
             
             if (user != null)
             {
-    		    UserCount.addUser(user.getId());
+    		    UserCount.addUser(user);
 
-                if (user.getLocale() != null)
+                if (user.getDefaultLocale() != null)
                 {
-                    setLocale(new Locale(user.getLocale()));
+                    setLocale(new Locale(user.getDefaultLocale()));
                 }
-
-	            this.userId = user.getId();
-	            this.nickname = user.getNickname();
             }
         }
 
@@ -102,25 +95,15 @@ public final class AddonSession extends WebSession
 	 */
 	public boolean isSignedIn()
 	{
-		return userId > 0;
+		return user != null;
 	}
 
 	/**
 	 * @return User
 	 */
-	public int getUserId()
+	public User getUser()
 	{
-		return this.userId;
-	}
-	
-	public void setUserLogonName(final String name)
-	{
-	    this.nickname = name;
-	}
-	
-	public String getUserLogonName()
-	{
-	    return this.nickname;
+		return this.user;
 	}
 	
 	public boolean isTopRated()

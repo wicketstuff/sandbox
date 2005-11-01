@@ -20,7 +20,8 @@ package wicket.addons;
 
 import wicket.PageParameters;
 import wicket.RequestCycle;
-import wicket.addons.hibernate.User;
+import wicket.addons.db.Person;
+import wicket.addons.db.User;
 import wicket.markup.html.form.Form;
 import wicket.markup.html.form.PasswordTextField;
 import wicket.markup.html.form.TextField;
@@ -45,8 +46,9 @@ public final class Register extends BaseHtmlPage /* AuthenticateHtmlPage */
         add(feedback);
 
         // Add edit book form to page
-        final User user = new User();
-        add(new RegisterUserForm("register", user, feedback));
+        final User user = User.Factory.newInstance();
+        user.setPerson(Person.Factory.newInstance());
+        add(new RegisterUserForm("register", user));
     }
 
     public final class RegisterUserForm extends Form
@@ -57,19 +59,16 @@ public final class Register extends BaseHtmlPage /* AuthenticateHtmlPage */
         /**
          * Constructor
          * @param componentName Name of form
-         * @param book Book model
-         * @param feedback Feedback component that shows errors
          */
-        public RegisterUserForm(final String componentName, final User user,
-            final FeedbackPanel feedback)
+        public RegisterUserForm(final String componentName, final User user)
         {
-            super(componentName, feedback);
+            super(componentName);
 
             // Set model
             this.user = user;
 
-            add(new TextField("loginname", new PropertyModel(user, "nickname")));
-            add(new TextField("email", new PropertyModel(user, "email")));
+            add(new TextField("loginname", new PropertyModel(user, "loginName")));
+            add(new TextField("email", new PropertyModel(user.getPerson(), "email")));
             add(new PasswordTextField("password", new PropertyModel(user, "password")));
             add(new PasswordTextField("passwordConfirm", new PropertyModel(this, "passwordConfirm")));
         }

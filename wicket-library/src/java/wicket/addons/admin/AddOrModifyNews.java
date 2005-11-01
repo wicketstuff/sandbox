@@ -26,7 +26,8 @@ import wicket.RequestCycle;
 import wicket.addons.BaseHtmlPage;
 import wicket.addons.ContentNews;
 import wicket.addons.Home;
-import wicket.addons.hibernate.News;
+import wicket.addons.ServiceLocator;
+import wicket.addons.db.News;
 import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.form.Form;
 import wicket.markup.html.form.TextArea;
@@ -47,12 +48,12 @@ public final class AddOrModifyNews extends BaseHtmlPage /* AuthenticateHtmlPage 
      */
     public AddOrModifyNews()
     {
-        this(new News());
+        this(News.Factory.newInstance());
     }
     
     public AddOrModifyNews(final PageParameters paramters)
     {
-        this(new News());
+        this(News.Factory.newInstance());
     }
     
     /**
@@ -66,14 +67,14 @@ public final class AddOrModifyNews extends BaseHtmlPage /* AuthenticateHtmlPage 
         
         if (news == null)
         {
-            news = new News();
+            news = News.Factory.newInstance();
         }
         
         // Create and add feedback panel to page
         final FeedbackPanel feedback = new FeedbackPanel("feedback");
         //add(feedback);
 
-        add(new AddNewsForm("form", feedback, news));
+        add(new AddNewsForm("form", news));
         
         previewRegion = new WebMarkupContainer("previewRegion");
         add(previewRegion);
@@ -91,21 +92,18 @@ public final class AddOrModifyNews extends BaseHtmlPage /* AuthenticateHtmlPage 
      */
     public final class AddNewsForm extends Form
     {
-        final News news;
+        private final News news;
         
         /**
          * Constructor
          * @param componentName Name of form
-         * @param book Book model
-         * @param feedback Feedback component that shows errors
          */
-        public AddNewsForm(final String componentName, final FeedbackPanel feedback, final News news)
+        public AddNewsForm(final String componentName, final News news)
         {
-            super(componentName, feedback);
+            super(componentName);
+            this.news = news;
             
-            this.news = (News)getAddonDao().load(news);
-            
-            add(new TextField("headline", new PropertyModel(news, "headline")));
+            add(new TextField("headline", new PropertyModel(news, "headLine")));
             add(new TextArea("message", new PropertyModel(news, "message")));
             
             WebMarkupContainer button = new WebMarkupContainer("delete");
@@ -114,7 +112,7 @@ public final class AddOrModifyNews extends BaseHtmlPage /* AuthenticateHtmlPage 
             WebMarkupContainer previewButton = new WebMarkupContainer("preview");
             add(previewButton);
             
-            if (news.getId() == 0)
+            if (news.getId() == null)
             {
                 button.setVisible(false);
             }
@@ -131,11 +129,18 @@ public final class AddOrModifyNews extends BaseHtmlPage /* AuthenticateHtmlPage 
             
             if (cycle.getRequest().getParameter("save") != null)
             {
-                getAddonDao().saveOrUpdate(news);
+                if (news.getId() == null)
+                {
+                    ServiceLocator.instance().getNewsService().addNews(news);
+                }
+                else
+                {
+                    ServiceLocator.instance().getNewsService().save(news);
+                }
             }
             else if (cycle.getRequest().getParameter("delete") != null)
             {
-                getAddonDao().delete(news);
+                ServiceLocator.instance().getNewsService().remove(news);
             }
             else if (cycle.getRequest().getParameter("preview") != null)
             {

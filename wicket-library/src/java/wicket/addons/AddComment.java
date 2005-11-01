@@ -20,10 +20,12 @@ package wicket.addons;
 
 import java.util.Map;
 
+import wicket.addons.ServiceLocator;
+
 import wicket.RequestCycle;
-import wicket.addons.hibernate.Addon;
-import wicket.addons.hibernate.Comment;
-import wicket.addons.hibernate.User;
+import wicket.addons.db.Addon;
+import wicket.addons.db.Comment;
+import wicket.addons.db.User;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.form.Form;
 import wicket.markup.html.panel.FeedbackPanel;
@@ -37,35 +39,33 @@ public final class AddComment extends BaseHtmlPage /* AuthenticateHtmlPage */
      * Constructor
      * @param parameters
       */
-    public AddComment(final int addonId)
+    public AddComment(final Addon addon)
     {
         super(null, "Wicket-Addons: Add comment");
         
-        final Addon addon = (Addon) getAddonDao().load(Addon.class, new Integer(addonId));
         add(new Label("addonName", addon.getName()));
         
         // Create and add feedback panel to page
         final FeedbackPanel feedback = new FeedbackPanel("feedback");
-        //add(feedback);
+        add(feedback);
         
-        add(new AddCommentForm("form", feedback, addon.getId()));
+        add(new AddCommentForm("form", addon));
     }
 
     public final class AddCommentForm extends Form
     {
-        private final int addonId;
+        private final Addon addon;
         
         /**
          * Constructor
          * @param componentName Name of form
          * @param book Book model
-         * @param feedback Feedback component that shows errors
          */
-        public AddCommentForm(final String componentName, final FeedbackPanel feedback, final int addonId)
+        public AddCommentForm(final String componentName, final Addon addon)
         {
-            super(componentName, feedback);
+            super(componentName);
             
-            this.addonId = addonId;
+            this.addon = addon;
         }
         
         /**
@@ -74,19 +74,17 @@ public final class AddComment extends BaseHtmlPage /* AuthenticateHtmlPage */
          */
         public final void onSubmit()
         {
-            final Addon addon = (Addon) getAddonDao().load(Addon.class, new Integer(addonId));
-            
-            final Comment comment = new Comment();
+            final Comment comment = Comment.Factory.newInstance();
             
             final RequestCycle cycle = getRequestCycle();
             final Map params = cycle.getRequest().getParameterMap();
             
             comment.setComment((String)params.get("comment"));
             comment.setAddon(addon);
-            comment.setUser((User)getUserDao().getUsers().get(0));
+            comment.setUser((User)getUserService().getUsers(0, 1).get(0));
             
-            getAddonDao().saveOrUpdate(comment);
+    		ServiceLocator.instance().getCommentService().addComment(comment);
             cycle.setResponsePage(newPage(getApplication().getPages().getHomePage()));
         }
     }
-}
+ }

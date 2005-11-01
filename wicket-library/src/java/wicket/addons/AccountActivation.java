@@ -43,7 +43,7 @@ public final class AccountActivation extends BaseHtmlPage /* AuthenticateHtmlPag
         add(feedback);
 
         // Add edit book form to page
-        add(new AccountActivationForm("form", feedback));
+        add(new AccountActivationForm("form"));
     }
     
     public final class AccountActivationForm extends Form
@@ -56,9 +56,9 @@ public final class AccountActivation extends BaseHtmlPage /* AuthenticateHtmlPag
          * @param book Book model
          * @param feedback Feedback component that shows errors
          */
-        public AccountActivationForm(final String componentName, final FeedbackPanel feedback)
+        public AccountActivationForm(final String componentName)
         {
-            super(componentName, feedback);
+            super(componentName);
 
             add(new TextField("code", new PropertyModel(this, "activationCode")));
         }

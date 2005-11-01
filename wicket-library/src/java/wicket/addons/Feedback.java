@@ -40,9 +40,9 @@ public final class Feedback extends BaseHtmlPage /* AuthenticateHtmlPage */
         
         // Create and add feedback panel to page
         final FeedbackPanel feedback = new FeedbackPanel("feedback");
-        //add(feedback);
+        add(feedback);
 
-        add(new FeedbackForm("feedback", feedback));
+        add(new FeedbackForm("feedback"));
     }
 
     public final class FeedbackForm extends Form
@@ -50,12 +50,10 @@ public final class Feedback extends BaseHtmlPage /* AuthenticateHtmlPage */
         /**
          * Constructor
          * @param componentName Name of form
-         * @param book Book model
-         * @param feedback Feedback component that shows errors
          */
-        public FeedbackForm(final String componentName, final FeedbackPanel feedback)
+        public FeedbackForm(final String componentName)
         {
-            super(componentName, feedback);
+            super(componentName);
         }
         
         /**

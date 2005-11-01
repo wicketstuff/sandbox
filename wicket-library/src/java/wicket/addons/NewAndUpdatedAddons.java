@@ -24,7 +24,8 @@ import java.util.List;
 
 import wicket.PageParameters;
 import wicket.RequestCycle;
-import wicket.addons.hibernate.Addon;
+import wicket.addons.db.Addon;
+import wicket.addons.db.Category;
 import wicket.addons.utils.AbstractDataList;
 import wicket.addons.utils.AddonListEntry;
 import wicket.addons.utils.CategoryDropDownChoice;
@@ -34,8 +35,7 @@ import wicket.markup.html.form.DropDownChoice;
 import wicket.markup.html.form.Form;
 import wicket.markup.html.list.ListItem;
 import wicket.markup.html.list.PageableListView;
-import wicket.markup.html.list.PageableListViewNavigator;
-import wicket.markup.html.panel.FeedbackPanel;
+import wicket.markup.html.navigation.paging.PagingNavigator;
 import wicket.model.Model;
 import wicket.model.PropertyModel;
 import wicket.util.string.StringValueConversionException;
@@ -47,7 +47,7 @@ public final class NewAndUpdatedAddons extends BaseHtmlPage /* AuthenticateHtmlP
 {
     private final PageableListView updatedAddons;
     private final AddonDataList model;
-    private int categoryId = -1;
+    private Long categoryId = null;
     private int sortId = 3;
     
     /**
@@ -62,7 +62,7 @@ public final class NewAndUpdatedAddons extends BaseHtmlPage /* AuthenticateHtmlP
         {
             try
             {
-                this.categoryId = parameters.getInt("category");
+                this.categoryId = new Long(parameters.getInt("category"));
             }
             catch (StringValueConversionException ex)
             {
@@ -70,7 +70,7 @@ public final class NewAndUpdatedAddons extends BaseHtmlPage /* AuthenticateHtmlP
             }
         }
         
-        add(new SelectForm("categoryForm", null));
+        add(new SelectForm("categoryForm"));
         
         this.model = new AddonDataList();
         this.updatedAddons = new PageableListView("updatedAddons", model, 5)
@@ -85,8 +85,8 @@ public final class NewAndUpdatedAddons extends BaseHtmlPage /* AuthenticateHtmlP
 
         add(updatedAddons);
         add(new Label("addonCount", new PropertyModel(new Model(model), "size")));
-        add(new PageableListViewNavigator("pageTableNav1", updatedAddons));
-        add(new PageableListViewNavigator("pageTableNav2", updatedAddons));
+        add(new PagingNavigator("pageTableNav1", updatedAddons));
+        add(new PagingNavigator("pageTableNav2", updatedAddons));
     }
     
     public final class SelectForm extends Form
@@ -94,11 +94,11 @@ public final class NewAndUpdatedAddons extends BaseHtmlPage /* AuthenticateHtmlP
         private final CategoryDropDownChoice categories;
         private final DropDownChoice sortDDC;
         
-        public SelectForm(final String componentName, final FeedbackPanel feedback)
+        public SelectForm(final String componentName)
         {
-            super(componentName, feedback);
+            super(componentName);
             
-            categories = new CategoryDropDownChoice("categories", getAddonDao(), categoryId);
+            categories = new CategoryDropDownChoice("categories", categoryId);
             add(categories);
             
             final List sortOptions = new ArrayList();
@@ -120,8 +120,11 @@ public final class NewAndUpdatedAddons extends BaseHtmlPage /* AuthenticateHtmlP
         {
             final CategoryOption category = (CategoryOption)categories.getModelObject();
             final SortOption sortOrder = (SortOption)sortDDC.getModelObject();
-            
-            NewAndUpdatedAddons.this.categoryId = category.getCategoryId();
+
+            if (category.getCategory() != null)
+            {
+                NewAndUpdatedAddons.this.categoryId = category.getCategory().getId();
+            }
             NewAndUpdatedAddons.this.sortId = sortOrder.getSortOrder();
 
             NewAndUpdatedAddons.this.modelChanging();
@@ -158,12 +161,14 @@ public final class NewAndUpdatedAddons extends BaseHtmlPage /* AuthenticateHtmlP
     
     public class AddonDataList extends AbstractDataList
     {
+        private Category category;
+        
 		/**
 		 * @see wicket.addons.utils.AbstractDataList#getInternalSize()
 		 */
 		protected int getInternalSize()
 		{
-            return getAddonDao().getAddonCountByCategory(categoryId).intValue();
+            return getAddonService().getAddonCountByCategory(category).intValue();
 		}
 
 		/**
@@ -173,8 +178,7 @@ public final class NewAndUpdatedAddons extends BaseHtmlPage /* AuthenticateHtmlP
 		{
             this.firstIndex = updatedAddons.getStartIndex();
             this.pageSize = updatedAddons.getRowsPerPage();
-            final List data = getAddonDao().getUpdatedAddons(firstIndex, pageSize, categoryId, sortId);
-            getAddonDao().initialize(data);
+            final List data = getAddonService().getUpdatedAddons(firstIndex, pageSize, category, sortId);
             return data;
 		}
     }

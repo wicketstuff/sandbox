@@ -22,12 +22,12 @@ package wicket.addons;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.BeanFactory;
+import wicket.addons.ServiceLocator;
 
 import wicket.PageParameters;
-import wicket.addons.hibernate.IAddonDao;
-import wicket.addons.hibernate.IUserDao;
-import wicket.addons.hibernate.User;
+import wicket.addons.db.User;
+import wicket.addons.services.AddonService;
+import wicket.addons.services.UserService;
 import wicket.addons.sidebars.SidebarAdminMenu;
 import wicket.addons.sidebars.SidebarHostedBy;
 import wicket.addons.sidebars.SidebarMainMenu;
@@ -70,7 +70,7 @@ public class BaseHtmlPage extends WebPage
     {
         this.parameters = parameters;
         
-        add(new Label("username", new PropertyModel(this, "nickname")));
+        add(new Label("username", new PropertyModel(this, "loginName")));
         
         // Sidebar Left
         List sidebarLeftData = new ArrayList();
@@ -81,7 +81,7 @@ public class BaseHtmlPage extends WebPage
             sidebarLeftData.add(new SidebarAdminMenu("sidebarLeftContent"));
         }
 
-        if (((AddonSession)getSession()).getUserId() > 0)
+        if (getUser() != null)
         {
             sidebarLeftData.add(new SidebarUserMenu("sidebarLeftContent"));
         }
@@ -116,10 +116,15 @@ public class BaseHtmlPage extends WebPage
         addRightSidebar();
     }
 
-    public String getNickname()
+    public String getLoginName()
     {
-        final String name = getAddonSession().getUserLogonName();
-
+        User user = getUser();
+        if (user == null)
+        {
+            return null;
+        }
+        
+        final String name = user.getLoginName();
         if (name == null)
         {
             return null;
@@ -149,16 +154,14 @@ public class BaseHtmlPage extends WebPage
         add(sidebarRight);
     }
     
-    public IAddonDao getAddonDao()
+    public AddonService getAddonService()
     {
-        BeanFactory fac = ((AddonApplication)this.getApplication()).getBeanFactory();
-        return (IAddonDao) fac.getBean("AddonDao");
+		return ServiceLocator.instance().getAddonService();
     }
     
-    public IUserDao getUserDao()
+    public UserService getUserService()
     {
-        BeanFactory fac = ((AddonApplication)this.getApplication()).getBeanFactory();
-        return (IUserDao) fac.getBean("UserDao");
+		return ServiceLocator.instance().getUserService();
     }
     
     public AddonSession getAddonSession()
@@ -168,7 +171,18 @@ public class BaseHtmlPage extends WebPage
 
     public User getUser()
     {
-        return (User)getAddonDao().load(User.class, new Integer(getAddonSession().getUserId()));
+        User user = ((AddonRequestCycle)getRequestCycle()).getUser();
+        if (user == null)
+        {
+            user = getAddonSession().getUser();
+            if (user != null)
+            {
+	            getUserService().lock(user, 0);
+	            ((AddonRequestCycle)getRequestCycle()).setUser(user);
+            }
+        }
+        
+        return user;
     }
     
     public boolean isUserSignedIn()
@@ -191,4 +205,33 @@ public class BaseHtmlPage extends WebPage
         int hour = (int)((System.currentTimeMillis() / 1000 / 60 / 60) % pagesPerHour.length);
         pagesPerHour[hour]++;
     }
+    
+    /**
+	 * @see wicket.Page#checkAccess()
+	 */
+	protected boolean checkAccess()
+	{
+	    if (((AddonApplication)getApplication()).getAdminEnabled() == false)
+	    {
+	        return super.checkAccess();
+	    }
+	    
+	    if (this instanceof Login)
+	    {
+	        return super.checkAccess();
+	    }
+	    
+        // Is a user signed into this cycle's session?
+        boolean signedIn = getAddonSession().isSignedIn();
+
+        // If nobody is signed in
+        if (!signedIn)
+        {
+            // Redirect request to SignIn page
+            redirectToInterceptPage(newPage(Login.class));
+        }
+
+        // Return true if someone is signed in and access is okay
+        return signedIn;
+	}
 }

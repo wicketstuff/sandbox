@@ -18,9 +18,7 @@
  */
 package wicket.addons;
 
-import java.util.List;
-
-import wicket.addons.hibernate.User;
+import wicket.addons.db.User;
 import wicket.markup.html.form.Form;
 import wicket.markup.html.form.TextField;
 import wicket.markup.html.panel.FeedbackPanel;
@@ -39,7 +37,7 @@ public final class ChangeUsername extends BaseHtmlPage /* AuthenticateHtmlPage *
         final FeedbackPanel feedback = new FeedbackPanel("feedback");
         add(feedback);
         
-        add(new ChangeUsernameForm("form", feedback));
+        add(new ChangeUsernameForm("form"));
     }
 
     public final class ChangeUsernameForm extends Form
@@ -49,12 +47,10 @@ public final class ChangeUsername extends BaseHtmlPage /* AuthenticateHtmlPage *
         /**
          * Constructor
          * @param componentName Name of form
-         * @param book Book model
-         * @param feedback Feedback component that shows errors
          */
-        public ChangeUsernameForm(final String componentName, final FeedbackPanel feedback)
+        public ChangeUsernameForm(final String componentName)
         {
-            super(componentName, feedback);
+            super(componentName);
             
             add(new TextField("username", new PropertyModel(this, "newUsername")));
         }
@@ -68,8 +64,8 @@ public final class ChangeUsername extends BaseHtmlPage /* AuthenticateHtmlPage *
             if ((newUsername != null) && (newUsername.trim().length() > 0))
             {
                 // confirm current password
-                final String username = getAddonSession().getUserLogonName();
-                final User user = (User)getAddonDao().load(User.class, new Integer(getAddonSession().getUserId()));
+                final User user = getUser();
+                final String username = user.getLoginName();
                 if (user == null)
                 {
     				// Try the component based localizer first. If not found try the
@@ -81,8 +77,8 @@ public final class ChangeUsername extends BaseHtmlPage /* AuthenticateHtmlPage *
                 }
                 else
                 {
-                    final List users = getUserDao().loadUserByNickname(newUsername);
-                    if (users.size() != 0)
+                    final User user2 = getUserService().getUserByLoginName(newUsername);
+                    if (user2 != null)
                     {
         				// Try the component based localizer first. If not found try the
         				// application localizer. Else use the default
@@ -94,9 +90,8 @@ public final class ChangeUsername extends BaseHtmlPage /* AuthenticateHtmlPage *
                     else
                     {
 	                    // update password
-                        user.setNickname(newUsername);
-	                    getAddonDao().saveOrUpdate(user);
-	                    getAddonSession().setUserLogonName(newUsername);
+                        user.setLoginName(newUsername);
+	                    getUserService().update(user);
 	                    
 	                    setResponsePage(newPage(getApplication().getPages().getHomePage()));
                     }

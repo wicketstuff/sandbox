@@ -21,11 +21,13 @@ package wicket.addons.admin;
 import java.io.Serializable;
 import java.util.List;
 
+import wicket.addons.ServiceLocator;
+
 import wicket.AttributeModifier;
 import wicket.Page;
 import wicket.PageParameters;
 import wicket.addons.BaseHtmlPage;
-import wicket.addons.hibernate.Category;
+import wicket.addons.db.Category;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.link.IPageLink;
 import wicket.markup.html.link.PageLink;
@@ -50,7 +52,7 @@ public final class Categories extends BaseHtmlPage /* AuthenticateHtmlPage */
     {
         super(parameters, PAGE_TITLE);
         
-        final List categories = getAddonDao().getCountByCategory();
+		List categories = ServiceLocator.instance().getCategoryService().getAllCategories();
         
         // Add table of existing comments
         this.table = new ListView("rows", categories)
@@ -63,10 +65,10 @@ public final class Categories extends BaseHtmlPage /* AuthenticateHtmlPage */
                 
                 final Category value = (Category) listItem.getModelObject();
 
-                listItem.add(new MyPageLink("name", value.getId(), value.getName()));
-                listItem.add(new MyPageLink("description", value.getId(), value.getDescription()));
-                listItem.add(new MyPageLink("modified", value.getId(), value.getLastModified()));
-                listItem.add(new MyPageLink("noOfAddons", value.getId(), new Integer(value.getCount())));
+                listItem.add(new MyPageLink("name", value, value.getName()));
+                listItem.add(new MyPageLink("description", value, value.getDescription()));
+                listItem.add(new MyPageLink("modified", value, value.getLastUpdated()));
+                listItem.add(new MyPageLink("noOfAddons", value, new Integer(value.getAddonCount())));
             }
         };
 
@@ -82,19 +84,19 @@ public final class Categories extends BaseHtmlPage /* AuthenticateHtmlPage */
      */
     protected void onBeginRequest()
     {
-        final List categories = getAddonDao().getCountByCategory();
+		List categories = ServiceLocator.instance().getCategoryService().getAllCategories();
         this.table.setModelObject(categories);
     }
     
     private class MyPageLink extends PageLink
     {
-        public MyPageLink(final String componentName, final int categoryId, final Serializable value)
+        public MyPageLink(final String componentName, final Category category, final Serializable value)
         {
             super(componentName + "Link", new IPageLink()
 	            {
 	                public Page getPage()
 	                {
-	                    return new AddOrModifyCategory(categoryId);
+	                    return new AddOrModifyCategory(category);
 	                }
 	
 	                public Class getPageIdentity()

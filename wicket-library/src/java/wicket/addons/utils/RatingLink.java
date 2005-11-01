@@ -20,11 +20,13 @@ package wicket.addons.utils;
 
 import java.text.DecimalFormat;
 
+import wicket.addons.ServiceLocator;
+
 import wicket.Page;
 import wicket.addons.RateIt;
 import wicket.addons.RatingDetails;
-import wicket.addons.hibernate.Addon;
-import wicket.addons.hibernate.IAddonDao;
+import wicket.addons.db.Addon;
+import wicket.addons.services.AddonService;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.link.IPageLink;
 import wicket.markup.html.link.PageLink;
@@ -41,7 +43,7 @@ public class RatingLink extends Panel
 	 * 
 	 * @param parameters
 	 */
-	public RatingLink(final String componentName, final Addon addon, final IAddonDao dao)
+	public RatingLink(final String componentName, final Addon addon)
 	{
 		super(componentName);
 
@@ -49,7 +51,7 @@ public class RatingLink extends Panel
 		{
 			public Page getPage()
 			{
-				return new RatingDetails(addon.getId());
+				return new RatingDetails(addon);
 			}
 
 			public Class getPageIdentity()
@@ -60,7 +62,8 @@ public class RatingLink extends Panel
 
 		add(rating);
 
-		final Object[] rateCountAndAverage = dao.getRatingCountAndAverage(addon);
+		final AddonService addonService = ServiceLocator.instance().getAddonService();
+		final Object[] rateCountAndAverage = addonService.getRatingCountAndRatingAverage(addon);
 		final int ratingCount = ((Integer)rateCountAndAverage[0]).intValue();
 
 		if (ratingCount == 0)
@@ -82,7 +85,7 @@ public class RatingLink extends Panel
 		{
 			public Page getPage()
 			{
-				return new RateIt(addon.getId());
+				return new RateIt(addon);
 			}
 
 			public Class getPageIdentity()
