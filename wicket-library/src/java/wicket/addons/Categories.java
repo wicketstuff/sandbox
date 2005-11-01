@@ -22,9 +22,10 @@ import java.io.Serializable;
 import java.util.AbstractList;
 import java.util.List;
 
+import wicket.addons.ServiceLocator;
+
 import wicket.PageParameters;
-import wicket.addons.hibernate.Category;
-import wicket.addons.hibernate.IAddonDao;
+import wicket.addons.db.Category;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.link.BookmarkablePageLink;
 import wicket.markup.html.link.Link;
@@ -68,7 +69,7 @@ public final class Categories extends BaseHtmlPage /* AuthenticateHtmlPage */
                 String text = (mod == 0 ? "<tr>" : "");
                 
                 final String href = getPage().urlFor("0", NewAndUpdatedAddons.class, new PageParameters("category=" + category.getId()));
-                text += "<td width=\"50%\"><a class=\"lm\" href=\"" + href + "\">" + category.getName() + "  (" + category.getCount() + ")</a></td>";
+                text += "<td width=\"50%\"><a class=\"lm\" href=\"" + href + "\">" + category.getName() + "  (" + category.getAddonCount() + ")</a></td>";
                     
                 if ((mod != 0) || (categoryCount.size() == (listItem.getIndex() + 1)) && ((categoryCount.size() % 2) != 0))
                 {
@@ -76,7 +77,7 @@ public final class Categories extends BaseHtmlPage /* AuthenticateHtmlPage */
                 }
                 
                 final Label label = new Label("text", text);
-                label.setShouldEscapeModelStrings(false);
+                label.setEscapeModelStrings(false);
                 listItem.add(label);
             }
         };
@@ -97,15 +98,13 @@ public final class Categories extends BaseHtmlPage /* AuthenticateHtmlPage */
             return categoryCount;
         }
 
-        final IAddonDao dao = this.getAddonDao();
-        nextUpdate = System.currentTimeMillis() + updateIntervall;
+        List data = ServiceLocator.instance().getCategoryService().getAllCategories();
 
         allCategoryCount = 0;
-        List data = dao.getCountByCategory();
         for (Object obj : data)
         {
             Category cat = (Category) obj;
-            allCategoryCount += cat.getCount();
+            allCategoryCount += cat.getAddonCount();
         }
         
         return data;

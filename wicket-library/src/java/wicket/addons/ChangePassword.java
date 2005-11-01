@@ -18,7 +18,7 @@
  */
 package wicket.addons;
 
-import wicket.addons.hibernate.User;
+import wicket.addons.db.User;
 import wicket.markup.html.form.Form;
 import wicket.markup.html.form.PasswordTextField;
 import wicket.markup.html.panel.FeedbackPanel;
@@ -37,7 +37,7 @@ public final class ChangePassword extends BaseHtmlPage /* AuthenticateHtmlPage *
         final FeedbackPanel feedback = new FeedbackPanel("feedback");
         add(feedback);
         
-        add(new ChangePasswordForm("form", feedback));
+        add(new ChangePasswordForm("form"));
     }
 
     public final class ChangePasswordForm extends Form
@@ -49,12 +49,10 @@ public final class ChangePassword extends BaseHtmlPage /* AuthenticateHtmlPage *
         /**
          * Constructor
          * @param componentName Name of form
-         * @param book Book model
-         * @param feedback Feedback component that shows errors
          */
-        public ChangePasswordForm(final String componentName, final FeedbackPanel feedback)
+        public ChangePasswordForm(final String componentName)
         {
-            super(componentName, feedback);
+            super(componentName);
             
             add(new PasswordTextField("currentPassword", new PropertyModel(this, "currentPassword")));
             add(new PasswordTextField("newPassword", new PropertyModel(this, "newPassword")));
@@ -70,7 +68,7 @@ public final class ChangePassword extends BaseHtmlPage /* AuthenticateHtmlPage *
             if ((newPassword != null) && (newPassword.equals(newPasswordConfirm)))
             {
                 // confirm current password
-                final String username = getAddonSession().getUserLogonName();
+                final String username = getUser().getLoginName();
                 final User user = ((AddonApplication)getApplication()).authenticate(username, currentPassword);
                 if (user == null)
                 {
@@ -84,7 +82,10 @@ public final class ChangePassword extends BaseHtmlPage /* AuthenticateHtmlPage *
                 else
                 {
                     // update password
-                    getAddonDao().changePassword(getAddonSession().getUserId(), newPassword);
+                    getUserService().changePassword(
+                            user, 
+                            user.getPassword(), 
+                            newPassword);
                     
                     setResponsePage(newPage(getApplication().getPages().getHomePage()));
                 }

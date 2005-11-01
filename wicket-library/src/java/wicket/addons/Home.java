@@ -20,9 +20,11 @@ package wicket.addons;
 
 import java.util.List;
 
+import wicket.addons.ServiceLocator;
+
 import wicket.Page;
 import wicket.PageParameters;
-import wicket.addons.hibernate.News;
+import wicket.addons.db.News;
 import wicket.markup.html.link.IPageLink;
 import wicket.markup.html.link.PageLink;
 import wicket.markup.html.list.ListItem;
@@ -50,12 +52,12 @@ public final class Home extends BaseHtmlPage /* AuthenticateHtmlPage */
       */
     public Home(final PageParameters parameters)
     {
-        super(parameters, "Appfuse Homepage");
+        super(parameters, "Wicket Library Homepage");
 /*
         StringResourceModel model = new StringResourceModel("heading.welcome", this, null);
         add(new Label("heading", model.getString()));
 */        
-        final List newsData = this.getAddonDao().getNews(newsIndex, NUMBER_OF_NEWS_PER_PAGE);
+        final List newsData = ServiceLocator.instance().getNewsService().getNews(newsIndex, NUMBER_OF_NEWS_PER_PAGE);
         
         // News
         newsList = new ListView("newsList", newsData)
@@ -91,7 +93,7 @@ public final class Home extends BaseHtmlPage /* AuthenticateHtmlPage */
 		public Page getPage()
 		{
 		    newsIndex = newsIndex + offset;
-	        final List newsData = getAddonDao().getNews(newsIndex, NUMBER_OF_NEWS_PER_PAGE);
+	        final List newsData = ServiceLocator.instance().getNewsService().getNews(newsIndex, NUMBER_OF_NEWS_PER_PAGE);
 		    newsList.modelChanging();
 		    newsList.setModelObject(newsData);
 	        

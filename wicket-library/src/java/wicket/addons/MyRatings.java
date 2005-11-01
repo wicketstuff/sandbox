@@ -18,11 +18,11 @@
  */
 package wicket.addons;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import wicket.addons.hibernate.IAddonDao;
-import wicket.addons.hibernate.Rating;
-import wicket.addons.hibernate.User;
+import wicket.addons.db.Rating;
+import wicket.addons.db.User;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.list.ListItem;
 import wicket.markup.html.list.ListView;
@@ -40,20 +40,25 @@ public final class MyRatings extends BaseHtmlPage /* AuthenticateHtmlPage */
     public MyRatings()
     {
         super(null, "Wicket-Addons: Ratings");
-        final IAddonDao dao = this.getAddonDao();
-        final User user = (User)dao.load(User.class, new Integer(this.getAddonSession().getUserId()));
-        final List myRatings = dao.getMyRatings(user);
+        User user = getUser();
+        
+        List myRatings = null;
+        if (user != null)
+        {
+            myRatings = new ArrayList();
+            myRatings.addAll(user.getRatings());
+        }
         
         add(new ListView("rows", myRatings)
-                {
-					protected void populateItem(final ListItem listItem)
-					{
-		                final Rating value = (Rating)listItem.getModelObject();
-		                listItem.add(new Label("plugin", value.getAddon().getName()));
-		                listItem.add(new Label("avg", new Model(new Double(5.5))));
-		                listItem.add(new Label("myRating", new Model(new Integer(value.getRating()))));
-		                listItem.add(new Label("comment", value.getComment()));
-					}
-                });
+        {
+			protected void populateItem(final ListItem listItem)
+			{
+                final Rating value = (Rating)listItem.getModelObject();
+                listItem.add(new Label("plugin", value.getAddon().getName()));
+                listItem.add(new Label("avg", new Model(new Double(5.5))));
+                listItem.add(new Label("myRating", new Model(new Integer(value.getRating()))));
+                listItem.add(new Label("comment", value.getComment()));
+			}
+        });
     }
 }

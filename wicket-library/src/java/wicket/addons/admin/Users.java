@@ -25,7 +25,7 @@ import wicket.AttributeModifier;
 import wicket.Page;
 import wicket.PageParameters;
 import wicket.addons.BaseHtmlPage;
-import wicket.addons.hibernate.User;
+import wicket.addons.db.User;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.link.IPageLink;
 import wicket.markup.html.link.PageLink;
@@ -50,7 +50,7 @@ public final class Users extends BaseHtmlPage /* AuthenticateHtmlPage */
     {
         super(parameters, PAGE_TITLE);
         
-        final List users = getUserDao().getUsers();
+        final List users = getUserService().getUsers(0, 99);
         
         // Add table of existing comments
         this.table = new ListView("rows", users)
@@ -63,12 +63,12 @@ public final class Users extends BaseHtmlPage /* AuthenticateHtmlPage */
                 
                 final User value = (User) listItem.getModelObject();
 
-                listItem.add(new MyPageLink("loginname", value, value.getNickname()));
-                listItem.add(new MyPageLink("name", value, value.getNameLastNameFirst()));
-                listItem.add(new MyPageLink("email", value, value.getEmail()));
+                listItem.add(new MyPageLink("loginname", value, value.getLoginName()));
+                listItem.add(new MyPageLink("name", value, value.getPerson().getLastName() + ", " + value.getPerson().getFirstName()));
+                listItem.add(new MyPageLink("email", value, value.getPerson().getEmail()));
                 listItem.add(new MyPageLink("lastLogin", value, value.getLastLogin()));
                 listItem.add(new MyPageLink("deactivated", value, value.getDeactivated()));
-                listItem.add(new MyPageLink("deleted", value, value.getDeleted()));
+                listItem.add(new MyPageLink("deleted", value, value.getDeactivated()));
             }
         };
 
@@ -84,7 +84,7 @@ public final class Users extends BaseHtmlPage /* AuthenticateHtmlPage */
      */
     protected void onBeginRequest()
     {
-        final List users = getUserDao().getUsers();
+        final List users = getUserService().getUsers(0, 99);
         this.table.setModelObject(users);
     }
     
@@ -96,7 +96,7 @@ public final class Users extends BaseHtmlPage /* AuthenticateHtmlPage */
 	            {
 	                public Page getPage()
 	                {
-	                    return new AddOrModifyUser(user.getId());
+	                    return new AddOrModifyUser(user);
 	                }
 	
 	                public Class getPageIdentity()
@@ -111,7 +111,7 @@ public final class Users extends BaseHtmlPage /* AuthenticateHtmlPage */
                 label ="&nbsp;";
             }
             
-            add(new Label(componentName, label).setShouldEscapeModelStrings(false));
+            add(new Label(componentName, label).setEscapeModelStrings(false));
         }
     }
 }

@@ -20,44 +20,46 @@ package wicket.addons;
 
 import java.io.Serializable;
 import java.util.AbstractList;
+import java.util.ArrayList;
 import java.util.List;
 
 import wicket.Page;
-import wicket.addons.hibernate.Addon;
-import wicket.addons.hibernate.Comment;
+import wicket.addons.db.Addon;
+import wicket.addons.db.Comment;
+import wicket.addons.models.AddonModel;
 import wicket.addons.utils.CommentListEntry;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.link.IPageLink;
 import wicket.markup.html.link.PageLink;
 import wicket.markup.html.list.ListItem;
 import wicket.markup.html.list.PageableListView;
-import wicket.markup.html.list.PageableListViewNavigator;
+import wicket.markup.html.navigation.paging.PagingNavigator;
 
 /**
  * @author Juergen Donnerstag
  */
-public final class Comments extends BaseHtmlPage /* AuthenticateHtmlPage */
+public final class CommentsPage extends BaseHtmlPage /* AuthenticateHtmlPage */
 {
-    private final int addonId;
+    private final AddonModel addonModel;
     
     /**
      * Constructor
      * @param parameters
      */
-    public Comments(final int addonId)
+    public CommentsPage(final Addon addon)
     {
         super(null, "Addon specific comments");
 
-        this.addonId = addonId;
+        getUserService().lock(addon, 0);
+        this.addonModel = new AddonModel(addon);
+        addonModel.getComments().size();
         
-        final Addon addon = (Addon)getAddonDao().load(Addon.class, new Integer(addonId));
-        
-        add(new Label("addonName", addon.getName()));
+        add(new Label("addonName", addonModel.getName()));
         add(new PageLink("addComment", new IPageLink() 
         {
             public Page getPage()
             {
-                return new AddComment(addonId);
+                return new AddComment(addon);
             }
             
             public Class getPageIdentity()
@@ -70,7 +72,7 @@ public final class Comments extends BaseHtmlPage /* AuthenticateHtmlPage */
         {
             public Page getPage()
             {
-                return new PluginDetails(addonId);
+                return new PluginDetails(addon);
             }
             
             public Class getPageIdentity()
@@ -79,7 +81,7 @@ public final class Comments extends BaseHtmlPage /* AuthenticateHtmlPage */
             }
         }));
 
-        final List comments = new CommentsDataList();
+        final List comments = new CommentsDataList(addonModel);
         final PageableListView commentListView = new PageableListView("comments", comments, 10)
         {
             public void populateItem(final ListItem listItem)
@@ -90,19 +92,27 @@ public final class Comments extends BaseHtmlPage /* AuthenticateHtmlPage */
         };
 
         add(commentListView);
-        add(new PageableListViewNavigator("pageNavigation1", commentListView));
-        add(new PageableListViewNavigator("pageNavigation2", commentListView ));
+        add(new PagingNavigator("pageNavigation1", commentListView));
+        add(new PagingNavigator("pageNavigation2", commentListView ));
     }
     
     public class CommentsDataList extends AbstractList implements Serializable
     {
+        private final List comments;
+        
+        public CommentsDataList(final AddonModel addonModel)
+        {
+            // TODO getComment() to return a List
+            this.comments = new ArrayList();
+            this.comments.addAll(addonModel.getComments());
+        }
+        
 		/**
 		 * @see wicket.addons.utils.AbstractDataList#getInternalSize()
 		 */
 		public int size()
 		{
-	        final Addon addon = (Addon)getAddonDao().load(Addon.class, new Integer(addonId));
-		    return addon.getComments().size();
+		    return comments.size();
 		}
 
 		/**
@@ -110,8 +120,7 @@ public final class Comments extends BaseHtmlPage /* AuthenticateHtmlPage */
 		 */
 		public Object get(int index)
 		{
-	        final Addon addon = (Addon)getAddonDao().load(Addon.class, new Integer(addonId));
-		    return ((List)addon.getComments()).get(index);
+		    return comments.get(index);
 		}
     }
 }

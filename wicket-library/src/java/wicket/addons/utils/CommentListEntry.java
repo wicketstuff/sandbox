@@ -20,7 +20,7 @@ package wicket.addons.utils;
 
 import java.text.SimpleDateFormat;
 
-import wicket.addons.hibernate.Comment;
+import wicket.addons.db.Comment;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.panel.Panel;
 
@@ -37,8 +37,8 @@ public class CommentListEntry extends Panel
     {
         super(componentName);
 
-        add(new Label("who", comment.getUser().getNickname()));
-        add(new Label("when", new SimpleDateFormat().format(comment.getLastModified())));
+        add(new Label("who", comment.getUser().getLoginName()));
+        add(new Label("when", new SimpleDateFormat().format(comment.getCreateDate())));
         add(new Label("comment", comment.getComment()));
     }
 }

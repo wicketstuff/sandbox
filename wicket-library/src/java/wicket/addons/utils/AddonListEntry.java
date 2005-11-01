@@ -22,12 +22,11 @@ import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 import wicket.Page;
-import wicket.RequestCycle;
-import wicket.addons.BaseHtmlPage;
-import wicket.addons.Comments;
+import wicket.addons.CommentsPage;
 import wicket.addons.PluginDetails;
-import wicket.addons.hibernate.Addon;
-import wicket.addons.hibernate.IAddonDao;
+import wicket.addons.ServiceLocator;
+import wicket.addons.db.Addon;
+import wicket.addons.services.AddonService;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.link.ExternalLink;
 import wicket.markup.html.link.IPageLink;
@@ -42,7 +41,7 @@ import wicket.model.PropertyModel;
  */
 public class AddonListEntry extends Panel
 {
-    private final int addonId;
+    private final Long addonId;
     
     /**
      * Constructor
@@ -58,7 +57,7 @@ public class AddonListEntry extends Panel
         add(new Label("category", new PropertyModel(addon.getCategory(), "name")));
 
         final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-        final String dateString = dateFormat.format(addon.getLastModified());
+        final String dateString = dateFormat.format(addon.getLastUpdated());
         add(new Label("updated", dateString));
 
         add(new Label("version", new PropertyModel(addon, "version")));
@@ -79,7 +78,7 @@ public class AddonListEntry extends Panel
         {
             public Page getPage()
             {
-                return new PluginDetails(addonId);
+                return new PluginDetails(addon);
             }
             
             public Class getPageIdentity()
@@ -88,27 +87,28 @@ public class AddonListEntry extends Panel
             }
         }));
         
-        final IAddonDao dao = ((BaseHtmlPage)RequestCycle.get().getResponsePage()).getAddonDao();
-        add(new RatingLink("ratingLink", addon, dao));
+        final AddonService addonService = ServiceLocator.instance().getAddonService();
+
+        add(new RatingLink("ratingLink", addon));
 
         final Link comments = new PageLink("comments", new IPageLink()
         {
             public Page getPage()
             {
-                return new Comments(addonId);
+                return new CommentsPage(addon);
             }
             
             public Class getPageIdentity()
             {
-                return Comments.class;
+                return CommentsPage.class;
             }
         });
         
         add(comments);
-        final Integer commentCount = ((BaseHtmlPage)getRequestCycle().getResponsePage()).getAddonDao().getCommentCount(addon);
+        final Integer commentCount = addonService.getCommentCount(addon);
         comments.add(new Label("commentCount", new Model(commentCount)));
 
-        if (addon.getCreateTime().before(addon.getLastModified()))
+        if (addon.getCreateTime().before(addon.getLastUpdated()))
         {
             // TODO avoid fixed url path
             add(new ExternalImage("image", new Model("addons/images/updated.gif")));

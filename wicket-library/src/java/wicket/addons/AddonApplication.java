@@ -21,15 +21,13 @@ package wicket.addons;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
+import wicket.addons.ServiceLocator;
 import org.springframework.beans.factory.xml.XmlBeanFactory;
 import org.springframework.core.io.ClassPathResource;
 
 import wicket.ISessionFactory;
 import wicket.Session;
-import wicket.addons.hibernate.AddonDaoSupport;
-import wicket.addons.hibernate.User;
-import wicket.addons.hibernate.UserDaoSupport;
+import wicket.addons.db.User;
 import wicket.addons.utils.UserCount;
 import wicket.protocol.http.WebApplication;
 import wicket.util.time.Duration;
@@ -56,11 +54,11 @@ public class AddonApplication extends WebApplication
         getSettings().setResourcePollFrequency(Duration.ONE_SECOND);
         
         beanFactory = new XmlBeanFactory(new ClassPathResource("spring-dao.xml"));
-        PropertyPlaceholderConfigurer cfg = (PropertyPlaceholderConfigurer) beanFactory.getBean("propertyConfigurer");
-        if (beanFactory != null)
-        {
-            cfg.postProcessBeanFactory(beanFactory);
-        }
+//        PropertyPlaceholderConfigurer cfg = (PropertyPlaceholderConfigurer) beanFactory.getBean("propertyConfigurer");
+//        if (beanFactory != null)
+//        {
+//            cfg.postProcessBeanFactory(beanFactory);
+//        }
         
         userCount = new UserCount();
         
@@ -102,11 +100,6 @@ public class AddonApplication extends WebApplication
         return beanFactory;
     }
     
-    public AddonDaoSupport getAddonDao()
-    {
-        return (AddonDaoSupport) getBeanFactory().getBean("AddonDao");
-    }
-    
     /**
      * @see wicket.protocol.http.WebApplication#getSessionFactory()
      */
@@ -123,8 +116,7 @@ public class AddonApplication extends WebApplication
     
 	public final User authenticate(final String username, final String password)
 	{
-        final UserDaoSupport dao = (UserDaoSupport) getBeanFactory().getBean("UserDaoTarget");
-        return dao.login(username, null, password);
+	    return ServiceLocator.instance().getUserService().login(username, password);
 	}
 	
 	private class UpdateStatisticsTask extends TimerTask
@@ -137,8 +129,8 @@ public class AddonApplication extends WebApplication
 	            active = true;
 	            try
 	            {
-		            getAddonDao().updateAddonClicksStatistics();
-		            getAddonDao().updateAddonAvgRating();
+	        		ServiceLocator.instance().getAddonService().updateAddonClicksStatistics();
+	        		ServiceLocator.instance().getAddonService().updateAddonAvgRating();
 	            }
 	            finally
 	            {

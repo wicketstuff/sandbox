@@ -24,8 +24,8 @@ import wicket.Page;
 import wicket.addons.BaseHtmlPage;
 import wicket.addons.ClickList;
 import wicket.addons.PluginDetails;
-import wicket.addons.hibernate.Addon;
-import wicket.addons.hibernate.IAddonDao;
+import wicket.addons.db.Addon;
+import wicket.addons.services.AddonService;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.link.IPageLink;
 import wicket.markup.html.link.PageLink;
@@ -47,8 +47,8 @@ public final class SidebarTopClicks extends Panel
     {
         super(componentName);
         
-        final IAddonDao dao = page.getAddonDao();
-        final List top5 = dao.getTop5AddonsByClicks();
+        final AddonService addonService = page.getAddonService();
+        final List top5 = addonService.getTop5AddonsByClicks();
         add(new ListView("rows", top5)
                 {
 					protected void populateItem(ListItem listItem)
@@ -60,7 +60,7 @@ public final class SidebarTopClicks extends Panel
 					            {
 									public Page getPage()
 									{
-										return new PluginDetails(addon.getId());
+										return new PluginDetails(addon);
 									}
 
 									public Class getPageIdentity()

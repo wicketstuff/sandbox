@@ -21,10 +21,10 @@ package wicket.addons.utils;
 import java.util.ArrayList;
 import java.util.List;
 
-import wicket.RequestCycle;
-import wicket.addons.BaseHtmlPage;
-import wicket.addons.hibernate.Addon;
-import wicket.addons.hibernate.IAddonDao;
+import wicket.addons.ServiceLocator;
+
+import wicket.addons.db.Addon;
+import wicket.addons.services.AddonService;
 import wicket.markup.html.list.ListItem;
 import wicket.markup.html.list.ListView;
 import wicket.markup.html.panel.Panel;
@@ -42,9 +42,9 @@ public class RatingChart extends Panel
     {
         super(componentName);
         
-        final IAddonDao dao = ((BaseHtmlPage)RequestCycle.get().getResponsePage()).getAddonDao();
+        final AddonService dao = ServiceLocator.instance().getAddonService();
 
-        final Object[] rateCountAndAverage = dao.getRatingCountAndAverage(addon);
+        final Object[] rateCountAndAverage = dao.getRatingCountAndRatingAverage(addon);
         final int ratingCount = ((Integer)rateCountAndAverage[0]).intValue();
         
         final List chartData = dao.getRatingChartData(addon);

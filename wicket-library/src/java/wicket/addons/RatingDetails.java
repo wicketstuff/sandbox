@@ -19,6 +19,7 @@
 package wicket.addons;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -26,10 +27,11 @@ import org.apache.commons.logging.LogFactory;
 
 import wicket.Page;
 import wicket.addons.admin.AddOrModifyUser;
-import wicket.addons.hibernate.Addon;
-import wicket.addons.hibernate.IAddonDao;
-import wicket.addons.hibernate.Rating;
-import wicket.addons.hibernate.User;
+import wicket.addons.db.Addon;
+import wicket.addons.db.Rating;
+import wicket.addons.db.User;
+import wicket.addons.models.AddonModel;
+import wicket.addons.services.AddonService;
 import wicket.addons.utils.RatingChart;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.link.IPageLink;
@@ -49,16 +51,18 @@ public final class RatingDetails extends BaseHtmlPage /* AuthenticateHtmlPage */
      * Constructor
      * @param parameters
       */
-    public RatingDetails(final int addonId)
+    public RatingDetails(final Addon addon)
     {
         super(null, "Wicket-Addons: Rating Details");
         
-        final Addon addon = (Addon)getAddonDao().load(Addon.class, new Integer(addonId));
+        getUserService().lock(addon, 0);
+        final AddonModel addonModel = new AddonModel(addon);
+        
         final PageLink details = new PageLink("details", new IPageLink()
                 {
 					public Page getPage()
 					{
-						return new PluginDetails(addonId);
+						return new PluginDetails(addon);
 					}
 
 					public Class getPageIdentity()
@@ -70,9 +74,9 @@ public final class RatingDetails extends BaseHtmlPage /* AuthenticateHtmlPage */
         add(details);
         details.add(new Label("addon", addon.getName()));
         
-        final IAddonDao dao = this.getAddonDao();
+        final AddonService addonService = this.getAddonService();
 
-        final Object[] rateCountAndAverage = dao.getRatingCountAndAverage(addon);
+        final Object[] rateCountAndAverage = addonService.getRatingCountAndRatingAverage(addon);
         final Integer ratingCount = (Integer)rateCountAndAverage[0];
         final Float ratingAvg = (Float)rateCountAndAverage[1];
         
@@ -86,7 +90,7 @@ public final class RatingDetails extends BaseHtmlPage /* AuthenticateHtmlPage */
                 {
 					public Page getPage()
 					{
-						return new RateIt(addonId);
+						return new RateIt(addon);
 					}
 
 					public Class getPageIdentity()
@@ -95,24 +99,23 @@ public final class RatingDetails extends BaseHtmlPage /* AuthenticateHtmlPage */
 					}
                 }));
 
-        dao.initialize(addon.getRatings());
-        add(new ListView("comments", (List)addon.getRatings())
+        List data = new ArrayList();
+        data.addAll(addonModel.getRatings());
+        add(new ListView("comments", data)
                 {
 					protected void populateItem(ListItem listItem)
 					{
 					    Rating rating = (Rating)listItem.getModelObject();
-					    rating = (Rating) dao.load(rating);
 					    
-					    listItem.add(new Label("date", new Model(rating.getCreateDate())));
+					    listItem.add(new Label("date", new Model(rating.getCreated())));
 					    
-					    dao.initialize(rating.getAddon().getOwner());
 					    final User owner = rating.getAddon().getOwner();
-					    final int ownerId = owner.getId();
+					    final Long ownerId = owner.getId();
 					    final PageLink user = new PageLink("user", new IPageLink()
 					            {
 									public Page getPage()
 									{
-										return new AddOrModifyUser(ownerId);
+										return new AddOrModifyUser(owner);
 									}
 		
 									public Class getPageIdentity()
@@ -122,7 +125,7 @@ public final class RatingDetails extends BaseHtmlPage /* AuthenticateHtmlPage */
 					            });
 					    
 					    listItem.add(user);
-					    user.add(new Label("username", owner.getNickname()));
+					    user.add(new Label("username", owner.getLoginName()));
 
 					    listItem.add(new Label("rating", new Model(new Integer(rating.getRating()))));
 					    listItem.add(new Label("comment", rating.getComment()));

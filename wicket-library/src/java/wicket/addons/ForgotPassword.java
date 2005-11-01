@@ -20,7 +20,7 @@ package wicket.addons;
 
 import wicket.PageParameters;
 import wicket.RequestCycle;
-import wicket.addons.hibernate.User;
+import wicket.addons.db.User;
 import wicket.markup.html.form.Form;
 import wicket.markup.html.form.TextField;
 import wicket.markup.html.panel.FeedbackPanel;
@@ -44,24 +44,22 @@ public final class ForgotPassword extends BaseHtmlPage /* AuthenticateHtmlPage *
         add(feedback);
 
         // Add edit book form to page
-        add(new ForgotPasswordForm("form", feedback));
+        add(new ForgotPasswordForm("form"));
     }
 
     public final class ForgotPasswordForm extends Form
     {
-        private User user = new User();
+        private User user = User.Factory.newInstance();
 
         /**
          * Constructor
          * @param componentName Name of form
-         * @param book Book model
-         * @param feedback Feedback component that shows errors
          */
-        public ForgotPasswordForm(final String componentName, final FeedbackPanel feedback)
+        public ForgotPasswordForm(final String componentName)
         {
-            super(componentName, feedback);
+            super(componentName);
 
-            add(new TextField("username", new PropertyModel(user, "nickname")));
+            add(new TextField("username", new PropertyModel(user, "loginName")));
             add(new TextField("email", new PropertyModel(user, "email")));
         }
         
@@ -71,7 +69,7 @@ public final class ForgotPassword extends BaseHtmlPage /* AuthenticateHtmlPage *
          */
         public final void onSubmit()
         {
-            if (user.getNickname() == null) 
+            if (user.getLoginName() == null) 
             {
                 String xxx = "1234";
             }

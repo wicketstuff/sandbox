@@ -22,7 +22,9 @@ import java.util.Map;
 
 import wicket.RequestCycle;
 import wicket.addons.BaseHtmlPage;
-import wicket.addons.hibernate.User;
+import wicket.addons.ServiceLocator;
+import wicket.addons.db.Person;
+import wicket.addons.db.User;
 import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.form.Form;
 import wicket.markup.html.form.PasswordTextField;
@@ -41,32 +43,28 @@ public final class AddOrModifyUser extends BaseHtmlPage /* AuthenticateHtmlPage 
      */
     public AddOrModifyUser()
     {
-        this(-1);
+        this(null);
     }
     
     /**
      * Constructor
      * @param parameters
       */
-    public AddOrModifyUser(final int userId)
+    public AddOrModifyUser(User user)
     {
         super(null, "Wicket-Addons: Category Request Form");
         
-        final User user;
-        if (userId <= 0)
+        if (user == null)
         {
-            user = new User();
-        }
-        else
-        {
-            user = (User)getAddonDao().load(User.class, new Integer(userId));
+            user = User.Factory.newInstance();
+            user.setPerson(Person.Factory.newInstance());
         }
         
         // Create and add feedback panel to page
         final FeedbackPanel feedback = new FeedbackPanel("feedback");
         //add(feedback);
 
-        add(new AddUserForm("form", feedback, user));
+        add(new AddUserForm("form", user));
     }
 
     /**
@@ -74,33 +72,30 @@ public final class AddOrModifyUser extends BaseHtmlPage /* AuthenticateHtmlPage 
      */
     public final class AddUserForm extends Form
     {
-        final private User user;
-        
+        private User user;
         private String confirmPassword;
         
         /**
          * Constructor
          * @param componentName Name of form
-         * @param book Book model
-         * @param feedback Feedback component that shows errors
          */
-        public AddUserForm(final String componentName, final FeedbackPanel feedback, final User user)
+        public AddUserForm(final String componentName, final User user)
         {
-            super(componentName, feedback);
+            super(componentName);
             
             this.user = user;
             
-            add(new TextField("loginname", new PropertyModel(user, "nickname")));
-            add(new TextField("firstname", new PropertyModel(user, "firstname")));
-            add(new TextField("lastname", new PropertyModel(user, "lastname")));
-            add(new TextField("email", new PropertyModel(user, "email")));
+            add(new TextField("loginname", new PropertyModel(user, "loginName")));
+            add(new TextField("firstname", new PropertyModel(user.getPerson(), "firstName")));
+            add(new TextField("lastname", new PropertyModel(user.getPerson(), "lastName")));
+            add(new TextField("email", new PropertyModel(user.getPerson(), "email")));
             add(new PasswordTextField("password", new PropertyModel(user, "password")));
             add(new PasswordTextField("confirmPassword", new Model(confirmPassword)));
             
             WebMarkupContainer button = new WebMarkupContainer("delete");
             add(button);
             
-            if (user.getId() == 0)
+            if (user.getId() == null)
             {
                 button.setVisible(false);
             }
@@ -130,11 +125,18 @@ public final class AddOrModifyUser extends BaseHtmlPage /* AuthenticateHtmlPage 
             
             if (cycle.getRequest().getParameter("save") != null)
             {
-                getAddonDao().saveOrUpdate(user);
+                if (user.getId() == null)
+                {
+                    ServiceLocator.instance().getUserService().addUser(user);
+                }
+                else
+                {
+                    ServiceLocator.instance().getUserService().update(user);
+                }
             }
             else if (cycle.getRequest().getParameter("delete") != null)
             {
-                getAddonDao().delete(user);
+                ServiceLocator.instance().getUserService().removeUser(user);
             }
             
             cycle.setResponsePage(new Users(null));

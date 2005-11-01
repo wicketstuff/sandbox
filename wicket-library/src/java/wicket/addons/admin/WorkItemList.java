@@ -42,7 +42,7 @@ public final class WorkItemList extends BaseHtmlPage /* AuthenticateHtmlPage */
         final FeedbackPanel feedback = new FeedbackPanel("feedback");
         //add(feedback);
 
-        add(new CategoryRequestForm("form", feedback));
+        add(new CategoryRequestForm("form"));
     }
 
     public final class CategoryRequestForm extends Form
@@ -50,12 +50,10 @@ public final class WorkItemList extends BaseHtmlPage /* AuthenticateHtmlPage */
         /**
          * Constructor
          * @param componentName Name of form
-         * @param book Book model
-         * @param feedback Feedback component that shows errors
          */
-        public CategoryRequestForm(final String componentName, final FeedbackPanel feedback)
+        public CategoryRequestForm(final String componentName)
         {
-            super(componentName, feedback);
+            super(componentName);
         }
         
         /**

@@ -22,16 +22,16 @@ import java.util.List;
 
 import wicket.Component;
 import wicket.MarkupContainer;
-import wicket.addons.hibernate.Addon;
-import wicket.addons.hibernate.Category;
-import wicket.addons.hibernate.IAddonDao;
+import wicket.addons.ServiceLocator;
+import wicket.addons.db.Addon;
+import wicket.addons.db.Category;
+import wicket.addons.services.AddonService;
 import wicket.markup.html.border.Border;
+import wicket.markup.html.form.ChoiceRenderer;
 import wicket.markup.html.form.DropDownChoice;
 import wicket.markup.html.form.Form;
 import wicket.markup.html.form.TextArea;
 import wicket.markup.html.form.TextField;
-import wicket.markup.html.form.model.ChoiceList;
-import wicket.markup.html.form.model.IChoice;
 import wicket.markup.html.panel.FeedbackPanel;
 import wicket.model.Model;
 import wicket.model.PropertyModel;
@@ -47,26 +47,21 @@ public abstract class AddOrModifyAddonPanel extends Border
      * Constructor
      * @param parameters
       */
-    public AddOrModifyAddonPanel(final String id, final IAddonDao dao, final int addonId)
+    public AddOrModifyAddonPanel(final String id, Addon addon)
     {
         super(id);
-        
-        final Addon addon;
-        if (addonId > 0)
+
+        if (addon == null)
         { 
-            addon = (Addon) dao.load(Addon.class, new Integer(addonId));
-        }
-        else
-        {
-            addon = new Addon();
-            addon.setCategory(new Category());
+            addon = Addon.Factory.newInstance();
+            addon.setCategory(Category.Factory.newInstance());
         }
         
         // Create and add feedback panel to page
         final FeedbackPanel feedback = new FeedbackPanel("feedback");
-        //add(feedback);
+        add(feedback);
         
-        form = new AddonSubmitForm("form", feedback, dao, addon);
+        form = new AddonSubmitForm("form", addon);
         add(form);
     }
 
@@ -83,20 +78,16 @@ public abstract class AddOrModifyAddonPanel extends Border
     public final class AddonSubmitForm extends Form
     {
         final private Addon addon;
-        final private IAddonDao dao;
         private String otherLicense;
         private Category category;
         
         /**
          * Constructor
          * @param componentName Name of form
-         * @param book Book model
-         * @param feedback Feedback component that shows errors
          */
-        public AddonSubmitForm(final String componentName, final FeedbackPanel feedback, final IAddonDao dao, final Addon addon)
+        public AddonSubmitForm(final String componentName, final Addon addon)
         {
-            super(componentName, feedback);
-            this.dao = dao;
+            super(componentName);
             this.addon = addon;
             
             add(new TextField("name", new PropertyModel(addon, "name")));
@@ -107,10 +98,11 @@ public abstract class AddOrModifyAddonPanel extends Border
             add(new TextField("wicketVersion", new PropertyModel(addon, "wicketVersion")));
             add(new TextField("otherLicense", new PropertyModel(this, "otherLicense")));
             
-            final List licenseList = dao.getLicenseNames();
+    		AddonService addonService = ServiceLocator.instance().getAddonService();
+            final List licenseList = addonService.getAllLicenseNames();
             add(new DropDownChoice("license", new PropertyModel(addon, "license"), licenseList));
             
-            final List categoryList = dao.getCategories();
+            final List categoryList = ServiceLocator.instance().getCategoryService().getAllCategories();
             add(new CategoryDropDownChoice("category", addon, categoryList));
         }
 
@@ -138,36 +130,6 @@ public abstract class AddOrModifyAddonPanel extends Border
             AddOrModifyAddonPanel.this.onSubmit(addon);
         }
     }
-    
-    private class FaultTolerantPropertyModel extends PropertyModel
-    {
-    	public FaultTolerantPropertyModel(final Object modelObject, final String expression)
-    	{
-    		super(modelObject, expression);
-    	}
-        
-    	/**
-		 * @see wicket.model.AbstractPropertyModel#onGetObject(wicket.Component)
-		 */
-		protected Object onGetObject(Component component)
-		{
-		    try
-		    {
-		        return super.onGetObject(component);
-		    }
-		    catch (RuntimeException ex)
-		    {
-		        // ignore exception
-		    }
-		    
-		    return null;
-		}
-		
-		protected void onSetObject(final Component component, Object object)
-		{
-		    super.onSetObject(component, object);
-		}
-    }
 
 	/**
 	 * 
@@ -192,63 +154,8 @@ public abstract class AddOrModifyAddonPanel extends Border
                 setModel(new Model(category.getName()));
             }
             
-			// use a custom implementation of choices, as we want to display
-			// the choices localized
-			ChoiceList categoriesChoiceList = new ChoiceList(categories)
-			{
-				protected IChoice newChoice(Object object, int index)
-				{
-					return new CategoryChoice((Category)object, index);
-				}
-			};
-			setChoices(categoriesChoiceList);
-		}
-	}
-
-	/**
-	 * Choice for a locale.
-	 */
-	private final class CategoryChoice implements IChoice
-	{
-		/** The index of the choice. */
-		private final int index;
-
-		/** The choice model object. */
-		private final Category category;
-
-		/**
-		 * Constructor.
-		 * @param locale The locale
-		 * @param index The index of the object in the choice list
-		 */
-		public CategoryChoice(final Category category, final int index)
-		{
-			this.category = category;
-			this.index = index;
-		}
-
-		/**
-		 * @see wicket.markup.html.form.model.IChoice#getDisplayValue()
-		 */
-		public String getDisplayValue()
-		{
-			return category.getName();
-		}
-
-		/**
-		 * @see wicket.markup.html.form.model.IChoice#getId()
-		 */
-		public String getId()
-		{
-			return Integer.toString(this.index);
-		}
-
-		/**
-		 * @see wicket.markup.html.form.model.IChoice#getObject()
-		 */
-		public Object getObject()
-		{
-			return category;
+			setChoices(categories);
+			setChoiceRenderer(new ChoiceRenderer("name"));
 		}
 	}
 }

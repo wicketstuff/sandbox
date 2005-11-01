@@ -19,7 +19,7 @@
 package wicket.addons;
 
 import wicket.PageParameters;
-import wicket.addons.hibernate.Addon;
+import wicket.addons.db.Addon;
 import wicket.addons.utils.AddOrModifyAddonPanel;
 
 /**
@@ -36,12 +36,12 @@ public final class AddonSubmit extends BaseHtmlPage /* AuthenticateHtmlPage */
 	{
 		super(parameters, "Wicket-Addons: Add-on Submit Form");
 
-		add(new AddOrModifyAddonPanel("addonPanel", getAddonDao(), 0)
+		add(new AddOrModifyAddonPanel("addonPanel", null)
         {
 			public void onSubmit(Addon addon)
 			{
-			    addon.setEnabled(0);
-			    getAddonDao().saveOrUpdate(addon);
+			    addon.setEnable(false);
+			    getAddonService().save(addon);
 			    
 				setResponsePage(newPage(getApplication().getPages().getHomePage()));
 			}

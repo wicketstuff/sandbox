@@ -22,10 +22,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import wicket.IFeedback;
 import wicket.Page;
 import wicket.PageParameters;
-import wicket.addons.hibernate.Addon;
+import wicket.addons.db.Addon;
 import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.form.Form;
@@ -56,9 +55,9 @@ public final class Search extends BaseHtmlPage /* AuthenticateHtmlPage */
         final FeedbackPanel feedback = new FeedbackPanel("feedback");
         add(feedback);
 
-        add(new SearchFullTextForm("formFullText", feedback));
+        add(new SearchFullTextForm("formFullText"));
 
-        add(new SearchForm("formByName", feedback));
+        add(new SearchForm("formByName"));
         
         add(new ListView("results", results)
         {
@@ -90,7 +89,7 @@ public final class Search extends BaseHtmlPage /* AuthenticateHtmlPage */
 		        {
 		            public Page getPage()
 		            {
-		                return new PluginDetails(addon.getId());
+		                return new PluginDetails(addon);
 		            }
 		            
 		            public Class getPageIdentity()
@@ -113,12 +112,10 @@ public final class Search extends BaseHtmlPage /* AuthenticateHtmlPage */
         /**
          * Constructor
          * @param componentName Name of form
-         * @param book Book model
-         * @param feedback Feedback component that shows errors
          */
-        public SearchFullTextForm(final String componentName, final IFeedback feedback)
+        public SearchFullTextForm(final String componentName)
         {
-            super(componentName, feedback);
+            super(componentName);
             
             add(new TextField("query", new PropertyModel(this, "searchText")));
         }
@@ -147,7 +144,7 @@ public final class Search extends BaseHtmlPage /* AuthenticateHtmlPage */
             final String searchText = getSearchText();
             if ((searchText != null) && (searchText.trim().length() > 0))
             {
-                final List data = getAddonDao().searchAddon(searchText, 20);
+                final List data = getAddonService().searchAddon(searchText, 20);
                 results.clear();
                 for (Object obj : data)
                 {
@@ -173,12 +170,10 @@ public final class Search extends BaseHtmlPage /* AuthenticateHtmlPage */
         /**
          * Constructor
          * @param componentName Name of form
-         * @param book Book model
-         * @param feedback Feedback component that shows errors
          */
-        public SearchForm(final String componentName, final IFeedback feedback)
+        public SearchForm(final String componentName)
         {
-            super(componentName, feedback);
+            super(componentName);
             
             add(new TextField("query", new PropertyModel(this, "searchText")));
         }
@@ -207,7 +202,7 @@ public final class Search extends BaseHtmlPage /* AuthenticateHtmlPage */
             final String searchText = getSearchText();
             if ((searchText != null) && (searchText.trim().length() > 0))
             {
-                final List data = getAddonDao().getAddonsByName(searchText, 20);
+                final List data = getAddonService().getAddonsByName(searchText, 20);
                 results.clear();
                 results.addAll(data);
                 

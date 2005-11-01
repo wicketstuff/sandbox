@@ -19,13 +19,15 @@
 package wicket.addons.user;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import wicket.AttributeModifier;
 import wicket.Page;
 import wicket.addons.BaseHtmlPage;
 import wicket.addons.admin.AddOrModifyAddon;
-import wicket.addons.hibernate.Addon;
+import wicket.addons.db.Addon;
+import wicket.addons.db.User;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.link.IPageLink;
 import wicket.markup.html.link.PageLink;
@@ -49,8 +51,12 @@ public final class MyAddons extends BaseHtmlPage /* AuthenticateHtmlPage */
     public MyAddons()
     {
         super(null, PAGE_TITLE);
+     
+        User user = getUser();
+        getUserService().lock(user, 0);
         
-        final List addons = getAddonsByUser(getAddonSession().getUserId());
+        final List addons = new ArrayList();
+        addons.addAll(user.getAddons());
         
         // Add table of existing comments
         this.table = new ListView("rows", addons)
@@ -65,7 +71,7 @@ public final class MyAddons extends BaseHtmlPage /* AuthenticateHtmlPage */
 
                 listItem.add(new MyPageLink("name", value, value.getName() + " (" + value.getVersion() + ")", MyAddons.this));
                 listItem.add(new MyPageLink("category", value, value.getCategory().getName(), MyAddons.this));
-                listItem.add(new MyPageLink("modified", value, value.getLastModified(), MyAddons.this));
+                listItem.add(new MyPageLink("modified", value, value.getLastUpdated(), MyAddons.this));
                 listItem.add(new MyPageLink("homepage", value, value.getHomepage(), MyAddons.this));
                 listItem.add(new MyPageLink("description", value, MyAddons.this.getDescription(value), MyAddons.this));
             }
@@ -96,7 +102,7 @@ public final class MyAddons extends BaseHtmlPage /* AuthenticateHtmlPage */
     
     private List getAddonsByUser(final int userId)
     {
-        return getAddonDao().getAddonsByUser(getAddonSession().getUserId());
+        return (List) getUser().getAddons();
     }
     
     /**
@@ -104,7 +110,12 @@ public final class MyAddons extends BaseHtmlPage /* AuthenticateHtmlPage */
      */
     protected void onBeginRequest()
     {
-        final List addons = getAddonsByUser(getAddonSession().getUserId());
+        User user = getUser();
+        getUserService().lock(user, 0);
+        
+        final List addons = new ArrayList();
+        addons.addAll(user.getAddons());
+        
         this.table.setModelObject(addons);
     }
     
@@ -131,7 +142,7 @@ public final class MyAddons extends BaseHtmlPage /* AuthenticateHtmlPage */
                 label ="&nbsp;";
             }
             
-            add(new Label(componentName, label).setShouldEscapeModelStrings(false));
+            add(new Label(componentName, label).setEscapeModelStrings(false));
         }
     }
 }

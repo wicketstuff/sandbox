@@ -23,10 +23,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import wicket.addons.hibernate.Category;
-import wicket.addons.hibernate.IAddonDao;
+import wicket.addons.ServiceLocator;
+import wicket.addons.db.Category;
+import wicket.markup.html.form.ChoiceRenderer;
 import wicket.markup.html.form.DropDownChoice;
-import wicket.markup.html.form.model.ChoiceList;
 import wicket.model.Model;
 
 /**
@@ -38,28 +38,33 @@ public class CategoryDropDownChoice extends DropDownChoice
      * Constructor
      * @param parameters
       */
-    public CategoryDropDownChoice(final String id, final IAddonDao dao, final int categoryId)
+    public CategoryDropDownChoice(final String id, final Long categoryId)
     {
-        super(id, new Model(""), new ChoiceList(new ArrayList()));
-        
-        final List categoryCount = dao.getCountByCategory();
+        super(id);
+
+        setChoiceRenderer(new ChoiceRenderer());
+
+        final List categoryCount = ServiceLocator.instance().getCategoryService().getAllCategories();
         final List categoryOptions = new ArrayList();
 
-        categoryOptions.add(new CategoryOption("All categories", -1));
+        final CategoryOption allOption = new CategoryOption("All categories", null);
+        setModel(new Model(allOption));
+        categoryOptions.add(allOption);
         
         final Iterator iter = categoryCount.iterator();
         while (iter.hasNext())
         {
             final Category cat = (Category)iter.next();
-            categoryOptions.add(new CategoryOption(cat.getName() + "  (" + cat.getCount() + ")", cat.getId()));
+            categoryOptions.add(new CategoryOption(cat.getName() + "  (" + cat.getAddonCount() + ")", cat));
         }
 
-        ((ChoiceList)this.getChoices()).addAll(categoryOptions);
+        this.setChoices(categoryOptions);
         
         for (Object data : categoryOptions)
         {
             final CategoryOption option = (CategoryOption) data;
-            if (option.getCategoryId() == categoryId)
+            if ((option.getCategory() != null) && (option.getCategory().getId() != null) && 
+                    (categoryId != null) && (option.getCategory().getId().doubleValue() == categoryId.doubleValue()))
             {
                 setModelObject(option);
                 break;
@@ -70,17 +75,17 @@ public class CategoryDropDownChoice extends DropDownChoice
 	public class CategoryOption implements Serializable
 	{
 	    private final String text;
-	    private final int categoryId;
+	    private final Category category;
 	    
-	    public CategoryOption(final String text, final int categoryId)
+	    public CategoryOption(final String text, final Category category)
 	    {
 	        this.text = text;
-	        this.categoryId = categoryId;
+	        this.category = category;
 	    }
 	    
-	    public int getCategoryId()
+	    public Category getCategory()
 	    {
-	        return categoryId;
+	        return category;
 	    }
 	    
 	    public String toString()

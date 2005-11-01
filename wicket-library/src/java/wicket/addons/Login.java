@@ -18,7 +18,6 @@
  */
 package wicket.addons;
 
-import wicket.PageParameters;
 import wicket.addons.utils.SignIn2Panel;
 
 /**
@@ -28,11 +27,10 @@ public final class Login extends BaseHtmlPage /* AuthenticateHtmlPage */
 {
     /**
      * Constructor
-     * @param parameters
       */
-    public Login(final PageParameters parameters)
+    public Login()
     {
-        super(parameters, "Wicket-Addons: Login page");
+        super(null, "Wicket-Addons: Login page");
         
         SignIn2Panel signInPanel = new SignIn2Panel("loginPanel")
         {

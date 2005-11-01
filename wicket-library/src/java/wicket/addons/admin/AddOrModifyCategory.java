@@ -22,8 +22,9 @@ import java.util.Map;
 
 import wicket.RequestCycle;
 import wicket.addons.BaseHtmlPage;
-import wicket.addons.hibernate.Category;
-import wicket.addons.hibernate.User;
+import wicket.addons.ServiceLocator;
+import wicket.addons.db.Category;
+import wicket.addons.db.User;
 import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.form.Form;
 import wicket.markup.html.form.TextArea;
@@ -41,22 +42,22 @@ public final class AddOrModifyCategory extends BaseHtmlPage /* AuthenticateHtmlP
      */
     public AddOrModifyCategory()
     {
-        this(0);
+        this(null);
     }
     
     /**
      * Constructor
      * @param parameters
       */
-    public AddOrModifyCategory(final int categoryId)
+    public AddOrModifyCategory(final Category category)
     {
         super(null, "Wicket-Addons: Category Request Form");
         
         // Create and add feedback panel to page
         final FeedbackPanel feedback = new FeedbackPanel("feedback");
-        //add(feedback);
+        add(feedback);
 
-        add(new AddCategoryForm("form", feedback, categoryId));
+        add(new AddCategoryForm("form", category));
     }
 
     /**
@@ -64,28 +65,22 @@ public final class AddOrModifyCategory extends BaseHtmlPage /* AuthenticateHtmlP
      */
     public final class AddCategoryForm extends Form
     {
-        private final Category category;
+        private Category category;
         private String creator;
         
         /**
          * Constructor
          * @param componentName Name of form
-         * @param book Book model
-         * @param feedback Feedback component that shows errors
          */
-        public AddCategoryForm(final String componentName, final FeedbackPanel feedback, final int categoryId)
+        public AddCategoryForm(final String componentName, Category category)
         {
-            super(componentName, feedback);
+            super(componentName);
 
-            if (categoryId == 0)
+            if (category == null)
             {
-                this.category = new Category();
+                category = Category.Factory.newInstance();
             }
-            else
-            {
-                this.category = (Category)getAddonDao().load(Category.class, new Integer(categoryId));
-                getAddonDao().getCountByCategory();
-            }
+            this.category = category;
             
             add(new TextField("categoryName", new PropertyModel(category, "name")));
             add(new TextArea("description", new PropertyModel(category, "description")));
@@ -96,7 +91,7 @@ public final class AddOrModifyCategory extends BaseHtmlPage /* AuthenticateHtmlP
             WebMarkupContainer button = new WebMarkupContainer("delete");
             add(button);
             
-            if (category.getCount() > 0)
+            if (category.getAddonCount() > 0)
             {
                 button.setVisible(false);
             }
@@ -119,11 +114,20 @@ public final class AddOrModifyCategory extends BaseHtmlPage /* AuthenticateHtmlP
             {
                 final User user = getUser();
                 category.setCreatedBy(user);
-                getAddonDao().saveOrUpdate(category);
+                
+                if (category.getId() == null)
+                {
+                    category.setEnable(true);
+                    ServiceLocator.instance().getCategoryService().addCategegory(category);
+                }
+                else
+                {
+                    ServiceLocator.instance().getCategoryService().save(category);
+                }
             }
             else if (cycle.getRequest().getParameter("delete") != null)
             {
-                getAddonDao().delete(category);
+        		ServiceLocator.instance().getCategoryService().remove(category);
             }
             
             cycle.setResponsePage(new Categories(null));

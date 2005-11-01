@@ -18,7 +18,7 @@
  */
 package wicket.addons;
 
-import wicket.addons.hibernate.User;
+import wicket.addons.db.User;
 import wicket.markup.html.form.Form;
 import wicket.markup.html.form.TextField;
 import wicket.markup.html.panel.FeedbackPanel;
@@ -37,7 +37,7 @@ public final class ChangeEmailAddress extends BaseHtmlPage /* AuthenticateHtmlPa
         final FeedbackPanel feedback = new FeedbackPanel("feedback");
         add(feedback);
         
-        add(new ChangeEmailAddressForm("form", feedback));
+        add(new ChangeEmailAddressForm("form"));
     }
 
     public final class ChangeEmailAddressForm extends Form
@@ -47,12 +47,10 @@ public final class ChangeEmailAddress extends BaseHtmlPage /* AuthenticateHtmlPa
         /**
          * Constructor
          * @param componentName Name of form
-         * @param book Book model
-         * @param feedback Feedback component that shows errors
          */
-        public ChangeEmailAddressForm(final String componentName, final FeedbackPanel feedback)
+        public ChangeEmailAddressForm(final String componentName)
         {
-            super(componentName, feedback);
+            super(componentName);
             
             add(new TextField("email", new PropertyModel(this, "newEmail")));
         }
@@ -63,7 +61,7 @@ public final class ChangeEmailAddress extends BaseHtmlPage /* AuthenticateHtmlPa
          */
         public final void onSubmit()
         {
-            final User user = (User)getAddonDao().load(User.class, new Integer(getAddonSession().getUserId()));
+            final User user = getUser();
             if (user == null)
             {
 				// Try the component based localizer first. If not found try the
@@ -76,8 +74,8 @@ public final class ChangeEmailAddress extends BaseHtmlPage /* AuthenticateHtmlPa
             else
             {
                 // update password
-                user.setEmail(newEmail);
-                getAddonDao().saveOrUpdate(user);
+                user.getPerson().setEmail(newEmail);
+                getUserService().update(user);
                 
                 setResponsePage(newPage(getApplication().getPages().getHomePage()));
             }
@@ -99,4 +97,4 @@ public final class ChangeEmailAddress extends BaseHtmlPage /* AuthenticateHtmlPa
 			this.newEmail = newEmail;
 		}
     }
-}
+} 

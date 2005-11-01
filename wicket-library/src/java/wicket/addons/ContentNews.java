@@ -18,10 +18,11 @@
  */
 package wicket.addons;
 
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
-import wicket.addons.hibernate.News;
+import wicket.addons.db.News;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.panel.Panel;
 import wicket.model.PropertyModel;
@@ -43,10 +44,15 @@ public class ContentNews extends Panel
         this.news = news;
         
         final SimpleDateFormat dateFormat = new SimpleDateFormat("MMM d", Locale.US);
-        final String dateString = dateFormat.format(news.getLastModified());
+        Timestamp lastUpdated = news.getLastUpdated();
+        if (lastUpdated == null)
+        {
+            lastUpdated = new Timestamp(System.currentTimeMillis());
+        }
+        final String dateString = dateFormat.format(lastUpdated);
         
         add(new Label("date", dateString));
-        add(new Label("headline", new PropertyModel(news, "headline")));
-        add(new Label("message", new PropertyModel(news, "message")).setShouldEscapeModelStrings(false));
+        add(new Label("headline", new PropertyModel(news, "headLine")));
+        add(new Label("message", new PropertyModel(news, "message")).setEscapeModelStrings(false));
     }
 }

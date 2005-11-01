@@ -18,14 +18,17 @@
  */
 package wicket.addons.admin;
 
+import java.util.List;
 import java.util.Map;
+
+import wicket.addons.ServiceLocator;
 
 import wicket.Page;
 import wicket.PageParameters;
 import wicket.RequestCycle;
 import wicket.addons.BaseHtmlPage;
-import wicket.addons.hibernate.Addon;
-import wicket.addons.hibernate.Category;
+import wicket.addons.db.Addon;
+import wicket.addons.db.Category;
 import wicket.addons.user.MyAddons;
 import wicket.addons.utils.AddOrModifyAddonPanel;
 
@@ -58,10 +61,10 @@ public final class AddOrModifyAddon extends BaseHtmlPage /* AuthenticateHtmlPage
         
         if (addon == null)
         {
-            addon = new Addon();
+            addon = Addon.Factory.newInstance();
         }
        
-        add(new AddOrModifyAddonPanel("addonPanel", getAddonDao(), addon.getId())
+        add(new AddOrModifyAddonPanel("addonPanel", addon)
         {
             public final void onSubmit(final Addon addon)
             {
@@ -70,14 +73,25 @@ public final class AddOrModifyAddon extends BaseHtmlPage /* AuthenticateHtmlPage
 
                 if ("save".equals(params.get("save")))
                 {
-                    addon.setEnabled(1);
-                    addon.setCategory((Category)getAddonDao().load(Category.class, new Integer(1)));
-                    addon.setOwner(getUser());
-                    getAddonDao().saveOrUpdate(addon);
+            		List categories = ServiceLocator.instance().getCategoryService().getAllCategories();
+
+                    addon.setEnable(true);
+                    
+                    addon.setCategory((Category)categories.get(0));
+                    
+                    if (addon.getId() == null)
+                    {
+                        addon.setOwner(getUser());
+                        getAddonService().addAddon(addon);
+                    }
+                    else
+                    {
+                        getAddonService().save(addon);
+                    }
                 }
                 else if ("delete".equals(params.get("delete")))
                 {
-                    getAddonDao().delete(addon);
+                    getAddonService().remove(addon);
                 }
 
                 setResponsePage(returnPage == null ? new MyAddons() : returnPage);

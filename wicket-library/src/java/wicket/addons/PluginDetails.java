@@ -22,11 +22,12 @@ import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Map;
 
-import org.apache.commons.collections.LRUMap;
+import wicket.addons.ServiceLocator;
+import org.apache.commons.collections.map.LRUMap;
 
 import wicket.Page;
-import wicket.addons.hibernate.Addon;
-import wicket.addons.hibernate.Click;
+import wicket.addons.db.Addon;
+import wicket.addons.db.Click;
 import wicket.addons.utils.ExternalImage;
 import wicket.addons.utils.RatingLink;
 import wicket.markup.html.basic.Label;
@@ -49,27 +50,25 @@ public final class PluginDetails extends BaseHtmlPage /* AuthenticateHtmlPage */
      * Constructor
      * @param parameters
       */
-    public PluginDetails(final int addonId)
+    public PluginDetails(Addon addon)
     {
         super(null, "Wicket-Addons: Addon-Details");
 
-        final Addon addon;
-        if (addonId == 0)
+        if (addon == null)
         {
-            addon = new Addon();
+            addon = Addon.Factory.newInstance();
         }
         else
         {
-            addon = (Addon)getAddonDao().load(Addon.class, new Integer(addonId));
             final String key = ((WebSession)this.getSession()).getHttpSession().getId() + "-" + addon.getId();
             if (!visits.containsKey(key))
             {
                 visits.put(key, null);
                 
-                final Click click = new Click();
+                final Click click = Click.Factory.newInstance();
                 click.setAddon(addon);
                 click.setSessionId(((WebSession)this.getSession()).getHttpSession().getId());
-                this.getAddonDao().saveOrUpdate(click);
+        		ServiceLocator.instance().getClickService().addClick(click);
             }
         }
         
@@ -78,23 +77,24 @@ public final class PluginDetails extends BaseHtmlPage /* AuthenticateHtmlPage */
         add(new ExternalLink("homepage", addon.getHomepage(), "plugin-homepage"));
         add(new ExternalLink("reportUpdate", "xxx.html", "report-update"));
 
-        add(new RatingLink("ratingLink", addon, getAddonDao()));
+        add(new RatingLink("ratingLink", addon));
 
+        final Addon addonX = addon;
         final Link comments = new PageLink("comments", new IPageLink()
 		        {
 		            public Page getPage()
 		            {
-		                return new Comments(addonId);
+		                return new CommentsPage(addonX);
 		            }
 		            
 		            public Class getPageIdentity()
 		            {
-		                return Comments.class;
+		                return CommentsPage.class;
 		            }
 		        });
         
         add(comments);
-        final Integer commentCount = getAddonDao().getCommentCount(addon);
+        final Integer commentCount = getAddonService().getCommentCount(addon);
         comments.add(new Label("commentCount", new Model(commentCount)));
         
         add(new Label("version", addon.getVersion()));
@@ -106,7 +106,7 @@ public final class PluginDetails extends BaseHtmlPage /* AuthenticateHtmlPage */
         
         add(new Label("license", addon.getLicense()));
         add(new Label("created", new SimpleDateFormat().format(addon.getCreateTime())));
-        add(new Label("updated", new SimpleDateFormat().format(addon.getLastModified())));
+        add(new Label("updated", new SimpleDateFormat().format(addon.getLastUpdated())));
 
         add(new Label("24h", new Model(new Integer(addon.getClicksLast24H()))));
         add(new Label("week", new Model(new Integer(addon.getClicksLastWeek()))));
