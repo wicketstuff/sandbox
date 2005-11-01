@@ -14,7 +14,6 @@
 	<classpathentry kind="var" path="MAVEN_REPO/hibernate/jars/antlr-2.7.5H3.jar"/>
 	<classpathentry kind="var" path="MAVEN_REPO/ehcache/jars/ehcache-1.1.jar"/>
 	<classpathentry sourcepath="MAVEN_REPO/ognl/src/ognl-2.6.7.zip" kind="var" path="MAVEN_REPO/ognl/jars/ognl-2.6.7.jar"/>
-	<classpathentry sourcepath="MAVEN_REPO/wicket/src/wicket-1.1-rc2.zip" kind="var" path="MAVEN_REPO/wicket/jars/wicket-1.1-rc2.jar"/>
 	<classpathentry sourcepath="MAVEN_REPO/springframework/src/spring-1.2.5.zip" kind="var" path="MAVEN_REPO/springframework/jars/spring-1.2.5.jar"/>
 	<classpathentry kind="var" path="MAVEN_REPO/jetty/jars/jetty-4.2.9.jar"/>
 	<classpathentry kind="var" path="MAVEN_REPO/jetty/jars/jasper-runtime-4.2.20RC0.jar"/>
@@ -24,5 +23,6 @@
 	<classpathentry kind="var" path="MAVEN_REPO/commons-pool/jars/commons-pool-1.2.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/wicket"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/wicket-extensions"/>
+	<classpathentry kind="lib" path="lib/jta.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
