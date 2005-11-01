@@ -3,7 +3,6 @@ package wicket.examples.cdapp2.page;
 import java.util.Date;
 import java.util.List;
 
-import wicket.IFeedback;
 import wicket.examples.cdapp2.model.Album;
 import wicket.markup.html.form.Button;
 import wicket.markup.html.form.DropDownChoice;
@@ -27,13 +26,13 @@ public class NewAlbum extends CdPage {
 		IModel formModel = new CompoundPropertyModel(new Album());
 		FeedbackPanel feedback = new FeedbackPanel("feedback");
 		
-		add(new NewAlbumForm(feedback, formModel));
+		add(new NewAlbumForm(formModel));
 		add(feedback);
 	}
 	
 	private class NewAlbumForm extends Form {
-		public NewAlbumForm(IFeedback feedback, IModel model) {
-			super("form", model, feedback);
+		public NewAlbumForm(IModel model) {
+			super("form", model);
 			add(new RequiredTextField("artist"));
 			add(new RequiredTextField("title"));
 			add(new RequiredTextField("date", Date.class));
@@ -49,7 +48,7 @@ public class NewAlbum extends CdPage {
 				public void onSubmit() {
 					setResponsePage(new BrowseAlbums());
 				}
-			}.setImmediate(true)); // so the form isn't validated
+			}.setDefaultFormProcessing(false)); // so the form isn't validated
 		}
 		
 		@Override

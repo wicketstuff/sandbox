@@ -38,7 +38,7 @@ public class BrowseAlbums extends CdPage {
 		add(gridFeedback);
 		
 		add(new SearchForm());
-		add(gridPanel = new GridPanel("allCustomers", ds, 5, null, gridFeedback));
+		add(gridPanel = new GridPanel("allCustomers", ds, 5, null));
 		add(new Link("newAlbum") {
 			@Override
 			public void onClick() {
@@ -49,7 +49,7 @@ public class BrowseAlbums extends CdPage {
 	
 	private class SearchForm extends Form {		
 		public SearchForm() {
-			super("searchForm", new CompoundPropertyModel(new ValueMap()), null);
+			super("searchForm", new CompoundPropertyModel(new ValueMap()));
 			add(new TextField("term"));
 			
             // Replaces the backing list with one that only contains the results
