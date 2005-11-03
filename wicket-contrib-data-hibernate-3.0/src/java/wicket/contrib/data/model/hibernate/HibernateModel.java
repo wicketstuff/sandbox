@@ -30,6 +30,8 @@ public class HibernateModel implements IModel, Comparable
 	private Serializable id;
 	
 	private boolean unproxy;
+	
+	private boolean evict;
 
 	private transient Object model;
 	
@@ -127,6 +129,15 @@ public class HibernateModel implements IModel, Comparable
 		}
 	}
 	
+	/**
+	 * Set to true to have the object evicted from the session before it's
+	 * returned from {@link #getObject(Component)}.
+	 */
+	public void setEvict(boolean evict)
+	{
+		this.evict = evict;
+	}
+	
 	public Serializable getId()
 	{
 		return id;
@@ -154,6 +165,19 @@ public class HibernateModel implements IModel, Comparable
 		{
 			attach();
 		}
+		
+		if (evict)
+		{
+			getDao().execute(new IHibernateCallback()
+			{
+				public Object execute(Session session)
+				{
+					session.evict(model);
+					return null;
+				}
+			});
+		}
+		
 		return model;
 	}
 
