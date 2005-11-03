@@ -19,8 +19,18 @@ import wicket.model.Model;
  */
 public abstract class HibernateDataProvider extends SortableDataProvider
 {
-	IModel hibernateDao;
+	private IModel hibernateDao;
 	
+	private boolean unproxy = false;
+	
+	/**
+	 * Set to true to have all models unproxied.
+	 */
+	public void setUnproxy(boolean unproxy)
+	{
+		this.unproxy = unproxy;
+	}
+
 	public HibernateDataProvider(IHibernateDao hibernateDao)
 	{
 		this.hibernateDao = new Model(hibernateDao);
@@ -33,7 +43,7 @@ public abstract class HibernateDataProvider extends SortableDataProvider
 
 	public IModel model(Object object)
 	{
-		return new HibernateModel(object, hibernateDao);
+		return new HibernateModel(object, hibernateDao, unproxy);
 	}
 
 	public Iterator iterator(final int first, final int count)

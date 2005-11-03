@@ -110,12 +110,20 @@ public class HibernateModel implements IModel, Comparable
 		// Set all the values.
 		this.clazz = meta.getMappedClass(EntityMode.POJO);
 		this.id = meta.getIdentifier(unproxiedModel, EntityMode.POJO);
-		this.model = model;
 		
 		if (id == null)
 		{
 			 throw new WicketRuntimeException("Could not get primary key for: "  +
 				 entityName);
+		}
+		
+		if (unproxy)
+		{
+			this.model = unproxiedModel;
+		}
+		else
+		{
+			this.model = model;
 		}
 	}
 	
@@ -146,11 +154,6 @@ public class HibernateModel implements IModel, Comparable
 		{
 			attach();
 		}
-		if (unproxy && model instanceof HibernateProxy)
-		{
-			HibernateProxy proxy = (HibernateProxy) model;
-			return proxy.getHibernateLazyInitializer().getImplementation();
-		}
 		return model;
 	}
 
@@ -180,6 +183,12 @@ public class HibernateModel implements IModel, Comparable
 				return session.load(clazz, id);
 			}
 		});
+		
+		if (unproxy && model instanceof HibernateProxy)
+		{
+			HibernateProxy proxy = (HibernateProxy) model;
+			model = proxy.getHibernateLazyInitializer().getImplementation();
+		}
 	}
 	
 	public int compareTo(Object rhs)
@@ -195,11 +204,17 @@ public class HibernateModel implements IModel, Comparable
 	
 	public boolean equals(Object rhs)
 	{
+		if (this == rhs)
+		{
+			return true;
+		}
+		
 		if (rhs instanceof HibernateModel)
 		{
 			HibernateModel hm = (HibernateModel) rhs;
 			return hm.getClazz().equals(getClazz()) && hm.getId().equals(getId());
 		}
+		
 		return false;
 	}
 	
