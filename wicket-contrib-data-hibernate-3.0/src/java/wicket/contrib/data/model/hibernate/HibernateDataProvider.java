@@ -23,12 +23,23 @@ public abstract class HibernateDataProvider extends SortableDataProvider
 	
 	private boolean unproxy = false;
 	
+	private boolean evict = false;
+	
 	/**
 	 * Set to true to have all models unproxied.
 	 */
 	public void setUnproxy(boolean unproxy)
 	{
 		this.unproxy = unproxy;
+	}
+	
+	/**
+	 * Set to true to have all models evicted from the session before they are
+	 * returned.
+	 */
+	public void setEvict(boolean evict)
+	{
+		this.evict = evict;
 	}
 
 	public HibernateDataProvider(IHibernateDao hibernateDao)
@@ -43,7 +54,9 @@ public abstract class HibernateDataProvider extends SortableDataProvider
 
 	public IModel model(Object object)
 	{
-		return new HibernateModel(object, hibernateDao, unproxy);
+		HibernateModel ret = new HibernateModel(object, hibernateDao, unproxy);
+		ret.setEvict(evict);
+		return ret;
 	}
 
 	public Iterator iterator(final int first, final int count)
