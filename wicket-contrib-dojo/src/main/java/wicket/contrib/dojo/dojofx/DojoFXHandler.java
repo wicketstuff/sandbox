@@ -1,5 +1,8 @@
 package wicket.contrib.dojo.dojofx;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import wicket.AttributeModifier;
 import wicket.Component;
 import wicket.WicketRuntimeException;
@@ -60,8 +63,9 @@ public abstract class DojoFXHandler extends DojoAjaxHandler
 	}
 	
 	
-	/* (non-Javadoc)
-	 * @see wicket.AjaxHandler#renderHeadContribution(wicket.markup.html.HtmlHeaderContainer)
+	/** 
+	 * renders the javascript functions to the page's head corresponding with this class
+	 * @param container the Header container to be written to
 	 */
 	protected abstract void renderHeadContribution(HtmlHeaderContainer container);
 	
@@ -96,6 +100,16 @@ public abstract class DojoFXHandler extends DojoAjaxHandler
 	{
 		return trigger;
 	}
+	
+	/**
+	 * Subclasses can use this method to add extra triggers
+	 * by adding an attributemodifier to c.
+	 * @param c trigger component
+	 */
+	protected void addTrigger(Component c)
+	{
+	}
+
 	/**
 	 * @author Ruud Booltink
 	 * @author Marco van de Haar
