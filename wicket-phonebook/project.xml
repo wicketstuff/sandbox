@@ -122,7 +122,7 @@
       <artifactId>jetty</artifactId>
       <version>4.2.9</version>
       <type>jar</type>
-      <properties><war.bundle>falase</war.bundle></properties>
+      <properties><war.bundle>false</war.bundle></properties>
     </dependency>
     
     <dependency>
@@ -130,7 +130,7 @@
       <artifactId>jasper-runtime</artifactId>
       <version>4.2.20RC0</version>
       <type>jar</type>
-      <properties><war.bundle>falase</war.bundle></properties>
+      <properties><war.bundle>false</war.bundle></properties>
     </dependency>
     
     <dependency>
@@ -138,7 +138,7 @@
       <artifactId>jasper-compiler</artifactId>
       <version>4.2.20RC0</version>
       <type>jar</type>
-      <properties><war.bundle>falase</war.bundle></properties>
+      <properties><war.bundle>false</war.bundle></properties>
     </dependency>
     
     <dependency>
@@ -146,7 +146,7 @@
       <artifactId>servletapi</artifactId>
       <version>2.3</version>
       <type>jar</type>
-      <properties><war.bundle>falase</war.bundle></properties>
+      <properties><war.bundle>false</war.bundle></properties>
     </dependency>
     
     <dependency>
