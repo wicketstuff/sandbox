@@ -41,7 +41,7 @@ public class FXOnClickWiper extends DojoFXHandler
 	/**
 	 * Constructor with custom startDisplay
 	 * 
-	 * @param trigger Omponent which'ONCLICK triggers teh wiping effect
+	 * @param trigger Component which'ONCLICK triggers teh wiping effect
 	 * @param duration duration for the animation.
 	 * @param startDisplay whether the wiping component starts wiped in or wiped out(wiped in means vissible)
 	 */
@@ -65,7 +65,7 @@ public class FXOnClickWiper extends DojoFXHandler
 	}
 
 	/* (non-Javadoc)
-	 * @see wicket.AjaxHandler#renderHeadContribution(wicket.markup.html.HtmlHeaderContainer)
+	 * @see wicket.contrib.dojo.dojofx.DojoFXHandler#renderHeadContribution(wicket.markup.html.HtmlHeaderContainer)
 	 */
 	public final void renderHeadContribution(HtmlHeaderContainer container)
 	/*
