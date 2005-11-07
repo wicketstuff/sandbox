@@ -19,6 +19,13 @@ public class FXOnMouseOverFader extends DojoFXHandler
 	
 	
 	
+	/**
+	 * Standard constructor for a fader which listens to trigger's mouseover events.
+	 * if startDisplay is true, component will start faded out.
+	 * @param duration
+	 * @param trigger
+	 * @param startDisplay whether component starts faded out.
+	 */
 	public FXOnMouseOverFader(int duration, Component trigger, boolean startDisplay)
 	{
 		super("OnMouseOver", duration, trigger);
@@ -26,6 +33,15 @@ public class FXOnMouseOverFader extends DojoFXHandler
 		this.type = "fade";
 	}
 
+	/**
+	 * Constructor for a fader with allowHide option. 
+	 * If allowhide is set to true, component's display property (style)
+	 * will be set to none, and compoennt will dissapear upon fadeout.
+	 * @param duration
+	 * @param trigger
+	 * @param startDisplay whether component starts faded out and with display=none.
+	 * @param allowHide
+	 */
 	public FXOnMouseOverFader(int duration, Component trigger, boolean startDisplay, boolean allowHide)
 	{
 		super("OnmouseOver", duration, trigger);
@@ -40,6 +56,15 @@ public class FXOnMouseOverFader extends DojoFXHandler
 		}
 	}
 	
+	/**
+	 * Constructor for a fader with a set starting and ending opacity. 
+	 * Component will fade from start to end opacity.
+	 * @param duration
+	 * @param trigger
+	 * @param startDisplay whether component starts with opacity=startOpac
+	 * @param startOpac
+	 * @param endOpac
+	 */
 	public FXOnMouseOverFader(int duration, Component trigger, boolean startDisplay, double startOpac, double endOpac)
 	{
 		super("OnMouseOver", duration, trigger);
@@ -83,6 +108,9 @@ public class FXOnMouseOverFader extends DojoFXHandler
 			
 	
 	}
+	/* (non-Javadoc)
+	 * @see wicket.AjaxHandler#renderHeadContribution(wicket.markup.html.HtmlHeaderContainer)
+	 */
 	protected void renderHeadContribution(HtmlHeaderContainer container)
 	{
 		//String to be written to header
@@ -151,6 +179,9 @@ public class FXOnMouseOverFader extends DojoFXHandler
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see wicket.AjaxHandler#onBind()
+	 */
 	protected void onBind()
 	{
 		Component c = getComponent();
