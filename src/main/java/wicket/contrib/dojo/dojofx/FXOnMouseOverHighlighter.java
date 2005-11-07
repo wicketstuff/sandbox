@@ -6,6 +6,12 @@ import wicket.contrib.dojo.dojofx.DojoFXHandler.AppendAttributeModifier;
 import wicket.markup.html.HtmlHeaderContainer;
 import wicket.model.Model;
 
+/**
+ * FX highlighter which reacts to mousover events. 
+ * @author Ruud Booltink
+ * @author Marco van de Haar
+ *
+ */
 public class FXOnMouseOverHighlighter extends DojoFXHandler
 {
 	
@@ -15,6 +21,14 @@ public class FXOnMouseOverHighlighter extends DojoFXHandler
 	private RGB startColor;
 	private RGB endColor;
 	
+	/**
+	 * Constructor for highlighter that highlights from current bg-color to toR,toG,toB.
+	 * @param duration
+	 * @param trigger
+	 * @param toR
+	 * @param toG
+	 * @param toB
+	 */
 	public FXOnMouseOverHighlighter(int duration, Component trigger, int toR, int toG, int toB)
 	{
 		super("OnMouseOver", duration, trigger);
@@ -23,6 +37,17 @@ public class FXOnMouseOverHighlighter extends DojoFXHandler
 		
 	}
 	
+	/**
+	 * Constructor for highlighter that highlights from startR/G/B to endR/G/B.
+	 * @param duration
+	 * @param trigger
+	 * @param startR
+	 * @param startG
+	 * @param startB
+	 * @param endR
+	 * @param endG
+	 * @param endB
+	 */
 	public FXOnMouseOverHighlighter(int duration, Component trigger, int startR, int startG, int startB, int endR, int endG, int endB)
 	{
 		super("OnMouseOver",duration, trigger);
@@ -30,16 +55,20 @@ public class FXOnMouseOverHighlighter extends DojoFXHandler
 		startColor = new RGB(startR, startG, startB);
 		endColor = new RGB(endR, endG, endB);
 	}
+	
+	/* (non-Javadoc)
+	 * @see wicket.AjaxHandler#renderHeadContribution(wicket.markup.html.HtmlHeaderContainer)
+	 */
 	protected void renderHeadContribution(HtmlHeaderContainer container)
 	{
-//		String to be written to header
+		//String to be written to header
 		String s;
-		//dojo function calls for fadein/out
+		//dojo function calls for higlighting
 		String highlightInFunction;
 		String highlightOutFunction;
 		
 		//check for type, and call dojo.fx.html so that:
-		//it fades node over duration (from startOpac to endOpac) and with callback.
+		//it highlights node over duration (from startOpac to endOpac) and with callback.
 		//callback sets the right state variable to the present state and 
 		//does mouseover checks for stability improvements.
 		//the following code might look a bit abracadabra, but it works and is thouroughly stress-tested.
@@ -92,12 +121,23 @@ public class FXOnMouseOverHighlighter extends DojoFXHandler
 		
 	}
 
+	/**
+	 * Simple inner class to manage RGB values;
+	 * @author Marco van de Haar
+	 *
+	 */
 	private class RGB
 	{
 		private final int R;
 		private final int G;
 		private final int B;
 		
+		/**
+		 * construct
+		 * @param R
+		 * @param G
+		 * @param B
+		 */
 		public RGB(int R, int G, int B)
 		{
 			this.R = R;
@@ -121,17 +161,20 @@ public class FXOnMouseOverHighlighter extends DojoFXHandler
 			return B;
 		}
 		
+		/**
+		 * @return string which dojo can use to pass RGB values to functions:  [255,255,255]
+		 */
 		public String toString()
 		{
 			return "["+ R +", "+ G +", "+ B +"]";
 		}
 		
 	}
+
 	
-	
-	
-	
-	
+	/* (non-Javadoc)
+	 * @see wicket.AjaxHandler#onBind()
+	 */
 	protected void onBind()
 	{
 		Component c = getComponent();
