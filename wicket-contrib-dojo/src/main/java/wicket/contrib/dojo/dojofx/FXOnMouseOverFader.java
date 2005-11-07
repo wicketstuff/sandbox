@@ -60,9 +60,6 @@ public class FXOnMouseOverFader extends DojoFXHandler
 		this.startOpac = startOpac;
 		this.endOpac = endOpac;
 		
-		
-		
-		
 	}
 
 	/* 
@@ -73,8 +70,10 @@ public class FXOnMouseOverFader extends DojoFXHandler
 		//set initial opacity to fadeOpac if type is fadeOpac, else to 0
 		double initOpac = (type=="fadeOpac"?startOpac:0);
 		//if starDisplay is false, set starting opacity of component to initOpac.
+		System.out.println("bodycontributorfunctioncalled");
 		if(!startDisplay)
 		{
+			System.out.println("dojo.html.setOpacity(document.getElementById('"+ HTMLID + "'), "+ initOpac + ");");
 			return "dojo.html.setOpacity(document.getElementById('"+ HTMLID + "'), "+ initOpac + ");";
 		} 
 		else
@@ -120,7 +119,8 @@ public class FXOnMouseOverFader extends DojoFXHandler
 				"\t"+ componentId  + "_mouseover = 0; \n";
 		} else {
 			s = "\t<script language=\"JavaScript\" type=\"text/javascript\">\n" +
-			"\t"+ componentId  + "_faderState = 'fadedOut'; \n";		
+			"\t"+ componentId  + "_faderState = 'fadedOut'; \n" + 
+			"\t"+ componentId  + "_mouseover = 0; \n";
 		}
 			
 			s = s + "\tfunction "+ componentId  + "_fade(id, duration) { \n" +
@@ -138,7 +138,7 @@ public class FXOnMouseOverFader extends DojoFXHandler
 			"\t}\n"; 
 			
 		
-		s = s + "\tfunction setMouseOver(ismouseover){\n" + 
+		s = s + "\tfunction "+ componentId  + "_setMouseOver(ismouseover){\n" + 
 			"\t\tif (ismouseover == 1){\n" + 
 				"\t\t\t"+ componentId  + "_mouseover = 1;\n" + 
 			"\t\t}else{\n" + 
@@ -165,8 +165,8 @@ public class FXOnMouseOverFader extends DojoFXHandler
 		/*add onmouseover and onmouseout handlers.
 		setMouseOver handles correct mouseover states 
 		followed by fade() calls with needed variables.*/
-		this.getTrigger().add(new AppendAttributeModifier(getEventName(),true, new Model("setMouseOver(1);" + componentId + "_fade('"+ HTMLID +"', " + getDuration() + ");")));
-		this.getTrigger().add(new AppendAttributeModifier("OnMouseOut",true, new Model("setMouseOver(0);" + componentId + "_fade('"+ HTMLID +"', " + getDuration() + ");")));
+		this.getTrigger().add(new AppendAttributeModifier(getEventName(),true, new Model(componentId  + "_setMouseOver(1);" + componentId + "_fade('"+ HTMLID +"', " + getDuration() + ");")));
+		this.getTrigger().add(new AppendAttributeModifier("OnMouseOut",true, new Model(componentId  + "_setMouseOver(0);" + componentId + "_fade('"+ HTMLID +"', " + getDuration() + ");")));
 	}
 
 }
