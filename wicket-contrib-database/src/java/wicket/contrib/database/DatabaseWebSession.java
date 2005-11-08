@@ -17,12 +17,12 @@
  */
 package wicket.contrib.database;
 
-import wicket.Application;
 import wicket.IRequestCycleFactory;
 import wicket.Request;
 import wicket.RequestCycle;
 import wicket.Response;
 import wicket.Session;
+import wicket.protocol.http.WebApplication;
 import wicket.protocol.http.WebRequest;
 import wicket.protocol.http.WebSession;
 
@@ -42,7 +42,7 @@ public class DatabaseWebSession extends WebSession
 	 * @param application
 	 *            The application object
 	 */
-	public DatabaseWebSession(final Application application)
+	public DatabaseWebSession(final WebApplication application)
 	{
 		super(application);
 	}
