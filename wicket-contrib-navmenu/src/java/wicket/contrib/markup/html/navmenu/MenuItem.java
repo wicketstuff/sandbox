@@ -18,6 +18,9 @@
  */
 package wicket.contrib.markup.html.navmenu;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
@@ -79,6 +82,9 @@ public class MenuItem extends DefaultMutableTreeNode
 	/** optional page parameters. */
 	private PageParameters pageParameters;
 
+	/** page classes that should be interpreted as being on the same path. */
+	private Set aliases = new HashSet();
+
 	/**
 	 * Construct.
 	 */
@@ -115,6 +121,19 @@ public class MenuItem extends DefaultMutableTreeNode
 	public boolean checkAccess(RequestCycle requestCycle)
 	{
 		return true;
+	}
+
+	/**
+	 * Whether the given page class is part of the selection.
+	 * 
+	 * @param pageClass
+	 *            the page class to check
+	 * @return whether the given page class is part of the selection
+	 */
+	public boolean isPartOfSelection(Class pageClass)
+	{
+		return ((this.pageClass != null && this.pageClass.equals(pageClass)) || aliases
+				.contains(pageClass));
 	}
 
 	/**
@@ -180,6 +199,31 @@ public class MenuItem extends DefaultMutableTreeNode
 		this.pageParameters = pageParameters;
 	}
 
+	/**
+	 * Adds an alias.
+	 * 
+	 * @param pageClass
+	 *            the alias page class to add
+	 * @return This
+	 */
+	public MenuItem addAlias(Class pageClass)
+	{
+		aliases.add(pageClass);
+		return this;
+	}
+
+	/**
+	 * Removes an alias.
+	 * 
+	 * @param pageClass
+	 *            the alias page class to remove
+	 * @return This
+	 */
+	public MenuItem removeAlias(Class pageClass)
+	{
+		aliases.remove(pageClass);
+		return this;
+	}
 
 	/**
 	 * @see javax.swing.tree.DefaultMutableTreeNode#add(javax.swing.tree.MutableTreeNode)

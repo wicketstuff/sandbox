@@ -94,7 +94,7 @@ public class MenuModel extends DefaultTreeModel
 		while (all.hasMoreElements())
 		{
 			MenuItem menuItem = (MenuItem)all.nextElement();
-			if (currentPageClass.equals(menuItem.getPageClass()))
+			if (menuItem.isPartOfSelection(currentPageClass))
 			{
 				currentPath = new MenuTreePath(menuItem.getPath());
 				break;
