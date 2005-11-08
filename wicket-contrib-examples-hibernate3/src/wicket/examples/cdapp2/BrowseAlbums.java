@@ -1,10 +1,12 @@
-package wicket.examples.cdapp2.page;
+package wicket.examples.cdapp2;
 
 import java.util.List;
 
 import wicket.contrib.data.model.OrderedPageableList;
 import wicket.contrib.data.model.bind.GridPanel;
 import wicket.contrib.data.model.bind.IListDataSource;
+import wicket.examples.cdapp2.page.CdPage;
+import wicket.examples.cdapp2.page.NewAlbum;
 import wicket.markup.html.form.Button;
 import wicket.markup.html.form.Form;
 import wicket.markup.html.form.TextField;
@@ -18,66 +20,53 @@ import wicket.util.value.ValueMap;
  * 
  * @author Phil Kulak
  */
-public class BrowseAlbums extends CdPage
-{
+public class BrowseAlbums extends CdPage {
 	private GridPanel gridPanel;
 
-	public BrowseAlbums(String feedbackMessage)
-	{
+	public BrowseAlbums(String feedbackMessage) {
 		this();
 		info(feedbackMessage);
 	}
 
-	public BrowseAlbums()
-	{
+	public BrowseAlbums() {
 		super("Browse Albums");
 
-		List list = getDao().getAlbums();
-		IListDataSource ds = new IListDataSource()
-		{
-			public OrderedPageableList getList()
-			{
-				return new OrderedPageableList()
-				{
+		List list = getDao().findAllAlbums();
+		IListDataSource ds = new IListDataSource() {
+			public OrderedPageableList getList() {
+				return new OrderedPageableList() {
 					@Override
-					protected List getItems(int start, int max, List ordering)
-					{
+					protected List getItems(int start, int max, List ordering) {
 						// TODO Auto-generated method stub
 						return null;
 					}
 
 					@Override
-					protected int getCount()
-					{
+					protected int getCount() {
 						// TODO Auto-generated method stub
 						return 0;
 					}
 				};
 			}
 
-			public List getFields()
-			{
+			public List getFields() {
 				// TODO Auto-generated method stub
 				return null;
 			}
 
-			public void merge(Object entity)
-			{
-				saveOrUpdate(entity);
+			public void merge(Object entity) {
+				merge(entity);
 			}
 
-			public void delete(Object entity)
-			{
+			public void delete(Object entity) {
 				delete(entity);
 			}
 
-			public List findAll(Class c)
-			{
+			public List findAll(Class c) {
 				return getDao().findAllAlbums();
 			}
 
-			public IModel wrap(Object entity)
-			{
+			public IModel wrap(Object entity) {
 				// TODO Auto-generated method stub
 				return null;
 			}
@@ -96,43 +85,36 @@ public class BrowseAlbums extends CdPage
 
 		add(new SearchForm());
 		add(gridPanel = new GridPanel("allCustomers", ds, 5, null));
-		add(new Link("newAlbum")
-		{
+		add(new Link("newAlbum") {
 			@Override
-			public void onClick()
-			{
+			public void onClick() {
 				setResponsePage(newPage(NewAlbum.class));
 			}
 		});
 	}
 
-	private class SearchForm extends Form
-	{
-		public SearchForm()
-		{
+	private class SearchForm extends Form {
+		public SearchForm() {
 			super("searchForm"); // , new CompoundPropertyModel(new
-									// ValueMap()), null);
+			// ValueMap()), null);
 			add(new TextField("term"));
 
 			// Replaces the backing list with one that only contains the results
 			// of the search.
-			add(new Button("submit")
-			{
+			add(new Button("submit") {
 				@Override
-				public void onSubmit()
-				{
-					ValueMap model = (ValueMap)getParent().getModelObject();
-					gridPanel.setList(getDao().searchAlbums(model.getString("term")));
+				public void onSubmit() {
+					ValueMap model = (ValueMap) getParent().getModelObject();
+					gridPanel.setList(getDao().searchAlbums(
+							model.getString("term")));
 				}
 			});
 
 			// Restors the GridPanel to it's origonal state.
-			add(new Button("clear")
-			{
+			add(new Button("clear") {
 				@Override
-				public void onSubmit()
-				{
-					ValueMap model = (ValueMap)getParent().getModelObject();
+				public void onSubmit() {
+					ValueMap model = (ValueMap) getParent().getModelObject();
 					model.remove("term");
 					gridPanel.setList(getDao().findAllAlbums());
 				}
