@@ -173,6 +173,14 @@ public class Tooltip extends Panel
 	}
 
 	/**
+	 * @return target Component
+	 */
+	public Component getTarget()
+	{
+		return target;
+	}
+	
+	/**
 	 * AttributeModifier that appends the new value to the current value if an old value
 	 * exists. If it does not exist, it sets the new value.
 	 * @author Ruud Booltink
