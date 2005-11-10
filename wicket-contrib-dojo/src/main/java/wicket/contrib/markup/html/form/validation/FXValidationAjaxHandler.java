@@ -4,7 +4,6 @@ import wicket.AttributeModifier;
 import wicket.Component;
 import wicket.WicketRuntimeException;
 import wicket.contrib.dojo.DojoAjaxHandler;
-import wicket.feedback.IFeedback;
 import wicket.markup.ComponentTag;
 import wicket.markup.html.HtmlHeaderContainer;
 import wicket.markup.html.form.FormComponent;
@@ -12,7 +11,6 @@ import wicket.model.Model;
 import wicket.util.resource.IResourceStream;
 import wicket.util.resource.StringBufferResourceStream;
 import wicket.util.value.ValueMap;
-import wicket.markup.html.ajax.IAjaxListener;
 
 public class FXValidationAjaxHandler extends DojoAjaxHandler
 {
