@@ -3,7 +3,9 @@ package wicket.contrib.markup.html.tooltip;
 import wicket.markup.ComponentTag;
 import wicket.markup.MarkupStream;
 import wicket.markup.html.HtmlHeaderContainer;
+import wicket.markup.html.PackageResourceReference;
 import wicket.markup.html.WebComponent;
+import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.panel.Panel;
 import wicket.markup.html.resources.JavaScriptReference;
 import wicket.model.IModel;
@@ -132,6 +134,8 @@ public class Tooltip extends Panel
 		String HTMLID = "id" + "_" + targetHTMLID;
 		
 		//add the javascript file
+	
+		
 		add(new JavaScriptReference("tooltipMain", Tooltip.class, "tooltip.js"));
 		
 		//add id attributes for javascript identification to both tooltip and parent
