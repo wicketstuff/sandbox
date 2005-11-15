@@ -114,7 +114,7 @@ public class MenuRowModel extends AbstractReadOnlyDetachableModel
 				for (int i = 0; i < len; i++)
 				{
 					MenuItem child = (MenuItem)node.getChildAt(i);
-					if (child.checkAccess(requestCycle))
+					if (child.checkAccess())
 					{
 						row.add(child);
 					}

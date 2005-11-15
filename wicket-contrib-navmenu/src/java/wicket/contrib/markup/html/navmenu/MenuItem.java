@@ -28,7 +28,6 @@ import javax.swing.tree.TreeNode;
 import wicket.AttributeModifier;
 import wicket.Component;
 import wicket.PageParameters;
-import wicket.RequestCycle;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.link.BookmarkablePageLink;
 import wicket.markup.html.panel.Panel;
@@ -114,11 +113,9 @@ public class MenuItem extends DefaultMutableTreeNode
 	/**
 	 * Checks whether the given (current) request may use this item.
 	 * 
-	 * @param requestCycle
-	 *            the (current) request cycle
 	 * @return true if this item should be visible
 	 */
-	public boolean checkAccess(RequestCycle requestCycle)
+	public boolean checkAccess()
 	{
 		return true;
 	}
