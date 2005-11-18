@@ -2,39 +2,52 @@ package wicket.contrib.markup.html.form.validation;
 
 import wicket.Component;
 import wicket.contrib.markup.html.tooltip.Tooltip;
-import wicket.feedback.ComponentFeedbackMessageFilter;
-import wicket.feedback.IFeedbackMessageFilter;
-import wicket.markup.html.panel.FeedbackPanel;
+import wicket.contrib.markup.html.tooltip.TooltipPanel;
+import wicket.markup.html.form.FormComponent;
 
-public class FXFeedbackTooltip extends Tooltip
+
+/**
+ * Tooltip class used by FXFeedbackIndicator.
+ * This class can also be used to create a 
+ * Tooltip which displays errormessages for 
+ * a chosen formcomponent.
+ * 
+ * @author Marco van de Haar
+ * @author Ruud Booltink
+ *
+ */
+public class FXFeedbackTooltip extends TooltipPanel
 {
 	
 		
-	public FXFeedbackTooltip(String id, Component target)
+	/**
+	 * @param target target Component @see Tooltip.java
+	 */
+	public FXFeedbackTooltip(Component target)
 	{
-		super(id, target, 10,20);
-		final FXTooltipFeedbackPanel feedback = new FXTooltipFeedbackPanel("feedbackpanel", getTarget());
-		add(feedback);
+		super(target, 10,20);
+		
 	}
 	
-	private class FXTooltipFeedbackPanel extends FeedbackPanel
+
+	/**
+	 * @see Tooltip constructor
+	 * 
+	 * @param target target Component
+	 * @param x x offset
+	 * @param y y offset
+	 */
+	public FXFeedbackTooltip(Component target, int x, int y)
 	{
-		/** The message filter for this indicator component */
-		private IFeedbackMessageFilter filter;
-				
-		public FXTooltipFeedbackPanel(String id, Component c)
-		{
-			super(id);
-			 filter = new ComponentFeedbackMessageFilter(c);
-		}
-		
-		/**
-		 * @return Let subclass specify some other filter
-		 */
-		protected IFeedbackMessageFilter getFeedbackMessageFilter()
-		{
-			return filter;
-		}
+		super(target, x,y);
 		
 	}
+
+
+	public void setComponentToCheck(Component component)
+	{
+		final FXTooltipFeedbackPanel feedback = new FXTooltipFeedbackPanel("feedbackpanel", (FormComponent)component);
+		add(feedback);
+	}
+
 }
