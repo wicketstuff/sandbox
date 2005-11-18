@@ -1,3 +1,15 @@
+	function setIFrame(ttip, iframe)
+	{
+		iframe.style.top = ttip.style.top;
+		iframe.style.left = ttip.style.left;
+		iframe.style.width = ttip.offsetWidth;
+		iframe.style.height = ttip.offsetHeight;
+		iframe.style.zIndex = 2;
+		iframe.style.visibility = ttip.style.visibility;
+		//alert("top: " + ttip.style.top + "left: " + ttip.style.left + "width: " + ttip.style.width + "height: " + ttip.style.height + "zindex: " + ttip.style.zIndex + "display: " + ttip.style.visibility);
+		//alert("top: " + iframe.style.top + "left: " + iframe.style.left + "width: " + iframe.style.width + "height: " + iframe.style.height + "zindex: " + iframe.style.zIndex + "display: " + iframe.style.visibility);
+	}
+
 
 	function xstooltip_findPosX(obj)
 	{
@@ -31,10 +43,11 @@
 		return curtop;
 	}
 
-	function xstooltip_show(tooltipId, parentId, posX, posY)
+	function xstooltip_show(tooltipId, parentId, posX, posY, iFrameId)
 	{
 
 		it2=document.getElementById(tooltipId);
+		iframe = document.getElementById(iFrameId);
 		
 		if ((it2.style.top == '' || it2.style.top == 0)
 			&& (it2.style.left == '' || it2.style.left == 0))
@@ -52,16 +65,27 @@
 
 			x = xstooltip_findPosX(img) + posX;
 			y = xstooltip_findPosY(img) + posY;
+			//x = dojo.style.getAbsoluteX(img) + posX;
+			//y = dojo.style.getAbsoluteY(img) + posY;
+			//alert("x = absx + posx : " + x  + "="+ xstooltip_findPosX(img) + "+"  + posX);
+			//alert("y = absy + posy : " + y  + "="+ xstooltip_findPosY(img) + "+"  + posY);
 
+			
 			it2.style.top = y;
 			it2.style.left = x;
+			//alert("2:top: " + it2.style.top + " left: " + it2.style.left + " viss: " + it2.style.visibility);
+			
 		}
 		it2.style.visibility = 'visible';
-		//alert("y: " + xstooltip_findPosY(it) + "x: " + xstooltip_findPosX(it) + " height : " + it.offsetHeight + " width: " + it.offsetWidth + " sum " + (it.offsetHeight + it.offsetWidth));
+		setIFrame(it2, iframe);
+
+		
 	}
 
 	function xstooltip_hide(id)
 	{
 		var it3 = document.getElementById(id);
 		it3.style.visibility = 'hidden';
+		setIFrame(it2, iframe);
+		
 	}
