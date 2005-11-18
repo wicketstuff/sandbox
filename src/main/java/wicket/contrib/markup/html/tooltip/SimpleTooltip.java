@@ -9,7 +9,7 @@ import wicket.markup.html.resources.JavaScriptReference;
  * simple form of Tooltip.java which has a default markup, style and holds a Label.
  *
  */
-public class SimpleTooltip extends Tooltip
+public class SimpleTooltip extends TooltipPanel
 {
 
 	/**
@@ -19,9 +19,9 @@ public class SimpleTooltip extends Tooltip
 	 * 
 	 * constructor with default positioning
 	 */
-	public SimpleTooltip(String id, Component target, String label)
+	public SimpleTooltip(Component target, String label)
 		{
-			super(id, target);
+			super(target);
 			add(new Label("tooltiplabel", label));
 		}
 	
@@ -33,9 +33,9 @@ public class SimpleTooltip extends Tooltip
 	 * @param x x-offset
 	 * @param y y-offset
 	 */
-	public SimpleTooltip(String id, Component target, String label, int x, int y)
+	public SimpleTooltip(Component target, String label, int x, int y)
 	{
-		super(id, target, x, y);
+		super(target, x, y);
 		add(new Label("tooltiplabel", label));
 	}
 

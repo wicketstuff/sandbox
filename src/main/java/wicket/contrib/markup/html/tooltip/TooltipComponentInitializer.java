@@ -9,7 +9,7 @@ public class TooltipComponentInitializer implements IInitializer
 
 	public void init(Application application)
 	{
-		PackageResource.bind(application, Tooltip.class, "tooltip.js");
+		PackageResource.bind(application, TooltipPanel.class, "tooltip.js");
 		
 	}
 
