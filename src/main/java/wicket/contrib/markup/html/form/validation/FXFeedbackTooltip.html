@@ -3,14 +3,24 @@
 
 <head>
 	<wicket:head>
-		<script wicket:id="tooltipMain" type="text/javascript""></script>
+	<style type="text/css">
+		.feedbackTooltipERROR
+		{
+			font-family:Arial, Helvetica, sans-serif; 
+			font-size:small;
+			color:#F00;
+			<!--background : rgb(255, 255, 215);-->
+			margin: 1px 1px
+		}
+	</style>
+		<!-- <script wicket:id="tooltipMain" type="text/javascript""></script> -->
 	</wicket:head>
 </head>
 
 
 <body>
  <wicket:panel>
- 	<div wicket:id="feedbackpanel" style="border: 2px dotted #fc0; background-color: rgb(255, 134, 20);">panel contents here </div>
+ 	<div wicket:id="feedbackpanel" style="border: 1px solid #000;padding: 5px; background-color: rgb(255, 255, 215);">panel contents here </div>
  </wicket:panel>
 </body>
 </html>
