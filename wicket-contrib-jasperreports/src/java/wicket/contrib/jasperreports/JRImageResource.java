@@ -131,7 +131,9 @@ public final class JRImageResource extends JRResource
 			exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, baos);
 
 			// create an image object
-			BufferedImage image = new BufferedImage(print.getPageWidth(), print.getPageHeight(), type);
+			int width = (int) ((float) print.getPageWidth() * getZoomRatio());
+			int height = (int) ((float) print.getPageHeight() * getZoomRatio());
+			BufferedImage image = new BufferedImage(width, height, type);
 			exporter.setParameter(JRGraphics2DExporterParameter.GRAPHICS_2D,
 					(Graphics2D) image.getGraphics());
 			exporter.setParameter(JRGraphics2DExporterParameter.ZOOM_RATIO, new Float(
@@ -236,6 +238,7 @@ public final class JRImageResource extends JRResource
 
 	/**
 	 * Gets type of image (one of BufferedImage.TYPE_*).
+	 * 
 	 * @return type of image
 	 */
 	public int getType()
@@ -245,7 +248,9 @@ public final class JRImageResource extends JRResource
 
 	/**
 	 * Sets type of image (one of BufferedImage.TYPE_*).
-	 * @param type type of image
+	 * 
+	 * @param type
+	 *            type of image
 	 */
 	public void setType(int type)
 	{
