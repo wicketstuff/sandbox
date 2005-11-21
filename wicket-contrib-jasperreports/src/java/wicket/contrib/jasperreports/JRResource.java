@@ -21,6 +21,7 @@ package wicket.contrib.jasperreports;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.net.URL;
 import java.sql.Connection;
 import java.util.Map;
@@ -45,6 +46,7 @@ import wicket.resource.DynamicByteArrayResource;
  * Base class for jasper reports resources.
  * 
  * @author Eelco Hillenius
+ * @author Matej Knopp
  */
 public abstract class JRResource extends DynamicByteArrayResource
 {
@@ -54,7 +56,7 @@ public abstract class JRResource extends DynamicByteArrayResource
 	/**
 	 * Provides JDBC connection.
 	 */
-	public static interface IDatabaseConnectionProvider
+	public static interface IDatabaseConnectionProvider extends Serializable
 	{
 		/**
 		 * Gets a JDBC connection to use when filling the report.
@@ -70,17 +72,38 @@ public abstract class JRResource extends DynamicByteArrayResource
 		void release();
 	}
 
-	/** the compiled report this resource references. */
-	private JasperReport jasperReport;
+	/**
+	 * Factory class for lazy initialization of the jasper report.
+	 */
+	private static interface JasperReportFactory extends Serializable
+	{
+		/**
+		 * Create a jasper report instance.
+		 * 
+		 * @return the new jasper report instance.
+		 * @throws JRException
+		 */
+		JasperReport newJasperReport() throws JRException;
+	};
+
+	/** the connection provider if any for filling this report. */
+	private IDatabaseConnectionProvider connectionProvider;
+
+	/** factory for delayed report creation. */
+	private JasperReportFactory jasperReportFactory;
+
+	/**
+	 * The compiled report this resource references. Made transient as we don't
+	 * want our report to be serialized while we can recreate it at other
+	 * servers at will using the factory.
+	 */
+	private transient JasperReport jasperReport;
 
 	/** the report parameters. */
 	private Map reportParameters;
 
 	/** the datasource if any for filling this report. */
 	private JRDataSource reportDataSource;
-
-	/** the connection provider if any for filling this report. */
-	private IDatabaseConnectionProvider connectionProvider;
 
 	/**
 	 * When set, a header 'Content-Disposition: attachment;
@@ -106,18 +129,15 @@ public abstract class JRResource extends DynamicByteArrayResource
 	 * @param report
 	 *            the report input stream
 	 */
-	public JRResource(InputStream report)
+	public JRResource(final InputStream report)
 	{
-		super();
-		setCacheable(false);
-		try
+		this(new JasperReportFactory()
 		{
-			jasperReport = (JasperReport) JRLoader.loadObject(report);
-		}
-		catch (JRException e)
-		{
-			throw new WicketRuntimeException(e);
-		}
+			public JasperReport newJasperReport() throws JRException
+			{
+				return (JasperReport) JRLoader.loadObject(report);
+			};
+		});
 	}
 
 	/**
@@ -126,18 +146,15 @@ public abstract class JRResource extends DynamicByteArrayResource
 	 * @param report
 	 *            the report input stream
 	 */
-	public JRResource(URL report)
+	public JRResource(final URL report)
 	{
-		super();
-		setCacheable(false);
-		try
+		this(new JasperReportFactory()
 		{
-			jasperReport = (JasperReport) JRLoader.loadObject(report);
-		}
-		catch (JRException e)
-		{
-			throw new WicketRuntimeException(e);
-		}
+			public JasperReport newJasperReport() throws JRException
+			{
+				return (JasperReport) JRLoader.loadObject(report);
+			};
+		});
 	}
 
 	/**
@@ -146,27 +163,53 @@ public abstract class JRResource extends DynamicByteArrayResource
 	 * @param report
 	 *            the report input stream
 	 */
-	public JRResource(File report)
+	public JRResource(final File report)
 	{
-		super();
-		setCacheable(false);
-		try
+		this(new JasperReportFactory()
 		{
-			jasperReport = (JasperReport) JRLoader.loadObject(report);
-		}
-		catch (JRException e)
-		{
-			throw new WicketRuntimeException(e);
-		}
+			public JasperReport newJasperReport() throws JRException
+			{
+				return (JasperReport) JRLoader.loadObject(report);
+			};
+		});
 	}
 
 	/**
-	 * Gets jasperReport.
+	 * Construct.
+	 * 
+	 * @param jasperReportFactory
+	 *            report factory for lazy initialization
+	 */
+	private JRResource(JasperReportFactory jasperReportFactory)
+	{
+		super();
+		setCacheable(false);
+
+		this.jasperReportFactory = jasperReportFactory;
+	}
+
+	/**
+	 * Gets jasperReport. This implementation uses an internal factory to lazily
+	 * create the report. After creation the report is cached (set as the
+	 * jasperReport property). Override this method in case you want to provide
+	 * some alternative creation/ caching scheme.
 	 * 
 	 * @return jasperReport
 	 */
 	public JasperReport getJasperReport()
 	{
+		// if the report has not yet been initialized and can be, initialize it
+		if (jasperReport == null && jasperReportFactory != null)
+		{
+			try
+			{
+				setJasperReport(jasperReportFactory.newJasperReport());
+			}
+			catch (JRException e)
+			{
+				throw new WicketRuntimeException(e);
+			}
+		}
 		return jasperReport;
 	}
 
@@ -282,6 +325,7 @@ public abstract class JRResource extends DynamicByteArrayResource
 
 	/**
 	 * Called by getData to obtain an exporter instance.
+	 * 
 	 * @return an exporter instance
 	 */
 	protected abstract JRAbstractExporter newExporter();
@@ -337,6 +381,7 @@ public abstract class JRResource extends DynamicByteArrayResource
 	protected JasperPrint newJasperPrint() throws JRException
 	{
 		final JasperPrint jasperPrint;
+
 		JasperReport jasperReport = getJasperReport();
 		Map reportParameters = getReportParameters();
 		JRDataSource reportDataSource = getReportDataSource();
