@@ -54,6 +54,7 @@ import wicket.util.value.ValueMap;
  * </p>
  * 
  * @author Eelco Hillenius
+ * @author Igor Vaynberg (ivaynberg)
  */
 public class ImmediateCheckBox extends CheckBox
 {
@@ -110,7 +111,7 @@ public class ImmediateCheckBox extends CheckBox
 	 * @see ImmediateCheckBox#getResponseResourceStream()
 	 * @return name of the client-side javascript callback handler
 	 */
-	public String getJSCallbackFunctionName()
+	protected String getJSCallbackFunctionName()
 	{
 		return null;
 	}
