@@ -34,21 +34,21 @@ import wicket.util.value.ValueMap;
  * An example:
  * 
  * <pre>
- *  	addTicketOptionForm.add(new ListView(&quot;ticketOptionsList&quot;,
- *  			new PropertyModel(activityModel, &quot;ticketOptions&quot;)) {
- *  
- *  		protected void populateItem(ListItem item) {
- *  			final TicketOption ticketOption = (TicketOption) item
- *  					.getModelObject();
- *  			...
- *  			item.add(new ImmediateCheckBox(&quot;available&quot;) {
- *  				@Override
- *  				protected void onAjaxModelUpdated() {
- *  					Activity activity = (Activity)ActivityDetailsPage.this.getModelObject();
- *  					getActivityDao().update(activity);
- *  				}
- *  			});
- *  		...
+ *         	addTicketOptionForm.add(new ListView(&quot;ticketOptionsList&quot;,
+ *         			new PropertyModel(activityModel, &quot;ticketOptions&quot;)) {
+ *         
+ *         		protected void populateItem(ListItem item) {
+ *         			final TicketOption ticketOption = (TicketOption) item
+ *         					.getModelObject();
+ *         			...
+ *         			item.add(new ImmediateCheckBox(&quot;available&quot;) {
+ *         				@Override
+ *         				protected void onAjaxModelUpdated() {
+ *         					Activity activity = (Activity)ActivityDetailsPage.this.getModelObject();
+ *         					getActivityDao().update(activity);
+ *         				}
+ *         			});
+ *         		...
  * </pre>
  * 
  * </p>
@@ -89,6 +89,50 @@ public class ImmediateCheckBox extends CheckBox
 	}
 
 	/**
+	 * Returns the name of the javascript method that will be invoked when the
+	 * processing of the ajax callback is complete. The method must have the
+	 * following signature: <code>function(type, data, evt)</code> where the
+	 * data argument will be the value of the resouce stream provided by
+	 * <code>getResponseResourceStream</code> method.
+	 * 
+	 * For example if we want to echo the value returned by
+	 * getResponseResourceStream stream we can implement it as follows: <code>
+	 * <pre>
+	 *    
+	 *    getJsCallbackFunctionName() {return(&quot;handleit&quot;);}
+	 *    
+	 *    in javascript:
+	 *    
+	 *    function handleit(type, data, evt) { alert(data); } 
+	 * </pre>
+	 * </code>
+	 * 
+	 * @see ImmediateCheckBox#getResponseResourceStream()
+	 * @return name of the client-side javascript callback handler
+	 */
+	public String getJSCallbackFunctionName()
+	{
+		return null;
+	}
+
+	/**
+	 * returns the resource stream whose value will become the value of the
+	 * <code>data</code> argument in the defined client-side javascript
+	 * callback handler.
+	 * 
+	 * @see ImmediateCheckBox#getJSCallbackFunctionName()
+	 * @see IResourceStream
+	 * @see StringBufferResourceStream
+	 * 
+	 * @return resource stream used as <code>data</code> argument in
+	 *         client-side javascript callback handler
+	 */
+	protected IResourceStream getResponseResourceStream()
+	{
+		return new StringBufferResourceStream();
+	}
+
+	/**
 	 * Ajax handler that immediately updates the attached component when the
 	 * onclick event happens.
 	 */
@@ -116,8 +160,13 @@ public class ImmediateCheckBox extends CheckBox
 					"\t\tdojo.io.bind({\n").append(
 					"\t\t\turl: componentUrl + '&' + componentPath + '=' + val,\n").append(
 					"\t\t\tmimetype: \"text/plain\",\n").append(
-					"\t\t\tload: function(type, data, evt) {}\n" + "\t\t});\n" + "\t}\n").append(
-					"\t</script>\n");
+					"\t\t\tload: function(type, data, evt) {");
+
+			if (checkBox.getJSCallbackFunctionName() != null) {
+				s.append(checkBox.getJSCallbackFunctionName()).append("(type, data, evt);");
+			}
+
+			s.append("}\n\t\t});").append("\n\t}\n").append("\t</script>\n");
 
 			container.getResponse().write(s.toString());
 		}
@@ -155,7 +204,8 @@ public class ImmediateCheckBox extends CheckBox
 			// let the form component update its model
 			checkBox.updateModel();
 			checkBox.onAjaxModelUpdated();
-			return new StringBufferResourceStream();
+			return checkBox.getResponseResourceStream();
 		}
 	}
+
 }
