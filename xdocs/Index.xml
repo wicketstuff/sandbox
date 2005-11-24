@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+
+<document>
+	<properties>
+		<title>Home</title>
+	</properties>
+	<meta name="keyword" content="wicket, web, j2ee, java, dojo" />
+	<body>
+		<section name="Welcome to Wicket-Dojo">
+			<p>
+				The powerful and easy-to-use Object-Orriented Web framework wicket meets Dojo, 
+				a javascript toolkit which let's you make your webapps even more useable, responsive, and functional. 
+				This includes graphical decorations, AJAX functionality and other javascript enhancements.
+			</p>
+			<ul>
+				<li>
+					Check the <a href="Tutorials.html">tutorials list</a>
+				</li>
+				<li>
+					Read <a href="http://www.jroller.com/page/ruudmarco">our weblog</a> or some
+					<a href="/Blogs.html">Wicket blogs</a>
+				</li>
+				<li>
+					Download <a href="http://sourceforge.net/projects/wicket/files">Wicket</a>
+				</li>
+			</ul>
+			<p>
+				Wicket is released under the <a href="license.html">Apache License, Version 2.0</a>.
+			</p>
+		</section>
+		<section name="Latest News">
+			<subsection name="November 23, 2005 - Contrib-dojo v0.2 released!">
+				<p>
+					We are proud to announce that version 0.2 of our library has been released.
+					It now contains actual useable components. ;)
+					<ul>
+						<li>Fully customizable Tooltip Component (non-dojo)</li>
+						<li>DojoFX Component decorators</li>
+						<li>FXFeedbackIndicator component (non-dojo)</li>
+						<li>FXValidationAjaxHandler</li>
+					</ul>
+					Check-out our tutorial section or our Tutorials or our javadoc section for more info on the components.
+				</p>
+				
+			</subsection>
+			<p>
+				See
+				<a href="News.html">the news archive</a>
+				for more (older) news.
+			</p>
+		</section>
+		<section name="Special Thanks">
+			<p>
+				We would like to thank Wicket and the entire community for making such a cool framwork.
+				And Dojo for being the coolest javascript toolkit out there.
+				And my dog....
+			</p>
+		
+			<p>
+<!--ONESTAT SCRIPTCODE START-->
+<!--
+// Het wijzigen van deze code is niet toegestaan en zal uw account definitief blokkeren!
+// Account ID : 239584
+// Website URL: http://wicket.sourceforge.net
+// Copyright (C) 2002-2005 OneStat.com All Rights Reserved
+-->
+<div id="OneStatTag"><table border='0' cellpadding='0' cellspacing='0'><tr><td align='center'>
+<script type="text/javascript" src="onestat.js">
+</script>
+<noscript>
+<a href="http://www.onestat.com"><img border="0" src="http://stat.onestat.com/stat.aspx?tagver=2&amp;sid=239584&amp;js=No&amp;" ALT="online web site analyser" /></a><br /><a href="http://www.onestat.com">online web site analyser</a>
+</noscript>
+</td></tr><tr><td align='center'><div style="DISPLAY: none; FONT-WEIGHT: bold; FONT-SIZE: 7pt; COLOR: black; FONT-FAMILY: 'Verdana'; HEIGHT: 15px"><a href="http://www.onestat.com" style="text-decoration:none; COLOR: black;" target="_blank">webtraffic analysis</a></div></td></tr></table></div>
+<!--ONESTAT SCRIPTCODE END-->
+			</p>
+		</section>
+	</body>
+</document>
