@@ -19,6 +19,7 @@ package wicket.contrib.dojo;
 
 import wicket.Application;
 import wicket.IInitializer;
+import wicket.contrib.markup.html.form.validation.FXFeedbackIndicatorInitializer;
 import wicket.contrib.markup.html.tooltip.TooltipComponentInitializer;
 import wicket.util.resource.IResourceStream;
 
@@ -34,8 +35,13 @@ public class Initializer implements IInitializer
 	 */
 	public void init(Application application)
 	{
+		//for FXfeedbackindicator
+		new FXFeedbackIndicatorInitializer();
+		
+		//for Tooltip innitialization
 		new TooltipComponentInitializer().init(application);
 		
+
 		// for ajax initialization
 		new DojoAjaxHandler()
 		{

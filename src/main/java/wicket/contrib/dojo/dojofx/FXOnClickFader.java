@@ -36,7 +36,7 @@ public class FXOnClickFader extends DojoFXHandler
 	 */
 	public FXOnClickFader(int duration, Component trigger)
 	{
-		super("Onclick", duration, trigger);
+		super("onclick", duration, trigger);
 		this.startDisplay = false;
 		this.type = "fade";
 	}
@@ -50,7 +50,7 @@ public class FXOnClickFader extends DojoFXHandler
 	 */
 	public FXOnClickFader(int duration, Component trigger, boolean startDisplay)
 	{
-		super("Onclick", duration, trigger);
+		super("onclick", duration, trigger);
 		this.startDisplay = startDisplay;
 		this.type = "fade";
 	}
@@ -177,11 +177,7 @@ public class FXOnClickFader extends DojoFXHandler
 			"\t\t}\n"+
 			"\t}\n" + 
 			"\t</script>\n";
-		
-		
 		container.getResponse().write(s);
-		
-		
 	}
 
 	/* (non-Javadoc)

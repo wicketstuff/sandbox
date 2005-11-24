@@ -136,6 +136,7 @@ public abstract class DojoFXHandler extends DojoAjaxHandler
 		}
 
 		protected String newValue(String currentValue, String replacementValue) {
+			System.out.println("currentValue : " + currentValue + " replacementvalue: " + replacementValue);
 			return (currentValue==null?"":currentValue + "; ") + replacementValue;
 		}
 	}
