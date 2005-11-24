@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<document>
+	<properties>
+		<title>Wicket-Dojo Tutorials</title>
+	</properties>
+
+	<meta name="keyword" content="wicket, web, j2ee, java, dojo, tutorial" />
+
+	<body>
+		<section name="See how Wicket meets Dojo">
+			<p>
+				"Nothing says more about a development technology than a few simple examples. After
+				all, how hard should it be to do something easy?" <br/>
+				This quote comes from the wicket-examples page, and we would like to continu with this physophy.
+				Therefor we have written some tutorials on how to use the various Components. Check them out and see for yourself how simple it is to add Dojo functionality to Wicket.
+			</p>
+			<p>
+				DojoFX Tutorials:
+				<ul>
+					<li>
+						<a href="SimpleWiperTutorial.html">A simple wiper tutorial</a>
+						- Create the most simple wiper effect.
+					</li>
+					<li>
+						<a href="WiperMenuTutorial.html">A wiper menu tutorial</a>
+						- Create a nice wipeable menu.
+					</li>
+					<li>
+						<a href="HighlighterTutorial.html">A Higlighter tutorial</a>
+						- Create an animated highlighting menubar
+					</li>
+					
+					
+				</ul>
+			</p>
+			<p>
+				Tooltip Tutorials:
+				<ul>
+					<li>
+						<a href="BasicTooltipTutorial.html">A basic Tooltip tutorial</a>
+						- Create a basic wicket Tooltip.
+					</li>
+					<li>
+						<a href="StudentTooltipTutorial.html">A dynamic Tooltip tutorial</a>
+						- Create a dynamic student Tooltip.
+					</li>
+				</ul>
+		
+			</p>
+				Validation Tutorials:
+			<p>
+				<ul>
+					<li>
+						<a href="ValidationTutorial1.html">FXFeedbackIndicator tutorial</a>
+						- Create a cool feedback indicator with a tooltip.
+					</li>
+					<li>
+						<a href="ValidationTutorial2.html">FXValidationAjaxHandler tutorial</a>
+						- Create a cool decorated component with Ajax validation.
+					</li>
+				</ul>
+			</p>
+			
+		</section>
+	</body>
+</document>
