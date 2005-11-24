@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<document>
+	<properties>
+		<title>News archive</title>
+	</properties>
+	<meta name="keyword" content="wicket, wicket-stuff, web, j2ee, java, dojo" />
+	<body>
+		<section name="News Archive">
+			<p>
+				Here is an overview of all Wicket related news items posted on our
+				<a href="Index.html">front page</a>
+				.
+			</p>
+			<subsection name="November 23, 2005 - Newwwzzz">
+				<p>
+					WRITE ITEM HERE!!
+				</p>
+				
+			</subsection>
+			
+		</section>
+	</body>
+</document>
