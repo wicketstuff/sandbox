@@ -23,6 +23,7 @@ import wicket.IInitializer;
 import wicket.markup.html.HtmlHeaderContainer;
 import wicket.markup.html.PackageResource;
 import wicket.markup.html.PackageResourceReference;
+import wicket.util.resource.IResourceStream;
 
 /**
  * Handles event requests using Dojo.
@@ -37,6 +38,18 @@ import wicket.markup.html.PackageResourceReference;
  */
 public abstract class DojoAjaxHandler extends AjaxHandler implements IInitializer
 {
+
+	public static DojoAjaxHandler newJavascriptBindingHandler() {
+		return new DojoAjaxHandler() {
+
+			protected IResourceStream getResponse() {
+				return null;
+			}
+
+		};
+	}
+
+	
 	/**
 	 * Construct.
 	 */
