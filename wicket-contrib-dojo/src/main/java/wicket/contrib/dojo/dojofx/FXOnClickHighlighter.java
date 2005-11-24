@@ -18,7 +18,7 @@ public class FXOnClickHighlighter extends DojoFXHandler
 	
 	public FXOnClickHighlighter(int duration, Component trigger, int toR, int toG, int toB)
 	{
-		super("OnClick", duration, trigger);
+		super("onclick", duration, trigger);
 		this.type = "b2c";
 		endColor = new RGB(toR, toG, toB);
 		

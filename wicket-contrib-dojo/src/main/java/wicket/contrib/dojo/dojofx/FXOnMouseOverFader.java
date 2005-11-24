@@ -197,7 +197,7 @@ public class FXOnMouseOverFader extends DojoFXHandler
 		setMouseOver handles correct mouseover states 
 		followed by fade() calls with needed variables.*/
 		this.getTrigger().add(new AppendAttributeModifier(getEventName(),true, new Model(componentId  + "_setMouseOver(1);" + componentId + "_fade('"+ HTMLID +"', " + getDuration() + ");")));
-		this.getTrigger().add(new AppendAttributeModifier("OnMouseOut",true, new Model(componentId  + "_setMouseOver(0);" + componentId + "_fade('"+ HTMLID +"', " + getDuration() + ");")));
+		this.getTrigger().add(new AppendAttributeModifier("onmouseout",true, new Model(componentId  + "_setMouseOver(0);" + componentId + "_fade('"+ HTMLID +"', " + getDuration() + ");")));
 	}
 
 }
