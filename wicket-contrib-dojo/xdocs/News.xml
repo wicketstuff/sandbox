@@ -11,9 +11,17 @@
 				<a href="Index.html">front page</a>
 				.
 			</p>
-			<subsection name="November 23, 2005 - Newwwzzz">
+			<subsection name="November 25, 2005 - Contrib-dojo v0.3 released!">
 				<p>
-					WRITE ITEM HERE!!
+					We are proud to announce that version 0.3 of our library has been released.
+					It now contains actual useable components. ;)
+					<ul>
+						<li>Fully customizable Tooltip Component (non-dojo)</li>
+						<li>DojoFX Component decorators</li>
+						<li>FXFeedbackIndicator component (non-dojo)</li>
+						<li>FXValidationAjaxHandler</li>
+					</ul>
+					Check-out our tutorial section or our Tutorials or our javadoc section for more info on the components.
 				</p>
 				
 			</subsection>

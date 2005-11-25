@@ -29,9 +29,9 @@
 			</p>
 		</section>
 		<section name="Latest News">
-			<subsection name="November 23, 2005 - Contrib-dojo v0.2 released!">
+			<subsection name="November 25, 2005 - Contrib-dojo v0.3 released!">
 				<p>
-					We are proud to announce that version 0.2 of our library has been released.
+					We are proud to announce that version 0.3 of our library has been released.
 					It now contains actual useable components. ;)
 					<ul>
 						<li>Fully customizable Tooltip Component (non-dojo)</li>
