@@ -2,6 +2,7 @@ package wicket.contrib.markup.html.form.validation;
 
 import wicket.AttributeModifier;
 import wicket.Component;
+import wicket.MarkupContainer;
 import wicket.WicketRuntimeException;
 import wicket.contrib.dojo.DojoAjaxHandler;
 import wicket.markup.ComponentTag;
@@ -170,18 +171,20 @@ public class FXValidationAjaxHandler extends DojoAjaxHandler
 		container.getResponse().write(s);
 	}
 	
-	/**
+	/*	*//**
 	 * Attaches the event handler for the given component to the given tag.
 	 * @param tag
 	 *            The tag to attach
-	 */
+	 *//*
 	public final void onComponentTag(final ComponentTag tag)
 	{
 		final ValueMap attributes = tag.getAttributes();
 		final String attributeValue =
 			"javascript:"+ componentId  + "_validate('" + getCallbackUrl() + "', '" + formComponent.getInputName() + "', this);";
 		attributes.put(eventName, attributeValue);
-	}
+		
+		
+	}*/
 
 	/**
 	 * Bind this handler to the FormComponent and set the corresponding
@@ -193,11 +196,21 @@ public class FXValidationAjaxHandler extends DojoAjaxHandler
 		Component c = getComponent();
 		if (!(c instanceof FormComponent))
 		{
-			throw new WicketRuntimeException("this handler must be bound to FormComponents");
+			throw new WicketRuntimeException("This handler must be bound to FormComponents");
 		}
+
+		
 		this.formComponent = (FormComponent)c;
-		this.formComponent.add(new AttributeModifier("id", true, new Model(this.formComponent.getId())));
 		this.componentId = this.formComponent.getId();
+		this.formComponent.add(new AttributeModifier("id", true, new Model(this.formComponent.getId())));
+		if (getComponent().findParent(MarkupContainer.class) == null)
+		{
+			throw new WicketRuntimeException("You have to add the Component: " + getComponent().getId() + " to a Page BEFORE you can bind an FXAjaxValidationHandler to it.");
+		} else
+		{
+			this.formComponent.add(new AttributeModifier(eventName, true, new Model("javascript:"+ componentId  + "_validate('" + getCallbackUrl() + "', '" + formComponent.getInputName() + "', this);")));
+		}
+		
 	
 	}
 
