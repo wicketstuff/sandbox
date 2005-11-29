@@ -1,7 +1,6 @@
 package wicket.contrib.dojo.examples;
 
 import wicket.Component;
-import wicket.contrib.markup.html.tooltip.Tooltip;
 import wicket.contrib.markup.html.tooltip.TooltipPanel;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.image.Image;
