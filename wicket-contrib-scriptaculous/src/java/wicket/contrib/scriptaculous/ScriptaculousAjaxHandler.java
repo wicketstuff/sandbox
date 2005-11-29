@@ -29,69 +29,84 @@ import wicket.util.resource.IResourceStream;
 /**
  * Handles event requests using 'script.aculo.us'.
  * <p>
- * This class is mainly here to automatically add the javascript files you need. As header
- * contributions are done once per class, you can have multiple instances/ subclasses
- * without having duplicate header contributions.
+ * This class is mainly here to automatically add the javascript files you need.
+ * As header contributions are done once per class, you can have multiple
+ * instances/ subclasses without having duplicate header contributions.
  * </p>
+ * 
  * @see <a href="http://script.aculo.us/">script.aculo.us</a>
- * @author Eelco Hillenius
  */
-public abstract class ScriptaculousAjaxHandler
-	extends AjaxHandler implements IInitializer
-{
-	public static ScriptaculousAjaxHandler newJavascriptBindingHandler() {
-		return new ScriptaculousAjaxHandler() {
+public abstract class ScriptaculousAjaxHandler extends AjaxHandler implements
+                IInitializer {
+        public static ScriptaculousAjaxHandler newJavascriptBindingHandler() {
+                return new ScriptaculousAjaxHandler() {
 
-			protected IResourceStream getResponse() {
-				return null;
-			}
+                        private static final long serialVersionUID = 1L;
 
-		};
-	}
-	/**
-	 * Construct.
-	 */
-	public ScriptaculousAjaxHandler()
-	{
-	}
+                        protected IResourceStream getResponse() {
+                                return null;
+                        }
 
-	/**
-	 * Register packaged javascript files.
-	 * @param application The application
-	 */
-	public void init(Application application)
-	{
-		PackageResource.bind(application, ScriptaculousAjaxHandler.class, "prototype.js");
-		PackageResource.bind(application, ScriptaculousAjaxHandler.class, "controls.js");
-		PackageResource.bind(application, ScriptaculousAjaxHandler.class, "dragdrop.js");
-		PackageResource.bind(application, ScriptaculousAjaxHandler.class, "effects.js");
-		PackageResource.bind(application, ScriptaculousAjaxHandler.class, "util.js");
-		PackageResource.bind(application, ScriptaculousAjaxHandler.class, "unittest.js");
-        PackageResource.bind(application, ScriptaculousAjaxHandler.class, "scriptaculous.js");
-        PackageResource.bind(application, ScriptaculousAjaxHandler.class, "behavior.js");
-	}
+                };
+        }
 
-	/**
-	 * Let this handler print out the needed header contributions.
-	 * @param container
-	 */
-	protected void renderHeadInitContribution(HtmlHeaderContainer container)
-	{
-		// add our basic javascript needs to the header
-		Application application = Application.get();
-		addJsReference(container, new PackageResourceReference(application,
-				ScriptaculousAjaxHandler.class, "prototype.js"));
-        addJsReference(container, new PackageResourceReference(application,
-                ScriptaculousAjaxHandler.class, "scriptaculous.js"));
-        addJsReference(container, new PackageResourceReference(application,
-                        ScriptaculousAjaxHandler.class, "behavior.js"));
-	}
+        /**
+         * Construct.
+         */
+        public ScriptaculousAjaxHandler() {
+        }
 
-	/**
-	 * @see AjaxHandler#getImplementationId()
-	 */
-	protected final String getImplementationId()
-	{
-		return "ScriptaculousImpl";
-	}
+        /**
+         * Register packaged javascript files.
+         * 
+         * @param application
+         *                The application
+         */
+        public void init(Application application) {
+                PackageResource.bind(application,
+                                ScriptaculousAjaxHandler.class, "behavior.js");
+                PackageResource.bind(application,
+                                ScriptaculousAjaxHandler.class, "controls.js");
+                PackageResource.bind(application,
+                                ScriptaculousAjaxHandler.class, "dragdrop.js");
+                PackageResource.bind(application,
+                                ScriptaculousAjaxHandler.class, "effects.js");
+                PackageResource.bind(application,
+                                ScriptaculousAjaxHandler.class, "prototype.js");
+                PackageResource.bind(application,
+                                ScriptaculousAjaxHandler.class,
+                                "scriptaculous.js");
+                PackageResource.bind(application,
+                                ScriptaculousAjaxHandler.class, "slider.js");
+                PackageResource.bind(application,
+                                ScriptaculousAjaxHandler.class, "unittest.js");
+                PackageResource.bind(application,
+                                ScriptaculousAjaxHandler.class, "util.js");
+        }
+
+        /**
+         * Let this handler print out the needed header contributions.
+         * 
+         * @param container
+         */
+        protected void renderHeadInitContribution(HtmlHeaderContainer container) {
+                // add our basic javascript needs to the header
+                Application application = Application.get();
+                addJsReference(container, new PackageResourceReference(
+                                application, ScriptaculousAjaxHandler.class,
+                                "prototype.js"));
+                addJsReference(container, new PackageResourceReference(
+                                application, ScriptaculousAjaxHandler.class,
+                                "scriptaculous.js"));
+                addJsReference(container, new PackageResourceReference(
+                                application, ScriptaculousAjaxHandler.class,
+                                "behavior.js"));
+        }
+
+        /**
+         * @see AjaxHandler#getImplementationId()
+         */
+        protected final String getImplementationId() {
+                return "ScriptaculousImpl";
+        }
 }
