@@ -7,7 +7,7 @@
 	>
     <preGoal name="xdoc:transform">
     	<!-- create custom dependencies  -->
-    	<j:include uri="file:../wicket/src/xdocs/dependencies.xml" />    	
+    	<j:include uri="file:src/xdocs/dependencies.xml" />    	
     </preGoal>
     <postGoal name="xdoc:jelly-transform" >
         <ant:delete>
