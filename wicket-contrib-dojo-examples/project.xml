@@ -31,7 +31,7 @@
     <dependency>
       <groupId>wicket</groupId>
       <artifactId>wicket</artifactId>
-      <version>1.1</version>
+      <version>SNAPSHOT</version>
       <type>jar</type>
       <properties>
         <eclipse.dependency>false</eclipse.dependency>
@@ -43,7 +43,7 @@
     <dependency>
 	  <groupId>wicket-stuff</groupId>
 	  <artifactId>wicket-contrib-dojo</artifactId>
-	  <version>0.3</version>
+	  <version>SNAPSHOT</version>
 	  <properties>
 		  <eclipse.dependency>false</eclipse.dependency>
 		  <war.bundle>true</war.bundle>
