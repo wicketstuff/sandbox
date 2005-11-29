@@ -109,11 +109,6 @@
 			<artifactId>org.mortbay.jetty</artifactId>
 			<version>4.2.24</version>
 		</dependency>
-		<dependency>
-		    <groupId>commons-fileupload</groupId>
-		    <artifactId>commons-fileupload</artifactId>
-		    <version>1.0</version>
-		</dependency>
 	</dependencies>
 	<build>
 		<sourceDirectory>src/java</sourceDirectory>
