@@ -17,18 +17,15 @@
  */
 package wicket.contrib.dojo.examples;
 
-import wicket.Application;
+import wicket.protocol.http.WebApplication;
 import wicket.protocol.http.WebSession;
 
 /**
  * Subclass of WebSession for ExampleApplication to allow easy and typesafe
  * access to session properties.
- * 
- * @author Jonathan Locke
  */
-public final class ExampleSession extends WebSession
-{
-	//  TODO Add any session properties here
+public final class ExampleSession extends WebSession {
+	// TODO Add any session properties here
 
 	/**
 	 * Constructor
@@ -36,8 +33,7 @@ public final class ExampleSession extends WebSession
 	 * @param application
 	 *            The application
 	 */
-	protected ExampleSession(final Application application)
-	{
+	protected ExampleSession(final WebApplication application) {
 		super(application);
 	}
 }
