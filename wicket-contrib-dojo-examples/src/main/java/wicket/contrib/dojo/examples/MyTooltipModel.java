@@ -2,8 +2,6 @@ package wicket.contrib.dojo.examples;
 
 import java.io.Serializable;
 
-import wicket.model.IModel;
-
 public class MyTooltipModel implements Serializable
 {
 	private String label1;
