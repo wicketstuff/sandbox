@@ -24,11 +24,13 @@ import wicket.IInitializer;
  * Initializer for components in the Wicket-Scriptaculous integration library.
  */
 public class Initializer implements IInitializer {
-	/**
-	 * @see wicket.IInitializer#init(wicket.Application)
-	 */
-	public void init(Application application) {
-		// implement the ajax handlers using dummy implementations
-		ScriptaculousAjaxHandler.newJavascriptBindingHandler().init(application);
-	}
+ 
+        /**
+         * @see wicket.IInitializer#init(wicket.Application)
+         */
+        public void init(Application application) {
+                // implement the ajax handlers using dummy implementations
+                ScriptaculousAjaxHandler.newJavascriptBindingHandler().init(
+                                application);
+        }
 }
