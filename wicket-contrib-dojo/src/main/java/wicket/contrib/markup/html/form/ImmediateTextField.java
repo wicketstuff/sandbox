@@ -1,3 +1,19 @@
+/*
+ * $Id$ $Revision$ $Date$
+ * 
+ * ==============================================================================
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package wicket.contrib.markup.html.form;
 
 import wicket.contrib.dojo.DojoAjaxHandler;
@@ -5,38 +21,37 @@ import wicket.markup.ComponentTag;
 import wicket.markup.html.HtmlHeaderContainer;
 import wicket.markup.html.form.TextField;
 import wicket.model.IModel;
-import wicket.model.PropertyModel;
 import wicket.util.resource.IResourceStream;
 import wicket.util.resource.StringBufferResourceStream;
 import wicket.util.value.ValueMap;
 
 
 /**
- *  Simple Dojo textfield folowing the example of ImmediateCheckBox
- *  
- * Textfield that updates the server side model using AJAX whenever the
- * user focusses on another formcomponent (onblur). After updating, the method 
- * onAjaxModelUpdated is called to allow users to do custom handling like 
+ * Simple Dojo textfield folowing the example of ImmediateCheckBox
+ * 
+ * Textfield that updates the server side model using AJAX whenever the user
+ * focusses on another formcomponent (onblur). After updating, the method
+ * onAjaxModelUpdated is called to allow users to do custom handling like
  * persisting the change to a database.
  * 
  * Example:
  * 
- * add(textfield = new ImmediateTextField("textfield", new PropertyModel(Index.this, "inputText"))
- *        		{
- *	            	protected void onAjaxModelUpdated() {   		
- *			    		//to see if model has been updated
- *						System.out.println("model: " + (Index.this.toString()));
- *	            	}
- *				}
- *				private static final long serialVersionUID = 1L;} 
- *  );  		
- *  
- * @author Eelco Hillenius 
+ * add(textfield = new ImmediateTextField("textfield", new
+ * PropertyModel(Index.this, "inputText")) { protected void onAjaxModelUpdated() {
+ * //to see if model has been updated System.out.println("model: " +
+ * (Index.this.toString())); } } private static final long serialVersionUID =
+ * 1L;} );
+ * 
+ * @author Eelco Hillenius
  * @author Marco van de Haar
  * @author Ruud Booltink
  */
 public class ImmediateTextField extends TextField
 {
+	/**
+	 * Construct.
+	 * @param id component id
+	 */
 	public ImmediateTextField(String id)
 	{
 		super(id);
@@ -54,7 +69,7 @@ public class ImmediateTextField extends TextField
 		super(id, model);
 		add(new ImmediateUpdateAjaxHandler());
 	}
-	
+
 	/**
 	 * @param id
 	 * @param type
@@ -64,7 +79,7 @@ public class ImmediateTextField extends TextField
 		super(id, type);
 		add(new ImmediateUpdateAjaxHandler());
 	}
-	
+
 	/**
 	 * @param id
 	 * @param model
@@ -75,7 +90,7 @@ public class ImmediateTextField extends TextField
 		super(id, model, type);
 		add(new ImmediateUpdateAjaxHandler());
 	}
-	
+
 
 	/**
 	 * Called after the model is updated. Use this method to e.g. update the
@@ -118,6 +133,7 @@ public class ImmediateTextField extends TextField
 
 			container.getResponse().write(s.toString());
 		}
+
 		/**
 		 * Attaches the event handler for the given component to the given tag.
 		 * 

@@ -1,3 +1,19 @@
+/*
+ * $Id$ $Revision$ $Date$
+ * 
+ * ==============================================================================
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package wicket.contrib.markup.html.form.validation;
 
 import java.util.Collections;
@@ -7,7 +23,6 @@ import java.util.List;
 
 import wicket.AttributeModifier;
 import wicket.Component;
-import wicket.WicketRuntimeException;
 import wicket.feedback.ComponentFeedbackMessageFilter;
 import wicket.feedback.FeedbackMessage;
 import wicket.feedback.FeedbackMessagesModel;
@@ -18,20 +33,17 @@ import wicket.markup.html.basic.Label;
 import wicket.markup.html.form.FormComponent;
 import wicket.markup.html.list.ListItem;
 import wicket.markup.html.list.ListView;
-import wicket.markup.html.panel.FeedbackPanel;
 import wicket.markup.html.panel.Panel;
 import wicket.model.IModel;
 import wicket.model.Model;
 
 /**
- * FeedbackPanel used in FXFeedbackTooltip
- * Created as an external class in order to 
- * let it define it's own UL and LI styles
- * in FXTooltipFeedbackPanel.html. 
+ * FeedbackPanel used in FXFeedbackTooltip Created as an external class in order
+ * to let it define it's own UL and LI styles in FXTooltipFeedbackPanel.html.
  * 
  * @author Marco van de Haar
  * @author Ruud Booltink
- *
+ * 
  */
 public class FXTooltipFeedbackPanel extends Panel implements IFeedback
 {
@@ -44,6 +56,7 @@ public class FXTooltipFeedbackPanel extends Panel implements IFeedback
 	private final MessageListView messageListView;
 
 	private ComponentFeedbackMessageFilter filter;
+
 	/**
 	 * List for messages.
 	 */
@@ -98,21 +111,21 @@ public class FXTooltipFeedbackPanel extends Panel implements IFeedback
 	public FXTooltipFeedbackPanel(final String id, FormComponent c)
 	{
 		super(id);
-			
+
 		WebMarkupContainer messagesContainer = new WebMarkupContainer("feedbackul")
 		{
 			private static final long serialVersionUID = 1L;
-			
+
 			public boolean isVisible()
 			{
 				return anyMessage();
 			}
-			
+
 		};
 		filter = new ComponentFeedbackMessageFilter(c);
 		System.out.println("Component: " + c);
 		System.out.println("filter1: " + filter);
-		
+
 		add(messagesContainer);
 		this.messageListView = new MessageListView("messages");
 		messageListView.setVersioned(false);
@@ -268,7 +281,7 @@ public class FXTooltipFeedbackPanel extends Panel implements IFeedback
 	 */
 	protected IFeedbackMessageFilter getFeedbackMessageFilter()
 	{
-	System.out.println("filter: " + filter);
+		System.out.println("filter: " + filter);
 		return filter;
 	}
 

@@ -1,32 +1,39 @@
+/*
+ * $Id$ $Revision$ $Date$
+ * 
+ * ==============================================================================
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package wicket.contrib.dojo.dojofx;
-
-import java.util.HashSet;
-import java.util.Set;
 
 import wicket.AttributeModifier;
 import wicket.Component;
-import wicket.WicketRuntimeException;
 import wicket.contrib.dojo.DojoAjaxHandler;
-import wicket.markup.ComponentTag;
 import wicket.markup.html.HtmlHeaderContainer;
-import wicket.markup.html.form.FormComponent;
 import wicket.model.IModel;
 import wicket.util.resource.IResourceStream;
-import wicket.util.value.ValueMap;
-
 
 
 /**
- * Abstract Handler class for Dojo.fx.html components
- * currently only handles som instance fields which are
- * currently mandatory for every dojo.fx.html animation
- * and has an AppendAttributeModifier private class, mostly
- * for style and onclick attributes.
- * Also declares some method signature for FX subclasses.
+ * Abstract Handler class for Dojo.fx.html components currently only handles som
+ * instance fields which are currently mandatory for every dojo.fx.html
+ * animation and has an AppendAttributeModifier private class, mostly for style
+ * and onclick attributes. Also declares some method signature for FX
+ * subclasses.
  * 
  * @author Marco van de Haar
  * @author Ruud Booltink
- *
+ * 
  */
 public abstract class DojoFXHandler extends DojoAjaxHandler
 {
@@ -35,11 +42,14 @@ public abstract class DojoFXHandler extends DojoAjaxHandler
 	private final int duration;
 	private final Component trigger;
 
-	
+
 	/**
-	 * @param eventName name of the function to be bound to the effect (i.e. ONCLICK)
-	 * @param duration duration of the animation.
-	 * @param trigger trigger object for the animation.
+	 * @param eventName
+	 *            name of the function to be bound to the effect (i.e. ONCLICK)
+	 * @param duration
+	 *            duration of the animation.
+	 * @param trigger
+	 *            trigger object for the animation.
 	 */
 	public DojoFXHandler(String eventName, int duration, Component trigger)
 	{
@@ -51,9 +61,8 @@ public abstract class DojoFXHandler extends DojoAjaxHandler
 		this.duration = duration;
 		this.trigger = trigger;
 	}
-	
-	
-	
+
+
 	/**
 	 * @return animation duration.
 	 */
@@ -61,22 +70,29 @@ public abstract class DojoFXHandler extends DojoAjaxHandler
 	{
 		return duration;
 	}
-	
-	
-	/** 
-	 * renders the javascript functions to the page's head corresponding with this class
-	 * @param container the Header container to be written to
+
+
+	/**
+	 * renders the javascript functions to the page's head corresponding with
+	 * this class
+	 * 
+	 * @param container
+	 *            the Header container to be written to
 	 */
 	protected abstract void renderHeadContribution(HtmlHeaderContainer container);
-	
-	
-	/* (non-Javadoc)
+
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see wicket.AjaxHandler#onBind()
 	 */
 	protected abstract void onBind();
-	
 
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see wicket.AjaxHandler#getResponse()
 	 */
 	protected IResourceStream getResponse()
@@ -84,7 +100,7 @@ public abstract class DojoFXHandler extends DojoAjaxHandler
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 	/**
 	 * @return event name
 	 */
@@ -92,7 +108,7 @@ public abstract class DojoFXHandler extends DojoAjaxHandler
 	{
 		return eventName;
 	}
-	
+
 	/**
 	 * @return trigger component
 	 */
@@ -100,11 +116,13 @@ public abstract class DojoFXHandler extends DojoAjaxHandler
 	{
 		return trigger;
 	}
-	
+
 	/**
-	 * Subclasses can use this method to add extra triggers
-	 * by adding an attributemodifier to c.
-	 * @param c trigger component
+	 * Subclasses can use this method to add extra triggers by adding an
+	 * attributemodifier to c.
+	 * 
+	 * @param c
+	 *            trigger component
 	 */
 	protected void addTrigger(Component c)
 	{
@@ -114,33 +132,68 @@ public abstract class DojoFXHandler extends DojoAjaxHandler
 	 * @author Ruud Booltink
 	 * @author Marco van de Haar
 	 * 
-	 * AttributeModifier that appends the new value to the current value if an old value
-	 * exists. If it does not exist, it sets the new value.
+	 * AttributeModifier that appends the new value to the current value if an
+	 * old value exists. If it does not exist, it sets the new value.
 	 */
 	final static class AppendAttributeModifier extends AttributeModifier
 	{
-		public AppendAttributeModifier(String attribute, boolean addAttributeIfNotPresent, IModel replaceModel) {
+		/**
+		 * Construct.
+		 * 
+		 * @param attribute
+		 * @param addAttributeIfNotPresent
+		 * @param replaceModel
+		 */
+		public AppendAttributeModifier(String attribute, boolean addAttributeIfNotPresent,
+				IModel replaceModel)
+		{
 			super(attribute, addAttributeIfNotPresent, replaceModel);
 		}
 
-		public AppendAttributeModifier(String attribute, IModel replaceModel) {
+		/**
+		 * Construct.
+		 * 
+		 * @param attribute
+		 * @param replaceModel
+		 */
+		public AppendAttributeModifier(String attribute, IModel replaceModel)
+		{
 			super(attribute, replaceModel);
 		}
 
-		public AppendAttributeModifier(String attribute, String pattern, boolean addAttributeIfNotPresent, IModel replaceModel) {
+		/**
+		 * Construct.
+		 * 
+		 * @param attribute
+		 * @param pattern
+		 * @param addAttributeIfNotPresent
+		 * @param replaceModel
+		 */
+		public AppendAttributeModifier(String attribute, String pattern,
+				boolean addAttributeIfNotPresent, IModel replaceModel)
+		{
 			super(attribute, pattern, addAttributeIfNotPresent, replaceModel);
 		}
 
-		public AppendAttributeModifier(String attribute, String pattern, IModel replaceModel) {
+		/**
+		 * Construct.
+		 * 
+		 * @param attribute
+		 * @param pattern
+		 * @param replaceModel
+		 */
+		public AppendAttributeModifier(String attribute, String pattern, IModel replaceModel)
+		{
 			super(attribute, pattern, replaceModel);
 		}
 
-		protected String newValue(String currentValue, String replacementValue) {
-			System.out.println("currentValue : " + currentValue + " replacementvalue: " + replacementValue);
-			return (currentValue==null?"":currentValue + "; ") + replacementValue;
+		/**
+		 * @see wicket.AttributeModifier#newValue(java.lang.String, java.lang.String)
+		 */
+		protected String newValue(String currentValue, String replacementValue)
+		{
+			return (currentValue == null ? "" : currentValue + "; ") + replacementValue;
 		}
 	}
-	
+
 }
-
-
