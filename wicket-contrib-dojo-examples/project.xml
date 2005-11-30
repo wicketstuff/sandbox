@@ -5,7 +5,7 @@
   <groupId>wicket</groupId>
   <id>wicket-contrib-dojo-examples</id>
   <name>Wicket Dojo Examples</name>
-  <currentVersion>1.1</currentVersion>
+  <currentVersion>SNAPSHOT</currentVersion>
   <organization>
     <name>Wicket Stuff</name>
     <url>http://wicket-stuff.sourceforge.net</url>
@@ -31,7 +31,7 @@
     <dependency>
       <groupId>wicket</groupId>
       <artifactId>wicket</artifactId>
-      <version>SNAPSHOT</version>
+      <version>1.1</version>
       <type>jar</type>
       <properties>
         <eclipse.dependency>false</eclipse.dependency>
@@ -43,7 +43,7 @@
     <dependency>
 	  <groupId>wicket-stuff</groupId>
 	  <artifactId>wicket-contrib-dojo</artifactId>
-	  <version>SNAPSHOT</version>
+	  <version>0.3</version>
 	  <properties>
 		  <eclipse.dependency>false</eclipse.dependency>
 		  <war.bundle>true</war.bundle>
