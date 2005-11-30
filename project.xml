@@ -55,6 +55,17 @@
 			== Dependencies for using Wicket container                       ==
 			===================================================================
 		-->
+	<dependency>
+      <groupId>ognl</groupId>
+      <artifactId>ognl</artifactId>
+      <version>2.6.7</version>
+      <url>http://www.ognl.org</url>
+      <properties>
+        <wicket.group>required</wicket.group>
+        <wicket.description>Used for introspection.</wicket.description>
+        <war.bundle>true</war.bundle>
+      </properties>
+    </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
