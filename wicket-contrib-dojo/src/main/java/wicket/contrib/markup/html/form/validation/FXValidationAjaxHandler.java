@@ -16,6 +16,8 @@
  */
 package wicket.contrib.markup.html.form.validation;
 
+import java.io.Serializable;
+
 import wicket.AttributeModifier;
 import wicket.Component;
 import wicket.MarkupContainer;
@@ -315,7 +317,7 @@ public class FXValidationAjaxHandler extends DojoAjaxHandler
 	 * @author Marco van de Haar
 	 * @author Ruud Booltink
 	 */
-	private static class RGB
+	private static class RGB implements Serializable
 	{
 		private final int R;
 		private final int G;
