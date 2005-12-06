@@ -20,6 +20,7 @@ package wicket.contrib.phonebook;
 
 import java.util.Iterator;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
@@ -90,15 +91,33 @@ public class HibernateContactDao implements ContactDao {
 	 *            Query Paramaters to use.
 	 * @return The results of the query as an Iterator.
 	 */
-	public Iterator find(final QueryParam qp) {
-
-		StringBuffer hql = new StringBuffer("from Contact c ");
+	public Iterator find(final QueryParam qp, Contact filter) {
+		//TODO filter application here and in the count needs to be clead up/factored out
+		StringBuffer hql = new StringBuffer("from Contact c where 1=1 ");
+		if (filter.getFirstname()!=null&&filter.getFirstname().trim().length()>0) {
+			hql.append(" and upper(c.firstname) like (:fname) ");
+		}
+		if (filter.getLastname()!=null&&!filter.getLastname().equals("ANY")) {
+			hql.append(" and c.lastname=:lname ");
+		}
+		
+		
 		if (qp.hasSort()) {
 			hql.append("order by upper(c.").append(qp.getSort()).append(") ").append(
 					(qp.isSortAsc()) ? " asc" : " desc");
 		}
-		return getSession().createQuery(hql.toString()).setFirstResult(
-				qp.getFirst()).setMaxResults(qp.getCount()).iterate();
+		Query q=getSession().createQuery(hql.toString()).setFirstResult(
+				qp.getFirst()).setMaxResults(qp.getCount());
+		
+		if (filter.getFirstname()!=null&&filter.getFirstname().trim().length()>0) {
+			q.setParameter("fname", "%"+filter.getFirstname().trim().toUpperCase()+"%");
+		}
+		if (filter.getLastname()!=null&&!filter.getLastname().equals("ANY")) {
+			q.setParameter("lname", filter.getLastname());
+		}
+		
+		return q.iterate();
+
 	}
 
 	/**
@@ -106,10 +125,30 @@ public class HibernateContactDao implements ContactDao {
 	 * 
 	 * @return count
 	 */
-	public int count() {
-		Integer count = (Integer) getSession().createQuery(
-				"select count(*) from Contact").uniqueResult();
-		return count.intValue();
+	public int count(Contact filter) {
+
+		StringBuffer hql=new StringBuffer("select count(*) from Contact c where 1=1 ");
+		
+		if (filter.getFirstname()!=null&&filter.getFirstname().trim().length()>0) {
+			hql.append(" and upper(c.firstname) like (:fname) ");
+		}
+		if (filter.getLastname()!=null&&!filter.getLastname().equals("ANY")) {
+			hql.append(" and c.lastname=:lname ");
+		}
+
+		
+		
+		Query q=getSession().createQuery(hql.toString());
+		
+		if (filter.getFirstname()!=null&&filter.getFirstname().trim().length()>0) {
+			q.setParameter("fname", "%"+filter.getFirstname().trim().toUpperCase()+"%");
+		}
+		if (filter.getLastname()!=null&&!filter.getLastname().equals("ANY")) {
+			q.setParameter("lname", filter.getLastname());
+		}
+
+		return ((Integer)q.uniqueResult()).intValue();
 	}
+
 
 }

@@ -61,5 +61,8 @@ public class Contact implements Serializable {
 		this.phone = phone;
 	}
 	
+	public String toString() {
+		return ("[Contact id="+id+", firstname="+firstname+", lastname="+lastname+", phone="+phone+", email="+email);
+	}
 	
 }

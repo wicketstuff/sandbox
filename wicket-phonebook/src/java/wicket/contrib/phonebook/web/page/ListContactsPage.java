@@ -18,10 +18,11 @@
  */
 package wicket.contrib.phonebook.web.page;
 
-import java.util.ArrayList;
+import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Iterator;
-import java.util.List;
 
+import wicket.Component;
 import wicket.contrib.phonebook.Contact;
 import wicket.contrib.phonebook.ContactDao;
 import wicket.contrib.phonebook.QueryParam;
@@ -29,14 +30,28 @@ import wicket.contrib.phonebook.web.DetachableContactModel;
 import wicket.contrib.phonebook.web.PhonebookApplication;
 import wicket.extensions.markup.html.repeater.data.sort.SortParam;
 import wicket.extensions.markup.html.repeater.data.sort.SortableDataProvider;
-import wicket.extensions.markup.html.repeater.data.table.AbstractColumn;
 import wicket.extensions.markup.html.repeater.data.table.DataTable;
+import wicket.extensions.markup.html.repeater.data.table.HeadersToolbar;
+import wicket.extensions.markup.html.repeater.data.table.IColumn;
 import wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
+import wicket.extensions.markup.html.repeater.data.table.filter.GoAndClearFilter;
+import wicket.extensions.markup.html.repeater.data.table.filter.FilterToolbar;
+import wicket.extensions.markup.html.repeater.data.table.filter.FilteredAbstractColumn;
+import wicket.extensions.markup.html.repeater.data.table.filter.FilteredPropertyColumn;
+import wicket.extensions.markup.html.repeater.data.table.filter.IFilterStateLocator;
+import wicket.extensions.markup.html.repeater.data.table.filter.SingleChoiceFilter;
+import wicket.extensions.markup.html.repeater.data.table.filter.TextFilter;
+import wicket.extensions.markup.html.repeater.refreshing.Item;
+import wicket.markup.html.form.Button;
+import wicket.markup.html.form.ChoiceRenderer;
+import wicket.markup.html.form.Form;
+import wicket.markup.html.form.TextField;
 import wicket.markup.html.link.Link;
 import wicket.markup.html.list.ListItem;
 import wicket.markup.html.panel.Panel;
 import wicket.model.IModel;
 import wicket.model.Model;
+import wicket.model.PropertyModel;
 
 /**
  * Display a Pageable List of Contacts.
@@ -59,38 +74,59 @@ public class ListContactsPage extends BasePage {
 			}
 
 		});
-
-		List columns = new ArrayList();
+		
+		IColumn[] columns = new IColumn[5];
 
 		/*
 		 * First column is a composite column, created by extending
 		 * AbstractColumn in order to add a UserActionsPanel as the
 		 * cell contents.
 		 */
-		columns.add(new AbstractColumn(new Model("Actions")) {
+		columns[0]=new FilteredAbstractColumn(new Model("Actions")) {
 
-			public void populateItem(ListItem cellItem, String componentId, IModel model) {
+			public void populateItem(Item cellItem, String componentId, IModel model) {
 				final Contact contact = (Contact) model.getObject(cellItem);
 				cellItem.add(new UserActionsPanel(componentId, contact));
 			}
 
-		});
+			public Component getFilter(String componentId, Form form) {
+				return new GoAndClearFilter(componentId);
+			}
+
+		};
 
 		/*
 		 * Use PropertyColumn to provide the 'normal' columns.
 		 */
-		columns.add(new PropertyColumn(new Model("First Name"), "firstname", "firstname"));
-		columns.add(new PropertyColumn(new Model("Last Name"), "lastname", "lastname"));
-		columns.add(new PropertyColumn(new Model("Phone Number"), "phone", "phone"));
-		columns.add(new PropertyColumn(new Model("Email"), "email", "email"));
+		columns[1]=new FilteredPropertyColumn(new Model("First Name"), "firstname", "firstname") {
+
+			public Component getFilter(String componentId, Form form) {
+				return new TextFilter(componentId, new PropertyModel(form.getModel(), "firstname"));
+			}
+			
+		};
+		columns[2]=new FilteredPropertyColumn(new Model("Last Name"), "lastname", "lastname") {
+
+			public Component getFilter(String componentId, Form form) {
+				String[] choices={"ANY", "Nelson", "Bailey", "Ortiz", "Baker", "Johnson", "Smith"};
+				return new SingleChoiceFilter(componentId, new Model("ANY"), new Model((Serializable) Arrays.asList(choices)), new ChoiceRenderer());
+			}
+
+		};
+		columns[3]=new PropertyColumn(new Model("Phone Number"), "phone", "phone");
+		columns[4]=new PropertyColumn(new Model("Email"), "email", "email");
 
 		// set up data provider and default sort for the data table
 		ContactsDataProvider dataProvider = new ContactsDataProvider();
 		dataProvider.setSort("firstname", true);
 
-		DataTable users = new DataTable("users", columns, dataProvider, 10);
+		DataTable users = new DataTable("users", Arrays.asList(columns), dataProvider, 10);
 
+		//users.addBottomToolbar(new HeadersToolbar(users, dataProvider));
+		//users.addTopToolbar(new FilterToolbar(users, dataProvider));
+		
 		add(users);
+		
 	}
 
 	/**
@@ -101,7 +137,7 @@ public class ListContactsPage extends BasePage {
 	 * dataview so having a reference to the page will cause an out of memory
 	 * error eventually
 	 */
-	private static class ContactsDataProvider extends SortableDataProvider {
+	private static class ContactsDataProvider extends SortableDataProvider implements IFilterStateLocator {
 		private ContactDao getDao() {
 			return PhonebookApplication.getInstance().getContactDao();
 		}
@@ -122,7 +158,8 @@ public class ListContactsPage extends BasePage {
 			} else {
 				qp = new QueryParam(first, count);
 			}
-			return getDao().find(qp);
+			System.out.println(filter.toString());
+			return getDao().find(qp, filter);
 		}
 
 		/**
@@ -131,7 +168,7 @@ public class ListContactsPage extends BasePage {
 		 * @return total item count
 		 */
 		public int size() {
-			return getDao().count();
+			return getDao().count(filter);
 		}
 
 		/**
@@ -143,6 +180,21 @@ public class ListContactsPage extends BasePage {
 		 */
 		public IModel model(Object object) {
 			return new DetachableContactModel((Contact) object);
+		}
+
+		private Contact filter=new Contact();
+
+		public ContactsDataProvider() {
+			filter.setLastname("ANY");
+		}
+		
+		
+		public Object getFilterState() {
+			return filter;
+		}
+
+		public void setFilterState(Object state) {
+			filter=(Contact) state;
 		}
 	};
 
