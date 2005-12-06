@@ -21,6 +21,7 @@ package wicket.contrib.phonebook.web;
 import wicket.contrib.phonebook.ContactDao;
 import wicket.contrib.phonebook.web.page.ListContactsPage;
 import wicket.protocol.http.WebApplication;
+import wicket.util.time.Duration;
 
 /**
  * Extends Wicket's WebApplication to hold the DAO instance for the app.
@@ -39,6 +40,10 @@ public class PhonebookApplication extends WebApplication {
 		super.init();
 		
 		getPages().setHomePage(ListContactsPage.class);
+
+		//getSettings().addResourceFolder("src/java").setResourcePollFrequency(
+		//		Duration.ONE_SECOND);
+
 	}
 
 	/**

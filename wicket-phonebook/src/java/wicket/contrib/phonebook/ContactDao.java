@@ -53,11 +53,11 @@ public interface ContactDao {
 	 * @param qp Query Paramaters to use.
 	 * @return The results of the query as an Iterator.
 	 */
-	Iterator find(QueryParam qp);
+	Iterator find(QueryParam qp, Contact filter);
 	
 	/**
 	 * Return the number of Contacts in the DB.
 	 * @return count
 	 */
-	int count();
+	int count(Contact filter);
 }
