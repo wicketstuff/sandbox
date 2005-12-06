@@ -93,27 +93,45 @@ public abstract class HibernateDataProvider extends SortableDataProvider
 	protected String getSqlOrderBy(String alias)
 	{
 		StringBuffer orderBy = new StringBuffer();
-		if (getSortList().size() > 0)
-		{
-			orderBy.append(" ORDER BY");
-			boolean addComma = false;
-			for (Iterator i = getSortList().iterator(); i.hasNext();)
+
+		SortParam sp=getSort();
+		if (sp!=null) {
+			orderBy.append(" ORDER BY ");
+			if (alias != null)
 			{
-				SortParam sortParam = (SortParam) i.next();
-				if (addComma) orderBy.append(",");
-				orderBy.append(" ");
-				
-				if (alias != null)
-				{
-					orderBy.append(alias + ".");
-				}
-				
-				orderBy.append(sortParam.getProperty());
-				orderBy.append(sortParam.isAscending() ? " ASC" : " DESC");
-			
-				addComma = true;
+				orderBy.append(alias + ".");
 			}
+			orderBy.append(sp.getProperty());
+			orderBy.append(sp.isAscending() ? " ASC" : " DESC");
+			
 		}
+		
+
+		// Currently sortable data provider only supports a single sort state
+		// so the list is not supported
+		// maybe the list will comeback in the future
+		// if (getSortList().size() > 0)
+		// {
+		//	orderBy.append(" ORDER BY");
+		//	boolean addComma = false;
+		//	for (Iterator i = getSortList().iterator(); i.hasNext();)
+		//	{
+		//		SortParam sortParam = (SortParam) i.next();
+		//		if (addComma) orderBy.append(",");
+		//		orderBy.append(" ");
+		//		
+		//		if (alias != null)
+		//		{
+		//			orderBy.append(alias + ".");
+		//		}
+		//		
+		//		orderBy.append(sortParam.getProperty());
+		//		orderBy.append(sortParam.isAscending() ? " ASC" : " DESC");
+		//	
+		//		addComma = true;
+		//	}
+		// }
+
 		return orderBy.toString();
 	}
 	
@@ -136,10 +154,15 @@ public abstract class HibernateDataProvider extends SortableDataProvider
 	 */
 	protected final Criteria addOrdering(Criteria criteria)
 	{
-		for (Iterator i = getSortList().iterator(); i.hasNext();)
-		{
-			criteria.addOrder(makeOrder((SortParam) i.next()));
+		SortParam sp=getSort();
+		if (sp!=null) {
+			criteria.addOrder(makeOrder(sp));
 		}
+		// list is not currently supported, only a single sort state is supported so far
+		// for (Iterator i = getSortList().iterator(); i.hasNext();)
+		// {
+		// 	criteria.addOrder(makeOrder((SortParam) i.next()));
+		//}
 		return criteria;
 	}
 
