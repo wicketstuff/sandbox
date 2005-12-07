@@ -5,7 +5,7 @@
   <groupId>wicket-stuff</groupId>
   <id>phonebook</id>
   <name>Wicket Phonebook Example</name>
-  <currentVersion>1.0-SNAPSHOT</currentVersion>
+  <currentVersion>SNAPSHOT</currentVersion>
   <inceptionYear>2005</inceptionYear>
   <package>wicket.contrib.phonebook</package>
   
@@ -98,14 +98,14 @@
     <dependency>
       <groupId>wicket</groupId>
       <artifactId>wicket</artifactId>
-      <version>1.1</version>
+      <version>SNAPSHOT</version>
       <properties><war.bundle>true</war.bundle></properties>
     </dependency>
 
     <dependency>
       <groupId>wicket</groupId>
       <artifactId>wicket-extensions</artifactId>
-      <version>1.1</version>
+      <version>SNAPSHOT</version>
       <properties><war.bundle>true</war.bundle></properties>
     </dependency>
     
