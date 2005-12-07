@@ -100,7 +100,9 @@ public class HibernateContactDao implements ContactDao {
 		if (filter.getLastname()!=null&&!filter.getLastname().equals("ANY")) {
 			hql.append(" and c.lastname=:lname ");
 		}
-		
+		if (filter.getEmail()!=null&&filter.getEmail().trim().length()>0) {
+			hql.append(" and c.email=:email");
+		}
 		
 		if (qp.hasSort()) {
 			hql.append("order by upper(c.").append(qp.getSort()).append(") ").append(
@@ -115,7 +117,9 @@ public class HibernateContactDao implements ContactDao {
 		if (filter.getLastname()!=null&&!filter.getLastname().equals("ANY")) {
 			q.setParameter("lname", filter.getLastname());
 		}
-		
+		if (filter.getEmail()!=null&&filter.getEmail().trim().length()>0) {
+			q.setParameter("email", filter.getEmail());
+		}
 		return q.iterate();
 
 	}
@@ -135,6 +139,9 @@ public class HibernateContactDao implements ContactDao {
 		if (filter.getLastname()!=null&&!filter.getLastname().equals("ANY")) {
 			hql.append(" and c.lastname=:lname ");
 		}
+		if (filter.getEmail()!=null&&filter.getEmail().trim().length()>0) {
+			hql.append(" and c.email=:email");
+		}
 
 		
 		
@@ -145,6 +152,9 @@ public class HibernateContactDao implements ContactDao {
 		}
 		if (filter.getLastname()!=null&&!filter.getLastname().equals("ANY")) {
 			q.setParameter("lname", filter.getLastname());
+		}
+		if (filter.getEmail()!=null&&filter.getEmail().trim().length()>0) {
+			q.setParameter("email", filter.getEmail());
 		}
 
 		return ((Integer)q.uniqueResult()).intValue();
