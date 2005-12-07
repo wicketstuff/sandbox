@@ -41,8 +41,8 @@ public class PhonebookApplication extends WebApplication {
 		
 		getPages().setHomePage(ListContactsPage.class);
 
-		//getSettings().addResourceFolder("src/java").setResourcePollFrequency(
-		//		Duration.ONE_SECOND);
+		getSettings().addResourceFolder("src/java").setResourcePollFrequency(
+				Duration.seconds(10));
 
 	}
 
