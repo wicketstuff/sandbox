@@ -93,33 +93,31 @@ public class HibernateContactDao implements ContactDao {
 	 * @return The results of the query as an Iterator.
 	 */
 	public Iterator find(final QueryParam qp, Contact filter) {
-		//TODO filter application here and in the count needs to be clead up/factored out
+		// TODO filter application here and in the count needs to be clead
+		// up/factored out
 		StringBuffer hql = new StringBuffer("from Contact c where 1=1 ");
-		if (filter.getFirstname()!=null&&filter.getFirstname().trim().length()>0) {
+		if (filter.getFirstname() != null
+				&& filter.getFirstname().trim().length() > 0) {
 			hql.append(" and upper(c.firstname) like (:fname) ");
 		}
-		if (filter.getLastname()!=null&&!filter.getLastname().equals("ANY")) {
+		if (filter.getLastname() != null && !filter.getLastname().equals("ANY")) {
 			hql.append(" and c.lastname=:lname ");
 		}
-		if (filter.getEmail()!=null&&filter.getEmail().trim().length()>0) {
-			hql.append(" and c.email=:email");
-		}
-		
+
 		if (qp.hasSort()) {
-			hql.append("order by upper(c.").append(qp.getSort()).append(") ").append(
-					(qp.isSortAsc()) ? " asc" : " desc");
+			hql.append("order by upper(c.").append(qp.getSort()).append(") ")
+					.append((qp.isSortAsc()) ? " asc" : " desc");
 		}
-		Query q=getSession().createQuery(hql.toString()).setFirstResult(
+		Query q = getSession().createQuery(hql.toString()).setFirstResult(
 				qp.getFirst()).setMaxResults(qp.getCount());
-		
-		if (filter.getFirstname()!=null&&filter.getFirstname().trim().length()>0) {
-			q.setParameter("fname", "%"+filter.getFirstname().trim().toUpperCase()+"%");
+
+		if (filter.getFirstname() != null
+				&& filter.getFirstname().trim().length() > 0) {
+			q.setParameter("fname", "%"
+					+ filter.getFirstname().trim().toUpperCase() + "%");
 		}
-		if (filter.getLastname()!=null&&!filter.getLastname().equals("ANY")) {
+		if (filter.getLastname() != null && !filter.getLastname().equals("ANY")) {
 			q.setParameter("lname", filter.getLastname());
-		}
-		if (filter.getEmail()!=null&&filter.getEmail().trim().length()>0) {
-			q.setParameter("email", filter.getEmail());
 		}
 		return q.iterate();
 
@@ -132,40 +130,36 @@ public class HibernateContactDao implements ContactDao {
 	 */
 	public int count(Contact filter) {
 
-		StringBuffer hql=new StringBuffer("select count(*) from Contact c where 1=1 ");
-		
-		if (filter.getFirstname()!=null&&filter.getFirstname().trim().length()>0) {
+		StringBuffer hql = new StringBuffer(
+				"select count(*) from Contact c where 1=1 ");
+
+		if (filter.getFirstname() != null
+				&& filter.getFirstname().trim().length() > 0) {
 			hql.append(" and upper(c.firstname) like (:fname) ");
 		}
-		if (filter.getLastname()!=null&&!filter.getLastname().equals("ANY")) {
+		if (filter.getLastname() != null && !filter.getLastname().equals("ANY")) {
 			hql.append(" and c.lastname=:lname ");
 		}
-		if (filter.getEmail()!=null&&filter.getEmail().trim().length()>0) {
-			hql.append(" and c.email=:email");
-		}
 
-		
-		
-		Query q=getSession().createQuery(hql.toString());
-		
-		if (filter.getFirstname()!=null&&filter.getFirstname().trim().length()>0) {
-			q.setParameter("fname", "%"+filter.getFirstname().trim().toUpperCase()+"%");
+		Query q = getSession().createQuery(hql.toString());
+
+		if (filter.getFirstname() != null
+				&& filter.getFirstname().trim().length() > 0) {
+			q.setParameter("fname", "%"
+					+ filter.getFirstname().trim().toUpperCase() + "%");
 		}
-		if (filter.getLastname()!=null&&!filter.getLastname().equals("ANY")) {
+		if (filter.getLastname() != null && !filter.getLastname().equals("ANY")) {
 			q.setParameter("lname", filter.getLastname());
 		}
-		if (filter.getEmail()!=null&&filter.getEmail().trim().length()>0) {
-			q.setParameter("email", filter.getEmail());
-		}
 
-		return ((Integer)q.uniqueResult()).intValue();
+		return ((Integer) q.uniqueResult()).intValue();
 	}
 
 	public List getUniqueLastNames() {
 		return getSession()
 				.createQuery(
-						"select distinct c.lastname from Contact c order by c.lastname").list();
+						"select distinct c.lastname from Contact c order by c.lastname")
+				.list();
 	}
-
 
 }
