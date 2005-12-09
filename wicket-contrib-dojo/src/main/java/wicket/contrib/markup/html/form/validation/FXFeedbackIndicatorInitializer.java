@@ -33,7 +33,7 @@ public class FXFeedbackIndicatorInitializer implements IInitializer
 	 */
 	public void init(Application application)
 	{
-		PackageResource.bind(application, FXFeedbackIndicator.class, "alert.gif");
+		PackageResource.bind(application, FXFeedbackIndicator.class, "alerticon.gif");
 	}
 
 }
