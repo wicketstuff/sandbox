@@ -5,7 +5,7 @@
   <groupId>wicket-stuff</groupId>
   <id>wicket-contrib-dojo</id>
   <name>Wicket Dojo Support</name>
-  <currentVersion>0.3</currentVersion>
+  <currentVersion>0.3.1</currentVersion>
   <organization>
     <name>Wicket Stuff</name>
     <url>http://wicket-stuff.sourceforge.net</url>
@@ -100,6 +100,17 @@
         <wicket.group>required</wicket.group>
         <wicket.description>The Wicket core classes</wicket.description>
         <eclipse.dependency>true</eclipse.dependency>
+        <war.bundle>true</war.bundle>
+      </properties>
+    </dependency>
+    <dependency>
+      <groupId>ognl</groupId>
+      <artifactId>ognl</artifactId>
+      <version>2.6.7</version>
+      <properties>
+        <wicket.group>required</wicket.group>
+        <wicket.description>The OGNL expression parser</wicket.description>
+        <eclipse.dependency>false</eclipse.dependency>
         <war.bundle>true</war.bundle>
       </properties>
     </dependency>
