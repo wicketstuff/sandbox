@@ -17,11 +17,12 @@
 package wicket.contrib.markup.html.form.validation;
 
 
+import wicket.Application;
 import wicket.Component;
 import wicket.contrib.markup.html.tooltip.Tooltip;
+import wicket.markup.html.PackageResourceReference;
 import wicket.markup.html.form.validation.FormComponentFeedbackIndicator;
 import wicket.markup.html.image.Image;
-import wicket.model.Model;
 
 /**
  * Feedback indicator that adds a small image when validation fails. Also
@@ -59,8 +60,10 @@ public class FXFeedbackIndicator extends FormComponentFeedbackIndicator
 	 */
 	protected void initIndicator()
 	{
-		Image i = new Image("image", new Model("alerticon.gif"));
-		add(i);
+		//Image i = new Image("image", new Model("alerticon.gif"));
+		final PackageResourceReference resource = new PackageResourceReference(Application.get(), FXFeedbackIndicator.class, "alerticon.gif");
+		Image image = new Image("image", resource);
+		add(image);
 	}
 
 	/**
