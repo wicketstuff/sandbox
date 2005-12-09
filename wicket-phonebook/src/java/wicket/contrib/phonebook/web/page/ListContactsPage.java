@@ -28,9 +28,8 @@ import wicket.contrib.phonebook.ContactDao;
 import wicket.contrib.phonebook.QueryParam;
 import wicket.contrib.phonebook.web.DetachableContactModel;
 import wicket.contrib.phonebook.web.PhonebookApplication;
-import wicket.extensions.markup.html.repeater.data.sort.SortParam;
-import wicket.extensions.markup.html.repeater.data.sort.SortableDataProvider;
 import wicket.extensions.markup.html.repeater.data.table.DataTable;
+import wicket.extensions.markup.html.repeater.data.table.HeadersToolbar;
 import wicket.extensions.markup.html.repeater.data.table.IColumn;
 import wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
 import wicket.extensions.markup.html.repeater.data.table.filter.FilterForm;
@@ -42,7 +41,11 @@ import wicket.extensions.markup.html.repeater.data.table.filter.IFilterStateLoca
 import wicket.extensions.markup.html.repeater.data.table.filter.SingleChoiceFilter;
 import wicket.extensions.markup.html.repeater.data.table.filter.TextFilter;
 import wicket.extensions.markup.html.repeater.refreshing.Item;
+import wicket.extensions.markup.html.repeater.util.SortParam;
+import wicket.extensions.markup.html.repeater.util.SortableDataProvider;
 import wicket.markup.html.form.ChoiceRenderer;
+import wicket.markup.html.form.Form;
+import wicket.markup.html.form.TextField;
 import wicket.markup.html.link.Link;
 import wicket.markup.html.panel.Panel;
 import wicket.model.IModel;
@@ -56,12 +59,24 @@ import wicket.util.lang.Objects;
  * @author igor
  */
 public class ListContactsPage extends BasePage {
+	private String property;
+	
+	
+	
+	public String getProperty() {
+		return property;
+	}
+
+	public void setProperty(String property) {
+		this.property = property;
+	}
+
 	/**
 	 * Constructor. Having this constructor public means that the page is
 	 * 'bookmarkable' and hence can be called/ created from anywhere.
 	 */
 	public ListContactsPage() {
-
+		
 		add(new Link("createLink") {
 			/**
 			 * Go to the Edit page when the link is clicked, passing an empty
@@ -147,7 +162,7 @@ public class ListContactsPage extends BasePage {
 
 		// users.addBottomToolbar(new HeadersToolbar(users, dataProvider));
 		users.addTopToolbar(new FilterToolbar(users, dataProvider));
-
+		users.addBottomToolbar(new HeadersToolbar(users, dataProvider));
 		add(users);
 
 	}
