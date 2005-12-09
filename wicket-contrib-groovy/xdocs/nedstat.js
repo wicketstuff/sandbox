@@ -1,1 +1,0 @@
-nedstatbasic("ADVPZAFJtL7GiqVQ1ddLPVNyrdgw", 0);
