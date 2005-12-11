@@ -70,7 +70,6 @@
 	
 	<!-- setup wicket application -->
 	<bean id="wicketApplication" class="wicket.contrib.phonebook.web.PhonebookApplication">
-		<property name="contactDao" ref="contactDao"/>
 	</bean> 	
 	
 	<!-- setup data generator that will add some data into the db when the app startsup -->

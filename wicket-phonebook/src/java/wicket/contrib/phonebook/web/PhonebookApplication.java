@@ -18,20 +18,13 @@
  */
 package wicket.contrib.phonebook.web;
 
-import wicket.contrib.phonebook.ContactDao;
 import wicket.contrib.phonebook.web.page.ListContactsPage;
-import wicket.protocol.http.WebApplication;
+import wicket.contrib.spring.SpringWebApplication;
 import wicket.util.time.Duration;
 
-/**
- * Extends Wicket's WebApplication to hold the DAO instance for the app.
- * @author igor
- *
- */
-public class PhonebookApplication extends WebApplication {
+public class PhonebookApplication extends SpringWebApplication {
 
-	private ContactDao contactDao;
-
+	
 	/**
 	 * Custom initialisation. This method is called right after this
 	 * application class is constructed, and the wicket servlet is set.
@@ -46,28 +39,4 @@ public class PhonebookApplication extends WebApplication {
 
 	}
 
-	/**
-	 * Get the Contact DAO instance
-	 * @return The Contact DAO instance
-	 */
-	public ContactDao getContactDao() {
-		return contactDao;
-	}
-
-	/**
-	 * Sets the Contact DAO for this app.  Called by Spring.
-	 * @param contactDao
-	 */
-	public void setContactDao(ContactDao contactDao) {
-		this.contactDao = contactDao;
-	}
-
-	/**
-	 * Get the PhonebookApplication instance for the current session.
-	 * Called by the DetachableContactModel's {@link DetachableContactModel#onAttach onAttach} method. 
-	 * @return The phonebookApplication instance for the current session.
-	 */
-	public static PhonebookApplication getInstance() {
-		return ((PhonebookApplication)WebApplication.get());
-	}
 }

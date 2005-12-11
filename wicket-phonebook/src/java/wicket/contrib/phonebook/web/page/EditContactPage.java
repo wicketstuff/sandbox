@@ -51,7 +51,7 @@ public class EditContactPage extends BasePage {
 	 */
 	public EditContactPage(Page backPage, final long contactId) {
 		this.backPage = backPage;
-		Contact contact = (contactId == 0) ? new Contact() : getContactDao()
+		Contact contact = (contactId == 0) ? new Contact() : getDao()
 				.load(contactId);
 
 		add(new FeedbackPanel("feedback"));
@@ -80,7 +80,7 @@ public class EditContactPage extends BasePage {
 		form.add(new Button("save") {
 			protected void onSubmit() {
 				Contact contact = (Contact) getForm().getModelObject();
-				getContactDao().save(contact);
+				getDao().save(contact);
 				setResponsePage(EditContactPage.this.backPage);
 			}
 		});

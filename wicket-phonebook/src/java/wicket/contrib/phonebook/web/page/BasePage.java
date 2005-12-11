@@ -19,21 +19,39 @@
 package wicket.contrib.phonebook.web.page;
 
 import wicket.contrib.phonebook.ContactDao;
-import wicket.contrib.phonebook.web.PhonebookApplication;
-import wicket.markup.html.WebPage;
+import wicket.contrib.spring.SpringWebPage;
+import wicket.contrib.spring.injection.SpringBean;
 
 /**
- * Extends {@link WebPage} in order to provide the {@link #getContactDao}
- * method.
- *
+ * Base page class used for phonebook web pages.
+ * <p>
+ * This page holds a reference to contact dao since all phonebook pages need
+ * access to it.
+ * <p>
+ * The markup of this files provides some common html as well as includes a
+ * reference to the css file that all other pages inherit through wicket's
+ * markup inheritance feature.
+ * <p>
+ * The base page also extends the SpringWebPage class so that all its subclasses
+ * have their dependencies automatically injected.
+ * 
  * @author igor
  */
-public class BasePage extends WebPage {
+public class BasePage extends SpringWebPage {
+
 	/**
-	 * Gets the Contact DAO instance.
-	 * @return The Contact DAO instance.
+	 * ContactDao implementation that will be injected from the spring
+	 * application context
+	 * <p>
+	 * note: we need to specify the bean name in the annotation because we have
+	 * two beans of type ContactDao (one for the actual dao and one for its
+	 * transactional proxy). If only one bean was present we could have omitted
+	 * the bean name.
 	 */
-	protected ContactDao getContactDao() {
-		return PhonebookApplication.getInstance().getContactDao();
+	@SpringBean(name = "contactDao")
+	private ContactDao dao;
+
+	protected ContactDao getDao() {
+		return dao;
 	}
 }

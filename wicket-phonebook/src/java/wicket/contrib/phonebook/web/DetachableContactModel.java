@@ -20,6 +20,7 @@ package wicket.contrib.phonebook.web;
 
 import wicket.Component;
 import wicket.contrib.phonebook.Contact;
+import wicket.contrib.phonebook.ContactDao;
 import wicket.model.AbstractReadOnlyDetachableModel;
 import wicket.model.IModel;
 
@@ -33,19 +34,21 @@ import wicket.model.IModel;
  * @author igor
  */
 public class DetachableContactModel extends AbstractReadOnlyDetachableModel {
-	private long id;
+	private final long id;
+	private final ContactDao dao;
 	private transient Contact contact;
 	
-	public DetachableContactModel(Contact contact) {
-		this(contact.getId());
+	public DetachableContactModel(Contact contact, ContactDao dao) {
+		this(contact.getId(), dao);
 		this.contact=contact;
 	}
 
-	public DetachableContactModel(long id) {
+	public DetachableContactModel(long id, ContactDao dao) {
 		if (id==0) {
 			throw new IllegalArgumentException();
 		}
 		this.id=id;
+		this.dao=dao;
 	}
 
 	/**
@@ -61,7 +64,7 @@ public class DetachableContactModel extends AbstractReadOnlyDetachableModel {
 	 * Uses the DAO to load the required contact when the model is attatched to the request.
 	 */
 	protected void onAttach() {
-		contact=PhonebookApplication.getInstance().getContactDao().load(id);
+		contact=dao.load(id);
 	}
 
 	/**
