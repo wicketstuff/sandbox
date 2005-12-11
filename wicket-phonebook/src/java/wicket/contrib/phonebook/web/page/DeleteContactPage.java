@@ -26,50 +26,54 @@ import wicket.markup.html.form.Form;
 
 /**
  * Delete the Contact.
+ * 
  * @author igor
- *
+ * 
  */
 public class DeleteContactPage extends BasePage {
 	private Page backPage;
 
 	/**
-	 * Constructor.  Display the summary (names) before asking for confirmation.
-	 * Note that if you don't need the page to be bookmarkable,
-	 * you can use whatever constructor you need, such as is done here.
-	 *
-	 * @param backPage The page that the user was on before coming here
-	 * @param contactId The id of the Contact to delete.
+	 * Constructor. Display the summary (names) before asking for confirmation.
+	 * Note that if you don't need the page to be bookmarkable, you can use
+	 * whatever constructor you need, such as is done here.
+	 * 
+	 * @param backPage
+	 *            The page that the user was on before coming here
+	 * @param contactId
+	 *            The id of the Contact to delete.
 	 */
 	public DeleteContactPage(Page backPage, final long contactId) {
-		this.backPage=backPage;
+		this.backPage = backPage;
 
-		Contact contact=getContactDao().load(contactId);
-		
-		add(new Label("name", contact.getFirstname()+" "+contact.getLastname()));
+		Contact contact = getDao().load(contactId);
+
+		add(new Label("name", contact.getFirstname() + " "
+				+ contact.getLastname()));
 
 		/*
 		 * Use a form to hold the buttons, but set the default form processing
 		 * off as there's no point it trying to do anything, as all we're
 		 * interested in are the button clicks.
 		 */
-	        Form form=new Form("confirmForm");
-		
+		Form form = new Form("confirmForm");
+
 		form.add(new Button("confirm") {
-	                /**
-	                 * If clicked, delete the contact and return to the calling page.
-	                 */
-                        protected void onSubmit() {
-				DeleteContactPage.this.getContactDao().delete(contactId);
+			/**
+			 * If clicked, delete the contact and return to the calling page.
+			 */
+			protected void onSubmit() {
+				getDao().delete(contactId);
 				setResponsePage(DeleteContactPage.this.backPage);
 			}
 		}.setDefaultFormProcessing(false));
-		
+
 		form.add(new Button("cancel") {
 			protected void onSubmit() {
 				setResponsePage(DeleteContactPage.this.backPage);
 			}
 		}.setDefaultFormProcessing(false));
-		
+
 		add(form);
 	}
 }

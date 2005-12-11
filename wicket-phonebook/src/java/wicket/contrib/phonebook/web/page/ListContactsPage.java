@@ -18,35 +18,27 @@
  */
 package wicket.contrib.phonebook.web.page;
 
+import java.io.Serializable;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
 import wicket.Component;
 import wicket.contrib.phonebook.Contact;
-import wicket.contrib.phonebook.ContactDao;
-import wicket.contrib.phonebook.QueryParam;
-import wicket.contrib.phonebook.web.DetachableContactModel;
-import wicket.contrib.phonebook.web.PhonebookApplication;
+import wicket.contrib.phonebook.web.ContactsDataProvider;
 import wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
 import wicket.extensions.markup.html.repeater.data.table.IColumn;
 import wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
+import wicket.extensions.markup.html.repeater.data.table.filter.ChoiceFilteredPropertyColumn;
 import wicket.extensions.markup.html.repeater.data.table.filter.FilterForm;
 import wicket.extensions.markup.html.repeater.data.table.filter.FilterToolbar;
 import wicket.extensions.markup.html.repeater.data.table.filter.FilteredAbstractColumn;
-import wicket.extensions.markup.html.repeater.data.table.filter.FilteredPropertyColumn;
 import wicket.extensions.markup.html.repeater.data.table.filter.GoAndClearFilter;
-import wicket.extensions.markup.html.repeater.data.table.filter.IFilterStateLocator;
-import wicket.extensions.markup.html.repeater.data.table.filter.SingleChoiceFilter;
-import wicket.extensions.markup.html.repeater.data.table.filter.TextFilter;
+import wicket.extensions.markup.html.repeater.data.table.filter.TextFilteredPropertyColumn;
 import wicket.extensions.markup.html.repeater.refreshing.Item;
-import wicket.extensions.markup.html.repeater.util.SortParam;
-import wicket.extensions.markup.html.repeater.util.SortableDataProvider;
 import wicket.markup.html.link.Link;
 import wicket.markup.html.panel.Panel;
 import wicket.model.IModel;
 import wicket.model.Model;
-import wicket.model.PropertyModel;
 
 /**
  * Display a Pageable List of Contacts.
@@ -54,15 +46,6 @@ import wicket.model.PropertyModel;
  * @author igor
  */
 public class ListContactsPage extends BasePage {
-	private String property;
-
-	public String getProperty() {
-		return property;
-	}
-
-	public void setProperty(String property) {
-		this.property = property;
-	}
 
 	/**
 	 * Constructor. Having this constructor public means that the page is
@@ -100,50 +83,28 @@ public class ListContactsPage extends BasePage {
 
 			// return the go-and-clear filter for the filter toolbar
 			public Component getFilter(String componentId, FilterForm form) {
+				System.out.println("rebuilding clear filter");
 				return new GoAndClearFilter(componentId, form);
 			}
 
 		};
 
-		/*
-		 * Use FilterPropertyColumn to easily populate the column with data
-		 */
-		columns[1] = new FilteredPropertyColumn(new Model("First Name"),
-				"firstname", "firstname") {
+		// creates a column with a text filter
+		columns[1] = new TextFilteredPropertyColumn(new Model("First Name"),
+				"firstname", "firstname");
 
-			// return a text-box filter for the filter toolbar
-			public Component getFilter(String componentId, FilterForm form) {
-				return new TextFilter(componentId, new PropertyModel(form
-						.getModel(), "firstname"), form);
-			}
-
-		};
-
-		columns[2] = new FilteredPropertyColumn(new Model("Last Name"),
-				"lastname", "lastname") {
-
-			// return a single-choice filter for the filter toolbar
-			public Component getFilter(String componentId, FilterForm form) {
-				ContactDao dao=PhonebookApplication.getInstance().getContactDao();
-				
-				List choices = dao.getUniqueLastNames();
-				
-				choices.add(0, "ANY");
-
-				IModel model = new PropertyModel(form.getModel(), "lastname");
-
-				return new SingleChoiceFilter(componentId, model, form,
-						choices, true);
-			}
-
-		};
-		columns[3] = new PropertyColumn(new Model("Phone Number"), "phone",
+		List names = getDao().getUniqueLastNames();
+		
+		columns[2] = new ChoiceFilteredPropertyColumn(new Model("Last Name"),
+				"lastname", "lastname", new Model((Serializable) names)) ;
+		
+		columns[3] = new TextFilteredPropertyColumn(new Model("Phone Number"), "phone",
 				"phone");
-		columns[4] = new PropertyColumn(new Model("Email"), "email", "email");
+		
+		columns[4] = new TextFilteredPropertyColumn(new Model("Email"), "email", "email");
 
-		// set up data provider and default sort
-		ContactsDataProvider dataProvider = new ContactsDataProvider();
-		dataProvider.setSort("firstname", true);
+		// set up data provider
+		ContactsDataProvider dataProvider = new ContactsDataProvider(getDao());
 
 		// create the data table
 		DefaultDataTable users = new DefaultDataTable("users", Arrays
@@ -153,79 +114,6 @@ public class ListContactsPage extends BasePage {
 		add(users);
 
 	}
-
-	/**
-	 * 
-	 * @author igor
-	 * 
-	 * note static is important here because dataprovider is the model of the
-	 * dataview so having a reference to the page will cause an out of memory
-	 * error eventually
-	 */
-	private static class ContactsDataProvider extends SortableDataProvider
-			implements IFilterStateLocator {
-		private ContactDao getDao() {
-			return PhonebookApplication.getInstance().getContactDao();
-		}
-
-		/**
-		 * Gets an iterator for the subset of total data.
-		 * 
-		 * @param first
-		 *            first row of data
-		 * @param count
-		 *            minumum number of elements to retrieve
-		 * @return iterator capable of iterating over {first, first+count} items
-		 */
-		public Iterator iterator(int first, int count) {
-			SortParam sp = getSort();
-			QueryParam qp = null;
-			if (sp != null) {
-				qp = new QueryParam(first, count, sp.getProperty(), sp
-						.isAscending());
-			} else {
-				qp = new QueryParam(first, count);
-			}
-			System.out.println(filter.toString());
-			return getDao().find(qp, filter);
-		}
-
-		/**
-		 * Gets total number of items in the collection.
-		 * 
-		 * @return total item count
-		 */
-		public int size() {
-			return getDao().count(filter);
-		}
-
-		/**
-		 * Converts the object in the collection to its model representation. A
-		 * good place to wrap the object in a detachable model.
-		 * 
-		 * @param object
-		 *            The object that needs to be wrapped
-		 * @return The model representation of the object
-		 */
-		public IModel model(Object object) {
-			return new DetachableContactModel((Contact) object);
-		}
-
-		private Contact filter = new Contact();
-
-		public ContactsDataProvider() {
-			filter.setLastname("ANY");
-			
-		}
-
-		public Object getFilterState() {
-			return filter;
-		}
-
-		public void setFilterState(Object state) {
-			filter = (Contact) state;
-		}
-	};
 
 	/**
 	 * Provides a composite User Actions panel for the Actions column.

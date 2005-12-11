@@ -93,33 +93,7 @@ public class HibernateContactDao implements ContactDao {
 	 * @return The results of the query as an Iterator.
 	 */
 	public Iterator find(final QueryParam qp, Contact filter) {
-		// TODO filter application here and in the count needs to be clead
-		// up/factored out
-		StringBuffer hql = new StringBuffer("from Contact c where 1=1 ");
-		if (filter.getFirstname() != null
-				&& filter.getFirstname().trim().length() > 0) {
-			hql.append(" and upper(c.firstname) like (:fname) ");
-		}
-		if (filter.getLastname() != null && !filter.getLastname().equals("ANY")) {
-			hql.append(" and c.lastname=:lname ");
-		}
-
-		if (qp.hasSort()) {
-			hql.append("order by upper(c.").append(qp.getSort()).append(") ")
-					.append((qp.isSortAsc()) ? " asc" : " desc");
-		}
-		Query q = getSession().createQuery(hql.toString()).setFirstResult(
-				qp.getFirst()).setMaxResults(qp.getCount());
-
-		if (filter.getFirstname() != null
-				&& filter.getFirstname().trim().length() > 0) {
-			q.setParameter("fname", "%"
-					+ filter.getFirstname().trim().toUpperCase() + "%");
-		}
-		if (filter.getLastname() != null && !filter.getLastname().equals("ANY")) {
-			q.setParameter("lname", filter.getLastname());
-		}
-		return q.iterate();
+		return buildFindQuery(qp, filter, false).iterate();
 
 	}
 
@@ -129,37 +103,79 @@ public class HibernateContactDao implements ContactDao {
 	 * @return count
 	 */
 	public int count(Contact filter) {
-
-		StringBuffer hql = new StringBuffer(
-				"select count(*) from Contact c where 1=1 ");
-
-		if (filter.getFirstname() != null
-				&& filter.getFirstname().trim().length() > 0) {
-			hql.append(" and upper(c.firstname) like (:fname) ");
-		}
-		if (filter.getLastname() != null && !filter.getLastname().equals("ANY")) {
-			hql.append(" and c.lastname=:lname ");
-		}
-
-		Query q = getSession().createQuery(hql.toString());
-
-		if (filter.getFirstname() != null
-				&& filter.getFirstname().trim().length() > 0) {
-			q.setParameter("fname", "%"
-					+ filter.getFirstname().trim().toUpperCase() + "%");
-		}
-		if (filter.getLastname() != null && !filter.getLastname().equals("ANY")) {
-			q.setParameter("lname", filter.getLastname());
-		}
-
-		return ((Integer) q.uniqueResult()).intValue();
+		return ((Integer) buildFindQuery(null, filter, true).uniqueResult())
+				.intValue();
 	}
 
+	/**
+	 * Returns a list of unique last names
+	 */
 	public List getUniqueLastNames() {
-		return getSession()
-				.createQuery(
-						"select distinct c.lastname from Contact c order by c.lastname")
+		return getSession().createQuery(
+				"select distinct target.lastname "
+						+ " from Contact target order by target.lastname")
 				.list();
+	}
+
+	/**
+	 * builds a query object to statify the provided parameters
+	 * 
+	 * @param qp
+	 *            sorting and paging criteria
+	 * @param filter
+	 *            filter criteria
+	 * @param count
+	 *            true if this is a query meant to retrieve the number of rows
+	 * @return query object that satisfies the provided criteria
+	 */
+	protected Query buildFindQuery(QueryParam qp, Contact filter, boolean count) {
+		StringBuffer hql = new StringBuffer();
+		if (count) {
+			hql.append("select count(*) ");
+		}
+		hql.append(" from Contact target where 1=1 ");
+		if (filter.getFirstname() != null) {
+			hql.append("and upper(target.firstname) like (:firstname)");
+		}
+		if (filter.getLastname() != null) {
+			hql.append("and upper(target.lastname) like (:lastname)");
+		}
+		if (filter.getPhone() != null) {
+			hql.append("and upper(target.phone) like (:phone)");
+		}
+		if (filter.getEmail() != null) {
+			hql.append("and upper(target.email) like (:email)");
+		}
+
+		if (!count && qp != null && qp.hasSort()) {
+			hql.append("order by upper(target.").append(qp.getSort()).append(
+					") ").append((qp.isSortAsc()) ? " asc" : " desc");
+		}
+
+		Query query = getSession().createQuery(hql.toString());
+
+		if (!count && qp != null) {
+			query.setFirstResult(qp.getFirst()).setMaxResults(qp.getCount());
+		}
+
+		if (filter.getFirstname() != null) {
+			query.setParameter("firstname", "%"
+					+ filter.getFirstname().toUpperCase() + "%");
+		}
+		if (filter.getLastname() != null) {
+			query.setParameter("lastname", "%"
+					+ filter.getLastname().toUpperCase() + "%");
+		}
+		if (filter.getPhone() != null) {
+			query.setParameter("phone", "%" + filter.getPhone().toUpperCase()
+					+ "%");
+		}
+		if (filter.getEmail() != null) {
+			query.setParameter("email", "%" + filter.getEmail().toUpperCase()
+					+ "%");
+		}
+
+		return query;
 	}
 
 }
