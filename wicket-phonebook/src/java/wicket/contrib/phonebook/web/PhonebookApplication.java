@@ -18,21 +18,26 @@
  */
 package wicket.contrib.phonebook.web;
 
+import wicket.contrib.phonebook.ContactDao;
 import wicket.contrib.phonebook.web.page.ListContactsPage;
 import wicket.contrib.spring.SpringWebApplication;
-import wicket.contrib.spring.injection.annot.AnnotSpringWebApplication;
 import wicket.util.time.Duration;
 
-public class PhonebookApplication extends AnnotSpringWebApplication {
+public class PhonebookApplication extends SpringWebApplication {
 
-	
 	/**
-	 * Custom initialisation. This method is called right after this
-	 * application class is constructed, and the wicket servlet is set.
+	 * this field holds a contact dao proxy that is safe to use in wicket
+	 * components
+	 */
+	private ContactDao contactDao;
+
+	/**
+	 * Custom initialisation. This method is called right after this application
+	 * class is constructed, and the wicket servlet is set.
 	 */
 	protected void init() {
 		super.init();
-		
+
 		getPages().setHomePage(ListContactsPage.class);
 
 		getSettings().addResourceFolder("src/java").setResourcePollFrequency(
@@ -40,4 +45,11 @@ public class PhonebookApplication extends AnnotSpringWebApplication {
 
 	}
 
+	public ContactDao getContactDao() {
+		if (contactDao == null) {
+			contactDao = (ContactDao) createSpringBeanProxy(ContactDao.class,
+					"contactDao");
+		}
+		return contactDao;
+	}
 }
