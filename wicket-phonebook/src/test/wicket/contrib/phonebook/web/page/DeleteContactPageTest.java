@@ -37,11 +37,8 @@ import wicket.util.tester.DummyHomePage;
 import wicket.util.tester.WicketTester;
 
 public class DeleteContactPageTest extends TestCase {
-
-	
-	
 	public void test() throws ServletException {
-		
+		// 1. setup dependencies and mock objects
 		Contact contact=new Contact();
 		
 		MockControl daoCtrl=MockControl.createControl(ContactDao.class);
@@ -52,6 +49,7 @@ public class DeleteContactPageTest extends TestCase {
 		
 		daoCtrl.replay();
 		
+		// 2. setup mock injection environment
 		ApplicationContextMock appctx=new ApplicationContextMock();
 		appctx.putBean("contactDao", dao);
 		
@@ -59,24 +57,20 @@ public class DeleteContactPageTest extends TestCase {
 		
 		AnnotSpringInjector injector=new AnnotSpringInjector(ctxLocator);
 		
+		// 3. set our mock injection environment as active
 		InjectorHolder.setInjector(injector);
 
+		// 4. run the test
 		WicketTester app=new WicketTester();
 		
-		Page page=new DeleteContactPage(new DummyHomePage(), 10);
-		
-		app.startPage(page);
+		app.startPage(new DeleteContactPage(new DummyHomePage(), 10));
 		app.assertRenderedPage(DeleteContactPage.class);
 		app.assertComponent("confirmForm", Form.class);
 		app.assertComponent("confirmForm:confirm", Button.class);
 		app.setParameterForNextRequest("confirmForm:confirm", "pressed");
 		app.submitForm("confirmForm");
+		app.assertRenderedPage(DummyHomePage.class);
 		
 		daoCtrl.verify();
-		
 	}
-	
-	
-	
-	
 }
