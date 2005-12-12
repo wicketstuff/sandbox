@@ -20,9 +20,10 @@ package wicket.contrib.phonebook.web;
 
 import wicket.contrib.phonebook.web.page.ListContactsPage;
 import wicket.contrib.spring.SpringWebApplication;
+import wicket.contrib.spring.injection.annot.AnnotSpringWebApplication;
 import wicket.util.time.Duration;
 
-public class PhonebookApplication extends SpringWebApplication {
+public class PhonebookApplication extends AnnotSpringWebApplication {
 
 	
 	/**
