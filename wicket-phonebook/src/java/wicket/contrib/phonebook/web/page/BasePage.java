@@ -18,9 +18,9 @@
  */
 package wicket.contrib.phonebook.web.page;
 
-import wicket.contrib.injection.web.InjectableWebPage;
 import wicket.contrib.phonebook.ContactDao;
-import wicket.contrib.spring.injection.annot.SpringBean;
+import wicket.contrib.phonebook.web.PhonebookApplication;
+import wicket.markup.html.WebPage;
 
 /**
  * Base page class used for phonebook web pages.
@@ -37,21 +37,9 @@ import wicket.contrib.spring.injection.annot.SpringBean;
  * 
  * @author igor
  */
-public class BasePage extends InjectableWebPage {
-
-	/**
-	 * ContactDao implementation that will be injected from the spring
-	 * application context
-	 * <p>
-	 * note: we need to specify the bean name in the annotation because we have
-	 * two beans of type ContactDao (one for the actual dao and one for its
-	 * transactional proxy). If only one bean was present we could have omitted
-	 * the bean name.
-	 */
-	@SpringBean(name = "contactDao")
-	private ContactDao dao;
+public class BasePage extends WebPage {
 
 	protected ContactDao getDao() {
-		return dao;
+		return ((PhonebookApplication) getApplication()).getContactDao();
 	}
 }
