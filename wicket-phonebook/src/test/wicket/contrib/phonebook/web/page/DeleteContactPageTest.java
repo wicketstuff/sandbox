@@ -20,19 +20,17 @@ package wicket.contrib.phonebook.web.page;
 
 import javax.servlet.ServletException;
 
-import org.easymock.MockControl;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.StaticApplicationContext;
-
 import junit.framework.TestCase;
+
+import org.easymock.MockControl;
+
 import wicket.Page;
+import wicket.contrib.injection.web.InjectorHolder;
 import wicket.contrib.phonebook.Contact;
 import wicket.contrib.phonebook.ContactDao;
-import wicket.contrib.spring.SpringInjector;
-import wicket.contrib.spring.SpringInjectorLocator;
+import wicket.contrib.spring.injection.annot.AnnotSpringInjector;
 import wicket.contrib.spring.test.ApplicationContextMock;
 import wicket.contrib.spring.test.SpringContextLocatorMock;
-import wicket.markup.html.WebPage;
 import wicket.markup.html.form.Button;
 import wicket.markup.html.form.Form;
 import wicket.util.tester.DummyHomePage;
@@ -59,11 +57,9 @@ public class DeleteContactPageTest extends TestCase {
 		
 		SpringContextLocatorMock ctxLocator=new SpringContextLocatorMock(appctx);
 		
-		SpringInjector injector=new SpringInjector(ctxLocator);
+		AnnotSpringInjector injector=new AnnotSpringInjector(ctxLocator);
 		
-		SpringInjectorLocator.setInjector(injector);
-		
-		
+		InjectorHolder.setInjector(injector);
 
 		WicketTester app=new WicketTester();
 		
