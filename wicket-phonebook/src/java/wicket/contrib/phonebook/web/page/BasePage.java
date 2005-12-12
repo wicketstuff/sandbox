@@ -18,9 +18,9 @@
  */
 package wicket.contrib.phonebook.web.page;
 
+import wicket.contrib.injection.web.InjectableWebPage;
 import wicket.contrib.phonebook.ContactDao;
-import wicket.contrib.spring.SpringWebPage;
-import wicket.contrib.spring.injection.SpringBean;
+import wicket.contrib.spring.injection.annot.SpringBean;
 
 /**
  * Base page class used for phonebook web pages.
@@ -37,7 +37,7 @@ import wicket.contrib.spring.injection.SpringBean;
  * 
  * @author igor
  */
-public class BasePage extends SpringWebPage {
+public class BasePage extends InjectableWebPage {
 
 	/**
 	 * ContactDao implementation that will be injected from the spring
