@@ -7,8 +7,8 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 
 import wicket.contrib.data.model.hibernate.IHibernateDao.IHibernateCallback;
-import wicket.extensions.markup.html.repeater.data.sort.SortParam;
-import wicket.extensions.markup.html.repeater.data.sort.SortableDataProvider;
+import wicket.extensions.markup.html.repeater.util.SortParam;
+import wicket.extensions.markup.html.repeater.util.SortableDataProvider;
 import wicket.model.IModel;
 import wicket.model.Model;
 
