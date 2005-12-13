@@ -229,18 +229,13 @@ public class FXValidationAjaxHandler extends DojoAjaxHandler
 		this.componentId = this.formComponent.getId();
 		this.formComponent.add(new AttributeModifier("id", true, new Model(this.formComponent
 				.getId())));
-		if (getComponent().findParent(MarkupContainer.class) == null)
-		{
-			throw new WicketRuntimeException("You have to add the Component: "
-					+ getComponent().getId()
-					+ " to a Page BEFORE you can bind an FXAjaxValidationHandler to it.");
-		}
-		else
-		{
-			this.formComponent.add(new AttributeModifier(eventName, true, new Model("javascript:"
+
+		this.formComponent.add(new AttributeModifier(eventName,true,new Model(){
+			public java.lang.Object getObject(Component co){
+			     return "javascript:"
 					+ componentId + "_validate('" + getCallbackUrl() + "', '"
-					+ formComponent.getInputName() + "', this);")));
-		}
+					+ formComponent.getInputName() + "', this);";
+			   }}));
 
 
 	}
