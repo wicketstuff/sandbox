@@ -1,3 +1,3 @@
 this package uses:
-	- nightly profile build of Dojo, from the 28th of august 2005
-		(http://archive.dojotoolkit.org/nightly-profiles/browserio-2005-08-29.tgz)
+	- Dojo 0.2 release -  kitchen-sink build, added monday 29 December 
+		(http://download.dojotoolkit.org/release-0.2.0/dojo-0.2.0-kitchen_sink.zip)
