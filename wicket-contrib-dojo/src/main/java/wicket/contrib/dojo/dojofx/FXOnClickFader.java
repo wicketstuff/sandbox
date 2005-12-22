@@ -18,6 +18,8 @@
  */
 package wicket.contrib.dojo.dojofx;
 
+import java.util.StringTokenizer;
+
 import wicket.AttributeModifier;
 import wicket.Component;
 import wicket.markup.html.HtmlHeaderContainer;
@@ -191,23 +193,23 @@ public class FXOnClickFader extends DojoFXHandler
 		// set the correct dojo functions for the type of fader
 		if (type == "fadeHide")
 		{
-			fadeInFunction = "dojo.fx.html.fadeShow(node, duration, function(){" + componentId
+			fadeInFunction = "dojo.fx.html.fadeShow(node, duration, function(){" + HTMLID
 					+ "_faderState='fadedIn';})";
-			fadeOutFunction = "dojo.fx.html.fadeHide(node, duration, function(){" + componentId
+			fadeOutFunction = "dojo.fx.html.fadeHide(node, duration, function(){" + HTMLID
 					+ "_faderState='fadedOut';})";
 		}
 		else if (type == "fadeOpac")
 		{
 			fadeInFunction = "dojo.fx.html.fade(node, duration," + startOpac + "," + endOpac
-					+ ", function(){" + componentId + "_faderState='fadedIn';});";
+					+ ", function(){" + HTMLID + "_faderState='fadedIn';});";
 			fadeOutFunction = "dojo.fx.html.fade(node, duration," + endOpac + "," + startOpac
-					+ ", function(){" + componentId + "_faderState='fadedOut';});";
+					+ ", function(){" + HTMLID + "_faderState='fadedOut';});";
 		}
 		else
 		{
-			fadeInFunction = "dojo.fx.html.fadeIn(node, duration, function(){" + componentId
+			fadeInFunction = "dojo.fx.html.fadeIn(node, duration, function(){" + HTMLID
 					+ "_faderState='fadedIn';})";
-			fadeOutFunction = "dojo.fx.html.fadeOut(node, duration, function(){" + componentId
+			fadeOutFunction = "dojo.fx.html.fadeOut(node, duration, function(){" + HTMLID
 					+ "_faderState='fadedOut'});";
 		}
 
@@ -215,24 +217,32 @@ public class FXOnClickFader extends DojoFXHandler
 		if (startDisplay)
 		{
 			s = "\t<script language=\"JavaScript\" type=\"text/javascript\">\n" + "\t"
-					+ componentId + "_faderState = 'fadedIn'; \n";
+					+ HTMLID + "_faderState = 'fadedIn'; \n";
 		}
 		else
 		{
 			s = "\t<script language=\"JavaScript\" type=\"text/javascript\">\n" + "\t"
-					+ componentId + "_faderState = 'fadedOut'; \n";
+					+ HTMLID + "_faderState = 'fadedOut'; \n";
 		}
 
-		s = s + "\tfunction " + componentId + "_fade(id, duration) { \n" + "\t\tif(" + componentId
+		s = s + "\tfunction " + HTMLID + "_fade(id, duration) { \n" + "\t\tif(" + HTMLID
 				+ "_faderState!='fading'){\n" + "\t\t\tnode = document.getElementById(id);\n"
-				+ "\t\t\tif(" + componentId + "_faderState == 'fadedOut') \n" + "\t\t\t{ \n"
-				+ "\t\t\t\t" + componentId + "_faderState = 'fading';\n" + "\t\t\t\t"
-				+ fadeInFunction + "\n" + "\t\t\t} else {\n" + "\t\t\t\t" + componentId
+				+ "\t\t\tif(" + HTMLID + "_faderState == 'fadedOut') \n" + "\t\t\t{ \n"
+				+ "\t\t\t\t" + HTMLID + "_faderState = 'fading';\n" + "\t\t\t\t"
+				+ fadeInFunction + "\n" + "\t\t\t} else {\n" + "\t\t\t\t" + HTMLID
 				+ "_faderState = 'fading';\n" + "\t\t\t\t" + fadeOutFunction + "\n" + "\t\t\t}\n"
 				+ "\t\t}\n" + "\t}\n" + "\t</script>\n";
 		container.getResponse().write(s);
 	}
 
+	public String removeColon(String s) {
+		  StringTokenizer st = new StringTokenizer(s,":",false);
+		  String t="";
+		  while (st.hasMoreElements()) t += st.nextElement();
+		  return t;
+	  }
+	
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -243,13 +253,14 @@ public class FXOnClickFader extends DojoFXHandler
 		Component c = getComponent();
 		this.component = (Component)c;
 		this.componentId = c.getId();
-
+		
+		String componentpath = removeColon(component.getPath());
 		// create a unique HTML for the wipe component
-		HTMLID = this.component.getId() + "_" + component.getPath();
+		this.HTMLID = "f_" + this.component.getId() + "_" + componentpath;
 		// Add ID to component, and bind effect to trigger
 		this.component.add(new AttributeModifier("id", true, new Model(HTMLID)));
 		this.getTrigger().add(
-				new AppendAttributeModifier(getEventName(), true, new Model(componentId + "_fade('"
+				new AppendAttributeModifier(getEventName(), true, new Model(HTMLID + "_fade('"
 						+ HTMLID + "', " + getDuration() + ");")));
 
 	}
