@@ -16,15 +16,14 @@
  */
 package wicket.contrib.dojo.dojofx;
 
+import java.util.StringTokenizer;
+
 import wicket.AttributeModifier;
 import wicket.Component;
 import wicket.markup.html.HtmlHeaderContainer;
 import wicket.model.Model;
 
-/**
- * TODO HEY STUDENTS! didn't they tought you documentation is important? If
- * Martijn finds out, it'll cost you points.
- */
+
 public class FXOnMouseOverFader extends DojoFXHandler
 {
 
@@ -34,6 +33,7 @@ public class FXOnMouseOverFader extends DojoFXHandler
 	private String componentId;
 	private double startOpac;
 	private double endOpac;
+
 
 
 	/**
@@ -160,65 +160,76 @@ public class FXOnMouseOverFader extends DojoFXHandler
 		// thouroughly stress-tested.
 		if (type == "fadeHide")
 		{
-			fadeInFunction = "dojo.fx.html.fadeShow(node, duration, function(){" + componentId
-					+ "_faderState='fadedIn';if(" + componentId + "_mouseover=="
-					+ (startDisplay ? 1 : 0) + "){" + componentId + "_fade(id, duration);}})";
-			fadeOutFunction = "dojo.fx.html.fadeHide(node, duration, function(){" + componentId
-					+ "_faderState='fadedOut';if(" + componentId + "_mouseover=="
-					+ (startDisplay ? 0 : 1) + "){" + componentId + "_fade(id, duration);}})";
+			fadeInFunction = "dojo.fx.html.fadeShow(node, duration, function(){" + HTMLID
+					+ "_faderState='fadedIn';if(" + HTMLID + "_mouseover=="
+					+ (startDisplay ? 1 : 0) + "){" + HTMLID + "_fade(id, duration);}})";
+			fadeOutFunction = "dojo.fx.html.fadeHide(node, duration, function(){" + HTMLID
+					+ "_faderState='fadedOut';if(" + HTMLID + "_mouseover=="
+					+ (startDisplay ? 0 : 1) + "){" + HTMLID + "_fade(id, duration);}})";
 		}
 		else if (type == "fadeOpac")
 		{
 			fadeInFunction = "dojo.fx.html.fade(node, duration," + startOpac + "," + endOpac
-					+ ", function(){" + componentId + "_faderState='fadedIn';if(" + componentId
-					+ "_mouseover==" + (startDisplay ? 1 : 0) + "){" + componentId
+					+ ", function(){" + HTMLID + "_faderState='fadedIn';if(" + HTMLID
+					+ "_mouseover==" + (startDisplay ? 1 : 0) + "){" + HTMLID
 					+ "_fade(id, duration);}});";
 			fadeOutFunction = "dojo.fx.html.fade(node, duration," + endOpac + "," + startOpac
-					+ ", function(){" + componentId + "_faderState='fadedOut';if(" + componentId
-					+ "_mouseover==" + (startDisplay ? 0 : 1) + "){" + componentId
+					+ ", function(){" + HTMLID + "_faderState='fadedOut';if(" + HTMLID
+					+ "_mouseover==" + (startDisplay ? 0 : 1) + "){" + HTMLID
 					+ "_fade(id, duration);}});";
 		}
 		else
 		{
-			fadeInFunction = "dojo.fx.html.fadeIn(node, duration, function(){" + componentId
-					+ "_faderState='fadedIn';if(" + componentId + "_mouseover=="
-					+ (startDisplay ? 1 : 0) + "){" + componentId + "_fade(id, duration);}})";
-			fadeOutFunction = "dojo.fx.html.fadeOut(node, duration, function(){" + componentId
-					+ "_faderState='fadedOut';if(" + componentId + "_mouseover=="
-					+ (startDisplay ? 0 : 1) + "){" + componentId + "_fade(id, duration);}});";
+			fadeInFunction = "dojo.fx.html.fadeIn(node, duration, function(){" + HTMLID
+					+ "_faderState='fadedIn';if(" + HTMLID + "_mouseover=="
+					+ (startDisplay ? 1 : 0) + "){" + HTMLID + "_fade(id, duration);}})";
+			fadeOutFunction = "dojo.fx.html.fadeOut(node, duration, function(){" + HTMLID
+					+ "_faderState='fadedOut';if(" + HTMLID + "_mouseover=="
+					+ (startDisplay ? 0 : 1) + "){" + HTMLID + "_fade(id, duration);}});";
 		}
 
 		if (startDisplay)
 		{
 			s = "\t<script language=\"JavaScript\" type=\"text/javascript\">\n" + "\t"
-					+ componentId + "_faderState = 'fadedIn'; \n" + "\t" + componentId
+					+ HTMLID + "_faderState = 'fadedIn'; \n" + "\t" + HTMLID
 					+ "_mouseover = 0; \n";
 		}
 		else
 		{
 			s = "\t<script language=\"JavaScript\" type=\"text/javascript\">\n" + "\t"
-					+ componentId + "_faderState = 'fadedOut'; \n" + "\t" + componentId
+					+ HTMLID + "_faderState = 'fadedOut'; \n" + "\t" + HTMLID
 					+ "_mouseover = 0; \n";
 		}
 
-		s = s + "\tfunction " + componentId + "_fade(id, duration) { \n" + "\t\tif(" + componentId
+		s = s + "\tfunction " + HTMLID + "_fade(id, duration) { \n" + "\t\tif(" + HTMLID
 				+ "_faderState!='fading'){\n" + "\t\t\tnode = document.getElementById(id);\n"
-				+ "\t\t\tif(" + componentId + "_faderState == 'fadedOut') \n" + "\t\t\t{ \n"
-				+ "\t\t\t\t" + componentId + "_faderState = 'fading';\n" + "\t\t\t\t"
-				+ fadeInFunction + "\n" + "\t\t\t} else {\n" + "\t\t\t\t" + componentId
+				+ "\t\t\tif(" + HTMLID + "_faderState == 'fadedOut') \n" + "\t\t\t{ \n"
+				+ "\t\t\t\t" + HTMLID + "_faderState = 'fading';\n" + "\t\t\t\t"
+				+ fadeInFunction + "\n" + "\t\t\t} else {\n" + "\t\t\t\t" + HTMLID
 				+ "_faderState = 'fading';\n" + "\t\t\t\t" + fadeOutFunction + "\n" + "\t\t\t}\n"
 				+ "\t\t}\n" + "\t}\n";
 
 
-		s = s + "\tfunction " + componentId + "_setMouseOver(ismouseover){\n"
-				+ "\t\tif (ismouseover == 1){\n" + "\t\t\t" + componentId + "_mouseover = 1;\n"
-				+ "\t\t}else{\n" + "\t\t\t" + componentId + "_mouseover = 0;\n" + "\t\t}\n"
+		s = s + "\tfunction " + HTMLID + "_setMouseOver(ismouseover){\n"
+				+ "\t\tif (ismouseover == 1){\n" + "\t\t\t" + HTMLID + "_mouseover = 1;\n"
+				+ "\t\t}else{\n" + "\t\t\t" + HTMLID + "_mouseover = 0;\n" + "\t\t}\n"
 				+ "\t}\n" + "\t</script>\n\n";
 		container.getResponse().write(s);
 
 
 	}
+	
+	/*
+	 * removes the colons in the componentPath. In order to use in Javascript variables
+	 */
+	public String removeColon(String s) {
+		  StringTokenizer st = new StringTokenizer(s,":",false);
+		  String t="";
+		  while (st.hasMoreElements()) t += st.nextElement();
+		  return t;
+	  }
 
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -229,9 +240,10 @@ public class FXOnMouseOverFader extends DojoFXHandler
 		Component c = getComponent();
 		this.component = (Component)c;
 		this.componentId = c.getId();
-
+		
+		String componentpath = removeColon(component.getPath());
 		// create a unique HTML for the wipe component
-		HTMLID = this.component.getId() + "_" + component.getPath();
+		this.HTMLID = "f_" + this.component.getId() + "_" + componentpath;
 		// Add ID to component, and bind effect to trigger
 		this.component.add(new AttributeModifier("id", true, new Model(HTMLID)));
 
@@ -240,12 +252,12 @@ public class FXOnMouseOverFader extends DojoFXHandler
 		 * mouseover states followed by fade() calls with needed variables.
 		 */
 		this.getTrigger().add(
-				new AppendAttributeModifier(getEventName(), true, new Model(componentId
-						+ "_setMouseOver(1);" + componentId + "_fade('" + HTMLID + "', "
+				new AppendAttributeModifier(getEventName(), true, new Model(HTMLID
+						+ "_setMouseOver(1);" + HTMLID + "_fade('" + HTMLID + "', "
 						+ getDuration() + ");")));
 		this.getTrigger().add(
-				new AppendAttributeModifier("onmouseout", true, new Model(componentId
-						+ "_setMouseOver(0);" + componentId + "_fade('" + HTMLID + "', "
+				new AppendAttributeModifier("onmouseout", true, new Model(HTMLID
+						+ "_setMouseOver(0);" + HTMLID + "_fade('" + HTMLID + "', "
 						+ getDuration() + ");")));
 	}
 
