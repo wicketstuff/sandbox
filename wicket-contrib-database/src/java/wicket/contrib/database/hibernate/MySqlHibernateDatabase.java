@@ -49,7 +49,7 @@ public class MySqlHibernateDatabase extends HibernateDatabase
 		configuration.setProperty("hibernate.show_sql", "true");
 		configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
 		configuration.setProperty("hibernate.connection.driver_class", "com.mysql.jdbc.Driver");
-		configuration.setProperty("hibernate.connection.url", "jdbc:mysql://localhost/voicetribe");
+		configuration.setProperty("hibernate.connection.url", "jdbc:mysql://localhost/databaseName?autoReconnect=true");
 		configuration.setProperty("hibernate.connection.username", "root");
 		configuration.setProperty("hibernate.connection.password", "");
 		// configuration.setProperty("c3p0.min_size", "3");
