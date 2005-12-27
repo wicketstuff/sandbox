@@ -19,7 +19,7 @@ package wicket.contrib.dojo.dojofx;
 
 import wicket.AttributeModifier;
 import wicket.Component;
-import wicket.markup.html.HtmlHeaderContainer;
+import wicket.markup.html.internal.HtmlHeaderContainer;
 import wicket.model.Model;
 
 /**
@@ -89,7 +89,7 @@ public class FXOnClickWiper extends DojoFXHandler
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see wicket.contrib.dojo.dojofx.DojoFXHandler#renderHeadContribution(wicket.markup.html.HtmlHeaderContainer)
+	 * @see wicket.contrib.dojo.dojofx.DojoFXHandler#renderHeadContribution(wicket.markup.html.internal.HtmlHeaderContainer)
 	 */
 	public final void renderHeadContribution(HtmlHeaderContainer container)
 	/*

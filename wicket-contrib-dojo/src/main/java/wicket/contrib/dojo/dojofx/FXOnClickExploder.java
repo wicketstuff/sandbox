@@ -18,7 +18,7 @@ package wicket.contrib.dojo.dojofx;
 
 import wicket.AttributeModifier;
 import wicket.Component;
-import wicket.markup.html.HtmlHeaderContainer;
+import wicket.markup.html.internal.HtmlHeaderContainer;
 import wicket.model.Model;
 
 /**
@@ -107,7 +107,7 @@ public class FXOnClickExploder extends DojoFXHandler
 	}
 
 	/**
-	 * @see wicket.AjaxHandler#renderHeadContribution(wicket.markup.html.HtmlHeaderContainer)
+	 * @see wicket.AjaxHandler#renderHeadContribution(wicket.markup.html.internal.HtmlHeaderContainer)
 	 */
 	protected void renderHeadContribution(HtmlHeaderContainer container)
 	{

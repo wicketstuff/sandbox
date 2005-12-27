@@ -20,11 +20,10 @@ import java.io.Serializable;
 
 import wicket.AttributeModifier;
 import wicket.Component;
-import wicket.MarkupContainer;
 import wicket.WicketRuntimeException;
 import wicket.contrib.dojo.DojoAjaxHandler;
-import wicket.markup.html.HtmlHeaderContainer;
 import wicket.markup.html.form.FormComponent;
+import wicket.markup.html.internal.HtmlHeaderContainer;
 import wicket.model.Model;
 import wicket.util.resource.IResourceStream;
 import wicket.util.resource.StringBufferResourceStream;
@@ -145,7 +144,7 @@ public class FXValidationAjaxHandler extends DojoAjaxHandler
 	/**
 	 * Write the validate/highlight javascript function to the page's head.
 	 * 
-	 * @see wicket.AjaxHandler#renderHeadContribution(wicket.markup.html.HtmlHeaderContainer)
+	 * @see wicket.AjaxHandler#renderHeadContribution(wicket.markup.html.internal.HtmlHeaderContainer)
 	 */
 	public final void renderHeadContribution(HtmlHeaderContainer container)
 	{
