@@ -5,7 +5,7 @@
   <groupId>wicket-stuff</groupId>
   <id>wicket-contrib-dojo</id>
   <name>Wicket Dojo Support</name>
-  <currentVersion>0.3.1</currentVersion>
+  <currentVersion>0.4-SNAPSHOT</currentVersion>
   <organization>
     <name>Wicket Stuff</name>
     <url>http://wicket-stuff.sourceforge.net</url>
