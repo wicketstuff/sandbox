@@ -23,8 +23,8 @@ import wicket.WicketRuntimeException;
 import wicket.contrib.dojo.DojoAjaxHandler;
 import wicket.feedback.IFeedback;
 import wicket.markup.ComponentTag;
-import wicket.markup.html.HtmlHeaderContainer;
 import wicket.markup.html.form.FormComponent;
+import wicket.markup.html.internal.HtmlHeaderContainer;
 import wicket.util.resource.IResourceStream;
 import wicket.util.resource.StringBufferResourceStream;
 import wicket.util.value.ValueMap;
@@ -59,7 +59,7 @@ public final class ValidationAjaxHandler extends DojoAjaxHandler
 	}
 
 	/**
-	 * @see wicket.AjaxHandler#renderHeadContribution(wicket.markup.html.HtmlHeaderContainer)
+	 * @see wicket.AjaxHandler#renderHeadContribution(wicket.markup.html.internal.HtmlHeaderContainer)
 	 */
 	public final void renderHeadContribution(HtmlHeaderContainer container)
 	{

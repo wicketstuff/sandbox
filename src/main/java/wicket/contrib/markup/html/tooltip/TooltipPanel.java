@@ -1,15 +1,14 @@
 package wicket.contrib.markup.html.tooltip;
 
 
-import wicket.markup.html.HtmlHeaderContainer;
-import wicket.markup.html.PackageResourceReference;
-import wicket.markup.html.WebMarkupContainer;
-import wicket.markup.html.panel.Panel;
-import wicket.model.IModel;
-import wicket.model.Model;
 import wicket.AttributeModifier;
 import wicket.Component;
 import wicket.ResourceReference;
+import wicket.markup.html.PackageResourceReference;
+import wicket.markup.html.internal.HtmlHeaderContainer;
+import wicket.markup.html.panel.Panel;
+import wicket.model.IModel;
+import wicket.model.Model;
 
 /**
  * 

@@ -2,7 +2,6 @@ package wicket.contrib.markup.html.tooltip;
 
 import wicket.Component;
 import wicket.markup.html.basic.Label;
-import wicket.markup.html.resources.JavaScriptReference;
 
 /**
  * @author Marco van de Haar

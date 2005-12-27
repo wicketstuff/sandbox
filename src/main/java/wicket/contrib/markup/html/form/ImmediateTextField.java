@@ -18,8 +18,8 @@ package wicket.contrib.markup.html.form;
 
 import wicket.contrib.dojo.DojoAjaxHandler;
 import wicket.markup.ComponentTag;
-import wicket.markup.html.HtmlHeaderContainer;
 import wicket.markup.html.form.TextField;
+import wicket.markup.html.internal.HtmlHeaderContainer;
 import wicket.model.IModel;
 import wicket.util.resource.IResourceStream;
 import wicket.util.resource.StringBufferResourceStream;
@@ -117,7 +117,7 @@ public class ImmediateTextField extends TextField
 		}
 
 		/**
-		 * @see wicket.AjaxHandler#renderHeadInitContribution(wicket.markup.html.HtmlHeaderContainer)
+		 * @see wicket.AjaxHandler#renderHeadInitContribution(wicket.markup.html.internal.HtmlHeaderContainer)
 		 */
 		public final void renderHeadInitContribution(HtmlHeaderContainer container)
 		{
