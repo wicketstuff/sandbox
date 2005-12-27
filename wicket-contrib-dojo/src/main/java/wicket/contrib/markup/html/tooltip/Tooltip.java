@@ -2,12 +2,10 @@ package wicket.contrib.markup.html.tooltip;
 
 
 
+import wicket.AttributeModifier;
 import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.panel.Panel;
-import wicket.model.IModel;
 import wicket.model.Model;
-import wicket.AttributeModifier;
-import wicket.Component;
 
 /**
  * 
