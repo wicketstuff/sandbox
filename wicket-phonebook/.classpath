@@ -23,8 +23,8 @@
 	<classpathentry kind="var" path="MAVEN_REPO/commons-dbcp/jars/commons-dbcp-1.2.1.jar"/>
 	<classpathentry kind="var" path="MAVEN_REPO/commons-pool/jars/commons-pool-1.2.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/wicket"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/wicket-contrib-spring"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/wicket-extensions"/>
 	<classpathentry kind="lib" path="lib/jta.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/wicket-spring"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
