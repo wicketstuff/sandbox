@@ -211,6 +211,35 @@
 			</properties>
 			<url>http://freemarker.sourceforge.net</url>
 		</dependency>
+
+        <!--  Jetty dependency needed for use of the embedded Jetty Webapp container -->
+	    <dependency>
+	      <groupId>jetty</groupId>
+	      <artifactId>jetty</artifactId>
+	      <version>4.2.9</version>
+	      <type>jar</type>
+	      <properties><war.bundle>false</war.bundle></properties>
+	    </dependency>
+	    
+        <!--  Jetty dependency needed for use of the embedded Jetty Webapp container -->
+	    <dependency>
+	      <groupId>jetty</groupId>
+	      <artifactId>jasper-runtime</artifactId>
+	      <version>4.2.20RC0</version>
+	      <type>jar</type>
+	      <properties><war.bundle>false</war.bundle></properties>
+	    </dependency>
+	    
+        <!--  Jetty dependency needed for use of the embedded Jetty Webapp container -->
+	    <dependency>
+	      <groupId>jetty</groupId>
+	      <artifactId>jasper-compiler</artifactId>
+	      <version>4.2.20RC0</version>
+	      <type>jar</type>
+	      <properties><war.bundle>false</war.bundle></properties>
+	    </dependency>
+
+
 	</dependencies>
 	<build>
 		<sourceDirectory>src/java</sourceDirectory>
