@@ -154,7 +154,7 @@ public class HibernateDatabaseSession extends DatabaseSession
 	{
 		if (id == null)
 		{
-			throw new NullPointerException("Id must be not null");
+			throw new IllegalArgumentException("Id must be not null");
 		}
 		return hibernateSession.load(c, id);
 	}
