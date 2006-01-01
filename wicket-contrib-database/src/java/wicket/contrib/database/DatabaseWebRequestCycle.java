@@ -31,7 +31,7 @@ import wicket.protocol.http.WebSession;
 public final class DatabaseWebRequestCycle extends WebRequestCycle
 {
 	/** Any database session for the current request cycle. */
-	private DatabaseSession databaseSession = null;
+	private transient DatabaseSession databaseSession = null;
 
 	/**
 	 * Construct.
