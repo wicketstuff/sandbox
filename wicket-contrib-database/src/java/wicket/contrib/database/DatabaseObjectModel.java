@@ -34,7 +34,7 @@ public class DatabaseObjectModel extends LoadableDetachableModel
 	private Long id;
 
 	/** The session for this database object model */
-	private DatabaseSession session;
+	private transient DatabaseSession session;
 
 	public DatabaseObjectModel(final DatabaseSession session, final Class c, final Long id)
 	{
