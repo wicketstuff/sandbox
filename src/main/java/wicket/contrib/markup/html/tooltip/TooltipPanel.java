@@ -1,9 +1,13 @@
 package wicket.contrib.markup.html.tooltip;
 
 
+
+
+
 import wicket.AttributeModifier;
 import wicket.Component;
 import wicket.ResourceReference;
+
 import wicket.markup.html.PackageResourceReference;
 import wicket.markup.html.internal.HtmlHeaderContainer;
 import wicket.markup.html.panel.Panel;
@@ -40,8 +44,6 @@ public class TooltipPanel extends Panel
 	//Can be set to custom value if user's page requires tooltip to have higher z-index.
 	private final int zIndex = 2;
 
-	private final String id;
-	
 	/**
 	 * Constructor with default X and Y offset 
 	 * @param id component id
@@ -52,7 +54,6 @@ public class TooltipPanel extends Panel
 		//set standardId for a tooltipPanel so user does not have to
 		//pass 2 Id's when creating a tooltip
 		super("tooltipPanel");
-		this.id = "tooltipPanel";
 		
 		//default offset. 
 		this.offsetX = 10;
@@ -64,7 +65,6 @@ public class TooltipPanel extends Panel
 	
 	/**
 	 * Constructor with default X and Y offset and Model object 
-	 * @param id component id
 	 * @param target target component bound to Tooltip
 	 * @param model Model to set for the Panel
 	 */	
@@ -73,7 +73,6 @@ public class TooltipPanel extends Panel
 		//set standardId for a tooltipPanel so user does not have to
 		//pass 2 Id's when creating a tooltip
 		super("tooltipPanel", model);
-		this.id = "tooltipPanel";
 		
 		//default offset. 
 		this.offsetX = 10;
@@ -97,7 +96,6 @@ public class TooltipPanel extends Panel
 		//set standardId for a tooltipPanel so user does not have to
 		//pass 2 Id's when creating a tooltip
 		super("tooltipPanel");
-		this.id = "tooltipPanel";
 		this.offsetX = x;
 		this.offsetY = y;
 		this.target = target;
@@ -118,7 +116,6 @@ public class TooltipPanel extends Panel
 		//set standardId for a tooltipPanel so user does not have to
 		//pass 2 Id's when creating a tooltip
 		super("tooltipPanel", model);
-		this.id = "tooltipPanel";
 		this.offsetX = x;
 		this.offsetY = y;
 		this.target = target;
