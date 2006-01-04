@@ -19,6 +19,8 @@ package wicket.contrib.dojo;
 
 import wicket.Application;
 import wicket.IInitializer;
+import wicket.contrib.dojo.autoupdate.AutoUpdateInitializer;
+import wicket.contrib.dojo.autoupdate.DojoAutoUpdateHandler;
 import wicket.contrib.markup.html.form.validation.FXFeedbackIndicatorInitializer;
 import wicket.contrib.markup.html.tooltip.TooltipComponentInitializer;
 import wicket.util.resource.IResourceStream;
@@ -36,7 +38,7 @@ public class Initializer implements IInitializer
 	public void init(Application application)
 	{
 		//for FXfeedbackindicator
-		new FXFeedbackIndicatorInitializer();
+		new FXFeedbackIndicatorInitializer().init(application);
 		
 		//for Tooltip innitialization
 		new TooltipComponentInitializer().init(application);
@@ -50,5 +52,8 @@ public class Initializer implements IInitializer
 				return null;
 			}
 		}.init(application);
+		
+		//	innitializes dojoautoupdatehandler
+		new AutoUpdateInitializer().init(application);
 	}
 }
