@@ -23,7 +23,6 @@ import wicket.contrib.phonebook.web.page.ListContactsPage;
 import wicket.spring.SpringWebApplication;
 import wicket.util.time.Duration;
 
-
 public class PhonebookApplication extends SpringWebApplication {
 
 	/**
@@ -39,10 +38,10 @@ public class PhonebookApplication extends SpringWebApplication {
 	protected void init() {
 		super.init();
 
-		getPages().setHomePage(ListContactsPage.class);
+		getRequiredPageSettings().setHomePage(ListContactsPage.class);
 
-		getSettings().addResourceFolder("src/java").setResourcePollFrequency(
-				Duration.seconds(10));
+		getResourceSettings().addResourceFolder("src/java");
+		getResourceSettings().setResourcePollFrequency(Duration.seconds(10));
 
 	}
 
