@@ -27,7 +27,6 @@ import wicket.contrib.phonebook.Contact;
 import wicket.contrib.phonebook.web.ContactsDataProvider;
 import wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
 import wicket.extensions.markup.html.repeater.data.table.IColumn;
-import wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
 import wicket.extensions.markup.html.repeater.data.table.filter.ChoiceFilteredPropertyColumn;
 import wicket.extensions.markup.html.repeater.data.table.filter.FilterForm;
 import wicket.extensions.markup.html.repeater.data.table.filter.FilterToolbar;
