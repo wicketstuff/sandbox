@@ -38,8 +38,6 @@ public class PhonebookApplication extends SpringWebApplication {
 	protected void init() {
 		super.init();
 
-		getRequiredPageSettings().setHomePage(ListContactsPage.class);
-
 		getResourceSettings().addResourceFolder("src/java");
 		getResourceSettings().setResourcePollFrequency(Duration.seconds(10));
 
@@ -51,5 +49,9 @@ public class PhonebookApplication extends SpringWebApplication {
 					"contactDao");
 		}
 		return contactDao;
+	}
+
+	public Class getHomePage() {
+		return ListContactsPage.class;
 	}
 }
