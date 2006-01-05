@@ -17,8 +17,11 @@
  */
 package wicket.contrib.dojo;
 
+
 import wicket.Application;
 import wicket.IInitializer;
+
+
 import wicket.behavior.AjaxHandler;
 import wicket.markup.html.PackageResource;
 import wicket.markup.html.PackageResourceReference;
