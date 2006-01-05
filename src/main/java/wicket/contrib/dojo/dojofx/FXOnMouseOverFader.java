@@ -122,11 +122,8 @@ public class FXOnMouseOverFader extends DojoFXHandler
 		double initOpac = (type == "fadeOpac" ? startOpac : 0);
 		// if starDisplay is false, set starting opacity of component to
 		// initOpac.
-		System.out.println("bodycontributorfunctioncalled");
 		if (!startDisplay)
 		{
-			System.out.println("dojo.html.setOpacity(document.getElementById('" + HTMLID + "'), "
-					+ initOpac + ");");
 			return "dojo.html.setOpacity(document.getElementById('" + HTMLID + "'), " + initOpac
 					+ ");";
 		}
