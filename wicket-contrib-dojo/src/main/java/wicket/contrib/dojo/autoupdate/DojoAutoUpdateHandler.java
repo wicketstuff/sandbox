@@ -130,7 +130,7 @@ public class DojoAutoUpdateHandler extends DojoAjaxHandler
 	 */
 	protected String getBodyOnloadContribution()
 	{
-		return "checkUpdate('" + getCallbackUrl() + "','text/plain', '" + getComponent().getId() + "');intervalCheck("+ this.interval + ", '" + getCallbackUrl() + "', 'text/html','" + HtmlId + "');";
+		return "checkUpdate('" + getCallbackUrl() + "','text/plain', '" + HtmlId + "');intervalCheck("+ this.interval + ", '" + getCallbackUrl() + "', 'text/html','" + HtmlId + "');";
 		
 	}
 	
