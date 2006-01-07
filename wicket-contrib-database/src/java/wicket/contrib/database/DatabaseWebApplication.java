@@ -24,7 +24,7 @@ import wicket.protocol.http.WebApplication;
  * 
  * @author Jonathan Locke
  */
-public class DatabaseWebApplication extends WebApplication implements IDatabaseApplication
+public abstract class DatabaseWebApplication extends WebApplication implements IDatabaseApplication
 {
 	/** The database for this web application */
 	private Database database;
