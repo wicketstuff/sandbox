@@ -63,25 +63,17 @@ public abstract class ScriptaculousAjaxHandler extends AjaxHandler implements
          *                The application
          */
         public void init(Application application) {
-                PackageResource.bind(application,
-                                ScriptaculousAjaxHandler.class, "behavior.js");
-                PackageResource.bind(application,
-                                ScriptaculousAjaxHandler.class, "controls.js");
-                PackageResource.bind(application,
-                                ScriptaculousAjaxHandler.class, "dragdrop.js");
-                PackageResource.bind(application,
-                                ScriptaculousAjaxHandler.class, "effects.js");
-                PackageResource.bind(application,
-                                ScriptaculousAjaxHandler.class, "prototype.js");
-                PackageResource.bind(application,
-                                ScriptaculousAjaxHandler.class,
-                                "scriptaculous.js");
-                PackageResource.bind(application,
-                                ScriptaculousAjaxHandler.class, "slider.js");
-                PackageResource.bind(application,
-                                ScriptaculousAjaxHandler.class, "unittest.js");
-                PackageResource.bind(application,
-                                ScriptaculousAjaxHandler.class, "util.js");
+                Class handler = ScriptaculousAjaxHandler.class;
+                PackageResource.bind(application, handler, "behavior.js");
+                PackageResource.bind(application, handler, "controls.js");
+                PackageResource.bind(application, handler, "dragdrop.js");
+                PackageResource.bind(application, handler, "effects.js");
+                PackageResource.bind(application, handler, "prototype.js");
+                PackageResource.bind(application, handler, "builder.js");
+                PackageResource.bind(application, handler, "scriptaculous.js");
+                PackageResource.bind(application, handler, "slider.js");
+                PackageResource.bind(application, handler, "unittest.js");
+                PackageResource.bind(application, handler, "util.js");
         }
 
         /**
