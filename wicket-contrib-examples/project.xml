@@ -214,7 +214,6 @@
 	      <properties><war.bundle>false</war.bundle></properties>
 	    </dependency>
 
-
 	</dependencies>
 	<build>
 		<sourceDirectory>src/java</sourceDirectory>

@@ -18,12 +18,12 @@
  */
 package wicket.contrib.scriptaculous;
 
-import wicket.AjaxHandler;
 import wicket.Application;
 import wicket.IInitializer;
-import wicket.markup.html.HtmlHeaderContainer;
+import wicket.behavior.AjaxHandler;
 import wicket.markup.html.PackageResource;
 import wicket.markup.html.PackageResourceReference;
+import wicket.markup.html.internal.HtmlHeaderContainer;
 import wicket.util.resource.IResourceStream;
 
 /**
