@@ -88,18 +88,6 @@
     </developers>
 	<dependencies>
 		<dependency>
-			<groupId>ognl</groupId>
-			<artifactId>ognl</artifactId>
-			<version>2.6.7</version>
-			<properties>
-				<wicket.group>required</wicket.group>
-				<wicket.description>
-					Used for introspection.
-				</wicket.description>
-				<war.bundle>true</war.bundle>
-			</properties>
-		</dependency>
-		<dependency>
 			<groupId>servletapi</groupId>
 			<artifactId>servletapi</artifactId>
 			<version>2.3</version>
@@ -152,7 +140,7 @@
 		<dependency>
 			<groupId>wicket</groupId>
 			<artifactId>wicket</artifactId>
-			<version>1.1-rc2</version>
+			<version>1.2-SNAPSHOT</version>
 			<properties>
 				<wicket.group>required</wicket.group>
 				<wicket.description>
@@ -165,7 +153,7 @@
 		<dependency>
 			<groupId>wicket-stuff</groupId>
 			<artifactId>wicket-contrib-easywizard</artifactId>
-			<version>SNAPSHOT</version>
+			<version>1.2-SNAPSHOT</version>
 			<properties>
 				<war.bundle>true</war.bundle>
 				<eclipse.dependency>true</eclipse.dependency>
