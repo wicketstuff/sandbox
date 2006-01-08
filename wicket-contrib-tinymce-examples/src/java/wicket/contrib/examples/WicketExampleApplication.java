@@ -24,6 +24,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import wicket.protocol.http.WebApplication;
+import wicket.settings.ISecuritySettings;
+import wicket.util.crypt.ClassCryptFactory;
 import wicket.util.crypt.NoCrypt;
 
 /**
@@ -50,7 +52,8 @@ public abstract class WicketExampleApplication extends WebApplication
         // has the java security classes required by Crypt installed
         // and we want them to be able to run the examples out of the
         // box.
-        getSettings().setCryptClass(NoCrypt.class);
+		getSecuritySettings().setCryptFactory(
+				new ClassCryptFactory(NoCrypt.class, ISecuritySettings.DEFAULT_ENCRYPTION_KEY));
     }
 
     /**
@@ -62,11 +65,11 @@ public abstract class WicketExampleApplication extends WebApplication
 		if (servletContext.getInitParameter("deployment") != null)
 	    {
 	    	// Use deployment settings
-	        getSettings().configure("deployment");
+	        configure("deployment");
 	    }
 	    else
 	    {
-	        getSettings().configure("development");
+	        configure("development");
 	    }
 	}
 }

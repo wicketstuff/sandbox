@@ -10,6 +10,13 @@ public class TinyMCEExampleApplication extends WebApplication
 
     public TinyMCEExampleApplication()
     {
-        getPages().setHomePage(TinyMCEBasePage.class);
     }
+    
+    /**
+    * @see wicket.Application#getHomePage()
+    */
+	public Class getHomePage()
+   {
+   	return TinyMCEBasePage.class;
+   }
 }
