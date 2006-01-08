@@ -28,18 +28,21 @@ import wicket.markup.html.panel.FeedbackPanel;
 import wicket.model.Model;
 import wicket.model.PropertyModel;
 import wicket.util.resource.StringBufferResourceStream;
+
 /**
  * Template example page.
  * 
  * @author Jonas Klingstedt
  */
-public class TemplatePage extends WicketExamplePage {
-	
+public class TemplatePage extends WicketExamplePage
+{
+
 	/** Context to be used by the template */
 	private final Model templateContext;
 
 	/** The current template contents */
-	private StringBufferResourceStream template = new StringBufferResourceStream(); {
+	private StringBufferResourceStream template = new StringBufferResourceStream();
+	{
 		template.append("<fieldset>\n");
 		template.append(" <legend>persons</legend>\n");
 		template.append("  <ul>\n");
@@ -56,9 +59,11 @@ public class TemplatePage extends WicketExamplePage {
 	/**
 	 * Constructor
 	 * 
-	 * @param parameters Page parameters
+	 * @param parameters
+	 *            Page parameters
 	 */
-	public TemplatePage(final PageParameters parameters) {
+	public TemplatePage(final PageParameters parameters)
+	{
 		HashMap map = new HashMap();
 		map.put("people", FreeMarkerTemplateApplication.getPeople());
 		templateContext = Model.valueOf(map);
@@ -73,16 +78,19 @@ public class TemplatePage extends WicketExamplePage {
 	 * 
 	 * @return the current template contents
 	 */
-	public final String getTemplate() {
+	public final String getTemplate()
+	{
 		return template.asString();
 	}
 
 	/**
 	 * Sets the current template contents.
 	 * 
-	 * @param templateContents the current template contents
+	 * @param templateContents
+	 *            the current template contents
 	 */
-	public final void setTemplate(String templateContents) {
+	public final void setTemplate(String templateContents)
+	{
 		template.clear();
 		template.append(templateContents);
 	}
@@ -90,25 +98,29 @@ public class TemplatePage extends WicketExamplePage {
 	/**
 	 * Form for changing the template contents.
 	 */
-	private final class TemplateForm extends Form {
-		
+	private final class TemplateForm extends Form
+	{
+
 		private TextArea templateTextArea;
-		
+
 		/**
 		 * Constructor.
 		 * 
-		 * @param name component name
+		 * @param name
+		 *            component name
 		 */
-		public TemplateForm(String name) {
+		public TemplateForm(String name)
+		{
 			super(name);
-			add(templateTextArea = new TextArea(
-				"templateInput",
-				new PropertyModel(new Model(TemplatePage.this), "template")));
+			add(templateTextArea = new TextArea("templateInput", new PropertyModel(new Model(
+					TemplatePage.this), "template")));
 		}
 
 		/**
 		 * @see wicket.markup.html.form.Form#onSubmit()
 		 */
-		protected void onSubmit() { }
+		protected void onSubmit()
+		{
+		}
 	}
 }

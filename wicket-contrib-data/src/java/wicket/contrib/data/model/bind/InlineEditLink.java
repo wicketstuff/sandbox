@@ -71,14 +71,14 @@ public class InlineEditLink extends Link
 	
 	protected String getCancelAlt()
 	{
-		return getApplication().getLocalizer().getString(
+		return getApplication().getResourceSettings().getLocalizer().getString(
 			GridView.getResourceId(this) + ".cancelAlt", getPage(), null, null,
 			null, "Cancel");
 	}
 	
 	protected String getEditAlt()
 	{
-		return getApplication().getLocalizer().getString(
+		return getApplication().getResourceSettings().getLocalizer().getString(
 			GridView.getResourceId(this) + ".editAlt", getPage(), null, null,
 			null, "Edit");
 	}

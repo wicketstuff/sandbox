@@ -52,7 +52,7 @@ public class InlineDeleteLink extends Link
 	{
 		String property = GridView.getResourceId(this) + ".deleteItem";
 		
-		String message = getApplication().getLocalizer().getString(
+		String message = getApplication().getResourceSettings().getLocalizer().getString(
 			property, getPage(), getResourceModel(), null, null,
 			"Are you sure you want to delete the row?" );
 		

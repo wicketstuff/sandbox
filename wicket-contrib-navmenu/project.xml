@@ -3,7 +3,7 @@
 <project>
   <groupId>wicket-stuff</groupId>
   <id>wicket-contrib-navmenu</id>
-  <currentVersion>1.0-SNAPSHOT</currentVersion>
+  <currentVersion>1.2-SNAPSHOT</currentVersion>
   <package>wicket.contrib.markup.html.navmenu</package>
   <inceptionYear>2005</inceptionYear>
   <description>Navigation menu for web framework Wicket.</description>
@@ -27,14 +27,6 @@
 			<war.bundle>false</war.bundle>
 		</properties>
 	</dependency>
-    <dependency>
-      <groupId>dom4j</groupId>
-      <artifactId>dom4j</artifactId>
-      <version>1.4</version>
-      <properties>
-        <war.bundle>true</war.bundle>
-      </properties>
-    </dependency>
     <dependency>
       <groupId>wicket</groupId>
       <artifactId>wicket</artifactId>

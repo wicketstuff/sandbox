@@ -18,7 +18,6 @@
  */
 package wicket.examples.navmenu;
 
-import wicket.ApplicationSettings;
 import wicket.contrib.markup.html.navmenu.MenuItem;
 import wicket.contrib.markup.html.navmenu.MenuModel;
 import wicket.protocol.http.WebApplication;
@@ -35,11 +34,17 @@ public class NavMenuApplication extends WebApplication
      */
     public NavMenuApplication()
     {
-        getPages().setHomePage(Home.class);
-		ApplicationSettings settings = getSettings();
-		settings.configure("development");
+		configure("development");
     }
 
+    /**
+     * @return class
+     */
+    public Class getHomePage()
+    {
+    	return Home.class;
+    }
+    
     /**
      * @return the menu as a tree model
      */

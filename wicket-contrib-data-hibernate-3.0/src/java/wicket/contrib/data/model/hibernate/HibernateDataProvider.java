@@ -20,11 +20,11 @@ import wicket.model.Model;
 public abstract class HibernateDataProvider extends SortableDataProvider
 {
 	private IModel hibernateDao;
-	
+
 	private boolean unproxy = false;
-	
+
 	private boolean evict = false;
-	
+
 	/**
 	 * Set to true to have all models unproxied.
 	 */
@@ -32,7 +32,7 @@ public abstract class HibernateDataProvider extends SortableDataProvider
 	{
 		this.unproxy = unproxy;
 	}
-	
+
 	/**
 	 * Set to true to have all models evicted from the session before they are
 	 * returned.
@@ -82,20 +82,22 @@ public abstract class HibernateDataProvider extends SortableDataProvider
 
 		return result.intValue();
 	}
-	
+
 	/**
 	 * Formats the current sort states an a query string suitable for appending
 	 * at the end of SQL, HQL or other queries.
 	 * 
-	 * @param alias the column alias each sort field will reference
+	 * @param alias
+	 *            the column alias each sort field will reference
 	 * @return an ORDER BY query fragment
 	 */
 	protected String getSqlOrderBy(String alias)
 	{
 		StringBuffer orderBy = new StringBuffer();
 
-		SortParam sp=getSort();
-		if (sp!=null) {
+		SortParam sp = getSort();
+		if (sp != null)
+		{
 			orderBy.append(" ORDER BY ");
 			if (alias != null)
 			{
@@ -103,38 +105,12 @@ public abstract class HibernateDataProvider extends SortableDataProvider
 			}
 			orderBy.append(sp.getProperty());
 			orderBy.append(sp.isAscending() ? " ASC" : " DESC");
-			
-		}
-		
 
-		// Currently sortable data provider only supports a single sort state
-		// so the list is not supported
-		// maybe the list will comeback in the future
-		// if (getSortList().size() > 0)
-		// {
-		//	orderBy.append(" ORDER BY");
-		//	boolean addComma = false;
-		//	for (Iterator i = getSortList().iterator(); i.hasNext();)
-		//	{
-		//		SortParam sortParam = (SortParam) i.next();
-		//		if (addComma) orderBy.append(",");
-		//		orderBy.append(" ");
-		//		
-		//		if (alias != null)
-		//		{
-		//			orderBy.append(alias + ".");
-		//		}
-		//		
-		//		orderBy.append(sortParam.getProperty());
-		//		orderBy.append(sortParam.isAscending() ? " ASC" : " DESC");
-		//	
-		//		addComma = true;
-		//	}
-		// }
+		}
 
 		return orderBy.toString();
 	}
-	
+
 	/**
 	 * Formats the current sort states an a query string suitable for appending
 	 * at the end of SQL, HQL or other queries.
@@ -145,24 +121,21 @@ public abstract class HibernateDataProvider extends SortableDataProvider
 	{
 		return getSqlOrderBy(null);
 	}
-	
+
 	/**
 	 * Adds all the current orderings to the criteria.
 	 * 
-	 * @param criteria the criteria to add the orderings to
+	 * @param criteria
+	 *            the criteria to add the orderings to
 	 * @return the criteria with the added orderings
 	 */
 	protected final Criteria addOrdering(Criteria criteria)
 	{
-		SortParam sp=getSort();
-		if (sp!=null) {
+		SortParam sp = getSort();
+		if (sp != null)
+		{
 			criteria.addOrder(makeOrder(sp));
 		}
-		// list is not currently supported, only a single sort state is supported so far
-		// for (Iterator i = getSortList().iterator(); i.hasNext();)
-		// {
-		// 	criteria.addOrder(makeOrder((SortParam) i.next()));
-		//}
 		return criteria;
 	}
 
@@ -171,8 +144,9 @@ public abstract class HibernateDataProvider extends SortableDataProvider
 		return param.isAscending() ? Order.asc(param.getProperty()) : Order.desc(param
 				.getProperty());
 	}
-	
-	private IHibernateDao getHibernateDao() {
+
+	private IHibernateDao getHibernateDao()
+	{
 		return (IHibernateDao) hibernateDao.getObject(null);
 	}
 
