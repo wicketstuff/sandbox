@@ -103,7 +103,7 @@ public class DatabaseWebPage extends WebPage
 	
 	protected void delete(Class c, Long id)
 	{
-		if (id != -1)
+		if (id.longValue() != -1)
 		{
 			getDatabaseSession().delete(c, id);
 		}
