@@ -19,7 +19,7 @@
 package wicket.contrib.scriptaculous.autocomplete;
 
 import wicket.markup.ComponentTag;
-import wicket.markup.html.HtmlHeaderContainer;
+import wicket.markup.html.internal.HtmlHeaderContainer;
 
 /**
  *

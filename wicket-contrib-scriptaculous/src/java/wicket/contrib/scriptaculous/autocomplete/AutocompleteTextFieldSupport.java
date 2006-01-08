@@ -3,9 +3,9 @@ package wicket.contrib.scriptaculous.autocomplete;
 import wicket.ResourceReference;
 import wicket.contrib.scriptaculous.ScriptaculousAjaxHandler;
 import wicket.markup.ComponentTag;
-import wicket.markup.html.HtmlHeaderContainer;
 import wicket.markup.html.PackageResourceReference;
 import wicket.markup.html.form.TextField;
+import wicket.markup.html.internal.HtmlHeaderContainer;
 
 /**
  * support class for all autocomplete text fields.
