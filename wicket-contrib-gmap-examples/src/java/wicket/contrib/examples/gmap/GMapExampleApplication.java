@@ -28,6 +28,10 @@ public class GMapExampleApplication extends WebApplication
 
     public GMapExampleApplication()
     {
-        getPages().setHomePage(HomePage.class);
+    }
+    
+    public Class getHomePage()
+    {
+    	return HomePage.class;
     }
 }
