@@ -22,7 +22,6 @@ import org.apache.commons.logging.LogFactory;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
-import wicket.ApplicationSettings;
 import wicket.IRequestCycleFactory;
 import wicket.ISessionFactory;
 import wicket.Request;
@@ -79,13 +78,19 @@ public class CdApplication extends WicketExampleApplication implements ISessionF
 			throw new RuntimeException(e);
 		}
 
-		ApplicationSettings settings = getSettings();
-		settings.setThrowExceptionOnMissingResource(false);
-		getPages().setHomePage(Home.class);
+		getResourceSettings().setThrowExceptionOnMissingResource(false);
 
 		setSessionFactory(this);
 	}
 
+	/**
+	 * @return class
+	 */
+	public Class getHomePage()
+	{
+		return Home.class;
+	}
+	
 	/**
 	 * @see wicket.ISessionFactory#newSession()
 	 */

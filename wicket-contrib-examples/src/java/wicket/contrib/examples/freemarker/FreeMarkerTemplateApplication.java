@@ -1,7 +1,6 @@
 /*
- * $Id$
- * $Revision$
- * $Date$
+ * $Id: FreeMarkerTemplateApplication.java,v 1.1 2005/09/01 13:44:28 jklingstedt
+ * Exp $ $Revision$ $Date$
  * 
  * ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -21,20 +20,21 @@ package wicket.contrib.examples.freemarker;
 import java.util.ArrayList;
 import java.util.List;
 
-import wicket.ApplicationSettings;
 import wicket.protocol.http.WebApplication;
 import wicket.util.time.Duration;
+
 /**
  * Application class for FreeMarker template example.
- *
+ * 
  * @author Jonas Klingstedt
  */
-public class FreeMarkerTemplateApplication extends WebApplication {
-	
+public class FreeMarkerTemplateApplication extends WebApplication
+{
 	/** Dummy people database */
 	private static List people = new ArrayList();
-	
-	static {
+
+	static
+	{
 		people.add(new Person("Joe", "Down"));
 		people.add(new Person("Fritz", "Frizel"));
 		people.add(new Person("Flip", "Vlieger"));
@@ -45,19 +45,27 @@ public class FreeMarkerTemplateApplication extends WebApplication {
 
 	/**
 	 * Gets the dummy people database.
-	 *
+	 * 
 	 * @return the dummy people database
 	 */
-	public static List getPeople() {
+	public static List getPeople()
+	{
 		return people;
 	}
 
-    /**
-     * Constructor.
-     */
-    public FreeMarkerTemplateApplication() {
-        ApplicationSettings settings = getSettings();
-        getPages().setHomePage(TemplatePage.class);
-        settings.setResourcePollFrequency(Duration.ONE_SECOND);
-    }
+	/**
+	 * Constructor.
+	 */
+	public FreeMarkerTemplateApplication()
+	{
+		getResourceSettings().setResourcePollFrequency(Duration.ONE_SECOND);
+	}
+
+	/**
+	 * @return class
+	 */
+	public Class getHomePage()
+	{
+		return TemplatePage.class;
+	}
 }

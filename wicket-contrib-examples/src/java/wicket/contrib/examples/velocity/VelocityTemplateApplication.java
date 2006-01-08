@@ -23,7 +23,6 @@ import java.util.List;
 
 import org.apache.velocity.app.Velocity;
 
-import wicket.ApplicationSettings;
 import wicket.WicketRuntimeException;
 import wicket.protocol.http.WebApplication;
 import wicket.util.time.Duration;
@@ -61,9 +60,7 @@ public class VelocityTemplateApplication extends WebApplication
      */
     public VelocityTemplateApplication()
     {
-        ApplicationSettings settings = getSettings();
-        getPages().setHomePage(TemplatePage.class);
-        settings.setResourcePollFrequency(Duration.ONE_SECOND);
+        getResourceSettings().setResourcePollFrequency(Duration.ONE_SECOND);
 
 		// initialize velocity
 		try
@@ -74,5 +71,13 @@ public class VelocityTemplateApplication extends WebApplication
 		{
 			throw new WicketRuntimeException(e);
 		}
+    }
+    
+    /**
+     * @return class
+     */
+    public Class getHomePage()
+    {
+    	return TemplatePage.class;
     }
 }
