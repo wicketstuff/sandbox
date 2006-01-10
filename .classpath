@@ -11,5 +11,7 @@
 	<classpathentry kind="var" path="MAVEN_REPO/tomcat/jars/jasper-runtime-4.1.30.jar"/>
 	<classpathentry kind="var" path="MAVEN_REPO/commons-logging/jars/commons-logging-1.0.4.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/wicket"/>
+	<classpathentry kind="lib" path="lib/rome-0.7.jar"/>
+	<classpathentry kind="var" path="MAVEN_REPO/jdom/jars/jdom-1.0.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
