@@ -110,6 +110,19 @@
         <war.bundle>true</war.bundle>
       </properties>
     </dependency>
+
+    <dependency>
+      <groupId>jdom</groupId>
+      <artifactId>jdom</artifactId>
+      <version>1.0</version>
+    </dependency>
+    
+    <dependency>
+      <artifactId>rome</artifactId>
+      <groupId>rome</groupId>
+      <version>0.7</version>
+      <id>rome</id>
+    </dependency>
     <!--		
 			===================================================================
 			== Dependencies for using Jetty servlet container                ==
