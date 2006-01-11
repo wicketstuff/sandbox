@@ -17,6 +17,8 @@
 package wicket.contrib.dojo.dojofx;
 
 
+import java.util.StringTokenizer;
+
 import wicket.AttributeModifier;
 import wicket.Component;
 import wicket.markup.html.internal.HtmlHeaderContainer;
@@ -140,6 +142,18 @@ public class FXOnClickWiper extends DojoFXHandler
 		return null;
 	}
 
+	/**
+	 * method to remove colons from string s.
+	 * @param s string to parse
+	 * @return string wichtout colons
+	 */
+	public String removeColon(String s) {
+		  StringTokenizer st = new StringTokenizer(s,":",false);
+		  String t="";
+		  while (st.hasMoreElements()) t += st.nextElement();
+		  return t;
+	  }
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -152,7 +166,8 @@ public class FXOnClickWiper extends DojoFXHandler
 		this.componentId = c.getId();
 
 		// create a unique HTML for the wipe component
-		HTMLID = this.component.getId() + "_" + component.getPath();
+		String componentpath = removeColon(component.getPath());
+		this.HTMLID = "f_" + this.component.getId() + "_" + componentpath;
 		// Add ID to component, and bind effect to trigger
 		this.component.add(new AttributeModifier("id", true, new Model(HTMLID)));
 		if (!startDisplay)
