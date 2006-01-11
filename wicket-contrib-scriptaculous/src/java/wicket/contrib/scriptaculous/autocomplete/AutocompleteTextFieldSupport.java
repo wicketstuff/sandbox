@@ -3,6 +3,7 @@ package wicket.contrib.scriptaculous.autocomplete;
 import wicket.ResourceReference;
 import wicket.contrib.scriptaculous.ScriptaculousAjaxHandler;
 import wicket.markup.ComponentTag;
+import wicket.markup.MarkupStream;
 import wicket.markup.html.PackageResourceReference;
 import wicket.markup.html.form.TextField;
 import wicket.markup.html.internal.HtmlHeaderContainer;
@@ -55,8 +56,8 @@ public class AutocompleteTextFieldSupport extends TextField {
     /**
      * adds a placeholder div where auto completion results will be populated.
      */
-    protected void onRender() {
-        super.onRender();
+    protected void onRender(MarkupStream markupStream) {
+        super.onRender(markupStream);
 
         getResponse().write("<div class=\"auto_complete\" id=\"" + getAutocompleteId()  + "\"></div>");
     }

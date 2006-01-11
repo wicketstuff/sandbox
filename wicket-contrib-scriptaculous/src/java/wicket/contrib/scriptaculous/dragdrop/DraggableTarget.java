@@ -4,6 +4,7 @@ import wicket.PageParameters;
 import wicket.contrib.scriptaculous.Indicator;
 import wicket.contrib.scriptaculous.ScriptaculousAjaxHandler;
 import wicket.markup.ComponentTag;
+import wicket.markup.MarkupStream;
 import wicket.markup.html.WebMarkupContainer;
 
 public class DraggableTarget extends WebMarkupContainer {
@@ -27,8 +28,8 @@ public class DraggableTarget extends WebMarkupContainer {
     	this.indicatorId = indicator.getId();
     }
 
-    protected void onRender() {
-        super.onRender();
+    protected void onRender(MarkupStream markupStream) {
+        super.onRender(markupStream);
 
         String url = this.getPage().urlFor(null, pageContribution, new PageParameters());
         getResponse().write("\n<script type=\"text/javascript\">new Ajax.Updater('" + getId() + "', '"+ url + "', " +
