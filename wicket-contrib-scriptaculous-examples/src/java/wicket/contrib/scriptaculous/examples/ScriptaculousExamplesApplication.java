@@ -1,5 +1,7 @@
 package wicket.contrib.scriptaculous.examples;
 
+import wicket.ISessionFactory;
+import wicket.Session;
 import wicket.protocol.http.WebApplication;
 
 /**
@@ -20,5 +22,16 @@ public class ScriptaculousExamplesApplication extends WebApplication {
     public Class getHomePage()
     {
     	return ScriptaculousExamplesHomePage.class;
+    }
+
+    protected ISessionFactory getSessionFactory()
+    {
+    	return new ISessionFactory()
+    	{
+			public Session newSession()
+			{
+				return new ScriptaculousExamplesSession(ScriptaculousExamplesApplication.this);
+			}
+    	};
     }
 }
