@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 
 import wicket.PageParameters;
 import wicket.contrib.scriptaculous.dragdrop.DragDropPageContribution;
+import wicket.contrib.scriptaculous.examples.ScriptaculousExamplesSession;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.list.ListItem;
 import wicket.markup.html.list.ListView;
@@ -40,17 +41,14 @@ public class DragDropExamplePageContribution extends DragDropPageContribution {
 	}
 
 	private List getCartItems() {
-		List cartItems = (List) getSessionInternal().getAttribute("cartItems");
+		ScriptaculousExamplesSession session = (ScriptaculousExamplesSession)getSession();
+		List cartItems = (List) session.getCartItems();
 		if (null == cartItems) {
 			cartItems = new ArrayList();
-			getSessionInternal().setAttribute("cartItems", cartItems);
+			session.setCartItems(cartItems);
 		}
 
 		return cartItems;
 
-	}
-
-	private HttpSession getSessionInternal() {
-		return ((WebSession)getSession()).getHttpSession();
 	}
 }
