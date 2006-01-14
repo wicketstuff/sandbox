@@ -17,17 +17,11 @@
  */
 package wicket.contrib.database;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 /**
  * Base class for different kinds of databases.
  */
 public abstract class Database
 {
-	/** Log. */
-	private static Log log = LogFactory.getLog(Database.class);
-	
 	/** Default transaction semantics for sessions on this database */
 	private DatabaseSession.TransactionScope defaultTransactionSemantics = DatabaseSession.TRANSACT_REQUESTS;
 

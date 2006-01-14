@@ -17,8 +17,6 @@
  */
 package wicket.contrib.database.hibernate;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
 
 /**
@@ -29,9 +27,6 @@ import org.hibernate.cfg.AnnotationConfiguration;
  */
 public class MySqlHibernateDatabase extends HibernateDatabase
 {
-	/** Log. */
-	private static Log log = LogFactory.getLog(MySqlHibernateDatabase.class);
-
 	/**
 	 * Constructor
 	 */
