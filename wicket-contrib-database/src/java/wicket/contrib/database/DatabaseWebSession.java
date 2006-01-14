@@ -36,6 +36,8 @@ import wicket.protocol.http.WebSession;
  */
 public class DatabaseWebSession extends WebSession
 {
+	private static final long serialVersionUID = 1L;
+
 	/**
 	 * Constructor
 	 * 
@@ -54,6 +56,8 @@ public class DatabaseWebSession extends WebSession
 	{
 		return new IRequestCycleFactory()
 		{
+			private static final long serialVersionUID = 1L;
+
 			public RequestCycle newRequestCycle(Session session, Request request, Response response)
 			{
 				return new DatabaseWebRequestCycle((WebSession)session, (WebRequest)request,

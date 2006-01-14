@@ -20,8 +20,6 @@ package wicket.contrib.database.hibernate;
 import java.io.Serializable;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -36,9 +34,6 @@ import wicket.contrib.database.DatabaseSession;
  */
 public abstract class HibernateDao extends DatabaseDao
 {
-	/** Used for logging. */
-	private static Log log = LogFactory.getLog(HibernateDao.class);
-	
 	/**
 	 * Constructor
 	 * 

@@ -27,6 +27,8 @@ import wicket.model.LoadableDetachableModel;
  */
 public class DatabaseObjectModel extends LoadableDetachableModel
 {
+	private static final long serialVersionUID = 1L;
+
 	/** The class of object */
 	private Class c;
 
