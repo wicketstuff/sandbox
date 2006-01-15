@@ -18,37 +18,36 @@
  */
 package wicket.contrib.gmap;
 
-import wicket.AttributeModifier;
-import wicket.markup.html.WebComponent;
 import wicket.markup.html.panel.Panel;
-import wicket.model.Model;
 
 /**
- * @author Iulian-Corneliu COSTAN
+ * A reusable wicket component for <a href="http://local.google.com">Google MAPS</a>.
+ *
+ * @author Iulian-Corneliu Costan
  */
 public class GMapPanel extends Panel {
 
     /**
-     * @param id   panel id
-     * @param gmap
+     * @param id   wicket component id
+     * @param gmap a GMap instance
      */
     public GMapPanel(String id, GMap gmap) {
         this(id, gmap, 400, 300, LOCALHOST_KEY);
     }
 
     /**
-     * @param id
-     * @param gmap
-     * @param width
-     * @param height
+     * @param id     wicket component id
+     * @param gmap   a GMap instance
+     * @param width  map width in px
+     * @param height map height in px
      */
     public GMapPanel(String id, GMap gmap, int width, int height) {
         this(id, gmap, width, height, LOCALHOST_KEY);
     }
 
     /**
-     * @param id
-     * @param gmap    gmap object
+     * @param id      wicket component id
+     * @param gmap    a GMap instance
      * @param width   map width in px
      * @param height  map height in px
      * @param gmapKey key generated for your site, you can get it from <a href="http://www.google.com/apis/maps/signup.html">here</a>
@@ -56,12 +55,9 @@ public class GMapPanel extends Panel {
     public GMapPanel(String id, GMap gmap, int width, int height, String gmapKey) {
         super(id);
 
-        add(new GMapReference("jsReference", GMAP_URL + gmapKey));
-        add(new GMapContainer("gMapContainer", gmap));
-
-        WebComponent mapDiv = new WebComponent("map");
-        mapDiv.add(new AttributeModifier("style", new Model("width: " + width + "px; height: " + height + "px")));
-        add(mapDiv);
+        add(new GMapScript("script", GMAP_URL + gmapKey));
+        add(new GMapContainer(gmap));
+        add(new Map("map", width, height));
     }
 
     // gmap url

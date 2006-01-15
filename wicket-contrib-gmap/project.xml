@@ -5,7 +5,7 @@
     <groupId>wicket-stuff</groupId>
     <id>wicket-contrib-gmap</id>
     <name>Wicket Contrib GMap</name>
-    <currentVersion>1.2-SNAPSHOT</currentVersion>
+    <currentVersion>1.1-SNAPSHOT</currentVersion>
     <organization>
         <name>Wicket Stuff</name>
         <url>http://wicket-stuff.sourceforge.net</url>
@@ -14,25 +14,15 @@
     <inceptionYear>2005</inceptionYear>
     <package>wicket</package>
     <logo>/images/projectLogo.png</logo>
-    <description>
-        <![CDATA[The Wicket Contrib GMap. Wicket component for <a href="http://maps.google.com/">Google Map</a>.]]>
-    </description>
-    <shortDescription>
-        Wicket component for Google Map.
-    </shortDescription>
+    <description><![CDATA[The Wicket Contrib GMap. Wicket component for <a href="http://maps.google.com/">Google Map</a>.]]></description>
+    <shortDescription>Wicket component for Google Map.</shortDescription>
     <url>http://wicket-stuff.sourceforge.net/${pom.artifactId}</url>
-    <issueTrackingUrl>
-        http://sourceforge.net/tracker/?group_id=${maven.sourceforge.project.groupId}
-    </issueTrackingUrl>
+    <issueTrackingUrl>http://sourceforge.net/tracker/?group_id=${maven.sourceforge.project.groupId}</issueTrackingUrl>
     <siteAddress>shell.sourceforge.net</siteAddress>
     <siteDirectory>/home/groups/w/wi/wicket-stuff/htdocs/${pom.artifactId}</siteDirectory>
     <repository>
-        <connection>
-            scm:cvs:pserver:anonymous@cvs.sourceforge.net:/cvsroot/${pom.groupId}:${pom.artifactId}
-        </connection>
-        <developerConnection>
-            scm:cvs:ext:${maven.username}@cvs.sourceforge.net:/cvsroot/${pom.groupId}:${pom.artifactId}
-        </developerConnection>
+        <connection>scm:cvs:pserver:anonymous@cvs.sourceforge.net:/cvsroot/${pom.groupId}:${pom.artifactId}</connection>
+        <developerConnection>scm:cvs:ext:${maven.username}@cvs.sourceforge.net:/cvsroot/${pom.groupId}:${pom.artifactId}</developerConnection>
         <url>http://cvs.sourceforge.net/viewcvs.py/${pom.groupId}/${pom.artifactId}</url>
     </repository>
     <versions></versions>
@@ -80,23 +70,12 @@
     </developers>
   <dependencies>
     <dependency>
-      <groupId>servletapi</groupId>
-      <artifactId>servletapi</artifactId>
-      <version>2.3</version>
-      <properties>
-        <wicket.group>compile</wicket.group>
-        <wicket.description>Compile time only, is supplied by your application server.</wicket.description>
-        <war.bundle>false</war.bundle>
-      </properties>
-    </dependency>
-    <dependency>
       <groupId>commons-logging</groupId>
       <artifactId>commons-logging</artifactId>
       <version>1.0.4</version>
       <properties>
         <wicket.group>required</wicket.group>
         <wicket.description>This library enables us to give you the choice of logging toolkit (JDK, Log4j, etc.)</wicket.description>
-        <war.bundle>true</war.bundle>
       </properties>
     </dependency>
     <dependency>
@@ -118,8 +97,17 @@
         <wicket.group>required</wicket.group>
         <wicket.description>This is the wicket library</wicket.description>
         <eclipse.dependency>true</eclipse.dependency>
-        <war.bundle>true</war.bundle>
       </properties>
+    </dependency>
+    <dependency>
+        <groupId>wicket-stuff</groupId>
+        <artifactId>wicket-contrib-dojo</artifactId>
+        <version>0.4-SNAPSHOT</version>
+        <properties>
+            <wicket.group>required</wicket.group>
+            <wicket.description>This is the wicket-contib-dojo library</wicket.description>
+            <eclipse.dependency>true</eclipse.dependency>
+        </properties>
     </dependency>
   </dependencies>
     <build>

@@ -18,9 +18,43 @@
  */
 package wicket.contrib.gmap;
 
-/**
- * @author Iulian-Corneliu COSTAN
- */
-public abstract class Overlay extends JSComponent {
+import java.io.Serializable;
 
+/**
+ * @author Iulian-Corneliu Costan
+ */
+public abstract class Overlay implements Serializable {
+
+    private GPoint point;
+
+    Overlay(GPoint point) {
+        if (point == null) {
+            new IllegalArgumentException("point cannot be null");
+        }
+        this.point = point;
+    }
+
+    /**
+     * Get the name of the JavaScript function that will be called in order to create this overlay.
+     *
+     * @return name of JavaScript function
+     */
+    public abstract String getFactoryMethod();
+
+    public GPoint getPoint() {
+        return point;
+    }
+
+    public String getPointAsString() {
+        return point.toString();
+    }
+
+    /**
+     * Each overlay on the map has to be unique.
+     *
+     * @return unique ID for each overlay
+     */
+    protected String getOverlayId() {
+        return JSUtil.longitudeAsString(point) + JSUtil.latitudeAsString(point);
+    }
 }

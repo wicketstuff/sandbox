@@ -1,71 +1,58 @@
-/*
- * $Id$
- * $Revision$
- * $Date$
- *
- * ====================================================================
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *  http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package wicket.contrib.gmap;
 
+import wicket.Component;
+import wicket.markup.html.WebComponent;
+
 /**
- * @author Iulian-Corneliu COSTAN
+ * Google Maps API's GMarker is represented by this class. Now you can set a wicket component to be displayed within info window.
+ * The layout and the size of the component is up to you,
+ * Actually the added component can be any wicket component (even any container, panel or border) but not a wicket page.
+ * it can be as big as you want as long as it looks good and fits into the page.
+ * There is one restriction, the name of the component has to be "<b>gmarkerInfo</b>", otherwise an exceptionn will be thrown.
+ *
+ * @author Iulian-Corneliu Costan
  */
 public class GMarker extends Overlay {
 
-    private GPoint point;
-    private String message;
+    private Component component;
+    private GIcon icon;
 
+    /**
+     * Creates an empty marker, only the default icon will be displayed and no onClick event handler will be attached.
+     *
+     * @param point
+     */
     public GMarker(GPoint point) {
-        this.point = point;
+        this(point, new WebComponent("gmarkerInfo"));
     }
 
-    public void setOnClickMessage(String message) {
-        this.message = message;
+    /**
+     * Creates an marker that will have an onClick event attached.
+     * When user clicks on this marker, wicket <code>component</code> will be rendered.
+     *
+     * @param point
+     * @param component
+     */
+    public GMarker(GPoint point, Component component) {
+        super(point);
+        this.component = component;
     }
 
-    protected String toJavaScript() {
-        String marker = null;
-        if (hasInfoWindow()) {
-            marker = createMessageMarker();
-        } else {
-            marker = createSimpleMarker();
-        }
-        getContainer().define(marker);
-        return getMarkerName() + "()";
+    /**
+     * Returns the attached wicket component.
+     *
+     * @return component
+     */
+    public Component getComponent() {
+        return component;
     }
 
-    private String createSimpleMarker() {
-        return JSUtil.createFunction(getMarkerName(), "return new GMarker(" + point.toJavaScript() + ");");
-    }
-
-    private String createMessageMarker() {
-        return JSUtil.createFunction(getMarkerName(),
-                "var marker = new GMarker(" + point.toJavaScript() + ");" + "\n" +
-                        getOnClickHandler() + "\n" +
-                        "GEvent.addListener(marker, \"click\", onClick);" + "\n" +
-                        "return marker;");
-    }
-
-    private String getOnClickHandler() {
-        return JSUtil.createFunction("onClick", "marker.openInfoWindowHtml(\"" + JSUtil.escape(message) + "\");");
-    }
-
-    private String getMarkerName() {
-        return "createMarker" + JSUtil.longitudeAsString(point) + JSUtil.latitudeAsString(point);
-    }
-
-    private boolean hasInfoWindow() {
-        return message != null && !"".equals(message);
+    /**
+     * Get the name of the JavaScript function that will be called in order to create this overlay.
+     *
+     * @return JavaScript function name
+     */
+    public String getFactoryMethod() {
+        return "createMarker" + getOverlayId();
     }
 }

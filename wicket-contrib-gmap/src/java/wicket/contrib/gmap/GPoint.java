@@ -18,10 +18,14 @@
  */
 package wicket.contrib.gmap;
 
+import java.io.Serializable;
+
 /**
- * @author Iulian-Corneliu COSTAN
+ * Represents an Maps API's GPoint that contains x and y coordinates.
+ *
+ * @author Iulian-Corneliu Costan
  */
-public class GPoint extends JSComponent {
+public class GPoint implements Serializable {
 
     private float longitude;
     private float latitude;
@@ -39,7 +43,7 @@ public class GPoint extends JSComponent {
         return latitude;
     }
 
-    protected String toJavaScript() {
+    public String toString() {
         return "new GPoint(" + longitude + ", " + latitude + ")";
     }
 }

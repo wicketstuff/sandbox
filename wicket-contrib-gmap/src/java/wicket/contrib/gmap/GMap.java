@@ -18,75 +18,87 @@
  */
 package wicket.contrib.gmap;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
+import java.io.Serializable;
 
 /**
- * @author Iulian-Corneliu COSTAN
+ * This class represents the main Maps API's GMap object.
+ *
+ * @author Iulian-Corneliu Costan
  */
-public class GMap extends JSContainer {
+public class GMap implements Serializable {
 
     private GPoint center;
     private int zoomLevel;
-    private Set<Overlay> overlays = new HashSet<Overlay>();
-    private boolean hasTypeControl;
-    private boolean hasSmallMapControl;
+    private List<Overlay> overlays = new ArrayList<Overlay>();
+    private boolean typeControl;
+    private boolean smallMapControl;
 
-    private Set<String> functionDefinitions = new HashSet<String>();
-
+    /**
+     * @param center    of the gmap
+     * @param zoomLevel only values between 1 and 15 are allowed.
+     */
     public GMap(GPoint center, int zoomLevel) {
+        if (center == null) {
+            throw new IllegalArgumentException("map's center point cannot be null");
+        }
+        if (zoomLevel < 0 || zoomLevel > 15) {
+            throw new IllegalArgumentException("zoomLevel must be 1 < zoomLevel < 15 ");
+        }
         this.center = center;
         this.zoomLevel = zoomLevel;
     }
 
+    /**
+     * Add a overlay to this map.
+     *
+     * @param overlay
+     */
     public void addOverlay(Overlay overlay) {
-        overlay.setContainer(this);
         overlays.add(overlay);
     }
 
-    public void setHasTypeControl(boolean hasTypeControl) {
-        this.hasTypeControl = hasTypeControl;
+    /**
+     * Get all overlays.
+     *
+     * @return overlays
+     */
+    public List<Overlay> getOverlays() {
+        return overlays;
     }
 
-    public void setHasSmallMapControl(boolean hasSmallMapControl) {
-        this.hasSmallMapControl = hasSmallMapControl;
+    /**
+     * Show/Hide the type control (right-up corner)
+     *
+     * @param typeControl
+     */
+    public void setTypeControl(boolean typeControl) {
+        this.typeControl = typeControl;
     }
 
-    protected String toJavaScript() {
-        // todo change hack
-        String overlayDefinitions = overlayDefinitions();
-        return gmapDefinition() + "\n" + functionDefinitions() + "\n" + overlayDefinitions;
+    /**
+     * Show/Hide the small map control
+     *
+     * @param smallMapControl
+     */
+    public void setSmallMapControl(boolean smallMapControl) {
+        this.smallMapControl = smallMapControl;
     }
 
-    protected void define(String functionDefinition) {
-        functionDefinitions.add(functionDefinition);
+    public boolean isTypeControl() {
+        return typeControl;
     }
 
-    private String overlayDefinitions() {
-        StringBuffer buffer = new StringBuffer();
-        for (Overlay overlay : overlays) {
-            buffer.append("map.addOverlay(").append(overlay.toJavaScript()).append(");\n");
-        }
-        return buffer.toString();
+    public boolean isSmallMapControl() {
+        return smallMapControl;
     }
 
-    private String functionDefinitions() {
-        StringBuffer buffer = new StringBuffer();
-        for (String function : functionDefinitions) {
-            buffer.append(function).append("\n\n");
-        }
-        return buffer.toString();
+    public GPoint getCenter() {
+        return center;
     }
 
-    private String gmapDefinition() {
-        StringBuffer buffer = new StringBuffer("var map = new GMap(document.getElementById(\"map\"));\n");
-        if (hasSmallMapControl) {
-            buffer.append("map.addControl(new GSmallMapControl());\n");
-        }
-        if (hasTypeControl) {
-            buffer.append("map.addControl(new GMapTypeControl());\n");
-        }
-        buffer.append("map.centerAndZoom(").append(center.toJavaScript()).append(", ").append(zoomLevel).append(");\n");
-        return buffer.toString();
+    public int getZoomLevel() {
+        return zoomLevel;
     }
 }

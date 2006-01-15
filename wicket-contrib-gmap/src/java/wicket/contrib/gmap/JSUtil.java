@@ -19,9 +19,9 @@
 package wicket.contrib.gmap;
 
 /**
- * @author Iulian-Corneliu COSTAN
+ * @author Iulian-Corneliu Costan
  */
-public class JSUtil {
+class JSUtil {
 
     public static String createFunction(String name, String body) {
         return "function " + name + "() {\n" + body + "\n}";

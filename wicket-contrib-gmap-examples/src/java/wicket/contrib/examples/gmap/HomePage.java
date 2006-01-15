@@ -23,29 +23,27 @@ import wicket.contrib.gmap.GMap;
 import wicket.contrib.gmap.GMapPanel;
 import wicket.contrib.gmap.GMarker;
 import wicket.contrib.gmap.GPoint;
+import wicket.markup.html.basic.Label;
+import wicket.markup.html.link.Link;
 
 /**
  * @author Iulian-Corneliu COSTAN
  */
-public class HomePage extends WicketExamplePage
-{
+public class HomePage extends WicketExamplePage {
 
-    public HomePage()
-    {
+    public HomePage() {
         // add gmap
         GMap gmap = new GMap(new GPoint(10, 30), 15);
-        gmap.setHasTypeControl(true);
-        gmap.setHasSmallMapControl(true);
-
-        // www.wicket.org
-        GMarker overlay = new GMarker(new GPoint(-78.7073f, 35.7512f));
-        overlay.setOnClickMessage("<a href=\"http://wicket.sourceforge.net/\">http://wicket.sourceforge.net/</a>");
-        gmap.addOverlay(overlay);
+        gmap.setTypeControl(true);
+        gmap.setSmallMapControl(true);
 
         // www.wicket-library.com
-        overlay = new GMarker(new GPoint(-112.1872f, 33.2765f));
-        overlay.setOnClickMessage("<a href=\"http://www.wicket-library.com/\">www.wicket-library.com/</a>");
-        gmap.addOverlay(overlay);
+        GMarker wicketLibrary = new GMarker(new GPoint(-112.1872f, 33.2765f), new Label("gmarkerInfo", "www.wicket-library.com"));
+        gmap.addOverlay(wicketLibrary);
+
+        // www.wicket.org
+        GMarker wicket = new GMarker(new GPoint(-78.7073f, 35.7512f), new InfoPanel("gmarkerInfo"));
+        gmap.addOverlay(wicket);
 
         add(new GMapPanel("gmap", gmap, 800, 600, LOCALHOST_8080_WICKET_CONTRIB_GMAP_KEY));
     }
