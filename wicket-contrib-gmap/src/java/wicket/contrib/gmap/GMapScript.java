@@ -18,10 +18,22 @@
  */
 package wicket.contrib.gmap;
 
-/**
- * @author Iulian-Corneliu COSTAN
- */
-public abstract class JSContainer extends JSComponent {
+import wicket.AttributeModifier;
+import wicket.model.Model;
 
-    protected abstract void define(String component);
+/**
+ * This component imports Google Maps API.
+ *
+ * @author Iulian-Corneliu Costan
+ */
+class GMapScript extends JavaScriptComponent {
+
+    GMapScript(final String id, String model) {
+        super(id);
+        add(new AttributeModifier("src", true, new Model(model)));
+    }
+
+    public String onJavaScriptComponentTagBody() {
+        return "";
+    }
 }

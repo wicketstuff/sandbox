@@ -36,8 +36,8 @@ public abstract class WicketExampleApplication extends WebApplication
     public WicketExampleApplication()
     {
         // WARNING: DO NOT do this on a real world application unless
-        // you really want your app's passwords all passed around and 
-        // stored in unencrypted browser cookies (BAD IDEA!)!!! 
+        // you really want your app's passwords all passed around and
+        // stored in unencrypted browser cookies (BAD IDEA!)!!!
 
         // The NoCrypt class is being used here because not everyone
         // has the java security classes required by Crypt installed

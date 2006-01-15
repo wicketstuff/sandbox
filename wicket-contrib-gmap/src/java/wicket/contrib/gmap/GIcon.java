@@ -18,10 +18,14 @@
  */
 package wicket.contrib.gmap;
 
+import java.io.Serializable;
+
 /**
+ * todo to be implemented
+ *
  * @author Iulian-Corneliu COSTAN
  */
-public class GIcon {
+public class GIcon implements Serializable {
 
     private String image;
     private GPoint anchor;
