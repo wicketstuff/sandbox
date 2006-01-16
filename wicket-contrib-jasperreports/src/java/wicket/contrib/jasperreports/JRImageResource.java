@@ -49,7 +49,7 @@ import wicket.WicketRuntimeException;
 public final class JRImageResource extends JRResource
 {
 	/** log. */
-	private Log log = LogFactory.getLog(JRImageResource.class);
+	private static Log log = LogFactory.getLog(JRImageResource.class);
 
 	/** Type of image (one of BufferedImage.TYPE_*). */
 	private int type = BufferedImage.TYPE_INT_RGB;
