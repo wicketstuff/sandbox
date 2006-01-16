@@ -6,5 +6,6 @@
 	<classpathentry kind="var" path="MAVEN_REPO/log4j/jars/log4j-1.2.11.jar"/>
 	<classpathentry kind="src" path="/wicket"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/wicket-contrib-dojo"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
