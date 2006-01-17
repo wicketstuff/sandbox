@@ -14,4 +14,12 @@ public interface IUpdatable
 void update();
 
 
+
+
+/**
+ * @return string representing CSS/HTML id
+ */
+String getHTMLID();
+
+	
 }

@@ -1,5 +1,7 @@
 package wicket.contrib.dojo.autoupdate;
 
+import java.util.StringTokenizer;
+
 import wicket.Application;
 import wicket.AttributeModifier;
 import wicket.Component;
@@ -27,7 +29,7 @@ import wicket.util.resource.StringBufferResourceStream;
 public class DojoAutoUpdateHandler extends DojoAjaxHandler
 {
 	private final int interval;
-	private String HtmlId;
+	private String HTMLID;
 	
 	/**
 	 * 
@@ -99,9 +101,10 @@ public class DojoAutoUpdateHandler extends DojoAjaxHandler
 		return response;
 		
 	}
-	/** 
-	 * adds reference to autoupdate.js.
-	 * @see wicket.AjaxHandler#renderHeadContribution(wicket.markup.html.HtmlHeaderContainer)
+
+	/**
+	 * @param container header container
+	 * @see wicket.behavior.AjaxHandler#renderHeadContribution(wicket.markup.html.internal.HtmlHeaderContainer)
 	 */
 	protected void renderHeadContribution(HtmlHeaderContainer container)
 	{
@@ -117,28 +120,31 @@ public class DojoAutoUpdateHandler extends DojoAjaxHandler
 	{
 		Component[] components = new Component[1];
 		components[0] = getComponent();
-		
 		((IUpdatable)components[0]).update();
 						
 		return render(components);
 	}
 	
-	/**
+
+	/** 
 	 * adds the onload contribution: calls checkUpdate() <br/>
-	 * and calls checkUpdate() in a set interval.
-	 * @see wicket.AjaxHandler#getBodyOnloadContribution()
+	 * @return contribution to body onload.
+	 * @see wicket.behavior.AjaxHandler#getBodyOnloadContribution()
 	 */
 	protected String getBodyOnloadContribution()
 	{
-		return "checkUpdate('" + getCallbackUrl() + "','text/plain', '" + HtmlId + "');intervalCheck("+ this.interval + ", '" + getCallbackUrl() + "', 'text/html','" + HtmlId + "');";
+		return "checkUpdate('" + getCallbackUrl() + "','text/plain', '" + HTMLID + "');intervalCheck("+ this.interval + ", '" + getCallbackUrl() + "', 'text/html','" + HTMLID + "');";
+		//return "checkUpdate();";
+		
 		
 	}
 	
 	
 	
+	
 	/**
 	 * Checks if bound component is Updatable and adds HTMLID
-	 * @see wicket.AjaxHandler#onBind()
+	 * @see wicket.behavior.AjaxHandler#onBind()
 	 */
 	protected void onBind()
 	{
@@ -148,10 +154,21 @@ public class DojoAutoUpdateHandler extends DojoAjaxHandler
 			throw new WicketRuntimeException("This handler must be bound to Updatable Components.");
 		}
 		// create a unique HTML for the explode component
-		HtmlId = c.getId() + "_" + c.getPath();
+		
+		String componentpath = removeColon(getComponent().getPath());
+		
+		//this.HTMLID = "f_" + this.getComponent().getId() + "_" + getComponent().getPath();
+		this.HTMLID = ((IUpdatable)getComponent()).getHTMLID();
+		System.out.println("path: " + getComponent().getPath() + "newpath: " + componentpath + " htmlid: " + HTMLID);
 		// Add ID to component, and bind effect to trigger
-		c.add(new AttributeModifier("id", true, new Model(HtmlId)));
+		c.add(new AttributeModifier("id", true, new Model(HTMLID)));
 
 	}
+	public String removeColon(String s) {
+		  StringTokenizer st = new StringTokenizer(s,":",false);
+		  String t="";
+		  while (st.hasMoreElements()) t += st.nextElement();
+		  return t;
+	  }
     
 }
