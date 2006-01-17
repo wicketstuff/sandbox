@@ -7,6 +7,7 @@
 	var requesting = false;
 	
 	function checkUpdate(componentUrl,mtype, nodeId) { 
+		//alert("hier!");
 		if(requesting == false)
 		 {
 		  requesting = true;
@@ -26,14 +27,19 @@
 					}
 					else
 					{
-						//alert(data);
-						//alert(node.innerHTML);
+
 						if(data == 'Unable to retrieve feed.')
 						{
 						  return false;
 						} else {
+	 					  
 	 					  node.innerHTML = data;
+	 					  //dojo.fx.html.fadeOut(node, 500, function(n) {
+	 					  //node.innerHTML = data;
+	 					  // dojo.fx.html.fadeIn(n, 500);
+	 					  //});
 						  return true;
+						  //alert(data);
 						}
 					}
 					
