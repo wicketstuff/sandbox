@@ -37,7 +37,7 @@
 	    		<item name="Tooltip tutorial 2: A dynamic Tooltip" href="/StudentTooltipTutorial.html"/>
 	    		<item name="Validation tutorial 1: FXFeedbackIndicator tutorial" href="/ValidationTutorial1.html"/>
 	    		<item name="Validation tutorial 2: FXValidationAjaxHandler tutorial" href="/ValidationTutorial2.html"/>
-	    		
+	    		<item name="Auto update tutorial" href="/AutoUpdateTutorial.html"/>
 	    		
 	    	</item>
 	    	<item name="Download examples" href="/DownloadExamples.html" />

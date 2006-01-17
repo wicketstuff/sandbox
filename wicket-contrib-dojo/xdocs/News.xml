@@ -11,6 +11,14 @@
 				<a href="Index.html">front page</a>
 				.
 			</p>
+			<subsection name="January 4, 2006 - DojoAutoUpdateHandler, try it now!">
+				<p>
+					We have just finished our latest component. It is an Ajax auto update handler. Since it uses Wicket's beta functionality to render a singel component, you can currently only use it with the HEAD version of Wicket.
+					You can find the components when you checkout wicket-contrib-dojo from CVS.
+					We've included a tutorial in our tutorial section which should get you started right away!
+				</p>
+				
+			</subsection>
 			<subsection name="November 25, 2005 - Contrib-dojo v0.3 released!">
 				<p>
 					We are proud to announce that version 0.3 of our library has been released.
