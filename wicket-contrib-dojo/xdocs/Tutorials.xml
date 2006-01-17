@@ -59,6 +59,14 @@
 						- Create a cool decorated component with Ajax validation.
 					</li>
 				</ul>
+				Auto update Tutorials:
+				<ul>
+					<li>
+						<b>NEW! </b><a href="AutoUpdateTutorial.html">Simple auto update tutorial</a>
+						- Create a simple Label that updates every X seconds.
+					</li>
+				
+				</ul>
 			</p>
 			
 		</section>
