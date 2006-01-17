@@ -21,6 +21,9 @@
 					<a href="/Blogs.html">Wicket blogs</a>
 				</li>
 				<li>
+					Download <a href="http://sourceforge.net/project/showfiles.php?group_id=134391&amp;package_id=164293">wicket-contrib-dojo</a>
+				</li>
+				<li>
 					Download <a href="http://sourceforge.net/projects/wicket/files">Wicket</a>
 				</li>
 			</ul>
@@ -29,17 +32,11 @@
 			</p>
 		</section>
 		<section name="Latest News">
-			<subsection name="November 25, 2005 - Contrib-dojo v0.3 released!">
+			<subsection name="January 4, 2006 - DojoAutoUpdateHandler, try it now!">
 				<p>
-					We are proud to announce that version 0.3 of our library has been released.
-					It now contains actual useable components. ;)
-					<ul>
-						<li>Fully customizable Tooltip Component (non-dojo)</li>
-						<li>DojoFX Component decorators</li>
-						<li>FXFeedbackIndicator component (non-dojo)</li>
-						<li>FXValidationAjaxHandler</li>
-					</ul>
-					Check-out our tutorial section or our Tutorials or our javadoc section for more info on the components.
+					We have just finished our latest component. It is an Ajax auto update handler. Since it uses Wicket's beta functionality to render a singel component, you can currently only use it with the HEAD version of Wicket.
+					
+					We've included a tutorial in our tutorial section which should get you started right away!
 				</p>
 				
 			</subsection>
@@ -51,9 +48,9 @@
 		</section>
 		<section name="Special Thanks">
 			<p>
-				We would like to thank Wicket and the entire community for making such a cool framwork.
-				And Dojo for being the coolest javascript toolkit out there.
-				And my dog....
+				We would like to thank <a href="http://www.topicus.nl">Topicus</a> for making this project possible and we would also like to thank Wicket and the entire community for making such a cool framework.
+				And of course Dojo for being the coolest javascript toolkit out there.
+				
 			</p>
 		
 			<p>
