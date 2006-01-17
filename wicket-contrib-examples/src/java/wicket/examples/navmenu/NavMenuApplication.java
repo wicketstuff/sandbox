@@ -34,7 +34,6 @@ public class NavMenuApplication extends WebApplication
      */
     public NavMenuApplication()
     {
-		configure("development");
     }
 
     /**
