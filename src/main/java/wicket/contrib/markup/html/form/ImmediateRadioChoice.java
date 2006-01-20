@@ -133,7 +133,6 @@ public class ImmediateRadioChoice extends RadioChoice
 								"\t\twhile(value=='NOT_SET')\n").append(
 								"\t\t{\n").append(
 								   "\t\t\tvar itemId = nodeId + '_' + i;\n").append(
-										   "alert('itemid: ' + itemId);\n").append(
 								   "\t\t\tvar item = document.getElementById(itemId);\n").append(
 								   "\t\t\tif(item.checked)\n").append(
 								   "\t\t\t{\n").append(
@@ -147,7 +146,7 @@ public class ImmediateRadioChoice extends RadioChoice
 							
 							
 					
-					"\tfunction immediateRadioButton(componentUrl, componentPath, val) { \n").append("alert(val);").append(
+					"\tfunction immediateRadioButton(componentUrl, componentPath, val) { \n").append(
 					"\t\tdojo.io.bind({\n").append(
 					"\t\t\turl: componentUrl + '&' + componentPath + '=' + val,\n").append(
 					"\t\t\tmimetype: \"text/plain\",\n").append(
