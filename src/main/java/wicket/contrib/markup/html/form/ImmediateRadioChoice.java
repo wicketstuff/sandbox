@@ -122,7 +122,6 @@ public class ImmediateRadioChoice extends RadioChoice
 		 */
 		public final void renderHeadContribution(HtmlHeaderContainer container)
 		{
-			System.out.println("dikke vette vatsige stinkHOER!!!");
 			super.renderHeadContribution(container);
 			StringBuffer s = new StringBuffer(
 					"\t<script language=\"JavaScript\" type=\"text/javascript\">\n").append(
