@@ -21,6 +21,9 @@ import wicket.contrib.tinymce.settings.Plugin;
 import wicket.contrib.tinymce.settings.PluginButton;
 
 /**
+ * This plugin adds a preview button to TinyMCE, pressing the button opens a popup showing the current content.
+ * <p>Note: Only basic functionality is implemented, more work is needed.
+ *
  * @author Iulian-Corneliu COSTAN
  */
 public class PreviewPlugin extends Plugin {

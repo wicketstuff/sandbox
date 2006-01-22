@@ -18,6 +18,12 @@
 package wicket.contrib.tinymce.settings;
 
 /**
+ * Base class for tinymce button. There ae two types of buttons:
+ * <ul>
+ * <li>default button - these buttons are defined in TinyMCESettings class.</li>
+ * <li>plugin button - these buttons are defined by individual plugins.</li>
+ * </ul>
+ *
  * @author Iulian-Corneliu COSTAN
  */
 public class Button extends wicket.contrib.tinymce.settings.Enum {

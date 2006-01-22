@@ -18,13 +18,12 @@
 package wicket.contrib.tinymce.settings;
 
 /**
- * Base class for all plugins.
+ * Base class for all TinyMCE plugins.
+ * <p>Note: Only basic functionality is implemented, more work is needed.
  *
  * @author Iulian-Corneliu COSTAN
  */
 public abstract class Plugin extends wicket.contrib.tinymce.settings.Enum {
-
-    // types of plugins: w/o buttons, w/ buttons, w/ standard props, w/ private props
 
     protected Plugin(String name) {
         super(name);

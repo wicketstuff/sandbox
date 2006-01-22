@@ -21,6 +21,8 @@ import wicket.contrib.tinymce.settings.Plugin;
 import wicket.contrib.tinymce.settings.PluginButton;
 
 /**
+ * This plugin adds search/replace dialogs to TinyMCE.
+ *
  * @author Iulian-Corneliu COSTAN
  */
 public class SearchReplacePlugin extends Plugin {

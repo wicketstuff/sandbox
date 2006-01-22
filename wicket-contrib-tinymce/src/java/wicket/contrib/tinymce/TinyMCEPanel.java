@@ -25,7 +25,12 @@ import wicket.markup.html.panel.Panel;
 import wicket.markup.html.resources.JavaScriptReference;
 
 /**
+ * Reusable wicket component for TinyMCE editor.
+ * All you have to do is to add this component to your wicket page and it just works.
+ * If you want to create a custom TinyMCE editor take a look at TinyMCESettings class.
+ *
  * @author Iulian-Corneliu COSTAN
+ * @see TinyMCESettings
  */
 public class TinyMCEPanel extends Panel {
 

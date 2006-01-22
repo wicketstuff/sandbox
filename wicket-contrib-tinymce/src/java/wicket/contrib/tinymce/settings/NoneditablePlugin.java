@@ -18,6 +18,8 @@
 package wicket.contrib.tinymce.settings;
 
 /**
+ * <p>Note: Only basic functionality is implemented, more work is needed.
+ *
  * @author Iulian-Corneliu COSTAN
  */
 public class NoneditablePlugin extends Plugin {

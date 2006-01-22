@@ -21,6 +21,9 @@ import wicket.contrib.tinymce.settings.Plugin;
 import wicket.contrib.tinymce.settings.PluginButton;
 
 /**
+ * This plugin adds table management functionality to TinyMCE.
+ * <p>Note: Only basic functionality is implemented, more work is needed.
+ *
  * @author Iulian-Corneliu COSTAN
  */
 public class TablePlugin extends Plugin {

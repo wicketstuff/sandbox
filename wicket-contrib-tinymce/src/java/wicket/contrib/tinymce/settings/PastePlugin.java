@@ -18,6 +18,9 @@
 package wicket.contrib.tinymce.settings;
 
 /**
+ * This plugin adds paste as plain text and paste from Word icons to TinyMCE.
+ * <p>Note: Only basic functionality is implemented, more work is needed.
+ *
  * @author Iulian-Corneliu COSTAN
  */
 public class PastePlugin extends Plugin {

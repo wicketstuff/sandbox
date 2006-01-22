@@ -21,6 +21,8 @@ import wicket.contrib.tinymce.settings.Button;
 import wicket.contrib.tinymce.settings.Plugin;
 
 /**
+ * A button that is defined by tinymce plugins.
+ *
  * @author Iulian-Corneliu COSTAN
  */
 public class PluginButton extends Button {
