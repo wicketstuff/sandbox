@@ -5,13 +5,46 @@
     </properties>
     <meta name="keyword" content="wicket, web, j2ee, java, components, editor"/>
     <body>
-        <section name="Welcome to the Wicket Tinymce Panel">
+        <section name="Welcome to the Wicket TinyMCE Panel">
             <p>
-                The Wicket TinyMCE Panel
+                TinyMCE Wicket panel allows you to use <a href="http://tinymce.moxiecode.com">TinyMCE</a> editor in your web page.
+                Please see below how to integrate it.
+            </p>
+            <p>
+                <b>java:</b>
+                <pre><i>
+                    TinyMCESettings settings =
+                        new TinyMCESettings(TinyMCESettings.Theme.advanced);
+
+                    // few TinyMce editor settings
+                    settings.setToolbarLocation(TinyMCESettings.Location.top);
+                    settings.setStatusbarLocation(TinyMCESettings.Location.bottom);
+
+                    // add default buttons
+                    settings.add(TinyMCESettings.newdocument,
+                        TinyMCESettings.Toolbar.first, TinyMCESettings.Position.before);
+                    settings.add(TinyMCESettings.separator,
+                        TinyMCESettings.Toolbar.first, TinyMCESettings.Position.before);
+
+                    // add plugin's button
+                    SavePlugin savePlugin = new SavePlugin();
+                    settings.add(savePlugin.getSaveButton(),
+                        TinyMCESettings.Toolbar.first, TinyMCESettings.Position.before);
+
+                    add(new TinyMCEPanel("tinyMCE", settings));
+                </i></pre>
+                <b>html:</b>
+                <pre><i>
+                    &lt;span wicket:id="tinyMCE"&gt;tinyMCE&lt;/span&gt;
+
+                    &lt;textarea wicket:id="ta" id="ta" name="ta" rows="30" style="width: 100%"&gt;
+                        some text
+                    &lt;/textarea&gt;
+                </i></pre>
             </p>
             <p>
                 The Wicket Contrib TinyMCE Panel is part of the
-                <a href="/index.html">Wicket Stuff</a>project.
+                <a href="/index.html">Wicket Stuff</a> project.
                 This Wicket powered project provides non-core components to the Wicket project.
             </p>
         </section>

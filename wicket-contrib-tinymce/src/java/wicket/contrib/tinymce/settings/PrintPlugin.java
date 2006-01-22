@@ -21,6 +21,8 @@ import wicket.contrib.tinymce.settings.Plugin;
 import wicket.contrib.tinymce.settings.PluginButton;
 
 /**
+ * This plugin adds a print button to TinyMCE.
+ *
  * @author Iulian-Corneliu COSTAN
  */
 public class PrintPlugin extends Plugin {

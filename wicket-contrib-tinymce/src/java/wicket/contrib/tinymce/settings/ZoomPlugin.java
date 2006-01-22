@@ -21,6 +21,8 @@ import wicket.contrib.tinymce.settings.Plugin;
 import wicket.contrib.tinymce.settings.PluginButton;
 
 /**
+ * Adds a zoom drop list in MSIE5.5+.
+ *
  * @author Iulian-Corneliu COSTAN
  */
 public class ZoomPlugin extends Plugin {

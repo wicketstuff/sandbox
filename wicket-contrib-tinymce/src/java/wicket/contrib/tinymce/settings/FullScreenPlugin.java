@@ -18,6 +18,8 @@
 package wicket.contrib.tinymce.settings;
 
 /**
+ * This plugin adds fullscreen editing mode to TinyMCE.
+ *
  * @author Iulian-Corneliu COSTAN
  */
 public class FullScreenPlugin extends Plugin {

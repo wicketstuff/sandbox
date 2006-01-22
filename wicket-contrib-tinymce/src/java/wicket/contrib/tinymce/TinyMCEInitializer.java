@@ -33,6 +33,8 @@ import java.util.zip.ZipFile;
 
 
 /**
+ * Wicket initializer for TinyMCE component.
+ *
  * @author Iulian-Corneliu COSTAN
  */
 public class TinyMCEInitializer implements IInitializer {

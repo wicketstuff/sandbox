@@ -18,7 +18,7 @@
 package wicket.contrib.tinymce.settings;
 
 /**
- * This plugin enables right-click context menu. This plugin has no additional buttons, you only need to register it
+ * This plugin enables right-click context menu. This plugin has no additional buttons, you only need to register it.
  *
  * @author Iulian-Corneliu COSTAN
  */

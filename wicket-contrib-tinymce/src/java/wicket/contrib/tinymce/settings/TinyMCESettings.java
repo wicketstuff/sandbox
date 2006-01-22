@@ -25,9 +25,12 @@ import java.io.Serializable;
 import java.util.*;
 
 /**
- * Settings class for TinyMCE editor.
+ * Settings class for TinyMCE editor. User can add/remove buttons, enable/disable resizing,
+ * change positions, orientation, alignment and much more.
  *
  * @author Iulian-Corneliu COSTAN
+ * @see Plugin
+ * @see Button
  */
 public class TinyMCESettings implements Serializable {
 
@@ -61,35 +64,83 @@ public class TinyMCESettings implements Serializable {
         plugins = new ListOrderedSet();
     }
 
+    /**
+     * Specifies the location of the toolbar.
+     *
+     * @param toolbarLocation
+     */
     public void setToolbarLocation(Location toolbarLocation) {
         this.toolbarLocation = toolbarLocation;
     }
 
+    /**
+     * Specifies the location of the status bar.
+     *
+     * @param statusbarLocation
+     */
     public void setStatusbarLocation(Location statusbarLocation) {
         this.statusbarLocation = statusbarLocation;
     }
 
+    /**
+     * Specifies the alignment of toolbar.
+     *
+     * @param toolbarAlign
+     */
     public void setToolbarAlign(Align toolbarAlign) {
         this.toolbarAlign = toolbarAlign;
     }
 
+    /**
+     * Enable/Disable vertical resizing.
+     *
+     * @param resizing
+     */
     public void setVerticalResizing(boolean resizing) {
         this.verticalResizing = resizing;
     }
 
+    /**
+     * Enable/Disable horizontal resizing.
+     *
+     * @param horizontalResizing
+     */
     public void setHorizontalResizing(boolean horizontalResizing) {
         this.horizontalResizing = horizontalResizing;
     }
 
+    /**
+     * Add a default button to tinymce editor.
+     * These plugins are defined by tinymce editor and are ready to use.
+     *
+     * @param button   - button to be added
+     * @param toolbar  - the toolbar where to add this button to
+     * @param position - position of this button
+     */
     public void add(Button button, Toolbar toolbar, Position position) {
         controls.add(new Control(button, toolbar, position));
     }
 
+    /**
+     * Allow users to add plugin button. Plugin buttons are defined by tinymce plugins and these plugins have to be registered.
+     * Fortunately, when new plugin button is added, the plugin that defines the button is automatically registered within tinymce editor.
+     *
+     * @param button   - button to be added
+     * @param toolbar  - the toolbar where to add this button to
+     * @param position - position of this button
+     */
     public void add(PluginButton button, Toolbar toolbar, Position position) {
         register(button.getPlugin());
         controls.add(new Control(button, toolbar, position));
     }
 
+    /**
+     * Register a tinymce plugin. In order to reuse a existing plugin it has to be registered before.
+     * Usually plugins are registered automatically when a plugin button is added,  but there are some plugins that contains no buttons.
+     * This method is used to register those plugins. (eg AutoSave)
+     *
+     * @param plugin
+     */
     public void register(Plugin plugin) {
         plugins.add(plugin);
     }
@@ -273,6 +324,16 @@ public class TinyMCESettings implements Serializable {
         }
     }
 
+    /**
+     * This class specifies how elements is to be converted into TinyMCE WYSIWYG editor instances.
+     * This option can be set to any of the values below:
+     * <ul>
+     * <li>textareas - converts all textarea elements to editors when the page loads.</li>
+     * <li>exact - exact - Converts only explicit elements, these are listed in the elements option.</li>
+     * <li>specific_textares - Converts all textarea elements with the a textarea_trigger attribute set to "true".</li>
+     * </ul>
+     * At this moment, only <b>textareas</b> mode is supported.
+     */
     public static class Mode extends Enum {
 
         public static final Mode textareas = new Mode("textareas");
@@ -282,6 +343,14 @@ public class TinyMCESettings implements Serializable {
         }
     }
 
+    /**
+     * This class enables you to specify what theme to use when rendering the TinyMCE WYSIWYG editor instances.
+     * Two themes are supported:
+     * <ul>
+     * <li>simple - This is the most simple theme for TinyMCE it contains only the basic functions.</li>
+     * <li>advanced - This theme enables users to add/remove buttons and panels .</li>
+     * </ul>
+     */
     public static class Theme extends Enum {
 
         public static final Theme simple = new Theme("simple");
@@ -292,6 +361,10 @@ public class TinyMCESettings implements Serializable {
         }
     }
 
+    /**
+     * This option enables you to specify where the toolbar should be located.
+     * This value can be top or bottom.
+     */
     public static class Location extends Enum {
 
         public static final Location top = new Location("top");
@@ -302,6 +375,10 @@ public class TinyMCESettings implements Serializable {
         }
     }
 
+    /**
+     * This class enables you to specify the alignment of the controls.
+     * This value can be left, right or center the default value is center.
+     */
     public static class Align extends Enum {
 
         public static final Align left = new Align("left");
@@ -313,6 +390,10 @@ public class TinyMCESettings implements Serializable {
         }
     }
 
+    /**
+     * This class specifies the position of new added control.
+     * It can be before or after existing elements.
+     */
     public static class Position extends Enum {
 
         public static final Position before = new Position("before");
@@ -323,6 +404,10 @@ public class TinyMCESettings implements Serializable {
         }
     }
 
+    /**
+     * This class specifices the toolbar to add specific control to.
+     * TinyMCE editor defines three toolbars named: first, second, third.
+     */
     public static class Toolbar extends Enum {
 
         public static final Toolbar first = new Toolbar("first");
@@ -334,6 +419,7 @@ public class TinyMCESettings implements Serializable {
         }
     }
 
+    // default tinymce buttons
     public static final Button bold = new Button("bold");
     public static final Button italic = new Button("italic");
     public static final Button underline = new Button("underline");
@@ -365,7 +451,7 @@ public class TinyMCESettings implements Serializable {
     public static final Button charmap = new Button("charmap");
     public static final Button separator = new Button("separator");
 
-    // others
+    // others buttons added by plugins
     public static final Button newdocument = new Button("newdocument");
     public static final Button cut = new Button("cut");
     public static final Button copy = new Button("copy");
