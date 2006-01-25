@@ -98,6 +98,11 @@ public class ImmediateRadioChoice extends RadioChoice
 	{
 		return new StringBufferResourceStream();
 	}
+	
+	protected java.lang.String getDefaultChoice(java.lang.Object selected)
+	{
+		return getChoices().get(0).toString();
+	}
 
 	/**
 	 * Ajax handler that immediately updates the attached component when the

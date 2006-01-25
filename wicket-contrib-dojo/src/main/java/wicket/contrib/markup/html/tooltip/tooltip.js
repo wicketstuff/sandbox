@@ -4,9 +4,9 @@
 		iframe.style.left = ttip.style.left;
 		iframe.style.width = ttip.offsetWidth;
 		iframe.style.height = ttip.offsetHeight;
-		iframe.style.zIndex = 2;
+		iframe.style.zIndex = ttip.style.zIndex-1;
 		iframe.style.visibility = ttip.style.visibility;
-		//alert("top: " + ttip.style.top + "left: " + ttip.style.left + "width: " + ttip.style.width + "height: " + ttip.style.height + "zindex: " + ttip.style.zIndex + "display: " + ttip.style.visibility);
+		//alert("top: " + ttip.style.top + "left: " + ttip.style.left + "width: " + ttip.offsetWidth + "height: " + ttip.offsetHeight + "zindex: " + ttip.style.zIndex + "display: " + ttip.style.visibility);
 		//alert("top: " + iframe.style.top + "left: " + iframe.style.left + "width: " + iframe.style.width + "height: " + iframe.style.height + "zindex: " + iframe.style.zIndex + "display: " + iframe.style.visibility);
 	}
 
@@ -82,10 +82,10 @@
 		
 	}
 
-	function xstooltip_hide(id)
+	function xstooltip_hide(id, iFrameId)
 	{
 		var it3 = document.getElementById(id);
 		it3.style.visibility = 'hidden';
-		setIFrame(it2, iframe);
+		setIFrame(it3, iframe);
 		
 	}
