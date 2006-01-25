@@ -248,9 +248,6 @@ public class FXOnMouseOverFader extends DojoFXHandler
 		 * add onmouseover and onmouseout handlers. setMouseOver handles correct
 		 * mouseover states followed by fade() calls with needed variables.
 		 */
-		System.out.println("trigger: " + getTrigger() + " ding: " + HTMLID
-				+ "_setMouseOver(1);" + HTMLID + "_fade('" + HTMLID + "', "
-				+ getDuration());
 		this.getTrigger().add(
 				new AppendAttributeModifier(getEventName(), true, new Model(HTMLID
 						+ "_setMouseOver(1);" + HTMLID + "_fade('" + HTMLID + "', "

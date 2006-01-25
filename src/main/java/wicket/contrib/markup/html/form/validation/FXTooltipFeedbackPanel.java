@@ -123,9 +123,6 @@ public class FXTooltipFeedbackPanel extends Panel implements IFeedback
 
 		};
 		filter = new ComponentFeedbackMessageFilter(c);
-		System.out.println("Component: " + c);
-		System.out.println("filter1: " + filter);
-
 		add(messagesContainer);
 		this.messageListView = new MessageListView("messages");
 		messageListView.setVersioned(false);
@@ -281,7 +278,7 @@ public class FXTooltipFeedbackPanel extends Panel implements IFeedback
 	 */
 	protected IFeedbackMessageFilter getFeedbackMessageFilter()
 	{
-		System.out.println("filter: " + filter);
+		//System.out.println("filter: " + filter);
 		return filter;
 	}
 

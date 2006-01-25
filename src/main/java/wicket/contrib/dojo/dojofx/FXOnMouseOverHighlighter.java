@@ -16,6 +16,8 @@
  */
 package wicket.contrib.dojo.dojofx;
 
+import java.io.Serializable;
+
 import wicket.AttributeModifier;
 import wicket.Component;
 import wicket.markup.html.internal.HtmlHeaderContainer;
@@ -147,7 +149,7 @@ public class FXOnMouseOverHighlighter extends DojoFXHandler
 	/**
 	 * Simple inner class to manage RGB values.
 	 */
-	private class RGB
+	private class RGB implements Serializable
 	{
 		private final int R;
 		private final int G;
