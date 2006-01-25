@@ -73,6 +73,12 @@ public class FXOnClickWiper extends DojoFXHandler
 		this.startDisplay = startDisplay;
 
 	}
+	
+	public String getHTMLID()
+	{
+		//only returns valid value after handler is bound.
+		return this.HTMLID;
+	}
 
 	/**
 	 * Constructor with default startDisplay
@@ -104,23 +110,23 @@ public class FXOnClickWiper extends DojoFXHandler
 		if (startDisplay)
 		{
 			s = "\t<script language=\"JavaScript\" type=\"text/javascript\">\n" + "\t"
-					+ componentId + "_wipedOut = 0; \n";
+					+ getHTMLID() + "_wipedOut = 0; \n";
 		}
 		else
 		{
 			s = "\t<script language=\"JavaScript\" type=\"text/javascript\">\n" + "\t"
-					+ componentId + "_wipedOut = 1; \n";
+					+ getHTMLID() + "_wipedOut = 1; \n";
 		}
 
-		s = s + "\t" + componentId + "_wiping = 0; \n" + "\tfunction " + componentId
-				+ "_wipe(id, duration) { \n" + "\t\tif(" + componentId + "_wiping==0){\n"
-				+ "\t\t\tnode = document.getElementById(id);\n" + "\t\t\tif(" + componentId
-				+ "_wipedOut == 1) \n" + "\t\t\t{ \n" + "\t\t\t\t" + componentId + "_wiping = 1;\n"
-				+ "\t\t\t\t" + componentId + "_wipedOut = 0;\n"
-				+ "\t\t\t\tdojo.fx.html.wipeIn(node, duration, function(){" + componentId
+		s = s + "\t" + getHTMLID() + "_wiping = 0; \n" + "\tfunction " + getHTMLID()
+				+ "_wipe(id, duration) { \n" + "\t\tif(" + getHTMLID() + "_wiping==0){\n"
+				+ "\t\t\tnode = document.getElementById(id);\n" + "\t\t\tif(" + getHTMLID()
+				+ "_wipedOut == 1) \n" + "\t\t\t{ \n" + "\t\t\t\t" + getHTMLID() + "_wiping = 1;\n"
+				+ "\t\t\t\t" + getHTMLID() + "_wipedOut = 0;\n"
+				+ "\t\t\t\tdojo.fx.html.wipeIn(node, duration, function(){" + getHTMLID()
 				+ "_wiping=0; node.style.height='auto';});\n" + "\t\t\t} else {\n" + "\t\t\t\t"
-				+ componentId + "_wiping = 1;\n" + "\t\t\t\t" + componentId + "_wipedOut = 1;\n"
-				+ "\t\t\t\tdojo.fx.html.wipeOut(node, duration, function(){" + componentId
+				+ getHTMLID() + "_wiping = 1;\n" + "\t\t\t\t" + getHTMLID() + "_wipedOut = 1;\n"
+				+ "\t\t\t\tdojo.fx.html.wipeOut(node, duration, function(){" + getHTMLID()
 				+ "_wiping=0; node.style.height='auto';});\n" + "\t\t\t}\n" + "\t\t}\n" + "\t}\n"
 				+ "\t</script>\n";
 
@@ -169,7 +175,7 @@ public class FXOnClickWiper extends DojoFXHandler
 		String componentpath = removeColon(component.getPath());
 		this.HTMLID = "f_" + this.component.getId() + "_" + componentpath;
 		// Add ID to component, and bind effect to trigger
-		this.component.add(new AttributeModifier("id", true, new Model(HTMLID)));
+		this.component.add(new AttributeModifier("id", true, new Model(getHTMLID())));
 		if (!startDisplay)
 		{
 			this.component
@@ -177,7 +183,7 @@ public class FXOnClickWiper extends DojoFXHandler
 		}
 		System.out.println("event: " + getEventName() + " component: " + this.componentId);
 		this.getTrigger().add(
-				new AppendAttributeModifier(getEventName(), true, new Model(componentId + "_wipe('"
+				new AppendAttributeModifier(getEventName(), true, new Model(getHTMLID() + "_wipe('"
 						+ HTMLID + "', " + getDuration() + ");")));
 
 	}
