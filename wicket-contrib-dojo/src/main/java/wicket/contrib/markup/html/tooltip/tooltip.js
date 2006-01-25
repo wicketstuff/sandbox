@@ -3,7 +3,10 @@
 		iframe.style.top = ttip.style.top;
 		iframe.style.left = ttip.style.left;
 		iframe.style.width = ttip.offsetWidth;
-		iframe.style.height = ttip.offsetHeight;
+		//Iframe's height needs to be reduced by 20. 
+		//I have no clue why....
+		iframe.style.height = ttip.offsetHeight -20;
+		//iframe.style.height = ttip.style.height;
 		iframe.style.zIndex = ttip.style.zIndex-1;
 		iframe.style.visibility = ttip.style.visibility;
 		//alert("top: " + ttip.style.top + "left: " + ttip.style.left + "width: " + ttip.offsetWidth + "height: " + ttip.offsetHeight + "zindex: " + ttip.style.zIndex + "display: " + ttip.style.visibility);
