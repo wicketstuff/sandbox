@@ -1,8 +1,7 @@
 package wicket.contrib.markup.html.tooltip;
 
 
-
-
+import java.util.StringTokenizer;
 
 import wicket.AttributeModifier;
 import wicket.Component;
@@ -156,13 +155,24 @@ public class TooltipPanel extends Panel
 	
 	public String getTargetHTMLID()
 	{
-		return "tid_" + target.getPath();
+		String componentpath = removeColon(target.getPath());
+		return "f_" + target.getId() + "_" + componentpath;
 	}
 	
 	public String getIFrameID()
 	{
 		return getHTMLID() + "_ttiframe";
 	}
+	
+	/*
+	 * removes the colons in the componentPath. In order to use in Javascript variables
+	 */
+	public String removeColon(String s) {
+		  StringTokenizer st = new StringTokenizer(s,":",false);
+		  String t="";
+		  while (st.hasMoreElements()) t += st.nextElement();
+		  return t;
+	  }
 	
 	/**
 	 * innitializes the tooltip

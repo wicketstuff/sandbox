@@ -186,7 +186,15 @@ public abstract class DojoFXHandler extends DojoAjaxHandler
 		{
 			super(attribute, pattern, replaceModel);
 		}
-
+		
+/*		*//**
+		 * Sets HTMLID if not present, and returns value;
+		 *//*
+		public String HTMLID()
+		{
+			
+		}
+*/
 		/**
 		 * @see wicket.AttributeModifier#newValue(java.lang.String, java.lang.String)
 		 */

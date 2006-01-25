@@ -11,7 +11,7 @@ public interface IUpdatable
 /**
  * This method is called on any component implementing Updatable before it is rerendered.
  */
-void update();
+boolean update();
 
 
 
