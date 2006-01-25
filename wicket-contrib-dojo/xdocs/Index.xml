@@ -32,13 +32,16 @@
 			</p>
 		</section>
 		<section name="Latest News">
-			<subsection name="January 4, 2006 - DojoAutoUpdateHandler, try it now!">
+			<subsection name="January 25, 2006 - Wicket-Dojo ajax-based RSS Dragon, try it now!">
 				<p>
-					We have just finished our latest component. It is an Ajax auto update handler. Since it uses Wicket's beta functionality to render a singel component, you can currently only use it with the HEAD version of Wicket.
-					
-					We've included a tutorial in our tutorial section which should get you started right away!
+					We have just finished a demo app using some of our components. It is an Ajax-based 
+					RSS reader which uses some of Wicket's beta component-level rendering functionality.
+					It's not entirely stable, but it should give you a impression of what Wicket and Dojo
+					are capable of. Since this application depends on a HEAD version of Wicket, getting it to work
+					from the wicket-contrib-dojo-examples CVS might be a bit tricky. Therefor we have made a
+					pre-compiled war file available which you can deploy in your appserver. Get it <a href="http://wicket-stuff.sourceforge.net/wicket-contrib-dojo/files/wicket-contrib-dojo-examples.war">
+					here!</a>
 				</p>
-				
 			</subsection>
 			<p>
 				See
