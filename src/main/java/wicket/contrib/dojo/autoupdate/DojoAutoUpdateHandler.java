@@ -30,6 +30,7 @@ public class DojoAutoUpdateHandler extends DojoAjaxHandler
 {
 	private final int interval;
 	private String HTMLID;
+	private String LoadingId = "";
 	
 	/**
 	 * 
@@ -38,6 +39,14 @@ public class DojoAutoUpdateHandler extends DojoAjaxHandler
 	public DojoAutoUpdateHandler(int interval)
 	{
 		this.interval = interval;
+	    
+
+	}
+	
+	public DojoAutoUpdateHandler(int interval, String loadingId)
+	{
+		this.interval = interval;
+		this.LoadingId = loadingId;
 	    
 
 	}
@@ -120,11 +129,31 @@ public class DojoAutoUpdateHandler extends DojoAjaxHandler
 	{
 		Component[] components = new Component[1];
 		components[0] = getComponent();
-		((IUpdatable)components[0]).update();
-						
-		return render(components);
+		boolean success = ((IUpdatable)components[0]).update();
+		if(success)
+		{
+			return render(components);	
+		}
+		else
+		{
+			StringBufferResourceStream response = new StringBufferResourceStream("text/plain");
+			response.append("UPDATE_ERROR");
+			return response;
+		}
+			
 	}
 	
+	/**
+	 * the javascript function expects the node corresponding to loadingId to have 
+	 * a style attribute: visibility=hidden; and sets it to visible during laoding.
+	 * This is not very good method for doing this and should probably be replaced by
+	 *  a a generic js function which is called during loading.
+	 * @return the CSS id for the loading node.
+	 */
+	protected String getLoadingId()
+	{
+		return this.LoadingId;
+	}
 
 	/** 
 	 * adds the onload contribution: calls checkUpdate() <br/>
@@ -133,7 +162,7 @@ public class DojoAutoUpdateHandler extends DojoAjaxHandler
 	 */
 	protected String getBodyOnloadContribution()
 	{
-		return "checkUpdate('" + getCallbackUrl() + "','text/plain', '" + HTMLID + "');intervalCheck("+ this.interval + ", '" + getCallbackUrl() + "', 'text/html','" + HTMLID + "');";
+		return "checkUpdate('" + getCallbackUrl() + "','text/plain', '" + HTMLID + "', '" + getLoadingId() + "');intervalCheck("+ this.interval + ", '" + getCallbackUrl() + "', 'text/html','" + HTMLID + "','" + getLoadingId() + "');";
 		//return "checkUpdate();";
 		
 		
@@ -159,7 +188,7 @@ public class DojoAutoUpdateHandler extends DojoAjaxHandler
 		
 		//this.HTMLID = "f_" + this.getComponent().getId() + "_" + getComponent().getPath();
 		this.HTMLID = ((IUpdatable)getComponent()).getHTMLID();
-		System.out.println("path: " + getComponent().getPath() + "newpath: " + componentpath + " htmlid: " + HTMLID);
+		
 		// Add ID to component, and bind effect to trigger
 		c.add(new AttributeModifier("id", true, new Model(HTMLID)));
 
