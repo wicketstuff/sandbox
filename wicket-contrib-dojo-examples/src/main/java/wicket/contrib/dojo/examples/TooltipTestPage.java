@@ -1,11 +1,20 @@
 package wicket.contrib.dojo.examples;
 
 import wicket.PageParameters;
+import wicket.contrib.dojo.DojoAjaxHandler;
+import wicket.contrib.dojo.autoupdate.DojoAutoUpdateHandler;
+import wicket.contrib.dojo.examples.rssreader.DescriptionModel;
+import wicket.contrib.dojo.examples.rssreader.DescriptionPanel;
+import wicket.contrib.dojo.examples.rssreader.FeedContainer;
+import wicket.contrib.dojo.examples.rssreader.UpdateLabel;
 import wicket.contrib.markup.html.tooltip.SimpleTooltip;
 import wicket.contrib.markup.html.tooltip.Tooltip;
+import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.WebPage;
 import wicket.markup.html.basic.Label;
+import wicket.markup.html.image.Image;
 import wicket.model.CompoundPropertyModel;
+import wicket.model.Model;
 
 public class TooltipTestPage extends WebPage{
 	
@@ -13,6 +22,15 @@ public class TooltipTestPage extends WebPage{
 	private Label target2;
 	private Label stlabel;
 	private Label stlabel2;
+	
+	private String text;
+	private Label i;
+	DojoAjaxHandler ajax;
+	private Image testImage;
+	
+	UpdateLabel j;
+	WebMarkupContainer c;
+	DescriptionPanel dpanel;
 
 	public TooltipTestPage(PageParameters parameters)
 	{
@@ -28,6 +46,7 @@ public class TooltipTestPage extends WebPage{
         add(new Tooltip("studenttooltip", new StudentTooltip(new CompoundPropertyModel(new StudentModel(1234, "van de Haar", "Marco", 'm')), stlabel, 100, 20)));
         add(new Tooltip("studenttooltip2", new StudentTooltip(new CompoundPropertyModel(new StudentModel(1235, "Booltink", "Ruud", 'm')), stlabel2, 100, 20)));
 		
+                
 	}
-	
+
 }
