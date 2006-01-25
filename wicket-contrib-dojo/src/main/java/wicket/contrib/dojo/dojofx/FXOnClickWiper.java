@@ -181,7 +181,6 @@ public class FXOnClickWiper extends DojoFXHandler
 			this.component
 					.add(new AppendAttributeModifier("style", true, new Model("display:none")));
 		}
-		System.out.println("event: " + getEventName() + " component: " + this.componentId);
 		this.getTrigger().add(
 				new AppendAttributeModifier(getEventName(), true, new Model(getHTMLID() + "_wipe('"
 						+ HTMLID + "', " + getDuration() + ");")));
