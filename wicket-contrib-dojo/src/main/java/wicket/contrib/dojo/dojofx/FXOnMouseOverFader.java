@@ -47,7 +47,7 @@ public class FXOnMouseOverFader extends DojoFXHandler
 	 */
 	public FXOnMouseOverFader(int duration, Component trigger, boolean startDisplay)
 	{
-		super("OnMouseOver", duration, trigger);
+		super("onmouseover", duration, trigger);
 		this.startDisplay = startDisplay;
 		this.type = "fade";
 	}
@@ -66,7 +66,7 @@ public class FXOnMouseOverFader extends DojoFXHandler
 	public FXOnMouseOverFader(int duration, Component trigger, boolean startDisplay,
 			boolean allowHide)
 	{
-		super("OnmouseOver", duration, trigger);
+		super("onmouseover", duration, trigger);
 		this.startDisplay = startDisplay;
 
 		if (allowHide)
@@ -93,7 +93,7 @@ public class FXOnMouseOverFader extends DojoFXHandler
 	public FXOnMouseOverFader(int duration, Component trigger, boolean startDisplay,
 			double startOpac, double endOpac)
 	{
-		super("OnMouseOver", duration, trigger);
+		super("onmouseover", duration, trigger);
 		this.startDisplay = startDisplay;
 
 		this.type = "fadeOpac";
@@ -248,6 +248,9 @@ public class FXOnMouseOverFader extends DojoFXHandler
 		 * add onmouseover and onmouseout handlers. setMouseOver handles correct
 		 * mouseover states followed by fade() calls with needed variables.
 		 */
+		System.out.println("trigger: " + getTrigger() + " ding: " + HTMLID
+				+ "_setMouseOver(1);" + HTMLID + "_fade('" + HTMLID + "', "
+				+ getDuration());
 		this.getTrigger().add(
 				new AppendAttributeModifier(getEventName(), true, new Model(HTMLID
 						+ "_setMouseOver(1);" + HTMLID + "_fade('" + HTMLID + "', "
