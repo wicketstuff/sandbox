@@ -1,6 +1,6 @@
 package wicket.examples.flickr;
 
-import wicket.markup.html.WebMarkupContainer;
+import wicket.markup.html.panel.Panel;
 import wicket.util.string.Strings;
 
 /**
@@ -9,12 +9,13 @@ import wicket.util.string.Strings;
  *
  * @author Martijn Dashorst
  */
-public class HelpInfo extends WebMarkupContainer {
+public class HelpInfo extends Panel {
 	/** for serialization. */
 	private static final long serialVersionUID = 1L;
 	
 	public HelpInfo(String id) {
 		super(id);
+		setRenderBodyOnly(true);
 	}
 	
 	@Override
