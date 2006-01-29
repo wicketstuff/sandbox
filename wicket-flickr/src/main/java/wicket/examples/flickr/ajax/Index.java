@@ -83,6 +83,7 @@ public class Index extends WebPage {
 
 				// get the new image URL's from flickr
 				FlickrDao flickr = new FlickrDao();
+				if(tags == null) tags = "";
 				images.addAll(flickr.getSmallSquareImages(tags.split(" ")));
 
 				// prepare the listview for the new images.
