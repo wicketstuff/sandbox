@@ -1,7 +1,6 @@
 package wicket.contrib.gmap;
 
-import wicket.MarkupContainer;
-import wicket.behavior.IBehaviorListener;
+import wicket.behavior.AjaxHandler;
 
 /**
  * Wicket component for Google's GMarker API.
@@ -11,13 +10,13 @@ import wicket.behavior.IBehaviorListener;
  */
 class GMarkerComponent extends JavaScriptComponent {
 
-    private IBehaviorListener behaviorListener;
+    private AjaxHandler behavior;
     private GMarker gmarker;
 
-    public GMarkerComponent(GMarker gmarker, IBehaviorListener behaviorListener) {
+    public GMarkerComponent(GMarker gmarker, AjaxHandler behavior) {
         super(ID);
         this.gmarker = gmarker;
-        this.behaviorListener = behaviorListener;
+        this.behavior = behavior;
     }
 
     public String onJavaScriptComponentTagBody() {
@@ -40,13 +39,12 @@ class GMarkerComponent extends JavaScriptComponent {
     }
 
     private String createInfoFunction() {
-        MarkupContainer parent = getParent();
         StringBuffer buffer = new StringBuffer();
         buffer.append("var div = document.createElement(\"div\");\n");
         buffer.append("div.id = \"" + gmarker.getOverlayId() + "\";\n");
         buffer.append("var script = document.createElement(\"script\");\n");
         buffer.append("var js = document.createTextNode(\"");
-        buffer.append("dojoCall('" + parent.urlFor(behaviorListener) + "','" + gmarker.getOverlayId() + "');\")\n");
+        buffer.append("dojoCall('" + behavior.getCallbackUrl() + "','" + gmarker.getOverlayId() + "');\")\n");
         buffer.append("script.appendChild(js);\n");
         buffer.append("div.appendChild(script);\n");
         buffer.append("return div;");
