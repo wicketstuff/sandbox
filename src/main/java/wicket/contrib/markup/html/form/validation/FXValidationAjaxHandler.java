@@ -174,12 +174,12 @@ public class FXValidationAjaxHandler extends DojoAjaxHandler
 
 		"\t<script language=\"JavaScript\" type=\"text/javascript\">\n" + "\t" + componentId
 				+ "_first = false; \n" + "\tfunction " + componentId
-				+ "_validate(componentUrl, componentPath, field) { \n" + "\tduration = "
+				+ "_validate(componentUrl, inputName, field) { \n" + "\tduration = "
 				+ getDuration() + "; \n" + "\t\t\tif(!" + componentId + "_first){\n" + "\t\t\t"
 				+ componentId + "_first = true; \n"
 				+ "\t\t\t\tstartbc = dojo.html.getBackgroundColor(field);\n" + "\t\t\t}\n"
 				+ "\t\tdojo.io.bind({\n"
-				+ "\t\t\turl: componentUrl + '&' + componentPath + '=' + field.value,\n"
+				+ "\t\t\turl: componentUrl + '&' + inputName + '=' + field.value,\n"
 				+ "\t\t\tmimetype: \"text/plain\",\n" + "\t\t\tload: function(type, data, evt) {\n"
 				+ "\t\t\t\tif(data == 'valid')\n" + "\t\t\t\t{\n" + "\t\t\t\t\t"
 				+ highlightValidFunction + "\n" + "\t\t\t\t\treturn true;\n" + "\t\t\t\t}\n"
