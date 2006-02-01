@@ -28,7 +28,7 @@ import wicket.protocol.http.WebSession;
  * retrieved by calling getHibernateSession(). The application referenced by the
  * session must implement the IHibernateDatabaseSouce interface.
  */
-public final class DatabaseWebRequestCycle extends WebRequestCycle
+public class DatabaseWebRequestCycle extends WebRequestCycle
 {
 	/** Any database session for the current request cycle. */
 	private transient DatabaseSession databaseSession = null;
