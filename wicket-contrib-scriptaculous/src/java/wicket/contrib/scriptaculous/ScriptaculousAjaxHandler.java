@@ -20,7 +20,7 @@ package wicket.contrib.scriptaculous;
 
 import wicket.Application;
 import wicket.IInitializer;
-import wicket.behavior.AjaxHandler;
+import wicket.Response;
 import wicket.markup.html.PackageResource;
 import wicket.markup.html.PackageResourceReference;
 import wicket.markup.html.internal.HtmlHeaderContainer;
@@ -81,16 +81,16 @@ public abstract class ScriptaculousAjaxHandler extends AjaxHandler implements
          * 
          * @param container
          */
-        protected void renderHeadInitContribution(HtmlHeaderContainer container) {
+        protected void renderHeadInitContribution(Response r) {
                 // add our basic javascript needs to the header
                 Application application = Application.get();
-                addJsReference(container, new PackageResourceReference(
+                addJsReference(r, new PackageResourceReference(
                                 application, ScriptaculousAjaxHandler.class,
                                 "prototype.js"));
-                addJsReference(container, new PackageResourceReference(
+                addJsReference(r, new PackageResourceReference(
                                 application, ScriptaculousAjaxHandler.class,
                                 "scriptaculous.js"));
-                addJsReference(container, new PackageResourceReference(
+                addJsReference(r, new PackageResourceReference(
                                 application, ScriptaculousAjaxHandler.class,
                                 "behavior.js"));
         }

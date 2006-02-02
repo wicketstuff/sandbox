@@ -6,7 +6,6 @@ import wicket.RequestCycle;
 import wicket.Response;
 import wicket.contrib.dojo.DojoAjaxHandler;
 import wicket.markup.html.PackageResourceReference;
-import wicket.markup.html.internal.HtmlHeaderContainer;
 import wicket.response.StringResponse;
 import wicket.util.resource.IResourceStream;
 import wicket.util.resource.StringBufferResourceStream;
@@ -29,9 +28,9 @@ public abstract class DojoUpdateHandler extends DojoAjaxHandler
 	 * adds reference to autoupdate.js.
 	 * @see wicket.AjaxHandler#renderHeadContribution(wicket.markup.html.HtmlHeaderContainer)
 	 */
-	protected void renderHeadContribution(HtmlHeaderContainer container)
+	protected void renderHeadContribution(Response r)
 	{
-		addJsReference(container, new PackageResourceReference(Application.get(),
+		addJsReference(r, new PackageResourceReference(Application.get(),
 				DojoUpdateHandler.class, "dojoupdate.js"));
 		
 	}

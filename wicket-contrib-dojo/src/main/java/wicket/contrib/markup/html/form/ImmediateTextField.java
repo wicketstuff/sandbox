@@ -16,10 +16,10 @@
  */
 package wicket.contrib.markup.html.form;
 
+import wicket.Response;
 import wicket.contrib.dojo.DojoAjaxHandler;
 import wicket.markup.ComponentTag;
 import wicket.markup.html.form.TextField;
-import wicket.markup.html.internal.HtmlHeaderContainer;
 import wicket.model.IModel;
 import wicket.util.resource.IResourceStream;
 import wicket.util.resource.StringBufferResourceStream;
@@ -119,9 +119,9 @@ public class ImmediateTextField extends TextField
 		/**
 		 * @see wicket.AjaxHandler#renderHeadInitContribution(wicket.markup.html.internal.HtmlHeaderContainer)
 		 */
-		public final void renderHeadInitContribution(HtmlHeaderContainer container)
+		public final void renderHeadInitContribution(Response r)
 		{
-			super.renderHeadInitContribution(container);
+			super.renderHeadInitContribution(r);
 			StringBuffer s = new StringBuffer(
 					"\t<script language=\"JavaScript\" type=\"text/javascript\">\n").append(
 					"\tfunction immediateCheckBox(componentUrl, componentPath, val) { \n").append(
@@ -131,7 +131,7 @@ public class ImmediateTextField extends TextField
 					"\t\t\tload: function(type, data, evt) {}\n" + "\t\t});\n" + "\t}\n").append(
 					"\t</script>\n");
 
-			container.getResponse().write(s.toString());
+			r.write(s.toString());
 		}
 
 		/**

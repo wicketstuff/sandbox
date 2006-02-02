@@ -20,6 +20,7 @@ import java.util.StringTokenizer;
 
 import wicket.AttributeModifier;
 import wicket.Component;
+import wicket.Response;
 import wicket.markup.html.internal.HtmlHeaderContainer;
 import wicket.model.Model;
 
@@ -140,7 +141,7 @@ public class FXOnMouseOverFader extends DojoFXHandler
 	 * 
 	 * @see wicket.AjaxHandler#renderHeadContribution(wicket.markup.html.internal.HtmlHeaderContainer)
 	 */
-	protected void renderHeadContribution(HtmlHeaderContainer container)
+	protected void renderHeadContribution(Response r)
 	{
 		// String to be written to header
 		String s;
@@ -211,7 +212,7 @@ public class FXOnMouseOverFader extends DojoFXHandler
 				+ "\t\tif (ismouseover == 1){\n" + "\t\t\t" + HTMLID + "_mouseover = 1;\n"
 				+ "\t\t}else{\n" + "\t\t\t" + HTMLID + "_mouseover = 0;\n" + "\t\t}\n"
 				+ "\t}\n" + "\t</script>\n\n";
-		container.getResponse().write(s);
+		r.write(s);
 
 
 	}

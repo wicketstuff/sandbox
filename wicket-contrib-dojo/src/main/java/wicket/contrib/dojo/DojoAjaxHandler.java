@@ -20,9 +20,7 @@ package wicket.contrib.dojo;
 
 import wicket.Application;
 import wicket.IInitializer;
-
-
-import wicket.behavior.AjaxHandler;
+import wicket.Response;
 import wicket.markup.html.PackageResource;
 import wicket.markup.html.PackageResourceReference;
 import wicket.markup.html.internal.HtmlHeaderContainer;
@@ -74,13 +72,11 @@ public abstract class DojoAjaxHandler extends AjaxHandler implements IInitialize
 	/**
 	 * Let this handler print out the needed header contributions.
 	 * 
-	 * @param container
-	 *            the header container
 	 */
-	protected void renderHeadInitContribution(HtmlHeaderContainer container)
+	protected void renderHeadInitContribution(Response r)
 	{
 		// add our basic javascript needs to the header
-		addJsReference(container, new PackageResourceReference(Application.get(),
+		addJsReference(r, new PackageResourceReference(Application.get(),
 				DojoAjaxHandler.class, "dojo.js"));
 	}
 
