@@ -42,6 +42,8 @@ import wicket.util.resource.IResourceStream;
  * @author Eelco Hillenius
  * @author Ralf Ebert
  * @author Igor Vaynberg
+ * 
+ * @deprecated to be replaced by {@link wicket.behavior.AbstractAjaxBehavior}
  */
 public abstract class AjaxHandler implements IBehavior, IBehaviorListener, IHeaderContributor
 {
