@@ -1,6 +1,6 @@
 package wicket.contrib.gmap;
 
-import wicket.behavior.AjaxHandler;
+import wicket.contrib.dojo.AjaxHandler;
 
 /**
  * Wicket component for Google's GMarker API.

@@ -39,6 +39,9 @@ public abstract class AjaxAutocompleteTextField extends AutocompleteTextFieldSup
 
     protected abstract String[] getResults(String input);
 
+    /**
+     * @see wicket.Component#renderHead(wicket.markup.html.internal.HtmlHeaderContainer)
+     */
     public void renderHead(HtmlHeaderContainer container) {
         super.renderHead(container);
 

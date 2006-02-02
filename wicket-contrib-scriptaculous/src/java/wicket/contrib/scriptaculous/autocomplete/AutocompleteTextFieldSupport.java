@@ -9,60 +9,82 @@ import wicket.markup.html.form.TextField;
 import wicket.markup.html.internal.HtmlHeaderContainer;
 
 /**
- * support class for all autocomplete text fields.
- * handles binding of needed css and javascript.
- *
+ * support class for all autocomplete text fields. handles binding of needed css
+ * and javascript.
+ * 
  * @author <a href="mailto:wireframe6464@users.sourceforge.net">Ryan Sonnek</a>
  */
 public class AutocompleteTextFieldSupport extends TextField {
 
-    public AutocompleteTextFieldSupport(String id) {
-        super(id);
-		add(ScriptaculousAjaxHandler.newJavascriptBindingHandler());
-    }
+        private static final long serialVersionUID = 1L;
 
-    protected void onComponentTag(ComponentTag tag) {
-        super.onComponentTag(tag);
-        tag.put("id", getId());
-        tag.put("autocomplete", "off");
-    }
+        /**
+         * Construct.
+         * 
+         * @param id
+         */
+        public AutocompleteTextFieldSupport(String id) {
+                super(id);
+                add(ScriptaculousAjaxHandler.newJavascriptBindingHandler());
+        }
 
-    public void renderHead(HtmlHeaderContainer container) {
-        super.renderHead(container);
+        /**
+         * @see wicket.Component#onComponentTag(wicket.markup.ComponentTag)
+         */
+        protected void onComponentTag(ComponentTag tag) {
+                super.onComponentTag(tag);
+                tag.put("id", getId());
+                tag.put("autocomplete", "off");
+        }
 
-        addCssReference(container, getCss());
-    }
+        /**
+         * @see wicket.Component#renderHead(wicket.markup.html.internal.HtmlHeaderContainer)
+         */
+        public void renderHead(HtmlHeaderContainer container) {
+                super.renderHead(container);
 
-    private void addCssReference(HtmlHeaderContainer container, ResourceReference ref) {
-        String url = container.getPage().urlFor(ref.getPath());
-        String s =
-            "\t<link rel=\"stylesheet\" type=\"text/css\" href=\"" + url + "\"/>\n";
-        write(container, s);
-    }
+                addCssReference(container, getCss());
+        }
 
-    /**
-     * Writes the given string to the header container.
-     * @param container the header container
-     * @param s the string to write
-     */
-    private void write(HtmlHeaderContainer container, String s) {
-        container.getResponse().write(s);
-    }
+        private void addCssReference(HtmlHeaderContainer container,
+                        ResourceReference ref) {
+                String url = container.getPage().urlFor(ref.getPath());
+                String s = "\t<link rel=\"stylesheet\" type=\"text/css\" href=\""
+                                + url + "\"/>\n";
+                write(container, s);
+        }
 
-    protected ResourceReference getCss() {
-        return new PackageResourceReference(AutocompleteTextFieldSupport.class, "style.css");
-    }
+        /**
+         * Writes the given string to the header container.
+         * 
+         * @param container
+         *                the header container
+         * @param s
+         *                the string to write
+         */
+        private void write(HtmlHeaderContainer container, String s) {
+                container.getResponse().write(s);
+        }
 
-    /**
-     * adds a placeholder div where auto completion results will be populated.
-     */
-    protected void onRender(MarkupStream markupStream) {
-        super.onRender(markupStream);
+        protected ResourceReference getCss() {
+                return new PackageResourceReference(
+                                AutocompleteTextFieldSupport.class, "style.css");
+        }
 
-        getResponse().write("<div class=\"auto_complete\" id=\"" + getAutocompleteId()  + "\"></div>");
-    }
+        /**
+         * adds a placeholder div where auto completion results will be
+         * populated.
+         */
+        protected void onRender(MarkupStream markupStream) {
+                super.onRender(markupStream);
 
-    protected final String getAutocompleteId() {
-        return getId() + "_autocomplete";
-    }
+                getResponse().write(
+                                "<div class=\"auto_complete\" id=\""
+                                                + getAutocompleteId()
+                                                + "\"></div>");
+        }
+
+        protected final String getAutocompleteId() {
+                return getId() + "_autocomplete";
+        }
 }
