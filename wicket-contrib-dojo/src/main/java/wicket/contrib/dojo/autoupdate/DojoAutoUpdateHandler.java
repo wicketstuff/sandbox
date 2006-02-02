@@ -115,9 +115,9 @@ public class DojoAutoUpdateHandler extends DojoAjaxHandler
 	 * @param container header container
 	 * @see wicket.behavior.AjaxHandler#renderHeadContribution(wicket.markup.html.internal.HtmlHeaderContainer)
 	 */
-	protected void renderHeadContribution(HtmlHeaderContainer container)
+	protected void renderHeadContribution(Response r)
 	{
-		addJsReference(container, new PackageResourceReference(Application.get(),
+		addJsReference(r, new PackageResourceReference(Application.get(),
 				DojoAutoUpdateHandler.class, "autoupdate.js"));
 		
 	}

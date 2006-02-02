@@ -6,10 +6,10 @@ package wicket.contrib.markup.html.form;
 
 import java.util.List;
 
+import wicket.Response;
 import wicket.contrib.dojo.DojoAjaxHandler;
 import wicket.markup.ComponentTag;
 import wicket.markup.html.form.RadioChoice;
-import wicket.markup.html.internal.HtmlHeaderContainer;
 import wicket.model.IModel;
 import wicket.util.resource.IResourceStream;
 import wicket.util.resource.StringBufferResourceStream;
@@ -125,9 +125,9 @@ public class ImmediateRadioChoice extends RadioChoice
 		/** 
 		 * @see wicket.behavior.AjaxHandler#renderHeadContribution(wicket.markup.html.internal.HtmlHeaderContainer)
 		 */
-		public final void renderHeadContribution(HtmlHeaderContainer container)
+		public final void renderHeadContribution(Response r)
 		{
-			super.renderHeadContribution(container);
+			super.renderHeadContribution(r);
 			StringBuffer s = new StringBuffer(
 					"\t<script language=\"JavaScript\" type=\"text/javascript\">\n").append(
 						"\tfunction getSelectedRadio(nodeId, numItems)\n").append(
@@ -162,7 +162,7 @@ public class ImmediateRadioChoice extends RadioChoice
 				
 			s.append("}\n\t\t});").append("\n\t}\n").append("\t</script>\n");
 
-			container.getResponse().write(s.toString());
+			r.write(s.toString());
 		}
 
 		/**

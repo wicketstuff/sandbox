@@ -17,6 +17,7 @@
  */
 package wicket.contrib.markup.html.form;
 
+import wicket.Response;
 import wicket.contrib.dojo.DojoAjaxHandler;
 import wicket.markup.ComponentTag;
 import wicket.markup.html.form.CheckBox;
@@ -152,9 +153,9 @@ public class ImmediateCheckBox extends CheckBox
 		/**
 		 * @see wicket.AjaxHandler#renderHeadInitContribution(wicket.markup.html.internal.HtmlHeaderContainer)
 		 */
-		public final void renderHeadInitContribution(HtmlHeaderContainer container)
+		public final void renderHeadInitContribution(Response r)
 		{
-			super.renderHeadInitContribution(container);
+			super.renderHeadInitContribution(r);
 			StringBuffer s = new StringBuffer(
 					"\t<script language=\"JavaScript\" type=\"text/javascript\">\n").append(
 					"\tfunction immediateCheckBox(componentUrl, componentPath, val) { \n").append(
@@ -169,7 +170,7 @@ public class ImmediateCheckBox extends CheckBox
 
 			s.append("}\n\t\t});").append("\n\t}\n").append("\t</script>\n");
 
-			container.getResponse().write(s.toString());
+			r.write(s.toString());
 		}
 
 		/**
