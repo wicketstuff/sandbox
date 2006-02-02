@@ -18,6 +18,7 @@ package wicket.contrib.dojo.dojofx;
 
 import wicket.AttributeModifier;
 import wicket.Component;
+import wicket.Response;
 import wicket.contrib.dojo.DojoAjaxHandler;
 import wicket.markup.html.internal.HtmlHeaderContainer;
 import wicket.model.IModel;
@@ -79,7 +80,7 @@ public abstract class DojoFXHandler extends DojoAjaxHandler
 	 * @param container
 	 *            the Header container to be written to
 	 */
-	protected abstract void renderHeadContribution(HtmlHeaderContainer container);
+	protected abstract void renderHeadContribution(Response r);
 
 
 	/*

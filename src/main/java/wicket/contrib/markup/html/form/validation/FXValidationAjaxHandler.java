@@ -20,6 +20,7 @@ import java.io.Serializable;
 
 import wicket.AttributeModifier;
 import wicket.Component;
+import wicket.Response;
 import wicket.WicketRuntimeException;
 import wicket.contrib.dojo.DojoAjaxHandler;
 import wicket.markup.html.form.FormComponent;
@@ -146,7 +147,7 @@ public class FXValidationAjaxHandler extends DojoAjaxHandler
 	 * 
 	 * @see wicket.AjaxHandler#renderHeadContribution(wicket.markup.html.internal.HtmlHeaderContainer)
 	 */
-	public final void renderHeadContribution(HtmlHeaderContainer container)
+	public final void renderHeadContribution(Response r)
 	{
 		String highlightValidFunction;
 		String highlightInvalidFunction;
@@ -190,7 +191,7 @@ public class FXValidationAjaxHandler extends DojoAjaxHandler
 
 				"\t}\n" + "\t</script>\n";
 
-		container.getResponse().write(s);
+		r.write(s);
 	}
 
 	/*	*//**
