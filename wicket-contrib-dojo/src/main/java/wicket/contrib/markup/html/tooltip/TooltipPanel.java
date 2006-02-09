@@ -133,7 +133,7 @@ public class TooltipPanel extends Panel
     }
 
     private void addJsReference(HtmlHeaderContainer container, ResourceReference ref) {
-        String url = container.getPage().urlFor(ref.getPath());
+        String url = container.getPage().urlFor(ref);
         String s =
             "\t<script type=\"text/javascript\" language='JavaScript' src=\"" + url + "\"></script>\n";
         write(container, s);

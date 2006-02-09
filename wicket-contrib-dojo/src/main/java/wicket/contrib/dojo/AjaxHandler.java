@@ -235,7 +235,7 @@ public abstract class AjaxHandler implements IBehavior, IBehaviorListener, IHead
 	 */
 	protected void addJsReference(Response r, PackageResourceReference ref)
 	{
-		String url = getComponent().getPage().urlFor(ref.getPath());
+		String url = getComponent().getPage().urlFor(ref);
 		String s = "\t<script language=\"JavaScript\" type=\"text/javascript\" " + "src=\"" + url
 				+ "\"></script>\n";
 		r.write(s);
