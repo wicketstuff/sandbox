@@ -42,6 +42,13 @@ class GMarkerComponent extends JavaScriptComponent {
         StringBuffer buffer = new StringBuffer();
         buffer.append("var div = document.createElement(\"div\");\n");
         buffer.append("div.id = \"" + gmarker.getOverlayId() + "\";\n");
+//        buffer.append("var indicator = document.createElement(\"img\");\n");
+//        buffer.append("indicator.src = \"" + getPage().urlFor(reference.getPath()) + "\";\n");
+//        buffer.append("div.appendChild(indicator);\n");
+        buffer.append("var waitText = document.createTextNode(\"Please wait ...\");\n");
+        buffer.append("var nobr = document.createElement(\"nobr\");\n");
+        buffer.append("nobr.appendChild(waitText);\n");
+        buffer.append("div.appendChild(nobr);\n");
         buffer.append("var script = document.createElement(\"script\");\n");
         buffer.append("var js = document.createTextNode(\"");
         buffer.append("dojoCall('" + behavior.getCallbackUrl() + "','" + gmarker.getOverlayId() + "');\")\n");
