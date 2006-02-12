@@ -25,21 +25,25 @@ import java.io.Serializable;
  *
  * @author Iulian-Corneliu COSTAN
  */
-public class GIcon implements Serializable {
+public class GIcon implements Serializable
+{
 
     private String image;
     private GPoint anchor;
 
-    public GIcon(String image, GPoint anchor) {
+    public GIcon(String image, GPoint anchor)
+    {
         this.image = image;
         this.anchor = anchor;
     }
 
-    public String getImage() {
+    public String getImage()
+    {
         return image;
     }
 
-    public GPoint getAnchor() {
+    public GPoint getAnchor()
+    {
         return anchor;
     }
 }

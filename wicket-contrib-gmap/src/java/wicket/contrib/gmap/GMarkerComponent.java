@@ -8,25 +8,29 @@ import wicket.contrib.dojo.AjaxHandler;
  *
  * @author Iulian-Corneliu Costan
  */
-class GMarkerComponent extends JavaScriptComponent {
+class GMarkerComponent extends JavaScriptComponent
+{
 
     private AjaxHandler behavior;
     private GMarker gmarker;
 
-    public GMarkerComponent(GMarker gmarker, AjaxHandler behavior) {
+    public GMarkerComponent(GMarker gmarker, AjaxHandler behavior)
+    {
         super(ID);
         this.gmarker = gmarker;
         this.behavior = behavior;
     }
 
-    public String onJavaScriptComponentTagBody() {
+    public String onJavaScriptComponentTagBody()
+    {
         StringBuffer buffer = new StringBuffer("\n");
         buffer.append(createMarker() + "\n");
         buffer.append(createInfoFunction() + "\n");
         return buffer.toString();
     }
 
-    private String createMarker() {
+    private String createMarker()
+    {
         return JSUtil.createFunction(gmarker.getFactoryMethod(),
                 "var marker = new GMarker(" + gmarker.getPointAsString() + ");" + "\n" +
                         getOnClickHandler() + "\n" +
@@ -34,11 +38,13 @@ class GMarkerComponent extends JavaScriptComponent {
                         "return marker;");
     }
 
-    private String getOnClickHandler() {
+    private String getOnClickHandler()
+    {
         return JSUtil.createFunction("onClick", "marker.openInfoWindow(" + getInfoFactoryName() + "());");
     }
 
-    private String createInfoFunction() {
+    private String createInfoFunction()
+    {
         StringBuffer buffer = new StringBuffer();
         buffer.append("var div = document.createElement(\"div\");\n");
         buffer.append("div.id = \"" + gmarker.getOverlayId() + "\";\n");
@@ -59,11 +65,13 @@ class GMarkerComponent extends JavaScriptComponent {
     }
 
     //todo implement empty
-    private String createEmptyMarker() {
+    private String createEmptyMarker()
+    {
         return JSUtil.createFunction(gmarker.getFactoryMethod(), "return new GMarker(" + gmarker.toString() + ");");
     }
 
-    private String getInfoFactoryName() {
+    private String getInfoFactoryName()
+    {
         return "createInfo" + gmarker.getOverlayId();
     }
 

@@ -33,18 +33,23 @@ import wicket.markup.html.WebMarkupContainer;
  * @author Iulian-Corneliu Costan
  * @see GMapAjaxHandler
  */
-class GMarkerContainer extends WebMarkupContainer {
+class GMarkerContainer extends WebMarkupContainer
+{
 
     private GMapAjaxHandler behaviour;
 
-    public GMarkerContainer(GMarker gmarker) {
+    public GMarkerContainer(GMarker gmarker)
+    {
         super(ID);
 
         // todo name constraint
         Component infoComponent = gmarker.getComponent();
-        if (INFO_COMPONENT_ID.equals(infoComponent.getId())) {
+        if (INFO_COMPONENT_ID.equals(infoComponent.getId()))
+        {
             infoComponent.setVisible(false);
-        } else {
+        }
+        else
+        {
             throw new IllegalArgumentException("the ID of your component has to be \"" + INFO_COMPONENT_ID + "\"");
         }
 
@@ -55,7 +60,8 @@ class GMarkerContainer extends WebMarkupContainer {
         add(infoComponent);
     }
 
-    public void toggleVisibility() {
+    public void toggleVisibility()
+    {
         get(GMarkerComponent.ID).setVisible(false);
         get(INFO_COMPONENT_ID).setVisible(true);
     }

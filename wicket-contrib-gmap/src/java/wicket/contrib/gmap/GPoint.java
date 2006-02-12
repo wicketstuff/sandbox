@@ -25,25 +25,30 @@ import java.io.Serializable;
  *
  * @author Iulian-Corneliu Costan
  */
-public class GPoint implements Serializable {
+public class GPoint implements Serializable
+{
 
     private float longitude;
     private float latitude;
 
-    public GPoint(float longitude, float latitude) {
+    public GPoint(float longitude, float latitude)
+    {
         this.longitude = longitude;
         this.latitude = latitude;
     }
 
-    public float getLongitude() {
+    public float getLongitude()
+    {
         return longitude;
     }
 
-    public float getLatitude() {
+    public float getLatitude()
+    {
         return latitude;
     }
 
-    public String toString() {
+    public String toString()
+    {
         return "new GPoint(" + longitude + ", " + latitude + ")";
     }
 }

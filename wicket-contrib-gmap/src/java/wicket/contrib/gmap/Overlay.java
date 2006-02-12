@@ -23,12 +23,15 @@ import java.io.Serializable;
 /**
  * @author Iulian-Corneliu Costan
  */
-public abstract class Overlay implements Serializable {
+public abstract class Overlay implements Serializable
+{
 
     private GPoint point;
 
-    Overlay(GPoint point) {
-        if (point == null) {
+    Overlay(GPoint point)
+    {
+        if (point == null)
+        {
             new IllegalArgumentException("point cannot be null");
         }
         this.point = point;
@@ -41,11 +44,13 @@ public abstract class Overlay implements Serializable {
      */
     public abstract String getFactoryMethod();
 
-    public GPoint getPoint() {
+    public GPoint getPoint()
+    {
         return point;
     }
 
-    public String getPointAsString() {
+    public String getPointAsString()
+    {
         return point.toString();
     }
 
@@ -54,7 +59,8 @@ public abstract class Overlay implements Serializable {
      *
      * @return unique ID for each overlay
      */
-    protected String getOverlayId() {
+    protected String getOverlayId()
+    {
         return JSUtil.longitudeAsString(point) + JSUtil.latitudeAsString(point);
     }
 }

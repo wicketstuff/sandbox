@@ -21,21 +21,26 @@ package wicket.contrib.gmap;
 /**
  * @author Iulian-Corneliu Costan
  */
-class JSUtil {
+class JSUtil
+{
 
-    public static String createFunction(String name, String body) {
+    public static String createFunction(String name, String body)
+    {
         return "function " + name + "() {\n" + body + "\n}";
     }
 
-    public static String longitudeAsString(GPoint point) {
+    public static String longitudeAsString(GPoint point)
+    {
         return Float.toString(point.getLongitude()).replace(".", "").replace("-", "1");
     }
 
-    public static String latitudeAsString(GPoint point) {
+    public static String latitudeAsString(GPoint point)
+    {
         return Float.toString(point.getLatitude()).replace(".", "").replace("-", "1");
     }
 
-    public static String escape(String s) {
+    public static String escape(String s)
+    {
         return s.replace("\"", "\\\"");
     }
 }
