@@ -22,15 +22,18 @@ import java.io.Serializable;
 /**
  * @author Iulian-Corneliu COSTAN
  */
-public abstract class Enum implements Serializable {
+public abstract class Enum implements Serializable
+{
 
     private String name;
 
-    protected Enum(String name) {
+    protected Enum(String name)
+    {
         this.name = name;
     }
 
-    public String getName() {
+    public String getName()
+    {
         return name;
     }
 }

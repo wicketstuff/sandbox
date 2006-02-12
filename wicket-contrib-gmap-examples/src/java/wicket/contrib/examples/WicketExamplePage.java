@@ -34,23 +34,26 @@ public class WicketExamplePage extends WebPage
      */
     public WicketExamplePage()
     {
-		this(null);
-	}
+        this(null);
+    }
 
-	/**
-	 * Construct.
-	 * @param model
-	 */
-	public WicketExamplePage(IModel model)
-	{
-		super(model);
+    /**
+     * Construct.
+     *
+     * @param model
+     */
+    public WicketExamplePage(IModel model)
+    {
+        super(model);
         final String packageName = getClass().getPackage().getName();
         add(new WicketExampleHeader("mainNavigation", Strings.afterLast(packageName, '.')));
-		explain();
-	}
+        explain();
+    }
 
-	/**
-	 * Override base method to provide an explanation
-	 */
-	protected void explain() {}
+    /**
+     * Override base method to provide an explanation
+     */
+    protected void explain()
+    {
+    }
 }

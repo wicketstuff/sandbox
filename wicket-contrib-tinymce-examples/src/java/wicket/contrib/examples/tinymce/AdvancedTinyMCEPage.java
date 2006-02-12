@@ -8,9 +8,11 @@ import wicket.model.Model;
 /**
  * @author Iulian-Corneliu COSTAN
  */
-public class AdvancedTinyMCEPage extends TinyMCEBasePage {
+public class AdvancedTinyMCEPage extends TinyMCEBasePage
+{
 
-    public AdvancedTinyMCEPage() {
+    public AdvancedTinyMCEPage()
+    {
         TinyMCESettings settings = new TinyMCESettings(TinyMCESettings.Theme.advanced);
 
         add(new TinyMCEPanel("tinyMCE", settings));

@@ -17,28 +17,29 @@
  */
 package wicket.contrib.tinymce.settings;
 
-import wicket.contrib.tinymce.settings.Button;
-import wicket.contrib.tinymce.settings.Plugin;
-
 /**
  * A button that is defined by tinymce plugins.
  *
  * @author Iulian-Corneliu COSTAN
  */
-public class PluginButton extends Button {
+public class PluginButton extends Button
+{
 
     private Plugin plugin;
 
-    PluginButton(String name, Plugin plugin) {
+    PluginButton(String name, Plugin plugin)
+    {
         super(name);
         this.plugin = plugin;
     }
 
-    public Plugin getPlugin() {
+    public Plugin getPlugin()
+    {
         return plugin;
     }
 
-    void setPlugin(Plugin plugin) {
+    void setPlugin(Plugin plugin)
+    {
         this.plugin = plugin;
     }
 }

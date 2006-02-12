@@ -22,16 +22,19 @@ package wicket.contrib.tinymce.settings;
  *
  * @author Iulian-Corneliu COSTAN
  */
-public class EmotionsPlugin extends Plugin {
+public class EmotionsPlugin extends Plugin
+{
 
     private PluginButton emotionsButton;
 
-    public EmotionsPlugin() {
+    public EmotionsPlugin()
+    {
         super("emotions");
         emotionsButton = new PluginButton("emotions", this);
     }
 
-    public PluginButton getEmotionsButton() {
+    public PluginButton getEmotionsButton()
+    {
         return emotionsButton;
     }
 }

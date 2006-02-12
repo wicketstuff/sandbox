@@ -17,25 +17,25 @@
  */
 package wicket.contrib.tinymce.settings;
 
-import wicket.contrib.tinymce.settings.Plugin;
-import wicket.contrib.tinymce.settings.PluginButton;
-
 /**
  * This plugin adds table management functionality to TinyMCE.
  * <p>Note: Only basic functionality is implemented, more work is needed.
  *
  * @author Iulian-Corneliu COSTAN
  */
-public class TablePlugin extends Plugin {
+public class TablePlugin extends Plugin
+{
 
     public PluginButton tableControls;
 
-    public TablePlugin() {
+    public TablePlugin()
+    {
         super("table");
         tableControls = new PluginButton("tablecontrols", this);
     }
 
-    public PluginButton getTableControls() {
+    public PluginButton getTableControls()
+    {
         return tableControls;
     }
 }

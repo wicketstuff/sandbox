@@ -24,14 +24,15 @@ import wicket.contrib.gmap.GMapPanel;
 import wicket.contrib.gmap.GMarker;
 import wicket.contrib.gmap.GPoint;
 import wicket.markup.html.basic.Label;
-import wicket.markup.html.link.Link;
 
 /**
  * @author Iulian-Corneliu COSTAN
  */
-public class HomePage extends WicketExamplePage {
+public class HomePage extends WicketExamplePage
+{
 
-    public HomePage() {
+    public HomePage()
+    {
         // add gmap
         GMap gmap = new GMap(new GPoint(10, 30), 15);
         gmap.setTypeControl(true);

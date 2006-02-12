@@ -17,30 +17,31 @@
  */
 package wicket.contrib.tinymce.settings;
 
-import wicket.contrib.tinymce.settings.Plugin;
-import wicket.contrib.tinymce.settings.PluginButton;
-
 /**
  * This plugin adds search/replace dialogs to TinyMCE.
  *
  * @author Iulian-Corneliu COSTAN
  */
-public class SearchReplacePlugin extends Plugin {
+public class SearchReplacePlugin extends Plugin
+{
 
     private PluginButton searchButton;
     private PluginButton replaceButton;
 
-    public SearchReplacePlugin() {
+    public SearchReplacePlugin()
+    {
         super("searchreplace");
         searchButton = new PluginButton("search", this);
         replaceButton = new PluginButton("replace", this);
     }
 
-    public PluginButton getSearchButton() {
+    public PluginButton getSearchButton()
+    {
         return searchButton;
     }
 
-    public PluginButton getReplaceButton() {
+    public PluginButton getReplaceButton()
+    {
         return replaceButton;
     }
 }

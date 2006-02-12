@@ -22,16 +22,19 @@ package wicket.contrib.tinymce.settings;
  *
  * @author Iulian-Corneliu COSTAN
  */
-public class SpellCheckPlugin extends Plugin {
+public class SpellCheckPlugin extends Plugin
+{
 
     private PluginButton spellCheckButton;
 
-    public SpellCheckPlugin() {
+    public SpellCheckPlugin()
+    {
         super("iespell");
         spellCheckButton = new PluginButton("iespell", this);
     }
 
-    public PluginButton getSpellCheckButton() {
+    public PluginButton getSpellCheckButton()
+    {
         return spellCheckButton;
     }
 }

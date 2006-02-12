@@ -18,12 +18,12 @@
  */
 package wicket.contrib.examples;
 
-import javax.servlet.ServletContext;
-
 import wicket.protocol.http.WebApplication;
 import wicket.settings.ISecuritySettings;
 import wicket.util.crypt.ClassCryptFactory;
 import wicket.util.crypt.NoCrypt;
+
+import javax.servlet.ServletContext;
 
 /**
  * Wicket Application class.
@@ -43,24 +43,24 @@ public abstract class WicketExampleApplication extends WebApplication
         // has the java security classes required by Crypt installed
         // and we want them to be able to run the examples out of the
         // box.
-		getSecuritySettings().setCryptFactory(
-				new ClassCryptFactory(NoCrypt.class, ISecuritySettings.DEFAULT_ENCRYPTION_KEY));
+        getSecuritySettings().setCryptFactory(
+                new ClassCryptFactory(NoCrypt.class, ISecuritySettings.DEFAULT_ENCRYPTION_KEY));
     }
 
     /**
      * Determine operations mode: deployment or development
      */
-	protected void init()
-	{
-	    ServletContext servletContext = this.getWicketServlet().getServletContext();
-		if (servletContext.getInitParameter("deployment") != null)
-	    {
-	    	// Use deployment settings
-	        configure("deployment");
-	    }
-	    else
-	    {
-	        configure("development");
-	    }
-	}
+    protected void init()
+    {
+        ServletContext servletContext = this.getWicketServlet().getServletContext();
+        if (servletContext.getInitParameter("deployment") != null)
+        {
+            // Use deployment settings
+            configure("deployment");
+        }
+        else
+        {
+            configure("development");
+        }
+    }
 }

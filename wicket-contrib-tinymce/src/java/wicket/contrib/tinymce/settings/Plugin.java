@@ -23,19 +23,23 @@ package wicket.contrib.tinymce.settings;
  *
  * @author Iulian-Corneliu COSTAN
  */
-public abstract class Plugin extends wicket.contrib.tinymce.settings.Enum {
+public abstract class Plugin extends wicket.contrib.tinymce.settings.Enum
+{
 
-    protected Plugin(String name) {
+    protected Plugin(String name)
+    {
         super(name);
     }
 
     // implemented by subclasses
-    String defineProperties() {
+    String defineProperties()
+    {
         return null;
     }
 
     // implemented by subclasses
-    String getExtension() {
+    String getExtension()
+    {
         return null;
     }
 }
