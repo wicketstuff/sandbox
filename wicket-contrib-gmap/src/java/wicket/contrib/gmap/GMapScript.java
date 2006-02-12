@@ -26,14 +26,17 @@ import wicket.model.Model;
  *
  * @author Iulian-Corneliu Costan
  */
-class GMapScript extends JavaScriptComponent {
+class GMapScript extends JavaScriptComponent
+{
 
-    GMapScript(final String id, String model) {
+    GMapScript(final String id, String model)
+    {
         super(id);
         add(new AttributeModifier("src", true, new Model(model)));
     }
 
-    public String onJavaScriptComponentTagBody() {
+    public String onJavaScriptComponentTagBody()
+    {
         return "";
     }
 }

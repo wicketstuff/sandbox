@@ -11,20 +11,24 @@ import wicket.model.Model;
  *
  * @author Iulian-Corneliu Costan
  */
-abstract class JavaScriptComponent extends WebComponent {
+abstract class JavaScriptComponent extends WebComponent
+{
 
-    public JavaScriptComponent(final String id) {
+    public JavaScriptComponent(final String id)
+    {
         super(id);
     }
 
-    protected void onComponentTag(final ComponentTag tag) {
+    protected void onComponentTag(final ComponentTag tag)
+    {
         checkComponentTag(tag, "script");
         add(new AttributeModifier("type", true, new Model("text/javascript")));
         add(new AttributeModifier("language", true, new Model("JavaScript")));
 
     }
 
-    protected void onComponentTagBody(final MarkupStream markupStream, final ComponentTag openTag) {
+    protected void onComponentTagBody(final MarkupStream markupStream, final ComponentTag openTag)
+    {
         String js = onJavaScriptComponentTagBody();
         replaceComponentTagBody(markupStream, openTag, js);
     }

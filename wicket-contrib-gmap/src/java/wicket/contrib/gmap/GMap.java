@@ -18,16 +18,17 @@
  */
 package wicket.contrib.gmap;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.io.Serializable;
 
 /**
  * This class represents the main Maps API's GMap object.
  *
  * @author Iulian-Corneliu Costan
  */
-public class GMap implements Serializable {
+public class GMap implements Serializable
+{
 
     private GPoint center;
     private int zoomLevel;
@@ -39,11 +40,14 @@ public class GMap implements Serializable {
      * @param center    of the gmap
      * @param zoomLevel only values between 1 and 15 are allowed.
      */
-    public GMap(GPoint center, int zoomLevel) {
-        if (center == null) {
+    public GMap(GPoint center, int zoomLevel)
+    {
+        if (center == null)
+        {
             throw new IllegalArgumentException("map's center point cannot be null");
         }
-        if (zoomLevel < 0 || zoomLevel > 15) {
+        if (zoomLevel < 0 || zoomLevel > 15)
+        {
             throw new IllegalArgumentException("zoomLevel must be 1 < zoomLevel < 15 ");
         }
         this.center = center;
@@ -55,7 +59,8 @@ public class GMap implements Serializable {
      *
      * @param overlay
      */
-    public void addOverlay(Overlay overlay) {
+    public void addOverlay(Overlay overlay)
+    {
         overlays.add(overlay);
     }
 
@@ -64,7 +69,8 @@ public class GMap implements Serializable {
      *
      * @return overlays
      */
-    public List<Overlay> getOverlays() {
+    public List<Overlay> getOverlays()
+    {
         return overlays;
     }
 
@@ -73,7 +79,8 @@ public class GMap implements Serializable {
      *
      * @param typeControl
      */
-    public void setTypeControl(boolean typeControl) {
+    public void setTypeControl(boolean typeControl)
+    {
         this.typeControl = typeControl;
     }
 
@@ -82,23 +89,28 @@ public class GMap implements Serializable {
      *
      * @param smallMapControl
      */
-    public void setSmallMapControl(boolean smallMapControl) {
+    public void setSmallMapControl(boolean smallMapControl)
+    {
         this.smallMapControl = smallMapControl;
     }
 
-    public boolean isTypeControl() {
+    public boolean isTypeControl()
+    {
         return typeControl;
     }
 
-    public boolean isSmallMapControl() {
+    public boolean isSmallMapControl()
+    {
         return smallMapControl;
     }
 
-    public GPoint getCenter() {
+    public GPoint getCenter()
+    {
         return center;
     }
 
-    public int getZoomLevel() {
+    public int getZoomLevel()
+    {
         return zoomLevel;
     }
 }

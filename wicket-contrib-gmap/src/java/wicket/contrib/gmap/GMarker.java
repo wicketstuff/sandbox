@@ -12,7 +12,8 @@ import wicket.markup.html.WebComponent;
  *
  * @author Iulian-Corneliu Costan
  */
-public class GMarker extends Overlay {
+public class GMarker extends Overlay
+{
 
     private Component component;
     private GIcon icon;
@@ -22,7 +23,8 @@ public class GMarker extends Overlay {
      *
      * @param point
      */
-    public GMarker(GPoint point) {
+    public GMarker(GPoint point)
+    {
         this(point, new WebComponent("gmarkerInfo"));
     }
 
@@ -33,7 +35,8 @@ public class GMarker extends Overlay {
      * @param point
      * @param component
      */
-    public GMarker(GPoint point, Component component) {
+    public GMarker(GPoint point, Component component)
+    {
         super(point);
         this.component = component;
     }
@@ -43,7 +46,8 @@ public class GMarker extends Overlay {
      *
      * @return component
      */
-    public Component getComponent() {
+    public Component getComponent()
+    {
         return component;
     }
 
@@ -52,7 +56,8 @@ public class GMarker extends Overlay {
      *
      * @return JavaScript function name
      */
-    public String getFactoryMethod() {
+    public String getFactoryMethod()
+    {
         return "createMarker" + getOverlayId();
     }
 }

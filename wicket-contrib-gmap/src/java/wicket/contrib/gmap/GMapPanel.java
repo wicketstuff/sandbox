@@ -25,13 +25,15 @@ import wicket.markup.html.panel.Panel;
  *
  * @author Iulian-Corneliu Costan
  */
-public class GMapPanel extends Panel {
+public class GMapPanel extends Panel
+{
 
     /**
      * @param id   wicket component id
      * @param gmap a GMap instance
      */
-    public GMapPanel(String id, GMap gmap) {
+    public GMapPanel(String id, GMap gmap)
+    {
         this(id, gmap, 400, 300, LOCALHOST_KEY);
     }
 
@@ -41,7 +43,8 @@ public class GMapPanel extends Panel {
      * @param width  map width in px
      * @param height map height in px
      */
-    public GMapPanel(String id, GMap gmap, int width, int height) {
+    public GMapPanel(String id, GMap gmap, int width, int height)
+    {
         this(id, gmap, width, height, LOCALHOST_KEY);
     }
 
@@ -52,7 +55,8 @@ public class GMapPanel extends Panel {
      * @param height  map height in px
      * @param gmapKey key generated for your site, you can get it from <a href="http://www.google.com/apis/maps/signup.html">here</a>
      */
-    public GMapPanel(String id, GMap gmap, int width, int height, String gmapKey) {
+    public GMapPanel(String id, GMap gmap, int width, int height, String gmapKey)
+    {
         super(id);
 
         add(new GMapScript("script", GMAP_URL + gmapKey));
