@@ -3,7 +3,6 @@ package wicket.contrib.gmap;
 import wicket.RequestCycle;
 import wicket.Response;
 import wicket.contrib.dojo.DojoAjaxHandler;
-import wicket.markup.html.internal.HtmlHeaderContainer;
 import wicket.request.target.ComponentRequestTarget;
 import wicket.util.resource.IResourceStream;
 import wicket.util.resource.StringBufferResourceStream;
@@ -14,10 +13,13 @@ import wicket.util.resource.StringBufferResourceStream;
 class GMapAjaxHandler extends DojoAjaxHandler {
 
 	/**
-	 * @see wicket.contrib.dojo.AjaxHandler#renderHeadInitContribution(wicket.Response)
+	 * @see wicket.contrib.dojo.DojoAjaxHandler#renderHeadInitContribution(wicket.Response)
 	 */
 	protected void renderHeadInitContribution(Response r) {
-		StringBuffer s = new StringBuffer(
+        // pls dont remove it, super call is really needed in order to import dojo.js file
+        super.renderHeadInitContribution(r);
+
+        StringBuffer s = new StringBuffer(
 				"\t<script language=\"JavaScript\" type=\"text/javascript\">\n");
 		s.append("\tfunction inject(component, data) {\n");
 		s.append("\t\tvar gmarker = document.getElementById(component);\n");
@@ -27,8 +29,7 @@ class GMapAjaxHandler extends DojoAjaxHandler {
 		s.append("\t\tdojo.io.bind({\n");
 		s.append("\t\t\turl: componentUrl,\n");
 		s.append("\t\t\tmimetype: \"text/html\",\n");
-		s
-				.append("\t\t\tload: function(type, data, evt) {  inject(componentId, data); }");
+		s.append("\t\t\tload: function(type, data, evt) {  inject(componentId, data); }");
 		s.append("\n\t\t});").append("\n\t}\n");
 		s.append("\t</script>\n");
 
@@ -44,8 +45,7 @@ class GMapAjaxHandler extends DojoAjaxHandler {
 		((GMarkerContainer) getComponent()).toggleVisibility();
 
 		RequestCycle requestCycle = RequestCycle.get();
-		requestCycle
-				.setRequestTarget(new ComponentRequestTarget(getComponent()));
+		requestCycle.setRequestTarget(new ComponentRequestTarget(getComponent()));
 	}
 
 	protected IResourceStream getResponse() {
