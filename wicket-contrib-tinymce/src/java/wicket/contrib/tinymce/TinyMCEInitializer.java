@@ -37,7 +37,8 @@ import java.util.zip.ZipFile;
  *
  * @author Iulian-Corneliu COSTAN
  */
-public class TinyMCEInitializer implements IInitializer {
+public class TinyMCEInitializer implements IInitializer
+{
 
     private static final Log log = LogFactory.getLog(TinyMCEInitializer.class);
 
@@ -46,46 +47,61 @@ public class TinyMCEInitializer implements IInitializer {
     private Class scope = TinyMCEPanel.class;
 
 
-    public void init(Application application) {
+    public void init(Application application)
+    {
         String protocol = scope.getResource("").getProtocol();
-        if ("file".equals(protocol)) {
+        if ("file".equals(protocol))
+        {
             initFromClasses(application);
 
-        } else if ("jar".equals(protocol)) {
+        }
+        else if ("jar".equals(protocol))
+        {
             initFromJar(application);
 
-        } else {
-            if (log.isErrorEnabled()) {
+        }
+        else
+        {
+            if (log.isErrorEnabled())
+            {
                 log.error("unknown protocol, only file and jar are implemented");
             }
             throw new UnsupportedOperationException("protocol " + protocol + "not implemented");
         }
     }
 
-    private void initFromJar(Application application) {
+    private void initFromJar(Application application)
+    {
         ZipFile zipFile = null;
-        try {
+        try
+        {
             String basePath = scope.getResource(Strings.afterLast(scope.getName(), '.') + ".class").getPath();
             String jarFilePath = new URL(Strings.beforeLast(basePath, '!')).getPath();
             zipFile = new ZipFile(jarFilePath);
-        } catch (IOException e) {
-            if (log.isErrorEnabled()) {
+        }
+        catch (IOException e)
+        {
+            if (log.isErrorEnabled())
+            {
                 log.error("tinymce.jar file exception", e);
             }
             throw new RuntimeException(e);
         }
 
         Enumeration entries = zipFile.entries();
-        while (entries.hasMoreElements()) {
+        while (entries.hasMoreElements())
+        {
             ZipEntry zipEntry = (ZipEntry) entries.nextElement();
-            if (zipEntry.getName().indexOf(TINY_MCE) > 0) {
+            if (zipEntry.getName().indexOf(TINY_MCE) > 0)
+            {
                 String name = zipEntry.getName();
                 bindResource(application, name);
             }
         }
     }
 
-    private void initFromClasses(Application application) {
+    private void initFromClasses(Application application)
+    {
         //todo used in development, it may not work in secured environment
         String path = scope.getProtectionDomain().getCodeSource().getLocation().getPath();
         String basePath = Strings.beforeLast(path, '/');
@@ -93,31 +109,39 @@ public class TinyMCEInitializer implements IInitializer {
         initResources(application, basePath);
     }
 
-    private void initResources(Application application, String path) {
+    private void initResources(Application application, String path)
+    {
         File tinyMceDir = new File(path + "/" + TINY_MCE);
         recursiveInitialization(application, tinyMceDir);
     }
 
-    private void recursiveInitialization(Application application, File dir) {
+    private void recursiveInitialization(Application application, File dir)
+    {
         File[] files = dir.listFiles();
-        for (int i = 0; i < files.length; i++) {
+        for (int i = 0; i < files.length; i++)
+        {
             File file = files[i];
-            if (file.isDirectory()) {
+            if (file.isDirectory())
+            {
                 recursiveInitialization(application, file);
-            } else {
+            }
+            else
+            {
                 String uri = file.toURI().toString();
                 bindResource(application, uri);
             }
         }
     }
 
-    private void bindResource(Application application, String uri) {
+    private void bindResource(Application application, String uri)
+    {
         String resource = uri.substring(uri.indexOf(TINY_MCE));
         PackageResource.bind(application, scope, resource);
     }
 
     /* used for testing purpose */
-    void setScope(Class scope) {
+    void setScope(Class scope)
+    {
         this.scope = scope;
     }
 }

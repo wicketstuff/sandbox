@@ -8,9 +8,11 @@ import wicket.model.Model;
 /**
  * @author Iulian-Corneliu COSTAN
  */
-public class WordTinyMCEPage extends TinyMCEBasePage {
+public class WordTinyMCEPage extends TinyMCEBasePage
+{
 
-    public WordTinyMCEPage() {
+    public WordTinyMCEPage()
+    {
         TinyMCESettings settings = new TinyMCESettings(TinyMCESettings.Theme.advanced);
 
         ContextMenuPlugin contextMenuPlugin = new ContextMenuPlugin();

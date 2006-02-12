@@ -18,26 +18,21 @@
  */
 package wicket.contrib.examples;
 
-import javax.servlet.ServletContext;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import wicket.protocol.http.WebApplication;
-import wicket.settings.ISecuritySettings;
-import wicket.util.crypt.ClassCryptFactory;
-import wicket.util.crypt.NoCrypt;
 
 /**
  * Wicket Application class for hello world example.
+ *
  * @author Jonathan Locke
  */
 public abstract class WicketExampleApplication extends WebApplication
 {
-	/**
-	 * Used for logging.
-	 */
-	private static Log log = LogFactory.getLog(WicketExampleApplication.class);
+    /**
+     * Used for logging.
+     */
+    private static Log log = LogFactory.getLog(WicketExampleApplication.class);
 
     /**
      * Constructor.

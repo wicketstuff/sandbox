@@ -32,7 +32,8 @@ import java.util.*;
  * @see Plugin
  * @see Button
  */
-public class TinyMCESettings implements Serializable {
+public class TinyMCESettings implements Serializable
+{
 
     private Mode mode;
     private Theme theme;
@@ -45,19 +46,23 @@ public class TinyMCESettings implements Serializable {
     private Set plugins;
     private List controls;
 
-    public TinyMCESettings() {
+    public TinyMCESettings()
+    {
         this(Mode.textareas, Theme.simple);
     }
 
-    public TinyMCESettings(Mode mode) {
+    public TinyMCESettings(Mode mode)
+    {
         this(mode, Theme.simple);
     }
 
-    public TinyMCESettings(Theme theme) {
+    public TinyMCESettings(Theme theme)
+    {
         this(Mode.textareas, theme);
     }
 
-    public TinyMCESettings(Mode mode, Theme theme) {
+    public TinyMCESettings(Mode mode, Theme theme)
+    {
         this.mode = mode;
         this.theme = theme;
         controls = new LinkedList();
@@ -69,7 +74,8 @@ public class TinyMCESettings implements Serializable {
      *
      * @param toolbarLocation
      */
-    public void setToolbarLocation(Location toolbarLocation) {
+    public void setToolbarLocation(Location toolbarLocation)
+    {
         this.toolbarLocation = toolbarLocation;
     }
 
@@ -78,7 +84,8 @@ public class TinyMCESettings implements Serializable {
      *
      * @param statusbarLocation
      */
-    public void setStatusbarLocation(Location statusbarLocation) {
+    public void setStatusbarLocation(Location statusbarLocation)
+    {
         this.statusbarLocation = statusbarLocation;
     }
 
@@ -87,7 +94,8 @@ public class TinyMCESettings implements Serializable {
      *
      * @param toolbarAlign
      */
-    public void setToolbarAlign(Align toolbarAlign) {
+    public void setToolbarAlign(Align toolbarAlign)
+    {
         this.toolbarAlign = toolbarAlign;
     }
 
@@ -96,7 +104,8 @@ public class TinyMCESettings implements Serializable {
      *
      * @param resizing
      */
-    public void setVerticalResizing(boolean resizing) {
+    public void setVerticalResizing(boolean resizing)
+    {
         this.verticalResizing = resizing;
     }
 
@@ -105,7 +114,8 @@ public class TinyMCESettings implements Serializable {
      *
      * @param horizontalResizing
      */
-    public void setHorizontalResizing(boolean horizontalResizing) {
+    public void setHorizontalResizing(boolean horizontalResizing)
+    {
         this.horizontalResizing = horizontalResizing;
     }
 
@@ -117,7 +127,8 @@ public class TinyMCESettings implements Serializable {
      * @param toolbar  - the toolbar where to add this button to
      * @param position - position of this button
      */
-    public void add(Button button, Toolbar toolbar, Position position) {
+    public void add(Button button, Toolbar toolbar, Position position)
+    {
         controls.add(new Control(button, toolbar, position));
     }
 
@@ -129,7 +140,8 @@ public class TinyMCESettings implements Serializable {
      * @param toolbar  - the toolbar where to add this button to
      * @param position - position of this button
      */
-    public void add(PluginButton button, Toolbar toolbar, Position position) {
+    public void add(PluginButton button, Toolbar toolbar, Position position)
+    {
         register(button.getPlugin());
         controls.add(new Control(button, toolbar, position));
     }
@@ -141,25 +153,32 @@ public class TinyMCESettings implements Serializable {
      *
      * @param plugin
      */
-    public void register(Plugin plugin) {
+    public void register(Plugin plugin)
+    {
         plugins.add(plugin);
     }
 
     // used in testing
-    Set getPlugins() {
+    Set getPlugins()
+    {
         return plugins;
     }
 
     //todo change access
-    public String toJavaScript() {
-        if (Theme.simple.equals(theme)) {
+    public String toJavaScript()
+    {
+        if (Theme.simple.equals(theme))
+        {
             return getSimpleSettings();
-        } else {
+        }
+        else
+        {
             return getAdvancedSettings();
         }
     }
 
-    private String getAdvancedSettings() {
+    private String getAdvancedSettings()
+    {
         StringBuffer buffer = new StringBuffer();
 
         // mode
@@ -190,77 +209,96 @@ public class TinyMCESettings implements Serializable {
         return buffer.toString();
     }
 
-    void addPlugins(StringBuffer buffer) {
-        if (plugins.size() > 0) {
+    void addPlugins(StringBuffer buffer)
+    {
+        if (plugins.size() > 0)
+        {
             String value = enumAsString(plugins);
             buffer.append(",\n\t").append("plugins : ") .append("\"").append(value).append("\"");
         }
     }
 
-    private void addButtons1_Before(StringBuffer buffer) {
+    private void addButtons1_Before(StringBuffer buffer)
+    {
         ControlPredicate predicate = new ControlPredicate(Toolbar.first, Position.before);
         Collection result = CollectionUtils.select(controls, predicate);
-        if (result.size() > 0) {
+        if (result.size() > 0)
+        {
             buffer.append(",\n\t").append("theme_advanced_buttons1_add_before : ") .append("\"").append(controlsAsString(result)).append("\"");
         }
     }
 
-    private void addButtons1_After(StringBuffer buffer) {
+    private void addButtons1_After(StringBuffer buffer)
+    {
         ControlPredicate predicate = new ControlPredicate(Toolbar.first, Position.after);
         Collection result = CollectionUtils.select(controls, predicate);
-        if (result.size() > 0) {
+        if (result.size() > 0)
+        {
             buffer.append(",\n\t").append("theme_advanced_buttons1_add : ") .append("\"").append(controlsAsString(result)).append("\"");
         }
     }
 
-    private void addButtons2_Before(StringBuffer buffer) {
+    private void addButtons2_Before(StringBuffer buffer)
+    {
         ControlPredicate predicate = new ControlPredicate(Toolbar.second, Position.before);
         Collection result = CollectionUtils.select(controls, predicate);
-        if (result.size() > 0) {
+        if (result.size() > 0)
+        {
             buffer.append(",\n\t").append("theme_advanced_buttons2_add_before: ") .append("\"").append(controlsAsString(result)).append("\"");
         }
     }
 
-    private void addButtons2_After(StringBuffer buffer) {
+    private void addButtons2_After(StringBuffer buffer)
+    {
         ControlPredicate predicate = new ControlPredicate(Toolbar.second, Position.after);
         Collection result = CollectionUtils.select(controls, predicate);
-        if (result.size() > 0) {
+        if (result.size() > 0)
+        {
             buffer.append(",\n\t").append("theme_advanced_buttons2_add : ").append("\"").append(controlsAsString(result)).append("\"");
         }
     }
 
-    private void addButtons3_Before(StringBuffer buffer) {
+    private void addButtons3_Before(StringBuffer buffer)
+    {
         ControlPredicate predicate = new ControlPredicate(Toolbar.third, Position.before);
         Collection result = CollectionUtils.select(controls, predicate);
-        if (result.size() > 0) {
+        if (result.size() > 0)
+        {
             buffer.append(",\n\t").append("theme_advanced_buttons3_add_before : ").append("\"").append(controlsAsString(result)).append("\"");
         }
     }
 
-    private void addButtons3_After(StringBuffer buffer) {
+    private void addButtons3_After(StringBuffer buffer)
+    {
         ControlPredicate predicate = new ControlPredicate(Toolbar.third, Position.after);
         Collection result = CollectionUtils.select(controls, predicate);
-        if (result.size() > 0) {
+        if (result.size() > 0)
+        {
             buffer.append(",\n\t").append("theme_advanced_buttons3_add : ").append("\"").append(controlsAsString(result)).append("\"");
         }
     }
 
-    private String controlsAsString(Collection controls) {
+    private String controlsAsString(Collection controls)
+    {
         List buttons = new ArrayList();
         Iterator iterator = controls.iterator();
-        while (iterator.hasNext()) {
+        while (iterator.hasNext())
+        {
             Control control = (Control) iterator.next();
             buttons.add(control.getButton());
         }
         return enumAsString(buttons);
     }
 
-    private String enumAsString(Collection enums) {
+    private String enumAsString(Collection enums)
+    {
         StringBuffer buffer = new StringBuffer();
         Iterator iterator = enums.iterator();
-        while (iterator.hasNext()) {
+        while (iterator.hasNext())
+        {
             wicket.contrib.tinymce.settings.Enum enumObject = (Enum) iterator.next();
-            if (buffer.length() > 0) {
+            if (buffer.length() > 0)
+            {
                 buffer.append(", ");
             }
             buffer.append(enumObject.getName());
@@ -268,35 +306,44 @@ public class TinyMCESettings implements Serializable {
         return buffer.toString();
     }
 
-    void addHorizontalResizing(StringBuffer buffer) {
+    void addHorizontalResizing(StringBuffer buffer)
+    {
         String value = horizontalResizing ? Boolean.TRUE.toString() : Boolean.FALSE.toString();
         buffer.append(",\n\t").append("theme_advanced_resize_horizontal : ").append(value);
     }
 
-    void addVerticalResizing(StringBuffer buffer) {
+    void addVerticalResizing(StringBuffer buffer)
+    {
         String value = verticalResizing ? Boolean.TRUE.toString() : Boolean.FALSE.toString();
         buffer.append(",\n\t").append("theme_advanced_resizing : ").append(value);
     }
 
-    void addToolbarAlign(StringBuffer buffer) {
-        if (toolbarAlign != null) {
+    void addToolbarAlign(StringBuffer buffer)
+    {
+        if (toolbarAlign != null)
+        {
             buffer.append(",\n\t").append("theme_advanced_toolbar_align : ").append("\"").append(toolbarAlign.getName()).append("\"");
         }
     }
 
-    void addToolbarLocation(StringBuffer buffer) {
-        if (toolbarLocation != null) {
+    void addToolbarLocation(StringBuffer buffer)
+    {
+        if (toolbarLocation != null)
+        {
             buffer.append(",\n\t").append("theme_advanced_toolbar_location : ").append("\"").append(toolbarLocation.getName()).append("\"");
         }
     }
 
-    void addStatusbarLocation(StringBuffer buffer) {
-        if (statusbarLocation != null) {
+    void addStatusbarLocation(StringBuffer buffer)
+    {
+        if (statusbarLocation != null)
+        {
             buffer.append(",\n\t").append("theme_advanced_statusbar_location : ").append("\"").append(statusbarLocation.getName()).append("\"");
         }
     }
 
-    private String getSimpleSettings() {
+    private String getSimpleSettings()
+    {
         StringBuffer buffer = new StringBuffer();
 
         // tinymce mode
@@ -308,17 +355,20 @@ public class TinyMCESettings implements Serializable {
         return buffer.toString();
     }
 
-    private class ControlPredicate implements Predicate {
+    private class ControlPredicate implements Predicate
+    {
 
         private Toolbar toolbar;
         private Position position;
 
-        public ControlPredicate(Toolbar toolbar, Position position) {
+        public ControlPredicate(Toolbar toolbar, Position position)
+        {
             this.toolbar = toolbar;
             this.position = position;
         }
 
-        public boolean evaluate(Object object) {
+        public boolean evaluate(Object object)
+        {
             Control control = (Control) object;
             return toolbar.equals(control.getToolbar()) && position.equals(control.getPosition());
         }
@@ -334,11 +384,13 @@ public class TinyMCESettings implements Serializable {
      * </ul>
      * At this moment, only <b>textareas</b> mode is supported.
      */
-    public static class Mode extends Enum {
+    public static class Mode extends Enum
+    {
 
         public static final Mode textareas = new Mode("textareas");
 
-        private Mode(String name) {
+        private Mode(String name)
+        {
             super(name);
         }
     }
@@ -351,12 +403,14 @@ public class TinyMCESettings implements Serializable {
      * <li>advanced - This theme enables users to add/remove buttons and panels .</li>
      * </ul>
      */
-    public static class Theme extends Enum {
+    public static class Theme extends Enum
+    {
 
         public static final Theme simple = new Theme("simple");
         public static final Theme advanced = new Theme("advanced");
 
-        private Theme(String name) {
+        private Theme(String name)
+        {
             super(name);
         }
     }
@@ -365,12 +419,14 @@ public class TinyMCESettings implements Serializable {
      * This option enables you to specify where the toolbar should be located.
      * This value can be top or bottom.
      */
-    public static class Location extends Enum {
+    public static class Location extends Enum
+    {
 
         public static final Location top = new Location("top");
         public static final Location bottom = new Location("bottom");
 
-        private Location(String name) {
+        private Location(String name)
+        {
             super(name);
         }
     }
@@ -379,13 +435,15 @@ public class TinyMCESettings implements Serializable {
      * This class enables you to specify the alignment of the controls.
      * This value can be left, right or center the default value is center.
      */
-    public static class Align extends Enum {
+    public static class Align extends Enum
+    {
 
         public static final Align left = new Align("left");
         public static final Align center = new Align("center");
         public static final Align right = new Align("right");
 
-        private Align(String name) {
+        private Align(String name)
+        {
             super(name);
         }
     }
@@ -394,12 +452,14 @@ public class TinyMCESettings implements Serializable {
      * This class specifies the position of new added control.
      * It can be before or after existing elements.
      */
-    public static class Position extends Enum {
+    public static class Position extends Enum
+    {
 
         public static final Position before = new Position("before");
         public static final Position after = new Position("after");
 
-        public Position(String name) {
+        public Position(String name)
+        {
             super(name);
         }
     }
@@ -408,13 +468,15 @@ public class TinyMCESettings implements Serializable {
      * This class specifices the toolbar to add specific control to.
      * TinyMCE editor defines three toolbars named: first, second, third.
      */
-    public static class Toolbar extends Enum {
+    public static class Toolbar extends Enum
+    {
 
         public static final Toolbar first = new Toolbar("first");
         public static final Toolbar second = new Toolbar("second");
         public static final Toolbar third = new Toolbar("third");
 
-        public Toolbar(String name) {
+        public Toolbar(String name)
+        {
             super(name);
         }
     }

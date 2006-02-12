@@ -23,9 +23,11 @@ package wicket.contrib.tinymce.settings;
  *
  * @author Iulian-Corneliu COSTAN
  */
-public class AutoSavePlugin extends Plugin {
+public class AutoSavePlugin extends Plugin
+{
 
-    public AutoSavePlugin() {
+    public AutoSavePlugin()
+    {
         super("autosave");
     }
 }

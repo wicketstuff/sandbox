@@ -32,21 +32,26 @@ import wicket.markup.html.resources.JavaScriptReference;
  * @author Iulian-Corneliu COSTAN
  * @see TinyMCESettings
  */
-public class TinyMCEPanel extends Panel {
+public class TinyMCEPanel extends Panel
+{
 
     private TinyMCESettings settings;
 
-    public TinyMCEPanel(final String id) {
+    public TinyMCEPanel(final String id)
+    {
         this(id, new TinyMCESettings());
     }
 
-    public TinyMCEPanel(final String id, final TinyMCESettings settings) {
+    public TinyMCEPanel(final String id, final TinyMCESettings settings)
+    {
         super(id);
 
         add(new JavaScriptReference("tinymce", TinyMCEPanel.class, "tiny_mce/tiny_mce_src.js"));
-        add(new WebComponent("initScript") {
+        add(new WebComponent("initScript")
+        {
 
-            protected void onComponentTagBody(final MarkupStream markupStream, final ComponentTag openTag) {
+            protected void onComponentTagBody(final MarkupStream markupStream, final ComponentTag openTag)
+            {
                 String body = "\ntinyMCE.init({" + settings.toJavaScript() + "\n});\n";
                 replaceComponentTagBody(markupStream, openTag, body);
             }

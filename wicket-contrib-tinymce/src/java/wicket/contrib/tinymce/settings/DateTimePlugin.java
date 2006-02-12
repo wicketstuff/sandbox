@@ -38,7 +38,8 @@ package wicket.contrib.tinymce.settings;
  *
  * @author Iulian-Corneliu COSTAN
  */
-public class DateTimePlugin extends Plugin {
+public class DateTimePlugin extends Plugin
+{
 
     private PluginButton dateButton;
     private PluginButton timeButton;
@@ -46,29 +47,35 @@ public class DateTimePlugin extends Plugin {
     private String timeFormat;
     private String dateFormat;
 
-    public DateTimePlugin() {
+    public DateTimePlugin()
+    {
         super("insertdatetime");
         dateButton = new PluginButton("inserttime", this);
         timeButton = new PluginButton("insertdate", this);
     }
 
-    public PluginButton getDateButton() {
+    public PluginButton getDateButton()
+    {
         return dateButton;
     }
 
-    public PluginButton getTimeButton() {
+    public PluginButton getTimeButton()
+    {
         return timeButton;
     }
 
-    private void setTimeFormat(String timeFormat) {
+    private void setTimeFormat(String timeFormat)
+    {
         this.timeFormat = timeFormat;
     }
 
-    public void setDateFormat(String dateFormat) {
+    public void setDateFormat(String dateFormat)
+    {
         this.dateFormat = dateFormat;
     }
 
-    public String defineProperties() {
+    public String defineProperties()
+    {
         return "";
     }
 }

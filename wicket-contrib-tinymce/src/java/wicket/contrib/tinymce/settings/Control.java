@@ -17,35 +17,37 @@
  */
 package wicket.contrib.tinymce.settings;
 
-import wicket.contrib.tinymce.settings.TinyMCESettings;
-import wicket.contrib.tinymce.settings.Button;
-
 import java.io.Serializable;
 
 /**
  * @author Iulian-Corneliu COSTAN
  */
-class Control implements Serializable {
+class Control implements Serializable
+{
 
     private Button button;
     private TinyMCESettings.Toolbar toolbar;
     private TinyMCESettings.Position position;
 
-    Control(Button button, TinyMCESettings.Toolbar toolbar, TinyMCESettings.Position position) {
+    Control(Button button, TinyMCESettings.Toolbar toolbar, TinyMCESettings.Position position)
+    {
         this.button = button;
         this.toolbar = toolbar;
         this.position = position;
     }
 
-    public Button getButton() {
+    public Button getButton()
+    {
         return button;
     }
 
-    public TinyMCESettings.Toolbar getToolbar() {
+    public TinyMCESettings.Toolbar getToolbar()
+    {
         return toolbar;
     }
 
-    public TinyMCESettings.Position getPosition() {
+    public TinyMCESettings.Position getPosition()
+    {
         return position;
     }
 }

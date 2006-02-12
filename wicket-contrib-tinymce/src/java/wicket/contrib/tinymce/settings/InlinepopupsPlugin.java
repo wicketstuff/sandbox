@@ -23,9 +23,11 @@ package wicket.contrib.tinymce.settings;
  *
  * @author Iulian-Corneliu COSTAN
  */
-public class InlinepopupsPlugin extends Plugin {
+public class InlinepopupsPlugin extends Plugin
+{
 
-    public InlinepopupsPlugin(String name) {
+    public InlinepopupsPlugin(String name)
+    {
         super(name);
     }
 }

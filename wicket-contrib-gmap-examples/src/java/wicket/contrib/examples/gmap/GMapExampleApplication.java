@@ -24,13 +24,16 @@ import wicket.util.time.Duration;
 /**
  * @author Iulian-Corneliu COSTAN
  */
-public class GMapExampleApplication extends WebApplication {
+public class GMapExampleApplication extends WebApplication
+{
 
-    public GMapExampleApplication() {
+    public GMapExampleApplication()
+    {
         getResourceSettings().setResourcePollFrequency(Duration.seconds(10));
     }
 
-    public Class getHomePage() {
+    public Class getHomePage()
+    {
         return HomePage.class;
     }
 }

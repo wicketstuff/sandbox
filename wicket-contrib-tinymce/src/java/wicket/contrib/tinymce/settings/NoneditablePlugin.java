@@ -22,13 +22,16 @@ package wicket.contrib.tinymce.settings;
  *
  * @author Iulian-Corneliu COSTAN
  */
-public class NoneditablePlugin extends Plugin {
+public class NoneditablePlugin extends Plugin
+{
 
-    public NoneditablePlugin() {
+    public NoneditablePlugin()
+    {
         super("noneditable");
     }
 
-    public String defineProperties() {
+    public String defineProperties()
+    {
         return null;
     }
 }

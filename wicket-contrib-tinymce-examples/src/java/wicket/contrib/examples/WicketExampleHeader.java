@@ -30,7 +30,8 @@ public final class WicketExampleHeader extends Panel
 {
     /**
      * Construct.
-     * @param id id of the component
+     *
+     * @param id           id of the component
      * @param exampleTitle title of the example
      */
     public WicketExampleHeader(String id, String exampleTitle)

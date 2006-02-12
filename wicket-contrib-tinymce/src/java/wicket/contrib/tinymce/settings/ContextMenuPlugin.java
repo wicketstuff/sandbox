@@ -22,9 +22,11 @@ package wicket.contrib.tinymce.settings;
  *
  * @author Iulian-Corneliu COSTAN
  */
-public class ContextMenuPlugin extends Plugin {
+public class ContextMenuPlugin extends Plugin
+{
 
-    public ContextMenuPlugin() {
+    public ContextMenuPlugin()
+    {
         super("contextmenu");
     }
 }

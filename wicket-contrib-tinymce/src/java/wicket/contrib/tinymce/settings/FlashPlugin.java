@@ -24,24 +24,29 @@ package wicket.contrib.tinymce.settings;
  *
  * @author Iulian-Corneliu COSTAN
  */
-public class FlashPlugin extends Plugin {
+public class FlashPlugin extends Plugin
+{
 
     private PluginButton flashButton;
 
-    public FlashPlugin() {
+    public FlashPlugin()
+    {
         super("flash");
         flashButton = new PluginButton("flash", this);
     }
 
-    public PluginButton getFlashButton() {
+    public PluginButton getFlashButton()
+    {
         return flashButton;
     }
 
-    public String defineProperties() {
+    public String defineProperties()
+    {
         return null;
     }
 
-    public String getExtension() {
+    public String getExtension()
+    {
         return null;
     }
 }

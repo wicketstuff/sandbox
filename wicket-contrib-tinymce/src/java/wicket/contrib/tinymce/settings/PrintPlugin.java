@@ -17,24 +17,24 @@
  */
 package wicket.contrib.tinymce.settings;
 
-import wicket.contrib.tinymce.settings.Plugin;
-import wicket.contrib.tinymce.settings.PluginButton;
-
 /**
  * This plugin adds a print button to TinyMCE.
  *
  * @author Iulian-Corneliu COSTAN
  */
-public class PrintPlugin extends Plugin {
+public class PrintPlugin extends Plugin
+{
 
     private PluginButton printButton;
 
-    public PrintPlugin() {
+    public PrintPlugin()
+    {
         super("print");
         printButton = new PluginButton("print", this);
     }
 
-    public PluginButton getPrintButton() {
+    public PluginButton getPrintButton()
+    {
         return printButton;
     }
 }

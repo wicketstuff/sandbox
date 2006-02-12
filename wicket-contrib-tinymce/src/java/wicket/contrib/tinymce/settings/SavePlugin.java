@@ -17,24 +17,24 @@
  */
 package wicket.contrib.tinymce.settings;
 
-import wicket.contrib.tinymce.settings.Plugin;
-import wicket.contrib.tinymce.settings.PluginButton;
-
 /**
  * This plugin adds a save button to TinyMCE this save button will submit the form that the editor is within.
  *
  * @author Iulian-Corneliu COSTAN
  */
-public class SavePlugin extends Plugin {
+public class SavePlugin extends Plugin
+{
 
     private PluginButton saveButton;
 
-    public SavePlugin() {
+    public SavePlugin()
+    {
         super("save");
         saveButton = new PluginButton("save", this);
     }
 
-    public PluginButton getSaveButton() {
+    public PluginButton getSaveButton()
+    {
         return saveButton;
     }
 }
