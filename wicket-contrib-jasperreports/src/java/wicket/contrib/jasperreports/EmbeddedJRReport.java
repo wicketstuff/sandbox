@@ -63,7 +63,7 @@ public final class EmbeddedJRReport extends WebComponent implements
 							+ " must be applied to a tag of type 'frame' or 'iframe'"
 							+ "', not " + tag.toUserDebugString());
 		}
-		String url = urlFor(IResourceListener.class);
+		String url = urlFor(IResourceListener.INTERFACE);
 		tag.put("src", getResponse().encodeURL(url));
 		super.onComponentTag(tag);
 	}
