@@ -3,7 +3,7 @@ package wicket.contrib.gmap;
 import wicket.RequestCycle;
 import wicket.Response;
 import wicket.contrib.dojo.DojoAjaxHandler;
-import wicket.request.target.ComponentRequestTarget;
+import wicket.request.target.component.ComponentRequestTarget;
 import wicket.util.resource.IResourceStream;
 import wicket.util.resource.StringBufferResourceStream;
 
