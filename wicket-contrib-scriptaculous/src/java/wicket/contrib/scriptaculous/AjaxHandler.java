@@ -30,8 +30,8 @@ import wicket.markup.ComponentTag;
 import wicket.markup.html.IHeaderContributor;
 import wicket.markup.html.PackageResourceReference;
 import wicket.markup.html.internal.HtmlHeaderContainer;
-import wicket.request.target.EmptyRequestTarget;
-import wicket.request.target.ResourceStreamRequestTarget;
+import wicket.request.target.basic.EmptyRequestTarget;
+import wicket.request.target.resource.ResourceStreamRequestTarget;
 import wicket.util.resource.IResourceStream;
 
 /**
@@ -157,7 +157,7 @@ public abstract class AjaxHandler implements IBehavior, IBehaviorListener, IHead
 					+ " was not registered with this component: " + getComponent().toString());
 		}
 
-		return getComponent().urlFor(IBehaviorListener.class) + "&behaviorId=" + index;
+		return getComponent().urlFor(IBehaviorListener.INTERFACE) + "&behaviorId=" + index;
 	}
 
 	/**
