@@ -17,11 +17,11 @@ import wicket.markup.html.list.ListItem;
 import wicket.markup.html.list.ListView;
 import wicket.model.Model;
 import wicket.model.PropertyModel;
-import wicket.request.target.ComponentRequestTarget;
+import wicket.request.target.component.ComponentRequestTarget;
 
 public class Index extends WebPage {
 	/**
-	 * Generates the onsubmit JavaScript event for the form. 
+	 * Generates the onsubmit JavaScript event for the form.
 	 */
 	private final class AjaxSubmitJavaScriptEvent extends Model {
 		/** The form that recieves the event handler. */
@@ -38,20 +38,22 @@ public class Index extends WebPage {
 		@Override
 		public Object getObject(Component component) {
 			StringBuilder sb = new StringBuilder();
-		
+
 			sb.append("new Ajax.Updater('photos',");
-			sb.append("'" + form.urlFor(IFormSubmitListener.class) + "',");
-			
+			sb.append("'" + form.urlFor(IFormSubmitListener.INTERFACE) + "',");
+
 			sb.append("{method:'get',");
 			sb.append(" parameters:Form.serialize('form'),");
 			sb.append(" onCreate:Element.show('spinner'),");
-			sb.append(" onComplete:function(){Effect.BlindDown('photos');Element.hide('spinner');}");
+			sb
+					.append(" onComplete:function(){Effect.BlindDown('photos');Element.hide('spinner');}");
 			sb.append("}");
 			sb.append(");");
-			// always return false, otherwise the submit event gets sent to the server. We
+			// always return false, otherwise the submit event gets sent to the
+			// server. We
 			// are already processing the ajax event.
 			sb.append("return false;");
-		
+
 			return sb.toString();
 		}
 	}
@@ -83,24 +85,28 @@ public class Index extends WebPage {
 
 				// get the new image URL's from flickr
 				FlickrDao flickr = new FlickrDao();
-				if(tags == null) tags = "";
+				if (tags == null)
+					tags = "";
 				images.addAll(flickr.getSmallSquareImages(tags.split(" ")));
 
 				// prepare the listview for the new images.
 				ListView photos = (ListView) get("photos");
 				photos.removeAll();
-//				photos.internalBeginRequest();
+				// photos.internalBeginRequest();
 
 				// render only the listview as the response
-				ComponentRequestTarget target = new ComponentRequestTarget(photos);
+				ComponentRequestTarget target = new ComponentRequestTarget(
+						photos);
 				RequestCycle cycle = RequestCycle.get();
 				cycle.setRequestTarget(target);
 			}
 		};
 		add(form);
-		form.add(new AttributeModifier("onsubmit", true, new AjaxSubmitJavaScriptEvent(form)));
+		form.add(new AttributeModifier("onsubmit", true,
+				new AjaxSubmitJavaScriptEvent(form)));
 		TextField tags = new TextField("tags", new PropertyModel(this, "tags"));
-		ListView photos = new ListView("photos", new PropertyModel(this, "images")) {
+		ListView photos = new ListView("photos", new PropertyModel(this,
+				"images")) {
 			/** Used for serialization. */
 			private static final long serialVersionUID = 1L;
 
@@ -108,6 +114,7 @@ public class Index extends WebPage {
 			public boolean isVersioned() {
 				return false;
 			}
+
 			@Override
 			protected void populateItem(ListItem item) {
 				item.add(new AttributeModifier("src", item.getModel()));
