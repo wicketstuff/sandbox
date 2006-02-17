@@ -33,7 +33,11 @@ public class JasperReportsApplication extends WebApplication
      */
     public JasperReportsApplication()
     {
-        getPages().setHomePage(Index.class);
-        getSettings().setResourcePollFrequency(Duration.ONE_SECOND);
+        getResourceSettings().setResourcePollFrequency(Duration.ONE_SECOND);
+    }
+    
+    public Class getHomePage()
+    {
+    	return Index.class;
     }
 }
