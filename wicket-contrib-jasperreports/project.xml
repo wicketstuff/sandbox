@@ -4,7 +4,7 @@
 	<groupId>wicket-stuff</groupId>
 	<id>wicket-contrib-jasperreports</id>
 	<name>Wicket jasperreports Integration</name>
-	<currentVersion>1.0</currentVersion>
+	<currentVersion>1.2-SNAPSHOT</currentVersion>
 	<inceptionYear>2005</inceptionYear>
 	<organization>
 		<name>Wicket Stuff</name>
@@ -92,7 +92,7 @@
         <dependency>
             <groupId>commons-digester</groupId>
             <artifactId>commons-digester</artifactId>
-            <version>1.6</version>
+            <version>1.7</version>
             <type>jar</type>
         </dependency>
         <dependency>
@@ -104,7 +104,7 @@
         <dependency>
             <groupId>jasperreports</groupId>
             <artifactId>jasperreports</artifactId>
-            <version>1.0.2</version>
+            <version>1.2.0</version>
             <type>jar</type>
         </dependency>
     </dependencies>
