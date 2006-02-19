@@ -21,6 +21,7 @@ package wicket.examples.cdapp;
 import java.sql.Blob;
 
 import wicket.Page;
+import wicket.PageMap;
 import wicket.examples.cdapp.model.CD;
 import wicket.markup.html.WebResource;
 import wicket.markup.html.image.resource.BlobImageResource;
@@ -46,7 +47,7 @@ public final class ImagePopupLink extends Link
 		super(name, cdModel);
 		
 		// custom popup settings that uses our automatic resize script
-		PopupSettings popupSettings = new PopupSettings();
+		PopupSettings popupSettings = new PopupSettings(PageMap.forName("imagepopup"));
 		popupSettings.setHeight(20);
 		popupSettings.setWidth(20);
 		setPopupSettings(popupSettings);
