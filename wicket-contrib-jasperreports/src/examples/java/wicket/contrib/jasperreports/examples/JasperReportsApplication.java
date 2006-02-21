@@ -35,7 +35,10 @@ public class JasperReportsApplication extends WebApplication
     {
         getResourceSettings().setResourcePollFrequency(Duration.ONE_SECOND);
     }
-    
+
+    /**
+     * @see wicket.Application#getHomePage()
+     */
     public Class getHomePage()
     {
     	return Index.class;
