@@ -72,7 +72,6 @@ public class MenuRow extends Panel
 				throw new WicketRuntimeException("item panel must have id 'itemPanel' assigned");
 			}
 
-			itemPanel.setRenderBodyOnly(true);
 			item.add(itemPanel);
 		}
 	}
