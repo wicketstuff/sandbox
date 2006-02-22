@@ -39,7 +39,7 @@ class GMapAjaxHandler extends DojoAjaxHandler
     }
 
     /**
-     * When an AJAX request, gmarker component is hidden and user's info
+     * On AJAX request, gmarker component is hidden and user's info
      * component is made visible.
      */
     protected void respond()
@@ -54,9 +54,8 @@ class GMapAjaxHandler extends DojoAjaxHandler
     protected IResourceStream getResponse()
     {
         Response response = RequestCycle.get().getResponse();
-        StringBufferResourceStream resourceStream = new StringBufferResourceStream(
-                "text/html");
-        resourceStream.append(response.toString());
-        return resourceStream;
+        StringBufferResourceStream rs = new StringBufferResourceStream("text/html");
+        rs.append(response.toString());
+        return rs;
     }
 }
