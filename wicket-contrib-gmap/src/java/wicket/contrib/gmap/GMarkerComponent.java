@@ -1,6 +1,7 @@
 package wicket.contrib.gmap;
 
 import wicket.contrib.dojo.AjaxHandler;
+import wicket.markup.html.PackageResourceReference;
 
 /**
  * Wicket component for Google's GMarker API.
@@ -13,6 +14,8 @@ class GMarkerComponent extends JavaScriptComponent
 
     private AjaxHandler behavior;
     private GMarker gmarker;
+
+    private PackageResourceReference ref = new PackageResourceReference(GMapPanel.class, GMapInitializer.INDICATOR);
 
     public GMarkerComponent(GMarker gmarker, AjaxHandler behavior)
     {
@@ -48,11 +51,11 @@ class GMarkerComponent extends JavaScriptComponent
         StringBuffer buffer = new StringBuffer();
         buffer.append("var div = document.createElement(\"div\");\n");
         buffer.append("div.id = \"" + gmarker.getOverlayId() + "\";\n");
-//        buffer.append("var indicator = document.createElement(\"img\");\n");
-//        buffer.append("indicator.src = \"" + getPage().urlFor(reference.getPath()) + "\";\n");
-//        buffer.append("div.appendChild(indicator);\n");
+        buffer.append("var progress = document.createElement(\"img\");\n");
+        buffer.append("progress.src = \"" + getPage().urlFor(ref) + "\";\n");
         buffer.append("var waitText = document.createTextNode(\"Please wait ...\");\n");
         buffer.append("var nobr = document.createElement(\"nobr\");\n");
+        buffer.append("nobr.appendChild(progress);\n");
         buffer.append("nobr.appendChild(waitText);\n");
         buffer.append("div.appendChild(nobr);\n");
         buffer.append("var script = document.createElement(\"script\");\n");
