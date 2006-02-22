@@ -19,7 +19,6 @@ package wicket.contrib.dojo.dojofx;
 import wicket.AttributeModifier;
 import wicket.Component;
 import wicket.Response;
-import wicket.markup.html.internal.HtmlHeaderContainer;
 import wicket.model.Model;
 
 /**
@@ -38,6 +37,13 @@ public class FXOnClickSlider extends DojoFXHandler
 	private int fromy;
 
 
+	/**
+	 * @param duration
+	 * @param trigger
+	 * @param x
+	 * @param y
+	 * @param relative
+	 */
 	public FXOnClickSlider(int duration, Component trigger, int x, int y, boolean relative)
 	{
 		super("onclick", duration, trigger);
@@ -54,6 +60,14 @@ public class FXOnClickSlider extends DojoFXHandler
 
 	}
 
+	/**
+	 * @param duration
+	 * @param trigger
+	 * @param x
+	 * @param y
+	 * @param fromx
+	 * @param fromy
+	 */
 	public FXOnClickSlider(int duration, Component trigger, int x, int y, int fromx, int fromy)
 	{
 		super("onclick", duration, trigger);
@@ -106,7 +120,7 @@ public class FXOnClickSlider extends DojoFXHandler
 
 	}
 
-	protected void renderHeadContribution(Response r)
+	protected void onRenderHeadContribution(Response r)
 	{
 		// no header contributions necessary here.
 

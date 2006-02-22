@@ -3,8 +3,6 @@ package wicket.contrib.dojo.examples.rssreader;
 import java.io.Serializable;
 import java.util.Date;
 
-import wicket.markup.html.basic.MultiLineLabel;
-
 public class DescriptionModel implements Serializable {
 
 	private String title  = "";

@@ -8,7 +8,6 @@ import wicket.markup.html.form.Form;
 import wicket.markup.html.form.FormComponent;
 import wicket.markup.html.form.RequiredTextField;
 import wicket.markup.html.form.TextArea;
-import wicket.markup.html.form.TextField;
 import wicket.markup.html.form.validation.IntegerValidator;
 import wicket.markup.html.form.validation.LengthValidator;
 import wicket.markup.html.panel.FeedbackPanel;

@@ -8,23 +8,21 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
-import com.sun.syndication.feed.synd.SyndEntryImpl;
-import com.sun.syndication.feed.synd.SyndFeed;
-import com.sun.syndication.io.SyndFeedInput;
-import com.sun.syndication.io.XmlReader;
-
 import wicket.contrib.dojo.DojoAjaxHandler;
 import wicket.contrib.dojo.autoupdate.DojoAutoUpdateHandler;
 import wicket.contrib.dojo.autoupdate.IUpdatable;
-import wicket.contrib.dojo.dojofx.FXOnClickWiper;
 import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.basic.Label;
-import wicket.markup.html.basic.MultiLineLabel;
 import wicket.markup.html.list.ListItem;
 import wicket.markup.html.list.ListView;
 import wicket.model.CompoundPropertyModel;
 import wicket.model.IModel;
 import wicket.model.Model;
+
+import com.sun.syndication.feed.synd.SyndEntryImpl;
+import com.sun.syndication.feed.synd.SyndFeed;
+import com.sun.syndication.io.SyndFeedInput;
+import com.sun.syndication.io.XmlReader;
 
 /**
  * WebmarkupContainer which displays information retrieved from an RSS feed.<br/>

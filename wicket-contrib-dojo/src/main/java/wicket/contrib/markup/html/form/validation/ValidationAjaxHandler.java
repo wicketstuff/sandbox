@@ -19,12 +19,13 @@
 package wicket.contrib.markup.html.form.validation;
 
 import wicket.Component;
+import wicket.Response;
 import wicket.WicketRuntimeException;
+import wicket.behavior.AbstractAjaxBehavior;
 import wicket.contrib.dojo.DojoAjaxHandler;
 import wicket.feedback.IFeedback;
 import wicket.markup.ComponentTag;
 import wicket.markup.html.form.FormComponent;
-import wicket.markup.html.internal.HtmlHeaderContainer;
 import wicket.util.resource.IResourceStream;
 import wicket.util.resource.StringBufferResourceStream;
 import wicket.util.value.ValueMap;
@@ -59,9 +60,9 @@ public final class ValidationAjaxHandler extends DojoAjaxHandler
 	}
 
 	/**
-	 * @see wicket.AjaxHandler#renderHeadContribution(wicket.markup.html.internal.HtmlHeaderContainer)
+	 * @see AbstractAjaxBehavior#onRenderHeadContribution(Response response)
 	 */
-	public final void renderHeadContribution(HtmlHeaderContainer container)
+	public final void onRenderHeadContribution(Response response)
 	{
 		String s =
 
@@ -77,7 +78,7 @@ public final class ValidationAjaxHandler extends DojoAjaxHandler
 			"\t}\n" +
 			"\t</script>\n";
 
-		container.getResponse().write(s);
+		response.write(s);
 	}
 
 	/**

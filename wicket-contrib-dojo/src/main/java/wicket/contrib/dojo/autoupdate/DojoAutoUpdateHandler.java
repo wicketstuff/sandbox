@@ -8,9 +8,9 @@ import wicket.Component;
 import wicket.RequestCycle;
 import wicket.Response;
 import wicket.WicketRuntimeException;
+import wicket.behavior.AbstractAjaxBehavior;
 import wicket.contrib.dojo.DojoAjaxHandler;
 import wicket.markup.html.PackageResourceReference;
-import wicket.markup.html.internal.HtmlHeaderContainer;
 import wicket.model.Model;
 import wicket.response.StringResponse;
 import wicket.util.resource.IResourceStream;
@@ -43,6 +43,10 @@ public class DojoAutoUpdateHandler extends DojoAjaxHandler
 
 	}
 	
+	/**
+	 * @param interval
+	 * @param loadingId
+	 */
 	public DojoAutoUpdateHandler(int interval, String loadingId)
 	{
 		this.interval = interval;
@@ -112,14 +116,13 @@ public class DojoAutoUpdateHandler extends DojoAjaxHandler
 	}
 
 	/**
-	 * @param container header container
-	 * @see wicket.behavior.AjaxHandler#renderHeadContribution(wicket.markup.html.internal.HtmlHeaderContainer)
+	 * @see AbstractAjaxBehavior#onRenderHeadContribution(Response response)
 	 */
-	protected void renderHeadContribution(Response r)
+	protected void onRenderHeadContribution(final Response response)
 	{
-		addJsReference(r, new PackageResourceReference(Application.get(),
+		super.onRenderHeadContribution(response);
+		writeJsReference(response,  new PackageResourceReference(Application.get(),
 				DojoAutoUpdateHandler.class, "autoupdate.js"));
-		
 	}
 	
 	/* (non-Javadoc)
@@ -193,7 +196,8 @@ public class DojoAutoUpdateHandler extends DojoAjaxHandler
 		c.add(new AttributeModifier("id", true, new Model(HTMLID)));
 
 	}
-	public String removeColon(String s) {
+	
+	private String removeColon(String s) {
 		  StringTokenizer st = new StringTokenizer(s,":",false);
 		  String t="";
 		  while (st.hasMoreElements()) t += st.nextElement();

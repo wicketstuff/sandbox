@@ -17,6 +17,7 @@
 package wicket.contrib.markup.html.form;
 
 import wicket.Response;
+import wicket.behavior.AbstractAjaxBehavior;
 import wicket.contrib.dojo.DojoAjaxHandler;
 import wicket.markup.ComponentTag;
 import wicket.markup.html.form.TextField;
@@ -117,11 +118,11 @@ public class ImmediateTextField extends TextField
 		}
 
 		/**
-		 * @see wicket.AjaxHandler#renderHeadInitContribution(wicket.markup.html.internal.HtmlHeaderContainer)
+		 * @see AbstractAjaxBehavior#onRenderHeadInitContribution(Response response)
 		 */
-		public final void renderHeadInitContribution(Response r)
+		public final void onRenderHeadInitContribution(Response response)
 		{
-			super.renderHeadInitContribution(r);
+			super.onRenderHeadInitContribution(response);
 			StringBuffer s = new StringBuffer(
 					"\t<script language=\"JavaScript\" type=\"text/javascript\">\n").append(
 					"\tfunction immediateCheckBox(componentUrl, componentPath, val) { \n").append(
@@ -131,7 +132,7 @@ public class ImmediateTextField extends TextField
 					"\t\t\tload: function(type, data, evt) {}\n" + "\t\t});\n" + "\t}\n").append(
 					"\t</script>\n");
 
-			r.write(s.toString());
+			response.write(s.toString());
 		}
 
 		/**
