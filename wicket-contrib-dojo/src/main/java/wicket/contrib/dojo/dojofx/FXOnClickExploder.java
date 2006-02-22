@@ -19,7 +19,7 @@ package wicket.contrib.dojo.dojofx;
 import wicket.AttributeModifier;
 import wicket.Component;
 import wicket.Response;
-import wicket.markup.html.internal.HtmlHeaderContainer;
+import wicket.behavior.AbstractAjaxBehavior;
 import wicket.model.Model;
 
 /**
@@ -108,9 +108,9 @@ public class FXOnClickExploder extends DojoFXHandler
 	}
 
 	/**
-	 * @see wicket.AjaxHandler#renderHeadContribution(wicket.markup.html.internal.HtmlHeaderContainer)
+	 * @see AbstractAjaxBehavior#onRenderHeadContribution(Response response)
 	 */
-	protected void renderHeadContribution(Response r)
+	protected void onRenderHeadContribution(Response r)
 	{
 		String s;
 

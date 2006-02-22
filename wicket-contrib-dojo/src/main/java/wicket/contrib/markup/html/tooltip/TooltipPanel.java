@@ -6,7 +6,6 @@ import java.util.StringTokenizer;
 import wicket.AttributeModifier;
 import wicket.Component;
 import wicket.ResourceReference;
-
 import wicket.markup.html.PackageResourceReference;
 import wicket.markup.html.internal.HtmlHeaderContainer;
 import wicket.markup.html.panel.Panel;
@@ -103,7 +102,7 @@ public class TooltipPanel extends Panel
 	
 	/**
 	 * constructor with custom x and y offsets and Model object
-	 * @param id Component id
+	 * @param model IModel the model of the component
 	 * @param target Target component bound to Tooltip
 	 * @param x X offset from target's upperleft corner
 	 * @param y Y offset from target's upperleft corner
@@ -126,6 +125,9 @@ public class TooltipPanel extends Panel
         return new PackageResourceReference(TooltipPanel.class, "tooltip.js");
     }
 	
+	/**
+	 * @see wicket.markup.html.panel.Panel#renderHead(wicket.markup.html.internal.HtmlHeaderContainer)
+	 */
 	public void renderHead(HtmlHeaderContainer container) {
         super.renderHead(container);
 
@@ -148,17 +150,26 @@ public class TooltipPanel extends Panel
     }
 
 	
+	/**
+	 * @return The html id
+	 */
 	public String getHTMLID()
 	{
 		return "id" + "_" + target.getPath();
 	}
 	
+	/**
+	 * @return the target html id
+	 */
 	public String getTargetHTMLID()
 	{
 		String componentpath = removeColon(target.getPath());
 		return "f_" + target.getId() + "_" + componentpath;
 	}
 	
+	/**
+	 * @return The iframe id
+	 */
 	public String getIFrameID()
 	{
 		return getHTMLID() + "_ttiframe";
@@ -167,7 +178,7 @@ public class TooltipPanel extends Panel
 	/*
 	 * removes the colons in the componentPath. In order to use in Javascript variables
 	 */
-	public String removeColon(String s) {
+	private String removeColon(String s) {
 		  StringTokenizer st = new StringTokenizer(s,":",false);
 		  String t="";
 		  while (st.hasMoreElements()) t += st.nextElement();
@@ -259,18 +270,38 @@ public class TooltipPanel extends Panel
 	 */
 	private final static class AppendAttributeModifier extends AttributeModifier
 	{
+		/**
+		 * @param attribute
+		 * @param addAttributeIfNotPresent
+		 * @param replaceModel
+		 */
 		public AppendAttributeModifier(String attribute, boolean addAttributeIfNotPresent, IModel replaceModel) {
 			super(attribute, addAttributeIfNotPresent, replaceModel);
 		}
 
+		/**
+		 * @param attribute
+		 * @param replaceModel
+		 */
 		public AppendAttributeModifier(String attribute, IModel replaceModel) {
 			super(attribute, replaceModel);
 		}
 
+		/**
+		 * @param attribute
+		 * @param pattern
+		 * @param addAttributeIfNotPresent
+		 * @param replaceModel
+		 */
 		public AppendAttributeModifier(String attribute, String pattern, boolean addAttributeIfNotPresent, IModel replaceModel) {
 			super(attribute, pattern, addAttributeIfNotPresent, replaceModel);
 		}
 
+		/**
+		 * @param attribute
+		 * @param pattern
+		 * @param replaceModel
+		 */
 		public AppendAttributeModifier(String attribute, String pattern, IModel replaceModel) {
 			super(attribute, pattern, replaceModel);
 		}

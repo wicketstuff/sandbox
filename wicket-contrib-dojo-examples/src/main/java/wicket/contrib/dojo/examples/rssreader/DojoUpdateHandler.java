@@ -4,6 +4,7 @@ import wicket.Application;
 import wicket.Component;
 import wicket.RequestCycle;
 import wicket.Response;
+import wicket.behavior.AbstractAjaxBehavior;
 import wicket.contrib.dojo.DojoAjaxHandler;
 import wicket.markup.html.PackageResourceReference;
 import wicket.response.StringResponse;
@@ -26,13 +27,12 @@ public abstract class DojoUpdateHandler extends DojoAjaxHandler
 	
 	/** 
 	 * adds reference to autoupdate.js.
-	 * @see wicket.AjaxHandler#renderHeadContribution(wicket.markup.html.HtmlHeaderContainer)
+	 * @see AbstractAjaxBehavior#onRenderHeadContribution(Response response)
 	 */
-	protected void renderHeadContribution(Response r)
+	protected void onRenderHeadContribution(Response response)
 	{
-		addJsReference(r, new PackageResourceReference(Application.get(),
+		writeJsReference(response,  new PackageResourceReference(Application.get(),
 				DojoUpdateHandler.class, "dojoupdate.js"));
-		
 	}
 	
 	/**

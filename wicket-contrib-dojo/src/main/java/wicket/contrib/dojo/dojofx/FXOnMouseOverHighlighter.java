@@ -21,6 +21,7 @@ import java.io.Serializable;
 import wicket.AttributeModifier;
 import wicket.Component;
 import wicket.Response;
+import wicket.behavior.AbstractAjaxBehavior;
 import wicket.model.Model;
 
 /**
@@ -79,9 +80,9 @@ public class FXOnMouseOverHighlighter extends DojoFXHandler
 	}
 
 	/**
-	 * @see wicket.AjaxHandler#renderHeadContribution(wicket.markup.html.internal.HtmlHeaderContainer)
+	 * @see AbstractAjaxBehavior#onRenderHeadContribution(Response response)
 	 */
-	protected void renderHeadContribution(Response r)
+	protected void onRenderHeadContribution(Response r)
 	{
 		// String to be written to header
 		String s;
@@ -170,16 +171,25 @@ public class FXOnMouseOverHighlighter extends DojoFXHandler
 
 		}
 
+		/**
+		 * @return Red int value
+		 */
 		public int getR()
 		{
 			return R;
 		}
 
+		/**
+		 * @return Green int value
+		 */
 		public int getG()
 		{
 			return G;
 		}
 
+		/**
+		 * @return Blue int value
+		 */
 		public int getB()
 		{
 			return B;

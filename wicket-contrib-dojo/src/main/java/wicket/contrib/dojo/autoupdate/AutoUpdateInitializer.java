@@ -2,7 +2,6 @@ package wicket.contrib.dojo.autoupdate;
 
 import wicket.Application;
 import wicket.IInitializer;
-import wicket.contrib.markup.html.tooltip.TooltipPanel;
 import wicket.markup.html.PackageResource;
 
 /**
@@ -15,7 +14,7 @@ import wicket.markup.html.PackageResource;
 public class AutoUpdateInitializer implements IInitializer
 {
 
-	/* (non-Javadoc)
+	/**
 	 * @see wicket.IInitializer#init(wicket.Application)
 	 */
 	public void init(Application application)

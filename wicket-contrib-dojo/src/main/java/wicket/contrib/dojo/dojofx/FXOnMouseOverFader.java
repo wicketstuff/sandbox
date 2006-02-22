@@ -21,10 +21,14 @@ import java.util.StringTokenizer;
 import wicket.AttributeModifier;
 import wicket.Component;
 import wicket.Response;
-import wicket.markup.html.internal.HtmlHeaderContainer;
+import wicket.behavior.AbstractAjaxBehavior;
 import wicket.model.Model;
 
 
+/**
+ * @author jcompagner
+ *
+ */
 public class FXOnMouseOverFader extends DojoFXHandler
 {
 
@@ -136,12 +140,10 @@ public class FXOnMouseOverFader extends DojoFXHandler
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see wicket.AjaxHandler#renderHeadContribution(wicket.markup.html.internal.HtmlHeaderContainer)
+	/**
+	 * @see AbstractAjaxBehavior#onRenderHeadContribution(Response response)
 	 */
-	protected void renderHeadContribution(Response r)
+	protected void onRenderHeadContribution(Response r)
 	{
 		// String to be written to header
 		String s;
@@ -220,7 +222,7 @@ public class FXOnMouseOverFader extends DojoFXHandler
 	/*
 	 * removes the colons in the componentPath. In order to use in Javascript variables
 	 */
-	public String removeColon(String s) {
+	private String removeColon(String s) {
 		  StringTokenizer st = new StringTokenizer(s,":",false);
 		  String t="";
 		  while (st.hasMoreElements()) t += st.nextElement();

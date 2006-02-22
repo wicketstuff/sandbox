@@ -4,10 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 
-
 import wicket.AttributeModifier;
 import wicket.WicketRuntimeException;
-import wicket.contrib.dojo.dojofx.FXOnClickWiper;
 import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.list.ListItem;
 import wicket.markup.html.list.ListView;

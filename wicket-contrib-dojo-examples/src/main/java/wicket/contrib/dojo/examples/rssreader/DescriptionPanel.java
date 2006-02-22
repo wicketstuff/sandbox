@@ -3,14 +3,11 @@ package wicket.contrib.dojo.examples.rssreader;
 import java.util.StringTokenizer;
 
 import wicket.AttributeModifier;
-import wicket.contrib.dojo.DojoAjaxHandler;
 import wicket.markup.ComponentTag;
 import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.basic.MultiLineLabel;
-import wicket.markup.html.link.ExternalLink;
 import wicket.markup.html.panel.Panel;
-import wicket.model.CompoundPropertyModel;
 import wicket.model.IModel;
 import wicket.model.Model;
 import wicket.util.string.Strings;

@@ -22,7 +22,7 @@ import java.util.StringTokenizer;
 import wicket.AttributeModifier;
 import wicket.Component;
 import wicket.Response;
-import wicket.markup.html.internal.HtmlHeaderContainer;
+import wicket.behavior.AbstractAjaxBehavior;
 import wicket.model.Model;
 
 /**
@@ -75,6 +75,9 @@ public class FXOnClickWiper extends DojoFXHandler
 
 	}
 	
+	/**
+	 * @return The html id
+	 */
 	public String getHTMLID()
 	{
 		//only returns valid value after handler is bound.
@@ -95,12 +98,10 @@ public class FXOnClickWiper extends DojoFXHandler
 		this.startDisplay = false;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see wicket.contrib.dojo.dojofx.DojoFXHandler#renderHeadContribution(wicket.markup.html.internal.HtmlHeaderContainer)
+	/**
+	 * @see AbstractAjaxBehavior#onRenderHeadContribution(Response response)
 	 */
-	public final void renderHeadContribution(Response r)
+	public final void onRenderHeadContribution(Response r)
 	/*
 	 * TODO: make this part a lot more efficient! every new Wiper adds a lot of
 	 * javascript to the header. I'm positive that this can work a lot more
