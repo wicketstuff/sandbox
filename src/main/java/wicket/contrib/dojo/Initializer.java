@@ -20,7 +20,6 @@ package wicket.contrib.dojo;
 import wicket.Application;
 import wicket.IInitializer;
 import wicket.contrib.dojo.autoupdate.AutoUpdateInitializer;
-import wicket.contrib.dojo.autoupdate.DojoAutoUpdateHandler;
 import wicket.contrib.markup.html.form.validation.FXFeedbackIndicatorInitializer;
 import wicket.contrib.markup.html.tooltip.TooltipComponentInitializer;
 import wicket.util.resource.IResourceStream;

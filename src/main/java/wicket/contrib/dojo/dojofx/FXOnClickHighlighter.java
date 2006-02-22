@@ -19,7 +19,7 @@ package wicket.contrib.dojo.dojofx;
 import wicket.AttributeModifier;
 import wicket.Component;
 import wicket.Response;
-import wicket.markup.html.internal.HtmlHeaderContainer;
+import wicket.behavior.AbstractAjaxBehavior;
 import wicket.model.Model;
 
 /**
@@ -35,6 +35,13 @@ public class FXOnClickHighlighter extends DojoFXHandler
 	private RGB startColor;
 	private RGB endColor;
 
+	/**
+	 * @param duration
+	 * @param trigger
+	 * @param toR
+	 * @param toG
+	 * @param toB
+	 */
 	public FXOnClickHighlighter(int duration, Component trigger, int toR, int toG, int toB)
 	{
 		super("onclick", duration, trigger);
@@ -43,6 +50,16 @@ public class FXOnClickHighlighter extends DojoFXHandler
 
 	}
 
+	/**
+	 * @param duration
+	 * @param trigger
+	 * @param startR
+	 * @param startG
+	 * @param startB
+	 * @param endR
+	 * @param endG
+	 * @param endB
+	 */
 	public FXOnClickHighlighter(int duration, Component trigger, int startR, int startG,
 			int startB, int endR, int endG, int endB)
 	{
@@ -58,6 +75,11 @@ public class FXOnClickHighlighter extends DojoFXHandler
 		private final int G;
 		private final int B;
 
+		/**
+		 * @param R
+		 * @param G
+		 * @param B
+		 */
 		public RGB(int R, int G, int B)
 		{
 			this.R = R;
@@ -66,21 +88,33 @@ public class FXOnClickHighlighter extends DojoFXHandler
 
 		}
 
+		/**
+		 * @return Red int value
+		 */
 		public int getR()
 		{
 			return R;
 		}
 
+		/**
+		 * @return Green int value
+		 */
 		public int getG()
 		{
 			return G;
 		}
 
+		/**
+		 * @return Blue int value
+		 */
 		public int getB()
 		{
 			return B;
 		}
 
+		/**
+		 * @see java.lang.Object#toString()
+		 */
 		public String toString()
 		{
 			return "[" + R + ", " + G + ", " + B + "]";
@@ -88,12 +122,11 @@ public class FXOnClickHighlighter extends DojoFXHandler
 
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
 	 * 
-	 * @see wicket.AjaxHandler#renderHeadContribution(wicket.markup.html.internal.HtmlHeaderContainer)
+	 * @see AbstractAjaxBehavior#onRenderHeadContribution(Response response)
 	 */
-	protected void renderHeadContribution(Response r)
+	protected void onRenderHeadContribution(Response r)
 	{
 		// String to be written to the header
 		String s;

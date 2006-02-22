@@ -20,10 +20,11 @@ package wicket.contrib.dojo;
 
 import wicket.Application;
 import wicket.IInitializer;
+import wicket.RequestCycle;
 import wicket.Response;
+import wicket.behavior.AbstractAjaxBehavior;
 import wicket.markup.html.PackageResource;
 import wicket.markup.html.PackageResourceReference;
-import wicket.markup.html.internal.HtmlHeaderContainer;
 import wicket.util.resource.IResourceStream;
 
 /**
@@ -37,20 +38,8 @@ import wicket.util.resource.IResourceStream;
  * @see <a href="http://dojotoolkit.org/">Dojo</a>
  * @author Eelco Hillenius
  */
-public abstract class DojoAjaxHandler extends AjaxHandler implements IInitializer
+public abstract class DojoAjaxHandler extends AbstractAjaxBehavior implements IInitializer
 {
-
-	public static DojoAjaxHandler newJavascriptBindingHandler() {
-		return new DojoAjaxHandler() {
-
-			protected IResourceStream getResponse() {
-				return null;
-			}
-
-		};
-	}
-
-	
 	/**
 	 * Construct.
 	 */
@@ -70,21 +59,47 @@ public abstract class DojoAjaxHandler extends AjaxHandler implements IInitialize
 	}
 
 	/**
-	 * Let this handler print out the needed header contributions.
 	 * 
+	 * @see wicket.behavior.AbstractAjaxBehavior#onRenderHeadInitContribution(wicket.Response)
 	 */
-	protected void renderHeadInitContribution(Response r)
+	protected void onRenderHeadInitContribution(final Response response)
 	{
-		// add our basic javascript needs to the header
-		addJsReference(r, new PackageResourceReference(Application.get(),
+		writeJsReference(response,  new PackageResourceReference(Application.get(),
 				DojoAjaxHandler.class, "dojo.js"));
 	}
-
+	
 	/**
-	 * @see AjaxHandler#getImplementationId()
+	 * @see AbstractAjaxBehavior#getImplementationId()
 	 */
 	protected final String getImplementationId()
 	{
 		return "DojoImpl";
 	}
+	
+	/**
+	 * @see wicket.behavior.IBehaviorListener#onRequest()
+	 */
+	public void onRequest()
+	{
+		IResourceStream response = getResponse();
+		if(response != null)
+		{
+			boolean isPageVersioned = true;
+			try
+			{
+				isPageVersioned = getComponent().getPage().isVersioned();
+				getComponent().getPage().setVersioned(false);
+	
+				DojoRequestTarget target = new DojoRequestTarget(response);
+				RequestCycle.get().setRequestTarget(target);
+			} 
+			finally 
+			{
+				getComponent().getPage().setVersioned(isPageVersioned);
+			}
+		}
+	}
+	
+	
+	protected abstract IResourceStream getResponse();
 }

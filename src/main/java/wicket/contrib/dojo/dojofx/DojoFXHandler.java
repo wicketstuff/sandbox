@@ -18,9 +18,7 @@ package wicket.contrib.dojo.dojofx;
 
 import wicket.AttributeModifier;
 import wicket.Component;
-import wicket.Response;
 import wicket.contrib.dojo.DojoAjaxHandler;
-import wicket.markup.html.internal.HtmlHeaderContainer;
 import wicket.model.IModel;
 import wicket.util.resource.IResourceStream;
 
@@ -72,36 +70,6 @@ public abstract class DojoFXHandler extends DojoAjaxHandler
 		return duration;
 	}
 
-
-	/**
-	 * renders the javascript functions to the page's head corresponding with
-	 * this class
-	 * 
-	 * @param container
-	 *            the Header container to be written to
-	 */
-	protected abstract void renderHeadContribution(Response r);
-
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see wicket.AjaxHandler#onBind()
-	 */
-	protected abstract void onBind();
-
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see wicket.AjaxHandler#getResponse()
-	 */
-	protected IResourceStream getResponse()
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	/**
 	 * @return event name
 	 */
@@ -127,6 +95,14 @@ public abstract class DojoFXHandler extends DojoAjaxHandler
 	 */
 	protected void addTrigger(Component c)
 	{
+	}
+	
+	/**
+	 * @see wicket.contrib.dojo.DojoAjaxHandler#getResponse()
+	 */
+	protected IResourceStream getResponse()
+	{
+		return null;
 	}
 
 	/**

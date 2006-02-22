@@ -33,6 +33,10 @@ public class Tooltip extends Panel
 	private final TooltipPanel tooltipPanel;
 	private final WebMarkupContainer iframe;
 	
+	/**
+	 * @param id
+	 * @param panel
+	 */
 	public Tooltip(String id, TooltipPanel panel)
 	{
 		super(id);
@@ -42,11 +46,17 @@ public class Tooltip extends Panel
 		iframe.add(new AttributeModifier("id", true, new Model(tooltipPanel.getIFrameID())));
 	}
 
+	/**
+	 * @return The iframe
+	 */
 	public WebMarkupContainer getIframe()
 	{
 		return iframe;
 	}
 	
+	/**
+	 * @return The tooltip panel
+	 */
 	public TooltipPanel getTooltipPanel()
 	{
 		return tooltipPanel;
