@@ -91,11 +91,10 @@ public class AutoUpdatePage2 extends WebPage {
 		Image about = new Image("about", new Model("img/AboutButton.gif"));
 		add(about);
 		WebMarkupContainer table2;
-		Image aboutimg;
 		Image close;
 		add(table2 = new WebMarkupContainer("abouttable"));
 
-		table2.add(aboutimg = new Image("aboutimg", "img/DojoLogo2.gif"));
+		table2.add(new Image("aboutimg", "img/DojoLogo2.gif"));
 		table2.add(close = new Image("close", new Model("img/close.gif")));
 		FXOnClickExploder d = new FXOnClickExploder(400, about);
 		table2.add(d);

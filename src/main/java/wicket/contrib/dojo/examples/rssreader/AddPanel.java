@@ -5,7 +5,6 @@ package wicket.contrib.dojo.examples.rssreader;
 import wicket.contrib.dojo.examples.AutoUpdatePage2;
 import wicket.contrib.markup.html.tooltip.SimpleTooltip;
 import wicket.contrib.markup.html.tooltip.Tooltip;
-import wicket.markup.html.basic.Label;
 import wicket.markup.html.image.Image;
 import wicket.markup.html.panel.Panel;
 import wicket.model.Model;
