@@ -44,6 +44,8 @@ import wicket.util.string.Strings;
  */
 public final class FreeMarkerPanel extends WebComponent {
 
+	private static final long serialVersionUID = 1L;
+
 	/** Whether to escape HTML characters. The default value is false. */
 	private boolean escapeHtml = false;
 
