@@ -23,7 +23,6 @@ import wicket.IInitializer;
 import wicket.Response;
 import wicket.markup.html.PackageResource;
 import wicket.markup.html.PackageResourceReference;
-import wicket.markup.html.internal.HtmlHeaderContainer;
 import wicket.util.resource.IResourceStream;
 
 /**
@@ -38,22 +37,26 @@ import wicket.util.resource.IResourceStream;
  */
 public abstract class ScriptaculousAjaxHandler extends AjaxHandler implements
                 IInitializer {
+
         public static ScriptaculousAjaxHandler newJavascriptBindingHandler() {
                 return new ScriptaculousAjaxHandler() {
 
                         private static final long serialVersionUID = 1L;
 
+                        /**
+                         * @see wicket.contrib.scriptaculous.AjaxHandler#getResponse()
+                         */
                         protected IResourceStream getResponse() {
                                 return null;
                         }
 
-                };
-        }
+                        /**
+                         * @see wicket.behavior.IBehavior#onException()
+                         */
+                        public void onException() {
+                        }
 
-        /**
-         * Construct.
-         */
-        public ScriptaculousAjaxHandler() {
+                };
         }
 
         /**
@@ -84,15 +87,13 @@ public abstract class ScriptaculousAjaxHandler extends AjaxHandler implements
         protected void renderHeadInitContribution(Response r) {
                 // add our basic javascript needs to the header
                 Application application = Application.get();
-                addJsReference(r, new PackageResourceReference(
-                                application, ScriptaculousAjaxHandler.class,
-                                "prototype.js"));
-                addJsReference(r, new PackageResourceReference(
-                                application, ScriptaculousAjaxHandler.class,
+                addJsReference(r, new PackageResourceReference(application,
+                                ScriptaculousAjaxHandler.class, "prototype.js"));
+                addJsReference(r, new PackageResourceReference(application,
+                                ScriptaculousAjaxHandler.class,
                                 "scriptaculous.js"));
-                addJsReference(r, new PackageResourceReference(
-                                application, ScriptaculousAjaxHandler.class,
-                                "behavior.js"));
+                addJsReference(r, new PackageResourceReference(application,
+                                ScriptaculousAjaxHandler.class, "behavior.js"));
         }
 
         /**
