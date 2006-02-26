@@ -57,6 +57,11 @@ public abstract class AjaxAutocompleteTextField extends AutocompleteTextFieldSup
 
     private class AutocompleteEventHandler extends ScriptaculousAjaxHandler {
 
+        private static final long serialVersionUID = 1L;
+
+        /**
+         * @see wicket.contrib.scriptaculous.AjaxHandler#getResponse()
+         */
         protected IResourceStream getResponse() {
             StringBufferResourceStream s = new StringBufferResourceStream();
             FormComponent formComponent = (FormComponent) getComponent();
@@ -76,6 +81,12 @@ public abstract class AjaxAutocompleteTextField extends AutocompleteTextFieldSup
             s.append("</ul>\n");
 
             return s;
+        }
+
+        /**
+         * @see wicket.behavior.IBehavior#onException()
+         */
+        public void onException() {
         }
     }
 }
