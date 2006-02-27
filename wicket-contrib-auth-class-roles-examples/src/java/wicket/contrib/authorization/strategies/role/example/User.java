@@ -91,7 +91,7 @@ public class User
   {
     List<String> roleNames = new ArrayList<String>();
     Stack<Class> inputRoles = new Stack<Class>();
-    inputRoles.add(getClass());
+    inputRoles.add(getRole());
     Set<Class> outputRoles = new HashSet<Class>();
     while (!inputRoles.isEmpty())
     {
