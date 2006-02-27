@@ -125,7 +125,9 @@ public final class Roles
     // Ensure that all roles extend EVERYONE
     for (Object o: roles)
     {
-      Class wantedRole = o.getClass();
+      if (!(o instanceof Class))
+        continue;
+      Class wantedRole = (Class) o;
       if (!Role.EVERYONE.class.isAssignableFrom(wantedRole))
         continue;
       else
