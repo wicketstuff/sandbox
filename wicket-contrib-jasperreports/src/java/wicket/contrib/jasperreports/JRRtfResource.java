@@ -83,7 +83,7 @@ public final class JRRtfResource extends JRResource
 	}
 
 	/**
-	 * @see wicket.resource.DynamicByteArrayResource#getContentType()
+	 * @see JRResource#getContentType()
 	 */
 	public String getContentType()
 	{
