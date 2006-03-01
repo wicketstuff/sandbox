@@ -112,9 +112,9 @@ public final class JRImageResource extends JRResource
 	}
 
 	/**
-	 * @see wicket.resource.DynamicByteArrayResource#getData()
+	 * @see wicket.resource.DynamicByteArrayResource#getResourceState()
 	 */
-	protected byte[] getData()
+	protected ResourceState getResourceState()
 	{
 		try
 		{
@@ -141,14 +141,30 @@ public final class JRImageResource extends JRResource
 
 			// execute the export and return the trapped result
 			exporter.exportReport();
-			byte[] data = toImageData(image);
+			final byte[] data = toImageData(image);
 			// if (log.isDebugEnabled())
 			// {
 			long t2 = System.currentTimeMillis();
 			log.info("loaded report data; bytes: "
 					+ data.length + " in " + (t2 - t1) + " miliseconds");
 			// }
-			return data;
+			return new ResourceState()
+			{
+				public int getLength()
+				{
+					return data.length;
+				}
+			
+				public byte[] getData()
+				{
+					return data;
+				}
+			
+				public String getContentType()
+				{
+					return "image/" + format;
+				}
+			};
 		}
 		catch (JRException e)
 		{
@@ -187,7 +203,7 @@ public final class JRImageResource extends JRResource
 	}
 
 	/**
-	 * @see wicket.resource.DynamicByteArrayResource#getContentType()
+	 * @see JRResource#getContentType()
 	 */
 	public String getContentType()
 	{

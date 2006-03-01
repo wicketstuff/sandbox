@@ -336,9 +336,9 @@ public abstract class JRResource extends DynamicByteArrayResource
 	 * 
 	 * @return the binary data
 	 * 
-	 * @see wicket.resource.DynamicByteArrayResource#getData()
+	 * @see wicket.resource.DynamicByteArrayResource#getResourceState()
 	 */
-	protected byte[] getData()
+	protected ResourceState getResourceState()
 	{
 		try
 		{
@@ -356,20 +356,41 @@ public abstract class JRResource extends DynamicByteArrayResource
 
 			// execute the export and return the trapped result
 			exporter.exportReport();
-			byte[] data = baos.toByteArray();
+			final byte[] data = baos.toByteArray();
 			if (log.isDebugEnabled())
 			{
 				long t2 = System.currentTimeMillis();
 				log.debug("loaded report data; bytes: "
 						+ data.length + " in " + (t2 - t1) + " miliseconds");
 			}
-			return data;
+			return new ResourceState()
+			{
+				public int getLength()
+				{
+					return data.length;
+				}
+			
+				public byte[] getData()
+				{
+					return data;
+				}
+			
+				public String getContentType()
+				{
+					return JRResource.this.getContentType();
+				}
+			};
 		}
 		catch (JRException e)
 		{
 			throw new WicketRuntimeException(e);
 		}
 	}
+
+	/**
+	 * @return The content type of the reports
+	 */
+	protected abstract String getContentType();
 
 	/**
 	 * Creates a new {@link JasperPrint} instance. This instance is specific for
