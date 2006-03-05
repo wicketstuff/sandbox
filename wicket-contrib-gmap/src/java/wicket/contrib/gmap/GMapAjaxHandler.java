@@ -14,12 +14,11 @@ class GMapAjaxHandler extends DojoAjaxHandler
 {
 
     /**
-     * @see wicket.contrib.dojo.DojoAjaxHandler#renderHeadInitContribution(wicket.Response)
+     * @see wicket.contrib.dojo.DojoAjaxHandler#onRenderHeadInitContribution(wicket.Response)
      */
-    protected void renderHeadInitContribution(Response r)
+    protected void onRenderHeadInitContribution(Response r)
     {
-        // pls dont remove it, super call is really needed in order to import dojo.js file
-        super.renderHeadInitContribution(r);
+        super.onRenderHeadInitContribution(r);
 
         StringBuffer s = new StringBuffer(
                 "\t<script language=\"JavaScript\" type=\"text/javascript\">\n");
@@ -57,5 +56,10 @@ class GMapAjaxHandler extends DojoAjaxHandler
         StringBufferResourceStream rs = new StringBufferResourceStream("text/html");
         rs.append(response.toString());
         return rs;
+    }
+
+    public void onException()
+    {
+        // todo
     }
 }
