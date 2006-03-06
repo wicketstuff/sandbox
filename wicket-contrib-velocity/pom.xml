@@ -31,7 +31,7 @@
 	<scm>
 		<connection>scm:cvs:pserver:${maven.scm.anonymous}@cvs.sourceforge.net:/cvsroot/wicket-stuff:wicket-contrib-velocity</connection>
 		<developerConnection>scm:cvs:ext:${maven.scm.user}@cvs.sourceforge.net:/cvsroot/wicket-stuff:wicket-contrib-velocity</developerConnection>
-		<url>http://cvs.sourceforge.net/viewcvs.py/wicket-stuff/wicket-contrib-navmenu</url>
+		<url>http://cvs.sourceforge.net/viewcvs.py/wicket-stuff/wicket-contrib-freemarker</url>
 	</scm>
 
 	<mailingLists>
