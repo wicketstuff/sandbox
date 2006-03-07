@@ -19,6 +19,7 @@
 package wicket.contrib.scriptaculous;
 
 import wicket.Application;
+import wicket.Component;
 import wicket.IInitializer;
 import wicket.Response;
 import wicket.markup.html.PackageResource;
@@ -51,9 +52,11 @@ public abstract class ScriptaculousAjaxHandler extends AjaxHandler implements
                         }
 
                         /**
-                         * @see wicket.behavior.IBehavior#onException()
+                         * @see wicket.behavior.IBehavior#onException(Component,
+                         *      RuntimeException)
                          */
-                        public void onException() {
+                        public void onException(Component component,
+                                        RuntimeException exception) {
                         }
 
                 };
