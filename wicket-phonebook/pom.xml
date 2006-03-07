@@ -80,6 +80,8 @@
     </dependencies>
 
     <build>
+        <finalName>wicket-phonebook</finalName>
+
         <sourceDirectory>src/java</sourceDirectory>
         <testSourceDirectory>src/test</testSourceDirectory>
 
