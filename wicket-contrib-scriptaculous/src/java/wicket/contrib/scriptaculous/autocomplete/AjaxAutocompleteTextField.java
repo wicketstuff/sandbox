@@ -82,11 +82,5 @@ public abstract class AjaxAutocompleteTextField extends AutocompleteTextFieldSup
 
             return s;
         }
-
-        /**
-         * @see wicket.behavior.IBehavior#onException()
-         */
-        public void onException() {
-        }
     }
 }
