@@ -82,7 +82,6 @@ public class ListContactsPage extends BasePage {
 
 			// return the go-and-clear filter for the filter toolbar
 			public Component getFilter(String componentId, FilterForm form) {
-				System.out.println("rebuilding clear filter");
 				return new GoAndClearFilter(componentId, form);
 			}
 
