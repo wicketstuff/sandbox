@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="Wicket Phonebook">
+	<body>
+		<links>
+			<item name="Wicket 1.0" href="http://wicket.sf.net/wicket-1.0/index.html" />
+			<item name="Wicket 1.1" href="http://wicket.sf.net/wicket-1.1/index.html" />
+			<item name="Wicket 1.2" href="http://wicket.sf.net/wicket-1.2/index.html" />
+		</links>
+
+		<menu name="Wicket Phonebook">
+			<item name="About" href="/index.html" />
+		</menu>
+		<menu name="Downloads">
+			<item name="1.2 Snapshot" href="http://prdownloads.sourceforge.net/wicket-stuff/wicket-phonebook-1.2-SNAPSHOT-bin.zip?download" />
+		</menu>
+		<menu name="Related projects">
+			<item name="Wicket" href="http://wicket.sourceforge.net/" />
+			<item name="Wicket Extensions" href="http://wicket.sourceforge.net/wicket-extensions/" />
+			<item name="Wicket Spring" href="http://wicket.sourceforge.net/wicket-spring/" />
+			<item name="Spring" href="http://www.springframework.org/" />
+			<item name="Hibernate" href="http://www.hibernate.org/" />
+		</menu>
+		<menu name="Documentation">
+			<!-- <item name="Wiki" href="http://wicket.sourceforge.net/wiki" /> -->
+			<item name="Javadoc" href="/apidocs/index.html" target="_blank" class="newwindow" />
+			<item name="Dependencies" href="/dependencies.html" />
+		</menu>
+		<menu name="Project info">
+			<item name="Wicket Stuff Home" href="http://wicket-stuff.sourceforge.net" />
+			<item name="SourceForge" href="http://sourceforge.net/projects/wicket-stuff" />
+			<item name="Issue tracker" href="http://sourceforge.net/tracker/?group_id=134391" />
+		</menu>
+
+		${reports}
+	</body>
+</project>
