@@ -199,6 +199,7 @@ public class ImmediateRadioChoice extends RadioChoice
 		protected final IResourceStream getResponse()
 		{
 			// let the form component update its model
+			radioButton.convert();
 			radioButton.updateModel();
 			radioButton.onAjaxModelUpdated();
 			return radioButton.getResponseResourceStream();
