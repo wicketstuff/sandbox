@@ -204,6 +204,7 @@ public class ImmediateCheckBox extends CheckBox
 		protected final IResourceStream getResponse()
 		{
 			// let the form component update its model
+			checkBox.convert();
 			checkBox.updateModel();
 			checkBox.onAjaxModelUpdated();
 			return checkBox.getResponseResourceStream();

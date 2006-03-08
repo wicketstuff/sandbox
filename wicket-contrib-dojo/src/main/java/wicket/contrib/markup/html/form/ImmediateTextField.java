@@ -166,6 +166,7 @@ public class ImmediateTextField extends TextField
 		protected final IResourceStream getResponse()
 		{
 			// let the form component update its model
+			textField.convert();
 			textField.updateModel();
 			textField.onAjaxModelUpdated();
 			return new StringBufferResourceStream();
