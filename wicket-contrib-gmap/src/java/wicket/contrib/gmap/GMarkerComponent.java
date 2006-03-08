@@ -1,8 +1,7 @@
 package wicket.contrib.gmap;
 
-import wicket.contrib.dojo.AjaxHandler;
-import wicket.markup.html.PackageResourceReference;
 import wicket.behavior.AbstractAjaxBehavior;
+import wicket.markup.html.PackageResourceReference;
 
 /**
  * Wicket component for Google's GMarker API.
@@ -16,6 +15,8 @@ class GMarkerComponent extends JavaScriptComponent
     private AbstractAjaxBehavior behavior;
     private GMarker gmarker;
 
+    private static final PackageResourceReference ref = new PackageResourceReference(GMapPanel.class,
+            GMapInitializer.INDICATOR);
 
     public GMarkerComponent(GMarker gmarker, AbstractAjaxBehavior behavior)
     {
@@ -48,8 +49,6 @@ class GMarkerComponent extends JavaScriptComponent
 
     private String createInfoFunction()
     {
-        PackageResourceReference ref = new PackageResourceReference(GMapPanel.class, GMapInitializer.INDICATOR);
-
         StringBuffer buffer = new StringBuffer();
         buffer.append("var div = document.createElement(\"div\");\n");
         buffer.append("div.id = \"" + gmarker.getOverlayId() + "\";\n");
