@@ -3,7 +3,7 @@ package wicket.contrib.gmap;
 import wicket.RequestCycle;
 import wicket.Response;
 import wicket.contrib.dojo.DojoAjaxHandler;
-import wicket.request.target.component.ComponentRequestTarget;
+import wicket.response.StringResponse;
 import wicket.util.resource.IResourceStream;
 import wicket.util.resource.StringBufferResourceStream;
 
@@ -38,26 +38,29 @@ class GMapAjaxHandler extends DojoAjaxHandler
     }
 
     /**
-     * On AJAX request, gmarker component is hidden and user's info
-     * component is made visible.
+     * @see wicket.contrib.dojo.DojoAjaxHandler#getResponse()
      */
-    protected void respond()
+    protected IResourceStream getResponse()
     {
         // visibility trick
         ((GMarkerContainer) getComponent()).toggleVisibility();
 
         RequestCycle requestCycle = RequestCycle.get();
-        requestCycle.setRequestTarget(new ComponentRequestTarget(getComponent()));
+        Response response = requestCycle.getResponse();
+
+        StringResponse stringResponse = new StringResponse();
+        requestCycle.setResponse(stringResponse);
+        getComponent().doRender();
+        requestCycle.setResponse(response);
+
+        StringBufferResourceStream resourceStream = new StringBufferResourceStream("text/html");
+        resourceStream.append(stringResponse.toString());
+        return resourceStream;
     }
 
-    protected IResourceStream getResponse()
-    {
-        Response response = RequestCycle.get().getResponse();
-        StringBufferResourceStream rs = new StringBufferResourceStream("text/html");
-        rs.append(response.toString());
-        return rs;
-    }
-
+    /**
+     * @see wicket.behavior.AbstractAjaxBehavior#onException()
+     */
     public void onException()
     {
         // todo
