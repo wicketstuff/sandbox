@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<document>
+    <properties>
+        <title>Wicket Phonebook</title>
+    </properties>
+    <meta name="keyword" content="wicket, web, j2ee, java, spring, hibernate"/>
+    <body>
+        <section name="Welcome to Wicket Phonebook">
+        <p>
+        Wicket Phonebook is an example of <a href="http://www.springframework.org/">Spring</a> &amp;
+        <a href="http://www.hibernate.org/">Hibernate</a> usage in a
+        <a href="http://wicket.sourceforge.net/index.html">Wicket</a> web-app.
+        </p>
+        <ul>
+        <li>The database is an in-memory <a href="http://www.hsqldb.org/">HSQLDB</a> DB - 
+                how this example, the schema gets generated automatically everytime the app starts up.</li>
+        <li>Hooking up to a different database is a simple matter of editing
+        <tt>src/conf/application.properties</tt>. </li>
+        <li>All database-related code is inside a DAO object, so Wicket never touches
+                anything database related.</li>
+        <li>All Hibernate session management and transaction management is handled by Spring.</li>
+        </ul>
+        </section>
+    </body>
+</document>
