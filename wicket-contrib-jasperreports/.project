@@ -1,16 +1,11 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
 <projectDescription>
   <name>wicket-contrib-jasperreports</name>
-  <comment>Contains extensions of the Wicket form components for working with JasperReports</comment>
-  <projects>
-    <project>wicket</project>
-  </projects>
+  <comment>JasperReports integration components and resources for Wicket.</comment>
+  <projects/>
   <buildSpec>
     <buildCommand>
       <name>org.eclipse.jdt.core.javabuilder</name>
-      <arguments>
-      </arguments>
+      <arguments/>
     </buildCommand>
   </buildSpec>
   <natures>
