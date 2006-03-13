@@ -37,15 +37,6 @@
       </properties>
     </dependency>
     <dependency>
-      <groupId>wicket</groupId>
-      <artifactId>wicket-extensions</artifactId>
-      <version>1.2-SNAPSHOT</version>
-      <properties>
-        <eclipse.dependency>true</eclipse.dependency>
-        <war.bundle>true</war.bundle>
-      </properties>
-    </dependency>
-    <dependency>
       <groupId>log4j</groupId>
       <artifactId>log4j</artifactId>
       <version>1.2.8</version>
