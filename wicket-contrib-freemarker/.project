@@ -1,16 +1,11 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
 <projectDescription>
   <name>wicket-contrib-freemarker</name>
-  <comment>The FreeMarker Panel component allows you to use Freemarker (http://www.freemarker.org/) templates in your Wicket applications.</comment>
-  <projects>
-    <project>wicket</project>
-  </projects>
+  <comment>Freemarker Panel component</comment>
+  <projects/>
   <buildSpec>
     <buildCommand>
       <name>org.eclipse.jdt.core.javabuilder</name>
-      <arguments>
-      </arguments>
+      <arguments/>
     </buildCommand>
   </buildSpec>
   <natures>

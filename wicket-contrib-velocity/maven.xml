@@ -12,12 +12,4 @@
 			</fileset>
 		</ant:copy>
     </postGoal>
-	<preGoal name="java:compile">
-	   <ant:path
-	       id="examples.src.dir"
-	       location="${basedir}/src/examples/java"/>
-	   <maven:addPath
-	       id="maven.compile.src.set"
-	       refid="examples.src.dir"/>
-	</preGoal>
 </project>
