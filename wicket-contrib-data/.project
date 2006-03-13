@@ -1,17 +1,11 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
 <projectDescription>
   <name>wicket-contrib-data</name>
-  <comment>
-  </comment>
-  <projects>
-    <project>wicket</project>
-  </projects>
+  <comment/>
+  <projects/>
   <buildSpec>
     <buildCommand>
       <name>org.eclipse.jdt.core.javabuilder</name>
-      <arguments>
-      </arguments>
+      <arguments/>
     </buildCommand>
   </buildSpec>
   <natures>
