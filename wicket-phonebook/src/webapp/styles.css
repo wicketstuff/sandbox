@@ -5,6 +5,20 @@ body {
 
 a { color: blue; }
 
+div.status {
+    width: 99%;
+    padding: 3px; 
+    border: 1px solid #c3c4c1;
+    background-color: #f0ffef;
+    color: black;
+    margin-bottom: 15px;
+  
+}
+
+div.status ul { margin:0; padding:0; list-style:none; }
+
+
+
 table.grid {
 	margin-bottom: 10px;
 	border-bottom: 1px solid #0079d6;

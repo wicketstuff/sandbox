@@ -61,6 +61,10 @@ public class Contact implements Serializable {
 		this.phone = phone;
 	}
 	
+	public String getFullName() {
+		return firstname+" "+lastname;
+	}
+	
 	public String toString() {
 		return ("[Contact id="+id+", firstname="+firstname+", lastname="+lastname+", phone="+phone+", email="+email);
 	}
