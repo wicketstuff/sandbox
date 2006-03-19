@@ -21,6 +21,7 @@ package wicket.contrib.phonebook.web.page;
 import wicket.contrib.phonebook.ContactDao;
 import wicket.contrib.phonebook.web.PhonebookApplication;
 import wicket.markup.html.WebPage;
+import wicket.markup.html.panel.FlashMessagesPanel;
 
 /**
  * Base page class used for phonebook web pages.
@@ -39,6 +40,10 @@ import wicket.markup.html.WebPage;
  */
 public class BasePage extends WebPage {
 
+	public BasePage() {
+		add(new FlashMessagesPanel("status"));
+	}
+	
 	protected ContactDao getDao() {
 		return ((PhonebookApplication) getApplication()).getContactDao();
 	}

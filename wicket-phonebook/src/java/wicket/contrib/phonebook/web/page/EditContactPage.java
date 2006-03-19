@@ -25,9 +25,10 @@ import wicket.markup.html.form.Form;
 import wicket.markup.html.form.RequiredTextField;
 import wicket.markup.html.form.TextField;
 import wicket.markup.html.form.validation.EmailAddressPatternValidator;
-import wicket.markup.html.form.validation.LengthValidator;
+import wicket.markup.html.form.validation.StringValidator;
 import wicket.markup.html.panel.FeedbackPanel;
 import wicket.model.CompoundPropertyModel;
+import wicket.util.collections.MicroMap;
 
 /**
  * Edit the Contact. Display details if an existing contact, then persist them
@@ -51,28 +52,30 @@ public class EditContactPage extends BasePage {
 	 */
 	public EditContactPage(Page backPage, final long contactId) {
 		this.backPage = backPage;
-		Contact contact = (contactId == 0) ? new Contact() : getDao()
-				.load(contactId);
+		Contact contact = (contactId == 0) ? new Contact() : getDao().load(
+				contactId);
 
 		add(new FeedbackPanel("feedback"));
 
 		Form form = new Form("contactForm", new CompoundPropertyModel(contact));
 		add(form);
 
-		form.add(new RequiredTextField("firstname")
-				.add(LengthValidator.max(32)));
+		form.add(new RequiredTextField("firstname").add(StringValidator
+				.maximumLength(32)));
 
-		form
-				.add(new RequiredTextField("lastname").add(LengthValidator
-						.max(32)));
+		form.add(new RequiredTextField("lastname").add(StringValidator
+				.maximumLength(32)));
 
-		form.add(new RequiredTextField("phone").add(LengthValidator.max(16)));
+		form.add(new RequiredTextField("phone").add(StringValidator
+				.maximumLength(16)));
 
-		form.add(new TextField("email").add(LengthValidator.max(128)).add(
-				EmailAddressPatternValidator.getInstance()));
+		form.add(new TextField("email").add(StringValidator.maximumLength(128))
+				.add(EmailAddressPatternValidator.getInstance()));
 
 		form.add(new Button("cancel") {
 			protected void onSubmit() {
+				flash(getLocalizer().getString("status.cancel", this));
+
 				setResponsePage(EditContactPage.this.backPage);
 			}
 		}.setDefaultFormProcessing(false));
@@ -81,6 +84,10 @@ public class EditContactPage extends BasePage {
 			protected void onSubmit() {
 				Contact contact = (Contact) getForm().getModelObject();
 				getDao().save(contact);
+
+				flash(getLocalizer().getString("status.save", this),
+						new MicroMap("name", contact.getFullName()));
+
 				setResponsePage(EditContactPage.this.backPage);
 			}
 		});

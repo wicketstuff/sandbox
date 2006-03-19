@@ -23,6 +23,7 @@ import wicket.contrib.phonebook.Contact;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.form.Button;
 import wicket.markup.html.form.Form;
+import wicket.util.collections.MicroMap;
 
 /**
  * Delete the Contact.
@@ -63,13 +64,24 @@ public class DeleteContactPage extends BasePage {
 			 * If clicked, delete the contact and return to the calling page.
 			 */
 			protected void onSubmit() {
+				Contact deleted = getDao().load(contactId);
+
 				getDao().delete(contactId);
+
+				flash(getLocalizer().getString("status.deleted", this),
+						new MicroMap("name", deleted.getFullName()));
+
 				setResponsePage(DeleteContactPage.this.backPage);
 			}
 		}.setDefaultFormProcessing(false));
 
 		form.add(new Button("cancel") {
 			protected void onSubmit() {
+				Contact deleted = getDao().load(contactId);
+
+				flash(getLocalizer().getString("status.cancelled", this),
+						new MicroMap("name", deleted.getFullName()));
+
 				setResponsePage(DeleteContactPage.this.backPage);
 			}
 		}.setDefaultFormProcessing(false));
