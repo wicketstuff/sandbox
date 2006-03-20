@@ -27,66 +27,59 @@ import net.sf.jasperreports.engine.export.JRHtmlExporter;
 
 /**
  * Resource class for jasper reports HTML resources.
- * 
+ *
  * @author Eelco Hillenius
  */
-public final class JRHtmlResource extends JRResource
-{
-	/**
-	 * Construct without a report. You must provide a report before you can use
-	 * this resource.
-	 */
-	public JRHtmlResource()
-	{
-		super();
+public final class JRHtmlResource extends JRResource {
+    /**
+     * Construct without a report. You must provide a report before you can use this resource.
+     */
+    public JRHtmlResource() {
+        super();
+    }
+
+    /**
+     * Construct.
+     *
+     * @param report the report input stream
+     */
+    public JRHtmlResource(InputStream report) {
+        super(report);
+    }
+
+    /**
+     * Construct.
+     *
+     * @param report the report input stream
+     */
+    public JRHtmlResource(URL report) {
+        super(report);
+    }
+
+    /**
+     * Construct.
+     *
+     * @param report the report input stream
+     */
+    public JRHtmlResource(File report) {
+        super(report);
+    }
+
+    /**
+     * @see JRResource#newExporter()
+     */
+    public JRAbstractExporter newExporter() {
+        return new JRHtmlExporter();
+    }
+
+    /**
+     * @see JRResource#getContentType()
+     */
+    public String getContentType() {
+        return "text/html";
 	}
 
-	/**
-	 * Construct.
-	 * 
-	 * @param report
-	 *            the report input stream
-	 */
-	public JRHtmlResource(InputStream report)
-	{
-		super(report);
-	}
-
-	/**
-	 * Construct.
-	 * 
-	 * @param report
-	 *            the report input stream
-	 */
-	public JRHtmlResource(URL report)
-	{
-		super(report);
-	}
-
-	/**
-	 * Construct.
-	 * 
-	 * @param report
-	 *            the report input stream
-	 */
-	public JRHtmlResource(File report)
-	{
-		super(report);
-	}
-
-	/**
-	 * @see wicket.contrib.jasperreports.JRResource#newExporter()
-	 */
-	public JRAbstractExporter newExporter()
-	{
-		return new JRHtmlExporter();
-	}
-
-	/**
-	 * @see JRResource#getContentType()
-	 */
-	public String getContentType()
-	{
-		return "text/html";
-	}
+    public String getExtension() {
+        return "html";
+    }
 }

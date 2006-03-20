@@ -27,66 +27,59 @@ import net.sf.jasperreports.engine.export.JRRtfExporter;
 
 /**
  * Resource class for jasper reports RTF resources.
- * 
+ *
  * @author Eelco Hillenius
  */
-public final class JRRtfResource extends JRResource
-{
-	/**
-	 * Construct without a report. You must provide a report before you can use
-	 * this resource.
-	 */
-	public JRRtfResource()
-	{
-		super();
-	}
+public final class JRRtfResource extends JRResource {
+    /**
+     * Construct without a report. You must provide a report before you can use this resource.
+     */
+    public JRRtfResource() {
+        super();
+    }
 
-	/**
-	 * Construct.
-	 * 
-	 * @param report
-	 *            the report input stream
-	 */
-	public JRRtfResource(InputStream report)
-	{
-		super(report);
-	}
+    /**
+     * Construct.
+     *
+     * @param report the report input stream
+     */
+    public JRRtfResource(InputStream report) {
+        super(report);
+    }
 
-	/**
-	 * Construct.
-	 * 
-	 * @param report
-	 *            the report input stream
-	 */
-	public JRRtfResource(URL report)
-	{
-		super(report);
-	}
+    /**
+     * Construct.
+     *
+     * @param report the report input stream
+     */
+    public JRRtfResource(URL report) {
+        super(report);
+    }
 
-	/**
-	 * Construct.
-	 * 
-	 * @param report
-	 *            the report input stream
-	 */
-	public JRRtfResource(File report)
-	{
-		super(report);
-	}
+    /**
+     * Construct.
+     *
+     * @param report the report input stream
+     */
+    public JRRtfResource(File report) {
+        super(report);
+    }
 
-	/**
-	 * @see wicket.contrib.jasperreports.JRResource#newExporter()
-	 */
-	public JRAbstractExporter newExporter()
-	{
-		return new JRRtfExporter();
-	}
+    /**
+     * @see JRResource#newExporter()
+     */
+    public JRAbstractExporter newExporter() {
+        return new JRRtfExporter();
+    }
 
-	/**
-	 * @see JRResource#getContentType()
-	 */
-	public String getContentType()
-	{
-		return "text/rtf";
-	}
+    /**
+     * @see JRResource#getContentType()
+     */
+    public String getContentType() {
+        return "text/rtf";
+    }
+
+    public String getExtension() {
+        return "rtf";
+    }
 }

@@ -18,14 +18,12 @@
  */
 package wicket.contrib.jasperreports;
 
-import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-
 import javax.imageio.ImageIO;
 import javax.imageio.ImageWriter;
 
@@ -35,241 +33,217 @@ import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.export.JRGraphics2DExporter;
 import net.sf.jasperreports.engine.export.JRGraphics2DExporterParameter;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import wicket.WicketRuntimeException;
+import wicket.resource.DynamicByteArrayResource;
 
 /**
  * Resource class for jasper reports PDF resources.
- * 
+ *
  * @author Eelco Hillenius
  */
-public final class JRImageResource extends JRResource
-{
-	/** log. */
-	private static Log log = LogFactory.getLog(JRImageResource.class);
+public final class JRImageResource extends JRResource {
+    /**
+     * log.
+     */
+    private static Log log = LogFactory.getLog(JRImageResource.class);
+    /**
+     * Type of image (one of BufferedImage.TYPE_*).
+     */
+    private int type = BufferedImage.TYPE_INT_RGB;
+    /**
+     * The zoom ratio used for the export. The default value is 1.
+     */
+    private float zoomRatio = 1;
+    /**
+     * the image type. The default value is 'png'.
+     */
+    private String format = "png";
 
-	/** Type of image (one of BufferedImage.TYPE_*). */
-	private int type = BufferedImage.TYPE_INT_RGB;
+    /**
+     * Construct without a report. You must provide a report before you can use this resource.
+     */
+    public JRImageResource() {
+        super();
+    }
 
-	/** The zoom ratio used for the export. The default value is 1. */
-	private float zoomRatio = 1;
+    /**
+     * Construct.
+     *
+     * @param report the report input stream
+     */
+    public JRImageResource(InputStream report) {
+        super(report);
+    }
 
-	/** the image type. The default value is 'png'. */
-	private String format = "png";
+    /**
+     * Construct.
+     *
+     * @param report the report input stream
+     */
+    public JRImageResource(URL report) {
+        super(report);
+    }
 
-	/**
-	 * Construct without a report. You must provide a report before you can use
-	 * this resource.
-	 */
-	public JRImageResource()
-	{
-		super();
-	}
+    /**
+     * Construct.
+     *
+     * @param report the report input stream
+     */
+    public JRImageResource(File report) {
+        super(report);
+    }
 
-	/**
-	 * Construct.
-	 * 
-	 * @param report
-	 *            the report input stream
-	 */
-	public JRImageResource(InputStream report)
-	{
-		super(report);
-	}
+    /**
+     * @see JRResource#newExporter()
+     */
+    public final JRAbstractExporter newExporter() {
+        throw new UnsupportedOperationException(
+            "this method is not used in this implementation");
+    }
 
-	/**
-	 * Construct.
-	 * 
-	 * @param report
-	 *            the report input stream
-	 */
-	public JRImageResource(URL report)
-	{
-		super(report);
-	}
+    /**
+     * @see DynamicByteArrayResource#getResourceState()
+     */
+    protected ResourceState getResourceState() {
+        try {
+            long t1 = System.currentTimeMillis();
+            // get a print instance for exporting
+            JasperPrint print = newJasperPrint();
 
-	/**
-	 * Construct.
-	 * 
-	 * @param report
-	 *            the report input stream
-	 */
-	public JRImageResource(File report)
-	{
-		super(report);
-	}
+            // get a fresh instance of an exporter for this report
+            JRGraphics2DExporter exporter = new JRGraphics2DExporter();
 
-	/**
-	 * @see wicket.contrib.jasperreports.JRResource#newExporter()
-	 */
-	public final JRAbstractExporter newExporter()
-	{
-		throw new UnsupportedOperationException(
-				"this method is not used in this implementation");
-	}
+            // prepare a stream to trap the exporter's output
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            exporter.setParameter(JRExporterParameter.JASPER_PRINT, print);
+            exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, baos);
 
-	/**
-	 * @see wicket.resource.DynamicByteArrayResource#getResourceState()
-	 */
-	protected ResourceState getResourceState()
-	{
-		try
-		{
-			long t1 = System.currentTimeMillis();
-			// get a print instance for exporting
-			JasperPrint print = newJasperPrint();
+            // create an image object
+            int width = (int)((float)print.getPageWidth() * getZoomRatio());
+            int height = (int)((float)print.getPageHeight() * getZoomRatio());
+            BufferedImage image = new BufferedImage(width, height, type);
+            exporter.setParameter(JRGraphics2DExporterParameter.GRAPHICS_2D, image.getGraphics());
+            exporter.setParameter(JRGraphics2DExporterParameter.ZOOM_RATIO, new Float(zoomRatio));
 
-			// get a fresh instance of an exporter for this report
-			JRGraphics2DExporter exporter = new JRGraphics2DExporter();
+            // execute the export and return the trapped result
+            exporter.exportReport();
+            final byte[] data = toImageData(image);
+            // if (log.isDebugEnabled())
+            // {
+            long t2 = System.currentTimeMillis();
+            log.info("loaded report data; bytes: "
+                + data.length + " in " + (t2 - t1) + " miliseconds");
+            // }
+            return new ResourceState() {
+                public int getLength() {
+                    return data.length;
+                }
 
-			// prepare a stream to trap the exporter's output
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			exporter.setParameter(JRExporterParameter.JASPER_PRINT, print);
-			exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, baos);
+                public byte[] getData() {
+                    return data;
+                }
 
-			// create an image object
-			int width = (int) ((float) print.getPageWidth() * getZoomRatio());
-			int height = (int) ((float) print.getPageHeight() * getZoomRatio());
-			BufferedImage image = new BufferedImage(width, height, type);
-			exporter.setParameter(JRGraphics2DExporterParameter.GRAPHICS_2D,
-					(Graphics2D) image.getGraphics());
-			exporter.setParameter(JRGraphics2DExporterParameter.ZOOM_RATIO, new Float(
-					zoomRatio));
+                public String getContentType() {
+                    return "image/" + format;
+                }
+            };
+        }
+        catch(JRException e) {
+            throw new WicketRuntimeException(e);
+        }
+    }
 
-			// execute the export and return the trapped result
-			exporter.exportReport();
-			final byte[] data = toImageData(image);
-			// if (log.isDebugEnabled())
-			// {
-			long t2 = System.currentTimeMillis();
-			log.info("loaded report data; bytes: "
-					+ data.length + " in " + (t2 - t1) + " miliseconds");
-			// }
-			return new ResourceState()
-			{
-				public int getLength()
-				{
-					return data.length;
-				}
-			
-				public byte[] getData()
-				{
-					return data;
-				}
-			
-				public String getContentType()
-				{
-					return "image/" + format;
-				}
-			};
-		}
-		catch (JRException e)
-		{
-			throw new WicketRuntimeException(e);
-		}
-	}
+    /**
+     * @param image The image to turn into data
+     *
+     * @return The image data for this dynamic image
+     */
+    protected byte[] toImageData(final BufferedImage image) {
+        try {
+            // Create output stream
+            final ByteArrayOutputStream out = new ByteArrayOutputStream();
 
-	/**
-	 * @param image
-	 *            The image to turn into data
-	 * @return The image data for this dynamic image
-	 */
-	protected byte[] toImageData(final BufferedImage image)
-	{
-		try
-		{
-			// Create output stream
-			final ByteArrayOutputStream out = new ByteArrayOutputStream();
+            // Get image writer for format
+            final ImageWriter writer = (ImageWriter)ImageIO.getImageWritersByFormatName(
+                format).next();
 
-			// Get image writer for format
-			final ImageWriter writer = (ImageWriter) ImageIO.getImageWritersByFormatName(
-					format).next();
+            // Write out image
+            writer.setOutput(ImageIO.createImageOutputStream(out));
+            writer.write(image);
 
-			// Write out image
-			writer.setOutput(ImageIO.createImageOutputStream(out));
-			writer.write(image);
+            // Return the image data
+            return out.toByteArray();
+        }
+        catch(IOException e) {
+            throw new WicketRuntimeException("Unable to convert dynamic image to stream",
+                e);
+        }
+    }
 
-			// Return the image data
-			return out.toByteArray();
-		}
-		catch (IOException e)
-		{
-			throw new WicketRuntimeException("Unable to convert dynamic image to stream",
-					e);
-		}
-	}
+    /**
+     * @see JRResource#getContentType()
+     */
+    public String getContentType() {
+        return "image/" + format;
+    }
 
-	/**
-	 * @see JRResource#getContentType()
-	 */
-	public String getContentType()
-	{
-		return "image/" + format;
-	}
+    /**
+     * Gets the zoom ratio.
+     *
+     * @return the zoom ratio used for the export. The default value is 1
+     */
+    public float getZoomRatio() {
+        return zoomRatio;
+    }
 
-	/**
-	 * Gets the zoom ratio.
-	 * 
-	 * @return the zoom ratio used for the export. The default value is 1
-	 */
-	public float getZoomRatio()
-	{
-		return zoomRatio;
-	}
+    /**
+     * Sets the zoom ratio.
+     *
+     * @param ratio the zoom ratio used for the export. The default value is 1
+     */
+    public void setZoomRatio(float ratio) {
+        this.zoomRatio = ratio;
+    }
 
-	/**
-	 * Sets the zoom ratio.
-	 * 
-	 * @param zoomRatio
-	 *            the zoom ratio used for the export. The default value is 1
-	 */
-	public void setZoomRatio(float zoomRatio)
-	{
-		this.zoomRatio = zoomRatio;
-	}
+    /**
+     * Gets the image type.
+     *
+     * @return the image type. The default value is 'png'
+     */
+    public String getFormat() {
+        return format;
+    }
 
-	/**
-	 * Gets the image type.
-	 * 
-	 * @return the image type. The default value is 'png'
-	 */
-	public String getFormat()
-	{
-		return format;
-	}
+    /**
+     * Sets the image type.
+     *
+     * @param format the image type. The default value is 'png'
+     */
+    public void setFormat(String format) {
+        this.format = format;
+    }
 
-	/**
-	 * Sets the image type.
-	 * 
-	 * @param format
-	 *            the image type. The default value is 'png'
-	 */
-	public void setFormat(String format)
-	{
-		this.format = format;
-	}
+    /**
+     * Gets type of image (one of BufferedImage.TYPE_*).
+     *
+     * @return type of image
+     */
+    public int getType() {
+        return type;
+    }
 
-	/**
-	 * Gets type of image (one of BufferedImage.TYPE_*).
-	 * 
-	 * @return type of image
-	 */
-	public int getType()
-	{
-		return type;
-	}
+    /**
+     * Sets type of image (one of BufferedImage.TYPE_*).
+     *
+     * @param type type of image
+     */
+    public void setType(int type) {
+        this.type = type;
+    }
 
-	/**
-	 * Sets type of image (one of BufferedImage.TYPE_*).
-	 * 
-	 * @param type
-	 *            type of image
-	 */
-	public void setType(int type)
-	{
-		this.type = type;
-	}
+    public String getExtension() {
+        return getFormat();
+    }
 }

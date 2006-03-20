@@ -18,61 +18,54 @@
  */
 package wicket.contrib.jasperreports;
 
+import wicket.Component;
 import wicket.IResourceListener;
+import wicket.ResourceReference;
 import wicket.markup.ComponentTag;
 import wicket.markup.html.WebComponent;
 
 /**
- * Component for embedding a jasper report in a page. This component must be
- * attached to either a frame- or an iframe tag. If you don't want to embed the
- * report, but have a link to it instead, use {@link wicket.ResourceReference}.
- * 
+ * Component for embedding a jasper report in a page. This component must be attached to either a frame- or an iframe
+ * tag. If you don't want to embed the report, but have a link to it instead, use {@link ResourceReference}.
+ *
  * @author Eelco Hillenius
+ * @deprecated use {@link JRObject} instead.  Frames and IFrames have plugin issues.
  */
 public final class EmbeddedJRReport extends WebComponent implements
-		IResourceListener
-{
-	/** the report resource. */
-	private final JRResource resource;
+    IResourceListener {
+    /**
+     * the report resource.
+     */
+    private final JRResource resource;
 
-	/**
-	 * Construcxt.
-	 * 
-	 * @param id
-	 *            component id
-	 * @param resource
-	 *            the resource
-	 */
-	public EmbeddedJRReport(String id, JRResource resource)
-	{
-		super(id);
-		this.resource = resource;
-	}
+    /**
+     * Construcxt.
+     *
+     * @param componentID component componentID
+     * @param jrResource the jrResource
+     */
+    public EmbeddedJRReport(String componentID, JRResource jrResource) {
+        super(componentID);
+        this.resource = jrResource;
+    }
 
-	/**
-	 * @see wicket.Component#onComponentTag(wicket.markup.ComponentTag)
-	 */
-	protected void onComponentTag(ComponentTag tag)
-	{
-		if ((!tag.getName().equalsIgnoreCase("frame"))
-				&& (!tag.getName().equalsIgnoreCase("iframe")))
-		{
-			findMarkupStream().throwMarkupException(
-					"Component "
-							+ getId()
-							+ " must be applied to a tag of type 'frame' or 'iframe'"
-							+ "', not " + tag.toUserDebugString());
-		}
-		String url = urlFor(IResourceListener.INTERFACE);
-		tag.put("src", getResponse().encodeURL(url));
-		super.onComponentTag(tag);
-	}
+    /**
+     * @see Component#onComponentTag(ComponentTag)
+     */
+    protected void onComponentTag(ComponentTag tag) {
+        if((!"frame".equalsIgnoreCase(tag.getName())) && (!"iframe".equalsIgnoreCase(tag.getName()))) {
+            findMarkupStream().throwMarkupException("Component " + getId()
+                + " must be applied to a tag of type 'frame' or 'iframe', not " + tag.toUserDebugString());
+        }
+        String url = urlFor(IResourceListener.INTERFACE);
+        tag.put("src", getResponse().encodeURL(url));
+        super.onComponentTag(tag);
+    }
 
-	/**
-	 * @see wicket.IResourceListener#onResourceRequested()
-	 */
-	public void onResourceRequested()
-	{
-		resource.onResourceRequested();
+    /**
+     * @see IResourceListener#onResourceRequested()
+     */
+    public void onResourceRequested() {
+        resource.onResourceRequested();
 	}
 }
