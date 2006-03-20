@@ -1,15 +1,14 @@
 /*
  * $Id$
- * $Revision$
- * $Date$
- *
+ * $Revision$ $Date$
+ * 
  * ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- *
+ * 
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -28,107 +27,130 @@ import net.sf.jasperreports.engine.export.JRTextExporterParameter;
 
 /**
  * Resource class for jasper reports text resources.
- *
+ * 
  * @author Eelco Hillenius
  */
-public final class JRTextResource extends JRResource {
-    /**
-     * an integer representing the page width in characters.
-     */
-    private int pageWidth = 100;
-    /**
-     * an integer representing the page height in characters.
-     */
-    private int pageHeight = 100;
+public final class JRTextResource extends JRResource
+{
+	/**
+	 * an integer representing the page width in characters.
+	 */
+	private int pageWidth = 100;
 
-    /**
-     * Construct without a report. You must provide a report before you can use this resource.
-     */
-    public JRTextResource() {
-        super();
-    }
+	/**
+	 * an integer representing the page height in characters.
+	 */
+	private int pageHeight = 100;
 
-    /**
-     * Construct.
-     *
-     * @param report the report input stream
-     */
-    public JRTextResource(InputStream report) {
-        super(report);
-    }
+	/**
+	 * Construct without a report. You must provide a report before you can use
+	 * this resource.
+	 */
+	public JRTextResource()
+	{
+		super();
+	}
 
-    /**
-     * Construct.
-     *
-     * @param report the report input stream
-     */
-    public JRTextResource(URL report) {
-        super(report);
-    }
+	/**
+	 * Construct.
+	 * 
+	 * @param report
+	 *            the report input stream
+	 */
+	public JRTextResource(InputStream report)
+	{
+		super(report);
+	}
 
-    /**
-     * Construct.
-     *
-     * @param report the report input stream
-     */
-    public JRTextResource(File report) {
-        super(report);
-    }
+	/**
+	 * Construct.
+	 * 
+	 * @param report
+	 *            the report input stream
+	 */
+	public JRTextResource(URL report)
+	{
+		super(report);
+	}
 
-    /**
-     * @see JRResource#newExporter()
-     */
-    public JRAbstractExporter newExporter() {
-        JRTextExporter exporter = new JRTextExporter();
-        exporter.setParameter(JRTextExporterParameter.PAGE_WIDTH, new Integer(pageWidth));
-        exporter.setParameter(JRTextExporterParameter.PAGE_HEIGHT, new Integer(pageHeight));
-        return exporter;
-    }
+	/**
+	 * Construct.
+	 * 
+	 * @param report
+	 *            the report input stream
+	 */
+	public JRTextResource(File report)
+	{
+		super(report);
+	}
 
-    /**
-     * @see JRResource#getContentType()
-     */
-    public String getContentType() {
-        return "text/plain";
-    }
+	/**
+	 * @see JRResource#newExporter()
+	 */
+	public JRAbstractExporter newExporter()
+	{
+		JRTextExporter exporter = new JRTextExporter();
+		exporter.setParameter(JRTextExporterParameter.PAGE_WIDTH, new Integer(pageWidth));
+		exporter.setParameter(JRTextExporterParameter.PAGE_HEIGHT,
+				new Integer(pageHeight));
+		return exporter;
+	}
 
-    /**
-     * Gets page height.
-     *
-     * @return an integer representing the page height in characters
-     */
-    public int getPageHeight() {
-        return pageHeight;
-    }
+	/**
+	 * @see JRResource#getContentType()
+	 */
+	public String getContentType()
+	{
+		return "text/plain";
+	}
 
-    /**
-     * Sets page height.
-     *
-     * @param height an integer representing the page height in characters
-     */
-    public void setPageHeight(int height) {
-        this.pageHeight = height;
-    }
+	/**
+	 * Gets page height.
+	 * 
+	 * @return an integer representing the page height in characters
+	 */
+	public int getPageHeight()
+	{
+		return pageHeight;
+	}
 
-    /**
-     * Gets page width.
-     *
-     * @return an integer representing the page width in characters
-     */
-    public int getPageWidth() {
-        return pageWidth;
-    }
+	/**
+	 * Sets page height.
+	 * 
+	 * @param height
+	 *            an integer representing the page height in characters
+	 */
+	public void setPageHeight(int height)
+	{
+		this.pageHeight = height;
+	}
 
-    /**
-     * Sets page width.
-     *
-     * @param width an integer representing the page width in characters
-     */
-    public void setPageWidth(int width) {
-        this.pageWidth = width;
-    }
+	/**
+	 * Gets page width.
+	 * 
+	 * @return an integer representing the page width in characters
+	 */
+	public int getPageWidth()
+	{
+		return pageWidth;
+	}
 
-    public String getExtension() {
-        return "txt";
-    }
+	/**
+	 * Sets page width.
+	 * 
+	 * @param width
+	 *            an integer representing the page width in characters
+	 */
+	public void setPageWidth(int width)
+	{
+		this.pageWidth = width;
+	}
+
+	/**
+	 * @see wicket.contrib.jasperreports.JRResource#getExtension()
+	 */
+	public String getExtension()
+	{
+		return "txt";
+	}
 }
