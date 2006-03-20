@@ -1,15 +1,14 @@
 /*
  * $Id$
- * $Revision$
- * $Date$
- *
+ * $Revision$ $Date$
+ * 
  * ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- *
+ * 
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -18,54 +17,58 @@
  */
 package wicket.contrib.jasperreports;
 
-import wicket.Component;
 import wicket.IResourceListener;
 import wicket.ResourceReference;
 import wicket.markup.ComponentTag;
 import wicket.markup.html.WebComponent;
 
 /**
- * Component for embedding a jasper report in a page. This component must be attached to either a frame- or an iframe
- * tag. If you don't want to embed the report, but have a link to it instead, use {@link ResourceReference}.
- *
- * @author Eelco Hillenius
- * @deprecated use {@link JRObject} instead.  Frames and IFrames have plugin issues.
+ * Component for embedding a jasper report in a page. This component must be
+ * attached to an &lt;object&gt; tag. If you don't want to embed the report, but
+ * have a link to it instead, use {@link ResourceReference}.
+ * 
+ * @author <a href="mailto:evanchooly@gmail.com">Justin Lee</a>
  */
-public final class EmbeddedJRReport extends WebComponent implements
-    IResourceListener {
-    /**
-     * the report resource.
-     */
-    private final JRResource resource;
+public final class EmbeddedJRReport extends WebComponent implements IResourceListener
+{
+	private final JRResource resource;
 
-    /**
-     * Construcxt.
-     *
-     * @param componentID component componentID
-     * @param jrResource the jrResource
-     */
-    public EmbeddedJRReport(String componentID, JRResource jrResource) {
-        super(componentID);
-        this.resource = jrResource;
-    }
+	/**
+	 * Construcxt.
+	 * 
+	 * @param componentID
+	 *            component componentID
+	 * @param resource
+	 *            the resource
+	 */
+	public EmbeddedJRReport(String componentID, JRResource resource)
+	{
+		super(componentID);
+		this.resource = resource;
+	}
 
-    /**
-     * @see Component#onComponentTag(ComponentTag)
-     */
-    protected void onComponentTag(ComponentTag tag) {
-        if((!"frame".equalsIgnoreCase(tag.getName())) && (!"iframe".equalsIgnoreCase(tag.getName()))) {
-            findMarkupStream().throwMarkupException("Component " + getId()
-                + " must be applied to a tag of type 'frame' or 'iframe', not " + tag.toUserDebugString());
-        }
-        String url = urlFor(IResourceListener.INTERFACE);
-        tag.put("src", getResponse().encodeURL(url));
-        super.onComponentTag(tag);
-    }
+	/**
+	 * @see wicket.IResourceListener#onResourceRequested()
+	 */
+	public void onResourceRequested()
+	{
+		resource.onResourceRequested();
+	}
 
-    /**
-     * @see IResourceListener#onResourceRequested()
-     */
-    public void onResourceRequested() {
-        resource.onResourceRequested();
+	/**
+	 * @see wicket.Component#onComponentTag(wicket.markup.ComponentTag)
+	 */
+	protected void onComponentTag(ComponentTag tag)
+	{
+		if (!"object".equalsIgnoreCase(tag.getName()))
+		{
+			findMarkupStream().throwMarkupException(
+					"Component "
+							+ getId() + " must be applied to a tag of type 'object' not "
+							+ tag.toUserDebugString());
+		}
+		tag.put("data", getResponse().encodeURL(urlFor(IResourceListener.INTERFACE)));
+		tag.put("type", resource.getContentType());
+		super.onComponentTag(tag);
 	}
 }

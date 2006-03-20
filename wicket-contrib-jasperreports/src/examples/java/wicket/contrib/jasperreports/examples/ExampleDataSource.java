@@ -2,33 +2,32 @@
  * ============================================================================
  * GNU Lesser General Public License
  * ============================================================================
- *
- * JasperReports - Free Java report-generating library.
- * Copyright (C) 2001-2005 JasperSoft Corporation http://www.jaspersoft.com
  * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * JasperReports - Free Java report-generating library. Copyright (C) 2001-2005
+ * JasperSoft Corporation http://www.jaspersoft.com
  * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307, USA.
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * JasperSoft Corporation
- * 185, Berry Street, Suite 6200
- * San Francisco CA 94107
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this library; if not, write to the Free Software Foundation, Inc.,
+ * 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
+ * 
+ * JasperSoft Corporation 185, Berry Street, Suite 6200 San Francisco CA 94107
  * http://www.jaspersoft.com
  */
 package wicket.contrib.jasperreports.examples;
 
-import net.sf.jasperreports.engine.*;
-
+import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRField;
 
 /**
  * @author Teodor Danciu (teodord@users.sourceforge.net)
@@ -37,12 +36,10 @@ import net.sf.jasperreports.engine.*;
 public class ExampleDataSource implements JRDataSource
 {
 
-
 	/**
-	 *
+	 * Sample data.
 	 */
-	private Object[][] data =
-		{
+	private Object[][] data = {
 			{"Berne", new Integer(22), "Bill Ott", "250 - 20th Ave."},
 			{"Berne", new Integer(9), "James Schneider", "277 Seventh Av."},
 			{"Boston", new Integer(32), "Michael Ott", "339 College Av."},
@@ -72,47 +69,45 @@ public class ExampleDataSource implements JRDataSource
 			{"Paris", new Integer(18), "Sylvia Fuller", "158 - 20th Ave."},
 			{"Paris", new Integer(5), "Laura Miller", "294 Seventh Av."},
 			{"San Francisco", new Integer(48), "Robert White", "549 Seventh Av."},
-			{"San Francisco", new Integer(7), "James Peterson", "231 Upland Pl."}
-		};
+			{"San Francisco", new Integer(7), "James Peterson", "231 Upland Pl."}};
 
 	private int index = -1;
-	
 
 	/**
-	 *
+	 * Construct.
 	 */
 	public ExampleDataSource()
 	{
 	}
 
-
 	/**
 	 * @return true when there is a next record.
-	 * @throws JRException 
-	 *
+	 * @throws JRException
+	 * 
 	 */
 	public boolean next() throws JRException
 	{
 		index++;
 
 		boolean hasNext = (index < data.length);
-		if (!hasNext) index = -1; // reset index for the next round
+		if (!hasNext)
+			index = -1; // reset index for the next round
 		return hasNext;
 	}
 
-
 	/**
-	 * @param field the field
+	 * @param field
+	 *            the field
 	 * @return the value
-	 * @throws JRException 
-	 *
+	 * @throws JRException
+	 * 
 	 */
 	public Object getFieldValue(JRField field) throws JRException
 	{
 		Object value = null;
-		
+
 		String fieldName = field.getName();
-		
+
 		if ("City".equals(fieldName))
 		{
 			value = data[index][0];
@@ -129,9 +124,7 @@ public class ExampleDataSource implements JRDataSource
 		{
 			value = data[index][3];
 		}
-		
+
 		return value;
 	}
-
-
 }
