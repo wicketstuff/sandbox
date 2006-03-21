@@ -88,7 +88,7 @@ public abstract class DojoUpdateHandler extends DojoAjaxHandler
 					{
 						component.setRenderBodyOnly(true);
 
-						component.doRender();
+						component.renderComponent();
 					}
 					catch (Exception ex)
 					{

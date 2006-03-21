@@ -50,7 +50,7 @@ class GMapAjaxHandler extends DojoAjaxHandler
 
         StringResponse stringResponse = new StringResponse();
         requestCycle.setResponse(stringResponse);
-        getComponent().doRender();
+        getComponent().renderComponent();
         requestCycle.setResponse(response);
 
         StringBufferResourceStream resourceStream = new StringBufferResourceStream("text/html");
