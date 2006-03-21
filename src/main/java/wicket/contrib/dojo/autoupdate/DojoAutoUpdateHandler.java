@@ -90,7 +90,7 @@ public class DojoAutoUpdateHandler extends DojoAjaxHandler
 					{
 						component.setRenderBodyOnly(true);
 
-						component.doRender();
+						component.renderComponent();
 					}
 					catch (Exception ex)
 					{
