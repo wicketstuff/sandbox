@@ -14,7 +14,7 @@ import wicket.util.resource.IResourceStream;
 
 /**
  * @author jcompagner
- *
+ * 
  */
 public class DojoRequestTarget implements IRequestTarget
 {
@@ -39,9 +39,9 @@ public class DojoRequestTarget implements IRequestTarget
 		{
 			Streams.copy(resourceStream.getInputStream(), out);
 		}
-		catch(Exception exception)
+		catch (Exception exception)
 		{
-			
+
 		}
 		finally
 		{
@@ -54,21 +54,6 @@ public class DojoRequestTarget implements IRequestTarget
 			{
 				ex.printStackTrace();
 			}
-		}		
-	}
-
-	/**
-	 * @see wicket.IRequestTarget#cleanUp(wicket.RequestCycle)
-	 */
-	public void cleanUp(RequestCycle requestCycle)
-	{
-		try
-		{
-			resourceStream.close();
-		}
-		catch (IOException ex)
-		{
-			// ignore
 		}
 	}
 
@@ -78,6 +63,21 @@ public class DojoRequestTarget implements IRequestTarget
 	public Object getLock(RequestCycle requestCycle)
 	{
 		return Session.get();
+	}
+
+	/**
+	 * @see wicket.IRequestTarget#detach(wicket.RequestCycle)
+	 */
+	public void detach(RequestCycle requestCycle)
+	{
+		try
+		{
+			resourceStream.close();
+		}
+		catch (IOException ex)
+		{
+			// ignore
+		}
 	}
 
 }
