@@ -102,10 +102,7 @@ public class TinyMCEInitializer implements IInitializer
 
     private void initFromClasses(Application application)
     {
-        //todo used in development, it may not work in secured environment
-        String path = scope.getProtectionDomain().getCodeSource().getLocation().getPath();
-        String basePath = Strings.beforeLast(path, '/');
-
+        String basePath = scope.getResource("").getPath();
         initResources(application, basePath);
     }
 
