@@ -62,13 +62,6 @@ public class SearchPage extends CdAppBasePage
 	private final SearchModel searchModel;
 
 	/**
-	 * Refers to a possible message set from the outside (details page). To be
-	 * checked on each rendering: when there is a message, add it to the current
-	 * queue and set this variable to null.
-	 */
-	private String infoMessageForNextRendering = null;
-
-	/**
 	 * Construct.
 	 */
 	public SearchPage()
@@ -120,31 +113,6 @@ public class SearchPage extends CdAppBasePage
 	public void setCurrentResultPageToFirst()
 	{
 		resultsListView.setCurrentPage(0);
-	}
-
-	/**
-	 * Sets a message for next rendering.
-	 * 
-	 * @param externalMessage
-	 *            message set from the outside (details page). To be checked on
-	 *            each rendering: when there is a message, add it to the current
-	 *            queue and set this variable to null
-	 */
-	public final void setInfoMessageForNextRendering(String externalMessage)
-	{
-		this.infoMessageForNextRendering = externalMessage;
-	}
-
-	/**
-	 * @see wicket.Component#onAttach()
-	 */
-	protected void onAttach()
-	{
-		if (infoMessageForNextRendering != null)
-		{
-			SearchPage.this.info(infoMessageForNextRendering);
-			infoMessageForNextRendering = null;
-		}
 	}
 
 	/**

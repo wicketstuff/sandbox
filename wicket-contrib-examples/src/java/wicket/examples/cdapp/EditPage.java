@@ -121,13 +121,13 @@ public final class EditPage extends CdAppBasePage
 			{
 				// if it is a new cd, start with a fresh page
 				SearchPage searchPage = new SearchPage();
-				searchPage.setInfoMessageForNextRendering("cd " + cd.getTitle() + " created");
+				searchPage.info("cd " + cd.getTitle() + " created");
 				setResponsePage(searchPage);
 			}
 			else
 			{
 				// set message for search page to display on next rendering
-				searchCDPage.setInfoMessageForNextRendering("cd " + cd.getTitle() + " saved");
+				searchCDPage.info("cd " + cd.getTitle() + " saved");
 				setResponsePage(searchCDPage); // navigate back to search page
 			}
 		}
@@ -257,9 +257,10 @@ public final class EditPage extends CdAppBasePage
 		final CD cd = (CD)cdModel.getObject(null);
 		if (cd.getImage() == null)
 		{
-			if(IMG_UNKNOWN == null)
+			if (IMG_UNKNOWN == null)
 			{
-				 IMG_UNKNOWN = PackageResource.get(EditPage.class, "questionmark.gif").setCacheable(false);
+				IMG_UNKNOWN = PackageResource.get(EditPage.class, "questionmark.gif").setCacheable(
+						false);
 			}
 			return IMG_UNKNOWN;
 		}
