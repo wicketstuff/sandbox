@@ -20,6 +20,8 @@ package wicket.contrib.authorization.strategies.role;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Set;
+import java.util.Stack;
 
 import wicket.util.string.StringList;
 
@@ -87,12 +89,14 @@ public final class Roles
   public boolean contains(Object o)
   {
     // Ensure that all roles extend EVERYONE
-    Class c = o.getClass();
+    if (!(o instanceof Class))
+      return false;
+    Class c = (Class) o;
     if (!Role.EVERYONE.class.isAssignableFrom(c))
       return false;
     else
     {
-      for (Class role: this)
+      for (Class<?> role: this)
       {
         if (role.isAssignableFrom(c))
           return true;
@@ -132,7 +136,7 @@ public final class Roles
         continue;
       else
       {
-        for (Class ownedRole: this)
+        for (Class<?> ownedRole: this)
         {
           if (ownedRole.isAssignableFrom(wantedRole))
             return true;
@@ -140,6 +144,32 @@ public final class Roles
       }
     }
     return false;
+  }
+  
+  /**
+   * Returns a set of all roles implied by the roles object by inheritance,
+   * including the roles that were explicitly specified.
+   */
+  public Set<Class> getImplicitRoles()
+  {
+    Stack<Class> inputRoles = new Stack<Class>();
+    inputRoles.addAll(this);
+    Set<Class> outputRoles = new HashSet<Class>();
+    while (!inputRoles.isEmpty())
+    {
+      Class role = inputRoles.pop();
+      outputRoles.add(role);
+      Class superClass = role.getSuperclass();
+      if (superClass!=null && Role.EVERYONE.class.isAssignableFrom(superClass))
+        inputRoles.add(superClass);
+      Class[] interfaces = role.getInterfaces();
+      for (Class Interface: interfaces)
+      {
+        if (Role.EVERYONE.class.isAssignableFrom(Interface))
+          inputRoles.add(Interface);
+      }
+    }
+    return outputRoles;
   }
   
   /**

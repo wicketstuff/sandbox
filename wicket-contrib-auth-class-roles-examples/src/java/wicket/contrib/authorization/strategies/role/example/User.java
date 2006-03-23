@@ -19,11 +19,9 @@ package wicket.contrib.authorization.strategies.role.example;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.Stack;
-import wicket.contrib.authorization.strategies.role.Role;
+import wicket.contrib.authorization.strategies.role.Roles;
 import wicket.util.string.StringList;
 
 /**
@@ -90,24 +88,8 @@ public class User
     public String toString()
   {
     List<String> roleNames = new ArrayList<String>();
-    Stack<Class> inputRoles = new Stack<Class>();
-    inputRoles.add(getRole());
-    Set<Class> outputRoles = new HashSet<Class>();
-    while (!inputRoles.isEmpty())
-    {
-      Class role = inputRoles.pop();
-      outputRoles.add(role);
-      Class superClass = role.getSuperclass();
-      if (superClass!=null && Role.EVERYONE.class.isAssignableFrom(superClass))
-        inputRoles.add(superClass);
-      Class[] interfaces = role.getInterfaces();
-      for (Class Interface: interfaces)
-      {
-        if (Role.EVERYONE.class.isAssignableFrom(Interface))
-          inputRoles.add(Interface);
-      }
-    }
-    for (Class role: outputRoles)
+    Set<Class> roles = new Roles(getRole()).getImplicitRoles();
+    for (Class role: roles)
     {
       String name = role.getName();
       // Role could be a nested or a normal class
