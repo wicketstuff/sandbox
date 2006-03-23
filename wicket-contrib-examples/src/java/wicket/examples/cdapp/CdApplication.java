@@ -1,6 +1,5 @@
 /*
- * $Id$ $Revision:
- * 1.1 $ $Date$
+ * $Id$ $Revision$ $Date$
  * 
  * ==================================================================== Licensed
  * under the Apache License, Version 2.0 (the "License"); you may not use this
@@ -44,7 +43,7 @@ public class CdApplication extends WicketExampleApplication implements ISessionF
 	private static Log log = LogFactory.getLog(CdApplication.class);
 
 	/** hibernate session factory. */
-	private final SessionFactory sessionFactory;
+	private SessionFactory sessionFactory;
 
 	/**
 	 * custom request cycle factory.
@@ -53,9 +52,10 @@ public class CdApplication extends WicketExampleApplication implements ISessionF
 	{
 		public RequestCycle newRequestCycle(Session session, Request request, Response response)
 		{
-			return new CdAppRequestCycle((WebSession)session, (WebRequest)request, response, sessionFactory);
+			return new CdAppRequestCycle((WebSession)session, (WebRequest)request, response,
+					sessionFactory);
 		}
-		
+
 	};
 
 	/**
@@ -63,7 +63,13 @@ public class CdApplication extends WicketExampleApplication implements ISessionF
 	 */
 	public CdApplication()
 	{
-		super();
+	}
+
+	/**
+	 * @see wicket.protocol.http.WebApplication#init()
+	 */
+	protected void init()
+	{
 		try
 		{
 			final Configuration configuration = new Configuration();
@@ -90,7 +96,7 @@ public class CdApplication extends WicketExampleApplication implements ISessionF
 	{
 		return Home.class;
 	}
-	
+
 	/**
 	 * @see wicket.ISessionFactory#newSession()
 	 */

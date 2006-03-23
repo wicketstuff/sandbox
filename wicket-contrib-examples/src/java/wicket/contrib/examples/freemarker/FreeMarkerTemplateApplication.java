@@ -58,6 +58,13 @@ public class FreeMarkerTemplateApplication extends WebApplication
 	 */
 	public FreeMarkerTemplateApplication()
 	{
+	}
+
+	/**
+	 * @see wicket.protocol.http.WebApplication#init()
+	 */
+	protected void init()
+	{
 		getResourceSettings().setResourcePollFrequency(Duration.ONE_SECOND);
 	}
 

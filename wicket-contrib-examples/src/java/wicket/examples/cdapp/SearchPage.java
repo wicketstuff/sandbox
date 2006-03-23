@@ -1,6 +1,5 @@
 /*
- * $Id$ $Revision:
- * 1.7 $ $Date$
+ * $Id$ $Revision$ $Date$
  * 
  * ==================================================================== Licensed
  * under the Apache License, Version 2.0 (the "License"); you may not use this
@@ -136,7 +135,10 @@ public class SearchPage extends CdAppBasePage
 		this.infoMessageForNextRendering = externalMessage;
 	}
 
-	protected void onBeginRequest()
+	/**
+	 * @see wicket.Component#onAttach()
+	 */
+	protected void onAttach()
 	{
 		if (infoMessageForNextRendering != null)
 		{
@@ -296,13 +298,15 @@ public class SearchPage extends CdAppBasePage
 		/**
 		 * Construct.
 		 * 
-		 * @param name name of the component
-		 * @param cd the cd
+		 * @param name
+		 *            name of the component
+		 * @param cd
+		 *            the cd
 		 */
 		public DeleteLink(String name, CD cd)
 		{
 			super(name, new Model(cd.getId()));
-			String msg = "if(!confirm('delete cd " + cd.getTitle() +" ?')) return false;";
+			String msg = "if(!confirm('delete cd " + cd.getTitle() + " ?')) return false;";
 			add(new AttributeModifier("onclick", true, new Model(msg)));
 		}
 
@@ -321,14 +325,16 @@ public class SearchPage extends CdAppBasePage
 			}
 			catch (HibernateException e)
 			{
-				// For some reason (back button, concurrent acces?) the object does not exist
+				// For some reason (back button, concurrent acces?) the object
+				// does not exist
 				// anymore. Report an error and return
-				SearchPage.this.error("could not delete cd with id " + id +
-						"; it was not found in the database");
+				SearchPage.this.error("could not delete cd with id " + id
+						+ "; it was not found in the database");
 				return;
 			}
 
-			// inform the list component that a change in its model is about to happen
+			// inform the list component that a change in its model is about to
+			// happen
 			resultsListView.modelChanging();
 
 			getCdDao().delete(cd);
@@ -396,8 +402,8 @@ public class SearchPage extends CdAppBasePage
 		 */
 		protected void populateItem(final LoopItem iteration)
 		{
-			final PagingNavigationLink link = new PagingNavigationLink(
-					"pageLink", pageable, iteration.getIteration());
+			final PagingNavigationLink link = new PagingNavigationLink("pageLink", pageable,
+					iteration.getIteration());
 
 			if (iteration.getIteration() > 0)
 			{

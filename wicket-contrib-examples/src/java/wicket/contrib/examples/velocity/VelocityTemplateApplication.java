@@ -1,7 +1,5 @@
 /*
- * $Id$
- * $Revision$
- * $Date$
+ * $Id$ $Revision$ $Date$
  * 
  * ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -29,7 +27,7 @@ import wicket.util.time.Duration;
 
 /**
  * Application class for velocity template example.
- *
+ * 
  * @author Eelco Hillenius
  */
 public class VelocityTemplateApplication extends WebApplication
@@ -48,6 +46,7 @@ public class VelocityTemplateApplication extends WebApplication
 
 	/**
 	 * Gets the dummy persons database.
+	 * 
 	 * @return the dummy persons database
 	 */
 	public static List getPersons()
@@ -55,12 +54,19 @@ public class VelocityTemplateApplication extends WebApplication
 		return persons;
 	}
 
-    /**
-     * Constructor.
-     */
-    public VelocityTemplateApplication()
-    {
-        getResourceSettings().setResourcePollFrequency(Duration.ONE_SECOND);
+	/**
+	 * Constructor.
+	 */
+	public VelocityTemplateApplication()
+	{
+	}
+
+	/**
+	 * @see wicket.protocol.http.WebApplication#init()
+	 */
+	protected void init()
+	{
+		getResourceSettings().setResourcePollFrequency(Duration.ONE_SECOND);
 
 		// initialize velocity
 		try
@@ -71,13 +77,13 @@ public class VelocityTemplateApplication extends WebApplication
 		{
 			throw new WicketRuntimeException(e);
 		}
-    }
-    
-    /**
-     * @return class
-     */
-    public Class getHomePage()
-    {
-    	return TemplatePage.class;
-    }
+	}
+
+	/**
+	 * @return class
+	 */
+	public Class getHomePage()
+	{
+		return TemplatePage.class;
+	}
 }
