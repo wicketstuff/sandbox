@@ -30,6 +30,7 @@ import wicket.contrib.authorization.strategies.role.RoleAuthorizationStrategy;
 import wicket.contrib.authorization.strategies.role.Roles;
 import wicket.markup.html.WebPage;
 import wicket.protocol.http.WebApplication;
+import wicket.settings.ISecuritySettings;
 
 /**
  * A web application subclass that does role-based authentication.
@@ -51,10 +52,14 @@ public abstract class AuthenticatedWebApplication extends WebApplication
   {
     // Get web session class to instantiate
     this.webSessionClass = getWebSessionClass();
-    
+  }
+  
+  protected void init()
+  {
     // Set authorization strategy and unauthorized instantiation listener
-    getSecuritySettings().setAuthorizationStrategy(new RoleAuthorizationStrategy(this));
-    getSecuritySettings().setUnauthorizedComponentInstantiationListener(this);
+    ISecuritySettings securitySettings = getSecuritySettings();
+    securitySettings.setAuthorizationStrategy(new RoleAuthorizationStrategy(this));
+    securitySettings.setUnauthorizedComponentInstantiationListener(this);
   }
   
   /**

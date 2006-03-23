@@ -10,7 +10,8 @@ import wicket.protocol.http.WebSession;
  *
  * @author Jonathan Locke
  */
-public abstract class AuthenticatedWebSession extends WebSession
+public abstract class AuthenticatedWebSession
+  extends WebSession
 {
   /**
    * @return Current authenticated web session

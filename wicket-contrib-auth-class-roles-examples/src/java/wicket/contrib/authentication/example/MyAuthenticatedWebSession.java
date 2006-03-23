@@ -22,9 +22,9 @@ public class MyAuthenticatedWebSession extends AuthenticatedWebSession
   {
     super(application);
   }
-  
+
   /**
-   * @see wicket.authentication.AuthenticatedWebSession#authenticate(java.lang.String,
+   * @see wicket.contrib.authentication.AuthenticatedWebSession#authenticate(java.lang.String,
    *      java.lang.String)
    */
   @Override
@@ -33,9 +33,9 @@ public class MyAuthenticatedWebSession extends AuthenticatedWebSession
     // Check username and password
     return username.equals("wicket") && password.equals("wicket");
   }
-  
+
   /**
-   * @see wicket.authentication.AuthenticatedWebSession#getRole()
+   * @see wicket.contrib.authentication.AuthenticatedWebSession#getRole()
    */
   @Override
     public Class getRole()
