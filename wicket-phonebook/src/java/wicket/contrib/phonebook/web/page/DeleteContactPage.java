@@ -24,6 +24,7 @@ import wicket.markup.html.basic.Label;
 import wicket.markup.html.form.Button;
 import wicket.markup.html.form.Form;
 import wicket.util.collections.MicroMap;
+import wicket.util.string.interpolator.MapVariableInterpolator;
 
 /**
  * Delete the Contact.
@@ -68,9 +69,11 @@ public class DeleteContactPage extends BasePage {
 
 				getDao().delete(contactId);
 
-				flash(getLocalizer().getString("status.deleted", this),
+				String msg=MapVariableInterpolator.interpolate(getLocalizer().getString("status.deleted", this),
 						new MicroMap("name", deleted.getFullName()));
-
+				
+				getSession().info(msg);
+				
 				setResponsePage(DeleteContactPage.this.backPage);
 			}
 		}.setDefaultFormProcessing(false));
@@ -79,9 +82,11 @@ public class DeleteContactPage extends BasePage {
 			protected void onSubmit() {
 				Contact deleted = getDao().load(contactId);
 
-				flash(getLocalizer().getString("status.cancelled", this),
+				String msg=MapVariableInterpolator.interpolate(getLocalizer().getString("status.cancelled", this),
 						new MicroMap("name", deleted.getFullName()));
 
+				getSession().info(msg);
+				
 				setResponsePage(DeleteContactPage.this.backPage);
 			}
 		}.setDefaultFormProcessing(false));

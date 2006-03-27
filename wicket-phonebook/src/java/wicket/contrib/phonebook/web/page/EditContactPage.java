@@ -29,6 +29,7 @@ import wicket.markup.html.form.validation.StringValidator;
 import wicket.markup.html.panel.FeedbackPanel;
 import wicket.model.CompoundPropertyModel;
 import wicket.util.collections.MicroMap;
+import wicket.util.string.interpolator.MapVariableInterpolator;
 
 /**
  * Edit the Contact. Display details if an existing contact, then persist them
@@ -74,8 +75,8 @@ public class EditContactPage extends BasePage {
 
 		form.add(new Button("cancel") {
 			protected void onSubmit() {
-				flash(getLocalizer().getString("status.cancel", this));
-
+				String msg=getLocalizer().getString("status.cancel", this);
+				getSession().info(msg);
 				setResponsePage(EditContactPage.this.backPage);
 			}
 		}.setDefaultFormProcessing(false));
@@ -85,9 +86,11 @@ public class EditContactPage extends BasePage {
 				Contact contact = (Contact) getForm().getModelObject();
 				getDao().save(contact);
 
-				flash(getLocalizer().getString("status.save", this),
+				String msg=MapVariableInterpolator.interpolate(getLocalizer().getString("status.save", this),
 						new MicroMap("name", contact.getFullName()));
 
+				getSession().info(msg);
+				
 				setResponsePage(EditContactPage.this.backPage);
 			}
 		});

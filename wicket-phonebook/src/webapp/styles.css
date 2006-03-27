@@ -5,14 +5,14 @@ body {
 
 a { color: blue; }
 
-div.status {
+div.status ul li {
     width: 99%;
     padding: 3px; 
     border: 1px solid #c3c4c1;
     background-color: #f0ffef;
     color: black;
     margin-bottom: 15px;
-  
+   
 }
 
 div.status ul { margin:0; padding:0; list-style:none; }
