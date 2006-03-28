@@ -38,9 +38,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import wicket.WicketRuntimeException;
+import wicket.markup.html.DynamicWebResource;
 import wicket.markup.html.WebResource;
 import wicket.protocol.http.WebResponse;
-import wicket.resource.DynamicByteArrayResource;
 
 /**
  * Base class for jasper reports resources.
@@ -48,7 +48,7 @@ import wicket.resource.DynamicByteArrayResource;
  * @author Eelco Hillenius
  * @author Matej Knopp
  */
-public abstract class JRResource extends DynamicByteArrayResource
+public abstract class JRResource extends DynamicWebResource
 {
 	/**
 	 * logger.
@@ -361,7 +361,7 @@ public abstract class JRResource extends DynamicByteArrayResource
 	 * 
 	 * @return the binary data
 	 * 
-	 * @see DynamicByteArrayResource#getResourceState()
+	 * @see DynamicWebResource#getResourceState()
 	 */
 	protected ResourceState getResourceState()
 	{
