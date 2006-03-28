@@ -38,7 +38,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import wicket.WicketRuntimeException;
-import wicket.resource.DynamicByteArrayResource;
+import wicket.markup.html.DynamicWebResource;
 
 /**
  * Resource class for jasper reports PDF resources.
@@ -119,7 +119,7 @@ public final class JRImageResource extends JRResource
 	}
 
 	/**
-	 * @see DynamicByteArrayResource#getResourceState()
+	 * @see DynamicWebResource#getResourceState()
 	 */
 	protected ResourceState getResourceState()
 	{
