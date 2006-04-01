@@ -3,7 +3,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>wicket</groupId>
+	<groupId>wicket-stuff</groupId>
 	<artifactId>wicket-contrib-yui</artifactId>
 	<packaging>jar</packaging>
 	<version>1.2-SNAPSHOT</version>
@@ -79,7 +79,7 @@
 		</developer>
 		<developer>
 			<name>Joshua Lim</name>
-			<id></id>
+			<id>josh_lim</id>
 			<email> at users.sf.net</email>
 		</developer>
 	</developers>

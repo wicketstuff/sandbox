@@ -16,7 +16,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package wicket.extensions.markup.html.yui.calendar;
+package wicket.contrib.markup.html.yui.calendar;
 
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -27,7 +27,7 @@ import wicket.Component;
 import wicket.IInitializer;
 import wicket.RequestCycle;
 import wicket.behavior.HeaderContributor;
-import wicket.extensions.markup.html.yui.AbstractYuiPanel;
+import wicket.contrib.markup.html.yui.AbstractYuiPanel;
 import wicket.extensions.util.resource.PackagedTextTemplate;
 import wicket.markup.html.PackageResource;
 import wicket.markup.html.PackageResourceReference;
@@ -194,6 +194,6 @@ public class Calendar extends AbstractYuiPanel
 		PackagedTextTemplate template = new PackagedTextTemplate(Calendar.class, "init.js");
 		template.interpolate(variables);
 
-		return template.toString();
+		return template.getString();
 	}
 }

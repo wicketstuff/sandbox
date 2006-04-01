@@ -15,16 +15,16 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package wicket.extensions.markup.html.yui;
+package wicket.contrib.markup.html.yui;
 
 import wicket.Application;
 import wicket.IInitializer;
+import wicket.contrib.markup.html.yui.AbstractYuiPanel;
+import wicket.contrib.markup.html.yui.calendar.Calendar;
+import wicket.contrib.markup.html.yui.slider.Slider;
 import wicket.extensions.ajax.markup.html.form.upload.UploadProgressBar;
 import wicket.extensions.markup.html.datepicker.DatePickerComponentInitializer;
 import wicket.extensions.markup.html.form.palette.PaletteInitializer;
-import wicket.extensions.markup.html.yui.AbstractYuiPanel;
-import wicket.extensions.markup.html.yui.calendar.Calendar;
-import wicket.extensions.markup.html.yui.slider.Slider;
 
 /**
  * Initializer for the extensions package.

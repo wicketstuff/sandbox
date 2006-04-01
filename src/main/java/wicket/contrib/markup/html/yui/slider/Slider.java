@@ -16,7 +16,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package wicket.extensions.markup.html.yui.slider;
+package wicket.contrib.markup.html.yui.slider;
 
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -26,7 +26,7 @@ import wicket.AttributeModifier;
 import wicket.Component;
 import wicket.IInitializer;
 import wicket.behavior.HeaderContributor;
-import wicket.extensions.markup.html.yui.AbstractYuiPanel;
+import wicket.contrib.markup.html.yui.AbstractYuiPanel;
 import wicket.extensions.util.resource.TextTemplateHeaderContributor;
 import wicket.markup.html.PackageResource;
 import wicket.markup.html.WebMarkupContainer;
