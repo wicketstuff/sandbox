@@ -16,7 +16,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package wicket.extensions.markup.html.yui;
+package wicket.contrib.markup.html.yui;
 
 import wicket.Application;
 import wicket.IInitializer;
