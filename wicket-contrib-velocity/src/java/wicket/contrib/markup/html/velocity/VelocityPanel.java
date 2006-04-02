@@ -172,7 +172,7 @@ public final class VelocityPanel extends WebComponent
 				{
 					// encode the result in order to get valid html output that
 					// does not break the rest of the page
-					result = Strings.escapeMarkup(result);
+					result = Strings.escapeMarkup(result).toString();
 				}
 
 				// now replace the body of the tag with the velocity merge
