@@ -43,20 +43,17 @@ import wicket.util.collections.MiniMap;
  * 
  * @author Eelco Hillenius
  */
-public class Calendar extends AbstractYuiPanel
-{
+public class Calendar extends AbstractYuiPanel {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Initializer for this component; binds static resources.
 	 */
-	public final static class ComponentInitializer implements IInitializer
-	{
+	public final static class ComponentInitializer implements IInitializer {
 		/**
 		 * @see wicket.IInitializer#init(wicket.Application)
 		 */
-		public void init(Application application)
-		{
+		public void init(Application application) {
 			// register all .js, .css, and .gif package resources
 			PackageResource.bind(application, Calendar.class, Pattern
 					.compile(".*\\.js|.*\\.css|.*\\.gif"));
@@ -66,8 +63,7 @@ public class Calendar extends AbstractYuiPanel
 	/**
 	 * The container/ receiver of the javascript component.
 	 */
-	private final class CalendarElement extends FormComponent
-	{
+	private final class CalendarElement extends FormComponent {
 		private static final long serialVersionUID = 1L;
 
 		/**
@@ -75,15 +71,12 @@ public class Calendar extends AbstractYuiPanel
 		 * 
 		 * @param id
 		 */
-		public CalendarElement(String id)
-		{
+		public CalendarElement(String id) {
 			super(id);
-			add(new AttributeModifier("id", true, new AbstractReadOnlyModel()
-			{
+			add(new AttributeModifier("id", true, new AbstractReadOnlyModel() {
 				private static final long serialVersionUID = 1L;
 
-				public Object getObject(Component component)
-				{
+				public Object getObject(Component component) {
 					return elementId;
 				}
 			}));
@@ -92,8 +85,7 @@ public class Calendar extends AbstractYuiPanel
 		/**
 		 * @see wicket.markup.html.form.FormComponent#updateModel()
 		 */
-		public void updateModel()
-		{
+		public void updateModel() {
 			Calendar.this.updateModel();
 		}
 	}
@@ -117,24 +109,22 @@ public class Calendar extends AbstractYuiPanel
 	 * @param id
 	 *            the component id
 	 */
-	public Calendar(String id)
-	{
+	public Calendar(String id) {
 		super(id);
 		add(HeaderContributor.forJavaScript(Calendar.class));
 		add(HeaderContributor.forCss(Calendar.class));
 
-		Label initialization = new Label("initialization", new AbstractReadOnlyModel()
-		{
-			private static final long serialVersionUID = 1L;
+		Label initialization = new Label("initialization",
+				new AbstractReadOnlyModel() {
+					private static final long serialVersionUID = 1L;
 
-			/**
-			 * @see wicket.model.IModel#getObject(wicket.Component)
-			 */
-			public Object getObject(Component component)
-			{
-				return getJavaScriptComponentInitializationScript();
-			}
-		});
+					/**
+					 * @see wicket.model.IModel#getObject(wicket.Component)
+					 */
+					public Object getObject(Component component) {
+						return getJavaScriptComponentInitializationScript();
+					}
+				});
 		initialization.setEscapeModelStrings(false);
 		add(initialization);
 		add(calendarElement = new CalendarElement("calendarContainer"));
@@ -143,29 +133,26 @@ public class Calendar extends AbstractYuiPanel
 	/**
 	 * TODO implement
 	 */
-	public void updateModel()
-	{
+	public void updateModel() {
 	}
 
 	/**
 	 * @see wicket.Component#renderHead(wicket.markup.html.internal.HtmlHeaderContainer)
 	 */
-	public void renderHead(HtmlHeaderContainer container)
-	{
-		((WebPage)getPage()).getBodyContainer().addOnLoadModifier("init" + javaScriptId + "();");
+	public void renderHead(HtmlHeaderContainer container) {
+		((WebPage) getPage()).getBodyContainer().addOnLoadModifier(
+				"init" + javaScriptId + "();");
 		super.renderHead(container);
 	}
 
 	/**
 	 * @see wicket.Component#onAttach()
 	 */
-	protected void onAttach()
-	{
+	protected void onAttach() {
 		super.onAttach();
 
 		// initialize lazily
-		if (elementId == null)
-		{
+		if (elementId == null) {
 			// assign the markup id
 			String id = getMarkupId();
 			elementId = id + "Element";
@@ -178,12 +165,13 @@ public class Calendar extends AbstractYuiPanel
 	 * 
 	 * @return the initilization script
 	 */
-	protected String getJavaScriptComponentInitializationScript()
-	{
+	protected String getJavaScriptComponentInitializationScript() {
 		String leftImage = RequestCycle.get().urlFor(
-				new PackageResourceReference(Calendar.class, "callt.gif"));
+				new PackageResourceReference(Calendar.class, "callt.gif"))
+				.toString();
 		String rightImage = RequestCycle.get().urlFor(
-				new PackageResourceReference(Calendar.class, "calrt.gif"));
+				new PackageResourceReference(Calendar.class, "calrt.gif"))
+				.toString();
 
 		Map variables = new MiniMap(4);
 		variables.put("javaScriptId", javaScriptId);
@@ -191,7 +179,8 @@ public class Calendar extends AbstractYuiPanel
 		variables.put("navigationArrowLeft", leftImage);
 		variables.put("navigationArrowRight", rightImage);
 
-		PackagedTextTemplate template = new PackagedTextTemplate(Calendar.class, "init.js");
+		PackagedTextTemplate template = new PackagedTextTemplate(
+				Calendar.class, "init.js");
 		template.interpolate(variables);
 
 		return template.getString();
