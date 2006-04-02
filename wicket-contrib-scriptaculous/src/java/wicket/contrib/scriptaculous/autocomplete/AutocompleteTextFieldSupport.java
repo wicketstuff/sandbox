@@ -48,7 +48,7 @@ public class AutocompleteTextFieldSupport extends TextField {
 
         private void addCssReference(HtmlHeaderContainer container,
                         ResourceReference ref) {
-                String url = container.getPage().urlFor(ref);
+                String url = container.getPage().urlFor(ref).toString();
                 String s = "\t<link rel=\"stylesheet\" type=\"text/css\" href=\""
                                 + url + "\"/>\n";
                 write(container, s);

@@ -56,6 +56,6 @@ public class InlineDeleteLink extends Link
 			property, getPage(), getResourceModel(), null, null,
 			"Are you sure you want to delete the row?" );
 		
-		return Strings.replaceAll(message, "'", "\\'");
+		return Strings.replaceAll(message, "'", "\\'").toString();
 	}
 }

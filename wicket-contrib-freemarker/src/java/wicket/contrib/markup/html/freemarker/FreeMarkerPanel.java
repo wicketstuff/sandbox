@@ -174,7 +174,7 @@ public final class FreeMarkerPanel extends WebComponent {
 				if (escapeHtml) {
 					// Encode the result in order to get valid HTML output that
 					// does not break the rest of the page
-					result = Strings.escapeMarkup(result);
+					result = Strings.escapeMarkup(result).toString();
 				}
 
 				// Finally, actually replace the tag body

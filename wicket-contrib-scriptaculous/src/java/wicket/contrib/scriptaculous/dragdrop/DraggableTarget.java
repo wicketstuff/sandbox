@@ -31,7 +31,7 @@ public class DraggableTarget extends WebMarkupContainer {
     protected void onRender(MarkupStream markupStream) {
         super.onRender(markupStream);
 
-        String url = this.getPage().urlFor(null, pageContribution, new PageParameters());
+        String url = this.getPage().urlFor(null, pageContribution, new PageParameters()).toString();
         getResponse().write("\n<script type=\"text/javascript\">new Ajax.Updater('" + getId() + "', '"+ url + "', " +
                 " { " +
                 " evalScripts:true, " +
