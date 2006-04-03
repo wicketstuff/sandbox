@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src/main/java"/>
+	<classpathentry kind="src" path="src/test/java"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.maven.ide.eclipse.MAVEN2_CLASSPATH_CONTAINER"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/wicket"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/wicket-auth-roles"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/wicket-contrib-tinymce"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/wicket-extensions"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/wicket-spring"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/wicket-spring-annot"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/wicket-contrib-cms"/>
+	<classpathentry kind="lib" path="/home/jtoth/downloads/mysql-connector-java-5.0.0-beta/mysql-connector-java-5.0.0-beta-bin.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+	<!-- Wicket Application -->
+	<bean id="wicketApplication" class="contrib.wicket.cms.example.CMSExampleApplication"/>
+
+	<!-- SMTP 
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host"><value>${smtp.hostname}</value></property>
+	</bean>
+-->
+
+	<!-- Freemarker 
+	<bean id="freemarkerConfiguration" class="org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean">
+	</bean>
+-->
+
+	<!-- 
+		allow the user of properties from application.properties 
+	     throughout this configuration file
+	-->
+	<bean id="placeholderConfig"
+	      class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+	    <property name="location"><value>classpath:application.properties</value></property>
+	    <property name="systemPropertiesModeName"><value>SYSTEM_PROPERTIES_MODE_OVERRIDE</value></property>
+	</bean>
+
+	<!-- configure a simple pooled datasource -->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass"><value>${jdbc.driver}</value></property>
+		<property name="jdbcUrl"><value>${jdbc.url}</value></property>
+		<property name="user"><value>${jdbc.username}</value></property>
+		<property name="password"><value>${jdbc.password}</value></property>
+	</bean>
+
+	<!-- setup hibernate session factory -->
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+		<property name="dataSource"><ref local="dataSource"/></property>
+
+    	<property name="annotatedClasses">
+     		<list>
+       			<value>contrib.wicket.cms.model.Content</value>           		       			
+				<value>contrib.wicket.cms.model.ContentHistory</value>   		
+       			<value>contrib.wicket.cms.model.ContentType</value>           		       			
+       			
+       			<value>contrib.wicket.cms.example.model.Member</value>       
+     		</list>
+   		</property>
+    			
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">${hibernate.dialect}</prop>
+				<prop key="hibernate.connection.pool_size">5</prop>
+				<prop key="hibernate.show_sql">true</prop>		
+				<prop key="hibernate.cglib.use_reflection_optimizer">true</prop>	
+            	<prop key="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</prop>
+            	<prop key="hibernate.hibernate.cache.use_query_cache">true</prop> 									
+			</props>
+		</property>
+		
+		<property name="entityInterceptor"><ref local="auditInterceptor"/></property>
+		
+		<property name="schemaUpdate" value="true" />
+	</bean>
+
+    <bean id="auditInterceptor" class="contrib.wicket.cms.interceptor.AuditInterceptor" />
+	
+	<!-- setup transaction manager	-->
+    <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+       <property name="sessionFactory"><ref bean="sessionFactory"/></property>
+    </bean>
+
+	<bean class="org.springframework.transaction.interceptor.TransactionAttributeSourceAdvisor">
+	  	<property name="transactionInterceptor" ref="transactionInterceptor"/>
+	</bean>
+
+	<bean id="transactionInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor">
+	  	<property name="transactionManager" ref="transactionManager"/>
+	  	<property name="transactionAttributeSource">
+	    	<bean class="org.springframework.transaction.annotation.AnnotationTransactionAttributeSource"/>
+	  	</property>
+	</bean>
+	
+	<bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"/>
+
+	<!-- Setup Services	-->
+	<bean id="membersService" class="contrib.wicket.cms.example.service.hibernate.MembersHibernateService">
+		<property name="sessionFactory"><ref local="sessionFactory"/></property>
+	</bean>		
+	<bean id="contentService" class="contrib.wicket.cms.service.hibernate.ContentHibernateService">
+		<property name="sessionFactory"><ref local="sessionFactory"/></property>
+	</bean>		
+	
+</beans>
