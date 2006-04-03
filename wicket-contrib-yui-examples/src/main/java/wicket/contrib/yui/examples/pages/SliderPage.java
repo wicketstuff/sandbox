@@ -19,6 +19,9 @@ package wicket.contrib.yui.examples.pages;
 
 import wicket.contrib.markup.html.yui.slider.Slider;
 import wicket.contrib.yui.examples.WicketExamplePage;
+import wicket.markup.html.form.Form;
+import wicket.markup.html.form.TextField;
+import wicket.markup.html.panel.FeedbackPanel;
 import wicket.model.PropertyModel;
 
 /**
@@ -28,34 +31,59 @@ import wicket.model.PropertyModel;
  */
 public class SliderPage extends WicketExamplePage
 {
-	private Integer selection = new Integer(0);
-
 	/**
 	 * Construct.
 	 */
 	public SliderPage()
 	{
-		add(new Slider("slider", new PropertyModel(this, "selection")));
+        add(new FeedbackPanel("feedback"));
+        add(new SliderForm("sliderForm"));
 	}
+    
+    private class SliderForm extends Form {
+        
+        private Integer wicketScore = new Integer(0);
+        private Integer strutsScore = new Integer(0);
+        private TextField tfWicket;
+        private TextField tfStruts;
+        
+        public SliderForm(String id) {
+            super(id);
+            
+            Integer leftUp = new Integer(100);
+            Integer rightDown = new Integer(100);
+            Integer tick = new Integer(1);
+            
+            add(tfWicket = new TextField("wicketScore", new PropertyModel(this, "wicketScore")));
+            add(new Slider("wicketSlider", new PropertyModel(this, "selection"), 
+                    leftUp, rightDown, tick, tfWicket ));
+            
+            add(tfStruts = new TextField("strutsScore", new PropertyModel(this, "strutsScore")));
+            add(new Slider("strutsSlider", new PropertyModel(this, "selection"), 
+                    leftUp, rightDown, tick, tfStruts));
+            
+        }
+        
+        protected void onSubmit() {
+            info("Wicket: " + this.wicketScore.toString());
+            info("Struts: " + this.strutsScore.toString());
+        }
+        
+        public Integer getStrutsScore() {
+            return strutsScore;
+        }
 
-	/**
-	 * Gets selection.
-	 * 
-	 * @return selection
-	 */
-	public Integer getSelection()
-	{
-		return selection;
-	}
+        public void setStrutsScore(Integer strutsScore) {
+            this.strutsScore = strutsScore;
+        }
 
-	/**
-	 * Sets selection.
-	 * 
-	 * @param selection
-	 *            selection
-	 */
-	public void setSelection(Integer selection)
-	{
-		this.selection = selection;
-	}
+        public Integer getWicketScore() {
+            return wicketScore;
+        }
+
+        public void setWicketScore(Integer wicketScore) {
+            this.wicketScore = wicketScore;
+        }
+    }
+
 }
