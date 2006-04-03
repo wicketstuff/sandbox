@@ -166,10 +166,10 @@ public class Calendar extends AbstractYuiPanel {
 	 * @return the initilization script
 	 */
 	protected String getJavaScriptComponentInitializationScript() {
-		String leftImage = RequestCycle.get().urlFor(
+		CharSequence leftImage = RequestCycle.get().urlFor(
 				new PackageResourceReference(Calendar.class, "callt.gif"))
 				.toString();
-		String rightImage = RequestCycle.get().urlFor(
+		CharSequence rightImage = RequestCycle.get().urlFor(
 				new PackageResourceReference(Calendar.class, "calrt.gif"))
 				.toString();
 
