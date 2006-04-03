@@ -228,10 +228,10 @@ public abstract class AjaxHandler extends AbstractBehavior implements
          *                reference to add
          */
         protected void addJsReference(Response r, PackageResourceReference ref) {
-                String url = getComponent().getPage().urlFor(ref).toString();
-                String s = "\t<script language=\"JavaScript\" type=\"text/javascript\" "
-                                + "src=\"" + url + "\"></script>\n";
-                r.write(s);
+                CharSequence url = getComponent().getPage().urlFor(ref);
+                r.write("\t<script language=\"JavaScript\" type=\"text/javascript\" src=\"");
+                r.write(url);
+                r.write("\"></script>\n");
         }
 
         /**
