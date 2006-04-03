@@ -21,6 +21,9 @@ package wicket.contrib.markup.html.yui.slider;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import wicket.Application;
 import wicket.AttributeModifier;
 import wicket.Component;
@@ -31,10 +34,12 @@ import wicket.extensions.util.resource.TextTemplateHeaderContributor;
 import wicket.markup.html.PackageResource;
 import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.WebPage;
+import wicket.markup.html.form.FormComponent;
 import wicket.markup.html.image.Image;
 import wicket.markup.html.internal.HtmlHeaderContainer;
 import wicket.model.AbstractReadOnlyModel;
 import wicket.model.IModel;
+import wicket.model.Model;
 import wicket.model.PropertyModel;
 import wicket.util.collections.MiniMap;
 
@@ -47,6 +52,7 @@ public class Slider extends AbstractYuiPanel
 {
 	private static final long serialVersionUID = 1L;
 
+    private Log log = LogFactory.getLog(Slider.class);
 	/**
 	 * Initializer for this component; binds static resources.
 	 */
@@ -63,7 +69,7 @@ public class Slider extends AbstractYuiPanel
 			PackageResource.bind(application, Slider.class, Pattern.compile(".*\\.gif|.*\\.png"),
 					true);
 			// and a css
-			PackageResource.bind(application, Slider.class, "css/screen.css");
+			PackageResource.bind(application, Slider.class, "css/default.css");
 		}
 	}
 
@@ -78,10 +84,15 @@ public class Slider extends AbstractYuiPanel
 	private String imageElementId;
 
 	/**
-	 * The JavaScript variable name of the calendar component.
+	 * The JavaScript variable name of the slider component.
 	 */
 	private String javaScriptId;
 
+    private Integer leftUp;
+    private Integer rightDown;
+    private Integer tick;
+    
+    
 	/**
 	 * Construct.
 	 * 
@@ -90,13 +101,26 @@ public class Slider extends AbstractYuiPanel
 	 * @param model
 	 *            the model for this component
 	 */
-	public Slider(String id, IModel model)
+	public Slider(String id, IModel model, 
+            final Integer leftUp, final Integer rightDown, final Integer tick,
+            final FormComponent element)
 	{
 		super(id, model);
-
+        
 		add(HeaderContributor.forJavaScript(Slider.class, "slider.js"));
-		add(HeaderContributor.forCss(Slider.class, "css/screen.css"));
+		add(HeaderContributor.forCss(Slider.class, "css/default.css"));
 
+        /* handle form element */
+        if (element != null) {
+            element.add(new AttributeModifier("id", true, new AbstractReadOnlyModel() {
+                private static final long serialVersionUID = 1L;
+
+                public Object getObject(Component component) {
+                    return element.getId();
+                }
+            }));
+        }
+        
 		IModel variablesModel = new AbstractReadOnlyModel()
 		{
 			private static final long serialVersionUID = 1L;
@@ -111,10 +135,14 @@ public class Slider extends AbstractYuiPanel
 			{
 				if (variables == null)
 				{
-					this.variables = new MiniMap(3);
+					this.variables = new MiniMap(7);
 					variables.put("javaScriptId", javaScriptId);
 					variables.put("backGroundElementId", backgroundElementId);
 					variables.put("imageElementId", imageElementId);
+                    variables.put("leftUp", leftUp);
+                    variables.put("rightDown", rightDown);
+                    variables.put("tick", tick);
+                    variables.put("formElementId", element.getId());
 				}
 				return variables;
 			}
@@ -122,20 +150,27 @@ public class Slider extends AbstractYuiPanel
 
 		add(TextTemplateHeaderContributor.forJavaScript(Slider.class, "init.js", variablesModel));
 
+        /* background div */
 		WebMarkupContainer backgroundElement = new WebMarkupContainer("backgroundElement");
 		backgroundElement.add(new AttributeModifier("id", true, new PropertyModel(this,
 				"backgroundElementId")));
+
+        int size = leftUp.intValue() + rightDown.intValue();
+        
+        backgroundElement.add(new AttributeModifier("style", true, new Model("width:" + size + "px;")));
 		add(backgroundElement);
 
+        /* thumb div and image */
 		WebMarkupContainer imageElement = new WebMarkupContainer("imageElement");
 		imageElement.add(new AttributeModifier("id", true,
 				new PropertyModel(this, "imageElementId")));
 		backgroundElement.add(imageElement);
 
-		/* add the thumb img resoruce */
-		imageElement.add(new Image("thumb", PackageResource
-				.get(Slider.class, "img/horizSlider.png")));
-
+        /* add the thumb img resoruce */
+        imageElement.add(new Image("thumb", PackageResource
+                .get(Slider.class, "img/horizSlider.png")));
+        imageElement.add(new AttributeModifier("style", true, new Model("left:" + leftUp.intValue() + "px;")));
+        
 	}
 
 	/**
@@ -172,6 +207,7 @@ public class Slider extends AbstractYuiPanel
 	 */
 	public void updateModel()
 	{
+        log.info("updateModel");
 	}
 
 	/**
@@ -191,4 +227,34 @@ public class Slider extends AbstractYuiPanel
 			javaScriptId = backgroundElementId + "JS";
 		}
 	}
+    
+    public Integer getLeftUp() 
+    {
+        return leftUp;
+    }
+
+    public void setLeftUp(Integer leftUp) 
+    {
+        this.leftUp = leftUp;
+    }
+
+    public Integer getRightDown() 
+    {
+        return rightDown;
+    }
+
+    public void setRightDown(Integer rightDown) 
+    {
+        this.rightDown = rightDown;
+    }
+
+    public Integer getTick() 
+    {
+        return tick;
+    }
+
+    public void setTick(Integer tick) 
+    {
+        this.tick = tick;
+    }
 }
