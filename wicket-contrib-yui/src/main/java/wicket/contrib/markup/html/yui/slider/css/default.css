@@ -1,0 +1,25 @@
+.horizBGDiv 	{
+	position	: relative; 
+	background	: url(../img/horizbgpx.gif) repeat-x; 
+	height		: 36px; 
+	z-index		: 5;
+	padding		: 0px;
+	margin 		: 0px;
+	float		: left; 
+	border		: 0px solid #FF00FF;
+} 
+
+.horizHandleDiv { 
+    position 	: relative;
+    top			: 5px;  		/* force the image down a bit */
+    cursor		: default;
+    width		: 18px; 
+    height		: 18px; 
+   	padding		: 0px;
+	margin 		: 0px;
+}
+
+.horizFBCorner {
+	float	:	left; 
+	border	:	0px solid #FF0000;
+} 
