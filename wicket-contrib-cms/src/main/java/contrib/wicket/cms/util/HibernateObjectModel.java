@@ -91,7 +91,7 @@ public class HibernateObjectModel extends LoadableDetachableModel {
 	public void setPersistentObject(Object persistentObject) {
 		objectId = session().getIdentifier(persistentObject);
 		objectClass = Hibernate.getClass(persistentObject);
-		attach();
+		detach();
 	}
 
 	/**
@@ -102,7 +102,7 @@ public class HibernateObjectModel extends LoadableDetachableModel {
 	 */
 	public void clearPersistentObject() {
 		objectId = null;
-		attach();
+		detach();
 	}
 
 	/**
