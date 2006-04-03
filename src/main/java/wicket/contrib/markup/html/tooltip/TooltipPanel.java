@@ -135,17 +135,17 @@ public class TooltipPanel extends Panel
     }
 
     private void addJsReference(HtmlHeaderContainer container, ResourceReference ref) {
-        String url = container.getPage().urlFor(ref).toString();
-        String s =
-            "\t<script type=\"text/javascript\" language='JavaScript' src=\"" + url + "\"></script>\n";
-        write(container, s);
+        CharSequence url = container.getPage().urlFor(ref);
+        write(container, "\t<script type=\"text/javascript\" language='JavaScript' src=\"");
+        write(container,url);
+        write(container,"\"></script>\n");
     }
     /**
      * Writes the given string to the header container.
      * @param container the header container
      * @param s the string to write
      */
-    private void write(HtmlHeaderContainer container, String s) {
+    private void write(HtmlHeaderContainer container, CharSequence s) {
         container.getResponse().write(s);
     }
 
