@@ -120,7 +120,7 @@ public class SourcesPage extends WebPage
 			{
 				PackageName name = PackageName.forClass(page);
 				ClassLoader loader = page.getClassLoader();
-				String path = Strings.replaceAll(name.getName(), ".", "/").toString();
+				CharSequence path = Strings.replaceAll(name.getName(), ".", "/");
 				try
 				{
 					// gives the urls for each place where the package
@@ -128,7 +128,7 @@ public class SourcesPage extends WebPage
 					// jar files containing the same package, so each
 					// jar file has its own url.
 
-					Enumeration urls = loader.getResources(path);
+					Enumeration urls = loader.getResources(path.toString());
 					while (urls.hasMoreElements())
 					{
 						URL url = (URL)urls.nextElement();
@@ -163,7 +163,6 @@ public class SourcesPage extends WebPage
 				while (br.ready())
 				{
 					String listing = br.readLine();
-					String extension = Strings.afterLast(listing, '.');
 					if (!listing.endsWith("class"))
 					{
 						resources.add(listing);

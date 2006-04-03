@@ -48,10 +48,10 @@ public class AutocompleteTextFieldSupport extends TextField {
 
         private void addCssReference(HtmlHeaderContainer container,
                         ResourceReference ref) {
-                String url = container.getPage().urlFor(ref).toString();
-                String s = "\t<link rel=\"stylesheet\" type=\"text/css\" href=\""
-                                + url + "\"/>\n";
-                write(container, s);
+        	CharSequence url = container.getPage().urlFor(ref);
+            write(container, "\t<link rel=\"stylesheet\" type=\"text/css\" href=\"");
+            write(container, url);
+            write(container, "\"/>\n");
         }
 
         /**
@@ -62,7 +62,7 @@ public class AutocompleteTextFieldSupport extends TextField {
          * @param s
          *                the string to write
          */
-        private void write(HtmlHeaderContainer container, String s) {
+        private void write(HtmlHeaderContainer container, CharSequence s) {
                 container.getResponse().write(s);
         }
 
