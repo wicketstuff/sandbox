@@ -10,17 +10,17 @@ import org.mortbay.jetty.Server;
 /**
  * Seperate startup class for people that want to run the examples directly.
  */
-public class Start
+public class StartWicketCms
 {
 	/**
 	 * Used for logging.
 	 */
-	private static Log log = LogFactory.getLog(Start.class);
+	private static Log log = LogFactory.getLog(StartWicketCms.class);
 
 	/**
 	 * Construct.
 	 */
-	Start()
+	StartWicketCms()
 	{
 		super();
 	}
