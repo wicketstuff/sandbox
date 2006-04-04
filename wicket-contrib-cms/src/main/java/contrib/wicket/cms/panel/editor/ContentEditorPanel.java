@@ -4,14 +4,11 @@
 package contrib.wicket.cms.panel.editor;
 
 import wicket.WicketRuntimeException;
-import wicket.contrib.tinymce.TinyMCEPanel;
 import wicket.markup.html.form.Form;
-import wicket.markup.html.form.TextArea;
 import wicket.markup.html.form.TextField;
 import wicket.markup.html.panel.FeedbackPanel;
 import wicket.markup.html.panel.Panel;
 import wicket.model.CompoundPropertyModel;
-import wicket.model.Model;
 import wicket.spring.injection.annot.SpringBean;
 import contrib.wicket.cms.model.Content;
 import contrib.wicket.cms.model.ContentType;

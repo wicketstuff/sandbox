@@ -2,17 +2,13 @@ package contrib.wicket.cms.initializer;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.springframework.orm.hibernate3.SessionFactoryUtils;
 
 import wicket.Application;
 import wicket.IInitializer;
 import wicket.MetaDataKey;
-import wicket.contrib.tinymce.TinyMCEInitializer;
-import wicket.request.target.coding.IndexedParamUrlCodingStrategy;
 import wicket.spring.SpringWebApplication;
 import contrib.wicket.cms.model.Content;
 import contrib.wicket.cms.model.ContentType;
-import contrib.wicket.cms.page.ContentManager;
 import contrib.wicket.cms.security.ContentAuthorizationStrategy;
 import contrib.wicket.cms.service.ContentService;
 
@@ -24,8 +20,6 @@ public class CMSInitializer implements IInitializer {
 
 	ContentAuthorizationStrategy contentAuthorizationStrategy;
 
-	String contentManagerPath = "/ContentManager";
-
 	public CMSInitializer(
 			ContentAuthorizationStrategy contentAuthorizationStrategy) {
 		this.contentAuthorizationStrategy = contentAuthorizationStrategy;
@@ -34,14 +28,10 @@ public class CMSInitializer implements IInitializer {
 	public void init(Application application) {
 		SpringWebApplication webApplication = (SpringWebApplication) application;
 
-		new TinyMCEInitializer().init(webApplication);
+//		new TinyMCEInitializer().init(webApplication);
 
 		webApplication.setMetaData(CONTENT_AUTHORIZATION_STRATEGY_KEY,
 				contentAuthorizationStrategy);
-
-		webApplication.mount(contentManagerPath,
-				new IndexedParamUrlCodingStrategy(contentManagerPath,
-						ContentManager.class));
 
 		initDatabase(webApplication);
 	}
@@ -92,14 +82,6 @@ public class CMSInitializer implements IInitializer {
 					ContentType.class, ContentType.FOLDER));
 			session.save(rootFolder);
 		}
-	}
-
-	public String getContentManagerPath() {
-		return contentManagerPath;
-	}
-
-	public void setContentManagerPath(String contentManagerPath) {
-		this.contentManagerPath = contentManagerPath;
 	}
 
 }

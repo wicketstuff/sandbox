@@ -1,4 +1,4 @@
-package contrib.wicket.cms.page;
+package contrib.wicket.cms.example.page;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -13,37 +13,28 @@ import contrib.wicket.cms.panel.ContentNavigatorPanel;
 import contrib.wicket.cms.panel.renderer.ContentRendererPanel;
 import contrib.wicket.cms.service.ContentService;
 
-public class ContentManager extends WebPage {
+public class Directory extends Template {
 
 	@SpringBean
 	private ContentService contentService;
 
-	public ContentManager(PageParameters params) {
+public Directory(PageParameters params) {
 		String[] path = new String[params.size()];
 
 		params.values().toArray(path);
 
 		Content content = contentService.findFolderByPath(path);
 
-		if (content == null) {
-			// TODO: Create parent folders
-			content = new Content();
-			content.setFolder(contentService.getRootFolder());
-			content.setContentType(contentService
-					.getContentType(ContentType.TEXT));
-			content.setDataAsString("Edit new content...");
-			content.setName(path[path.length - 1]);
-		}
-
-		final ContentRendererPanel contentPanel = new ContentRendererPanel(
-				"content", content);
-		add(contentPanel);
-
 		add(new ContentNavigatorPanel("contentNavigator", content) {
 
 			@Override
 			public void onClick(Content content) {
-				contentPanel.setContent(content);
+				if (content.getContentType().getId().equals(ContentType.FOLDER)) {
+					setFolder(content);
+				} else {
+					Home home = new Home(content);
+					setResponsePage(home);
+				}
 			}
 
 			@Override
@@ -52,6 +43,4 @@ public class ContentManager extends WebPage {
 			}
 		});
 
-	}
-
-}
+	}}
