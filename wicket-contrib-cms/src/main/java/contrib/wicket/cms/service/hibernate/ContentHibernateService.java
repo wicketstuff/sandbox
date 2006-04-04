@@ -32,15 +32,24 @@ public class ContentHibernateService extends GenericHibernateService implements
 
 	public Content findFolderByPath(String[] path) {
 
-		Criteria criteria = session().createCriteria(Content.class);
+		Content folder = null;
 
-		Criteria appendingCriteria = criteria;
-		for (int i = 0; i < path.length; i++) {
-			appendingCriteria = appendingCriteria.add(Restrictions.eq("name",
-					path[i]));
+		if (path.length == 0) {
+			folder = getRootFolder();
+		} else {
+
+			Criteria criteria = session().createCriteria(Content.class);
+
+			Criteria appendingCriteria = criteria;
+			for (int i = 0; i < path.length; i++) {
+				appendingCriteria = appendingCriteria.add(Restrictions.eq(
+						"name", path[i]));
+			}
+
+			folder = (Content) criteria.uniqueResult();
 		}
 
-		return (Content) criteria.uniqueResult();
+		return folder;
 	}
 
 	public Content findContentByName(Content folder, String name) {

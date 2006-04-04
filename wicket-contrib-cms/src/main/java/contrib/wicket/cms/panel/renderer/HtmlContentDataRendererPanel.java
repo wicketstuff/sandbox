@@ -13,7 +13,7 @@ public class HtmlContentDataRendererPanel extends Panel {
 
 	public HtmlContentDataRendererPanel(final String id, Content content) {
 		super(id);
-		add(new Label("dataAsString"));
+		add(new Label("dataAsString").setEscapeModelStrings(false));
 	}
 
 }

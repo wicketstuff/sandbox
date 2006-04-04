@@ -4,7 +4,9 @@ import javax.servlet.ServletContext;
 
 import wicket.ISessionFactory;
 import wicket.Session;
+import wicket.request.target.coding.IndexedParamUrlCodingStrategy;
 import wicket.spring.injection.annot.AnnotSpringWebApplication;
+import contrib.wicket.cms.example.page.Directory;
 import contrib.wicket.cms.example.page.Home;
 import contrib.wicket.cms.example.session.SecuritySession;
 import contrib.wicket.cms.initializer.CMSInitializer;
@@ -27,18 +29,16 @@ public class CMSExampleApplication extends AnnotSpringWebApplication {
 
 		getMarkupSettings().setStripWicketTags(true);
 
-		// Setup Security
-		// getSecuritySettings().setAuthorizationStrategy(
-		// new ResearchJunctionAuthorizationStrategy());
-
-		// Nice URLs
-		// mount("/q", PackageName.forClass(Home.class));
+		mount("/Directory", new IndexedParamUrlCodingStrategy("/Directory",
+				Directory.class));
 
 		// BEGIN CMS SETUP
 		ContentAuthorizationStrategy strategy = new ContentAuthorizationStrategy() {
 
 			public boolean hasWriteAccess(Content resource) {
-				return SecuritySession.get().getMemberId() != null;
+				// TODO: enable security access again
+				// return SecuritySession.get().getMemberId() != null;
+				return true;
 			}
 
 			public boolean hasReadAccess(Content resource) {

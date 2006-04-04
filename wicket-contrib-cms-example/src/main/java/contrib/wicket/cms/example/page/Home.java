@@ -12,27 +12,28 @@ public class Home extends Template {
 	ContentService contentService;
 
 	public Home() {
-		Content resource = contentService.findContentByName(contentService
-				.getRootFolder(), "HomePage");
+		init(contentService.findContentByName(contentService.getRootFolder(),
+				"HomePage"));
+	}
 
-		if (resource == null) {
-			resource = new Content();
-			resource.setContentType(contentService
+	public Home(Content content) {
+		init(content);
+	}
+
+	public void init(Content content) {
+
+		if (content == null) {
+			content = new Content();
+			content.setContentType(contentService
 					.getContentType(ContentType.HTML));
-			resource.setFolder(contentService.getRootFolder());
-			resource.setDataAsString("Edit Here...");
-			resource.setName("HomePage");
+			content.setFolder(contentService.getRootFolder());
+			content.setDataAsString("Edit Here...");
+			content.setName("HomePage");
 		}
 
-		ContentRendererPanel contentPanel = new ContentRendererPanel(
-				"content", resource);
+		ContentRendererPanel contentPanel = new ContentRendererPanel("content",
+				content);
 		add(contentPanel);
-
-		// add(new TinyMCEPanel("tinyMCE"));
-		//
-		// add(new TextArea("dataAsString", new
-		// Model(resource.getDataAsString())));
-
 	}
 
 }

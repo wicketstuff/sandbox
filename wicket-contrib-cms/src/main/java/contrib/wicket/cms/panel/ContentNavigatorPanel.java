@@ -6,6 +6,7 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 
 import wicket.extensions.markup.html.repeater.data.DataView;
 import wicket.extensions.markup.html.repeater.refreshing.Item;
@@ -25,34 +26,20 @@ abstract public class ContentNavigatorPanel extends Panel {
 	@SpringBean
 	private ContentService contentService;
 
+	Content folder;
+
 	public ContentNavigatorPanel(final String id) {
 		this(id, null);
 	}
 
-	public ContentNavigatorPanel(final String id, Content folder) {
+	public ContentNavigatorPanel(final String id, final Content folder) {
 		super(id);
 
-		if (folder == null) {
-			folder = contentService.getRootFolder();
-		}
+		this.folder = folder;
 
-		// List<AbstractColumn> columns = new ArrayList<AbstractColumn>();
-		//
-		// columns.add(new PropertyColumn(new Model("Name"), "name", "name") {
-		// @Override
-		// public void populateItem(final Item item, String componentId,
-		// IModel model) {
-		// item.add(new Link(componentId) {
-		// public void onClick() {
-		// ContentNavigatorPanel.this.onClick((Content) item
-		// .getModelObject());
-		// };
-		// });
+		// if (folder == null) {
+		// folder = contentService.getRootFolder();
 		// }
-		// });
-		//
-		// columns.add(new PropertyColumn(new Model("Last Modified"),
-		// "updatedDate", "updatedDate"));
 
 		SortableDataProvider dataProvider = new SortableDataProvider() {
 
@@ -60,8 +47,6 @@ abstract public class ContentNavigatorPanel extends Panel {
 
 				Criteria criteria = contentService.session().createCriteria(
 						Content.class);
-
-				List<Content> list = criteria.setFetchSize(count).list();
 
 				SortParam sp = (SortParam) getSort();
 
@@ -71,9 +56,12 @@ abstract public class ContentNavigatorPanel extends Panel {
 					criteria.addOrder(Order.desc(sp.getProperty()));
 				}
 
+				criteria.add(Restrictions.eq("folder", folder));
+
+				criteria.setFetchSize(count);
 				criteria.setFirstResult(first);
 
-				return list.iterator();
+				return criteria.list().iterator();
 			}
 
 			public IModel model(Object object) {
@@ -111,6 +99,10 @@ abstract public class ContentNavigatorPanel extends Panel {
 			}
 		});
 
+	}
+
+	public void setFolder(Content folder) {
+		this.folder = folder;
 	}
 
 	abstract public void onClick(Content content);

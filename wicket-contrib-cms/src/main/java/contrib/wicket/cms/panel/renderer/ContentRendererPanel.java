@@ -31,8 +31,6 @@ public class ContentRendererPanel extends Panel {
 
 		setOutputMarkupId(true);
 
-		showForm = content.getId() == null;
-
 		contentEditorPanel = new ContentEditorPanel("contentEditor", content) {
 			@Override
 			public boolean isVisible() {
@@ -41,26 +39,8 @@ public class ContentRendererPanel extends Panel {
 		};
 		add(contentEditorPanel);
 
-		Link edit = new Link("edit") {
-
-			@Override
-			public void onClick() {
-				showForm = true;
-				contentEditorPanel.setVisible(false);
-			}
-
-			@Override
-			public boolean isVisible() {
-				ContentAuthorizationStrategy strategy = (ContentAuthorizationStrategy) Application
-						.get()
-						.getMetaData(
-								CMSInitializer.CONTENT_AUTHORIZATION_STRATEGY_KEY);
-				return strategy.hasWriteAccess(content);
-			}
-		};
-		add(edit);
-
-		WebMarkupContainer highlightContainer = new WebMarkupContainer(
+		// Renderer Panel
+		final WebMarkupContainer highlightContainer = new WebMarkupContainer(
 				"highlightContainer");
 		highlightContainer.add(new AttributeModifier("class", true, new Model(
 				"highlight")) {
@@ -84,6 +64,28 @@ public class ContentRendererPanel extends Panel {
 		}
 
 		highlightContainer.add(contentDataRendererPanel);
+
+		// Edit Link
+		Link edit = new Link("edit") {
+
+			@Override
+			public void onClick() {
+				showForm = true;
+				contentEditorPanel.setVisible(false);
+				highlightContainer.setVisible(false);
+			}
+
+			@Override
+			public boolean isVisible() {
+				ContentAuthorizationStrategy strategy = (ContentAuthorizationStrategy) Application
+						.get()
+						.getMetaData(
+								CMSInitializer.CONTENT_AUTHORIZATION_STRATEGY_KEY);
+
+				return !showForm && strategy.hasWriteAccess(content);
+			}
+		};
+		add(edit);
 	}
 
 	public void setContent(Content content) {
