@@ -6,17 +6,6 @@
 	<!-- Wicket Application -->
 	<bean id="wicketApplication" class="contrib.wicket.cms.example.CMSExampleApplication"/>
 
-	<!-- SMTP 
-	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
-		<property name="host"><value>${smtp.hostname}</value></property>
-	</bean>
--->
-
-	<!-- Freemarker 
-	<bean id="freemarkerConfiguration" class="org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean">
-	</bean>
--->
-
 	<!-- 
 		allow the user of properties from application.properties 
 	     throughout this configuration file
@@ -28,10 +17,10 @@
 	</bean>
 
 	<!-- configure a simple pooled datasource -->
-	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
-		<property name="driverClass"><value>${jdbc.driver}</value></property>
-		<property name="jdbcUrl"><value>${jdbc.url}</value></property>
-		<property name="user"><value>${jdbc.username}</value></property>
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName"><value>${jdbc.driver}</value></property>
+		<property name="url"><value>${jdbc.url}</value></property>
+		<property name="username"><value>${jdbc.username}</value></property>
 		<property name="password"><value>${jdbc.password}</value></property>
 	</bean>
 
@@ -42,7 +31,7 @@
     	<property name="annotatedClasses">
      		<list>
        			<value>contrib.wicket.cms.model.Content</value>           		       			
-				<value>contrib.wicket.cms.model.ContentHistory</value>   		
+				<value>contrib.wicket.cms.model.ContentArchive</value>   		
        			<value>contrib.wicket.cms.model.ContentType</value>           		       			
        			
        			<value>contrib.wicket.cms.example.model.Member</value>       
