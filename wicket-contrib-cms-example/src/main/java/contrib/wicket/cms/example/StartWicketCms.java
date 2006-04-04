@@ -45,7 +45,7 @@ public class StartWicketCms
 		}
 		catch (Exception e)
 		{
-			log.fatal("Could not start the Jetty server: " + e);
+			log.fatal("Could not start the Jetty server: " + e, e);
 			if (jettyServer != null)
 			{
 				try
