@@ -48,9 +48,6 @@ public class Content implements Serializable, Updatable {
 	@JoinColumn(name = "folderId")
 	Content folder;
 
-	@NotNull
-	boolean isFolder;
-
 	@Lob
 	@Basic(fetch = FetchType.LAZY)
 	byte[] data;
@@ -87,14 +84,6 @@ public class Content implements Serializable, Updatable {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public boolean getIsFolder() {
-		return isFolder;
-	}
-
-	public void setFolder(boolean isFolder) {
-		this.isFolder = isFolder;
 	}
 
 //	public Set<Content> getChildren() {

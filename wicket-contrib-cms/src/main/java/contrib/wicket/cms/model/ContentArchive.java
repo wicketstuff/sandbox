@@ -34,8 +34,8 @@ import org.hibernate.validator.NotNull;
  */
 
 @Entity
-@Table(name = "contentHistories")
-public class ContentHistory implements Serializable, Creatable {
+@Table(name = "contentArchives")
+public class ContentArchive implements Serializable, Creatable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -55,9 +55,6 @@ public class ContentHistory implements Serializable, Creatable {
 	@JoinColumn(name = "folderId")
 	Content folder;
 
-	@NotNull
-	boolean isFolder;
-
 	@Lob
 	@Basic(fetch = FetchType.LAZY)
 	byte[] data;
@@ -69,10 +66,10 @@ public class ContentHistory implements Serializable, Creatable {
 
 	private Date createdDate;
 
-	public ContentHistory() {
+	public ContentArchive() {
 	}
 
-	public ContentHistory(Integer id) {
+	public ContentArchive(Integer id) {
 		this.id = id;
 	}
 
@@ -90,14 +87,6 @@ public class ContentHistory implements Serializable, Creatable {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public boolean getIsFolder() {
-		return isFolder;
-	}
-
-	public void setIsFolder(boolean isFolder) {
-		this.isFolder = isFolder;
 	}
 
 	public Content getContent() {
