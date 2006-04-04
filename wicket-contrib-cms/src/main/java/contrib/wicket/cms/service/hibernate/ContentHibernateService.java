@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
 import contrib.wicket.cms.model.Content;
-import contrib.wicket.cms.model.ContentHistory;
+import contrib.wicket.cms.model.ContentArchive;
 import contrib.wicket.cms.model.ContentType;
 import contrib.wicket.cms.service.ContentService;
 
@@ -64,15 +64,13 @@ public class ContentHibernateService extends GenericHibernateService implements
 		save(content);
 
 		if (!isNew) {
-			ContentHistory contentHistory = new ContentHistory();
-			contentHistory.setData(content.getData());
-			contentHistory.setContentType(content.getContentType());
-			// BeanUtils.copyProperties(content, contentHistory);
-			contentHistory.setContent(content);
-			contentHistory.setFolder(content.getFolder());
-			contentHistory.setIsFolder(content.getIsFolder());
-			contentHistory.setName(content.getName());
-			save(contentHistory);
+			ContentArchive contentArchive = new ContentArchive();
+			contentArchive.setData(content.getData());
+			contentArchive.setContentType(content.getContentType());
+			contentArchive.setContent(content);
+			contentArchive.setFolder(content.getFolder());
+			contentArchive.setName(content.getName());
+			save(contentArchive);
 		}
 	}
 
