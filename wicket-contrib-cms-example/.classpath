@@ -11,10 +11,5 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/wicket-spring"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/wicket-spring-annot"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/wicket-contrib-cms"/>
-	<classpathentry kind="lib" path="/researchjunction/lib/jasper-compiler.jar"/>
-	<classpathentry kind="lib" path="/researchjunction/lib/jasper-runtime.jar"/>
-	<classpathentry kind="lib" path="/researchjunction/lib/jetty-5.1.10.jar"/>
-	<classpathentry kind="lib" path="/researchjunction/lib/jetty-5.1.10-start.jar"/>
-	<classpathentry kind="lib" path="/researchjunction/lib/javax.servlet.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
