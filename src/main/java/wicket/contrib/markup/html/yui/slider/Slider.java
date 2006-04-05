@@ -69,7 +69,7 @@ public class Slider extends AbstractYuiPanel
 			PackageResource.bind(application, Slider.class, Pattern.compile(".*\\.gif|.*\\.png"),
 					true);
 			// and a css
-			PackageResource.bind(application, Slider.class, "css/default.css");
+			PackageResource.bind(application, Slider.class, "css/slider.css");
 		}
 	}
 
@@ -88,11 +88,30 @@ public class Slider extends AbstractYuiPanel
 	 */
 	private String javaScriptId;
 
+    /**
+     * TODO : maybe abstract out to "length" and "interval" ??
+     * 
+     */
     private Integer leftUp;
     private Integer rightDown;
     private Integer tick;
     
-    
+    /**
+     * Contruct. 
+     * 
+     * @param id
+     * @param model
+     * @param leftUp
+     * @param rightDown
+     * @param tick
+     * @param element
+     */
+    public Slider(String id, IModel model, 
+            final Integer leftUp, final Integer rightDown, final Integer tick,
+            final FormComponent element)
+    {
+        this(id, model, element,  new SliderSettings(leftUp, rightDown, tick));
+    }
 	/**
 	 * Construct.
 	 * 
@@ -102,14 +121,22 @@ public class Slider extends AbstractYuiPanel
 	 *            the model for this component
 	 */
 	public Slider(String id, IModel model, 
-            final Integer leftUp, final Integer rightDown, final Integer tick,
-            final FormComponent element)
+                    final FormComponent element, 
+                    final SliderSettings settings)
 	{
 		super(id, model);
         
 		add(HeaderContributor.forJavaScript(Slider.class, "slider.js"));
-		add(HeaderContributor.forCss(Slider.class, "css/default.css"));
+		add(HeaderContributor.forCss(Slider.class, "css/slider.css"));
 
+        /*
+         * default settings if null
+         */
+        
+        if (settings == null) {
+            // error 
+        }
+        
         /* handle form element */
         if (element != null) {
             element.add(new AttributeModifier("id", true, new AbstractReadOnlyModel() {
@@ -139,9 +166,9 @@ public class Slider extends AbstractYuiPanel
 					variables.put("javaScriptId", javaScriptId);
 					variables.put("backGroundElementId", backgroundElementId);
 					variables.put("imageElementId", imageElementId);
-                    variables.put("leftUp", leftUp);
-                    variables.put("rightDown", rightDown);
-                    variables.put("tick", tick);
+                    variables.put("leftUp", settings.getLeftUp());
+                    variables.put("rightDown", settings.getRightDown());
+                    variables.put("tick", settings.getTick());
                     variables.put("formElementId", element.getId());
 				}
 				return variables;
@@ -150,26 +177,34 @@ public class Slider extends AbstractYuiPanel
 
 		add(TextTemplateHeaderContributor.forJavaScript(Slider.class, "init.js", variablesModel));
 
-        /* background div */
-		WebMarkupContainer backgroundElement = new WebMarkupContainer("backgroundElement");
-		backgroundElement.add(new AttributeModifier("id", true, new PropertyModel(this,
-				"backgroundElementId")));
-
-        int size = leftUp.intValue() + rightDown.intValue();
+        /*
+         * Corner Images
+         */
+        add(new Image("leftImg", settings.getLeftCornerResource()));
+        add(new Image("rightImg", settings.getRightCornerResource()));
         
-        backgroundElement.add(new AttributeModifier("style", true, new Model("width:" + size + "px;")));
-		add(backgroundElement);
-
-        /* thumb div and image */
-		WebMarkupContainer imageElement = new WebMarkupContainer("imageElement");
-		imageElement.add(new AttributeModifier("id", true,
-				new PropertyModel(this, "imageElementId")));
-		backgroundElement.add(imageElement);
-
-        /* add the thumb img resoruce */
-        imageElement.add(new Image("thumb", PackageResource
-                .get(Slider.class, "img/horizSlider.png")));
-        imageElement.add(new AttributeModifier("style", true, new Model("left:" + leftUp.intValue() + "px;")));
+        /* 
+         * Background Div 
+         */
+        
+		WebMarkupContainer backgroundElement = new WebMarkupContainer("backgroundDiv");
+		backgroundElement.add(new AttributeModifier("id", true, new PropertyModel(this, "backgroundElementId")));
+        backgroundElement.add(new AttributeModifier("style", true, new Model(settings.getBackground().getStyle())));
+        add(backgroundElement);
+        
+        /* 
+         * Element Div and Thumb Div 
+         */
+        
+		WebMarkupContainer imageElement = new WebMarkupContainer("handleDiv");
+		imageElement.add(new AttributeModifier("id", true, new PropertyModel(this, "imageElementId")));
+        imageElement.add(new AttributeModifier("style", true, new Model(settings.getHandle().getStyle())));
+        
+        WebMarkupContainer thumbElement = new WebMarkupContainer("thumbDiv");
+        thumbElement.add(new AttributeModifier("style", true, new Model(settings.getThumb().getStyle())));
+        
+        imageElement.add(thumbElement);
+        backgroundElement.add(imageElement);
         
 	}
 
