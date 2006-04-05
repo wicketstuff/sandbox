@@ -1,0 +1,24 @@
+/* CSS for all Horizontal Slider Bars */
+
+.horizBGDiv 	{
+	position	: relative; 
+	z-index		: 5;
+	padding		: 0px;
+	margin 		: 0px;
+	float		: left; 
+	border		: 0px solid #FF00FF;
+} 
+
+.horizHandleDiv { 
+    position 	: relative;
+    cursor		: default;
+   	padding		: 0px;
+	margin 		: 0px;
+}
+
+.horizCornerImg{
+	float	:	left; 
+	border	:	0px solid #FF0000;
+	   	padding		: 0px;
+	margin 		: 0px;
+} 
