@@ -56,7 +56,7 @@ public class Calendar extends AbstractYuiPanel {
 		public void init(Application application) {
 			// register all .js, .css, and .gif package resources
 			PackageResource.bind(application, Calendar.class, Pattern
-					.compile(".*\\.js|.*\\.css|.*\\.gif"));
+					.compile(".*\\.js|.*\\.css|.*\\.gif"), true);
 		}
 	}
 
