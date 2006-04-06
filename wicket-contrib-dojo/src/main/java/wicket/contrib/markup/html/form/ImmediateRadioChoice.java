@@ -1,7 +1,7 @@
 package wicket.contrib.markup.html.form;
 
 /*
- *
+ * 
  */
 
 import java.util.List;
@@ -17,24 +17,22 @@ import wicket.util.resource.StringBufferResourceStream;
 import wicket.util.value.ValueMap;
 
 
-
 /**
  * @author Ruud Booltink
  * @author Marco van de Haar
  */
 public class ImmediateRadioChoice extends RadioChoice
 {
-	
+
 	private final int numItems;
-	
-	
+
 
 	/**
 	 * Construct.
 	 * 
 	 * @param id
 	 * @param model
-	 * @param list 
+	 * @param list
 	 */
 	public ImmediateRadioChoice(String id, IModel model, List list)
 	{
@@ -46,11 +44,12 @@ public class ImmediateRadioChoice extends RadioChoice
 	/**
 	 * @return number of items
 	 */
-	public int getNumItems() {
+	public int getNumItems()
+	{
 		return this.numItems;
 	}
-	
-	
+
+
 	/**
 	 * Called after the model is updated. Use this method to e.g. update the
 	 * persistent model. Does nothing by default.
@@ -58,7 +57,7 @@ public class ImmediateRadioChoice extends RadioChoice
 	protected void onAjaxModelUpdated()
 	{
 	}
-	
+
 	/**
 	 * Returns the name of the javascript method that will be invoked when the
 	 * processing of the ajax callback is complete. The method must have the
@@ -69,12 +68,12 @@ public class ImmediateRadioChoice extends RadioChoice
 	 * For example if we want to echo the value returned by
 	 * getResponseResourceStream stream we can implement it as follows: <code>
 	 * <pre>
-	 *    
-	 *    getJsCallbackFunctionName() {return(&quot;handleit&quot;);}
-	 *    
-	 *    in javascript:
-	 *    
-	 *    function handleit(type, data, evt) { alert(data); } 
+	 *      
+	 *      getJsCallbackFunctionName() {return(&quot;handleit&quot;);}
+	 *      
+	 *      in javascript:
+	 *      
+	 *      function handleit(type, data, evt) { alert(data); } 
 	 * </pre>
 	 * </code>
 	 * 
@@ -99,8 +98,15 @@ public class ImmediateRadioChoice extends RadioChoice
 	{
 		return new StringBufferResourceStream();
 	}
-	
-	protected java.lang.String getDefaultChoice(java.lang.Object selected)
+
+	/**
+	 * Gets the default choice.
+	 * 
+	 * @param selected
+	 * @return The default choice
+	 * @see wicket.markup.html.form.AbstractSingleSelectChoice#getDefaultChoice(java.lang.Object)
+	 */
+	protected CharSequence getDefaultChoice(java.lang.Object selected)
 	{
 		return getChoices().get(0).toString();
 	}
@@ -115,7 +121,7 @@ public class ImmediateRadioChoice extends RadioChoice
 		private ImmediateRadioChoice radioButton;
 
 		private int size;
-		
+
 		/**
 		 * Construct.
 		 */
@@ -123,7 +129,7 @@ public class ImmediateRadioChoice extends RadioChoice
 		{
 		}
 
-		/** 
+		/**
 		 * @see AbstractAjaxBehavior#onRenderHeadContribution(wicket.Response)
 		 */
 		public final void onRenderHeadContribution(Response response)
@@ -131,36 +137,29 @@ public class ImmediateRadioChoice extends RadioChoice
 			super.onRenderHeadContribution(response);
 			StringBuffer s = new StringBuffer(
 					"\t<script language=\"JavaScript\" type=\"text/javascript\">\n").append(
-						"\tfunction getSelectedRadio(nodeId, numItems)\n").append(
-							"\t{\n").append(
-								"\t\tvar value = 'NOT_SET';\n").append(
-								"\t\tvar i = 0;\n").append(
-								"\t\twhile(value=='NOT_SET')\n").append(
-								"\t\t{\n").append(
-								   "\t\t\tvar itemId = nodeId + '_' + i;\n").append(
-								   "\t\t\tvar item = document.getElementById(itemId);\n").append(
-								   "\t\t\tif(item.checked)\n").append(
-								   "\t\t\t{\n").append(
-								   	"\t\t\t\tvalue = item.value;\n").append(
-								   "\t\t\t}\n").append(
-								   "\t\t\t++i;\n").append(
-							   	"\t\t}\n").append(
-								"\t\treturn value;\n").append(
+					"\tfunction getSelectedRadio(nodeId, numItems)\n").append("\t{\n").append(
+					"\t\tvar value = 'NOT_SET';\n").append("\t\tvar i = 0;\n").append(
+					"\t\twhile(value=='NOT_SET')\n").append("\t\t{\n").append(
+					"\t\t\tvar itemId = nodeId + '_' + i;\n").append(
+					"\t\t\tvar item = document.getElementById(itemId);\n").append(
+					"\t\t\tif(item.checked)\n").append("\t\t\t{\n").append(
+					"\t\t\t\tvalue = item.value;\n").append("\t\t\t}\n").append("\t\t\t++i;\n")
+					.append("\t\t}\n").append("\t\treturn value;\n").append(
 
-							"\t}\n\n").append(
-							
-							
-					
-					"\tfunction immediateRadioButton(componentUrl, componentPath, val) { \n").append(
-					"\t\tdojo.io.bind({\n").append(
-					"\t\t\turl: componentUrl + '&' + componentPath + '=' + val,\n").append(
-					"\t\t\tmimetype: \"text/plain\",\n").append(
-					"\t\t\tload: function(type, data, evt) {");
-			
-			if (radioButton.getJSCallbackFunctionName() != null) {
+					"\t}\n\n").append(
+
+
+					"\tfunction immediateRadioButton(componentUrl, componentPath, val) { \n")
+					.append("\t\tdojo.io.bind({\n").append(
+							"\t\t\turl: componentUrl + '&' + componentPath + '=' + val,\n").append(
+							"\t\t\tmimetype: \"text/plain\",\n").append(
+							"\t\t\tload: function(type, data, evt) {");
+
+			if (radioButton.getJSCallbackFunctionName() != null)
+			{
 				s.append(radioButton.getJSCallbackFunctionName()).append("(type, data, evt);");
 			}
-				
+
 			s.append("}\n\t\t});").append("\n\t}\n").append("\t</script>\n");
 
 			response.write(s.toString());
@@ -174,16 +173,21 @@ public class ImmediateRadioChoice extends RadioChoice
 		 */
 		public final void onComponentTag(final ComponentTag tag)
 		{
-			//List l = getChoices();
+			// List l = getChoices();
 			final ValueMap attributes = tag.getAttributes();
 			final String attributeValue = new StringBuffer("javascript:immediateRadioButton('")
-					.append(getCallbackUrl()).append("', '").append(radioButton.getInputName())
-					.append("',  getSelectedRadio('"+ radioButton.getInputName()+"' ,"+((ImmediateRadioChoice)(getComponent())).getNumItems()+"))").toString();
+					.append(getCallbackUrl())
+					.append("', '")
+					.append(radioButton.getInputName())
+					.append(
+							"',  getSelectedRadio('" + radioButton.getInputName() + "' ,"
+									+ ((ImmediateRadioChoice)(getComponent())).getNumItems() + "))")
+					.toString();
 			attributes.put("onclick", attributeValue);
 		}
 
-		
-		/** 
+
+		/**
 		 * @see wicket.behavior.AjaxHandler#onBind()
 		 */
 		protected void onBind()
