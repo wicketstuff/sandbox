@@ -14,6 +14,7 @@ import wicket.markup.html.form.RadioChoice;
 import wicket.model.IModel;
 import wicket.util.resource.IResourceStream;
 import wicket.util.resource.StringBufferResourceStream;
+import wicket.util.string.AppendingStringBuffer;
 import wicket.util.value.ValueMap;
 
 
@@ -135,34 +136,36 @@ public class ImmediateRadioChoice extends RadioChoice
 		public final void onRenderHeadContribution(Response response)
 		{
 			super.onRenderHeadContribution(response);
-			StringBuffer s = new StringBuffer(
-					"\t<script language=\"JavaScript\" type=\"text/javascript\">\n").append(
-					"\tfunction getSelectedRadio(nodeId, numItems)\n").append("\t{\n").append(
-					"\t\tvar value = 'NOT_SET';\n").append("\t\tvar i = 0;\n").append(
-					"\t\twhile(value=='NOT_SET')\n").append("\t\t{\n").append(
-					"\t\t\tvar itemId = nodeId + '_' + i;\n").append(
-					"\t\t\tvar item = document.getElementById(itemId);\n").append(
-					"\t\t\tif(item.checked)\n").append("\t\t\t{\n").append(
-					"\t\t\t\tvalue = item.value;\n").append("\t\t\t}\n").append("\t\t\t++i;\n")
-					.append("\t\t}\n").append("\t\treturn value;\n").append(
-
-					"\t}\n\n").append(
-
-
-					"\tfunction immediateRadioButton(componentUrl, componentPath, val) { \n")
-					.append("\t\tdojo.io.bind({\n").append(
-							"\t\t\turl: componentUrl + '&' + componentPath + '=' + val,\n").append(
-							"\t\t\tmimetype: \"text/plain\",\n").append(
-							"\t\t\tload: function(type, data, evt) {");
+			AppendingStringBuffer s = new AppendingStringBuffer(
+					"\t<script language=\"JavaScript\" type=\"text/javascript\">\n"+
+					"\tfunction getSelectedRadio(nodeId, numItems)\n\t{\n"+
+					"\t\tvar value = 'NOT_SET';\n" +
+					"\t\tvar i = 0;\n"+
+					"\t\twhile(value=='NOT_SET')\n" +
+					"\t\t{\n"+
+					"\t\t\tvar itemId = nodeId + '_' + i;\n"+
+					"\t\t\tvar item = document.getElementById(itemId);\n"+
+					"\t\t\tif(item.checked)\n" +
+					"\t\t\t{\n"+
+					"\t\t\t\tvalue = item.value;\n" +
+					"\t\t\t}\n" +
+					"\t\t\t++i;\n"+
+					"\t\t}\n\t\treturn value;\n" +
+					"\t}\n\n"+
+					"\tfunction immediateRadioButton(componentUrl, componentPath, val) { \n"+
+					"\t\tdojo.io.bind({\n"+
+					"\t\t\turl: componentUrl + '&' + componentPath + '=' + val,\n"+
+					"\t\t\tmimetype: \"text/plain\",\n"+
+					"\t\t\tload: function(type, data, evt) {");
 
 			if (radioButton.getJSCallbackFunctionName() != null)
 			{
 				s.append(radioButton.getJSCallbackFunctionName()).append("(type, data, evt);");
 			}
 
-			s.append("}\n\t\t});").append("\n\t}\n").append("\t</script>\n");
+			s.append("}\n\t\t});\n\t}\n\t</script>\n");
 
-			response.write(s.toString());
+			response.write(s);
 		}
 
 		/**
@@ -175,14 +178,14 @@ public class ImmediateRadioChoice extends RadioChoice
 		{
 			// List l = getChoices();
 			final ValueMap attributes = tag.getAttributes();
-			final String attributeValue = new StringBuffer("javascript:immediateRadioButton('")
+			final AppendingStringBuffer attributeValue = new AppendingStringBuffer("javascript:immediateRadioButton('")
 					.append(getCallbackUrl())
 					.append("', '")
 					.append(radioButton.getInputName())
-					.append(
-							"',  getSelectedRadio('" + radioButton.getInputName() + "' ,"
-									+ ((ImmediateRadioChoice)(getComponent())).getNumItems() + "))")
-					.toString();
+					.append("',  getSelectedRadio('")
+					.append(radioButton.getInputName())
+					.append( "' ,")
+					.append(((ImmediateRadioChoice)(getComponent())).getNumItems() + "))");
 			attributes.put("onclick", attributeValue);
 		}
 

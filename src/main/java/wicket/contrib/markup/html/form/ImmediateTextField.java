@@ -24,6 +24,7 @@ import wicket.markup.html.form.TextField;
 import wicket.model.IModel;
 import wicket.util.resource.IResourceStream;
 import wicket.util.resource.StringBufferResourceStream;
+import wicket.util.string.AppendingStringBuffer;
 import wicket.util.value.ValueMap;
 
 
@@ -123,16 +124,16 @@ public class ImmediateTextField extends TextField
 		public final void onRenderHeadInitContribution(Response response)
 		{
 			super.onRenderHeadInitContribution(response);
-			StringBuffer s = new StringBuffer(
-					"\t<script language=\"JavaScript\" type=\"text/javascript\">\n").append(
-					"\tfunction immediateCheckBox(componentUrl, componentPath, val) { \n").append(
-					"\t\tdojo.io.bind({\n").append(
-					"\t\t\turl: componentUrl + '&' + componentPath + '=' + val,\n").append(
-					"\t\t\tmimetype: \"text/plain\",\n").append(
-					"\t\t\tload: function(type, data, evt) {}\n" + "\t\t});\n" + "\t}\n").append(
+			AppendingStringBuffer s = new AppendingStringBuffer(
+					"\t<script language=\"JavaScript\" type=\"text/javascript\">\n"+
+					"\tfunction immediateCheckBox(componentUrl, componentPath, val) { \n"+
+					"\t\tdojo.io.bind({\n"+
+					"\t\t\turl: componentUrl + '&' + componentPath + '=' + val,\n"+
+					"\t\t\tmimetype: \"text/plain\",\n"+
+					"\t\t\tload: function(type, data, evt) {}\n" + "\t\t});\n" + "\t}\n"+
 					"\t</script>\n");
 
-			response.write(s.toString());
+			response.write(s);
 		}
 
 		/**
@@ -144,9 +145,9 @@ public class ImmediateTextField extends TextField
 		public final void onComponentTag(final ComponentTag tag)
 		{
 			final ValueMap attributes = tag.getAttributes();
-			final String attributeValue = new StringBuffer("javascript:immediateCheckBox('")
+			final AppendingStringBuffer attributeValue = new AppendingStringBuffer("javascript:immediateCheckBox('")
 					.append(getCallbackUrl()).append("', '").append(textField.getInputName())
-					.append("', this.value);").toString();
+					.append("', this.value);");
 			attributes.put("onblur", attributeValue);
 		}
 
