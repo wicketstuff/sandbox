@@ -25,6 +25,7 @@ import wicket.markup.html.form.CheckBox;
 import wicket.model.IModel;
 import wicket.util.resource.IResourceStream;
 import wicket.util.resource.StringBufferResourceStream;
+import wicket.util.string.AppendingStringBuffer;
 import wicket.util.value.ValueMap;
 
 /**
@@ -156,21 +157,21 @@ public class ImmediateCheckBox extends CheckBox
 		public final void onRenderHeadInitContribution(Response response)
 		{
 			super.onRenderHeadInitContribution(response);
-			StringBuffer s = new StringBuffer(
-					"\t<script language=\"JavaScript\" type=\"text/javascript\">\n").append(
-					"\tfunction immediateCheckBox(componentUrl, componentPath, val) { \n").append(
-					"\t\tdojo.io.bind({\n").append(
-					"\t\t\turl: componentUrl + '&' + componentPath + '=' + val,\n").append(
-					"\t\t\tmimetype: \"text/plain\",\n").append(
+			AppendingStringBuffer s = new AppendingStringBuffer(
+					"\t<script language=\"JavaScript\" type=\"text/javascript\">\n"+
+					"\tfunction immediateCheckBox(componentUrl, componentPath, val) { \n"+
+					"\t\tdojo.io.bind({\n"+
+					"\t\t\turl: componentUrl + '&' + componentPath + '=' + val,\n"+
+					"\t\t\tmimetype: \"text/plain\",\n"+
 					"\t\t\tload: function(type, data, evt) {");
 
 			if (checkBox.getJSCallbackFunctionName() != null) {
 				s.append(checkBox.getJSCallbackFunctionName()).append("(type, data, evt);");
 			}
 
-			s.append("}\n\t\t});").append("\n\t}\n").append("\t</script>\n");
+			s.append("}\n\t\t});\n\t}\n\t</script>\n");
 
-			response.write(s.toString());
+			response.write(s);
 		}
 
 		/**
@@ -182,9 +183,9 @@ public class ImmediateCheckBox extends CheckBox
 		public final void onComponentTag(final ComponentTag tag)
 		{
 			final ValueMap attributes = tag.getAttributes();
-			final String attributeValue = new StringBuffer("javascript:immediateCheckBox('")
+			final AppendingStringBuffer attributeValue = new AppendingStringBuffer("javascript:immediateCheckBox('")
 					.append(getCallbackUrl()).append("', '").append(checkBox.getInputName())
-					.append("', this.checked);").toString();
+					.append("', this.checked);");
 			attributes.put("onclick", attributeValue);
 		}
 
