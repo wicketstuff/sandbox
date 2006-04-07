@@ -13,6 +13,8 @@ public class SliderSettings {
     /* Resources needed to generate the slider bar */
     private ResourceReference rightCornerResource;
     private ResourceReference leftCornerResource;
+    private ResourceReference rightTickResource;
+    private ResourceReference leftTickResource;
     private ResourceReference backgroundResource;
     private ResourceReference thumbResource;
     
@@ -23,8 +25,9 @@ public class SliderSettings {
     private String leftUp;
     private String rightDown;
     private String tick;
-    private String rightDownEnd;
     private String tickSize;
+    
+    private boolean showTicks = false;
     
     /**
      * Contructor 
@@ -48,16 +51,12 @@ public class SliderSettings {
         int left = leftUp.intValue() - thumbWidth;
         int height = 25;
         int bgLength = leftUp.intValue() + rightDown.intValue();
-        int tickSize = (int)(((float) thumbWidth /2) + tick.intValue());
         
-        setTickSize(Integer.toString(tickSize));
         String width = Integer.toString(bgLength - thumbWidth);
         
         setLeftUp(leftUp.toString());
         setRightDown(rightDown.toString());
         setTick(tick.toString());
-        setRightDownEnd(Integer.toString(thumbWidth + bgLength));
-        
         
         /* background */
         setBackgroundResource(new PackageResourceReference(Slider.class, "style/bg.gif"));
@@ -67,9 +66,11 @@ public class SliderSettings {
         
         /* left */
         setLeftCornerResource(new PackageResourceReference(Slider.class, "style/left.gif"));
+        setLeftTickResource(new PackageResourceReference( Slider.class, "style/left_tick.gif"));
         
         /* right */
         setRightCornerResource(new PackageResourceReference( Slider.class, "style/right.gif"));
+        setRightTickResource(new PackageResourceReference( Slider.class, "style/right_tick.gif"));
         
         /* handle */
         getHandle().add("width",    thumbWidth + "px");
@@ -165,14 +166,6 @@ public class SliderSettings {
         this.thumbResource = thumbResource;
     }
 
-    public String getRightDownEnd() {
-        return rightDownEnd;
-    }
-
-    public void setRightDownEnd(String rightDownEnd) {
-        this.rightDownEnd = rightDownEnd;
-    }
-
     public String getTickSize() {
         return tickSize;
     }
@@ -180,4 +173,29 @@ public class SliderSettings {
     public void setTickSize(String tickSize) {
         this.tickSize = tickSize;
     }
+
+    public ResourceReference getLeftTickResource() {
+        return leftTickResource;
+    }
+
+    public void setLeftTickResource(ResourceReference leftTickResource) {
+        this.leftTickResource = leftTickResource;
+    }
+
+    public ResourceReference getRightTickResource() {
+        return rightTickResource;
+    }
+
+    public void setRightTickResource(ResourceReference rightTickResource) {
+        this.rightTickResource = rightTickResource;
+    }
+
+	public boolean isShowTicks() {
+		return showTicks;
+	}
+
+	public void setShowTicks(boolean showTicks) {
+		this.showTicks = showTicks;
+	}
+
 }
