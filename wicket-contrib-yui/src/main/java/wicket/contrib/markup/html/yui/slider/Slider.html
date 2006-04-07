@@ -1,28 +1,11 @@
 <wicket:panel>
-	
 	<div class="horizWrapper">
-		<img class="horizCornerImg" wicket:id="leftImg" />
+		<div class="horizCornerImg"><img class="horizCornerImg" wicket:id="leftImg"/></div>
 		<div class="horizBGDiv" id="sliderbg" wicket:id="backgroundDiv" >
-	   		<div class="horizHandleDiv" wicket:id="handleDiv" id="sliderthumb" onkeypress="return handleHorizSliderKey(this, YAHOO.util.Event.getEvent(event))">
-				<div wicket:id="thumbDiv"></div>
+			<div class="horizHandleDiv" wicket:id="handleDiv" id="sliderthumb">
+				<div class="horizThumbDiv" wicket:id="thumbDiv"></div>
 			</div>
 		</div>
-		<img class="horizCornerImg" wicket:id="rightImg" />
+		<div class="horizCornerImg"><img wicket:id="rightImg"/></div>
 	</div>
-	
-	
-	
-<!--
-	<div class="horizWrapper">
-		<img src="aqua/left.png" style="width:18px;height:15px;" class="horizFBCorner"/>
-		<div class="horizBGDiv" style=" background : url(aqua/bg.png) repeat-x; height: 15px; width : 285px; " id="horizBGDiv2"   name="horizBGDiv2" onkeypress="return handleHorizSliderKey(this, YAHOO.util.Event.getEvent(event))" >
-			<div class="horizHandleDiv" style="left:-15px;top:0px;width : 18px; height : 15px;" id="horizHandleDiv2" >
-				<div style="background : url(aqua/thumb.gif) no-repeat; width : 18px; height : 15px;"></div>
-			</div>
-		</div>
-		<img src="aqua/right.png" style="width:18px;height:15px;" class="horizFBCorner" />
-	</div>
--->
-				
-	
 </wicket:panel>
