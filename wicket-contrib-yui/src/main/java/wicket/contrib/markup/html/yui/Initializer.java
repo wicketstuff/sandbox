@@ -38,11 +38,8 @@ public class Initializer implements IInitializer
 	 */
 	public void init(Application application)
 	{
-		new DatePickerComponentInitializer().init(application);
-		new PaletteInitializer().init(application);
 		new AbstractYuiPanel.ComponentInitializer().init(application);
 		new Calendar.ComponentInitializer().init(application);
 		new Slider.ComponentInitializer().init(application);
-		new UploadProgressBar.ComponentInitializer().init(application);
 	}
 }
