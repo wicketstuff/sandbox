@@ -178,25 +178,44 @@ public class Slider extends AbstractYuiPanel
 		add(TextTemplateHeaderContributor.forJavaScript(Slider.class, "init.js", variablesModel));
 
         /*
-         * Corner Images
+         * LEFT Corner Images & Tick Marks
          */
         
-        Image leftImg = new Image("leftImg", settings.getLeftCornerResource());
-        leftImg.add(new AttributeModifier("onclick", true, new AbstractReadOnlyModel() {
+        Image leftTickImg = new Image("leftTickImg", settings.getLeftTickResource());
+        leftTickImg.add(new AttributeModifier("onclick", true, new AbstractReadOnlyModel() {
            public Object getObject(Component component) {
-               return javaScriptId + ".moveThumb(0)";
+        	   return javaScriptId + ".setValue(" + javaScriptId + ".getXValue() - " + settings.getTick() + ");";
            }
         }));
-        add(leftImg);
+      	add(leftTickImg.setVisible(settings.isShowTicks()));
         
-        Image rightImg = new Image("rightImg", settings.getRightCornerResource());
-        rightImg.add(new AttributeModifier("onclick", true, new AbstractReadOnlyModel() {
+        Image leftCornerImg = new Image("leftCornerImg", settings.getLeftCornerResource());
+        leftCornerImg.add(new AttributeModifier("onclick", true, new AbstractReadOnlyModel() {
+           public Object getObject(Component component) {
+               return javaScriptId + ".setValue(-" + settings.getLeftUp()+ ")";
+           }
+        }));
+        add(leftCornerImg);
+        
+        /*
+         * RIGHT Corner Images & Tick Marks
+         */
+        
+        Image rightCornerImg = new Image("rightCornerImg", settings.getRightCornerResource());
+        rightCornerImg.add(new AttributeModifier("onclick", true, new AbstractReadOnlyModel() {
+           public Object getObject(Component component) {
+               return  javaScriptId + ".setValue(" + settings.getRightDown()+ ")";
+           }
+        }));
+        add(rightCornerImg);
+        
+        Image rightTickImg = new Image("rightTickImg", settings.getRightTickResource());
+        rightTickImg.add(new AttributeModifier("onclick", true, new AbstractReadOnlyModel() {
             public Object getObject(Component component) {
-                // return javaScriptId + ".moveThumb(this.x)";
-                return javaScriptId + ".moveThumb(YAHOO.util.Dom.getX("+ getImageElementId() +") + " + settings.getTickSize() + ");";
+                return javaScriptId + ".setValue(" + javaScriptId + ".getXValue() + " + settings.getTick() + ");";
             } 
         }));
-        add(rightImg);
+        add(rightTickImg.setVisible(settings.isShowTicks()));
        
         /* 
          * Background Div 
