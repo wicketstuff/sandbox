@@ -180,9 +180,24 @@ public class Slider extends AbstractYuiPanel
         /*
          * Corner Images
          */
-        add(new Image("leftImg", settings.getLeftCornerResource()));
-        add(new Image("rightImg", settings.getRightCornerResource()));
         
+        Image leftImg = new Image("leftImg", settings.getLeftCornerResource());
+        leftImg.add(new AttributeModifier("onclick", true, new AbstractReadOnlyModel() {
+           public Object getObject(Component component) {
+               return javaScriptId + ".moveThumb(0)";
+           }
+        }));
+        add(leftImg);
+        
+        Image rightImg = new Image("rightImg", settings.getRightCornerResource());
+        rightImg.add(new AttributeModifier("onclick", true, new AbstractReadOnlyModel() {
+            public Object getObject(Component component) {
+                // return javaScriptId + ".moveThumb(this.x)";
+                return javaScriptId + ".moveThumb(YAHOO.util.Dom.getX("+ getImageElementId() +") + " + settings.getTickSize() + ");";
+            } 
+        }));
+        add(rightImg);
+       
         /* 
          * Background Div 
          */
@@ -191,7 +206,7 @@ public class Slider extends AbstractYuiPanel
 		backgroundElement.add(new AttributeModifier("id", true, new PropertyModel(this, "backgroundElementId")));
         backgroundElement.add(new AttributeModifier("style", true, new Model(settings.getBackground().getStyle())));
         add(backgroundElement);
-        
+
         /* 
          * Element Div and Thumb Div 
          */
