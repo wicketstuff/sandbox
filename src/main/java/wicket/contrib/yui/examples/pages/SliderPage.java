@@ -60,7 +60,7 @@ public class SliderPage extends WicketExamplePage
             
             add(tfStruts = new TextField("strutsScore", new PropertyModel(this, "strutsScore")));
             add(new Slider("strutsSlider", new PropertyModel(this, "selection"), 
-                    leftUp, rightDown, tick, tfStruts));
+                    new Integer(0), new Integer(300), new Integer(30), tfStruts));
             
         }
         
