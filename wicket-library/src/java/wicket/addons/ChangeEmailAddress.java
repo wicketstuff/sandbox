@@ -1,20 +1,19 @@
 /*
  * $Id$
- * $Revision$
- * $Date$
- *
- * ====================================================================
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *  http://www.apache.org/licenses/LICENSE-2.0
- *
+ * $Revision$ $Date$
+ * 
+ * ==================================================================== Licensed
+ * under the Apache License, Version 2.0 (the "License"); you may not use this
+ * file except in compliance with the License. You may obtain a copy of the
+ * License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 package wicket.addons;
 
@@ -29,58 +28,62 @@ import wicket.model.PropertyModel;
  */
 public final class ChangeEmailAddress extends BaseHtmlPage /* AuthenticateHtmlPage */
 {
-    public ChangeEmailAddress()
-    {
-        super(null, "Wicket-Addons: Change email address");
-        
-        // Create and add feedback panel to page
-        final FeedbackPanel feedback = new FeedbackPanel("feedback");
-        add(feedback);
-        
-        add(new ChangeEmailAddressForm("form"));
-    }
+	public ChangeEmailAddress()
+	{
+		super(null, "Wicket-Addons: Change email address");
 
-    public final class ChangeEmailAddressForm extends Form
-    {
-        private String newEmail;
-        
-        /**
-         * Constructor
-         * @param componentName Name of form
-         */
-        public ChangeEmailAddressForm(final String componentName)
-        {
-            super(componentName);
-            
-            add(new TextField("email", new PropertyModel(this, "newEmail")));
-        }
-        
-        /**
-         * Show the resulting valid edit
-         * @param cycle The request cycle
-         */
-        public final void onSubmit()
-        {
-            final User user = getUser();
-            if (user == null)
-            {
+		// Create and add feedback panel to page
+		final FeedbackPanel feedback = new FeedbackPanel("feedback");
+		add(feedback);
+
+		add(new ChangeEmailAddressForm("form"));
+	}
+
+	public final class ChangeEmailAddressForm extends Form
+	{
+		private String newEmail;
+
+		/**
+		 * Constructor
+		 * 
+		 * @param componentName
+		 *            Name of form
+		 */
+		public ChangeEmailAddressForm(final String componentName)
+		{
+			super(componentName);
+
+			add(new TextField("email", new PropertyModel(this, "newEmail")));
+		}
+
+		/**
+		 * Show the resulting valid edit
+		 * 
+		 * @param cycle
+		 *            The request cycle
+		 */
+		public final void onSubmit()
+		{
+			final User user = getUser();
+			if (user == null)
+			{
 				// Try the component based localizer first. If not found try the
 				// application localizer. Else use the default
 				final String errmsg = getLocalizer().getString("userDeleted", this,
 						"Hmmm, user does not exist");
 
 				error(errmsg);
-            }
-            else
-            {
-                // update password
-                user.getPerson().setEmail(newEmail);
-                getUserService().update(user);
-                
-                setResponsePage(newPage(getApplication().getPages().getHomePage()));
-            }
-        }
-        
+			}
+			else
+			{
+				// update password
+				user.getPerson().setEmail(newEmail);
+				getUserService().update(user);
+
+				setResponsePage(newPage(getApplication().getHomePage()));
+			}
+		}
+
 		/**
 		 * @return Returns the newEmail
 		 */
@@ -88,7 +91,7 @@ public final class ChangeEmailAddress extends BaseHtmlPage /* AuthenticateHtmlPa
 		{
 			return newEmail;
 		}
-		
+
 		/**
 		 * @param newEmail
 		 */
@@ -96,5 +99,5 @@ public final class ChangeEmailAddress extends BaseHtmlPage /* AuthenticateHtmlPa
 		{
 			this.newEmail = newEmail;
 		}
-    }
-} 
+	}
+}

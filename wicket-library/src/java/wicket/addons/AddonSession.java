@@ -1,6 +1,6 @@
 /*
- * $Id$ $Revision:
- * 1.6 $ $Date$
+ * $Id$ $Revision$
+ * $Date$
  * 
  * ==================================================================== Licensed
  * under the Apache License, Version 2.0 (the "License"); you may not use this
@@ -19,7 +19,6 @@ package wicket.addons;
 
 import java.util.Locale;
 
-import wicket.Application;
 import wicket.IRequestCycleFactory;
 import wicket.Request;
 import wicket.RequestCycle;
@@ -27,6 +26,7 @@ import wicket.Response;
 import wicket.Session;
 import wicket.addons.db.User;
 import wicket.addons.utils.UserCount;
+import wicket.protocol.http.WebApplication;
 import wicket.protocol.http.WebRequest;
 import wicket.protocol.http.WebSession;
 
@@ -35,12 +35,12 @@ import wicket.protocol.http.WebSession;
  */
 public final class AddonSession extends WebSession
 {
-    private User user;
+	private User user;
 
-    // If true, the sidebar "top rated" will be shown, else "top clicks"
-    private boolean topRated = true;
-    
-    // we are using a modified RequestCycleFactory
+	// If true, the sidebar "top rated" will be shown, else "top clicks"
+	private boolean topRated = true;
+
+	// we are using a modified RequestCycleFactory
 	private static IRequestCycleFactory requestCycleFactory = new IRequestCycleFactory()
 	{
 		public RequestCycle newRequestCycle(Session session, Request request, Response response)
@@ -48,14 +48,14 @@ public final class AddonSession extends WebSession
 			return new AddonRequestCycle((WebSession)session, (WebRequest)request, response);
 		}
 	};
-    
+
 	/**
 	 * Constructor
 	 * 
 	 * @param application
 	 *            The application
 	 */
-	protected AddonSession(Application application)
+	protected AddonSession(final WebApplication application)
 	{
 		super(application);
 	}
@@ -72,22 +72,22 @@ public final class AddonSession extends WebSession
 	 */
 	public final boolean authenticate(final String username, final String password)
 	{
-        if (user == null)
-        {
-            user = ((AddonApplication)getApplication()).authenticate(username, password);
-            
-            if (user != null)
-            {
-    		    UserCount.addUser(user);
+		if (user == null)
+		{
+			user = ((AddonApplication)getApplication()).authenticate(username, password);
 
-                if (user.getDefaultLocale() != null)
-                {
-                    setLocale(new Locale(user.getDefaultLocale()));
-                }
-            }
-        }
+			if (user != null)
+			{
+				UserCount.addUser(user);
 
-        return isSignedIn();
+				if (user.getDefaultLocale() != null)
+				{
+					setLocale(new Locale(user.getDefaultLocale()));
+				}
+			}
+		}
+
+		return isSignedIn();
 	}
 
 	/**
@@ -105,15 +105,15 @@ public final class AddonSession extends WebSession
 	{
 		return this.user;
 	}
-	
+
 	public boolean isTopRated()
 	{
-	    return this.topRated;
+		return this.topRated;
 	}
-	
+
 	public void toggleTopRated()
 	{
-	    this.topRated = !this.topRated;
+		this.topRated = !this.topRated;
 	}
 
 	/**

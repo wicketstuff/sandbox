@@ -1,4 +1,4 @@
-///////////////////////////////////////////////////////////////////////////////////
+// /////////////////////////////////////////////////////////////////////////////////
 //
 // Created Jun 26, 2004
 //
@@ -8,7 +8,7 @@
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-//     http://www.apache.org/licenses/LICENSE-2.0
+// http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,7 +21,6 @@ package wicket.addons.utils;
 
 import wicket.addons.panels.signin.SignInPanel;
 
-
 /**
  * Extends standard SignInPanel with a rememberMe checkbox
  * 
@@ -29,12 +28,13 @@ import wicket.addons.panels.signin.SignInPanel;
  */
 public abstract class SignIn2Panel extends SignInPanel
 {
-    /**
-     * Constructor
-     * @param componentName
-     */
-    public SignIn2Panel(String componentName)
-    {
-        super(componentName);
-    }
+	/**
+	 * Constructor
+	 * 
+	 * @param componentName
+	 */
+	public SignIn2Panel(String componentName)
+	{
+		super(componentName);
+	}
 }

@@ -1,20 +1,19 @@
 /*
- * $Id$
- * $Revision$
- * $Date$
- *
- * ====================================================================
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *  http://www.apache.org/licenses/LICENSE-2.0
- *
+ * $Id$ $Revision:
+ * 408 $ $Date$
+ * 
+ * ==================================================================== Licensed
+ * under the Apache License, Version 2.0 (the "License"); you may not use this
+ * file except in compliance with the License. You may obtain a copy of the
+ * License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 package wicket.addons.sidebars;
 
@@ -39,53 +38,55 @@ import wicket.model.Model;
  */
 public final class SidebarTopClicks extends Panel
 {
-    /**
-     * Constructor
-     * @param parameters
-      */
-    public SidebarTopClicks(final String componentName, final BaseHtmlPage page)
-    {
-        super(componentName);
-        
-        final AddonService addonService = page.getAddonService();
-        final List top5 = addonService.getTop5AddonsByClicks();
-        add(new ListView("rows", top5)
-                {
-					protected void populateItem(ListItem listItem)
-					{
-					    final Addon addon = (Addon) listItem.getModelObject();
-					    listItem.add(new Label("clicks", new Model(new Integer(addon.getClicksLastWeek()))));
-					    
-					    final PageLink link = new PageLink("addon", new IPageLink()
-					            {
-									public Page getPage()
-									{
-										return new PluginDetails(addon);
-									}
+	/**
+	 * Constructor
+	 * 
+	 * @param parameters
+	 */
+	public SidebarTopClicks(final String componentName, final BaseHtmlPage page)
+	{
+		super(componentName);
 
-									public Class getPageIdentity()
-									{
-										return PluginDetails.class;
-									}
-					            });
+		final AddonService addonService = page.getAddonService();
+		final List top5 = addonService.getTop5AddonsByClicks();
+		add(new ListView("rows", top5)
+		{
+			protected void populateItem(ListItem listItem)
+			{
+				final Addon addon = (Addon)listItem.getModelObject();
+				listItem
+						.add(new Label("clicks", new Model(new Integer(addon.getClicksLastWeek()))));
 
-					    link.setAutoEnable(false);
-					    listItem.add(link);
-					    link.add(new Label("name", addon.getName()));
-					}
-                });
-        
-        add(new PageLink("clickList", new IPageLink()
-                {
+				final PageLink link = new PageLink("addon", new IPageLink()
+				{
 					public Page getPage()
 					{
-						return new ClickList();
+						return new PluginDetails(addon);
 					}
 
 					public Class getPageIdentity()
 					{
-						return ClickList.class;
+						return PluginDetails.class;
 					}
-                }));
-    }
+				});
+
+				link.setAutoEnable(false);
+				listItem.add(link);
+				link.add(new Label("name", addon.getName()));
+			}
+		});
+
+		add(new PageLink("clickList", new IPageLink()
+		{
+			public Page getPage()
+			{
+				return new ClickList();
+			}
+
+			public Class getPageIdentity()
+			{
+				return ClickList.class;
+			}
+		}));
+	}
 }

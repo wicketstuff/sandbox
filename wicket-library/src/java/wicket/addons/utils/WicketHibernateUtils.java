@@ -1,20 +1,19 @@
 /*
  * $Id$
- * $Revision$
- * $Date$
- *
- * ====================================================================
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *  http://www.apache.org/licenses/LICENSE-2.0
- *
+ * $Revision$ $Date$
+ * 
+ * ==================================================================== Licensed
+ * under the Apache License, Version 2.0 (the "License"); you may not use this
+ * file except in compliance with the License. You may obtain a copy of the
+ * License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 package wicket.addons.utils;
 
@@ -30,12 +29,11 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 
 import wicket.addons.ServiceLocator;
 
-
 /**
  * Special request cycle for this application that opens and closes a hibernate
  * session for each request.
  */
-public final class WicketHibernateUtils 
+public final class WicketHibernateUtils
 {
 	private static Log log = LogFactory.getLog(WicketHibernateUtils.class);
 
@@ -63,7 +61,7 @@ public final class WicketHibernateUtils
 	 */
 	private SessionFactory lookupSessionFactory()
 	{
-		return (SessionFactory) ServiceLocator.instance().getUserService().getSessionFactory();
+		return (SessionFactory)ServiceLocator.instance().getUserService().getSessionFactory();
 	}
 
 	/**
@@ -73,14 +71,14 @@ public final class WicketHibernateUtils
 	{
 		return singleSession;
 	}
-	
+
 	/**
 	 * 
 	 * @return
 	 */
 	public Session getCurrentHibernateSession()
 	{
-	    return this.hibernateSession;
+		return this.hibernateSession;
 	}
 
 	/**
@@ -102,8 +100,8 @@ public final class WicketHibernateUtils
 			{
 				log.debug("Opening single Hibernate session in WicketHibernateUtils");
 				hibernateSession = getHibernateSession(sessionFactory);
-				TransactionSynchronizationManager.bindResource(sessionFactory, 
-				        new SessionHolder(hibernateSession));
+				TransactionSynchronizationManager.bindResource(sessionFactory, new SessionHolder(
+						hibernateSession));
 			}
 		}
 		else
@@ -144,8 +142,8 @@ public final class WicketHibernateUtils
 	}
 
 	/**
-	 * Get a Session for the SessionFactory that this filter uses. Note that this
-	 * just applies in single session mode!
+	 * Get a Session for the SessionFactory that this filter uses. Note that
+	 * this just applies in single session mode!
 	 * <p>
 	 * The default implementation delegates to SessionFactoryUtils' getSession
 	 * method and sets the Session's flushMode to NEVER.
@@ -154,10 +152,10 @@ public final class WicketHibernateUtils
 	 * entity interceptor or JDBC exception translator.
 	 * 
 	 * @param sessionFactory
-	 *           the SessionFactory that this filter uses
+	 *            the SessionFactory that this filter uses
 	 * @return the Session to use
 	 * @throws DataAccessResourceFailureException
-	 *            if the Session could not be created
+	 *             if the Session could not be created
 	 * @see org.hibernate.FlushMode#NEVER
 	 */
 	private Session getHibernateSession(SessionFactory sessionFactory)
@@ -181,9 +179,9 @@ public final class WicketHibernateUtils
 	 * flush mode to something else than NEVER.
 	 * 
 	 * @param session
-	 *           the Session used for filtering
+	 *            the Session used for filtering
 	 * @param sessionFactory
-	 *           the SessionFactory that this filter uses
+	 *            the SessionFactory that this filter uses
 	 */
 	private void closeHibernateSession(Session session, SessionFactory sessionFactory)
 	{
