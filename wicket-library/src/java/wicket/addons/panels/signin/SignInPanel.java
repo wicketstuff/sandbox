@@ -1,6 +1,6 @@
 /*
- * $Id$
- * $Revision$ $Date$
+ * $Id$ $Revision$
+ * $Date$
  * 
  * ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -18,7 +18,6 @@
 package wicket.addons.panels.signin;
 
 import wicket.Page;
-import wicket.PageParameters;
 import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.form.CheckBox;
 import wicket.markup.html.form.Form;
@@ -75,18 +74,17 @@ public abstract class SignInPanel extends Panel
 
 			// Attach textfield components that edit properties map
 			// in lieu of a formal beans model
-			add(username = new TextField("username", new PropertyModel(properties,
-					"username")));
-			add(password = new PasswordTextField("password", new PropertyModel(
-					properties, "password")));
+			add(username = new TextField("username", new PropertyModel(properties, "username")));
+			add(password = new PasswordTextField("password", new PropertyModel(properties,
+					"password")));
 
 			// MarkupContainer row for remember me checkbox
 			WebMarkupContainer rememberMeRow = new WebMarkupContainer("rememberMeRow");
 			add(rememberMeRow);
 
 			// Add rememberMe checkbox
-			rememberMeRow.add(new CheckBox("rememberMe", new PropertyModel(
-					SignInPanel.this, "rememberMe")));
+			rememberMeRow.add(new CheckBox("rememberMe", new PropertyModel(SignInPanel.this,
+					"rememberMe")));
 
 			// Make form values persistent
 			setPersistent(rememberMe);
@@ -113,9 +111,7 @@ public abstract class SignInPanel extends Panel
 				}
 				else
 				{
-					setResponsePage(getApplicationSettings().getDefaultPageFactory()
-							.newPage(getApplicationPages().getHomePage(),
-									(PageParameters) null));
+					setResponsePage(getPageFactory().newPage(getApplication().getHomePage()));
 				}
 			}
 			else

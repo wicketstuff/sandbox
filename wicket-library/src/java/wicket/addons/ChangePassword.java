@@ -1,20 +1,19 @@
 /*
- * $Id$
- * $Revision$
- * $Date$
- *
- * ====================================================================
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *  http://www.apache.org/licenses/LICENSE-2.0
- *
+ * $Id$ $Revision:
+ * 408 $ $Date$
+ * 
+ * ==================================================================== Licensed
+ * under the Apache License, Version 2.0 (the "License"); you may not use this
+ * file except in compliance with the License. You may obtain a copy of the
+ * License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 package wicket.addons;
 
@@ -29,78 +28,82 @@ import wicket.model.PropertyModel;
  */
 public final class ChangePassword extends BaseHtmlPage /* AuthenticateHtmlPage */
 {
-    public ChangePassword()
-    {
-        super(null, "Wicket-Addons: Change Password");
-        
-        // Create and add feedback panel to page
-        final FeedbackPanel feedback = new FeedbackPanel("feedback");
-        add(feedback);
-        
-        add(new ChangePasswordForm("form"));
-    }
+	public ChangePassword()
+	{
+		super(null, "Wicket-Addons: Change Password");
 
-    public final class ChangePasswordForm extends Form
-    {
-        private String currentPassword;
-        private String newPassword;
-        private String newPasswordConfirm;
-        
-        /**
-         * Constructor
-         * @param componentName Name of form
-         */
-        public ChangePasswordForm(final String componentName)
-        {
-            super(componentName);
-            
-            add(new PasswordTextField("currentPassword", new PropertyModel(this, "currentPassword")));
-            add(new PasswordTextField("newPassword", new PropertyModel(this, "newPassword")));
-            add(new PasswordTextField("newPasswordConfirm", new PropertyModel(this, "newPasswordConfirm")));
-        }
-        
-        /**
-         * Show the resulting valid edit
-         * @param cycle The request cycle
-         */
-        public final void onSubmit()
-        {
-            if ((newPassword != null) && (newPassword.equals(newPasswordConfirm)))
-            {
-                // confirm current password
-                final String username = getUser().getLoginName();
-                final User user = ((AddonApplication)getApplication()).authenticate(username, currentPassword);
-                if (user == null)
-                {
-    				// Try the component based localizer first. If not found try the
-    				// application localizer. Else use the default
-    				final String errmsg = getLocalizer().getString("currentPasswordMismatch", this,
-    						"password mismatch");
+		// Create and add feedback panel to page
+		final FeedbackPanel feedback = new FeedbackPanel("feedback");
+		add(feedback);
 
-    				error(errmsg);
-                }
-                else
-                {
-                    // update password
-                    getUserService().changePassword(
-                            user, 
-                            user.getPassword(), 
-                            newPassword);
-                    
-                    setResponsePage(newPage(getApplication().getPages().getHomePage()));
-                }
-            }
-            else
-            {
+		add(new ChangePasswordForm("form"));
+	}
+
+	public final class ChangePasswordForm extends Form
+	{
+		private String currentPassword;
+		private String newPassword;
+		private String newPasswordConfirm;
+
+		/**
+		 * Constructor
+		 * 
+		 * @param componentName
+		 *            Name of form
+		 */
+		public ChangePasswordForm(final String componentName)
+		{
+			super(componentName);
+
+			add(new PasswordTextField("currentPassword", new PropertyModel(this, "currentPassword")));
+			add(new PasswordTextField("newPassword", new PropertyModel(this, "newPassword")));
+			add(new PasswordTextField("newPasswordConfirm", new PropertyModel(this,
+					"newPasswordConfirm")));
+		}
+
+		/**
+		 * Show the resulting valid edit
+		 * 
+		 * @param cycle
+		 *            The request cycle
+		 */
+		public final void onSubmit()
+		{
+			if ((newPassword != null) && (newPassword.equals(newPasswordConfirm)))
+			{
+				// confirm current password
+				final String username = getUser().getLoginName();
+				final User user = ((AddonApplication)getApplication()).authenticate(username,
+						currentPassword);
+				if (user == null)
+				{
+					// Try the component based localizer first. If not found try
+					// the
+					// application localizer. Else use the default
+					final String errmsg = getLocalizer().getString("currentPasswordMismatch", this,
+							"password mismatch");
+
+					error(errmsg);
+				}
+				else
+				{
+					// update password
+					getUserService().changePassword(user, user.getPassword(), newPassword);
+
+					setResponsePage(newPage(getApplication().getHomePage()));
+				}
+			}
+			else
+			{
 				// Try the component based localizer first. If not found try the
 				// application localizer. Else use the default
 				final String errmsg = getLocalizer().getString("confirmPasswordMismatch", this,
 						"confirm password must match new password");
 
 				error(errmsg);
-            }
-        }
-        
+			}
+		}
+
 		/**
 		 * @return Returns the currentPassword.
 		 */
@@ -108,15 +111,16 @@ public final class ChangePassword extends BaseHtmlPage /* AuthenticateHtmlPage *
 		{
 			return currentPassword;
 		}
-		
+
 		/**
-		 * @param currentPassword The currentPassword to set.
+		 * @param currentPassword
+		 *            The currentPassword to set.
 		 */
 		public void setCurrentPassword(String currentPassword)
 		{
 			this.currentPassword = currentPassword;
 		}
-		
+
 		/**
 		 * @return Returns the newPassword.
 		 */
@@ -124,15 +128,16 @@ public final class ChangePassword extends BaseHtmlPage /* AuthenticateHtmlPage *
 		{
 			return newPassword;
 		}
-		
+
 		/**
-		 * @param newPassword The newPassword to set.
+		 * @param newPassword
+		 *            The newPassword to set.
 		 */
 		public void setNewPassword(String newPassword)
 		{
 			this.newPassword = newPassword;
 		}
-		
+
 		/**
 		 * @return Returns the newPasswordConfirm.
 		 */
@@ -140,13 +145,14 @@ public final class ChangePassword extends BaseHtmlPage /* AuthenticateHtmlPage *
 		{
 			return newPasswordConfirm;
 		}
-		
+
 		/**
-		 * @param newPasswordConfirm The newPasswordConfirm to set.
+		 * @param newPasswordConfirm
+		 *            The newPasswordConfirm to set.
 		 */
 		public void setNewPasswordConfirm(String newPasswordConfirm)
 		{
 			this.newPasswordConfirm = newPasswordConfirm;
 		}
-    }
+	}
 }
