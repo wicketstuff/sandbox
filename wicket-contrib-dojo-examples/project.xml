@@ -14,8 +14,8 @@
   <inceptionYear>2005</inceptionYear>
   <package>wicket</package>
   <logo>/images/projectLogo.png</logo>
-  <description>A quickstart project for the Wicket framework. This project will get you up and running using Jetty as a servlet container and web server. This will allow you to quickly start developing your first Wicket application.</description>
-  <shortDescription>Quickstart project for web applications using Wicket.</shortDescription>
+  <description>Examples for the dojo integration project.</description>
+  <shortDescription>Examples for the dojo integration project</shortDescription>
   <url>http://wicket-stuff.sourceforge.net/${pom.artifactId}</url>
   <issueTrackingUrl>http://sourceforge.net/tracker/?group_id=${maven.sourceforge.project.groupId}</issueTrackingUrl>
   <siteAddress>shell.sourceforge.net</siteAddress>
