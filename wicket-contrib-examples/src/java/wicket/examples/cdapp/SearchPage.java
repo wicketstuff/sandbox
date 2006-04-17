@@ -22,9 +22,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.HibernateException;
 
-import wicket.AttributeModifier;
 import wicket.PageParameters;
 import wicket.RequestCycle;
+import wicket.behavior.SimpleAttributeModifier;
 import wicket.examples.cdapp.model.CD;
 import wicket.examples.cdapp.model.CdDao;
 import wicket.markup.html.WebMarkupContainer;
@@ -274,8 +274,8 @@ public class SearchPage extends CdAppBasePage
 		public DeleteLink(String name, CD cd)
 		{
 			super(name, new Model(cd.getId()));
-			String msg = "if(!confirm('delete cd " + cd.getTitle() + " ?')) return false;";
-			add(new AttributeModifier("onclick", true, new Model(msg)));
+			add(new SimpleAttributeModifier("onclick", "if(!confirm('delete cd " + cd.getTitle()
+					+ " ?')) return false;"));
 		}
 
 		/**
