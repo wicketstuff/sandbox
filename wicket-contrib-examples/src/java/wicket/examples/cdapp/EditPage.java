@@ -34,8 +34,8 @@ import wicket.markup.html.form.RequiredTextField;
 import wicket.markup.html.form.TextField;
 import wicket.markup.html.form.upload.FileUpload;
 import wicket.markup.html.form.upload.FileUploadField;
-import wicket.markup.html.form.validation.IntegerValidator;
-import wicket.markup.html.form.validation.LengthValidator;
+import wicket.markup.html.form.validation.NumberValidator;
+import wicket.markup.html.form.validation.StringValidator;
 import wicket.markup.html.image.Image;
 import wicket.markup.html.image.resource.BlobImageResource;
 import wicket.markup.html.link.Link;
@@ -84,18 +84,18 @@ public final class EditPage extends CdAppBasePage
 			super(name, cdModel);
 			RequiredTextField titleField = new RequiredTextField("title", new PropertyModel(
 					cdModel, "title"));
-			titleField.add(LengthValidator.max(50));
+			titleField.add(StringValidator.maximumLength(50));
 			add(titleField);
 			RequiredTextField performersField = new RequiredTextField("performers",
 					new PropertyModel(cdModel, "performers"));
-			performersField.add(LengthValidator.max(50));
+			performersField.add(StringValidator.maximumLength(50));
 			add(performersField);
 			TextField labelField = new TextField("label", new PropertyModel(cdModel, "label"));
-			labelField.add(LengthValidator.max(50));
+			labelField.add(StringValidator.maximumLength(50));
 			add(labelField);
 			RequiredTextField yearField = new RequiredTextField("year", new PropertyModel(cdModel,
-					"year"));
-			yearField.add(IntegerValidator.POSITIVE_INT);
+					"year"), Integer.class);
+			yearField.add(NumberValidator.POSITIVE);
 			add(yearField);
 			add(new Link("cancelButton")
 			{
