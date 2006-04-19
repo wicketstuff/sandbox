@@ -18,6 +18,11 @@ class GMarkerComponent extends JavaScriptComponent
     private static final PackageResourceReference ref = new PackageResourceReference(GMapPanel.class,
             GMapInitializer.INDICATOR);
 
+    /**
+     * Construct.
+     * @param gmarker
+     * @param behavior
+     */
     public GMarkerComponent(GMarker gmarker, AbstractAjaxBehavior behavior)
     {
         super(ID);
@@ -25,6 +30,9 @@ class GMarkerComponent extends JavaScriptComponent
         this.behavior = behavior;
     }
 
+    /**
+     * @see wicket.contrib.gmap.JavaScriptComponent#onJavaScriptComponentTagBody()
+     */
     public String onJavaScriptComponentTagBody()
     {
         StringBuffer buffer = new StringBuffer("\n");
@@ -51,7 +59,7 @@ class GMarkerComponent extends JavaScriptComponent
     {
         StringBuffer buffer = new StringBuffer();
         buffer.append("var div = document.createElement(\"div\");\n");
-        buffer.append("div.id = \"" + gmarker.getOverlayId() + "\";\n");
+        buffer.append("div.id = \"dst" + gmarker.getOverlayId() + "\";\n");
         buffer.append("var progress = document.createElement(\"img\");\n");
         buffer.append("progress.src = \"" + getPage().urlFor(ref) + "\";\n");
         buffer.append("var waitText = document.createTextNode(\"Please wait ...\");\n");
@@ -61,7 +69,7 @@ class GMarkerComponent extends JavaScriptComponent
         buffer.append("div.appendChild(nobr);\n");
         buffer.append("var script = document.createElement(\"script\");\n");
         buffer.append("var js = document.createTextNode(\"");
-        buffer.append("dojoCall('" + behavior.getCallbackUrl() + "','" + gmarker.getOverlayId() + "');\")\n");
+        buffer.append("gmapRequest('" + behavior.getCallbackUrl() + "', '" + gmarker.getOverlayId() + "');\")\n");
         buffer.append("script.appendChild(js);\n");
         buffer.append("div.appendChild(script);\n");
         buffer.append("return div;");
