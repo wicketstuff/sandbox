@@ -27,10 +27,15 @@ import wicket.util.time.Duration;
 public class GMapExampleApplication extends WebApplication
 {
 
-    public GMapExampleApplication()
-    {
+	
+    /**
+	 * @see wicket.protocol.http.WebApplication#init()
+	 */
+	@Override
+	protected void init()
+	{
         getResourceSettings().setResourcePollFrequency(Duration.seconds(10));
-    }
+	}
 
     public Class getHomePage()
     {
