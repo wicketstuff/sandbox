@@ -156,17 +156,6 @@
                 <war.bundle>true</war.bundle>
 			</properties>
 		</dependency>
-        <dependency>
-            <groupId>wicket-stuff</groupId>
-            <artifactId>wicket-contrib-dojo</artifactId>
-            <version>0.4-SNAPSHOT</version>
-            <properties>
-                <wicket.group>required</wicket.group>
-                <wicket.description>This is the wicket-contib-dojo library</wicket.description>
-                <eclipse.dependency>true</eclipse.dependency>
-                <war.bundle>true</war.bundle>
-            </properties>
-        </dependency>
 	</dependencies>
 	<build>
 		<sourceDirectory>src/java</sourceDirectory>

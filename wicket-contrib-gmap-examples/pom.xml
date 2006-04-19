@@ -52,12 +52,6 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>wicket-stuff</groupId>
-            <artifactId>wicket-contrib-dojo</artifactId>
-            <version>0.4-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>3.8.1</version>

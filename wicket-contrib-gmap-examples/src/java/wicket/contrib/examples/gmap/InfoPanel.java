@@ -6,6 +6,7 @@ import wicket.markup.html.list.ListItem;
 import wicket.markup.html.list.ListView;
 import wicket.markup.html.panel.Panel;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +41,7 @@ public class InfoPanel extends Panel
         return developers;
     }
 
-    private class Developer
+    private class Developer implements Serializable
     {
         private String firstname;
         private String lastname;
