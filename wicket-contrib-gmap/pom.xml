@@ -19,13 +19,6 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>wicket-stuff</groupId>
-            <artifactId>wicket-contrib-dojo</artifactId>
-            <version>0.4-SNAPSHOT</version>
-            <type>jar</type>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
             <groupId>commons-logging</groupId>
             <artifactId>commons-logging</artifactId>
             <version>1.0.4</version>
