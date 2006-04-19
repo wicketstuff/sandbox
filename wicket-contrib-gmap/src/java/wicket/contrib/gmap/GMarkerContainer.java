@@ -31,16 +31,20 @@ import wicket.markup.html.WebMarkupContainer;
  * At very first time, page rendering time, gmarker component is rendered, the other one is hidden.
  *
  * @author Iulian-Corneliu Costan
- * @see GMapAjaxHandler
+ * @see GMapAjaxBehavior
  */
 class GMarkerContainer extends WebMarkupContainer
 {
 
-    private GMapAjaxHandler behaviour;
+    private GMapAjaxBehavior behaviour;
+    
+    //todo quick hack
+    private String markupId;
 
     public GMarkerContainer(GMarker gmarker)
     {
         super(ID);
+        this.markupId = gmarker.getOverlayId();
 
         // todo name constraint
         Component infoComponent = gmarker.getComponent();
@@ -53,8 +57,8 @@ class GMarkerContainer extends WebMarkupContainer
             throw new IllegalArgumentException("the ID of your component has to be \"" + INFO_COMPONENT_ID + "\"");
         }
 
-        behaviour = new GMapAjaxHandler();
-
+        behaviour = new GMapAjaxBehavior();
+        
         add(behaviour);
         add(new GMarkerComponent(gmarker, behaviour));
         add(infoComponent);
@@ -64,6 +68,13 @@ class GMarkerContainer extends WebMarkupContainer
     {
         get(GMarkerComponent.ID).setVisible(false);
         get(INFO_COMPONENT_ID).setVisible(true);
+    }
+    
+    /**
+     * Return the DOM Id of the component that has to be updated.
+     */
+    public String getMarkupId() {
+    	return markupId;
     }
 
     public static final String ID = "gmarkerContainer";

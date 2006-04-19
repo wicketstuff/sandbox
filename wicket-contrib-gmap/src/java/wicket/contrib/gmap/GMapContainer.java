@@ -11,6 +11,10 @@ import java.util.List;
 class GMapContainer extends WebMarkupContainer
 {
 
+    /**
+     * Construct.
+     * @param gmap
+     */
     public GMapContainer(final GMap gmap)
     {
         super(ID);
