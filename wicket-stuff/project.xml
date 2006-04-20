@@ -22,53 +22,44 @@
 	<shortDescription>Third party components using the Wicket Framework</shortDescription>
 	<url>http://wicket-stuff.sourceforge.net</url>
 	<issueTrackingUrl>
-		http://sourceforge.net/tracker/?group_id=${maven.sourceforge.project.groupId}
+		http://sourceforge.net/tracker/?group_id=119783
 	</issueTrackingUrl>
 	<siteAddress>shell.sourceforge.net</siteAddress>
 	<siteDirectory>/home/groups/w/wi/wicket-stuff/htdocs</siteDirectory>
-	<repository>
-		<connection>
-			scm:cvs:pserver:anonymous@cvs.sourceforge.net:/cvsroot/${pom.groupId}:${pom.artifactId}
-		</connection>
-		<developerConnection>
-			scm:cvs:ext:${maven.username}@cvs.sourceforge.net:/cvsroot/${pom.groupId}:${pom.artifactId}
-		</developerConnection>
-		<url>http://cvs.sourceforge.net/viewcvs.py/${pom.groupId}/${pom.artifactId}</url>
-	</repository>
 	<versions></versions>
 	<mailingLists>
 		<mailingList>
 			<name>${pom.name} Dev List</name>
 			<subscribe>
-				http://lists.sourceforge.net/mailman/listinfo/${pom.groupId}-develop
+				http://lists.sourceforge.net/mailman/listinfo/wicket-develop
 			</subscribe>
 			<unsubscribe>
-				http://lists.sourceforge.net/mailman/listinfo/${pom.groupId}-develop
+				http://lists.sourceforge.net/mailman/listinfo/wicket-develop
 			</unsubscribe>
 			<archive>
-				http://sourceforge.net/mailarchive/forum.php?forum=${pom.groupId}-develop
+				http://sourceforge.net/mailarchive/forum.php?forum=wicket-develop
 			</archive>
 		</mailingList>
 		<mailingList>
 			<name>${pom.name} User List</name>
-			<subscribe>http://lists.sourceforge.net/mailman/listinfo/${pom.groupId}-user</subscribe>
+			<subscribe>http://lists.sourceforge.net/mailman/listinfo/wicket-user</subscribe>
 			<unsubscribe>
-				http://lists.sourceforge.net/mailman/listinfo/${pom.groupId}-user
+				http://lists.sourceforge.net/mailman/listinfo/wicket-user
 			</unsubscribe>
 			<archive>
-				http://sourceforge.net/mailarchive/forum.php?forum=${pom.groupId}-user
+				http://sourceforge.net/mailarchive/forum.php?forum=wicket-user
 			</archive>
 		</mailingList>
 		<mailingList>
 			<name>${pom.name} CVS commit List</name>
 			<subscribe>
-				http://lists.sourceforge.net/mailman/listinfo/${pom.groupId}-autocvs
+				http://lists.sourceforge.net/mailman/listinfo/wicket-autocvs
 			</subscribe>
 			<unsubscribe>
-				http://lists.sourceforge.net/mailman/listinfo/${pom.groupId}-autocvs
+				http://lists.sourceforge.net/mailman/listinfo/wicket-autocvs
 			</unsubscribe>
 			<archive>
-				http://sourceforge.net/mailarchive/forum.php?forum=${pom.groupId}-autocvs
+				http://sourceforge.net/mailarchive/forum.php?forum=wicket-autocvs
 			</archive>
 		</mailingList>
 	</mailingLists>
