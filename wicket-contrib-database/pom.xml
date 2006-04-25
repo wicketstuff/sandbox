@@ -6,7 +6,7 @@
 	<groupId>wicket-contrib</groupId>
 	<artifactId>wicket-contrib-database</artifactId>
 	<packaging>jar</packaging>
-	<version>1.2-SNAPSHOT</version>
+	<version>1.0-SNAPSHOT</version>
 	<name>Wicket Contrib Database</name>
 	<description>
 		Database abstraction for Wicket.
