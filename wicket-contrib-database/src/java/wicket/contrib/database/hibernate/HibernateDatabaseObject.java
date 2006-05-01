@@ -85,7 +85,7 @@ public abstract class HibernateDatabaseObject implements Serializable
 			}
 			else
 			{
-				return null == (((HibernateDatabaseObject)that).id);
+				return this == that;
 			}
 		}
 		else
