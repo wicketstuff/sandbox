@@ -59,7 +59,14 @@ public abstract class HibernateDatabaseObject implements Serializable
 	 */
 	public final void setId(Long id)
 	{
-		this.id = id;
+		if (id.longValue() == -1)
+		{
+			this.id = null;
+		}
+		else
+		{
+			this.id = id;
+		}
 	}
 
 	/**
