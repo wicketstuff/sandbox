@@ -86,13 +86,13 @@ public abstract class HibernateDatabaseObject implements Serializable
 	{
 		if (that instanceof HibernateDatabaseObject)
 		{
-			if (id != null)
+			if (isNew())
 			{
-				return id.equals((((HibernateDatabaseObject)that).id));
+				return this == that;
 			}
 			else
 			{
-				return this == that;
+				return id.equals((((HibernateDatabaseObject)that).id));
 			}
 		}
 		else
@@ -106,10 +106,13 @@ public abstract class HibernateDatabaseObject implements Serializable
 	 */
 	public int hashCode()
 	{
-		if (id != null)
+		if (isNew())
+		{
+			return super.hashCode();
+		}
+		else
 		{
 			return id.hashCode();
 		}
-		return super.hashCode();
 	}
 }
