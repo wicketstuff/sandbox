@@ -31,14 +31,14 @@ public class DatabaseWebPage extends WebPage
 {
 	private static final long serialVersionUID = 1L;
 
-	private final PageParameters parameters;	
-	
+	private final PageParameters parameters;
+
 	public DatabaseWebPage()
 	{
 		super();
 		this.parameters = null;
 	}
-	
+
 	public DatabaseWebPage(PageParameters parameters)
 	{
 		this.parameters = parameters;
@@ -49,12 +49,12 @@ public class DatabaseWebPage extends WebPage
 		super(model);
 		this.parameters = null;
 	}
-	
+
 	protected Database getDatabase()
 	{
-		return ((IDatabaseApplication)getApplication()).getDatabase(); 
+		return ((IDatabaseApplication)getApplication()).getDatabase();
 	}
-	
+
 	protected DatabaseSession getDatabaseSession()
 	{
 		DatabaseWebRequestCycle cycle = (DatabaseWebRequestCycle)getRequestCycle();
@@ -69,7 +69,7 @@ public class DatabaseWebPage extends WebPage
 		}
 		return new DatabaseObjectModel(getDatabaseSession(), c, id);
 	}
-	
+
 	protected IModel newModel(Class c)
 	{
 		try
@@ -81,7 +81,7 @@ public class DatabaseWebPage extends WebPage
 			throw new DatabaseException(e);
 		}
 	}
-	
+
 	protected Object load(Class c, Long id)
 	{
 		if (id.longValue() == -1)
@@ -90,7 +90,7 @@ public class DatabaseWebPage extends WebPage
 		}
 		return getDatabaseSession().load(c, id);
 	}
-	
+
 	protected Object load(Class c)
 	{
 		try
@@ -102,37 +102,37 @@ public class DatabaseWebPage extends WebPage
 			throw new DatabaseException(e);
 		}
 	}
-	
-	protected void delete(Class c, Long id)
+
+	protected void deleteTransaction(Class c, Long id)
 	{
 		if (id.longValue() != -1)
 		{
-			getDatabaseSession().delete(c, id);
+			getDatabaseSession().deleteTransaction(c, id);
 		}
 	}
-	
-	protected void delete(Object object)
+
+	protected void deleteTransaction(Object object)
 	{
-		getDatabaseSession().save(object);
+		getDatabaseSession().deleteTransaction(object);
 	}
-	
+
 	protected void evict(Object object)
 	{
 		getDatabaseSession().evict(object);
 	}
-	
-	protected void saveOrUpdate(Object object)
+
+	protected void saveOrUpdateTransaction(Object object)
 	{
-		getDatabaseSession().saveOrUpdate(object);
+		getDatabaseSession().saveOrUpdateTransaction(object);
 	}
-	
-	protected void save(Object object)
+
+	protected void saveTransaction(Object object)
 	{
-		getDatabaseSession().save(object);
+		getDatabaseSession().saveTransaction(object);
 	}
-	
-	protected void update(Object object)
+
+	protected void updateTransaction(Object object)
 	{
-		getDatabaseSession().update(object);
+		getDatabaseSession().updateTransaction(object);
 	}
 }
