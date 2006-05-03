@@ -1,6 +1,6 @@
 /*
- * $Id$
- * $Revision$ $Date$
+ * $Id$ $Revision:
+ * 245 $ $Date$
  * 
  * ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -17,6 +17,8 @@
  */
 package wicket.contrib.database;
 
+import wicket.RequestCycle;
+
 /**
  * Abstraction for database sessions. Any database implementation must be able
  * to perform at least these basic functions.
@@ -27,10 +29,32 @@ public abstract class DatabaseSession
 {
 	public static final TransactionScope TRANSACT_OPERATIONS = new TransactionScope();
 	public static final TransactionScope TRANSACT_REQUESTS = new TransactionScope();
-	private TransactionScope transactionSemantics;
-	
-	public static class TransactionScope { }
 
+	private TransactionScope transactionSemantics;
+
+	public static class TransactionScope
+	{
+	}
+
+	/**
+	 * @return Current database session for this web request cycle
+	 */
+	public static DatabaseSession get()
+	{
+		DatabaseWebRequestCycle cycle = (DatabaseWebRequestCycle)RequestCycle.get();
+		if (cycle != null)
+		{
+			return cycle.getDatabaseSession();
+		}
+		return null;
+	}
+
+	/**
+	 * Construct
+	 * 
+	 * @param database
+	 *            Database for this session
+	 */
 	public DatabaseSession(final Database database)
 	{
 		setTransactionSemantics(database.getDefaultTransactionSemantics());
@@ -103,7 +127,8 @@ public abstract class DatabaseSession
 	public abstract void saveOrUpdate(final Object object);
 
 	/**
-	 * @param transactionSemantics The transactionSemantics to set.
+	 * @param transactionSemantics
+	 *            The transactionSemantics to set.
 	 */
 	public final void setTransactionSemantics(TransactionScope transactionSemantics)
 	{
