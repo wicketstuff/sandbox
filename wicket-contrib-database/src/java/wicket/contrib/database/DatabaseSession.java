@@ -17,6 +17,9 @@
  */
 package wicket.contrib.database;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import wicket.RequestCycle;
 
 /**
@@ -27,14 +30,15 @@ import wicket.RequestCycle;
  */
 public abstract class DatabaseSession
 {
-	public static final TransactionScope TRANSACT_OPERATIONS = new TransactionScope();
-	public static final TransactionScope TRANSACT_REQUESTS = new TransactionScope();
-
-	private TransactionScope transactionSemantics;
-
 	public static class TransactionScope
 	{
 	}
+
+	public static final TransactionScope TRANSACT_OPERATIONS = new TransactionScope();
+	public static final TransactionScope TRANSACT_REQUESTS = new TransactionScope();
+
+	/** Used for logging. */
+	private static Log log = LogFactory.getLog(DatabaseSession.class);
 
 	/**
 	 * @return Current database session for this web request cycle
@@ -48,6 +52,8 @@ public abstract class DatabaseSession
 		}
 		return null;
 	}
+
+	private TransactionScope transactionSemantics;
 
 	/**
 	 * Construct
@@ -82,6 +88,35 @@ public abstract class DatabaseSession
 	 *            Object to delete
 	 */
 	public abstract void delete(Object object);
+
+	/**
+	 * @see wicket.contrib.database.DatabaseSession#delete(java.lang.Class,
+	 *      java.lang.Long)
+	 */
+	public void deleteTransaction(final Class c, final Long id)
+	{
+		transaction(new Runnable()
+		{
+			public void run()
+			{
+				delete(load(c, id));
+			}
+		});
+	}
+
+	/**
+	 * @see wicket.contrib.database.DatabaseSession#delete(java.lang.Object)
+	 */
+	public void deleteTransaction(final Object object)
+	{
+		transaction(new Runnable()
+		{
+			public void run()
+			{
+				delete(object);
+			}
+		});
+	}
 
 	/**
 	 * Evict object from persistence cache
@@ -127,6 +162,36 @@ public abstract class DatabaseSession
 	public abstract void saveOrUpdate(final Object object);
 
 	/**
+	 * @see wicket.contrib.database.DatabaseSession#saveOrUpdate(java.lang.Object)
+	 */
+	public void saveOrUpdateTransaction(final Object object)
+	{
+		transaction(new Runnable()
+		{
+			public void run()
+			{
+				log.info("Save or update " + object);
+				saveOrUpdate(object);
+			}
+		});
+	}
+
+	/**
+	 * @see wicket.contrib.database.DatabaseSession#save(java.lang.Object)
+	 */
+	public void saveTransaction(final Object object)
+	{
+		transaction(new Runnable()
+		{
+			public void run()
+			{
+				log.info("Save " + object);
+				save(object);
+			}
+		});
+	}
+
+	/**
 	 * @param transactionSemantics
 	 *            The transactionSemantics to set.
 	 */
@@ -136,10 +201,33 @@ public abstract class DatabaseSession
 	}
 
 	/**
+	 * Executes a command within a transaction.
+	 * 
+	 * @param runnable
+	 *            The code that executes the transaction
+	 */
+	public abstract void transaction(Runnable runnable);
+
+	/**
 	 * Updates an existing object
 	 * 
 	 * @param object
 	 *            The object to update
 	 */
 	public abstract void update(final Object object);
+
+	/**
+	 * @see wicket.contrib.database.DatabaseSession#update(java.lang.Object)
+	 */
+	public void updateTransaction(final Object object)
+	{
+		transaction(new Runnable()
+		{
+			public void run()
+			{
+				log.info("Update " + object);
+				update(object);
+			}
+		});
+	}
 }

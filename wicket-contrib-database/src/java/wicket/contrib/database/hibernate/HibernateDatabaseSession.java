@@ -42,7 +42,7 @@ public class HibernateDatabaseSession extends DatabaseSession
 
 	/** Exception object if transaction needs to be rolled back */
 	private HibernateException rollbackException;
-	
+
 	/** Any request-level transaction going on */
 	private Transaction transaction = null;
 
@@ -104,13 +104,7 @@ public class HibernateDatabaseSession extends DatabaseSession
 	 */
 	public void delete(final Class c, final Long id)
 	{
-		transaction(new Runnable()
-		{
-			public void run()
-			{
-				hibernateSession.delete(hibernateSession.load(c, id));
-			}
-		});
+		hibernateSession.delete(hibernateSession.load(c, id));
 	}
 
 	/**
@@ -118,13 +112,7 @@ public class HibernateDatabaseSession extends DatabaseSession
 	 */
 	public void delete(final Object object)
 	{
-		transaction(new Runnable()
-		{
-			public void run()
-			{
-				hibernateSession.delete(object);
-			}
-		});
+		hibernateSession.delete(object);
 	}
 
 	/**
@@ -135,7 +123,7 @@ public class HibernateDatabaseSession extends DatabaseSession
 	 */
 	public void evict(Object object)
 	{
-		getHibernateSession().evict(object);
+		hibernateSession.evict(object);
 	}
 
 	/**
@@ -175,14 +163,8 @@ public class HibernateDatabaseSession extends DatabaseSession
 	 */
 	public void save(final Object object)
 	{
-		transaction(new Runnable()
-		{
-			public void run()
-			{
-				log.info("Save " + object);
-				hibernateSession.save(object);
-			}
-		});
+		log.info("Save " + object);
+		hibernateSession.save(object);
 	}
 
 	/**
@@ -190,48 +172,8 @@ public class HibernateDatabaseSession extends DatabaseSession
 	 */
 	public void saveOrUpdate(final Object object)
 	{
-		transaction(new Runnable()
-		{
-			public void run()
-			{
-				log.info("Save or update " + object);
-				hibernateSession.saveOrUpdate(object);
-			}
-		});
-	}
-
-	/**
-	 * @see wicket.contrib.database.DatabaseSession#update(java.lang.Object)
-	 */
-	public void update(final Object object)
-	{
-		transaction(new Runnable()
-		{
-			public void run()
-			{
-				log.info("Update " + object);
-				hibernateSession.update(object);
-			}
-		});
-	}
-
-	/**
-	 * @param e HibernateException that caused rollback
-	 */
-	private void rollback(HibernateException e)
-	{
-		if (transaction != null)
-		{
-			try
-			{
-				transaction.rollback();
-			}
-			catch (HibernateException e1)
-			{
-				log.error("Unable to rollback transaction", e1);
-			}
-		}
-		log.error(e.getMessage());
+		log.info("Save or update " + object);
+		hibernateSession.saveOrUpdate(object);
 	}
 
 	/**
@@ -240,7 +182,7 @@ public class HibernateDatabaseSession extends DatabaseSession
 	 * @param runnable
 	 *            The code that executes the transaction
 	 */
-	private final void transaction(Runnable runnable)
+	public final void transaction(final Runnable runnable)
 	{
 		if (getTransactionSemantics() == DatabaseSession.TRANSACT_OPERATIONS)
 		{
@@ -277,5 +219,34 @@ public class HibernateDatabaseSession extends DatabaseSession
 				}
 			}
 		}
+	}
+
+	/**
+	 * @see wicket.contrib.database.DatabaseSession#update(java.lang.Object)
+	 */
+	public void update(final Object object)
+	{
+		log.info("Update " + object);
+		hibernateSession.update(object);
+	}
+
+	/**
+	 * @param e
+	 *            HibernateException that caused rollback
+	 */
+	private void rollback(HibernateException e)
+	{
+		if (transaction != null)
+		{
+			try
+			{
+				transaction.rollback();
+			}
+			catch (HibernateException e1)
+			{
+				log.error("Unable to rollback transaction", e1);
+			}
+		}
+		log.error(e.getMessage());
 	}
 }
