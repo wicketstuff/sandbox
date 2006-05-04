@@ -53,6 +53,11 @@ public abstract class DatabaseSession
 		return null;
 	}
 
+	/**
+	 * Database for this session
+	 */
+	private Database database;
+
 	private TransactionScope transactionSemantics;
 
 	/**
@@ -63,6 +68,7 @@ public abstract class DatabaseSession
 	 */
 	public DatabaseSession(final Database database)
 	{
+		this.database = database;
 		setTransactionSemantics(database.getDefaultTransactionSemantics());
 	}
 
@@ -125,6 +131,14 @@ public abstract class DatabaseSession
 	 *            Object to evict
 	 */
 	public abstract void evict(Object object);
+
+	/**
+	 * @return Returns the database.
+	 */
+	public Database getDatabase()
+	{
+		return database;
+	}
 
 	/**
 	 * @return Returns the transactionSemantics.
