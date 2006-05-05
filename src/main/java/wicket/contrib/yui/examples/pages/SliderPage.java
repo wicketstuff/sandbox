@@ -18,6 +18,7 @@
 package wicket.contrib.yui.examples.pages;
 
 import wicket.contrib.markup.html.yui.slider.Slider;
+import wicket.contrib.markup.html.yui.slider.SliderSettings;
 import wicket.contrib.yui.examples.WicketExamplePage;
 import wicket.markup.html.form.Form;
 import wicket.markup.html.form.TextField;
@@ -50,17 +51,15 @@ public class SliderPage extends WicketExamplePage
         public SliderForm(String id) {
             super(id);
             
-            Integer leftUp = new Integer(100);
-            Integer rightDown = new Integer(100);
-            Integer tick = new Integer(1);
+            int leftUp 	  = 100;
+            int rightDown = 100;
+            int tick 	  = 1;
             
             add(tfWicket = new TextField("wicketScore", new PropertyModel(this, "wicketScore")));
-            add(new Slider("wicketSlider", new PropertyModel(this, "selection"), 
-                    leftUp, rightDown, tick, tfWicket ));
-            
+            add(new Slider("wicketSlider", new PropertyModel(this, "selection"),  tfWicket, SliderSettings.getDefault(leftUp, rightDown, tick)));
+
             add(tfStruts = new TextField("strutsScore", new PropertyModel(this, "strutsScore")));
-            add(new Slider("strutsSlider", new PropertyModel(this, "selection"), 
-                    new Integer(0), new Integer(300), new Integer(30), tfStruts));
+            add(new Slider("strutsSlider", new PropertyModel(this, "selection"), tfStruts, SliderSettings.getAqua(0, 300, 30)));
             
         }
         
