@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>wicket</groupId>
 	<artifactId>wicket-contrib-yui-examples</artifactId>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 	<version>1.2-SNAPSHOT</version>
 	<name>Wicket Contrib YUI examples</name>
 	<description>
@@ -88,16 +88,19 @@
 			<groupId>wicket</groupId>
 			<artifactId>wicket</artifactId>
 			<version>1.2-SNAPSHOT</version>
+			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>wicket</groupId>
 			<artifactId>wicket-extensions</artifactId>
 			<version>1.2-SNAPSHOT</version>
+			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>wicket-stuff</groupId>
 			<artifactId>wicket-contrib-yui</artifactId>
 			<version>1.2-SNAPSHOT</version>
+			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -111,12 +114,26 @@
 			<version>3.8.1</version>
 			<scope>test</scope>
 		</dependency>
+			<dependency>
+			<groupId>tomcat</groupId>
+			<artifactId>jasper-compiler</artifactId>
+			<version>4.1.30</version>
+			<type>jar</type>
+			<scope>provided</scope>
+		</dependency>
 		<dependency>
 			<groupId>jetty</groupId>
 			<artifactId>org.mortbay.jetty</artifactId>
 			<version>4.2.24</version>
 			<type>jar</type>
-			<scope>compile</scope>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>tomcat</groupId>
+			<artifactId>jasper-runtime</artifactId>
+			<version>4.1.30</version>
+			<type>jar</type>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 
