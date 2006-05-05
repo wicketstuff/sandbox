@@ -47,6 +47,7 @@ import wicket.util.collections.MiniMap;
  * Slider component based on the Slider of Yahoo UI Library.
  * 
  * @author Eelco Hillenius
+ * @author Joshua Lim
  */
 public class Slider extends AbstractYuiPanel
 {
@@ -89,15 +90,7 @@ public class Slider extends AbstractYuiPanel
 	private String javaScriptId;
 
     /**
-     * TODO : maybe abstract out to "length" and "interval" ??
-     * 
-     */
-    private Integer leftUp;
-    private Integer rightDown;
-    private Integer tick;
-    
-    /**
-     * Contruct. 
+     * Contruct. creates a default Slider.
      * 
      * @param id
      * @param model
@@ -106,12 +99,15 @@ public class Slider extends AbstractYuiPanel
      * @param tick
      * @param element
      */
+	
     public Slider(String id, IModel model, 
-            final Integer leftUp, final Integer rightDown, final Integer tick,
+            final int leftUp, final int rightDown, final int tick,
             final FormComponent element)
     {
-        this(id, model, element,  new SliderSettings(leftUp, rightDown, tick));
+        this(id, model, element,  SliderSettings.getDefault(leftUp, rightDown, tick));
     }
+    
+    
 	/**
 	 * Construct.
 	 * 
@@ -247,7 +243,7 @@ public class Slider extends AbstractYuiPanel
 	 */
 	public void renderHead(HtmlHeaderContainer container)
 	{
-		((WebPage)getPage()).getBodyContainer().addOnLoadModifier("init" + javaScriptId + "();");
+		((WebPage)getPage()).getBodyContainer().addOnLoadModifier("init" + javaScriptId + "();", this);
 		super.renderHead(container);
 	}
 
@@ -296,34 +292,4 @@ public class Slider extends AbstractYuiPanel
 			javaScriptId = backgroundElementId + "JS";
 		}
 	}
-    
-    public Integer getLeftUp() 
-    {
-        return leftUp;
-    }
-
-    public void setLeftUp(Integer leftUp) 
-    {
-        this.leftUp = leftUp;
-    }
-
-    public Integer getRightDown() 
-    {
-        return rightDown;
-    }
-
-    public void setRightDown(Integer rightDown) 
-    {
-        this.rightDown = rightDown;
-    }
-
-    public Integer getTick() 
-    {
-        return tick;
-    }
-
-    public void setTick(Integer tick) 
-    {
-        this.tick = tick;
-    }
 }
