@@ -1,6 +1,7 @@
 /* Functions for the advimage plugin popup */
 
 var preloadImg = null;
+var orgImageWidth, orgImageHeight;
 
 function preinit() {
 	// Initialize
@@ -10,7 +11,7 @@ function preinit() {
 	var url = tinyMCE.getParam("external_image_list_url");
 	if (url != null) {
 		// Fix relative
-		if (url.charAt(0) != '/')
+		if (url.charAt(0) != '/' && url.indexOf('://') == -1)
 			url = tinyMCE.documentBasePath + "/" + url;
 
 		document.write('<sc'+'ript language="javascript" type="text/javascript" src="' + url + '"></sc'+'ript>');
@@ -32,6 +33,9 @@ function getImageSrc(str) {
 
 		src = src.substring(0, src.indexOf('\''));
 
+		if (tinyMCE.getParam('convert_urls'))
+			src = convertURL(src, null, true);
+
 		return src;
 	}
 
@@ -45,15 +49,53 @@ function init() {
 	var inst = tinyMCE.getInstanceById(tinyMCE.getWindowArg('editor_id'));
 	var elm = inst.getFocusElement();
 	var action = "insert";
+	var html = "";
+
+	// Image list src
+	html = getImageListHTML('imagelistsrc','src','onSelectMainImage');
+	if (html == "")
+		document.getElementById("imagelistsrcrow").style.display = 'none';
+	else
+		document.getElementById("imagelistsrccontainer").innerHTML = html;
+
+	// Image list oversrc
+	html = getImageListHTML('imagelistover','onmouseoversrc');
+	if (html == "")
+		document.getElementById("imagelistoverrow").style.display = 'none';
+	else
+		document.getElementById("imagelistovercontainer").innerHTML = html;
+
+	// Image list outsrc
+	html = getImageListHTML('imagelistout','onmouseoutsrc');
+	if (html == "")
+		document.getElementById("imagelistoutrow").style.display = 'none';
+	else
+		document.getElementById("imagelistoutcontainer").innerHTML = html;
+
+	// Src browser
+	html = getBrowserHTML('srcbrowser','src','image','advimage');
+	document.getElementById("srcbrowsercontainer").innerHTML = html;
+
+	// Over browser
+	html = getBrowserHTML('oversrcbrowser','onmouseoversrc','image','advimage');
+	document.getElementById("onmouseoversrccontainer").innerHTML = html;
+
+	// Out browser
+	html = getBrowserHTML('outsrcbrowser','onmouseoutsrc','image','advimage');
+	document.getElementById("onmouseoutsrccontainer").innerHTML = html;
+
+	// Longdesc browser
+	html = getBrowserHTML('longdescbrowser','longdesc','file','advimage');
+	document.getElementById("longdesccontainer").innerHTML = html;
 
 	// Resize some elements
 	if (isVisible('srcbrowser'))
 		document.getElementById('src').style.width = '260px';
 
-	if (isVisible('overbrowser'))
+	if (isVisible('oversrcbrowser'))
 		document.getElementById('onmouseoversrc').style.width = '260px';
 
-	if (isVisible('outbrowser'))
+	if (isVisible('outsrcbrowser'))
 		document.getElementById('onmouseoutsrc').style.width = '260px';
 
 	if (isVisible('longdescbrowser'))
@@ -70,29 +112,38 @@ function init() {
 		var onmouseoversrc = getImageSrc(tinyMCE.cleanupEventStr(tinyMCE.getAttrib(elm, 'onmouseover')));
 		var onmouseoutsrc = getImageSrc(tinyMCE.cleanupEventStr(tinyMCE.getAttrib(elm, 'onmouseout')));
 
-		// Fix for drag-drop/copy paste bug in Mozilla
-		mceRealSrc = tinyMCE.getAttrib(elm, 'mce_real_src');
-		if (mceRealSrc != "")
-			src = mceRealSrc;
-
 		src = convertURL(src, elm, true);
 
-		if (onmouseoversrc != "")
+		// Use mce_src if found
+		var mceRealSrc = tinyMCE.getAttrib(elm, 'mce_src');
+		if (mceRealSrc != "") {
+			src = mceRealSrc;
+
+			if (tinyMCE.getParam('convert_urls'))
+				src = convertURL(src, elm, true);
+		}
+
+		if (onmouseoversrc != "" && tinyMCE.getParam('convert_urls'))
 			onmouseoversrc = convertURL(onmouseoversrc, elm, true);
 
-		if (onmouseoutsrc != "")
+		if (onmouseoutsrc != "" && tinyMCE.getParam('convert_urls'))
 			onmouseoutsrc = convertURL(onmouseoutsrc, elm, true);
 
 		// Setup form data
-		var style = tinyMCE.parseStyle(elm.style.cssText);
+		var style = tinyMCE.parseStyle(tinyMCE.getAttrib(elm, "style"));
+
+		// Store away old size
+		orgImageWidth = trimSize(getStyle(elm, 'width'))
+		orgImageHeight = trimSize(getStyle(elm, 'height'));
+
 		formObj.src.value    = src;
 		formObj.alt.value    = tinyMCE.getAttrib(elm, 'alt');
 		formObj.title.value  = tinyMCE.getAttrib(elm, 'title');
 		formObj.border.value = trimSize(getStyle(elm, 'border', 'borderWidth'));
 		formObj.vspace.value = tinyMCE.getAttrib(elm, 'vspace');
 		formObj.hspace.value = tinyMCE.getAttrib(elm, 'hspace');
-		formObj.width.value  = trimSize(getStyle(elm, 'width'));
-		formObj.height.value = trimSize(getStyle(elm, 'height'));
+		formObj.width.value  = orgImageWidth;
+		formObj.height.value = orgImageHeight;
 		formObj.onmouseoversrc.value = onmouseoversrc;
 		formObj.onmouseoutsrc.value  = onmouseoutsrc;
 		formObj.id.value  = tinyMCE.getAttrib(elm, 'id');
@@ -108,19 +159,20 @@ function init() {
 		else
 			selectByValue(formObj, 'align', getStyle(elm, 'align', 'cssFloat'));
 
+		addClassesToList('classlist', 'advimage_styles');
+
 		selectByValue(formObj, 'classlist', tinyMCE.getAttrib(elm, 'class'));
 		selectByValue(formObj, 'imagelistsrc', src);
 		selectByValue(formObj, 'imagelistover', onmouseoversrc);
 		selectByValue(formObj, 'imagelistout', onmouseoutsrc);
 
 		updateStyle();
-		showPreviewImage(src);
+		showPreviewImage(src, true);
 		changeAppearance();
 
 		window.focus();
-	}
-
-	addClassesToList('classlist', 'advimage_styles');
+	} else
+		addClassesToList('classlist', 'advimage_styles');
 
 	// If option enabled default contrain proportions to checked
 	if (tinyMCE.getParam("advimage_constrain_proportions", true))
@@ -207,7 +259,7 @@ function makeAttrib(attrib, value) {
 	value = value.replace(/&/g, '&amp;');
 	value = value.replace(/\"/g, '&quot;');
 	value = value.replace(/</g, '&lt;');
-	value = value.replace(/>/g, '&gr;');
+	value = value.replace(/>/g, '&gt;');
 
 	return ' ' + attrib + '="' + value + '"';
 }
@@ -234,9 +286,6 @@ function insertAction() {
 			return;
 	}
 
-	// Fix output URLs
-	src = convertURL(src, tinyMCE.imgElement);
-
 	if (onmouseoversrc && onmouseoversrc != "")
 		onmouseoversrc = "this.src='" + convertURL(onmouseoversrc, tinyMCE.imgElement) + "';";
 
@@ -244,8 +293,8 @@ function insertAction() {
 		onmouseoutsrc = "this.src='" + convertURL(onmouseoutsrc, tinyMCE.imgElement) + "';";
 
 	if (elm != null && elm.nodeName == "IMG") {
-		setAttrib(elm, 'src', src);
-		setAttrib(elm, 'mce_real_src', src);
+		setAttrib(elm, 'src', convertURL(src, tinyMCE.imgElement));
+		setAttrib(elm, 'mce_src', src);
 		setAttrib(elm, 'alt');
 		setAttrib(elm, 'title');
 		setAttrib(elm, 'border');
@@ -266,13 +315,18 @@ function insertAction() {
 
 		//tinyMCEPopup.execCommand("mceRepaint");
 
+		// Repaint if dimensions changed
+		if (formObj.width.value != orgImageWidth || formObj.height.value != orgImageHeight)
+			inst.repaint();
+
 		// Refresh in old MSIE
 		if (tinyMCE.isMSIE5)
 			elm.outerHTML = elm.outerHTML;
 	} else {
 		var html = "<img";
 
-		html += makeAttrib('src', src);
+		html += makeAttrib('src', convertURL(src, tinyMCE.imgElement));
+		html += makeAttrib('mce_src', src);
 		html += makeAttrib('alt');
 		html += makeAttrib('title');
 		html += makeAttrib('border');
@@ -280,7 +334,7 @@ function insertAction() {
 		html += makeAttrib('hspace');
 		html += makeAttrib('width');
 		html += makeAttrib('height');
-		html += makeAttrib('onmouseover', onmouseoutsrc);
+		html += makeAttrib('onmouseover', onmouseoversrc);
 		html += makeAttrib('onmouseout', onmouseoutsrc);
 		html += makeAttrib('id');
 		html += makeAttrib('dir');
@@ -295,6 +349,7 @@ function insertAction() {
 		tinyMCEPopup.execCommand("mceInsertContent", false, html);
 	}
 
+	tinyMCE._setEventsEnabled(inst.getBody(), false);
 	tinyMCEPopup.close();
 }
 
@@ -373,6 +428,9 @@ function changeHeight() {
 		return;
 	}
 
+	if (formObj.width.value == "" || formObj.height.value == "")
+		return;
+
 	var temp = (formObj.width.value / preloadImg.width) * preloadImg.height;
 	formObj.height.value = temp.toFixed(0);
 	updateStyle();
@@ -386,6 +444,9 @@ function changeWidth() {
 		return;
 	}
 
+	if (formObj.width.value == "" || formObj.height.value == "")
+		return;
+
 	var temp = (formObj.height.value / preloadImg.height) * preloadImg.width;
 	formObj.width.value = temp.toFixed(0);
 	updateStyle();
@@ -398,14 +459,19 @@ function onSelectMainImage(target_form_element, name, value) {
 	formObj.title.value = name;
 
 	resetImageData();
-	showPreviewImage(formObj.elements[target_form_element].value);
+	showPreviewImage(formObj.elements[target_form_element].value, false);
 }
 
-function showPreviewImage(src) {
+function showPreviewImage(src, start) {
+	var formObj = document.forms[0];
+
 	selectByValue(document.forms[0], 'imagelistsrc', src);
 
 	var elm = document.getElementById('prev');
 	var src = src == "" ? src : tinyMCE.convertRelativeToAbsoluteURL(tinyMCE.settings['base_href'], src);
+
+	if (!start && tinyMCE.getParam("advimage_update_dimensions_onchange", true))
+		resetImageData();
 
 	if (src == "")
 		elm.innerHTML = "";
@@ -450,14 +516,13 @@ function getSelectValue(form_obj, field_name) {
 	return elm.options[elm.selectedIndex].value;
 }
 
-function renderImageList(elm_id, target_form_element, onchange_func) {
+function getImageListHTML(elm_id, target_form_element, onchange_func) {
 	if (typeof(tinyMCEImageList) == "undefined" || tinyMCEImageList.length == 0)
-		return;
+		return "";
 
 	var html = "";
 
-	html += '<tr><td class="column1"><label for="' + elm_id + '">{$lang_image_list}</label></td>';
-	html += '<td colspan="2"><select id="' + elm_id + '" name="' + elm_id + '"';
+	html += '<select id="' + elm_id + '" name="' + elm_id + '"';
 	html += ' class="mceImageList" onfocus="tinyMCE.addSelectAccessibility(event, this, window);" onchange="this.form.' + target_form_element + '.value=';
 	html += 'this.options[this.selectedIndex].value;';
 
@@ -469,9 +534,9 @@ function renderImageList(elm_id, target_form_element, onchange_func) {
 	for (var i=0; i<tinyMCEImageList.length; i++)
 		html += '<option value="' + tinyMCEImageList[i][1] + '">' + tinyMCEImageList[i][0] + '</option>';
 
-	html += '</select></td></tr>';
+	html += '</select>';
 
-	document.write(html);
+	return html;
 
 	// tinyMCE.debug('-- image list start --', html, '-- image list end --');
 }

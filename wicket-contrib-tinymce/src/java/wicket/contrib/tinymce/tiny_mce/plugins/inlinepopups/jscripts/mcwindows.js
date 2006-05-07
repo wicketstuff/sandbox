@@ -1,5 +1,5 @@
 /**
- * $RCSfile$
+ * $RCSfile: mcwindows.js,v $
  * $Revision$
  * $Date$
  *

@@ -1,12 +1,12 @@
 /**
- * $RCSfile$
+ * $RCSfile: validate.js,v $
  * $Revision$
  * $Date$
  *
  * Various form validation methods.
  *
  * @author Moxiecode
- * @copyright Copyright © 2005, Moxiecode Systems AB, All rights reserved.
+ * @copyright Copyright © 2004-2006, Moxiecode Systems AB, All rights reserved.
  */
 
 function testRegExp(form_name, element_name, re) {
