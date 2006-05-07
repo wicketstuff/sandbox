@@ -84,4 +84,23 @@ public class TinyMCESettingsTest extends TestCase {
         settings.add(savePlugin.getSaveButton(), TinyMCESettings.Toolbar.first, TinyMCESettings.Position.before);
         assertEquals(1, settings.getPlugins().size());
     }
+    
+    public void testDisableButton1() {
+    	settings.disableButton(TinyMCESettings.bold);
+    	
+    	settings.addDisabledButtons(buffer);
+    	
+    	assertTrue(buffer.capacity() > 0);
+    	assertEquals(",\n\ttheme_advanced_disable : \"bold\"", buffer.toString());
+    }
+    
+    public void testDisableButton2() {
+    	settings.disableButton(TinyMCESettings.bold);
+    	settings.disableButton(TinyMCESettings.italic);
+    	
+    	settings.addDisabledButtons(buffer);
+    	
+    	assertTrue(buffer.capacity() > 0);
+    	assertEquals(",\n\ttheme_advanced_disable : \"bold, italic\"", buffer.toString());
+    }
 }
