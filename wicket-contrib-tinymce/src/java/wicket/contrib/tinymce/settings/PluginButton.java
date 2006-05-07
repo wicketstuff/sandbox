@@ -27,7 +27,7 @@ public class PluginButton extends Button
 
     private Plugin plugin;
 
-    PluginButton(String name, Plugin plugin)
+    public PluginButton(String name, Plugin plugin)
     {
         super(name);
         this.plugin = plugin;

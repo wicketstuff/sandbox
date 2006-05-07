@@ -17,12 +17,17 @@
  */
 package wicket.contrib.tinymce.settings;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
 import org.apache.commons.collections.set.ListOrderedSet;
-
-import java.io.Serializable;
-import java.util.*;
 
 /**
  * Settings class for TinyMCE editor. User can add/remove buttons, enable/disable resizing,
@@ -34,8 +39,9 @@ import java.util.*;
  */
 public class TinyMCESettings implements Serializable
 {
-
-    private Mode mode;
+	private static final long serialVersionUID = 1L;
+	
+	private Mode mode;
     private Theme theme;
     private Location toolbarLocation;
     private Location statusbarLocation;
@@ -45,6 +51,8 @@ public class TinyMCESettings implements Serializable
 
     private Set plugins;
     private List controls;
+    
+    private Set disabledButtons;
 
     public TinyMCESettings()
     {
@@ -67,6 +75,7 @@ public class TinyMCESettings implements Serializable
         this.theme = theme;
         controls = new LinkedList();
         plugins = new ListOrderedSet();
+        disabledButtons = new ListOrderedSet();
     }
 
     /**
@@ -147,6 +156,16 @@ public class TinyMCESettings implements Serializable
     }
 
     /**
+     * Disable specific button in advanced theme mode.
+     * 
+     * @param button button to be disabled
+     */
+    public void disableButton(Button button) 
+    {
+    	disabledButtons.add(button);
+    }
+
+    /**
      * Register a tinymce plugin. In order to reuse a existing plugin it has to be registered before.
      * Usually plugins are registered automatically when a plugin button is added,  but there are some plugins that contains no buttons.
      * This method is used to register those plugins. (eg AutoSave)
@@ -176,6 +195,32 @@ public class TinyMCESettings implements Serializable
             return getAdvancedSettings();
         }
     }
+    
+    public String getLoadPluginJavaScript() 
+    {
+    	StringBuffer loadPluginJavaScript = new StringBuffer();
+    	
+    	if (plugins.size() > 0)
+    	{
+    		Iterator iterator = plugins.iterator();
+            while (iterator.hasNext())
+            {
+                Plugin plugin = (Plugin) iterator.next();
+                String pluginPath = plugin.getPluginPath();
+                
+                if (pluginPath != null && pluginPath.equals("") == false)
+                {
+                	loadPluginJavaScript.append("tinyMCE.loadPlugin('");
+                	loadPluginJavaScript.append(plugin.getName());
+                	loadPluginJavaScript.append("','");
+                	loadPluginJavaScript.append(pluginPath);
+                	loadPluginJavaScript.append("');\n");
+                }
+            }
+    	}
+    	
+    	return loadPluginJavaScript.toString();
+    }
 
     private String getAdvancedSettings()
     {
@@ -186,9 +231,12 @@ public class TinyMCESettings implements Serializable
         // theme
         buffer.append(",\n\t").append("theme : ").append("\"").append(theme.getName()).append("\"");
 
+        // disable buttons
+        addDisabledButtons(buffer);
+        
         // plugins
         addPlugins(buffer);
-
+        
         // add additional controls
         addButtons1_Before(buffer);
         addButtons1_After(buffer);
@@ -275,6 +323,14 @@ public class TinyMCESettings implements Serializable
         if (result.size() > 0)
         {
             buffer.append(",\n\t").append("theme_advanced_buttons3_add : ").append("\"").append(controlsAsString(result)).append("\"");
+        }
+    }
+    
+    void addDisabledButtons(StringBuffer buffer) {
+    	if (disabledButtons.size() > 0)
+        {
+            String value = enumAsString(disabledButtons);
+            buffer.append(",\n\t").append("theme_advanced_disable : ") .append("\"").append(value).append("\"");
         }
     }
 
@@ -386,8 +442,9 @@ public class TinyMCESettings implements Serializable
      */
     public static class Mode extends Enum
     {
-
-        public static final Mode textareas = new Mode("textareas");
+		private static final long serialVersionUID = 1L;
+		
+		public static final Mode textareas = new Mode("textareas");
 
         private Mode(String name)
         {
@@ -405,8 +462,9 @@ public class TinyMCESettings implements Serializable
      */
     public static class Theme extends Enum
     {
-
-        public static final Theme simple = new Theme("simple");
+		private static final long serialVersionUID = 1L;
+		
+		public static final Theme simple = new Theme("simple");
         public static final Theme advanced = new Theme("advanced");
 
         private Theme(String name)
@@ -421,8 +479,9 @@ public class TinyMCESettings implements Serializable
      */
     public static class Location extends Enum
     {
-
-        public static final Location top = new Location("top");
+		private static final long serialVersionUID = 1L;
+		
+		public static final Location top = new Location("top");
         public static final Location bottom = new Location("bottom");
 
         private Location(String name)
@@ -437,8 +496,9 @@ public class TinyMCESettings implements Serializable
      */
     public static class Align extends Enum
     {
-
-        public static final Align left = new Align("left");
+		private static final long serialVersionUID = 1L;
+		
+		public static final Align left = new Align("left");
         public static final Align center = new Align("center");
         public static final Align right = new Align("right");
 
@@ -454,8 +514,9 @@ public class TinyMCESettings implements Serializable
      */
     public static class Position extends Enum
     {
-
-        public static final Position before = new Position("before");
+		private static final long serialVersionUID = 1L;
+		
+		public static final Position before = new Position("before");
         public static final Position after = new Position("after");
 
         public Position(String name)
@@ -470,8 +531,9 @@ public class TinyMCESettings implements Serializable
      */
     public static class Toolbar extends Enum
     {
-
-        public static final Toolbar first = new Toolbar("first");
+		private static final long serialVersionUID = 1L;
+		
+		public static final Toolbar first = new Toolbar("first");
         public static final Toolbar second = new Toolbar("second");
         public static final Toolbar third = new Toolbar("third");
 
@@ -521,4 +583,5 @@ public class TinyMCESettings implements Serializable
     public static final Button fontsizeselect = new Button("fontsizeselect");
     public static final Button forecolor = new Button("forecolor");
     public static final Button backcolor = new Button("backcolor");
+
 }

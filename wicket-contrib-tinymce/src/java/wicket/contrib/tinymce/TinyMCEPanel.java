@@ -61,8 +61,9 @@ public class TinyMCEPanel extends Panel
 
             protected void onComponentTagBody(final MarkupStream markupStream, final ComponentTag openTag)
             {
-                String body = "\ntinyMCE.init({" + settings.toJavaScript() + "\n});\n";
-                replaceComponentTagBody(markupStream, openTag, body);
+                String initScript = "\ntinyMCE.init({" + settings.toJavaScript() + "\n});\n";
+                String loadPluginScript = settings.getLoadPluginJavaScript();
+                replaceComponentTagBody(markupStream, openTag, initScript + loadPluginScript);
             }
         });
     }
