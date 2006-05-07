@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-modules id="moduleCoreId">
+<wb-module deploy-name="wicket-contrib-tinymce">
+<wb-resource deploy-path="/" source-path="/src/test"/>
+</wb-module>
+</project-modules>
