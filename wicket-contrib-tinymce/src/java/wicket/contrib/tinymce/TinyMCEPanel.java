@@ -17,9 +17,13 @@
  */
 package wicket.contrib.tinymce;
 
+import java.util.regex.Pattern;
+
+import wicket.Application;
 import wicket.contrib.tinymce.settings.TinyMCESettings;
 import wicket.markup.ComponentTag;
 import wicket.markup.MarkupStream;
+import wicket.markup.html.PackageResource;
 import wicket.markup.html.WebComponent;
 import wicket.markup.html.panel.Panel;
 import wicket.markup.html.resources.JavaScriptReference;
@@ -34,8 +38,9 @@ import wicket.markup.html.resources.JavaScriptReference;
  */
 public class TinyMCEPanel extends Panel
 {
+	private static final String TINY_MCE = ".*(\\.js|\\.gif|\\.html|\\.htm|\\.css)$";
 
-    private TinyMCESettings settings;
+	private TinyMCESettings settings;
 
     public TinyMCEPanel(final String id)
     {
@@ -46,6 +51,10 @@ public class TinyMCEPanel extends Panel
     {
         super(id);
 
+        // bind tinymce resources
+		PackageResource.bind(Application.get(), TinyMCEPanel.class, Pattern.compile(TINY_MCE), true);
+
+		// add tinymce init script and startup js 
         add(new JavaScriptReference("tinymce", TinyMCEPanel.class, "tiny_mce/tiny_mce_src.js"));
         add(new WebComponent("initScript")
         {
