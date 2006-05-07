@@ -1,10 +1,14 @@
 function init() {
 	tinyMCEPopup.resizeToInnerSize();
 
+	document.getElementById('backgroundimagebrowsercontainer').innerHTML = getBrowserHTML('backgroundimagebrowser','backgroundimage','image','table');
+	document.getElementById('bordercolor_pickcontainer').innerHTML = getColorPickerHTML('bordercolor_pick','bordercolor');
+	document.getElementById('bgcolor_pickcontainer').innerHTML = getColorPickerHTML('bgcolor_pick','bgcolor')
+
 	var inst = tinyMCE.selectedInstance;
 	var tdElm = tinyMCE.getParentElement(inst.getFocusElement(), "td,th");
 	var formObj = document.forms[0];
-	var st = tinyMCE.parseStyle(tdElm.style.cssText);
+	var st = tinyMCE.parseStyle(tinyMCE.getAttrib(tdElm, "style"));
 
 	// Get table cell data
 	var celltype = tdElm.nodeName.toLowerCase();
@@ -47,6 +51,8 @@ function init() {
 }
 
 function updateAction() {
+	tinyMCEPopup.restoreSelection();
+
 	var inst = tinyMCE.selectedInstance;
 	var tdElm = tinyMCE.getParentElement(inst.getFocusElement(), "td,th");
 	var trElm = tinyMCE.getParentElement(inst.getFocusElement(), "tr");
@@ -76,9 +82,12 @@ function updateAction() {
 		case "row":
 			var cell = trElm.firstChild;
 
+			if (cell.nodeName != "TD" && cell.nodeName != "TH")
+				cell = nextCell(cell);
+
 			do {
 				cell = updateCell(cell, true);
-			} while ((cell = nextCell(cell)));
+			} while ((cell = nextCell(cell)) != null);
 
 			break;
 
@@ -88,9 +97,12 @@ function updateAction() {
 			for (var i=0; i<rows.length; i++) {
 				var cell = rows[i].firstChild;
 
+				if (cell.nodeName != "TD" && cell.nodeName != "TH")
+					cell = nextCell(cell);
+
 				do {
 					cell = updateCell(cell, true);
-				} while ((cell = nextCell(cell)));
+				} while ((cell = nextCell(cell)) != null);
 			}
 
 			break;
@@ -103,7 +115,7 @@ function updateAction() {
 }
 
 function nextCell(elm) {
-	while ((elm = elm.nextSibling)) {
+	while ((elm = elm.nextSibling) != null) {
 		if (elm.nodeName == "TD" || elm.nodeName == "TH")
 			return elm;
 	}
@@ -157,9 +169,8 @@ function updateCell(td, skip_id) {
 		// changing to a different node type
 		var newCell = doc.createElement(celltype);
 
-		for (var c=0; c<td.childNodes.length; c++) {
+		for (var c=0; c<td.childNodes.length; c++)
 			newCell.appendChild(td.childNodes[c].cloneNode(1));
-		}
 
 		for (var a=0; a<td.attributes.length; a++) {
 			var attr = td.attributes[a];
@@ -168,8 +179,6 @@ function updateCell(td, skip_id) {
 
 		td.parentNode.replaceChild(newCell, td);
 		td = newCell;
-
-		return newCell;
 	}
 
 	return td;
