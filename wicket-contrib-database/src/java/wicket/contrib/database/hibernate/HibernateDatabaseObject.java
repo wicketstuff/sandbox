@@ -57,13 +57,9 @@ public abstract class HibernateDatabaseObject implements Serializable
 	 * @param id
 	 *            the unique identifier
 	 */
-	public final void setId(Long id)
+	public final void setId(final Long id)
 	{
-		if (id.longValue() == -1)
-		{
-			this.id = null;
-		}
-		else
+		if (id.longValue() != -1)
 		{
 			this.id = id;
 		}
@@ -82,7 +78,7 @@ public abstract class HibernateDatabaseObject implements Serializable
 	/**
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
-	public boolean equals(Object that)
+	public boolean equals(final Object that)
 	{
 		if (that instanceof HibernateDatabaseObject)
 		{
