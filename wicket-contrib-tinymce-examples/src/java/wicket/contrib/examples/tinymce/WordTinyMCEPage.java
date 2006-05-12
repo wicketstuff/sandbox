@@ -30,6 +30,8 @@ public class WordTinyMCEPage extends TinyMCEBasePage
         PastePlugin pastePlugin = new PastePlugin();
         SearchReplacePlugin searchReplacePlugin = new SearchReplacePlugin();
         DateTimePlugin dateTimePlugin = new DateTimePlugin();
+        dateTimePlugin.setDateFormat("Date: %m-%d-%Y");
+        dateTimePlugin.setTimeFormat("Time: %H:%M");
         PreviewPlugin previewPlugin = new PreviewPlugin();
         ZoomPlugin zoomPlugin = new ZoomPlugin();
         settings.add(TinyMCESettings.cut, TinyMCESettings.Toolbar.second, TinyMCESettings.Position.before);
