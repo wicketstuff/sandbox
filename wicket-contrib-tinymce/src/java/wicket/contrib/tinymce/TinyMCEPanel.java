@@ -33,7 +33,8 @@ import wicket.markup.html.resources.JavaScriptReference;
  * All you have to do is to add this component to your wicket page and it just works.
  * If you want to create a custom TinyMCE editor take a look at TinyMCESettings class.
  *
- * @author Iulian-Corneliu COSTAN
+ * @author Iulian-Corneliu Costan (iulian.costan@gmail.com)
+ * @author Frank Bille Jensen (fbille@avaleo.net)
  * @see TinyMCESettings
  */
 public class TinyMCEPanel extends Panel
@@ -61,9 +62,13 @@ public class TinyMCEPanel extends Panel
 
             protected void onComponentTagBody(final MarkupStream markupStream, final ComponentTag openTag)
             {
-                String initScript = "\ntinyMCE.init({" + settings.toJavaScript() + "\n});\n";
-                String loadPluginScript = settings.getLoadPluginJavaScript();
-                replaceComponentTagBody(markupStream, openTag, initScript + loadPluginScript);
+            	StringBuffer buffer = new StringBuffer();
+            	
+                buffer.append("\ntinyMCE.init({" + settings.toJavaScript() + "\n});\n");
+                buffer.append(settings.getLoadPluginJavaScript());
+                buffer.append(settings.getAdditionalPluginJavaScript());
+                
+                replaceComponentTagBody(markupStream, openTag, buffer.toString());
             }
         });
     }

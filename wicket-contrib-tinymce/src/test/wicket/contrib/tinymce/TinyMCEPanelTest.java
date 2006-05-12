@@ -31,12 +31,16 @@ import wicket.util.tester.WicketTester;
 /**
  * Tests of the TinyMCE panel.
  * 
- * @author Frank Bille Jensen
+ * @author Frank Bille Jensen (fbille@avaleo.net)
  */
 public class TinyMCEPanelTest extends TestCase
 {
 	WicketTester application;
 
+	/**
+	 * For each test case we provide a new WicketTester.
+	 * @see junit.framework.TestCase#setUp()
+	 */
 	public void setUp()
 	{
 		application = new WicketTester();
@@ -115,6 +119,40 @@ public class TinyMCEPanelTest extends TestCase
 		application.assertContains("plugins : \"mockplugin\"");
 		application.assertContains("tinyMCE\\.loadPlugin\\('" + mockPlugin.getName() + "','"
 				+ mockPlugin.getPluginPath() + "'\\);");
+	}
+
+	/**
+	 * Ensure that the plugins additional javascript is actually rendered.
+	 * 
+	 */
+	public void testAdditionalPluginJavaScript()
+	{
+		// Define a mock plugin
+		final Plugin mockPlugin = new Plugin("mockplugin")
+		{
+			private static final long serialVersionUID = 1L;
+			
+			protected void additionalJavaScript(StringBuffer buffer)
+			{
+				buffer.append("alert('Hello Mock World');");
+			}
+		};
+
+		// Add the panel.
+		application.startPanel(new TestPanelSource()
+		{
+			public Panel getTestPanel(String panelId)
+			{
+				TinyMCESettings settings = new TinyMCESettings();
+				settings.register(mockPlugin);
+
+				return new TinyMCEPanel("panel", settings);
+			}
+		});
+
+		assertCommonComponents();
+		
+		application.assertContains("tinyMCE.init\\(\\{[^\\}]+\\}\\);\nalert\\('Hello Mock World'\\);");
 	}
 
 	private void assertCommonComponents()

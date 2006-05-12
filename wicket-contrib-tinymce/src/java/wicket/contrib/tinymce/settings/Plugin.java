@@ -17,27 +17,33 @@
  */
 package wicket.contrib.tinymce.settings;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 /**
  * Base class for all TinyMCE plugins.
  * <p>
  * Note: Only basic functionality is implemented, more work is needed.
  * 
- * @author Iulian-Corneliu COSTAN
+ * @author Iulian-Corneliu Costan (iulian.costan@gmail.com)
+ * @author Frank Bille Jensen (fbille@avaleo.net)
  */
 public abstract class Plugin extends wicket.contrib.tinymce.settings.Enum
 {
 	private String pluginPath;
+	private Map settings;
 
 	protected Plugin(String name)
 	{
-		super(name);
+		this(name, null);
 	}
 
 	protected Plugin(String name, String pluginPath)
 	{
-		this(name);
+		super(name);
 		this.pluginPath = pluginPath;
+		settings = new HashMap();
 	}
 
 	public String getPluginPath()
@@ -45,15 +51,46 @@ public abstract class Plugin extends wicket.contrib.tinymce.settings.Enum
 		return pluginPath;
 	}
 
-	// implemented by subclasses
-	protected String defineProperties()
+	/**
+	 * Override this in specific plugins if the plugin needs to be able to add
+	 * something to the javascript. Use this to define the javascript callback
+	 * functions if the plugin requires this (i.e. "paste_callback".
+	 * <p>
+	 * NOTE: This should NOT be used to configure settings for the plugin. The
+	 * output is added AFTER the tinyMCE.init().
+	 * 
+	 * @param buffer
+	 *            The output buffer which the plugin should append to, if they
+	 *            have some additional javascript.
+	 */
+	protected void definePluginExtensions(StringBuffer buffer)
 	{
-		return null;
+		// do nothing;
+	}
+	
+	/**
+	 * Define configuration settings for this plugin.
+	 * <p>
+	 * I.e. the "paste" plugin can be configured with different settings such
+	 * as: "paste_callback" etc.
+	 * @param buffer 
+	 * 				buffer to append to
+	 * @param settingKey
+	 *            The setting to set. I.e. "paste_callback"
+	 * @param value
+	 *            The value to set on the setting. I.e. "myCallbackFunction"
+	 */
+	protected void definePluginSettings(StringBuffer buffer)
+	{
+		// do nothting 
+	}
+	
+	protected void define(StringBuffer buffer, String key, String value) 
+	{
+		if (value != null) 
+		{
+			buffer.append(",\n\t").append(key).append(" : ") .append("\"").append(value).append("\"");
+		}
 	}
 
-	// implemented by subclasses
-	protected String getExtension()
-	{
-		return null;
-	}
 }

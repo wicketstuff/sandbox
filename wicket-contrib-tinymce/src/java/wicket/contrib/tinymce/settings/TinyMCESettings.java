@@ -33,7 +33,8 @@ import org.apache.commons.collections.set.ListOrderedSet;
  * Settings class for TinyMCE editor. User can add/remove buttons, enable/disable resizing,
  * change positions, orientation, alignment and much more.
  *
- * @author Iulian-Corneliu COSTAN
+ * @author Iulian-Corneliu Costan (iulian.costan@gmail.com)
+ * @author Frank Bille Jensen (fbille@avaleo.net)
  * @see Plugin
  * @see Button
  */
@@ -73,9 +74,9 @@ public class TinyMCESettings implements Serializable
     {
         this.mode = mode;
         this.theme = theme;
-        controls = new LinkedList();
-        plugins = new ListOrderedSet();
-        disabledButtons = new ListOrderedSet();
+        this.controls = new LinkedList();
+        this.plugins = new ListOrderedSet();
+        this.disabledButtons = new ListOrderedSet();
     }
 
     /**
@@ -186,17 +187,37 @@ public class TinyMCESettings implements Serializable
     //todo change access
     public String toJavaScript()
     {
-        if (Theme.simple.equals(theme))
+    	StringBuffer buffer = new StringBuffer();
+        
+        // mode
+        buffer.append("\n\tmode : ").append("\"").append(mode.getName()).append("\"");
+        // theme
+        buffer.append(",\n\t").append("theme : ").append("\"").append(theme.getName()).append("\"");
+    	
+        if (Theme.advanced.equals(theme))
         {
-            return getSimpleSettings();
+        	appendAdvancedSettings(buffer);
         }
-        else
-        {
-            return getAdvancedSettings();
-        }
+        
+        appendPluginSettings(buffer);
+        
+        return buffer.toString();
     }
     
-    public String getLoadPluginJavaScript() 
+    private void appendPluginSettings(StringBuffer buffer)
+	{
+    	if (plugins.size() > 0)
+    	{
+    		Iterator iterator = plugins.iterator();
+    		while (iterator.hasNext())
+    		{
+    			Plugin plugin = (Plugin) iterator.next();
+    			plugin.definePluginSettings(buffer);
+    		}
+    	}
+	}
+
+	public String getLoadPluginJavaScript() 
     {
     	StringBuffer loadPluginJavaScript = new StringBuffer();
     	
@@ -221,16 +242,31 @@ public class TinyMCESettings implements Serializable
     	
     	return loadPluginJavaScript.toString();
     }
-
-    private String getAdvancedSettings()
+    
+    /**
+     * Get additional javascript from the plugins.
+     * 
+     * @return The different plugins additional javascript.
+     */
+    public String getAdditionalPluginJavaScript()
     {
-        StringBuffer buffer = new StringBuffer();
-
-        // mode
-        buffer.append("\n\tmode : ").append("\"").append(mode.getName()).append("\"");
-        // theme
-        buffer.append(",\n\t").append("theme : ").append("\"").append(theme.getName()).append("\"");
-
+    	StringBuffer buffer = new StringBuffer();
+    	
+    	if (plugins.size() > 0)
+    	{
+    		Iterator iterator = plugins.iterator();
+    		while (iterator.hasNext())
+    		{
+    			Plugin plugin = (Plugin) iterator.next();
+    			plugin.definePluginExtensions(buffer);
+    		}
+    	}
+    	
+    	return buffer.toString();
+    }
+    
+    private void appendAdvancedSettings(StringBuffer buffer)
+    {
         // disable buttons
         addDisabledButtons(buffer);
         
@@ -253,8 +289,6 @@ public class TinyMCESettings implements Serializable
         // resizing
         addVerticalResizing(buffer);
         addHorizontalResizing(buffer);
-
-        return buffer.toString();
     }
 
     void addPlugins(StringBuffer buffer)
@@ -396,19 +430,6 @@ public class TinyMCESettings implements Serializable
         {
             buffer.append(",\n\t").append("theme_advanced_statusbar_location : ").append("\"").append(statusbarLocation.getName()).append("\"");
         }
-    }
-
-    private String getSimpleSettings()
-    {
-        StringBuffer buffer = new StringBuffer();
-
-        // tinymce mode
-        buffer.append("\n\tmode : ").append("\"").append(mode.getName()).append("\"").append(", ");
-
-        // tinymce theme
-        buffer.append("\n\ttheme : ").append("\"").append(theme.getName()).append("\"");
-
-        return buffer.toString();
     }
 
     private class ControlPredicate implements Predicate
