@@ -20,26 +20,12 @@ package wicket.contrib.tinymce.settings;
 /**
  * The datetime plugin is able to insert date and time into the TinyMCE editable area.
  * <p/>
- * Replacement variables:
- * <ul>
- * <li><b>%y</b> year as a decimal number without a century (range 00 to 99)</li>
- * <li>%Y year as a decimal number including the century</li>
- * %d day of the month as a decimal number (range 01 to 31)
- * %m month as a decimal number (range 01 to 12)
- * %D same as %m/%d/%y
- * %r time in a.m. and p.m. notation
- * %H hour as a decimal number using a 24-hour clock (range 00 to 23)
- * %I hour as a decimal number using a 12-hour clock (range 01 to 12)
- * %M minute as a decimal number (range 00-59)
- * %S second as a decimal number (range 00-59)
- * %p either "am" or "pm" according to the given time value
- * %% a literal "%" character
- * </ul>
  *
- * @author Iulian-Corneliu COSTAN
+ * @author Iulian-Corneliu Costan (iulian.costan@gmail.com)
  */
 public class DateTimePlugin extends Plugin
 {
+	private static final long serialVersionUID = 1L;
 
     private PluginButton dateButton;
     private PluginButton timeButton;
@@ -64,18 +50,51 @@ public class DateTimePlugin extends Plugin
         return timeButton;
     }
 
-    private void setTimeFormat(String timeFormat)
+    /**
+	 * Time variables:
+	 * <ul>
+	 * <li>%r time in a.m. and p.m. notation</li>
+	 * <li>%H hour as a decimal number using a 24-hour clock (range 00 to 23)</li>
+	 * <li>%I hour as a decimal number using a 12-hour clock (range 01 to 12)</li>
+	 * <li>%M minute as a decimal number (range 00-59)</li>
+	 * <li>%S second as a decimal number (range 00-59)</li>
+	 * <li>%p either "am" or "pm" according to the given time value</li>
+	 * <li>%% a literal "%" character</li>
+	 * </ul>
+     * @param timeFormat
+     */
+    public void setTimeFormat(String timeFormat)
     {
         this.timeFormat = timeFormat;
     }
 
+    /**
+	 * Date variables:
+	 * <ul>
+	 * <li>%y year as a decimal number without a century (range 00 to 99)</li>
+	 * <li>%Y year as a decimal number including the century</li>
+	 * <li>%d day of the month as a decimal number (range 01 to 31)</li>
+	 * <li>%m month as a decimal number (range 01 to 12)</li>
+	 * <li>%D same as %m/%d/%y</li>
+	 * <li>%% a literal "%" character</li>
+	 * </ul>
+     * @param timeFormat
+     */
     public void setDateFormat(String dateFormat)
     {
         this.dateFormat = dateFormat;
     }
 
-    public String defineProperties()
-    {
-        return "";
-    }
+	protected void definePluginSettings(StringBuffer buffer)
+	{
+		if (timeFormat != null)
+		{
+			define(buffer, "plugin_insertdate_timeFormat", timeFormat);
+		}
+		if (dateFormat != null) 
+		{
+			define(buffer, "plugin_insertdate_dateFormat", dateFormat);
+		}
+	}
+    
 }

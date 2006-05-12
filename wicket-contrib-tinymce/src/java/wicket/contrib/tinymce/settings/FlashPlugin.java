@@ -40,13 +40,4 @@ public class FlashPlugin extends Plugin
         return flashButton;
     }
 
-    public String defineProperties()
-    {
-        return null;
-    }
-
-    public String getExtension()
-    {
-        return null;
-    }
 }

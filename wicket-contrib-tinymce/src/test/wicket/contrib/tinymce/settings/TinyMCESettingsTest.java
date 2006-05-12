@@ -1,12 +1,15 @@
 package wicket.contrib.tinymce.settings;
 
+import java.util.regex.Pattern;
+
 import junit.framework.TestCase;
 import wicket.contrib.tinymce.settings.SavePlugin;
 import wicket.contrib.tinymce.settings.DateTimePlugin;
 import wicket.contrib.tinymce.settings.TinyMCESettings;
 
 /**
- * @author Iulian-Corneliu COSTAN
+ * @author Iulian-Corneliu Costan (iulian.costan@gmail.com)
+ * @author Frank Bille (fbille@avaleo.net)
  */
 public class TinyMCESettingsTest extends TestCase {
 
@@ -102,5 +105,31 @@ public class TinyMCESettingsTest extends TestCase {
     	
     	assertTrue(buffer.capacity() > 0);
     	assertEquals(",\n\ttheme_advanced_disable : \"bold, italic\"", buffer.toString());
+    }
+    
+    public void testDateTimePlugin() {
+    	DateTimePlugin plugin = new DateTimePlugin();
+    	plugin.setDateFormat("%Y-%m-%d");
+    	settings.register(plugin);
+    	
+    	String javascript = settings.toJavaScript();
+    	Pattern pattern = Pattern.compile(".*,\n\tplugin_insertdate_dateFormat : \"%Y-%m-%d\"", Pattern.DOTALL);
+		assertTrue(pattern.matcher(javascript).matches());
+    }
+    
+    public void testDefinePluginExtensions() {
+    	Plugin plugin = new Plugin("mockplugin") {
+
+			protected void definePluginExtensions(StringBuffer buffer)
+			{
+				buffer.append("alert('Hello Mock World');");
+			}
+    		
+    	};
+    	
+    	settings.register(plugin);
+    	
+    	String javascript = settings.getAdditionalPluginJavaScript();
+    	assertEquals("alert('Hello Mock World');", javascript);
     }
 }
