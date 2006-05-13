@@ -19,6 +19,8 @@ package wicket.contrib.database.hibernate;
 
 import java.io.Serializable;
 
+import wicket.util.lang.Classes;
+
 /**
  * Base class for persistent entities.
  */
@@ -70,9 +72,7 @@ public abstract class HibernateDatabaseObject implements Serializable
 	 */
 	public String toString()
 	{
-		String clsName = getClass().getName();
-		String simpleClsName = clsName.substring(clsName.lastIndexOf('.') + 1);
-		return simpleClsName + "{id=" + getId() + "}";
+		return "[" + Classes.simpleName(getClass()) + " id=" + getId() + "]";
 	}
 
 	/**
