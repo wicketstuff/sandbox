@@ -21,8 +21,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hsqldb.Server;
 
-import org.hibernate.cfg.AnnotationConfiguration;
-
 import wicket.util.time.Duration;
 
 /**
@@ -38,29 +36,14 @@ public class HypersonicHibernateDatabase extends HibernateDatabase
 
 	/**
 	 * Constructor
+	 * 
+	 * @param name
+	 *            Name of database
 	 */
-	public HypersonicHibernateDatabase()
+	public HypersonicHibernateDatabase(final String name)
 	{
+		super(name);
 		start();
-	}
-
-	/**
-	 * @return Default annotation configuration for a hypersonic hibernate 3
-	 *         database
-	 */
-	protected AnnotationConfiguration newAnnotationConfiguration()
-	{
-		final AnnotationConfiguration configuration = super.newAnnotationConfiguration();
-		configuration.setProperty("hibernate.show_sql", "true");
-		configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.HSQLDialect");
-		configuration.setProperty("hibernate.connection.driver_class", "org.hsqldb.jdbcDriver");
-		configuration.setProperty("hibernate.connection.url", "jdbc:hsqldb:hsql://localhost");
-		configuration.setProperty("hibernate.connection.username", "sa");
-		configuration.setProperty("hibernate.connection.password", "");
-		// configuration.setProperty("c3p0.min_size", "3");
-		// configuration.setProperty("c3p0.max_size", "5");
-		// configuration.setProperty("c3p0.timeout", "1800");
-		return configuration;
 	}
 
 	/**

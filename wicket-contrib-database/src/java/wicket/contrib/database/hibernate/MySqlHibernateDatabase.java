@@ -1,6 +1,6 @@
 /*
- * $Id: MySqlHibernateDatabase.java,v 1.5 2005/02/22 17:42:33 jonathanlocke
- * Exp $ $Revision$ $Date$
+ * $Id$
+ * $Revision$ $Date$
  * 
  * ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -17,11 +17,9 @@
  */
 package wicket.contrib.database.hibernate;
 
-import org.hibernate.cfg.AnnotationConfiguration;
 
 /**
- * A hibernate database that automatically uses an embedded MySql SQL
- * server.
+ * A hibernate database that automatically uses an embedded MySql SQL server.
  * 
  * @author Jonathan Locke
  */
@@ -29,27 +27,12 @@ public class MySqlHibernateDatabase extends HibernateDatabase
 {
 	/**
 	 * Constructor
+	 * 
+	 * @param name
+	 *            Name of database
 	 */
-	public MySqlHibernateDatabase()
+	public MySqlHibernateDatabase(final String name)
 	{
-	}
-
-	/**
-	 * @return Default annotation configuration for a MySql hibernate 3
-	 *         database
-	 */
-	protected AnnotationConfiguration newAnnotationConfiguration()
-	{
-		final AnnotationConfiguration configuration = super.newAnnotationConfiguration();
-		configuration.setProperty("hibernate.show_sql", "true");
-		configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
-		configuration.setProperty("hibernate.connection.driver_class", "com.mysql.jdbc.Driver");
-		configuration.setProperty("hibernate.connection.url", "jdbc:mysql://localhost/databaseName?autoReconnect=true");
-		configuration.setProperty("hibernate.connection.username", "root");
-		configuration.setProperty("hibernate.connection.password", "");
-		// configuration.setProperty("c3p0.min_size", "3");
-		// configuration.setProperty("c3p0.max_size", "5");
-		// configuration.setProperty("c3p0.timeout", "1800");
-		return configuration;
+		super(name);
 	}
 }
