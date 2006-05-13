@@ -28,7 +28,6 @@ import org.apache.commons.logging.LogFactory;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.impl.SessionFactoryImpl;
@@ -51,6 +50,17 @@ public class HibernateDatabase extends Database
 
 	/** The one and only Hibernate session factory for this web application. */
 	private SessionFactory hibernateSessionFactory;
+	
+	/**
+	 * Constructor
+	 * 
+	 * @param name
+	 *            Name of database
+	 */
+	public HibernateDatabase(final String name)
+	{
+		super(name);
+	}
 
 	/**
 	 * Construct.
@@ -80,8 +90,8 @@ public class HibernateDatabase extends Database
 		Session session = null;
 		try
 		{
-			SessionFactory sessionFactory = configuration.buildSessionFactory();
-			Dialect dialect = ((SessionFactoryImpl)sessionFactory).getDialect();
+			final SessionFactory sessionFactory = configuration.buildSessionFactory();
+			final Dialect dialect = ((SessionFactoryImpl)sessionFactory).getDialect();
 			final String[] drops = configuration.generateDropSchemaScript(dialect);
 			final String[] creates = configuration.generateSchemaCreationScript(dialect);
 			session = sessionFactory.openSession();
@@ -121,16 +131,6 @@ public class HibernateDatabase extends Database
 	public DatabaseSession newDatabaseSession()
 	{
 		return new HibernateDatabaseSession(this, hibernateSessionFactory.openSession());
-	}
-
-	/**
-	 * @return Default annotation configuration for a Hibernate 3 database
-	 */
-	protected AnnotationConfiguration newAnnotationConfiguration()
-	{
-		final AnnotationConfiguration configuration = new AnnotationConfiguration();
-		configuration.setProperty("hibernate.jdbc.use_streams_for_binary", "true");
-		return configuration;
 	}
 
 	/**

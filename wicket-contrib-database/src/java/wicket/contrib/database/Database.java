@@ -24,7 +24,23 @@ public abstract class Database
 {
 	/** Default transaction semantics for sessions on this database */
 	private DatabaseSession.TransactionScope defaultTransactionSemantics = DatabaseSession.TRANSACT_REQUESTS;
-
+	
+	/**
+	 * Name of this database
+	 */
+	private final String name;
+	
+	/**
+	 * Constructor
+	 * 
+	 * @param name
+	 *            Name of database
+	 */
+	public Database(final String name)
+	{
+		this.name = name;
+	}
+	
 	/**
 	 * Drops and recreates database tables
 	 */
@@ -36,6 +52,14 @@ public abstract class Database
 	public final DatabaseSession.TransactionScope getDefaultTransactionSemantics()
 	{
 		return defaultTransactionSemantics;
+	}
+
+	/**
+	 * @return Returns name.
+	 */
+	public String getName()
+	{
+		return name;
 	}
 
 	/**
