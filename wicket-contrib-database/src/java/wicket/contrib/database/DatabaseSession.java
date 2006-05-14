@@ -58,6 +58,9 @@ public abstract class DatabaseSession
 	 */
 	private Database database;
 
+	/** 
+	 * Transaction scope semantics
+	 */
 	private TransactionScope transactionSemantics;
 
 	/**
