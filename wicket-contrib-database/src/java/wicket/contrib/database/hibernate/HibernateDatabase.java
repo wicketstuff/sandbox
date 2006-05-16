@@ -17,6 +17,7 @@
  */
 package wicket.contrib.database.hibernate;
 
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -25,16 +26,19 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.EmptyInterceptor;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.impl.SessionFactoryImpl;
+import org.hibernate.type.Type;
 
 import wicket.WicketRuntimeException;
 import wicket.contrib.database.Database;
 import wicket.contrib.database.DatabaseSession;
+import wicket.contrib.database.IDatabaseObject;
 
 
 /**
@@ -50,7 +54,7 @@ public class HibernateDatabase extends Database
 
 	/** The one and only Hibernate session factory for this web application. */
 	private SessionFactory hibernateSessionFactory;
-	
+
 	/**
 	 * Constructor
 	 * 
@@ -130,7 +134,28 @@ public class HibernateDatabase extends Database
 	 */
 	public DatabaseSession newDatabaseSession()
 	{
-		return new HibernateDatabaseSession(this, hibernateSessionFactory.openSession());
+		return new HibernateDatabaseSession(this, hibernateSessionFactory
+				.openSession(new EmptyInterceptor()
+				{
+					private static final long serialVersionUID = 1L;
+
+					/**
+					 * @see org.hibernate.EmptyInterceptor#onFlushDirty(java.lang.Object, java.io.Serializable, java.lang.Object[], java.lang.Object[], java.lang.String[], org.hibernate.type.Type[])
+					 */
+					public boolean onFlushDirty(Object dirtyObject, Serializable arg1, Object[] arg2, Object[] arg3, String[] arg4, Type[] arg5)
+					{
+						final IDatabaseObject object = (IDatabaseObject)dirtyObject;
+						if (object.getId() == null)
+						{
+							object.onSave();
+						}
+						else
+						{
+							object.onUpdate();
+						}
+						return super.onFlushDirty(dirtyObject, arg1, arg2, arg3, arg4, arg5);
+					}
+				}));
 	}
 
 	/**

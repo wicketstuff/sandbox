@@ -19,13 +19,17 @@ package wicket.contrib.database.hibernate;
 
 import java.io.Serializable;
 
+import wicket.contrib.database.IDatabaseObject;
 import wicket.util.lang.Classes;
 
 /**
  * Base class for persistent entities.
  */
-public abstract class HibernateDatabaseObject implements Serializable
+public abstract class HibernateDatabaseObject implements IDatabaseObject, Serializable
 {
+	/**
+	 * The identifier for this database object
+	 */
 	private Long id;
 
 	/**
@@ -36,6 +40,29 @@ public abstract class HibernateDatabaseObject implements Serializable
 	}
 
 	/**
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	public boolean equals(final Object object)
+	{
+        if (object instanceof HibernateDatabaseObject)
+        {
+            final HibernateDatabaseObject that = (HibernateDatabaseObject)object;
+            if (isNew())
+            {
+                return this == that;
+            }
+            else
+            {
+                return this.getId().equals(that.getId());
+            }
+        }
+        else
+        {
+            return false;
+        }
+	}
+    
+    /**
 	 * Returns the unique identifier.
 	 * 
 	 * @return the unique identifier.
@@ -44,13 +71,28 @@ public abstract class HibernateDatabaseObject implements Serializable
 	{
 		return id;
 	}
-    
-    /**
+
+	/**
+	 * @see java.lang.Object#hashCode()
+	 */
+	public int hashCode()
+	{
+		if (isNew())
+		{
+			return super.hashCode();
+		}
+		else
+		{
+			return id.hashCode();
+		}
+	}
+
+	/**
      * @return True if the object has not yet been assigned a valid id
      */
     public final boolean isNew()
     {
-        return getId() == null || getId().longValue() == -1;
+        return getId() == null;
     }
 
 	/**
@@ -73,42 +115,5 @@ public abstract class HibernateDatabaseObject implements Serializable
 	public String toString()
 	{
 		return "[" + Classes.simpleName(getClass()) + " id=" + getId() + "]";
-	}
-
-	/**
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	public boolean equals(final Object that)
-	{
-		if (that instanceof HibernateDatabaseObject)
-		{
-			if (isNew())
-			{
-				return this == that;
-			}
-			else
-			{
-				return id.equals((((HibernateDatabaseObject)that).id));
-			}
-		}
-		else
-		{
-			return false;
-		}
-	}
-
-	/**
-	 * @see java.lang.Object#hashCode()
-	 */
-	public int hashCode()
-	{
-		if (isNew())
-		{
-			return super.hashCode();
-		}
-		else
-		{
-			return id.hashCode();
-		}
 	}
 }

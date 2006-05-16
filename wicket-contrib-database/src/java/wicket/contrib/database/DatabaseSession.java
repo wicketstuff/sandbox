@@ -96,7 +96,7 @@ public abstract class DatabaseSession
 	 * @param object
 	 *            Object to delete
 	 */
-	public abstract void delete(Object object);
+	public abstract void delete(IDatabaseObject object);
 
 	/**
 	 * @see wicket.contrib.database.DatabaseSession#delete(java.lang.Class,
@@ -116,7 +116,7 @@ public abstract class DatabaseSession
 	/**
 	 * @see wicket.contrib.database.DatabaseSession#delete(java.lang.Object)
 	 */
-	public void deleteTransaction(final Object object)
+	public void deleteTransaction(final IDatabaseObject object)
 	{
 		transaction(new Runnable()
 		{
@@ -133,7 +133,7 @@ public abstract class DatabaseSession
 	 * @param object
 	 *            Object to evict
 	 */
-	public abstract void evict(Object object);
+	public abstract void evict(IDatabaseObject object);
 
 	/**
 	 * @return Returns the database.
@@ -160,7 +160,7 @@ public abstract class DatabaseSession
 	 *            The object's id
 	 * @return The object
 	 */
-	public abstract Object load(final Class c, final Long id);
+	public abstract IDatabaseObject load(final Class c, final Long id);
 
 	/**
 	 * Creates an object
@@ -168,7 +168,7 @@ public abstract class DatabaseSession
 	 * @param object
 	 *            The object to save
 	 */
-	public abstract void save(final Object object);
+	public abstract void save(final IDatabaseObject object);
 
 	/**
 	 * Creates an object or updates it if it already exists
@@ -176,12 +176,12 @@ public abstract class DatabaseSession
 	 * @param object
 	 *            The object to save
 	 */
-	public abstract void saveOrUpdate(final Object object);
+	public abstract void saveOrUpdate(final IDatabaseObject object);
 
 	/**
 	 * @see wicket.contrib.database.DatabaseSession#saveOrUpdate(java.lang.Object)
 	 */
-	public void saveOrUpdateTransaction(final Object object)
+	public void saveOrUpdateTransaction(final IDatabaseObject object)
 	{
 		transaction(new Runnable()
 		{
@@ -196,7 +196,7 @@ public abstract class DatabaseSession
 	/**
 	 * @see wicket.contrib.database.DatabaseSession#save(java.lang.Object)
 	 */
-	public void saveTransaction(final Object object)
+	public void saveTransaction(final IDatabaseObject object)
 	{
 		transaction(new Runnable()
 		{
@@ -231,12 +231,12 @@ public abstract class DatabaseSession
 	 * @param object
 	 *            The object to update
 	 */
-	public abstract void update(final Object object);
+	public abstract void update(final IDatabaseObject object);
 
 	/**
 	 * @see wicket.contrib.database.DatabaseSession#update(java.lang.Object)
 	 */
-	public void updateTransaction(final Object object)
+	public void updateTransaction(final IDatabaseObject object)
 	{
 		transaction(new Runnable()
 		{

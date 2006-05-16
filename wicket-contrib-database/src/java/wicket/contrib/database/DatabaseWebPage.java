@@ -111,27 +111,27 @@ public class DatabaseWebPage extends WebPage
 		}
 	}
 
-	protected void deleteTransaction(Object object)
+	protected void deleteTransaction(IDatabaseObject object)
 	{
 		getDatabaseSession().deleteTransaction(object);
 	}
 
-	protected void evict(Object object)
+	protected void evict(IDatabaseObject object)
 	{
 		getDatabaseSession().evict(object);
 	}
 
-	protected void saveOrUpdateTransaction(Object object)
+	protected void saveOrUpdateTransaction(IDatabaseObject object)
 	{
 		getDatabaseSession().saveOrUpdateTransaction(object);
 	}
 
-	protected void saveTransaction(Object object)
+	protected void saveTransaction(IDatabaseObject object)
 	{
 		getDatabaseSession().saveTransaction(object);
 	}
 
-	protected void updateTransaction(Object object)
+	protected void updateTransaction(IDatabaseObject object)
 	{
 		getDatabaseSession().updateTransaction(object);
 	}
