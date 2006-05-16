@@ -26,6 +26,7 @@ import org.hibernate.Transaction;
 
 import wicket.contrib.database.DatabaseException;
 import wicket.contrib.database.DatabaseSession;
+import wicket.contrib.database.IDatabaseObject;
 
 /**
  * Thin wrapper around database session for abstraction.
@@ -110,7 +111,7 @@ public class HibernateDatabaseSession extends DatabaseSession
 	/**
 	 * @see wicket.contrib.database.DatabaseSession#delete(java.lang.Object)
 	 */
-	public void delete(final Object object)
+	public void delete(final IDatabaseObject object)
 	{
 		hibernateSession.delete(object);
 	}
@@ -121,7 +122,7 @@ public class HibernateDatabaseSession extends DatabaseSession
 	 * @param object
 	 * @see Session#evict(java.lang.Object)
 	 */
-	public void evict(Object object)
+	public void evict(final IDatabaseObject object)
 	{
 		hibernateSession.evict(object);
 	}
@@ -138,13 +139,13 @@ public class HibernateDatabaseSession extends DatabaseSession
 	 * @see wicket.contrib.database.DatabaseSession#load(java.lang.Class,
 	 *      java.lang.Long)
 	 */
-	public Object load(final Class c, final Long id) throws HibernateException
+	public IDatabaseObject load(final Class c, final Long id) throws HibernateException
 	{
 		if (id == null)
 		{
 			throw new IllegalArgumentException("Id must be not null");
 		}
-		return hibernateSession.load(c, id);
+		return (IDatabaseObject)hibernateSession.load(c, id);
 	}
 
 	/**
@@ -152,16 +153,16 @@ public class HibernateDatabaseSession extends DatabaseSession
 	 *            The select string
 	 * @return The object
 	 */
-	public Object query(final String queryString)
+	public IDatabaseObject query(final String queryString)
 	{
-		Query query = hibernateSession.createQuery(queryString);
-		return query.uniqueResult();
+		final Query query = hibernateSession.createQuery(queryString);
+		return (IDatabaseObject)query.uniqueResult();
 	}
 
 	/**
 	 * @see wicket.contrib.database.DatabaseSession#save(java.lang.Object)
 	 */
-	public void save(final Object object)
+	public void save(final IDatabaseObject object)
 	{
 		log.info("Save " + object);
 		hibernateSession.save(object);
@@ -170,7 +171,7 @@ public class HibernateDatabaseSession extends DatabaseSession
 	/**
 	 * @see wicket.contrib.database.DatabaseSession#saveOrUpdate(java.lang.Object)
 	 */
-	public void saveOrUpdate(final Object object)
+	public void saveOrUpdate(final IDatabaseObject object)
 	{
 		log.info("Save or update " + object);
 		hibernateSession.saveOrUpdate(object);
@@ -182,7 +183,7 @@ public class HibernateDatabaseSession extends DatabaseSession
 	 * @param runnable
 	 *            The code that executes the transaction
 	 */
-	public final void transaction(final Runnable runnable)
+	public void transaction(final Runnable runnable)
 	{
 		if (getTransactionSemantics() == DatabaseSession.TRANSACT_OPERATIONS)
 		{
@@ -224,7 +225,7 @@ public class HibernateDatabaseSession extends DatabaseSession
 	/**
 	 * @see wicket.contrib.database.DatabaseSession#update(java.lang.Object)
 	 */
-	public void update(final Object object)
+	public void update(final IDatabaseObject object)
 	{
 		log.info("Update " + object);
 		hibernateSession.update(object);
