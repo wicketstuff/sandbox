@@ -20,6 +20,7 @@ package wicket.contrib.database.hibernate;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.HibernateException;
+import org.hibernate.LockMode;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -117,10 +118,7 @@ public class HibernateDatabaseSession extends DatabaseSession
 	}
 
 	/**
-	 * Evict object from Hibernate session cache.
-	 * 
-	 * @param object
-	 * @see Session#evict(java.lang.Object)
+	 * @see wicket.contrib.database.DatabaseSession#evict(IDatabaseObject)
 	 */
 	public void evict(final IDatabaseObject object)
 	{
@@ -145,6 +143,15 @@ public class HibernateDatabaseSession extends DatabaseSession
 		{
 			throw new IllegalArgumentException("Id must be not null");
 		}
+
+		// Get object from existing session if there is one
+		final IDatabaseObject sessionObject = (IDatabaseObject)hibernateSession.get(c, id);
+		if (sessionObject != null)
+		{
+			return sessionObject;
+		}
+
+		// Load the object
 		return (IDatabaseObject)hibernateSession.load(c, id);
 	}
 
@@ -160,28 +167,25 @@ public class HibernateDatabaseSession extends DatabaseSession
 	}
 
 	/**
+	 * @see wicket.contrib.database.DatabaseSession#reattach(IDatabaseObject)
+	 */
+	public IDatabaseObject reattach(IDatabaseObject object)
+	{
+		hibernateSession.lock(object, LockMode.NONE);
+		return object;
+	}
+
+	/**
 	 * @see wicket.contrib.database.DatabaseSession#save(java.lang.Object)
 	 */
 	public void save(final IDatabaseObject object)
 	{
 		log.info("Save " + object);
-		hibernateSession.save(object);
-	}
-
-	/**
-	 * @see wicket.contrib.database.DatabaseSession#saveOrUpdate(java.lang.Object)
-	 */
-	public void saveOrUpdate(final IDatabaseObject object)
-	{
-		log.info("Save or update " + object);
 		hibernateSession.saveOrUpdate(object);
 	}
 
 	/**
-	 * Executes a command within a transaction.
-	 * 
-	 * @param runnable
-	 *            The code that executes the transaction
+	 * @see wicket.contrib.database.DatabaseSession#transaction(Runnable)
 	 */
 	public void transaction(final Runnable runnable)
 	{
