@@ -25,6 +25,9 @@ import wicket.RequestCycle;
 /**
  * Abstraction for database sessions. Any database implementation must be able
  * to perform at least these basic functions.
+ * <p>
+ * The functions in this class are abstracted and simplified over the semantics
+ * of ORM implementations such as Hibernate or JDO.
  * 
  * @author Jonathan Locke
  */
@@ -58,7 +61,7 @@ public abstract class DatabaseSession
 	 */
 	private Database database;
 
-	/** 
+	/**
 	 * Transaction scope semantics
 	 */
 	private TransactionScope transactionSemantics;
@@ -152,7 +155,10 @@ public abstract class DatabaseSession
 	}
 
 	/**
-	 * Load the object with the given id
+	 * Load the object with the given id. If an object with the given id already
+	 * exists in the session, that object will be returned. This means that load
+	 * will always safely give you the object with the given id without any
+	 * identity confusion.
 	 * 
 	 * @param c
 	 *            The class of object to load
@@ -163,35 +169,28 @@ public abstract class DatabaseSession
 	public abstract IDatabaseObject load(final Class c, final Long id);
 
 	/**
-	 * Creates an object
+	 * Makes the given object navigable again if it might have been "detached"
+	 * from the database session. If the object with the given id is already in
+	 * the session, that object will be returned. If not, the object itself is
+	 * reattached to the session.
+	 * 
+	 * @param object
+	 *            The object to reattach to the session
+	 * @return A live object attached to the session with the same id as object,
+	 *         either object or some other object already in the session with
+	 *         the same id.
+	 */
+	public abstract IDatabaseObject reattach(IDatabaseObject object);
+
+	/**
+	 * Saves the given object, overwriting any previous object. This method is
+	 * implemented to avoid any kind of complexity in the implementation such as
+	 * the update / save / saveOrUpdate methods of Hibernate or other ORMs.
 	 * 
 	 * @param object
 	 *            The object to save
 	 */
 	public abstract void save(final IDatabaseObject object);
-
-	/**
-	 * Creates an object or updates it if it already exists
-	 * 
-	 * @param object
-	 *            The object to save
-	 */
-	public abstract void saveOrUpdate(final IDatabaseObject object);
-
-	/**
-	 * @see wicket.contrib.database.DatabaseSession#saveOrUpdate(java.lang.Object)
-	 */
-	public void saveOrUpdateTransaction(final IDatabaseObject object)
-	{
-		transaction(new Runnable()
-		{
-			public void run()
-			{
-				log.info("Save or update " + object);
-				saveOrUpdate(object);
-			}
-		});
-	}
 
 	/**
 	 * @see wicket.contrib.database.DatabaseSession#save(java.lang.Object)
@@ -224,27 +223,4 @@ public abstract class DatabaseSession
 	 *            The code that executes the transaction
 	 */
 	public abstract void transaction(Runnable runnable);
-
-	/**
-	 * Updates an existing object
-	 * 
-	 * @param object
-	 *            The object to update
-	 */
-	public abstract void update(final IDatabaseObject object);
-
-	/**
-	 * @see wicket.contrib.database.DatabaseSession#update(java.lang.Object)
-	 */
-	public void updateTransaction(final IDatabaseObject object)
-	{
-		transaction(new Runnable()
-		{
-			public void run()
-			{
-				log.info("Update " + object);
-				update(object);
-			}
-		});
-	}
 }

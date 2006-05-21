@@ -121,18 +121,9 @@ public class DatabaseWebPage extends WebPage
 		getDatabaseSession().evict(object);
 	}
 
-	protected void saveOrUpdateTransaction(IDatabaseObject object)
-	{
-		getDatabaseSession().saveOrUpdateTransaction(object);
-	}
-
 	protected void saveTransaction(IDatabaseObject object)
 	{
 		getDatabaseSession().saveTransaction(object);
 	}
-
-	protected void updateTransaction(IDatabaseObject object)
-	{
-		getDatabaseSession().updateTransaction(object);
-	}
 }
+
