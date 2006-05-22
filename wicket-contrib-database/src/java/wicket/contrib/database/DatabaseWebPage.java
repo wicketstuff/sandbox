@@ -103,14 +103,6 @@ public class DatabaseWebPage extends WebPage
 		}
 	}
 
-	protected void deleteTransaction(Class c, Long id)
-	{
-		if (id.longValue() != -1)
-		{
-			getDatabaseSession().deleteTransaction(c, id);
-		}
-	}
-
 	protected void deleteTransaction(IDatabaseObject object)
 	{
 		getDatabaseSession().deleteTransaction(object);

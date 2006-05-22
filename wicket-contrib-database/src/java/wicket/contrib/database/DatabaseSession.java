@@ -79,19 +79,23 @@ public abstract class DatabaseSession
 	}
 
 	/**
+	 * Makes the given object navigable again if it might have been "detached"
+	 * from the database session. If the object with the given id is already in
+	 * the session, that object will be returned. If not, the object itself is
+	 * reattached to the session.
+	 * 
+	 * @param object
+	 *            The object to reattach to the session
+	 * @return A live object attached to the session with the same id as object,
+	 *         either object or some other object already in the session with
+	 *         the same id.
+	 */
+	public abstract IDatabaseObject attach(IDatabaseObject object);
+
+	/**
 	 * Close this session
 	 */
 	public abstract void close();
-
-	/**
-	 * Deletes an object.
-	 * 
-	 * @param c
-	 *            The class of object to delete
-	 * @param id
-	 *            The object id to delete
-	 */
-	public abstract void delete(final Class c, final Long id);
 
 	/**
 	 * Deletes an object.
@@ -100,21 +104,6 @@ public abstract class DatabaseSession
 	 *            Object to delete
 	 */
 	public abstract void delete(IDatabaseObject object);
-
-	/**
-	 * @see wicket.contrib.database.DatabaseSession#delete(java.lang.Class,
-	 *      java.lang.Long)
-	 */
-	public void deleteTransaction(final Class c, final Long id)
-	{
-		transaction(new Runnable()
-		{
-			public void run()
-			{
-				delete(load(c, id));
-			}
-		});
-	}
 
 	/**
 	 * @see wicket.contrib.database.DatabaseSession#delete(java.lang.Object)
@@ -167,20 +156,6 @@ public abstract class DatabaseSession
 	 * @return The object
 	 */
 	public abstract IDatabaseObject load(final Class c, final Long id);
-
-	/**
-	 * Makes the given object navigable again if it might have been "detached"
-	 * from the database session. If the object with the given id is already in
-	 * the session, that object will be returned. If not, the object itself is
-	 * reattached to the session.
-	 * 
-	 * @param object
-	 *            The object to reattach to the session
-	 * @return A live object attached to the session with the same id as object,
-	 *         either object or some other object already in the session with
-	 *         the same id.
-	 */
-	public abstract IDatabaseObject reattach(IDatabaseObject object);
 
 	/**
 	 * Saves the given object, overwriting any previous object. This method is

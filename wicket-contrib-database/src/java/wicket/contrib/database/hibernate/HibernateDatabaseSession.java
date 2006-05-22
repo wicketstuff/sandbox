@@ -63,6 +63,26 @@ public class HibernateDatabaseSession extends DatabaseSession
 	}
 
 	/**
+	 * @see wicket.contrib.database.DatabaseSession#attach(IDatabaseObject)
+	 */
+	public IDatabaseObject attach(IDatabaseObject object)
+	{
+		if (!hibernateSession.contains(object))
+		{
+			// We need a cache to sustain the performance hit.
+			Object oldObj = hibernateSession.get(object.getClass(), object.getId());
+			if (oldObj != null)
+			{
+				hibernateSession.evict(oldObj);
+			}
+		}
+
+		// Reattach and version-check.
+		hibernateSession.lock(object, LockMode.READ);
+		return object;
+	}
+
+	/**
 	 * Close this session
 	 */
 	public void close()
@@ -98,15 +118,6 @@ public class HibernateDatabaseSession extends DatabaseSession
 				hibernateSession.close();
 			}
 		}
-	}
-
-	/**
-	 * @see wicket.contrib.database.DatabaseSession#delete(java.lang.Class,
-	 *      java.lang.Long)
-	 */
-	public void delete(final Class c, final Long id)
-	{
-		hibernateSession.delete(hibernateSession.load(c, id));
 	}
 
 	/**
@@ -167,15 +178,6 @@ public class HibernateDatabaseSession extends DatabaseSession
 	}
 
 	/**
-	 * @see wicket.contrib.database.DatabaseSession#reattach(IDatabaseObject)
-	 */
-	public IDatabaseObject reattach(IDatabaseObject object)
-	{
-		hibernateSession.lock(object, LockMode.NONE);
-		return object;
-	}
-
-	/**
 	 * @see wicket.contrib.database.DatabaseSession#save(java.lang.Object)
 	 */
 	public void save(final IDatabaseObject object)
@@ -199,8 +201,9 @@ public class HibernateDatabaseSession extends DatabaseSession
 				transaction.commit();
 				hibernateSession.flush();
 			}
-			catch (HibernateException e)
+			catch (Exception e)
 			{
+				e.printStackTrace();
 				rollback(e);
 				throw new DatabaseException(e);
 			}
@@ -227,19 +230,10 @@ public class HibernateDatabaseSession extends DatabaseSession
 	}
 
 	/**
-	 * @see wicket.contrib.database.DatabaseSession#update(java.lang.Object)
-	 */
-	public void update(final IDatabaseObject object)
-	{
-		log.info("Update " + object);
-		hibernateSession.update(object);
-	}
-
-	/**
 	 * @param e
-	 *            HibernateException that caused rollback
+	 *            Exception that caused rollback
 	 */
-	private void rollback(HibernateException e)
+	private void rollback(Exception e)
 	{
 		if (transaction != null)
 		{
