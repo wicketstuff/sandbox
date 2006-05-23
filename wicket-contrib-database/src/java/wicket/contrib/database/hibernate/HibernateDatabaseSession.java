@@ -70,15 +70,15 @@ public class HibernateDatabaseSession extends DatabaseSession
 		if (!hibernateSession.contains(object))
 		{
 			// We need a cache to sustain the performance hit.
-			Object oldObj = hibernateSession.get(object.getClass(), object.getId());
-			if (oldObj != null)
+			final Object oldObject = hibernateSession.get(object.getClass(), object.getId());
+			if (oldObject != null)
 			{
-				hibernateSession.evict(oldObj);
+				hibernateSession.evict(oldObject);
 			}
 		}
 
 		// Reattach and version-check.
-		hibernateSession.lock(object, LockMode.READ);
+		hibernateSession.lock(object, LockMode.NONE);
 		return object;
 	}
 
