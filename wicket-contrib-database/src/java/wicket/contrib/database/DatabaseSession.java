@@ -156,7 +156,7 @@ public abstract class DatabaseSession
 	 * @return The object
 	 */
 	public abstract IDatabaseObject load(final Class c, final Long id);
-
+	
 	/**
 	 * Saves the given object, overwriting any previous object. This method is
 	 * implemented to avoid any kind of complexity in the implementation such as

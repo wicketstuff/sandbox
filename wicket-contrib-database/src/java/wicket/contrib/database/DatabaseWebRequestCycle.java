@@ -74,6 +74,7 @@ public class DatabaseWebRequestCycle extends WebRequestCycle
 		{
 			try
 			{
+				((DatabaseWebSession)getWebSession()).beforeDatabaseSessionClose();
 				databaseSession.close();
 			}
 			finally

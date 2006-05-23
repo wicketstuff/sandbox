@@ -65,4 +65,11 @@ public class DatabaseWebSession extends WebSession
 			}
 		};
 	}
+
+	/**
+	 * Called just before the database session is closed
+	 */
+	protected void beforeDatabaseSessionClose()
+	{
+	}
 }

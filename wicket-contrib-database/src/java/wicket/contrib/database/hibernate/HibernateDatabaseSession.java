@@ -65,20 +65,14 @@ public class HibernateDatabaseSession extends DatabaseSession
 	/**
 	 * @see wicket.contrib.database.DatabaseSession#attach(IDatabaseObject)
 	 */
-	public IDatabaseObject attach(IDatabaseObject object)
+	public IDatabaseObject attach(final IDatabaseObject object)
 	{
+		// If object is not already in the session,
 		if (!hibernateSession.contains(object))
 		{
-			// We need a cache to sustain the performance hit.
-			final Object oldObject = hibernateSession.get(object.getClass(), object.getId());
-			if (oldObject != null)
-			{
-				hibernateSession.evict(oldObject);
-			}
+			// re-attach it to the session
+			hibernateSession.lock(object, LockMode.NONE);
 		}
-
-		// Reattach and version-check.
-		hibernateSession.lock(object, LockMode.NONE);
 		return object;
 	}
 
