@@ -41,7 +41,7 @@ import wicket.markup.html.panel.FeedbackPanel;
 public class BasePage extends WebPage {
 
 	public BasePage() {
-		add(new FeedbackPanel("status"));
+		add(new FeedbackPanel(this,"status"));
 	}
 	
 	protected ContactDao getDao() {

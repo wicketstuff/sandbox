@@ -56,24 +56,24 @@ public class EditContactPage extends BasePage {
 		Contact contact = (contactId == 0) ? new Contact() : getDao().load(
 				contactId);
 
-		add(new FeedbackPanel("feedback"));
+		add(new FeedbackPanel(this,"feedback"));
 
-		Form form = new Form("contactForm", new CompoundPropertyModel(contact));
+		Form form = new Form(this,"contactForm", new CompoundPropertyModel(contact));
 		add(form);
 
-		form.add(new RequiredTextField("firstname").add(StringValidator
+		form.add(new RequiredTextField(form,"firstname").add(StringValidator
 				.maximumLength(32)));
 
-		form.add(new RequiredTextField("lastname").add(StringValidator
+		form.add(new RequiredTextField(form,"lastname").add(StringValidator
 				.maximumLength(32)));
 
-		form.add(new RequiredTextField("phone").add(StringValidator
+		form.add(new RequiredTextField(form,"phone").add(StringValidator
 				.maximumLength(16)));
 
-		form.add(new TextField("email").add(StringValidator.maximumLength(128))
+		form.add(new TextField(form,"email").add(StringValidator.maximumLength(128))
 				.add(EmailAddressPatternValidator.getInstance()));
 
-		form.add(new Button("cancel") {
+		form.add(new Button(form,"cancel") {
 			protected void onSubmit() {
 				String msg=getLocalizer().getString("status.cancel", this);
 				getSession().info(msg);
@@ -81,13 +81,13 @@ public class EditContactPage extends BasePage {
 			}
 		}.setDefaultFormProcessing(false));
 
-		form.add(new Button("save") {
+		form.add(new Button(form,"form,save") {
 			protected void onSubmit() {
 				Contact contact = (Contact) getForm().getModelObject();
 				getDao().save(contact);
 
 				String msg=MapVariableInterpolator.interpolate(getLocalizer().getString("status.save", this),
-						new MicroMap("name", contact.getFullName()));
+						new MicroMap<String,String>("name", contact.getFullName()));
 
 				getSession().info(msg);
 				

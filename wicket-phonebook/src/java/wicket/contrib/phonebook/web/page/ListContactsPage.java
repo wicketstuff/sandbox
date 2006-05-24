@@ -23,6 +23,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import wicket.Component;
+import wicket.MarkupContainer;
 import wicket.contrib.phonebook.Contact;
 import wicket.contrib.phonebook.web.ContactsDataProvider;
 import wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
@@ -52,7 +53,7 @@ public class ListContactsPage extends BasePage {
 	 */
 	public ListContactsPage() {
 
-		add(new Link("createLink") {
+		add(new Link(this,"createLink") {
 			/**
 			 * Go to the Edit page when the link is clicked, passing an empty
 			 * Contact details
@@ -77,12 +78,12 @@ public class ListContactsPage extends BasePage {
 			public void populateItem(Item cellItem, String componentId,
 					IModel model) {
 				final Contact contact = (Contact) model.getObject(cellItem);
-				cellItem.add(new UserActionsPanel(componentId, contact));
+				cellItem.add(new UserActionsPanel(cellItem,componentId, contact));
 			}
 
 			// return the go-and-clear filter for the filter toolbar
-			public Component getFilter(String componentId, FilterForm form) {
-				return new GoAndClearFilter(componentId, form);
+			public Component getFilter(MarkupContainer<?> parent, String componentId, FilterForm form) {
+				return new GoAndClearFilter(parent,componentId, form);
 			}
 
 		};
@@ -105,7 +106,7 @@ public class ListContactsPage extends BasePage {
 		ContactsDataProvider dataProvider = new ContactsDataProvider(getDao());
 
 		// create the data table
-		DefaultDataTable users = new DefaultDataTable("users", Arrays
+		DefaultDataTable users = new DefaultDataTable(this,"users", Arrays
 				.asList(columns), dataProvider, 10);
 
 		users.addTopToolbar(new FilterToolbar(users, dataProvider));
@@ -120,11 +121,11 @@ public class ListContactsPage extends BasePage {
 	 */
 	private static class UserActionsPanel extends Panel {
 
-		public UserActionsPanel(String id, Contact contact) {
-			super(id);
+		public UserActionsPanel(MarkupContainer<?> panel,String id, Contact contact) {
+			super(panel,id);
 			final long contactId = contact.getId();
 
-			add(new Link("editLink") {
+			add(new Link(this,"editLink") {
 				/**
 				 * Go to the Edit page, passing this page and the id of the
 				 * Contact involved.
@@ -135,7 +136,7 @@ public class ListContactsPage extends BasePage {
 
 			});
 
-			add(new Link("deleteLink") {
+			add(new Link(this,"deleteLink") {
 				/**
 				 * Go to the Delete page, passing this page and the id of the
 				 * Contact involved.
