@@ -50,7 +50,7 @@ public class DeleteContactPage extends BasePage {
 
 		Contact contact = getDao().load(contactId);
 
-		add(new Label("name", contact.getFirstname() + " "
+		add(new Label(this,"name", contact.getFirstname() + " "
 				+ contact.getLastname()));
 
 		/*
@@ -58,9 +58,9 @@ public class DeleteContactPage extends BasePage {
 		 * off as there's no point it trying to do anything, as all we're
 		 * interested in are the button clicks.
 		 */
-		Form form = new Form("confirmForm");
+		Form form = new Form(this,"confirmForm");
 
-		form.add(new Button("confirm") {
+		form.add(new Button(form,"confirm") {
 			/**
 			 * If clicked, delete the contact and return to the calling page.
 			 */
@@ -70,7 +70,7 @@ public class DeleteContactPage extends BasePage {
 				getDao().delete(contactId);
 
 				String msg=MapVariableInterpolator.interpolate(getLocalizer().getString("status.deleted", this),
-						new MicroMap("name", deleted.getFullName()));
+						new MicroMap<String,String>("name", deleted.getFullName()));
 				
 				getSession().info(msg);
 				
@@ -78,7 +78,7 @@ public class DeleteContactPage extends BasePage {
 			}
 		}.setDefaultFormProcessing(false));
 
-		form.add(new Button("cancel") {
+		form.add(new Button(form,"cancel") {
 			protected void onSubmit() {
 				Contact deleted = getDao().load(contactId);
 
