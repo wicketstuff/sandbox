@@ -3,13 +3,31 @@
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>wicket-stuff</groupId>
-    <artifactId>phonebook</artifactId>
+    <artifactId>wicket-phonebook</artifactId>
     <packaging>war</packaging>
-    <version>1.2-SNAPSHOT</version>
+    <version>1.2</version>
     <name>Wicket Phonebook Example</name>
     <description>Wicket Phonebook Example - Spring &amp; Hibernate CrUD app</description>
     <url>http://wicket.sourceforge.net/</url>
     <inceptionYear>2005</inceptionYear>
+
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<issueManagement>
+		<url>http://sourceforge.net/tracker/?group_id=134391</url>
+	</issueManagement>
+
+	<scm>
+		<connection>scm:svn:https://svn.sourceforge.net/svnroot/wicket-stuff/trunk/wicket-phonebook</connection>
+		<developerConnection>scm:svn:https://svn.sourceforge.net/svnroot/wicket-stuff/trunk/wicket-phonebook</developerConnection>
+		<url>http://svn.sourceforge.net/viewcvs.py/wicket-stuff/trunk/wicket-phonebook</url>
+	</scm>
 
     <developers>
         <developer>
@@ -30,11 +48,13 @@
     </organization>
 
 
-    <scm>
-        <connection>scm:cvs:pserver:${maven.scm.anonymous}@cvs.sourceforge.net:/cvsroot/wicket-stuff:wicket-phonebook</connection>
-        <developerConnection>scm:cvs:ext:${maven.scm.user}@cvs.sourceforge.net:/cvsroot/wicket-stuff:wicket-phonebook</developerConnection>
-        <url>http://cvs.sourceforge.net/viewcvs.py/wicket-stuff/wicket-phonebook</url>
-    </scm>
+    <repositories>
+        <repository>
+            <id>wicket-repo</id>
+            <name>wicket-repo</name>
+            <url>http://wicketframework.org/maven2</url>
+        </repository>
+    </repositories>
 
     <pluginRepositories>
         <pluginRepository>
@@ -48,21 +68,21 @@
         <dependency>
             <groupId>wicket</groupId>
             <artifactId>wicket</artifactId>
-            <version>1.2-SNAPSHOT</version>
+            <version>1.2</version>
             <type>jar</type>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>wicket</groupId>
             <artifactId>wicket-extensions</artifactId>
-            <version>1.2-SNAPSHOT</version>
+            <version>1.2</version>
             <type>jar</type>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>wicket</groupId>
             <artifactId>wicket-spring</artifactId>
-            <version>1.2-SNAPSHOT</version>
+            <version>1.2</version>
             <type>jar</type>
             <scope>compile</scope>
         </dependency>
@@ -87,8 +107,6 @@
     </dependencies>
 
     <build>
-        <finalName>wicket-phonebook</finalName>
-
         <sourceDirectory>src/java</sourceDirectory>
         <testSourceDirectory>src/test</testSourceDirectory>
 
@@ -106,9 +124,12 @@
                 <includes>
                     <include>**</include>
                 </includes>
+<!--
+                Just for a demo project, don't exclude sources...
                 <excludes>
                     <exclude>**/*.java</exclude>
                 </excludes>
+-->
             </resource>
         </resources>
         <plugins>
@@ -141,7 +162,7 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>
                 <configuration>
-                    <templateDirectory>file:src/site/template/</templateDirectory>
+                    <templateDirectory>${basedir}/src/site/template/</templateDirectory>
                     <template>wicket-site.vm</template>
                 </configuration>
             </plugin>
@@ -164,7 +185,7 @@
                 <artifactId>maven-jetty6-plugin</artifactId>
                 <version>6.0-SNAPSHOT</version>
                 <configuration>
-                        <webAppSourceDirectory>src/webapp</webAppSourceDirectory> 
+                        <webAppSourceDirectory>src/webapp</webAppSourceDirectory>
                 </configuration>
            </plugin>
         </plugins>
@@ -174,6 +195,18 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-project-info-reports-plugin</artifactId>
+				<reportSets>
+					<reportSet>
+						<reports>
+							<report>dependencies</report>
+							<report>project-team</report>
+							<report>mailing-list</report>
+							<report>issue-tracking</report>
+							<report>license</report>
+							<report>scm</report>
+						</reports>
+					</reportSet>
+				</reportSets>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -185,4 +218,10 @@
             </plugin>
         </plugins>
     </reporting>
+	<distributionManagement>
+		<site>
+			<id>wicket-site</id>
+			<url>scpexe://shell.sourceforge.net/home/groups/w/wi/wicket-stuff/htdocs/wicket-phonebook</url>
+		</site>
+	</distributionManagement>
 </project>
