@@ -26,6 +26,8 @@ import wicket.Component;
 import wicket.MarkupContainer;
 import wicket.contrib.phonebook.Contact;
 import wicket.contrib.phonebook.web.ContactsDataProvider;
+import wicket.extensions.markup.html.repeater.data.table.AbstractToolbar;
+import wicket.extensions.markup.html.repeater.data.table.DataTable;
 import wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
 import wicket.extensions.markup.html.repeater.data.table.IColumn;
 import wicket.extensions.markup.html.repeater.data.table.filter.ChoiceFilteredPropertyColumn;
@@ -82,34 +84,40 @@ public class ListContactsPage extends BasePage {
 			}
 
 			// return the go-and-clear filter for the filter toolbar
-			public Component getFilter(MarkupContainer<?> parent, String componentId, FilterForm form) {
+			public Component getFilter(MarkupContainer parent, String componentId, FilterForm form) {
 				return new GoAndClearFilter(parent,componentId, form);
 			}
 
 		};
 
 		// creates a column with a text filter
-		columns[1] = new TextFilteredPropertyColumn(new Model("First Name"),
+		columns[1] = new TextFilteredPropertyColumn(new Model<String>("First Name"),
 				"firstname", "firstname");
 
 		List names = getDao().getUniqueLastNames();
 		
-		columns[2] = new ChoiceFilteredPropertyColumn(new Model("Last Name"),
-				"lastname", "lastname", new Model((Serializable) names)) ;
+		columns[2] = new ChoiceFilteredPropertyColumn(new Model<String>("Last Name"),
+				"lastname", "lastname", new Model<List>(names)) ;
 		
-		columns[3] = new TextFilteredPropertyColumn(new Model("Phone Number"), "phone",
+		columns[3] = new TextFilteredPropertyColumn(new Model<String>("Phone Number"), "phone",
 				"phone");
 		
-		columns[4] = new TextFilteredPropertyColumn(new Model("Email"), "email", "email");
+		columns[4] = new TextFilteredPropertyColumn(new Model<String>("Email"), "email", "email");
 
 		// set up data provider
-		ContactsDataProvider dataProvider = new ContactsDataProvider(getDao());
+		final ContactsDataProvider dataProvider = new ContactsDataProvider(getDao());
 
 		// create the data table
-		DefaultDataTable users = new DefaultDataTable(this,"users", Arrays
+		final DefaultDataTable users = new DefaultDataTable(this,"users", Arrays
 				.asList(columns), dataProvider, 10);
 
-		users.addTopToolbar(new FilterToolbar(users, dataProvider));
+		users.addTopToolbar(new DataTable.IToolbarFactory() {
+			public AbstractToolbar newToolbar(MarkupContainer parent, String id, DataTable dataTable) 
+			{
+				return new FilterToolbar(parent,id,users, dataProvider);
+			};
+				
+		});
 		add(users);
 
 	}
