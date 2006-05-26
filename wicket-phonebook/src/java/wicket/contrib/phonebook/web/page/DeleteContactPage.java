@@ -50,8 +50,8 @@ public class DeleteContactPage extends BasePage {
 
 		Contact contact = getDao().load(contactId);
 
-		add(new Label(this,"name", contact.getFirstname() + " "
-				+ contact.getLastname()));
+		 new Label(this,"name", contact.getFirstname() + " "
+				+ contact.getLastname());
 
 		/*
 		 * Use a form to hold the buttons, but set the default form processing
@@ -60,7 +60,7 @@ public class DeleteContactPage extends BasePage {
 		 */
 		Form form = new Form(this,"confirmForm");
 
-		form.add(new Button(form,"confirm") {
+		new Button(form,"confirm") {
 			/**
 			 * If clicked, delete the contact and return to the calling page.
 			 */
@@ -76,9 +76,9 @@ public class DeleteContactPage extends BasePage {
 				
 				setResponsePage(DeleteContactPage.this.backPage);
 			}
-		}.setDefaultFormProcessing(false));
+		}.setDefaultFormProcessing(false);
 
-		form.add(new Button(form,"cancel") {
+		new Button(form,"cancel") {
 			protected void onSubmit() {
 				Contact deleted = getDao().load(contactId);
 
@@ -89,8 +89,7 @@ public class DeleteContactPage extends BasePage {
 				
 				setResponsePage(DeleteContactPage.this.backPage);
 			}
-		}.setDefaultFormProcessing(false));
+		}.setDefaultFormProcessing(false);
 
-		add(form);
 	}
 }

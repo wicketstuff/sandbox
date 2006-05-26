@@ -55,7 +55,7 @@ public class ListContactsPage extends BasePage {
 	 */
 	public ListContactsPage() {
 
-		add(new Link(this,"createLink") {
+		 new Link(this,"createLink") {
 			/**
 			 * Go to the Edit page when the link is clicked, passing an empty
 			 * Contact details
@@ -64,7 +64,7 @@ public class ListContactsPage extends BasePage {
 				setResponsePage(new EditContactPage(getPage(), 0));
 			}
 
-		});
+		};
 
 		IColumn[] columns = new IColumn[5];
 
@@ -80,7 +80,7 @@ public class ListContactsPage extends BasePage {
 			public void populateItem(Item cellItem, String componentId,
 					IModel model) {
 				final Contact contact = (Contact) model.getObject(cellItem);
-				cellItem.add(new UserActionsPanel(cellItem,componentId, contact));
+				new UserActionsPanel(cellItem,componentId, contact);
 			}
 
 			// return the go-and-clear filter for the filter toolbar
@@ -118,7 +118,6 @@ public class ListContactsPage extends BasePage {
 			};
 				
 		});
-		add(users);
 
 	}
 
@@ -133,7 +132,7 @@ public class ListContactsPage extends BasePage {
 			super(panel,id);
 			final long contactId = contact.getId();
 
-			add(new Link(this,"editLink") {
+			 new Link(this,"editLink") {
 				/**
 				 * Go to the Edit page, passing this page and the id of the
 				 * Contact involved.
@@ -142,9 +141,9 @@ public class ListContactsPage extends BasePage {
 					setResponsePage(new EditContactPage(getPage(), contactId));
 				}
 
-			});
+			};
 
-			add(new Link(this,"deleteLink") {
+			 new Link(this,"deleteLink") {
 				/**
 				 * Go to the Delete page, passing this page and the id of the
 				 * Contact involved.
@@ -153,7 +152,7 @@ public class ListContactsPage extends BasePage {
 					setResponsePage(new DeleteContactPage(getPage(), contactId));
 				}
 
-			});
+			};
 
 		}
 
