@@ -29,8 +29,8 @@ public class SpellCheckPlugin extends Plugin
 
     public SpellCheckPlugin()
     {
-        super("iespell");
-        spellCheckButton = new PluginButton("iespell", this);
+        super("spellchecker");
+        spellCheckButton = new PluginButton("spellchecker", this);
     }
 
     public PluginButton getSpellCheckButton()
