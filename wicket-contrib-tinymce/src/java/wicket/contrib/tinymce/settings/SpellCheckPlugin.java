@@ -37,4 +37,11 @@ public class SpellCheckPlugin extends Plugin
     {
         return spellCheckButton;
     }
+
+	protected void definePluginSettings(StringBuffer buffer)
+	{
+		//todo remove hardcoded locales
+		define(buffer, "spellchecker_languages", "+English=en,Danish=da,Dutch=nl,Finnish=fi,French=fr,German=de,Italian=it,Polish=pl,Portuguese=pt,Spanish=es,Swedish=sv");
+	}
+    
 }
