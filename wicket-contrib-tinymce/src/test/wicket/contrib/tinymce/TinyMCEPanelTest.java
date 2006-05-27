@@ -132,7 +132,7 @@ public class TinyMCEPanelTest extends TestCase
 		{
 			private static final long serialVersionUID = 1L;
 			
-			protected void additionalJavaScript(StringBuffer buffer)
+			protected void definePluginExtensions(StringBuffer buffer)
 			{
 				buffer.append("alert('Hello Mock World');");
 			}
