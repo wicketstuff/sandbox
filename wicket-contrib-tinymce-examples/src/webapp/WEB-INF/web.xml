@@ -5,10 +5,10 @@
 
 <web-app>
 
-    <display-name>Wicket Examples</display-name>
+    <display-name>TinyMCE Wicket Examples</display-name>
 
     <servlet>
-        <servlet-name>Wicket-Contrib-TinyMCE</servlet-name>
+        <servlet-name>tinymce</servlet-name>
         <servlet-class>wicket.protocol.http.WicketServlet</servlet-class>
         <init-param>
             <param-name>applicationClassName</param-name>
@@ -18,7 +18,7 @@
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>Wicket-Contrib-TinyMCE</servlet-name>
+        <servlet-name>tinymce</servlet-name>
         <url-pattern>/tinymce/*</url-pattern>
     </servlet-mapping>
 
