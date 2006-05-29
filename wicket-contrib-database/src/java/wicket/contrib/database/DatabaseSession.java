@@ -110,7 +110,7 @@ public abstract class DatabaseSession
 	 */
 	public void deleteTransaction(final IDatabaseObject object)
 	{
-		transaction(new Runnable()
+		transaction(new IDatabaseTransaction()
 		{
 			public void run()
 			{
@@ -172,7 +172,7 @@ public abstract class DatabaseSession
 	 */
 	public void saveTransaction(final IDatabaseObject object)
 	{
-		transaction(new Runnable()
+		transaction(new IDatabaseTransaction()
 		{
 			public void run()
 			{
@@ -194,8 +194,8 @@ public abstract class DatabaseSession
 	/**
 	 * Executes a command within a transaction.
 	 * 
-	 * @param runnable
+	 * @param transaction
 	 *            The code that executes the transaction
 	 */
-	public abstract void transaction(Runnable runnable);
+	public abstract void transaction(IDatabaseTransaction transaction);
 }

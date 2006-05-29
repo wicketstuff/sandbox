@@ -28,6 +28,7 @@ import org.hibernate.Transaction;
 import wicket.contrib.database.DatabaseException;
 import wicket.contrib.database.DatabaseSession;
 import wicket.contrib.database.IDatabaseObject;
+import wicket.contrib.database.IDatabaseTransaction;
 
 /**
  * Thin wrapper around database session for abstraction.
@@ -43,7 +44,7 @@ public class HibernateDatabaseSession extends DatabaseSession
 	private Session hibernateSession;
 
 	/** Exception object if transaction needs to be rolled back */
-	private HibernateException rollbackException;
+	private Exception rollbackException;
 
 	/** Any request-level transaction going on */
 	private Transaction transaction = null;
@@ -181,9 +182,9 @@ public class HibernateDatabaseSession extends DatabaseSession
 	}
 
 	/**
-	 * @see wicket.contrib.database.DatabaseSession#transaction(Runnable)
+	 * @see wicket.contrib.database.DatabaseSession#transaction(IDatabaseTransaction)
 	 */
-	public void transaction(final Runnable runnable)
+	public void transaction(final IDatabaseTransaction transactionCode)
 	{
 		if (getTransactionSemantics() == DatabaseSession.TRANSACT_OPERATIONS)
 		{
@@ -191,7 +192,7 @@ public class HibernateDatabaseSession extends DatabaseSession
 			try
 			{
 				transaction = hibernateSession.beginTransaction();
-				runnable.run();
+				transactionCode.run();
 				transaction.commit();
 				hibernateSession.flush();
 			}
@@ -212,9 +213,9 @@ public class HibernateDatabaseSession extends DatabaseSession
 			{
 				try
 				{
-					runnable.run();
+					transactionCode.run();
 				}
-				catch (HibernateException e)
+				catch (Exception e)
 				{
 					rollbackException = e;
 					throw new DatabaseException(e);
