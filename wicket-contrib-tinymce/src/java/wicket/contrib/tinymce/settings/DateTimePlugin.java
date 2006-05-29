@@ -21,7 +21,7 @@ package wicket.contrib.tinymce.settings;
  * The datetime plugin is able to insert date and time into the TinyMCE editable
  * area. <p/>
  * 
- * @author Iulian-Corneliu Costan (iulian.costan@gmail.com)
+ * @author Iulian Costan (iulian.costan@gmail.com)
  */
 public class DateTimePlugin extends Plugin
 {
@@ -33,18 +33,28 @@ public class DateTimePlugin extends Plugin
 	private String timeFormat;
 	private String dateFormat;
 
+	/**
+	 * Construct datetime plugin.
+	 */
 	public DateTimePlugin()
 	{
 		super("insertdatetime");
+
 		dateButton = new PluginButton("inserttime", this);
 		timeButton = new PluginButton("insertdate", this);
 	}
 
+	/**
+	 * @return PluginButton date plugin button
+	 */
 	public PluginButton getDateButton()
 	{
 		return dateButton;
 	}
 
+	/**
+	 * @return PluginButton time plugin button
+	 */
 	public PluginButton getTimeButton()
 	{
 		return timeButton;
@@ -63,6 +73,7 @@ public class DateTimePlugin extends Plugin
 	 * </ul>
 	 * 
 	 * @param timeFormat
+	 *            the time format
 	 */
 	public void setTimeFormat(String timeFormat)
 	{
@@ -80,7 +91,8 @@ public class DateTimePlugin extends Plugin
 	 * <li>%% a literal "%" character</li>
 	 * </ul>
 	 * 
-	 * @param timeFormat
+	 * @param dateFormat
+	 *            date format
 	 */
 	public void setDateFormat(String dateFormat)
 	{
