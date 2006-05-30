@@ -7,7 +7,7 @@
     <packaging>war</packaging>
     <version>1.2</version>
     <name>Wicket Phonebook Example</name>
-    <description>Wicket Phonebook Example - Spring &amp; Hibernate CrUD app</description>
+    <description>Wicket Phonebook Example - Spring &amp; [Hibernate|iBATIS] CrUD app</description>
     <url>http://wicket.sourceforge.net/</url>
     <inceptionYear>2005</inceptionYear>
 
@@ -87,16 +87,20 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
+    		<groupId>org.springframework</groupId>
+    		<artifactId>spring</artifactId>
+    		<version>1.2.7</version>
+  		</dependency>
+		<dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate</artifactId>
             <version>3.0.5</version>
             <scope>compile</scope>
         </dependency>
-        <dependency>
-            <groupId>commons-dbcp</groupId>
-            <artifactId>commons-dbcp</artifactId>
-            <version>1.2.1</version>
-            <scope>runtime</scope>
+		<dependency>
+            <groupId>com.ibatis</groupId>
+            <artifactId>ibatis2-sqlmap</artifactId>
+            <version>2.1.7.597</version>
         </dependency>
         <dependency>
             <groupId>hsqldb</groupId>
@@ -104,7 +108,12 @@
             <version>1.7.3.3</version>
             <scope>runtime</scope>
         </dependency>
-    </dependencies>
+		<dependency>
+    		<groupId>commons-dbcp</groupId>
+    		<artifactId>commons-dbcp</artifactId>
+    		<version>1.2.1</version>
+		</dependency>
+	</dependencies>
 
     <build>
         <sourceDirectory>src/java</sourceDirectory>
@@ -220,7 +229,7 @@
     </reporting>
 	<distributionManagement>
 		<site>
-			<id>wicket-site</id>
+			<id>wicket-stuff-site</id>
 			<url>scpexe://shell.sourceforge.net/home/groups/w/wi/wicket-stuff/htdocs/wicket-phonebook</url>
 		</site>
 	</distributionManagement>
