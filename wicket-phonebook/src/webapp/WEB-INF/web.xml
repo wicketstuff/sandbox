@@ -12,16 +12,20 @@
 		<param-value>classpath:applicationContext.xml</param-value>
 	</context-param>
 
+
+	<!-- Enable the filters for Hibernate -->
+<!--
     <filter>
         <filter-name>opensessioninview</filter-name>
         <filter-class>org.springframework.orm.hibernate3.support.OpenSessionInViewFilter</filter-class>
     </filter>
-    
+
 
     <filter-mapping>
         <filter-name>opensessioninview</filter-name>
         <servlet-name>phonebook</servlet-name>
     </filter-mapping>
+-->
 
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
@@ -36,8 +40,7 @@
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
-    
-   
+
     <servlet-mapping>
         <servlet-name>phonebook</servlet-name>
         <url-pattern>/app/*</url-pattern>

@@ -22,7 +22,7 @@ import java.io.Serializable;
 
 /**
  * Contact details. This is the business object that we persist to the DB.
- * 
+ *
  * @author igor
  */
 public class Contact implements Serializable {
@@ -31,10 +31,17 @@ public class Contact implements Serializable {
 	private String lastname;
 	private String email;
 	private String phone;
-	
-	
+
 	public long getId() {
 		return id;
+	}
+
+	/**
+	 * This is required for iBatis, but not for Hibernate
+	 * @param id
+	 */
+	public void setId(long id) {
+		this.id = id;
 	}
 	public String getEmail() {
 		return email;
@@ -60,13 +67,13 @@ public class Contact implements Serializable {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
-	
+
 	public String getFullName() {
 		return firstname+" "+lastname;
 	}
-	
+
 	public String toString() {
 		return ("[Contact id="+id+", firstname="+firstname+", lastname="+lastname+", phone="+phone+", email="+email);
 	}
-	
+
 }
