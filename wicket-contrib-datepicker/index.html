@@ -1,0 +1,48 @@
+<html>
+<head>
+<script src="calendar.js"></script>
+<script src="date.js"></script>
+<script src="sdf.js"></script>
+
+
+<style>
+	div.cal { width: 154px; }
+	div.cal td { font-family: verdana, tahoma; font-size: 10px; }
+
+	div.cal a { text-decoration:none; }
+
+	div.cal table.wc-header { width: 100%; background-color: #f4f4f4; color: black; height: 26px; }
+	div.cal table.wc-header a { color: black; }
+	div.cal td.wc-header-disp { text-align: center; width: 100%; color: #7e8eb0; }
+	div.cal td.wc-header-nm { text-align: right; }
+	div.cal td.wc-header-ny { text-align: right; }
+	
+	div.cal table.wc-days { width: 100%; }
+
+	div.cal td.wc-day-title { width: 22px; text-align: right; border-bottom: 1px solid #f4f4f4; }
+	div.cal td.wc-day a { text-align: right; color: black; }
+	
+	div.cal td.wc-day-today a { background-color: #dedede; }
+	div.cal td.wc-day-outer a { color: #ddd; }
+	div.cal td.wc-day-weekend a { color: red; }
+
+</style>
+
+</head>
+<body>
+	
+	<form>
+	<input type="text" id="dob" size="25"/><input type="button" value="..." onclick="Wicket.Calendar.getInstance('cal').toggle();"/>
+	<br/>
+	<select><option>hellllllllo<option>hellllllllo<option>hellllllllo<option>hellllllllo</select>
+	</form>
+	
+	<div style="display: block; position:absolute; left: -1000px; top:0px; z-index:1000; border:1px solid black;" id="cal" class="cal"></div>
+	
+	<script>
+		new Wicket.Calendar("dob","cal","EEEE, MMMM d yyyy");
+	</script>
+	
+</body>
+
+</html>
