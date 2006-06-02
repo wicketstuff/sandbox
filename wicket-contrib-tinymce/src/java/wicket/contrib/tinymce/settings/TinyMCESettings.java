@@ -280,6 +280,7 @@ public class TinyMCESettings implements Serializable
         addButtons2_After(buffer);
         addButtons3_Before(buffer);
         addButtons3_After(buffer);
+        addButtons4(buffer);
 
         // toolbar, statusbar
         addToolbarLocation(buffer);
@@ -291,7 +292,7 @@ public class TinyMCESettings implements Serializable
         addHorizontalResizing(buffer);
     }
 
-    void addPlugins(StringBuffer buffer)
+	void addPlugins(StringBuffer buffer)
     {
         if (plugins.size() > 0)
         {
@@ -360,6 +361,23 @@ public class TinyMCESettings implements Serializable
         }
     }
     
+    private void addButtons4(StringBuffer buffer)
+	{
+        ControlPredicate predicate = new ControlPredicate(Toolbar.fourth, Position.before);
+        Collection result = CollectionUtils.select(controls, predicate);
+        if (result.size() > 0)
+        {
+            buffer.append(",\n\t").append("theme_advanced_buttons4 : ").append("\"").append(controlsAsString(result)).append("\"");
+        }
+
+        predicate = new ControlPredicate(Toolbar.fourth, Position.after);
+        result = CollectionUtils.select(controls, predicate);
+        if (result.size() > 0)
+        {
+            buffer.append(",\n\t").append("theme_advanced_buttons4 : ").append("\"").append(controlsAsString(result)).append("\"");
+        }
+	}
+
     void addDisabledButtons(StringBuffer buffer) {
     	if (disabledButtons.size() > 0)
         {
@@ -557,6 +575,7 @@ public class TinyMCESettings implements Serializable
 		public static final Toolbar first = new Toolbar("first");
         public static final Toolbar second = new Toolbar("second");
         public static final Toolbar third = new Toolbar("third");
+        public static final Toolbar fourth = new Toolbar("fourth");
 
         public Toolbar(String name)
         {
