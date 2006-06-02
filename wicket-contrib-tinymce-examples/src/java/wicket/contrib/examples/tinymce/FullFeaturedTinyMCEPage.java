@@ -1,18 +1,31 @@
 package wicket.contrib.examples.tinymce;
 
 import wicket.contrib.tinymce.TinyMCEPanel;
-import wicket.contrib.tinymce.settings.*;
+import wicket.contrib.tinymce.settings.ContextMenuPlugin;
+import wicket.contrib.tinymce.settings.DateTimePlugin;
+import wicket.contrib.tinymce.settings.DirectionalityPlugin;
+import wicket.contrib.tinymce.settings.EmotionsPlugin;
+import wicket.contrib.tinymce.settings.FlashPlugin;
+import wicket.contrib.tinymce.settings.FullScreenPlugin;
+import wicket.contrib.tinymce.settings.IESpellPlugin;
+import wicket.contrib.tinymce.settings.PastePlugin;
+import wicket.contrib.tinymce.settings.PreviewPlugin;
+import wicket.contrib.tinymce.settings.PrintPlugin;
+import wicket.contrib.tinymce.settings.SavePlugin;
+import wicket.contrib.tinymce.settings.SearchReplacePlugin;
+import wicket.contrib.tinymce.settings.SpellCheckPlugin;
+import wicket.contrib.tinymce.settings.TablePlugin;
+import wicket.contrib.tinymce.settings.TinyMCESettings;
+import wicket.contrib.tinymce.settings.ZoomPlugin;
 import wicket.markup.html.form.TextArea;
 import wicket.model.Model;
 
 /**
- * @author Iulian-Corneliu COSTAN
+ * @author syca
  */
-public class WordTinyMCEPage extends TinyMCEBasePage
-{
+public class FullFeaturedTinyMCEPage extends TinyMCEBasePage {
 
-    public WordTinyMCEPage()
-    {
+	public FullFeaturedTinyMCEPage() {
         TinyMCESettings settings = new TinyMCESettings(TinyMCESettings.Theme.advanced);
 
         ContextMenuPlugin contextMenuPlugin = new ContextMenuPlugin();
@@ -73,6 +86,10 @@ public class WordTinyMCEPage extends TinyMCEBasePage
         settings.add(TinyMCESettings.separator, TinyMCESettings.Toolbar.third, TinyMCESettings.Position.after);
         settings.add(fullScreenPlugin.getFullscreenButton(), TinyMCESettings.Toolbar.third, TinyMCESettings.Position.after);
 
+        // fourth toolbar
+        SpellCheckPlugin spellCheckPlugin = new SpellCheckPlugin();
+        settings.add(spellCheckPlugin.getSpellCheckButton(), TinyMCESettings.Toolbar.fourth, TinyMCESettings.Position.after);
+
         // other settings
         settings.setToolbarAlign(TinyMCESettings.Align.left);
         settings.setToolbarLocation(TinyMCESettings.Location.top);
@@ -81,12 +98,11 @@ public class WordTinyMCEPage extends TinyMCEBasePage
 
         add(new TinyMCEPanel("tinyMCE", settings));
         add(new TextArea("ta", new Model(TEXT)));
-    }
+	}
 
-    private static final String TEXT = "<p>Some paragraph</p>" +
-            "<p>Some other paragraph</p>" +
-            "<p>Some <strong>element</strong>, this is to be editor 1. <br />" +
-            "This editor instance has a 100% width to it. </p>" +
-            "<p>Some paragraph. <a href=\"http://www.sourceforge.net/\">Some link</a></p>" +
-            "<img src=\"logo.jpg\" border=\"0\" /><p>&nbsp;</p>";
+	private static final String TEXT = "<p><img src=\"logo.jpg\" alt=\" \" hspace=\"5\" vspace=\"5\" width=\"250\" height=\"48\" align=\"right\" />" +
+		"TinyMCE is a platform independent web based Javascript HTML <strong>WYSIWYG</strong> editor control released as Open Source under LGPL by Moxiecode Systems AB. " +
+		"It has the ability to convert HTML TEXTAREA fields or other HTML elements to editor instances. TinyMCE is very easy to integrate into other Content Management Systems.</p>" +
+		"<p>We recommend <a href=\"http://www.getfirefox.com\" target=\"_blank\">Firefox</a> and <a href=\"http://www.google.com\" target=\"_blank\">Google</a> <br /></p>";
+	
 }

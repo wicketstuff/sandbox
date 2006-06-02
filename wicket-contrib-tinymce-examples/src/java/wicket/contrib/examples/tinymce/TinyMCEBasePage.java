@@ -9,34 +9,45 @@ import wicket.markup.html.link.Link;
 public class TinyMCEBasePage extends WicketExamplePage
 {
 
-    public TinyMCEBasePage()
-    {
-        add(new Link("advanced")
-        {
+	private static final long serialVersionUID = 1L;
 
-            public void onClick()
-            {
-                setResponsePage(AdvancedTinyMCEPage.class);
-                setRedirect(true);
-            }
-        });
-        add(new Link("simple")
-        {
+	public TinyMCEBasePage()
+	{
+		add(new Link("simple")
+		{
 
-            public void onClick()
-            {
-                setResponsePage(SimpleTinyMCEPage.class);
-                setRedirect(true);
-            }
-        });
-        add(new Link("word")
-        {
+			public void onClick()
+			{
+				setResponsePage(SimpleTinyMCEPage.class);
+				setRedirect(true);
+			}
+		});
+		add(new Link("advanced")
+		{
 
-            public void onClick()
-            {
-                setResponsePage(WordTinyMCEPage.class);
-                setRedirect(true);
-            }
-        });
-    }
+			public void onClick()
+			{
+				setResponsePage(AdvancedTinyMCEPage.class);
+				setRedirect(true);
+			}
+		});
+		add(new Link("full")
+		{
+
+			public void onClick()
+			{
+				setResponsePage(FullFeaturedTinyMCEPage.class);
+				setRedirect(true);
+			}
+		});
+		add(new Link("word")
+		{
+
+			public void onClick()
+			{
+				setResponsePage(WordTinyMCEPage.class);
+				setRedirect(true);
+			}
+		});
+	}
 }
