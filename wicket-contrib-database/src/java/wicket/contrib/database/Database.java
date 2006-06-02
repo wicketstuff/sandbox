@@ -44,7 +44,7 @@ public abstract class Database
 	/**
 	 * Drops and recreates database tables
 	 */
-	public abstract void formatTables();
+	public abstract void format();
 	
 	/**
 	 * @return Returns the defaultTransactionSemantics.
