@@ -1,6 +1,7 @@
 /*
- * $Id$
- * $Revision$ $Date$
+ * $Id: HibernateDatabase.java 724 2006-05-16 20:49:45 +0000 (Tue, 16 May 2006)
+ * jonathanlocke $ $Revision$ $Date: 2006-05-16 20:49:45 +0000 (Tue, 16
+ * May 2006) $
  * 
  * ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -33,13 +34,13 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.impl.SessionFactoryImpl;
+import org.hibernate.tool.hbm2ddl.SchemaUpdate;
 import org.hibernate.type.Type;
 
 import wicket.WicketRuntimeException;
 import wicket.contrib.database.Database;
 import wicket.contrib.database.DatabaseSession;
 import wicket.contrib.database.IDatabaseObject;
-
 
 /**
  * Utility that sets up the database.
@@ -87,23 +88,37 @@ public class HibernateDatabase extends Database
 	}
 
 	/**
+	 * Updates schema without dropping tables
+	 */
+	public void updateSchema()
+	{
+		new SchemaUpdate(configuration).execute(true, true);
+	}
+
+	/**
 	 * Drops and recreates all hibernate tables
 	 */
-	public void formatTables()
+	public void format()
 	{
-		Session session = null;
 		try
 		{
 			final SessionFactory sessionFactory = configuration.buildSessionFactory();
 			final Dialect dialect = ((SessionFactoryImpl)sessionFactory).getDialect();
 			final String[] drops = configuration.generateDropSchemaScript(dialect);
 			final String[] creates = configuration.generateSchemaCreationScript(dialect);
-			session = sessionFactory.openSession();
-			final Connection connection = session.connection();
-			final Statement statement = connection.createStatement();
-			executeStatements(connection, statement, splitAlterTables(drops, true));
-			executeStatements(connection, statement, splitAlterTables(drops, false));
-			executeStatements(connection, statement, creates);
+			final Session session = sessionFactory.openSession();
+			try
+			{
+				final Connection connection = session.connection();
+				final Statement statement = connection.createStatement();
+				executeStatements(connection, statement, splitAlterTables(drops, true));
+				executeStatements(connection, statement, splitAlterTables(drops, false));
+				executeStatements(connection, statement, creates);
+			}
+			finally
+			{
+				session.close();
+			}
 		}
 		catch (HibernateException e)
 		{
@@ -112,20 +127,6 @@ public class HibernateDatabase extends Database
 		catch (SQLException e)
 		{
 			throw new WicketRuntimeException(e);
-		}
-		finally
-		{
-			try
-			{
-				if (session != null)
-				{
-					session.close();
-				}
-			}
-			catch (HibernateException e)
-			{
-				throw new WicketRuntimeException(e);
-			}
 		}
 	}
 
@@ -140,9 +141,13 @@ public class HibernateDatabase extends Database
 					private static final long serialVersionUID = 1L;
 
 					/**
-					 * @see org.hibernate.EmptyInterceptor#onFlushDirty(java.lang.Object, java.io.Serializable, java.lang.Object[], java.lang.Object[], java.lang.String[], org.hibernate.type.Type[])
+					 * @see org.hibernate.EmptyInterceptor#onFlushDirty(java.lang.Object,
+					 *      java.io.Serializable, java.lang.Object[],
+					 *      java.lang.Object[], java.lang.String[],
+					 *      org.hibernate.type.Type[])
 					 */
-					public boolean onFlushDirty(Object dirtyObject, Serializable arg1, Object[] arg2, Object[] arg3, String[] arg4, Type[] arg5)
+					public boolean onFlushDirty(Object dirtyObject, Serializable arg1,
+							Object[] arg2, Object[] arg3, String[] arg4, Type[] arg5)
 					{
 						final IDatabaseObject object = (IDatabaseObject)dirtyObject;
 						if (object.getId() == null)
@@ -192,9 +197,9 @@ public class HibernateDatabase extends Database
 	 * Filter statements on start of statement.
 	 * 
 	 * @param drops
-	 *            statements
+	 *            Statements
 	 * @param includeAlterFlag
-	 *            if true, everything that starts with alter, else the inverse
+	 *            If true, everything that starts with alter, else the inverse
 	 * @return part of the input
 	 */
 	private String[] splitAlterTables(String[] drops, boolean includeAlterFlag)
