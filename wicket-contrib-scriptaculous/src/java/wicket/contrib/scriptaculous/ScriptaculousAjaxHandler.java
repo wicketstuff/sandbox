@@ -36,8 +36,7 @@ import wicket.util.resource.IResourceStream;
  * 
  * @see <a href="http://script.aculo.us/">script.aculo.us</a>
  */
-public abstract class ScriptaculousAjaxHandler extends AjaxHandler implements
-                IInitializer {
+public abstract class ScriptaculousAjaxHandler extends AjaxHandler {
 
         public static ScriptaculousAjaxHandler newJavascriptBindingHandler() {
                 return new ScriptaculousAjaxHandler() {
@@ -60,26 +59,6 @@ public abstract class ScriptaculousAjaxHandler extends AjaxHandler implements
                         }
 
                 };
-        }
-
-        /**
-         * Register packaged javascript files.
-         * 
-         * @param application
-         *                The application
-         */
-        public void init(Application application) {
-                Class handler = ScriptaculousAjaxHandler.class;
-                PackageResource.bind(application, handler, "behavior.js");
-                PackageResource.bind(application, handler, "controls.js");
-                PackageResource.bind(application, handler, "dragdrop.js");
-                PackageResource.bind(application, handler, "effects.js");
-                PackageResource.bind(application, handler, "prototype.js");
-                PackageResource.bind(application, handler, "builder.js");
-                PackageResource.bind(application, handler, "scriptaculous.js");
-                PackageResource.bind(application, handler, "slider.js");
-                PackageResource.bind(application, handler, "unittest.js");
-                PackageResource.bind(application, handler, "util.js");
         }
 
         /**
