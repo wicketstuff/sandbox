@@ -18,10 +18,10 @@
 package wicket.contrib.yui.examples;
 
 import wicket.PageMap;
+import wicket.examples.debug.InspectorBug;
 import wicket.examples.source.SourcesPage;
 import wicket.markup.html.WebPage;
 import wicket.markup.html.basic.Label;
-import wicket.markup.html.debug.InspectorBug;
 import wicket.markup.html.link.Link;
 import wicket.markup.html.link.PopupSettings;
 import wicket.markup.html.panel.Panel;
@@ -31,8 +31,7 @@ import wicket.markup.html.panel.Panel;
  * 
  * @author Eelco Hillenius
  */
-public final class WicketExampleHeader extends Panel
-{
+public final class WicketExampleHeader extends Panel {
 	/**
 	 * Construct.
 	 * 
@@ -43,15 +42,12 @@ public final class WicketExampleHeader extends Panel
 	 * @param page
 	 *            The example page
 	 */
-	public WicketExampleHeader(String id, String exampleTitle, WebPage page)
-	{
+	public WicketExampleHeader(String id, String exampleTitle, WebPage page) {
 		super(id);
 		add(new InspectorBug("inspector", page));
 		add(new Label("exampleTitle", exampleTitle));
-		Link link = new Link("sources")
-		{
-			public void onClick()
-			{
+		Link link = new Link("sources") {
+			public void onClick() {
 				setResponsePage(new SourcesPage(getPage().getClass()));
 			}
 		};
