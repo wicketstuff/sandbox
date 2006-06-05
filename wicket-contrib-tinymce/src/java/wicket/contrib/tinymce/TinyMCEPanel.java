@@ -67,9 +67,6 @@ public class TinyMCEPanel extends Panel
 	{
 		super(id);
 
-		// bind tinymce resources
-		PackageResource.bind(Application.get(), TinyMCEPanel.class, Pattern.compile(TINY_MCE), true);
-
 		// add tinymce init script and startup js
 		add(new JavaScriptReference("tinymce", TinyMCEPanel.class, "tiny_mce/tiny_mce_src.js"));
 		add(new WebComponent("initScript")
