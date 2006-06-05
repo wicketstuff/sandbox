@@ -28,15 +28,12 @@
         <url>http://sourceforge.net/tracker/?group_id=${maven.sourceforge.project.groupId}</url>
     </issueManagement>
 
-    <scm>
-        <connection>
-            scm:cvs:pserver:${maven.scm.anonymous}@cvs.sourceforge.net:/cvsroot/wicket-stuff:wicket-contrib-tinymce
-        </connection>
-        <developerConnection>
-            scm:cvs:ext:${maven.scm.user}@cvs.sourceforge.net:/cvsroot/wicket-stuff:wicket-contrib-tinymce
-        </developerConnection>
-        <url>http://cvs.sourceforge.net/viewcvs.py/wicket-stuff:wicket-contrib-tinymce</url>
-    </scm>
+
+        <scm>
+                <connection>scm:svn:https://svn.sourceforge.net/svnroot/wicket-stuff/trunk/wicket-contrib-tinymce</connection>
+                <developerConnection>scm:svn:https://svn.sourceforge.net/svnroot/wicket-stuff/trunk/wicket-contrib-tinymce</developerConnection>
+                <url>http://svn.sourceforge.net/viewcvs.py/wicket-stuff/trunk/wicket-contrib-tinymce</url>
+        </scm>
 
     <mailingLists>
         <mailingList>
