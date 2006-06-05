@@ -19,17 +19,13 @@
 package wicket.contrib.markup.html.yui.calendar;
 
 import java.util.Map;
-import java.util.regex.Pattern;
 
-import wicket.Application;
 import wicket.AttributeModifier;
 import wicket.Component;
-import wicket.IInitializer;
 import wicket.RequestCycle;
 import wicket.behavior.HeaderContributor;
 import wicket.contrib.markup.html.yui.AbstractYuiPanel;
 import wicket.extensions.util.resource.PackagedTextTemplate;
-import wicket.markup.html.PackageResource;
 import wicket.markup.html.PackageResourceReference;
 import wicket.markup.html.WebPage;
 import wicket.markup.html.basic.Label;
@@ -45,20 +41,6 @@ import wicket.util.collections.MiniMap;
  */
 public class Calendar extends AbstractYuiPanel {
 	private static final long serialVersionUID = 1L;
-
-	/**
-	 * Initializer for this component; binds static resources.
-	 */
-	public final static class ComponentInitializer implements IInitializer {
-		/**
-		 * @see wicket.IInitializer#init(wicket.Application)
-		 */
-		public void init(Application application) {
-			// register all .js, .css, and .gif package resources
-			PackageResource.bind(application, Calendar.class, Pattern
-					.compile(".*\\.js|.*\\.css|.*\\.gif"), true);
-		}
-	}
 
 	/**
 	 * The container/ receiver of the javascript component.

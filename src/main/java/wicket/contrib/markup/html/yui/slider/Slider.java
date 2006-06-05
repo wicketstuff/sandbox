@@ -19,19 +19,15 @@
 package wicket.contrib.markup.html.yui.slider;
 
 import java.util.Map;
-import java.util.regex.Pattern;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import wicket.Application;
 import wicket.AttributeModifier;
 import wicket.Component;
-import wicket.IInitializer;
 import wicket.behavior.HeaderContributor;
 import wicket.contrib.markup.html.yui.AbstractYuiPanel;
 import wicket.extensions.util.resource.TextTemplateHeaderContributor;
-import wicket.markup.html.PackageResource;
 import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.WebPage;
 import wicket.markup.html.form.FormComponent;
@@ -49,30 +45,10 @@ import wicket.util.collections.MiniMap;
  * @author Eelco Hillenius
  * @author Joshua Lim
  */
-public class Slider extends AbstractYuiPanel
-{
+public class Slider extends AbstractYuiPanel {
 	private static final long serialVersionUID = 1L;
 
-    private Log log = LogFactory.getLog(Slider.class);
-	/**
-	 * Initializer for this component; binds static resources.
-	 */
-	public final static class ComponentInitializer implements IInitializer
-	{
-		/**
-		 * @see wicket.IInitializer#init(wicket.Application)
-		 */
-		public void init(Application application)
-		{
-			// register all javascript files
-			PackageResource.bind(application, Slider.class, Pattern.compile(".*\\.js"));
-			// images
-			PackageResource.bind(application, Slider.class, Pattern.compile(".*\\.gif|.*\\.png"),
-					true);
-			// and a css
-			PackageResource.bind(application, Slider.class, "css/slider.css");
-		}
-	}
+	private Log log = LogFactory.getLog(Slider.class);
 
 	/**
 	 * The id of the background element.
@@ -89,25 +65,23 @@ public class Slider extends AbstractYuiPanel
 	 */
 	private String javaScriptId;
 
-    /**
-     * Contruct. creates a default Slider.
-     * 
-     * @param id
-     * @param model
-     * @param leftUp
-     * @param rightDown
-     * @param tick
-     * @param element
-     */
-	
-    public Slider(String id, IModel model, 
-            final int leftUp, final int rightDown, final int tick,
-            final FormComponent element)
-    {
-        this(id, model, element,  SliderSettings.getDefault(leftUp, rightDown, tick));
-    }
-    
-    
+	/**
+	 * Contruct. creates a default Slider.
+	 * 
+	 * @param id
+	 * @param model
+	 * @param leftUp
+	 * @param rightDown
+	 * @param tick
+	 * @param element
+	 */
+
+	public Slider(String id, IModel model, final int leftUp,
+			final int rightDown, final int tick, final FormComponent element) {
+		this(id, model, element, SliderSettings.getDefault(leftUp, rightDown,
+				tick));
+	}
+
 	/**
 	 * Construct.
 	 * 
@@ -116,36 +90,34 @@ public class Slider extends AbstractYuiPanel
 	 * @param model
 	 *            the model for this component
 	 */
-	public Slider(String id, IModel model, 
-                    final FormComponent element, 
-                    final SliderSettings settings)
-	{
+	public Slider(String id, IModel model, final FormComponent element,
+			final SliderSettings settings) {
 		super(id, model);
-        
+
 		add(HeaderContributor.forJavaScript(Slider.class, "slider.js"));
 		add(HeaderContributor.forCss(Slider.class, "css/slider.css"));
 
-        /*
-         * default settings if null
-         */
-        
-        if (settings == null) {
-            // error 
-        }
-        
-        /* handle form element */
-        if (element != null) {
-            element.add(new AttributeModifier("id", true, new AbstractReadOnlyModel() {
-                private static final long serialVersionUID = 1L;
+		/*
+		 * default settings if null
+		 */
 
-                public Object getObject(Component component) {
-                    return element.getId();
-                }
-            }));
-        }
-        
-		IModel variablesModel = new AbstractReadOnlyModel()
-		{
+		if (settings == null) {
+			// error
+		}
+
+		/* handle form element */
+		if (element != null) {
+			element.add(new AttributeModifier("id", true,
+					new AbstractReadOnlyModel() {
+						private static final long serialVersionUID = 1L;
+
+						public Object getObject(Component component) {
+							return element.getId();
+						}
+					}));
+		}
+
+		IModel variablesModel = new AbstractReadOnlyModel() {
 			private static final long serialVersionUID = 1L;
 
 			/** cached variables; we only need to fill this once. */
@@ -154,96 +126,113 @@ public class Slider extends AbstractYuiPanel
 			/**
 			 * @see wicket.model.AbstractReadOnlyModel#getObject(wicket.Component)
 			 */
-			public Object getObject(Component component)
-			{
-				if (variables == null)
-				{
+			public Object getObject(Component component) {
+				if (variables == null) {
 					this.variables = new MiniMap(7);
 					variables.put("javaScriptId", javaScriptId);
 					variables.put("backGroundElementId", backgroundElementId);
 					variables.put("imageElementId", imageElementId);
-                    variables.put("leftUp", settings.getLeftUp());
-                    variables.put("rightDown", settings.getRightDown());
-                    variables.put("tick", settings.getTick());
-                    variables.put("formElementId", element.getId());
+					variables.put("leftUp", settings.getLeftUp());
+					variables.put("rightDown", settings.getRightDown());
+					variables.put("tick", settings.getTick());
+					variables.put("formElementId", element.getId());
 				}
 				return variables;
 			}
 		};
 
-		add(TextTemplateHeaderContributor.forJavaScript(Slider.class, "init.js", variablesModel));
+		add(TextTemplateHeaderContributor.forJavaScript(Slider.class,
+				"init.js", variablesModel));
 
-        /*
-         * LEFT Corner Images & Tick Marks
-         */
-        
-        Image leftTickImg = new Image("leftTickImg", settings.getLeftTickResource());
-        leftTickImg.add(new AttributeModifier("onclick", true, new AbstractReadOnlyModel() {
-           public Object getObject(Component component) {
-        	   return javaScriptId + ".setValue(" + javaScriptId + ".getXValue() - " + settings.getTick() + ");";
-           }
-        }));
-      	add(leftTickImg.setVisible(settings.isShowTicks()));
-        
-        Image leftCornerImg = new Image("leftCornerImg", settings.getLeftCornerResource());
-        leftCornerImg.add(new AttributeModifier("onclick", true, new AbstractReadOnlyModel() {
-           public Object getObject(Component component) {
-               return javaScriptId + ".setValue(-" + settings.getLeftUp()+ ")";
-           }
-        }));
-        add(leftCornerImg);
-        
-        /*
-         * RIGHT Corner Images & Tick Marks
-         */
-        
-        Image rightCornerImg = new Image("rightCornerImg", settings.getRightCornerResource());
-        rightCornerImg.add(new AttributeModifier("onclick", true, new AbstractReadOnlyModel() {
-           public Object getObject(Component component) {
-               return  javaScriptId + ".setValue(" + settings.getRightDown()+ ")";
-           }
-        }));
-        add(rightCornerImg);
-        
-        Image rightTickImg = new Image("rightTickImg", settings.getRightTickResource());
-        rightTickImg.add(new AttributeModifier("onclick", true, new AbstractReadOnlyModel() {
-            public Object getObject(Component component) {
-                return javaScriptId + ".setValue(" + javaScriptId + ".getXValue() + " + settings.getTick() + ");";
-            } 
-        }));
-        add(rightTickImg.setVisible(settings.isShowTicks()));
-       
-        /* 
-         * Background Div 
-         */
-        
-		WebMarkupContainer backgroundElement = new WebMarkupContainer("backgroundDiv");
-		backgroundElement.add(new AttributeModifier("id", true, new PropertyModel(this, "backgroundElementId")));
-        backgroundElement.add(new AttributeModifier("style", true, new Model(settings.getBackground().getStyle())));
-        add(backgroundElement);
+		/*
+		 * LEFT Corner Images & Tick Marks
+		 */
 
-        /* 
-         * Element Div and Thumb Div 
-         */
-        
+		Image leftTickImg = new Image("leftTickImg", settings
+				.getLeftTickResource());
+		leftTickImg.add(new AttributeModifier("onclick", true,
+				new AbstractReadOnlyModel() {
+					public Object getObject(Component component) {
+						return javaScriptId + ".setValue(" + javaScriptId
+								+ ".getXValue() - " + settings.getTick() + ");";
+					}
+				}));
+		add(leftTickImg.setVisible(settings.isShowTicks()));
+
+		Image leftCornerImg = new Image("leftCornerImg", settings
+				.getLeftCornerResource());
+		leftCornerImg.add(new AttributeModifier("onclick", true,
+				new AbstractReadOnlyModel() {
+					public Object getObject(Component component) {
+						return javaScriptId + ".setValue(-"
+								+ settings.getLeftUp() + ")";
+					}
+				}));
+		add(leftCornerImg);
+
+		/*
+		 * RIGHT Corner Images & Tick Marks
+		 */
+
+		Image rightCornerImg = new Image("rightCornerImg", settings
+				.getRightCornerResource());
+		rightCornerImg.add(new AttributeModifier("onclick", true,
+				new AbstractReadOnlyModel() {
+					public Object getObject(Component component) {
+						return javaScriptId + ".setValue("
+								+ settings.getRightDown() + ")";
+					}
+				}));
+		add(rightCornerImg);
+
+		Image rightTickImg = new Image("rightTickImg", settings
+				.getRightTickResource());
+		rightTickImg.add(new AttributeModifier("onclick", true,
+				new AbstractReadOnlyModel() {
+					public Object getObject(Component component) {
+						return javaScriptId + ".setValue(" + javaScriptId
+								+ ".getXValue() + " + settings.getTick() + ");";
+					}
+				}));
+		add(rightTickImg.setVisible(settings.isShowTicks()));
+
+		/*
+		 * Background Div
+		 */
+
+		WebMarkupContainer backgroundElement = new WebMarkupContainer(
+				"backgroundDiv");
+		backgroundElement.add(new AttributeModifier("id", true,
+				new PropertyModel(this, "backgroundElementId")));
+		backgroundElement.add(new AttributeModifier("style", true, new Model(
+				settings.getBackground().getStyle())));
+		add(backgroundElement);
+
+		/*
+		 * Element Div and Thumb Div
+		 */
+
 		WebMarkupContainer imageElement = new WebMarkupContainer("handleDiv");
-		imageElement.add(new AttributeModifier("id", true, new PropertyModel(this, "imageElementId")));
-        imageElement.add(new AttributeModifier("style", true, new Model(settings.getHandle().getStyle())));
-        
-        WebMarkupContainer thumbElement = new WebMarkupContainer("thumbDiv");
-        thumbElement.add(new AttributeModifier("style", true, new Model(settings.getThumb().getStyle())));
-        
-        imageElement.add(thumbElement);
-        backgroundElement.add(imageElement);
-        
+		imageElement.add(new AttributeModifier("id", true, new PropertyModel(
+				this, "imageElementId")));
+		imageElement.add(new AttributeModifier("style", true, new Model(
+				settings.getHandle().getStyle())));
+
+		WebMarkupContainer thumbElement = new WebMarkupContainer("thumbDiv");
+		thumbElement.add(new AttributeModifier("style", true, new Model(
+				settings.getThumb().getStyle())));
+
+		imageElement.add(thumbElement);
+		backgroundElement.add(imageElement);
+
 	}
 
 	/**
 	 * @see wicket.Component#renderHead(wicket.markup.html.internal.HtmlHeaderContainer)
 	 */
-	public void renderHead(HtmlHeaderContainer container)
-	{
-		((WebPage)getPage()).getBodyContainer().addOnLoadModifier("init" + javaScriptId + "();", this);
+	public void renderHead(HtmlHeaderContainer container) {
+		((WebPage) getPage()).getBodyContainer().addOnLoadModifier(
+				"init" + javaScriptId + "();", this);
 		super.renderHead(container);
 	}
 
@@ -252,8 +241,7 @@ public class Slider extends AbstractYuiPanel
 	 * 
 	 * @return backgroundElementId
 	 */
-	public final String getBackgroundElementId()
-	{
+	public final String getBackgroundElementId() {
 		return backgroundElementId;
 	}
 
@@ -262,29 +250,25 @@ public class Slider extends AbstractYuiPanel
 	 * 
 	 * @return imageElementId
 	 */
-	public final String getImageElementId()
-	{
+	public final String getImageElementId() {
 		return imageElementId;
 	}
 
 	/**
 	 * TODO implement
 	 */
-	public void updateModel()
-	{
-        log.info("updateModel");
+	public void updateModel() {
+		log.info("updateModel");
 	}
 
 	/**
 	 * @see wicket.Component#onAttach()
 	 */
-	protected void onAttach()
-	{
+	protected void onAttach() {
 		super.onAttach();
 
 		// initialize lazily
-		if (backgroundElementId == null)
-		{
+		if (backgroundElementId == null) {
 			// assign the markup id
 			String id = getMarkupId();
 			backgroundElementId = id + "Bg";
