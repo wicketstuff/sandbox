@@ -8,6 +8,6 @@
 	<classpathentry kind="var" path="M2_REPO/javax/servlet/servlet-api/2.4/servlet-api-2.4.jar"/>
 	<classpathentry sourcepath="M2_REPO/commons-logging/commons-logging/1.0.4/commons-logging-1.0.4-sources.jar" kind="var" path="M2_REPO/commons-logging/commons-logging/1.0.4/commons-logging-1.0.4.jar"/>
 	<classpathentry kind="var" path="M2_REPO/jazzyplugin/jazzyplugin/0.2.1/jazzyplugin-0.2.1.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/wicket-1.2"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/wicket"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
