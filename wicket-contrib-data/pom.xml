@@ -15,6 +15,13 @@
     </developer>
   </developers>
 
+        <scm>
+                <connection>scm:svn:https://svn.sourceforge.net/svnroot/wicket-stuff/trunk/wicket-contrib-data</connection>
+                <developerConnection>scm:svn:https://svn.sourceforge.net/svnroot/wicket-stuff/trunk/wicket-contrib-data</developerConnection>
+                <url>http://svn.sourceforge.net/viewcvs.py/wicket-stuff/trunk/wicket-contrib-data</url>
+        </scm>
+
+
   <contributors>
   </contributors>
 
