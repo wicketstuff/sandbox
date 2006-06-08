@@ -40,8 +40,6 @@ import wicket.util.collections.MiniMap;
  * @author Eelco Hillenius
  */
 public class Calendar extends AbstractYuiPanel {
-	private static final long serialVersionUID = 1L;
-
 	/**
 	 * The container/ receiver of the javascript component.
 	 */
@@ -72,6 +70,8 @@ public class Calendar extends AbstractYuiPanel {
 		}
 	}
 
+	private static final long serialVersionUID = 1L;
+
 	/** the receiving component. */
 	private CalendarElement calendarElement;
 
@@ -93,8 +93,8 @@ public class Calendar extends AbstractYuiPanel {
 	 */
 	public Calendar(String id) {
 		super(id);
-		add(HeaderContributor.forJavaScript(Calendar.class));
-		add(HeaderContributor.forCss(Calendar.class));
+		add(HeaderContributor.forJavaScript(Calendar.class, "calendar.js"));
+		add(HeaderContributor.forCss(Calendar.class, "calendar.css"));
 
 		Label initialization = new Label("initialization",
 				new AbstractReadOnlyModel() {
@@ -113,33 +113,18 @@ public class Calendar extends AbstractYuiPanel {
 	}
 
 	/**
-	 * TODO implement
-	 */
-	public void updateModel() {
-	}
-
-	/**
 	 * @see wicket.Component#renderHead(wicket.markup.html.internal.HtmlHeaderContainer)
 	 */
 	public void renderHead(HtmlHeaderContainer container) {
 		((WebPage) getPage()).getBodyContainer().addOnLoadModifier(
-				"init" + javaScriptId + "();");
+				"init" + javaScriptId + "();", null);
 		super.renderHead(container);
 	}
 
 	/**
-	 * @see wicket.Component#onAttach()
+	 * TODO implement
 	 */
-	protected void onAttach() {
-		super.onAttach();
-
-		// initialize lazily
-		if (elementId == null) {
-			// assign the markup id
-			String id = getMarkupId();
-			elementId = id + "Element";
-			javaScriptId = elementId + "JS";
-		}
+	public void updateModel() {
 	}
 
 	/**
@@ -166,5 +151,20 @@ public class Calendar extends AbstractYuiPanel {
 		template.interpolate(variables);
 
 		return template.getString();
+	}
+
+	/**
+	 * @see wicket.Component#onAttach()
+	 */
+	protected void onAttach() {
+		super.onAttach();
+
+		// initialize lazily
+		if (elementId == null) {
+			// assign the markup id
+			String id = getMarkupId();
+			elementId = id + "Element";
+			javaScriptId = elementId + "JS";
+		}
 	}
 }
