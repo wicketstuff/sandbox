@@ -48,8 +48,6 @@ import wicket.util.collections.MiniMap;
 public class Slider extends AbstractYuiPanel {
 	private static final long serialVersionUID = 1L;
 
-	private Log log = LogFactory.getLog(Slider.class);
-
 	/**
 	 * The id of the background element.
 	 */
@@ -65,22 +63,7 @@ public class Slider extends AbstractYuiPanel {
 	 */
 	private String javaScriptId;
 
-	/**
-	 * Contruct. creates a default Slider.
-	 * 
-	 * @param id
-	 * @param model
-	 * @param leftUp
-	 * @param rightDown
-	 * @param tick
-	 * @param element
-	 */
-
-	public Slider(String id, IModel model, final int leftUp,
-			final int rightDown, final int tick, final FormComponent element) {
-		this(id, model, element, SliderSettings.getDefault(leftUp, rightDown,
-				tick));
-	}
+	private Log log = LogFactory.getLog(Slider.class);
 
 	/**
 	 * Construct.
@@ -152,6 +135,9 @@ public class Slider extends AbstractYuiPanel {
 				.getLeftTickResource());
 		leftTickImg.add(new AttributeModifier("onclick", true,
 				new AbstractReadOnlyModel() {
+
+					private static final long serialVersionUID = 1L;
+
 					public Object getObject(Component component) {
 						return javaScriptId + ".setValue(" + javaScriptId
 								+ ".getXValue() - " + settings.getTick() + ");";
@@ -163,6 +149,8 @@ public class Slider extends AbstractYuiPanel {
 				.getLeftCornerResource());
 		leftCornerImg.add(new AttributeModifier("onclick", true,
 				new AbstractReadOnlyModel() {
+					private static final long serialVersionUID = 1L;
+
 					public Object getObject(Component component) {
 						return javaScriptId + ".setValue(-"
 								+ settings.getLeftUp() + ")";
@@ -178,6 +166,8 @@ public class Slider extends AbstractYuiPanel {
 				.getRightCornerResource());
 		rightCornerImg.add(new AttributeModifier("onclick", true,
 				new AbstractReadOnlyModel() {
+					private static final long serialVersionUID = 1L;
+
 					public Object getObject(Component component) {
 						return javaScriptId + ".setValue("
 								+ settings.getRightDown() + ")";
@@ -189,6 +179,8 @@ public class Slider extends AbstractYuiPanel {
 				.getRightTickResource());
 		rightTickImg.add(new AttributeModifier("onclick", true,
 				new AbstractReadOnlyModel() {
+					private static final long serialVersionUID = 1L;
+
 					public Object getObject(Component component) {
 						return javaScriptId + ".setValue(" + javaScriptId
 								+ ".getXValue() + " + settings.getTick() + ");";
@@ -228,12 +220,20 @@ public class Slider extends AbstractYuiPanel {
 	}
 
 	/**
-	 * @see wicket.Component#renderHead(wicket.markup.html.internal.HtmlHeaderContainer)
+	 * Contruct. creates a default Slider.
+	 * 
+	 * @param id
+	 * @param model
+	 * @param leftUp
+	 * @param rightDown
+	 * @param tick
+	 * @param element
 	 */
-	public void renderHead(HtmlHeaderContainer container) {
-		((WebPage) getPage()).getBodyContainer().addOnLoadModifier(
-				"init" + javaScriptId + "();", this);
-		super.renderHead(container);
+
+	public Slider(String id, IModel model, final int leftUp,
+			final int rightDown, final int tick, final FormComponent element) {
+		this(id, model, element, SliderSettings.getDefault(leftUp, rightDown,
+				tick));
 	}
 
 	/**
@@ -252,6 +252,15 @@ public class Slider extends AbstractYuiPanel {
 	 */
 	public final String getImageElementId() {
 		return imageElementId;
+	}
+
+	/**
+	 * @see wicket.Component#renderHead(wicket.markup.html.internal.HtmlHeaderContainer)
+	 */
+	public void renderHead(HtmlHeaderContainer container) {
+		((WebPage) getPage()).getBodyContainer().addOnLoadModifier(
+				"init" + javaScriptId + "();", this);
+		super.renderHead(container);
 	}
 
 	/**
