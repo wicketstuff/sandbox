@@ -20,40 +20,41 @@ package wicket.contrib.yui.examples;
 
 import wicket.markup.html.WebPage;
 import wicket.model.IModel;
+import wicket.util.lang.Classes;
 
 /**
  * Base class for all example pages.
  * 
  * @author Jonathan Locke
  */
-public class WicketExamplePage extends WebPage
-{
-    /**
-     * Constructor
-     */
-    public WicketExamplePage()
-    {
+public class WicketExamplePage extends WebPage {
+	/**
+	 * Constructor
+	 */
+	public WicketExamplePage() {
 		this(null);
 	}
 
 	/**
 	 * Construct.
+	 * 
 	 * @param model
 	 */
-	public WicketExamplePage(IModel model)
-	{
+	public WicketExamplePage(IModel model) {
 		super(model);
-        // final String packageName = getClass().getPackage().getName();
-        // add(new WicketExampleHeader("mainNavigation", Strings.afterLast(packageName, '.'), this));
-        
-        String className = getClass().getSimpleName();
-        add(new WicketExampleHeader("mainNavigation", className, this));
-        
+		// final String packageName = getClass().getPackage().getName();
+		// add(new WicketExampleHeader("mainNavigation",
+		// Strings.afterLast(packageName, '.'), this));
+
+		String className = Classes.simpleName(getClass());
+		add(new WicketExampleHeader("mainNavigation", className, this));
+
 		explain();
 	}
 
 	/**
 	 * Override base method to provide an explanation
 	 */
-	protected void explain() {}
+	protected void explain() {
+	}
 }
