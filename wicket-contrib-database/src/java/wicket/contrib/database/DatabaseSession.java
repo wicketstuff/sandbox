@@ -33,13 +33,6 @@ import wicket.RequestCycle;
  */
 public abstract class DatabaseSession
 {
-	public static class TransactionScope
-	{
-	}
-
-	public static final TransactionScope TRANSACT_OPERATIONS = new TransactionScope();
-	public static final TransactionScope TRANSACT_REQUESTS = new TransactionScope();
-
 	/** Used for logging. */
 	private static Log log = LogFactory.getLog(DatabaseSession.class);
 
@@ -62,11 +55,6 @@ public abstract class DatabaseSession
 	private Database database;
 
 	/**
-	 * Transaction scope semantics
-	 */
-	private TransactionScope transactionSemantics;
-
-	/**
 	 * Construct
 	 * 
 	 * @param database
@@ -75,7 +63,6 @@ public abstract class DatabaseSession
 	public DatabaseSession(final Database database)
 	{
 		this.database = database;
-		setTransactionSemantics(database.getDefaultTransactionSemantics());
 	}
 
 	/**
@@ -136,14 +123,6 @@ public abstract class DatabaseSession
 	}
 
 	/**
-	 * @return Returns the transactionSemantics.
-	 */
-	public final TransactionScope getTransactionSemantics()
-	{
-		return transactionSemantics;
-	}
-
-	/**
 	 * Load the object with the given id. If an object with the given id already
 	 * exists in the session, that object will be returned. This means that load
 	 * will always safely give you the object with the given id without any
@@ -180,15 +159,6 @@ public abstract class DatabaseSession
 				save(object);
 			}
 		});
-	}
-
-	/**
-	 * @param transactionSemantics
-	 *            The transactionSemantics to set.
-	 */
-	public final void setTransactionSemantics(TransactionScope transactionSemantics)
-	{
-		this.transactionSemantics = transactionSemantics;
 	}
 
 	/**

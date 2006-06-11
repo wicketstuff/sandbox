@@ -1,6 +1,7 @@
 /*
- * $Id$ $Revision:
- * 1.43 $ $Date$
+ * $Id: Database.java 751 2006-06-02 00:04:01 +0000 (Fri, 02 Jun 2006)
+ * jonathanlocke $ $Revision$ $Date: 2006-06-02 00:04:01 +0000 (Fri, 02
+ * Jun 2006) $
  * 
  * ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -22,14 +23,11 @@ package wicket.contrib.database;
  */
 public abstract class Database
 {
-	/** Default transaction semantics for sessions on this database */
-	private DatabaseSession.TransactionScope defaultTransactionSemantics = DatabaseSession.TRANSACT_REQUESTS;
-	
 	/**
 	 * Name of this database
 	 */
 	private final String name;
-	
+
 	/**
 	 * Constructor
 	 * 
@@ -40,19 +38,11 @@ public abstract class Database
 	{
 		this.name = name;
 	}
-	
+
 	/**
 	 * Drops and recreates database tables
 	 */
 	public abstract void format();
-	
-	/**
-	 * @return Returns the defaultTransactionSemantics.
-	 */
-	public final DatabaseSession.TransactionScope getDefaultTransactionSemantics()
-	{
-		return defaultTransactionSemantics;
-	}
 
 	/**
 	 * @return Returns name.
@@ -63,16 +53,8 @@ public abstract class Database
 	}
 
 	/**
-	 * @return Subclass of HibernateDatabaseSession depending on type of database;
+	 * @return Subclass of HibernateDatabaseSession depending on type of
+	 *         database;
 	 */
 	public abstract DatabaseSession newDatabaseSession();
-
-	/**
-	 * @param defaultTransactionSemantics The defaultTransactionSemantics to set.
-	 */
-	public final void setDefaultTransactionSemantics(
-			DatabaseSession.TransactionScope defaultTransactionSemantics)
-	{
-		this.defaultTransactionSemantics = defaultTransactionSemantics;
-	}
 }
