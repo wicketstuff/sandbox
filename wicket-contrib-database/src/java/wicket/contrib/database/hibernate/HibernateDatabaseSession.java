@@ -43,12 +43,6 @@ public class HibernateDatabaseSession extends DatabaseSession
 	/** The wrapped hibernate session object */
 	private Session hibernateSession;
 
-	/** Exception object if transaction needs to be rolled back */
-	private Exception rollbackException;
-
-	/** Any request-level transaction going on */
-	private Transaction transaction = null;
-
 	/**
 	 * Constructor
 	 * 
@@ -84,34 +78,8 @@ public class HibernateDatabaseSession extends DatabaseSession
 	{
 		if (hibernateSession != null)
 		{
-			try
-			{
-				if (transaction != null)
-				{
-					if (rollbackException != null)
-					{
-						rollback(rollbackException);
-						throw new DatabaseException(rollbackException);
-					}
-					else
-					{
-						try
-						{
-							transaction.commit();
-						}
-						catch (HibernateException e)
-						{
-							rollback(e);
-							throw new DatabaseException(e);
-						}
-					}
-				}
-			}
-			finally
-			{
-				hibernateSession.flush();
-				hibernateSession.close();
-			}
+			hibernateSession.flush();
+			hibernateSession.close();
 		}
 	}
 
@@ -186,61 +154,31 @@ public class HibernateDatabaseSession extends DatabaseSession
 	 */
 	public void transaction(final IDatabaseTransaction transactionCode)
 	{
-		if (getTransactionSemantics() == DatabaseSession.TRANSACT_OPERATIONS)
+		final Transaction transaction = hibernateSession.beginTransaction();
+		try
 		{
-			Transaction transaction = null;
-			try
-			{
-				transaction = hibernateSession.beginTransaction();
-				transactionCode.run();
-				transaction.commit();
-				hibernateSession.flush();
-			}
-			catch (Exception e)
-			{
-				e.printStackTrace();
-				rollback(e);
-				throw new DatabaseException(e);
-			}
+			log.info("Transaction beginning");
+			transaction.begin();
+			transactionCode.run();
+			log.info("Transaction committing");
+			transaction.commit();
+			log.info("Transaction committed");
+			hibernateSession.flush();
 		}
-		else
-		{
-			if (transaction == null)
-			{
-				transaction = hibernateSession.beginTransaction();
-			}
-			if (rollbackException == null)
-			{
-				try
-				{
-					transactionCode.run();
-				}
-				catch (Exception e)
-				{
-					rollbackException = e;
-					throw new DatabaseException(e);
-				}
-			}
-		}
-	}
-
-	/**
-	 * @param e
-	 *            Exception that caused rollback
-	 */
-	private void rollback(Exception e)
-	{
-		if (transaction != null)
+		catch (Exception e)
 		{
 			try
 			{
+				log.info("Rolling back transaction");
 				transaction.rollback();
+				log.info("Transaction rolled back");
 			}
 			catch (HibernateException e1)
 			{
 				log.error("Unable to rollback transaction", e1);
 			}
+			log.error(e.getMessage());
+			throw new DatabaseException(e);
 		}
-		log.error(e.getMessage());
 	}
 }
