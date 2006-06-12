@@ -50,7 +50,11 @@ Date.prototype.getDayOfYear = function(year, month, day) {
 }
 
 Date.prototype.addDays = function(days) {
-	this.setTime(this.getTime()+days*Date.DAY);
+	var hours = this.getHours();
+	this.setTime(this.getTime() + days*Date.DAY);
+	// Fix the date offset in daylight saving time
+	var delta = this.getHours() - hours;
+	this.setTime(this.getTime() + delta*Date.HOUR);
 }
 
 Date.prototype.stripTime = function() {
@@ -85,6 +89,9 @@ Date.prototype.compareDateOnlyTo = function(date) {
     return lhs.compareTo(rhs);
 }
 
+Date.prototype.isToday = function() {
+	return (this.compareDateOnlyTo(new Date()) == 0);
+}
 
 Date.prototype.getWeekInYear = function() {
     var totalDays = 0;
