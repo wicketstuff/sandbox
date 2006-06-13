@@ -17,7 +17,9 @@
  */
  
  
-function Wicket() {};
+if (Wicket == undefined) {
+	var Wicket = {};
+}
 
 Wicket.Calendar = function() {
 	this.initialize.apply(this, arguments);
@@ -114,12 +116,13 @@ Wicket.Calendar.prototype = {
 	},
 	
 	onPrevYear : function() {
-		this.startDay.setFullYear(this.startDay.getFullYear()-1);
+		this.startDay.addYears(-1);
+		// this.startDay.setFirstDayOfWeek();
 		this.draw();
 	},
 	
 	onNextYear : function() {
-		this.startDay.setFullYear(this.startDay.getFullYear()+1);
+		this.startDay.addYears(1);
 		this.draw();
 	},
 
