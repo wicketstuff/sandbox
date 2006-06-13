@@ -66,6 +66,11 @@ Date.prototype.addDays = function(days) {
 	}
 }
 
+Date.prototype.addYears = function(years) {
+	this.setFullYear(this.getFullYear() + years);
+	return this;
+} 
+
 Date.prototype.stripTime = function() {
     this.setHours(0);
     this.setMinutes(0);

@@ -81,5 +81,14 @@ function checkWholeYear(day) {
 	}
 }
 
+function testAddYears() {
+	assertEquals("Apr 30 2006 + 1 year", new Date(2007, 03, 30).getTime(), new Date(2006, 03, 30).addYears(1).getTime());
+	assertEquals("Apr 30 2006 - 1 year", new Date(2005, 03, 30).getTime(), new Date(2006, 03, 30).addYears(-1).getTime());
+	
+	assertEquals("Feb 29 2004 + 1 year", new Date(2005, 02, 1).getTime(), new Date(2004, 01, 29).addYears(1).getTime());
+	assertEquals("Mar 1 2005 - 1 year", new Date(2004, 02, 1).getTime(), new Date(2005, 02, 1).addYears(-1).getTime());
+	assertEquals("Feb 28 2005 - 1 year", new Date(2004, 01, 28).getTime(), new Date(2005, 01, 28).addYears(-1).getTime());
+}
+
 function tearDown() {
 }
