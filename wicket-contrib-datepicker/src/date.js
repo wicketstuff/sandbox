@@ -29,15 +29,14 @@ Date.getDaysInMonth = function(year, month) {;
 	} else {
 		return Date.DAYS_IN_MONTH[month];
 	}
-		
-};
+}
 
 Date.getDayOfYear = function(year, month, day) {
 	var days=0;
-	for (var i=0;i<month-1;i++) {
-		days+=Date.getDaysInMonth(year, i);
+	for (var i=0; i<month; i++) {
+		days += Date.getDaysInMonth(year, i);
 	}
-	days+=day;
+	days += day;
 	return days;
 }
 
@@ -45,16 +44,26 @@ Date.prototype.getDaysInMonth = function() {
     return Date.getDaysInMonth(this.getFullYear(), this.getMonth());
 }
 
-Date.prototype.getDayOfYear = function(year, month, day) {
+Date.prototype.getDayOfYear = function() {
 	return Date.getDayOfYear(this.getFullYear(), this.getMonth(), this.getDate());
 }
 
 Date.prototype.addDays = function(days) {
 	var hours = this.getHours();
 	this.setTime(this.getTime() + days*Date.DAY);
-	// Fix the date offset in daylight saving time
-	var delta = this.getHours() - hours;
-	this.setTime(this.getTime() + delta*Date.HOUR);
+
+	// Fix the date offset caused by daylight saving time
+	var delta = hours - this.getHours();
+	if (delta != 0) {
+		// Correct the delta to be between [-12, 12] 
+		if (delta > 12) { 
+		    delta -= 24;
+		}
+		if (delta < -12) { 
+		    delta += 24;
+		}
+		this.setTime(this.getTime() + (delta*Date.HOUR));
+	}
 }
 
 Date.prototype.stripTime = function() {
