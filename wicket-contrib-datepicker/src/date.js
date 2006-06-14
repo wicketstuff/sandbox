@@ -142,3 +142,15 @@ Date.prototype.getWeekInMonth = function() {
     var week = Math.round((totalDays+diff-firstDay)/7);
     return week;
 }
+
+Date.prototype.getFirstDateOfWeek = function(firstDayOfWeek) {
+	var day = new Date(this.getTime());
+	
+	if (firstDayOfWeek < this.getDay()) {
+		day.addDays(firstDayOfWeek - this.getDay());
+	}
+	if (firstDayOfWeek > this.getDay()) {
+		day.addDays(firstDayOfWeek - this.getDay() - 7);
+	}
+	return day;
+}
