@@ -64,6 +64,8 @@ function testAddDays() {
 	checkWholeYear(new Date(2006, 0, 1, 23, 30, 00));
 	checkWholeYear(new Date(2006, 0, 1, 00, 30, 00));
 	checkWholeYear(new Date(2006, 0, 1, 12, 00, 00));
+	checkWholeYear(new Date(2006, 0, 1, 11, 00, 00));
+	checkWholeYear(new Date(2006, 0, 1, 12, 30, 00));
 }
 
 function checkWholeYear(day) {
@@ -82,12 +84,18 @@ function checkWholeYear(day) {
 }
 
 function testAddYears() {
-	assertEquals("Apr 30 2006 + 1 year", new Date(2007, 03, 30).getTime(), new Date(2006, 03, 30).addYears(1).getTime());
-	assertEquals("Apr 30 2006 - 1 year", new Date(2005, 03, 30).getTime(), new Date(2006, 03, 30).addYears(-1).getTime());
+	assertEquals("Apr 30 2006 + 1 year", new Date(2007, 03, 30).toString(), new Date(2006, 03, 30).addYears(1).toString());
+	assertEquals("Apr 30 2006 - 1 year", new Date(2005, 03, 30).toString(), new Date(2006, 03, 30).addYears(-1).toString());
 	
-	assertEquals("Feb 29 2004 + 1 year", new Date(2005, 02, 1).getTime(), new Date(2004, 01, 29).addYears(1).getTime());
-	assertEquals("Mar 1 2005 - 1 year", new Date(2004, 02, 1).getTime(), new Date(2005, 02, 1).addYears(-1).getTime());
-	assertEquals("Feb 28 2005 - 1 year", new Date(2004, 01, 28).getTime(), new Date(2005, 01, 28).addYears(-1).getTime());
+	assertEquals("Feb 29 2004 + 1 year", new Date(2005, 02, 1).toString(), new Date(2004, 01, 29).addYears(1).toString());
+	assertEquals("Mar 1 2005 - 1 year", new Date(2004, 02, 1).toString(), new Date(2005, 02, 1).addYears(-1).toString());
+	assertEquals("Feb 28 2005 - 1 year", new Date(2004, 01, 28).toString(), new Date(2005, 01, 28).addYears(-1).toString());
+}
+
+function testFirstDateOfWeek() {
+	assertEquals("Jun 11th 2006", new Date(2006, 5, 11).toString(), new Date(2006, 05, 14).getFirstDateOfWeek(0).toString());
+	assertEquals("Jun 12th 2006", new Date(2006, 5, 12).toString(), new Date(2006, 05, 14).getFirstDateOfWeek(1).toString());
+	assertEquals("Jun 12th 2006", new Date(2006, 5, 12).toString(), new Date(2006, 05, 18).getFirstDateOfWeek(1).toString());
 }
 
 function tearDown() {

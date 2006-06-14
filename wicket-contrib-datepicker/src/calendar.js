@@ -53,11 +53,12 @@ Wicket.Calendar.prototype = {
 			format = "MM/dd/yyyy";
 		}
 
-		this.sdf = new Wicket.SimpleDateFormat(format, new Wicket.DateLocale());//TODO add date locale as a param
+		this.locale = new Wicket.DateLocale();
+		this.sdf = new Wicket.SimpleDateFormat(format, this.locale);//TODO add date locale as a param
 	
 		Wicket.Calendar.registerInstance(this);
 		
-		this.theme = new Wicket.Calendar.Theme();
+		// this.theme = new Wicket.Calendar.Theme();
 		
 		this.shownWeeks = 12;
 		this.startDay = new Date(2006, 7, 13);
@@ -117,12 +118,13 @@ Wicket.Calendar.prototype = {
 	
 	onPrevYear : function() {
 		this.startDay.addYears(-1);
-		// this.startDay.setFirstDayOfWeek();
+		this.startDay = this.startDay.getFirstDateOfWeek(this.locale.getFirstDayOfWeek());
 		this.draw();
 	},
 	
 	onNextYear : function() {
 		this.startDay.addYears(1);
+		this.startDay = this.startDay.getFirstDateOfWeek(this.locale.getFirstDayOfWeek());
 		this.draw();
 	},
 
@@ -163,10 +165,10 @@ Wicket.Calendar.prototype = {
 		html += '</th>';
 		
 		// weekdays
-		
-		for (var i=0; i<7; i++) {
+		var i = this.locale.getShortWeekdayIterator();
+		while (i.hasNext()) {
 			html += '<th>';
-			html += this.theme.getWeekdayName(i);
+			html += i.next();
 			html += '</th>';
 		}
 		
@@ -202,7 +204,7 @@ Wicket.Calendar.prototype = {
 				html += '<tr>';
 				html += '<th class="'+this.dayMonthClassName(day)+'">';
 				if (monthChanged) {
-					html += this.theme.getMonthName(day.getMonth());
+					html += this.locale.getMonth(day.getMonth());
 					monthChanged = false;
 				} else {
 					if (yearChanged) {
@@ -286,5 +288,4 @@ Wicket.Calendar.Theme.prototype = {
 	getWeekdayName : function(day) {
 		return this.weekdayNames[day];
 	}
-	
 }
