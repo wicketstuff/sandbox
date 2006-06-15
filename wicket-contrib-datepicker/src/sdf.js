@@ -33,6 +33,15 @@ Wicket.DateLocale.prototype = {
 	  this.firstDayOfWeek = 0;
 	},
 	
+	setAllLocaleInfo : function(info) {
+		for (var i in info) {
+			if (this[i] == undefined) {
+				throw("Undefined locale attribute '"+i+"'");
+			}
+			this[i] = info[i];
+		}	
+	},
+	
 	getMonth : function(m) { return this.months[m]; },
 	getShortMonth : function(m) { return this.shortMonths[m]; },
 	getWeekday : function(w) { return this.weekdays[w]; },
