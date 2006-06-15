@@ -57,8 +57,7 @@ public class DatabaseWebPage extends WebPage
 
 	protected DatabaseSession getDatabaseSession()
 	{
-		DatabaseWebRequestCycle cycle = (DatabaseWebRequestCycle)getRequestCycle();
-		return cycle.getDatabaseSession();
+		return DatabaseSession.get();
 	}
 
 	protected IModel newModel(Class c, Long id)
@@ -67,7 +66,7 @@ public class DatabaseWebPage extends WebPage
 		{
 			return null;
 		}
-		return new DatabaseObjectModel(getDatabaseSession(), c, id);
+		return new DatabaseObjectModel(c, id);
 	}
 
 	protected IModel newModel(Class c)

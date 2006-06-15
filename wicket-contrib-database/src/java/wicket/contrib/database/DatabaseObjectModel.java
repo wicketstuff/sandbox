@@ -35,12 +35,8 @@ public class DatabaseObjectModel extends LoadableDetachableModel
 	/** The id for the object stored in the database */
 	private Long id;
 
-	/** The session for this database object model */
-	private transient DatabaseSession session;
-
-	public DatabaseObjectModel(final DatabaseSession session, final Class c, final Long id)
+	public DatabaseObjectModel(final Class c, final Long id)
 	{
-		this.session = session;
 		this.c = c;
 		this.id = id;
 	}
@@ -53,6 +49,6 @@ public class DatabaseObjectModel extends LoadableDetachableModel
 	 */
 	public Object load()
 	{
-		return session.load(c, id);
+		return DatabaseSession.get().load(c, id);
 	}
 }
