@@ -104,3 +104,13 @@
 	height: 1em;
 	background-color: white;
 }
+
+.wicket-calendar .close {
+	background-color: #EEEEEE;
+	cursor: pointer;
+	border: 1px outset black;
+	line-height: 0.8em;
+	width: 1em;
+	padding: 0px 1px 0px 1px;
+	vertical-align: middle;
+}

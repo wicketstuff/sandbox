@@ -191,8 +191,10 @@ Wicket.Calendar.prototype = {
 			html += '</th>';
 		}
 		
-		// Scroll column
-		html += '<th>&nbsp;</th>';
+		// Scroll column: close button
+		html += '<th>';
+		html += '<div class="close" onclick="'+this.getInstanceJS()+'.hide()">x</div>';
+		html += '</th>';
 
 		html += '</tr>';
 		html += '</thead>\n';		
