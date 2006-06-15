@@ -72,6 +72,33 @@ function checkWeekdays(i, weekdays) {
 	} 	
 }
 
+function testSetAll() {
+	var locale = new Wicket.DateLocale();
+	var datesFI = { months : ["Tammikuu","Helmikuu","Maaliskuu","Huhtikuu","Toukokuu","Kes\u00E4kuu",
+						"Hein\u00E4kuu","Elokuu","Syyskuu","Lokakuu","Marraskuu","Joulukuu"], 
+					shortMonths : ["Tammi","Helmi","Maalis","Huhti","Touko","Kes\u00E4",
+						"Hein\u00E4","Elo","Syys","Loka","Marras","Joulu"],
+					weekdays : ["Sunnuntai","Maanantai","Tiistai","Keskiviikko","Torstai","Perjantai","Lauantai"],
+					shortWeekdays : ["Su","Ma","Ti","Ke","To","Pe","La"],
+					firstDayOfWeek : 1
+				};
+	locale.setAllLocaleInfo(datesFI);
+	
+	for (var i=0; i<12; i++) {
+		assertEquals("Months", datesFI.months[i], locale.getMonth(i));
+	}
+	for (i=0; i<12; i++) {
+		assertEquals("Short months", datesFI.shortMonths[i], locale.getShortMonth(i));
+	}
+	for (i=0; i<7; i++) {
+		assertEquals("Weekdays", datesFI.weekdays[i], locale.getWeekday(i));
+	}
+	for (i=0; i<7; i++) {
+		assertEquals("Short weekdays", datesFI.shortWeekdays[i], locale.getShortWeekday(i));
+	}
+	assertEquals("First day of week", datesFI.firstDayOfWeek, locale.getFirstDayOfWeek());
+}
+
 function tearDown() {
 
 }

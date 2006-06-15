@@ -16,7 +16,15 @@
  * @author Igor Vaynberg (ivaynberg)
  */
  
- 
+// TODO: close button
+// TODO: fix positioning
+// TODO: css namespace
+// TODO: parse date
+// TODO: selected day
+// TODO: day decorations
+// TODO: rangepicker
+
+
 if (Wicket == undefined) {
 	var Wicket = {};
 }
@@ -54,7 +62,17 @@ Wicket.Calendar.prototype = {
 		}
 
 		this.locale = new Wicket.DateLocale();
-		this.sdf = new Wicket.SimpleDateFormat(format, this.locale);//TODO add date locale as a param
+		var datesFI = { months : ["Tammikuu","Helmikuu","Maaliskuu","Huhtikuu","Toukokuu","Kes\u00E4kuu",
+							"Hein\u00E4kuu","Elokuu","Syyskuu","Lokakuu","Marraskuu","Joulukuu"], 
+						shortMonths : ["Tammi","Helmi","Maalis","Huhti","Touko","Kes\u00E4",
+							"Hein\u00E4","Elo","Syys","Loka","Marras","Joulu"],
+						weekdays : ["Sunnuntai","Maanantai","Tiistai","Keskiviikko","Torstai","Perjantai","Lauantai"],
+						shortWeekdays : ["Su","Ma","Ti","Ke","To","Pe","La"],
+						firstDayOfWeek : 1
+					};
+		this.locale.setAllLocaleInfo(datesFI);
+		
+		this.sdf = new Wicket.SimpleDateFormat(format, this.locale);
 	
 		Wicket.Calendar.registerInstance(this);
 		
@@ -62,6 +80,7 @@ Wicket.Calendar.prototype = {
 		
 		this.shownWeeks = 12;
 		this.startDay = new Date(2006, 7, 13);
+		this.startDay = this.startDay.getFirstDateOfWeek(this.locale.getFirstDayOfWeek());
 	
 		this.visible = false;
 	
@@ -129,12 +148,12 @@ Wicket.Calendar.prototype = {
 	},
 
 	onPrevScreen : function() {
-		// this.year--;
+		this.startDay.addDays(-7 * (this.shownWeeks-2));
 		this.draw();
 	},
 	
 	onNextScreen : function() {
-		// this.year++;
+		this.startDay.addDays(7 * (this.shownWeeks-2));
 		this.draw();
 	},
 
@@ -200,7 +219,7 @@ Wicket.Calendar.prototype = {
 				}
 			}
 
-			if (day.getDay() == 0) {
+			if (day.getDay() == this.locale.getFirstDayOfWeek()) {
 				html += '<tr>';
 				html += '<th class="'+this.dayMonthClassName(day)+'">';
 				if (monthChanged) {
@@ -221,13 +240,13 @@ Wicket.Calendar.prototype = {
 			html += day.getDate();
 			html += '</td>';
 			
-			if (day.getDay() == 6) {
+			day.addDays(1);
+
+			if (day.getDay() == this.locale.getFirstDayOfWeek()) {
 				html += this.getScrollingContent(row);
 				html += '</tr>\n';
 				row++;
 			}
-		
-			day.addDays(1);
 		}
 		
 		html += '</tbody>';		
