@@ -20,10 +20,6 @@
 function setUp() {
 }
 
-function testConstruction() {
-	new Wicket.Calendar("dob", "cal", "EEEE, MMMM d yyyy");
-}
-
 function testDaysInMonth() {
 	// Basic year
 	assertEquals("Jan", 31, Date.getDaysInMonth(2006, 0));

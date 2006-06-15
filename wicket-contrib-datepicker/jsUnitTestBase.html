@@ -2,27 +2,23 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<link href="calendar.css" rel="stylesheet" type="text/css" />
-	<title>Calendar test page</title>
-	<script type="text/javascript" src="src/calendar.js"></script>
-	<script type="text/javascript" src="src/date.js"></script>
-	<script type="text/javascript" src="src/sdf.js"></script>
-	<script type="text/javascript" src="file:///C:/Program%20Files/jsunit/app/jsUnitCore.js"></script>
-	<script type="text/javascript" src="src/test/dateTests.js"></script>
-	<script type="text/javascript" src="src/test/calendarTests.js"></script>
-	<script type="text/javascript" src="src/test/localeTests.js"></script>
+	<title>Calendar JSUnit base suite</title>
+	<script type="text/javascript" src="file:///C:/jsunit/app/jsUnitCore.js"></script>
+	<script type="text/javascript">
+		function suite() {
+			var dir = "file:///E:/projects/wicket/wicket-contrib-datepicker";
+			var calendarSuite = new top.jsUnitTestSuite();
+			calendarSuite.addTestPage(dir+"/testDate.html");
+			calendarSuite.addTestPage(dir+"/testLocale.html");
+			calendarSuite.addTestPage(dir+"/testCalendar.html");
+			return calendarSuite;
+		}
+	</script>
 </head>
 <body>
-	
-	<form>
-		<fieldset>
-			<input type="text" id="dob" size="25"/><input type="button" value="..." onclick="Wicket.Calendar.getInstance('cal').toggle();"/>
-			<br/>
-			<select><option>hellllllllo<option>hellllllllo<option>hellllllllo<option>hellllllllo</select>
-		</fieldset>
-	</form>
-	
-	<div style="display: block; position:absolute; left: -1000px; top:0px; z-index:1000; border:1px solid black;" id="cal" class="cal"></div>
+
+<h1>JSUnit calendar test suite</h1>
+
 	
 </body>
 </html>
