@@ -34,10 +34,13 @@
 	border-bottom: 1px solid #888888;
 }
 .wicket-calendar tbody th,
-.wicket-calendar thead th.year div {
+.wicket-calendar thead th.year {
 	text-align: left;
 	border-right: 1px solid #888888;
 	padding: 0px 1px 0px 2px;
+}
+
+.wicket-calendar thead th.year div {
 	width: 50px;
 }
 .wicket-calendar tbody th {
@@ -64,6 +67,8 @@
 	cursor: pointer;
 }
 .wicket-calendar td.empty { cursor: default; }
+.wicket-calendar th.scroll,
+.wicket-calendar td.scroll { border-left: 1px solid #888888; }
 
 .wicket-calendar td:hover,
 .wicket-calendar td.holiday:hover {
@@ -106,11 +111,9 @@
 }
 
 .wicket-calendar .close {
-	background-color: #EEEEEE;
 	cursor: pointer;
-	border: 1px outset black;
 	line-height: 0.8em;
-	width: 1em;
 	padding: 0px 1px 0px 1px;
 	vertical-align: middle;
+	text-align: center;
 }

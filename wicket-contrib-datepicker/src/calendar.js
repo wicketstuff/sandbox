@@ -16,7 +16,6 @@
  * @author Igor Vaynberg (ivaynberg)
  */
  
-// TODO: close button
 // TODO: fix positioning
 // TODO: css namespace
 // TODO: parse date
@@ -192,9 +191,7 @@ Wicket.Calendar.prototype = {
 		}
 		
 		// Scroll column: close button
-		html += '<th>';
-		html += '<div class="close" onclick="'+this.getInstanceJS()+'.hide()">x</div>';
-		html += '</th>';
+		html += '<th class="scroll close" onclick="'+this.getInstanceJS()+'.hide()">x</th>';
 
 		html += '</tr>';
 		html += '</thead>\n';		
@@ -269,19 +266,19 @@ Wicket.Calendar.prototype = {
 	
 	getScrollingContent : function(dateRow) {
 		if (dateRow == 0) {
-			return '<td><img src="src/images/arrow-more-up.gif" width="9" height="9" alt="" onclick="'+this.getInstanceJS()+'.onPrevScreen()"/></td>';
+			return '<td class="scroll"><img src="src/images/arrow-more-up.gif" width="9" height="9" alt="" onclick="'+this.getInstanceJS()+'.onPrevScreen()"/></td>';
 		}
 		if (dateRow == 1) {
-			return '<td><img src="src/images/arrow-up.gif" width="9" height="5" alt="" onclick="'+this.getInstanceJS()+'.onPrevWeek()"/></td>';
+			return '<td class="scroll"><img src="src/images/arrow-up.gif" width="9" height="5" alt="" onclick="'+this.getInstanceJS()+'.onPrevWeek()"/></td>';
 		}
 		if (dateRow == 2) {
-			return '<td rowspan="'+(this.shownWeeks-4)+'" class="empty">&nbsp;</td>';
+			return '<td rowspan="'+(this.shownWeeks-4)+'" class="empty scroll">&nbsp;</td>';
 		}
 		if (dateRow == this.shownWeeks-2) {
-			return '<td><img src="src/images/arrow-down.gif" width="9" height="5" alt="" onclick="'+this.getInstanceJS()+'.onNextWeek()"/></td>';
+			return '<td class="scroll"><img src="src/images/arrow-down.gif" width="9" height="5" alt="" onclick="'+this.getInstanceJS()+'.onNextWeek()"/></td>';
 		}
 		if (dateRow == this.shownWeeks-1) {
-			return '<td><img src="src/images/arrow-more-down.gif" width="9" height="9" alt="" onclick="'+this.getInstanceJS()+'.onNextScreen()"/></td>';
+			return '<td class="scroll"><img src="src/images/arrow-more-down.gif" width="9" height="9" alt="" onclick="'+this.getInstanceJS()+'.onNextScreen()"/></td>';
 		}
 		return '';
 	}
