@@ -143,14 +143,12 @@ Date.prototype.getWeekInMonth = function() {
     return week;
 }
 
-Date.prototype.getFirstDateOfWeek = function(firstDayOfWeek) {
-	var day = new Date(this.getTime());
-	
+Date.prototype.setToFirstDateOfWeek = function(firstDayOfWeek) {
 	if (firstDayOfWeek < this.getDay()) {
-		day.addDays(firstDayOfWeek - this.getDay());
+		this.addDays(firstDayOfWeek - this.getDay());
 	}
-	if (firstDayOfWeek > this.getDay()) {
-		day.addDays(firstDayOfWeek - this.getDay() - 7);
+	else if (firstDayOfWeek > this.getDay()) {
+		this.addDays(firstDayOfWeek - this.getDay() - 7);
 	}
-	return day;
+	return this;
 }

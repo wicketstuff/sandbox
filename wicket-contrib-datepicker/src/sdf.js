@@ -25,20 +25,23 @@ Wicket.DateLocale = function() {
 }
 
 Wicket.DateLocale.prototype = {
-	initialize : function() {
+	initialize : function(locale) {
 	  this.months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 	  this.shortMonths = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 	  this.weekdays = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 	  this.shortWeekdays = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 	  this.firstDayOfWeek = 0;
+	  if (locale) {
+		  this.setAllLocaleData(locale);
+	  }
 	},
 	
-	setAllLocaleInfo : function(info) {
-		for (var i in info) {
+	setAllLocaleData : function(data) {
+		for (var i in data) {
 			if (this[i] == undefined) {
 				throw("Undefined locale attribute '"+i+"'");
 			}
-			this[i] = info[i];
+			this[i] = data[i];
 		}	
 	},
 	

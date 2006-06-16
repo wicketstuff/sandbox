@@ -82,21 +82,28 @@ function testSetAll() {
 					shortWeekdays : ["Su","Ma","Ti","Ke","To","Pe","La"],
 					firstDayOfWeek : 1
 				};
-	locale.setAllLocaleInfo(datesFI);
-	
+	locale.setAllLocaleData(datesFI);
+	checkAllLocaleData(datesFI, locale);
+
+	locale = new Wicket.DateLocale(datesFI);
+	checkAllLocaleData(datesFI, locale);
+}
+
+
+function checkAllLocaleData(dateSet, locale) {
 	for (var i=0; i<12; i++) {
-		assertEquals("Months", datesFI.months[i], locale.getMonth(i));
+		assertEquals("Months", dateSet.months[i], locale.getMonth(i));
 	}
 	for (i=0; i<12; i++) {
-		assertEquals("Short months", datesFI.shortMonths[i], locale.getShortMonth(i));
+		assertEquals("Short months", dateSet.shortMonths[i], locale.getShortMonth(i));
 	}
 	for (i=0; i<7; i++) {
-		assertEquals("Weekdays", datesFI.weekdays[i], locale.getWeekday(i));
+		assertEquals("Weekdays", dateSet.weekdays[i], locale.getWeekday(i));
 	}
 	for (i=0; i<7; i++) {
-		assertEquals("Short weekdays", datesFI.shortWeekdays[i], locale.getShortWeekday(i));
+		assertEquals("Short weekdays", dateSet.shortWeekdays[i], locale.getShortWeekday(i));
 	}
-	assertEquals("First day of week", datesFI.firstDayOfWeek, locale.getFirstDayOfWeek());
+	assertEquals("First day of week", dateSet.firstDayOfWeek, locale.getFirstDayOfWeek());
 }
 
 function tearDown() {

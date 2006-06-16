@@ -89,9 +89,9 @@ function testAddYears() {
 }
 
 function testFirstDateOfWeek() {
-	assertEquals("Jun 11th 2006", new Date(2006, 5, 11).toString(), new Date(2006, 05, 14).getFirstDateOfWeek(0).toString());
-	assertEquals("Jun 12th 2006", new Date(2006, 5, 12).toString(), new Date(2006, 05, 14).getFirstDateOfWeek(1).toString());
-	assertEquals("Jun 12th 2006", new Date(2006, 5, 12).toString(), new Date(2006, 05, 18).getFirstDateOfWeek(1).toString());
+	assertEquals("Jun 11th 2006", new Date(2006, 5, 11).toString(), new Date(2006, 05, 14).setToFirstDateOfWeek(0).toString());
+	assertEquals("Jun 12th 2006", new Date(2006, 5, 12).toString(), new Date(2006, 05, 14).setToFirstDateOfWeek(1).toString());
+	assertEquals("Jun 12th 2006", new Date(2006, 5, 12).toString(), new Date(2006, 05, 18).setToFirstDateOfWeek(1).toString());
 }
 
 function tearDown() {

@@ -16,16 +16,26 @@
  * @author Karri-Pekka Laakso (kplaakso)
  */
 
+var datesFI = { 
+	months : ["Tammikuu","Helmikuu","Maaliskuu","Huhtikuu","Toukokuu","Kes\u00E4kuu",
+			"Hein\u00E4kuu","Elokuu","Syyskuu","Lokakuu","Marraskuu","Joulukuu"], 
+	shortMonths : ["Tammi","Helmi","Maalis","Huhti","Touko","Kes\u00E4",
+			"Hein\u00E4","Elo","Syys","Loka","Marras","Joulu"],
+	weekdays : ["Sunnuntai","Maanantai","Tiistai","Keskiviikko","Torstai","Perjantai","Lauantai"],
+	shortWeekdays : ["Su","Ma","Ti","Ke","To","Pe","La"],
+	firstDayOfWeek : 1
+};
 
 function setUp() {
 }
 
 function testConstruction() {
-	new Wicket.Calendar("dob", "cal", "EEEE, MMMM d yyyy");
+	new Wicket.Calendar("dob", "cal", "EEEE, MMMM d yyyy", datesFI);
 }
 
-function test() {
-	
+function testStartTodayInMiddle() {
+	var cal = new Wicket.Calendar("dob", "cal", "EEEE, MMMM d yyyy");
+	assertEquals("Start day at start of week", 0, cal.getStartTodayInMiddle().getDay());
 }
 
 function tearDown() {

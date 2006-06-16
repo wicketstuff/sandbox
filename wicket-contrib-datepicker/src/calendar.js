@@ -45,7 +45,7 @@ Wicket.Calendar.registerInstance = function(instance) {
 
 Wicket.Calendar.prototype = {
 	
-	initialize : function(inputId, containerId, format) {
+	initialize : function(inputId, containerId, format, locale) {
 		this.input = document.getElementById(inputId);
 		if (this.input == undefined) {
 			throw("Calendar input control with id '"+inputId+"' was not found");
@@ -60,30 +60,23 @@ Wicket.Calendar.prototype = {
 			format = "MM/dd/yyyy";
 		}
 
-		this.locale = new Wicket.DateLocale();
-		var datesFI = { months : ["Tammikuu","Helmikuu","Maaliskuu","Huhtikuu","Toukokuu","Kes\u00E4kuu",
-							"Hein\u00E4kuu","Elokuu","Syyskuu","Lokakuu","Marraskuu","Joulukuu"], 
-						shortMonths : ["Tammi","Helmi","Maalis","Huhti","Touko","Kes\u00E4",
-							"Hein\u00E4","Elo","Syys","Loka","Marras","Joulu"],
-						weekdays : ["Sunnuntai","Maanantai","Tiistai","Keskiviikko","Torstai","Perjantai","Lauantai"],
-						shortWeekdays : ["Su","Ma","Ti","Ke","To","Pe","La"],
-						firstDayOfWeek : 1
-					};
-		this.locale.setAllLocaleInfo(datesFI);
-		
+		this.locale = new Wicket.DateLocale(locale);		
 		this.sdf = new Wicket.SimpleDateFormat(format, this.locale);
 	
 		Wicket.Calendar.registerInstance(this);
 		
-		// this.theme = new Wicket.Calendar.Theme();
-		
 		this.shownWeeks = 12;
-		this.startDay = new Date(2006, 7, 13);
-		this.startDay = this.startDay.getFirstDateOfWeek(this.locale.getFirstDayOfWeek());
-	
+		this.startDay = this.getStartTodayInMiddle();
 		this.visible = false;
 	
 		return this;
+	},
+
+	getStartTodayInMiddle : function() {
+		var day = new Date();
+		day.addDays(- this.shownWeeks/2);
+		day.setToFirstDateOfWeek(this.locale.getFirstDayOfWeek());
+		return day;
 	},
 
 	show : function() {
@@ -136,13 +129,13 @@ Wicket.Calendar.prototype = {
 	
 	onPrevYear : function() {
 		this.startDay.addYears(-1);
-		this.startDay = this.startDay.getFirstDateOfWeek(this.locale.getFirstDayOfWeek());
+		this.startDay.setToFirstDateOfWeek(this.locale.getFirstDayOfWeek());
 		this.draw();
 	},
 	
 	onNextYear : function() {
 		this.startDay.addYears(1);
-		this.startDay = this.startDay.getFirstDateOfWeek(this.locale.getFirstDayOfWeek());
+		this.startDay.setToFirstDateOfWeek(this.locale.getFirstDayOfWeek());
 		this.draw();
 	},
 
