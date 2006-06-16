@@ -74,7 +74,7 @@ Wicket.Calendar.prototype = {
 
 	getStartTodayInMiddle : function() {
 		var day = new Date();
-		day.addDays(- this.shownWeeks/2);
+		day.addDays(-(this.shownWeeks/2)*7);
 		day.setToFirstDateOfWeek(this.locale.getFirstDayOfWeek());
 		return day;
 	},
