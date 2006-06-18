@@ -45,13 +45,13 @@ function testDaysInMonth() {
 
 function testDayOfYear() {
 	// Basic years
-	assertEquals("Jan 31", 31, Date.getDayOfYear(2006, 0, 31));
-	assertEquals("Feb 28", 59, Date.getDayOfYear(2006, 1, 28));
-	assertEquals("Mar 1", 60, Date.getDayOfYear(2006, 2, 1));
+	assertEquals("Jan 31", 31, Date.getDayInYear(2006, 0, 31));
+	assertEquals("Feb 28", 59, Date.getDayInYear(2006, 1, 28));
+	assertEquals("Mar 1", 60, Date.getDayInYear(2006, 2, 1));
 	
 	// Leap years
-	assertEquals("Dec 31 2006", 365, Date.getDayOfYear(2006, 11, 31));
-	assertEquals("Dec 31 2004 (leap)", 366, Date.getDayOfYear(2004, 11, 31));
+	assertEquals("Dec 31 2006", 365, Date.getDayInYear(2006, 11, 31));
+	assertEquals("Dec 31 2004 (leap)", 366, Date.getDayInYear(2004, 11, 31));
 }
 
 function testAddDays() {
@@ -68,13 +68,13 @@ function checkWholeYear(day) {
 	var reference = new Date(day.getTime());
 	assertEquals("day <> reference", 0, day.compareTo(reference));
 
-	var dayOfYear = day.getDayOfYear();
+	var dayOfYear = day.getDayInYear();
 	for (var i=0; i<364; i++) {
 	    day.addDays(1);
 		assertEquals("Hours mismatched for "+day, reference.getHours(), day.getHours());
 		assertEquals("Mins mismatched for "+day, reference.getMinutes(), day.getMinutes());
 		assertEquals("Secs mismatched for "+day, reference.getSeconds(), day.getSeconds());
-	    assertEquals("Adding mismatch", dayOfYear+1, day.getDayOfYear())
+	    assertEquals("Adding mismatch", dayOfYear+1, day.getDayInYear())
 	    dayOfYear++;
 	}
 }
@@ -101,7 +101,27 @@ function testIsToday() {
 }
 
 function testWeekInYear() {
-	
+	// Basic stuff
+	assertEquals("Jun 17th 2006", 24, new Date(2006, 05, 17).getWeekInYear());	
+	assertEquals("Jun 18th 2006", 25, new Date(2006, 05, 18).getWeekInYear());	
+	assertEquals("Jun 19th 2006", 25, new Date(2006, 05, 19).getWeekInYear());	
+	assertEquals("Jan 1st 2006", 1, new Date(2006, 00, 01).getWeekInYear());	
+	assertEquals("Jan 30th 2006", 5, new Date(2006, 00, 30).getWeekInYear());	
+	assertEquals("Feb 26th 2006", 9, new Date(2006, 01, 26).getWeekInYear());	
+
+	// Year endings and beginnings
+	assertEquals("Dec 31st 2006", 53, new Date(2006, 11, 31).getWeekInYear());	
+	assertEquals("Jan 1st 2007",  1, new Date(2007, 00, 1).getWeekInYear());	
+	assertEquals("Dec 31st 2007", 53, new Date(2007, 11, 31).getWeekInYear());	
+	assertEquals("Jan 1st 2008",  1, new Date(2008, 00, 1).getWeekInYear());	
+	assertEquals("Dec 31st 2008", 53, new Date(2008, 11, 31).getWeekInYear());	
+	assertEquals("Jan 1st 2009",  1, new Date(2009, 00, 1).getWeekInYear());	
+	assertEquals("Jan 4th 2009",  2, new Date(2009, 00, 4).getWeekInYear());	
+	assertEquals("Dec 31st 2009", 53, new Date(2009, 11, 31).getWeekInYear());	
+	assertEquals("Jan 1st 2010",  1, new Date(2010, 00, 1).getWeekInYear());	
+	assertEquals("Jan 3rd 2010",  1, new Date(2010, 00, 3).getWeekInYear());	
+
+	// Leap years
 }
 
 function testWeekInMonth() {

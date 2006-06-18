@@ -31,7 +31,7 @@ Date.getDaysInMonth = function(year, month) {;
 	}
 }
 
-Date.getDayOfYear = function(year, month, day) {
+Date.getDayInYear = function(year, month, day) {
 	var days=0;
 	for (var i=0; i<month; i++) {
 		days += Date.getDaysInMonth(year, i);
@@ -44,8 +44,8 @@ Date.prototype.getDaysInMonth = function() {
     return Date.getDaysInMonth(this.getFullYear(), this.getMonth());
 }
 
-Date.prototype.getDayOfYear = function() {
-	return Date.getDayOfYear(this.getFullYear(), this.getMonth(), this.getDate());
+Date.prototype.getDayInYear = function() {
+	return Date.getDayInYear(this.getFullYear(), this.getMonth(), this.getDate());
 }
 
 Date.prototype.addDays = function(days) {
@@ -107,40 +107,26 @@ Date.prototype.isToday = function() {
 	return (this.compareDateOnlyTo(new Date()) == 0);
 }
 
-Date.prototype.getWeekInYear = function() {
-    var totalDays = 0;
-    
-    var year=this.getFullYear();
+Date.prototype.getWeekInYear = function(firstDayOfWeek) {
+	if (typeof(firstDayOfWeek) == "undefined") {
+		firstDayOfWeek = 0;
+	}
 
-    for (var i = 0; i < this.getMonth()-1; i++) {
-        totalDays = totalDays + Date.getDaysInMonth(year, i);
-    }
-    
-    totalDays = totalDays + this.getDate();
-
-    var firstDay=new Date();
-    firstDay.setMonth(0);
-    firstDay.setDate(1);
-    firstDay.setYear(this.getYear());
-    firstDay=firstDay.getDay();
-        
-    var diff=6-firstDay;
-    var week = Math.round((totalDays+diff-firstDay)/7);
-    return week;
+	if (firstDayOfWeek == 0) {
+		return Math.ceil(this.getDayInYear() / 7);
+	} else {
+		return Math.ceil(Date.getDayInYear(this.getFullYear(), this.getMonth(), this.getDate() + (7-firstDayOfWeek)) / 7);
+	}
 }
 
-Date.prototype.getWeekInMonth = function() {
-    var totalDays = this.getDate();
-    
-    var firstDay=new Date();
-    firstDay.setYear(this.getFullYear());
-    firstDay.setMonth(this.getMonth());
-    firstDay.setDate(1);
-    firstDay=firstDay.getDay();
-
-    var diff=6-firstDay;
-    var week = Math.round((totalDays+diff-firstDay)/7);
-    return week;
+Date.prototype.getWeekInMonth = function(firstDayOfWeek) {
+	if (typeof(firstDayOfWeek) == "undefined") {
+		firstDayOfWeek = 0;
+	}
+	
+	var firstDay = new Date(this.getFullYear(), this.getMonth(), 1).getDay();
+	var totalDays = this.getDate() + firstDay - firstDayOfWeek - 1;
+	return Math.floor(totalDays / 7) + 1;
 }
 
 Date.prototype.setToFirstDateOfWeek = function(firstDayOfWeek) {
