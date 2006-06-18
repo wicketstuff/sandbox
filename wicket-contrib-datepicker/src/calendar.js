@@ -20,6 +20,7 @@
 // TODO: css namespace
 // TODO: parse date
 // TODO: selected day
+// TODO: java connection
 // TODO: day decorations
 // TODO: rangepicker
 
@@ -39,7 +40,7 @@ Wicket.Calendar.getInstance = function(instanceId) {
 }
 
 Wicket.Calendar.registerInstance = function(instance) {
-	var instanceId = instance.container.id;
+	var instanceId = instance.containerId;
 	Wicket.Calendar.instances[instanceId] = instance;
 }
 
@@ -51,9 +52,9 @@ Wicket.Calendar.prototype = {
 			throw("Calendar input control with id '"+inputId+"' was not found");
 		}
 
-		this.container = document.getElementById(containerId);
-		if (this.container == undefined) {
-			throw("Calendar container div with id '"+containerId+"' was not found");
+		this.containerId = containerId;
+		if (this.containerId == undefined) {
+			throw("A container id must be defined");
 		}
 	
 		if (format == undefined) {
@@ -79,16 +80,31 @@ Wicket.Calendar.prototype = {
 		return day;
 	},
 
+	getContainer : function() {
+		var container = document.getElementById(this.containerId);
+		if (container == null) {
+			container = document.createElement("div");
+			document.body.appendChild(container);
+			container.id = this.containerId;
+			container.style.display = "none";
+			container.style.position = "absolute";
+			container.style.zIndex = "10000";
+		}
+        
+		return container;
+	},
+    
 	show : function() {
 		var pos = this.getPosition(this.input);
-		this.container.style.left = pos[0]+"px";
-		this.container.style.top = (this.input.offsetHeight+pos[1])+"px";
-		this.container.style.display = "";
+		var container = this.getContainer();
+		container.style.left = pos.x+"px";
+		container.style.top = (this.input.offsetHeight+pos.y)+"px";
+		container.style.display = "";
 		this.visible = true;
 	},
 	
 	hide : function() {
-		this.container.style.display = "none";
+		this.getContainer().style.display = "none";
 		this.visible = false;
 	},
 	
@@ -109,12 +125,12 @@ Wicket.Calendar.prototype = {
 			leftPosition += obj.offsetLeft || 0;
 			obj = obj.offsetParent;
 		} while (obj);
-		return [leftPosition,topPosition];
+		return {x:leftPosition, y:topPosition};
 	},
 	
 	
 	getInstanceJS : function() {
-		return "Wicket.Calendar.getInstance('"+this.container.id+"')";
+		return "Wicket.Calendar.getInstance('"+this.containerId+"')";
 	},
 
 	onPrevWeek : function() {
@@ -194,7 +210,7 @@ Wicket.Calendar.prototype = {
 
 		var day = new Date(this.startDay.getTime());
 		var row = 0;
-		var monthChanged = true;
+		var monthChanged = this.startDay.hasMonthChangedOnPreviousWeek(this.locale.getFirstDayOfWeek());
 		var yearChanged = false;
 		
 		while (day<=lastDay) {
@@ -244,11 +260,11 @@ Wicket.Calendar.prototype = {
 		html += '</tbody>';		
 		html += '</table>';		
 		
-		this.container.innerHTML = html;
+		this.getContainer().innerHTML = html;
 		// DEBUG
 		document.getElementById("pastebin").value = html;
 	},
-	
+
 	dayMonthClassName : function(date) {
 		var className = '';
 		if (date.getMonth()%2 == 1) {

@@ -18,8 +18,8 @@
 
 .wicket-calendar {
 	position: absolute;
-	top: 60px;
-	left: 60px;
+/*	top: 60px;
+	left: 60px; */
 	font-family: Arial, Verdana, sans-serif;
 	font-size: 8pt;
 	color: black;

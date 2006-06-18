@@ -152,3 +152,13 @@ Date.prototype.setToFirstDateOfWeek = function(firstDayOfWeek) {
 	}
 	return this;
 }
+
+Date.prototype.hasMonthChangedOnPreviousWeek = function(firstDayOfWeek) {
+	var thisFirst = new Date(this.getTime());
+	thisFirst.setToFirstDateOfWeek(firstDayOfWeek);
+	
+	var lastFirst = new Date(thisFirst.getTime());
+	lastFirst.addDays(-7);
+	
+	return (thisFirst.getMonth() != lastFirst.getMonth());
+}
