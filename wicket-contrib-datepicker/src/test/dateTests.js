@@ -88,6 +88,26 @@ function testAddYears() {
 	assertEquals("Feb 28 2005 - 1 year", new Date(2004, 01, 28).toString(), new Date(2005, 01, 28).addYears(-1).toString());
 }
 
+function testCompareTo() {
+	
+}
+
+function testCompareToDateOnly() {
+	
+}
+
+function testIsToday() {
+	
+}
+
+function testWeekInYear() {
+	
+}
+
+function testWeekInMonth() {
+	
+}
+
 function testFirstDateOfWeek() {
 	assertEquals("Jun 11th 2006", new Date(2006, 5, 11).toString(), new Date(2006, 05, 14).setToFirstDateOfWeek(0).toString());
 	assertEquals("Jun 12th 2006", new Date(2006, 5, 12).toString(), new Date(2006, 05, 14).setToFirstDateOfWeek(1).toString());

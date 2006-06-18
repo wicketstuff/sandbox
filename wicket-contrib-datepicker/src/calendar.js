@@ -66,14 +66,16 @@ Wicket.Calendar.prototype = {
 		Wicket.Calendar.registerInstance(this);
 		
 		this.shownWeeks = 12;
-		this.startDay = this.getStartTodayInMiddle();
+		this.startDay = this.getStartDayInMiddle();
 		this.visible = false;
 	
 		return this;
 	},
 
-	getStartTodayInMiddle : function() {
-		var day = new Date();
+	getStartDayInMiddle : function(day) {
+		if (!day) {
+			day = new Date();
+		}
 		day.addDays(-(this.shownWeeks/2)*7);
 		day.setToFirstDateOfWeek(this.locale.getFirstDayOfWeek());
 		return day;
@@ -94,6 +96,8 @@ Wicket.Calendar.prototype = {
 	},
     
 	show : function() {
+		this.startDay = this.getStartDayInMiddle();
+		
 		var pos = this.getPosition(this.input);
 		var container = this.getContainer();
 		container.style.left = pos.x+"px";
