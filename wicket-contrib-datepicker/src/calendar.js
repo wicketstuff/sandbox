@@ -16,10 +16,9 @@
  * @author Igor Vaynberg (ivaynberg)
  */
  
-// TODO: fix positioning
-// TODO: css namespace
 // TODO: parse date
 // TODO: selected day
+// TODO: css namespace
 // TODO: java connection
 // TODO: day decorations
 // TODO: rangepicker
