@@ -94,5 +94,13 @@ function testFirstDateOfWeek() {
 	assertEquals("Jun 12th 2006", new Date(2006, 5, 12).toString(), new Date(2006, 05, 18).setToFirstDateOfWeek(1).toString());
 }
 
+function testMonthChangedOnLastWeek() {
+	var SUNDAY=0, MONDAY=1;
+	assertFalse("Jun 3rd 2006 (US)", new Date(2006, 5, 3).hasMonthChangedOnPreviousWeek(SUNDAY));
+	assertTrue("Jun 4th 2006 (US)", new Date(2006, 5, 4).hasMonthChangedOnPreviousWeek(SUNDAY));
+	assertFalse("Jun 4th 2006 (FI)", new Date(2006, 5, 4).hasMonthChangedOnPreviousWeek(MONDAY));
+}
+
+
 function tearDown() {
 }
