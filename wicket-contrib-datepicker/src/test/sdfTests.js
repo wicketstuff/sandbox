@@ -33,8 +33,8 @@ function testTokenize() {
 }
 
 function testFormat() {
-	var sdf = new Wicket.SimpleDateFormat("[y][MMM][d][W][w][D][F][EEE]", new Wicket.DateLocale());
-	assertEquals("Jun 18th 2006", "[06][Jun][18][25][3][169][0][Sun]",  sdf.format(new Date(2006, 5, 18)));
+	var sdf = new Wicket.SimpleDateFormat("[y][MMM][d][W][D][F][EEE]", new Wicket.DateLocale());
+	assertEquals("Jun 18th 2006", "[06][Jun][18][25][169][0][Sun]",  sdf.format(new Date(2006, 5, 18)));
 }
 
 function testFormatYear() {

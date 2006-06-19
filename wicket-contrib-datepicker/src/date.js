@@ -107,27 +107,44 @@ Date.prototype.isToday = function() {
 	return (this.compareDateOnlyTo(new Date()) == 0);
 }
 
-Date.prototype.getWeekInYear = function(firstDayOfWeek) {
-	if (typeof(firstDayOfWeek) == "undefined") {
-		firstDayOfWeek = 0;
+Date.prototype.getWeekInYear = function(weekNumberingSystem) {
+	if (weekNumberingSystem != "US" && weekNumberingSystem != "ISO") {
+		throw("Week numbering system must be either US or ISO, was "+weekNumberingSystem);
 	}
 
-	if (firstDayOfWeek == 0) {
-		return Math.ceil(this.getDayInYear() / 7);
-	} else {
-		return Math.ceil(Date.getDayInYear(this.getFullYear(), this.getMonth(), this.getDate() + (7-firstDayOfWeek)) / 7);
+	var firstDay = new Date(this.getFullYear(), 0, 1).getDay();
+	if (weekNumberingSystem == "US") {
+		return Math.ceil((this.getDayInYear()+firstDay) / 7);		
 	}
-}
 
-Date.prototype.getWeekInMonth = function(firstDayOfWeek) {
-	if (typeof(firstDayOfWeek) == "undefined") {
-		firstDayOfWeek = 0;
+	var THU=4;
+	var weekday = this.getDay();
+	if (weekday == 0) {
+		weekday = 7;
+	}
+	if (firstDay == 0) {
+		firstDay = 7;
 	}
 	
-	var firstDay = new Date(this.getFullYear(), this.getMonth(), 1).getDay();
-	var totalDays = this.getDate() + firstDay - firstDayOfWeek - 1;
-	return Math.floor(totalDays / 7) + 1;
+	// If Dec 29 falls on Mon, Dec 30 on Mon or Tue, Dec 31 on Mon - Wed, it's on the first week of next year
+	if (this.getMonth() == 11 && this.getDate() >= 29 && (this.getDate()-weekday) > 27) {
+		return 1;
+	}
+	// If Jan 1-3 falls on Fri, Sat or Sun, it's on the last week of the previous year 
+	if (this.getMonth() == 0 && this.getDate() < 4 && weekday > THU ) {
+		return new Date(this.getFullYear()-1, 11, 31).getWeekInYear('ISO');
+	}
+
+	var week = Math.ceil((this.getDayInYear()+firstDay-1) / 7);
+
+	// If first days of this year are on last year's last week, the above gives one week too much
+	if (firstDay > THU) {
+		week--;
+	}
+	
+	return week;
 }
+
 
 Date.prototype.setToFirstDateOfWeek = function(firstDayOfWeek) {
 	if (firstDayOfWeek < this.getDay()) {
