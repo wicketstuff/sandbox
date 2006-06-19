@@ -54,8 +54,7 @@ function testDayOfYear() {
 	assertEquals("Dec 31 2004 (leap)", 366, Date.getDayInYear(2004, 11, 31));
 }
 
-// FIXME: put this back some time later
-function tsetAddDays() {
+function testAddDays() {
     // Basic adding
 	checkWholeYear(new Date(2006, 0, 1));
 	checkWholeYear(new Date(2006, 0, 1, 23, 30, 00));
