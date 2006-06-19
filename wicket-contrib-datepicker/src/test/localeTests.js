@@ -80,7 +80,8 @@ function testSetAll() {
 						"Hein\u00E4","Elo","Syys","Loka","Marras","Joulu"],
 					weekdays : ["Sunnuntai","Maanantai","Tiistai","Keskiviikko","Torstai","Perjantai","Lauantai"],
 					shortWeekdays : ["Su","Ma","Ti","Ke","To","Pe","La"],
-					firstDayOfWeek : 1
+					firstDayOfWeek : 1,
+					weekNumbering: 'ISO'
 				};
 	locale.setAllLocaleData(datesFI);
 	checkAllLocaleData(datesFI, locale);
@@ -104,6 +105,7 @@ function checkAllLocaleData(dateSet, locale) {
 		assertEquals("Short weekdays", dateSet.shortWeekdays[i], locale.getShortWeekday(i));
 	}
 	assertEquals("First day of week", dateSet.firstDayOfWeek, locale.getFirstDayOfWeek());
+	assertEquals("Week numbering", dateSet.weekNumbering, locale.getWeekNumbering());
 }
 
 function tearDown() {

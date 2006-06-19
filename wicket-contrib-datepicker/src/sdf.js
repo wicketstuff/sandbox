@@ -51,7 +51,6 @@ Wicket.SimpleDateFormat.prototype = {
 			"M":this.formatMonth,
 			"d":this.formatDayOfMonth,
 			"W":this.formatWeekInYear,
-			"w":this.formatWeekInMonth,
 			"D":this.formatDayOfYear,
 			"F":this.formatDayOfWeek,
 			"E":this.formatWeekday
@@ -157,15 +156,11 @@ Wicket.SimpleDateFormat.prototype = {
 	},
             
 	formatWeekInYear : function(date, rank, locale) {
-		return Wicket.SimpleDateFormat.pad(date.getWeekInYear(), rank);
-	},
-
-	formatWeekInMonth : function(date, rank, locale) {
-		return Wicket.SimpleDateFormat.pad(date.getWeekInMonth(), rank);
+		return Wicket.SimpleDateFormat.pad(date.getWeekInYear(locale.getWeekNumbering()), rank);
 	},
 
 	formatDayOfYear : function(date, rank, locale) {
-		return Wicket.SimpleDateFormat.pad(date.getDayOfYear(), rank);
+		return Wicket.SimpleDateFormat.pad(date.getDayInYear(), rank);
 	},
 
 	formatDayOfWeek : function(date, rank, locale) {

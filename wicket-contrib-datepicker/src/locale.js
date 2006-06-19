@@ -32,6 +32,7 @@ Wicket.DateLocale.prototype = {
 	  this.weekdays = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 	  this.shortWeekdays = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 	  this.firstDayOfWeek = 0;
+	  this.weekNumbering = "US";
 	  if (locale) {
 		  this.setAllLocaleData(locale);
 	  }
@@ -51,17 +52,24 @@ Wicket.DateLocale.prototype = {
 	getWeekday : function(w) { return this.weekdays[w]; },
 	getShortWeekday : function(w) { return this.shortWeekdays[w]; },
 	getFirstDayOfWeek : function() { return this.firstDayOfWeek; },
+	getWeekNumbering : function() { return this.weekNumbering; },
 	setMonths : function(m) { this.months = m.split(","); },
 	setShortMonths : function(m) { this.shortMonths = m.split(","); },
 	setWeekdays : function(w) { this.weekdays = w.split(","); },
 	setShortWeekdays : function(w) { this.shortWeekdays = w.split(","); },
-	
 	setFirstDayOfWeek : function(day) {
-		if (day >= 0 && day < 7) {
-			this.firstDayOfWeek = day;
-		} 
+		if (day < 0 || day > 6) {
+			throw("Week day must be 0-6, was "+day);
+		}
+		this.firstDayOfWeek = day;
 	},
-	
+	setWeekNumbering : function(scheme) {
+		if (scheme != 'US' && scheme != 'ISO') {
+			throw("Week numbering system must be either US or ISO, was "+scheme);
+		}
+		this.weekNumbering = scheme;
+	},
+
 	getWeekdayIterator : function() { return new Wicket.WeekdayIterator(this); },
 	
 	getShortWeekdayIterator : function() {
