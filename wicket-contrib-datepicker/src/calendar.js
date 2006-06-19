@@ -17,6 +17,8 @@
  */
  
 // TODO: parse date
+// TODO: catch illegal days of month (like 2006-04-31)
+// TODO: real parseException object and validation hl in field
 // TODO: selected day
 // TODO: css namespace
 // TODO: java connection
