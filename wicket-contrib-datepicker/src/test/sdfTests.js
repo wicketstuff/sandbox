@@ -52,7 +52,8 @@ function testParse() {
 		{ format:"yyyy.MM.dd", value:"789.12.9", legal:true,  date: new Date(789,11,9) },
 		{ format:"yyyy.MM.dd", value:"789,12,9", legal:false, date: new Date(789,11,9) },
 		{ format:"yyyy.MM.dd", value:"789.1o.9", legal:false, date: new Date(789,11,9) },
-		{ format:"yyyy.MM.dd", value:"789.o1.9", legal:false, date: new Date(789,11,9) }
+		{ format:"yyyy.MM.dd", value:"789.o1.9", legal:false, date: new Date(789,11,9) },
+		{ format:"yyyy-MM-dd", value:"2006-02-29", legal:false, date: new Date(2006,1,29) }
 	];
 	for (var i=0; i<formats.length; i++) {
 		checkParserFormats(formats[i]);

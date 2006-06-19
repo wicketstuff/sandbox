@@ -170,7 +170,12 @@ Wicket.SimpleDateFormat.prototype = {
 			throw("Parsing is not possible with the current format " + this.tokensToFormat());
 		}
 		
-		var date = new Date(0,0,1);
+		var date = new Date();
+		date.setMonth(0);
+		date.setDate(1);
+		date.stripTime();
+		date.proposedDay = null;
+
 		var pos = 0;
 		for (var i=0; i<this.tokens.length; i++) {
 			var token = this.tokens[i];
@@ -180,6 +185,13 @@ Wicket.SimpleDateFormat.prototype = {
 				var parser = this.parsers[token[0]]; 
 				pos = parser(str, pos, token[1], date);
 			}
+		}
+		// Check validity as a whole (esp. day of month)
+		if (date.proposedDay != null) {
+			if (date.proposedDay > date.getDaysInMonth()) {
+				throw("Illegal date "+date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.proposedDay);
+			}
+			date.setDate(date.proposedDay);
 		}
 		return date;
 	},
@@ -237,7 +249,7 @@ Wicket.SimpleDateFormat.prototype = {
 	parseDayOfMonth : function(str, pos, rank, date) {
 		var ret = Wicket.SimpleDateFormat.parseNumber(str, pos, 'day of month');
 		if (ret.value > 0 && ret.value < 32) {
-			date.setDate(ret.value);
+			date.proposedDay = ret.value;
 		} else {
 			throw("Illegal day of month value "+ret.value);
 		}
@@ -262,5 +274,17 @@ Wicket.SimpleDateFormat.prototype = {
 		} else {
 			return locale.getWeekday(date.getDay());
 		}
+	}
+}
+
+
+Wicket.ParseException = function() {
+	this.initialize.apply(this, arguments);
+}
+
+Wicket.ParseException.prototype = {
+	initialize : function(message) {
+		this.className = "ParseException";
+		this.message = message;
 	}
 }
