@@ -79,6 +79,10 @@ Date.prototype.stripTime = function() {
 }    
 
 Date.prototype.compareTo = function(date) {
+	if (!date) {
+		return 1;
+	}
+	
     var lhs=this.getTime();
     var rhs=date.getTime();
     
@@ -92,6 +96,10 @@ Date.prototype.compareTo = function(date) {
 }
 
 Date.prototype.compareDateOnlyTo = function(date) {
+	if (!date) {
+		return 1;
+	}
+	
     var lhs=new Date();
     lhs.setTime(this.getTime());
     lhs.stripTime();

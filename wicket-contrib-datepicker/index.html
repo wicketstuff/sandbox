@@ -13,9 +13,9 @@
 	
 	<form action="">
 		<fieldset>
-			<input type="text" id="dob" size="25"/>
+			<input type="text" id="dob" class="wicket-calendarField"/>
 			<input type="button" value="..." onclick="Wicket.Calendar.getInstance('cal').toggle();"/>
-			<script type="text/javascript">new Wicket.Calendar('dob', 'cal', 'EEEE, MMMM d yyyy');</script>
+			<script type="text/javascript">new Wicket.Calendar('dob', 'cal', 'dd.MM.yyyy');</script>
 			<br/>
 			<select><option>hellllllllo<option>hellllllllo<option>hellllllllo<option>hellllllllo</select>
 			<textarea id="pastebin" cols="200" rows="40" style="display:none">

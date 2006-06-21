@@ -40,7 +40,7 @@ Wicket.SimpleDateFormat.parseNumber = function(str, pos, parsed) {
 			str+"', start position "+pos);
 	}
 
-	while (str[pos] >= '0' && str[pos] <= '9') {
+	while (pos < str.length && str[pos] >= '0' && str[pos] <= '9') {
 		pos++;
 	}
 	
@@ -223,7 +223,7 @@ Wicket.SimpleDateFormat.prototype = {
 		var month = date.getMonth();
 		
 		if (rank<=2) {
-		  return Wicket.SimpleDateFormat.pad(month, 2);
+		  return Wicket.SimpleDateFormat.pad(month+1, 2);
 		} else if (rank == 3) {
 	    return locale.getShortMonth(month);
 		} else {
