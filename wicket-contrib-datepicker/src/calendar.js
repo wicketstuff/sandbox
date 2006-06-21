@@ -16,9 +16,11 @@
  * @author Igor Vaynberg (ivaynberg)
  */
  
-// TODO: real parseException object
+// TODO: week numbers
 // TODO: predefined locales
 // TODO: css namespace
+// TODO: error messages
+// TODO: real parseException object for more precise error messages
 // TODO: java connection
 // TODO: day decorations
 // TODO: rangepicker

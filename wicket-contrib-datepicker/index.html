@@ -15,7 +15,13 @@
 		<fieldset>
 			<input type="text" id="dob" class="wicket-calendarField"/>
 			<input type="button" value="..." onclick="Wicket.Calendar.getInstance('cal').toggle();"/>
-			<script type="text/javascript">new Wicket.Calendar('dob', 'cal', 'dd.MM.yyyy');</script>
+			<script type="text/javascript">
+new Wicket.Calendar('dob','cal','d.M.yyyy',new Wicket.DateLocale({months:["Tammikuu","Helmikuu","Maaliskuu","Huhtikuu","Toukokuu","Kes\u00E4kuu","Hein\u00E4kuu","Elokuu","Syyskuu","Lokakuu","Marraskuu","Joulukuu"], 
+shortMonths : ["Tammi","Helmi","Maalis","Huhti","Touko","Kes\u00E4",
+"Hein\u00E4","Elo","Syys","Loka","Marras","Joulu"],
+weekdays:["Sunnuntai","Maanantai","Tiistai","Keskiviikko","Torstai","Perjantai","Lauantai"],
+shortWeekdays:["Su","Ma","Ti","Ke","To","Pe","La"], firstDayOfWeek:1,
+weekNumbering: 'ISO'}));</script>
 			<br/>
 			<select><option>hellllllllo<option>hellllllllo<option>hellllllllo<option>hellllllllo</select>
 			<textarea id="pastebin" cols="200" rows="40" style="display:none">
