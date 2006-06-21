@@ -16,9 +16,8 @@
  * @author Igor Vaynberg (ivaynberg)
  */
  
-// TODO: parse date
-// TODO: real parseException object and validation hl in field
-// TODO: selected day
+// TODO: real parseException object
+// TODO: predefined locales
 // TODO: css namespace
 // TODO: java connection
 // TODO: day decorations
@@ -58,7 +57,7 @@ Wicket.Calendar.prototype = {
 		}
 	
 		if (format == undefined) {
-			format = "MM/dd/yyyy";
+			format = "yyyy-MM-dd";
 		}
 
 		this.locale = new Wicket.DateLocale(locale);		
@@ -67,8 +66,11 @@ Wicket.Calendar.prototype = {
 		Wicket.Calendar.registerInstance(this);
 		
 		this.shownWeeks = 12;
-		this.startDay = this.getStartDayInMiddle();
 		this.visible = false;
+
+		this.setFieldEventHandlers();
+		this.setStartAndSelection();
+		this.validationTimerId = null;
 	
 		return this;
 	},
@@ -77,9 +79,10 @@ Wicket.Calendar.prototype = {
 		if (!day) {
 			day = new Date();
 		}
-		day.addDays(-(this.shownWeeks/2)*7);
-		day.setToFirstDateOfWeek(this.locale.getFirstDayOfWeek());
-		return day;
+		var startDay = new Date(day);
+		startDay.addDays(-(this.shownWeeks/2)*7);
+		startDay.setToFirstDateOfWeek(this.locale.getFirstDayOfWeek());
+		return startDay;
 	},
 
 	getContainer : function() {
@@ -96,9 +99,22 @@ Wicket.Calendar.prototype = {
 		return container;
 	},
     
+    setStartAndSelection : function() {
+		try {
+			this.selectedDay = this.sdf.parse(this.input.value);
+		} catch (parseException) {
+			this.selectedDay = null;
+		}
+		this.startDay = this.getStartDayInMiddle(this.selectedDay);
+    },
+    
+    setFieldEventHandlers : function () {
+    	this.input.onfocus = this.getEventHandler("hide()");
+    	this.input.onkeyup = this.getEventHandler("waitAndValidate()");
+    },
+    
 	show : function() {
-		this.startDay = this.getStartDayInMiddle();
-		
+		this.setStartAndSelection();
 		var pos = this.getPosition(this.input);
 		var container = this.getContainer();
 		container.style.left = pos.x+"px";
@@ -137,6 +153,10 @@ Wicket.Calendar.prototype = {
 		return "Wicket.Calendar.getInstance('"+this.containerId+"')";
 	},
 
+	getEventHandler : function(method) {
+		return eval("function() {"+this.getInstanceJS()+"."+method+"}");
+	},
+
 	onPrevWeek : function() {
 		this.startDay.addDays(-7);
 		this.draw();
@@ -173,6 +193,7 @@ Wicket.Calendar.prototype = {
 		var day = new Date();
 		day.setTime(time);
 		this.input.value = this.sdf.format(day);
+		this.setFieldValid(true);
 		this.hide();
 	},
 
@@ -217,13 +238,7 @@ Wicket.Calendar.prototype = {
 		var monthChanged = this.startDay.hasMonthChangedOnPreviousWeek(this.locale.getFirstDayOfWeek());
 		var yearChanged = false;
 		
-		while (day<=lastDay) {
-			var dayClass = this.dayMonthClassName(day);
-
-			if (day.isToday()) {
-				dayClass += ' today';
-			}
-			
+		while (day <= lastDay) {
 			if (day.getDate() == 1) {
 				monthChanged = true;
 				if (day.getMonth() == 0) {
@@ -233,7 +248,7 @@ Wicket.Calendar.prototype = {
 
 			if (day.getDay() == this.locale.getFirstDayOfWeek()) {
 				html += '<tr>';
-				html += '<th class="'+this.dayMonthClassName(day)+'">';
+				html += '<th class="'+this.getBackgroundClass(day)+'">';
 				if (monthChanged) {
 					html += this.locale.getMonth(day.getMonth());
 					monthChanged = false;
@@ -246,6 +261,14 @@ Wicket.Calendar.prototype = {
 					}
 				}
 				html += '</th>';
+			}
+
+			var dayClass = this.getBackgroundClass(day);
+			if (day.isToday()) {
+				dayClass += ' today';
+			}
+			if (this.isSelected(day)) {
+				dayClass += ' selected';
 			}
 			
 			html += '<td class="'+dayClass+'" onclick="'+this.getInstanceJS()+'.onSelect('+day.getTime()+')">';
@@ -269,7 +292,7 @@ Wicket.Calendar.prototype = {
 		document.getElementById("pastebin").value = html;
 	},
 
-	dayMonthClassName : function(date) {
+	getBackgroundClass : function(date) {
 		var className = '';
 		if (date.getMonth()%2 == 1) {
 			className = 'odd';
@@ -277,6 +300,14 @@ Wicket.Calendar.prototype = {
 		return className;
 	},
 	
+	isSelected : function(date) {
+		var retVal = false;
+		if (this.selectedDay) {
+			retVal = (date.compareDateOnlyTo(this.selectedDay) == 0);
+		}
+		return retVal;
+	},
+		
 	getScrollingContent : function(dateRow) {
 		if (dateRow == 0) {
 			return '<td class="scroll"><img src="src/images/arrow-more-up.gif" width="9" height="9" alt="" onclick="'+this.getInstanceJS()+'.onPrevScreen()"/></td>';
@@ -294,12 +325,57 @@ Wicket.Calendar.prototype = {
 			return '<td class="scroll"><img src="src/images/arrow-more-down.gif" width="9" height="9" alt="" onclick="'+this.getInstanceJS()+'.onNextScreen()"/></td>';
 		}
 		return '';
+	},
+
+	validateField : function() {
+		try {
+			this.sdf.parse(this.input.value);
+			this.setFieldValid(true);
+		} catch (parseException) {
+			Wicket.Util.addClassName(this.input, "wicket-invalid");
+			this.setFieldValid(false);
+		}		
+	},
+	
+	setFieldValid : function(valid) {
+		if (valid) {
+			Wicket.Util.removeClassName(this.input, "wicket-invalid");
+		} else {
+			Wicket.Util.addClassName(this.input, "wicket-invalid");
+		}
+	},
+	
+	waitAndValidate : function() {
+		var VALIDATIONTIMEOUT = 300; // ms
+		window.clearTimeout(this.validationTimerId);
+		this.validationTimerId = window.setTimeout(this.getInstanceJS()+".validateField()", VALIDATIONTIMEOUT);
 	}
-
-
 }
 
+if (Wicket.Util == undefined) {
+	Wicket.Util = {};
+}
 
+Wicket.Util.removeClassName = function(element, name) {
+	if (!element.className) {
+		return;
+	}
+	var classes = element.className.split(' ');
+	for (var i=0; i<classes.length; i++) {
+		if (classes[i] == name) {
+			classes[i] = null;
+		}
+	}
+	element.className = classes.join(' ');
+}
+
+Wicket.Util.addClassName = function(element, name) {
+	if (!element.className) {
+		return;
+	}
+	Wicket.Util.removeClassName(element, name);
+	element.className += ' ' + name;
+}
 
 Wicket.Calendar.Theme = function() {
 	this.initialize.apply(this, arguments);

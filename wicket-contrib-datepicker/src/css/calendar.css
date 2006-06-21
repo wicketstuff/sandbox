@@ -117,3 +117,12 @@
 	vertical-align: middle;
 	text-align: center;
 }
+
+input.wicket-calendarField {
+	border: 1px solid black;
+	width: 70px; /* TODO:  calculate this with manual fontmetrics */
+}
+
+input.wicket-calendarField.wicket-invalid {
+	background-color: #FF6666;
+}
