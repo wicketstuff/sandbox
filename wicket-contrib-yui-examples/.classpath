@@ -11,7 +11,7 @@
 	<classpathentry sourcepath="M2_REPO/tomcat/jasper-runtime/4.1.30/jasper-runtime-4.1.30-sources.jar" kind="var" path="M2_REPO/tomcat/jasper-runtime/4.1.30/jasper-runtime-4.1.30.jar"/>
 	<classpathentry sourcepath="M2_REPO/log4j/log4j/1.2.13/log4j-1.2.13-sources.jar" kind="var" path="M2_REPO/log4j/log4j/1.2.13/log4j-1.2.13.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/wicket-contrib-yui"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/wicket-1.2"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/wicket-extensions-1.2"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/wicket"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/wicket-extensions"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
