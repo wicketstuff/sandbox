@@ -94,6 +94,14 @@ public class HibernateDatabase extends Database
 	{
 		new SchemaUpdate(configuration).execute(true, true);
 	}
+	
+	/**
+	 * Prints schema update script to console
+	 */
+	public void printSchemaUpdateScript()
+	{
+		new SchemaUpdate(configuration).execute(true, false);
+	}
 
 	/**
 	 * Drops and recreates all hibernate tables
