@@ -14,6 +14,7 @@
 
 /*
  * @author Igor Vaynberg (ivaynberg)
+ * @author Karri-Pekka Laakso (kplaakso)
  */
  
 Date.DAYS_IN_MONTH = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]; 
