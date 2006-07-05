@@ -14,6 +14,7 @@
 
 /*
  * @author Igor Vaynberg (ivaynberg)
+ * @author Karri-Pekka Laakso (kplaakso)
  */
  
 // TODO: week numbers
