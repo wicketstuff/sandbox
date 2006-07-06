@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>wicket</groupId>
 	<artifactId>wicket-contrib-datepicker</artifactId>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<version>1.2-SNAPSHOT</version>
 	<name>Wicket Date Picker</name>
 	<description></description>
@@ -65,6 +65,14 @@
 		</testResources>
 
 		<plugins>
+                        <plugin>
+                                <groupId>org.apache.maven.plugins</groupId>
+                                <artifactId>maven-compiler-plugin</artifactId>
+                                <configuration>
+                                        <source>1.5</source>
+                                        <target>1.5</target>
+                                </configuration>
+                        </plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
