@@ -10,6 +10,12 @@
 	<name>Wicket Date Picker</name>
 	<description></description>
 
+	<scm>
+		<connection>scm:svn:https://svn.sourceforge.net/svnroot/wicket-stuff/trunk/wicket-contrib-datepicker</connection>
+  		<developerConnection>scm:svn:https://svn.sourceforge.net/svnroot/wicket-stuff/trunk/wicket-contrib-datepicker</developerConnection>
+        <url>http://svn.sourceforge.net/viewcvs.py/wicket-stuff/trunk/wicket-contrib-data</url>
+    </scm>
+
 	<dependencies>
 		<dependency>
 			<groupId>wicket</groupId>
