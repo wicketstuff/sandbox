@@ -29,6 +29,11 @@ import javax.swing.text.StyledEditorKit.BoldAction;
 public class ZoomPlugin extends Plugin
 {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private PluginButton zoomButton;
 
 	private String fonts;

@@ -29,7 +29,12 @@ package wicket.contrib.tinymce.settings;
 public class Button extends wicket.contrib.tinymce.settings.Enum
 {
 
-    protected Button(String name)
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	protected Button(String name)
     {
         super(name);
     }

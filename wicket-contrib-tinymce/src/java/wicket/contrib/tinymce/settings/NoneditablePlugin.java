@@ -25,7 +25,12 @@ package wicket.contrib.tinymce.settings;
 public class NoneditablePlugin extends Plugin
 {
 
-    public NoneditablePlugin()
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public NoneditablePlugin()
     {
         super("noneditable");
     }

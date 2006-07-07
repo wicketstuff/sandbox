@@ -26,7 +26,11 @@ package wicket.contrib.tinymce.settings;
 public class PastePlugin extends Plugin
 {
 
-    private PluginButton pasteButton;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private PluginButton pasteButton;
     private PluginButton pasteWordButton;
     private PluginButton pasteTextButton;
 

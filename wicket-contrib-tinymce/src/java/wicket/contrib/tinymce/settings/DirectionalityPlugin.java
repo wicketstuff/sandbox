@@ -26,7 +26,11 @@ package wicket.contrib.tinymce.settings;
 public class DirectionalityPlugin extends Plugin
 {
 
-    private PluginButton ltrButton;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private PluginButton ltrButton;
     private PluginButton rtlButton;
 
     public DirectionalityPlugin()

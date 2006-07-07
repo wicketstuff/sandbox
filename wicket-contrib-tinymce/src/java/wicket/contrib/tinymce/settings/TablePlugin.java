@@ -26,7 +26,11 @@ package wicket.contrib.tinymce.settings;
 public class TablePlugin extends Plugin
 {
 
-    public PluginButton tableControls;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	public PluginButton tableControls;
 
     public TablePlugin()
     {

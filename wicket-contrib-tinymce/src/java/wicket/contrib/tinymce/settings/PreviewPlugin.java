@@ -26,7 +26,11 @@ package wicket.contrib.tinymce.settings;
 public class PreviewPlugin extends Plugin
 {
 
-    private PluginButton previewButton;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private PluginButton previewButton;
 
     public PreviewPlugin()
     {

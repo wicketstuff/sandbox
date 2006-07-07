@@ -25,7 +25,11 @@ package wicket.contrib.tinymce.settings;
 public class SavePlugin extends Plugin
 {
 
-    private PluginButton saveButton;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private PluginButton saveButton;
 
     public SavePlugin()
     {
