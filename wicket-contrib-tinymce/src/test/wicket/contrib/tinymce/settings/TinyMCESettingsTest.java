@@ -120,6 +120,11 @@ public class TinyMCESettingsTest extends TestCase {
     public void testDefinePluginExtensions() {
     	Plugin plugin = new Plugin("mockplugin") {
 
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
 			protected void definePluginExtensions(StringBuffer buffer)
 			{
 				buffer.append("alert('Hello Mock World');");

@@ -25,7 +25,12 @@ package wicket.contrib.tinymce.settings;
 public class ContextMenuPlugin extends Plugin
 {
 
-    public ContextMenuPlugin()
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public ContextMenuPlugin()
     {
         super("contextmenu");
     }

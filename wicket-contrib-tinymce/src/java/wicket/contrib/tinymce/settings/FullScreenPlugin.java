@@ -25,7 +25,11 @@ package wicket.contrib.tinymce.settings;
 public class FullScreenPlugin extends Plugin
 {
 
-    private PluginButton fullscreenButton;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private PluginButton fullscreenButton;
 
     public FullScreenPlugin()
     {

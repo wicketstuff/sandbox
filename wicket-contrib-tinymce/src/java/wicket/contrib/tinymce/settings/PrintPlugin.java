@@ -25,7 +25,11 @@ package wicket.contrib.tinymce.settings;
 public class PrintPlugin extends Plugin
 {
 
-    private PluginButton printButton;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private PluginButton printButton;
 
     public PrintPlugin()
     {

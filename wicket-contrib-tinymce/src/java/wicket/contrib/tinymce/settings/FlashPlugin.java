@@ -27,7 +27,11 @@ package wicket.contrib.tinymce.settings;
 public class FlashPlugin extends Plugin
 {
 
-    private PluginButton flashButton;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private PluginButton flashButton;
 
     public FlashPlugin()
     {

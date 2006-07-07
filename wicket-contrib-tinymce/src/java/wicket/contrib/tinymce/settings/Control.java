@@ -25,7 +25,11 @@ import java.io.Serializable;
 class Control implements Serializable
 {
 
-    private Button button;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private Button button;
     private TinyMCESettings.Toolbar toolbar;
     private TinyMCESettings.Position position;
 

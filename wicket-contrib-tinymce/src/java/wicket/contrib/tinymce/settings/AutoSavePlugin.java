@@ -26,7 +26,12 @@ package wicket.contrib.tinymce.settings;
 public class AutoSavePlugin extends Plugin
 {
 
-    public AutoSavePlugin()
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public AutoSavePlugin()
     {
         super("autosave");
     }
