@@ -291,8 +291,6 @@ Wicket.Calendar.prototype = {
 		html += '</table>';		
 		
 		this.getContainer().innerHTML = html;
-		// DEBUG
-		document.getElementById("pastebin").value = html;
 	},
 
 	getBackgroundClass : function(date) {
