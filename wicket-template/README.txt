@@ -8,7 +8,7 @@ demonstrating issues.
 
 Includes support for the Jetty6 embedded server - use "mvn jetty6:run" 
 
-Create IDEA project/module files via "mvn idea:idea"
+Create IDEA project/module files via "mvn idea:idea" and Eclipse files via "mvn eclipse:eclipse".
 
 /Gwyn
 
