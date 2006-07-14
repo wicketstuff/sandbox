@@ -64,7 +64,7 @@
         </dependency>
         <dependency>
           <groupId>org.grlea.log.adapters</groupId>
-          <artifactId>simple-log-sl4j</artifactId>
+          <artifactId>simple-log-slf4j</artifactId>
           <version>1.7</version>
             <scope>runtime</scope>
         </dependency>
