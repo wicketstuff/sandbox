@@ -10,13 +10,14 @@ import wicket.model.Model;
  */
 public class AdvancedTinyMCEPage extends TinyMCEBasePage
 {
+	private static final long serialVersionUID = 1L;
 
-    public AdvancedTinyMCEPage()
+	public AdvancedTinyMCEPage()
     {
         TinyMCESettings settings = new TinyMCESettings(TinyMCESettings.Theme.advanced);
 
-        add(new TinyMCEPanel("tinyMCE", settings));
-        add(new TextArea("ta", new Model(TEXT)));
+        new TinyMCEPanel(this, "tinyMCE", settings);
+        new TextArea(this, "ta", new Model(TEXT));
     }
 
     private String TEXT = "Some <strong>element</strong>, this is to be editor 1. <br/>\n" +

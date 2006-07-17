@@ -96,8 +96,8 @@ public class FullFeaturedTinyMCEPage extends TinyMCEBasePage {
         settings.setStatusbarLocation(TinyMCESettings.Location.bottom);
         settings.setVerticalResizing(true);
 
-        add(new TinyMCEPanel("tinyMCE", settings));
-        add(new TextArea("ta", new Model(TEXT)));
+        new TinyMCEPanel(this, "tinyMCE", settings);
+        new TextArea(this, "ta", new Model(TEXT));
 	}
 
 	private static final String TEXT = "<p><img src=\"logo.jpg\" alt=\" \" hspace=\"5\" vspace=\"5\" width=\"250\" height=\"48\" align=\"right\" />" +
