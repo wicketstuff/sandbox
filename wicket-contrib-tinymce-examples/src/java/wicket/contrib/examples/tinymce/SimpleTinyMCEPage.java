@@ -12,8 +12,8 @@ public class SimpleTinyMCEPage extends TinyMCEBasePage
 
     public SimpleTinyMCEPage()
     {
-        add(new TinyMCEPanel("tinyMCE"));
-        add(new TextArea("ta", new Model(TEXT)));
+        new TinyMCEPanel(this, "tinyMCE");
+        new TextArea(this, "ta", new Model(TEXT));
     }
 
     private String TEXT = "Some <b>element</b>, this is to be editor 1.";

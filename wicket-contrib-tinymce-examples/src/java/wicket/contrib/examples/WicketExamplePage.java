@@ -29,7 +29,9 @@ import wicket.util.string.Strings;
  */
 public class WicketExamplePage extends WebPage
 {
-    /**
+	private static final long serialVersionUID = 1L;
+
+	/**
      * Constructor
      */
     public WicketExamplePage()
@@ -45,8 +47,9 @@ public class WicketExamplePage extends WebPage
     public WicketExamplePage(IModel model)
     {
         super(model);
+        
         final String packageName = getClass().getPackage().getName();
-        add(new WicketExampleHeader("mainNavigation", Strings.afterLast(packageName, '.')));
+        new WicketExampleHeader(this, "mainNavigation", Strings.afterLast(packageName, '.'));
         explain();
     }
 

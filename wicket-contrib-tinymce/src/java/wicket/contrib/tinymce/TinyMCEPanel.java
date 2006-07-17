@@ -17,13 +17,10 @@
  */
 package wicket.contrib.tinymce;
 
-import java.util.regex.Pattern;
-
-import wicket.Application;
+import wicket.MarkupContainer;
 import wicket.contrib.tinymce.settings.TinyMCESettings;
 import wicket.markup.ComponentTag;
 import wicket.markup.MarkupStream;
-import wicket.markup.html.PackageResource;
 import wicket.markup.html.WebComponent;
 import wicket.markup.html.panel.Panel;
 import wicket.markup.html.resources.JavaScriptReference;
@@ -48,28 +45,30 @@ public class TinyMCEPanel extends Panel
 	/**
 	 * Construct TinyMCE component with default settings.
 	 * 
+	 * @param parent 
 	 * @param id
 	 *            wicket component id
 	 */
-	public TinyMCEPanel(final String id)
+	public TinyMCEPanel(final MarkupContainer parent, final String id)
 	{
-		this(id, new TinyMCESettings());
+		this(parent, id, new TinyMCESettings());
 	}
 
 	/**
 	 * Construct TinyMCE component passing customs settings.
 	 * 
+	 * @param parent 
 	 * @param id
 	 * @param settings
 	 *            settings for tinymce component
 	 */
-	public TinyMCEPanel(final String id, final TinyMCESettings settings)
+	public TinyMCEPanel(final MarkupContainer parent, final String id, final TinyMCESettings settings)
 	{
-		super(id);
+		super(parent, id);
 
 		// add tinymce init script and startup js
-		add(new JavaScriptReference("tinymce", TinyMCEPanel.class, "tiny_mce/tiny_mce_src.js"));
-		add(new WebComponent("initScript")
+		new JavaScriptReference(this, "tinymce", TinyMCEPanel.class, "tiny_mce/tiny_mce_src.js");
+		new WebComponent(this, "initScript")
 		{
 			private static final long serialVersionUID = 1L;
 
@@ -84,6 +83,6 @@ public class TinyMCEPanel extends Panel
 
 				replaceComponentTagBody(markupStream, openTag, buffer.toString());
 			}
-		});
+		};
 	}
 }

@@ -18,12 +18,11 @@
 package wicket.contrib.tinymce;
 
 import junit.framework.TestCase;
-import wicket.contrib.tinymce.TinyMCEPanel;
+import wicket.MarkupContainer;
 import wicket.contrib.tinymce.settings.NoneditablePlugin;
 import wicket.contrib.tinymce.settings.Plugin;
 import wicket.contrib.tinymce.settings.TinyMCESettings;
 import wicket.markup.html.WebComponent;
-import wicket.markup.html.panel.Panel;
 import wicket.markup.html.resources.JavaScriptReference;
 import wicket.util.tester.TestPanelSource;
 import wicket.util.tester.WicketTester;
@@ -53,11 +52,13 @@ public class TinyMCEPanelTest extends TestCase
 	{
 		application.startPanel(new TestPanelSource()
 		{
-			public Panel getTestPanel(String panelId)
+			private static final long serialVersionUID = 1L;
+
+			public void getTestPanel(MarkupContainer parent, String panelId)
 			{
 				TinyMCESettings settings = new TinyMCESettings();
 
-				return new TinyMCEPanel("panel", settings);
+				new TinyMCEPanel(parent, panelId, settings);
 			}
 		});
 
@@ -74,12 +75,14 @@ public class TinyMCEPanelTest extends TestCase
 	{
 		application.startPanel(new TestPanelSource()
 		{
-			public Panel getTestPanel(String panelId)
+			private static final long serialVersionUID = 1L;
+
+			public void getTestPanel(MarkupContainer parent, String panelId)
 			{
 				TinyMCESettings settings = new TinyMCESettings(TinyMCESettings.Theme.advanced);
 				settings.register(new NoneditablePlugin());
 
-				return new TinyMCEPanel("panel", settings);
+				new TinyMCEPanel(parent, panelId, settings);
 			}
 		});
 
@@ -105,12 +108,14 @@ public class TinyMCEPanelTest extends TestCase
 		// Add the panel.
 		application.startPanel(new TestPanelSource()
 		{
-			public Panel getTestPanel(String panelId)
+			private static final long serialVersionUID = 1L;
+
+			public void getTestPanel(MarkupContainer parent, String panelId)
 			{
 				TinyMCESettings settings = new TinyMCESettings(TinyMCESettings.Theme.advanced);
 				settings.register(mockPlugin);
 
-				return new TinyMCEPanel("panel", settings);
+				new TinyMCEPanel(parent, panelId, settings);
 			}
 		});
 
@@ -141,12 +146,14 @@ public class TinyMCEPanelTest extends TestCase
 		// Add the panel.
 		application.startPanel(new TestPanelSource()
 		{
-			public Panel getTestPanel(String panelId)
+			private static final long serialVersionUID = 1L;
+
+			public void getTestPanel(MarkupContainer parent, String panelId)
 			{
 				TinyMCESettings settings = new TinyMCESettings();
 				settings.register(mockPlugin);
 
-				return new TinyMCEPanel("panel", settings);
+				new TinyMCEPanel(parent, panelId, settings);
 			}
 		});
 

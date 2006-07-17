@@ -79,8 +79,8 @@ public class WordTinyMCEPage extends TinyMCEBasePage
         settings.setStatusbarLocation(TinyMCESettings.Location.bottom);
         settings.setVerticalResizing(true);
 
-        add(new TinyMCEPanel("tinyMCE", settings));
-        add(new TextArea("ta", new Model(TEXT)));
+        new TinyMCEPanel(this, "tinyMCE", settings);
+        new TextArea(this, "ta", new Model(TEXT));
     }
 
     private static final String TEXT = "<p>Some paragraph</p>" +

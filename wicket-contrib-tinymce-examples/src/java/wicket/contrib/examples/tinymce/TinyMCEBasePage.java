@@ -13,7 +13,7 @@ public class TinyMCEBasePage extends WicketExamplePage
 
 	public TinyMCEBasePage()
 	{
-		add(new Link("simple")
+		new Link(this, "simple")
 		{
 
 			public void onClick()
@@ -21,8 +21,8 @@ public class TinyMCEBasePage extends WicketExamplePage
 				setResponsePage(SimpleTinyMCEPage.class);
 				setRedirect(true);
 			}
-		});
-		add(new Link("advanced")
+		};
+		new Link(this, "advanced")
 		{
 
 			public void onClick()
@@ -30,8 +30,8 @@ public class TinyMCEBasePage extends WicketExamplePage
 				setResponsePage(AdvancedTinyMCEPage.class);
 				setRedirect(true);
 			}
-		});
-		add(new Link("full")
+		};
+		new Link(this, "full")
 		{
 
 			public void onClick()
@@ -39,8 +39,8 @@ public class TinyMCEBasePage extends WicketExamplePage
 				setResponsePage(FullFeaturedTinyMCEPage.class);
 				setRedirect(true);
 			}
-		});
-		add(new Link("word")
+		};
+		new Link(this, "word")
 		{
 
 			public void onClick()
@@ -48,6 +48,6 @@ public class TinyMCEBasePage extends WicketExamplePage
 				setResponsePage(WordTinyMCEPage.class);
 				setRedirect(true);
 			}
-		});
+		};
 	}
 }

@@ -18,6 +18,7 @@
  */
 package wicket.contrib.examples;
 
+import wicket.MarkupContainer;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.panel.Panel;
 
@@ -28,15 +29,18 @@ import wicket.markup.html.panel.Panel;
  */
 public final class WicketExampleHeader extends Panel
 {
-    /**
+ 	private static final long serialVersionUID = 1L;
+
+	/**
      * Construct.
      *
      * @param id           id of the component
      * @param exampleTitle title of the example
      */
-    public WicketExampleHeader(String id, String exampleTitle)
+    public WicketExampleHeader(MarkupContainer parent, String id, String exampleTitle)
     {
-        super(id);
-        add(new Label("exampleTitle", exampleTitle));
+        super(parent, id);
+        
+        new Label(this, "exampleTitle", exampleTitle);
     }
 }
