@@ -1,6 +1,7 @@
 package wicket.contrib.data.model.bind;
 
 import wicket.AttributeModifier;
+import wicket.MarkupContainer;
 import wicket.Resource;
 import wicket.markup.html.PackageResource;
 import wicket.markup.html.image.Image;
@@ -13,6 +14,11 @@ import wicket.markup.html.link.Link;
  */
 public class InlineEditLink extends Link
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	/** an image for a cancel button */
 	public static final PackageResource CANCEL = PackageResource.get(InlineEditLink.class, "cancel.gif");
 
@@ -23,12 +29,18 @@ public class InlineEditLink extends Link
 	 * @param id
 	 *            the id of this link
 	 */
-	public InlineEditLink(String id)
+	public InlineEditLink(MarkupContainer parent, String id)
 	{
-		super(id);
+		super(parent, id);
 
-		Image image = new Image("image")
+		Image image = new Image(this, "image")
 		{
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
 			protected Resource getImageResource()
 			{
 				if (GridView.isEdit(this))
@@ -41,6 +53,12 @@ public class InlineEditLink extends Link
 
 		image.add(new AttributeModifier("alt", true, new AttributeModel()
 		{
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
 			protected String getAttributeValue()
 			{
 				if (GridView.isEdit(InlineEditLink.this))
@@ -50,13 +68,12 @@ public class InlineEditLink extends Link
 				return getEditAlt();
 			}
 		}));
-
-		add(image);
 	}
 
 	/**
 	 * Toggles the edit status of the list item.
 	 */
+	@Override
 	public void onClick()
 	{
 		if (GridView.isEdit(this))

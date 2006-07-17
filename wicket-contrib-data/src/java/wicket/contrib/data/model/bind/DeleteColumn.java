@@ -1,17 +1,20 @@
 package wicket.contrib.data.model.bind;
 
 import wicket.Component;
+import wicket.MarkupContainer;
 import wicket.model.IModel;
 
-public class DeleteColumn extends AbstractColumn
+public class DeleteColumn<T> extends AbstractColumn<T>
 {
+	private static final long serialVersionUID = 1L;
+
 	public DeleteColumn()
 	{
 		super(null, null);
 	}
 	
-	public Component getComponent(String id, IModel model)
+	public Component getComponent(MarkupContainer parent, String id, IModel<T> model)
 	{
-		return new DeletePanel(id);
+		return new DeletePanel(parent, id);
 	}
 }

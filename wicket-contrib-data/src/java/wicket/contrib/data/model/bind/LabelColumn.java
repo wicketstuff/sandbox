@@ -1,6 +1,7 @@
 package wicket.contrib.data.model.bind;
 
 import wicket.Component;
+import wicket.MarkupContainer;
 import wicket.model.IModel;
 
 /**
@@ -8,15 +9,17 @@ import wicket.model.IModel;
  * 
  * @author Phil Kulak
  */
-public class LabelColumn extends AbstractColumn
+public class LabelColumn<T> extends AbstractColumn<T>
 {
+	private static final long serialVersionUID = 1L;
+
 	public LabelColumn(String displayName, String ognlPath)
 	{
 		super(displayName, ognlPath);
 	}
 
-	public Component getComponent(String id, IModel model)
+	public Component getComponent(MarkupContainer parent, String id, IModel<T> model)
 	{
-		return new LabelPanel(id, makePropertyModel(model));
+		return new LabelPanel(parent, id, makePropertyModel(model));
 	}
 }

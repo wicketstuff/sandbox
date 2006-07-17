@@ -15,8 +15,10 @@ import wicket.model.Model;
  * 
  * @author Phil Kulak
  */
-public class OrderByLink extends Link
+public class OrderByLink extends Link<Integer>
 {
+	private static final long serialVersionUID = 1L;
+
 	private static final Integer UP = new Integer(0);
 
 	private static final Integer DOWN = new Integer(1);
@@ -24,7 +26,7 @@ public class OrderByLink extends Link
 	private static final Integer NONE = new Integer(2);
 
 	private String field;
-	
+
 	private ListView list;
 
 	/**
@@ -35,11 +37,11 @@ public class OrderByLink extends Link
 	 * @param field
 	 *            the field of the list
 	 * @param list
-	 *            the ListView that contains an OrderedPageableList           
+	 *            the ListView that contains an OrderedPageableList
 	 */
-	public OrderByLink(String id, String field, ListView list)
+	public OrderByLink(MarkupContainer parent, String id, String field, ListView list)
 	{
-		super(id, new Model(NONE));
+		super(parent, id, new Model<Integer>(NONE));
 		this.field = field;
 		this.list = list;
 		add(new AttributeModifier("class", true, new AttribModel()));
@@ -48,17 +50,18 @@ public class OrderByLink extends Link
 	/**
 	 * @see wicket.markup.html.link.Link
 	 */
+	@Override
 	public void onClick()
 	{
 		OrderedPageableList listModel = (OrderedPageableList) list.getModelObject();
-		
-        // Add the ordering to the list.
-        list.modelChanging();
-        listModel.addOrder(field);
-        list.modelChanged();
-        
-        // Clear the items so they get redrawn.
-        list.removeAll();
+
+		// Add the ordering to the list.
+		list.modelChanging();
+		listModel.addOrder(field);
+		list.modelChanged();
+
+		// Clear the items so they get redrawn.
+		list.removeAll();
 
 		// Switch our state.
 		switchState();
@@ -87,18 +90,19 @@ public class OrderByLink extends Link
 	{
 		setModelObject(NONE);
 	}
-	
+
 	/**
 	 * Does this link point to the same list?
 	 * 
-	 * @param rhs the link to check
+	 * @param rhs
+	 *            the link to check
 	 * @return true if rhs operates on the same list as this link
 	 */
 	public boolean usesSameList(OrderByLink rhs)
 	{
 		return list == rhs.getList();
 	}
-	
+
 	/**
 	 * Returns the list this link operates on.
 	 * 
@@ -108,7 +112,7 @@ public class OrderByLink extends Link
 	{
 		return list;
 	}
-	
+
 	/**
 	 * Switches the state of this link.
 	 */
@@ -129,11 +133,14 @@ public class OrderByLink extends Link
 	/**
 	 * The class attribute of a order by link.
 	 */
-	private class AttribModel extends AbstractModel
+	private class AttribModel extends AbstractModel<String>
 	{
+		private static final long serialVersionUID = 1L;
+
 		/**
 		 * @see wicket.model.IModel
 		 */
+		@Override
 		public IModel getNestedModel()
 		{
 			return null;
@@ -142,21 +149,27 @@ public class OrderByLink extends Link
 		/**
 		 * @see wicket.model.IModel
 		 */
-		public Object getObject(Component arg0)
+		public String getObject()
 		{
 			Integer state = (Integer) OrderByLink.this.getModelObject();
 			if (state.equals(UP))
+			{
 				return "wicket_orderUp";
+			}
 			if (state.equals(DOWN))
+			{
 				return "wicket_orderDown";
+			}
 			else
+			{
 				return "wicket_orderNone";
+			}
 		}
 
 		/**
 		 * @see wicket.model.IModel
 		 */
-		public void setObject(Component component, Object object)
+		public void setObject(String object)
 		{
 			throw new UnsupportedOperationException();
 		}

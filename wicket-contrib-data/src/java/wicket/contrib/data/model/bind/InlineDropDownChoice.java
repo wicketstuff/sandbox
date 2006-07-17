@@ -2,6 +2,7 @@ package wicket.contrib.data.model.bind;
 
 import java.util.List;
 
+import wicket.MarkupContainer;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.form.DropDownChoice;
 import wicket.model.IModel;
@@ -11,25 +12,33 @@ import wicket.model.IModel;
  * 
  * @author Phil Kulak
  */
-public class InlineDropDownChoice extends InlineValidatingComponent
+public class InlineDropDownChoice<T> extends InlineValidatingComponent<T>
 {
-	public InlineDropDownChoice(String id, IModel model, List choices)
+	private static final long serialVersionUID = 1L;
+
+	public InlineDropDownChoice(MarkupContainer parent, String id, IModel<T> model, List<T> choices)
 	{
-		super(id);
-		setFormComponent(new DropDownChoice("dropDownChoice", model, choices)
+		super(parent, id);
+		setFormComponent(new DropDownChoice<T>(this, "dropDownChoice", model, choices)
 		{
+			private static final long serialVersionUID = 1L;
+
+			@Override
 			public boolean isVisible()
 			{
 				return GridView.isEdit(this);
 			}
 		});
 		
-		add(new Label("label", model)
+		new Label(this, "label", model)
 		{
+			private static final long serialVersionUID = 1L;
+
+			@Override
 			public boolean isVisible()
 			{
 				return !GridView.isEdit(this);
 			}
-		});
+		};
 	}
 }

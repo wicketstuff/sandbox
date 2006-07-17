@@ -171,9 +171,9 @@ public final class SearchModel extends AbstractReadOnlyDetachableModel
 	}
 
 	/**
-	 * @see wicket.model.AbstractDetachableModel#onGetObject(Component)
+	 * @see wicket.model.AbstractDetachableModel#onGetObject()
 	 */
-	protected Object onGetObject(final Component component)
+	protected Object onGetObject()
 	{
 		return list;
 	}

@@ -3,6 +3,7 @@ package wicket.contrib.data.model.bind;
 import java.io.Serializable;
 
 import wicket.Component;
+import wicket.MarkupContainer;
 import wicket.model.IModel;
 
 /**
@@ -10,7 +11,7 @@ import wicket.model.IModel;
  * 
  * @author Phil Kulak
  */
-public interface IColumn extends Serializable
+public interface IColumn<T> extends Serializable
 {
 	/**
 	 * @return the name to display in the header of this column
@@ -44,5 +45,5 @@ public interface IColumn extends Serializable
 	 *            the model the returned component should use
 	 * @return a component representing each data cell for this column
 	 */
-	public Component getComponent(String id, IModel model);
+	public Component getComponent(MarkupContainer parent, String id, IModel<T> model);
 }

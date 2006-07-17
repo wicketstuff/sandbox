@@ -18,31 +18,32 @@ import wicket.model.IModel;
  * 
  * @author Phil Kulak
  */
-public abstract class ValidatingColumn extends AbstractColumn
+public abstract class ValidatingColumn<T> extends AbstractColumn<T>
 {
-	private List validators = new ArrayList();
-	private Class type;
-	
+	private List<AbstractValidator> validators = new ArrayList<AbstractValidator>();
+
+	private Class<T> type;
+
 	public ValidatingColumn(String displayName, String modelPath)
 	{
 		super(displayName, modelPath);
 	}
-	
+
 	public ValidatingColumn add(AbstractValidator validator)
 	{
 		validators.add(validator);
 		return this;
 	}
-	
-	protected InlineValidatingPanel prepare(InlineValidatingPanel panel, IModel model)
+
+	protected InlineValidatingPanel prepare(InlineValidatingPanel panel, IModel<T> model)
 	{
 		for (Iterator i = validators.iterator(); i.hasNext();)
 		{
 			final AbstractValidator validator = (AbstractValidator) i.next();
-			
+
 			// Build the resource key.
-			final String resourceKey = model.getClass().getName() + "."
-				+ getModelPath() + "." + validator.getClass().getName();
+			final String resourceKey = model.getClass().getName()
+					+ "." + getModelPath() + "." + validator.getClass().getName();
 
 			IValidator proxiedValidator = (IValidator) Proxy.newProxyInstance(validator
 					.getClass().getClassLoader(), new Class[] {IValidator.class},
@@ -61,18 +62,18 @@ public abstract class ValidatingColumn extends AbstractColumn
 
 			panel.add(proxiedValidator);
 		}
-		
+
 		if (type != null)
 		{
 			panel.setType(type);
 		}
 		return panel;
 	}
-	
+
 	/**
 	 * Sets the conversion type for this component.
 	 */
-	public ValidatingColumn setType(Class type)
+	public ValidatingColumn setType(Class<T> type)
 	{
 		this.type = type;
 		return this;

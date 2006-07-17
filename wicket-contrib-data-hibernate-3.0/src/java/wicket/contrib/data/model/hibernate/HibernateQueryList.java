@@ -12,7 +12,7 @@ import wicket.contrib.data.model.hibernate.IHibernateDao.IHibernateCallback;
  * 
  * @author Phil Kulak
  */
-public class HibernateQueryList extends QueryList
+public class HibernateQueryList<E> extends QueryList<E>
 {
 	private String listQuery;
 	private String countQuery;
@@ -80,13 +80,14 @@ public class HibernateQueryList extends QueryList
         this.useQueryCache = useQueryCache;
 	}
 
-	protected List getItems(final int start, final int max, final String orderBy)
+	@SuppressWarnings("unchecked")
+	protected List<E> getItems(final int start, final int max, final String orderBy)
 	{
-		return (List) dao.execute(new IHibernateCallback()
+		return dao.execute(new IHibernateCallback<List<E>>()
 		{
-			public Object execute(Session session)
+			public List<E> execute(Session session)
 			{
-				return session.createQuery(listQuery + orderBy)
+				return (List<E>)session.createQuery(listQuery + orderBy)
 					.setFirstResult(start)
 					.setMaxResults(max)
 					.setCacheable(useQueryCache)
@@ -95,13 +96,14 @@ public class HibernateQueryList extends QueryList
 		});
 	}
 	
-	protected List getAllItems(final String orderBy)
+	@SuppressWarnings("unchecked")
+	protected List<E> getAllItems(final String orderBy)
 	{
-		return (List) dao.execute(new IHibernateCallback()
+		return dao.execute(new IHibernateCallback<List<E>>()
 		{
-			public Object execute(Session session)
+			public List<E> execute(Session session)
 			{
-				return session.createQuery(listQuery + orderBy)
+				return (List<E>)session.createQuery(listQuery + orderBy)
 					.setCacheable(useQueryCache)
 					.list();
 			}
@@ -110,11 +112,11 @@ public class HibernateQueryList extends QueryList
 
 	protected int getCount()
 	{
-		return ((Integer) dao.execute(new IHibernateCallback()
+		return ((Integer) dao.execute(new IHibernateCallback<Integer>()
 		{
-			public Object execute(Session session)
+			public Integer execute(Session session)
 			{
-				return session.createQuery(countQuery)
+				return (Integer)session.createQuery(countQuery)
 						.setCacheable(useQueryCache)
 						.uniqueResult();
 			}

@@ -3,6 +3,7 @@ package wicket.contrib.data.model.bind;
 import java.util.List;
 
 import wicket.Component;
+import wicket.MarkupContainer;
 import wicket.model.IModel;
 
 /**
@@ -10,20 +11,21 @@ import wicket.model.IModel;
  * 
  * @author Phil Kulak
  */
-public class DropDownChoiceColumn extends ValidatingColumn
+public class DropDownChoiceColumn<T> extends ValidatingColumn<T>
 {
-	private List choices;
-	
-	public DropDownChoiceColumn(String displayName, String ognlPath, List choices)
+	private static final long serialVersionUID = 1L;
+
+	private List<T> choices;
+
+	public DropDownChoiceColumn(String displayName, String ognlPath, List<T> choices)
 	{
 		super(displayName, ognlPath);
 		this.choices = choices;
 	}
-	
-	public Component getComponent(String id, IModel model)
+
+	public Component getComponent(MarkupContainer parent, String id, IModel<T> model)
 	{
-		return prepare(
-			new DropDownChoicePanel(id, makePropertyModel(model), choices), 
-			model);
+		return prepare(new DropDownChoicePanel<T>(parent, id, makePropertyModel(model),
+				choices), model);
 	}
 }

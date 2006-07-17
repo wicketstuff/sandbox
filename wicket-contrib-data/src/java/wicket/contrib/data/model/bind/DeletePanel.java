@@ -1,12 +1,18 @@
 package wicket.contrib.data.model.bind;
 
+import wicket.MarkupContainer;
 import wicket.markup.html.panel.Panel;
 
 public class DeletePanel extends Panel
 {
-	public DeletePanel(String id)
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public DeletePanel(MarkupContainer parent, String id)
 	{
-		super(id);
-		add(new InlineDeleteLink("delete"));
+		super(parent, id);
+		new InlineDeleteLink(this, "delete");
 	}
 }

@@ -13,20 +13,20 @@ import wicket.contrib.data.model.bind.IListDataSource;
 import wicket.contrib.data.model.hibernate.IHibernateDao.IHibernateCallback;
 import wicket.model.IModel;
 
-public class HibernateDataSource implements IListDataSource
+public class HibernateDataSource<T, V> implements IListDataSource<T>
 {
 	private IHibernateDao dao;
-	private OrderedPageableList list;
-	private Class entity;
+	private OrderedPageableList<T> list;
+	private Class<T> entity;
 	
-	public HibernateDataSource(Class entity, IHibernateDao dao)
+	public HibernateDataSource(Class<T> entity, IHibernateDao dao)
 	{
-		list = new HibernateQueryList("FROM " + entity.getName() + " e", dao);
+		list = new HibernateQueryList<T>("FROM " + entity.getName() + " e", dao);
 		this.dao = dao;
 		this.entity = entity;
 	}
 	
-	public HibernateDataSource(Class entity, OrderedPageableList list, 
+	public HibernateDataSource(Class<T> entity, OrderedPageableList<T> list, 
 			IHibernateDao dao)
 	{
 		this.entity = entity;
@@ -34,12 +34,13 @@ public class HibernateDataSource implements IListDataSource
 		this.dao = dao;
 	}
 
-	public OrderedPageableList getList()
+	public OrderedPageableList<T> getList()
 	{
 		return list;
 	}
 
-	public void merge(final Object entity)
+	@SuppressWarnings("unchecked")
+	public void merge(final T entity)
 	{
 		dao.execute(new IHibernateCallback()
 		{
@@ -51,6 +52,7 @@ public class HibernateDataSource implements IListDataSource
 		});
 	}
 
+	@SuppressWarnings("unchecked")
 	public void delete(final Object entity)
 	{
 		dao.execute(new IHibernateCallback()
@@ -63,21 +65,21 @@ public class HibernateDataSource implements IListDataSource
 		});
 	}
 	
-	public List findAll(final Class c)
+	public List<T> findAll(final Class c)
 	{
-		return new HibernateQueryList("FROM " + c.getName(), dao);
+		return new HibernateQueryList<T>("FROM " + c.getName(), dao);
 	}
 
-	public IModel wrap(Object entity)
+	public IModel<T> wrap(T entity)
 	{
-		return new HibernateModel(entity, dao);
+		return new HibernateModel<T, V>(entity, dao);
 	}
 
-	public List getFields()
+	public List<EntityField> getFields()
 	{
-		SessionFactory factory = (SessionFactory) dao.execute(new IHibernateCallback()
+		SessionFactory factory = (SessionFactory) dao.execute(new IHibernateCallback<SessionFactory>()
 		{
-			public Object execute(Session session)
+			public SessionFactory execute(Session session)
 			{
 				return session.getSessionFactory();
 			}
@@ -86,7 +88,7 @@ public class HibernateDataSource implements IListDataSource
 		ClassMetadata meta = factory.getClassMetadata(entity);
 		
 		String[] propNames = meta.getPropertyNames();
-		List columns = new ArrayList(propNames.length);
+		List<EntityField> columns = new ArrayList<EntityField>(propNames.length);
 
 		for (int i = 0; i < propNames.length; i++)
 		{

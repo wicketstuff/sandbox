@@ -2,35 +2,42 @@ package wicket.contrib.data.model.bind;
 
 import java.util.List;
 
+import wicket.MarkupContainer;
 import wicket.markup.html.list.ListItem;
 import wicket.markup.html.list.ListView;
 import wicket.markup.html.panel.Panel;
 import wicket.model.IModel;
 
-public class MultiColumnPanel extends Panel
+public class MultiColumnPanel<T> extends Panel<T>
 {
-	public MultiColumnPanel(String id, IModel model, List columns)
+	private static final long serialVersionUID = 1L;
+
+	public MultiColumnPanel(MarkupContainer parent, String id, IModel<T> model,
+			List<IColumn> columns)
 	{
-		super(id, model);
+		super(parent, id, model);
 		setRenderBodyOnly(true);
-		add(new Columns(columns));
+		new Columns(this, columns);
 	}
-	
-	private class Columns extends ListView
+
+	private class Columns extends ListView<IColumn>
 	{
-		public Columns(List columns)
+		private static final long serialVersionUID = 1L;
+
+		public Columns(MarkupContainer parent, List<IColumn> columns)
 		{
-			super("columns", columns);
-			setOptimizeItemRemoval(true);
+			super(parent, "columns", columns);
+			setReuseItems(true);
 			setRenderBodyOnly(true);
 		}
-		
+
+		@Override
+		@SuppressWarnings("unchecked")
 		protected void populateItem(ListItem item)
 		{
-			IModel model = MultiColumnPanel.this.getModel();
+			IModel<T> model = MultiColumnPanel.this.getModel();
 			IColumn col = (IColumn) item.getModelObject();
-			
-			item.add(col.getComponent("column", model));
+			col.getComponent(item, "column", model);
 			item.setRenderBodyOnly(true);
 		}
 	}

@@ -14,15 +14,16 @@ public interface IHibernateDao extends Serializable
 	/**
 	 * Executes the callback and returns the result.
 	 * 
-	 * @param callback the callback to execute
+	 * @param callback
+	 *            the callback to execute
 	 * @return the object returned by HibernateCallback.execute
 	 */
-	public Object execute(IHibernateCallback callback);
-	
+	public <T> T execute(IHibernateCallback<T> callback);
+
 	/**
 	 * Passed into the execute method of IHibernateDao.
 	 */
-	public interface IHibernateCallback
+	public interface IHibernateCallback<E>
 	{
 		/**
 		 * Uses the provided session to perform and reading from or writing to
@@ -31,6 +32,6 @@ public interface IHibernateDao extends Serializable
 		 * @param session
 		 * @return the result of any queries executed
 		 */
-		public Object execute(Session session);
+		public E execute(Session session);
 	}
 }

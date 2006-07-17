@@ -1,5 +1,6 @@
 package wicket.contrib.data.model.bind;
 
+import wicket.MarkupContainer;
 import wicket.markup.html.form.validation.IValidator;
 import wicket.markup.html.panel.Panel;
 
@@ -8,13 +9,17 @@ import wicket.markup.html.panel.Panel;
  * 
  * @author Phil Kulak
  */
-public class InlineValidatingPanel extends Panel
+public class InlineValidatingPanel<T> extends Panel<T>
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	InlineValidatingComponent component;
 	
-	public InlineValidatingPanel(String id)
+	public InlineValidatingPanel(MarkupContainer parent, String id)
 	{
-		super(id);
+		super(parent, id);
 	}
 	
 	/**
@@ -23,7 +28,6 @@ public class InlineValidatingPanel extends Panel
 	public void setComponent(InlineValidatingComponent component)
 	{
 		this.component = component;
-		add(component);
 	}
 	
 	/**

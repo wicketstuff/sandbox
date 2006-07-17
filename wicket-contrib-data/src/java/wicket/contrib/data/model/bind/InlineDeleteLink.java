@@ -1,5 +1,6 @@
 package wicket.contrib.data.model.bind;
 
+import wicket.MarkupContainer;
 import wicket.markup.html.PackageResource;
 import wicket.markup.html.image.Image;
 import wicket.markup.html.link.Link;
@@ -15,6 +16,10 @@ import wicket.util.string.Strings;
  */
 public class InlineDeleteLink extends Link
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	/** the image representing this link */
 	public static final PackageResource DELETE = PackageResource.get(InlineEditLink.class, "delete.gif");
 
@@ -22,17 +27,17 @@ public class InlineDeleteLink extends Link
 	 * @param id
 	 *            the id of this link
 	 */
-	public InlineDeleteLink(String id)
+	public InlineDeleteLink(MarkupContainer parent, String id)
 	{
-		super(id);
-		Image image = new Image("image");
+		super(parent, id);
+		Image image = new Image(this, "image");
 		image.setImageResource(DELETE);
-		add(image);
 	}
 
 	/**
 	 * Deletes the row's model object from the database.
 	 */
+	@Override
 	public void onClick()
 	{
 		GridView.deleteRowModel(this);

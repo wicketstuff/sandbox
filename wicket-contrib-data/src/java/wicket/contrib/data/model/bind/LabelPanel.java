@@ -1,5 +1,6 @@
 package wicket.contrib.data.model.bind;
 
+import wicket.MarkupContainer;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.panel.Panel;
 import wicket.model.IModel;
@@ -12,16 +13,20 @@ import wicket.model.Model;
  */
 public class LabelPanel extends Panel
 {
-	public LabelPanel(String id, IModel model)
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public LabelPanel(MarkupContainer parent, String id, IModel model)
 	{
-		super(id);
-		Label label = new Label("label", model);
+		super(parent, id);
+		Label label = new Label(this, "label", model);
 		label.setRenderBodyOnly(true);
-		add(label);
 	}
 
-	public LabelPanel(String id, String label)
+	public LabelPanel(MarkupContainer parent, String id, String label)
 	{
-		this(id, new Model(label));
+		this(parent, id, new Model(label));
 	}
 }

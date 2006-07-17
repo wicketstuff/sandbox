@@ -1,5 +1,6 @@
 package wicket.contrib.data.model.bind;
 
+import wicket.MarkupContainer;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.list.ListView;
 import wicket.markup.html.panel.Panel;
@@ -11,10 +12,16 @@ import wicket.markup.html.panel.Panel;
  */
 public class OrderByPanel extends Panel
 {
-	public OrderByPanel(String id, String field, String displayName, ListView list)
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public OrderByPanel(MarkupContainer parent, String id, String field,
+			String displayName, ListView list)
 	{
-		super(id);
-		add(new OrderByLink("orderBy", field, list)
-            .add(new Label("name", displayName)));
+		super(parent, id);
+		OrderByLink l = new OrderByLink(this, "orderBy", field, list);
+		new Label(l, "name", displayName);
 	}
 }

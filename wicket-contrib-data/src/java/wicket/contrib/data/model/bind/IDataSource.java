@@ -9,25 +9,25 @@ import wicket.model.IModel;
  * 
  * @author Phil Kulak
  */
-public interface IDataSource
+public interface IDataSource<T>
 {
 	/**
 	 * Saves or updates the persistent state of the given object.
 	 */
-	public void merge(Object entity);
+	public void merge(T entity);
 	
 	/**
 	 * Deletes the object from the database.
 	 * 
 	 * @param entity the object to delete
 	 */
-	public void delete(Object entity);
+	public void delete(T entity);
 	
 	/**
 	 * @param c the class of the object to search for
 	 * @return all persistent instances of the class
 	 */
-	public List findAll(Class c);
+	public List<T> findAll(Class<T> c);
 	
 	/**
 	 * Wraps the given object in an IModel. The model returned MUST properly
@@ -36,5 +36,5 @@ public interface IDataSource
 	 * @param entity the object to wrap
 	 * @return the object wraped in a detachable model
 	 */
-	public IModel wrap(Object entity);
+	public IModel<T> wrap(T entity);
 }

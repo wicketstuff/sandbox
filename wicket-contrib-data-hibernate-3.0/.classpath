@@ -1,26 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <classpath>
-  <classpathentry excluding="" kind="src" path="src/java">
-  </classpathentry>
-  <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
-  </classpathentry>
-  <classpathentry kind="var" path="MAVEN_REPO/commons-collections/jars/commons-collections-2.1.jar">
-  </classpathentry>
-  <classpathentry kind="var" path="MAVEN_REPO/commons-logging/jars/commons-logging-1.0.4.jar">
-  </classpathentry>
-  <classpathentry kind="var" path="MAVEN_REPO/cglib/jars/cglib-nodep-2.1_2.jar">
-  </classpathentry>
-  <classpathentry kind="var" path="MAVEN_REPO/hibernate/jars/hibernate-3.0.5.jar">
-  </classpathentry>
-  <classpathentry kind="var" path="MAVEN_REPO/hibernate/jars/antlr-2.7.5H3.jar">
-  </classpathentry>
-  <classpathentry kind="src" path="/wicket">
-  </classpathentry>
-  <classpathentry kind="src" path="/wicket-extensions">
-  </classpathentry>
-  <classpathentry kind="src" path="/wicket-contrib-data">
-  </classpathentry>
-  <classpathentry kind="output" path="target/classes">
-  </classpathentry>
+	<classpathentry kind="src" path="src/java"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/J2SE-1.5"/>
+	<classpathentry kind="var" path="MAVEN_REPO/commons-collections/jars/commons-collections-2.1.jar"/>
+	<classpathentry kind="var" path="MAVEN_REPO/commons-logging/jars/commons-logging-1.0.4.jar"/>
+	<classpathentry kind="var" path="MAVEN_REPO/cglib/jars/cglib-nodep-2.1_2.jar"/>
+	<classpathentry kind="var" path="MAVEN_REPO/hibernate/jars/hibernate-3.0.5.jar"/>
+	<classpathentry kind="var" path="MAVEN_REPO/hibernate/jars/antlr-2.7.5H3.jar"/>
+	<classpathentry kind="src" path="/wicket"/>
+	<classpathentry kind="src" path="/wicket-extensions"/>
+	<classpathentry kind="src" path="/wicket-contrib-data"/>
+	<classpathentry kind="output" path="target/classes"/>
 </classpath>

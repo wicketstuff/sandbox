@@ -1,6 +1,5 @@
 package wicket.contrib.data.model;
 
-import wicket.Component;
 import wicket.WicketRuntimeException;
 import wicket.model.AbstractDetachableModel;
 import wicket.model.IModel;
@@ -13,18 +12,23 @@ import wicket.model.IModel;
  * 
  * @author Phil Kulak
  */
-public class BlankModel extends AbstractDetachableModel
+public class BlankModel<T> extends AbstractDetachableModel<T>
 {
-	private Object object;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
-	private Class objectClass;
+	private T object;
+
+	private Class<T> objectClass;
 	
 	/**
 	 * Constructor
 	 * 
 	 * @param objectClass the class that will be used to create new beans
 	 */
-	public BlankModel(Class objectClass)
+	public BlankModel(Class<T> objectClass)
 	{
 		this.objectClass = objectClass;
 	}
@@ -32,11 +36,16 @@ public class BlankModel extends AbstractDetachableModel
 	/**
 	 * @see wicket.model.AbstractDetachableModel#getNestedModel()
 	 */
+	@Override
 	public IModel getNestedModel()
 	{
 		return null;
 	}
 
+	/**
+	 * @see wicket.model.AbstractDetachableModel#onAttach()
+	 */
+	@Override
 	protected void onAttach()
 	{
 		try
@@ -50,19 +59,32 @@ public class BlankModel extends AbstractDetachableModel
 		}
 	}
 
+	/**
+	 * @see wicket.model.AbstractDetachableModel#onDetach()
+	 */
+	@Override
 	protected void onDetach()
 	{
 		object = null;
 	}
 
-	protected Object onGetObject(Component component)
+	/**
+	 * @see wicket.model.AbstractDetachableModel#onGetObject()
+	 */
+	@Override
+	protected T onGetObject()
 	{
 		return object;
 	}
 
-	protected void onSetObject(Component component, Object object)
+	/**
+	 * @see wicket.model.AbstractDetachableModel#onSetObject(java.lang.Object)
+	 */
+	@Override
+	@SuppressWarnings("unchecked")
+	protected void onSetObject(T object)
 	{
 		this.object = object;
-		this.objectClass = object.getClass();
+		this.objectClass = (Class<T>)object.getClass();
 	}
 }

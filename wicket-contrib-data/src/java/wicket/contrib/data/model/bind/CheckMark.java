@@ -1,5 +1,6 @@
 package wicket.contrib.data.model.bind;
 
+import wicket.MarkupContainer;
 import wicket.Resource;
 import wicket.WicketRuntimeException;
 import wicket.markup.html.PackageResource;
@@ -16,17 +17,21 @@ import wicket.util.string.Strings;
  */
 public class CheckMark extends Image
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	/** the image of a check mark */
 	public static final PackageResource IMAGE = PackageResource.get(CheckMark.class, "checkMark.gif");
 
-	public CheckMark(String id, IModel model)
+	public CheckMark(MarkupContainer parent, String id, IModel model)
 	{
-		super(id, model);
+		super(parent, id, model);
 	}
 	
-	public CheckMark(String id, Boolean checked)
+	public CheckMark(MarkupContainer parent, String id, Boolean checked)
 	{
-		super(id, new Model(checked));
+		super(parent, id, new Model(checked));
 	}
 
 	/**
@@ -35,6 +40,7 @@ public class CheckMark extends Image
 	 * 
 	 * @return true if the check mark is visible
 	 */
+	@Override
 	public boolean isVisible()
 	{
 		String value = this.getModelObjectAsString();
@@ -48,6 +54,7 @@ public class CheckMark extends Image
 		}
 	}
 
+	@Override
 	protected Resource getImageResource()
 	{
 		return IMAGE;

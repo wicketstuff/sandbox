@@ -2,6 +2,7 @@ package wicket.contrib.data.model.bind;
 
 import java.util.List;
 
+import wicket.MarkupContainer;
 import wicket.model.IModel;
 
 /**
@@ -9,14 +10,16 @@ import wicket.model.IModel;
  * 
  * @author Phil Kulak
  */
-public class DropDownChoicePanel extends InlineValidatingPanel
+public class DropDownChoicePanel<T> extends InlineValidatingPanel<T>
 {
-	public DropDownChoicePanel(String id, IModel model, List choices)
+	private static final long serialVersionUID = 1L;
+
+	public DropDownChoicePanel(MarkupContainer parent, String id, IModel<T> model,
+			List<T> choices)
 	{
-		super(id);
-		InlineDropDownChoice choice = new InlineDropDownChoice(
-			"inlineDropDownChoice", model, choices);
+		super(parent, id);
+		InlineDropDownChoice<T> choice = new InlineDropDownChoice<T>(this,
+				"inlineDropDownChoice", model, choices);
 		choice.setRenderBodyOnly(true);
-		add(choice);
 	}
 }
