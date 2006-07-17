@@ -3,6 +3,7 @@ package wicket.contrib.data.model.bind;
 import java.util.List;
 
 import wicket.Component;
+import wicket.MarkupContainer;
 import wicket.WicketRuntimeException;
 import wicket.contrib.data.model.DetachableList;
 import wicket.markup.html.form.Form;
@@ -20,7 +21,7 @@ import wicket.model.Model;
  * 
  * @author Phil Kulak
  */
-public abstract class GridView extends Form
+public abstract class GridView<T> extends Form<T>
 {
 	/** used when no model is being edited */
 	public static final IModel EMPTY_MODEL = new Model();
@@ -37,12 +38,11 @@ public abstract class GridView extends Form
 	 * @param perPage
 	 *            the number of items to display per page
 	 */
-	public GridView(String id, IListDataSource dataSource, int perPage)
+	public GridView(MarkupContainer parent, String id, IListDataSource<T> dataSource, int perPage)
 	{
-		super(id, EMPTY_MODEL);
+		super(parent, id, EMPTY_MODEL);
 		this.dataSource = dataSource;
-		listView = new FormList(new DetachableList(dataSource.getList()), perPage);
-		add(listView);
+		listView = new FormList(this, new DetachableList(dataSource.getList()), perPage);
 	}
 
 	/**
@@ -89,20 +89,24 @@ public abstract class GridView extends Form
 
 	private final class FormList extends PageableListView
 	{
-		public FormList(IModel model, int perPage)
+		private static final long serialVersionUID = 1L;
+
+		public FormList(MarkupContainer parent, IModel model, int perPage)
 		{
-			super("rows", model, perPage);
-			setOptimizeItemRemoval(true);
+			super(parent, "rows", model, perPage);
+			setReuseItems(true);
 		}
 
+		@Override
 		protected void populateItem(ListItem item)
 		{
 			GridView.this.populateItem(item);
 		}
         
-        public IModel getListItemModel(IModel listViewModel, int index)
+        @Override
+		public IModel getListItemModel(IModel listViewModel, int index)
     	{
-    		Object object = ((List) listViewModel.getObject(this)).get(index);
+    		Object object = ((List) listViewModel.getObject()).get(index);
             return dataSource.wrap(object);
     	}
 	}

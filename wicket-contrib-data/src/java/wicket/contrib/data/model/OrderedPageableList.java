@@ -43,10 +43,10 @@ import wicket.model.IDetachable;
  * @author Phil Kulak
  * @author Eelco Hillenius
  */
-public abstract class OrderedPageableList extends AbstractList
+public abstract class OrderedPageableList<E> extends AbstractList<E>
 		implements IDetachable
 {
-	private List window = null;
+	private List<E> window = null;
 
 	private int windowStart = 0;
 
@@ -54,20 +54,28 @@ public abstract class OrderedPageableList extends AbstractList
 
 	private int totalElements = -1;
 
-	private List ordering = new ArrayList(3);
+	private List<ListOrder> ordering = new ArrayList<ListOrder>(3);
 	
 	private int orderingMaxFields = 2;
 	
 	private boolean usePaging = true;
 	
 	/** a handy replacement when Collections.EMPTY_LIST just won't do. **/
+	@SuppressWarnings("unchecked")
 	public static final OrderedPageableList EMPTY_LIST = new OrderedPageableList()
 	{
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
+		@Override
 		protected List getItems(int start, int max, List ordering)
 		{
 			return null;
 		}
 
+		@Override
 		protected int getCount()
 		{
 			return 0;
@@ -78,7 +86,7 @@ public abstract class OrderedPageableList extends AbstractList
 	 * @param windowSize the new size of the pageing window
 	 * @return itself to allow chaining
 	 */
-	public OrderedPageableList setWindowSize(int windowSize)
+	public OrderedPageableList<E> setWindowSize(int windowSize)
 	{
 		this.windowSize = windowSize;
 		return this;
@@ -88,7 +96,7 @@ public abstract class OrderedPageableList extends AbstractList
 	 * @param orderingMaxFields the maximum number of orderings to remember
 	 * @return itself to allow chaining
 	 */
-	public OrderedPageableList setOrderingMaxFields(int orderingMaxFields)
+	public OrderedPageableList<E> setOrderingMaxFields(int orderingMaxFields)
 	{
 		this.orderingMaxFields = orderingMaxFields;
 		return this;
@@ -98,7 +106,7 @@ public abstract class OrderedPageableList extends AbstractList
 	 * @param usePaging false to have this list fetch all items when any one is needed
 	 * @return itself to allow chaining
 	 */
-	public OrderedPageableList setUsePaging(boolean usePaging)
+	public OrderedPageableList<E> setUsePaging(boolean usePaging)
 	{
 		this.usePaging = usePaging;
 		return this;
@@ -113,7 +121,7 @@ public abstract class OrderedPageableList extends AbstractList
 	 * @param ordering the list of orderings to use                  
 	 * @return all the items in the current window
 	 */
-	protected abstract List getItems(int start, int max, List ordering);
+	protected abstract List<E> getItems(int start, int max, List<ListOrder> ordering);
 	
 	/**
 	 * Override this method to return all items in the list. This doesn't have
@@ -123,7 +131,7 @@ public abstract class OrderedPageableList extends AbstractList
 	 * @param ordering the list of orderings to use
 	 * @return all items
 	 */
-	protected List getAllItems(List ordering)
+	protected List<E> getAllItems(List<ListOrder> ordering)
 	{
 		return null;
 	}
@@ -150,7 +158,7 @@ public abstract class OrderedPageableList extends AbstractList
 	 * @param field the field to order by
 	 * @return itself to allow chaining
 	 */
-	public OrderedPageableList addOrder(String field)
+	public OrderedPageableList<E> addOrder(String field)
 	{
 		if (orderingMaxFields == 0) {
 			return this;
@@ -162,7 +170,7 @@ public abstract class OrderedPageableList extends AbstractList
 		// If it exists, remove it and swap it's ordering.
 		if (i != -1)
 		{
-			order = (ListOrder) ordering.remove(i);
+			order = ordering.remove(i);
 			order.switchOrder();
 		}
 
@@ -181,7 +189,7 @@ public abstract class OrderedPageableList extends AbstractList
 	/**
 	 * Removes the ordering on the given field.
 	 */
-	public OrderedPageableList removeOrder(String field)
+	public OrderedPageableList<E> removeOrder(String field)
 	{
 		ordering.remove(new ListOrder(field));
 		return this;
@@ -194,15 +202,22 @@ public abstract class OrderedPageableList extends AbstractList
 	 * 
 	 * @see java.util.List#get(int)
 	 */
-	public final Object get(int index)
+	@Override
+	public final E get(int index)
 	{
 		if (window == null)
+		{
 			resetWindow(index);
+		}
 
 		if (index >= size())
+		{
 			throw new IndexOutOfBoundsException("Index greater then size - 1");
+		}
 		if (index < 0)
+		{
 			throw new IndexOutOfBoundsException("Index less than zero.");
+		}
 
 		int relativeIndex = index - windowStart;
 
@@ -213,12 +228,14 @@ public abstract class OrderedPageableList extends AbstractList
 		}
 		
 		if (relativeIndex >= window.size())
+		{
 			throw new IndexOutOfBoundsException("The count query has returned a " +
 				"number greater then the amount of records in the data set or " +
 				"get() has been called for a row that doesn't exist. If this " +
 				"exception was thrown after adding an ordering, check that the " +
 				"ordering didn't introduce an inner join that reduced the size " +
 				"of the record set. ");
+		}
 		
 		return window.get(relativeIndex);
 	}
@@ -226,10 +243,13 @@ public abstract class OrderedPageableList extends AbstractList
 	/**
 	 * @see java.util.List#size()
 	 */
+	@Override
 	public final int size()
 	{
 		if (totalElements == -1)
+		{
 			totalElements = getCountInternal();
+		}
 
 		return totalElements;
 	}

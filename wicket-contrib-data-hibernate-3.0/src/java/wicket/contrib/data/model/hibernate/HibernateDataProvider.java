@@ -17,9 +17,9 @@ import wicket.model.Model;
  * 
  * @author Phil Kulak
  */
-public abstract class HibernateDataProvider extends SortableDataProvider
+public abstract class HibernateDataProvider<T, V> extends SortableDataProvider<T>
 {
-	private IModel hibernateDao;
+	private IModel<IHibernateDao> hibernateDao;
 
 	private boolean unproxy = false;
 
@@ -44,41 +44,45 @@ public abstract class HibernateDataProvider extends SortableDataProvider
 
 	public HibernateDataProvider(IHibernateDao hibernateDao)
 	{
-		this.hibernateDao = new Model(hibernateDao);
+		this.hibernateDao = new Model<IHibernateDao>(hibernateDao);
 	}
 
-	public HibernateDataProvider(IModel hibernateDao)
+	public HibernateDataProvider(IModel<IHibernateDao> hibernateDao)
 	{
 		this.hibernateDao = hibernateDao;
 	}
 
-	public IModel model(Object object)
+	public IModel<T> model(T object)
 	{
-		HibernateModel ret = new HibernateModel(object, hibernateDao, unproxy);
+		HibernateModel<T, V> ret = new HibernateModel<T, V>(object, hibernateDao, unproxy);
 		ret.setEvict(evict);
 		return ret;
 	}
 
-	public Iterator iterator(final int first, final int count)
+	@SuppressWarnings("unchecked")
+	public Iterator<T> iterator(final int first, final int count)
 	{
-		return (Iterator) getHibernateDao().execute(new IHibernateCallback()
-		{
-			public Object execute(Session session)
-			{
-				return iterator(first, count, session);
-			}
-		});
+		return (Iterator<T>) getHibernateDao().execute(
+				new IHibernateCallback<Iterator<T>>()
+				{
+					public Iterator<T> execute(Session session)
+					{
+						return iterator(first, count, session);
+					}
+				});
 	}
 
+	@SuppressWarnings("unchecked")
 	public int size()
 	{
-		Integer result = (Integer) getHibernateDao().execute(new IHibernateCallback()
-		{
-			public Object execute(Session session)
-			{
-				return size(session);
-			}
-		});
+		Integer result = (Integer) getHibernateDao().execute(
+				new IHibernateCallback<Integer>()
+				{
+					public Integer execute(Session session)
+					{
+						return size(session);
+					}
+				});
 
 		return result.intValue();
 	}
@@ -147,10 +151,10 @@ public abstract class HibernateDataProvider extends SortableDataProvider
 
 	private IHibernateDao getHibernateDao()
 	{
-		return (IHibernateDao) hibernateDao.getObject(null);
+		return hibernateDao.getObject();
 	}
 
-	protected abstract Iterator iterator(int first, int count, Session session);
+	protected abstract Iterator<T> iterator(int first, int count, Session session);
 
-	protected abstract Object size(Session session);
+	protected abstract Integer size(Session session);
 }

@@ -1,5 +1,6 @@
 package wicket.contrib.data.model.bind;
 
+import wicket.MarkupContainer;
 import wicket.markup.html.panel.Panel;
 import wicket.model.IModel;
 
@@ -11,9 +12,14 @@ import wicket.model.IModel;
  */
 public class CheckBoxPanel extends Panel
 {
-	public CheckBoxPanel(String id, IModel model)
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public CheckBoxPanel(MarkupContainer parent, String id, IModel model)
 	{
-		super(id);
-		add(new InlineCheckBox("inlineCheckBox", model));
+		super(parent, id);
+		new InlineCheckBox(this, "inlineCheckBox", model);
 	}
 }

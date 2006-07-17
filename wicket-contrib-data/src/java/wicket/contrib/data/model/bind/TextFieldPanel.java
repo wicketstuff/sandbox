@@ -1,5 +1,6 @@
 package wicket.contrib.data.model.bind;
 
+import wicket.MarkupContainer;
 import wicket.model.IModel;
 
 /**
@@ -9,10 +10,15 @@ import wicket.model.IModel;
  */
 public class TextFieldPanel extends InlineValidatingPanel
 {
-	public TextFieldPanel(String id, IModel model)
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public TextFieldPanel(MarkupContainer parent, String id, IModel model)
 	{
-		super(id);
-		InlineTextField field = new InlineTextField("inlineTextField", model);
+		super(parent, id);
+		InlineTextField field = new InlineTextField(this, "inlineTextField", model);
 		field.setRenderBodyOnly(true);
 		setComponent(field);
 	}

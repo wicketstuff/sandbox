@@ -8,7 +8,7 @@ import wicket.model.PropertyModel;
  * 
  * @author Phil Kulak
  */
-public abstract class AbstractColumn implements IColumn
+public abstract class AbstractColumn<T> implements IColumn<T>
 {
 	private String displayName;
 
@@ -55,7 +55,7 @@ public abstract class AbstractColumn implements IColumn
 	 * @param allowOrderBy
 	 * @return an IColumn to support chaining
 	 */
-	public IColumn setAllowOrderBy(boolean allowOrderBy)
+	public IColumn<T> setAllowOrderBy(boolean allowOrderBy)
 	{
 		this.allowOrderBy = allowOrderBy;
 		return this;
@@ -66,7 +66,7 @@ public abstract class AbstractColumn implements IColumn
 	 * @param orderByPath
 	 * @return an IColumn to support chaining
 	 */
-	public IColumn setOrderByPath(String orderByPath)
+	public IColumn<T> setOrderByPath(String orderByPath)
 	{
 		this.orderByPath = orderByPath;
 		return this;
@@ -87,8 +87,8 @@ public abstract class AbstractColumn implements IColumn
 		return orderByPath;
 	}
 	
-	protected PropertyModel makePropertyModel(IModel model)
+	protected PropertyModel<T> makePropertyModel(IModel<T> model)
 	{
-		return new PropertyModel(model, getModelPath());
+		return new PropertyModel<T>(model, getModelPath());
 	}
 }

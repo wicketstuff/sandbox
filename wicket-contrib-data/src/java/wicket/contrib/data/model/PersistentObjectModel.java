@@ -1,26 +1,23 @@
 /*
- * $Id$
- * $Revision$
- * $Date$
- *
- * ====================================================================
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *  http://www.apache.org/licenses/LICENSE-2.0
- *
+ * $Id$ $Revision$ $Date$
+ * 
+ * ==================================================================== Licensed
+ * under the Apache License, Version 2.0 (the "License"); you may not use this
+ * file except in compliance with the License. You may obtain a copy of the
+ * License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 package wicket.contrib.data.model;
 
 import java.io.Serializable;
 
-import wicket.Component;
 import wicket.model.AbstractDetachableModel;
 import wicket.model.IModel;
 import wicket.model.Model;
@@ -32,36 +29,42 @@ import wicket.model.Model;
  * <p>
  * The actual loading of the object is delegated to the select object action.
  * </p>
- *
+ * 
  * @author Eelco Hillenius
  */
-public class PersistentObjectModel extends AbstractDetachableModel
+public class PersistentObjectModel<T, V> extends AbstractDetachableModel<T>
 {
+	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Transient flag to prevent multiple detach/attach scenario. We need to maintain this
-	 * flag as we allow 'null' model values!
+	 * Transient flag to prevent multiple detach/attach scenario. We need to
+	 * maintain this flag as we allow 'null' model values!
 	 */
 	private transient boolean attached = false;
+
 	/** model that provides the object id. */
-	private IModel idModel;
+	private IModel<V> idModel;
 
 	/** The (temporary) detail object. */
-	private transient Object object;
+	private transient T object;
 
 	/** action that loads the object. */
-	private ISelectObjectAction selectObjectAction;
+	private ISelectObjectAction<T, V> selectObjectAction;
 
 	/**
 	 * Construct with a model that provides the id.
-	 * @param idModel the model that provides the id
-	 * @param selectObjectAction action that loads the object
+	 * 
+	 * @param idModel
+	 *            the model that provides the id
+	 * @param selectObjectAction
+	 *            action that loads the object
 	 */
-	public PersistentObjectModel(IModel idModel, ISelectObjectAction selectObjectAction)
+	public PersistentObjectModel(IModel<V> idModel,
+			ISelectObjectAction<T, V> selectObjectAction)
 	{
 		if (idModel == null) // consider same as null id
 		{
-			this.idModel = new Model(null);
+			this.idModel = new Model<V>(null);
 		}
 		else
 		{
@@ -72,39 +75,46 @@ public class PersistentObjectModel extends AbstractDetachableModel
 
 	/**
 	 * Construct with a model that provides the id.
-	 * @param selectObjectAction action that loads the object
+	 * 
+	 * @param selectObjectAction
+	 *            action that loads the object
 	 */
-	public PersistentObjectModel(ISelectObjectAction selectObjectAction)
+	public PersistentObjectModel(ISelectObjectAction<T, V> selectObjectAction)
 	{
-		this(new Model(null), selectObjectAction);
+		this(new Model<V>(null), selectObjectAction);
 	}
 
 	/**
 	 * Construct with an id.
-	 * @param id the object's id; will be wrapped in a {@link Model}
-	 * @param selectObjectAction action that loads the object
+	 * 
+	 * @param id
+	 *            the object's id; will be wrapped in a {@link Model}
+	 * @param selectObjectAction
+	 *            action that loads the object
 	 */
-	public PersistentObjectModel(Serializable id, ISelectObjectAction selectObjectAction)
+	public PersistentObjectModel(V id, ISelectObjectAction<T, V> selectObjectAction)
 	{
-		this.idModel = new Model(id);
+		this.idModel = new Model<V>(id);
 		this.selectObjectAction = selectObjectAction;
 	}
 
 	/**
 	 * Gets the id.
+	 * 
 	 * @return the id
 	 */
-	public final Object getId()
+	public final V getId()
 	{
-		Object id = idModel.getObject(null);
+		V id = idModel.getObject();
 		return id;
 	}
 
 	/**
 	 * Gets the model that provides the object id.
+	 * 
 	 * @return the model that provides the object id
 	 */
-	public final IModel getIdModel()
+	public final IModel<V> getIdModel()
 	{
 		return idModel;
 	}
@@ -112,6 +122,7 @@ public class PersistentObjectModel extends AbstractDetachableModel
 	/**
 	 * @see wicket.model.IModel#getNestedModel()
 	 */
+	@Override
 	public IModel getNestedModel()
 	{
 		return null;
@@ -119,8 +130,10 @@ public class PersistentObjectModel extends AbstractDetachableModel
 
 	/**
 	 * Whether this model has been attached to the current request.
+	 * 
 	 * @return whether this model has been attached to the current request
 	 */
+	@Override
 	public final boolean isAttached()
 	{
 		return attached;
@@ -128,30 +141,36 @@ public class PersistentObjectModel extends AbstractDetachableModel
 
 	/**
 	 * Loads the object using the given id.
-	 * @param id the id of the object to load
-	 * @return the loaded object or null if not found (or - if that's what you prefer -
-	 *         throw an exception if the object is not found)
+	 * 
+	 * @param id
+	 *            the id of the object to load
+	 * @return the loaded object or null if not found (or - if that's what you
+	 *         prefer - throw an exception if the object is not found)
 	 */
-	public Object loadObject(Serializable id)
+	public T loadObject(V id)
 	{
 		return selectObjectAction.execute(id);
 	}
 
 	/**
 	 * Sets the id.
-	 * @param id the id
+	 * 
+	 * @param id
+	 *            the id
 	 */
-	public final void setId(Serializable id)
+	public final void setId(V id)
 	{
-		idModel.setObject(null, id);
+		idModel.setObject(id);
 		detach();
 	}
 
 	/**
 	 * Sets idModel.
-	 * @param idModel idModel
+	 * 
+	 * @param idModel
+	 *            idModel
 	 */
-	public void setIdModel(IModel idModel)
+	public void setIdModel(IModel<V> idModel)
 	{
 		this.idModel = idModel;
 		detach();
@@ -159,58 +178,66 @@ public class PersistentObjectModel extends AbstractDetachableModel
 
 	/**
 	 * Sets action that loads the object.
-	 * @param selectObjectAction action that loads the object.
+	 * 
+	 * @param selectObjectAction
+	 *            action that loads the object.
 	 */
-	public final void setSelectObjectAction(ISelectObjectAction selectObjectAction)
+	public final void setSelectObjectAction(ISelectObjectAction<T, V> selectObjectAction)
 	{
 		this.selectObjectAction = selectObjectAction;
 	}
 
 	/**
 	 * Gets the action that loads the object.
+	 * 
 	 * @return the action that loads the object
 	 */
-	protected final ISelectObjectAction getSelectObjectAction()
+	protected final ISelectObjectAction<T, V> getSelectObjectAction()
 	{
 		return selectObjectAction;
 	}
 
 	/**
-	 * Attach to the current request. Does nothing; Override this method if you need to do
-	 * more than the default behaviour.
+	 * Attach to the current request. Does nothing; Override this method if you
+	 * need to do more than the default behaviour.
 	 */
+	@Override
 	protected void onAttach()
 	{
-		final Object id = getId();
+		final V id = getId();
 		if ((id != null) && (!(id instanceof Serializable)))
 		{
 			throw new IllegalArgumentException("id must be serializable");
 		}
-		this.object = loadObject((Serializable) id);
+		this.object = loadObject(id);
 	}
 
 	/**
-	 * Detach from the current request. Does nothing; Override this method if you need to
-	 * do more than the default behaviour.
+	 * Detach from the current request. Does nothing; Override this method if
+	 * you need to do more than the default behaviour.
 	 */
+	@Override
 	protected void onDetach()
 	{
 		this.object = null;
 	}
 
 	/**
-	 * @see wicket.model.AbstractDetachableModel#onGetObject(wicket.Component)
+	 * @see wicket.model.AbstractDetachableModel#onGetObject()
 	 */
-	protected Object onGetObject(Component component)
+	@Override
+	protected T onGetObject()
 	{
 		return object;
 	}
 
 	/**
-	 * @see wicket.model.AbstractDetachableModel#onSetObject(wicket.Component, java.lang.Object)
+	 * @see wicket.model.AbstractDetachableModel#onSetObject(java.lang.Object)
 	 */
-	protected void onSetObject(Component component, Object object)
+	@Override
+	protected void onSetObject(Object T)
 	{
-		throw new UnsupportedOperationException("an object can only be set through its id");
+		throw new UnsupportedOperationException(
+				"an object can only be set through its id");
 	}
 }

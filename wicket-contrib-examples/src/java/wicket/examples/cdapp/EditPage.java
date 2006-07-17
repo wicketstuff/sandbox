@@ -21,6 +21,7 @@ import java.sql.Blob;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import wicket.MarkupContainer;
 import wicket.Resource;
 import wicket.contrib.data.model.PersistentObjectModel;
 import wicket.contrib.data.model.hibernate.HibernateObjectModel;
@@ -61,7 +62,7 @@ public final class EditPage extends CdAppBasePage
 	private static Resource IMG_UNKNOWN;
 
 	/** model for one cd. */
-	private final PersistentObjectModel cdModel;
+	private final PersistentObjectModel<CD, Long> cdModel;
 
 	/** search page to navigate back to. */
 	private final SearchPage searchCDPage;
@@ -74,36 +75,36 @@ public final class EditPage extends CdAppBasePage
 		/**
 		 * Construct.
 		 * 
+		 * @param parent
+		 *            The parent
+		 * 
 		 * @param name
 		 *            component name
 		 * @param cdModel
 		 *            the model
 		 */
-		public DetailForm(String name, PersistentObjectModel cdModel)
+		public DetailForm(MarkupContainer parent, String name,
+				PersistentObjectModel<CD, Long> cdModel)
 		{
-			super(name, cdModel);
-			RequiredTextField titleField = new RequiredTextField("title", new PropertyModel(
+			super(parent, name, cdModel);
+			RequiredTextField titleField = new RequiredTextField(this, "title", new PropertyModel(
 					cdModel, "title"));
 			titleField.add(StringValidator.maximumLength(50));
-			add(titleField);
-			RequiredTextField performersField = new RequiredTextField("performers",
+			RequiredTextField performersField = new RequiredTextField(this, "performers",
 					new PropertyModel(cdModel, "performers"));
 			performersField.add(StringValidator.maximumLength(50));
-			add(performersField);
-			TextField labelField = new TextField("label", new PropertyModel(cdModel, "label"));
+			TextField labelField = new TextField(this, "label", new PropertyModel(cdModel, "label"));
 			labelField.add(StringValidator.maximumLength(50));
-			add(labelField);
-			RequiredTextField yearField = new RequiredTextField("year", new PropertyModel(cdModel,
-					"year"), Integer.class);
+			RequiredTextField yearField = new RequiredTextField(this, "year", new PropertyModel(
+					cdModel, "year"), Integer.class);
 			yearField.add(NumberValidator.POSITIVE);
-			add(yearField);
-			add(new Link("cancelButton")
+			new Link(this, "cancelButton")
 			{
 				public void onClick()
 				{
 					setResponsePage(searchCDPage);
 				}
-			});
+			};
 		}
 
 		/**
@@ -136,25 +137,27 @@ public final class EditPage extends CdAppBasePage
 	/**
 	 * Form for uploading an image and attaching that image to the cd.
 	 */
-	private final class ImageUploadForm extends Form
+	private final class ImageUploadForm extends Form<CD>
 	{
 		private FileUploadField uploadField;
 
 		/**
 		 * Construct.
 		 * 
+		 * @param parent
 		 * @param name
 		 * @param cdModel
 		 */
-		public ImageUploadForm(String name, PersistentObjectModel cdModel)
+		public ImageUploadForm(MarkupContainer parent, String name,
+				PersistentObjectModel<CD, Long> cdModel)
 		{
-			super(name, cdModel);
+			super(parent, name, cdModel);
 
 			// set this form to multipart mode
 			setMultiPart(true);
 
 			// add the actual upload field
-			add(uploadField = new FileUploadField("file"));
+			uploadField = new FileUploadField(this, "file");
 		}
 
 		protected void onSubmit()
@@ -174,17 +177,18 @@ public final class EditPage extends CdAppBasePage
 	/**
 	 * Deletes the cd image.
 	 */
-	private final class DeleteImageLink extends Link
+	private final class DeleteImageLink extends Link<CD>
 	{
 		/**
 		 * Construct.
 		 * 
+		 * @param parent
 		 * @param name
 		 * @param cdModel
 		 */
-		public DeleteImageLink(String name, IModel cdModel)
+		public DeleteImageLink(MarkupContainer parent, String name, IModel<CD> cdModel)
 		{
-			super(name, cdModel);
+			super(parent, name, cdModel);
 		}
 
 		/**
@@ -192,7 +196,7 @@ public final class EditPage extends CdAppBasePage
 		 */
 		public void onClick()
 		{
-			CD cd = (CD)getModelObject();
+			CD cd = getModelObject();
 			cd.setImage(null);
 			thumbnailImage.setImageResource(getThumbnail());
 			getCdDao().save(cd);
@@ -204,7 +208,7 @@ public final class EditPage extends CdAppBasePage
 		public boolean isVisible()
 		{
 			// only set visible when there is an image set
-			return ((CD)getModelObject()).getImage() != null;
+			return (getModelObject()).getImage() != null;
 		}
 	}
 
@@ -213,14 +217,15 @@ public final class EditPage extends CdAppBasePage
 	/**
 	 * Constructor.
 	 * 
+	 * @param parent
+	 *            The parent
 	 * @param searchCDPage
 	 *            the search page to navigate back to
 	 * @param id
 	 *            the id of the cd to edit
 	 */
-	public EditPage(final SearchPage searchCDPage, Long id)
+	public EditPage(MarkupContainer parent, final SearchPage searchCDPage, Long id)
 	{
-		super();
 		cdModel = new HibernateObjectModel(id, CD.class, new HibernateSessionDelegate());
 		this.searchCDPage = searchCDPage;
 		add(new Label("cdTitle", new TitleModel(cdModel)));

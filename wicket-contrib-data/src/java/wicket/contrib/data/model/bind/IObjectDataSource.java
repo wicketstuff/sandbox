@@ -8,18 +8,18 @@ import java.util.List;
  * 
  * @author Phil Kulak
  */
-public interface IObjectDataSource extends IDataSource
+public interface IObjectDataSource<T> extends IDataSource<T>
 {
 	/**
 	 * @return a list of {@link EntityField}s for the object
 	 */
-	public List/*<EntityField>*/ getFields();
+	List<EntityField> getFields();
 	
 	/**
 	 * A class loosly based on Hibernate's Type object, but not dependent on
 	 * any one persistance framework.
 	 */
-	public class EntityField
+	public static class EntityField
 	{
 		/** a field that links to another mapped entitiy: 
 		    manyToOne or oneToOne */

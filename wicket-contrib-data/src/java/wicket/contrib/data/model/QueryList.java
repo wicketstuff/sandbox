@@ -1,6 +1,5 @@
 package wicket.contrib.data.model;
 
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -8,40 +7,45 @@ import java.util.List;
  * 
  * @author Phil Kulak
  */
-public abstract class QueryList extends OrderedPageableList
+public abstract class QueryList<E> extends OrderedPageableList<E>
 {
-	protected final List getItems(int start, int max, List ordering)
+	@Override
+	protected final List<E> getItems(int start, int max, List<ListOrder> ordering)
 	{
 		return getItems(start, max, makeOrderBy(ordering));
 	}
-	
-	protected final List getAllItems(List ordering)
+
+	@Override
+	protected final List<E> getAllItems(List<ListOrder> ordering)
 	{
 		return getAllItems(makeOrderBy(ordering));
 	}
-	
-	protected abstract List getItems(int start, int max, String orderBy);
-	
-	protected List getAllItems(String orderBy)
+
+	protected abstract List<E> getItems(int start, int max, String orderBy);
+
+	protected List<E> getAllItems(String orderBy)
 	{
 		return null;
 	}
-	
-	protected String makeOrderBy(List ordering)
+
+	protected String makeOrderBy(List<ListOrder> ordering)
 	{
 		StringBuffer orderBy = new StringBuffer();
 		if (ordering.size() > 0)
 		{
 			orderBy.append(" ORDER BY");
 			boolean addComma = false;
-			for (Iterator i = ordering.iterator(); i.hasNext();)
+			for (Object element : ordering)
 			{
-				if (addComma) orderBy.append(",");
-					
-				ListOrder order = (ListOrder) i.next();
-				orderBy.append(" " + order.getField())
-					.append(order.isAscending() ? " ASC" : " DESC");
-				
+				if (addComma)
+				{
+					orderBy.append(",");
+				}
+
+				ListOrder order = (ListOrder) element;
+				orderBy.append(" " + order.getField()).append(
+						order.isAscending() ? " ASC" : " DESC");
+
 				addComma = true;
 			}
 		}

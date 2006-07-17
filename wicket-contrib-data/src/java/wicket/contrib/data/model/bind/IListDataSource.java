@@ -8,10 +8,10 @@ import wicket.contrib.data.model.OrderedPageableList;
  * 
  * @author Phil Kulak
  */
-public interface IListDataSource extends IObjectDataSource
+public interface IListDataSource<T> extends IObjectDataSource<T>
 {
 	/**
 	 * @return a list of items that should be displayed by a component
 	 */
-	public OrderedPageableList getList();
+	public OrderedPageableList<T> getList();
 }

@@ -9,6 +9,11 @@ import java.io.Serializable;
  */
 public class ListOrder implements Serializable
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private boolean ascending = true;
 
 	private String field;
@@ -48,6 +53,7 @@ public class ListOrder implements Serializable
 	/**
 	 * Compares based on field name.
 	 */
+	@Override
 	public boolean equals(Object rhs)
 	{
 		if (!(rhs instanceof ListOrder))
