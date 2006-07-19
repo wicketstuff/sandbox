@@ -22,7 +22,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
 import wicket.IRequestCycleFactory;
-import wicket.ISessionFactory;
 import wicket.Page;
 import wicket.Request;
 import wicket.RequestCycle;
@@ -38,26 +37,10 @@ import wicket.protocol.http.WebSession;
  * 
  * @author Eelco Hillenius
  */
-public class CdApplication extends WicketExampleApplication implements ISessionFactory
+public class CdApplication extends WicketExampleApplication
 {
 	/** Logger. */
 	private static Log log = LogFactory.getLog(CdApplication.class);
-
-	/** hibernate session factory. */
-	private SessionFactory sessionFactory;
-
-	/**
-	 * custom request cycle factory.
-	 */
-	private transient IRequestCycleFactory requestCycleFactory = new IRequestCycleFactory()
-	{
-		public RequestCycle newRequestCycle(Session session, Request request, Response response)
-		{
-			return new CdAppRequestCycle((WebSession)session, (WebRequest)request, response,
-					sessionFactory);
-		}
-
-	};
 
 	/**
 	 * Constructor
@@ -71,20 +54,6 @@ public class CdApplication extends WicketExampleApplication implements ISessionF
 	 */
 	protected void init()
 	{
-		try
-		{
-			final Configuration configuration = new Configuration();
-			configuration.configure();
-			// build hibernate SessionFactory for this application instance
-			sessionFactory = configuration.buildSessionFactory();
-			// create database
-			new DatabaseUtil(configuration).createDatabase();
-		}
-		catch (Exception e)
-		{
-			throw new RuntimeException(e);
-		}
-
 		getResourceSettings().setThrowExceptionOnMissingResource(false);
 
 		setSessionFactory(this);
@@ -110,8 +79,64 @@ public class CdApplication extends WicketExampleApplication implements ISessionF
 			 */
 			protected IRequestCycleFactory getRequestCycleFactory()
 			{
-				return requestCycleFactory;
+				return new IRequestCycleFactory()
+				{
+					private transient SessionFactory sessionFactory;
+
+					public RequestCycle newRequestCycle(Session session, Request request,
+							Response response)
+					{
+						if (sessionFactory == null)
+						{
+							try
+							{
+								final Configuration configuration = new Configuration();
+								configuration.configure();
+								sessionFactory = configuration.buildSessionFactory();
+								new DatabaseUtil(configuration).createDatabase();
+							}
+							catch (Exception e)
+							{
+								throw new RuntimeException(e);
+							}
+						}
+						return new CdAppRequestCycle((WebSession)session, (WebRequest)request,
+								response, sessionFactory);
+					}
+				};
 			}
 		};
+	}
+
+	/**
+	 * Request cycle factory.
+	 */
+	private static class RequestCycleFactory implements IRequestCycleFactory
+	{
+		private transient SessionFactory sessionFactory;
+
+		/**
+		 * @see wicket.IRequestCycleFactory#newRequestCycle(wicket.Session,
+		 *      wicket.Request, wicket.Response)
+		 */
+		public RequestCycle newRequestCycle(Session session, Request request, Response response)
+		{
+			if (sessionFactory == null)
+			{
+				try
+				{
+					final Configuration configuration = new Configuration();
+					configuration.configure();
+					sessionFactory = configuration.buildSessionFactory();
+					new DatabaseUtil(configuration).createDatabase();
+				}
+				catch (Exception e)
+				{
+					throw new RuntimeException(e);
+				}
+			}
+			return new CdAppRequestCycle((WebSession)session, (WebRequest)request, response,
+					sessionFactory);
+		}
 	}
 }
