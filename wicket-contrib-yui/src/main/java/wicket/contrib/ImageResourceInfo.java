@@ -1,6 +1,7 @@
 package wicket.contrib;
 
 import java.io.InputStream;
+import java.io.Serializable;
 
 import org.devlib.schmidt.imageinfo.ImageInfo;
 
@@ -14,18 +15,20 @@ import wicket.util.resource.ResourceStreamNotFoundException;
  * 
  * @author josh
  */
+public class ImageResourceInfo implements Serializable {
 
-public class ImageResourceInfo
-{
+	private static final long serialVersionUID = 1L;
+
 	private PackageResource resource = null;
+
 	private ImageInfo imageInfo = new ImageInfo();
-	
+
 	/**
 	 * Construct
+	 * 
 	 * @param resource
 	 */
-	public ImageResourceInfo(PackageResource resource)
-	{
+	public ImageResourceInfo(PackageResource resource) {
 		this.resource = resource;
 		this.imageInfo.setInput(getInputStream());
 		this.imageInfo.check();
@@ -36,8 +39,7 @@ public class ImageResourceInfo
 	 * 
 	 * @param reference
 	 */
-	public ImageResourceInfo(ResourceReference reference)
-	{
+	public ImageResourceInfo(ResourceReference reference) {
 		this(PackageResource.get(reference.getScope(), reference.getName()));
 	}
 
@@ -46,63 +48,52 @@ public class ImageResourceInfo
 	 * 
 	 * @return
 	 */
-	
-	private InputStream getInputStream() 
-	{	
+	private InputStream getInputStream() {
 		IResourceStream rs = this.resource.getResourceStream();
-		try
-		{
+		try {
 			return rs.getInputStream();
-		}
-		catch (ResourceStreamNotFoundException e)
-		{
+		} catch (ResourceStreamNotFoundException e) {
 			e.printStackTrace();
 		}
-		return null;  
+		return null;
 	}
-	
+
 	/**
-	 * gets the height 
+	 * gets the height
 	 * 
 	 * @return
 	 */
-	public int getHeight()
-	{
+	public int getHeight() {
 		return getImageInfo().getHeight();
 	}
-	
+
 	/**
-	 * gets teh width from ImageInfo ... is there a way to do this 
-	 * wrapping by delegating all calls to the wrapped ImageInfo object ?
+	 * gets teh width from ImageInfo ... is there a way to do this wrapping by
+	 * delegating all calls to the wrapped ImageInfo object ?
 	 * 
 	 * @return
 	 */
-	public int getWidth()
-	{
+	public int getWidth() {
 		return getImageInfo().getWidth();
 	}
-	
+
 	/*
-	 * ACCESSORS 
+	 * ACCESSORS
 	 */
 
-	public PackageResource getResource()
-	{
+	public PackageResource getResource() {
 		return resource;
 	}
 
-	public void setResource(PackageResource resource)
-	{
+	public void setResource(PackageResource resource) {
 		this.resource = resource;
 	}
 
-	public ImageInfo getImageInfo()
-	{
+	public ImageInfo getImageInfo() {
 		return imageInfo;
 	}
 
-	public void setImageInfo(ImageInfo imageInfo)
-	{
+	public void setImageInfo(ImageInfo imageInfo) {
 		this.imageInfo = imageInfo;
 	}
 }

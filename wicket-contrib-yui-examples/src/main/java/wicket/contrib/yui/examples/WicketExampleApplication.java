@@ -27,34 +27,28 @@ import wicket.util.crypt.NoCrypt;
  * 
  * @author Jonathan Locke
  */
-public abstract class WicketExampleApplication extends WebApplication
-{
-	/**
-	 * Used for logging.
-	 */
-	// private static Log log = LogFactory.getLog(WicketExampleApplication.class);
+public abstract class WicketExampleApplication extends WebApplication {
 
 	/**
 	 * Constructor.
 	 */
-	public WicketExampleApplication()
-	{
+	public WicketExampleApplication() {
 	}
-	
+
 	/**
 	 * @see wicket.protocol.http.WebApplication#init()
 	 */
-	protected void init()
-	{
+	protected void init() {
 		// WARNING: DO NOT do this on a real world application unless
 		// you really want your app's passwords all passed around and
 		// stored in unencrypted browser cookies (BAD IDEA!)!!!
-		
+
 		// The NoCrypt class is being used here because not everyone
 		// has the java security classes required by Crypt installed
 		// and we want them to be able to run the examples out of the
 		// box.
 		getSecuritySettings().setCryptFactory(
-				new ClassCryptFactory(NoCrypt.class, ISecuritySettings.DEFAULT_ENCRYPTION_KEY));
+				new ClassCryptFactory(NoCrypt.class,
+						ISecuritySettings.DEFAULT_ENCRYPTION_KEY));
 	}
 }
