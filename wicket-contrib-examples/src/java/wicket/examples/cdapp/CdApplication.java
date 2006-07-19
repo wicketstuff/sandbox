@@ -79,31 +79,7 @@ public class CdApplication extends WicketExampleApplication
 			 */
 			protected IRequestCycleFactory getRequestCycleFactory()
 			{
-				return new IRequestCycleFactory()
-				{
-					private transient SessionFactory sessionFactory;
-
-					public RequestCycle newRequestCycle(Session session, Request request,
-							Response response)
-					{
-						if (sessionFactory == null)
-						{
-							try
-							{
-								final Configuration configuration = new Configuration();
-								configuration.configure();
-								sessionFactory = configuration.buildSessionFactory();
-								new DatabaseUtil(configuration).createDatabase();
-							}
-							catch (Exception e)
-							{
-								throw new RuntimeException(e);
-							}
-						}
-						return new CdAppRequestCycle((WebSession)session, (WebRequest)request,
-								response, sessionFactory);
-					}
-				};
+				return new RequestCycleFactory();
 			}
 		};
 	}
