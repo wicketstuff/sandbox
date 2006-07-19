@@ -404,8 +404,6 @@ public final class DatabaseUtil
 		cd = new CD("Kid A", artist, "EMI", "", 2001, tracks, categories, 5);
 		session.save(cd);
 		count++;
-
-		log.info("saved " + count + " cds");
 	}
 
 	/**
@@ -506,7 +504,6 @@ public final class DatabaseUtil
 	{
 		for (int i = 0; i < stmts.length; i++)
 		{
-			log.info("exec: " + stmts[i]);
 			try
 			{
 				stmt.executeUpdate(stmts[i]);

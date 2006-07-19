@@ -24,13 +24,11 @@ import wicket.contrib.yui.examples.WicketExamplePage;
  * 
  * @author Eelco Hillenius
  */
-public class CalendarPage extends WicketExamplePage
-{
+public class CalendarPage extends WicketExamplePage {
 	/**
 	 * Construct.
 	 */
-	public CalendarPage()
-	{
-		add(new Calendar("simpleCalendar"));
+	public CalendarPage() {
+		new Calendar(this, "simpleCalendar");
 	}
 }

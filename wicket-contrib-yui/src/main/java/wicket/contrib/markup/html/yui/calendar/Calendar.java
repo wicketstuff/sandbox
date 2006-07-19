@@ -21,7 +21,7 @@ package wicket.contrib.markup.html.yui.calendar;
 import java.util.Map;
 
 import wicket.AttributeModifier;
-import wicket.Component;
+import wicket.MarkupContainer;
 import wicket.RequestCycle;
 import wicket.behavior.HeaderContributor;
 import wicket.contrib.markup.html.yui.AbstractYuiPanel;
@@ -49,17 +49,19 @@ public class Calendar extends AbstractYuiPanel {
 		/**
 		 * Construct.
 		 * 
+		 * @param parent
 		 * @param id
 		 */
-		public CalendarElement(String id) {
-			super(id);
-			add(new AttributeModifier("id", true, new AbstractReadOnlyModel() {
-				private static final long serialVersionUID = 1L;
+		public CalendarElement(MarkupContainer parent, String id) {
+			super(parent, id);
+			add(new AttributeModifier("id", true,
+					new AbstractReadOnlyModel<String>() {
+						private static final long serialVersionUID = 1L;
 
-				public Object getObject(Component component) {
-					return elementId;
-				}
-			}));
+						public String getObject() {
+							return elementId;
+						}
+					}));
 		}
 
 		/**
@@ -91,25 +93,24 @@ public class Calendar extends AbstractYuiPanel {
 	 * @param id
 	 *            the component id
 	 */
-	public Calendar(String id) {
-		super(id);
+	public Calendar(MarkupContainer parent, String id) {
+		super(parent, id);
 		add(HeaderContributor.forJavaScript(Calendar.class, "calendar.js"));
 		add(HeaderContributor.forCss(Calendar.class, "calendar.css"));
 
-		Label initialization = new Label("initialization",
-				new AbstractReadOnlyModel() {
+		Label initialization = new Label(this, "initialization",
+				new AbstractReadOnlyModel<String>() {
 					private static final long serialVersionUID = 1L;
 
 					/**
 					 * @see wicket.model.IModel#getObject(wicket.Component)
 					 */
-					public Object getObject(Component component) {
+					public String getObject() {
 						return getJavaScriptComponentInitializationScript();
 					}
 				});
 		initialization.setEscapeModelStrings(false);
-		add(initialization);
-		add(calendarElement = new CalendarElement("calendarContainer"));
+		calendarElement = new CalendarElement(this, "calendarContainer");
 	}
 
 	/**
@@ -140,7 +141,8 @@ public class Calendar extends AbstractYuiPanel {
 				new PackageResourceReference(Calendar.class, "calrt.gif"))
 				.toString();
 
-		Map variables = new MiniMap(4);
+		Map<String, CharSequence> variables = new MiniMap<String, CharSequence>(
+				4);
 		variables.put("javaScriptId", javaScriptId);
 		variables.put("elementId", elementId);
 		variables.put("navigationArrowLeft", leftImage);

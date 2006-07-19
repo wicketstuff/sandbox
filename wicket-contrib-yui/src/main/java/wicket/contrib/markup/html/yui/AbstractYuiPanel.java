@@ -18,6 +18,7 @@
  */
 package wicket.contrib.markup.html.yui;
 
+import wicket.MarkupContainer;
 import wicket.behavior.HeaderContributor;
 import wicket.markup.html.panel.Panel;
 import wicket.model.IModel;
@@ -27,7 +28,7 @@ import wicket.model.IModel;
  * 
  * @author Eelco Hillenius
  */
-public class AbstractYuiPanel extends Panel {
+public class AbstractYuiPanel<T> extends Panel<T> {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -35,8 +36,8 @@ public class AbstractYuiPanel extends Panel {
 	 * 
 	 * @param id
 	 */
-	public AbstractYuiPanel(String id) {
-		super(id);
+	public AbstractYuiPanel(MarkupContainer parent, String id) {
+		super(parent, id);
 		addHeaderContributions();
 	}
 
@@ -46,8 +47,8 @@ public class AbstractYuiPanel extends Panel {
 	 * @param id
 	 * @param model
 	 */
-	public AbstractYuiPanel(String id, IModel model) {
-		super(id, model);
+	public AbstractYuiPanel(MarkupContainer parent, String id, IModel<T> model) {
+		super(parent, id, model);
 		addHeaderContributions();
 	}
 

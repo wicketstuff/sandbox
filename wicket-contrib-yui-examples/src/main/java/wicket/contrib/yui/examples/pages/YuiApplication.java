@@ -17,6 +17,7 @@
  */
 package wicket.contrib.yui.examples.pages;
 
+import wicket.Page;
 import wicket.contrib.yui.examples.WicketExampleApplication;
 
 /**
@@ -24,21 +25,18 @@ import wicket.contrib.yui.examples.WicketExampleApplication;
  * 
  * @author Jonathan Locke
  */
-public class YuiApplication extends WicketExampleApplication
-{
+public class YuiApplication extends WicketExampleApplication {
 	/**
 	 * Constructor.
 	 */
-	public YuiApplication()
-	{
-		
+	public YuiApplication() {
+
 	}
 
 	/**
 	 * @see wicket.Application#getHomePage()
 	 */
-	public Class getHomePage()
-	{
+	public Class<? extends Page> getHomePage() {
 		return Index.class;
 	}
 }

@@ -1,6 +1,7 @@
 /*
- * $Id$
- * $Revision$ $Date$
+ * $Id: EmbeddedJRReport.java 627 2006-03-20 07:12:13 +0000 (Mon, 20 Mar 2006)
+ * eelco12 $ $Revision$ $Date: 2006-03-20 07:12:13 +0000 (Mon, 20 Mar
+ * 2006) $
  * 
  * ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -18,6 +19,7 @@
 package wicket.contrib.jasperreports;
 
 import wicket.IResourceListener;
+import wicket.MarkupContainer;
 import wicket.ResourceReference;
 import wicket.markup.ComponentTag;
 import wicket.markup.html.WebComponent;
@@ -36,14 +38,16 @@ public final class EmbeddedJRReport extends WebComponent implements IResourceLis
 	/**
 	 * Construcxt.
 	 * 
-	 * @param componentID
-	 *            component componentID
+	 * @param parent
+	 *            The parent
+	 * @param id
+	 *            component id
 	 * @param resource
 	 *            the resource
 	 */
-	public EmbeddedJRReport(String componentID, JRResource resource)
+	public EmbeddedJRReport(MarkupContainer parent, String id, JRResource resource)
 	{
-		super(componentID);
+		super(parent, id);
 		this.resource = resource;
 	}
 
