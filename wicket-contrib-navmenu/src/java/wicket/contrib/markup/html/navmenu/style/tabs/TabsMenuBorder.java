@@ -18,6 +18,7 @@
  */
 package wicket.contrib.markup.html.navmenu.style.tabs;
 
+import wicket.MarkupContainer;
 import wicket.contrib.markup.html.navmenu.MenuModel;
 import wicket.markup.html.border.Border;
 
@@ -31,14 +32,16 @@ public class TabsMenuBorder extends Border
 	/**
 	 * Construct.
 	 * 
+	 * @param parent
+	 *            The parent
 	 * @param id
 	 *            component id
 	 * @param model
 	 *            the menu model
 	 */
-	public TabsMenuBorder(String id, MenuModel model)
+	public TabsMenuBorder(MarkupContainer parent, String id, MenuModel model)
 	{
-		super(id);
-		add(new TabsNavigationMenu("navmenu", model));
+		super(parent, id);
+		new TabsNavigationMenu(this, "navmenu", model);
 	}
 }

@@ -46,9 +46,6 @@ import wicket.markup.html.list.PageableListView;
  */
 public class PageableList<T, V> extends UnimplementedList<T>
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	/** default page size. */

@@ -21,6 +21,7 @@ import java.util.List;
 
 import org.apache.velocity.app.Velocity;
 
+import wicket.Page;
 import wicket.WicketRuntimeException;
 import wicket.protocol.http.WebApplication;
 import wicket.util.time.Duration;
@@ -33,7 +34,7 @@ import wicket.util.time.Duration;
 public class VelocityTemplateApplication extends WebApplication
 {
 	/** simple persons db. */
-	private static List persons = new ArrayList();
+	private static List<Person> persons = new ArrayList<Person>();
 	static
 	{
 		persons.add(new Person("Joe", "Down"));
@@ -49,7 +50,7 @@ public class VelocityTemplateApplication extends WebApplication
 	 * 
 	 * @return the dummy persons database
 	 */
-	public static List getPersons()
+	public static List<Person> getPersons()
 	{
 		return persons;
 	}
@@ -82,7 +83,7 @@ public class VelocityTemplateApplication extends WebApplication
 	/**
 	 * @return class
 	 */
-	public Class getHomePage()
+	public Class<? extends Page> getHomePage()
 	{
 		return TemplatePage.class;
 	}

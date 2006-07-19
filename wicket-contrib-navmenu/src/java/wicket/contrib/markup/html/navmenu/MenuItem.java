@@ -26,7 +26,8 @@ import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
 
 import wicket.AttributeModifier;
-import wicket.Component;
+import wicket.MarkupContainer;
+import wicket.Page;
 import wicket.PageParameters;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.link.BookmarkablePageLink;
@@ -48,23 +49,24 @@ public class MenuItem extends DefaultMutableTreeNode
 		/**
 		 * Construct.
 		 * 
+		 * @param parent
+		 *            The parent
 		 * @param id
 		 *            component id
 		 * @param row
 		 *            the row
 		 */
-		public ItemPanel(final String id, final MenuRow row)
+		public ItemPanel(MarkupContainer parent, final String id, final MenuRow row)
 		{
-			super(id);
+			super(parent, id);
 			final String label = getLabel();
-			final BookmarkablePageLink pageLink = new BookmarkablePageLink("link", getPageClass(),
-					getPageParameters());
+			final BookmarkablePageLink pageLink = new BookmarkablePageLink(this, "link",
+					getPageClass(), getPageParameters());
 			pageLink.setAutoEnable(false);
-			pageLink.add(new Label("label", label));
-			add(pageLink);
-			add(new AttributeModifier("class", true, new Model()
+			new Label(pageLink, "label", label);
+			add(new AttributeModifier("class", true, new Model<String>()
 			{
-				public Object getObject(final Component component)
+				public String getObject()
 				{
 					return row.getRowStyle().getItemCSSClass(MenuItem.this, row);
 				}
@@ -76,13 +78,13 @@ public class MenuItem extends DefaultMutableTreeNode
 	private String label;
 
 	/** class of the page. */
-	private Class pageClass;
+	private Class< ? extends Page> pageClass;
 
 	/** optional page parameters. */
 	private PageParameters pageParameters;
 
 	/** page classes that should be interpreted as being on the same path. */
-	private Set aliases = new HashSet();
+	private Set<Class< ? extends Page>> aliases = new HashSet<Class< ? extends Page>>();
 
 	/**
 	 * Construct.
@@ -102,7 +104,7 @@ public class MenuItem extends DefaultMutableTreeNode
 	 * @param pageParameters
 	 *            optional page parameters
 	 */
-	public MenuItem(String label, Class pageClass, PageParameters pageParameters)
+	public MenuItem(String label, Class< ? extends Page> pageClass, PageParameters pageParameters)
 	{
 		super();
 		this.label = label;
@@ -159,7 +161,7 @@ public class MenuItem extends DefaultMutableTreeNode
 	 * 
 	 * @return the class of the page
 	 */
-	public Class getPageClass()
+	public Class< ? extends Page> getPageClass()
 	{
 		return pageClass;
 	}
@@ -170,7 +172,7 @@ public class MenuItem extends DefaultMutableTreeNode
 	 * @param pageClass
 	 *            the class of the page
 	 */
-	public void setPageClass(Class pageClass)
+	public void setPageClass(Class< ? extends Page> pageClass)
 	{
 		this.pageClass = pageClass;
 	}
@@ -203,7 +205,7 @@ public class MenuItem extends DefaultMutableTreeNode
 	 *            the alias page class to add
 	 * @return This
 	 */
-	public MenuItem addAlias(Class pageClass)
+	public MenuItem addAlias(Class< ? extends Page> pageClass)
 	{
 		aliases.add(pageClass);
 		return this;
@@ -254,15 +256,17 @@ public class MenuItem extends DefaultMutableTreeNode
 	 * Gets a new panel to display the actual menu link. Override this when you
 	 * want something specific other than [link[label]].
 	 * 
+	 * @param parent
+	 *            The parent
 	 * @param panelId
 	 *            the id of the panel. MUST BE USED WHEN CONSTRUCTING THE PANEL
 	 * @param row
 	 *            the parent menu row
 	 * @return the panel instance
 	 */
-	public Panel newItemPanel(String panelId, MenuRow row)
+	public Panel newItemPanel(MarkupContainer parent, String panelId, MenuRow row)
 	{
-		return new ItemPanel(panelId, row);
+		return new ItemPanel(parent, panelId, row);
 	}
 
 	/**

@@ -18,8 +18,11 @@
  */
 package wicket.contrib.markup.html.navmenu;
 
+import java.util.List;
+
 import wicket.AttributeModifier;
 import wicket.Component;
+import wicket.MarkupContainer;
 import wicket.ResourceReference;
 import wicket.WicketRuntimeException;
 import wicket.markup.html.WebComponent;
@@ -28,7 +31,6 @@ import wicket.markup.html.list.ListItem;
 import wicket.markup.html.list.ListView;
 import wicket.markup.html.panel.Panel;
 import wicket.markup.html.resources.StyleSheetReference;
-import wicket.model.IModel;
 import wicket.model.Model;
 
 /**
@@ -36,33 +38,37 @@ import wicket.model.Model;
  * 
  * @author Eelco Hillenius
  */
-public class MenuRow extends Panel
+public class MenuRow extends Panel<List<MenuItem>>
 {
 	/**
 	 * Listview for a menu row.
 	 */
-	private final class RowListView extends ListView
+	private final class RowListView extends ListView<MenuItem>
 	{
 		/**
 		 * Construct.
 		 * 
+		 * @param parent
+		 *            The parent
 		 * @param id
+		 *            The id
 		 * @param model
+		 *            The model
 		 */
-		public RowListView(String id, IModel model)
+		public RowListView(MarkupContainer parent, String id, MenuRowModel model)
 		{
-			super(id, model);
-			setOptimizeItemRemoval(false);
+			super(parent, id, model);
+			setReuseItems(false);
 		}
 
 		/**
 		 * @see wicket.markup.html.list.ListView#populateItem(wicket.markup.html.list.ListItem)
 		 */
-		protected void populateItem(ListItem item)
+		protected void populateItem(ListItem<MenuItem> item)
 		{
-			final MenuItem menuItem = (MenuItem)item.getModelObject();
+			final MenuItem menuItem = item.getModelObject();
 
-			final Panel itemPanel = menuItem.newItemPanel("itemPanel", MenuRow.this);
+			final Panel itemPanel = menuItem.newItemPanel(item, "itemPanel", MenuRow.this);
 			if (itemPanel == null)
 			{
 				throw new WicketRuntimeException("item panel must be not-null");
@@ -71,8 +77,6 @@ public class MenuRow extends Panel
 			{
 				throw new WicketRuntimeException("item panel must have id 'itemPanel' assigned");
 			}
-
-			item.add(itemPanel);
 		}
 	}
 
@@ -82,20 +86,24 @@ public class MenuRow extends Panel
 	/**
 	 * Construct using a default style.
 	 * 
+	 * @param parent
+	 *            The parent
 	 * @param id
 	 *            component id
 	 * @param model
 	 *            row model
 	 * @see MenuRowStyle
 	 */
-	public MenuRow(final String id, final MenuRowModel model)
+	public MenuRow(MarkupContainer parent, final String id, final MenuRowModel model)
 	{
-		this(id, model, new MenuRowStyle());
+		this(parent, id, model, new MenuRowStyle());
 	}
 
 	/**
 	 * Construct using the provided row style.
 	 * 
+	 * @param parent
+	 *            The parent
 	 * @param id
 	 *            component id
 	 * @param model
@@ -103,9 +111,10 @@ public class MenuRow extends Panel
 	 * @param style
 	 *            row style
 	 */
-	public MenuRow(final String id, final MenuRowModel model, final MenuRowStyle style)
+	public MenuRow(MarkupContainer parent, final String id, final MenuRowModel model,
+			final MenuRowStyle style)
 	{
-		super(id, model);
+		super(parent, id, model);
 
 		if (model == null)
 		{
@@ -117,35 +126,33 @@ public class MenuRow extends Panel
 		}
 
 		this.style = style;
-		WebMarkupContainer div = new WebMarkupContainer("div");
-		div.add(new AttributeModifier("class", true, new Model())
+		WebMarkupContainer div = new WebMarkupContainer(this, "div");
+		div.add(new AttributeModifier("class", true, new Model<String>())
 		{
-			public Object getObject(Component component)
+			public String getObject(Component component)
 			{
 				return style.getContainerCSSClass();
 			}
 		});
 
-		WebMarkupContainer ul = new WebMarkupContainer("ul");
-		ul.add(new AttributeModifier("class", true, new Model()
+		WebMarkupContainer ul = new WebMarkupContainer(div, "ul");
+		ul.add(new AttributeModifier("class", true, new Model<String>()
 		{
-			public Object getObject(Component component)
+			public String getObject()
 			{
 				return style.getRowCSSClass();
 			}
 		}));
-		ul.add(new RowListView("columns", model));
-		div.add(ul);
-		add(div);
+		new RowListView(ul, "columns", model);
 
 		ResourceReference styleSheetResource = style.getStyleSheetResource();
 		if (styleSheetResource != null)
 		{
-			add(new StyleSheetReference("cssStyleResource", styleSheetResource));
+			new StyleSheetReference(this, "cssStyleResource", styleSheetResource);
 		}
 		else
 		{
-			add(new WebComponent("cssStyleResource").setVisible(false));
+			new WebComponent(this, "cssStyleResource").setVisible(false);
 		}
 	}
 

@@ -24,9 +24,8 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Map;
 
-import freemarker.template.Template;
-import freemarker.template.TemplateException;
-
+import wicket.Component;
+import wicket.MarkupContainer;
 import wicket.WicketRuntimeException;
 import wicket.markup.ComponentTag;
 import wicket.markup.MarkupStream;
@@ -34,15 +33,23 @@ import wicket.markup.html.WebComponent;
 import wicket.model.Model;
 import wicket.util.resource.IStringResourceStream;
 import wicket.util.string.Strings;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
+
 /**
  * Panel that displays the result of rendering a FreeMarker template. The
  * template itself can be any IStringResourceStream implementation, of which
  * there are a number of convenient implementations in wicket.util. The model
  * can be any normal Wicket MapModel.
- *
- * @author	Jonas Klingstedt
+ * 
+ * @param <K>
+ *            The key type
+ * @param <V>
+ *            The value type
+ * 
+ * @author Jonas Klingstedt
  */
-public final class FreeMarkerPanel extends WebComponent {
+public final class FreeMarkerPanel<K, V> extends WebComponent<Map<K, V>> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -69,31 +76,34 @@ public final class FreeMarkerPanel extends WebComponent {
 
 	/** FreeMarker configuration */
 	private SerializableFreeMarkerConfiguration config;
-	
+
 	/**
 	 * Constructor.
-	 *
-	 * @param id the component id.
-	 * @param templateResource the FreeMarker template as a String resource.
-	 * @param model a MapModel with variables that can be substituted by
-	 * FreeMarker.
-	 *
+	 * 
+	 * @param id
+	 *            the component id.
+	 * @param templateResource
+	 *            the FreeMarker template as a String resource.
+	 * @param model
+	 *            a MapModel with variables that can be substituted by
+	 *            FreeMarker.
+	 * 
 	 * @see Component
 	 */
-	public FreeMarkerPanel(final String id,
-						   final IStringResourceStream templateResource,
-						   final Model model) {
-		super(id, model);
+	public FreeMarkerPanel(final MarkupContainer parent, final String id,
+			final IStringResourceStream templateResource,
+			final Model<Map<K, V>> model) {
+		super(parent, id, model);
 
 		this.templateResource = templateResource;
-	
+
 		// Create FreeMarker configuration
 		config = new SerializableFreeMarkerConfiguration();
 	}
 
 	/**
 	 * Gets whether to escape HTML characters.
-	 *
+	 * 
 	 * @return whether to escape HTML characters.
 	 */
 	public final boolean getEscapeHtml() {
@@ -102,8 +112,9 @@ public final class FreeMarkerPanel extends WebComponent {
 
 	/**
 	 * Sets whether to escape HTML characters. The default value is false.
-	 *
-	 * @param escapeHtml whether to escape HTML characters.
+	 * 
+	 * @param escapeHtml
+	 *            whether to escape HTML characters.
 	 * @return this
 	 */
 	public final FreeMarkerPanel setEscapeHtml(boolean escapeHtml) {
@@ -111,7 +122,7 @@ public final class FreeMarkerPanel extends WebComponent {
 
 		return this;
 	}
-	
+
 	/**
 	 * Gets whether any FreeMarker exception should be trapped and displayed on
 	 * the panel (false) or thrown up to be handled by the exception mechanism
@@ -130,23 +141,23 @@ public final class FreeMarkerPanel extends WebComponent {
 	 * the panel (true) or thrown up to be handled by the exception mechanism of
 	 * Wicket (false).
 	 * 
-	 * @param throwFreeMarkerExceptions whether any exception should be trapped 
-	 * * or rethrown
+	 * @param throwFreeMarkerExceptions
+	 *            whether any exception should be trapped * or rethrown
 	 * @return this
 	 */
 	public final FreeMarkerPanel setThrowFreeMarkerExceptions(
 			boolean throwFreeMarkerExceptions) {
 		this.throwFreeMarkerExceptions = throwFreeMarkerExceptions;
-		
+
 		return this;
 	}
 
 	/**
 	 * @see wicket.Component#onComponentTagbody(wicket.markup.MarkupStream,
-	 *		wicket.markup.ComponentTag)
+	 *      wicket.markup.ComponentTag)
 	 */
 	protected void onComponentTagBody(final MarkupStream markupStream,
-									  final ComponentTag openTag) {
+			final ComponentTag openTag) {
 		final Reader templateReader = getTemplateReader();
 
 		if (null == templateReader) {
@@ -154,22 +165,22 @@ public final class FreeMarkerPanel extends WebComponent {
 			replaceComponentTagBody(markupStream, openTag, "");
 		} else {
 			// Get model as a map
-			final Map map = (Map) getModelObject();
+			final Map<K, V> map = getModelObject();
 			// Create a writer for capturing the FreeMarker output
 			StringWriter writer = new StringWriter();
-			
+
 			try {
 				// Create a new FreeMarker template
-				Template template = new Template(
-					getId(), templateReader, config);
-		
+				Template template = new Template(getId(), templateReader,
+						config);
+
 				// Process the FreeMarker template and capture the output in
 				// the writer
 				template.process(map, writer);
-			
+
 				// Replace the tag's body with the FreeMarker output
 				String result = writer.toString();
-				
+
 				// Escape the HTML ?
 				if (escapeHtml) {
 					// Encode the result in order to get valid HTML output that
@@ -186,17 +197,19 @@ public final class FreeMarkerPanel extends WebComponent {
 			}
 		}
 	}
-	
+
 	/**
 	 * Either print or rethrow the throwable.
-	 *
-	 * @param exception the cause.
-	 * @param markupStream the markup stream.
-	 * @param openTag the open tag.
+	 * 
+	 * @param exception
+	 *            the cause.
+	 * @param markupStream
+	 *            the markup stream.
+	 * @param openTag
+	 *            the open tag.
 	 */
 	private void onException(final Exception exception,
-							 final MarkupStream markupStream,
-							 final ComponentTag openTag) {
+			final MarkupStream markupStream, final ComponentTag openTag) {
 		if (!throwFreeMarkerExceptions) {
 			// Print the exception on the panel
 			String stackTraceAsString = Strings.toString(exception);
@@ -209,7 +222,7 @@ public final class FreeMarkerPanel extends WebComponent {
 
 	/**
 	 * Gets a reader for the FreeMarker template.
-	 *
+	 * 
 	 * @return a reader for the FreeMarker template.
 	 */
 	private Reader getTemplateReader() {
