@@ -34,6 +34,6 @@ public abstract class PageWithMenu extends WebPage
 	public PageWithMenu()
 	{
 		super();
-		add(new TabsNavigationMenu("navmenu", NavMenuApplication.getMenu()));
+		new TabsNavigationMenu(this, "navmenu", NavMenuApplication.getMenu());
 	}
 }

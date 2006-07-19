@@ -24,7 +24,7 @@ import java.util.List;
 import wicket.Component;
 import wicket.Page;
 import wicket.RequestCycle;
-import wicket.model.AbstractReadOnlyDetachableModel;
+import wicket.model.AbstractDetachableAssignmentAwareModel;
 import wicket.model.IModel;
 
 /**
@@ -32,7 +32,7 @@ import wicket.model.IModel;
  * 
  * @author Eelco Hillenius
  */
-public class MenuRowModel extends AbstractReadOnlyDetachableModel
+public class MenuRowModel extends AbstractDetachableAssignmentAwareModel<List<MenuItem>>
 {
 	/** menu level. */
 	private final int level;
@@ -41,7 +41,7 @@ public class MenuRowModel extends AbstractReadOnlyDetachableModel
 	private final MenuModel menuModel;
 
 	/** current row. */
-	private transient List row;
+	private transient List<MenuItem> row;
 
 	/**
 	 * Construct.
@@ -81,14 +81,14 @@ public class MenuRowModel extends AbstractReadOnlyDetachableModel
 	}
 
 	/**
-	 * @see wicket.model.AbstractDetachableModel#onAttach()
+	 * @see wicket.model.AbstractDetachableAssignmentAwareModel#onAttach()
 	 */
 	protected void onAttach()
 	{
 	}
 
 	/**
-	 * @see wicket.model.AbstractDetachableModel#onDetach()
+	 * @see wicket.model.AbstractDetachableAssignmentAwareModel#onDetach()
 	 */
 	protected void onDetach()
 	{
@@ -96,21 +96,22 @@ public class MenuRowModel extends AbstractReadOnlyDetachableModel
 	}
 
 	/**
-	 * @see wicket.model.AbstractDetachableModel#onGetObject(wicket.Component)
+	 * @see wicket.model.AbstractDetachableAssignmentAwareModel#onGetObject(wicket.Component)
 	 */
-	protected Object onGetObject(Component component)
+	@Override
+	protected List<MenuItem> onGetObject(Component component)
 	{
 		// lazily attach
 		if (row == null)
 		{
-			row = new ArrayList();
+			row = new ArrayList<MenuItem>();
+			RequestCycle requestCycle = RequestCycle.get();
 			Page currentPage = component.getPage();
 			MenuTreePath currentSelection = menuModel.getCurrentSelection(currentPage);
 			if (currentSelection.getPathCount() > level)
 			{
 				MenuItem node = (MenuItem)currentSelection.getPathComponent(level);
 				int len = node.getChildCount();
-				RequestCycle requestCycle = component.getRequestCycle();
 				for (int i = 0; i < len; i++)
 				{
 					MenuItem child = (MenuItem)node.getChildAt(i);
@@ -122,5 +123,11 @@ public class MenuRowModel extends AbstractReadOnlyDetachableModel
 			}
 		}
 		return row;
+	}
+
+	@Override
+	protected void onSetObject(Component component, List<MenuItem> object)
+	{
+		throw new UnsupportedOperationException("set object is not supported for this model");
 	}
 }

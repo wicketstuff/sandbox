@@ -22,6 +22,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.HibernateException;
 
+import wicket.MarkupContainer;
 import wicket.PageParameters;
 import wicket.RequestCycle;
 import wicket.behavior.SimpleAttributeModifier;
@@ -81,30 +82,25 @@ public class SearchPage extends CdAppBasePage
 		final int rowsPerPage = 8;
 		searchModel = new SearchModel(rowsPerPage);
 
-		FeedbackPanel pageFeedback = new FeedbackPanel("feedback");
-		searchForm = new SearchForm("searchForm");
-		add(searchForm);
-
-		add(pageFeedback);
-		resultsListView = new SearchCDResultsListView("results", searchModel, rowsPerPage);
-		add(resultsListView);
-		WebMarkupContainer resultsTableHeader = new WebMarkupContainer("resultsHeader")
+		FeedbackPanel pageFeedback = new FeedbackPanel(this, "feedback");
+		searchForm = new SearchForm(this, "searchForm");
+		resultsListView = new SearchCDResultsListView(this, "results", searchModel, rowsPerPage);
+		WebMarkupContainer resultsTableHeader = new WebMarkupContainer(this, "resultsHeader")
 		{
 			public boolean isVisible()
 			{
 				return searchModel.hasResults();
 			}
 		};
-		resultsTableHeader.add(new SortLink("sortOnArtist", "performers"));
-		resultsTableHeader.add(new SortLink("sortOnTitle", "title"));
-		resultsTableHeader.add(new SortLink("sortOnYear", "year"));
-		resultsTableHeader.add(new SortLink("sortOnLabel", "label"));
+		new SortLink(resultsTableHeader, "sortOnArtist", "performers");
+		new SortLink(resultsTableHeader, "sortOnTitle", "title");
+		new SortLink(resultsTableHeader, "sortOnYear", "year");
+		new SortLink(resultsTableHeader, "sortOnLabel", "label");
 		resultsTableHeader.setVisible(false); // non-visible as there are no
-		// results yet
-		add(resultsTableHeader);
-		add(new DetailLink("newCdLink", null)); // add with null; the model and
+		new DetailLink(this, "newCdLink", null); // add with null; the model
+		// and
 		// the detail page are smart enough to know we want a new one then
-		add(new CDTableNavigation("navigation", resultsListView));
+		new CDTableNavigation(this, "navigation", resultsListView);
 	}
 
 	/**
@@ -136,13 +132,15 @@ public class SearchPage extends CdAppBasePage
 		/**
 		 * Constructor
 		 * 
+		 * @param parent
+		 *            The parent
 		 * @param id
 		 *            id of the form component
 		 */
-		public SearchForm(final String id)
+		public SearchForm(MarkupContainer parent, final String id)
 		{
-			super(id);
-			add(new TextField("search", new PropertyModel(this, "search")));
+			super(parent, id);
+			new TextField<String>(this, "search", new PropertyModel<String>(this, "search"));
 		}
 
 		/**
@@ -185,11 +183,13 @@ public class SearchPage extends CdAppBasePage
 	/**
 	 * Table for displaying search results.
 	 */
-	private class SearchCDResultsListView extends PageableListView
+	private class SearchCDResultsListView extends PageableListView<CD>
 	{
 		/**
 		 * Construct.
 		 * 
+		 * @param parent
+		 *            The parent
 		 * @param id
 		 *            id of the component
 		 * @param model
@@ -197,9 +197,10 @@ public class SearchPage extends CdAppBasePage
 		 * @param pageSizeInCells
 		 *            page size
 		 */
-		public SearchCDResultsListView(String id, IModel model, int pageSizeInCells)
+		public SearchCDResultsListView(MarkupContainer parent, String id, IModel<List<CD>> model,
+				int pageSizeInCells)
 		{
-			super(id, model, pageSizeInCells);
+			super(parent, id, model, pageSizeInCells);
 		}
 
 		/**
@@ -214,39 +215,39 @@ public class SearchPage extends CdAppBasePage
 		 * @see PageableListView#populateItem(ListItem)
 		 * @param item
 		 */
-		public void populateItem(final ListItem item)
+		public void populateItem(final ListItem<CD> item)
 		{
-			final CD cd = (CD)item.getModelObject();
+			final CD cd = item.getModelObject();
 			final Long id = cd.getId();
 
 			// add links to the details
-			item.add(new DetailLink("title", id).add(new Label("title", cd.getTitle())));
-			item.add(new DetailLink("performers", id).add(new Label("performers", cd
-					.getPerformers())));
-			item.add(new DetailLink("label", id).add(new Label("label", cd.getLabel())));
-			item.add(new DetailLink("year", id).add(new Label("year", (cd.getYear() != null) ? cd
-					.getYear().toString() : "")));
+			new Label(new DetailLink(item, "title", id), "title", cd.getTitle());
+			new Label(new DetailLink(item, "performers", id), "performers", cd.getPerformers());
+			new Label(new DetailLink(item, "label", id), "label", cd.getLabel());
+			new Label(new DetailLink(item, "year", id), "year", (cd.getYear() != null) ? cd
+					.getYear().toString() : "");
 
 			// add a delete link for each found record
-			DeleteLink deleteLink = new DeleteLink("delete", cd);
-			item.add(deleteLink);
+			DeleteLink deleteLink = new DeleteLink(item, "delete", cd);
 		}
 	}
 
 	/** link to detail edit page. */
-	private final class DetailLink extends Link
+	private final class DetailLink extends Link<Long>
 	{
 		/**
 		 * Construct.
 		 * 
+		 * @param parent
+		 *            The parent
 		 * @param name
 		 *            name of the component
 		 * @param id
 		 *            the id of the cd
 		 */
-		public DetailLink(String name, Long id)
+		public DetailLink(MarkupContainer parent, String name, Long id)
 		{
-			super(name, new Model(id));
+			super(parent, name, new Model<Long>(id));
 		}
 
 		/**
@@ -261,19 +262,21 @@ public class SearchPage extends CdAppBasePage
 	}
 
 	/** Link for deleting a row. */
-	private final class DeleteLink extends Link
+	private final class DeleteLink extends Link<Long>
 	{
 		/**
 		 * Construct.
 		 * 
+		 * @param parent
+		 *            The parent
 		 * @param name
 		 *            name of the component
 		 * @param cd
 		 *            the cd
 		 */
-		public DeleteLink(String name, CD cd)
+		public DeleteLink(MarkupContainer parent, String name, CD cd)
 		{
-			super(name, new Model(cd.getId()));
+			super(parent, name, new Model<Long>(cd.getId()));
 			add(new SimpleAttributeModifier("onclick", "if(!confirm('delete cd " + cd.getTitle()
 					+ " ?')) return false;"));
 		}
@@ -283,7 +286,7 @@ public class SearchPage extends CdAppBasePage
 		 */
 		public void onClick()
 		{
-			final Long id = (Long)getModelObject();
+			final Long id = getModelObject();
 
 			CdDao cdDao = getCdDao();
 			CD cd = null;
@@ -324,14 +327,16 @@ public class SearchPage extends CdAppBasePage
 		/**
 		 * Construct.
 		 * 
+		 * @param parent
+		 *            The parent
 		 * @param id
 		 *            name of component
 		 * @param field
 		 *            order by field
 		 */
-		public SortLink(String id, String field)
+		public SortLink(MarkupContainer parent, String id, String field)
 		{
-			super(id);
+			super(parent, id);
 			this.field = field;
 		}
 
@@ -355,14 +360,16 @@ public class SearchPage extends CdAppBasePage
 		/**
 		 * Construct.
 		 * 
+		 * @param parent
+		 *            The parent
 		 * @param id
 		 *            the name of the component
 		 * @param table
 		 *            the table
 		 */
-		public CDTableNavigation(String id, PageableListView table)
+		public CDTableNavigation(MarkupContainer parent, String id, PageableListView table)
 		{
-			super(id, table);
+			super(parent, id, table);
 		}
 
 		/**
@@ -370,20 +377,19 @@ public class SearchPage extends CdAppBasePage
 		 */
 		protected void populateItem(final LoopItem iteration)
 		{
-			final PagingNavigationLink link = new PagingNavigationLink("pageLink", pageable,
-					iteration.getIteration());
+			final PagingNavigationLink link = new PagingNavigationLink(iteration, "pageLink",
+					pageable, iteration.getIteration());
 
 			if (iteration.getIteration() > 0)
 			{
-				iteration.add(new Label("separator", "|"));
+				new Label(iteration, "separator", "|");
 			}
 			else
 			{
-				iteration.add(new Label("separator", ""));
+				new Label(iteration, "separator", "");
 			}
-			link.add(new Label("pageNumber", String.valueOf(iteration.getIteration() + 1)));
-			link.add(new Label("pageLabel", "page"));
-			iteration.add(link);
+			new Label(link, "pageNumber", String.valueOf(iteration.getIteration() + 1));
+			new Label(link, "pageLabel", "page");
 		}
 	}
 }

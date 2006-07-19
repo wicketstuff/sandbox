@@ -29,6 +29,7 @@ import org.apache.velocity.exception.MethodInvocationException;
 import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
 
+import wicket.MarkupContainer;
 import wicket.WicketRuntimeException;
 import wicket.markup.ComponentTag;
 import wicket.markup.MarkupStream;
@@ -39,14 +40,19 @@ import wicket.util.string.Strings;
 
 /**
  * Panel that displays the result of rendering a Velocity template. The template
- * itself can be any IStringResourceStream implementation, of which there are a number
- * of convenient implementations in wicket.util. The model can be any normal
- * Wicket MapModel.
+ * itself can be any IStringResourceStream implementation, of which there are a
+ * number of convenient implementations in wicket.util. The model can be any
+ * normal Wicket MapModel.
+ * 
+ * @param <K>
+ *            The key type
+ * @param <V>
+ *            The value type
  * 
  * @author Eelco Hillenius
  * @author Jonathan Locke
  */
-public final class VelocityPanel extends WebComponent
+public final class VelocityPanel<K, V> extends WebComponent<Map<K, V>>
 {
 	/** Whether to escape HTML characters. The default value is false. */
 	private boolean escapeHtml = false;
@@ -72,6 +78,8 @@ public final class VelocityPanel extends WebComponent
 	/**
 	 * Construct.
 	 * 
+	 * @param parent
+	 *            The parent
 	 * @param name
 	 *            See Component
 	 * @param templateResource
@@ -79,10 +87,10 @@ public final class VelocityPanel extends WebComponent
 	 * @param model
 	 *            MapModel with variables that can be substituted by Velocity
 	 */
-	public VelocityPanel(final String name, final IStringResourceStream templateResource,
-			final Model model)
+	public VelocityPanel(final MarkupContainer parent, final String name,
+			final IStringResourceStream templateResource, final Model<Map<K, V>> model)
 	{
-		super(name, model);
+		super(parent, name, model);
 		this.templateResource = templateResource;
 	}
 
@@ -149,7 +157,7 @@ public final class VelocityPanel extends WebComponent
 		if (templateReader != null)
 		{
 			// Get model as a map
-			final Map map = (Map)getModelObject();
+			final Map<K, V> map = getModelObject();
 
 			// create a Velocity context object using the model if set
 			final VelocityContext ctx = new VelocityContext(map);

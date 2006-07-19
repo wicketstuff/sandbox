@@ -1,6 +1,5 @@
 /*
- * $Id$ $Revision$
- * $Date$
+ * $Id$ $Revision$ $Date$
  * 
  * ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -18,7 +17,10 @@
 package wicket.contrib.examples.velocity;
 
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+import wicket.MarkupContainer;
 import wicket.PageParameters;
 import wicket.contrib.markup.html.velocity.VelocityPanel;
 import wicket.examples.WicketExamplePage;
@@ -37,7 +39,7 @@ import wicket.util.resource.StringBufferResourceStream;
 public class TemplatePage extends WicketExamplePage
 {
 	/** context to be used by the template. */
-	private final Model templateContext;
+	private final Model<Map<String, List<Person>>> templateContext;
 
 	/** the current template contents. */
 	private StringBufferResourceStream template = new StringBufferResourceStream();
@@ -63,13 +65,13 @@ public class TemplatePage extends WicketExamplePage
 	 */
 	public TemplatePage(final PageParameters parameters)
 	{
-		HashMap map = new HashMap();
+		Map<String, List<Person>> map = new HashMap<String, List<Person>>();
 		map.put("persons", VelocityTemplateApplication.getPersons());
 		templateContext = Model.valueOf(map);
 
-		add(new TemplateForm("templateForm"));
-		add(new VelocityPanel("templatePanel", template, templateContext));
-		add(new FeedbackPanel("feedback"));
+		new TemplateForm(this, "templateForm");
+		new VelocityPanel<String, List<Person>>(this, "templatePanel", template, templateContext);
+		new FeedbackPanel(this, "feedback");
 	}
 
 	/**
@@ -99,25 +101,19 @@ public class TemplatePage extends WicketExamplePage
 	 */
 	private final class TemplateForm extends Form
 	{
-		private TextArea templateTextArea;
 		/**
 		 * Construct.
 		 * 
+		 * @param parent
+		 *            The parent
 		 * @param name
 		 *            component name
 		 */
-		public TemplateForm(String name)
+		public TemplateForm(MarkupContainer parent, String name)
 		{
-			super(name);
-			add(templateTextArea = new TextArea("templateInput",
-					new PropertyModel(new Model(TemplatePage.this), "template")));
-		}
-
-		/**
-		 * @see wicket.markup.html.form.Form#onSubmit()
-		 */
-		protected void onSubmit()
-		{
+			super(parent, name);
+			new TextArea<String>(this, "templateInput", new PropertyModel<String>(
+					TemplatePage.this, "template"));
 		}
 	}
 }

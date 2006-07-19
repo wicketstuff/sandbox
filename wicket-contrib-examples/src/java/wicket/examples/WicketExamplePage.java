@@ -25,9 +25,12 @@ import wicket.util.string.Strings;
 /**
  * Base class for all example pages.
  * 
+ * @param <T>
+ *            any type
+ * 
  * @author Jonathan Locke
  */
-public class WicketExamplePage extends WebPage
+public class WicketExamplePage<T> extends WebPage<T>
 {
     /**
      * Constructor
@@ -41,11 +44,10 @@ public class WicketExamplePage extends WebPage
 	 * Construct.
 	 * @param model
 	 */
-	public WicketExamplePage(IModel model)
+	public WicketExamplePage(IModel<T> model)
 	{
 		super(model);
         final String packageName = getClass().getPackage().getName();
-        add(new WicketExampleHeader("mainNavigation", Strings.afterLast(packageName, '.')));
-
+        new WicketExampleHeader(this, "mainNavigation", Strings.afterLast(packageName, '.'));
 	}
 }

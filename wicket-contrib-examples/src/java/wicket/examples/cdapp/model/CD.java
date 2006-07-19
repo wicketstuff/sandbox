@@ -1,20 +1,18 @@
 /*
- * $Id$
- * $Revision$
- * $Date$
- *
- * ====================================================================
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *  http://www.apache.org/licenses/LICENSE-2.0
- *
+ * $Id$ $Revision$ $Date$
+ * 
+ * ==================================================================== Licensed
+ * under the Apache License, Version 2.0 (the "License"); you may not use this
+ * file except in compliance with the License. You may obtain a copy of the
+ * License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 package wicket.examples.cdapp.model;
 
@@ -40,8 +38,8 @@ public class CD extends Entity
 	private Blob image;
 
 	private Integer year;
-	private List tracks;
-	private Set categories = new HashSet();
+	private List<Track> tracks;
+	private Set<Category> categories = new HashSet<Category>();
 
 	private int[] availableRatings;
 
@@ -51,11 +49,11 @@ public class CD extends Entity
 	 */
 	public CD()
 	{
-
 	}
 
 	/**
 	 * Construct.
+	 * 
 	 * @param title
 	 * @param performers
 	 * @param label
@@ -66,7 +64,7 @@ public class CD extends Entity
 	 * @param rating
 	 */
 	public CD(String title, String performers, String label, String description, int year,
-			List tracks, Set categories, int rating)
+			List<Track> tracks, Set<Category> categories, int rating)
 	{
 		super();
 		this.title = title;
@@ -81,6 +79,7 @@ public class CD extends Entity
 
 	/**
 	 * get label
+	 * 
 	 * @return String
 	 */
 	public String getLabel()
@@ -90,6 +89,7 @@ public class CD extends Entity
 
 	/**
 	 * get performers
+	 * 
 	 * @return String
 	 */
 	public String getPerformers()
@@ -99,6 +99,7 @@ public class CD extends Entity
 
 	/**
 	 * get title
+	 * 
 	 * @return String
 	 */
 	public String getTitle()
@@ -108,15 +109,17 @@ public class CD extends Entity
 
 	/**
 	 * get tracks
+	 * 
 	 * @return List
 	 */
-	public List getTracks()
+	public List<Track> getTracks()
 	{
 		return tracks;
 	}
 
 	/**
 	 * get year
+	 * 
 	 * @return Integer
 	 */
 	public Integer getYear()
@@ -126,6 +129,7 @@ public class CD extends Entity
 
 	/**
 	 * set label
+	 * 
 	 * @param label
 	 */
 	public void setLabel(String label)
@@ -135,6 +139,7 @@ public class CD extends Entity
 
 	/**
 	 * set performers
+	 * 
 	 * @param performers
 	 */
 	public void setPerformers(String performers)
@@ -144,6 +149,7 @@ public class CD extends Entity
 
 	/**
 	 * set title
+	 * 
 	 * @param title
 	 */
 	public void setTitle(String title)
@@ -153,15 +159,17 @@ public class CD extends Entity
 
 	/**
 	 * set tracks
+	 * 
 	 * @param tracks
 	 */
-	public void setTracks(List tracks)
+	public void setTracks(List<Track> tracks)
 	{
 		this.tracks = tracks;
 	}
 
 	/**
 	 * set year
+	 * 
 	 * @param year
 	 */
 	public void setYear(Integer year)
@@ -171,6 +179,7 @@ public class CD extends Entity
 
 	/**
 	 * add a track
+	 * 
 	 * @param track
 	 */
 	public void addTrack(Track track)
@@ -183,6 +192,7 @@ public class CD extends Entity
 
 	/**
 	 * This methods returns the total trackTime rounded to 2 decimals
+	 * 
 	 * @return Double totalTrackTime
 	 */
 	public Double getTotalTrackTime()
@@ -220,7 +230,8 @@ public class CD extends Entity
 	}
 
 	/**
-	 * @param string description
+	 * @param string
+	 *            description
 	 */
 	public void setDescription(String string)
 	{
@@ -229,25 +240,30 @@ public class CD extends Entity
 
 	/**
 	 * get categories for this cd
+	 * 
 	 * @return Set set of categories for this cd
 	 */
-	public Set getCategories()
+	public Set<Category> getCategories()
 	{
 		return categories;
 	}
 
 	/**
 	 * set categories for this cd
-	 * @param categories categories for this cd
+	 * 
+	 * @param categories
+	 *            categories for this cd
 	 */
-	public void setCategories(Set categories)
+	public void setCategories(Set<Category> categories)
 	{
 		this.categories = categories;
 	}
 
 	/**
 	 * does this cd has (is member of) the given category?
-	 * @param category category
+	 * 
+	 * @param category
+	 *            category
 	 * @return boolean true if this cd has (is member of) the given category,
 	 *         false otherwise
 	 */
@@ -258,6 +274,7 @@ public class CD extends Entity
 
 	/**
 	 * get rating
+	 * 
 	 * @return Integer
 	 */
 	public Integer getRating()
@@ -267,6 +284,7 @@ public class CD extends Entity
 
 	/**
 	 * set rating
+	 * 
 	 * @param rating
 	 */
 	public void setRating(Integer rating)
@@ -276,6 +294,7 @@ public class CD extends Entity
 
 	/**
 	 * help method to get the available ratings for cd's
+	 * 
 	 * @return int[] the available ratings for cd's
 	 */
 	public int[] getAvailableRatings()
@@ -286,6 +305,7 @@ public class CD extends Entity
 
 	/**
 	 * Gets the image.
+	 * 
 	 * @return image
 	 */
 	public Blob getImage()
@@ -295,7 +315,9 @@ public class CD extends Entity
 
 	/**
 	 * Sets the image.
-	 * @param image image
+	 * 
+	 * @param image
+	 *            image
 	 */
 	public void setImage(Blob image)
 	{
@@ -304,7 +326,9 @@ public class CD extends Entity
 
 	/**
 	 * Sets the image.
-	 * @param image image
+	 * 
+	 * @param image
+	 *            image
 	 */
 	public void setImageBytes(byte[] image)
 	{
@@ -313,7 +337,9 @@ public class CD extends Entity
 
 	/**
 	 * set the available ratings for cd's
-	 * @param availableRatings the available ratings for cd's
+	 * 
+	 * @param availableRatings
+	 *            the available ratings for cd's
 	 */
 	public void setAvailableRatings(int[] availableRatings)
 	{

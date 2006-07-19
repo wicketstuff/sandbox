@@ -18,6 +18,7 @@
  */
 package wicket.examples.navmenu;
 
+import wicket.Page;
 import wicket.contrib.markup.html.navmenu.MenuItem;
 import wicket.contrib.markup.html.navmenu.MenuModel;
 import wicket.protocol.http.WebApplication;
@@ -39,7 +40,7 @@ public class NavMenuApplication extends WebApplication
     /**
      * @return class
      */
-    public Class getHomePage()
+    public Class<? extends Page> getHomePage()
     {
     	return Home.class;
     }

@@ -18,6 +18,7 @@
  */
 package wicket.contrib.markup.html.navmenu.style.tabs;
 
+import wicket.MarkupContainer;
 import wicket.contrib.markup.html.navmenu.MenuModel;
 import wicket.contrib.markup.html.navmenu.MenuRow;
 import wicket.contrib.markup.html.navmenu.MenuRowModel;
@@ -36,18 +37,18 @@ public final class TabsNavigationMenu extends Panel
 	/**
 	 * Construct.
 	 * 
+	 * @param parent
+	 *            The parent
 	 * @param id
 	 *            component id
 	 * @param model
 	 *            the model
 	 */
-	public TabsNavigationMenu(String id, MenuModel model)
+	public TabsNavigationMenu(MarkupContainer parent, String id, MenuModel model)
 	{
-		super(id);
+		super(parent, id);
 		this.menuModel = model;
-		MenuRow level0 = new MenuRow("level0", new MenuRowModel(model, 0), TabsStyle.LEVEL_0);
-		MenuRow level1 = new MenuRow("level1", new MenuRowModel(model, 1), TabsStyle.LEVEL_1);
-		add(level0);
-		add(level1);
+		MenuRow level0 = new MenuRow(this, "level0", new MenuRowModel(model, 0), TabsStyle.LEVEL_0);
+		MenuRow level1 = new MenuRow(this, "level1", new MenuRowModel(model, 1), TabsStyle.LEVEL_1);
 	}
 }

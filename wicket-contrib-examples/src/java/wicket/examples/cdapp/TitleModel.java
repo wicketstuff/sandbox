@@ -1,9 +1,9 @@
 package wicket.examples.cdapp;
 
-import wicket.Component;
 import wicket.contrib.data.model.PersistentObjectModel;
 import wicket.examples.cdapp.model.CD;
 import wicket.model.AbstractDetachableModel;
+import wicket.model.AbstractReadOnlyDetachableModel;
 import wicket.model.IModel;
 
 /**
@@ -11,27 +11,19 @@ import wicket.model.IModel;
  * loaded object (when the id != null) or it returns a special string in case
  * there is no loaded object (if id == null).
  */
-public class TitleModel extends AbstractDetachableModel
+public class TitleModel extends AbstractReadOnlyDetachableModel<String>
 {
 	/** decorated model; provides the current id. */
-	private final PersistentObjectModel cdModel;
+	private final PersistentObjectModel<CD, Long> cdModel;
 
 	/**
 	 * Construct.
 	 * 
 	 * @param cdModel the model to decorate
 	 */
-	public TitleModel(PersistentObjectModel cdModel)
+	public TitleModel(PersistentObjectModel<CD, Long> cdModel)
 	{
 		this.cdModel = cdModel;
-	}
-
-	/**
-	 * @see AbstractDetachableModel#onSetObject(Component, Object)
-	 */
-	public void onSetObject(final Component component, final Object object)
-	{
-		cdModel.setObject(component, object);
 	}
 
 	/**
@@ -51,13 +43,13 @@ public class TitleModel extends AbstractDetachableModel
 	}
 
 	/**
-	 * @see AbstractDetachableModel#onGetObject(Component)
+	 * @see AbstractDetachableModel#onGetObject()
 	 */
-	protected Object onGetObject(final Component component)
+	protected String onGetObject()
 	{
 		if (cdModel.getId() != null) // it is allready persistent
 		{
-			CD cd = (CD)cdModel.getObject(component);
+			CD cd = (CD)cdModel.getObject();
 			return cd.getTitle();
 		}
 		else // it is a new cd

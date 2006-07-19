@@ -1,20 +1,18 @@
 /*
- * $Id$
- * $Revision$
- * $Date$
- *
- * ====================================================================
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *  http://www.apache.org/licenses/LICENSE-2.0
- *
+ * $Id$ $Revision$ $Date$
+ * 
+ * ==================================================================== Licensed
+ * under the Apache License, Version 2.0 (the "License"); you may not use this
+ * file except in compliance with the License. You may obtain a copy of the
+ * License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 package wicket.examples.cdapp.util;
 
@@ -54,7 +52,9 @@ public final class DatabaseUtil
 
 	/**
 	 * Construct.
-	 * @param configuration hibernate configuration
+	 * 
+	 * @param configuration
+	 *            hibernate configuration
 	 */
 	public DatabaseUtil(Configuration configuration)
 	{
@@ -104,15 +104,17 @@ public final class DatabaseUtil
 
 	/**
 	 * Insert a couple of test cd's.
-	 * @param session hibernate session
+	 * 
+	 * @param session
+	 *            hibernate session
 	 * @throws HibernateException
 	 */
 	private void insertTestData(Session session) throws HibernateException
 	{
 		int count = 0;
 		CD cd;
-		List tracks;
-		Set categories;
+		List<Track> tracks;
+		Set<Category> categories;
 		String artist;
 		Category catPop = newCategory(session, "pop");
 		Category catRock = newCategory(session, "rock");
@@ -131,7 +133,8 @@ public final class DatabaseUtil
 
 		artist = "Lhasa";
 		tracks = newTracks(session, new Track[] { new Track(1, "De Cara A La Pared", 4.16, artist),
-				new Track(2, "La Celestina", 4.47, artist), new Track(3, "El Desierto", 3.54, artist),
+				new Track(2, "La Celestina", 4.47, artist),
+				new Track(3, "El Desierto", 3.54, artist),
 				new Track(4, "Por Eso Me Quedo", 3.51, artist),
 				new Track(5, "El Payande", 3.31, artist), new Track(6, "Los Peces", 3.53, artist),
 				new Track(7, "Floricanto", 4.10, artist), new Track(8, "Desdenosa", 4.35, artist),
@@ -164,7 +167,8 @@ public final class DatabaseUtil
 				new Track(4, "Midnite Cruiser", 4.09, artist),
 				new Track(5, "Only A Fool Would Say That", 2.54, artist),
 				new Track(6, "Reeling In The Years", 4.35, artist),
-				new Track(7, "Fire In The Hole", 3.26, artist), new Track(8, "Brooklyn", 4.2, artist),
+				new Track(7, "Fire In The Hole", 3.26, artist),
+				new Track(8, "Brooklyn", 4.2, artist),
 				new Track(9, "Change Of The Guard", 3.28, artist),
 				new Track(10, "Turn That Heartbeat Over Again", 4.58, artist),
 				new Track(11, "Wasted", 2.3, artist) });
@@ -174,42 +178,43 @@ public final class DatabaseUtil
 		count++;
 
 		artist = "Steely Dan";
-		tracks = newTracks(session,
-				new Track[] { new Track(1, "Babylon Sisters", 5.56, artist),
-						new Track(2, "Hey Nineteen", 3.45, artist),
-						new Track(3, "Glamour Profession", 3.45, artist),
-						new Track(4, "Third World Man", 4.09, artist),
-						new Track(5, "Gaucho", 2.54, artist),
-						new Track(6, "Time Out Of Mind", 4.35, artist),
-						new Track(7, "My Rival", 3.26, artist) });
+		tracks = newTracks(session, new Track[] { new Track(1, "Babylon Sisters", 5.56, artist),
+				new Track(2, "Hey Nineteen", 3.45, artist),
+				new Track(3, "Glamour Profession", 3.45, artist),
+				new Track(4, "Third World Man", 4.09, artist),
+				new Track(5, "Gaucho", 2.54, artist),
+				new Track(6, "Time Out Of Mind", 4.35, artist),
+				new Track(7, "My Rival", 3.26, artist) });
 		categories = asSet(new Category[] { catPop });
 		cd = new CD("Caucho", artist, "MCA Records", "", 1980, tracks, categories, 4);
 		session.save(cd);
 		count++;
 
 		artist = "Paco De Lucia";
-		tracks = newTracks(session, new Track[] { new Track(1, "Danza De Los Vecinos", 3.09, artist),
+		tracks = newTracks(session, new Track[] {
+				new Track(1, "Danza De Los Vecinos", 3.09, artist),
 				new Track(2, "Danza Ritual Del Fuego", 4.24, artist),
 				new Track(3, "Introduccion Y Pantominma", 2.59, artist),
 				new Track(4, "El Pano Moruno", 1.27, artist),
-				new Track(5, "Danza Del Molinero", 3.04, artist), new Track(6, "Danza", 3.24, artist),
-				new Track(7, "Escena", 1.25, artist),
+				new Track(5, "Danza Del Molinero", 3.04, artist),
+				new Track(6, "Danza", 3.24, artist), new Track(7, "Escena", 1.25, artist),
 				new Track(8, "Cancion Del Fuego Fatuo", 4.05, artist),
 				new Track(9, "Danza Del Terror", 1.48, artist),
 				new Track(10, "Danza De La Molinera", 4.01, artist) });
 		categories = asSet(new Category[] { catWorld, catClassical, catJazz });
-		cd = new CD("Paco De Lucia Plays De Falla", artist, "PolyGram", "", 1978, tracks, categories,
-				5);
+		cd = new CD("Paco De Lucia Plays De Falla", artist, "PolyGram", "", 1978, tracks,
+				categories, 5);
 		session.save(cd);
 		count++;
 
 		artist = "John Scofield";
 		tracks = newTracks(session, new Track[] { new Track(1, "Lazy", 6.50, artist),
-				new Track(2, "Peculiar", 6.33, artist), new Track(3, "Let The Cat Out", 5.35, artist),
-				new Track(4, "Kool", 4.49, artist), new Track(5, "Old Soul", 5.21, artist),
+				new Track(2, "Peculiar", 6.33, artist),
+				new Track(3, "Let The Cat Out", 5.35, artist), new Track(4, "Kool", 4.49, artist),
+				new Track(5, "Old Soul", 5.21, artist),
 				new Track(6, "Groove Elation", 6.50, artist), new Track(7, "Carlos", 7.28, artist),
-				new Track(8, "Soft Shoe", 6.06, artist), new Track(9, "Let It Shine", 6.04, artist),
-				new Track(10, "Bigtop", 6.33, artist) });
+				new Track(8, "Soft Shoe", 6.06, artist),
+				new Track(9, "Let It Shine", 6.04, artist), new Track(10, "Bigtop", 6.33, artist) });
 		categories = asSet(new Category[] { catJazz });
 		cd = new CD("Groove Elation", artist, "Blue Note", "", 1995, tracks, categories, 4);
 		session.save(cd);
@@ -246,7 +251,8 @@ public final class DatabaseUtil
 
 		artist = "Bjork";
 		tracks = newTracks(session, new Track[] { new Track(1, "Army Of Me", 1, artist),
-				new Track(2, "Hyper-balad", 2, artist), new Track(3, "The Mordern Things", 3, artist),
+				new Track(2, "Hyper-balad", 2, artist),
+				new Track(3, "The Mordern Things", 3, artist),
 				new Track(4, "It's Oh So Quiet", 4, artist), new Track(5, "Enjoy", 5, artist),
 				new Track(6, "You've Been Flirting Again", 6, artist),
 				new Track(7, "Isobel", 7, artist), new Track(8, "Possibly Maybe", 8, artist),
@@ -260,8 +266,10 @@ public final class DatabaseUtil
 		artist = "Van Halen";
 		tracks = newTracks(session, new Track[] { new Track(1, "1984", 1.07, artist),
 				new Track(2, "Jump", 4.04, artist), new Track(3, "Panama", 3.31, artist),
-				new Track(4, "Top Jimmy", 2.59, artist), new Track(5, "Drop Dead Legs", 4.13, artist),
-				new Track(6, "Hot For Teacher", 4.42, artist), new Track(7, "I'll Wait", 4.41, artist),
+				new Track(4, "Top Jimmy", 2.59, artist),
+				new Track(5, "Drop Dead Legs", 4.13, artist),
+				new Track(6, "Hot For Teacher", 4.42, artist),
+				new Track(7, "I'll Wait", 4.41, artist),
 				new Track(8, "Girl Gone Bad", 4.33, artist),
 				new Track(9, "House Of Pain", 3.18, artist) });
 		categories = asSet(new Category[] { catRock });
@@ -275,9 +283,12 @@ public final class DatabaseUtil
 						artist), new Track(2, "No One Knows", 0, artist),
 				new Track(3, "First It Giveth", 0, artist),
 				new Track(4, "A Song For The Dead", 0, artist),
-				new Track(5, "The Sky Is Fallin'", 0, artist), new Track(6, "Six Shooter", 0, artist),
-				new Track(7, "Hangin' AbstractTree", 0, artist), new Track(8, "Go With The Flow", 0, artist),
-				new Track(9, "Gonna Leave You", 0, artist), new Track(10, "Do It Again", 0, artist),
+				new Track(5, "The Sky Is Fallin'", 0, artist),
+				new Track(6, "Six Shooter", 0, artist),
+				new Track(7, "Hangin' AbstractTree", 0, artist),
+				new Track(8, "Go With The Flow", 0, artist),
+				new Track(9, "Gonna Leave You", 0, artist),
+				new Track(10, "Do It Again", 0, artist),
 				new Track(11, "God Is In The Radio", 0, artist),
 				new Track(12, "Another Love Song", 0, artist),
 				new Track(13, "A Song For The Deaf", 0, artist) });
@@ -306,13 +317,15 @@ public final class DatabaseUtil
 		count++;
 
 		artist = "Jeff Buckley";
-		tracks = newTracks(session, new Track[] { new Track(1, "Mojo Pin", 0, artist),
-				new Track(2, "Grace", 0, artist), new Track(3, "Last Goodbye", 0, artist),
-				new Track(4, "Lilac Wine", 0, artist), new Track(5, "So Real", 0, artist),
-				new Track(6, "Hallelujah", 0, artist),
-				new Track(7, "Lover, You Should've Come Over", 0, artist),
-				new Track(8, "Corpus Christi Carol", 0, artist),
-				new Track(9, "Eternal Live", 0, artist), new Track(10, "Dream Brother", 0, artist) });
+		tracks = newTracks(session,
+				new Track[] { new Track(1, "Mojo Pin", 0, artist),
+						new Track(2, "Grace", 0, artist), new Track(3, "Last Goodbye", 0, artist),
+						new Track(4, "Lilac Wine", 0, artist), new Track(5, "So Real", 0, artist),
+						new Track(6, "Hallelujah", 0, artist),
+						new Track(7, "Lover, You Should've Come Over", 0, artist),
+						new Track(8, "Corpus Christi Carol", 0, artist),
+						new Track(9, "Eternal Live", 0, artist),
+						new Track(10, "Dream Brother", 0, artist) });
 		categories = asSet(new Category[] { catPop, catSingerSongwriter });
 		cd = new CD("Grace", artist, "Sony Music", "", 1994, tracks, categories, 5);
 		session.save(cd);
@@ -369,7 +382,8 @@ public final class DatabaseUtil
 				new Track(4, "You And Whose Army?", 0, artist),
 				new Track(5, "I Might Be Wrong", 0, artist), new Track(6, "Knives Out", 0, artist),
 				new Track(7, "Morning Bell/ Amnesiac", 0, artist),
-				new Track(8, "Dollars And Cents", 0, artist), new Track(9, "Hunting Bears", 0, artist),
+				new Track(8, "Dollars And Cents", 0, artist),
+				new Track(9, "Hunting Bears", 0, artist),
 				new Track(10, "Like Spinning Plates", 0, artist),
 				new Track(11, "Life In A Glass House", 0, artist) });
 		categories = asSet(new Category[] { catPop });
@@ -396,8 +410,11 @@ public final class DatabaseUtil
 
 	/**
 	 * Create a new category.
-	 * @param session Hibernate session
-	 * @param name category name
+	 * 
+	 * @param session
+	 *            Hibernate session
+	 * @param name
+	 *            category name
 	 * @return the new category
 	 * @throws HibernateException
 	 */
@@ -410,14 +427,17 @@ public final class DatabaseUtil
 
 	/**
 	 * Create new tracks.
-	 * @param session Hibernate session
-	 * @param tracks new tracks.
+	 * 
+	 * @param session
+	 *            Hibernate session
+	 * @param tracks
+	 *            new tracks.
 	 * @return list with the new tracks
 	 * @throws HibernateException
 	 */
-	private List newTracks(Session session, Track[] tracks) throws HibernateException
+	private List<Track> newTracks(Session session, Track[] tracks) throws HibernateException
 	{
-		List list = new ArrayList(tracks.length);
+		List<Track> list = new ArrayList<Track>(tracks.length);
 		for (int i = 0; i < tracks.length; i++)
 		{
 			session.save(tracks[i]);
@@ -428,24 +448,28 @@ public final class DatabaseUtil
 
 	/**
 	 * Wrap the categories in a set.
-	 * @param cats the categories
+	 * 
+	 * @param cats
+	 *            the categories
 	 * @return categories wrapped in a set
 	 */
-	private Set asSet(Category[] cats)
+	private Set<Category> asSet(Category[] cats)
 	{
-		return new HashSet(Arrays.asList(cats));
+		return new HashSet<Category>(Arrays.asList(cats));
 	}
 
 	/**
 	 * Filter statements on start of statement.
-	 * @param drops statements
-	 * @param inclAlterFlag if true, everything that starts with alter, else the
-	 *           inverse
+	 * 
+	 * @param drops
+	 *            statements
+	 * @param inclAlterFlag
+	 *            if true, everything that starts with alter, else the inverse
 	 * @return part of the input
 	 */
 	private String[] splitAltTables(String[] drops, boolean inclAlterFlag)
 	{
-		List temp = new ArrayList();
+		List<String> temp = new ArrayList<String>();
 		for (int i = 0; i < drops.length; i++)
 		{
 			if (inclAlterFlag)
@@ -468,10 +492,15 @@ public final class DatabaseUtil
 
 	/**
 	 * Execute statements.
-	 * @param conn connection
-	 * @param stmt statement object
-	 * @param stmts statements
-	 * @throws SQLException sql error
+	 * 
+	 * @param conn
+	 *            connection
+	 * @param stmt
+	 *            statement object
+	 * @param stmts
+	 *            statements
+	 * @throws SQLException
+	 *             sql error
 	 */
 	private void execStmt(Connection conn, Statement stmt, String[] stmts) throws SQLException
 	{

@@ -41,8 +41,8 @@ import wicket.markup.html.image.Image;
 import wicket.markup.html.image.resource.BlobImageResource;
 import wicket.markup.html.link.Link;
 import wicket.markup.html.panel.FeedbackPanel;
+import wicket.model.CompoundPropertyModel;
 import wicket.model.IModel;
-import wicket.model.PropertyModel;
 import wicket.util.lang.Bytes;
 
 
@@ -70,7 +70,7 @@ public final class EditPage extends CdAppBasePage
 	/**
 	 * form for detail editing.
 	 */
-	private final class DetailForm extends Form
+	private final class DetailForm extends Form<CD>
 	{
 		/**
 		 * Construct.
@@ -83,20 +83,16 @@ public final class EditPage extends CdAppBasePage
 		 * @param cdModel
 		 *            the model
 		 */
-		public DetailForm(MarkupContainer parent, String name,
-				PersistentObjectModel<CD, Long> cdModel)
+		public DetailForm(MarkupContainer parent, String name, IModel<CD> cdModel)
 		{
-			super(parent, name, cdModel);
-			RequiredTextField titleField = new RequiredTextField(this, "title", new PropertyModel(
-					cdModel, "title"));
+			super(parent, name, new CompoundPropertyModel<CD>(cdModel));
+			RequiredTextField titleField = new RequiredTextField(this, "title");
 			titleField.add(StringValidator.maximumLength(50));
-			RequiredTextField performersField = new RequiredTextField(this, "performers",
-					new PropertyModel(cdModel, "performers"));
+			RequiredTextField performersField = new RequiredTextField(this, "performers");
 			performersField.add(StringValidator.maximumLength(50));
-			TextField labelField = new TextField(this, "label", new PropertyModel(cdModel, "label"));
+			TextField labelField = new TextField(this, "label");
 			labelField.add(StringValidator.maximumLength(50));
-			RequiredTextField yearField = new RequiredTextField(this, "year", new PropertyModel(
-					cdModel, "year"), Integer.class);
+			RequiredTextField yearField = new RequiredTextField(this, "year", Integer.class);
 			yearField.add(NumberValidator.POSITIVE);
 			new Link(this, "cancelButton")
 			{
@@ -166,7 +162,7 @@ public final class EditPage extends CdAppBasePage
 			FileUpload upload = uploadField.getFileUpload();
 			if (upload != null)
 			{
-				CD cd = (CD)getModelObject();
+				CD cd = getModelObject();
 				cd.setImageBytes(upload.getBytes());
 				thumbnailImage.setImageResource(getThumbnail());
 				getCdDao().save(cd);
@@ -208,7 +204,7 @@ public final class EditPage extends CdAppBasePage
 		public boolean isVisible()
 		{
 			// only set visible when there is an image set
-			return (getModelObject()).getImage() != null;
+			return getModelObject().getImage() != null;
 		}
 	}
 
@@ -217,38 +213,31 @@ public final class EditPage extends CdAppBasePage
 	/**
 	 * Constructor.
 	 * 
-	 * @param parent
-	 *            The parent
 	 * @param searchCDPage
 	 *            the search page to navigate back to
 	 * @param id
 	 *            the id of the cd to edit
 	 */
-	public EditPage(MarkupContainer parent, final SearchPage searchCDPage, Long id)
+	public EditPage(final SearchPage searchCDPage, Long id)
 	{
-		cdModel = new HibernateObjectModel(id, CD.class, new HibernateSessionDelegate());
+		cdModel = new HibernateObjectModel<CD, Long>(id, CD.class, new HibernateSessionDelegate());
 		this.searchCDPage = searchCDPage;
-		add(new Label("cdTitle", new TitleModel(cdModel)));
-		FeedbackPanel feedback = new FeedbackPanel("feedback");
-		add(feedback);
-		add(new DetailForm("detailForm", cdModel));
-		ImageUploadForm imageUploadForm = new ImageUploadForm("imageUpload", cdModel);
+		new Label(this, "cdTitle", new TitleModel(cdModel));
+		FeedbackPanel feedback = new FeedbackPanel(this, "feedback");
+		new DetailForm(this, "detailForm", cdModel);
+		ImageUploadForm imageUploadForm = new ImageUploadForm(this, "imageUpload", cdModel);
 		imageUploadForm.setMaxSize(Bytes.kilobytes(200));
-		add(imageUploadForm);
 
 		getThumbnail();
 
 		// create a link that displays the full image in a popup page
-		ImagePopupLink popupImageLink = new ImagePopupLink("popupImageLink", cdModel);
+		ImagePopupLink popupImageLink = new ImagePopupLink(this, "popupImageLink", cdModel);
 
 		// create an image using the image resource
-		popupImageLink.add(thumbnailImage = new Image("cdimage", getThumbnail()));
-
-		// add the link to the original image
-		add(popupImageLink);
+		thumbnailImage = new Image(popupImageLink, "cdimage", getThumbnail());
 
 		// add link for deleting the image
-		add(new DeleteImageLink("deleteImageLink", cdModel));
+		new DeleteImageLink(this, "deleteImageLink", cdModel);
 	}
 
 	/**
@@ -259,7 +248,7 @@ public final class EditPage extends CdAppBasePage
 		// create an image resource that displays a question mark when no image
 		// is set on the cd, or displays a thumbnail of the cd's image when
 		// there is one
-		final CD cd = (CD)cdModel.getObject(null);
+		final CD cd = (CD)cdModel.getObject();
 		if (cd.getImage() == null)
 		{
 			if (IMG_UNKNOWN == null)

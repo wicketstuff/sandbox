@@ -23,6 +23,7 @@ import org.hibernate.cfg.Configuration;
 
 import wicket.IRequestCycleFactory;
 import wicket.ISessionFactory;
+import wicket.Page;
 import wicket.Request;
 import wicket.RequestCycle;
 import wicket.Response;
@@ -90,15 +91,15 @@ public class CdApplication extends WicketExampleApplication implements ISessionF
 	}
 
 	/**
-	 * @return class
+	 * @see wicket.Application#getHomePage()
 	 */
-	public Class getHomePage()
+	public Class< ? extends Page> getHomePage()
 	{
 		return Home.class;
 	}
 
 	/**
-	 * @see wicket.ISessionFactory#newSession()
+	 * @see wicket.protocol.http.WebApplication#newSession()
 	 */
 	public Session newSession()
 	{
