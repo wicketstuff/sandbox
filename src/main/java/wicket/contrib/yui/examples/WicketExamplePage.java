@@ -30,13 +30,16 @@ import wicket.util.string.Strings;
  * 
  * @author Jonathan Locke
  */
-public class WicketExamplePage<T> extends WebPage<T>
-{
+public class WicketExamplePage<T> extends WebPage<T> {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	/**
 	 * Constructor
 	 */
-	public WicketExamplePage()
-	{
+	public WicketExamplePage() {
 		this(null);
 	}
 
@@ -45,18 +48,17 @@ public class WicketExamplePage<T> extends WebPage<T>
 	 * 
 	 * @param model
 	 */
-	public WicketExamplePage(IModel<T> model)
-	{
+	public WicketExamplePage(IModel<T> model) {
 		super(model);
 		final String packageName = getClass().getPackage().getName();
-		new WicketExampleHeader(this, "mainNavigation", Strings.afterLast(packageName, '.'), this);
+		new WicketExampleHeader(this, "mainNavigation", Strings.afterLast(
+				packageName, '.'), this);
 		explain();
 	}
 
 	/**
 	 * Override base method to provide an explanation
 	 */
-	protected void explain()
-	{
+	protected void explain() {
 	}
 }

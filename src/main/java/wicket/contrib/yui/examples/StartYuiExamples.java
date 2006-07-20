@@ -27,8 +27,7 @@ import org.mortbay.jetty.Server;
 /**
  * Seperate startup class for people that want to run the examples directly.
  */
-public class StartYuiExamples
-{
+public class StartYuiExamples {
 	/**
 	 * Used for logging.
 	 */
@@ -37,8 +36,7 @@ public class StartYuiExamples
 	/**
 	 * Construct.
 	 */
-	StartYuiExamples()
-	{
+	StartYuiExamples() {
 		super();
 	}
 
@@ -47,30 +45,22 @@ public class StartYuiExamples
 	 * 
 	 * @param args
 	 */
-	public static void main(String[] args)
-	{
-        Server jettyServer = null;
-		try
-		{
+	public static void main(String[] args) {
+		Server jettyServer = null;
+		try {
 			URL jettyConfig = new URL("file:src/etc/jetty-config.xml");
-			if (jettyConfig == null)
-			{
-				log.fatal("Unable to locate jetty-test-config.xml on the classpath");
+			if (jettyConfig == null) {
+				log
+						.fatal("Unable to locate jetty-test-config.xml on the classpath");
 			}
 			jettyServer = new Server(jettyConfig);
 			jettyServer.start();
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			log.fatal("Could not start the Jetty server: " + e);
-			if (jettyServer != null)
-			{
-				try
-				{
+			if (jettyServer != null) {
+				try {
 					jettyServer.stop();
-				}
-				catch (InterruptedException e1)
-				{
+				} catch (InterruptedException e1) {
 					log.fatal("Unable to stop the jetty server: " + e1);
 				}
 			}

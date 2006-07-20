@@ -55,8 +55,7 @@ import wicket.util.convert.converters.DateConverter;
 /**
  * @author jcompagner
  */
-public class RequestsPage extends WebPage
-{
+public class RequestsPage extends WebPage {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -64,63 +63,58 @@ public class RequestsPage extends WebPage
 	 * 
 	 * @param sessionData
 	 */
-	public RequestsPage(final SessionData sessionData)
-	{
+	public RequestsPage(final SessionData sessionData) {
 		new Image(this, "bug");
 
 		new SessionView(this, "session", sessionData.getSession());
 
-		IModel<List<RequestData>> requestsModel = new Model<List<RequestData>>()
-		{
+		IModel<List<RequestData>> requestsModel = new Model<List<RequestData>>() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public List<RequestData> getObject()
-			{
+			public List<RequestData> getObject() {
 				return new ArrayList<RequestData>(sessionData.getRequests());
 			}
 		};
-		PageableListView<RequestData> listView = new PageableListView<RequestData>(this, "requests", requestsModel, 50)
-		{
+		PageableListView<RequestData> listView = new PageableListView<RequestData>(
+				this, "requests", requestsModel, 50) {
 			private static final long serialVersionUID = 1L;
 
-			private final SimpleDateFormat sdf = new SimpleDateFormat("dd MMM hh:mm:ss.SSS");
+			private final SimpleDateFormat sdf = new SimpleDateFormat(
+					"dd MMM hh:mm:ss.SSS");
 
 			@Override
-			protected void populateItem(ListItem item)
-			{
-				RequestData rd = (RequestData)item.getModelObject();
-				new Label(item, "startDate", new Model<Date>(rd.getStartDate()))
-				{
+			protected void populateItem(ListItem item) {
+				RequestData rd = (RequestData) item.getModelObject();
+				new Label(item, "startDate", new Model<Date>(rd.getStartDate())) {
 					private static final long serialVersionUID = 1L;
 
 					/**
 					 * @see wicket.Component#getConverter(Class)
 					 */
 					@Override
-					public IConverter getConverter(Class type)
-					{
+					public IConverter getConverter(Class type) {
 
-						return new DateConverter()
-						{
+						return new DateConverter() {
 							private static final long serialVersionUID = 1L;
 
 							/**
 							 * @see wicket.util.convert.converters.DateConverter#getDateFormat(java.util.Locale)
 							 */
 							@Override
-							public DateFormat getDateFormat(Locale locale)
-							{
+							public DateFormat getDateFormat(Locale locale) {
 								return sdf;
 							}
 						};
 					}
 				};
 				new Label(item, "timeTaken", new Model<Long>(rd.getTimeTaken()));
-				new Label(item, "eventTarget", new Model<String>(rd.getEventTargert()));
-				new Label(item, "responseTarget", new Model<String>(rd.getResponseTarget()));
-				new Label(item, "alteredObjects", new Model<String>(rd.getAlteredObjects()))
-						.setEscapeModelStrings(false);
+				new Label(item, "eventTarget", new Model<String>(rd
+						.getEventTargert()));
+				new Label(item, "responseTarget", new Model<String>(rd
+						.getResponseTarget()));
+				new Label(item, "alteredObjects", new Model<String>(rd
+						.getAlteredObjects())).setEscapeModelStrings(false);
 			}
 		};
 

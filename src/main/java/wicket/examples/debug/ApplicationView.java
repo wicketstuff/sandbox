@@ -28,8 +28,7 @@ import wicket.markup.html.panel.Panel;
  * 
  * @author Jonathan Locke
  */
-public final class ApplicationView extends Panel
-{
+public final class ApplicationView extends Panel {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -42,8 +41,8 @@ public final class ApplicationView extends Panel
 	 * @param application
 	 *            The application to view
 	 */
-	public ApplicationView(MarkupContainer parent, final String id, final Application application)
-	{
+	public ApplicationView(MarkupContainer parent, final String id,
+			final Application application) {
 		super(parent, id);
 
 		// Basic attributes
@@ -54,8 +53,10 @@ public final class ApplicationView extends Panel
 				+ application.getMarkupSettings().getCompressWhitespace());
 		new Label(this, "defaultLocale", ""
 				+ application.getApplicationSettings().getDefaultLocale());
-		new Label(this, "maxPageVersions", "" + application.getPageSettings().getMaxPageVersions());
-		new Label(this, "stripComments", "" + application.getMarkupSettings().getStripComments());
+		new Label(this, "maxPageVersions", ""
+				+ application.getPageSettings().getMaxPageVersions());
+		new Label(this, "stripComments", ""
+				+ application.getMarkupSettings().getStripComments());
 		new Label(this, "stripWicketTags", ""
 				+ application.getMarkupSettings().getStripWicketTags());
 		new Label(this, "bufferResponse", ""

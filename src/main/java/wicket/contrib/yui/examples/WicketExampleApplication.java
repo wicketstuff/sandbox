@@ -38,6 +38,7 @@ public abstract class WicketExampleApplication extends WebApplication {
 	/**
 	 * @see wicket.protocol.http.WebApplication#init()
 	 */
+	@Override
 	protected void init() {
 		// WARNING: DO NOT do this on a real world application unless
 		// you really want your app's passwords all passed around and
