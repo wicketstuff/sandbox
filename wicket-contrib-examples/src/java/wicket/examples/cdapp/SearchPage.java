@@ -50,6 +50,11 @@ import wicket.model.PropertyModel;
  */
 public class SearchPage extends CdAppBasePage
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	/** Logger. */
 	private static Log log = LogFactory.getLog(SearchPage.class);
 
@@ -87,6 +92,12 @@ public class SearchPage extends CdAppBasePage
 		resultsListView = new SearchCDResultsListView(this, "results", searchModel, rowsPerPage);
 		WebMarkupContainer resultsTableHeader = new WebMarkupContainer(this, "resultsHeader")
 		{
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
 			public boolean isVisible()
 			{
 				return searchModel.hasResults();
@@ -126,6 +137,10 @@ public class SearchPage extends CdAppBasePage
 	 */
 	private class SearchForm extends Form
 	{
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 		/** search property to set. */
 		private String search;
 
@@ -146,6 +161,7 @@ public class SearchPage extends CdAppBasePage
 		/**
 		 * @see wicket.markup.html.form.Form#onSubmit()
 		 */
+		@Override
 		public final void onSubmit()
 		{
 			searchModel.setSearchString(search); // set search query on model
@@ -186,6 +202,11 @@ public class SearchPage extends CdAppBasePage
 	private class SearchCDResultsListView extends PageableListView<CD>
 	{
 		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
+		/**
 		 * Construct.
 		 * 
 		 * @param parent
@@ -206,6 +227,7 @@ public class SearchPage extends CdAppBasePage
 		/**
 		 * @see wicket.Component#isVersioned()
 		 */
+		@Override
 		public boolean isVersioned()
 		{
 			return true;
@@ -215,6 +237,7 @@ public class SearchPage extends CdAppBasePage
 		 * @see PageableListView#populateItem(ListItem)
 		 * @param item
 		 */
+		@Override
 		public void populateItem(final ListItem<CD> item)
 		{
 			final CD cd = item.getModelObject();
@@ -236,6 +259,11 @@ public class SearchPage extends CdAppBasePage
 	private final class DetailLink extends Link<Long>
 	{
 		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
+		/**
 		 * Construct.
 		 * 
 		 * @param parent
@@ -253,10 +281,11 @@ public class SearchPage extends CdAppBasePage
 		/**
 		 * @see wicket.markup.html.link.Link#onClick()
 		 */
+		@Override
 		public void onClick()
 		{
 			final RequestCycle requestCycle = getRequestCycle();
-			final Long id = (Long)getModelObject();
+			final Long id = getModelObject();
 			requestCycle.setResponsePage(new EditPage(SearchPage.this, id));
 		}
 	}
@@ -264,6 +293,11 @@ public class SearchPage extends CdAppBasePage
 	/** Link for deleting a row. */
 	private final class DeleteLink extends Link<Long>
 	{
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
 		/**
 		 * Construct.
 		 * 
@@ -284,6 +318,7 @@ public class SearchPage extends CdAppBasePage
 		/**
 		 * @see wicket.markup.html.link.Link#onClick()
 		 */
+		@Override
 		public void onClick()
 		{
 			final Long id = getModelObject();
@@ -321,6 +356,10 @@ public class SearchPage extends CdAppBasePage
 	/** Link for sorting on a column. */
 	private final class SortLink extends Link
 	{
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 		/** order by field. */
 		private final String field;
 
@@ -345,6 +384,7 @@ public class SearchPage extends CdAppBasePage
 		 * 
 		 * @see wicket.markup.html.link.Link#onClick()
 		 */
+		@Override
 		public void onClick()
 		{
 			searchModel.addOrdering(field);
@@ -357,6 +397,11 @@ public class SearchPage extends CdAppBasePage
 	 */
 	private static class CDTableNavigation extends PagingNavigation
 	{
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
 		/**
 		 * Construct.
 		 * 
@@ -375,6 +420,7 @@ public class SearchPage extends CdAppBasePage
 		/**
 		 * @see wicket.markup.html.list.Loop#populateItem(wicket.markup.html.list.Loop.LoopItem)
 		 */
+		@Override
 		protected void populateItem(final LoopItem iteration)
 		{
 			final PagingNavigationLink link = new PagingNavigationLink(iteration, "pageLink",

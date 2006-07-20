@@ -1,6 +1,7 @@
 /*
- * $Id$
- * $Revision$ $Date$
+ * $Id: JRHtmlResource.java 627 2006-03-20 07:12:13 +0000 (Mon, 20 Mar 2006)
+ * eelco12 $ $Revision$ $Date: 2006-03-20 07:12:13 +0000 (Mon, 20 Mar
+ * 2006) $
  * 
  * ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -31,6 +32,11 @@ import net.sf.jasperreports.engine.export.JRHtmlExporter;
  */
 public final class JRHtmlResource extends JRResource
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	/**
 	 * Construct without a report. You must provide a report before you can use
 	 * this resource.

@@ -20,10 +20,12 @@ public class InlineEditLink extends Link
 	private static final long serialVersionUID = 1L;
 
 	/** an image for a cancel button */
-	public static final PackageResource CANCEL = PackageResource.get(InlineEditLink.class, "cancel.gif");
+	public static final PackageResource CANCEL = PackageResource.get(
+			InlineEditLink.class, "cancel.gif");
 
 	/** an image for an edit button */
-	public static final PackageResource EDIT = PackageResource.get(InlineEditLink.class, "edit.gif");
+	public static final PackageResource EDIT = PackageResource.get(InlineEditLink.class,
+			"edit.gif");
 
 	/**
 	 * @param id
@@ -85,18 +87,18 @@ public class InlineEditLink extends Link
 			GridView.setEdit(this);
 		}
 	}
-	
+
 	protected String getCancelAlt()
 	{
 		return getApplication().getResourceSettings().getLocalizer().getString(
-			GridView.getResourceId(this) + ".cancelAlt", getPage(), null, null,
-			null, "Cancel");
+				GridView.getResourceId(this) + ".cancelAlt", getPage(), null, null, null,
+				"Cancel");
 	}
-	
+
 	protected String getEditAlt()
 	{
 		return getApplication().getResourceSettings().getLocalizer().getString(
-			GridView.getResourceId(this) + ".editAlt", getPage(), null, null,
-			null, "Edit");
+				GridView.getResourceId(this) + ".editAlt", getPage(), null, null, null,
+				"Edit");
 	}
 }

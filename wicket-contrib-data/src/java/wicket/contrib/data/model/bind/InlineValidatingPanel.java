@@ -15,13 +15,14 @@ public class InlineValidatingPanel<T> extends Panel<T>
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+
 	InlineValidatingComponent component;
-	
+
 	public InlineValidatingPanel(MarkupContainer parent, String id)
 	{
 		super(parent, id);
 	}
-	
+
 	/**
 	 * Sets the component that will optionally have valildators added.
 	 */
@@ -29,7 +30,7 @@ public class InlineValidatingPanel<T> extends Panel<T>
 	{
 		this.component = component;
 	}
-	
+
 	/**
 	 * Adds a validator to the inner form component.
 	 */
@@ -38,7 +39,7 @@ public class InlineValidatingPanel<T> extends Panel<T>
 		component.add(validator);
 		return this;
 	}
-	
+
 	/**
 	 * Sets the type for the inner form component.
 	 */

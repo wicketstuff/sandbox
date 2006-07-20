@@ -11,6 +11,7 @@ import wicket.model.IModel;
 public class DetachableList implements IModel<IDetachable>
 {
 	private static final long serialVersionUID = 1L;
+
 	private IDetachable object;
 
 	/**

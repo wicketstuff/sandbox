@@ -24,6 +24,7 @@ import wicket.model.IModel;
 
 /**
  * Base page for the cd app example.
+ * 
  * @param <T>
  *            any type
  * 

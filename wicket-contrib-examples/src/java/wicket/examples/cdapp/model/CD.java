@@ -30,6 +30,10 @@ import org.hibernate.Hibernate;
  */
 public class CD extends Entity
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String title;
 	private String performers;
 	private String label;
@@ -349,6 +353,7 @@ public class CD extends Entity
 	/**
 	 * @see java.lang.Object#toString()
 	 */
+	@Override
 	public String toString()
 	{
 		return "CD{" + title + "}";

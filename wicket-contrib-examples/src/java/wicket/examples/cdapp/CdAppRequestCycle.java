@@ -1,20 +1,18 @@
 /*
- * $Id$
- * $Revision$
- * $Date$
- *
- * ====================================================================
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *  http://www.apache.org/licenses/LICENSE-2.0
- *
+ * $Id$ $Revision$ $Date$
+ * 
+ * ==================================================================== Licensed
+ * under the Apache License, Version 2.0 (the "License"); you may not use this
+ * file except in compliance with the License. You may obtain a copy of the
+ * License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 package wicket.examples.cdapp;
 
@@ -28,8 +26,8 @@ import wicket.protocol.http.WebRequestCycle;
 import wicket.protocol.http.WebSession;
 
 /**
- * Special request cycle for this application that opens and closes a hibernate session
- * for each request.
+ * Special request cycle for this application that opens and closes a hibernate
+ * session for each request.
  */
 public final class CdAppRequestCycle extends WebRequestCycle
 {
@@ -41,13 +39,18 @@ public final class CdAppRequestCycle extends WebRequestCycle
 
 	/**
 	 * Construct.
-	 * @param session session object
-	 * @param request request object
-	 * @param response response object
-	 * @param sessionFactory hibernate session factory
+	 * 
+	 * @param session
+	 *            session object
+	 * @param request
+	 *            request object
+	 * @param response
+	 *            response object
+	 * @param sessionFactory
+	 *            hibernate session factory
 	 */
-	public CdAppRequestCycle(WebSession session,
-			WebRequest request, Response response, SessionFactory sessionFactory)
+	public CdAppRequestCycle(WebSession session, WebRequest request, Response response,
+			SessionFactory sessionFactory)
 	{
 		super(session, request, response);
 		this.sessionFactory = sessionFactory;
@@ -56,9 +59,10 @@ public final class CdAppRequestCycle extends WebRequestCycle
 	/**
 	 * @see wicket.RequestCycle#onEndRequest()
 	 */
+	@Override
 	protected void onEndRequest()
 	{
-		if(session != null)
+		if (session != null)
 		{
 			try
 			{
@@ -77,11 +81,12 @@ public final class CdAppRequestCycle extends WebRequestCycle
 
 	/**
 	 * Gets the hibernate session for this request.
+	 * 
 	 * @return the session
 	 */
 	public Session getHibernateSession()
 	{
-		if(session == null)
+		if (session == null)
 		{
 			try
 			{

@@ -37,6 +37,11 @@ import wicket.model.Model;
  */
 public class HibernateObjectModel<T, V> extends PersistentObjectModel<T, V>
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	/** whether to 'unproxy' the objects after loading. */
 	private boolean unproxy = false;
 
@@ -240,6 +245,7 @@ public class HibernateObjectModel<T, V> extends PersistentObjectModel<T, V>
 	 * 
 	 * @see PersistentObjectModel#loadObject(java.io.Serializable)
 	 */
+	@Override
 	@SuppressWarnings("unchecked")
 	public T loadObject(V id)
 	{
@@ -255,7 +261,7 @@ public class HibernateObjectModel<T, V> extends PersistentObjectModel<T, V>
 			{
 				HibernateProxy proxy = (HibernateProxy) loaded;
 				LazyInitializer lazyInitializer = proxy.getHibernateLazyInitializer();
-				T implementation = (T)lazyInitializer.getImplementation();
+				T implementation = (T) lazyInitializer.getImplementation();
 				return implementation;
 			}
 
@@ -327,10 +333,16 @@ public class HibernateObjectModel<T, V> extends PersistentObjectModel<T, V>
 	{
 
 		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
+		/**
 		 * Gets the object that is to be used when the id is null.
 		 * 
 		 * @return the object that is to be used when the id is null
 		 */
+		@Override
 		@SuppressWarnings("unchecked")
 		public T doGetObjectForNullId()
 		{
@@ -343,7 +355,7 @@ public class HibernateObjectModel<T, V> extends PersistentObjectModel<T, V>
 						throw new WicketRuntimeException(
 								"only serializable classes can be used with this strategy");
 					}
-					return (T) objectClass.newInstance();
+					return objectClass.newInstance();
 				}
 				catch (InstantiationException e)
 				{

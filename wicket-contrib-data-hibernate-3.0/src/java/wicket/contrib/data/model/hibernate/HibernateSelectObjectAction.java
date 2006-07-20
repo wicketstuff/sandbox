@@ -31,6 +31,11 @@ import wicket.contrib.data.model.ISelectObjectAction;
  */
 public final class HibernateSelectObjectAction<T, V> implements ISelectObjectAction<T, V>
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	/** delegate that provides instances of {@link org.hibernate.Session}. */
 	private final IHibernateSessionDelegate sessionDelegate;
 
@@ -73,6 +78,11 @@ public final class HibernateSelectObjectAction<T, V> implements ISelectObjectAct
 	 */
 	private static final class ObjectNotFoundException extends WicketRuntimeException
 	{
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
 		/**
 		 * Construct.
 		 */

@@ -41,10 +41,20 @@ import wicket.model.Model;
 public class MenuRow extends Panel<List<MenuItem>>
 {
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**
 	 * Listview for a menu row.
 	 */
 	private final class RowListView extends ListView<MenuItem>
 	{
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
 		/**
 		 * Construct.
 		 * 
@@ -64,6 +74,7 @@ public class MenuRow extends Panel<List<MenuItem>>
 		/**
 		 * @see wicket.markup.html.list.ListView#populateItem(wicket.markup.html.list.ListItem)
 		 */
+		@Override
 		protected void populateItem(ListItem<MenuItem> item)
 		{
 			final MenuItem menuItem = item.getModelObject();
@@ -129,6 +140,11 @@ public class MenuRow extends Panel<List<MenuItem>>
 		WebMarkupContainer div = new WebMarkupContainer(this, "div");
 		div.add(new AttributeModifier("class", true, new Model<String>())
 		{
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
 			public String getObject(Component component)
 			{
 				return style.getContainerCSSClass();
@@ -138,6 +154,12 @@ public class MenuRow extends Panel<List<MenuItem>>
 		WebMarkupContainer ul = new WebMarkupContainer(div, "ul");
 		ul.add(new AttributeModifier("class", true, new Model<String>()
 		{
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
 			public String getObject()
 			{
 				return style.getRowCSSClass();
@@ -159,6 +181,7 @@ public class MenuRow extends Panel<List<MenuItem>>
 	/**
 	 * @see wicket.Component#isVersioned()
 	 */
+	@Override
 	public final boolean isVersioned()
 	{
 		return false;

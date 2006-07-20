@@ -27,6 +27,11 @@ import wicket.markup.html.link.PageLink;
 public class Home extends CdAppBasePage
 {
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**
 	 * Create the home page.
 	 * 
 	 * @param parameters

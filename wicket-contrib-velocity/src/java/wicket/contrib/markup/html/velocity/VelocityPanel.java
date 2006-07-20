@@ -54,6 +54,11 @@ import wicket.util.string.Strings;
  */
 public final class VelocityPanel<K, V> extends WebComponent<Map<K, V>>
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	/** Whether to escape HTML characters. The default value is false. */
 	private boolean escapeHtml = false;
 
@@ -150,6 +155,7 @@ public final class VelocityPanel<K, V> extends WebComponent<Map<K, V>>
 	 * @see wicket.Component#onComponentTagBody(wicket.markup.MarkupStream,
 	 *      wicket.markup.ComponentTag)
 	 */
+	@Override
 	protected void onComponentTagBody(final MarkupStream markupStream,
 			final ComponentTag openTag)
 	{

@@ -33,6 +33,11 @@ import wicket.ResourceReference;
  */
 public class MenuRowStyle implements Serializable
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	/** the CSS style file. */
 	private ResourceReference styleSheetResource;
 

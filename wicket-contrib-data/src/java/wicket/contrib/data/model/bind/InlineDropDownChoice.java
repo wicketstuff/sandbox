@@ -16,7 +16,8 @@ public class InlineDropDownChoice<T> extends InlineValidatingComponent<T>
 {
 	private static final long serialVersionUID = 1L;
 
-	public InlineDropDownChoice(MarkupContainer parent, String id, IModel<T> model, List<T> choices)
+	public InlineDropDownChoice(MarkupContainer parent, String id, IModel<T> model,
+			List<T> choices)
 	{
 		super(parent, id);
 		setFormComponent(new DropDownChoice<T>(this, "dropDownChoice", model, choices)
@@ -29,7 +30,7 @@ public class InlineDropDownChoice<T> extends InlineValidatingComponent<T>
 				return GridView.isEdit(this);
 			}
 		});
-		
+
 		new Label(this, "label", model)
 		{
 			private static final long serialVersionUID = 1L;

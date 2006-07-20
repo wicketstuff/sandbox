@@ -62,27 +62,25 @@ public abstract class HibernateDataProvider<T, V> extends SortableDataProvider<T
 	@SuppressWarnings("unchecked")
 	public Iterator<T> iterator(final int first, final int count)
 	{
-		return (Iterator<T>) getHibernateDao().execute(
-				new IHibernateCallback<Iterator<T>>()
-				{
-					public Iterator<T> execute(Session session)
-					{
-						return iterator(first, count, session);
-					}
-				});
+		return getHibernateDao().execute(new IHibernateCallback<Iterator<T>>()
+		{
+			public Iterator<T> execute(Session session)
+			{
+				return iterator(first, count, session);
+			}
+		});
 	}
 
 	@SuppressWarnings("unchecked")
 	public int size()
 	{
-		Integer result = (Integer) getHibernateDao().execute(
-				new IHibernateCallback<Integer>()
-				{
-					public Integer execute(Session session)
-					{
-						return size(session);
-					}
-				});
+		Integer result = getHibernateDao().execute(new IHibernateCallback<Integer>()
+		{
+			public Integer execute(Session session)
+			{
+				return size(session);
+			}
+		});
 
 		return result.intValue();
 	}

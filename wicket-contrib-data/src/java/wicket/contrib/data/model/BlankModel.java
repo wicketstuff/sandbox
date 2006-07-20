@@ -22,17 +22,18 @@ public class BlankModel<T> extends AbstractDetachableModel<T>
 	private T object;
 
 	private Class<T> objectClass;
-	
+
 	/**
 	 * Constructor
 	 * 
-	 * @param objectClass the class that will be used to create new beans
+	 * @param objectClass
+	 *            the class that will be used to create new beans
 	 */
 	public BlankModel(Class<T> objectClass)
 	{
 		this.objectClass = objectClass;
 	}
-	
+
 	/**
 	 * @see wicket.model.AbstractDetachableModel#getNestedModel()
 	 */
@@ -85,6 +86,6 @@ public class BlankModel<T> extends AbstractDetachableModel<T>
 	protected void onSetObject(T object)
 	{
 		this.object = object;
-		this.objectClass = (Class<T>)object.getClass();
+		this.objectClass = (Class<T>) object.getClass();
 	}
 }

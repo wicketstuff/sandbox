@@ -1,6 +1,7 @@
 /*
- * $Id$
- * $Revision$ $Date$
+ * $Id: JRTextResource.java 627 2006-03-20 07:12:13 +0000 (Mon, 20 Mar 2006)
+ * eelco12 $ $Revision$ $Date: 2006-03-20 07:12:13 +0000 (Mon, 20 Mar
+ * 2006) $
  * 
  * ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -32,6 +33,11 @@ import net.sf.jasperreports.engine.export.JRTextExporterParameter;
  */
 public final class JRTextResource extends JRResource
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	/**
 	 * an integer representing the page width in characters.
 	 */

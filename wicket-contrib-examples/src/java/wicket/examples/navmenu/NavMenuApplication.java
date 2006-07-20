@@ -1,7 +1,5 @@
 /*
- * $Id$
- * $Revision$
- * $Date$
+ * $Id$ $Revision$ $Date$
  * 
  * ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -25,31 +23,32 @@ import wicket.protocol.http.WebApplication;
 
 /**
  * WicketServlet class for nested structure example.
- *
+ * 
  * @author Eelco Hillenius
  */
 public class NavMenuApplication extends WebApplication
 {
-    /**
-     * Constructor.
-     */
-    public NavMenuApplication()
-    {
-    }
+	/**
+	 * Constructor.
+	 */
+	public NavMenuApplication()
+	{
+	}
 
-    /**
-     * @return class
-     */
-    public Class<? extends Page> getHomePage()
-    {
-    	return Home.class;
-    }
-    
-    /**
-     * @return the menu as a tree model
-     */
-    public static MenuModel getMenu()
-    {
+	/**
+	 * @return class
+	 */
+	@Override
+	public Class< ? extends Page> getHomePage()
+	{
+		return Home.class;
+	}
+
+	/**
+	 * @return the menu as a tree model
+	 */
+	public static MenuModel getMenu()
+	{
 		// create tree
 		MenuModel model = null;
 		MenuItem root = new MenuItem(); // dummy
@@ -73,5 +72,5 @@ public class NavMenuApplication extends WebApplication
 		root.add(a4);
 		model = new MenuModel(root);
 		return model;
-    }
+	}
 }

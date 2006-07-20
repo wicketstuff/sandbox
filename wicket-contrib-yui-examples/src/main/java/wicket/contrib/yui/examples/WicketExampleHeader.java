@@ -33,8 +33,12 @@ import wicket.markup.html.panel.Panel;
  * 
  * @author Eelco Hillenius
  */
-public final class WicketExampleHeader extends Panel
-{
+public final class WicketExampleHeader extends Panel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	/**
 	 * Construct.
 	 * 
@@ -47,17 +51,19 @@ public final class WicketExampleHeader extends Panel
 	 * @param page
 	 *            The example page
 	 */
-	public WicketExampleHeader(MarkupContainer parent, final String id, String exampleTitle,
-			WebPage page)
-	{
+	public WicketExampleHeader(MarkupContainer parent, final String id,
+			String exampleTitle, WebPage page) {
 		super(page, id);
 		new InspectorBug(this, "inspector", page);
 		new Label(this, "exampleTitle", exampleTitle);
-		Link link = new Link(this, "sources")
-		{
+		Link link = new Link(this, "sources") {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
 			@Override
-			public void onClick()
-			{
+			public void onClick() {
 				setResponsePage(new SourcesPage(getPage().getClass()));
 			}
 		};

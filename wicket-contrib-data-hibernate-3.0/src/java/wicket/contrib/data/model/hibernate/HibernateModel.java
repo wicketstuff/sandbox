@@ -22,6 +22,11 @@ import wicket.model.Model;
  */
 public class HibernateModel<T, V> implements IModel<T>, Comparable
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private IModel<IHibernateDao> dao;
 
 	private Class<T> clazz;
@@ -125,7 +130,7 @@ public class HibernateModel<T, V> implements IModel<T>, Comparable
 
 		// Set all the values.
 		this.clazz = meta.getMappedClass(EntityMode.POJO);
-		this.id = (V)meta.getIdentifier(unproxiedModel, EntityMode.POJO);
+		this.id = (V) meta.getIdentifier(unproxiedModel, EntityMode.POJO);
 
 		if (id == null)
 		{
@@ -220,7 +225,7 @@ public class HibernateModel<T, V> implements IModel<T>, Comparable
 			@SuppressWarnings("unchecked")
 			public T execute(Session session)
 			{
-				return (T) session.load(clazz, (Serializable)id);
+				return (T) session.load(clazz, (Serializable) id);
 			}
 		});
 
@@ -238,12 +243,13 @@ public class HibernateModel<T, V> implements IModel<T>, Comparable
 
 		if (!getId().equals(model.getId()))
 		{
-			return ((Comparable) getId()).compareTo((Comparable) model.getId());
+			return ((Comparable) getId()).compareTo(model.getId());
 		}
 
 		return getClazz().getName().compareTo(model.getClazz().getName());
 	}
 
+	@Override
 	public boolean equals(Object rhs)
 	{
 		if (this == rhs)
@@ -260,6 +266,7 @@ public class HibernateModel<T, V> implements IModel<T>, Comparable
 		return false;
 	}
 
+	@Override
 	public int hashCode()
 	{
 		return getClazz().getName().hashCode() ^ getId().hashCode();

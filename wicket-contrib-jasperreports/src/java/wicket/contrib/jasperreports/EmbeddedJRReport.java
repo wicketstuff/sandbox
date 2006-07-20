@@ -33,6 +33,11 @@ import wicket.markup.html.WebComponent;
  */
 public final class EmbeddedJRReport extends WebComponent implements IResourceListener
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private final JRResource resource;
 
 	/**

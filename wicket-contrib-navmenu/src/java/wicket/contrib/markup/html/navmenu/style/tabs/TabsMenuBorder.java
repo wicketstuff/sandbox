@@ -30,6 +30,11 @@ import wicket.markup.html.border.Border;
 public class TabsMenuBorder extends Border
 {
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**
 	 * Construct.
 	 * 
 	 * @param parent

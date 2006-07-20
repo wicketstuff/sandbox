@@ -33,12 +33,12 @@ public abstract class AbstractColumn<T> implements IColumn<T>
 		{
 			setAllowOrderBy(false);
 		}
-		
-		if(displayName == null)
+
+		if (displayName == null)
 		{
 			displayName = "";
 		}
-		
+
 		this.displayName = displayName;
 		this.modelPath = modelPath;
 		this.orderByPath = modelPath;
@@ -86,7 +86,7 @@ public abstract class AbstractColumn<T> implements IColumn<T>
 	{
 		return orderByPath;
 	}
-	
+
 	protected PropertyModel<T> makePropertyModel(IModel<T> model)
 	{
 		return new PropertyModel<T>(model, getModelPath());

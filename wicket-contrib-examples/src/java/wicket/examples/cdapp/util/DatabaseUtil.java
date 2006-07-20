@@ -436,10 +436,10 @@ public final class DatabaseUtil
 	private List<Track> newTracks(Session session, Track[] tracks) throws HibernateException
 	{
 		List<Track> list = new ArrayList<Track>(tracks.length);
-		for (int i = 0; i < tracks.length; i++)
+		for (Track element : tracks)
 		{
-			session.save(tracks[i]);
-			list.add(tracks[i]);
+			session.save(element);
+			list.add(element);
 		}
 		return list;
 	}
@@ -468,20 +468,20 @@ public final class DatabaseUtil
 	private String[] splitAltTables(String[] drops, boolean inclAlterFlag)
 	{
 		List<String> temp = new ArrayList<String>();
-		for (int i = 0; i < drops.length; i++)
+		for (String element : drops)
 		{
 			if (inclAlterFlag)
 			{
-				if (drops[i].toLowerCase().trim().startsWith("alter"))
+				if (element.toLowerCase().trim().startsWith("alter"))
 				{
-					temp.add(drops[i]);
+					temp.add(element);
 				}
 			}
 			else
 			{
-				if (!drops[i].toLowerCase().trim().startsWith("alter"))
+				if (!element.toLowerCase().trim().startsWith("alter"))
 				{
-					temp.add(drops[i]);
+					temp.add(element);
 				}
 			}
 		}
@@ -502,11 +502,11 @@ public final class DatabaseUtil
 	 */
 	private void execStmt(Connection conn, Statement stmt, String[] stmts) throws SQLException
 	{
-		for (int i = 0; i < stmts.length; i++)
+		for (String element : stmts)
 		{
 			try
 			{
-				stmt.executeUpdate(stmts[i]);
+				stmt.executeUpdate(element);
 				conn.commit();
 			}
 			catch (SQLException e)

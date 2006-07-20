@@ -31,6 +31,10 @@ import wicket.markup.html.panel.Panel;
  */
 public final class TabsNavigationMenu extends Panel
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	/** the model. */
 	private final MenuModel menuModel;
 

@@ -27,7 +27,7 @@ public abstract class GridView<T> extends Form<T>
 	public static final IModel EMPTY_MODEL = new Model();
 
 	private FormList listView;
-	
+
 	private IListDataSource dataSource;
 
 	/**
@@ -38,7 +38,8 @@ public abstract class GridView<T> extends Form<T>
 	 * @param perPage
 	 *            the number of items to display per page
 	 */
-	public GridView(MarkupContainer parent, String id, IListDataSource<T> dataSource, int perPage)
+	public GridView(MarkupContainer parent, String id, IListDataSource<T> dataSource,
+			int perPage)
 	{
 		super(parent, id, EMPTY_MODEL);
 		this.dataSource = dataSource;
@@ -52,12 +53,13 @@ public abstract class GridView<T> extends Form<T>
 	{
 		return listView;
 	}
-	
+
 	/**
 	 * Resets the list being used by the panel. The new list must contain the
 	 * same entities as the one created on initialization.
 	 * 
-	 * @param list the list to set
+	 * @param list
+	 *            the list to set
 	 */
 	public void setList(List list)
 	{
@@ -72,20 +74,20 @@ public abstract class GridView<T> extends Form<T>
 	 *            the item to populate
 	 */
 	protected abstract void populateItem(ListItem item);
-    
-    private void merge()
-    {
-    	dataSource.merge(getModelObject());
-    	removeEditModel();
-    	getListView().removeAll();
-    }
-    
-    private void delete(Object object)
-    {
-    	dataSource.delete(object);
-    	removeEditModel();
-    	getListView().removeAll();
-    }
+
+	private void merge()
+	{
+		dataSource.merge(getModelObject());
+		removeEditModel();
+		getListView().removeAll();
+	}
+
+	private void delete(Object object)
+	{
+		dataSource.delete(object);
+		removeEditModel();
+		getListView().removeAll();
+	}
 
 	private final class FormList extends PageableListView
 	{
@@ -102,20 +104,20 @@ public abstract class GridView<T> extends Form<T>
 		{
 			GridView.this.populateItem(item);
 		}
-        
-        @Override
+
+		@Override
 		public IModel getListItemModel(IModel listViewModel, int index)
-    	{
-    		Object object = ((List) listViewModel.getObject()).get(index);
-            return dataSource.wrap(object);
-    	}
+		{
+			Object object = ((List) listViewModel.getObject()).get(index);
+			return dataSource.wrap(object);
+		}
 	}
-	
+
 	public static String getResourceId(Component component)
 	{
 		GridView gridView = findGridView(component);
 		GridPanel gridPanel = (GridPanel) gridView.findParent(GridPanel.class);
-		
+
 		if (gridPanel != null)
 		{
 			return gridPanel.getId();
@@ -125,41 +127,42 @@ public abstract class GridView<T> extends Form<T>
 			return gridView.getId();
 		}
 	}
-	
+
 	public static Object getRowModel(Component component)
 	{
 		return findListItem(component).getModelObject();
 	}
-    
-    public static void deleteRowModel(Component component)
-    {
-        ListItem item = findListItem(component);
-        GridView grid = findGridView(component);
-        
-        grid.delete(item.getModelObject());
-        grid.getListView().removeAll();
-    }
-    
-    public static void removeEdit(Component component)
-    {
-        findGridView(component).removeEditModel();
-    }
-    
-    public static void setEdit(Component component)
-    {
-        findGridView(component).setEditModel(findListItem(component).getModel());
-    }
-    
-    /**
-     * Saves the modified row to the database.
-     * 
-     * @param component any component under the form
-     */
-    public static void mergeEdit(Component component)
-    {
-    	findGridView(component).merge();
-    }
-    
+
+	public static void deleteRowModel(Component component)
+	{
+		ListItem item = findListItem(component);
+		GridView grid = findGridView(component);
+
+		grid.delete(item.getModelObject());
+		grid.getListView().removeAll();
+	}
+
+	public static void removeEdit(Component component)
+	{
+		findGridView(component).removeEditModel();
+	}
+
+	public static void setEdit(Component component)
+	{
+		findGridView(component).setEditModel(findListItem(component).getModel());
+	}
+
+	/**
+	 * Saves the modified row to the database.
+	 * 
+	 * @param component
+	 *            any component under the form
+	 */
+	public static void mergeEdit(Component component)
+	{
+		findGridView(component).merge();
+	}
+
 	/**
 	 * @param component
 	 *            the component to check
@@ -169,7 +172,7 @@ public abstract class GridView<T> extends Form<T>
 	{
 		return findGridView(component).isEditModel(findListItem(component).getModel());
 	}
-    
+
 	/**
 	 * @param component
 	 *            the component to start the search from
@@ -224,7 +227,7 @@ public abstract class GridView<T> extends Form<T>
 		}
 		return null;
 	}
-    
+
 	/**
 	 * @return true if the given model is the one currently beind edited.
 	 */

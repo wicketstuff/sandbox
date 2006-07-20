@@ -23,13 +23,15 @@ public abstract class CriteriaDataProvider<T, V> extends HibernateDataProvider<T
 		super(hibernateDao);
 	}
 
+	@Override
 	@SuppressWarnings("unchecked")
 	protected Iterator<T> iterator(int first, int count, Session session)
 	{
-		return (Iterator<T>) addOrdering(allItems(session)).setFirstResult(first)
-				.setMaxResults(count).list().iterator();
+		return addOrdering(allItems(session)).setFirstResult(first).setMaxResults(count)
+				.list().iterator();
 	}
 
+	@Override
 	protected Integer size(Session session)
 	{
 		return (Integer) allItems(session).setProjection(Projections.rowCount())

@@ -42,10 +42,20 @@ import wicket.model.Model;
 public class MenuItem extends DefaultMutableTreeNode
 {
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**
 	 * Default panel for items.
 	 */
 	protected class ItemPanel extends Panel
 	{
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
 		/**
 		 * Construct.
 		 * 
@@ -66,6 +76,12 @@ public class MenuItem extends DefaultMutableTreeNode
 			new Label(pageLink, "label", label);
 			add(new AttributeModifier("class", true, new Model<String>()
 			{
+				/**
+				 * 
+				 */
+				private static final long serialVersionUID = 1L;
+
+				@Override
 				public String getObject()
 				{
 					return row.getRowStyle().getItemCSSClass(MenuItem.this, row);
@@ -227,6 +243,7 @@ public class MenuItem extends DefaultMutableTreeNode
 	/**
 	 * @see javax.swing.tree.DefaultMutableTreeNode#add(javax.swing.tree.MutableTreeNode)
 	 */
+	@Override
 	public final void add(MutableTreeNode newChild)
 	{
 		check(newChild);
@@ -237,6 +254,7 @@ public class MenuItem extends DefaultMutableTreeNode
 	 * @see javax.swing.tree.DefaultMutableTreeNode#insert(javax.swing.tree.MutableTreeNode,
 	 *      int)
 	 */
+	@Override
 	public final void insert(MutableTreeNode newChild, int childIndex)
 	{
 		check(newChild);
@@ -246,6 +264,7 @@ public class MenuItem extends DefaultMutableTreeNode
 	/**
 	 * @see javax.swing.tree.DefaultMutableTreeNode#setParent(javax.swing.tree.MutableTreeNode)
 	 */
+	@Override
 	public final void setParent(MutableTreeNode newParent)
 	{
 		check(newParent);
@@ -272,6 +291,7 @@ public class MenuItem extends DefaultMutableTreeNode
 	/**
 	 * @see java.lang.Object#toString()
 	 */
+	@Override
 	public String toString()
 	{
 		return "MenuItem{pageClass=" + getPageClass() + "}";

@@ -28,6 +28,11 @@ import wicket.markup.html.image.Image;
 public final class ImagePopup extends WebPage
 {
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**
 	 * Construct.
 	 * 
 	 * @param imageResource

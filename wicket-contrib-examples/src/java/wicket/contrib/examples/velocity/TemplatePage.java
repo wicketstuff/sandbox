@@ -38,6 +38,11 @@ import wicket.util.resource.StringBufferResourceStream;
  */
 public class TemplatePage extends WicketExamplePage
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	/** context to be used by the template. */
 	private final Model<Map<String, List<Person>>> templateContext;
 
@@ -101,6 +106,11 @@ public class TemplatePage extends WicketExamplePage
 	 */
 	private final class TemplateForm extends Form
 	{
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
 		/**
 		 * Construct.
 		 * 

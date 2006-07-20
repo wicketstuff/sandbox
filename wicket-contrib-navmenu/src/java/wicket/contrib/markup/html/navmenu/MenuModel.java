@@ -34,6 +34,11 @@ import wicket.Page;
 public class MenuModel extends DefaultTreeModel
 {
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**
 	 * Construct.
 	 * 
 	 * @param menuItem
@@ -62,6 +67,7 @@ public class MenuModel extends DefaultTreeModel
 	/**
 	 * @see javax.swing.tree.DefaultTreeModel#setRoot(javax.swing.tree.TreeNode)
 	 */
+	@Override
 	public void setRoot(TreeNode root)
 	{
 		if (root == null)

@@ -44,8 +44,7 @@ import wicket.util.lang.Objects;
  * 
  * @author Jonathan Locke
  */
-public final class PageMapView extends Panel
-{
+public final class PageMapView extends Panel {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -58,22 +57,20 @@ public final class PageMapView extends Panel
 	 * @param pageMap
 	 *            Page map to show
 	 */
-	public PageMapView(MarkupContainer parent, final String id, final PageMap pageMap)
-	{
+	public PageMapView(MarkupContainer parent, final String id,
+			final PageMap pageMap) {
 		super(parent, id);
 
 		// Basic attributes
-		new Label(this, "name", pageMap.getName() == null ? "null" : pageMap.getName());
+		new Label(this, "name", pageMap.getName() == null ? "null" : pageMap
+				.getName());
 		new Label(this, "size", "" + Bytes.bytes(pageMap.getSizeInBytes()));
 
 		// Get entry accesses
 		final ArrayListStack<Access> accessStack;
-		if (pageMap instanceof AccessStackPageMap)
-		{
-			accessStack = ((AccessStackPageMap)pageMap).getAccessStack();
-		}
-		else
-		{
+		if (pageMap instanceof AccessStackPageMap) {
+			accessStack = ((AccessStackPageMap) pageMap).getAccessStack();
+		} else {
 			accessStack = new ArrayListStack<Access>();
 		}
 		final List<Access> reversedAccessStack = new ArrayList<Access>();
@@ -81,42 +78,39 @@ public final class PageMapView extends Panel
 		Collections.reverse(reversedAccessStack);
 
 		// Create the table containing the list the components
-		new ListView<Access>(this, "accesses", reversedAccessStack)
-		{
+		new ListView<Access>(this, "accesses", reversedAccessStack) {
 			private static final long serialVersionUID = 1L;
 
 			/**
 			 * Populate the table with Wicket elements
 			 */
 			@Override
-			protected void populateItem(final ListItem listItem)
-			{
-				final Access access = (Access)listItem.getModelObject();
+			protected void populateItem(final ListItem listItem) {
+				final Access access = (Access) listItem.getModelObject();
 				IPageMapEntry entry = pageMap.getEntry(access.getId());
 				PageParameters parameters = new PageParameters();
 				parameters.put("pageId", "" + entry.getNumericId());
-				Link link = new BookmarkablePageLink(listItem, "link", InspectorPage.class,
-						parameters);
+				Link link = new BookmarkablePageLink(listItem, "link",
+						InspectorPage.class, parameters);
 				new Label(link, "id", "" + entry.getNumericId());
 				new Label(listItem, "class", "" + entry.getClass().getName());
 				long size;
 				int versions;
-				if (entry instanceof Page)
-				{
-					Page page = (Page)entry;
+				if (entry instanceof Page) {
+					Page page = (Page) entry;
 					page.detachModels();
 					size = page.getSizeInBytes();
 					versions = page.getVersions();
-				}
-				else
-				{
+				} else {
 					size = Objects.sizeof(entry);
 					versions = 0;
 				}
-				new Label(listItem, "access", "" + (accessStack.size() - listItem.getIndex()));
+				new Label(listItem, "access", ""
+						+ (accessStack.size() - listItem.getIndex()));
 				new Label(listItem, "version", "" + access.getVersion());
 				new Label(listItem, "versions", "" + versions);
-				new Label(listItem, "size", size == -1 ? "[Unknown]" : "" + Bytes.bytes(size));
+				new Label(listItem, "size", size == -1 ? "[Unknown]" : ""
+						+ Bytes.bytes(size));
 			}
 		};
 	}

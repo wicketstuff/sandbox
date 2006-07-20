@@ -20,8 +20,10 @@ public class InlineDeleteLink extends Link
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+
 	/** the image representing this link */
-	public static final PackageResource DELETE = PackageResource.get(InlineEditLink.class, "delete.gif");
+	public static final PackageResource DELETE = PackageResource.get(
+			InlineEditLink.class, "delete.gif");
 
 	/**
 	 * @param id
@@ -42,25 +44,25 @@ public class InlineDeleteLink extends Link
 	{
 		GridView.deleteRowModel(this);
 	}
-	
+
 	protected String getOnClickScript(String url)
 	{
 		return "return confirm('" + getDeleteString() + "');";
 	}
-	
+
 	protected IModel getResourceModel()
 	{
 		return new Model(new MicroMap("model", GridView.getRowModel(this).toString()));
 	}
-	
+
 	protected String getDeleteString()
 	{
 		String property = GridView.getResourceId(this) + ".deleteItem";
-		
+
 		String message = getApplication().getResourceSettings().getLocalizer().getString(
-			property, getPage(), getResourceModel(), null, null,
-			"Are you sure you want to delete the row?" );
-		
+				property, getPage(), getResourceModel(), null, null,
+				"Are you sure you want to delete the row?");
+
 		return Strings.replaceAll(message, "'", "\\'").toString();
 	}
 }

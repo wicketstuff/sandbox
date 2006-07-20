@@ -16,17 +16,20 @@ public class InlineSubmitButton extends ImageButton
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+
 	/** an image representing a save button */
-	public static final PackageResource SAVE = PackageResource.get(InlineSubmitButton.class, "save.gif");
+	public static final PackageResource SAVE = PackageResource.get(
+			InlineSubmitButton.class, "save.gif");
 
 	/**
-	 * @param id the id of the button
+	 * @param id
+	 *            the id of the button
 	 */
 	public InlineSubmitButton(MarkupContainer parent, String id)
 	{
 		super(parent, id, SAVE);
 	}
-	
+
 	@Override
 	public void onSubmit()
 	{
