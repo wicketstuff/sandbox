@@ -61,7 +61,7 @@ public class MenuRowStyle implements Serializable
 	 */
 	public String getItemCSSClass(MenuItem menuItem, MenuRow menuRow)
 	{
-		MenuRowModel rowModel = (MenuRowModel)menuRow.getModel();
+		MenuRowModel rowModel = (MenuRowModel)menuRow.getModel().getNestedModel();
 		boolean active = (rowModel.isPartOfCurrentSelection(menuRow.getPage(), menuItem));
 		return (active) ? "selectedTab" : null;
 	}
