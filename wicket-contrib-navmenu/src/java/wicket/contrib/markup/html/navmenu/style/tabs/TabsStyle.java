@@ -41,6 +41,11 @@ public final class TabsStyle
 	private static final class Level0 extends MenuRowStyle
 	{
 		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
+		/**
 		 * Construct.
 		 */
 		private Level0()
@@ -61,6 +66,11 @@ public final class TabsStyle
 	 */
 	private static final class Level1 extends MenuRowStyle
 	{
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
 		/**
 		 * Construct.
 		 */

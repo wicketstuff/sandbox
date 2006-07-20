@@ -34,6 +34,11 @@ import wicket.model.IModel;
  */
 public class MenuRowModel extends AbstractDetachableAssignmentAwareModel<List<MenuItem>>
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	/** menu level. */
 	private final int level;
 
@@ -75,6 +80,7 @@ public class MenuRowModel extends AbstractDetachableAssignmentAwareModel<List<Me
 	/**
 	 * @see wicket.model.IModel#getNestedModel()
 	 */
+	@Override
 	public IModel getNestedModel()
 	{
 		return null;
@@ -83,6 +89,7 @@ public class MenuRowModel extends AbstractDetachableAssignmentAwareModel<List<Me
 	/**
 	 * @see wicket.model.AbstractDetachableAssignmentAwareModel#onAttach()
 	 */
+	@Override
 	protected void onAttach()
 	{
 	}
@@ -90,6 +97,7 @@ public class MenuRowModel extends AbstractDetachableAssignmentAwareModel<List<Me
 	/**
 	 * @see wicket.model.AbstractDetachableAssignmentAwareModel#onDetach()
 	 */
+	@Override
 	protected void onDetach()
 	{
 		this.row = null;

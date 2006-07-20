@@ -36,8 +36,8 @@ public interface IColumn<T> extends Serializable
 
 	/**
 	 * Columns are responsible for providing their own component representation.
-	 * Note that the model is NOT a property model, but the entire bean for
-	 * the row. It's up to the column to decide how to map itself to a field(s).
+	 * Note that the model is NOT a property model, but the entire bean for the
+	 * row. It's up to the column to decide how to map itself to a field(s).
 	 * 
 	 * @param id
 	 *            the id the returned component should use

@@ -156,6 +156,7 @@ public final class FreeMarkerPanel<K, V> extends WebComponent<Map<K, V>> {
 	 * @see wicket.Component#onComponentTagbody(wicket.markup.MarkupStream,
 	 *      wicket.markup.ComponentTag)
 	 */
+	@Override
 	protected void onComponentTagBody(final MarkupStream markupStream,
 			final ComponentTag openTag) {
 		final Reader templateReader = getTemplateReader();

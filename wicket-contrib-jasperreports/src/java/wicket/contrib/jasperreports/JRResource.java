@@ -1,6 +1,6 @@
 /*
- * $Id$ $Revision:
- * 1.4 $ $Date$
+ * $Id$
+ * $Revision$ $Date$
  * 
  * ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -146,6 +146,11 @@ public abstract class JRResource extends DynamicWebResource
 	{
 		this(new JasperReportFactory()
 		{
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
 			public JasperReport newJasperReport() throws JRException
 			{
 				return (JasperReport) JRLoader.loadObject(report);
@@ -165,6 +170,11 @@ public abstract class JRResource extends DynamicWebResource
 	{
 		this(new JasperReportFactory()
 		{
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
 			public JasperReport newJasperReport() throws JRException
 			{
 				return (JasperReport) JRLoader.loadObject(report);
@@ -184,6 +194,11 @@ public abstract class JRResource extends DynamicWebResource
 	{
 		this(new JasperReportFactory()
 		{
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
 			public JasperReport newJasperReport() throws JRException
 			{
 				return (JasperReport) JRLoader.loadObject(report);

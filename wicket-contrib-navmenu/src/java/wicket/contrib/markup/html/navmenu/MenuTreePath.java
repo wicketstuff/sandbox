@@ -28,6 +28,11 @@ import javax.swing.tree.TreePath;
 public final class MenuTreePath extends TreePath
 {
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**
 	 * Construct.
 	 * 
 	 * @param path

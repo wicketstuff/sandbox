@@ -15,6 +15,11 @@ import net.sf.jasperreports.engine.export.JRXlsExporter;
 public final class JRXlsResource extends JRResource
 {
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**
 	 * Construct without a report. You must provide a report before you can use
 	 * this resource.
 	 */

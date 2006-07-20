@@ -35,8 +35,7 @@ import wicket.util.string.StringValueConversionException;
  * 
  * @author Jonathan Locke
  */
-public final class InspectorPage extends WebPage
-{
+public final class InspectorPage extends WebPage {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -45,31 +44,27 @@ public final class InspectorPage extends WebPage
 	 * @param parameters
 	 *            The page id of any page to be analyzed
 	 */
-	public InspectorPage(final PageParameters parameters)
-	{
+	public InspectorPage(final PageParameters parameters) {
 		new ApplicationView(this, "application", Application.get());
 		new SessionView(this, "session", Session.get());
 		IPageMapEntry entry = null;
-		try
-		{
+		try {
 			entry = getPageMap().getEntry(parameters.getInt("pageId"));
-		}
-		catch (StringValueConversionException e)
-		{
+		} catch (StringValueConversionException e) {
 			// Ignore
 		}
 		new PageView(this, "page", entry == null ? null : entry.getPage());
 		new Image(this, "bug");
 		new BookmarkablePageLink(this, "allsessions", LiveSessionsPage.class);
-		new Label(this, "wicketVersion", getApplication().getFrameworkSettings().getVersion());
+		new Label(this, "wicketVersion", getApplication()
+				.getFrameworkSettings().getVersion());
 	}
 
 	/**
 	 * @see wicket.Component#isVersioned()
 	 */
 	@Override
-	public boolean isVersioned()
-	{
+	public boolean isVersioned() {
 		return false;
 	}
 }

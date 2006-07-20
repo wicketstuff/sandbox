@@ -61,21 +61,28 @@ import wicket.util.string.Strings;
  * 
  * @author Martijn Dashorst
  */
-public class SourcesPage extends WebPage
-{
+public class SourcesPage extends WebPage {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private static final Log log = LogFactory.getLog(SourcesPage.class);
 
 	/**
 	 * Model for retrieving the source code from the classpath of a packaged
 	 * resource.
 	 */
-	public class SourceModel extends AbstractReadOnlyModel
-	{
+	public class SourceModel extends AbstractReadOnlyModel {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
 		/**
 		 * Constructor.
 		 */
-		public SourceModel()
-		{
+		public SourceModel() {
 		}
 
 		/**
@@ -84,40 +91,31 @@ public class SourcesPage extends WebPage
 		 * @return the contents of the file identified by name
 		 */
 		@Override
-		public Object getObject()
-		{
+		public Object getObject() {
 			// name contains the name of the selected file
-			if (Strings.isEmpty(name))
-			{
+			if (Strings.isEmpty(name)) {
 				return "";
 			}
 			BufferedReader br = null;
-			try
-			{
+			try {
 				StringBuffer sb = new StringBuffer();
 
 				InputStream resourceAsStream = page.getResourceAsStream(name);
-				if (resourceAsStream == null)
-				{
+				if (resourceAsStream == null) {
 					return "Unable to read the source for " + name;
 				}
 				br = new BufferedReader(new InputStreamReader(resourceAsStream));
 
-				while (br.ready())
-				{
+				while (br.ready()) {
 					sb.append(br.readLine());
 					sb.append("\n");
 				}
 				return sb.toString();
-			}
-			catch (IOException e)
-			{
-				log.error("Unable to read resource stream for: " + name + "; Page="
-						+ page.toString(), e);
+			} catch (IOException e) {
+				log.error("Unable to read resource stream for: " + name
+						+ "; Page=" + page.toString(), e);
 				return "";
-			}
-			finally
-			{
+			} finally {
 				IOUtils.closeQuietly(br);
 			}
 		}
@@ -127,22 +125,25 @@ public class SourcesPage extends WebPage
 	 * Model for retrieving the contents of a package directory from the class
 	 * path.
 	 */
-	public class PackagedResourcesModel extends AbstractReadOnlyModel<List<String>> implements IDetachable
-	{
+	public class PackagedResourcesModel extends
+			AbstractReadOnlyModel<List<String>> implements IDetachable {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
 		private final List<String> resources = new ArrayList<String>();
 
 		/**
 		 * Constructor.
 		 */
-		public PackagedResourcesModel()
-		{
+		public PackagedResourcesModel() {
 		}
 
 		/**
 		 * Clears the list to save space.
 		 */
-		protected void onDetach()
-		{
+		protected void onDetach() {
 			resources.clear();
 		}
 
@@ -152,31 +153,23 @@ public class SourcesPage extends WebPage
 		 * @return the list of resources found in the package of the page.
 		 */
 		@Override
-		public List<String> getObject()
-		{
-			if (resources.isEmpty())
-			{
+		public List<String> getObject() {
+			if (resources.isEmpty()) {
 				get(page);
 			}
 			return resources;
 		}
 
 		private final void addResources(final Class scope,
-				final AppendingStringBuffer relativePath, final File dir)
-		{
+				final AppendingStringBuffer relativePath, final File dir) {
 			File[] files = dir.listFiles();
-			for (File file : files)
-			{
-				if (file.isDirectory())
-				{
-					addResources(scope, new AppendingStringBuffer(relativePath).append(
-							file.getName()).append('/'), file);
-				}
-				else
-				{
+			for (File file : files) {
+				if (file.isDirectory()) {
+					addResources(scope, new AppendingStringBuffer(relativePath)
+							.append(file.getName()).append('/'), file);
+				} else {
 					String name = file.getName();
-					if (!name.endsWith("class"))
-					{
+					if (!name.endsWith("class")) {
 						resources.add(relativePath + name);
 					}
 
@@ -184,44 +177,35 @@ public class SourcesPage extends WebPage
 			}
 		}
 
-		private void get(Class scope)
-		{
-			String packageRef = Strings.replaceAll(PackageName.forClass(scope).getName(), ".", "/")
-					.toString();
+		private void get(Class scope) {
+			String packageRef = Strings.replaceAll(
+					PackageName.forClass(scope).getName(), ".", "/").toString();
 			ClassLoader loader = scope.getClassLoader();
-			try
-			{
+			try {
 				// loop through the resources of the package
 				Enumeration packageResources = loader.getResources(packageRef);
-				while (packageResources.hasMoreElements())
-				{
-					URL resource = (URL)packageResources.nextElement();
+				while (packageResources.hasMoreElements()) {
+					URL resource = (URL) packageResources.nextElement();
 					URLConnection connection = resource.openConnection();
-					if (connection instanceof JarURLConnection)
-					{
-						JarFile jf = ((JarURLConnection)connection).getJarFile();
+					if (connection instanceof JarURLConnection) {
+						JarFile jf = ((JarURLConnection) connection)
+								.getJarFile();
 						scanJarFile(scope, packageRef, jf);
-					}
-					else
-					{
-						String absolutePath = scope.getResource("").toExternalForm();
+					} else {
+						String absolutePath = scope.getResource("")
+								.toExternalForm();
 						File basedir;
 						URI uri;
-						try
-						{
+						try {
 							uri = new URI(absolutePath);
-						}
-						catch (URISyntaxException e)
-						{
+						} catch (URISyntaxException e) {
 							throw new RuntimeException(e);
 						}
-						try
-						{
+						try {
 							basedir = new File(uri);
-						}
-						catch (IllegalArgumentException e)
-						{
-							log.debug("Can't construct the uri as a file: " + absolutePath);
+						} catch (IllegalArgumentException e) {
+							log.debug("Can't construct the uri as a file: "
+									+ absolutePath);
 							// if this is throwen then the path is not really a
 							// file. but could be a zip.
 							String jarZipPart = uri.getSchemeSpecificPart();
@@ -229,57 +213,50 @@ public class SourcesPage extends WebPage
 							// real filespec unchanged
 							String lowerJarZipPart = jarZipPart.toLowerCase();
 							int index = lowerJarZipPart.indexOf(".zip");
-							if (index == -1)
-							{
+							if (index == -1) {
 								index = lowerJarZipPart.indexOf(".jar");
 							}
-							if (index == -1)
-							{
+							if (index == -1) {
 								throw e;
 							}
 
-							String filename = jarZipPart.substring(0, index + 4); // 4 =
+							String filename = jarZipPart
+									.substring(0, index + 4); // 4 =
 							// len
 							// of
 							// ".jar"
 							// or
 							// ".zip"
-							log
-									.debug("trying the filename: " + filename
-											+ " to load as a zip/jar.");
+							log.debug("trying the filename: " + filename
+									+ " to load as a zip/jar.");
 							JarFile jarFile = new JarFile(filename, false);
 							scanJarFile(scope, packageRef, jarFile);
 							return;
 						}
-						if (!basedir.isDirectory())
-						{
+						if (!basedir.isDirectory()) {
 							throw new IllegalStateException(
-									"unable to read resources from directory " + basedir);
+									"unable to read resources from directory "
+											+ basedir);
 						}
-						addResources(scope, new AppendingStringBuffer(), basedir);
+						addResources(scope, new AppendingStringBuffer(),
+								basedir);
 					}
 				}
-			}
-			catch (IOException e)
-			{
+			} catch (IOException e) {
 				throw new WicketRuntimeException(e);
 			}
 
 			return;
 		}
 
-		private void scanJarFile(Class scope, String packageRef, JarFile jf)
-		{
+		private void scanJarFile(Class scope, String packageRef, JarFile jf) {
 			Enumeration enumeration = jf.entries();
-			while (enumeration.hasMoreElements())
-			{
-				JarEntry je = (JarEntry)enumeration.nextElement();
+			while (enumeration.hasMoreElements()) {
+				JarEntry je = (JarEntry) enumeration.nextElement();
 				String name = je.getName();
-				if (name.startsWith(packageRef))
-				{
+				if (name.startsWith(packageRef)) {
 					name = name.substring(packageRef.length() + 1);
-					if (!name.endsWith("class"))
-					{
+					if (!name.endsWith("class")) {
 						resources.add(name);
 					}
 				}
@@ -290,8 +267,12 @@ public class SourcesPage extends WebPage
 	/**
 	 * Displays the resources embedded in a package in a list.
 	 */
-	public class FilesBrowser extends WebMarkupContainer
-	{
+	public class FilesBrowser extends WebMarkupContainer {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
 		/**
 		 * Constructor.
 		 * 
@@ -300,19 +281,25 @@ public class SourcesPage extends WebPage
 		 * @param id
 		 *            the component identifier
 		 */
-		public FilesBrowser(MarkupContainer parent, String id)
-		{
+		public FilesBrowser(MarkupContainer parent, String id) {
 			super(parent, id);
-			new ListView<String>(this, "file", new PackagedResourcesModel())
-			{
+			new ListView<String>(this, "file", new PackagedResourcesModel()) {
+				/**
+				 * 
+				 */
+				private static final long serialVersionUID = 1L;
+
 				@Override
-				protected void populateItem(ListItem<String> item)
-				{
-					AjaxFallbackLink link = new AjaxFallbackLink<String>(item, "link", item.getModel())
-					{
+				protected void populateItem(ListItem<String> item) {
+					AjaxFallbackLink link = new AjaxFallbackLink<String>(item,
+							"link", item.getModel()) {
+						/**
+						 * 
+						 */
+						private static final long serialVersionUID = 1L;
+
 						@Override
-						public void onClick(AjaxRequestTarget target)
-						{
+						public void onClick(AjaxRequestTarget target) {
 							setName(getModelObjectAsString());
 							target.addComponent(codePanel);
 							target.addComponent(filename);
@@ -328,8 +315,12 @@ public class SourcesPage extends WebPage
 	 * Container for displaying the source of the selected page, resource or
 	 * other element from the package.
 	 */
-	public class CodePanel extends WebMarkupContainer
-	{
+	public class CodePanel extends WebMarkupContainer {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
 		/**
 		 * Constructor.
 		 * 
@@ -338,8 +329,7 @@ public class SourcesPage extends WebPage
 		 * @param id
 		 *            the component id
 		 */
-		public CodePanel(MarkupContainer parent, String id)
-		{
+		public CodePanel(MarkupContainer parent, String id) {
 			super(parent, id);
 			Label code = new Label(this, "code", new SourceModel());
 			code.setEscapeModelStrings(true);
@@ -370,8 +360,7 @@ public class SourcesPage extends WebPage
 	 * @param name
 	 *            the name to set.
 	 */
-	public void setName(String name)
-	{
+	public void setName(String name) {
 		this.name = name;
 	}
 
@@ -380,16 +369,14 @@ public class SourcesPage extends WebPage
 	 * 
 	 * @return the name.
 	 */
-	public String getName()
-	{
+	public String getName() {
 		return name;
 	}
 
 	/**
 	 * Default constructor, only used for test purposes.
 	 */
-	public SourcesPage()
-	{
+	public SourcesPage() {
 		this(SourcesPage.class);
 	}
 
@@ -399,8 +386,7 @@ public class SourcesPage extends WebPage
 	 * @param page
 	 *            the page where the sources need to be shown from.
 	 */
-	public SourcesPage(Class page)
-	{
+	public SourcesPage(Class page) {
 		this.page = page;
 
 		filename = new Label(this, "filename", new PropertyModel(this, "name"));

@@ -38,6 +38,11 @@ import wicket.model.IModel;
 @SuppressWarnings("hiding")
 public final class SearchModel extends AbstractReadOnlyDetachableModel<List<CD>>
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	/** action used by the pageable list (has our order columns). */
 	private CountAndListAction countAndListAction = new CountAndListAction();
 
@@ -54,6 +59,11 @@ public final class SearchModel extends AbstractReadOnlyDetachableModel<List<CD>>
 	private final class CountAndListAction extends HibernateCountAndListAction<CD, Long>
 	{
 		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
+		/**
 		 * Construct.
 		 */
 		public CountAndListAction()
@@ -69,6 +79,7 @@ public final class SearchModel extends AbstractReadOnlyDetachableModel<List<CD>>
 		 * @see wicket.contrib.data.model.hibernate.HibernateCountAndListAction#setParameters(org.hibernate.Query,
 		 *      java.lang.Object)
 		 */
+		@Override
 		protected void setParameters(Query query, Long queryObject) throws HibernateException
 		{
 			final String searchStringParameter = getSearchStringParameter();
@@ -117,6 +128,7 @@ public final class SearchModel extends AbstractReadOnlyDetachableModel<List<CD>>
 	/**
 	 * @see wicket.model.IModel#getNestedModel()
 	 */
+	@Override
 	public IModel getNestedModel()
 	{
 		return null;
@@ -168,6 +180,7 @@ public final class SearchModel extends AbstractReadOnlyDetachableModel<List<CD>>
 	/**
 	 * @see wicket.model.AbstractDetachableModel#onAttach()
 	 */
+	@Override
 	protected void onAttach()
 	{
 		list = new PageableList<CD, Long>(rowsPerPage, countAndListAction);
@@ -176,6 +189,7 @@ public final class SearchModel extends AbstractReadOnlyDetachableModel<List<CD>>
 	/**
 	 * @see AbstractDetachableModel#onDetach()
 	 */
+	@Override
 	protected void onDetach()
 	{
 		list = null;
@@ -184,6 +198,7 @@ public final class SearchModel extends AbstractReadOnlyDetachableModel<List<CD>>
 	/**
 	 * @see wicket.model.AbstractDetachableModel#onGetObject()
 	 */
+	@Override
 	protected PageableList<CD, Long> onGetObject()
 	{
 		return list;

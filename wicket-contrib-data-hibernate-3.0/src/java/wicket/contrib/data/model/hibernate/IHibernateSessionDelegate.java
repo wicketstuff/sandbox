@@ -24,12 +24,14 @@ import org.hibernate.Session;
 
 /**
  * Delegate that provides the Hibernate session object.
+ * 
  * @author Eelco Hillenius
  */
 public interface IHibernateSessionDelegate extends Serializable
 {
 	/**
 	 * Get the Hibernate session.
+	 * 
 	 * @return the Hibernate session
 	 */
 	Session getSession();

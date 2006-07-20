@@ -26,6 +26,11 @@ import wicket.contrib.yui.examples.WicketExamplePage;
  */
 public class CalendarPage extends WicketExamplePage {
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**
 	 * Construct.
 	 */
 	public CalendarPage() {

@@ -17,7 +17,7 @@ public class ListOrder implements Serializable
 	private boolean ascending = true;
 
 	private String field;
-	
+
 	/**
 	 * Creats a new ListOrder on the given field.
 	 */
@@ -25,7 +25,7 @@ public class ListOrder implements Serializable
 	{
 		this.field = field;
 	}
-	
+
 	/**
 	 * Reverses the order.
 	 */
@@ -33,7 +33,7 @@ public class ListOrder implements Serializable
 	{
 		ascending = !ascending;
 	}
-	
+
 	/**
 	 * Returns true if the current field is marked "ascending".
 	 */
@@ -49,7 +49,7 @@ public class ListOrder implements Serializable
 	{
 		return field;
 	}
-	
+
 	/**
 	 * Compares based on field name.
 	 */

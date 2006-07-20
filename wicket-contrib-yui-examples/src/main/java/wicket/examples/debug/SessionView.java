@@ -37,8 +37,7 @@ import wicket.util.lang.Objects;
  * 
  * @author Jonathan Locke
  */
-public final class SessionView extends Panel
-{
+public final class SessionView extends Panel {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -51,31 +50,28 @@ public final class SessionView extends Panel
 	 * @param session
 	 * @see Component#Component(MarkupContainer, String)
 	 */
-	public SessionView(MarkupContainer parent, final String id, final Session session)
-	{
+	public SessionView(MarkupContainer parent, final String id,
+			final Session session) {
 		super(parent, id);
 
 		// Basic attributes
 		new Label(this, "id", session.getId());
 		new Label(this, "locale", session.getLocale().toString());
-		new Label(this, "style", session.getStyle() == null ? "[None]" : session.getStyle());
-		new Label(this, "size", new Model()
-		{
+		new Label(this, "style", session.getStyle() == null ? "[None]"
+				: session.getStyle());
+		new Label(this, "size", new Model() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public Object getObject()
-			{
+			public Object getObject() {
 				return Bytes.bytes(Objects.sizeof(session));
 			}
 		});
-		new Label(this, "totalSize", new Model()
-		{
+		new Label(this, "totalSize", new Model() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public Object getObject()
-			{
+			public Object getObject() {
 				return Bytes.bytes(session.getSizeInBytes());
 			}
 		});
@@ -84,17 +80,15 @@ public final class SessionView extends Panel
 		final List<PageMap> pagemaps = session.getPageMaps();
 
 		// Create the table containing the list the components
-		new ListView<PageMap>(this, "pagemaps", pagemaps)
-		{
+		new ListView<PageMap>(this, "pagemaps", pagemaps) {
 			private static final long serialVersionUID = 1L;
 
 			/**
 			 * Populate the table with Wicket elements
 			 */
 			@Override
-			protected void populateItem(final ListItem listItem)
-			{
-				PageMap p = (PageMap)listItem.getModelObject();
+			protected void populateItem(final ListItem listItem) {
+				PageMap p = (PageMap) listItem.getModelObject();
 				new PageMapView(listItem, "pagemap", p);
 			}
 		};

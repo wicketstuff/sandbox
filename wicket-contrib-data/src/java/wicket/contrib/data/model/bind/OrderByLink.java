@@ -118,7 +118,7 @@ public class OrderByLink extends Link<Integer>
 	 */
 	private void switchState()
 	{
-		Integer state = (Integer) getModelObject();
+		Integer state = getModelObject();
 
 		if (state.equals(NONE) || state.equals(UP))
 		{
@@ -151,7 +151,7 @@ public class OrderByLink extends Link<Integer>
 		 */
 		public String getObject()
 		{
-			Integer state = (Integer) OrderByLink.this.getModelObject();
+			Integer state = OrderByLink.this.getModelObject();
 			if (state.equals(UP))
 			{
 				return "wicket_orderUp";

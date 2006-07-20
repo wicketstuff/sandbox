@@ -16,17 +16,19 @@ import wicket.model.IModel;
 public class HibernateDataSource<T, V> implements IListDataSource<T>
 {
 	private IHibernateDao dao;
+
 	private OrderedPageableList<T> list;
+
 	private Class<T> entity;
-	
+
 	public HibernateDataSource(Class<T> entity, IHibernateDao dao)
 	{
 		list = new HibernateQueryList<T>("FROM " + entity.getName() + " e", dao);
 		this.dao = dao;
 		this.entity = entity;
 	}
-	
-	public HibernateDataSource(Class<T> entity, OrderedPageableList<T> list, 
+
+	public HibernateDataSource(Class<T> entity, OrderedPageableList<T> list,
 			IHibernateDao dao)
 	{
 		this.entity = entity;
@@ -64,7 +66,7 @@ public class HibernateDataSource<T, V> implements IListDataSource<T>
 			}
 		});
 	}
-	
+
 	public List<T> findAll(final Class c)
 	{
 		return new HibernateQueryList<T>("FROM " + c.getName(), dao);
@@ -77,7 +79,7 @@ public class HibernateDataSource<T, V> implements IListDataSource<T>
 
 	public List<EntityField> getFields()
 	{
-		SessionFactory factory = (SessionFactory) dao.execute(new IHibernateCallback<SessionFactory>()
+		SessionFactory factory = dao.execute(new IHibernateCallback<SessionFactory>()
 		{
 			public SessionFactory execute(Session session)
 			{
@@ -86,15 +88,14 @@ public class HibernateDataSource<T, V> implements IListDataSource<T>
 		});
 
 		ClassMetadata meta = factory.getClassMetadata(entity);
-		
+
 		String[] propNames = meta.getPropertyNames();
 		List<EntityField> columns = new ArrayList<EntityField>(propNames.length);
 
-		for (int i = 0; i < propNames.length; i++)
+		for (String prop : propNames)
 		{
-			String prop = propNames[i];
 			Type type = meta.getPropertyType(prop);
-			
+
 			// Get the type;
 			int fieldType = EntityField.FIELD;
 			if (type.isCollectionType())
@@ -105,7 +106,7 @@ public class HibernateDataSource<T, V> implements IListDataSource<T>
 			{
 				fieldType = EntityField.ENTITY;
 			}
-			
+
 			columns.add(new EntityField(prop, type.getReturnedClass(), fieldType));
 		}
 		return columns;

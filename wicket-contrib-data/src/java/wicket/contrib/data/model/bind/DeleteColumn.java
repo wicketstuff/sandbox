@@ -12,7 +12,7 @@ public class DeleteColumn<T> extends AbstractColumn<T>
 	{
 		super(null, null);
 	}
-	
+
 	public Component getComponent(MarkupContainer parent, String id, IModel<T> model)
 	{
 		return new DeletePanel(parent, id);

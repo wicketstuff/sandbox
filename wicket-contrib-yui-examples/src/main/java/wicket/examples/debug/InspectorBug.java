@@ -31,8 +31,7 @@ import wicket.markup.html.panel.Panel;
  * 
  * @author Jonathan Locke
  */
-public final class InspectorBug extends Panel
-{
+public final class InspectorBug extends Panel {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -45,12 +44,13 @@ public final class InspectorBug extends Panel
 	 * @param page
 	 *            Page to inspect
 	 */
-	public InspectorBug(MarkupContainer parent, final String id, final WebPage page)
-	{
+	public InspectorBug(MarkupContainer parent, final String id,
+			final WebPage page) {
 		super(parent, id);
 		PageParameters parameters = new PageParameters();
 		parameters.put("pageId", page.getId());
-		Link link = new BookmarkablePageLink(this, "link", InspectorPage.class, parameters);
+		Link link = new BookmarkablePageLink(this, "link", InspectorPage.class,
+				parameters);
 		new Image(link, "bug");
 	}
 }

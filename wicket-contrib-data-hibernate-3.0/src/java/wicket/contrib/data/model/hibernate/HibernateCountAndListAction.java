@@ -41,16 +41,16 @@ import wicket.contrib.data.model.ISelectCountAndListAction;
  * use a pattern like this:
  * 
  * <pre>
- *   
- *     &lt;query name=&quot;cdapp.model.SearchCD&quot;&gt;
- *         &lt;![CDATA[
- *   		  SELECT cd FROM cdapp.model.CD as cd
- *             WHERE (:title is null or upper(cd.title) like :title)
- *             AND (:performers is null or upper(cd.performers) like :performers)
- *             AND (:year = -1 or cd.year = :year)
- *         ]]&gt;
- *     &lt;/query&gt;
  *    
+ *      &lt;query name=&quot;cdapp.model.SearchCD&quot;&gt;
+ *          &lt;![CDATA[
+ *    		  SELECT cd FROM cdapp.model.CD as cd
+ *              WHERE (:title is null or upper(cd.title) like :title)
+ *              AND (:performers is null or upper(cd.performers) like :performers)
+ *              AND (:year = -1 or cd.year = :year)
+ *          ]]&gt;
+ *      &lt;/query&gt;
+ *     
  * </pre>
  * 
  * Take for example: 'WHERE (:title is null or upper(cd.title) like :title)'; if
@@ -65,6 +65,11 @@ import wicket.contrib.data.model.ISelectCountAndListAction;
 public class HibernateCountAndListAction<T, V> implements
 		ISelectCountAndListAction<T, V>, Serializable
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	/** delegate that provides instances of {@link org.hibernate.Session}. */
 	private final IHibernateSessionDelegate sessionDelegate;
 
@@ -167,7 +172,7 @@ public class HibernateCountAndListAction<T, V> implements
 			setParameters(query, queryObject);
 			query.setFirstResult(startFromRow);
 			query.setMaxResults(numberOfRows);
-			return (List<T>) query.list();
+			return query.list();
 		}
 		catch (HibernateException e)
 		{
@@ -305,7 +310,7 @@ public class HibernateCountAndListAction<T, V> implements
 		int i = orderColumns.indexOf(order);
 		if (i != -1)
 		{
-			Order current = (Order) orderColumns.remove(i); // remove
+			Order current = orderColumns.remove(i); // remove
 		}
 	}
 
@@ -333,6 +338,11 @@ public class HibernateCountAndListAction<T, V> implements
 	/** Wrapper class for ordering. */
 	protected static class Order implements Serializable
 	{
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
 		/** order by field. */
 		String field;
 
@@ -351,10 +361,13 @@ public class HibernateCountAndListAction<T, V> implements
 		}
 
 		/** @see java.lang.Object#equals(java.lang.Object) */
+		@Override
 		public boolean equals(Object obj)
 		{
 			if (!(obj instanceof Order))
+			{
 				return false;
+			}
 			Order that = (Order) obj;
 			return this.field.equals(that.field);
 		}

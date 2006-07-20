@@ -109,6 +109,7 @@ public class GridPanel<T> extends Panel<T>
 	private class Columns extends ListView<IColumn>
 	{
 		private static final long serialVersionUID = 1L;
+
 		IModel model;
 
 		public Columns(MarkupContainer parent, IModel model)
@@ -130,6 +131,7 @@ public class GridPanel<T> extends Panel<T>
 	private class Orderings extends ListView<IColumn>
 	{
 		private static final long serialVersionUID = 1L;
+
 		ListView mainList;
 
 		public Orderings(MarkupContainer parent, ListView mainList)

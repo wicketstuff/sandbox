@@ -1,6 +1,6 @@
 /*
- * $Id$
- * $Revision$ $Date$
+ * $Id: JRImageResource.java 635 2006-03-28 11:49:11 +0000 (Tue, 28 Mar 2006)
+ * joco01 $ $Revision$ $Date$
  * 
  * ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -47,6 +47,11 @@ import wicket.markup.html.DynamicWebResource;
  */
 public final class JRImageResource extends JRResource
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	/**
 	 * log.
 	 */
@@ -138,8 +143,8 @@ public final class JRImageResource extends JRResource
 			exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, baos);
 
 			// create an image object
-			int width = (int) ((float) print.getPageWidth() * getZoomRatio());
-			int height = (int) ((float) print.getPageHeight() * getZoomRatio());
+			int width = (int) (print.getPageWidth() * getZoomRatio());
+			int height = (int) (print.getPageHeight() * getZoomRatio());
 			BufferedImage image = new BufferedImage(width, height, type);
 			exporter.setParameter(JRGraphics2DExporterParameter.GRAPHICS_2D, image
 					.getGraphics());

@@ -1,7 +1,5 @@
 /*
- * $Id$
- * $Revision$
- * $Date$
+ * $Id$ $Revision$ $Date$
  * 
  * ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -26,8 +24,15 @@ import wicket.PageParameters;
 public class Page1 extends PageWithMenu
 {
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**
 	 * Constructor.
-	 * @param parameters Page parameters
+	 * 
+	 * @param parameters
+	 *            Page parameters
 	 */
 	public Page1(final PageParameters parameters)
 	{

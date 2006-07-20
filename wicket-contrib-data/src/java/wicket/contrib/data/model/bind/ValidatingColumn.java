@@ -4,7 +4,6 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import wicket.markup.html.form.validation.AbstractValidator;
@@ -37,9 +36,9 @@ public abstract class ValidatingColumn<T> extends AbstractColumn<T>
 
 	protected InlineValidatingPanel prepare(InlineValidatingPanel panel, IModel<T> model)
 	{
-		for (Iterator i = validators.iterator(); i.hasNext();)
+		for (Object element : validators)
 		{
-			final AbstractValidator validator = (AbstractValidator) i.next();
+			final AbstractValidator validator = (AbstractValidator) element;
 
 			// Build the resource key.
 			final String resourceKey = model.getClass().getName()

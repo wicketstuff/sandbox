@@ -53,6 +53,11 @@ import wicket.util.lang.Bytes;
  */
 public final class EditPage extends CdAppBasePage
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	/** Logger. */
 	private static Log log = LogFactory.getLog(SearchPage.class);
 
@@ -72,6 +77,11 @@ public final class EditPage extends CdAppBasePage
 	 */
 	private final class DetailForm extends Form<CD>
 	{
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
 		/**
 		 * Construct.
 		 * 
@@ -96,6 +106,12 @@ public final class EditPage extends CdAppBasePage
 			yearField.add(NumberValidator.POSITIVE);
 			new Link(this, "cancelButton")
 			{
+				/**
+				 * 
+				 */
+				private static final long serialVersionUID = 1L;
+
+				@Override
 				public void onClick()
 				{
 					setResponsePage(searchCDPage);
@@ -106,9 +122,10 @@ public final class EditPage extends CdAppBasePage
 		/**
 		 * @see wicket.markup.html.form.Form#onSubmit()
 		 */
+		@Override
 		public void onSubmit()
 		{
-			CD cd = (CD)getModelObject();
+			CD cd = getModelObject();
 			boolean isNew = (cd.getId() == null);
 			// note that, as we used the Ognl property model, the fields are
 			// allready updated
@@ -135,6 +152,10 @@ public final class EditPage extends CdAppBasePage
 	 */
 	private final class ImageUploadForm extends Form<CD>
 	{
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 		private FileUploadField uploadField;
 
 		/**
@@ -156,6 +177,7 @@ public final class EditPage extends CdAppBasePage
 			uploadField = new FileUploadField(this, "file");
 		}
 
+		@Override
 		protected void onSubmit()
 		{
 			// get the uploaded file
@@ -176,6 +198,11 @@ public final class EditPage extends CdAppBasePage
 	private final class DeleteImageLink extends Link<CD>
 	{
 		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
+		/**
 		 * Construct.
 		 * 
 		 * @param parent
@@ -190,6 +217,7 @@ public final class EditPage extends CdAppBasePage
 		/**
 		 * @see wicket.markup.html.link.Link#onClick()
 		 */
+		@Override
 		public void onClick()
 		{
 			CD cd = getModelObject();
@@ -201,6 +229,7 @@ public final class EditPage extends CdAppBasePage
 		/**
 		 * @see wicket.Component#isVisible()
 		 */
+		@Override
 		public boolean isVisible()
 		{
 			// only set visible when there is an image set
@@ -248,7 +277,7 @@ public final class EditPage extends CdAppBasePage
 		// create an image resource that displays a question mark when no image
 		// is set on the cd, or displays a thumbnail of the cd's image when
 		// there is one
-		final CD cd = (CD)cdModel.getObject();
+		final CD cd = cdModel.getObject();
 		if (cd.getImage() == null)
 		{
 			if (IMG_UNKNOWN == null)
@@ -262,6 +291,12 @@ public final class EditPage extends CdAppBasePage
 		{
 			BlobImageResource img = new BlobImageResource()
 			{
+				/**
+				 * 
+				 */
+				private static final long serialVersionUID = 1L;
+
+				@Override
 				protected Blob getBlob()
 				{
 					return cd.getImage();
@@ -274,6 +309,7 @@ public final class EditPage extends CdAppBasePage
 	/**
 	 * @see wicket.Component#initModel()
 	 */
+	@Override
 	protected IModel initModel()
 	{
 		return cdModel;

@@ -40,6 +40,11 @@ import wicket.protocol.http.WebSession;
  */
 public class CdApplication extends WicketExampleApplication implements IRequestCycleFactory
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	/** Logger. */
 	private static Log log = LogFactory.getLog(CdApplication.class);
 
@@ -55,6 +60,7 @@ public class CdApplication extends WicketExampleApplication implements IRequestC
 	/**
 	 * @see wicket.protocol.http.WebApplication#init()
 	 */
+	@Override
 	protected void init()
 	{
 		getResourceSettings().setThrowExceptionOnMissingResource(false);
@@ -77,6 +83,7 @@ public class CdApplication extends WicketExampleApplication implements IRequestC
 	/**
 	 * @see wicket.Application#getHomePage()
 	 */
+	@Override
 	public Class< ? extends Page> getHomePage()
 	{
 		return Home.class;
@@ -85,6 +92,7 @@ public class CdApplication extends WicketExampleApplication implements IRequestC
 	/**
 	 * @see wicket.protocol.http.WebApplication#newSession()
 	 */
+	@Override
 	public Session newSession()
 	{
 		return new CdAppSession(CdApplication.this);
@@ -96,6 +104,11 @@ public class CdApplication extends WicketExampleApplication implements IRequestC
 	private static class CdAppSession extends WebSession
 	{
 		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
+		/**
 		 * @param application
 		 */
 		public CdAppSession(WebApplication application)
@@ -106,6 +119,7 @@ public class CdApplication extends WicketExampleApplication implements IRequestC
 		/**
 		 * @see wicket.protocol.http.WebSession#getRequestCycleFactory()
 		 */
+		@Override
 		protected IRequestCycleFactory getRequestCycleFactory()
 		{
 			return (CdApplication)getApplication();

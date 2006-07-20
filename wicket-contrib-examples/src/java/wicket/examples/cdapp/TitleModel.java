@@ -13,13 +13,18 @@ import wicket.model.IModel;
  */
 public class TitleModel extends AbstractReadOnlyDetachableModel<String>
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	/** decorated model; provides the current id. */
 	private final PersistentObjectModel<CD, Long> cdModel;
 
 	/**
 	 * Construct.
 	 * 
-	 * @param cdModel the model to decorate
+	 * @param cdModel
+	 *            the model to decorate
 	 */
 	public TitleModel(PersistentObjectModel<CD, Long> cdModel)
 	{
@@ -29,6 +34,7 @@ public class TitleModel extends AbstractReadOnlyDetachableModel<String>
 	/**
 	 * @see wicket.model.AbstractDetachableModel#onAttach()
 	 */
+	@Override
 	protected void onAttach()
 	{
 		cdModel.attach();
@@ -37,6 +43,7 @@ public class TitleModel extends AbstractReadOnlyDetachableModel<String>
 	/**
 	 * @see AbstractDetachableModel#onDetach()
 	 */
+	@Override
 	protected void onDetach()
 	{
 		cdModel.detach();
@@ -45,14 +52,16 @@ public class TitleModel extends AbstractReadOnlyDetachableModel<String>
 	/**
 	 * @see AbstractDetachableModel#onGetObject()
 	 */
+	@Override
 	protected String onGetObject()
 	{
 		if (cdModel.getId() != null) // it is allready persistent
 		{
-			CD cd = (CD)cdModel.getObject();
+			CD cd = cdModel.getObject();
 			return cd.getTitle();
 		}
-		else // it is a new cd
+		else
+		// it is a new cd
 		{
 			return "<NEW CD>";
 		}
@@ -61,6 +70,7 @@ public class TitleModel extends AbstractReadOnlyDetachableModel<String>
 	/**
 	 * @see wicket.model.IModel#getNestedModel()
 	 */
+	@Override
 	public IModel getNestedModel()
 	{
 		return null;

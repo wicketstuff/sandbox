@@ -21,14 +21,16 @@ public class CheckMark extends Image
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+
 	/** the image of a check mark */
-	public static final PackageResource IMAGE = PackageResource.get(CheckMark.class, "checkMark.gif");
+	public static final PackageResource IMAGE = PackageResource.get(CheckMark.class,
+			"checkMark.gif");
 
 	public CheckMark(MarkupContainer parent, String id, IModel model)
 	{
 		super(parent, id, model);
 	}
-	
+
 	public CheckMark(MarkupContainer parent, String id, Boolean checked)
 	{
 		super(parent, id, new Model(checked));

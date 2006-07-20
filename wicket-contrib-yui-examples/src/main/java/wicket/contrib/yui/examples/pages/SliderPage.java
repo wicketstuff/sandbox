@@ -35,6 +35,11 @@ import wicket.model.CompoundPropertyModel;
 public class SliderPage extends WicketExamplePage {
 
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**
 	 * Construct.
 	 */
 	public SliderPage() {
@@ -43,6 +48,11 @@ public class SliderPage extends WicketExamplePage {
 	}
 
 	private class SliderForm extends Form<SliderForm> {
+
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 
 		private Integer wicketScore = new Integer(0);
 
@@ -71,6 +81,7 @@ public class SliderPage extends WicketExamplePage {
 
 		}
 
+		@Override
 		protected void onSubmit() {
 			info("Wicket: " + this.wicketScore.toString());
 			info("Struts: " + this.strutsScore.toString());

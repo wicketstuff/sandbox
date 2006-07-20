@@ -37,6 +37,11 @@ import wicket.util.resource.IResourceStream;
 public final class ImagePopupLink extends Link<CD>
 {
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**
 	 * Construct.
 	 * 
 	 * @param parent
@@ -60,14 +65,27 @@ public final class ImagePopupLink extends Link<CD>
 	/**
 	 * @see wicket.markup.html.link.Link#onClick()
 	 */
+	@Override
 	public void onClick()
 	{
 		WebResource imgResource = new WebResource()
 		{
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
 			public IResourceStream getResourceStream()
 			{
 				BlobImageResource img = new BlobImageResource()
 				{
+					/**
+					 * 
+					 */
+					private static final long serialVersionUID = 1L;
+
+					@Override
 					protected Blob getBlob()
 					{
 						CD cd = getModelObject();
@@ -83,6 +101,7 @@ public final class ImagePopupLink extends Link<CD>
 	/**
 	 * @see wicket.markup.html.link.Link#linksTo(wicket.Page)
 	 */
+	@Override
 	protected boolean linksTo(Page page)
 	{
 		// this is kind of ugly, but as isEnabled is marked final, this
