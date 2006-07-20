@@ -109,6 +109,7 @@ public class Slider<T> extends AbstractYuiPanel<T> {
 					new AbstractReadOnlyModel<String>() {
 						private static final long serialVersionUID = 1L;
 
+						@Override
 						public String getObject() {
 							return element.getId();
 						}
@@ -124,6 +125,7 @@ public class Slider<T> extends AbstractYuiPanel<T> {
 			/**
 			 * @see wicket.model.AbstractReadOnlyModel#getObject(wicket.Component)
 			 */
+			@Override
 			public Map getObject() {
 				if (variables == null) {
 					this.variables = new MiniMap<String, CharSequence>(7);
@@ -150,6 +152,7 @@ public class Slider<T> extends AbstractYuiPanel<T> {
 
 					private static final long serialVersionUID = 1L;
 
+					@Override
 					public String getObject() {
 						return javaScriptId + ".setValue(" + javaScriptId
 								+ ".getXValue() - " + settings.getTick() + ");";
@@ -163,6 +166,7 @@ public class Slider<T> extends AbstractYuiPanel<T> {
 				new AbstractReadOnlyModel<String>() {
 					private static final long serialVersionUID = 1L;
 
+					@Override
 					public String getObject() {
 						return javaScriptId + ".setValue(-"
 								+ settings.getLeftUp() + ")";
@@ -176,6 +180,7 @@ public class Slider<T> extends AbstractYuiPanel<T> {
 				new AbstractReadOnlyModel<String>() {
 					private static final long serialVersionUID = 1L;
 
+					@Override
 					public String getObject() {
 						return javaScriptId + ".setValue("
 								+ settings.getRightDown() + ")";
@@ -188,6 +193,7 @@ public class Slider<T> extends AbstractYuiPanel<T> {
 				new AbstractReadOnlyModel<String>() {
 					private static final long serialVersionUID = 1L;
 
+					@Override
 					public String getObject() {
 						return javaScriptId + ".setValue(" + javaScriptId
 								+ ".getXValue() + " + settings.getTick() + ");";
@@ -263,6 +269,7 @@ public class Slider<T> extends AbstractYuiPanel<T> {
 	/**
 	 * @see wicket.Component#renderHead(wicket.markup.html.internal.HtmlHeaderContainer)
 	 */
+	@Override
 	@SuppressWarnings("unchecked")
 	public void renderHead(HtmlHeaderContainer container) {
 		((WebPage) getPage()).getBodyContainer().addOnLoadModifier(
@@ -280,6 +287,7 @@ public class Slider<T> extends AbstractYuiPanel<T> {
 	/**
 	 * @see wicket.Component#onAttach()
 	 */
+	@Override
 	protected void onAttach() {
 		super.onAttach();
 

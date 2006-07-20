@@ -58,6 +58,7 @@ public class Calendar extends AbstractYuiPanel {
 					new AbstractReadOnlyModel<String>() {
 						private static final long serialVersionUID = 1L;
 
+						@Override
 						public String getObject() {
 							return elementId;
 						}
@@ -67,6 +68,7 @@ public class Calendar extends AbstractYuiPanel {
 		/**
 		 * @see wicket.markup.html.form.FormComponent#updateModel()
 		 */
+		@Override
 		public void updateModel() {
 			Calendar.this.updateModel();
 		}
@@ -105,6 +107,7 @@ public class Calendar extends AbstractYuiPanel {
 					/**
 					 * @see wicket.model.IModel#getObject(wicket.Component)
 					 */
+					@Override
 					public String getObject() {
 						return getJavaScriptComponentInitializationScript();
 					}
@@ -116,6 +119,7 @@ public class Calendar extends AbstractYuiPanel {
 	/**
 	 * @see wicket.Component#renderHead(wicket.markup.html.internal.HtmlHeaderContainer)
 	 */
+	@Override
 	public void renderHead(HtmlHeaderContainer container) {
 		((WebPage) getPage()).getBodyContainer().addOnLoadModifier(
 				"init" + javaScriptId + "();", null);
@@ -158,6 +162,7 @@ public class Calendar extends AbstractYuiPanel {
 	/**
 	 * @see wicket.Component#onAttach()
 	 */
+	@Override
 	protected void onAttach() {
 		super.onAttach();
 
