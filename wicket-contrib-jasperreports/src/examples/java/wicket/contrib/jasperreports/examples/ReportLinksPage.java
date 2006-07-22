@@ -1,6 +1,7 @@
 /*
- * $Id$ $Revision:
- * 1.3 $ $Date$
+ * $Id: ReportLinksPage.java 627 2006-03-20 07:12:13 +0000 (Mon, 20 Mar 2006)
+ * eelco12 $ $Revision$ $Date: 2006-03-20 07:12:13 +0000 (Mon, 20 Mar
+ * 2006) $
  * 
  * ==================================================================== Licensed
  * under the Apache License, Version 2.0 (the "License"); you may not use this
@@ -44,33 +45,32 @@ public class ReportLinksPage extends WicketExamplePage
 	 */
 	public ReportLinksPage()
 	{
-		ServletContext context = ((WebApplication) getApplication()).getWicketServlet()
-				.getServletContext();
+		ServletContext context = ((WebApplication) getApplication()).getServletContext();
 		final File reportFile = new File(context.getRealPath("/reports/example.jasper"));
 
 		JRResource pdfResource = new JRPdfResource(reportFile)
 				.setReportDataSource(new ExampleDataSource());
-		add(new ResourceLink("linkToPdf", pdfResource));
+		new ResourceLink(this, "linkToPdf", pdfResource);
 
 		JRResource rtfResource = new JRRtfResource(reportFile)
 				.setReportDataSource(new ExampleDataSource());
-		add(new ResourceLink("linkToRtf", rtfResource));
+		new ResourceLink(this, "linkToRtf", rtfResource);
 
 		JRResource htmlResource = new JRHtmlResource(reportFile)
 				.setReportDataSource(new ExampleDataSource());
-		add(new ResourceLink("linkToHtml", htmlResource));
+		new ResourceLink(this, "linkToHtml", htmlResource);
 
 		JRResource textResource = new JRTextResource(reportFile)
 				.setReportDataSource(new ExampleDataSource());
-		add(new ResourceLink("linkToText", textResource));
+		new ResourceLink(this, "linkToText", textResource);
 
 		JRResource imageResource = new JRImageResource(reportFile)
 				.setReportDataSource(new ExampleDataSource());
-		add(new ResourceLink("linkToImage", imageResource));
+		new ResourceLink(this, "linkToImage", imageResource);
 
 		JRResource csvResource = new JRCsvResource(reportFile)
 				.setReportDataSource(new ExampleDataSource());
-		add(new ResourceLink("linkToCsv", csvResource));
+		new ResourceLink(this, "linkToCsv", csvResource);
 	}
 
 	/**

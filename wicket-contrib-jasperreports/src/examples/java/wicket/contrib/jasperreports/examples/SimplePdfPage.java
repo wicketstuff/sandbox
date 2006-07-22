@@ -1,6 +1,7 @@
 /*
- * $Id$ $Revision:
- * 1.5 $ $Date$
+ * $Id: SimplePdfPage.java 627 2006-03-20 07:12:13 +0000 (Mon, 20 Mar 2006)
+ * eelco12 $ $Revision$ $Date: 2006-03-20 07:12:13 +0000 (Mon, 20 Mar
+ * 2006) $
  * 
  * ==================================================================== Licensed
  * under the Apache License, Version 2.0 (the "License"); you may not use this
@@ -41,13 +42,12 @@ public class SimplePdfPage extends WicketExamplePage
 	 */
 	public SimplePdfPage()
 	{
-		ServletContext context = ((WebApplication) getApplication()).getWicketServlet()
-				.getServletContext();
+		ServletContext context = ((WebApplication) getApplication()).getServletContext();
 		final File reportFile = new File(context.getRealPath("/reports/example.jasper"));
 		final Map parameters = new HashMap();
 		JRResource pdfResource = new JRPdfResource(reportFile).setReportParameters(
 				parameters).setReportDataSource(new ExampleDataSource());
-		add(new EmbeddedJRReport("report", pdfResource));
+		new EmbeddedJRReport(this, "report", pdfResource);
 	}
 
 	/**
