@@ -1,6 +1,7 @@
 /*
- * $Id$
- * $Revision$ $Date$
+ * $Id: JasperReportsApplication.java 627 2006-03-20 07:12:13 +0000 (Mon, 20 Mar
+ * 2006) eelco12 $ $Revision$ $Date: 2006-03-20 07:12:13 +0000 (Mon, 20
+ * Mar 2006) $
  * 
  * ==================================================================== Licensed
  * under the Apache License, Version 2.0 (the "License"); you may not use this
@@ -17,6 +18,7 @@
  */
 package wicket.contrib.jasperreports.examples;
 
+import wicket.Page;
 import wicket.protocol.http.WebApplication;
 import wicket.util.time.Duration;
 
@@ -45,7 +47,7 @@ public class JasperReportsApplication extends WebApplication
 	/**
 	 * @see wicket.Application#getHomePage()
 	 */
-	public Class getHomePage()
+	public Class< ? extends Page> getHomePage()
 	{
 		return Index.class;
 	}
