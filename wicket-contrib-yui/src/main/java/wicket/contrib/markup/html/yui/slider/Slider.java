@@ -27,7 +27,6 @@ import wicket.AttributeModifier;
 import wicket.MarkupContainer;
 import wicket.behavior.HeaderContributor;
 import wicket.contrib.markup.html.yui.AbstractYuiPanel;
-import wicket.extensions.util.resource.TextTemplateHeaderContributor;
 import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.WebPage;
 import wicket.markup.html.form.FormComponent;
@@ -38,6 +37,7 @@ import wicket.model.IModel;
 import wicket.model.Model;
 import wicket.model.PropertyModel;
 import wicket.util.collections.MiniMap;
+import wicket.util.resource.TextTemplateHeaderContributor;
 
 /**
  * Slider component based on the Slider of Yahoo UI Library.

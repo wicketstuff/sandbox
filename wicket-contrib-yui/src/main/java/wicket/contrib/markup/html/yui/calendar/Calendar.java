@@ -25,7 +25,6 @@ import wicket.MarkupContainer;
 import wicket.RequestCycle;
 import wicket.behavior.HeaderContributor;
 import wicket.contrib.markup.html.yui.AbstractYuiPanel;
-import wicket.extensions.util.resource.PackagedTextTemplate;
 import wicket.markup.html.PackageResourceReference;
 import wicket.markup.html.WebPage;
 import wicket.markup.html.basic.Label;
@@ -33,6 +32,7 @@ import wicket.markup.html.form.FormComponent;
 import wicket.markup.html.internal.HtmlHeaderContainer;
 import wicket.model.AbstractReadOnlyModel;
 import wicket.util.collections.MiniMap;
+import wicket.util.resource.PackagedTextTemplate;
 
 /**
  * Calendar component based on the Calendar of Yahoo UI Library.
