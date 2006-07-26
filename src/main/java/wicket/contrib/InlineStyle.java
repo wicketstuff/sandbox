@@ -1,10 +1,11 @@
 package wicket.contrib;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-public class InlineStyle {
+public class InlineStyle implements Serializable {
 
     // valid Styles....
     
