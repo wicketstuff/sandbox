@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="Wicket Contrib JooReports">
+	<bannerLeft>
+		<name>Wicket</name>
+		<src>http://wicket.sourceforge.net/images/logo.png</src>
+		<href>http://wicket.sourceforge.net</href>
+	</bannerLeft>
+	<body>
+		<links>
+			<item name="Wicket 1.2" href="http://wicket.sf.net/wicket-1.2/index.html" />
+		</links>
+		${reports}
+	</body>
+</project>
