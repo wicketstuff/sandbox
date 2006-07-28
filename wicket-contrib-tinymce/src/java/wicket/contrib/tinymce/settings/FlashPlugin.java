@@ -22,23 +22,27 @@ package wicket.contrib.tinymce.settings;
  * <p/>
  * You can control the wmode, quality and menu by setting the flash_wmode, flash_quality and flash_menu options
  *
- * @author Iulian-Corneliu COSTAN
+ * @author Iulian Costan (iulian.costan@gmail.com)
  */
 public class FlashPlugin extends Plugin
 {
-
-    /**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
+
 	private PluginButton flashButton;
 
+    /**
+     * Construct flash plugin.
+     */
     public FlashPlugin()
     {
         super("flash");
+        
         flashButton = new PluginButton("flash", this);
     }
 
+    /**
+     * @return the flash button
+     */
     public PluginButton getFlashButton()
     {
         return flashButton;

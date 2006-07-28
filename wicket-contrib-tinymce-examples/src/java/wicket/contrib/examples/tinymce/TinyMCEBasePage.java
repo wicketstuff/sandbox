@@ -4,7 +4,7 @@ import wicket.contrib.examples.WicketExamplePage;
 import wicket.markup.html.link.Link;
 
 /**
- * @author Iulian-Corneliu COSTAN
+ * @author Iulian Costan (iulian.costan@gmail.com)
  */
 public class TinyMCEBasePage extends WicketExamplePage
 {
@@ -17,6 +17,7 @@ public class TinyMCEBasePage extends WicketExamplePage
 	{
 		new Link(this, "simple")
 		{
+			private static final long serialVersionUID = 1L;
 
 			public void onClick()
 			{
@@ -26,6 +27,7 @@ public class TinyMCEBasePage extends WicketExamplePage
 		};
 		new Link(this, "advanced")
 		{
+			private static final long serialVersionUID = 1L;
 
 			public void onClick()
 			{
@@ -35,6 +37,7 @@ public class TinyMCEBasePage extends WicketExamplePage
 		};
 		new Link(this, "full")
 		{
+			private static final long serialVersionUID = 1L;
 
 			public void onClick()
 			{
@@ -44,6 +47,7 @@ public class TinyMCEBasePage extends WicketExamplePage
 		};
 		new Link(this, "word")
 		{
+			private static final long serialVersionUID = 1L;
 
 			public void onClick()
 			{

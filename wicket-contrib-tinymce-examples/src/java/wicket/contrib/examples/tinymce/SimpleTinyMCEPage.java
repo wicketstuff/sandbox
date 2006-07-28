@@ -5,7 +5,7 @@ import wicket.markup.html.form.TextArea;
 import wicket.model.Model;
 
 /**
- * @author Iulian-Corneliu COSTAN
+ * @author Iulian Costan (iulian.costan@gmail.com)
  */
 public class SimpleTinyMCEPage extends TinyMCEBasePage
 {

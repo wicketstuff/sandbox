@@ -20,15 +20,12 @@ package wicket.contrib.tinymce.settings;
 import java.io.Serializable;
 
 /**
- * @author Iulian-Corneliu COSTAN
+ * @author Iulian Costan (iulian.costan@gmail.com)
  */
 class Control implements Serializable
 {
-
-    /**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
+	
 	private Button button;
     private TinyMCESettings.Toolbar toolbar;
     private TinyMCESettings.Position position;
@@ -40,17 +37,17 @@ class Control implements Serializable
         this.position = position;
     }
 
-    public Button getButton()
+    Button getButton()
     {
         return button;
     }
 
-    public TinyMCESettings.Toolbar getToolbar()
+    TinyMCESettings.Toolbar getToolbar()
     {
         return toolbar;
     }
 
-    public TinyMCESettings.Position getPosition()
+    TinyMCESettings.Position getPosition()
     {
         return position;
     }

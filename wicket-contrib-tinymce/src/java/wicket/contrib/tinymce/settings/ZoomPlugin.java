@@ -19,8 +19,6 @@ package wicket.contrib.tinymce.settings;
 
 import java.util.Locale;
 
-import javax.swing.text.StyledEditorKit.BoldAction;
-
 /**
  * Adds a zoom drop list in MSIE5.5+.
  * 
@@ -28,10 +26,6 @@ import javax.swing.text.StyledEditorKit.BoldAction;
  */
 public class ZoomPlugin extends Plugin
 {
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	private PluginButton zoomButton;
@@ -44,12 +38,19 @@ public class ZoomPlugin extends Plugin
 	private Locale language;
 	private String title;
 
+	/**
+	 * Construct zoom plugin.
+	 */
 	public ZoomPlugin()
 	{
 		super("zoom");
+
 		zoomButton = new PluginButton("zoom", this);
 	}
 
+	/**
+	 * @return zoom button
+	 */
 	public PluginButton getZoomButton()
 	{
 		return zoomButton;
@@ -59,7 +60,7 @@ public class ZoomPlugin extends Plugin
 	 * This option enables you to specify the default langcode for the output
 	 * HTML.
 	 * 
-	 * @param fullpage_default_langcode
+	 * @param locale locale
 	 */
 	public void setLanguage(Locale locale)
 	{
@@ -143,7 +144,9 @@ public class ZoomPlugin extends Plugin
 		define(buffer, "fullpage_default_fontsizes", fontSizes);
 		define(buffer, "fullpage_default_font_family", fontFamily);
 		define(buffer, "fullpage_default_xml_pi", xmlDeclaration ? "true" : "false");
-		define(buffer, "fullpage_default_langcode", language != null ? language.getLanguage() : null);
+		define(buffer, "fullpage_default_langcode", language != null
+				? language.getLanguage()
+				: null);
 		define(buffer, "fullpage_default_title", title);
 	}
 
