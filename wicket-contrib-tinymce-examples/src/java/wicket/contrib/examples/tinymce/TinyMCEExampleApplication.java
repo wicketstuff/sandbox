@@ -1,5 +1,7 @@
 package wicket.contrib.examples.tinymce;
 
+import wicket.Page;
+import wicket.contrib.examples.WicketExamplePage;
 import wicket.protocol.http.WebApplication;
 
 /**
@@ -7,16 +9,14 @@ import wicket.protocol.http.WebApplication;
  */
 public class TinyMCEExampleApplication extends WebApplication
 {
+	private static final long serialVersionUID = 1L;
 
-    public TinyMCEExampleApplication()
-    {
-    }
+	/**
+	 * @see wicket.Application#getHomePage()
+	 */
+	public Class< ? extends Page> getHomePage()
+	{
+		return SimpleTinyMCEPage.class;
+	}
 
-    /**
-     * @see wicket.Application#getHomePage()
-     */
-    public Class getHomePage()
-    {
-        return TinyMCEBasePage.class;
-    }
 }
