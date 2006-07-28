@@ -26,8 +26,8 @@ import wicket.markup.html.panel.Panel;
 import wicket.markup.html.resources.JavaScriptReference;
 
 /**
- * Reusable wicket component for TinyMCE editor. If you want to create a
- * custom TinyMCE editor take a look at TinyMCESettings class.
+ * Reusable wicket component for TinyMCE editor. If you want to create a custom
+ * TinyMCE editor take a look at TinyMCESettings class.
  * 
  * @author Iulian-Corneliu Costan (iulian.costan@gmail.com)
  * @author Frank Bille Jensen (fbille@avaleo.net)
@@ -45,11 +45,12 @@ public class TinyMCEPanel extends Panel
 	/**
 	 * Construct TinyMCE component with default settings.
 	 * 
-	 * @param parent 
+	 * @param parent
+	 *            the parent component
 	 * @param id
-	 *            wicket component id
+	 *            the id
 	 */
-	public TinyMCEPanel(final MarkupContainer parent, final String id)
+	public TinyMCEPanel(MarkupContainer parent, final String id)
 	{
 		this(parent, id, new TinyMCESettings());
 	}
@@ -57,12 +58,14 @@ public class TinyMCEPanel extends Panel
 	/**
 	 * Construct TinyMCE component passing customs settings.
 	 * 
-	 * @param parent 
+	 * @param parent
+	 *            the parent component
 	 * @param id
+	 *            the component id
 	 * @param settings
-	 *            settings for tinymce component
+	 *            custom settings
 	 */
-	public TinyMCEPanel(final MarkupContainer parent, final String id, final TinyMCESettings settings)
+	public TinyMCEPanel(MarkupContainer parent, final String id, final TinyMCESettings settings)
 	{
 		super(parent, id);
 
