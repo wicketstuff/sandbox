@@ -26,12 +26,8 @@ package wicket.contrib.tinymce.settings;
  *
  * @author Iulian Costan (iulian.costan@gmail.com)
  */
-public class Button extends wicket.contrib.tinymce.settings.Enum
+public class Button extends NamedObject
 {
-
-    /**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	protected Button(String name)
