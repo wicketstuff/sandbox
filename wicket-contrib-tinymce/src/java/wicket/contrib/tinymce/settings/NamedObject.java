@@ -22,12 +22,12 @@ import java.io.Serializable;
 /**
  * @author Iulian Costan (iulian.costan@gmail.com)
  */
-public abstract class Enum implements Serializable
+public abstract class NamedObject implements Serializable
 {
 
 	private String name;
 
-	protected Enum(String name)
+	protected NamedObject(String name)
 	{
 		this.name = name;
 	}

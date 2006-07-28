@@ -227,9 +227,9 @@ public class TinyMCESettings implements Serializable
 		StringBuffer buffer = new StringBuffer();
 
 		// mode
-		buffer.append("\n\tmode : ").append("\"").append(mode.getName()).append("\"");
+		buffer.append("\n\tmode : ").append("\"").append(mode.name()).append("\"");
 		// theme
-		buffer.append(",\n\t").append("theme : ").append("\"").append(theme.getName()).append("\"");
+		buffer.append(",\n\t").append("theme : ").append("\"").append(theme.name()).append("\"");
 
 		if (Theme.advanced.equals(theme))
 		{
@@ -336,7 +336,7 @@ public class TinyMCESettings implements Serializable
 	{
 		if (plugins.size() > 0)
 		{
-			String value = enumAsString(plugins);
+			String value = namedObjectAsString(plugins);
 			buffer.append(",\n\t").append("plugins : ").append("\"").append(value).append("\"");
 		}
 	}
@@ -430,7 +430,7 @@ public class TinyMCESettings implements Serializable
 	{
 		if (disabledButtons.size() > 0)
 		{
-			String value = enumAsString(disabledButtons);
+			String value = namedObjectAsString(disabledButtons);
 			buffer.append(",\n\t").append("theme_advanced_disable : ").append("\"").append(value)
 					.append("\"");
 		}
@@ -445,21 +445,21 @@ public class TinyMCESettings implements Serializable
 			Control control = (Control)iterator.next();
 			buttons.add(control.getButton());
 		}
-		return enumAsString(buttons);
+		return namedObjectAsString(buttons);
 	}
 
-	private String enumAsString(Collection collection)
+	private String namedObjectAsString(Collection<? extends NamedObject> collection)
 	{
 		StringBuffer buffer = new StringBuffer();
 		Iterator iterator = collection.iterator();
 		while (iterator.hasNext())
 		{
-			wicket.contrib.tinymce.settings.Enum enumObject = (Enum)iterator.next();
+			NamedObject namedObject = (NamedObject)iterator.next();
 			if (buffer.length() > 0)
 			{
 				buffer.append(", ");
 			}
-			buffer.append(enumObject.getName());
+			buffer.append(namedObject.getName());
 		}
 		return buffer.toString();
 	}
@@ -481,7 +481,7 @@ public class TinyMCESettings implements Serializable
 		if (toolbarAlign != null)
 		{
 			buffer.append(",\n\t").append("theme_advanced_toolbar_align : ").append("\"").append(
-					toolbarAlign.getName()).append("\"");
+					toolbarAlign.name()).append("\"");
 		}
 	}
 
@@ -490,7 +490,7 @@ public class TinyMCESettings implements Serializable
 		if (toolbarLocation != null)
 		{
 			buffer.append(",\n\t").append("theme_advanced_toolbar_location : ").append("\"")
-					.append(toolbarLocation.getName()).append("\"");
+					.append(toolbarLocation.name()).append("\"");
 		}
 	}
 
@@ -499,7 +499,7 @@ public class TinyMCESettings implements Serializable
 		if (statusbarLocation != null)
 		{
 			buffer.append(",\n\t").append("theme_advanced_statusbar_location : ").append("\"")
-					.append(statusbarLocation.getName()).append("\"");
+					.append(statusbarLocation.name()).append("\"");
 		}
 	}
 
@@ -526,7 +526,7 @@ public class TinyMCESettings implements Serializable
 	}
 
 	/**
-	 * This class specifies how elements is to be converted into TinyMCE WYSIWYG
+	 * This enum specifies how elements is to be converted into TinyMCE WYSIWYG
 	 * editor instances. This option can be set to any of the values below:
 	 * <ul>
 	 * <li>textareas - converts all textarea elements to editors when the page
@@ -538,16 +538,9 @@ public class TinyMCESettings implements Serializable
 	 * </ul>
 	 * At this moment, only <b>textareas</b> mode is supported.
 	 */
-	public static class Mode extends Enum
+	public enum Mode
 	{
-		private static final long serialVersionUID = 1L;
-
-		public static final Mode textareas = new Mode("textareas");
-
-		private Mode(String name)
-		{
-			super(name);
-		}
+		textareas;
 	}
 
 	/**
@@ -559,88 +552,53 @@ public class TinyMCESettings implements Serializable
 	 * <li>advanced - This theme enables users to add/remove buttons and panels .</li>
 	 * </ul>
 	 */
-	public static class Theme extends Enum
+	public enum Theme
 	{
-		private static final long serialVersionUID = 1L;
-
-		public static final Theme simple = new Theme("simple");
-		public static final Theme advanced = new Theme("advanced");
-
-		private Theme(String name)
-		{
-			super(name);
-		}
+		simple,
+		advanced;
 	}
 
 	/**
-	 * This option enables you to specify where the toolbar should be located.
+	 * This enum enables you to specify where the toolbar should be located.
 	 * This value can be top or bottom.
 	 */
-	public static class Location extends Enum
+	public enum Location
 	{
-		private static final long serialVersionUID = 1L;
-
-		public static final Location top = new Location("top");
-		public static final Location bottom = new Location("bottom");
-
-		private Location(String name)
-		{
-			super(name);
-		}
+		top,
+		bottom;
 	}
 
 	/**
-	 * This class enables you to specify the alignment of the controls. This
+	 * This enum enables you to specify the alignment of the controls. This
 	 * value can be left, right or center the default value is center.
 	 */
-	public static class Align extends Enum
+	public enum Align
 	{
-		private static final long serialVersionUID = 1L;
-
-		public static final Align left = new Align("left");
-		public static final Align center = new Align("center");
-		public static final Align right = new Align("right");
-
-		private Align(String name)
-		{
-			super(name);
-		}
+		left,
+		center,
+		right;
 	}
 
 	/**
-	 * This class specifies the position of new added control. It can be before
+	 * This enum specifies the position of new added control. It can be before
 	 * or after existing elements.
 	 */
-	public static class Position extends Enum
+	public enum Position
 	{
-		private static final long serialVersionUID = 1L;
-
-		public static final Position before = new Position("before");
-		public static final Position after = new Position("after");
-
-		public Position(String name)
-		{
-			super(name);
-		}
+		before,
+		after;
 	}
 
 	/**
 	 * This class specifices the toolbar to add specific control to. TinyMCE
 	 * editor defines three toolbars named: first, second, third.
 	 */
-	public static class Toolbar extends Enum
+	public enum Toolbar
 	{
-		private static final long serialVersionUID = 1L;
-
-		public static final Toolbar first = new Toolbar("first");
-		public static final Toolbar second = new Toolbar("second");
-		public static final Toolbar third = new Toolbar("third");
-		public static final Toolbar fourth = new Toolbar("fourth");
-
-		public Toolbar(String name)
-		{
-			super(name);
-		}
+		first,
+		second,
+		third,
+		fourth;
 	}
 
 	// default tinymce buttons

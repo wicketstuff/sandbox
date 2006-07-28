@@ -29,7 +29,7 @@ import java.util.Map;
  * @author Iulian-Corneliu Costan (iulian.costan@gmail.com)
  * @author Frank Bille Jensen (fbille@avaleo.net)
  */
-public abstract class Plugin extends wicket.contrib.tinymce.settings.Enum
+public abstract class Plugin extends NamedObject
 {
 	private String pluginPath;
 	private Map settings;
