@@ -8,9 +8,11 @@ import wicket.markup.html.link.Link;
  */
 public class TinyMCEBasePage extends WicketExamplePage
 {
-
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Construct.
+	 */
 	public TinyMCEBasePage()
 	{
 		new Link(this, "simple")
