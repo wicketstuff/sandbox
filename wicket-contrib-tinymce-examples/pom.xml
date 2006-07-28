@@ -5,10 +5,10 @@
     <groupId>wicket-stuff</groupId>
     <artifactId>wicket-contrib-tinymce-examples</artifactId>
     <packaging>war</packaging>
-    <version>1.0-SNAPSHOT</version>
+    <version>2.0-SNAPSHOT</version>
     <name>Wicket Contrib TinyMCE Examples</name>
     <description>Examples tinymce component.</description>
-    <inceptionYear>2004</inceptionYear>
+    <inceptionYear>2005</inceptionYear>
     <url>http://wicket-stuff.sourceforge.net</url>
 
     <organization>
@@ -42,7 +42,7 @@
         <dependency>
             <groupId>wicket-stuff</groupId>
             <artifactId>wicket-contrib-tinymce</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>2.0-SNAPSHOT</version>
             <exclusions>
             	<exclusion>
 		            <groupId>junit</groupId>
@@ -96,6 +96,14 @@
         </testResources>
 
         <plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.5</source>
+					<target>1.5</target>
+				</configuration>
+			</plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
