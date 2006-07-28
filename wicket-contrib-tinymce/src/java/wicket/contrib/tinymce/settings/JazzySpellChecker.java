@@ -44,6 +44,7 @@ import com.swabunga.spell.event.StringWordTokenizer;
 
 /**
  * Wicket web resource that acts as backend spell checker for tinymce component.
+ * 
  * @author ivaynberg
  * @author Iulian Costan (iulian.costan@gmail.com)
  */
@@ -62,7 +63,7 @@ class JazzySpellChecker extends WebResource
 	 */
 	public JazzySpellChecker()
 	{
-		//todo load dict file from jazzy.jar archive.
+		// todo load dict file from jazzy.jar archive.
 		InputStream inputStream = getClass().getClassLoader().getResourceAsStream(dictFile);
 		InputStreamReader reader = new InputStreamReader(inputStream);
 		try
@@ -112,7 +113,7 @@ class JazzySpellChecker extends WebResource
 		}
 
 		log.debug("Spellcheck response: " + resourceStream.asString());
-		
+
 		return resourceStream;
 	}
 
@@ -141,7 +142,7 @@ class JazzySpellChecker extends WebResource
 	{
 		final SpellChecker checker = new SpellChecker(dict);
 
-		final Set errors = new HashSet();
+		final Set<String> errors = new HashSet<String>();
 
 		checker.addSpellCheckListener(new SpellCheckListener()
 		{

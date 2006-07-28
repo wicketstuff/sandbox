@@ -20,16 +20,15 @@ package wicket.contrib.tinymce.settings;
 /**
  * This plugin enables right-click context menu. This plugin has no additional buttons, you only need to register it.
  *
- * @author Iulian-Corneliu COSTAN
+ * @author Iulian Costan (iulian.costan@gmail.com)
  */
 public class ContextMenuPlugin extends Plugin
 {
-
-    /**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Construct.
+	 */
 	public ContextMenuPlugin()
     {
         super("contextmenu");

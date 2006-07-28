@@ -24,7 +24,7 @@ package wicket.contrib.tinymce.settings;
  * <li>plugin button - these buttons are defined by individual plugins.</li>
  * </ul>
  *
- * @author Iulian-Corneliu COSTAN
+ * @author Iulian Costan (iulian.costan@gmail.com)
  */
 public class Button extends wicket.contrib.tinymce.settings.Enum
 {

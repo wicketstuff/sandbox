@@ -42,10 +42,14 @@ public abstract class Plugin extends wicket.contrib.tinymce.settings.Enum
 	protected Plugin(String name, String pluginPath)
 	{
 		super(name);
+		
 		this.pluginPath = pluginPath;
-		settings = new HashMap();
+		this.settings = new HashMap();
 	}
 
+	/**
+	 * @return the path to custom plugin
+	 */
 	public String getPluginPath()
 	{
 		return pluginPath;
@@ -67,14 +71,15 @@ public abstract class Plugin extends wicket.contrib.tinymce.settings.Enum
 	{
 		// do nothing;
 	}
-	
+
 	/**
 	 * Define configuration settings for this plugin.
 	 * <p>
 	 * I.e. the "paste" plugin can be configured with different settings such
 	 * as: "paste_callback" etc.
-	 * @param buffer 
-	 * 				buffer to append to
+	 * 
+	 * @param buffer
+	 *            buffer to append to
 	 * @param settingKey
 	 *            The setting to set. I.e. "paste_callback"
 	 * @param value
@@ -82,14 +87,15 @@ public abstract class Plugin extends wicket.contrib.tinymce.settings.Enum
 	 */
 	protected void definePluginSettings(StringBuffer buffer)
 	{
-		// do nothting 
+		// do nothting
 	}
-	
-	protected void define(StringBuffer buffer, String key, String value) 
+
+	protected void define(StringBuffer buffer, String key, String value)
 	{
-		if (value != null) 
+		if (value != null)
 		{
-			buffer.append(",\n\t").append(key).append(" : ") .append("\"").append(value).append("\"");
+			buffer.append(",\n\t").append(key).append(" : ").append("\"").append(value)
+					.append("\"");
 		}
 	}
 

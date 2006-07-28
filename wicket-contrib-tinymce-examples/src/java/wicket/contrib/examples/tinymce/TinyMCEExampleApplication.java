@@ -1,11 +1,10 @@
 package wicket.contrib.examples.tinymce;
 
 import wicket.Page;
-import wicket.contrib.examples.WicketExamplePage;
 import wicket.protocol.http.WebApplication;
 
 /**
- * @author Iulian-Corneliu COSTAN
+ * @author Iulian Costan (iulian.costan@gmail.com)
  */
 public class TinyMCEExampleApplication extends WebApplication
 {

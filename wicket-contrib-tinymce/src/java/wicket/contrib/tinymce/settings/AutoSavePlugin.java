@@ -21,16 +21,15 @@ package wicket.contrib.tinymce.settings;
  * This plugin gives the user a warning if they made modifications to a editor instance but didn't submit them.
  * This plugin will most likely be extended in the future to provide AJAX auto save support.
  *
- * @author Iulian-Corneliu COSTAN
+ * @author Iulian Costan (iulian.costan@gmail.com)
  */
 public class AutoSavePlugin extends Plugin
 {
-
-    /**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Construct.
+	 */
 	public AutoSavePlugin()
     {
         super("autosave");
