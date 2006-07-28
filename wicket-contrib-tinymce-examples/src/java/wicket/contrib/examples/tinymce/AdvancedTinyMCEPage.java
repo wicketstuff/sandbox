@@ -12,16 +12,19 @@ public class AdvancedTinyMCEPage extends TinyMCEBasePage
 {
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Construct.
+	 */
 	public AdvancedTinyMCEPage()
-    {
-        TinyMCESettings settings = new TinyMCESettings(TinyMCESettings.Theme.advanced);
+	{
+		TinyMCESettings settings = new TinyMCESettings(TinyMCESettings.Theme.advanced);
 
-        new TinyMCEPanel(this, "tinyMCE", settings);
-        new TextArea(this, "ta", new Model(TEXT));
-    }
+		new TinyMCEPanel(this, "tinyMCE", settings);
+		new TextArea<String>(this, "ta", new Model<String>(TEXT));
+	}
 
-    private String TEXT = "Some <strong>element</strong>, this is to be editor 1. <br/>\n" +
-            "This editor instance has a 100% width to it. \n" +
-            "<p>Some paragraph. <a href=\"http://www.sourceforge.net/\">Some link</a></p>\n" +
-            "<img src=\"logo.jpg\" border=\"0\" />";
+	private String TEXT = "Some <strong>element</strong>, this is to be editor 1. <br/>\n"
+			+ "This editor instance has a 100% width to it. \n"
+			+ "<p>Some paragraph. <a href=\"http://www.sourceforge.net/\">Some link</a></p>\n"
+			+ "<img src=\"logo.jpg\" border=\"0\" />";
 }
