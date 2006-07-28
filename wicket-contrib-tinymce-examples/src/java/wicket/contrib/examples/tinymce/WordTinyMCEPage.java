@@ -10,7 +10,11 @@ import wicket.model.Model;
  */
 public class WordTinyMCEPage extends TinyMCEBasePage
 {
+	private static final long serialVersionUID = 1L;
 
+	/**
+     * Construct.
+     */
     public WordTinyMCEPage()
     {
         TinyMCESettings settings = new TinyMCESettings(TinyMCESettings.Theme.advanced);
@@ -80,7 +84,7 @@ public class WordTinyMCEPage extends TinyMCEBasePage
         settings.setVerticalResizing(true);
 
         new TinyMCEPanel(this, "tinyMCE", settings);
-        new TextArea(this, "ta", new Model(TEXT));
+        new TextArea<String>(this, "ta", new Model<String>(TEXT));
     }
 
     private static final String TEXT = "<p>Some paragraph</p>" +

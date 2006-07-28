@@ -9,11 +9,15 @@ import wicket.model.Model;
  */
 public class SimpleTinyMCEPage extends TinyMCEBasePage
 {
+	private static final long serialVersionUID = 1L;
 
-    public SimpleTinyMCEPage()
+	/**
+	 * Construct.
+	 */
+	public SimpleTinyMCEPage()
     {
         new TinyMCEPanel(this, "tinyMCE");
-        new TextArea(this, "ta", new Model(TEXT));
+        new TextArea<String>(this, "ta", new Model<String>(TEXT));
     }
 
     private String TEXT = "Some <b>element</b>, this is to be editor 1.";
