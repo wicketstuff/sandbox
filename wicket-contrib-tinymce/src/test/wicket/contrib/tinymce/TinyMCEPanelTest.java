@@ -38,6 +38,7 @@ public class TinyMCEPanelTest extends TestCase
 
 	/**
 	 * For each test case we provide a new WicketTester.
+	 * 
 	 * @see junit.framework.TestCase#setUp()
 	 */
 	public void setUp()
@@ -136,7 +137,7 @@ public class TinyMCEPanelTest extends TestCase
 		final Plugin mockPlugin = new Plugin("mockplugin")
 		{
 			private static final long serialVersionUID = 1L;
-			
+
 			protected void definePluginExtensions(StringBuffer buffer)
 			{
 				buffer.append("alert('Hello Mock World');");
@@ -158,8 +159,9 @@ public class TinyMCEPanelTest extends TestCase
 		});
 
 		assertCommonComponents();
-		
-		application.assertContains("tinyMCE.init\\(\\{[^\\}]+\\}\\);\nalert\\('Hello Mock World'\\);");
+
+		application
+				.assertContains("tinyMCE.init\\(\\{[^\\}]+\\}\\);\nalert\\('Hello Mock World'\\);");
 	}
 
 	private void assertCommonComponents()
