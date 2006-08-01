@@ -78,7 +78,6 @@ public class HibernateDatabaseSession extends DatabaseSession
 	{
 		if (hibernateSession != null)
 		{
-			hibernateSession.flush();
 			hibernateSession.close();
 		}
 	}
