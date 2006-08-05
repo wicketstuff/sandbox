@@ -51,4 +51,25 @@ public class DatabaseObjectModel extends LoadableDetachableModel
 	{
 		return DatabaseSession.get().load(c, id);
 	}
+	
+	/**
+	 * @return Hashcode for object
+	 */
+	public int hashCode()
+	{
+		return (int)id.longValue();
+	}
+	
+	/**
+	 * @return True if the objects are equal
+	 */
+	public boolean equals(final Object object)
+	{
+		if (object instanceof DatabaseObjectModel)
+		{
+			final DatabaseObjectModel that = (DatabaseObjectModel)object;
+			return that.id == this.id;
+		}
+		return false;
+	}
 }
