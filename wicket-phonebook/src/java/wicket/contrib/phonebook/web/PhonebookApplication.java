@@ -18,6 +18,7 @@
  */
 package wicket.contrib.phonebook.web;
 
+import wicket.Page;
 import wicket.contrib.phonebook.ContactDao;
 import wicket.contrib.phonebook.web.page.ListContactsPage;
 import wicket.spring.SpringWebApplication;
@@ -31,6 +32,18 @@ public class PhonebookApplication extends SpringWebApplication {
 	 */
 	private ContactDao contactDao;
 
+	public ContactDao getContactDao() {
+		if (contactDao == null) {
+			contactDao = (ContactDao) createSpringBeanProxy(ContactDao.class,
+					"contactDao");
+		}
+		return contactDao;
+	}
+
+	public Class<? extends Page> getHomePage() {
+		return ListContactsPage.class;
+	}
+
 	/**
 	 * Custom initialisation. This method is called right after this application
 	 * class is constructed, and the wicket servlet is set.
@@ -41,17 +54,5 @@ public class PhonebookApplication extends SpringWebApplication {
 		getResourceSettings().addResourceFolder("src/java");
 		getResourceSettings().setResourcePollFrequency(Duration.seconds(10));
 
-	}
-
-	public ContactDao getContactDao() {
-		if (contactDao == null) {
-			contactDao = (ContactDao) createSpringBeanProxy(ContactDao.class,
-					"contactDao");
-		}
-		return contactDao;
-	}
-
-	public Class getHomePage() {
-		return ListContactsPage.class;
 	}
 }

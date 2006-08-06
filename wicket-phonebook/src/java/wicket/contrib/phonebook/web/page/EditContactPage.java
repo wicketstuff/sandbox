@@ -56,40 +56,43 @@ public class EditContactPage extends BasePage {
 		Contact contact = (contactId == 0) ? new Contact() : getDao().load(
 				contactId);
 
-		 new FeedbackPanel(this,"feedback");
+		new FeedbackPanel(this, "feedback");
 
-		Form form = new Form(this,"contactForm", new CompoundPropertyModel(contact));
+		Form form = new Form<Contact>(this, "contactForm",
+				new CompoundPropertyModel<Contact>(contact));
 
-		new RequiredTextField(form,"firstname").add(StringValidator
+		new RequiredTextField(form, "firstname").add(StringValidator
 				.maximumLength(32));
 
-		new RequiredTextField(form,"lastname").add(StringValidator
+		new RequiredTextField(form, "lastname").add(StringValidator
 				.maximumLength(32));
 
-		new RequiredTextField(form,"phone").add(StringValidator
+		new RequiredTextField(form, "phone").add(StringValidator
 				.maximumLength(16));
 
-		new TextField(form,"email").add(StringValidator.maximumLength(128))
+		new TextField(form, "email").add(StringValidator.maximumLength(128))
 				.add(EmailAddressPatternValidator.getInstance());
 
-		new Button(form,"cancel") {
+		new Button(form, "cancel") {
 			protected void onSubmit() {
-				String msg=getLocalizer().getString("status.cancel", this);
+				String msg = getLocalizer().getString("status.cancel", this);
 				getSession().info(msg);
 				setResponsePage(EditContactPage.this.backPage);
 			}
 		}.setDefaultFormProcessing(false);
 
-		new Button(form,"form,save") {
+		new Button(form, "form,save") {
 			protected void onSubmit() {
 				Contact contact = (Contact) getForm().getModelObject();
 				getDao().save(contact);
 
-				String msg=MapVariableInterpolator.interpolate(getLocalizer().getString("status.save", this),
-						new MicroMap<String,String>("name", contact.getFullName()));
+				String msg = MapVariableInterpolator.interpolate(getLocalizer()
+						.getString("status.save", this),
+						new MicroMap<String, String>("name", contact
+								.getFullName()));
 
 				getSession().info(msg);
-				
+
 				setResponsePage(EditContactPage.this.backPage);
 			}
 		};

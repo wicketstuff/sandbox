@@ -18,10 +18,10 @@
  */
 package wicket.contrib.phonebook;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.orm.ibatis.support.SqlMapClientDaoSupport;
@@ -79,7 +79,7 @@ public class IbatisContactDao extends SqlMapClientDaoSupport implements ContactD
      * @return The results of the query as an Iterator.
      */
     public Iterator find(final QueryParam qp, Contact filter) {
-        Map map = createMap(filter);
+        Map<String, String> map = createMap(filter);
         map.put("sort", qp.getSort());
         map.put("sortasc", (qp.isSortAsc() ? " asc" : " desc"));
         List list = getSqlMapClientTemplate().queryForList("getContactList", map, qp.getFirst(), qp.getCount());
@@ -113,13 +113,13 @@ public class IbatisContactDao extends SqlMapClientDaoSupport implements ContactD
      * @param filter
      * @return
      */
-    private Map createMap(Contact filter) {
+    private Map<String, String> createMap(Contact filter) {
         String firstname = filter.getFirstname();
         String lastname = filter.getLastname();
         String email = filter.getEmail();
         String phone = filter.getPhone();
 
-        Map map = new HashMap();
+        Map<String, String> map = new HashMap<String, String>();
         map.put("firstname", firstname == null ? null : "%" + firstname.toUpperCase() + "%");
         map.put("lastname", lastname ); // Selected via drop-down
         map.put("email", email == null ? null : "%" + email.toUpperCase() + "%");

@@ -18,7 +18,6 @@
  */
 package wicket.contrib.phonebook.web.page;
 
-import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
@@ -37,6 +36,7 @@ import wicket.extensions.markup.html.repeater.data.table.filter.FilteredAbstract
 import wicket.extensions.markup.html.repeater.data.table.filter.GoAndClearFilter;
 import wicket.extensions.markup.html.repeater.data.table.filter.TextFilteredPropertyColumn;
 import wicket.extensions.markup.html.repeater.refreshing.Item;
+import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.link.Link;
 import wicket.markup.html.panel.Panel;
 import wicket.model.IModel;
@@ -74,12 +74,12 @@ public class ListContactsPage extends BasePage {
 		 * cell contents. It also provides the go-and-clear filter control
 		 * panel.
 		 */
-		columns[0] = new FilteredAbstractColumn(new Model("Actions")) {
+		columns[0] = new FilteredAbstractColumn(new Model<String>("Actions")) {
 
 			// addd the UserActionsPanel to the cell item
 			public void populateItem(Item cellItem, String componentId,
 					IModel model) {
-				final Contact contact = (Contact) model.getObject(cellItem);
+				final Contact contact = (Contact) model.getObject();
 				new UserActionsPanel(cellItem,componentId, contact);
 			}
 
@@ -112,8 +112,8 @@ public class ListContactsPage extends BasePage {
 				.asList(columns), dataProvider, 10);
 
 		users.addTopToolbar(new DataTable.IToolbarFactory() {
-			public AbstractToolbar newToolbar(MarkupContainer parent, String id, DataTable dataTable) 
-			{
+
+			public AbstractToolbar newToolbar(WebMarkupContainer parent, String id, DataTable dataTable) {
 				return new FilterToolbar(parent,id,users, dataProvider);
 			};
 				
