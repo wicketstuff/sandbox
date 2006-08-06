@@ -18,68 +18,71 @@
  */
 package wicket.contrib.phonebook.web;
 
-import wicket.Component;
 import wicket.contrib.phonebook.Contact;
 import wicket.contrib.phonebook.ContactDao;
 import wicket.model.AbstractReadOnlyDetachableModel;
 import wicket.model.IModel;
 
 /**
- * Detatchable, read-only Contact model.
- * Ensures that memory used to load the contact details is immediately freed
- * rather than held in the session.
+ * Detatchable, read-only Contact model. Ensures that memory used to load the
+ * contact details is immediately freed rather than held in the session.
  * Typically used by <tt>List</tt>-type pages, where multiple elements are
  * loaded at a time.
- *
+ * 
  * @author igor
  */
 public class DetachableContactModel extends AbstractReadOnlyDetachableModel {
-	private final long id;
-	private final ContactDao dao;
 	private transient Contact contact;
-	
+
+	private final ContactDao dao;
+
+	private final long id;
+
 	public DetachableContactModel(Contact contact, ContactDao dao) {
 		this(contact.getId(), dao);
-		this.contact=contact;
+		this.contact = contact;
 	}
 
 	public DetachableContactModel(long id, ContactDao dao) {
-		if (id==0) {
+		if (id == 0) {
 			throw new IllegalArgumentException();
 		}
-		this.id=id;
-		this.dao=dao;
+		this.id = id;
+		this.dao = dao;
 	}
 
 	/**
 	 * Returns null to indicate there is no nested model.
+	 * 
 	 * @return Null
 	 */
 	public IModel getNestedModel() {
 		return null;
 	}
 
-
 	/**
-	 * Uses the DAO to load the required contact when the model is attatched to the request.
+	 * Uses the DAO to load the required contact when the model is attatched to
+	 * the request.
 	 */
 	protected void onAttach() {
-		contact=dao.load(id);
+		contact = dao.load(id);
 	}
 
 	/**
 	 * Clear the reference to the contact when the model is detatched.
 	 */
 	protected void onDetach() {
-		contact=null;
+		contact = null;
 	}
 
 	/**
 	 * Called after attatch to return the detatchable object.
-	 * @param component  The component asking for the object
+	 * 
+	 * @param component
+	 *            The component asking for the object
 	 * @return The detatchable object.
 	 */
-	protected Object onGetObject(Component component) {
+	protected Object onGetObject() {
 		return contact;
 	}
 

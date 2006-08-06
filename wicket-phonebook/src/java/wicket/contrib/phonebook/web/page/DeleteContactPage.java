@@ -50,7 +50,7 @@ public class DeleteContactPage extends BasePage {
 
 		Contact contact = getDao().load(contactId);
 
-		 new Label(this,"name", contact.getFirstname() + " "
+		new Label(this, "name", contact.getFirstname() + " "
 				+ contact.getLastname());
 
 		/*
@@ -58,9 +58,9 @@ public class DeleteContactPage extends BasePage {
 		 * off as there's no point it trying to do anything, as all we're
 		 * interested in are the button clicks.
 		 */
-		Form form = new Form(this,"confirmForm");
+		Form form = new Form(this, "confirmForm");
 
-		new Button(form,"confirm") {
+		new Button(form, "confirm") {
 			/**
 			 * If clicked, delete the contact and return to the calling page.
 			 */
@@ -69,24 +69,28 @@ public class DeleteContactPage extends BasePage {
 
 				getDao().delete(contactId);
 
-				String msg=MapVariableInterpolator.interpolate(getLocalizer().getString("status.deleted", this),
-						new MicroMap<String,String>("name", deleted.getFullName()));
-				
+				String msg = MapVariableInterpolator.interpolate(getLocalizer()
+						.getString("status.deleted", this),
+						new MicroMap<String, String>("name", deleted
+								.getFullName()));
+
 				getSession().info(msg);
-				
+
 				setResponsePage(DeleteContactPage.this.backPage);
 			}
 		}.setDefaultFormProcessing(false);
 
-		new Button(form,"cancel") {
+		new Button(form, "cancel") {
 			protected void onSubmit() {
 				Contact deleted = getDao().load(contactId);
 
-				String msg=MapVariableInterpolator.interpolate(getLocalizer().getString("status.cancelled", this),
-						new MicroMap("name", deleted.getFullName()));
+				String msg = MapVariableInterpolator.interpolate(getLocalizer()
+						.getString("status.cancelled", this),
+						new MicroMap<String, String>("name", deleted
+								.getFullName()));
 
 				getSession().info(msg);
-				
+
 				setResponsePage(DeleteContactPage.this.backPage);
 			}
 		}.setDefaultFormProcessing(false);
