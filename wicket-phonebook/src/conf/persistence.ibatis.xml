@@ -4,7 +4,7 @@
 <beans>
 
 	<bean id="sqlMapClient" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
-		<property name="configLocation" value="WEB-INF/classes/sqlMapConfig.xml"/>
+		<property name="configLocation" value="classpath:sqlMapConfig.xml"/>
 		<property name="dataSource" ref="dataSource"/>
 	</bean>
 
