@@ -42,25 +42,6 @@ public class DatabaseObjectModel extends LoadableDetachableModel
 	}
 
 	/**
-	 * Called to attach the model using the database session when the object is
-	 * needed.
-	 * 
-	 * @see wicket.model.LoadableDetachableModel#load()
-	 */
-	public Object load()
-	{
-		return DatabaseSession.get().load(c, id);
-	}
-	
-	/**
-	 * @return Hashcode for object
-	 */
-	public int hashCode()
-	{
-		return (int)id.longValue();
-	}
-	
-	/**
 	 * @return True if the objects are equal
 	 */
 	public boolean equals(final Object object)
@@ -71,5 +52,32 @@ public class DatabaseObjectModel extends LoadableDetachableModel
 			return that.id == this.id;
 		}
 		return false;
+	}
+	
+	/**
+	 * @return the id
+	 */
+	public Long getId()
+	{
+		return id;
+	}
+	
+	/**
+	 * @return Hashcode for object
+	 */
+	public int hashCode()
+	{
+		return (int)id.longValue();
+	}
+
+	/**
+	 * Called to attach the model using the database session when the object is
+	 * needed.
+	 * 
+	 * @see wicket.model.LoadableDetachableModel#load()
+	 */
+	public Object load()
+	{
+		return DatabaseSession.get().load(c, id);
 	}
 }
