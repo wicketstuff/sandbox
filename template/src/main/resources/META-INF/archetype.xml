@@ -1,0 +1,20 @@
+<archetype>
+  <id>wicket</id>
+  <sources>
+    <source>src/main/java/Index.java</source>
+    <source>src/main/java/Index.html</source>
+    <source>src/main/java/Index.properties</source>
+    <source>src/main/java/MyProjectApplication.java</source>
+    <source>src/main/java/MyProjectPage.java</source>
+    <source>src/main/java/MyProjectSession.java</source>
+  </sources>
+  <testSources>
+    <source>src/test/java/Start.java</source>
+  </testSources>
+  <resources>
+    <resource>src/main/resources/commons-logging.properties</resource>
+    <resource>src/main/resources/log4j.properties</resource>
+    <resource>src/main/webapp/WEB-INF/web.xml</resource>
+    <resource>src/main/webapp/index.html</resource>
+  </resources>
+</archetype>
