@@ -32,14 +32,10 @@ import org.apache.velocity.exception.ResourceNotFoundException;
 import wicket.MarkupContainer;
 import wicket.WicketRuntimeException;
 import wicket.markup.ComponentTag;
-import wicket.markup.IMarkup;
-import wicket.markup.MarkupResourceStream;
 import wicket.markup.MarkupStream;
 import wicket.markup.html.WebComponent;
 import wicket.model.Model;
 import wicket.util.resource.IStringResourceStream;
-import wicket.util.resource.ResourceStreamNotFoundException;
-import wicket.util.resource.StringResourceStream;
 import wicket.util.string.Strings;
 
 /**
@@ -193,22 +189,9 @@ public final class VelocityPanel<K, V> extends WebComponent<Map<K, V>>
 					result = Strings.escapeMarkup(result).toString();
 				}
 
-				// now parse the velocity merge result
-				IMarkup markup;
-				try
-				{
-					MarkupResourceStream stream = new MarkupResourceStream(
-							new StringResourceStream(result), null, null);
-					markup = getApplication().getMarkupSettings()
-							.getMarkupParserFactory().newMarkupParser(stream)
-							.readAndParse();
-				}
-				catch (ResourceStreamNotFoundException e)
-				{
-					throw new RuntimeException(e);
-				}
-
-				render(new MarkupStream(markup));
+				// now replace the body of the tag with the velocity merge
+				// result
+				replaceComponentTagBody(markupStream, openTag, result);
 			}
 			catch (ParseErrorException e)
 			{
