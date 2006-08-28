@@ -18,6 +18,7 @@
  */
 package wicket.contrib.markup.html.yui.slider;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.logging.Log;
@@ -119,24 +120,20 @@ public class Slider<T> extends AbstractYuiPanel<T> {
 		IModel<Map> variablesModel = new AbstractReadOnlyModel<Map>() {
 			private static final long serialVersionUID = 1L;
 
-			/** cached variables; we only need to fill this once. */
-			private Map<String, CharSequence> variables;
-
 			/**
 			 * @see wicket.model.AbstractReadOnlyModel#getObject(wicket.Component)
 			 */
 			@Override
 			public Map getObject() {
-				if (variables == null) {
-					this.variables = new MiniMap<String, CharSequence>(7);
-					variables.put("javaScriptId", javaScriptId);
-					variables.put("backGroundElementId", backgroundElementId);
-					variables.put("imageElementId", imageElementId);
-					variables.put("leftUp", settings.getLeftUp());
-					variables.put("rightDown", settings.getRightDown());
-					variables.put("tick", settings.getTick());
-					variables.put("formElementId", element.getId());
-				}
+				Map<String, CharSequence> variables = new HashMap<String, CharSequence>(
+						7);
+				variables.put("javaScriptId", javaScriptId);
+				variables.put("backGroundElementId", backgroundElementId);
+				variables.put("imageElementId", imageElementId);
+				variables.put("leftUp", settings.getLeftUp());
+				variables.put("rightDown", settings.getRightDown());
+				variables.put("tick", settings.getTick());
+				variables.put("formElementId", element.getId());
 				return variables;
 			}
 		};
