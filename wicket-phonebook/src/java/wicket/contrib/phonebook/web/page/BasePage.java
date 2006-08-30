@@ -18,33 +18,24 @@
  */
 package wicket.contrib.phonebook.web.page;
 
-import wicket.contrib.phonebook.ContactDao;
-import wicket.contrib.phonebook.web.PhonebookApplication;
 import wicket.markup.html.WebPage;
 import wicket.markup.html.panel.FeedbackPanel;
 
 /**
  * Base page class used for phonebook web pages.
  * <p>
- * This page holds a reference to contact dao since all phonebook pages need
- * access to it.
- * <p>
  * The markup of this files provides some common html as well as includes a
  * reference to the css file that all other pages inherit through wicket's
  * markup inheritance feature.
  * <p>
- * The base page also extends the SpringWebPage class so that all its subclasses
- * have their dependencies automatically injected.
+ * 
  * 
  * @author igor
  */
 public class BasePage extends WebPage {
 
 	public BasePage() {
-		 new FeedbackPanel(this,"status");
+		new FeedbackPanel(this, "status");
 	}
-	
-	protected ContactDao getDao() {
-		return ((PhonebookApplication) getApplication()).getContactDao();
-	}
+
 }

@@ -20,6 +20,7 @@ package wicket.contrib.phonebook.web.page;
 
 import wicket.Page;
 import wicket.contrib.phonebook.Contact;
+import wicket.contrib.phonebook.ContactDao;
 import wicket.markup.html.form.Button;
 import wicket.markup.html.form.Form;
 import wicket.markup.html.form.RequiredTextField;
@@ -28,6 +29,7 @@ import wicket.markup.html.form.validation.EmailAddressPatternValidator;
 import wicket.markup.html.form.validation.StringValidator;
 import wicket.markup.html.panel.FeedbackPanel;
 import wicket.model.CompoundPropertyModel;
+import wicket.spring.injection.SpringBean;
 import wicket.util.collections.MicroMap;
 import wicket.util.string.interpolator.MapVariableInterpolator;
 
@@ -41,6 +43,8 @@ import wicket.util.string.interpolator.MapVariableInterpolator;
 public class EditContactPage extends BasePage {
 	private Page backPage;
 
+	@SpringBean private ContactDao dao;
+
 	/**
 	 * Constructor. Create or edit the contact. Note that if you don't need the
 	 * page to be bookmarkable, you can use whatever constructor you need, such
@@ -53,7 +57,7 @@ public class EditContactPage extends BasePage {
 	 */
 	public EditContactPage(Page backPage, final long contactId) {
 		this.backPage = backPage;
-		Contact contact = (contactId == 0) ? new Contact() : getDao().load(
+		Contact contact = (contactId == 0) ? new Contact() : dao.load(
 				contactId);
 
 		new FeedbackPanel(this, "feedback");
@@ -81,10 +85,10 @@ public class EditContactPage extends BasePage {
 			}
 		}.setDefaultFormProcessing(false);
 
-		new Button(form, "form,save") {
+		new Button(form, "save") {
 			protected void onSubmit() {
 				Contact contact = (Contact) getForm().getModelObject();
-				getDao().save(contact);
+				dao.save(contact);
 
 				String msg = MapVariableInterpolator.interpolate(getLocalizer()
 						.getString("status.save", this),

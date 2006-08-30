@@ -20,9 +20,11 @@ package wicket.contrib.phonebook.web.page;
 
 import wicket.Page;
 import wicket.contrib.phonebook.Contact;
+import wicket.contrib.phonebook.ContactDao;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.form.Button;
 import wicket.markup.html.form.Form;
+import wicket.spring.injection.SpringBean;
 import wicket.util.collections.MicroMap;
 import wicket.util.string.interpolator.MapVariableInterpolator;
 
@@ -35,6 +37,8 @@ import wicket.util.string.interpolator.MapVariableInterpolator;
 public class DeleteContactPage extends BasePage {
 	private Page backPage;
 
+	@SpringBean private ContactDao dao;
+	
 	/**
 	 * Constructor. Display the summary (names) before asking for confirmation.
 	 * Note that if you don't need the page to be bookmarkable, you can use
@@ -48,7 +52,7 @@ public class DeleteContactPage extends BasePage {
 	public DeleteContactPage(Page backPage, final long contactId) {
 		this.backPage = backPage;
 
-		Contact contact = getDao().load(contactId);
+		Contact contact = dao.load(contactId);
 
 		new Label(this, "name", contact.getFirstname() + " "
 				+ contact.getLastname());
@@ -65,9 +69,9 @@ public class DeleteContactPage extends BasePage {
 			 * If clicked, delete the contact and return to the calling page.
 			 */
 			protected void onSubmit() {
-				Contact deleted = getDao().load(contactId);
+				Contact deleted = dao.load(contactId);
 
-				getDao().delete(contactId);
+				dao.delete(contactId);
 
 				String msg = MapVariableInterpolator.interpolate(getLocalizer()
 						.getString("status.deleted", this),
@@ -82,7 +86,7 @@ public class DeleteContactPage extends BasePage {
 
 		new Button(form, "cancel") {
 			protected void onSubmit() {
-				Contact deleted = getDao().load(contactId);
+				Contact deleted = dao.load(contactId);
 
 				String msg = MapVariableInterpolator.interpolate(getLocalizer()
 						.getString("status.cancelled", this),
