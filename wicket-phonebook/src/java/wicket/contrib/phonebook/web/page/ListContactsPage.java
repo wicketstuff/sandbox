@@ -24,6 +24,7 @@ import java.util.List;
 import wicket.Component;
 import wicket.MarkupContainer;
 import wicket.contrib.phonebook.Contact;
+import wicket.contrib.phonebook.ContactDao;
 import wicket.contrib.phonebook.web.ContactsDataProvider;
 import wicket.extensions.markup.html.repeater.data.table.AbstractToolbar;
 import wicket.extensions.markup.html.repeater.data.table.DataTable;
@@ -40,7 +41,9 @@ import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.link.Link;
 import wicket.markup.html.panel.Panel;
 import wicket.model.IModel;
+import wicket.model.LoadableDetachableModel;
 import wicket.model.Model;
+import wicket.spring.injection.SpringBean;
 
 /**
  * Display a Pageable List of Contacts.
@@ -48,6 +51,8 @@ import wicket.model.Model;
  * @author igor
  */
 public class ListContactsPage extends BasePage {
+	@SpringBean
+	private ContactDao dao;
 
 	/**
 	 * Constructor. Having this constructor public means that the page is
@@ -55,7 +60,7 @@ public class ListContactsPage extends BasePage {
 	 */
 	public ListContactsPage() {
 
-		 new Link(this,"createLink") {
+		new Link(this, "createLink") {
 			/**
 			 * Go to the Edit page when the link is clicked, passing an empty
 			 * Contact details
@@ -80,43 +85,52 @@ public class ListContactsPage extends BasePage {
 			public void populateItem(Item cellItem, String componentId,
 					IModel model) {
 				final Contact contact = (Contact) model.getObject();
-				new UserActionsPanel(cellItem,componentId, contact);
+				new UserActionsPanel(cellItem, componentId, contact);
 			}
 
 			// return the go-and-clear filter for the filter toolbar
-			public Component getFilter(MarkupContainer parent, String componentId, FilterForm form) {
-				return new GoAndClearFilter(parent,componentId, form);
+			public Component getFilter(MarkupContainer parent,
+					String componentId, FilterForm form) {
+				return new GoAndClearFilter(parent, componentId, form);
 			}
 
 		};
 
 		// creates a column with a text filter
-		columns[1] = new TextFilteredPropertyColumn(new Model<String>("First Name"),
-				"firstname", "firstname");
+		columns[1] = new TextFilteredPropertyColumn(new Model<String>(
+				"First Name"), "firstname", "firstname");
 
-		List names = getDao().getUniqueLastNames();
-		
-		columns[2] = new ChoiceFilteredPropertyColumn(new Model<String>("Last Name"),
-				"lastname", "lastname", new Model<List>(names)) ;
-		
-		columns[3] = new TextFilteredPropertyColumn(new Model<String>("Phone Number"), "phone",
-				"phone");
-		
-		columns[4] = new TextFilteredPropertyColumn(new Model<String>("Email"), "email", "email");
+		columns[2] = new ChoiceFilteredPropertyColumn(new Model<String>(
+				"Last Name"), "lastname", "lastname",
+				new LoadableDetachableModel<List>() {
+
+					@Override
+					protected List load() {
+						return dao.getUniqueLastNames();
+					}
+
+				});
+
+		columns[3] = new TextFilteredPropertyColumn(new Model<String>(
+				"Phone Number"), "phone", "phone");
+
+		columns[4] = new TextFilteredPropertyColumn(new Model<String>("Email"),
+				"email", "email");
 
 		// set up data provider
-		final ContactsDataProvider dataProvider = new ContactsDataProvider(getDao());
+		final ContactsDataProvider dataProvider = new ContactsDataProvider(dao);
 
 		// create the data table
-		final DefaultDataTable users = new DefaultDataTable(this,"users", Arrays
-				.asList(columns), dataProvider, 10);
+		final DefaultDataTable users = new DefaultDataTable(this, "users",
+				Arrays.asList(columns), dataProvider, 10);
 
 		users.addTopToolbar(new DataTable.IToolbarFactory() {
 
-			public AbstractToolbar newToolbar(WebMarkupContainer parent, String id, DataTable dataTable) {
-				return new FilterToolbar(parent,id,users, dataProvider);
+			public AbstractToolbar newToolbar(WebMarkupContainer parent,
+					String id, DataTable dataTable) {
+				return new FilterToolbar(parent, id, users, dataProvider);
 			};
-				
+
 		});
 
 	}
@@ -128,11 +142,12 @@ public class ListContactsPage extends BasePage {
 	 */
 	private static class UserActionsPanel extends Panel {
 
-		public UserActionsPanel(MarkupContainer<?> panel,String id, Contact contact) {
-			super(panel,id);
+		public UserActionsPanel(MarkupContainer<?> panel, String id,
+				Contact contact) {
+			super(panel, id);
 			final long contactId = contact.getId();
 
-			 new Link(this,"editLink") {
+			new Link(this, "editLink") {
 				/**
 				 * Go to the Edit page, passing this page and the id of the
 				 * Contact involved.
@@ -143,7 +158,7 @@ public class ListContactsPage extends BasePage {
 
 			};
 
-			 new Link(this,"deleteLink") {
+			new Link(this, "deleteLink") {
 				/**
 				 * Go to the Delete page, passing this page and the id of the
 				 * Contact involved.

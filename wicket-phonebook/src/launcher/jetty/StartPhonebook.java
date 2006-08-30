@@ -17,20 +17,18 @@
  */
 package jetty;
 
-
 /**
  * Seperate startup class for people that want to run the examples directly.
  */
-public class StartPhonebook
-{
+public class StartPhonebook {
 
 	/**
 	 * Main function, starts the jetty server.
 	 * 
 	 * @param args
+	 * @throws Exception
 	 */
-	public static void main(String[] args)
-	{
+	public static void main(String[] args) throws Exception {
 		Start.main(args);
 	}
 }
