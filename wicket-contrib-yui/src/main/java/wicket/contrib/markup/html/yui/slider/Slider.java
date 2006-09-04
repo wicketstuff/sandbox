@@ -32,12 +32,11 @@ import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.WebPage;
 import wicket.markup.html.form.FormComponent;
 import wicket.markup.html.image.Image;
-import wicket.markup.html.internal.HtmlHeaderContainer;
+import wicket.markup.html.internal.HeaderContainer;
 import wicket.model.AbstractReadOnlyModel;
 import wicket.model.IModel;
 import wicket.model.Model;
 import wicket.model.PropertyModel;
-import wicket.util.collections.MiniMap;
 import wicket.util.resource.TextTemplateHeaderContributor;
 
 /**
@@ -263,12 +262,8 @@ public class Slider<T> extends AbstractYuiPanel<T> {
 		return imageElementId;
 	}
 
-	/**
-	 * @see wicket.Component#renderHead(wicket.markup.html.internal.HtmlHeaderContainer)
-	 */
 	@Override
-	@SuppressWarnings("unchecked")
-	public void renderHead(HtmlHeaderContainer container) {
+	public void renderHead(HeaderContainer container) {
 		((WebPage) getPage()).getBodyContainer().addOnLoadModifier(
 				"init" + javaScriptId + "();", this);
 		super.renderHead(container);
