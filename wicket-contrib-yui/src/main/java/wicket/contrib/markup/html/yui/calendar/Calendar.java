@@ -29,7 +29,7 @@ import wicket.markup.html.PackageResourceReference;
 import wicket.markup.html.WebPage;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.form.FormComponent;
-import wicket.markup.html.internal.HtmlHeaderContainer;
+import wicket.markup.html.internal.HeaderContainer;
 import wicket.model.AbstractReadOnlyModel;
 import wicket.util.collections.MiniMap;
 import wicket.util.resource.PackagedTextTemplate;
@@ -117,10 +117,10 @@ public class Calendar extends AbstractYuiPanel {
 	}
 
 	/**
-	 * @see wicket.Component#renderHead(wicket.markup.html.internal.HtmlHeaderContainer)
+	 * @see wicket.Component#renderHead(wicket.markup.html.internal.HeaderContainer)
 	 */
 	@Override
-	public void renderHead(HtmlHeaderContainer container) {
+	public void renderHead(HeaderContainer container) {
 		((WebPage) getPage()).getBodyContainer().addOnLoadModifier(
 				"init" + javaScriptId + "();", null);
 		super.renderHead(container);
