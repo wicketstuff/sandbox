@@ -60,6 +60,7 @@ public final class ValidationAjaxHandler extends DojoAjaxHandler
 	}
 
 	/**
+	 * @param response 
 	 * @see AbstractAjaxBehavior#onRenderHeadContribution(Response response)
 	 */
 	public final void onRenderHeadContribution(Response response)

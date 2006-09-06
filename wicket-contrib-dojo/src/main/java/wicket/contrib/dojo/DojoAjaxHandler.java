@@ -1,6 +1,6 @@
 /*
- * $Id$ $Revision:
- * 1.2 $ $Date$
+ * $Id: DojoAjaxHandler.java 594 2006-02-22 05:54:55 -0800 (Wed, 22 Feb 2006)
+ * joco01 $ $Revision$ $Date$
  * 
  * ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -21,8 +21,8 @@ package wicket.contrib.dojo;
 import wicket.Application;
 import wicket.IInitializer;
 import wicket.RequestCycle;
-import wicket.Response;
 import wicket.behavior.AbstractAjaxBehavior;
+import wicket.markup.html.IHeaderResponse;
 import wicket.markup.html.PackageResource;
 import wicket.markup.html.PackageResourceReference;
 import wicket.util.resource.IResourceStream;
@@ -59,47 +59,39 @@ public abstract class DojoAjaxHandler extends AbstractAjaxBehavior implements II
 	}
 
 	/**
-	 * 
-	 * @see wicket.behavior.AbstractAjaxBehavior#onRenderHeadInitContribution(wicket.Response)
-	 */
-	protected void onRenderHeadInitContribution(final Response response)
-	{
-		writeJsReference(response,  new PackageResourceReference(Application.get(),
-				DojoAjaxHandler.class, "dojo.js"));
-	}
-	
-	/**
-	 * @see AbstractAjaxBehavior#getImplementationId()
-	 */
-	protected final String getImplementationId()
-	{
-		return "DojoImpl";
-	}
-	
-	/**
 	 * @see wicket.behavior.IBehaviorListener#onRequest()
 	 */
 	public void onRequest()
 	{
 		IResourceStream response = getResponse();
-		if(response != null)
+		if (response != null)
 		{
 			boolean isPageVersioned = true;
 			try
 			{
 				isPageVersioned = getComponent().getPage().isVersioned();
 				getComponent().getPage().setVersioned(false);
-	
+
 				DojoRequestTarget target = new DojoRequestTarget(response);
 				RequestCycle.get().setRequestTarget(target);
-			} 
-			finally 
+			}
+			finally
 			{
 				getComponent().getPage().setVersioned(isPageVersioned);
 			}
 		}
 	}
-	
-	
+
+	/**
+	 * @see wicket.behavior.AbstractAjaxBehavior#renderHead(wicket.markup.html.IHeaderResponse)
+	 */
+	@Override
+	public void renderHead(IHeaderResponse response)
+	{
+		response.renderJavascriptReference(new PackageResourceReference(Application.get(),
+				DojoAjaxHandler.class, "dojo.js"));
+	}
+
+
 	protected abstract IResourceStream getResponse();
 }
