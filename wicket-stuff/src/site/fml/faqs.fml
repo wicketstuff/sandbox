@@ -8,7 +8,7 @@
 			<answer>
 				<p>
 					<a href="http://wicket.sf.net">Wicket</a> needs to do one 
-					thing and do it good. If we would add support/integrations 
+					thing and do it well. If we would add support/integrations 
 					for every framework out there, Wicket would grow beyond
 					control. The number of core developers need to be small in
 					order to keep the group focused and to speed development of
@@ -39,6 +39,16 @@
 					component/integration. Just send an e-mail to the developer list,
 					or first survey the user list (you might also want to check the
 					Wicket user list) to see if anyone else is wanting your component.
+				</p>
+			</answer>       
+		</faq>                  
+		<faq id="why-no-xyz-release">
+			<question>Why is there no release of XYZ project?</question>
+			<answer>
+				<p>
+					Because the developer's not (yet?) made one!  For Wicket-Stufs projects, many of the contributions
+					are in the form of source code, so it's best to check the Source Repositry directly.  (See the
+					menu on the left for a link to more information about the Source Repositry.)
 				</p>
 			</answer>       
 		</faq>                  
