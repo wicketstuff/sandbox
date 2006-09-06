@@ -1,0 +1,173 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>wicket-stuff</groupId>
+	<artifactId>wicket-stuff</artifactId>
+	<packaging>pom</packaging>
+	<version>1.0</version>
+	<name>Wicket Stuff</name>
+	<description>
+	    The Wicket Stuff project makes third party components available using the Wicket web
+		component framework. Subprojects of this project contain integrations for Spring, Groovy,
+		Hibernate, Velocity and other popular Java open source projects.
+    </description>
+	<url>http://wicket-stuff.sourceforge.net</url>
+	<inceptionYear>2004</inceptionYear>
+
+	<organization>
+		<name>Wicket Stuff developers</name>
+		<url>http://wicket-stuff.sourceforge.net</url>
+	</organization>
+
+	<issueManagement>
+		<url>http://sourceforge.net/tracker/?group_id=119783</url>
+	</issueManagement>
+
+	<scm>
+		<connection>scm:svn:https://svn.sourceforge.net/svnroot/wicket-stuff/trunk</connection>
+		<developerConnection>scm:svn:https://svn.sourceforge.net/svnroot/wicket-stuff/trunk</developerConnection>
+		<url>http://svn.sourceforge.net/viewcvs.py/wicket-stuff/trunk</url>
+	</scm>
+
+	<mailingLists>
+		<mailingList>
+			<name>Wicket Announcements List</name>
+			<subscribe>http://lists.sourceforge.net/mailman/listinfo/wicket-announce</subscribe>
+			<unsubscribe>http://lists.sourceforge.net/mailman/listinfo/wicket-announce</unsubscribe>
+			<archive>http://sourceforge.net/mailarchive/forum.php?forum=wicket-announce</archive>
+			<otherArchives>
+			    <otherArchive>http://www.nabble.com/Wicket---Announce-f13975.html</otherArchive>
+			</otherArchives>
+		</mailingList>
+		<mailingList>
+			<name>Wicket User List</name>
+			<subscribe>http://lists.sourceforge.net/mailman/listinfo/wicket-user</subscribe>
+			<unsubscribe>http://lists.sourceforge.net/mailman/listinfo/wicket-user</unsubscribe>
+			<archive>http://sourceforge.net/mailarchive/forum.php?forum=wicket-user</archive>
+			<otherArchives>
+			    <otherArchive>http://www.nabble.com/Wicket---User-f13976.html</otherArchive>
+			</otherArchives>
+		</mailingList>
+		<mailingList>
+			<name>Wicket Development List</name>
+			<subscribe>http://lists.sourceforge.net/mailman/listinfo/wicket-develop</subscribe>
+			<unsubscribe>http://lists.sourceforge.net/mailman/listinfo/wicket-develop</unsubscribe>
+			<archive>http://sourceforge.net/mailarchive/forum.php?forum=wicket-develop</archive>
+			<otherArchives>
+			    <otherArchive>http://www.nabble.com/Wicket---Dev-f13977.html</otherArchive>
+			</otherArchives>
+		</mailingList>
+		<mailingList>
+			<name>Wicket CVS commit List</name>
+			<subscribe>http://lists.sourceforge.net/mailman/listinfo/wicket-autocvs</subscribe>
+			<unsubscribe>http://lists.sourceforge.net/mailman/listinfo/wicket-autocvs</unsubscribe>
+			<archive>http://sourceforge.net/mailarchive/forum.php?forum=wicket-autocvs</archive>
+		</mailingList>
+		<mailingList>
+			<name>Wicket automated builds List</name>
+			<subscribe>http://lists.sourceforge.net/mailman/listinfo/wicket-builds</subscribe>
+			<unsubscribe>http://lists.sourceforge.net/mailman/listinfo/wicket-builds</unsubscribe>
+			<archive>http://sourceforge.net/mailarchive/forum.php?forum=wicket-builds</archive>
+		</mailingList>
+	</mailingLists>
+
+	<developers>
+		<developer>
+			<name>Jonathan Locke</name>
+			<id>jonathanlocke</id>
+			<email>jonathanlocke at users.sourceforge.net</email>
+			<roles>
+				<role>administrator</role>
+			</roles>
+		</developer>
+		<developer>
+			<name>Christopher Turner</name>
+			<id>skipoles</id>
+			<email>skipoles at users.sourceforge.net</email>
+			<roles>
+				<role>administrator</role>
+			</roles>
+		</developer>
+		<developer>
+			<name>Eelco Hillenius</name>
+			<id>eelco12</id>
+			<email>eelco12 at users.sourceforge.net</email>
+			<roles>
+				<role>administrator</role>
+			</roles>
+		</developer>
+		<developer>
+			<name>Johan Compagner</name>
+			<id>joco01</id>
+			<email>joco01 at users.sourceforge.net</email>
+			<roles>
+				<role>administrator</role>
+			</roles>
+		</developer>
+		<developer>
+			<name>Martijn Dashorst</name>
+			<id>dashorst</id>
+			<email>dashorst at users.sourceforge.net</email>
+			<roles>
+				<role>administrator</role>
+			</roles>
+		</developer>
+		<developer>
+			<name>Juergen Donnerstag</name>
+			<id>jdonnerstag</id>
+			<email>jdonnerstag at users.sourceforge.net</email>
+			<roles>
+				<role>administrator</role>
+			</roles>
+		</developer>
+		<developer>
+			<name>Gili Tzabari</name>
+			<email>cowwoc at users.sourceforge.net</email>
+			<roles>
+				<role>developer</role>
+			</roles>
+		</developer>
+	</developers>
+
+	<contributors>
+ 	</contributors>
+
+	<dependencies>
+ 	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<configuration>
+					<templateFile>src/site/template/wicket-site.vm</templateFile>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-project-info-reports-plugin</artifactId>
+				<reportSets>
+					<reportSet>
+						<reports>
+							<report>scm</report>
+						</reports>
+					</reportSet>
+				</reportSets>
+			</plugin>
+		</plugins>
+	</reporting>
+	<distributionManagement>
+		<site>
+			<id>wicket-site</id>
+			<url>scpexe://shell.sourceforge.net/home/groups/w/wi/wicket-stuff/htdocs/mvn2</url>
+		</site>
+	</distributionManagement>
+</project>
