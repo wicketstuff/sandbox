@@ -1,6 +1,6 @@
 /*
- * $Id$
- * $Revision$ $Date$
+ * $Id: ImmediateCheckBox.java 673 2006-04-06 12:53:07 -0700 (Thu, 06 Apr 2006)
+ * joco01 $ $Revision$ $Date$
  * 
  * ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -17,6 +17,7 @@
  */
 package wicket.contrib.markup.html.form;
 
+import wicket.MarkupContainer;
 import wicket.Response;
 import wicket.behavior.AbstractAjaxBehavior;
 import wicket.contrib.dojo.DojoAjaxHandler;
@@ -36,21 +37,21 @@ import wicket.util.value.ValueMap;
  * An example:
  * 
  * <pre>
- *         	addTicketOptionForm.add(new ListView(&quot;ticketOptionsList&quot;,
- *         			new PropertyModel(activityModel, &quot;ticketOptions&quot;)) {
- *         
- *         		protected void populateItem(ListItem item) {
- *         			final TicketOption ticketOption = (TicketOption) item
- *         					.getModelObject();
- *         			...
- *         			item.add(new ImmediateCheckBox(&quot;available&quot;) {
- *         				@Override
- *         				protected void onAjaxModelUpdated() {
- *         					Activity activity = (Activity)ActivityDetailsPage.this.getModelObject();
- *         					getActivityDao().update(activity);
- *         				}
- *         			});
- *         		...
+ *           	addTicketOptionForm.add(new ListView(&quot;ticketOptionsList&quot;,
+ *           			new PropertyModel(activityModel, &quot;ticketOptions&quot;)) {
+ *           
+ *           		protected void populateItem(ListItem item) {
+ *           			final TicketOption ticketOption = (TicketOption) item
+ *           					.getModelObject();
+ *           			...
+ *           			item.add(new ImmediateCheckBox(&quot;available&quot;) {
+ *           				@Override
+ *           				protected void onAjaxModelUpdated() {
+ *           					Activity activity = (Activity)ActivityDetailsPage.this.getModelObject();
+ *           					getActivityDao().update(activity);
+ *           				}
+ *           			});
+ *           		...
  * </pre>
  * 
  * </p>
@@ -61,34 +62,110 @@ import wicket.util.value.ValueMap;
 public class ImmediateCheckBox extends CheckBox
 {
 	/**
+	 * Ajax handler that immediately updates the attached component when the
+	 * onclick event happens.
+	 */
+	public static class ImmediateUpdateAjaxHandler extends DojoAjaxHandler
+	{
+		/** checkbox this handler is attached to. */
+		private ImmediateCheckBox checkBox;
+
+		/**
+		 * Construct.
+		 */
+		public ImmediateUpdateAjaxHandler()
+		{
+		}
+
+		/**
+		 * Attaches the event handler for the given component to the given tag.
+		 * 
+		 * @param tag
+		 *            The tag to attach
+		 */
+		public final void onComponentTag(final ComponentTag tag)
+		{
+			final ValueMap attributes = tag.getAttributes();
+			final AppendingStringBuffer attributeValue = new AppendingStringBuffer(
+					"javascript:immediateCheckBox('").append(getCallbackUrl()).append("', '")
+					.append(checkBox.getInputName()).append("', this.checked);");
+			attributes.put("onclick", attributeValue);
+		}
+
+		/**
+		 * @param response
+		 * @see AbstractAjaxBehavior#onRenderHeadInitContribution(Response
+		 *      response)
+		 */
+		public final void onRenderHeadInitContribution(Response response)
+		{
+			super.onRenderHeadInitContribution(response);
+			AppendingStringBuffer s = new AppendingStringBuffer(
+					"\t<script language=\"JavaScript\" type=\"text/javascript\">\n"
+							+ "\tfunction immediateCheckBox(componentUrl, componentPath, val) { \n"
+							+ "\t\tdojo.io.bind({\n"
+							+ "\t\t\turl: componentUrl + '&' + componentPath + '=' + val,\n"
+							+ "\t\t\tmimetype: \"text/plain\",\n"
+							+ "\t\t\tload: function(type, data, evt) {");
+
+			if (checkBox.getJSCallbackFunctionName() != null)
+			{
+				s.append(checkBox.getJSCallbackFunctionName()).append("(type, data, evt);");
+			}
+
+			s.append("}\n\t\t});\n\t}\n\t</script>\n");
+
+			response.write(s);
+		}
+
+		/**
+		 * Gets the resource to render to the requester.
+		 * 
+		 * @return the resource to render to the requester
+		 */
+		protected final IResourceStream getResponse()
+		{
+			// let the form component update its model
+			checkBox.convert();
+			checkBox.updateModel();
+			checkBox.onAjaxModelUpdated();
+			return checkBox.getResponseResourceStream();
+		}
+
+		/**
+		 * @see wicket.AjaxHandler#onBind()
+		 */
+		protected void onBind()
+		{
+			this.checkBox = (ImmediateCheckBox)getComponent();
+		}
+	}
+
+	/**
 	 * Construct.
+	 * 
+	 * @param parent
 	 * 
 	 * @param id
 	 */
-	public ImmediateCheckBox(String id)
+	public ImmediateCheckBox(MarkupContainer parent, String id)
 	{
-		super(id);
+		super(parent, id);
 		add(new ImmediateUpdateAjaxHandler());
 	}
 
 	/**
 	 * Construct.
+	 * 
+	 * @param parent
 	 * 
 	 * @param id
 	 * @param model
 	 */
-	public ImmediateCheckBox(String id, IModel model)
+	public ImmediateCheckBox(MarkupContainer parent, String id, IModel<Boolean> model)
 	{
-		super(id, model);
+		super(parent, id, model);
 		add(new ImmediateUpdateAjaxHandler());
-	}
-
-	/**
-	 * Called after the model is updated. Use this method to e.g. update the
-	 * persistent model. Does nothing by default.
-	 */
-	protected void onAjaxModelUpdated()
-	{
 	}
 
 	/**
@@ -101,12 +178,12 @@ public class ImmediateCheckBox extends CheckBox
 	 * For example if we want to echo the value returned by
 	 * getResponseResourceStream stream we can implement it as follows: <code>
 	 * <pre>
-	 *    
-	 *    getJsCallbackFunctionName() {return(&quot;handleit&quot;);}
-	 *    
-	 *    in javascript:
-	 *    
-	 *    function handleit(type, data, evt) { alert(data); } 
+	 *      
+	 *      getJsCallbackFunctionName() {return(&quot;handleit&quot;);}
+	 *      
+	 *      in javascript:
+	 *      
+	 *      function handleit(type, data, evt) { alert(data); } 
 	 * </pre>
 	 * </code>
 	 * 
@@ -136,80 +213,11 @@ public class ImmediateCheckBox extends CheckBox
 	}
 
 	/**
-	 * Ajax handler that immediately updates the attached component when the
-	 * onclick event happens.
+	 * Called after the model is updated. Use this method to e.g. update the
+	 * persistent model. Does nothing by default.
 	 */
-	public static class ImmediateUpdateAjaxHandler extends DojoAjaxHandler
+	protected void onAjaxModelUpdated()
 	{
-		/** checkbox this handler is attached to. */
-		private ImmediateCheckBox checkBox;
-
-		/**
-		 * Construct.
-		 */
-		public ImmediateUpdateAjaxHandler()
-		{
-		}
-
-		/**
-		 * @see AbstractAjaxBehavior#onRenderHeadInitContribution(Response response)
-		 */
-		public final void onRenderHeadInitContribution(Response response)
-		{
-			super.onRenderHeadInitContribution(response);
-			AppendingStringBuffer s = new AppendingStringBuffer(
-					"\t<script language=\"JavaScript\" type=\"text/javascript\">\n"+
-					"\tfunction immediateCheckBox(componentUrl, componentPath, val) { \n"+
-					"\t\tdojo.io.bind({\n"+
-					"\t\t\turl: componentUrl + '&' + componentPath + '=' + val,\n"+
-					"\t\t\tmimetype: \"text/plain\",\n"+
-					"\t\t\tload: function(type, data, evt) {");
-
-			if (checkBox.getJSCallbackFunctionName() != null) {
-				s.append(checkBox.getJSCallbackFunctionName()).append("(type, data, evt);");
-			}
-
-			s.append("}\n\t\t});\n\t}\n\t</script>\n");
-
-			response.write(s);
-		}
-
-		/**
-		 * Attaches the event handler for the given component to the given tag.
-		 * 
-		 * @param tag
-		 *            The tag to attach
-		 */
-		public final void onComponentTag(final ComponentTag tag)
-		{
-			final ValueMap attributes = tag.getAttributes();
-			final AppendingStringBuffer attributeValue = new AppendingStringBuffer("javascript:immediateCheckBox('")
-					.append(getCallbackUrl()).append("', '").append(checkBox.getInputName())
-					.append("', this.checked);");
-			attributes.put("onclick", attributeValue);
-		}
-
-		/**
-		 * @see wicket.AjaxHandler#onBind()
-		 */
-		protected void onBind()
-		{
-			this.checkBox = (ImmediateCheckBox)getComponent();
-		}
-
-		/**
-		 * Gets the resource to render to the requester.
-		 * 
-		 * @return the resource to render to the requester
-		 */
-		protected final IResourceStream getResponse()
-		{
-			// let the form component update its model
-			checkBox.convert();
-			checkBox.updateModel();
-			checkBox.onAjaxModelUpdated();
-			return checkBox.getResponseResourceStream();
-		}
 	}
 
 }

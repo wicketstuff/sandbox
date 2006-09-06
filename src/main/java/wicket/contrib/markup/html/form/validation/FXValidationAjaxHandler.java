@@ -144,6 +144,7 @@ public class FXValidationAjaxHandler extends DojoAjaxHandler
 
 	/**
 	 * Write the validate/highlight javascript function to the page's head.
+	 * @param r 
 	 * 
 	 * @see AbstractAjaxBehavior#onRenderHeadContribution(Response response)
 	 */
@@ -227,17 +228,15 @@ public class FXValidationAjaxHandler extends DojoAjaxHandler
 
 		this.formComponent = (FormComponent)c;
 		this.componentId = this.formComponent.getId();
-		this.formComponent.add(new AttributeModifier("id", true, new Model(this.formComponent
+		this.formComponent.add(new AttributeModifier("id", true, new Model<String>(this.formComponent
 				.getId())));
 
 		this.formComponent.add(new AttributeModifier(eventName,true,new Model(){
-			public java.lang.Object getObject(Component co){
+			public java.lang.Object getObject(){
 			     return "javascript:"
 					+ componentId + "_validate('" + getCallbackUrl() + "', '"
 					+ formComponent.getInputName() + "', this);";
 			   }}));
-
-
 	}
 
 
