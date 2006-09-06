@@ -19,13 +19,8 @@
 package wicket.contrib.yui.examples;
 
 import wicket.MarkupContainer;
-import wicket.PageMap;
-import wicket.examples.debug.InspectorBug;
-import wicket.examples.source.SourcesPage;
 import wicket.markup.html.WebPage;
 import wicket.markup.html.basic.Label;
-import wicket.markup.html.link.Link;
-import wicket.markup.html.link.PopupSettings;
 import wicket.markup.html.panel.Panel;
 
 /**
@@ -54,24 +49,6 @@ public final class WicketExampleHeader extends Panel {
 	public WicketExampleHeader(MarkupContainer parent, final String id,
 			String exampleTitle, WebPage page) {
 		super(page, id);
-		new InspectorBug(this, "inspector", page);
 		new Label(this, "exampleTitle", exampleTitle);
-		Link link = new Link(this, "sources") {
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void onClick() {
-				setResponsePage(new SourcesPage(getPage().getClass()));
-			}
-		};
-
-		PopupSettings settings = new PopupSettings(PageMap.forName("sources"));
-		settings.setWidth(800);
-		settings.setHeight(600);
-		settings.setWindowName("sources");
-		link.setPopupSettings(settings);
 	}
 }
