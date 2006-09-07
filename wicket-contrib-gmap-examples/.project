@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <projectDescription>
-  <name>wicket-contrib-gmap</name>
+  <name>wicket-contrib-gmap-examples</name>
   <comment>The Wicket Contrib GMap. Wicket component for &lt;a href="http://maps.google.com/"&gt;Google Map&lt;/a&gt;.</comment>
   <projects>
     <project>wicket</project>
