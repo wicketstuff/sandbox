@@ -29,7 +29,7 @@ import wicket.util.resource.StringBufferResourceStream;
  * 
  * @author <a href="mailto:wireframe6464@users.sourceforge.net">Ryan Sonnek</a>
  */
-public abstract class AjaxAutocompleteTextField extends AutocompleteTextFieldSupport
+public abstract class AjaxAutocompleteTextField<T> extends AutocompleteTextFieldSupport<T>
 {
 	private class AutocompleteEventHandler extends ScriptaculousAjaxHandler
 	{

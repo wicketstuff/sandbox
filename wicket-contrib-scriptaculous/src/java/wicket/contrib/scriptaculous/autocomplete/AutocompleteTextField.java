@@ -26,7 +26,7 @@ import wicket.markup.html.internal.HtmlHeaderContainer;
  * 
  * @author <a href="mailto:wireframe6464@users.sourceforge.net">Ryan Sonnek</a>
  */
-public class AutocompleteTextField extends AutocompleteTextFieldSupport
+public class AutocompleteTextField<T> extends AutocompleteTextFieldSupport<T>
 {
 	private static final long serialVersionUID = 1L;
 	private final String[] results;

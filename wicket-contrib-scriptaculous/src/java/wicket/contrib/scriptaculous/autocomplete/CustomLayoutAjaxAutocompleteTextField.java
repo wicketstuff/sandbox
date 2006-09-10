@@ -19,6 +19,7 @@
 package wicket.contrib.scriptaculous.autocomplete;
 
 import wicket.MarkupContainer;
+import wicket.Page;
 import wicket.PageParameters;
 import wicket.markup.html.internal.HtmlHeaderContainer;
 
@@ -29,12 +30,13 @@ import wicket.markup.html.internal.HtmlHeaderContainer;
  * 
  * @author <a href="mailto:wireframe6464@users.sourceforge.net">Ryan Sonnek</a>
  */
-public class CustomLayoutAjaxAutocompleteTextField extends AutocompleteTextFieldSupport
+public class CustomLayoutAjaxAutocompleteTextField<T> extends AutocompleteTextFieldSupport<T>
 {
 	private static final long serialVersionUID = 1L;
-	private final Class page;
+	private final Class<? extends Page> page;
 
-	public CustomLayoutAjaxAutocompleteTextField(MarkupContainer parent, String id, Class page)
+	public CustomLayoutAjaxAutocompleteTextField(MarkupContainer parent, String id,
+			Class<? extends Page> page)
 	{
 		super(parent, id);
 		this.page = page;
@@ -46,7 +48,7 @@ public class CustomLayoutAjaxAutocompleteTextField extends AutocompleteTextField
 
 		PageParameters parameters = new PageParameters();
 		parameters.put("fieldName", this.getId());
-		CharSequence url = this.getPage().urlFor(null, page, parameters);
+		CharSequence url = urlFor(null, page, parameters);
 		container.getResponse().write(
 				"<script type=\"text/javascript\">\n" + "var myrules = { \n" + "\t'#" + getId()
 						+ "' : function(el){ \n" + "\t\tnew Ajax.Autocompleter('" + getId()

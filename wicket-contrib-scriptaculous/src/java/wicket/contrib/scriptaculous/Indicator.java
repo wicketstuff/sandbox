@@ -25,7 +25,7 @@ import wicket.markup.html.panel.Panel;
 /**
  * Indicator panel.
  */
-public class Indicator extends Panel
+public class Indicator<T> extends Panel<T>
 {
 	private static final long serialVersionUID = 1L;
 

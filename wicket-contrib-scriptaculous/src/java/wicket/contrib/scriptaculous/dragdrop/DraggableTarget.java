@@ -1,6 +1,7 @@
 package wicket.contrib.scriptaculous.dragdrop;
 
 import wicket.MarkupContainer;
+import wicket.Page;
 import wicket.PageParameters;
 import wicket.contrib.scriptaculous.Indicator;
 import wicket.contrib.scriptaculous.ScriptaculousAjaxHandler;
@@ -8,14 +9,14 @@ import wicket.markup.ComponentTag;
 import wicket.markup.MarkupStream;
 import wicket.markup.html.WebMarkupContainer;
 
-public class DraggableTarget extends WebMarkupContainer
+public class DraggableTarget<T> extends WebMarkupContainer<T>
 {
 	private static final long serialVersionUID = 1L;
 	private String draggableClass;
 	private String indicatorId;
-	private final Class pageContribution;
+	private final Class<? extends Page> pageContribution;
 
-	public DraggableTarget(MarkupContainer parent, String id, Class pageContribution)
+	public DraggableTarget(MarkupContainer parent, String id, Class<? extends Page> pageContribution)
 	{
 		super(parent, id);
 		this.pageContribution = pageContribution;
@@ -44,7 +45,7 @@ public class DraggableTarget extends WebMarkupContainer
 		super.onRender(markupStream);
 
 
-		CharSequence url = this.getPage().urlFor(null, pageContribution, new PageParameters());
+		CharSequence url = urlFor(null, pageContribution, new PageParameters());
 		getResponse().write(
 				"\n<script type=\"text/javascript\">new Ajax.Updater('" + getId() + "', '" + url
 						+ "', " + " { " + " evalScripts:true, " + " asynchronous:true" + " })"
