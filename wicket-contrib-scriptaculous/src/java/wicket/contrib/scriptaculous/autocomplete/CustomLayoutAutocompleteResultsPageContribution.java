@@ -3,7 +3,7 @@ package wicket.contrib.scriptaculous.autocomplete;
 import wicket.PageParameters;
 import wicket.markup.html.WebPage;
 
-public class CustomLayoutAutocompleteResultsPageContribution extends WebPage
+public class CustomLayoutAutocompleteResultsPageContribution<T> extends WebPage<T>
 {
 
 	private static final long serialVersionUID = 1L;

@@ -1,6 +1,7 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
- xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-        <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 	<groupId>wicket-stuff</groupId>
 	<artifactId>wicket-contrib-scriptaculous</artifactId>
 	<name>Wicket Contrib Scriptaculous Integration</name>
@@ -17,17 +18,19 @@
 	<url>http://wicket-stuff.sourceforge.net/${pom.artifactId}</url>
 
 	<licenses>
-	  <license>
-	     <name>The Apache Software License, Version 2.0</name>
-	     <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-	     <distribution>repo</distribution>
-	  </license>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
 	</licenses>
-  
-        <issueManagement>
-	      <url>http://sourceforge.net/tracker/?group_id=${maven.sourceforge.project.groupId}</url>
+
+	<issueManagement>
+		<url>
+			http://sourceforge.net/tracker/?group_id=${maven.sourceforge.project.groupId}
+		</url>
 	</issueManagement>
-	
+
 	<scm>
 		<connection>
 			scm:cvs:pserver:anonymous@cvs.sourceforge.net:/cvsroot/${pom.groupId}:${pom.artifactId}
@@ -35,7 +38,9 @@
 		<developerConnection>
 			scm:cvs:ext:${maven.username}@cvs.sourceforge.net:/cvsroot/${pom.groupId}:${pom.artifactId}
 		</developerConnection>
-		<url>http://cvs.sourceforge.net/viewcvs.py/${pom.groupId}/${pom.artifactId}</url>
+		<url>
+			http://cvs.sourceforge.net/viewcvs.py/${pom.groupId}/${pom.artifactId}
+		</url>
 	</scm>
 
 	<mailingLists>
@@ -53,7 +58,9 @@
 		</mailingList>
 		<mailingList>
 			<name>Wicket Stuff User List</name>
-			<subscribe>http://lists.sourceforge.net/mailman/listinfo/${pom.groupId}-user</subscribe>
+			<subscribe>
+				http://lists.sourceforge.net/mailman/listinfo/${pom.groupId}-user
+			</subscribe>
 			<unsubscribe>
 				http://lists.sourceforge.net/mailman/listinfo/${pom.groupId}-user
 			</unsubscribe>
@@ -85,7 +92,7 @@
 		<dependency>
 			<groupId>wicket</groupId>
 			<artifactId>wicket</artifactId>
-			<version>1.2-SNAPSHOT</version>
+			<version>2.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>servletapi</groupId>
