@@ -2,15 +2,14 @@ package wicket.contrib.dojo.autoupdate;
 
 import java.util.StringTokenizer;
 
-import wicket.Application;
 import wicket.AttributeModifier;
 import wicket.Component;
 import wicket.RequestCycle;
+import wicket.ResourceReference;
 import wicket.Response;
 import wicket.WicketRuntimeException;
-import wicket.behavior.AbstractAjaxBehavior;
 import wicket.contrib.dojo.DojoAjaxHandler;
-import wicket.markup.html.PackageResourceReference;
+import wicket.markup.html.IHeaderResponse;
 import wicket.model.Model;
 import wicket.response.StringResponse;
 import wicket.util.resource.IResourceStream;
@@ -116,13 +115,13 @@ public class DojoAutoUpdateHandler extends DojoAjaxHandler
 	}
 
 	/**
-	 * @see AbstractAjaxBehavior#onRenderHeadContribution(Response response)
+	 * @see wicket.contrib.dojo.DojoAjaxHandler#renderHead(wicket.markup.html.IHeaderResponse)
 	 */
-	protected void onRenderHeadContribution(final Response response)
+	@Override
+	public void renderHead(IHeaderResponse response)
 	{
-		super.onRenderHeadContribution(response);
-		writeJsReference(response,  new PackageResourceReference(Application.get(),
-				DojoAutoUpdateHandler.class, "autoupdate.js"));
+		super.renderHead(response);
+		response.renderJavascriptReference(new ResourceReference(DojoAutoUpdateHandler.class, "autoupdate.js"));
 	}
 	
 	/* (non-Javadoc)

@@ -1,5 +1,6 @@
 /*
- * $Id$ $Revision$ $Date$
+ * $Id: ImmediateTextField.java 673 2006-04-06 12:53:07 -0700 (Thu, 06 Apr 2006)
+ * joco01 $ $Revision$ $Date$
  * 
  * ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -16,10 +17,11 @@
  */
 package wicket.contrib.markup.html.form;
 
-import wicket.Response;
-import wicket.behavior.AbstractAjaxBehavior;
+import wicket.MarkupContainer;
+import wicket.ResourceReference;
 import wicket.contrib.dojo.DojoAjaxHandler;
 import wicket.markup.ComponentTag;
+import wicket.markup.html.IHeaderResponse;
 import wicket.markup.html.form.TextField;
 import wicket.model.IModel;
 import wicket.util.resource.IResourceStream;
@@ -47,49 +49,57 @@ import wicket.util.value.ValueMap;
  * @author Eelco Hillenius
  * @author Marco van de Haar
  * @author Ruud Booltink
+ * @param <T>
  */
-public class ImmediateTextField extends TextField
+public class ImmediateTextField<T> extends TextField<T>
 {
 	/**
 	 * Construct.
-	 * @param id component id
+	 * 
+	 * @param parent
+	 * @param id
+	 *            component id
 	 */
-	public ImmediateTextField(String id)
+	public ImmediateTextField(MarkupContainer parent, String id)
 	{
-		super(id);
+		super(parent, id);
 		add(new ImmediateUpdateAjaxHandler());
 	}
 
 	/**
 	 * Construct.
 	 * 
+	 * @param parent
+	 * 
 	 * @param id
 	 * @param model
 	 */
-	public ImmediateTextField(String id, IModel model)
+	public ImmediateTextField(MarkupContainer parent, String id, IModel<T> model)
 	{
-		super(id, model);
+		super(parent, id, model);
 		add(new ImmediateUpdateAjaxHandler());
 	}
 
 	/**
+	 * @param parent
 	 * @param id
 	 * @param type
 	 */
-	public ImmediateTextField(String id, java.lang.Class type)
+	public ImmediateTextField(MarkupContainer parent, String id, Class<T> type)
 	{
-		super(id, type);
+		super(parent, id, type);
 		add(new ImmediateUpdateAjaxHandler());
 	}
 
 	/**
+	 * @param parent
 	 * @param id
 	 * @param model
 	 * @param type
 	 */
-	public ImmediateTextField(String id, IModel model, java.lang.Class type)
+	public ImmediateTextField(MarkupContainer parent, String id, IModel<T> model, Class<T> type)
 	{
-		super(id, model, type);
+		super(parent, id, model, type);
 		add(new ImmediateUpdateAjaxHandler());
 	}
 
@@ -119,21 +129,15 @@ public class ImmediateTextField extends TextField
 		}
 
 		/**
-		 * @see AbstractAjaxBehavior#onRenderHeadInitContribution(Response response)
+		 * @see wicket.contrib.dojo.DojoAjaxHandler#renderHead(wicket.markup.html.IHeaderResponse)
 		 */
-		public final void onRenderHeadInitContribution(Response response)
+		@Override
+		public void renderHead(IHeaderResponse response)
 		{
-			super.onRenderHeadInitContribution(response);
-			AppendingStringBuffer s = new AppendingStringBuffer(
-					"\t<script language=\"JavaScript\" type=\"text/javascript\">\n"+
-					"\tfunction immediateCheckBox(componentUrl, componentPath, val) { \n"+
-					"\t\tdojo.io.bind({\n"+
-					"\t\t\turl: componentUrl + '&' + componentPath + '=' + val,\n"+
-					"\t\t\tmimetype: \"text/plain\",\n"+
-					"\t\t\tload: function(type, data, evt) {}\n" + "\t\t});\n" + "\t}\n"+
-					"\t</script>\n");
+			super.renderHead(response);
 
-			response.write(s);
+			response.renderJavascriptReference(new ResourceReference(ImmediateTextField.class,
+					"ImmediateTextField.js"));
 		}
 
 		/**
@@ -145,9 +149,9 @@ public class ImmediateTextField extends TextField
 		public final void onComponentTag(final ComponentTag tag)
 		{
 			final ValueMap attributes = tag.getAttributes();
-			final AppendingStringBuffer attributeValue = new AppendingStringBuffer("javascript:immediateCheckBox('")
-					.append(getCallbackUrl()).append("', '").append(textField.getInputName())
-					.append("', this.value);");
+			final AppendingStringBuffer attributeValue = new AppendingStringBuffer(
+					"javascript:immediateTextField('").append(getCallbackUrl()).append("', '")
+					.append(textField.getInputName()).append("', this.value);");
 			attributes.put("onblur", attributeValue);
 		}
 

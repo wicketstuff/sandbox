@@ -21,10 +21,10 @@ package wicket.contrib.dojo;
 import wicket.Application;
 import wicket.IInitializer;
 import wicket.RequestCycle;
+import wicket.ResourceReference;
 import wicket.behavior.AbstractAjaxBehavior;
 import wicket.markup.html.IHeaderResponse;
 import wicket.markup.html.PackageResource;
-import wicket.markup.html.PackageResourceReference;
 import wicket.util.resource.IResourceStream;
 
 /**
@@ -88,8 +88,7 @@ public abstract class DojoAjaxHandler extends AbstractAjaxBehavior implements II
 	@Override
 	public void renderHead(IHeaderResponse response)
 	{
-		response.renderJavascriptReference(new PackageResourceReference(Application.get(),
-				DojoAjaxHandler.class, "dojo.js"));
+		response.renderJavascriptReference(new ResourceReference(DojoAjaxHandler.class, "dojo.js"));
 	}
 
 
