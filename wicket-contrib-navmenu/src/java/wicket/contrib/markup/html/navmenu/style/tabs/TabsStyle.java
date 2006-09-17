@@ -18,9 +18,8 @@
  */
 package wicket.contrib.markup.html.navmenu.style.tabs;
 
-import wicket.Application;
+import wicket.ResourceReference;
 import wicket.contrib.markup.html.navmenu.MenuRowStyle;
-import wicket.markup.html.PackageResourceReference;
 
 /**
  * Style that renders tabs.
@@ -50,13 +49,11 @@ public final class TabsStyle
 		 */
 		private Level0()
 		{
-			new PackageResourceReference(Application.get(), TabsStyle.class, "folders/active.gif");
-			new PackageResourceReference(Application.get(), TabsStyle.class, "folders/hover.gif");
-			new PackageResourceReference(Application.get(), TabsStyle.class, "folders/selected.gif");
-			new PackageResourceReference(Application.get(), TabsStyle.class,
-					"folders/unselected.gif");
-			setStyleSheetResource(new PackageResourceReference(Application.get(), TabsStyle.class,
-					"tabs-folders.css"));
+			new ResourceReference(TabsStyle.class, "folders/active.gif");
+			new ResourceReference(TabsStyle.class, "folders/hover.gif");
+			new ResourceReference(TabsStyle.class, "folders/selected.gif");
+			new ResourceReference(TabsStyle.class, "folders/unselected.gif");
+			setStyleSheetResource(new ResourceReference(TabsStyle.class, "tabs-folders.css"));
 			setRowCSSClass("wicketNavmenuTabsLevel0");
 		}
 	}
@@ -76,8 +73,7 @@ public final class TabsStyle
 		 */
 		private Level1()
 		{
-			setStyleSheetResource(new PackageResourceReference(Application.get(), TabsStyle.class,
-					"tabs-folders.css"));
+			setStyleSheetResource(new ResourceReference(TabsStyle.class, "tabs-folders.css"));
 			setContainerCSSClass("wicketNavmenuTabsLevel1Border");
 			setRowCSSClass("wicketNavmenuTabsLevel1");
 		}

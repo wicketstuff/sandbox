@@ -24,20 +24,46 @@ import java.util.List;
 import wicket.Component;
 import wicket.Page;
 import wicket.RequestCycle;
-import wicket.model.AbstractDetachableAssignmentAwareModel;
+import wicket.model.IAssignmentAware;
 import wicket.model.IModel;
+import wicket.model.IWrapModel;
 
 /**
  * Menu model for one row.
  * 
  * @author Eelco Hillenius
  */
-public class MenuRowModel extends AbstractDetachableAssignmentAwareModel<List<MenuItem>>
+public class MenuRowModel implements IAssignmentAware<List<MenuItem>>
 {
-	/**
-	 * 
-	 */
+	private class AssignmentWrapper extends MenuRowModel implements IWrapModel<List<MenuItem>>
+	{
+		private static final long serialVersionUID = 1L;
+
+		/**
+		 * Construct.
+		 * 
+		 * @param menuModel
+		 * @param level
+		 * @param component
+		 */
+		public AssignmentWrapper(MenuModel menuModel, int level, Component component)
+		{
+			super(menuModel, level);
+			MenuRowModel.this.component = component;
+		}
+
+		/**
+		 * @see wicket.model.IWrapModel#getNestedModel()
+		 */
+		public IModel getNestedModel()
+		{
+			return MenuRowModel.this;
+		}
+	}
+
 	private static final long serialVersionUID = 1L;
+
+	private Component component;
 
 	/** menu level. */
 	private final int level;
@@ -63,51 +89,17 @@ public class MenuRowModel extends AbstractDetachableAssignmentAwareModel<List<Me
 	}
 
 	/**
-	 * Whether the given menu item is part of the currently selected path
-	 * 
-	 * @param currentPage
-	 *            the current page
-	 * @param menuItem
-	 *            the menu item
-	 * @return true if the given menu item is part of the currently selected
-	 *         path
+	 * @see wicket.model.IDetachable#detach()
 	 */
-	public boolean isPartOfCurrentSelection(Page currentPage, MenuItem menuItem)
-	{
-		return menuModel.isPartOfCurrentSelection(currentPage, menuItem);
-	}
-
-	/**
-	 * @see wicket.model.IModel#getNestedModel()
-	 */
-	@Override
-	public IModel getNestedModel()
-	{
-		return null;
-	}
-
-	/**
-	 * @see wicket.model.AbstractDetachableAssignmentAwareModel#onAttach()
-	 */
-	@Override
-	protected void onAttach()
-	{
-	}
-
-	/**
-	 * @see wicket.model.AbstractDetachableAssignmentAwareModel#onDetach()
-	 */
-	@Override
-	protected void onDetach()
+	public void detach()
 	{
 		this.row = null;
 	}
 
 	/**
-	 * @see wicket.model.AbstractDetachableAssignmentAwareModel#onGetObject(wicket.Component)
+	 * @see wicket.model.IModel#getObject()
 	 */
-	@Override
-	protected List<MenuItem> onGetObject(Component component)
+	public List<MenuItem> getObject()
 	{
 		// lazily attach
 		if (row == null)
@@ -133,9 +125,36 @@ public class MenuRowModel extends AbstractDetachableAssignmentAwareModel<List<Me
 		return row;
 	}
 
-	@Override
-	protected void onSetObject(Component component, List<MenuItem> object)
+	/**
+	 * Whether the given menu item is part of the currently selected path
+	 * 
+	 * @param currentPage
+	 *            the current page
+	 * @param menuItem
+	 *            the menu item
+	 * @return true if the given menu item is part of the currently selected
+	 *         path
+	 */
+	public boolean isPartOfCurrentSelection(Page currentPage, MenuItem menuItem)
+	{
+		return menuModel.isPartOfCurrentSelection(currentPage, menuItem);
+	}
+
+	/**
+	 * @param object
+	 * @see wicket.model.IModel#setObject(java.lang.Object)
+	 */
+	public void setObject(List<MenuItem> object)
 	{
 		throw new UnsupportedOperationException("set object is not supported for this model");
+	}
+
+	/**
+	 * @see wicket.model.IAssignmentAware#wrapOnAssignment(wicket.Component)
+	 */
+	@SuppressWarnings("unchecked")
+	public IWrapModel<List<MenuItem>> wrapOnAssignment(Component component)
+	{
+		return new AssignmentWrapper(menuModel, level, component);
 	}
 }
