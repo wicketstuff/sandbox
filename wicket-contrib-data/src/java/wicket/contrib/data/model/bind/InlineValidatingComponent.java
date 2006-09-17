@@ -3,7 +3,7 @@ package wicket.contrib.data.model.bind;
 import wicket.MarkupContainer;
 import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.form.FormComponent;
-import wicket.markup.html.form.validation.IValidator;
+import wicket.validation.IValidator;
 
 /**
  * Used for any inline component that needs to be able to add validators to

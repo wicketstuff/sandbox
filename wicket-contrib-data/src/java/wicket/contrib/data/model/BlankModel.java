@@ -2,7 +2,6 @@ package wicket.contrib.data.model;
 
 import wicket.WicketRuntimeException;
 import wicket.model.AbstractDetachableModel;
-import wicket.model.IModel;
 
 /**
  * A simple detachable model that creates a new bean instance on every attach.
@@ -32,15 +31,6 @@ public class BlankModel<T> extends AbstractDetachableModel<T>
 	public BlankModel(Class<T> objectClass)
 	{
 		this.objectClass = objectClass;
-	}
-
-	/**
-	 * @see wicket.model.AbstractDetachableModel#getNestedModel()
-	 */
-	@Override
-	public IModel getNestedModel()
-	{
-		return null;
 	}
 
 	/**

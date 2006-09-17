@@ -7,7 +7,6 @@ import wicket.contrib.data.model.OrderedPageableList;
 import wicket.markup.html.link.Link;
 import wicket.markup.html.list.ListView;
 import wicket.model.AbstractModel;
-import wicket.model.IModel;
 import wicket.model.Model;
 
 /**
@@ -136,15 +135,6 @@ public class OrderByLink extends Link<Integer>
 	private class AttribModel extends AbstractModel<String>
 	{
 		private static final long serialVersionUID = 1L;
-
-		/**
-		 * @see wicket.model.IModel
-		 */
-		@Override
-		public IModel getNestedModel()
-		{
-			return null;
-		}
 
 		/**
 		 * @see wicket.model.IModel
