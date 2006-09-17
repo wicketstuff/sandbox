@@ -20,9 +20,9 @@ package wicket.contrib.scriptaculous;
 
 import wicket.Application;
 import wicket.Component;
+import wicket.ResourceReference;
 import wicket.behavior.AbstractAjaxBehavior;
 import wicket.markup.html.IHeaderResponse;
-import wicket.markup.html.PackageResourceReference;
 
 /**
  * Handles event requests using 'script.aculo.us'.
@@ -66,11 +66,11 @@ public abstract class ScriptaculousAjaxHandler extends AbstractAjaxBehavior
 		super.renderHead(response);
 		// add our basic javascript needs to the header
 		Application application = Application.get();
-		response.renderJavascriptReference(new PackageResourceReference(application,
-				ScriptaculousAjaxHandler.class, "prototype.js"));
-		response.renderJavascriptReference(new PackageResourceReference(application,
-				ScriptaculousAjaxHandler.class, "scriptaculous.js"));
-		response.renderJavascriptReference(new PackageResourceReference(application,
-				ScriptaculousAjaxHandler.class, "behavior.js"));
+		response.renderJavascriptReference(new ResourceReference(ScriptaculousAjaxHandler.class,
+				"prototype.js"));
+		response.renderJavascriptReference(new ResourceReference(ScriptaculousAjaxHandler.class,
+				"scriptaculous.js"));
+		response.renderJavascriptReference(new ResourceReference(ScriptaculousAjaxHandler.class,
+				"behavior.js"));
 	}
 }

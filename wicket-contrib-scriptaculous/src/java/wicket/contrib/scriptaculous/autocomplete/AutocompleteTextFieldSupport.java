@@ -5,7 +5,6 @@ import wicket.ResourceReference;
 import wicket.contrib.scriptaculous.ScriptaculousAjaxHandler;
 import wicket.markup.ComponentTag;
 import wicket.markup.MarkupStream;
-import wicket.markup.html.PackageResourceReference;
 import wicket.markup.html.form.TextField;
 import wicket.markup.html.internal.HeaderContainer;
 
@@ -44,7 +43,7 @@ public class AutocompleteTextFieldSupport<T> extends TextField<T>
 
 	protected ResourceReference getCss()
 	{
-		return new PackageResourceReference(AutocompleteTextFieldSupport.class, "style.css");
+		return new ResourceReference(AutocompleteTextFieldSupport.class, "style.css");
 	}
 
 	/**
