@@ -27,7 +27,6 @@ import wicket.examples.cdapp.model.CD;
 import wicket.examples.cdapp.util.HibernateSessionDelegate;
 import wicket.model.AbstractDetachableModel;
 import wicket.model.AbstractReadOnlyDetachableModel;
-import wicket.model.IModel;
 
 /**
  * Model that keeps a (current) search argument, and uses a pageable list as
@@ -38,23 +37,6 @@ import wicket.model.IModel;
 @SuppressWarnings("hiding")
 public final class SearchModel extends AbstractReadOnlyDetachableModel<List<CD>>
 {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
-	/** action used by the pageable list (has our order columns). */
-	private CountAndListAction countAndListAction = new CountAndListAction();
-
-	/** the list of matches */
-	private transient PageableList<CD, Long> list;
-
-	/** number of rows on each page. */
-	private int rowsPerPage = 8;
-
-	/** zoek opdracht. */
-	private String searchString = null;
-
 	/** count and list action that works with this model. */
 	private final class CountAndListAction extends HibernateCountAndListAction<CD, Long>
 	{
@@ -88,6 +70,20 @@ public final class SearchModel extends AbstractReadOnlyDetachableModel<List<CD>>
 			query.setString("label", searchStringParameter);
 		}
 	}
+
+	private static final long serialVersionUID = 1L;
+
+	/** action used by the pageable list (has our order columns). */
+	private CountAndListAction countAndListAction = new CountAndListAction();
+
+	/** the list of matches */
+	private transient PageableList<CD, Long> list;
+
+	/** number of rows on each page. */
+	private int rowsPerPage = 8;
+
+	/** zoek opdracht. */
+	private String searchString = null;
 
 	/**
 	 * Construct.
@@ -123,15 +119,6 @@ public final class SearchModel extends AbstractReadOnlyDetachableModel<List<CD>>
 			action.addOrdering(field);
 			list.clear();
 		}
-	}
-
-	/**
-	 * @see wicket.model.IModel#getNestedModel()
-	 */
-	@Override
-	public IModel getNestedModel()
-	{
-		return null;
 	}
 
 	/**

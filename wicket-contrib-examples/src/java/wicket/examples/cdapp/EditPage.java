@@ -35,8 +35,6 @@ import wicket.markup.html.form.RequiredTextField;
 import wicket.markup.html.form.TextField;
 import wicket.markup.html.form.upload.FileUpload;
 import wicket.markup.html.form.upload.FileUploadField;
-import wicket.markup.html.form.validation.NumberValidator;
-import wicket.markup.html.form.validation.StringValidator;
 import wicket.markup.html.image.Image;
 import wicket.markup.html.image.resource.BlobImageResource;
 import wicket.markup.html.link.Link;
@@ -44,6 +42,8 @@ import wicket.markup.html.panel.FeedbackPanel;
 import wicket.model.CompoundPropertyModel;
 import wicket.model.IModel;
 import wicket.util.lang.Bytes;
+import wicket.validation.validator.NumberValidator;
+import wicket.validation.validator.StringValidator;
 
 
 /**
@@ -54,23 +54,49 @@ import wicket.util.lang.Bytes;
 public final class EditPage extends CdAppBasePage
 {
 	/**
-	 * 
+	 * Deletes the cd image.
 	 */
-	private static final long serialVersionUID = 1L;
+	private final class DeleteImageLink extends Link<CD>
+	{
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 
-	/** Logger. */
-	private static Log log = LogFactory.getLog(SearchPage.class);
+		/**
+		 * Construct.
+		 * 
+		 * @param parent
+		 * @param name
+		 * @param cdModel
+		 */
+		public DeleteImageLink(MarkupContainer parent, String name, IModel<CD> cdModel)
+		{
+			super(parent, name, cdModel);
+		}
 
-	/**
-	 * static resource from this package; references image 'questionmark.gif'.
-	 */
-	private static Resource IMG_UNKNOWN;
+		/**
+		 * @see wicket.Component#isVisible()
+		 */
+		@Override
+		public boolean isVisible()
+		{
+			// only set visible when there is an image set
+			return getModelObject().getImage() != null;
+		}
 
-	/** model for one cd. */
-	private final PersistentObjectModel<CD, Long> cdModel;
-
-	/** search page to navigate back to. */
-	private final SearchPage searchCDPage;
+		/**
+		 * @see wicket.markup.html.link.Link#onClick()
+		 */
+		@Override
+		public void onClick()
+		{
+			CD cd = getModelObject();
+			cd.setImage(null);
+			thumbnailImage.setImageResource(getThumbnail());
+			getCdDao().save(cd);
+		}
+	}
 
 	/**
 	 * form for detail editing.
@@ -102,7 +128,8 @@ public final class EditPage extends CdAppBasePage
 			performersField.add(StringValidator.maximumLength(50));
 			TextField labelField = new TextField(this, "label");
 			labelField.add(StringValidator.maximumLength(50));
-			RequiredTextField yearField = new RequiredTextField(this, "year", Integer.class);
+			RequiredTextField yearField = new RequiredTextField<Integer>(this, "year",
+					Integer.class);
 			yearField.add(NumberValidator.POSITIVE);
 			new Link(this, "cancelButton")
 			{
@@ -193,49 +220,23 @@ public final class EditPage extends CdAppBasePage
 	}
 
 	/**
-	 * Deletes the cd image.
+	 * static resource from this package; references image 'questionmark.gif'.
 	 */
-	private final class DeleteImageLink extends Link<CD>
-	{
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;
+	private static Resource IMG_UNKNOWN;
 
-		/**
-		 * Construct.
-		 * 
-		 * @param parent
-		 * @param name
-		 * @param cdModel
-		 */
-		public DeleteImageLink(MarkupContainer parent, String name, IModel<CD> cdModel)
-		{
-			super(parent, name, cdModel);
-		}
+	/** Logger. */
+	private static Log log = LogFactory.getLog(SearchPage.class);
 
-		/**
-		 * @see wicket.markup.html.link.Link#onClick()
-		 */
-		@Override
-		public void onClick()
-		{
-			CD cd = getModelObject();
-			cd.setImage(null);
-			thumbnailImage.setImageResource(getThumbnail());
-			getCdDao().save(cd);
-		}
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
-		/**
-		 * @see wicket.Component#isVisible()
-		 */
-		@Override
-		public boolean isVisible()
-		{
-			// only set visible when there is an image set
-			return getModelObject().getImage() != null;
-		}
-	}
+	/** model for one cd. */
+	private final PersistentObjectModel<CD, Long> cdModel;
+
+	/** search page to navigate back to. */
+	private final SearchPage searchCDPage;
 
 	private Image thumbnailImage;
 
@@ -267,6 +268,15 @@ public final class EditPage extends CdAppBasePage
 
 		// add link for deleting the image
 		new DeleteImageLink(this, "deleteImageLink", cdModel);
+	}
+
+	/**
+	 * @see wicket.Component#initModel()
+	 */
+	@Override
+	protected IModel initModel()
+	{
+		return cdModel;
 	}
 
 	/**
@@ -304,14 +314,5 @@ public final class EditPage extends CdAppBasePage
 			};
 			return new ThumbnailImageResource(img, 100).setCacheable(false);
 		}
-	}
-
-	/**
-	 * @see wicket.Component#initModel()
-	 */
-	@Override
-	protected IModel initModel()
-	{
-		return cdModel;
 	}
 }
