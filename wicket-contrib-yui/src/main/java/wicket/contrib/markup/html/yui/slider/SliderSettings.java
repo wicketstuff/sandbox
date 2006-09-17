@@ -6,7 +6,6 @@ import wicket.RequestCycle;
 import wicket.ResourceReference;
 import wicket.contrib.ImageResourceInfo;
 import wicket.contrib.InlineStyle;
-import wicket.markup.html.PackageResourceReference;
 
 public class SliderSettings implements Serializable {
 
@@ -64,18 +63,18 @@ public class SliderSettings implements Serializable {
 	 */
 
 	public static SliderSettings getDefault(int leftUp, int rightDown, int tick) {
-		ResourceReference background = new PackageResourceReference(
-				Slider.class, "style/bg.gif");
-		ResourceReference thumb = new PackageResourceReference(Slider.class,
+		ResourceReference background = new ResourceReference(Slider.class,
+				"style/bg.gif");
+		ResourceReference thumb = new ResourceReference(Slider.class,
 				"style/thumb.png");
-		ResourceReference leftCorner = new PackageResourceReference(
-				Slider.class, "style/left.gif");
-		ResourceReference leftTick = new PackageResourceReference(Slider.class,
+		ResourceReference leftCorner = new ResourceReference(Slider.class,
+				"style/left.gif");
+		ResourceReference leftTick = new ResourceReference(Slider.class,
 				"style/left_tick.gif");
-		ResourceReference rightCorner = new PackageResourceReference(
-				Slider.class, "style/right.gif");
-		ResourceReference rightTick = new PackageResourceReference(
-				Slider.class, "style/right_tick.gif");
+		ResourceReference rightCorner = new ResourceReference(Slider.class,
+				"style/right.gif");
+		ResourceReference rightTick = new ResourceReference(Slider.class,
+				"style/right_tick.gif");
 
 		SliderSettings defSettings = new SliderSettings();
 		defSettings.setResources(leftUp, rightDown, tick, background, thumb,
@@ -95,18 +94,18 @@ public class SliderSettings implements Serializable {
 	 * @return a default look and feel slider bar
 	 */
 	public static SliderSettings getAqua(int leftUp, int rightDown, int tick) {
-		ResourceReference background = new PackageResourceReference(
-				Slider.class, "style/aqua/aqua_bg.png");
-		ResourceReference thumb = new PackageResourceReference(Slider.class,
+		ResourceReference background = new ResourceReference(Slider.class,
+				"style/aqua/aqua_bg.png");
+		ResourceReference thumb = new ResourceReference(Slider.class,
 				"style/aqua/aqua_thumb.gif");
-		ResourceReference leftCorner = new PackageResourceReference(
-				Slider.class, "style/aqua/aqua_left.png");
-		ResourceReference leftTick = new PackageResourceReference(Slider.class,
+		ResourceReference leftCorner = new ResourceReference(Slider.class,
+				"style/aqua/aqua_left.png");
+		ResourceReference leftTick = new ResourceReference(Slider.class,
 				"style/aqua/aqua_left_tick.png");
-		ResourceReference rightCorner = new PackageResourceReference(
-				Slider.class, "style/aqua/aqua_right.png");
-		ResourceReference rightTick = new PackageResourceReference(
-				Slider.class, "style/aqua/aqua_right_tick.png");
+		ResourceReference rightCorner = new ResourceReference(Slider.class,
+				"style/aqua/aqua_right.png");
+		ResourceReference rightTick = new ResourceReference(Slider.class,
+				"style/aqua/aqua_right_tick.png");
 
 		SliderSettings defSettings = new SliderSettings();
 		defSettings.setResources(leftUp, rightDown, tick, background, thumb,
