@@ -10,10 +10,10 @@ import wicket.markup.html.link.BookmarkablePageLink;
 public class ScriptaculousExamplesHomePage extends WebPage {
 
 	public ScriptaculousExamplesHomePage() {
-		add(new BookmarkablePageLink("autocompleteExampleLink", AutocompleteExamplePage.class));
-		add(new BookmarkablePageLink("ajaxAutocompleteExampleLink", AjaxAutocompleteExamplePage.class));
-		add(new BookmarkablePageLink("customLayoutAjaxAutocompleteExampleLink", CustomLayoutAjaxAutocompleteExamplePage.class));
+		new BookmarkablePageLink(this, "autocompleteExampleLink", AutocompleteExamplePage.class);
+		new BookmarkablePageLink(this, "ajaxAutocompleteExampleLink", AjaxAutocompleteExamplePage.class);
+		new BookmarkablePageLink(this, "customLayoutAjaxAutocompleteExampleLink", CustomLayoutAjaxAutocompleteExamplePage.class);
 
-		add(new BookmarkablePageLink("draggableImageExamplePage", DragDropExamplePage.class));
+		new BookmarkablePageLink(this, "draggableImageExamplePage", DragDropExamplePage.class);
 	}
 }
