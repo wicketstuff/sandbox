@@ -23,9 +23,9 @@ import java.util.Map;
 import wicket.AttributeModifier;
 import wicket.MarkupContainer;
 import wicket.RequestCycle;
+import wicket.ResourceReference;
 import wicket.behavior.HeaderContributor;
 import wicket.contrib.markup.html.yui.AbstractYuiPanel;
-import wicket.markup.html.PackageResourceReference;
 import wicket.markup.html.WebPage;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.form.FormComponent;
@@ -139,11 +139,9 @@ public class Calendar extends AbstractYuiPanel {
 	 */
 	protected String getJavaScriptComponentInitializationScript() {
 		CharSequence leftImage = RequestCycle.get().urlFor(
-				new PackageResourceReference(Calendar.class, "callt.gif"))
-				.toString();
+				new ResourceReference(Calendar.class, "callt.gif")).toString();
 		CharSequence rightImage = RequestCycle.get().urlFor(
-				new PackageResourceReference(Calendar.class, "calrt.gif"))
-				.toString();
+				new ResourceReference(Calendar.class, "calrt.gif")).toString();
 
 		Map<String, CharSequence> variables = new MiniMap<String, CharSequence>(
 				4);
