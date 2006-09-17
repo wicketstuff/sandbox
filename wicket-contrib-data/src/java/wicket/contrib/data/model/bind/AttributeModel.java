@@ -1,7 +1,6 @@
 package wicket.contrib.data.model.bind;
 
 import wicket.model.AbstractModel;
-import wicket.model.IModel;
 
 /**
  * A convenience class to represent the attribute value in an attribute
@@ -11,12 +10,6 @@ import wicket.model.IModel;
  */
 public abstract class AttributeModel extends AbstractModel<String>
 {
-	@Override
-	public IModel getNestedModel()
-	{
-		return null;
-	}
-
 	public String getObject()
 	{
 		return getAttributeValue();

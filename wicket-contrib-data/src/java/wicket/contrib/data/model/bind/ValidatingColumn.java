@@ -6,9 +6,9 @@ import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.List;
 
-import wicket.markup.html.form.validation.AbstractValidator;
-import wicket.markup.html.form.validation.IValidator;
 import wicket.model.IModel;
+import wicket.validation.IValidator;
+import wicket.validation.validator.AbstractValidator;
 
 /**
  * A column that can have validators added to it. Any subclass must call

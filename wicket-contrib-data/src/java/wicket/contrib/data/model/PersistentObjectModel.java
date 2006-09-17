@@ -120,15 +120,6 @@ public class PersistentObjectModel<T, V> extends AbstractDetachableModel<T>
 	}
 
 	/**
-	 * @see wicket.model.IModel#getNestedModel()
-	 */
-	@Override
-	public IModel getNestedModel()
-	{
-		return null;
-	}
-
-	/**
 	 * Whether this model has been attached to the current request.
 	 * 
 	 * @return whether this model has been attached to the current request
