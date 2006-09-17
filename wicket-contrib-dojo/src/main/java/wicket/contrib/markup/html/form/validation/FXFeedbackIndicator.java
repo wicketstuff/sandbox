@@ -1,5 +1,7 @@
 /*
- * $Id$ $Revision$ $Date$
+ * $Id: FXFeedbackIndicator.java 477 2005-12-09 06:40:06 -0800 (Fri, 09 Dec
+ * 2005) dashorst $ $Revision$ $Date: 2005-12-09 06:40:06 -0800 (Fri, 09
+ * Dec 2005) $
  * 
  * ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -19,8 +21,9 @@ package wicket.contrib.markup.html.form.validation;
 
 import wicket.Application;
 import wicket.Component;
+import wicket.MarkupContainer;
+import wicket.ResourceReference;
 import wicket.contrib.markup.html.tooltip.Tooltip;
-import wicket.markup.html.PackageResourceReference;
 import wicket.markup.html.form.validation.FormComponentFeedbackIndicator;
 import wicket.markup.html.image.Image;
 
@@ -41,16 +44,17 @@ public class FXFeedbackIndicator extends FormComponentFeedbackIndicator
 	/**
 	 * Construct
 	 * 
+	 * @param parent
+	 * 
 	 * @param id
 	 *            Component ID
 	 */
-	public FXFeedbackIndicator(String id)
+	public FXFeedbackIndicator(MarkupContainer parent, String id)
 	{
-		super(id);
+		super(parent, id);
 		initIndicator();
-		feedbackTooltip = new Tooltip("feedbacktooltip", new FXFeedbackTooltip(this, 20, 30));
-		add(feedbackTooltip);
-
+		feedbackTooltip = new Tooltip(this, "feedbacktooltip", new FXFeedbackTooltip(this, this,
+				20, 30));
 	}
 
 
@@ -60,10 +64,10 @@ public class FXFeedbackIndicator extends FormComponentFeedbackIndicator
 	 */
 	protected void initIndicator()
 	{
-		//Image i = new Image("image", new Model("alerticon.gif"));
-		final PackageResourceReference resource = new PackageResourceReference(Application.get(), FXFeedbackIndicator.class, "alerticon.gif");
-		Image image = new Image("image", resource);
-		add(image);
+		// Image i = new Image("image", new Model("alerticon.gif"));
+		final ResourceReference resource = new ResourceReference(FXFeedbackIndicator.class,
+				"alerticon.gif");
+		Image image = new Image(this, "image", resource);
 	}
 
 	/**
