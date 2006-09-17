@@ -4,7 +4,6 @@ import wicket.contrib.data.model.PersistentObjectModel;
 import wicket.examples.cdapp.model.CD;
 import wicket.model.AbstractDetachableModel;
 import wicket.model.AbstractReadOnlyDetachableModel;
-import wicket.model.IModel;
 
 /**
  * Special model for the title header. It returns the CD title if there's a
@@ -65,14 +64,5 @@ public class TitleModel extends AbstractReadOnlyDetachableModel<String>
 		{
 			return "<NEW CD>";
 		}
-	}
-
-	/**
-	 * @see wicket.model.IModel#getNestedModel()
-	 */
-	@Override
-	public IModel getNestedModel()
-	{
-		return null;
 	}
 }
