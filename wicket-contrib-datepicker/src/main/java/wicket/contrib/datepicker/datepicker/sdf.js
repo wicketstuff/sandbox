@@ -224,7 +224,7 @@ Wicket.SimpleDateFormat.prototype = {
 		var month = date.getMonth();
 		
 		if (rank<=2) {
-		  return Wicket.SimpleDateFormat.pad(month+1, 2);
+		  return Wicket.SimpleDateFormat.pad(month+1, rank);
 		} else if (rank == 3) {
 	    return locale.getShortMonth(month);
 		} else {
