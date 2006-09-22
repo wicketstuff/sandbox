@@ -101,10 +101,37 @@ Wicket.Calendar.prototype = {
         
 		return container;
 	},
+	
+	getInputValue : function() {
+		if (this.input.nodeName == "INPUT") {
+			return this.input.value;
+		}
+		
+		// It's a container, so pick the value from the first text node
+		var value = "";
+		for (var i=0; i < this.input.childNodes.length; i++) {
+			var child = this.input.childNodes[i];
+			if (child.nodeName == "#text") {
+				value = child.nodeValue;
+				break;
+			}
+		}
+		return value;
+	},
+	
+	setInputValue : function(value) {
+		if (this.input.nodeName == "INPUT") {
+			this.input.value = value;
+		} else {
+			try {
+				this.input.innerHTML = value;
+			} catch(e) { /* Do nothing */ }
+		}
+	},
     
     setStartAndSelection : function() {
 		try {
-			this.selectedDay = this.sdf.parse(this.input.value);
+			this.selectedDay = this.sdf.parse(this.getInputValue());
 		} catch (parseException) {
 			this.selectedDay = null;
 		}
@@ -195,7 +222,7 @@ Wicket.Calendar.prototype = {
 	onSelect : function(time) {
 		var day = new Date();
 		day.setTime(time);
-		this.input.value = this.sdf.format(day);
+		this.setInputValue(this.sdf.format(day));
 		this.setFieldValid(true);
 		this.hide();
 	},
