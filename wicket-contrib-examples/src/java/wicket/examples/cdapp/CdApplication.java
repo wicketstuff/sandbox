@@ -29,7 +29,6 @@ import wicket.Response;
 import wicket.Session;
 import wicket.examples.WicketExampleApplication;
 import wicket.examples.cdapp.util.DatabaseUtil;
-import wicket.protocol.http.WebApplication;
 import wicket.protocol.http.WebRequest;
 import wicket.protocol.http.WebSession;
 
@@ -113,9 +112,9 @@ public class CdApplication extends WicketExampleApplication
 	}
 
 	/**
-	 * @see wicket.protocol.http.WebApplication#getDefaultRequestCycleFactory()
+	 * @see wicket.protocol.http.WebApplication#getRequestCycleFactory()
 	 */
-	protected IRequestCycleFactory getDefaultRequestCycleFactory()
+	protected IRequestCycleFactory getRequestCycleFactory()
 	{
 		return requestCycleFactory;
 	}
