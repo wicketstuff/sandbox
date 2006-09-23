@@ -38,23 +38,58 @@ import wicket.protocol.http.WebSession;
  * 
  * @author Eelco Hillenius
  */
-public class CdApplication extends WicketExampleApplication implements IRequestCycleFactory
+public class CdApplication extends WicketExampleApplication
 {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
 	/** Logger. */
 	private static Log log = LogFactory.getLog(CdApplication.class);
 
-	private SessionFactory sessionFactory;
+	/**
+	 * custom request cycle factory.
+	 */
+	private static class CdRequestCycleFactory implements IRequestCycleFactory
+	{
+		/** hibernate session factory. */
+		private final SessionFactory sessionFactory;
+
+		/**
+		 * Construct.
+		 */
+		public CdRequestCycleFactory()
+		{
+			try
+			{
+				final Configuration configuration = new Configuration();
+				configuration.configure();
+				// build hibernate SessionFactory for this application instance
+				sessionFactory = configuration.buildSessionFactory();
+				// create database
+				new DatabaseUtil(configuration).createDatabase();
+			}
+			catch (Exception e)
+			{
+				throw new RuntimeException(e);
+			}
+		}
+
+		/**
+		 * @see wicket.IRequestCycleFactory#newRequestCycle(wicket.Session,
+		 *      wicket.Request, wicket.Response)
+		 */
+		public RequestCycle newRequestCycle(Session session, Request request, Response response)
+		{
+			return new CdAppRequestCycle((WebSession)session, (WebRequest)request, response,
+					sessionFactory);
+		}
+	};
+
+	private final CdRequestCycleFactory requestCycleFactory;
 
 	/**
 	 * Constructor
 	 */
 	public CdApplication()
 	{
+		requestCycleFactory = new CdRequestCycleFactory();
 	}
 
 	/**
@@ -66,18 +101,6 @@ public class CdApplication extends WicketExampleApplication implements IRequestC
 		getResourceSettings().setThrowExceptionOnMissingResource(false);
 
 		setSessionFactory(this);
-
-		try
-		{
-			final Configuration configuration = new Configuration();
-			configuration.configure();
-			sessionFactory = configuration.buildSessionFactory();
-			new DatabaseUtil(configuration).createDatabase();
-		}
-		catch (Exception e)
-		{
-			throw new RuntimeException(e);
-		}
 	}
 
 	/**
@@ -90,49 +113,10 @@ public class CdApplication extends WicketExampleApplication implements IRequestC
 	}
 
 	/**
-	 * @see wicket.protocol.http.WebApplication#newSession()
+	 * @see wicket.protocol.http.WebApplication#getDefaultRequestCycleFactory()
 	 */
-	@Override
-	public Session newSession()
+	protected IRequestCycleFactory getDefaultRequestCycleFactory()
 	{
-		return new CdAppSession(CdApplication.this);
-	}
-
-	/**
-	 * Session object for cdapp.
-	 */
-	private static class CdAppSession extends WebSession
-	{
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;
-
-		/**
-		 * @param application
-		 */
-		public CdAppSession(WebApplication application)
-		{
-			super(application);
-		}
-
-		/**
-		 * @see wicket.protocol.http.WebSession#getRequestCycleFactory()
-		 */
-		@Override
-		protected IRequestCycleFactory getRequestCycleFactory()
-		{
-			return (CdApplication)getApplication();
-		}
-	}
-
-	/**
-	 * @see wicket.IRequestCycleFactory#newRequestCycle(wicket.Session,
-	 *      wicket.Request, wicket.Response)
-	 */
-	public RequestCycle newRequestCycle(Session session, Request request, Response response)
-	{
-		return new CdAppRequestCycle((WebSession)session, (WebRequest)request, response,
-				sessionFactory);
+		return requestCycleFactory;
 	}
 }
