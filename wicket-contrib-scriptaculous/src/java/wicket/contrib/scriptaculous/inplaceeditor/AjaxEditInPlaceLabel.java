@@ -87,7 +87,7 @@ public class AjaxEditInPlaceLabel extends AbstractTextComponent {
 		{
 			String key = (String)iter.next();
 			String value = (String)options.get(key);
-			buffer.append("  ").append(key).append(", ").append(value);
+			buffer.append("  '").append(key).append("', '").append(value).append("'");
 
 			if (iter.hasNext()) {
 				buffer.append("\n");
