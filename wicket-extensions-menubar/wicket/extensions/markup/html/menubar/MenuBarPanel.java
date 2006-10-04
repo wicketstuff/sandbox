@@ -28,31 +28,31 @@ import wicket.model.Model;
 <pre>
 	List&lt;Menu&gt; menus = new ArrayList&lt;Menu&gt;();
 
-	List&lt;MenuItem&gt; menuItems = new ArrayList&lt;MenuItem&gt;();
-
 	// The MenuItems for the first Menu
-	menuItems.add(new MenuItem(new Model&lt;String&gt;("Visible menu item 1.1"), new LinkToPage(Page1.class)));
-	menuItems.add(new MenuItem(new Model&lt;String&gt;("Visible but disabled menu item 1.2"), new LinkToPage(Page2.class)).setEnabled(false));
-	menuItems.add(new MenuItem(new Model&lt;String&gt;("Invisible menu item 1.3"), new LinkToPage(Page3.class)).setVisible(false));
-	menuItems.add(new MenuItem(new Model&lt;String&gt;("visible menu item 1.4"), new LinkToPage(Page4.class)));
+	List&lt;MenuItem&gt; menu1Items = new ArrayList&lt;MenuItem&gt;();
 
-	menus.add(new Menu(new Model&lt;String&gt;("First menu"), menuItems));
+	menu1Items.add(new MenuItem(new Model&lt;String&gt;("Visible menu item 1.1"), new LinkToPage(Page1.class)));
+	menu1Items.add(new MenuItem(new Model&lt;String&gt;("Visible but disabled menu item 1.2"), new LinkToPage(Page2.class)).setEnabled(false));
+	menu1Items.add(new MenuItem(new Model&lt;String&gt;("Invisible menu item 1.3"), new LinkToPage(Page3.class)).setVisible(false));
+	menu1Items.add(new MenuItem(new Model&lt;String&gt;("visible menu item 1.4"), new LinkToPage(Page4.class)));
+
+	menus.add(new Menu(new Model&lt;String&gt;("First menu"), menu1Items));
 
 	// The MenuItems for the second Menu
-	menuItems.clear();
-	menuItems.add(new MenuItem(new Model&lt;String&gt;("Visible menu item 2.1"), "http://www.wicketframework.org"));
-	menuItems.add(new MenuItem(new Model&lt;String&gt;("Visible but disabled menu item 2.2"), new LinkToPage(Page1.class)).setEnabled(false));
-	menuItems.add(new MenuItem(new Model&lt;String&gt;("Invisible menu item 2.3"), new LinkToPage(null, Page2.class)).setVisible(false));
-	menuItems.add(new MenuItem(new Model&lt;String&gt;("visible menu item 2.4"), new LinkToPage(Page3.class)));
+	List&lt;MenuItem&gt; menu2Items = new ArrayList&lt;MenuItem&gt;();
 
-	menus.add(new Menu(new Model&lt;String&gt;("Second menu"), menuItems));
+	menu2Items.add(new MenuItem(new Model&lt;String&gt;("Visible menu item 2.1"), "http://www.wicketframework.org"));
+	menu2Items.add(new MenuItem(new Model&lt;String&gt;("Visible but disabled menu item 2.2"), new LinkToPage(Page1.class)).setEnabled(false));
+	menu2Items.add(new MenuItem(new Model&lt;String&gt;("Invisible menu item 2.3"), new LinkToPage(null, Page2.class)).setVisible(false));
+	menu2Items.add(new MenuItem(new Model&lt;String&gt;("visible menu item 2.4"), new LinkToPage(Page3.class)));
+
+	menus.add(new Menu(new Model&lt;String&gt;("Second menu"), menu2Items));
 
 	new MenuBarPanel(this, "menuBar", menus);
 
-
 	...
-		
-		
+
+
 	private class LinkToPage implements IPageLink {
 
 		private Class&lt;? extends Page&gt; pageClass;
@@ -98,7 +98,7 @@ import wicket.model.Model;
 		text-align: left;
 		display: block;
 		color: rgb(41,41,41);
-		padding : 0.2em 10px; 
+		padding : 0.2em 10px;
 		white-space : nowrap;
 		z-index: 999;
 	}
@@ -107,7 +107,7 @@ import wicket.model.Model;
 		font-weight: bold;
 		text-align: left;
 		display: block;
-		padding : 0.2em 10px; 
+		padding : 0.2em 10px;
 		white-space : nowrap;
 		z-index: 999;
 	}
