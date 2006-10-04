@@ -41,9 +41,9 @@ public class InlineStyle implements Serializable {
             if (value != null)
             {
                 buffer.append(entry.getKey());
-                buffer.append(" : ");
+                buffer.append(":");
                 buffer.append(value);
-                buffer.append(" ; ");
+                buffer.append(";");
             }
         }
         return buffer.toString();

@@ -55,15 +55,29 @@ public class AbstractYuiPanel extends Panel {
 	 * Adds the default header contributions for all YUI components.
 	 */
 	private void addHeaderContributions() {
-		add(HeaderContributor.forJavaScript(AbstractYuiPanel.class, "YAHOO.js"));
+		/*
+		add(HeaderContributor.forJavaScript(AbstractYuiPanel.class, "yahoo.js"));
 		add(HeaderContributor.forJavaScript(AbstractYuiPanel.class, "log.js"));
 		add(HeaderContributor.forJavaScript(AbstractYuiPanel.class, "color.js"));
 		add(HeaderContributor.forJavaScript(AbstractYuiPanel.class, "key.js"));
 		add(HeaderContributor.forJavaScript(AbstractYuiPanel.class, "event.js"));
 		add(HeaderContributor.forJavaScript(AbstractYuiPanel.class, "dom.js"));
-		add(HeaderContributor.forJavaScript(AbstractYuiPanel.class,
-				"animation.js"));
-		add(HeaderContributor.forJavaScript(AbstractYuiPanel.class,
-				"dragdrop.js"));
+		add(HeaderContributor.forJavaScript(AbstractYuiPanel.class, "animation.js"));
+		add(HeaderContributor.forJavaScript(AbstractYuiPanel.class, "dragdrop.js"));
+		*/
+
+		add(HeaderContributor.forJavaScript(AbstractYuiPanel.class, "yahoo.js"));
+		add(HeaderContributor.forJavaScript(AbstractYuiPanel.class, "event.js"));
+		add(HeaderContributor.forJavaScript(AbstractYuiPanel.class, "dom.js"));
+		add(HeaderContributor.forJavaScript(AbstractYuiPanel.class, "animation.js"));
+		add(HeaderContributor.forJavaScript(AbstractYuiPanel.class, "autocomplete.js"));
+		add(HeaderContributor.forJavaScript(AbstractYuiPanel.class, "calendar.js"));
+		add(HeaderContributor.forJavaScript(AbstractYuiPanel.class, "connection.js"));
+		add(HeaderContributor.forJavaScript(AbstractYuiPanel.class, "container.js"));
+		add(HeaderContributor.forJavaScript(AbstractYuiPanel.class, "dragdrop.js"));
+		add(HeaderContributor.forJavaScript(AbstractYuiPanel.class, "logger.js"));
+		add(HeaderContributor.forJavaScript(AbstractYuiPanel.class, "menu.js"));
+		add(HeaderContributor.forJavaScript(AbstractYuiPanel.class, "slider.js"));
+		add(HeaderContributor.forJavaScript(AbstractYuiPanel.class, "treeview.js"));
 	}
 }
