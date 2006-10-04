@@ -37,7 +37,7 @@ class MenuLinkPanel extends Panel<String> {
 				Link<String> linkListener = new Link<String>(this, "link", menuItem.getModel()) {
 					private static final long serialVersionUID = 1L;
 					public void onClick() {
-						onLinkClicked();
+						menuItem.getLinkListener().onLinkClicked();
 					}
 				};
 				new Label(linkListener, "linkLabel", menuItem.getModel().getObject()).setRenderBodyOnly(true);
