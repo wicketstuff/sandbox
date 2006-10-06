@@ -77,7 +77,6 @@ public class Slider extends AbstractYuiPanel {
 			final SliderSettings settings) {
 		super(id, model);
 
-		add(HeaderContributor.forJavaScript(Slider.class, "slider.js"));
 		add(HeaderContributor.forCss(Slider.class, "css/slider.css"));
 
 		/*
