@@ -1,6 +1,10 @@
 package wicket.contrib.scriptaculous.dragdrop;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import wicket.MarkupContainer;
+import wicket.contrib.scriptaculous.JavascriptBuilder;
 import wicket.contrib.scriptaculous.ScriptaculousAjaxHandler;
 import wicket.markup.ComponentTag;
 import wicket.markup.MarkupStream;
@@ -30,8 +34,13 @@ public class DraggableImage extends Image
 	{
 		super.onRender(markupStream);
 
-		getResponse().write(
-				"\n<script type=\"text/javascript\">new Draggable('" + id
-						+ "', {revert:true})</script>");
+		JavascriptBuilder builder = new JavascriptBuilder();
+		Map options = new HashMap() {{
+			put("revert", Boolean.TRUE);
+		}};
+		builder.addLine("new Draggable('" + id + "', ");
+		builder.addOptions(options);
+		builder.addLine(");");
+		getResponse().write(builder.buildScriptTagString());
 	}
 }

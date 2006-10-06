@@ -1,10 +1,15 @@
 package wicket.contrib.scriptaculous.dragdrop;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import wicket.MarkupContainer;
 import wicket.Page;
 import wicket.PageParameters;
 import wicket.contrib.scriptaculous.Indicator;
+import wicket.contrib.scriptaculous.JavascriptBuilder;
 import wicket.contrib.scriptaculous.ScriptaculousAjaxHandler;
+import wicket.contrib.scriptaculous.JavascriptBuilder.JavascriptFunction;
 import wicket.markup.ComponentTag;
 import wicket.markup.MarkupStream;
 import wicket.markup.html.WebMarkupContainer;
@@ -45,24 +50,46 @@ public class DraggableTarget<T> extends WebMarkupContainer<T>
 		super.onRender(markupStream);
 
 
-		CharSequence url = urlFor(null, pageContribution, new PageParameters());
-		getResponse().write(
-				"\n<script type=\"text/javascript\">new Ajax.Updater('" + getId() + "', '" + url
-						+ "', " + " { " + " evalScripts:true, " + " asynchronous:true" + " })"
-						+ "</script>\n");
-		getResponse().write(
-				"<script type=\"text/javascript\">Droppables.add('" + getId() + "', "
-						+ " {accept:'" + draggableClass + "', " + " onDrop:function(element){ "
-						+ " new Ajax.Updater('" + getId() + "', '" + url + "', " + " { ");
-		if (null != indicatorId)
-		{
-			getResponse().write(
-					" onLoading:function(request){ Element.show('indicator')}, "
-							+ " onComplete:function(request){Element.hide('indicator')}, ");
-		}
-		getResponse().write(
-				" parameters:'id=' + encodeURIComponent(element.id), " + " evalScripts:true, "
-						+ " asynchronous:true" + " }" + ")}, " + " hoverclass:'" + getId()
-						+ "-active'})</script>\n");
+		final CharSequence url = urlFor(null, pageContribution, new PageParameters());
+
+		renderInitialAjaxRequest(url);
+
+		final Map updaterOptions = new HashMap() {{
+			if (null != indicatorId)
+			{
+				put("onLoading", new JavascriptFunction("function(request){ Element.show('indicator')}"));
+				put("onComplete", new JavascriptFunction("function(request){Element.hide('indicator')}"));
+			}
+			put("parameters", "");
+			put("evalScripts", Boolean.TRUE);
+			put("asynchronous", Boolean.TRUE);
+
+		}};
+
+		final JavascriptBuilder builder = new JavascriptBuilder();
+		Map dropOptions = new HashMap() {{
+			put("accept", draggableClass);
+			put("onDrop", new JavascriptFunction("function(element) { new Ajax.Updater('" + getId() + "', '"+ url+ "' " + builder.formatAsJavascriptHash(updaterOptions) + ") }"));
+			put("hoverclass", getId() + "-active");
+		}};
+		builder.addLine("Droppables.add('" + getId() + "', ");
+		builder.addOptions(dropOptions);
+		builder.addLine(");");
+
+
+		getResponse().write(builder.buildScriptTagString());
+	}
+
+	private void renderInitialAjaxRequest(CharSequence url)
+	{
+		Map options = new HashMap() {{
+			put("evalScripts", Boolean.TRUE);
+			put("asynchronous", Boolean.TRUE);
+		}};
+		JavascriptBuilder builder = new JavascriptBuilder();
+		builder.addLine("new Ajax.Updater('" + getId() + "', ");
+		builder.addLine("  '" + url+ "', ");
+		builder.addOptions(options);
+		getResponse().write(builder.buildScriptTagString());
 	}
 }
