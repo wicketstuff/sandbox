@@ -69,31 +69,12 @@ public class AjaxEditInPlaceLabel extends AbstractTextComponent {
 		JavascriptBuilder builder = new JavascriptBuilder();
 		builder.addLine("new Ajax.InPlaceEditor('" + getMarkupId() + "', ");
 		builder.addLine("  '" + handler.getCallbackUrl() + "', ");
-		builder.addLine("  " + formatAsJavascriptHash(options) + ");");
+		builder.addOptions(options);
+		builder.addLine(");");
 		getResponse().write(builder.buildScriptTagString());
 	}
 
 	public void setOptions(Map options) {
 		this.options = options;
-	}
-
-	private String formatAsJavascriptHash(Map options) {
-		if (options.isEmpty()) {
-			return "{}";
-		}
-		StringBuffer buffer = new StringBuffer();
-		buffer.append("{\n");
-		for (Iterator iter = options.keySet().iterator(); iter.hasNext();)
-		{
-			String key = (String)iter.next();
-			String value = (String)options.get(key);
-			buffer.append("  '").append(key).append("', '").append(value).append("'");
-
-			if (iter.hasNext()) {
-				buffer.append("\n");
-			}
-		}
-		buffer.append("}");
-		return buffer.toString();
 	}
 }
