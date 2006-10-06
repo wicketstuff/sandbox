@@ -31,7 +31,7 @@ public class AnimSelect extends AbstractYuiPanel{
 	private String javaScriptId;
 	private final List animSelectScriptList = new Vector();
 	private final ListView animSelectScriptListView;
-	private final List animSelectList = new Vector();
+	private final List animSelectVector = new Vector();
 	private final ListView animSelectListView;
 	
 	private String boxElementId;
@@ -41,13 +41,13 @@ public class AnimSelect extends AbstractYuiPanel{
 	private double duration;
 	private int maxSelection;
 	private String message;
-	private AnimSelectGroupOption animSelectGroupOption;
+	private ArrayList animSelectList;
 	private AnimSelectSettings settings;
 	
 	private int width;
 	private int height;
 	
-	private String selectedValues="";
+	private String selectedValue="'AA'";
 	private boolean isHideLabel;
 	
 	/**
@@ -56,7 +56,7 @@ public class AnimSelect extends AbstractYuiPanel{
 	 * @param id 
 	 * @param settings
 	 */
-	public AnimSelect(String id, final AnimSelectSettings settings){
+	public AnimSelect(String id, AnimSelectOption option, final AnimSelectSettings settings){
 		super(id);
 		
 		this.boxElementId= id;
@@ -64,38 +64,18 @@ public class AnimSelect extends AbstractYuiPanel{
 		this.duration= settings.getDuration();
 		this.maxSelection= settings.getMaxSelection();
 		this.message= settings.getMessage();
-		this.animSelectGroupOption= settings.getAnimSelectGroupOption();
+		this.animSelectList= settings.getAnimSelectList();
 		this.settings= settings;
 		
 		this.width= settings.getWidth();
 		this.height= settings.getHeight();
 		
-		for(int i=0; i<animSelectGroupOption.getSize(); i++){
-			AnimSelectOption animSelectOption = animSelectGroupOption.get(i);
-			String value= animSelectOption.getSelectedValue();
-			if(selectedValues.equals("")){
-				selectedValues = "'"+ value +"'";
-			}
-			else{
-				selectedValues = selectedValues + ",'"+ value +"'";
-			}
+		for(int i=0; i<animSelectList.size(); i++){
+			animSelectScriptList.add(i, animSelectList.get(i));
+			//animSelectVector.add(i, animSelectList.get(i));
 		}
 		
-		this.isHideLabel= settings.getAnimSelectGroupOption().isHideLabel();
-		
-		Label initialization = new Label("initialization", new AbstractReadOnlyModel(){
-			private static final long serialVersionUID=1L;
-			public Object getObject(Component component){
-				return getJavaScriptComponentInitializationScript();
-			}
-		});
-		initialization.setEscapeModelStrings(false);
-		add(initialization);
-		
-		for(int i=0; i<animSelectGroupOption.getSize(); i++){
-			animSelectScriptList.add(i, animSelectGroupOption.get(i));
-			animSelectList.add(i, animSelectGroupOption.get(i));
-		}
+		animSelectVector.add(0, option);
 	
 		add(animSelectScriptListView = new ListView("animSelectScriptContainer", animSelectScriptList){	
 			private static final long serialVersionUID=1L;
@@ -114,50 +94,29 @@ public class AnimSelect extends AbstractYuiPanel{
 			}
 		});
 		
-		//This need to be defined by the user instead. How?
-		add(animSelectListView = new ListView("animSelectContainer", animSelectList)
+		add(animSelectListView = new ListView("animSelectContainer", animSelectVector)
 		{	
 			private static final long serialVersionUID=1L;
 			public void populateItem(final ListItem listItem)
 			{
 				AnimSelectOption aAnimSelectOption= (AnimSelectOption)listItem.getModelObject();
+				String parentMarkupId = getParentMarkupId(getMarkupId());
 				ImgStyle style= new ImgStyle("imgStyle");
 				listItem.add(style);
-				style.add(new AnimSelectBox("defaultImg", boxElementId, count, "DefaultImg", aAnimSelectOption.getDefaultImg()));
-				style.add(new AnimSelectBox("defaultImgOver", boxElementId, count, "DefaultImgOver", aAnimSelectOption.getDefaultImgOver()));
-				style.add(new AnimSelectBox("selectedImg", boxElementId, count, "SelectedImg", aAnimSelectOption.getSelectedImg()));
-				style.add(new AnimSelectBox("selectedImgOver", boxElementId, count, "SelectedImgOver", aAnimSelectOption.getSelectedImgOver()));
-			
-				if(isHideLabel == true){
-					listItem.add(new Label("label", ""));
-				}
-				else{
-					listItem.add(new Label("label", aAnimSelectOption.getSelectedValue()));
-				}
+				style.add(new AnimSelectBox("defaultImg", parentMarkupId, count, "DefaultImg", aAnimSelectOption.getDefaultImg()));
+				style.add(new AnimSelectBox("defaultImgOver", parentMarkupId, count, "DefaultImgOver", aAnimSelectOption.getDefaultImgOver()));
+				style.add(new AnimSelectBox("selectedImg", parentMarkupId, count, "SelectedImg", aAnimSelectOption.getSelectedImg()));
+				style.add(new AnimSelectBox("selectedImgOver", parentMarkupId, count, "SelectedImgOver", aAnimSelectOption.getSelectedImgOver()));
 				count++;
 			}
 		});
-		
-		add(new AnimSelectValue("selectedValue", boxElementId, "selectedValue"));
+//		add(new AnimSelectValue("selectedValue", boxElementId, "selectedValue"));
 	}
 	
-	/**
-	 * This will initialize init.js with values
-	 * 
-	 * @return
-	 */
-	
-	protected String getJavaScriptComponentInitializationScript(){
-		PackagedTextTemplate template = new PackagedTextTemplate(AnimSelect.class, "init.js");
-		Map variables = new MiniMap(6);
-		variables.put("javaScriptId", javaScriptId);
-		variables.put("easing", "YAHOO.util.Easing."+easing);
-		variables.put("duration", new Double(duration));
-		variables.put("maxSelection", new Integer(maxSelection));
-		variables.put("noOfBoxes", new Integer(animSelectGroupOption.getSize()));
-		variables.put("selectedValues", selectedValues);
-		template.interpolate(variables);
-		return template.getString();
+	public String getParentMarkupId(String markupId){
+		String temp= new String(markupId);
+		temp= temp.replaceAll("_animSelectContainer", "");
+		return temp;
 	}
 	
 	/**
@@ -168,13 +127,14 @@ public class AnimSelect extends AbstractYuiPanel{
 	 */
 	protected String getAnimSelectInitializationScript(int boxId){
 		PackagedTextTemplate template = new PackagedTextTemplate(AnimSelect.class, "animselect.js");
-		Map variables = new MiniMap(7);
+		Map variables = new MiniMap(8);
 		variables.put("javaScriptId", javaScriptId);
 		variables.put("boxId", new Integer(boxId));
 		variables.put("easing", "YAHOO.util.Easing."+easing);
 		variables.put("duration", new Double(duration));
 		variables.put("maxSelection", new Integer(maxSelection));
-		variables.put("noOfBoxes", new Integer(animSelectGroupOption.getSize()));
+		variables.put("noOfBoxes", new Integer(animSelectList.size()));
+		variables.put("value", selectedValue);
 		if(message == null || message.equals("")){
 			message = "Up to "+maxSelection+" selections allowed!";
 		}

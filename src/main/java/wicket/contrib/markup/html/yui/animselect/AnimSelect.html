@@ -1,7 +1,6 @@
 <wicket:head>
 </wicket:head>
 <wicket:panel>
-<script type="text/javascript" wicket:id="initialization"></script>
 <span wicket:id="animSelectScriptContainer">
 	    <script type="text/javascript" wicket:id = "animSelectScript"></script>
 </span>
@@ -11,30 +10,15 @@
 	div.box{ position:absolute;left:0px;top:0px; }
 </style>	
 
-<!--
-	1. Need to allow the user to be able to specify the positioning of the boxes and its label
-	2. The order must be selectedImg, selectedImgOver, defaultImgOver and defaultImg, how to prevent user from setting this?
-	3. User should not touch on the table and td style as well
--->
+<div style="border:1px solid #FFFFFF;font-size:12px" wicket:id="animSelectContainer">
+	<div class="cont" wicket:id="imgStyle">
+		<div class="box" wicket:id="selectedImg"></div>
+		<div class="box" wicket:id="selectedImgOver"></div>
+		<div class="box" wicket:id="defaultImgOver"></div>
+		<div class="box" wicket:id="defaultImg"></div>
+	</div>
+</div> 
 
-<table>
-	<tr>
-		<td style="border:1px solid #FFFFFF;text-align:center;font-size:12px" wicket:id="animSelectContainer">
-			<div class="cont" wicket:id="imgStyle">
-				<div class="box" wicket:id="selectedImg"></div>
-				<div class="box" wicket:id="selectedImgOver"></div>
-				<div class="box" wicket:id="defaultImgOver"></div>
-				<div class="box" wicket:id="defaultImg"></div>
-			</div>
-<!--			<td>
-				<DIV wciket:id=YuiOption>
-			</td>
-			<td><div wicket:id="label"></div></td>-->
-			<div wicket:id="label"></div>
-		</td> 
-	</tr>
-</table>
-
-Selected Values: <input type="text" wicket:id="selectedValue" size="50" /><br>
+<!--Selected Values: <input type="text" wicket:id="selectedValue" size="50" /><br>-->
 <br>
 </wicket:panel>

@@ -3,16 +3,32 @@ package wicket.contrib.markup.html.yui.animselect;
 import java.util.ArrayList;
 import java.io.Serializable;
 
+import wicket.Component;
+import wicket.markup.html.list.ListItem;
+import wicket.markup.html.list.ListView;
+
 /**
  * Allows the user to add AnimSelectOption
  * @author cptan
  *
  */
-public class AnimSelectGroupOption implements Serializable{
+public abstract class AnimSelectGroupOption extends Component implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private boolean hideLabel= false;
 	
 	private ArrayList animSelectList= new ArrayList();
+	private ListView list;
+
+	public AnimSelectGroupOption(String id, ArrayList list) {
+		super(id);
+		this.list = new ListView(id) {
+			protected void populateItem(ListItem item) {
+				populateItem(item);
+			}
+		};
+	}
+	
+	public abstract void populateItem(ListItem item);
 	
 	public boolean add(AnimSelectOption animSelectOption){
 		return animSelectList.add(animSelectOption);
