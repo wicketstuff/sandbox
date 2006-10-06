@@ -6,20 +6,23 @@
 	<link rel="stylesheet" type="text/css" href="style.css">
 </head>
 
+<style>
+	div.cont { position:relative; }
+	div.box{ position:absolute;left:0px;top:0px; }
+</style>	
+
 <body>
 <span wicket:id="mainNavigation" />
 <br>
 
-<!--	<table>
-		<tr wicket:id="aSelGroup">
-			<td wicket:id="anim obj">a yui anim object</td>
-			<td wicket:id="anim lab">a yui anim label</td>	
-		</tr>
-	</table>-->
-	
-		<div wicket:id="aSelection"></div><br>
-		<div wicket:id="bSelection"></div><br>
-		<div wicket:id="cSelection"></div><br>
-		<div wicket:id="dSelection"></div><br>
+<table>
+	<tr>
+		<td style="border:1px solid #FFFFFF;font-size:12px" wicket:id="aSelection">
+			<div wicket:id="label"></div>
+			<div class="cont" wicket:id="box"></div>		
+		</td> 
+	</tr>
+</table>
+
 </body>
 </html>
