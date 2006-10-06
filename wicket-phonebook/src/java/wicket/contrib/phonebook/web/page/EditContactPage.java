@@ -25,13 +25,13 @@ import wicket.markup.html.form.Button;
 import wicket.markup.html.form.Form;
 import wicket.markup.html.form.RequiredTextField;
 import wicket.markup.html.form.TextField;
-import wicket.markup.html.form.validation.EmailAddressPatternValidator;
-import wicket.markup.html.form.validation.StringValidator;
 import wicket.markup.html.panel.FeedbackPanel;
 import wicket.model.CompoundPropertyModel;
 import wicket.spring.injection.SpringBean;
 import wicket.util.collections.MicroMap;
 import wicket.util.string.interpolator.MapVariableInterpolator;
+import wicket.validation.validator.EmailAddressPatternValidator;
+import wicket.validation.validator.StringValidator;
 
 /**
  * Edit the Contact. Display details if an existing contact, then persist them
