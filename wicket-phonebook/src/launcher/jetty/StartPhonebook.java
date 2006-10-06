@@ -17,6 +17,11 @@
  */
 package jetty;
 
+import org.mortbay.jetty.Connector;
+import org.mortbay.jetty.Server;
+import org.mortbay.jetty.bio.SocketConnector;
+import org.mortbay.jetty.webapp.WebAppContext;
+
 /**
  * Seperate startup class for people that want to run the examples directly.
  */
@@ -29,6 +34,17 @@ public class StartPhonebook {
 	 * @throws Exception
 	 */
 	public static void main(String[] args) throws Exception {
-		Start.main(args);
+		Server server = new Server();
+		SocketConnector connector = new SocketConnector();
+		connector.setPort(8080);
+		server.setConnectors(new Connector[] { connector });
+
+		WebAppContext ptabs = new WebAppContext();
+		ptabs.setServer(server);
+		ptabs.setContextPath("/phonebook");
+		ptabs.setWar("src/webapp");
+
+		server.addHandler(ptabs);
+		server.start();
 	}
 }
