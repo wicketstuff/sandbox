@@ -2,14 +2,14 @@
  * $Id: AutocompleteTextField.java 528 2006-01-08 04:14:46 -0800 (Sun, 08 Jan
  * 2006) jdonnerstag $ $Revision$ $Date: 2006-01-08 04:14:46 -0800 (Sun,
  * 08 Jan 2006) $
- * 
+ *
  * ==================================================================== Licensed
  * under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the
  * License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -19,11 +19,12 @@
 package wicket.contrib.scriptaculous.autocomplete;
 
 import wicket.MarkupContainer;
+import wicket.contrib.scriptaculous.JavascriptBuilder;
 import wicket.markup.ComponentTag;
 import wicket.markup.html.internal.HtmlHeaderContainer;
 
 /**
- * 
+ *
  * @author <a href="mailto:wireframe6464@users.sourceforge.net">Ryan Sonnek</a>
  */
 public class AutocompleteTextField<T> extends AutocompleteTextFieldSupport<T>
@@ -42,11 +43,12 @@ public class AutocompleteTextField<T> extends AutocompleteTextFieldSupport<T>
 	{
 		super.renderHead(container);
 
-		container.getResponse().write(
-				"<script type=\"text/javascript\">\n" + "var myrules = { \n" + "\t'#" + getId()
-						+ "' : function(el){ \n" + "\t\tnew Autocompleter.Local('" + getId()
-						+ "', '" + getAutocompleteId() + "', " + buildResults() + ", {});\n"
-						+ "\t} \n" + "} \n" + "Behaviour.register(myrules);\n" + "</script>\n");
+		JavascriptBuilder builder = new JavascriptBuilder();
+		builder.addLine("new Autocompleter.Local(");
+		builder.addLine("  '" + getId() + "', ");
+		builder.addLine("  '" + getAutocompleteId() + "', ");
+		builder.addLine("  " + buildResults() + ", {} );");
+		container.getResponse().write(builder.buildScriptTagString());
 	}
 
 	protected void onComponentTag(ComponentTag tag)

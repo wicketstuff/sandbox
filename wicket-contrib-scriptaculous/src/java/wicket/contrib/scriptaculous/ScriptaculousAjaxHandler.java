@@ -68,7 +68,5 @@ public abstract class ScriptaculousAjaxHandler extends AbstractAjaxBehavior
 				"prototype.js"));
 		response.renderJavascriptReference(new ResourceReference(ScriptaculousAjaxHandler.class,
 				"scriptaculous.js"));
-		response.renderJavascriptReference(new ResourceReference(ScriptaculousAjaxHandler.class,
-				"behavior.js"));
 	}
 }
