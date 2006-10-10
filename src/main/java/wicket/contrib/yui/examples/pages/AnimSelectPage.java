@@ -3,13 +3,12 @@ import java.util.ArrayList;
 
 import wicket.contrib.YuiEasingConstants;
 import wicket.contrib.YuiImage;
-import wicket.contrib.markup.html.yui.animselect.AnimSelect;
-import wicket.contrib.markup.html.yui.animselect.AnimSelectGroupOption;
 import wicket.contrib.markup.html.yui.animselect.AnimSelectOption;
+import wicket.contrib.markup.html.yui.animselect.AnimSelectOptionBox;
+import wicket.contrib.markup.html.yui.animselect.AnimSelectOptionGroup;
+import wicket.contrib.markup.html.yui.animselect.AnimSelectOptionLabel;
 import wicket.contrib.markup.html.yui.animselect.AnimSelectSettings;
 import wicket.contrib.yui.examples.WicketExamplePage;
-import wicket.markup.MarkupStream;
-import wicket.markup.html.basic.Label;
 import wicket.markup.html.list.ListItem;
 import wicket.markup.html.list.ListView;
 
@@ -23,52 +22,79 @@ import wicket.markup.html.list.ListView;
  */
 
 public class AnimSelectPage extends WicketExamplePage {
-	private ListView animSelectListView;
-	private AnimSelectGroupOption ansGroup;
+
+	/**
+	 * Constructor
+	 *
+	 */
 	
 	public AnimSelectPage(){
 
-		YuiImage selectedImg = new YuiImage("style/abcdefgLight_mouseover.bmp");
-		YuiImage selectedImgOver = new YuiImage("style/abcdefgLight.bmp");
-		YuiImage defaultImgOver = new YuiImage("style/abcdefgDark_mouseover.bmp");
-		YuiImage defaultImg = new YuiImage("style/abcdefgDark.bmp");
+		/*****************************************************************************
+		 * Single Selection Example
+		 *****************************************************************************/
 		
-		AnimSelectOption ano1 = new AnimSelectOption(defaultImg,defaultImgOver, selectedImg, selectedImgOver, "Option 1");
-		AnimSelectOption ano2 = new AnimSelectOption(defaultImg,defaultImgOver, selectedImg, selectedImgOver, "Option 2");
-		AnimSelectOption ano3 = new AnimSelectOption(defaultImg,defaultImgOver, selectedImg, selectedImgOver, "Option 3");
+		YuiImage selectedImgSingle = new YuiImage("style/mse_dwn.jpg");
+		YuiImage selectedImgOverSingle = new YuiImage("style/mse_dwn.jpg");
+		YuiImage defaultImgOverSingle = new YuiImage("style/mse_dwn-1.jpg");
+		YuiImage defaultImgSingle = new YuiImage("style/mse_up.jpg");
 		
-		final ArrayList list= new ArrayList();
-		list.add(ano1);
-		list.add(ano2);
-		list.add(ano3);
-		 
-		add(ansGroup = new AnimSelectGroupOption("aSelection", list) {
-			public void populateItem(ListItem item) {
-				AnimSelectOption option= (AnimSelectOption)item.getModelObject();
-				item.add(new AnimSelect("box", option, AnimSelectSettings.getDefault(YuiEasingConstants.EASE_OUT, 1, 1, list)));
-				item.add(new Label("label", option.getSelectedValue()));
-			}
-			protected void onRender(MarkupStream markupStream) {
-				System.out.println(markupStream.toString());
-				markupStream.skipComponent();
-			}
-		});
+		AnimSelectOption ano1Single = new AnimSelectOption(defaultImgSingle,defaultImgOverSingle, selectedImgSingle, selectedImgOverSingle, "Radio 1");
+		AnimSelectOption ano2Single = new AnimSelectOption(defaultImgSingle,defaultImgOverSingle, selectedImgSingle, selectedImgOverSingle, "Radio 2");
+		AnimSelectOption ano3Single = new AnimSelectOption(defaultImgSingle,defaultImgOverSingle, selectedImgSingle, selectedImgOverSingle, "Radio 3");
 
-//		add(animSelectListView = new ListView("aSelection", list){
-//			public void populateItem(ListItem item) {
-//				AnimSelectOption option= (AnimSelectOption)item.getModelObject();
-//				item.add(new AnimSelect("box", option, AnimSelectSettings.getDefault(YuiEasingConstants.EASE_OUT, 1, 1, list)));
-//				item.add(new Label("label", option.getSelectedValue()));
-//			}
-//		});
-//	
-//		add(animSelectListView = new ListView("bSelection", list){
-//			public void populateItem(ListItem item) {
-//				AnimSelectOption option= (AnimSelectOption)item.getModelObject();
-//				item.add(new AnimSelect("box", option, AnimSelectSettings.getDefault(YuiEasingConstants.EASE_OUT, 1, 2, list)));
-//				item.add(new Label("label", option.getSelectedValue()));
-//			}
-//		});
+		final ArrayList animSelectOptionListSingle= new ArrayList();
+		animSelectOptionListSingle.add(ano1Single);
+		animSelectOptionListSingle.add(ano2Single);
+		animSelectOptionListSingle.add(ano3Single);
+		
+		final AnimSelectSettings settingsSingle = AnimSelectSettings.getDefault(YuiEasingConstants.EASE_OUT, 1, 1, animSelectOptionListSingle);
+		AnimSelectOptionGroup animSelectOptionGroupSingle= new AnimSelectOptionGroup("animSelectOptionGroupSingle", settingsSingle);
+		add(animSelectOptionGroupSingle);
+		
+		ListView listViewSingle= new ListView("animSelectViewSingle", animSelectOptionListSingle){
+			protected void populateItem(ListItem item) {
+				AnimSelectOption animSelectOptionSingle= (AnimSelectOption) item.getModelObject();
+				item.add(new AnimSelectOptionBox("animSelectOptionBoxSingle", item.getIndex(), animSelectOptionSingle, settingsSingle));
+				item.add(new AnimSelectOptionLabel("animSelectOptionLabelSingle", animSelectOptionSingle.getSelectedValue()));
+			};
+		};
+		
+		animSelectOptionGroupSingle.add(listViewSingle);
+		
+		
+		/*****************************************************************************
+		 * Multiple Selection Example
+		 *****************************************************************************/
+		
+		YuiImage selectedImgMultiple = new YuiImage("style/check.jpg");
+		YuiImage selectedImgOverMultiple = new YuiImage("style/check.jpg");
+		YuiImage defaultImgOverMultiple = new YuiImage("style/uncheck-1.jpg");
+		YuiImage defaultImgMultiple = new YuiImage("style/uncheck.jpg");
+		
+		AnimSelectOption ano1Multiple = new AnimSelectOption(defaultImgMultiple,defaultImgOverMultiple, selectedImgMultiple, selectedImgOverMultiple, "Check A");
+		AnimSelectOption ano2Multiple = new AnimSelectOption(defaultImgMultiple,defaultImgOverMultiple, selectedImgMultiple, selectedImgOverMultiple, "Check B");
+		AnimSelectOption ano3Multiple = new AnimSelectOption(defaultImgMultiple,defaultImgOverMultiple, selectedImgMultiple, selectedImgOverMultiple, "Check C");
+
+		final ArrayList animSelectOptionListMultiple= new ArrayList();
+		animSelectOptionListMultiple.add(ano1Multiple);
+		animSelectOptionListMultiple.add(ano2Multiple);
+		animSelectOptionListMultiple.add(ano3Multiple);
+		
+		
+		final AnimSelectSettings settingsMultiple = AnimSelectSettings.getDefault(YuiEasingConstants.EASE_OUT, 1, 2, animSelectOptionListMultiple);
+		AnimSelectOptionGroup animSelectOptionGroupMultiple= new AnimSelectOptionGroup("animSelectOptionGroupMultiple", settingsMultiple);
+		add(animSelectOptionGroupMultiple);
+		
+		ListView listViewMultiple= new ListView("animSelectViewMultiple", animSelectOptionListMultiple){
+			protected void populateItem(ListItem item) {
+				AnimSelectOption animSelectOptionMultiple= (AnimSelectOption) item.getModelObject();
+				item.add(new AnimSelectOptionBox("animSelectOptionBoxMultiple", item.getIndex(), animSelectOptionMultiple, settingsMultiple));
+				item.add(new AnimSelectOptionLabel("animSelectOptionLabelMultiple", animSelectOptionMultiple.getSelectedValue()));
+			};
+		};
+		
+		animSelectOptionGroupMultiple.add(listViewMultiple);
 		
 	}
 }
