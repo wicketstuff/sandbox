@@ -4,7 +4,7 @@ import wicket.contrib.YuiImage;
 import java.io.Serializable;
 
 /**
- * AnimSelectOption creates an option with four images which animates upon clicking and mouseover
+ * Creates an option with four images which animates upon clicking and mouseover
  * @author cptan
  *
  */
