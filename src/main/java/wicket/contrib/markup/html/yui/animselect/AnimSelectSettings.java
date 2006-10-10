@@ -22,7 +22,7 @@ public class AnimSelectSettings implements Serializable{
 	private double duration;
 	private int maxSelection;
 	private String message;
-	private ArrayList animSelectList;
+	private ArrayList animSelectOptionList;
 	
 	
 	private ArrayList defaultImgStyleList= new ArrayList();
@@ -46,12 +46,12 @@ public class AnimSelectSettings implements Serializable{
 	 * @param easing
 	 * @param duration
 	 * @param maxSelection
-	 * @param animSelectGroupOption
+	 * @param animSelectOptionList
 	 * @return
 	 */
-	public static AnimSelectSettings getDefault(String easing, double duration, int maxSelection, ArrayList animSelectList){
+	public static AnimSelectSettings getDefault(String easing, double duration, int maxSelection, ArrayList animSelectOptionList){
 		AnimSelectSettings settings= new AnimSelectSettings();
-		settings.setResources(easing, duration, maxSelection, animSelectList);
+		settings.setResources(easing, duration, maxSelection, animSelectOptionList);
 		return settings;
 	}
 	
@@ -63,12 +63,12 @@ public class AnimSelectSettings implements Serializable{
 	 * @param maxSelection
 	 * @param animSelectGroupOption
 	 */
-	public void setResources(String easing, double duration,int maxSelection, ArrayList animSelectList){
+	public void setResources(String easing, double duration,int maxSelection, ArrayList animSelectOptionList){
 		setEasing(easing);
 		setDuration(duration);
 		setMaxSelection(maxSelection);
-		setAnimSelectList(animSelectList);
-		setImageResources(animSelectList);
+		setAnimSelectOptionList(animSelectOptionList);
+		setImageResources(animSelectOptionList);
 	}
 	
 	/**
@@ -78,12 +78,12 @@ public class AnimSelectSettings implements Serializable{
 	 * @param duration
 	 * @param maxSelection
 	 * @param message
-	 * @param animSelectGroupOption
+	 * @param animSelectOptionList
 	 * @return
 	 */
-	public static AnimSelectSettings getDefault(String easing, double duration, int maxSelection, String message, ArrayList animSelectList){
+	public static AnimSelectSettings getDefault(String easing, double duration, int maxSelection, String message, ArrayList animSelectOptionList){
 		AnimSelectSettings settings= new AnimSelectSettings();
-		settings.setResources(easing, duration, maxSelection, message, animSelectList);
+		settings.setResources(easing, duration, maxSelection, message, animSelectOptionList);
 		return settings;
 	}
 	
@@ -94,32 +94,33 @@ public class AnimSelectSettings implements Serializable{
 	 * @param duration
 	 * @param maxSelection
 	 * @param message
-	 * @param animSelectGroupOption
+	 * @param animSelectOptionList
 	 */
-	public void setResources(String easing, double duration, int maxSelection, String message, ArrayList animSelectList){
+	public void setResources(String easing, double duration, int maxSelection, String message, ArrayList animSelectOptionList){
 		setEasing(easing);
 		setDuration(duration);
 		setMaxSelection(maxSelection);
 		setMessage(message);
-		setAnimSelectList(animSelectList);
-		setImageResources(animSelectList);
+		setAnimSelectOptionList(animSelectOptionList);
+		setImageResources(animSelectOptionList);
 	}
 	/**
 	 * Set the image resources
 	 * 
 	 * @param animSelectGroupOption
 	 */
-	public void setImageResources(ArrayList animSelectList){
-		for(int i=animSelectList.size()-1; i>=0; i--){
-			YuiImage defaultImg= ((AnimSelectOption)animSelectList.get(i)).getDefaultImg();
-			YuiImage defaultImgOver= ((AnimSelectOption)animSelectList.get(i)).getDefaultImgOver();
-			YuiImage selectedImg= ((AnimSelectOption)animSelectList.get(i)).getSelectedImg();
-			YuiImage selectedImgOver= ((AnimSelectOption)animSelectList.get(i)).getSelectedImgOver();
+	public void setImageResources(ArrayList animSelectOptionList){
+		for(int i=animSelectOptionList.size()-1; i>=0; i--){
+			YuiImage defaultImg= ((AnimSelectOption)animSelectOptionList.get(i)).getDefaultImg();
+			YuiImage defaultImgOver= ((AnimSelectOption)animSelectOptionList.get(i)).getDefaultImgOver();
+			YuiImage selectedImg= ((AnimSelectOption)animSelectOptionList.get(i)).getSelectedImg();
+			YuiImage selectedImgOver= ((AnimSelectOption)animSelectOptionList.get(i)).getSelectedImgOver();
 			
-			ResourceReference defaultImgRR = new PackageResourceReference(AnimSelect.class, defaultImg.getFileName());
-			ResourceReference defaultImgOverRR = new PackageResourceReference(AnimSelect.class, defaultImgOver.getFileName());
-			ResourceReference selectedImgRR = new PackageResourceReference(AnimSelect.class, selectedImg.getFileName());
-			ResourceReference selectedImgOverRR = new PackageResourceReference(AnimSelect.class, selectedImgOver.getFileName());
+			
+			ResourceReference defaultImgRR = new PackageResourceReference(AnimSelectSettings.class, defaultImg.getFileName());
+			ResourceReference defaultImgOverRR = new PackageResourceReference(AnimSelectSettings.class, defaultImgOver.getFileName());
+			ResourceReference selectedImgRR = new PackageResourceReference(AnimSelectSettings.class, selectedImg.getFileName());
+			ResourceReference selectedImgOverRR = new PackageResourceReference(AnimSelectSettings.class, selectedImgOver.getFileName());
 				
 			ImageResourceInfo defaultImgInfo = new ImageResourceInfo(defaultImgRR);
 			int defaultImgWidth = defaultImgInfo.getWidth();
@@ -165,21 +166,21 @@ public class AnimSelectSettings implements Serializable{
 	}
 	
 	/**
-	 * Set the AnimSelectGroupOption
+	 * Set the AnimSelectOptionList
 	 * 
 	 * @return
 	 */
-	public ArrayList getAnimSelectList() {
-		return animSelectList;
+	public ArrayList getAnimSelectOptionList() {
+		return animSelectOptionList;
 	}
 
 	/**
-	 * Set the AnimSelectGroupOption
+	 * Set the AnimSelectOptionList
 	 * 
-	 * @param animSelectGroupOption
+	 * @param animSelectOptionList
 	 */
-	public void setAnimSelectList(ArrayList animSelectList) {
-		this.animSelectList = animSelectList;
+	public void setAnimSelectOptionList(ArrayList animSelectOptionList) {
+		this.animSelectOptionList = animSelectOptionList;
 	}
 
 	/**
