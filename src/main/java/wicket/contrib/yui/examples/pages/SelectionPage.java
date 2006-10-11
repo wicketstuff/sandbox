@@ -21,7 +21,6 @@ public class SelectionPage extends WicketExamplePage{
 		/**
 		 * Define the animation properties
 		 */
-		
 		YuiProperty yuiPropertyBorderTopColor = new YuiProperty("'#FF0000'", "'#FFFFFF'", true);
 		YuiProperty yuiPropertyBorderBottomColor = new YuiProperty("'#FF0000'", "'#FFFFFF'", true);
 		YuiProperty yuiPropertyBorderLeftColor = new YuiProperty("'#000000'", "'#FFFFFF'", true);
