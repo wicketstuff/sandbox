@@ -4,18 +4,22 @@ import wicket.contrib.markup.html.yui.AbstractYuiPanel;
 import wicket.markup.html.basic.Label;
 
 /**
- * Represent the option's value
+ * An AnimLabel contains the option's value
+ * 
  * @author cptan
- *
+ * 
  */
-public class AnimLabel extends AbstractYuiPanel{
+public class AnimLabel extends AbstractYuiPanel {
 
 	/**
-	 * Constructor
-	 * @param id
-	 * @param text
+	 * Creates an AnimLabel
+	 * 
+	 * @param id -
+	 *            wicket id
+	 * @param text -
+	 *            value of the option
 	 */
-	public AnimLabel(String id, String text){
+	public AnimLabel(String id, String text) {
 		super(id);
 		add(new Label("label", text));
 	}
