@@ -6,20 +6,19 @@
 	<link rel="stylesheet" type="text/css" href="style.css">
 </head>
 
-<style>
-	div.cont { position:relative; }
-	div.box{ position:absolute;left:0px;top:0px; }
-</style>
-
 <body>
 <span wicket:id="mainNavigation" />
 <br>
 
-<!-- Single Selection Example -->
+<!-- Example 1: Single option only -->
 <table>
+	<!-- 
+		Upon adding animGroupSingle, automatically add the init.js
+		Create animInit to add the initialization script automatically 
+	-->
 	<tr wicket:id="animGroupSingle">
 		<script type="text/javascript" wicket:id="init"></script>
-		<td style="border:1px solid #FFFFFF;text-align:center;font-size:12px" wicket:id="animViewSingle">
+		<td wicket:id="animViewSingle">
 			<td wicket:id="animBoxSingle"></td>
 			<td wicket:id="animLabelSingle"></td>
 		</td>
@@ -30,16 +29,22 @@ Values: <input type="text" id="selectedValue_animGroupSingle" size="30" /><br>
 
 <!-- Multiple Selection Example -->
 <table>
-	<td wicket:id="animGroupMultiple">
+	<td wicket:id="animGroupMultiple" >
 		<script type="text/javascript" wicket:id="init"></script>
-		<tr style="border:1px solid #FFFFFF;text-align:center;font-size:12px" wicket:id="animViewMultiple">
+		<tr wicket:id="animViewMultiple">
 			<td wicket:id="animBoxMultiple"></td>
 			<td wicket:id="animLabelMultiple"></td>
 		</tr>
 	</td>
 </table>
+
+<!--
+	This should not be a MUST add on for the user
+	The library should always add the value of the text automatically
+-->
 Values: <input type="text" id="selectedValue_animGroupMultiple" size="30" /><br>
 <br>
+
 
 </body>
 </html>
