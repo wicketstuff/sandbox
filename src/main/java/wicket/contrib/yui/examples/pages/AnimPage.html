@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<title>Animation Selection Example</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+<style>
+	div.cont { position:relative; }
+	div.box{ position:absolute;left:0px;top:0px; }
+</style>
+
+<body>
+<span wicket:id="mainNavigation" />
+<br>
+
+<!-- Single Selection Example -->
+<table>
+	<tr wicket:id="animGroupSingle">
+		<script type="text/javascript" wicket:id="init"></script>
+		<td style="border:1px solid #FFFFFF;text-align:center;font-size:12px" wicket:id="animViewSingle">
+			<td wicket:id="animBoxSingle"></td>
+			<td wicket:id="animLabelSingle"></td>
+		</td>
+	</tr>
+</table>
+Values: <input type="text" id="selectedValue_animGroupSingle" size="30" /><br>
+<br>
+
+<!-- Multiple Selection Example -->
+<table>
+	<td wicket:id="animGroupMultiple">
+		<script type="text/javascript" wicket:id="init"></script>
+		<tr style="border:1px solid #FFFFFF;text-align:center;font-size:12px" wicket:id="animViewMultiple">
+			<td wicket:id="animBoxMultiple"></td>
+			<td wicket:id="animLabelMultiple"></td>
+		</tr>
+	</td>
+</table>
+Values: <input type="text" id="selectedValue_animGroupMultiple" size="30" /><br>
+<br>
+
+</body>
+</html>
