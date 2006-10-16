@@ -18,6 +18,7 @@
  */
 package wicket.contrib.markup.html.yui.slider;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.logging.Log;
@@ -37,7 +38,6 @@ import wicket.model.AbstractReadOnlyModel;
 import wicket.model.IModel;
 import wicket.model.Model;
 import wicket.model.PropertyModel;
-import wicket.util.collections.MiniMap;
 
 /**
  * Slider component based on the Slider of Yahoo UI Library.
@@ -93,6 +93,7 @@ public class Slider extends AbstractYuiPanel {
 					new AbstractReadOnlyModel() {
 						private static final long serialVersionUID = 1L;
 
+						@Override
 						public Object getObject(Component component) {
 							return element.getId();
 						}
@@ -103,14 +104,15 @@ public class Slider extends AbstractYuiPanel {
 			private static final long serialVersionUID = 1L;
 
 			/** cached variables; we only need to fill this once. */
-			private Map variables;
+			private Map<String, Object> variables;
 
 			/**
 			 * @see wicket.model.AbstractReadOnlyModel#getObject(wicket.Component)
 			 */
+			@Override
 			public Object getObject(Component component) {
 				if (variables == null) {
-					this.variables = new MiniMap(7);
+					this.variables = new HashMap<String, Object>(7);
 					variables.put("javaScriptId", javaScriptId);
 					variables.put("backGroundElementId", backgroundElementId);
 					variables.put("imageElementId", imageElementId);
@@ -137,6 +139,7 @@ public class Slider extends AbstractYuiPanel {
 
 					private static final long serialVersionUID = 1L;
 
+					@Override
 					public Object getObject(Component component) {
 						return javaScriptId + ".setValue(" + javaScriptId
 								+ ".getXValue() - " + settings.getTick() + ");";
@@ -150,6 +153,7 @@ public class Slider extends AbstractYuiPanel {
 				new AbstractReadOnlyModel() {
 					private static final long serialVersionUID = 1L;
 
+					@Override
 					public Object getObject(Component component) {
 						return javaScriptId + ".setValue(-"
 								+ settings.getLeftUp() + ")";
@@ -167,6 +171,7 @@ public class Slider extends AbstractYuiPanel {
 				new AbstractReadOnlyModel() {
 					private static final long serialVersionUID = 1L;
 
+					@Override
 					public Object getObject(Component component) {
 						return javaScriptId + ".setValue("
 								+ settings.getRightDown() + ")";
@@ -180,6 +185,7 @@ public class Slider extends AbstractYuiPanel {
 				new AbstractReadOnlyModel() {
 					private static final long serialVersionUID = 1L;
 
+					@Override
 					public Object getObject(Component component) {
 						return javaScriptId + ".setValue(" + javaScriptId
 								+ ".getXValue() + " + settings.getTick() + ");";
@@ -256,6 +262,7 @@ public class Slider extends AbstractYuiPanel {
 	/**
 	 * @see wicket.Component#renderHead(wicket.markup.html.internal.HtmlHeaderContainer)
 	 */
+	@Override
 	public void renderHead(HtmlHeaderContainer container) {
 		((WebPage) getPage()).getBodyContainer().addOnLoadModifier(
 				"init" + javaScriptId + "();", this);
@@ -272,6 +279,7 @@ public class Slider extends AbstractYuiPanel {
 	/**
 	 * @see wicket.Component#onAttach()
 	 */
+	@Override
 	protected void onAttach() {
 		super.onAttach();
 

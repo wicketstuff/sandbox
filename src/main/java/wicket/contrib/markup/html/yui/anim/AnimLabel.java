@@ -7,9 +7,10 @@ import wicket.markup.html.basic.Label;
  * An AnimLabel contains the option's value
  * 
  * @author cptan
- * 
  */
 public class AnimLabel extends AbstractYuiPanel {
+
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Creates an AnimLabel

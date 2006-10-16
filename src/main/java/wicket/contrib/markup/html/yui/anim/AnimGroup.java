@@ -1,6 +1,7 @@
 package wicket.contrib.markup.html.yui.anim;
 
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import wicket.Component;
@@ -10,24 +11,22 @@ import wicket.markup.MarkupStream;
 import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.basic.Label;
 import wicket.model.AbstractReadOnlyModel;
-import wicket.util.collections.MiniMap;
 
 /**
  * An AnimGroup groups the options
  * 
  * @author cptan
- * 
  */
 public class AnimGroup extends WebMarkupContainer {
 	private static final long serialVersionUID = 1L;
 
-	private String javaScriptId;
+	private List<AnimOption> animSelectOptionList;
 
-	private ArrayList animSelectOptionList;
+	private double duration;
 
 	private String easing;
 
-	private double duration;
+	private String javaScriptId;
 
 	private int maxSelection;
 
@@ -50,8 +49,7 @@ public class AnimGroup extends WebMarkupContainer {
 		this.maxSelection = settings.getMaxSelection();
 
 		for (int i = 0; i < animSelectOptionList.size(); i++) {
-			AnimOption animSelectOption = (AnimOption) animSelectOptionList
-					.get(i);
+			AnimOption animSelectOption = animSelectOptionList.get(i);
 			String value = animSelectOption.getSelectedValue();
 			if (selectedValues.equals("")) {
 				selectedValues = "'" + value + "'";
@@ -59,10 +57,11 @@ public class AnimGroup extends WebMarkupContainer {
 				selectedValues = selectedValues + ",'" + value + "'";
 			}
 		}
-		
+
 		Label initialization = new Label("init", new AbstractReadOnlyModel() {
 			private static final long serialVersionUID = 1L;
 
+			@Override
 			public Object getObject(Component component) {
 				return getJavaScriptComponentInitializationScript();
 			}
@@ -80,7 +79,7 @@ public class AnimGroup extends WebMarkupContainer {
 	protected String getJavaScriptComponentInitializationScript() {
 		PackagedTextTemplate template = new PackagedTextTemplate(
 				AnimGroup.class, "init.js");
-		Map variables = new MiniMap(6);
+		Map<String, Object> variables = new HashMap<String, Object>(6);
 		variables.put("javaScriptId", javaScriptId);
 		variables.put("easing", "YAHOO.util.Easing." + easing);
 		variables.put("duration", new Double(duration));
@@ -94,6 +93,7 @@ public class AnimGroup extends WebMarkupContainer {
 	/**
 	 * Get the markup Id on attach
 	 */
+	@Override
 	protected void onAttach() {
 		super.onAttach();
 		javaScriptId = getMarkupId();
@@ -102,13 +102,15 @@ public class AnimGroup extends WebMarkupContainer {
 	/**
 	 * 
 	 */
-	protected void onComponentTagBody(MarkupStream markupStream, ComponentTag openTag) {
-		super.onComponentTagBody(markupStream, openTag);		
-//		StringBuffer buffer = new StringBuffer();
-//        buffer.append("\n<script type=\"text/javascript\">")
-//        .append(getJavaScriptComponentInitializationScript())
-//        .append("\n</script>\n");
-//        replaceComponentTagBody(markupStream, openTag, buffer.toString());
+	@Override
+	protected void onComponentTagBody(MarkupStream markupStream,
+			ComponentTag openTag) {
+		super.onComponentTagBody(markupStream, openTag);
+		// StringBuffer buffer = new StringBuffer();
+		// buffer.append("\n<script type=\"text/javascript\">")
+		// .append(getJavaScriptComponentInitializationScript())
+		// .append("\n</script>\n");
+		// replaceComponentTagBody(markupStream, openTag, buffer.toString());
 	}
-	
+
 }

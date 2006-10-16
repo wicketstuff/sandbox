@@ -18,21 +18,21 @@
  */
 package wicket.contrib.markup.html.yui.calendar;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import wicket.AttributeModifier;
 import wicket.Component;
 import wicket.RequestCycle;
+import wicket.ResourceReference;
 import wicket.behavior.HeaderContributor;
 import wicket.contrib.markup.html.yui.AbstractYuiPanel;
 import wicket.extensions.util.resource.PackagedTextTemplate;
-import wicket.markup.html.PackageResourceReference;
 import wicket.markup.html.WebPage;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.form.FormComponent;
 import wicket.markup.html.internal.HtmlHeaderContainer;
 import wicket.model.AbstractReadOnlyModel;
-import wicket.util.collections.MiniMap;
 
 /**
  * Calendar component based on the Calendar of Yahoo UI Library.
@@ -56,6 +56,7 @@ public class Calendar extends AbstractYuiPanel {
 			add(new AttributeModifier("id", true, new AbstractReadOnlyModel() {
 				private static final long serialVersionUID = 1L;
 
+				@Override
 				public Object getObject(Component component) {
 					return elementId;
 				}
@@ -65,6 +66,7 @@ public class Calendar extends AbstractYuiPanel {
 		/**
 		 * @see wicket.markup.html.form.FormComponent#updateModel()
 		 */
+		@Override
 		public void updateModel() {
 			Calendar.this.updateModel();
 		}
@@ -103,6 +105,7 @@ public class Calendar extends AbstractYuiPanel {
 					/**
 					 * @see wicket.model.IModel#getObject(wicket.Component)
 					 */
+					@Override
 					public Object getObject(Component component) {
 						return getJavaScriptComponentInitializationScript();
 					}
@@ -115,6 +118,7 @@ public class Calendar extends AbstractYuiPanel {
 	/**
 	 * @see wicket.Component#renderHead(wicket.markup.html.internal.HtmlHeaderContainer)
 	 */
+	@Override
 	public void renderHead(HtmlHeaderContainer container) {
 		((WebPage) getPage()).getBodyContainer().addOnLoadModifier(
 				"init" + javaScriptId + "();", null);
@@ -134,13 +138,11 @@ public class Calendar extends AbstractYuiPanel {
 	 */
 	protected String getJavaScriptComponentInitializationScript() {
 		CharSequence leftImage = RequestCycle.get().urlFor(
-				new PackageResourceReference(Calendar.class, "callt.gif"))
-				.toString();
+				new ResourceReference(Calendar.class, "callt.gif")).toString();
 		CharSequence rightImage = RequestCycle.get().urlFor(
-				new PackageResourceReference(Calendar.class, "calrt.gif"))
-				.toString();
+				new ResourceReference(Calendar.class, "calrt.gif")).toString();
 
-		Map variables = new MiniMap(4);
+		Map<String, Object> variables = new HashMap<String, Object>(4);
 		variables.put("javaScriptId", javaScriptId);
 		variables.put("elementId", elementId);
 		variables.put("navigationArrowLeft", leftImage);
@@ -156,6 +158,7 @@ public class Calendar extends AbstractYuiPanel {
 	/**
 	 * @see wicket.Component#onAttach()
 	 */
+	@Override
 	protected void onAttach() {
 		super.onAttach();
 

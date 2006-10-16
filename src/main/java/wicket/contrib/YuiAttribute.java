@@ -1,90 +1,84 @@
 package wicket.contrib;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-import java.io.Serializable;
 
-public class YuiAttribute implements Serializable{
+public class YuiAttribute implements Serializable {
 	private static final long serialVersionUID = 1L;
-	Map propertyMap = new HashMap();
-	
+
+	Map<String, YuiProperty> propertyMap = new HashMap<String, YuiProperty>();
+
 	public YuiAttribute() {
 	}
-  
-	 public void add(String element, YuiProperty attribute) {	        
-		 if (isValid(element, attribute)) {
-			 propertyMap.put(element,attribute);
-		 }
-	 }
-	 
-	 public String getJsScript() {
-		int count=0;
-		String jsScript="";
-		Set keySet= propertyMap.keySet();
-		Iterator iter= keySet.iterator();
-		while(iter.hasNext()){
-			if(count==0){
-				String aKey= (String)iter.next();
-				jsScript= jsScript+ aKey+ ": {";
-				YuiProperty aYuiProperty = (YuiProperty) propertyMap.get(aKey);
-				jsScript = jsScript + aYuiProperty.getJsScript()+" }";
-			}	
-			else{
-				String aKey= (String)iter.next();
-				jsScript=  jsScript+ ", "+ aKey+ ": {";
-				YuiProperty aYuiProperty = (YuiProperty) propertyMap.get(aKey);
-				jsScript = jsScript + aYuiProperty.getJsScript()+" }";
+
+	public void add(String element, YuiProperty attribute) {
+		if (isValid(element, attribute)) {
+			propertyMap.put(element, attribute);
+		}
+	}
+
+	public String getJsScript() {
+
+		int count = 0;
+		StringBuilder jsScript = new StringBuilder();
+		for (String aKey : propertyMap.keySet()) {
+			if (count == 0) {
+				jsScript.append(aKey).append(": {");
+				YuiProperty aYuiProperty = propertyMap.get(aKey);
+				jsScript.append(aYuiProperty.getJsScript()).append(" }");
+			} else {
+				jsScript.append(", ").append(aKey).append(": {");
+				YuiProperty aYuiProperty = propertyMap.get(aKey);
+				jsScript.append(aYuiProperty.getJsScript()).append(" }");
 			}
 			count++;
 		}
-		return jsScript;
+		return jsScript.toString();
 	}
-	 
-	 public String getReverseJsScript(){
-			int count=0;
-			String jsScript="";
-			Set keySet= propertyMap.keySet();
-			Iterator iter= keySet.iterator();
-			while(iter.hasNext()){
-				if(count==0){
-					String aKey= (String)iter.next();
-					jsScript= jsScript+ aKey+ ": {";
-					YuiProperty aYuiProperty = (YuiProperty) propertyMap.get(aKey);
-					jsScript = jsScript + aYuiProperty.getReverseJsScript()+" }";
-				}	
-				else{
-					String aKey= (String)iter.next();
-					jsScript=  jsScript+ ", "+ aKey+ ": {";
-					YuiProperty aYuiProperty = (YuiProperty) propertyMap.get(aKey);
-					jsScript = jsScript + aYuiProperty.getReverseJsScript()+" }";
-				}
-				count++;
-			}
-			return jsScript;
-		}
-
-	
-	 /**
-	  * validate that is valid key 
-	  * e.g. : borderWidth, lineHeight ....
-	  * 
-	  * @param element
-	  * @param value
-	  * @return
-	  */
-	 private boolean isValid(String element, YuiProperty attribute) {
-		 // TODO Auto-generated method stub
-		 return true;
-	 }
 
 	public Map getPropertyMap() {
 		return propertyMap;
 	}
 
-	public void setPropertyMap(Map propertyMap) {
+	public String getReverseJsScript() {
+		int count = 0;
+		String jsScript = "";
+		Set keySet = propertyMap.keySet();
+		Iterator iter = keySet.iterator();
+		while (iter.hasNext()) {
+			if (count == 0) {
+				String aKey = (String) iter.next();
+				jsScript = jsScript + aKey + ": {";
+				YuiProperty aYuiProperty = propertyMap.get(aKey);
+				jsScript = jsScript + aYuiProperty.getReverseJsScript() + " }";
+			} else {
+				String aKey = (String) iter.next();
+				jsScript = jsScript + ", " + aKey + ": {";
+				YuiProperty aYuiProperty = propertyMap.get(aKey);
+				jsScript = jsScript + aYuiProperty.getReverseJsScript() + " }";
+			}
+			count++;
+		}
+		return jsScript;
+	}
+
+	public void setPropertyMap(Map<String, YuiProperty> propertyMap) {
 		this.propertyMap = propertyMap;
 	}
-	
+
+	/**
+	 * validate that is valid key e.g. : borderWidth, lineHeight ....
+	 * 
+	 * @param element
+	 * @param value
+	 * @return
+	 */
+	private boolean isValid(String element, YuiProperty attribute) {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
 }

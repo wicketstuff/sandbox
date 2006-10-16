@@ -1,5 +1,7 @@
 package wicket.contrib.markup.html.yui.animselect;
-import java.util.ArrayList;
+
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import wicket.Component;
@@ -7,49 +9,56 @@ import wicket.extensions.util.resource.PackagedTextTemplate;
 import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.basic.Label;
 import wicket.model.AbstractReadOnlyModel;
-import wicket.util.collections.MiniMap;
 
 /**
  * Grouping of the options
+ * 
  * @author cptan
- *
  */
 public class AnimSelectOptionGroup extends WebMarkupContainer {
 	private static final long serialVersionUID = 1L;
-	private String javaScriptId;
-	private ArrayList animSelectOptionList;
-	private String easing;
+
+	private List<AnimSelectOption> animSelectOptionList;
+
 	private double duration;
+
+	private String easing;
+
+	private String javaScriptId;
+
 	private int maxSelection;
-	private String selectedValues="";
-	
+
+	private String selectedValues = "";
+
 	/**
 	 * Constructor
+	 * 
 	 * @param id
 	 * @param settings
 	 */
-	public AnimSelectOptionGroup(String id, AnimSelectSettings settings){
+	public AnimSelectOptionGroup(String id, AnimSelectSettings settings) {
 		super(id);
-	
-		this.animSelectOptionList= settings.getAnimSelectOptionList();
-		this.easing= settings.getEasing();
-		this.duration= settings.getDuration();
-		this.maxSelection= settings.getMaxSelection();
-		
-		for(int i=0; i<animSelectOptionList.size(); i++){
-			AnimSelectOption animSelectOption = (AnimSelectOption)animSelectOptionList.get(i);
-			String value= animSelectOption.getSelectedValue();
-			if(selectedValues.equals("")){
-				selectedValues = "'"+ value +"'";
-			}
-			else{
-				selectedValues = selectedValues + ",'"+ value +"'";
+
+		this.animSelectOptionList = settings.getAnimSelectOptionList();
+		this.easing = settings.getEasing();
+		this.duration = settings.getDuration();
+		this.maxSelection = settings.getMaxSelection();
+
+		for (int i = 0; i < animSelectOptionList.size(); i++) {
+			AnimSelectOption animSelectOption = animSelectOptionList.get(i);
+			String value = animSelectOption.getSelectedValue();
+			if (selectedValues.equals("")) {
+				selectedValues = "'" + value + "'";
+			} else {
+				selectedValues = selectedValues + ",'" + value + "'";
 			}
 		}
-		
-		Label initialization = new Label("init", new AbstractReadOnlyModel(){
-			private static final long serialVersionUID=1L;
-			public Object getObject(Component component){
+
+		Label initialization = new Label("init", new AbstractReadOnlyModel() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public Object getObject(Component component) {
 				return getJavaScriptComponentInitializationScript();
 			}
 		});
@@ -59,13 +68,15 @@ public class AnimSelectOptionGroup extends WebMarkupContainer {
 
 	/**
 	 * Initialize the init.js which is shared among a group of options
+	 * 
 	 * @return
 	 */
-	protected String getJavaScriptComponentInitializationScript(){
-		PackagedTextTemplate template = new PackagedTextTemplate(AnimSelectOptionGroup.class, "init.js");
-		Map variables = new MiniMap(6);
+	protected String getJavaScriptComponentInitializationScript() {
+		PackagedTextTemplate template = new PackagedTextTemplate(
+				AnimSelectOptionGroup.class, "init.js");
+		Map<String, Object> variables = new HashMap<String, Object>(6);
 		variables.put("javaScriptId", javaScriptId);
-		variables.put("easing", "YAHOO.util.Easing."+easing);
+		variables.put("easing", "YAHOO.util.Easing." + easing);
 		variables.put("duration", new Double(duration));
 		variables.put("maxSelection", new Integer(maxSelection));
 		variables.put("noOfBoxes", new Integer(animSelectOptionList.size()));
@@ -77,8 +88,9 @@ public class AnimSelectOptionGroup extends WebMarkupContainer {
 	/**
 	 * Get the markup Id on attach
 	 */
-	protected void onAttach(){
+	@Override
+	protected void onAttach() {
 		super.onAttach();
-		javaScriptId= getMarkupId();
+		javaScriptId = getMarkupId();
 	}
 }

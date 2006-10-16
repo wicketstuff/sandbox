@@ -2,13 +2,13 @@ package wicket.contrib.markup.html.yui.anim;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 import wicket.RequestCycle;
 import wicket.ResourceReference;
 import wicket.contrib.ImageResourceInfo;
 import wicket.contrib.InlineStyle;
 import wicket.contrib.YuiImage;
-import wicket.markup.html.PackageResourceReference;
 
 /**
  * An AnimSettings allows the user to define the anim select settings
@@ -19,27 +19,70 @@ import wicket.markup.html.PackageResourceReference;
 public class AnimSettings implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	private String easing;
+	/**
+	 * Get the default settings
+	 * 
+	 * @param easing -
+	 *            the easing effect of the animation
+	 * @param duration -
+	 *            the duration of the animation
+	 * @param maxSelection -
+	 *            the maximum selection allowed
+	 * @param animSelectOptionList -
+	 *            an arraylist of the animOptions
+	 * @return the default settings
+	 */
+	public static AnimSettings getDefault(String easing, double duration,
+			int maxSelection, List<AnimOption> animOptionList) {
+		AnimSettings settings = new AnimSettings();
+		settings.setResources(easing, duration, maxSelection, animOptionList);
+		return settings;
+	}
+
+	/**
+	 * Get the default settings
+	 * 
+	 * @param easing -
+	 *            the easing effect of the animation
+	 * @param duration -
+	 *            the duration of the animation
+	 * @param maxSelection -
+	 *            the maximum selection allowed
+	 * @param message -
+	 *            the message to display if reach the maximum selection
+	 * @param animSelectOptionList -
+	 *            an arraylist of the animOptions
+	 * @return the default settings
+	 */
+	public static AnimSettings getDefault(String easing, double duration,
+			int maxSelection, String message, List<AnimOption> animOptionList) {
+		AnimSettings settings = new AnimSettings();
+		settings.setResources(easing, duration, maxSelection, message,
+				animOptionList);
+		return settings;
+	}
+
+	private List<AnimOption> animOptionList;
+
+	private List<InlineStyle> defaultImgOverStyleList = new ArrayList<InlineStyle>();
+
+	private List<InlineStyle> defaultImgStyleList = new ArrayList<InlineStyle>();
 
 	private double duration;
+
+	private String easing;
+
+	private int height;
 
 	private int maxSelection;
 
 	private String message;
 
-	private ArrayList animOptionList;
+	private List<InlineStyle> selectedImgOverStyleList = new ArrayList<InlineStyle>();
 
-	private ArrayList defaultImgStyleList = new ArrayList();
-
-	private ArrayList defaultImgOverStyleList = new ArrayList();
-
-	private ArrayList selectedImgStyleList = new ArrayList();
-
-	private ArrayList selectedImgOverStyleList = new ArrayList();
+	private List<InlineStyle> selectedImgStyleList = new ArrayList<InlineStyle>();
 
 	private int width;
-
-	private int height;
 
 	/**
 	 * Creates an AnimSettings
@@ -49,91 +92,163 @@ public class AnimSettings implements Serializable {
 	}
 
 	/**
-	 * Get the default settings
+	 * Set the AnimSelectOptionList
 	 * 
-	 * @param easing -
-	 *            the easing effect of the animation
-	 * @param duration -
-	 *            the duration of the animation
-	 * @param maxSelection -
-	 *            the maximum selection allowed
-	 * @param animSelectOptionList -
-	 *            an arraylist of the animOptions
-	 * @return the default settings
+	 * @return an arraylist of the animOptions
 	 */
-	public static AnimSettings getDefault(String easing, double duration,
-			int maxSelection, ArrayList animOptionList) {
-		AnimSettings settings = new AnimSettings();
-		settings.setResources(easing, duration, maxSelection, animOptionList);
-		return settings;
+	public List<AnimOption> getAnimOptionList() {
+		return animOptionList;
 	}
 
 	/**
-	 * Set the resources
+	 * Get the default mouseover image style list
 	 * 
-	 * @param easing -
-	 *            the easing effect of the animation
-	 * @param duration -
-	 *            the duration of the animation
-	 * @param maxSelection -
-	 *            the maximum selection allowed
-	 * @param animSelectGroupOption -
-	 *            an arraylist of the animOptions
+	 * @return the default mouseover image style list
 	 */
-	public void setResources(String easing, double duration, int maxSelection,
-			ArrayList animOptionList) {
-		setEasing(easing);
-		setDuration(duration);
-		setMaxSelection(maxSelection);
-		setAnimOptionList(animOptionList);
-		setImageResources(animOptionList);
+	public List<InlineStyle> getDefaultImgOverStyleList() {
+		return defaultImgOverStyleList;
 	}
 
 	/**
-	 * Get the default settings
+	 * Get the default image style list
 	 * 
-	 * @param easing -
-	 *            the easing effect of the animation
-	 * @param duration -
-	 *            the duration of the animation
-	 * @param maxSelection -
-	 *            the maximum selection allowed
-	 * @param message -
-	 *            the message to display if reach the maximum selection
-	 * @param animSelectOptionList -
-	 *            an arraylist of the animOptions
-	 * @return the default settings
+	 * @return the default image style list
 	 */
-	public static AnimSettings getDefault(String easing, double duration,
-			int maxSelection, String message, ArrayList animOptionList) {
-		AnimSettings settings = new AnimSettings();
-		settings.setResources(easing, duration, maxSelection, message,
-				animOptionList);
-		return settings;
+	public List<InlineStyle> getDefaultImgStyleList() {
+		return defaultImgStyleList;
 	}
 
 	/**
-	 * Set the resources
+	 * Get the duration
+	 * 
+	 * @return the duration
+	 */
+	public double getDuration() {
+		return duration;
+	}
+
+	/**
+	 * Get the easing effect
+	 * 
+	 * @return the easing effect
+	 */
+	public String getEasing() {
+		return easing;
+	}
+
+	/**
+	 * Get the height
+	 * 
+	 * @return the height
+	 */
+	public int getHeight() {
+		return height;
+	}
+
+	/**
+	 * Get the maximum selection allowed
+	 * 
+	 * @return the maximum selection allowed
+	 */
+	public int getMaxSelection() {
+		return maxSelection;
+	}
+
+	/**
+	 * Get the message
+	 * 
+	 * @return the message
+	 */
+	public String getMessage() {
+		return message;
+	}
+
+	/**
+	 * Get the selected mouseover image style list
+	 * 
+	 * @return the selected mouseover image style list
+	 */
+	public List<InlineStyle> getSelectedImgOverStyleList() {
+		return selectedImgOverStyleList;
+	}
+
+	/**
+	 * Get the selected image style list
+	 * 
+	 * @return the selected image style list
+	 */
+	public List<InlineStyle> getSelectedImgStyleList() {
+		return selectedImgStyleList;
+	}
+
+	/**
+	 * Get the width
+	 * 
+	 * @return the width
+	 */
+	public int getWidth() {
+		return width;
+	}
+
+	/**
+	 * Set the AnimOptionList
+	 * 
+	 * @param animOptionList -
+	 *            an new arraylist of the animOptions
+	 */
+	public void setAnimOptionList(List<AnimOption> animOptionList) {
+		this.animOptionList = animOptionList;
+	}
+
+	/**
+	 * Set the default mouseover image style list
+	 * 
+	 * @param defaultImgOverStyleList -
+	 *            the new default mouseover image style list
+	 */
+	public void setDefaultImgOverStyleList(
+			List<InlineStyle> defaultImgOverStyleList) {
+		this.defaultImgOverStyleList = defaultImgOverStyleList;
+	}
+
+	/**
+	 * Set the default image style list
+	 * 
+	 * @param defaultImgStyleList -
+	 *            set the new default image style list
+	 */
+	public void setDefaultImgStyleList(List<InlineStyle> defaultImgStyleList) {
+		this.defaultImgStyleList = defaultImgStyleList;
+	}
+
+	/**
+	 * Set the duration
+	 * 
+	 * @param duration -
+	 *            the new duration
+	 */
+	public void setDuration(double duration) {
+		this.duration = duration;
+	}
+
+	/**
+	 * Set the easing effects
 	 * 
 	 * @param easing -
-	 *            the easing effect of the animation
-	 * @param duration -
-	 *            the duration of the animation
-	 * @param maxSelection -
-	 *            the maximum selection allowed
-	 * @param message -
-	 *            the message to display if reach the maximum selection
-	 * @param animSelectOptionList -
-	 *            an arraylist of the animOptions
+	 *            the new easing effect
 	 */
-	public void setResources(String easing, double duration, int maxSelection,
-			String message, ArrayList animOptionList) {
-		setEasing(easing);
-		setDuration(duration);
-		setMaxSelection(maxSelection);
-		setMessage(message);
-		setAnimOptionList(animOptionList);
-		setImageResources(animOptionList);
+	public void setEasing(String easing) {
+		this.easing = easing;
+	}
+
+	/**
+	 * Set the height
+	 * 
+	 * @param height -
+	 *            the new height
+	 */
+	public void setHeight(int height) {
+		this.height = height;
 	}
 
 	/**
@@ -142,24 +257,22 @@ public class AnimSettings implements Serializable {
 	 * @param animOptionList -
 	 *            an arraylist of the animOptions
 	 */
-	public void setImageResources(ArrayList animOptionList) {
-		for (int i = animOptionList.size() - 1; i >= 0; i--) {
-			YuiImage defaultImg = ((AnimOption) animOptionList.get(i))
-					.getDefaultImg();
-			YuiImage defaultImgOver = ((AnimOption) animOptionList.get(i))
-					.getDefaultImgOver();
-			YuiImage selectedImg = ((AnimOption) animOptionList.get(i))
-					.getSelectedImg();
-			YuiImage selectedImgOver = ((AnimOption) animOptionList.get(i))
-					.getSelectedImgOver();
+	public void setImageResources(List<AnimOption> animOptionList) {
 
-			ResourceReference defaultImgRR = new PackageResourceReference(
+		for (int i = animOptionList.size() - 1; i >= 0; i--) {
+			AnimOption animOption = animOptionList.get(i);
+			YuiImage defaultImg = animOption.getDefaultImg();
+			YuiImage defaultImgOver = animOption.getDefaultImgOver();
+			YuiImage selectedImg = animOption.getSelectedImg();
+			YuiImage selectedImgOver = animOption.getSelectedImgOver();
+
+			ResourceReference defaultImgRR = new ResourceReference(
 					AnimSettings.class, defaultImg.getFileName());
-			ResourceReference defaultImgOverRR = new PackageResourceReference(
+			ResourceReference defaultImgOverRR = new ResourceReference(
 					AnimSettings.class, defaultImgOver.getFileName());
-			ResourceReference selectedImgRR = new PackageResourceReference(
+			ResourceReference selectedImgRR = new ResourceReference(
 					AnimSettings.class, selectedImg.getFileName());
-			ResourceReference selectedImgOverRR = new PackageResourceReference(
+			ResourceReference selectedImgOverRR = new ResourceReference(
 					AnimSettings.class, selectedImgOver.getFileName());
 
 			ImageResourceInfo defaultImgInfo = new ImageResourceInfo(
@@ -214,72 +327,6 @@ public class AnimSettings implements Serializable {
 	}
 
 	/**
-	 * Set the AnimSelectOptionList
-	 * 
-	 * @return an arraylist of the animOptions
-	 */
-	public ArrayList getAnimOptionList() {
-		return animOptionList;
-	}
-
-	/**
-	 * Set the AnimOptionList
-	 * 
-	 * @param animOptionList -
-	 *            an new arraylist of the animOptions
-	 */
-	public void setAnimOptionList(ArrayList animOptionList) {
-		this.animOptionList = animOptionList;
-	}
-
-	/**
-	 * Get the duration
-	 * 
-	 * @return the duration
-	 */
-	public double getDuration() {
-		return duration;
-	}
-
-	/**
-	 * Set the duration
-	 * 
-	 * @param duration -
-	 *            the new duration
-	 */
-	public void setDuration(double duration) {
-		this.duration = duration;
-	}
-
-	/**
-	 * Get the easing effect
-	 * 
-	 * @return the easing effect
-	 */
-	public String getEasing() {
-		return easing;
-	}
-
-	/**
-	 * Set the easing effects
-	 * 
-	 * @param easing -
-	 *            the new easing effect
-	 */
-	public void setEasing(String easing) {
-		this.easing = easing;
-	}
-
-	/**
-	 * Get the maximum selection allowed
-	 * 
-	 * @return the maximum selection allowed
-	 */
-	public int getMaxSelection() {
-		return maxSelection;
-	}
-
-	/**
 	 * Set the maximum selection allowed
 	 * 
 	 * @param maxSelection -
@@ -287,15 +334,6 @@ public class AnimSettings implements Serializable {
 	 */
 	public void setMaxSelection(int maxSelection) {
 		this.maxSelection = maxSelection;
-	}
-
-	/**
-	 * Get the message
-	 * 
-	 * @return the message
-	 */
-	public String getMessage() {
-		return message;
 	}
 
 	/**
@@ -309,50 +347,48 @@ public class AnimSettings implements Serializable {
 	}
 
 	/**
-	 * Get the default mouseover image style list
+	 * Set the resources
 	 * 
-	 * @return the default mouseover image style list
+	 * @param easing -
+	 *            the easing effect of the animation
+	 * @param duration -
+	 *            the duration of the animation
+	 * @param maxSelection -
+	 *            the maximum selection allowed
+	 * @param animSelectGroupOption -
+	 *            an arraylist of the animOptions
 	 */
-	public ArrayList getDefaultImgOverStyleList() {
-		return defaultImgOverStyleList;
+	public void setResources(String easing, double duration, int maxSelection,
+			List<AnimOption> animOptionList) {
+		setEasing(easing);
+		setDuration(duration);
+		setMaxSelection(maxSelection);
+		setAnimOptionList(animOptionList);
+		setImageResources(animOptionList);
 	}
 
 	/**
-	 * Set the default mouseover image style list
+	 * Set the resources
 	 * 
-	 * @param defaultImgOverStyleList -
-	 *            the new default mouseover image style list
+	 * @param easing -
+	 *            the easing effect of the animation
+	 * @param duration -
+	 *            the duration of the animation
+	 * @param maxSelection -
+	 *            the maximum selection allowed
+	 * @param message -
+	 *            the message to display if reach the maximum selection
+	 * @param animSelectOptionList -
+	 *            an arraylist of the animOptions
 	 */
-	public void setDefaultImgOverStyleList(ArrayList defaultImgOverStyleList) {
-		this.defaultImgOverStyleList = defaultImgOverStyleList;
-	}
-
-	/**
-	 * Get the default image style list
-	 * 
-	 * @return the default image style list
-	 */
-	public ArrayList getDefaultImgStyleList() {
-		return defaultImgStyleList;
-	}
-
-	/**
-	 * Set the default image style list
-	 * 
-	 * @param defaultImgStyleList -
-	 *            set the new default image style list
-	 */
-	public void setDefaultImgStyleList(ArrayList defaultImgStyleList) {
-		this.defaultImgStyleList = defaultImgStyleList;
-	}
-
-	/**
-	 * Get the selected mouseover image style list
-	 * 
-	 * @return the selected mouseover image style list
-	 */
-	public ArrayList getSelectedImgOverStyleList() {
-		return selectedImgOverStyleList;
+	public void setResources(String easing, double duration, int maxSelection,
+			String message, List<AnimOption> animOptionList) {
+		setEasing(easing);
+		setDuration(duration);
+		setMaxSelection(maxSelection);
+		setMessage(message);
+		setAnimOptionList(animOptionList);
+		setImageResources(animOptionList);
 	}
 
 	/**
@@ -361,17 +397,9 @@ public class AnimSettings implements Serializable {
 	 * @param selectedImgOverStyleList -
 	 *            the new selected mouseover image style list
 	 */
-	public void setSelectedImgOverStyleList(ArrayList selectedImgOverStyleList) {
+	public void setSelectedImgOverStyleList(
+			List<InlineStyle> selectedImgOverStyleList) {
 		this.selectedImgOverStyleList = selectedImgOverStyleList;
-	}
-
-	/**
-	 * Get the selected image style list
-	 * 
-	 * @return the selected image style list
-	 */
-	public ArrayList getSelectedImgStyleList() {
-		return selectedImgStyleList;
 	}
 
 	/**
@@ -380,36 +408,8 @@ public class AnimSettings implements Serializable {
 	 * @param selectedImgStyleList -
 	 *            the new selected image style list
 	 */
-	public void setSelectedImgStyleList(ArrayList selectedImgStyleList) {
+	public void setSelectedImgStyleList(List<InlineStyle> selectedImgStyleList) {
 		this.selectedImgStyleList = selectedImgStyleList;
-	}
-
-	/**
-	 * Get the height
-	 * 
-	 * @return the height
-	 */
-	public int getHeight() {
-		return height;
-	}
-
-	/**
-	 * Set the height
-	 * 
-	 * @param height -
-	 *            the new height
-	 */
-	public void setHeight(int height) {
-		this.height = height;
-	}
-
-	/**
-	 * Get the width
-	 * 
-	 * @return the width
-	 */
-	public int getWidth() {
-		return width;
 	}
 
 	/**
