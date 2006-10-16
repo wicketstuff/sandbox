@@ -18,62 +18,55 @@
  */
 package wicket.contrib.yui.examples;
 
-import java.net.URL;
+import java.lang.management.ManagementFactory;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import javax.management.MBeanServer;
+
+import org.mortbay.jetty.Connector;
 import org.mortbay.jetty.Server;
+import org.mortbay.jetty.nio.SelectChannelConnector;
+import org.mortbay.jetty.webapp.WebAppContext;
+import org.mortbay.management.MBeanContainer;
 
 /**
  * Seperate startup class for people that want to run the examples directly.
  */
-public class StartYuiExamples
-{
-	/**
-	 * Used for logging.
-	 */
-	private static Log log = LogFactory.getLog(StartYuiExamples.class);
-
-	/**
-	 * Construct.
-	 */
-	StartYuiExamples()
-	{
-		super();
-	}
+public class StartYuiExamples {
 
 	/**
 	 * Main function, starts the jetty server.
 	 * 
 	 * @param args
 	 */
-	public static void main(String[] args)
-	{
-        Server jettyServer = null;
-		try
-		{
-			URL jettyConfig = new URL("file:src/etc/jetty-config.xml");
-			if (jettyConfig == null)
-			{
-				log.fatal("Unable to locate jetty-test-config.xml on the classpath");
-			}
-			jettyServer = new Server(jettyConfig);
-			jettyServer.start();
+	public static void main(String[] args) {
+		Server server = new Server();
+		SelectChannelConnector connector = new SelectChannelConnector();
+		connector.setPort(8080);
+		server.setConnectors(new Connector[] { connector });
+
+		WebAppContext web = new WebAppContext();
+		web.setContextPath("/wicket-contrib-yui-examples");
+		web.setWar("src/main/webapp");
+		server.addHandler(web);
+
+		MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
+		MBeanContainer mBeanContainer = new MBeanContainer(mBeanServer);
+		server.getContainer().addEventListener(mBeanContainer);
+		mBeanContainer.start();
+
+		try {
+			server.start();
+			server.join();
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(100);
 		}
-		catch (Exception e)
-		{
-			log.fatal("Could not start the Jetty server: " + e);
-			if (jettyServer != null)
-			{
-				try
-				{
-					jettyServer.stop();
-				}
-				catch (InterruptedException e1)
-				{
-					log.fatal("Unable to stop the jetty server: " + e1);
-				}
-			}
-		}
+	}
+
+	/**
+	 * Construct.
+	 */
+	StartYuiExamples() {
+		super();
 	}
 }
