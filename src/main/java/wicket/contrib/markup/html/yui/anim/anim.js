@@ -27,7 +27,7 @@ function fnClick${boxId}_${javaScriptId}(){
 			if(eval("boxes"+m+"_${javaScriptId}[0]") == this.id){	
 				eval("fnShow"+m+"_${javaScriptId}('SelectedImg"+m+"_${javaScriptId}')");
 				eval("count"+m+"_${javaScriptId}++");
-				document.getElementById("selectedValue_${javaScriptId}").value= selectedValues_${javaScriptId}[m];
+				document.getElementById(eval("valueId_${javaScriptId}")).value= selectedValues_${javaScriptId}[m];
 			}
 			else{
 				eval("fnShow"+m+"_${javaScriptId}('DefaultImg"+m+"_${javaScriptId}')");
@@ -61,21 +61,21 @@ function fnClick${boxId}_${javaScriptId}(){
 
 function fn_addSelection_${javaScriptId}(selectedValue){
 	newValue="";
-	currentValue= document.getElementById("selectedValue_${javaScriptId}").value;
+	currentValue= document.getElementById(eval("valueId_${javaScriptId}")).value;
 	if(currentValue == ""){
 		newValue=selectedValue;
 	}
 	else{
 		newValue=currentValue+","+selectedValue;
 	}
-	document.getElementById("selectedValue_${javaScriptId}").value = newValue;
+	document.getElementById(eval("valueId_${javaScriptId}")).value = newValue;
 }
 
 function fn_removeSelection_${javaScriptId}(unselectedValue){
 	newValue="";
-	currentValue= ","+document.getElementById("selectedValue_${javaScriptId}").value;
+	currentValue= ","+document.getElementById(eval("valueId_${javaScriptId}")).value;
 	newValue= currentValue.replace(","+unselectedValue, "");
-	document.getElementById("selectedValue_${javaScriptId}").value = newValue.substring(1, newValue.length);
+	document.getElementById(eval("valueId_${javaScriptId}")).value = newValue.substring(1, newValue.length);
 }
 
 function fnShow${boxId}_${javaScriptId}(elementId){
