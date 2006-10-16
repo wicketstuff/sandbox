@@ -1,0 +1,1 @@
+var dd_${childJavaScriptId}_${id} = new YAHOO.example.DDSwap${isIntersect}(${classId} ${groupId});
