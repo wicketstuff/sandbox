@@ -23,106 +23,20 @@ import wicket.model.AbstractReadOnlyModel;
  * <p> - the selected mouseover image
  * 
  * @author cptan
+ * 
  */
 public class AnimBox extends AbstractYuiPanel {
+	private AnimSettings settings;
 
-	/**
-	 * Represent one of the images for each option
-	 * 
-	 * @author cptan
-	 * 
-	 */
-	private final class AnimSelectBox extends FormComponent implements
-			Serializable {
-		private static final long serialVersionUID = 1L;
-
-		public AnimSelectBox(final String id, final int count,
-				final String name, YuiImage yuiImage) {
-			super(id);
-			add(new AttributeModifier("id", true, new AbstractReadOnlyModel() {
-				private static final long serialVersionUID = 1L;
-
-				@Override
-				public Object getObject(Component component) {
-					return name + count + "_" + javaScriptId;
-				}
-			}));
-			add(new AttributeModifier("style", true,
-					new AbstractReadOnlyModel() {
-						private static final long serialVersionUID = 1L;
-
-						@Override
-						public Object getObject(Component component) {
-							if (name.equals("DefaultImg")) {
-								List<InlineStyle> aInlineStyleList = settings
-										.getDefaultImgStyleList();
-								InlineStyle aInlineStyle = aInlineStyleList
-										.get(0);
-								return aInlineStyle.getStyle();
-							} else if (name.equals("DefaultImgOver")) {
-								List<InlineStyle> aInlineStyleList = settings
-										.getDefaultImgOverStyleList();
-								InlineStyle aInlineStyle = aInlineStyleList
-										.get(0);
-								return aInlineStyle.getStyle();
-							} else if (name.equals("SelectedImg")) {
-								List<InlineStyle> aInlineStyleList = settings
-										.getSelectedImgStyleList();
-								InlineStyle aInlineStyle = aInlineStyleList
-										.get(0);
-								return aInlineStyle.getStyle();
-							} else if (name.equals("SelectedImgOver")) {
-								List<InlineStyle> aInlineStyleList = settings
-										.getSelectedImgOverStyleList();
-								InlineStyle aInlineStyle = aInlineStyleList
-										.get(0);
-								return aInlineStyle.getStyle();
-							} else {
-								return new String("");
-							}
-						}
-					}));
-		}
-	}
-
-	/**
-	 * Get the image's width and height
-	 * 
-	 * @author cptan
-	 * 
-	 */
-	private final class ImgStyle extends FormComponent implements Serializable {
-		private static final long serialVersionUID = 1L;
-
-		public ImgStyle(final String id) {
-			super(id);
-			add(new AttributeModifier("style", true,
-					new AbstractReadOnlyModel() {
-						private static final long serialVersionUID = 1L;
-
-						@Override
-						public Object getObject(Component component) {
-							return "width:" + settings.getWidth()
-									+ "px; height:" + settings.getHeight()
-									+ "px";
-						}
-					}));
-		}
-	}
-
-	private static final long serialVersionUID = 1L;
-
-	private double duration;
+	private String javaScriptId;
 
 	private String easing;
 
-	private String javaScriptId;
+	private double duration;
 
 	private int maxSelection;
 
 	private String message;
-
-	private AnimSettings settings;
 
 	/**
 	 * Creates an AnimBox
@@ -160,7 +74,6 @@ public class AnimBox extends AbstractYuiPanel {
 				new AbstractReadOnlyModel() {
 					private static final long serialVersionUID = 1L;
 
-					@Override
 					public Object getObject(Component component) {
 						return getAnimSelectInitializationScript(index);
 					}
@@ -177,17 +90,16 @@ public class AnimBox extends AbstractYuiPanel {
 	 * @return a String representation of the anim.js
 	 */
 	protected String getAnimSelectInitializationScript(int index) {
-
 		PackagedTextTemplate template = new PackagedTextTemplate(AnimBox.class,
 				"anim.js");
-		Map<String, Object> variables = new HashMap<String, Object>(7);
+		Map<Object, Object> variables = new HashMap<Object, Object>(7);
 		variables.put("javaScriptId", javaScriptId);
 		variables.put("boxId", new Integer(index));
 		variables.put("easing", "YAHOO.util.Easing." + easing);
 		variables.put("duration", new Double(duration));
 		variables.put("maxSelection", new Integer(maxSelection));
-		variables.put("noOfBoxes", new Integer(settings.getAnimOptionList()
-				.size()));
+		variables.put("noOfBoxes", new Integer(settings
+				.getAnimOptionList().size()));
 		if (message == null || message.equals("")) {
 			message = "Up to " + maxSelection + " selections allowed!";
 		}
@@ -199,9 +111,88 @@ public class AnimBox extends AbstractYuiPanel {
 	/**
 	 * Get the markup Id of the super parent class on attach
 	 */
-	@Override
 	protected void onAttach() {
 		super.onAttach();
 		javaScriptId = findParent(AnimGroup.class).getMarkupId();
+	}
+
+	/**
+	 * Get the image's width and height
+	 * 
+	 * @author cptan
+	 * 
+	 */
+	private final class ImgStyle extends FormComponent implements Serializable {
+		private static final long serialVersionUID = 1L;
+
+		public ImgStyle(final String id) {
+			super(id);
+			add(new AttributeModifier("style", true,
+					new AbstractReadOnlyModel() {
+						private static final long serialVersionUID = 1L;
+
+						public Object getObject(Component component) {
+							return "width:" + settings.getWidth()
+									+ "px; height:" + settings.getHeight()
+									+ "px";
+						}
+					}));
+		}
+	}
+
+	/**
+	 * Represent one of the images for each option
+	 * 
+	 * @author cptan
+	 * 
+	 */
+	private final class AnimSelectBox extends FormComponent implements
+			Serializable {
+		private static final long serialVersionUID = 1L;
+
+		public AnimSelectBox(final String id, final int count,
+				final String name, YuiImage yuiImage) {
+			super(id);
+			add(new AttributeModifier("id", true, new AbstractReadOnlyModel() {
+				private static final long serialVersionUID = 1L;
+
+				public Object getObject(Component component) {
+					return name + count + "_" + javaScriptId;
+				}
+			}));
+			add(new AttributeModifier("style", true,
+					new AbstractReadOnlyModel() {
+						private static final long serialVersionUID = 1L;
+
+						public Object getObject(Component component) {
+							if (name.equals("DefaultImg")) {
+								List aInlineStyleList = settings
+										.getDefaultImgStyleList();
+								InlineStyle aInlineStyle = (InlineStyle) aInlineStyleList
+										.get(0);
+								return aInlineStyle.getStyle();
+							} else if (name.equals("DefaultImgOver")) {
+								List aInlineStyleList = settings
+										.getDefaultImgOverStyleList();
+								InlineStyle aInlineStyle = (InlineStyle) aInlineStyleList
+										.get(0);
+								return aInlineStyle.getStyle();
+							} else if (name.equals("SelectedImg")) {
+								List aInlineStyleList = settings
+										.getSelectedImgStyleList();
+								InlineStyle aInlineStyle = (InlineStyle) aInlineStyleList
+										.get(0);
+								return aInlineStyle.getStyle();
+							} else if (name.equals("SelectedImgOver")) {
+								List aInlineStyleList = settings
+										.getSelectedImgOverStyleList();
+								InlineStyle aInlineStyle = (InlineStyle) aInlineStyleList
+										.get(0);
+								return aInlineStyle.getStyle();
+							} else
+								return new String("");
+						}
+					}));
+		}
 	}
 }
