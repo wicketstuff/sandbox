@@ -7,6 +7,9 @@ public class YuiImage implements Serializable{
 	private String fileName;
 	private String desc;
 	
+	private int sortTop;
+	private int sortLeft;
+	
 	public YuiImage(String fileName){
 		this.fileName= fileName;
 	}
@@ -31,4 +34,23 @@ public class YuiImage implements Serializable{
 	public void setDesc(String desc){
 		this.desc= desc;
 	}
+
+	public int getSortLeft() {
+		return sortLeft;
+	}
+
+	public void setSortLeft(int sortLeft) {
+		this.sortLeft = sortLeft;
+	}
+
+	public int getSortTop() {
+		return sortTop;
+	}
+
+	public void setSortTop(int sortTop) {
+		this.sortTop = sortTop;
+	}
+
+	
+	
 }

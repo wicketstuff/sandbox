@@ -5,6 +5,8 @@ import java.util.Map;
 
 import wicket.Component;
 import wicket.extensions.util.resource.PackagedTextTemplate;
+import wicket.markup.ComponentTag;
+import wicket.markup.MarkupStream;
 import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.basic.Label;
 import wicket.model.AbstractReadOnlyModel;
@@ -57,7 +59,7 @@ public class AnimGroup extends WebMarkupContainer {
 				selectedValues = selectedValues + ",'" + value + "'";
 			}
 		}
-
+		
 		Label initialization = new Label("init", new AbstractReadOnlyModel() {
 			private static final long serialVersionUID = 1L;
 
@@ -96,4 +98,17 @@ public class AnimGroup extends WebMarkupContainer {
 		super.onAttach();
 		javaScriptId = getMarkupId();
 	}
+
+	/**
+	 * 
+	 */
+	protected void onComponentTagBody(MarkupStream markupStream, ComponentTag openTag) {
+		super.onComponentTagBody(markupStream, openTag);		
+//		StringBuffer buffer = new StringBuffer();
+//        buffer.append("\n<script type=\"text/javascript\">")
+//        .append(getJavaScriptComponentInitializationScript())
+//        .append("\n</script>\n");
+//        replaceComponentTagBody(markupStream, openTag, buffer.toString());
+	}
+	
 }
