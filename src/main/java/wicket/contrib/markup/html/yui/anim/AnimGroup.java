@@ -4,12 +4,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import wicket.AttributeModifier;
 import wicket.Component;
 import wicket.extensions.util.resource.PackagedTextTemplate;
 import wicket.markup.ComponentTag;
 import wicket.markup.MarkupStream;
 import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.basic.Label;
+import wicket.markup.html.form.FormComponent;
 import wicket.model.AbstractReadOnlyModel;
 
 /**
@@ -43,14 +45,14 @@ public class AnimGroup extends WebMarkupContainer {
 	 * @param settings -
 	 *            defines the animation settings
 	 */
-	public AnimGroup(String id, AnimSettings settings, String valueId) {
+	public AnimGroup(String id, AnimSettings settings, final FormComponent element) {
 		super(id);
 
 		this.animOptionList = settings.getAnimOptionList();
 		this.easing = settings.getEasing();
 		this.duration = settings.getDuration();
 		this.maxSelection = settings.getMaxSelection();
-		this.valueId = valueId;
+		this.valueId= element.getId()+"_"+id;
 
 		for (int i = 0; i < animOptionList.size(); i++) {
 			AnimOption animSelectOption = (AnimOption) animOptionList
@@ -62,7 +64,19 @@ public class AnimGroup extends WebMarkupContainer {
 				selectedValues = selectedValues + ",'" + value + "'";
 			}
 		}
+		
+		if (element != null) {
+			element.add(new AttributeModifier("id", true,
+					new AbstractReadOnlyModel() {
+						private static final long serialVersionUID = 1L;
 
+						public Object getObject(Component component) {
+							return element.getId()+"_"+javaScriptId;
+						}
+					}));
+		}
+		add(element);
+		
 		Label initialization = new Label("init", new AbstractReadOnlyModel() {
 			private static final long serialVersionUID = 1L;
 
@@ -72,7 +86,6 @@ public class AnimGroup extends WebMarkupContainer {
 		});
 		initialization.setEscapeModelStrings(false);
 		add(initialization);
-
 	}
 
 	/**
@@ -228,25 +241,5 @@ public class AnimGroup extends WebMarkupContainer {
 	public void setSelectedValues(String selectedValues) {
 		this.selectedValues = selectedValues;
 	}
-
-	/**
-	 * Get the value id
-	 * 
-	 * @return the valueId
-	 */
-	public String getValueId() {
-		return valueId;
-	}
-
-	/**
-	 * Set the value id
-	 * 
-	 * @param valueId
-	 *            the valueId to set
-	 */
-	public void setValueId(String valueId) {
-		this.valueId = valueId;
-	}
-
 
 }
