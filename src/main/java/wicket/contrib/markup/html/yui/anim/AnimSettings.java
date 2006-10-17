@@ -59,7 +59,7 @@ public class AnimSettings implements Serializable {
 	 * @param maxSelection -
 	 *            the maximum selection allowed
 	 * @param animSelectOptionList -
-	 *            an arraylist of the animOptions
+	 *            a list of the animOptions
 	 * @return the default settings
 	 */
 	public static AnimSettings getDefault(String easing, double duration,
@@ -79,7 +79,7 @@ public class AnimSettings implements Serializable {
 	 * @param maxSelection -
 	 *            the maximum selection allowed
 	 * @param animSelectGroupOption -
-	 *            an arraylist of the animOptions
+	 *            a list of the animOptions
 	 */
 	public void setResources(String easing, double duration, int maxSelection,
 			List<AnimOption> animOptionList) {
@@ -102,7 +102,7 @@ public class AnimSettings implements Serializable {
 	 * @param message -
 	 *            the message to display if reach the maximum selection
 	 * @param animSelectOptionList -
-	 *            an arraylist of the animOptions
+	 *            a list of the animOptions
 	 * @return the default settings
 	 */
 	public static AnimSettings getDefault(String easing, double duration,
@@ -125,7 +125,7 @@ public class AnimSettings implements Serializable {
 	 * @param message -
 	 *            the message to display if reach the maximum selection
 	 * @param animSelectOptionList -
-	 *            an arraylist of the animOptions
+	 *            a list of the animOptions
 	 */
 	public void setResources(String easing, double duration, int maxSelection,
 			String message, List<AnimOption> animOptionList) {
@@ -141,7 +141,7 @@ public class AnimSettings implements Serializable {
 	 * Set the image resources
 	 * 
 	 * @param animOptionList -
-	 *            an arraylist of the animOptions
+	 *            a list of the animOptions
 	 */
 	public void setImageResources(List<AnimOption> animOptionList) {
 		for (int i = animOptionList.size() - 1; i >= 0; i--) {
@@ -217,7 +217,7 @@ public class AnimSettings implements Serializable {
 	/**
 	 * Set the AnimSelectOptionList
 	 * 
-	 * @return an arraylist of the animOptions
+	 * @return a list of the animOptions
 	 */
 	public List<AnimOption> getAnimOptionList() {
 		return (List<AnimOption>) animOptionList;
@@ -227,7 +227,7 @@ public class AnimSettings implements Serializable {
 	 * Set the AnimOptionList
 	 * 
 	 * @param animOptionList -
-	 *            an new arraylist of the animOptions
+	 *            a new list of the animOptions
 	 */
 	public void setAnimOptionList(List<AnimOption> animOptionList) {
 		this.animOptionList = animOptionList;

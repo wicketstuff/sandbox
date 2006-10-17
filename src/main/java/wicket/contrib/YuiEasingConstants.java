@@ -46,7 +46,8 @@ public final class YuiEasingConstants implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Hide constructor.
+	 * Creates a YuiEasingConstants
+	 *
 	 */
 	private YuiEasingConstants() {
 	}
