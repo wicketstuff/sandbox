@@ -28,7 +28,7 @@ import wicket.markup.ComponentTag;
 import wicket.markup.html.form.FormComponent;
 import wicket.util.resource.IResourceStream;
 import wicket.util.resource.StringBufferResourceStream;
-import wicket.util.value.ValueMap;
+import wicket.util.value.IValueMap;
 
 /**
  * WORK IN PROGRESS; DO NOT USE THIS CLASS YET!
@@ -89,7 +89,7 @@ public final class ValidationAjaxHandler extends DojoAjaxHandler
 	 */
 	public final void onComponentTag(final ComponentTag tag)
 	{
-		final ValueMap attributes = tag.getAttributes();
+		final IValueMap attributes = tag.getAttributes();
 		final String attributeValue =
 			"javascript:validate('" + getCallbackUrl() + "', '" + formComponent.getInputName() + "', this);";
 		attributes.put(eventName, attributeValue);

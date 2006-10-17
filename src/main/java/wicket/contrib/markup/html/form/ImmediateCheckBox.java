@@ -27,7 +27,7 @@ import wicket.model.IModel;
 import wicket.util.resource.IResourceStream;
 import wicket.util.resource.StringBufferResourceStream;
 import wicket.util.string.AppendingStringBuffer;
-import wicket.util.value.ValueMap;
+import wicket.util.value.IValueMap;
 
 /**
  * Checkbox that updates the server side model using AJAX whenever it is
@@ -85,7 +85,7 @@ public class ImmediateCheckBox extends CheckBox
 		 */
 		public final void onComponentTag(final ComponentTag tag)
 		{
-			final ValueMap attributes = tag.getAttributes();
+			final IValueMap attributes = tag.getAttributes();
 			final AppendingStringBuffer attributeValue = new AppendingStringBuffer(
 					"javascript:immediateCheckBox('").append(getCallbackUrl()).append("', '")
 					.append(checkBox.getInputName()).append("', this.checked);");
