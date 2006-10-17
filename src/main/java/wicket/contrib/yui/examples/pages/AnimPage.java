@@ -1,5 +1,6 @@
 package wicket.contrib.yui.examples.pages;
 import java.util.ArrayList;
+import java.util.List;
 
 import wicket.contrib.YuiEasingConstants;
 import wicket.contrib.YuiImage;
@@ -9,11 +10,12 @@ import wicket.contrib.markup.html.yui.anim.AnimLabel;
 import wicket.contrib.markup.html.yui.anim.AnimOption;
 import wicket.contrib.markup.html.yui.anim.AnimSettings;
 import wicket.contrib.yui.examples.WicketExamplePage;
+import wicket.markup.html.form.TextField;
 import wicket.markup.html.list.ListItem;
 import wicket.markup.html.list.ListView;
 
 /**
- * This class demostrates how you can use the wicket.contrib.markup.html.yui.anim package
+ * This class demostrates how you can use the wicket.contrOib.markup.html.yui.anim package
  * to create animated inputs like radio buttons and check boxes. 
  * <p>
  * 
@@ -44,14 +46,15 @@ public class AnimPage extends WicketExamplePage {
 		AnimOption ao3Single = new AnimOption(defaultImgSingle,defaultImgOverSingle, selectedImgSingle, selectedImgOverSingle, "Radio 3");
 
 		//Step 3: Group the options together
-		final ArrayList animListSingle= new ArrayList();
+		final List<AnimOption> animListSingle= new ArrayList<AnimOption>();
 		animListSingle.add(ao1Single);
 		animListSingle.add(ao2Single);
 		animListSingle.add(ao3Single);
 		
 		//Step 4: Define the animation settings for the group of options
+		TextField tfValue = new TextField("value");
 		final AnimSettings settingsSingle = AnimSettings.getDefault(YuiEasingConstants.EASE_OUT, 0.2, 1, animListSingle);
-		AnimGroup animGroupSingle= new AnimGroup("animGroupSingle", settingsSingle);
+		AnimGroup animGroupSingle= new AnimGroup("animGroupSingle", settingsSingle, tfValue);
 		add(animGroupSingle);
 		
 		//Step 5: Apply the settings to all the options in the group
@@ -62,8 +65,7 @@ public class AnimPage extends WicketExamplePage {
 				item.add(new AnimLabel("animLabelSingle", animOption.getSelectedValue()));
 			};
 		};
-		animGroupSingle.add(listViewSingle);
-		
+		animGroupSingle.add(listViewSingle);	
 		
 		/*
 		 * Example 2: Multiple options allowed
@@ -81,14 +83,15 @@ public class AnimPage extends WicketExamplePage {
 		AnimOption ao3Multiple = new AnimOption(defaultImgMultiple,defaultImgOverMultiple, selectedImgMultiple, selectedImgOverMultiple, "Check C");
 
 		//Step 3: Group the options together
-		final ArrayList animListMultiple= new ArrayList();
+		final List<AnimOption> animListMultiple= new ArrayList<AnimOption>();
 		animListMultiple.add(ao1Multiple);
 		animListMultiple.add(ao2Multiple);
 		animListMultiple.add(ao3Multiple);
 		
 		//Step 4: Define the animation settings for the group of options
+		TextField tfValues = new TextField("values");
 		final AnimSettings settingsMultiple = AnimSettings.getDefault(YuiEasingConstants.EASE_OUT, 0.2, 2, animListMultiple);
-		AnimGroup animGroupMultiple= new AnimGroup("animGroupMultiple", settingsMultiple);
+		AnimGroup animGroupMultiple= new AnimGroup("animGroupMultiple", settingsMultiple, tfValues);
 		add(animGroupMultiple);
 		
 		//Step 5: Apply the settings to all the options in the group
@@ -100,6 +103,5 @@ public class AnimPage extends WicketExamplePage {
 			};
 		};
 		animGroupMultiple.add(listViewMultiple);
-		
 	}
 }
