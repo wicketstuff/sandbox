@@ -12,40 +12,36 @@
 
 <!-- Example 1: Single option only -->
 <table>
-	<!-- 
-		Upon adding animGroupSingle, AUTOMATICALLY add the init.js
-		User should not need to add the script, how?
-	-->
 	<tr wicket:id="animGroupSingle">
-	<script type="text/javascript" wicket:id="init"></script>
+		<script type="text/javascript" wicket:id="init"></script>
 		<td wicket:id="animViewSingle">
 			<td wicket:id="animBoxSingle"></td>
 			<td wicket:id="animLabelSingle"></td>
 		</td>
+		<tr>
+			<input type="text" wicket:id="value" size="30"/>
+		</tr>
 	</tr>
 </table>
-<!--
-	This should not be a MUST add on for the user
-	The library should always add the value of the text automatically
-	User should be able to indicate the wicket id to input the values
-	Need to add the box in the java.
--->
-Values: <input type="text" id="selectedValue_animGroupSingle" size="30" /><br>
 <br>
+<br>
+
 
 <!-- Multiple Selection Example -->
 <table>
 	<td wicket:id="animGroupMultiple" >
-	<script type="text/javascript" wicket:id="init"></script>
+		<script type="text/javascript" wicket:id="init"></script>
 		<tr wicket:id="animViewMultiple">
 			<td wicket:id="animBoxMultiple"></td>
 			<td wicket:id="animLabelMultiple"></td>
 		</tr>
+		<tr>
+			<input type="text" wicket:id="values" size="30"/>
+		</tr>
 	</td>
 </table>
-Values: <input type="text" id="selectedValue_animGroupMultiple" size="30" /><br>
 <br>
-
+<br>
 
 </body>
 </html>
