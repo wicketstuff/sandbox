@@ -1,6 +1,7 @@
 package wicket.contrib.authentication;
 
 import wicket.Session;
+import wicket.contrib.authorization.strategies.role.Roles;
 import wicket.protocol.http.WebSession;
 
 /**
@@ -49,7 +50,7 @@ public abstract class AuthenticatedWebSession
   /**
    * @return Get the roles that this session can play
    */
-  public abstract Class getRole();
+  public abstract Roles getRoles();
   
   /**
    * @return True if the user is signed in to this session

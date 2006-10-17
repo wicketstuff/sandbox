@@ -67,10 +67,9 @@ public abstract class AuthenticatedWebApplication extends WebApplication
    */
   public final boolean hasAnyRole(final Roles roles)
   {
-    Class role = AuthenticatedWebSession.get().getRole();
-    if (role==null)
+    Roles sessionRoles = AuthenticatedWebSession.get().getRoles();
+    if (sessionRoles==null)
       return false;
-    final Roles sessionRoles = new Roles(role);
     return sessionRoles.containsAny(roles);
   }
   

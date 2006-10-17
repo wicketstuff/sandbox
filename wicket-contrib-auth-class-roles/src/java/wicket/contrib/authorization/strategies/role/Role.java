@@ -31,6 +31,7 @@ public interface Role extends Serializable
    */
   public static interface EVERYONE extends Role
   {};
+  
   /**
    * Role for denying access to all. No user should ever be granted this role,
    * including the administrator.
