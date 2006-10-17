@@ -91,7 +91,7 @@ Wicket.SimpleDateFormat.prototype = {
 
 		var i = 0;
 		while (i < expr.length) {
-			var c = expr[i];
+			var c = expr.charAt(i);
 			
 			if ((c >= 'A'&& c <= 'Z') || (c >= 'a'&& c <= 'z')) {
 				var legal = (this.formatters[c] != undefined);
@@ -101,18 +101,18 @@ Wicket.SimpleDateFormat.prototype = {
     				throw("expression [["+expr+"]] contains an illegal character [["+c+"]] at position [["+i+"]]");
 				} else {
 					var start = i;
-					for (i;i<expr.length;i++) {
-						if (expr[i]!=c) break;
+					while (i<expr.length && expr.charAt(i)==c) {
+						i++;
 					}
-					tokens.push([c,i-start]);
+					tokens.push([c, i-start]);
 				}	
 			}
 			else if (c == '\'') {
 				var quote = "";
 				do {
-					quote += expr[i];
+					quote += expr.charAt(i);
 					i++;
-				} while (i < expr.length && expr[i] != '\'')
+				} while (i < expr.length && expr.charAt(i) != '\'')
 				
 				if (i == expr.length) {
 					throw("expression [["+expr+"]] contains an unclosed quote (')");
@@ -183,7 +183,7 @@ Wicket.SimpleDateFormat.prototype = {
 			if (token.length == 1) {
 				pos = this.parseString(str, pos, token);
 			} else {
-				var parser = this.parsers[token[0]]; 
+				var parser = this.parsers[token[0]];
 				pos = parser(str, pos, token[1], date);
 			}
 		}

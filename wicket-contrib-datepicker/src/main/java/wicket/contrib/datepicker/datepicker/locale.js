@@ -74,7 +74,7 @@ Wicket.DateLocale.prototype = {
 	
 	getShortWeekdayIterator : function() {
 		var i = new Wicket.WeekdayIterator(this);
-		i.nextItemFromLocale = eval("function() { this.nextItem = this.locale.getShortWeekday(this.dayNumber); }");
+		i.nextItemFromLocale = new Function("this.nextItem = this.locale.getShortWeekday(this.dayNumber)");
 		i.nextItemFromLocale();
 		return i;
 	}
