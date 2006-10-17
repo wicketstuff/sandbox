@@ -21,7 +21,6 @@ package wicket.contrib.jasperreports.examples;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
-
 import javax.servlet.ServletContext;
 
 import wicket.contrib.examples.WicketExamplePage;
@@ -32,29 +31,24 @@ import wicket.protocol.http.WebApplication;
 
 /**
  * Simple Jasper reports example with PDF output and a jasper reports panel..
- * 
+ *
  * @author Eelco Hillenius
+ * @author Justin Lee
  */
-public class SimplePdfPage extends WicketExamplePage
-{
-	/**
-	 * Constructor.
-	 */
-	public SimplePdfPage()
-	{
-		ServletContext context = ((WebApplication) getApplication()).getServletContext();
-		final File reportFile = new File(context.getRealPath("/reports/example.jasper"));
-		final Map parameters = new HashMap();
-		JRResource pdfResource = new JRPdfResource(reportFile).setReportParameters(
-				parameters).setReportDataSource(new ExampleDataSource());
-		new EmbeddedJRReport(this, "report", pdfResource);
-	}
+public class SimplePdfPage extends WicketExamplePage {
+    /**
+     * Constructor.
+     */
+    public SimplePdfPage() {
+        ServletContext context = ((WebApplication)getApplication()).getServletContext();
+        final File reportFile = new File(context.getRealPath("/reports/example.jrxml"));
+        final Map parameters = new HashMap();
+        new EmbeddedJRReport(this, "report", new JRPdfResource(reportFile).setReportParameters(parameters)
+            .setReportDataSource(new ExampleDataSource()));
+    }
 
-	/**
-	 * @see wicket.Component#isVersioned()
-	 */
-	public boolean isVersioned()
-	{
-		return false;
-	}
+    @Override
+    public boolean isVersioned() {
+        return false;
+    }
 }
