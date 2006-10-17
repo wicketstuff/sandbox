@@ -46,10 +46,9 @@ public final class Roles
   {}
   
   /**
-   * Construct.
+   * Creates a new instance of Roles.
    *
-   * @param role
-   *            Role
+   * @param role Role
    */
   public Roles(Class role)
   {
@@ -57,10 +56,9 @@ public final class Roles
   }
   
   /**
-   * Construct.
+   * Creates a new instance of Roles.
    *
-   * @param roles
-   *            Roles
+   * @param roles Roles
    */
   public Roles(final Class[] roles)
   {
@@ -69,10 +67,9 @@ public final class Roles
   }
   
   /**
-   * Construct.
+   * Creates a new instance of Roles.
    *
-   * @param roles
-   *            Roles
+   * @param roles Roles
    */
   public Roles(final Collection<Class> roles)
   {
@@ -82,8 +79,7 @@ public final class Roles
   /**
    * Whether this role contains the provided role.
    *
-   * @param role
-   *            the role to check
+   * @param role the role to check
    * @return true if it contains the role, false otherwise
    */
   public boolean contains(Object o)
@@ -108,8 +104,7 @@ public final class Roles
   /**
    * Whether this role contains all of the provided roles.
    *
-   * @param roles
-   *            the roles to check
+   * @param roles the roles to check
    * @return true if it contains all of the roles, false otherwise
    */
   public boolean containsAll(Collection<?> roles)
@@ -120,8 +115,7 @@ public final class Roles
   /**
    * Whether this role contains any of the provided roles.
    *
-   * @param roles
-   *            the roles to check
+   * @param roles the roles to check
    * @return true if it contains any of the roles, false otherwise
    */
   public boolean containsAny(Collection<?> roles)
@@ -176,7 +170,7 @@ public final class Roles
    * @see java.lang.Object#toString()
    */
   @Override
-    public String toString()
+  public String toString()
   {
     return StringList.valueOf(this).join();
   }
