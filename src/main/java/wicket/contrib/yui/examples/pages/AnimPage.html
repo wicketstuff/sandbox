@@ -13,13 +13,14 @@
 <!-- Example 1: Single option only -->
 <table>
 	<tr wicket:id="animGroupSingle">
-		<script type="text/javascript" wicket:id="init"></script>
-		<td wicket:id="animViewSingle">
-			<td wicket:id="animBoxSingle"></td>
-			<td wicket:id="animLabelSingle"></td>
-		</td>
 		<tr>
-			<input type="text" wicket:id="value" size="30"/>
+			<td wicket:id="animViewSingle">
+				<td wicket:id="animBoxSingle"></td>
+				<td wicket:id="animLabelSingle"></td>
+			</td>
+		</tr>
+		<tr>
+			<td colspan=6><input type="text" wicket:id="value" size="30"/></td>
 		</tr>
 	</tr>
 </table>
@@ -30,7 +31,6 @@
 <!-- Multiple Selection Example -->
 <table>
 	<td wicket:id="animGroupMultiple" >
-		<script type="text/javascript" wicket:id="init"></script>
 		<tr wicket:id="animViewMultiple">
 			<td wicket:id="animBoxMultiple"></td>
 			<td wicket:id="animLabelMultiple"></td>
