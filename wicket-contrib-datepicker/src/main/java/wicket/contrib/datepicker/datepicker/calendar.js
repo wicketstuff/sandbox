@@ -184,7 +184,7 @@ Wicket.Calendar.prototype = {
 	},
 
 	getEventHandler : function(method) {
-		return eval("function() {"+this.getInstanceJS()+"."+method+"}");
+		return new Function(this.getInstanceJS()+"."+method);
 	},
 
 	onPrevWeek : function() {
