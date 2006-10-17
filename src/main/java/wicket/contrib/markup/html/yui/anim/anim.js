@@ -81,11 +81,11 @@ function fn_removeSelection_${javaScriptId}(unselectedValue){
 function fnShow${boxId}_${javaScriptId}(elementId){
 	for(i=0; i<boxes${boxId}_${javaScriptId}.length; i++){
 		if(elementId == boxes${boxId}_${javaScriptId}[i]){
-			anim = new YAHOO.util.Anim(boxes${boxId}_${javaScriptId}[i], visible_${javaScriptId} , duration_${javaScriptId} , easing_${javaScriptId});
+			anim = new YAHOO.util.Anim(boxes${boxId}_${javaScriptId}[i], visible_${javaScriptId} , duration_${javaScriptId} , YAHOO.util.Easing.easing_${javaScriptId});
 			anim.animate();	
 		}
 		else{
-			anim = new YAHOO.util.Anim(boxes${boxId}_${javaScriptId}[i], invisible_${javaScriptId}, duration_${javaScriptId} , easing_${javaScriptId});
+			anim = new YAHOO.util.Anim(boxes${boxId}_${javaScriptId}[i], invisible_${javaScriptId}, duration_${javaScriptId} , YAHOO.util.Easing.easing_${javaScriptId});
 			anim.animate();
 		}
 	}	

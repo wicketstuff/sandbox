@@ -6,11 +6,11 @@ import java.util.Map;
 
 import wicket.AttributeModifier;
 import wicket.Component;
+import wicket.behavior.StringHeaderContributor;
 import wicket.extensions.util.resource.PackagedTextTemplate;
 import wicket.markup.ComponentTag;
 import wicket.markup.MarkupStream;
 import wicket.markup.html.WebMarkupContainer;
-import wicket.markup.html.basic.Label;
 import wicket.markup.html.form.FormComponent;
 import wicket.model.AbstractReadOnlyModel;
 
@@ -76,16 +76,6 @@ public class AnimGroup extends WebMarkupContainer {
 					}));
 		}
 		add(element);
-		
-		Label initialization = new Label("init", new AbstractReadOnlyModel() {
-			private static final long serialVersionUID = 1L;
-
-			public Object getObject(Component component) {
-				return getJavaScriptComponentInitializationScript();
-			}
-		});
-		initialization.setEscapeModelStrings(false);
-		add(initialization);
 	}
 
 	/**
@@ -98,7 +88,7 @@ public class AnimGroup extends WebMarkupContainer {
 				AnimGroup.class, "init.js");
 		Map<Object, Object> variables = new HashMap<Object, Object>(7);
 		variables.put("javaScriptId", javaScriptId);
-		variables.put("easing", "YAHOO.util.Easing." + easing);
+		variables.put("easing", "'"+easing+"'");
 		variables.put("duration", new Double(duration));
 		variables.put("maxSelection", new Integer(maxSelection));
 		variables.put("noOfBoxes", new Integer(animOptionList.size()));
@@ -114,6 +104,9 @@ public class AnimGroup extends WebMarkupContainer {
 	protected void onAttach() {
 		super.onAttach();
 		javaScriptId = getMarkupId();
+		
+		String js= "\n<script type=\"text/javascript\">" + getJavaScriptComponentInitializationScript() + "\n</script>\n";
+		add(new StringHeaderContributor(js));
 	}
 
 	/**
@@ -121,11 +114,6 @@ public class AnimGroup extends WebMarkupContainer {
 	 */
 	protected void onComponentTagBody(MarkupStream markupStream, ComponentTag openTag) {
 		super.onComponentTagBody(markupStream, openTag);		
-//		 StringBuffer buffer = new StringBuffer();
-//		 buffer.append("\n<script type=\"text/javascript\">")
-//		 .append(getJavaScriptComponentInitializationScript())
-//		 .append("\n</script>\n");
-//		 replaceComponentTagBody(markupStream, openTag, buffer.toString());
 	}
 
 	/**
