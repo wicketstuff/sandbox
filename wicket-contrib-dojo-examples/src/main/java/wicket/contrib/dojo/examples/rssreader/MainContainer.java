@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.StringTokenizer;
 
 import wicket.AttributeModifier;
+import wicket.MarkupContainer;
 import wicket.WicketRuntimeException;
 import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.list.ListItem;
@@ -22,9 +23,9 @@ public class MainContainer extends WebMarkupContainer
 	private final DescriptionPanel dp;
 	private String HTMLID;
 	
-	public MainContainer(String id, DescriptionPanel d) 
+	public MainContainer(MarkupContainer parent, String id, DescriptionPanel d) 
 	{
-		super(id);
+		super(parent, id);
 		String componentpath = removeColon(getPath());
 		this.HTMLID = "p_" + getId() + "_" + componentpath;
 		add(new AttributeModifier("id",true,new Model(this.HTMLID)));
@@ -114,24 +115,24 @@ public class MainContainer extends WebMarkupContainer
 				String feedUrl = ((String)iter.next());
 				if(feedUrl != null)
 				{
-					FeedContainer c = new FeedContainer("entryContainer", i , feedUrl, dp);
+					FeedContainer c = new FeedContainer(this, "entryContainer", i , feedUrl, dp);
 					feedList.add(c);
 				}
 				CompoundPropertyModel listModel = new CompoundPropertyModel(feedList);
 				
 				if(feedListView == null)
 				{
-					feedListView = new ListView("feeds", (IModel)listModel){
+					feedListView = new ListView(this, "feeds", (IModel)listModel){
 					  public void populateItem(final ListItem listItem)
 					  {
 
-						listItem.add((FeedContainer)listItem.getModelObject());
+                        // FIXME need to refactor the code for Wicket 2.0!!!
+						//listItem.add((FeedContainer)listItem.getModelObject());
 						
 					  }
 				  };
 					feedListView.setVersioned(false);
 					feedListView.setRenderBodyOnly(false);
-					add(feedListView);
 				} 
 				else
 				{

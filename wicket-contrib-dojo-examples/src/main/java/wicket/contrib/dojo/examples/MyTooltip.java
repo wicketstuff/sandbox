@@ -1,6 +1,7 @@
 package wicket.contrib.dojo.examples;
 
 import wicket.Component;
+import wicket.MarkupContainer;
 import wicket.contrib.markup.html.tooltip.TooltipPanel;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.image.Image;
@@ -11,17 +12,17 @@ public class MyTooltip extends TooltipPanel
 {
 	
 	//i want a default constructor with just a target and an id
-	public MyTooltip(Component target)
+	public MyTooltip(MarkupContainer parent, Component target)
 	{
-		super(target);
-		add(new Label("label", "tooltip.......!!!!"));
-		add(new Image("dogimg", new Model("dog.gif")));
+		super(parent, target);
+		new Label(this, "label", "tooltip.......!!!!");
+		new Image(this, "dogimg", new Model("dog.gif"));
 	}
 	
 	//and I want a constructor with an x, y and a model
-	public MyTooltip(IModel model, Component target, int x, int y)
+	public MyTooltip(MarkupContainer parent, IModel model, Component target, int x, int y)
 	{
-		super(model, target, x, y);
+		super(parent, model, target, x, y);
 		
 		String label1 = ((MyTooltipModel)getModelObject()).getLabel1();
 		if(label1 == null)
@@ -29,8 +30,8 @@ public class MyTooltip extends TooltipPanel
 			label1 = "this is a more static label";
 		}
 		
-		add(new Label("label", label1));
-		add(new Image("dogimg", new Model("dog.gif")));
+		new Label(this, "label", label1);
+		new Image(this, "dogimg", new Model("dog.gif"));
 	}
 
 }

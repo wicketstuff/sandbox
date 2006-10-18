@@ -3,6 +3,7 @@ package wicket.contrib.dojo.examples.rssreader;
 import java.util.StringTokenizer;
 
 import wicket.AttributeModifier;
+import wicket.MarkupContainer;
 import wicket.markup.ComponentTag;
 import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.basic.Label;
@@ -21,8 +22,8 @@ public class DescriptionPanel extends Panel{
 	private FullStoryLink link;
 	private Label title;
 	
-	public DescriptionPanel(String id, IModel model) {
-		super(id, model);
+	public DescriptionPanel(MarkupContainer parent, String id, IModel model) {
+		super(parent, id, model);
 		String componentpath = removeColon(getPath());
 
 		this.HTMLID = "p_" + getId() + "_" + componentpath;
@@ -37,18 +38,14 @@ public class DescriptionPanel extends Panel{
 		if(desc == null)
 		{
 			String description = ((DescriptionModel)getModelObject()).getDescription();		
-			desc = new MultiLineLabel("desc", new Model(description));
+			desc = new MultiLineLabel(this, "desc", new Model(description));
 			desc.setEscapeModelStrings(false);
-			add(desc);
 			
-			title = new Label("desctitle","");
-			add(title);
-			date = new Label("descdate","");
-			add(date);
+			title = new Label(this, "desctitle","");
+			date = new Label(this, "descdate","");
 			
-			link = new FullStoryLink("fulllink", new Model("#"));
+			link = new FullStoryLink(this, "fulllink", new Model("#"));
 			
-			add(link);
 		} else {
 			setModel(model);
 			String description = ((DescriptionModel)getModelObject()).getDescription();
@@ -89,8 +86,8 @@ public class DescriptionPanel extends Panel{
 	private class FullStoryLink extends WebMarkupContainer
 	{
 
-		public FullStoryLink(String id, IModel model) {
-			super(id);
+		public FullStoryLink(MarkupContainer parent, String id, IModel model) {
+			super(parent, id);
 			setModel(model);
 		}
 		protected void onComponentTag(ComponentTag tag)

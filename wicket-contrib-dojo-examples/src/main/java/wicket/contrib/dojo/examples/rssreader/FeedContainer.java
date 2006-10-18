@@ -8,6 +8,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
+import wicket.MarkupContainer;
 import wicket.contrib.dojo.DojoAjaxHandler;
 import wicket.contrib.dojo.autoupdate.DojoAutoUpdateHandler;
 import wicket.contrib.dojo.autoupdate.IUpdatable;
@@ -51,9 +52,9 @@ public class FeedContainer extends WebMarkupContainer implements IUpdatable
 	 * @param id Wicket Id
 	 * @param url url to rss feed.
 	 */
-	public FeedContainer(String id, int index, String url, DescriptionPanel dpanel)
+	public FeedContainer(MarkupContainer parent, String id, int index, String url, DescriptionPanel dpanel)
 	{
-		super(id);
+		super(parent, id);
 		this.url = url;
 		
 		this.index = index;
@@ -64,15 +65,13 @@ public class FeedContainer extends WebMarkupContainer implements IUpdatable
 		
 		if(!success)
 		{
-			feedTitle = new Label("ftitle", new Model("Feed Error!"));
+			feedTitle = new Label(this, "ftitle", new Model("Feed Error!"));
 			
-			add(feedTitle);
-			ListView l = new ListView("entries"){
+			ListView l = new ListView(this, "entries"){
 				public void populateItem(final ListItem listItem)
 				{
 				}
 			  };
-			add(l);
 		}
 
 
@@ -136,21 +135,19 @@ public class FeedContainer extends WebMarkupContainer implements IUpdatable
 				        
 						if(syndEntryListView == null)
 						{
-							syndEntryListView = new ListView("entries", (IModel)listModel){
+							syndEntryListView = new ListView(this, "entries", (IModel)listModel){
 							  public void populateItem(final ListItem listItem)
 							  {					
 								
-								listItem.add(new RSSItemPanel("item",(SyndEntryImpl)listItem.getModelObject(), dpanel));
+								new RSSItemPanel(listItem, "item",(SyndEntryImpl)listItem.getModelObject(), dpanel);
 							  }
 						  };
 							syndEntryListView.setVersioned(false);
 							syndEntryListView.setRenderBodyOnly(false);
 							
-							feedTitle = new Label("ftitle", new Model(title));
+							feedTitle = new Label(this, "ftitle", new Model(title));
 							
-							add(feedTitle);
 							
-							add(syndEntryListView);
 
 						} else
 						{

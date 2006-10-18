@@ -2,6 +2,7 @@ package wicket.contrib.dojo.examples.rssreader;
 
 import java.util.Date;
 
+import wicket.MarkupContainer;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.panel.Panel;
 
@@ -15,16 +16,16 @@ public class RSSItemPanel extends Panel{
 	private Date publishedDate;
 	private DescriptionPanel dPanel;
 	
-	public RSSItemPanel(String id, SyndEntryImpl entry, DescriptionPanel dpanel) {
-		super(id);
+	public RSSItemPanel(MarkupContainer parent, String id, SyndEntryImpl entry, DescriptionPanel dpanel) {
+		super(parent,id);
 
 		this.title = entry.getTitle();
 		this.Description = entry.getDescription().getValue();
 		this.publishedDate = entry.getPublishedDate();
 		this.link = entry.getLink();
 		this.dPanel = dpanel;
-		add(new Label("date",getPublishedDate().toString()));
-		add(new Label("title",getTitle()));
+		new Label(this, "date",getPublishedDate().toString());
+		new Label(this, "title",getTitle());
 		add(new DescriptionUpdateHandler());
 	}
 
