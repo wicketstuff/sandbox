@@ -102,25 +102,25 @@ public class DojoFXTestPage extends WebPage{
 	
 	public DojoFXTestPage(PageParameters parameters)
 	{
-		add(new Image("topimg", new Model("menu-top.gif") ));
-		add(menuItem1 = new Label("menuitem1", new Model("About")));
-		add(menuItem2 = new Label("menuitem2", new Model("Documentation")));
-		add(menuItem3 = new Label("menuitem3", new Model("Tutorials")));
+		new Image(this,"topimg", new Model("menu-top.gif"));
+		menuItem1 = new Label(this, "menuitem1", new Model("About"));
+		menuItem2 = new Label(this, "menuitem2", new Model("Documentation"));
+		menuItem3 = new Label(this, "menuitem3", new Model("Tutorials"));
 		
 		
-		add(submenu1 = new WebMarkupContainer("submenu1"));
-		add(submenu2 = new WebMarkupContainer("submenu2"));
-		add(submenu3 = new WebMarkupContainer("submenu3"));
+		submenu1 = new WebMarkupContainer(this, "submenu1");
+		submenu2 = new WebMarkupContainer(this, "submenu2");
+		submenu3 = new WebMarkupContainer(this, "submenu3");
 		
-		submenu1.add(submenu11 = new Label("submenu11", new Model("About us")));
-		submenu2.add(submenu21 = new Label("submenu21", new Model("JavaDoc")));
-		submenu3.add(submenu31 = new Label("submenu31", new Model("Tutorial 1")));
-		submenu3.add(submenu32 = new Label("submenu32", new Model("Tutoral 2")));
-		submenu3.add(submenu31x = new WebMarkupContainer("submenu31x"));
-		submenu31x.add(submenu311 = new Label("submenu311","Part 1. Basics"));
-		submenu31x.add(submenu312 = new Label("submenu312","Part 2. Bloody complicated"));
+		submenu11 = new Label(submenu1, "submenu11", new Model("About us"));
+		submenu21 = new Label(submenu2, "submenu21", new Model("JavaDoc"));
+		submenu31 = new Label(submenu3, "submenu31", new Model("Tutorial 1"));
+		submenu32 = new Label(submenu3, "submenu32", new Model("Tutoral 2"));
+		submenu31x = new WebMarkupContainer(submenu3, "submenu31x");
+		submenu311 = new Label(submenu31x, "submenu311","Part 1. Basics");
+		submenu312 = new Label(submenu31x, "submenu312","Part 2. Bloody complicated");
 		
-		add(new Image("bottomimg", new Model("menu-bottom.gif") ));
+		new Image(this, "bottomimg", new Model("menu-bottom.gif"));
 		
 		submenu1.add(new FXOnClickWiper(duration, menuItem1));
 		submenu2.add(new FXOnClickWiper(duration, menuItem2));
@@ -128,54 +128,54 @@ public class DojoFXTestPage extends WebPage{
 		submenu31x.add(new FXOnClickWiper(duration, submenu31));
 		
 		
-		add(table1 = new WebMarkupContainer("cdinfo"));
-		table1.add(new Label("title", new Model("Hello nasty")));
-		table1.add(explodeimg = new Image("explodeimg", "hello_nasty_small.jpg"));
-		table1.add(new Label("artist", new Model("Beasty boys")));
-		table1.add(new Label("year", new Model("1998")));
-		table1.add(new Label("genre", new Model("Hip Hop")));
+		table1 = new WebMarkupContainer(this, "cdinfo");
+		new Label(table1, "title", new Model("Hello nasty"));
+		explodeimg = new Image(table1, "explodeimg", "hello_nasty_small.jpg");
+		new Label(table1, "artist", new Model("Beasty boys"));
+		new Label(table1, "year", new Model("1998"));
+		new Label(table1, "genre", new Model("Hip Hop"));
 		
 		
-		add(table2 = new WebMarkupContainer("infotable"));
-		table2.add(explodedimg = new Image("explodedimg", "hello_nasty.jpg"));
-		table2.add(close = new Label("close", new Model("(X)")));
+		table2 = new WebMarkupContainer(this, "infotable");
+		explodedimg = new Image(table2, "explodedimg", "hello_nasty.jpg");
+		close = new Label(table2, "close", new Model("(X)"));
 		FXOnClickExploder d = new FXOnClickExploder(duration, explodeimg);
 		table2.add(d);
 		d.addTrigger(close);
 		
 		//slidertest
-		add(slidetrigger = new Label("slidetrigger","click here to slide relative"));
-		add(sliderdiv = new Label("sliderdiv","I'm sliding by! I'm sliding by!"));
+		slidetrigger = new Label(this, "slidetrigger","click here to slide relative");
+		sliderdiv = new Label(this, "sliderdiv","I'm sliding by! I'm sliding by!");
 		sliderdiv.add(new FXOnClickSlider(duration, slidetrigger, 200, 200, true));
 		
-		add(slidetrigger2 = new Label("slidetrigger2","click here to slide absolute"));
-		add(sliderdiv2 = new Label("sliderdiv2","I'm sliding to! I'm sliding to!"));
+		slidetrigger2 = new Label(this, "slidetrigger2","click here to slide absolute");
+		sliderdiv2 = new Label(this, "sliderdiv2","I'm sliding to! I'm sliding to!");
 		sliderdiv2.add(new FXOnClickSlider(duration, slidetrigger2, 500, 500, false));
 		
-		add(slidetrigger3 = new Label("slidetrigger3","click here to slide fromto"));
-		add(sliderdiv3 = new Label("sliderdiv3","I'm sliding fromto! I'm sliding fromto!"));
+		slidetrigger3 = new Label(this, "slidetrigger3","click here to slide fromto");
+		sliderdiv3 = new Label(this, "sliderdiv3","I'm sliding fromto! I'm sliding fromto!");
 		sliderdiv3.add(new FXOnClickSlider(duration, slidetrigger3, 500, 500, 700, 700));
 	
 		//Fadertest
 		
-		add(imagecontainer = new WebMarkupContainer("imgcontainer"));
-		imagecontainer.add(pic1 = new Image("pic1", "pic1.jpg"));
-		imagecontainer.add(pic2 = new Image("pic2", "pic2.jpg"));
-		imagecontainer.add(pic3 = new Image("pic3", "pic3.jpg"));
-		imagecontainer.add(pic4 = new Image("pic4", "pic4.jpg"));
-		imagecontainer.add(pic5 = new Image("pic5", "pic5.jpg"));
+		imagecontainer = new WebMarkupContainer(this, "imgcontainer");
+		pic1 = new Image(imagecontainer, "pic1", "pic1.jpg");
+		pic2 = new Image(imagecontainer, "pic2", "pic2.jpg");
+		pic3 = new Image(imagecontainer, "pic3", "pic3.jpg");
+		pic4 = new Image(imagecontainer, "pic4", "pic4.jpg");
+		pic5 = new Image(imagecontainer, "pic5", "pic5.jpg");
 		pic1.add(new FXOnMouseOverFader(duration, pic1, false, 0.2, 1.0));
 		pic2.add(new FXOnMouseOverFader(duration, pic2, false, 0.2, 1.0));
 		pic3.add(new FXOnMouseOverFader(duration, pic3, false, 0.2, 1.0));
 		pic4.add(new FXOnMouseOverFader(duration, pic4, false, 0.2, 1.0));
 		pic5.add(new FXOnMouseOverFader(duration, pic5, false, 0.2, 1.0));
 		
-		add(menubar = new WebMarkupContainer("menubar"));
-		menubar.add(filemenu = new Label("filemenu", new Model("File")));
-		menubar.add(editmenu = new Label("editmenu", new Model("Edit")));
-		menubar.add(viewmenu = new Label("viewmenu", new Model("View")));
-		menubar.add(insertmenu = new Label("insertmenu", new Model("Insert")));
-		menubar.add(modifymenu = new Label("modifymenu", new Model("Modify")));
+		menubar = new WebMarkupContainer(this, "menubar");
+		filemenu = new Label(menubar, "filemenu", new Model("File"));
+		editmenu = new Label(menubar, "editmenu", new Model("Edit"));
+		viewmenu = new Label(menubar, "viewmenu", new Model("View"));
+		insertmenu = new Label(menubar, "insertmenu", new Model("Insert"));
+		modifymenu = new Label(menubar, "modifymenu", new Model("Modify"));
 		filemenu.add(new FXOnMouseOverHighlighter(200, filemenu, 255,102,0));
 		editmenu.add(new FXOnMouseOverHighlighter(200, editmenu, 255,102,0));
 		viewmenu.add(new FXOnMouseOverHighlighter(200, viewmenu, 255,102,0));
@@ -183,37 +183,46 @@ public class DojoFXTestPage extends WebPage{
 		modifymenu.add(new FXOnMouseOverHighlighter(200, modifymenu, 255,102,0));
 		
 		//menu2 example
-		menu2 = new WebMarkupContainer("menu2");
-		menuhead = new WebMarkupContainer("menuhead");
-		menutitle = new Label("menutitle","File menu");
-		menutoggle = new Label("menutoggle","(±)");
-		menubody = new WebMarkupContainer("menubody");
-		item1 = new WebMarkupContainer("item1");
-		item1label = new Label("item1label","Move file");
-		item2 = new WebMarkupContainer("item2");
-		item2label = new Label("item2label","Rename file");
-		item3 = new WebMarkupContainer("item3");
-		item3label = new Label("item3label","Mail file");
-		item4 = new WebMarkupContainer("item4");
-		item4label = new Label("item4label","Copy file");
-		item5 = new WebMarkupContainer("item5");
-		item5label = new Label("item5label","Print file");
+		menu2 = new WebMarkupContainer(this, "menu2");
+		menuhead = new WebMarkupContainer(menu2, "menuhead");
+		menutitle = new Label(menuhead, "menutitle","File menu");
+		menutoggle = new Label(menuhead, "menutoggle","(±)");
+		menubody = new WebMarkupContainer(menu2, "menubody");
+		item1 = new WebMarkupContainer(menubody, "item1");
+		item1label = new Label(item1, "item1label","Move file");
+		new Image(item1, "item1img", new Model("move.jpg"));
+		item2 = new WebMarkupContainer(menubody, "item2");
+		item2label = new Label(item2, "item2label","Rename file");
+		new Image(item2, "item2img", new Model("rename.gif"));
+		item3 = new WebMarkupContainer(menubody, "item3");
+		item3label = new Label(item3, "item3label","Mail file");
+		new Image(item3, "item3img", new Model("mail.jpg"));
+		item4 = new WebMarkupContainer(menubody, "item4");
+		item4label = new Label(item4, "item4label","Copy file");
+		new Image(item4, "item4img", new Model("copy.jpg"));
+		item5 = new WebMarkupContainer(menubody, "item5");
+		item5label = new Label(item5, "item5label","Print file");
+		new Image(item5, "item5img", new Model("print.jpg")); 
 
 		
 		//menu3
-		menu3 = new WebMarkupContainer("menu3");
-		menu3head = new WebMarkupContainer("menu3head");
-		menu3title = new Label("menu3title","Other places");
-		menu3toggle = new Label("menu3toggle","(±)");
-		menu3body = new WebMarkupContainer("menu3body");
-		item13 = new WebMarkupContainer("item13");
-		item1label3 = new Label("item1label3","Notulen");
-		item23 = new WebMarkupContainer("item23");
-		item2label3 = new Label("item2label3","My Documents");
-		item33 = new WebMarkupContainer("item33");
-		item3label3 = new Label("item3label3","My Computer");
-		item43 = new WebMarkupContainer("item43");
-		item4label3 = new Label("item4label3","My Network places");
+		menu3 = new WebMarkupContainer(this, "menu3");
+		menu3head = new WebMarkupContainer(menu3, "menu3head");
+		menu3title = new Label(menu3head, "menu3title","Other places");
+		menu3toggle = new Label(menu3head, "menu3toggle","(±)");
+		menu3body = new WebMarkupContainer(menu3, "menu3body");
+		item13 = new WebMarkupContainer(menu3body, "item13");
+		item1label3 = new Label(item13, "item1label3","Notulen");
+		new Image(item13, "item1img3", new Model("Notulen.jpg"));
+		item23 = new WebMarkupContainer(menu3body, "item23");
+		item2label3 = new Label(item23, "item2label3","My Documents");
+		new Image(item23, "item2img3", new Model("documents.jpg"));
+		item33 = new WebMarkupContainer(menu3body, "item33");
+		item3label3 = new Label(item33, "item3label3","My Computer");
+		new Image(item33, "item3img3", new Model("myComputer.jpg"));
+		item43 = new WebMarkupContainer(menu3body, "item43");
+		item4label3 = new Label(item43, "item4label3","My Network places");
+		new Image(item43, "item4img3", new Model("network.jpg"));
 
 		
 		//images
@@ -222,51 +231,9 @@ public class DojoFXTestPage extends WebPage{
 		//wiper + fader
 		menubody.add(new FXOnClickWiper(250, menutoggle, true));
 		menubody.add(new FXOnClickFader(250, menutoggle, true));
-		
-		
-		
-		add(menu2);
-		 menu2.add(menuhead);
-		  menuhead.add(menutitle);
-		  menuhead.add(menutoggle);
-		 menu2.add(menubody);
-		  menubody.add(item1);
-		   item1.add(item1label);
-		   item1.add(new Image("item1img", new Model("move.jpg")));
-		  menubody.add(item2);
-		   item2.add(item2label);
-		   item2.add(new Image("item2img", new Model("rename.gif")));
-		  menubody.add(item3);
-		   item3.add(item3label);
-		   item3.add(new Image("item3img", new Model("mail.jpg")));
-		  menubody.add(item4);
-		   item4.add(item4label);
-		   item4.add(new Image("item4img", new Model("copy.jpg")));
-		  menubody.add(item5);
-		   item5.add(item5label);
-		   item5.add(new Image("item5img", new Model("print.jpg")));
-		   
-		   //menu3
-			add(menu3);
-			 menu3.add(menu3head);
-			  menu3head.add(menu3title);
-			  menu3head.add(menu3toggle);
-			 menu3.add(menu3body);
-			  menu3body.add(item13);
-			   item13.add(item1label3);
-			   item13.add(new Image("item1img3", new Model("Notulen.jpg")));
-			  menu3body.add(item23);
-			   item23.add(item2label3);
-			   item23.add(new Image("item2img3", new Model("documents.jpg")));
-			  menu3body.add(item33);
-			   item33.add(item3label3);
-			   item33.add(new Image("item3img3", new Model("myComputer.jpg")));
-			  menu3body.add(item43);
-			   item43.add(item4label3);
-			   item43.add(new Image("item4img3", new Model("network.jpg")));
 			  
-			menu3body.add(new FXOnClickWiper(250, menu3toggle, true));
-			menu3body.add(new FXOnClickFader(250, menu3toggle, true));
+		menu3body.add(new FXOnClickWiper(250, menu3toggle, true));
+		menu3body.add(new FXOnClickFader(250, menu3toggle, true));
 	}
 	
 }

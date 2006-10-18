@@ -1,18 +1,14 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>wicket-contrib-dojo-examples</name>
-	<comment>Quickstart project for the Wicket framework. This project will get you up and running using Jetty as a servlet container and web server. This will allow you to quickly start developing your first &lt;a href=&quot;http://wicket.sourceforge.net&quot;&gt;Wicket&lt;/a&gt; application.</comment>
-	<projects>
-	</projects>
-	<buildSpec>
-		<buildCommand>
-			<name>org.eclipse.jdt.core.javabuilder</name>
-			<arguments>
-			</arguments>
-		</buildCommand>
-	</buildSpec>
-	<natures>
-		<nature>org.eclipse.jdt.core.javanature</nature>
-		<nature>com.sysdeo.eclipse.tomcat.tomcatnature</nature>
-	</natures>
+  <name>wicket-contrib-dojo-examples</name>
+  <comment>An integration project for the Ajax JavaScript library Dojo. This project provides the basic AjaxHandler for DOJO processing at the serverside, and Dojo/Wicket components.</comment>
+  <projects/>
+  <buildSpec>
+    <buildCommand>
+      <name>org.eclipse.jdt.core.javabuilder</name>
+      <arguments/>
+    </buildCommand>
+  </buildSpec>
+  <natures>
+    <nature>org.eclipse.jdt.core.javanature</nature>
+  </natures>
 </projectDescription>

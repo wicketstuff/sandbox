@@ -2,6 +2,7 @@ package wicket.contrib.dojo.examples.rssreader;
 
 
 
+import wicket.MarkupContainer;
 import wicket.contrib.dojo.examples.AutoUpdatePage2;
 import wicket.contrib.markup.html.tooltip.SimpleTooltip;
 import wicket.contrib.markup.html.tooltip.Tooltip;
@@ -20,11 +21,11 @@ public class AddPanel extends Panel{
 
 	private final MainContainer main;
 	
-	public AddPanel(String id, String title,String url, String imgpath,  MainContainer main) {
-		super(id);
+	public AddPanel(MarkupContainer parent, String id, String title,String url, String imgpath,  MainContainer main) {
+		super(parent, id);
 		this.main = main;
-		add(new Image("addimg", new Model(imgpath)));
-		add(new Tooltip("addtooltip", new SimpleTooltip(this, title)));
+		new Image(this, "addimg", new Model(imgpath));
+		new Tooltip(this, "addtooltip", new SimpleTooltip(this, this, title));
 		AddFeedHandler afh = new AddFeedHandler(url);
 		add(afh);
 		
