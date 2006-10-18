@@ -3,11 +3,9 @@ package wicket.contrib.markup.html.yui.sort;
 import java.util.HashMap;
 import java.util.Map;
 
-import wicket.Component;
+import wicket.behavior.StringHeaderContributor;
 import wicket.extensions.util.resource.PackagedTextTemplate;
 import wicket.markup.html.WebMarkupContainer;
-import wicket.markup.html.basic.Label;
-import wicket.model.AbstractReadOnlyModel;
 
 public class SortGroup extends WebMarkupContainer {
 	private static final long serialVersionUID = 1L;
@@ -19,17 +17,6 @@ public class SortGroup extends WebMarkupContainer {
 	public SortGroup(String id, SortSettings settings) {
 		super(id);
 		this.mode = settings.getMode();
-
-		Label initialization = new Label("init", new AbstractReadOnlyModel() {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public Object getObject(Component component) {
-				return getJavaScriptComponentInitializationScript();
-			}
-		});
-		initialization.setEscapeModelStrings(false);
-		add(initialization);
 	}
 
 	protected String getJavaScriptComponentInitializationScript() {
@@ -46,5 +33,8 @@ public class SortGroup extends WebMarkupContainer {
 	protected void onAttach() {
 		super.onAttach();
 		javaScriptId = getMarkupId();
+		
+		String js= "\n<script type=\"text/javascript\">" + getJavaScriptComponentInitializationScript() + "\n</script>\n";
+		add(new StringHeaderContributor(js));
 	}
 }

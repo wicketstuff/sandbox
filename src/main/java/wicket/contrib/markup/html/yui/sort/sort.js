@@ -1,1 +1,3 @@
-var dd_${childJavaScriptId}_${id} = new YAHOO.example.DDSwap${isIntersect}(${classId} ${groupId});
+var dd${id}_${javaScriptId} = new YAHOO.example.DDSwap${isIntersect}(${classId} , ${groupId});
+
+YAHOO.util.Event.addListener("dd${id}_${javaScriptId}", "mouseover", fn_${javaScriptId});

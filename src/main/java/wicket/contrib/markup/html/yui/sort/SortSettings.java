@@ -10,16 +10,10 @@ import wicket.contrib.ImageResourceInfo;
 import wicket.contrib.InlineStyle;
 import wicket.contrib.YuiImage;
 
-/**
- * Allows the user to define the sort settings
- * 
- * @author cptan
- * 
- */
 public class SortSettings implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	public static SortSettings getDefault(String mode, ArrayList sortList) {
+	public static SortSettings getDefault(String mode, List<YuiImage> sortList) {
 		SortSettings settings = new SortSettings();
 		settings.setResources(mode, sortList);
 		return settings;
@@ -31,7 +25,7 @@ public class SortSettings implements Serializable {
 
 	private String mode;
 
-	private ArrayList sortList;
+	private List<YuiImage> sortList;
 
 	private int width;
 
@@ -50,7 +44,7 @@ public class SortSettings implements Serializable {
 		return mode;
 	}
 
-	public ArrayList getSortList() {
+	public List<YuiImage> getSortList() {
 		return sortList;
 	}
 
@@ -62,7 +56,7 @@ public class SortSettings implements Serializable {
 		this.height = height;
 	}
 
-	public void setImageResources(ArrayList sortList) {
+	public void setImageResources(List<YuiImage> sortList) {
 		for (int i = sortList.size() - 1; i >= 0; i--) {
 			YuiImage img = (YuiImage) sortList.get(i);
 
@@ -79,8 +73,8 @@ public class SortSettings implements Serializable {
 			imgStyle.add("width", imgWidth + "px");
 			imgStyle.add("height", imgHeight + "px");
 
-			imgStyle.add("top", img.getSortTop() + "px");
-			imgStyle.add("left", img.getSortLeft() + "px");
+			imgStyle.add("top", img.getTop() + "px");
+			imgStyle.add("left", img.getLeft() + "px");
 
 			imgStyleList.add(imgStyle);
 
@@ -97,13 +91,13 @@ public class SortSettings implements Serializable {
 		this.mode = mode;
 	}
 
-	public void setResources(String mode, ArrayList sortList) {
+	public void setResources(String mode, List<YuiImage> sortList) {
 		setMode(mode);
 		setSortList(sortList);
 		setImageResources(sortList);
 	}
 
-	public void setSortList(ArrayList sortList) {
+	public void setSortList(List<YuiImage> sortList) {
 		this.sortList = sortList;
 	}
 
