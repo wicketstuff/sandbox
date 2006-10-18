@@ -89,7 +89,7 @@ public class FXTooltipFeedbackPanel extends Panel implements IFeedback
 				}
 			};
 
-			final Label label = new Label(listItem, "message", message.getMessage());
+			final Label label = new Label(listItem, "message", message.getMessage().toString());
 			label.setEscapeModelStrings(getEscapeMessages());
 			final AttributeModifier levelModifier = new AttributeModifier("class", replacementModel);
 			label.add(levelModifier);
