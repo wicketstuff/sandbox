@@ -1,6 +1,7 @@
 package wicket.contrib.yui.examples.pages;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import wicket.contrib.YuiImage;
 import wicket.contrib.YuiSortConstants;
@@ -15,75 +16,80 @@ public class SortPage extends WicketExamplePage{
 	public SortPage(){	
 		
 		/**
-		 * Need to be able to retrieve the value of the sort list?
-		 * how to define the sequence of the value?
+		 * Example A: Intersect Mode
 		 */
 		
-		/**
-		 * How to add two or more sets?
-		 */
+		YuiImage blueA = new YuiImage("style/blue.bmp", "blue");  
+		blueA.setTop(150);
+		blueA.setLeft(80);
 		
-		/**
-		 * How to activate the mode?
-		 * The mode should not be a shared variable
-		 */
+		YuiImage greenA = new YuiImage("style/green.bmp", "green"); 
+		greenA.setTop(150);
+		greenA.setLeft(195);
 		
-		/**
-		POINT
-		dd1 = new YAHOO.example.DDSwap("1", "A Group");
-		dd2 = new YAHOO.example.DDSwap("1", "A Group");
-		dd3 = new YAHOO.example.DDSwap("1", "A Group");
-		dd4 = new YAHOO.example.DDSwap("1", "A Group");
+		YuiImage pinkA = new YuiImage("style/pink.bmp", "pink"); 
+		pinkA.setTop(150);
+		pinkA.setLeft(305);
 		
-		How to indicate that INTERSECT A and INTERSECT B are not a group?
+		YuiImage yellowA = new YuiImage("style/yellow.bmp", "yellow"); 
+		yellowA.setTop(150);
+		yellowA.setLeft(415);
 
-		INTERSECT A
-		dd1 = new YAHOO.example.DDSwap_i("1");
-		dd2 = new YAHOO.example.DDSwap_i("1");
-
-		INTERSECT B
-		dd3 = new YAHOO.example.DDSwap_i("1");
-		dd4 = new YAHOO.example.DDSwap_i("1");
-
-		Need to group myself??
-		*/
-
+		final List<YuiImage> sortListA= new ArrayList<YuiImage>();
+		sortListA.add(blueA);
+		sortListA.add(greenA);
+		sortListA.add(pinkA);
+		sortListA.add(yellowA);
 		
-		/**
-		 * Should the top and left position of the image be defined this way?
-		 */
-		YuiImage blue = new YuiImage("style/blue.bmp"); 
-		blue.setSortTop(150);
-		blue.setSortLeft(80);
-		
-		YuiImage green = new YuiImage("style/green.bmp"); 
-		green.setSortTop(150);
-		green.setSortLeft(195);
-		
-		YuiImage pink = new YuiImage("style/pink.bmp"); 
-		pink.setSortTop(150);
-		pink.setSortLeft(305);
-		
-		YuiImage yellow = new YuiImage("style/yellow.bmp"); 
-		yellow.setSortTop(150);
-		yellow.setSortLeft(415);
-
-		final ArrayList sortList= new ArrayList();
-		sortList.add(blue);
-		sortList.add(green);
-		sortList.add(pink);
-		sortList.add(yellow);
-		
-		final SortSettings settings = SortSettings.getDefault(YuiSortConstants.INTERSECT, sortList);
-		SortGroup sortGroup= new SortGroup("sortGroup", settings);
-		add(sortGroup);
+		final SortSettings settingsA = SortSettings.getDefault(YuiSortConstants.INTERSECT, sortListA);
+		SortGroup sortGroupA= new SortGroup("sortGroupA", settingsA);
+		add(sortGroupA);
 	
-		ListView sortListView= new ListView("sortListView", sortList){
+		ListView sortListViewA= new ListView("sortListViewA", sortListA){
 			protected void populateItem(ListItem item) {
-				YuiImage image= (YuiImage) item.getModelObject();
-				item.add(new SortBox("sortBox", item.getIndex(), image, settings));
+				YuiImage imageA= (YuiImage) item.getModelObject();
+				item.add(new SortBox("sortBoxA", item.getIndex(), imageA, settingsA));
 			};
 		};
-		sortGroup.add(sortListView);
+		sortGroupA.add(sortListViewA);
+		
+		
+		/**
+		 * Example B: Point Mode
+		 */
+		
+		YuiImage blueB = new YuiImage("style/blue.bmp", "blue"); 
+		blueB.setTop(300);
+		blueB.setLeft(80);
+		
+		YuiImage greenB = new YuiImage("style/green.bmp", "green"); 
+		greenB.setTop(300);
+		greenB.setLeft(195);
+		
+		YuiImage pinkB = new YuiImage("style/pink.bmp", "pink"); 
+		pinkB.setTop(300);
+		pinkB.setLeft(305);
+		
+		YuiImage yellowB = new YuiImage("style/yellow.bmp", "yellow"); 
+		yellowB.setTop(300);
+		yellowB.setLeft(415);
+
+		final List<YuiImage> sortListB= new ArrayList<YuiImage>();
+		sortListB.add(blueB);
+		sortListB.add(greenB);
+		sortListB.add(pinkB);
+		sortListB.add(yellowB);
+		
+		final SortSettings settingsB = SortSettings.getDefault(YuiSortConstants.POINT, sortListB);
+		SortGroup sortGroupB= new SortGroup("sortGroupB", settingsB);
+		add(sortGroupB);
+	
+		ListView sortListViewB= new ListView("sortListViewB", sortListB){
+			protected void populateItem(ListItem item) {
+				YuiImage imageB= (YuiImage) item.getModelObject();
+				item.add(new SortBox("sortBoxB", item.getIndex(), imageB, settingsB));
+			};
+		};
+		sortGroupB.add(sortListViewB);
 	}	
 }
