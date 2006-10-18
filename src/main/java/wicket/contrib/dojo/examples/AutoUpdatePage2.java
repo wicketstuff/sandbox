@@ -46,56 +46,40 @@ public class AutoUpdatePage2 extends WebPage {
 	{
 		
 				
-		loading = new Label("loading", new Model("Loading......"));
+		loading = new Label(this, "loading", new Model("Loading......"));
 		loading.add(new AttributeModifier("id", true, new Model("loading_node")));
-		add(loading);
 			
-		WebMarkupContainer wmc = new WebMarkupContainer("temp");
+		WebMarkupContainer wmc = new WebMarkupContainer(this, "temp");
 		DescriptionModel dmodel = new DescriptionModel("Click a news item to view it's description.");
-		dpanel = new DescriptionPanel("dpanel", new CompoundPropertyModel(dmodel));
-		wmc.add(dpanel);
-		add(wmc);
+		dpanel = new DescriptionPanel(wmc, "dpanel", new CompoundPropertyModel(dmodel));
 		
-		MainContainer main = new MainContainer("mainContainer", dpanel);
+		MainContainer main = new MainContainer(this, "mainContainer", dpanel);
 
 		main.addFeed("http://www.nu.nl/deeplink_rss2/index.jsp?r=Algemeen");
 		main.addFeed("http://thedailywtf.com/rss.aspx");
 		main.addFeed("http://slashdot.org/index.rss");
 		main.addFeed("http://www.engadget.com/rss.xml");
 		
-		add(main);
 		
-		RadioChoice rc = new ImmediateRadioChoice("feedPicker", new PropertyModel(AutoUpdatePage2.this, "feedPicker"),NUMBERS).setSuffix("");
+		RadioChoice rc = new ImmediateRadioChoice(this, "feedPicker", new PropertyModel(AutoUpdatePage2.this, "feedPicker"),NUMBERS).setSuffix("");
 		rc.setLabel(new Model("Position to add feed"));
-		add(rc);
 
-		addPanel1 = new AddPanel("addPanel1", "BBC","http://news.bbc.co.uk/rss/newsonline_uk_edition/front_page/rss091.xml","img/bbc.gif", main); 
-		addPanel2 = new AddPanel("addPanel2", "New York Times","http://www.nytimes.com/services/xml/rss/userland/HomePage.xml","img/NYTimes.gif", main);
-		addPanel3 = new AddPanel("addPanel3", "EnGadget","http://www.engadget.com/rss.xml","img/engadget.gif", main);
-		addPanel4 = new AddPanel("addPanel4", "Reuters","http://www.microsite.reuters.com/rss/topNews","img/reuters.gif", main);
-		addPanel5 = new AddPanel("addPanel5", "Slashdot","http://slashdot.org/index.rss","img/slashdot.gif", main);
-		addPanel6 = new AddPanel("addPanel6", "Yahoo Entertainment","http://rss.news.yahoo.com/rss/entertainment","img/yahoo.gif", main);
-		addPanel7 = new AddPanel("addPanel7", "The Daily WTF","http://thedailywtf.com/rss.aspx","img/dwtf.gif", main);
-		addPanel8 = new AddPanel("addPanel8", "Kotaku","http://feeds.gawker.com/kotaku/full","img/kotaku.gif", main);
+		addPanel1 = new AddPanel(this, "addPanel1", "BBC","http://news.bbc.co.uk/rss/newsonline_uk_edition/front_page/rss091.xml","img/bbc.gif", main); 
+		addPanel2 = new AddPanel(this, "addPanel2", "New York Times","http://www.nytimes.com/services/xml/rss/userland/HomePage.xml","img/NYTimes.gif", main);
+		addPanel3 = new AddPanel(this, "addPanel3", "EnGadget","http://www.engadget.com/rss.xml","img/engadget.gif", main);
+		addPanel4 = new AddPanel(this, "addPanel4", "Reuters","http://www.microsite.reuters.com/rss/topNews","img/reuters.gif", main);
+		addPanel5 = new AddPanel(this, "addPanel5", "Slashdot","http://slashdot.org/index.rss","img/slashdot.gif", main);
+		addPanel6 = new AddPanel(this, "addPanel6", "Yahoo Entertainment","http://rss.news.yahoo.com/rss/entertainment","img/yahoo.gif", main);
+		addPanel7 = new AddPanel(this, "addPanel7", "The Daily WTF","http://thedailywtf.com/rss.aspx","img/dwtf.gif", main);
+		addPanel8 = new AddPanel(this, "addPanel8", "Kotaku","http://feeds.gawker.com/kotaku/full","img/kotaku.gif", main);
 		
-		
-		add(addPanel1);
-		add(addPanel2);
-		add(addPanel3);
-		add(addPanel4);
-		add(addPanel5);
-		add(addPanel6);
-		add(addPanel7);
-		add(addPanel8);
-		
-		Image about = new Image("about", new Model("img/AboutButton.gif"));
-		add(about);
+		Image about = new Image(this, "about", new Model("img/AboutButton.gif"));
 		WebMarkupContainer table2;
 		Image close;
-		add(table2 = new WebMarkupContainer("abouttable"));
+		table2 = new WebMarkupContainer(this, "abouttable");
 
-		table2.add(new Image("aboutimg", "img/DojoLogo2.gif"));
-		table2.add(close = new Image("close", new Model("img/close.gif")));
+		new Image(table2, "aboutimg", "img/DojoLogo2.gif");
+		close = new Image(table2, "close", new Model("img/close.gif"));
 		FXOnClickExploder d = new FXOnClickExploder(400, about);
 		table2.add(d);
 		d.addTrigger(close);

@@ -1,12 +1,12 @@
 package wicket.contrib.dojo.examples.rssreader;
 
-import wicket.Application;
 import wicket.Component;
 import wicket.RequestCycle;
+import wicket.ResourceReference;
 import wicket.Response;
 import wicket.behavior.AbstractAjaxBehavior;
 import wicket.contrib.dojo.DojoAjaxHandler;
-import wicket.markup.html.PackageResourceReference;
+import wicket.markup.html.IHeaderResponse;
 import wicket.response.StringResponse;
 import wicket.util.resource.IResourceStream;
 import wicket.util.resource.StringBufferResourceStream;
@@ -24,15 +24,15 @@ public abstract class DojoUpdateHandler extends DojoAjaxHandler
 	{
 		
 	}
-	
+
 	/** 
 	 * adds reference to autoupdate.js.
 	 * @see AbstractAjaxBehavior#onRenderHeadContribution(Response response)
 	 */
-	protected void onRenderHeadContribution(Response response)
-	{
-		writeJsReference(response,  new PackageResourceReference(Application.get(),
-				DojoUpdateHandler.class, "dojoupdate.js"));
+	@Override
+	public void renderHead(IHeaderResponse response) {
+		super.renderHead(response);
+		response.renderJavascriptReference(new ResourceReference(DojoUpdateHandler.class, "dojoupdate.js"));
 	}
 	
 	/**

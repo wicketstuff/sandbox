@@ -30,17 +30,17 @@ public class TooltipTestPage extends WebPage{
 
 	public TooltipTestPage(PageParameters parameters)
 	{
-		add(target = new Label("target","point here for a simple tooltip"));
-		add(new Tooltip("stooltip", new SimpleTooltip(target, "help!")));
-		add(target2 = new Label("target2","point here for a Dynamic tooltip"));
-		add(new Tooltip("tooltip2",new MyTooltip(new CompoundPropertyModel(new MyTooltipModel("this tooltip is a bit more dynamic with a model")) ,  target2, 100, 50)));
+		target = new Label(this, "target","point here for a simple tooltip");
+		new Tooltip(this, "stooltip", new SimpleTooltip(this, target, "help!"));
+		target2 = new Label(this, "target2","point here for a Dynamic tooltip");
+		new Tooltip(this, "tooltip2",new MyTooltip(this, new CompoundPropertyModel(new MyTooltipModel("this tooltip is a bit more dynamic with a model")) ,  target2, 100, 50));
 		
 		//		add student example
-        add(stlabel = new Label("stlabel", "Marco van de Haar"));
-        add(stlabel2 = new Label("stlabel2", "Ruud Booltink"));
+        stlabel = new Label(this, "stlabel", "Marco van de Haar");
+        stlabel2 = new Label(this, "stlabel2", "Ruud Booltink");
 //      add the tooltip dor the student and give a StudentModel to use witht hte tooltip
-        add(new Tooltip("studenttooltip", new StudentTooltip(new CompoundPropertyModel(new StudentModel(1234, "van de Haar", "Marco", 'm')), stlabel, 100, 20)));
-        add(new Tooltip("studenttooltip2", new StudentTooltip(new CompoundPropertyModel(new StudentModel(1235, "Booltink", "Ruud", 'm')), stlabel2, 100, 20)));
+        new Tooltip(this, "studenttooltip", new StudentTooltip(this, new CompoundPropertyModel(new StudentModel(1234, "van de Haar", "Marco", 'm')), stlabel, 100, 20));
+        new Tooltip(this, "studenttooltip2", new StudentTooltip(this, new CompoundPropertyModel(new StudentModel(1235, "Booltink", "Ruud", 'm')), stlabel2, 100, 20));
 		
                 
 	}

@@ -42,7 +42,7 @@ public class DescriptionUpdateHandler extends DojoUpdateHandler{
 		
 		
 		c.add(new AttributeModifier("onclick", true, new Model(){
-			public java.lang.Object getObject(Component co){
+			public java.lang.Object getObject(){
 			     return "javascript:"
 					+ "render_update('" 
 					+ getCallbackUrl() 

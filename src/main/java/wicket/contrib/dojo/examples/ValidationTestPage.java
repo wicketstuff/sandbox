@@ -8,10 +8,10 @@ import wicket.markup.html.form.Form;
 import wicket.markup.html.form.FormComponent;
 import wicket.markup.html.form.RequiredTextField;
 import wicket.markup.html.form.TextArea;
-import wicket.markup.html.form.validation.IntegerValidator;
-import wicket.markup.html.form.validation.LengthValidator;
 import wicket.markup.html.panel.FeedbackPanel;
 import wicket.model.PropertyModel;
+import wicket.validation.validator.NumberValidator;
+import wicket.validation.validator.StringValidator;
 
 public class ValidationTestPage extends WebPage{
 
@@ -29,29 +29,26 @@ public class ValidationTestPage extends WebPage{
 	public ValidationTestPage(PageParameters parameters)
 	{
 		 
-			form = new Form("testform");
-			add(form);
+			form = new Form(this, "testform");
 			//testfield = new RequiredTextField("text", new PropertyModel(ValidationTestPage.this, "textValue"));
-			testfield =  new TextArea("text",new PropertyModel(ValidationTestPage.this, "textValue"));
-			testfield.add(LengthValidator.max(5));
+			testfield =  new TextArea(form, "text",new PropertyModel(ValidationTestPage.this, "textValue"));
+			testfield.add(StringValidator.maximumLength(5));
 			testfield.add(new FXValidationAjaxHandler("onblur"));
 			
-			form.add(testfield);
 			
-			FXFeedbackIndicator indicator = new FXFeedbackIndicator("indicator");
+			FXFeedbackIndicator indicator = new FXFeedbackIndicator(form, "indicator");
 	        indicator.setIndicatorFor(testfield);
-	        form.add(indicator);
 
 			
-	        FormComponent tx = new RequiredTextField("integerInRangeProperty", new PropertyModel(ValidationTestPage.this, "integerInRangeProperty"), Integer.class).add(IntegerValidator.range(0, 100));
-	        form.add(tx);
+	        FormComponent tx = new RequiredTextField(form, "integerInRangeProperty", new PropertyModel(ValidationTestPage.this, "integerInRangeProperty"), Integer.class);
+            tx.add(NumberValidator.range(0, 100));
 	        tx.add(new FXValidationAjaxHandler("onblur"));
 			
 			
 
 			//test multiple ajax textfields
-			FormComponent tx2 = new RequiredTextField("integerInRangeProperty2", new PropertyModel(ValidationTestPage.this, "integerInRangeProperty2"),Integer.class).add(IntegerValidator.range(0, 200));
-			form.add(tx2);
+			FormComponent tx2 = new RequiredTextField(form, "integerInRangeProperty2", new PropertyModel(ValidationTestPage.this, "integerInRangeProperty2"),Integer.class);
+            tx2.add(NumberValidator.range(0, 200));
 			tx2.add(new FXValidationAjaxHandler("onblur"));
 			
 			
@@ -64,8 +61,7 @@ public class ValidationTestPage extends WebPage{
 	           tarea.add(new FXValidationAjaxHandler("onblur", 251, 156, 71)); 
 	        form.add(tarea);*/
 	        
-	        final FeedbackPanel feedback = new FeedbackPanel("feedback");
-			add(feedback);
+	        final FeedbackPanel feedback = new FeedbackPanel(this, "feedback");
 	        
 	}
 	public String getTextValue()

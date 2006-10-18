@@ -1,5 +1,6 @@
 package wicket.contrib.dojo.examples.rssreader;
 
+import wicket.MarkupContainer;
 import wicket.contrib.dojo.autoupdate.IUpdatable;
 import wicket.markup.html.basic.Label;
 import wicket.model.Model;
@@ -21,9 +22,9 @@ public class UpdateLabel extends Label implements IUpdatable
 	 * @param id Wicket id
 	 * @param txt Innitial Label contents
 	 */
-	public UpdateLabel(String id, String txt)
+	public UpdateLabel(MarkupContainer parent, String id, String txt)
 	{
-		super(id, txt);
+		super(parent, id, txt);
 		
 	}
 
