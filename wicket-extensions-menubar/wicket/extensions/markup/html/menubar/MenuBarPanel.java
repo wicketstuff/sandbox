@@ -3,20 +3,11 @@
  */
 package wicket.extensions.markup.html.menubar;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import de.visiomedic.personen.PatientBean;
-import de.visiomedic.wicket.administration.messageserver.MessageQueueMasterDetailView;
-import de.visiomedic.wicket.components.VisiomedicPage;
-import de.visiomedic.wicket.components.forms.popupwindow.Patientendaten;
-
-import tcs.soapmessageserver.MessageQueueBean;
 import wicket.AttributeModifier;
 import wicket.MarkupContainer;
-import wicket.Page;
 import wicket.markup.html.basic.Label;
-import wicket.markup.html.link.IPageLink;
 import wicket.markup.html.list.Loop;
 import wicket.markup.html.panel.Panel;
 import wicket.model.Model;
@@ -51,7 +42,6 @@ import wicket.model.Model;
 	new MenuBarPanel(this, "menuBar", menus);
 
 	...
-
 
 	private class LinkToPage implements IPageLink {
 
