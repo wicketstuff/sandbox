@@ -19,6 +19,7 @@ package wicket.contrib.dojo;
 
 
 import wicket.Application;
+import wicket.Component;
 import wicket.IInitializer;
 import wicket.RequestCycle;
 import wicket.ResourceReference;
@@ -59,9 +60,9 @@ public abstract class DojoAjaxHandler extends AbstractAjaxBehavior implements II
 	}
 
 	/**
-	 * @see wicket.behavior.IBehaviorListener#onRequest()
+	 * @see wicket.behavior.IBehaviorListener#onRequest(Component)
 	 */
-	public void onRequest()
+	public void onRequest(Component component)
 	{
 		IResourceStream response = getResponse();
 		if (response != null)
