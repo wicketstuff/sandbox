@@ -1,11 +1,8 @@
 package wicket.contrib.dojo.dojodnd;
 
 import wicket.contrib.dojo.DojoAjaxHandler;
-import wicket.markup.ComponentTag;
 import wicket.markup.html.IHeaderResponse;
 import wicket.util.resource.IResourceStream;
-import wicket.util.string.AppendingStringBuffer;
-import wicket.util.value.IValueMap;
 
 /**
  * Package class for Dojo DropContainer
