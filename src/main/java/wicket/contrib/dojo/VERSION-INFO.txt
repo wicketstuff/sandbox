@@ -1,3 +1,2 @@
 this package uses:
-	- Dojo 0.22 release -  Ajax build, added monday 20 Janary 
-		(http://download.dojotoolkit.org/release-0.2.2/dojo-0.2.2-ajax.zip)
+	- Dojo 0.3. It is not build

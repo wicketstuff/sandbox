@@ -19,6 +19,7 @@ package wicket.contrib.dojo.dojofx;
 import wicket.AttributeModifier;
 import wicket.Component;
 import wicket.contrib.dojo.DojoAjaxHandler;
+import wicket.markup.html.IHeaderResponse;
 import wicket.model.IModel;
 import wicket.util.resource.IResourceStream;
 
@@ -103,6 +104,15 @@ public abstract class DojoFXHandler extends DojoAjaxHandler
 	protected IResourceStream getResponse()
 	{
 		return null;
+	}
+	
+	/* (non-Javadoc)
+	 * @see wicket.contrib.dojo.DojoAjaxHandler#renderHead(wicket.markup.html.IHeaderResponse)
+	 */
+	public void renderHead(IHeaderResponse response)
+	{
+		super.renderHead(response);
+		response.renderString("<script language=\"JavaScript\" type=\"text/javascript\">dojo.require(\"dojo.fx.*\")</script>");
 	}
 
 	/**

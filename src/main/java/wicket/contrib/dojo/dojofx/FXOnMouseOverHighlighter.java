@@ -20,8 +20,7 @@ import java.io.Serializable;
 
 import wicket.AttributeModifier;
 import wicket.Component;
-import wicket.Response;
-import wicket.behavior.AbstractAjaxBehavior;
+import wicket.markup.html.IHeaderResponse;
 import wicket.model.Model;
 
 /**
@@ -79,73 +78,6 @@ public class FXOnMouseOverHighlighter extends DojoFXHandler
 		endColor = new RGB(endR, endG, endB);
 	}
 
-	/**
-	 * @see AbstractAjaxBehavior#onRenderHeadContribution(Response response)
-	 */
-	protected void onRenderHeadContribution(Response r)
-	{
-		// String to be written to header
-		String s;
-		// dojo function calls for higlighting
-		String highlightInFunction;
-		String highlightOutFunction;
-
-		// check for type, and call dojo.fx.html so that:
-		// it highlights node over duration (from startOpac to endOpac) and with
-		// callback.
-		// callback sets the right state variable to the present state and
-		// does mouseover checks for stability improvements.
-		// the following code might look a bit abracadabra, but it works and is
-		// thouroughly stress-tested.
-		if (type == "c2c")
-		{
-			highlightInFunction = "dojo.fx.html.colorFade(node, " + startColor.toString() + ","
-					+ endColor.toString() + ", duration, function(){" + componentId
-					+ "_highlighterState='highlighted';if(" + componentId + "_mouseover == 0){"
-					+ componentId + "_highlight(id, duration);}});";
-			highlightOutFunction = "dojo.fx.html.colorFade(node, " + endColor.toString() + ","
-					+ startColor.toString() + ", duration, function(){" + componentId
-					+ "_highlighterState='unhighlighted';if(" + componentId + "_mouseover == 1){"
-					+ componentId + "_highlight(id, duration);}});";
-		}
-		else
-		{
-			highlightInFunction = "dojo.fx.html.colorFadeOut(node, " + endColor.toString()
-					+ ", duration ,0,function(){" + componentId
-					+ "_highlighterState='highlighted';if(" + componentId + "_mouseover == 0){"
-					+ componentId + "_highlight(id, duration);}});";
-			highlightOutFunction = "dojo.fx.html.colorFadeOut(node, startbc, duration ,0,function(){"
-					+ componentId
-					+ "_highlighterState='unhighlighted';if("
-					+ componentId
-					+ "_mouseover == 1){" + componentId + "_highlight(id, duration);}});";
-		}
-
-
-		s = "\t<script language=\"JavaScript\" type=\"text/javascript\">\n" + "\t" + componentId
-				+ "_highlighterState = 'unhighlighted'; \n" + "\t" + componentId
-				+ "_first = false; \n" + "\t" + componentId + "_mouseover = 0; \n";
-
-		s = s + "\tfunction " + componentId + "_highlight(id, duration) { \n" + "\t\tif("
-				+ componentId + "_highlighterState!='highlighting'){\n"
-				+ "\t\t\tnode = document.getElementById(id);\n" + "\t\t\tif(!" + componentId
-				+ "_first){\n" + "\t\t\t" + componentId + "_first = true; \n"
-				+ "\t\t\t\tstartbc = dojo.html.getBackgroundColor(node);\n" + "\t\t\t}\n"
-				+ "\t\t\tif(" + componentId + "_highlighterState == 'unhighlighted') \n"
-				+ "\t\t\t{ \n" + "\t\t\t\t" + componentId + "_highlighterState = 'highlighting';\n"
-				+ "\t\t\t\t" + highlightInFunction + "\n" + "\t\t\t} else {\n" + "\t\t\t\t"
-				+ componentId + "_highlighterState = 'highlighting';\n" + "\t\t\t\t"
-				+ highlightOutFunction + "\n" + "\t\t\t}\n" + "\t\t}\n" + "\t}\n";
-
-
-		s = s + "\tfunction " + componentId + "_setMouseOver(ismouseover){\n"
-				+ "\t\tif (ismouseover == 1){\n" + "\t\t\t" + componentId + "_mouseover = 1;\n"
-				+ "\t\t}else{\n" + "\t\t\t" + componentId + "_mouseover = 0;\n" + "\t\t}\n"
-				+ "\t}\n" + "\t</script>\n\n";
-		r.write(s);
-
-
-	}
 
 	/**
 	 * Simple inner class to manage RGB values.
@@ -204,6 +136,72 @@ public class FXOnMouseOverHighlighter extends DojoFXHandler
 			return "[" + R + ", " + G + ", " + B + "]";
 		}
 
+	}
+	
+	@Override
+	public void renderHead(IHeaderResponse response)
+	{
+		super.renderHead(response);
+//		 String to be written to header
+		String s;
+		// dojo function calls for higlighting
+		String highlightInFunction;
+		String highlightOutFunction;
+
+		// check for type, and call dojo.fx.html so that:
+		// it highlights node over duration (from startOpac to endOpac) and with
+		// callback.
+		// callback sets the right state variable to the present state and
+		// does mouseover checks for stability improvements.
+		// the following code might look a bit abracadabra, but it works and is
+		// thouroughly stress-tested.
+		if (type == "c2c")
+		{
+			highlightInFunction = "dojo.fx.html.colorFade(node, " + startColor.toString() + ","
+					+ endColor.toString() + ", duration, function(){" + componentId
+					+ "_highlighterState='highlighted';if(" + componentId + "_mouseover == 0){"
+					+ componentId + "_highlight(id, duration);}});";
+			highlightOutFunction = "dojo.fx.html.colorFade(node, " + endColor.toString() + ","
+					+ startColor.toString() + ", duration, function(){" + componentId
+					+ "_highlighterState='unhighlighted';if(" + componentId + "_mouseover == 1){"
+					+ componentId + "_highlight(id, duration);}});";
+		}
+		else
+		{
+			highlightInFunction = "dojo.fx.html.colorFadeOut(node, " + endColor.toString()
+					+ ", duration ,0,function(){" + componentId
+					+ "_highlighterState='highlighted';if(" + componentId + "_mouseover == 0){"
+					+ componentId + "_highlight(id, duration);}});";
+			highlightOutFunction = "dojo.fx.html.colorFadeOut(node, startbc, duration ,0,function(){"
+					+ componentId
+					+ "_highlighterState='unhighlighted';if("
+					+ componentId
+					+ "_mouseover == 1){" + componentId + "_highlight(id, duration);}});";
+		}
+
+
+		s = "\t<script language=\"JavaScript\" type=\"text/javascript\">\n" + "\t" + componentId
+				+ "_highlighterState = 'unhighlighted'; \n" + "\t" + componentId
+				+ "_first = false; \n" + "\t" + componentId + "_mouseover = 0; \n";
+
+		s = s + "\tfunction " + componentId + "_highlight(id, duration) { \n" + "\t\tif("
+				+ componentId + "_highlighterState!='highlighting'){\n"
+				+ "\t\t\tnode = document.getElementById(id);\n" + "\t\t\tif(!" + componentId
+				+ "_first){\n" + "\t\t\t" + componentId + "_first = true; \n"
+				+ "\t\t\t\tstartbc = dojo.html.getBackgroundColor(node);\n" + "\t\t\t}\n"
+				+ "\t\t\tif(" + componentId + "_highlighterState == 'unhighlighted') \n"
+				+ "\t\t\t{ \n" + "\t\t\t\t" + componentId + "_highlighterState = 'highlighting';\n"
+				+ "\t\t\t\t" + highlightInFunction + "\n" + "\t\t\t} else {\n" + "\t\t\t\t"
+				+ componentId + "_highlighterState = 'highlighting';\n" + "\t\t\t\t"
+				+ highlightOutFunction + "\n" + "\t\t\t}\n" + "\t\t}\n" + "\t}\n";
+
+
+		s = s + "\tfunction " + componentId + "_setMouseOver(ismouseover){\n"
+				+ "\t\tif (ismouseover == 1){\n" + "\t\t\t" + componentId + "_mouseover = 1;\n"
+				+ "\t\t}else{\n" + "\t\t\t" + componentId + "_mouseover = 0;\n" + "\t\t}\n"
+				+ "\t}\n" + "\t</script>\n\n";
+		
+		response.renderString(s);
 	}
 
 
