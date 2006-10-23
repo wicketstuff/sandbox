@@ -2,7 +2,6 @@ package wicket.contrib.scriptaculous.inplaceeditor;
 
 import java.util.Map;
 
-import wicket.Component;
 import wicket.MarkupContainer;
 import wicket.RequestCycle;
 import wicket.behavior.AbstractAjaxBehavior;
@@ -29,7 +28,7 @@ public class AjaxEditInPlaceLabel extends AbstractTextComponent
 	{
 		private static final long serialVersionUID = 1L;
 
-		public void onRequest(Component component)
+		public void onRequest()
 		{
 			FormComponent formComponent = (FormComponent)getComponent();
 			formComponent.validate();

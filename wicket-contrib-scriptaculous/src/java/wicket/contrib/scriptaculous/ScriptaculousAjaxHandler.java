@@ -51,9 +51,9 @@ public abstract class ScriptaculousAjaxHandler extends AbstractAjaxBehavior
 			}
 
 			/**
-			 * @see wicket.behavior.IBehaviorListener#onRequest(Component)
+			 * @see wicket.behavior.IBehaviorListener#onRequest()
 			 */
-			public void onRequest(Component component)
+			public void onRequest()
 			{
 			}
 		};
