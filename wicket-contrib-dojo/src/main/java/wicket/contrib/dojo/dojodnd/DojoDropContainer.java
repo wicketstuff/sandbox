@@ -1,6 +1,5 @@
 package wicket.contrib.dojo.dojodnd;
 
-import wicket.Component;
 import wicket.MarkupContainer;
 import wicket.contrib.markup.html.form.ImmediateCheckBox;
 import wicket.util.resource.IResourceStream;
