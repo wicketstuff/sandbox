@@ -18,7 +18,7 @@ package wicket.contrib.dojo.dojofx;
 
 import wicket.AttributeModifier;
 import wicket.Component;
-import wicket.Response;
+import wicket.markup.html.IHeaderResponse;
 import wicket.model.Model;
 
 /**
@@ -120,9 +120,12 @@ public class FXOnClickSlider extends DojoFXHandler
 
 	}
 
-	protected void onRenderHeadContribution(Response r)
+	/* (non-Javadoc)
+	 * @see wicket.contrib.dojo.DojoAjaxHandler#renderHead(wicket.markup.html.IHeaderResponse)
+	 */
+	public void renderHead(IHeaderResponse response)
 	{
-		// no header contributions necessary here.
-
+		super.renderHead(response);
 	}
+
 }
