@@ -18,6 +18,7 @@
  */
 package wicket.contrib.scriptaculous.autocomplete;
 
+import wicket.Component;
 import wicket.MarkupContainer;
 import wicket.RequestCycle;
 import wicket.contrib.scriptaculous.JavascriptBuilder;
@@ -36,7 +37,7 @@ public abstract class AjaxAutocompleteTextField<T> extends AutocompleteTextField
 	{
 		private static final long serialVersionUID = 1L;
 
-		public void onRequest()
+		public void onRequest(Component component)
 		{
 			StringBufferResourceStream s = new StringBufferResourceStream();
 			FormComponent formComponent = (FormComponent)getComponent();
