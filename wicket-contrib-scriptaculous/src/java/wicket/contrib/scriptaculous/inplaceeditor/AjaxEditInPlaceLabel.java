@@ -1,8 +1,8 @@
 package wicket.contrib.scriptaculous.inplaceeditor;
 
-import java.util.Iterator;
 import java.util.Map;
 
+import wicket.Component;
 import wicket.MarkupContainer;
 import wicket.RequestCycle;
 import wicket.behavior.AbstractAjaxBehavior;
@@ -16,18 +16,25 @@ import wicket.model.IModel;
 import wicket.request.target.basic.StringRequestTarget;
 
 /**
- *
+ * 
  * @author <a href="mailto:wireframe6464@users.sourceforge.net">Ryan Sonnek</a>
  */
-public class AjaxEditInPlaceLabel extends AbstractTextComponent {
+public class AjaxEditInPlaceLabel extends AbstractTextComponent
+{
+	private static final long serialVersionUID = 1L;
 	private AbstractAjaxBehavior handler;
 	private Map options;
 
-	private class InPlaceEditorAjaxHandler extends ScriptaculousAjaxHandler {
-		public void onRequest() {
-			FormComponent formComponent = (FormComponent) getComponent();
+	private static class InPlaceEditorAjaxHandler extends ScriptaculousAjaxHandler
+	{
+		private static final long serialVersionUID = 1L;
+
+		public void onRequest(Component component)
+		{
+			FormComponent formComponent = (FormComponent)getComponent();
 			formComponent.validate();
-			if (formComponent.isValid()) {
+			if (formComponent.isValid())
+			{
 				formComponent.updateModel();
 			}
 			String value = formComponent.getValue();
@@ -36,7 +43,8 @@ public class AjaxEditInPlaceLabel extends AbstractTextComponent {
 		}
 	}
 
-	public AjaxEditInPlaceLabel(MarkupContainer parent, String id, IModel model) {
+	public AjaxEditInPlaceLabel(MarkupContainer parent, String id, IModel model)
+	{
 		super(parent, id);
 		setModel(model);
 
@@ -46,24 +54,28 @@ public class AjaxEditInPlaceLabel extends AbstractTextComponent {
 		setOutputMarkupId(true);
 	}
 
-	public String getInputName() {
+	public String getInputName()
+	{
 		return "value";
 	}
 
 	/**
 	 * Handle the container's body.
-	 *
+	 * 
 	 * @param markupStream
 	 *            The markup stream
 	 * @param openTag
 	 *            The open tag for the body
 	 * @see wicket.Component#onComponentTagBody(MarkupStream, ComponentTag)
 	 */
-	protected final void onComponentTagBody(final MarkupStream markupStream, final ComponentTag openTag) {
+	protected final void onComponentTagBody(final MarkupStream markupStream,
+			final ComponentTag openTag)
+	{
 		replaceComponentTagBody(markupStream, openTag, getValue());
 	}
 
-	protected void onRender(MarkupStream markupStream) {
+	protected void onRender(MarkupStream markupStream)
+	{
 		super.onRender(markupStream);
 
 		JavascriptBuilder builder = new JavascriptBuilder();
@@ -74,7 +86,8 @@ public class AjaxEditInPlaceLabel extends AbstractTextComponent {
 		getResponse().write(builder.buildScriptTagString());
 	}
 
-	public void setOptions(Map options) {
+	public void setOptions(Map options)
+	{
 		this.options = options;
 	}
 }
