@@ -20,8 +20,7 @@ import java.util.StringTokenizer;
 
 import wicket.AttributeModifier;
 import wicket.Component;
-import wicket.Response;
-import wicket.behavior.AbstractAjaxBehavior;
+import wicket.markup.html.IHeaderResponse;
 import wicket.model.Model;
 
 
@@ -139,13 +138,54 @@ public class FXOnMouseOverFader extends DojoFXHandler
 
 
 	}
-
-	/**
-	 * @see AbstractAjaxBehavior#onRenderHeadContribution(Response response)
+	
+	/*
+	 * removes the colons in the componentPath. In order to use in Javascript variables
 	 */
-	protected void onRenderHeadContribution(Response r)
+	private String removeColon(String s) {
+		  StringTokenizer st = new StringTokenizer(s,":",false);
+		  String t="";
+		  while (st.hasMoreElements()) t += st.nextElement();
+		  return t;
+	  }
+
+	
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see wicket.AjaxHandler#onBind()
+	 */
+	protected void onBind()
 	{
-		// String to be written to header
+		Component c = getComponent();
+		this.component = (Component)c;
+		this.componentId = c.getId();
+		
+		String componentpath = removeColon(component.getPath());
+		// create a unique HTML for the wipe component
+		this.HTMLID = "f_" + this.component.getId() + "_" + componentpath;
+		// Add ID to component, and bind effect to trigger
+		this.component.add(new AttributeModifier("id", true, new Model(HTMLID)));
+
+		/*
+		 * add onmouseover and onmouseout handlers. setMouseOver handles correct
+		 * mouseover states followed by fade() calls with needed variables.
+		 */
+		this.getTrigger().add(
+				new AppendAttributeModifier(getEventName(), true, new Model(HTMLID
+						+ "_setMouseOver(1);" + HTMLID + "_fade('" + HTMLID + "', "
+						+ getDuration() + ");")));
+		this.getTrigger().add(
+				new AppendAttributeModifier("onmouseout", true, new Model(HTMLID
+						+ "_setMouseOver(0);" + HTMLID + "_fade('" + HTMLID + "', "
+						+ getDuration() + ");")));
+	}
+
+	@Override
+	public void renderHead(IHeaderResponse response)
+	{
+		super.renderHead(response);
+//		 String to be written to header
 		String s;
 		// dojo function calls for fadein/out
 		String fadeInFunction;
@@ -214,51 +254,8 @@ public class FXOnMouseOverFader extends DojoFXHandler
 				+ "\t\tif (ismouseover == 1){\n" + "\t\t\t" + HTMLID + "_mouseover = 1;\n"
 				+ "\t\t}else{\n" + "\t\t\t" + HTMLID + "_mouseover = 0;\n" + "\t\t}\n"
 				+ "\t}\n" + "\t</script>\n\n";
-		r.write(s);
-
-
-	}
-	
-	/*
-	 * removes the colons in the componentPath. In order to use in Javascript variables
-	 */
-	private String removeColon(String s) {
-		  StringTokenizer st = new StringTokenizer(s,":",false);
-		  String t="";
-		  while (st.hasMoreElements()) t += st.nextElement();
-		  return t;
-	  }
-
-	
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see wicket.AjaxHandler#onBind()
-	 */
-	protected void onBind()
-	{
-		Component c = getComponent();
-		this.component = (Component)c;
-		this.componentId = c.getId();
 		
-		String componentpath = removeColon(component.getPath());
-		// create a unique HTML for the wipe component
-		this.HTMLID = "f_" + this.component.getId() + "_" + componentpath;
-		// Add ID to component, and bind effect to trigger
-		this.component.add(new AttributeModifier("id", true, new Model(HTMLID)));
-
-		/*
-		 * add onmouseover and onmouseout handlers. setMouseOver handles correct
-		 * mouseover states followed by fade() calls with needed variables.
-		 */
-		this.getTrigger().add(
-				new AppendAttributeModifier(getEventName(), true, new Model(HTMLID
-						+ "_setMouseOver(1);" + HTMLID + "_fade('" + HTMLID + "', "
-						+ getDuration() + ");")));
-		this.getTrigger().add(
-				new AppendAttributeModifier("onmouseout", true, new Model(HTMLID
-						+ "_setMouseOver(0);" + HTMLID + "_fade('" + HTMLID + "', "
-						+ getDuration() + ");")));
+		response.renderString(s);
 	}
 
 }

@@ -55,7 +55,7 @@ public abstract class DojoAjaxHandler extends AbstractAjaxBehavior implements II
 	 */
 	public void init(Application application)
 	{
-		PackageResource.bind(application, DojoAjaxHandler.class, "dojo.js");
+		PackageResource.bind(application, DojoAjaxHandler.class, "dojo0.3/dojo.js");
 	}
 
 	/**
@@ -88,7 +88,7 @@ public abstract class DojoAjaxHandler extends AbstractAjaxBehavior implements II
 	@Override
 	public void renderHead(IHeaderResponse response)
 	{
-		response.renderJavascriptReference(new ResourceReference(DojoAjaxHandler.class, "dojo.js"));
+		response.renderJavascriptReference(new ResourceReference(DojoAjaxHandler.class, "dojo0.3/dojo.js"));
 	}
 
 
