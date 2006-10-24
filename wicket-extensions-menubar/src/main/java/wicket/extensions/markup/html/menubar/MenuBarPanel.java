@@ -7,6 +7,8 @@ import java.util.List;
 
 import wicket.AttributeModifier;
 import wicket.MarkupContainer;
+import wicket.ResourceReference;
+import wicket.behavior.HeaderContributor;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.list.Loop;
 import wicket.markup.html.panel.Panel;
@@ -228,6 +230,9 @@ public class MenuBarPanel extends Panel {
 	private static final long serialVersionUID = 1L;
 
 	private final List<Menu> menus;
+    
+    private static final ResourceReference CSS = new ResourceReference(
+            MenuBarPanel.class, "res/wicket-extensions-menubar.css");
 
 	/**
 	 * Constructs a {@code MenuBarPanel}.
@@ -238,7 +243,7 @@ public class MenuBarPanel extends Panel {
 	 */
 	public MenuBarPanel(MarkupContainer parent, final String id, final List<Menu> menus) {
 		super(parent, id);
-
+		init();
 		this.menus = menus;
 
 		// add the loop used to generate each single menu
@@ -273,5 +278,21 @@ public class MenuBarPanel extends Panel {
 			}
 		};
 	}
+    
+    /**
+     * Returns the resource reference of default stylesheet.
+     * 
+     * @return The package resource reference
+     */
+    protected ResourceReference getCSS()
+    {
+        return CSS;
+    }
+    
+    private void init()
+    {
+        ResourceReference css = getCSS();
+        add(HeaderContributor.forCss(css.getScope(), css.getName()));
+    }
 
 }

@@ -27,6 +27,7 @@ public class MenuItem implements Serializable{
 	private boolean enabled = true;
 	private boolean visible = true;
 	private MenuItemType menuItemType;
+    private IMenuLinkCallback menuLinkCallback;
 
 	/**
 	 * Constructs a {@code MenuItem}.
@@ -77,7 +78,21 @@ public class MenuItem implements Serializable{
 		this.menuItemType = MenuItemType.EXTERNAL_URL;
 	}
 
-
+	/**
+     * Constructs a {@code MenuItem} that uses an {@link AjaxFallbackLink} 
+     * @param model The {@link Model} represents the label that is shown as representation for the link.
+     * @param menuLinkCallback The {@code IMenuLinkCallback} implementation that gets invoked by the {@link AjaxFallbackLink}
+	 */
+    public MenuItem(final Model<String> model, IMenuLinkCallback menuLinkCallback) {
+        if (model == null)
+            throw new IllegalArgumentException("argument [model] cannot be null");
+        if (menuLinkCallback == null)
+            throw new IllegalArgumentException("argument [menuLinkCallback] cannot be null");
+        this.model = model;
+        this.menuLinkCallback = menuLinkCallback;
+        this.menuItemType = MenuItemType.IMENULINKCALLBACK;
+    }
+    
 	/**
 	 * Gets the {@link MenuItemType} that depends upon the way tis {@code MenuItem} was created.
 	 * 
@@ -172,4 +187,10 @@ public class MenuItem implements Serializable{
 	public boolean isVisible() {
 		return this.visible;
 	}
+
+
+    public IMenuLinkCallback getMenuLinkCallback()
+    {
+        return menuLinkCallback;
+    }
 }
