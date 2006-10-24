@@ -5,6 +5,8 @@ package wicket.extensions.markup.html.menubar;
 
 
 import wicket.MarkupContainer;
+import wicket.ajax.AjaxRequestTarget;
+import wicket.ajax.markup.html.AjaxFallbackLink;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.link.ExternalLink;
 import wicket.markup.html.link.Link;
@@ -47,6 +49,18 @@ class MenuLinkPanel extends Panel<String> {
 				ExternalLink externalLink = new ExternalLink(this, "link", menuItem.getExternalUrl()).setPopupSettings(popupSettings);
 				new Label(externalLink, "linkLabel", menuItem.getModel().getObject()).setRenderBodyOnly(true);
 				break;
+             case IMENULINKCALLBACK:
+                    AjaxFallbackLink<String> menuCallBack = new AjaxFallbackLink<String>(this, "link", menuItem.getModel()) {
+
+                        @Override
+                        public void onClick(AjaxRequestTarget target)
+                        {
+                            menuItem.getMenuLinkCallback().onClick(target);                        
+                        }
+                        
+                    };
+                    new Label(menuCallBack, "linkLabel", menuItem.getModel().getObject()).setRenderBodyOnly(true);
+                    break;
 		}
 		this.setRenderBodyOnly(true);
 	}
