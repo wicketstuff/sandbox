@@ -3,6 +3,7 @@ package wicket.contrib.dojo.markup.html.dialog;
 import wicket.MarkupContainer;
 import wicket.behavior.AttributeAppender;
 import wicket.contrib.dojo.toggle.DojoToggle;
+import wicket.markup.html.WebMarkupContainer;
 import wicket.model.Model;
 
 /**
@@ -10,7 +11,7 @@ import wicket.model.Model;
  * @author <a href="http://www.demay-fr.net/blog">Vincent Demay</a>
  *
  */
-public class DojoDialog extends MarkupContainer
+public class DojoDialog extends WebMarkupContainer
 {
 
 	public DojoDialog(MarkupContainer parent, String id)
