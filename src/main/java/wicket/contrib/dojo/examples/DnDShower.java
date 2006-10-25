@@ -4,6 +4,7 @@ import wicket.PageParameters;
 import wicket.contrib.dojo.dojodnd.DojoDragContainer;
 import wicket.contrib.dojo.dojodnd.DojoDropContainer;
 import wicket.markup.html.WebPage;
+import wicket.markup.html.image.Image;
 
 public class DnDShower extends WebPage {
 	
@@ -19,13 +20,17 @@ public class DnDShower extends WebPage {
 		
 		};
 		
-		DojoDragContainer dropContainer1 = new DojoDragContainer(this,"dragContainer1");
-		DojoDragContainer dropContainer2 = new DojoDragContainer(this,"dragContainer2");
-		DojoDragContainer dropContainer3 = new DojoDragContainer(this,"dragContainer3");
+		DojoDragContainer dragContainer1 = new DojoDragContainer(this,"dragContainer1");
+		DojoDragContainer dragContainer2 = new DojoDragContainer(this,"dragContainer2");
+		DojoDragContainer dragContainer3 = new DojoDragContainer(this,"dragContainer3");
 		
-		DojoDragContainer dropContainer4 = new DojoDragContainer(dropContainer,"dragContainer4");
-		DojoDragContainer dropContainer5 = new DojoDragContainer(dropContainer,"dragContainer5");
-		DojoDragContainer dropContainer6 = new DojoDragContainer(dropContainer,"dragContainer6");
+		DojoDragContainer dragContainer4 = new DojoDragContainer(dropContainer,"dragContainer4");
+		DojoDragContainer dragContainer5 = new DojoDragContainer(dropContainer,"dragContainer5");
 		
+		new Image(dragContainer1,"pic1");
+		new Image(dragContainer2,"pic2");
+		new Image(dragContainer3,"pic3");
+		new Image(dragContainer4,"pic4");
+		new Image(dragContainer5,"pic5");
 	}
 }
