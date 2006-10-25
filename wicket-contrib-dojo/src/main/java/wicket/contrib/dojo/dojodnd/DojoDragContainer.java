@@ -1,13 +1,14 @@
 package wicket.contrib.dojo.dojodnd;
 
 import wicket.MarkupContainer;
+import wicket.markup.html.WebMarkupContainer;
 
 /**
  * Dojo drag container
  * @author <a href="http://www.demay-fr.net/blog">Vincent Demay</a>
  *
  */
-public class DojoDragContainer extends MarkupContainer
+public class DojoDragContainer extends WebMarkupContainer
 {
 
 	private String dragId;

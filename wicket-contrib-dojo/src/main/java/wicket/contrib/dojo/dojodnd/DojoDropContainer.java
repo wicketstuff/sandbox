@@ -2,6 +2,7 @@ package wicket.contrib.dojo.dojodnd;
 
 import wicket.MarkupContainer;
 import wicket.contrib.markup.html.form.ImmediateCheckBox;
+import wicket.markup.html.WebMarkupContainer;
 import wicket.util.resource.IResourceStream;
 import wicket.util.resource.StringBufferResourceStream;
 
@@ -10,7 +11,7 @@ import wicket.util.resource.StringBufferResourceStream;
  * @author <a href="http://www.demay-fr.net/blog">Vincent Demay</a>
  *
  */
-public abstract class DojoDropContainer extends MarkupContainer
+public abstract class DojoDropContainer extends WebMarkupContainer
 {
 
 	private String dropId;
