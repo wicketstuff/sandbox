@@ -23,83 +23,82 @@ import java.io.InputStream;
 import java.net.URL;
 
 import net.sf.jasperreports.engine.JRAbstractExporter;
+import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
 
 /**
  * Resource class for jasper reports PDF resources.
- * 
+ *
  * @author Eelco Hillenius
+ * @author Justin Lee
  */
-public final class JRPdfResource extends JRResource
-{
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+public class JRPdfResource extends JRResource {
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
-	/**
-	 * Construct without a report. You must provide a report before you can use
-	 * this resource.
-	 */
-	public JRPdfResource()
-	{
-		super();
-	}
+    /**
+     * Construct without a report. You must provide a report before you can use this resource.
+     */
+    public JRPdfResource() {
+        super();
+    }
 
-	/**
-	 * Construct.
-	 * 
-	 * @param report
-	 *            the report input stream
-	 */
-	public JRPdfResource(InputStream report)
-	{
-		super(report);
-	}
+    /**
+     * Construct.
+     *
+     * @param report the report input stream
+     */
+    public JRPdfResource(InputStream report) {
+        super(report);
+    }
 
-	/**
-	 * Construct.
-	 * 
-	 * @param report
-	 *            the report input stream
-	 */
-	public JRPdfResource(URL report)
-	{
-		super(report);
-	}
+    /**
+     * Construct.
+     *
+     * @param report the report input stream
+     */
+    public JRPdfResource(JasperReport report) {
+        super(report);
+    }
 
-	/**
-	 * Construct.
-	 * 
-	 * @param report
-	 *            the report input stream
-	 */
-	public JRPdfResource(File report)
-	{
-		super(report);
-	}
+    /**
+     * Construct.
+     *
+     * @param report the report input stream
+     */
+    public JRPdfResource(URL report) {
+        super(report);
+    }
 
-	/**
-	 * @see JRResource#newExporter()
-	 */
-	public JRAbstractExporter newExporter()
-	{
-		return new JRPdfExporter();
-	}
+    /**
+     * Construct.
+     *
+     * @param report the report input stream
+     */
+    public JRPdfResource(File report) {
+        super(report);
+    }
 
-	/**
-	 * @see JRResource#getContentType()
-	 */
-	public String getContentType()
-	{
-		return "application/pdf";
-	}
+    /**
+     * @see JRResource#newExporter()
+     */
+    @Override
+    public JRAbstractExporter newExporter() {
+        return new JRPdfExporter();
+    }
 
-	/**
-	 * @see wicket.contrib.jasperreports.JRResource#getExtension()
-	 */
-	public String getExtension()
-	{
-		return "pdf";
-	}
+    /**
+     * @see JRResource#getContentType()
+     */
+    @Override
+    public String getContentType() {
+        return "application/pdf";
+    }
+
+    @Override
+    public String getExtension() {
+        return "pdf";
+    }
 }

@@ -24,24 +24,19 @@ import wicket.markup.html.panel.Panel;
 
 /**
  * Navigation panel for the examples project.
- * 
+ *
  * @author Eelco Hillenius
  */
-public final class WicketExampleHeader extends Panel
-{
-	/**
-	 * Construct.
-	 * 
-	 * @param parent
-	 *            The parent
-	 * @param id
-	 *            name of the component
-	 * @param exampleTitle
-	 *            title of the example
-	 */
-	public WicketExampleHeader(MarkupContainer parent, String id, String exampleTitle)
-	{
-		super(parent, id);
-		new Label(this, "exampleTitle", exampleTitle);
-	}
+public final class WicketExampleHeader extends Panel {
+    /**
+     * Construct.
+     *
+     * @param parent The parent
+     * @param id name of the component
+     * @param exampleTitle title of the example
+     */
+    public WicketExampleHeader(MarkupContainer parent, String id, String exampleTitle) {
+        super(parent, id);
+        new Label(this, "exampleTitle", exampleTitle);
+    }
 }
