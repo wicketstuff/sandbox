@@ -1,22 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<html xmlns="http://www.w3.org/1999/xhtml" >
-<head>
-    <title>Wicket Examples - helloworld</title>
-    <link rel="stylesheet" type="text/css" href="style.css"/>
-</head>
-<body>
-    <span wicket:id="mainNavigation"/>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>Wicket Examples - helloworld</title>
+        <link rel="stylesheet" type="text/css" href="style.css"/>
+    </head>
 
-	<ul>
-	 <wicket:link>
-	  <li>
-	   <a href="SimplePdfPage.html">Simple PDF page</a>
-	  </li>
-	  <li>
-	   <a href="ReportLinksPage.html">Page links to reports</a>
-	  </li>
-	 </wicket:link>
-	</ul>
+    <body>
+        <span wicket:id="mainNavigation"/>
 
-</body>
+        <ul>
+            <li>
+                <a wicket:id="simple" href="SimplePdfPage.html">Simple PDF page</a>
+            </li>
+            <li>
+                <a wicket:id="links" href="ReportLinksPage.html">Page links to reports</a>
+            </li>
+        </ul>
+
+    </body>
 </html>

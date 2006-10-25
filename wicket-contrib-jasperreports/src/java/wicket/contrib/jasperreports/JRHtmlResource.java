@@ -23,83 +23,73 @@ import java.io.InputStream;
 import java.net.URL;
 
 import net.sf.jasperreports.engine.JRAbstractExporter;
+import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.export.JRHtmlExporter;
 
 /**
  * Resource class for jasper reports HTML resources.
- * 
+ *
  * @author Eelco Hillenius
+ * @author Justin Lee
  */
-public final class JRHtmlResource extends JRResource
-{
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+public class JRHtmlResource extends JRResource {
+    private static final long serialVersionUID = 1L;
 
-	/**
-	 * Construct without a report. You must provide a report before you can use
-	 * this resource.
-	 */
-	public JRHtmlResource()
-	{
-		super();
-	}
+    /**
+     * Construct without a report. You must provide a report before you can use this resource.
+     */
+    public JRHtmlResource() {
+        super();
+    }
 
-	/**
-	 * Construct.
-	 * 
-	 * @param report
-	 *            the report input stream
-	 */
-	public JRHtmlResource(InputStream report)
-	{
-		super(report);
-	}
+    /**
+     * Construct.
+     *
+     * @param report the report input stream
+     */
+    public JRHtmlResource(InputStream report) {
+        super(report);
+    }
 
-	/**
-	 * Construct.
-	 * 
-	 * @param report
-	 *            the report input stream
-	 */
-	public JRHtmlResource(URL report)
-	{
-		super(report);
-	}
+    /**
+     * Construct.
+     *
+     * @param report the report input stream
+     */
+    public JRHtmlResource(JasperReport report) {
+        super(report);
+    }
 
-	/**
-	 * Construct.
-	 * 
-	 * @param report
-	 *            the report input stream
-	 */
-	public JRHtmlResource(File report)
-	{
-		super(report);
-	}
+    /**
+     * Construct.
+     *
+     * @param report the report input stream
+     */
+    public JRHtmlResource(URL report) {
+        super(report);
+    }
 
-	/**
-	 * @see JRResource#newExporter()
-	 */
-	public JRAbstractExporter newExporter()
-	{
-		return new JRHtmlExporter();
-	}
+    /**
+     * Construct.
+     *
+     * @param report the report input stream
+     */
+    public JRHtmlResource(File report) {
+        super(report);
+    }
 
-	/**
-	 * @see JRResource#getContentType()
-	 */
-	public String getContentType()
-	{
-		return "text/html";
-	}
+    @Override
+    public JRAbstractExporter newExporter() {
+        return new JRHtmlExporter();
+    }
 
-	/**
-	 * @see wicket.contrib.jasperreports.JRResource#getExtension()
-	 */
-	public String getExtension()
-	{
-		return "html";
-	}
+    @Override
+    public String getContentType() {
+        return "text/html";
+    }
+
+    @Override
+    public String getExtension() {
+        return "html";
+    }
 }
