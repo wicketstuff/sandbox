@@ -1,0 +1,10 @@
+textarea {
+	width: 60em;
+	height: 30em;
+}
+
+table th {
+	text-align: right;
+	vertical-align: top;
+	white-space: nowrap;
+}
