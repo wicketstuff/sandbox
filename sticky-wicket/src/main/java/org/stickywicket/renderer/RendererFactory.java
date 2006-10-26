@@ -29,15 +29,12 @@ public class RendererFactory {
 				Constructor constructor = clazz.getConstructor(constructorArgs);
 				Object[] args = new Object[] { parent, string, nodeModel };
 				return (Component) constructor.newInstance(args);
-			} else if (NodeType.CONTENT_REFERENCE.toString().equals(type)) {
+			} else if (NodeType.REFERENCE.toString().equals(type)) {
 				String path = node.getProperty("ref").getString();
 				Node ref = StickyWicketSession.get().getJcrSession()
 						.getRootNode().getNode(path.substring(1));
-				Class clazz = ContentRenderer.class;
-				Constructor constructor = clazz.getConstructor(constructorArgs);
-				Object[] args = new Object[] { parent, string,
-						new NodeModel(ref) };
-				return (Component) constructor.newInstance(args);
+
+				return newRenderer(parent, string, new NodeModel(ref));
 			} else {
 				throw new RuntimeException("unknown node type [["
 						+ type.toString() + "]");
