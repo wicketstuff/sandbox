@@ -57,7 +57,7 @@ public class SortSettings implements Serializable {
 	}
 
 	public void setImageResources(List<YuiImage> sortList) {
-		for (int i = sortList.size() - 1; i >= 0; i--) {
+		for (int i = 0; i<sortList.size(); i++) {
 			YuiImage img = (YuiImage) sortList.get(i);
 
 			ResourceReference imgRR = new ResourceReference(SortSettings.class,

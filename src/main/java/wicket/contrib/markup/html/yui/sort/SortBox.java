@@ -45,7 +45,6 @@ public class SortBox extends AbstractYuiPanel {
 		});
 		sortLabel.setEscapeModelStrings(false);
 		add(sortLabel);
-
 	}
 
 	protected String getAnimSelectInitializationScript(int boxId) {
