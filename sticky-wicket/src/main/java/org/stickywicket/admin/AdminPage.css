@@ -1,0 +1,146 @@
+body,
+form {
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	background-color: #fff;
+	font-size: 76%;
+	font-family: tahoma, arial, helvetica, sans;
+	color: #555;
+}
+
+table,
+p {
+	font-size: 1em;
+}
+
+a {
+	color: #00f;
+	text-decoration: none;
+}
+
+a:hover {
+	color: #f00;
+	text-decoration: underline;
+}
+
+h1 {
+	font-family: Trebuchet MS, Georgia;
+	font-size: 3em;
+	font-weight: normal;
+	letter-spacing: -2px;
+	margin: 0;
+	padding: 0.5em;
+	color: #080;
+}
+
+#tabs {
+	padding: 0.5em 3em;
+}
+
+img {
+	border: 0;
+}
+
+.tab-row ul {
+	list-style: none;
+	padding: 0 0.75em;
+	margin: 0;
+	border-bottom: 1px solid #aaa;
+}
+
+.tab-row ul:after {
+    content: "."; 
+    display: block; 
+    height: 0; 
+    clear: both; 
+    visibility: hidden;
+}
+
+.tab-row ul li {
+	float: left;
+	border: 1px solid #aaa;
+	margin-left: 0.5em;
+	padding: 0;
+	margin-bottom: -1px;
+}
+
+.tab-row ul li.selected {
+	background-color: #fafafa;
+	border-bottom: 1px solid #fafafa;
+}
+
+.tab-row ul li a {
+	display: block;
+	padding: 0.25em 1em;
+	text-decoration: none;
+	font-weight: normal;
+}
+
+.tab-row ul li a:hover {
+	background-color: #eee;
+}
+
+.tab-row ul li.selected a {
+	background-color: #fafafa;
+	color: #000;
+	cursor: default;
+}
+
+.tab-panel {
+	clear: both;
+	border-left: 1px solid #aaa;
+	border-right: 1px solid #aaa;
+	border-bottom: 3px solid #080;
+	padding: 1em;
+	background-color: #fafafa;
+}
+
+.tab-panel:after {
+    content: "."; 
+    display: block; 
+    height: 0; 
+    clear: both; 
+    visibility: hidden;
+}
+
+.subPanel {
+	float: left;
+	padding-right: 1em;
+	margin-bottom: 1em;
+	margin-right: 1em;
+	border-right: 1px solid #eee;
+}
+
+.subPanel.last {
+	margin-right: 0;
+	border-right: 0;
+}
+
+.subPanel.cleared {
+	clear: left;
+}
+
+.subPanel h2 {
+	font-size: 1em;
+	font-family: tahoma, arial, helvetica, sans;
+	font-weight: normal;
+	margin: 0 0 0.5em 0;
+	padding: 0 0.25em;
+	border-bottom: 1px solid #ddd;
+	color: #080;
+}
+
+
+.subPanel table {
+	border-collapse: collapse;
+}
+
+.subPanel table th {
+	text-align: right;
+	font-weight: normal;
+	color: #888;
+	white-space: nowrap;
+}
