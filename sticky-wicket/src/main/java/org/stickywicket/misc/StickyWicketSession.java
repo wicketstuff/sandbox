@@ -45,7 +45,7 @@ public class StickyWicketSession extends WebSession {
 			c1container.setProperty("type", NodeType.CONTAINER.toString());
 
 			Node c1refc2 = c1container.addNode("c1refc2");
-			c1refc2.setProperty("type", NodeType.CONTENT_REFERENCE.toString());
+			c1refc2.setProperty("type", NodeType.REFERENCE.toString());
 			c1refc2.setProperty("ref", "/components/component2");
 
 			Node component2 = components.addNode("component2");
@@ -68,12 +68,12 @@ public class StickyWicketSession extends WebSession {
 			container1.setProperty("type", NodeType.CONTAINER.toString());
 
 			Node component1ref = container1.addNode("component1ref");
-			component1ref.setProperty("type", NodeType.CONTENT_REFERENCE
+			component1ref.setProperty("type", NodeType.REFERENCE
 					.toString());
 			component1ref.setProperty("ref", "/components/component1");
 
 			Node component2ref = container1.addNode("component1ref2");
-			component2ref.setProperty("type", NodeType.CONTENT_REFERENCE
+			component2ref.setProperty("type", NodeType.REFERENCE
 					.toString());
 			component2ref.setProperty("ref", "/components/component2");
 
