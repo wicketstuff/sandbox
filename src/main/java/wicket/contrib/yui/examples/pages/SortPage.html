@@ -6,24 +6,54 @@
 	<link rel="stylesheet" type="text/css" href="style.css">
 </head>
 
+<style>
+.initPosA {
+    text-align:center;
+    color:#000000;
+    cursor:move;
+    position:absolute;
+    top: 120px;
+    left: 80px;
+}
+
+.initPosB {
+    text-align:center;
+    color:#000000;
+    cursor:move;
+    position:absolute;
+    top: 120px;
+    left: 80px;
+}
+
+.init{
+	position:relative;
+	width:600px;
+	height:200px;
+}
+</style>
+
 <body>
-<span wicket:id="mainNavigation" />
+<span wicket:id="mainNavigation" /><br>
 
-<div>
-	<div wicket:id="sortGroupA">
-		<div wicket:id="sortListViewA">
-			<div wicket:id="sortBoxA"></div>
+<div style="border:1px solid #000000" class= "init" wicket:id="sortGroupA">
+	<div wicket:id="sortListViewA">
+		<div wicket:id="sortBoxA"></div>
 		</div>
+	<div>
+		<div class="initPosA">Sequence Order A <input type="text" wicket:id="valueA" size="50"></input></div>
+	</div>	
+</div>	
+
+<div style="border:1px solid #000000" class= "init" wicket:id="sortGroupB">
+	<div wicket:id="sortListViewB">
+		<div wicket:id="sortBoxB"></div>
 	</div>
+	<div>
+		<div class="initPosB">Sequence Order B <input type="text" wicket:id="valueB" size="50"></input></div>
+	</div>	
 </div>
 
-<div> 
-	<div wicket:id="sortGroupB">
-		<div wicket:id="sortListViewB">
-			<div wicket:id="sortBoxB"></div>
-		</div>
-	</div>
-</div>
+
 
 </body>
 </html>

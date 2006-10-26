@@ -9,6 +9,7 @@ import wicket.contrib.markup.html.yui.sort.SortBox;
 import wicket.contrib.markup.html.yui.sort.SortGroup;
 import wicket.contrib.markup.html.yui.sort.SortSettings;
 import wicket.contrib.yui.examples.WicketExamplePage;
+import wicket.markup.html.form.TextField;
 import wicket.markup.html.list.ListItem;
 import wicket.markup.html.list.ListView;
 
@@ -20,19 +21,19 @@ public class SortPage extends WicketExamplePage{
 		 */
 		
 		YuiImage blueA = new YuiImage("style/blue.bmp", "blue");  
-		blueA.setTop(150);
+		blueA.setTop(10);
 		blueA.setLeft(80);
 		
 		YuiImage greenA = new YuiImage("style/green.bmp", "green"); 
-		greenA.setTop(150);
+		greenA.setTop(10);
 		greenA.setLeft(195);
 		
 		YuiImage pinkA = new YuiImage("style/pink.bmp", "pink"); 
-		pinkA.setTop(150);
+		pinkA.setTop(10);
 		pinkA.setLeft(305);
 		
 		YuiImage yellowA = new YuiImage("style/yellow.bmp", "yellow"); 
-		yellowA.setTop(150);
+		yellowA.setTop(10);
 		yellowA.setLeft(415);
 
 		final List<YuiImage> sortListA= new ArrayList<YuiImage>();
@@ -42,7 +43,8 @@ public class SortPage extends WicketExamplePage{
 		sortListA.add(yellowA);
 		
 		final SortSettings settingsA = SortSettings.getDefault(YuiSortConstants.INTERSECT, sortListA);
-		SortGroup sortGroupA= new SortGroup("sortGroupA", settingsA);
+		TextField tfValueA = new TextField("valueA");
+		SortGroup sortGroupA= new SortGroup("sortGroupA", settingsA, tfValueA);
 		add(sortGroupA);
 	
 		ListView sortListViewA= new ListView("sortListViewA", sortListA){
@@ -59,19 +61,19 @@ public class SortPage extends WicketExamplePage{
 		 */
 		
 		YuiImage blueB = new YuiImage("style/blue.bmp", "blue"); 
-		blueB.setTop(300);
+		blueB.setTop(10);
 		blueB.setLeft(80);
 		
 		YuiImage greenB = new YuiImage("style/green.bmp", "green"); 
-		greenB.setTop(300);
+		greenB.setTop(10);
 		greenB.setLeft(195);
 		
 		YuiImage pinkB = new YuiImage("style/pink.bmp", "pink"); 
-		pinkB.setTop(300);
+		pinkB.setTop(10);
 		pinkB.setLeft(305);
 		
 		YuiImage yellowB = new YuiImage("style/yellow.bmp", "yellow"); 
-		yellowB.setTop(300);
+		yellowB.setTop(10);
 		yellowB.setLeft(415);
 
 		final List<YuiImage> sortListB= new ArrayList<YuiImage>();
@@ -81,7 +83,8 @@ public class SortPage extends WicketExamplePage{
 		sortListB.add(yellowB);
 		
 		final SortSettings settingsB = SortSettings.getDefault(YuiSortConstants.POINT, sortListB);
-		SortGroup sortGroupB= new SortGroup("sortGroupB", settingsB);
+		TextField tfValueB = new TextField("valueB");
+		SortGroup sortGroupB= new SortGroup("sortGroupB", settingsB, tfValueB);
 		add(sortGroupB);
 	
 		ListView sortListViewB= new ListView("sortListViewB", sortListB){
