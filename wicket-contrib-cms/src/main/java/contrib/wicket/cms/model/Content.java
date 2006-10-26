@@ -36,14 +36,17 @@ public class Content implements Serializable, Updatable {
 	public final static Integer ROOT = 1;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	Integer id;
 
 	@NotNull
 	@Length(min = 1, max = 128)
 	String name;
 
-	@NotNull
+	// @NotNull
+	// TODO: Only top most parent can be null, but the concept of "folders"
+	// should really be replaced with "labels" so each piece of content can have
+	// more than one parent (symlinking)
 	@ManyToOne
 	@JoinColumn(name = "folderId")
 	Content folder;
@@ -57,9 +60,9 @@ public class Content implements Serializable, Updatable {
 	@JoinColumn(name = "contentTypeId")
 	ContentType contentType;
 
-//	@OneToMany(cascade = CascadeType.ALL, mappedBy = "folder")
-//	@OrderBy("updatedDate")
-//	private Set<Content> children = new HashSet<Content>();
+	// @OneToMany(cascade = CascadeType.ALL, mappedBy = "folder")
+	// @OrderBy("updatedDate")
+	// private Set<Content> children = new HashSet<Content>();
 
 	private Date updatedDate;
 
@@ -86,13 +89,13 @@ public class Content implements Serializable, Updatable {
 		this.name = name;
 	}
 
-//	public Set<Content> getChildren() {
-//		return children;
-//	}
-//
-//	public void setChildren(Set<Content> children) {
-//		this.children = children;
-//	}
+	// public Set<Content> getChildren() {
+	// return children;
+	// }
+	//
+	// public void setChildren(Set<Content> children) {
+	// this.children = children;
+	// }
 
 	public Content getFolder() {
 		return folder;

@@ -55,9 +55,7 @@ public class WicketUtil {
 		StringResourceModel labelModel = new StringResourceModel(contentKey,
 				container, null);
 		errorableFormComponent.setLabel(labelModel);
-		container.add(errorableFormComponent);
-		Label label = new Label(errorableLabelName, labelModel);
-		container.add(label);
+		Label label = new Label(container, errorableLabelName, labelModel);
 		label.add(addErrorClassAttributeModifier(errorableFormComponent));
 		errorableFormComponent.add(addErrorClassAttributeModifier(
 				errorableFormComponent, DEFAULT_FORM_COMPONENT_INFO_CLASS,

@@ -8,7 +8,7 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/wicket-auth-roles"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/wicket-extensions"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/wicket-spring"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/wicket-spring-annot"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/wicket-contrib-cms"/>
+	<classpathentry kind="lib" path="/wicket-contrib-cms/lib/spring.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

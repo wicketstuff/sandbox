@@ -2,12 +2,13 @@ package contrib.wicket.cms.panel.renderer;
 
 import wicket.Application;
 import wicket.AttributeModifier;
+import wicket.MarkupContainer;
 import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.link.Link;
 import wicket.markup.html.panel.Panel;
 import wicket.model.CompoundPropertyModel;
 import wicket.model.Model;
-import wicket.spring.injection.annot.SpringBean;
+import wicket.spring.injection.SpringBean;
 import contrib.wicket.cms.initializer.CMSInitializer;
 import contrib.wicket.cms.model.Content;
 import contrib.wicket.cms.model.ContentType;
@@ -26,22 +27,23 @@ public class ContentRendererPanel extends Panel {
 
 	HtmlContentDataRendererPanel contentDataRendererPanel;
 
-	public ContentRendererPanel(final String id, final Content content) {
-		super(id, new CompoundPropertyModel(content));
+	public ContentRendererPanel(MarkupContainer<?> parent, final String id,
+			final Content content) {
+		super(parent, id, new CompoundPropertyModel(content));
 
 		setOutputMarkupId(true);
 
-		contentEditorPanel = new ContentEditorPanel("contentEditor", content) {
+		contentEditorPanel = new ContentEditorPanel(this, "contentEditor",
+				content) {
 			@Override
 			public boolean isVisible() {
 				return showForm;
 			}
 		};
-		add(contentEditorPanel);
 
 		// Renderer Panel
 		final WebMarkupContainer highlightContainer = new WebMarkupContainer(
-				"highlightContainer");
+				this, "highlightContainer");
 		highlightContainer.add(new AttributeModifier("class", true, new Model(
 				"highlight")) {
 			@Override
@@ -55,18 +57,15 @@ public class ContentRendererPanel extends Panel {
 				return strategy.hasWriteAccess(content);
 			}
 		});
-		add(highlightContainer);
 
 		if (content.getContentType().getId().equals(ContentType.TEXT)
 				|| content.getContentType().getId().equals(ContentType.HTML)) {
-			contentDataRendererPanel = new HtmlContentDataRendererPanel(
+			contentDataRendererPanel = new HtmlContentDataRendererPanel(this,
 					"content", content);
 		}
 
-		highlightContainer.add(contentDataRendererPanel);
-
 		// Edit Link
-		Link edit = new Link("edit") {
+		Link edit = new Link(this, "edit") {
 
 			@Override
 			public void onClick() {
@@ -85,7 +84,6 @@ public class ContentRendererPanel extends Panel {
 				return !showForm && strategy.hasWriteAccess(content);
 			}
 		};
-		add(edit);
 	}
 
 	public void setContent(Content content) {

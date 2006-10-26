@@ -1,6 +1,6 @@
 package contrib.wicket.cms.example.page;
 
-import wicket.spring.injection.annot.SpringBean;
+import wicket.spring.injection.SpringBean;
 import contrib.wicket.cms.model.Content;
 import contrib.wicket.cms.model.ContentType;
 import contrib.wicket.cms.panel.renderer.ContentRendererPanel;
@@ -31,9 +31,8 @@ public class Home extends Template {
 			content.setName("HomePage");
 		}
 
-		ContentRendererPanel contentPanel = new ContentRendererPanel("content",
-				content);
-		add(contentPanel);
+		ContentRendererPanel contentPanel = new ContentRendererPanel(this,
+				"content", content);
 	}
 
 }

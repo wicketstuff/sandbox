@@ -1,36 +1,29 @@
 package contrib.wicket.cms.example;
 
-import javax.servlet.ServletContext;
-
 import wicket.ISessionFactory;
+import wicket.Request;
 import wicket.Session;
+import wicket.protocol.http.WebApplication;
 import wicket.request.target.coding.IndexedParamUrlCodingStrategy;
-import wicket.spring.injection.annot.AnnotSpringWebApplication;
+import wicket.spring.injection.SpringComponentInjector;
 import contrib.wicket.cms.example.page.Directory;
 import contrib.wicket.cms.example.page.Home;
+import contrib.wicket.cms.example.page.Registration;
 import contrib.wicket.cms.example.session.SecuritySession;
 import contrib.wicket.cms.initializer.CMSInitializer;
 import contrib.wicket.cms.model.Content;
 import contrib.wicket.cms.security.ContentAuthorizationStrategy;
 
-public class CMSExampleApplication extends AnnotSpringWebApplication {
+public class CMSExampleApplication extends WebApplication {
 
 	@Override
 	protected void init() {
 
 		// Setup Environment
-		ServletContext servletContext = this.getWicketServlet()
-				.getServletContext();
-		if (servletContext.getInitParameter("deployment") != null) {
-			configure("deployment");
-		} else {
-			configure("development");
-		}
-
 		getMarkupSettings().setStripWicketTags(true);
 
-		mount("/Directory", new IndexedParamUrlCodingStrategy("/Directory",
-				Directory.class));
+		mountBookmarkablePage("/Registration", Registration.class);
+		mount(new IndexedParamUrlCodingStrategy("/Directory", Directory.class));
 
 		// BEGIN CMS SETUP
 		ContentAuthorizationStrategy strategy = new ContentAuthorizationStrategy() {
@@ -53,6 +46,8 @@ public class CMSExampleApplication extends AnnotSpringWebApplication {
 
 		CMSInitializer initializer = new CMSInitializer(strategy);
 		initializer.init(this);
+
+		addComponentInstantiationListener(new SpringComponentInjector(this));
 		// END CMS SETUP
 	}
 
@@ -63,7 +58,7 @@ public class CMSExampleApplication extends AnnotSpringWebApplication {
 	@Override
 	protected ISessionFactory getSessionFactory() {
 		return new ISessionFactory() {
-			public Session newSession() {
+			public Session newSession(Request request) {
 				return new SecuritySession(CMSExampleApplication.this);
 			}
 		};
