@@ -38,7 +38,7 @@
    
     <servlet-mapping>
         <servlet-name>wicket</servlet-name>
-        <url-pattern>/app/*</url-pattern>
+        <url-pattern>/*</url-pattern>
     </servlet-mapping>
   
 </web-app>

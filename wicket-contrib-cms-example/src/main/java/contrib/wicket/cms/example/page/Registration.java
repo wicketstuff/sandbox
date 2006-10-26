@@ -2,14 +2,15 @@ package contrib.wicket.cms.example.page;
 
 import java.io.Serializable;
 
+import wicket.MarkupContainer;
 import wicket.markup.html.form.Form;
 import wicket.markup.html.form.PasswordTextField;
 import wicket.markup.html.form.TextField;
-import wicket.markup.html.form.validation.EmailAddressPatternValidator;
-import wicket.markup.html.form.validation.StringValidator;
 import wicket.markup.html.panel.FeedbackPanel;
 import wicket.model.CompoundPropertyModel;
-import wicket.spring.injection.annot.SpringBean;
+import wicket.spring.injection.SpringBean;
+import wicket.validation.validator.EmailAddressPatternValidator;
+import wicket.validation.validator.StringValidator;
 import contrib.wicket.cms.example.model.Member;
 import contrib.wicket.cms.example.service.MembersService;
 import contrib.wicket.cms.example.session.SecuritySession;
@@ -22,38 +23,38 @@ public class Registration extends Template {
 	private MembersService memberService;
 
 	public Registration() {
-		RegistrationForm form = new RegistrationForm("form");
+		RegistrationForm form = new RegistrationForm(this, "form");
 
-		add(form);
 	}
 
 	private class RegistrationForm extends Form {
 
-		public RegistrationForm(final String id) {
-			super(id, new CompoundPropertyModel(new MemberForm()));
+		public RegistrationForm(MarkupContainer<?> parent, final String id) {
+			super(parent, id, new CompoundPropertyModel(new MemberForm()));
 
-			final FeedbackPanel feedbackPanel = new FeedbackPanel("feedback");
-			add(feedbackPanel);
+			final FeedbackPanel feedbackPanel = new FeedbackPanel(this,
+					"feedback");
 
-			TextField emailAddress = new TextField("emailAddress");
+			TextField emailAddress = new TextField(this, "emailAddress");
 			emailAddress.setRequired(true);
 			emailAddress.add(EmailAddressPatternValidator.getInstance());
 			WicketUtil.addErrorableLabel(this, "emailAddressLabel",
 					emailAddress);
 
-			TextField confirmEmailAddress = new TextField("confirmEmailAddress");
+			TextField confirmEmailAddress = new TextField(this,
+					"confirmEmailAddress");
 			confirmEmailAddress.setRequired(true);
 			confirmEmailAddress.add(EmailAddressPatternValidator.getInstance());
 			confirmEmailAddress.add(new EqualsValidator(emailAddress));
 			WicketUtil.addErrorableLabel(this, "confirmEmailAddressLabel",
 					confirmEmailAddress);
 
-			PasswordTextField password = new PasswordTextField("password");
+			PasswordTextField password = new PasswordTextField(this, "password");
 			password.setRequired(true);
 			password.add(StringValidator.lengthBetween(6, 32));
 			WicketUtil.addErrorableLabel(this, "passwordLabel", password);
 
-			PasswordTextField confirmPassword = new PasswordTextField(
+			PasswordTextField confirmPassword = new PasswordTextField(this,
 					"confirmPassword");
 			confirmPassword.setRequired(true);
 			confirmPassword.add(StringValidator.lengthBetween(6, 32));

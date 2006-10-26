@@ -3,7 +3,8 @@
  */
 package contrib.wicket.cms.panel.editor;
 
-import wicket.spring.injection.annot.SpringBean;
+import wicket.MarkupContainer;
+import wicket.spring.injection.SpringBean;
 import contrib.wicket.cms.model.Content;
 import contrib.wicket.cms.service.ContentService;
 
@@ -12,8 +13,9 @@ class FolderContentDataEditorPanel extends ContentDataEditorPanel {
 	@SpringBean
 	private ContentService contentService;
 
-	public FolderContentDataEditorPanel(String id, final Content content) {
-		super(id, content);
+	public FolderContentDataEditorPanel(MarkupContainer<?> parent, String id,
+			final Content content) {
+		super(parent, id, content);
 
 		// Currently no custom editing
 	}

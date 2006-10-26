@@ -3,13 +3,14 @@
  */
 package contrib.wicket.cms.panel.editor;
 
+import wicket.MarkupContainer;
 import wicket.WicketRuntimeException;
 import wicket.markup.html.form.Form;
 import wicket.markup.html.form.TextField;
 import wicket.markup.html.panel.FeedbackPanel;
 import wicket.markup.html.panel.Panel;
 import wicket.model.CompoundPropertyModel;
-import wicket.spring.injection.annot.SpringBean;
+import wicket.spring.injection.SpringBean;
 import contrib.wicket.cms.model.Content;
 import contrib.wicket.cms.model.ContentType;
 import contrib.wicket.cms.service.ContentService;
@@ -18,10 +19,11 @@ import contrib.wicket.cms.util.WicketUtil;
 public class ContentEditorPanel extends Panel {
 
 	ContentDataEditorPanel contentDataEditorPanel;
-	
-	public ContentEditorPanel(String id, Content content) {
-		super(id, new CompoundPropertyModel(content));
-		add(new ContentEditorForm("form", content));
+
+	public ContentEditorPanel(MarkupContainer<?> parent, String id,
+			Content content) {
+		super(parent, id, new CompoundPropertyModel(content));
+		new ContentEditorForm(this, "form", content);
 	}
 
 	public class ContentEditorForm extends Form {
@@ -29,8 +31,9 @@ public class ContentEditorPanel extends Panel {
 		@SpringBean
 		ContentService contentService;
 
-		public ContentEditorForm(String id, Content content) {
-			super(id);
+		public ContentEditorForm(MarkupContainer<?> parent, String id,
+				Content content) {
+			super(parent, id);
 
 			if (content == null || content.getContentType() == null
 					|| content.getFolder() == null) {
@@ -38,27 +41,24 @@ public class ContentEditorPanel extends Panel {
 						"content, content.contentType and content.folder must not be null");
 			}
 
-			add(new FeedbackPanel("feedback"));
+			new FeedbackPanel(this, "feedback");
 
-			TextField name = new TextField("name");
+			TextField name = new TextField(this, "name");
 			name.setRequired(true);
 			WicketUtil.addErrorClassAttributeModifier(name);
-			add(name);
 
 			if (content.getContentType().getId().equals(ContentType.TEXT)) {
-				contentDataEditorPanel = new TextContentDataEditorPanel(
+				contentDataEditorPanel = new TextContentDataEditorPanel(this,
 						"contentEditor", content);
-			} else if (content.getContentType().getId().equals(
-					ContentType.HTML)) {
-				contentDataEditorPanel = new HtmlContentDataEditorPanel(
+			} else if (content.getContentType().getId()
+					.equals(ContentType.HTML)) {
+				contentDataEditorPanel = new HtmlContentDataEditorPanel(this,
 						"contentEditor", content);
 			} else if (content.getContentType().getId().equals(
 					ContentType.FOLDER)) {
-				contentDataEditorPanel = new FolderContentDataEditorPanel(
+				contentDataEditorPanel = new FolderContentDataEditorPanel(this,
 						"contentEditor", content);
 			}
-
-			add(contentDataEditorPanel);			
 		}
 
 		@Override

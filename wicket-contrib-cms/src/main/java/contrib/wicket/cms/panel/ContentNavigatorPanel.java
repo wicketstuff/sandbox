@@ -1,13 +1,13 @@
 package contrib.wicket.cms.panel;
 
 import java.util.Iterator;
-import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
+import wicket.MarkupContainer;
 import wicket.extensions.markup.html.repeater.data.DataView;
 import wicket.extensions.markup.html.repeater.refreshing.Item;
 import wicket.extensions.markup.html.repeater.util.SortParam;
@@ -16,7 +16,7 @@ import wicket.markup.html.basic.Label;
 import wicket.markup.html.link.Link;
 import wicket.markup.html.panel.Panel;
 import wicket.model.IModel;
-import wicket.spring.injection.annot.SpringBean;
+import wicket.spring.injection.SpringBean;
 import contrib.wicket.cms.model.Content;
 import contrib.wicket.cms.service.ContentService;
 import contrib.wicket.cms.util.HibernateObjectModel;
@@ -28,12 +28,13 @@ abstract public class ContentNavigatorPanel extends Panel {
 
 	Content folder;
 
-	public ContentNavigatorPanel(final String id) {
-		this(id, null);
+	public ContentNavigatorPanel(MarkupContainer<?> parent, final String id) {
+		this(parent, id, null);
 	}
 
-	public ContentNavigatorPanel(final String id, final Content folder) {
-		super(id);
+	public ContentNavigatorPanel(MarkupContainer<?> parent, final String id,
+			final Content folder) {
+		super(parent, id);
 
 		this.folder = folder;
 
@@ -78,26 +79,25 @@ abstract public class ContentNavigatorPanel extends Panel {
 
 		dataProvider.setSort("name", true);
 
-		add(new DataView("data", dataProvider, getPageSize()) {
+		new DataView(this, "data", dataProvider, getPageSize()) {
 
 			@Override
 			protected void populateItem(final Item item) {
 
 				final Content content = (Content) item.getModelObject();
 
-				Link link = new Link("nameLink") {
+				Link link = new Link(item, "nameLink") {
 					public void onClick() {
 						ContentNavigatorPanel.this.onClick(content);
 					}
 				};
-				link.add(new Label("name", content.getName()));
-				item.add(link);
+				new Label(item, "name", content.getName());
 
 				String updatedDate = content.getUpdatedDate() == null ? ""
 						: content.getUpdatedDate().toString();
-				item.add(new Label("updatedDate", updatedDate));
+				new Label(item, "updatedDate", updatedDate);
 			}
-		});
+		};
 
 	}
 

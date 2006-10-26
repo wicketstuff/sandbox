@@ -21,11 +21,15 @@ package contrib.wicket.cms.util;
 
 import java.io.Serializable;
 
+import javax.servlet.ServletContext;
+
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import wicket.model.LoadableDetachableModel;
-import wicket.spring.SpringWebApplication;
+import wicket.protocol.http.WebApplication;
 import contrib.wicket.cms.service.ContentService;
 
 /**
@@ -76,11 +80,15 @@ public class HibernateObjectModel extends LoadableDetachableModel {
 	}
 
 	public Session session() {
-		SpringWebApplication app = (SpringWebApplication) SpringWebApplication
-				.get();
-		return ((ContentService) app.getSpringContextLocator()
-				.getSpringContext().getBean(ContentService.BEAN_NAME))
-				.session();
+
+		ServletContext sc = WebApplication.get().getServletContext();
+		ApplicationContext ac = WebApplicationContextUtils
+				.getRequiredWebApplicationContext(sc);
+
+		ContentService contentService = (ContentService) ac
+				.getBean(ContentService.BEAN_NAME);
+
+		return contentService.session();
 	}
 
 	/**
