@@ -21,8 +21,6 @@ public class ContentRendererPanel extends Panel {
 	@SpringBean
 	ContentService contentService;
 
-	boolean showForm = false;
-
 	ContentEditorPanel contentEditorPanel;
 
 	HtmlContentDataRendererPanel contentDataRendererPanel;
@@ -32,14 +30,6 @@ public class ContentRendererPanel extends Panel {
 		super(parent, id, new CompoundPropertyModel(content));
 
 		setOutputMarkupId(true);
-
-		contentEditorPanel = new ContentEditorPanel(this, "contentEditor",
-				content) {
-			@Override
-			public boolean isVisible() {
-				return showForm;
-			}
-		};
 
 		// Renderer Panel
 		final WebMarkupContainer highlightContainer = new WebMarkupContainer(
@@ -64,13 +54,24 @@ public class ContentRendererPanel extends Panel {
 					highlightContainer, "content", content);
 		}
 
+		// Editor Panel
+		contentEditorPanel = new ContentEditorPanel(this, "contentEditor",
+				content) {
+
+			@Override
+			public void onSubmit() {
+				contentEditorPanel.setVisible(false);
+				highlightContainer.setVisible(true);
+			}
+		};
+		contentEditorPanel.setVisible(false);
+
 		// Edit Link
 		Link edit = new Link(this, "edit") {
 
 			@Override
 			public void onClick() {
-				showForm = true;
-				contentEditorPanel.setVisible(false);
+				contentEditorPanel.setVisible(true);
 				highlightContainer.setVisible(false);
 			}
 
@@ -81,13 +82,14 @@ public class ContentRendererPanel extends Panel {
 						.getMetaData(
 								CMSInitializer.CONTENT_AUTHORIZATION_STRATEGY_KEY);
 
-				return !showForm && strategy.hasWriteAccess(content);
+				return !contentEditorPanel.isVisible()
+						&& strategy.hasWriteAccess(content);
 			}
 		};
 	}
 
 	public void setContent(Content content) {
-		showForm = false;
+		contentEditorPanel.setVisible(false);
 		contentEditorPanel.setContent(content);
 		setModel(new CompoundPropertyModel(content));
 	}

@@ -16,7 +16,7 @@ import contrib.wicket.cms.model.ContentType;
 import contrib.wicket.cms.service.ContentService;
 import contrib.wicket.cms.util.WicketUtil;
 
-public class ContentEditorPanel extends Panel {
+abstract public class ContentEditorPanel extends Panel {
 
 	ContentDataEditorPanel contentDataEditorPanel;
 
@@ -64,6 +64,7 @@ public class ContentEditorPanel extends Panel {
 		@Override
 		protected void onSubmit() {
 			contentDataEditorPanel.onSubmit(getContent());
+			ContentEditorPanel.this.onSubmit();
 		}
 
 	}
@@ -77,4 +78,6 @@ public class ContentEditorPanel extends Panel {
 		contentDataEditorPanel.setContent(content);
 	}
 
+	public abstract void onSubmit();
+	
 }
