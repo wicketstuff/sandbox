@@ -60,8 +60,8 @@ public class ContentRendererPanel extends Panel {
 
 		if (content.getContentType().getId().equals(ContentType.TEXT)
 				|| content.getContentType().getId().equals(ContentType.HTML)) {
-			contentDataRendererPanel = new HtmlContentDataRendererPanel(this,
-					"content", content);
+			contentDataRendererPanel = new HtmlContentDataRendererPanel(
+					highlightContainer, "content", content);
 		}
 
 		// Edit Link

@@ -14,7 +14,7 @@ public class HtmlContentDataRendererPanel extends Panel {
 
 	public HtmlContentDataRendererPanel(MarkupContainer<?> parent, final String id, Content content) {
 		super(parent, id);
-		new Label(parent, "dataAsString").setEscapeModelStrings(false);
+		new Label(this, "dataAsString").setEscapeModelStrings(false);
 	}
 
 }
