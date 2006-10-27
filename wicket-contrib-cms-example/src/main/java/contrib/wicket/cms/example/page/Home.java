@@ -1,5 +1,6 @@
 package contrib.wicket.cms.example.page;
 
+import wicket.markup.html.basic.Label;
 import wicket.spring.injection.SpringBean;
 import contrib.wicket.cms.model.Content;
 import contrib.wicket.cms.model.ContentType;
@@ -31,8 +32,9 @@ public class Home extends Template {
 			content.setName("HomePage");
 		}
 
-		ContentRendererPanel contentPanel = new ContentRendererPanel(this,
-				"content", content);
+		// new Label(this, "content", "rukey");
+
+		new ContentRendererPanel(this, "content", content);
 	}
 
 }
