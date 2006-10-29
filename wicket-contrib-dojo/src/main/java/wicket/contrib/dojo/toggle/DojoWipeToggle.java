@@ -11,6 +11,10 @@ public class DojoWipeToggle extends DojoToggle
 		super(duration);
 	}
 	
+	public DojoWipeToggle(){
+		super();
+	}
+	
 	public String getToggle(){
 		return "wipe";
 	}

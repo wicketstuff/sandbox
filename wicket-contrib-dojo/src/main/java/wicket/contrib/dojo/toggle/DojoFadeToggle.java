@@ -10,6 +10,10 @@ public class DojoFadeToggle extends DojoToggle
 	public DojoFadeToggle(int duration){
 		super(duration);
 	}
+	
+	public DojoFadeToggle(){
+		super();
+	}
 
 	public String getToggle(){
 		return "fade";
