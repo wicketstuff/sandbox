@@ -11,6 +11,10 @@ public class DojoExplodeToggle extends DojoToggle
 		super(duration);
 	}
 	
+	public DojoExplodeToggle(){
+		super();
+	}
+	
 	public String getToggle(){
 		return "explode";
 	}
