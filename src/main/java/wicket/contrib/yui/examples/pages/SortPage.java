@@ -13,86 +13,122 @@ import wicket.markup.html.form.TextField;
 import wicket.markup.html.list.ListItem;
 import wicket.markup.html.list.ListView;
 
-public class SortPage extends WicketExamplePage{
-	public SortPage(){	
-		
+/**
+ * This class demostrates how you can use the wicket.contrib.markup.html.yui.sort package
+ * to create images that can be sorted and retrieve the ordering after sort.
+ * <p>
+ * 
+ * @author cptan
+ *
+ */
+public class SortPage extends WicketExamplePage {
+	
+	/**
+	 * Defines a SortPage object
+	 *
+	 */
+	public SortPage() {
+
 		/**
 		 * Example A: Intersect Mode
 		 */
-		
-		YuiImage blueA = new YuiImage("style/blue.bmp", "blue");  
-		blueA.setTop(10);
+
+		// Step 1a: Define the first image and its position
+		YuiImage blueA = new YuiImage("style/blue.bmp", "blue");
+		blueA.setTop(50);
 		blueA.setLeft(80);
-		
-		YuiImage greenA = new YuiImage("style/green.bmp", "green"); 
-		greenA.setTop(10);
+
+		// Step 1b: Define the second image and its position
+		YuiImage greenA = new YuiImage("style/green.bmp", "green");
+		greenA.setTop(50);
 		greenA.setLeft(195);
-		
-		YuiImage pinkA = new YuiImage("style/pink.bmp", "pink"); 
-		pinkA.setTop(10);
+
+		// Step 1c: Define the third image and its position
+		YuiImage pinkA = new YuiImage("style/pink.bmp", "pink");
+		pinkA.setTop(50);
 		pinkA.setLeft(305);
-		
-		YuiImage yellowA = new YuiImage("style/yellow.bmp", "yellow"); 
-		yellowA.setTop(10);
+
+		// Step 1d: Define the fourth image and its position
+		YuiImage yellowA = new YuiImage("style/yellow.bmp", "yellow");
+		yellowA.setTop(50);
 		yellowA.setLeft(415);
 
-		final List<YuiImage> sortListA= new ArrayList<YuiImage>();
+		// Step 2: The initial ordering of the images depends on the order in which the
+		// image is added to the List. In this case, the initial ordering is
+		// blue, green, pink, yellow.
+		final List<YuiImage> sortListA = new ArrayList<YuiImage>();
 		sortListA.add(blueA);
 		sortListA.add(greenA);
 		sortListA.add(pinkA);
 		sortListA.add(yellowA);
-		
-		final SortSettings settingsA = SortSettings.getDefault(YuiSortConstants.INTERSECT, sortListA);
+
+		// Step 3: Declare the type of mode and adding a textfield to contain the
+		// ordering of the images
+		final SortSettings settingsA = SortSettings.getDefault(
+				YuiSortConstants.INTERSECT, sortListA);
 		TextField tfValueA = new TextField("valueA");
-		SortGroup sortGroupA= new SortGroup("sortGroupA", settingsA, tfValueA);
+		SortGroup sortGroupA = new SortGroup("sortGroupA", settingsA, tfValueA);
 		add(sortGroupA);
-	
-		ListView sortListViewA= new ListView("sortListViewA", sortListA){
+
+		//Step 4: Create a SortBox for each image
+		ListView sortListViewA = new ListView("sortListViewA", sortListA) {
 			protected void populateItem(ListItem item) {
-				YuiImage imageA= (YuiImage) item.getModelObject();
-				item.add(new SortBox("sortBoxA", item.getIndex(), imageA, settingsA));
+				YuiImage imageA = (YuiImage) item.getModelObject();
+				item.add(new SortBox("sortBoxA", item.getIndex(), imageA,
+						settingsA));
 			};
 		};
 		sortGroupA.add(sortListViewA);
-		
-		
+
 		/**
 		 * Example B: Point Mode
 		 */
-		
-		YuiImage blueB = new YuiImage("style/blue.bmp", "blue"); 
-		blueB.setTop(10);
+
+		//Step 1a: Define the first image and its position
+		YuiImage blueB = new YuiImage("style/blue.bmp", "blue");
+		blueB.setTop(200);
 		blueB.setLeft(80);
-		
-		YuiImage greenB = new YuiImage("style/green.bmp", "green"); 
-		greenB.setTop(10);
+
+		//Step 1b: Define the second image and its position
+		YuiImage greenB = new YuiImage("style/green.bmp", "green");
+		greenB.setTop(200);
 		greenB.setLeft(195);
 		
-		YuiImage pinkB = new YuiImage("style/pink.bmp", "pink"); 
-		pinkB.setTop(10);
+		//Step 1c: Define the third image and its position
+		YuiImage pinkB = new YuiImage("style/pink.bmp", "pink");
+		pinkB.setTop(200);
 		pinkB.setLeft(305);
 		
-		YuiImage yellowB = new YuiImage("style/yellow.bmp", "yellow"); 
-		yellowB.setTop(10);
+		//Step 1d: Define the fourth image and its position
+		YuiImage yellowB = new YuiImage("style/yellow.bmp", "yellow");
+		yellowB.setTop(200);
 		yellowB.setLeft(415);
 
-		final List<YuiImage> sortListB= new ArrayList<YuiImage>();
+		// Step 2: The initial ordering of the images depends on the order in which the
+		// image is added to the List. In this case, the initial ordering is
+		// blue, green, pink, yellow.
+		final List<YuiImage> sortListB = new ArrayList<YuiImage>();
 		sortListB.add(blueB);
 		sortListB.add(greenB);
 		sortListB.add(pinkB);
 		sortListB.add(yellowB);
-		
-		final SortSettings settingsB = SortSettings.getDefault(YuiSortConstants.POINT, sortListB);
+
+		// Step 3: Declare the type of mode and adding a textfield to contain the
+		// ordering of the images
+		final SortSettings settingsB = SortSettings.getDefault(
+				YuiSortConstants.POINT, sortListB);
 		TextField tfValueB = new TextField("valueB");
-		SortGroup sortGroupB= new SortGroup("sortGroupB", settingsB, tfValueB);
+		SortGroup sortGroupB = new SortGroup("sortGroupB", settingsB, tfValueB);
 		add(sortGroupB);
-	
-		ListView sortListViewB= new ListView("sortListViewB", sortListB){
+
+		// Step 4: Create a SortBox for each image
+		ListView sortListViewB = new ListView("sortListViewB", sortListB) {
 			protected void populateItem(ListItem item) {
-				YuiImage imageB= (YuiImage) item.getModelObject();
-				item.add(new SortBox("sortBoxB", item.getIndex(), imageB, settingsB));
+				YuiImage imageB = (YuiImage) item.getModelObject();
+				item.add(new SortBox("sortBoxB", item.getIndex(), imageB,
+						settingsB));
 			};
 		};
 		sortGroupB.add(sortListViewB);
-	}	
+	}
 }

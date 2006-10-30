@@ -15,7 +15,7 @@ import wicket.markup.html.list.ListItem;
 import wicket.markup.html.list.ListView;
 
 /**
- * This class demostrates how you can use the wicket.contrOib.markup.html.yui.anim package
+ * This class demostrates how you can use the wicket.contrib.markup.html.yui.anim package
  * to create animated inputs like radio buttons and check boxes. 
  * <p>
  * 

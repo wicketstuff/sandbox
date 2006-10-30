@@ -12,8 +12,8 @@
     color:#000000;
     cursor:move;
     position:absolute;
-    top: 120px;
-    left: 80px;
+    top:10px;
+    left:80px;
 }
 
 .initPosB {
@@ -21,39 +21,33 @@
     color:#000000;
     cursor:move;
     position:absolute;
-    top: 120px;
-    left: 80px;
+    top:170px;
+    left:80px;
 }
 
 .init{
 	position:relative;
-	width:600px;
-	height:200px;
 }
 </style>
 
 <body>
 <span wicket:id="mainNavigation" /><br>
 
-<div style="border:1px solid #000000" class= "init" wicket:id="sortGroupA">
+<!--This example uses the INTERSECT mode-->
+<div class= "init" wicket:id="sortGroupA">
 	<div wicket:id="sortListViewA">
 		<div wicket:id="sortBoxA"></div>
-		</div>
-	<div>
-		<div class="initPosA">Sequence Order A <input type="text" wicket:id="valueA" size="50"></input></div>
-	</div>	
-</div>	
+	</div>
+	<div class="initPosA">Example A - Intersect mode <input type="text" wicket:id="valueA" size="40"></input></div>
+</div>
 
-<div style="border:1px solid #000000" class= "init" wicket:id="sortGroupB">
+<!--This example uses the POINT mode-->
+<div class= "init" wicket:id="sortGroupB">
 	<div wicket:id="sortListViewB">
 		<div wicket:id="sortBoxB"></div>
 	</div>
-	<div>
-		<div class="initPosB">Sequence Order B <input type="text" wicket:id="valueB" size="50"></input></div>
-	</div>	
+	<div class="initPosB">Example B - Point mode <input type="text" wicket:id="valueB" size="40"></input></div>
 </div>
-
-
 
 </body>
 </html>
