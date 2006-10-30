@@ -44,19 +44,21 @@ public class AnimGroup extends WebMarkupContainer {
 	 *            wicket id
 	 * @param settings -
 	 *            defines the animation settings
+	 * @param element -
+	 *            component to contains the selected options
 	 */
-	public AnimGroup(String id, AnimSettings settings, final FormComponent element) {
+	public AnimGroup(String id, AnimSettings settings,
+			final FormComponent element) {
 		super(id);
 
 		this.animOptionList = settings.getAnimOptionList();
 		this.easing = settings.getEasing();
 		this.duration = settings.getDuration();
 		this.maxSelection = settings.getMaxSelection();
-		this.valueId= element.getId()+"_"+id;
+		this.valueId = element.getId() + "_" + id;
 
 		for (int i = 0; i < animOptionList.size(); i++) {
-			AnimOption animSelectOption = (AnimOption) animOptionList
-					.get(i);
+			AnimOption animSelectOption = (AnimOption) animOptionList.get(i);
 			String value = animSelectOption.getSelectedValue();
 			if (selectedValues.equals("")) {
 				selectedValues = "'" + value + "'";
@@ -64,14 +66,14 @@ public class AnimGroup extends WebMarkupContainer {
 				selectedValues = selectedValues + ",'" + value + "'";
 			}
 		}
-		
+
 		if (element != null) {
 			element.add(new AttributeModifier("id", true,
 					new AbstractReadOnlyModel() {
 						private static final long serialVersionUID = 1L;
 
 						public Object getObject(Component component) {
-							return element.getId()+"_"+javaScriptId;
+							return element.getId() + "_" + javaScriptId;
 						}
 					}));
 		}
@@ -88,7 +90,7 @@ public class AnimGroup extends WebMarkupContainer {
 				AnimGroup.class, "init.js");
 		Map<Object, Object> variables = new HashMap<Object, Object>(7);
 		variables.put("javaScriptId", javaScriptId);
-		variables.put("easing", "'"+easing+"'");
+		variables.put("easing", "'" + easing + "'");
 		variables.put("duration", new Double(duration));
 		variables.put("maxSelection", new Integer(maxSelection));
 		variables.put("noOfBoxes", new Integer(animOptionList.size()));
@@ -104,16 +106,19 @@ public class AnimGroup extends WebMarkupContainer {
 	protected void onAttach() {
 		super.onAttach();
 		javaScriptId = getMarkupId();
-		
-		String js= "\n<script type=\"text/javascript\">" + getJavaScriptComponentInitializationScript() + "\n</script>\n";
+
+		String js = "\n<script type=\"text/javascript\">"
+				+ getJavaScriptComponentInitializationScript()
+				+ "\n</script>\n";
 		add(new StringHeaderContributor(js));
 	}
 
 	/**
 	 * 
 	 */
-	protected void onComponentTagBody(MarkupStream markupStream, ComponentTag openTag) {
-		super.onComponentTagBody(markupStream, openTag);		
+	protected void onComponentTagBody(MarkupStream markupStream,
+			ComponentTag openTag) {
+		super.onComponentTagBody(markupStream, openTag);
 	}
 
 	/**

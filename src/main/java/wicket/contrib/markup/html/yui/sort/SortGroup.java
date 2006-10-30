@@ -13,52 +13,73 @@ import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.form.FormComponent;
 import wicket.model.AbstractReadOnlyModel;
 
+/**
+ * A SortGroup groups the images
+ * 
+ * @author cptan
+ * 
+ */
 public class SortGroup extends WebMarkupContainer {
 	private static final long serialVersionUID = 1L;
 
 	private String javaScriptId;
 
 	private String mode;
-	
+
 	private List<YuiImage> sortList;
-	
+
 	private String id;
-	
+
 	private String valueId;
 
-	public SortGroup(String id, SortSettings settings, final FormComponent element) {
+	/**
+	 * Creates a SortGroup
+	 * 
+	 * @param id -
+	 *            wicket id
+	 * @param settings -
+	 *            defines the animation settings
+	 * @param element -
+	 *            component to contains the sorting order
+	 */
+	public SortGroup(String id, SortSettings settings,
+			final FormComponent element) {
 		super(id);
 		this.mode = settings.getMode();
 		this.sortList = settings.getSortList();
-		this.id= id;
-		this.valueId = element.getId()+"_"+id;
-		
+		this.id = id;
+		this.valueId = element.getId() + "_" + id;
+
 		if (element != null) {
 			element.add(new AttributeModifier("id", true,
 					new AbstractReadOnlyModel() {
 						private static final long serialVersionUID = 1L;
 
 						public Object getObject(Component component) {
-							return element.getId()+"_"+javaScriptId;
+							return element.getId() + "_" + javaScriptId;
 						}
 					}));
 		}
 		add(element);
 	}
 
+	/**
+	 * Initialize the init.js which is shared among a a group of images
+	 * 
+	 * @return a String representation of the init.js
+	 */
 	protected String getJavaScriptComponentInitializationScript() {
 		String sortValues = "";
 		String sortIds = "";
-		
-		for(int i=0; i<sortList.size(); i++){
-			YuiImage yuiImage = (YuiImage)sortList.get(i);
-			if(sortValues.equals("") || sortValues == ""){
-				sortValues = "'"+ yuiImage.getDesc() +"'";
-				sortIds = "'dd"+i+"_"+id+"'";
-			}
-			else{
-				sortValues = sortValues +", '"+ yuiImage.getDesc()+"'";
-				sortIds = sortIds + ", 'dd"+i+"_"+id+"'";
+
+		for (int i = 0; i < sortList.size(); i++) {
+			YuiImage yuiImage = (YuiImage) sortList.get(i);
+			if (sortValues.equals("") || sortValues == "") {
+				sortValues = "'" + yuiImage.getDesc() + "'";
+				sortIds = "'dd" + i + "_" + id + "'";
+			} else {
+				sortValues = sortValues + ", '" + yuiImage.getDesc() + "'";
+				sortIds = sortIds + ", 'dd" + i + "_" + id + "'";
 			}
 		}
 		PackagedTextTemplate template = new PackagedTextTemplate(
@@ -73,12 +94,16 @@ public class SortGroup extends WebMarkupContainer {
 		return template.getString();
 	}
 
-	@Override
+	/**
+	 * Get the markup Id on attach
+	 */
 	protected void onAttach() {
 		super.onAttach();
 		javaScriptId = getMarkupId();
-		
-		String js= "\n<script type=\"text/javascript\">" + getJavaScriptComponentInitializationScript() + "\n</script>\n";
+
+		String js = "\n<script type=\"text/javascript\">"
+				+ getJavaScriptComponentInitializationScript()
+				+ "\n</script>\n";
 		add(new StringHeaderContributor(js));
 	}
 }

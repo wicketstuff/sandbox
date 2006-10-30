@@ -15,8 +15,13 @@ import wicket.markup.html.basic.Label;
 import wicket.markup.html.form.FormComponent;
 import wicket.model.AbstractReadOnlyModel;
 
+/**
+ * 
+ * @author cptan
+ * 
+ */
 public class SortBox extends AbstractYuiPanel {
-	
+
 	private static final long serialVersionUID = 1L;
 
 	private String javaScriptId;
@@ -24,7 +29,19 @@ public class SortBox extends AbstractYuiPanel {
 	private String mode;
 
 	private SortSettings settings;
-	
+
+	/**
+	 * Defines a SortSettings object
+	 * 
+	 * @param id -
+	 *            wicket id
+	 * @param index -
+	 *            auto-generated through the listview
+	 * @param image -
+	 *            defines the image
+	 * @param settings -
+	 *            defines the sort settings
+	 */
 	public SortBox(String id, final int index, YuiImage image,
 			SortSettings settings) {
 		super(id);
@@ -47,6 +64,13 @@ public class SortBox extends AbstractYuiPanel {
 		add(sortLabel);
 	}
 
+	/**
+	 * Initialize the sort.js for each option
+	 * 
+	 * @param boxId -
+	 *            auto-generated through the listview
+	 * @return a String representation of the sort.js
+	 */
 	protected String getAnimSelectInitializationScript(int boxId) {
 		PackagedTextTemplate template = new PackagedTextTemplate(SortBox.class,
 				"sort.js");
@@ -54,8 +78,8 @@ public class SortBox extends AbstractYuiPanel {
 		variables.put("javaScriptId", javaScriptId);
 		variables.put("id", new Integer(boxId));
 		variables.put("classId", "'dd" + boxId + "_" + javaScriptId + "'");
-		variables.put("groupId", "'"+javaScriptId+"'");
-		
+		variables.put("groupId", "'" + javaScriptId + "'");
+
 		if (mode.equals("INTERSECT")) {
 			variables.put("isIntersect", "_i");
 		} else if (mode.equals("POINT")) {
@@ -66,23 +90,32 @@ public class SortBox extends AbstractYuiPanel {
 		return template.getString();
 	}
 
-	@Override
+	/**
+	 * Get the markup Id of the super parent class on attach
+	 */
 	protected void onAttach() {
 		super.onAttach();
 		javaScriptId = findParent(SortGroup.class).getMarkupId();
 	}
 
+	/**
+	 * Get the box's style
+	 * 
+	 * @author cptan
+	 * 
+	 */
 	private final class Box extends FormComponent implements Serializable {
 		private static final long serialVersionUID = 1L;
 
-		public Box(final String id, final int count, final String name, YuiImage yuiImage) {
+		public Box(final String id, final int count, final String name,
+				YuiImage yuiImage) {
 			super(id);
 			add(new AttributeModifier("id", true, new AbstractReadOnlyModel() {
 				private static final long serialVersionUID = 1L;
 
 				@Override
 				public Object getObject(Component component) {
-					return "dd"+count+ "_"+ javaScriptId;
+					return "dd" + count + "_" + javaScriptId;
 				}
 			}));
 			add(new AttributeModifier("style", true,
@@ -105,6 +138,12 @@ public class SortBox extends AbstractYuiPanel {
 		}
 	}
 
+	/**
+	 * Get the image's width and height
+	 * 
+	 * @author cptan
+	 * 
+	 */
 	private final class ImgStyle extends FormComponent implements Serializable {
 		private static final long serialVersionUID = 1L;
 
