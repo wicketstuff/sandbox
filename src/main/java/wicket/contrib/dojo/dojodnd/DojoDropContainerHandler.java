@@ -1,5 +1,6 @@
 package wicket.contrib.dojo.dojodnd;
 
+import wicket.ajax.AjaxRequestTarget;
 import wicket.contrib.dojo.DojoAjaxHandler;
 import wicket.markup.html.IHeaderResponse;
 import wicket.util.resource.IResourceStream;
@@ -76,20 +77,9 @@ class DojoDropContainerHandler extends DojoAjaxHandler
 	}
 	
 	@Override
-	public void onRequest()
+	protected void respond(AjaxRequestTarget target)
 	{
-		super.onRequest();
-	}
-	
-	/**
-	 * Gets the resource to render to the requester.
-	 * 
-	 * @return the resource to render to the requester
-	 */
-	protected final IResourceStream getResponse()
-	{
-		container.onAjaxModelUpdated();
-		return container.getResponseResourceStream();
+		container.onAjaxModelUpdated(target);
 	}
 	
 

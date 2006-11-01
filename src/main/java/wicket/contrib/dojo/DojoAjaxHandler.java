@@ -20,8 +20,10 @@ package wicket.contrib.dojo;
 
 import wicket.Application;
 import wicket.IInitializer;
+import wicket.Page;
 import wicket.RequestCycle;
 import wicket.ResourceReference;
+import wicket.ajax.AjaxRequestTarget;
 import wicket.behavior.AbstractAjaxBehavior;
 import wicket.markup.html.IHeaderResponse;
 import wicket.markup.html.PackageResource;
@@ -63,22 +65,18 @@ public abstract class DojoAjaxHandler extends AbstractAjaxBehavior implements II
 	 */
 	public void onRequest()
 	{
-		IResourceStream response = getResponse();
-		if (response != null)
-		{
-			boolean isPageVersioned = true;
-			try
-			{
-				isPageVersioned = getComponent().getPage().isVersioned();
-				getComponent().getPage().setVersioned(false);
-
-				DojoRequestTarget target = new DojoRequestTarget(response);
-				RequestCycle.get().setRequestTarget(target);
-			}
-			finally
-			{
-				getComponent().getPage().setVersioned(isPageVersioned);
-			}
+		boolean isPageVersioned = true;
+		Page page = getComponent().getPage();
+		try {
+			isPageVersioned = page.isVersioned();
+			page.setVersioned(false);
+			
+			AjaxRequestTarget target = new AjaxRequestTarget();
+			RequestCycle.get().setRequestTarget(target);
+			respond(target);
+		}
+		finally{
+			page.setVersioned(isPageVersioned);
 		}
 	}
 
@@ -91,6 +89,5 @@ public abstract class DojoAjaxHandler extends AbstractAjaxBehavior implements II
 		response.renderJavascriptReference(new ResourceReference(DojoAjaxHandler.class, "dojo0.3/dojo.js"));
 	}
 
-
-	protected abstract IResourceStream getResponse();
+	protected abstract void respond(AjaxRequestTarget target);
 }

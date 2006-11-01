@@ -7,6 +7,7 @@ package wicket.contrib.markup.html.form;
 import java.util.List;
 
 import wicket.MarkupContainer;
+import wicket.ajax.AjaxRequestTarget;
 import wicket.contrib.dojo.DojoAjaxHandler;
 import wicket.markup.ComponentTag;
 import wicket.markup.html.IHeaderResponse;
@@ -100,20 +101,17 @@ public class ImmediateRadioChoice<T> extends RadioChoice<T>
 
 			response.renderString(s.toString());
 		}
-
-
+		
 		/**
 		 * Gets the resource to render to the requester.
-		 * 
-		 * @return the resource to render to the requester
+		 * @param target {@link AjaxRequestTarget}
 		 */
-		protected final IResourceStream getResponse()
+		protected final void respond(AjaxRequestTarget target)
 		{
 			// let the form component update its model
 			radioButton.convert();
 			radioButton.updateModel();
-			radioButton.onAjaxModelUpdated();
-			return radioButton.getResponseResourceStream();
+			radioButton.onAjaxModelUpdated(target);
 		}
 
 		/**
@@ -193,24 +191,12 @@ public class ImmediateRadioChoice<T> extends RadioChoice<T>
 	}
 
 	/**
-	 * returns the resource stream whose value will become the value of the
-	 * <code>data</code> argument in the defined client-side javascript
-	 * callback handler.
-	 * 
-	 * 
-	 * @return resource stream used as <code>data</code> argument in
-	 *         client-side javascript callback handler
-	 */
-	protected IResourceStream getResponseResourceStream()
-	{
-		return new StringBufferResourceStream();
-	}
-
-	/**
 	 * Called after the model is updated. Use this method to e.g. update the
 	 * persistent model. Does nothing by default.
+	 * 
+     * @param target {@link AjaxRequestTarget}
 	 */
-	protected void onAjaxModelUpdated()
+	protected void onAjaxModelUpdated(AjaxRequestTarget target)
 	{
 	}
 

@@ -1,6 +1,7 @@
 package wicket.contrib.dojo.dojodnd;
 
 import wicket.MarkupContainer;
+import wicket.ajax.AjaxRequestTarget;
 import wicket.contrib.markup.html.form.ImmediateCheckBox;
 import wicket.markup.html.WebMarkupContainer;
 import wicket.util.resource.IResourceStream;
@@ -60,27 +61,10 @@ public abstract class DojoDropContainer extends WebMarkupContainer
 	}
 	
 	/**
-	 * returns the resource stream whose value will become the value of the
-	 * <code>data</code> argument in the defined client-side javascript
-	 * callback handler.
-	 * 
-	 * @see ImmediateCheckBox#getJSCallbackFunctionName()
-	 * @see IResourceStream
-	 * @see StringBufferResourceStream
-	 * 
-	 * @return resource stream used as <code>data</code> argument in
-	 *         client-side javascript callback handler
-	 */
-	protected IResourceStream getResponseResourceStream()
-	{
-		return new StringBufferResourceStream();
-	}
-	
-	/**
 	 * Called after the model is updated. Use this method to e.g. update the
 	 * persistent model. Does nothing by default.
 	 */
-	protected void onAjaxModelUpdated()
+	protected void onAjaxModelUpdated(AjaxRequestTarget target)
 	{
 		String dragSource = getRequest().getParameter("dragSource");
 		int position = Integer.parseInt(getRequest().getParameter("position"));

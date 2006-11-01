@@ -8,6 +8,7 @@ import wicket.RequestCycle;
 import wicket.ResourceReference;
 import wicket.Response;
 import wicket.WicketRuntimeException;
+import wicket.ajax.AjaxRequestTarget;
 import wicket.contrib.dojo.DojoAjaxHandler;
 import wicket.markup.html.IHeaderResponse;
 import wicket.model.Model;
@@ -24,6 +25,7 @@ import wicket.util.resource.StringBufferResourceStream;
  * @author Ruud Booltink
  * @author Marco van de Haar
  *
+ * TODO : make it work with new respond method and update autoupdate.js
  */
 public class DojoAutoUpdateHandler extends DojoAjaxHandler
 {
@@ -61,6 +63,8 @@ public class DojoAutoUpdateHandler extends DojoAjaxHandler
 	 * 
 	 * @param components The components to be rerendered.
 	 * @return Rerendered component's resource stream.
+     * @deprecated never use
+     * TODO implements with respond method and update js scripts
 	 */
 	protected IResourceStream render(final Component[] components) 
 	{
@@ -124,8 +128,11 @@ public class DojoAutoUpdateHandler extends DojoAjaxHandler
 		response.renderJavascriptReference(new ResourceReference(DojoAutoUpdateHandler.class, "autoupdate.js"));
 	}
 	
-	/* (non-Javadoc)
+	
+	/**
 	 * @see wicket.AjaxHandler#getResponse()
+	 * @deprecated never use 
+     * TODO implements with respond method and update js scripts
 	 */
 	protected IResourceStream getResponse() 
 	{
@@ -202,5 +209,12 @@ public class DojoAutoUpdateHandler extends DojoAjaxHandler
 		  while (st.hasMoreElements()) t += st.nextElement();
 		  return t;
 	  }
+
+	@Override
+	protected void respond(AjaxRequestTarget target)
+	{
+		// TODO Implement rerender here
+		
+	}
     
 }

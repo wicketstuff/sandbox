@@ -22,6 +22,7 @@ import wicket.AttributeModifier;
 import wicket.Component;
 import wicket.Response;
 import wicket.WicketRuntimeException;
+import wicket.ajax.AjaxRequestTarget;
 import wicket.behavior.AbstractAjaxBehavior;
 import wicket.contrib.dojo.DojoAjaxHandler;
 import wicket.markup.html.form.FormComponent;
@@ -239,22 +240,10 @@ public class FXValidationAjaxHandler extends DojoAjaxHandler
 			   }}));
 	}
 
-
-	/**
-	 * Gets the resource to render to the requester. In this implementation,
-	 * just validate formcomponent and return the result. In the future, when
-	 * partial page rendering is well implemented in wicket, this method should
-	 * also visit and rerender IFeedback components.
-	 * 
-	 * @return the resource to render to the requester
-	 */
-	protected final IResourceStream getResponse()
+	@Override
+	protected void respond(AjaxRequestTarget target)
 	{
-		StringBufferResourceStream s = new StringBufferResourceStream();
-
-		formComponent.validate();
-
-		// When validation failed...
+		formComponent.validate();	
 		if (!formComponent.isValid())
 		{
 			// TODO finish
@@ -278,23 +267,9 @@ public class FXValidationAjaxHandler extends DojoAjaxHandler
 			// fix
 			// that in a generic fashion, our ajax support would be pretty
 			// usable at once
-
-			/*
-			 * formComponent.getPage().visitChildren(IFeedback.class, new
-			 * Component.IVisitor() { public Object component(Component
-			 * component) { // this doesn't work yet. //component.render();
-			 * return Component.IVisitor.CONTINUE_TRAVERSAL; } });
-			 */
-
-			s.append("invalid");
 		}
-		else
-		{
-			s.append("valid");
-		}
-		return s;
 	}
-
+	
 	/**
 	 * Let subclasses define their very own duration.
 	 * 

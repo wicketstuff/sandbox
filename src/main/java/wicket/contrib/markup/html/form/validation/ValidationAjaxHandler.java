@@ -21,6 +21,7 @@ package wicket.contrib.markup.html.form.validation;
 import wicket.Component;
 import wicket.Response;
 import wicket.WicketRuntimeException;
+import wicket.ajax.AjaxRequestTarget;
 import wicket.behavior.AbstractAjaxBehavior;
 import wicket.contrib.dojo.DojoAjaxHandler;
 import wicket.feedback.IFeedback;
@@ -107,52 +108,34 @@ public final class ValidationAjaxHandler extends DojoAjaxHandler
 		}
 		this.formComponent = (FormComponent)c;
 	}
-
-	/**
-	 * @see wicket.EventRequestHandler#getResourceStream()
-	 */
-	/**
-	 * Gets the resource to render to the requester.
-	 * @return the resource to render to the requester
-	 */
-	protected final IResourceStream getResponse()
+	
+	@Override
+	protected void respond(AjaxRequestTarget target)
 	{
-		StringBufferResourceStream s = new StringBufferResourceStream();
-
-		formComponent.validate();
-
-		// When validation failed...
+		formComponent.validate();	
 		if (!formComponent.isValid())
 		{
-			//TODO finish
-			// The plan here is the visit all feedback components, re-render them, and
-			// return the render results to the browser with the components (top level)
-			// ids attached. We could then use this information to replace the dom
+			// TODO finish
+			// The plan here is the visit all feedback components, re-render
+			// them, and
+			// return the render results to the browser with the components (top
+			// level)
+			// ids attached. We could then use this information to replace the
+			// dom
 			// elements in the browser
 
 			// We need a couple of things for this to work first:
 			// 1) The ability to let a component render on its' own
-			// 2) Trap that render result somewhere. Either by setting the response to
-			//			render to on that component, or passing a response as a parameter
-			//			of the render call
-			// Furthermore, we need to have the javascript side covered. That could
-			// be tricky too, but the cool thing about that is that if we would fix
-			// that in a generic fashion, our ajax support would be pretty usable at once
-
-			formComponent.getPage().visitChildren(IFeedback.class, new Component.IVisitor()
-			{
-				public Object component(Component component)
-				{
-					// this doesn't work yet.
-					//component.render();
-					return Component.IVisitor.CONTINUE_TRAVERSAL;
-				}
-			});
+			// 2) Trap that render result somewhere. Either by setting the
+			// response to
+			// render to on that component, or passing a response as a parameter
+			// of the render call
+			// Furthermore, we need to have the javascript side covered. That
+			// could
+			// be tricky too, but the cool thing about that is that if we would
+			// fix
+			// that in a generic fashion, our ajax support would be pretty
+			// usable at once
 		}
-
-		// for now, just display a simple message
-		s.append("ajax validation executed");
-
-		return s;
 	}
 }
