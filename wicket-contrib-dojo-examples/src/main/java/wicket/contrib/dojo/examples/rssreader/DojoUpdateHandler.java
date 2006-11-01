@@ -4,6 +4,7 @@ import wicket.Component;
 import wicket.RequestCycle;
 import wicket.ResourceReference;
 import wicket.Response;
+import wicket.ajax.AjaxRequestTarget;
 import wicket.behavior.AbstractAjaxBehavior;
 import wicket.contrib.dojo.DojoAjaxHandler;
 import wicket.markup.html.IHeaderResponse;
@@ -44,17 +45,15 @@ public abstract class DojoUpdateHandler extends DojoAjaxHandler
 	protected abstract Component[] updateComponent();
 
 	
-	/* (non-Javadoc)
-	 * @see wicket.AjaxHandler#getResponse()
-	 */
-	protected IResourceStream getResponse() 
+	@Override
+	protected void respond(AjaxRequestTarget target)
 	{
-
 		Component[] components = updateComponent();
-		return render(components);
+		for (int i=0; i < components.length; i++){
+			target.addComponent(components[i]);
+		}
+		
 	}
-	
-
 	
 	/**
 	 * Internal render method. This handler currently only supports 1 component.<br/>
