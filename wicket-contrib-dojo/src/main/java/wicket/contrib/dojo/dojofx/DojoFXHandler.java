@@ -18,6 +18,7 @@ package wicket.contrib.dojo.dojofx;
 
 import wicket.AttributeModifier;
 import wicket.Component;
+import wicket.ajax.AjaxRequestTarget;
 import wicket.contrib.dojo.DojoAjaxHandler;
 import wicket.markup.html.IHeaderResponse;
 import wicket.model.IModel;
@@ -87,15 +88,10 @@ public abstract class DojoFXHandler extends DojoAjaxHandler
 		return trigger;
 	}
 
-	/**
-	 * Subclasses can use this method to add extra triggers by adding an
-	 * attributemodifier to c.
-	 * 
-	 * @param c
-	 *            trigger component
-	 */
-	protected void addTrigger(Component c)
+	@Override
+	protected void respond(AjaxRequestTarget target)
 	{
+		//DO NOTHING
 	}
 	
 	/**
