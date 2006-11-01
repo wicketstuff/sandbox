@@ -1,16 +1,20 @@
 package wicket.contrib.dojo.markup.html.dialog;
 
+import wicket.ajax.AjaxRequestTarget;
 import wicket.contrib.dojo.DojoAjaxHandler;
 import wicket.markup.html.IHeaderResponse;
-import wicket.util.resource.IResourceStream;
 
+/**
+ * A Dojo Dialog Box Handler
+ * @author <a href="http://www.demay-fr.net/blog">Vincent Demay</a>
+ *
+ */
 public class DojoDialogHandler extends DojoAjaxHandler
 {
-
 	@Override
-	protected IResourceStream getResponse()
+	protected void respond(AjaxRequestTarget target)
 	{
-		return null;
+		//DO NOTHING
 	}
 	
 	/* (non-Javadoc)

@@ -19,6 +19,7 @@ package wicket.contrib.dojo;
 
 import wicket.Application;
 import wicket.IInitializer;
+import wicket.ajax.AjaxRequestTarget;
 import wicket.contrib.dojo.autoupdate.AutoUpdateInitializer;
 import wicket.contrib.markup.html.form.validation.FXFeedbackIndicatorInitializer;
 import wicket.contrib.markup.html.tooltip.TooltipComponentInitializer;
@@ -46,9 +47,11 @@ public class Initializer implements IInitializer
 		// for ajax initialization
 		new DojoAjaxHandler()
 		{
-			protected IResourceStream getResponse()
+			@Override
+			protected void respond(AjaxRequestTarget target)
 			{
-				return null;
+				//DO NOTHING
+				
 			}
 		}.init(application);
 		

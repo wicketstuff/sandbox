@@ -9,12 +9,13 @@ import java.io.OutputStream;
 import wicket.IRequestTarget;
 import wicket.RequestCycle;
 import wicket.Session;
+import wicket.ajax.AjaxRequestTarget;
 import wicket.util.io.Streams;
 import wicket.util.resource.IResourceStream;
 
 /**
  * @author jcompagner
- * 
+ * @deprecated DojoAjaxHandler uses now {@link AjaxRequestTarget}
  */
 public class DojoRequestTarget implements IRequestTarget
 {

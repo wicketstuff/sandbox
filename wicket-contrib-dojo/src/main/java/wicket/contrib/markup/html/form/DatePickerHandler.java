@@ -1,17 +1,16 @@
 package wicket.contrib.markup.html.form;
 
+import wicket.ajax.AjaxRequestTarget;
 import wicket.contrib.dojo.DojoAjaxHandler;
 import wicket.markup.html.IHeaderResponse;
-import wicket.util.resource.IResourceStream;
 
+/**
+ * A dojo date picker
+ * @author <a href="http://www.demay-fr.net/blog">Vincent Demay</a>
+ *
+ */
 public class DatePickerHandler extends DojoAjaxHandler
 {
-
-	@Override
-	protected IResourceStream getResponse()
-	{
-		return null;
-	}
 	
 	/* (non-Javadoc)
 	 * @see wicket.contrib.dojo.DojoAjaxHandler#renderHead(wicket.markup.html.IHeaderResponse)
@@ -26,6 +25,12 @@ public class DatePickerHandler extends DojoAjaxHandler
 		require += "</script>\n";
 
 		response.renderString(require);
+	}
+
+	@Override
+	protected void respond(AjaxRequestTarget target)
+	{
+		//DO NOTHING	
 	}
 
 }

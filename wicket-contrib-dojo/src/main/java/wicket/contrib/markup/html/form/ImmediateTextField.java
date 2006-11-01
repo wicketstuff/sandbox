@@ -19,6 +19,7 @@ package wicket.contrib.markup.html.form;
 
 import wicket.MarkupContainer;
 import wicket.ResourceReference;
+import wicket.ajax.AjaxRequestTarget;
 import wicket.contrib.dojo.DojoAjaxHandler;
 import wicket.markup.ComponentTag;
 import wicket.markup.html.IHeaderResponse;
@@ -103,12 +104,13 @@ public class ImmediateTextField<T> extends TextField<T>
 		add(new ImmediateUpdateAjaxHandler());
 	}
 
-
 	/**
 	 * Called after the model is updated. Use this method to e.g. update the
 	 * persistent model. Does nothing by default.
+	 * 
+     * @param target {@link AjaxRequestTarget}
 	 */
-	protected void onAjaxModelUpdated()
+	protected void onAjaxModelUpdated(AjaxRequestTarget target)
 	{
 	}
 
@@ -162,19 +164,17 @@ public class ImmediateTextField<T> extends TextField<T>
 		{
 			this.textField = (ImmediateTextField)getComponent();
 		}
-
+		
 		/**
 		 * Gets the resource to render to the requester.
-		 * 
-		 * @return the resource to render to the requester
+		 * @param target {@link AjaxRequestTarget}
 		 */
-		protected final IResourceStream getResponse()
+		protected final void respond(AjaxRequestTarget target)
 		{
 			// let the form component update its model
 			textField.convert();
 			textField.updateModel();
-			textField.onAjaxModelUpdated();
-			return new StringBufferResourceStream();
+			textField.onAjaxModelUpdated(target);
 		}
 	}
 
