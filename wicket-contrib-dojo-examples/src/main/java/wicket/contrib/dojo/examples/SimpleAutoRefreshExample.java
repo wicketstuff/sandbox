@@ -15,6 +15,7 @@ public class SimpleAutoRefreshExample extends WebPage {
 	public SimpleAutoRefreshExample() {
 		timer = 0;
 		updateTimer();
+		label  = new Label(this, "label");
 		label.add(new DojoAutoUpdateHandler(1000){
 
 			@Override
