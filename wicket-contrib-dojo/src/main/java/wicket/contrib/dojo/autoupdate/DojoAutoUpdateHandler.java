@@ -74,14 +74,11 @@ public abstract class DojoAutoUpdateHandler extends DojoAjaxHandler
 		return this.LoadingId;
 	}
 	
-	/**
-	 * Checks if bound component is Updatable and adds HTMLID
-	 * @see wicket.behavior.AjaxHandler#onBind()
-	 */
-	/*protected void onBind()
+
+	protected void onBind()
 	{
-		Component c = getComponent();
-	}*/
+		getComponent().setOutputMarkupId(true);
+	}
 	
 	/*private String removeColon(String s) {
 		  StringTokenizer st = new StringTokenizer(s,":",false);
