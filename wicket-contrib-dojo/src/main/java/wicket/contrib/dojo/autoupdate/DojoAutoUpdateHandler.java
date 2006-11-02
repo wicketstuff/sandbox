@@ -1,20 +1,10 @@
 package wicket.contrib.dojo.autoupdate;
 
-import java.util.StringTokenizer;
-
-import wicket.AttributeModifier;
 import wicket.Component;
-import wicket.RequestCycle;
 import wicket.ResourceReference;
-import wicket.Response;
-import wicket.WicketRuntimeException;
 import wicket.ajax.AjaxRequestTarget;
 import wicket.contrib.dojo.DojoAjaxHandler;
 import wicket.markup.html.IHeaderResponse;
-import wicket.model.Model;
-import wicket.response.StringResponse;
-import wicket.util.resource.IResourceStream;
-import wicket.util.resource.StringBufferResourceStream;
 
 /**
  * Dojo Ajax auto update handler. <br/>
@@ -25,12 +15,10 @@ import wicket.util.resource.StringBufferResourceStream;
  * @author Ruud Booltink
  * @author Marco van de Haar
  *
- * TODO : make it work with new respond method and update autoupdate.js
  */
-public class DojoAutoUpdateHandler extends DojoAjaxHandler
+public abstract class DojoAutoUpdateHandler extends DojoAjaxHandler
 {
 	private final int interval;
-	private String HTMLID;
 	private String LoadingId = "";
 	
 	/**
@@ -40,8 +28,7 @@ public class DojoAutoUpdateHandler extends DojoAjaxHandler
 	public DojoAutoUpdateHandler(int interval)
 	{
 		this.interval = interval;
-	    
-
+		//getComponent().setOutputMarkupId(true);
 	}
 	
 	/**
@@ -52,70 +39,6 @@ public class DojoAutoUpdateHandler extends DojoAjaxHandler
 	{
 		this.interval = interval;
 		this.LoadingId = loadingId;
-	    
-
-	}
-
-    
-	/**
-	 * Internal render method. This handler currently only supports 1 component.<br/>
-	 * The array is for future usage.
-	 * 
-	 * @param components The components to be rerendered.
-	 * @return Rerendered component's resource stream.
-     * @deprecated never use
-     * TODO implements with respond method and update js scripts
-	 */
-	protected IResourceStream render(final Component[] components) 
-	{
-		
-		
-		StringBufferResourceStream response = new StringBufferResourceStream("text/plain");
-		//response.append("<?xml version='1.0' encoding='utf-8'?>");
-		//response.append("<components>");
-		
-		if (components != null)
-		{
-			
-			Response resp = new StringResponse(); 
-			RequestCycle requestCycle = RequestCycle.get();
-			Response origResponse = requestCycle.getResponse();
-			try
-			{
-				requestCycle.setResponse(resp);
-				for (int i=0; i < components.length; i++)
-				{
-					//	resp.write("<component cssid=''><![CDATA[");
-					
-					Component component = components[i];
-					boolean renderBodyOnly = component.getRenderBodyOnly();
-					try
-					{
-						component.setRenderBodyOnly(true);
-
-						component.renderComponent();
-					}
-					catch (Exception ex)
-					{
-						resp.write(ex.toString());
-					}
-					finally
-					{
-						component.setRenderBodyOnly(renderBodyOnly);
-					}
-				//	resp.write("]]<component>");
-				}
-			}
-			finally
-			{
-				requestCycle.setResponse(origResponse);
-			}
-			response.append(resp.toString());
-		}
-		//response.append("</components>");
-		//System.out.println("response: " + response.asString());
-		return response;
-		
 	}
 
 	/**
@@ -126,31 +49,18 @@ public class DojoAutoUpdateHandler extends DojoAjaxHandler
 	{
 		super.renderHead(response);
 		response.renderJavascriptReference(new ResourceReference(DojoAutoUpdateHandler.class, "autoupdate.js"));
+		String require = "";
+		require += "<script language=\"JavaScript\" type=\"text/javascript\">\n";
+		require += "\n";
+		require += "function initAutoRefreshFor" + getComponent().getId() + "(){\n";
+		require += "	checkUpdate('" + getCallbackUrl() + "','text/plain', '" + getComponent().getId() + "', '" + getLoadingId() + "');intervalCheck("+ this.interval + ", '" + getCallbackUrl() + "', 'text/html','" + getComponent().getId() + "','" + getLoadingId() + "');\n";
+		require += "}\n";
+		require += "dojo.addOnLoad(initAutoRefreshFor" + getComponent().getId() + ");\n";
+		require += "</script>\n";
+		
+		response.renderString(require);
 	}
 	
-	
-	/**
-	 * @see wicket.AjaxHandler#getResponse()
-	 * @deprecated never use 
-     * TODO implements with respond method and update js scripts
-	 */
-	protected IResourceStream getResponse() 
-	{
-		Component[] components = new Component[1];
-		components[0] = getComponent();
-		boolean success = ((IUpdatable)components[0]).update();
-		if(success)
-		{
-			return render(components);	
-		}
-		else
-		{
-			StringBufferResourceStream response = new StringBufferResourceStream("text/plain");
-			response.append("UPDATE_ERROR");
-			return response;
-		}
-			
-	}
 	
 	/**
 	 * the javascript function expects the node corresponding to loadingId to have 
@@ -163,58 +73,34 @@ public class DojoAutoUpdateHandler extends DojoAjaxHandler
 	{
 		return this.LoadingId;
 	}
-
-	/** 
-	 * adds the onload contribution: calls checkUpdate() <br/>
-	 * @return contribution to body onload.
-	 * @see wicket.behavior.AjaxHandler#getBodyOnloadContribution()
-	 */
-	protected String getBodyOnloadContribution()
-	{
-		return "checkUpdate('" + getCallbackUrl() + "','text/plain', '" + HTMLID + "', '" + getLoadingId() + "');intervalCheck("+ this.interval + ", '" + getCallbackUrl() + "', 'text/html','" + HTMLID + "','" + getLoadingId() + "');";
-		//return "checkUpdate();";
-		
-		
-	}
-	
-	
-	
 	
 	/**
 	 * Checks if bound component is Updatable and adds HTMLID
 	 * @see wicket.behavior.AjaxHandler#onBind()
 	 */
-	protected void onBind()
+	/*protected void onBind()
 	{
 		Component c = getComponent();
-		if (!(c instanceof IUpdatable))
-		{
-			throw new WicketRuntimeException("This handler must be bound to Updatable Components.");
-		}
-		// create a unique HTML for the explode component
-		
-		String componentpath = removeColon(getComponent().getPath());
-		
-		//this.HTMLID = "f_" + this.getComponent().getId() + "_" + getComponent().getPath();
-		this.HTMLID = ((IUpdatable)getComponent()).getHTMLID();
-		
-		// Add ID to component, and bind effect to trigger
-		c.add(new AttributeModifier("id", true, new Model(HTMLID)));
-
-	}
+	}*/
 	
-	private String removeColon(String s) {
+	/*private String removeColon(String s) {
 		  StringTokenizer st = new StringTokenizer(s,":",false);
 		  String t="";
 		  while (st.hasMoreElements()) t += st.nextElement();
 		  return t;
-	  }
+	  }*/
 
 	@Override
-	protected void respond(AjaxRequestTarget target)
+	protected final void respond(AjaxRequestTarget target)
 	{
-		// TODO Implement rerender here
-		
+		update(getComponent());
+		target.addComponent(getComponent());
 	}
+	
+	/**
+	 * update the component where this handler is added
+	 * @param component component where this handler is added
+	 */
+	protected abstract void update(Component component);
     
 }

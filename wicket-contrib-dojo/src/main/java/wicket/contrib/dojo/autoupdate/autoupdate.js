@@ -1,77 +1,62 @@
-	function intervalCheck(interval, componentUrl, mimetype, nodeId, loadingId)
-	{
-	  //alert(nodeId);
-	  setInterval("checkUpdate('" + componentUrl + "', '" + mimetype + "', '" + nodeId + "', '" + loadingId + "')" , interval);
-	  //setInterval("alert(componentUrl)");
-	}
-	var requesting = false;
-	
-	function checkUpdate(componentUrl,mtype, nodeId, loadingId) { 
-		//alert("hier!");
-		if(requesting == false)
-		 {
-		  requesting = true;
-		  node = document.getElementById(nodeId);
-			//	alert(componentUrl);
-			//alert("checkupate!");
-			
-			dojo.io.bind({
-				url: componentUrl,
-				mimetype: mtype,
-				load: function(type, data, evt) {
-					//alert("requ: " + requesting);
-					requesting = false;
-					if(data == '')
-					{
-						return false;
-					}
-					else
-					{
+	/**
+ * Run update every interval ms
+ */
+function intervalCheck(interval, componentUrl, mimetype, nodeId, loadingId)
+{
+	setInterval("checkUpdate('" + componentUrl + "', '" + mimetype + "', '" + nodeId + "', '" + loadingId + "')" , interval);
+}
+var requesting = false;
 
-						if(data == 'UPDATE_ERROR')
-						{
-						  return false;
-						} else {
-	 					  if(loadingId != "")
-	 					  {
-	 					    loading(loadingId,false);
-	 					  }
-	 					  node.innerHTML = data;
-	 					  //dojo.fx.html.fadeOut(node, 500, function(n) {
-	 					  //node.innerHTML = data;
-	 					  // dojo.fx.html.fadeIn(n, 500);
-	 					  //});
-						  return true;
-						  //alert(data);
-						}
-					}
-					
+/**
+ * Make the update if request is not in the flight
+ */
+function checkUpdate(componentUrl,mtype, nodeId, loadingId) { 
+	if(requesting == false)
+	 {
+	  requesting = true;
+		
+		dojo.io.bind({
+			url: componentUrl,
+			mimetype: mtype,
+			load: function(type, data, evt) {
+				requesting = false;
+				if(data == '')
+				{
+					return false;
 				}
-			});
-			if(loadingId != "")
-	 		{
-	 		    loading(loadingId,true);
-	 		}
-		  }
-		  else
-		  {
-		   setTimeout("checkUpdate('" + componentUrl + "', '" + mtype + "', '" + nodeId + "', '" + loadingId + "')", 3000);
-		   //alert("nodeid: " + nodeId);
-		  }
-	}
-	
-		function loading(loadingId, state)
-	{
-	  loadNode = document.getElementById(loadingId);
-	  //alert(loadNode.style.visibility);
-	  if(state)
-	  {
-	    loadNode.style.visibility = 'visible';
-	    
+				else
+				{
+					//define in dojo-ajax-updater
+					updatePage(data);
+					loading(loadingId, false);
+				}
+				
+			}
+		});
+		if(loadingId != "")
+ 		{
+ 		    loading(loadingId,true);
+ 		}
 	  }
 	  else
 	  {
-	    loadNode.style.visibility = 'hidden';
-	    
+	   setTimeout("checkUpdate('" + componentUrl + "', '" + mtype + "', '" + nodeId + "', '" + loadingId + "')", 3000);
+	   //alert("nodeid: " + nodeId);
 	  }
+}
+
+/**
+ * Set loading visible or not
+ */
+function loading(loadingId, state)
+{
+	loadNode = document.getElementById(loadingId);
+	if(state)
+	{
+		loadNode.style.visibility = 'visible';
 	}
+	else
+	{
+		loadNode.style.visibility = 'hidden';
+	}
+}
