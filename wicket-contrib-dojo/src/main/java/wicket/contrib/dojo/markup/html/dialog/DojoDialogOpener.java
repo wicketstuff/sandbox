@@ -16,7 +16,7 @@ public class DojoDialogOpener extends Link{
 	public DojoDialogOpener(MarkupContainer parent, String id, DojoDialog dialog)
 	{
 		super(parent, id);
-		String dialogId = dialog.getId();
+		String dialogId = dialog.getMarkupId();
 		String onClick = "";
 		onClick = "javascript:getDialog('" + dialogId + "').show(); return false;";
 		this.add(new AttributeAppender("onClick", new Model<String>(onClick),""));

@@ -16,7 +16,7 @@ public class DojoDialogCloser extends Link{
 	public DojoDialogCloser(MarkupContainer parent, String id, DojoDialog dialog)
 	{
 		super(parent, id);
-		String dialogId = dialog.getId();
+		String dialogId = dialog.getMarkupId();
 		String onClick = "";
 		onClick = "javascript:getDialog('" + dialogId + "').hide(); return false;";
 		this.add(new AttributeAppender("onClick", new Model<String>(onClick),""));
