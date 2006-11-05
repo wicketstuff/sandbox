@@ -28,15 +28,14 @@ function checkUpdate(componentUrl,mtype, nodeId, loadingId) {
 				{
 					//define in dojo-ajax-updater
 					updatePage(data);
-					loading(loadingId, false);
 				}
 				
 			}
 		});
-		if(loadingId != "")
+		/**if(loadingId != "")
  		{
  		    loading(loadingId,true);
- 		}
+ 		}*/
 	  }
 	  else
 	  {
