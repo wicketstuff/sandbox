@@ -8,6 +8,7 @@ import wicket.Component;
 import wicket.MarkupContainer;
 import wicket.ResourceReference;
 import wicket.behavior.HeaderContributor;
+import wicket.contrib.dojo.markup.html.tooltip.DojoTooltip;
 import wicket.markup.html.internal.HeaderContainer;
 import wicket.markup.html.internal.HtmlHeaderContainer;
 import wicket.markup.html.panel.Panel;
@@ -38,6 +39,7 @@ import wicket.model.Model;
  * 2: Dynamic Tooltip</a>
  * 
  * @author Marco & Ruud
+ * @deprecated see {@link DojoTooltip}
  */
 
 public class TooltipPanel extends Panel
