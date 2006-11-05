@@ -3,6 +3,7 @@ package wicket.contrib.markup.html.tooltip;
 
 import wicket.AttributeModifier;
 import wicket.MarkupContainer;
+import wicket.contrib.dojo.markup.html.tooltip.DojoTooltip;
 import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.panel.Panel;
 import wicket.model.Model;
@@ -31,6 +32,7 @@ import wicket.model.Model;
  * 2: Dynamic Tooltip</a>
  * 
  * @author Marco & Ruud
+ * @deprecated see {@link DojoTooltip}
  */
 
 public class Tooltip extends Panel
