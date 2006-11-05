@@ -19,9 +19,17 @@ import wicket.markup.html.form.TextField;
 public abstract class DojoUpdateHandler extends DojoAjaxHandler
 {
 
+	Component loading;
+	
 	public DojoUpdateHandler()
 	{
 		super();
+	}
+	
+	public DojoUpdateHandler(Component loading)
+	{
+		super();
+		this.loading = loading;
 	}
 	
 	@Override
@@ -36,6 +44,9 @@ public abstract class DojoUpdateHandler extends DojoAjaxHandler
 	protected void onBind()
 	{
 		super.onBind();
+		if (loading != null){
+			loading.setOutputMarkupId(true);
+		}
 	}
 	
 	@Override
@@ -52,16 +63,23 @@ public abstract class DojoUpdateHandler extends DojoAjaxHandler
 		}
 	}
 	
+	private final String getLoadingPart(){
+		if (loading != null){
+			return ", '" + loading.getMarkupId() + "'";
+		}
+		else return "";
+	}
+	
 	
 	@Override
 	protected void onComponentTag(ComponentTag tag)
 	{
 		super.onComponentTag(tag);
 		if (getComponent() instanceof TextField){
-			tag.put("onblur", "javascript:update('" + getCallbackUrl() + "&value=' + this.value" + ",'text/plain')");
+			tag.put("onblur", "javascript:update('" + getCallbackUrl() + "&value=' + this.value" + ",'text/plain'" + getLoadingPart() + ")");
 		}
 		else {
-			tag.put("onclick", "javascript:update('" + getCallbackUrl() + "','text/plain')");
+			tag.put("onclick", "javascript:update('" + getCallbackUrl() + "','text/plain'" + getLoadingPart() + ")");
 		}
 	}
 
