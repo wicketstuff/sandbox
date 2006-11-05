@@ -27,6 +27,10 @@ public class DojoFloatingPaneHandler extends DojoAjaxHandler
 		require += "<script language=\"JavaScript\" type=\"text/javascript\">\n";
 		require += "	dojo.require(\"dojo.widget.FloatingPane\")\n";
 		require += "\n";
+		require += "function getFloatingPane(id){\n";
+		require += "	var fp = dojo.widget.byId(id);\n";
+		require += "	return fp;\n";
+		require += "}\n";
 		require += "</script>\n";
 
 		response.renderString(require);
