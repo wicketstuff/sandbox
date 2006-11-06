@@ -6,6 +6,7 @@ import java.util.List;
 
 import wicket.Component;
 import wicket.MarkupContainer;
+import wicket.ajax.AjaxRequestTarget;
 import wicket.behavior.AttributeAppender;
 import wicket.contrib.dojo.autoupdate.DojoAutoUpdateHandler;
 import wicket.contrib.dojo.update.DojoUpdateHandler;
@@ -37,26 +38,26 @@ public class SimpleUpdateExample extends WebPage {
 		
 		labelString = "Hello ! Try to click me";
 		label = new Label(this, "label", new Model<String>(labelString));
-		label.add(new DojoUpdateHandler(){
+		label.add(new DojoUpdateHandler("onclick"){
 
 			@Override
-			public void updateComponents(List<Component> components, Component submitter, String value) {
+			public void updateComponents(AjaxRequestTarget target, Component submitter, String value) {
 				listList.add("You click on Hello");	
-				components.add(listContainer);
+				target.addComponent(listContainer);
 			}
 			
 		});
 		
 		
 		textField = new TextField(this,"textField", new Model<String>(textFieldString));
-		textField.add(new DojoUpdateHandler(){
+		textField.add(new DojoUpdateHandler("onblur"){
 
 			@Override
-			public void updateComponents(List<Component> components, Component submitter, String value) {
+			public void updateComponents(AjaxRequestTarget target, Component submitter, String value) {
 				String toAdd = value;
 				if (!toAdd.equals("")){
 					listList.add(toAdd);
-					components.add(listContainer);
+					target.addComponent(listContainer);
 				}
 			}
 			
