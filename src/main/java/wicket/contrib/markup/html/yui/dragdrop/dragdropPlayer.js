@@ -1,5 +1,5 @@
 function fn_initPlayer${id}_${javaScriptId}(){
-	player${id} = new YAHOO.example.DDPlayer(${id}, ${draggableSlot});
+	player${id} = new YAHOO.example.DDPlayer(${id}, ${dragableSlot});
 	player${id}.addToGroup(${targetSlot});
 
 	player${id}.onDragOver = function (e, id){

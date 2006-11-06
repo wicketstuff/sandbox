@@ -1,6 +1,7 @@
 package wicket.contrib.markup.html.yui.dragdrop;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import wicket.RequestCycle;
@@ -17,40 +18,79 @@ import wicket.contrib.YuiImage;
  */
 public class DragDropSettings implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
-	private List dragableList;
-	private List targetList;
-	
-	private List dragableImgList;
-	private int dragableWidth;
-	private int dragableHeight;
-	
-	private List targetImgList;
-	private int targetWidth;
-	private int targetHeight;
+
+	// the dragable list consists of dragable slots images and dragable images
+	private DragableSlotList dragableSlotList;
+	// the target list consists of target slots images
+	private TargetSlotList targetSlotList;
+
+	private List<InlineStyle> dragableImgStyleList = new ArrayList<InlineStyle>();
+	private int dragableImgWidth;
+	private int dragableImgHeight;
+
+	private List<InlineStyle> targetSlotStyleList = new ArrayList<InlineStyle>();
+	private int targetSlotWidth;
+	private int targetSlotHeight;
+
+	private List<InlineStyle> dragableSlotStyleList = new ArrayList<InlineStyle>();
+	private int dragableSlotWidth;
+	private int dragableSlotHeight;
 
 	public DragDropSettings() {
 	}
 
-
-	public static DragDropSettings getDefault(List dragableList, List targetList) {
+	public static DragDropSettings getDefault(DragableSlotList dragableSlotList, TargetSlotList targetSlotList) {
 		DragDropSettings settings = new DragDropSettings();
-		settings.setResources(dragableList, targetList);
+		settings.setResources(dragableSlotList, targetSlotList);
 		return settings;
 	}
-	
-	public void setResources(List dragableList, List targetList) {
-		setDragableList(dragableList);
-		setTargetList(targetList);
-		setDragableImageResources(dragableList);
-		setTargetImageResources(targetList);
-	}
-	
-	public void setDragableImageResources(List dragableList){
-		for (int i = 0; i < dragableList.size(); i++) {
-			YuiImage img = (YuiImage) dragableList.get(i);
 
-			ResourceReference imgRR = new ResourceReference(DragDropSettings.class,img.getFileName());
+	public void setResources(DragableSlotList dragableSlotList, TargetSlotList targetSlotList) {
+		setDragableSlotList(dragableSlotList);
+		setTargetSlotList(targetSlotList);
+		setDragableImageResources(dragableSlotList);
+		setDragableSlotResources(dragableSlotList);
+		setTargetSlotResources(targetSlotList);
+	}
+
+	public void setDragableImageResources(DragableSlotList dragableSlotList) {
+
+		for (int i = 0; i < dragableSlotList.getSize(); i++) {
+			DragableSlot slot = (DragableSlot) dragableSlotList.getDragableSlot(i);
+			YuiImage img = slot.getImage();
+
+			ResourceReference imgRR = new ResourceReference(
+					DragDropSettings.class, img.getFileName());
+
+			ImageResourceInfo imgInfo = new ImageResourceInfo(imgRR);
+			int imgWidth = imgInfo.getWidth();
+			int imgHeight = imgInfo.getHeight();
+
+			InlineStyle imgStyle = new InlineStyle();
+
+			imgStyle.add("background", "url("
+					+ RequestCycle.get().urlFor(imgRR) + ")");
+
+			imgStyle.add("width", imgWidth + "px");
+			imgStyle.add("height", imgHeight + "px");
+
+			imgStyle.add("top", img.getTop() + "px");
+			imgStyle.add("left", img.getLeft() + "px");
+
+			dragableImgStyleList.add(imgStyle);
+
+			this.dragableImgWidth = imgWidth;
+			this.dragableImgHeight = imgHeight;
+		}
+	}
+
+	public void setDragableSlotResources(DragableSlotList dragableSlotList) {
+		for (int i = 0; i < dragableSlotList.getSize(); i++) {
+			DragableSlot slot = (DragableSlot) dragableSlotList.getDragableSlot(i);
+			YuiImage img = slot.getSlot();
+
+			ResourceReference imgRR = new ResourceReference(
+					DragDropSettings.class, img.getFileName());
 
 			ImageResourceInfo imgInfo = new ImageResourceInfo(imgRR);
 			int imgWidth = imgInfo.getWidth();
@@ -65,18 +105,20 @@ public class DragDropSettings implements Serializable {
 			imgStyle.add("top", img.getTop() + "px");
 			imgStyle.add("left", img.getLeft() + "px");
 
-			dragableImgList.add(imgStyle);
+			dragableSlotStyleList.add(imgStyle);
 
-			this.dragableWidth = imgWidth;
-			this.dragableHeight = imgHeight;
+			this.dragableSlotWidth = imgWidth;
+			this.dragableSlotHeight = imgHeight;
 		}
 	}
 
-	public void setTargetImageResources(List targetList) {
-		for (int i = 0; i < targetList.size(); i++) {
-			YuiImage img = (YuiImage) targetList.get(i);
+	public void setTargetSlotResources(TargetSlotList targetSlotList) {
+		for (int i = 0; i < targetSlotList.getSize(); i++) {
+			TargetSlot slot = (TargetSlot) targetSlotList.getTargetSlot(i);
+			YuiImage img = slot.getSlot();
 
-			ResourceReference imgRR = new ResourceReference(DragDropSettings.class,img.getFileName());
+			ResourceReference imgRR = new ResourceReference(
+					DragDropSettings.class, img.getFileName());
 
 			ImageResourceInfo imgInfo = new ImageResourceInfo(imgRR);
 			int imgWidth = imgInfo.getWidth();
@@ -91,138 +133,167 @@ public class DragDropSettings implements Serializable {
 			imgStyle.add("top", img.getTop() + "px");
 			imgStyle.add("left", img.getLeft() + "px");
 
-			targetImgList.add(imgStyle);
+			targetSlotStyleList.add(imgStyle);
 
-			this.targetWidth = imgWidth;
-			this.targetHeight = imgHeight;
+			this.targetSlotWidth = imgWidth;
+			this.targetSlotHeight = imgHeight;
 		}
 	}
 
-
 	/**
-	 * @return the dragableList
+	 * @return the dragableImgHeight
 	 */
-	public List getDragableList() {
-		return dragableList;
+	public int getDragableImgHeight() {
+		return dragableImgHeight;
 	}
 
-
 	/**
-	 * @param dragableList the dragableList to set
+	 * @param dragableImgHeight the dragableImgHeight to set
 	 */
-	public void setDragableList(List dragableList) {
-		this.dragableList = dragableList;
+	public void setDragableImgHeight(int dragableImgHeight) {
+		this.dragableImgHeight = dragableImgHeight;
 	}
 
-
 	/**
-	 * @return the targetList
+	 * @return the dragableImgStyleList
 	 */
-	public List getTargetList() {
-		return targetList;
+	public List<InlineStyle> getDragableImgStyleList() {
+		return dragableImgStyleList;
 	}
 
-
 	/**
-	 * @param targetList the targetList to set
+	 * @param dragableImgStyleList the dragableImgStyleList to set
 	 */
-	public void setTargetList(List targetList) {
-		this.targetList = targetList;
+	public void setDragableImgStyleList(List<InlineStyle> dragableImgStyleList) {
+		this.dragableImgStyleList = dragableImgStyleList;
 	}
 
-
 	/**
-	 * @return the dragableHeight
+	 * @return the dragableImgWidth
 	 */
-	public int getDragableHeight() {
-		return dragableHeight;
+	public int getDragableImgWidth() {
+		return dragableImgWidth;
 	}
 
-
 	/**
-	 * @param dragableHeight the dragableHeight to set
+	 * @param dragableImgWidth the dragableImgWidth to set
 	 */
-	public void setDragableHeight(int dragableHeight) {
-		this.dragableHeight = dragableHeight;
+	public void setDragableImgWidth(int dragableImgWidth) {
+		this.dragableImgWidth = dragableImgWidth;
 	}
 
-
 	/**
-	 * @return the dragableImgList
+	 * @return the dragableSlotHeight
 	 */
-	public List getDragableImgList() {
-		return dragableImgList;
+	public int getDragableSlotHeight() {
+		return dragableSlotHeight;
 	}
 
-
 	/**
-	 * @param dragableImgList the dragableImgList to set
+	 * @param dragableSlotHeight the dragableSlotHeight to set
 	 */
-	public void setDragableImgList(List dragableImgList) {
-		this.dragableImgList = dragableImgList;
+	public void setDragableSlotHeight(int dragableSlotHeight) {
+		this.dragableSlotHeight = dragableSlotHeight;
 	}
 
-
 	/**
-	 * @return the dragableWidth
+	 * @return the dragableSlotList
 	 */
-	public int getDragableWidth() {
-		return dragableWidth;
+	public DragableSlotList getDragableSlotList() {
+		return dragableSlotList;
 	}
 
-
 	/**
-	 * @param dragableWidth the dragableWidth to set
+	 * @param dragableSlotList the dragableSlotList to set
 	 */
-	public void setDragableWidth(int dragableWidth) {
-		this.dragableWidth = dragableWidth;
+	public void setDragableSlotList(DragableSlotList dragableSlotList) {
+		this.dragableSlotList = dragableSlotList;
 	}
 
-
 	/**
-	 * @return the targetHeight
+	 * @return the dragableSlotStyleList
 	 */
-	public int getTargetHeight() {
-		return targetHeight;
+	public List<InlineStyle> getDragableSlotStyleList() {
+		return dragableSlotStyleList;
 	}
 
-
 	/**
-	 * @param targetHeight the targetHeight to set
+	 * @param dragableSlotStyleList the dragableSlotStyleList to set
 	 */
-	public void setTargetHeight(int targetHeight) {
-		this.targetHeight = targetHeight;
+	public void setDragableSlotStyleList(List<InlineStyle> dragableSlotStyleList) {
+		this.dragableSlotStyleList = dragableSlotStyleList;
 	}
 
-
 	/**
-	 * @return the targetImgList
+	 * @return the dragableSlotWidth
 	 */
-	public List getTargetImgList() {
-		return targetImgList;
+	public int getDragableSlotWidth() {
+		return dragableSlotWidth;
 	}
 
-
 	/**
-	 * @param targetImgList the targetImgList to set
+	 * @param dragableSlotWidth the dragableSlotWidth to set
 	 */
-	public void setTargetImgList(List targetImgList) {
-		this.targetImgList = targetImgList;
+	public void setDragableSlotWidth(int dragableSlotWidth) {
+		this.dragableSlotWidth = dragableSlotWidth;
 	}
 
-
 	/**
-	 * @return the targetWidth
+	 * @return the targetSlotHeight
 	 */
-	public int getTargetWidth() {
-		return targetWidth;
+	public int getTargetSlotHeight() {
+		return targetSlotHeight;
 	}
 
+	/**
+	 * @param targetSlotHeight the targetSlotHeight to set
+	 */
+	public void setTargetSlotHeight(int targetSlotHeight) {
+		this.targetSlotHeight = targetSlotHeight;
+	}
 
 	/**
-	 * @param targetWidth the targetWidth to set
+	 * @return the targetSlotList
 	 */
-	public void setTargetWidth(int targetWidth) {
-		this.targetWidth = targetWidth;
+	public TargetSlotList getTargetSlotList() {
+		return targetSlotList;
 	}
+
+	/**
+	 * @param targetSlotList the targetSlotList to set
+	 */
+	public void setTargetSlotList(TargetSlotList targetSlotList) {
+		this.targetSlotList = targetSlotList;
+	}
+
+	/**
+	 * @return the targetSlotStyleList
+	 */
+	public List<InlineStyle> getTargetSlotStyleList() {
+		return targetSlotStyleList;
+	}
+
+	/**
+	 * @param targetSlotStyleList the targetSlotStyleList to set
+	 */
+	public void setTargetSlotStyleList(List<InlineStyle> targetSlotStyleList) {
+		this.targetSlotStyleList = targetSlotStyleList;
+	}
+
+	/**
+	 * @return the targetSlotWidth
+	 */
+	public int getTargetSlotWidth() {
+		return targetSlotWidth;
+	}
+
+	/**
+	 * @param targetSlotWidth the targetSlotWidth to set
+	 */
+	public void setTargetSlotWidth(int targetSlotWidth) {
+		this.targetSlotWidth = targetSlotWidth;
+	}
+	
+
+
 }
