@@ -4,6 +4,7 @@ import java.util.List;
 
 import wicket.Component;
 import wicket.ResourceReference;
+import wicket.ajax.AjaxRequestTarget;
 import wicket.contrib.dojo.examples.rssreader.model.FeedListMaker;
 import wicket.contrib.dojo.examples.rssreader.model.FeedModel;
 import wicket.contrib.dojo.examples.rssreader.widgets.FeedPanel;
@@ -39,11 +40,11 @@ public class RssReader extends WebPage {
 				tooltip.setToggle(new DojoExplodeToggle(200));
 				new Image(item, "image", new ResourceReference(RssReader.class, "rssreader/" + ((FeedModel)item.getModelObject()).getImage()));
 				final String url = ((FeedModel)item.getModelObject()).getUrl();
-				label.add(new DojoUpdateHandler(loading){
-					public void updateComponents(List<Component> components, Component submitter, String value) {
+				label.add(new DojoUpdateHandler("onclick", loading){
+					public void updateComponents(AjaxRequestTarget target, Component submitter, String value) {
 						FeedPanel feed = (FeedPanel) ((WebMarkupContainer)getPage().get("window")).get("rss");
 						feed = new FeedPanel(((WebMarkupContainer)getPage().get("window")), "rss", new Model<String>(url));
-						components.add(feed);
+						target.addComponent(feed);
 					}
 				});
 			}
