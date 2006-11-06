@@ -19,17 +19,21 @@ import wicket.markup.html.form.TextField;
 public abstract class DojoUpdateHandler extends DojoAjaxHandler
 {
 
-	Component loading;
+	private Component loading;
+	private String jsEvent;
 	
-	public DojoUpdateHandler()
+	
+	public DojoUpdateHandler(String jsEvent)
 	{
 		super();
+		this.jsEvent = jsEvent;
 	}
 	
-	public DojoUpdateHandler(Component loading)
+	public DojoUpdateHandler(String jsEvent, Component loading)
 	{
 		super();
 		this.loading = loading;
+		this.jsEvent = jsEvent;
 	}
 	
 	@Override
@@ -52,15 +56,7 @@ public abstract class DojoUpdateHandler extends DojoAjaxHandler
 	@Override
 	protected final void respond(AjaxRequestTarget target)
 	{
-		
-		List<Component> components = new ArrayList<Component>();
-		updateComponents(components, getComponent(), getComponent().getRequest().getParameter("value"));
-		
-		Iterator<Component> ite = components.iterator();
-		
-		while (ite.hasNext()){
-			target.addComponent(ite.next());
-		}
+		updateComponents(target, getComponent(), getComponent().getRequest().getParameter("value"));
 	}
 	
 	private final String getLoadingPart(){
@@ -74,13 +70,7 @@ public abstract class DojoUpdateHandler extends DojoAjaxHandler
 	@Override
 	protected void onComponentTag(ComponentTag tag)
 	{
-		super.onComponentTag(tag);
-		if (getComponent() instanceof TextField){
-			tag.put("onblur", "javascript:update('" + getCallbackUrl() + "&value=' + this.value" + ",'text/plain'" + getLoadingPart() + ")");
-		}
-		else {
-			tag.put("onclick", "javascript:update('" + getCallbackUrl() + "','text/plain'" + getLoadingPart() + ")");
-		}
+		tag.put(this.jsEvent, "javascript:update('" + getCallbackUrl() + "&value=' + this.value" + ",'text/plain'" + getLoadingPart() + ")");
 	}
 
 	/**
@@ -88,7 +78,7 @@ public abstract class DojoUpdateHandler extends DojoAjaxHandler
 	 * @param components List of componants where a component to update should be added
 	 * @param submitter components which throw the request
 	 */
-	public abstract void updateComponents(List<Component> components, Component submitter, String value);
+	public abstract void updateComponents(AjaxRequestTarget target, Component submitter, String value);
 
     
 }
