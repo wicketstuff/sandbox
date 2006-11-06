@@ -1,13 +1,12 @@
 package wicket.contrib.yui.examples.pages;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import wicket.contrib.YuiImage;
 import wicket.contrib.markup.html.yui.dragdrop.DragDropGroup;
 import wicket.contrib.markup.html.yui.dragdrop.DragDropSettings;
 import wicket.contrib.markup.html.yui.dragdrop.DragableSlot;
+import wicket.contrib.markup.html.yui.dragdrop.DragableSlotList;
 import wicket.contrib.markup.html.yui.dragdrop.TargetSlot;
+import wicket.contrib.markup.html.yui.dragdrop.TargetSlotList;
 import wicket.contrib.yui.examples.WicketExamplePage;
 import wicket.markup.html.form.TextField;
 
@@ -27,10 +26,11 @@ public class DragDropPage extends WicketExamplePage {
 	 */
 	public DragDropPage() {
 	
-		//Define the dragable slot with the group name
-		YuiImage dSlotA = new YuiImage("style/yellow.bmp", "dragable");
-		YuiImage dSlotB = new YuiImage("style/yellow.bmp", "dragable");
-		YuiImage dSlotC = new YuiImage("style/yellow.bmp", "dragable");
+		//Define the dragable slot with the group name, should i allow the user to define the group name?
+		// the group can be define by creating DragableSlotList with default name Dragable 
+		YuiImage dSlotA = new YuiImage("style/yellow.bmp", "dragA");
+		YuiImage dSlotB = new YuiImage("style/yellow.bmp", "dragB");
+		YuiImage dSlotC = new YuiImage("style/yellow.bmp", "dragC");
 		
 		//Define the image that is used to be swapped between the target slot and the dragable slot
 		YuiImage imageA = new YuiImage("style/blue.bmp", "blue");
@@ -42,10 +42,11 @@ public class DragDropPage extends WicketExamplePage {
 		DragableSlot dragableB = new DragableSlot(dSlotB, imageB, 350, 238);
 		DragableSlot dragableC = new DragableSlot(dSlotC, imageC, 350, 312);
 		
-		//Define the target slot with the group name
-		YuiImage tSlotA= new YuiImage("style/yellow.bmp", "target");
-		YuiImage tSlotB= new YuiImage("style/yellow.bmp", "target");
-		YuiImage tSlotC= new YuiImage("style/yellow.bmp", "target");
+		//Define the target slot with the group name, should i allow the user to define the group name?
+		//the group can be define by creating TargetSlotList with default group name Target
+		YuiImage tSlotA= new YuiImage("style/yellow.bmp", "targetA");
+		YuiImage tSlotB= new YuiImage("style/yellow.bmp", "targetB");
+		YuiImage tSlotC= new YuiImage("style/yellow.bmp", "targetC");
 		
 		//Define the position of the target slot
 		TargetSlot targetA = new TargetSlot(tSlotA, 110, 164);
@@ -53,26 +54,34 @@ public class DragDropPage extends WicketExamplePage {
 		TargetSlot targetC = new TargetSlot(tSlotC, 110, 312);
 
 		//Store the dragable slots in a List
-		List dList= new ArrayList();
-		dList.add(dSlotA);
-		dList.add(dSlotB);
-		dList.add(dSlotC);
+		//May need to create a DragableSlotList to allow the user to specify the wicket id
+		DragableSlotList dList =  new DragableSlotList("dragableListView", "dragableSlot", "dragableImg");
+		dList.add(dragableA);
+		dList.add(dragableB);
+		dList.add(dragableC);
 		
 		//Store the target slots in a List
-		List tList= new ArrayList();
-		tList.add(tSlotA);
-		tList.add(tSlotB);
-		tList.add(tSlotC);
+		//May need to create a TargetSlotList to allow the user to specify the wicket id
+		TargetSlotList tList= new TargetSlotList("targetListView", "targetSlot"); 
+		tList.add(targetA);
+		tList.add(targetB);
+		tList.add(targetC);
 		
+		//For each DragDrop, there are dragable and target slots lists, define the lists as a settings
+		//Set the style of the images in the lists
 		DragDropSettings settings= DragDropSettings.getDefault(dList, tList);
 		
-		//Linking the two lists together?? 
-		//Should the linking be done this way?
-		//The SlotGroup will implements IWebContainer and add the list separately?
-		//How to display them using the SlotGroup, ListView can only use ArrayList using the same wicket id(s)
+		//Use to obtain the order of the elements in the dragable slots
 		TextField dragableElement = new TextField("dragableElement");
+		
+		//Use to obtain the order of the elements in the target slots
 		TextField targetElement = new TextField("targetElement");
+		
+		//Getting the  settings which consists of the dragable and target lists,
+		//the textfields to retrieve the order of the elements in the dragable and target slots
 		DragDropGroup slotGroup = new DragDropGroup("dragDrop", settings, dragableElement, targetElement);
+		
+		//Add the group
 		add(slotGroup);
 	}
 }
