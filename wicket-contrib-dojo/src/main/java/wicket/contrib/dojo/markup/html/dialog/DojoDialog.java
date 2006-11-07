@@ -40,6 +40,7 @@ public class DojoDialog extends WebMarkupContainer
 	{
 		super.onComponentTag(tag);
 		tag.put("dojoType", "dialog");
+		tag.put("style", "display:none");
 	}
 
 

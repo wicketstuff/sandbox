@@ -25,6 +25,7 @@ public class DojoTooltip extends WebMarkupContainer
 	{
 		tag.put("dojoType", "tooltip");
 		tag.put("connectId", component.getMarkupId());
+		tag.put("style", "display:none");
 	}
 	
 	public Component getTooltipedComponent(){
