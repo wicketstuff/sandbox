@@ -30,12 +30,22 @@ public class VelocityHeaderContributor extends AbstractHeaderContributor
 		return this;
 	}
 	
+	
 	@Override
-	public void detachModel(Component component)
+	public void detach(Component component)
 	{
 		for (VelocityContributor vc : contributors)
 		{
 			vc.detachModel();
+		}
+	}
+	
+	@Override
+	public void onRendered(Component component)
+	{
+		for (VelocityContributor vc : contributors)
+		{
+			vc.onRendered(component);
 		}
 	}
 }
