@@ -3,16 +3,21 @@
  */
 package wicket.extensions.markup.html.menubar;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import wicket.AttributeModifier;
 import wicket.MarkupContainer;
 import wicket.ResourceReference;
 import wicket.behavior.HeaderContributor;
+import wicket.behavior.SimpleAttributeModifier;
+import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.list.Loop;
 import wicket.markup.html.panel.Panel;
 import wicket.model.Model;
+import wicket.util.resource.TextTemplateHeaderContributor;
 
 
 /**
@@ -230,24 +235,42 @@ public class MenuBarPanel extends Panel {
 	private static final long serialVersionUID = 1L;
 
 	private final List<Menu> menus;
+    private final String name;
     
     private static final ResourceReference CSS = new ResourceReference(
             MenuBarPanel.class, "res/wicket-extensions-menubar.css");
 
-	/**
-	 * Constructs a {@code MenuBarPanel}.
+    
+    /**
+     * Constructs a {@code MenuBarPanel} with the default "nav" id.
+     *
+     * @param parent The parent of this component.
+     * @param id See {@link wicket.Component}
+     * @param menus A {@code List} of the {@link Menu}s that belong to this {@code MenuBarPanel}.
+     */
+	public MenuBarPanel(MarkupContainer parent, String id, final List<Menu> menus)
+    {
+        this(parent, id, menus, "nav");
+    }
+
+    /**
+	 * Constructs a {@code MenuBarPanel} with a unique id "name".
 	 *
 	 * @param parent The parent of this component.
 	 * @param id See {@link wicket.Component}
 	 * @param menus A {@code List} of the {@link Menu}s that belong to this {@code MenuBarPanel}.
+     * @param name the html dom id of the menubar in the markup
 	 */
-	public MenuBarPanel(MarkupContainer parent, final String id, final List<Menu> menus) {
+	public MenuBarPanel(MarkupContainer parent, final String id, final List<Menu> menus, final String name) {
 		super(parent, id);
+        this.menus = menus;
+        this.name = name;
 		init();
-		this.menus = menus;
 
+		WebMarkupContainer menuBar = new WebMarkupContainer(this, "menubar");
+        menuBar.add(new SimpleAttributeModifier("id", name));
 		// add the loop used to generate each single menu
-		new Loop(this, "menus", menus.size()) {
+		new Loop(menuBar, "menus", menus.size()) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -293,6 +316,8 @@ public class MenuBarPanel extends Panel {
     {
         ResourceReference css = getCSS();
         add(HeaderContributor.forCss(css.getScope(), css.getName()));
+        add(TextTemplateHeaderContributor.forJavaScript(MenuBarPanel.class, "res/menubar.js", 
+                new Model<Map>(Collections.singletonMap("name", name))));
     }
 
 }
