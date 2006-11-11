@@ -18,16 +18,14 @@
 package wicket.contrib.dojo;
 
 
-import wicket.Application;
-import wicket.IInitializer;
 import wicket.Page;
 import wicket.RequestCycle;
 import wicket.ResourceReference;
+import wicket.ajax.AbstractDefaultAjaxBehavior;
 import wicket.ajax.AjaxRequestTarget;
 import wicket.behavior.AbstractAjaxBehavior;
 import wicket.markup.html.IHeaderResponse;
-import wicket.markup.html.PackageResource;
-import wicket.util.resource.IResourceStream;
+import wicket.markup.html.resources.CompressedResourceReference;
 
 /**
  * Handles event requests using Dojo.
@@ -36,29 +34,46 @@ import wicket.util.resource.IResourceStream;
  * As header contributions are done once per class, you can have multiple
  * instances/ subclasses without having duplicate header contributions.
  * </p>
+ * <p> this class use {@link AjaxRequestTarget} to respond to XMLHttpRequest
  * 
  * @see <a href="http://dojotoolkit.org/">Dojo</a>
  * @author Eelco Hillenius
+ * TODO : see {@link AbstractDefaultAjaxBehavior} to add javascriptCallBack and indicator
  */
-public abstract class DojoAjaxHandler extends AbstractAjaxBehavior implements IInitializer
+public abstract class AbstractDefaultDojoBehavior extends AbstractAjaxBehavior
 {
+	
+	private static final long serialVersionUID = 1L;
+	
+	/** reference to the dojo support javascript file. */
+	private static final ResourceReference DOJO = new CompressedResourceReference(
+			AbstractDefaultDojoBehavior.class, "dojo0.3/dojo.js");
+	
+	/** reference to the default dojo ajax updater support javascript file. */
+	private static final ResourceReference DOJO_UPDATER = new CompressedResourceReference(
+			AbstractDefaultDojoBehavior.class, "dojo-ajax-updater.js");
+	
+	
 	/**
-	 * Construct.
-	 */
-	public DojoAjaxHandler()
-	{
-	}
-
-	/**
-	 * Register packaged javascript files.
+	 * Subclasses should call super.onBind()
 	 * 
-	 * @param application
-	 *            The application
+	 * @see wicket.behavior.AbstractAjaxBehavior#onBind()
 	 */
-	public void init(Application application)
+	@Override
+	protected void onBind()
 	{
-		PackageResource.bind(application, DojoAjaxHandler.class, "dojo0.3/dojo.js");
-		PackageResource.bind(application, DojoAjaxHandler.class, "dojo-ajax-updater.js");
+		getComponent().setOutputMarkupId(true);
+	}
+	
+	/**
+	 * @see wicket.behavior.AbstractAjaxBehavior#renderHead(wicket.markup.html.IHeaderResponse)
+	 */
+	@Override
+	public void renderHead(IHeaderResponse response)
+	{
+		super.renderHead(response);
+		response.renderJavascriptReference(DOJO);
+		response.renderJavascriptReference(DOJO_UPDATER);
 	}
 
 	/**
@@ -81,15 +96,6 @@ public abstract class DojoAjaxHandler extends AbstractAjaxBehavior implements II
 		}
 	}
 
-	/**
-	 * @see wicket.behavior.AbstractAjaxBehavior#renderHead(wicket.markup.html.IHeaderResponse)
-	 */
-	@Override
-	public void renderHead(IHeaderResponse response)
-	{
-		response.renderJavascriptReference(new ResourceReference(DojoAjaxHandler.class, "dojo0.3/dojo.js"));
-		response.renderJavascriptReference(new ResourceReference(DojoAjaxHandler.class, "dojo-ajax-updater.js"));
-	}
 
 	protected abstract void respond(AjaxRequestTarget target);
 }
