@@ -9,9 +9,8 @@ import java.util.Date;
 import java.util.List;
 
 import wicket.MarkupContainer;
-import wicket.contrib.dojo.DojoAjaxHandler;
-import wicket.contrib.dojo.autoupdate.DojoAutoUpdateHandler;
-import wicket.contrib.dojo.autoupdate.IUpdatable;
+import wicket.contrib.dojo.AbstractDefaultDojoBehavior;
+import wicket.contrib.dojo.DojoSelfUpdatingTimerBehavior;
 import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.list.ListItem;
@@ -19,6 +18,7 @@ import wicket.markup.html.list.ListView;
 import wicket.model.CompoundPropertyModel;
 import wicket.model.IModel;
 import wicket.model.Model;
+import wicket.util.time.Duration;
 
 import com.sun.syndication.feed.synd.SyndEntryImpl;
 import com.sun.syndication.feed.synd.SyndFeed;
@@ -34,12 +34,12 @@ import com.sun.syndication.io.XmlReader;
  * @author Marco van de Haar
  * @author Ruud Booltink
  */
-public class FeedContainer extends WebMarkupContainer implements IUpdatable
+public class FeedContainer extends WebMarkupContainer
 {
 
 	final String url;
 	int maxEntries = 7;
-	DojoAjaxHandler ajax;
+	AbstractDefaultDojoBehavior ajax;
 	private ListView syndEntryListView;
 	private int index;
 	private Label feedTitle;
@@ -59,7 +59,7 @@ public class FeedContainer extends WebMarkupContainer implements IUpdatable
 		
 		this.index = index;
 		this.dpanel = dpanel;
-		ajax = new DojoAutoUpdateHandler(300000, "loading_node");
+		ajax = new DojoSelfUpdatingTimerBehavior(Duration.milliseconds(300000), "loading_node");
 		add(ajax);
 		boolean success = update();
 		

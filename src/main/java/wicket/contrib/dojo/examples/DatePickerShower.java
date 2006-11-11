@@ -5,7 +5,7 @@ import java.util.Date;
 import wicket.MarkupContainer;
 import wicket.PageParameters;
 import wicket.Response;
-import wicket.contrib.dojo.autoupdate.DojoAutoUpdateHandler;
+import wicket.contrib.dojo.AbstractDojoTimerBehavior;
 import wicket.contrib.dojo.toggle.DojoExplodeToggle;
 import wicket.contrib.dojo.toggle.DojoFadeToggle;
 import wicket.contrib.dojo.toggle.DojoWipeToggle;

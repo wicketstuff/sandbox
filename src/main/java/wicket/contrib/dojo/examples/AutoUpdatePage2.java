@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import wicket.AttributeModifier;
-import wicket.contrib.dojo.DojoAjaxHandler;
+import wicket.contrib.dojo.AbstractDefaultDojoBehavior;
 import wicket.contrib.dojo.dojofx.FXOnClickExploder;
 import wicket.contrib.dojo.examples.rssreader.AddPanel;
 import wicket.contrib.dojo.examples.rssreader.DescriptionModel;
@@ -31,7 +31,7 @@ public class AutoUpdatePage2 extends WebPage {
 	private AddPanel addPanel6;
 	private AddPanel addPanel7;
 	private AddPanel addPanel8;
-	DojoAjaxHandler ajax;
+	AbstractDefaultDojoBehavior ajax;
 	private Image testImage;
 	
 	/** available numbers for the radio selection. */

@@ -1,10 +1,13 @@
 package wicket.contrib.dojo.examples;
 
 import wicket.Component;
-import wicket.contrib.dojo.autoupdate.DojoAutoUpdateHandler;
+import wicket.ajax.AjaxRequestTarget;
+import wicket.contrib.dojo.AbstractDojoTimerBehavior;
+import wicket.contrib.dojo.DojoSelfUpdatingTimerBehavior;
 import wicket.markup.html.WebPage;
 import wicket.markup.html.basic.Label;
 import wicket.model.Model;
+import wicket.util.time.Duration;
 
 public class SimpleAutoRefreshExample extends WebPage {
 
@@ -16,12 +19,12 @@ public class SimpleAutoRefreshExample extends WebPage {
 		timer = 0;
 		updateTimer();
 		label  = new Label(this, "label");
-		label.add(new DojoAutoUpdateHandler(1000){
+		label.add(new DojoSelfUpdatingTimerBehavior(Duration.milliseconds(1000)){
 
 			@Override
-			protected void update(Component component) {
+			protected void onPostProcessTarget(final AjaxRequestTarget target){
 				updateTimer();
-				component.setModel(new Model<String>(display));
+				getComponent().setModel(new Model<String>(display));
 				
 			}
 			
