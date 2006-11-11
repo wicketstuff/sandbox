@@ -6,7 +6,7 @@ import wicket.ResourceReference;
 import wicket.Response;
 import wicket.ajax.AjaxRequestTarget;
 import wicket.behavior.AbstractAjaxBehavior;
-import wicket.contrib.dojo.DojoAjaxHandler;
+import wicket.contrib.dojo.AbstractDefaultDojoBehavior;
 import wicket.markup.html.IHeaderResponse;
 import wicket.response.StringResponse;
 import wicket.util.resource.IResourceStream;
@@ -18,7 +18,7 @@ import wicket.util.resource.StringBufferResourceStream;
  * @author Ruud Booltink
  *
  */
-public abstract class DojoUpdateHandler extends DojoAjaxHandler
+public abstract class DojoUpdateHandler extends AbstractDefaultDojoBehavior
 {
 
 	public DojoUpdateHandler()

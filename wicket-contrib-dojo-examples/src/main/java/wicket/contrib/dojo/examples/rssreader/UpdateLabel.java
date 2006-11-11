@@ -1,7 +1,6 @@
 package wicket.contrib.dojo.examples.rssreader;
 
 import wicket.MarkupContainer;
-import wicket.contrib.dojo.autoupdate.IUpdatable;
 import wicket.markup.html.basic.Label;
 import wicket.model.Model;
 
@@ -11,7 +10,7 @@ import wicket.model.Model;
  * @author Ruud Booltink
  *
  */
-public class UpdateLabel extends Label implements IUpdatable
+public class UpdateLabel extends Label
 
 {
 

@@ -8,7 +8,7 @@ import wicket.Component;
 import wicket.MarkupContainer;
 import wicket.ajax.AjaxRequestTarget;
 import wicket.behavior.AttributeAppender;
-import wicket.contrib.dojo.autoupdate.DojoAutoUpdateHandler;
+import wicket.contrib.dojo.AbstractDojoTimerBehavior;
 import wicket.contrib.dojo.update.DojoUpdateHandler;
 import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.WebPage;
