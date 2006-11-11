@@ -26,10 +26,10 @@ import wicket.RequestCycle;
 import wicket.ResourceReference;
 import wicket.behavior.HeaderContributor;
 import wicket.contrib.markup.html.yui.AbstractYuiPanel;
+import wicket.markup.html.IHeaderResponse;
 import wicket.markup.html.WebPage;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.form.FormComponent;
-import wicket.markup.html.internal.HeaderContainer;
 import wicket.model.AbstractReadOnlyModel;
 import wicket.util.collections.MiniMap;
 import wicket.util.resource.PackagedTextTemplate;
@@ -116,14 +116,11 @@ public class Calendar extends AbstractYuiPanel {
 		calendarElement = new CalendarElement(this, "calendarContainer");
 	}
 
-	/**
-	 * @see wicket.Component#renderHead(wicket.markup.html.internal.HeaderContainer)
-	 */
 	@Override
-	public void renderHead(HeaderContainer container) {
+	public void renderHead(IHeaderResponse response) {
 		((WebPage) getPage()).getBodyContainer().addOnLoadModifier(
 				"init" + javaScriptId + "();", null);
-		super.renderHead(container);
+		super.renderHead(response);
 	}
 
 	/**
