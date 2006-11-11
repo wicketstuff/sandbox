@@ -1,7 +1,7 @@
 package wicket.contrib.markup.html.form;
 
 import wicket.ajax.AjaxRequestTarget;
-import wicket.contrib.dojo.DojoAjaxHandler;
+import wicket.contrib.dojo.AbstractDefaultDojoBehavior;
 import wicket.markup.html.IHeaderResponse;
 
 /**
@@ -9,7 +9,7 @@ import wicket.markup.html.IHeaderResponse;
  * @author <a href="http://www.demay-fr.net/blog">Vincent Demay</a>
  *
  */
-public class DatePickerHandler extends DojoAjaxHandler
+public class DatePickerHandler extends AbstractDefaultDojoBehavior
 {
 	
 	/* (non-Javadoc)

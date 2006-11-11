@@ -9,14 +9,14 @@ import sun.reflect.ReflectionFactory.GetReflectionFactoryAction;
 import wicket.Component;
 import wicket.ResourceReference;
 import wicket.ajax.AjaxRequestTarget;
-import wicket.contrib.dojo.DojoAjaxHandler;
+import wicket.contrib.dojo.AbstractDefaultDojoBehavior;
 import wicket.markup.ComponentTag;
 import wicket.markup.html.IHeaderResponse;
 import wicket.markup.html.form.TextField;
 
 
 
-public abstract class DojoUpdateHandler extends DojoAjaxHandler
+public abstract class DojoUpdateHandler extends AbstractDefaultDojoBehavior
 {
 
 	private Component loading;

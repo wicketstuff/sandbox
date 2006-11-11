@@ -20,7 +20,7 @@ package wicket.contrib.markup.html.form;
 import wicket.MarkupContainer;
 import wicket.ResourceReference;
 import wicket.ajax.AjaxRequestTarget;
-import wicket.contrib.dojo.DojoAjaxHandler;
+import wicket.contrib.dojo.AbstractDefaultDojoBehavior;
 import wicket.markup.ComponentTag;
 import wicket.markup.html.IHeaderResponse;
 import wicket.markup.html.form.CheckBox;
@@ -66,7 +66,7 @@ public class ImmediateCheckBox extends CheckBox
 	 * Ajax handler that immediately updates the attached component when the
 	 * onclick event happens.
 	 */
-	public static class ImmediateUpdateAjaxHandler extends DojoAjaxHandler
+	public static class ImmediateUpdateAjaxHandler extends AbstractDefaultDojoBehavior
 	{
 		/** checkbox this handler is attached to. */
 		private ImmediateCheckBox checkBox;
@@ -94,7 +94,7 @@ public class ImmediateCheckBox extends CheckBox
 		}
 
 		/**
-		 * @see wicket.contrib.dojo.DojoAjaxHandler#renderHead(wicket.markup.html.IHeaderResponse)
+		 * @see wicket.contrib.dojo.AbstractDefaultDojoBehavior#renderHead(wicket.markup.html.IHeaderResponse)
 		 */
 		@Override
 		public void renderHead(IHeaderResponse response)

@@ -23,7 +23,7 @@ import wicket.Response;
 import wicket.WicketRuntimeException;
 import wicket.ajax.AjaxRequestTarget;
 import wicket.behavior.AbstractAjaxBehavior;
-import wicket.contrib.dojo.DojoAjaxHandler;
+import wicket.contrib.dojo.AbstractDefaultDojoBehavior;
 import wicket.feedback.IFeedback;
 import wicket.markup.ComponentTag;
 import wicket.markup.html.form.FormComponent;
@@ -39,7 +39,7 @@ import wicket.util.value.IValueMap;
  *
  * @author Eelco Hillenius
  */
-public final class ValidationAjaxHandler extends DojoAjaxHandler
+public final class ValidationAjaxHandler extends AbstractDefaultDojoBehavior
 {
 	/** name event, like onblur. */
 	private final String eventName;

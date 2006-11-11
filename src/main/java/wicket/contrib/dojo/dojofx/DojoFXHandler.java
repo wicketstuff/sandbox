@@ -19,7 +19,7 @@ package wicket.contrib.dojo.dojofx;
 import wicket.AttributeModifier;
 import wicket.Component;
 import wicket.ajax.AjaxRequestTarget;
-import wicket.contrib.dojo.DojoAjaxHandler;
+import wicket.contrib.dojo.AbstractDefaultDojoBehavior;
 import wicket.markup.html.IHeaderResponse;
 import wicket.model.IModel;
 import wicket.util.resource.IResourceStream;
@@ -36,7 +36,7 @@ import wicket.util.resource.IResourceStream;
  * @author Ruud Booltink
  * 
  */
-public abstract class DojoFXHandler extends DojoAjaxHandler
+public abstract class DojoFXHandler extends AbstractDefaultDojoBehavior
 {
 	private final String eventName;
 	protected Component component;
@@ -95,7 +95,7 @@ public abstract class DojoFXHandler extends DojoAjaxHandler
 	}
 	
 	/**
-	 * @see wicket.contrib.dojo.DojoAjaxHandler#getResponse()
+	 * @see wicket.contrib.dojo.AbstractDefaultDojoBehavior#getResponse()
 	 */
 	protected IResourceStream getResponse()
 	{

@@ -1,7 +1,7 @@
 package wicket.contrib.dojo.dojodnd;
 
 import wicket.ajax.AjaxRequestTarget;
-import wicket.contrib.dojo.DojoAjaxHandler;
+import wicket.contrib.dojo.AbstractDefaultDojoBehavior;
 import wicket.markup.html.IHeaderResponse;
 import wicket.util.resource.IResourceStream;
 
@@ -10,7 +10,7 @@ import wicket.util.resource.IResourceStream;
  * @author <a href="http://www.demay-fr.net/blog">Vincent Demay</a>
  *
  */
-class DojoDropContainerHandler extends DojoAjaxHandler
+class DojoDropContainerHandler extends AbstractDefaultDojoBehavior
 {
 	/** container handler is attached to. */
 	private DojoDropContainer container;

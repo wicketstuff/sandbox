@@ -20,7 +20,7 @@ package wicket.contrib.markup.html.form;
 import wicket.MarkupContainer;
 import wicket.ResourceReference;
 import wicket.ajax.AjaxRequestTarget;
-import wicket.contrib.dojo.DojoAjaxHandler;
+import wicket.contrib.dojo.AbstractDefaultDojoBehavior;
 import wicket.markup.ComponentTag;
 import wicket.markup.html.IHeaderResponse;
 import wicket.markup.html.form.TextField;
@@ -118,7 +118,7 @@ public class ImmediateTextField<T> extends TextField<T>
 	 * Ajax handler that immediately updates the attached component when the
 	 * onblur event happens.
 	 */
-	private static class ImmediateUpdateAjaxHandler extends DojoAjaxHandler
+	private static class ImmediateUpdateAjaxHandler extends AbstractDefaultDojoBehavior
 	{
 		/** checkbox this handler is attached to. */
 		private ImmediateTextField textField;
@@ -131,7 +131,7 @@ public class ImmediateTextField<T> extends TextField<T>
 		}
 
 		/**
-		 * @see wicket.contrib.dojo.DojoAjaxHandler#renderHead(wicket.markup.html.IHeaderResponse)
+		 * @see wicket.contrib.dojo.AbstractDefaultDojoBehavior#renderHead(wicket.markup.html.IHeaderResponse)
 		 */
 		@Override
 		public void renderHead(IHeaderResponse response)

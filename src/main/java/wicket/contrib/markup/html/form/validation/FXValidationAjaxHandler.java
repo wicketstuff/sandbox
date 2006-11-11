@@ -24,7 +24,7 @@ import wicket.Response;
 import wicket.WicketRuntimeException;
 import wicket.ajax.AjaxRequestTarget;
 import wicket.behavior.AbstractAjaxBehavior;
-import wicket.contrib.dojo.DojoAjaxHandler;
+import wicket.contrib.dojo.AbstractDefaultDojoBehavior;
 import wicket.markup.html.form.FormComponent;
 import wicket.model.Model;
 import wicket.util.resource.IResourceStream;
@@ -41,7 +41,7 @@ import wicket.util.resource.StringBufferResourceStream;
  * @author Marco van de Haar
  * @author Ruud Booltink
  */
-public class FXValidationAjaxHandler extends DojoAjaxHandler
+public class FXValidationAjaxHandler extends AbstractDefaultDojoBehavior
 {
 	/** name event, like onblur. */
 	private final String eventName;

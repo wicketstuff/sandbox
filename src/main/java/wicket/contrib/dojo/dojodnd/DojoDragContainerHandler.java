@@ -1,11 +1,11 @@
 package wicket.contrib.dojo.dojodnd;
 
 import wicket.ajax.AjaxRequestTarget;
-import wicket.contrib.dojo.DojoAjaxHandler;
+import wicket.contrib.dojo.AbstractDefaultDojoBehavior;
 import wicket.markup.html.IHeaderResponse;
 import wicket.util.resource.IResourceStream;
 
-public class DojoDragContainerHandler extends DojoAjaxHandler
+public class DojoDragContainerHandler extends AbstractDefaultDojoBehavior
 {
 	/** container handler is attached to. */
 	private DojoDragContainer container;
