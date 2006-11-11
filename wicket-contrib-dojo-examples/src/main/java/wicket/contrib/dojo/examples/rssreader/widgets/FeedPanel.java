@@ -8,7 +8,8 @@ import java.util.Date;
 
 import wicket.Component;
 import wicket.MarkupContainer;
-import wicket.contrib.dojo.autoupdate.DojoAutoUpdateHandler;
+import wicket.ajax.AjaxRequestTarget;
+import wicket.contrib.dojo.AbstractDojoTimerBehavior;
 import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.basic.MultiLineLabel;
@@ -17,6 +18,7 @@ import wicket.markup.html.list.ListView;
 import wicket.markup.html.panel.Panel;
 import wicket.model.IModel;
 import wicket.model.Model;
+import wicket.util.time.Duration;
 
 import com.sun.syndication.feed.synd.SyndEntryImpl;
 import com.sun.syndication.feed.synd.SyndFeed;
@@ -53,9 +55,9 @@ public class FeedPanel extends Panel{
 		
 		};
 		
-		newsContainer.add(new DojoAutoUpdateHandler(120000,"") {
-			protected void update(Component component) {
-				ListView list = (ListView)((WebMarkupContainer)component).get("news");
+		newsContainer.add(new AbstractDojoTimerBehavior(Duration.milliseconds(120000),"") {
+			protected void onTimer(AjaxRequestTarget target) {
+				ListView list = (ListView)((WebMarkupContainer)getComponent()).get("news");
 				list.setList(getNewsList(url));
 			}
 		});

@@ -1,7 +1,7 @@
 package wicket.contrib.dojo.examples;
 
 import wicket.PageParameters;
-import wicket.contrib.dojo.DojoAjaxHandler;
+import wicket.contrib.dojo.AbstractDefaultDojoBehavior;
 import wicket.contrib.dojo.examples.rssreader.DescriptionPanel;
 import wicket.contrib.dojo.examples.rssreader.UpdateLabel;
 import wicket.contrib.markup.html.tooltip.SimpleTooltip;
@@ -21,7 +21,7 @@ public class TooltipTestPage extends WebPage{
 	
 	private String text;
 	private Label i;
-	DojoAjaxHandler ajax;
+	AbstractDefaultDojoBehavior ajax;
 	private Image testImage;
 	
 	UpdateLabel j;
