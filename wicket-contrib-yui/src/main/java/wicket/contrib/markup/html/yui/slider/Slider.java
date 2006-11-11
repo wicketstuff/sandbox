@@ -28,11 +28,11 @@ import wicket.AttributeModifier;
 import wicket.MarkupContainer;
 import wicket.behavior.HeaderContributor;
 import wicket.contrib.markup.html.yui.AbstractYuiPanel;
+import wicket.markup.html.IHeaderResponse;
 import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.WebPage;
 import wicket.markup.html.form.FormComponent;
 import wicket.markup.html.image.Image;
-import wicket.markup.html.internal.HeaderContainer;
 import wicket.model.AbstractReadOnlyModel;
 import wicket.model.IModel;
 import wicket.model.Model;
@@ -263,10 +263,10 @@ public class Slider<T> extends AbstractYuiPanel<T> {
 	}
 
 	@Override
-	public void renderHead(HeaderContainer container) {
+	public void renderHead(IHeaderResponse response) {
 		((WebPage) getPage()).getBodyContainer().addOnLoadModifier(
 				"init" + javaScriptId + "();", this);
-		super.renderHead(container);
+		super.renderHead(response);
 	}
 
 	/**
