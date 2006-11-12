@@ -60,17 +60,21 @@ public abstract class AbstractDojoTimerBehavior extends AbstractDefaultDojoBehav
 	public void renderHead(IHeaderResponse response)
 	{
 		super.renderHead(response);
-		response.renderJavascriptReference(new ResourceReference(AbstractDojoTimerBehavior.class, "autoupdate.js"));
 		String require = "";
 		require += "<script language=\"JavaScript\" type=\"text/javascript\">\n";
 		require += "\n";
 		require += "function initAutoRefreshFor" + getComponent().getId() + "(){\n";
-		require += "	checkUpdate('" + getCallbackUrl() + "','text/plain', '" + getComponent().getId() + "', '" + getLoadingId() + "');intervalCheck("+ this.interval.getMilliseconds() + ", '" + getCallbackUrl() + "', 'text/html','" + getComponent().getId() + "','" + getLoadingId() + "');\n";
+		require += "	" + getCallbackScript() + "\n";
 		require += "}\n";
 		require += "dojo.addOnLoad(initAutoRefreshFor" + getComponent().getId() + ");\n";
 		require += "</script>\n";
 		
 		response.renderString(require);
+	}
+	
+	protected CharSequence getCallbackScript(boolean recordPageVersion)
+	{
+		return getCallbackScript("dojoAutoUpdate(" + interval.getMilliseconds() + ",'" + getCallbackUrl(recordPageVersion) + "'", null, null, null);
 	}
 	
 	
@@ -81,17 +85,10 @@ public abstract class AbstractDojoTimerBehavior extends AbstractDefaultDojoBehav
 	 *  a a generic js function which is called during loading.
 	 * @return the CSS id for the loading node.
 	 */
-	protected String getLoadingId()
+	private String findIndicatorId()
 	{
 		return this.LoadingId;
 	}
-	
-	/*private String removeColon(String s) {
-		  StringTokenizer st = new StringTokenizer(s,":",false);
-		  String t="";
-		  while (st.hasMoreElements()) t += st.nextElement();
-		  return t;
-	  }*/
 
 	/**
 	 * 
