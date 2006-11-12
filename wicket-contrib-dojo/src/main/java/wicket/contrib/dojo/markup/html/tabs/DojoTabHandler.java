@@ -1,42 +1,27 @@
 package wicket.contrib.dojo.markup.html.tabs;
 
 import wicket.ajax.AjaxRequestTarget;
-import wicket.contrib.dojo.AbstractDefaultDojoBehavior;
-import wicket.markup.html.IHeaderResponse;
+import wicket.contrib.dojo.AbstractRequireDojoBehavior;
 
 /**
  * A Dojo Dialog Box Handler
- * @author <a href="http://www.demay-fr.net/blog">Vincent Demay</a>
+ * @author vdemay
  *
  */
-public class DojoTabHandler extends AbstractDefaultDojoBehavior
+public class DojoTabHandler extends AbstractRequireDojoBehavior
 {
+	@Override
+	public void setRequire(RequireDojoLibs libs)
+	{
+		libs.add("dojo.widget.ContentPane");
+		libs.add("dojo.widget.TabContainer");
+	}
+
 	@Override
 	protected void respond(AjaxRequestTarget target)
 	{
-		//DO NOTHING
-	}
-	
-	/* (non-Javadoc)
-	 * @see wicket.contrib.dojo.DojoAjaxHandler#renderHead(wicket.markup.html.IHeaderResponse)
-	 */
-	public void renderHead(IHeaderResponse response)
-	{
-		super.renderHead(response);
-		String require = "";
-		require += "<script language=\"JavaScript\" type=\"text/javascript\">\n";
-		require += "	dojo.require(\"dojo.widget.ContentPane\")\n";
-		require += "	dojo.require(\"dojo.widget.TabContainer\")\n";
-		require += "\n";
-		require += "</script>\n";
-
-		response.renderString(require);
-	}
-
-	@Override
-	protected void onBind()
-	{
-		super.onBind();
+		// DO NOTHING
+		
 	}
 
 }
