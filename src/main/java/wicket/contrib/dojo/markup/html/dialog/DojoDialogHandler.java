@@ -2,6 +2,7 @@ package wicket.contrib.dojo.markup.html.dialog;
 
 import wicket.ajax.AjaxRequestTarget;
 import wicket.contrib.dojo.AbstractDefaultDojoBehavior;
+import wicket.contrib.dojo.AbstractRequireDojoBehavior;
 import wicket.markup.html.IHeaderResponse;
 
 /**
@@ -9,7 +10,7 @@ import wicket.markup.html.IHeaderResponse;
  * @author <a href="http://www.demay-fr.net/blog">Vincent Demay</a>
  *
  */
-public class DojoDialogHandler extends AbstractDefaultDojoBehavior
+public class DojoDialogHandler extends AbstractRequireDojoBehavior
 {
 	@Override
 	protected void respond(AjaxRequestTarget target)
@@ -25,8 +26,6 @@ public class DojoDialogHandler extends AbstractDefaultDojoBehavior
 		super.renderHead(response);
 		String require = "";
 		require += "<script language=\"JavaScript\" type=\"text/javascript\">\n";
-		require += "	dojo.require(\"dojo.widget.Dialog\")\n";
-		require += "\n";
 		require += "function getDialog(id){\n";
 		require += "	var dlg = dojo.widget.byId(id);\n";
 		require += "	return dlg;\n";
@@ -34,6 +33,13 @@ public class DojoDialogHandler extends AbstractDefaultDojoBehavior
 		require += "</script>\n";
 
 		response.renderString(require);
+	}
+
+	@Override
+	public void setRequire(RequireDojoLibs libs)
+	{
+		libs.add("dojo.widget.Dialog");
+		
 	}
 
 }

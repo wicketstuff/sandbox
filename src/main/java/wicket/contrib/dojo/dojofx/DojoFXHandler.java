@@ -19,10 +19,8 @@ package wicket.contrib.dojo.dojofx;
 import wicket.AttributeModifier;
 import wicket.Component;
 import wicket.ajax.AjaxRequestTarget;
-import wicket.contrib.dojo.AbstractDefaultDojoBehavior;
-import wicket.markup.html.IHeaderResponse;
+import wicket.contrib.dojo.AbstractRequireDojoBehavior;
 import wicket.model.IModel;
-import wicket.util.resource.IResourceStream;
 
 
 /**
@@ -36,7 +34,7 @@ import wicket.util.resource.IResourceStream;
  * @author Ruud Booltink
  * 
  */
-public abstract class DojoFXHandler extends AbstractDefaultDojoBehavior
+public abstract class DojoFXHandler extends AbstractRequireDojoBehavior
 {
 	private final String eventName;
 	protected Component component;
@@ -94,21 +92,11 @@ public abstract class DojoFXHandler extends AbstractDefaultDojoBehavior
 		//DO NOTHING
 	}
 	
-	/**
-	 * @see wicket.contrib.dojo.AbstractDefaultDojoBehavior#getResponse()
-	 */
-	protected IResourceStream getResponse()
+
+	@Override
+	public void setRequire(RequireDojoLibs libs)
 	{
-		return null;
-	}
-	
-	/* (non-Javadoc)
-	 * @see wicket.contrib.dojo.DojoAjaxHandler#renderHead(wicket.markup.html.IHeaderResponse)
-	 */
-	public void renderHead(IHeaderResponse response)
-	{
-		super.renderHead(response);
-		response.renderString("<script language=\"JavaScript\" type=\"text/javascript\">dojo.require(\"dojo.fx.*\")</script>");
+		libs.add("dojo.fx.*");
 	}
 
 	/**
@@ -170,14 +158,6 @@ public abstract class DojoFXHandler extends AbstractDefaultDojoBehavior
 			super(attribute, pattern, replaceModel);
 		}
 		
-/*		*//**
-		 * Sets HTMLID if not present, and returns value;
-		 *//*
-		public String HTMLID()
-		{
-			
-		}
-*/
 		/**
 		 * @see wicket.AttributeModifier#newValue(java.lang.String, java.lang.String)
 		 */
@@ -186,5 +166,6 @@ public abstract class DojoFXHandler extends AbstractDefaultDojoBehavior
 			return (currentValue == null ? "" : currentValue + "; ") + replacementValue;
 		}
 	}
+
 
 }

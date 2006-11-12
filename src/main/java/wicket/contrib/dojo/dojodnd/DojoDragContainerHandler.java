@@ -1,11 +1,10 @@
 package wicket.contrib.dojo.dojodnd;
 
 import wicket.ajax.AjaxRequestTarget;
-import wicket.contrib.dojo.AbstractDefaultDojoBehavior;
+import wicket.contrib.dojo.AbstractRequireDojoBehavior;
 import wicket.markup.html.IHeaderResponse;
-import wicket.util.resource.IResourceStream;
 
-public class DojoDragContainerHandler extends AbstractDefaultDojoBehavior
+public class DojoDragContainerHandler extends AbstractRequireDojoBehavior
 {
 	/** container handler is attached to. */
 	private DojoDragContainer container;
@@ -32,19 +31,6 @@ public class DojoDragContainerHandler extends AbstractDefaultDojoBehavior
 	public void renderHead(IHeaderResponse response)
 	{
 		super.renderHead(response);
-		String require = "";
-		require += "<script language=\"JavaScript\" type=\"text/javascript\">\n";
-		require += "	dojo.require(\"dojo.dnd.*\")\n";
-		require += "	dojo.require(\"dojo.event.*\")\n";
-		require += "	dojo.require(\"dojo.io.*\")\n";
-		require += "\n";
-		require += "function byId(id){\n";
-		require += "	return document.getElementById(id);\n";
-		require += "}\n";
-		require += "</script>\n";
-
-		response.renderString(require);
-
 		response.renderString(generateDragDefinition());
 	}
 	
@@ -58,6 +44,15 @@ public class DojoDragContainerHandler extends AbstractDefaultDojoBehavior
 		toReturn += "dojo.event.connect(dojo, \"loaded\", \"initDrag" + container.getMarkupId() + "\");\n";
 		toReturn += "</script>\n";
 		return toReturn;
+	}
+
+
+	@Override
+	public void setRequire(RequireDojoLibs libs)
+	{
+		libs.add("dojo.dnd.*");
+		libs.add("dojo.event.*");
+		libs.add("dojo.io.*");
 	}
 
 }

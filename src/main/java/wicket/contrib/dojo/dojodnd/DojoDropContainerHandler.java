@@ -1,16 +1,15 @@
 package wicket.contrib.dojo.dojodnd;
 
 import wicket.ajax.AjaxRequestTarget;
-import wicket.contrib.dojo.AbstractDefaultDojoBehavior;
+import wicket.contrib.dojo.AbstractRequireDojoBehavior;
 import wicket.markup.html.IHeaderResponse;
-import wicket.util.resource.IResourceStream;
 
 /**
  * Package class for Dojo DropContainer
  * @author <a href="http://www.demay-fr.net/blog">Vincent Demay</a>
  *
  */
-class DojoDropContainerHandler extends AbstractDefaultDojoBehavior
+class DojoDropContainerHandler extends AbstractRequireDojoBehavior
 {
 	/** container handler is attached to. */
 	private DojoDropContainer container;
@@ -32,10 +31,6 @@ class DojoDropContainerHandler extends AbstractDefaultDojoBehavior
 		super.renderHead(response);
 		String require = "";
 		require += "<script language=\"JavaScript\" type=\"text/javascript\">\n";
-		require += "	dojo.require(\"dojo.dnd.*\")\n";
-		require += "	dojo.require(\"dojo.event.*\")\n";
-		require += "	dojo.require(\"dojo.io.*\")\n";
-		require += "\n";
 		require += "function byId(id){\n";
 		require += "	return document.getElementById(id);\n";
 		require += "}\n";
@@ -80,6 +75,14 @@ class DojoDropContainerHandler extends AbstractDefaultDojoBehavior
 	protected void respond(AjaxRequestTarget target)
 	{
 		container.onAjaxModelUpdated(target);
+	}
+
+	@Override
+	public void setRequire(RequireDojoLibs libs)
+	{
+		libs.add("dojo.dnd.*");
+		libs.add("dojo.event.*");
+		libs.add("dojo.io.*");
 	}
 	
 
