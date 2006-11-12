@@ -8,11 +8,16 @@ import wicket.model.Model;
 
 /**
  * Link to close à DojoDialog
- * @author <a href="http://www.demay-fr.net/blog">Vincent Demay</a>
+ * @author vdemay
  *
  */
 public class DojoDialogCloser extends Link{
 
+	/**
+	 * @param parent
+	 * @param id
+	 * @param dialog
+	 */
 	public DojoDialogCloser(MarkupContainer parent, String id, DojoDialog dialog)
 	{
 		super(parent, id);
@@ -23,7 +28,9 @@ public class DojoDialogCloser extends Link{
 		this.add(new AttributeModifier("href", new Model<String>("#")));
 	}
 
-	@Override
+	/* (non-Javadoc)
+	 * @see wicket.markup.html.link.Link#onClick()
+	 */
 	public void onClick()
 	{
 		//DO NOTHING
