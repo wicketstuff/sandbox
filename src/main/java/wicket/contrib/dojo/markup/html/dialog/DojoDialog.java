@@ -1,18 +1,20 @@
 package wicket.contrib.dojo.markup.html.dialog;
 
+import static wicket.contrib.dojo.DojoIdConstants.DOJO_TYPE;
+import static wicket.contrib.dojo.DojoIdConstants.DOJO_TYPE_DIALOG;
 import wicket.MarkupContainer;
 import wicket.behavior.AttributeAppender;
 import wicket.contrib.dojo.toggle.DojoToggle;
+import wicket.contrib.dojo.widgets.HideWebMarkupContainer;
 import wicket.markup.ComponentTag;
-import wicket.markup.html.WebMarkupContainer;
 import wicket.model.Model;
 
 /**
  * Dialog showing a Dojo dialog
- * @author <a href="http://www.demay-fr.net/blog">Vincent Demay</a>
+ * @author vdemay
  *
  */
-public class DojoDialog extends WebMarkupContainer
+public class DojoDialog extends HideWebMarkupContainer
 {
 
 	/**
@@ -39,9 +41,6 @@ public class DojoDialog extends WebMarkupContainer
 	protected void onComponentTag(ComponentTag tag)
 	{
 		super.onComponentTag(tag);
-		tag.put("dojoType", "dialog");
-		tag.put("style", "display:none");
+		tag.put(DOJO_TYPE, DOJO_TYPE_DIALOG);
 	}
-
-
 }

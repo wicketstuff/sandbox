@@ -1,10 +1,16 @@
 package wicket.contrib.dojo.markup.html.floatingpane;
 
+import static wicket.contrib.dojo.DojoIdConstants.DOJO_TYPE;
+import static wicket.contrib.dojo.DojoIdConstants.DOJO_TYPE_FLOATINGPANE;
 import wicket.MarkupContainer;
+import wicket.contrib.dojo.widgets.StylingWebMarkupContainer;
 import wicket.markup.ComponentTag;
-import wicket.markup.html.WebMarkupContainer;
 
-public class DojoFloatingPane extends WebMarkupContainer
+/**
+ * @author vdemay
+ *
+ */
+public class DojoFloatingPane extends StylingWebMarkupContainer
 {
 
 	private String title;
@@ -15,6 +21,10 @@ public class DojoFloatingPane extends WebMarkupContainer
 	private boolean hasShadow;
 	private boolean constrainToContainer;
 	
+	/**
+	 * @param parent
+	 * @param id
+	 */
 	public DojoFloatingPane(MarkupContainer parent, String id)
 	{
 		super(parent, id);
@@ -32,7 +42,8 @@ public class DojoFloatingPane extends WebMarkupContainer
 	@Override
 	protected void onComponentTag(ComponentTag tag)
 	{
-		tag.put("dojoType", "FloatingPane");
+		super.onComponentTag(tag);
+		tag.put(DOJO_TYPE, DOJO_TYPE_FLOATINGPANE);
 		
 		tag.put("title", title);
 		
