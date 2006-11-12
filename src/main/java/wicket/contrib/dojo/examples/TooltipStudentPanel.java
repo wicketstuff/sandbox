@@ -1,23 +1,22 @@
 package wicket.contrib.dojo.examples;
 
-import wicket.Component;
 import wicket.MarkupContainer;
-import wicket.contrib.markup.html.tooltip.TooltipPanel;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.image.Image;
+import wicket.markup.html.panel.Panel;
 import wicket.model.IModel;
 import wicket.model.Model;
 
-public class StudentTooltip extends TooltipPanel
+public class TooltipStudentPanel extends Panel
 {
 
 	
 	//and I want a constructor with an x, y and a model
-	public StudentTooltip(MarkupContainer parent, IModel model, Component target, int x, int y)
+	public TooltipStudentPanel(MarkupContainer parent, String id, IModel model)
 	{
-		super(parent, model, target, x, y);
+		super(parent, id, model);
 		
-		StudentModel thisStudent = (StudentModel)getModelObject();
+		TooltipStudentModel thisStudent = (TooltipStudentModel)getModelObject();
 		
 		//simply add the components to match the HTML
 		new Label(this, "studentid", thisStudent.getStudentID() + "");

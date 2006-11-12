@@ -4,12 +4,9 @@ package wicket.contrib.dojo.examples;
 import java.util.ArrayList;
 import java.util.List;
 
-import wicket.Component;
-import wicket.MarkupContainer;
 import wicket.ajax.AjaxRequestTarget;
-import wicket.behavior.AttributeAppender;
-import wicket.contrib.dojo.AbstractDojoTimerBehavior;
-import wicket.contrib.dojo.update.DojoUpdateHandler;
+import wicket.ajax.ClientEvent;
+import wicket.contrib.dojo.DojoEventBehavior;
 import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.WebPage;
 import wicket.markup.html.basic.Label;
@@ -38,10 +35,9 @@ public class SimpleUpdateExample extends WebPage {
 		
 		labelString = "Hello ! Try to click me";
 		label = new Label(this, "label", new Model<String>(labelString));
-		label.add(new DojoUpdateHandler("onclick"){
-
+		label.add(new DojoEventBehavior(ClientEvent.CLICK){
 			@Override
-			public void updateComponents(AjaxRequestTarget target, Component submitter, String value) {
+			protected void onEvent(AjaxRequestTarget target) {
 				listList.add("You click on Hello");	
 				target.addComponent(listContainer);
 			}
@@ -50,15 +46,11 @@ public class SimpleUpdateExample extends WebPage {
 		
 		
 		textField = new TextField(this,"textField", new Model<String>(textFieldString));
-		textField.add(new DojoUpdateHandler("onblur"){
-
+		textField.add(new DojoEventBehavior(ClientEvent.BLUR){
 			@Override
-			public void updateComponents(AjaxRequestTarget target, Component submitter, String value) {
-				String toAdd = value;
-				if (!toAdd.equals("")){
-					listList.add(toAdd);
-					target.addComponent(listContainer);
-				}
+			protected void onEvent(AjaxRequestTarget target) {
+				listList.add("You change field value");	
+				target.addComponent(listContainer);
 			}
 			
 		});
