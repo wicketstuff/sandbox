@@ -39,7 +39,7 @@ public abstract class DojoOrderableListView extends ListView
 	}
 	
 	private String generateId(){
-		return container.getMarkupId() + (pos++);
+		return container.getMarkupId()+ "_" + getId() + "_" + (pos++);
 		
 	}
 
@@ -69,17 +69,18 @@ public abstract class DojoOrderableListView extends ListView
 	public void renderHead(IHeaderResponse response)
 	{
 		super.renderHead(response);
-		for (int i =0; i < getList().size(); i++){
-			response.renderString(generateDragDefinition(container.getMarkupId() + i));
-		}
+		response.renderString(generateDragDefinition(container.getMarkupId()));
+
 	}
 	
 	private String generateDragDefinition(String id){
 		String toReturn = "";
 		toReturn += "<script language=\"JavaScript\" type=\"text/javascript\">\n";
 		toReturn += "function initDrag" + id + "(){\n";
-		toReturn += "	var dl = byId(\"" + id + "\");\n";
-		toReturn += "	var drag = new dojo.dnd.HtmlDragSource(dl, \"" + id + "\");\n";
+		toReturn += "	var children = document.getElementById('" + container.getMarkupId() + "').getElementsByTagName('div');\n";
+		toReturn += "	for(var i=0; i < children.length; i++){\n";
+		toReturn += "		var drag = new dojo.dnd.HtmlDragSource(children[i], children[i].id);\n";
+		toReturn += "	}\n";
 		toReturn += "}\n";
 		toReturn += "dojo.event.connect(dojo, \"loaded\", \"initDrag" + id + "\");\n";
 		toReturn += "</script>\n";
