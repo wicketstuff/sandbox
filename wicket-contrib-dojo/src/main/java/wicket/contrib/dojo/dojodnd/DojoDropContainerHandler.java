@@ -59,7 +59,7 @@ class DojoDropContainerHandler extends AbstractRequireDojoBehavior
 		toReturn += "	var dl = byId(\"" + container.getId() + "\");\n";
 		toReturn += "	var drop = new dojo.dnd.HtmlDropTarget(dl, [\"" + container.getDropId() + "\"]);\n";
 		toReturn += "	dojo.event.connect(drop, 'onDrop', function(e) {\n";
-		toReturn += "		dojoUpdate(createUrl(e),function(){},function(){},function(){},'');";
+		toReturn += "		wicketAjaxGet(createUrl(e),function(){},function(){});";
 		toReturn += "	});\n";
 		toReturn += "}\n";
 		toReturn += "dojo.event.connect(dojo, \"loaded\", \"initDrop" + container.getMarkupId() + "\");\n";
