@@ -38,7 +38,7 @@ public abstract class DojoOrderableListView extends ListView
 		container = parent;
 	}
 	
-	private String generateId(){
+	public String generateId(){
 		return container.getMarkupId()+ "_" + getId() + "_" + (pos++);
 		
 	}
