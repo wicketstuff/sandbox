@@ -1,0 +1,72 @@
+package wicket.contrib.dojo.html.list;
+
+import wicket.MarkupContainer;
+import wicket.WicketRuntimeException;
+import wicket.ajax.AjaxRequestTarget;
+import wicket.ajax.markup.html.AjaxLink;
+import wicket.markup.html.list.ListItem;
+import wicket.model.IModel;
+
+public class DojoOrderableListRemover extends AjaxLink{
+
+	// item to remove
+	private ListItem item;
+	
+	public DojoOrderableListRemover(MarkupContainer parent, String id, ListItem item)
+	{
+		super(parent, id);
+		this.item = item; 
+	}
+	
+	@Override
+	protected void onBeforeRender()
+	{
+		super.onBeforeRender();
+		check();
+	}
+
+	@Override
+	public final void onClick(AjaxRequestTarget target)
+	{
+		if (beforeRemoving()){
+			DojoOrderableListView parent = ((DojoOrderableListView)this.item.getParent());
+			DojoOrderableListViewContainer granParent = (DojoOrderableListViewContainer)parent.getParent();
+			parent.getList().remove(this.item.getIndex());
+			String removeId = granParent.getMarkupId() + "_" + parent.getId() + "_" + this.item.getIndex();
+			String remove = "";
+			remove += "document.getElementById('" + removeId + "').parentNode.removeChild(document.getElementById('" + removeId + "'))";
+			target.appendJavascript(remove);
+			onRemove(target);
+		}
+		else {
+			onNotRemove(target);
+		}
+	}
+
+	private void check(){
+		if (! (item.getParent() instanceof DojoOrderableListView)){
+			throw new WicketRuntimeException("Parent of item should be a DojoOrderableListView");
+		}
+		if (! (item.getParent().getParent() instanceof DojoOrderableListViewContainer)){
+			throw new WicketRuntimeException("GranParent of item should be a DojoOrderableListViewContainer");
+		}
+	}
+
+	protected void onRemove(AjaxRequestTarget target){
+		
+	}
+	
+	private void onNotRemove(AjaxRequestTarget target)
+	{
+		
+	}
+	
+	protected boolean beforeRemoving(){
+		return true;
+	}
+	
+
+
+	
+	
+}
