@@ -3,6 +3,7 @@ package wicket.contrib.dojo.examples;
 import java.util.ArrayList;
 import java.util.List;
 
+import wicket.contrib.dojo.html.list.DojoOrderableListRemover;
 import wicket.contrib.dojo.html.list.DojoOrderableListView;
 import wicket.contrib.dojo.html.list.DojoOrderableListViewContainer;
 import wicket.markup.html.WebPage;
@@ -36,6 +37,7 @@ public class OrderableList extends WebPage {
 			@Override
 			protected void populateItem(ListItem item) {
 				new Label(item,"label",(String)item.getModelObject());
+				new DojoOrderableListRemover(item, "remover", item);
 				
 			}
 			
