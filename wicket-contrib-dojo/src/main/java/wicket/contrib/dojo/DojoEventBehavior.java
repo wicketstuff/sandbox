@@ -4,7 +4,7 @@ import wicket.ajax.AjaxEventBehavior;
 import wicket.ajax.ClientEvent;
 
 /**
- * TODO : add Drag event and others
+ * TODO : add Drag event, onShow for tab handler and others
  */
 public abstract class DojoEventBehavior extends AjaxEventBehavior
 {
