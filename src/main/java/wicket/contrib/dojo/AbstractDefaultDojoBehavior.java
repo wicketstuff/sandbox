@@ -35,7 +35,6 @@ import wicket.markup.html.resources.CompressedResourceReference;
  * 
  * @see <a href="http://dojotoolkit.org/">Dojo</a>
  * @author Eelco Hillenius
- * TODO : see {@link AbstractDefaultAjaxBehavior} to add throttleScript
  */
 public abstract class AbstractDefaultDojoBehavior extends AbstractDefaultAjaxBehavior
 {
