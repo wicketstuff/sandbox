@@ -1,6 +1,7 @@
 package wicket.contrib.scriptaculous.examples;
 
 import wicket.ISessionFactory;
+import wicket.Request;
 import wicket.Session;
 import wicket.protocol.http.WebApplication;
 
@@ -28,7 +29,7 @@ public class ScriptaculousExamplesApplication extends WebApplication {
     {
     	return new ISessionFactory()
     	{
-			public Session newSession()
+			public Session newSession(Request request)
 			{
 				return new ScriptaculousExamplesSession(ScriptaculousExamplesApplication.this);
 			}
