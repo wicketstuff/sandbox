@@ -14,6 +14,8 @@ import wicket.model.AbstractReadOnlyModel;
  */
 public class AnimText extends AbstractYuiPanel {
 
+	private static final long serialVersionUID = 1L;
+
 	/**
 	 * Create an AnimText
 	 * @param id - wicket id

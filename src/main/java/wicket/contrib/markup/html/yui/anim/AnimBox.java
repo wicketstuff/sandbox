@@ -26,6 +26,9 @@ import wicket.model.AbstractReadOnlyModel;
  * 
  */
 public class AnimBox extends AbstractYuiPanel {
+
+	private static final long serialVersionUID = 1L;
+
 	private AnimSettings settings;
 
 	private String javaScriptId;

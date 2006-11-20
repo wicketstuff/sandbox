@@ -9,7 +9,6 @@ import wicket.ResourceReference;
 import wicket.contrib.ImageResourceInfo;
 import wicket.contrib.InlineStyle;
 import wicket.contrib.YuiImage;
-import wicket.markup.html.PackageResourceReference;
 
 /**
  * An AnimSettings allows the user to define the anim select settings
@@ -27,7 +26,7 @@ public class AnimSettings implements Serializable {
 	private int maxSelection;
 
 	private String message;
-	
+
 	private List<AnimOption> animOptionList;
 
 	private List<InlineStyle> defaultImgStyleList = new ArrayList<InlineStyle>();
@@ -154,13 +153,13 @@ public class AnimSettings implements Serializable {
 			YuiImage selectedImgOver = ((AnimOption) animOptionList.get(i))
 					.getSelectedImgOver();
 
-			ResourceReference defaultImgRR = new PackageResourceReference(
+			ResourceReference defaultImgRR = new ResourceReference(
 					AnimSettings.class, defaultImg.getFileName());
-			ResourceReference defaultImgOverRR = new PackageResourceReference(
+			ResourceReference defaultImgOverRR = new ResourceReference(
 					AnimSettings.class, defaultImgOver.getFileName());
-			ResourceReference selectedImgRR = new PackageResourceReference(
+			ResourceReference selectedImgRR = new ResourceReference(
 					AnimSettings.class, selectedImg.getFileName());
-			ResourceReference selectedImgOverRR = new PackageResourceReference(
+			ResourceReference selectedImgOverRR = new ResourceReference(
 					AnimSettings.class, selectedImgOver.getFileName());
 
 			ImageResourceInfo defaultImgInfo = new ImageResourceInfo(
@@ -324,7 +323,8 @@ public class AnimSettings implements Serializable {
 	 * @param defaultImgOverStyleList -
 	 *            the new default mouseover image style list
 	 */
-	public void setDefaultImgOverStyleList(List<InlineStyle> defaultImgOverStyleList) {
+	public void setDefaultImgOverStyleList(
+			List<InlineStyle> defaultImgOverStyleList) {
 		this.defaultImgOverStyleList = defaultImgOverStyleList;
 	}
 
@@ -362,7 +362,8 @@ public class AnimSettings implements Serializable {
 	 * @param selectedImgOverStyleList -
 	 *            the new selected mouseover image style list
 	 */
-	public void setSelectedImgOverStyleList(List<InlineStyle> selectedImgOverStyleList) {
+	public void setSelectedImgOverStyleList(
+			List<InlineStyle> selectedImgOverStyleList) {
 		this.selectedImgOverStyleList = selectedImgOverStyleList;
 	}
 

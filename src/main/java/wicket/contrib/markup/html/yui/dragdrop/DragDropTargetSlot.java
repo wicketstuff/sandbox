@@ -11,6 +11,8 @@ import wicket.markup.html.basic.Label;
 import wicket.model.AbstractReadOnlyModel;
 
 public class DragDropTargetSlot extends AbstractYuiPanel{
+
+	private static final long serialVersionUID = 1L;
 	private int index;
 	private YuiImage slot;
 	private DragDropSettings settings;
