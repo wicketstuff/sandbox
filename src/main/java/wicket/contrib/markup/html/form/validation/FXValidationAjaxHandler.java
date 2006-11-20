@@ -1,5 +1,6 @@
 /*
- * $Id$ $Revision$ $Date$
+ * $Id$
+ * $Revision$ $Date$
  * 
  * ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -20,10 +21,9 @@ import java.io.Serializable;
 
 import wicket.AttributeModifier;
 import wicket.Component;
-import wicket.Response;
 import wicket.WicketRuntimeException;
-import wicket.behavior.AbstractAjaxBehavior;
 import wicket.contrib.dojo.DojoAjaxHandler;
+import wicket.markup.html.IHeaderResponse;
 import wicket.markup.html.form.FormComponent;
 import wicket.model.Model;
 import wicket.util.resource.IResourceStream;
@@ -143,12 +143,12 @@ public class FXValidationAjaxHandler extends DojoAjaxHandler
 	}
 
 	/**
-	 * Write the validate/highlight javascript function to the page's head.
-	 * 
-	 * @see AbstractAjaxBehavior#onRenderHeadContribution(Response response)
+	 * @see wicket.behavior.AbstractAjaxBehavior#renderHead(wicket.markup.html.IHeaderResponse)
 	 */
-	public final void onRenderHeadContribution(Response r)
+	public void renderHead(IHeaderResponse response)
 	{
+		super.renderHead(response);
+
 		String highlightValidFunction;
 		String highlightInvalidFunction;
 
@@ -191,7 +191,7 @@ public class FXValidationAjaxHandler extends DojoAjaxHandler
 
 				"\t}\n" + "\t</script>\n";
 
-		r.write(s);
+		response.renderString(s);
 	}
 
 	/*	*//**
@@ -206,8 +206,7 @@ public class FXValidationAjaxHandler extends DojoAjaxHandler
 	 * attributes = tag.getAttributes(); final String attributeValue =
 	 * "javascript:"+ componentId + "_validate('" + getCallbackUrl() + "', '" +
 	 * formComponent.getInputName() + "', this);"; attributes.put(eventName,
-	 * attributeValue);
-	 *  }
+	 * attributeValue); }
 	 */
 
 	/**
@@ -230,12 +229,14 @@ public class FXValidationAjaxHandler extends DojoAjaxHandler
 		this.formComponent.add(new AttributeModifier("id", true, new Model(this.formComponent
 				.getId())));
 
-		this.formComponent.add(new AttributeModifier(eventName,true,new Model(){
-			public java.lang.Object getObject(Component co){
-			     return "javascript:"
-					+ componentId + "_validate('" + getCallbackUrl() + "', '"
-					+ formComponent.getInputName() + "', this);";
-			   }}));
+		this.formComponent.add(new AttributeModifier(eventName, true, new Model()
+		{
+			public java.lang.Object getObject(Component co)
+			{
+				return "javascript:" + componentId + "_validate('" + getCallbackUrl() + "', '"
+						+ formComponent.getInputName() + "', this);";
+			}
+		}));
 
 
 	}

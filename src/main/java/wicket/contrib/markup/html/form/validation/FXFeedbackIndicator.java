@@ -1,5 +1,6 @@
 /*
- * $Id$ $Revision$ $Date$
+ * $Id$ $Revision:
+ * 477 $ $Date$
  * 
  * ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -17,10 +18,9 @@
 package wicket.contrib.markup.html.form.validation;
 
 
-import wicket.Application;
 import wicket.Component;
+import wicket.ResourceReference;
 import wicket.contrib.markup.html.tooltip.Tooltip;
-import wicket.markup.html.PackageResourceReference;
 import wicket.markup.html.form.validation.FormComponentFeedbackIndicator;
 import wicket.markup.html.image.Image;
 
@@ -60,8 +60,9 @@ public class FXFeedbackIndicator extends FormComponentFeedbackIndicator
 	 */
 	protected void initIndicator()
 	{
-		//Image i = new Image("image", new Model("alerticon.gif"));
-		final PackageResourceReference resource = new PackageResourceReference(Application.get(), FXFeedbackIndicator.class, "alerticon.gif");
+		// Image i = new Image("image", new Model("alerticon.gif"));
+		final ResourceReference resource = new ResourceReference(FXFeedbackIndicator.class,
+				"alerticon.gif");
 		Image image = new Image("image", resource);
 		add(image);
 	}

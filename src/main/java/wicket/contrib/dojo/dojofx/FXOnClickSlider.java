@@ -1,5 +1,6 @@
 /*
- * $Id$ $Revision$ $Date$
+ * $Id$ $Revision$
+ * $Date$
  * 
  * ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -18,7 +19,6 @@ package wicket.contrib.dojo.dojofx;
 
 import wicket.AttributeModifier;
 import wicket.Component;
-import wicket.Response;
 import wicket.model.Model;
 
 /**
@@ -117,12 +117,6 @@ public class FXOnClickSlider extends DojoFXHandler
 							"dojo.fx.html.slideTo(document.getElementById('" + HTMLID + "'), [" + x
 									+ ", " + y + "]," + getDuration() + ")")));
 		}
-
-	}
-
-	protected void onRenderHeadContribution(Response r)
-	{
-		// no header contributions necessary here.
 
 	}
 }

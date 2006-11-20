@@ -1,5 +1,6 @@
 /*
- * $Id$ $Revision$ $Date$
+ * $Id$ $Revision$
+ * $Date$
  * 
  * ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -16,10 +17,10 @@
  */
 package wicket.contrib.markup.html.form;
 
-import wicket.Response;
-import wicket.behavior.AbstractAjaxBehavior;
+import wicket.ResourceReference;
 import wicket.contrib.dojo.DojoAjaxHandler;
 import wicket.markup.ComponentTag;
+import wicket.markup.html.IHeaderResponse;
 import wicket.markup.html.form.TextField;
 import wicket.model.IModel;
 import wicket.util.resource.IResourceStream;
@@ -52,7 +53,9 @@ public class ImmediateTextField extends TextField
 {
 	/**
 	 * Construct.
-	 * @param id component id
+	 * 
+	 * @param id
+	 *            component id
 	 */
 	public ImmediateTextField(String id)
 	{
@@ -119,21 +122,24 @@ public class ImmediateTextField extends TextField
 		}
 
 		/**
-		 * @see AbstractAjaxBehavior#onRenderHeadInitContribution(Response response)
+		 * @see wicket.behavior.AbstractAjaxBehavior#renderHead(wicket.markup.html.IHeaderResponse)
 		 */
-		public final void onRenderHeadInitContribution(Response response)
+		public void renderHead(IHeaderResponse response)
 		{
-			super.onRenderHeadInitContribution(response);
-			AppendingStringBuffer s = new AppendingStringBuffer(
-					"\t<script language=\"JavaScript\" type=\"text/javascript\">\n"+
-					"\tfunction immediateCheckBox(componentUrl, componentPath, val) { \n"+
-					"\t\tdojo.io.bind({\n"+
-					"\t\t\turl: componentUrl + '&' + componentPath + '=' + val,\n"+
-					"\t\t\tmimetype: \"text/plain\",\n"+
-					"\t\t\tload: function(type, data, evt) {}\n" + "\t\t});\n" + "\t}\n"+
-					"\t</script>\n");
+			super.renderHead(response);
+			response.renderJavascriptReference(new ResourceReference(DojoAjaxHandler.class,
+					"dojo.js"));
 
-			response.write(s);
+			AppendingStringBuffer s = new AppendingStringBuffer(
+					"\t<script language=\"JavaScript\" type=\"text/javascript\">\n"
+							+ "\tfunction immediateCheckBox(componentUrl, componentPath, val) { \n"
+							+ "\t\tdojo.io.bind({\n"
+							+ "\t\t\turl: componentUrl + '&' + componentPath + '=' + val,\n"
+							+ "\t\t\tmimetype: \"text/plain\",\n"
+							+ "\t\t\tload: function(type, data, evt) {}\n" + "\t\t});\n" + "\t}\n"
+							+ "\t</script>\n");
+
+			response.renderString(s);
 		}
 
 		/**
@@ -145,9 +151,9 @@ public class ImmediateTextField extends TextField
 		public final void onComponentTag(final ComponentTag tag)
 		{
 			final ValueMap attributes = tag.getAttributes();
-			final AppendingStringBuffer attributeValue = new AppendingStringBuffer("javascript:immediateCheckBox('")
-					.append(getCallbackUrl()).append("', '").append(textField.getInputName())
-					.append("', this.value);");
+			final AppendingStringBuffer attributeValue = new AppendingStringBuffer(
+					"javascript:immediateCheckBox('").append(getCallbackUrl()).append("', '")
+					.append(textField.getInputName()).append("', this.value);");
 			attributes.put("onblur", attributeValue);
 		}
 

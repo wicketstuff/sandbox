@@ -1,5 +1,6 @@
 /*
- * $Id$ $Revision$ $Date$
+ * $Id$ $Revision$
+ * $Date$
  * 
  * ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -21,8 +22,7 @@ import java.util.StringTokenizer;
 
 import wicket.AttributeModifier;
 import wicket.Component;
-import wicket.Response;
-import wicket.behavior.AbstractAjaxBehavior;
+import wicket.markup.html.IHeaderResponse;
 import wicket.model.Model;
 
 /**
@@ -74,13 +74,13 @@ public class FXOnClickWiper extends DojoFXHandler
 		this.startDisplay = startDisplay;
 
 	}
-	
+
 	/**
 	 * @return The html id
 	 */
 	public String getHTMLID()
 	{
-		//only returns valid value after handler is bound.
+		// only returns valid value after handler is bound.
 		return this.HTMLID;
 	}
 
@@ -99,15 +99,16 @@ public class FXOnClickWiper extends DojoFXHandler
 	}
 
 	/**
-	 * @see AbstractAjaxBehavior#onRenderHeadContribution(Response response)
+	 * @see wicket.behavior.AbstractAjaxBehavior#renderHead(wicket.markup.html.IHeaderResponse)
 	 */
-	public final void onRenderHeadContribution(Response r)
-	/*
-	 * TODO: make this part a lot more efficient! every new Wiper adds a lot of
-	 * javascript to the header. I'm positive that this can work a lot more
-	 * efficient, but have not secceeded in doing this yet.....
-	 */
+	public void renderHead(IHeaderResponse response)
 	{
+		super.renderHead(response);
+		/*
+		 * TODO: make this part a lot more efficient! every new Wiper adds a lot
+		 * of javascript to the header. I'm positive that this can work a lot
+		 * more efficient, but have not secceeded in doing this yet.....
+		 */
 		String s;
 		if (startDisplay)
 		{
@@ -133,8 +134,7 @@ public class FXOnClickWiper extends DojoFXHandler
 				+ "\t</script>\n";
 
 
-		r.write(s);
-
+		response.renderString(s);
 	}
 
 	/*
@@ -152,16 +152,20 @@ public class FXOnClickWiper extends DojoFXHandler
 
 	/**
 	 * method to remove colons from string s.
-	 * @param s string to parse
+	 * 
+	 * @param s
+	 *            string to parse
 	 * @return string wichtout colons
 	 */
-	public String removeColon(String s) {
-		  StringTokenizer st = new StringTokenizer(s,":",false);
-		  String t="";
-		  while (st.hasMoreElements()) t += st.nextElement();
-		  return t;
-	  }
-	
+	public String removeColon(String s)
+	{
+		StringTokenizer st = new StringTokenizer(s, ":", false);
+		String t = "";
+		while (st.hasMoreElements())
+			t += st.nextElement();
+		return t;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
