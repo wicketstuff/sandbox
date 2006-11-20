@@ -1,5 +1,6 @@
 /*
- * $Id$ $Revision$ $Date$
+ * $Id$ $Revision:
+ * 594 $ $Date$
  * 
  * ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -18,8 +19,7 @@ package wicket.contrib.dojo.dojofx;
 
 import wicket.AttributeModifier;
 import wicket.Component;
-import wicket.Response;
-import wicket.behavior.AbstractAjaxBehavior;
+import wicket.markup.html.IHeaderResponse;
 import wicket.model.Model;
 
 /**
@@ -123,11 +123,12 @@ public class FXOnClickHighlighter extends DojoFXHandler
 	}
 
 	/**
-	 * 
-	 * @see AbstractAjaxBehavior#onRenderHeadContribution(Response response)
+	 * @see wicket.behavior.AbstractAjaxBehavior#renderHead(wicket.markup.html.IHeaderResponse)
 	 */
-	protected void onRenderHeadContribution(Response r)
+	public void renderHead(IHeaderResponse response)
 	{
+		super.renderHead(response);
+
 		// String to be written to the header
 		String s;
 		// dojo function calls for highlight/unhighlight
@@ -170,9 +171,7 @@ public class FXOnClickHighlighter extends DojoFXHandler
 				+ "\n" + "\t\t\t}\n" + "\t\t}\n" + "\t}\n" + "\t</script>\n";
 
 
-		r.write(s);
-
-
+		response.renderString(s);
 	}
 
 	/*

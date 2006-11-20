@@ -2,47 +2,47 @@ package wicket.contrib.dojo.autoupdate;
 
 import java.util.StringTokenizer;
 
-import wicket.Application;
 import wicket.AttributeModifier;
 import wicket.Component;
 import wicket.RequestCycle;
+import wicket.ResourceReference;
 import wicket.Response;
 import wicket.WicketRuntimeException;
-import wicket.behavior.AbstractAjaxBehavior;
 import wicket.contrib.dojo.DojoAjaxHandler;
-import wicket.markup.html.PackageResourceReference;
+import wicket.markup.html.IHeaderResponse;
 import wicket.model.Model;
 import wicket.response.StringResponse;
 import wicket.util.resource.IResourceStream;
 import wicket.util.resource.StringBufferResourceStream;
 
 /**
- * Dojo Ajax auto update handler. <br/>
- * Bind this handler to any component implementing IUpdatable.<br/>
- * Every <i>interval</i> the bound component's update() method will be called<br/>
- * followed by a rerender of the bound component.<br/>
+ * Dojo Ajax auto update handler. <br/> Bind this handler to any component
+ * implementing IUpdatable.<br/> Every <i>interval</i> the bound component's
+ * update() method will be called<br/> followed by a rerender of the bound
+ * component.<br/>
  * 
  * @author Ruud Booltink
  * @author Marco van de Haar
- *
+ * 
  */
 public class DojoAutoUpdateHandler extends DojoAjaxHandler
 {
 	private final int interval;
 	private String HTMLID;
 	private String LoadingId = "";
-	
+
 	/**
 	 * 
-	 * @param interval The amount of milliseconds between updates and renders.
+	 * @param interval
+	 *            The amount of milliseconds between updates and renders.
 	 */
 	public DojoAutoUpdateHandler(int interval)
 	{
 		this.interval = interval;
-	    
+
 
 	}
-	
+
 	/**
 	 * @param interval
 	 * @param loadingId
@@ -51,39 +51,40 @@ public class DojoAutoUpdateHandler extends DojoAjaxHandler
 	{
 		this.interval = interval;
 		this.LoadingId = loadingId;
-	    
+
 
 	}
 
-    
+
 	/**
 	 * Internal render method. This handler currently only supports 1 component.<br/>
 	 * The array is for future usage.
 	 * 
-	 * @param components The components to be rerendered.
+	 * @param components
+	 *            The components to be rerendered.
 	 * @return Rerendered component's resource stream.
 	 */
-	protected IResourceStream render(final Component[] components) 
+	protected IResourceStream render(final Component[] components)
 	{
-		
-		
+
+
 		StringBufferResourceStream response = new StringBufferResourceStream("text/plain");
-		//response.append("<?xml version='1.0' encoding='utf-8'?>");
-		//response.append("<components>");
-		
+		// response.append("<?xml version='1.0' encoding='utf-8'?>");
+		// response.append("<components>");
+
 		if (components != null)
 		{
-			
-			Response resp = new StringResponse(); 
+
+			Response resp = new StringResponse();
 			RequestCycle requestCycle = RequestCycle.get();
 			Response origResponse = requestCycle.getResponse();
 			try
 			{
 				requestCycle.setResponse(resp);
-				for (int i=0; i < components.length; i++)
+				for (int i = 0; i < components.length; i++)
 				{
-					//	resp.write("<component cssid=''><![CDATA[");
-					
+					// resp.write("<component cssid=''><![CDATA[");
+
 					Component component = components[i];
 					boolean renderBodyOnly = component.getRenderBodyOnly();
 					try
@@ -100,7 +101,7 @@ public class DojoAutoUpdateHandler extends DojoAjaxHandler
 					{
 						component.setRenderBodyOnly(renderBodyOnly);
 					}
-				//	resp.write("]]<component>");
+					// resp.write("]]<component>");
 				}
 			}
 			finally
@@ -109,33 +110,35 @@ public class DojoAutoUpdateHandler extends DojoAjaxHandler
 			}
 			response.append(resp.toString());
 		}
-		//response.append("</components>");
-		//System.out.println("response: " + response.asString());
+		// response.append("</components>");
+		// System.out.println("response: " + response.asString());
 		return response;
-		
+
 	}
 
 	/**
-	 * @see AbstractAjaxBehavior#onRenderHeadContribution(Response response)
+	 * @see wicket.behavior.AbstractAjaxBehavior#renderHead(wicket.markup.html.IHeaderResponse)
 	 */
-	protected void onRenderHeadContribution(final Response response)
+	public void renderHead(IHeaderResponse response)
 	{
-		super.onRenderHeadContribution(response);
-		writeJsReference(response,  new PackageResourceReference(Application.get(),
-				DojoAutoUpdateHandler.class, "autoupdate.js"));
+		super.renderHead(response);
+		response.renderJavascriptReference(new ResourceReference(DojoAutoUpdateHandler.class,
+				"autoupdate.js"));
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see wicket.AjaxHandler#getResponse()
 	 */
-	protected IResourceStream getResponse() 
+	protected IResourceStream getResponse()
 	{
 		Component[] components = new Component[1];
 		components[0] = getComponent();
 		boolean success = ((IUpdatable)components[0]).update();
-		if(success)
+		if (success)
 		{
-			return render(components);	
+			return render(components);
 		}
 		else
 		{
@@ -143,14 +146,15 @@ public class DojoAutoUpdateHandler extends DojoAjaxHandler
 			response.append("UPDATE_ERROR");
 			return response;
 		}
-			
+
 	}
-	
+
 	/**
-	 * the javascript function expects the node corresponding to loadingId to have 
-	 * a style attribute: visibility=hidden; and sets it to visible during laoding.
-	 * This is not very good method for doing this and should probably be replaced by
-	 *  a a generic js function which is called during loading.
+	 * the javascript function expects the node corresponding to loadingId to
+	 * have a style attribute: visibility=hidden; and sets it to visible during
+	 * laoding. This is not very good method for doing this and should probably
+	 * be replaced by a a generic js function which is called during loading.
+	 * 
 	 * @return the CSS id for the loading node.
 	 */
 	protected String getLoadingId()
@@ -158,24 +162,26 @@ public class DojoAutoUpdateHandler extends DojoAjaxHandler
 		return this.LoadingId;
 	}
 
-	/** 
+	/**
 	 * adds the onload contribution: calls checkUpdate() <br/>
+	 * 
 	 * @return contribution to body onload.
 	 * @see wicket.behavior.AjaxHandler#getBodyOnloadContribution()
 	 */
 	protected String getBodyOnloadContribution()
 	{
-		return "checkUpdate('" + getCallbackUrl() + "','text/plain', '" + HTMLID + "', '" + getLoadingId() + "');intervalCheck("+ this.interval + ", '" + getCallbackUrl() + "', 'text/html','" + HTMLID + "','" + getLoadingId() + "');";
-		//return "checkUpdate();";
-		
-		
+		return "checkUpdate('" + getCallbackUrl() + "','text/plain', '" + HTMLID + "', '"
+				+ getLoadingId() + "');intervalCheck(" + this.interval + ", '" + getCallbackUrl()
+				+ "', 'text/html','" + HTMLID + "','" + getLoadingId() + "');";
+		// return "checkUpdate();";
+
+
 	}
-	
-	
-	
-	
+
+
 	/**
 	 * Checks if bound component is Updatable and adds HTMLID
+	 * 
 	 * @see wicket.behavior.AjaxHandler#onBind()
 	 */
 	protected void onBind()
@@ -186,22 +192,25 @@ public class DojoAutoUpdateHandler extends DojoAjaxHandler
 			throw new WicketRuntimeException("This handler must be bound to Updatable Components.");
 		}
 		// create a unique HTML for the explode component
-		
+
 		String componentpath = removeColon(getComponent().getPath());
-		
-		//this.HTMLID = "f_" + this.getComponent().getId() + "_" + getComponent().getPath();
+
+		// this.HTMLID = "f_" + this.getComponent().getId() + "_" +
+		// getComponent().getPath();
 		this.HTMLID = ((IUpdatable)getComponent()).getHTMLID();
-		
+
 		// Add ID to component, and bind effect to trigger
 		c.add(new AttributeModifier("id", true, new Model(HTMLID)));
 
 	}
-	
-	private String removeColon(String s) {
-		  StringTokenizer st = new StringTokenizer(s,":",false);
-		  String t="";
-		  while (st.hasMoreElements()) t += st.nextElement();
-		  return t;
-	  }
-    
+
+	private String removeColon(String s)
+	{
+		StringTokenizer st = new StringTokenizer(s, ":", false);
+		String t = "";
+		while (st.hasMoreElements())
+			t += st.nextElement();
+		return t;
+	}
+
 }

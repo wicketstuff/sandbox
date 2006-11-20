@@ -1,5 +1,6 @@
 /*
- * $Id$ $Revision$ $Date$
+ * $Id$ $Revision$
+ * $Date$
  * 
  * ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -20,14 +21,13 @@ import java.util.StringTokenizer;
 
 import wicket.AttributeModifier;
 import wicket.Component;
-import wicket.Response;
-import wicket.behavior.AbstractAjaxBehavior;
+import wicket.markup.html.IHeaderResponse;
 import wicket.model.Model;
 
 
 /**
  * @author jcompagner
- *
+ * 
  */
 public class FXOnMouseOverFader extends DojoFXHandler
 {
@@ -38,7 +38,6 @@ public class FXOnMouseOverFader extends DojoFXHandler
 	private String componentId;
 	private double startOpac;
 	private double endOpac;
-
 
 
 	/**
@@ -141,10 +140,12 @@ public class FXOnMouseOverFader extends DojoFXHandler
 	}
 
 	/**
-	 * @see AbstractAjaxBehavior#onRenderHeadContribution(Response response)
+	 * @see wicket.behavior.AbstractAjaxBehavior#renderHead(wicket.markup.html.IHeaderResponse)
 	 */
-	protected void onRenderHeadContribution(Response r)
+	public void renderHead(IHeaderResponse response)
 	{
+		super.renderHead(response);
+
 		// String to be written to header
 		String s;
 		// dojo function calls for fadein/out
@@ -190,46 +191,45 @@ public class FXOnMouseOverFader extends DojoFXHandler
 
 		if (startDisplay)
 		{
-			s = "\t<script language=\"JavaScript\" type=\"text/javascript\">\n" + "\t"
-					+ HTMLID + "_faderState = 'fadedIn'; \n" + "\t" + HTMLID
-					+ "_mouseover = 0; \n";
+			s = "\t<script language=\"JavaScript\" type=\"text/javascript\">\n" + "\t" + HTMLID
+					+ "_faderState = 'fadedIn'; \n" + "\t" + HTMLID + "_mouseover = 0; \n";
 		}
 		else
 		{
-			s = "\t<script language=\"JavaScript\" type=\"text/javascript\">\n" + "\t"
-					+ HTMLID + "_faderState = 'fadedOut'; \n" + "\t" + HTMLID
-					+ "_mouseover = 0; \n";
+			s = "\t<script language=\"JavaScript\" type=\"text/javascript\">\n" + "\t" + HTMLID
+					+ "_faderState = 'fadedOut'; \n" + "\t" + HTMLID + "_mouseover = 0; \n";
 		}
 
 		s = s + "\tfunction " + HTMLID + "_fade(id, duration) { \n" + "\t\tif(" + HTMLID
 				+ "_faderState!='fading'){\n" + "\t\t\tnode = document.getElementById(id);\n"
 				+ "\t\t\tif(" + HTMLID + "_faderState == 'fadedOut') \n" + "\t\t\t{ \n"
-				+ "\t\t\t\t" + HTMLID + "_faderState = 'fading';\n" + "\t\t\t\t"
-				+ fadeInFunction + "\n" + "\t\t\t} else {\n" + "\t\t\t\t" + HTMLID
-				+ "_faderState = 'fading';\n" + "\t\t\t\t" + fadeOutFunction + "\n" + "\t\t\t}\n"
-				+ "\t\t}\n" + "\t}\n";
+				+ "\t\t\t\t" + HTMLID + "_faderState = 'fading';\n" + "\t\t\t\t" + fadeInFunction
+				+ "\n" + "\t\t\t} else {\n" + "\t\t\t\t" + HTMLID + "_faderState = 'fading';\n"
+				+ "\t\t\t\t" + fadeOutFunction + "\n" + "\t\t\t}\n" + "\t\t}\n" + "\t}\n";
 
 
 		s = s + "\tfunction " + HTMLID + "_setMouseOver(ismouseover){\n"
 				+ "\t\tif (ismouseover == 1){\n" + "\t\t\t" + HTMLID + "_mouseover = 1;\n"
-				+ "\t\t}else{\n" + "\t\t\t" + HTMLID + "_mouseover = 0;\n" + "\t\t}\n"
-				+ "\t}\n" + "\t</script>\n\n";
-		r.write(s);
+				+ "\t\t}else{\n" + "\t\t\t" + HTMLID + "_mouseover = 0;\n" + "\t\t}\n" + "\t}\n"
+				+ "\t</script>\n\n";
 
-
+		response.renderString(s);
 	}
-	
-	/*
-	 * removes the colons in the componentPath. In order to use in Javascript variables
-	 */
-	private String removeColon(String s) {
-		  StringTokenizer st = new StringTokenizer(s,":",false);
-		  String t="";
-		  while (st.hasMoreElements()) t += st.nextElement();
-		  return t;
-	  }
 
-	
+	/*
+	 * removes the colons in the componentPath. In order to use in Javascript
+	 * variables
+	 */
+	private String removeColon(String s)
+	{
+		StringTokenizer st = new StringTokenizer(s, ":", false);
+		String t = "";
+		while (st.hasMoreElements())
+			t += st.nextElement();
+		return t;
+	}
+
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -240,7 +240,7 @@ public class FXOnMouseOverFader extends DojoFXHandler
 		Component c = getComponent();
 		this.component = (Component)c;
 		this.componentId = c.getId();
-		
+
 		String componentpath = removeColon(component.getPath());
 		// create a unique HTML for the wipe component
 		this.HTMLID = "f_" + this.component.getId() + "_" + componentpath;
@@ -253,12 +253,12 @@ public class FXOnMouseOverFader extends DojoFXHandler
 		 */
 		this.getTrigger().add(
 				new AppendAttributeModifier(getEventName(), true, new Model(HTMLID
-						+ "_setMouseOver(1);" + HTMLID + "_fade('" + HTMLID + "', "
-						+ getDuration() + ");")));
+						+ "_setMouseOver(1);" + HTMLID + "_fade('" + HTMLID + "', " + getDuration()
+						+ ");")));
 		this.getTrigger().add(
 				new AppendAttributeModifier("onmouseout", true, new Model(HTMLID
-						+ "_setMouseOver(0);" + HTMLID + "_fade('" + HTMLID + "', "
-						+ getDuration() + ");")));
+						+ "_setMouseOver(0);" + HTMLID + "_fade('" + HTMLID + "', " + getDuration()
+						+ ");")));
 	}
 
 }

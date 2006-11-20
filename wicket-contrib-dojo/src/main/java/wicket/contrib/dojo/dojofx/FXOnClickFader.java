@@ -1,6 +1,5 @@
 /*
- * $Id$
- * $Revision$
+ * $Id$ $Revision$
  * $Date$
  * 
  * ==============================================================================
@@ -22,8 +21,7 @@ import java.util.StringTokenizer;
 
 import wicket.AttributeModifier;
 import wicket.Component;
-import wicket.Response;
-import wicket.behavior.AbstractAjaxBehavior;
+import wicket.markup.html.IHeaderResponse;
 import wicket.model.Model;
 
 /**
@@ -177,12 +175,13 @@ public class FXOnClickFader extends DojoFXHandler
 
 	}
 
-
 	/**
-	 * @see AbstractAjaxBehavior#onRenderHeadContribution(Response response)
+	 * @see wicket.behavior.AbstractAjaxBehavior#renderHead(wicket.markup.html.IHeaderResponse)
 	 */
-	protected void onRenderHeadContribution(Response r)
+	public void renderHead(IHeaderResponse response)
 	{
+		super.renderHead(response);
+
 		// String to be written to the header
 		String s;
 		// dojo function calls for fadein/out
@@ -215,33 +214,36 @@ public class FXOnClickFader extends DojoFXHandler
 		// set the correct state for the startDisplay value
 		if (startDisplay)
 		{
-			s = "\t<script language=\"JavaScript\" type=\"text/javascript\">\n" + "\t"
-					+ HTMLID + "_faderState = 'fadedIn'; \n";
+			s = "\t<script language=\"JavaScript\" type=\"text/javascript\">\n" + "\t" + HTMLID
+					+ "_faderState = 'fadedIn'; \n";
 		}
 		else
 		{
-			s = "\t<script language=\"JavaScript\" type=\"text/javascript\">\n" + "\t"
-					+ HTMLID + "_faderState = 'fadedOut'; \n";
+			s = "\t<script language=\"JavaScript\" type=\"text/javascript\">\n" + "\t" + HTMLID
+					+ "_faderState = 'fadedOut'; \n";
 		}
 
 		s = s + "\tfunction " + HTMLID + "_fade(id, duration) { \n" + "\t\tif(" + HTMLID
 				+ "_faderState!='fading'){\n" + "\t\t\tnode = document.getElementById(id);\n"
 				+ "\t\t\tif(" + HTMLID + "_faderState == 'fadedOut') \n" + "\t\t\t{ \n"
-				+ "\t\t\t\t" + HTMLID + "_faderState = 'fading';\n" + "\t\t\t\t"
-				+ fadeInFunction + "\n" + "\t\t\t} else {\n" + "\t\t\t\t" + HTMLID
-				+ "_faderState = 'fading';\n" + "\t\t\t\t" + fadeOutFunction + "\n" + "\t\t\t}\n"
-				+ "\t\t}\n" + "\t}\n" + "\t</script>\n";
-		r.write(s);
+				+ "\t\t\t\t" + HTMLID + "_faderState = 'fading';\n" + "\t\t\t\t" + fadeInFunction
+				+ "\n" + "\t\t\t} else {\n" + "\t\t\t\t" + HTMLID + "_faderState = 'fading';\n"
+				+ "\t\t\t\t" + fadeOutFunction + "\n" + "\t\t\t}\n" + "\t\t}\n" + "\t}\n"
+				+ "\t</script>\n";
+
+		response.renderString(s);
 	}
 
-	private String removeColon(String s) {
-		  StringTokenizer st = new StringTokenizer(s,":",false);
-		  String t="";
-		  while (st.hasMoreElements()) t += st.nextElement();
-		  return t;
-	  }
-	
-	
+	private String removeColon(String s)
+	{
+		StringTokenizer st = new StringTokenizer(s, ":", false);
+		String t = "";
+		while (st.hasMoreElements())
+			t += st.nextElement();
+		return t;
+	}
+
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -252,7 +254,7 @@ public class FXOnClickFader extends DojoFXHandler
 		Component c = getComponent();
 		this.component = (Component)c;
 		this.componentId = c.getId();
-		
+
 		String componentpath = removeColon(component.getPath());
 		// create a unique HTML for the wipe component
 		this.HTMLID = "f_" + this.component.getId() + "_" + componentpath;

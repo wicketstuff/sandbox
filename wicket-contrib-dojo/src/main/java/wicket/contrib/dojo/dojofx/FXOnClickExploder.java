@@ -1,5 +1,6 @@
 /*
- * $Id$ $Revision$ $Date$
+ * $Id$ $Revision$
+ * $Date$
  * 
  * ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -18,8 +19,7 @@ package wicket.contrib.dojo.dojofx;
 
 import wicket.AttributeModifier;
 import wicket.Component;
-import wicket.Response;
-import wicket.behavior.AbstractAjaxBehavior;
+import wicket.markup.html.IHeaderResponse;
 import wicket.model.Model;
 
 /**
@@ -108,10 +108,11 @@ public class FXOnClickExploder extends DojoFXHandler
 	}
 
 	/**
-	 * @see AbstractAjaxBehavior#onRenderHeadContribution(Response response)
+	 * @see wicket.behavior.AbstractAjaxBehavior#renderHead(wicket.markup.html.IHeaderResponse)
 	 */
-	protected void onRenderHeadContribution(Response r)
+	public void renderHead(IHeaderResponse response)
 	{
+		super.renderHead(response);
 		String s;
 
 		// if box has not been created: explode from trigger
@@ -128,7 +129,6 @@ public class FXOnClickExploder extends DojoFXHandler
 					+ componentId + "_exploderstate=\"exploded\";});";
 			functionIm = "dojo.fx.html.implodeToBox(end, " + coords + ", duration, function(){"
 					+ componentId + "_exploderstate=\"imploded\";});";
-
 		}
 		else if (from != null)
 		{
@@ -140,13 +140,10 @@ public class FXOnClickExploder extends DojoFXHandler
 		}
 		else
 		{
-
 			functionEx = "dojo.fx.html.explode(start, end, duration, function(){" + componentId
 					+ "_exploderstate=\"exploded\";});";
 			functionIm = "dojo.fx.html.implode(end, start, duration, function(){" + componentId
 					+ "_exploderstate=\"imploded\";});";
-
-
 		}
 
 		if (startDisplay)
@@ -169,10 +166,8 @@ public class FXOnClickExploder extends DojoFXHandler
 
 				+ "\t}\n" + "\t</script>\n";
 
-		r.write(s);
-
+		response.renderString(s);
 	}
-
 
 	/**
 	 * @see wicket.contrib.dojo.dojofx.DojoFXHandler#addTrigger(wicket.Component)

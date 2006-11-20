@@ -1,6 +1,6 @@
 /*
- * $Id$
- * $Revision$ $Date$
+ * $Id$ $Revision$
+ * $Date$
  * 
  * ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -17,10 +17,9 @@
  */
 package wicket.contrib.markup.html.form;
 
-import wicket.Response;
-import wicket.behavior.AbstractAjaxBehavior;
 import wicket.contrib.dojo.DojoAjaxHandler;
 import wicket.markup.ComponentTag;
+import wicket.markup.html.IHeaderResponse;
 import wicket.markup.html.form.CheckBox;
 import wicket.model.IModel;
 import wicket.util.resource.IResourceStream;
@@ -36,21 +35,21 @@ import wicket.util.value.ValueMap;
  * An example:
  * 
  * <pre>
- *         	addTicketOptionForm.add(new ListView(&quot;ticketOptionsList&quot;,
- *         			new PropertyModel(activityModel, &quot;ticketOptions&quot;)) {
- *         
- *         		protected void populateItem(ListItem item) {
- *         			final TicketOption ticketOption = (TicketOption) item
- *         					.getModelObject();
- *         			...
- *         			item.add(new ImmediateCheckBox(&quot;available&quot;) {
- *         				@Override
- *         				protected void onAjaxModelUpdated() {
- *         					Activity activity = (Activity)ActivityDetailsPage.this.getModelObject();
- *         					getActivityDao().update(activity);
- *         				}
- *         			});
- *         		...
+ *           	addTicketOptionForm.add(new ListView(&quot;ticketOptionsList&quot;,
+ *           			new PropertyModel(activityModel, &quot;ticketOptions&quot;)) {
+ *           
+ *           		protected void populateItem(ListItem item) {
+ *           			final TicketOption ticketOption = (TicketOption) item
+ *           					.getModelObject();
+ *           			...
+ *           			item.add(new ImmediateCheckBox(&quot;available&quot;) {
+ *           				@Override
+ *           				protected void onAjaxModelUpdated() {
+ *           					Activity activity = (Activity)ActivityDetailsPage.this.getModelObject();
+ *           					getActivityDao().update(activity);
+ *           				}
+ *           			});
+ *           		...
  * </pre>
  * 
  * </p>
@@ -101,12 +100,12 @@ public class ImmediateCheckBox extends CheckBox
 	 * For example if we want to echo the value returned by
 	 * getResponseResourceStream stream we can implement it as follows: <code>
 	 * <pre>
-	 *    
-	 *    getJsCallbackFunctionName() {return(&quot;handleit&quot;);}
-	 *    
-	 *    in javascript:
-	 *    
-	 *    function handleit(type, data, evt) { alert(data); } 
+	 *      
+	 *      getJsCallbackFunctionName() {return(&quot;handleit&quot;);}
+	 *      
+	 *      in javascript:
+	 *      
+	 *      function handleit(type, data, evt) { alert(data); } 
 	 * </pre>
 	 * </code>
 	 * 
@@ -152,26 +151,32 @@ public class ImmediateCheckBox extends CheckBox
 		}
 
 		/**
-		 * @see AbstractAjaxBehavior#onRenderHeadInitContribution(Response response)
+		 * @see wicket.behavior.AbstractAjaxBehavior#renderHead(wicket.markup.html.IHeaderResponse)
 		 */
-		public final void onRenderHeadInitContribution(Response response)
+		public void renderHead(IHeaderResponse response)
 		{
-			super.onRenderHeadInitContribution(response);
-			AppendingStringBuffer s = new AppendingStringBuffer(
-					"\t<script language=\"JavaScript\" type=\"text/javascript\">\n"+
-					"\tfunction immediateCheckBox(componentUrl, componentPath, val) { \n"+
-					"\t\tdojo.io.bind({\n"+
-					"\t\t\turl: componentUrl + '&' + componentPath + '=' + val,\n"+
-					"\t\t\tmimetype: \"text/plain\",\n"+
-					"\t\t\tload: function(type, data, evt) {");
+			super.renderHead(response);
 
-			if (checkBox.getJSCallbackFunctionName() != null) {
+			// this is pretty funny, using a buffer and then + concats...
+			// if someone ever cares, how about doing it properly (with adds)
+			// here
+			// and in the rest of this project?
+			AppendingStringBuffer s = new AppendingStringBuffer(
+					"\t<script language=\"JavaScript\" type=\"text/javascript\">\n"
+							+ "\tfunction immediateCheckBox(componentUrl, componentPath, val) { \n"
+							+ "\t\tdojo.io.bind({\n"
+							+ "\t\t\turl: componentUrl + '&' + componentPath + '=' + val,\n"
+							+ "\t\t\tmimetype: \"text/plain\",\n"
+							+ "\t\t\tload: function(type, data, evt) {");
+
+			if (checkBox.getJSCallbackFunctionName() != null)
+			{
 				s.append(checkBox.getJSCallbackFunctionName()).append("(type, data, evt);");
 			}
 
 			s.append("}\n\t\t});\n\t}\n\t</script>\n");
 
-			response.write(s);
+			response.renderString(s);
 		}
 
 		/**
@@ -183,9 +188,9 @@ public class ImmediateCheckBox extends CheckBox
 		public final void onComponentTag(final ComponentTag tag)
 		{
 			final ValueMap attributes = tag.getAttributes();
-			final AppendingStringBuffer attributeValue = new AppendingStringBuffer("javascript:immediateCheckBox('")
-					.append(getCallbackUrl()).append("', '").append(checkBox.getInputName())
-					.append("', this.checked);");
+			final AppendingStringBuffer attributeValue = new AppendingStringBuffer(
+					"javascript:immediateCheckBox('").append(getCallbackUrl()).append("', '")
+					.append(checkBox.getInputName()).append("', this.checked);");
 			attributes.put("onclick", attributeValue);
 		}
 

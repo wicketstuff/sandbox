@@ -1,6 +1,6 @@
 /*
- * $Id$ $Revision:
- * 1.2 $ $Date$
+ * $Id$ $Revision$
+ * $Date$
  * 
  * ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -21,10 +21,10 @@ package wicket.contrib.dojo;
 import wicket.Application;
 import wicket.IInitializer;
 import wicket.RequestCycle;
-import wicket.Response;
+import wicket.ResourceReference;
 import wicket.behavior.AbstractAjaxBehavior;
+import wicket.markup.html.IHeaderResponse;
 import wicket.markup.html.PackageResource;
-import wicket.markup.html.PackageResourceReference;
 import wicket.util.resource.IResourceStream;
 
 /**
@@ -59,47 +59,38 @@ public abstract class DojoAjaxHandler extends AbstractAjaxBehavior implements II
 	}
 
 	/**
-	 * 
-	 * @see wicket.behavior.AbstractAjaxBehavior#onRenderHeadInitContribution(wicket.Response)
+	 * @see wicket.behavior.AbstractAjaxBehavior#renderHead(wicket.markup.html.IHeaderResponse)
 	 */
-	protected void onRenderHeadInitContribution(final Response response)
+	public void renderHead(IHeaderResponse response)
 	{
-		writeJsReference(response,  new PackageResourceReference(Application.get(),
-				DojoAjaxHandler.class, "dojo.js"));
+		super.renderHead(response);
+		response.renderJavascriptReference(new ResourceReference(DojoAjaxHandler.class, "dojo.js"));
 	}
-	
-	/**
-	 * @see AbstractAjaxBehavior#getImplementationId()
-	 */
-	protected final String getImplementationId()
-	{
-		return "DojoImpl";
-	}
-	
+
 	/**
 	 * @see wicket.behavior.IBehaviorListener#onRequest()
 	 */
 	public void onRequest()
 	{
 		IResourceStream response = getResponse();
-		if(response != null)
+		if (response != null)
 		{
 			boolean isPageVersioned = true;
 			try
 			{
 				isPageVersioned = getComponent().getPage().isVersioned();
 				getComponent().getPage().setVersioned(false);
-	
+
 				DojoRequestTarget target = new DojoRequestTarget(response);
 				RequestCycle.get().setRequestTarget(target);
-			} 
-			finally 
+			}
+			finally
 			{
 				getComponent().getPage().setVersioned(isPageVersioned);
 			}
 		}
 	}
-	
-	
+
+
 	protected abstract IResourceStream getResponse();
 }
