@@ -40,8 +40,8 @@ public class DojoOrderableListViewContainer extends DojoDropContainer
 		String containerId = getMarkupId();
 		String changeId = "";
 		changeId += "var children = document.getElementById('" + containerId + "').getElementsByTagName('div');\n";
-		changeId += "for(var i=0; i < children.length; i++){\n";
-		changeId += "	children[i].id = '" + containerId + "_list_'+i\n";
+		changeId += "for(var i=0; children.length > i ; i++){\n";
+		changeId += "	children[i].id = '" + containerId + "_" + "list" + "_'+i\n";   //FIXME : replace List it is not very Generic
 		changeId += "}";
 		return changeId;
 		
