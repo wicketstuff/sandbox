@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>Wicket Examples - Yahoo UI library, Slider</title>
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+</head>
+<body>
+    <span wicket:id="mainNavigation"/>
+
+<br/>
+<br/>
+	<form wicket:id ="sliderForm">
+		<table border="0" cellpadding="4" cellspacing="4" style="width:600px;">
+			<tr>
+				<td>
+					Wicket is easy ...
+				</td>
+				<td>
+					<div wicket:id="wicketSlider"></div>
+				</td>
+				<td>
+					<input type="text" wicket:id="wicketScore" size="5"/>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					Struts is easy ...
+				</td>
+				<td>
+					<div wicket:id="strutsSlider"></div>
+				</td>
+				<td>
+					<input type="text" wicket:id="strutsScore" size="5"/>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="3" style="text-align:right;">
+					<input type="submit" value="vote!">
+				</td>
+			</tr>
+		</table>
+	</form>
+		<div wicket:id="feedback" >
+	</div>
+</body>
+</html>
