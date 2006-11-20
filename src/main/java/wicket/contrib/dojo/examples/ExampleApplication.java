@@ -4,6 +4,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import wicket.ISessionFactory;
+import wicket.Request;
 import wicket.Session;
 import wicket.protocol.http.WebApplication;
 
@@ -32,7 +33,7 @@ public class ExampleApplication extends WebApplication {
 	 */
 	public ISessionFactory getSessionFactory() {
 		return new ISessionFactory() {
-			public Session newSession() {
+			public Session newSession(Request request) {
 				return new ExampleSession(ExampleApplication.this);
 			}
 		};
