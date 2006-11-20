@@ -1,9 +1,6 @@
 package wicket.contrib.dojo;
 
-import wicket.ResourceReference;
 import wicket.ajax.AbstractAjaxTimerBehavior;
-import wicket.ajax.AjaxRequestTarget;
-import wicket.markup.html.IHeaderResponse;
 import wicket.util.time.Duration;
 
 /**

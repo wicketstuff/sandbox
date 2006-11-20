@@ -39,7 +39,7 @@ public abstract class DojoOrderableListView extends ListView
 	}
 	
 	public String generateId(){
-		return container.getMarkupId()+ "_" + getId() + "_" + (pos++);
+		return container.getMarkupId()+ "_list_" + (pos++);
 		
 	}
 
@@ -78,7 +78,7 @@ public abstract class DojoOrderableListView extends ListView
 		toReturn += "<script language=\"JavaScript\" type=\"text/javascript\">\n";
 		toReturn += "function initDrag" + id + "(){\n";
 		toReturn += "	var children = document.getElementById('" + container.getMarkupId() + "').getElementsByTagName('div');\n";
-		toReturn += "	for(var i=0; i < children.length; i++){\n";
+		toReturn += "	for(var i=0;  children.length > i ; i++){\n";
 		toReturn += "		var drag = new dojo.dnd.HtmlDragSource(children[i], children[i].id);\n";
 		toReturn += "	}\n";
 		toReturn += "}\n";

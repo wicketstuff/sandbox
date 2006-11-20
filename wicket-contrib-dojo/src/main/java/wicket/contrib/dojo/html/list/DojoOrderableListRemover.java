@@ -1,7 +1,10 @@
 package wicket.contrib.dojo.html.list;
 
+import java.util.Iterator;
+
 import wicket.MarkupContainer;
 import wicket.WicketRuntimeException;
+import wicket.ajax.AjaxEventBehavior;
 import wicket.ajax.AjaxRequestTarget;
 import wicket.ajax.markup.html.AjaxLink;
 import wicket.markup.html.list.ListItem;
@@ -31,18 +34,17 @@ public class DojoOrderableListRemover extends AjaxLink{
 		if (beforeRemoving()){
 			DojoOrderableListView parent = ((DojoOrderableListView)this.item.getParent());
 			DojoOrderableListViewContainer granParent = (DojoOrderableListViewContainer)parent.getParent();
-			parent.getList().remove(this.item.getIndex());
-			String removeId = granParent.getMarkupId() + "_" + parent.getId() + "_" + this.item.getIndex();
-			String remove = "";
-			remove += "document.getElementById('" + removeId + "').parentNode.removeChild(document.getElementById('" + removeId + "'))";
-			target.appendJavascript(remove);
+			parent.getList().remove(parent.getList().indexOf(this.item.getModelObject()));
+			parent.modelChanged();
+			
+			target.addComponent(granParent);
 			onRemove(target);
 		}
 		else {
 			onNotRemove(target);
 		}
 	}
-
+	
 	private void check(){
 		if (! (item.getParent() instanceof DojoOrderableListView)){
 			throw new WicketRuntimeException("Parent of item should be a DojoOrderableListView");
