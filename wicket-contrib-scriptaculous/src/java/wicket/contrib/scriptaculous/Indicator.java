@@ -26,17 +26,17 @@ import wicket.markup.html.panel.Panel;
  */
 public class Indicator extends Panel {
 
-        private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-        /**
-         * 
-         * Construct.
-         */
-        public Indicator() {
-                super("indicator");
+	/**
+	 * 
+	 * Construct.
+	 */
+	public Indicator() {
+		super("indicator");
 
-                add(new Image("indicatorImage", "indicator.gif"));
-                add(new Label("indicatorLabel", "Processing..."));
-        }
+		add(new Image("indicatorImage", "indicator.gif"));
+		add(new Label("indicatorLabel", "Processing..."));
+	}
 
 }

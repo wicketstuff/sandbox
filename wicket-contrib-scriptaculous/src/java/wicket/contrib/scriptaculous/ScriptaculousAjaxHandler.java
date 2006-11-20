@@ -18,12 +18,10 @@
  */
 package wicket.contrib.scriptaculous;
 
-import wicket.Application;
-import wicket.Component;
-import wicket.IInitializer;
-import wicket.Response;
-import wicket.markup.html.PackageResource;
-import wicket.markup.html.PackageResourceReference;
+import wicket.RequestCycle;
+import wicket.ResourceReference;
+import wicket.behavior.AbstractAjaxBehavior;
+import wicket.markup.html.IHeaderResponse;
 import wicket.util.resource.IResourceStream;
 
 /**
@@ -36,52 +34,49 @@ import wicket.util.resource.IResourceStream;
  * 
  * @see <a href="http://script.aculo.us/">script.aculo.us</a>
  */
-public abstract class ScriptaculousAjaxHandler extends AjaxHandler {
+public abstract class ScriptaculousAjaxHandler extends AbstractAjaxBehavior {
 
-        public static ScriptaculousAjaxHandler newJavascriptBindingHandler() {
-                return new ScriptaculousAjaxHandler() {
+	public static ScriptaculousAjaxHandler newJavascriptBindingHandler() {
+		return new ScriptaculousAjaxHandler() {
 
-                        private static final long serialVersionUID = 1L;
+			private static final long serialVersionUID = 1L;
 
-                        /**
-                         * @see wicket.contrib.scriptaculous.AjaxHandler#getResponse()
-                         */
-                        protected IResourceStream getResponse() {
-                                return null;
-                        }
+			protected IResourceStream getResponse() {
+				return null;
+			}
+		};
+	}
 
-                        /**
-                         * @see wicket.behavior.IBehavior#onException(Component,
-                         *      RuntimeException)
-                         */
-                        public void onException(Component component,
-                                        RuntimeException exception) {
-                        }
+	/**
+	 * @see wicket.behavior.IBehaviorListener#onRequest()
+	 */
+	public void onRequest() {
+		IResourceStream response = getResponse();
+		if (response != null) {
+			boolean isPageVersioned = true;
+			try {
+				isPageVersioned = getComponent().getPage().isVersioned();
+				getComponent().getPage().setVersioned(false);
 
-                };
-        }
+				ScriptaculousRequestTarget target = new ScriptaculousRequestTarget(
+						response);
+				RequestCycle.get().setRequestTarget(target);
+			} finally {
+				getComponent().getPage().setVersioned(isPageVersioned);
+			}
+		}
+	}
 
-        /**
-         * Let this handler print out the needed header contributions.
-         * 
-         * @param container
-         */
-        protected void renderHeadInitContribution(Response r) {
-                // add our basic javascript needs to the header
-                Application application = Application.get();
-                addJsReference(r, new PackageResourceReference(application,
-                                ScriptaculousAjaxHandler.class, "prototype.js"));
-                addJsReference(r, new PackageResourceReference(application,
-                                ScriptaculousAjaxHandler.class,
-                                "scriptaculous.js"));
-                addJsReference(r, new PackageResourceReference(application,
-                                ScriptaculousAjaxHandler.class, "behavior.js"));
-        }
+	protected abstract IResourceStream getResponse();
 
-        /**
-         * @see AjaxHandler#getImplementationId()
-         */
-        protected final String getImplementationId() {
-                return "ScriptaculousImpl";
-        }
+	@Override
+	public void renderHead(IHeaderResponse response) {
+		super.renderHead(response);
+		response.renderJavascriptReference(new ResourceReference(
+				ScriptaculousAjaxHandler.class, "prototype.js"));
+		response.renderJavascriptReference(new ResourceReference(
+				ScriptaculousAjaxHandler.class, "scriptaculous.js"));
+		response.renderJavascriptReference(new ResourceReference(
+				ScriptaculousAjaxHandler.class, "scriptaculous.js"));
+	}
 }
