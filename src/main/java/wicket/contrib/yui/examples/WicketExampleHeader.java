@@ -17,7 +17,6 @@
  */
 package wicket.contrib.yui.examples;
 
-import wicket.examples.debug.InspectorBug;
 import wicket.markup.html.WebPage;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.panel.Panel;
@@ -40,7 +39,6 @@ public final class WicketExampleHeader extends Panel {
 	 */
 	public WicketExampleHeader(String id, String exampleTitle, WebPage page) {
 		super(id);
-		add(new InspectorBug("inspector", page));
 		add(new Label("exampleTitle", exampleTitle));
 	}
 }
