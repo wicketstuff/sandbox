@@ -6,10 +6,11 @@ import java.util.Map;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 
-import wicket.Response;
+import wicket.Component;
 import wicket.WicketRuntimeException;
 import wicket.behavior.AbstractBehavior;
 import wicket.markup.html.IHeaderContributor;
+import wicket.markup.html.IHeaderResponse;
 import wicket.model.IDetachable;
 import wicket.model.IModel;
 import wicket.util.string.Strings;
@@ -34,11 +35,18 @@ public class VelocityContributor extends AbstractBehavior implements IHeaderCont
 
 	private String encoding = "ISO-8859-1";
 
+	/**
+	 * @return The encoding
+	 */
 	public String getEncoding()
 	{
 		return encoding;
 	}
 
+	/**
+	 * @param encoding
+	 *            The encoding
+	 */
 	public void setEncoding(String encoding)
 	{
 		this.encoding = encoding;
@@ -102,16 +110,22 @@ public class VelocityContributor extends AbstractBehavior implements IHeaderCont
 		}
 	}
 
-	public void renderHead(Response response)
+	/**
+	 * @see wicket.markup.html.IHeaderContributor#renderHead(wicket.markup.html.IHeaderResponse)
+	 */
+	public void renderHead(IHeaderResponse response)
 	{
 		String s = evaluate();
 		if (null != s)
 		{
-			response.println(s);
+			response.renderString(s);
 		}
 	}
 
-	public void detachModel()
+	/**
+	 * @see wicket.behavior.AbstractBehavior#detachModel(wicket.Component)
+	 */
+	public void detachModel(Component c)
 	{
 		if (model instanceof IDetachable)
 		{
@@ -119,5 +133,4 @@ public class VelocityContributor extends AbstractBehavior implements IHeaderCont
 
 		}
 	}
-
 }

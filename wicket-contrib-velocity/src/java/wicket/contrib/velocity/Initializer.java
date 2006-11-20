@@ -20,47 +20,48 @@ import wicket.util.lang.Packages;
 import wicket.util.resource.IResourceStream;
 import wicket.util.resource.locator.ClassLoaderResourceStreamLocator;
 
-
 /**
- * An implementation of {@link wicket.IInitializer} for the Velocity Runtime Singleton.
- * If Application is an instance of WebApplication, Initializer will retrieve
- * "velocityPropertiesFolder" as an initparam to point to the directory the properties
- * file lives in, and "velocity.properties" for the name of the properties file. If the params
- * don't exist, then velocity.properties next to this class will be loaded. 
- *
+ * An implementation of {@link wicket.IInitializer} for the Velocity Runtime
+ * Singleton. If Application is an instance of WebApplication, Initializer will
+ * retrieve "velocityPropertiesFolder" as an initparam to point to the directory
+ * the properties file lives in, and "velocity.properties" for the name of the
+ * properties file. If the params don't exist, then velocity.properties next to
+ * this class will be loaded.
+ * 
  */
 public class Initializer implements IInitializer
 {
 	private static final Log log = LogFactory.getLog(Initializer.class);
 
 	private String velocityPropertiesFolder;
-	
+
 	private String velocityPropertiesFile = "velocity.properties";
-	
-	private Properties getVelocityProperties (Application application) 
+
+	private Properties getVelocityProperties(Application application)
 	{
 		if (application instanceof WebApplication)
 		{
 			return getVelocityProperties((WebApplication) application);
 		}
-		else 
+		else
 		{
 			return getVelocityProperties();
 		}
 	}
-	
-	private Properties getVelocityProperties(WebApplication webapp) 
+
+	private Properties getVelocityProperties(WebApplication webapp)
 	{
 		ServletContext sc = webapp.getWicketServlet().getServletContext();
 		velocityPropertiesFolder = sc.getInitParameter("velocityPropertiesFolder");
-		String propsFile = webapp.getWicketServlet().getServletContext().getInitParameter("velocity.properties");
-		
-		if(null != propsFile) 
+		String propsFile = webapp.getWicketServlet().getServletContext()
+				.getInitParameter("velocity.properties");
+
+		if (null != propsFile)
 		{
 			velocityPropertiesFile = propsFile;
 		}
-		
-		if(null != velocityPropertiesFolder) 
+
+		if (null != velocityPropertiesFolder)
 		{
 			WebApplicationPath webPath = new WebApplicationPath(sc);
 			webPath.add(velocityPropertiesFolder);
@@ -68,7 +69,7 @@ public class Initializer implements IInitializer
 			try
 			{
 				InputStream is = url.openStream();
-				Properties props = new Properties ();
+				Properties props = new Properties();
 				props.load(is);
 				return props;
 			}
@@ -76,8 +77,8 @@ public class Initializer implements IInitializer
 			{
 				throw new WicketRuntimeException(e);
 			}
-		} 
-		else 
+		}
+		else
 		{
 			return getVelocityProperties();
 		}
@@ -86,9 +87,10 @@ public class Initializer implements IInitializer
 	private Properties getVelocityProperties()
 	{
 		ClassLoaderResourceStreamLocator clrsr = new ClassLoaderResourceStreamLocator();
-		String absolutePath = Packages.absolutePath(Initializer.class, velocityPropertiesFile);
+		String absolutePath = Packages.absolutePath(Initializer.class,
+				velocityPropertiesFile);
 		IResourceStream irs = clrsr.locate(Initializer.class, absolutePath);
-		
+
 		try
 		{
 			InputStream is = irs.getInputStream();
@@ -102,15 +104,21 @@ public class Initializer implements IInitializer
 		}
 	}
 
+	/**
+	 * @see wicket.IInitializer#init(wicket.Application)
+	 */
 	public void init(Application application)
 	{
 		Properties props = getVelocityProperties(application);
 
 		try
 		{
-			if(null != props) {
+			if (null != props)
+			{
 				Velocity.init(props);
-			} else {
+			}
+			else
+			{
 				Velocity.init();
 			}
 			log.info("Initialized Velocity successfully");
