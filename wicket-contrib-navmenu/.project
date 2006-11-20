@@ -1,0 +1,14 @@
+<projectDescription>
+  <name>wicket-contrib-navmenu</name>
+  <comment>Implementation of a tree based navigation menu for Wicket. Mainly serves as an example, though it is useable for many cases.</comment>
+  <projects/>
+  <buildSpec>
+    <buildCommand>
+      <name>org.eclipse.jdt.core.javabuilder</name>
+      <arguments/>
+    </buildCommand>
+  </buildSpec>
+  <natures>
+    <nature>org.eclipse.jdt.core.javanature</nature>
+  </natures>
+</projectDescription>

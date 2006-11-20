@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project>
+  <groupId>wicket-stuff</groupId>
+  <id>wicket-contrib-navmenu</id>
+  <currentVersion>1.2-SNAPSHOT</currentVersion>
+  <package>wicket.contrib.markup.html.navmenu</package>
+  <inceptionYear>2005</inceptionYear>
+  <description>Navigation menu for web framework Wicket.</description>
+  <shortDescription>Navigation menu for web framework Wicket.</shortDescription>
+  <versions>
+  </versions>
+  <dependencies>
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+      <version>1.0.4</version>
+      <properties>
+        <war.bundle>true</war.bundle>
+      </properties>
+    </dependency>
+	<dependency>
+		<groupId>servletapi</groupId>
+		<artifactId>servletapi</artifactId>
+		<version>2.3</version>
+		<properties>
+			<war.bundle>false</war.bundle>
+		</properties>
+	</dependency>
+    <dependency>
+      <groupId>wicket</groupId>
+      <artifactId>wicket</artifactId>
+      <version>1.2-SNAPSHOT</version>
+      <properties>
+        <eclipse.dependency>true</eclipse.dependency>
+        <war.bundle>true</war.bundle>
+      </properties>
+    </dependency>
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <version>1.2.8</version>
+      <properties>
+        <war.bundle>true</war.bundle>
+      </properties>
+    </dependency>
+  </dependencies>
+  <build>
+    <sourceDirectory>src/java</sourceDirectory>
+    <resources>
+      <resource>
+        <directory>src/java</directory>
+        <includes>
+          <include>**</include>
+        </includes>
+        <excludes>
+          <exclude>**/*.java</exclude>
+        </excludes>
+      </resource>
+    </resources>
+  </build>
+  <properties/>
+</project>
