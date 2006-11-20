@@ -1,0 +1,57 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+        <modelVersion>4.0.0</modelVersion>
+  <groupId>wicket-stuff</groupId>
+  <artifactId>wicket-contrib-data</artifactId>
+  <name>Wicket Contrib Data</name>
+  <version>1.2-SNAPSHOT</version>
+  <inceptionYear>2004</inceptionYear>
+
+  <developers>
+    <developer>
+      <name>Eelco Hillenius</name>
+      <id>eelco12</id>
+      <email>eelco12 at users.sourceforge.net</email>
+    </developer>
+  </developers>
+
+        <scm>
+                <connection>scm:svn:https://svn.sourceforge.net/svnroot/wicket-stuff/trunk/wicket-contrib-data</connection>
+                <developerConnection>scm:svn:https://svn.sourceforge.net/svnroot/wicket-stuff/trunk/wicket-contrib-data</developerConnection>
+                <url>http://svn.sourceforge.net/viewcvs.py/wicket-stuff/trunk/wicket-contrib-data</url>
+        </scm>
+
+
+  <contributors>
+  </contributors>
+
+  <dependencies>
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+      <version>1.0.4</version>
+     </dependency>
+    <dependency>
+      <groupId>wicket</groupId>
+      <artifactId>wicket</artifactId>
+      <version>1.2-SNAPSHOT</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <sourceDirectory>src/java</sourceDirectory>
+    <resources>
+      <resource>
+        <directory>src/java</directory>
+        <includes>
+          <include>**</include>
+        </includes>
+        <excludes>
+          <exclude>**/*.java</exclude>
+        </excludes>
+        <filtering>false</filtering>
+      </resource>
+    </resources>
+  </build>
+  <properties/>
+</project>
