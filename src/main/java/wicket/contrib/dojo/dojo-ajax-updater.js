@@ -59,7 +59,16 @@ function dojoUpdater(componentUrl, onStart, onSuccess, onFailure, loadingId){
 	};
 	
 	function updateScripts(/** node */ ajaxRequest) {
-		//TODO
+		var evaluate = dojo.dom.firstElement(ajaxRequest, "evaluate");
+		while (evaluate != null){
+			//get content...
+		 	currentContent = dojo.dom.innerXML(evaluate.firstChild);
+		 	//...and remove CDATA
+		 	currentContent = currentContent.substring(9, currentContent.length - 3);
+			currentContent = currentContent.replace("^", "");
+			dj_eval(currentContent);
+			evaluate = dojo.dom.nextElement(evaluate, "evaluate");
+		}
 	};
 	
 	
