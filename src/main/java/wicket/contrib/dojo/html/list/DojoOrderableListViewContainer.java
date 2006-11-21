@@ -21,6 +21,7 @@ public class DojoOrderableListViewContainer extends DojoDropContainer
 	public DojoOrderableListViewContainer(MarkupContainer parent, String id)
 	{
 		super(parent, id);
+		setDropPattern(this.getMarkupId());
 	}
 
 

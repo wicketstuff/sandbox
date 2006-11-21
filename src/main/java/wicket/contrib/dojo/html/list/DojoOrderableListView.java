@@ -24,18 +24,21 @@ public abstract class DojoOrderableListView extends ListView
 	{
 		super(parent, id, model);
 		container = parent;
+		dragId = container.getMarkupId();
 	}
 
 	public DojoOrderableListView(DojoOrderableListViewContainer parent, String id, List list)
 	{
 		super(parent, id, list);
 		container = parent;
+		dragId = container.getMarkupId();
 	}
 
 	public DojoOrderableListView(DojoOrderableListViewContainer parent, String id)
 	{
 		super(parent, id);
 		container = parent;
+		dragId = container.getMarkupId();
 	}
 	
 	public String generateId(){
@@ -54,7 +57,6 @@ public abstract class DojoOrderableListView extends ListView
 	{
 		String id = generateId();
 		item.add(new AttributeAppender("id", true, new Model<String>(id),""));
-		dragId = "*";
 		super.renderItem(item);
 	}
 
@@ -79,7 +81,7 @@ public abstract class DojoOrderableListView extends ListView
 		toReturn += "function initDrag" + id + "(){\n";
 		toReturn += "	var children = document.getElementById('" + container.getMarkupId() + "').getElementsByTagName('div');\n";
 		toReturn += "	for(var i=0;  children.length > i ; i++){\n";
-		toReturn += "		var drag = new dojo.dnd.HtmlDragSource(children[i], children[i].id);\n";
+		toReturn += "		var drag = new dojo.dnd.HtmlDragSource(children[i], ['" + dragId + "']);\n";
 		toReturn += "	}\n";
 		toReturn += "}\n";
 		toReturn += "dojo.event.connect(dojo, \"loaded\", \"initDrag" + id + "\");\n";
