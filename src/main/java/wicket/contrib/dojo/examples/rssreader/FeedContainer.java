@@ -59,8 +59,8 @@ public class FeedContainer extends WebMarkupContainer
 		
 		this.index = index;
 		this.dpanel = dpanel;
-		ajax = new DojoSelfUpdatingTimerBehavior(Duration.milliseconds(300000), "loading_node");
-		add(ajax);
+		//ajax = new DojoSelfUpdatingTimerBehavior(Duration.milliseconds(300000), "loading_node");
+		//add(ajax);
 		boolean success = update();
 		
 		if(!success)
