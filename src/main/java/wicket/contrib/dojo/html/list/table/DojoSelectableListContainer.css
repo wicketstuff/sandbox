@@ -1,0 +1,61 @@
+table {
+	font-family:Lucida Grande, Verdana;
+	font-size:0.8em;
+	width:100%;
+	border:1px solid #ccc;
+	cursor:default;
+}
+
+* html div.tableContainer {	/* IE only hack */
+	width:95%;
+	border:1px solid #ccc;
+	height: 285px;
+	overflow-x:hidden;
+	overflow-y: auto;
+}
+
+table td,
+table th{
+	border-right:1px solid #999;
+	padding:2px;
+	font-weight:normal;
+}
+table thead td, table thead th {
+	background:#94BEFF;
+}
+
+* html div.tableContainer table thead tr td,
+* html div.tableContainer table thead tr th{
+	/* IE Only hacks */
+	position:relative;
+	top:expression(dojo.html.getFirstAncestorByTag(this,'table').parentNode.scrollTop-2);
+}
+
+html>body tbody.scrollContent {
+	height: 262px;
+	overflow-x:hidden;
+	overflow-y: auto;
+}
+
+tbody.scrollContent td, tbody.scrollContent tr td {
+	background: #FFF;
+	padding: 2px;
+}
+
+tbody.scrollContent tr.alternateRow td {
+	background: #e3edfa;
+	padding: 2px;
+}
+
+tbody.scrollContent tr.selected td {
+	background: yellow;
+	padding: 2px;
+}
+tbody.scrollContent tr:hover td {
+	background: #a6c2e7;
+	padding: 2px;
+}
+tbody.scrollContent tr.selected:hover td {
+	background: #ff3;
+	padding: 2px;
+}
