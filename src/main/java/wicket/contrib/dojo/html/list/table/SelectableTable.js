@@ -10,6 +10,8 @@ dojo.require("dojo.event.*");
 dojo.require("dojo.widget.*");
 dojo.require("dojo.widget.HtmlWidget");
 
+var pos = 0;
+
 dojo.widget.defineWidget(
 	"dojo.widget.SelectableTable",
 	dojo.widget.HtmlWidget,
@@ -145,6 +147,7 @@ dojo.widget.defineWidget(
 			if(dojo.html.hasAttribute(row,"value")){
 				o[this.valueField]=dojo.html.getAttribute(row,"value");
 			}
+			o.id = row.getAttribute("pos");
 			return o;	//	object
 		},
 		setSelectionByRow:function(/* HTMLTableElementRow */ row){
@@ -374,6 +377,7 @@ dojo.widget.defineWidget(
 			while(body.childNodes.length>0) body.removeChild(body.childNodes[0]);
 			for(var i=0; i<data.length;i++){
 				var row=document.createElement("tr");
+				row.setAttribute("pos", "pos" + pos++);
 				dojo.html.disableSelection(row);
 				if (data[i][this.valueField]){
 					row.setAttribute("value",data[i][this.valueField]);
