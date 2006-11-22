@@ -193,24 +193,24 @@ public class FXOnClickFader extends DojoFXHandler
 		// set the correct dojo functions for the type of fader
 		if (type == "fadeHide")
 		{
-			fadeInFunction = "dojo.fx.html.fadeShow(node, duration, function(){" + HTMLID
+			fadeInFunction = "dojo.lfx.html.fadeShow(node.id, duration, null, function(){" + HTMLID
 					+ "_faderState='fadedIn';})";
-			fadeOutFunction = "dojo.fx.html.fadeHide(node, duration, function(){" + HTMLID
+			fadeOutFunction = "dojo.lfx.html.fadeHide(node.id, duration, null, function(){" + HTMLID
 					+ "_faderState='fadedOut';})";
 		}
 		else if (type == "fadeOpac")
 		{
-			fadeInFunction = "dojo.fx.html.fade(node, duration," + startOpac + "," + endOpac
-					+ ", function(){" + HTMLID + "_faderState='fadedIn';});";
-			fadeOutFunction = "dojo.fx.html.fade(node, duration," + endOpac + "," + startOpac
-					+ ", function(){" + HTMLID + "_faderState='fadedOut';});";
+			fadeInFunction = "dojo.lfx.html.fade(node.id, duration,{start:" + startOpac + ",end:" + endOpac
+					+ "},null, function(){" + HTMLID + "_faderState='fadedIn';}).play();";
+			fadeOutFunction = "dojo.lfx.html.fade(node.id, duration,{start:" + endOpac + ",end:" + startOpac
+					+ "},null, function(){" + HTMLID + "_faderState='fadedOut';}).play();";
 		}
 		else
 		{
-			fadeInFunction = "dojo.fx.html.fadeIn(node, duration, function(){" + HTMLID
-					+ "_faderState='fadedIn';})";
-			fadeOutFunction = "dojo.fx.html.fadeOut(node, duration, function(){" + HTMLID
-					+ "_faderState='fadedOut'});";
+			fadeInFunction = "dojo.lfx.html.fadeIn(node.id, duration, null, function(){" + HTMLID
+					+ "_faderState='fadedIn';}).play()";
+			fadeOutFunction = "dojo.lfx.html.fadeOut(node.id, duration, null, function(){" + HTMLID
+					+ "_faderState='fadedOut'}).play();";
 		}
 
 		// set the correct state for the startDisplay value

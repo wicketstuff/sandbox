@@ -191,7 +191,7 @@ public class FXOnMouseOverFader extends DojoFXHandler
 		String fadeInFunction;
 		String fadeOutFunction;
 
-		// check for type, and call dojo.fx.html so that:
+		// check for type, and call dojo.lfx.html so that:
 		// it fades node over duration (from startOpac to endOpac) and with
 		// callback.
 		// callback sets the right state variable to the present state and
@@ -200,30 +200,30 @@ public class FXOnMouseOverFader extends DojoFXHandler
 		// thouroughly stress-tested.
 		if (type == "fadeHide")
 		{
-			fadeInFunction = "dojo.fx.html.fadeShow(node, duration, function(){" + HTMLID
+			fadeInFunction = "dojo.lfx.html.fadeShow(node, duration, function(){" + HTMLID
 					+ "_faderState='fadedIn';if(" + HTMLID + "_mouseover=="
 					+ (startDisplay ? 1 : 0) + "){" + HTMLID + "_fade(id, duration);}})";
-			fadeOutFunction = "dojo.fx.html.fadeHide(node, duration, function(){" + HTMLID
+			fadeOutFunction = "dojo.lfx.html.fadeHide(node, duration, function(){" + HTMLID
 					+ "_faderState='fadedOut';if(" + HTMLID + "_mouseover=="
 					+ (startDisplay ? 0 : 1) + "){" + HTMLID + "_fade(id, duration);}})";
 		}
 		else if (type == "fadeOpac")
 		{
-			fadeInFunction = "dojo.fx.html.fade(node, duration," + startOpac + "," + endOpac
+			fadeInFunction = "dojo.lfx.html.fade(node, duration," + startOpac + "," + endOpac
 					+ ", function(){" + HTMLID + "_faderState='fadedIn';if(" + HTMLID
 					+ "_mouseover==" + (startDisplay ? 1 : 0) + "){" + HTMLID
 					+ "_fade(id, duration);}});";
-			fadeOutFunction = "dojo.fx.html.fade(node, duration," + endOpac + "," + startOpac
+			fadeOutFunction = "dojo.lfx.html.fade(node, duration," + endOpac + "," + startOpac
 					+ ", function(){" + HTMLID + "_faderState='fadedOut';if(" + HTMLID
 					+ "_mouseover==" + (startDisplay ? 0 : 1) + "){" + HTMLID
 					+ "_fade(id, duration);}});";
 		}
 		else
 		{
-			fadeInFunction = "dojo.fx.html.fadeIn(node, duration, function(){" + HTMLID
+			fadeInFunction = "dojo.lfx.html.fadeIn(node, duration, function(){" + HTMLID
 					+ "_faderState='fadedIn';if(" + HTMLID + "_mouseover=="
 					+ (startDisplay ? 1 : 0) + "){" + HTMLID + "_fade(id, duration);}})";
-			fadeOutFunction = "dojo.fx.html.fadeOut(node, duration, function(){" + HTMLID
+			fadeOutFunction = "dojo.lfx.html.fadeOut(node, duration, function(){" + HTMLID
 					+ "_faderState='fadedOut';if(" + HTMLID + "_mouseover=="
 					+ (startDisplay ? 0 : 1) + "){" + HTMLID + "_fade(id, duration);}});";
 		}
