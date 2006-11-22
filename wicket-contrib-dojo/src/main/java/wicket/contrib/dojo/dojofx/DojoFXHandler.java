@@ -96,7 +96,7 @@ public abstract class DojoFXHandler extends AbstractRequireDojoBehavior
 	@Override
 	public void setRequire(RequireDojoLibs libs)
 	{
-		libs.add("dojo.fx.*");
+		libs.add("dojo.lfx.*");
 	}
 
 	/**

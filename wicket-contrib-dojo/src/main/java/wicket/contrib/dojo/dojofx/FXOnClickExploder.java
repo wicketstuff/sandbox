@@ -124,27 +124,27 @@ public class FXOnClickExploder extends DojoFXHandler
 		{
 			String coords = "[" + box.getX() + ", " + box.getY() + ", " + box.getWidth() + ", "
 					+ box.getHeight() + "]";
-			functionEx = "dojo.fx.html.explodeFromBox(" + coords + ", end, duration, function(){"
-					+ componentId + "_exploderstate=\"exploded\";});";
-			functionIm = "dojo.fx.html.implodeToBox(end, " + coords + ", duration, function(){"
-					+ componentId + "_exploderstate=\"imploded\";});";
+			functionEx = "dojo.lfx.html.explodeFromBox(" + coords + ", end.id, duration,null, function(){"
+					+ componentId + "_exploderstate=\"exploded\";}).play();";
+			functionIm = "dojo.lfx.html.implodeToBox(end.id, " + coords + ", duration,null, function(){"
+					+ componentId + "_exploderstate=\"imploded\";}).play();";
 
 		}
 		else if (from != null)
 		{
-			functionEx = "dojo.fx.html.explode(document.getElementById('" + from.getId()
-					+ "'), end, duration, function(){" + componentId
-					+ "_exploderstate=\"exploded\";});";
-			functionIm = "dojo.fx.html.implode(end, document.getElementById('" + from.getId()
-					+ "'), duration, function(){" + componentId + "_exploderstate=\"imploded\";});";
+			functionEx = "dojo.lfx.explode(document.getElementById('" + from.getId()
+					+ "'), end, duration, null, function(){" + componentId
+					+ "_exploderstate=\"exploded\";}).play();";
+			functionIm = "dojo.lfx.implode(end, document.getElementById('" + from.getId()
+					+ "'), duration, null, function(){" + componentId + "_exploderstate=\"imploded\";}).play();";
 		}
 		else
 		{
 
-			functionEx = "dojo.fx.html.explode(start, end, duration, function(){" + componentId
-					+ "_exploderstate=\"exploded\";});";
-			functionIm = "dojo.fx.html.implode(end, start, duration, function(){" + componentId
-					+ "_exploderstate=\"imploded\";});";
+			functionEx = "dojo.lfx.explode(start, end, duration, null, function(){" + componentId
+					+ "_exploderstate=\"exploded\";}).play();";
+			functionIm = "dojo.lfx.implode(end, start, duration, null, function(){" + componentId
+					+ "_exploderstate=\"imploded\";}).play();";
 
 
 		}

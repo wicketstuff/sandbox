@@ -98,14 +98,14 @@ public class FXOnClickSlider extends DojoFXHandler
 		{
 			this.getTrigger().add(
 					new AppendAttributeModifier(getEventName(), true, new Model(
-							"dojo.fx.html.slideBy(document.getElementById('" + HTMLID + "'), [" + x
+							"dojo.lfx.html.slideBy(document.getElementById('" + HTMLID + "'), [" + x
 									+ ", " + y + "]," + getDuration() + ")")));
 		}
 		else if (type == "fromto")
 		{
 			this.getTrigger().add(
 					new AppendAttributeModifier(getEventName(), true, new Model(
-							"dojo.fx.html.slide(document.getElementById('" + HTMLID + "'), ["
+							"dojo.lfx.html.slide(document.getElementById('" + HTMLID + "'), ["
 									+ fromx + ", " + fromy + "], [" + x + ", " + y + "],"
 									+ getDuration() + ")")));
 		}
@@ -114,7 +114,7 @@ public class FXOnClickSlider extends DojoFXHandler
 		{
 			this.getTrigger().add(
 					new AppendAttributeModifier(getEventName(), true, new Model(
-							"dojo.fx.html.slideTo(document.getElementById('" + HTMLID + "'), [" + x
+							"dojo.lfx.html.slideTo(document.getElementById('" + HTMLID + "'), [" + x
 									+ ", " + y + "]," + getDuration() + ")")));
 		}
 

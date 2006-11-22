@@ -26,13 +26,13 @@ import wicket.model.Model;
 
 /**
  * This classacts as an AjaxHandler an can be added to components. It adds a
- * Dojo.fx.html wiper to the class which reactes to a target component's ONCLICK
+ * dojo.lfx.html wiper to the class which reactes to a target component's ONCLICK
  * method.
  * 
  * TODO: We wanted to make a generic wiper that could also react to
  * ONMOUSEOVER/ONMOUSEOUT but the current dojoimplementation made our version
  * very unstable. If you want to help with this, or hear the problems we ran
- * into please give a yell on the mailing list. TODO: Dojo.fx.html currently
+ * into please give a yell on the mailing list. TODO: dojo.lfx.html currently
  * only supports top-down wiping, so down-top wiping and horizontal wiping is
  * currently not supported. We have however, requested this on the Dojo
  * animation wishlist. TODO: streamlining javascript handling: see
@@ -117,15 +117,15 @@ public class FXOnClickWiper extends DojoFXHandler
 		}
 
 		s = s + "\t" + getHTMLID() + "_wiping = 0; \n" + "\tfunction " + getHTMLID()
-				+ "_wipe(id, duration) { \n" + "\t\tif(" + getHTMLID() + "_wiping==0){\n"
+				+ "_wipe(id, duration) {\n" + "\t\tif(" + getHTMLID() + "_wiping==0){\n"
 				+ "\t\t\tnode = document.getElementById(id);\n" + "\t\t\tif(" + getHTMLID()
-				+ "_wipedOut == 1) \n" + "\t\t\t{ \n" + "\t\t\t\t" + getHTMLID() + "_wiping = 1;\n"
+				+ "_wipedOut == 1) \n" + "\t\t\t{\n" + "\t\t\t\t" + getHTMLID() + "_wiping = 1;\n"
 				+ "\t\t\t\t" + getHTMLID() + "_wipedOut = 0;\n"
-				+ "\t\t\t\tdojo.fx.html.wipeIn(node, duration, function(){" + getHTMLID()
-				+ "_wiping=0; node.style.height='auto';});\n" + "\t\t\t} else {\n" + "\t\t\t\t"
+				+ "\t\t\t\tdojo.lfx.html.wipeIn(node.id, duration,null, function(){" + getHTMLID()
+				+ "_wiping=0; node.style.height='auto';}).play();\n" + "\t\t\t} else {\n" + "\t\t\t\t"
 				+ getHTMLID() + "_wiping = 1;\n" + "\t\t\t\t" + getHTMLID() + "_wipedOut = 1;\n"
-				+ "\t\t\t\tdojo.fx.html.wipeOut(node, duration, function(){" + getHTMLID()
-				+ "_wiping=0; node.style.height='auto';});\n" + "\t\t\t}\n" + "\t\t}\n" + "\t}\n"
+				+ "\t\t\t\tdojo.lfx.html.wipeOut(node.id, duration,null,  function(){" + getHTMLID()
+				+ "_wiping=0; node.style.height='auto';}).play();\n" + "\t\t\t}\n" + "\t\t}\n" + "\t}\n"
 				+ "\t</script>\n";
 
 

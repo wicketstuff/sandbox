@@ -148,7 +148,7 @@ public class FXOnMouseOverHighlighter extends DojoFXHandler
 		String highlightInFunction;
 		String highlightOutFunction;
 
-		// check for type, and call dojo.fx.html so that:
+		// check for type, and call dojo.lfx.html so that:
 		// it highlights node over duration (from startOpac to endOpac) and with
 		// callback.
 		// callback sets the right state variable to the present state and
@@ -157,22 +157,22 @@ public class FXOnMouseOverHighlighter extends DojoFXHandler
 		// thouroughly stress-tested.
 		if (type == "c2c")
 		{
-			highlightInFunction = "dojo.fx.html.colorFade(node, " + startColor.toString() + ","
+			highlightInFunction = "dojo.lfx.html.colorFade(node, " + startColor.toString() + ","
 					+ endColor.toString() + ", duration, function(){" + componentId
 					+ "_highlighterState='highlighted';if(" + componentId + "_mouseover == 0){"
 					+ componentId + "_highlight(id, duration);}});";
-			highlightOutFunction = "dojo.fx.html.colorFade(node, " + endColor.toString() + ","
+			highlightOutFunction = "dojo.lfx.html.colorFade(node, " + endColor.toString() + ","
 					+ startColor.toString() + ", duration, function(){" + componentId
 					+ "_highlighterState='unhighlighted';if(" + componentId + "_mouseover == 1){"
 					+ componentId + "_highlight(id, duration);}});";
 		}
 		else
 		{
-			highlightInFunction = "dojo.fx.html.colorFadeOut(node, " + endColor.toString()
+			highlightInFunction = "dojo.lfx.html.colorFadeOut(node, " + endColor.toString()
 					+ ", duration ,0,function(){" + componentId
 					+ "_highlighterState='highlighted';if(" + componentId + "_mouseover == 0){"
 					+ componentId + "_highlight(id, duration);}});";
-			highlightOutFunction = "dojo.fx.html.colorFadeOut(node, startbc, duration ,0,function(){"
+			highlightOutFunction = "dojo.lfx.html.colorFadeOut(node, startbc, duration ,0,function(){"
 					+ componentId
 					+ "_highlighterState='unhighlighted';if("
 					+ componentId
