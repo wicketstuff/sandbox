@@ -37,6 +37,7 @@ import wicket.util.resource.IResourceStream;
  * 
  * @see <a href="http://dojotoolkit.org/">Dojo</a>
  * @author Eelco Hillenius
+ * @deprecated will be remove in 2.0 use {@link AbstractDefaultDojoBehavior}
  */
 public abstract class DojoAjaxHandler extends AbstractAjaxBehavior implements IInitializer
 {

@@ -23,6 +23,7 @@ import wicket.util.resource.StringBufferResourceStream;
  * 
  * @author Ruud Booltink
  * @author Marco van de Haar
+ * @deprecated will be remove in 2.0
  * 
  */
 public class DojoAutoUpdateHandler extends DojoAjaxHandler
