@@ -4,15 +4,12 @@ package wicket.contrib.dojo.html.list.table;
 import java.util.List;
 
 import wicket.WicketRuntimeException;
-import wicket.markup.ComponentTag;
-import wicket.markup.MarkupStream;
-import wicket.markup.html.list.ListItem;
 import wicket.markup.html.list.ListView;
 import wicket.model.IModel;
 
 public abstract class DojoSelectableList extends  ListView
 {
-
+	
 	DojoSelectableListContainer container;
 	
 	public DojoSelectableList(String id, IModel model, DojoSelectableListContainer container)
@@ -54,18 +51,7 @@ public abstract class DojoSelectableList extends  ListView
 	private DojoSelectableListContainer getParentContainer(){
 		return this.container;
 	}
-
-	protected void onComponentTag(ComponentTag tag)
-	{
-		super.onComponentTag(tag);
-	}
-
-
-	protected void onComponentTagBody(MarkupStream markupStream, ComponentTag openTag)
-	{
-		// TODO Auto-generated method stub
-		super.onComponentTagBody(markupStream, openTag);
-	}
+	
 
 
 
