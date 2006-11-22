@@ -4,6 +4,7 @@ package wicket.contrib.dojo.autoupdate;
  * Interface for components which need to be compatible with  DojoAutoUpdatehandler. 
  * @author Ruud Booltink
  * @author Marco van de Haar
+ * @deprecated will be remove in 2.0
  */
 public interface IUpdatable
 {

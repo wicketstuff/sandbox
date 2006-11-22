@@ -1,12 +1,13 @@
 package wicket.contrib.markup.html.tooltip;
 
 import wicket.Component;
+import wicket.contrib.dojo.markup.html.tooltip.DojoTooltip;
 import wicket.markup.html.basic.Label;
 
 /**
  * @author Marco van de Haar
  * simple form of Tooltip.java which has a default markup, style and holds a Label.
- *
+ * @deprecated will be remove in 2.0 use {@link DojoTooltip}
  */
 public class SimpleTooltip extends TooltipPanel
 {

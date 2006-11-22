@@ -31,7 +31,7 @@ var dojo;
 if(dj_undef("dojo")){
 dojo={};
 }
-dojo.version={major:0,minor:2,patch:2,flag:"",revision:Number("$Rev: 2836 $".match(/[0-9]+/)[0]),toString:function(){
+dojo.version={major:0,minor:2,patch:2,flag:"",revision:Number("$Rev: 557 $".match(/[0-9]+/)[0]),toString:function(){
 with(dojo.version){
 return major+"."+minor+"."+patch+flag+" ("+revision+")";
 }

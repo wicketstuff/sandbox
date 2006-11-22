@@ -6,6 +6,7 @@ import java.util.StringTokenizer;
 import wicket.AttributeModifier;
 import wicket.Component;
 import wicket.ResourceReference;
+import wicket.contrib.dojo.markup.html.tooltip.DojoTooltip;
 import wicket.markup.html.internal.HtmlHeaderContainer;
 import wicket.markup.html.panel.Panel;
 import wicket.model.IModel;
@@ -35,6 +36,7 @@ import wicket.model.Model;
  * 2: Dynamic Tooltip</a>
  * 
  * @author Marco & Ruud
+ * @deprecated will be remove in 2.0 use {@link DojoTooltip}
  */
 
 public class TooltipPanel extends Panel

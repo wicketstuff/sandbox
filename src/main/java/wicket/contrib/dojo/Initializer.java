@@ -28,6 +28,7 @@ import wicket.util.resource.IResourceStream;
  * Initializer for components in wicket dojo library.
  * 
  * @author Eelco Hillenius
+ * @deprecated will be remove in 2.0
  */
 public class Initializer implements IInitializer
 {

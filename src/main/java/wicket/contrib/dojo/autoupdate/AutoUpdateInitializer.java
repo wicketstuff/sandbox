@@ -9,6 +9,7 @@ import wicket.markup.html.PackageResource;
  * 
  * @author Marco van de Haar
  * @author Ruud Booltink
+ * @deprecated will be remove in 2.0
  *
  */
 public class AutoUpdateInitializer implements IInitializer
