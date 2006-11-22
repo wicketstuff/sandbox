@@ -137,19 +137,19 @@ public class FXOnClickHighlighter extends DojoFXHandler
 		// set the correct dojo functions for the type of highlighter
 		if (type == "c2c")
 		{
-			highlightInFunction = "dojo.fx.html.colorFade(node, " + startColor.toString() + ","
+			highlightInFunction = "dojo.lfx.html.colorFade(node, " + startColor.toString() + ","
 					+ endColor.toString() + ", duration, function(){" + componentId
 					+ "_highlighterState='highlighted';});";
-			highlightOutFunction = "dojo.fx.html.colorFade(node, " + endColor.toString() + ","
+			highlightOutFunction = "dojo.lfx.html.colorFade(node, " + endColor.toString() + ","
 					+ startColor.toString() + ", duration, function(){" + componentId
 					+ "_highlighterState='unhighlighted';});";
 		}
 		else
 		{
-			highlightInFunction = "dojo.fx.html.colorFadeOut(node, " + endColor.toString()
+			highlightInFunction = "dojo.lfx.html.colorFadeOut(node, " + endColor.toString()
 					+ ", duration ,0,function(){" + componentId
 					+ "_highlighterState='highlighted';});";
-			highlightOutFunction = "dojo.fx.html.colorFadeOut(node, startbc, duration ,0,function(){"
+			highlightOutFunction = "dojo.lfx.html.colorFadeOut(node, startbc, duration ,0,function(){"
 					+ componentId + "_highlighterState='unhighlighted';});";
 		}
 
