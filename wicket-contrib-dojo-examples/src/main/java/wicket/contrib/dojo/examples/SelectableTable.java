@@ -37,7 +37,13 @@ public class SelectableTable extends WebPage {
 			objList.add("bar6");
 		}
 		DojoSelectableList list = null;
-		DojoSelectableListContainer container = new DojoSelectableListContainer(this, "container");
+		DojoSelectableListContainer container = new DojoSelectableListContainer(this, "container"){
+			@Override
+			public void onChoose(AjaxRequestTarget target, Object o) {
+				target.appendJavascript("alert('dblClick')");
+				
+			}
+		};
 		list = new DojoSelectableList(container, "list", objList){
 
 			@Override
