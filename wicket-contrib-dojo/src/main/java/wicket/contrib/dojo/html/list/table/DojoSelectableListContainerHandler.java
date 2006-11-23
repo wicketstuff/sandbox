@@ -37,7 +37,13 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 		ArrayList selected = new ArrayList();
 		String indexList = getComponent().getRequest().getParameter("indexList");
 		if (indexList == null){
-			((DojoSelectableListContainer)getComponent()).onChoose(target);
+			if (selected != null){
+				((DojoSelectableListContainer)getComponent()).onChoose(target, selected.get(0));
+			}
+			else
+			{
+				((DojoSelectableListContainer)getComponent()).onChoose(target, null);
+			}
 		}else{
 			StringTokenizer tokenizer = new StringTokenizer(indexList, ",");
 			List all = listView.getList();
