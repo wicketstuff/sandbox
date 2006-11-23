@@ -142,7 +142,7 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer
 	 * Triggered when double click on an item
 	 * @param target ajax target
 	 */
-	public void onChoose(AjaxRequestTarget target)
+	public void onChoose(AjaxRequestTarget target, Object selected)
 	{
 		
 	}
