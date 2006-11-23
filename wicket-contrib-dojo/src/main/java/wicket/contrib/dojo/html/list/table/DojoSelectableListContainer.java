@@ -39,9 +39,7 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer
 	 */
 	public DojoSelectableListContainer(String id)
 	{
-		super(id);
-		enableMultipleSelect = "true";
-		tbodyClass = "scrollContent";
+		this(id, null);
 	}
 
 	/**
@@ -52,6 +50,8 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer
 	public DojoSelectableListContainer(String id, IModel model)
 	{
 		super(id, model);
+		enableMultipleSelect = "true";
+		tbodyClass = "scrollContent";
 	}
 
 	protected void onComponentTag(ComponentTag tag)
