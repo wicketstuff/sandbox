@@ -36,8 +36,8 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 		ArrayList selected = new ArrayList();
 		String indexList = getComponent().getRequest().getParameter("indexList");
 		if (indexList == null){
-			if (selected != null){
-				((DojoSelectableListContainer)getComponent()).onChoose(target, selected.get(0));
+			if (((DojoSelectableListContainer)getComponent()).getSelected() != null){
+				((DojoSelectableListContainer)getComponent()).onChoose(target, ((DojoSelectableListContainer)getComponent()).getSelected().get(0));
 			}
 			else
 			{
