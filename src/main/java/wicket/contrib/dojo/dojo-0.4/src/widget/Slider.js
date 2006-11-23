@@ -124,7 +124,7 @@ dojo.widget.defineWidget (
 		activeDrag: false,
 
 		templateCssPath: dojo.uri.dojoUri ("src/widget/templates/Slider.css"),
-		templatePath: dojo.uri.dojoUri ("src/widget/templates/Slider.html"),
+		templatePath: dojo.uri.dojoUri ("src/widget/templates/Slider.htm"),
 
 		// This is set to true when a drag is started, so that it is not confused
 		// with a click
