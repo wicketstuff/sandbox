@@ -7,33 +7,43 @@ import wicket.WicketRuntimeException;
 import wicket.markup.html.list.ListView;
 import wicket.model.IModel;
 
+/**
+ * A selectable list with listener on click and dbl click to add to the parent see {@link DojoSelectableListContainer}
+ * @author vincent demay
+ *
+ */
 public abstract class DojoSelectableList extends  ListView
 {
 	
 	DojoSelectableListContainer container;
 	
-	public DojoSelectableList(String id, IModel model, DojoSelectableListContainer container)
+	/**
+	 * Construct the list
+	 * @param id list id
+	 * @param model model associated with the list
+	 */
+	public DojoSelectableList(String id, IModel model)
 	{
 		super(id, model);
-		//we add here behavior to the parent
-		container.add(new DojoSelectableListContainerHandler(this));
-		this.container = container;
 	}
 
-	public DojoSelectableList(String id, List list, DojoSelectableListContainer container)
+	/**
+	 * Construct the list
+	 * @param id list id
+	 * @param list model associated with the list
+	 */
+	public DojoSelectableList(String id, List list)
 	{
 		super(id, list);
-		//we add here behavior to the parent
-		container.add(new DojoSelectableListContainerHandler(this));
-		this.container = container;
 	}
 
-	public DojoSelectableList(String id, DojoSelectableListContainer container)
+	/**
+	 * Construct the list
+	 * @param id list id
+	 */
+	public DojoSelectableList(String id)
 	{
 		super(id);
-		//we add here behavior to the parent
-		container.add(new DojoSelectableListContainerHandler(this));
-		this.container = container;
 	}
 	
 	protected void onBeforeRender()
@@ -50,6 +60,14 @@ public abstract class DojoSelectableList extends  ListView
 	 */
 	private DojoSelectableListContainer getParentContainer(){
 		return this.container;
+	}
+
+	protected void onAttach()
+	{
+		super.onAttach();
+		//we add here behavior to the parent
+		this.container = (DojoSelectableListContainer)getParent();
+		container.add(new DojoSelectableListContainerHandler(this));
 	}
 	
 

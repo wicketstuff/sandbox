@@ -12,10 +12,11 @@ import wicket.markup.ComponentTag;
 /**
  * Selectable List container
  * <pre>
- * 		DojoSelectableListContainer container = new DojoSelectableListContainer(parent, "container");
- * 		DojoSelectableList list = new DojoSelectableList(container, "list"){
+ * 		DojoSelectableListContainer container = new DojoSelectableListContainer("container");
+ * 		DojoSelectableList list = new DojoSelectableList("list"){
  * 			[...]
  * 		};
+ * 		container.add(list);
  * </pre>
  * <b>The html (wicket:id="container" in the previous example) tag should be a &lt;table&gt;</b>
  * @author Vincent Demay
@@ -35,7 +36,6 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer
 	 * Construct the selectable list containre
 	 * @param parent prent where DojoSelectableListContainer will be added
 	 * @param id container id
-	 * TODO remove childId????
 	 */
 	public DojoSelectableListContainer(String id)
 	{
@@ -140,7 +140,7 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer
 	 * Triggered when double click on an item
 	 * @param target ajax target
 	 */
-	public void onChoose(AjaxRequestTarget target)
+	public void onChoose(AjaxRequestTarget target, Object selected)
 	{
 		
 	}
