@@ -19,7 +19,6 @@ public class StylingWebMarkupContainer extends WebMarkupContainer
 	private StyleAttribute style;
 	
 	/**
-	 * @param parent
 	 * @param id
 	 */
 	public StylingWebMarkupContainer(String id)
@@ -29,7 +28,6 @@ public class StylingWebMarkupContainer extends WebMarkupContainer
 	}
 	
 	/**
-	 * @param parent
 	 * @param id
 	 * @param model
 	 */

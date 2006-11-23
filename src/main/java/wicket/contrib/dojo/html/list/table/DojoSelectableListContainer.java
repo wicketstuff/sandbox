@@ -8,6 +8,7 @@ import wicket.contrib.dojo.DojoIdConstants;
 import wicket.ajax.AjaxRequestTarget;
 import wicket.contrib.dojo.widgets.StylingWebMarkupContainer;
 import wicket.markup.ComponentTag;
+import wicket.model.IModel;
 
 /**
  * Selectable List container
@@ -31,10 +32,9 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer
 
 	private String enableMultipleSelect;
 	private String tbodyClass;
-	
+
 	/**
-	 * Construct the selectable list containre
-	 * @param parent prent where DojoSelectableListContainer will be added
+	 * Construct the selectable list container
 	 * @param id container id
 	 */
 	public DojoSelectableListContainer(String id)
@@ -42,6 +42,16 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer
 		super(id);
 		enableMultipleSelect = "true";
 		tbodyClass = "scrollContent";
+	}
+
+	/**
+	 * Construct the selectable list container
+	 * @param id container id
+	 * @param model model
+	 */
+	public DojoSelectableListContainer(String id, IModel model)
+	{
+		super(id, model);
 	}
 
 	protected void onComponentTag(ComponentTag tag)
@@ -144,6 +154,4 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer
 	{
 		
 	}
-
-
 }
