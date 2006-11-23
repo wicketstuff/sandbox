@@ -1,5 +1,6 @@
 package wicket.contrib.dojo.html.list.table;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import wicket.MarkupContainer;
@@ -35,7 +36,6 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer
 	 * Construct the selectable list containre
 	 * @param parent prent where DojoSelectableListContainer will be added
 	 * @param id container id
-	 * TODO remove childId????
 	 */
 	public DojoSelectableListContainer(MarkupContainer parent, String id)
 	{
@@ -142,7 +142,7 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer
 	 * Triggered when double click on an item
 	 * @param target ajax target
 	 */
-	public void onChoose(AjaxRequestTarget target, Object selected)
+	public void onChoose(AjaxRequestTarget target, Object indexList)
 	{
 		
 	}
