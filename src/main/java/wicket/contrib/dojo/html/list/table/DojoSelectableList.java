@@ -5,13 +5,23 @@ import java.util.List;
 
 import wicket.WicketRuntimeException;
 import wicket.markup.ComponentTag;
-import wicket.markup.html.list.ListItem;
 import wicket.markup.html.list.ListView;
 import wicket.model.IModel;
 
+/**
+ * A selectable list with listener on click and dbl click to add to the parent see {@link DojoSelectableListContainer}
+ * @author vincent demay
+ *
+ */
 public abstract class DojoSelectableList extends  ListView
 {
 
+	/**
+	 * Construct the list
+	 * @param parent parent where the container is added 
+	 * @param id list id
+	 * @param model model associated with the list
+	 */
 	public DojoSelectableList(DojoSelectableListContainer parent, String id, IModel model)
 	{
 		super(parent, id, model);
@@ -19,6 +29,12 @@ public abstract class DojoSelectableList extends  ListView
 		getParentContainer().add(new DojoSelectableListContainerHandler(this));
 	}
 
+	/**
+	 * Construct the list
+	 * @param parent parent where the container is added 
+	 * @param id list id
+	 * @param list model associated with the list
+	 */
 	public DojoSelectableList(DojoSelectableListContainer parent, String id, List list)
 	{
 		super(parent, id, list);
@@ -26,6 +42,11 @@ public abstract class DojoSelectableList extends  ListView
 		getParentContainer().add(new DojoSelectableListContainerHandler(this));
 	}
 
+	/**
+	 * Construct the list
+	 * @param parent parent where the container is added 
+	 * @param id list id
+	 */
 	public DojoSelectableList(DojoSelectableListContainer parent, String id)
 	{
 		super(parent, id);
