@@ -2,7 +2,6 @@ package wicket.contrib.dojo.html.list.table;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.StringTokenizer;
 
 import wicket.ResourceReference;
 import wicket.ajax.AjaxRequestTarget;
@@ -35,21 +34,20 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 	protected final void respond(AjaxRequestTarget target)
 	{
 		ArrayList selected = new ArrayList();
-		String indexList = getComponent().getRequest().getParameter("indexList");
+		String indexList[] = getComponent().getRequest().getParameters("select");
 		if (indexList == null){
-			if (selected != null){
-				((DojoSelectableListContainer)getComponent()).onChoose(target, selected.get(0));
+			if (((DojoSelectableListContainer)getComponent()).getSelected() != null){
+				((DojoSelectableListContainer)getComponent()).onChoose(target, ((DojoSelectableListContainer)getComponent()).getSelected().get(0));
 			}
 			else
 			{
 				((DojoSelectableListContainer)getComponent()).onChoose(target, null);
 			}
 		}else{
-			StringTokenizer tokenizer = new StringTokenizer(indexList, ",");
 			List all = listView.getList();
-			
-			while (tokenizer.hasMoreTokens()){
-				int pos = Integer.parseInt(tokenizer.nextToken());
+			int pos;
+			for (int i=0; i < indexList.length; i++){
+				pos = Integer.parseInt(indexList[i]);
 				selected.add(all.get(pos));
 			}
 			
@@ -80,7 +78,7 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 		toReturn += "	for(var i=0; i<rows.length; i++){\n";
 		toReturn += "		if(rows[i].parentNode==body){\n";
 		toReturn += "			if(dojo.html.getAttribute(rows[i],'selected')=='true'){\n";
-		toReturn += "				selection += index + ',';\n";
+		toReturn += "				selection += '&select=' + index;\n";
 		toReturn += "			}\n";
 		toReturn += "			index++;\n";
 		toReturn += "		}\n";
@@ -107,7 +105,7 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 	 */
 	protected final CharSequence getCallbackScript(boolean recordPageVersion)
 	{
-		return getCallbackScript("wicketAjaxGet('" + super.getCallbackUrl(recordPageVersion) + "&indexList=' + getSelection()", null,
+		return getCallbackScript("wicketAjaxGet('" + super.getCallbackUrl(recordPageVersion) + "'+ getSelection()", null,
 				null);
 	}
 	
