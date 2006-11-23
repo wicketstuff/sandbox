@@ -1,6 +1,6 @@
 /*
  * $Id: DojoAjaxHandler.java 594 2006-02-22 05:54:55 -0800 (Wed, 22 Feb 2006)
- * joco01 $ $Revision: 1123 $ $Date: 2006-11-16 18:23:27 +0100 (jeu., 16 nov. 2006) $
+ * joco01 $ $Revision$ $Date$
  * 
  * ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
