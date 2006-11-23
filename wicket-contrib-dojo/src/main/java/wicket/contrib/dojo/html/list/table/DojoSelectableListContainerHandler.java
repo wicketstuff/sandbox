@@ -36,7 +36,13 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 		ArrayList selected = new ArrayList();
 		String indexList = getComponent().getRequest().getParameter("indexList");
 		if (indexList == null){
-			((DojoSelectableListContainer)getComponent()).onChoose(target);
+			if (selected != null){
+				((DojoSelectableListContainer)getComponent()).onChoose(target, selected.get(0));
+			}
+			else
+			{
+				((DojoSelectableListContainer)getComponent()).onChoose(target, null);
+			}
 		}else{
 			StringTokenizer tokenizer = new StringTokenizer(indexList, ",");
 			List all = listView.getList();
@@ -54,6 +60,7 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 
 	/**
 	 * TODO find an other way to Render an as big javascript
+	 * TODO put it in js file
 	 */
 	public void renderHead(IHeaderResponse response)
 	{
@@ -107,6 +114,9 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 				null);
 	}
 
+	/**
+	 * Add onSelect and on choose event listener
+	 */
 	protected void onComponentTag(ComponentTag tag)
 	{
 		super.onComponentTag(tag);
