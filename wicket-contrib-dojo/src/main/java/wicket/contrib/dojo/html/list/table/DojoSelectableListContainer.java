@@ -1,15 +1,16 @@
 package wicket.contrib.dojo.html.list.table;
 
-import java.util.ArrayList;
+import static wicket.contrib.dojo.DojoIdConstants.DOJO_TYPE;
+
 import java.util.List;
 
 import wicket.MarkupContainer;
 import wicket.ResourceReference;
 import wicket.WicketRuntimeException;
-import static wicket.contrib.dojo.DojoIdConstants.*;
 import wicket.ajax.AjaxRequestTarget;
 import wicket.contrib.dojo.widgets.StylingWebMarkupContainer;
 import wicket.markup.ComponentTag;
+import wicket.markup.html.link.ILinkListener;
 import wicket.model.IModel;
 
 /**
@@ -24,7 +25,7 @@ import wicket.model.IModel;
  * @author Vincent Demay
  *
  */
-public class DojoSelectableListContainer extends StylingWebMarkupContainer
+public class DojoSelectableListContainer extends StylingWebMarkupContainer  implements ILinkListener
 {
 	/**
 	 * List of selected objects
@@ -44,6 +45,8 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer
 	 */
 	private ResourceReference overwriteCss;
 	
+	//child
+	private DojoSelectableList listView;
 	
 	/**
 	 * Construct the selectable list containre
@@ -90,6 +93,22 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer
 			throw new WicketRuntimeException("Tag name for a DojoSelectableListContainer should be 'table'");
 		}
 	}
+	
+	/**
+	 * Happen when dblclick and ajax enabled
+	 * <b>by default ajax is enabled</b>
+	 */
+	public final void onLinkClicked()
+	{
+		int selectIndex = Integer.parseInt(getRequest().getParameter("select"));
+		onNonAjaxChoose(this.listView.getList().get(this.listView.getList().size()- selectIndex - 1));
+		
+	}
+	
+	/*																									  *\
+	 * ---------------------------------------------------------------------------------------------------*
+	\*																								      */
+	
 	
 	/**
 	 * Enable or not multipleSelection on items
@@ -189,6 +208,24 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer
 	}
 	
 	/**
+	 * Get the DojoSelectableList
+	 * @return the DojoSelectableList
+	 */
+	public DojoSelectableList getListView()
+	{
+		return listView;
+	}
+
+	/**
+	 * Set the DojoSelectableList
+	 * @param listView the DojoSelectableList
+	 */
+	public void setListView(DojoSelectableList listView)
+	{
+		this.listView = listView;
+	}
+	
+	/**
 	 * Triggered when selection change
 	 * @param target ajax target
 	 * @param selected List of selected item
@@ -210,10 +247,11 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer
 	/**
 	 * Triggered when double click on an item and ajaxOnChoose is disabled
 	 * <b>by default ajax is enabled</b>
+	 * @param selected selected item
 	 */
-	public void onLinkClicked()
+	public void onNonAjaxChoose(Object selected)
 	{
-		System.out.println("onClick");
+		
 	}
 
 
