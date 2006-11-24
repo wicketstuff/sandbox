@@ -6,7 +6,9 @@ import java.util.List;
 import wicket.ResourceReference;
 import wicket.ajax.AjaxRequestTarget;
 import wicket.contrib.dojo.AbstractRequireDojoBehavior;
+import wicket.markup.ComponentTag;
 import wicket.markup.html.IHeaderResponse;
+import wicket.markup.html.link.ILinkListener;
 
 /**
  * @author Vincent Demay
@@ -18,13 +20,19 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 	//child of this container
 	private DojoSelectableList listView;
 
+	/**
+	 * 
+	 * @param selectableList
+	 */
 	public DojoSelectableListContainerHandler(DojoSelectableList selectableList)
 	{
 		super();
 		listView = selectableList;
 	}
 
-	@Override
+	/**
+	 * 
+	 */
 	public void setRequire(RequireDojoLibs libs)
 	{
 		//DO Nothing, the Widget is in the package
@@ -59,6 +67,7 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 
 	/**
 	 * TODO find an other way to Render an as big javascript
+	 * TODO put it in js file
 	 */
 	@Override
 	public void renderHead(IHeaderResponse response)
@@ -66,6 +75,9 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 		super.renderHead(response);
 		response.renderCSSReference(new ResourceReference(DojoSelectableListContainer.class, "DojoSelectableListContainer.css"));
 		response.renderJavascriptReference(new ResourceReference(DojoSelectableListContainer.class, "SelectableTable.js"));
+		if (((DojoSelectableListContainer)getComponent()).getOverwriteCss() != null){
+			response.renderCSSReference(((DojoSelectableListContainer)getComponent()).getOverwriteCss());
+		}
 		
 		String toReturn="";
 		toReturn += "<script language=\"JavaScript\" type=\"text/javascript\">\n";
@@ -114,8 +126,12 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 	 * @return javascript that will be used to respond to Double click
 	 */
 	protected final CharSequence getDoubleClickCallbackScripts(){
-		return getCallbackScript("wicketAjaxGet('" + super.getCallbackUrl(true) + "'", null,
-				null);
+		if (((DojoSelectableListContainer) getComponent()).isAjaxModeOnChoose()){
+			return getCallbackScript("wicketAjaxGet('" + super.getCallbackUrl(true) + "'", null, null);
+		}else{
+			CharSequence url = ((DojoSelectableListContainer) getComponent()).urlFor(ILinkListener.INTERFACE);
+			return "window.location.href='" + url + "'";
+		}
 	}
 
 	
