@@ -26,6 +26,7 @@ public abstract class DojoSelectableList extends  ListView
 	{
 		super(parent, id, model);
 		//we add here behavior to the parent
+		((DojoSelectableListContainer)getParentContainer()).setListView(this);
 		getParentContainer().add(new DojoSelectableListContainerHandler(this));
 	}
 
