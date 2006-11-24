@@ -11,8 +11,8 @@
 		<table wicket:id="container">
 			<thead>
 				<tr>
-					<th dataType="String">String</th>
-					<th dataType="String">String2</th>
+					<th>String</th>
+					<th>String2</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -22,8 +22,27 @@
 					</td>
 					<td>foo</td>
 				</tr>
-				<tr><td>sdfsdf</td><td>sfdf</td></tr>
 			</tbody>
+			<tfoot><tr><td></td><td></td></tr></tfoot>
+		</table>
+		<br/>
+		<br/>
+		<table wicket:id="container2">
+			<thead>
+				<tr>
+					<th>String</th>
+					<th>String2</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr wicket:id="list2">
+					<td width="100%" >
+						<span wicket:id="label"> result</span><br/>
+					</td>
+					<td>foo</td>
+				</tr>
+			</tbody>
+			<tfoot><tr><td></td><td></td></tr></tfoot>
 		</table>
 	</p>
  <br/>
