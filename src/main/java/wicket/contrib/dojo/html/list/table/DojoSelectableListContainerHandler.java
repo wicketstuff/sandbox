@@ -82,8 +82,8 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 		
 		String toReturn="";
 		toReturn += "<script language=\"JavaScript\" type=\"text/javascript\">\n";
-		toReturn += "function getSelection(){\n";
-		toReturn += "	var container = document.getElementById('" + getComponent().getMarkupId() + "');\n";
+		toReturn += "function getSelection(id){\n";
+		toReturn += "	var container = document.getElementById(id);\n";
 		toReturn += "	var body = container.getElementsByTagName('tbody')[0];\n";
 		toReturn += "	var rows=body.getElementsByTagName('tr')\n";
 		toReturn += "	var selection = '';\n";
@@ -113,7 +113,7 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 	 */
 	protected final CharSequence getCallbackScript()
 	{
-		return getCallbackScript("wicketAjaxGet('" + super.getCallbackUrl(false, true) + "' + getSelection()", null,
+		return getCallbackScript("wicketAjaxGet('" + super.getCallbackUrl(false, true) + "' + getSelection('"+getComponent().getMarkupId()+"')", null,
 				null);
 	}
 	

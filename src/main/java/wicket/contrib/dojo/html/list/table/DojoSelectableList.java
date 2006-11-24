@@ -12,7 +12,7 @@ import wicket.model.IModel;
  * @author vincent demay
  *
  */
-public abstract class DojoSelectableList extends  ListView
+public abstract class DojoSelectableList extends ListView
 {
 	
 	DojoSelectableListContainer container;
@@ -70,8 +70,4 @@ public abstract class DojoSelectableList extends  ListView
 		this.container.setListView(this);
 		container.add(new DojoSelectableListContainerHandler(this));
 	}
-	
-
-
-
 }
