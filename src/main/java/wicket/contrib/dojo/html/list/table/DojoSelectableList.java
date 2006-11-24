@@ -67,6 +67,7 @@ public abstract class DojoSelectableList extends  ListView
 		super.onAttach();
 		//we add here behavior to the parent
 		this.container = (DojoSelectableListContainer)getParent();
+		this.container.setListView(this);
 		container.add(new DojoSelectableListContainerHandler(this));
 	}
 	
