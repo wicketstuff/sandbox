@@ -2,13 +2,13 @@ package wicket.contrib.dojo.html.list.table;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.StringTokenizer;
 
 import wicket.ResourceReference;
 import wicket.ajax.AjaxRequestTarget;
 import wicket.contrib.dojo.AbstractRequireDojoBehavior;
 import wicket.markup.ComponentTag;
 import wicket.markup.html.IHeaderResponse;
+import wicket.markup.html.link.ILinkListener;
 
 /**
  * @author Vincent Demay
@@ -20,21 +20,31 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 	//child of this container
 	private DojoSelectableList listView;
 
+	/**
+	 * 
+	 * @param selectableList
+	 */
 	public DojoSelectableListContainerHandler(DojoSelectableList selectableList)
 	{
 		super();
 		listView = selectableList;
 	}
 
+	/**
+	 * 
+	 */
 	public void setRequire(RequireDojoLibs libs)
 	{
 		//DO Nothing, the Widget is in the package
 	}
 
+	/**
+	 * 
+	 */
 	protected final void respond(AjaxRequestTarget target)
 	{
 		ArrayList selected = new ArrayList();
-		String indexList = getComponent().getRequest().getParameter("indexList");
+		String indexList[] = getComponent().getRequest().getParameters("select");
 		if (indexList == null){
 			if (((DojoSelectableListContainer)getComponent()).getSelected() != null){
 				((DojoSelectableListContainer)getComponent()).onChoose(target, ((DojoSelectableListContainer)getComponent()).getSelected().get(0));
@@ -44,11 +54,10 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 				((DojoSelectableListContainer)getComponent()).onChoose(target, null);
 			}
 		}else{
-			StringTokenizer tokenizer = new StringTokenizer(indexList, ",");
 			List all = listView.getList();
-			
-			while (tokenizer.hasMoreTokens()){
-				int pos = Integer.parseInt(tokenizer.nextToken());
+			int pos;
+			for (int i=0; i < indexList.length; i++){
+				pos = Integer.parseInt(indexList[i]);
 				selected.add(all.get(pos));
 			}
 			
@@ -67,6 +76,9 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 		super.renderHead(response);
 		response.renderCSSReference(new ResourceReference(DojoSelectableListContainer.class, "DojoSelectableListContainer.css"));
 		response.renderJavascriptReference(new ResourceReference(DojoSelectableListContainer.class, "SelectableTable.js"));
+		if (((DojoSelectableListContainer)getComponent()).getOverwriteCss() != null){
+			response.renderCSSReference(((DojoSelectableListContainer)getComponent()).getOverwriteCss());
+		}
 		
 		String toReturn="";
 		toReturn += "<script language=\"JavaScript\" type=\"text/javascript\">\n";
@@ -79,7 +91,7 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 		toReturn += "	for(var i=0; i<rows.length; i++){\n";
 		toReturn += "		if(rows[i].parentNode==body){\n";
 		toReturn += "			if(dojo.html.getAttribute(rows[i],'selected')=='true'){\n";
-		toReturn += "				selection += index + ',';\n";
+		toReturn += "				selection += '&select=' + index;\n";
 		toReturn += "			}\n";
 		toReturn += "			index++;\n";
 		toReturn += "		}\n";
@@ -101,7 +113,7 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 	 */
 	protected final CharSequence getCallbackScript()
 	{
-		return getCallbackScript("wicketAjaxGet('" + super.getCallbackUrl(false, true) + "&indexList=' + getSelection()", null,
+		return getCallbackScript("wicketAjaxGet('" + super.getCallbackUrl(false, true) + "' + getSelection()", null,
 				null);
 	}
 	
@@ -110,8 +122,12 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 	 * @return javascript that will be used to respond to Double click
 	 */
 	protected final CharSequence getDoubleClickCallbackScripts(){
-		return getCallbackScript("wicketAjaxGet('" + super.getCallbackUrl(false, true) + "'", null,
-				null);
+		if (((DojoSelectableListContainer) getComponent()).isAjaxModeOnChoose()){
+			return getCallbackScript("wicketAjaxGet('" + super.getCallbackUrl(false, true) + "'", null,null);
+		}else{
+			CharSequence url = ((DojoSelectableListContainer) getComponent()).urlFor(ILinkListener.INTERFACE);
+			return "window.location.href='" + url + "'";
+		}
 	}
 
 	/**
