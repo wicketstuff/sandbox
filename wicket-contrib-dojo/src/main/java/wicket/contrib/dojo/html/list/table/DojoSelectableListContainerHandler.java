@@ -58,7 +58,7 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 			int pos;
 			for (int i=0; i < indexList.length; i++){
 				pos = Integer.parseInt(indexList[i]);
-				selected.add(all.get(pos));
+				selected.add(all.get(all.size()- pos - 1));
 			}
 			
 			((DojoSelectableListContainer)getComponent()).setSelected(selected);
@@ -126,7 +126,7 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 			return getCallbackScript("wicketAjaxGet('" + super.getCallbackUrl(false, true) + "'", null,null);
 		}else{
 			CharSequence url = ((DojoSelectableListContainer) getComponent()).urlFor(ILinkListener.INTERFACE);
-			return "window.location.href='" + url + "'";
+			return "window.location.href='" + url + "' + getSelection() ";
 		}
 	}
 

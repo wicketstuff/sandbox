@@ -43,6 +43,9 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer imple
 	 * Allow user to set another css to overwrite the default one
 	 */
 	private ResourceReference overwriteCss;
+	
+	//child
+	private DojoSelectableList listView;
 
 	/**
 	 * Construct the selectable list container
@@ -86,6 +89,21 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer imple
 			throw new WicketRuntimeException("Tag name for a DojoSelectableListContainer should be 'table'");
 		}
 	}
+	
+	/**
+	 * Happen when dblclick and ajax enabled
+	 * <b>by default ajax is enabled</b>
+	 */
+	public final void onLinkClicked()
+	{
+		int selectIndex = Integer.parseInt(getRequest().getParameter("select"));
+		onNonAjaxChoose(this.listView.getList().get(this.listView.getList().size()- selectIndex - 1));
+		
+	}
+	
+	/*																									  *\
+	 * ---------------------------------------------------------------------------------------------------*
+	\*																								      */
 	
 	/**
 	 * Enable or not multipleSelection on items
@@ -185,6 +203,24 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer imple
 	}
 	
 	/**
+	 * Get the DojoSelectableList
+	 * @return the DojoSelectableList
+	 */
+	public DojoSelectableList getListView()
+	{
+		return listView;
+	}
+
+	/**
+	 * Set the DojoSelectableList
+	 * @param listView the DojoSelectableList
+	 */
+	public void setListView(DojoSelectableList listView)
+	{
+		this.listView = listView;
+	}
+	
+	/**
 	 * Triggered when selection change
 	 * @param target ajax target
 	 * @param selected List of selected item
@@ -203,12 +239,17 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer imple
 	{
 		
 	}
-
+	
 	/**
 	 * Triggered when double click on an item and ajaxOnChoose is disabled
 	 * <b>by default ajax is enabled</b>
+	 * @param selected selected item
 	 */
-	public void onLinkClicked()
+	public void onNonAjaxChoose(Object selected)
 	{
+		
 	}
+
+
+	
 }
