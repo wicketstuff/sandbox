@@ -6,7 +6,6 @@ import java.util.List;
 import wicket.ResourceReference;
 import wicket.ajax.AjaxRequestTarget;
 import wicket.contrib.dojo.AbstractRequireDojoBehavior;
-import wicket.markup.ComponentTag;
 import wicket.markup.html.IHeaderResponse;
 import wicket.markup.html.link.ILinkListener;
 
@@ -81,8 +80,8 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 		
 		String toReturn="";
 		toReturn += "<script language=\"JavaScript\" type=\"text/javascript\">\n";
-		toReturn += "function getSelection(){\n";
-		toReturn += "	var container = dojo.widget.byId('" + getComponent().getMarkupId() + "');\n";
+		toReturn += "function getSelection(id){\n";
+		toReturn += "	var container = dojo.widget.byId(id);\n";
 		toReturn += "	var body = container.domNode.getElementsByTagName('tbody')[0];\n";
 		toReturn += "	var rows=body.getElementsByTagName('tr')\n";
 		toReturn += "	var selection = '';\n";
@@ -117,7 +116,7 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 	 */
 	protected final CharSequence getCallbackScript(boolean recordPageVersion)
 	{
-		return getCallbackScript("wicketAjaxGet('" + super.getCallbackUrl(recordPageVersion) + "'+ getSelection()", null,
+		return getCallbackScript("wicketAjaxGet('" + super.getCallbackUrl(recordPageVersion) + "'+ getSelection('" + getComponent().getMarkupId() + "')", null,
 				null);
 	}
 	
@@ -130,7 +129,7 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 			return getCallbackScript("wicketAjaxGet('" + super.getCallbackUrl(true) + "'", null, null);
 		}else{
 			CharSequence url = ((DojoSelectableListContainer) getComponent()).urlFor(ILinkListener.INTERFACE);
-			return "window.location.href='" + url + "'  + getSelection()";
+			return "window.location.href='" + url + "'  + getSelection('" + getComponent().getMarkupId() + "')";
 		}
 	}
 
