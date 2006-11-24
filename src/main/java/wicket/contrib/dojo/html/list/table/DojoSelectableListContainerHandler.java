@@ -9,6 +9,7 @@ import wicket.contrib.dojo.AbstractRequireDojoBehavior;
 import wicket.markup.ComponentTag;
 import wicket.markup.html.IHeaderResponse;
 import wicket.markup.html.link.ILinkListener;
+import wicket.markup.html.list.ListView;
 
 /**
  * @author Vincent Demay
@@ -18,16 +19,16 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 {
 	
 	//child of this container
-	private DojoSelectableList listView;
+	private ListView listView;
 
 	/**
 	 * 
-	 * @param selectableList
+	 * @param listView
 	 */
-	public DojoSelectableListContainerHandler(DojoSelectableList selectableList)
+	public DojoSelectableListContainerHandler(ListView listView)
 	{
 		super();
-		listView = selectableList;
+		listView = listView;
 	}
 
 	/**
@@ -126,7 +127,7 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 			return getCallbackScript("wicketAjaxGet('" + super.getCallbackUrl(false, true) + "'", null,null);
 		}else{
 			CharSequence url = ((DojoSelectableListContainer) getComponent()).urlFor(ILinkListener.INTERFACE);
-			return "window.location.href='" + url + "' + getSelection('"+getComponent().getMarkupId()+"')";
+			return "window.location.href='" + url + "' + getSelection('"+getComponent().getMarkupId()+"') ";
 		}
 	}
 
