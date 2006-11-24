@@ -126,7 +126,7 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 			return getCallbackScript("wicketAjaxGet('" + super.getCallbackUrl(false, true) + "'", null,null);
 		}else{
 			CharSequence url = ((DojoSelectableListContainer) getComponent()).urlFor(ILinkListener.INTERFACE);
-			return "window.location.href='" + url + "' + getSelection() ";
+			return "window.location.href='" + url + "' + getSelection('"+getComponent().getMarkupId()+"')";
 		}
 	}
 
