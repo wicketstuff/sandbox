@@ -2,6 +2,7 @@ package wicket.contrib.dojo.html.list.table;
 
 import java.util.List;
 
+import wicket.Component;
 import wicket.ResourceReference;
 import wicket.WicketRuntimeException;
 import wicket.ajax.AjaxRequestTarget;
@@ -9,13 +10,14 @@ import wicket.contrib.dojo.DojoIdConstants;
 import wicket.contrib.dojo.widgets.StylingWebMarkupContainer;
 import wicket.markup.ComponentTag;
 import wicket.markup.html.link.ILinkListener;
+import wicket.markup.html.list.ListView;
 import wicket.model.IModel;
 
 /**
  * Selectable List container
  * <pre>
  * 		DojoSelectableListContainer container = new DojoSelectableListContainer("container");
- * 		DojoSelectableList list = new DojoSelectableList("list"){
+ * 		ListView list = new ListView("list"){
  * 			[...]
  * 		};
  * 		container.add(list);
@@ -45,7 +47,7 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer imple
 	private ResourceReference overwriteCss;
 	
 	//child
-	private DojoSelectableList listView;
+	private ListView listView;
 
 	/**
 	 * Construct the selectable list container
@@ -98,6 +100,25 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer imple
 	{
 		int selectIndex = Integer.parseInt(getRequest().getParameter("select"));
 		onNonAjaxChoose(this.listView.getList().get(this.listView.getList().size()- selectIndex - 1));
+		
+	}
+	
+	protected void onAttach()
+	{
+		super.onAttach();
+		this.listView = getListView();
+		add(new DojoSelectableListContainerHandler(listView));
+	}
+
+	/**
+	 * Find the list view in children
+	 * if none or more than one throw an exception!
+	 */
+	private ListView getListView()
+	{
+		ListViewFinder visitor = new ListViewFinder();
+		visitChildren(visitor);
+		return visitor.getListView();
 		
 	}
 	
@@ -203,24 +224,6 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer imple
 	}
 	
 	/**
-	 * Get the DojoSelectableList
-	 * @return the DojoSelectableList
-	 */
-	public DojoSelectableList getListView()
-	{
-		return listView;
-	}
-
-	/**
-	 * Set the DojoSelectableList
-	 * @param listView the DojoSelectableList
-	 */
-	public void setListView(DojoSelectableList listView)
-	{
-		this.listView = listView;
-	}
-	
-	/**
 	 * Triggered when selection change
 	 * @param target ajax target
 	 * @param selected List of selected item
@@ -248,6 +251,33 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer imple
 	public void onNonAjaxChoose(Object selected)
 	{
 		
+	}
+
+	/***************************************************************************/
+	
+	private class ListViewFinder implements IVisitor{
+		private ListView listView = null;
+		private int listViewNumber = 0;
+		
+		public Object component(Component component)
+		{
+			if (component instanceof wicket.markup.html.list.ListView){
+				listView = (ListView)component;
+				listViewNumber ++;
+			}
+			return CONTINUE_TRAVERSAL_BUT_DONT_GO_DEEPER;
+		}
+		
+		public ListView getListView(){
+			if (listViewNumber != 1 ){
+				throw new WicketRuntimeException("A DojoSelectableListContainer should contain exactly one ListView as directly child");
+			}
+			//FIXME check for TR
+			/*if (!"tr".equals(listView.getMarkupStream().getTag().getName())){
+				throw new WicketRuntimeException("Tag name for a DojoSelectableListContinaner listView should be 'tr'");
+			}*/
+			return listView;
+		}
 	}
 
 
