@@ -166,8 +166,7 @@ public class FXOnClickFader extends DojoFXHandler
 		// initOpac.
 		if (!startDisplay)
 		{
-			return "dojo.html.setOpacity(document.getElementById('" + HTMLID + "'), " + initOpac
-					+ ");";
+			return "dojo.html.setOpacity(document.getElementById('" + HTMLID + "'), " + initOpac + ");";
 		}
 		else
 		{
@@ -193,24 +192,18 @@ public class FXOnClickFader extends DojoFXHandler
 		// set the correct dojo functions for the type of fader
 		if (type == "fadeHide")
 		{
-			fadeInFunction = "dojo.lfx.html.fadeShow(node.id, duration, null, function(){" + HTMLID
-					+ "_faderState='fadedIn';})";
-			fadeOutFunction = "dojo.lfx.html.fadeHide(node.id, duration, null, function(){" + HTMLID
-					+ "_faderState='fadedOut';})";
+			fadeInFunction  = "dojo.lfx.html.fadeShow(node.id, duration, null, function(){" + HTMLID + "_faderState='fadedIn';})";
+			fadeOutFunction = "dojo.lfx.html.fadeHide(node.id, duration, null, function(){" + HTMLID + "_faderState='fadedOut';})";
 		}
 		else if (type == "fadeOpac")
 		{
-			fadeInFunction = "dojo.lfx.html.fade(node.id, duration,{start:" + startOpac + ",end:" + endOpac
-					+ "},null, function(){" + HTMLID + "_faderState='fadedIn';}).play();";
-			fadeOutFunction = "dojo.lfx.html.fade(node.id, duration,{start:" + endOpac + ",end:" + startOpac
-					+ "},null, function(){" + HTMLID + "_faderState='fadedOut';}).play();";
+			fadeInFunction  = "dojo.lfx.html.fade(node.id, {start:" + startOpac + ",end:" + endOpac   + "}, duration, null, function(){" + HTMLID + "_faderState='fadedIn';}).play();";
+			fadeOutFunction = "dojo.lfx.html.fade(node.id, {start:" + endOpac   + ",end:" + startOpac + "}, duration, null, function(){" + HTMLID + "_faderState='fadedOut';}).play();";
 		}
 		else
 		{
-			fadeInFunction = "dojo.lfx.html.fadeIn(node.id, duration, null, function(){" + HTMLID
-					+ "_faderState='fadedIn';}).play()";
-			fadeOutFunction = "dojo.lfx.html.fadeOut(node.id, duration, null, function(){" + HTMLID
-					+ "_faderState='fadedOut'}).play();";
+			fadeInFunction  = " dojo.lfx.html.fadeIn(node.id, duration, null, function(){" + HTMLID + "_faderState='fadedIn';}).play()";
+			fadeOutFunction = "dojo.lfx.html.fadeOut(node.id, duration, null, function(){" + HTMLID + "_faderState='fadedOut'}).play();";
 		}
 
 		// set the correct state for the startDisplay value

@@ -60,25 +60,6 @@ public class FXOnClickSlider extends DojoFXHandler
 
 	}
 
-	/**
-	 * @param duration
-	 * @param trigger
-	 * @param x
-	 * @param y
-	 * @param fromx
-	 * @param fromy
-	 */
-	public FXOnClickSlider(int duration, Component trigger, int x, int y, int fromx, int fromy)
-	{
-		super("onclick", duration, trigger);
-		this.x = x;
-		this.y = y;
-		this.fromx = fromx;
-		this.fromy = fromy;
-		this.type = "fromto";
-
-	}
-
 
 	protected void onBind()
 	{
@@ -99,15 +80,7 @@ public class FXOnClickSlider extends DojoFXHandler
 			this.getTrigger().add(
 					new AppendAttributeModifier(getEventName(), true, new Model(
 							"dojo.lfx.html.slideBy(document.getElementById('" + HTMLID + "'), [" + x
-									+ ", " + y + "]," + getDuration() + ")")));
-		}
-		else if (type == "fromto")
-		{
-			this.getTrigger().add(
-					new AppendAttributeModifier(getEventName(), true, new Model(
-							"dojo.lfx.html.slide(document.getElementById('" + HTMLID + "'), ["
-									+ fromx + ", " + fromy + "], [" + x + ", " + y + "],"
-									+ getDuration() + ")")));
+									+ ", " + y + "]," + getDuration() + ").play();")));
 		}
 		// assume that type == absolute
 		else
@@ -115,7 +88,7 @@ public class FXOnClickSlider extends DojoFXHandler
 			this.getTrigger().add(
 					new AppendAttributeModifier(getEventName(), true, new Model(
 							"dojo.lfx.html.slideTo(document.getElementById('" + HTMLID + "'), [" + x
-									+ ", " + y + "]," + getDuration() + ")")));
+									+ ", " + y + "]," + getDuration() + ").play();")));
 		}
 
 	}
