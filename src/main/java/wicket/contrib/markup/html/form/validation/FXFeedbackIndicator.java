@@ -19,12 +19,10 @@
 package wicket.contrib.markup.html.form.validation;
 
 
-import wicket.Application;
 import wicket.Component;
 import wicket.MarkupContainer;
 import wicket.ResourceReference;
 import wicket.contrib.dojo.markup.html.tooltip.DojoTooltip;
-import wicket.contrib.markup.html.tooltip.Tooltip;
 import wicket.markup.html.form.validation.FormComponentFeedbackIndicator;
 import wicket.markup.html.image.Image;
 
