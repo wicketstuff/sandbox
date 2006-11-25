@@ -5,8 +5,6 @@ import wicket.contrib.dojo.AbstractDefaultDojoBehavior;
 import wicket.contrib.dojo.examples.rssreader.DescriptionPanel;
 import wicket.contrib.dojo.examples.rssreader.UpdateLabel;
 import wicket.contrib.dojo.markup.html.tooltip.DojoTooltip;
-import wicket.contrib.markup.html.tooltip.SimpleTooltip;
-import wicket.contrib.markup.html.tooltip.Tooltip;
 import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.WebPage;
 import wicket.markup.html.basic.Label;
