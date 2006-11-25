@@ -23,6 +23,7 @@ import wicket.Application;
 import wicket.Component;
 import wicket.MarkupContainer;
 import wicket.ResourceReference;
+import wicket.contrib.dojo.markup.html.tooltip.DojoTooltip;
 import wicket.contrib.markup.html.tooltip.Tooltip;
 import wicket.markup.html.form.validation.FormComponentFeedbackIndicator;
 import wicket.markup.html.image.Image;
@@ -38,8 +39,9 @@ import wicket.markup.html.image.Image;
  */
 public class FXFeedbackIndicator extends FormComponentFeedbackIndicator
 {
-	private Tooltip feedbackTooltip;
+	private DojoTooltip feedbackTooltip;
 	private Component toCheck;
+	private FXTooltipFeedbackPanel panel;
 
 	/**
 	 * Construct
@@ -52,22 +54,10 @@ public class FXFeedbackIndicator extends FormComponentFeedbackIndicator
 	public FXFeedbackIndicator(MarkupContainer parent, String id)
 	{
 		super(parent, id);
-		initIndicator();
-		feedbackTooltip = new Tooltip(this, "feedbacktooltip", new FXFeedbackTooltip(this, this,
-				20, 30));
-	}
-
-
-	/**
-	 * method to innitialize Indicator. Necessary here to load static Image.
-	 * subclasses can overwrite.
-	 */
-	protected void initIndicator()
-	{
-		// Image i = new Image("image", new Model("alerticon.gif"));
-		final ResourceReference resource = new ResourceReference(FXFeedbackIndicator.class,
-				"alerticon.gif");
+		final ResourceReference resource = new ResourceReference(FXFeedbackIndicator.class, "alerticon.gif");
 		Image image = new Image(this, "image", resource);
+		feedbackTooltip = new DojoTooltip(this, "feedbacktooltip", image);
+		FXTooltipFeedbackPanel panel = new FXTooltipFeedbackPanel(feedbackTooltip, "content");
 	}
 
 	/**
@@ -76,6 +66,5 @@ public class FXFeedbackIndicator extends FormComponentFeedbackIndicator
 	public void setIndicatorFor(Component component)
 	{
 		super.setIndicatorFor(component);
-		((FXFeedbackTooltip)feedbackTooltip.getTooltipPanel()).setComponentToCheck(component);
 	}
 }

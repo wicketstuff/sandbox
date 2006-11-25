@@ -24,11 +24,10 @@ import wicket.Response;
 import wicket.WicketRuntimeException;
 import wicket.ajax.AjaxRequestTarget;
 import wicket.behavior.AbstractAjaxBehavior;
-import wicket.contrib.dojo.AbstractDefaultDojoBehavior;
+import wicket.contrib.dojo.AbstractRequireDojoBehavior;
+import wicket.markup.html.IHeaderResponse;
 import wicket.markup.html.form.FormComponent;
 import wicket.model.Model;
-import wicket.util.resource.IResourceStream;
-import wicket.util.resource.StringBufferResourceStream;
 
 /**
  * Ajaxhandler to be bound to FormComponents.<br/> This handler executes wicket
@@ -40,8 +39,9 @@ import wicket.util.resource.StringBufferResourceStream;
  * 
  * @author Marco van de Haar
  * @author Ruud Booltink
+ * FIXME : valid and invalid rgb does not work for the moment
  */
-public class FXValidationAjaxHandler extends AbstractDefaultDojoBehavior
+public class FXValidationAjaxHandler extends AbstractRequireDojoBehavior
 {
 	/** name event, like onblur. */
 	private final String eventName;
@@ -148,69 +148,30 @@ public class FXValidationAjaxHandler extends AbstractDefaultDojoBehavior
 	 * @param r 
 	 * 
 	 * @see AbstractAjaxBehavior#onRenderHeadContribution(Response response)
+	 * FIXME : fader does not work on invalid state
 	 */
-	public final void onRenderHeadContribution(Response r)
+	public final void renderHead(IHeaderResponse response)
 	{
-		String highlightValidFunction;
-		String highlightInvalidFunction;
+		super.renderHead(response);
+		String s = "";
+		s += "<script language='JavaScript' type='text/javascript'>\n";
+		s += "	var " + componentId + "_first = false; \n";
+		s += "	function " + componentId + "_validate(type) { \n";
+		s += "		var startbc\n;";
+		s += "		if(!" + componentId + "_first){\n" ;
+		s += "			" + componentId + "_first = true; \n";
+		s += "			startbc = dojo.html.getBackgroundColor('" + componentId + "');\n";
+		s += "		}\n";
+		s += "		if (type=='valid'){\n";
+		s += "			dojo.lfx.html.unhighlight('" + componentId + "', [255,255,255] , 300).play()\n";
+		s += "		}else{\n";	
+		s += "			dojo.lfx.html.unhighlight('" + componentId + "', [255, 0, 0], 300).play()\n;";
+		s += "		}\n";
+		s += "	}\n";
+		s += "</script>\n";
 
-		/*
-		 * check if valdiRGB is set, if not use node's current background color
-		 * for valid highlighting.
-		 */
-		if (validRGB != null)
-		{
-			highlightValidFunction = "dojo.fx.html.colorFadeOut(field, " + this.validRGB.toString()
-					+ ", duration);";
-			highlightInvalidFunction = "dojo.fx.html.colorFadeOut(field, "
-					+ this.invalidRGB.toString() + ", duration ,0);";
-		}
-		else
-		{
-			// validRGB is null!
-			highlightValidFunction = "dojo.fx.html.colorFadeOut(field, startbc, duration);";
-			highlightInvalidFunction = "dojo.fx.html.colorFadeOut(field, "
-					+ this.invalidRGB.toString() + ", duration ,0);";
-		}
-
-		String s =
-
-		"\t<script language=\"JavaScript\" type=\"text/javascript\">\n" + "\t" + componentId
-				+ "_first = false; \n" + "\tfunction " + componentId
-				+ "_validate(componentUrl, inputName, field) { \n" + "\tduration = "
-				+ getDuration() + "; \n" + "\t\t\tif(!" + componentId + "_first){\n" + "\t\t\t"
-				+ componentId + "_first = true; \n"
-				+ "\t\t\t\tstartbc = dojo.html.getBackgroundColor(field);\n" + "\t\t\t}\n"
-				+ "\t\tdojo.io.bind({\n"
-				+ "\t\t\turl: componentUrl + '&' + inputName + '=' + field.value,\n"
-				+ "\t\t\tmimetype: \"text/plain\",\n" + "\t\t\tload: function(type, data, evt) {\n"
-				+ "\t\t\t\tif(data == 'valid')\n" + "\t\t\t\t{\n" + "\t\t\t\t\t"
-				+ highlightValidFunction + "\n" + "\t\t\t\t\treturn true;\n" + "\t\t\t\t}\n"
-				+ "\t\t\t\telse if(data == 'invalid')\n" + "\t\t\t\t{\n" + "\t\t\t\t"
-				+ highlightInvalidFunction + "\n" + "\t\t\t\t\treturn false;\n" + "\t\t\t\t}\n"
-				+ "\t\t\t\telse\n" + "\t\t\t\t{\n" + "\t\t\t\t\treturn false;\n" + "\t\t\t\t}\n"
-				+ "\t\t\t}\n" + "\t\t});\n" +
-
-				"\t}\n" + "\t</script>\n";
-
-		r.write(s);
+		response.renderString(s);
 	}
-
-	/*	*//**
-			 * Attaches the event handler for the given component to the given
-			 * tag.
-			 * 
-			 * @param tag
-			 *            The tag to attach
-			 */
-	/*
-	 * public final void onComponentTag(final ComponentTag tag) { final ValueMap
-	 * attributes = tag.getAttributes(); final String attributeValue =
-	 * "javascript:"+ componentId + "_validate('" + getCallbackUrl() + "', '" +
-	 * formComponent.getInputName() + "', this);"; attributes.put(eventName,
-	 * attributeValue);
-	 *  }
-	 */
 
 	/**
 	 * Bind this handler to the FormComponent and set the corresponding HTML id
@@ -235,8 +196,7 @@ public class FXValidationAjaxHandler extends AbstractDefaultDojoBehavior
 		this.formComponent.add(new AttributeModifier(eventName,true,new Model(){
 			public java.lang.Object getObject(){
 			     return "javascript:"
-					+ componentId + "_validate('" + getCallbackUrl() + "', '"
-					+ formComponent.getInputName() + "', this);";
+					+ "var wcall=wicketAjaxGet('" + getCallbackUrl() + "&" + formComponent.getInputName() + "=' + this.value, function() { }, function() { });return !wcall;";
 			   }}));
 	}
 
@@ -246,27 +206,10 @@ public class FXValidationAjaxHandler extends AbstractDefaultDojoBehavior
 		formComponent.validate();	
 		if (!formComponent.isValid())
 		{
-			// TODO finish
-			// The plan here is the visit all feedback components, re-render
-			// them, and
-			// return the render results to the browser with the components (top
-			// level)
-			// ids attached. We could then use this information to replace the
-			// dom
-			// elements in the browser
-
-			// We need a couple of things for this to work first:
-			// 1) The ability to let a component render on its' own
-			// 2) Trap that render result somewhere. Either by setting the
-			// response to
-			// render to on that component, or passing a response as a parameter
-			// of the render call
-			// Furthermore, we need to have the javascript side covered. That
-			// could
-			// be tricky too, but the cool thing about that is that if we would
-			// fix
-			// that in a generic fashion, our ajax support would be pretty
-			// usable at once
+			target.appendJavascript(componentId + "_validate('invalid')");
+		}
+		else{
+			target.appendJavascript(componentId + "_validate('valid')");
 		}
 	}
 	
@@ -345,6 +288,13 @@ public class FXValidationAjaxHandler extends AbstractDefaultDojoBehavior
 		{
 			return "[" + R + ", " + G + ", " + B + "]";
 		}
+	}
+
+	@Override
+	public void setRequire(RequireDojoLibs libs)
+	{
+		libs.add("dojo.html.*");
+		libs.add("dojo.lfx.*");
 	}
 
 
