@@ -151,10 +151,6 @@ public class DojoFXTestPage extends WebPage{
 		slidetrigger2 = new Label(this, "slidetrigger2","click here to slide absolute");
 		sliderdiv2 = new Label(this, "sliderdiv2","I'm sliding to! I'm sliding to!");
 		sliderdiv2.add(new FXOnClickSlider(duration, slidetrigger2, 500, 500, false));
-		
-		slidetrigger3 = new Label(this, "slidetrigger3","click here to slide fromto");
-		sliderdiv3 = new Label(this, "sliderdiv3","I'm sliding fromto! I'm sliding fromto!");
-		sliderdiv3.add(new FXOnClickSlider(duration, slidetrigger3, 500, 500, 700, 700));
 	
 		//Fadertest
 		
