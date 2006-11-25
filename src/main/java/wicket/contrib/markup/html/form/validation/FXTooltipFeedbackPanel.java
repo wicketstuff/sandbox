@@ -113,7 +113,7 @@ public class FXTooltipFeedbackPanel extends Panel implements IFeedback
 	 * @param c
 	 * @see wicket.Component#Component(String)
 	 */
-	public FXTooltipFeedbackPanel(MarkupContainer parent, final String id, FormComponent c)
+	public FXTooltipFeedbackPanel(MarkupContainer parent, final String id)
 	{
 		super(parent, id);
 
@@ -127,7 +127,6 @@ public class FXTooltipFeedbackPanel extends Panel implements IFeedback
 			}
 
 		};
-		filter = new ComponentFeedbackMessageFilter(c);
 		this.messageListView = new MessageListView(messagesContainer, "messages");
 		messageListView.setVersioned(false);
 	}
