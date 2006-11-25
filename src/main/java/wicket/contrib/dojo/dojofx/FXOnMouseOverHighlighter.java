@@ -157,26 +157,26 @@ public class FXOnMouseOverHighlighter extends DojoFXHandler
 		// thouroughly stress-tested.
 		if (type == "c2c")
 		{
-			highlightInFunction = "dojo.lfx.html.colorFade(node, " + startColor.toString() + ","
-					+ endColor.toString() + ", duration, function(){" + componentId
+			highlightInFunction = "dojo.lfx.html.highlight(node, " + endColor.toString() + ","
+					+ "null, duration, function(){" + componentId
 					+ "_highlighterState='highlighted';if(" + componentId + "_mouseover == 0){"
-					+ componentId + "_highlight(id, duration);}});";
-			highlightOutFunction = "dojo.lfx.html.colorFade(node, " + endColor.toString() + ","
-					+ startColor.toString() + ", duration, function(){" + componentId
+					+ componentId + "_highlight(id, duration);}}).play();";
+			highlightOutFunction = "dojo.lfx.html.unhighlight(node, " + endColor.toString() + ","
+					+ "null, duration, function(){" + componentId
 					+ "_highlighterState='unhighlighted';if(" + componentId + "_mouseover == 1){"
-					+ componentId + "_highlight(id, duration);}});";
+					+ componentId + "_highlight(id, duration);}}).play();";
 		}
 		else
 		{
-			highlightInFunction = "dojo.lfx.html.colorFadeOut(node, " + endColor.toString()
-					+ ", duration ,0,function(){" + componentId
+			highlightInFunction = "dojo.lfx.html.highlight(node, " + endColor.toString()
+					+ ", duration ,null,function(){" + componentId
 					+ "_highlighterState='highlighted';if(" + componentId + "_mouseover == 0){"
-					+ componentId + "_highlight(id, duration);}});";
-			highlightOutFunction = "dojo.lfx.html.colorFadeOut(node, startbc, duration ,0,function(){"
+					+ componentId + "_highlight(id, duration);}}).play();";
+			highlightOutFunction = "dojo.lfx.html.unhighlight(node, startbc, duration ,null,function(){"
 					+ componentId
 					+ "_highlighterState='unhighlighted';if("
 					+ componentId
-					+ "_mouseover == 1){" + componentId + "_highlight(id, duration);}});";
+					+ "_mouseover == 1){" + componentId + "_highlight(id, duration);}}).play();";
 		}
 
 

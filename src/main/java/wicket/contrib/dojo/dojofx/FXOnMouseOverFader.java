@@ -200,32 +200,32 @@ public class FXOnMouseOverFader extends DojoFXHandler
 		// thouroughly stress-tested.
 		if (type == "fadeHide")
 		{
-			fadeInFunction = "dojo.lfx.html.fadeShow(node, duration, function(){" + HTMLID
+			fadeInFunction = "dojo.lfx.html.fadeShow(node, duration, null, function(){" + HTMLID
 					+ "_faderState='fadedIn';if(" + HTMLID + "_mouseover=="
-					+ (startDisplay ? 1 : 0) + "){" + HTMLID + "_fade(id, duration);}})";
-			fadeOutFunction = "dojo.lfx.html.fadeHide(node, duration, function(){" + HTMLID
+					+ (startDisplay ? 1 : 0) + "){" + HTMLID + "_fade(id, duration);}}).play()";
+			fadeOutFunction = "dojo.lfx.html.fadeHide(node, duration, null, function(){" + HTMLID
 					+ "_faderState='fadedOut';if(" + HTMLID + "_mouseover=="
-					+ (startDisplay ? 0 : 1) + "){" + HTMLID + "_fade(id, duration);}})";
+					+ (startDisplay ? 0 : 1) + "){" + HTMLID + "_fade(id, duration);}}).play()";
 		}
 		else if (type == "fadeOpac")
 		{
-			fadeInFunction = "dojo.lfx.html.fade(node, duration," + startOpac + "," + endOpac
-					+ ", function(){" + HTMLID + "_faderState='fadedIn';if(" + HTMLID
+			fadeInFunction = "dojo.lfx.html.fade(node, {start:" + startOpac + ",end:" + endOpac   + "}, duration,"
+					+ "null, function(){" + HTMLID + "_faderState='fadedIn';if(" + HTMLID
 					+ "_mouseover==" + (startDisplay ? 1 : 0) + "){" + HTMLID
-					+ "_fade(id, duration);}});";
-			fadeOutFunction = "dojo.lfx.html.fade(node, duration," + endOpac + "," + startOpac
-					+ ", function(){" + HTMLID + "_faderState='fadedOut';if(" + HTMLID
+					+ "_fade(id, duration);}}).play();";
+			fadeOutFunction = "dojo.lfx.html.fade(node, {start:" + endOpac + ",end:" +  startOpac  + "}, duration," 
+					+ "null, function(){" + HTMLID + "_faderState='fadedOut';if(" + HTMLID
 					+ "_mouseover==" + (startDisplay ? 0 : 1) + "){" + HTMLID
-					+ "_fade(id, duration);}});";
+					+ "_fade(id, duration);}}).play();";
 		}
 		else
 		{
-			fadeInFunction = "dojo.lfx.html.fadeIn(node, duration, function(){" + HTMLID
+			fadeInFunction = "dojo.lfx.html.fadeIn(node, duration, null, function(){" + HTMLID
 					+ "_faderState='fadedIn';if(" + HTMLID + "_mouseover=="
-					+ (startDisplay ? 1 : 0) + "){" + HTMLID + "_fade(id, duration);}})";
-			fadeOutFunction = "dojo.lfx.html.fadeOut(node, duration, function(){" + HTMLID
+					+ (startDisplay ? 1 : 0) + "){" + HTMLID + "_fade(id, duration);}}).play();";
+			fadeOutFunction = "dojo.lfx.html.fadeOut(node, duration, null, function(){" + HTMLID
 					+ "_faderState='fadedOut';if(" + HTMLID + "_mouseover=="
-					+ (startDisplay ? 0 : 1) + "){" + HTMLID + "_fade(id, duration);}});";
+					+ (startDisplay ? 0 : 1) + "){" + HTMLID + "_fade(id, duration);}}).play();";
 		}
 
 		if (startDisplay)

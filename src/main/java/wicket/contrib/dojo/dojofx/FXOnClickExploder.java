@@ -124,9 +124,9 @@ public class FXOnClickExploder extends DojoFXHandler
 		{
 			String coords = "[" + box.getX() + ", " + box.getY() + ", " + box.getWidth() + ", "
 					+ box.getHeight() + "]";
-			functionEx = "dojo.lfx.html.explodeFromBox(" + coords + ", end.id, duration,null, function(){"
+			functionEx = "dojo.lfx.html.explodeFromBox(" + coords + ", end.id, duration, null, function(){"
 					+ componentId + "_exploderstate=\"exploded\";}).play();";
-			functionIm = "dojo.lfx.html.implodeToBox(end.id, " + coords + ", duration,null, function(){"
+			functionIm = "dojo.lfx.html.implodeToBox(end.id, " + coords + ", duration, null, function(){"
 					+ componentId + "_exploderstate=\"imploded\";}).play();";
 
 		}
@@ -142,34 +142,36 @@ public class FXOnClickExploder extends DojoFXHandler
 		{
 
 			functionEx = "dojo.lfx.explode(start, end, duration, null, function(){" + componentId
-					+ "_exploderstate=\"exploded\";}).play();";
+					+ "_exploderstate='exploded';}).play();";
 			functionIm = "dojo.lfx.implode(end, start, duration, null, function(){" + componentId
-					+ "_exploderstate=\"imploded\";}).play();";
+					+ "_exploderstate='imploded';}).play();";
 
 
 		}
 
 		if (startDisplay)
 		{
-			s = "\t<script language=\"JavaScript\" type=\"text/javascript\">\n" + "\t"
-					+ componentId + "_expoderstate = 'exploded'; \n";
+			s  = "	<script language='JavaScript' type='text/javascript'>\n";
+			s += "	" + componentId + "_expoderstate = 'exploded'; \n";
+					
 		}
 		else
 		{
-			s = "\t<script language=\"JavaScript\" type=\"text/javascript\">\n" + "\t"
-					+ componentId + "_exploderstate = 'imploded'; \n";
+			s  = "	<script language='JavaScript' type='text/javascript'>\n";
+			s += "	" + componentId + "_exploderstate = 'imploded'; \n";
 		}
-		s = s + "\tfunction " + componentId + "_plode(start, endid, duration)\n" + "\t{\n"
-				+ "\t\tvar end = document.getElementById(endid);\n" + "\t\tif(" + componentId
-				+ "_exploderstate==\"imploded\")\n" + "\t\t{\n" + "\t\t\t" + componentId
-				+ "_exploderstate = \"exploding\";\n" + "\t\t\t" + functionEx + "\n"
-				+ "\t\t} else if (" + componentId + "_exploderstate == \"exploded\")\n" + "\t\t{\n"
-				+ "\t\t\t" + componentId + "_exploderstate = \"imploding\";\n" + "\t\t\t"
-				+ functionIm + "\n" + "\t\t} else {\n" + "\t\t}\n"
+		s += "	function " + componentId + "_plode(start, end, duration){\n";
+		s += "		if(" + componentId + "_exploderstate=='imploded'){\n";
+		s += "			" + componentId + "_exploderstate = 'exploding';\n";
+		s += "			" + functionEx + "\n";
+		s += "		} else if (" + componentId + "_exploderstate == 'exploded'){\n";
+		s += "			" + componentId + "_exploderstate = 'imploding';\n";
+		s += "			" + functionIm + "\n";
+		s += "		} else {\n";
+		s += "		}\n";
+		s += "	}\n";
+		s += "	</script>\n";
 
-				+ "\t}\n" + "\t</script>\n";
-
-		
 		response.renderString(s);
 	}
 
@@ -181,12 +183,10 @@ public class FXOnClickExploder extends DojoFXHandler
 	{
 		if (getComponent() == null)
 		{
-			throw new NullPointerException(
-					"Component is null. Cannot add extra trigger before effect is bound to component!");
+			throw new NullPointerException("Component is null. Cannot add extra trigger before effect is bound to component!");
 		}
 		c.add(new AppendAttributeModifier(getEventName(), true, new Model(componentId
-				+ "_plode(document.getElementById('" + getTrigger().getId() + "'),'" + HTMLID
-				+ "', " + getDuration() + ");")));
+				+ "_plode('" + getTrigger().getId() + "','" + HTMLID + "', " + getDuration() + ");")));
 	}
 
 	/**
