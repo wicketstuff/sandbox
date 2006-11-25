@@ -28,7 +28,7 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 	public DojoSelectableListContainerHandler(ListView listView)
 	{
 		super();
-		listView = listView;
+		this.listView = listView;
 	}
 
 	/**
@@ -68,10 +68,6 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 		}
 	}
 
-	/**
-	 * TODO find an other way to Render an as big javascript
-	 * TODO put it in js file
-	 */
 	public void renderHead(IHeaderResponse response)
 	{
 		super.renderHead(response);
@@ -80,28 +76,6 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 		if (((DojoSelectableListContainer)getComponent()).getOverwriteCss() != null){
 			response.renderCSSReference(((DojoSelectableListContainer)getComponent()).getOverwriteCss());
 		}
-		
-		String toReturn="";
-		toReturn += "<script language=\"JavaScript\" type=\"text/javascript\">\n";
-		toReturn += "function getSelection(id){\n";
-		toReturn += "	var container = document.getElementById(id);\n";
-		toReturn += "	var body = container.getElementsByTagName('tbody')[0];\n";
-		toReturn += "	var rows=body.getElementsByTagName('tr')\n";
-		toReturn += "	var selection = '';\n";
-		toReturn += "	var index = 0;\n";
-		toReturn += "	for(var i=0; i<rows.length; i++){\n";
-		toReturn += "		if(rows[i].parentNode==body){\n";
-		toReturn += "			if(dojo.html.getAttribute(rows[i],'selected')=='true'){\n";
-		toReturn += "				selection += '&select=' + index;\n";
-		toReturn += "			}\n";
-		toReturn += "			index++;\n";
-		toReturn += "		}\n";
-		toReturn += "	}\n";
-		toReturn += "	return selection;\n";
-		toReturn += "};\n";
-		toReturn += "</script>\n";
-		
-		response.renderString(toReturn);
 	}
 	
 	/**
