@@ -88,7 +88,7 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer imple
 	{
 		super.onBeforeRender();
 		if (!"table".equals(getMarkupStream().getTag().getName())){
-			throw new WicketRuntimeException("Tag name for a DojoSelectableListContainer should be 'table'");
+			throw new WicketRuntimeException("Encountered tag name: '" + getMarkupStream().getTag().getName() + "', should be 'table'");
 		}
 	}
 	
@@ -113,13 +113,14 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer imple
 	/**
 	 * Find the list view in children
 	 * if none or more than one throw an exception!
+	 * 
+	 * @return the child ListView of this container
 	 */
 	private ListView getListView()
 	{
 		ListViewFinder visitor = new ListViewFinder();
 		visitChildren(visitor);
 		return visitor.getListView();
-		
 	}
 	
 	/*																									  *\
