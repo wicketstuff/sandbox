@@ -34,7 +34,7 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer imple
 	private List selected;
 
 	private String enableMultipleSelect;
-	private String tbodyClass;
+	private String cssClass;
 	
 	/**
 	 * flag to know if on choose meke a ajax request or not
@@ -44,7 +44,7 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer imple
 	/**
 	 * Allow user to set another css to overwrite the default one
 	 */
-	private ResourceReference overwriteCss;
+	private ResourceReference overrideCssReference;
 	
 	//child
 	private ListView listView;
@@ -67,7 +67,7 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer imple
 	{
 		super(id, model);
 		enableMultipleSelect = "true";
-		tbodyClass = "scrollContent";
+		cssClass = "dojoSelectableList";
 		ajaxModeOnChoose = true;
 	}
 
@@ -76,12 +76,9 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer imple
 		super.onComponentTag(tag);
 		tag.put(DojoIdConstants.DOJO_TYPE, "SelectableTable");
 		tag.put("enableMultipleSelect", enableMultipleSelect);
-		tag.put("tbodyClass", tbodyClass);
-		
-		//Is they need to be configured?
-		tag.put("enableAlternateRows","true");
+		tag.put("enableAlternateRows", "true");
 		tag.put("rowAlternateClass", "alternateRow");
-		tag.put("headClass","fixedHeader");
+		tag.put("class", cssClass);
 	}
 
 	protected void onBeforeRender()
@@ -152,22 +149,23 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer imple
 	}
 
 	/**
-	 * Get the class used to render table, selection and onMouse over
+	 * Get the CSS class for the table, defaults to "dojoSelectableList".
+	 * It is used to render the table, selection and onMouse over.
 	 * TODO : more explanation
-	 * @return the body table class
+	 * @return the table's CSS class
 	 */
-	public String getTbodyClass()
+	public String getCssClass()
 	{
-		return tbodyClass;
+		return cssClass;
 	}
 
 	/**
-	 * Change the default table body class
+	 * Override the default CSS class "dojoSelectableList" for the table
 	 * @param tbodyClass the new table body class
 	 */
-	public void setTbodyClass(String tbodyClass)
+	public void setCssClass(String tbodyClass)
 	{
-		this.tbodyClass = tbodyClass;
+		this.cssClass = tbodyClass;
 	}
 
 	/**
@@ -201,18 +199,18 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer imple
 	 * return the used css to overwrite the default one
 	 * @return the used css to overwrite the default one or null if none ios defined
 	 */
-	public ResourceReference getOverwriteCss()
+	public ResourceReference getOverrideCssReference()
 	{
-		return overwriteCss;
+		return overrideCssReference;
 	}
 
 	/**
 	 * set a css reference to overwrite the default one
 	 * @param overwriteCss  a css reference to overwrite the default one
 	 */
-	public void setOverwriteCss(ResourceReference overwriteCss)
+	public void setOverrideCssReference(ResourceReference overwriteCss)
 	{
-		this.overwriteCss = overwriteCss;
+		this.overrideCssReference = overwriteCss;
 	}
 
 	/**
@@ -235,9 +233,10 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer imple
 	}
 
 	/**
-	 * Triggered when double click on an item and ajaxOnChoose is enabled
+	 * Triggered when double click on a table row and ajaxOnChoose is enabled
 	 * <b>by default ajax is enabled</b>
 	 * @param target ajax target
+	 * @param selected the object corresponding to the table row that has been choosen
 	 */
 	public void onChoose(AjaxRequestTarget target, Object selected)
 	{
@@ -245,7 +244,7 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer imple
 	}
 	
 	/**
-	 * Triggered when double click on an item and ajaxOnChoose is disabled
+	 * Triggered when double click on a table row and ajaxOnChoose is disabled
 	 * <b>by default ajax is enabled</b>
 	 * @param selected selected item
 	 */
