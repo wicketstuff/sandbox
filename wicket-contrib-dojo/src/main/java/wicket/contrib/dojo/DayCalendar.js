@@ -29,23 +29,25 @@ dojo.widget.defineWidget (
 	mousedown: false,
 	
 	//list of slice time
-	sliceTimes: null,
+	timeRange: null,
 	
 	//incremented on each new Slice
 	slicePartId: 0,
 	
 	//Selected Slice
-	selectedSlice: null,
+	selectedTimeRange: null,
 	
 	//if a weekCalendar exsit add it here
 	weekCalendar : null,
 	
+	tmpx: null,
+	
 	postCreate: function(args, fragment, parent){
-		this.sliceTimes =  new dojo.collections.ArrayList();
+		this.timeRange =  new dojo.collections.ArrayList();
 		var body = document.getElementsByTagName("body")[0];
 		var onMouseUp = body.getAttribute("onMouseUp");
 		if (onMouseUp == null){ onMouseUp = ""}
-		onMouseUp += "dojo.widget.byId('" + this.widgetId + "').fixDiv();";
+		onMouseUp += "dojo.widget.byId('" + this.widgetId + "').fixTimeRange();";
 		document.getElementsByTagName("body")[0].setAttribute("onMouseUp",onMouseUp);
 		var onKeyPress = body.getAttribute("onkeypress");
 		if (onKeyPress == null){ onKeyPress = ""}
@@ -55,8 +57,9 @@ dojo.widget.defineWidget (
 		//add listener to slice
 		var inners = this.domNode.getElementsByTagName("div");
 		for(var i=0; i<inners.length; i++){
-			inners[i].setAttribute("onmouseover","dojo.widget.byId('" + this.widgetId + "').expandDiv(this)");
-			inners[i].setAttribute("onmousedown","dojo.widget.byId('" + this.widgetId + "').createDiv(this)");
+			inners[i].setAttribute("onmouseover","this.innerHTML= this.getAttribute('start') + ' - ' + this.getAttribute('end'); dojo.widget.byId('" + this.widgetId + "').expandTimeRange(this)");
+			inners[i].setAttribute("onmouseout","this.innerHTML=''");;
+			inners[i].setAttribute("onmousedown","dojo.widget.byId('" + this.widgetId + "').createTimeRange(this)");
 			var pos = i + "";
 			if (pos.length == 1){ pos = "0" + i} 
 			inners[i].setAttribute("pos", pos);
@@ -64,14 +67,14 @@ dojo.widget.defineWidget (
 	},
 	
 	
-	createDiv: function(div){
+	createTimeRange: function(div){
 		var pos = dojo.html.toCoordinateObject(div,true);
 		this.current = document.createElement("div");
 		this.timeDiv = document.createElement("div");
 		with (this.current.style){
 			borderStyle = "solid";
 			borderColor = "#0000FF";
-			backgroundColor = "#4444FF";
+			backgroundColor = "#AAAAFF";
 			borderWidth = "1px";
 			height = pos.height - 3 +"px";
 			width = pos.width - 3 + "px";
@@ -86,27 +89,27 @@ dojo.widget.defineWidget (
 		}
 		this.current.appendChild(this.timeDiv);
 		dojo.body().appendChild(this.current);
-		this.current.setAttribute("onMouseMove","dojo.widget.byId('" + this.widgetId + "').reduceDiv(event)");
+		this.current.setAttribute("onMouseMove","dojo.widget.byId('" + this.widgetId + "').reduceTimeRange(event)");
 		var id = this.widgetId + "_timeSlice_" + this.slicePartId++;
 		this.current.setAttribute("id", id);
-		this.current.setAttribute("onClick","dojo.widget.byId('" + this.widgetId + "').selectDiv(this)");
+		this.current.setAttribute("onClick","dojo.widget.byId('" + this.widgetId + "').selectTimeRange(this)");
 		dojo.html.setOpacity(this.current, 0.8, false);
 		//dojo.lfx.rounded({}, [id]);
 		this.firstSelected = div;
 		this.mousedown = true;
+		this.expandTimeRange(this.firstSelected);
 	},
 
 	getDivUnderMouse: function(cursor){
-		var inners = this.domNode.getElementsByTagName("div");
-		for(var i=0; i<inners.length; i++){
-			if (this.inDiv(inners[i], cursor)){
-				return inners[i];
-			}
-		}
-		return null;
+		var pos = dojo.html.toCoordinateObject(this.domNode,true);
+		var y = cursor.y - pos.top;
+		
+		var divPos = Math.floor(y/10);
+
+		return this.domNode.getElementsByTagName("div")[divPos];
 	},
 
-	reduceDiv: function(e){
+	reduceTimeRange: function(e){
 		if (this.mousedown){
 			var cursor = dojo.html.getCursorPosition(e);
 			this.lastSelected = this.getDivUnderMouse(cursor);
@@ -116,24 +119,41 @@ dojo.widget.defineWidget (
 			}else{
 				//no div under cursor
 			}
+			
 		}
 	},
 
-	expandDiv: function(div){
+	expandTimeRange: function(div){
 		if (this.mousedown){
+			div.innerHTML='';
 			this.lastSelected = div;
 			this.doExpend();
 		}
 	},
 
-	fixDiv: function (){
+	fixTimeRange: function (){
 		if (this.mousedown){
-			this.sliceTimes.add(this.current);
+			this.timeRange.add(this.current);
 			this.firstSelected = null;
 			this.lastSelected = null;
+			with (this.current.style){
+				backgroundColor = "#4444FF";
+			}
+			var val = this.current.getElementsByTagName('div')[0].innerHTML;
+			var start = val.substring(0,5);
+			var end = val.substring(8,val.length);
+			this.onCreate(start, end, this.widgetId);
+			if (this.weekCalendar != null){
+				this.weekCalendar.onCreate(start, end, this.widgetId);
+			}
 			this.current = null;
 			this.mousedown = false;
+			this.tmpx = null;
+			
 		}
+	},
+	
+	onCreate: function(start, end, widgetId){
 	},
 
 	doExpend: function (){
@@ -185,36 +205,37 @@ dojo.widget.defineWidget (
 	createTimeDiv: function(){
 		this.timeDiv.innerHTML = this.createTime();
 	},
-
-	inDiv: function(div, cursor){
-		var pos = dojo.html.toCoordinateObject(div,true);
-		if ( ((pos.left + pos.width) > cursor.x) && (cursor.x > pos.left) &&
-		     ((pos.top  + pos.height)> cursor.y) && (cursor.y > pos.top)  )
-		{
-			return true;
+	
+	removeTimeRange: function(div){
+		var val = div.getElementsByTagName('div')[0].innerHTML;
+		var start = val.substring(0,5);
+		var end = val.substring(8,val.length);
+		this.onRemove(start, end, this.widgetId);
+		if (this.weekCalendar != null){
+			this.weekCalendar.onRemove(start, end, this.widgetId);
 		}
-		return false;
-	},
-	
-	removeSlice: function(div){
-		this.sliceTimes.remove(div);
+		this.timeRange.remove(div);
 		document.getElementsByTagName("body")[0].removeChild(div);
+		
 	},
 	
-	selectDiv: function(div){
-		if (this.selectedSlice != null && div == this.selectedSlice){
+	onRemove: function(start, end, widgetId){
+	},
+	
+	selectTimeRange: function(div){
+		if (this.selectedTimeRange != null && div == this.selectedTimeRange){
 			//remove selected Style
-			with (this.selectedSlice.style){
+			with (this.selectedTimeRange.style){
 				backgroundColor = "#4444FF";
 			}
-			this.selectedSlice = null;
+			this.selectedTimeRange = null;
 		} else {
-			if (this.selectedSlice != null ){
-				with (this.selectedSlice.style){
+			if (this.selectedTimeRange != null ){
+				with (this.selectedTimeRange.style){
 					backgroundColor = "#4444FF";
 				}
 			}
-			this.selectedSlice = div;
+			this.selectedTimeRange = div;
 			if (div != null){
 				with (div.style){
 					backgroundColor = "#FF44FF";
@@ -230,9 +251,9 @@ dojo.widget.defineWidget (
 	onSelect: function(div){},
 	
 	keyPressed: function(e){
-		if (e.keyCode == 46 && this.selectedSlice != null){  //DEL
-			this.removeSlice(this.selectedSlice);
-			this.selectedSlice = null;
+		if (e.keyCode == 46 && this.selectedTimeRange != null){  //DEL
+			this.removeTimeRange(this.selectedTimeRange);
+			this.selectedTimeRange = null;
 		}
 	},
 	
@@ -244,7 +265,7 @@ dojo.widget.defineWidget (
 	 */
 	getValue: function(){
 		var toReturn = new Array();
-		this.sliceTimes.forEach(function(item){
+		this.timeRange.forEach(function(item){
 			var toAdd = {};
 			var val = item.getElementsByTagName('div')[0].innerHTML;
 			toAdd.start = val.substring(0,5);
@@ -254,22 +275,32 @@ dojo.widget.defineWidget (
 		return toReturn;
 	},
 	
-	addSliceTime: function(start, end){
+	addTimeRange: function(start, end){
 		var inners = this.domNode.getElementsByTagName("div");
 		for(var i=0; i<inners.length; i++){
 			if (inners[i].getAttribute("start") == start){
-				this.createDiv(inners[i]);
+				this.createTimeRange(inners[i]);
 			}
 			if (inners[i].getAttribute("end") == end){
-				this.expandDiv(inners[i]);
-				this.fixDiv();
+				this.expandTimeRange(inners[i]);
+				if (this.mousedown){
+					this.timeRange.add(this.current);
+					this.firstSelected = null;
+					this.lastSelected = null;
+					with (this.current.style){
+						backgroundColor = "#4444FF";
+					}
+					this.current = null;
+					this.mousedown = false;
+					this.tmpx = null;
+				}
 			}
 		}
 	},
 	
 	setValue: function(obj){
 		for(var i=0; i < obj.length; i++){
-			this.addSliceTime(obj[i].start, obj[i].end);
+			this.addTimeRange(obj[i].start, obj[i].end);
 		}
 	},
 });
