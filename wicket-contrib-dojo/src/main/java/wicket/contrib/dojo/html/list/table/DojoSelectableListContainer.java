@@ -113,7 +113,7 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer imple
 	 * 
 	 * @return the child ListView of this container
 	 */
-	private ListView getListView()
+	public ListView getListView()
 	{
 		ListViewFinder visitor = new ListViewFinder();
 		visitChildren(visitor);
