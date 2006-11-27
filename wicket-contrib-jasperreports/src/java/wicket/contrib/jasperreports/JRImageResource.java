@@ -30,6 +30,7 @@ import net.sf.jasperreports.engine.JRAbstractExporter;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.export.JRGraphics2DExporter;
 import net.sf.jasperreports.engine.export.JRGraphics2DExporterParameter;
 import org.apache.commons.logging.Log;
@@ -123,16 +124,11 @@ public class JRImageResource extends JRResource {
             BufferedImage image = new BufferedImage(width, height, type);
             exporter.setParameter(JRGraphics2DExporterParameter.GRAPHICS_2D, image.getGraphics());
             exporter.setParameter(JRGraphics2DExporterParameter.ZOOM_RATIO, new Float(zoomRatio));
+            exporter.setParameter(JRExporterParameter.JASPER_PRINT, print);
 
             // execute the export and return the trapped result
             exporter.exportReport();
             final byte[] data = toImageData(image);
-            // if (log.isDebugEnabled())
-            // {
-            long t2 = System.currentTimeMillis();
-            log.info("loaded report data; bytes: "
-                + data.length + " in " + (t2 - t1) + " miliseconds");
-            // }
             return new ResourceState() {
                 @Override
                 public int getLength() {

@@ -8,14 +8,15 @@
 	<name>Wicket Contrib JasperReports</name>
 	<description>JasperReports integration components and resources for Wicket.</description>
 	<url>http://wicket-stuff.sourceforge.net/wicket-contrib-jasperreports</url>
-	<inceptionYear>2005</inceptionYear>
+	<inceptionYear>2006</inceptionYear>
 
-	<organization>
-		<name>Wicket developers</name>
-		<url>http://wicket.sourceforge.net</url>
-	</organization>
+    <organization>
+        <name>Wicket Stuff developers</name>
+        <url>http://wicket-stuff.sourceforge.net</url>
+    </organization>
 
-	<licenses>
+
+    <licenses>
 		<license>
 			<name>The Apache Software License, Version 2.0</name>
 			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
@@ -29,9 +30,9 @@
 
 
 	<scm>
-		<connection>scm:cvs:pserver:${maven.scm.anonymous}@cvs.sourceforge.net:/cvsroot/wicket-stuff:wicket-contrib-jasperreports</connection>
-		<developerConnection>scm:cvs:ext:${maven.scm.user}@cvs.sourceforge.net:/cvsroot/wicket-stuff:wicket-contrib-jasperreports</developerConnection>
-		<url>http://cvs.sourceforge.net/viewcvs.py/wicket-stuff/wicket-contrib-jasperreports</url>
+        <connection>scm:svn:${maven.scm.anonymous}@https://svn.sourceforge.net/svnroot/wicket-stuff/trunk/wicket-contrib-jasperreports</connection>
+        <developerConnection>scm:svn:${maven.scm.user}@https://svn.sourceforge.net/svnroot/wicket-stuff/trunk/wicket-contrib-jasperreports</developerConnection>
+        <url>http://cvs.sourceforge.net/viewcvs.py/wicket-stuff/wicket-contrib-jasperreports</url>
 	</scm>
 
 	<mailingLists>
