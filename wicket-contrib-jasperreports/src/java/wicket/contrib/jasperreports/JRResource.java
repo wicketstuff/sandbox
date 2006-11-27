@@ -67,11 +67,6 @@ public abstract class JRResource extends DynamicWebResource {
     private Map reportParameters;
 
     /**
-     * the datasource if any for filling this report.
-     */
-    private JRDataSource reportDataSource;
-
-    /**
      * When set, a header 'Content-Disposition: attachment; filename="${fileName}"' will be added to the response,
      * resulting in a download dialog. No magical extensions are added, so you should make sure the file has the
      * extension you want yourself.
@@ -212,19 +207,7 @@ public abstract class JRResource extends DynamicWebResource {
      * @return the datasource if any for filling this report
      */
     public JRDataSource getReportDataSource() {
-        return reportDataSource;
-    }
-
-    /**
-     * Sets the datasource if any for filling this report.
-     *
-     * @param dataSource the datasource if any for filling this report
-     *
-     * @return This
-     */
-    public JRResource setReportDataSource(JRDataSource dataSource) {
-        reportDataSource = dataSource;
-        return this;
+        return null;
     }
 
     /**
