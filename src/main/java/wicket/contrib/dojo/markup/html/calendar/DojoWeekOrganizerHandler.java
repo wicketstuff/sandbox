@@ -1,0 +1,74 @@
+package wicket.contrib.dojo.markup.html.calendar;
+
+import wicket.ResourceReference;
+import wicket.ajax.AjaxRequestTarget;
+import wicket.contrib.dojo.AbstractDefaultDojoBehavior;
+import wicket.contrib.dojo.AbstractRequireDojoBehavior;
+import wicket.contrib.dojo.markup.html.calendar.model.TimeRangeModelHelper;
+import wicket.contrib.dojo.markup.html.calendar.model.WeekTimeRange;
+import wicket.markup.ComponentTag;
+import wicket.markup.html.IHeaderResponse;
+
+public class DojoWeekOrganizerHandler extends AbstractRequireDojoBehavior
+{
+
+	@Override
+	public void setRequire(RequireDojoLibs libs)
+	{
+		//DO NOTHING For the moment
+		
+	}
+
+	@Override
+	protected void respond(AjaxRequestTarget target)
+	{
+		String action = getComponent().getRequest().getParameter("action");
+		String start  = getComponent().getRequest().getParameter("start");
+		String end    = getComponent().getRequest().getParameter("end");
+		String day    = getComponent().getRequest().getParameter("day");
+		if (((WeekTimeRange)getComponent().getModelObject()) != null){
+			if ("create".equals(action)){
+				((WeekTimeRange)getComponent().getModelObject()).add(TimeRangeModelHelper.getDay(day), TimeRangeModelHelper.createRange(start, end));
+			}else if ("remove".equals(action)){
+				((WeekTimeRange)getComponent().getModelObject()).remove(TimeRangeModelHelper.getDay(day), TimeRangeModelHelper.createRange(start, end));
+			}
+		}
+	}
+
+	@Override
+	public void renderHead(IHeaderResponse response)
+	{
+		super.renderHead(response);
+		response.renderJavascriptReference(new ResourceReference(AbstractDefaultDojoBehavior.class, "DayCalendar.js"));
+		response.renderJavascriptReference(new ResourceReference(AbstractDefaultDojoBehavior.class, "WeekCalendar.js"));
+		if (((WeekTimeRange)getComponent().getModelObject()) != null){
+			String toRender = "";
+			toRender += "<script language=\"JavaScript\" type=\"text/javascript\">\n";
+			toRender += "function init" + getComponent().getMarkupId() + "(){\n";
+			toRender += "	var json='" + TimeRangeModelHelper.createJson(((WeekTimeRange)getComponent().getModelObject())) + "'\n";
+			toRender += "	dojo.widget.byId('" + getComponent().getMarkupId() + "').setJson(json);\n";
+			toRender += "}\n";
+			toRender += "dojo.addOnLoad(init"+ getComponent().getMarkupId() +");\n";
+			toRender += "</script>\n";
+			response.renderString(toRender);
+		}
+
+	}
+
+	@Override
+	protected void onComponentTag(ComponentTag tag)
+	{
+		super.onComponentTag(tag);
+		tag.put("onCreate", this.getCallbackCreate());
+		tag.put("onRemove", this.getCallbackRemove());
+	}
+	
+	protected String getCallbackCreate(){
+		return "var wcall=wicketAjaxGet('" + getCallbackUrl() + "&action=create&start=' + this.start + '&end=' + this.end + '&day=' + this.day, function() { }, function() { })";
+	}
+	
+	protected String getCallbackRemove(){
+		return "var wcall=wicketAjaxGet('" + getCallbackUrl() + "&action=remove&start=' + this.start + '&end=' + this.end + '&day=' + this.day, function() { }, function() { })";
+	}
+
+}
