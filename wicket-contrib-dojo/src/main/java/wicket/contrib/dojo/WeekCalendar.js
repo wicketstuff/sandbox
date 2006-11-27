@@ -17,6 +17,11 @@ dojo.widget.defineWidget (
 	friday: null,
 	saturday: null,
 	
+	//containings last values
+	start: null,
+	end: null,
+	day:null,
+	
 	
 	postCreate: function(args, fragment, parent){
 		this.sunday    = dojo.widget.createWidget("dojo:DayCalendar",{widgetId:'sunday'},dojo.byId("Sunday"));
@@ -37,61 +42,73 @@ dojo.widget.defineWidget (
 		
 		
 		this.sunday.onSelect = function(div){
-			this.weekCalendar.monday.selectDiv(null);
-			this.weekCalendar.tuesday.selectDiv(null);
-			this.weekCalendar.wednesday.selectDiv(null);
-			this.weekCalendar.thursday.selectDiv(null);
-			this.weekCalendar.friday.selectDiv(null);
-			this.weekCalendar.saturday.selectDiv(null);
+			this.weekCalendar.monday.selectTimeRange(null);
+			this.weekCalendar.tuesday.selectTimeRange(null);
+			this.weekCalendar.wednesday.selectTimeRange(null);
+			this.weekCalendar.thursday.selectTimeRange(null);
+			this.weekCalendar.friday.selectTimeRange(null);
+			this.weekCalendar.saturday.selectTimeRange(null);
 		};
 		this.monday.onSelect = function(div){
-			this.weekCalendar.sunday.selectDiv(null);
-			this.weekCalendar.tuesday.selectDiv(null);
-			this.weekCalendar.wednesday.selectDiv(null);
-			this.weekCalendar.thursday.selectDiv(null);
-			this.weekCalendar.friday.selectDiv(null);
-			this.weekCalendar.saturday.selectDiv(null);
+			this.weekCalendar.sunday.selectTimeRange(null);
+			this.weekCalendar.tuesday.selectTimeRange(null);
+			this.weekCalendar.wednesday.selectTimeRange(null);
+			this.weekCalendar.thursday.selectTimeRange(null);
+			this.weekCalendar.friday.selectTimeRange(null);
+			this.weekCalendar.saturday.selectTimeRange(null);
 		};
 		this.tuesday.onSelect = function(div){
-			this.weekCalendar.sunday.selectDiv(null);
-			this.weekCalendar.monday.selectDiv(null);
-			this.weekCalendar.wednesday.selectDiv(null);
-			this.weekCalendar.thursday.selectDiv(null);
-			this.weekCalendar.friday.selectDiv(null);
-			this.weekCalendar.saturday.selectDiv(null);
+			this.weekCalendar.sunday.selectTimeRange(null);
+			this.weekCalendar.monday.selectTimeRange(null);
+			this.weekCalendar.wednesday.selectTimeRange(null);
+			this.weekCalendar.thursday.selectTimeRange(null);
+			this.weekCalendar.friday.selectTimeRange(null);
+			this.weekCalendar.saturday.selectTimeRange(null);
 		};
 		this.wednesday.onSelect = function(div){
-			this.weekCalendar.sunday.selectDiv(null);
-			this.weekCalendar.monday.selectDiv(null);
-			this.weekCalendar.tuesday.selectDiv(null);
-			this.weekCalendar.thursday.selectDiv(null);
-			this.weekCalendar.friday.selectDiv(null);
-			this.weekCalendar.saturday.selectDiv(null);
+			this.weekCalendar.sunday.selectTimeRange(null);
+			this.weekCalendar.monday.selectTimeRange(null);
+			this.weekCalendar.tuesday.selectTimeRange(null);
+			this.weekCalendar.thursday.selectTimeRange(null);
+			this.weekCalendar.friday.selectTimeRange(null);
+			this.weekCalendar.saturday.selectTimeRange(null);
 		};
 		this.thursday.onSelect = function(div){
-			this.weekCalendar.sunday.selectDiv(null);
-			this.weekCalendar.monday.selectDiv(null);
-			this.weekCalendar.tuesday.selectDiv(null);
-			this.weekCalendar.wednesday.selectDiv(null);
-			this.weekCalendar.friday.selectDiv(null);
-			this.weekCalendar.saturday.selectDiv(null);
+			this.weekCalendar.sunday.selectTimeRange(null);
+			this.weekCalendar.monday.selectTimeRange(null);
+			this.weekCalendar.tuesday.selectTimeRange(null);
+			this.weekCalendar.wednesday.selectTimeRange(null);
+			this.weekCalendar.friday.selectTimeRange(null);
+			this.weekCalendar.saturday.selectTimeRange(null);
 		};
 		this.friday.onSelect = function(div){
-			this.weekCalendar.sunday.selectDiv(null);
-			this.weekCalendar.monday.selectDiv(null);
-			this.weekCalendar.tuesday.selectDiv(null);
-			this.weekCalendar.wednesday.selectDiv(null);
-			this.weekCalendar.thursday.selectDiv(null);
-			this.weekCalendar.saturday.selectDiv(null);
+			this.weekCalendar.sunday.selectTimeRange(null);
+			this.weekCalendar.monday.selectTimeRange(null);
+			this.weekCalendar.tuesday.selectTimeRange(null);
+			this.weekCalendar.wednesday.selectTimeRange(null);
+			this.weekCalendar.thursday.selectTimeRange(null);
+			this.weekCalendar.saturday.selectTimeRange(null);
 		};
 		this.saturday.onSelect = function(div){
-			this.weekCalendar.sunday.selectDiv(null);
-			this.weekCalendar.monday.selectDiv(null);
-			this.weekCalendar.tuesday.selectDiv(null);
-			this.weekCalendar.wednesday.selectDiv(null);
-			this.weekCalendar.thursday.selectDiv(null);
-			this.weekCalendar.friday.selectDiv(null);
-		};
+			this.weekCalendar.sunday.selectTimeRange(null);
+			this.weekCalendar.monday.selectTimeRange(null);
+			this.weekCalendar.tuesday.selectTimeRange(null);
+			this.weekCalendar.wednesday.selectTimeRange(null);
+			this.weekCalendar.thursday.selectTimeRange(null);
+			this.weekCalendar.friday.selectTimeRange(null);
+		};	
+	},
+	
+	onCreate: function(start, end, day){
+		this.start = start;
+		this.end = end;
+		this.day = day;
+	},
+	
+	onRemove: function(start, end, day){
+		this.start = start;
+		this.end = end;
+		this.day = day;
 	},
 	
 	/**
