@@ -73,8 +73,8 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 		super.renderHead(response);
 		response.renderCSSReference(new ResourceReference(DojoSelectableListContainer.class, "DojoSelectableListContainer.css"));
 		response.renderJavascriptReference(new ResourceReference(DojoSelectableListContainer.class, "SelectableTable.js"));
-		if (((DojoSelectableListContainer)getComponent()).getOverwriteCss() != null){
-			response.renderCSSReference(((DojoSelectableListContainer)getComponent()).getOverwriteCss());
+		if (((DojoSelectableListContainer)getComponent()).getOverrideCssReference() != null){
+			response.renderCSSReference(((DojoSelectableListContainer)getComponent()).getOverrideCssReference());
 		}
 	}
 	
