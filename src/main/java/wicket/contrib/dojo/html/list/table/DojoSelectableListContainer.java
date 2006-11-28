@@ -98,7 +98,7 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer imple
 	public final void onLinkClicked()
 	{
 		int selectIndex = Integer.parseInt(getRequest().getParameter("select"));
-		onNonAjaxChoose(this.listView.getList().get(this.listView.getList().size()- selectIndex - 1));
+		onNonAjaxChoose(this.listView.getList().get(selectIndex));
 		
 	}
 	
