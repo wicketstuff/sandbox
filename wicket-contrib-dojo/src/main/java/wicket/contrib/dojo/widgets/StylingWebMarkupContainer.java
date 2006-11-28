@@ -50,7 +50,7 @@ public class StylingWebMarkupContainer extends WebMarkupContainer
 			Entry<String,String> entry = ite.next();
 			styleTag += entry.getKey()+":"+entry.getValue()+";";
 		}
-		if (styleTag != null && !"".equals("")){
+		if (styleTag != null && !"".equals(styleTag)){
 			tag.put("style", styleTag);	
 		}
 	}
