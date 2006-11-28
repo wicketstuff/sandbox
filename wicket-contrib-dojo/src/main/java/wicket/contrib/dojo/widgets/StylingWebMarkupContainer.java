@@ -3,7 +3,6 @@ package wicket.contrib.dojo.widgets;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
-import wicket.MarkupContainer;
 import wicket.markup.ComponentTag;
 import wicket.markup.html.WebMarkupContainer;
 import wicket.model.IModel;
