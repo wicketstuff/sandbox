@@ -1,4 +1,4 @@
-package wicket.contrib.dojo.markup.html.container.tab;
+package wicket.contrib.dojo.markup.html.container.accordion;
 
 import wicket.Component;
 import wicket.Component.IVisitor;
@@ -12,27 +12,21 @@ import wicket.markup.html.IHeaderResponse;
  * @author vdemay
  *
  */
-public class DojoTabHandler extends AbstractRequireDojoBehavior
+public class DojoAccordionHandler extends AbstractRequireDojoBehavior
 {
 	@Override
 	public void setRequire(RequireDojoLibs libs)
 	{
-		libs.add("dojo.widget.TabContainer");
+		libs.add("dojo.widget.AccordionContainer");
 	}
 
 	@Override
 	protected final void respond(AjaxRequestTarget target)
 	{
 		AbstractDojoContainer container = (AbstractDojoContainer) getComponent();
-		String tabId = container.getRequest().getParameter("tabId");
-		String widgetPath = tabId;
-		if (tabId.contains("_")){
-			widgetPath = tabId.substring(tabId.lastIndexOf('_')+1, tabId.length());
-		}
-		AbstractDojoContainer tab = (AbstractDojoContainer)container.get(widgetPath);
-		((DojoTabContainer)getComponent()).setSelectedTab(tab);
-		((DojoTabContainer)getComponent()).onSelectTab(tab);
+		((DojoAccordionContainer)getComponent()).onChange();
 	}
+
 	
 	/**
 	 * @return javascript that will generate an ajax GET request to this
@@ -44,7 +38,7 @@ public class DojoTabHandler extends AbstractRequireDojoBehavior
 	 */
 	protected CharSequence getCallbackScript(boolean recordPageVersion)
 	{
-		return getCallbackScript("wicketAjaxGet('" + getCallbackUrl(recordPageVersion) + "&tabId=' + dojo.widget.byId('" + getComponent().getMarkupId() + "').selectedTabWidget.widgetId", null,null);
+		return getCallbackScript("wicketAjaxGet('" + getCallbackUrl(recordPageVersion) + "'", null,null);
 	}
 
 	@Override
@@ -53,7 +47,7 @@ public class DojoTabHandler extends AbstractRequireDojoBehavior
 		super.renderHead(response);
 
 		//add onShow event on each child in the tabContainer
-		DojoTabContainer container = (DojoTabContainer)getComponent();
+		DojoAccordionContainer container = (DojoAccordionContainer)getComponent();
 		RenderHeadCreator head = new RenderHeadCreator(container);
 		container.visitChildren(head);
 		
@@ -67,9 +61,9 @@ public class DojoTabHandler extends AbstractRequireDojoBehavior
 	private class RenderHeadCreator implements IVisitor{
 
 		private String toReturn;
-		private DojoTabContainer container;
+		private DojoAccordionContainer container;
 		
-		public RenderHeadCreator(DojoTabContainer container)
+		public RenderHeadCreator(DojoAccordionContainer container)
 		{
 			toReturn = "";
 			toReturn += "<script language=\"JavaScript\" type=\"text/javascript\">\n";

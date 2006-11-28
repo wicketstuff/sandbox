@@ -73,5 +73,14 @@ public class DojoTabContainer extends AbstractDojoContainer
 		return selected;
 	}
 
+	/**
+	 * Ovewrite this methos to handle clicks on tab
+	 * @param tab new tab selected
+	 */
+	public void onSelectTab(AbstractDojoContainer tab)
+	{
+				
+	}
+
 
 }
