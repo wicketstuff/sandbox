@@ -59,7 +59,7 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 			int pos;
 			for (int i=0; i < indexList.length; i++){
 				pos = Integer.parseInt(indexList[i]);
-				selected.add(all.get(all.size()- pos - 1));
+				selected.add(all.get(pos));
 			}
 			
 			((DojoSelectableListContainer)getComponent()).setSelected(selected);
@@ -88,7 +88,7 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 	 */
 	protected final CharSequence getCallbackScript()
 	{
-		return getCallbackScript("wicketAjaxGet('" + super.getCallbackUrl(false, true) + "' + getSelection('"+getComponent().getMarkupId()+"')", null,
+		return getCallbackScript("wicketAjaxGet('" + super.getCallbackUrl(true, true) + "' + getSelection('"+getComponent().getMarkupId()+"')", null,
 				null);
 	}
 	
@@ -98,7 +98,7 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 	 */
 	protected final CharSequence getDoubleClickCallbackScripts(){
 		if (((DojoSelectableListContainer) getComponent()).isAjaxModeOnChoose()){
-			return getCallbackScript("wicketAjaxGet('" + super.getCallbackUrl(false, true) + "'", null,null);
+			return getCallbackScript("wicketAjaxGet('" + super.getCallbackUrl(true, true) + "'", null,null);
 		}else{
 			CharSequence url = ((DojoSelectableListContainer) getComponent()).urlFor(ILinkListener.INTERFACE);
 			return "window.location.href='" + url + "' + getSelection('"+getComponent().getMarkupId()+"') ";

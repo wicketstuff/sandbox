@@ -1,5 +1,6 @@
 package wicket.contrib.dojo.html.list.table;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import wicket.Component;
@@ -9,6 +10,7 @@ import wicket.ajax.AjaxRequestTarget;
 import wicket.contrib.dojo.DojoIdConstants;
 import wicket.contrib.dojo.widgets.StylingWebMarkupContainer;
 import wicket.markup.ComponentTag;
+import wicket.markup.MarkupStream;
 import wicket.markup.html.link.ILinkListener;
 import wicket.markup.html.list.ListView;
 import wicket.model.IModel;
@@ -84,7 +86,7 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer imple
 	protected void onBeforeRender()
 	{
 		super.onBeforeRender();
-		if (!"table".equals(getMarkupStream().getTag().getName())){
+		if (getMarkupStream().atTag() && !"table".equals(getMarkupStream().getTag().getName())){
 			throw new WicketRuntimeException("Encountered tag name: '" + getMarkupStream().getTag().getName() + "', should be 'table'");
 		}
 	}
@@ -105,6 +107,14 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer imple
 		super.onAttach();
 		this.listView = getListView();
 		add(new DojoSelectableListContainerHandler(listView));
+	}
+	
+
+	// set to Empty the model
+	protected void onRender(MarkupStream markupStream)
+	{
+		super.onRender(markupStream);
+		this.selected = new ArrayList();
 	}
 
 	/**
