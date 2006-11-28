@@ -178,7 +178,7 @@ dojo.widget.defineWidget(
 				var o={
 					field:null,
 					format:null,
-					noSort:false,
+					noSort:true,
 					sortType:"String",
 					dataType:String,
 					sortFunction:null,
@@ -358,20 +358,6 @@ dojo.widget.defineWidget(
 			}
 			
 			var col=this.columns[this.sortIndex];
-			if(!col.noSort){
-				var field=col.getField();
-				if(col.sortFunction){
-					var sort=col.sortFunction;
-				}else{
-					var sort=function(a,b){
-						if (a[field]>b[field]) return 1;
-						if (a[field]<b[field]) return -1;
-						return 0;
-					}
-				}
-				data.sort(sort);
-				if(this.sortDirection!=0) data.reverse();
-			}
 
 			//	build the table and pop it in.
 			while(body.childNodes.length>0) body.removeChild(body.childNodes[0]);
