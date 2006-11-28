@@ -4,7 +4,6 @@ import static wicket.contrib.dojo.DojoIdConstants.DOJO_TYPE;
 import static wicket.contrib.dojo.DojoIdConstants.DOJO_TYPE_ACCORDIONCONTAINER;
 import wicket.MarkupContainer;
 import wicket.contrib.dojo.markup.html.container.AbstractDojoContainer;
-import wicket.contrib.dojo.markup.html.container.tab.DojoTabHandler;
 import wicket.markup.ComponentTag;
 
 /**
@@ -14,7 +13,7 @@ import wicket.markup.ComponentTag;
  */
 public class DojoAccordionContainer extends AbstractDojoContainer
 {
-	
+
 	/**
 	 * Construct a DojoAccordionContainer
 	 * @param parent parent where the container will be added
@@ -24,7 +23,7 @@ public class DojoAccordionContainer extends AbstractDojoContainer
 	public DojoAccordionContainer(MarkupContainer parent, String id, String title)
 	{
 		super(parent, id, title);
-		add(new DojoTabHandler());
+		add(new DojoAccordionHandler());
 	}
 
 	/**
@@ -43,5 +42,14 @@ public class DojoAccordionContainer extends AbstractDojoContainer
 		super.onComponentTag(tag);
 		tag.put(DOJO_TYPE, DOJO_TYPE_ACCORDIONCONTAINER);
 		tag.put("label", getTitle());
+	}
+
+	/**
+	 * Triggered when change selection
+	 *
+	 */
+	public void onChange()
+	{
+		
 	}
 }
