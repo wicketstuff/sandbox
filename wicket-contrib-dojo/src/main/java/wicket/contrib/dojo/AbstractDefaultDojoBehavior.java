@@ -43,7 +43,7 @@ public abstract class AbstractDefaultDojoBehavior extends AbstractDefaultAjaxBeh
 	
 	/** reference to the dojo support javascript file. */
 	private static final ResourceReference DOJO = new CompressedResourceReference(
-			AbstractDefaultDojoBehavior.class, "dojo-0.4/dojo.js");
+			AbstractDefaultDojoBehavior.class, "dojo-0.4/dojo.js.uncompressed.js");
 
 	/* (non-Javadoc)
 	 * @see wicket.ajax.AbstractDefaultAjaxBehavior#renderHead(wicket.markup.html.IHeaderResponse)
