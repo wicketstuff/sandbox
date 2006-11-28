@@ -3,6 +3,8 @@ package wicket.contrib.dojo;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import wicket.RequestCycle;
+import wicket.ajax.AjaxRequestTarget;
 import wicket.markup.html.IHeaderResponse;
 
 /**
@@ -13,6 +15,10 @@ public abstract class AbstractRequireDojoBehavior extends AbstractDefaultDojoBeh
 {
 	private RequireDojoLibs libs = new RequireDojoLibs();
 	
+	/**
+	 * see onComponentRendered
+	 */
+	private boolean once = false;
 	
 	/* (non-Javadoc)
 	 * @see wicket.contrib.dojo.AbstractDefaultDojoBehavior#renderHead(wicket.markup.html.IHeaderResponse)
@@ -47,7 +53,15 @@ public abstract class AbstractRequireDojoBehavior extends AbstractDefaultDojoBeh
 		return "	dojo.require(\"" + lib + "\")\n";
 	}
 	
-	
+	/**
+	 * this method is used to interpret dojoWidgets rendered via XMLHTTPRequest
+	 */
+	protected void onComponentRendered() {
+		if (!once && RequestCycle.get().getRequestTarget() instanceof AjaxRequestTarget) {
+			once = true;
+			((AjaxRequestTarget)RequestCycle.get().getRequestTarget()).appendJavascript("dojo.hostenv.makeWidgets()");
+		}
+	}
 	
 	/**
 	 * @author vdemay
