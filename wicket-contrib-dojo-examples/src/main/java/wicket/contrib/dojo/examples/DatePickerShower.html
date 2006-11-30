@@ -17,6 +17,69 @@
 			
 		<input value="Submit" name="Submit" type="submit" />
 	</form>
+	<br/>
+	<br/>
+	<br/>
+	<table align="center" style="border-color: navy; border-style: solid; border-width: 1px; font-size: 12px">
+		<tr>
+			<td style="color: white; background-color: navy; font-weight: bold; text-align: center;">
+				EDate Picker associated with java.util.date model. Can Accept toggler to display some effects 
+			</td>
+		</tr>
+		<tr>
+			<td>
+
+			</td>
+		</tr>
+		<tr>
+			<td style="color: white; background-color: navy; font-weight: bold; text-align: center;">
+				Java Code
+			</td>
+		</tr>
+		<tr>
+			<td>
+					<pre>
+package wicket.contrib.dojo.examples;
+
+import java.util.Date;
+
+import wicket.PageParameters;
+import wicket.contrib.dojo.toggle.DojoExplodeToggle;
+import wicket.contrib.dojo.toggle.DojoFadeToggle;
+import wicket.contrib.dojo.toggle.DojoWipeToggle;
+import wicket.contrib.markup.html.form.DatePicker;
+import wicket.markup.html.WebPage;
+import wicket.markup.html.form.Form;
+import wicket.model.Model;
+
+public class DatePickerShower extends WebPage {
+	
+	private Date date1;
+	private Date date2;
+	private Date date3;
+	private Date date4;
+	private String text1;
+		
+	public DatePickerShower(PageParameters parameters){
+
+		date1 = null;
+		date2 = new Date();
+		date3 = new Date();
+		date4 = new Date(); 
+		
+		Form form = new Form(this, "dateform");
+		new DatePicker(form, "date1", new Model&ltDate>(date1), "%m/%d/%Y");
+		new DatePicker(form, "date2", new Model&ltDate>(date2), "%m/%d/%Y").setToggle(new DojoWipeToggle(200));
+		new DatePicker(form, "date3", new Model&ltDate>(date3), "%m/%d/%Y").setToggle(new DojoFadeToggle(600));
+		new DatePicker(form, "date4", new Model&ltDate>(date4), "%m/%d/%Y").setToggle(new DojoExplodeToggle());
+
+	}
+}
+
+					</pre>
+			</td>
+		</tr>
+	</table>
  <br/>
  <br/>
   <br/>

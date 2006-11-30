@@ -20,6 +20,53 @@
 			foo bar
 		</div>
 	</div>
+		<br/>
+	<br/>
+	<br/>
+	<table align="center" style="border-color: navy; border-style: solid; border-width: 1px; font-size: 12px">
+		<tr>
+			<td style="color: white; background-color: navy; font-weight: bold; text-align: center;">
+				Explanation
+			</td>
+		</tr>
+		<tr>
+			<td>
+				Tabs, event is triggered on changing selection
+			</td>
+		</tr>
+		<tr>
+			<td style="color: white; background-color: navy; font-weight: bold; text-align: center;">
+				Java Code
+			</td>
+		</tr>
+		<tr>
+			<td>
+					<pre>
+package wicket.contrib.dojo.examples;
+
+import wicket.contrib.dojo.markup.html.container.DojoSimpleContainer;
+import wicket.contrib.dojo.markup.html.container.page.DojoPageContainer;
+import wicket.contrib.dojo.markup.html.container.tab.DojoTabContainer;
+import wicket.markup.html.WebPage;
+
+public class TabContainerSample extends WebPage {
+
+	public TabContainerSample() {
+		super();
+		DojoTabContainer container = new DojoTabContainer(this,"tabContainer");
+		container.setHeight("500px");
+		new DojoSimpleContainer(container, "tab1", "title1");
+		new DojoSimpleContainer(container, "tab2", "title2");
+		new DojoPageContainer(container, "tab3", DatePickerShower.class).setTitle("title3");
+		
+	}
+
+}
+
+					</pre>
+			</td>
+		</tr>
+	</table>
  <br/>
  <br/>
   <br/>

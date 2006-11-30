@@ -7,8 +7,6 @@
 	</head>
 
 <body>
-	TODO : opener and hidder ?<br/>
-	TODO : size and position
 	<div wicket:id="pane1">
 		content of my floatingPane 
 		<b>Could be html</b>
@@ -17,6 +15,57 @@
 	<div wicket:id="pane3">
 		Test another window with shadow
 	</div>
+	<br/>
+	<br/>
+	<br/>
+	<table align="center" style="border-color: navy; border-style: solid; border-width: 1px; font-size: 12px">
+		<tr>
+			<td style="color: white; background-color: navy; font-weight: bold; text-align: center;">
+				Display windows which can be rezized. A window can contains an other one
+			</td>
+		</tr>
+		<tr>
+			<td>
+
+			</td>
+		</tr>
+		<tr>
+			<td style="color: white; background-color: navy; font-weight: bold; text-align: center;">
+				Java Code
+			</td>
+		</tr>
+		<tr>
+			<td>
+					<pre>
+package wicket.contrib.dojo.examples;
+
+import wicket.PageParameters;
+import wicket.contrib.dojo.markup.html.floatingpane.DojoFloatingPane;
+import wicket.markup.html.WebPage;
+
+public class FloatingPaneShower extends WebPage {
+	
+	public FloatingPaneShower(PageParameters parameters){
+		DojoFloatingPane pane1 = new DojoFloatingPane(this, "pane1");
+		DojoFloatingPane pane2 = new DojoFloatingPane(pane1, "pane2");
+		DojoFloatingPane pane3 = new DojoFloatingPane(this, "pane3");
+		
+		
+		pane3.setHasShadow(true);
+		pane3.setHeight("300px");
+		pane3.setWidth("300px");
+		
+		pane1.setDisplayCloseAction(false);
+		pane1.setHeight("300px");
+		pane1.setWidth("300px");
+		pane2.setTitle("a title here");
+	}
+}
+
+					</pre>
+			</td>
+		</tr>
+	</table>
  <br/>
  <br/>
   <br/>
