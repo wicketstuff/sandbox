@@ -27,10 +27,13 @@ import wicket.util.string.Strings;
  *            the value type
  * 
  */
-public class VelocityContributor<K, V> extends AbstractBehavior implements IHeaderContributor
+public class VelocityContributor<K, V> extends AbstractBehavior implements
+		IHeaderContributor
 {
 
 	private static final long serialVersionUID = 1L;
+
+	private String encoding = "ISO-8859-1";
 
 	/** Whether to escape HTML characters. The default value is false. */
 	private boolean escapeHtml = false;
@@ -38,18 +41,6 @@ public class VelocityContributor<K, V> extends AbstractBehavior implements IHead
 	private IModel<Map<K, V>> model;
 
 	private String templateName;
-
-	private String encoding = "ISO-8859-1";
-
-	public String getEncoding()
-	{
-		return encoding;
-	}
-
-	public void setEncoding(String encoding)
-	{
-		this.encoding = encoding;
-	}
 
 	/**
 	 * Ctor for VelocityContributor
@@ -71,6 +62,50 @@ public class VelocityContributor<K, V> extends AbstractBehavior implements IHead
 		this.model = model;
 	}
 
+	/**
+	 * Detach contributor's model.
+	 */
+	public void detachModel()
+	{
+		if (model instanceof IDetachable)
+		{
+			((IDetachable) model).detach();
+
+		}
+	}
+
+	/**
+	 * @return contributor encoding, ISO-8859-1 by default.
+	 */
+	public String getEncoding()
+	{
+		return encoding;
+	}
+
+	/**
+	 * @see wicket.markup.html.IHeaderContributor#renderHead(wicket.markup.html.IHeaderResponse)
+	 */
+	public void renderHead(IHeaderResponse response)
+	{
+		String s = evaluate();
+		if (null != s)
+		{
+			response.getResponse().println(s);
+		}
+	}
+
+	/**
+	 * @param encoding
+	 *            contributor encoding
+	 */
+	public void setEncoding(String encoding)
+	{
+		this.encoding = encoding;
+	}
+
+	/**
+	 * @return Evaluate template
+	 */
 	protected String evaluate()
 	{
 
@@ -106,24 +141,6 @@ public class VelocityContributor<K, V> extends AbstractBehavior implements IHead
 		catch (Exception e)
 		{
 			throw new WicketRuntimeException(e);
-		}
-	}
-
-	public void renderHead(IHeaderResponse response)
-	{
-		String s = evaluate();
-		if (null != s)
-		{
-			response.getResponse().println(s);
-		}
-	}
-
-	public void detachModel()
-	{
-		if (model instanceof IDetachable)
-		{
-			((IDetachable) model).detach();
-
 		}
 	}
 

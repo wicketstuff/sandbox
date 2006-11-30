@@ -22,7 +22,7 @@ public class VelocityJavascriptContributor<K, V> extends VelocityContributor<K, 
 	private String id;
 
 	/**
-	 * Ctor
+	 * Construct.
 	 * 
 	 * Use this constructor if you have configured Velocity to use a
 	 * ClasspathResourceLoader. The templatePath will then be relative to the
@@ -41,7 +41,7 @@ public class VelocityJavascriptContributor<K, V> extends VelocityContributor<K, 
 	}
 
 	/**
-	 * Ctor
+	 * Construct.
 	 * 
 	 * Use this constructor when Velocity is configured with the
 	 * FileResourceLoader. templatePath with then be relative to the loader path
@@ -58,6 +58,9 @@ public class VelocityJavascriptContributor<K, V> extends VelocityContributor<K, 
 		this.id = id;
 	}
 
+	/**
+	 * @see wicket.contrib.util.resource.VelocityContributor#renderHead(wicket.markup.html.IHeaderResponse)
+	 */
 	@Override
 	public void renderHead(IHeaderResponse response)
 	{
@@ -67,5 +70,4 @@ public class VelocityJavascriptContributor<K, V> extends VelocityContributor<K, 
 			response.renderJavascript(s, id);
 		}
 	}
-
 }
