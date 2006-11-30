@@ -143,6 +143,6 @@ dojo.widget.defineWidget (
 	
 	getJson: function(){
 		return dojo.json.serialize(this.getValue())
-	},
+	}
 	
 });

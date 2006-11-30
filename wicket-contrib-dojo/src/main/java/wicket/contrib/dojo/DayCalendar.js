@@ -45,26 +45,55 @@ dojo.widget.defineWidget (
 	postCreate: function(args, fragment, parent){
 		this.timeRange =  new dojo.collections.ArrayList();
 		var body = document.getElementsByTagName("body")[0];
-		var onMouseUp = body.getAttribute("onMouseUp");
-		if (onMouseUp == null){ onMouseUp = ""}
-		onMouseUp += "dojo.widget.byId('" + this.widgetId + "').fixTimeRange();";
-		document.getElementsByTagName("body")[0].setAttribute("onMouseUp",onMouseUp);
-		var onKeyPress = body.getAttribute("onkeypress");
-		if (onKeyPress == null){ onKeyPress = ""}
-		onKeyPress += "dojo.widget.byId('" + this.widgetId + "').keyPressed(event);";
-		document.getElementsByTagName("body")[0].setAttribute("onkeypress",onKeyPress);
+		dojo.event.connect(body, "onmouseup", this, "fixTimeRange");
+		dojo.event.connect(document, "onkeydown", this, "keyPressed");
 		
 		//add listener to slice
 		var inners = this.domNode.getElementsByTagName("div");
 		for(var i=0; i<inners.length; i++){
-			inners[i].setAttribute("onmouseover","this.innerHTML= this.getAttribute('start') + ' - ' + this.getAttribute('end'); dojo.widget.byId('" + this.widgetId + "').expandTimeRange(this)");
-			inners[i].setAttribute("onmouseout","this.innerHTML=''");;
-			inners[i].setAttribute("onmousedown","dojo.widget.byId('" + this.widgetId + "').createTimeRange(this)");
+			dojo.event.connect(inners[i], "onmouseover", this, "mouseOverDiv");
+			dojo.event.connect(inners[i], "onmouseout", this, "mouseOutDiv");
+			dojo.event.connect(inners[i], "onmousedown", this, "mouseDownDiv");
 			var pos = i + "";
 			if (pos.length == 1){ pos = "0" + i} 
 			inners[i].setAttribute("pos", pos);
 		}
 	},
+	
+	/**
+	 * Event Listener
+	 */
+	mouseOverDiv: function(event){
+		div = event.target;
+		div.innerHTML = div.getAttribute('start') + ' - ' + div.getAttribute('end');
+		this.expandTimeRange(div);
+	},
+	
+	mouseOutDiv: function(event){
+		div = event.target;
+		div.innerHTML='';
+	},
+	
+	mouseDownDiv: function(event){
+		div = event.target;
+		this.createTimeRange(div);
+	},
+	
+	mouseMoveRange: function(event){
+		div = event.target;
+		this.reduceTimeRange(event)
+	},
+	
+	clickRange: function(event){
+		div = event.target;
+		if (div.getElementsByTagName('div').length == 0){
+			div = div.parentNode;
+		}
+		this.selectTimeRange(div);
+	},
+	/**
+	 * End Event Listener
+	 */
 	
 	
 	createTimeRange: function(div){
@@ -86,13 +115,14 @@ dojo.widget.defineWidget (
 			fontSize = "9px";
 			textAlign = "center";
 			fontWeight = "bold";
+			marginTop = "-3px";
 		}
 		this.current.appendChild(this.timeDiv);
 		dojo.body().appendChild(this.current);
-		this.current.setAttribute("onMouseMove","dojo.widget.byId('" + this.widgetId + "').reduceTimeRange(event)");
+		dojo.event.connect(this.current, "onmousemove", this, "mouseMoveRange");
 		var id = this.widgetId + "_timeSlice_" + this.slicePartId++;
 		this.current.setAttribute("id", id);
-		this.current.setAttribute("onClick","dojo.widget.byId('" + this.widgetId + "').selectTimeRange(this)");
+		dojo.event.connect(this.current, "onclick", this, "clickRange");
 		dojo.html.setOpacity(this.current, 0.8, false);
 		//dojo.lfx.rounded({}, [id]);
 		this.firstSelected = div;
@@ -302,5 +332,5 @@ dojo.widget.defineWidget (
 		for(var i=0; i < obj.length; i++){
 			this.addTimeRange(obj[i].start, obj[i].end);
 		}
-	},
+	}
 });
