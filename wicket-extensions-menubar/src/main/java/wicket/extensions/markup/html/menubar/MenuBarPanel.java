@@ -11,7 +11,6 @@ import wicket.AttributeModifier;
 import wicket.MarkupContainer;
 import wicket.ResourceReference;
 import wicket.behavior.HeaderContributor;
-import wicket.behavior.SimpleAttributeModifier;
 import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.list.Loop;
@@ -268,7 +267,7 @@ public class MenuBarPanel extends Panel {
 		init();
 
 		WebMarkupContainer menuBar = new WebMarkupContainer(this, "menubar");
-        menuBar.add(new SimpleAttributeModifier("id", name));
+        menuBar.add(new AttributeModifier("id", true, new Model<String>(name)));
 		// add the loop used to generate each single menu
 		new Loop(menuBar, "menus", menus.size()) {
 			private static final long serialVersionUID = 1L;
