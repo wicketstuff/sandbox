@@ -52,7 +52,9 @@ class MenuLinkPanel extends Panel<String> {
              case IMENULINKCALLBACK:
                     AjaxFallbackLink<String> menuCallBack = new AjaxFallbackLink<String>(this, "link", menuItem.getModel()) {
 
-                        @Override
+						private static final long serialVersionUID = 1L;
+
+						@Override
                         public void onClick(AjaxRequestTarget target)
                         {
                             menuItem.getMenuLinkCallback().onClick(target);                        
