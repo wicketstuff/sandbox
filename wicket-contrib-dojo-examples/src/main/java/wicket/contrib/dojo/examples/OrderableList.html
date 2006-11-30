@@ -37,6 +37,82 @@
 			</div>
 		</div>
 	</p>
+	
+	<br/>
+	<br/>
+	<br/>
+	<table align="center" style="border-color: navy; border-style: solid; border-width: 1px; font-size: 12px">
+		<tr>
+			<td style="color: white; background-color: navy; font-weight: bold; text-align: center;">
+				Explanation
+			</td>
+		</tr>
+		<tr>
+			<td>
+				Use on a list view, drag and drop can re-order the model in the list view.<br/>
+				Here the model is static to check it is synchronize with the output
+			</td>
+		</tr>
+		<tr>
+			<td style="color: white; background-color: navy; font-weight: bold; text-align: center;">
+				Java Code
+			</td>
+		</tr>
+		<tr>
+			<td>
+					<pre>
+package wicket.contrib.dojo.examples;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import wicket.contrib.dojo.html.list.DojoOrderableListRemover;
+import wicket.contrib.dojo.html.list.DojoOrderableListView;
+import wicket.contrib.dojo.html.list.DojoOrderableListViewContainer;
+import wicket.markup.html.WebPage;
+import wicket.markup.html.basic.Label;
+import wicket.markup.html.list.ListItem;
+
+public class OrderableList extends WebPage {
+
+	static final List<String> objList  = new  ArrayList<String>();
+
+	
+	public OrderableList() {
+		super();
+		if (objList.size() == 0){
+			objList.add("foo1");
+			objList.add("bar1");
+			objList.add("foo2");
+			objList.add("bar2");
+			objList.add("foo3");
+			objList.add("bar3");
+			objList.add("foo4");
+			objList.add("bar4");
+			objList.add("foo5");
+			objList.add("bar5");
+			objList.add("foo6");
+			objList.add("bar6");
+		}
+		DojoOrderableListViewContainer container = new DojoOrderableListViewContainer(this, "container");
+		DojoOrderableListView list = new DojoOrderableListView(container, "list", objList){
+
+			@Override
+			protected void populateItem(ListItem item) {
+				new Label(item,"label",(String)item.getModelObject());
+				new DojoOrderableListRemover(item, "remover", item);
+				
+			}
+			
+		};
+	}
+
+}
+
+					</pre>
+			</td>
+		</tr>
+	</table>
  <br/>
  <br/>
   <br/>

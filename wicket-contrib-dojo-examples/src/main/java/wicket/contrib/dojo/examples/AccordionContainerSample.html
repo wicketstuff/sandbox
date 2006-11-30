@@ -9,7 +9,18 @@
 	</head>
 
 <body>
-		<div wicket:id="organizer" type="text"></div>
+	<div wicket:id="tabContainer">
+		<div wicket:id="tab1">
+			content
+		</div>
+		<div wicket:id="tab2">
+			content 2
+		</div>
+		<div wicket:id="tab3">
+			foo bar
+		</div>
+	</div>
+	
 	<br/>
 	<br/>
 	<br/>
@@ -21,8 +32,7 @@
 		</tr>
 		<tr>
 			<td>
-				A week organizer to setup time ranges on a week. Time range can be deleted on click on it and Del key pressed.<br/>
-				This widget is associated with a model. Here datas are static to check synchronization between model and widget.
+				An  accordion container contain Other DojoXContainer. The last one (title3) contains a Page in it : see DojoPageContainer
 			</td>
 		</tr>
 		<tr>
@@ -33,24 +43,27 @@
 		<tr>
 			<td>
 					<pre>
+
 package wicket.contrib.dojo.examples;
 
-import wicket.PageParameters;
-import wicket.contrib.dojo.markup.html.calendar.DojoWeekOrganizer;
-import wicket.contrib.dojo.markup.html.calendar.model.WeekTimeRange;
+import wicket.contrib.dojo.markup.html.container.DojoSimpleContainer;
+import wicket.contrib.dojo.markup.html.container.accordion.DojoAccordionContainer;
+import wicket.contrib.dojo.markup.html.container.page.DojoPageContainer;
 import wicket.markup.html.WebPage;
-import wicket.model.Model;
 
-public class WeekOrganizerSample extends WebPage {
-	
-	private static WeekTimeRange times = new WeekTimeRange();
-	
-	public WeekOrganizerSample(PageParameters parameters){
-		
-		DojoWeekOrganizer organizer = new DojoWeekOrganizer(this, "organizer", new Model&ltWeekTimeRange>(times)); 
+public class AccordionContainerSample extends WebPage {
+
+	public AccordionContainerSample() {
+		super();
+		DojoAccordionContainer container = new DojoAccordionContainer(this,"tabContainer");
+		container.setHeight("500px");
+		new DojoSimpleContainer(container, "tab1", "title1");
+		new DojoSimpleContainer(container, "tab2", "title2");
+		new DojoPageContainer(container, "tab3", DatePickerShower.class).setTitle("title3");
 		
 	}
-}
+
+}					
 
 					</pre>
 			</td>
