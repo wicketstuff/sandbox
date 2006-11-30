@@ -33,9 +33,6 @@ import wicket.Page;
  */
 public class MenuModel extends DefaultTreeModel
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	/**

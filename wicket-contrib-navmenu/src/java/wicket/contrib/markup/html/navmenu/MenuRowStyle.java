@@ -33,9 +33,6 @@ import wicket.ResourceReference;
  */
 public class MenuRowStyle implements Serializable
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	/** the CSS style file. */
@@ -66,7 +63,7 @@ public class MenuRowStyle implements Serializable
 	 */
 	public String getItemCSSClass(MenuItem menuItem, MenuRow menuRow)
 	{
-		MenuRowModel rowModel = (MenuRowModel)menuRow.getModel().getNestedModel();
+		MenuRowModel rowModel = (MenuRowModel)menuRow.getModel();
 		boolean active = (rowModel.isPartOfCurrentSelection(menuRow.getPage(), menuItem));
 		return (active) ? "selectedTab" : null;
 	}
