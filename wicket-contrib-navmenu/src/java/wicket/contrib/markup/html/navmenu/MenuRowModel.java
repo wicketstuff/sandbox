@@ -23,8 +23,7 @@ import java.util.List;
 
 import wicket.Component;
 import wicket.Page;
-import wicket.RequestCycle;
-import wicket.model.IAssignmentAware;
+import wicket.model.IAssignmentAwareModel;
 import wicket.model.IModel;
 import wicket.model.IWrapModel;
 
@@ -33,7 +32,7 @@ import wicket.model.IWrapModel;
  * 
  * @author Eelco Hillenius
  */
-public class MenuRowModel implements IAssignmentAware<List<MenuItem>>
+public class MenuRowModel implements IAssignmentAwareModel<List<MenuItem>>
 {
 	private class AssignmentWrapper extends MenuRowModel implements IWrapModel<List<MenuItem>>
 	{
@@ -49,6 +48,10 @@ public class MenuRowModel implements IAssignmentAware<List<MenuItem>>
 		public AssignmentWrapper(MenuModel menuModel, int level, Component component)
 		{
 			super(menuModel, level);
+			if (component == null)
+			{
+				throw new IllegalArgumentException("component must be not null");
+			}
 			MenuRowModel.this.component = component;
 		}
 
@@ -105,7 +108,6 @@ public class MenuRowModel implements IAssignmentAware<List<MenuItem>>
 		if (row == null)
 		{
 			row = new ArrayList<MenuItem>();
-			RequestCycle requestCycle = RequestCycle.get();
 			Page currentPage = component.getPage();
 			MenuTreePath currentSelection = menuModel.getCurrentSelection(currentPage);
 			if (currentSelection.getPathCount() > level)
@@ -150,7 +152,7 @@ public class MenuRowModel implements IAssignmentAware<List<MenuItem>>
 	}
 
 	/**
-	 * @see wicket.model.IAssignmentAware#wrapOnAssignment(wicket.Component)
+	 * @see wicket.model.IAssignmentAwareModel#wrapOnAssignment(wicket.Component)
 	 */
 	@SuppressWarnings("unchecked")
 	public IWrapModel<List<MenuItem>> wrapOnAssignment(Component component)

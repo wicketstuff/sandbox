@@ -40,9 +40,6 @@ import wicket.model.Model;
  */
 public class MenuRow extends Panel<List<MenuItem>>
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -50,9 +47,6 @@ public class MenuRow extends Panel<List<MenuItem>>
 	 */
 	private final class RowListView extends ListView<MenuItem>
 	{
-		/**
-		 * 
-		 */
 		private static final long serialVersionUID = 1L;
 
 		/**
@@ -68,7 +62,7 @@ public class MenuRow extends Panel<List<MenuItem>>
 		public RowListView(MarkupContainer parent, String id, MenuRowModel model)
 		{
 			super(parent, id, model);
-			setReuseItems(false);
+			setReuseItems(true);
 		}
 
 		/**

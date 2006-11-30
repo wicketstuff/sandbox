@@ -41,9 +41,6 @@ import wicket.model.Model;
  */
 public class MenuItem extends DefaultMutableTreeNode
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	/**
