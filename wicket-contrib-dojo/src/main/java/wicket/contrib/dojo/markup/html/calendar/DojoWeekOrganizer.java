@@ -37,6 +37,7 @@ public class DojoWeekOrganizer extends WebMarkupContainer {
 	{
 		super.onComponentTag(tag);
 		tag.put(DOJO_TYPE, DOJO_TYPE_WEEKCALENDAR);
+		tag.put("widgetId", getMarkupId());
 	}
 
 }
