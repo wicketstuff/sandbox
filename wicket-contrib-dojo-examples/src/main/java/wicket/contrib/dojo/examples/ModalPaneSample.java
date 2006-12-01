@@ -13,6 +13,8 @@ public class ModalPaneSample extends WebPage {
 		dialog.setTitle("Sample...");
 		dialog.setWidth("300px");
 		dialog.setHeight("300px");
+		dialog.setMinHeight("200px");
+		dialog.setMinWidth("200px");
 		new AjaxLink(this, "open"){
 
 			@Override
