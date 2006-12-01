@@ -76,19 +76,14 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer imple
 	protected void onComponentTag(ComponentTag tag)
 	{
 		super.onComponentTag(tag);
+		if (getMarkupStream().atTag() && !"table".equals(getMarkupStream().getTag().getName())){
+			throw new WicketRuntimeException("Encountered tag name: '" + getMarkupStream().getTag().getName() + "', should be 'table'");
+		}
 		tag.put(DojoIdConstants.DOJO_TYPE, "SelectableTable");
 		tag.put("enableMultipleSelect", enableMultipleSelect);
 		tag.put("enableAlternateRows", "true");
 		tag.put("rowAlternateClass", "alternateRow");
 		tag.put("class", cssClass);
-	}
-
-	protected void onBeforeRender()
-	{
-		super.onBeforeRender();
-		if (getMarkupStream().atTag() && !"table".equals(getMarkupStream().getTag().getName())){
-			throw new WicketRuntimeException("Encountered tag name: '" + getMarkupStream().getTag().getName() + "', should be 'table'");
-		}
 	}
 	
 	/**
