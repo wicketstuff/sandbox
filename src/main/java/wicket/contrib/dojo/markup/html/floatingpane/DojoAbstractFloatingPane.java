@@ -1,5 +1,7 @@
 package wicket.contrib.dojo.markup.html.floatingpane;
 
+import wicket.ResourceReference;
+import wicket.ajax.AjaxRequestTarget;
 import wicket.contrib.dojo.widgets.StylingWebMarkupContainer;
 import wicket.markup.ComponentTag;
 
@@ -13,7 +15,7 @@ public abstract class DojoAbstractFloatingPane extends StylingWebMarkupContainer
 	private boolean displayCloseAction;
 	private boolean hasShadow;
 
-	public DojoAbstractFloatingPane( String id)
+	public DojoAbstractFloatingPane(String id)
 	{
 		super(id);
 		title = "";
@@ -24,10 +26,13 @@ public abstract class DojoAbstractFloatingPane extends StylingWebMarkupContainer
 		hasShadow = false;
 	}
 	
+
 	protected void onComponentTag(ComponentTag tag)
 	{
 		super.onComponentTag(tag);
 		tag.put("title", title);
+		tag.put("templatePath", urlFor(new ResourceReference(DojoModalFloatingPane.class, "FloatingPane.htm")));
+		tag.put("widgetId", getMarkupId());
 		
 		if (rezisable){
 			tag.put("rezisable", "true");
@@ -63,6 +68,23 @@ public abstract class DojoAbstractFloatingPane extends StylingWebMarkupContainer
 		else{
 			tag.put("hasShadow", "false");
 		}
+	}
+	
+	
+	/**
+	 * Show the modal pane
+	 * @param target
+	 */
+	public void show(AjaxRequestTarget target){
+		target.appendJavascript("dojo.widget.byId('" + getMarkupId() + "').show()");
+	}
+	
+	/**
+	 * Hide the modal pane
+	 * @param target
+	 */
+	public void close(AjaxRequestTarget target){
+		target.appendJavascript("dojo.widget.byId('" + getMarkupId() + "').hide()");
 	}
 
 
