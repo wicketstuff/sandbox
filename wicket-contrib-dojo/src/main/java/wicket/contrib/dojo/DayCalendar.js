@@ -118,7 +118,7 @@ dojo.widget.defineWidget (
 			marginTop = "-3px";
 		}
 		this.current.appendChild(this.timeDiv);
-		dojo.body().appendChild(this.current);
+		this.domNode.appendChild(this.current);
 		dojo.event.connect(this.current, "onmousemove", this, "mouseMoveRange");
 		var id = this.widgetId + "_timeSlice_" + this.slicePartId++;
 		this.current.setAttribute("id", id);
@@ -245,7 +245,7 @@ dojo.widget.defineWidget (
 			this.weekCalendar.onRemove(start, end, this.widgetId);
 		}
 		this.timeRange.remove(div);
-		document.getElementsByTagName("body")[0].removeChild(div);
+		this.domNode.removeChild(div);
 		
 	},
 	
