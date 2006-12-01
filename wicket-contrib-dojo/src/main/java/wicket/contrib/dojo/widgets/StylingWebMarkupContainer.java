@@ -3,6 +3,7 @@ package wicket.contrib.dojo.widgets;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
+import wicket.MarkupContainer;
 import wicket.markup.ComponentTag;
 import wicket.markup.html.WebMarkupContainer;
 import wicket.model.IModel;
@@ -18,6 +19,7 @@ public class StylingWebMarkupContainer extends WebMarkupContainer
 	private StyleAttribute style;
 	
 	/**
+	 * @param parent
 	 * @param id
 	 */
 	public StylingWebMarkupContainer(String id)
@@ -27,6 +29,7 @@ public class StylingWebMarkupContainer extends WebMarkupContainer
 	}
 	
 	/**
+	 * @param parent
 	 * @param id
 	 * @param model
 	 */
@@ -46,7 +49,9 @@ public class StylingWebMarkupContainer extends WebMarkupContainer
 			Entry entry = (Entry)ite.next();
 			styleTag += entry.getKey()+":"+entry.getValue()+";";
 		}
-		tag.put("style", styleTag);	
+		if (styleTag != null && !"".equals(styleTag)){
+			tag.put("style", styleTag);	
+		}
 	}
 	
 	/**
@@ -61,6 +66,20 @@ public class StylingWebMarkupContainer extends WebMarkupContainer
 	 */
 	public final void setWidth(String width){
 		style.setWidth(width);
+	}
+	
+	/**
+	 * @param minHeight
+	 */
+	public void setMinHeight(String minHeight){
+		style.setMinHeight(minHeight);
+	}
+	
+	/**
+	 * @param minWidth
+	 */
+	public void setMinWidth(String minWidth){
+		style.setMinWidth(minWidth);
 	}
 	
 	/**
