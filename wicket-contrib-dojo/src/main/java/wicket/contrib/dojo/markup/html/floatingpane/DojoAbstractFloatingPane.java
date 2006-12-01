@@ -22,7 +22,6 @@ public abstract class DojoAbstractFloatingPane extends StylingWebMarkupContainer
 		rezisable = true;
 		displayCloseAction = true;
 		displayMaximizeAction = true;
-		displayCloseAction = true;
 		hasShadow = false;
 	}
 	
