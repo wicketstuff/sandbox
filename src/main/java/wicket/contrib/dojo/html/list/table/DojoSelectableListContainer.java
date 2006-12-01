@@ -83,12 +83,7 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer  impl
 		tag.put("enableAlternateRows","true");
 		tag.put("rowAlternateClass", "alternateRow");
 		tag.put("headClass","fixedHeader");
-	}
-
-	@Override
-	protected void onBeforeRender()
-	{
-		super.onBeforeRender();
+		
 		if (!"table".equals(getMarkupFragment().getTag().getName())){
 			throw new WicketRuntimeException("Tag name for a DojoSelectableListContainer should be 'table'");
 		}

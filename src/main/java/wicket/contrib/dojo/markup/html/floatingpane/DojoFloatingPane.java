@@ -32,5 +32,6 @@ public class DojoFloatingPane extends DojoAbstractFloatingPane
 	{
 		super.onComponentTag(tag);
 		tag.put(DOJO_TYPE, DOJO_TYPE_FLOATINGPANE);
+		tag.put("widgetId", getMarkupId());
 	}
 }
