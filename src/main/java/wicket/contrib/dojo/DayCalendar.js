@@ -98,6 +98,7 @@ dojo.widget.defineWidget (
 	
 	createTimeRange: function(div){
 		var pos = dojo.html.toCoordinateObject(div,true);
+		var domNodePos = dojo.html.toCoordinateObject(this.domNode,true);
 		this.current = document.createElement("div");
 		this.timeDiv = document.createElement("div");
 		with (this.current.style){
@@ -108,8 +109,9 @@ dojo.widget.defineWidget (
 			height = pos.height - 3 +"px";
 			width = pos.width - 3 + "px";
 			position = "absolute";
-			top = pos.top + "px";
-			left = pos.left + "px"; 
+			top = pos.top - domNodePos.top + "px";
+			left = pos.left - domNodePos.left + "px";
+			zIndex = "2"; 
 		}
 		with (this.timeDiv.style){
 			fontSize = "9px";
@@ -203,6 +205,7 @@ dojo.widget.defineWidget (
 				newHeight = firstPos.top - lastPos.top + firstPos.height;
 			}
 			
+			var domNodePos = dojo.html.toCoordinateObject(this.domNode,true);
 			
 			with (this.current.style){
 				borderStyle = "solid";
@@ -211,8 +214,8 @@ dojo.widget.defineWidget (
 				height = newHeight -3 +"px";
 				width = firstPos.width - 3 + "px";
 				position = "absolute";
-				top = newTop + "px";
-				left = firstPos.left + "px"; 
+				top = newTop - domNodePos.top + "px";
+				left = firstPos.left - domNodePos.left + "px"; 
 			}
 			this.createTimeDiv()
 		}
