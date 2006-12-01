@@ -70,6 +70,20 @@ public class StylingWebMarkupContainer extends WebMarkupContainer
 	}
 	
 	/**
+	 * @param minHeight
+	 */
+	public void setMinHeight(String minHeight){
+		style.setMinHeight(minHeight);
+	}
+	
+	/**
+	 * @param minWidth
+	 */
+	public void setMinWidth(String minWidth){
+		style.setMinWidth(minWidth);
+	}
+	
+	/**
 	 * @param display
 	 */
 	public final void setDisplay(String display){
