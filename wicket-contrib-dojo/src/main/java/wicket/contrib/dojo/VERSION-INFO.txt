@@ -1,2 +1,4 @@
-this package uses:
-	- Dojo 0.3. It is not build
+Dojo Version is 0.4
+	Patches : 
+		widget/Dialog.js has been replaced by 2006-12-01 nigthly build
+		widget/FloatingPane.js has been replaced by 2006-12-01 nigthly build
