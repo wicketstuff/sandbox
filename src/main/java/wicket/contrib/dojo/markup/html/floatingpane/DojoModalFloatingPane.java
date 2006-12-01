@@ -22,7 +22,19 @@ public class DojoModalFloatingPane extends DojoAbstractFloatingPane
 		tag.put(DojoIdConstants.DOJO_TYPE, DojoIdConstants.DOJO_TYPE_MODALFLOATINGPANE);
 	}
 	
+	/**
+	 * Show the modal pane
+	 * @param target
+	 */
 	public void show(AjaxRequestTarget target){
 		target.appendJavascript("dojo.widget.byId('" + getMarkupId() + "').show()");
+	}
+	
+	/**
+	 * Hide the modal pane
+	 * @param target
+	 */
+	public void close(AjaxRequestTarget target){
+		target.appendJavascript("dojo.widget.byId('" + getMarkupId() + "').hide()");
 	}
 }
