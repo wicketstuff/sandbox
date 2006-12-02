@@ -18,7 +18,14 @@
 	fdsgmlksdfghlkh
 	dfhmdh*
 	kldfgh<br/>
-
+				<div onclick="document.getElementById('sub').style.display='block'">
+					click
+					<div id="sub" style="display:none">
+						some text here
+						<br/>
+						and oither
+					</div>
+				</div>
 				<div dojoType="WeekCalendar" id="week" onCreate="alert(this.start)"></div>
 				<div onCLick="document.getElementById('json').innerHTML = cal.getJson()">Click me to view Json</div>
 				<div id="json"></div>

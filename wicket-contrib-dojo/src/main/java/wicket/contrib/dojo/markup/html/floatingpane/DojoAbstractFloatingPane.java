@@ -34,7 +34,6 @@ public abstract class DojoAbstractFloatingPane extends StylingWebMarkupContainer
 		super.onComponentTag(tag);
 		tag.put("title", title);
 		tag.put("templatePath", urlFor(new ResourceReference(DojoModalFloatingPane.class, "FloatingPane.htm")));
-		tag.put("widgetId", getMarkupId());
 		
 		if (rezisable){
 			tag.put("rezisable", "true");
