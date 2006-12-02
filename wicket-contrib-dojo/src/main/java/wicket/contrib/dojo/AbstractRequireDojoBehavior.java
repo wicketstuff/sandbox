@@ -5,6 +5,7 @@ import java.util.Iterator;
 
 import wicket.RequestCycle;
 import wicket.ajax.AjaxRequestTarget;
+import wicket.markup.ComponentTag;
 import wicket.markup.html.IHeaderResponse;
 
 /**
@@ -61,6 +62,12 @@ public abstract class AbstractRequireDojoBehavior extends AbstractDefaultDojoBeh
 			once = true;
 			((AjaxRequestTarget)RequestCycle.get().getRequestTarget()).appendJavascript("dojo.hostenv.makeWidgets()");
 		}
+	}
+	
+	@Override
+	protected void onComponentTag(ComponentTag tag){
+		super.onComponentTag(tag);
+		tag.put("widgetId", getComponent().getMarkupId());
 	}
 	
 	/**
