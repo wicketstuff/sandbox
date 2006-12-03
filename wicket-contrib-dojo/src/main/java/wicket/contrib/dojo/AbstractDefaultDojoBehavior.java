@@ -41,7 +41,7 @@ public abstract class AbstractDefaultDojoBehavior extends AbstractDefaultAjaxBeh
 	private static final long serialVersionUID = 1L;
 	
 	/** reference to the dojo support javascript file. */
-	private static final ResourceReference DOJO = new CompressedResourceReference(
+	public static final ResourceReference DOJO = new CompressedResourceReference(
 			AbstractDefaultDojoBehavior.class, "dojo-0.4/dojo.js");
 
 	/* (non-Javadoc)
