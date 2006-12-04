@@ -13,7 +13,6 @@ public class SliderSample extends WebPage {
         if (params.containsKey("value"))
             value = params.getInt("value");
         Form form = new Form("form") {
-            @Override
             protected void onSubmit() {
                 PageParameters params = new PageParameters();
                 params.add("value", Integer.toString(value));

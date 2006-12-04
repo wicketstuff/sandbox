@@ -62,10 +62,11 @@ public class SelectableTable extends WebPage {
 				target.appendJavascript("alert('dblClick')");
 				setResponsePage(DojoFXTestPage.class);
 			}
-			@Override
+
 			public void onNonAjaxChoose(Object selected) {
 				System.out.println(selected);
 			}
+
 			public void onSelection(AjaxRequestTarget target, List selected) {
 				System.out.println(selected);
 			}
