@@ -63,8 +63,8 @@ public class DojoIntegerSlider extends Panel
 	 * Set the minimum value for the slider
 	 * @param start minimum value for the slider
 	 */
-	public void setStart(Integer start){
-		slider.setStart(start.toString());
+	public void setStart(int start){
+		slider.setStart(Integer.toString(start));
 		setNumberSelection();
 	}
 	
@@ -72,8 +72,8 @@ public class DojoIntegerSlider extends Panel
 	 * Set the maximum value for the slider
 	 * @param end maximum value for the slider
 	 */
-	public void setEnd(Integer end){
-		slider.setEnd(end.toString());
+	public void setEnd(int end){
+		slider.setEnd(Integer.toString(end));
 		setNumberSelection();
 	}
 	
