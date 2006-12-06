@@ -68,7 +68,7 @@ public class DeleteContactPage extends BasePage {
 			/**
 			 * If clicked, delete the contact and return to the calling page.
 			 */
-			protected void onSubmit() {
+			public void onSubmit() {
 				Contact deleted = dao.load(contactId);
 
 				dao.delete(contactId);
@@ -85,7 +85,7 @@ public class DeleteContactPage extends BasePage {
 		}.setDefaultFormProcessing(false);
 
 		new Button(form, "cancel") {
-			protected void onSubmit() {
+			public void onSubmit() {
 				Contact deleted = dao.load(contactId);
 
 				String msg = MapVariableInterpolator.interpolate(getLocalizer()

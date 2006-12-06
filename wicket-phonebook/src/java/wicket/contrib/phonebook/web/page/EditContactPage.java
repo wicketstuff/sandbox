@@ -78,7 +78,7 @@ public class EditContactPage extends BasePage {
 				.add(EmailAddressPatternValidator.getInstance());
 
 		new Button(form, "cancel") {
-			protected void onSubmit() {
+			public void onSubmit() {
 				String msg = getLocalizer().getString("status.cancel", this);
 				getSession().info(msg);
 				setResponsePage(EditContactPage.this.backPage);
@@ -86,7 +86,7 @@ public class EditContactPage extends BasePage {
 		}.setDefaultFormProcessing(false);
 
 		new Button(form, "save") {
-			protected void onSubmit() {
+			public void onSubmit() {
 				Contact contact = (Contact) getForm().getModelObject();
 				dao.save(contact);
 
