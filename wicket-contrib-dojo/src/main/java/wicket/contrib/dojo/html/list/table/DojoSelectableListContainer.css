@@ -1,4 +1,4 @@
-table {
+table.dojoSelectableList {
 	font-family:Lucida Grande, Verdana;
 	font-size:0.8em;
 	width:100%;
@@ -14,13 +14,12 @@ table {
 	overflow-y: auto;
 }
 
-table td,
-table th{
+table.dojoSelectableList td, table.dojoSelectableList th {
 	border-right:1px solid #999;
 	padding:2px;
 	font-weight:normal;
 }
-table thead td, table thead th {
+table.dojoSelectableList thead td, table thead th {
 	background:#94BEFF;
 }
 
@@ -31,31 +30,31 @@ table thead td, table thead th {
 	top:expression(dojo.html.getFirstAncestorByTag(this,'table').parentNode.scrollTop-2);
 }
 
-html>body tbody.scrollContent {
+html>body table.dojoSelectableList tbody {
 	height: 262px;
 	overflow-x:hidden;
 	overflow-y: auto;
 }
 
-tbody.scrollContent td, tbody.scrollContent tr td {
+table.dojoSelectableList tbody td, tbody tr td {
 	background: #FFF;
 	padding: 2px;
 }
 
-tbody.scrollContent tr.alternateRow td {
+table.dojoSelectableList tbody tr.alternateRow td {
 	background: #e3edfa;
 	padding: 2px;
 }
 
-tbody.scrollContent tr.selected td {
+table.dojoSelectableList tbody tr.selected td {
 	background: yellow;
 	padding: 2px;
 }
-tbody.scrollContent tr:hover td {
+table.dojoSelectableList tbody tr:hover td {
 	background: #a6c2e7;
 	padding: 2px;
 }
-tbody.scrollContent tr.selected:hover td {
+table.dojoSelectableList tbody tr.selected:hover td {
 	background: #ff3;
 	padding: 2px;
 }
