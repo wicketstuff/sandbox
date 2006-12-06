@@ -13,7 +13,7 @@ import wicket.markup.html.basic.Label;
 public class LazyTableSample extends WebPage {
 	
 	public LazyTableSample(PageParameters parameters){
-		DojoLazyLoadingListContainer container = new DojoLazyLoadingListContainer(this, "container");
+		DojoLazyLoadingListContainer container = new DojoLazyLoadingListContainer(this, "container", 3000);
 		DojoLazyLoadingRefreshingView list = new DojoLazyLoadingRefreshingView(container, "table"){
 
 			@Override

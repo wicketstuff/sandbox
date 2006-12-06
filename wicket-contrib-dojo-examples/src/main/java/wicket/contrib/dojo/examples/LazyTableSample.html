@@ -7,10 +7,10 @@
 	</head>
 
 <body>
-	<table wicket:id="container">
+	<table wicket:id="container" style="width:600px">
 		<tr wicket:id="table">
-			<td><span wicket:id="label"></span></td>
-			<td>I'm a test column</td>
+			<td style="width: 50%"><span wicket:id="label"></span></td>
+			<td style="width: 50%">I'm a test column</td>
 		</tr>
 	</table>
 	
@@ -50,7 +50,7 @@ import wicket.markup.html.basic.Label;
 public class LazyTableSample extends WebPage {
 	
 	public LazyTableSample(PageParameters parameters){
-		DojoLazyLoadingListContainer container = new DojoLazyLoadingListContainer(this, "container");
+		DojoLazyLoadingListContainer container = new DojoLazyLoadingListContainer(this, "container", 3000)
 		DojoLazyLoadingRefreshingView list = new DojoLazyLoadingRefreshingView(container, "table"){
 
 			@Override
