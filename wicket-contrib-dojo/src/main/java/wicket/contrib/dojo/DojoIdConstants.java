@@ -14,7 +14,6 @@ public interface DojoIdConstants
 	public static String DOJO_TYPE_TOOLTIP               = "tooltip";
 	public static String DOJO_TYPE_FLOATINGPANE          = "FloatingPane";
 	public static String DOJO_TYPE_MODALFLOATINGPANE     = "ModalFloatingPane";
-	public static String DOJO_TYPE_WEEKCALENDAR          = "WeekCalendar";
 	public static String DOJO_TYPE_TOASTER 				 = "Toaster";
 	public static String DOJO_TYPE_COMBOBOX 			 = "ComboBox";
 	
@@ -22,4 +21,7 @@ public interface DojoIdConstants
 	public static String DOJO_TYPE_ACCORDIONCONTAINER    = "AccordionContainer";
 	public static String DOJO_TYPE_SPLITCONTAINER        = "SplitContainer";
 	public static String DOJO_TYPE_CONTENTPANE           = "ContentPane";
+	
+	public static String DOJO_TYPE_WEEKCALENDAR          = "WeekCalendar";
+	public static String DOJO_TYPE_LAZYTABLE			 = "LazyTable";
 }
