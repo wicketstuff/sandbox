@@ -33,9 +33,6 @@ public class DojoLazyLoadingListContainerHandler extends AbstractRequireDojoBeha
 		child.setCount(count);
 		target.addComponent(child);
 		
-		int i = 0;
-		while (i < 1000000000){i++;}
-		
 		target.prependJavascript("dojo.widget.byId(\"" + getComponent().getMarkupId() + "\").contentTable.getElementsByTagName('tbody')[0].id='" + child.getMarkupId() + "'");
 		target.appendJavascript("dojo.widget.byId('" + getComponent().getMarkupId() + "').postUpdate()");
 	}
