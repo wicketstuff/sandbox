@@ -6,11 +6,11 @@ import java.util.List;
 import wicket.ajax.AjaxEventBehavior;
 import wicket.ajax.AjaxRequestTarget;
 import wicket.ajax.ClientEvent;
-import wicket.contrib.dojo.html.list.table.DojoSelectableList;
 import wicket.contrib.dojo.html.list.table.DojoSelectableListContainer;
 import wicket.markup.html.WebPage;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.list.ListItem;
+import wicket.markup.html.list.ListView;
 
 public class SelectableTable extends WebPage {
 
@@ -33,7 +33,7 @@ public class SelectableTable extends WebPage {
 			objList.add("foo6");
 			objList.add("bar6");
 		}
-		DojoSelectableList list = null;
+		ListView list = null;
 		DojoSelectableListContainer container = new DojoSelectableListContainer(this, "container"){
 			@Override
 			public void onChoose(AjaxRequestTarget target, Object o) {
@@ -41,7 +41,7 @@ public class SelectableTable extends WebPage {
 				
 			}
 		};
-		list = new DojoSelectableList(container, "list", objList){
+		list = new ListView(container, "list", objList){
 
 			@Override
 			protected void populateItem(final ListItem item) {
