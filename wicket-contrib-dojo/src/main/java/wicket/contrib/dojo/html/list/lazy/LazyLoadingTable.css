@@ -1,0 +1,29 @@
+.fixedTable {
+   table-layout : fixed;
+}
+
+td {
+    padding       : 0px 0px 0px 3px;
+    margin        : -1px;
+    border-bottom : 0px solid #b8b8b8;
+    border-right  : 1px solid #b8b8b8;
+    height        : 22px;
+    overflow      : hidden;
+    font-size     : 11px;
+    font-family: verdana, arial, helvetica, sans-serif;
+    line-height: 12px;
+    width: 150px;
+}
+
+.first {
+   border-left  : 1px solid #b8b8b8;
+}
+
+.tableCellHeader {
+   padding          : 2px 0px 2px 3px;
+   text-align       : left;
+   font-size        : 11px;
+   border-top       : 1px solid #b8b8b8;
+   border-right     : 1px solid #b8b8b8;
+   background-color : #cedebd;
+}
