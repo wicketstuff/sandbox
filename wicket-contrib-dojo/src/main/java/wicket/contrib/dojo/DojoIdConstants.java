@@ -20,4 +20,5 @@ public interface DojoIdConstants
 	public static String DOJO_TYPE_ACCORDIONCONTAINER    = "AccordionContainer";
 	public static String DOJO_TYPE_SPLITCONTAINER        = "SplitContainer";
 	public static String DOJO_TYPE_CONTENTPANE           = "ContentPane";
+	public static String DOJO_TYPE_INLINE_EDIT_BOX       = "inlineEditBox";
 }
