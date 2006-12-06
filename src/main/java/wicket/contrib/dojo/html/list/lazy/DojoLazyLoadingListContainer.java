@@ -18,17 +18,21 @@ import wicket.model.IModel;
  */
 public class DojoLazyLoadingListContainer extends  WebMarkupContainer
 {
+	
+	private int max;
 
-	public DojoLazyLoadingListContainer(MarkupContainer parent, String id, IModel model)
+	public DojoLazyLoadingListContainer(MarkupContainer parent, String id, IModel model, int maxItem)
 	{
 		super(parent, id, model);
 		add(new DojoLazyLoadingListContainerHandler());
+		max = maxItem;
 	}
 
-	public DojoLazyLoadingListContainer(MarkupContainer parent, String id)
+	public DojoLazyLoadingListContainer(MarkupContainer parent, String id, int maxItem)
 	{
 		super(parent, id);
 		add(new DojoLazyLoadingListContainerHandler());
+		max = maxItem;
 	}
 	
 	@Override
@@ -37,6 +41,7 @@ public class DojoLazyLoadingListContainer extends  WebMarkupContainer
 		super.onComponentTag(tag);
 		tag.put(DOJO_TYPE, DOJO_TYPE_LAZYTABLE);
 		tag.put("templatePath", urlFor(new ResourceReference(DojoLazyLoadingListContainerHandler.class, "LazyTable.htm")));
+		tag.put("maxKnewItem","" + max);
 	}
 	
 	/**
