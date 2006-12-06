@@ -6,8 +6,10 @@ import java.util.List;
 import wicket.ResourceReference;
 import wicket.ajax.AjaxRequestTarget;
 import wicket.contrib.dojo.AbstractRequireDojoBehavior;
+import wicket.markup.ComponentTag;
 import wicket.markup.html.IHeaderResponse;
 import wicket.markup.html.link.ILinkListener;
+import wicket.markup.html.list.ListView;
 
 /**
  * @author Vincent Demay
@@ -17,16 +19,16 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 {
 	
 	//child of this container
-	private DojoSelectableList listView;
+	private ListView listView;
 
 	/**
 	 * 
-	 * @param selectableList
+	 * @param listView
 	 */
-	public DojoSelectableListContainerHandler(DojoSelectableList selectableList)
+	public DojoSelectableListContainerHandler(ListView listView)
 	{
 		super();
-		listView = selectableList;
+		this.listView = listView;
 	}
 
 	/**
@@ -37,7 +39,9 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 		//DO Nothing, the Widget is in the package
 	}
 
-	@Override
+	/**
+	 * 
+	 */
 	protected final void respond(AjaxRequestTarget target)
 	{
 		ArrayList selected = new ArrayList();
@@ -55,7 +59,7 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 			int pos;
 			for (int i=0; i < indexList.length; i++){
 				pos = Integer.parseInt(indexList[i]);
-				selected.add(all.get(all.size()- pos - 1));
+				selected.add(all.get(pos));
 			}
 			
 			((DojoSelectableListContainer)getComponent()).setSelected(selected);
@@ -64,46 +68,14 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 		}
 	}
 
-	/**
-	 * TODO find an other way to Render an as big javascript
-	 * TODO put it in js file
-	 */
-	@Override
 	public void renderHead(IHeaderResponse response)
 	{
 		super.renderHead(response);
 		response.renderCSSReference(new ResourceReference(DojoSelectableListContainer.class, "DojoSelectableListContainer.css"));
 		response.renderJavascriptReference(new ResourceReference(DojoSelectableListContainer.class, "SelectableTable.js"));
-		if (((DojoSelectableListContainer)getComponent()).getOverwriteCss() != null){
-			response.renderCSSReference(((DojoSelectableListContainer)getComponent()).getOverwriteCss());
+		if (((DojoSelectableListContainer)getComponent()).getOverrideCssReference() != null){
+			response.renderCSSReference(((DojoSelectableListContainer)getComponent()).getOverrideCssReference());
 		}
-		
-		String toReturn="";
-		toReturn += "<script language=\"JavaScript\" type=\"text/javascript\">\n";
-		toReturn += "function getSelection(id){\n";
-		toReturn += "	var container = dojo.widget.byId(id);\n";
-		toReturn += "	var body = container.domNode.getElementsByTagName('tbody')[0];\n";
-		toReturn += "	var rows=body.getElementsByTagName('tr')\n";
-		toReturn += "	var selection = '';\n";
-		toReturn += "	var index = 0;\n";
-		toReturn += "	for(var i=0; i<rows.length; i++){\n";
-		toReturn += "		if(rows[i].parentNode==body){\n";
-		toReturn += "			if(dojo.html.getAttribute(rows[i],'selected')=='true'){\n";
-		toReturn += "				selection += '&select=' + index;\n";
-		toReturn += "			}\n";
-		toReturn += "			index++;\n";
-		toReturn += "		}\n";
-		toReturn += "	}\n";
-		toReturn += "	return selection;\n";
-		toReturn += "};\n";
-		toReturn += "function initSelectable" + getComponent().getMarkupId() + "(){\n";
-		toReturn += "	dojo.event.connect(dojo.widget.byId('" + getComponent().getMarkupId() + "'), \"onSelect\", function(){" + getCallbackScript() + "});\n";
-		toReturn += "	dojo.event.connect(dojo.widget.byId('" + getComponent().getMarkupId() + "'), \"onChoose\", function(){" + getDoubleClickCallbackScripts() + "});\n";
-		toReturn += "}\n";
-		toReturn += "dojo.event.connect(dojo, \"loaded\", \"initSelectable" + getComponent().getMarkupId() + "\");\n";
-		toReturn += "</script>\n";
-		
-		response.renderString(toReturn);
 	}
 	
 	/**
@@ -114,9 +86,9 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 	 *            version, otherwise url will be encoded to execute on the
 	 *            latest page version
 	 */
-	protected final CharSequence getCallbackScript(boolean recordPageVersion)
+	protected final CharSequence getCallbackScript()
 	{
-		return getCallbackScript("wicketAjaxGet('" + super.getCallbackUrl(recordPageVersion) + "'+ getSelection('" + getComponent().getMarkupId() + "')", null,
+		return getCallbackScript("wicketAjaxGet('" + super.getCallbackUrl(true) + "' + getSelection('"+getComponent().getMarkupId()+"')", null,
 				null);
 	}
 	
@@ -126,11 +98,21 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 	 */
 	protected final CharSequence getDoubleClickCallbackScripts(){
 		if (((DojoSelectableListContainer) getComponent()).isAjaxModeOnChoose()){
-			return getCallbackScript("wicketAjaxGet('" + super.getCallbackUrl(true) + "'", null, null);
+			return getCallbackScript("wicketAjaxGet('" + super.getCallbackUrl(true) + "'", null,null);
 		}else{
 			CharSequence url = ((DojoSelectableListContainer) getComponent()).urlFor(ILinkListener.INTERFACE);
-			return "window.location.href='" + url + "'  + getSelection('" + getComponent().getMarkupId() + "')";
+			return "window.location.href='" + url + "' + getSelection('"+getComponent().getMarkupId()+"') ";
 		}
+	}
+
+	/**
+	 * Add onSelect and on choose event listener
+	 */
+	protected void onComponentTag(ComponentTag tag)
+	{
+		super.onComponentTag(tag);
+		tag.put("onSelect", getCallbackScript());
+		tag.put("onChoose", getDoubleClickCallbackScripts());
 	}
 
 	

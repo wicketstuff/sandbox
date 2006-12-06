@@ -1,23 +1,26 @@
 package wicket.contrib.dojo.html.list.table;
 
-import static wicket.contrib.dojo.DojoIdConstants.DOJO_TYPE;
-
+import java.util.ArrayList;
 import java.util.List;
 
+import wicket.Component;
 import wicket.MarkupContainer;
 import wicket.ResourceReference;
 import wicket.WicketRuntimeException;
 import wicket.ajax.AjaxRequestTarget;
+import wicket.contrib.dojo.DojoIdConstants;
 import wicket.contrib.dojo.widgets.StylingWebMarkupContainer;
 import wicket.markup.ComponentTag;
+import wicket.markup.MarkupStream;
 import wicket.markup.html.link.ILinkListener;
+import wicket.markup.html.list.ListView;
 import wicket.model.IModel;
 
 /**
  * Selectable List container
  * <pre>
- * 		DojoSelectableListContainer container = new DojoSelectableListContainer(parent, "container");
- * 		DojoSelectableList list = new DojoSelectableList(container, "list"){
+ * 		DojoSelectableListContainer container = new DojoSelectableListContainer(this, "container");
+ * 		ListView list = new ListView(container, "list"){
  * 			[...]
  * 		};
  * </pre>
@@ -25,7 +28,7 @@ import wicket.model.IModel;
  * @author Vincent Demay
  *
  */
-public class DojoSelectableListContainer extends StylingWebMarkupContainer  implements ILinkListener
+public class DojoSelectableListContainer extends StylingWebMarkupContainer implements ILinkListener
 {
 	/**
 	 * List of selected objects
@@ -33,7 +36,7 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer  impl
 	private List selected;
 
 	private String enableMultipleSelect;
-	private String tbodyClass;
+	private String cssClass;
 	
 	/**
 	 * flag to know if on choose meke a ajax request or not
@@ -43,23 +46,24 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer  impl
 	/**
 	 * Allow user to set another css to overwrite the default one
 	 */
-	private ResourceReference overwriteCss;
+	private ResourceReference overrideCssReference;
 	
 	//child
-	private DojoSelectableList listView;
-	
+	private ListView listView;
+
 	/**
-	 * Construct the selectable list containre
-	 * @param parent prent where DojoSelectableListContainer will be added
+	 * Construct the selectable list container
+	 * @param parent parent where this widget will be displayed
 	 * @param id container id
 	 */
 	public DojoSelectableListContainer(MarkupContainer parent, String id)
 	{
 		this(parent, id, null);
 	}
-	
+
 	/**
 	 * Construct the selectable list container
+	 * @param parent parent where this widget will be displayed
 	 * @param id container id
 	 * @param model model
 	 */
@@ -67,26 +71,21 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer  impl
 	{
 		super(parent, id, model);
 		enableMultipleSelect = "true";
-		tbodyClass = "scrollContent";
+		cssClass = "dojoSelectableList";
 		ajaxModeOnChoose = true;
 	}
 
-	@Override
 	protected void onComponentTag(ComponentTag tag)
 	{
 		super.onComponentTag(tag);
-		tag.put(DOJO_TYPE, "SelectableTable");
-		tag.put("enableMultipleSelect", enableMultipleSelect);
-		tag.put("tbodyClass", tbodyClass);
-		
-		//Is they need to be configured?
-		tag.put("enableAlternateRows","true");
-		tag.put("rowAlternateClass", "alternateRow");
-		tag.put("headClass","fixedHeader");
-		
-		if (!"table".equals(getMarkupFragment().getTag().getName())){
-			throw new WicketRuntimeException("Tag name for a DojoSelectableListContainer should be 'table'");
+		if (getMarkupStream().atTag() && !"table".equals(getMarkupStream().getTag().getName())){
+			throw new WicketRuntimeException("Encountered tag name: '" + getMarkupStream().getTag().getName() + "', should be 'table'");
 		}
+		tag.put(DojoIdConstants.DOJO_TYPE, "SelectableTable");
+		tag.put("enableMultipleSelect", enableMultipleSelect);
+		tag.put("enableAlternateRows", "true");
+		tag.put("rowAlternateClass", "alternateRow");
+		tag.put("class", cssClass);
 	}
 	
 	/**
@@ -96,14 +95,41 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer  impl
 	public final void onLinkClicked()
 	{
 		int selectIndex = Integer.parseInt(getRequest().getParameter("select"));
-		onNonAjaxChoose(this.listView.getList().get(this.listView.getList().size()- selectIndex - 1));
+		onNonAjaxChoose(this.listView.getList().get(selectIndex));
 		
+	}
+	
+	protected void onAttach()
+	{
+		super.onAttach();
+		this.listView = getListView();
+		add(new DojoSelectableListContainerHandler(listView));
+	}
+	
+
+	// set to Empty the model
+	protected void onRender(MarkupStream markupStream)
+	{
+		super.onRender(markupStream);
+		this.selected = new ArrayList();
+	}
+
+	/**
+	 * Find the list view in children
+	 * if none or more than one throw an exception!
+	 * 
+	 * @return the child ListView of this container
+	 */
+	public ListView getListView()
+	{
+		ListViewFinder visitor = new ListViewFinder();
+		visitChildren(visitor);
+		return visitor.getListView();
 	}
 	
 	/*																									  *\
 	 * ---------------------------------------------------------------------------------------------------*
 	\*																								      */
-	
 	
 	/**
 	 * Enable or not multipleSelection on items
@@ -130,22 +156,23 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer  impl
 	}
 
 	/**
-	 * Get the class used to render table, selection and onMouse over
+	 * Get the CSS class for the table, defaults to "dojoSelectableList".
+	 * It is used to render the table, selection and onMouse over.
 	 * TODO : more explanation
-	 * @return the body table class
+	 * @return the table's CSS class
 	 */
-	public String getTbodyClass()
+	public String getCssClass()
 	{
-		return tbodyClass;
+		return cssClass;
 	}
 
 	/**
-	 * Change the default table body class
+	 * Override the default CSS class "dojoSelectableList" for the table
 	 * @param tbodyClass the new table body class
 	 */
-	public void setTbodyClass(String tbodyClass)
+	public void setCssClass(String tbodyClass)
 	{
-		this.tbodyClass = tbodyClass;
+		this.cssClass = tbodyClass;
 	}
 
 	/**
@@ -179,18 +206,18 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer  impl
 	 * return the used css to overwrite the default one
 	 * @return the used css to overwrite the default one or null if none ios defined
 	 */
-	public ResourceReference getOverwriteCss()
+	public ResourceReference getOverrideCssReference()
 	{
-		return overwriteCss;
+		return overrideCssReference;
 	}
 
 	/**
 	 * set a css reference to overwrite the default one
 	 * @param overwriteCss  a css reference to overwrite the default one
 	 */
-	public void setOverwriteCss(ResourceReference overwriteCss)
+	public void setOverrideCssReference(ResourceReference overwriteCss)
 	{
-		this.overwriteCss = overwriteCss;
+		this.overrideCssReference = overwriteCss;
 	}
 
 	/**
@@ -200,24 +227,6 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer  impl
 	public void setAjaxModeOnChoose(boolean ajaxModeOnChoose)
 	{
 		this.ajaxModeOnChoose = ajaxModeOnChoose;
-	}
-	
-	/**
-	 * Get the DojoSelectableList
-	 * @return the DojoSelectableList
-	 */
-	public DojoSelectableList getListView()
-	{
-		return listView;
-	}
-
-	/**
-	 * Set the DojoSelectableList
-	 * @param listView the DojoSelectableList
-	 */
-	public void setListView(DojoSelectableList listView)
-	{
-		this.listView = listView;
 	}
 	
 	/**
@@ -231,16 +240,18 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer  impl
 	}
 
 	/**
-	 * Triggered when double click on an item
+	 * Triggered when double click on a table row and ajaxOnChoose is enabled
+	 * <b>by default ajax is enabled</b>
 	 * @param target ajax target
+	 * @param selected the object corresponding to the table row that has been choosen
 	 */
-	public void onChoose(AjaxRequestTarget target, Object indexList)
+	public void onChoose(AjaxRequestTarget target, Object selected)
 	{
 		
 	}
 	
 	/**
-	 * Triggered when double click on an item and ajaxOnChoose is disabled
+	 * Triggered when double click on a table row and ajaxOnChoose is disabled
 	 * <b>by default ajax is enabled</b>
 	 * @param selected selected item
 	 */
@@ -249,5 +260,33 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer  impl
 		
 	}
 
+	/***************************************************************************/
+	
+	private class ListViewFinder implements IVisitor{
+		private ListView listView = null;
+		private int listViewNumber = 0;
+		
+		public Object component(Component component)
+		{
+			if (component instanceof wicket.markup.html.list.ListView){
+				listView = (ListView)component;
+				listViewNumber ++;
+			}
+			return CONTINUE_TRAVERSAL_BUT_DONT_GO_DEEPER;
+		}
+		
+		public ListView getListView(){
+			if (listViewNumber != 1 ){
+				throw new WicketRuntimeException("A DojoSelectableListContainer should contain exactly one ListView as directly child");
+			}
+			//FIXME check for TR
+			/*if (!"tr".equals(listView.getMarkupStream().getTag().getName())){
+				throw new WicketRuntimeException("Tag name for a DojoSelectableListContinaner listView should be 'tr'");
+			}*/
+			return listView;
+		}
+	}
 
+
+	
 }
