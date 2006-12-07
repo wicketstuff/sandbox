@@ -180,7 +180,7 @@ dojo.widget.defineWidget(
 					format:null,
 					noSort:true,
 					sortType:"String",
-					dataType:String,
+					dataType: String,
 					sortFunction:null,
 					label:null,
 					align:"left",
@@ -292,22 +292,7 @@ dojo.widget.defineWidget(
 				var cells=rows[i].getElementsByTagName("td");
 				for(var j=0; j<this.columns.length; j++){
 					var field=this.columns[j].getField();
-					if(this.columns[j].sortType=="__markup__"){
-						//	FIXME: parse this?
-						o[field]=cells[j].innerHTML;
-					}else{
-						var type=this.columns[j].getType();
-						var val=dojo.html.renderedTextContent(cells[j]); //	should be the same index as the column.
-						if(type == String){
-							o[field]=val;
-						} else {
-							if (val!=null){
-								o[field]=new type(val);
-							} else {
-								o[field]=new type();	//	let it use the default.
-							}
-						}
-					}
+					o[field]=cells[j].innerHTML;
 				}
 				if(dojo.html.hasAttribute(rows[i],"value")&&!o[this.valueField]){
 					o[this.valueField]=dojo.html.getAttribute(rows[i],"value");
@@ -381,26 +366,15 @@ dojo.widget.defineWidget(
 					cell.setAttribute("align", this.columns[j].align);
 					cell.setAttribute("valign", this.columns[j].valign);
 					dojo.html.disableSelection(cell);
-					if(this.sortIndex==j){
-						cell.className=this.columnSelected;
-					}
-					if(this.columns[j].sortType=="__markup__"){
-						cell.innerHTML=data[i][this.columns[j].getField()];
-						for(var k=0; k<cell.childNodes.length; k++){
-							var node=cell.childNodes[k];
-							if(node&&node.nodeType==dojo.html.ELEMENT_NODE){
-								dojo.html.disableSelection(node);
-							}
-						}
-					}else{
-						if(this.columns[j].getType()==Date){
-							var format=this.defaultDateFormat;
-							if(this.columns[j].format) format=this.columns[j].format;
-							cell.appendChild(document.createTextNode(dojo.date.strftime(data[i][this.columns[j].getField()], format)));
-						}else{
-							cell.appendChild(document.createTextNode(data[i][this.columns[j].getField()]));
+
+					cell.innerHTML=data[i][this.columns[j].getField()];
+					for(var k=0; k<cell.childNodes.length; k++){
+						var node=cell.childNodes[k];
+						if(node&&node.nodeType==dojo.html.ELEMENT_NODE){
+							dojo.html.disableSelection(node);
 						}
 					}
+
 					row.appendChild(cell);
 				}
 				body.appendChild(row);
