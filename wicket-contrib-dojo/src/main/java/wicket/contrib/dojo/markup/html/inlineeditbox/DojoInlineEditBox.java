@@ -35,7 +35,6 @@ public class DojoInlineEditBox extends WebComponent<String> {
 	protected void onComponentTag(ComponentTag tag) {
 		super.onComponentTag(tag);
 		tag.put(DOJO_TYPE, DOJO_TYPE_INLINE_EDIT_BOX);
-		tag.put("templatePath", urlFor(new ResourceReference(DojoInlineEditBox.class, "InlineEditBox.htm")));
 	}
 	
 	/** To initialize the text field with the model value */
