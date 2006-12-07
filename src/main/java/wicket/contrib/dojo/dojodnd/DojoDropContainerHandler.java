@@ -1,7 +1,10 @@
 package wicket.contrib.dojo.dojodnd;
 
+import java.util.HashMap;
+
 import wicket.ajax.AjaxRequestTarget;
 import wicket.contrib.dojo.AbstractRequireDojoBehavior;
+import wicket.contrib.dojo.templates.DojoPackagedTextTemplate;
 import wicket.markup.html.IHeaderResponse;
 
 /**
@@ -29,42 +32,15 @@ class DojoDropContainerHandler extends AbstractRequireDojoBehavior
 	public void renderHead(IHeaderResponse response)
 	{
 		super.renderHead(response);
-		String require = "";
-		require += "<script language=\"JavaScript\" type=\"text/javascript\">\n";
-		require += "function byId(id){\n";
-		require += "	return document.getElementById(id);\n";
-		require += "}\n";
-		require += "function createUrl(e){\n";
-		require += "	var dragId = e.dragSource.domNode.id;\n";
-		require += "	var all = e.dragSource.domNode.parentNode.getElementsByTagName('div')\n";
-		require += "	var position = 0;\n";
-		require += "	while (all[position] != e.dragSource.domNode){\n";
-		require += "		position++;\n";
-		require += "	}\n";
-		require += "	\n";
-		require += "	return '" + getCallbackUrl() + "' + '&dragSource=' + dragId + '&position=' + position\n";
-		require += "}\n";
-		require += "</script>\n";
 
-		response.renderString(require);
-		
-		response.renderString(generateDropDefinition());
+		DojoPackagedTextTemplate template = new DojoPackagedTextTemplate(this.getClass(), "DojoDropContainerHandlerTemplate.js");
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("MarkupId", container.getMarkupId());
+		map.put("DropId", container.getDropId());
+		map.put("CallbackUrl", getCallbackUrl());
+		map.put("Id", container.getId());
+		response.renderJavascript(template.asString(map), template.getWidgetUniqueKey(this.getComponent()));
 
-	}
-	
-	private String generateDropDefinition(){
-		String toReturn = "";
-		toReturn += "<script language=\"JavaScript\" type=\"text/javascript\">\n";
-		toReturn += "function initDrop" + container.getMarkupId() + "(){\n";
-		toReturn += "	var dl = byId(\"" + container.getId() + "\");\n";
-		toReturn += "	var drop = new dojo.dnd.HtmlDropTarget(dl, [\"" + container.getDropId() + "\"]);\n";
-		toReturn += "	dojo.event.connect(drop, 'onDrop', function(e) {\n";
-		toReturn += "		wicketAjaxGet(createUrl(e),function(){},function(){});";
-		toReturn += "	});\n";
-		toReturn += "}\n";
-		toReturn += "dojo.event.connect(dojo, \"loaded\", \"initDrop" + container.getMarkupId() + "\");\n";
-		toReturn += "</script>\n";
-		return toReturn;
 	}
 	
 	@Override
