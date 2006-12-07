@@ -206,7 +206,7 @@ dojo.widget.defineWidget ("dojo.widget.LazyTable",dojo.widget.HtmlWidget,
 		if (this.requestTimeOut){
 			clearTimeout(this.requestTimeOut);
 		}
-		this.requestTimeOut = setTimeout('dojo.widget.byId("' + this.widgetId + '").reloadAndPlace(' + from + ', ' + to + ')', 1000);
+		this.requestTimeOut = setTimeout('dojo.widget.byId("' + this.widgetId + '").reloadAndPlace(' + from + ', ' + to + ')', 200);
 	},
 	
 	reloadAndPlace: function(from, to ){

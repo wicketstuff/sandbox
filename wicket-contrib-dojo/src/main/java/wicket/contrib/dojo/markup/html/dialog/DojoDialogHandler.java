@@ -3,6 +3,7 @@ package wicket.contrib.dojo.markup.html.dialog;
 import wicket.ajax.AjaxRequestTarget;
 import wicket.contrib.dojo.AbstractDefaultDojoBehavior;
 import wicket.contrib.dojo.AbstractRequireDojoBehavior;
+import wicket.contrib.dojo.templates.DojoPackagedTextTemplate;
 import wicket.markup.html.IHeaderResponse;
 
 /**
@@ -12,6 +13,8 @@ import wicket.markup.html.IHeaderResponse;
  */
 public class DojoDialogHandler extends AbstractRequireDojoBehavior
 {
+	private final static String TEMPLATE = "DojoDialogHandlerTemplate.js";
+	
 	@Override
 	protected void respond(AjaxRequestTarget target)
 	{
@@ -24,15 +27,10 @@ public class DojoDialogHandler extends AbstractRequireDojoBehavior
 	public void renderHead(IHeaderResponse response)
 	{
 		super.renderHead(response);
-		String require = "";
-		require += "<script language=\"JavaScript\" type=\"text/javascript\">\n";
-		require += "function getDialog(id){\n";
-		require += "	var dlg = dojo.widget.byId(id);\n";
-		require += "	return dlg;\n";
-		require += "}\n";
-		require += "</script>\n";
 
-		response.renderString(require);
+		DojoPackagedTextTemplate template = new DojoPackagedTextTemplate(this.getClass(), TEMPLATE);
+		response.renderJavascript(template.asString(), template.getStaticKey());
+		
 	}
 
 	@Override

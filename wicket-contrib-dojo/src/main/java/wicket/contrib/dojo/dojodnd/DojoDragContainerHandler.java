@@ -1,7 +1,10 @@
 package wicket.contrib.dojo.dojodnd;
 
+import java.util.HashMap;
+
 import wicket.ajax.AjaxRequestTarget;
 import wicket.contrib.dojo.AbstractRequireDojoBehavior;
+import wicket.contrib.dojo.templates.DojoPackagedTextTemplate;
 import wicket.markup.html.IHeaderResponse;
 
 public class DojoDragContainerHandler extends AbstractRequireDojoBehavior
@@ -31,19 +34,11 @@ public class DojoDragContainerHandler extends AbstractRequireDojoBehavior
 	public void renderHead(IHeaderResponse response)
 	{
 		super.renderHead(response);
-		response.renderString(generateDragDefinition());
-	}
-	
-	private String generateDragDefinition(){
-		String toReturn = "";
-		toReturn += "<script language=\"JavaScript\" type=\"text/javascript\">\n";
-		toReturn += "function initDrag" + container.getMarkupId() + "(){\n";
-		toReturn += "	var dl = byId(\"" + container.getMarkupId() + "\");\n";
-		toReturn += "	var drag = new dojo.dnd.HtmlDragSource(dl, \"" + container.getDragId() + "\");\n";
-		toReturn += "}\n";
-		toReturn += "dojo.event.connect(dojo, \"loaded\", \"initDrag" + container.getMarkupId() + "\");\n";
-		toReturn += "</script>\n";
-		return toReturn;
+		DojoPackagedTextTemplate template = new DojoPackagedTextTemplate(this.getClass(), "DojoDragContainerHandlerTemplate.js");
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("MarkupId", container.getMarkupId());
+		map.put("DragId", container.getDragId());
+		response.renderJavascript(template.asString(map), template.getWidgetUniqueKey(this.getComponent()));
 	}
 
 
