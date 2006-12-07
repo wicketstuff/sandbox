@@ -41,7 +41,7 @@ public class DojoLazyLoadingListContainer extends  WebMarkupContainer
 		super.onComponentTag(tag);
 		tag.put(DOJO_TYPE, DOJO_TYPE_LAZYTABLE);
 		tag.put("templatePath", urlFor(new ResourceReference(DojoLazyLoadingListContainerHandler.class, "LazyTable.htm")));
-		tag.put("maxKnewItem","" + max);
+		tag.put("rowCount","" + max);
 	}
 	
 	/**
