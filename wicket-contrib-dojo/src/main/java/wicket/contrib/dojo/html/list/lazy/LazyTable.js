@@ -15,13 +15,13 @@ dojo.widget.defineWidget ("dojo.widget.LazyTable",dojo.widget.HtmlWidget,
 	rowHeight: 22,
 
 	//real table size
-	knewItemSize: 30,
+	knownItemSize: 30,
 	//real started item
-	knewItemStart: 0,
+	knownItemStart: 0,
 	//real ended item
-	knewItemEnd: null,
+	knownItemEnd: null,
 	//possible max item
-	maxKnewItem: 1000,
+	rowCount: 1000,
 
 	//position of the real scroll bar (it is hidden)
 	realScrollPosition: 0,
@@ -66,10 +66,10 @@ dojo.widget.defineWidget ("dojo.widget.LazyTable",dojo.widget.HtmlWidget,
 	
 	postCreate: function(args, fragment, parent){
 		//initialize element range
-		this.knewItemEnd = this.knewItemStart + this.knewItemSize;
+		this.knownItemEnd = this.knownItemStart + this.knownItemSize;
 		//keep initial contentCoord
 		this.contentCoord = dojo.html.toCoordinateObject(this.content,false);
-		this.scrollerContent.style.height = (this.maxKnewItem * this.rowHeight) + "px";
+		this.scrollerContent.style.height = (this.rowCount * this.rowHeight) + "px";
 		dojo.event.connect(this.scroller, "onscroll", this, "scrollMoved");
 		
 		if(this.content.addEventListener){
@@ -123,13 +123,13 @@ dojo.widget.defineWidget ("dojo.widget.LazyTable",dojo.widget.HtmlWidget,
 	 * This method place the real table (content) on the right position to display on the top item with this.top position
 	 */
 	placeTable: function(){
-		var newScrollTop = (this.top - this.knewItemStart) * this.rowHeight;
+		var newScrollTop = (this.top - this.knownItemStart) * this.rowHeight;
 		this.content.scrollTop = newScrollTop;
-		if (this.top - 1 > this.knewItemEnd - this.rowNumber){		
-			this.turnTable(this.top -this.knewItemEnd + this.rowNumber);
+		if (this.top - 1 > this.knownItemEnd - this.rowNumber){		
+			this.turnTable(this.top -this.knownItemEnd + this.rowNumber);
 		}
-		if (this.top + 1 < this.knewItemStart){
-			this.backTurnTable(this.knewItemStart - this.top);
+		if (this.top + 1 < this.knownItemStart){
+			this.backTurnTable(this.knownItemStart - this.top);
 		}
 		
 		//reload content if necessary
@@ -180,9 +180,9 @@ dojo.widget.defineWidget ("dojo.widget.LazyTable",dojo.widget.HtmlWidget,
 
 	//Make the reload
 	reload: function(){
-		if (this.top < this.knewItemStart || this.top + this.rowNumber > this.knewItemEnd){
-			var start =  this.top + 1  - this.knewItemSize/2 ; 
-			var end   = start + this.knewItemSize
+		if (this.top < this.knownItemStart || this.top + this.rowNumber > this.knownItemEnd){
+			var start =  this.top + 1  - this.knownItemSize/2 ; 
+			var end   = start + this.knownItemSize
 			this.from = start;
 			this.reloadData(start, end);
 		}
@@ -194,7 +194,7 @@ dojo.widget.defineWidget ("dojo.widget.LazyTable",dojo.widget.HtmlWidget,
 		
 		//make reload Here...
 		if (from < 0){from = 0; }
-		if (to > this.maxKnewItem-1){to = this.maxKnewItem}
+		if (to > this.rowCount-1){to = this.rowCount}
 
 		this.reloadItems(from, to);
 	},
@@ -217,14 +217,14 @@ dojo.widget.defineWidget ("dojo.widget.LazyTable",dojo.widget.HtmlWidget,
 	 * All stuff to do after reloading
 	 */
 	postUpdate: function(){
-		this.knewItemStart = this.from; 
-		this.knewItemEnd = this.knewItemStart + this.knewItemSize;
+		this.knownItemStart = this.from; 
+		this.knownItemEnd = this.knownItemStart + this.knownItemSize;
 		
 		var numberLine = this.contentTable.getElementsByTagName("tbody")[0].getElementsByTagName("tr").length
 		
-		if (this.top <  this.knewItemSize && numberLine < this.knewItemSize){
+		if (this.top <  this.knownItemSize && numberLine < this.knownItemSize){
 			//some tr are to be create on the top of the list
-			var trToBeCreated = this.knewItemSize - numberLine;
+			var trToBeCreated = this.knownItemSize - numberLine;
 			var columns = this.contentTable.getElementsByTagName("tbody")[0].getElementsByTagName("tr")[0].getElementsByTagName('td').length;
 		
 			for (var i=0; i< trToBeCreated; i++){
@@ -238,9 +238,9 @@ dojo.widget.defineWidget ("dojo.widget.LazyTable",dojo.widget.HtmlWidget,
 			}
 		}
 		
-		if (this.top > this.maxKnewItem - (2 * this.rowNumber) && numberLine < this.knewItemSize){
+		if (this.top > this.rowCount - (2 * this.rowNumber) && numberLine < this.knownItemSize){
 			//some tr should be happen at the end
-			var trToBeCreated = this.knewItemSize - numberLine;
+			var trToBeCreated = this.knownItemSize - numberLine;
 			var columns = this.contentTable.getElementsByTagName("tbody")[0].getElementsByTagName("tr")[0].getElementsByTagName('td').length;
 		
 			for (var i=0; i< trToBeCreated; i++){
