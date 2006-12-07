@@ -16,6 +16,7 @@ public interface DojoIdConstants
 	public static String DOJO_TYPE_MODALFLOATINGPANE     = "ModalFloatingPane";
 	public static String DOJO_TYPE_TOASTER 				 = "Toaster";
 	public static String DOJO_TYPE_COMBOBOX 			 = "ComboBox";
+	public static String DOJO_TYPE_INLINE_EDIT_BOX       = "inlineEditBox";
 	
 	public static String DOJO_TYPE_TABCONTAINER          = "TabContainer";
 	public static String DOJO_TYPE_ACCORDIONCONTAINER    = "AccordionContainer";
