@@ -1,17 +1,18 @@
 package wicket.contrib.dojo.templates;
 
 import wicket.Component;
+import wicket.behavior.AbstractBehavior;
 import wicket.util.resource.PackagedTextTemplate;
 
 public class DojoPackagedTextTemplate extends PackagedTextTemplate
 {
 	private String fileName;
-	private Component component;
+	private Class clazz;
 	/**
 	 * Constructor.
 	 * 
-	 * @param component
-	 *            The component to be used for retrieving the classloader for
+	 * @param clazz
+	 *            The clazz to be used for retrieving the classloader for
 	 *            loading the packaged template.
 	 * @param fileName
 	 *            the name of the file, relative to the clazz position
@@ -21,18 +22,18 @@ public class DojoPackagedTextTemplate extends PackagedTextTemplate
 	 * @param encoding
 	 *            The file's encoding, e.g. 'UTF-8'
 	 */
-	public DojoPackagedTextTemplate(Component component, String fileName, String contentType, String encoding)
+	public DojoPackagedTextTemplate(Class clazz, String fileName, String contentType, String encoding)
 	{
-		super(component.getClass(), fileName, contentType, encoding);
-		this.component = component;
+		super(clazz, fileName, contentType, encoding);
+		this.clazz = clazz;
 		this.fileName = fileName;
 	}
 
 	/**
 	 * Constructor.
 	 * 
-	 * @param component
-	 *            The component to be used for retrieving the classloader for
+	 * @param clazz
+	 *            The clazz to be used for retrieving the classloader for
 	 *            loading the packaged template.
 	 * @param fileName
 	 *            the name of the file, relative to the clazz position
@@ -40,9 +41,9 @@ public class DojoPackagedTextTemplate extends PackagedTextTemplate
 	 *            The mime type of this resource, such as "image/jpeg" or
 	 *            "text/html"
 	 */
-	public DojoPackagedTextTemplate(Component component, String fileName, String contentType)
+	public DojoPackagedTextTemplate(Class clazz, String fileName, String contentType)
 	{
-		this(component, fileName, contentType, null);
+		this(clazz, fileName, contentType, null);
 	}
 
 	/**
@@ -54,9 +55,9 @@ public class DojoPackagedTextTemplate extends PackagedTextTemplate
 	 * @param fileName
 	 *            The name of the file, relative to the clazz position
 	 */
-	public DojoPackagedTextTemplate(Component component, String fileName)
+	public DojoPackagedTextTemplate(Class clazz, String fileName)
 	{
-		this(component, fileName, "text");
+		this(clazz, fileName, "text");
 	}
 	
 	
@@ -68,7 +69,7 @@ public class DojoPackagedTextTemplate extends PackagedTextTemplate
 	 * @return a key to use in renderJavascript
 	 */
 	public String getStaticKey(){
-		return this.component.getClass().getName() + this.fileName;
+		return clazz.getName() + this.fileName;
 	}
 	
 	/**
@@ -76,11 +77,12 @@ public class DojoPackagedTextTemplate extends PackagedTextTemplate
 	 * A WidgetUnique Key is a Key <b>Unique for <u>one</u> widget of the class</b>.
 	 * So if there are n widget on the same page, a resource rendered with a
 	 * WidgetUniqueKey will be displayed n times. But if a same widget is render m times, this resource wil render once
+	 * @param component component for which the uniqueKey will be generated
 	 * @return a key to use in renderJavascript
 	 */
-	public String getWidgetUniqueKey(){
+	public String getWidgetUniqueKey(Component component){
 		//use memory adress to generate key
-		return this.component.toString() + this.fileName;
+		return component.toString() + this.fileName;
 	}
 
 }
