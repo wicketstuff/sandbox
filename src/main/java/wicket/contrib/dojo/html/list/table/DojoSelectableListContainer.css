@@ -50,11 +50,11 @@ table.dojoSelectableList tbody tr.selected td {
 	background: yellow;
 	padding: 2px;
 }
-table.dojoSelectableList tbody tr:hover td {
+table.dojoSelectableList tbody tr.mouseOver td {
 	background: #a6c2e7;
 	padding: 2px;
 }
-table.dojoSelectableList tbody tr.selected:hover td {
+table.dojoSelectableList tbody tr.selectedMouseOver td {
 	background: #ff3;
 	padding: 2px;
 }
