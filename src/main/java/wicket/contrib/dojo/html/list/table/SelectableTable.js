@@ -40,6 +40,8 @@ dojo.widget.defineWidget(
 		rowClass: "",
 		rowAlternateClass: "alt",
 		rowSelectedClass: "selected",
+		rowMouseOverClass: "mouseOver",
+		rowSelectedAndMouseOverClass: "selectedMouseOver",
 		columnSelected: "sorted-column",
 
 		isContainer: false,
@@ -379,6 +381,8 @@ dojo.widget.defineWidget(
 				}
 				body.appendChild(row);
 				dojo.event.connect(row, "onclick", this, "onUISelect");
+				dojo.event.connect(row, "onmouseover", this, "onOver");
+				dojo.event.connect(row, "onmouseout", this, "onOut");
 				dojo.event.connect(row, "ondblclick", this, "onChoose");
 			}
 			
@@ -492,6 +496,18 @@ dojo.widget.defineWidget(
 			e.stopPropagation();
 			e.preventDefault();
 		},
+		
+		
+		onOver:function(/* DomEvent */ e){ 
+			var row=dojo.html.getParentByType(e.target,"tr");
+			var selected = (dojo.html.getAttribute(row,"selected")=="true");
+            row.className = selected ? this.rowSelectedAndMouseOverClass : this.rowMouseOverClass;
+		},
+		
+		onOut:function(/* DomEvent */ e){ 
+			this.showSelections();
+		},
+ 
 
 		postCreate:function(){ 
 			// 	summary
