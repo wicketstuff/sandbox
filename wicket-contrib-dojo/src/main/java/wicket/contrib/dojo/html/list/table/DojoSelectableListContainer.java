@@ -35,8 +35,13 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer imple
 	 */
 	private List selected;
 
-	private String enableMultipleSelect;
+	private boolean enableMultipleSelect;
+	
+	private boolean enableAlternateRows;
+	
 	private String cssClass;
+	
+	private String alternateRowClass;
 	
 	/**
 	 * flag to know if on choose meke a ajax request or not
@@ -68,9 +73,11 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer imple
 	public DojoSelectableListContainer(String id, IModel model)
 	{
 		super(id, model);
-		enableMultipleSelect = "true";
+		enableMultipleSelect = true;
+		enableAlternateRows = true;
 		cssClass = "dojoSelectableList";
 		ajaxModeOnChoose = true;
+		alternateRowClass = "alternateRow";
 	}
 
 	protected void onComponentTag(ComponentTag tag)
@@ -80,9 +87,9 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer imple
 			throw new WicketRuntimeException("Encountered tag name: '" + getMarkupStream().getTag().getName() + "', should be 'table'");
 		}
 		tag.put(DojoIdConstants.DOJO_TYPE, "SelectableTable");
-		tag.put("enableMultipleSelect", enableMultipleSelect);
-		tag.put("enableAlternateRows", "true");
-		tag.put("rowAlternateClass", "alternateRow");
+		tag.put("enableMultipleSelect", enableMultipleSelect + "");
+		tag.put("enableAlternateRows", enableAlternateRows + "");
+		tag.put("rowAlternateClass", alternateRowClass);
 		tag.put("class", cssClass);
 	}
 	
@@ -134,11 +141,7 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer imple
 	 * @param enableMultipleSelect true to enable multiple selection on items, false otherwise
 	 */
 	public void enableMultipleSelect(boolean enableMultipleSelect){
-		if (enableMultipleSelect){
-			this.enableMultipleSelect = "true";
-		}else{
-			this.enableMultipleSelect = "false";
-		}
+		this.enableMultipleSelect = enableMultipleSelect;
 	}
 	
 	/**
@@ -146,11 +149,23 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer imple
 	 * @return  true if multiple selection is enabled and false otherwise
 	 */
 	public boolean multipleSelectEnabled(){
-		if ("true".equals(enableMultipleSelect)){
-			return true;
-		}else{
-			return false;
-		}
+		return this.enableMultipleSelect;
+	}
+	
+	/**
+	 * Enable or not alternate class on rows
+	 * @param enableAlternateRows true to enable alternate class on rows, false otherwise
+	 */
+	public void enableAlternateRows(boolean enableAlternateRows){
+		this.enableAlternateRows = enableAlternateRows;
+	}
+	
+	/**
+	 * return true if alternate class on rows is enabled and false otherwise
+	 * @return  true if alternate class on rows is enabled and false otherwise
+	 */
+	public boolean alternateRowsEnabled(){
+		return this.enableAlternateRows;
 	}
 
 	/**
@@ -258,6 +273,16 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer imple
 		
 	}
 
+	public String getAlternateRowClass()
+	{
+		return alternateRowClass;
+	}
+
+	public void setAlternateRowClass(String alternateRowClass)
+	{
+		this.alternateRowClass = alternateRowClass;
+	}
+	
 	/***************************************************************************/
 	
 	private class ListViewFinder implements IVisitor{
@@ -285,6 +310,4 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer imple
 		}
 	}
 
-
-	
 }
