@@ -15,7 +15,7 @@ function createUrl(e){
 
 
 function initDrop${MarkupId}(){
-	var dl = byId('${Id}');
+	var dl = byId('${MarkupId}');
 	var drop = new dojo.dnd.HtmlDropTarget(dl, ['${DropId}']);
 	dojo.event.connect(drop, 'onDrop', function(e) {
 		wicketAjaxGet(createUrl(e),function(){},function(){});
