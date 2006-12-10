@@ -25,4 +25,5 @@ public interface DojoIdConstants
 	
 	public static String DOJO_TYPE_WEEKCALENDAR          = "WeekCalendar";
 	public static String DOJO_TYPE_LAZYTABLE			 = "LazyTable";
+	public static String DOJO_TYPE_PERCENTSELECTOR       = "PercentSelector";
 }
