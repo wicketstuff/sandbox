@@ -1,5 +1,6 @@
 package wicket.contrib.scriptaculous;
 
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -59,7 +60,7 @@ public class JavascriptBuilder {
 		addLine(formatAsJavascriptHash(options));
 	}
 
-	public static class JavascriptFunction {
+	public static class JavascriptFunction implements Serializable {
 		private String function;
 
 		public JavascriptFunction(String function) {
