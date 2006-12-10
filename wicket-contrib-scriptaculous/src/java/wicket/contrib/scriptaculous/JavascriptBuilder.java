@@ -30,6 +30,10 @@ public class JavascriptBuilder {
 			buffer.append("\n");
 			buffer.append("  ").append(key).append(": ");
 			buffer.append(formatJavascriptValue(value));
+
+			if (iter.hasNext()) {
+				buffer.append(", ");
+			}
 		}
 		buffer.append("\n");
 		buffer.append("}");
