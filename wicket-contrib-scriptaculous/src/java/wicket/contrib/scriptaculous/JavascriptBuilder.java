@@ -21,18 +21,17 @@ public class JavascriptBuilder {
 			return "{}";
 		}
 		StringBuffer buffer = new StringBuffer();
-		buffer.append("{\n");
+		buffer.append("{");
 		for (Iterator iter = options.keySet().iterator(); iter.hasNext();)
 		{
 			String key = (String)iter.next();
 			Object value = options.get(key);
-			buffer.append("  ").append(key).append(", ");
-			buffer.append(formatJavascriptValue(value));
 
-			if (iter.hasNext()) {
-				buffer.append("\n");
-			}
+			buffer.append("\n");
+			buffer.append("  ").append(key).append(": ");
+			buffer.append(formatJavascriptValue(value));
 		}
+		buffer.append("\n");
 		buffer.append("}");
 		return buffer.toString();
 	}
