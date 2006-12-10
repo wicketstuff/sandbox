@@ -22,8 +22,7 @@
 		</tr>
 		<tr>
 			<td>
-				A week organizer to setup time ranges on a week. Time range can be deleted on click on it and Del key pressed.<br/>
-				This widget is associated with a model. Here datas are static to check synchronization between model and widget.
+				TODO
 			</td>
 		</tr>
 		<tr>
@@ -37,18 +36,24 @@
 package wicket.contrib.dojo.examples;
 
 import wicket.PageParameters;
-import wicket.contrib.dojo.markup.html.calendar.DojoWeekOrganizer;
-import wicket.contrib.dojo.markup.html.calendar.model.WeekTimeRange;
+import wicket.contrib.dojo.markup.html.percentage.DojoPercentSelector;
+import wicket.contrib.dojo.markup.html.percentage.model.PercentageRanges;
 import wicket.markup.html.WebPage;
 import wicket.model.Model;
 
-public class WeekOrganizerSample extends WebPage {
+public class PercentSelectorSample extends WebPage {
 	
-	private static WeekTimeRange times = new WeekTimeRange();
+	private static PercentageRanges ranges = new PercentageRanges();
 	
-	public WeekOrganizerSample(PageParameters parameters){
-		
-		DojoWeekOrganizer organizer = new DojoWeekOrganizer(this, "organizer", new Model&ltWeekTimeRange>(times)); 
+	public PercentSelectorSample(PageParameters parameters){
+		if(ranges.size() == 0){
+			ranges.put("value 1", new Integer(25));
+			ranges.put("value 2", new Integer(25));
+			ranges.put("value 3", new Integer(25));
+			ranges.put("value 4", new Integer(15));
+			ranges.put("value 5", new Integer(10));
+		}
+		DojoPercentSelector percent = new DojoPercentSelector(this, "percent", new Model&lt;PercentageRanges>(ranges)); 
 		
 	}
 }
