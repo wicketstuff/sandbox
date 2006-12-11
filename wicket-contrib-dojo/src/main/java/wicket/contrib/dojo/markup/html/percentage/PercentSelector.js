@@ -371,7 +371,7 @@ dojo.declare (
 				//it isn't the leader... right, we need to move it
 				var currentLeft = parseInt(item.style.left.substring(0, item.style.left.length -2));
 				with (item.style){
-					left =  currentLeft + (decal - leaderBeginLeft );
+					left =  currentLeft + (decal - leaderBeginLeft ) + "px";
 				}
 			}
 		});
