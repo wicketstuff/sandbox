@@ -26,8 +26,10 @@ import wicket.WicketRuntimeException;
 import wicket.ajax.AjaxRequestTarget;
 import wicket.contrib.dojo.DojoIdConstants;
 import wicket.contrib.dojo.widgets.StylingWebMarkupContainer;
+import wicket.extensions.markup.html.repeater.RepeatingView;
 import wicket.markup.ComponentTag;
 import wicket.markup.MarkupStream;
+import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.link.ILinkListener;
 import wicket.markup.html.list.ListView;
 import wicket.model.IModel;
@@ -70,7 +72,7 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer imple
 	private ResourceReference overrideCssReference;
 	
 	//child
-	private ListView listView;
+	private WebMarkupContainer child;
 
 	/**
 	 * Construct the selectable list container
@@ -95,6 +97,7 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer imple
 		enableAlternateRows = true;
 		cssClass = "dojoSelectableList";
 		ajaxModeOnChoose = true;
+		alternateRowClass = "alternateRow";
 	}
 
 	protected void onComponentTag(ComponentTag tag)
@@ -117,15 +120,18 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer imple
 	public final void onLinkClicked()
 	{
 		int selectIndex = Integer.parseInt(getRequest().getParameter("select"));
-		onNonAjaxChoose(this.listView.getList().get(selectIndex));
+		if (child instanceof ListView){
+			ListView listView = (ListView) child;
+			onNonAjaxChoose(listView.getList().get(selectIndex));
+		}//else TODO for RepeatingView
 		
 	}
 	
 	protected void onAttach()
 	{
 		super.onAttach();
-		this.listView = getListView();
-		add(new DojoSelectableListContainerHandler(listView));
+		this.child = getChild();
+		add(new DojoSelectableListContainerHandler(child));
 	}
 	
 
@@ -142,11 +148,11 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer imple
 	 * 
 	 * @return the child ListView of this container
 	 */
-	public ListView getListView()
+	public WebMarkupContainer getChild()
 	{
-		ListViewFinder visitor = new ListViewFinder();
+		ChildFinder visitor = new ChildFinder();
 		visitChildren(visitor);
-		return visitor.getListView();
+		return visitor.getChild();
 	}
 	
 	/*																									  *\
@@ -302,28 +308,33 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer imple
 	
 	/***************************************************************************/
 	
-	private class ListViewFinder implements IVisitor{
-		private ListView listView = null;
+	private class ChildFinder implements IVisitor{
+		private WebMarkupContainer child = null;
 		private int listViewNumber = 0;
+		private int repeatingViewNumber = 0;
 		
 		public Object component(Component component)
 		{
 			if (component instanceof wicket.markup.html.list.ListView){
-				listView = (ListView)component;
+				child = (ListView)component;
 				listViewNumber ++;
+			}
+			if (component instanceof RepeatingView){
+				child = (RepeatingView)component;
+				repeatingViewNumber ++;
 			}
 			return CONTINUE_TRAVERSAL_BUT_DONT_GO_DEEPER;
 		}
 		
-		public ListView getListView(){
-			if (listViewNumber != 1 ){
-				throw new WicketRuntimeException("A DojoSelectableListContainer should contain exactly one ListView as directly child");
+		public WebMarkupContainer getChild(){
+			if (listViewNumber != 1 && repeatingViewNumber != 1){
+				throw new WicketRuntimeException("A DojoSelectableListContainer should contain exactly one ListView or one RepeatingView as directly child");
 			}
 			//FIXME check for TR
 			/*if (!"tr".equals(listView.getMarkupStream().getTag().getName())){
 				throw new WicketRuntimeException("Tag name for a DojoSelectableListContinaner listView should be 'tr'");
 			}*/
-			return listView;
+			return child;
 		}
 	}
 
