@@ -40,7 +40,7 @@ public class PercentageRanges extends HashMap<String, Integer>
 			toReturn += "\"" + current.getKey() + "\":" + current.getValue() + ",";
 		}
 		
-		return toReturn + "}";
+		return toReturn.substring(0, toReturn.length() -1) + "}";
 	}
 
 }
