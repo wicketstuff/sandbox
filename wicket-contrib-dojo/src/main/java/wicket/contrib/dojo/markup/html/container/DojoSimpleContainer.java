@@ -22,7 +22,7 @@ import wicket.MarkupContainer;
 import wicket.markup.ComponentTag;
 
 /**
- * A simple Dojo container
+ * A simple Dojo container. Used to take place in an other container
  * @author Vincent Demay
  *
  */

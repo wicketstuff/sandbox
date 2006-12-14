@@ -24,7 +24,7 @@ import wicket.contrib.dojo.templates.DojoPackagedTextTemplate;
 import wicket.markup.html.IHeaderResponse;
 
 /**
- * Dojo inlineEditBox behavior
+ * Handler for {@link DojoInlineEditBox}
  * @author Gregory Maes
  */
 class DojoInlineEditBoxHandler extends AbstractRequireDojoBehavior {

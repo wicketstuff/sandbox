@@ -42,8 +42,9 @@ public class DojoDropContainerHandler extends AbstractRequireDojoBehavior
 		this.container = (DojoDropContainer)getComponent();
 	}
 	
-	/**
-	 * 
+
+	/* (non-Javadoc)
+	 * @see wicket.contrib.dojo.AbstractRequireDojoBehavior#renderHead(wicket.markup.html.IHeaderResponse)
 	 */
 	public void renderHead(IHeaderResponse response)
 	{
@@ -52,7 +53,7 @@ public class DojoDropContainerHandler extends AbstractRequireDojoBehavior
 		DojoPackagedTextTemplate template = new DojoPackagedTextTemplate(this.getClass(), "DojoDropContainerHandlerTemplate.js");
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("MarkupId", container.getMarkupId());
-		map.put("DropId", container.getDropId());
+		map.put("DropId", container.getDropPattern());
 		map.put("CallbackUrl", getCallbackUrl());
 		map.put("Id", container.getId());
 		response.renderJavascript(template.asString(map), template.getWidgetUniqueKey(this.getComponent()));

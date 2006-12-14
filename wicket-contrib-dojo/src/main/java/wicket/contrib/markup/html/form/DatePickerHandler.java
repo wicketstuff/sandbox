@@ -20,8 +20,8 @@ import wicket.ajax.AjaxRequestTarget;
 import wicket.contrib.dojo.AbstractRequireDojoBehavior;
 
 /**
- * A dojo date picker
- * @author <a href="http://www.demay-fr.net/blog">Vincent Demay</a>
+ * Handler for {@link DatePicker}
+ * @author <a href="http://www.demay-fr.net/blog/index.php/en">Vincent Demay</a>
  *
  */
 public class DatePickerHandler extends AbstractRequireDojoBehavior

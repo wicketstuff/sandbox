@@ -16,14 +16,15 @@
  */
 package wicket.contrib.dojo.html.list.lazy;
 
+
 import wicket.ResourceReference;
 import wicket.ajax.AjaxRequestTarget;
-import wicket.contrib.dojo.AbstractDefaultDojoBehavior;
 import wicket.contrib.dojo.AbstractRequireDojoBehavior;
 import wicket.markup.ComponentTag;
 import wicket.markup.html.IHeaderResponse;
 
 /**
+ * Handler associated with {@link DojoLazyLoadingListContainer}
  * @author Vincent Demay
  *
  */

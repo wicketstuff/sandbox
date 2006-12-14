@@ -23,10 +23,42 @@ import wicket.ajax.AjaxRequestTarget;
 import wicket.markup.ComponentTag;
 import wicket.markup.MarkupStream;
 import wicket.markup.html.WebComponent;
+import wicket.markup.html.WebPage;
+import wicket.markup.html.basic.Label;
 import wicket.model.Model;
 
 /**
- * Dojo inlineEditBox widget for wicket
+ * <p>
+ * 	Dojo inlineEditBox widget for wicket
+ * <p>
+ * <p>
+ * 	<b>Sample
+ *  </b>
+ *  <pre>
+ *  public class DojoInlineEditBoxSample extends WebPage {
+ *	
+ *	public static final String DISPLAY_TEXT = "displayText";
+ *
+ *	private DojoInlineEditBox dojoInlineEditBox;
+ *	private Label displayText;
+ *	
+ *
+ *	public DojoInlineEditBoxSample() {
+ *		
+ *		new DojoInlineEditBox(this,"inlineEditBox", "inlineEditBox") {
+ *			
+ *			protected void onSave(AjaxRequestTarget target) {
+ *				displayText.setModelObject(getModelObject());
+ *				target.addComponent(displayText);
+ *			}
+ *		};
+ *		
+ *		displayText = new Label(this, DISPLAY_TEXT, "Label");
+ *		displayText.setOutputMarkupId(true);
+ *	}
+ *}
+ *  </pre>
+ * </p>
  * @author Gregory Maes
  */
 public class DojoInlineEditBox extends WebComponent<String> {

@@ -7,6 +7,11 @@ import wicket.contrib.dojo.AbstractRequireDojoBehavior;
 import wicket.contrib.dojo.templates.DojoPackagedTextTemplate;
 import wicket.markup.html.IHeaderResponse;
 
+/**
+ * 
+ * @author Vincent Demay
+ *
+ */
 public class DojoDragContainerHandler extends AbstractRequireDojoBehavior
 {
 	/** container handler is attached to. */

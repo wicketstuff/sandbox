@@ -18,7 +18,7 @@ package wicket.contrib.dojo.toggle;
 
 /**
  * Return a Fade toogler
- * @author <a href="http://www.demay-fr.net/blog">Vincent Demay</a>
+ * @author <a href="http://www.demay-fr.net/blog/index.php/en">Vincent Demay</a>
  *
  */
 public class DojoFadeToggle extends DojoToggle
