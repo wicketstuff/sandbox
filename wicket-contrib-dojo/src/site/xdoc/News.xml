@@ -11,15 +11,19 @@
 				<a href="Index.html">front page</a>
 				.
 			</p>
-			<subsection name="January 25, 2006 - Wicket-Dojo ajax-based RSS Dragon, try it now!">
+			<subsection name="December XX, 2006 - Wicket 1.3 came out with the first new release of wicket-dojo-contrib">
 				<p>
-					We have just finished a demo app using some of our components. It is an Ajax-based 
-					RSS reader which uses some of Wicket's beta component-level rendering functionality.
-					It's not entirely stable, but it should give you a impression of what Wicket and Dojo
-					are capable of. Since this application depends on a HEAD version of Wicket, getting it to work
-					from the wicket-contrib-dojo-examples CVS might be a bit tricky. Therefor we have made a
-					pre-compiled war file available which you can deploy in your appserver. Get it <a href="http://wicket-stuff.sourceforge.net/wicket-contrib-dojo/files/wicket-contrib-dojo-examples.war">
-					here!</a>
+					This project is not dead ;). There was no activity on this project between Jnauary 2006 and november 2006 but since Novembre a lot of features
+					has been developped. And the first new Version is now available with a lot of features.<br/>
+					More than Validation or effects from last release, now you can find widgets such has 
+					<ul>
+						<li>Suggestion List
+						</li>
+						<li>Calendar</li>
+						<li>Drag and drop</li>
+						<li>and friends...</li>
+					</ul> 
+					Take a Look at the <a href="http://www.demay-fr.net:8080/Wicket-start/app">live exemple</a>.
 				</p>
 			</subsection>
 			<subsection name="January 4, 2006 - DojoAutoUpdateHandler, try it now!">
