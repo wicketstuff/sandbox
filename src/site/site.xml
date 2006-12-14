@@ -27,7 +27,16 @@
 			<item name="Javadoc" href="/apidocs/index.html" target="_blank" class="newwindow" />
 			<item name="LiveDemo" href="http://www.demay-fr.net:8080/Wicket-start/app"/>
 			<item name="Tutorial">
-				<item name="SuggestionList" href="SuggestionList.html"/>
+				<item name="Widgets">
+				</item>
+				<item name="Effects">
+					<item name="Highlighter" href="TutorialHighlighter.html"/>
+					<item name="Wiper" href="TutorialSimpleWiper.html"/>
+				</item>
+				<item name="Validation">
+					<item name="Part1" href="TutorialValidation1.html"/>
+					<item name="Part2" href="TutorialValidation2.html"/>
+				</item>
 			</item>
 		</menu>
 		<menu name="Project info">
