@@ -37,7 +37,7 @@ public class DojoDragContainerHandler extends AbstractRequireDojoBehavior
 		DojoPackagedTextTemplate template = new DojoPackagedTextTemplate(this.getClass(), "DojoDragContainerHandlerTemplate.js");
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("MarkupId", container.getMarkupId());
-		map.put("DragId", container.getDragId());
+		map.put("DragId", container.getDragPattern());
 		response.renderJavascript(template.asString(map), template.getWidgetUniqueKey(this.getComponent()));
 	}
 
