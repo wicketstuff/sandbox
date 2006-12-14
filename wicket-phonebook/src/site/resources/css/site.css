@@ -38,7 +38,10 @@ div {
 }
 
 #banner {
-	display: none;
+	position: absolute;
+	left:30px;
+	top: 100px;
+	z-index:50;
 }
 
 #breadcrumbs {

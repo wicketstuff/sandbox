@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+	<properties>
+		<title>Ajax AutoUpdate Tutorial</title>
+	</properties>
+
+	<meta
+		name="keyword"
+		content="wicket, example, web, j2ee, java, tutorial, dojo" />
+
+<body>
+<section name="A Basic AutoUpdate example">
+ <subsection name="It's simple">
+	<p>
+		This is probably our last tutorial made for our project, because it is comming to an end. (atm we are very busy making a presentation and finishing our report).
+		Now back to the DojoAutoUpdateHandler, what it does is autoupdating a component on a page in a given interval using Ajax . Ok…. so you are probably wondering why would I need such a component? Well, for instance you could use it for a RSS reader, or something like a stockmonitor.
+		Now you‘re probably thinking… hey this gets interesting!!
+		Doing a tutorial showing the latest stockchanges would spoil all the fun, so we are doing a tutorial with a updating counter (it gives you the opportunity to create beautiful components :)).
+		OK, let us begin!
+		Here are the tree simple steps:
+
+    	<ul>
+    	<li>The first thing to do is to make yourClass updatable</li>
+    	<li>Second, add a new DojoautoUpdateHandler to a yourClass object</li>
+    	<li>Third, add it to your page</li>
+    	</ul>
+
+
+      The first step, make an updatable label, in this case a simple counter:
+
+	</p>
+	
+   	<source>public class UpdateLabel extends Label implements IUpdatable
+{
+private int count = 0;
+  /**
+    * construct
+    * @param id Wicket id
+    * @param txt Innitial Label contents
+    */
+public UpdateLabel(String id, String txt)
+{
+	super(id, txt);
+}
+
+  /**
+    * This method replaces the innitial label text with a counter which shows
+    * the amount of times this Label has been updated.
+    * @see wicket.contrib.markup.html.autoupdate.IUpdatable#update()
+    */
+public void update()
+{
+	setModel(new Model(“updated ” count “ times”));
+	++count;
+}
+
+}
+</source>
+</subsection>
+ <subsection name="Add it...">
+ <p>
+Then you simply add the DojoAutoUpdateHandler to a yourClass object:
+</p>
+<source>
+DojoAutoUpdateHandler ajax = new DojoAutoUpdateHandler(1000);
+UpdateLabel j = new UpdateLabel(“labelj“, “inside c, not changed yet.”);
+j.add(ajax);
+add(j);
+</source>
+<p>
+Here is the screenshot of the handler in action in the example we discussed earlier.
+</p>
+<img src="http://jroller.com/resources/r/ruudmarco/autoupdate.gif"/>
+<p>Note: This component can only be used with Wicket version 1.2+ (or the current CVS version)</p>
+</subsection>
+</section>
+</body>
+</document>
