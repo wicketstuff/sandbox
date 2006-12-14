@@ -21,6 +21,7 @@ import static wicket.contrib.dojo.DojoIdConstants.DOJO_TYPE_ACCORDIONCONTAINER;
 import wicket.MarkupContainer;
 import wicket.contrib.dojo.markup.html.container.AbstractDojoContainer;
 import wicket.markup.ComponentTag;
+import wicket.util.time.Duration;
 
 /**
  * <p>
@@ -49,6 +50,7 @@ import wicket.markup.ComponentTag;
  */
 public class DojoAccordionContainer extends AbstractDojoContainer
 {
+	private Duration duration; 
 
 	/**
 	 * Construct a DojoAccordionContainer
@@ -60,6 +62,7 @@ public class DojoAccordionContainer extends AbstractDojoContainer
 	{
 		super(parent, id, title);
 		add(new DojoAccordionHandler());
+		duration = Duration.milliseconds(200);
 	}
 
 	/**
@@ -78,6 +81,23 @@ public class DojoAccordionContainer extends AbstractDojoContainer
 		super.onComponentTag(tag);
 		tag.put(DOJO_TYPE, DOJO_TYPE_ACCORDIONCONTAINER);
 		tag.put("label", getTitle());
+		tag.put("duration", duration.getMilliseconds() + "");
+	}
+	
+	/**
+	 * return the duration of the movement between 2 accordions
+	 * @return the duration of the movement between 2 accordions
+	 */
+	public Duration getDuration(){
+		return this.duration;
+	}
+	
+	/**
+	 * set the duration of the movement between 2 accordions
+	 * @param duration the duration of the movement between 2 accordions
+	 */
+	public void setDuration(Duration duration){
+		this.duration = duration;
 	}
 
 	/**
