@@ -28,6 +28,7 @@ import wicket.markup.html.link.ILinkListener;
 import wicket.markup.html.list.ListView;
 
 /**
+ * Handler associated with {@link DojoSelectableListContainer}
  * @author Vincent Demay
  *
  */
@@ -47,17 +48,16 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 		this.listView = listView;
 	}
 
-	/**
-	 * 
+
+	/* (non-Javadoc)
+	 * @see wicket.contrib.dojo.AbstractRequireDojoBehavior#setRequire(wicket.contrib.dojo.AbstractRequireDojoBehavior.RequireDojoLibs)
 	 */
 	public void setRequire(RequireDojoLibs libs)
 	{
 		//DO Nothing, the Widget is in the package
 	}
 
-	/**
-	 * 
-	 */
+
 	protected final void respond(AjaxRequestTarget target)
 	{
 		ArrayList selected = new ArrayList();

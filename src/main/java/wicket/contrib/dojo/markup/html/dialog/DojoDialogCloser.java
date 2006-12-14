@@ -23,8 +23,24 @@ import wicket.markup.html.link.Link;
 import wicket.model.Model;
 
 /**
- * Link to close � DojoDialog
- * @author vdemay
+ * <p>
+ * Close a {@link DojoDialog} on click on it
+ * <p>
+ * <p>
+ * 	<pre>
+ * 	public class DialogShower extends WebPage {
+ *	
+ *	public DialogShower(PageParameters parameters){
+ *		DojoDialog dialog = new DojoDialog(this,"dialogPanel");
+ *		dialog.setToggle(new DojoWipeToggle(500));
+ *		new DojoDialogOpener(this, "openner", dialog);
+ *		new DojoDialogCloser(dialog, "closer", dialog);
+ *	}
+ *}
+ *
+ *  </pre>
+ * </p>
+ * @author Vincent Demay
  *
  */
 public class DojoDialogCloser extends Link{

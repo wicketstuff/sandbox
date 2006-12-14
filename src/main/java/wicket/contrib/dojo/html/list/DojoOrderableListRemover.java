@@ -16,15 +16,11 @@
  */
 package wicket.contrib.dojo.html.list;
 
-import java.util.Iterator;
-
 import wicket.MarkupContainer;
 import wicket.WicketRuntimeException;
-import wicket.ajax.AjaxEventBehavior;
 import wicket.ajax.AjaxRequestTarget;
 import wicket.ajax.markup.html.AjaxLink;
 import wicket.markup.html.list.ListItem;
-import wicket.model.IModel;
 
 public class DojoOrderableListRemover extends AjaxLink{
 

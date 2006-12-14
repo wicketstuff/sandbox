@@ -24,7 +24,7 @@ import wicket.contrib.dojo.markup.html.container.AbstractDojoContainer;
 import wicket.markup.html.IHeaderResponse;
 
 /**
- * A Dojo Dialog Box Handler
+ * Handler for {@link DojoAccordionContainer}
  * @author vdemay
  *
  */

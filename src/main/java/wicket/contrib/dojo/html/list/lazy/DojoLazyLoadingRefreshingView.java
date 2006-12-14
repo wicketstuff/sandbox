@@ -22,10 +22,46 @@ import java.util.List;
 
 import wicket.extensions.markup.html.repeater.data.IDataProvider;
 import wicket.extensions.markup.html.repeater.refreshing.RefreshingView;
-import wicket.extensions.markup.html.repeater.refreshing.ReuseIfModelsEqualStrategy;
 import wicket.model.IModel;
 import wicket.model.Model;
 
+/**
+ * <p>
+ * This widget is a repeating view which will be lazy loaded : Element will be asked to the server
+ * in real time when user scroll the list. This Widget should be added in a {@link DojoLazyLoadingListContainer}.
+ * </p>
+ * <p>
+ * 	<b>Sample</b>
+ *  <pre>
+ *public class LazyTableSample extends WebPage {
+ *	
+ *	public LazyTableSample(PageParameters parameters){
+ *		DojoLazyLoadingListContainer container = new DojoLazyLoadingListContainer(this, "container", 3000)
+ *		DojoLazyLoadingRefreshingView list = new DojoLazyLoadingRefreshingView(container, "table"){ 
+ *
+ *			public Iterator iterator(int first, int count) {
+ *				ArrayList&ltString> list = new ArrayList&ltString>();
+ * 				int i = 0;
+ *				while(i < count){
+ *					list.add("foo" + (first + i++));
+ *				}
+ *				
+ *				return list.iterator();
+ *			} 
+ *
+ *			protected void populateItem(Item item) {
+ *				new Label(item, "label",item.getModel());			
+ *			}
+ *			
+ *		};
+ *	}
+ *}
+ *
+ *  </pre>
+ * </p>
+ * @author Vincent demay
+ *
+ */
 public abstract class DojoLazyLoadingRefreshingView extends RefreshingView implements IDataProvider
 {
 	private int first = 0;
@@ -33,12 +69,22 @@ public abstract class DojoLazyLoadingRefreshingView extends RefreshingView imple
 	
 	private DojoLazyLoadingListContainer parent;
 	
+	/**
+	 * {@link DojoLazyLoadingRefreshingView} constructor
+	 * @param parent parent where the widget will be added
+	 * @param id widget id
+	 * @param model model associated to the widget
+	 */
 	public DojoLazyLoadingRefreshingView(DojoLazyLoadingListContainer parent, String id, IModel model) {
 		super(parent, id, model);
 		this.parent = parent;
 	}
 
-
+	/**
+	 * {@link DojoLazyLoadingRefreshingView} constructor
+	 * @param parent parent where the widget will be added
+	 * @param id widget id
+	 */
 	public DojoLazyLoadingRefreshingView(DojoLazyLoadingListContainer parent, String id) {
 		super(parent, id);
 		this.parent = parent;
@@ -46,10 +92,12 @@ public abstract class DojoLazyLoadingRefreshingView extends RefreshingView imple
 
 
 	/**
-	 * @param first 
-	 * @param count 
-	 * @return 
-	 * 
+	 * Return an iterator used to display element on client side
+	 * This method is called when users scrolled the list and items
+	 * are not yet available
+	 * @param first First element to send on client-side
+	 * @param count Number of element to Send
+	 * @return A repeater containing count element starting from first
 	 */
 	public abstract Iterator iterator(int first, int count);
 	
@@ -60,26 +108,43 @@ public abstract class DojoLazyLoadingRefreshingView extends RefreshingView imple
 
 	public void detach(){}
 
+	/**
+	 * return count
+	 * @return count
+	 */
 	public int getCount()
 	{
 		return count;
 	}
 
+	/**
+	 * set count
+	 * @param count
+	 */
 	public void setCount(int count)
 	{
 		this.count = count;
 	}
 
+	/**
+	 * return first
+	 * @return first
+	 */
 	public int getFirst()
 	{
 		return first;
 	}
 
+	/**
+	 * set first
+	 * @param first
+	 */
 	public void setFirst(int first)
 	{
 		this.first = first;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected final Iterator getItemModels(){
 		

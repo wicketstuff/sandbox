@@ -22,6 +22,11 @@ import wicket.ajax.AjaxRequestTarget;
 import wicket.contrib.dojo.widgets.StylingWebMarkupContainer;
 import wicket.markup.ComponentTag;
 
+/**
+ * Dojo Abstract floating pane
+ * @author doume
+ *
+ */
 public abstract class DojoAbstractFloatingPane extends StylingWebMarkupContainer
 {
 	
@@ -32,6 +37,11 @@ public abstract class DojoAbstractFloatingPane extends StylingWebMarkupContainer
 	private boolean displayCloseAction;
 	private boolean hasShadow;
 
+	/**
+	 * Constructor
+	 * @param parent prent where the widget will be added
+	 * @param id widget id
+	 */
 	public DojoAbstractFloatingPane(MarkupContainer parent, String id)
 	{
 		super(parent, id);

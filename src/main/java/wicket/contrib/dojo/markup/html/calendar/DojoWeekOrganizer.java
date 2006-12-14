@@ -25,15 +25,50 @@ import wicket.markup.html.WebMarkupContainer;
 import wicket.model.IModel;
 import static wicket.contrib.dojo.DojoIdConstants.*;
 
+/**
+ * <p>
+ * 	A WeekCalendar allows to graphicaly select time range on a week à la GoogleCalendar
+ * </p>
+ * <p>
+ * <b>Sample</b>
+ * 	<pre>
+ * public class WeekOrganizerSample extends WebPage {
+ *	
+ *	private static WeekTimeRange times = new WeekTimeRange();
+ *	
+ *	public WeekOrganizerSample(PageParameters parameters){
+ *		
+ *		DojoWeekOrganizer organizer = new DojoWeekOrganizer(this, "organizer", new Model&lt;WeekTimeRange>(times)); 
+ *		
+ *	}
+ *}
+ *
+ *
+ *  </pre>
+ *  <u>Be carrefull</u> : Model associated with this widget should be {@link WeekTimeRange}
+ * </p>
+ * @author Vincent Demay
+ *
+ */
 public class DojoWeekOrganizer extends WebMarkupContainer {
 
+	/**
+	 * Contructor
+	 * @param parent parent where the widget will be added
+	 * @param id widget id
+	 * @param model model associated with the widget. Should be {@link WeekTimeRange}
+	 */
 	public DojoWeekOrganizer(MarkupContainer parent, String id, IModel<WeekTimeRange> model)
 	{
 		super(parent, id, model);
 		this.add(new DojoWeekOrganizerHandler());
 	}
 	
-
+	/**
+	 * set the model associated with the widget. Should be {@link WeekTimeRange}
+	 * @param model model associated with the widget. Should be {@link WeekTimeRange}
+	 * @return component
+	 */
 	public Component setModel(IModel model)
 	{
 		if (!(model.getObject() instanceof WeekTimeRange)){
@@ -42,6 +77,11 @@ public class DojoWeekOrganizer extends WebMarkupContainer {
 		return super.setModel(model);
 	}
 
+	/**
+	 * Contructor
+	 * @param parent parent where the widget will be added
+	 * @param id widget id
+	 */
 	public DojoWeekOrganizer(MarkupContainer parent, String id)
 	{
 		super(parent, id);

@@ -31,7 +31,7 @@ import wicket.model.Model;
 import wicket.util.convert.ConversionException;
 
 /**
- * @author <a href="http://www.demay-fr.net/blog">Vincent Demay</a>
+ * @author <a href="http://www.demay-fr.net/blog/index.php/en">Vincent Demay</a>
  *
  */
 public class DatePicker extends TextField<Date>{

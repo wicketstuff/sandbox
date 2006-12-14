@@ -22,8 +22,8 @@ import wicket.contrib.dojo.templates.DojoPackagedTextTemplate;
 import wicket.markup.html.IHeaderResponse;
 
 /**
- * A Dojo Dialog Box Handler
- * @author <a href="http://www.demay-fr.net/blog">Vincent Demay</a>
+ * Handler for {@link DojoFloatingPane}
+ * @author <a href="http://www.demay-fr.net/blog/index.php/en">Vincent Demay</a>
  *
  */
 public class DojoFloatingPaneHandler extends AbstractRequireDojoBehavior {

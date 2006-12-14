@@ -19,6 +19,11 @@ package wicket.contrib.dojo.markup.html.calendar.model;
 import java.io.Serializable;
 import java.text.NumberFormat;
 
+/**
+ * Base model for {@link WeekTimeRange}
+ * @author Gregory Maes
+ *
+ */
 public class TimeRange implements Serializable, Comparable<TimeRange> {
 	/* offsets in seconds since 00:00 */
     /* time in seconde */

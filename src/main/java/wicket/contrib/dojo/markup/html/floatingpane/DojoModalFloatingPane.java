@@ -21,6 +21,39 @@ import static wicket.contrib.dojo.DojoIdConstants.DOJO_TYPE_MODALFLOATINGPANE;
 import wicket.MarkupContainer;
 import wicket.markup.ComponentTag;
 
+/**
+ * <p>
+ * 	This widget has the same skin as {@link DojoFloatingPane} but it is modal 
+ * </p>
+ * <p>
+ * 	<b>Sample</b>
+ * <pre>
+ * 	public class ModalPaneSample extends WebPage {
+ *	
+ *	public ModalPaneSample(PageParameters parameters){
+ *		final DojoModalFloatingPane dialog = new DojoModalFloatingPane(this,"dialogFloating");
+ *		dialog.setTitle("Sample...");
+ *		dialog.setWidth("300px");
+ *		dialog.setHeight("300px");
+ *		dialog.setMinHeight("200px");
+ *		dialog.setMinWidth("200px");
+ *		new AjaxLink(this, "open"){
+ *
+ *			@Override
+ *			public void onClick(AjaxRequestTarget target) {
+ *				dialog.show(target);			
+ *			}
+ *			
+ *		};
+ *	}
+ *}
+ *
+ *
+ * </pre>
+ * </p>
+ * @author doume
+ *
+ */
 public class DojoModalFloatingPane extends DojoAbstractFloatingPane
 {
 

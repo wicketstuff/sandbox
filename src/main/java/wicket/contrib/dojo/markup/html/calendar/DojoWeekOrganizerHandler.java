@@ -25,6 +25,11 @@ import wicket.contrib.dojo.markup.html.calendar.model.WeekTimeRange;
 import wicket.markup.ComponentTag;
 import wicket.markup.html.IHeaderResponse;
 
+/**
+ * Handler for {@link DojoWeekOrganizer}
+ * @author Vincent Demay
+ *
+ */
 public class DojoWeekOrganizerHandler extends AbstractRequireDojoBehavior
 {
 

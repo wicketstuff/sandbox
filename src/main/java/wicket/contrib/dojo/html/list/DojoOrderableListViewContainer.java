@@ -16,14 +16,12 @@
  */
 package wicket.contrib.dojo.html.list;
 
-import java.util.Collections;
 import java.util.List;
 
 import wicket.MarkupContainer;
 import wicket.ajax.AjaxRequestTarget;
 import wicket.contrib.dojo.dojodnd.DojoDragContainer;
 import wicket.contrib.dojo.dojodnd.DojoDropContainer;
-import wicket.markup.html.list.ListItem;
 
 
 /**

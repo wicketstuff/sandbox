@@ -17,9 +17,13 @@
 package wicket.contrib.dojo.templates;
 
 import wicket.Component;
-import wicket.behavior.AbstractBehavior;
 import wicket.util.resource.PackagedTextTemplate;
 
+/**
+ * Used to externalized js in templates
+ * @author Vincent Demay
+ *
+ */
 public class DojoPackagedTextTemplate extends PackagedTextTemplate
 {
 	private String fileName;

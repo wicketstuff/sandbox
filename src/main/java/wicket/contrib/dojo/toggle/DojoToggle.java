@@ -17,8 +17,8 @@
 package wicket.contrib.dojo.toggle;
 
 /**
- * Define a Dojo toggle
- * @author <a href="http://www.demay-fr.net/blog">Vincent Demay</a>
+ * Define a Dojo toggle. Toggles are used to make effect in widget
+ * @author <a href="http://www.demay-fr.net/blog/index.php/en">Vincent Demay</a>
  *
  */
 public abstract class DojoToggle

@@ -20,6 +20,13 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import wicket.contrib.dojo.markup.html.calendar.DojoWeekOrganizer;
+
+/**
+ * Model used by {@link DojoWeekOrganizer}
+ * @author Vincent Demay
+ *
+ */
 public class WeekTimeRange implements Serializable
 {
 	private HashMap<Integer, ArrayList<TimeRange>> week;
@@ -32,6 +39,10 @@ public class WeekTimeRange implements Serializable
 	public static final int FRIDAY = 6;
 	public static final int SATURDAY = 7;
 
+	/**
+	 * Constructor
+	 *
+	 */
 	public WeekTimeRange()
 	{
 		super();
@@ -44,11 +55,21 @@ public class WeekTimeRange implements Serializable
 		week.put(FRIDAY, new ArrayList<TimeRange>());
 		week.put(SATURDAY, new ArrayList<TimeRange>());
 	}
-	
+
+	/**
+	 * Add a new Time range for a given day and a give time Range
+	 * @param day day
+	 * @param range Time range
+	 */
 	public void add(int day, TimeRange range){
 		week.get(day).add(range);
 	}
 	
+	/**
+	 * Suppress an existing Time range for a given day and a give time Range
+	 * @param day day
+	 * @param range Time range
+	 */
 	public void remove(int day, TimeRange range){
 		week.get(day).remove(range);
 	}

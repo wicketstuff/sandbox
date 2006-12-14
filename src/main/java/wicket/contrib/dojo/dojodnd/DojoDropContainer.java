@@ -20,12 +20,57 @@ import wicket.MarkupContainer;
 import wicket.ajax.AjaxRequestTarget;
 import wicket.contrib.markup.html.form.ImmediateCheckBox;
 import wicket.markup.html.WebMarkupContainer;
-import wicket.util.resource.IResourceStream;
-import wicket.util.resource.StringBufferResourceStream;
 
 /**
  * Dojo drop container
- * @author <a href="http://www.demay-fr.net/blog">Vincent Demay</a>
+ * <p>
+ * 	A drop container is a HTML container used to define a Drop area.
+ *  This area is associated with a pattern. This pattern is used to know 
+ *  if a {@link DojoDragContainer} can be drag and drop on it 
+ * </p>
+ * <p>
+ * 	<b>Sample</b>
+ *  <pre>
+ *   package wicket.contrib.dojo.examples;
+ *   
+ *   import wicket.PageParameters;
+ *   import wicket.contrib.dojo.dojodnd.DojoDragContainer;
+ *   import wicket.contrib.dojo.dojodnd.DojoDropContainer;
+ *   import wicket.markup.html.WebPage;
+ *   import wicket.markup.html.image.Image;
+ *   
+ *   public class DnDShower extends WebPage {
+ *   	
+ *   	public DnDShower(PageParameters parameters){
+ *   		DojoDropContainer dropContainer = new DojoDropContainer(this,"dropContainer"){
+ *   		
+ *   			public void onDrop(DojoDragContainer container, int position) {
+ *   				System.out.println("position = " + position);
+ *   				System.out.println("DojoDragContainer" + container.getId());
+ *   				
+ *   			}
+ *   		
+ *   		};
+ *   		
+ *   		DojoDragContainer dragContainer1 = new DojoDragContainer(this,"dragContainer1");
+ *   		DojoDragContainer dragContainer2 = new DojoDragContainer(this,"dragContainer2");
+ *   		DojoDragContainer dragContainer3 = new DojoDragContainer(this,"dragContainer3");
+ *   		
+ *   		DojoDragContainer dragContainer4 = new DojoDragContainer(dropContainer,"dragContainer4");
+ *   		DojoDragContainer dragContainer5 = new DojoDragContainer(dropContainer,"dragContainer5");
+ *   		
+ *   		new Image(dragContainer1,"pic1");
+ *   		new Image(dragContainer2,"pic2");
+ *     		new Image(dragContainer3,"pic3");
+ *   		new Image(dragContainer4,"pic4");
+ *   		new Image(dragContainer5,"pic5");
+ *   	}
+ *   }
+ *   
+ *   
+ *  </pre>
+ * </p>
+ * @author <a href="http://www.demay-fr.net/blog/index.php/en">Vincent Demay</a>
  *
  */
 public abstract class DojoDropContainer extends WebMarkupContainer
@@ -33,6 +78,11 @@ public abstract class DojoDropContainer extends WebMarkupContainer
 
 	private String dropId;
 	
+	/**
+	 * Drop container sample 
+	 * @param parent parent where the widget will be added
+	 * @param id widget id
+	 */
 	public DojoDropContainer(MarkupContainer parent, String id)
 	{
 		super(parent, id);
@@ -42,13 +92,24 @@ public abstract class DojoDropContainer extends WebMarkupContainer
 		add(new DojoDropContainerHandler());
 	}
 	
+	/**
+	 * Set the drop pattern to specified which Drag container can be dropped on
+	 * this Container
+	 * @param pattern drop pattern
+	 */
 	public void setDropPattern(String pattern){
 		this.dropId = pattern;
 	}
 	
-	public String getDropId(){
+	/**
+	 * Drop pattern to specified which Drag container can be dropped on
+	 * this Container
+	 * @return the Drop 
+	 */
+	public String getDropPattern(){
 		return dropId;
 	}
+	
 	/**
 	 * Returns the name of the javascript method that will be invoked when the
 	 * processing of the ajax callback is complete. The method must have the
@@ -79,6 +140,7 @@ public abstract class DojoDropContainer extends WebMarkupContainer
 	/**
 	 * Called after the model is updated. Use this method to e.g. update the
 	 * persistent model. Does nothing by default.
+	 * @param target {@link AjaxRequestTarget}
 	 */
 	protected void onAjaxModelUpdated(AjaxRequestTarget target)
 	{
@@ -92,5 +154,11 @@ public abstract class DojoDropContainer extends WebMarkupContainer
 		onDrop((DojoDragContainer) container, position);  
 	}
 
+	/**
+	 * This method is triggered when a {@link DojoDragContainer} is dropped
+	 * on this container.
+	 * @param container {@link DojoDragContainer} dropped
+	 * @param position position where it is dropped
+	 */
 	public abstract void onDrop(DojoDragContainer container, int position);
 }

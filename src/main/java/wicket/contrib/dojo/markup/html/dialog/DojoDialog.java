@@ -26,8 +26,24 @@ import wicket.markup.ComponentTag;
 import wicket.model.Model;
 
 /**
- * Dialog showing a Dojo dialog
- * @author vdemay
+ * <p>
+ * Dialog showing a Dojo dialog. Associated with {@link DojoDialogCloser} and {@link DojoDialogOpener} to hide and show it
+ * <p>
+ * <p>
+ * 	<pre>
+ * 	public class DialogShower extends WebPage {
+ *	
+ *	public DialogShower(PageParameters parameters){
+ *		DojoDialog dialog = new DojoDialog(this,"dialogPanel");
+ *		dialog.setToggle(new DojoWipeToggle(500));
+ *		new DojoDialogOpener(this, "openner", dialog);
+ *		new DojoDialogCloser(dialog, "closer", dialog);
+ *	}
+ *}
+ *
+ *  </pre>
+ * </p>
+ * @author Vincent Demay
  *
  */
 public class DojoDialog extends HideWebMarkupContainer
@@ -45,7 +61,7 @@ public class DojoDialog extends HideWebMarkupContainer
 	}
 
 	/**
-	 * Set the dialog effect
+	 * Set the dialog effect : see {@link DojoToggle}
 	 * @param toggle
 	 */
 	public void setToggle(DojoToggle toggle){
