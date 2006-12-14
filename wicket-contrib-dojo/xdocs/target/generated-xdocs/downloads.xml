@@ -1,2 +1,0 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
-<document><properties><title>Downloads</title></properties><body><section name="Downloads"><p>You must define the<code>maven.xdoc.distributionUrl</code>property if you wish to generate the download report.</p></section></body></document>
