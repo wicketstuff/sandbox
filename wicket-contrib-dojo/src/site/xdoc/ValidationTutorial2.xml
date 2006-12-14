@@ -43,7 +43,7 @@ this will also trigger our effect.
 </p>
  
 <p>
-Let‘s say you have a RequiredTextfield with a typeValidator which checks for integers and an 
+Let's say you have a RequiredTextfield with a typeValidator which checks for integers and an 
 Integervalidator which checks if the entered value lies between 0 and 100:
 </p>
 <source>
@@ -61,7 +61,7 @@ tx.add(new FXValidationAjaxHandler("onblur"));
 This will trigger wicket validation (in this case: required, type and range) 
 to check the value you entered every onblur and it will highlight the textfield based 
 on the validation result. Since we used the default constructor (only takes an event name), 
-the default color is used when the value is invalid, and the component‘s CSS style background 
+the default color is used when the value is invalid, and the component's CSS style background 
 color is used when the value is valid.
 </p>
 </subsection>
@@ -72,7 +72,7 @@ should highlight when the value is valid or invalid.
 </p>
 
 <source>
-/* Default constructor which uses node‘s current
+/* Default constructor which uses node's current
 background color when component is valid./
 public FXValidationAjaxHandler(String eventName)
 
@@ -90,14 +90,14 @@ public FXValidationAjaxHandler(String eventName, int ir, int ig, int ib, int vr,
 </source>
 <p>
 Here is the screenshot of the handler in action in the example we discussed earlier. 
-In this case a single ‘n‘ is entered and we move on to the next field. 
-The validation fails because ‘n‘ is not a valid integer and the field turns red.
+In this case a single 'n' is entered and we move on to the next field. 
+The validation fails because 'n' is not a valid integer and the field turns red.
 </p>
 
 <img src="images/validator.gif" alt="validator"/>
 <p>
-If we had changed ‘n‘ to a valid integer between 0 and 100 and we would have left the field again, 
-the field would change back to it‘s original background color.
+If we had changed 'n' to a valid integer between 0 and 100 and we would have left the field again, 
+the field would change back to it's original background color.
 </p>
 </subsection>
 

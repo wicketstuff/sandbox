@@ -50,7 +50,7 @@
 	add(integerTextField);
 	</source>
 	<p>
-	Then add a wicket id to the HTML, and you‘re finished.
+	Then add a wicket id to the HTML, and you're finished.
 	</p>
 	<source><![CDATA[
 	<label for="integerProperty">Integer</label><span wicket:id="fc">*</span>

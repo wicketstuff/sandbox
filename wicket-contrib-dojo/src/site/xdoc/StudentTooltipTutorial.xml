@@ -12,16 +12,16 @@
 <section name="A more dynamic Tooltip">
 	<p>
 	In the <a href="BasicTooltipTutorial.html">first example</a> we have shown you how to make a basic Tooltip, 
-	it looks nice but you would probably want a lot more when you‘re working with Wicket.
+	it looks nice but you would probably want a lot more when you're working with Wicket.
 	This tutorial will show you how to make a more dynamic Tooltip.
 	</p>
 	<subsection name="How to make a dynamic Tooltip">
 	<p>
         The case: Imagine you have a student administration application and you would like 
-        to have information tooltips popup when you point at the student‘s name.
+        to have information tooltips popup when you point at the student's name.
 	</p>
 	<p>Step one:
-	Let‘s say you‘ll have a simple student model like this:
+	Let's say you'll have a simple student model like this:
 	</p>
 	<p>
 	<source>
@@ -56,7 +56,7 @@
 	Make sure that StudentTooltip.java extends TooltipPanel and has the necessary imports.
 	You can also see here that we use a constructor which requires an ID, a target component, 
 	a model, an X-offset and a Y-offset. The x and Y offsets are the offsets from the targets 
-	upper-left corner. So it positions your tooltip relatively to it‘s target.
+	upper-left corner. So it positions your tooltip relatively to itï¿½s target.
 	</p>
 	</subsection>
 	<subsection name="StudentTooltip.Java">
@@ -131,8 +131,8 @@
 	add(stlabel2 = new Label("stlabel2", "Ruud Booltink"));
 	...
 	//Create 2 students to serve as modelObjects for the tooltips
-	StudentModel student1 = new StudentModel(1234, "van de Haar", "Marco", ‘m‘);
-	StudentModel student1 = new StudentModel(1235, "Booltink", "Ruud", ‘m‘);
+	StudentModel student1 = new StudentModel(1234, "van de Haar", "Marco", ï¿½mï¿½);
+	StudentModel student1 = new StudentModel(1235, "Booltink", "Ruud", ï¿½mï¿½);
 	
 	//add the tooltips for the student and give a StudentModel to use with hte tooltip
 	add(new Tooltip("studenttooltip", new StudentTooltip(new CompoundPropertyModel(student1), stlabel, 100, 20)));
@@ -152,7 +152,7 @@
 	]]></source>
 	<p>
 	When you hover over the target component (in this case the student name labels) 
-	the Tooltip appears. As you can see we‘ve added some custom style to our Tooltip paragraph. 
+	the Tooltip appears. As you can see weï¿½ve added some custom style to our Tooltip paragraph. 
 	This is a wise thing to do because without any style, our Tooltip will render transparent. 
 	This can look cool when you use transparent image to shape your Tooltip, but mostly it is 
 	just annoying.
