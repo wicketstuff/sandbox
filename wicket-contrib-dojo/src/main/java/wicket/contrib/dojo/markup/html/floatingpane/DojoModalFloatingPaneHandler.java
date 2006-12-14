@@ -20,7 +20,7 @@ import wicket.ajax.AjaxRequestTarget;
 import wicket.contrib.dojo.AbstractRequireDojoBehavior;
 
 /**
- * A Dojo Dialog Box Handler
+ * Handler for {@link DojoModalFloatingPane}
  * @author Vincent Demay
  *
  */

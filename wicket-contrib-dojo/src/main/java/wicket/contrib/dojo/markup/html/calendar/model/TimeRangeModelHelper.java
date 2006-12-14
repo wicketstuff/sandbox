@@ -19,8 +19,20 @@ package wicket.contrib.dojo.markup.html.calendar.model;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+/**
+ * An Helper for {@link WeekTimeRange}.
+ * interpret and generate Json
+ * @author Vincent Demay
+ *
+ */
 public class TimeRangeModelHelper
 {
+	/**
+	 * Create Json for one interval. Json will be sent client side 
+	 * too upgrade the widget
+	 * @param range Time range
+	 * @return String representing Json
+	 */
 	public static String createJsonInterval(TimeRange range){
 		String toReturn ="{\"start\":\"";
 		toReturn += normelizeHour(range.getStartTimeHour()) + ":" + normelizeHour(range.getStartTimeMin());
@@ -38,6 +50,11 @@ public class TimeRangeModelHelper
 		return value;
 	}
 	
+	/**
+	 * Create Json for a {@link TimeRange} list
+	 * @param timeRanges
+	 * @return json
+	 */
 	public static String createJsonIntervals(ArrayList<TimeRange> timeRanges){
 		Iterator<TimeRange> it = timeRanges.iterator();
 		String toReturn = "[";
@@ -52,6 +69,11 @@ public class TimeRangeModelHelper
 		return toReturn;
 	}
 	
+	/**
+	 * Create json for a {@link WeekTimeRange} 
+	 * @param ranges
+	 * @return json
+	 */
 	public static String createJson(WeekTimeRange ranges){
 		String toReturn = "";
 		toReturn += "{\"sunday\":" + createJsonIntervals(ranges.get(WeekTimeRange.SUNDAY));
@@ -65,6 +87,11 @@ public class TimeRangeModelHelper
 		return toReturn;
 	}
 	
+	/**
+	 * Return int associated with a day
+	 * @param day day
+	 * @return int representing the day
+	 */
 	public static int getDay(String day){
 		if (day.equals("sunday")){
 			return WeekTimeRange.SUNDAY;
@@ -84,6 +111,12 @@ public class TimeRangeModelHelper
 		return -1;
 	}
 	
+	/**
+	 * Create a Time range knowing start and end
+	 * @param start
+	 * @param end
+	 * @return {@link TimeRange}
+	 */
 	public static TimeRange createRange(String start, String end){
 		TimeRange range = new TimeRange();
 		range.setStartTimeHour(Integer.parseInt(start.substring(0,2)));

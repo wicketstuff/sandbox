@@ -69,7 +69,7 @@ import wicket.markup.html.WebMarkupContainer;
  *   
  *  </pre>
  * </p>
- * @author <a href="http://www.demay-fr.net/blog/index.html/en">Vincent Demay</a>
+ * @author <a href="http://www.demay-fr.net/blog/index.php/en">Vincent Demay</a>
  *
  */
 public class DojoDragContainer extends WebMarkupContainer

@@ -28,8 +28,40 @@ import wicket.markup.html.WebMarkupContainer;
 import wicket.model.IModel;
 
 /**
- * A lazy loading Repeating view
- * @author vincent demay
+ * <p>
+ * This container should be used to suround {@link DojoLazyLoadingRefreshingView}
+ * . {@link DojoLazyLoadingRefreshingView} could not works without this container around
+ * </p>
+ * <p>
+ * 	<b>Sample</b>
+ *  <pre>
+ *public class LazyTableSample extends WebPage {
+ *	
+ *	public LazyTableSample(PageParameters parameters){
+ *		DojoLazyLoadingListContainer container = new DojoLazyLoadingListContainer(this, "container", 3000)
+ *		DojoLazyLoadingRefreshingView list = new DojoLazyLoadingRefreshingView(container, "table"){ 
+ *
+ *			public Iterator iterator(int first, int count) {
+ *				ArrayList&ltString> list = new ArrayList&ltString>();
+ * 				int i = 0;
+ *				while(i < count){
+ *					list.add("foo" + (first + i++));
+ *				}
+ *				
+ *				return list.iterator();
+ *			} 
+ *
+ *			protected void populateItem(Item item) {
+ *				new Label(item, "label",item.getModel());			
+ *			}
+ *			
+ *		};
+ *	}
+ *}
+ *
+ *  </pre>
+ * </p>
+ * @author Vincent demay
  *
  */
 public class DojoLazyLoadingListContainer extends  WebMarkupContainer
@@ -37,6 +69,13 @@ public class DojoLazyLoadingListContainer extends  WebMarkupContainer
 	
 	private int max;
 
+	/**
+	 * Construct a {@link DojoLazyLoadingRefreshingView}
+	 * @param parent parent where the widget will be added
+	 * @param id widget id
+	 * @param model model associated with the widget
+	 * @param maxItem maximal number of item display in the child see {@link DojoLazyLoadingRefreshingView}
+	 */
 	public DojoLazyLoadingListContainer(MarkupContainer parent, String id, IModel model, int maxItem)
 	{
 		super(parent, id, model);
@@ -44,6 +83,12 @@ public class DojoLazyLoadingListContainer extends  WebMarkupContainer
 		max = maxItem;
 	}
 
+	/**
+	 * Construct a {@link DojoLazyLoadingRefreshingView}
+	 * @param parent parent where the widget will be added
+	 * @param id widget id
+	 * @param maxItem maximal number of item display in the child see {@link DojoLazyLoadingRefreshingView}
+	 */
 	public DojoLazyLoadingListContainer(MarkupContainer parent, String id, int maxItem)
 	{
 		super(parent, id);
@@ -83,7 +128,7 @@ public class DojoLazyLoadingListContainer extends  WebMarkupContainer
 	private class ChildFinder implements IVisitor{
 		private Component component = null;
 		private int componentNumber = 0;
-		
+
 		public Object component(Component component)
 		{
 			if (component instanceof DojoLazyLoadingRefreshingView){
