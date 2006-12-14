@@ -77,8 +77,8 @@
 	</table>
 	]]></source>
 	<p>
-	You can see a table with some rows and some DIV‘s which contain the menu-items and the submenus. 
-	The top and bottom TR‘s hold the top and bottom images. 
+	You can see a table with some rows and some DIV's which contain the menu-items and the submenus. 
+	The top and bottom TR's hold the top and bottom images. 
 	The menu structure is something like this:
 	
 	<table>
