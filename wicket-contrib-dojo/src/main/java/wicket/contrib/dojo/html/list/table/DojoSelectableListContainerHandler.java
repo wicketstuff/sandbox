@@ -17,6 +17,7 @@
 package wicket.contrib.dojo.html.list.table;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -30,7 +31,6 @@ import wicket.markup.html.IHeaderResponse;
 import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.link.ILinkListener;
 import wicket.markup.html.list.ListView;
-import wicket.model.Model;
 
 /**
  * Handler associated with {@link DojoSelectableListContainer}
@@ -87,17 +87,11 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 			}else if (child instanceof RepeatingView){
 				RepeatingView repeatingView = (RepeatingView) child;
 				Iterator ite = repeatingView.iterator();
-				//get All Selected in anb ArrayList
-				ArrayList selectedIndexes = new ArrayList();
-				int pos;
-				for (int i=0; i < indexList.length; i++){
-					pos = Integer.parseInt(indexList[i]);
-					selectedIndexes.add(pos);
-				}
-				pos = 0;
+				List selectedIndexes = Arrays.asList(indexList);
+				int pos = 0;
 				while (ite.hasNext()){
 					Object element = ite.next();
-					if (selectedIndexes.contains(pos)){
+					if (selectedIndexes.contains(Integer.toString(pos))){
 						selected.add(((Item)element).getModelObject());
 					}
 					pos++;
