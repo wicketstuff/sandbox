@@ -1,6 +1,7 @@
 package wicket.contrib.dojo.examples;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import wicket.ajax.AjaxEventBehavior;
@@ -11,6 +12,9 @@ import wicket.markup.html.WebPage;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.list.ListItem;
 import wicket.markup.html.list.ListView;
+import wicket.markup.repeater.RefreshingView;
+import wicket.markup.repeater.RepeatingView;
+import wicket.model.Model;
 
 public class SelectableTable extends WebPage {
 
@@ -55,6 +59,38 @@ public class SelectableTable extends WebPage {
 					}
 					
 				});
+			}
+			
+		};
+		
+		
+		RepeatingView repeater = null;
+		DojoSelectableListContainer container2 = new DojoSelectableListContainer(this, "container2"){
+			@Override
+			public void onChoose(AjaxRequestTarget target, Object o) {
+				System.out.println(o);
+				
+			}
+			@Override
+			public void onSelection(AjaxRequestTarget target, List selected){
+				System.out.println(selected);
+			}
+		};
+		repeater = new RefreshingView(container2, "repeater"){
+
+			@Override
+			protected Iterator getItemModels() {
+				ArrayList<Model<String>> list = new ArrayList<Model<String>>();
+				Iterator ite = objList.iterator();
+				while (ite.hasNext()){
+					list.add(new Model<String>((String)ite.next()));
+				}
+				return list.iterator();
+			}
+
+			@Override
+			protected void populateItem(wicket.extensions.markup.html.repeater.refreshing.Item item) {
+				new Label(item, "label2", item.getModel());
 			}
 			
 		};
