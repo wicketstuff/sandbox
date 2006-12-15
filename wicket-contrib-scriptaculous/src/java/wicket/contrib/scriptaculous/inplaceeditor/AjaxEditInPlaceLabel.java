@@ -83,6 +83,11 @@ public class AjaxEditInPlaceLabel extends AbstractTextComponent {
 	public void setSubmitOnBlur(boolean value) {
 		options.put("submitOnBlur", Boolean.valueOf(value));
 	}
+
+	public void setRows(int rows) {
+		options.put("rows", new Integer(rows));
+	}
+
 	/**
 	 * Handle the container's body.
 	 *
