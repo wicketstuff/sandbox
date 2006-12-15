@@ -45,10 +45,6 @@ public class AjaxEditInPlaceLabel extends AbstractTextComponent {
 		};
 		add(handler);
 		onCompleteHandler = new ScriptaculousAjaxHandler() {
-			protected String getImplementationId() {
-				return "scriptaculous";
-			}
-
 			public void onRequest() {
 				AjaxRequestTarget target = new AjaxRequestTarget();
 				getRequestCycle().setRequestTarget(target);
@@ -116,5 +112,9 @@ public class AjaxEditInPlaceLabel extends AbstractTextComponent {
 	 * extension point to override default onComplete behavior.
 	 */
 	protected void onComplete(final AjaxRequestTarget target) {
+	}
+
+	protected void addOption(String key, Object value) {
+		options.put(key, value);
 	}
 }

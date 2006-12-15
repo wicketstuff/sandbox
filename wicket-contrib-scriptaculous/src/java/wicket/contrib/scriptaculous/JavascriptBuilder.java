@@ -41,8 +41,8 @@ public class JavascriptBuilder {
 		return buffer.toString();
 	}
 	private String formatJavascriptValue(Object value) {
-		if (value instanceof String) {
-			return "'" + (String) value + "'";
+		if (value instanceof CharSequence) {
+			return "'" + (CharSequence) value + "'";
 		}
 		if (value instanceof Map) {
 			return formatAsJavascriptHash((Map)value);
