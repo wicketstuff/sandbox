@@ -20,8 +20,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import wicket.extensions.markup.html.repeater.data.IDataProvider;
-import wicket.extensions.markup.html.repeater.refreshing.RefreshingView;
+import wicket.markup.repeater.RefreshingView;
+import wicket.markup.repeater.data.IDataProvider;
 import wicket.model.IModel;
 import wicket.model.Model;
 
