@@ -26,12 +26,12 @@ import wicket.WicketRuntimeException;
 import wicket.ajax.AjaxRequestTarget;
 import wicket.contrib.dojo.DojoIdConstants;
 import wicket.contrib.dojo.widgets.StylingWebMarkupContainer;
-import wicket.extensions.markup.html.repeater.RepeatingView;
 import wicket.markup.ComponentTag;
 import wicket.markup.MarkupStream;
 import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.link.ILinkListener;
 import wicket.markup.html.list.ListView;
+import wicket.markup.repeater.RepeatingView;
 import wicket.model.IModel;
 
 /**

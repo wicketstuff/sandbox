@@ -24,13 +24,13 @@ import java.util.List;
 import wicket.ResourceReference;
 import wicket.ajax.AjaxRequestTarget;
 import wicket.contrib.dojo.AbstractRequireDojoBehavior;
-import wicket.extensions.markup.html.repeater.RepeatingView;
-import wicket.extensions.markup.html.repeater.refreshing.Item;
 import wicket.markup.ComponentTag;
 import wicket.markup.html.IHeaderResponse;
 import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.link.ILinkListener;
 import wicket.markup.html.list.ListView;
+import wicket.markup.repeater.Item;
+import wicket.markup.repeater.RepeatingView;
 
 /**
  * Handler associated with {@link DojoSelectableListContainer}
