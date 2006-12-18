@@ -2,7 +2,7 @@ package wicket.contrib.scriptaculous.autocomplete;
 
 import wicket.MarkupContainer;
 import wicket.ResourceReference;
-import wicket.contrib.scriptaculous.ScriptaculousAjaxHandler;
+import wicket.contrib.scriptaculous.ScriptaculousAjaxBehavior;
 import wicket.markup.ComponentTag;
 import wicket.markup.MarkupStream;
 import wicket.markup.html.form.TextField;
@@ -26,7 +26,7 @@ public class AutocompleteTextFieldSupport<T> extends TextField<T>
 	public AutocompleteTextFieldSupport(MarkupContainer parent, String id)
 	{
 		super(parent, id);
-		add(ScriptaculousAjaxHandler.newJavascriptBindingHandler());
+		add(ScriptaculousAjaxBehavior.newJavascriptBindingBehavior());
 	}
 
 	@Override

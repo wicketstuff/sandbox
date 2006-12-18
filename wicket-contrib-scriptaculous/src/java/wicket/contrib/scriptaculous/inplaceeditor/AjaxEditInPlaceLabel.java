@@ -7,7 +7,7 @@ import wicket.RequestCycle;
 import wicket.ajax.AjaxRequestTarget;
 import wicket.behavior.AbstractAjaxBehavior;
 import wicket.contrib.scriptaculous.JavascriptBuilder;
-import wicket.contrib.scriptaculous.ScriptaculousAjaxHandler;
+import wicket.contrib.scriptaculous.ScriptaculousAjaxBehavior;
 import wicket.markup.ComponentTag;
 import wicket.markup.MarkupStream;
 import wicket.markup.html.WebMarkupContainer;
@@ -22,15 +22,15 @@ import wicket.request.target.basic.StringRequestTarget;
  * @author <a href="mailto:wireframe6464@sf.net">Ryan Sonnek</a>
  */
 public class AjaxEditInPlaceLabel extends AbstractTextComponent {
-	private AbstractAjaxBehavior handler;
-	private AbstractAjaxBehavior onCompleteHandler;
+	private AbstractAjaxBehavior callbackBehavior;
+	private AbstractAjaxBehavior onCompleteBehavior;
 	private Map options = new HashMap();
 
 	public AjaxEditInPlaceLabel(WebMarkupContainer parent, String wicketId, IModel model) {
 		super(parent, wicketId);
 		setModel(model);
 
-		this.handler = new ScriptaculousAjaxHandler() {
+		this.callbackBehavior = new ScriptaculousAjaxBehavior() {
 
 			public void onRequest() {
 				FormComponent formComponent = (FormComponent) getComponent();
@@ -43,8 +43,8 @@ public class AjaxEditInPlaceLabel extends AbstractTextComponent {
 				RequestCycle.get().setRequestTarget(new StringRequestTarget(value));
 			}
 		};
-		add(handler);
-		onCompleteHandler = new ScriptaculousAjaxHandler() {
+		add(callbackBehavior);
+		onCompleteBehavior = new ScriptaculousAjaxBehavior() {
 			public void onRequest() {
 				AjaxRequestTarget target = new AjaxRequestTarget();
 				getRequestCycle().setRequestTarget(target);
@@ -54,9 +54,9 @@ public class AjaxEditInPlaceLabel extends AbstractTextComponent {
 			}
 
 		};
-		add(onCompleteHandler);
+		add(onCompleteBehavior);
 
-		options.put("onComplete", new JavascriptBuilder.JavascriptFunction("function() { wicketAjaxGet('" + onCompleteHandler.getCallbackUrl() + "'); }"));
+		options.put("onComplete", new JavascriptBuilder.JavascriptFunction("function() { wicketAjaxGet('" + onCompleteBehavior.getCallbackUrl() + "'); }"));
 		setOutputMarkupId(true);
 	}
 
@@ -102,7 +102,7 @@ public class AjaxEditInPlaceLabel extends AbstractTextComponent {
 
 		JavascriptBuilder builder = new JavascriptBuilder();
 		builder.addLine("new Ajax.InPlaceEditor('" + getMarkupId() + "', ");
-		builder.addLine("  '" + handler.getCallbackUrl() + "', ");
+		builder.addLine("  '" + callbackBehavior.getCallbackUrl() + "', ");
 		builder.addOptions(options);
 		builder.addLine(");");
 		getResponse().write(builder.buildScriptTagString());

@@ -33,12 +33,12 @@ import wicket.markup.html.IHeaderResponse;
  *
  * @see <a href="http://script.aculo.us/">script.aculo.us</a>
  */
-public abstract class ScriptaculousAjaxHandler extends AbstractAjaxBehavior
+public abstract class ScriptaculousAjaxBehavior extends AbstractAjaxBehavior
 {
 
-	public static ScriptaculousAjaxHandler newJavascriptBindingHandler()
+	public static ScriptaculousAjaxBehavior newJavascriptBindingBehavior()
 	{
-		return new ScriptaculousAjaxHandler()
+		return new ScriptaculousAjaxBehavior()
 		{
 			private static final long serialVersionUID = 1L;
 
@@ -64,9 +64,9 @@ public abstract class ScriptaculousAjaxHandler extends AbstractAjaxBehavior
 	{
 		super.renderHead(response);
 		// add our basic javascript needs to the header
-		response.renderJavascriptReference(new ResourceReference(ScriptaculousAjaxHandler.class,
+		response.renderJavascriptReference(new ResourceReference(ScriptaculousAjaxBehavior.class,
 				"prototype.js"));
-		response.renderJavascriptReference(new ResourceReference(ScriptaculousAjaxHandler.class,
+		response.renderJavascriptReference(new ResourceReference(ScriptaculousAjaxBehavior.class,
 				"scriptaculous.js"));
 	}
 }

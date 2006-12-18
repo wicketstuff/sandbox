@@ -5,7 +5,7 @@ import java.util.Map;
 
 import wicket.MarkupContainer;
 import wicket.contrib.scriptaculous.JavascriptBuilder;
-import wicket.contrib.scriptaculous.ScriptaculousAjaxHandler;
+import wicket.contrib.scriptaculous.ScriptaculousAjaxBehavior;
 import wicket.markup.ComponentTag;
 import wicket.markup.MarkupStream;
 import wicket.markup.html.image.Image;
@@ -20,7 +20,7 @@ public class DraggableImage extends Image
 		super(parent, wicketId, img);
 		this.id = id;
 
-		add(ScriptaculousAjaxHandler.newJavascriptBindingHandler());
+		add(ScriptaculousAjaxBehavior.newJavascriptBindingBehavior());
 	}
 
 	protected void onComponentTag(ComponentTag tag)
