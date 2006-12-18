@@ -20,7 +20,7 @@ package wicket.contrib.scriptaculous;
 
 import wicket.Component;
 import wicket.ResourceReference;
-import wicket.behavior.AbstractAjaxBehavior;
+import wicket.contrib.behaviour.BehaviourAjaxHandler;
 import wicket.markup.html.IHeaderResponse;
 
 /**
@@ -33,7 +33,7 @@ import wicket.markup.html.IHeaderResponse;
  *
  * @see <a href="http://script.aculo.us/">script.aculo.us</a>
  */
-public abstract class ScriptaculousAjaxHandler extends AbstractAjaxBehavior
+public abstract class ScriptaculousAjaxHandler extends BehaviourAjaxHandler
 {
 
 	public static ScriptaculousAjaxHandler newJavascriptBindingHandler()
