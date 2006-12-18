@@ -23,7 +23,7 @@ import wicket.model.Model;
  * @author <a href="mailto:wireframe6464@sf.net">Ryan Sonnek</a>
  */
 public abstract class SortableContainer extends WebMarkupContainer {
-	private AbstractAjaxBehavior onUpdateHandler;
+	private AbstractAjaxBehavior onUpdateBehavior;
 	private Map options = new HashMap();
 
 	public SortableContainer(MarkupContainer parent, String id, String itemId, final List items) {
@@ -31,7 +31,7 @@ public abstract class SortableContainer extends WebMarkupContainer {
 
 		setOutputMarkupId(true);
 
-		onUpdateHandler = new ScriptaculousAjaxBehavior() {
+		onUpdateBehavior = new ScriptaculousAjaxBehavior() {
 			protected String getImplementationId() {
 				return "scriptaculous";
 			}
@@ -53,7 +53,7 @@ public abstract class SortableContainer extends WebMarkupContainer {
 				target.addComponent(getComponent());
 			}
 		};
-		add(onUpdateHandler);
+		add(onUpdateBehavior);
 
 		new ListView(this, itemId, items) {
 			protected void populateItem(ListItem item) {
@@ -63,7 +63,7 @@ public abstract class SortableContainer extends WebMarkupContainer {
 			}
 		};
 
-		options.put("onUpdate", new JavascriptBuilder.JavascriptFunction("function(element) { wicketAjaxGet('" + onUpdateHandler.getCallbackUrl() + "&' + Sortable.serialize(element)); }"));
+		options.put("onUpdate", new JavascriptBuilder.JavascriptFunction("function(element) { wicketAjaxGet('" + onUpdateBehavior.getCallbackUrl() + "&' + Sortable.serialize(element)); }"));
 	}
 
 	public void setConstraint(boolean value) {
