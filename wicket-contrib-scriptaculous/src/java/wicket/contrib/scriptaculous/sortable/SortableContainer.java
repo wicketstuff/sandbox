@@ -32,10 +32,6 @@ public abstract class SortableContainer extends WebMarkupContainer {
 		setOutputMarkupId(true);
 
 		onUpdateBehavior = new ScriptaculousAjaxBehavior() {
-			protected String getImplementationId() {
-				return "scriptaculous";
-			}
-
 			public void onRequest() {
 				AjaxRequestTarget target = new AjaxRequestTarget();
 				String[] parameters = getRequestCycle().getRequest().getParameters(getMarkupId() + "[]");
