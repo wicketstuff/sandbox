@@ -135,4 +135,12 @@
 		<report>maven-javadoc-plugin</report>
 	</reports>
 	<properties />
+
+  <repositories>
+    <repository>
+      <id>wicket-repository</id>
+      <name>Wicket Repository</name>
+      <url>http://maven.sateh.com/wicket/</url>
+    </repository>
+  </repositories>
 </project>

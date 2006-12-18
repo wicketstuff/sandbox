@@ -20,7 +20,7 @@ package wicket.contrib.scriptaculous;
 
 import wicket.Component;
 import wicket.ResourceReference;
-import wicket.contrib.behaviour.BehaviourAjaxHandler;
+import wicket.contrib.behavior.BehaviourAjaxHandler;
 import wicket.markup.html.IHeaderResponse;
 
 /**
