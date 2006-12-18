@@ -8,7 +8,7 @@ import wicket.Page;
 import wicket.PageParameters;
 import wicket.contrib.scriptaculous.Indicator;
 import wicket.contrib.scriptaculous.JavascriptBuilder;
-import wicket.contrib.scriptaculous.ScriptaculousAjaxHandler;
+import wicket.contrib.scriptaculous.ScriptaculousAjaxBehavior;
 import wicket.contrib.scriptaculous.JavascriptBuilder.JavascriptFunction;
 import wicket.markup.ComponentTag;
 import wicket.markup.MarkupStream;
@@ -26,7 +26,7 @@ public class DraggableTarget<T> extends WebMarkupContainer<T>
 		super(parent, id);
 		this.pageContribution = pageContribution;
 
-		add(ScriptaculousAjaxHandler.newJavascriptBindingHandler());
+		add(ScriptaculousAjaxBehavior.newJavascriptBindingBehavior());
 	}
 
 	public void accepts(DraggableImage image)

@@ -10,7 +10,7 @@ import wicket.MarkupContainer;
 import wicket.ajax.AjaxRequestTarget;
 import wicket.behavior.AbstractAjaxBehavior;
 import wicket.contrib.scriptaculous.JavascriptBuilder;
-import wicket.contrib.scriptaculous.ScriptaculousAjaxHandler;
+import wicket.contrib.scriptaculous.ScriptaculousAjaxBehavior;
 import wicket.markup.MarkupStream;
 import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.list.ListItem;
@@ -31,7 +31,7 @@ public abstract class SortableContainer extends WebMarkupContainer {
 
 		setOutputMarkupId(true);
 
-		onUpdateHandler = new ScriptaculousAjaxHandler() {
+		onUpdateHandler = new ScriptaculousAjaxBehavior() {
 			protected String getImplementationId() {
 				return "scriptaculous";
 			}
