@@ -8,6 +8,7 @@ import wicket.ajax.AjaxRequestTarget;
 import wicket.behavior.AbstractAjaxBehavior;
 import wicket.contrib.scriptaculous.JavascriptBuilder;
 import wicket.contrib.scriptaculous.ScriptaculousAjaxBehavior;
+import wicket.contrib.scriptaculous.effects.Effect;
 import wicket.markup.ComponentTag;
 import wicket.markup.MarkupStream;
 import wicket.markup.html.WebMarkupContainer;
@@ -31,7 +32,6 @@ public class AjaxEditInPlaceLabel extends AbstractTextComponent {
 		setModel(model);
 
 		this.callbackBehavior = new ScriptaculousAjaxBehavior() {
-
 			public void onRequest() {
 				FormComponent formComponent = (FormComponent) getComponent();
 				formComponent.validate();
@@ -44,11 +44,12 @@ public class AjaxEditInPlaceLabel extends AbstractTextComponent {
 			}
 		};
 		add(callbackBehavior);
+
 		onCompleteBehavior = new ScriptaculousAjaxBehavior() {
 			public void onRequest() {
 				AjaxRequestTarget target = new AjaxRequestTarget();
 				getRequestCycle().setRequestTarget(target);
-				target.appendJavascript("new Effect.Highlight('" + getMarkupId() + "')");
+				target.appendJavascript(Effect.highlight(AjaxEditInPlaceLabel.this));
 
 				onComplete(target);
 			}
