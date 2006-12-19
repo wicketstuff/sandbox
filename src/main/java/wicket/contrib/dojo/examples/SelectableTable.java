@@ -12,6 +12,7 @@ import wicket.markup.html.WebPage;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.list.ListItem;
 import wicket.markup.html.list.ListView;
+import wicket.markup.repeater.Item;
 import wicket.markup.repeater.RefreshingView;
 import wicket.markup.repeater.RepeatingView;
 import wicket.model.Model;
@@ -89,7 +90,7 @@ public class SelectableTable extends WebPage {
 			}
 
 			@Override
-			protected void populateItem(wicket.extensions.markup.html.repeater.refreshing.Item item) {
+			protected void populateItem(Item item) {
 				new Label(item, "label2", item.getModel());
 			}
 			
