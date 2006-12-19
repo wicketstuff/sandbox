@@ -1,6 +1,8 @@
 package wicket.contrib.dojo.html.list.table;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 import wicket.ResourceReference;
@@ -8,8 +10,11 @@ import wicket.ajax.AjaxRequestTarget;
 import wicket.contrib.dojo.AbstractRequireDojoBehavior;
 import wicket.markup.ComponentTag;
 import wicket.markup.html.IHeaderResponse;
+import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.link.ILinkListener;
 import wicket.markup.html.list.ListView;
+import wicket.markup.repeater.Item;
+import wicket.markup.repeater.RepeatingView;
 
 /**
  * @author Vincent Demay
@@ -19,16 +24,16 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 {
 	
 	//child of this container
-	private ListView listView;
+	private WebMarkupContainer child;
 
 	/**
 	 * 
 	 * @param listView
 	 */
-	public DojoSelectableListContainerHandler(ListView listView)
+	public DojoSelectableListContainerHandler(WebMarkupContainer child)
 	{
 		super();
-		this.listView = listView;
+		this.child = child;
 	}
 
 	/**
@@ -55,11 +60,26 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 				((DojoSelectableListContainer)getComponent()).onChoose(target, null);
 			}
 		}else{
-			List all = listView.getList();
-			int pos;
-			for (int i=0; i < indexList.length; i++){
-				pos = Integer.parseInt(indexList[i]);
-				selected.add(all.get(pos));
+			if (child instanceof ListView){
+				ListView listView = (ListView) child;
+				List all = listView.getList();
+				int pos;
+				for (int i=0; i < indexList.length; i++){
+					pos = Integer.parseInt(indexList[i]);
+					selected.add(all.get(pos));
+				}
+			}else if (child instanceof RepeatingView){
+				RepeatingView repeatingView = (RepeatingView) child;
+				Iterator ite = repeatingView.iterator();
+				List selectedIndexes = Arrays.asList(indexList);
+				int pos = 0;
+				while (ite.hasNext()){
+					Object element = ite.next();
+					if (selectedIndexes.contains(Integer.toString(pos))){
+						selected.add(((Item)element).getModelObject());
+					}
+					pos++;
+				}
 			}
 			
 			((DojoSelectableListContainer)getComponent()).setSelected(selected);
