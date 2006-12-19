@@ -58,6 +58,10 @@ public class WicketHelper {
         return instance.openTextEditor(new OpenFileDescriptor(project, virtualFile), true);
     }
 
+    /**
+     * @param psiClass the class to findwicket ids in
+     * @return all the wicket ids found the in the given class
+     */
     public static String[] getWicketIdsFromJavaFile(PsiClass psiClass) {
         WicketIdVisitor visitor = new WicketIdVisitor();
         PsiField[] psiFields = psiClass.getFields();
@@ -80,10 +84,19 @@ public class WicketHelper {
         return (String[]) wicketIds.toArray(new String[wicketIds.size()]);
     }
 
+    /**
+     *
+     * @param psiFile
+     * @return all wicket ids found in the given html file
+     */
     public static String[] getWicketIdsFromHtmlFile(PsiFile psiFile) {
         return new String[0];
     }
 
+
+    /**
+     * This is the class that does all the work.
+     */
     private static class WicketIdVisitor extends PsiRecursiveElementVisitor {
         List wicketIds = new ArrayList();
 
@@ -132,6 +145,11 @@ public class WicketHelper {
             }
         }
 
+        /**
+         * Looks through the object hierachy to see it the object or one of its fathers is extending
+         * a wicket.Component object. If so we have a winner :-)
+         * @return true if class is a descendant of wicket.Component
+         */
         private boolean instanceOfWicketComponent(PsiClass aClass) {
             while (aClass != null && !"Object".equals(aClass.getQualifiedName())) {
                 if ("wicket.Component".equals(aClass.getQualifiedName())) {
@@ -142,6 +160,10 @@ public class WicketHelper {
             return false;
         }
 
+        /**
+         * This method is used to return all the wicket ids found
+         * @return
+         */
         public List getWicketIds() {
             return wicketIds;
         }
