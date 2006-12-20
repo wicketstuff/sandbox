@@ -1,0 +1,36 @@
+<html xmlns:wicket>
+<body>	
+<wicket:panel>
+<!-- Start DynListPanel --> 
+  <span wicket:id="pagedTableNav" />
+  
+  <table cellspacing="2" cellpadding="2" style="border:1px solid #31659c">
+    <thead>
+      <tr>
+        <th wicket:id="columnHeaderRow">
+          <span wicket:id="columnName">header</span>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="headerSeparator">
+        <td colspan="20" height="3"></td>
+      </tr>
+      <tr class="even" wicket:id="listRow">
+        <td><a wicket:id="editLink" href="">Edit</a></td>
+        <td wicket:id="listCell">
+          <span wicket:id="cell">attribute 1</span>
+        </td>
+        <wicket:remove>
+          <td>attribute 2</td>
+        </wicket:remove>
+      </tr>
+      <wicket:remove>
+        <tr class="odd"><td>attr 1</td><td>attr 2</td></tr>
+      </wicket:remove>
+    </tbody>
+  </table>
+<!-- End DynListPanel -->
+</wicket:panel>
+</body>
+</html>

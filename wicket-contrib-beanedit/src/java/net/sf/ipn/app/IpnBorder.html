@@ -1,0 +1,52 @@
+<html xmlns:wicket="http://wicket.sf.net">
+<head>
+  <title>Intentional</title>
+  <link rel="stylesheet" href="nav.css" type="text/css" />
+  <link rel="stylesheet" href="pray.css" type="text/css" />
+</head>
+<body>
+  <wicket:border>
+    <img src="images/intentional.png">
+    <br><br>
+	  <!-- BEGIN TAB NAV -->
+	  <div id="navbar" >
+	  	<h5>Primary Navigation</h5>
+  		<ul>  
+  			<li class=""  ><div><a href="home.htm"><b>Home</b></a></div></li>
+  			<li class=""  ><div><a href="bible.htm"><b>Listen</b></a></div></li>
+  			<li class="on"><div><a href="pray.htm"><b>Talk</b></a></div></li>
+  			<li class=""  ><div><a href="evangelism.htm"><b>Share</b></a></div></li>
+  			<li class=""  ><div><a href="worship.htm"><b>Give</b></a></div></li>
+  		</ul>
+  		<div class="spacer"></div>
+  	</div>
+ 
+  	<div id="subnavbar">
+	  	<h5>Secondary Navigation</h5>
+	  	<ul>
+        <li class="first">&nbsp;</li>
+        <span wicket:id="subnavs">
+  			  <li wicket:id="subnav" class="first">
+            <a wicket:id="subnavLink">
+              <span wicket:id="subnavLabel">First Tab</span>
+            </a>
+          </li>  
+        </span>
+        <wicket:remove>
+  			  <li class=""><a href="">My Profile</a></li>
+  			  <li class="on"><a href="">Prayer Items</a></li>
+	  		  <li class=""><a href="">Groups</a></li>
+        </wicket:remove>
+  		  <li class="remainder">&nbsp;</li>
+  		</ul>
+		  <div class="spacer"></div>
+	  </div><!-- id="subnavbar" -->
+    <!-- END TABNAV -->
+    
+    <wicket:body/>
+  
+<br /><br />
+Footer stuff goes down here (IpnBorder.html)
+  </wicket:border>
+</body>
+</html>
