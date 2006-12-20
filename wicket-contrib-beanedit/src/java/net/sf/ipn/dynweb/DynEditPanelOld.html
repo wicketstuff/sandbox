@@ -1,0 +1,51 @@
+<html>
+<body>
+<wicket:panel>
+<!-- Start DynFormPanel -->
+
+  <span wicket:id="feedback" />
+
+	<form wicket:id="dynamicEditForm" action="dummy">
+    <table cellspacing="2" cellpadding="2" style="border:1px solid #31659c">
+      <thead wicket:id="headerTitle">
+        <tr>
+          <th colspan="2" align="center">
+            <span wicket:id="formTitle">Edit Form</span>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <span wicket:id="headerSeparator">
+        <tr class="headerSeparator">
+          <td colspan="2" height="3"></td>
+        </tr>
+        </span>
+	      <tr wicket:id="formFields" class="even">
+	        <td align="right"><span wicket:id="dynamicLabel">label</span>: </td>
+	        <td align="left">
+	          <span wicket:id="dynamicField" />
+	        </td>
+	      </tr>
+	      <wicket:remove>
+		      <tr class="odd">
+		        <td align="right">label2: </td>
+		        <td align="left">
+		          <input type="text" length="15" />
+		        </td>
+		      </tr>
+	      </wicket:remove>
+	      <tr>
+	        <td colspan="2" align="center">
+	          <input type="submit" value="Save" />
+	        </td>
+	      </tr>
+      </tbody>
+    </table>
+	</form>
+  
+  <span wicket:id="relationships" />
+  
+<!-- End DynFormPanel -->
+</wicket:panel>
+</body>
+</html>
