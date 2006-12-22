@@ -4,7 +4,7 @@ dojo.require("dojo.html.*");
 dojo.require("dojo.widget.*");
 dojo.require("dojo.collections.ArrayList");
 dojo.require("dojo.json");
-dojo.require("dojo.lfx.rounded");
+
 
 dojo.widget.defineWidget (
 	"dojo.widget.DayCalendar",
@@ -12,6 +12,7 @@ dojo.widget.defineWidget (
 	{
 
 	templatePath: dojo.uri.dojoUri("../DayCalendar.htm"),
+	templateCssPath: dojo.uri.dojoUri("../DayCalendar.css"),
 	
 	//first selected div in day
 	firstSelected: null,
@@ -309,6 +310,8 @@ dojo.widget.defineWidget (
 	},
 	
 	addTimeRange: function(start, end){
+		//translate end 00:00 to 24:00
+		if (end == "00:00"){end = "24:00";}
 		var inners = this.domNode.getElementsByTagName("div");
 		for(var i=0; i<inners.length; i++){
 			if (inners[i].getAttribute("start") == start){
