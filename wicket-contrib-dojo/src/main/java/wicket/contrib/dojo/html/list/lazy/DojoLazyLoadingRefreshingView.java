@@ -78,6 +78,7 @@ public abstract class DojoLazyLoadingRefreshingView extends RefreshingView imple
 	public DojoLazyLoadingRefreshingView(DojoLazyLoadingListContainer parent, String id, IModel model) {
 		super(parent, id, model);
 		this.parent = parent;
+		setOutputMarkupId(true);
 	}
 
 	/**
@@ -86,8 +87,7 @@ public abstract class DojoLazyLoadingRefreshingView extends RefreshingView imple
 	 * @param id widget id
 	 */
 	public DojoLazyLoadingRefreshingView(DojoLazyLoadingListContainer parent, String id) {
-		super(parent, id);
-		this.parent = parent;
+		this(parent, id, null);
 	}
 
 
