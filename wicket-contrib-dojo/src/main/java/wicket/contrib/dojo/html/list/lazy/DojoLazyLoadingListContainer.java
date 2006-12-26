@@ -81,6 +81,7 @@ public class DojoLazyLoadingListContainer extends  WebMarkupContainer
 		super(parent, id, model);
 		add(new DojoLazyLoadingListContainerHandler());
 		max = maxItem;
+		setOutputMarkupId(true);
 	}
 
 	/**
@@ -91,9 +92,7 @@ public class DojoLazyLoadingListContainer extends  WebMarkupContainer
 	 */
 	public DojoLazyLoadingListContainer(MarkupContainer parent, String id, int maxItem)
 	{
-		super(parent, id);
-		add(new DojoLazyLoadingListContainerHandler());
-		max = maxItem;
+		this(parent, id, null, maxItem);
 	}
 	
 	@Override
