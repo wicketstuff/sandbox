@@ -73,7 +73,6 @@ public class DojoWeekOrganizerHandler extends AbstractRequireDojoBehavior
 			toRender += "</script>\n";
 			response.renderString(toRender);
 		}
-
 	}
 
 	@Override
@@ -90,6 +89,15 @@ public class DojoWeekOrganizerHandler extends AbstractRequireDojoBehavior
 	
 	protected String getCallbackRemove(){
 		return "var wcall=wicketAjaxGet('" + getCallbackUrl() + "&action=remove&start=' + this.start + '&end=' + this.end + '&day=' + this.day, function() { }, function() { })";
+	}
+
+	@Override
+	public void onComponentReRendered(AjaxRequestTarget ajaxTarget)
+	{
+		String toRender = "";
+		toRender += "	var json='" + TimeRangeModelHelper.createJson(((WeekTimeRange)getComponent().getModelObject())) + "'\n";
+		toRender += "	dojo.widget.byId('" + getComponent().getMarkupId() + "').setJson(json);\n";
+		ajaxTarget.appendJavascript(toRender);
 	}
 
 }
