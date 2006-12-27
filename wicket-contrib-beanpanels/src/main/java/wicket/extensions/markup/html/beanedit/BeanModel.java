@@ -58,7 +58,7 @@ public class BeanModel implements IModel
 	 * @param component
 	 * @return BeanInfo object for the model object, or null if the model object is null
 	 */
-	protected final BeanInfo getBeanInfo(Component component)
+	protected final BeanInfo getBeanInfo()
 	{
 		Class objectClass = bean.getClass();
 		try
