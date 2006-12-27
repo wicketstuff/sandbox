@@ -18,45 +18,53 @@
  */
 package wicket.extensions.markup.html.beanedit;
 
+import java.beans.BeanDescriptor;
+import java.beans.BeanInfo;
 import java.beans.IndexedPropertyDescriptor;
+import java.beans.PropertyDescriptor;
 import java.io.Serializable;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
-import wicket.AttributeModifier;
+import wicket.ResourceReference;
 import wicket.WicketRuntimeException;
+import wicket.extensions.markup.html.datepicker.DatePicker;
+import wicket.extensions.markup.html.datepicker.DatePickerSettings;
+import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.form.CheckBox;
 import wicket.markup.html.form.TextField;
 import wicket.markup.html.link.Link;
 import wicket.markup.html.list.ListItem;
 import wicket.markup.html.list.ListView;
-import wicket.markup.html.panel.Panel;
+import wicket.markup.html.panel.Fragment;
+import wicket.model.LoadableDetachableModel;
 
 /**
  * Panel for generic bean displaying/ editing.
  *
  * @author Eelco Hillenius
+ * @author Paolo Di Tommaso
  */
 public class BeanPanel extends AbstractBeanPanel
 {
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * factory for property editors. 
-	 */
-	private IPropertyEditorFactory propertyEditorFactory;
 
 	/** boolean types. */
 	private static final Class[] BOOL_TYPES = new Class[] { Boolean.class, Boolean.TYPE };
 
+	private static final Class[] DATE_TYPES = new Class[] { java.util.Date.class, java.sql.Date.class };
+	
 	/** basic java types. */
-	private static final Class[] BASE_TYPES = new Class[] { String.class, Number.class,
-			Integer.TYPE, Double.TYPE, Long.TYPE, Float.TYPE, Short.TYPE, Byte.TYPE, Date.class };
+	private static final Class[] BASE_TYPES = new Class[] { String.class, Number.class, Integer.TYPE, Double.TYPE, Long.TYPE, Float.TYPE, Short.TYPE, Byte.TYPE };
 
 	/** edit mode. */
 	private EditMode editMode = EditMode.READ_WRITE;
+	
+	private BeanModel beanModel;
 
 	/**
 	 * Construct.
@@ -76,14 +84,35 @@ public class BeanPanel extends AbstractBeanPanel
 	public BeanPanel(String id, BeanModel beanModel)
 	{
 		super(id, beanModel);
+		this.beanModel = beanModel;
 		setRenderBodyOnly(true);
-		Panel header = newHeader("header", beanModel);
+		/*
+		 * Add the bean panel table header
+		 */
+		Fragment header = newHeader("header", beanModel);
 		if (header == null)
 		{
 			throw new NullPointerException("header must be not null");
 		}
-		add(header);
-		add(new PropertyList("propertiesList", new BeanPropertiesListModel(beanModel)));
+		add( header );
+		
+		/*
+		 * Add the properties
+		 */
+		add( new ListView("propertiesList", new BeanPropertiesListModel()) {
+			
+			protected void populateItem(ListItem item) 
+			{
+				PropertyMeta propertyMeta = (PropertyMeta)item.getModelObject();
+				item.add(new Label("displayName", propertyMeta.getDisplayName()));
+				WebMarkupContainer propertyEditor = newPropertyEditor("editor", propertyMeta);
+				if (propertyEditor == null)
+				{
+					throw new NullPointerException("propertyEditor must be not null");
+				}
+				item.add(propertyEditor);
+				
+			} } );
 	}
 
 	/**
@@ -92,9 +121,9 @@ public class BeanPanel extends AbstractBeanPanel
 	 * @param beanModel model with the JavaBean to be edited or displayed
 	 * @return the header panel
 	 */
-	protected Panel newHeader(String panelId, BeanModel beanModel)
+	protected Fragment newHeader(String panelId, BeanModel beanModel)
 	{
-		return new DefaultBeanHeaderPanel(panelId, beanModel);
+		return new DefaultHeaderFragment(panelId,beanModel);
 	}
 
 	/**
@@ -103,21 +132,18 @@ public class BeanPanel extends AbstractBeanPanel
 	 * @param propertyMeta property descriptor
 	 * @return the editor
 	 */
-	protected Panel newPropertyEditor(String panelId, PropertyMeta propertyMeta)
+	protected WebMarkupContainer newPropertyEditor(String panelId, PropertyMeta propertyMeta)
 	{
-		Class type = propertyMeta.getPropertyType();
-		BeanPropertyEditor editor = findCustomEditor(panelId, propertyMeta);
-
-		if (editor == null)
+		//BeanPropertyEditor editor = findCustomEditor(panelId, propertyMeta);
+		WebMarkupContainer editor;
+		
+		if (propertyMeta.getPropertyDescriptor() instanceof IndexedPropertyDescriptor)
 		{
-			if (propertyMeta.getPropertyDescriptor() instanceof IndexedPropertyDescriptor)
-			{
-				throw new WicketRuntimeException("indexed properties not supported yet ");
-			}
-			else
-			{
-				editor = newDefaultEditor(panelId, propertyMeta);
-			}
+			throw new WicketRuntimeException("indexed properties not supported yet ");
+		}
+		else
+		{
+			editor = newDefaultEditor(panelId, propertyMeta);
 		}
 
 		return editor;
@@ -149,18 +175,21 @@ public class BeanPanel extends AbstractBeanPanel
 	 * @param propertyMeta property descriptor
 	 * @return a property editor
 	 */
-	protected final BeanPropertyEditor newDefaultEditor(
-			final String panelId, final PropertyMeta propertyMeta)
+	protected final WebMarkupContainer newDefaultEditor(final String panelId, final PropertyMeta propertyMeta)
 	{
-		BeanPropertyEditor editor;
+		WebMarkupContainer editor;
 		final Class type = propertyMeta.getPropertyType();
 		if (checkAssignableFrom(BOOL_TYPES, type))
 		{
 			editor = new PropertyCheckBox(panelId, propertyMeta);
 		}
-		if (checkAssignableFrom(BASE_TYPES, type))
+		else if (checkAssignableFrom(BASE_TYPES, type))
 		{
 			editor = new PropertyInput(panelId, propertyMeta);
+		}
+		else if (checkAssignableFrom(DATE_TYPES, type))
+		{
+			editor = new PropertyDate(panelId, propertyMeta);
 		}
 		else
 		{
@@ -194,7 +223,6 @@ public class BeanPanel extends AbstractBeanPanel
 	 * @param panelId id of panel; must be used for constructing any panel
 	 * @param propertyMeta property descriptor
 	 * @return PropertyEditor if found or null
-	 */
 	protected final BeanPropertyEditor findCustomEditor(String panelId, PropertyMeta propertyMeta)
 	{
 		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
@@ -249,45 +277,13 @@ public class BeanPanel extends AbstractBeanPanel
 
 		return null;
 	}
-
-	/**
-	 * Lists all properties of the target object.
 	 */
-	private final class PropertyList extends ListView
-	{
-		private static final long serialVersionUID = 1L;
 
-		/**
-		 * Construct.
-		 * @param id component name
-		 * @param model the model
-		 */
-		public PropertyList(String id, BeanPropertiesListModel model)
-		{
-			super(id, model);
-			setOptimizeItemRemoval(true);
-		}
-
-		/**
-		 * @see wicket.markup.html.list.ListView#populateItem(wicket.markup.html.list.ListItem)
-		 */
-		protected void populateItem(ListItem item)
-		{
-			PropertyMeta propertyMeta = (PropertyMeta)item.getModelObject();
-			item.add(new Label("displayName", propertyMeta.getDisplayName()));
-			Panel propertyEditor = newPropertyEditor("editor", propertyMeta);
-			if (propertyEditor == null)
-			{
-				throw new NullPointerException("propertyEditor must be not null");
-			}
-			item.add(propertyEditor);
-		}
-	}
 
 	/**
 	 * Panel for an input field.
 	 */
-	static final class PropertyInput extends BeanPropertyEditor
+	static final class PropertyInput extends Fragment
 	{
 		private static final long serialVersionUID = 1L;
 
@@ -298,22 +294,46 @@ public class BeanPanel extends AbstractBeanPanel
 		 */
 		public PropertyInput(String id, final PropertyMeta propertyMeta)
 		{
-			super(id, propertyMeta);
+			super(id, "propertyInput");
 			setRenderBodyOnly(true);
 			Class type = propertyMeta.getPropertyType();
-			TextField valueTextField = new TextField("value",
-					new BeanPropertyModel(propertyMeta), type);
-			EditModeReplacementModel replacementModel =
-				new EditModeReplacementModel(propertyMeta);
-			valueTextField.add(new AttributeModifier("disabled", true, replacementModel));
-			add(valueTextField);
+			TextField field = new TextField("value", new BeanPropertyModel(propertyMeta), type);
+			field.setEnabled( EditMode.READ_WRITE.equals(propertyMeta.getEditMode()) );
+			add(field);
 		}
 	}
+	
+	static final class PropertyDate extends Fragment
+	{
+		private static final long serialVersionUID = 1L;
+
+		/**
+		 * Construct.
+		 * @param id component id
+		 * @param propertyMeta property descriptor
+		 */
+		public PropertyDate(String id, final PropertyMeta propertyMeta)
+		{
+			super(id, "propertyDate");
+			setRenderBodyOnly(true);
+			Class type = propertyMeta.getPropertyType();
+			TextField field = new TextField("value", new BeanPropertyModel(propertyMeta), type);
+			field.setEnabled( EditMode.READ_WRITE.equals(propertyMeta.getEditMode()) );
+			add(field);
+			
+			// .. and the date picker
+			DatePickerSettings settings = new DatePickerSettings();
+			settings.setStyle( settings.newStyleWinter() );
+			settings.setIcon( new ResourceReference(DatePicker.class, "calendar_icon_2.gif") );
+			add(new DatePicker( "datePicker", field, settings));	
+			
+		}
+	}	
 
 	/**
 	 * Panel for a check box.
 	 */
-	static final class PropertyCheckBox extends BeanPropertyEditor
+	static final class PropertyCheckBox extends Fragment
 	{
 		private static final long serialVersionUID = 1L;
 
@@ -324,22 +344,18 @@ public class BeanPanel extends AbstractBeanPanel
 		 */
 		public PropertyCheckBox(String id, final PropertyMeta propertyMeta)
 		{
-			super(id, propertyMeta);
+			super(id, "propertyCheck");
 			setRenderBodyOnly(true);
-			Class type = propertyMeta.getPropertyType();
-			CheckBox valueTextField = new CheckBox("value",
-					new BeanPropertyModel(propertyMeta));
-			EditModeReplacementModel replacementModel =
-				new EditModeReplacementModel(propertyMeta);
-			valueTextField.add(new AttributeModifier("disabled", true, replacementModel));
-			add(valueTextField);
+			CheckBox field = new CheckBox("value", new BeanPropertyModel(propertyMeta));
+			field.setEnabled( EditMode.READ_WRITE.equals(propertyMeta.getEditMode()) );
+			add(field);
 		}
 	}
 
 	/**
 	 * Panel for a button to more details.
 	 */
-	static final class ButtonToMoreDetails extends BeanPropertyEditor
+	static final class ButtonToMoreDetails extends Fragment
 	{
 		private static final long serialVersionUID = 1L;
 
@@ -350,7 +366,7 @@ public class BeanPanel extends AbstractBeanPanel
 		 */
 		public ButtonToMoreDetails(String id, final PropertyMeta propertyMeta)
 		{
-			super(id, propertyMeta);
+			super(id, "propertyButton");
 			add(new Link("button")
 			{
 				private static final long serialVersionUID = 1L;
@@ -360,5 +376,89 @@ public class BeanPanel extends AbstractBeanPanel
 				}
 			});
 		}
+	}
+	
+	final class DefaultHeaderFragment extends Fragment {
+
+		public DefaultHeaderFragment(String id, BeanModel beanModel) {
+			super(id, "defaultHeader");
+			add(new Label("displayName", new BeanNameModel()));
+		} 
+		
+	}
+	
+	final class BeanPropertiesListModel extends LoadableDetachableModel {
+		
+		protected Object load() {
+			BeanInfo beanInfo = beanModel.getBeanInfo();
+			if (beanInfo != null)
+			{
+				PropertyDescriptor[] descriptors = beanInfo.getPropertyDescriptors();
+				if (descriptors != null)
+				{
+					List all = new ArrayList();
+					int len = descriptors.length;
+					for (int i = 0; i < len; i++)
+					{
+						if (shouldAdd(descriptors[i]))
+						{
+							PropertyMeta meta = new PropertyMeta(beanModel, descriptors[i]);
+							all.add(meta);
+						}
+					}
+					int defaultPropertyIndex = beanInfo.getDefaultPropertyIndex();
+					if (defaultPropertyIndex != -1)
+					{
+						//TODO 
+					}
+					return all;
+				}
+			}
+			return Collections.EMPTY_LIST;
+		} 
+		
+		/**
+		 * Whether this descriptor should be added to the list.
+		 * @param descriptor
+		 * @return whether this descriptor should be added to the list
+		 */
+		private boolean shouldAdd(PropertyDescriptor descriptor)
+		{
+			if ("class".equals(descriptor.getName())) {
+				return false;
+			} 
+			else if( descriptor.getReadMethod()==null && descriptor.getWriteMethod()==null ) { 
+				return false;
+			}
+			
+			return true;
+		}
+	}
+	
+	final class BeanNameModel extends LoadableDetachableModel {
+
+		protected Object load() {
+			BeanInfo beanInfo = beanModel.getBeanInfo();
+
+			if (beanInfo != null)
+			{
+				BeanDescriptor beanDescriptor = beanInfo.getBeanDescriptor();
+				String displayName;
+
+				if (beanDescriptor != null)
+				{
+					displayName = beanDescriptor.getDisplayName();
+				}
+				else
+				{
+					Class clazz = beanModel.getBean().getClass();
+					displayName = (clazz != null) ? clazz.getName() : null;
+				}
+				return displayName;
+			}
+
+			return null;
+		} 
+		
 	}
 }

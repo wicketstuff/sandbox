@@ -25,6 +25,7 @@ import java.io.Serializable;
  * Wraps meta data about a property.
  *
  * @author Eelco Hillenius
+ * @author Paolo Di Tommaso
  */
 public class PropertyMeta implements Serializable
 {
@@ -102,7 +103,15 @@ public class PropertyMeta implements Serializable
 	 */
 	public EditMode getEditMode()
 	{
-		return editMode;
+		if( !hasGetter() ) { 
+			return EditMode.INVISIBLE;
+		}
+		else if( !hasSetter() ) { 
+			return EditMode.READ_ONLY;
+		}
+		else { 
+			return editMode;
+		}
 	}
 
 	/**
@@ -119,7 +128,14 @@ public class PropertyMeta implements Serializable
 	 */
 	public String toString()
 	{
-		return "meta for property " + propertyDescriptor.getDisplayName() +
-			" of bean " + beanModel.getBean();
+		return "meta for property " + propertyDescriptor.getDisplayName() + " of bean " + beanModel.getBean();
+	}
+	
+	private boolean hasGetter() { 
+		return getPropertyDescriptor().getReadMethod() != null;
+	}
+	
+	private boolean hasSetter() { 
+		return getPropertyDescriptor().getWriteMethod() != null;
 	}
 }
