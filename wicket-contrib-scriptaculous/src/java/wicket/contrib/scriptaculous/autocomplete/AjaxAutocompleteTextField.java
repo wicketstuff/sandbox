@@ -20,10 +20,8 @@ package wicket.contrib.scriptaculous.autocomplete;
 
 import wicket.MarkupContainer;
 import wicket.RequestCycle;
-import wicket.contrib.scriptaculous.JavascriptBuilder;
 import wicket.contrib.scriptaculous.ScriptaculousAjaxBehavior;
 import wicket.markup.html.form.FormComponent;
-import wicket.markup.html.internal.HtmlHeaderContainer;
 import wicket.util.resource.StringBufferResourceStream;
 
 /**
@@ -70,20 +68,18 @@ public abstract class AjaxAutocompleteTextField<T> extends AutocompleteTextField
 		add(handler);
 	}
 
-	/**
-	 * @see wicket.Component#renderHead(wicket.markup.html.internal.HtmlHeaderContainer)
-	 */
-	public void renderHead(HtmlHeaderContainer container)
+	@Override
+	protected String getAutocompleteType()
 	{
-		super.renderHead(container);
+		return "Ajax.Autocompleter";
+	}
 
-		JavascriptBuilder builder = new JavascriptBuilder();
-		builder.addLine("new Ajax.Autocompleter(");
-		builder.addLine("  '" + getMarkupId() + "', ");
-		builder.addLine("  '" + getAutocompleteId() + "', ");
-		builder.addLine("  '" + handler.getCallbackUrl() + "', {} );");
-		container.getResponse().write(builder.buildScriptTagString());
+	@Override
+	protected String getThirdAutocompleteArgument()
+	{
+		return "" + handler.getCallbackUrl();
 	}
 
 	protected abstract String[] getResults(String input);
+
 }

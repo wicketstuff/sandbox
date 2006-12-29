@@ -19,9 +19,6 @@
 package wicket.contrib.scriptaculous.autocomplete;
 
 import wicket.MarkupContainer;
-import wicket.contrib.scriptaculous.JavascriptBuilder;
-import wicket.markup.ComponentTag;
-import wicket.markup.html.internal.HtmlHeaderContainer;
 
 /**
  *
@@ -39,18 +36,6 @@ public class AutocompleteTextField<T> extends AutocompleteTextFieldSupport<T>
 		this.results = results;
 	}
 
-	public void renderHead(HtmlHeaderContainer container)
-	{
-		super.renderHead(container);
-
-		JavascriptBuilder builder = new JavascriptBuilder();
-		builder.addLine("new Autocompleter.Local(");
-		builder.addLine("  '" + getMarkupId() + "', ");
-		builder.addLine("  '" + getAutocompleteId() + "', ");
-		builder.addLine("  " + buildResults() + ", {} );");
-		container.getResponse().write(builder.buildScriptTagString());
-	}
-
 	private String buildResults()
 	{
 		String result = "new Array(";
@@ -64,5 +49,17 @@ public class AutocompleteTextField<T> extends AutocompleteTextFieldSupport<T>
 		}
 		result += ")";
 		return result;
+	}
+
+	@Override
+	protected String getAutocompleteType()
+	{
+		return "Autocompleter.Local";
+	}
+
+	@Override
+	protected String getThirdAutocompleteArgument()
+	{
+		return buildResults();
 	}
 }

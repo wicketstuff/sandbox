@@ -21,8 +21,6 @@ package wicket.contrib.scriptaculous.autocomplete;
 import wicket.MarkupContainer;
 import wicket.Page;
 import wicket.PageParameters;
-import wicket.contrib.scriptaculous.JavascriptBuilder;
-import wicket.markup.html.internal.HtmlHeaderContainer;
 
 /**
  * Autocomplete text field that allows for customized layout of autocomplete
@@ -34,27 +32,27 @@ import wicket.markup.html.internal.HtmlHeaderContainer;
 public class CustomLayoutAjaxAutocompleteTextField<T> extends AutocompleteTextFieldSupport<T>
 {
 	private static final long serialVersionUID = 1L;
-	private final Class<? extends Page> page;
+	private CharSequence url;
 
 	public CustomLayoutAjaxAutocompleteTextField(MarkupContainer parent, String id,
 			Class<? extends Page> page)
 	{
 		super(parent, id);
-		this.page = page;
-	}
-
-	public void renderHead(HtmlHeaderContainer container)
-	{
-		super.renderHead(container);
 
 		PageParameters parameters = new PageParameters();
 		parameters.put("fieldName", this.getMarkupId());
-		CharSequence url = urlFor(null, page, parameters);
+		this.url = urlFor(null, page, parameters);
+	}
 
-		JavascriptBuilder builder = new JavascriptBuilder();
-		builder.addLine("new Ajax.Autocompleter(");
-		builder.addLine("  '" + getMarkupId() + "', ");
-		builder.addLine("  '" + getAutocompleteId() + "', ");
-		builder.addLine("  '" + url + "', {} );");
+	@Override
+	protected String getAutocompleteType()
+	{
+		return "Ajax.Autocompleter";
+	}
+
+	@Override
+	protected String getThirdAutocompleteArgument()
+	{
+		return "" + url;
 	}
 }
