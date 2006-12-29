@@ -53,7 +53,7 @@ public class CustomLayoutAjaxAutocompleteTextField<T> extends AutocompleteTextFi
 
 		JavascriptBuilder builder = new JavascriptBuilder();
 		builder.addLine("new Ajax.Autocompleter(");
-		builder.addLine("  '" + getId() + "', ");
+		builder.addLine("  '" + getMarkupId() + "', ");
 		builder.addLine("  '" + getAutocompleteId() + "', ");
 		builder.addLine("  '" + url + "', {} );");
 	}

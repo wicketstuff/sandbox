@@ -11,7 +11,7 @@ import wicket.markup.html.internal.HeaderContainer;
 /**
  * support class for all autocomplete text fields. handles binding of needed css
  * and javascript.
- * 
+ *
  * @author <a href="mailto:wireframe6464@users.sourceforge.net">Ryan Sonnek</a>
  */
 public class AutocompleteTextFieldSupport<T> extends TextField<T>
@@ -20,13 +20,15 @@ public class AutocompleteTextFieldSupport<T> extends TextField<T>
 
 	/**
 	 * Construct.
-	 * 
+	 *
 	 * @param id
 	 */
 	public AutocompleteTextFieldSupport(MarkupContainer parent, String id)
 	{
 		super(parent, id);
 		add(ScriptaculousAjaxBehavior.newJavascriptBindingBehavior());
+
+		setOutputMarkupId(true);
 	}
 
 	@Override
@@ -38,7 +40,7 @@ public class AutocompleteTextFieldSupport<T> extends TextField<T>
 
 	protected final String getAutocompleteId()
 	{
-		return getId() + "_autocomplete";
+		return getMarkupId() + "_autocomplete";
 	}
 
 	protected ResourceReference getCss()
@@ -49,17 +51,16 @@ public class AutocompleteTextFieldSupport<T> extends TextField<T>
 	/**
 	 * @see wicket.Component#onComponentTag(wicket.markup.ComponentTag)
 	 */
-	protected void onComponentTag(ComponentTag tag)
+	protected final void onComponentTag(ComponentTag tag)
 	{
 		super.onComponentTag(tag);
-		tag.put("id", getId());
 		tag.put("autocomplete", "off");
 	}
 
 	/**
 	 * adds a placeholder div where auto completion results will be populated.
 	 */
-	protected void onRender(MarkupStream markupStream)
+	protected final void onRender(MarkupStream markupStream)
 	{
 		super.onRender(markupStream);
 
@@ -77,7 +78,7 @@ public class AutocompleteTextFieldSupport<T> extends TextField<T>
 
 	/**
 	 * Writes the given string to the header container.
-	 * 
+	 *
 	 * @param container
 	 *            the header container
 	 * @param s
