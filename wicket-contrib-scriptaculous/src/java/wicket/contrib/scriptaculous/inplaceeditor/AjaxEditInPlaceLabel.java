@@ -25,7 +25,7 @@ import wicket.request.target.basic.StringRequestTarget;
 public class AjaxEditInPlaceLabel extends AbstractTextComponent {
 	private AbstractAjaxBehavior callbackBehavior;
 	private AbstractAjaxBehavior onCompleteBehavior;
-	private Map options = new HashMap();
+	private Map<String, Object> options = new HashMap<String, Object>();
 
 	public AjaxEditInPlaceLabel(WebMarkupContainer parent, String wicketId, IModel model) {
 		super(parent, wicketId);
@@ -43,7 +43,7 @@ public class AjaxEditInPlaceLabel extends AbstractTextComponent {
 		};
 		add(callbackBehavior);
 
-		onCompleteBehavior = new ScriptaculousAjaxBehavior() {
+		this.onCompleteBehavior = new ScriptaculousAjaxBehavior() {
 			public void onRequest() {
 				AjaxRequestTarget target = new AjaxRequestTarget();
 				getRequestCycle().setRequestTarget(target);
@@ -93,10 +93,10 @@ public class AjaxEditInPlaceLabel extends AbstractTextComponent {
 	public void setSize(int size) {
 		options.put("size", new Integer(size));
 	}
-	
+
 	/**
 	 * extension point for customizing what text is loaded for editing.
-	 * 
+	 *
 	 * @see #getDisplayValue()
 	 */
 	public void setLoadBehavior(AbstractAjaxBehavior loadBehavior) {
