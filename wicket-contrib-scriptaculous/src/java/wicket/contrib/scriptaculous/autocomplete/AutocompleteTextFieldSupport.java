@@ -1,5 +1,7 @@
 package wicket.contrib.scriptaculous.autocomplete;
 
+import java.util.HashMap;
+
 import wicket.MarkupContainer;
 import wicket.ResourceReference;
 import wicket.contrib.scriptaculous.JavascriptBuilder;
@@ -43,6 +45,7 @@ public abstract class AutocompleteTextFieldSupport<T> extends TextField<T>
 		builder.addLine("  '" + getMarkupId() + "', ");
 		builder.addLine("  '" + getAutocompleteId() + "', ");
 		builder.addLine("  '" + getThirdAutocompleteArgument() + "', ");
+		builder.addOptions(new HashMap());
 		builder.addLine(");");
 		container.getResponse().write(builder.buildScriptTagString());
 	}
