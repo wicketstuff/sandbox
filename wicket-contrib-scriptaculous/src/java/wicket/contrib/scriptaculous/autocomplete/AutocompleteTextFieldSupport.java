@@ -2,6 +2,7 @@ package wicket.contrib.scriptaculous.autocomplete;
 
 import wicket.MarkupContainer;
 import wicket.ResourceReference;
+import wicket.contrib.scriptaculous.JavascriptBuilder;
 import wicket.contrib.scriptaculous.ScriptaculousAjaxBehavior;
 import wicket.markup.ComponentTag;
 import wicket.markup.MarkupStream;
@@ -14,7 +15,7 @@ import wicket.markup.html.internal.HeaderContainer;
  *
  * @author <a href="mailto:wireframe6464@users.sourceforge.net">Ryan Sonnek</a>
  */
-public class AutocompleteTextFieldSupport<T> extends TextField<T>
+public abstract class AutocompleteTextFieldSupport<T> extends TextField<T>
 {
 	private static final long serialVersionUID = 1L;
 
@@ -32,11 +33,23 @@ public class AutocompleteTextFieldSupport<T> extends TextField<T>
 	}
 
 	@Override
-	public void renderHead(HeaderContainer container)
+	public final void renderHead(HeaderContainer container)
 	{
 		super.renderHead(container);
 		addCssReference(container, getCss());
+
+		JavascriptBuilder builder = new JavascriptBuilder();
+		builder.addLine("new " + getAutocompleteType() + "(");
+		builder.addLine("  '" + getMarkupId() + "', ");
+		builder.addLine("  '" + getAutocompleteId() + "', ");
+		builder.addLine("  '" + getThirdAutocompleteArgument() + "', ");
+		builder.addLine(");");
+		container.getResponse().write(builder.buildScriptTagString());
 	}
+
+	protected abstract String getThirdAutocompleteArgument();
+
+	protected abstract String getAutocompleteType();
 
 	protected final String getAutocompleteId()
 	{
