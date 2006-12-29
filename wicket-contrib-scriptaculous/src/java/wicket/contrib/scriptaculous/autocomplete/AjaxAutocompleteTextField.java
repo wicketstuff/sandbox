@@ -31,46 +31,43 @@ import wicket.util.resource.StringBufferResourceStream;
  */
 public abstract class AjaxAutocompleteTextField<T> extends AutocompleteTextFieldSupport<T>
 {
-	private class AutocompleteBehavior extends ScriptaculousAjaxBehavior
-	{
-		private static final long serialVersionUID = 1L;
-
-		public void onRequest()
-		{
-			FormComponent formComponent = (FormComponent)getComponent();
-
-			formComponent.validate();
-			if (formComponent.isValid())
-			{
-				formComponent.updateModel();
-			}
-			String input = formComponent.getValue();
-			String[] results = getResults(input);
-			RequestCycle.get().getResponse().write(formatResultsAsUnorderedList(results));
-		}
-
-		private String formatResultsAsUnorderedList(String[] results)
-		{
-			StringBufferResourceStream s = new StringBufferResourceStream();
-			s.append("<ul>\n");
-			for (int x = 0; x < results.length; x++)
-			{
-				String result = results[x];
-				s.append("  <li>" + result + "</li>\n");
-			}
-			s.append("</ul>\n");
-			return s.toString();
-		}
-	}
-
-	private final AutocompleteBehavior callbackBehavior;
+	private final ScriptaculousAjaxBehavior callbackBehavior;
 
 	public AjaxAutocompleteTextField(MarkupContainer parent, String id)
 	{
 		super(parent, id);
-		this.callbackBehavior = new AutocompleteBehavior();
+		this.callbackBehavior = new ScriptaculousAjaxBehavior()
+		{
+			public void onRequest()
+			{
+				FormComponent formComponent = (FormComponent)getComponent();
+
+				formComponent.validate();
+				if (formComponent.isValid())
+				{
+					formComponent.updateModel();
+				}
+				String input = formComponent.getValue();
+				String[] results = getResults(input);
+				RequestCycle.get().getResponse().write(formatResultsAsUnorderedList(results));
+			}
+		};
 		add(callbackBehavior);
 	}
+
+	private String formatResultsAsUnorderedList(String[] results)
+	{
+		StringBufferResourceStream s = new StringBufferResourceStream();
+		s.append("<ul>\n");
+		for (int x = 0; x < results.length; x++)
+		{
+			String result = results[x];
+			s.append("  <li>" + result + "</li>\n");
+		}
+		s.append("</ul>\n");
+		return s.toString();
+	}
+
 
 	@Override
 	protected String getAutocompleteType()
