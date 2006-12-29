@@ -79,7 +79,7 @@ public abstract class AjaxAutocompleteTextField<T> extends AutocompleteTextField
 
 		JavascriptBuilder builder = new JavascriptBuilder();
 		builder.addLine("new Ajax.Autocompleter(");
-		builder.addLine("  '" + getId() + "', ");
+		builder.addLine("  '" + getMarkupId() + "', ");
 		builder.addLine("  '" + getAutocompleteId() + "', ");
 		builder.addLine("  '" + handler.getCallbackUrl() + "', {} );");
 		container.getResponse().write(builder.buildScriptTagString());

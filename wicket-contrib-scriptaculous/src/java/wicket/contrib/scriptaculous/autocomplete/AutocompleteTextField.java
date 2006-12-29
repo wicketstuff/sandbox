@@ -45,17 +45,10 @@ public class AutocompleteTextField<T> extends AutocompleteTextFieldSupport<T>
 
 		JavascriptBuilder builder = new JavascriptBuilder();
 		builder.addLine("new Autocompleter.Local(");
-		builder.addLine("  '" + getId() + "', ");
+		builder.addLine("  '" + getMarkupId() + "', ");
 		builder.addLine("  '" + getAutocompleteId() + "', ");
 		builder.addLine("  " + buildResults() + ", {} );");
 		container.getResponse().write(builder.buildScriptTagString());
-	}
-
-	protected void onComponentTag(ComponentTag tag)
-	{
-		super.onComponentTag(tag);
-		tag.put("id", getId());
-		tag.put("autocomplete", "off");
 	}
 
 	private String buildResults()
