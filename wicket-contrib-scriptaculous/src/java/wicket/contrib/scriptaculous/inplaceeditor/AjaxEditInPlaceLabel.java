@@ -38,7 +38,7 @@ public class AjaxEditInPlaceLabel extends AbstractTextComponent {
 				if (formComponent.isValid()) {
 					formComponent.updateModel();
 				}
-				RequestCycle.get().setRequestTarget(new StringRequestTarget(formatValue(formComponent.getValue())));
+				RequestCycle.get().setRequestTarget(new StringRequestTarget(getDisplayValue()));
 			}
 		};
 		add(callbackBehavior);
@@ -93,6 +93,17 @@ public class AjaxEditInPlaceLabel extends AbstractTextComponent {
 	public void setSize(int size) {
 		options.put("size", new Integer(size));
 	}
+	
+	/**
+	 * extension point for customizing what text is loaded for editing.
+	 * 
+	 * @see #getDisplayValue()
+	 */
+	public void setLoadBehavior(AbstractAjaxBehavior loadBehavior) {
+		add(loadBehavior);
+
+		addOption("loadTextURL", loadBehavior.getCallbackUrl());
+	}
 
 	/**
 	 * Handle the container's body.
@@ -104,16 +115,20 @@ public class AjaxEditInPlaceLabel extends AbstractTextComponent {
 	 * @see wicket.Component#onComponentTagBody(MarkupStream, ComponentTag)
 	 */
 	protected void onComponentTagBody(final MarkupStream markupStream, final ComponentTag openTag) {
-		replaceComponentTagBody(markupStream, openTag, formatValue(getValue()));
+		replaceComponentTagBody(markupStream, openTag, getDisplayValue());
 	}
 
 	/**
-	 * extension point to allow for manipulation of the value.
-	 * @param value
-	 * @return
+	 * extension point to allow for manipulation of what value is displayed.
+	 * Overriding this method allows for the component to display different text than what is edited.
+	 * This may be useful when the display text is formatted differently than the editable text (ex: textile).
+	 * The default behavior is to return the same value as the <code>getValue()</code> method.
+	 *
+	 * @see #getValue();
+	 * @see #setLoadBehavior(AbstractAjaxBehavior)
 	 */
-	protected String formatValue(String value) {
-		return value;
+	protected String getDisplayValue() {
+		return getValue();
 	}
 
 	protected void onRender(MarkupStream markupStream) {
