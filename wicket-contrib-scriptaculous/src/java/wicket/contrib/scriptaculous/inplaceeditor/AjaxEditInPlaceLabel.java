@@ -38,9 +38,7 @@ public class AjaxEditInPlaceLabel extends AbstractTextComponent {
 				if (formComponent.isValid()) {
 					formComponent.updateModel();
 				}
-				String value = formComponent.getValue();
-
-				RequestCycle.get().setRequestTarget(new StringRequestTarget(value));
+				RequestCycle.get().setRequestTarget(new StringRequestTarget(formatValue(formComponent.getValue())));
 			}
 		};
 		add(callbackBehavior);
@@ -49,7 +47,7 @@ public class AjaxEditInPlaceLabel extends AbstractTextComponent {
 			public void onRequest() {
 				AjaxRequestTarget target = new AjaxRequestTarget();
 				getRequestCycle().setRequestTarget(target);
-				target.appendJavascript(Effect.highlight(AjaxEditInPlaceLabel.this));
+				target.appendJavascript(new Effect.Highlight(AjaxEditInPlaceLabel.this).toJavascript());
 
 				onComplete(target);
 			}
@@ -77,12 +75,23 @@ public class AjaxEditInPlaceLabel extends AbstractTextComponent {
 		options.put("cancelLink", Boolean.valueOf(value));
 	}
 
+	public void setExternalControl(WebMarkupContainer control) {
+		options.put("externalControl", control.getMarkupId());
+	}
 	public void setSubmitOnBlur(boolean value) {
 		options.put("submitOnBlur", Boolean.valueOf(value));
 	}
 
 	public void setRows(int rows) {
 		options.put("rows", new Integer(rows));
+	}
+
+	public void setCols(int cols) {
+		options.put("cols", new Integer(cols));
+	}
+
+	public void setSize(int size) {
+		options.put("size", new Integer(size));
 	}
 
 	/**
@@ -94,8 +103,17 @@ public class AjaxEditInPlaceLabel extends AbstractTextComponent {
 	 *            The open tag for the body
 	 * @see wicket.Component#onComponentTagBody(MarkupStream, ComponentTag)
 	 */
-	protected final void onComponentTagBody(final MarkupStream markupStream, final ComponentTag openTag) {
-		replaceComponentTagBody(markupStream, openTag, getValue());
+	protected void onComponentTagBody(final MarkupStream markupStream, final ComponentTag openTag) {
+		replaceComponentTagBody(markupStream, openTag, formatValue(getValue()));
+	}
+
+	/**
+	 * extension point to allow for manipulation of the value.
+	 * @param value
+	 * @return
+	 */
+	protected String formatValue(String value) {
+		return value;
 	}
 
 	protected void onRender(MarkupStream markupStream) {
