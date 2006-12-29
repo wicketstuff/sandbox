@@ -48,7 +48,7 @@ public class CustomLayoutAjaxAutocompleteTextField<T> extends AutocompleteTextFi
 		super.renderHead(container);
 
 		PageParameters parameters = new PageParameters();
-		parameters.put("fieldName", this.getId());
+		parameters.put("fieldName", this.getMarkupId());
 		CharSequence url = urlFor(null, page, parameters);
 
 		JavascriptBuilder builder = new JavascriptBuilder();
