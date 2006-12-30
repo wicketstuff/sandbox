@@ -1,35 +1,33 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src/conf"/>
-	<classpathentry kind="src" path="src/java"/>
-	<classpathentry kind="src" path="src/launcher"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/wicket"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/wicket-extensions"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/wicket-spring"/>
-	<classpathentry sourcepath="M2_REPO/commons-pool/commons-pool/1.2/commons-pool-1.2-sources.jar" kind="var" path="M2_REPO/commons-pool/commons-pool/1.2/commons-pool-1.2.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/mortbay/jetty/jetty-util/6.0.0beta16/jetty-util-6.0.0beta16.jar"/>
-	<classpathentry kind="var" path="M2_REPO/cglib/cglib/2.0.2/cglib-2.0.2.jar"/>
-	<classpathentry sourcepath="M2_REPO/commons-logging/commons-logging/1.0.4/commons-logging-1.0.4-sources.jar" kind="var" path="M2_REPO/commons-logging/commons-logging/1.0.4/commons-logging-1.0.4.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/mortbay/jetty/jetty/6.0.0beta16/jetty-6.0.0beta16.jar"/>
-	<classpathentry kind="var" path="M2_REPO/hibernate/antlr/2.7.5H3/antlr-2.7.5H3.jar"/>
-	<classpathentry sourcepath="M2_REPO/wicket/wicket-extensions/2.0-SNAPSHOT/wicket-extensions-2.0-SNAPSHOT-sources.jar" kind="var" path="M2_REPO/wicket/wicket-extensions/2.0-SNAPSHOT/wicket-extensions-2.0-SNAPSHOT.jar"/>
-	<classpathentry kind="var" path="M2_REPO/commons-collections/commons-collections/2.1/commons-collections-2.1.jar"/>
-	<classpathentry kind="var" path="M2_REPO/com/ibatis/ibatis2-common/2.1.7.597/ibatis2-common-2.1.7.597.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/hibernate/hibernate/3.0.5/hibernate-3.0.5.jar"/>
-	<classpathentry kind="var" path="M2_REPO/asm/asm/1.4.3/asm-1.4.3.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/springframework/spring/2.0/spring-2.0.jar"/>
-	<classpathentry kind="var" path="M2_REPO/hsqldb/hsqldb/1.7.3.3/hsqldb-1.7.3.3.jar"/>
-	<classpathentry sourcepath="M2_REPO/ehcache/ehcache/1.1/ehcache-1.1-sources.jar" kind="var" path="M2_REPO/ehcache/ehcache/1.1/ehcache-1.1.jar"/>
-	<classpathentry kind="var" path="M2_REPO/dom4j/dom4j/1.6/dom4j-1.6.jar"/>
-	<classpathentry kind="var" path="M2_REPO/com/ibatis/ibatis2-sqlmap/2.1.7.597/ibatis2-sqlmap-2.1.7.597.jar"/>
-	<classpathentry sourcepath="M2_REPO/wicket/wicket-spring/2.0-SNAPSHOT/wicket-spring-2.0-SNAPSHOT-sources.jar" kind="var" path="M2_REPO/wicket/wicket-spring/2.0-SNAPSHOT/wicket-spring-2.0-SNAPSHOT.jar"/>
-	<classpathentry sourcepath="M2_REPO/junit/junit/3.8.1/junit-3.8.1-sources.jar" kind="var" path="M2_REPO/junit/junit/3.8.1/junit-3.8.1.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/mortbay/jetty/servlet-api-2.5/6.0.0beta16/servlet-api-2.5-6.0.0beta16.jar"/>
-	<classpathentry sourcepath="M2_REPO/wicket/wicket/2.0-SNAPSHOT/wicket-2.0-SNAPSHOT-sources.jar" kind="var" path="M2_REPO/wicket/wicket/2.0-SNAPSHOT/wicket-2.0-SNAPSHOT.jar"/>
-	<classpathentry kind="var" path="M2_REPO/javax/transaction/jta/1.0.1B/jta-1.0.1B.jar"/>
-	<classpathentry sourcepath="M2_REPO/xml-apis/xml-apis/1.0.b2/xml-apis-1.0.b2-sources.jar" kind="var" path="M2_REPO/xml-apis/xml-apis/1.0.b2/xml-apis-1.0.b2.jar"/>
-	<classpathentry sourcepath="M2_REPO/commons-dbcp/commons-dbcp/1.2.1/commons-dbcp-1.2.1-sources.jar" kind="var" path="M2_REPO/commons-dbcp/commons-dbcp/1.2.1/commons-dbcp-1.2.1.jar"/>
-	<classpathentry kind="var" path="M2_REPO/xerces/xercesImpl/2.0.2/xercesImpl-2.0.2.jar"/>
-	<classpathentry kind="output" path="target/classes"/>
+  <classpathentry kind="src" path="src/conf"/>
+  <classpathentry kind="src" path="src/java"/>
+  <classpathentry kind="output" path="target/classes"/>
+  <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+  <classpathentry kind="var" path="M2_REPO/org/slf4j/slf4j-log4j12/1.1.0/slf4j-log4j12-1.1.0.jar" sourcepath="M2_REPO/org/slf4j/slf4j-log4j12/1.1.0/slf4j-log4j12-1.1.0-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/mortbay/jetty/jetty-util/6.0.2/jetty-util-6.0.2.jar"/>
+  <classpathentry kind="var" path="M2_REPO/javax/transaction/jta/1.0.1B/jta-1.0.1B.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/ibatis/ibatis2-sqlmap/2.1.7.597/ibatis2-sqlmap-2.1.7.597.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/ibatis/ibatis2-common/2.1.7.597/ibatis2-common-2.1.7.597.jar"/>
+  <classpathentry kind="var" path="M2_REPO/wicket/wicket/2.0-SNAPSHOT/wicket-2.0-SNAPSHOT.jar" sourcepath="M2_REPO/wicket/wicket/2.0-SNAPSHOT/wicket-2.0-SNAPSHOT-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/xml-apis/xml-apis/1.0.b2/xml-apis-1.0.b2.jar" sourcepath="M2_REPO/xml-apis/xml-apis/1.0.b2/xml-apis-1.0.b2-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/springframework/spring/2.0.1/spring-2.0.1.jar" sourcepath="M2_REPO/org/springframework/spring/2.0.1/spring-2.0.1-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/wicket/wicket-extensions/2.0-SNAPSHOT/wicket-extensions-2.0-SNAPSHOT.jar" sourcepath="M2_REPO/wicket/wicket-extensions/2.0-SNAPSHOT/wicket-extensions-2.0-SNAPSHOT-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/ehcache/ehcache/1.1/ehcache-1.1.jar" sourcepath="M2_REPO/ehcache/ehcache/1.1/ehcache-1.1-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/junit/junit/3.8.1/junit-3.8.1.jar" sourcepath="M2_REPO/junit/junit/3.8.1/junit-3.8.1-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/dom4j/dom4j/1.6/dom4j-1.6.jar"/>
+  <classpathentry kind="var" path="M2_REPO/commons-pool/commons-pool/1.2/commons-pool-1.2.jar" sourcepath="M2_REPO/commons-pool/commons-pool/1.2/commons-pool-1.2-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/mortbay/jetty/servlet-api-2.5/6.0.2/servlet-api-2.5-6.0.2.jar"/>
+  <classpathentry kind="var" path="M2_REPO/asm/asm/1.4.3/asm-1.4.3.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/slf4j/slf4j-api/1.1.0/slf4j-api-1.1.0.jar" sourcepath="M2_REPO/org/slf4j/slf4j-api/1.1.0/slf4j-api-1.1.0-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/hsqldb/hsqldb/1.7.3.3/hsqldb-1.7.3.3.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/mortbay/jetty/jetty/6.0.2/jetty-6.0.2.jar"/>
+  <classpathentry kind="var" path="M2_REPO/wicket/wicket-spring/2.0-SNAPSHOT/wicket-spring-2.0-SNAPSHOT.jar" sourcepath="M2_REPO/wicket/wicket-spring/2.0-SNAPSHOT/wicket-spring-2.0-SNAPSHOT-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/commons-collections/commons-collections/2.1/commons-collections-2.1.jar" sourcepath="M2_REPO/commons-collections/commons-collections/2.1/commons-collections-2.1-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/xerces/xercesImpl/2.0.2/xercesImpl-2.0.2.jar"/>
+  <classpathentry kind="var" path="M2_REPO/log4j/log4j/1.2.13/log4j-1.2.13.jar" sourcepath="M2_REPO/log4j/log4j/1.2.13/log4j-1.2.13-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/hibernate/antlr/2.7.5H3/antlr-2.7.5H3.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/hibernate/hibernate/3.0.5/hibernate-3.0.5.jar"/>
+  <classpathentry kind="var" path="M2_REPO/commons-dbcp/commons-dbcp/1.2.1/commons-dbcp-1.2.1.jar" sourcepath="M2_REPO/commons-dbcp/commons-dbcp/1.2.1/commons-dbcp-1.2.1-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/cglib/cglib/2.0.2/cglib-2.0.2.jar"/>
+  <classpathentry kind="var" path="M2_REPO/commons-logging/commons-logging/1.0.4/commons-logging-1.0.4.jar" sourcepath="M2_REPO/commons-logging/commons-logging/1.0.4/commons-logging-1.0.4-sources.jar"/>
 </classpath>

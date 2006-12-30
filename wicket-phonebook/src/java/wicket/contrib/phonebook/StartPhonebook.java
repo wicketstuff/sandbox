@@ -15,15 +15,18 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package jetty;
+package wicket.contrib.phonebook;
 
 import org.mortbay.jetty.Connector;
 import org.mortbay.jetty.Server;
-import org.mortbay.jetty.bio.SocketConnector;
+import org.mortbay.jetty.nio.SelectChannelConnector;
 import org.mortbay.jetty.webapp.WebAppContext;
 
 /**
  * Seperate startup class for people that want to run the examples directly.
+ * 
+ * Once started the phonebook is accessible under
+ * http://localhost:8080/phonebook
  */
 public class StartPhonebook {
 
@@ -35,16 +38,29 @@ public class StartPhonebook {
 	 */
 	public static void main(String[] args) throws Exception {
 		Server server = new Server();
-		SocketConnector connector = new SocketConnector();
+		SelectChannelConnector connector = new SelectChannelConnector();
 		connector.setPort(8080);
 		server.setConnectors(new Connector[] { connector });
 
-		WebAppContext ptabs = new WebAppContext();
-		ptabs.setServer(server);
-		ptabs.setContextPath("/phonebook");
-		ptabs.setWar("src/webapp");
+		WebAppContext web = new WebAppContext();
+		web.setContextPath("/phonebook");
+		web.setWar("src/webapp");
+		web.setDistributable(true);
+		server.addHandler(web);
 
-		server.addHandler(ptabs);
-		server.start();
+		// JMX
+		// MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
+		// MBeanContainer mBeanContainer = new MBeanContainer(mBeanServer);
+		// server.getContainer().addEventListener(mBeanContainer);
+		// mBeanContainer.start();
+
+		try {
+			server.start();
+			server.join();
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(100);
+		}
+
 	}
 }
