@@ -17,13 +17,19 @@
 package wicket.javaee.injection;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.concurrent.ConcurrentHashMap;
 
+import javax.annotation.Resource;
 import javax.ejb.EJB;
+import javax.persistence.PersistenceUnit;
 
 import wicket.extensions.injection.IFieldValueFactory;
+import wicket.extensions.proxy.IProxyTargetLocator;
 import wicket.extensions.proxy.LazyInitProxyFactory;
+import wicket.javaee.EntityManagerFactoryLocator;
 import wicket.javaee.JavaEEBeanLocator;
+import wicket.javaee.JndiObjectLocator;
 import wicket.javaee.naming.IJndiNamingStrategy;
 import wicket.javaee.naming.StandardJndiNamingStrategy;
 
@@ -37,7 +43,7 @@ import wicket.javaee.naming.StandardJndiNamingStrategy;
  */
 public class JavaEEProxyFieldValueFactory implements IFieldValueFactory
 {
-	private final ConcurrentHashMap<JavaEEBeanLocator, Object> cache = new ConcurrentHashMap<JavaEEBeanLocator, Object>();
+	private final ConcurrentHashMap<IProxyTargetLocator, Object> cache = new ConcurrentHashMap<IProxyTargetLocator, Object>();
 	private IJndiNamingStrategy namingStrategy;
 
 	/**
@@ -62,27 +68,51 @@ public class JavaEEProxyFieldValueFactory implements IFieldValueFactory
 	 */
 	public Object getFieldValue(Field field, Object fieldOwner)
 	{
+		IProxyTargetLocator locator = getProxyTargetLocator(field);
+		return getCachedProxy(field.getType(), locator);
+	}
 
+	private IProxyTargetLocator getProxyTargetLocator(Field field) {
 		if (field.isAnnotationPresent(EJB.class))
 		{
-			EJB annot = field.getAnnotation(EJB.class);
+			return new JavaEEBeanLocator(field.getAnnotation(EJB.class).name(), field.getType(), namingStrategy);
+		}
+		
+		if (field.isAnnotationPresent(PersistenceUnit.class)) 
+		{
+			return new EntityManagerFactoryLocator(field.getAnnotation(PersistenceUnit.class).unitName());
+		}
+		
+		if (field.isAnnotationPresent(Resource.class)) 
+		{
+			return new JndiObjectLocator(field.getAnnotation(Resource.class).name(), field.getType());
+		}
+		//else
+		return null;
+	}
 
-			String name = annot.name();
-			JavaEEBeanLocator locator = new JavaEEBeanLocator(name, field.getType(), namingStrategy);
+	private Object getCachedProxy(Class type, IProxyTargetLocator locator) {
+		if (locator ==  null)
+			return null;
+		
+		if (cache.containsKey(locator))
+		{
+			return cache.get(locator);
+		}
 
-			if (cache.containsKey(locator))
-			{
-				return cache.get(locator);
-			}
-
-			Object proxy = LazyInitProxyFactory.createProxy(field.getType(), locator);
+		if (!Modifier.isFinal(type.getModifiers()))
+		{
+			Object proxy = LazyInitProxyFactory.createProxy(type, locator);
 			cache.put(locator, proxy);
-			return proxy;
+			return proxy;	
 		}
 		else
 		{
-			return null;
-		}
+			Object value = locator.locateProxyTarget();
+			cache.put(locator, value);
+			return value;	
+		}	
+		
 	}
 
 
@@ -91,7 +121,7 @@ public class JavaEEProxyFieldValueFactory implements IFieldValueFactory
 	 */
 	public boolean supportsField(Field field)
 	{
-		return field.isAnnotationPresent(EJB.class);
+		return field.isAnnotationPresent(EJB.class) || field.isAnnotationPresent(Resource.class) || field.isAnnotationPresent(PersistenceUnit.class);
 	}
 
 }
