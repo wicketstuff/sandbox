@@ -13,8 +13,13 @@ public class JavascriptBuilder {
 	}
 	public String buildScriptTagString() {
 		return "\n<script type=\"text/javascript\">\n" +
-		buffer.toString() +
+		toJavascript() +
 		"</script>\n";
+	}
+
+	public String toJavascript()
+	{
+		return buffer.toString();
 	}
 
 	public String formatAsJavascriptHash(Map options) {
