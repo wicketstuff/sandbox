@@ -18,6 +18,8 @@ package wicket.javaee.injection;
 
 import wicket.extensions.injection.ConfigurableInjector;
 import wicket.extensions.injection.IFieldValueFactory;
+import wicket.javaee.naming.IJndiNamingStrategy;
+import wicket.javaee.naming.StandardJndiNamingStrategy;
 
 /**
  * Injector that injects ejb references based on {@link javax.ejb.EJB} annotation
@@ -26,18 +28,27 @@ public class AnnotJavaEEInjector extends ConfigurableInjector
 {
 
 	IFieldValueFactory factory;
-
+	
 	/**
 	 * Constructor
 	 */
 	public AnnotJavaEEInjector()
 	{
-		initFactory();
+		initFactory(new StandardJndiNamingStrategy());
+	}
+	
+	/**
+	 * Constructor
+	 * 
+	 */
+	public AnnotJavaEEInjector(IJndiNamingStrategy namingStrategy)
+	{
+		initFactory(namingStrategy);
 	}
 
-	private void initFactory()
+	private void initFactory(IJndiNamingStrategy namingStrategy)
 	{
-		factory = new JavaEEProxyFieldValueFactory();
+		factory = new JavaEEProxyFieldValueFactory(namingStrategy);
 	}
 
 	@Override
