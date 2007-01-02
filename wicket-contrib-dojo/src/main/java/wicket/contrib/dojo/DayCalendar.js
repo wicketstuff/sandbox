@@ -51,22 +51,11 @@ dojo.widget.defineWidget (
 		var body = document.getElementsByTagName("body")[0];
 		dojo.event.connect(body, "onmouseup", this, "fixTimeRange");
 		dojo.event.connect(document, "onkeydown", this, "keyPressed");
-		
-		//add listener to slice
-		var inners = this.domNode.getElementsByTagName("div");
-		for(var i=0; i<inners.length; i++){
-			dojo.event.connect(inners[i], "onmouseover", this, "mouseOverDiv");
-			dojo.event.connect(inners[i], "onmouseout", this, "mouseOutDiv");
-			dojo.event.connect(inners[i], "onmousedown", this, "mouseDownDiv");
-			var pos = i + "";
-			if (pos.length == 1){ pos = "0" + i} 
-			inners[i].setAttribute("pos", pos);
-		}
 	},
 	
 	/**
 	 * Event Listener
-	 */
+	 */ 
 	mouseOverDiv: function(event){
 		div = event.target;
 		div.innerHTML = div.getAttribute('start') + ' - ' + div.getAttribute('end');
@@ -132,6 +121,7 @@ dojo.widget.defineWidget (
 	
 	
 	createTimeRange: function(div){
+		//TODO : try to do that in the template to optimize calendar loading
 		var pos = dojo.html.toCoordinateObject(div,true);
 		var domNodePos = dojo.html.toCoordinateObject(this.domNode,true);
 		this.current = document.createElement("div");
