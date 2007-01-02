@@ -18,6 +18,7 @@ package wicket.javaee.injection;
 
 import wicket.extensions.injection.ComponentInjector;
 import wicket.extensions.injection.InjectorHolder;
+import wicket.javaee.naming.IJndiNamingStrategy;
 import wicket.protocol.http.WebApplication;
 
 /**
@@ -42,6 +43,16 @@ public class JavaEEComponentInjector extends ComponentInjector
 	public JavaEEComponentInjector(WebApplication webapp)
 	{
 		InjectorHolder.setInjector(new AnnotJavaEEInjector());
+	}
+	
+	/**
+	 * Constructor 
+	 * @param webapp - wicket web application
+	 * @param namingStrategy - a jndi naming strategy to lookup ejb references
+	 */
+	public JavaEEComponentInjector(WebApplication webapp, IJndiNamingStrategy namingStrategy)
+	{
+		InjectorHolder.setInjector(new AnnotJavaEEInjector(namingStrategy));
 	}
 
 

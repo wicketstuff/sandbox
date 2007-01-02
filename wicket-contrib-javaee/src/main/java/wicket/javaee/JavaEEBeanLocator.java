@@ -20,6 +20,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 import wicket.extensions.proxy.IProxyTargetLocator;
+import wicket.javaee.naming.IJndiNamingStrategy;
 import wicket.util.lang.Objects;
 
 /**
@@ -42,22 +43,9 @@ public class JavaEEBeanLocator implements IProxyTargetLocator
 {
 
 	private Class beanType;
-
 	private String beanName;
+	private IJndiNamingStrategy namingStrategy;
 
-
-	/**
-	 * Constructor
-	 * 
-	 * @param beanType
-	 *            bean class
-	 * @param locator
-	 *            spring context locator
-	 */
-	public JavaEEBeanLocator(Class beanType)
-	{
-		this(null, beanType);
-	}
 
 	/**
 	 * Constructor
@@ -67,7 +55,7 @@ public class JavaEEBeanLocator implements IProxyTargetLocator
 	 * @param beanType
 	 *            bean class
 	 */
-	public JavaEEBeanLocator(String beanId, Class beanType)
+	public JavaEEBeanLocator(String beanId, Class beanType, IJndiNamingStrategy namingStrategy)
 	{
 		if (beanType == null)
 		{
@@ -75,6 +63,7 @@ public class JavaEEBeanLocator implements IProxyTargetLocator
 		}
 		this.beanType = beanType;
 		this.beanName = beanId;
+		this.namingStrategy = namingStrategy;
 	}
 
 	/**
@@ -95,9 +84,9 @@ public class JavaEEBeanLocator implements IProxyTargetLocator
 
 
 
-	private static Object lookupEjb(String name, Class type)
+	private Object lookupEjb(String name, Class type)
 	{
-		String lookupName = "java:comp/env/" + (name == null ? type.getName() : name);
+		String lookupName = calculateName(name, type);
 		InitialContext ic;
 		try {
 			ic = new InitialContext();
@@ -110,6 +99,10 @@ public class JavaEEBeanLocator implements IProxyTargetLocator
 			}
 			throw new RuntimeException(errorMessage, e);
 		}
+	}
+
+	private String calculateName(String name, Class type) {
+		return this.namingStrategy.calculateName(name, type);
 	}
 
 	/**

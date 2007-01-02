@@ -24,6 +24,8 @@ import javax.ejb.EJB;
 import wicket.extensions.injection.IFieldValueFactory;
 import wicket.extensions.proxy.LazyInitProxyFactory;
 import wicket.javaee.JavaEEBeanLocator;
+import wicket.javaee.naming.IJndiNamingStrategy;
+import wicket.javaee.naming.StandardJndiNamingStrategy;
 
 /**
  * {@link IFieldValueFactory} that creates
@@ -36,12 +38,22 @@ import wicket.javaee.JavaEEBeanLocator;
 public class JavaEEProxyFieldValueFactory implements IFieldValueFactory
 {
 	private final ConcurrentHashMap<JavaEEBeanLocator, Object> cache = new ConcurrentHashMap<JavaEEBeanLocator, Object>();
+	private IJndiNamingStrategy namingStrategy;
 
 	/**
 	 * Constructor
 	 */
 	public JavaEEProxyFieldValueFactory()
 	{
+		this(new StandardJndiNamingStrategy());
+	}
+	
+	/**
+	 * Constructor
+	 */
+	public JavaEEProxyFieldValueFactory(IJndiNamingStrategy namingStrategy)
+	{
+		this.namingStrategy = namingStrategy;
 	}
 
 	/**
@@ -56,7 +68,7 @@ public class JavaEEProxyFieldValueFactory implements IFieldValueFactory
 			EJB annot = field.getAnnotation(EJB.class);
 
 			String name = annot.name();
-			JavaEEBeanLocator locator = new JavaEEBeanLocator(name, field.getType());
+			JavaEEBeanLocator locator = new JavaEEBeanLocator(name, field.getType(), namingStrategy);
 
 			if (cache.containsKey(locator))
 			{
