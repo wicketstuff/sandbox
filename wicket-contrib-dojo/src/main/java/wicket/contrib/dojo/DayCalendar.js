@@ -26,6 +26,9 @@ dojo.widget.defineWidget (
 	//div : containing text;
 	timeDiv: null,
 	
+	//div : reziseHandler
+	resizeDiv: null,
+	
 	//is the mouse down?
 	mousedown: false,
 	
@@ -92,6 +95,37 @@ dojo.widget.defineWidget (
 		}
 		this.selectTimeRange(div);
 	},
+	
+	clickHandler: function(event){
+		//if a div id selected disable it
+		if (this.selectedTimeRange != null){
+			//remove selected Style
+			with (this.selectedTimeRange.style){
+				backgroundColor = "#4444FF";
+			}
+			this.selectedTimeRange = null;
+		}
+		this.resizeDiv = event.target;
+		this.current = event.target.parentNode;
+		this.timeDiv = this.current.getElementsByTagName("div")[0];
+		
+		//send event to delete this range server side
+		var val = this.current.getElementsByTagName('div')[0].innerHTML;
+		var start = val.substring(0,5);
+		var end = val.substring(8,val.length);
+		this.onRemove(start, end, this.widgetId);
+		if (this.weekCalendar != null){
+			this.weekCalendar.onRemove(start, end, this.widgetId);
+		}
+		
+		//and give hand to the others events...
+		this.mousedown = true;
+		var pos = dojo.html.toCoordinateObject(this.domNode,true);
+		var posy = dojo.html.toCoordinateObject(this.current, true);
+		var y = posy.top - pos.top;
+		var divPos = Math.floor(y/10);
+		this.firstSelected = this.domNode.getElementsByTagName("div")[divPos];
+	},
 	/**
 	 * End Event Listener
 	 */
@@ -102,6 +136,7 @@ dojo.widget.defineWidget (
 		var domNodePos = dojo.html.toCoordinateObject(this.domNode,true);
 		this.current = document.createElement("div");
 		this.timeDiv = document.createElement("div");
+		this.resizeDiv = document.createElement("div");
 		with (this.current.style){
 			borderStyle = "solid";
 			borderColor = "#0000FF";
@@ -114,6 +149,8 @@ dojo.widget.defineWidget (
 			left = pos.left - domNodePos.left + "px";
 			zIndex = "2"; 
 		}
+		
+		//Time Div
 		with (this.timeDiv.style){
 			fontSize = "9px";
 			textAlign = "center";
@@ -121,13 +158,24 @@ dojo.widget.defineWidget (
 			marginTop = "-3px";
 		}
 		this.current.appendChild(this.timeDiv);
+		
+		//resize Div
+		with (this.resizeDiv.style){
+			zIndex = "3";
+			position = "absolute";
+			textAlign = "center";
+			width = "100%";
+		}
+		this.current.appendChild(this.resizeDiv);
+		this.resizeDiv.innerHTML = "=";
+		dojo.event.connect(this.resizeDiv, "onmousedown", this, "clickHandler");
+		
 		this.domNode.appendChild(this.current);
 		dojo.event.connect(this.current, "onmousemove", this, "mouseMoveRange");
 		var id = this.widgetId + "_timeSlice_" + this.slicePartId++;
 		this.current.setAttribute("id", id);
 		dojo.event.connect(this.current, "onclick", this, "clickRange");
 		dojo.html.setOpacity(this.current, 0.8, false);
-		//dojo.lfx.rounded({}, [id]);
 		this.firstSelected = div;
 		this.mousedown = true;
 		this.expandTimeRange(this.firstSelected);
@@ -148,7 +196,6 @@ dojo.widget.defineWidget (
 			this.lastSelected = this.getDivUnderMouse(cursor);
 			if (this.lastSelected != null){
 				this.doExpend();
-				
 			}else{
 				//no div under cursor
 			}
@@ -218,7 +265,8 @@ dojo.widget.defineWidget (
 				top = newTop - domNodePos.top + "px";
 				left = firstPos.left - domNodePos.left + "px"; 
 			}
-			this.createTimeDiv()
+			this.createTimeDiv();
+			this.createResizeDiv(newHeight);
 		}
 	},
 	
@@ -236,6 +284,12 @@ dojo.widget.defineWidget (
 		return time;
 	},
 	
+	createResizeDiv: function(newHeight){
+		with (this.resizeDiv.style){
+			top = (newHeight - 13) + "px";
+		}
+	},
+
 	createTimeDiv: function(){
 		this.timeDiv.innerHTML = this.createTime();
 	},
