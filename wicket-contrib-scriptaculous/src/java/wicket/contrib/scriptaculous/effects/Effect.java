@@ -38,10 +38,17 @@ public interface Effect
 			return builder.toJavascript();
 		}
 
+		protected void addOption(String key, Object value) {
+			options.put(key, value);
+		}
 		protected abstract String getEffectName();
 
 	}
 
+	/**
+	 *
+	 * @see http://wiki.script.aculo.us/scriptaculous/show/Effect.Highlight
+	 */
 	public class Highlight extends AbstractEffect {
 
 		public Highlight(Component component) {
@@ -55,6 +62,16 @@ public interface Effect
 		protected String getEffectName()
 		{
 			return "Highlight";
+		}
+
+		public void setStartColor(String rgb) {
+			addOption("startcolor", rgb);
+		}
+		public void setEndColor(String rgb) {
+			addOption("endcolor", rgb);
+		}
+		public void setRestoreColor(String rgb) {
+			addOption("restorecolor", rgb);
 		}
 	}
 }
