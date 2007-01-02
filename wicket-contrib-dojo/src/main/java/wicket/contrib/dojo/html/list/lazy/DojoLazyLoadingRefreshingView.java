@@ -106,8 +106,6 @@ public abstract class DojoLazyLoadingRefreshingView extends RefreshingView imple
 		return new Model(object);
 	}
 
-	public void detach(){}
-
 	/**
 	 * return count
 	 * @return count
