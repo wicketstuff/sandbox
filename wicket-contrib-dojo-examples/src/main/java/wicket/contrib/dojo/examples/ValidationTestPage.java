@@ -6,8 +6,8 @@ import wicket.contrib.markup.html.form.validation.FXValidationAjaxHandler;
 import wicket.markup.html.WebPage;
 import wicket.markup.html.form.Form;
 import wicket.markup.html.form.FormComponent;
-import wicket.markup.html.form.RequiredTextField;
 import wicket.markup.html.form.TextArea;
+import wicket.markup.html.form.TextField;
 import wicket.markup.html.panel.FeedbackPanel;
 import wicket.model.PropertyModel;
 import wicket.validation.validator.NumberValidator;
@@ -40,15 +40,17 @@ public class ValidationTestPage extends WebPage{
 	        indicator.setIndicatorFor(testfield);
 
 			
-	        FormComponent tx = new RequiredTextField(form, "integerInRangeProperty", new PropertyModel(ValidationTestPage.this, "integerInRangeProperty"), Integer.class);
-            tx.add(NumberValidator.range(0, 100));
+	        FormComponent tx = new TextField(form, "integerInRangeProperty", new PropertyModel(ValidationTestPage.this, "integerInRangeProperty"), Integer.class);
+            tx.setRequired(true);
+	        tx.add(NumberValidator.range(0, 100));
 	        tx.add(new FXValidationAjaxHandler("onblur"));
 			
 			
 
 			//test multiple ajax textfields
-			FormComponent tx2 = new RequiredTextField(form, "integerInRangeProperty2", new PropertyModel(ValidationTestPage.this, "integerInRangeProperty2"),Integer.class);
-            tx2.add(NumberValidator.range(0, 200));
+			FormComponent tx2 = new TextField(form, "integerInRangeProperty2", new PropertyModel(ValidationTestPage.this, "integerInRangeProperty2"),Integer.class);
+            tx2.setRequired(true);
+			tx2.add(NumberValidator.range(0, 200));
 			tx2.add(new FXValidationAjaxHandler("onblur"));
 			
 			
