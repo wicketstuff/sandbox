@@ -3,7 +3,7 @@ package wicket.contrib.dojo.examples;
 import wicket.PageParameters;
 import wicket.ajax.AjaxRequestTarget;
 import wicket.contrib.dojo.html.DojoLink;
-import wicket.contrib.dojo.indicator.DojoImageIndicator;
+import wicket.contrib.dojo.indicator.DojoDialogIndicator;
 import wicket.contrib.dojo.indicator.behavior.DojoIndicatorBehavior;
 import wicket.contrib.dojo.markup.html.calendar.DojoWeekOrganizer;
 import wicket.contrib.dojo.markup.html.calendar.model.WeekTimeRange;
@@ -18,7 +18,7 @@ public class WeekOrganizerSample extends WebPage {
 		
 		final DojoWeekOrganizer organizer = new DojoWeekOrganizer(this, "organizer", new Model<WeekTimeRange>(times)); 
 		
-		final DojoImageIndicator indicator = new DojoImageIndicator(this, "indicator");
+		final DojoDialogIndicator indicator = new DojoDialogIndicator(this, "indicator");
 		
 		DojoLink link = new DojoLink(this, "link"){
 			public void onClick(AjaxRequestTarget target) {
