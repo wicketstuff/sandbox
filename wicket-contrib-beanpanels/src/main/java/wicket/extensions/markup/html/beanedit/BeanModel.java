@@ -18,19 +18,19 @@
  */
 package wicket.extensions.markup.html.beanedit;
 
-import java.beans.BeanInfo;
-import java.beans.IntrospectionException;
-import java.beans.Introspector;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import wicket.Component;
-import wicket.WicketRuntimeException;
 import wicket.model.IModel;
 
 /**
  * Model for JavaBeans.
  *
  * @author Eelco Hillenius
+ * @author Paolo Di Tommaso
  */
 public class BeanModel implements IModel
 {
@@ -38,39 +38,45 @@ public class BeanModel implements IModel
 
 	/** the java bean to edit. */
 	private final Serializable bean;
-
+	
+	private final List propertiesList;
+	
+	/** This list containes the name of properties that shave to be display, it defines the display order also */
+	private final List propertyNames;
+	
 	/**
 	 * Construct.
 	 * @param bean the javabean to edit
 	 */
-	public BeanModel(Serializable bean)
+	public BeanModel( final Serializable bean )
 	{
+		this(bean,(List)null);
+	}
+	
+	public BeanModel( final Serializable bean, final String[]  names ) { 
+		this(bean, names != null ? Arrays.asList(names) : null );
+	}
+	
+	public BeanModel( final Serializable bean, final List names ) { 
 		if (bean == null)
 		{
 			throw new IllegalArgumentException("bean must be not null");
 		}
 
 		this.bean = bean;
+		this.propertyNames = new ArrayList();
+		
+		this.propertiesList = PropertiesProvider.propertiesFor( bean.getClass(), new IPropertyFilter() {
+			int c = 0;
+			public int accept(String propertyName) {
+				int p = names != null ? names.indexOf(propertyName) : c++;
+				if( p != -1 ) { 
+					propertyNames.add(propertyName);
+				}
+				return p;
+			} } );
 	}
-
-	/**
-	 * Gets the {@link BeanInfo} object of the model object.
-	 * @param component
-	 * @return BeanInfo object for the model object, or null if the model object is null
-	 */
-	protected final BeanInfo getBeanInfo()
-	{
-		Class objectClass = bean.getClass();
-		try
-		{
-			return Introspector.getBeanInfo(objectClass);
-		}
-		catch (IntrospectionException e)
-		{
-			throw new WicketRuntimeException(e);
-		}
-	}
-
+ 	
 	/**
 	 * @see wicket.model.IModel#getNestedModel()
 	 */
@@ -110,5 +116,18 @@ public class BeanModel implements IModel
 	public Serializable getBean()
 	{
 		return bean;
+	}
+
+	public IPropertyMeta getProperty( String name ) { 
+		int i = propertyNames.indexOf(name);
+		return (IPropertyMeta) (i != -1 ? propertiesList.get(i) : null); 
+	}
+	
+	public List getPropertiesList() { 
+		return propertiesList;
+	}
+	
+	public List getPropertyNames() { 
+		return propertyNames != null ? propertyNames : new ArrayList();
 	}
 }
