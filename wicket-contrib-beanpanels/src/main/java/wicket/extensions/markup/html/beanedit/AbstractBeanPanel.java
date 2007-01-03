@@ -18,7 +18,6 @@
  */
 package wicket.extensions.markup.html.beanedit;
 
-import java.io.Serializable;
 
 import wicket.markup.html.panel.Panel;
 
@@ -27,18 +26,17 @@ import wicket.markup.html.panel.Panel;
  * but does nothing else.
  *
  * @author Eelco Hillenius
+ * @author Paolo Di Tommaso
  */
 public abstract class AbstractBeanPanel extends Panel
 {
-	/**
-	 * Construct.
-	 * @param id component id
-	 * @param bean JavaBean to be edited or displayed
-	 */
-	public AbstractBeanPanel(String id, Serializable bean)
-	{
-		this(id, new BeanModel(bean));
-	}
+	/** boolean types. */
+	protected static final Class[] BOOL_TYPES = new Class[] { Boolean.class, Boolean.TYPE };
+
+	protected static final Class[] DATE_TYPES = new Class[] { java.util.Date.class, java.sql.Date.class };
+	
+	/** basic java types. */
+	protected static final Class[] BASE_TYPES = new Class[] { String.class, Number.class, Integer.TYPE, Double.TYPE, Long.TYPE, Float.TYPE, Short.TYPE, Byte.TYPE };
 
 	/**
 	 * Construct.
@@ -55,11 +53,23 @@ public abstract class AbstractBeanPanel extends Panel
 	}
 
 	/**
-	 * Gets the model casted to {@link BeanModel}.
-	 * @return the model casted to {@link BeanModel}
+	 * Does isAssignableFrom check on given class array for given type.
+	 * @param types array of types
+	 * @param type type to check against
+	 * @return true if one of the types matched
 	 */
-	protected final BeanModel getBeanModel()
+	protected boolean checkAssignableFrom(Class[] types, Class type)
 	{
-		return (BeanModel)getModel();
-	}
+		int len = types.length;
+		for (int i = 0; i < len; i++)
+		{
+			if (types[i].isAssignableFrom(type))
+			{
+				return true;
+			}
+		}
+		return false;
+	}	
+
+	
 }

@@ -1,141 +1,53 @@
-/*
- * $Id$
- * $Revision$
- * $Date$
- * 
- * ==============================================================================
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
- * 
- * http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
- */
 package wicket.extensions.markup.html.beanedit;
 
-import java.beans.PropertyDescriptor;
-import java.io.Serializable;
+import java.lang.reflect.Field;
 
 /**
- * Wraps meta data about a property.
- *
- * @author Eelco Hillenius
+ * 
  * @author Paolo Di Tommaso
+ *
  */
-public class PropertyMeta implements Serializable
-{
-	private static final long serialVersionUID = 1L;
 
-	/** model with the bean that owns the property. */
-	private final BeanModel beanModel;
+public class PropertyMeta implements IPropertyMeta {
 
-	/** the beans property descriptor. */
-	private final PropertyDescriptor propertyDescriptor;
-
-	/** the edit mode; defaults to EditMode.READ_WRITE. */
-	private EditMode editMode = EditMode.READ_WRITE;
-
-	/**
-	 * Construct.
-	 * @param beanModel the bean model
-	 * @param propertyDescriptor the beans property descriptor
-	 */
-	public PropertyMeta(final BeanModel beanModel, final PropertyDescriptor propertyDescriptor)
-	{
-		if (propertyDescriptor == null)
-		{
-			throw new NullPointerException("argument propertyDescriptor may not be null");
-		}
-
-		if (beanModel == null)
-		{
-			throw new NullPointerException("argument beanModel may not be null");
-		}
-
-		this.beanModel = beanModel;
-		this.propertyDescriptor = propertyDescriptor;
+	private String label;
+	private String name;
+	private int index ;
+	private boolean readOnly;
+	private Class type;
+	
+	public PropertyMeta( Field field, int ndx, boolean readOnly ) { 
+		this.name = field.getName();
+		this.type = field.getType();
+		this.readOnly = readOnly;
+		this.index = ndx;
+		
+		Label annotation = field.getAnnotation(Label.class);
+		this.label = annotation != null ? annotation.value() : name;
 	}
 
-	/**
-	 * Gets the model with the bean that owns the property.
-	 * @return the model with the bean that owns the property
-	 */
-	public final BeanModel getBeanModel()
-	{
-		return beanModel;
+	public String getLabel() {
+		return label;
 	}
 
-	/**
-	 * Gets the beans property descriptor.
-	 * @return the beans property descriptor
-	 */
-	public final PropertyDescriptor getPropertyDescriptor()
-	{
-		return propertyDescriptor;
+	public int getIndex() {
+		return index;
 	}
 
-	/**
-	 * Gets the type of the property.
-	 * @return the type of the property
-	 */
-	public Class getPropertyType()
-	{
-		return propertyDescriptor.getPropertyType();
+	public String getName() {
+		return name;
 	}
 
-	/**
-	 * Gets the display name of the property.
-	 * @return the display name of the property
-	 */
-	public String getDisplayName()
-	{
-		return propertyDescriptor.getDisplayName();
+	public Class getType() {
+		return type;
 	}
 
-	/**
-	 * Gets the edit mode.
-	 * @return the edit mode
-	 */
-	public EditMode getEditMode()
-	{
-		if( !hasGetter() ) { 
-			return EditMode.INVISIBLE;
-		}
-		else if( !hasSetter() ) { 
-			return EditMode.READ_ONLY;
-		}
-		else { 
-			return editMode;
-		}
+	public boolean isReadOnly() {
+		return readOnly;
 	}
 
-	/**
-	 * Sets the edit mode.
-	 * @param editMode the edit mode
-	 */
-	public void setEditMode(EditMode editMode)
-	{
-		this.editMode = editMode;
-	}
-
-	/**
-	 * @see java.lang.Object#toString()
-	 */
-	public String toString()
-	{
-		return "meta for property " + propertyDescriptor.getDisplayName() + " of bean " + beanModel.getBean();
+	public boolean isVisible() {
+		return true;
 	}
 	
-	private boolean hasGetter() { 
-		return getPropertyDescriptor().getReadMethod() != null;
-	}
-	
-	private boolean hasSetter() { 
-		return getPropertyDescriptor().getWriteMethod() != null;
-	}
 }
