@@ -17,9 +17,14 @@
 package wicket.contrib.dojo;
 
 
+import java.util.Iterator;
+
 import wicket.ResourceReference;
 import wicket.ajax.AbstractDefaultAjaxBehavior;
 import wicket.ajax.AjaxRequestTarget;
+import wicket.ajax.IAjaxCallDecorator;
+import wicket.ajax.IAjaxIndicatorAware;
+import wicket.contrib.dojo.indicator.behavior.DojoIndicatorBehavior;
 import wicket.markup.html.IHeaderResponse;
 import wicket.markup.html.resources.CompressedResourceReference;
 
@@ -35,13 +40,15 @@ import wicket.markup.html.resources.CompressedResourceReference;
  * @see <a href="http://dojotoolkit.org/">Dojo</a>
  * @author Eelco Hillenius
  */
-public abstract class AbstractDefaultDojoBehavior extends AbstractDefaultAjaxBehavior
+public abstract class AbstractDefaultDojoBehavior extends AbstractDefaultAjaxBehavior implements IAjaxIndicatorAware
 {
 	private static final long serialVersionUID = 1L;
 	
 	/** reference to the dojo support javascript file. */
 	public static final ResourceReference DOJO = new CompressedResourceReference(
 			AbstractDefaultDojoBehavior.class, "dojo-0.4/dojo.js");
+	
+	private DojoIndicatorBehavior indicatorBehavior = null;
 
 	/* (non-Javadoc)
 	 * @see wicket.ajax.AbstractDefaultAjaxBehavior#renderHead(wicket.markup.html.IHeaderResponse)
@@ -52,6 +59,46 @@ public abstract class AbstractDefaultDojoBehavior extends AbstractDefaultAjaxBeh
 		super.renderHead(response);
 		response.renderJavascriptReference(DOJO);
 	}
+	
+	/**
+	 * If a DojoIndicator has already been found does not looking for it again
+	 * @return the dojoIndicator id
+	 */
+	private DojoIndicatorBehavior getIndicator(){
+		if (indicatorBehavior == null){
+			Iterator behaviors = getComponent().getBehaviors().iterator();
+			while (behaviors.hasNext()){
+				Object behavior = behaviors.next();
+				if (behavior instanceof DojoIndicatorBehavior){
+					indicatorBehavior = (DojoIndicatorBehavior)behavior;
+				}
+			}
+		}
+		return indicatorBehavior;
+	}
 
+	/**
+	 * return the indicator Id to show it if it is in the page
+	 * @return the indicator Id to show it if it is in the page
+	 */
+	public String getAjaxIndicatorMarkupId()
+	{
+		if (getIndicator() != null){
+			return indicatorBehavior.getDojoIndicatorMarkupId();
+		}
+		return null;
+	}
+
+	/**
+	 * return the ajax call decorator to do more than hide or show an image
+	 * @return the ajax call decorator to do more than hide or show an image
+	 */
+	protected IAjaxCallDecorator getAjaxCallDecorator()
+	{
+		if (getIndicator() != null){
+			return indicatorBehavior.getDojoCallDecorator();
+		}
+		return null;
+	}
 	
 }
