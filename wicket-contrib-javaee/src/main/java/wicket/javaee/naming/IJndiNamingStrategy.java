@@ -1,6 +1,8 @@
 package wicket.javaee.naming;
 
-public interface IJndiNamingStrategy {
+import java.io.Serializable;
+
+public interface IJndiNamingStrategy extends Serializable {
 
 	String calculateName(String ejbName, Class ejbType);
 
