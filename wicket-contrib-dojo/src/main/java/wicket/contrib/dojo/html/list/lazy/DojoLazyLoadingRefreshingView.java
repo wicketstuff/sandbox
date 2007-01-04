@@ -1,6 +1,5 @@
 package wicket.contrib.dojo.html.list.lazy;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -10,15 +9,17 @@ import wicket.markup.repeater.data.IDataProvider;
 import wicket.model.IModel;
 import wicket.model.Model;
 
-public abstract class DojoLazyLoadingRefreshingView extends RefreshingView implements IDataProvider
+public abstract class DojoLazyLoadingRefreshingView extends RefreshingView
 {
 	private int first = 0;
 	private int count = 30;
 	
 	private DojoLazyLoadingListContainer parent;
-	
-	public DojoLazyLoadingRefreshingView(String id, IModel model) {
-		super(id, model);
+	IDataProvider dataProvider;
+
+	public DojoLazyLoadingRefreshingView(String id, IDataProvider dataProvider) {
+		super(id);
+		this.dataProvider = dataProvider;
 		this.parent = parent;
 	}
 
@@ -27,22 +28,6 @@ public abstract class DojoLazyLoadingRefreshingView extends RefreshingView imple
 		super(id);
 		this.parent = parent;
 	}
-
-
-	/**
-	 * @param first 
-	 * @param count 
-	 * @return 
-	 * 
-	 */
-	public abstract Iterator iterator(int first, int count);
-	
-	
-	public IModel model(Serializable object){
-		return new Model(object);
-	}
-
-	public void detach(){}
 
 	public int getCount()
 	{
@@ -68,10 +53,10 @@ public abstract class DojoLazyLoadingRefreshingView extends RefreshingView imple
 		
 		final List toReturn = new ArrayList();
 		
-		Iterator it = iterator(first, count);
+		Iterator it = dataProvider.iterator(first, count);
 		while (it.hasNext())
 		{
-			toReturn.add(model(it.next()));
+			toReturn.add(dataProvider.model(it.next()));
 		}
 
 		return toReturn.iterator();
