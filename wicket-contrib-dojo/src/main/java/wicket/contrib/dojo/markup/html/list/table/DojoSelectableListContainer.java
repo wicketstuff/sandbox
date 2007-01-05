@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package wicket.contrib.dojo.html.list.table;
+package wicket.contrib.dojo.markup.html.list.table;
 
 import java.util.ArrayList;
 import java.util.List;

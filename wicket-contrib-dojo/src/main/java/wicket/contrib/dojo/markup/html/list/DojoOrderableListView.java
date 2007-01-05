@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package wicket.contrib.dojo.html.list;
+package wicket.contrib.dojo.markup.html.list;
 
 import java.util.List;
 
