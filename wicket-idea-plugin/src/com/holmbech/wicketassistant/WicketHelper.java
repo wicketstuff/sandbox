@@ -62,6 +62,7 @@ public class WicketHelper {
      * @param psiClass the class to findwicket ids in
      * @return all the wicket ids found the in the given class
      */
+    @SuppressWarnings("unchecked")
     public static String[] getWicketIdsFromJavaFile(PsiClass psiClass) {
         WicketIdVisitor visitor = new WicketIdVisitor();
         PsiField[] psiFields = psiClass.getFields();
@@ -98,7 +99,7 @@ public class WicketHelper {
      * This is the class that does all the work.
      */
     private static class WicketIdVisitor extends PsiRecursiveElementVisitor {
-        List wicketIds = new ArrayList();
+        List<String> wicketIds = new ArrayList<String>();
 
         public void visitReferenceExpression(PsiReferenceExpression expression) {
             super.visitReferenceExpression(expression);

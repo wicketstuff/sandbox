@@ -23,20 +23,11 @@ import com.intellij.codeInspection.LocalQuickFix;
 import com.intellij.codeInspection.ProblemDescriptor;
 import com.intellij.codeInspection.ProblemHighlightType;
 import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.psi.PsiClass;
-import com.intellij.psi.PsiClassInitializer;
-import com.intellij.psi.PsiDirectory;
-import com.intellij.psi.PsiExpression;
-import com.intellij.psi.PsiExpressionList;
-import com.intellij.psi.PsiField;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiMethod;
-import com.intellij.psi.PsiNewExpression;
-import com.intellij.psi.PsiRecursiveElementVisitor;
-import com.intellij.psi.PsiReferenceExpression;
+import com.intellij.psi.*;
 import com.intellij.psi.xml.XmlAttribute;
 import com.intellij.psi.xml.XmlDocument;
 import com.intellij.psi.xml.XmlFile;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,18 +40,22 @@ public class WicketIdJavaInspection extends LocalInspectionTool {
 
     private static final Logger LOG = Logger.getInstance(WicketIdJavaInspection.class.getName());
 
+    @NotNull
     public String getGroupDisplayName() {
         return "Wicket Assistent";
     }
 
+    @NotNull
     public String getDisplayName() {
         return "Wicket id java inspection";
     }
 
+    @NotNull
     public String getShortName() {
         return "WicketIdJavaInspection";
     }
 
+    @NotNull
     public HighlightDisplayLevel getDefaultLevel() {
         return HighlightDisplayLevel.WARNING;
     }
@@ -69,30 +64,30 @@ public class WicketIdJavaInspection extends LocalInspectionTool {
         return true;
     }
 
-    public ProblemDescriptor[] checkClass(PsiClass aClass, InspectionManager manager, boolean isOnTheFly) {
+    public ProblemDescriptor[] checkClass(@NotNull PsiClass aClass, @NotNull InspectionManager manager, boolean isOnTheFly) {
         PsiClassInitializer[] initializers = aClass.getInitializers();
         WicketIdVisitor visitor = new WicketIdVisitor(manager);
         for (int i = 0; i < initializers.length; i++) {
             PsiClassInitializer initializer = initializers[i];
             initializer.accept(visitor);
         }
-        return (ProblemDescriptor[]) visitor.problems.toArray(new ProblemDescriptor[visitor.problems.size()]);
+        return visitor.problems.toArray(new ProblemDescriptor[visitor.problems.size()]);
     }
 
-    public ProblemDescriptor[] checkMethod(PsiMethod method, InspectionManager manager, boolean isOnTheFly) {
+    public ProblemDescriptor[] checkMethod(@NotNull PsiMethod method, @NotNull InspectionManager manager, boolean isOnTheFly) {
         WicketIdVisitor visitor = new WicketIdVisitor(manager);
         method.accept(visitor);
-        return (ProblemDescriptor[]) visitor.problems.toArray(new ProblemDescriptor[visitor.problems.size()]);
+        return visitor.problems.toArray(new ProblemDescriptor[visitor.problems.size()]);
     }
 
-    public ProblemDescriptor[] checkField(PsiField field, InspectionManager manager, boolean isOnTheFly) {
+    public ProblemDescriptor[] checkField(@NotNull PsiField field, @NotNull InspectionManager manager, boolean isOnTheFly) {
         WicketIdVisitor visitor = new WicketIdVisitor(manager);
         field.accept(visitor);
-        return (ProblemDescriptor[]) visitor.problems.toArray(new ProblemDescriptor[visitor.problems.size()]);
+        return visitor.problems.toArray(new ProblemDescriptor[visitor.problems.size()]);
     }
 
     private static class WicketIdVisitor extends PsiRecursiveElementVisitor {
-        public List problems = new ArrayList();
+        public List<ProblemDescriptor> problems = new ArrayList<ProblemDescriptor>();
         private InspectionManager manager;
 
         public WicketIdVisitor(InspectionManager manager) {
@@ -120,8 +115,15 @@ public class WicketIdJavaInspection extends LocalInspectionTool {
                 if (expressionList == null) {
                     return;
                 }
+                
                 LOG.debug("expression argumentlist: " + expression.getArgumentList());
-                PsiExpression idElement = expressionList.getExpressions()[0];
+                final PsiExpression[] psiExpressions = expressionList.getExpressions();
+
+                if (psiExpressions.length <= 0) {
+                    return;
+                }
+                
+                PsiExpression idElement = psiExpressions[0];
                 int length = idElement.getText().length();
                 if (!(idElement.getText().charAt(0) == '\"')) {
                     return; // todo check if its a string, if its a string variable check that one instead.
@@ -140,7 +142,8 @@ public class WicketIdJavaInspection extends LocalInspectionTool {
                 PsiFile htmlFile = containingDirectory.findFile(fileName + ".html");
                 if (htmlFile != null && !wicketIdExistsInHtmlfile(wicketId, ((XmlFile) htmlFile).getDocument())) {
                     LocalQuickFix fix = null;
-                    problems.add(manager.createProblemDescriptor(idElement, "Wicket id missing in html file?", fix, ProblemHighlightType.GENERIC_ERROR_OR_WARNING));
+                    problems.add(manager.createProblemDescriptor(idElement, "Wicket id missing in html file?",
+                        fix, ProblemHighlightType.GENERIC_ERROR_OR_WARNING));
                 }
             }
         }

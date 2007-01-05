@@ -25,10 +25,14 @@ import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiFile;
 
 /**
+ * Toggles between the HTML and Java files for Wicket components.  Refer to the plugin.xml file for
+ * the default keybinding.
+ *
  * @author Anders Holmbech Brandt
  *         Date: 2006-10-11
  */
 public class WicketJavaHtmlToggleAction extends AnAction {
+
     public void actionPerformed(AnActionEvent e) {
         DataContext dataContext = e.getDataContext();
         Object data = dataContext.getData(DataConstants.PSI_FILE);
@@ -40,7 +44,10 @@ public class WicketJavaHtmlToggleAction extends AnAction {
             String fileName = virtualFile.getNameWithoutExtension();
             String extension = virtualFile.getExtension();
             PsiDirectory containingDirectory = psiFile.getContainingDirectory();
-            if (containingDirectory == null) return;
+            if (containingDirectory == null) {
+                return;
+            }
+
             if ("html".equals(extension)) {
                 String name = fileName + ".java";
                 WicketHelper.openFile(containingDirectory, name);

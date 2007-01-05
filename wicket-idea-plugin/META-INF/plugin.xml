@@ -28,6 +28,11 @@
         <ul>
             <li>Added action to toggle between the html and the java file. The default keymapping is: shift+alt+W</li>
         </ul>]]></change-notes>
+    <project-components>
+        <component>
+            <implementation-class>com.holmbech.wicketassistant.WicketIdCompletionComponent</implementation-class>
+        </component>
+    </project-components>
     <actions>
         <action id="WicketJavaHtmlToggle" class="com.holmbech.wicketassistant.WicketJavaHtmlToggleAction" text="WicketJavaHtmlToggle"
                 description="Toggles between the Wicket java and html file">
