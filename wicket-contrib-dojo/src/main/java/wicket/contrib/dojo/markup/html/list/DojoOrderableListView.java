@@ -1,4 +1,4 @@
-package wicket.contrib.dojo.html.list;
+package wicket.contrib.dojo.markup.html.list;
 
 import java.util.List;
 

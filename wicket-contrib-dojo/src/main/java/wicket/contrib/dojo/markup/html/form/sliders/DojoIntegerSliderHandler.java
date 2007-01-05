@@ -1,4 +1,4 @@
-package wicket.contrib.markup.html.form.sliders;
+package wicket.contrib.dojo.markup.html.form.sliders;
 
 import wicket.ajax.AjaxRequestTarget;
 import wicket.contrib.dojo.AbstractRequireDojoBehavior;

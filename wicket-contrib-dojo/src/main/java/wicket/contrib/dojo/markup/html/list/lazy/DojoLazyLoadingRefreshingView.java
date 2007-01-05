@@ -1,4 +1,4 @@
-package wicket.contrib.dojo.html.list.lazy;
+package wicket.contrib.dojo.markup.html.list.lazy;
 
 import java.util.ArrayList;
 import java.util.Iterator;

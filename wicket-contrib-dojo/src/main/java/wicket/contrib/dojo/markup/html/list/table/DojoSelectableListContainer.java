@@ -1,4 +1,4 @@
-package wicket.contrib.dojo.html.list.table;
+package wicket.contrib.dojo.markup.html.list.table;
 
 import java.util.ArrayList;
 import java.util.List;

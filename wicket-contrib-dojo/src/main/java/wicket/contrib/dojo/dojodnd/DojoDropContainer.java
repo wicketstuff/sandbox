@@ -2,7 +2,7 @@ package wicket.contrib.dojo.dojodnd;
 
 import wicket.MarkupContainer;
 import wicket.ajax.AjaxRequestTarget;
-import wicket.contrib.markup.html.form.ImmediateCheckBox;
+import wicket.contrib.dojo.markup.html.form.ImmediateCheckBox;
 import wicket.markup.html.WebMarkupContainer;
 import wicket.util.resource.IResourceStream;
 import wicket.util.resource.StringBufferResourceStream;

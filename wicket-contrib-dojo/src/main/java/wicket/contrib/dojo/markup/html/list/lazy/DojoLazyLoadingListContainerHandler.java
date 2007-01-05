@@ -1,4 +1,4 @@
-package wicket.contrib.dojo.html.list.lazy;
+package wicket.contrib.dojo.markup.html.list.lazy;
 
 import wicket.ResourceReference;
 import wicket.ajax.AjaxRequestTarget;

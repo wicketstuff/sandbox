@@ -1,4 +1,4 @@
-package wicket.contrib.markup.html.form;
+package wicket.contrib.dojo.markup.html.form;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

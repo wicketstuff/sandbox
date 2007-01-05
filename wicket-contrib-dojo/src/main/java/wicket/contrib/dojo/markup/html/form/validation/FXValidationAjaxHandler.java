@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package wicket.contrib.markup.html.form.validation;
+package wicket.contrib.dojo.markup.html.form.validation;
 
 import java.io.Serializable;
 
