@@ -1,7 +1,7 @@
 package wicket.contrib.dojo.examples;
 
 import wicket.PageParameters;
-import wicket.contrib.markup.html.form.sliders.DojoIntegerSlider;
+import wicket.contrib.dojo.markup.html.form.sliders.DojoIntegerSlider;
 import wicket.markup.html.WebPage;
 import wicket.markup.html.form.Form;
 import wicket.model.PropertyModel;

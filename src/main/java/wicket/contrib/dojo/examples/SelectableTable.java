@@ -6,7 +6,7 @@ import java.util.List;
 
 import wicket.ajax.AjaxEventBehavior;
 import wicket.ajax.AjaxRequestTarget;
-import wicket.contrib.dojo.html.list.table.DojoSelectableListContainer;
+import wicket.contrib.dojo.markup.html.list.table.DojoSelectableListContainer;
 import wicket.markup.html.WebPage;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.list.ListItem;

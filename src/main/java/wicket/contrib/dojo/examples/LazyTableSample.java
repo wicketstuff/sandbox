@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import wicket.PageParameters;
-import wicket.contrib.dojo.html.list.lazy.DojoLazyLoadingListContainer;
-import wicket.contrib.dojo.html.list.lazy.DojoLazyLoadingRefreshingView;
+import wicket.contrib.dojo.markup.html.list.lazy.DojoLazyLoadingListContainer;
+import wicket.contrib.dojo.markup.html.list.lazy.DojoLazyLoadingRefreshingView;
 import wicket.markup.html.WebPage;
 import wicket.markup.html.basic.Label;
 import wicket.markup.repeater.Item;
