@@ -17,9 +17,7 @@
 package wicket.contrib.dojo.markup.html.tooltip;
 
 import wicket.ajax.AjaxRequestTarget;
-import wicket.contrib.dojo.AbstractDefaultDojoBehavior;
 import wicket.contrib.dojo.AbstractRequireDojoBehavior;
-import wicket.markup.html.IHeaderResponse;
 
 /**
  * Handler for {@link DojoTooltip} 
