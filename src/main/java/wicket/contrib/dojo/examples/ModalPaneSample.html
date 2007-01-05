@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+	<head>
+		<title>Untitled Document</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+		<style type="text/css">
+		body { font-family : sans-serif; }
+		.dojoDialog {
+			background : #eee;
+			border : 1px solid #999;
+			-moz-border-radius : 5px;
+			padding : 4px;
+		}
+		
+		form {
+			margin-bottom : 0;
+		}
+		</style>
+	</head>
+
+<body>
+	<div wicket:id="dialogFloating"></div>
+	<a wicket:id="open">open</a>
+	
+	<br/>
+	<br/>
+	<br/>
+	<table align="center" style="border-color: navy; border-style: solid; border-width: 1px; font-size: 12px">
+		<tr>
+			<td style="color: white; background-color: navy; font-weight: bold; text-align: center;">
+				Explanation
+			</td>
+		</tr>
+		<tr>
+			<td>
+				A dragable Modal Pane. Can also full screened
+			</td>
+		</tr>
+		<tr>
+			<td style="color: white; background-color: navy; font-weight: bold; text-align: center;">
+				Java Code
+			</td>
+		</tr>
+		<tr>
+			<td>
+					<pre>
+package wicket.contrib.dojo.examples;
+
+import wicket.PageParameters;
+import wicket.ajax.AjaxRequestTarget;
+import wicket.ajax.markup.html.AjaxLink;
+import wicket.contrib.dojo.markup.html.floatingpane.DojoModalFloatingPane;
+import wicket.markup.html.WebPage;
+
+public class ModalPaneSample extends WebPage {
+	
+	public ModalPaneSample(PageParameters parameters){
+		final DojoModalFloatingPane dialog = new DojoModalFloatingPane(this,"dialogFloating");
+		dialog.setTitle("Sample...");
+		dialog.setWidth("300px");
+		dialog.setHeight("300px");
+		dialog.setMinHeight("200px");
+		dialog.setMinWidth("200px");
+		new AjaxLink(this, "open"){
+
+			@Override
+			public void onClick(AjaxRequestTarget target) {
+				dialog.show(target);			
+			}
+			
+		};
+	}
+}
+
+					</pre>
+			</td>
+		</tr>
+	</table>
+ <br/>
+ <br/>
+  <br/>
+ <br/>
+  <br/>
+ <br/>
+  <br/>
+ <br/>
+  <br/>
+ <br/>
+  <br/>
+ <br/>
+<wicket:link>
+		<ul>
+		 <li><a href="Index.html">Back to index</a></li>
+		</ul>
+</wicket:link>
+</body>
+</html>

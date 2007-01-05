@@ -152,10 +152,6 @@ public class DojoFXTestPage extends WebPage{
 		add(sliderdiv2 = new Label("sliderdiv2","I'm sliding to! I'm sliding to!"));
 		sliderdiv2.add(new FXOnClickSlider(duration, slidetrigger2, 500, 500, false));
 		
-		add(slidetrigger3 = new Label("slidetrigger3","click here to slide fromto"));
-		add(sliderdiv3 = new Label("sliderdiv3","I'm sliding fromto! I'm sliding fromto!"));
-		sliderdiv3.add(new FXOnClickSlider(duration, slidetrigger3, 500, 500, 700, 700));
-	
 		//Fadertest
 		
 		add(imagecontainer = new WebMarkupContainer("imgcontainer"));
