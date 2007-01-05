@@ -61,33 +61,43 @@ public class WicketIdGotoAction extends AnAction {
         VirtualFile virtualFile = getPsiFile(dataContext).getVirtualFile();
         if (virtualFile == null)
             return false;
+        
         if ("html".equals(virtualFile.getExtension())) {
             stringElement = stringElement.getParent(); // gets the string including the ""
             PsiElement parent = stringElement.getParent(); // gets what should be wicket:id...
             if (parent.getText().startsWith("wicket:id")) {
                 String fileName = virtualFile.getNameWithoutExtension() + ".java";
-                jumpToWicketId(dataContext, fileName, stringElement);
+                return jumpToWicketId(dataContext, fileName, stringElement);
             }
         } else if ("java".equals(virtualFile.getExtension())) {
             if ((stringElement instanceof PsiJavaToken )) {
                 PsiJavaToken token = (PsiJavaToken) stringElement;
                 System.out.println("token = " + token);
                 String fileName = virtualFile.getNameWithoutExtension() + ".html";
-                jumpToWicketId(dataContext, fileName, stringElement);
+                return jumpToWicketId(dataContext, fileName, stringElement);
             }
         }
 
-        return true;
+        return false;
     }
 
-    private void jumpToWicketId(DataContext dataContext, String fileName, PsiElement stringElement) {
+    private boolean jumpToWicketId(DataContext dataContext, String fileName, PsiElement stringElement) {
         PsiDirectory containingDirectory = getPsiFile(dataContext).getContainingDirectory();
         Editor javaEditor = WicketHelper.openFile(containingDirectory, fileName);
+
+        if (javaEditor == null) {
+            return false;
+        }
+
         String text = javaEditor.getDocument().getText();
         int wicketIndex = text.indexOf(stringElement.getText());
         if (wicketIndex > -1) {
             CaretModel caretModel = javaEditor.getCaretModel();
             caretModel.moveToOffset(wicketIndex);
+            return true;
+        }
+        else {
+            return false;
         }
     }
 

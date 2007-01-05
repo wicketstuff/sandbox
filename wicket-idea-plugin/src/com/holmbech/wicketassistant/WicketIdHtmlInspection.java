@@ -32,6 +32,7 @@ import com.intellij.psi.PsiNewExpression;
 import com.intellij.psi.PsiRecursiveElementVisitor;
 import com.intellij.psi.PsiReferenceExpression;
 import com.intellij.psi.xml.XmlAttribute;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,18 +43,22 @@ import java.util.List;
  */
 public class WicketIdHtmlInspection extends LocalInspectionTool {
 
+    @NotNull
     public String getGroupDisplayName() {
         return "Wicket Assistent";
     }
 
+    @NotNull
     public String getDisplayName() {
         return "Wicket id Html inspection";
     }
 
+    @NotNull
     public String getShortName() {
         return "WicketIdHtmlInspection";
     }
 
+    @NotNull
     public HighlightDisplayLevel getDefaultLevel() {
         return HighlightDisplayLevel.WARNING;
     }
@@ -62,14 +67,15 @@ public class WicketIdHtmlInspection extends LocalInspectionTool {
         return true;
     }
 
-    public ProblemDescriptor[] checkFile(PsiFile file, InspectionManager manager, boolean isOnTheFly) {
+    @SuppressWarnings("unchecked")
+    public ProblemDescriptor[] checkFile(@NotNull PsiFile file, @NotNull InspectionManager manager, boolean isOnTheFly) {
         WicketIdHtmlInspection.WicketIdVisitor idVisitor = new WicketIdHtmlInspection.WicketIdVisitor(manager);
         file.accept(idVisitor);
-        return (ProblemDescriptor[]) idVisitor.problems.toArray(new ProblemDescriptor[idVisitor.problems.size()]);
+        return idVisitor.problems.toArray(new ProblemDescriptor[idVisitor.problems.size()]);
     }
 
     private static class WicketIdVisitor extends PsiRecursiveElementVisitor {
-        public List problems = new ArrayList();
+        public List<ProblemDescriptor> problems = new ArrayList<ProblemDescriptor>();
         private InspectionManager manager;
 
         public WicketIdVisitor(InspectionManager manager) {
@@ -83,6 +89,7 @@ public class WicketIdHtmlInspection extends LocalInspectionTool {
         /**
          * The html inspector method that finds wicket:ids in a html file
          */
+        @SuppressWarnings("unchecked")
         public void visitXmlAttribute(XmlAttribute attribute) {
             super.visitXmlAttribute(attribute);
             String name = attribute.getContainingFile().getName();
@@ -90,25 +97,30 @@ public class WicketIdHtmlInspection extends LocalInspectionTool {
                 return;
             }
             if ("wicket:id".equals(attribute.getName())) {
-                PsiFile containingFile = attribute.getContainingFile();
                 String fileName = attribute.getContainingFile().getName();
                 if (fileName == null) {
                     return;
                 }
-                fileName = fileName.substring(0, fileName.length() - 5);
+                PsiFile containingFile = attribute.getContainingFile();
                 PsiDirectory containingDirectory = containingFile.getContainingDirectory();
                 if (containingDirectory == null) {
                     return;
                 }
+                fileName = fileName.substring(0, fileName.length() - 5);
                 PsiFile javaFile = containingDirectory.findFile(fileName + ".java");
                 if (javaFile != null && !wicketIdExistsInJavafile(attribute.getValue(), javaFile)) {
                     LocalQuickFix fix = null;
-                    problems.add(manager.createProblemDescriptor(attribute, "Wicket id missing in java file?", fix, ProblemHighlightType.GENERIC_ERROR_OR_WARNING));
+                    problems.add(manager.createProblemDescriptor(attribute, "Wicket id missing in java file?",
+                        fix, ProblemHighlightType.GENERIC_ERROR_OR_WARNING));
                 }
             }
         }
 
         private boolean wicketIdExistsInJavafile(final String htmlWicketId, PsiFile javaFile) {
+            if (htmlWicketId == null || htmlWicketId.length() == 0) {
+                return false;
+            }
+
             final boolean[] result = new boolean[]{false};
             javaFile.accept(new PsiRecursiveElementVisitor() {
                 public void visitReferenceExpression(PsiReferenceExpression expression) {
@@ -121,16 +133,23 @@ public class WicketIdHtmlInspection extends LocalInspectionTool {
                     if (constructor == null || !constructor.getContainingFile().isPhysical()) {
                         return;
                     }
+                    
                     if (instanceOfWicketComponent(constructor.getContainingClass())) {
                         PsiExpressionList expressionList = expression.getArgumentList();
                         if (expressionList == null) {
                             return;
                         }
-                        PsiExpression idElement = expressionList.getExpressions()[0];
-                        int length = idElement.getText().length();
-                        String theWicketId = idElement.getText().substring(1, length - 1);
-                        if (htmlWicketId.equals(theWicketId)) {
-                            result[0] = true;
+
+                        final PsiExpression[] psiExpressions = expressionList.getExpressions();
+                        if (psiExpressions.length > 0) {
+                            PsiExpression idElement = psiExpressions[0];
+                            int length = idElement.getText().length();
+                            if (length > 0) {
+                                String theWicketId = idElement.getText().substring(1, length - 1);
+                                if (theWicketId != null && htmlWicketId.equals(theWicketId)) {
+                                    result[0] = true;
+                                }
+                            }
                         }
                     }
                 }

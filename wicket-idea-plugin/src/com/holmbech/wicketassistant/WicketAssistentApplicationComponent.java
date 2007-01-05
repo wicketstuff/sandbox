@@ -20,13 +20,17 @@ import com.intellij.codeInspection.InspectionToolProvider;
 import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.components.ApplicationComponent;
+import org.jetbrains.annotations.NotNull;
 
 /**
+ * This class is the integration point between IDEA and the rest of the plugin.
+ * 
  * @author Anders Holmbech Brandt
  *         Date: 2006-09-04
  */
 public class WicketAssistentApplicationComponent implements ApplicationComponent, InspectionToolProvider {
 
+    /** Stores a reference to the AnAction we're replacing. */
     private AnAction defaultGotoAction;
 
     public WicketAssistentApplicationComponent() {
@@ -41,6 +45,7 @@ public class WicketAssistentApplicationComponent implements ApplicationComponent
         replaceAction("GotoDeclaration", defaultGotoAction);
     }
 
+    @NotNull
     public String getComponentName() {
         return "WicketAssistentApplicationComponent";
     }
