@@ -2,7 +2,7 @@ package wicket.contrib.dojo.examples;
 
 import wicket.PageParameters;
 import wicket.ajax.AjaxRequestTarget;
-import wicket.contrib.dojo.html.DojoLink;
+import wicket.contrib.dojo.markup.html.DojoLink;
 import wicket.contrib.dojo.markup.html.floatingpane.DojoModalFloatingPane;
 import wicket.markup.html.WebPage;
 
