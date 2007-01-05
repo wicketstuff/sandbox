@@ -3,10 +3,10 @@ package wicket.contrib.dojo.examples;
 import java.util.Date;
 
 import wicket.PageParameters;
+import wicket.contrib.dojo.markup.html.form.DatePicker;
 import wicket.contrib.dojo.toggle.DojoExplodeToggle;
 import wicket.contrib.dojo.toggle.DojoFadeToggle;
 import wicket.contrib.dojo.toggle.DojoWipeToggle;
-import wicket.contrib.markup.html.form.DatePicker;
 import wicket.markup.html.WebPage;
 import wicket.markup.html.form.Form;
 import wicket.model.Model;

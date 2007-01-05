@@ -2,9 +2,9 @@ package wicket.contrib.dojo.examples;
 
 import wicket.PageParameters;
 import wicket.ajax.AjaxRequestTarget;
-import wicket.contrib.dojo.html.DojoLink;
 import wicket.contrib.dojo.indicator.DojoDialogIndicator;
 import wicket.contrib.dojo.indicator.behavior.DojoIndicatorBehavior;
+import wicket.contrib.dojo.markup.html.DojoLink;
 import wicket.contrib.dojo.markup.html.calendar.DojoWeekOrganizer;
 import wicket.contrib.dojo.markup.html.calendar.model.WeekTimeRange;
 import wicket.markup.html.WebPage;
