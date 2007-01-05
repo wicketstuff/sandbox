@@ -1,19 +1,18 @@
 /*
- * $Id$ $Revision$
- * $Date$
- * 
- * ==============================================================================
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
- * 
- * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package wicket.contrib.dojo.dojofx;
 
@@ -27,13 +26,13 @@ import wicket.model.Model;
 
 /**
  * This classacts as an AjaxHandler an can be added to components. It adds a
- * Dojo.fx.html wiper to the class which reactes to a target component's ONCLICK
+ * dojo.lfx.html wiper to the class which reactes to a target component's ONCLICK
  * method.
  * 
  * TODO: We wanted to make a generic wiper that could also react to
  * ONMOUSEOVER/ONMOUSEOUT but the current dojoimplementation made our version
  * very unstable. If you want to help with this, or hear the problems we ran
- * into please give a yell on the mailing list. TODO: Dojo.fx.html currently
+ * into please give a yell on the mailing list. TODO: dojo.lfx.html currently
  * only supports top-down wiping, so down-top wiping and horizontal wiping is
  * currently not supported. We have however, requested this on the Dojo
  * animation wishlist. TODO: streamlining javascript handling: see
@@ -74,13 +73,13 @@ public class FXOnClickWiper extends DojoFXHandler
 		this.startDisplay = startDisplay;
 
 	}
-
+	
 	/**
 	 * @return The html id
 	 */
 	public String getHTMLID()
 	{
-		// only returns valid value after handler is bound.
+		//only returns valid value after handler is bound.
 		return this.HTMLID;
 	}
 
@@ -98,17 +97,13 @@ public class FXOnClickWiper extends DojoFXHandler
 		this.startDisplay = false;
 	}
 
-	/**
-	 * @see wicket.behavior.AbstractAjaxBehavior#renderHead(wicket.markup.html.IHeaderResponse)
+
+	/* (non-Javadoc)
+	 * @see wicket.contrib.dojo.DojoAjaxHandler#renderHead(wicket.markup.html.IHeaderResponse)
 	 */
 	public void renderHead(IHeaderResponse response)
 	{
 		super.renderHead(response);
-		/*
-		 * TODO: make this part a lot more efficient! every new Wiper adds a lot
-		 * of javascript to the header. I'm positive that this can work a lot
-		 * more efficient, but have not secceeded in doing this yet.....
-		 */
 		String s;
 		if (startDisplay)
 		{
@@ -122,15 +117,15 @@ public class FXOnClickWiper extends DojoFXHandler
 		}
 
 		s = s + "\t" + getHTMLID() + "_wiping = 0; \n" + "\tfunction " + getHTMLID()
-				+ "_wipe(id, duration) { \n" + "\t\tif(" + getHTMLID() + "_wiping==0){\n"
+				+ "_wipe(id, duration) {\n" + "\t\tif(" + getHTMLID() + "_wiping==0){\n"
 				+ "\t\t\tnode = document.getElementById(id);\n" + "\t\t\tif(" + getHTMLID()
-				+ "_wipedOut == 1) \n" + "\t\t\t{ \n" + "\t\t\t\t" + getHTMLID() + "_wiping = 1;\n"
+				+ "_wipedOut == 1) \n" + "\t\t\t{\n" + "\t\t\t\t" + getHTMLID() + "_wiping = 1;\n"
 				+ "\t\t\t\t" + getHTMLID() + "_wipedOut = 0;\n"
-				+ "\t\t\t\tdojo.fx.html.wipeIn(node, duration, function(){" + getHTMLID()
-				+ "_wiping=0; node.style.height='auto';});\n" + "\t\t\t} else {\n" + "\t\t\t\t"
+				+ "\t\t\t\tdojo.lfx.html.wipeIn(node.id, duration,null, function(){" + getHTMLID()
+				+ "_wiping=0; node.style.height='auto';}).play();\n" + "\t\t\t} else {\n" + "\t\t\t\t"
 				+ getHTMLID() + "_wiping = 1;\n" + "\t\t\t\t" + getHTMLID() + "_wipedOut = 1;\n"
-				+ "\t\t\t\tdojo.fx.html.wipeOut(node, duration, function(){" + getHTMLID()
-				+ "_wiping=0; node.style.height='auto';});\n" + "\t\t\t}\n" + "\t\t}\n" + "\t}\n"
+				+ "\t\t\t\tdojo.lfx.html.wipeOut(node.id, duration,null,  function(){" + getHTMLID()
+				+ "_wiping=0; node.style.height='auto';}).play();\n" + "\t\t\t}\n" + "\t\t}\n" + "\t}\n"
 				+ "\t</script>\n";
 
 
@@ -152,20 +147,16 @@ public class FXOnClickWiper extends DojoFXHandler
 
 	/**
 	 * method to remove colons from string s.
-	 * 
-	 * @param s
-	 *            string to parse
+	 * @param s string to parse
 	 * @return string wichtout colons
 	 */
-	public String removeColon(String s)
-	{
-		StringTokenizer st = new StringTokenizer(s, ":", false);
-		String t = "";
-		while (st.hasMoreElements())
-			t += st.nextElement();
-		return t;
-	}
-
+	public String removeColon(String s) {
+		  StringTokenizer st = new StringTokenizer(s,":",false);
+		  String t="";
+		  while (st.hasMoreElements()) t += st.nextElement();
+		  return t;
+	  }
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -192,6 +183,7 @@ public class FXOnClickWiper extends DojoFXHandler
 						+ HTMLID + "', " + getDuration() + ");")));
 
 	}
+
 
 
 }

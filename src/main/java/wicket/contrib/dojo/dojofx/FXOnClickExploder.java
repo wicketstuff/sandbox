@@ -1,19 +1,18 @@
 /*
- * $Id$ $Revision$
- * $Date$
- * 
- * ==============================================================================
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
- * 
- * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package wicket.contrib.dojo.dojofx;
 
@@ -106,9 +105,9 @@ public class FXOnClickExploder extends DojoFXHandler
 		this.startDisplay = false;
 		this.from = from;
 	}
-
-	/**
-	 * @see wicket.behavior.AbstractAjaxBehavior#renderHead(wicket.markup.html.IHeaderResponse)
+	
+	/* (non-Javadoc)
+	 * @see wicket.contrib.dojo.DojoAjaxHandler#renderHead(wicket.markup.html.IHeaderResponse)
 	 */
 	public void renderHead(IHeaderResponse response)
 	{
@@ -125,49 +124,57 @@ public class FXOnClickExploder extends DojoFXHandler
 		{
 			String coords = "[" + box.getX() + ", " + box.getY() + ", " + box.getWidth() + ", "
 					+ box.getHeight() + "]";
-			functionEx = "dojo.fx.html.explodeFromBox(" + coords + ", end, duration, function(){"
-					+ componentId + "_exploderstate=\"exploded\";});";
-			functionIm = "dojo.fx.html.implodeToBox(end, " + coords + ", duration, function(){"
-					+ componentId + "_exploderstate=\"imploded\";});";
+			functionEx = "dojo.lfx.html.explodeFromBox(" + coords + ", end.id, duration, null, function(){"
+					+ componentId + "_exploderstate=\"exploded\";}).play();";
+			functionIm = "dojo.lfx.html.implodeToBox(end.id, " + coords + ", duration, null, function(){"
+					+ componentId + "_exploderstate=\"imploded\";}).play();";
+
 		}
 		else if (from != null)
 		{
-			functionEx = "dojo.fx.html.explode(document.getElementById('" + from.getId()
-					+ "'), end, duration, function(){" + componentId
-					+ "_exploderstate=\"exploded\";});";
-			functionIm = "dojo.fx.html.implode(end, document.getElementById('" + from.getId()
-					+ "'), duration, function(){" + componentId + "_exploderstate=\"imploded\";});";
+			functionEx = "dojo.lfx.explode(document.getElementById('" + from.getId()
+					+ "'), end, duration, null, function(){" + componentId
+					+ "_exploderstate=\"exploded\";}).play();";
+			functionIm = "dojo.lfx.implode(end, document.getElementById('" + from.getId()
+					+ "'), duration, null, function(){" + componentId + "_exploderstate=\"imploded\";}).play();";
 		}
 		else
 		{
-			functionEx = "dojo.fx.html.explode(start, end, duration, function(){" + componentId
-					+ "_exploderstate=\"exploded\";});";
-			functionIm = "dojo.fx.html.implode(end, start, duration, function(){" + componentId
-					+ "_exploderstate=\"imploded\";});";
+
+			functionEx = "dojo.lfx.explode(start, end, duration, null, function(){" + componentId
+					+ "_exploderstate='exploded';}).play();";
+			functionIm = "dojo.lfx.implode(end, start, duration, null, function(){" + componentId
+					+ "_exploderstate='imploded';}).play();";
+
+
 		}
 
 		if (startDisplay)
 		{
-			s = "\t<script language=\"JavaScript\" type=\"text/javascript\">\n" + "\t"
-					+ componentId + "_expoderstate = 'exploded'; \n";
+			s  = "	<script language='JavaScript' type='text/javascript'>\n";
+			s += "	" + componentId + "_expoderstate = 'exploded'; \n";
+					
 		}
 		else
 		{
-			s = "\t<script language=\"JavaScript\" type=\"text/javascript\">\n" + "\t"
-					+ componentId + "_exploderstate = 'imploded'; \n";
+			s  = "	<script language='JavaScript' type='text/javascript'>\n";
+			s += "	" + componentId + "_exploderstate = 'imploded'; \n";
 		}
-		s = s + "\tfunction " + componentId + "_plode(start, endid, duration)\n" + "\t{\n"
-				+ "\t\tvar end = document.getElementById(endid);\n" + "\t\tif(" + componentId
-				+ "_exploderstate==\"imploded\")\n" + "\t\t{\n" + "\t\t\t" + componentId
-				+ "_exploderstate = \"exploding\";\n" + "\t\t\t" + functionEx + "\n"
-				+ "\t\t} else if (" + componentId + "_exploderstate == \"exploded\")\n" + "\t\t{\n"
-				+ "\t\t\t" + componentId + "_exploderstate = \"imploding\";\n" + "\t\t\t"
-				+ functionIm + "\n" + "\t\t} else {\n" + "\t\t}\n"
-
-				+ "\t}\n" + "\t</script>\n";
+		s += "	function " + componentId + "_plode(start, end, duration){\n";
+		s += "		if(" + componentId + "_exploderstate=='imploded'){\n";
+		s += "			" + componentId + "_exploderstate = 'exploding';\n";
+		s += "			" + functionEx + "\n";
+		s += "		} else if (" + componentId + "_exploderstate == 'exploded'){\n";
+		s += "			" + componentId + "_exploderstate = 'imploding';\n";
+		s += "			" + functionIm + "\n";
+		s += "		} else {\n";
+		s += "		}\n";
+		s += "	}\n";
+		s += "	</script>\n";
 
 		response.renderString(s);
 	}
+
 
 	/**
 	 * @see wicket.contrib.dojo.dojofx.DojoFXHandler#addTrigger(wicket.Component)
@@ -176,12 +183,10 @@ public class FXOnClickExploder extends DojoFXHandler
 	{
 		if (getComponent() == null)
 		{
-			throw new NullPointerException(
-					"Component is null. Cannot add extra trigger before effect is bound to component!");
+			throw new NullPointerException("Component is null. Cannot add extra trigger before effect is bound to component!");
 		}
 		c.add(new AppendAttributeModifier(getEventName(), true, new Model(componentId
-				+ "_plode(document.getElementById('" + getTrigger().getId() + "'),'" + HTMLID
-				+ "', " + getDuration() + ");")));
+				+ "_plode('" + getTrigger().getId() + "','" + HTMLID + "', " + getDuration() + ");")));
 	}
 
 	/**
@@ -281,6 +286,7 @@ public class FXOnClickExploder extends DojoFXHandler
 			return height;
 		}
 	}
+
 
 
 }

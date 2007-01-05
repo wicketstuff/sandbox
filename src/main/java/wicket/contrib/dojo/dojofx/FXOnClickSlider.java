@@ -1,24 +1,24 @@
 /*
- * $Id$ $Revision$
- * $Date$
- * 
- * ==============================================================================
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
- * 
- * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package wicket.contrib.dojo.dojofx;
 
 import wicket.AttributeModifier;
 import wicket.Component;
+import wicket.markup.html.IHeaderResponse;
 import wicket.model.Model;
 
 /**
@@ -60,25 +60,6 @@ public class FXOnClickSlider extends DojoFXHandler
 
 	}
 
-	/**
-	 * @param duration
-	 * @param trigger
-	 * @param x
-	 * @param y
-	 * @param fromx
-	 * @param fromy
-	 */
-	public FXOnClickSlider(int duration, Component trigger, int x, int y, int fromx, int fromy)
-	{
-		super("onclick", duration, trigger);
-		this.x = x;
-		this.y = y;
-		this.fromx = fromx;
-		this.fromy = fromy;
-		this.type = "fromto";
-
-	}
-
 
 	protected void onBind()
 	{
@@ -98,25 +79,26 @@ public class FXOnClickSlider extends DojoFXHandler
 		{
 			this.getTrigger().add(
 					new AppendAttributeModifier(getEventName(), true, new Model(
-							"dojo.fx.html.slideBy(document.getElementById('" + HTMLID + "'), [" + x
-									+ ", " + y + "]," + getDuration() + ")")));
-		}
-		else if (type == "fromto")
-		{
-			this.getTrigger().add(
-					new AppendAttributeModifier(getEventName(), true, new Model(
-							"dojo.fx.html.slide(document.getElementById('" + HTMLID + "'), ["
-									+ fromx + ", " + fromy + "], [" + x + ", " + y + "],"
-									+ getDuration() + ")")));
+							"dojo.lfx.html.slideBy(document.getElementById('" + HTMLID + "'), [" + x
+									+ ", " + y + "]," + getDuration() + ").play();")));
 		}
 		// assume that type == absolute
 		else
 		{
 			this.getTrigger().add(
 					new AppendAttributeModifier(getEventName(), true, new Model(
-							"dojo.fx.html.slideTo(document.getElementById('" + HTMLID + "'), [" + x
-									+ ", " + y + "]," + getDuration() + ")")));
+							"dojo.lfx.html.slideTo(document.getElementById('" + HTMLID + "'), [" + x
+									+ ", " + y + "]," + getDuration() + ").play();")));
 		}
 
 	}
+
+	/* (non-Javadoc)
+	 * @see wicket.contrib.dojo.DojoAjaxHandler#renderHead(wicket.markup.html.IHeaderResponse)
+	 */
+	public void renderHead(IHeaderResponse response)
+	{
+		super.renderHead(response);
+	}
+
 }

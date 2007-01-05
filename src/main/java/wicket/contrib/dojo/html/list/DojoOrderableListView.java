@@ -2,13 +2,8 @@ package wicket.contrib.dojo.html.list;
 
 import java.util.List;
 
-import wicket.MarkupContainer;
-import wicket.ajax.AjaxRequestTarget;
 import wicket.behavior.AttributeAppender;
-import wicket.contrib.dojo.AbstractRequireDojoBehavior;
-import wicket.contrib.dojo.dojodnd.DojoDragContainerHandler;
 import wicket.markup.ComponentTag;
-import wicket.markup.html.IHeaderResponse;
 import wicket.markup.html.list.ListItem;
 import wicket.markup.html.list.ListView;
 import wicket.model.IModel;

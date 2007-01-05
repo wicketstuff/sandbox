@@ -21,13 +21,30 @@ public abstract class DojoLazyLoadingRefreshingView extends RefreshingView
 		super(id);
 		this.dataProvider = dataProvider;
 		this.parent = parent;
+		setOutputMarkupId(true);
 	}
 
 
 	public DojoLazyLoadingRefreshingView(String id) {
 		super(id);
 		this.parent = parent;
+		setOutputMarkupId(true);
 	}
+
+/*
+
+	public abstract Iterator iterator(int first, int count);
+	
+	
+	public IModel model(Object object){
+		if (!(object instanceof Serializable)){
+			throw new IllegalArgumentException("The model Object should be Serializable in a DojoLazyLoadingListContainer");
+		}
+		return new Model((Serializable)object);
+	}
+
+	public void detach(){}
+*/
 
 	public int getCount()
 	{

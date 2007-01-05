@@ -24,6 +24,7 @@ public class DojoLazyLoadingListContainer extends  WebMarkupContainer
 		super(id, model);
 		add(new DojoLazyLoadingListContainerHandler());
 		max = maxItem;
+		setOutputMarkupId(true);
 	}
 
 	public DojoLazyLoadingListContainer(String id, int maxItem)
@@ -31,6 +32,7 @@ public class DojoLazyLoadingListContainer extends  WebMarkupContainer
 		super(id);
 		add(new DojoLazyLoadingListContainerHandler());
 		max = maxItem;
+		setOutputMarkupId(true);
 	}
 	
 	protected void onComponentTag(ComponentTag tag)

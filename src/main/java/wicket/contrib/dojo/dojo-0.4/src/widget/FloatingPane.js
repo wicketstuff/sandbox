@@ -74,7 +74,7 @@ dojo.declare(
 		_max_taskBarConnectAttempts: 5,
 		_taskBarConnectAttempts: 0,
 
-		templatePath: dojo.uri.dojoUri("src/widget/templates/FloatingPane.html"),
+		templatePath: dojo.uri.dojoUri("src/widget/templates/FloatingPane.htm"),
 		templateCssPath: dojo.uri.dojoUri("src/widget/templates/FloatingPane.css"),
 
 		fillInFloatingPaneTemplate: function(args, frag){

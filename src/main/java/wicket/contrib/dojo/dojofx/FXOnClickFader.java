@@ -1,19 +1,18 @@
 /*
- * $Id$ $Revision$
- * $Date$
- * 
- * ==============================================================================
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
- * 
- * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package wicket.contrib.dojo.dojofx;
 
@@ -165,8 +164,7 @@ public class FXOnClickFader extends DojoFXHandler
 		// initOpac.
 		if (!startDisplay)
 		{
-			return "dojo.html.setOpacity(document.getElementById('" + HTMLID + "'), " + initOpac
-					+ ");";
+			return "dojo.html.setOpacity(document.getElementById('" + HTMLID + "'), " + initOpac + ");";
 		}
 		else
 		{
@@ -175,14 +173,15 @@ public class FXOnClickFader extends DojoFXHandler
 
 	}
 
-	/**
-	 * @see wicket.behavior.AbstractAjaxBehavior#renderHead(wicket.markup.html.IHeaderResponse)
+	
+
+	/* (non-Javadoc)
+	 * @see wicket.contrib.dojo.DojoAjaxHandler#renderHead(wicket.markup.html.IHeaderResponse)
 	 */
 	public void renderHead(IHeaderResponse response)
 	{
 		super.renderHead(response);
-
-		// String to be written to the header
+//		 String to be written to the header
 		String s;
 		// dojo function calls for fadein/out
 		String fadeInFunction;
@@ -191,59 +190,50 @@ public class FXOnClickFader extends DojoFXHandler
 		// set the correct dojo functions for the type of fader
 		if (type == "fadeHide")
 		{
-			fadeInFunction = "dojo.fx.html.fadeShow(node, duration, function(){" + HTMLID
-					+ "_faderState='fadedIn';})";
-			fadeOutFunction = "dojo.fx.html.fadeHide(node, duration, function(){" + HTMLID
-					+ "_faderState='fadedOut';})";
+			fadeInFunction  = "dojo.lfx.html.fadeShow(node.id, duration, null, function(){" + HTMLID + "_faderState='fadedIn';})";
+			fadeOutFunction = "dojo.lfx.html.fadeHide(node.id, duration, null, function(){" + HTMLID + "_faderState='fadedOut';})";
 		}
 		else if (type == "fadeOpac")
 		{
-			fadeInFunction = "dojo.fx.html.fade(node, duration," + startOpac + "," + endOpac
-					+ ", function(){" + HTMLID + "_faderState='fadedIn';});";
-			fadeOutFunction = "dojo.fx.html.fade(node, duration," + endOpac + "," + startOpac
-					+ ", function(){" + HTMLID + "_faderState='fadedOut';});";
+			fadeInFunction  = "dojo.lfx.html.fade(node.id, {start:" + startOpac + ",end:" + endOpac   + "}, duration, null, function(){" + HTMLID + "_faderState='fadedIn';}).play();";
+			fadeOutFunction = "dojo.lfx.html.fade(node.id, {start:" + endOpac   + ",end:" + startOpac + "}, duration, null, function(){" + HTMLID + "_faderState='fadedOut';}).play();";
 		}
 		else
 		{
-			fadeInFunction = "dojo.fx.html.fadeIn(node, duration, function(){" + HTMLID
-					+ "_faderState='fadedIn';})";
-			fadeOutFunction = "dojo.fx.html.fadeOut(node, duration, function(){" + HTMLID
-					+ "_faderState='fadedOut'});";
+			fadeInFunction  = " dojo.lfx.html.fadeIn(node.id, duration, null, function(){" + HTMLID + "_faderState='fadedIn';}).play()";
+			fadeOutFunction = "dojo.lfx.html.fadeOut(node.id, duration, null, function(){" + HTMLID + "_faderState='fadedOut'}).play();";
 		}
 
 		// set the correct state for the startDisplay value
 		if (startDisplay)
 		{
-			s = "\t<script language=\"JavaScript\" type=\"text/javascript\">\n" + "\t" + HTMLID
-					+ "_faderState = 'fadedIn'; \n";
+			s = "\t<script language=\"JavaScript\" type=\"text/javascript\">\n" + "\t"
+					+ HTMLID + "_faderState = 'fadedIn'; \n";
 		}
 		else
 		{
-			s = "\t<script language=\"JavaScript\" type=\"text/javascript\">\n" + "\t" + HTMLID
-					+ "_faderState = 'fadedOut'; \n";
+			s = "\t<script language=\"JavaScript\" type=\"text/javascript\">\n" + "\t"
+					+ HTMLID + "_faderState = 'fadedOut'; \n";
 		}
 
 		s = s + "\tfunction " + HTMLID + "_fade(id, duration) { \n" + "\t\tif(" + HTMLID
 				+ "_faderState!='fading'){\n" + "\t\t\tnode = document.getElementById(id);\n"
 				+ "\t\t\tif(" + HTMLID + "_faderState == 'fadedOut') \n" + "\t\t\t{ \n"
-				+ "\t\t\t\t" + HTMLID + "_faderState = 'fading';\n" + "\t\t\t\t" + fadeInFunction
-				+ "\n" + "\t\t\t} else {\n" + "\t\t\t\t" + HTMLID + "_faderState = 'fading';\n"
-				+ "\t\t\t\t" + fadeOutFunction + "\n" + "\t\t\t}\n" + "\t\t}\n" + "\t}\n"
-				+ "\t</script>\n";
-
+				+ "\t\t\t\t" + HTMLID + "_faderState = 'fading';\n" + "\t\t\t\t"
+				+ fadeInFunction + "\n" + "\t\t\t} else {\n" + "\t\t\t\t" + HTMLID
+				+ "_faderState = 'fading';\n" + "\t\t\t\t" + fadeOutFunction + "\n" + "\t\t\t}\n"
+				+ "\t\t}\n" + "\t}\n" + "\t</script>\n";
 		response.renderString(s);
 	}
 
-	private String removeColon(String s)
-	{
-		StringTokenizer st = new StringTokenizer(s, ":", false);
-		String t = "";
-		while (st.hasMoreElements())
-			t += st.nextElement();
-		return t;
-	}
-
-
+	private String removeColon(String s) {
+		  StringTokenizer st = new StringTokenizer(s,":",false);
+		  String t="";
+		  while (st.hasMoreElements()) t += st.nextElement();
+		  return t;
+	  }
+	
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -254,7 +244,7 @@ public class FXOnClickFader extends DojoFXHandler
 		Component c = getComponent();
 		this.component = (Component)c;
 		this.componentId = c.getId();
-
+		
 		String componentpath = removeColon(component.getPath());
 		// create a unique HTML for the wipe component
 		this.HTMLID = "f_" + this.component.getId() + "_" + componentpath;
@@ -265,5 +255,7 @@ public class FXOnClickFader extends DojoFXHandler
 						+ HTMLID + "', " + getDuration() + ");")));
 
 	}
+
+
 
 }
