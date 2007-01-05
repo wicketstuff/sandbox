@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package wicket.contrib.markup.html.form;
+package wicket.contrib.dojo.markup.html.form;
 
 import wicket.ResourceReference;
 import wicket.ajax.AjaxRequestTarget;
