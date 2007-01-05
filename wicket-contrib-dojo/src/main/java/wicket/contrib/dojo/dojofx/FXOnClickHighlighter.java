@@ -1,19 +1,18 @@
 /*
- * $Id$ $Revision:
- * 594 $ $Date$
- * 
- * ==============================================================================
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
- * 
- * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package wicket.contrib.dojo.dojofx;
 
@@ -122,14 +121,14 @@ public class FXOnClickHighlighter extends DojoFXHandler
 
 	}
 
-	/**
-	 * @see wicket.behavior.AbstractAjaxBehavior#renderHead(wicket.markup.html.IHeaderResponse)
+
+	/* (non-Javadoc)
+	 * @see wicket.contrib.dojo.DojoAjaxHandler#renderHead(wicket.markup.html.IHeaderResponse)
 	 */
 	public void renderHead(IHeaderResponse response)
 	{
 		super.renderHead(response);
-
-		// String to be written to the header
+//		 String to be written to the header
 		String s;
 		// dojo function calls for highlight/unhighlight
 		String highlightInFunction;
@@ -138,19 +137,19 @@ public class FXOnClickHighlighter extends DojoFXHandler
 		// set the correct dojo functions for the type of highlighter
 		if (type == "c2c")
 		{
-			highlightInFunction = "dojo.fx.html.colorFade(node, " + startColor.toString() + ","
+			highlightInFunction = "dojo.lfx.html.colorFade(node, " + startColor.toString() + ","
 					+ endColor.toString() + ", duration, function(){" + componentId
 					+ "_highlighterState='highlighted';});";
-			highlightOutFunction = "dojo.fx.html.colorFade(node, " + endColor.toString() + ","
+			highlightOutFunction = "dojo.lfx.html.colorFade(node, " + endColor.toString() + ","
 					+ startColor.toString() + ", duration, function(){" + componentId
 					+ "_highlighterState='unhighlighted';});";
 		}
 		else
 		{
-			highlightInFunction = "dojo.fx.html.colorFadeOut(node, " + endColor.toString()
+			highlightInFunction = "dojo.lfx.html.colorFadeOut(node, " + endColor.toString()
 					+ ", duration ,0,function(){" + componentId
 					+ "_highlighterState='highlighted';});";
-			highlightOutFunction = "dojo.fx.html.colorFadeOut(node, startbc, duration ,0,function(){"
+			highlightOutFunction = "dojo.lfx.html.colorFadeOut(node, startbc, duration ,0,function(){"
 					+ componentId + "_highlighterState='unhighlighted';});";
 		}
 
@@ -169,7 +168,6 @@ public class FXOnClickHighlighter extends DojoFXHandler
 				+ highlightInFunction + "\n" + "\t\t\t} else {\n" + "\t\t\t\t" + componentId
 				+ "_highlighterState = 'highlighting';\n" + "\t\t\t\t" + highlightOutFunction
 				+ "\n" + "\t\t\t}\n" + "\t\t}\n" + "\t}\n" + "\t</script>\n";
-
 
 		response.renderString(s);
 	}
@@ -195,5 +193,6 @@ public class FXOnClickHighlighter extends DojoFXHandler
 						+ "_highlight('" + HTMLID + "', " + getDuration() + ");")));
 
 	}
+
 
 }

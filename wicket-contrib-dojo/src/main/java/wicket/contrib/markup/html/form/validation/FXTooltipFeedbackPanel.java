@@ -1,18 +1,18 @@
 /*
- * $Id$ $Revision$ $Date$
- * 
- * ==============================================================================
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
- * 
- * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package wicket.contrib.markup.html.form.validation;
 
@@ -22,7 +22,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import wicket.AttributeModifier;
-import wicket.Component;
+import wicket.MarkupContainer;
 import wicket.feedback.ComponentFeedbackMessageFilter;
 import wicket.feedback.FeedbackMessage;
 import wicket.feedback.FeedbackMessagesModel;
@@ -43,20 +43,9 @@ import wicket.model.Model;
  * 
  * @author Marco van de Haar
  * @author Ruud Booltink
- * 
  */
 public class FXTooltipFeedbackPanel extends Panel implements IFeedback
 {
-	private static final long serialVersionUID = 1L;
-
-	/** whether model messages should be HTML escaped. Default is true. */
-	private boolean escapeMessages = true;
-
-	/** Message view */
-	private final MessageListView messageListView;
-
-	private ComponentFeedbackMessageFilter filter;
-
 	/**
 	 * List for messages.
 	 */
@@ -65,6 +54,8 @@ public class FXTooltipFeedbackPanel extends Panel implements IFeedback
 		private static final long serialVersionUID = 1L;
 
 		/**
+		 * @param parent
+		 * @param id
 		 * @see wicket.Component#Component(String)
 		 */
 		public MessageListView(final String id)
@@ -88,27 +79,40 @@ public class FXTooltipFeedbackPanel extends Panel implements IFeedback
 				 * 'feedbackPanelERROR'. This is used as the class of the li /
 				 * span elements.
 				 * 
-				 * @see wicket.model.IModel#getObject(Component)
+				 * @see wicket.model.IModel#getObject()
 				 */
-				public Object getObject(final Component component)
+				public Object getObject()
 				{
 					return getCSSClass(message);
 				}
 			};
 
-			final Label label = new Label("message", message.getMessage());
+			final Label label = new Label("message", message.getMessage().toString());
+			listItem.add(label);
 			label.setEscapeModelStrings(getEscapeMessages());
 			final AttributeModifier levelModifier = new AttributeModifier("class", replacementModel);
 			label.add(levelModifier);
 			listItem.add(levelModifier);
-			listItem.add(label);
 		}
 	}
 
+	private static final long serialVersionUID = 1L;
+
+	/** whether model messages should be HTML escaped. Default is true. */
+	private boolean escapeMessages = true;
+
+	private ComponentFeedbackMessageFilter filter;
+
+	/** Message view */
+	private final MessageListView messageListView;
+
 	/**
+	 * @param parent
+	 * @param id
+	 * @param c
 	 * @see wicket.Component#Component(String)
 	 */
-	public FXTooltipFeedbackPanel(final String id, FormComponent c)
+	public FXTooltipFeedbackPanel(final String id)
 	{
 		super(id);
 
@@ -122,7 +126,6 @@ public class FXTooltipFeedbackPanel extends Panel implements IFeedback
 			}
 
 		};
-		filter = new ComponentFeedbackMessageFilter(c);
 		add(messagesContainer);
 		this.messageListView = new MessageListView("messages");
 		messageListView.setVersioned(false);
@@ -259,8 +262,16 @@ public class FXTooltipFeedbackPanel extends Panel implements IFeedback
 	 */
 	protected final List getCurrentMessages()
 	{
-		final List messages = (List)messageListView.getModelObject();
+		final List messages = (List) messageListView.getModelObject();
 		return Collections.unmodifiableList(messages);
+	}
+
+	/**
+	 * @return Let subclass specify some other filter
+	 */
+	protected IFeedbackMessageFilter getFeedbackMessageFilter()
+	{
+		return filter;
 	}
 
 	/**
@@ -272,15 +283,4 @@ public class FXTooltipFeedbackPanel extends Panel implements IFeedback
 	{
 		return new FeedbackMessagesModel(getFeedbackMessageFilter());
 	}
-
-	/**
-	 * @return Let subclass specify some other filter
-	 */
-	protected IFeedbackMessageFilter getFeedbackMessageFilter()
-	{
-		//System.out.println("filter: " + filter);
-		return filter;
-	}
-
-
 }

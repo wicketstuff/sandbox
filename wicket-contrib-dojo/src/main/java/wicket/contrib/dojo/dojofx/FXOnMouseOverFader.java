@@ -1,19 +1,18 @@
 /*
- * $Id$ $Revision$
- * $Date$
- * 
- * ==============================================================================
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
- * 
- * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package wicket.contrib.dojo.dojofx;
 
@@ -27,7 +26,7 @@ import wicket.model.Model;
 
 /**
  * @author jcompagner
- * 
+ *
  */
 public class FXOnMouseOverFader extends DojoFXHandler
 {
@@ -38,6 +37,7 @@ public class FXOnMouseOverFader extends DojoFXHandler
 	private String componentId;
 	private double startOpac;
 	private double endOpac;
+
 
 
 	/**
@@ -138,98 +138,18 @@ public class FXOnMouseOverFader extends DojoFXHandler
 
 
 	}
-
-	/**
-	 * @see wicket.behavior.AbstractAjaxBehavior#renderHead(wicket.markup.html.IHeaderResponse)
-	 */
-	public void renderHead(IHeaderResponse response)
-	{
-		super.renderHead(response);
-
-		// String to be written to header
-		String s;
-		// dojo function calls for fadein/out
-		String fadeInFunction;
-		String fadeOutFunction;
-
-		// check for type, and call dojo.fx.html so that:
-		// it fades node over duration (from startOpac to endOpac) and with
-		// callback.
-		// callback sets the right state variable to the present state and
-		// does mouseover checks for stability improvements.
-		// the following code might look a bit abracadabra, but it works and is
-		// thouroughly stress-tested.
-		if (type == "fadeHide")
-		{
-			fadeInFunction = "dojo.fx.html.fadeShow(node, duration, function(){" + HTMLID
-					+ "_faderState='fadedIn';if(" + HTMLID + "_mouseover=="
-					+ (startDisplay ? 1 : 0) + "){" + HTMLID + "_fade(id, duration);}})";
-			fadeOutFunction = "dojo.fx.html.fadeHide(node, duration, function(){" + HTMLID
-					+ "_faderState='fadedOut';if(" + HTMLID + "_mouseover=="
-					+ (startDisplay ? 0 : 1) + "){" + HTMLID + "_fade(id, duration);}})";
-		}
-		else if (type == "fadeOpac")
-		{
-			fadeInFunction = "dojo.fx.html.fade(node, duration," + startOpac + "," + endOpac
-					+ ", function(){" + HTMLID + "_faderState='fadedIn';if(" + HTMLID
-					+ "_mouseover==" + (startDisplay ? 1 : 0) + "){" + HTMLID
-					+ "_fade(id, duration);}});";
-			fadeOutFunction = "dojo.fx.html.fade(node, duration," + endOpac + "," + startOpac
-					+ ", function(){" + HTMLID + "_faderState='fadedOut';if(" + HTMLID
-					+ "_mouseover==" + (startDisplay ? 0 : 1) + "){" + HTMLID
-					+ "_fade(id, duration);}});";
-		}
-		else
-		{
-			fadeInFunction = "dojo.fx.html.fadeIn(node, duration, function(){" + HTMLID
-					+ "_faderState='fadedIn';if(" + HTMLID + "_mouseover=="
-					+ (startDisplay ? 1 : 0) + "){" + HTMLID + "_fade(id, duration);}})";
-			fadeOutFunction = "dojo.fx.html.fadeOut(node, duration, function(){" + HTMLID
-					+ "_faderState='fadedOut';if(" + HTMLID + "_mouseover=="
-					+ (startDisplay ? 0 : 1) + "){" + HTMLID + "_fade(id, duration);}});";
-		}
-
-		if (startDisplay)
-		{
-			s = "\t<script language=\"JavaScript\" type=\"text/javascript\">\n" + "\t" + HTMLID
-					+ "_faderState = 'fadedIn'; \n" + "\t" + HTMLID + "_mouseover = 0; \n";
-		}
-		else
-		{
-			s = "\t<script language=\"JavaScript\" type=\"text/javascript\">\n" + "\t" + HTMLID
-					+ "_faderState = 'fadedOut'; \n" + "\t" + HTMLID + "_mouseover = 0; \n";
-		}
-
-		s = s + "\tfunction " + HTMLID + "_fade(id, duration) { \n" + "\t\tif(" + HTMLID
-				+ "_faderState!='fading'){\n" + "\t\t\tnode = document.getElementById(id);\n"
-				+ "\t\t\tif(" + HTMLID + "_faderState == 'fadedOut') \n" + "\t\t\t{ \n"
-				+ "\t\t\t\t" + HTMLID + "_faderState = 'fading';\n" + "\t\t\t\t" + fadeInFunction
-				+ "\n" + "\t\t\t} else {\n" + "\t\t\t\t" + HTMLID + "_faderState = 'fading';\n"
-				+ "\t\t\t\t" + fadeOutFunction + "\n" + "\t\t\t}\n" + "\t\t}\n" + "\t}\n";
-
-
-		s = s + "\tfunction " + HTMLID + "_setMouseOver(ismouseover){\n"
-				+ "\t\tif (ismouseover == 1){\n" + "\t\t\t" + HTMLID + "_mouseover = 1;\n"
-				+ "\t\t}else{\n" + "\t\t\t" + HTMLID + "_mouseover = 0;\n" + "\t\t}\n" + "\t}\n"
-				+ "\t</script>\n\n";
-
-		response.renderString(s);
-	}
-
+	
 	/*
-	 * removes the colons in the componentPath. In order to use in Javascript
-	 * variables
+	 * removes the colons in the componentPath. In order to use in Javascript variables
 	 */
-	private String removeColon(String s)
-	{
-		StringTokenizer st = new StringTokenizer(s, ":", false);
-		String t = "";
-		while (st.hasMoreElements())
-			t += st.nextElement();
-		return t;
-	}
+	private String removeColon(String s) {
+		  StringTokenizer st = new StringTokenizer(s,":",false);
+		  String t="";
+		  while (st.hasMoreElements()) t += st.nextElement();
+		  return t;
+	  }
 
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -240,7 +160,7 @@ public class FXOnMouseOverFader extends DojoFXHandler
 		Component c = getComponent();
 		this.component = (Component)c;
 		this.componentId = c.getId();
-
+		
 		String componentpath = removeColon(component.getPath());
 		// create a unique HTML for the wipe component
 		this.HTMLID = "f_" + this.component.getId() + "_" + componentpath;
@@ -253,12 +173,88 @@ public class FXOnMouseOverFader extends DojoFXHandler
 		 */
 		this.getTrigger().add(
 				new AppendAttributeModifier(getEventName(), true, new Model(HTMLID
-						+ "_setMouseOver(1);" + HTMLID + "_fade('" + HTMLID + "', " + getDuration()
-						+ ");")));
+						+ "_setMouseOver(1);" + HTMLID + "_fade('" + HTMLID + "', "
+						+ getDuration() + ");")));
 		this.getTrigger().add(
 				new AppendAttributeModifier("onmouseout", true, new Model(HTMLID
-						+ "_setMouseOver(0);" + HTMLID + "_fade('" + HTMLID + "', " + getDuration()
-						+ ");")));
+						+ "_setMouseOver(0);" + HTMLID + "_fade('" + HTMLID + "', "
+						+ getDuration() + ");")));
+	}
+
+	public void renderHead(IHeaderResponse response)
+	{
+		super.renderHead(response);
+//		 String to be written to header
+		String s;
+		// dojo function calls for fadein/out
+		String fadeInFunction;
+		String fadeOutFunction;
+
+		// check for type, and call dojo.lfx.html so that:
+		// it fades node over duration (from startOpac to endOpac) and with
+		// callback.
+		// callback sets the right state variable to the present state and
+		// does mouseover checks for stability improvements.
+		// the following code might look a bit abracadabra, but it works and is
+		// thouroughly stress-tested.
+		if (type == "fadeHide")
+		{
+			fadeInFunction = "dojo.lfx.html.fadeShow(node, duration, null, function(){" + HTMLID
+					+ "_faderState='fadedIn';if(" + HTMLID + "_mouseover=="
+					+ (startDisplay ? 1 : 0) + "){" + HTMLID + "_fade(id, duration);}}).play()";
+			fadeOutFunction = "dojo.lfx.html.fadeHide(node, duration, null, function(){" + HTMLID
+					+ "_faderState='fadedOut';if(" + HTMLID + "_mouseover=="
+					+ (startDisplay ? 0 : 1) + "){" + HTMLID + "_fade(id, duration);}}).play()";
+		}
+		else if (type == "fadeOpac")
+		{
+			fadeInFunction = "dojo.lfx.html.fade(node, {start:" + startOpac + ",end:" + endOpac   + "}, duration,"
+					+ "null, function(){" + HTMLID + "_faderState='fadedIn';if(" + HTMLID
+					+ "_mouseover==" + (startDisplay ? 1 : 0) + "){" + HTMLID
+					+ "_fade(id, duration);}}).play();";
+			fadeOutFunction = "dojo.lfx.html.fade(node, {start:" + endOpac + ",end:" +  startOpac  + "}, duration," 
+					+ "null, function(){" + HTMLID + "_faderState='fadedOut';if(" + HTMLID
+					+ "_mouseover==" + (startDisplay ? 0 : 1) + "){" + HTMLID
+					+ "_fade(id, duration);}}).play();";
+		}
+		else
+		{
+			fadeInFunction = "dojo.lfx.html.fadeIn(node, duration, null, function(){" + HTMLID
+					+ "_faderState='fadedIn';if(" + HTMLID + "_mouseover=="
+					+ (startDisplay ? 1 : 0) + "){" + HTMLID + "_fade(id, duration);}}).play();";
+			fadeOutFunction = "dojo.lfx.html.fadeOut(node, duration, null, function(){" + HTMLID
+					+ "_faderState='fadedOut';if(" + HTMLID + "_mouseover=="
+					+ (startDisplay ? 0 : 1) + "){" + HTMLID + "_fade(id, duration);}}).play();";
+		}
+
+		if (startDisplay)
+		{
+			s = "\t<script language=\"JavaScript\" type=\"text/javascript\">\n" + "\t"
+					+ HTMLID + "_faderState = 'fadedIn'; \n" + "\t" + HTMLID
+					+ "_mouseover = 0; \n";
+		}
+		else
+		{
+			s = "\t<script language=\"JavaScript\" type=\"text/javascript\">\n" + "\t"
+					+ HTMLID + "_faderState = 'fadedOut'; \n" + "\t" + HTMLID
+					+ "_mouseover = 0; \n";
+		}
+
+		s = s + "\tfunction " + HTMLID + "_fade(id, duration) { \n" + "\t\tif(" + HTMLID
+				+ "_faderState!='fading'){\n" + "\t\t\tnode = document.getElementById(id);\n"
+				+ "\t\t\tif(" + HTMLID + "_faderState == 'fadedOut') \n" + "\t\t\t{ \n"
+				+ "\t\t\t\t" + HTMLID + "_faderState = 'fading';\n" + "\t\t\t\t"
+				+ fadeInFunction + "\n" + "\t\t\t} else {\n" + "\t\t\t\t" + HTMLID
+				+ "_faderState = 'fading';\n" + "\t\t\t\t" + fadeOutFunction + "\n" + "\t\t\t}\n"
+				+ "\t\t}\n" + "\t}\n";
+
+
+		s = s + "\tfunction " + HTMLID + "_setMouseOver(ismouseover){\n"
+				+ "\t\tif (ismouseover == 1){\n" + "\t\t\t" + HTMLID + "_mouseover = 1;\n"
+				+ "\t\t}else{\n" + "\t\t\t" + HTMLID + "_mouseover = 0;\n" + "\t\t}\n"
+				+ "\t}\n" + "\t</script>\n\n";
+		
+		response.renderString(s);
 	}
 
 }

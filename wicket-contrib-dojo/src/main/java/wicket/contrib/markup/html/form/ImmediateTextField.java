@@ -1,30 +1,29 @@
 /*
- * $Id$ $Revision$
- * $Date$
- * 
- * ==============================================================================
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
- * 
- * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package wicket.contrib.markup.html.form;
 
+import wicket.MarkupContainer;
 import wicket.ResourceReference;
-import wicket.contrib.dojo.DojoAjaxHandler;
+import wicket.ajax.AjaxRequestTarget;
+import wicket.contrib.dojo.AbstractDefaultDojoBehavior;
 import wicket.markup.ComponentTag;
 import wicket.markup.html.IHeaderResponse;
 import wicket.markup.html.form.TextField;
 import wicket.model.IModel;
-import wicket.util.resource.IResourceStream;
-import wicket.util.resource.StringBufferResourceStream;
 import wicket.util.string.AppendingStringBuffer;
 import wicket.util.value.ValueMap;
 
@@ -54,6 +53,7 @@ public class ImmediateTextField extends TextField
 	/**
 	 * Construct.
 	 * 
+	 * @param parent
 	 * @param id
 	 *            component id
 	 */
@@ -65,6 +65,8 @@ public class ImmediateTextField extends TextField
 
 	/**
 	 * Construct.
+	 * 
+	 * @param parent
 	 * 
 	 * @param id
 	 * @param model
@@ -79,7 +81,7 @@ public class ImmediateTextField extends TextField
 	 * @param id
 	 * @param type
 	 */
-	public ImmediateTextField(String id, java.lang.Class type)
+	public ImmediateTextField(String id, Class type)
 	{
 		super(id, type);
 		add(new ImmediateUpdateAjaxHandler());
@@ -90,18 +92,19 @@ public class ImmediateTextField extends TextField
 	 * @param model
 	 * @param type
 	 */
-	public ImmediateTextField(String id, IModel model, java.lang.Class type)
+	public ImmediateTextField(String id, IModel model, Class type)
 	{
 		super(id, model, type);
 		add(new ImmediateUpdateAjaxHandler());
 	}
 
-
 	/**
 	 * Called after the model is updated. Use this method to e.g. update the
 	 * persistent model. Does nothing by default.
+	 * 
+     * @param target {@link AjaxRequestTarget}
 	 */
-	protected void onAjaxModelUpdated()
+	protected void onAjaxModelUpdated(AjaxRequestTarget target)
 	{
 	}
 
@@ -109,7 +112,7 @@ public class ImmediateTextField extends TextField
 	 * Ajax handler that immediately updates the attached component when the
 	 * onblur event happens.
 	 */
-	private static class ImmediateUpdateAjaxHandler extends DojoAjaxHandler
+	private static class ImmediateUpdateAjaxHandler extends AbstractDefaultDojoBehavior
 	{
 		/** checkbox this handler is attached to. */
 		private ImmediateTextField textField;
@@ -122,24 +125,14 @@ public class ImmediateTextField extends TextField
 		}
 
 		/**
-		 * @see wicket.behavior.AbstractAjaxBehavior#renderHead(wicket.markup.html.IHeaderResponse)
+		 * @see wicket.contrib.dojo.AbstractDefaultDojoBehavior#renderHead(wicket.markup.html.IHeaderResponse)
 		 */
 		public void renderHead(IHeaderResponse response)
 		{
 			super.renderHead(response);
-			response.renderJavascriptReference(new ResourceReference(DojoAjaxHandler.class,
-					"dojo.js"));
 
-			AppendingStringBuffer s = new AppendingStringBuffer(
-					"\t<script language=\"JavaScript\" type=\"text/javascript\">\n"
-							+ "\tfunction immediateCheckBox(componentUrl, componentPath, val) { \n"
-							+ "\t\tdojo.io.bind({\n"
-							+ "\t\t\turl: componentUrl + '&' + componentPath + '=' + val,\n"
-							+ "\t\t\tmimetype: \"text/plain\",\n"
-							+ "\t\t\tload: function(type, data, evt) {}\n" + "\t\t});\n" + "\t}\n"
-							+ "\t</script>\n");
-
-			response.renderString(s);
+			response.renderJavascriptReference(new ResourceReference(ImmediateTextField.class,
+					"ImmediateTextField.js"));
 		}
 
 		/**
@@ -152,7 +145,7 @@ public class ImmediateTextField extends TextField
 		{
 			final ValueMap attributes = tag.getAttributes();
 			final AppendingStringBuffer attributeValue = new AppendingStringBuffer(
-					"javascript:immediateCheckBox('").append(getCallbackUrl()).append("', '")
+					"javascript:immediateTextField('").append(getCallbackUrl()).append("', '")
 					.append(textField.getInputName()).append("', this.value);");
 			attributes.put("onblur", attributeValue);
 		}
@@ -164,19 +157,17 @@ public class ImmediateTextField extends TextField
 		{
 			this.textField = (ImmediateTextField)getComponent();
 		}
-
+		
 		/**
 		 * Gets the resource to render to the requester.
-		 * 
-		 * @return the resource to render to the requester
+		 * @param target {@link AjaxRequestTarget}
 		 */
-		protected final IResourceStream getResponse()
+		protected final void respond(AjaxRequestTarget target)
 		{
 			// let the form component update its model
 			textField.convert();
 			textField.updateModel();
-			textField.onAjaxModelUpdated();
-			return new StringBufferResourceStream();
+			textField.onAjaxModelUpdated(target);
 		}
 	}
 

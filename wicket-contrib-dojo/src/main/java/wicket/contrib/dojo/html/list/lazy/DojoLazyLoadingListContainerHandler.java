@@ -48,7 +48,7 @@ public class DojoLazyLoadingListContainerHandler extends AbstractRequireDojoBeha
 	protected void onComponentTag(ComponentTag tag)
 	{
 		super.onComponentTag(tag);
-		tag.put("onReload", "" + getPreCallbackScript() + getCallbackScript());
+		tag.put("onReload", "" + getPreCallbackScript() + getCallbackScript(true));
 	}
 	
 	protected CharSequence getPreCallbackScript(){

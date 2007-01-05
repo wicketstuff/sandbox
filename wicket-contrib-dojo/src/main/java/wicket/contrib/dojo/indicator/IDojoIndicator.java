@@ -14,26 +14,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package wicket.contrib.markup.html.form.validation;
+package wicket.contrib.dojo.indicator;
 
-import wicket.Application;
-import wicket.IInitializer;
-import wicket.markup.html.PackageResource;
+import wicket.ajax.IAjaxCallDecorator;
 
 /**
- * Innitializer class for FXFeedbackIndicator
- * 
- * @author Marco van de Haar
+ * Interface to used to create new Indicators
+ * @author Vincent Demay
+ *
  */
-public class FXFeedbackIndicatorInitializer implements IInitializer
-{
+public interface IDojoIndicator {
 
 	/**
-	 * @see wicket.IInitializer#init(wicket.Application)
+	 * return a markup id that shown/hidden when a request is in the flight
+	 * @return a markup id that shown/hidden when a request is in the flight
 	 */
-	public void init(Application application)
-	{
-		PackageResource.bind(application, FXFeedbackIndicator.class, "alerticon.gif");
-	}
+	public String getDojoIndicatorMarkupId();
+
+	/**
+	 * return an {@link IAjaxCallDecorator} to execute js on dojo request
+	 * @return an {@link IAjaxCallDecorator} to execute js on dojo request
+	 */
+	public IAjaxCallDecorator getDojoCallDecorator();
 
 }

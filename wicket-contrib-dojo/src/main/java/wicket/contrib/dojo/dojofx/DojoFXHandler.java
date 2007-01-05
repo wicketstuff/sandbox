@@ -1,26 +1,26 @@
 /*
- * $Id$ $Revision$ $Date$
- * 
- * ==============================================================================
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
- * 
- * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package wicket.contrib.dojo.dojofx;
 
 import wicket.AttributeModifier;
 import wicket.Component;
-import wicket.contrib.dojo.DojoAjaxHandler;
+import wicket.ajax.AjaxRequestTarget;
+import wicket.contrib.dojo.AbstractRequireDojoBehavior;
 import wicket.model.IModel;
-import wicket.util.resource.IResourceStream;
 
 
 /**
@@ -34,7 +34,7 @@ import wicket.util.resource.IResourceStream;
  * @author Ruud Booltink
  * 
  */
-public abstract class DojoFXHandler extends DojoAjaxHandler
+public abstract class DojoFXHandler extends AbstractRequireDojoBehavior
 {
 	private final String eventName;
 	protected Component component;
@@ -86,23 +86,15 @@ public abstract class DojoFXHandler extends DojoAjaxHandler
 		return trigger;
 	}
 
-	/**
-	 * Subclasses can use this method to add extra triggers by adding an
-	 * attributemodifier to c.
-	 * 
-	 * @param c
-	 *            trigger component
-	 */
-	protected void addTrigger(Component c)
+	protected void respond(AjaxRequestTarget target)
 	{
+		//DO NOTHING
 	}
 	
-	/**
-	 * @see wicket.contrib.dojo.DojoAjaxHandler#getResponse()
-	 */
-	protected IResourceStream getResponse()
+
+	public void setRequire(RequireDojoLibs libs)
 	{
-		return null;
+		libs.add("dojo.lfx.*");
 	}
 
 	/**
@@ -164,14 +156,6 @@ public abstract class DojoFXHandler extends DojoAjaxHandler
 			super(attribute, pattern, replaceModel);
 		}
 		
-/*		*//**
-		 * Sets HTMLID if not present, and returns value;
-		 *//*
-		public String HTMLID()
-		{
-			
-		}
-*/
 		/**
 		 * @see wicket.AttributeModifier#newValue(java.lang.String, java.lang.String)
 		 */
@@ -180,5 +164,6 @@ public abstract class DojoFXHandler extends DojoAjaxHandler
 			return (currentValue == null ? "" : currentValue + "; ") + replacementValue;
 		}
 	}
+
 
 }
