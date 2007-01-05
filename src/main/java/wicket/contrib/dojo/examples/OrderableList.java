@@ -3,9 +3,9 @@ package wicket.contrib.dojo.examples;
 import java.util.ArrayList;
 import java.util.List;
 
-import wicket.contrib.dojo.html.list.DojoOrderableListRemover;
-import wicket.contrib.dojo.html.list.DojoOrderableListView;
-import wicket.contrib.dojo.html.list.DojoOrderableListViewContainer;
+import wicket.contrib.dojo.markup.html.list.DojoOrderableListRemover;
+import wicket.contrib.dojo.markup.html.list.DojoOrderableListView;
+import wicket.contrib.dojo.markup.html.list.DojoOrderableListViewContainer;
 import wicket.markup.html.WebPage;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.list.ListItem;

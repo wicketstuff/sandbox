@@ -1,8 +1,8 @@
 package wicket.contrib.dojo.examples;
 
 import wicket.PageParameters;
-import wicket.contrib.markup.html.form.validation.FXFeedbackIndicator;
-import wicket.contrib.markup.html.form.validation.FXValidationAjaxHandler;
+import wicket.contrib.dojo.markup.html.form.validation.FXFeedbackIndicator;
+import wicket.contrib.dojo.markup.html.form.validation.FXValidationAjaxHandler;
 import wicket.markup.html.WebPage;
 import wicket.markup.html.form.Form;
 import wicket.markup.html.form.FormComponent;
