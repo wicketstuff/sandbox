@@ -14,7 +14,6 @@ import wicket.markup.MarkupStream;
 import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.link.ILinkListener;
 import wicket.markup.html.list.ListView;
-import wicket.markup.repeater.RepeatingView;
 import wicket.model.IModel;
 
 /**
@@ -105,7 +104,10 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer imple
 		if (child instanceof ListView){
 			ListView listView = (ListView) child;
 			onNonAjaxChoose(listView.getList().get(selectIndex));
-		}//else TODO for RepeatingView
+		} else {//(child instanceof DojoSelectableRefreshingView){
+			DojoSelectableRefreshingView repeatingView = (DojoSelectableRefreshingView) child;
+			onNonAjaxChoose(repeatingView.getByIndex(selectIndex));
+		}
 		
 	}
 	
@@ -293,7 +295,7 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer imple
 	private class ChildFinder implements IVisitor{
 		private WebMarkupContainer child = null;
 		private int listViewNumber = 0;
-		private int repeatingViewNumber = 0;
+		private int refreshingViewNumber = 0;
 		
 		public Object component(Component component)
 		{
@@ -301,16 +303,16 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer imple
 				child = (ListView)component;
 				listViewNumber ++;
 			}
-			if (component instanceof RepeatingView){
-				child = (RepeatingView)component;
-				repeatingViewNumber ++;
+			if (component instanceof DojoSelectableRefreshingView){
+				child = (DojoSelectableRefreshingView)component;
+				refreshingViewNumber ++;
 			}
 			return CONTINUE_TRAVERSAL_BUT_DONT_GO_DEEPER;
 		}
 		
 		public WebMarkupContainer getChild(){
-			if (listViewNumber != 1 && repeatingViewNumber != 1){
-				throw new WicketRuntimeException("A DojoSelectableListContainer should contain exactly one ListView or one RepeatingView as directly child");
+			if (listViewNumber != 1 && refreshingViewNumber != 1){
+				throw new WicketRuntimeException("A DojoSelectableListContainer should contain exactly one ListView or one DojoSelectableRefreshingView as directly child");
 			}
 			//FIXME check for TR
 			/*if (!"tr".equals(listView.getMarkupStream().getTag().getName())){
