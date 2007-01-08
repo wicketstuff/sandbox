@@ -60,7 +60,7 @@ public class DojoTabHandler extends AbstractRequireDojoBehavior
 	 */
 	protected CharSequence getCallbackScript(boolean recordPageVersion)
 	{
-		return getCallbackScript("wicketAjaxGet('" + getCallbackUrl(recordPageVersion) + "&tabId=' + dojo.widget.byId('" + getComponent().getMarkupId() + "').selectedTabWidget.widgetId", null,null);
+		return getCallbackScript("wicketAjaxGet('" + getCallbackUrl(recordPageVersion) + "&tabId=' + dojo.widget.byId('" + getComponent().getMarkupId() + "').selectedChildWidget.widgetId", null,null);
 	}
 
 	@Override
