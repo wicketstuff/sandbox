@@ -44,7 +44,16 @@ public class DojoTabHandler extends AbstractRequireDojoBehavior
 	 */
 	protected CharSequence getCallbackScript(boolean recordPageVersion)
 	{
-		return getCallbackScript("wicketAjaxGet('" + getCallbackUrl(recordPageVersion,true) + "&tabId=' + dojo.widget.byId('" + getComponent().getMarkupId() + "').selectedTabWidget.widgetId", null,null);
+		return getCallbackScript("wicketAjaxGet('" + getCallbackUrl(recordPageVersion,true) + "&tabId=' + dojo.widget.byId('" + getComponent().getMarkupId() + "').selectedChildWidget.widgetId", null,null);
+	}
+	
+	
+	/**
+	 * @return javascript that will generate an ajax GET request to this
+	 *         behavior *
+	 */
+	protected CharSequence getCallbackScript(){
+		return getCallbackScript(true);
 	}
 
 
@@ -85,7 +94,7 @@ public class DojoTabHandler extends AbstractRequireDojoBehavior
 			toReturn += "	var widget = dojo.widget.byId('" + id + "')\n";
 			toReturn += "	dojo.event.connect(widget,'onShow', function(){" + getCallbackScript() + "})\n";
 			
-			return CONTINUE_TRAVERSAL;
+			return CONTINUE_TRAVERSAL_BUT_DONT_GO_DEEPER;
 		}
 		
 		public String getHead(){

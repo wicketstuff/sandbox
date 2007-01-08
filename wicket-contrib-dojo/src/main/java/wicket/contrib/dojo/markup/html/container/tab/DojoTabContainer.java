@@ -1,6 +1,5 @@
 package wicket.contrib.dojo.markup.html.container.tab;
 
-import wicket.MarkupContainer;
 import wicket.contrib.dojo.DojoIdConstants;
 import wicket.contrib.dojo.markup.html.container.AbstractDojoContainer;
 import wicket.markup.ComponentTag;
