@@ -68,17 +68,13 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 					pos = Integer.parseInt(indexList[i]);
 					selected.add(all.get(pos));
 				}
-			}else if (child instanceof RepeatingView){
-				RepeatingView repeatingView = (RepeatingView) child;
-				Iterator ite = repeatingView.iterator();
-				List selectedIndexes = Arrays.asList(indexList);
-				int pos = 0;
-				while (ite.hasNext()){
-					Object element = ite.next();
-					if (selectedIndexes.contains(Integer.toString(pos))){
-						selected.add(((Item)element).getModelObject());
-					}
-					pos++;
+			}else if (child instanceof DojoSelectableRefreshingView){
+				DojoSelectableRefreshingView repeatingView = (DojoSelectableRefreshingView) child;
+				List all = repeatingView.getListFromCache();
+				int pos;
+				for (int i=0; i < indexList.length; i++){
+					pos = Integer.parseInt(indexList[i]);
+					selected.add(all.get(pos));
 				}
 			}
 			
