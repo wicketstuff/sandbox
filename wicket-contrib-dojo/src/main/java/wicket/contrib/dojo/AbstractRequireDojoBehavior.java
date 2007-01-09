@@ -16,11 +16,6 @@ public abstract class AbstractRequireDojoBehavior extends AbstractDefaultDojoBeh
 {
 	private RequireDojoLibs libs = new RequireDojoLibs();
 	
-	/**
-	 * see onComponentRendered
-	 */
-	private boolean once = false;
-	
 	/* (non-Javadoc)
 	 * @see wicket.contrib.dojo.AbstractDefaultDojoBehavior#renderHead(wicket.markup.html.IHeaderResponse)
 	 */
@@ -57,9 +52,9 @@ public abstract class AbstractRequireDojoBehavior extends AbstractDefaultDojoBeh
 	 * this method is used to interpret dojoWidgets rendered via XMLHTTPRequest
 	 */
 	protected void onComponentRendered() {
-		if (!once && RequestCycle.get().getRequestTarget() instanceof AjaxRequestTarget) {
-			once = true;
-			((AjaxRequestTarget)RequestCycle.get().getRequestTarget()).appendJavascript("dojo.hostenv.makeWidgets()");
+		//if a Dojo Widget is rerender needs to run some javascript to refresh it
+		if (RequestCycle.get().getRequestTarget() instanceof AjaxRequestTarget) {
+			((AjaxRequestTarget)RequestCycle.get().getRequestTarget()).appendJavascript("djConfig.searchIds = ['" + getComponent().getMarkupId() + "'];dojo.hostenv.makeWidgets()");
 		}
 	}
 	
