@@ -47,10 +47,9 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 	 * 
 	 * @param listView
 	 */
-	public DojoSelectableListContainerHandler(WebMarkupContainer child)
+	public DojoSelectableListContainerHandler()
 	{
 		super();
-		this.child = child;
 	}
 
 
@@ -149,6 +148,18 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 		super.onComponentTag(tag);
 		tag.put("onSelect", getCallbackScript());
 		tag.put("onChoose", getDoubleClickCallbackScripts());
+	}
+
+
+	public WebMarkupContainer getChild()
+	{
+		return child;
+	}
+
+
+	public void setChild(WebMarkupContainer child)
+	{
+		this.child = child;
 	}
 
 	
