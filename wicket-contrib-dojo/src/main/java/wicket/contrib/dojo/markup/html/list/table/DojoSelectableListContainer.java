@@ -56,7 +56,8 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer imple
 	
 	//child
 	private WebMarkupContainer child;
-
+	private DojoSelectableListContainerHandler containerHandler;
+	
 	/**
 	 * Construct the selectable list container
 	 * @param id container id
@@ -79,6 +80,7 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer imple
 		cssClass = "dojoSelectableList";
 		ajaxModeOnChoose = true;
 		alternateRowClass = "alternateRow";
+		add(containerHandler = new DojoSelectableListContainerHandler());
 	}
 
 	protected void onComponentTag(ComponentTag tag)
@@ -115,7 +117,7 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer imple
 	{
 		super.onAttach();
 		this.child = getChild();
-		add(new DojoSelectableListContainerHandler(child));
+		containerHandler.setChild(child);
 	}
 	
 
