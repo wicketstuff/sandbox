@@ -75,8 +75,7 @@ public abstract class AbstractRequireDojoBehavior extends AbstractDefaultDojoBeh
 	 */
 	protected void onComponentRendered() {
 		if (RequestCycle.get().getRequestTarget() instanceof AjaxRequestTarget) {
-			//once = true;
-			((AjaxRequestTarget)RequestCycle.get().getRequestTarget()).appendJavascript("dojo.hostenv.makeWidgets()");
+			((AjaxRequestTarget)RequestCycle.get().getRequestTarget()).appendJavascript("djConfig.searchIds = ['" + getComponent().getMarkupId() + "'];dojo.hostenv.makeWidgets()");
 			onComponentReRendered(((AjaxRequestTarget)RequestCycle.get().getRequestTarget()));
 		}
 	}
