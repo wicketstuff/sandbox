@@ -533,7 +533,7 @@ dojo.widget.defineWidget(
 	}
 );
 
-function getSelection(id) {
+function getSelectableTableSelection(id) {
 	var container = document.getElementById(id);
 	var body = container.getElementsByTagName('tbody')[0];
 	var rows=body.getElementsByTagName('tr')
