@@ -454,6 +454,14 @@ dojo.widget.defineWidget(
 		}
 
 		this.layoutPanels();
+
+		this.onResize();
+	},
+	
+	/**
+	 * Resize handler for to listen to the resizing
+	 */
+	onResize: function(){
 	},
 
 	showSizingLine: function(){
