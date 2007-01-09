@@ -51,7 +51,7 @@ public class MaximizeBehavior extends AbstractRequireDojoBehavior
 		toReturn.append("function maximize(id){\n");
 		toReturn.append("	var el = dojo.byId(id);\n");
 		toReturn.append("   var viewport = dojo.html.getViewport();\n");
-		toReturn.append("	dojo.html.setContentBox(el, {width: viewport.width, height: viewport.height});\n");
+		toReturn.append("	dojo.html.setContentBox(el, {width: dojo.html.getContentBox(el).width, height: viewport.height});\n");
 		toReturn.append("}\n");
 		toReturn.append("dojo.addOnLoad( function() { maximize('" + container.getMarkupId() + "'); });\n");
 		return toReturn.toString();
