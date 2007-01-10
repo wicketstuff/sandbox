@@ -8,7 +8,7 @@ import wicket.contrib.dojo.AbstractRequireDojoBehavior;
  * @author <a href="http://www.demay-fr.net/blog">Vincent Demay</a>
  *
  */
-public class DatePickerHandler extends AbstractRequireDojoBehavior
+public class DojoDatePickerHandler extends AbstractRequireDojoBehavior
 {
 	protected void respond(AjaxRequestTarget target)
 	{
