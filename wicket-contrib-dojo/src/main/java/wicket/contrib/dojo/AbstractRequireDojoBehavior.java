@@ -25,6 +25,13 @@ import wicket.markup.ComponentTag;
 import wicket.markup.html.IHeaderResponse;
 
 /**
+ * This behavior has to be extend to write a new Behavior (Handler) using Dojo : 
+ * This behavior allows user to add require dojo Libs (see dojo.require(...)) - to add a require dojo libs
+ * implement <code>setRequire()</code> and add libs to the libs variable.
+ * <br/>
+ * <br/>
+ * This behavior also auto-reload a Dojo component when it is re-render via AjaxRequest.
+ *  
  * @author vdemay
  *
  */
