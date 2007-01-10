@@ -1,19 +1,34 @@
 package wicket.contrib.dojo.examples;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import wicket.ajax.AjaxEventBehavior;
 import wicket.ajax.AjaxRequestTarget;
 import wicket.ajax.markup.html.AjaxLink;
 import wicket.contrib.dojo.markup.html.container.DojoSimpleContainer;
 import wicket.contrib.dojo.markup.html.container.split.DojoSplitContainer;
 import wicket.contrib.dojo.markup.html.container.tab.DojoTabContainer;
+import wicket.contrib.dojo.markup.html.list.table.DojoSelectableListContainer;
 import wicket.markup.html.WebPage;
+import wicket.markup.html.basic.Label;
+import wicket.markup.html.list.ListItem;
+import wicket.markup.html.list.ListView;
 
 public class RefreshTest extends WebPage {
 
+	static final List<String> objList  = new  ArrayList<String>();
+	
 	public RefreshTest() {
 		
 		super();
 		
 		final DojoTabContainer page= new DojoTabContainer("tab3", "tab inside");
+		final DojoSelectableListContainer containerList = new DojoSelectableListContainer("containerList"){
+			public void onChoose(AjaxRequestTarget target, Object o) {
+				target.appendJavascript("alert('dblClick')");
+			}
+		};
 		
 		
 		final DojoSplitContainer container = new DojoSplitContainer("splitContainer");
@@ -27,8 +42,47 @@ public class RefreshTest extends WebPage {
 				//THIS A HACK TO AVOID A RESIZE BUG
 				target.appendJavascript("dojo.event.connect(dojo.widget.byId('" + container.getMarkupId() + "'), 'onResize', function() {dojo.widget.byId('" + page.getMarkupId() + "').onResized()});");
 				target.addComponent(page);
+				target.addComponent(containerList);
 			}
 		});
+		
+		if (objList.size() == 0){
+			objList.add("foo1");
+			objList.add("bar1");
+			objList.add("foo2");
+			objList.add("bar2");
+			objList.add("foo3");
+			objList.add("bar3");
+			objList.add("foo4");
+			objList.add("bar4");
+			objList.add("foo5");
+			objList.add("bar5");
+			objList.add("foo6");
+			objList.add("bar6");
+		}
+		ListView list = null;
+		
+		first.add(containerList);
+		list = new ListView("list", objList){
+
+			@Override
+			protected void populateItem(final ListItem item) {
+				item.add(new Label("label",(String)item.getModelObject()));
+				item.add(new AjaxEventBehavior("dblClick"){
+
+					@Override
+					protected void onEvent(AjaxRequestTarget target) {
+						target.appendJavascript("alert('You dblClick on item number " + item.getIndex() + "')");
+						
+					}
+					
+				});
+			}
+			
+		};
+		containerList.add(list);
+		
+		
 		container.add(first);
 		
 		container.add(new DojoSimpleContainer("tab2", "title2"));

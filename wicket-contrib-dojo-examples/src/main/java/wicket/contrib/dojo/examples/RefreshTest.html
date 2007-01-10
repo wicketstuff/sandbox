@@ -15,9 +15,25 @@
 
 <body>
 	<div wicket:id="splitContainer" class="split">
-		<div wicket:id="tab1">
+		<div wicket:id="tab1" style="overflow:hidden">
 			content<br/>
 			<a wicket:id="ajaxlink">Click Me</a>
+			<table wicket:id="containerList">
+				<thead>
+					<tr>
+						<th dataType="String">String</th>
+						<th dataType="String">String2</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr wicket:id="list">
+						<td width="100%" >
+							<span wicket:id="label"> result</span><br/>
+						</td>
+						<td>foo</td>
+					</tr>
+				</tbody>
+			</table>
 		</div>
 		<div wicket:id="tab2">
 			content 2
