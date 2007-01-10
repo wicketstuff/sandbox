@@ -4,7 +4,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import wicket.MarkupContainer;
 import wicket.behavior.AttributeAppender;
 import wicket.contrib.dojo.toggle.DojoToggle;
 import wicket.markup.ComponentTag;
@@ -16,7 +15,7 @@ import wicket.util.convert.ConversionException;
 
 /**
  * @author <a href="http://www.demay-fr.net/blog">Vincent Demay</a>
- *
+ *FIXME : authorize i18n
  */
 public class DatePicker extends TextField{
 	
@@ -29,32 +28,28 @@ public class DatePicker extends TextField{
 	 * @param model
 	 * @param pattern
 	 */
-	public DatePicker(String id, IModel model, String pattern)
+	public DatePicker(String id, IModel model/*, String pattern*/)
 	{
 		super(id, model);
 		add(new DatePickerHandler());
 		this.setOutputMarkupId(true);
-		setDatePattern(pattern);
+		//setDatePattern(pattern);
+		pattern = "dd/MM/yyyy";
+		formatter = new SimpleDateFormat(pattern);
 	}
 	
 	/**
 	 * Set the date pattern
 	 * @param pattern date pattern example %d/%m/%y
 	 */
-	public void setDatePattern(String pattern){
+	/*public void setDatePattern(String pattern){
 		this.pattern = pattern;
 		formatter = new SimpleDateFormat(getSimpleDatePattern());
-	}
+	}*/
 	
-	private String getSimpleDatePattern(){
+	/*private String getSimpleDatePattern(){
 		return pattern.replace("%d", "dd").replace("%Y", "yyyy").replace("%m", "MM");
-	}
-
-
-	protected String getInputType()
-	{
-		return "text";
-	}
+	}*/
 
 	protected void onComponentTag(ComponentTag tag)
 	{
@@ -65,7 +60,7 @@ public class DatePicker extends TextField{
 			tag.put("date", "");
 		}
 		tag.put("dojoType", "dropdowndatepicker");
-		tag.put("dateFormat", this.pattern);
+		tag.put("dateFormat", "%d/%m/%Y");
 		tag.put("inputName", this.getId());
 	}
 
@@ -92,14 +87,14 @@ public class DatePicker extends TextField{
 
 	protected Object convertValue(String[] value) throws ConversionException
 	{
-		if (value != null){
+		if (value != null && !("".equals(value[1]))){
 			try
 			{
-				return formatter.parse(value[0]);
+				return formatter.parse(value[1]);
 			}
 			catch (ParseException e)
 			{
-				new ConversionException(e);
+				throw new ConversionException(e);
 			}
 		}
 		return null;
