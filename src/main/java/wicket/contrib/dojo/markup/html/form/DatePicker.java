@@ -38,6 +38,11 @@ public class DatePicker extends TextField{
 		formatter = new SimpleDateFormat(pattern);
 	}
 	
+	
+	public DatePicker(String id){
+		this(id, null);
+	}
+	
 	/**
 	 * Set the date pattern
 	 * @param pattern date pattern example %d/%m/%y
