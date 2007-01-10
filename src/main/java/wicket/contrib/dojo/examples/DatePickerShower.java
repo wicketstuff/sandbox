@@ -3,7 +3,7 @@ package wicket.contrib.dojo.examples;
 import java.util.Date;
 
 import wicket.PageParameters;
-import wicket.contrib.dojo.markup.html.form.DatePicker;
+import wicket.contrib.dojo.markup.html.form.DojoDatePicker;
 import wicket.contrib.dojo.toggle.DojoExplodeToggle;
 import wicket.contrib.dojo.toggle.DojoFadeToggle;
 import wicket.contrib.dojo.toggle.DojoWipeToggle;
@@ -27,17 +27,17 @@ public class DatePickerShower extends WebPage {
 		date4 = new Date(); 
 		
 		Form form = new Form("dateform");
-		form.add(new DatePicker("date1", new Model(date1), "%m/%d/%Y"));
+		form.add(new DojoDatePicker("date1", new Model(date1)));
 		
-		DatePicker date2P = new DatePicker("date2", new Model(date2), "%m/%d/%Y");
+		DojoDatePicker date2P = new DojoDatePicker("date2", new Model(date2));
 		date2P.setToggle(new DojoWipeToggle(200));
 		form.add(date2P);
 		
-		DatePicker date3P = new DatePicker("date3", new Model(date3), "%m/%d/%Y");
+		DojoDatePicker date3P = new DojoDatePicker("date3", new Model(date3));
 		date3P.setToggle(new DojoFadeToggle(600));
 		form.add(date3P);
 		
-		DatePicker date4P = new DatePicker("date4", new Model(date4), "%m/%d/%Y");
+		DojoDatePicker date4P = new DojoDatePicker("date4", new Model(date4));
 		date4P.setToggle(new DojoExplodeToggle());
 		form.add(date4P);
 
