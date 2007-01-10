@@ -34,7 +34,7 @@ public class DojoDatePicker extends TextField{
 		add(new DojoDatePickerHandler());
 		this.setOutputMarkupId(true);
 		//setDatePattern(pattern);
-		pattern = "dd/MM/yyyy";
+		pattern = "MM/dd/yyyy";
 		formatter = new SimpleDateFormat(pattern);
 	}
 	
