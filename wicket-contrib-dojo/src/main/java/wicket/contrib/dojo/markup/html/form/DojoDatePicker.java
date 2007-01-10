@@ -17,7 +17,7 @@ import wicket.util.convert.ConversionException;
  * @author <a href="http://www.demay-fr.net/blog">Vincent Demay</a>
  *FIXME : authorize i18n
  */
-public class DatePicker extends TextField{
+public class DojoDatePicker extends TextField{
 	
 	private SimpleDateFormat formatter;
 	private String pattern;
@@ -28,10 +28,10 @@ public class DatePicker extends TextField{
 	 * @param model
 	 * @param pattern
 	 */
-	public DatePicker(String id, IModel model/*, String pattern*/)
+	public DojoDatePicker(String id, IModel model/*, String pattern*/)
 	{
 		super(id, model);
-		add(new DatePickerHandler());
+		add(new DojoDatePickerHandler());
 		this.setOutputMarkupId(true);
 		//setDatePattern(pattern);
 		pattern = "dd/MM/yyyy";
@@ -39,7 +39,7 @@ public class DatePicker extends TextField{
 	}
 	
 	
-	public DatePicker(String id){
+	public DojoDatePicker(String id){
 		this(id, null);
 	}
 	
