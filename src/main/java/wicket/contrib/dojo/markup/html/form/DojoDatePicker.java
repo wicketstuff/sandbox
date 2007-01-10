@@ -59,13 +59,19 @@ public class DojoDatePicker extends TextField{
 	protected void onComponentTag(ComponentTag tag)
 	{
 		super.onComponentTag(tag);
-		if (getValue() != null){
-			tag.put("date",  getValue());
-		}else {
+		String[] value = getInputAsArray();
+		if (value != null && !("".equals(value[1]))){
+			tag.put("date", value[1]);
+			tag.put("value", value[1]);
+		}else if(value == null && getValue() != null){
+			tag.put("date", getValue());
+			tag.put("value", getValue());
+		}else{
 			tag.put("date", "");
+			tag.put("value", "");
 		}
 		tag.put("dojoType", "dropdowndatepicker");
-		tag.put("dateFormat", "%d/%m/%Y");
+		tag.put("dateFormat", "%m/%d/%Y");
 		tag.put("inputName", this.getId());
 	}
 
