@@ -35,7 +35,11 @@ import wicket.markup.html.resources.CompressedResourceReference;
  * As header contributions are done once per class, you can have multiple
  * instances/ subclasses without having duplicate header contributions.
  * </p>
- * <p> this class use {@link AjaxRequestTarget} to respond to XMLHttpRequest
+ * <p> this class use {@link AjaxRequestTarget} to respond to XMLHttpRequest </p>
+ * <p> 
+ * this behavior can work with a {@link DojoIndicatorBehavior} to set up an Indicator when a request 
+ * has been sent and waiting for the response. This Behavior auto manage Indicator.
+ * </p>
  * 
  * @see <a href="http://dojotoolkit.org/">Dojo</a>
  * @author Eelco Hillenius
