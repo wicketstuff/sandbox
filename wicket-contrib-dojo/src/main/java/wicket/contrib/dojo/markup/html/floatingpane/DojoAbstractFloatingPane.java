@@ -24,7 +24,7 @@ import wicket.markup.ComponentTag;
 
 /**
  * Dojo Abstract floating pane
- * @author doume
+ * @author Vincent Demay
  *
  */
 public abstract class DojoAbstractFloatingPane extends StylingWebMarkupContainer

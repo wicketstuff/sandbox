@@ -29,8 +29,8 @@ import wicket.model.IModel;
  * A Slider a get an Integer
  * <pre>
  * 		DojoIntegerSlider slider = new DojoIntegerSlider(parent, "slider1", model);
-		slider.setStart(0);
-		slider.setEnd(100);
+ *		slider.setStart(0);
+ *		slider.setEnd(100);
  * </pre>
  * @author Vincent Demay
  *

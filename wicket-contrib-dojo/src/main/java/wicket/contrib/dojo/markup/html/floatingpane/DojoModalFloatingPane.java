@@ -54,7 +54,7 @@ import wicket.model.Model;
  *
  * </pre>
  * </p>
- * @author doume
+ * @author Vincent Demay
  *
  */
 public class DojoModalFloatingPane extends DojoAbstractFloatingPane
@@ -64,7 +64,7 @@ public class DojoModalFloatingPane extends DojoAbstractFloatingPane
 	private String bgOpacity="0.5";
 
 	/**
-	 * Modal floasting pane constructor
+	 * Modal floating pane constructor
 	 * @param parent parent where the widget will be added
 	 * @param id widget Id
 	 */
