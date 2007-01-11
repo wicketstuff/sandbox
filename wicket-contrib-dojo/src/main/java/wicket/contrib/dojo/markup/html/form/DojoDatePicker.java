@@ -14,8 +14,24 @@ import wicket.model.Model;
 import wicket.util.convert.ConversionException;
 
 /**
+ * <p>
+ * A DatePicker to select a Date in a popup (not navigator but Js)
+ * You can add effect to this popup adding a {@link DojoToggle} with the setToggle method.<br/>
+ * This component should be associated to an <b>input</b> in the markup
+ * </p>
+ * <p>
+ * <b><u>Sample</u></b>
+ * <pre>
+ * [...]
+ * DojoDatePicker datePicker = new DojoDatePicker("date", new Model(date));
+ * datePicker.setToggle(new DojoWipeToggle(200));
+ * form.add(datePicker);
+ * </pre>
+ * </p>
+ * 
  * @author <a href="http://www.demay-fr.net/blog">Vincent Demay</a>
- *FIXME : authorize i18n
+ * 
+ * FIXME : authorize i18n and pattern setting
  */
 public class DojoDatePicker extends TextField{
 	
@@ -60,7 +76,7 @@ public class DojoDatePicker extends TextField{
 	{
 		super.onComponentTag(tag);
 		String[] value = getInputAsArray();
-		if (value != null && !("".equals(value[1]))){
+		if (isDojoValue(value)){
 			tag.put("date", value[1]);
 			tag.put("value", value[1]);
 		}else if(value == null && getValue() != null){
@@ -73,6 +89,15 @@ public class DojoDatePicker extends TextField{
 		tag.put("dojoType", "dropdowndatepicker");
 		tag.put("dateFormat", "%m/%d/%Y");
 		tag.put("inputName", this.getId());
+	}
+	
+	/**
+	 * return true if it is a Dojo Request field or false otherwise (in test for exemple)
+	 * @param value request argument giving the value
+	 * @return true if it is a Dojo Request field or false otherwise (in test for exemple)
+	 */
+	private boolean isDojoValue(String[] value){
+		return (value != null && !("".equals(value[1])) && value.length > 1);
 	}
 
 	/**
@@ -98,7 +123,7 @@ public class DojoDatePicker extends TextField{
 
 	protected Object convertValue(String[] value) throws ConversionException
 	{
-		if (value != null && !("".equals(value[1]))){
+		if (isDojoValue(value)){
 			try
 			{
 				return formatter.parse(value[1]);
