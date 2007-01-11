@@ -1,3 +1,19 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package wicket.contrib.dojo.markup.html.list.table;
 
 import java.util.ArrayList;
@@ -17,6 +33,7 @@ import wicket.markup.repeater.Item;
 import wicket.markup.repeater.RepeatingView;
 
 /**
+ * Handler associated with {@link DojoSelectableListContainer}
  * @author Vincent Demay
  *
  */
@@ -36,29 +53,28 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 	}
 
 	/**
-	 * 
+	 * @see wicket.contrib.dojo.AbstractRequireDojoBehavior#setRequire(wicket.contrib.dojo.AbstractRequireDojoBehavior.RequireDojoLibs)
 	 */
 	public void setRequire(RequireDojoLibs libs)
 	{
 		//DO Nothing, the Widget is in the package
 	}
 
-	/**
-	 * 
-	 */
 	protected final void respond(AjaxRequestTarget target)
 	{
-		ArrayList selected = new ArrayList();
+		List selected = ((DojoSelectableListContainer)getComponent()).getSelected();
+
 		String indexList[] = getComponent().getRequest().getParameters("select");
 		if (indexList == null){
-			if (((DojoSelectableListContainer)getComponent()).getSelected() != null){
-				((DojoSelectableListContainer)getComponent()).onChoose(target, ((DojoSelectableListContainer)getComponent()).getSelected().get(0));
-			}
-			else
-			{
-				((DojoSelectableListContainer)getComponent()).onChoose(target, null);
-			}
+			// Double-click has occured, call the onChoose() method
+			((DojoSelectableListContainer)getComponent()).onChoose(target, selected.get(0));
 		}else{
+			// A new selection has been made
+
+			// Clear current selection
+			selected.clear();
+
+			// Compute new selection 
 			if (child instanceof ListView){
 				ListView listView = (ListView) child;
 				List all = listView.getList();
@@ -67,18 +83,21 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 					pos = Integer.parseInt(indexList[i]);
 					selected.add(all.get(pos));
 				}
-			}else if (child instanceof DojoSelectableRefreshingView){
-				DojoSelectableRefreshingView repeatingView = (DojoSelectableRefreshingView) child;
-				List all = repeatingView.getListFromCache();
-				int pos;
-				for (int i=0; i < indexList.length; i++){
-					pos = Integer.parseInt(indexList[i]);
-					selected.add(all.get(pos));
+			}else if (child instanceof RepeatingView){
+				RepeatingView repeatingView = (RepeatingView) child;
+				Iterator ite = repeatingView.iterator();
+				List selectedIndexes = Arrays.asList(indexList);
+				int pos = 0;
+				while (ite.hasNext()){
+					Object element = ite.next();
+					if (selectedIndexes.contains(Integer.toString(pos))){
+						selected.add(((Item)element).getModelObject());
+					}
+					pos++;
 				}
 			}
-			
-			((DojoSelectableListContainer)getComponent()).setSelected(selected);
-			
+
+			// Call the onSelection() method
 			((DojoSelectableListContainer)getComponent()).onSelection(target, selected);
 		}
 	}
