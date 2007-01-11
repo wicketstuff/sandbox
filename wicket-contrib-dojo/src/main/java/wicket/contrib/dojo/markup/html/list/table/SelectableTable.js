@@ -1,7 +1,6 @@
 dojo.provide("dojo.widget.SelectableTable");
 
 dojo.require("dojo.lang.common");
-dojo.require("dojo.date.format");
 dojo.require("dojo.html.*");
 dojo.require("dojo.html.selection");
 dojo.require("dojo.html.util");
@@ -26,7 +25,6 @@ dojo.widget.defineWidget(
 		maximumNumberOfSelections: 0,	//	0 for unlimited, is the default.
 		enableAlternateRows: false,
 		minRows: 0,	//	0 means ignore.
-		defaultDateFormat: "%D",
 		sortIndex: 0,		//	index of the column sorted on, first is the default.
 		sortDirection: 0,	//	0==asc, 1==desc
 		valueField: "Id",	//	if a JSON structure is parsed and there is a field of this name,
