@@ -4,6 +4,14 @@ import wicket.ajax.AjaxRequestTarget;
 import wicket.contrib.dojo.AbstractRequireDojoBehavior;
 import wicket.markup.html.IHeaderResponse;
 
+/**
+ * <p>
+ * A Handler associated to {@link DojoDragContainer}
+ * </p>
+ * 
+ * @author Vincent Demay
+ *
+ */
 public class DojoDragContainerHandler extends AbstractRequireDojoBehavior
 {
 	/** container handler is attached to. */
@@ -38,7 +46,7 @@ public class DojoDragContainerHandler extends AbstractRequireDojoBehavior
 		toReturn += "<script language=\"JavaScript\" type=\"text/javascript\">\n";
 		toReturn += "function initDrag" + container.getMarkupId() + "(){\n";
 		toReturn += "	var dl = byId(\"" + container.getMarkupId() + "\");\n";
-		toReturn += "	var drag = new dojo.dnd.HtmlDragSource(dl, \"" + container.getDragId() + "\");\n";
+		toReturn += "	var drag = new dojo.dnd.HtmlDragSource(dl, \"" + container.getDragPattern() + "\");\n";
 		toReturn += "}\n";
 		toReturn += "dojo.event.connect(dojo, \"loaded\", \"initDrag" + container.getMarkupId() + "\");\n";
 		toReturn += "</script>\n";

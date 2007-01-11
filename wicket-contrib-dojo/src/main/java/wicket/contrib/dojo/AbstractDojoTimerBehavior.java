@@ -28,7 +28,7 @@ import wicket.util.time.Duration;
  * @author Ruud Booltink
  * @author Marco van de Haar
  *
- * TODO : show getJsTimeoutCall in {@link AbstractAjaxTimerBehavior} to implement it
+ * TODO : see getJsTimeoutCall in {@link AbstractAjaxTimerBehavior} to implement it
  */
 public abstract class AbstractDojoTimerBehavior extends AbstractAjaxTimerBehavior
 {

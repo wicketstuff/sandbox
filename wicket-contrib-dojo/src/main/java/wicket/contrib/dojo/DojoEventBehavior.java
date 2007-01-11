@@ -19,6 +19,26 @@ package wicket.contrib.dojo;
 import wicket.ajax.AjaxEventBehavior;
 
 /**
+ * An Dojo behavior that is attached to a certain client-side (usually
+ * javascript) event, such as onClick, onChange, onKeyDown, etc.
+ * <p>
+ * Example:
+ * 
+ * <pre>
+ *       DropDownChoice choice=new DropDownChoice(...);
+ *       choice.add(new DojoEventBehavior(&quot;onchange&quot;) {
+ *           protected void onEvent(AjaxRequestTarget target) {
+ *               System.out.println(&quot;ajax here!&quot;);
+ *           }
+ *       }
+ * </pre>
+ * 
+ * This behavior will be linked to the onChange javascript event of the select
+ * box this DropDownChoice represents, and so anytime a new option is selected
+ * we will get the System.out message
+ * 
+ * @author vdemay
+ * 
  * TODO : add Drag event, onShow for tab handler and others
  */
 public abstract class DojoEventBehavior extends AjaxEventBehavior

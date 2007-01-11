@@ -27,16 +27,26 @@ import wicket.model.Model;
  * <p>
  * <p>
  * 	<pre>
- * 	public class DialogShower extends WebPage {
- *	
- *	public DialogShower(PageParameters parameters){
- *		DojoDialog dialog = new DojoDialog(this,"dialogPanel");
- *		dialog.setToggle(new DojoWipeToggle(500));
- *		new DojoDialogOpener(this, "openner", dialog);
- *		new DojoDialogCloser(dialog, "closer", dialog);
- *	}
- *}
- *
+ * package wicket.contrib.dojo.examples;
+ * 
+ * import wicket.PageParameters;
+ * import wicket.contrib.dojo.markup.html.dialog.DojoDialog;
+ * import wicket.contrib.dojo.markup.html.dialog.DojoDialogCloser;
+ * import wicket.contrib.dojo.markup.html.dialog.DojoDialogOpener;
+ * import wicket.contrib.dojo.toggle.DojoWipeToggle;
+ * import wicket.markup.html.WebPage;
+ * 
+ * public class DialogShower extends WebPage {
+ * 	
+ * 	public DialogShower(PageParameters parameters){
+ * 		DojoDialog dialog = new DojoDialog("dialogPanel");
+ * 		add(dialog);
+ * 		dialog.setToggle(new DojoWipeToggle(500));
+ * 		add(new DojoDialogOpener("openner", dialog));
+ * 		dialog.add(new DojoDialogCloser("closer", dialog));
+ * 	}
+ * }
+ * 
  *  </pre>
  * </p>
  * @author Vincent Demay
@@ -45,7 +55,6 @@ import wicket.model.Model;
 public class DojoDialogCloser extends Link{
 
 	/**
-	 * @param parent
 	 * @param id
 	 * @param dialog
 	 */

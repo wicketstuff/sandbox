@@ -36,9 +36,6 @@ public abstract class DojoLink extends AjaxLink
 	/**
 	 * Construct.
 	 * 
-	 * @param parent
-	 *            The parent of this component
-	 * 
 	 * @param id
 	 */
 	public DojoLink(final String id)
@@ -48,9 +45,6 @@ public abstract class DojoLink extends AjaxLink
 
 	/**
 	 * Construct.
-	 * 
-	 * @param parent
-	 *            The parent of this component
 	 * 
 	 * @param id
 	 * @param model

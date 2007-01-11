@@ -44,7 +44,6 @@ public abstract class DojoRemoteSuggestionList extends TextField
 
 	/**
 	 * Construct a suggestion list
-	 * @param parent parent where the suggestion is rendered
 	 * @param id component id
 	 */
 	public DojoRemoteSuggestionList(String id)
