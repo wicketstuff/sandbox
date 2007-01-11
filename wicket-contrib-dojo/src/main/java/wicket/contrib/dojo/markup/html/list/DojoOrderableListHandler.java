@@ -21,11 +21,11 @@ import wicket.contrib.dojo.AbstractRequireDojoBehavior;
 import wicket.markup.html.IHeaderResponse;
 
 /**
- * Handler for {@link DojoOrderableListViewContainer}
+ * Handler for {@link DojoOrderableListContainer}
  * @author Vincent Demay
  *
  */
-public class DojoOrderableListViewHandler extends AbstractRequireDojoBehavior
+public class DojoOrderableListHandler extends AbstractRequireDojoBehavior
 {
 
 	public void setRequire(RequireDojoLibs libs)
