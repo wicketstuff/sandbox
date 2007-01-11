@@ -26,10 +26,14 @@ import wicket.model.IModel;
 import wicket.model.Model;
 
 /**
- * DojoOrderableListView should be added on a {@link DojoOrderableListViewContainer}
+ * DojoOrderableListView should be added on a {@link DojoOrderableListContainer}
  * This container and it child allow top make a DragAndDropableList. Model associated with the {@link DojoOrderableListView}
  * will be automaticaly updated during dnd
  * <p>
+ * 	This componant should be associated to a <b>div</b> element in the markup
+ * </p>
+ * <p>
+ * 
  * <b>Sample</b>
  * <pre>
  * public class OrderableList extends WebPage {
@@ -55,7 +59,7 @@ import wicket.model.Model;
  * 		}
  * 		DojoOrderableListViewContainer container = new DojoOrderableListViewContainer("container");
  * 		add(container);
- * 		DojoOrderableListView list = new DojoOrderableListView(container, "list", objList){
+ * 		DojoOrderableListView list = new DojoOrderableListView("list", objList){
  * 
  * 			protected void populateItem(ListItem item) {
  * 				item.add(new Label("label",(String)item.getModelObject()));
@@ -74,68 +78,48 @@ import wicket.model.Model;
  */
 public abstract class DojoOrderableListView extends ListView
 {
-	DojoOrderableListViewContainer container;
 	int pos = 0; 
-	private String dragId;
 
 	/**
 	 * Construct
-	 * @param parent the {@link DojoOrderableListViewContainer} where it will be added
 	 * @param id id
 	 * @param model model
 	 */
-	public DojoOrderableListView(DojoOrderableListViewContainer parent, String id, IModel model)
+	public DojoOrderableListView(String id, IModel model)
 	{
 		super(id, model);
-		container = parent;
 	}
 
 	/**
 	 * Construct
-	 * @param parent the {@link DojoOrderableListViewContainer} where it will be added
 	 * @param id id 
 	 * @param list list
 	 */
-	public DojoOrderableListView(DojoOrderableListViewContainer parent, String id, List list)
+	public DojoOrderableListView(String id, List list)
 	{
 		super(id, list);
-		container = parent;
 	}
 
 	/**
 	 * Construct
-	 * @param parent the {@link DojoOrderableListViewContainer} where it will be added
 	 * @param id id
 	 */
-	public DojoOrderableListView(DojoOrderableListViewContainer parent, String id)
+	public DojoOrderableListView(String id)
 	{
 		super(id);
-		container = parent;
 	}
 	
-	public String generateId(){
-		return container.getMarkupId()+ "_list_" + (pos++);
-		
-	}
-
 	protected void onComponentTag(ComponentTag tag)
 	{
+		checkComponentTag(tag, "div");
 		super.onComponentTag(tag);
 	}
 
 	protected void renderItem(ListItem item)
 	{
-		String id = generateId();
-		item.add(new AttributeAppender("id", true, new Model(id),""));
-		dragId = "*";
+		String posString = Integer.toString(pos++);
+		item.add(new AttributeAppender("pos", true, new Model(posString),""));
 		super.renderItem(item);
-	}
-
-
-	protected void populateItem(ListItem item)
-	{
-		// TODO Auto-generated method stub
-		
 	}
 
 }
