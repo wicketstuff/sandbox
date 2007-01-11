@@ -47,7 +47,7 @@ public class DojoDatePicker extends TextField{
 	public DojoDatePicker(String id, IModel model/*, String pattern*/)
 	{
 		super(id, model);
-		add(new DojoDatePickerHandler());
+		//add(new DojoDatePickerHandler());
 		this.setOutputMarkupId(true);
 		//setDatePattern(pattern);
 		pattern = "MM/dd/yyyy";
@@ -76,10 +76,10 @@ public class DojoDatePicker extends TextField{
 	{
 		super.onComponentTag(tag);
 		String[] value = getInputAsArray();
-		if (isDojoValue(value)){
+		if (isDojoValue(value)){							//value returned by Dojo - Classic
 			tag.put("date", value[1]);
 			tag.put("value", value[1]);
-		}else if(value == null && getValue() != null){
+		}else if(getValue() != null && ( value == null || value.length < 2)){	//value returned when js is inactive - TestCase
 			tag.put("date", getValue());
 			tag.put("value", getValue());
 		}else{
@@ -97,7 +97,7 @@ public class DojoDatePicker extends TextField{
 	 * @return true if it is a Dojo Request field or false otherwise (in test for exemple)
 	 */
 	private boolean isDojoValue(String[] value){
-		return (value != null && !("".equals(value[1])) && value.length > 1);
+		return (value != null && value.length > 1 && !("".equals(value[1])) );
 	}
 
 	/**
@@ -123,16 +123,24 @@ public class DojoDatePicker extends TextField{
 
 	protected Object convertValue(String[] value) throws ConversionException
 	{
-		if (isDojoValue(value)){
-			try
-			{
-				return formatter.parse(value[1]);
-			}
-			catch (ParseException e)
-			{
-				throw new ConversionException(e);
-			}
+		String usableValue;
+		
+		if (isDojoValue(value)){							//value returned by Dojo - Classic 
+			usableValue = value[1];
+		}else if(getValue() != null){		//value returned when js is inactive - TestCase
+			usableValue = getValue();
+		}else{
+			return null;									//No value
 		}
-		return null;
+		
+		try
+		{
+			return formatter.parse(usableValue);
+		}
+		catch (ParseException e)
+		{
+			throw new ConversionException(e);
+		}
+		
 	}
 }
