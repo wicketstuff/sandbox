@@ -125,8 +125,10 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer imple
 		if (child instanceof ListView){
 			ListView listView = (ListView) child;
 			onNonAjaxChoose(listView.getList().get(selectIndex));
-		}//else TODO for RepeatingView
-		
+		} else {
+			RepeatingView repeatingView = (RepeatingView) child;
+			onNonAjaxChoose(RepeatingViewHelper.getItemAt(repeatingView, selectIndex).getModelObject());
+		}
 	}
 	
 	protected void onAttach()
@@ -312,25 +314,25 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer imple
 	
 	private class ChildFinder implements IVisitor{
 		private WebMarkupContainer child = null;
-		private int listViewNumber = 0;
-		private int repeatingViewNumber = 0;
+		private int listViewCount = 0;
+		private int repeatingViewCount = 0;
 		
 		public Object component(Component component)
 		{
 			if (component instanceof wicket.markup.html.list.ListView){
 				child = (ListView)component;
-				listViewNumber ++;
+				listViewCount ++;
 			}
 			if (component instanceof RepeatingView){
 				child = (RepeatingView)component;
-				repeatingViewNumber ++;
+				repeatingViewCount ++;
 			}
 			return CONTINUE_TRAVERSAL_BUT_DONT_GO_DEEPER;
 		}
 		
 		public WebMarkupContainer getChild(){
-			if (listViewNumber != 1 && repeatingViewNumber != 1){
-				throw new WicketRuntimeException("A DojoSelectableListContainer should contain exactly one ListView or one RepeatingView as directly child");
+			if (listViewCount != 1 && repeatingViewCount != 1){
+				throw new WicketRuntimeException("A DojoSelectableListContainer should contain exactly one ListView or one RepeatingView as direct child");
 			}
 			//FIXME check for TR
 			/*if (!"tr".equals(listView.getMarkupStream().getTag().getName())){

@@ -52,8 +52,7 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 		super();
 	}
 
-
-	/* (non-Javadoc)
+	/**
 	 * @see wicket.contrib.dojo.AbstractRequireDojoBehavior#setRequire(wicket.contrib.dojo.AbstractRequireDojoBehavior.RequireDojoLibs)
 	 */
 	public void setRequire(RequireDojoLibs libs)
@@ -61,20 +60,21 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 		//DO Nothing, the Widget is in the package
 	}
 
-
 	protected final void respond(AjaxRequestTarget target)
 	{
-		ArrayList selected = new ArrayList();
+		List selected = ((DojoSelectableListContainer)getComponent()).getSelected();
+
 		String indexList[] = getComponent().getRequest().getParameters("select");
 		if (indexList == null){
-			if (((DojoSelectableListContainer)getComponent()).getSelected() != null){
-				((DojoSelectableListContainer)getComponent()).onChoose(target, ((DojoSelectableListContainer)getComponent()).getSelected().get(0));
-			}
-			else
-			{
-				((DojoSelectableListContainer)getComponent()).onChoose(target, null);
-			}
+			// Double-click has occured, call the onChoose() method
+			((DojoSelectableListContainer)getComponent()).onChoose(target, selected.get(0));
 		}else{
+			// A new selection has been made
+
+			// Clear current selection
+			selected.clear();
+
+			// Compute new selection 
 			if (child instanceof ListView){
 				ListView listView = (ListView) child;
 				List all = listView.getList();
@@ -96,9 +96,8 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 					pos++;
 				}
 			}
-			
-			((DojoSelectableListContainer)getComponent()).setSelected(selected);
-			
+
+			// Call the onSelection() method
 			((DojoSelectableListContainer)getComponent()).onSelection(target, selected);
 		}
 	}
@@ -150,12 +149,10 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 		tag.put("onChoose", getDoubleClickCallbackScripts());
 	}
 
-
 	public WebMarkupContainer getChild()
 	{
 		return child;
 	}
-
 
 	public void setChild(WebMarkupContainer child)
 	{
