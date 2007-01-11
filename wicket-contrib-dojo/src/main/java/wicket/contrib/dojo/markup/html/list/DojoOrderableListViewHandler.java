@@ -51,7 +51,7 @@ public class DojoOrderableListViewHandler extends AbstractRequireDojoBehavior
 		toReturn += "function initDrag" + id + "(){\n";
 		toReturn += "	var children = document.getElementById('" + id + "').getElementsByTagName('div');\n";
 		toReturn += "	for(var i=0;  children.length > i ; i++){\n";
-		toReturn += "		var drag = new dojo.dnd.HtmlDragSource(children[i], children[i].id);\n";
+		toReturn += "		var drag = new dojo.dnd.HtmlDragSource(children[i], '*');\n";
 		toReturn += "	}\n";
 		toReturn += "}\n";
 		toReturn += "dojo.event.connect(dojo, \"loaded\", \"initDrag" + id + "\");\n";
