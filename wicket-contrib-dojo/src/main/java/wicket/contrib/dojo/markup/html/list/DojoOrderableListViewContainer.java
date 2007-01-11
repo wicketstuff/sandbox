@@ -81,6 +81,7 @@ public class DojoOrderableListViewContainer extends DojoDropContainer
 	public DojoOrderableListViewContainer(String id)
 	{
 		super(id);
+		add(new DojoOrderableListViewHandler());
 	}
 
 
