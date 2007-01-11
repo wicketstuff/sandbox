@@ -21,8 +21,15 @@ import wicket.ajax.AjaxRequestTarget;
 import wicket.util.time.Duration;
 
 /**
+ * <p>
  * Automatically re-renders the component it is attached to via AJAX at a
  * regular interval.
+ * </p>
+ * <p>
+ * Add this Behavior to a Component to autoRenderIt every updateInterval. You can add an other 
+ * component/js to the target with onPostProcessTarget method
+ * 
+ * </p>
  * 
  * @author Vincent Demay
  */

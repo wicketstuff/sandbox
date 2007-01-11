@@ -43,7 +43,6 @@ public class DojoInlineSuggestionList extends WebMarkupContainer
 
 	/**
 	 * Create a DojoInlineSuggestionList
-	 * @param parent parent where this component is rendered 
 	 * @param id component id
 	 */
 	public DojoInlineSuggestionList(String id){
