@@ -4,7 +4,7 @@ import wicket.ajax.AjaxRequestTarget;
 import wicket.contrib.dojo.AbstractRequireDojoBehavior;
 
 /**
- * A dojo date picker
+ * Handler used in {@link DojoDatePicker}
  * @author <a href="http://www.demay-fr.net/blog">Vincent Demay</a>
  *
  */
