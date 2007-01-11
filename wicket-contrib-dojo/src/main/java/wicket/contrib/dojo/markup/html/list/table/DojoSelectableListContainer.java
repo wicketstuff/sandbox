@@ -1,3 +1,19 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package wicket.contrib.dojo.markup.html.list.table;
 
 import java.util.ArrayList;
@@ -14,16 +30,16 @@ import wicket.markup.MarkupStream;
 import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.link.ILinkListener;
 import wicket.markup.html.list.ListView;
+import wicket.markup.repeater.RepeatingView;
 import wicket.model.IModel;
 
 /**
  * Selectable List container
  * <pre>
  * 		DojoSelectableListContainer container = new DojoSelectableListContainer("container");
- * 		ListView list = new ListView("list"){
+ * 		container.add(new ListView("list"){
  * 			[...]
- * 		};
- * 		container.add(list);
+ * 		});
  * </pre>
  * <b>The html (wicket:id="container" in the previous example) tag should be a &lt;table&gt;</b>
  * @author Vincent Demay
@@ -57,7 +73,7 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer imple
 	//child
 	private WebMarkupContainer child;
 	private DojoSelectableListContainerHandler containerHandler;
-	
+
 	/**
 	 * Construct the selectable list container
 	 * @param id container id
@@ -106,11 +122,10 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer imple
 		if (child instanceof ListView){
 			ListView listView = (ListView) child;
 			onNonAjaxChoose(listView.getList().get(selectIndex));
-		} else {//(child instanceof DojoSelectableRefreshingView){
-			DojoSelectableRefreshingView repeatingView = (DojoSelectableRefreshingView) child;
-			onNonAjaxChoose(repeatingView.getByIndex(selectIndex));
+		} else {
+			RepeatingView repeatingView = (RepeatingView) child;
+			onNonAjaxChoose(RepeatingViewHelper.getItemAt(repeatingView, selectIndex).getModelObject());
 		}
-		
 	}
 	
 	protected void onAttach()
@@ -296,25 +311,25 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer imple
 	
 	private class ChildFinder implements IVisitor{
 		private WebMarkupContainer child = null;
-		private int listViewNumber = 0;
-		private int refreshingViewNumber = 0;
+		private int listViewCount = 0;
+		private int repeatingViewCount = 0;
 		
 		public Object component(Component component)
 		{
 			if (component instanceof wicket.markup.html.list.ListView){
 				child = (ListView)component;
-				listViewNumber ++;
+				listViewCount ++;
 			}
-			if (component instanceof DojoSelectableRefreshingView){
-				child = (DojoSelectableRefreshingView)component;
-				refreshingViewNumber ++;
+			if (component instanceof RepeatingView){
+				child = (RepeatingView)component;
+				repeatingViewCount ++;
 			}
 			return CONTINUE_TRAVERSAL_BUT_DONT_GO_DEEPER;
 		}
 		
 		public WebMarkupContainer getChild(){
-			if (listViewNumber != 1 && refreshingViewNumber != 1){
-				throw new WicketRuntimeException("A DojoSelectableListContainer should contain exactly one ListView or one DojoSelectableRefreshingView as directly child");
+			if (listViewCount != 1 && repeatingViewCount != 1){
+				throw new WicketRuntimeException("A DojoSelectableListContainer should contain exactly one ListView or one RepeatingView as direct child");
 			}
 			//FIXME check for TR
 			/*if (!"tr".equals(listView.getMarkupStream().getTag().getName())){
