@@ -8,6 +8,9 @@ import wicket.contrib.dojo.templates.DojoPackagedTextTemplate;
 import wicket.markup.html.IHeaderResponse;
 
 /**
+ * <p>
+ * A Handler associated to {@link DojoDragContainer}
+ * </p>
  * 
  * @author Vincent Demay
  *
