@@ -21,6 +21,10 @@ import wicket.ajax.ClientEvent;
 import wicket.ajax.IAjaxIndicatorAware;
 
 /**
+ * This Behavior work as {@link DojoEventBehavior} but it allow user to set a component on it
+ * this component will be show during ajax request running and Hidde when response will be render. 
+ * see on the DojoEventBehaviorWithLoading constructor
+ * 
  * @author vdemay
  *
  */
