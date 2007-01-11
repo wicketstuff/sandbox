@@ -16,31 +16,76 @@
  */
 package wicket.contrib.dojo.markup.html.list;
 
-import wicket.MarkupContainer;
 import wicket.WicketRuntimeException;
 import wicket.ajax.AjaxRequestTarget;
 import wicket.ajax.markup.html.AjaxLink;
 import wicket.markup.html.list.ListItem;
 
+/**
+ * Add this widget to a {@link DojoOrderableListView} to make it removable by clicking on this widget
+ * <p>
+ * <b>Sample</b>
+ * <pre>
+ * public class OrderableList extends WebPage {
+ * 
+ * 	static final List objList  = new  ArrayList();
+ * 
+ * 	
+ * 	public OrderableList() {
+ * 		super();
+ * 		if (objList.size() == 0){
+ * 			objList.add("foo1");
+ * 			objList.add("bar1");
+ * 			objList.add("foo2");
+ * 			objList.add("bar2");
+ * 			objList.add("foo3");
+ * 			objList.add("bar3");
+ * 			objList.add("foo4");
+ * 			objList.add("bar4");
+ * 			objList.add("foo5");
+ * 			objList.add("bar5");
+ * 			objList.add("foo6");
+ * 			objList.add("bar6");
+ * 		}
+ * 		DojoOrderableListViewContainer container = new DojoOrderableListViewContainer(this, "container");
+ * 		DojoOrderableListView list = new DojoOrderableListView(container, "list", objList){
+ * 
+ * 			protected void populateItem(ListItem item) {
+ * 				item.add(new Label("label",(String)item.getModelObject()));
+ * 				item.add(new DojoOrderableListRemover("remover", item));
+ * 				
+ * 			}
+ * 			
+ * 		};
+ * 	}
+ * 
+ * }
+ * </pre>
+ * </p>
+ * @author Vincent Demay
+ */
 public class DojoOrderableListRemover extends AjaxLink{
 
 	// item to remove
 	private ListItem item;
 	
-	public DojoOrderableListRemover(MarkupContainer parent, String id, ListItem item)
+	/**
+	 * Construct
+	 * @param id id
+	 * @param item ListItem to be remove if clicking
+	 */
+	public DojoOrderableListRemover(String id, ListItem item)
 	{
-		super(parent, id);
+		super(id);
 		this.item = item; 
 	}
 	
-	@Override
 	protected void onBeforeRender()
 	{
 		super.onBeforeRender();
 		check();
 	}
 
-	@Override
 	public final void onClick(AjaxRequestTarget target)
 	{
 		if (beforeRemoving()){
@@ -66,15 +111,29 @@ public class DojoOrderableListRemover extends AjaxLink{
 		}
 	}
 
+	/**
+	 * Triggered if remove succes
+	 * @param target target
+	 */
 	protected void onRemove(AjaxRequestTarget target){
 		
 	}
 	
+	/**
+	 * Triggered if remove failed
+	 * @param target target 
+	 */
 	private void onNotRemove(AjaxRequestTarget target)
 	{
 		
 	}
 	
+	/**
+	 * This method is called before remove the element for the list
+	 * if returned value is true remove will be done and onRemove will be execute, otherwise
+	 * remove will not be done and onNotRemove will be called
+	 * @return true to remove the item, false otherwise
+	 */
 	protected boolean beforeRemoving(){
 		return true;
 	}

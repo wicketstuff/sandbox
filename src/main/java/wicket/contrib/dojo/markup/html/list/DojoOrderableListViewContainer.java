@@ -25,13 +25,59 @@ import wicket.contrib.dojo.dojodnd.DojoDropContainer;
 
 
 /**
+ * DojoOrderableListViewContainer should contains a {@link DojoOrderableListView} and nothing else.
+ * This container and it child allow top make a DragAndDropableList. Model associated with the {@link DojoOrderableListView}
+ * will be automaticaly updated during dnd
+ * <p>
+ * <b>Sample</b>
+ * <pre>
+ * public class OrderableList extends WebPage {
  * 
+ * 	static final List objList  = new  ArrayList();
+ * 
+ * 	
+ * 	public OrderableList() {
+ * 		super();
+ * 		if (objList.size() == 0){
+ * 			objList.add("foo1");
+ * 			objList.add("bar1");
+ * 			objList.add("foo2");
+ * 			objList.add("bar2");
+ * 			objList.add("foo3");
+ * 			objList.add("bar3");
+ * 			objList.add("foo4");
+ * 			objList.add("bar4");
+ * 			objList.add("foo5");
+ * 			objList.add("bar5");
+ * 			objList.add("foo6");
+ * 			objList.add("bar6");
+ * 		}
+ * 		DojoOrderableListViewContainer container = new DojoOrderableListViewContainer(this, "container");
+ * 		DojoOrderableListView list = new DojoOrderableListView(container, "list", objList){
+ * 
+ * 			protected void populateItem(ListItem item) {
+ * 				item.add(new Label("label",(String)item.getModelObject()));
+ * 				item.add(new DojoOrderableListRemover("remover", item));
+ * 				
+ * 			}
+ * 			
+ * 		};
+ * 	}
+ * 
+ * }
+ * </pre>
+ * </p>
  * @author vdemay
  * TODO refactor me 
  */
 public class DojoOrderableListViewContainer extends DojoDropContainer
 {
 
+	/**
+	 * Construct
+	 * @param parent parent
+	 * @param id id
+	 */
 	public DojoOrderableListViewContainer(MarkupContainer parent, String id)
 	{
 		super(parent, id);
@@ -39,6 +85,13 @@ public class DojoOrderableListViewContainer extends DojoDropContainer
 	}
 
 
+	/**
+	 * 
+	 * @param container
+	 * @param oldPosition
+	 * @param newPosition
+	 * @param target
+	 */
 	public void onDrop(DojoOrderableListView container,  int oldPosition, int newPosition, AjaxRequestTarget target)
 	{
 		if (oldPosition != newPosition){
@@ -79,6 +132,11 @@ public class DojoOrderableListViewContainer extends DojoDropContainer
 		onDrop((DojoOrderableListView) container, oldPosition, newPosition, target);  
 	}
 
+	/**
+	 * Event Triggered when an item is dnd
+	 * @param container DragMoved
+	 * @param position odl DragMoved position
+	 */
 	@Override
 	public void onDrop(DojoDragContainer container, int newPosition){}
 

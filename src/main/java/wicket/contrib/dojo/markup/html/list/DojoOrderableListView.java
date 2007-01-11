@@ -30,12 +30,63 @@ import wicket.markup.html.list.ListView;
 import wicket.model.IModel;
 import wicket.model.Model;
 
+/**
+ * DojoOrderableListView should be added on a {@link DojoOrderableListViewContainer}
+ * This container and it child allow top make a DragAndDropableList. Model associated with the {@link DojoOrderableListView}
+ * will be automaticaly updated during dnd
+ * <p>
+ * <b>Sample</b>
+ * <pre>
+ * public class OrderableList extends WebPage {
+ * 
+ * 	static final List objList  = new  ArrayList();
+ * 
+ * 	
+ * 	public OrderableList() {
+ * 		super();
+ * 		if (objList.size() == 0){
+ * 			objList.add("foo1");
+ * 			objList.add("bar1");
+ * 			objList.add("foo2");
+ * 			objList.add("bar2");
+ * 			objList.add("foo3");
+ * 			objList.add("bar3");
+ * 			objList.add("foo4");
+ * 			objList.add("bar4");
+ * 			objList.add("foo5");
+ * 			objList.add("bar5");
+ * 			objList.add("foo6");
+ * 			objList.add("bar6");
+ * 		}
+ * 		DojoOrderableListViewContainer container = new DojoOrderableListViewContainer(this, "container");
+ * 		DojoOrderableListView list = new DojoOrderableListView(container, "list", objList){
+ * 
+ * 			protected void populateItem(ListItem item) {
+ * 				item.add(new Label("label",(String)item.getModelObject()));
+ * 				item.add(new DojoOrderableListRemover("remover", item));
+ * 				
+ * 			}
+ * 			
+ * 		};
+ * 	}
+ * 
+ * }
+ * </pre>
+ * </p>
+ * @author Vincent Demay
+ */
 public abstract class DojoOrderableListView extends ListView
 {
 	DojoOrderableListViewContainer container;
 	int pos = 0; 
 	private String dragId;
 
+	/**
+	 * Construct
+	 * @param parent the {@link DojoOrderableListViewContainer} where it will be added
+	 * @param id id
+	 * @param model model
+	 */
 	public DojoOrderableListView(DojoOrderableListViewContainer parent, String id, IModel model)
 	{
 		super(parent, id, model);
@@ -43,6 +94,12 @@ public abstract class DojoOrderableListView extends ListView
 		dragId = container.getMarkupId();
 	}
 
+	/**
+	 * Construct
+	 * @param parent the {@link DojoOrderableListViewContainer} where it will be added
+	 * @param id id 
+	 * @param list list
+	 */
 	public DojoOrderableListView(DojoOrderableListViewContainer parent, String id, List list)
 	{
 		super(parent, id, list);
@@ -50,6 +107,11 @@ public abstract class DojoOrderableListView extends ListView
 		dragId = container.getMarkupId();
 	}
 
+	/**
+	 * Construct
+	 * @param parent the {@link DojoOrderableListViewContainer} where it will be added
+	 * @param id id
+	 */
 	public DojoOrderableListView(DojoOrderableListViewContainer parent, String id)
 	{
 		super(parent, id);
