@@ -5,7 +5,7 @@ import wicket.contrib.dojo.AbstractRequireDojoBehavior;
 import wicket.markup.html.IHeaderResponse;
 
 /**
- * Package class for Dojo DropContainer
+ * Handler for a {@link DojoDropContainer}
  * @author <a href="http://www.demay-fr.net/blog">Vincent Demay</a>
  *
  */
@@ -57,7 +57,7 @@ class DojoDropContainerHandler extends AbstractRequireDojoBehavior
 		toReturn += "<script language=\"JavaScript\" type=\"text/javascript\">\n";
 		toReturn += "function initDrop" + container.getMarkupId() + "(){\n";
 		toReturn += "	var dl = byId(\"" + container.getMarkupId() + "\");\n";
-		toReturn += "	var drop = new dojo.dnd.HtmlDropTarget(dl, [\"" + container.getDropId() + "\"]);\n";
+		toReturn += "	var drop = new dojo.dnd.HtmlDropTarget(dl, [\"" + container.getDropPattern() + "\"]);\n";
 		toReturn += "	dojo.event.connect(drop, 'onDrop', function(e) {\n";
 		toReturn += "		wicketAjaxGet(createUrl(e),function(){},function(){});";
 		toReturn += "	});\n";

@@ -18,7 +18,8 @@ package wicket.contrib.dojo;
 
 
 /**
- * Contants id names for Dojo
+ * Contants id names for Dojo. Add Dojo component here
+ * 
  * @author vdemay
  *
  */

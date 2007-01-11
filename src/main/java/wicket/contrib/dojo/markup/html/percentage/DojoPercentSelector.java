@@ -35,7 +35,8 @@ import wicket.model.IModel;
  * <p> 
  * <p><b>Usage</b>
  * <pre>
- * DojoPercentSelector percent = new DojoPercentSelector(this, "percent", new Model&lt;PercentageRanges>(ranges));	
+ * DojoPercentSelector percent = new DojoPercentSelector("percent", new Model&lt;PercentageRanges>(ranges));	
+ * add(percent);
  * </pre>
  * <u>Be carrefull </u>: model associated with this widget should be {@link PercentageRanges}. Others models are not allowed. 
  * </p>
