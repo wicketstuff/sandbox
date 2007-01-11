@@ -16,10 +16,12 @@
  */
 package wicket.contrib.dojo.markup.html.list;
 
+import wicket.MarkupContainer;
 import wicket.WicketRuntimeException;
 import wicket.ajax.AjaxRequestTarget;
 import wicket.ajax.markup.html.AjaxLink;
 import wicket.markup.html.list.ListItem;
+import wicket.markup.repeater.Item;
 
 /**
  * Add this widget to a {@link DojoOrderableListView} to make it removable by clicking on this widget
@@ -69,14 +71,26 @@ import wicket.markup.html.list.ListItem;
 public class DojoOrderableListRemover extends AjaxLink{
 
 	// item to remove
-	private ListItem item;
+	private ListItem listItem;
+	private Item item;
 	
 	/**
-	 * Construct
+	 * Construct for a listView
 	 * @param id id
 	 * @param item ListItem to be remove if clicking
 	 */
 	public DojoOrderableListRemover(String id, ListItem item)
+	{
+		super(id);
+		this.listItem = item; 
+	}
+	
+	/**
+	 * Construct for a repeatingView
+	 * @param id id
+	 * @param item ListItem to be remove if clicking
+	 */
+	public DojoOrderableListRemover(String id, Item item)
 	{
 		super(id);
 		this.item = item; 
@@ -91,11 +105,17 @@ public class DojoOrderableListRemover extends AjaxLink{
 	public final void onClick(AjaxRequestTarget target)
 	{
 		if (beforeRemoving()){
-			DojoOrderableListView parent = ((DojoOrderableListView)this.item.getParent());
-			DojoOrderableListViewContainer granParent = (DojoOrderableListViewContainer)parent.getParent();
-			parent.getList().remove(parent.getList().indexOf(this.item.getModelObject()));
-			parent.modelChanged();
 			
+			MarkupContainer parent = this.listItem.getParent();
+			if (parent instanceof DojoOrderableListView){
+				DojoOrderableListView current = (DojoOrderableListView) parent;
+				current.getList().remove(current.getList().indexOf(this.listItem.getModelObject()));
+				current.modelChanged();
+			}else if (parent instanceof DojoOrderableRepeatingView){
+				DojoOrderableRepeatingView current = (DojoOrderableRepeatingView) parent;
+				current.removeItem(item, target);
+			}
+			DojoOrderableListContainer granParent = (DojoOrderableListContainer)parent.getParent();
 			target.addComponent(granParent);
 			onRemove(target);
 		}
@@ -105,10 +125,10 @@ public class DojoOrderableListRemover extends AjaxLink{
 	}
 	
 	private void check(){
-		if (! (item.getParent() instanceof DojoOrderableListView)){
+		if (! (listItem.getParent() instanceof DojoOrderableListView)){
 			throw new WicketRuntimeException("Parent of item should be a DojoOrderableListView");
 		}
-		if (! (item.getParent().getParent() instanceof DojoOrderableListViewContainer)){
+		if (! (listItem.getParent().getParent() instanceof DojoOrderableListContainer)){
 			throw new WicketRuntimeException("GranParent of item should be a DojoOrderableListViewContainer");
 		}
 	}

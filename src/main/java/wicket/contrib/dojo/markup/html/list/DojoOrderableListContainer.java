@@ -18,10 +18,13 @@ package wicket.contrib.dojo.markup.html.list;
 
 import java.util.List;
 
-import wicket.MarkupContainer;
+import wicket.Component;
+import wicket.WicketRuntimeException;
 import wicket.ajax.AjaxRequestTarget;
 import wicket.contrib.dojo.dojodnd.DojoDragContainer;
 import wicket.contrib.dojo.dojodnd.DojoDropContainer;
+import wicket.markup.ComponentTag;
+import wicket.markup.html.WebMarkupContainer;
 
 
 /**
@@ -29,6 +32,9 @@ import wicket.contrib.dojo.dojodnd.DojoDropContainer;
  * This container and it child allow top make a DragAndDropableList. Model associated with the {@link DojoOrderableListView}
  * will be automaticaly updated during dnd
  * <p>
+ * <p>
+ * 	This componant should be associated to a <b>div</b> element in the markup
+ * </p>
  * <b>Sample</b>
  * <pre>
  * public class OrderableList extends WebPage {
@@ -71,17 +77,17 @@ import wicket.contrib.dojo.dojodnd.DojoDropContainer;
  * </p>
  * @author Vincent Demay
  */
-public class DojoOrderableListViewContainer extends DojoDropContainer
+public class DojoOrderableListContainer extends DojoDropContainer
 {
 
 	/**
 	 * Construct
 	 * @param id id
 	 */
-	public DojoOrderableListViewContainer(String id)
+	public DojoOrderableListContainer(String id)
 	{
 		super(id);
-		add(new DojoOrderableListViewHandler());
+		add(new DojoOrderableListHandler());
 	}
 
 
@@ -92,16 +98,22 @@ public class DojoOrderableListViewContainer extends DojoDropContainer
 	 * @param newPosition
 	 * @param target
 	 */
-	public void onDrop(DojoOrderableListView container,  int oldPosition, int newPosition, AjaxRequestTarget target)
+	public void onDrop(WebMarkupContainer container,  int oldPosition, int newPosition, AjaxRequestTarget target)
 	{
 		if (oldPosition != newPosition){
-			List list = container.getList();
-			Object drag = list.remove(oldPosition);
-			list.add(newPosition, drag);
-			container.setList(list);
+			if (container instanceof DojoOrderableListView){
+				DojoOrderableListView current = (DojoOrderableListView) container;
+				List list = current.getList();
+				Object drag = list.remove(oldPosition);
+				list.add(newPosition, drag);
+				current.setList(list);
+			}
+			else if (container instanceof DojoOrderableRepeatingView){
+				DojoOrderableRepeatingView current = (DojoOrderableRepeatingView) container;
+				current.moveItem(oldPosition, newPosition, target);
+			}
 			target.appendJavascript(getChangeIDScript());
 		}
-		onDrop(null, newPosition);
 	}
 	
 	private String getChangeIDScript(){
@@ -109,10 +121,15 @@ public class DojoOrderableListViewContainer extends DojoDropContainer
 		String changeId = "";
 		changeId += "var children = document.getElementById('" + containerId + "').getElementsByTagName('div');\n";
 		changeId += "for(var i=0; children.length > i ; i++){\n";
-		changeId += "	children[i].id = '" + containerId + "_" + "list" + "_'+i\n";   //FIXME : replace List it is not very Generic
+		changeId += "	children[i].setAttribute('pos',i);\n";
 		changeId += "}";
 		return changeId;
-		
+	}
+	
+	protected void onComponentTag(ComponentTag tag)
+	{
+		checkComponentTag(tag, "div");
+		super.onComponentTag(tag);
 	}
 	
 	/**
@@ -121,22 +138,46 @@ public class DojoOrderableListViewContainer extends DojoDropContainer
 	 */
 	protected void onAjaxModelUpdated(AjaxRequestTarget target)
 	{
-		String dragSource = getRequest().getParameter("dragSource");
 		int newPosition = Integer.parseInt(getRequest().getParameter("position"));
-		MarkupContainer container = getPage(); 
-		String[] ids = dragSource.split("_");
-		for (int i=0; i < ids.length - 1; i++){
-			container = (MarkupContainer)container.get(ids[i]);
-		}
-		int oldPosition = Integer.parseInt(ids[ids.length - 1]);
-		onDrop((DojoOrderableListView) container, oldPosition, newPosition, target);  
+		int oldPosition = Integer.parseInt(getRequest().getParameter("oldPosition"));
+		ChildFinder visitor = new ChildFinder();
+		visitChildren(visitor);
+		WebMarkupContainer container = visitor.getChild();
+		onDrop(	container, oldPosition, newPosition, target);
 	}
-
+	
 	/**
-	 * Event Triggered when an item is dnd
-	 * @param container DragMoved
-	 * @param position odl DragMoved position
+	 * THIS METHOD CAN NOT BE USED IN THIS CONTEXT
 	 */
-	public void onDrop(DojoDragContainer container, int newPosition){}
+	public final void onDrop(DojoDragContainer container, int position){}
+	
+	
+/***************************************************************************/
+	
+	private class ChildFinder implements IVisitor{
+		private WebMarkupContainer child = null;
+		private int listViewCount = 0;
+		private int repeatingViewCount = 0;
+		
+		public Object component(Component component)
+		{
+			if (component instanceof DojoOrderableListView){
+				child = (DojoOrderableListView)component;
+				listViewCount ++;
+			}
+			if (component instanceof DojoOrderableRepeatingView){
+				child = (DojoOrderableListView)component;
+				repeatingViewCount ++;
+			}
+			return CONTINUE_TRAVERSAL_BUT_DONT_GO_DEEPER;
+		}
+		
+		public WebMarkupContainer getChild(){
+			if (listViewCount != 1 || repeatingViewCount != 1){
+				throw new WicketRuntimeException("A DojoOrderableListContainer should contain exactly one DojoOrderableList or DojoOrderableRepeatingView as direct child : found " + listViewCount);
+			}
+			return child;
+		}
+	}
 
 }
