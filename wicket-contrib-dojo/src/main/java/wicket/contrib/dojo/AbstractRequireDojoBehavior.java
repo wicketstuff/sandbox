@@ -17,6 +17,7 @@
 package wicket.contrib.dojo;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 
 import wicket.RequestCycle;
@@ -105,7 +106,7 @@ public abstract class AbstractRequireDojoBehavior extends AbstractDefaultDojoBeh
 	 * @author vdemay
 	 *
 	 */
-	public class RequireDojoLibs extends ArrayList<String>{
+	public class RequireDojoLibs extends HashSet<String>{
 		
 	}
 
