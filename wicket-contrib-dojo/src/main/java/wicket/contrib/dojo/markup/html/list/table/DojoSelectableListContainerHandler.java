@@ -144,8 +144,9 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 	protected void onComponentTag(ComponentTag tag)
 	{
 		super.onComponentTag(tag);
-		tag.put("onSelect", getCallbackScript());
-		tag.put("onChoose", getDoubleClickCallbackScripts());
+		//TODO : nothing better to do?
+		tag.put("onSelect", getCallbackScript().toString().replace("&", "&amp;"));
+		tag.put("onChoose", getDoubleClickCallbackScripts().toString().replace("&", "&amp;"));
 	}
 
 	public WebMarkupContainer getChild()
