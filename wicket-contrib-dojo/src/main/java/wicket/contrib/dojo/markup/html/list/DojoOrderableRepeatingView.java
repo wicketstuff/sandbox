@@ -49,6 +49,7 @@ public abstract class DojoOrderableRepeatingView extends RefreshingView
 	public DojoOrderableRepeatingView(String id, IModel model)
 	{
 		super(id, model);
+		setOutputMarkupId(true);
 	}
 
 	/**
@@ -58,6 +59,7 @@ public abstract class DojoOrderableRepeatingView extends RefreshingView
 	public DojoOrderableRepeatingView(String id)
 	{
 		super(id);
+		setOutputMarkupId(true);
 	}
 	
 	protected void renderChild(Component child)

@@ -16,8 +16,13 @@
  */
 package wicket.contrib.dojo.markup.html.list;
 
+import java.util.HashMap;
+
+import wicket.IRequestTarget;
+import wicket.RequestCycle;
 import wicket.ajax.AjaxRequestTarget;
 import wicket.contrib.dojo.AbstractRequireDojoBehavior;
+import wicket.contrib.dojo.templates.DojoPackagedTextTemplate;
 import wicket.markup.html.IHeaderResponse;
 
 /**
@@ -35,28 +40,30 @@ public class DojoOrderableListHandler extends AbstractRequireDojoBehavior
 
 	protected void respond(AjaxRequestTarget target)
 	{
-
+	
 	}
 
 	public void renderHead(IHeaderResponse response)
 	{
 		super.renderHead(response);
-		response.renderString(generateDragDefinition(getComponent().getMarkupId()));
-
+		
+		DojoPackagedTextTemplate template = new DojoPackagedTextTemplate(this.getClass(), "DojoOrderableListHandlerTemplate.js");
+		
+		HashMap map = new HashMap();
+		map.put("MarkupId", getComponent().getMarkupId());
+		response.renderJavascript(template.asString(map), template.getWidgetUniqueKey(this.getComponent()));
+	
+		IRequestTarget target = RequestCycle.get().getRequestTarget();
+		if(!(target instanceof AjaxRequestTarget)){
+			response.renderJavascript("dojo.event.connect(dojo, \"loaded\", \"initDrag" + getComponent().getMarkupId() + "\");\n", getComponent().getMarkupId() + "onLoad");
+		}
 	}
 	
-	private String generateDragDefinition(String id){
-		String toReturn = "";
-		toReturn += "<script language=\"JavaScript\" type=\"text/javascript\">\n";
-		toReturn += "function initDrag" + id + "(){\n";
-		toReturn += "	var children = document.getElementById('" + id + "').getElementsByTagName('div');\n";
-		toReturn += "	for(var i=0;  children.length > i ; i++){\n";
-		toReturn += "		var drag = new dojo.dnd.HtmlDragSource(children[i], '*');\n";
-		toReturn += "	}\n";
-		toReturn += "}\n";
-		toReturn += "dojo.event.connect(dojo, \"loaded\", \"initDrag" + id + "\");\n";
-		toReturn += "</script>\n";
-		return toReturn;
+
+	public void onComponentReRendered(AjaxRequestTarget ajaxTarget)
+	{
+		super.onComponentReRendered(ajaxTarget);
+		ajaxTarget.appendJavascript("initDrag" + getComponent().getMarkupId() + "();");
 	}
 
 }
