@@ -127,7 +127,7 @@ public class DojoDatePicker extends TextField{
 		
 		if (isDojoValue(value)){							//value returned by Dojo - Classic 
 			usableValue = value[1];
-		}else if(getValue() != null && ( value == null || value.length < 2)){						//value returned when js is inactive - TestCase
+		}else if (! "".equals(getValue()) && (value == null || value.length < 2)) {						//value returned when js is inactive - TestCase
 			usableValue = getValue();
 		}else{
 			return null;									//No value
