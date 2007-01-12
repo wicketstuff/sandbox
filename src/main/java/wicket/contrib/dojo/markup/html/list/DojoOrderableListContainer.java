@@ -166,14 +166,14 @@ public class DojoOrderableListContainer extends DojoDropContainer
 				listViewCount ++;
 			}
 			if (component instanceof DojoOrderableRepeatingView){
-				child = (DojoOrderableListView)component;
+				child = (DojoOrderableRepeatingView)component;
 				repeatingViewCount ++;
 			}
 			return CONTINUE_TRAVERSAL_BUT_DONT_GO_DEEPER;
 		}
 		
 		public WebMarkupContainer getChild(){
-			if (listViewCount != 1 || repeatingViewCount != 1){
+			if (listViewCount != 1 && repeatingViewCount != 1){
 				throw new WicketRuntimeException("A DojoOrderableListContainer should contain exactly one DojoOrderableList or DojoOrderableRepeatingView as direct child : found " + listViewCount);
 			}
 			return child;
