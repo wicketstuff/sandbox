@@ -1,7 +1,12 @@
 package wicket.contrib.dojo.dojodnd;
 
+import java.util.HashMap;
+
+import wicket.IRequestTarget;
+import wicket.RequestCycle;
 import wicket.ajax.AjaxRequestTarget;
 import wicket.contrib.dojo.AbstractRequireDojoBehavior;
+import wicket.contrib.dojo.templates.DojoPackagedTextTemplate;
 import wicket.markup.html.IHeaderResponse;
 
 /**
@@ -38,19 +43,25 @@ public class DojoDragContainerHandler extends AbstractRequireDojoBehavior
 	public void renderHead(IHeaderResponse response)
 	{
 		super.renderHead(response);
-		response.renderString(generateDragDefinition());
+		
+		DojoPackagedTextTemplate template = new DojoPackagedTextTemplate(this.getClass(), "DojoDragContainerHandlerTemplate.js");
+		HashMap map = new HashMap();
+		map.put("MarkupId", container.getMarkupId());
+		map.put("DragId", container.getDragPattern());
+		response.renderJavascript(template.asString(map), template.getWidgetUniqueKey(this.getComponent()));
+		
+		//DojoOnLoad only if not AjaxRequest
+		IRequestTarget target = RequestCycle.get().getRequestTarget();
+		if(!(target instanceof AjaxRequestTarget)){
+			response.renderJavascript("dojo.event.connect(dojo, \"loaded\", \"initDrag" + container.getMarkupId() + "\");\n", container.getMarkupId() + "onLoad" );
+		}
+		//else will be done by onComponentReRendered
 	}
 	
-	private String generateDragDefinition(){
-		String toReturn = "";
-		toReturn += "<script language=\"JavaScript\" type=\"text/javascript\">\n";
-		toReturn += "function initDrag" + container.getMarkupId() + "(){\n";
-		toReturn += "	var dl = byId(\"" + container.getMarkupId() + "\");\n";
-		toReturn += "	var drag = new dojo.dnd.HtmlDragSource(dl, \"" + container.getDragPattern() + "\");\n";
-		toReturn += "}\n";
-		toReturn += "dojo.event.connect(dojo, \"loaded\", \"initDrag" + container.getMarkupId() + "\");\n";
-		toReturn += "</script>\n";
-		return toReturn;
+	public void onComponentReRendered(AjaxRequestTarget ajaxTarget)
+	{
+		super.onComponentReRendered(ajaxTarget);
+		ajaxTarget.appendJavascript("initDrag" + container.getMarkupId() + "()\n");
 	}
 
 

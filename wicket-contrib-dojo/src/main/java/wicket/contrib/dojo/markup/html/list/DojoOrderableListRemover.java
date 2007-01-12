@@ -125,12 +125,13 @@ public class DojoOrderableListRemover extends AjaxLink{
 	}
 	
 	private void check(){
-		if (! (listItem.getParent() instanceof DojoOrderableListView)){
+		//FIXME : DO THIS CHECK
+		/*if (! (listItem.getParent() instanceof DojoOrderableListView)){
 			throw new WicketRuntimeException("Parent of item should be a DojoOrderableListView");
 		}
 		if (! (listItem.getParent().getParent() instanceof DojoOrderableListContainer)){
 			throw new WicketRuntimeException("GranParent of item should be a DojoOrderableListViewContainer");
-		}
+		}*/
 	}
 
 	/**
