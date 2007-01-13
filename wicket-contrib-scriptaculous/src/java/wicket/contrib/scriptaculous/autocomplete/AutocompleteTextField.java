@@ -18,18 +18,22 @@
  */
 package wicket.contrib.scriptaculous.autocomplete;
 
+import java.util.Collection;
+import java.util.Iterator;
+
 import wicket.MarkupContainer;
 
 /**
+ * TextField that provides a static list of options to autocomplete.
  *
  * @author <a href="mailto:wireframe6464@users.sourceforge.net">Ryan Sonnek</a>
  */
 public class AutocompleteTextField<T> extends AutocompleteTextFieldSupport<T>
 {
 	private static final long serialVersionUID = 1L;
-	private final String[] results;
+	private final Collection<String> results;
 
-	public AutocompleteTextField(MarkupContainer parent, String id, String[] results)
+	public AutocompleteTextField(MarkupContainer parent, String id, Collection<String> results)
 	{
 		super(parent, id);
 
@@ -39,10 +43,11 @@ public class AutocompleteTextField<T> extends AutocompleteTextFieldSupport<T>
 	private String buildResults()
 	{
 		String result = "new Array(";
-		for (int x = 0; x < results.length; x++)
+		for (Iterator iter = results.iterator(); iter.hasNext();)
 		{
-			result += "\"" + results[x] + "\"";
-			if (x < results.length - 1)
+			String value = (String)iter.next();
+			result += "\"" + value + "\"";
+			if (iter.hasNext())
 			{
 				result += ",";
 			}
