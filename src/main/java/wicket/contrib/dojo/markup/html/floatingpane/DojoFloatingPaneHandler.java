@@ -18,6 +18,8 @@ package wicket.contrib.dojo.markup.html.floatingpane;
 
 import wicket.ajax.AjaxRequestTarget;
 import wicket.contrib.dojo.AbstractDefaultDojoBehavior;
+import wicket.contrib.dojo.AbstractRequireDojoBehavior;
+import wicket.contrib.dojo.templates.DojoPackagedTextTemplate;
 import wicket.markup.html.IHeaderResponse;
 
 /**
@@ -25,7 +27,7 @@ import wicket.markup.html.IHeaderResponse;
  * @author <a href="http://www.demay-fr.net/blog/index.php/en">Vincent Demay</a>
  *
  */
-public class DojoFloatingPaneHandler extends AbstractDefaultDojoBehavior
+public class DojoFloatingPaneHandler extends AbstractRequireDojoBehavior
 {
 	protected void respond(AjaxRequestTarget target)
 	{
@@ -38,17 +40,13 @@ public class DojoFloatingPaneHandler extends AbstractDefaultDojoBehavior
 	public void renderHead(IHeaderResponse response)
 	{
 		super.renderHead(response);
-		String require = "";
-		require += "<script language=\"JavaScript\" type=\"text/javascript\">\n";
-		require += "	dojo.require(\"dojo.widget.FloatingPane\")\n";
-		require += "\n";
-		require += "function getFloatingPane(id){\n";
-		require += "	var fp = dojo.widget.byId(id);\n";
-		require += "	return fp;\n";
-		require += "}\n";
-		require += "</script>\n";
+		DojoPackagedTextTemplate template = new DojoPackagedTextTemplate(this.getClass(), "DojoFloatingPaneHandlerTemplate.js");
+		response.renderJavascript(template.asString(), template.getStaticKey());
+	}
 
-		response.renderString(require);
+	public void setRequire(RequireDojoLibs libs)
+	{
+		libs.add("dojo.widget.FloatingPane");
 	}
 
 }
