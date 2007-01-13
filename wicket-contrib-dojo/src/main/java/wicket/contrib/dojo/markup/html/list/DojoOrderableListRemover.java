@@ -105,8 +105,7 @@ public class DojoOrderableListRemover extends AjaxLink{
 	public final void onClick(AjaxRequestTarget target)
 	{
 		if (beforeRemoving()){
-			
-			MarkupContainer parent = this.listItem.getParent();
+			MarkupContainer parent = getParentContainer();
 			if (parent instanceof DojoOrderableListView){
 				DojoOrderableListView current = (DojoOrderableListView) parent;
 				current.getList().remove(current.getList().indexOf(this.listItem.getModelObject()));
@@ -124,14 +123,24 @@ public class DojoOrderableListRemover extends AjaxLink{
 		}
 	}
 	
-	private void check(){
-		//FIXME : DO THIS CHECK
-		/*if (! (listItem.getParent() instanceof DojoOrderableListView)){
-			throw new WicketRuntimeException("Parent of item should be a DojoOrderableListView");
+	private MarkupContainer getParentContainer(){
+		MarkupContainer parent = null;
+		if (listItem !=null){
+			parent = listItem.getParent();
+		}else if (item != null){
+			parent = item.getParent();
 		}
-		if (! (listItem.getParent().getParent() instanceof DojoOrderableListContainer)){
+		return parent;
+	}
+	
+	private void check(){
+		MarkupContainer parent = getParentContainer();
+		if (! (parent instanceof DojoOrderableListView) && !(parent instanceof DojoOrderableRepeatingView)){
+			throw new WicketRuntimeException("Parent of item should be a DojoOrderableListView or a DojoOrderableRepeatingView");
+		}
+		if (! (parent.getParent() instanceof DojoOrderableListContainer)){
 			throw new WicketRuntimeException("GranParent of item should be a DojoOrderableListViewContainer");
-		}*/
+		}
 	}
 
 	/**
