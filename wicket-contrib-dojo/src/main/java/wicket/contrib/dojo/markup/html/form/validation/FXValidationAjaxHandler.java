@@ -18,16 +18,15 @@ package wicket.contrib.dojo.markup.html.form.validation;
 
 import java.io.Serializable;
 
-import wicket.AttributeModifier;
 import wicket.Component;
 import wicket.Response;
 import wicket.WicketRuntimeException;
 import wicket.ajax.AjaxRequestTarget;
 import wicket.behavior.AbstractAjaxBehavior;
 import wicket.contrib.dojo.AbstractRequireDojoBehavior;
+import wicket.markup.ComponentTag;
 import wicket.markup.html.IHeaderResponse;
 import wicket.markup.html.form.FormComponent;
-import wicket.model.Model;
 
 /**
  * Ajaxhandler to be bound to FormComponents.<br/> This handler executes wicket
@@ -43,6 +42,7 @@ import wicket.model.Model;
  */
 public class FXValidationAjaxHandler extends AbstractRequireDojoBehavior
 {
+
 	/** name event, like onblur. */
 	private final String eventName;
 
@@ -52,8 +52,6 @@ public class FXValidationAjaxHandler extends AbstractRequireDojoBehavior
 	private final RGB invalidRGB;
 	/** not mandatory, if not set validRGB will be components background color */
 	private RGB validRGB;
-
-	private String componentId;
 
 	/**
 	 * Default constructor which uses node's current background color when
@@ -70,48 +68,7 @@ public class FXValidationAjaxHandler extends AbstractRequireDojoBehavior
 		}
 		this.eventName = eventName;
 		this.invalidRGB = RGB.DEFAULT_INVALID;
-	}
-
-	/**
-	 * Constructor which sets default valid highlight color
-	 * 
-	 * @param eventName
-	 * @see #eventName
-	 * @param colorValid
-	 *            True if default highlight color should be used in stead of
-	 *            node's current background color when component is valid.
-	 */
-	public FXValidationAjaxHandler(String eventName, boolean colorValid)
-	{
-		if (eventName == null)
-		{
-			throw new NullPointerException("argument eventName must be not null");
-		}
-		this.eventName = eventName;
-		this.invalidRGB = RGB.DEFAULT_INVALID;
 		this.validRGB = RGB.DEFAULT_VALID;
-	}
-
-	/**
-	 * Constructor with custom invalid RGB values.
-	 * 
-	 * @param eventName
-	 * @see #eventName
-	 * @param r
-	 *            int representing Red value for this.invalidRGB
-	 * @param g
-	 *            int representing Green value for this.invalidRGB
-	 * @param b
-	 *            int representing Blue value for this.invalidRGB
-	 */
-	public FXValidationAjaxHandler(String eventName, int r, int g, int b)
-	{
-		if (eventName == null)
-		{
-			throw new NullPointerException("argument eventName must be not null");
-		}
-		this.eventName = eventName;
-		this.invalidRGB = new RGB(r, g, b);
 	}
 
 	/**
@@ -153,56 +110,47 @@ public class FXValidationAjaxHandler extends AbstractRequireDojoBehavior
 	public final void renderHead(IHeaderResponse response)
 	{
 		super.renderHead(response);
+		String componentId = getComponent().getMarkupId();
 		String s = "";
 		s += "<script language='JavaScript' type='text/javascript'>\n";
 		s += "	var " + componentId + "_first = false; \n";
 		s += "	function " + componentId + "_validate(type) { \n";
-		s += "		var startbc\n;";
-		s += "		if(!" + componentId + "_first){\n" ;
-		s += "			" + componentId + "_first = true; \n";
-		s += "			startbc = dojo.html.getBackgroundColor('" + componentId + "');\n";
-		s += "		}\n";
+		s += "		with(dojo.byId('" + componentId + "').style){backgroundColor = '#FFF';}";
 		s += "		if (type=='valid'){\n";
-		s += "			dojo.lfx.html.unhighlight('" + componentId + "', [255,255,255] , 300).play()\n";
+		s += "			dojo.lfx.html.highlight('" + componentId + "', dojo.gfx.color.hex2rgb('" + validRGB + "'), 200).play(0)\n";
+		s += "			dojo.lfx.html.unhighlight('" + componentId + "', dojo.gfx.color.hex2rgb('" + validRGB + "'), 200).play(200)\n";
 		s += "		}else{\n";	
-		s += "			dojo.lfx.html.unhighlight('" + componentId + "', [255, 0, 0], 300).play()\n;";
+		s += "			dojo.lfx.html.highlight('" + componentId + "', dojo.gfx.color.hex2rgb('" + invalidRGB + "'), 200).play(0)\n;";
+		s += "			dojo.lfx.html.unhighlight('" + componentId + "', dojo.gfx.color.hex2rgb('" + invalidRGB + "'), 200).play(200)\n;";
 		s += "		}\n";
 		s += "	}\n";
 		s += "</script>\n";
 
 		response.renderString(s);
 	}
-
+	
 	/**
 	 * Bind this handler to the FormComponent and set the corresponding HTML id
 	 * attribute.
-	 * 
-	 * @see wicket.AjaxHandler#onBind()
+	 * @param tag tag
 	 */
-	protected void onBind()
-	{
+	protected void onComponentTag(ComponentTag tag){
+		super.onComponentTag(tag);
 		Component c = getComponent();
 		if (!(c instanceof FormComponent))
 		{
 			throw new WicketRuntimeException("This handler must be bound to FormComponents");
 		}
+		formComponent = (FormComponent)c;
 
-
-		this.formComponent = (FormComponent)c;
-		this.componentId = this.formComponent.getId();
-		this.formComponent.add(new AttributeModifier("id", true, new Model(this.formComponent
-				.getId())));
-
-		this.formComponent.add(new AttributeModifier(eventName,true,new Model(){
-			public java.lang.Object getObject(){
-			     return "javascript:"
-					+ "var wcall=wicketAjaxGet('" + getCallbackUrl() + "&" + formComponent.getInputName() + "=' + this.value, function() { }, function() { });return !wcall;";
-			   }}));
+		tag.put(eventName, "javascript:" + "var wcall=wicketAjaxGet('" + getCallbackUrl() + "&amp;" + formComponent.getInputName() + "=' + this.value, function() { }, function() { });return !wcall;");
 	}
+
 
 	protected void respond(AjaxRequestTarget target)
 	{
 		formComponent.validate();	
+		String componentId = getComponent().getMarkupId();
 		if (!formComponent.isValid())
 		{
 			target.appendJavascript(componentId + "_validate('invalid')");
@@ -285,7 +233,7 @@ public class FXValidationAjaxHandler extends AbstractRequireDojoBehavior
 		 */
 		public String toString()
 		{
-			return "[" + R + ", " + G + ", " + B + "]";
+			return "#" + Integer.toHexString(R) + Integer.toHexString(G) + Integer.toHexString(B) + "";
 		}
 	}
 
@@ -293,6 +241,7 @@ public class FXValidationAjaxHandler extends AbstractRequireDojoBehavior
 	{
 		libs.add("dojo.html.*");
 		libs.add("dojo.lfx.*");
+		libs.add("dojo.gfx.*");
 	}
 
 
