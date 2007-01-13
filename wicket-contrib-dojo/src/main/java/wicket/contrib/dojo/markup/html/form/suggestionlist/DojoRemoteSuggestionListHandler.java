@@ -20,6 +20,7 @@ import wicket.Page;
 import wicket.RequestCycle;
 import wicket.behavior.AbstractAjaxBehavior;
 import wicket.contrib.dojo.AbstractDefaultDojoBehavior;
+import wicket.contrib.dojo.AbstractRequireDojoBehavior;
 import wicket.markup.ComponentTag;
 import wicket.markup.html.IHeaderResponse;
 import wicket.request.target.basic.StringRequestTarget;
@@ -27,6 +28,10 @@ import wicket.request.target.basic.StringRequestTarget;
 /**
  * Handler for {@link DojoRemoteSuggestionList}
  * @author <a href="http://www.demay-fr.net/blog">Vincent Demay</a>
+ * <p>
+ * <i>SuggestionList does not use {@link AbstractRequireDojoBehavior} because XMLHTTPRequest 
+ * does not respond a DOM fragment but a json</i>
+ * </p>
  *
  */
 public class DojoRemoteSuggestionListHandler extends AbstractAjaxBehavior{
