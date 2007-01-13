@@ -24,9 +24,9 @@ import wicket.model.Model;
  */
 public abstract class SortableContainer extends WebMarkupContainer {
 	private AbstractAjaxBehavior onUpdateBehavior;
-	private Map options = new HashMap();
+	private Map<String,Object> options = new HashMap<String,Object>();
 
-	public SortableContainer(MarkupContainer parent, String id, String itemId, final List items) {
+	public SortableContainer(MarkupContainer parent, String id, String itemId, final List<Object> items) {
 		super(parent, id);
 
 		setOutputMarkupId(true);
@@ -37,7 +37,7 @@ public abstract class SortableContainer extends WebMarkupContainer {
 				String[] parameters = getRequestCycle().getRequest().getParameters(getMarkupId() + "[]");
 
 				if (parameters != null) {
-					List originalItems = new ArrayList(items);
+					List originalItems = new ArrayList<Object>(items);
 					for (int index = 0; index < items.size(); index++) {
 						int newIndex = Integer.parseInt(parameters[index]);
 						items.set(index, originalItems.get(newIndex));

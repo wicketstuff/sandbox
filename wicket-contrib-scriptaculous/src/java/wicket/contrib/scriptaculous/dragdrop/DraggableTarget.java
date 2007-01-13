@@ -10,7 +10,6 @@ import wicket.contrib.scriptaculous.Indicator;
 import wicket.contrib.scriptaculous.JavascriptBuilder;
 import wicket.contrib.scriptaculous.ScriptaculousAjaxBehavior;
 import wicket.contrib.scriptaculous.JavascriptBuilder.JavascriptFunction;
-import wicket.markup.ComponentTag;
 import wicket.markup.MarkupStream;
 import wicket.markup.html.WebMarkupContainer;
 
@@ -26,23 +25,18 @@ public class DraggableTarget<T> extends WebMarkupContainer<T>
 		super(parent, id);
 		this.pageContribution = pageContribution;
 
+		setOutputMarkupId(true);
 		add(ScriptaculousAjaxBehavior.newJavascriptBindingBehavior());
 	}
 
 	public void accepts(DraggableImage image)
 	{
-		this.draggableClass = image.getId();
+		this.draggableClass = image.getStyleClass();
 	}
 
 	public void setIndicator(Indicator indicator)
 	{
 		this.indicatorId = indicator.getId();
-	}
-
-	protected void onComponentTag(ComponentTag tag)
-	{
-		super.onComponentTag(tag);
-		tag.put("id", getId());
 	}
 
 	protected void onRender(MarkupStream markupStream)
@@ -54,7 +48,7 @@ public class DraggableTarget<T> extends WebMarkupContainer<T>
 
 		renderInitialAjaxRequest(url);
 
-		final Map updaterOptions = new HashMap() {{
+		final Map<String,Object> updaterOptions = new HashMap<String,Object>() {{
 			if (null != indicatorId)
 			{
 				put("onLoading", new JavascriptFunction("function(request){ Element.show('indicator')}"));
@@ -67,7 +61,7 @@ public class DraggableTarget<T> extends WebMarkupContainer<T>
 		}};
 
 		final JavascriptBuilder builder = new JavascriptBuilder();
-		Map dropOptions = new HashMap() {{
+		Map<String,Object> dropOptions = new HashMap<String,Object>() {{
 			put("accept", draggableClass);
 			put("onDrop", new JavascriptFunction("function(element) { new Ajax.Updater('" + getId() + "', '"+ url+ "' " + builder.formatAsJavascriptHash(updaterOptions) + ") }"));
 			put("hoverclass", getId() + "-active");
@@ -82,7 +76,7 @@ public class DraggableTarget<T> extends WebMarkupContainer<T>
 
 	private void renderInitialAjaxRequest(CharSequence url)
 	{
-		Map options = new HashMap() {{
+		Map<String,Object> options = new HashMap<String,Object>() {{
 			put("evalScripts", Boolean.TRUE);
 			put("asynchronous", Boolean.TRUE);
 		}};
