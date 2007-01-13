@@ -8,8 +8,8 @@ import wicket.contrib.scriptaculous.JavascriptBuilder;
 import wicket.contrib.scriptaculous.ScriptaculousAjaxBehavior;
 import wicket.markup.ComponentTag;
 import wicket.markup.MarkupStream;
+import wicket.markup.html.IHeaderResponse;
 import wicket.markup.html.form.TextField;
-import wicket.markup.html.internal.HeaderContainer;
 
 /**
  * support class for all autocomplete text fields. handles binding of needed css
@@ -35,10 +35,11 @@ public abstract class AutocompleteTextFieldSupport<T> extends TextField<T>
 	}
 
 	@Override
-	public final void renderHead(HeaderContainer container)
+	public final void renderHead(IHeaderResponse response)
 	{
-		super.renderHead(container);
-		addCssReference(container, getCss());
+		super.renderHead(response);
+
+		response.renderCSSReference(getCss());
 
 		JavascriptBuilder builder = new JavascriptBuilder();
 		builder.addLine("new " + getAutocompleteType() + "(");
@@ -47,7 +48,7 @@ public abstract class AutocompleteTextFieldSupport<T> extends TextField<T>
 		builder.addLine("  '" + getThirdAutocompleteArgument() + "', ");
 		builder.addOptions(new HashMap());
 		builder.addLine(");");
-		container.getResponse().write(builder.buildScriptTagString());
+		response.getResponse().write(builder.buildScriptTagString());
 	}
 
 	protected abstract String getThirdAutocompleteArgument();
@@ -59,6 +60,10 @@ public abstract class AutocompleteTextFieldSupport<T> extends TextField<T>
 		return getMarkupId() + "_autocomplete";
 	}
 
+	/**
+	 * extension point to customize what css is used to style the component.
+	 * @return
+	 */
 	protected ResourceReference getCss()
 	{
 		return new ResourceReference(AutocompleteTextFieldSupport.class, "style.css");
@@ -82,26 +87,5 @@ public abstract class AutocompleteTextFieldSupport<T> extends TextField<T>
 
 		getResponse().write(
 				"<div class=\"auto_complete\" id=\"" + getAutocompleteId() + "\"></div>");
-	}
-
-	private void addCssReference(HeaderContainer container, ResourceReference ref)
-	{
-		CharSequence url = container.getPage().urlFor(ref);
-		write(container, "\t<link rel=\"stylesheet\" type=\"text/css\" href=\"");
-		write(container, url);
-		write(container, "\"/>\n");
-	}
-
-	/**
-	 * Writes the given string to the header container.
-	 *
-	 * @param container
-	 *            the header container
-	 * @param s
-	 *            the string to write
-	 */
-	private void write(HeaderContainer container, CharSequence s)
-	{
-		container.getResponse().write(s);
 	}
 }
