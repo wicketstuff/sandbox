@@ -18,7 +18,6 @@
  */
 package wicket.contrib.scriptaculous;
 
-import wicket.Component;
 import wicket.ResourceReference;
 import wicket.behavior.AbstractAjaxBehavior;
 import wicket.markup.html.IHeaderResponse;
@@ -36,6 +35,10 @@ import wicket.markup.html.IHeaderResponse;
 public abstract class ScriptaculousAjaxBehavior extends AbstractAjaxBehavior
 {
 
+	/**
+	 * generate a stub just to attach javascript to a component.
+	 * @return
+	 */
 	public static ScriptaculousAjaxBehavior newJavascriptBindingBehavior()
 	{
 		return new ScriptaculousAjaxBehavior()
@@ -43,15 +46,7 @@ public abstract class ScriptaculousAjaxBehavior extends AbstractAjaxBehavior
 			private static final long serialVersionUID = 1L;
 
 			/**
-			 * @see wicket.behavior.IBehavior#onException(Component,
-			 *      RuntimeException)
-			 */
-			public void onException(Component component, RuntimeException exception)
-			{
-			}
-
-			/**
-			 * @see wicket.behavior.IBehaviorListener#onRequest()
+			 * do nothing for this stub
 			 */
 			public void onRequest()
 			{
@@ -63,7 +58,6 @@ public abstract class ScriptaculousAjaxBehavior extends AbstractAjaxBehavior
 	public void renderHead(IHeaderResponse response)
 	{
 		super.renderHead(response);
-		// add our basic javascript needs to the header
 		response.renderJavascriptReference(new ResourceReference(ScriptaculousAjaxBehavior.class,
 				"prototype.js"));
 		response.renderJavascriptReference(new ResourceReference(ScriptaculousAjaxBehavior.class,
