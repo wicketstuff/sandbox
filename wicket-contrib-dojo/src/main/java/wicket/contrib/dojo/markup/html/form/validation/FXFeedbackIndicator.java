@@ -18,7 +18,6 @@ package wicket.contrib.dojo.markup.html.form.validation;
 
 
 import wicket.Component;
-import wicket.MarkupContainer;
 import wicket.ResourceReference;
 import wicket.contrib.dojo.markup.html.tooltip.DojoTooltip;
 import wicket.markup.html.form.validation.FormComponentFeedbackIndicator;
@@ -55,13 +54,5 @@ public class FXFeedbackIndicator extends FormComponentFeedbackIndicator
 		add(feedbackTooltip);
 		FXTooltipFeedbackPanel panel = new FXTooltipFeedbackPanel("content");
 		feedbackTooltip.add(panel);
-	}
-
-	/**
-	 * @see wicket.markup.html.form.validation.FormComponentFeedbackIndicator#setIndicatorFor(wicket.Component)
-	 */
-	public void setIndicatorFor(Component component)
-	{
-		super.setIndicatorFor(component);
 	}
 }
