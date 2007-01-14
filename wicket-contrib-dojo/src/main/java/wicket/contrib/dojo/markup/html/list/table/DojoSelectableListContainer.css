@@ -19,7 +19,7 @@ table.dojoSelectableList td, table.dojoSelectableList th {
 	padding:2px;
 	font-weight:normal;
 }
-table.dojoSelectableList thead td, table thead th {
+table.dojoSelectableList thead th {
 	background:#94BEFF;
 }
 
@@ -36,7 +36,7 @@ html>body table.dojoSelectableList tbody {
 	overflow-y: auto;
 }
 
-table.dojoSelectableList tbody td, tbody tr td {
+table.dojoSelectableList tbody td {
 	background: #FFF;
 	padding: 2px;
 }
