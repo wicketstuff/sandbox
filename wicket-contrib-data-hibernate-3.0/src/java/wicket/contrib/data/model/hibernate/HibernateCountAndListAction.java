@@ -41,16 +41,16 @@ import wicket.contrib.data.model.ISelectCountAndListAction;
  * use a pattern like this:
  * 
  * <pre>
- *    
- *      &lt;query name=&quot;cdapp.model.SearchCD&quot;&gt;
- *          &lt;![CDATA[
- *    		  SELECT cd FROM cdapp.model.CD as cd
- *              WHERE (:title is null or upper(cd.title) like :title)
- *              AND (:performers is null or upper(cd.performers) like :performers)
- *              AND (:year = -1 or cd.year = :year)
- *          ]]&gt;
- *      &lt;/query&gt;
- *     
+ *      
+ *        &lt;query name=&quot;cdapp.model.SearchCD&quot;&gt;
+ *            &lt;![CDATA[
+ *      		  SELECT cd FROM cdapp.model.CD as cd
+ *                WHERE (:title is null or upper(cd.title) like :title)
+ *                AND (:performers is null or upper(cd.performers) like :performers)
+ *                AND (:year = -1 or cd.year = :year)
+ *            ]]&gt;
+ *        &lt;/query&gt;
+ *       
  * </pre>
  * 
  * Take for example: 'WHERE (:title is null or upper(cd.title) like :title)'; if
@@ -144,7 +144,7 @@ public class HibernateCountAndListAction<T, V> implements
 			Query query = getCountQuery(sessionDelegate.getSession());
 			setParameters(query, queryObject);
 			List countResult = query.list();
-			return (Integer) countResult.get(0);
+			return ((Number) countResult.get(0)).intValue();
 		}
 		catch (HibernateException e)
 		{
