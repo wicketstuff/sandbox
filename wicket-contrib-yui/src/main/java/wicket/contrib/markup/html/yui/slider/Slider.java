@@ -21,10 +21,11 @@ package wicket.contrib.markup.html.yui.slider;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import wicket.AttributeModifier;
+import wicket.Component;
 import wicket.MarkupContainer;
 import wicket.behavior.HeaderContributor;
 import wicket.contrib.markup.html.yui.AbstractYuiPanel;
@@ -63,7 +64,8 @@ public class Slider<T> extends AbstractYuiPanel<T> {
 	 */
 	private String javaScriptId;
 
-	private static Log log = LogFactory.getLog(Slider.class);
+	/** Log. */
+	private static final Logger log = LoggerFactory.getLogger(Component.class);
 
 	/**
 	 * Construct.
