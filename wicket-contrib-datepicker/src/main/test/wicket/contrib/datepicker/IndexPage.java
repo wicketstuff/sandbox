@@ -29,7 +29,7 @@ public class IndexPage extends WebPage {
 		Form form = new Form(this, "form");
 		new DatepickerField(form, "dp", new PropertyModel<Date>(this, "date"),
 				getLocale());
-		List locales = Arrays.asList(Locale.getAvailableLocales());
+		List<Locale> locales = Arrays.asList(Locale.getAvailableLocales());
 		new DropDownChoice<Locale>(form, "locale", new PropertyModel<Locale>(
 				getSession(), "locale"), locales);
 	}
