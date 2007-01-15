@@ -48,10 +48,13 @@ public class DojoDatePicker extends TextField{
 		this.displayFormat = displayFormat;
 		add(new DojoDatePickerHandler());
 		this.setOutputMarkupId(true);
-		formatter = new SimpleDateFormat("yyyy-MM-dd");
+		formatter = new SimpleDateFormat(getInternalDatePattern());
 	}
 	
-	
+	public static String getInternalDatePattern() {
+		return "yyyy-MM-dd";
+	}
+
 	public DojoDatePicker(String id, String displayFormat){
 		this(id, null, displayFormat);
 	}
