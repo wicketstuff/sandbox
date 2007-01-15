@@ -27,7 +27,7 @@ import wicket.util.string.StringValueConversionException;
  * 
  * @author Jonathan Locke
  */
-public class DatabaseWebPage extends WebPage
+public class DatabaseWebPage<T> extends WebPage<T>
 {
 	private static final long serialVersionUID = 1L;
 
@@ -44,7 +44,7 @@ public class DatabaseWebPage extends WebPage
 		this.parameters = parameters;
 	}
 
-	public DatabaseWebPage(IModel model)
+	public DatabaseWebPage(IModel<T> model)
 	{
 		super(model);
 		this.parameters = null;
