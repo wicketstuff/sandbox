@@ -2,7 +2,6 @@ package wicket.contrib.velocity;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.util.Properties;
 
 import javax.servlet.ServletContext;
@@ -19,6 +18,9 @@ import wicket.protocol.http.WebApplication;
 import wicket.util.file.WebApplicationPath;
 import wicket.util.lang.Packages;
 import wicket.util.resource.IResourceStream;
+import wicket.util.resource.ResourceStreamNotFoundException;
+import wicket.util.resource.locator.IResourceStreamFactory;
+import wicket.util.resource.locator.ResourceStreamFactory;
 
 /**
  * An implementation of {@link wicket.IInitializer} for the Velocity Runtime
@@ -64,7 +66,7 @@ public class Initializer implements IInitializer
 
 	private Properties getVelocityProperties()
 	{
-		ClassLoaderResourceStreamLocator clrsr = new ClassLoaderResourceStreamLocator();
+		IResourceStreamFactory clrsr = new ResourceStreamFactory();
 		String absolutePath = Packages.absolutePath(Initializer.class,
 				velocityPropertiesFile);
 		IResourceStream irs = clrsr.locate(Initializer.class, absolutePath);
@@ -110,15 +112,19 @@ public class Initializer implements IInitializer
 		{
 			WebApplicationPath webPath = new WebApplicationPath(sc);
 			webPath.add(velocityPropertiesFolder);
-			URL url = webPath.find(velocityPropertiesFile);
+			IResourceStream s = webPath.find(Initializer.class, velocityPropertiesFile);
 			try
 			{
-				InputStream is = url.openStream();
+				InputStream is = s.getInputStream();
 				Properties props = new Properties();
 				props.load(is);
 				return props;
 			}
 			catch (IOException e)
+			{
+				throw new WicketRuntimeException(e);
+			}
+			catch (ResourceStreamNotFoundException e)
 			{
 				throw new WicketRuntimeException(e);
 			}
