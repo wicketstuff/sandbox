@@ -7,18 +7,18 @@ import java.util.Properties;
 
 import javax.servlet.ServletContext;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.velocity.app.Velocity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import wicket.Application;
+import wicket.Component;
 import wicket.IInitializer;
 import wicket.WicketRuntimeException;
 import wicket.protocol.http.WebApplication;
 import wicket.util.file.WebApplicationPath;
 import wicket.util.lang.Packages;
 import wicket.util.resource.IResourceStream;
-import wicket.util.resource.locator.ClassLoaderResourceStreamLocator;
 
 /**
  * An implementation of {@link wicket.IInitializer} for the Velocity Runtime
@@ -30,7 +30,8 @@ import wicket.util.resource.locator.ClassLoaderResourceStreamLocator;
  */
 public class Initializer implements IInitializer
 {
-	private static final Log log = LogFactory.getLog(Initializer.class);
+	/** Log. */
+	private static final Logger log = LoggerFactory.getLogger(Component.class);
 
 	private String velocityPropertiesFile = "velocity.properties";
 
