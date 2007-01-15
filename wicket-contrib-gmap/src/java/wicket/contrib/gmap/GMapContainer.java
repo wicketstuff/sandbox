@@ -1,9 +1,10 @@
 package wicket.contrib.gmap;
 
+import java.util.List;
+
+import wicket.MarkupContainer;
 import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.list.Loop;
-
-import java.util.List;
 
 /**
  * @author Iulian-Corneliu Costan
@@ -11,25 +12,26 @@ import java.util.List;
 class GMapContainer extends WebMarkupContainer
 {
 
-    /**
-     * Construct.
-     * @param gmap
-     */
-    public GMapContainer(final GMap gmap)
-    {
-        super(ID);
-        final List<Overlay> overlays = gmap.getOverlays();
+	/**
+	 * Construct.
+	 * 
+	 * @param gmap
+	 */
+	public GMapContainer(MarkupContainer parent, final GMap gmap)
+	{
+		super(parent, ID);
+		final List<Overlay> overlays = gmap.getOverlays();
 
-        add(new GMapComponent(gmap));
-        add(new Loop("gmarkersLoop", overlays.size())
-        {
-            protected void populateItem(LoopItem item)
-            {
-                Overlay gmarker = overlays.get(item.getIteration());
-                item.add(new GMarkerContainer((GMarker) gmarker));
-            }
-        });
-    }
+		new GMapComponent(this, gmap);
+		new Loop(this, "gmarkersLoop", overlays.size())
+		{
+			protected void populateItem(LoopItem item)
+			{
+				Overlay gmarker = overlays.get(item.getIteration());
+				new GMarkerContainer(item, (GMarker)gmarker);
+			}
+		};
+	}
 
-    public static final String ID = "gmapContainer";
+	public static final String ID = "gmapContainer";
 }
