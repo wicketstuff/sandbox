@@ -73,9 +73,6 @@ public class MenuItem extends DefaultMutableTreeNode
 			new Label(pageLink, "label", label);
 			add(new AttributeModifier("class", true, new Model<String>()
 			{
-				/**
-				 * 
-				 */
 				private static final long serialVersionUID = 1L;
 
 				@Override
