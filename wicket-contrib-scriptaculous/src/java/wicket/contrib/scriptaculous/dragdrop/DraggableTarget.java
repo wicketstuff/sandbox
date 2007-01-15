@@ -13,21 +13,23 @@ import wicket.markup.MarkupStream;
 import wicket.markup.html.WebMarkupContainer;
 
 /**
- *
+ * 
  * @see http://wiki.script.aculo.us/scriptaculous/show/Droppables.add
  */
 public abstract class DraggableTarget<T> extends WebMarkupContainer<T>
 {
 	private static final long serialVersionUID = 1L;
 	private final ScriptaculousAjaxBehavior onDropBehavior;
-	private final Map<String,Object> dropOptions = new HashMap<String,Object>();
+	private final Map<String, Object> dropOptions = new HashMap<String, Object>();
 
 	public DraggableTarget(MarkupContainer parent, String id)
 	{
 		super(parent, id);
 
 		setOutputMarkupId(true);
-		this.onDropBehavior = new ScriptaculousAjaxBehavior() {
+		this.onDropBehavior = new ScriptaculousAjaxBehavior()
+		{
+			private static final long serialVersionUID = 1L;
 
 			public void onRequest()
 			{
@@ -43,14 +45,16 @@ public abstract class DraggableTarget<T> extends WebMarkupContainer<T>
 		};
 		add(onDropBehavior);
 
-		dropOptions.put("onDrop", new JavascriptFunction("function() { wicketAjaxGet('" + onDropBehavior.getCallbackUrl() + "'); }"));
+		dropOptions.put("onDrop", new JavascriptFunction("function() { wicketAjaxGet('"
+				+ onDropBehavior.getCallbackUrl() + "'); }"));
 	}
 
 	protected abstract void onDrop(String input, AjaxRequestTarget target);
 
 	public void accepts(DraggableImage image)
 	{
-		//TODO: this should build a string array of classes so that one target can accept multiple classes.
+		// TODO: this should build a string array of classes so that one target
+		// can accept multiple classes.
 		dropOptions.put("accept", image.getStyleClass());
 	}
 
