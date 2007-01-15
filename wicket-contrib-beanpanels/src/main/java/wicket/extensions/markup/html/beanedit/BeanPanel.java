@@ -32,7 +32,9 @@ import wicket.markup.html.list.ListItem;
 import wicket.markup.html.list.ListView;
 import wicket.markup.html.panel.Fragment;
 import wicket.model.IModel;
+import wicket.model.Model;
 import wicket.model.PropertyModel;
+import wicket.model.ResourceModel;
 
 /**
  * Panel for generic bean displaying/ editing.
@@ -45,7 +47,7 @@ public class BeanPanel extends AbstractBeanPanel
 	private static final long serialVersionUID = 1L;
 
 
-	private BeanModel beanModel;
+	protected BeanModel beanModel;
 
 	/**
 	 * Construct.
@@ -77,6 +79,10 @@ public class BeanPanel extends AbstractBeanPanel
 		}
 		add( header );
 		
+		addProperties();
+	}
+
+	protected void addProperties() {
 		/*
 		 * Add the properties
 		 */
@@ -86,7 +92,7 @@ public class BeanPanel extends AbstractBeanPanel
 			{
 				IPropertyMeta propertyMeta = (IPropertyMeta)item.getModelObject();
 				item.add(new Label("displayName", propertyMeta.getLabel()));
-				WebMarkupContainer propertyEditor = newPropertyEditor("editor", propertyMeta);
+				WebMarkupContainer propertyEditor = newPropertyEditor("editor", propertyMeta, beanModel);
 				if (propertyEditor == null)
 				{
 					throw new NullPointerException("propertyEditor must be not null");
@@ -96,200 +102,4 @@ public class BeanPanel extends AbstractBeanPanel
 			} } );
 	}
 
-	/**
-	 * Gets the header panel of this editor.
-	 * @param panelId id of panel; must be used for constructing any panel
-	 * @param beanModel model with the JavaBean to be edited or displayed
-	 * @return the header panel
-	 */
-	protected Fragment newHeader(String panelId, BeanModel beanModel)
-	{
-		return new DefaultHeaderFragment(panelId,beanModel);
-	}
-
-	/**
-	 * Gets the editor for the given property.
-	 * @param panelId id of panel; must be used for constructing any panel
-	 * @param propertyMeta property descriptor
-	 * @return the editor
-	 */
-	protected WebMarkupContainer newPropertyEditor(String panelId, IPropertyMeta propertyMeta)
-	{
-		//BeanPropertyEditor editor = findCustomEditor(panelId, propertyMeta);
-		WebMarkupContainer editor;
-		
-		editor = newDefaultEditor(panelId, propertyMeta);
-
-		return editor;
-	}
-
-	
-
-	/**
-	 * Gets a default property editor panel.
-	 * @param panelId component id
-	 * @param propertyMeta property descriptor
-	 * @return a property editor
-	 */
-	protected final WebMarkupContainer newDefaultEditor(final String panelId, final IPropertyMeta propertyMeta)
-	{
-		WebMarkupContainer editor;
-		final Class type = propertyMeta.getType();
-		if (checkAssignableFrom(BOOL_TYPES, type))
-		{
-			editor = new CheckFieldFragment(panelId, propertyMeta);
-		}
-		else if (checkAssignableFrom(BASE_TYPES, type))
-		{
-			editor = new TextFieldFragment(panelId, propertyMeta);
-		}
-		else if (checkAssignableFrom(DATE_TYPES, type))
-		{
-			editor = new DateFieldFragment(panelId, propertyMeta);
-		}
-		else
-		{
-			return new ButtonToMoreDetails(panelId, propertyMeta);
-		}
-		return editor;
-	}
-
-
-	/**
-	 * Panel for an input field.
-	 */
-	final class TextFieldFragment extends Fragment
-	{
-		private static final long serialVersionUID = 1L;
-
-		/**
-		 * Construct.
-		 * @param id component id
-		 * @param propertyMeta property descriptor
-		 */
-		public TextFieldFragment(String id, final IPropertyMeta propertyMeta)
-		{
-			super(id, "propertyInput");
-			setRenderBodyOnly(true);
-			Class type = propertyMeta.getType();
-			IModel model = new PropertyModel(beanModel.getBean(),propertyMeta.getName());
-			TextField field = new TextField("value", model, type);
-			field.setEnabled( !propertyMeta.isReadOnly() );
-			add(field);
-		}
-	}
-	
-	final class DateFieldFragment extends Fragment
-	{
-		private static final long serialVersionUID = 1L;
-
-		/**
-		 * Construct.
-		 * @param id component id
-		 * @param propertyMeta property descriptor
-		 */
-		public DateFieldFragment(String id, final IPropertyMeta propertyMeta)
-		{
-			super(id, "propertyDate");
-			setRenderBodyOnly(true);
-			Class type = propertyMeta.getType();
-			IModel model = new PropertyModel(beanModel.getBean(),propertyMeta.getName());
-			TextField field = new TextField("value", model, type);
-			field.setEnabled( !propertyMeta.isReadOnly() );
-			add(field);
-			
-			// .. and the date picker
-			DatePickerSettings settings = new DatePickerSettings();
-			settings.setStyle( settings.newStyleWinter() );
-			settings.setIcon( new ResourceReference(DatePicker.class, "calendar_icon_2.gif") );
-			add(new DatePicker( "datePicker", field, settings));	
-			
-		}
-	}	
-
-	/**
-	 * Panel for a check box.
-	 */
-	final class CheckFieldFragment extends Fragment
-	{
-		private static final long serialVersionUID = 1L;
-
-		/**
-		 * Construct.
-		 * @param id component id
-		 * @param propertyMeta property descriptor
-		 */
-		public CheckFieldFragment(String id, final IPropertyMeta propertyMeta)
-		{
-			super(id, "propertyCheck");
-			setRenderBodyOnly(true);
-			IModel model = new PropertyModel(beanModel.getBean(),propertyMeta.getName());
-			CheckBox field = new CheckBox("value",model);
-			field.setEnabled( !propertyMeta.isReadOnly() );
-			add(field);
-		}
-	}
-
-	/**
-	 * Panel for a button to more details.
-	 */
-	static final class ButtonToMoreDetails extends Fragment
-	{
-		private static final long serialVersionUID = 1L;
-
-		/**
-		 * Construct.
-		 * @param id component id
-		 * @param propertyMeta property descriptor
-		 */
-		public ButtonToMoreDetails(String id, final IPropertyMeta propertyMeta)
-		{
-			super(id, "propertyButton");
-			add(new Link("button")
-			{
-				private static final long serialVersionUID = 1L;
-
-				public void onClick()
-				{
-				}
-			});
-		}
-	}
-	
-	final class DefaultHeaderFragment extends Fragment {
-
-		public DefaultHeaderFragment(String id, BeanModel beanModel) {
-			super(id, "defaultHeader");
-			add(new Label("displayName", beanModel.getBean().getClass().getName()));
-		} 
-		
-	}
-	
-
-//	final class BeanNameModel extends LoadableDetachableModel {
-//
-//		protected Object load() {
-//			BeanInfo beanInfo = beanModel.getBeanInfo();
-//
-//			if (beanInfo != null)
-//			{
-//				BeanDescriptor beanDescriptor = beanInfo.getBeanDescriptor();
-//				String displayName;
-//
-//				if (beanDescriptor != null)
-//				{
-//					displayName = beanDescriptor.getDisplayName();
-//				}
-//				else
-//				{
-//					Class clazz = beanModel.getBean().getClass();
-//					displayName = (clazz != null) ? clazz.getName() : null;
-//				}
-//				return displayName;
-//			}
-//
-//			return null;
-//		} 
-//		
-//	}
 }

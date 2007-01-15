@@ -59,12 +59,12 @@ public class PropertiesProvider implements IPropertiesProvider {
 				if( filter != null ) { 
 					int p = filter.accept(fields[i]);
 					if( p != -1 ) { 
-						IPropertyMeta meta = new PropertyMeta(fields[i], p, readOnly);
+						IPropertyMeta meta = PropertyMetaFactory.getPropertyMetaImplementation(fields[i], p, readOnly);
 						result.add(meta);
 					}
 				}
 				else { 
-					result.add( new PropertyMeta(fields[i], i, readOnly) );
+					result.add(PropertyMetaFactory.getPropertyMetaImplementation(fields[i], i, readOnly));
 				}
 			}
 		}

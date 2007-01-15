@@ -2,6 +2,8 @@ package wicket.extensions.markup.html.beanedit;
 
 import java.lang.reflect.Field;
 
+import wicket.model.IModel;
+
 /**
  * 
  * @author Paolo Di Tommaso
@@ -10,11 +12,11 @@ import java.lang.reflect.Field;
 
 public class PropertyMeta implements IPropertyMeta {
 
-	private String label;
-	private String name;
-	private int index ;
-	private boolean readOnly;
-	private Class type;
+	protected IModel label;
+	protected String name;
+	protected int index ;
+	protected boolean readOnly;
+	protected Class type;
 	
 	public PropertyMeta( Field field, int ndx, boolean readOnly ) { 
 		this.name = field.getName();
@@ -22,11 +24,14 @@ public class PropertyMeta implements IPropertyMeta {
 		this.readOnly = readOnly;
 		this.index = ndx;
 		
-		Label annotation = field.getAnnotation(Label.class);
-		this.label = annotation != null ? annotation.value() : name;
+		init(field);
 	}
 
-	public String getLabel() {
+	protected void init(Field field) {
+
+	}
+
+	public IModel getLabel() {
 		return label;
 	}
 
