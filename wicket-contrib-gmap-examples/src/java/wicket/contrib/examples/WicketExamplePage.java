@@ -24,36 +24,33 @@ import wicket.util.string.Strings;
 
 /**
  * Base class for all example pages.
- *
- * @author Jonathan Locke
  */
-public class WicketExamplePage extends WebPage
-{
-    /**
-     * Constructor
-     */
-    public WicketExamplePage()
-    {
-        this(null);
-    }
+public class WicketExamplePage<T> extends WebPage<T> {
+	private static final long serialVersionUID = 1L;
 
-    /**
-     * Construct.
-     *
-     * @param model
-     */
-    public WicketExamplePage(IModel model)
-    {
-        super(model);
-        final String packageName = getClass().getPackage().getName();
-        add(new WicketExampleHeader("mainNavigation", Strings.afterLast(packageName, '.')));
-        explain();
-    }
+	/**
+	 * Constructor
+	 */
+	public WicketExamplePage() {
+		this(null);
+	}
 
-    /**
-     * Override base method to provide an explanation
-     */
-    protected void explain()
-    {
-    }
+	/**
+	 * Construct.
+	 * 
+	 * @param model
+	 */
+	public WicketExamplePage(IModel<T> model) {
+		super(model);
+		final String packageName = getClass().getPackage().getName();
+		new WicketExampleHeader(this, "mainNavigation", Strings.afterLast(
+				packageName, '.'));
+		explain();
+	}
+
+	/**
+	 * Override base method to provide an explanation
+	 */
+	protected void explain() {
+	}
 }
