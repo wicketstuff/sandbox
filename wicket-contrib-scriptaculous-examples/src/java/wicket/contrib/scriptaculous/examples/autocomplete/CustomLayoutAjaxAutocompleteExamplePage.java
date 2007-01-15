@@ -21,7 +21,7 @@ public class CustomLayoutAjaxAutocompleteExamplePage extends WebPage
 			new Button(this, "submitButton")
 			{
 				@Override
-				protected void onSubmit()
+				public void onSubmit()
 				{
 				}
 			};
