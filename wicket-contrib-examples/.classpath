@@ -32,7 +32,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/wicket-contrib-data"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/wicket-contrib-data-hibernate-3.0"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/wicket-contrib-freemarker"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/wicket-contrib-navmenu"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/wicket-contrib-velocity"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/wicket-extensions"/>
 	<classpathentry kind="output" path="target/classes"/>
