@@ -19,6 +19,7 @@
 package wicket.extensions.markup.html.beanedit;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -66,12 +67,13 @@ public class BeanModel implements IModel
 		this.bean = bean;
 		this.propertyNames = new ArrayList();
 		
-		this.propertiesList = PropertiesProvider.propertiesFor( bean.getClass(), new IPropertyFilter() {
+		IPropertiesProvider provider = new PropertiesProvider();
+		this.propertiesList = provider.propertiesFor( bean.getClass(), new IPropertyFilter() {
 			int c = 0;
-			public int accept(String propertyName) {
-				int p = names != null ? names.indexOf(propertyName) : c++;
+			public int accept(Field field) {
+				int p = names != null ? names.indexOf(field.getName()) : c++;
 				if( p != -1 ) { 
-					propertyNames.add(propertyName);
+					propertyNames.add(field.getName());
 				}
 				return p;
 			} } );
