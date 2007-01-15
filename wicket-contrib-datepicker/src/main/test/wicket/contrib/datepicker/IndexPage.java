@@ -12,22 +12,25 @@ import wicket.markup.html.form.Form;
 import wicket.model.PropertyModel;
 
 public class IndexPage extends WebPage {
-	
-	Date date=new Date();
-	
-	public Date getDate(){
+
+	private static final long serialVersionUID = 1L;
+
+	Date date = new Date();
+
+	public Date getDate() {
 		return date;
 	}
-	
-	public void setDate(Date date){
-		this.date=date;
+
+	public void setDate(Date date) {
+		this.date = date;
 	}
-	
+
 	public IndexPage() {
-		Form form=new Form("form");
-		add(form);
-		form.add(new DatepickerField("dp",new PropertyModel(this,"date"),getLocale()));
-		List locales=Arrays.asList(Locale.getAvailableLocales());
-		form.add(new DropDownChoice("locale",new PropertyModel(getSession(),"locale"),locales));
+		Form form = new Form(this, "form");
+		new DatepickerField(form, "dp", new PropertyModel<Date>(this, "date"),
+				getLocale());
+		List locales = Arrays.asList(Locale.getAvailableLocales());
+		new DropDownChoice<Locale>(form, "locale", new PropertyModel<Locale>(
+				getSession(), "locale"), locales);
 	}
 }
