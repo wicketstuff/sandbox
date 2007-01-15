@@ -18,6 +18,7 @@
  */
 package wicket.contrib.examples.gmap;
 
+import wicket.Page;
 import wicket.protocol.http.WebApplication;
 import wicket.util.time.Duration;
 
@@ -37,7 +38,7 @@ public class GMapExampleApplication extends WebApplication
         getResourceSettings().setResourcePollFrequency(Duration.seconds(10));
 	}
 
-    public Class getHomePage()
+    public Class<? extends Page> getHomePage()
     {
         return HomePage.class;
     }

@@ -1,17 +1,11 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
 <projectDescription>
   <name>wicket-contrib-gmap-examples</name>
-  <comment>The Wicket Contrib GMap. Wicket component for &lt;a href="http://maps.google.com/"&gt;Google Map&lt;/a&gt;.</comment>
-  <projects>
-    <project>wicket</project>
-    <project>wicket-contrib-gmap</project>
-  </projects>
+  <comment>Examples gmap component.</comment>
+  <projects/>
   <buildSpec>
     <buildCommand>
       <name>org.eclipse.jdt.core.javabuilder</name>
-      <arguments>
-      </arguments>
+      <arguments/>
     </buildCommand>
   </buildSpec>
   <natures>
