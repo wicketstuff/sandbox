@@ -29,21 +29,26 @@ public abstract class DraggableImage extends Image
 	}
 
 	/**
-	 * define the css style used to define this component.
-	 * used by the draggable target to declare what it accepts.
+	 * define the css style used to define this component. used by the draggable
+	 * target to declare what it accepts.
+	 * 
 	 * @see DraggableTarget#accepts(DraggableImage)
 	 * @return
 	 */
 	protected abstract String getStyleClass();
-	
+
 	protected void onRender(MarkupStream markupStream)
 	{
 		super.onRender(markupStream);
 
 		JavascriptBuilder builder = new JavascriptBuilder();
-		Map<String,Object> options = new HashMap<String,Object>() {{
-			put("revert", Boolean.TRUE);
-		}};
+		Map<String, Object> options = new HashMap<String, Object>()
+		{
+			private static final long serialVersionUID = 1L;
+			{
+				put("revert", Boolean.TRUE);
+			}
+		};
 		builder.addLine("new Draggable('" + getMarkupId() + "', ");
 		builder.addOptions(options);
 		builder.addLine(");");

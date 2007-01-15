@@ -5,16 +5,18 @@ import java.util.Iterator;
 import java.util.Map;
 
 
-public class JavascriptBuilder {
+public class JavascriptBuilder
+{
 	private StringBuffer buffer = new StringBuffer();
 
-	public void addLine(String line) {
+	public void addLine(String line)
+	{
 		buffer.append(line).append("\n");
 	}
-	public String buildScriptTagString() {
-		return "\n<script type=\"text/javascript\">\n" +
-		toJavascript() +
-		"</script>\n";
+
+	public String buildScriptTagString()
+	{
+		return "\n<script type=\"text/javascript\">\n" + toJavascript() + "</script>\n";
 	}
 
 	public String toJavascript()
@@ -22,8 +24,10 @@ public class JavascriptBuilder {
 		return buffer.toString();
 	}
 
-	public String formatAsJavascriptHash(Map options) {
-		if (options.isEmpty()) {
+	public String formatAsJavascriptHash(Map options)
+	{
+		if (options.isEmpty())
+		{
 			return "{}";
 		}
 		StringBuffer buffer = new StringBuffer();
@@ -37,7 +41,8 @@ public class JavascriptBuilder {
 			buffer.append("  ").append(key).append(": ");
 			buffer.append(formatJavascriptValue(value));
 
-			if (iter.hasNext()) {
+			if (iter.hasNext())
+			{
 				buffer.append(", ");
 			}
 		}
@@ -45,33 +50,45 @@ public class JavascriptBuilder {
 		buffer.append("}");
 		return buffer.toString();
 	}
-	private String formatJavascriptValue(Object value) {
-		if (value instanceof CharSequence) {
-			return "'" + (CharSequence) value + "'";
+
+	private String formatJavascriptValue(Object value)
+	{
+		if (value instanceof CharSequence)
+		{
+			return "'" + (CharSequence)value + "'";
 		}
-		if (value instanceof Map) {
+		if (value instanceof Map)
+		{
 			return formatAsJavascriptHash((Map)value);
 		}
-		if (value instanceof Boolean) {
+		if (value instanceof Boolean)
+		{
 			return ((Boolean)value).toString();
 		}
-		if (value instanceof JavascriptFunction) {
+		if (value instanceof JavascriptFunction)
+		{
 			return ((JavascriptFunction)value).getFunction();
 		}
 		return value.toString();
 	}
+
 	public void addOptions(Map options)
 	{
 		addLine(formatAsJavascriptHash(options));
 	}
 
-	public static class JavascriptFunction implements Serializable {
+	public static class JavascriptFunction implements Serializable
+	{
+		private static final long serialVersionUID = 1L;
 		private String function;
 
-		public JavascriptFunction(String function) {
+		public JavascriptFunction(String function)
+		{
 			this.function = function;
 		}
-		public String getFunction() {
+
+		public String getFunction()
+		{
 			return function;
 		}
 	}
