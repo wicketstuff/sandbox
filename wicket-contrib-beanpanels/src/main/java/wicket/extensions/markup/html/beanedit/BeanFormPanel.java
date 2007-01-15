@@ -26,7 +26,7 @@ import wicket.markup.html.form.Form;
 import wicket.markup.html.panel.Panel;
 import wicket.model.IModel;
 import wicket.model.Model;
-import wicket.model.StringResourceModel;
+import wicket.model.ResourceModel;
 
 /**
  * Panel with a form for generic bean displaying/ editing.
@@ -84,23 +84,6 @@ public class BeanFormPanel extends Panel
 	{
 	}
 
-	/**
-	 * Gets the label model for the cancel button.
-	 * @return the label model for the cancel button
-	 */
-	protected IModel getLabelModelForCancelButton()
-	{
-		return new StringResourceModel("wicket.ext.BeanFormPanel.cancel", this, null);
-	}
-
-	/**
-	 * Gets the label model for the save button.
-	 * @return the label model for the save button
-	 */
-	protected IModel getLabelModelForSaveButton()
-	{
-		return new StringResourceModel("wicket.ext.BeanFormPanel.save", this, null);
-	}
 
 	/**
 	 * Gets the css class model for the cancel button.
@@ -132,26 +115,25 @@ public class BeanFormPanel extends Panel
 		 * @param id component id
 		 * @param beanModel model with the JavaBean to be edited or displayed
 		 */
-		public BeanForm(String id, BeanModel beanModel)
+		public BeanForm(String id, final BeanModel beanModel)
 		{
 			super(id, beanModel);
 			add(newBeanPanel("beanPanel", beanModel));
 
-			Button cancel = new Button("cancel")
+			Button cancel = new Button("cancel", new ResourceModel(beanModel.getBean().getClass().getName()+".cancel","cancel"))
 			{
 				private static final long serialVersionUID = 1L;
 
 				protected void onSubmit()
 				{
 					onCancel();
-				}
+				}				
 			};
-			cancel.add(new AttributeModifier("value", true, getLabelModelForCancelButton()));
 			cancel.add(new AttributeModifier("class", true, getCSSClassModelForCancelButton()));
 			cancel.setDefaultFormProcessing(true);
 			add(cancel);
 
-			Button save = new Button("save")
+			Button save = new Button("save",new ResourceModel(beanModel.getBean().getClass().getName()+".save","save"))
 			{
 				private static final long serialVersionUID = 1L;
 
@@ -160,7 +142,6 @@ public class BeanFormPanel extends Panel
 					onSave();
 				}
 			};
-			save.add(new AttributeModifier("value", true, getLabelModelForSaveButton()));
 			save.add(new AttributeModifier("class", true, getCSSClassModelForSaveButton()));
 			add(save);
 		}
