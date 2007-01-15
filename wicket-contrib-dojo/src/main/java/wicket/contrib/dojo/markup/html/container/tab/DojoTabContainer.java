@@ -62,6 +62,25 @@ public class DojoTabContainer extends AbstractDojoContainer
 {
 	private AbstractDojoContainer selected;
 	
+	private String tabPosition;
+	
+	/**
+	 * Tab position on top see setTabPosition
+	 */
+	public final static String TAB_POS_TOP 		= "top";
+	/**
+	 * Tab position on bottom see setTabPosition
+	 */
+	public final static String TAB_POS_BOTTOM 	= "bottom";
+	/**
+	 * Tab position on left see setTabPosition
+	 */
+	public final static String TAB_POS_LEFT 	= "left-h";
+	/**
+	 * Tab position on right see setTabPosition
+	 */
+	public final static String TAB_POS_RIGHT 	= "right-h";
+	
 	/**
 	 * Construct a DojoTabContainer
 	 * @param id container id
@@ -88,6 +107,16 @@ public class DojoTabContainer extends AbstractDojoContainer
 		tag.put(DojoIdConstants.DOJO_TYPE, DojoIdConstants.DOJO_TYPE_TABCONTAINER);
 		tag.put("label", getTitle());
 		tag.put("selectedChild", getSelectedTabId());
+		tag.put("labelPosition", tabPosition);
+	}
+	
+	/**
+	 * Set the tab Position used constants : TAB_POS_*
+	 * @param tabPosition
+	 */
+	public void setTabPosition(String tabPosition)
+	{
+		this.tabPosition = tabPosition;
 	}
 
 	/**
