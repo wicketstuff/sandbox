@@ -1,8 +1,6 @@
 package wicket.contrib.dojo.examples;
 
-import wicket.Component;
 import wicket.ajax.AjaxRequestTarget;
-import wicket.contrib.dojo.AbstractDojoTimerBehavior;
 import wicket.contrib.dojo.DojoSelfUpdatingTimerBehavior;
 import wicket.markup.html.WebPage;
 import wicket.markup.html.basic.Label;

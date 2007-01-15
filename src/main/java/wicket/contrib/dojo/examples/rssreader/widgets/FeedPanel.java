@@ -3,10 +3,9 @@ package wicket.contrib.dojo.examples.rssreader.widgets;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.List;
 import java.util.Date;
+import java.util.List;
 
-import wicket.Component;
 import wicket.MarkupContainer;
 import wicket.ajax.AjaxRequestTarget;
 import wicket.contrib.dojo.AbstractDojoTimerBehavior;
