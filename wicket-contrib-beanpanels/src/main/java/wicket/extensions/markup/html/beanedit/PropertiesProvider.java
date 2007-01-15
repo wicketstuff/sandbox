@@ -16,26 +16,26 @@ import org.apache.commons.logging.LogFactory;
  * @author Paolo Di Tommaso
  *
  */
-public class PropertiesProvider {
+public class PropertiesProvider implements IPropertiesProvider {
 
 	private static final transient Log log = LogFactory.getLog(PropertiesProvider.class);
-	
-	public static List propertiesFor( final Class clazz ) {
+
+	public List propertiesFor( final Class clazz ) {
 		return propertiesFor(clazz,(IPropertyFilter)null);
 	}
 	
-	public static List propertiesFor( final Class clazz, final String[] attributes ) { 
+	public List propertiesFor( final Class clazz, final String[] attributes ) { 
 		return propertiesFor( clazz, attributes!=null ? Arrays.asList(attributes) : null );
 	}
 	
-	public static List propertiesFor( final Class clazz, final List attributes ) { 
+	public List propertiesFor( final Class clazz, final List attributes ) { 
 		
 		IPropertyFilter filter = null;
 
 		if( attributes != null ) { 
 			filter = new IPropertyFilter() {
-				public int accept(String propertyName) {
-					return attributes.indexOf(propertyName);
+				public int accept(Field field) {
+					return attributes.indexOf(field.getName());
 				} 
 			};
 		}
@@ -43,7 +43,7 @@ public class PropertiesProvider {
 		return propertiesFor(clazz,filter);
 	}
 
-	public static List propertiesFor( final Class clazz, final IPropertyFilter filter ) { 
+	public List propertiesFor( final Class clazz, final IPropertyFilter filter ) { 
 		List result = new ArrayList();
 		Field[] fields = clazz.getDeclaredFields();
 		for( int i=0, c=(fields!=null ? fields.length : 0); i<c; i++ ) { 
@@ -57,7 +57,7 @@ public class PropertiesProvider {
 				 */
 				boolean readOnly = (setter(clazz,fields[i]) == null);
 				if( filter != null ) { 
-					int p = filter.accept(fields[i].getName());
+					int p = filter.accept(fields[i]);
 					if( p != -1 ) { 
 						IPropertyMeta meta = new PropertyMeta(fields[i], p, readOnly);
 						result.add(meta);
