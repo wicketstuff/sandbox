@@ -94,7 +94,7 @@ public class HibernateDatabase extends Database
 	{
 		new SchemaUpdate(configuration).execute(true, true);
 	}
-	
+
 	/**
 	 * Prints schema update script to console
 	 */
@@ -212,7 +212,7 @@ public class HibernateDatabase extends Database
 	 */
 	private String[] splitAlterTables(String[] drops, boolean includeAlterFlag)
 	{
-		List temp = new ArrayList();
+		List<String> temp = new ArrayList<String>();
 		for (int i = 0; i < drops.length; i++)
 		{
 			if (drops[i].toLowerCase().trim().startsWith("alter") == includeAlterFlag)
@@ -220,6 +220,6 @@ public class HibernateDatabase extends Database
 				temp.add(drops[i]);
 			}
 		}
-		return (String[])temp.toArray(new String[temp.size()]);
+		return temp.toArray(new String[temp.size()]);
 	}
 }
