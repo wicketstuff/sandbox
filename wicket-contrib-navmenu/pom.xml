@@ -1,13 +1,21 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>wicket-stuff</groupId>
 	<artifactId>wicket-contrib-navmenu</artifactId>
 	<packaging>jar</packaging>
-	<version>1.2-SNAPSHOT</version>
+	<version>2.0-SNAPSHOT</version>
 	<name>Wicket Contrib Navigation Menu</name>
-	<description>Implementation of a tree based navigation menu for Wicket. Mainly serves as an example, though it is useable for many cases.</description>
-	<url>http://wicket-stuff.sourceforge.net/wicket-contrib-jasperreports</url>
+	<description>
+		Implementation of a tree based navigation menu for Wicket.
+		Mainly serves as an example, though it is useable for many
+		cases.
+	</description>
+	<url>
+		http://wicket-stuff.sourceforge.net/wicket-contrib-jasperreports
+	</url>
 	<inceptionYear>2005</inceptionYear>
 
 	<organization>
@@ -29,41 +37,77 @@
 
 
 	<scm>
-		<connection>scm:cvs:pserver:${maven.scm.anonymous}@cvs.sourceforge.net:/cvsroot/wicket-stuff:wicket-contrib-navmenu</connection>
-		<developerConnection>scm:cvs:ext:${maven.scm.user}@cvs.sourceforge.net:/cvsroot/wicket-stuff:wicket-contrib-navmenu</developerConnection>
-		<url>http://cvs.sourceforge.net/viewcvs.py/wicket-stuff/wicket-contrib-navmenu</url>
+		<connection>
+			scm:cvs:pserver:${maven.scm.anonymous}@cvs.sourceforge.net:/cvsroot/wicket-stuff:wicket-contrib-navmenu
+		</connection>
+		<developerConnection>
+			scm:cvs:ext:${maven.scm.user}@cvs.sourceforge.net:/cvsroot/wicket-stuff:wicket-contrib-navmenu
+		</developerConnection>
+		<url>
+			http://cvs.sourceforge.net/viewcvs.py/wicket-stuff/wicket-contrib-navmenu
+		</url>
 	</scm>
 
 	<mailingLists>
 		<mailingList>
 			<name>Wicket Announcements List</name>
-			<subscribe>http://lists.sourceforge.net/mailman/listinfo/wicket-announce</subscribe>
-			<unsubscribe>http://lists.sourceforge.net/mailman/listinfo/wicket-announce</unsubscribe>
-			<archive>http://sourceforge.net/mailarchive/forum.php?forum=wicket-announce</archive>
+			<subscribe>
+				http://lists.sourceforge.net/mailman/listinfo/wicket-announce
+			</subscribe>
+			<unsubscribe>
+				http://lists.sourceforge.net/mailman/listinfo/wicket-announce
+			</unsubscribe>
+			<archive>
+				http://sourceforge.net/mailarchive/forum.php?forum=wicket-announce
+			</archive>
 		</mailingList>
 		<mailingList>
 			<name>Wicket User List</name>
-			<subscribe>http://lists.sourceforge.net/mailman/listinfo/wicket-user</subscribe>
-			<unsubscribe>http://lists.sourceforge.net/mailman/listinfo/wicket-user</unsubscribe>
-			<archive>http://sourceforge.net/mailarchive/forum.php?forum=wicket-user</archive>
+			<subscribe>
+				http://lists.sourceforge.net/mailman/listinfo/wicket-user
+			</subscribe>
+			<unsubscribe>
+				http://lists.sourceforge.net/mailman/listinfo/wicket-user
+			</unsubscribe>
+			<archive>
+				http://sourceforge.net/mailarchive/forum.php?forum=wicket-user
+			</archive>
 		</mailingList>
 		<mailingList>
 			<name>Wicket Development List</name>
-			<subscribe>http://lists.sourceforge.net/mailman/listinfo/wicket-develop</subscribe>
-			<unsubscribe>http://lists.sourceforge.net/mailman/listinfo/wicket-develop</unsubscribe>
-			<archive>http://sourceforge.net/mailarchive/forum.php?forum=wicket-develop</archive>
+			<subscribe>
+				http://lists.sourceforge.net/mailman/listinfo/wicket-develop
+			</subscribe>
+			<unsubscribe>
+				http://lists.sourceforge.net/mailman/listinfo/wicket-develop
+			</unsubscribe>
+			<archive>
+				http://sourceforge.net/mailarchive/forum.php?forum=wicket-develop
+			</archive>
 		</mailingList>
 		<mailingList>
 			<name>Wicket CVS commit List</name>
-			<subscribe>http://lists.sourceforge.net/mailman/listinfo/wicket-autocvs</subscribe>
-			<unsubscribe>http://lists.sourceforge.net/mailman/listinfo/wicket-autocvs</unsubscribe>
-			<archive>http://sourceforge.net/mailarchive/forum.php?forum=wicket-autocvs</archive>
+			<subscribe>
+				http://lists.sourceforge.net/mailman/listinfo/wicket-autocvs
+			</subscribe>
+			<unsubscribe>
+				http://lists.sourceforge.net/mailman/listinfo/wicket-autocvs
+			</unsubscribe>
+			<archive>
+				http://sourceforge.net/mailarchive/forum.php?forum=wicket-autocvs
+			</archive>
 		</mailingList>
 		<mailingList>
 			<name>Wicket automated builds List</name>
-			<subscribe>http://lists.sourceforge.net/mailman/listinfo/wicket-builds</subscribe>
-			<unsubscribe>http://lists.sourceforge.net/mailman/listinfo/wicket-builds</unsubscribe>
-			<archive>http://sourceforge.net/mailarchive/forum.php?forum=wicket-builds</archive>
+			<subscribe>
+				http://lists.sourceforge.net/mailman/listinfo/wicket-builds
+			</subscribe>
+			<unsubscribe>
+				http://lists.sourceforge.net/mailman/listinfo/wicket-builds
+			</unsubscribe>
+			<archive>
+				http://sourceforge.net/mailarchive/forum.php?forum=wicket-builds
+			</archive>
 		</mailingList>
 	</mailingLists>
 
@@ -78,7 +122,7 @@
 		<dependency>
 			<groupId>wicket</groupId>
 			<artifactId>wicket</artifactId>
-			<version>1.2-SNAPSHOT</version>
+			<version>2.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -118,7 +162,9 @@
 				<configuration>
 					<descriptor>src/assembly/bin.xml</descriptor>
 					<finalName>${artifactId}-${version}</finalName>
-					<outputDirectory>target/distributions</outputDirectory>
+					<outputDirectory>
+						target/distributions
+					</outputDirectory>
 					<workDirectory>target/assembly/work</workDirectory>
 				</configuration>
 			</plugin>
@@ -134,7 +180,9 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-site-plugin</artifactId>
 				<configuration>
-					<templateDirectory>file:src/site/template/</templateDirectory>
+					<templateDirectory>
+						file:src/site/template/
+					</templateDirectory>
 					<template>wicket-site.vm</template>
 				</configuration>
 			</plugin>
@@ -144,7 +192,17 @@
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-project-info-reports-plugin</artifactId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.5</source>
+					<target>1.5</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>
+					maven-project-info-reports-plugin
+				</artifactId>
 				<reportSets>
 					<reportSet>
 						<reports>
