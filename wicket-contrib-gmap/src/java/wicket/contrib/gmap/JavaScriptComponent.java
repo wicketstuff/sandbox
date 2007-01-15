@@ -1,6 +1,7 @@
 package wicket.contrib.gmap;
 
 import wicket.AttributeModifier;
+import wicket.MarkupContainer;
 import wicket.markup.ComponentTag;
 import wicket.markup.MarkupStream;
 import wicket.markup.html.WebComponent;
@@ -14,9 +15,9 @@ import wicket.model.Model;
 abstract class JavaScriptComponent extends WebComponent
 {
 
-    public JavaScriptComponent(final String id)
+    public JavaScriptComponent(MarkupContainer parent, final String id)
     {
-        super(id);
+        super(parent, id);
     }
 
     protected void onComponentTag(final ComponentTag tag)

@@ -19,6 +19,7 @@
 package wicket.contrib.gmap;
 
 import wicket.Component;
+import wicket.MarkupContainer;
 import wicket.markup.html.WebMarkupContainer;
 
 /**
@@ -41,9 +42,9 @@ class GMarkerContainer extends WebMarkupContainer
     //todo quick hack
     private String markupId;
 
-    public GMarkerContainer(GMarker gmarker)
+    public GMarkerContainer(MarkupContainer parent, GMarker gmarker)
     {
-        super(ID);
+        super(parent, ID);
         this.markupId = gmarker.getOverlayId();
 
         // todo name constraint
@@ -60,8 +61,7 @@ class GMarkerContainer extends WebMarkupContainer
         behaviour = new GMapAjaxBehavior();
         
         add(behaviour);
-        add(new GMarkerComponent(gmarker, behaviour));
-        add(infoComponent);
+        new GMarkerComponent(this, gmarker, behaviour);
     }
 
     public void toggleVisibility()

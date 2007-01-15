@@ -22,19 +22,6 @@ public class GMarker extends Overlay
 	private GIcon icon;
 
 	/**
-	 * Creates an empty marker, only the default icon will be displayed and no
-	 * onClick event handler will be attached.
-	 * 
-	 * @param point
-	 *            the point on the map where this marker will be anchored
-	 * @see GPoint
-	 */
-	public GMarker(GPoint point)
-	{
-		this(point, new WebComponent("gmarkerInfo"));
-	}
-
-	/**
 	 * Creates an marker that will have an onClick event attached. When user
 	 * clicks on this marker, wicket <code>component</code> will be rendered.
 	 * 

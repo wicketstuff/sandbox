@@ -1,5 +1,6 @@
 package wicket.contrib.gmap;
 
+import wicket.MarkupContainer;
 import wicket.ResourceReference;
 import wicket.behavior.AbstractAjaxBehavior;
 
@@ -27,12 +28,13 @@ class GMarkerComponent extends JavaScriptComponent
 	/**
 	 * Construct.
 	 * 
+	 * @param parent
 	 * @param gmarker
 	 * @param behavior
 	 */
-	public GMarkerComponent(GMarker gmarker, AbstractAjaxBehavior behavior)
+	public GMarkerComponent(MarkupContainer parent, GMarker gmarker, AbstractAjaxBehavior behavior)
 	{
-		super(ID);
+		super(parent, ID);
 		this.gmarker = gmarker;
 		this.behavior = behavior;
 	}

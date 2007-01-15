@@ -17,7 +17,7 @@
  */
 package wicket.contrib.gmap;
 
-import wicket.markup.html.form.persistence.IValuePersister;
+import wicket.MarkupContainer;
 import wicket.markup.html.panel.Panel;
 
 /**
@@ -34,27 +34,33 @@ import wicket.markup.html.panel.Panel;
  */
 public class GMapPanel extends Panel
 {
-	private static final long serialVersionUID = 1L; 
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Creates a GMapPanel with width=400, height=300 and using default
-	 * {GMapPanel.GMAP_DEFAULT_KEY} key. Make sure that deployment context of your
-	 * application is <a href="http://localhost/gmap/">http://localhost/gmap/</a>
+	 * {GMapPanel.GMAP_DEFAULT_KEY} key. Make sure that deployment context of
+	 * your application is <a
+	 * href="http://localhost/gmap/">http://localhost/gmap/</a>
+	 * 
+	 * @param parent
 	 * 
 	 * @param id
 	 *            wicket component id
 	 * @param gmap
 	 *            a GMap instance
 	 */
-	public GMapPanel(String id, GMap gmap)
+	public GMapPanel(MarkupContainer parent, String id, GMap gmap)
 	{
-		this(id, gmap, 400, 300, GMAP_DEFAULT_KEY);
+		this(parent, id, gmap, 400, 300, GMAP_DEFAULT_KEY);
 	}
 
 	/**
-	 * Creates GMapPanel component using default {@link GMapPanel.GMAP_DEFAULT_KEY} key.
-	 * Make sure that deployment context of your application is <a
+	 * Creates GMapPanel component using default
+	 * {@link GMapPanel.GMAP_DEFAULT_KEY} key. Make sure that deployment context
+	 * of your application is <a
 	 * href="http://localhost/gmap">http://localhost/gmap/</a>
+	 * 
+	 * @param parent
 	 * 
 	 * @param id
 	 *            wicket component id
@@ -65,13 +71,15 @@ public class GMapPanel extends Panel
 	 * @param height
 	 *            map height in px
 	 */
-	public GMapPanel(String id, GMap gmap, int width, int height)
+	public GMapPanel(MarkupContainer parent, String id, GMap gmap, int width, int height)
 	{
-		this(id, gmap, width, height, GMAP_DEFAULT_KEY);
+		this(parent, id, gmap, width, height, GMAP_DEFAULT_KEY);
 	}
 
 	/**
 	 * Create GMapPanel.
+	 * 
+	 * @param parent
 	 * 
 	 * @param id
 	 *            wicket component id
@@ -85,13 +93,14 @@ public class GMapPanel extends Panel
 	 *            key generated for your site, you can get it from <a
 	 *            href="http://www.google.com/apis/maps/signup.html">here</a>
 	 */
-	public GMapPanel(String id, GMap gmap, int width, int height, String gmapKey)
+	public GMapPanel(MarkupContainer parent, String id, GMap gmap, int width, int height,
+			String gmapKey)
 	{
-		super(id);
+		super(parent, id);
 
-		add(new GMapScript("script", GMAP_URL + gmapKey));
-		add(new GMapContainer(gmap));
-		add(new Map("map", width, height));
+		new GMapScript(this, "script", GMAP_URL + gmapKey);
+		new GMapContainer(this, gmap);
+		new Map(this, "map", width, height);
 	}
 
 	// gmap url
