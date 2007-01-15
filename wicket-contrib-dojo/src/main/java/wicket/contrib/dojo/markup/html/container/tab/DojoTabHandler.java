@@ -82,7 +82,7 @@ public class DojoTabHandler extends AbstractRequireDojoBehavior
 		RenderHeadCreator head = new RenderHeadCreator(container);
 		container.visitChildren(head);
 		
-		response.renderString(head.getHead());
+		response.renderJavascript(head.getHead(), getComponent().getMarkupId() + "script");
 	}
 	
 	/**
@@ -97,7 +97,6 @@ public class DojoTabHandler extends AbstractRequireDojoBehavior
 		public RenderHeadCreator(DojoTabContainer container)
 		{
 			toReturn = "";
-			toReturn += "<script language=\"JavaScript\" type=\"text/javascript\">\n";
 			toReturn += "function initTab" + container.getMarkupId() + "(){\n";
 			
 			this.container = container;
@@ -116,7 +115,6 @@ public class DojoTabHandler extends AbstractRequireDojoBehavior
 		public String getHead(){
 			toReturn += "}\n";
 			toReturn += "dojo.event.connect(dojo, \"loaded\", \"initTab" + container.getMarkupId() + "\");\n";
-			toReturn += "</script>\n";
 			return toReturn;
 		}
 		
