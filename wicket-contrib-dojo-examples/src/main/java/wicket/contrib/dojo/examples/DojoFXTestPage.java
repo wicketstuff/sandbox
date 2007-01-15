@@ -3,17 +3,17 @@ package wicket.contrib.dojo.examples;
 
 
 import wicket.PageParameters;
+import wicket.contrib.dojo.dojofx.FXOnClickExploder;
 import wicket.contrib.dojo.dojofx.FXOnClickFader;
 import wicket.contrib.dojo.dojofx.FXOnClickSlider;
 import wicket.contrib.dojo.dojofx.FXOnClickWiper;
 import wicket.contrib.dojo.dojofx.FXOnMouseOverFader;
+import wicket.contrib.dojo.dojofx.FXOnMouseOverHighlighter;
 import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.WebPage;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.image.Image;
 import wicket.model.Model;
-import wicket.contrib.dojo.dojofx.FXOnClickExploder;
-import wicket.contrib.dojo.dojofx.FXOnMouseOverHighlighter;
 
 public class DojoFXTestPage extends WebPage{
 

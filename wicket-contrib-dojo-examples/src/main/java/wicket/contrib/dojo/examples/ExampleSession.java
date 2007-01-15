@@ -17,6 +17,7 @@
  */
 package wicket.contrib.dojo.examples;
 
+import wicket.Request;
 import wicket.protocol.http.WebApplication;
 import wicket.protocol.http.WebSession;
 
@@ -25,15 +26,16 @@ import wicket.protocol.http.WebSession;
  * access to session properties.
  */
 public final class ExampleSession extends WebSession {
-	// TODO Add any session properties here
 
 	/**
 	 * Constructor
 	 * 
 	 * @param application
 	 *            The application
+	 * @param request
+	 *            The current request
 	 */
-	protected ExampleSession(final WebApplication application) {
-		super(application);
+	protected ExampleSession(final WebApplication application, Request request) {
+		super(application, request);
 	}
 }
