@@ -18,8 +18,6 @@ package wicket.examples.cdapp;
 
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.hibernate.HibernateException;
 
 import wicket.MarkupContainer;
@@ -42,19 +40,16 @@ import wicket.model.IModel;
 import wicket.model.Model;
 import wicket.model.PropertyModel;
 
-
 /**
  * Page that nests a search form and a pageable and sortable results table.
  * 
  * @author Eelco Hillenius
  */
-public class SearchPage extends CdAppBasePage
-{
+public class SearchPage extends CdAppBasePage {
 	/**
 	 * Custom table navigation class that adds extra labels.
 	 */
-	private static class CDTableNavigation extends PagingNavigation
-	{
+	private static class CDTableNavigation extends PagingNavigation {
 		/**
 		 * 
 		 */
@@ -70,8 +65,8 @@ public class SearchPage extends CdAppBasePage
 		 * @param table
 		 *            the table
 		 */
-		public CDTableNavigation(MarkupContainer parent, String id, PageableListView table)
-		{
+		public CDTableNavigation(MarkupContainer parent, String id,
+				PageableListView table) {
 			super(parent, id, table);
 		}
 
@@ -79,27 +74,23 @@ public class SearchPage extends CdAppBasePage
 		 * @see wicket.markup.html.list.Loop#populateItem(wicket.markup.html.list.Loop.LoopItem)
 		 */
 		@Override
-		protected void populateItem(final LoopItem iteration)
-		{
-			final PagingNavigationLink link = new PagingNavigationLink(iteration, "pageLink",
-					pageable, iteration.getIteration());
+		protected void populateItem(final LoopItem iteration) {
+			final PagingNavigationLink link = new PagingNavigationLink(
+					iteration, "pageLink", pageable, iteration.getIteration());
 
-			if (iteration.getIteration() > 0)
-			{
+			if (iteration.getIteration() > 0) {
 				new Label(iteration, "separator", "|");
-			}
-			else
-			{
+			} else {
 				new Label(iteration, "separator", "");
 			}
-			new Label(link, "pageNumber", String.valueOf(iteration.getIteration() + 1));
+			new Label(link, "pageNumber", String.valueOf(iteration
+					.getIteration() + 1));
 			new Label(link, "pageLabel", "page");
 		}
 	}
 
 	/** Link for deleting a row. */
-	private final class DeleteLink extends Link<Long>
-	{
+	private final class DeleteLink extends Link<Long> {
 		/**
 		 * 
 		 */
@@ -115,29 +106,25 @@ public class SearchPage extends CdAppBasePage
 		 * @param cd
 		 *            the cd
 		 */
-		public DeleteLink(MarkupContainer parent, String name, CD cd)
-		{
+		public DeleteLink(MarkupContainer parent, String name, CD cd) {
 			super(parent, name, new Model<Long>(cd.getId()));
-			add(new SimpleAttributeModifier("onclick", "if(!confirm('delete cd " + cd.getTitle()
-					+ " ?')) return false;"));
+			add(new SimpleAttributeModifier("onclick",
+					"if(!confirm('delete cd " + cd.getTitle()
+							+ " ?')) return false;"));
 		}
 
 		/**
 		 * @see wicket.markup.html.link.Link#onClick()
 		 */
 		@Override
-		public void onClick()
-		{
+		public void onClick() {
 			final Long id = getModelObject();
 
 			CdDao cdDao = getCdDao();
 			CD cd = null;
-			try
-			{
+			try {
 				cd = cdDao.load(id);
-			}
-			catch (HibernateException e)
-			{
+			} catch (HibernateException e) {
 				// For some reason (back button, concurrent acces?) the object
 				// does not exist
 				// anymore. Report an error and return
@@ -161,8 +148,7 @@ public class SearchPage extends CdAppBasePage
 	}
 
 	/** link to detail edit page. */
-	private final class DetailLink extends Link<Long>
-	{
+	private final class DetailLink extends Link<Long> {
 		/**
 		 * 
 		 */
@@ -178,8 +164,7 @@ public class SearchPage extends CdAppBasePage
 		 * @param id
 		 *            the id of the cd
 		 */
-		public DetailLink(MarkupContainer parent, String name, Long id)
-		{
+		public DetailLink(MarkupContainer parent, String name, Long id) {
 			super(parent, name, new Model<Long>(id));
 		}
 
@@ -187,8 +172,7 @@ public class SearchPage extends CdAppBasePage
 		 * @see wicket.markup.html.link.Link#onClick()
 		 */
 		@Override
-		public void onClick()
-		{
+		public void onClick() {
 			final RequestCycle requestCycle = getRequestCycle();
 			final Long id = getModelObject();
 			requestCycle.setResponsePage(new EditPage(SearchPage.this, id));
@@ -198,8 +182,7 @@ public class SearchPage extends CdAppBasePage
 	/**
 	 * Table for displaying search results.
 	 */
-	private class SearchCDResultsListView extends PageableListView<CD>
-	{
+	private class SearchCDResultsListView extends PageableListView<CD> {
 		/**
 		 * 
 		 */
@@ -217,9 +200,8 @@ public class SearchPage extends CdAppBasePage
 		 * @param pageSizeInCells
 		 *            page size
 		 */
-		public SearchCDResultsListView(MarkupContainer parent, String id, IModel<List<CD>> model,
-				int pageSizeInCells)
-		{
+		public SearchCDResultsListView(MarkupContainer parent, String id,
+				IModel<List<CD>> model, int pageSizeInCells) {
 			super(parent, id, model, pageSizeInCells);
 		}
 
@@ -227,8 +209,7 @@ public class SearchPage extends CdAppBasePage
 		 * @see wicket.Component#isVersioned()
 		 */
 		@Override
-		public boolean isVersioned()
-		{
+		public boolean isVersioned() {
 			return true;
 		}
 
@@ -237,32 +218,32 @@ public class SearchPage extends CdAppBasePage
 		 * @param item
 		 */
 		@Override
-		public void populateItem(final ListItem<CD> item)
-		{
+		public void populateItem(final ListItem<CD> item) {
 			final CD cd = item.getModelObject();
 			final Long id = cd.getId();
 
 			// add links to the details
 			new Label(new DetailLink(item, "title", id), "title", cd.getTitle());
-			new Label(new DetailLink(item, "performers", id), "performers", cd.getPerformers());
+			new Label(new DetailLink(item, "performers", id), "performers", cd
+					.getPerformers());
 			new Label(new DetailLink(item, "label", id), "label", cd.getLabel());
-			new Label(new DetailLink(item, "year", id), "year", (cd.getYear() != null) ? cd
-					.getYear().toString() : "");
+			new Label(new DetailLink(item, "year", id), "year",
+					(cd.getYear() != null) ? cd.getYear().toString() : "");
 
 			// add a delete link for each found record
-			DeleteLink deleteLink = new DeleteLink(item, "delete", cd);
+			new DeleteLink(item, "delete", cd);
 		}
 	}
 
 	/**
 	 * Form for search actions.
 	 */
-	private class SearchForm extends Form
-	{
+	private class SearchForm extends Form {
 		/**
 		 * 
 		 */
 		private static final long serialVersionUID = 1L;
+
 		/** search property to set. */
 		private String search;
 
@@ -274,10 +255,10 @@ public class SearchPage extends CdAppBasePage
 		 * @param id
 		 *            id of the form component
 		 */
-		public SearchForm(MarkupContainer parent, final String id)
-		{
+		public SearchForm(MarkupContainer parent, final String id) {
 			super(parent, id);
-			new TextField<String>(this, "search", new PropertyModel<String>(this, "search"));
+			new TextField<String>(this, "search", new PropertyModel<String>(
+					this, "search"));
 		}
 
 		/**
@@ -285,8 +266,7 @@ public class SearchPage extends CdAppBasePage
 		 * 
 		 * @return search property
 		 */
-		public final String getSearch()
-		{
+		public final String getSearch() {
 			return search;
 		}
 
@@ -294,15 +274,14 @@ public class SearchPage extends CdAppBasePage
 		 * @see wicket.markup.html.form.Form#onSubmit()
 		 */
 		@Override
-		public final void onSubmit()
-		{
+		public final void onSubmit() {
 			searchModel.setSearchString(search); // set search query on model
 			setCurrentResultPageToFirst(); // start with first page
 			// SearchPage.this.modelChangedStructure();
 
-			if (search != null && (!search.trim().equals("")))
-			{
-				info(getNumberOfResults() + " results found for query '" + search + "'");
+			if (search != null && (!search.trim().equals(""))) {
+				info(getNumberOfResults() + " results found for query '"
+						+ search + "'");
 			}
 		}
 
@@ -312,19 +291,18 @@ public class SearchPage extends CdAppBasePage
 		 * @param search
 		 *            search property
 		 */
-		public final void setSearch(String search)
-		{
+		public final void setSearch(String search) {
 			this.search = search;
 		}
 	}
 
 	/** Link for sorting on a column. */
-	private final class SortLink extends Link
-	{
+	private final class SortLink extends Link {
 		/**
 		 * 
 		 */
 		private static final long serialVersionUID = 1L;
+
 		/** order by field. */
 		private final String field;
 
@@ -338,8 +316,7 @@ public class SearchPage extends CdAppBasePage
 		 * @param field
 		 *            order by field
 		 */
-		public SortLink(MarkupContainer parent, String id, String field)
-		{
+		public SortLink(MarkupContainer parent, String id, String field) {
 			super(parent, id);
 			this.field = field;
 		}
@@ -350,19 +327,12 @@ public class SearchPage extends CdAppBasePage
 		 * @see wicket.markup.html.link.Link#onClick()
 		 */
 		@Override
-		public void onClick()
-		{
+		public void onClick() {
 			searchModel.addOrdering(field);
 			// SearchPage.this.modelChangedStructure();
 		}
 	}
 
-	/** Logger. */
-	private static Log log = LogFactory.getLog(SearchPage.class);
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	/** list view for search results. */
@@ -377,8 +347,7 @@ public class SearchPage extends CdAppBasePage
 	/**
 	 * Construct.
 	 */
-	public SearchPage()
-	{
+	public SearchPage() {
 		this(null);
 	}
 
@@ -388,25 +357,24 @@ public class SearchPage extends CdAppBasePage
 	 * @param pageParameters
 	 *            parameters for this page
 	 */
-	public SearchPage(PageParameters pageParameters)
-	{
+	public SearchPage(PageParameters pageParameters) {
 		super();
 		final int rowsPerPage = 8;
 		searchModel = new SearchModel(rowsPerPage);
 
 		FeedbackPanel pageFeedback = new FeedbackPanel(this, "feedback");
 		searchForm = new SearchForm(this, "searchForm");
-		resultsListView = new SearchCDResultsListView(this, "results", searchModel, rowsPerPage);
-		WebMarkupContainer resultsTableHeader = new WebMarkupContainer(this, "resultsHeader")
-		{
+		resultsListView = new SearchCDResultsListView(this, "results",
+				searchModel, rowsPerPage);
+		WebMarkupContainer resultsTableHeader = new WebMarkupContainer(this,
+				"resultsHeader") {
 			/**
 			 * 
 			 */
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public boolean isVisible()
-			{
+			public boolean isVisible() {
 				return searchModel.hasResults();
 			}
 		};
@@ -424,8 +392,7 @@ public class SearchPage extends CdAppBasePage
 	/**
 	 * Sets the result page to the first page.
 	 */
-	public void setCurrentResultPageToFirst()
-	{
+	public void setCurrentResultPageToFirst() {
 		resultsListView.setCurrentPage(0);
 	}
 
@@ -434,8 +401,7 @@ public class SearchPage extends CdAppBasePage
 	 * 
 	 * @return the current number of results
 	 */
-	private int getNumberOfResults()
-	{
-		return ((List)resultsListView.getModelObject()).size();
+	private int getNumberOfResults() {
+		return ((List) resultsListView.getModelObject()).size();
 	}
 }

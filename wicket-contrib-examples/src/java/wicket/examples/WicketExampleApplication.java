@@ -16,39 +16,26 @@
  */
 package wicket.examples;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import wicket.protocol.http.WebApplication;
 import wicket.settings.ISecuritySettings;
 import wicket.util.crypt.ClassCryptFactory;
 import wicket.util.crypt.NoCrypt;
 
 /**
- * WicketServlet class for hello world example.
- * 
- * @author Jonathan Locke
+ * Application class.
  */
-public abstract class WicketExampleApplication extends WebApplication
-{
-	/**
-	 * Used for logging.
-	 */
-	private static Log log = LogFactory.getLog(WicketExampleApplication.class);
-
+public abstract class WicketExampleApplication extends WebApplication {
 	/**
 	 * Constructor.
 	 */
-	public WicketExampleApplication()
-	{
+	public WicketExampleApplication() {
 	}
 
 	/**
 	 * @see wicket.protocol.http.WebApplication#init()
 	 */
 	@Override
-	protected void init()
-	{
+	protected void init() {
 		// WARNING: DO NOT do this on a real world application unless
 		// you really want your app's passwords all passed around and
 		// stored in unencrypted browser cookies (BAD IDEA!)!!!
@@ -58,7 +45,8 @@ public abstract class WicketExampleApplication extends WebApplication
 		// and we want them to be able to run the examples out of the
 		// box.
 		getSecuritySettings().setCryptFactory(
-				new ClassCryptFactory(NoCrypt.class, ISecuritySettings.DEFAULT_ENCRYPTION_KEY));
+				new ClassCryptFactory(NoCrypt.class,
+						ISecuritySettings.DEFAULT_ENCRYPTION_KEY));
 
 	}
 }

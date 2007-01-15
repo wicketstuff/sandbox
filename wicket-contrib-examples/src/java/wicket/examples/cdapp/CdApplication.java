@@ -16,8 +16,6 @@
  */
 package wicket.examples.cdapp;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
@@ -37,35 +35,28 @@ import wicket.protocol.http.WebSession;
  * 
  * @author Eelco Hillenius
  */
-public class CdApplication extends WicketExampleApplication
-{
-	/** Logger. */
-	private static Log log = LogFactory.getLog(CdApplication.class);
-
+public class CdApplication extends WicketExampleApplication {
 	/**
 	 * custom request cycle factory.
 	 */
-	private static class CdRequestCycleFactory implements IRequestCycleFactory
-	{
+	private static class CdRequestCycleFactory implements IRequestCycleFactory {
+		private static final long serialVersionUID = 1L;
+
 		/** hibernate session factory. */
 		private final SessionFactory sessionFactory;
 
 		/**
 		 * Construct.
 		 */
-		public CdRequestCycleFactory()
-		{
-			try
-			{
+		public CdRequestCycleFactory() {
+			try {
 				final Configuration configuration = new Configuration();
 				configuration.configure();
 				// build hibernate SessionFactory for this application instance
 				sessionFactory = configuration.buildSessionFactory();
 				// create database
 				new DatabaseUtil(configuration).createDatabase();
-			}
-			catch (Exception e)
-			{
+			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}
 		}
@@ -74,10 +65,10 @@ public class CdApplication extends WicketExampleApplication
 		 * @see wicket.IRequestCycleFactory#newRequestCycle(wicket.Session,
 		 *      wicket.Request, wicket.Response)
 		 */
-		public RequestCycle newRequestCycle(Session session, Request request, Response response)
-		{
-			return new CdAppRequestCycle((WebSession)session, (WebRequest)request, response,
-					sessionFactory);
+		public RequestCycle newRequestCycle(Session session, Request request,
+				Response response) {
+			return new CdAppRequestCycle((WebSession) session,
+					(WebRequest) request, response, sessionFactory);
 		}
 	};
 
@@ -86,8 +77,7 @@ public class CdApplication extends WicketExampleApplication
 	/**
 	 * Constructor
 	 */
-	public CdApplication()
-	{
+	public CdApplication() {
 		requestCycleFactory = new CdRequestCycleFactory();
 	}
 
@@ -95,8 +85,7 @@ public class CdApplication extends WicketExampleApplication
 	 * @see wicket.protocol.http.WebApplication#init()
 	 */
 	@Override
-	protected void init()
-	{
+	protected void init() {
 		getResourceSettings().setThrowExceptionOnMissingResource(false);
 
 		setSessionFactory(this);
@@ -106,16 +95,14 @@ public class CdApplication extends WicketExampleApplication
 	 * @see wicket.Application#getHomePage()
 	 */
 	@Override
-	public Class< ? extends Page> getHomePage()
-	{
+	public Class<? extends Page> getHomePage() {
 		return Home.class;
 	}
 
 	/**
 	 * @see wicket.protocol.http.WebApplication#getRequestCycleFactory()
 	 */
-	protected IRequestCycleFactory getRequestCycleFactory()
-	{
+	protected IRequestCycleFactory getRequestCycleFactory() {
 		return requestCycleFactory;
 	}
 }

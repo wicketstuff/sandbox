@@ -35,11 +35,11 @@ import wicket.model.AbstractReadOnlyDetachableModel;
  * @author Eelco Hillenius
  */
 @SuppressWarnings("hiding")
-public final class SearchModel extends AbstractReadOnlyDetachableModel<List<CD>>
-{
+public final class SearchModel extends
+		AbstractReadOnlyDetachableModel<List<CD>> {
 	/** count and list action that works with this model. */
-	private final class CountAndListAction extends HibernateCountAndListAction<CD, Long>
-	{
+	private final class CountAndListAction extends
+			HibernateCountAndListAction<CD, Long> {
 		/**
 		 * 
 		 */
@@ -48,10 +48,10 @@ public final class SearchModel extends AbstractReadOnlyDetachableModel<List<CD>>
 		/**
 		 * Construct.
 		 */
-		public CountAndListAction()
-		{
+		public CountAndListAction() {
 			super("wicket.examples.cdapp.model.SearchCD",
-					"wicket.examples.cdapp.model.SearchCD.count", new HibernateSessionDelegate());
+					"wicket.examples.cdapp.model.SearchCD.count",
+					new HibernateSessionDelegate());
 		}
 
 		/**
@@ -62,8 +62,8 @@ public final class SearchModel extends AbstractReadOnlyDetachableModel<List<CD>>
 		 *      java.lang.Object)
 		 */
 		@Override
-		protected void setParameters(Query query, Long queryObject) throws HibernateException
-		{
+		protected void setParameters(Query query, Long queryObject)
+				throws HibernateException {
 			final String searchStringParameter = getSearchStringParameter();
 			query.setString("performers", searchStringParameter);
 			query.setString("title", searchStringParameter);
@@ -88,8 +88,7 @@ public final class SearchModel extends AbstractReadOnlyDetachableModel<List<CD>>
 	/**
 	 * Construct.
 	 */
-	public SearchModel()
-	{
+	public SearchModel() {
 	}
 
 	/**
@@ -98,8 +97,7 @@ public final class SearchModel extends AbstractReadOnlyDetachableModel<List<CD>>
 	 * @param rowsPerPage
 	 *            number of rows on each page
 	 */
-	public SearchModel(int rowsPerPage)
-	{
+	public SearchModel(int rowsPerPage) {
 		this.rowsPerPage = rowsPerPage;
 	}
 
@@ -109,12 +107,10 @@ public final class SearchModel extends AbstractReadOnlyDetachableModel<List<CD>>
 	 * @param field
 	 *            the field to add
 	 */
-	public final void addOrdering(String field)
-	{
-		PageableList<CD, Long> list = (PageableList<CD, Long>)getObject();
-		if (list != null)
-		{
-			HibernateCountAndListAction action = (HibernateCountAndListAction)list
+	public final void addOrdering(String field) {
+		PageableList<CD, Long> list = (PageableList<CD, Long>) getObject();
+		if (list != null) {
+			HibernateCountAndListAction action = (HibernateCountAndListAction) list
 					.getCountAndListAction();
 			action.addOrdering(field);
 			list.clear();
@@ -126,8 +122,7 @@ public final class SearchModel extends AbstractReadOnlyDetachableModel<List<CD>>
 	 * 
 	 * @return number of rows on each page
 	 */
-	public final int getRowsPerPage()
-	{
+	public final int getRowsPerPage() {
 		return rowsPerPage;
 	}
 
@@ -136,8 +131,7 @@ public final class SearchModel extends AbstractReadOnlyDetachableModel<List<CD>>
 	 * 
 	 * @return searchString
 	 */
-	public final String getSearchString()
-	{
+	public final String getSearchString() {
 		return searchString;
 	}
 
@@ -146,8 +140,7 @@ public final class SearchModel extends AbstractReadOnlyDetachableModel<List<CD>>
 	 * 
 	 * @return whether there are any rows found
 	 */
-	public final boolean hasResults()
-	{
+	public final boolean hasResults() {
 		List results = getObject();
 		return (!results.isEmpty());
 	}
@@ -158,8 +151,7 @@ public final class SearchModel extends AbstractReadOnlyDetachableModel<List<CD>>
 	 * @param searchString
 	 *            searchString
 	 */
-	public final void setSearchString(String searchString)
-	{
+	public final void setSearchString(String searchString) {
 		detach(); // force reload right away
 		this.searchString = searchString;
 	}
@@ -168,8 +160,7 @@ public final class SearchModel extends AbstractReadOnlyDetachableModel<List<CD>>
 	 * @see wicket.model.AbstractDetachableModel#onAttach()
 	 */
 	@Override
-	protected void onAttach()
-	{
+	protected void onAttach() {
 		list = new PageableList<CD, Long>(rowsPerPage, countAndListAction);
 	}
 
@@ -177,8 +168,7 @@ public final class SearchModel extends AbstractReadOnlyDetachableModel<List<CD>>
 	 * @see AbstractDetachableModel#onDetach()
 	 */
 	@Override
-	protected void onDetach()
-	{
+	protected void onDetach() {
 		list = null;
 	}
 
@@ -186,8 +176,7 @@ public final class SearchModel extends AbstractReadOnlyDetachableModel<List<CD>>
 	 * @see wicket.model.AbstractDetachableModel#onGetObject()
 	 */
 	@Override
-	protected PageableList<CD, Long> onGetObject()
-	{
+	protected PageableList<CD, Long> onGetObject() {
 		return list;
 	}
 
@@ -196,11 +185,9 @@ public final class SearchModel extends AbstractReadOnlyDetachableModel<List<CD>>
 	 * 
 	 * @return the current search string as a query parameter
 	 */
-	private String getSearchStringParameter()
-	{
+	private String getSearchStringParameter() {
 		final String searchStringParameter;
-		if (searchString != null)
-		{
+		if (searchString != null) {
 			return '%' + searchString.toUpperCase() + '%';
 		}
 		return null;
