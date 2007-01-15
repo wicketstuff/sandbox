@@ -4,23 +4,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 import wicket.PageParameters;
-import wicket.contrib.scriptaculous.dragdrop.DragDropPageContribution;
 import wicket.contrib.scriptaculous.examples.ScriptaculousExamplesSession;
+import wicket.markup.html.WebPage;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.list.ListItem;
 import wicket.markup.html.list.ListView;
 
-public class DragDropExamplePageContribution extends DragDropPageContribution
+/**
+ * Page.
+ */
+public class DragDropExamplePageContribution extends WebPage
 {
-
+	/**
+	 * Construct.
+	 * 
+	 * @param parameters
+	 */
 	public DragDropExamplePageContribution(PageParameters parameters)
 	{
 		super(parameters);
 
-		if (null != getInputValue())
-		{
-			addProductToCart();
-		}
+		addProductToCart();
 
 		new ListView(this, "cartItem", getCartItems())
 		{

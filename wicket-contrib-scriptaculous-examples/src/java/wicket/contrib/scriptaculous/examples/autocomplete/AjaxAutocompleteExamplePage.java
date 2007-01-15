@@ -1,5 +1,8 @@
 package wicket.contrib.scriptaculous.examples.autocomplete;
 
+import java.util.Arrays;
+import java.util.Collection;
+
 import wicket.MarkupContainer;
 import wicket.contrib.scriptaculous.autocomplete.AjaxAutocompleteTextField;
 import wicket.markup.html.WebPage;
@@ -7,9 +10,15 @@ import wicket.markup.html.form.Button;
 import wicket.markup.html.form.Form;
 import wicket.model.CompoundPropertyModel;
 
+/**
+ * Example.
+ */
 public class AjaxAutocompleteExamplePage extends WebPage
 {
 
+	/**
+	 * Construct.
+	 */
 	public AjaxAutocompleteExamplePage()
 	{
 		super();
@@ -20,11 +29,17 @@ public class AjaxAutocompleteExamplePage extends WebPage
 	{
 		private String emailAddress;
 
+		/**
+		 * @return email address
+		 */
 		public String getEmailAddress()
 		{
 			return emailAddress;
 		}
 
+		/**
+		 * @param emailAddress
+		 */
 		public void setEmailAddress(String emailAddress)
 		{
 			this.emailAddress = emailAddress;
@@ -32,23 +47,29 @@ public class AjaxAutocompleteExamplePage extends WebPage
 
 	}
 
-	private class AutocompleteExampleForm extends Form
+	private class AutocompleteExampleForm extends Form<EmailSearchCommand>
 	{
+		/**
+		 * @param parent
+		 * @param id
+		 */
 		public AutocompleteExampleForm(MarkupContainer parent, String id)
 		{
-			super(parent, id, new CompoundPropertyModel(new EmailSearchCommand()));
+			super(parent, id, new CompoundPropertyModel<EmailSearchCommand>(
+					new EmailSearchCommand()));
 
 			new AjaxAutocompleteTextField(this, "emailAddress")
 			{
-				public String[] getResults(String input)
+				public Collection<String> getResults(String input)
 				{
-					return new String[] {"bill.gates@microsoft.com", "me@yourdomain.com"};
+					return Arrays.asList(new String[] {"bill.gates@microsoft.com",
+							"me@yourdomain.com"});
 				}
 			};
 			new Button(this, "submitButton")
 			{
 				@Override
-				protected void onSubmit()
+				public void onSubmit()
 				{
 				}
 			};
