@@ -37,24 +37,19 @@ class DojoDropContainerHandler extends AbstractRequireDojoBehavior
 		super.renderHead(response);
 
 		DojoPackagedTextTemplate template = new DojoPackagedTextTemplate(this.getClass(), "DojoDropContainerHandlerTemplate.js");
-		
-		HashMap map = new HashMap();
-		map.put("MarkupId", container.getMarkupId());
-		map.put("DropId", container.getDropPattern());
-		map.put("CallbackUrl", getCallbackUrl());
-		map.put("Id", container.getId());
-		response.renderJavascript(template.asString(map), template.getWidgetUniqueKey(this.getComponent()));
+
+		response.renderJavascript(template.asString(), template.getStaticKey());
 	
 		IRequestTarget target = RequestCycle.get().getRequestTarget();
 		if(!(target instanceof AjaxRequestTarget)){
-			response.renderJavascript("dojo.event.connect(dojo, \"loaded\", \"initDrop" + container.getMarkupId() + "\");\n", container.getMarkupId() + "onLoad");
+			response.renderJavascript("dojo.event.connect(dojo, \"loaded\", function() {initDrop('" + container.getMarkupId() + "', '" + container.getDropPattern() + "', '" + getCallbackUrl() + "'); }" , container.getMarkupId() + "onLoad");
 		}
 	}
 	
 	public void onComponentReRendered(AjaxRequestTarget ajaxTarget)
 	{
 		super.onComponentReRendered(ajaxTarget);
-		ajaxTarget.appendJavascript("initDrop" + container.getMarkupId() + "();\n");
+		ajaxTarget.appendJavascript("initDrop('" + container.getMarkupId() + "', '" + container.getDropPattern() + "', '" + getCallbackUrl() + "');\n");
 	}
 	
 	protected void respond(AjaxRequestTarget target)
