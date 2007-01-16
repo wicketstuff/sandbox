@@ -14,7 +14,7 @@ public interface IPropertyMeta extends Serializable {
 	
 	Class getType();
 	String getName();
-	IModel getLabel();
+	String getLabel();
 	
 	int getIndex();
 	
