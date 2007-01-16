@@ -28,19 +28,19 @@ public class DatePickerShower extends WebPage {
 		
 		Form form = new Form("dateform");
 		
-		DojoDatePicker date1P = new DojoDatePicker("date1", new Model(date1));
+		DojoDatePicker date1P = new DojoDatePicker("date1", new Model(date1), "dd/MM/yyyy");
 		date1P.setRequired(true);
 		form.add(date1P);
 		
-		DojoDatePicker date2P = new DojoDatePicker("date2", new Model(date2));
+		DojoDatePicker date2P = new DojoDatePicker("date2", new Model(date2), "dd/MM/yyyy");
 		date2P.setToggle(new DojoWipeToggle(200));
 		form.add(date2P);
 		
-		DojoDatePicker date3P = new DojoDatePicker("date3", new Model(date3));
+		DojoDatePicker date3P = new DojoDatePicker("date3", new Model(date3), "dd/MM/yyyy");
 		date3P.setToggle(new DojoFadeToggle(600));
 		form.add(date3P);
 		
-		DojoDatePicker date4P = new DojoDatePicker("date4", new Model(date4));
+		DojoDatePicker date4P = new DojoDatePicker("date4", new Model(date4), "dd/MM/yyyy");
 		date4P.setToggle(new DojoExplodeToggle());
 		form.add(date4P);
 
