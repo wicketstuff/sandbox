@@ -90,8 +90,12 @@ public class BeanPanel extends AbstractBeanPanel
 			
 			protected void populateItem(ListItem item) 
 			{
+				// the bean property meta-data
 				IPropertyMeta propertyMeta = (IPropertyMeta)item.getModelObject();
-				item.add(new Label("displayName", propertyMeta.getLabel()));
+				// lookup for wicket-style properties
+				ResourceModel labelModel = new ResourceModel(propertyMeta.getName(), propertyMeta.getLabel());
+				item.add(new Label("displayName", labelModel));
+				// get the editor web component
 				WebMarkupContainer propertyEditor = newPropertyEditor("editor", propertyMeta, beanModel);
 				if (propertyEditor == null)
 				{
