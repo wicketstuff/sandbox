@@ -42,7 +42,7 @@ class DojoDropContainerHandler extends AbstractRequireDojoBehavior
 	
 		IRequestTarget target = RequestCycle.get().getRequestTarget();
 		if(!(target instanceof AjaxRequestTarget)){
-			response.renderJavascript("dojo.event.connect(dojo, \"loaded\", function() {initDrop('" + container.getMarkupId() + "', '" + container.getDropPattern() + "', '" + getCallbackUrl() + "'); }" , container.getMarkupId() + "onLoad");
+			response.renderJavascript("dojo.event.connect(dojo, \"loaded\", function() {initDrop('" + container.getMarkupId() + "', '" + container.getDropPattern() + "', '" + getCallbackUrl() + "'); });" , container.getMarkupId() + "onLoad");
 		}
 	}
 	
