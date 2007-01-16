@@ -2,8 +2,6 @@ package wicket.extensions.markup.html.beanedit;
 
 import java.lang.reflect.Field;
 
-import wicket.model.IModel;
-
 /**
  * 
  * @author Paolo Di Tommaso
@@ -12,26 +10,40 @@ import wicket.model.IModel;
 
 public class PropertyMeta implements IPropertyMeta {
 
-	protected IModel label;
-	protected String name;
-	protected int index ;
-	protected boolean readOnly;
-	protected Class type;
+	private String label;
+	private String name;
+	private int index ;
+	private boolean readOnly;
+	private Class type;
 	
-	public PropertyMeta( Field field, int ndx, boolean readOnly ) { 
-		this.name = field.getName();
-		this.type = field.getType();
+	public PropertyMeta( String name, Class type ) { 
+		this.name = name;
+		this.type = type;
+	}
+	
+	public PropertyMeta( String name, Class type, String label ) { 
+		this(name,type);
+		this.label = label;
+	}
+	
+	public PropertyMeta( String name, Class type, String label, int index ) { 
+		this(name,type,label);
+		this.index = index;
+	}
+	
+	public PropertyMeta( String name, Class type, String label, int index, boolean readOnly ) { 
+		this(name,type,label,index);
 		this.readOnly = readOnly;
-		this.index = ndx;
-		
-		init(field);
+	}
+	
+	public PropertyMeta( Field field, int index ) { 
+		this.name = field.getName();
+		this.label = field.getName();
+		this.type = field.getType();
+		this.index = index;
 	}
 
-	protected void init(Field field) {
-
-	}
-
-	public IModel getLabel() {
+	public String getLabel() {
 		return label;
 	}
 
@@ -53,6 +65,26 @@ public class PropertyMeta implements IPropertyMeta {
 
 	public boolean isVisible() {
 		return true;
+	}
+
+	public void setIndex(int index) {
+		this.index = index;
+	}
+
+	public void setLabel(String label) {
+		this.label = label;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setReadOnly(boolean readOnly) {
+		this.readOnly = readOnly;
+	}
+
+	public void setType(Class type) {
+		this.type = type;
 	}
 	
 }
