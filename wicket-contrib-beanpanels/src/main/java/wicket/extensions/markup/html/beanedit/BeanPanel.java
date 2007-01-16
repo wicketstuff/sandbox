@@ -20,20 +20,11 @@ package wicket.extensions.markup.html.beanedit;
 
 import java.io.Serializable;
 
-import wicket.ResourceReference;
-import wicket.extensions.markup.html.datepicker.DatePicker;
-import wicket.extensions.markup.html.datepicker.DatePickerSettings;
 import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.basic.Label;
-import wicket.markup.html.form.CheckBox;
-import wicket.markup.html.form.TextField;
-import wicket.markup.html.link.Link;
 import wicket.markup.html.list.ListItem;
 import wicket.markup.html.list.ListView;
 import wicket.markup.html.panel.Fragment;
-import wicket.model.IModel;
-import wicket.model.Model;
-import wicket.model.PropertyModel;
 import wicket.model.ResourceModel;
 
 /**
@@ -64,14 +55,12 @@ public class BeanPanel extends AbstractBeanPanel
 	 * @param id component id
 	 * @param beanModel model with the JavaBean to be edited or displayed
 	 */
-	public BeanPanel(String id, BeanModel beanModel)
+	public BeanPanel(String id, final BeanModel beanModel)
 	{
 		super(id, beanModel);
 		this.beanModel = beanModel;
 		setRenderBodyOnly(true);
-		/*
-		 * Add the bean panel table header
-		 */
+
 		Fragment header = newHeader("header", beanModel);
 		if (header == null)
 		{
@@ -79,15 +68,7 @@ public class BeanPanel extends AbstractBeanPanel
 		}
 		add( header );
 		
-		addProperties();
-	}
-
-	protected void addProperties() {
-		/*
-		 * Add the properties
-		 */
 		add( new ListView("propertiesList", beanModel.getPropertiesList() ) {
-			
 			protected void populateItem(ListItem item) 
 			{
 				// the bean property meta-data
@@ -102,8 +83,6 @@ public class BeanPanel extends AbstractBeanPanel
 					throw new NullPointerException("propertyEditor must be not null");
 				}
 				item.add(propertyEditor);
-				
 			} } );
 	}
-
 }
