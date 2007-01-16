@@ -35,8 +35,6 @@ import wicket.model.IModel;
  */
 public class BeanModel implements IModel
 {
-	private static final long serialVersionUID = 1L;
-
 	/** the java bean to edit. */
 	private final Serializable bean;
 	
@@ -67,8 +65,8 @@ public class BeanModel implements IModel
 		this.bean = bean;
 		this.propertyNames = new ArrayList();
 		
-		IPropertiesProvider provider = new PropertiesProvider();
-		this.propertiesList = provider.propertiesFor( bean.getClass(), new IPropertyFilter() {
+
+		this.propertiesList = PropertiesProviderFactory.get().propertiesFor( bean.getClass(), new IPropertyFilter() {
 			int c = 0;
 			public int accept(Field field) {
 				int p = names != null ? names.indexOf(field.getName()) : c++;
@@ -110,7 +108,7 @@ public class BeanModel implements IModel
 	{
 		throw new UnsupportedOperationException("BeanModel is read-only");
 	}
-
+	
 	/**
 	 * Convenience method.
 	 * @return the bean
