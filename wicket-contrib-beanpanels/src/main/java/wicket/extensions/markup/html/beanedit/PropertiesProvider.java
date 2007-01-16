@@ -52,19 +52,14 @@ public class PropertiesProvider implements IPropertiesProvider {
 			 */
 			if( getter(clazz,fields[i]) != null ) { 
 				
-				/*
-				 * if the setter dows not exists property is read-only
-				 */
-				boolean readOnly = (setter(clazz,fields[i]) == null);
 				if( filter != null ) { 
 					int p = filter.accept(fields[i]);
 					if( p != -1 ) { 
-						IPropertyMeta meta = PropertyMetaFactory.getPropertyMetaImplementation(fields[i], p, readOnly);
-						result.add(meta);
+						result.add( createPropertyMeta(clazz,fields[i],p) );
 					}
 				}
 				else { 
-					result.add(PropertyMetaFactory.getPropertyMetaImplementation(fields[i], i, readOnly));
+					result.add( createPropertyMeta(clazz,fields[i],i) );
 				}
 			}
 		}
@@ -78,6 +73,22 @@ public class PropertiesProvider implements IPropertiesProvider {
 			} } );
 
 		return result;
+	}
+	/**
+	 * Property meta info factory method. Override this method to provide alternative meta information providing strategy.
+	 * 
+	 * @param field The field istance
+	 * @param index
+	 * @return
+	 */
+	protected IPropertyMeta createPropertyMeta( Class clazz, Field field, int index ) { 
+		/*
+		 * if the setter dows not exists property is read-only
+		 */
+		boolean readOnly = (setter(clazz,field) == null);
+		PropertyMeta meta = new PropertyMeta(field, index);
+		meta.setReadOnly(readOnly);
+		return meta;
 	}
 	
 	/**
