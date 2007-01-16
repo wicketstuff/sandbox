@@ -19,8 +19,11 @@ package wicket.contrib.dojo;
 import java.util.HashSet;
 import java.util.Iterator;
 
+import wicket.Component;
 import wicket.RequestCycle;
 import wicket.ajax.AjaxRequestTarget;
+import wicket.contrib.dojo.markup.html.container.DojoSimpleContainer;
+import wicket.contrib.dojo.markup.html.container.tab.DojoTabContainer;
 import wicket.markup.ComponentTag;
 import wicket.markup.html.IHeaderResponse;
 
@@ -73,11 +76,14 @@ public abstract class AbstractRequireDojoBehavior extends AbstractDefaultDojoBeh
 	
 	/**
 	 * this method is used to interpret dojoWidgets rendered via XMLHTTPRequest
+	 * FIXME : see cocoonMethod : http://svn.apache.org/repos/asf/cocoon/trunk/blocks/cocoon-ajax/cocoon-ajax-impl/src/main/resources/org/apache/cocoon/ajax/resources/js/insertion.js
+	 * at the botton. Also rerender only highter ancestor... child will be automaticaly parse
 	 */
 	protected void onComponentRendered() {
 		//if a Dojo Widget is rerender needs to run some javascript to refresh it
 		if (RequestCycle.get().getRequestTarget() instanceof AjaxRequestTarget) {
-			((AjaxRequestTarget)RequestCycle.get().getRequestTarget()).appendJavascript("djConfig.searchIds = ['" + getComponent().getMarkupId() + "'];dojo.hostenv.makeWidgets()");
+			//((AjaxRequestTarget)RequestCycle.get().getRequestTarget()).appendJavascript("djConfig.searchIds = ['" + getComponent().getMarkupId() + "'];dojo.hostenv.makeWidgets()");
+			//FIXME : this method should be done... by the implementation
 			onComponentReRendered(((AjaxRequestTarget)RequestCycle.get().getRequestTarget()));
 		}
 	}
@@ -101,6 +107,10 @@ public abstract class AbstractRequireDojoBehavior extends AbstractDefaultDojoBeh
 	 */
 	public class RequireDojoLibs extends HashSet{
 		
+	}
+	
+	public static void rerenderDojoWidget(Component component, AjaxRequestTarget target){
+		target.appendJavascript("djConfig.searchIds = ['" + component.getMarkupId() + "'];dojo.hostenv.makeWidgets()");
 	}
 
 }
