@@ -46,14 +46,12 @@ public class DojoDragContainerHandler extends AbstractRequireDojoBehavior
 		
 		DojoPackagedTextTemplate template = new DojoPackagedTextTemplate(this.getClass(), "DojoDragContainerHandlerTemplate.js");
 		HashMap map = new HashMap();
-		map.put("MarkupId", container.getMarkupId());
-		map.put("DragId", container.getDragPattern());
-		response.renderJavascript(template.asString(map), template.getWidgetUniqueKey(this.getComponent()));
+		response.renderJavascript(template.asString(), template.getStaticKey());
 		
 		//DojoOnLoad only if not AjaxRequest
 		IRequestTarget target = RequestCycle.get().getRequestTarget();
 		if(!(target instanceof AjaxRequestTarget)){
-			response.renderJavascript("dojo.event.connect(dojo, \"loaded\", \"initDrag" + container.getMarkupId() + "\");\n", container.getMarkupId() + "onLoad" );
+			response.renderJavascript("dojo.event.connect(dojo, \"loaded\", function() {initDrag('" + container.getMarkupId() + "','" + container.getDragPattern() + "')});\n", container.getMarkupId() + "onLoad" );
 		}
 		//else will be done by onComponentReRendered
 	}
@@ -61,7 +59,7 @@ public class DojoDragContainerHandler extends AbstractRequireDojoBehavior
 	public void onComponentReRendered(AjaxRequestTarget ajaxTarget)
 	{
 		super.onComponentReRendered(ajaxTarget);
-		ajaxTarget.appendJavascript("initDrag" + container.getMarkupId() + "()\n");
+		ajaxTarget.appendJavascript("initDrag('" + container.getMarkupId() + "','" + container.getDragPattern() + "')\n");
 	}
 
 
