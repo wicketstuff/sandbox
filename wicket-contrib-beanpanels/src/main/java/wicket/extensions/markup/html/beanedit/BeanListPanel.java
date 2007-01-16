@@ -2,10 +2,6 @@ package wicket.extensions.markup.html.beanedit;
 
 import java.util.List;
 
-import wicket.extensions.markup.html.beanedit.AbstractBeanPanel.ButtonToMoreDetails;
-import wicket.extensions.markup.html.beanedit.AbstractBeanPanel.CheckFieldFragment;
-import wicket.extensions.markup.html.beanedit.AbstractBeanPanel.DateFieldFragment;
-import wicket.extensions.markup.html.beanedit.AbstractBeanPanel.TextFieldFragment;
 import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.list.ListItem;
@@ -38,59 +34,59 @@ public class BeanListPanel extends AbstractBeanPanel {
 		this.beanListModel = beanListModel;
 		setRenderBodyOnly(true);
 
-		addProperties();
+		if (beanListModel.getBeanModels() == null || beanListModel.isVoid()) {
+			add(new Label("content", "No elements available"));	//TODO localizeme
+		}
+		else {
+			add(new TableFragment("content", beanListModel));	
+		}
 	}
 	
-	protected void addProperties() {
-		
-		if (beanListModel.getBeanModels() == null || beanListModel.isVoid())
-			return;
-		
-		BeanModel firstBeanModel = ((BeanModel)(beanListModel.getBeanModels().get(0)));
-		
-		/*
-		 * Add the bean panel table header
-		 */
-		Fragment header = newHeader("header", firstBeanModel);
-		if (header == null)
-		{
-			throw new NullPointerException("header must be not null");
-		}
-		add( header );
-		
-		/*
-		 * Add the properties
-		 */
-		add( new ListView("propertyKeys", firstBeanModel.getPropertiesList() ) {
+	private class TableFragment extends Fragment {
+	
+		TableFragment(String id, BeanListModel beanListModel) {
+			super(id, "tableFragment");
+			BeanModel firstBeanModel = ((BeanModel)(beanListModel.getBeanModels().get(0)));
 			
-			protected void populateItem(ListItem item) 
+			/*
+			 * Add the bean panel table header
+			 */
+			Fragment header = newHeader("header", firstBeanModel);
+			if (header == null)
 			{
-				IPropertyMeta propertyMeta = (IPropertyMeta)item.getModelObject();
-				item.add(new Label("displayName", propertyMeta.getLabel()));				
-			} } );
-		
-		
-		add( new ListView("feeds", beanListModel.getBeanModels()) {
+				throw new NullPointerException("header must be not null");
+			}
+			add( header );
 			
-			protected void populateItem(ListItem item) 
-			{
-				final BeanModel beanModel = (BeanModel)item.getModelObject();
-				item.add( new ListView("propertyValues", beanModel.getPropertiesList() ) {
-					
-					protected void populateItem(ListItem item) 
-					{
-						IPropertyMeta propertyMeta = (IPropertyMeta)item.getModelObject();
-						WebMarkupContainer propertyEditor = newPropertyEditor("editor", propertyMeta, beanModel);
-						if (propertyEditor == null)
-						{
-							throw new NullPointerException("propertyEditor must be not null");
-						}
-						item.add(propertyEditor);
+			add( new ListView("propertyKeys", firstBeanModel.getPropertiesList() ) {
+				
+				protected void populateItem(ListItem item) 
+				{
+					IPropertyMeta propertyMeta = (IPropertyMeta)item.getModelObject();
+					ResourceModel labelModel = new ResourceModel(propertyMeta.getName(), propertyMeta.getLabel());
+					item.add(new Label("displayName", labelModel));
+				} } );
+			
+			add( new ListView("feeds", beanListModel.getBeanModels()) {
+				protected void populateItem(ListItem item) 
+				{
+					final BeanModel beanModel = (BeanModel)item.getModelObject();
+					item.add( new ListView("propertyValues", beanModel.getPropertiesList() ) {
 						
-					} } );
-			} 
-		});
-		
+						protected void populateItem(ListItem item) 
+						{
+							IPropertyMeta propertyMeta = (IPropertyMeta)item.getModelObject();
+							WebMarkupContainer propertyEditor = newPropertyEditor("editor", propertyMeta, beanModel);
+							if (propertyEditor == null)
+							{
+								throw new NullPointerException("propertyEditor must be not null");
+							}
+							item.add(propertyEditor);
+						} } );
+				} 
+			});
+		}
+
 	}
 	
 	
