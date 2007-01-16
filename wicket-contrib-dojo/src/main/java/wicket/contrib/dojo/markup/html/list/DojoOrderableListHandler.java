@@ -50,12 +50,11 @@ public class DojoOrderableListHandler extends AbstractRequireDojoBehavior
 		DojoPackagedTextTemplate template = new DojoPackagedTextTemplate(this.getClass(), "DojoOrderableListHandlerTemplate.js");
 		
 		HashMap map = new HashMap();
-		map.put("MarkupId", getComponent().getMarkupId());
-		response.renderJavascript(template.asString(map), template.getWidgetUniqueKey(this.getComponent()));
+		response.renderJavascript(template.asString(), template.getStaticKey());
 	
 		IRequestTarget target = RequestCycle.get().getRequestTarget();
 		if(!(target instanceof AjaxRequestTarget)){
-			response.renderJavascript("dojo.event.connect(dojo, \"loaded\", \"initDrag" + getComponent().getMarkupId() + "\");\n", getComponent().getMarkupId() + "onLoad");
+			response.renderJavascript("dojo.event.connect(dojo, \"loaded\", function() {initDragTable('" + getComponent().getMarkupId() + "')});\n", getComponent().getMarkupId() + "onLoad");
 		}
 	}
 	
@@ -63,7 +62,7 @@ public class DojoOrderableListHandler extends AbstractRequireDojoBehavior
 	public void onComponentReRendered(AjaxRequestTarget ajaxTarget)
 	{
 		super.onComponentReRendered(ajaxTarget);
-		ajaxTarget.appendJavascript("initDrag" + getComponent().getMarkupId() + "();");
+		ajaxTarget.appendJavascript("initDragTable('" + getComponent().getMarkupId() + "')");
 	}
 
 }

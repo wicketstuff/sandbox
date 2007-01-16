@@ -1,5 +1,5 @@
-function initDrag${MarkupId}(){
-	var children = document.getElementById('${MarkupId}').getElementsByTagName('div');
+function initDragTable(markupId){
+	var children = document.getElementById(markupId).getElementsByTagName('div');
 	for(var i=0;  children.length > i ; i++){
 		var drag = new dojo.dnd.HtmlDragSource(children[i], '*');
 	}
