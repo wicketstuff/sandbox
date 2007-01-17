@@ -20,6 +20,7 @@ import wicket.Component;
 import wicket.ajax.AjaxRequestTarget;
 import wicket.behavior.AttributeAppender;
 import wicket.markup.ComponentTag;
+import wicket.markup.MarkupStream;
 import wicket.markup.repeater.Item;
 import wicket.markup.repeater.RefreshingView;
 import wicket.model.IModel;
@@ -39,6 +40,7 @@ import wicket.model.Model;
  */
 public abstract class DojoOrderableRepeatingView extends RefreshingView
 {
+
 	int pos = 0; 
 
 	/**
@@ -74,6 +76,12 @@ public abstract class DojoOrderableRepeatingView extends RefreshingView
 		checkComponentTag(tag, "div");
 		super.onComponentTag(tag);
 	}
+	
+	protected void onRender(MarkupStream markupStream)
+	{
+		super.onRender(markupStream);
+		pos = 0;
+	}
 
 	/**
 	 * Triggered when an item is dragged and dropped. SubClass has to implement this
@@ -93,5 +101,7 @@ public abstract class DojoOrderableRepeatingView extends RefreshingView
 	 * @param target ajaxtarget
 	 */
 	public abstract void removeItem(Item item, AjaxRequestTarget target);
+	
+	
 
 }
