@@ -62,6 +62,7 @@ public abstract class AbstractBeanPanel extends Panel
 		{
 			throw new NullPointerException("argument beanModel must not be null");
 		}
+		setRenderBodyOnly(true);
 	}
 
 	/**
