@@ -20,6 +20,7 @@ import java.util.List;
 
 import wicket.behavior.AttributeAppender;
 import wicket.markup.ComponentTag;
+import wicket.markup.MarkupStream;
 import wicket.markup.html.list.ListItem;
 import wicket.markup.html.list.ListView;
 import wicket.model.IModel;
@@ -120,6 +121,13 @@ public abstract class DojoOrderableListView extends ListView
 		String posString = Integer.toString(pos++);
 		item.add(new AttributeAppender("pos", true, new Model(posString),""));
 		super.renderItem(item);
+	}
+
+	protected void onRender(MarkupStream markupStream)
+	{
+		super.onRender(markupStream);
+		//position computing should be restart : 
+		pos = 0;
 	}
 
 }
