@@ -1,4 +1,4 @@
-package wicket.extensions.markup.html.beanedit;
+package wicket.contrib.beanpanels;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
