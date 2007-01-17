@@ -1,4 +1,4 @@
-package wicket.extensions.markup.html.beanedit;
+package wicket.contrib.beanpanels;
 
 import java.io.Serializable;
 import java.util.ArrayList;
