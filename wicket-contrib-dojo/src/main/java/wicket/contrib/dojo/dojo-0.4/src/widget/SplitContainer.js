@@ -257,6 +257,8 @@ dojo.widget.defineWidget(
 			this.children[i].checkSize();
 			pos += size;
 		}
+		
+		this.onResize();
 	},
 
 	movePanel: function(panel, pos, size){
@@ -454,8 +456,6 @@ dojo.widget.defineWidget(
 		}
 
 		this.layoutPanels();
-
-		this.onResize();
 	},
 	
 	/**
