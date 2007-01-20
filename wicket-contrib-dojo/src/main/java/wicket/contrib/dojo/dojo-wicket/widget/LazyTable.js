@@ -1,10 +1,12 @@
+dojo.provide("dojoWicket.widget.LazyTable");
+
 dojo.require("dojo.widget.*");
 dojo.require("dojo.html.*");
 dojo.require("dojo.event.*");
 
-dojo.provide ("dojo.widget.LazyTable");
 
-dojo.widget.defineWidget ("dojo.widget.LazyTable",dojo.widget.HtmlWidget,
+dojo.widget.defineWidget ("dojoWicket.widget.LazyTable",
+	[dojo.widget.HtmlWidget],
 {
 	isContainer: true,
 	//current top Item
@@ -34,8 +36,6 @@ dojo.widget.defineWidget ("dojo.widget.LazyTable",dojo.widget.HtmlWidget,
 	//debug purpose loading number
 	loaded: 0,
 	
-	templatePath: dojo.uri.dojoUri("../LazyTable.htm"),
-	
 	requestTimeOut: null,
 	
 	//last request interval
@@ -43,6 +43,10 @@ dojo.widget.defineWidget ("dojo.widget.LazyTable",dojo.widget.HtmlWidget,
 	//already turn element
 	turnElt: 0,
 	backTurnElt:0,
+	
+	templatePath : dojo.uri.dojoUri("../dojo-wicket/widget/template/LazyTable.htm"),
+	templateCssPath : dojo.uri.dojoUri("../dojo-wicket/widget/template/LazyTable.css"),
+	
 	
 	/**
 	 * Important note : 

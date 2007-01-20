@@ -34,7 +34,7 @@ public class DojoLazyLoadingListContainerHandler extends AbstractRequireDojoBeha
 	 */
 	public void setRequire(RequireDojoLibs libs)
 	{
-		//DO Nothing, the Widget is in the package
+		libs.add("dojoWicket.widget.LazyTable");
 	}
 
 	protected final void respond(AjaxRequestTarget target)
@@ -50,14 +50,6 @@ public class DojoLazyLoadingListContainerHandler extends AbstractRequireDojoBeha
 		
 		target.prependJavascript("dojo.widget.byId(\"" + getComponent().getMarkupId() + "\").contentTable.getElementsByTagName('tbody')[0].id='" + child.getMarkupId() + "'");
 		target.appendJavascript("dojo.widget.byId('" + getComponent().getMarkupId() + "').postUpdate()");
-	}
-
-
-	public void renderHead(IHeaderResponse response)
-	{
-		super.renderHead(response);
-		response.renderJavascriptReference(new ResourceReference(DojoLazyLoadingListContainerHandler.class, "LazyTable.js"));
-		response.renderCSSReference(new ResourceReference(DojoLazyLoadingListContainerHandler.class, "LazyLoadingTable.css"));
 	}
 
 

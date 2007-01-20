@@ -1,0 +1,60 @@
+table.dojoSelectableList {
+	font-family:Lucida Grande, Verdana;
+	font-size:0.8em;
+	width:100%;
+	border:1px solid #ccc;
+	cursor:default;
+}
+
+* html div.tableContainer {	/* IE only hack */
+	width:95%;
+	border:1px solid #ccc;
+	height: 285px;
+	overflow-x:hidden;
+	overflow-y: auto;
+}
+
+table.dojoSelectableList td, table.dojoSelectableList th {
+	border-right:1px solid #999;
+	padding:2px;
+	font-weight:normal;
+}
+table.dojoSelectableList thead th {
+	background:#94BEFF;
+}
+
+* html div.tableContainer table thead tr td,
+* html div.tableContainer table thead tr th{
+	/* IE Only hacks */
+	position:relative;
+	top:expression(dojo.html.getFirstAncestorByTag(this,'table').parentNode.scrollTop-2);
+}
+
+html>body table.dojoSelectableList tbody {
+	height: 262px;
+	overflow-x:hidden;
+	overflow-y: auto;
+}
+
+table.dojoSelectableList tbody td {
+	background: #FFF;
+	padding: 2px;
+}
+
+table.dojoSelectableList tbody tr.alternateRow td {
+	background: #e3edfa;
+	padding: 2px;
+}
+
+table.dojoSelectableList tbody tr.selected td {
+	background: yellow;
+	padding: 2px;
+}
+table.dojoSelectableList tbody tr.mouseOver td {
+	background: #a6c2e7;
+	padding: 2px;
+}
+table.dojoSelectableList tbody tr.selectedMouseOver td {
+	background: #ff3;
+	padding: 2px;
+}

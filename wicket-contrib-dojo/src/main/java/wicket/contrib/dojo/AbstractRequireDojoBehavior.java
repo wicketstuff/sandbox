@@ -21,6 +21,7 @@ import java.util.Iterator;
 
 import wicket.Component;
 import wicket.RequestCycle;
+import wicket.ResourceReference;
 import wicket.ajax.AjaxRequestTarget;
 import wicket.contrib.dojo.markup.html.container.DojoSimpleContainer;
 import wicket.contrib.dojo.markup.html.container.tab.DojoTabContainer;
@@ -83,6 +84,31 @@ public abstract class AbstractRequireDojoBehavior extends AbstractDefaultDojoBeh
 		//if a Dojo Widget is rerender needs to run some javascript to refresh it
 		if (RequestCycle.get().getRequestTarget() instanceof AjaxRequestTarget) {
 			//((AjaxRequestTarget)RequestCycle.get().getRequestTarget()).appendJavascript("djConfig.searchIds = ['" + getComponent().getMarkupId() + "'];dojo.hostenv.makeWidgets()");
+			((AjaxRequestTarget)RequestCycle.get().getRequestTarget()).appendJavascript("djConfig.searchIds = ['" + getComponent().getMarkupId() + "'];dojo.hostenv.makeWidgets()");
+			((AjaxRequestTarget)RequestCycle.get().getRequestTarget()).appendJavascript("djConfig.searchIds = ['" + getComponent().getMarkupId() + "'];dojo.hostenv.makeWidgets()");
+			((AjaxRequestTarget)RequestCycle.get().getRequestTarget()).appendJavascript("djConfig.searchIds = ['" + getComponent().getMarkupId() + "'];dojo.hostenv.makeWidgets()");
+			((AjaxRequestTarget)RequestCycle.get().getRequestTarget()).appendJavascript("djConfig.searchIds = ['" + getComponent().getMarkupId() + "'];dojo.hostenv.makeWidgets()");
+			((AjaxRequestTarget)RequestCycle.get().getRequestTarget()).appendJavascript("djConfig.searchIds = ['" + getComponent().getMarkupId() + "'];dojo.hostenv.makeWidgets()");
+			((AjaxRequestTarget)RequestCycle.get().getRequestTarget()).appendJavascript("djConfig.searchIds = ['" + getComponent().getMarkupId() + "'];dojo.hostenv.makeWidgets()");
+			((AjaxRequestTarget)RequestCycle.get().getRequestTarget()).appendJavascript("djConfig.searchIds = ['" + getComponent().getMarkupId() + "'];dojo.hostenv.makeWidgets()");
+			((AjaxRequestTarget)RequestCycle.get().getRequestTarget()).appendJavascript("djConfig.searchIds = ['" + getComponent().getMarkupId() + "'];dojo.hostenv.makeWidgets()");
+			((AjaxRequestTarget)RequestCycle.get().getRequestTarget()).appendJavascript("djConfig.searchIds = ['" + getComponent().getMarkupId() + "'];dojo.hostenv.makeWidgets()");
+			((AjaxRequestTarget)RequestCycle.get().getRequestTarget()).appendJavascript("djConfig.searchIds = ['" + getComponent().getMarkupId() + "'];dojo.hostenv.makeWidgets()");
+			
+			System.out.println(getComponent().getMarkupId());
+			System.out.println(((AjaxRequestTarget)RequestCycle.get().getRequestTarget()));
+			/*
+			((AjaxRequestTarget)RequestCycle.get().getRequestTarget()).appendJavascript("var wid = dojo.byId('" + getComponent().getMarkupId() + "'); parseDojoWidgets(wid)");
+			((AjaxRequestTarget)RequestCycle.get().getRequestTarget()).appendJavascript("var wid = dojo.byId('" + getComponent().getMarkupId() + "'); parseDojoWidgets(wid)");
+			((AjaxRequestTarget)RequestCycle.get().getRequestTarget()).appendJavascript("var wid = dojo.byId('" + getComponent().getMarkupId() + "'); parseDojoWidgets(wid)");
+			((AjaxRequestTarget)RequestCycle.get().getRequestTarget()).appendJavascript("var wid = dojo.byId('" + getComponent().getMarkupId() + "'); parseDojoWidgets(wid)");
+			((AjaxRequestTarget)RequestCycle.get().getRequestTarget()).appendJavascript("var wid = dojo.byId('" + getComponent().getMarkupId() + "'); parseDojoWidgets(wid)");
+			((AjaxRequestTarget)RequestCycle.get().getRequestTarget()).appendJavascript("var wid = dojo.byId('" + getComponent().getMarkupId() + "'); parseDojoWidgets(wid)");
+			((AjaxRequestTarget)RequestCycle.get().getRequestTarget()).appendJavascript("var wid = dojo.byId('" + getComponent().getMarkupId() + "'); parseDojoWidgets(wid)");
+			((AjaxRequestTarget)RequestCycle.get().getRequestTarget()).appendJavascript("var wid = dojo.byId('" + getComponent().getMarkupId() + "'); parseDojoWidgets(wid)");
+			((AjaxRequestTarget)RequestCycle.get().getRequestTarget()).appendJavascript("var wid = dojo.byId('" + getComponent().getMarkupId() + "'); parseDojoWidgets(wid)");
+			((AjaxRequestTarget)RequestCycle.get().getRequestTarget()).appendJavascript("var wid = dojo.byId('" + getComponent().getMarkupId() + "'); parseDojoWidgets(wid)");
+			*/
 			//FIXME : this method should be done... by the implementation
 			onComponentReRendered(((AjaxRequestTarget)RequestCycle.get().getRequestTarget()));
 		}
