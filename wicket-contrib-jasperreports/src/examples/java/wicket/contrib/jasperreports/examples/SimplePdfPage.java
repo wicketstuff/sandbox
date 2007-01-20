@@ -1,6 +1,6 @@
 /*
- * $Id$ $Revision:
- * 1.5 $ $Date$
+ * $Id$ $Revision$
+ * $Date$
  * 
  * ==================================================================== Licensed
  * under the Apache License, Version 2.0 (the "License"); you may not use this
@@ -41,8 +41,7 @@ public class SimplePdfPage extends WicketExamplePage
 	 */
 	public SimplePdfPage()
 	{
-		ServletContext context = ((WebApplication) getApplication()).getWicketServlet()
-				.getServletContext();
+		ServletContext context = ((WebApplication) getApplication()).getServletContext();
 		final File reportFile = new File(context.getRealPath("/reports/example.jasper"));
 		final Map parameters = new HashMap();
 		JRResource pdfResource = new JRPdfResource(reportFile).setReportParameters(

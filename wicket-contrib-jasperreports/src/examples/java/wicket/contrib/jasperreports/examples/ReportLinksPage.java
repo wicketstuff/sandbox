@@ -1,6 +1,6 @@
 /*
- * $Id$ $Revision:
- * 1.3 $ $Date$
+ * $Id$ $Revision$
+ * $Date$
  * 
  * ==================================================================== Licensed
  * under the Apache License, Version 2.0 (the "License"); you may not use this
@@ -44,8 +44,7 @@ public class ReportLinksPage extends WicketExamplePage
 	 */
 	public ReportLinksPage()
 	{
-		ServletContext context = ((WebApplication) getApplication()).getWicketServlet()
-				.getServletContext();
+		ServletContext context = ((WebApplication) getApplication()).getServletContext();
 		final File reportFile = new File(context.getRealPath("/reports/example.jasper"));
 
 		JRResource pdfResource = new JRPdfResource(reportFile)
