@@ -51,10 +51,10 @@ public class Initializer implements IInitializer
 
 	private Properties getVelocityProperties(WebApplication webapp)
 	{
-		ServletContext sc = webapp.getWicketServlet().getServletContext();
+		ServletContext servletContext = webapp.getServletContext();
+		ServletContext sc = servletContext;
 		velocityPropertiesFolder = sc.getInitParameter("velocityPropertiesFolder");
-		String propsFile = webapp.getWicketServlet().getServletContext()
-				.getInitParameter("velocity.properties");
+		String propsFile = servletContext.getInitParameter("velocity.properties");
 
 		if (null != propsFile)
 		{

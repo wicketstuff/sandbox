@@ -34,7 +34,7 @@ public class VelocityHeaderContributor extends AbstractHeaderContributor
 		Iterator it = contributors.iterator();
 		while (it.hasNext()) {
 			VelocityContributor vc = (VelocityContributor) it.next();
-			vc.detachModel();
+			vc.detachModel(component);
 		}
 	}
 }
