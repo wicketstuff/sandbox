@@ -56,7 +56,7 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 	 */
 	public void setRequire(RequireDojoLibs libs)
 	{
-		//DO Nothing, the Widget is in the package
+		libs.add("dojoWicket.widget.SelectableTable");
 	}
 
 	protected final void respond(AjaxRequestTarget target)
@@ -104,8 +104,8 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 	public void renderHead(IHeaderResponse response)
 	{
 		super.renderHead(response);
-		response.renderCSSReference(new ResourceReference(DojoSelectableListContainer.class, "DojoSelectableListContainer.css"));
-		response.renderJavascriptReference(new ResourceReference(DojoSelectableListContainer.class, "SelectableTable.js"));
+		//response.renderCSSReference(new ResourceReference(DojoSelectableListContainer.class, "DojoSelectableListContainer.css"));
+		//response.renderJavascriptReference(new ResourceReference(DojoSelectableListContainer.class, "SelectableTable.js"));
 		if (((DojoSelectableListContainer)getComponent()).getOverrideCssReference() != null){
 			response.renderCSSReference(((DojoSelectableListContainer)getComponent()).getOverrideCssReference());
 		}
