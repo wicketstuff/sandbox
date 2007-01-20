@@ -69,7 +69,6 @@ public abstract class ScriptaculousAjaxHandler extends AbstractAjaxBehavior {
 
 	protected abstract IResourceStream getResponse();
 
-	@Override
 	public void renderHead(IHeaderResponse response) {
 		super.renderHead(response);
 		response.renderJavascriptReference(new ResourceReference(
