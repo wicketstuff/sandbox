@@ -1,4 +1,4 @@
-dojo.provide("dojo.widget.SelectableTable");
+dojo.provide("dojoWicket.widget.SelectableTable");
 
 
 dojo.require("dojo.event.*");
@@ -8,7 +8,7 @@ dojo.require("dojo.html.*");
 dojo.require("dojo.html.selection");
 
 dojo.widget.defineWidget(
-	"dojo.widget.SelectableTable",
+	"dojoWicket.widget.SelectableTable",
 	dojo.widget.HtmlWidget,{
 
 	pos: 0,
@@ -27,7 +27,7 @@ dojo.widget.defineWidget(
 	//from HtmlWidget
 	isContainer: false,
 	templatePath:null,
-	templateCssPath:null,
+	templateCssPath : dojo.uri.dojoUri("../dojo-wicket/widget/template/DojoSelectableListContainer.css"),
 	
 	postCreate:function(){
 	

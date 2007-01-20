@@ -51,6 +51,8 @@ public abstract class AbstractDefaultDojoBehavior extends AbstractDefaultAjaxBeh
 	/** reference to the dojo support javascript file. */
 	public static final ResourceReference DOJO = new CompressedResourceReference(
 			AbstractDefaultDojoBehavior.class, "dojo-0.4/dojo.js");
+	public static final ResourceReference DOJO_WICKET =  new CompressedResourceReference(
+			AbstractRequireDojoBehavior.class, "dojo-wicket/dojoWicket.js");
 	
 	private DojoIndicatorBehavior indicatorBehavior = null;
 
@@ -61,6 +63,7 @@ public abstract class AbstractDefaultDojoBehavior extends AbstractDefaultAjaxBeh
 	{
 		super.renderHead(response);
 		response.renderJavascriptReference(DOJO);
+		response.renderJavascriptReference(DOJO_WICKET);
 	}
 	
 	/**
