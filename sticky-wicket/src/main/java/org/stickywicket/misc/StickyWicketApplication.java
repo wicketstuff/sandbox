@@ -11,6 +11,7 @@ import org.stickywicket.admin.AdminPage;
 import org.stickywicket.renderer.Renderer;
 
 import wicket.Page;
+import wicket.Request;
 import wicket.Session;
 import wicket.protocol.http.WebApplication;
 import wicket.request.target.coding.IndexedParamUrlCodingStrategy;
@@ -36,8 +37,8 @@ public class StickyWicketApplication extends WebApplication {
 	}
 
 	@Override
-	public Session newSession() {
-		return new StickyWicketSession(StickyWicketApplication.this);
+	public Session newSession(Request request) {
+		return new StickyWicketSession(StickyWicketApplication.this, request);
 	}
 
 	@Override

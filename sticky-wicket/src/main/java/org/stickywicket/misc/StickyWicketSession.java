@@ -9,6 +9,7 @@ import javax.jcr.SimpleCredentials;
 import org.stickywicket.jcr.JcrUtil;
 import org.stickywicket.renderer.NodeType;
 
+import wicket.Request;
 import wicket.protocol.http.WebSession;
 
 public class StickyWicketSession extends WebSession {
@@ -17,8 +18,8 @@ public class StickyWicketSession extends WebSession {
 
 	private transient Session jcrSession;
 
-	public StickyWicketSession(StickyWicketApplication application) {
-		super(application);
+	public StickyWicketSession(StickyWicketApplication application, Request request) {
+		super(application, request);
 	}
 
 	public Session getJcrSession() {

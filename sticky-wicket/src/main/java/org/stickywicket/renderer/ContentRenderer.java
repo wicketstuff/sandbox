@@ -6,21 +6,17 @@ import java.util.List;
 import javax.jcr.Node;
 import javax.jcr.PathNotFoundException;
 import javax.jcr.RepositoryException;
-import javax.jcr.Session;
 import javax.jcr.ValueFormatException;
 
-import org.stickywicket.misc.StickyWicketSession;
-
 import wicket.MarkupContainer;
-import wicket.extensions.markup.html.repeater.RepeatingView;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.panel.Panel;
+import wicket.markup.repeater.RepeatingView;
 import wicket.model.IModel;
 
 public class ContentRenderer extends Panel<Node> {
 
-	public ContentRenderer(MarkupContainer parent, String id,
-			IModel<Node> model) {
+	public ContentRenderer(MarkupContainer parent, String id, IModel<Node> model) {
 		super(parent, id, model);
 		setRenderBodyOnly(true);
 		RepeatingView repeater = new RepeatingView(this, "repeater");
@@ -28,8 +24,8 @@ public class ContentRenderer extends Panel<Node> {
 		for (Chunk chunk : getTemplateChunks()) {
 			if (chunk instanceof MarkupChunk) {
 				new Label(repeater, repeater.newChildId(),
-						((MarkupChunk) chunk).getMarkup())
-						.setRenderBodyOnly(true).setEscapeModelStrings(false);
+						((MarkupChunk) chunk).getMarkup()).setRenderBodyOnly(
+						true).setEscapeModelStrings(false);
 			} else if (chunk instanceof ContainerChunk) {
 				final String containerName = ((ContainerChunk) chunk)
 						.getContainerName();
