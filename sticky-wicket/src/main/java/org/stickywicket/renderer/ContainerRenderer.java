@@ -5,8 +5,8 @@ import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
 
 import wicket.MarkupContainer;
-import wicket.extensions.markup.html.repeater.RepeatingView;
 import wicket.markup.html.panel.Panel;
+import wicket.markup.repeater.RepeatingView;
 import wicket.model.IModel;
 
 public class ContainerRenderer extends Panel<Node> {
