@@ -1,30 +1,34 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<project>
-	<pomVersion>3</pomVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+        <modelVersion>4.0.0</modelVersion>
 	<groupId>wicket-stuff</groupId>
-	<id>wicket-contrib-scriptaculous-examples</id>
-	<name>Wicket Contrib Scriptaculous Integration</name>
-	<currentVersion>0.1.0-SNAPSHOT</currentVersion>
+	<artifactId>wicket-contrib-scriptaculous-examples</artifactId>
+	<name>Wicket Contrib Scriptaculous Integration examples</name>
+	<version>1.3-SNAPSHOT</version>
 	<organization>
 		<name>Wicket Stuff</name>
 		<url>http://wicket-stuff.sourceforge.net</url>
-		<logo>http://wicket-stuff.sourceforge.net/images/projectLogo.png</logo>
 	</organization>
-	<inceptionYear>2005</inceptionYear>
-	<package>wicket</package>
-	<logo>/images/projectLogo.png</logo>
+	<inceptionYear>2006</inceptionYear>
 	<description>
+		<![CDATA[The Wicket Contrib Prototype project showcases one possible way to integrate the
+		scriptaculous ajax framework.]]>
 	</description>
-	<shortDescription>
-	</shortDescription>
 	<url>http://wicket-stuff.sourceforge.net/${pom.artifactId}</url>
-	<issueTrackingUrl>
-		http://sourceforge.net/tracker/?group_id=${maven.sourceforge.project.groupId}
-	</issueTrackingUrl>
-	<siteAddress>shell.sourceforge.net</siteAddress>
-	<siteDirectory>/home/groups/w/wi/wicket-stuff/htdocs/${pom.artifactId}</siteDirectory>
-	<repository>
+
+	<licenses>
+	  <license>
+	     <name>The Apache Software License, Version 2.0</name>
+	     <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+	     <distribution>repo</distribution>
+	  </license>
+	</licenses>
+  
+        <issueManagement>
+	      <url>http://sourceforge.net/tracker/?group_id=${maven.sourceforge.project.groupId}</url>
+	</issueManagement>
+	
+	<scm>
 		<connection>
 			scm:cvs:pserver:anonymous@cvs.sourceforge.net:/cvsroot/${pom.groupId}:${pom.artifactId}
 		</connection>
@@ -32,8 +36,8 @@
 			scm:cvs:ext:${maven.username}@cvs.sourceforge.net:/cvsroot/${pom.groupId}:${pom.artifactId}
 		</developerConnection>
 		<url>http://cvs.sourceforge.net/viewcvs.py/${pom.groupId}/${pom.artifactId}</url>
-	</repository>
-	<versions></versions>
+	</scm>
+
 	<mailingLists>
 		<mailingList>
 			<name>Wicket Stuff Dev List</name>
@@ -79,20 +83,9 @@
 	</developers>
 	<dependencies>
 		<dependency>
-			<groupId>wicket</groupId>
+			<groupId>org.apache.wicket</groupId>
 			<artifactId>wicket</artifactId>
-			<version>1.2-SNAPSHOT</version>
-			<properties>
-			  <eclipse.dependency>true</eclipse.dependency>
-			</properties>
-		</dependency>
-		<dependency>
-			<groupId>wicket-stuff</groupId>
-			<artifactId>wicket-contrib-scriptaculous</artifactId>
-			<version>SNAPSHOT</version>
-			<properties>
-			  <eclipse.dependency>true</eclipse.dependency>
-			</properties>
+			<version>1.3-incubating-SNAPSHOT</version>		
 		</dependency>
 		<dependency>
 			<groupId>servletapi</groupId>
@@ -105,9 +98,24 @@
 			<version>1.0.4</version>
 		</dependency>
 		<dependency>
-			<groupId>jetty</groupId>
-			<artifactId>org.mortbay.jetty</artifactId>
-			<version>4.2.24</version>
+			<groupId>wicket-stuff</groupId>
+			<artifactId>wicket-contrib-scriptaculous</artifactId>
+			<version>1.3-SNAPSHOT</version>		
+		</dependency>
+		<dependency>
+			<groupId>org.mortbay.jetty</groupId>
+			<artifactId>jetty</artifactId>
+			<version>6.0.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mortbay.jetty</groupId>
+			<artifactId>jetty-util</artifactId>
+			<version>6.0.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mortbay.jetty</groupId>
+			<artifactId>jetty-management</artifactId>
+			<version>6.0.1</version>
 		</dependency>
 	</dependencies>
 	<build>

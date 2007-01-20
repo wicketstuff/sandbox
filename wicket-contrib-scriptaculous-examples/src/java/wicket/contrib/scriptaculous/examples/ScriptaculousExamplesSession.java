@@ -20,6 +20,7 @@ package wicket.contrib.scriptaculous.examples;
 
 import java.util.List;
 
+import wicket.Request;
 import wicket.protocol.http.WebApplication;
 import wicket.protocol.http.WebSession;
 
@@ -32,15 +33,18 @@ public class ScriptaculousExamplesSession extends WebSession
 
 	/**
 	 * Construct.
+	 * 
 	 * @param application
+	 * @param request
 	 */
-	public ScriptaculousExamplesSession(WebApplication application)
+	public ScriptaculousExamplesSession(WebApplication application, Request request)
 	{
-		super(application);
+		super(application, request);
 	}
 
 	/**
 	 * Gets cartItems.
+	 * 
 	 * @return cartItems
 	 */
 	public List getCartItems()
@@ -50,7 +54,9 @@ public class ScriptaculousExamplesSession extends WebSession
 
 	/**
 	 * Sets cartItems.
-	 * @param cartItems cartItems
+	 * 
+	 * @param cartItems
+	 *            cartItems
 	 */
 	public void setCartItems(List cartItems)
 	{

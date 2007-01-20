@@ -1,18 +1,12 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
 <projectDescription>
   <name>wicket-contrib-scriptaculous-examples</name>
-  <comment>
-  </comment>
-  <projects>
-    <project>wicket</project>
-    <project>wicket-contrib-scriptaculous</project>
-  </projects>
+  <comment>The Wicket Contrib Prototype project showcases one possible way to integrate the
+		scriptaculous ajax framework.</comment>
+  <projects/>
   <buildSpec>
     <buildCommand>
       <name>org.eclipse.jdt.core.javabuilder</name>
-      <arguments>
-      </arguments>
+      <arguments/>
     </buildCommand>
   </buildSpec>
   <natures>
