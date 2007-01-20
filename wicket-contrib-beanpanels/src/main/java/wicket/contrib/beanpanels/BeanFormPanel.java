@@ -124,7 +124,7 @@ public class BeanFormPanel extends Panel
 			{
 				private static final long serialVersionUID = 1L;
 
-				protected void onSubmit()
+				public void onSubmit()
 				{
 					onCancel();
 				}				
@@ -137,7 +137,7 @@ public class BeanFormPanel extends Panel
 			{
 				private static final long serialVersionUID = 1L;
 
-				protected void onSubmit()
+				public void onSubmit()
 				{
 					onSave();
 				}
