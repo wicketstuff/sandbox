@@ -1,6 +1,6 @@
 /*
- * $Id$ $Revision:
- * 1.43 $ $Date$
+ * $Id$
+ * $Revision$ $Date$
  * 
  * ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -43,10 +43,12 @@ public class DatabaseWebSession extends WebSession
 	 * 
 	 * @param application
 	 *            The application object
+	 * @param request
+	 *            the current request
 	 */
-	public DatabaseWebSession(final WebApplication application)
+	public DatabaseWebSession(final WebApplication application, Request request)
 	{
-		super(application);
+		super(application, request);
 	}
 
 	/**
