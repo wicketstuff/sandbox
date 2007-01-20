@@ -29,12 +29,11 @@ import wicket.Component;
 import wicket.MarkupContainer;
 import wicket.behavior.HeaderContributor;
 import wicket.contrib.markup.html.yui.AbstractYuiPanel;
-import wicket.markup.html.IHeaderResponse;
+import wicket.extensions.behavior.SimpleAttributeModifier;
 import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.WebPage;
 import wicket.markup.html.form.FormComponent;
 import wicket.markup.html.image.Image;
-import wicket.model.AbstractReadOnlyModel;
 import wicket.model.IModel;
 import wicket.model.Model;
 import wicket.model.PropertyModel;
@@ -105,104 +104,58 @@ public class Slider<T> extends AbstractYuiPanel<T> {
 		add(HeaderContributor.forJavaScript(Slider.class, "slider.js"));
 		add(HeaderContributor.forCss(Slider.class, "css/slider.css"));
 
+		String markupId = getMarkupId();
+		backgroundElementId = markupId + "Bg";
+		imageElementId = markupId + "Img";
+		javaScriptId = backgroundElementId + "JS";
+
 		// handle form element
 		if (element != null) {
-			element.add(new AttributeModifier("id", true,
-					new AbstractReadOnlyModel<String>() {
-						private static final long serialVersionUID = 1L;
-
-						@Override
-						public String getObject() {
-							return element.getId();
-						}
-					}));
+			element.add(new SimpleAttributeModifier("id", element.getId()));
 		}
 
-		IModel<Map> variablesModel = new AbstractReadOnlyModel<Map>() {
-			private static final long serialVersionUID = 1L;
-
-			/**
-			 * @see wicket.model.AbstractReadOnlyModel#getObject(wicket.Component)
-			 */
-			@Override
-			public Map getObject() {
-				Map<String, CharSequence> variables = new HashMap<String, CharSequence>(
-						7);
-				variables.put("javaScriptId", javaScriptId);
-				variables.put("backGroundElementId", backgroundElementId);
-				variables.put("imageElementId", imageElementId);
-				variables.put("leftUp", settings.getLeftUp());
-				variables.put("rightDown", settings.getRightDown());
-				variables.put("tick", settings.getTick());
-				variables.put("formElementId", element.getId());
-				return variables;
-			}
-		};
+		Map<String, CharSequence> variables = new HashMap<String, CharSequence>(
+				7);
+		variables.put("javaScriptId", javaScriptId);
+		variables.put("backGroundElementId", backgroundElementId);
+		variables.put("imageElementId", imageElementId);
+		variables.put("leftUp", settings.getLeftUp());
+		variables.put("rightDown", settings.getRightDown());
+		variables.put("tick", settings.getTick());
+		variables.put("formElementId", element.getId());
 
 		add(TextTemplateHeaderContributor.forJavaScript(Slider.class,
-				"init.js", variablesModel));
+				"init.js", Model.valueOf(variables)));
 
 		// LEFT Corner Images & Tick Marks
 		Image leftTickImg = new Image(this, "leftTickImg", settings
 				.getLeftTickResource());
-		leftTickImg.add(new AttributeModifier("onclick", true,
-				new AbstractReadOnlyModel<String>() {
-
-					private static final long serialVersionUID = 1L;
-
-					@Override
-					public String getObject() {
-						return javaScriptId + ".setValue(" + javaScriptId
-								+ ".getXValue() - " + settings.getTick() + ");";
-					}
-				}));
+		leftTickImg.add(new SimpleAttributeModifier("onclick", javaScriptId
+				+ ".setValue(" + javaScriptId + ".getXValue() - "
+				+ settings.getTick() + ");"));
 		leftTickImg.setVisible(settings.isShowTicks());
 
 		Image leftCornerImg = new Image(this, "leftCornerImg", settings
 				.getLeftCornerResource());
-		leftCornerImg.add(new AttributeModifier("onclick", true,
-				new AbstractReadOnlyModel<String>() {
-					private static final long serialVersionUID = 1L;
-
-					@Override
-					public String getObject() {
-						return javaScriptId + ".setValue(-"
-								+ settings.getLeftUp() + ")";
-					}
-				}));
+		leftCornerImg.add(new SimpleAttributeModifier("onclick", javaScriptId
+				+ ".setValue(-" + settings.getLeftUp() + ")"));
 
 		// RIGHT Corner Images & Tick Marks
 		Image rightCornerImg = new Image(this, "rightCornerImg", settings
 				.getRightCornerResource());
-		rightCornerImg.add(new AttributeModifier("onclick", true,
-				new AbstractReadOnlyModel<String>() {
-					private static final long serialVersionUID = 1L;
-
-					@Override
-					public String getObject() {
-						return javaScriptId + ".setValue("
-								+ settings.getRightDown() + ")";
-					}
-				}));
+		rightCornerImg.add(new SimpleAttributeModifier("onclick", javaScriptId
+				+ ".setValue(" + settings.getRightDown() + ")"));
 
 		Image rightTickImg = new Image(this, "rightTickImg", settings
 				.getRightTickResource());
-		rightTickImg.add(new AttributeModifier("onclick", true,
-				new AbstractReadOnlyModel<String>() {
-					private static final long serialVersionUID = 1L;
-
-					@Override
-					public String getObject() {
-						return javaScriptId + ".setValue(" + javaScriptId
-								+ ".getXValue() + " + settings.getTick() + ");";
-					}
-				}));
+		rightTickImg.add(new SimpleAttributeModifier("onclick", javaScriptId
+				+ ".setValue(" + javaScriptId + ".getXValue() + "
+				+ settings.getTick() + ");"));
 		rightTickImg.setVisible(settings.isShowTicks());
 
 		/*
 		 * Background Div
 		 */
-
 		WebMarkupContainer backgroundElement = new WebMarkupContainer(this,
 				"backgroundDiv");
 		backgroundElement.add(new AttributeModifier("id", true,
@@ -213,7 +166,6 @@ public class Slider<T> extends AbstractYuiPanel<T> {
 		/*
 		 * Element Div and Thumb Div
 		 */
-
 		WebMarkupContainer imageElement = new WebMarkupContainer(
 				backgroundElement, "handleDiv");
 		imageElement.add(new AttributeModifier("id", true,
@@ -238,7 +190,6 @@ public class Slider<T> extends AbstractYuiPanel<T> {
 	 * @param tick
 	 * @param element
 	 */
-
 	public Slider(MarkupContainer parent, String id, IModel<T> model,
 			final int leftUp, final int rightDown, final int tick,
 			final FormComponent element) {
@@ -264,13 +215,6 @@ public class Slider<T> extends AbstractYuiPanel<T> {
 		return imageElementId;
 	}
 
-	@Override
-	public void renderHead(IHeaderResponse response) {
-		((WebPage) getPage()).getBodyContainer().addOnLoadModifier(
-				"init" + javaScriptId + "();", this);
-		super.renderHead(response);
-	}
-
 	/**
 	 * TODO implement
 	 */
@@ -285,13 +229,7 @@ public class Slider<T> extends AbstractYuiPanel<T> {
 	protected void onAttach() {
 		super.onAttach();
 
-		// initialize lazily
-		if (backgroundElementId == null) {
-			// assign the markup id
-			String id = getMarkupId();
-			backgroundElementId = id + "Bg";
-			imageElementId = id + "Img";
-			javaScriptId = backgroundElementId + "JS";
-		}
+		((WebPage) getPage()).getBodyContainer().addOnLoadModifier(
+				"init" + javaScriptId + "();", this);
 	}
 }
