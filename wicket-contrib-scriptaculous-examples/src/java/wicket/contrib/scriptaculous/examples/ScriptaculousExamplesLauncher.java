@@ -1,36 +1,59 @@
 package wicket.contrib.scriptaculous.examples;
 
-import org.mortbay.http.SocketListener;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.mortbay.jetty.Connector;
 import org.mortbay.jetty.Server;
-import org.mortbay.jetty.servlet.ServletHolder;
-import org.mortbay.jetty.servlet.ServletHttpContext;
+import org.mortbay.jetty.nio.SelectChannelConnector;
+import org.mortbay.jetty.webapp.WebAppContext;
 
-import wicket.protocol.http.WicketServlet;
+public class ScriptaculousExamplesLauncher
+{
 
-public class ScriptaculousExamplesLauncher {
+	/**
+	 * Used for logging.
+	 */
+	private static final Log log = LogFactory.getLog(ScriptaculousExamplesLauncher.class);
 
-	public static void main(String[] args) throws Exception {
-        SocketListener listener = new SocketListener();
-        listener.setPort(8080);
+	/**
+	 * Main function, starts the jetty server.
+	 * 
+	 * @param args
+	 */
+	public static void main(String[] args)
+	{
+		Server server = new Server();
+		SelectChannelConnector connector = new SelectChannelConnector();
+		connector.setPort(8080);
+		server.setConnectors(new Connector[] {connector});
 
+		WebAppContext web = new WebAppContext();
+		web.setContextPath("/wicket-examples");
+		web.setWar("src/main/webapp");
+		server.addHandler(web);
 
-        Server jettyServer = new Server();
-        jettyServer.addListener(listener);
-        jettyServer.addContext(createContext("/scriptaculousExamples", ScriptaculousExamplesApplication.class, "Autocomplete Examples"));
-        jettyServer.start();
+		// MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
+		// MBeanContainer mBeanContainer = new MBeanContainer(mBeanServer);
+		// server.getContainer().addEventListener(mBeanContainer);
+		// mBeanContainer.start();
+
+		try
+		{
+			server.start();
+			server.join();
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			System.exit(100);
+		}
 	}
 
-    private static ServletHttpContext createContext(String path, Class applicationClass, String name) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
-        ServletHttpContext httpContext = new ServletHttpContext();
-        httpContext.setContextPath(path);
-
-        //this is important, otherwise form posts get redirected and don't work
-        httpContext.setRedirectNullPath(false);
-
-        ServletHolder holder = httpContext.addServlet("Wicket", "/*", WicketServlet.class.getName());
-
-        holder.setInitParameter("applicationClassName", applicationClass.getName());
-        holder.setDisplayName(name);
-        return httpContext;
-    }
+	/**
+	 * Construct.
+	 */
+	ScriptaculousExamplesLauncher()
+	{
+		super();
+	}
 }

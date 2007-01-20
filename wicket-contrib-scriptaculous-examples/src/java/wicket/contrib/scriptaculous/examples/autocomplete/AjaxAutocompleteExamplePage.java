@@ -6,14 +6,17 @@ import wicket.markup.html.form.Button;
 import wicket.markup.html.form.Form;
 import wicket.model.CompoundPropertyModel;
 
-public class AjaxAutocompleteExamplePage extends WebPage {
+public class AjaxAutocompleteExamplePage extends WebPage
+{
 
-	public AjaxAutocompleteExamplePage() {
+	public AjaxAutocompleteExamplePage()
+	{
 		super();
 		add(new AutocompleteExampleForm("searchForm"));
 	}
 
-	private class EmailSearchCommand {
+	private class EmailSearchCommand
+	{
 		private String emailAddress;
 
 		public String getEmailAddress()
@@ -28,23 +31,25 @@ public class AjaxAutocompleteExamplePage extends WebPage {
 
 	}
 
-	private class AutocompleteExampleForm extends Form {
-		public AutocompleteExampleForm(String id) {
+	private class AutocompleteExampleForm extends Form
+	{
+		public AutocompleteExampleForm(String id)
+		{
 			super(id, new CompoundPropertyModel(new EmailSearchCommand()));
 
-			add(new AjaxAutocompleteTextField("emailAddress") {
-				public String[] getResults(String input) {
-					return new String[] {
-							"bill.gates@microsoft.com"
-							, "me@yourdomain.com"
-					};
+			add(new AjaxAutocompleteTextField("emailAddress")
+			{
+				public String[] getResults(String input)
+				{
+					return new String[] {"bill.gates@microsoft.com", "me@yourdomain.com"};
 				}
 			});
 			add(new Button("submitButton"));
 		}
 
-		protected void onSubmit() {
-			//do something here
+		protected void onSubmit()
+		{
+			// do something here
 		}
 	}
 }
