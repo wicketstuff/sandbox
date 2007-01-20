@@ -150,6 +150,7 @@ dojo.widget.defineWidget(
 			o.id = row.getAttribute("pos");
 			return o;	//	object
 		},
+		
 		setSelectionByRow:function(/* HTMLTableElementRow */ row){
 			//	summary
 			//	create the selection object based on the passed row, makes sure it's unique.
@@ -196,50 +197,15 @@ dojo.widget.defineWidget(
 					o.valign=dojo.html.getAttribute(cells[i],"valign");
 				}
 
-				//	sorting features.
-				if(dojo.html.hasAttribute(cells[i], "nosort")){
-					o.noSort=dojo.html.getAttribute(cells[i],"nosort")=="true";
-				}
-				if(dojo.html.hasAttribute(cells[i], "sortusing")){
-					var trans=dojo.html.getAttribute(cells[i],"sortusing");
-					var f=this.getTypeFromString(trans);
-					if (f!=null && f!=window && typeof(f)=="function") 
-						o.sortFunction=f;
-				}
-
 				if(dojo.html.hasAttribute(cells[i], "field")){
 					o.field=dojo.html.getAttribute(cells[i],"field");
 				}
 				if(dojo.html.hasAttribute(cells[i], "format")){
 					o.format=dojo.html.getAttribute(cells[i],"format");
 				}
-				if(dojo.html.hasAttribute(cells[i], "dataType")){
-					var sortType=dojo.html.getAttribute(cells[i],"dataType");
-					if(sortType.toLowerCase()=="html"||sortType.toLowerCase()=="markup"){
-						o.sortType="__markup__";	//	always convert to "__markup__"
-						o.noSort=true;
-					}else{
-						var type=this.getTypeFromString(sortType);
-						if(type){
-							o.sortType=sortType;
-							o.dataType=type;
-						}
-					}
-				}
 				o.label=dojo.html.renderedTextContent(cells[i]);
 				this.columns.push(o);
 
-				//	check to see if there's a default sort, and set the properties necessary
-				if(dojo.html.hasAttribute(cells[i], "sort")){
-					this.sortIndex=i;
-					var dir=dojo.html.getAttribute(cells[i], "sort");
-					if(!isNaN(parseInt(dir))){
-						dir=parseInt(dir);
-						this.sortDirection=(dir!=0)?1:0;
-					}else{
-						this.sortDirection=(dir.toLowerCase()=="desc")?1:0;
-					}
-				}
 			}
 		},
 
@@ -252,22 +218,7 @@ dojo.widget.defineWidget(
 				var o={};	//	new data object.
 				for(var j=0; j<this.columns.length; j++){
 					var field=this.columns[j].getField();
-					if(this.columns[j].sortType=="__markup__"){
-						o[field]=String(data[i][field]);
-					}else{
-						var type=this.columns[j].getType();
-						var val=data[i][field];
-						var t=this.columns[j].sortType.toLowerCase();
-						if(type == String) {
-							o[field]=val;
-						} else {
-							if(val!=null){
-								o[field]=new type(val);
-							}else{
-								o[field]=new type();	//	let it use the default.
-							}
-						}
-					}
+					o[field]=String(data[i][field]);
 				}
 				//	check for the valueField if not already parsed.
 				if(data[i][this.valueField]&&!o[this.valueField]){
@@ -326,6 +277,7 @@ dojo.widget.defineWidget(
 				}
 			}
 		},
+		
 		render:function(bDontPreserve){
 			//	summary
 			//	renders the table to the browser
@@ -383,27 +335,6 @@ dojo.widget.defineWidget(
 				dojo.event.connect(row, "onmouseout", this, "onOut");
 				dojo.event.connect(row, "ondblclick", this, "onChoose");
 			}
-			
-			//	if minRows exist.
-			var minRows=parseInt(this.minRows);
-			if (!isNaN(minRows) && minRows>0 && data.length<minRows){
-				var mod=0;
-				if(data.length%2==0) mod=1;
-				var nRows=minRows-data.length;
-				for(var i=0; i<nRows; i++){
-					var row=document.createElement("tr");
-					row.setAttribute("ignoreIfParsed","true");
-					if(this.enableAlternateRows&&i%2==mod){
-						row.className=this.rowAlternateClass;
-					}
-					for(var j=0;j<this.columns.length;j++){
-						var cell=document.createElement("td");
-						cell.appendChild(document.createTextNode("\u00A0"));
-						row.appendChild(cell);
-					}
-					body.appendChild(row);
-				}
-			}
 		},
 		
 		onChoose:function(/* DomEvent */ e){ 
@@ -415,6 +346,7 @@ dojo.widget.defineWidget(
 			//	summary
 			//	empty function for the user to attach code to, fired by onUISelect
 		},
+		
 		onUISelect:function(/* DomEvent */ e){
 			//	summary
 			//	fired when a user selects a row
