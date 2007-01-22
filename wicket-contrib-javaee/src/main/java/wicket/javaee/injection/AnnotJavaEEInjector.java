@@ -23,6 +23,8 @@ import wicket.javaee.naming.StandardJndiNamingStrategy;
 
 /**
  * Injector that injects ejb references based on {@link javax.ejb.EJB} annotation
+ * 
+ * @author Filippo Diotalevi
  */
 public class AnnotJavaEEInjector extends ConfigurableInjector
 {
