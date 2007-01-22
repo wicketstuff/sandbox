@@ -39,6 +39,27 @@ import wicket.markup.repeater.RepeatingView;
 public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehavior
 {
 	
+	public void onComponentReRendered(AjaxRequestTarget ajaxTarget)
+	{
+		String selectedIndex[] = ((DojoSelectableListContainer)getComponent()).getSelectedIndex();
+		super.onComponentReRendered(ajaxTarget);
+		if (selectedIndex != null){
+			String selected = "";
+			for (int i=0; i < selectedIndex.length; i++){
+				int pos = Integer.parseInt(selectedIndex[i]);
+				if (i==0){
+					selected += "[";
+				}
+				if (i == selectedIndex.length -1){
+					selected += pos + "]";
+				}else {
+					selected += pos + ",";
+				}
+			}
+			ajaxTarget.appendJavascript("dojo.widget.byId('" + getComponent().getMarkupId() + "').selectIndexes(" + selected + ")");
+		}
+	}
+
 	//child of this container
 	private WebMarkupContainer child;
 
@@ -69,7 +90,7 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 			((DojoSelectableListContainer)getComponent()).onChoose(target, selected.get(0));
 		}else{
 			// A new selection has been made
-
+			
 			// Clear current selection
 			selected.clear();
 
@@ -95,7 +116,8 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 					pos++;
 				}
 			}
-
+			//store selected indexes
+			((DojoSelectableListContainer)getComponent()).setSelectedIndex(indexList);
 			// Call the onSelection() method
 			((DojoSelectableListContainer)getComponent()).onSelection(target, selected);
 		}
