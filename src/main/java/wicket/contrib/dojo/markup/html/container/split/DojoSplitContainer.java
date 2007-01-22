@@ -98,6 +98,7 @@ public class DojoSplitContainer extends AbstractDojoContainer
 		tag.put("orientation", orientation);
 		tag.put("sizerWidth", Integer.toString(sizerWidth));
 		tag.put("activeSizing", activeSizing.toString());
+		tag.put("persist", "false");
 	}
 
 	/**
