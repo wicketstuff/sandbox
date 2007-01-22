@@ -53,6 +53,10 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer imple
 	 * List of selected objects
 	 */
 	private List selected;
+	/**
+	 * List of selected indexes
+	 */
+	private String[] selectedIndex;
 
 	private boolean enableMultipleSelect;
 	
@@ -71,6 +75,8 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer imple
 	 * Allow user to set another css to overwrite the default one
 	 */
 	private ResourceReference overrideCssReference;
+	
+	private boolean permanentSelection;
 	
 	//child
 	private WebMarkupContainer child;
@@ -99,6 +105,7 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer imple
 		ajaxModeOnChoose = true;
 		alternateRowClass = "alternateRow";
 		add(containerHandler = new DojoSelectableListContainerHandler());
+		setPermanentSelection(false);
 	}
 
 	protected void onComponentTag(ComponentTag tag)
@@ -140,12 +147,23 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer imple
 		containerHandler.setChild(child);
 	}
 	
+	/**
+	 * Clear the selection on this widget
+	 *
+	 */
+	public void clearSelection(){
+		this.selected = new ArrayList();
+		this.selectedIndex = null;
+	}
+	
 
 	// set to Empty the model
 	protected void onRender(MarkupStream markupStream)
 	{
 		super.onRender(markupStream);
-		this.selected = new ArrayList();
+		if (!permanentSelection){
+			clearSelection();
+		}
 	}
 
 	/**
@@ -314,6 +332,43 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer imple
 	{
 		this.alternateRowClass = alternateRowClass;
 	}
+	
+	/**
+	 * return true if the container keep Selection when it is re-render
+	 * @return true if the container keep Selection when it is re-render
+	 */
+	public boolean isPermanentSelection()
+	{
+		return permanentSelection;
+	}
+
+	/**
+	 * set to true if the container keep Selection when it is re-render
+	 * @param keepSelectedOnReRender true if the container keep Selection when it is re-render
+	 */
+	public void setPermanentSelection(boolean permanentSelection)
+	{
+		this.permanentSelection = permanentSelection;
+	}
+	
+	/**
+	 * return a list of selected indexes
+	 * @return a list of selected indexes
+	 */
+	public String[] getSelectedIndex()
+	{
+		return selectedIndex;
+	}
+	
+	/**
+	 * set a list of selected indexes
+	 * @param selectedIndex list of selected indexes
+	 */
+	public void setSelectedIndex(String [] selectedIndex)
+	{
+		this.selectedIndex = selectedIndex;
+	}
+
 	
 	/***************************************************************************/
 	
