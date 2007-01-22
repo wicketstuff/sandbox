@@ -23,6 +23,7 @@ import java.util.List;
 import wicket.ResourceReference;
 import wicket.ajax.AjaxRequestTarget;
 import wicket.contrib.dojo.AbstractRequireDojoBehavior;
+import wicket.contrib.dojo.templates.DojoPackagedTextTemplate;
 import wicket.markup.ComponentTag;
 import wicket.markup.html.IHeaderResponse;
 import wicket.markup.html.WebMarkupContainer;
@@ -169,6 +170,13 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 	public void setChild(WebMarkupContainer child)
 	{
 		this.child = child;
+	}
+
+	public void renderHead(IHeaderResponse response)
+	{
+		super.renderHead(response);
+		DojoPackagedTextTemplate template = new DojoPackagedTextTemplate(DojoSelectableListContainer.class, "DojoSelectableTableContainerTemplate.js");
+		response.renderJavascript(template.asString(), template.getStaticKey());
 	}
 
 	
