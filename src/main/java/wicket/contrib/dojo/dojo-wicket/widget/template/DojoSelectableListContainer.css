@@ -2,25 +2,27 @@ table.dojoSelectableList {
 	font-family:Lucida Grande, Verdana;
 	font-size:0.8em;
 	width:100%;
-	border:1px solid #ccc;
+	border:1px solid #999;
 	cursor:default;
 }
 
 * html div.tableContainer {	/* IE only hack */
 	width:95%;
-	border:1px solid #ccc;
+	border:1px solid #999;
 	height: 285px;
 	overflow-x:hidden;
 	overflow-y: auto;
 }
 
 table.dojoSelectableList td, table.dojoSelectableList th {
-	border-right:1px solid #999;
+	/*border-right:1px solid #999;
+	border-top:1px solid #999;*/
 	padding:2px;
-	font-weight:normal;
 }
+
 table.dojoSelectableList thead th {
 	background:#94BEFF;
+	height: 15px;
 }
 
 * html div.tableContainer table thead tr td,
@@ -30,8 +32,8 @@ table.dojoSelectableList thead th {
 	top:expression(dojo.html.getFirstAncestorByTag(this,'table').parentNode.scrollTop-2);
 }
 
-html>body table.dojoSelectableList tbody {
-	height: 262px;
+table.dojoSelectableList tbody {
+	height: 300px;
 	overflow-x:hidden;
 	overflow-y: auto;
 }
