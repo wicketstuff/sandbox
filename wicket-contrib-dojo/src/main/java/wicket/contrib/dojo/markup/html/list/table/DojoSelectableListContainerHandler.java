@@ -100,16 +100,6 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 			((DojoSelectableListContainer)getComponent()).onSelection(target, selected);
 		}
 	}
-
-	public void renderHead(IHeaderResponse response)
-	{
-		super.renderHead(response);
-		//response.renderCSSReference(new ResourceReference(DojoSelectableListContainer.class, "DojoSelectableListContainer.css"));
-		//response.renderJavascriptReference(new ResourceReference(DojoSelectableListContainer.class, "SelectableTable.js"));
-		if (((DojoSelectableListContainer)getComponent()).getOverrideCssReference() != null){
-			response.renderCSSReference(((DojoSelectableListContainer)getComponent()).getOverrideCssReference());
-		}
-	}
 	
 	/**
 	 * @return javascript that will generate an ajax GET request to this
@@ -121,7 +111,7 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 	 */
 	protected final CharSequence getCallbackScript()
 	{
-		return getCallbackScript("wicketAjaxGet('" + super.getCallbackUrl(true, true) + "' + getSelectableTableSelection('"+getComponent().getMarkupId()+"')", null,
+		return getCallbackScript("wicketAjaxGet('" + super.getCallbackUrl() + "' + getSelectableTableSelection('"+getComponent().getMarkupId()+"')", null,
 				null);
 	}
 	

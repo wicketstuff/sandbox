@@ -23,6 +23,7 @@ import wicket.Component;
 import wicket.ResourceReference;
 import wicket.WicketRuntimeException;
 import wicket.ajax.AjaxRequestTarget;
+import wicket.behavior.AttributeAppender;
 import wicket.contrib.dojo.DojoIdConstants;
 import wicket.contrib.dojo.widgets.StylingWebMarkupContainer;
 import wicket.markup.ComponentTag;
@@ -32,6 +33,7 @@ import wicket.markup.html.link.ILinkListener;
 import wicket.markup.html.list.ListView;
 import wicket.markup.repeater.RepeatingView;
 import wicket.model.IModel;
+import wicket.model.Model;
 
 /**
  * Selectable List container
@@ -110,6 +112,9 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer imple
 		tag.put("enableAlternateRows", enableAlternateRows + "");
 		tag.put("rowAlternateClass", alternateRowClass);
 		tag.put("class", cssClass);
+		if (getOverrideCssReference() != null){
+			tag.put("templateCssPath", urlFor(getOverrideCssReference()));
+		}
 	}
 	
 	/**
@@ -254,7 +259,10 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer imple
 	 */
 	public void setOverrideCssReference(ResourceReference overwriteCss)
 	{
-		this.overrideCssReference = overwriteCss;
+		if (overwriteCss != null){  
+			this.overrideCssReference = overwriteCss;
+			add(new AttributeAppender("templateCssPath", true, new Model(urlFor(overwriteCss).toString()), ""));
+		}
 	}
 
 	/**
