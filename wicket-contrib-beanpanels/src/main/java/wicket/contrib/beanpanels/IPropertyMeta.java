@@ -2,8 +2,6 @@ package wicket.contrib.beanpanels;
 
 import java.io.Serializable;
 
-import wicket.model.IModel;
-
 /**
  * 
  * @author Paolo Di Tommaso

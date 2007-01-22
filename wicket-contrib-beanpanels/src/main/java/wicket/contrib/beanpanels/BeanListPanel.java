@@ -2,6 +2,7 @@ package wicket.contrib.beanpanels;
 
 import java.util.List;
 
+import wicket.Component;
 import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.list.ListItem;
@@ -76,7 +77,7 @@ public class BeanListPanel extends AbstractBeanPanel {
 						protected void populateItem(ListItem item) 
 						{
 							IPropertyMeta propertyMeta = (IPropertyMeta)item.getModelObject();
-							WebMarkupContainer propertyEditor = newPropertyEditor("editor", propertyMeta, beanModel);
+							Component propertyEditor = newPropertyEditor("editor", propertyMeta, beanModel);
 							if (propertyEditor == null)
 							{
 								throw new NullPointerException("propertyEditor must be not null");
