@@ -80,7 +80,8 @@ public abstract class DojoFormSubmitBehavior extends AbstractDefaultDojoBehavior
 	protected void onComponentTag(ComponentTag tag)
 	{
 		super.onComponentTag(tag);
-		tag.put("onclick", getEventHandler());
+        // return false to end event processing in case the DojoLink is bound to a <button> contained in a form
+        tag.put("onclick", getEventHandler() + "; return false;");
 	}
 
 	/**
