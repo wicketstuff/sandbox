@@ -20,6 +20,7 @@ package wicket.contrib.beanpanels;
 
 import java.io.Serializable;
 
+import wicket.Component;
 import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.list.ListItem;
@@ -77,10 +78,10 @@ public class BeanPanel extends AbstractBeanPanel
 				ResourceModel labelModel = new ResourceModel(propertyMeta.getName(), propertyMeta.getLabel());
 				item.add(new Label("displayName", labelModel));
 				// get the editor web component
-				WebMarkupContainer propertyEditor = newPropertyEditor("editor", propertyMeta, beanModel);
+				Component propertyEditor = newPropertyEditor("editor", propertyMeta, beanModel);
 				if (propertyEditor == null)
 				{
-					throw new NullPointerException("propertyEditor must be not null");
+					propertyEditor = new Label("editor", "(editor not available)");
 				}
 				item.add(propertyEditor);
 			} } );

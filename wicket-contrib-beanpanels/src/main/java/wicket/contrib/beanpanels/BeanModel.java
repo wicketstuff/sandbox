@@ -20,7 +20,6 @@ package wicket.contrib.beanpanels;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -38,10 +37,9 @@ public class BeanModel implements IModel
 	/** the java bean to edit. */
 	private final Serializable bean;
 	
-	private final List propertiesList;
+	private List propertiesList;
 	
-	/** This list containes the name of properties that shave to be display, it defines the display order also */
-	private final List propertyNames;
+	private List names;
 	
 	/**
 	 * Construct.
@@ -52,10 +50,16 @@ public class BeanModel implements IModel
 		this(bean,(List)null);
 	}
 	
+	public BeanModel( final Object bean ) { 
+		this( (Serializable)bean, (List)null );
+	}
+	
+	/** deprecated */
 	public BeanModel( final Serializable bean, final String[]  names ) { 
 		this(bean, names != null ? Arrays.asList(names) : null );
 	}
 	
+	/** deprecated */
 	public BeanModel( final Serializable bean, final List names ) { 
 		if (bean == null)
 		{
@@ -63,18 +67,9 @@ public class BeanModel implements IModel
 		}
 
 		this.bean = bean;
-		this.propertyNames = new ArrayList();
-		
+		this.names = names;
 
-		this.propertiesList = PropertiesProviderFactory.get().propertiesFor( bean.getClass(), new IPropertyFilter() {
-			int c = 0;
-			public int accept(Field field) {
-				int p = names != null ? names.indexOf(field.getName()) : c++;
-				if( p != -1 ) { 
-					propertyNames.add(field.getName());
-				}
-				return p;
-			} } );
+
 	}
  	
 	/**
@@ -117,17 +112,24 @@ public class BeanModel implements IModel
 	{
 		return bean;
 	}
-
-	public IPropertyMeta getProperty( String name ) { 
-		int i = propertyNames.indexOf(name);
-		return (IPropertyMeta) (i != -1 ? propertiesList.get(i) : null); 
-	}
 	
 	public List getPropertiesList() { 
+		if( propertiesList == null ) { 
+			propertiesList = PropertiesProviderFactory.get().propertiesFor( bean.getClass(), new IPropertyFilter() {
+				
+				int c = 0;
+				
+				public int accept(Field field) {
+					int p = names != null 
+						  ? names.indexOf(field.getName()) 
+						  : c++;
+						  
+					return p;
+				} } );			
+		}
 		return propertiesList;
 	}
 	
-	public List getPropertyNames() { 
-		return propertyNames != null ? propertyNames : new ArrayList();
-	}
+	protected List<IPropertyMeta> properties() { return null; }
+	
 }

@@ -1,4 +1,4 @@
-package wicket.contrib.beanpanels;
+package wicket.contrib.beanpanels.annotation;
 
 import java.lang.annotation.*;
 

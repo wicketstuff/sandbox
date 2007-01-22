@@ -4,7 +4,7 @@ import wicket.WicketRuntimeException;
 
 public class PropertiesProviderFactory {
 
-	static private Class propertiesProviderClass = PropertiesProvider.class;
+	static private Class propertiesProviderClass = AnnotatedPropertiesProvider.class;
 
 	static private IPropertiesProvider propertiesProvider;
 	
