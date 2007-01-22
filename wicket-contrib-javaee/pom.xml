@@ -21,10 +21,10 @@
 	<groupId>wicket</groupId>
 	<artifactId>wicket-contrib-javaee-1.x</artifactId>
 	<packaging>jar</packaging>
-	<version>1.0-SNAPSHOT</version>
+	<version>1.0</version>
 	<name>Wicket Java EE Integration for Wicket 1.x</name>
 	<description>Integration project to use Java EE 5 injection in your Wicket applications.</description>
-	<url>http://wicket-stuff.sourceforge.net/wicket-contrib-javaee-1.x</url>
+	<url>http://wicket-stuff.sourceforge.net/wicket-contrib-javaee</url>
 	<inceptionYear>2006</inceptionYear>
 
 	<organization>
