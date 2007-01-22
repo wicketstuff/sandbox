@@ -18,7 +18,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>wicket</groupId>
+	<groupId>wicket-stuff</groupId>
 	<artifactId>wicket-contrib-javaee-1.x</artifactId>
 	<packaging>jar</packaging>
 	<version>1.0</version>
@@ -26,11 +26,6 @@
 	<description>Integration project to use Java EE 5 injection in your Wicket applications.</description>
 	<url>http://wicket-stuff.sourceforge.net/wicket-contrib-javaee</url>
 	<inceptionYear>2006</inceptionYear>
-
-	<organization>
-		<name>Wicket developers</name>
-		<url>http://www.wicketframework.org</url>
-	</organization>
 
 	<licenses>
 		<license>
