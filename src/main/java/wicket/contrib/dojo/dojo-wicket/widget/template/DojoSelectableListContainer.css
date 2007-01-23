@@ -6,14 +6,6 @@ table.dojoSelectableList {
 	cursor:default;
 }
 
-* html div.tableContainer {	/* IE only hack */
-	width:95%;
-	border:1px solid #999;
-	height: 285px;
-	overflow-x:hidden;
-	overflow-y: auto;
-}
-
 table.dojoSelectableList td, table.dojoSelectableList th {
 	/*border-right:1px solid #999;
 	border-top:1px solid #999;*/
@@ -25,18 +17,14 @@ table.dojoSelectableList thead th {
 	height: 15px;
 }
 
-* html div.tableContainer table thead tr td,
-* html div.tableContainer table thead tr th{
-	/* IE Only hacks */
-	position:relative;
-	top:expression(dojo.html.getFirstAncestorByTag(this,'table').parentNode.scrollTop-2);
-}
 
-table.dojoSelectableList tbody {
+html>body table.dojoSelectableList tbody { /**FF spécific*/
 	height: 300px;
 	overflow-x:hidden;
 	overflow-y: auto;
 }
+
+/** If IE a hack should be done : a div should suround the table*/
 
 table.dojoSelectableList tbody td {
 	background-color: #FFF;
