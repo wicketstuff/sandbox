@@ -1,4 +1,4 @@
-package wicket.contrib.beanpanels;
+package wicket.contrib.beanpanels.model;
 
 import java.lang.reflect.Field;
 

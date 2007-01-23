@@ -3,6 +3,9 @@ package wicket.contrib.beanpanels;
 import java.util.List;
 
 import wicket.Component;
+import wicket.contrib.beanpanels.model.BeanListModel;
+import wicket.contrib.beanpanels.model.BeanModel;
+import wicket.contrib.beanpanels.model.IPropertyMeta;
 import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.list.ListItem;
@@ -59,7 +62,7 @@ public class BeanListPanel extends AbstractBeanPanel {
 			}
 			add( header );
 			
-			add( new ListView("propertyKeys", firstBeanModel.getPropertiesList() ) {
+			add( new ListView("propertyKeys", firstBeanModel.getProperties() ) {
 				
 				protected void populateItem(ListItem item) 
 				{
@@ -72,7 +75,7 @@ public class BeanListPanel extends AbstractBeanPanel {
 				protected void populateItem(ListItem item) 
 				{
 					final BeanModel beanModel = (BeanModel)item.getModelObject();
-					item.add( new ListView("propertyValues", beanModel.getPropertiesList() ) {
+					item.add( new ListView("propertyValues", beanModel.getProperties() ) {
 						
 						protected void populateItem(ListItem item) 
 						{

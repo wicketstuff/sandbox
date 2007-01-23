@@ -21,6 +21,8 @@ package wicket.contrib.beanpanels;
 import java.io.Serializable;
 
 import wicket.Component;
+import wicket.contrib.beanpanels.model.BeanModel;
+import wicket.contrib.beanpanels.model.IPropertyMeta;
 import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.list.ListItem;
@@ -69,7 +71,7 @@ public class BeanPanel extends AbstractBeanPanel
 		}
 		add( header );
 		
-		add( new ListView("propertiesList", beanModel.getPropertiesList() ) {
+		add( new ListView("propertiesList", beanModel.getProperties() ) {
 			protected void populateItem(ListItem item) 
 			{
 				// the bean property meta-data

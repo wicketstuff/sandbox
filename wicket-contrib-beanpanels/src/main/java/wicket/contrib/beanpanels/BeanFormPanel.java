@@ -21,6 +21,7 @@ package wicket.contrib.beanpanels;
 import java.io.Serializable;
 
 import wicket.AttributeModifier;
+import wicket.contrib.beanpanels.model.BeanModel;
 import wicket.markup.html.form.Button;
 import wicket.markup.html.form.Form;
 import wicket.markup.html.panel.Panel;

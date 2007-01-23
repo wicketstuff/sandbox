@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 import wicket.Component;
 import wicket.contrib.beanpanels.editor.PropertyEditorFactory;
+import wicket.contrib.beanpanels.model.BeanModel;
+import wicket.contrib.beanpanels.model.IPropertyMeta;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.list.ListItem;
 import wicket.markup.html.list.ListView;
@@ -24,7 +26,7 @@ public class EditBeanPanel extends AbstractBeanPanel {
 	public EditBeanPanel( final String id, final BeanModel model, final boolean cascade ) { 
 		super(id,model);
 
-		ListView properties = new ListView("properties", model.getPropertiesList() ) {
+		ListView properties = new ListView("properties", model.getProperties() ) {
 			protected void populateItem(ListItem item) 
 			{
 				item.setRenderBodyOnly(true);

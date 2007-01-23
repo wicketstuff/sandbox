@@ -1,4 +1,4 @@
-package wicket.contrib.beanpanels;
+package wicket.contrib.beanpanels.model;
 
 import java.lang.reflect.Field;
 
@@ -17,8 +17,8 @@ public class PropertyMeta implements IPropertyMeta {
 	private int index ;
 	private boolean readOnly;
 	private Class type;
-
-	private Class<? extends Component > componentType;
+	private boolean required = false;
+	private Integer length;
 
 	public PropertyMeta( String name, Class type ) { 
 		this.name = name;
@@ -91,12 +91,20 @@ public class PropertyMeta implements IPropertyMeta {
 		this.type = type;
 	}
 
-	public Class<? extends Component> getComponentType() {
-		return componentType;
+	public Integer getLength() {
+		return length;
 	}
 
-	public void setComponentType(Class<? extends Component> componentType) {
-		this.componentType = componentType;
+	public void setLength(Integer length) {
+		this.length = length;
+	}
+
+	public boolean isRequired() {
+		return required;
+	}
+
+	public void setRequired(boolean required) {
+		this.required = required;
 	}
 
 

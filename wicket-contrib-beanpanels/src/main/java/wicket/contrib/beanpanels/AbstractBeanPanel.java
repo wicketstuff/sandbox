@@ -21,6 +21,8 @@ package wicket.contrib.beanpanels;
 
 import wicket.Component;
 import wicket.contrib.beanpanels.editor.PropertyEditorFactory;
+import wicket.contrib.beanpanels.model.BeanModel;
+import wicket.contrib.beanpanels.model.IPropertyMeta;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.panel.Fragment;
 import wicket.markup.html.panel.Panel;
@@ -48,7 +50,7 @@ public abstract class AbstractBeanPanel extends Panel
 		super(id, beanModel);
 		if (beanModel == null)
 		{
-			throw new NullPointerException("argument beanModel must not be null");
+			throw new IllegalArgumentException("Argument BeanModel must not be null");
 		}
 	}
 

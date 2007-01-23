@@ -3,6 +3,8 @@ package wicket.contrib.beanpanels;
 import java.io.Serializable;
 
 import wicket.contrib.beanpanels.editor.PropertyEditorFactory;
+import wicket.contrib.beanpanels.model.BeanModel;
+import wicket.contrib.beanpanels.model.IPropertyMeta;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.list.ListItem;
 import wicket.markup.html.list.ListView;
@@ -30,7 +32,7 @@ public class ViewBeanPanel extends AbstractBeanPanel {
 		this.beanModel = beanModel;
 		this.cascade = cascade;
 		
-		ListView properties = new ListView("properties", beanModel.getPropertiesList() ) {
+		ListView properties = new ListView("properties", beanModel.getProperties() ) {
 			protected void populateItem(ListItem item) 
 			{
 				item.setRenderBodyOnly(true);
