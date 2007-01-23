@@ -1,6 +1,7 @@
 package wicket.contrib.beanpanels.model;
 
 import java.lang.reflect.Field;
+import java.util.List;
 
 import wicket.Component;
 
@@ -19,6 +20,7 @@ public class PropertyMeta implements IPropertyMeta {
 	private Class type;
 	private boolean required = false;
 	private Integer length;
+	private List choices = null;
 
 	public PropertyMeta( String name, Class type ) { 
 		this.name = name;
@@ -105,6 +107,14 @@ public class PropertyMeta implements IPropertyMeta {
 
 	public void setRequired(boolean required) {
 		this.required = required;
+	}
+
+	public List getChoices() {
+		return choices;
+	}
+
+	public void setChoices(List choices) {
+		this.choices = choices;
 	}
 
 

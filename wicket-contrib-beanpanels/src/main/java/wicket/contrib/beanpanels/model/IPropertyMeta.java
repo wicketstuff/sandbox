@@ -1,6 +1,7 @@
 package wicket.contrib.beanpanels.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 
@@ -22,4 +23,6 @@ public interface IPropertyMeta extends Serializable {
 	boolean isRequired();
 	
 	Integer getLength();
+	
+	List getChoices(); 
 }
