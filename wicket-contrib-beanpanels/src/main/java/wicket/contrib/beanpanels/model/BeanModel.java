@@ -26,10 +26,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import wicket.Component;
+import wicket.contrib.beanpanels.annotation.Choice;
 import wicket.contrib.beanpanels.annotation.Label;
 import wicket.contrib.beanpanels.util.PropertyUtil;
-import wicket.model.IModel;
 
 /**
  * Model for JavaBeans.
@@ -37,14 +36,10 @@ import wicket.model.IModel;
  * @author Eelco Hillenius
  * @author Paolo Di Tommaso
  */
-public class BeanModel extends AbstractBeanModel
+public class BeanModel extends AbstractBeanModel 
 {
-	/** the java bean to edit. */
-	private final Serializable bean;
 	
-	private List propertiesList;
-	
-	private List names;
+	private IPropertyFilter filter;
 	
 	/**
 	 * Construct.
@@ -52,58 +47,37 @@ public class BeanModel extends AbstractBeanModel
 	 */
 	public BeanModel( final Serializable bean )
 	{
-		this(bean,(List)null);
+		super(bean);
+		
+		if( bean == null ) {
+			throw new IllegalArgumentException("bean must be not null");
+		}
 	}
-	
+
 	public BeanModel( final Object bean ) { 
-		this( (Serializable)bean, (List)null );
+		this( (Serializable)bean );
 	}
-	
+
+	public BeanModel( final Serializable bean, IPropertyFilter filter ) { 
+		this(bean);
+		this.filter = filter;
+	}
 	/** deprecated */
 	public BeanModel( final Serializable bean, final String[]  names ) { 
-		this(bean, names != null ? Arrays.asList(names) : null );
+		this(bean);
+		this.filter = new PropertyNameFilter(names);
 	}
 	
 	/** deprecated */
 	public BeanModel( final Serializable bean, final List names ) { 
-		super(bean);
-		
-		if (bean == null)
-		{
-			throw new IllegalArgumentException("bean must be not null");
-		}
-
-		this.bean = bean;
-		this.names = names;
-
-
-	}
- 	
-	final protected List propertiesFor( final Class clazz ) {
-		return propertiesFor(clazz,(IPropertyFilter)null);
+		this(bean);
+		this.filter = new PropertyNameFilter(names);
 	}
 	
-	final protected List propertiesFor( final Class clazz, final String[] attributes ) { 
-		return propertiesFor( clazz, attributes!=null ? Arrays.asList(attributes) : null );
-	}
-	
-	final protected List propertiesFor( final Class clazz, final List attributes ) { 
-		
-		IPropertyFilter filter = null;
 
-		if( attributes != null ) { 
-			filter = new IPropertyFilter() {
-				public int accept(Field field) {
-					return attributes.indexOf(field.getName());
-				} 
-			};
-		}
-		
-		return propertiesFor(clazz,filter);
-	}
-
-	final protected List propertiesFor( final Class clazz, final IPropertyFilter filter ) { 
+	final protected List propertiesFor( ) { 
 		List result = new ArrayList();
+		Class clazz = getType();
 		Field[] fields = clazz.getDeclaredFields();
 		for( int i=0, c=(fields!=null ? fields.length : 0); i<c; i++ ) { 
 			/*
@@ -114,11 +88,11 @@ public class BeanModel extends AbstractBeanModel
 				if( filter != null ) { 
 					int p = filter.accept(fields[i]);
 					if( p != -1 ) { 
-						result.add( createPropertyMeta(clazz,fields[i],p) );
+						result.add( createPropertyMeta(fields[i],p) );
 					}
 				}
 				else { 
-					result.add( createPropertyMeta(clazz,fields[i],i) );
+					result.add( createPropertyMeta(fields[i],i) );
 				}
 			}
 		}
@@ -133,6 +107,8 @@ public class BeanModel extends AbstractBeanModel
 
 		return result;
 	}
+	
+	
 	/**
 	 * Property meta info factory method. Override this method to provide alternative meta information providing strategy.
 	 * 
@@ -140,11 +116,11 @@ public class BeanModel extends AbstractBeanModel
 	 * @param index
 	 * @return
 	 */
-	protected IPropertyMeta createPropertyMeta( Class clazz, Field field, int index ) { 
+	protected IPropertyMeta createPropertyMeta(Field field, int index ) { 
 		/*
 		 * if the setter dows not exists property is read-only
 		 */
-		boolean readOnly = (PropertyUtil.setter(clazz,field) == null);
+		boolean readOnly = (PropertyUtil.setter(getType(),field) == null);
 		PropertyMeta meta = new PropertyMeta(field, index);
 		meta.setReadOnly(readOnly);
 		/*
@@ -154,22 +130,18 @@ public class BeanModel extends AbstractBeanModel
 		if( annotation != null ) { 
 			meta.setLabel(annotation.value());
 		}
-
+		/*
+		 * Check for Choice annotation
+		 */
+		Choice choice = field.getAnnotation(Choice.class);
+		if( choice != null ) { 
+			meta.setChoices( Arrays.asList(choice.value()) );
+		}
 		return meta;
 	}	
 	
 	public List getProperties() { 
-		return propertiesFor( bean.getClass(), new IPropertyFilter() {
-				
-				int c = 0;
-				
-				public int accept(Field field) {
-					int p = names != null 
-						  ? names.indexOf(field.getName()) 
-						  : c++;
-						  
-					return p;
-				} } );			
+		return propertiesFor();			
 	}
-	
+
 }

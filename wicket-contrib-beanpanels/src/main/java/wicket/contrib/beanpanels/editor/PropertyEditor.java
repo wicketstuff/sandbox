@@ -60,7 +60,10 @@ public class PropertyEditor implements IPropertyEditor {
 		Component editor = null;
 		final Class type = propertyMeta.getType();
 	
-		if (checkAssignableFrom(TEXT_TYPES, type))
+		if( propertyMeta.getChoices() != null ) { 
+			editor = new ChoiceFieldEditor(panelId, propertyMeta, beanModel);
+		}
+		else if (checkAssignableFrom(TEXT_TYPES, type))
 		{
 			editor = new TextFieldEditor(panelId, propertyMeta, beanModel);
 		}
