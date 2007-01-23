@@ -3,6 +3,8 @@ package wicket.contrib.beanpanels;
 import java.io.Serializable;
 
 import wicket.contrib.beanpanels.editor.PropertyEditorFactory;
+import wicket.contrib.beanpanels.model.BeanModel;
+import wicket.contrib.beanpanels.model.IPropertyMeta;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.list.ListItem;
 import wicket.markup.html.list.ListView;
@@ -11,22 +13,22 @@ import wicket.model.PropertyModel;
 import wicket.model.ResourceModel;
 import wicket.util.lang.PropertyResolver;
 
-public class PlainViewBeanPanel extends AbstractBeanPanel {
+public class TableViewBeanPanel extends AbstractBeanPanel {
 	
 	final private BeanModel beanModel;
 	private boolean cascade;
 	
-	public PlainViewBeanPanel(final String id, final Serializable bean)
+	public TableViewBeanPanel(final String id, final Serializable bean)
 	{
 		this(id, new BeanModel(bean), true);
 	}	
 
-	public PlainViewBeanPanel(final String id, final BeanModel beanModel )
+	public TableViewBeanPanel(final String id, final BeanModel beanModel )
 	{
 		this(id, beanModel, true );
 	}	
 	
-	public PlainViewBeanPanel(final String id, final BeanModel beanModel, boolean cascade) {
+	public TableViewBeanPanel(final String id, final BeanModel beanModel, boolean cascade) {
 		super(id, beanModel);
 		this.beanModel = beanModel;
 		this.cascade = cascade;
@@ -56,7 +58,7 @@ public class PlainViewBeanPanel extends AbstractBeanPanel {
 			super(id, "BodyFragment");
 			setRenderBodyOnly(true);
 			
-			ListView properties = new ListView("properties", beanModel.getPropertiesList() ) {
+			ListView properties = new ListView("properties", beanModel.getProperties() ) {
 				protected void populateItem(ListItem item) 
 				{
 					item.setRenderBodyOnly(true);
@@ -98,7 +100,7 @@ public class PlainViewBeanPanel extends AbstractBeanPanel {
 			add(new Label("label", new ResourceModel(meta.getName(), meta.getLabel())));
 
 			Object val = PropertyResolver.getValue(meta.getName(), beanModel.getBean());
-			PlainViewBeanPanel view = new PlainViewBeanPanel("view", new BeanModel(val), false);
+			TableViewBeanPanel view = new TableViewBeanPanel("view", new BeanModel(val), false);
 			view.setRenderBodyOnly(true);
 			add(view);
 		} 

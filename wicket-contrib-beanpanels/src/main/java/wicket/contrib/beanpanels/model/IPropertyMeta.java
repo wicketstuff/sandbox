@@ -1,4 +1,4 @@
-package wicket.contrib.beanpanels;
+package wicket.contrib.beanpanels.model;
 
 import java.io.Serializable;
 
@@ -19,4 +19,7 @@ public interface IPropertyMeta extends Serializable {
 	boolean isReadOnly();
 	boolean isVisible();
 	
+	boolean isRequired();
+	
+	Integer getLength();
 }

@@ -1,7 +1,7 @@
 package wicket.contrib.beanpanels.editor;
 
-import wicket.contrib.beanpanels.BeanModel;
-import wicket.contrib.beanpanels.IPropertyMeta;
+import wicket.contrib.beanpanels.model.BeanModel;
+import wicket.contrib.beanpanels.model.IPropertyMeta;
 import wicket.markup.html.form.CheckBox;
 import wicket.markup.html.panel.Panel;
 import wicket.model.IModel;

@@ -1,4 +1,4 @@
-package wicket.contrib.beanpanels;
+package wicket.contrib.beanpanels.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;

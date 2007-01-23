@@ -1,8 +1,8 @@
 package wicket.contrib.beanpanels.editor;
 
 import wicket.Component;
-import wicket.contrib.beanpanels.BeanModel;
-import wicket.contrib.beanpanels.IPropertyMeta;
+import wicket.contrib.beanpanels.model.BeanModel;
+import wicket.contrib.beanpanels.model.IPropertyMeta;
 
 public interface IPropertyEditor {
 	
