@@ -83,7 +83,7 @@ public abstract class AbstractRequireDojoBehavior extends AbstractDefaultDojoBeh
 	protected void onComponentRendered() {
 		//if a Dojo Widget is rerender needs to run some javascript to refresh it
 		if (RequestCycle.get().getRequestTarget() instanceof AjaxRequestTarget) {
-			((AjaxRequestTarget)RequestCycle.get().getRequestTarget()).appendJavascript("djConfig.searchIds = ['" + getComponent().getMarkupId() + "'];dojo.hostenv.makeWidgets()");
+			//((AjaxRequestTarget)RequestCycle.get().getRequestTarget()).appendJavascript("djConfig.searchIds = ['" + getComponent().getMarkupId() + "'];dojo.hostenv.makeWidgets()");
 			onComponentReRendered(((AjaxRequestTarget)RequestCycle.get().getRequestTarget()));
 		}
 	}
