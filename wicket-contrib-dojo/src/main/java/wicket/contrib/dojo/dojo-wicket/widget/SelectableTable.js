@@ -184,6 +184,14 @@ dojo.widget.defineWidget(
 		e.preventDefault();
 	},
 	
+	selectIndexes:function(/** String[] */ indexes){
+		var body = this.domNode.getElementsByTagName("tbody")[0];
+		for (var i=0; i<indexes.length; i++){
+			body.getElementsByTagName('tr')[i].setAttribute("selected", "true");
+		}
+		this.showSelections();
+	},
+	
 	onChoose:function(/* DomEvent */ e){ 
 		
 	},
