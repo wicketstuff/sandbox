@@ -106,6 +106,7 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer imple
 		alternateRowClass = "alternateRow";
 		add(containerHandler = new DojoSelectableListContainerHandler());
 		setPermanentSelection(false);
+		selected = new ArrayList();
 	}
 
 	protected void onComponentTag(ComponentTag tag)
