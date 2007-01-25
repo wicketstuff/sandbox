@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-modules id="moduleCoreId" project-version="1.5.0">
+  <wb-module deploy-name="wicket-contrib-gmap-examples">
+    <property context-root="wicket-contrib-gmap-examples"/>
+    <wb-resource deploy-path="/" source-path="src/webapp"/>
+    <property name="java-output-path" value="/target/classes"/>
+    <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/log4j/log4j/1.2.12/log4j-1.2.12.jar">
+      <dependency-type>uses</dependency-type>
+    </dependent-module>
+    <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/wicket/wicket/1.2-SNAPSHOT/wicket-1.2-SNAPSHOT.jar">
+      <dependency-type>uses</dependency-type>
+    </dependent-module>
+    <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/junit/junit/3.8.1/junit-3.8.1.jar">
+      <dependency-type>uses</dependency-type>
+    </dependent-module>
+<dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/commons-logging/commons-logging/1.0.4/commons-logging-1.0.4.jar">
+      <dependency-type>uses</dependency-type>
+    </dependent-module>
+<dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/commons-collections/commons-collections/3.1/commons-collections-3.1.jar">
+      <dependency-type>uses</dependency-type>
+    </dependent-module>
+<dependent-module deploy-path="/WEB-INF/lib" handle="module:/resource/wicket/wicket">
+<dependency-type>uses</dependency-type>
+</dependent-module>
+<dependent-module deploy-path="/WEB-INF/lib" handle="module:/resource/wicket-contrib-gmap/wicket-contrib-gmap">
+<dependency-type>uses</dependency-type>
+</dependent-module>
+    <wb-resource deploy-path="/WEB-INF/classes" source-path="src/java"/>
+  </wb-module>
+</project-modules>
