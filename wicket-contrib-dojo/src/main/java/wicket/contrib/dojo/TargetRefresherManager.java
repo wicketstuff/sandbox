@@ -1,14 +1,11 @@
 package wicket.contrib.dojo;
 
-import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import wicket.Component;
-import wicket.WicketRuntimeException;
 import wicket.ajax.AjaxRequestTarget;
 import wicket.ajax.AjaxRequestTarget.IJavascriptResponse;
 import wicket.ajax.AjaxRequestTarget.IListener;
