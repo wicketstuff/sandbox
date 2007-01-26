@@ -20,8 +20,8 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-import wicket.ResourceReference;
 import wicket.ajax.AjaxRequestTarget;
+import wicket.ajax.IAjaxCallDecorator;
 import wicket.contrib.dojo.AbstractRequireDojoBehavior;
 import wicket.contrib.dojo.TargetRefresherManager;
 import wicket.contrib.dojo.templates.DojoPackagedTextTemplate;
@@ -40,6 +40,10 @@ import wicket.markup.repeater.RepeatingView;
  */
 public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehavior
 {
+	/**
+	 * Allow to lock indicator on a request
+	 */
+	private boolean lockIndicator = false;
 	
 	public void onComponentReRendered(AjaxRequestTarget ajaxTarget)
 	{
@@ -136,6 +140,7 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 	 */
 	protected final CharSequence getCallbackScript()
 	{
+		lockIndicator = ((DojoSelectableListContainer)getComponent()).isLockIndicatorOnClick();
 		return getCallbackScript("wicketAjaxGet('" + super.getCallbackUrl() + "' + getSelectableTableSelection('"+getComponent().getMarkupId()+"')", null,
 				null);
 	}
@@ -150,6 +155,16 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 		}else{
 			CharSequence url = ((DojoSelectableListContainer) getComponent()).urlFor(ILinkListener.INTERFACE);
 			return "window.location.href='" + url + "' + getSelectableTableSelection('"+getComponent().getMarkupId()+"') ";
+		}
+	}
+	
+	protected IAjaxCallDecorator getAjaxCallDecorator()
+	{
+		if(lockIndicator){
+			lockIndicator = false;
+			return null;
+		}else{
+			return super.getAjaxCallDecorator();
 		}
 	}
 
