@@ -25,6 +25,7 @@ import wicket.WicketRuntimeException;
 import wicket.ajax.AjaxRequestTarget;
 import wicket.behavior.AttributeAppender;
 import wicket.contrib.dojo.DojoIdConstants;
+import wicket.contrib.dojo.indicator.behavior.DojoIndicatorBehavior;
 import wicket.contrib.dojo.widgets.StylingWebMarkupContainer;
 import wicket.markup.ComponentTag;
 import wicket.markup.MarkupStream;
@@ -81,6 +82,11 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer imple
 	//child
 	private WebMarkupContainer child;
 	private DojoSelectableListContainerHandler containerHandler;
+	
+	/**
+	 * Allow to avoid indicator on the click on a line
+	 */
+	private boolean lockIndicatorOnClick = false;
 
 	/**
 	 * Construct the selectable list container
@@ -401,6 +407,25 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer imple
 			}*/
 			return child;
 		}
+	}
+
+	/**
+	 * true if the indicator does not need to be shown on the simple click
+	 * @return true if the indicator does not need to be shown on the simple click
+	 */
+	public boolean isLockIndicatorOnClick()
+	{
+		return lockIndicatorOnClick;
+	}
+
+	/**
+	 * Set to true if you don't whant an indicatorf on the simple click even if
+	 * {@link DojoIndicatorBehavior} has been added to this widget
+	 * @param lockIndicatorOnClick true if you don't whant an indicatorf on the simple click
+	 */
+	public void setLockIndicatorOnClick(boolean lockIndicatorOnClick)
+	{
+		this.lockIndicatorOnClick = lockIndicatorOnClick;
 	}
 
 }
