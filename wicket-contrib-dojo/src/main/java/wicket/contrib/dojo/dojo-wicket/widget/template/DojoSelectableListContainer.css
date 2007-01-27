@@ -18,7 +18,7 @@ table.dojoSelectableList thead th {
 }
 
 
-html>/**/body table.dojoSelectableList tbody { /**FF spécific*/
+html>/**/body table.dojoSelectableList tbody { /**FF specific*/
 	height: 300px;
 	overflow-x:hidden;
 	overflow-y: auto;
