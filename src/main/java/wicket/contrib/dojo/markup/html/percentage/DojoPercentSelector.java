@@ -16,11 +16,9 @@
  */
 package wicket.contrib.dojo.markup.html.percentage;
 
-import wicket.contrib.dojo.DojoIdConstants;
 import wicket.Component;
-import wicket.MarkupContainer;
-import wicket.ResourceReference;
 import wicket.WicketRuntimeException;
+import wicket.contrib.dojo.DojoIdConstants;
 import wicket.contrib.dojo.markup.html.percentage.model.PercentageRanges;
 import wicket.markup.ComponentTag;
 import wicket.markup.html.WebMarkupContainer;
@@ -90,8 +88,8 @@ public class DojoPercentSelector extends WebMarkupContainer {
 		tag.put(DojoIdConstants.DOJO_TYPE, DojoIdConstants.DOJO_TYPE_PERCENTSELECTOR);
 		tag.put("widgetId", getMarkupId());
 
-		tag.put("templatePath", urlFor(new ResourceReference(DojoPercentSelector.class, "PercentSelector.htm")));
-		tag.put("templateCssPath", urlFor(new ResourceReference(DojoPercentSelector.class, "PercentSelector.css")));
+		//tag.put("templatePath", urlFor(new ResourceReference(DojoPercentSelector.class, "PercentSelector.htm")));
+		//tag.put("templateCssPath", urlFor(new ResourceReference(DojoPercentSelector.class, "PercentSelector.css")));
 	}
 
 }
