@@ -43,7 +43,10 @@ public class TargetRefresherManager implements IListener
 		}
 		dojoComponents = real;
 
-		response.addJavascript(generateReParseJs());
+		if (generateReParseJs()!=null){
+			response.addJavascript(generateReParseJs());
+		}
+		instance=null;
 		
 	}
 
