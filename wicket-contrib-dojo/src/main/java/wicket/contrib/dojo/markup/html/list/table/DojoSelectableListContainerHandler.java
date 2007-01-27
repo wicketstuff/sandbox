@@ -88,7 +88,6 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 
 	protected final void respond(AjaxRequestTarget target)
 	{
-		target.addListener(TargetRefresherManager.getInstance());
 		List selected = ((DojoSelectableListContainer)getComponent()).getSelected();
 
 		String indexList[] = getComponent().getRequest().getParameters("select");
