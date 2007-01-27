@@ -33,7 +33,7 @@ class DojoPercentSelectorHandler extends AbstractRequireDojoBehavior
 
 	public void setRequire(RequireDojoLibs libs)
 	{
-		//DO NOTHING For the moment
+		libs.add("dojoWicket.widget.PercentSelector");
 		
 	}
 
@@ -46,7 +46,6 @@ class DojoPercentSelectorHandler extends AbstractRequireDojoBehavior
 	public void renderHead(IHeaderResponse response)
 	{
 		super.renderHead(response);
-		response.renderJavascriptReference(new ResourceReference(DojoPercentSelectorHandler.class, "PercentSelector.js"));
 		if (((PercentageRanges)getComponent().getModelObject()) != null){
 			String toRender = "";
 			toRender += "<script language=\"JavaScript\" type=\"text/javascript\">\n";
