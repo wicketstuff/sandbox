@@ -25,6 +25,8 @@ import wicket.ResourceReference;
 import wicket.ajax.AjaxRequestTarget;
 import wicket.contrib.dojo.markup.html.container.DojoSimpleContainer;
 import wicket.contrib.dojo.markup.html.container.tab.DojoTabContainer;
+import wicket.contrib.dojo.skin.manager.SkinManager;
+import wicket.contrib.dojo.skin.windows.WindowsDojoSkin;
 import wicket.markup.ComponentTag;
 import wicket.markup.html.IHeaderResponse;
 
@@ -98,6 +100,7 @@ public abstract class AbstractRequireDojoBehavior extends AbstractDefaultDojoBeh
 	protected void onComponentTag(ComponentTag tag){
 		super.onComponentTag(tag);
 		tag.put("widgetId", getComponent().getMarkupId());
+		SkinManager.getInstance().setSkin(getComponent(), this, tag);
 	}
 	
 	/**
