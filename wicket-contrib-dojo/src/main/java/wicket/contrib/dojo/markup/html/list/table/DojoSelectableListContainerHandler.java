@@ -23,7 +23,6 @@ import java.util.List;
 import wicket.ajax.AjaxRequestTarget;
 import wicket.ajax.IAjaxCallDecorator;
 import wicket.contrib.dojo.AbstractRequireDojoBehavior;
-import wicket.contrib.dojo.TargetRefresherManager;
 import wicket.contrib.dojo.templates.DojoPackagedTextTemplate;
 import wicket.markup.ComponentTag;
 import wicket.markup.html.IHeaderResponse;
