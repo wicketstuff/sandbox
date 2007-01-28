@@ -1,19 +1,26 @@
 package wicket.contrib.dojo.examples;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
+import wicket.ajax.AjaxRequestTarget;
+import wicket.ajax.markup.html.AjaxLink;
 import wicket.contrib.dojo.markup.html.list.DojoOrderableListRemover;
 import wicket.contrib.dojo.markup.html.list.DojoOrderableListView;
-import wicket.contrib.dojo.markup.html.list.DojoOrderableListViewContainer;
+import wicket.contrib.dojo.markup.html.list.DojoOrderableListContainer;
+import wicket.contrib.dojo.markup.html.list.DojoOrderableRepeatingView;
 import wicket.markup.html.WebPage;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.list.ListItem;
+import wicket.markup.repeater.Item;
+import wicket.model.Model;
 
 public class OrderableList extends WebPage {
 
 	static final List<String> objList  = new  ArrayList<String>();
-
+	DojoOrderableRepeatingView list;
+	DojoOrderableListContainer container;
 	
 	public OrderableList() {
 		super();
@@ -31,18 +38,85 @@ public class OrderableList extends WebPage {
 			objList.add("foo6");
 			objList.add("bar6");
 		}
-		DojoOrderableListViewContainer container = new DojoOrderableListViewContainer("container");
+		container = new DojoOrderableListContainer("container");
 		add(container);
-		DojoOrderableListView list = new DojoOrderableListView(container, "list", objList){
+		list = new DojoOrderableRepeatingView("list"){
 
-			protected void populateItem(ListItem item) {
+			@Override
+			public void moveItem(int from, int to, AjaxRequestTarget target) {
+				String drag = objList.remove(from);
+				objList.add(to, drag);
+				
+			}
+
+			@Override
+			public void removeItem(Item item, AjaxRequestTarget target) {
+				objList.remove(item.getModelObject());
+				
+			}
+
+			@Override
+			protected Iterator getItemModels() {
+				ArrayList modelList = new ArrayList();
+				Iterator it = objList.iterator();
+				while (it.hasNext()){
+					modelList.add(new Model((String)it.next()));
+				}
+				return modelList.iterator();
+			}
+
+			@Override
+			protected void populateItem(Item item) {
 				item.add(new Label("label",(String)item.getModelObject()));
 				item.add(new DojoOrderableListRemover("remover", item));
-				
 			}
 			
 		};
 		container.add(list);
+		
+		add(new AjaxLink("link"){
+
+			@Override
+			public void onClick(AjaxRequestTarget target) {
+				DojoOrderableListContainer containerNew = new DojoOrderableListContainer("container");
+				DojoOrderableRepeatingView listNew = new DojoOrderableRepeatingView("list"){
+
+					@Override
+					public void moveItem(int from, int to, AjaxRequestTarget target) {
+						String drag = objList.remove(from);
+						objList.add(to, drag);
+						
+					}
+
+					@Override
+					public void removeItem(Item item, AjaxRequestTarget target) {
+						objList.remove(item);
+						
+					}
+
+					@Override
+					protected Iterator getItemModels() {
+						ArrayList modelList = new ArrayList();
+						Iterator it = objList.iterator();
+						while (it.hasNext()){
+							modelList.add(new Model((String)it.next()));
+						}
+						return modelList.iterator();
+					}
+
+					@Override
+					protected void populateItem(Item item) {
+						item.add(new Label("label",(String)item.getModelObject()));
+						item.add(new DojoOrderableListRemover("remover", item));
+					}
+					
+				};
+				containerNew.add(listNew);
+				container.replaceWith(containerNew);
+				container = containerNew;
+				target.addComponent(containerNew);
+			}
+		});
 	}
 
 }
