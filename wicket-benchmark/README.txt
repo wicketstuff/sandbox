@@ -11,8 +11,7 @@ You'll need Maven 2 to run this project, or you'll have to get creative yourself
 
 and point your browser to the following URL:
 
-    http://localhost:8080/benchmark/wick for Wicket
-    http://localhost:8080/benchmark/app for Tapestry
+    http://localhost:8080/wicket-benchmark
 
 You can find a jmeter [3] test script in src/jmeter to satisfy your curiosity how the frameworks handle stress.
 
