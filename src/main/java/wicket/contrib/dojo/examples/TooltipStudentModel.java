@@ -6,7 +6,7 @@ import java.io.Serializable;
  * @author vandehaar
  * student Pojo for demo purposes
  */
-public class StudentModel implements Serializable
+public class TooltipStudentModel implements Serializable
 {
 	//instant fields are set to create a simple student for testing purposes
 	private int studentID;
@@ -15,7 +15,7 @@ public class StudentModel implements Serializable
 	private char sex;
 	
 	//testing constructor
-	public StudentModel()
+	public TooltipStudentModel()
 	{
 		this.studentID = 1234;
 		this.lastName = "van de Haar";
@@ -23,7 +23,7 @@ public class StudentModel implements Serializable
 		this.sex = 'm';
 	}
 	
-	public StudentModel(int SID, String lname, String fname, char sex)
+	public TooltipStudentModel(int SID, String lname, String fname, char sex)
 	{
 		this.studentID = SID;
 		this.lastName = lname;

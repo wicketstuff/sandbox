@@ -34,7 +34,7 @@ public class ExampleApplication extends WebApplication {
 	public ISessionFactory getSessionFactory() {
 		return new ISessionFactory() {
 			public Session newSession(Request request) {
-				return new ExampleSession(ExampleApplication.this);
+				return new ExampleSession(ExampleApplication.this, request);
 			}
 		};
 	}
