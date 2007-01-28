@@ -17,6 +17,7 @@
  */
 package wicket.contrib.dojo.examples;
 
+import wicket.Request;
 import wicket.protocol.http.WebApplication;
 import wicket.protocol.http.WebSession;
 
@@ -32,8 +33,9 @@ public final class ExampleSession extends WebSession {
 	 * 
 	 * @param application
 	 *            The application
+	 * @param request 
 	 */
-	protected ExampleSession(final WebApplication application) {
-		super(application);
+	protected ExampleSession(final WebApplication application, Request request) {
+		super(application, request);
 	}
 }

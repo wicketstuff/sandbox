@@ -1,10 +1,8 @@
 package wicket.contrib.dojo.examples;
 
 import wicket.PageParameters;
-import wicket.contrib.dojo.examples.rssreader.DescriptionPanel;
-import wicket.contrib.dojo.examples.rssreader.UpdateLabel;
-import wicket.contrib.markup.html.tooltip.SimpleTooltip;
-import wicket.contrib.markup.html.tooltip.Tooltip;
+import wicket.contrib.dojo.AbstractDefaultDojoBehavior;
+import wicket.contrib.dojo.markup.html.tooltip.DojoTooltip;
 import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.WebPage;
 import wicket.markup.html.basic.Label;
@@ -20,26 +18,35 @@ public class TooltipTestPage extends WebPage{
 	
 	private String text;
 	private Label i;
+	AbstractDefaultDojoBehavior ajax;
 	private Image testImage;
 	
-	UpdateLabel j;
 	WebMarkupContainer c;
-	DescriptionPanel dpanel;
 
 	public TooltipTestPage(PageParameters parameters)
 	{
-		add(target = new Label("target","point here for a simple tooltip"));
-		add(new Tooltip("stooltip", new SimpleTooltip(target, "help!")));
-		add(target2 = new Label("target2","point here for a Dynamic tooltip"));
-		add(new Tooltip("tooltip2",new MyTooltip(new CompoundPropertyModel(new MyTooltipModel("this tooltip is a bit more dynamic with a model")) ,  target2, 100, 50)));
+		target = new Label("target", "point here for a simple tooltip");
+		add(target);
+		add(new DojoTooltip("stooltip", target));
+		target2 = new Label("target2", "point here for a Dynamic tooltip");
+		add(target2);
+		DojoTooltip tooltip2 = new DojoTooltip("tooltip2", target2);
+		add(tooltip2);
+		tooltip2.add(new TooltipSimplePanel( "tooltip2Panel"));
 		
-		//		add student example
-        add(stlabel = new Label("stlabel", "Marco van de Haar"));
-        add(stlabel2 = new Label("stlabel2", "Ruud Booltink"));
-//      add the tooltip dor the student and give a StudentModel to use witht hte tooltip
-        add(new Tooltip("studenttooltip", new StudentTooltip(new CompoundPropertyModel(new StudentModel(1234, "van de Haar", "Marco", 'm')), stlabel, 100, 20)));
-        add(new Tooltip("studenttooltip2", new StudentTooltip(new CompoundPropertyModel(new StudentModel(1235, "Booltink", "Ruud", 'm')), stlabel2, 100, 20)));
+		//add student example
+        stlabel = new Label("stlabel", "Marco van de Haar");
+        add(stlabel);
+        stlabel2 = new Label("stlabel2", "Ruud Booltink");
+        add(stlabel2);
+        
+        DojoTooltip studenttooltip = new DojoTooltip("studenttooltip", stlabel);
+        DojoTooltip studenttooltip2 = new DojoTooltip("studenttooltip2", stlabel2);
+        add(studenttooltip);
+        add(studenttooltip2);
 		
+        studenttooltip.add(new TooltipStudentPanel( "student1", new CompoundPropertyModel(new TooltipStudentModel(1234, "van de Haar", "Marco", 'm'))));
+        studenttooltip2.add(new TooltipStudentPanel("student2", new CompoundPropertyModel(new TooltipStudentModel(1235, "Booltink", "Ruud", 'm'))));
                 
 	}
 
