@@ -89,7 +89,7 @@ public class DojoTabContainer extends AbstractDojoContainer
 	public DojoTabContainer(String id, String title)
 	{
 		super(id, title);
-		add(new DojoTabHandler());
+		add(new DojoTabContainerHandler());
 	}
 
 	/**

@@ -28,7 +28,7 @@ import wicket.markup.html.IHeaderResponse;
  * @author vdemay
  *
  */
-public class DojoTabHandler extends AbstractRequireDojoBehavior
+public class DojoTabContainerHandler extends AbstractRequireDojoBehavior
 {
 
 	public void setRequire(RequireDojoLibs libs)
