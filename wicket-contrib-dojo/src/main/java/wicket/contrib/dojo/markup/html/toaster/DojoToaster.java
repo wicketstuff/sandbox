@@ -119,7 +119,6 @@ public class DojoToaster extends WebMarkupContainer{
 		add(new DojoToasterHandler());
 	}
 
-	@Override
 	protected void onComponentTag(ComponentTag tag){
 		super.onComponentTag(tag);
 		tag.put(wicket.contrib.dojo.DojoIdConstants.DOJO_TYPE, wicket.contrib.dojo.DojoIdConstants.DOJO_TYPE_TOASTER);
