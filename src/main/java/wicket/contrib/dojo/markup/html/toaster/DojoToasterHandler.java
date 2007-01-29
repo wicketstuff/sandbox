@@ -27,12 +27,10 @@ import wicket.contrib.dojo.AbstractRequireDojoBehavior;
 public class DojoToasterHandler extends AbstractRequireDojoBehavior
 {
 
-	@Override
 	public void setRequire(RequireDojoLibs libs){
 		libs.add("dojo.widget.Toaster");
 	}
 
-	@Override
 	protected void respond(AjaxRequestTarget target){
 		
 	}
