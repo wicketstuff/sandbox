@@ -23,7 +23,6 @@ import wicket.contrib.phonebook.Contact;
 import wicket.contrib.phonebook.ContactDao;
 import wicket.markup.html.form.Button;
 import wicket.markup.html.form.Form;
-import wicket.markup.html.form.RequiredTextField;
 import wicket.markup.html.form.TextField;
 import wicket.markup.html.panel.FeedbackPanel;
 import wicket.model.CompoundPropertyModel;
@@ -43,7 +42,8 @@ import wicket.validation.validator.StringValidator;
 public class EditContactPage extends BasePage {
 	private Page backPage;
 
-	@SpringBean private ContactDao dao;
+	@SpringBean
+	private ContactDao dao;
 
 	/**
 	 * Constructor. Create or edit the contact. Note that if you don't need the
@@ -57,22 +57,22 @@ public class EditContactPage extends BasePage {
 	 */
 	public EditContactPage(Page backPage, final long contactId) {
 		this.backPage = backPage;
-		Contact contact = (contactId == 0) ? new Contact() : dao.load(
-				contactId);
+		Contact contact = (contactId == 0) ? new Contact() : dao
+				.load(contactId);
 
 		new FeedbackPanel(this, "feedback");
 
 		Form form = new Form<Contact>(this, "contactForm",
 				new CompoundPropertyModel<Contact>(contact));
 
-		new RequiredTextField(form, "firstname").add(StringValidator
-				.maximumLength(32));
+		new TextField(form, "firstname").add(StringValidator.maximumLength(32))
+				.setRequired(true);
 
-		new RequiredTextField(form, "lastname").add(StringValidator
-				.maximumLength(32));
+		new TextField(form, "lastname").add(StringValidator.maximumLength(32))
+				.setRequired(true);
 
-		new RequiredTextField(form, "phone").add(StringValidator
-				.maximumLength(16));
+		new TextField(form, "phone").add(StringValidator.maximumLength(16))
+				.setRequired(true);
 
 		new TextField(form, "email").add(StringValidator.maximumLength(128))
 				.add(EmailAddressPatternValidator.getInstance());
