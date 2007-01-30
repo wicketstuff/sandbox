@@ -29,7 +29,6 @@ public class DojoOrderableListScrollerBehavior extends AbstractBehavior implemen
 		this.scrollComponent = scrollComponent;
 	}
 
-	@Override
 	public void onRendered(Component component) {
 		super.onRendered(component);
 		
