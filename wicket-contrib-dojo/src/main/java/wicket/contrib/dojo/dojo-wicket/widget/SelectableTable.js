@@ -186,6 +186,10 @@ dojo.widget.defineWidget(
 	
 	selectIndexes:function(/** String[] */ indexes){
 		var body = this.domNode.getElementsByTagName("tbody")[0];
+		var rows=body.getElementsByTagName("tr");
+		for(var i=0;i<rows.length;i++){
+			rows[i].setAttribute("selected", "false");
+		}
 		for (var i=0; i<indexes.length; i++){
 			body.getElementsByTagName('tr')[indexes[i]].setAttribute("selected", "true");
 		}
