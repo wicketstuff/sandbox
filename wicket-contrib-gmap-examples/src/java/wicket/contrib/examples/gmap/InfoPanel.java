@@ -25,9 +25,9 @@ public class InfoPanel extends Panel {
 
 			protected void populateItem(final ListItem<Developer> item) {
 				Developer developer = item.getModelObject();
-				new Label(this, "firstname", developer.getFirstname());
-				new Label(this, "lastname", developer.getLastname());
-				new Label(this, "email", developer.getEmail());
+				new Label(item, "firstname", developer.getFirstname());
+				new Label(item, "lastname", developer.getLastname());
+				new Label(item, "email", developer.getEmail());
 			}
 		};
 	}

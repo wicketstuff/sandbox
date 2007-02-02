@@ -35,6 +35,7 @@ public class GMapExampleApplication extends WebApplication
 	@Override
 	protected void init()
 	{
+        configure( DEVELOPMENT );
         getResourceSettings().setResourcePollFrequency(Duration.seconds(10));
 	}
 

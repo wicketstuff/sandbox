@@ -43,25 +43,22 @@
             <groupId>wicket</groupId>
             <artifactId>wicket</artifactId>
             <version>2.0-SNAPSHOT</version>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>wicket-stuff</groupId>
             <artifactId>wicket-contrib-gmap</artifactId>
             <version>2.0-SNAPSHOT</version>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>3.8.1</version>
-            <scope>compile</scope>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>commons-logging</groupId>
             <artifactId>commons-logging</artifactId>
             <version>1.0.4</version>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -73,20 +70,17 @@
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
             <version>1.2.12</version>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>commons-collections</groupId>
             <artifactId>commons-collections</artifactId>
             <version>3.1</version>
-            <scope>compile</scope>
         </dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-			<version>1.1.0</version>
-			<optional>true</optional>
-			<scope>provided</scope>
+			<artifactId>slf4j-jdk14</artifactId>
+			<version>1.2</version>
+            <scope>runtime</scope>
 		</dependency>
     </dependencies>
 
