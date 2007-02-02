@@ -1,27 +1,22 @@
 package wicket.contrib.gmap;
 
-import wicket.Component;
-import wicket.RequestCycle;
 import wicket.Response;
 import wicket.ajax.AbstractDefaultAjaxBehavior;
 import wicket.ajax.AjaxRequestTarget;
-import wicket.markup.html.IHeaderResponse;
-import wicket.response.StringResponse;
-import wicket.util.resource.IResourceStream;
-import wicket.util.resource.StringBufferResourceStream;
 
 /**
  * @author Iulian-Corneliu Costan
  */
 class GMapAjaxBehavior extends AbstractDefaultAjaxBehavior
 {
+
 	/**
-	 * @see wicket.ajax.AbstractDefaultAjaxBehavior#renderHead(wicket.markup.html.IHeaderResponse)
+	 * @see wicket.ajax.AbstractDefaultAjaxBehavior#onRenderHeadInitContribution(wicket.Response)
 	 */
 	@Override
-	public void renderHead(IHeaderResponse response)
+	protected void onRenderHeadInitContribution(Response response)
 	{
-		super.renderHead(response);
+		super.onRenderHeadInitContribution(response);
 
 		StringBuffer s = new StringBuffer(
 				"\t<script language=\"JavaScript\" type=\"text/javascript\">\n");
@@ -39,7 +34,7 @@ class GMapAjaxBehavior extends AbstractDefaultAjaxBehavior
 		s.append("\n\t}\n");
 		s.append("\t</script>\n");
 
-		response.renderString(s.toString());
+		response.write(s);
 	}
 
 	/**
