@@ -6,6 +6,9 @@ import org.apache.commons.logging.LogFactory;
 import wicket.ISessionFactory;
 import wicket.Request;
 import wicket.Session;
+import wicket.contrib.dojo.skin.manager.SkinManager;
+import wicket.contrib.dojo.skin.windows.WindowsDojoSkin;
+import wicket.contrib.dojo.toggle.DojoWipeToggle;
 import wicket.protocol.http.WebApplication;
 
 /**
@@ -19,6 +22,7 @@ public class ExampleApplication extends WebApplication {
 	 * Constructor
 	 */
 	public ExampleApplication() {
+			SkinManager.getInstance().setupSkin(new WindowsDojoSkin());
 	}
 
 	/**
