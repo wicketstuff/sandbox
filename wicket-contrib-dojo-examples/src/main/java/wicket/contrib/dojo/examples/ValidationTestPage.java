@@ -3,16 +3,15 @@ package wicket.contrib.dojo.examples;
 import wicket.PageParameters;
 import wicket.contrib.dojo.markup.html.form.validation.FXFeedbackIndicator;
 import wicket.contrib.dojo.markup.html.form.validation.FXValidationAjaxHandler;
+import wicket.contrib.dojo.markup.html.form.validation.bubble.DojoBubbleValidationAjaxBehavior;
+import wicket.contrib.dojo.markup.html.form.validation.bubble.DojoErrorBubble;
 import wicket.markup.html.WebPage;
 import wicket.markup.html.form.Form;
 import wicket.markup.html.form.FormComponent;
 import wicket.markup.html.form.RequiredTextField;
 import wicket.markup.html.form.TextArea;
-import wicket.markup.html.form.validation.IntegerValidator;
-import wicket.markup.html.form.validation.LengthValidator;
 import wicket.markup.html.form.validation.NumberValidator;
 import wicket.markup.html.form.validation.StringValidator;
-import wicket.markup.html.panel.FeedbackPanel;
 import wicket.model.PropertyModel;
 
 public class ValidationTestPage extends WebPage{
@@ -25,6 +24,14 @@ public class ValidationTestPage extends WebPage{
 	private	FormComponent tx;
 	private int integerInRangeProperty;
 	private int integerInRangeProperty2;
+	
+	private Form formBis;
+	//private TextField testfield;
+	private TextArea testfieldBis;
+	private String textValueBis;
+	private	FormComponent txBis;
+	private int integerInRangePropertyBis;
+	private int integerInRangeProperty2Bis;
 	
 	
 	
@@ -52,6 +59,35 @@ public class ValidationTestPage extends WebPage{
 			FormComponent tx2 = new RequiredTextField("integerInRangeProperty2", new PropertyModel(ValidationTestPage.this, "integerInRangeProperty2"),Integer.class).add(NumberValidator.range(0, 200));
 			form.add(tx2);
 			tx2.add(new FXValidationAjaxHandler("onblur"));
+			
+			
+			/**************************************/
+			
+			
+			formBis = new Form("testformBis");
+			add(formBis);
+			
+			final DojoErrorBubble bubble = new DojoErrorBubble("bubble");
+			add(bubble);
+
+			
+			testfieldBis =  new TextArea("textBis",new PropertyModel(ValidationTestPage.this, "textValueBis"));
+			testfieldBis.setOutputMarkupId(true);
+			testfieldBis.add(StringValidator.maximumLength(5));
+			testfieldBis.add(new DojoBubbleValidationAjaxBehavior("onblur", bubble));
+			formBis.add(testfieldBis);
+			
+	        FormComponent txBis = new RequiredTextField("integerInRangePropertyBis", new PropertyModel(ValidationTestPage.this, "integerInRangePropertyBis"),Integer.class).add(NumberValidator.range(0, 100));
+	        formBis.add(txBis);
+	        txBis.setOutputMarkupId(true);
+	        txBis.add(new DojoBubbleValidationAjaxBehavior("onblur", bubble));
+			
+
+			//test multiple ajax textfields
+			FormComponent tx2Bis = new RequiredTextField("integerInRangeProperty2Bis", new PropertyModel(ValidationTestPage.this, "integerInRangeProperty2Bis"),Integer.class).add(NumberValidator.range(0, 200));
+			formBis.add(tx2Bis);
+			tx2Bis.setOutputMarkupId(true);
+			tx2Bis.add(new DojoBubbleValidationAjaxBehavior("onblur", bubble));
 
 	        
 	}
