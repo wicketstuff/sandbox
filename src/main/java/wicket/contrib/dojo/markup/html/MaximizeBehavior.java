@@ -40,7 +40,15 @@ public class MaximizeBehavior extends AbstractRequireDojoBehavior {
 	protected int getVerticalMargin() {
 		return 0;
 	}
-
+	protected int getHorizontalMargin() {
+		return 0;
+	}
+	protected float getHorizontalRatio() {
+		return 1f;
+	}
+	protected float getVerticalRatio() {
+		return 1f;
+	}
 	/**
 	 * @see wicket.contrib.dojo.DojoAjaxHandler#renderHead(wicket.markup.html.IHeaderResponse)
 	 */
@@ -52,7 +60,7 @@ public class MaximizeBehavior extends AbstractRequireDojoBehavior {
 
 	private String generateDefinition() {
 		StringBuffer toReturn = new StringBuffer();
-		toReturn.append("dojo.addOnLoad( function() { maximize('" + container.getMarkupId() + "', " + getVerticalMargin() + "); var widget = dojo.widget.byId('"
+		toReturn.append("dojo.addOnLoad( function() { maximize('" + container.getMarkupId() + "', " + getVerticalMargin() + ", " + getHorizontalMargin() + ", " + getVerticalRatio() + ", " + getHorizontalRatio() + "); var widget = dojo.widget.byId('"
 				+ container.getMarkupId() + "'); if (widget.onResized) widget.onResized()});\n");
 		return toReturn.toString();
 	}
