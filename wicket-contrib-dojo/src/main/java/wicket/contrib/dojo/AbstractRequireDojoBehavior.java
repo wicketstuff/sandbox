@@ -51,18 +51,18 @@ public abstract class AbstractRequireDojoBehavior extends AbstractDefaultDojoBeh
 	public void renderHead(IHeaderResponse response) {
 		super.renderHead(response);
 		setRequire(libs);
-		String require = "";
-		require += "<script language=\"JavaScript\" type=\"text/javascript\">\n";
+		StringBuffer require = new StringBuffer();
 
 		Iterator ite = libs.iterator();
 		while (ite.hasNext()) {
-			require += getRequire((String) ite.next());
+			require.append("	dojo.require(\"");
+			require.append((String) ite.next());
+			require.append("\")\n");
 		}
 
-		require += "\n";
-		require += "</script>\n";
+		require.append("\n");
 
-		response.renderString(require);
+		response.renderJavascript(require, AbstractRequireDojoBehavior.class.getName());
 	}
 
 	/**
@@ -71,10 +71,6 @@ public abstract class AbstractRequireDojoBehavior extends AbstractDefaultDojoBeh
 	 * @param libs
 	 */
 	public abstract void setRequire(RequireDojoLibs libs);
-
-	private String getRequire(String lib) {
-		return "	dojo.require(\"" + lib + "\")\n";
-	}
 
 	/**
 	 * this method is used to interpret dojoWidgets rendered via XMLHTTPRequest
