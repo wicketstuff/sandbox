@@ -196,6 +196,17 @@ dojo.widget.defineWidget(
 		this.showSelections();
 	},
 	
+	getFirstSelected:function(){
+		var body = this.domNode.getElementsByTagName("tbody")[0];
+		var rows=body.getElementsByTagName("tr");
+		for(var i=0;i<rows.length;i++){
+			if (rows[i].getAttribute("selected") ==  "true"){
+				return i;
+			}
+		}
+		return null;
+	},
+	
 	onChoose:function(/* DomEvent */ e){ 
 		
 	},
