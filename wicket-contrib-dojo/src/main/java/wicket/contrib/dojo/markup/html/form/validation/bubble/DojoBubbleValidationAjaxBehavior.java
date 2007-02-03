@@ -16,14 +16,12 @@
  */
 package wicket.contrib.dojo.markup.html.form.validation.bubble;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import wicket.Component;
 import wicket.WicketRuntimeException;
 import wicket.ajax.AjaxRequestTarget;
 import wicket.contrib.dojo.AbstractRequireDojoBehavior;
-import wicket.contrib.dojo.markup.html.Bubble.DojoBubble;
 import wicket.markup.ComponentTag;
 import wicket.markup.html.IHeaderResponse;
 import wicket.markup.html.form.FormComponent;
@@ -31,14 +29,10 @@ import wicket.markup.html.form.FormComponent;
 /**
  * Ajaxhandler to be bound to FormComponents.<br/> This handler executes wicket
  * validation on set event (e.g. onblur, onchange) with an Ajax server call.<br/>
- * The Formcomponent is highlighted based on the validation result. Example:
- * TextField's background will turn red if validation fails. For usage tutorials
- * see: TODO link to tutorials.
+ * The Form component on error is displayed with a bubble on it containing the error message
  * 
  * 
- * @author Marco van de Haar
- * @author Ruud Booltink
- * FIXME : valid and invalid rgb does not work for the moment
+ * @author Vincent Demay
  */
 public class DojoBubbleValidationAjaxBehavior extends AbstractRequireDojoBehavior
 {
