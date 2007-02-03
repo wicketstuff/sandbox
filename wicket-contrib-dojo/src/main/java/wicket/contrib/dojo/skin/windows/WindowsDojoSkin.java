@@ -19,22 +19,24 @@ package wicket.contrib.dojo.skin.windows;
 import wicket.contrib.dojo.skin.AbstractDojoSkin;
 
 /**
- * See {@link AbstractDojoSkin}
+ * <p>
  * Skin defining new Templates (windows XP look) for
+ * </p>
  * <ul>
- * 	<li>DojoFloatingPane</li>
- * 	<li>DojoModalFloatingPane</li>
- *  <li>DojoTabContainer</li>
- *  <li>DojoSelectableListContainer</li>
+ * <li>DojoFloatingPane</li>
+ * <li>DojoModalFloatingPane</li>
+ * <li>DojoTabContainer</li>
+ * <li>DojoSelectableListContainer</li>
  * </ul>
- * Others widgets will used default skin
+ * <p>
+ * Others widgets will use a default skin.
+ * </p>
  * 
+ * @see AbstractDojoSkin
  * @author Vincent Demay
- *
  */
 public class WindowsDojoSkin extends AbstractDojoSkin {
 	public Class getResourceClass() {
 		return WindowsDojoSkin.class;
 	}
-
 }
