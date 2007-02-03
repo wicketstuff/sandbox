@@ -26,6 +26,7 @@ import wicket.ajax.AjaxRequestTarget;
 import wicket.behavior.AttributeAppender;
 import wicket.contrib.dojo.DojoIdConstants;
 import wicket.contrib.dojo.indicator.behavior.DojoIndicatorBehavior;
+import wicket.contrib.dojo.skin.manager.SkinManager;
 import wicket.contrib.dojo.widgets.StylingWebMarkupContainer;
 import wicket.markup.ComponentTag;
 import wicket.markup.MarkupStream;
@@ -74,6 +75,7 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer imple
 	
 	/**
 	 * Allow user to set another css to overwrite the default one
+	 * @deprecated : see {@link SkinManager} to change the css
 	 */
 	private ResourceReference overrideCssReference;
 	
@@ -272,6 +274,7 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer imple
 	/**
 	 * return the used css to overwrite the default one
 	 * @return the used css to overwrite the default one or null if none ios defined
+	 * @deprecated : see {@link SkinManager} to change the css
 	 */
 	public ResourceReference getOverrideCssReference()
 	{
@@ -281,6 +284,7 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer imple
 	/**
 	 * set a css reference to overwrite the default one
 	 * @param overwriteCss  a css reference to overwrite the default one
+	 * @deprecated : see {@link SkinManager} to change the css
 	 */
 	public void setOverrideCssReference(ResourceReference overrideCssReference)
 	{

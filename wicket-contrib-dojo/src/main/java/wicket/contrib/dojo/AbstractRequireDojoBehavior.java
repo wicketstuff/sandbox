@@ -100,7 +100,7 @@ public abstract class AbstractRequireDojoBehavior extends AbstractDefaultDojoBeh
 	protected void onComponentTag(ComponentTag tag){
 		super.onComponentTag(tag);
 		tag.put("widgetId", getComponent().getMarkupId());
-		SkinManager.getInstance().setSkin(getComponent(), this, tag);
+		SkinManager.getInstance().setSkinOnComponent(getComponent(), this, tag);
 	}
 	
 	/**
