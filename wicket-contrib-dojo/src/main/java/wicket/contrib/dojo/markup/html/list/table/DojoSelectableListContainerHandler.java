@@ -173,7 +173,7 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 	{
 		super.onComponentTag(tag);
 		//TODO : nothing better to do?
-		tag.put("onSelect", getCallbackScript().toString().replace("&", "&amp;"));
+		tag.put("onSelect", "currentSelectableTable = '" + getComponent().getMarkupId() + "';" + getCallbackScript().toString().replace("&", "&amp;"));
 		tag.put("onChoose", getDoubleClickCallbackScripts().toString().replace("&", "&amp;"));
 	}
 
