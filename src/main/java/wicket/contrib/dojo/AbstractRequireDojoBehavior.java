@@ -19,96 +19,99 @@ package wicket.contrib.dojo;
 import java.util.HashSet;
 import java.util.Iterator;
 
-import wicket.Component;
 import wicket.RequestCycle;
-import wicket.ResourceReference;
 import wicket.ajax.AjaxRequestTarget;
-import wicket.contrib.dojo.markup.html.container.DojoSimpleContainer;
-import wicket.contrib.dojo.markup.html.container.tab.DojoTabContainer;
 import wicket.contrib.dojo.skin.manager.SkinManager;
-import wicket.contrib.dojo.skin.windows.WindowsDojoSkin;
 import wicket.markup.ComponentTag;
 import wicket.markup.html.IHeaderResponse;
 
 /**
- * This behavior has to be extend to write a new Behavior (Handler) using Dojo : 
- * This behavior allows user to add require dojo Libs (see dojo.require(...)) - to add a require dojo libs
- * implement <code>setRequire()</code> and add libs to the libs variable.
- * <br/>
- * <br/>
- * This behavior also auto-reload a Dojo component when it is re-render via AjaxRequest.
- *  
+ * <p>
+ * This behavior has to be extended to write a new Behavior (Handler) using
+ * Dojo. Adding the required dojo libs (see <tt>dojo.require(...)</tt>) can
+ * be achieved using the <code>setRequire()</code> method and adding the
+ * required libs to the <tt>libs</tt> variable.
+ * </p>
+ * 
+ * <p>
+ * This behavior also takes care to refresh a Dojo component when it is
+ * re-rendered via an ajax request.
+ * </p>
+ * 
  * @author vdemay
- *
  */
-public abstract class AbstractRequireDojoBehavior extends AbstractDefaultDojoBehavior
-{
+public abstract class AbstractRequireDojoBehavior extends AbstractDefaultDojoBehavior {
 	private RequireDojoLibs libs = new RequireDojoLibs();
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see wicket.contrib.dojo.AbstractDefaultDojoBehavior#renderHead(wicket.markup.html.IHeaderResponse)
 	 */
-	public void renderHead(IHeaderResponse response)
-	{
+	public void renderHead(IHeaderResponse response) {
 		super.renderHead(response);
 		setRequire(libs);
 		String require = "";
 		require += "<script language=\"JavaScript\" type=\"text/javascript\">\n";
-		
+
 		Iterator ite = libs.iterator();
-		while(ite.hasNext()){
-			require += getRequire((String)ite.next());
+		while (ite.hasNext()) {
+			require += getRequire((String) ite.next());
 		}
-		
+
 		require += "\n";
 		require += "</script>\n";
-		
+
 		response.renderString(require);
 	}
-	
+
 	/**
 	 * allow subclass to register new Dojo require libs
+	 * 
 	 * @param libs
 	 */
 	public abstract void setRequire(RequireDojoLibs libs);
-	
-	
-	private String getRequire(String lib){
+
+	private String getRequire(String lib) {
 		return "	dojo.require(\"" + lib + "\")\n";
 	}
-	
+
 	/**
 	 * this method is used to interpret dojoWidgets rendered via XMLHTTPRequest
 	 */
 	protected void onComponentRendered() {
-		//if a Dojo Widget is rerender needs to run some javascript to refresh it
+		// if a Dojo Widget is rerender needs to run some javascript to refresh
+		// it
 		if (RequestCycle.get().getRequestTarget() instanceof AjaxRequestTarget) {
-			((AjaxRequestTarget)RequestCycle.get().getRequestTarget()).addListener(TargetRefresherManager.getInstance());
+			((AjaxRequestTarget) RequestCycle.get().getRequestTarget()).addListener(TargetRefresherManager
+					.getInstance());
 			TargetRefresherManager.getInstance().addComponent(getComponent());
-			onComponentReRendered(((AjaxRequestTarget)RequestCycle.get().getRequestTarget()));
+			onComponentReRendered(((AjaxRequestTarget) RequestCycle.get().getRequestTarget()));
 		}
 	}
-	
+
 	/**
-	 * Add Javascript scripts when a dojo component is Rerender in a {@link AjaxRequestTarget}
+	 * Add Javascript scripts when a dojo component is Rerender in a
+	 * {@link AjaxRequestTarget}
+	 * 
 	 * @param ajaxTarget
 	 */
 	public void onComponentReRendered(AjaxRequestTarget ajaxTarget) {
-		
+
 	}
-	
-	protected void onComponentTag(ComponentTag tag){
+
+	protected void onComponentTag(ComponentTag tag) {
 		super.onComponentTag(tag);
 		tag.put("widgetId", getComponent().getMarkupId());
 		SkinManager.getInstance().setSkinOnComponent(getComponent(), this, tag);
 	}
-	
+
 	/**
 	 * @author vdemay
-	 *
+	 * 
 	 */
-	public class RequireDojoLibs extends HashSet{
-		
+	public class RequireDojoLibs extends HashSet {
+
 	}
 
 }
