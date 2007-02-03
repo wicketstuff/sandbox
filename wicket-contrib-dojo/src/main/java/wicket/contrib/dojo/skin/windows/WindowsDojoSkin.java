@@ -33,7 +33,7 @@ import wicket.contrib.dojo.skin.AbstractDojoSkin;
  *
  */
 public class WindowsDojoSkin extends AbstractDojoSkin {
-	public Class getRessourceClass() {
+	public Class getResourceClass() {
 		return WindowsDojoSkin.class;
 	}
 
