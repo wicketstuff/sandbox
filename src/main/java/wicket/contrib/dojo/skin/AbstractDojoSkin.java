@@ -25,71 +25,97 @@ import wicket.contrib.dojo.AbstractRequireDojoBehavior;
 import wicket.contrib.dojo.skin.manager.SkinManager;
 
 /**
- * Abstract class to define a new Skin for dojo widget.<br/>
- * A dojo skin is associated with a set of html templates and css. Templates and css should be in the same package
- * as the skin class. If a widget css/template is not defined, the default skin will be used. <br/>
- * <p>Template and css should have the same name as the widget class.<br/>
- * For exemple, if you want skin DojoFloatingPane you should write a new class 
- * extending this one and 2 files <code>DojoFloatingPane.css</code> and <code>DojoFloatingPane.htm</code>.<br/>
- * Widgets without skin define in the package will be used default skin.
+ * <p>
+ * Abstract class to define a new Skin for dojo widget.
  * </p>
  * <p>
- * See {@link SkinManager} to know how to used a skin.
+ * A dojo skin is associated with a set of html templates and css. Templates and
+ * css should be in the same package as the skin class. If a widget css/template
+ * is not defined, the default skin will be used.
+ * </p>
+ * <p>
+ * Template and css should have the same name as the widget class.
  * </p>
  * 
+ * <p>
+ * For example, if you want to skin DojoFloatingPane you should write a new
+ * class extending AbstractDojoSkin and provide two files:
+ * <code>DojoFloatingPane.css</code> and <code>DojoFloatingPane.htm</code>.
+ * </p>
+ * 
+ * <p>
+ * Widgets without a custom skin defined in the package will be using the
+ * default Dojo skin.
+ * </p>
+ * 
+ * @see SkinManager to know how to use a skin.
+ * 
  * @author Vincent Demay
- *
  */
 public abstract class AbstractDojoSkin {
-	
+
 	protected abstract Class getResourceClass();
-	
+
 	/**
 	 * Check if the file exists
-	 * @param file file path
+	 * 
+	 * @param file
+	 *            file path
 	 * @return true if the file exist and false otherwise
 	 */
-	private final boolean exists(String file){
-		URL res = getResourceClass().getClassLoader().getResource(getResourceClass().getPackage().getName().replace('.', File.separatorChar) + File.separatorChar + file);
- 		return res!=null;
+	private final boolean exists(String file) {
+		URL res = getResourceClass().getClassLoader().getResource(
+				getResourceClass().getPackage().getName().replace('.', File.separatorChar) + File.separatorChar + file);
+		return res != null;
 	}
-	
+
 	/**
-	 * Get the css to used for the widget is this file exist otherwise return null
-	 * @param component Component to skin
-	 * @param behavior Dojo component behavior
-	 * @return the css to used for the widget is this file exist otherwise return null
+	 * Get the css to used for the widget is this file exist otherwise return
+	 * null
+	 * 
+	 * @param component
+	 *            Component to skin
+	 * @param behavior
+	 *            Dojo component behavior
+	 * @return the css to used for the widget is this file exist otherwise
+	 *         return null
 	 */
-	public final String getTemplateCssPath(Component component, AbstractRequireDojoBehavior behavior){
+	public final String getTemplateCssPath(Component component, AbstractRequireDojoBehavior behavior) {
 		String cssTemplate = getClassName(behavior.getClass().getName()).replaceAll("Handler", "") + ".css";
-		 if (exists(cssTemplate)){
+		if (exists(cssTemplate)) {
 			return (String) component.urlFor(new ResourceReference(getResourceClass(), cssTemplate));
-		}else{
+		} else {
 			return null;
 		}
 	}
-	
+
 	/**
-	 * Get the htm to used for the widget is this file exist otherwise return null
-	 * @param component Component to skin
-	 * @param behavior Dojo component behavior
-	 * @return the htm to used for the widget is this file exist otherwise return null
+	 * Get the htm to used for the widget is this file exist otherwise return
+	 * null
+	 * 
+	 * @param component
+	 *            Component to skin
+	 * @param behavior
+	 *            Dojo component behavior
+	 * @return the htm to used for the widget is this file exist otherwise
+	 *         return null
 	 */
-	public final String getTemplateHtmlPath(Component component, AbstractRequireDojoBehavior behavio){
+	public final String getTemplateHtmlPath(Component component, AbstractRequireDojoBehavior behavio) {
 		String htmlTemplate = getClassName(component.getClass().getName().replaceAll("Handler", "")) + ".htm";
-		 if (exists(htmlTemplate)){
+		if (exists(htmlTemplate)) {
 			return (String) component.urlFor(new ResourceReference(getResourceClass(), htmlTemplate));
-		}else{
+		} else {
 			return null;
 		}
 	}
-	
+
 	/**
 	 * Return the name that should be used to find templates
+	 * 
 	 * @param clazz
 	 * @return
 	 */
-	private final String getClassName(String clazz){
-		return clazz.substring(clazz.lastIndexOf(".")+1, clazz.length());
+	private final String getClassName(String clazz) {
+		return clazz.substring(clazz.lastIndexOf(".") + 1, clazz.length());
 	}
 }
