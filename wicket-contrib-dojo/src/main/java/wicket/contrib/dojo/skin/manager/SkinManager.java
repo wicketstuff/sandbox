@@ -24,74 +24,89 @@ import wicket.markup.ComponentTag;
 import wicket.markup.html.WebPage;
 
 /**
- * SkinManager is a singleton class allowing user to set up a skin for all Dojo component.
- * When you setup a skin it will be used while you set up an other skin.
  * <p>
- * To use a skin in a page you can for exemple call the following code in the {@link WebPage} constructor
+ * SkinManager is a singleton class allowing user to set up a skin for all Dojo
+ * component. When you setup a skin it will be used while you set up an other
+ * skin.
+ * </p>
+ * <p>
+ * To use a skin in a page you can for exemple call the following code in the
+ * {@link WebPage} constructor
+ * </p>
+ * 
  * <pre>
  * SkinManager.getInstance().setupSkin(new WindowsDojoSkin());
  * </pre>
- * If the skin should be the same for all the application, use the same code in the constructor of the {@link Application}
+ * 
+ * <p>
+ * If the skin should be the same for all the application, use the same code in
+ * the constructor of the {@link Application}
  * </p>
  * <p>
- * You also can remove skin using the following : <pre>SkinManager.getInstance().setupSkin(null);</pre>.
- * In this case default skin will be used
+ * You also can remove skin using the following :
+ * 
+ * <pre>
+ * SkinManager.getInstance().setupSkin(null);
+ * </pre>. In this case default skin will be used
  * </p>
  * 
  * @author Vincent Demay
- *
  */
 public class SkinManager {
-	
+
 	private static SkinManager instance;
+
 	private AbstractDojoSkin skin;
 
 	/**
 	 * Private constructor of the skinManager Singleton
-	 *
 	 */
 	private SkinManager() {
-		
+
 	}
-	
+
 	/**
 	 * get the {@link SkinManager}
+	 * 
 	 * @return the skin manager
 	 */
-	public static SkinManager getInstance(){
-		if (instance == null){
+	public static SkinManager getInstance() {
+		if (instance == null) {
 			instance = new SkinManager();
 		}
 		return instance;
 	}
-	
+
 	/**
 	 * Set a new skin for the skin Manager
-	 * @param skin skin to be used for all widgets
+	 * 
+	 * @param skin
+	 *            skin to be used for all widgets
 	 */
-	public void setupSkin(AbstractDojoSkin skin){
+	public void setupSkin(AbstractDojoSkin skin) {
 		this.skin = skin;
 	}
-	
+
 	/**
 	 * Used on {@link AbstractRequireDojoBehavior} to set the skin on a widget
-	 * @param component component to skin
-	 * @param behavior {@link AbstractRequireDojoBehavior} used in thed component
-	 * @param tag {@link ComponentTag} of the Component
+	 * 
+	 * @param component
+	 *            component to skin
+	 * @param behavior
+	 *            {@link AbstractRequireDojoBehavior} used in thed component
+	 * @param tag
+	 *            {@link ComponentTag} of the Component
 	 */
-	public final void setSkinOnComponent(Component component,  AbstractRequireDojoBehavior behavior, ComponentTag tag){
-		if (skin !=null){
+	public final void setSkinOnComponent(Component component, AbstractRequireDojoBehavior behavior, ComponentTag tag) {
+		if (skin != null) {
 			String templateCssPath = skin.getTemplateCssPath(component, behavior);
 			String templateHtmlPath = skin.getTemplateHtmlPath(component, behavior);
-			if(templateCssPath != null){
+			if (templateCssPath != null) {
 				tag.put("templateCssPath", templateCssPath);
 			}
-			if (templateHtmlPath != null){		
-				tag.put("templatePath"   , templateHtmlPath);
+			if (templateHtmlPath != null) {
+				tag.put("templatePath", templateHtmlPath);
 			}
 		}
 	}
-	
-	
-	
 }
