@@ -282,12 +282,9 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer imple
 	 * set a css reference to overwrite the default one
 	 * @param overwriteCss  a css reference to overwrite the default one
 	 */
-	public void setOverrideCssReference(ResourceReference overwriteCss)
+	public void setOverrideCssReference(ResourceReference overrideCssReference)
 	{
-		if (overwriteCss != null){  
-			this.overrideCssReference = overwriteCss;
-			add(new AttributeAppender("templateCssPath", true, new Model(urlFor(overwriteCss).toString()), ""));
-		}
+            this.overrideCssReference = overrideCssReference;
 	}
 
 	/**
