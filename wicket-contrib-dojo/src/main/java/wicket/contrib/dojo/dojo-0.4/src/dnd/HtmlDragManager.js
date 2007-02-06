@@ -329,7 +329,11 @@ dojo.declare("dojo.dnd.HtmlDragManager", dojo.dnd.DragManager, {
 			var tn = tempTarget.domNode;
 			//only cache dropTarget which can accept current dragSource
 			if(!tn || dojo.lang.find(tempTarget.acceptedTypes, this.dragSource.type) < 0){ return; }
-			var abs = dojo.html.getAbsolutePosition(tn, true);
+			var absElt = tn;
+			if (tn.id){
+				absElt = tn.id;
+			}
+			var abs = dojo.html.getAbsolutePosition(absElt, true);
 			var bb = dojo.html.getBorderBox(tn);
 			this.dropTargetDimensions.push([
 				[abs.x, abs.y],	// upper-left
