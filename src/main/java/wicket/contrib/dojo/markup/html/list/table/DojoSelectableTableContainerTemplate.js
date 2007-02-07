@@ -40,6 +40,8 @@ function handleKeyPressed(e){
 				table.selectIndexes([selected]);
 				table.onSelect();
 			}
+			e.stopPropagation();
+			e.preventDefault();
 		}
 		if (e.keyCode == e.KEY_DOWN_ARROW){
 			if (table.getFirstSelected() != null && table.getFirstSelected() < (maxSize -1)){
@@ -47,10 +49,9 @@ function handleKeyPressed(e){
 				table.selectIndexes([selected]);
 				table.onSelect();
 			}
+			e.stopPropagation();
+			e.preventDefault();
 		}
-		
-		e.stopPropagation();
-		e.preventDefault();
 	}
 }
 
