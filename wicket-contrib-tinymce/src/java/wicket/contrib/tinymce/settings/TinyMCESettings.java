@@ -32,6 +32,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import wicket.Component;
+import wicket.markup.html.form.TextArea;
 
 /**
  * Settings class for TinyMCE editor. User can add/remove buttons,
@@ -60,7 +61,7 @@ public class TinyMCESettings implements Serializable
 	private List controls;
 
 	private Set disabledButtons;
-	private Set /* <Component> */components;
+	private Set /* <TextArea> */textAreas;
 
 
 	/**
@@ -109,7 +110,7 @@ public class TinyMCESettings implements Serializable
 		this.controls = new LinkedList();
 		this.plugins = new ListOrderedSet();
 		this.disabledButtons = new ListOrderedSet();
-		this.components = new ListOrderedSet();
+		this.textAreas = new ListOrderedSet();
 	}
 
 	/**
@@ -225,13 +226,13 @@ public class TinyMCESettings implements Serializable
 	 * Enable tinymce area only for added components. This works in tinymce
 	 * exact mode.
 	 * 
-	 * @param component
+	 * @param textArea
 	 *            the component to enable tinymce for
 	 */
-	public void addComponent(Component component)
+	public void enableTextArea(TextArea textArea)
 	{
-		component.setOutputMarkupId(true);
-		components.add(component);
+		textArea.setOutputMarkupId(true);
+		textAreas.add(textArea);
 	}
 
 	// used in testing
@@ -249,10 +250,10 @@ public class TinyMCESettings implements Serializable
 		buffer.append("\n\tmode : ").append("\"").append(mode.getName()).append("\"");
 		if (isExactMode())
 		{
-			if (components.size() > 0)
+			if (textAreas.size() > 0)
 			{
 				buffer.append(",\n\telements : \"");
-				Iterator iterator = components.iterator();
+				Iterator iterator = textAreas.iterator();
 				while (iterator.hasNext())
 				{
 					Component component = (Component)iterator.next();
@@ -586,7 +587,7 @@ public class TinyMCESettings implements Serializable
 
 		public static final Mode textareas = new Mode("textareas");
 		/**
-		 * @see TinyMCESettings#addComponent(Component)
+		 * @see TinyMCESettings#enableTextArea(Component)
 		 */
 		public static final Mode exact = new Mode("exact");
 

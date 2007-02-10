@@ -18,7 +18,7 @@ public class ExactModeTinyMCEPage extends TinyMCEBasePage {
 		TextArea textArea2 = new TextArea("ta2", new Model(TEXT));
 
 		TinyMCESettings settings = new TinyMCESettings(Mode.exact);
-		settings.addComponent(textArea1);
+		settings.enableTextArea(textArea1);
 		TinyMCEPanel tinyMCEPanel = new TinyMCEPanel("tinyMCE", settings);
 
 		add(textArea1);
