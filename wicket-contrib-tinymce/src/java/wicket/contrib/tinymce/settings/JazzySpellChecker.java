@@ -26,8 +26,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import wicket.markup.html.WebResource;
 import wicket.protocol.http.WebResponse;
@@ -50,9 +50,8 @@ import com.swabunga.spell.event.StringWordTokenizer;
  */
 class JazzySpellChecker extends WebResource
 {
-	private static final Log log = LogFactory.getLog(JazzySpellChecker.class);
-
 	private static final long serialVersionUID = 1L;
+	private static final Logger logger = LoggerFactory.getLogger(JazzySpellChecker.class);
 
 	private static final String dictFile = "wicket/contrib/tinymce/jazzy/english.0";
 
@@ -112,7 +111,7 @@ class JazzySpellChecker extends WebResource
 			doSuggest(resourceStream, cmd, id, check);
 		}
 
-		log.debug("Spellcheck response: " + resourceStream.asString());
+		logger.debug("Spellcheck response: " + resourceStream.asString());
 
 		return resourceStream;
 	}

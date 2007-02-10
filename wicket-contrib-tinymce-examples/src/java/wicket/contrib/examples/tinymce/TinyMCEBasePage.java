@@ -55,5 +55,15 @@ public class TinyMCEBasePage extends WicketExamplePage
 				setRedirect(true);
 			}
 		};
+		new Link(this, "exact")
+		{
+			private static final long serialVersionUID = 1L;
+			
+			public void onClick()
+			{
+				setResponsePage(ExactModeTinyMCEPage.class);
+				setRedirect(true);
+			}
+		};
 	}
 }

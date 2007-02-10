@@ -28,6 +28,11 @@ import java.util.Set;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
 import org.apache.commons.collections.set.ListOrderedSet;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import wicket.Component;
+import wicket.markup.html.form.TextArea;
 
 /**
  * Settings class for TinyMCE editor. User can add/remove buttons,
@@ -42,6 +47,7 @@ import org.apache.commons.collections.set.ListOrderedSet;
 public class TinyMCESettings implements Serializable
 {
 	private static final long serialVersionUID = 1L;
+	private static final Logger logger = LoggerFactory.getLogger(TinyMCESettings.class);
 
 	private Mode mode;
 	private Theme theme;
@@ -55,6 +61,7 @@ public class TinyMCESettings implements Serializable
 	private List<Control> controls;
 
 	private Set<Button> disabledButtons;
+	private Set<Component> textAreas;
 
 	/**
 	 * Construct default tinymce settings.
@@ -98,9 +105,11 @@ public class TinyMCESettings implements Serializable
 	{
 		this.mode = mode;
 		this.theme = theme;
-		this.controls = new LinkedList<Control>();
-		this.plugins = new ListOrderedSet();
-		this.disabledButtons = new ListOrderedSet();
+
+		controls = new LinkedList<Control>();
+		plugins = new ListOrderedSet();
+		disabledButtons = new ListOrderedSet();
+		textAreas = new ListOrderedSet();
 	}
 
 	/**
@@ -212,6 +221,18 @@ public class TinyMCESettings implements Serializable
 		plugins.add(plugin);
 	}
 
+	/**
+	 * Enable tinymce only for added components. This works in tinymce exact
+	 * mode.
+	 * 
+	 * @param textArea
+	 */
+	public void enableTextArea(TextArea textArea)
+	{
+		textArea.setOutputMarkupId(true);
+		textAreas.add(textArea);
+	}
+
 	// used in testing
 	Set getPlugins()
 	{
@@ -220,6 +241,7 @@ public class TinyMCESettings implements Serializable
 
 	/**
 	 * todo change access
+	 * 
 	 * @return JavaScript string
 	 */
 	public String toJavaScript()
@@ -228,6 +250,30 @@ public class TinyMCESettings implements Serializable
 
 		// mode
 		buffer.append("\n\tmode : ").append("\"").append(mode.name()).append("\"");
+		if (isExactMode())
+		{
+			if (textAreas.size() > 0)
+			{
+				buffer.append(",\n\telements : \"");
+				Iterator iterator = textAreas.iterator();
+				while (iterator.hasNext())
+				{
+					Component component = (Component)iterator.next();
+					buffer.append(component.getMarkupId());
+					if (iterator.hasNext())
+					{
+						buffer.append(", ");
+					}
+				}
+				buffer.append("\"");
+			}
+			else
+			{
+				logger
+						.warn("tinymce is set to \"exact\" mode but there are no components attached");
+			}
+		}
+
 		// theme
 		buffer.append(",\n\t").append("theme : ").append("\"").append(theme.name()).append("\"");
 
@@ -239,6 +285,11 @@ public class TinyMCESettings implements Serializable
 		appendPluginSettings(buffer);
 
 		return buffer.toString();
+	}
+
+	private boolean isExactMode()
+	{
+		return Mode.exact.equals(mode);
 	}
 
 	private void appendPluginSettings(StringBuffer buffer)
@@ -255,7 +306,7 @@ public class TinyMCESettings implements Serializable
 	}
 
 	/**
-	 * @return JavaScript string to load custom tinymce plugin 
+	 * @return JavaScript string to load custom tinymce plugin
 	 */
 	public String getLoadPluginJavaScript()
 	{
@@ -536,11 +587,11 @@ public class TinyMCESettings implements Serializable
 	 * <li>specific_textares - Converts all textarea elements with the a
 	 * textarea_trigger attribute set to "true".</li>
 	 * </ul>
-	 * At this moment, only <b>textareas</b> mode is supported.
+	 * At this moment, only <b>textareas</b> and <b>exact</b> modes are
+	 * supported.
 	 */
-	public enum Mode
-	{
-		textareas;
+	public enum Mode {
+		textareas, exact;
 	}
 
 	/**
@@ -552,53 +603,40 @@ public class TinyMCESettings implements Serializable
 	 * <li>advanced - This theme enables users to add/remove buttons and panels .</li>
 	 * </ul>
 	 */
-	public enum Theme
-	{
-		simple,
-		advanced;
+	public enum Theme {
+		simple, advanced;
 	}
 
 	/**
 	 * This enum enables you to specify where the toolbar should be located.
 	 * This value can be top or bottom.
 	 */
-	public enum Location
-	{
-		top,
-		bottom;
+	public enum Location {
+		top, bottom;
 	}
 
 	/**
 	 * This enum enables you to specify the alignment of the controls. This
 	 * value can be left, right or center the default value is center.
 	 */
-	public enum Align
-	{
-		left,
-		center,
-		right;
+	public enum Align {
+		left, center, right;
 	}
 
 	/**
 	 * This enum specifies the position of new added control. It can be before
 	 * or after existing elements.
 	 */
-	public enum Position
-	{
-		before,
-		after;
+	public enum Position {
+		before, after;
 	}
 
 	/**
 	 * This class specifices the toolbar to add specific control to. TinyMCE
 	 * editor defines three toolbars named: first, second, third.
 	 */
-	public enum Toolbar
-	{
-		first,
-		second,
-		third,
-		fourth;
+	public enum Toolbar {
+		first, second, third, fourth;
 	}
 
 	// default tinymce buttons
