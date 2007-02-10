@@ -49,5 +49,14 @@ public class TinyMCEBasePage extends WicketExamplePage
 				setRedirect(true);
 			}
 		});
+		add(new Link("exact")
+		{
+			
+			public void onClick()
+			{
+				setResponsePage(ExactModeTinyMCEPage.class);
+				setRedirect(true);
+			}
+		});
 	}
 }
