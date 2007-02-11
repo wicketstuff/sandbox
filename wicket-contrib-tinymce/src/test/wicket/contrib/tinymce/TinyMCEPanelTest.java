@@ -53,6 +53,8 @@ public class TinyMCEPanelTest extends TestCase
 	{
 		application.startPanel(new TestPanelSource()
 		{
+			private static final long serialVersionUID = 1L;
+
 			public Panel getTestPanel(String panelId)
 			{
 				TinyMCESettings settings = new TinyMCESettings();
@@ -74,6 +76,8 @@ public class TinyMCEPanelTest extends TestCase
 	{
 		application.startPanel(new TestPanelSource()
 		{
+			private static final long serialVersionUID = 1L;
+
 			public Panel getTestPanel(String panelId)
 			{
 				TinyMCESettings settings = new TinyMCESettings(TinyMCESettings.Theme.advanced);
@@ -105,6 +109,8 @@ public class TinyMCEPanelTest extends TestCase
 		// Add the panel.
 		application.startPanel(new TestPanelSource()
 		{
+			private static final long serialVersionUID = 1L;
+
 			public Panel getTestPanel(String panelId)
 			{
 				TinyMCESettings settings = new TinyMCESettings(TinyMCESettings.Theme.advanced);
@@ -141,6 +147,8 @@ public class TinyMCEPanelTest extends TestCase
 		// Add the panel.
 		application.startPanel(new TestPanelSource()
 		{
+			private static final long serialVersionUID = 1L;
+
 			public Panel getTestPanel(String panelId)
 			{
 				TinyMCESettings settings = new TinyMCESettings();

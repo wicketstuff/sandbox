@@ -54,6 +54,7 @@ public class TinyMCESettings implements Serializable
 	private Location toolbarLocation;
 	private Location statusbarLocation;
 	private Align toolbarAlign;
+	private Language language = Language.EN;
 	private boolean verticalResizing;
 	private boolean horizontalResizing;
 
@@ -161,6 +162,17 @@ public class TinyMCESettings implements Serializable
 	public void setHorizontalResizing(boolean horizontalResizing)
 	{
 		this.horizontalResizing = horizontalResizing;
+	}
+
+	/**
+	 * Change the tinymce default language.
+	 * 
+	 * @param language
+	 *            the language
+	 */
+	public void setLanguage(Language language)
+	{
+		this.language = language;
 	}
 
 	/**
@@ -273,6 +285,9 @@ public class TinyMCESettings implements Serializable
 
 		// theme
 		buffer.append(",\n\t").append("theme : ").append("\"").append(theme.getName()).append("\"");
+
+		// language
+		buffer.append(",\n\t").append("language : ").append("\"").append(language.getName()).append("\"");
 
 		if (Theme.advanced.equals(theme))
 		{
@@ -595,6 +610,55 @@ public class TinyMCESettings implements Serializable
 		{
 			super(name);
 		}
+	}
+
+	public static class Language extends Enum
+	{
+		private static final long serialVersionUID = 1L;
+
+		public static final Language AR = new Language("ar");
+		public static final Language CA = new Language("ca");
+		public static final Language CS = new Language("cs");
+		public static final Language DA = new Language("da");
+		public static final Language DE = new Language("de");
+		public static final Language EL = new Language("el");
+		public static final Language EN = new Language("en");
+		public static final Language ES = new Language("es");
+		public static final Language FA = new Language("fa");
+		public static final Language FR = new Language("fr");
+		public static final Language HE = new Language("he");
+		public static final Language HU = new Language("hu");
+		public static final Language IT = new Language("it");
+		public static final Language JA = new Language("ja");
+		public static final Language KO = new Language("ko");
+		public static final Language NL = new Language("nl");
+		public static final Language NO = new Language("no");
+		public static final Language PL = new Language("pl");
+		public static final Language PT = new Language("pt");
+		public static final Language RO = new Language("ro");
+		public static final Language RU = new Language("ru");
+		public static final Language SI = new Language("si");
+		public static final Language SK = new Language("sk");
+		public static final Language SQ = new Language("sq");
+		public static final Language SR = new Language("sr");
+		public static final Language SV = new Language("sv");
+		public static final Language TH = new Language("th");
+		public static final Language TR = new Language("tr");
+		public static final Language TW = new Language("tw");
+		public static final Language VI = new Language("vi");
+		public static final Language ZH = new Language("zh");
+
+		/**
+		 * Construct.
+		 * 
+		 * @param name
+		 *            the language
+		 */
+		public Language(String name)
+		{
+			super(name);
+		}
+
 	}
 
 	/**
