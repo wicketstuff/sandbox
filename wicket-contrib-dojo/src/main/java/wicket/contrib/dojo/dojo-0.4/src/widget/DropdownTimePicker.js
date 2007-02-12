@@ -77,6 +77,7 @@ dojo.widget.defineWidget(
 				this.onSetTime();
 			}
 			this.valueNode.name=this.name;
+			this.inputNode.name=this.name;
 		},
 		
 		onSetTime: function(){
