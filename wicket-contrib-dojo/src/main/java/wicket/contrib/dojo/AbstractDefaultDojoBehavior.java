@@ -62,6 +62,7 @@ public abstract class AbstractDefaultDojoBehavior extends AbstractDefaultAjaxBeh
 	public void renderHead(IHeaderResponse response)
 	{
 		super.renderHead(response);
+		DojoLocaleManager.getInstance().renderLocale(response);
 		response.renderJavascriptReference(DOJO);
 		response.renderJavascriptReference(DOJO_WICKET);
 	}
