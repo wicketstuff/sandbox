@@ -50,6 +50,9 @@ dojo.widget.defineWidget(
 		//	time value in RFC3339 format (http://www.ietf.org/rfc/rfc3339.txt)
 		//	ex: 12:00
 		value: "",
+		
+		// 	name of the form element, used to create a hidden field by this name for form element submission.
+		name: "",
 
 		postMixInProperties: function() {
 			dojo.widget.DropdownTimePicker.superclass.postMixInProperties.apply(this, arguments);
@@ -73,6 +76,7 @@ dojo.widget.defineWidget(
 				this.timePicker.initUI();
 				this.onSetTime();
 			}
+			this.valueNode.name=this.name;
 		},
 		
 		onSetTime: function(){
