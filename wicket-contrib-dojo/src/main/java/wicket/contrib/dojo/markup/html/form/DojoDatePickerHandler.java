@@ -2,6 +2,7 @@ package wicket.contrib.dojo.markup.html.form;
 
 import wicket.ajax.AjaxRequestTarget;
 import wicket.contrib.dojo.AbstractRequireDojoBehavior;
+import wicket.markup.html.IHeaderResponse;
 
 /**
  * Handler used in {@link DojoDatePicker}
