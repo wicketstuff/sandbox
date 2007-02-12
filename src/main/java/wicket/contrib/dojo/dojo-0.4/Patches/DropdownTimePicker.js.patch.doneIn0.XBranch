@@ -17,6 +17,7 @@ Index: /Users/doume/Dev/Wicket/branch-1X/wicket-contrib-dojo/src/main/java/wicke
  				this.onSetTime();
  			}
 +			this.valueNode.name=this.name;
++			this.inputNode.name=this.name;
  		},
  		
  		onSetTime: function(){
