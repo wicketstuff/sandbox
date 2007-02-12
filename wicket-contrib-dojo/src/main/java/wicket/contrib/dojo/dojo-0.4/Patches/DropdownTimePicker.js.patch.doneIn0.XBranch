@@ -1,0 +1,22 @@
+Index: /Users/doume/Dev/Wicket/branch-1X/wicket-contrib-dojo/src/main/java/wicket/contrib/dojo/dojo-0.4/src/widget/DropdownTimePicker.js
+===================================================================
+--- /Users/doume/Dev/Wicket/branch-1X/wicket-contrib-dojo/src/main/java/wicket/contrib/dojo/dojo-0.4/src/widget/DropdownTimePicker.js	(revision 1757)
++++ /Users/doume/Dev/Wicket/branch-1X/wicket-contrib-dojo/src/main/java/wicket/contrib/dojo/dojo-0.4/src/widget/DropdownTimePicker.js	(working copy)
+@@ -50,6 +50,9 @@
+ 		//	time value in RFC3339 format (http://www.ietf.org/rfc/rfc3339.txt)
+ 		//	ex: 12:00
+ 		value: "",
++		
++		// 	name of the form element, used to create a hidden field by this name for form element submission.
++		name: "",
+ 
+ 		postMixInProperties: function() {
+ 			dojo.widget.DropdownTimePicker.superclass.postMixInProperties.apply(this, arguments);
+@@ -73,6 +76,7 @@
+ 				this.timePicker.initUI();
+ 				this.onSetTime();
+ 			}
++			this.valueNode.name=this.name;
+ 		},
+ 		
+ 		onSetTime: function(){
