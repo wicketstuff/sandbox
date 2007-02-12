@@ -3,8 +3,11 @@ package wicket.contrib.dojo.markup.html.form;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import wicket.behavior.AttributeAppender;
+import wicket.contrib.dojo.DojoLocaleManager;
 import wicket.contrib.dojo.toggle.DojoToggle;
 import wicket.markup.ComponentTag;
 import wicket.markup.html.form.FormComponent;
@@ -35,6 +38,7 @@ public class DojoDatePicker extends TextField{
 	
 	private SimpleDateFormat formatter;
 	private String displayFormat;
+	private Locale locale;
 
 	/**
 	 * @param parent
@@ -44,11 +48,25 @@ public class DojoDatePicker extends TextField{
 	 */
 	public DojoDatePicker(String id, IModel model, String displayFormat)
 	{
+		this(id, model, displayFormat, null);
+	}
+	
+	/**
+	 * @param parent
+	 * @param id
+	 * @param model
+	 * @param pattern
+	 * @param timeZone 
+	 */
+	public DojoDatePicker(String id, IModel model, String displayFormat, TimeZone timeZone){
 		super(id, model);
 		this.displayFormat = displayFormat;
 		add(new DojoDatePickerHandler());
 		this.setOutputMarkupId(true);
 		formatter = new SimpleDateFormat(getInternalDatePattern());
+		if (timeZone != null){
+			formatter.setTimeZone(timeZone);
+		}
 	}
 	
 	public static String getInternalDatePattern() {
@@ -65,6 +83,10 @@ public class DojoDatePicker extends TextField{
 
 		tag.put("dojoType", "DropdownDatePicker");
 		tag.put("displayFormat", getDisplayFormat());
+		String localeString = getLocaleAsString();
+		if (localeString != null){
+			tag.put("lang", localeString);
+		}
 	}
 
 	/**
@@ -115,4 +137,19 @@ public class DojoDatePicker extends TextField{
 	{
 		this.displayFormat = displayFormat;
 	}
+
+	public Locale getLocale() {
+		return locale;
+	}
+	
+	public String getLocaleAsString() {
+		if (locale == null) return null;
+		return locale.toString().replace("_", "-").toLowerCase();
+	}
+
+	public void setLocale(Locale locale) {
+		this.locale = locale;
+		DojoLocaleManager.getInstance().addLocale(locale);
+	}
+	
 }
