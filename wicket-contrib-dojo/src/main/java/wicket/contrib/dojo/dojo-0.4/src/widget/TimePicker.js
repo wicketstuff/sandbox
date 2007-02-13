@@ -53,7 +53,7 @@ dojo.widget.defineWidget(
 	},
 {
 	isContainer: false,
-	templatePath: dojo.uri.dojoUri("src/widget/templates/TimePicker.html"),
+	templatePath: dojo.uri.dojoUri("src/widget/templates/TimePicker.htm"),
 	templateCssPath: dojo.uri.dojoUri("src/widget/templates/TimePicker.css"),
 
 	fillInTemplate: function(args, frag){
