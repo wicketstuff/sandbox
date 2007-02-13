@@ -47,23 +47,29 @@ import wicket.markup.html.resources.CompressedResourceReference;
 public abstract class AbstractDefaultDojoBehavior extends AbstractDefaultAjaxBehavior implements IAjaxIndicatorAware
 {
 	private static final long serialVersionUID = 1L;
-	
+	public static boolean USE_DOJO_UNCOMPRESSED = false;
+
 	/** reference to the dojo support javascript file. */
 	public static final ResourceReference DOJO = new CompressedResourceReference(
 			AbstractDefaultDojoBehavior.class, "dojo-0.4/dojo.js");
+	public static final ResourceReference DOJO_UNCOMPRESSED = new CompressedResourceReference(
+			AbstractDefaultDojoBehavior.class, "dojo-0.4/dojo.js.uncompressed.js");
 	public static final ResourceReference DOJO_WICKET =  new CompressedResourceReference(
 			AbstractRequireDojoBehavior.class, "dojo-wicket/dojoWicket.js");
 	
 	private DojoIndicatorBehavior indicatorBehavior = null;
 
-	/* (non-Javadoc)
+	/**
 	 * @see wicket.ajax.AbstractDefaultAjaxBehavior#renderHead(wicket.markup.html.IHeaderResponse)
 	 */
 	public void renderHead(IHeaderResponse response)
 	{
 		super.renderHead(response);
 		DojoLocaleManager.getInstance().renderLocale(response);
-		response.renderJavascriptReference(DOJO);
+		if (USE_DOJO_UNCOMPRESSED)
+			response.renderJavascriptReference(DOJO_UNCOMPRESSED);
+		else
+			response.renderJavascriptReference(DOJO);
 		response.renderJavascriptReference(DOJO_WICKET);
 	}
 	
