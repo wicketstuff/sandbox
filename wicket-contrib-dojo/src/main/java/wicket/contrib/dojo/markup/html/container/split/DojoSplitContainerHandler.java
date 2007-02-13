@@ -24,7 +24,7 @@ import wicket.contrib.dojo.AbstractRequireDojoBehavior;
  * @author vdemay
  *
  */
-public class DojoSplitHandler extends AbstractRequireDojoBehavior
+public class DojoSplitContainerHandler extends AbstractRequireDojoBehavior
 {
 	
 	public void setRequire(RequireDojoLibs libs)
