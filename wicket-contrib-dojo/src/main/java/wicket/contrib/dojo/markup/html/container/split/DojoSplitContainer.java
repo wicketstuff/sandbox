@@ -77,7 +77,7 @@ public class DojoSplitContainer extends AbstractDojoContainer
 	public DojoSplitContainer(String id, String title)
 	{
 		super(id, title);
-		add(new DojoSplitHandler());
+		add(new DojoSplitContainerHandler());
 	}
 
 	/**
