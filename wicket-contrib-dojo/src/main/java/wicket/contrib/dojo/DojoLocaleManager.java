@@ -1,17 +1,18 @@
 package wicket.contrib.dojo;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Locale;
+import java.util.Set;
 
 import wicket.markup.html.IHeaderResponse;
 
 public class DojoLocaleManager {
 	private static DojoLocaleManager manager;
-	private ArrayList locales;
+	private Set locales;
 	
 	private DojoLocaleManager(){
-		locales = new ArrayList();
+		locales = new HashSet();
 	}
 	
 	public static DojoLocaleManager getInstance(){
