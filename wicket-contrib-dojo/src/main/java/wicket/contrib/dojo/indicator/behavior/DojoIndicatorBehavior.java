@@ -21,10 +21,11 @@ import wicket.behavior.AbstractBehavior;
 import wicket.contrib.dojo.indicator.IDojoIndicator;
 
 /**
- * Add this behavior to DojoComponent to auto show/hide a DojoIndicator<br/>
- * This behavior has to be added to show a dojoIndicator : see {@link IDojoIndicator}
+ * Add this behavior to a Dojo component to automatically show/hide a
+ * DojoIndicator upon Ajax request.
+ * 
+ * @see IDojoIndicator
  * @author Vincent Demay
- *
  */
 public class DojoIndicatorBehavior extends AbstractBehavior {
 
