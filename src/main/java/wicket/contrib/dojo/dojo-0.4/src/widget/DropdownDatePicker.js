@@ -92,6 +92,9 @@ dojo.widget.defineWidget(
 		//	disable all incremental controls, must pick a date in the current display
 		staticDisplay: false,
 		
+		templatePath:  dojo.uri.dojoUri("src/widget/templates/DatePicker.htm"),
+		templateCssPath:  dojo.uri.dojoUri("src/widget/templates/DatePicker.css"),
+		
 		postMixInProperties: function(localProperties, frag){
 			// summary: see dojo.widget.DomWidget
 
@@ -116,10 +119,14 @@ dojo.widget.defineWidget(
 			// summary: see dojo.widget.DomWidget
 			dojo.widget.DropdownDatePicker.superclass.fillInTemplate.call(this, args, frag);
 			//attributes to be passed on to DatePicker
+			
 			var dpArgs = {widgetContainerId: this.widgetId, lang: this.lang, value: this.value,
 				startDate: this.startDate, endDate: this.endDate, displayWeeks: this.displayWeeks,
-				weekStartsOn: this.weekStartsOn, adjustWeeks: this.adjustWeeks, staticDisplay: this.staticDisplay};
-
+				weekStartsOn: this.weekStartsOn, adjustWeeks: this.adjustWeeks, staticDisplay: this.staticDisplay, 
+				templateCssPath:  this.templateCssPath, templatePath: this.templatePath
+				};
+			
+			
 			//build the args for DatePicker based on the public attributes of DropdownDatePicker
 			this.datePicker = dojo.widget.createWidget("DatePicker", dpArgs, this.containerNode, "child");
 			dojo.event.connect(this.datePicker, "onValueChanged", this, "onSetDate");
