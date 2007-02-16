@@ -53,6 +53,10 @@ dojo.widget.defineWidget(
 		
 		// 	name of the form element, used to create a hidden field by this name for form element submission.
 		name: "",
+		
+		
+		templatePath: dojo.uri.dojoUri("src/widget/templates/TimePicker.htm"),
+		templateCssPath: dojo.uri.dojoUri("src/widget/templates/TimePicker.css"),
 
 		postMixInProperties: function() {
 			dojo.widget.DropdownTimePicker.superclass.postMixInProperties.apply(this, arguments);
@@ -63,7 +67,10 @@ dojo.widget.defineWidget(
 		fillInTemplate: function(){
 			dojo.widget.DropdownTimePicker.superclass.fillInTemplate.apply(this, arguments);
 
-			var timeProps = { widgetContainerId: this.widgetId, lang: this.lang };
+			var timeProps = { widgetContainerId: this.widgetId, lang: this.lang , 
+				templateCssPath:  this.templateCssPath, templatePath: this.templatePath
+				};
+			
 			this.timePicker = dojo.widget.createWidget("TimePicker", timeProps, this.containerNode, "child");
 			dojo.event.connect(this.timePicker, "onSetTime", this, "onSetTime");
 			dojo.event.connect(this.inputNode,  "onchange",  this, "onInputChange");
