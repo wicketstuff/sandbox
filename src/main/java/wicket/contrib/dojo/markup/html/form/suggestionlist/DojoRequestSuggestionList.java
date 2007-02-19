@@ -17,7 +17,6 @@
 package wicket.contrib.dojo.markup.html.form.suggestionlist;
 
 import wicket.contrib.dojo.DojoIdConstants;
-import wicket.MarkupContainer;
 import wicket.markup.ComponentTag;
 import wicket.markup.html.form.TextField;
 import wicket.model.IModel;
@@ -28,7 +27,7 @@ import wicket.model.IModel;
  * @author <a href="http://www.demay-fr.net/blog">Vincent Demay</a>
  *
  */
-public abstract class DojoRemoteSuggestionList extends TextField
+public abstract class DojoRequestSuggestionList extends TextField
 {
 
 	/**
@@ -36,20 +35,20 @@ public abstract class DojoRemoteSuggestionList extends TextField
 	 * @param id component id
 	 * @param model model associated with the widget : TODO pt here a suggestionList???
 	 */
-	public DojoRemoteSuggestionList(String id, IModel model)
+	public DojoRequestSuggestionList(String id, IModel model)
 	{
 		super(id, model);
-		add(new DojoRemoteSuggestionListHandler());
+		add(new DojoRequestSuggestionListHandler());
 	}
 
 	/**
 	 * Construct a suggestion list
 	 * @param id component id
 	 */
-	public DojoRemoteSuggestionList(String id)
+	public DojoRequestSuggestionList(String id)
 	{
 		super(id);
-		add(new DojoRemoteSuggestionListHandler());
+		add(new DojoRequestSuggestionListHandler());
 	}
 
 	protected void onComponentTag(ComponentTag tag)

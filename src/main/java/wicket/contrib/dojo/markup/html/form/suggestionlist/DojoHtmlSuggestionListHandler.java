@@ -16,32 +16,27 @@
  */
 package wicket.contrib.dojo.markup.html.form.suggestionlist;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map.Entry;
+import wicket.ajax.AjaxRequestTarget;
+import wicket.contrib.dojo.AbstractRequireDojoBehavior;
 
 /**
- * Model to represent what should be rendered a {@link DojoRequestSuggestionList}
- * its a HashMap : key is the value given for a label which is the value
- * TODO : more documentation
+ * Handler for DojoInline suggestionList
  * @author <a href="http://www.demay-fr.net/blog">Vincent Demay</a>
  *
  */
-public class SuggestionList extends HashMap{
+public class DojoHtmlSuggestionListHandler extends AbstractRequireDojoBehavior
+{
 
-	/**
-	 * Return jsonString to populate suggestionList
-	 * @return jSon to populate suggestionList
+	/* (non-Javadoc)
+	 * @see wicket.contrib.dojo.AbstractRequireDojoBehavior#setRequire(wicket.contrib.dojo.AbstractRequireDojoBehavior.RequireDojoLibs)
 	 */
-	public String getJson()
-	{
-		String toReturn = "[";
-		Iterator it = this.entrySet().iterator();
-		while(it.hasNext()){
-			Entry item = (Entry)it.next();
-			toReturn +="[\"" + item.getValue() + "\",\"" + item.getKey() + "\"],";
-		}
-		return toReturn + "]";
+	public void setRequire(RequireDojoLibs libs){
+		libs.add("dojo.widget.ComboBox");		
 	}
-	
+
+	protected void respond(AjaxRequestTarget target){
+		//DO Nothing in inline suggestionlist
+	}
+
+
 }

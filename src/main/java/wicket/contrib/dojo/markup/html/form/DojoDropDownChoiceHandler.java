@@ -14,17 +14,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package wicket.contrib.dojo.markup.html.form.suggestionlist;
+package wicket.contrib.dojo.markup.html.form;
 
+import wicket.RequestCycle;
 import wicket.ajax.AjaxRequestTarget;
 import wicket.contrib.dojo.AbstractRequireDojoBehavior;
+import wicket.markup.ComponentTag;
+import wicket.markup.html.form.DropDownChoice;
+import wicket.markup.html.form.Form;
+import wicket.markup.html.form.IOnChangeListener;
 
 /**
  * Handler for DojoInline suggestionList
  * @author <a href="http://www.demay-fr.net/blog">Vincent Demay</a>
  *
  */
-public class DojoInlineSuggestionListHandler extends AbstractRequireDojoBehavior
+public class DojoDropDownChoiceHandler extends AbstractRequireDojoBehavior
 {
 
 	/* (non-Javadoc)
@@ -35,8 +40,29 @@ public class DojoInlineSuggestionListHandler extends AbstractRequireDojoBehavior
 	}
 
 	protected void respond(AjaxRequestTarget target){
-		//DO Nothing in inline suggestionlist
+		String value = RequestCycle.get().getRequest().getParameter("value");
+		System.out.println(value);
+		//TODO : needs to update model and call selectionChange
 	}
+
+	protected void onComponentTag(ComponentTag tag) {
+		super.onComponentTag(tag);
+		
+		DojoDropDownChoice c = (DojoDropDownChoice) getComponent();
+
+		if (c.isHandleSelectionChange()){
+			tag.put("onchange", getCallbackScript());
+		}
+	}
+	
+	protected CharSequence getCallbackScript(boolean recordPageVersion, boolean onlyTargetActivePage)
+	{
+		return getCallbackScript("wicketAjaxGet('"
+				+ getCallbackUrl(recordPageVersion, onlyTargetActivePage) + "&value=' + dojo.widget.getId('" + getComponent().getMarkupId() + "')", 
+				null, null);
+	}
+	
+	
 
 
 }
