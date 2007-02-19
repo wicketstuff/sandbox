@@ -29,7 +29,7 @@ public abstract class DojoSubmitButton extends Button
 	public DojoSubmitButton(String id, final Form form)
 	{
 		super(id);
-		add(new DojoFormSubmitBehavior(form){
+		add(new DojoFormSubmitBehavior("onclick" , form){
 			private static final long serialVersionUID = 1L;
 
 			protected void onSubmit(AjaxRequestTarget target)
