@@ -29,38 +29,31 @@ import wicket.contrib.dojo.DojoIdConstants;
  * @author <a href="http://www.demay-fr.net/blog">Vincent Demay</a>
  *
  */
-public class DojoInlineSuggestionList extends WebMarkupContainer
+public class DojoHtmlSuggestionList extends WebMarkupContainer
 {
 	/**
 	 * Create a DojoInlineSuggestionList
 	 * @param id component id
 	 * @param model model associated with the component
 	 */
-	public DojoInlineSuggestionList(String id, IModel model){
+	public DojoHtmlSuggestionList(String id, IModel model){
 		super(id, model);
-		add(new DojoInlineSuggestionListHandler());
+		add(new DojoHtmlSuggestionListHandler());
 	}
 
 	/**
 	 * Create a DojoInlineSuggestionList
 	 * @param id component id
 	 */
-	public DojoInlineSuggestionList(String id){
+	public DojoHtmlSuggestionList(String id){
 		super(id);
-		add(new DojoInlineSuggestionListHandler());
+		add(new DojoHtmlSuggestionListHandler());
 	}
 
 	protected void onComponentTag(ComponentTag tag)
 	{
-		super.onComponentTag(tag);
-		checkTag(tag);
+		checkComponentTag(tag, "select");
 		tag.put(DojoIdConstants.DOJO_TYPE, DojoIdConstants.DOJO_TYPE_COMBOBOX);
-	}
-	
-	protected void checkTag(ComponentTag tag){
-		if ("select".equals(tag.getName())){
-			throw new WicketRuntimeException("DojoInlineSuggestionList " + getMarkupId() + " expected a select tag but found a " + tag.getName() + "tag.");
-		}
 	}
 
 }
