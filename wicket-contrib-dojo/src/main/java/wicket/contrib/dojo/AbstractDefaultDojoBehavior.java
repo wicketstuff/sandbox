@@ -24,6 +24,7 @@ import wicket.ajax.AbstractDefaultAjaxBehavior;
 import wicket.ajax.AjaxRequestTarget;
 import wicket.ajax.IAjaxCallDecorator;
 import wicket.ajax.IAjaxIndicatorAware;
+import wicket.contrib.dojo.indicator.DojoIndicatorHandlerHelper;
 import wicket.contrib.dojo.indicator.behavior.DojoIndicatorBehavior;
 import wicket.markup.html.IHeaderResponse;
 import wicket.markup.html.resources.CompressedResourceReference;
@@ -56,8 +57,6 @@ public abstract class AbstractDefaultDojoBehavior extends AbstractDefaultAjaxBeh
 			AbstractDefaultDojoBehavior.class, "dojo-0.4/dojo.js.uncompressed.js");
 	public static final ResourceReference DOJO_WICKET =  new CompressedResourceReference(
 			AbstractRequireDojoBehavior.class, "dojo-wicket/dojoWicket.js");
-	
-	private DojoIndicatorBehavior indicatorBehavior = null;
 
 	/**
 	 * @see wicket.ajax.AbstractDefaultAjaxBehavior#renderHead(wicket.markup.html.IHeaderResponse)
@@ -72,23 +71,6 @@ public abstract class AbstractDefaultDojoBehavior extends AbstractDefaultAjaxBeh
 			response.renderJavascriptReference(DOJO);
 		response.renderJavascriptReference(DOJO_WICKET);
 	}
-	
-	/**
-	 * If a DojoIndicator has already been found does not looking for it again
-	 * @return the dojoIndicator id
-	 */
-	private DojoIndicatorBehavior getIndicator(){
-		if (indicatorBehavior == null){
-			Iterator behaviors = getComponent().getBehaviors().iterator();
-			while (behaviors.hasNext()){
-				Object behavior = behaviors.next();
-				if (behavior instanceof DojoIndicatorBehavior){
-					indicatorBehavior = (DojoIndicatorBehavior)behavior;
-				}
-			}
-		}
-		return indicatorBehavior;
-	}
 
 	/**
 	 * return the indicator Id to show it if it is in the page
@@ -96,10 +78,7 @@ public abstract class AbstractDefaultDojoBehavior extends AbstractDefaultAjaxBeh
 	 */
 	public String getAjaxIndicatorMarkupId()
 	{
-		if (getIndicator() != null){
-			return indicatorBehavior.getDojoIndicatorMarkupId();
-		}
-		return null;
+		return new DojoIndicatorHandlerHelper(getComponent()).getAjaxIndicatorMarkupId();
 	}
 
 	/**
@@ -108,10 +87,7 @@ public abstract class AbstractDefaultDojoBehavior extends AbstractDefaultAjaxBeh
 	 */
 	protected IAjaxCallDecorator getAjaxCallDecorator()
 	{
-		if (getIndicator() != null){
-			return indicatorBehavior.getDojoCallDecorator();
-		}
-		return null;
+		return new DojoIndicatorHandlerHelper(getComponent()).getAjaxCallDecorator();
 	}
 	
 }
