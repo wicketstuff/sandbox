@@ -26,7 +26,7 @@ import wicket.markup.html.IHeaderResponse;
 import wicket.request.target.basic.StringRequestTarget;
 
 /**
- * Handler for {@link DojoRemoteSuggestionList}
+ * Handler for {@link DojoRequestSuggestionList}
  * @author <a href="http://www.demay-fr.net/blog">Vincent Demay</a>
  * <p>
  * <i>SuggestionList does not use {@link AbstractRequireDojoBehavior} because XMLHTTPRequest 
@@ -34,7 +34,7 @@ import wicket.request.target.basic.StringRequestTarget;
  * </p>
  *
  */
-public class DojoRemoteSuggestionListHandler extends AbstractAjaxBehavior{
+public class DojoRequestSuggestionListHandler extends AbstractAjaxBehavior{
 
 	/* (non-Javadoc)
 	 * @see wicket.behavior.AbstractAjaxBehavior#renderHead(wicket.markup.html.IHeaderResponse)
@@ -83,7 +83,7 @@ public class DojoRemoteSuggestionListHandler extends AbstractAjaxBehavior{
 
 	protected String respond(){
 		String pattern = getComponent().getRequest().getParameter("search");
-		SuggestionList list = ((DojoRemoteSuggestionList)getComponent()).getMatchingValues(pattern);
+		SuggestionList list = ((DojoRequestSuggestionList)getComponent()).getMatchingValues(pattern);
 		return list.getJson();
 	}
 
