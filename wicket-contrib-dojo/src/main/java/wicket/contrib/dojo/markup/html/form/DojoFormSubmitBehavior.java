@@ -27,6 +27,7 @@ public abstract class DojoFormSubmitBehavior extends AbstractDefaultDojoBehavior
 	private static final long serialVersionUID = 1L;
 
 	private Form form;
+	private String event;
 
 
 	/**
@@ -37,10 +38,11 @@ public abstract class DojoFormSubmitBehavior extends AbstractDefaultDojoBehavior
 	 * @param event
 	 *            javascript event this behavior is attached to, like onclick
 	 */
-	public DojoFormSubmitBehavior(Form form)
+	public DojoFormSubmitBehavior(String event, Form form)
 	{
 		super();
 		this.form = form;
+		this.event = event;
 	}
 
 	protected CharSequence getEventHandler()
@@ -81,7 +83,7 @@ public abstract class DojoFormSubmitBehavior extends AbstractDefaultDojoBehavior
 	{
 		super.onComponentTag(tag);
         // return false to end event processing in case the DojoLink is bound to a <button> contained in a form
-        tag.put("onclick", getEventHandler() + "; return false;");
+        tag.put(event, getEventHandler() + "; return false;");
 	}
 
 	/**
