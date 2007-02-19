@@ -31,6 +31,18 @@ public abstract class DojoFormSubmitBehavior extends AbstractDefaultDojoBehavior
 
 
 	/**
+	 * Constructor. This constructor can only be used when the component this
+	 * behavior is attached to is inside a form.
+	 * 
+	 * @param event
+	 *            javascript event this behavior is attached to, like onclick
+	 */
+	public DojoFormSubmitBehavior(String event)
+	{
+		this(null, event);
+	}
+	
+	/**
 	 * Construct.
 	 * 
 	 * @param form
@@ -38,7 +50,7 @@ public abstract class DojoFormSubmitBehavior extends AbstractDefaultDojoBehavior
 	 * @param event
 	 *            javascript event this behavior is attached to, like onclick
 	 */
-	public DojoFormSubmitBehavior(String event, Form form)
+	public DojoFormSubmitBehavior(Form form, String event)
 	{
 		super();
 		this.form = form;
