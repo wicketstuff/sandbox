@@ -90,10 +90,18 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 		List selected = ((DojoSelectableListContainer)getComponent()).getSelected();
 
 		String indexList[] = getComponent().getRequest().getParameters("select");
-		if (indexList == null){
-			// Double-click has occured, call the onChoose() method
+
+		if (indexList == null)
+			return;
+
+		if (selected.size() > 0)
+		{
+			// No parameters by the name "select", so double-click has occured,
+			// call the onChoose() method
 			((DojoSelectableListContainer)getComponent()).onChoose(target, selected.get(0));
-		}else{
+		}
+		else
+		{
 			// A new selection has been made
 			
 			// Clear current selection
