@@ -46,6 +46,9 @@ public class DojoLocaleManager {
 	}
 	
 	public void renderLocale(IHeaderResponse response){
-		response.renderJavascript(generateLocaleJs(), "localeManagerJs");
+		String js = generateLocaleJs();
+		if (js != null){
+			response.renderJavascript(js , "localeManagerJs");
+		}
 	}
 }
