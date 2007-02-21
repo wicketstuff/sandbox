@@ -92,13 +92,11 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 		String indexList[] = getComponent().getRequest().getParameters("select");
 
 		if (indexList == null)
-			return;
-
-		if (selected.size() > 0)
 		{
-			// No parameters by the name "select", so double-click has occured,
-			// call the onChoose() method
-			((DojoSelectableListContainer)getComponent()).onChoose(target, selected.get(0));
+			if (selected.size() > 0)
+				// No parameters by the name "select", so double-click has occured,
+				// call the onChoose() method
+				((DojoSelectableListContainer)getComponent()).onChoose(target, selected.get(0));
 		}
 		else
 		{
