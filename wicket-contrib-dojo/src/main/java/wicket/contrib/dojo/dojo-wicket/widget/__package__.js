@@ -4,6 +4,7 @@ dojo.kwCompoundRequire({
 		"dojoWicket.widget.LazyTable",
 		"dojoWicket.widget.Bubble",
 		"dojoWicket.widget.ErrorBubble",
+		"dojoWicket.widget.ErrorDisplayer",
 		"dojoWicket.widget.PercentSelector"
 	]
 });
