@@ -76,4 +76,9 @@ public class DojoDropDownChoice extends DropDownChoice {
 		return isHandleSelectionChange();
 	}
 
+	protected void onAttach() {
+		super.onAttach();
+		this.setOutputMarkupId(true);
+	}
+
 }
