@@ -1,0 +1,9 @@
+.errorDisplayer{
+	background-color: #FFFAFA;
+	border: 1px solid red;
+	overflow: hidden;
+}
+
+.dojoWiketValidationError{
+	color : red;
+}
