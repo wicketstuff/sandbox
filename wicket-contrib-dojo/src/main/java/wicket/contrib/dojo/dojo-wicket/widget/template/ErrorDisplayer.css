@@ -2,6 +2,13 @@
 	background-color: #FFFAFA;
 	border: 1px solid red;
 	overflow: hidden;
+	
+	/**require**/
+	position: absolute;
+	left: 0px; 
+	top: 0px; 
+	z-index: 107; 
+	cursor: default;"
 }
 
 .dojoWiketValidationError{

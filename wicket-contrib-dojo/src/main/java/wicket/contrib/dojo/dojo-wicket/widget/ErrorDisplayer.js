@@ -4,6 +4,7 @@ dojo.require("dojo.widget.*");
 dojo.require("dojo.html.*");
 dojo.require("dojo.event.*");
 dojo.require("dojo.lfx.*");
+dojo.require("dojo.dom.*");
 
 
 dojo.widget.defineWidget ("dojoWicket.widget.ErrorDisplayer", dojo.widget.HtmlWidget, {
@@ -21,11 +22,24 @@ dojo.widget.defineWidget ("dojoWicket.widget.ErrorDisplayer", dojo.widget.HtmlWi
 	
 	stickTo: function(/**NodeId*/ id){
 		var pos = dojo.html.toCoordinateObject(id,true);
-		this.setPosition(pos.left, pos.top, pos.width);
+		var sticked = dojo.byId(id);
+		var parentDiv = dojo.dom.getFirstAncestorByTag(sticked, "div");
+		
+		if (parentDiv != null){
+			parentDiv.appendChild(this.domNode);
+		}else{
+			parentDiv = document.getElementByTagName('body')[0];
+		}
+		
+		var contentPos = dojo.html.toCoordinateObject(parentDiv,true);
+		this.setPosition(
+			pos.left - contentPos.left + dojo.html.getMarginExtent(parentDiv,"left"), 
+			pos.top - contentPos.top + dojo.html.getMarginExtent(parentDiv,"top"), 
+			pos.width);
 	},
 	
 	setPosition: function(x, y, w){
-		this.domNode.style.width = w - 5 +"px";
+		this.domNode.style.width = w - 4 +"px";
 		var messagePos = dojo.html.toCoordinateObject(this.containerNode,true);
 		this.domNode.style.left = x + "px";
 		this.domNode.style.top  = y - messagePos.height - 3 + "px";
