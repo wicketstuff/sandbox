@@ -209,6 +209,7 @@ dojo.html.getMargin = function(/* HTMLElement */node){
 	};	//	object
 }
 
+
 dojo.html.getBorder = function(/* HTMLElement */node){
 	//	summary
 	//	Returns the width and height of the passed node's border
