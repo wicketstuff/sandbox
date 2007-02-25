@@ -20,9 +20,6 @@ import wicket.RequestCycle;
 import wicket.ajax.AjaxRequestTarget;
 import wicket.contrib.dojo.AbstractRequireDojoBehavior;
 import wicket.markup.ComponentTag;
-import wicket.markup.html.form.DropDownChoice;
-import wicket.markup.html.form.Form;
-import wicket.markup.html.form.IOnChangeListener;
 
 /**
  * Handler for DojoInline suggestionList
