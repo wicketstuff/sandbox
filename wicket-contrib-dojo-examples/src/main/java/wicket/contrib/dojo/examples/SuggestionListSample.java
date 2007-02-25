@@ -1,47 +1,17 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-"http://www.w3.org/TR/html4/loose.dtd">
-<html>
-	<head>
-		<title>Untitled Document</title>
-		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-	</head>
-
-<body>
-	<input type="text" wicket:id="list1"></input>
-	
-	<select wicket:id="dropdown"></select>
- <br/>
- <br/>
-  <br/>
-  <table align="center" style="border-color: navy; border-style: solid; border-width: 1px; font-size: 12px">
-		<tr>
-			<td style="color: white; background-color: navy; font-weight: bold; text-align: center;">
-				Explanation
-			</td>
-		</tr>
-		<tr>
-			<td>
-				A suggestionList filter list entry with user input. This sample
-				is not very usefull. but getMatchingValues should normaly request a dataBase
-			</td>
-		</tr>
-		<tr>
-			<td style="color: white; background-color: navy; font-weight: bold; text-align: center;">
-				Java Code
-			</td>
-		</tr>
-		<tr>
-			<td>
-					<pre>
 package wicket.contrib.dojo.examples;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map.Entry;
 
 import wicket.PageParameters;
-import wicket.contrib.dojo.markup.html.form.suggestionlist.DojoRemoteSuggestionList;
+import wicket.contrib.dojo.markup.html.form.DojoDropDownChoice;
+import wicket.contrib.dojo.markup.html.form.suggestionlist.DojoRequestSuggestionList;
 import wicket.contrib.dojo.markup.html.form.suggestionlist.SuggestionList;
 import wicket.markup.html.WebPage;
+import wicket.markup.html.form.ChoiceRenderer;
+import wicket.markup.html.form.IChoiceRenderer;
 
 public class SuggestionListSample extends WebPage {
 	
@@ -73,41 +43,61 @@ public class SuggestionListSample extends WebPage {
 		allItems.put("Marshall Islands", "Marshall Islands");
 		
 		
-		DojoRemoteSuggestionList list1 = new DojoRemoteSuggestionList(this, "list1"){
+		add(new DojoRequestSuggestionList( "list1"){
 
-			@Override
 			public SuggestionList getMatchingValues(String pattern) {
 				if (pattern.equals("")) return allItems;
 				SuggestionList list = new SuggestionList();
-				Iterator&lt;Entry&lt;String, String>> it = allItems.entrySet().iterator();
+				Iterator it = allItems.entrySet().iterator();
 				while(it.hasNext()){
-					Entry&lt;String, String> item = it.next();
-					if (item.getValue().toLowerCase().startsWith(pattern.toLowerCase())){
+					Entry item = (Entry)it.next();
+					if (((String)item.getValue()).toLowerCase().startsWith(pattern.toLowerCase())){
 						list.put(item.getKey(), item.getValue());
 					}
 				}
 				return list;
 			}
-		};
+		});
+		
+		ArrayList personList = new ArrayList();
+		
+		personList.add(new person("JBQ", 1));
+		personList.add(new person("Eelco", 2));
+		personList.add(new person("Igor", 3));
+		personList.add(new person("Vincent", 4));
+		
+		DojoDropDownChoice choice = new DojoDropDownChoice("dropdown", personList, new ChoiceRenderer("name", "id"));
+		choice.setHandleSelectionChange(true);
+		add(choice);
+	}
+	
+	public class person{
+		private String name;
+		private int id;
+		
+		public person(String name, int id) {
+			super();
+			this.name = name;
+			this.id = id;
+		}
+
+		public int getId() {
+			return id;
+		}
+
+		public void setId(int id) {
+			this.id = id;
+		}
+
+		public String getName() {
+			return name;
+		}
+
+		public void setName(String name) {
+			this.name = name;
+		}
+		
+		
+		
 	}
 }
-				</pre>
-			</td>
-		</tr>
-	</table>
- <br/>
-  <br/>
- <br/>
-  <br/>
- <br/>
-  <br/>
- <br/>
-  <br/>
- <br/>
-<wicket:link>
-		<ul>
-		 <li><a href="Index.html">Back to index</a></li>
-		</ul>
-</wicket:link>
-</body>
-</html>
