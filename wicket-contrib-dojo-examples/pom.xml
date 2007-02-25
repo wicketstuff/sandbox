@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>wicket-stuff</groupId>
 	<artifactId>wicket-contrib-dojo-examples</artifactId>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 	<version>1.3-incubating-SNAPSHOT</version>
 	<name>Wicket Contrib Dojo Examples</name>
 	<description>An integration project for the Ajax JavaScript library Dojo. This project provides the basic AjaxHandler for DOJO processing at the serverside, and Dojo/Wicket components.</description>
@@ -103,5 +103,24 @@
 				</excludes>
 			</resource>
 		</resources>
+		<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<configuration>
+						<source>1.4</source>
+						<target>1.4</target>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.mortbay.jetty</groupId>
+					<artifactId>maven-jetty-plugin</artifactId>
+					<version>6.0.1</version>
+					<configuration>
+						<scanIntervalSeconds>60</scanIntervalSeconds>
+						<webAppSourceDirectory>src/webapp</webAppSourceDirectory>
+					</configuration>
+				</plugin>
+		</plugins>
 	</build>
 </project>
