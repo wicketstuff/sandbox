@@ -1,6 +1,7 @@
 package wicket.contrib.dojo.examples;
 
 import wicket.PageParameters;
+import wicket.ajax.AjaxRequestTarget;
 import wicket.contrib.dojo.dojodnd.DojoDragContainer;
 import wicket.contrib.dojo.dojodnd.DojoDropContainer;
 import wicket.markup.html.WebPage;
@@ -11,7 +12,7 @@ public class DnDShower extends WebPage {
 	public DnDShower(PageParameters parameters){
 		DojoDropContainer dropContainer = new DojoDropContainer("dropContainer"){
 		
-			public void onDrop(DojoDragContainer container, int position) {
+			public void onDrop(AjaxRequestTarget target, DojoDragContainer container, int position) {
 				System.out.println("position = " + position);
 				System.out.println("DojoDragContainer" + container.getId());
 				

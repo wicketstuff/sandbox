@@ -149,7 +149,7 @@ public class DojoOrderableListContainer extends DojoDropContainer
 	/**
 	 * THIS METHOD CAN NOT BE USED IN THIS CONTEXT
 	 */
-	public final void onDrop(DojoDragContainer container, int position){}
+	public final void onDrop(AjaxRequestTarget target, DojoDragContainer container, int position){}
 	
 	
 /***************************************************************************/
