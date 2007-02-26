@@ -101,7 +101,7 @@ public class DojoOrderableListViewContainer extends DojoDropContainer
 			container.setList(list);
 			target.appendJavascript(getChangeIDScript());
 		}
-		onDrop(null, newPosition);
+		onDrop(target, null, newPosition);
 	}
 	
 	private String getChangeIDScript(){
@@ -138,6 +138,6 @@ public class DojoOrderableListViewContainer extends DojoDropContainer
 	 * @param position odl DragMoved position
 	 */
 	@Override
-	public void onDrop(DojoDragContainer container, int newPosition){}
+	public void onDrop(AjaxRequestTarget target, DojoDragContainer container, int newPosition){}
 
 }
