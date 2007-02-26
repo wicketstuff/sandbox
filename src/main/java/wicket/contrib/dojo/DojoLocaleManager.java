@@ -23,7 +23,7 @@ public class DojoLocaleManager {
 	}
 	
 	public void addLocale(Locale locale){
-		locales.add(locale.toString().replace("_", "-").toLowerCase());
+		locales.add(locale.toString().replace('_', '-').toLowerCase());
 	}
 	
 	private String generateLocaleJs(){
