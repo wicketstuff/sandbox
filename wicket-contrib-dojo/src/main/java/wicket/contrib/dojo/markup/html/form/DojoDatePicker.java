@@ -160,7 +160,7 @@ public class DojoDatePicker extends TextField{
 	
 	public String getLocaleAsString() {
 		if (locale == null) return null;
-		return locale.toString().replace("_", "-").toLowerCase();
+		return locale.toString().replace('_', '-').toLowerCase();
 	}
 
 	public void setLocale(Locale locale) {

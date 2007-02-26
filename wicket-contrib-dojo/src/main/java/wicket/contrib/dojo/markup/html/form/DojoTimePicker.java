@@ -95,7 +95,7 @@ public class DojoTimePicker extends TextField {
 	
 	private String getLocaleAsString() {
 		if (locale == null) return null;
-		return locale.toString().replace("_", "-").toLowerCase();
+		return locale.toString().replace('_', '-').toLowerCase();
 	}
 
 	protected void onComponentTag(ComponentTag tag)	{

@@ -42,7 +42,7 @@ public class DojoTabContainerHandler extends AbstractRequireDojoBehavior
 		AbstractDojoContainer container = (AbstractDojoContainer) getComponent();
 		String tabId = container.getRequest().getParameter("tabId");
 		String widgetPath = tabId;
-		if (tabId.contains("_")){
+		if (tabId.indexOf("_") != -1){
 			widgetPath = tabId.substring(tabId.lastIndexOf('_')+1, tabId.length());
 		}
 		AbstractDojoContainer tab = (AbstractDojoContainer)container.get(widgetPath);
