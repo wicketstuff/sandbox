@@ -137,7 +137,7 @@ public abstract class DojoDropContainer extends WebMarkupContainer
 		for (int i=0; i < ids.length; i++){
 			container = (MarkupContainer)container.get(ids[i]);
 		}
-		onDrop((DojoDragContainer) container, position);  
+		onDrop(target, (DojoDragContainer) container, position);  
 	}
 
 	/**
@@ -145,5 +145,5 @@ public abstract class DojoDropContainer extends WebMarkupContainer
 	 * @param container the {@link DojoDragContainer} dopped
 	 * @param position position
 	 */
-	public abstract void onDrop(DojoDragContainer container, int position);
+	public abstract void onDrop(AjaxRequestTarget target, DojoDragContainer container, int position);
 }
