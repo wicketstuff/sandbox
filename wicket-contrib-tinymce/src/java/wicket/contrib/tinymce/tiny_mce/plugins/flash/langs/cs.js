@@ -1,14 +1,16 @@
 /**
- * Czech lang variables 
+ * Czech lang variables
  * encoding: utf-8
- *  
- * $Id$ 
- */  
+ *
+ * $Id$
+ */
 
-tinyMCE.addToLang('',{
-insert_flash : 'Vlo�it/editovat Flash Movie',
-insert_flash_file : 'Flash soubor (.swf)',
-insert_flash_size : 'Velikost',
-insert_flash_list : 'Seznam',
-flash_props : 'Vlastnosti Flash'
+tinyMCE.addToLang('flash',{
+title : 'Vložit / editovat Flash',
+desc : 'Vložit / editovat Flash',
+file : 'Flash soubor (.swf)',
+size : 'Velikost',
+list : 'Flash soubory',
+props : 'Flash nastavení',
+general : 'Obecné'
 });

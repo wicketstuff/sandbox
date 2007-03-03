@@ -6,8 +6,8 @@
  */  
 
 tinyMCE.addToLang('',{
-insertdate_def_fmt : '%Y-%m-%d',
-inserttime_def_fmt : '%H:%M:%S',
+insertdate_def_fmt : '%d.%m.%Y',
+inserttime_def_fmt : '%H:%M',
 insertdate_desc : 'Vložit datum',
 inserttime_desc : 'Vložit čas',
 inserttime_months_long : new Array('Leden','Únor','Březen','Duben','Květen','Červen','Červenec','Srpen','Září','Říjen','Listopad','Prosinec'),
