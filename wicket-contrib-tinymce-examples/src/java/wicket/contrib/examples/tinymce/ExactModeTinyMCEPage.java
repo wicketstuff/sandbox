@@ -24,6 +24,7 @@ public class ExactModeTinyMCEPage extends TinyMCEBasePage {
 		FeedbackPanel panel = new FeedbackPanel(this, "feedback");
 
 		TinyMCESettings settings = new TinyMCESettings(Mode.exact);
+		settings.setLanguage(TinyMCESettings.Language.ro);
 		settings.enableTextArea(textArea1);
 		TinyMCEPanel tinyMCEPanel = new TinyMCEPanel(this, "tinyMCE", settings);
 	}

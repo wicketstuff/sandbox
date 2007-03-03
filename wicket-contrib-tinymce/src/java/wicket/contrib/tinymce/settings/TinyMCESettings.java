@@ -50,6 +50,7 @@ public class TinyMCESettings implements Serializable
 	private static final Logger logger = LoggerFactory.getLogger(TinyMCESettings.class);
 
 	private Mode mode;
+	private Language language = Language.en;
 	private Theme theme;
 	private Location toolbarLocation;
 	private Location statusbarLocation;
@@ -160,6 +161,15 @@ public class TinyMCESettings implements Serializable
 	public void setHorizontalResizing(boolean horizontalResizing)
 	{
 		this.horizontalResizing = horizontalResizing;
+	}
+
+	/**
+	 * @param language
+	 *            the language
+	 */
+	public void setLanguage(Language language)
+	{
+		this.language = language;
 	}
 
 	/**
@@ -276,11 +286,14 @@ public class TinyMCESettings implements Serializable
 
 		// theme
 		buffer.append(",\n\t").append("theme : ").append("\"").append(theme.name()).append("\"");
-
 		if (Theme.advanced.equals(theme))
 		{
 			appendAdvancedSettings(buffer);
 		}
+
+		// language
+		buffer.append(",\n\t").append("language : ").append("\"").append(language.name()).append(
+				"\"");
 
 		appendPluginSettings(buffer);
 
@@ -592,6 +605,13 @@ public class TinyMCESettings implements Serializable
 	 */
 	public enum Mode {
 		textareas, exact;
+	}
+
+	/**
+	 * i18n support
+	 */
+	public enum Language {
+		ar, ca, cs, da, de, el, en, es, fa, fr, he, hu, it, ja, ko, nl, no, pl, pt, ro, ru, si, sk, sq, sr, sv, th, tr, tw, vi, zh
 	}
 
 	/**
