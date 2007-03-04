@@ -16,12 +16,10 @@
  */
 package wicket.contrib.dojo.markup.html.form.suggestionlist;
 
-import wicket.MarkupContainer;
-import wicket.WicketRuntimeException;
-import wicket.markup.ComponentTag;
-import wicket.markup.html.WebMarkupContainer;
-import wicket.model.IModel;
 import wicket.contrib.dojo.DojoIdConstants;
+import wicket.markup.ComponentTag;
+import wicket.markup.html.form.DropDownChoice;
+import wicket.model.IModel;
 
 /**
  * DojoInline suggestion list is a suggestion list withour server request.
@@ -29,7 +27,7 @@ import wicket.contrib.dojo.DojoIdConstants;
  * @author <a href="http://www.demay-fr.net/blog">Vincent Demay</a>
  *
  */
-public class DojoHtmlSuggestionList extends WebMarkupContainer
+public class DojoHtmlSuggestionList extends DropDownChoice
 {
 	/**
 	 * Create a DojoInlineSuggestionList
@@ -52,7 +50,6 @@ public class DojoHtmlSuggestionList extends WebMarkupContainer
 
 	protected void onComponentTag(ComponentTag tag)
 	{
-		checkComponentTag(tag, "select");
 		tag.put(DojoIdConstants.DOJO_TYPE, DojoIdConstants.DOJO_TYPE_COMBOBOX);
 	}
 
