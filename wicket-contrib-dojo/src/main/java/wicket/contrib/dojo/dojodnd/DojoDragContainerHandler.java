@@ -2,6 +2,8 @@ package wicket.contrib.dojo.dojodnd;
 
 import java.util.HashMap;
 
+import wicket.IRequestTarget;
+import wicket.RequestCycle;
 import wicket.ajax.AjaxRequestTarget;
 import wicket.contrib.dojo.AbstractRequireDojoBehavior;
 import wicket.contrib.dojo.templates.DojoPackagedTextTemplate;
@@ -32,7 +34,7 @@ public class DojoDragContainerHandler extends AbstractRequireDojoBehavior
 	@Override
 	protected void respond(AjaxRequestTarget target)
 	{
-		//DO NOTHING
+		((DojoDragContainer)getComponent()).onDrag(target);
 	}
 
 	
@@ -43,10 +45,21 @@ public class DojoDragContainerHandler extends AbstractRequireDojoBehavior
 	{
 		super.renderHead(response);
 		DojoPackagedTextTemplate template = new DojoPackagedTextTemplate(this.getClass(), "DojoDragContainerHandlerTemplate.js");
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("MarkupId", container.getMarkupId());
-		map.put("DragId", container.getDragPattern());
-		response.renderJavascript(template.asString(map), template.getWidgetUniqueKey(this.getComponent()));
+		HashMap map = new HashMap();
+		response.renderJavascript(template.asString(), template.getStaticKey());
+		
+		//DojoOnLoad only if not AjaxRequest
+		IRequestTarget target = RequestCycle.get().getRequestTarget();
+		if(!(target instanceof AjaxRequestTarget)){
+			response.renderJavascript("dojo.event.connect(dojo, \"loaded\", function() {initDrag('" + container.getMarkupId() + "','" + container.getDragPattern() + "')});\n", container.getMarkupId() + "onLoad" );
+		}
+		//else will be done by onComponentReRendered
+	}
+	
+	public void onComponentReRendered(AjaxRequestTarget ajaxTarget)
+	{
+		super.onComponentReRendered(ajaxTarget);
+		ajaxTarget.appendJavascript("initDrag('" + container.getMarkupId() + "','" + container.getDragPattern() + "')\n");
 	}
 
 
