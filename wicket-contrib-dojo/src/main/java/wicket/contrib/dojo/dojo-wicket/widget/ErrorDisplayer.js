@@ -27,14 +27,16 @@ dojo.widget.defineWidget ("dojoWicket.widget.ErrorDisplayer", dojo.widget.HtmlWi
 		
 		if (parentDiv != null){
 			parentDiv.appendChild(this.domNode);
+			parentDiv.style.position="relative";
 		}else{
 			parentDiv = document.getElementByTagName('body')[0];
+			parentDiv.appendChild(this.domNode);
 		}
 		
-		var contentPos = dojo.html.toCoordinateObject(parentDiv,true);
+		var contentPos = dojo.html.getAbsolutePosition(parentDiv,true, "padding-box");
 		this.setPosition(
-			pos.left - contentPos.left + dojo.html.getMarginExtent(parentDiv,"left"), 
-			pos.top - contentPos.top + dojo.html.getMarginExtent(parentDiv,"top"), 
+			pos.left - contentPos.x , 
+			pos.top - contentPos.y, 
 			pos.width);
 	},
 	
