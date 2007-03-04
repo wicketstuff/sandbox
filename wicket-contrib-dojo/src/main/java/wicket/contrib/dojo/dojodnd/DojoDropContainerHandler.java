@@ -16,8 +16,6 @@
  */
 package wicket.contrib.dojo.dojodnd;
 
-import java.util.HashMap;
-
 import wicket.IRequestTarget;
 import wicket.RequestCycle;
 import wicket.ajax.AjaxRequestTarget;
