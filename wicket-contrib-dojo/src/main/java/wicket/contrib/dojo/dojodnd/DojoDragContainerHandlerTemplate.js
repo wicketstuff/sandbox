@@ -1,5 +1,4 @@
-function initDrag${MarkupId}(){
-	var dl = byId('${MarkupId}');
-	var drag = new dojo.dnd.HtmlDragSource(dl, '${DragId}');
+function initDrag(markupId, dragId){
+	var dl = byId(markupId);
+	var drag = new dojo.dnd.HtmlDragSource(dl, dragId);
 }
-dojo.event.connect(dojo, 'loaded', 'initDrag${MarkupId}');
