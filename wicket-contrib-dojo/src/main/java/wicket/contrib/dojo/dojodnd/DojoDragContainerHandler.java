@@ -33,7 +33,7 @@ public class DojoDragContainerHandler extends AbstractRequireDojoBehavior
 	
 	protected void respond(AjaxRequestTarget target)
 	{
-		//DO NOTHING
+		((DojoDragContainer)getComponent()).onDrag(target);
 	}
 
 	
