@@ -16,6 +16,7 @@
  */
 package wicket.contrib.dojo.dojodnd;
 
+import wicket.Component;
 import wicket.MarkupContainer;
 import wicket.ajax.AjaxRequestTarget;
 import wicket.contrib.dojo.markup.html.form.ImmediateCheckBox;
@@ -146,11 +147,9 @@ public abstract class DojoDropContainer extends WebMarkupContainer
 	{
 		String dragSource = getRequest().getParameter("dragSource");
 		int position = Integer.parseInt(getRequest().getParameter("position"));
-		MarkupContainer container = getPage(); 
-		String[] ids = dragSource.split("_");
-		for (int i=0; i < ids.length; i++){
-			container = (MarkupContainer)container.get(ids[i]);
-		}
+		LookupChildVisitor visitor = new LookupChildVisitor(dragSource);
+		getPage().visitChildren(visitor);
+		Component container = visitor.getComponent();
 		onDrop(target, (DojoDragContainer) container, position);  
 	}
 
@@ -159,6 +158,52 @@ public abstract class DojoDropContainer extends WebMarkupContainer
 	 * on this container.
 	 * @param container {@link DojoDragContainer} dropped
 	 * @param position position where it is dropped
+	 * @param target {@link AjaxRequestTarget}
 	 */
 	public abstract void onDrop(AjaxRequestTarget target, DojoDragContainer container, int position);
+	
+	/**
+	 * This class lookup a component in the page component tree by its id
+	 * 
+	 * @author Vincent Demay
+	 *
+	 */
+	protected class LookupChildVisitor implements IVisitor{
+
+		private String markupId;
+		private Component component = null;
+		
+		/**
+		 * Create the visitor using the markupId 
+		 * @param markupId markupId to lookup
+		 */
+		public LookupChildVisitor(String markupId)
+		{
+			this.markupId = markupId;
+		}
+
+		/* (non-Javadoc)
+		 * @see wicket.Component.IVisitor#component(wicket.Component)
+		 */
+		public Object component(Component component)
+		{
+			if (!component.getId().startsWith(Component.AUTO_COMPONENT_PREFIX) && component.getMarkupId() != null && component.getMarkupId().equals(this.markupId)){
+				this.component = component;
+			}
+			if (this.component == null){
+				return IVisitor.CONTINUE_TRAVERSAL;
+			}
+			return IVisitor.STOP_TRAVERSAL;
+		}
+		
+		/**
+		 * Return component if it has been found or null otherwise
+		 * @return component if it has been found or null otherwise
+		 */
+		public Component getComponent(){
+			return this.component;
+		}
+		
+		
+	}
 }
