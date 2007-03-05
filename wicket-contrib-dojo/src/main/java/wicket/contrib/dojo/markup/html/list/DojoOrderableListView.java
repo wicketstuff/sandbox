@@ -16,14 +16,18 @@
  */
 package wicket.contrib.dojo.markup.html.list;
 
+import java.util.Enumeration;
 import java.util.List;
 
-import wicket.MarkupContainer;
-import wicket.ajax.AjaxRequestTarget;
+import javax.media.j3d.Behavior;
+
+import wicket.ResourceReference;
+import wicket.Response;
+import wicket.behavior.AbstractBehavior;
 import wicket.behavior.AttributeAppender;
-import wicket.contrib.dojo.AbstractRequireDojoBehavior;
-import wicket.contrib.dojo.dojodnd.DojoDragContainerHandler;
+import wicket.behavior.IBehaviorListener;
 import wicket.markup.ComponentTag;
+import wicket.markup.html.IHeaderContributor;
 import wicket.markup.html.IHeaderResponse;
 import wicket.markup.html.list.ListItem;
 import wicket.markup.html.list.ListView;
@@ -92,6 +96,7 @@ public abstract class DojoOrderableListView extends ListView
 		super(parent, id, model);
 		container = parent;
 		dragId = container.getMarkupId();
+		add(new DojoOrderableBehavior());
 	}
 
 	/**
@@ -105,6 +110,7 @@ public abstract class DojoOrderableListView extends ListView
 		super(parent, id, list);
 		container = parent;
 		dragId = container.getMarkupId();
+		add(new DojoOrderableBehavior());
 	}
 
 	/**
@@ -117,6 +123,7 @@ public abstract class DojoOrderableListView extends ListView
 		super(parent, id);
 		container = parent;
 		dragId = container.getMarkupId();
+		add(new DojoOrderableBehavior());
 	}
 	
 	public String generateId(){
@@ -145,12 +152,16 @@ public abstract class DojoOrderableListView extends ListView
 		
 	}
 
-	@Override
-	public void renderHead(IHeaderResponse response)
-	{
-		super.renderHead(response);
-		response.renderString(generateDragDefinition(container.getMarkupId()));
+	
+	public class DojoOrderableBehavior extends AbstractBehavior implements IHeaderContributor{
 
+		@Override
+		public void renderHead(IHeaderResponse response)
+		{
+			super.renderHead(response);
+			response.renderString(generateDragDefinition(container.getMarkupId()));
+		}
+		
 	}
 	
 	private String generateDragDefinition(String id){
