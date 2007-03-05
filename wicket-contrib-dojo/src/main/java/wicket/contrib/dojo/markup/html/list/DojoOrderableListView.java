@@ -16,16 +16,10 @@
  */
 package wicket.contrib.dojo.markup.html.list;
 
-import java.util.Enumeration;
 import java.util.List;
 
-import javax.media.j3d.Behavior;
-
-import wicket.ResourceReference;
-import wicket.Response;
 import wicket.behavior.AbstractBehavior;
 import wicket.behavior.AttributeAppender;
-import wicket.behavior.IBehaviorListener;
 import wicket.markup.ComponentTag;
 import wicket.markup.html.IHeaderContributor;
 import wicket.markup.html.IHeaderResponse;
