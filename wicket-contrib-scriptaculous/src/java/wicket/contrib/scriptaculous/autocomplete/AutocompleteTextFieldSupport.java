@@ -2,14 +2,15 @@ package wicket.contrib.scriptaculous.autocomplete;
 
 import java.util.HashMap;
 
+import wicket.AttributeModifier;
 import wicket.MarkupContainer;
 import wicket.ResourceReference;
 import wicket.contrib.scriptaculous.JavascriptBuilder;
 import wicket.contrib.scriptaculous.ScriptaculousAjaxBehavior;
-import wicket.markup.ComponentTag;
 import wicket.markup.MarkupStream;
 import wicket.markup.html.IHeaderResponse;
 import wicket.markup.html.form.TextField;
+import wicket.model.Model;
 
 /**
  * support class for all autocomplete text fields. handles binding of needed css
@@ -30,6 +31,7 @@ public abstract class AutocompleteTextFieldSupport<T> extends TextField<T>
 	{
 		super(parent, id);
 		add(ScriptaculousAjaxBehavior.newJavascriptBindingBehavior());
+		add(new AttributeModifier("autocomplete", new Model("off")));
 
 		setOutputMarkupId(true);
 	}
@@ -67,15 +69,6 @@ public abstract class AutocompleteTextFieldSupport<T> extends TextField<T>
 	protected ResourceReference getCss()
 	{
 		return new ResourceReference(AutocompleteTextFieldSupport.class, "style.css");
-	}
-
-	/**
-	 * @see wicket.Component#onComponentTag(wicket.markup.ComponentTag)
-	 */
-	protected final void onComponentTag(ComponentTag tag)
-	{
-		super.onComponentTag(tag);
-		tag.put("autocomplete", "off");
 	}
 
 	/**
