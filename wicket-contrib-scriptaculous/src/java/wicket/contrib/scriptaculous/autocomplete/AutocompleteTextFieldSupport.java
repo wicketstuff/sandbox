@@ -5,6 +5,7 @@ import java.util.HashMap;
 import wicket.AttributeModifier;
 import wicket.MarkupContainer;
 import wicket.ResourceReference;
+import wicket.behavior.HeaderContributor;
 import wicket.contrib.scriptaculous.JavascriptBuilder;
 import wicket.contrib.scriptaculous.ScriptaculousAjaxBehavior;
 import wicket.markup.MarkupStream;
@@ -32,25 +33,9 @@ public abstract class AutocompleteTextFieldSupport<T> extends TextField<T>
 		super(parent, id);
 		add(ScriptaculousAjaxBehavior.newJavascriptBindingBehavior());
 		add(new AttributeModifier("autocomplete", new Model("off")));
+		add(HeaderContributor.forCss(getCss(), "screen"));
 
 		setOutputMarkupId(true);
-	}
-
-	@Override
-	public final void renderHead(IHeaderResponse response)
-	{
-		super.renderHead(response);
-
-		response.renderCSSReference(getCss());
-
-		JavascriptBuilder builder = new JavascriptBuilder();
-		builder.addLine("new " + getAutocompleteType() + "(");
-		builder.addLine("  '" + getMarkupId() + "', ");
-		builder.addLine("  '" + getAutocompleteId() + "', ");
-		builder.addLine("  '" + getThirdAutocompleteArgument() + "', ");
-		builder.addOptions(new HashMap());
-		builder.addLine(");");
-		response.getResponse().write(builder.buildScriptTagString());
 	}
 
 	protected abstract String getThirdAutocompleteArgument();
@@ -80,5 +65,14 @@ public abstract class AutocompleteTextFieldSupport<T> extends TextField<T>
 
 		getResponse().write(
 				"<div class=\"auto_complete\" id=\"" + getAutocompleteId() + "\"></div>");
+		
+		JavascriptBuilder builder = new JavascriptBuilder();
+		builder.addLine("new " + getAutocompleteType() + "(");
+		builder.addLine("  '" + getMarkupId() + "', ");
+		builder.addLine("  '" + getAutocompleteId() + "', ");
+		builder.addLine("  '" + getThirdAutocompleteArgument() + "', ");
+		builder.addOptions(new HashMap());
+		builder.addLine(");");
+		getResponse().write(builder.buildScriptTagString());
 	}
 }
