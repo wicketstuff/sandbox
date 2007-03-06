@@ -46,8 +46,11 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 	
 	public void onComponentReRendered(AjaxRequestTarget ajaxTarget)
 	{
+		//get the indexes list
 		String selectedIndex[] = ((DojoSelectableListContainer)getComponent()).getSelectedIndex();
 		super.onComponentReRendered(ajaxTarget);
+		
+		//and generate js to select them
 		if (selectedIndex != null){
 			String selected = "";
 			for (int i=0; i < selectedIndex.length; i++){
@@ -127,8 +130,8 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 					pos++;
 				}
 			}
-			//store selected indexes
-			((DojoSelectableListContainer)getComponent()).setSelectedIndex(indexList);
+			//store selected
+			((DojoSelectableListContainer)getComponent()).setSelected(selected);
 			// Call the onSelection() method
 			((DojoSelectableListContainer)getComponent()).onSelection(target, selected);
 		}
