@@ -464,18 +464,6 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer imple
 			return this.getIndexesForSelection(selected);
 		}
 	}
-	
-	/**
-	 * <b>WARNING</b> : this method is not synchronized with the model, it will only select index on 
-	 * client side, Use void setSelected(List selected) or setSelected(List selected, AjaxRequestTraget target) method<br/>
-	 * 
-	 * set a list of selected indexes
-	 * @param selectedIndex list of selected indexes
-	 */
-	/*public void ForceSelectionOnClientSide(String [] selectedIndex)
-	{
-		this.selectedIndex = selectedIndex;
-	}*/
 
 	
 	/***************************************************************************/
