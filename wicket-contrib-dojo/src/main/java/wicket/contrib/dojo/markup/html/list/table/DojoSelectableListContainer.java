@@ -17,13 +17,13 @@
 package wicket.contrib.dojo.markup.html.list.table;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import wicket.Component;
 import wicket.ResourceReference;
 import wicket.WicketRuntimeException;
 import wicket.ajax.AjaxRequestTarget;
-import wicket.behavior.AttributeAppender;
 import wicket.contrib.dojo.DojoIdConstants;
 import wicket.contrib.dojo.indicator.behavior.DojoIndicatorBehavior;
 import wicket.contrib.dojo.skin.manager.SkinManager;
@@ -33,9 +33,9 @@ import wicket.markup.MarkupStream;
 import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.link.ILinkListener;
 import wicket.markup.html.list.ListView;
+import wicket.markup.repeater.Item;
 import wicket.markup.repeater.RepeatingView;
 import wicket.model.IModel;
-import wicket.model.Model;
 
 /**
  * Selectable List container
@@ -56,7 +56,7 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer imple
 	 */
 	private List selected;
 	/**
-	 * List of selected indexes
+	 * List of selected indexes - Used in permanent selection mode
 	 */
 	private String[] selectedIndex;
 
@@ -158,6 +158,17 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer imple
 	
 	/**
 	 * Clear the selection on this widget
+	 * @param target {@link AjaxRequestTarget}
+	 */
+	public void clearSelection(AjaxRequestTarget target){
+		target.appendJavascript("dojo.widget.byId('" + getMarkupId() + "').selectIndexes([])");
+		clearSelection();
+	}
+	
+	/**
+	 * Clear the server side selection
+	 * Be Careefull, if this container is not rerendered the client side will never be updated,
+	 * if you want to update client side, use clearSelection(AjaxRequestTarget target)
 	 *
 	 */
 	public void clearSelection(){
@@ -254,14 +265,94 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer imple
 	}
 
 	/**
-	 * change the selected List
+	 * change the selected List.<br/>
+	 * Be Carrefull, this method update only server side model. If this container is not rerender,
+	 * Client side will never be updated, use setSelected(AjaxRequestTarget, if you want to update it)
 	 * @param selected the new selected List
 	 */
 	public void setSelected(List selected)
 	{
 		this.selected = selected;
+		this.selectedIndex = getIndexesForSelection(selected);
 	}
 	
+	/**
+	 * Calculate indexes postion of the selected items in the list
+	 * @param Selected list of item
+	 * @return a String[] représenting position
+	 */
+	private String[] getIndexesForSelection(List selected){
+		ArrayList positions = new ArrayList();
+		
+		if (child instanceof ListView){
+			Iterator ite = null;
+			ListView listView = (ListView) child;
+			ite = listView.getList().iterator();
+			int pos=0;
+			while (ite.hasNext()){
+				Object obj = ite.next();
+				if (selected.contains(obj)){
+					positions.add(pos + "");
+				}
+				pos ++;
+			}
+		} else {
+			Iterator ite = null;
+			RepeatingView repeatingView = (RepeatingView) child;
+			ite = repeatingView.iterator();
+			int pos=0;
+			while (ite.hasNext()){
+				Object obj = ((Item)ite.next()).getModelObject();
+				if (selected.contains(obj)){
+					positions.add(pos + "");
+				}
+				pos ++;
+			}
+		}
+		
+		String str [] = new String [positions.size ()];
+		positions.toArray (str);
+		
+		return str;
+	}
+	
+	/**
+	 * change the selected List.<br/>
+	 * @param selected the new selected List 
+	 * @param target ajaxRequestTarget
+	 * */
+	public void setSelected(AjaxRequestTarget target, List selected){
+		Iterator ite = null;
+		if (child instanceof ListView){
+			ListView listView = (ListView) child;
+			ite = listView.getList().iterator();
+		} else {
+			RepeatingView repeatingView = (RepeatingView) child;
+			ite = repeatingView.iterator();
+		}
+		
+		int pos = 0;
+		String toReturn = "[";
+		boolean noElement = true;
+		while (ite.hasNext()){
+			Object obj = ite.next();
+			if (selected.contains(obj)){
+				noElement = false;
+				toReturn += pos + ",";
+			}
+			pos ++;
+		}
+		if (! noElement){
+			toReturn = toReturn.substring(0, toReturn.length()-1);
+		}
+		toReturn += "]";
+		
+		target.appendJavascript("dojo.widget.byId('" + getMarkupId() + "').selectIndexes(" + toReturn + ")");
+		
+		//Update Model
+		setSelected(selected);
+	}
+
 	/**
 	 * return boolean to know if ajax is enable on the choose(dblclick)
 	 * @return true if ajax is active on choose
@@ -365,17 +456,26 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer imple
 	 */
 	public String[] getSelectedIndex()
 	{
-		return selectedIndex;
+		if (this.selectedIndex != null && this.selectedIndex.length != 0){
+			//some selection already done
+			return this.selectedIndex;
+		}else{
+			//try to find object selected 
+			return this.getIndexesForSelection(selected);
+		}
 	}
 	
 	/**
+	 * <b>WARNING</b> : this method is not synchronized with the model, it will only select index on 
+	 * client side, Use void setSelected(List selected) or setSelected(List selected, AjaxRequestTraget target) method<br/>
+	 * 
 	 * set a list of selected indexes
 	 * @param selectedIndex list of selected indexes
 	 */
-	public void setSelectedIndex(String [] selectedIndex)
+	/*public void ForceSelectionOnClientSide(String [] selectedIndex)
 	{
 		this.selectedIndex = selectedIndex;
-	}
+	}*/
 
 	
 	/***************************************************************************/
