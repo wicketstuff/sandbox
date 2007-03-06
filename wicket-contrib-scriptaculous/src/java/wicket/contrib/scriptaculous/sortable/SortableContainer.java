@@ -79,9 +79,14 @@ public abstract class SortableContainer extends WebMarkupContainer
 						+ "&' + Sortable.serialize(element)); }"));
 	}
 
-	public void setConstraint(boolean value)
+	public void setConstraintVertical()
 	{
-		options.put("constraint", Boolean.valueOf(value));
+		options.put("constraint", "vertical");
+	}
+	
+	public void setConstraintHorizontal() 
+	{
+		options.put("constraint", "horizontal");
 	}
 
 	protected abstract void populateItemInternal(ListItem item);
