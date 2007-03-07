@@ -4,9 +4,9 @@ import java.util.Map;
 
 import javax.servlet.ServletContext;
 
-import org.mortbay.cometd.Bayeux;
-import org.mortbay.cometd.Channel;
-import org.mortbay.cometd.CometdServlet;
+//import org.mortbay.cometd.Bayeux;
+//import org.mortbay.cometd.Channel;
+//import org.mortbay.cometd.CometdServlet;
 
 import wicket.contrib.dojo.cometd.DojoSharedForm;
 import wicket.protocol.http.WebApplication;
@@ -26,12 +26,13 @@ public class CometdPublisher {
 	}
 	
 	public void publish(String channel, Map message){
-		ServletContext ctxt = this.application.getServletContext();
+	/*	ServletContext ctxt = this.application.getServletContext();
 		Bayeux b = (Bayeux)ctxt.getAttribute(CometdServlet.ORG_MORTBAY_BAYEUX);
 		Channel c = b.getChannel(channel);
 		if (c!=null){
 			c.publish(message, b.newClient());
 		}
+	*/
 	}
 
 }
