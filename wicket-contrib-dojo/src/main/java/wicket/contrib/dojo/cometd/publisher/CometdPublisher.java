@@ -2,7 +2,7 @@ package wicket.contrib.dojo.cometd.publisher;
 
 import java.util.Map;
 
-import javax.servlet.ServletContext;
+//import javax.servlet.ServletContext;
 
 //import org.mortbay.cometd.Bayeux;
 //import org.mortbay.cometd.Channel;
