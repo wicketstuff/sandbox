@@ -92,6 +92,9 @@ dojo.widget.defineWidget(
 		//	disable all incremental controls, must pick a date in the current display
 		staticDisplay: false,
 		
+		//If true disabled the input from keyboard
+		inputNotAllowed:false,
+		
 		templatePath:  dojo.uri.dojoUri("src/widget/templates/DatePicker.htm"),
 		templateCssPath:  dojo.uri.dojoUri("src/widget/templates/DatePicker.css"),
 		
@@ -137,6 +140,9 @@ dojo.widget.defineWidget(
 			this.containerNode.style.zIndex = this.zIndex;
 			this.containerNode.explodeClassName = "calendarBodyContainer";
 			this.valueNode.name=this.name;
+			
+			//Can disable the input if inputNotAllowed = true
+			this.inputNode.disabled = this.inputNotAllowed;
 		},
 
 		getValue: function(){
@@ -221,7 +227,8 @@ dojo.widget.defineWidget(
 		},
 		
 		enable: function() {
-			this.inputNode.disabled = false;
+			//Can disable the input if inputNotAllowed = true
+			this.inputNode.disabled = this.inputNotAllowed;
 			this.datePicker.enable();
 			dojo.widget.DropdownDatePicker.superclass.enable.apply(this, arguments);
 		},

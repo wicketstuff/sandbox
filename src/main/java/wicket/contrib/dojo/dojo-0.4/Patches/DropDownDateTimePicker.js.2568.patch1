@@ -1,0 +1,67 @@
+Index: /Users/doume/Dev/Wicket/branch-1X/wicket-contrib-dojo/src/main/java/wicket/contrib/dojo/dojo-0.4/src/widget/DropdownDatePicker.js
+===================================================================
+--- /Users/doume/Dev/Wicket/branch-1X/wicket-contrib-dojo/src/main/java/wicket/contrib/dojo/dojo-0.4/src/widget/DropdownDatePicker.js	(revision 1804)
++++ /Users/doume/Dev/Wicket/branch-1X/wicket-contrib-dojo/src/main/java/wicket/contrib/dojo/dojo-0.4/src/widget/DropdownDatePicker.js	(working copy)
+@@ -92,6 +92,9 @@
+ 		//	disable all incremental controls, must pick a date in the current display
+ 		staticDisplay: false,
+ 		
++		//If true disabled the input from keyboard
++		inputNotAllowed:false,
++		
+ 		templatePath:  dojo.uri.dojoUri("src/widget/templates/DatePicker.htm"),
+ 		templateCssPath:  dojo.uri.dojoUri("src/widget/templates/DatePicker.css"),
+ 		
+@@ -137,6 +140,9 @@
+ 			this.containerNode.style.zIndex = this.zIndex;
+ 			this.containerNode.explodeClassName = "calendarBodyContainer";
+ 			this.valueNode.name=this.name;
++			
++			//Can disable the input if inputNotAllowed = true
++			this.inputNode.disabled = this.inputNotAllowed;
+ 		},
+ 
+ 		getValue: function(){
+@@ -221,7 +227,8 @@
+ 		},
+ 		
+ 		enable: function() {
+-			this.inputNode.disabled = false;
++			//Can disable the input if inputNotAllowed = true
++			this.inputNode.disabled = this.inputNotAllowed;
+ 			this.datePicker.enable();
+ 			dojo.widget.DropdownDatePicker.superclass.enable.apply(this, arguments);
+ 		},
+Index: /Users/doume/Dev/Wicket/branch-1X/wicket-contrib-dojo/src/main/java/wicket/contrib/dojo/dojo-0.4/src/widget/DropdownTimePicker.js
+===================================================================
+--- /Users/doume/Dev/Wicket/branch-1X/wicket-contrib-dojo/src/main/java/wicket/contrib/dojo/dojo-0.4/src/widget/DropdownTimePicker.js	(revision 1804)
++++ /Users/doume/Dev/Wicket/branch-1X/wicket-contrib-dojo/src/main/java/wicket/contrib/dojo/dojo-0.4/src/widget/DropdownTimePicker.js	(working copy)
+@@ -54,6 +54,8 @@
+ 		// 	name of the form element, used to create a hidden field by this name for form element submission.
+ 		name: "",
+ 		
++		//If true disabled the input from keyboard
++		inputNotAllowed:false,
+ 		
+ 		templatePath: dojo.uri.dojoUri("src/widget/templates/TimePicker.htm"),
+ 		templateCssPath: dojo.uri.dojoUri("src/widget/templates/TimePicker.css"),
+@@ -85,6 +87,9 @@
+ 			}
+ 			this.valueNode.name=this.name;
+ 			this.inputNode.name=this.name;
++			
++			//Can disable the input if inputNotAllowed = true
++			this.inputNode.disabled = this.inputNotAllowed;
+ 		},
+ 		
+ 		onSetTime: function(){
+@@ -113,7 +118,8 @@
+ 		
+ 		enable: function() {
+ 			// summary: enable this widget to accept user input
+-			this.inputNode.disabled = false;
++			//Can disable the input if inputNotAllowed = true
++			this.inputNode.disabled = this.inputNotAllowed;
+ 			this.timePicker.enable();
+ 			dojo.widget.DropdownTimePicker.superclass.enable.apply(this, arguments);
+ 		},
