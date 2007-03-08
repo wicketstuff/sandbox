@@ -54,6 +54,8 @@ dojo.widget.defineWidget(
 		// 	name of the form element, used to create a hidden field by this name for form element submission.
 		name: "",
 		
+		//If true disabled the input from keyboard
+		inputNotAllowed:false,
 		
 		templatePath: dojo.uri.dojoUri("src/widget/templates/TimePicker.htm"),
 		templateCssPath: dojo.uri.dojoUri("src/widget/templates/TimePicker.css"),
@@ -85,6 +87,9 @@ dojo.widget.defineWidget(
 			}
 			this.valueNode.name=this.name;
 			this.inputNode.name=this.name;
+			
+			//Can disable the input if inputNotAllowed = true
+			this.inputNode.disabled = this.inputNotAllowed;
 		},
 		
 		onSetTime: function(){
@@ -113,7 +118,8 @@ dojo.widget.defineWidget(
 		
 		enable: function() {
 			// summary: enable this widget to accept user input
-			this.inputNode.disabled = false;
+			//Can disable the input if inputNotAllowed = true
+			this.inputNode.disabled = this.inputNotAllowed;
 			this.timePicker.enable();
 			dojo.widget.DropdownTimePicker.superclass.enable.apply(this, arguments);
 		},

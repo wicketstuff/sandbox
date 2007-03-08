@@ -55,6 +55,7 @@ public class DojoDatePicker extends TextField{
 	private SimpleDateFormat formatter;
 	private String displayFormat;
 	private Locale locale;
+	private boolean allowInput = false;
 
 	/**
 	 * @param parent
@@ -102,6 +103,9 @@ public class DojoDatePicker extends TextField{
 		String localeString = getLocaleAsString();
 		if (localeString != null){
 			tag.put("lang", localeString);
+		}
+		if (!this.allowInput){
+			tag.put("inputNotAllowed", "true");
 		}
 	}
 
@@ -166,6 +170,18 @@ public class DojoDatePicker extends TextField{
 	public void setLocale(Locale locale) {
 		this.locale = locale;
 		DojoLocaleManager.getInstance().addLocale(locale);
+	}
+
+	public boolean isAllowInput() {
+		return allowInput;
+	}
+
+	/**
+	 * Allow or not to input with keyboard in the field. If true, field can only be field by the date picker
+	 * @param allowInput If true, field can only be field by the date picker
+	 */
+	public void setAllowInput(boolean allowInput) {
+		this.allowInput = allowInput;
 	}
 	
 }
