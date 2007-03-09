@@ -24,9 +24,7 @@ import wicket.Component;
 import wicket.markup.html.WebMarkupContainer;
 import wicket.model.IModel;
 import wicket.model.Model;
-import wicket.util.convert.Converter;
 import wicket.util.convert.IConverter;
-import wicket.util.convert.ITypeConverter;
 import wicket.util.convert.converters.DateConverter;
 
 /**
@@ -218,25 +216,12 @@ public class PopupDatePicker extends DatePicker {
 	}
 
 	protected DateConverter getDateConverter() {
-		DateConverter dateConverter = null;
-		
-		// TODO this should be much easier and nicer to do in 2.0
-		IConverter converter = target.getConverter();
-		if (converter instanceof Converter)
+		IConverter converter = target.getConverter(Date.class);
+		if (converter instanceof DateConverter)
 		{
-			ITypeConverter typeConverter = ((Converter)converter).get(Date.class);
-			if (typeConverter instanceof DateConverter)
-			{
-				dateConverter = (DateConverter)typeConverter;
-			}
+			return (DateConverter)converter;
 		}
-		
-		if (dateConverter == null)
-		{
-			dateConverter = super.getDateConverter();
-		}
-		
-		return dateConverter;
+		return super.getDateConverter();
 	}
 
 	protected Locale getDatePickerLocale() {
