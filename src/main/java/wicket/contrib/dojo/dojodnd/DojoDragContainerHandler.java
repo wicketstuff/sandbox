@@ -45,7 +45,6 @@ public class DojoDragContainerHandler extends AbstractRequireDojoBehavior
 		super.renderHead(response);
 		
 		DojoPackagedTextTemplate template = new DojoPackagedTextTemplate(this.getClass(), "DojoDragContainerHandlerTemplate.js");
-		HashMap map = new HashMap();
 		response.renderJavascript(template.asString(), template.getStaticKey());
 		
 		//DojoOnLoad only if not AjaxRequest
