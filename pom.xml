@@ -78,6 +78,9 @@
 			<email>vdemay at users.sf.net</email>
 		</developer>
 	</developers>
+	<contributors>
+		<contributor><name>Grégory Maes</name><email>gregory@anyware-tech.com</email></contributor>
+	</contributors>
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.wicket</groupId>
