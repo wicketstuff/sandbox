@@ -55,7 +55,7 @@ public class DojoDatePicker extends TextField{
 	private SimpleDateFormat formatter;
 	private String displayFormat;
 	private Locale locale;
-	private boolean allowInput = false;
+	private boolean allowInput = true;
 
 	/**
 	 * @param parent
@@ -106,6 +106,9 @@ public class DojoDatePicker extends TextField{
 		}
 		if (!this.allowInput){
 			tag.put("inputNotAllowed", "true");
+		}
+		if (getOutputMarkupId()){
+			tag.put("inputId", getMarkupId() + "_input");
 		}
 	}
 
