@@ -103,6 +103,7 @@ public abstract class DojoAbstractFloatingPane extends StylingWebMarkupContainer
 	 * Refresh content and show the modal pane
 	 * Should be called if this widget has been added to the target
 	 * @param target
+	 * @deprecated : use show instead
 	 */
 	public void refreshAndShow(AjaxRequestTarget target){
 		target.appendJavascript("djConfig.searchIds = ['" + getMarkupId() + "'];dojo.hostenv.makeWidgets();");
