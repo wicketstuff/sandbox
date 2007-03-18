@@ -15,14 +15,9 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 -->
-<project name="Wicket Spring">
-	<skin>
-		<groupId>org.apache.wicket</groupId>
-		<artifactId>wicket-site-skin</artifactId>
-		<version>1.0-incubating-SNAPSHOT</version>
-	</skin>
+<project name="Wicket Portlets">
 	<body>
-		<menu name="Wicket Spring">
+		<menu name="Wicket Portlets">
 			<item name="About" href="/index.html" />
 			<item name="Apache Wicket" href="http://incubator.apache.org/wicket" />
 			<item name="License" href="/license.html" />
@@ -31,7 +26,7 @@
 	        <item name="Dependencies" href="/dependencies.html"/>
 			<item name="Javadoc" href="/apidocs/index.html" target="_blank" class="newwindow" />
 			<item name="Mailing Lists" href="/mail-lists.html" />
-			<item name="Issue Tracker" href="http://issues.apache.org/jira/browse/WICKET" />
+			<item name="Issue Tracker" href="http://wicketstuff.org/jira/browse" />
 			<item name="SVN Access" href="/source-repository.html" />
 		</menu>
 	</body>
