@@ -80,7 +80,7 @@ public class VelocityContributor extends AbstractBehavior implements IHeaderCont
 			return null;
 		}
 		// create a Velocity context object using the model if set
-		final VelocityContext ctx = new VelocityContext((Map) model.getObject(null));
+		final VelocityContext ctx = new VelocityContext((Map) model.getObject());
 
 		// create a writer for capturing the Velocity output
 		StringWriter writer = new StringWriter();

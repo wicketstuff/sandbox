@@ -1,9 +1,8 @@
 package wicket.contrib.util.resource;
 
-import wicket.Response;
+import wicket.markup.html.IHeaderResponse;
 import wicket.model.IModel;
 import wicket.util.lang.Packages;
-import wicket.util.string.JavascriptUtils;
 
 /**
  * A derivation of VelocityContributor that uses
@@ -26,8 +25,8 @@ public class VelocityJavascriptContributor extends VelocityContributor
 	 * @param model
 	 * @param id
 	 */
-	public VelocityJavascriptContributor(Class clazz, String templatePath,
-			IModel model, String id)
+	public VelocityJavascriptContributor(Class clazz, String templatePath, IModel model,
+			String id)
 	{
 		super(Packages.absolutePath(clazz, templatePath), model);
 		this.id = id;
@@ -44,20 +43,21 @@ public class VelocityJavascriptContributor extends VelocityContributor
 	 * @param model
 	 * @param id
 	 */
-	public VelocityJavascriptContributor(String templatePath, IModel model,
-			String id)
+	public VelocityJavascriptContributor(String templatePath, IModel model, String id)
 	{
 		super(templatePath, model);
 		this.id = id;
 	}
 
-	public void renderHead(Response response)
+	/**
+	 * @see wicket.markup.html.IHeaderContributor#renderHead(wicket.markup.html.IHeaderResponse)
+	 */
+	public void renderHead(IHeaderResponse response)
 	{
 		String s = evaluate();
 		if (null != s)
 		{
-			JavascriptUtils.writeJavascript(response, s, id);
+			response.renderJavascript(s, id);
 		}
 	}
-
 }
