@@ -16,6 +16,7 @@
  */
 package wicket.contrib.dojo.markup.html.floatingpane;
 
+import wicket.ajax.AjaxRequestTarget;
 import wicket.behavior.AttributeAppender;
 import wicket.contrib.dojo.DojoIdConstants;
 import wicket.contrib.dojo.toggle.DojoToggle;
@@ -24,7 +25,13 @@ import wicket.model.Model;
 
 /**
  * <p>
- * 	This widget has the same skin as {@link DojoFloatingPane} but it is modal 
+ * 	This widget has the same skin as {@link DojoFloatingPane} but modal 
+ * </p>
+ * <p>
+ * 	Can also notify to the server hide or show event : 
+ *  <code>
+ *  	modal.setNotify[Hide|Show](true);
+ *  </code>
  * </p>
  * @author Vincent Demay
  *
@@ -33,6 +40,12 @@ public class DojoModalFloatingPane extends DojoAbstractFloatingPane
 {
 	private String bgColor="white";
 	private String bgOpacity="0.5";
+	
+	/**
+	 * Send notification to server on hide/show event
+	 */
+	private boolean notifyHide = false;
+	private boolean notifyShow = false;
 
 	/**
 	 * Modal floating pane constructor
@@ -96,6 +109,59 @@ public class DojoModalFloatingPane extends DojoAbstractFloatingPane
 	public void setToggle(DojoToggle toggle){
 		this.add(new AttributeAppender("toggle", new Model(toggle.getToggle()),""));
 		this.add(new AttributeAppender("toggleDuration", new Model(toggle.getDuration() + ""),""));
+	}
+
+	/**
+	 * If true, send a notification to serveur when Hide.<br/>
+	 * Calls onHide method
+	 * @param notifyHide
+	 */
+	public void setNotifyHide(boolean notifyHide) {
+		this.notifyHide = notifyHide;
+	}
+	
+	/**
+	 * Called when modal is hidden if setNotifyHide is set to true
+	 * <br/><b>WARNING</b> : if setNotifyShow is set to true before the page loading, This triggered 
+	 * will be called during the page loading because of DOJO. Dojo hidde the modalFloatingPane
+	 * calling hide during loading  
+	 * @param target {@link AjaxRequestTarget}
+	 */
+	public void onHide(AjaxRequestTarget target){
+		//Do nothing
+	}
+
+	/**
+	 * If true, send a notification to serveur when Show
+	 * Calls onShow method
+	 * @param notifyHide
+	 */
+	public void setNotifyShow(boolean notifyShow) {
+		this.notifyShow = notifyShow;
+	}
+	
+	/**
+	 * Called when modal is shown if setNotifyShow is set to true
+	 * @param target {@link AjaxRequestTarget}
+	 */
+	public void onShow(AjaxRequestTarget target){
+		//Do nothing
+	}
+
+	/**
+	 * Do we need to notify Hide event
+	 * @return true if yes false otherwise
+	 */
+	public boolean isNotifyHide() {
+		return notifyHide;
+	}
+
+	/**
+	 * Do we need to notify Show event
+	 * @return true if yes false otherwise
+	 */
+	public boolean isNotifyShow() {
+		return notifyShow;
 	}
 	
 	
