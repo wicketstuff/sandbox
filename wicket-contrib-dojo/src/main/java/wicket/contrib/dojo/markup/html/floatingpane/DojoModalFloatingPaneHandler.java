@@ -16,8 +16,11 @@
  */
 package wicket.contrib.dojo.markup.html.floatingpane;
 
+import wicket.RequestCycle;
 import wicket.ajax.AjaxRequestTarget;
 import wicket.contrib.dojo.AbstractRequireDojoBehavior;
+import wicket.markup.ComponentTag;
+import wicket.protocol.http.WebRequest;
 
 /**
  * Handler for {@link DojoModalFloatingPane}
@@ -26,15 +29,47 @@ import wicket.contrib.dojo.AbstractRequireDojoBehavior;
  */
 public class DojoModalFloatingPaneHandler extends AbstractRequireDojoBehavior
 {
+	
+	private static final String SHOW = "show";
+	private static final String HIDE = "hide"; 
+	
 	protected void respond(AjaxRequestTarget target)
 	{
-		//DO NOTHING
+		DojoModalFloatingPane pane = (DojoModalFloatingPane)getComponent();
+		if (SHOW.equals(((WebRequest)RequestCycle.get().getRequest()).getParameter("state"))){
+			pane.onShow(target);
+		}
+		if (HIDE.equals(((WebRequest)RequestCycle.get().getRequest()).getParameter("state"))){
+			pane.onHide(target);
+		}
 	}
 	
 	public void setRequire(RequireDojoLibs libs)
 	{
 		libs.add("dojo.widget.FloatingPane");
-		
+	}
+
+	@Override
+	protected void onComponentTag(ComponentTag tag) {
+		super.onComponentTag(tag);
+		DojoModalFloatingPane pane = (DojoModalFloatingPane)getComponent();
+		if (pane.isNotifyHide()){
+			tag.put("onHide", getCallbackScript(HIDE));
+		}
+		if (pane.isNotifyShow()){
+			tag.put("onShow", getCallbackScript(SHOW));
+		}
+	}
+	
+	/**
+	 * To send datas to the server : the state of the pane
+	 * @param state "show" or hide 
+	 * @return
+	 */
+	protected CharSequence getCallbackScript(String state)
+	{
+		return getCallbackScript("wicketAjaxGet('"
+				+ getCallbackUrl(true, false) + "&state=" + state + "'", null, null);
 	}
 
 }
