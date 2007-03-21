@@ -433,7 +433,19 @@ dojo.widget.defineWidget(
 		},
 		hide: function(){
 			this.hideModalDialog();
+			//need also to reinit order between floating and background
+			this.reOrderWindowsAndBg();
 			dojo.widget.ModalFloatingPane.superclass.hide.apply(this, arguments);
+		},
+		reOrderWindowsAndBg: function(){
+			var floatingPanes= dojo.widget.manager.getWidgetsByType(this.widgetType);
+			var windows = [];
+			for (var x=0; x<floatingPanes.length; x++) {
+				if (this.widgetId != floatingPanes[x].widgetId) {
+						var floating = floatingPanes[x];
+						floating.bg.style.zIndex = floating.domNode.style.zIndex-1;
+				}
+			}
 		},
 		closeWindow: function(){
 			this.hide();
