@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import wicket.AttributeModifier;
-import wicket.Component;
 import wicket.behavior.StringHeaderContributor;
 import wicket.extensions.util.resource.PackagedTextTemplate;
 import wicket.markup.ComponentTag;
@@ -72,12 +71,126 @@ public class AnimGroup extends WebMarkupContainer {
 					new AbstractReadOnlyModel() {
 						private static final long serialVersionUID = 1L;
 
-						public Object getObject(Component component) {
+						public Object getObject() {
 							return element.getId() + "_" + javaScriptId;
 						}
 					}));
 		}
 		add(element);
+	}
+
+	/**
+	 * Get the animOptionList
+	 * 
+	 * @return the animOptionList
+	 */
+	public List<AnimOption> getAnimOptionList() {
+		return animOptionList;
+	}
+
+	/**
+	 * Get the duration
+	 * 
+	 * @return the duration
+	 */
+	public double getDuration() {
+		return duration;
+	}
+
+	/**
+	 * Get the easing
+	 * 
+	 * @return the easing
+	 */
+	public String getEasing() {
+		return easing;
+	}
+
+	/**
+	 * Get the JavaScriptId
+	 * 
+	 * @return the javaScriptId
+	 */
+	public String getJavaScriptId() {
+		return javaScriptId;
+	}
+
+	/**
+	 * Get the maximum selection allowed
+	 * 
+	 * @return the maxSelection
+	 */
+	public int getMaxSelection() {
+		return maxSelection;
+	}
+
+	/**
+	 * Get the selected values
+	 * 
+	 * @return the selectedValues
+	 */
+	public String getSelectedValues() {
+		return selectedValues;
+	}
+
+	/**
+	 * Set the animOptionList
+	 * 
+	 * @param animOptionList
+	 *            the animOptionList to set
+	 */
+	public void setAnimOptionList(List<AnimOption> animOptionList) {
+		this.animOptionList = animOptionList;
+	}
+
+	/**
+	 * Set the duration
+	 * 
+	 * @param duration
+	 *            the duration to set
+	 */
+	public void setDuration(double duration) {
+		this.duration = duration;
+	}
+
+	/**
+	 * Set the easing
+	 * 
+	 * @param easing
+	 *            the easing to set
+	 */
+	public void setEasing(String easing) {
+		this.easing = easing;
+	}
+
+	/**
+	 * Set the javaScriptId
+	 * 
+	 * @param javaScriptId
+	 *            the javaScriptId to set
+	 */
+	public void setJavaScriptId(String javaScriptId) {
+		this.javaScriptId = javaScriptId;
+	}
+
+	/**
+	 * Set the maximum selections allowed
+	 * 
+	 * @param maxSelection
+	 *            the maxSelection to set
+	 */
+	public void setMaxSelection(int maxSelection) {
+		this.maxSelection = maxSelection;
+	}
+
+	/**
+	 * Set the selected values
+	 * 
+	 * @param selectedValues
+	 *            the selectedValues to set
+	 */
+	public void setSelectedValues(String selectedValues) {
+		this.selectedValues = selectedValues;
 	}
 
 	/**
@@ -119,120 +232,6 @@ public class AnimGroup extends WebMarkupContainer {
 	protected void onComponentTagBody(MarkupStream markupStream,
 			ComponentTag openTag) {
 		super.onComponentTagBody(markupStream, openTag);
-	}
-
-	/**
-	 * Get the animOptionList
-	 * 
-	 * @return the animOptionList
-	 */
-	public List<AnimOption> getAnimOptionList() {
-		return animOptionList;
-	}
-
-	/**
-	 * Set the animOptionList
-	 * 
-	 * @param animOptionList
-	 *            the animOptionList to set
-	 */
-	public void setAnimOptionList(List<AnimOption> animOptionList) {
-		this.animOptionList = animOptionList;
-	}
-
-	/**
-	 * Get the duration
-	 * 
-	 * @return the duration
-	 */
-	public double getDuration() {
-		return duration;
-	}
-
-	/**
-	 * Set the duration
-	 * 
-	 * @param duration
-	 *            the duration to set
-	 */
-	public void setDuration(double duration) {
-		this.duration = duration;
-	}
-
-	/**
-	 * Get the easing
-	 * 
-	 * @return the easing
-	 */
-	public String getEasing() {
-		return easing;
-	}
-
-	/**
-	 * Set the easing
-	 * 
-	 * @param easing
-	 *            the easing to set
-	 */
-	public void setEasing(String easing) {
-		this.easing = easing;
-	}
-
-	/**
-	 * Get the JavaScriptId
-	 * 
-	 * @return the javaScriptId
-	 */
-	public String getJavaScriptId() {
-		return javaScriptId;
-	}
-
-	/**
-	 * Set the javaScriptId
-	 * 
-	 * @param javaScriptId
-	 *            the javaScriptId to set
-	 */
-	public void setJavaScriptId(String javaScriptId) {
-		this.javaScriptId = javaScriptId;
-	}
-
-	/**
-	 * Get the maximum selection allowed
-	 * 
-	 * @return the maxSelection
-	 */
-	public int getMaxSelection() {
-		return maxSelection;
-	}
-
-	/**
-	 * Set the maximum selections allowed
-	 * 
-	 * @param maxSelection
-	 *            the maxSelection to set
-	 */
-	public void setMaxSelection(int maxSelection) {
-		this.maxSelection = maxSelection;
-	}
-
-	/**
-	 * Get the selected values
-	 * 
-	 * @return the selectedValues
-	 */
-	public String getSelectedValues() {
-		return selectedValues;
-	}
-
-	/**
-	 * Set the selected values
-	 * 
-	 * @param selectedValues
-	 *            the selectedValues to set
-	 */
-	public void setSelectedValues(String selectedValues) {
-		this.selectedValues = selectedValues;
 	}
 
 }

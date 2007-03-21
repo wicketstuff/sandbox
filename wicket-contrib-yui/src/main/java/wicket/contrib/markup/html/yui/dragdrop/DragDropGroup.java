@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import wicket.AttributeModifier;
-import wicket.Component;
 import wicket.behavior.StringHeaderContributor;
 import wicket.contrib.YuiImage;
 import wicket.extensions.util.resource.PackagedTextTemplate;
@@ -35,7 +34,7 @@ public class DragDropGroup extends WebMarkupContainer {
 					new AbstractReadOnlyModel() {
 						private static final long serialVersionUID = 1L;
 
-						public Object getObject(Component component) {
+						public Object getObject() {
 							return dragableElement.getId() + "_" + javaScriptId;
 						}
 					}));
@@ -47,7 +46,7 @@ public class DragDropGroup extends WebMarkupContainer {
 					new AbstractReadOnlyModel() {
 						private static final long serialVersionUID = 1L;
 
-						public Object getObject(Component component) {
+						public Object getObject() {
 							return targetElement.getId() + "_" + javaScriptId;
 						}
 					}));
@@ -87,16 +86,6 @@ public class DragDropGroup extends WebMarkupContainer {
 			};
 		};
 		add(dragableSlotView);
-	}
-
-	protected void onAttach() {
-		super.onAttach();
-		javaScriptId = getMarkupId();
-
-		String js = "\n<script type=\"text/javascript\">"
-				+ getJavaScriptComponentInitializationScript()
-				+ "\n</script>\n";
-		add(new StringHeaderContributor(js));
 	}
 
 	protected String getJavaScriptComponentInitializationScript() {
@@ -160,5 +149,15 @@ public class DragDropGroup extends WebMarkupContainer {
 		variables.put("dragSlotId", dragSlotId);
 		template.interpolate(variables);
 		return template.getString();
+	}
+
+	protected void onAttach() {
+		super.onAttach();
+		javaScriptId = getMarkupId();
+
+		String js = "\n<script type=\"text/javascript\">"
+				+ getJavaScriptComponentInitializationScript()
+				+ "\n</script>\n";
+		add(new StringHeaderContributor(js));
 	}
 }

@@ -22,7 +22,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import wicket.AttributeModifier;
-import wicket.Component;
 import wicket.RequestCycle;
 import wicket.ResourceReference;
 import wicket.behavior.HeaderContributor;
@@ -57,7 +56,7 @@ public class Calendar extends AbstractYuiPanel {
 				private static final long serialVersionUID = 1L;
 
 				@Override
-				public Object getObject(Component component) {
+				public Object getObject() {
 					return elementId;
 				}
 			}));
@@ -106,7 +105,7 @@ public class Calendar extends AbstractYuiPanel {
 					 * @see wicket.model.IModel#getObject(wicket.Component)
 					 */
 					@Override
-					public Object getObject(Component component) {
+					public Object getObject() {
 						return getJavaScriptComponentInitializationScript();
 					}
 				});
