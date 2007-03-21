@@ -22,150 +22,38 @@ import wicket.model.Model;
  */
 public abstract class GridView extends Form
 {
-	/** used when no model is being edited */
-	public static final IModel EMPTY_MODEL = new Model();
-
-	private FormList listView;
-	
-	private IListDataSource dataSource;
-
-	/**
-	 * @param id
-	 *            the id of the form
-	 * @param feedback
-	 *            a feedback panel
-	 * @param perPage
-	 *            the number of items to display per page
-	 */
-	public GridView(String id, IListDataSource dataSource, int perPage)
-	{
-		super(id, EMPTY_MODEL);
-		this.dataSource = dataSource;
-		listView = new FormList(new DetachableList(dataSource.getList()), perPage);
-		add(listView);
-	}
-
-	/**
-	 * @return the list being used internally by this form.
-	 */
-	public PageableListView getListView()
-	{
-		return listView;
-	}
-	
-	/**
-	 * Resets the list being used by the panel. The new list must contain the
-	 * same entities as the one created on initialization.
-	 * 
-	 * @param list the list to set
-	 */
-	public void setList(List list)
-	{
-		listView.setModelObject(list);
-		listView.removeAll();
-	}
-
-	/**
-	 * Delegated to from the internal list view.
-	 * 
-	 * @param item
-	 *            the item to populate
-	 */
-	protected abstract void populateItem(ListItem item);
-    
-    private void merge()
-    {
-    	dataSource.merge(getModelObject());
-    	removeEditModel();
-    	getListView().removeAll();
-    }
-    
-    private void delete(Object object)
-    {
-    	dataSource.delete(object);
-    	removeEditModel();
-    	getListView().removeAll();
-    }
-
 	private final class FormList extends PageableListView
 	{
 		public FormList(IModel model, int perPage)
 		{
 			super("rows", model, perPage);
-			setOptimizeItemRemoval(true);
+			setReuseItems(true);
+		}
+
+		public IModel getListItemModel(IModel listViewModel, int index)
+		{
+			Object object = ((List) listViewModel.getObject()).get(index);
+			return dataSource.wrap(object);
 		}
 
 		protected void populateItem(ListItem item)
 		{
 			GridView.this.populateItem(item);
 		}
-        
-        public IModel getListItemModel(IModel listViewModel, int index)
-    	{
-    		Object object = ((List) listViewModel.getObject(this)).get(index);
-            return dataSource.wrap(object);
-    	}
 	}
-	
-	public static String getResourceId(Component component)
+
+	/** used when no model is being edited */
+	public static final IModel EMPTY_MODEL = new Model();
+
+	public static void deleteRowModel(Component component)
 	{
-		GridView gridView = findGridView(component);
-		GridPanel gridPanel = (GridPanel) gridView.findParent(GridPanel.class);
-		
-		if (gridPanel != null)
-		{
-			return gridPanel.getId();
-		}
-		else
-		{
-			return gridView.getId();
-		}
+		ListItem item = findListItem(component);
+		GridView grid = findGridView(component);
+
+		grid.delete(item.getModelObject());
+		grid.getListView().removeAll();
 	}
-	
-	public static Object getRowModel(Component component)
-	{
-		return findListItem(component).getModelObject();
-	}
-    
-    public static void deleteRowModel(Component component)
-    {
-        ListItem item = findListItem(component);
-        GridView grid = findGridView(component);
-        
-        grid.delete(item.getModelObject());
-        grid.getListView().removeAll();
-    }
-    
-    public static void removeEdit(Component component)
-    {
-        findGridView(component).removeEditModel();
-    }
-    
-    public static void setEdit(Component component)
-    {
-        findGridView(component).setEditModel(findListItem(component).getModel());
-    }
-    
-    /**
-     * Saves the modified row to the database.
-     * 
-     * @param component any component under the form
-     */
-    public static void mergeEdit(Component component)
-    {
-    	findGridView(component).merge();
-    }
-    
-	/**
-	 * @param component
-	 *            the component to check
-	 * @return true if the component is currently being edited
-	 */
-	public static boolean isEdit(Component component)
-	{
-		return findGridView(component).isEditModel(findListItem(component).getModel());
-	}
-    
+
 	/**
 	 * @param component
 	 *            the component to start the search from
@@ -203,6 +91,57 @@ public abstract class GridView extends Form
 		return item;
 	}
 
+	public static String getResourceId(Component component)
+	{
+		GridView gridView = findGridView(component);
+		GridPanel gridPanel = (GridPanel) gridView.findParent(GridPanel.class);
+
+		if (gridPanel != null)
+		{
+			return gridPanel.getId();
+		}
+		else
+		{
+			return gridView.getId();
+		}
+	}
+
+	public static Object getRowModel(Component component)
+	{
+		return findListItem(component).getModelObject();
+	}
+
+	/**
+	 * @param component
+	 *            the component to check
+	 * @return true if the component is currently being edited
+	 */
+	public static boolean isEdit(Component component)
+	{
+		return findGridView(component).isEditModel(findListItem(component).getModel());
+	}
+
+	/**
+	 * Saves the modified row to the database.
+	 * 
+	 * @param component
+	 *            any component under the form
+	 */
+	public static void mergeEdit(Component component)
+	{
+		findGridView(component).merge();
+	}
+
+	public static void removeEdit(Component component)
+	{
+		findGridView(component).removeEditModel();
+	}
+
+	public static void setEdit(Component component)
+	{
+		findGridView(component).setEditModel(findListItem(component).getModel());
+	}
+
 	private static ListItem findListItemRec(Component component)
 	{
 		ListItem item = null;
@@ -220,7 +159,62 @@ public abstract class GridView extends Form
 		}
 		return null;
 	}
-    
+
+	private FormList listView;
+
+	private IListDataSource dataSource;
+
+	/**
+	 * @param id
+	 *            the id of the form
+	 * @param feedback
+	 *            a feedback panel
+	 * @param perPage
+	 *            the number of items to display per page
+	 */
+	public GridView(String id, IListDataSource dataSource, int perPage)
+	{
+		super(id, EMPTY_MODEL);
+		this.dataSource = dataSource;
+		listView = new FormList(new DetachableList(dataSource.getList()), perPage);
+		add(listView);
+	}
+
+	/**
+	 * @return the list being used internally by this form.
+	 */
+	public PageableListView getListView()
+	{
+		return listView;
+	}
+
+	/**
+	 * Resets the list being used by the panel. The new list must contain the
+	 * same entities as the one created on initialization.
+	 * 
+	 * @param list
+	 *            the list to set
+	 */
+	public void setList(List list)
+	{
+		listView.setModelObject(list);
+		listView.removeAll();
+	}
+
+	private void delete(Object object)
+	{
+		dataSource.delete(object);
+		removeEditModel();
+		getListView().removeAll();
+	}
+
+	private void merge()
+	{
+		dataSource.merge(getModelObject());
+		removeEditModel();
+		getListView().removeAll();
+	}
+
 	/**
 	 * @return true if the given model is the one currently beind edited.
 	 */
@@ -234,14 +228,12 @@ public abstract class GridView extends Form
 	}
 
 	/**
-	 * @param model
-	 *            the model to set as the edit.
+	 * Delegated to from the internal list view.
+	 * 
+	 * @param item
+	 *            the item to populate
 	 */
-	protected void setEditModel(IModel model)
-	{
-		setModel(model);
-		getListView().removeAll();
-	}
+	protected abstract void populateItem(ListItem item);
 
 	/**
 	 * Sets the form's model object to null, removing the edit.
@@ -249,6 +241,16 @@ public abstract class GridView extends Form
 	protected void removeEditModel()
 	{
 		setModel(EMPTY_MODEL);
+		getListView().removeAll();
+	}
+
+	/**
+	 * @param model
+	 *            the model to set as the edit.
+	 */
+	protected void setEditModel(IModel model)
+	{
+		setModel(model);
 		getListView().removeAll();
 	}
 }

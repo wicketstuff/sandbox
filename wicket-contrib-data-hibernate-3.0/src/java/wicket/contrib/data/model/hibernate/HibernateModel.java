@@ -11,7 +11,6 @@ import org.hibernate.proxy.LazyInitializer;
 
 import wicket.Component;
 import wicket.WicketRuntimeException;
-import wicket.contrib.data.model.hibernate.IHibernateDao;
 import wicket.contrib.data.model.hibernate.IHibernateDao.IHibernateCallback;
 import wicket.model.IModel;
 import wicket.model.Model;
@@ -28,57 +27,69 @@ public class HibernateModel implements IModel, Comparable
 	private Class clazz;
 
 	private Serializable id;
-	
+
 	private boolean unproxy;
-	
+
 	private boolean evict;
 
 	private transient Object model;
-	
+
 	/**
 	 * Constructor that wraps any mapped Hibernate class.
 	 * 
-	 * @param model the object to wrap
-	 * @param dao the data access object for this model to use
+	 * @param model
+	 *            the object to wrap
+	 * @param dao
+	 *            the data access object for this model to use
 	 */
-	public HibernateModel(Object model, IHibernateDao dao) {
+	public HibernateModel(Object model, IHibernateDao dao)
+	{
 		this(model, new Model(dao), false);
 	}
-	
+
 	/**
 	 * Constructor that wraps any mapped Hibernate class.
 	 * 
-	 * @param model the object to wrap
-	 * @param dao the data access object for this model to use
-	 */
-	public HibernateModel(Object model, IModel dao) {
-		this(model, dao, false);
-	}
-	
-	/**
-	 * Constructor that wraps any mapped Hibernate class.
-	 * 
-	 * @param model the object to wrap
-	 * @param dao the data access object for this model to use
-	 * @param unproxy whether or not to unproxy object on getObject()
+	 * @param model
+	 *            the object to wrap
+	 * @param dao
+	 *            the data access object for this model to use
+	 * @param unproxy
+	 *            whether or not to unproxy object on getObject()
 	 */
 	public HibernateModel(Object model, IHibernateDao dao, boolean unproxy)
 	{
 		this(model, new Model(dao), unproxy);
 	}
-	
+
 	/**
 	 * Constructor that wraps any mapped Hibernate class.
 	 * 
-	 * @param model the object to wrap
-	 * @param dao the data access object for this model to use
-	 * @param unproxy whether or not to unproxy object on getObject()
+	 * @param model
+	 *            the object to wrap
+	 * @param dao
+	 *            the data access object for this model to use
+	 */
+	public HibernateModel(Object model, IModel dao)
+	{
+		this(model, dao, false);
+	}
+
+	/**
+	 * Constructor that wraps any mapped Hibernate class.
+	 * 
+	 * @param model
+	 *            the object to wrap
+	 * @param dao
+	 *            the data access object for this model to use
+	 * @param unproxy
+	 *            whether or not to unproxy object on getObject()
 	 */
 	public HibernateModel(Object model, IModel dao, boolean unproxy)
 	{
 		this.unproxy = unproxy;
 		this.dao = dao;
-		
+
 		// Get the name of the object.
 		String entityName = "";
 		Object unproxiedModel = model;
@@ -93,32 +104,34 @@ public class HibernateModel implements IModel, Comparable
 		{
 			entityName = model.getClass().getName();
 		}
-		
-		SessionFactory factory = (SessionFactory) getDao().execute(new IHibernateCallback()
-		{
-			public Object execute(Session session)
-			{
-				return session.getSessionFactory();
-			}
-		});
+
+		SessionFactory factory = (SessionFactory) getDao().execute(
+				new IHibernateCallback()
+				{
+					public Object execute(Session session)
+					{
+						return session.getSessionFactory();
+					}
+				});
 
 		ClassMetadata meta = factory.getClassMetadata(entityName);
-		
-		if (meta == null) {
-			throw new WicketRuntimeException("A mapping for the class: " + 
-				entityName + " could not be found.");
+
+		if (meta == null)
+		{
+			throw new WicketRuntimeException("A mapping for the class: "
+					+ entityName + " could not be found.");
 		}
 
 		// Set all the values.
 		this.clazz = meta.getMappedClass(EntityMode.POJO);
 		this.id = meta.getIdentifier(unproxiedModel, EntityMode.POJO);
-		
+
 		if (id == null)
 		{
-			 throw new WicketRuntimeException("Could not get primary key for: "  +
-				 entityName);
+			throw new WicketRuntimeException("Could not get primary key for: "
+					+ entityName);
 		}
-		
+
 		if (unproxy)
 		{
 			this.model = unproxiedModel;
@@ -128,24 +141,51 @@ public class HibernateModel implements IModel, Comparable
 			this.model = model;
 		}
 	}
-	
+
+	public int compareTo(Object rhs)
+	{
+		HibernateModel model = (HibernateModel) rhs;
+
+		if (!getId().equals(model.getId()))
+		{
+			return ((Comparable) getId()).compareTo((Comparable) model.getId());
+		}
+
+		return getClazz().getName().compareTo(model.getClazz().getName());
+	}
+
 	/**
-	 * Set to true to have the object evicted from the session before it's
-	 * returned from {@link #getObject(Component)}.
+	 * @see wicket.model.IDetachable#detach()
 	 */
-	public void setEvict(boolean evict)
+	public void detach()
 	{
-		this.evict = evict;
+		model = null;
 	}
-	
-	public Serializable getId()
+
+	public boolean equals(Object rhs)
 	{
-		return id;
+		if (this == rhs)
+		{
+			return true;
+		}
+
+		if (rhs instanceof HibernateModel)
+		{
+			HibernateModel hm = (HibernateModel) rhs;
+			return hm.getClazz().equals(getClazz()) && hm.getId().equals(getId());
+		}
+
+		return false;
 	}
-	
+
 	public Class getClazz()
 	{
 		return clazz;
+	}
+
+	public Serializable getId()
+	{
+		return id;
 	}
 
 	/**
@@ -155,17 +195,17 @@ public class HibernateModel implements IModel, Comparable
 	{
 		return null;
 	}
-	
+
 	/**
-	 * @see wicket.model.IModel#getObject(Component)
+	 * @see wicket.model.IModel#getObject()
 	 */
-	public Object getObject(Component component)
+	public Object getObject()
 	{
 		if (model == null)
 		{
 			attach();
 		}
-		
+
 		if (evict)
 		{
 			getDao().execute(new IHibernateCallback()
@@ -177,25 +217,31 @@ public class HibernateModel implements IModel, Comparable
 				}
 			});
 		}
-		
+
 		return model;
 	}
 
+	public int hashCode()
+	{
+		return getClazz().getName().hashCode() ^ getId().hashCode();
+	}
+
 	/**
-	 * @see wicket.model.IModel#setObject(Component, Object)
+	 * Set to true to have the object evicted from the session before it's
+	 * returned from {@link #getObject(Component)}.
 	 */
-	public void setObject(Component component, Object object)
+	public void setEvict(boolean evict)
+	{
+		this.evict = evict;
+	}
+
+	/**
+	 * @see wicket.model.IModel#setObject(Object)
+	 */
+	public void setObject(Object object)
 	{
 		throw new UnsupportedOperationException("setObject(Component, Object) "
 				+ "is not supported on Hibernate models.");
-	}
-	
-	/**
-	 * @see wicket.model.IDetachable#detach()
-	 */
-	public void detach()
-	{
-		model = null;
 	}
 
 	private void attach()
@@ -207,47 +253,16 @@ public class HibernateModel implements IModel, Comparable
 				return session.load(clazz, id);
 			}
 		});
-		
+
 		if (unproxy && model instanceof HibernateProxy)
 		{
 			HibernateProxy proxy = (HibernateProxy) model;
 			model = proxy.getHibernateLazyInitializer().getImplementation();
 		}
 	}
-	
-	public int compareTo(Object rhs)
+
+	private IHibernateDao getDao()
 	{
-		HibernateModel model = (HibernateModel) rhs;
-		
-		if (!getId().equals(model.getId())) {
-			return ((Comparable) getId()).compareTo((Comparable) model.getId());
-		}
-		
-		return getClazz().getName().compareTo(model.getClazz().getName());
-	}
-	
-	public boolean equals(Object rhs)
-	{
-		if (this == rhs)
-		{
-			return true;
-		}
-		
-		if (rhs instanceof HibernateModel)
-		{
-			HibernateModel hm = (HibernateModel) rhs;
-			return hm.getClazz().equals(getClazz()) && hm.getId().equals(getId());
-		}
-		
-		return false;
-	}
-	
-	public int hashCode()
-	{
-		return getClazz().getName().hashCode() ^ getId().hashCode();
-	}
-	
-	private IHibernateDao getDao() {
-		return (IHibernateDao) dao.getObject(null);
+		return (IHibernateDao) dao.getObject();
 	}
 }

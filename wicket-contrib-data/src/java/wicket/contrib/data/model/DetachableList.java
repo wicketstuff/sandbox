@@ -1,6 +1,5 @@
 package wicket.contrib.data.model;
 
-import wicket.Component;
 import wicket.model.IDetachable;
 import wicket.model.IModel;
 
@@ -16,16 +15,12 @@ public class DetachableList implements IModel
 	/**
 	 * Wraps an {@link wicket.contrib.data.model.OrderedPageableList}.
 	 * 
-	 * @param list the list to wrap
+	 * @param list
+	 *            the list to wrap
 	 */
 	public DetachableList(IDetachable object)
 	{
 		this.object = object;
-	}
-	
-	public IModel getNestedModel()
-	{
-		return null;
 	}
 
 	public void detach()
@@ -33,12 +28,17 @@ public class DetachableList implements IModel
 		object.detach();
 	}
 
-	public Object getObject(Component component)
+	public IModel getNestedModel()
+	{
+		return null;
+	}
+
+	public Object getObject()
 	{
 		return object;
 	}
 
-	public void setObject(Component component, Object object)
+	public void setObject(Object object)
 	{
 		this.object = (IDetachable) object;
 	}

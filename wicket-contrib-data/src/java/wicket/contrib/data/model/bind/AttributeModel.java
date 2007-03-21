@@ -1,7 +1,5 @@
 package wicket.contrib.data.model.bind;
 
-import wicket.Component;
-import wicket.model.AbstractModel;
 import wicket.model.IModel;
 
 /**
@@ -10,19 +8,23 @@ import wicket.model.IModel;
  * 
  * @author Phil Kulak
  */
-public abstract class AttributeModel extends AbstractModel
+public abstract class AttributeModel implements IModel
 {
+	public void detach()
+	{
+	}
+
 	public IModel getNestedModel()
 	{
 		return null;
 	}
 
-	public Object getObject(Component component)
+	public Object getObject()
 	{
 		return getAttributeValue();
 	}
 
-	public void setObject(Component component, Object object)
+	public void setObject(Object object)
 	{
 		throw new UnsupportedOperationException("Attribute models can "
 				+ "not have their models set.");

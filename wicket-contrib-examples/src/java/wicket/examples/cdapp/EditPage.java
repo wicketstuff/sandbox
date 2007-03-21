@@ -34,8 +34,6 @@ import wicket.markup.html.form.RequiredTextField;
 import wicket.markup.html.form.TextField;
 import wicket.markup.html.form.upload.FileUpload;
 import wicket.markup.html.form.upload.FileUploadField;
-import wicket.markup.html.form.validation.NumberValidator;
-import wicket.markup.html.form.validation.StringValidator;
 import wicket.markup.html.image.Image;
 import wicket.markup.html.image.resource.BlobImageResource;
 import wicket.markup.html.link.Link;
@@ -43,6 +41,8 @@ import wicket.markup.html.panel.FeedbackPanel;
 import wicket.model.IModel;
 import wicket.model.PropertyModel;
 import wicket.util.lang.Bytes;
+import wicket.validation.validator.NumberValidator;
+import wicket.validation.validator.StringValidator;
 
 
 /**
@@ -52,19 +52,42 @@ import wicket.util.lang.Bytes;
  */
 public final class EditPage extends CdAppBasePage
 {
-	/** Logger. */
-	private static Log log = LogFactory.getLog(SearchPage.class);
-
 	/**
-	 * static resource from this package; references image 'questionmark.gif'.
+	 * Deletes the cd image.
 	 */
-	private static Resource IMG_UNKNOWN;
+	private final class DeleteImageLink extends Link
+	{
+		/**
+		 * Construct.
+		 * 
+		 * @param name
+		 * @param cdModel
+		 */
+		public DeleteImageLink(String name, IModel cdModel)
+		{
+			super(name, cdModel);
+		}
 
-	/** model for one cd. */
-	private final PersistentObjectModel cdModel;
+		/**
+		 * @see wicket.Component#isVisible()
+		 */
+		public boolean isVisible()
+		{
+			// only set visible when there is an image set
+			return ((CD)getModelObject()).getImage() != null;
+		}
 
-	/** search page to navigate back to. */
-	private final SearchPage searchCDPage;
+		/**
+		 * @see wicket.markup.html.link.Link#onClick()
+		 */
+		public void onClick()
+		{
+			CD cd = (CD)getModelObject();
+			cd.setImage(null);
+			thumbnailImage.setImageResource(getThumbnail());
+			getCdDao().save(cd);
+		}
+	}
 
 	/**
 	 * form for detail editing.
@@ -171,42 +194,19 @@ public final class EditPage extends CdAppBasePage
 		}
 	}
 
+	/** Logger. */
+	private static Log log = LogFactory.getLog(SearchPage.class);
+
 	/**
-	 * Deletes the cd image.
+	 * static resource from this package; references image 'questionmark.gif'.
 	 */
-	private final class DeleteImageLink extends Link
-	{
-		/**
-		 * Construct.
-		 * 
-		 * @param name
-		 * @param cdModel
-		 */
-		public DeleteImageLink(String name, IModel cdModel)
-		{
-			super(name, cdModel);
-		}
+	private static Resource IMG_UNKNOWN;
 
-		/**
-		 * @see wicket.markup.html.link.Link#onClick()
-		 */
-		public void onClick()
-		{
-			CD cd = (CD)getModelObject();
-			cd.setImage(null);
-			thumbnailImage.setImageResource(getThumbnail());
-			getCdDao().save(cd);
-		}
+	/** model for one cd. */
+	private final PersistentObjectModel cdModel;
 
-		/**
-		 * @see wicket.Component#isVisible()
-		 */
-		public boolean isVisible()
-		{
-			// only set visible when there is an image set
-			return ((CD)getModelObject()).getImage() != null;
-		}
-	}
+	/** search page to navigate back to. */
+	private final SearchPage searchCDPage;
 
 	private Image thumbnailImage;
 
@@ -254,7 +254,7 @@ public final class EditPage extends CdAppBasePage
 		// create an image resource that displays a question mark when no image
 		// is set on the cd, or displays a thumbnail of the cd's image when
 		// there is one
-		final CD cd = (CD)cdModel.getObject(null);
+		final CD cd = (CD)cdModel.getObject();
 		if (cd.getImage() == null)
 		{
 			if (IMG_UNKNOWN == null)
