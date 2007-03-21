@@ -1,8 +1,6 @@
 package wicket.contrib.data.model;
 
-import wicket.Component;
 import wicket.WicketRuntimeException;
-import wicket.model.AbstractDetachableModel;
 import wicket.model.IModel;
 
 /**
@@ -13,31 +11,29 @@ import wicket.model.IModel;
  * 
  * @author Phil Kulak
  */
-public class BlankModel extends AbstractDetachableModel
+public class BlankModel implements IModel
 {
 	private Object object;
 
 	private Class objectClass;
-	
+
+	private transient boolean attached = false;
+
 	/**
 	 * Constructor
 	 * 
-	 * @param objectClass the class that will be used to create new beans
+	 * @param objectClass
+	 *            the class that will be used to create new beans
 	 */
 	public BlankModel(Class objectClass)
 	{
 		this.objectClass = objectClass;
 	}
-	
-	/**
-	 * @see wicket.model.AbstractDetachableModel#getNestedModel()
-	 */
-	public IModel getNestedModel()
-	{
-		return null;
-	}
 
-	protected void onAttach()
+	/**
+	 * Attach.
+	 */
+	public void attach()
 	{
 		try
 		{
@@ -50,17 +46,33 @@ public class BlankModel extends AbstractDetachableModel
 		}
 	}
 
-	protected void onDetach()
+	public void detach()
 	{
 		object = null;
+		attached = false;
 	}
 
-	protected Object onGetObject(Component component)
+	public Object getObject()
 	{
+		if (!attached)
+		{
+			attach();
+			attached = true;
+		}
 		return object;
 	}
 
-	protected void onSetObject(Component component, Object object)
+	/**
+	 * Whether this model has been attached to the current request.
+	 * 
+	 * @return whether this model has been attached to the current request
+	 */
+	public final boolean isAttached()
+	{
+		return attached;
+	}
+
+	public void setObject(Object object)
 	{
 		this.object = object;
 		this.objectClass = object.getClass();

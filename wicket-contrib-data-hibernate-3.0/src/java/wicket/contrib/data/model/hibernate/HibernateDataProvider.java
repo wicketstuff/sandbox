@@ -25,23 +25,6 @@ public abstract class HibernateDataProvider extends SortableDataProvider
 
 	private boolean evict = false;
 
-	/**
-	 * Set to true to have all models unproxied.
-	 */
-	public void setUnproxy(boolean unproxy)
-	{
-		this.unproxy = unproxy;
-	}
-
-	/**
-	 * Set to true to have all models evicted from the session before they are
-	 * returned.
-	 */
-	public void setEvict(boolean evict)
-	{
-		this.evict = evict;
-	}
-
 	public HibernateDataProvider(IHibernateDao hibernateDao)
 	{
 		this.hibernateDao = new Model(hibernateDao);
@@ -50,13 +33,6 @@ public abstract class HibernateDataProvider extends SortableDataProvider
 	public HibernateDataProvider(IModel hibernateDao)
 	{
 		this.hibernateDao = hibernateDao;
-	}
-
-	public IModel model(Object object)
-	{
-		HibernateModel ret = new HibernateModel(object, hibernateDao, unproxy);
-		ret.setEvict(evict);
-		return ret;
 	}
 
 	public Iterator iterator(final int first, final int count)
@@ -70,6 +46,30 @@ public abstract class HibernateDataProvider extends SortableDataProvider
 		});
 	}
 
+	public IModel model(Object object)
+	{
+		HibernateModel ret = new HibernateModel(object, hibernateDao, unproxy);
+		ret.setEvict(evict);
+		return ret;
+	}
+
+	/**
+	 * Set to true to have all models evicted from the session before they are
+	 * returned.
+	 */
+	public void setEvict(boolean evict)
+	{
+		this.evict = evict;
+	}
+
+	/**
+	 * Set to true to have all models unproxied.
+	 */
+	public void setUnproxy(boolean unproxy)
+	{
+		this.unproxy = unproxy;
+	}
+
 	public int size()
 	{
 		Integer result = (Integer) getHibernateDao().execute(new IHibernateCallback()
@@ -81,6 +81,45 @@ public abstract class HibernateDataProvider extends SortableDataProvider
 		});
 
 		return result.intValue();
+	}
+
+	private IHibernateDao getHibernateDao()
+	{
+		return (IHibernateDao) hibernateDao.getObject();
+	}
+
+	private Order makeOrder(SortParam param)
+	{
+		return param.isAscending() ? Order.asc(param.getProperty()) : Order.desc(param
+				.getProperty());
+	}
+
+	/**
+	 * Adds all the current orderings to the criteria.
+	 * 
+	 * @param criteria
+	 *            the criteria to add the orderings to
+	 * @return the criteria with the added orderings
+	 */
+	protected final Criteria addOrdering(Criteria criteria)
+	{
+		SortParam sp = getSort();
+		if (sp != null)
+		{
+			criteria.addOrder(makeOrder(sp));
+		}
+		return criteria;
+	}
+
+	/**
+	 * Formats the current sort states an a query string suitable for appending
+	 * at the end of SQL, HQL or other queries.
+	 * 
+	 * @return an ORDER BY query fragment
+	 */
+	protected String getSqlOrderBy()
+	{
+		return getSqlOrderBy(null);
 	}
 
 	/**
@@ -109,45 +148,6 @@ public abstract class HibernateDataProvider extends SortableDataProvider
 		}
 
 		return orderBy.toString();
-	}
-
-	/**
-	 * Formats the current sort states an a query string suitable for appending
-	 * at the end of SQL, HQL or other queries.
-	 * 
-	 * @return an ORDER BY query fragment
-	 */
-	protected String getSqlOrderBy()
-	{
-		return getSqlOrderBy(null);
-	}
-
-	/**
-	 * Adds all the current orderings to the criteria.
-	 * 
-	 * @param criteria
-	 *            the criteria to add the orderings to
-	 * @return the criteria with the added orderings
-	 */
-	protected final Criteria addOrdering(Criteria criteria)
-	{
-		SortParam sp = getSort();
-		if (sp != null)
-		{
-			criteria.addOrder(makeOrder(sp));
-		}
-		return criteria;
-	}
-
-	private Order makeOrder(SortParam param)
-	{
-		return param.isAscending() ? Order.asc(param.getProperty()) : Order.desc(param
-				.getProperty());
-	}
-
-	private IHibernateDao getHibernateDao()
-	{
-		return (IHibernateDao) hibernateDao.getObject(null);
 	}
 
 	protected abstract Iterator iterator(int first, int count, Session session);

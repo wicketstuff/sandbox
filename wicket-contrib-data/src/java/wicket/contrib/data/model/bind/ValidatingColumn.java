@@ -7,9 +7,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import wicket.markup.html.form.validation.AbstractValidator;
-import wicket.markup.html.form.validation.IValidator;
 import wicket.model.IModel;
+import wicket.validation.IValidator;
+import wicket.validation.validator.AbstractValidator;
 
 /**
  * A column that can have validators added to it. Any subclass must call
@@ -21,28 +21,38 @@ import wicket.model.IModel;
 public abstract class ValidatingColumn extends AbstractColumn
 {
 	private List validators = new ArrayList();
+
 	private Class type;
-	
+
 	public ValidatingColumn(String displayName, String modelPath)
 	{
 		super(displayName, modelPath);
 	}
-	
+
 	public ValidatingColumn add(AbstractValidator validator)
 	{
 		validators.add(validator);
 		return this;
 	}
-	
+
+	/**
+	 * Sets the conversion type for this component.
+	 */
+	public ValidatingColumn setType(Class type)
+	{
+		this.type = type;
+		return this;
+	}
+
 	protected InlineValidatingPanel prepare(InlineValidatingPanel panel, IModel model)
 	{
 		for (Iterator i = validators.iterator(); i.hasNext();)
 		{
 			final AbstractValidator validator = (AbstractValidator) i.next();
-			
+
 			// Build the resource key.
-			final String resourceKey = model.getClass().getName() + "."
-				+ getModelPath() + "." + validator.getClass().getName();
+			final String resourceKey = model.getClass().getName()
+					+ "." + getModelPath() + "." + validator.getClass().getName();
 
 			IValidator proxiedValidator = (IValidator) Proxy.newProxyInstance(validator
 					.getClass().getClassLoader(), new Class[] {IValidator.class},
@@ -61,20 +71,11 @@ public abstract class ValidatingColumn extends AbstractColumn
 
 			panel.add(proxiedValidator);
 		}
-		
+
 		if (type != null)
 		{
 			panel.setType(type);
 		}
 		return panel;
-	}
-	
-	/**
-	 * Sets the conversion type for this component.
-	 */
-	public ValidatingColumn setType(Class type)
-	{
-		this.type = type;
-		return this;
 	}
 }
