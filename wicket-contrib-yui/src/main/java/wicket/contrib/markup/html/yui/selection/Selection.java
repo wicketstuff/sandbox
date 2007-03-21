@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.Vector;
 
 import wicket.AttributeModifier;
-import wicket.Component;
 import wicket.behavior.HeaderContributor;
 import wicket.contrib.InlineStyle;
 import wicket.contrib.YuiAttribute;
@@ -33,7 +32,7 @@ public class Selection extends AbstractYuiPanel {
 				private static final long serialVersionUID = 1L;
 
 				@Override
-				public Object getObject(Component component) {
+				public Object getObject() {
 					boxCount++;
 					return elementId + "" + boxCount;
 				}
@@ -43,7 +42,7 @@ public class Selection extends AbstractYuiPanel {
 						private static final long serialVersionUID = 1L;
 
 						@Override
-						public Object getObject(Component component) {
+						public Object getObject() {
 							List<InlineStyle> aInlineStyleList = settings
 									.getInlineStyleList();
 							InlineStyle aInlineStyle = aInlineStyleList
@@ -118,7 +117,7 @@ public class Selection extends AbstractYuiPanel {
 					private static final long serialVersionUID = 1L;
 
 					@Override
-					public Object getObject(Component component) {
+					public Object getObject() {
 						return getJavaScriptComponentInitializationScript();
 					}
 				});
@@ -130,7 +129,7 @@ public class Selection extends AbstractYuiPanel {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public Object getObject(Component component) {
+			public Object getObject() {
 				return getSelectionInitializationScript();
 			}
 		});

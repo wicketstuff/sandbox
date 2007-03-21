@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import wicket.AttributeModifier;
-import wicket.Component;
 import wicket.behavior.StringHeaderContributor;
 import wicket.contrib.YuiImage;
 import wicket.extensions.util.resource.PackagedTextTemplate;
@@ -55,7 +54,7 @@ public class SortGroup extends WebMarkupContainer {
 					new AbstractReadOnlyModel() {
 						private static final long serialVersionUID = 1L;
 
-						public Object getObject(Component component) {
+						public Object getObject() {
 							return element.getId() + "_" + javaScriptId;
 						}
 					}));

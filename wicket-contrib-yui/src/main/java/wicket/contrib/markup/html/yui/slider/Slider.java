@@ -25,7 +25,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import wicket.AttributeModifier;
-import wicket.Component;
 import wicket.behavior.HeaderContributor;
 import wicket.contrib.markup.html.yui.AbstractYuiPanel;
 import wicket.extensions.util.resource.TextTemplateHeaderContributor;
@@ -94,7 +93,7 @@ public class Slider extends AbstractYuiPanel {
 						private static final long serialVersionUID = 1L;
 
 						@Override
-						public Object getObject(Component component) {
+						public Object getObject() {
 							return element.getId();
 						}
 					}));
@@ -110,7 +109,7 @@ public class Slider extends AbstractYuiPanel {
 			 * @see wicket.model.AbstractReadOnlyModel#getObject(wicket.Component)
 			 */
 			@Override
-			public Object getObject(Component component) {
+			public Object getObject() {
 				if (variables == null) {
 					this.variables = new HashMap<String, Object>(7);
 					variables.put("javaScriptId", javaScriptId);
@@ -140,7 +139,7 @@ public class Slider extends AbstractYuiPanel {
 					private static final long serialVersionUID = 1L;
 
 					@Override
-					public Object getObject(Component component) {
+					public Object getObject() {
 						return javaScriptId + ".setValue(" + javaScriptId
 								+ ".getXValue() - " + settings.getTick() + ");";
 					}
@@ -154,7 +153,7 @@ public class Slider extends AbstractYuiPanel {
 					private static final long serialVersionUID = 1L;
 
 					@Override
-					public Object getObject(Component component) {
+					public Object getObject() {
 						return javaScriptId + ".setValue(-"
 								+ settings.getLeftUp() + ")";
 					}
@@ -172,7 +171,7 @@ public class Slider extends AbstractYuiPanel {
 					private static final long serialVersionUID = 1L;
 
 					@Override
-					public Object getObject(Component component) {
+					public Object getObject() {
 						return javaScriptId + ".setValue("
 								+ settings.getRightDown() + ")";
 					}
@@ -186,7 +185,7 @@ public class Slider extends AbstractYuiPanel {
 					private static final long serialVersionUID = 1L;
 
 					@Override
-					public Object getObject(Component component) {
+					public Object getObject() {
 						return javaScriptId + ".setValue(" + javaScriptId
 								+ ".getXValue() + " + settings.getTick() + ");";
 					}

@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import wicket.AttributeModifier;
-import wicket.Component;
 import wicket.contrib.InlineStyle;
 import wicket.contrib.YuiImage;
 import wicket.contrib.markup.html.yui.AbstractYuiPanel;
@@ -21,6 +20,71 @@ import wicket.model.AbstractReadOnlyModel;
  * 
  */
 public class SortBox extends AbstractYuiPanel {
+
+	/**
+	 * Get the box's style
+	 * 
+	 * @author cptan
+	 * 
+	 */
+	private final class Box extends FormComponent implements Serializable {
+		private static final long serialVersionUID = 1L;
+
+		public Box(final String id, final int count, final String name,
+				YuiImage yuiImage) {
+			super(id);
+			add(new AttributeModifier("id", true, new AbstractReadOnlyModel() {
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				public Object getObject() {
+					return "dd" + count + "_" + javaScriptId;
+				}
+			}));
+			add(new AttributeModifier("style", true,
+					new AbstractReadOnlyModel() {
+						private static final long serialVersionUID = 1L;
+
+						@Override
+						public Object getObject() {
+							if (name.equals("dd")) {
+								List<InlineStyle> aInlineStyleList = settings
+										.getImgStyleList();
+								InlineStyle aInlineStyle = aInlineStyleList
+										.get(count);
+								return aInlineStyle.getStyle();
+							} else {
+								return new String("");
+							}
+						}
+					}));
+		}
+	}
+
+	/**
+	 * Get the image's width and height
+	 * 
+	 * @author cptan
+	 * 
+	 */
+	private final class ImgStyle extends FormComponent implements Serializable {
+		private static final long serialVersionUID = 1L;
+
+		public ImgStyle(final String id) {
+			super(id);
+			add(new AttributeModifier("style", true,
+					new AbstractReadOnlyModel() {
+						private static final long serialVersionUID = 1L;
+
+						@Override
+						public Object getObject() {
+							return "width:" + settings.getWidth()
+									+ "px; height:" + settings.getHeight()
+									+ "px";
+						}
+					}));
+		}
+	}
 
 	private static final long serialVersionUID = 1L;
 
@@ -56,7 +120,7 @@ public class SortBox extends AbstractYuiPanel {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public Object getObject(Component component) {
+			public Object getObject() {
 				return getAnimSelectInitializationScript(index);
 			}
 		});
@@ -96,70 +160,5 @@ public class SortBox extends AbstractYuiPanel {
 	protected void onAttach() {
 		super.onAttach();
 		javaScriptId = findParent(SortGroup.class).getMarkupId();
-	}
-
-	/**
-	 * Get the box's style
-	 * 
-	 * @author cptan
-	 * 
-	 */
-	private final class Box extends FormComponent implements Serializable {
-		private static final long serialVersionUID = 1L;
-
-		public Box(final String id, final int count, final String name,
-				YuiImage yuiImage) {
-			super(id);
-			add(new AttributeModifier("id", true, new AbstractReadOnlyModel() {
-				private static final long serialVersionUID = 1L;
-
-				@Override
-				public Object getObject(Component component) {
-					return "dd" + count + "_" + javaScriptId;
-				}
-			}));
-			add(new AttributeModifier("style", true,
-					new AbstractReadOnlyModel() {
-						private static final long serialVersionUID = 1L;
-
-						@Override
-						public Object getObject(Component component) {
-							if (name.equals("dd")) {
-								List<InlineStyle> aInlineStyleList = settings
-										.getImgStyleList();
-								InlineStyle aInlineStyle = aInlineStyleList
-										.get(count);
-								return aInlineStyle.getStyle();
-							} else {
-								return new String("");
-							}
-						}
-					}));
-		}
-	}
-
-	/**
-	 * Get the image's width and height
-	 * 
-	 * @author cptan
-	 * 
-	 */
-	private final class ImgStyle extends FormComponent implements Serializable {
-		private static final long serialVersionUID = 1L;
-
-		public ImgStyle(final String id) {
-			super(id);
-			add(new AttributeModifier("style", true,
-					new AbstractReadOnlyModel() {
-						private static final long serialVersionUID = 1L;
-
-						@Override
-						public Object getObject(Component component) {
-							return "width:" + settings.getWidth()
-									+ "px; height:" + settings.getHeight()
-									+ "px";
-						}
-					}));
-		}
 	}
 }
