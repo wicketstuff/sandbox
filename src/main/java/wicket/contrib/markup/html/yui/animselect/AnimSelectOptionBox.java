@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import wicket.AttributeModifier;
-import wicket.Component;
 import wicket.contrib.InlineStyle;
 import wicket.contrib.YuiImage;
 import wicket.contrib.markup.html.yui.AbstractYuiPanel;
@@ -38,7 +37,7 @@ public class AnimSelectOptionBox extends AbstractYuiPanel {
 				private static final long serialVersionUID = 1L;
 
 				@Override
-				public Object getObject(Component component) {
+				public Object getObject() {
 					return name + count + "_" + javaScriptId;
 				}
 			}));
@@ -47,7 +46,7 @@ public class AnimSelectOptionBox extends AbstractYuiPanel {
 						private static final long serialVersionUID = 1L;
 
 						@Override
-						public Object getObject(Component component) {
+						public Object getObject() {
 							if (name.equals("DefaultImg")) {
 								List<InlineStyle> aInlineStyleList = settings
 										.getDefaultImgStyleList();
@@ -96,7 +95,7 @@ public class AnimSelectOptionBox extends AbstractYuiPanel {
 						private static final long serialVersionUID = 1L;
 
 						@Override
-						public Object getObject(Component component) {
+						public Object getObject() {
 							return "width:" + settings.getWidth()
 									+ "px; height:" + settings.getHeight()
 									+ "px";
@@ -152,7 +151,7 @@ public class AnimSelectOptionBox extends AbstractYuiPanel {
 					private static final long serialVersionUID = 1L;
 
 					@Override
-					public Object getObject(Component component) {
+					public Object getObject() {
 						return getAnimSelectInitializationScript(index);
 					}
 				});

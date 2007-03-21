@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import wicket.Component;
 import wicket.extensions.util.resource.PackagedTextTemplate;
 import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.basic.Label;
@@ -58,7 +57,7 @@ public class AnimSelectOptionGroup extends WebMarkupContainer {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public Object getObject(Component component) {
+			public Object getObject() {
 				return getJavaScriptComponentInitializationScript();
 			}
 		});
