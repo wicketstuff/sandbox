@@ -2,7 +2,7 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>wicket-stuff</groupId>
-	<artifactId>wicket-contrib-cometd-examples</artifactId>
+	<artifactId>wicket-contrib-push-examples</artifactId>
 	<packaging>war</packaging>
 	<version>1.3.0-incubating-SNAPSHOT</version>
 	<name>Wicket Contrib Cometd Examples</name>
@@ -81,7 +81,7 @@
 		</dependency>
 		<dependency>
 			<groupId>wicket-stuff</groupId>
-			<artifactId>wicket-contrib-cometd</artifactId>
+			<artifactId>wicket-contrib-push</artifactId>
 			<version>1.3.0-incubating-SNAPSHOT</version>
 		</dependency>
 	    <dependency>
