@@ -102,7 +102,7 @@ public class DojoErrorDivValidationAjaxBehavior extends AbstractRequireDojoBehav
 					"dojo.html.addClass(dojo.byId('" + formComponent.getMarkupId() + "'), 'dojoWiketValidationError')"
 					);
 					
-			error.setMessage(target,formComponent.getFeedbackMessage().getMessage());
+			error.setMessage(target,formComponent.getFeedbackMessage().getMessage().toString());
 			error.show(target);
 			error.place(target, formComponent);
 			

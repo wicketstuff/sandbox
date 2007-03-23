@@ -99,7 +99,7 @@ public class DojoBubbleValidationAjaxBehavior extends AbstractRequireDojoBehavio
 		formComponent.validate();	
 		if (!formComponent.isValid())
 		{
-			bubble.setMessage(target,formComponent.getFeedbackMessage().getMessage());
+			bubble.setMessage(target,formComponent.getFeedbackMessage().getMessage().toString());
 			bubble.place(target, formComponent);
 			bubble.show(target);
 			invalid.put(formComponent, formComponent.getFeedbackMessage().getMessage());
