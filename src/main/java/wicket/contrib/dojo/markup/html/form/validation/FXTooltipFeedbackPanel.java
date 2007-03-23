@@ -22,7 +22,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import wicket.AttributeModifier;
-import wicket.MarkupContainer;
 import wicket.feedback.ComponentFeedbackMessageFilter;
 import wicket.feedback.FeedbackMessage;
 import wicket.feedback.FeedbackMessagesModel;
@@ -30,7 +29,6 @@ import wicket.feedback.IFeedback;
 import wicket.feedback.IFeedbackMessageFilter;
 import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.basic.Label;
-import wicket.markup.html.form.FormComponent;
 import wicket.markup.html.list.ListItem;
 import wicket.markup.html.list.ListView;
 import wicket.markup.html.panel.Panel;
@@ -281,6 +279,6 @@ public class FXTooltipFeedbackPanel extends Panel implements IFeedback
 	 */
 	protected FeedbackMessagesModel newFeedbackMessagesModel()
 	{
-		return new FeedbackMessagesModel(getFeedbackMessageFilter());
+		return new FeedbackMessagesModel(this);
 	}
 }

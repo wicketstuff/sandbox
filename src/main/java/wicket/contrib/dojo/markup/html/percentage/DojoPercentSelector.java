@@ -52,7 +52,7 @@ public class DojoPercentSelector extends WebMarkupContainer {
 	public DojoPercentSelector(String id, IModel model)
 	{
 		super(id, model);
-		if (!(model.getObject(this) instanceof PercentageRanges)){
+		if (!(model.getObject() instanceof PercentageRanges)){
 			throw new WicketRuntimeException("Model for a DojoPercentSelector should be a PercentageRanges instance");
 		}
 		this.add(new DojoPercentSelectorHandler());
@@ -66,7 +66,7 @@ public class DojoPercentSelector extends WebMarkupContainer {
 	 */
 	public Component setModel(IModel model)
 	{
-		if (!(model.getObject(this) instanceof PercentageRanges)){
+		if (!(model.getObject() instanceof PercentageRanges)){
 			throw new WicketRuntimeException("Model for a DojoPercentSelector should be a PercentageRanges instance");
 		}
 		return super.setModel(model);
