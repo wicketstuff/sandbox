@@ -1,4 +1,4 @@
 function initDrag(markupId, dragId){
-	var dl = byId(markupId);
+	var dl = dojo.byId(markupId);
 	var drag = new dojo.dnd.HtmlDragSource(dl, dragId);
 }
