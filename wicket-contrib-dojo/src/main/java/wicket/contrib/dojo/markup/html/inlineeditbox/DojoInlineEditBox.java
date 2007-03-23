@@ -82,7 +82,7 @@ public class DojoInlineEditBox extends WebComponent {
 	
 	/** Only the String object is allowed */
 	public Component setModel(IModel model)	{
-		if (!(model.getObject(this) instanceof String)) {
+		if (!(model.getObject() instanceof String)) {
 			throw new WicketRuntimeException("Model for a DojoInlineEditBox should be a String instance");
 		}
 		return super.setModel(model);
