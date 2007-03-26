@@ -12,7 +12,7 @@
  *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
- */   
+ */
 package wicket.extensions.markup.html.datepicker;
 
 import java.io.IOException;
@@ -27,7 +27,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import wicket.ResourceReference;
-import wicket.markup.html.resources.CompressedPackageResourceReference;
+import wicket.markup.html.resources.CompressedResourceReference;
 
 /**
  * The settings of the date picker component. Use this to customize the
@@ -152,17 +152,17 @@ public class DatePickerSettings implements Serializable
 		String ref = (String)localeToLanguageReference.get(currentLocale.toString());
 		if (ref != null)
 		{
-			return new CompressedPackageResourceReference(DatePickerSettings.class, ref);
+			return new CompressedResourceReference(DatePickerSettings.class, ref);
 		}
 		// now try only the language
 		ref = (String)localeToLanguageReference.get(currentLocale.getLanguage());
 		if (ref != null)
 		{
-			return new CompressedPackageResourceReference(DatePickerSettings.class, ref);
+			return new CompressedResourceReference(DatePickerSettings.class, ref);
 		}
 
 		// we didn't find a mapping; just return English
-		return new CompressedPackageResourceReference(DatePickerSettings.class, "lang/calendar-en.js");
+		return new CompressedResourceReference(DatePickerSettings.class, "lang/calendar-en.js");
 	}
 
 	/**
@@ -275,11 +275,11 @@ public class DatePickerSettings implements Serializable
 	 * If ``true'' then the calendar will display week numbers.
 	 */
 	private boolean weekNumbers = true;
-	
+
 	private ISelectCallback onSelect;
-	
+
 	private ISelectCallback onClose;
-	
+
 	private ISelectCallback onUpdate;
 
 	/**
@@ -445,7 +445,7 @@ public class DatePickerSettings implements Serializable
 	 */
 	public final ResourceReference newButtonIconBlue()
 	{
-		return new CompressedPackageResourceReference(DatePickerSettings.class, "calendar_icon_3.gif");
+		return new CompressedResourceReference(DatePickerSettings.class, "calendar_icon_3.gif");
 	}
 
 	/**
@@ -455,7 +455,7 @@ public class DatePickerSettings implements Serializable
 	 */
 	public final ResourceReference newButtonIconPlain()
 	{
-		return new CompressedPackageResourceReference(DatePickerSettings.class, "calendar_icon_2.gif");
+		return new CompressedResourceReference(DatePickerSettings.class, "calendar_icon_2.gif");
 	}
 
 	/**
@@ -465,7 +465,7 @@ public class DatePickerSettings implements Serializable
 	 */
 	public final ResourceReference newButtonIconRed()
 	{
-		return new CompressedPackageResourceReference(DatePickerSettings.class, "calendar_icon_1.gif");
+		return new CompressedResourceReference(DatePickerSettings.class, "calendar_icon_1.gif");
 	}
 
 	/**
@@ -475,7 +475,7 @@ public class DatePickerSettings implements Serializable
 	 */
 	public final ResourceReference newStyleAqua()
 	{
-		return new CompressedPackageResourceReference(DatePickerSettings.class, "style/aqua/theme.css");
+		return new CompressedResourceReference(DatePickerSettings.class, "style/aqua/theme.css");
 	}
 
 	/**
@@ -485,7 +485,7 @@ public class DatePickerSettings implements Serializable
 	 */
 	public final ResourceReference newStyleBlue()
 	{
-		return new CompressedPackageResourceReference(DatePickerSettings.class, "style/calendar-blue2.css");
+		return new CompressedResourceReference(DatePickerSettings.class, "style/calendar-blue2.css");
 	}
 
 	/**
@@ -495,7 +495,7 @@ public class DatePickerSettings implements Serializable
 	 */
 	public final ResourceReference newStyleGreen()
 	{
-		return new CompressedPackageResourceReference(DatePickerSettings.class, "style/calendar-green.css");
+		return new CompressedResourceReference(DatePickerSettings.class, "style/calendar-green.css");
 	}
 
 	/**
@@ -505,7 +505,7 @@ public class DatePickerSettings implements Serializable
 	 */
 	public final ResourceReference newStyleSummer()
 	{
-		return new CompressedPackageResourceReference(DatePickerSettings.class, "style/calendar-brown.css");
+		return new CompressedResourceReference(DatePickerSettings.class, "style/calendar-brown.css");
 	}
 
 	/**
@@ -515,7 +515,8 @@ public class DatePickerSettings implements Serializable
 	 */
 	public final ResourceReference newStyleSystem()
 	{
-		return new CompressedPackageResourceReference(DatePickerSettings.class, "style/calendar-system.css");
+		return new CompressedResourceReference(DatePickerSettings.class,
+				"style/calendar-system.css");
 	}
 
 	/**
@@ -525,7 +526,7 @@ public class DatePickerSettings implements Serializable
 	 */
 	public final ResourceReference newStyleTas()
 	{
-		return new CompressedPackageResourceReference(DatePickerSettings.class, "style/calendar-tas.css");
+		return new CompressedResourceReference(DatePickerSettings.class, "style/calendar-tas.css");
 	}
 
 	/**
@@ -535,7 +536,8 @@ public class DatePickerSettings implements Serializable
 	 */
 	public final ResourceReference newStyleWin2k1()
 	{
-		return new CompressedPackageResourceReference(DatePickerSettings.class, "style/calendar-win2k-1.css");
+		return new CompressedResourceReference(DatePickerSettings.class,
+				"style/calendar-win2k-1.css");
 	}
 
 	/**
@@ -545,7 +547,8 @@ public class DatePickerSettings implements Serializable
 	 */
 	public final ResourceReference newStyleWin2k2()
 	{
-		return new CompressedPackageResourceReference(DatePickerSettings.class, "style/calendar-win2k-2.css");
+		return new CompressedResourceReference(DatePickerSettings.class,
+				"style/calendar-win2k-2.css");
 	}
 
 	/**
@@ -555,7 +558,8 @@ public class DatePickerSettings implements Serializable
 	 */
 	public final ResourceReference newStyleWin2kCold1()
 	{
-		return new CompressedPackageResourceReference(DatePickerSettings.class, "style/calendar-win2k-cold-1.css");
+		return new CompressedResourceReference(DatePickerSettings.class,
+				"style/calendar-win2k-cold-1.css");
 	}
 
 	/**
@@ -565,7 +569,8 @@ public class DatePickerSettings implements Serializable
 	 */
 	public final ResourceReference newStyleWin2kCold2()
 	{
-		return new CompressedPackageResourceReference(DatePickerSettings.class, "style/calendar-win2k-cold-2.css");
+		return new CompressedResourceReference(DatePickerSettings.class,
+				"style/calendar-win2k-cold-2.css");
 	}
 
 	/**
@@ -575,7 +580,7 @@ public class DatePickerSettings implements Serializable
 	 */
 	public final ResourceReference newStyleWinter()
 	{
-		return new CompressedPackageResourceReference(DatePickerSettings.class, "style/calendar-blue.css");
+		return new CompressedResourceReference(DatePickerSettings.class, "style/calendar-blue.css");
 	}
 
 	/**
@@ -665,6 +670,42 @@ public class DatePickerSettings implements Serializable
 	}
 
 	/**
+	 * Set an onClose callback.
+	 * 
+	 * @see ISelectCallback
+	 * @param onClose
+	 *            The onClose callback to use.
+	 */
+	public void setOnClose(ISelectCallback onClose)
+	{
+		this.onClose = onClose;
+	}
+
+	/**
+	 * Set an onSelect callback.
+	 * 
+	 * @see ISelectCallback
+	 * @param onSelect
+	 *            The onSelect callback to use.
+	 */
+	public void setOnSelect(ISelectCallback onSelect)
+	{
+		this.onSelect = onSelect;
+	}
+
+	/**
+	 * Set an onUpdate callback.
+	 * 
+	 * @see ISelectCallback
+	 * @param onUpdate
+	 *            The onUpdate callback to use.
+	 */
+	public void setOnUpdate(ISelectCallback onUpdate)
+	{
+		this.onUpdate = onUpdate;
+	}
+
+	/**
 	 * Sets the showOthers.
 	 * 
 	 * @param showOthers
@@ -723,54 +764,6 @@ public class DatePickerSettings implements Serializable
 	public void setWeekNumbers(boolean weekNumbers)
 	{
 		this.weekNumbers = weekNumbers;
-	}
-	
-	ISelectCallback getOnClose()
-	{
-		return onClose;
-	}
-
-	/**
-	 * Set an onClose callback.
-	 * 
-	 * @see ISelectCallback
-	 * @param onClose The onClose callback to use.
-	 */
-	public void setOnClose(ISelectCallback onClose)
-	{
-		this.onClose = onClose;
-	}
-
-	ISelectCallback getOnSelect()
-	{
-		return onSelect;
-	}
-
-	/**
-	 * Set an onSelect callback.
-	 * 
-	 * @see ISelectCallback
-	 * @param onSelect The onSelect callback to use.
-	 */
-	public void setOnSelect(ISelectCallback onSelect)
-	{
-		this.onSelect = onSelect;
-	}
-
-	ISelectCallback getOnUpdate()
-	{
-		return onUpdate;
-	}
-
-	/**
-	 * Set an onUpdate callback.
-	 * 
-	 * @see ISelectCallback
-	 * @param onUpdate The onUpdate callback to use.
-	 */
-	public void setOnUpdate(ISelectCallback onUpdate)
-	{
-		this.onUpdate = onUpdate;
 	}
 
 	/**
@@ -929,5 +922,20 @@ public class DatePickerSettings implements Serializable
 		}
 
 		return b.toString();
+	}
+
+	ISelectCallback getOnClose()
+	{
+		return onClose;
+	}
+
+	ISelectCallback getOnSelect()
+	{
+		return onSelect;
+	}
+
+	ISelectCallback getOnUpdate()
+	{
+		return onUpdate;
 	}
 }
