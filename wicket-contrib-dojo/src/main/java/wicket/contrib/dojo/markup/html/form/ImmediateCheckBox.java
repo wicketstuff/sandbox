@@ -82,11 +82,10 @@ public class ImmediateCheckBox extends CheckBox
 		 */
 		public final void onComponentTag(final ComponentTag tag)
 		{
-			final ValueMap attributes = tag.getAttributes();
 			final AppendingStringBuffer attributeValue = new AppendingStringBuffer(
 					"javascript:immediateCheckBox('").append(getCallbackUrl()).append("', '")
 					.append(checkBox.getInputName()).append("', this.checked);");
-			attributes.put("onclick", attributeValue);
+			tag.put("onclick", attributeValue);
 		}
 
 		/**

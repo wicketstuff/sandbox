@@ -22,7 +22,6 @@ package wicket.contrib.dojo.markup.html.form;
 
 import java.util.List;
 
-import wicket.MarkupContainer;
 import wicket.ajax.AjaxRequestTarget;
 import wicket.contrib.dojo.AbstractDefaultDojoBehavior;
 import wicket.markup.ComponentTag;
@@ -66,14 +65,12 @@ public class ImmediateRadioChoice extends RadioChoice
 		 */
 		public final void onComponentTag(final ComponentTag tag)
 		{
-			// List l = getChoices();
-			final ValueMap attributes = tag.getAttributes();
 			final AppendingStringBuffer attributeValue = new AppendingStringBuffer(
 					"javascript:immediateRadioButton('").append(getCallbackUrl()).append("', '")
 					.append(radioButton.getInputName()).append("',  getSelectedRadio('").append(
 							radioButton.getInputName()).append("' ,").append(
 							((ImmediateRadioChoice)(getComponent())).getNumItems() + "))");
-			attributes.put("onclick", attributeValue);
+			tag.put("onclick", attributeValue);
 		}
 
 		/**
