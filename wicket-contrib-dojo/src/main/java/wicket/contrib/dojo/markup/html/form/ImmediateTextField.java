@@ -16,7 +16,6 @@
  */
 package wicket.contrib.dojo.markup.html.form;
 
-import wicket.MarkupContainer;
 import wicket.ResourceReference;
 import wicket.ajax.AjaxRequestTarget;
 import wicket.contrib.dojo.AbstractDefaultDojoBehavior;
@@ -143,11 +142,10 @@ public class ImmediateTextField extends TextField
 		 */
 		public final void onComponentTag(final ComponentTag tag)
 		{
-			final ValueMap attributes = tag.getAttributes();
 			final AppendingStringBuffer attributeValue = new AppendingStringBuffer(
 					"javascript:immediateTextField('").append(getCallbackUrl()).append("', '")
 					.append(textField.getInputName()).append("', this.value);");
-			attributes.put("onblur", attributeValue);
+			tag.put("onblur", attributeValue);
 		}
 
 		/**
