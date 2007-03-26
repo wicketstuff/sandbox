@@ -57,7 +57,8 @@ import wicket.util.convert.converters.DateConverter;
  * 
  * @author Frank Bille Jensen
  */
-public class PopupDatePicker extends DatePicker {
+public class PopupDatePicker extends DatePicker
+{
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -82,7 +83,7 @@ public class PopupDatePicker extends DatePicker {
 			{
 				private static final long serialVersionUID = 1L;
 
-				public Object getObject(Component component)
+				public Object getObject()
 				{
 					if (pathProvider.getOutputMarkupId())
 					{
@@ -95,7 +96,7 @@ public class PopupDatePicker extends DatePicker {
 			});
 		}
 	}
-	
+
 	/**
 	 * Button that triggers the popup.
 	 */
@@ -119,7 +120,7 @@ public class PopupDatePicker extends DatePicker {
 			{
 				private static final long serialVersionUID = 1L;
 
-				public Object getObject(Component component)
+				public Object getObject()
 				{
 					return urlFor(resourceReference);
 				};
@@ -172,7 +173,8 @@ public class PopupDatePicker extends DatePicker {
 	 * @param settings
 	 *            datepicker properties
 	 */
-	public PopupDatePicker(final String id, final Component target, final DatePickerSettings settings)
+	public PopupDatePicker(final String id, final Component target,
+			final DatePickerSettings settings)
 	{
 		this(id, null, target, settings);
 	}
@@ -209,13 +211,15 @@ public class PopupDatePicker extends DatePicker {
 		add(triggerButton = new TriggerButton("trigger", settings.getIcon()));
 	}
 
-	protected void appendSettings(Map settings) {
+	protected void appendSettings(Map settings)
+	{
 		String targetId = target.getOutputMarkupId() ? target.getMarkupId() : target.getPath();
-		settings.put("inputField", "\""+targetId+"\"");
-		settings.put("button", "\""+triggerButton.getPath()+"\"");
+		settings.put("inputField", "\"" + targetId + "\"");
+		settings.put("button", "\"" + triggerButton.getPath() + "\"");
 	}
 
-	protected DateConverter getDateConverter() {
+	protected DateConverter getDateConverter()
+	{
 		IConverter converter = target.getConverter(Date.class);
 		if (converter instanceof DateConverter)
 		{
@@ -224,8 +228,9 @@ public class PopupDatePicker extends DatePicker {
 		return super.getDateConverter();
 	}
 
-	protected Locale getDatePickerLocale() {
+	protected Locale getDatePickerLocale()
+	{
 		return target.getLocale();
 	}
-	
+
 }

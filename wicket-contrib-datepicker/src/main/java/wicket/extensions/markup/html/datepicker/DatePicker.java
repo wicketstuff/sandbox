@@ -24,13 +24,12 @@ import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 
-import wicket.Component;
 import wicket.ResourceReference;
 import wicket.markup.ComponentTag;
 import wicket.markup.MarkupStream;
 import wicket.markup.html.WebComponent;
 import wicket.markup.html.panel.Panel;
-import wicket.markup.html.resources.CompressedPackageResourceReference;
+import wicket.markup.html.resources.CompressedResourceReference;
 import wicket.markup.html.resources.JavaScriptReference;
 import wicket.markup.html.resources.StyleSheetReference;
 import wicket.model.Model;
@@ -56,11 +55,6 @@ import wicket.util.string.AppendingStringBuffer;
  */
 public abstract class DatePicker extends Panel
 {
-	private static final long serialVersionUID = 1L;
-
-	private static final ResourceReference JAVASCRIPT = new CompressedPackageResourceReference(DatePicker.class, "calendar.js");
-	private static final ResourceReference JAVASCRIPT_SETUP = new CompressedPackageResourceReference(DatePicker.class, "calendar-setup.js");
-
 	/**
 	 * Outputs the Javascript initialization code.
 	 */
@@ -89,35 +83,44 @@ public abstract class DatePicker extends Panel
 			replaceComponentTagBody(markupStream, openTag, getInitScript());
 		}
 	}
-	
+
 	protected abstract class CallbackScript extends WebComponent
 	{
 		private static final long serialVersionUID = 1L;
 
 		private ISelectCallback selectCallback;
-		
+
 		/**
 		 * Construct.
-		 * @param id Component id.
+		 * 
+		 * @param id
+		 *            Component id.
 		 */
 		public CallbackScript(String id, ISelectCallback selectCallback)
 		{
 			super(id);
-			
+
 			this.selectCallback = selectCallback;
-			
+
 			if (selectCallback != null)
 			{
 				selectCallback.bind(this);
 			}
 		}
-		
+
+		public abstract String getCallbackFunctionName();
+
+		public boolean isVisible()
+		{
+			return selectCallback != null;
+		}
+
 		protected void onComponentTagBody(MarkupStream markupStream, ComponentTag openTag)
 		{
 			if (selectCallback != null)
 			{
 				AppendingStringBuffer b = new AppendingStringBuffer("\nfunction ");
-	
+
 				String functionName = getCallbackFunctionName();
 				b.append(functionName).append("(calendar){\n");
 				b.append("\tvar dateParam = calendar.date.getFullYear();\n");
@@ -129,39 +132,40 @@ public abstract class DatePicker extends Panel
 				b.append("\tdateParam += calendar.date.getHours();\n");
 				b.append("\tdateParam += '-';\n");
 				b.append("\tdateParam += calendar.date.getMinutes();\n");
-	
+
 				CharSequence handleCallback = selectCallback.handleCallback();
 				b.append("\t").append(handleCallback).append("\n");
 				b.append("}\n");
-	
+
 				replaceComponentTagBody(markupStream, openTag, b);
 			}
 		}
-		
-		public boolean isVisible()
-		{
-			return selectCallback != null;
-		}
-
-		public abstract String getCallbackFunctionName();
 	}
+
+	private static final long serialVersionUID = 1L;
+
+	private static final ResourceReference JAVASCRIPT = new CompressedResourceReference(
+			DatePicker.class, "calendar.js");
+
+	private static final ResourceReference JAVASCRIPT_SETUP = new CompressedResourceReference(
+			DatePicker.class, "calendar-setup.js");
 
 	/** settings for the javascript datepicker component. */
 	private final DatePickerSettings settings;
 
 	private DateConverter dateConverter;
-	
+
 	private CallbackScript onSelect;
 	private CallbackScript onClose;
 	private CallbackScript onUpdate;
-	
+
 	private Date defaultDate;;
 
 	public DatePicker(final String id, final DatePickerSettings settings)
 	{
 		this(id, settings, null);
 	}
-	
+
 	public DatePicker(final String id, final DatePickerSettings settings, Date defaultDate)
 	{
 		super(id);
@@ -182,13 +186,13 @@ public abstract class DatePicker extends Panel
 		{
 			private static final long serialVersionUID = 1L;
 
-			public Object getObject(Component component)
+			public Object getObject()
 			{
 				return settings.getLanguage(DatePicker.this.getLocale());
 			}
 		}));
 		add(new StyleSheetReference("calendarStyle", settings.getStyle()));
-		
+
 		// Add callbacks
 		add(onSelect = new CallbackScript("onSelect", settings.getOnSelect())
 		{
@@ -199,7 +203,7 @@ public abstract class DatePicker extends Panel
 				return DatePicker.this.getMarkupId() + "_onselect";
 			}
 		});
-		
+
 		add(onClose = new CallbackScript("onClose", settings.getOnClose())
 		{
 			private static final long serialVersionUID = 1L;
@@ -209,7 +213,7 @@ public abstract class DatePicker extends Panel
 				return DatePicker.this.getMarkupId() + "_onclose";
 			}
 		});
-		
+
 		add(onUpdate = new CallbackScript("onUpdate", settings.getOnUpdate())
 		{
 			private static final long serialVersionUID = 1L;
@@ -245,21 +249,24 @@ public abstract class DatePicker extends Panel
 
 		AppendingStringBuffer b = new AppendingStringBuffer();
 
-		if (defaultDate != null) 
+		if (defaultDate != null)
 		{
 			Calendar calendar = Calendar.getInstance();
 			calendar.setTime(defaultDate);
-			
+
 			b.append("\nvar defaultDate = new Date();");
 			b.append("\ndefaultDate.setFullYear(").append(calendar.get(Calendar.YEAR)).append(");");
 			b.append("\ndefaultDate.setMonth(").append(calendar.get(Calendar.MONTH)).append(");");
-			b.append("\ndefaultDate.setDate(").append(calendar.get(Calendar.DAY_OF_MONTH)).append(");");
-			b.append("\ndefaultDate.setHours(").append(calendar.get(Calendar.HOUR_OF_DAY)).append(");");
-			b.append("\ndefaultDate.setMinutes(").append(calendar.get(Calendar.MINUTE)).append(");\n");
+			b.append("\ndefaultDate.setDate(").append(calendar.get(Calendar.DAY_OF_MONTH)).append(
+					");");
+			b.append("\ndefaultDate.setHours(").append(calendar.get(Calendar.HOUR_OF_DAY)).append(
+					");");
+			b.append("\ndefaultDate.setMinutes(").append(calendar.get(Calendar.MINUTE)).append(
+					");\n");
 		}
-		
+
 		b.append("\nCalendar.setup(\n{");
-		
+
 		// Append specific settings
 		for (Iterator iter = additionalSettings.keySet().iterator(); iter.hasNext();)
 		{
@@ -268,26 +275,26 @@ public abstract class DatePicker extends Panel
 			b.append("\n\t\t").append(option).append(" : ").append(additionalSettings.get(option))
 					.append(",");
 		}
-		
+
 		// Callbacks
-		if (settings.getOnClose() != null) 
+		if (settings.getOnClose() != null)
 		{
 			b.append("\n\t\tonClose : ").append(onClose.getCallbackFunctionName()).append(",");
 		}
-		if (settings.getOnSelect() != null) 
+		if (settings.getOnSelect() != null)
 		{
 			b.append("\n\t\tonSelect : ").append(onSelect.getCallbackFunctionName()).append(",");
 		}
-		if (settings.getOnUpdate() != null) 
+		if (settings.getOnUpdate() != null)
 		{
 			b.append("\n\t\tonUpdate : ").append(onUpdate.getCallbackFunctionName()).append(",");
 		}
-		
+
 		if (defaultDate != null)
 		{
 			b.append("\n\t\tdate : defaultDate,");
 		}
-		
+
 		String pattern = null;
 		if (dateConverter == null)
 		{
@@ -299,7 +306,7 @@ public abstract class DatePicker extends Panel
 			pattern = ((SimpleDateFormat)df).toPattern();
 		}
 		b.append(settings.toScript(getDatePickerLocale(), pattern));
-		
+
 		int last = b.length() - 1;
 		if (',' == b.charAt(last))
 		{
