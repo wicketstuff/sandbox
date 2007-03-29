@@ -93,7 +93,11 @@ public abstract class DojoDropContainer extends WebMarkupContainer
 		this.setOutputMarkupId(true);
 		//all by default
 		dropId = "*";
-		add(new DojoDropContainerHandler());
+		add(createDropBehavior());
+	}
+	
+	protected AbstractDojoDropContainerHandler createDropBehavior() {
+		return new DojoDropContainerHandler();
 	}
 	
 	/**
