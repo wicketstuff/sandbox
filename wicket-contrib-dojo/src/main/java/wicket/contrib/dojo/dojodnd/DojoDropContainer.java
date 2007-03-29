@@ -16,6 +16,9 @@
  */
 package wicket.contrib.dojo.dojodnd;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import wicket.Component;
 import wicket.ajax.AjaxRequestTarget;
 import wicket.contrib.dojo.markup.html.form.ImmediateCheckBox;
@@ -81,7 +84,7 @@ import wicket.markup.html.WebMarkupContainer;
 public abstract class DojoDropContainer extends WebMarkupContainer
 {
 
-	private String dropId;
+	private Set<String> dropIds = new HashSet<String>();
 	
 	/**
 	 * Create a DropContainer
@@ -92,7 +95,7 @@ public abstract class DojoDropContainer extends WebMarkupContainer
 		super(id);
 		this.setOutputMarkupId(true);
 		//all by default
-		dropId = "*";
+		dropIds = new HashSet<String>();
 		add(createDropBehavior());
 	}
 	
@@ -103,19 +106,35 @@ public abstract class DojoDropContainer extends WebMarkupContainer
 	/**
 	 * Set the drop pattern. The drop container only accept dragContainer with
 	 * the same pattern or all id *
-	 * @param pattern drop pattern
+	 * @param pattern drop pattern set
 	 */
-	public void setDropPattern(String pattern){
-		this.dropId = pattern;
+	public void setDropPattern(Set<String> patterns){
+		this.dropIds = patterns;
+	}
+	
+	/**
+	 * Add a drop pattern to the drop pattern set. The drop container will accept
+	 * only dragConbtainer with a dragPattern contains in the dropPattern set.
+	 * If the dropPattern set is empty, all dragPattern will be accpeted
+	 * by the dropContainer.
+	 * @param pattern a pattern which will be accepted by the dropContainer
+	 */
+	public void addDropPattern(String pattern){
+		this.dropIds.add(pattern);
 	}
 	
 	/**
 	 * Drop pattern to specified which Drag container can be dropped on
-	 * this Container
-	 * @return the Drop 
+	 * this Container. If no pattern has been set return * (all)
+	 * @return the Drop pattern set
 	 */
-	public String getDropPattern(){
-		return dropId;
+	public Set<String> getDropPatterns(){
+		if (dropIds.isEmpty()){
+			Set<String> toReturn  = new HashSet<String>();
+			toReturn.add("*");
+			return toReturn;
+		}
+		return dropIds;
 	}
 	
 	/**

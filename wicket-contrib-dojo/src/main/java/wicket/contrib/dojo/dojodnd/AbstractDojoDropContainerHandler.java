@@ -16,6 +16,9 @@
  */
 package wicket.contrib.dojo.dojodnd;
 
+import java.util.Iterator;
+import java.util.Set;
+
 import wicket.ajax.AjaxRequestTarget;
 import wicket.contrib.dojo.AbstractRequireDojoBehavior;
 
@@ -59,6 +62,32 @@ public abstract class AbstractDojoDropContainerHandler extends AbstractRequireDo
 		libs.add("dojo.io.*");
 	}
 	
+	/**
+	 * Converts the accept IDs to a javascript array.
+	 * @return
+	 */
+	protected String acceptIdsToJavaScriptArray() {
+		DojoDropContainer container = (DojoDropContainer) getDojoDropContainer();
+		Set acceptIds = container.getDropPatterns();
+		
+		StringBuffer buffer = new StringBuffer();
+		buffer.append("[");
+		
+		Iterator i = acceptIds.iterator();
+		while (i.hasNext()) {
+			buffer.append("'");
+			buffer.append(i.next().toString());
+			buffer.append("'");
+			
+			if (i.hasNext()) {
+				buffer.append(", ");
+			}
+		}
+		
+		buffer.append("]");
+		
+		return buffer.toString();
+	}
 
 
 }
