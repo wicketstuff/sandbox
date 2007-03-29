@@ -1,11 +1,8 @@
 package wicket.contrib.dojo.dojodnd;
 
-import java.util.HashMap;
-
 import wicket.IRequestTarget;
 import wicket.RequestCycle;
 import wicket.ajax.AjaxRequestTarget;
-import wicket.contrib.dojo.AbstractRequireDojoBehavior;
 import wicket.contrib.dojo.templates.DojoPackagedTextTemplate;
 import wicket.markup.html.IHeaderResponse;
 
@@ -17,25 +14,10 @@ import wicket.markup.html.IHeaderResponse;
  * @author Vincent Demay
  *
  */
-public class DojoDragContainerHandler extends AbstractRequireDojoBehavior
-{
-	/** container handler is attached to. */
-	private DojoDragContainer container;
-	
-	/**
-	 * @see wicket.AjaxHandler#onBind()
-	 */
-	protected void onBind()
-	{
-		this.container = (DojoDragContainer)getComponent();
-	}
-	
-	
-	protected void respond(AjaxRequestTarget target)
-	{
-		((DojoDragContainer)getComponent()).onDrag(target);
-	}
 
+@SuppressWarnings("serial")
+public class DojoDragContainerHandler extends AbstractDojoDragContainerHandler
+{
 	
 	/* (non-Javadoc)
 	 * @see wicket.contrib.dojo.DojoAjaxHandler#renderHead(wicket.markup.html.IHeaderResponse)
@@ -43,6 +25,8 @@ public class DojoDragContainerHandler extends AbstractRequireDojoBehavior
 	public void renderHead(IHeaderResponse response)
 	{
 		super.renderHead(response);
+
+		DojoDragContainer container = getDojoDragContainer();
 		
 		DojoPackagedTextTemplate template = new DojoPackagedTextTemplate(this.getClass(), "DojoDragContainerHandlerTemplate.js");
 		response.renderJavascript(template.asString(), template.getStaticKey());
@@ -58,15 +42,8 @@ public class DojoDragContainerHandler extends AbstractRequireDojoBehavior
 	public void onComponentReRendered(AjaxRequestTarget ajaxTarget)
 	{
 		super.onComponentReRendered(ajaxTarget);
+		
+		DojoDragContainer container = getDojoDragContainer();
 		ajaxTarget.appendJavascript("initDrag('" + container.getMarkupId() + "','" + container.getDragPattern() + "')\n");
 	}
-
-
-	public void setRequire(RequireDojoLibs libs)
-	{
-		libs.add("dojo.dnd.*");
-		libs.add("dojo.event.*");
-		libs.add("dojo.io.*");
-	}
-
 }
