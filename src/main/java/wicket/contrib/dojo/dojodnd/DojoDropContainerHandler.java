@@ -19,7 +19,6 @@ package wicket.contrib.dojo.dojodnd;
 import wicket.IRequestTarget;
 import wicket.RequestCycle;
 import wicket.ajax.AjaxRequestTarget;
-import wicket.contrib.dojo.AbstractRequireDojoBehavior;
 import wicket.contrib.dojo.templates.DojoPackagedTextTemplate;
 import wicket.markup.html.IHeaderResponse;
 
@@ -28,20 +27,10 @@ import wicket.markup.html.IHeaderResponse;
  * @author <a href="http://www.demay-fr.net/blog">Vincent Demay</a>
  *
  */
-class DojoDropContainerHandler extends AbstractRequireDojoBehavior
+
+@SuppressWarnings("serial")
+class DojoDropContainerHandler extends AbstractDojoDropContainerHandler
 {
-	/** container handler is attached to. */
-	private DojoDropContainer container;
-
-
-	/**
-	 * @see wicket.AjaxHandler#onBind()
-	 */
-	protected void onBind()
-	{
-		this.container = (DojoDropContainer)getComponent();
-	}
-	
 	/**
 	 * 
 	 */
@@ -55,6 +44,7 @@ class DojoDropContainerHandler extends AbstractRequireDojoBehavior
 	
 		IRequestTarget target = RequestCycle.get().getRequestTarget();
 		if(!(target instanceof AjaxRequestTarget)){
+			DojoDropContainer container = getDojoDropContainer();
 			response.renderJavascript("dojo.event.connect(dojo, \"loaded\", function() {initDrop('" + container.getMarkupId() + "', '" + container.getDropPattern() + "', '" + getCallbackUrl() + "'); });" , container.getMarkupId() + "onLoad");
 		}
 	}
@@ -62,21 +52,8 @@ class DojoDropContainerHandler extends AbstractRequireDojoBehavior
 	public void onComponentReRendered(AjaxRequestTarget ajaxTarget)
 	{
 		super.onComponentReRendered(ajaxTarget);
+		
+		DojoDropContainer container = getDojoDropContainer();
 		ajaxTarget.appendJavascript("initDrop('" + container.getMarkupId() + "', '" + container.getDropPattern() + "', '" + getCallbackUrl() + "');\n");
 	}
-	
-	protected void respond(AjaxRequestTarget target)
-	{
-		container.onAjaxModelUpdated(target);
-	}
-
-	public void setRequire(RequireDojoLibs libs)
-	{
-		libs.add("dojo.dnd.*");
-		libs.add("dojo.event.*");
-		libs.add("dojo.io.*");
-	}
-	
-
-
 }

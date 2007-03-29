@@ -17,6 +17,7 @@
 package wicket.contrib.dojo.dojodnd;
 
 import wicket.ajax.AjaxRequestTarget;
+import wicket.contrib.dojo.AbstractRequireDojoBehavior;
 import wicket.markup.html.WebMarkupContainer;
 
 /**
@@ -77,6 +78,8 @@ import wicket.markup.html.WebMarkupContainer;
  * @author <a href="http://www.demay-fr.net/blog/index.php/en">Vincent Demay</a>
  *
  */
+
+@SuppressWarnings("serial")
 public class DojoDragContainer extends WebMarkupContainer
 {
 
@@ -86,15 +89,20 @@ public class DojoDragContainer extends WebMarkupContainer
 	 * Constructor of a drag container
 	 * @param id widget id
 	 */
-	 public DojoDragContainer(String id)
+	public DojoDragContainer(String id)
 	{
 		super(id);
 		this.setOutputMarkupId(true);
 		//all by default
 		dragId = "*";
-		add(new DojoDragContainerHandler());
+		add(createDragBehavior());
 	}
 	
+	protected AbstractRequireDojoBehavior createDragBehavior() 
+	{
+		return new DojoDragContainerHandler();
+	}
+	 
 	/**
 	 * Drag Pattern
 	 * @param pattern pattern use to allow to be dragged on a dropContainer with the same pattern
