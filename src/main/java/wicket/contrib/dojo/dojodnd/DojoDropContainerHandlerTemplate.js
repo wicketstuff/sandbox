@@ -8,9 +8,9 @@ function createUrl(e, url){
 	return url + '&dragSource=' + dragId + '&oldPosition=' + e.dragSource.domNode.getAttribute('pos') + '&position=' + position
 }
 
-function initDrop(markupId, dropId, url){
+function initDrop(markupId, dropIds, url){
 	var dl = dojo.byId(markupId);
-	var drop = new dojo.dnd.HtmlDropTarget(dl, [dropId]);
+	var drop = new dojo.dnd.HtmlDropTarget(dl, dropIds);
 	dojo.event.connect(drop, 'onDrop', function(e) {
 		wicketAjaxGet(createUrl(e, url),function(){},function(){});
 	});
