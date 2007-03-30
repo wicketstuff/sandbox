@@ -162,6 +162,10 @@ public class DojoLayoutContainer extends AbstractDojoContainer{
 		protected void respond(AjaxRequestTarget target) {
 			//Never Called : no callback on this component
 		}
+		
+		public void onComponentReRendered(AjaxRequestTarget ajaxTarget) {
+			ajaxTarget.appendJavascript("dojo.widget.byId('" + getComponent().getMarkupId() + "').onResized()");
+		}
 	}
 
 }
