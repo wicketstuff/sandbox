@@ -1,5 +1,5 @@
 function createUrl(e, url){
-	var dragId = e.dragSource.domNode.id;
+	var dragId = e.dragObject.domNode.id;
 	var all = e.dragSource.domNode.parentNode.getElementsByTagName('div')
 	var position = 0;
 	while (all[position] != e.dragSource.domNode){
