@@ -18,8 +18,6 @@ package wicket.contrib.dojo.markup.html.floatingpane;
 
 import wicket.ajax.AjaxRequestTarget;
 import wicket.contrib.dojo.AbstractRequireDojoBehavior;
-import wicket.contrib.dojo.templates.DojoPackagedTextTemplate;
-import wicket.markup.html.IHeaderResponse;
 
 /**
  * Handler for {@link DojoFloatingPane}
@@ -32,17 +30,6 @@ public class DojoFloatingPaneHandler extends AbstractRequireDojoBehavior
 	{
 		//DO NOTHING
 	}
-	
-	/* (non-Javadoc)
-	 * @see wicket.contrib.dojo.DojoAjaxHandler#renderHead(wicket.markup.html.IHeaderResponse)
-	 */
-	public void renderHead(IHeaderResponse response)
-	{
-		super.renderHead(response);
-		DojoPackagedTextTemplate template = new DojoPackagedTextTemplate(DojoFloatingPaneHandler.class, "DojoFloatingPaneHandlerTemplate.js");
-		response.renderJavascript(template.asString(), template.getStaticKey());
-	}
-
 	public void setRequire(RequireDojoLibs libs)
 	{
 		libs.add("dojo.widget.FloatingPane");
