@@ -16,31 +16,32 @@
  */
 package wicket.contrib.dojo.markup.html.container;
 
-import wicket.ajax.AjaxRequestTarget;
-import wicket.contrib.dojo.AbstractRequireDojoBehavior;
 
 /**
- * A very simple handler for Dojo containers
+ * Interface defining a DojoContainer, Directly implentede by {@link AbstractDojoContainer}
+ * Only this king of component can be used as child of an other IDojoContainer
+ * 
  * @author Vincent Demay
  *
  */
-@SuppressWarnings("serial")
-public class DojoSimpleContainerHandler extends AbstractRequireDojoBehavior
-{
+public interface IDojoContainer {
 
-	/* (non-Javadoc)
-	 * @see wicket.contrib.dojo.AbstractRequireDojoBehavior#setRequire(wicket.contrib.dojo.AbstractRequireDojoBehavior.RequireDojoLibs)
+	/**
+	 * Return the Container title
+	 * @return container title
 	 */
-	@SuppressWarnings("unchecked")
-	public void setRequire(final RequireDojoLibs libs)
-	{
-		libs.add("dojo.widget.ContentPane");
-	}
-
-	protected void respond(AjaxRequestTarget target)
-	{
-		//DO NOTHING
-		
-	}
-
+	public String getTitle();
+	
+	
+	/**
+	 * Set the container title
+	 * @param title container title
+	 */
+	public void setTitle(String title);
+	
+	/**
+	 * Return the markupid of this component
+	 * @return
+	 */
+	public String getMarkupId();
 }

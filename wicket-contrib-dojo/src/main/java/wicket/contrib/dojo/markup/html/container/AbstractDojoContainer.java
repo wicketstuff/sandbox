@@ -23,9 +23,10 @@ import wicket.contrib.dojo.widgets.StylingWebMarkupContainer;
  * @author vincent demay
  *
  */
-public abstract class AbstractDojoContainer extends StylingWebMarkupContainer{
+public abstract class AbstractDojoContainer extends StylingWebMarkupContainer implements IDojoContainer{
 	
 	private String title;
+	
 	
 	/**
 	 * Construct a dojo container

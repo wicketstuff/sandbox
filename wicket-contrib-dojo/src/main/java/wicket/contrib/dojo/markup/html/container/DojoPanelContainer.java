@@ -16,31 +16,21 @@
  */
 package wicket.contrib.dojo.markup.html.container;
 
-import wicket.ajax.AjaxRequestTarget;
-import wicket.contrib.dojo.AbstractRequireDojoBehavior;
+import wicket.markup.html.panel.Panel;
 
 /**
- * A very simple handler for Dojo containers
+ * 
  * @author Vincent Demay
  *
+ * TODO implement ;)
  */
 @SuppressWarnings("serial")
-public class DojoSimpleContainerHandler extends AbstractRequireDojoBehavior
+public abstract class DojoPanelContainer extends Panel implements IDojoContainer
 {
 
-	/* (non-Javadoc)
-	 * @see wicket.contrib.dojo.AbstractRequireDojoBehavior#setRequire(wicket.contrib.dojo.AbstractRequireDojoBehavior.RequireDojoLibs)
-	 */
-	@SuppressWarnings("unchecked")
-	public void setRequire(final RequireDojoLibs libs)
-	{
-		libs.add("dojo.widget.ContentPane");
-	}
-
-	protected void respond(AjaxRequestTarget target)
-	{
-		//DO NOTHING
-		
+	public DojoPanelContainer(String id) {
+		super(id);
+		// TODO Auto-generated constructor stub
 	}
 
 }

@@ -14,33 +14,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package wicket.contrib.dojo.markup.html.container;
+package wicket.contrib.dojo.markup.html.container.accordion;
 
-import wicket.ajax.AjaxRequestTarget;
-import wicket.contrib.dojo.AbstractRequireDojoBehavior;
+import wicket.contrib.dojo.markup.html.container.AbstractDojoChangeContainerHandler;
 
 /**
- * A very simple handler for Dojo containers
- * @author Vincent Demay
+ * Handler for {@link DojoAccordionContainer}
+ * @author vdemay
  *
  */
 @SuppressWarnings("serial")
-public class DojoSimpleContainerHandler extends AbstractRequireDojoBehavior
+public class DojoAccordionContainerHandler extends AbstractDojoChangeContainerHandler
 {
-
-	/* (non-Javadoc)
-	 * @see wicket.contrib.dojo.AbstractRequireDojoBehavior#setRequire(wicket.contrib.dojo.AbstractRequireDojoBehavior.RequireDojoLibs)
-	 */
 	@SuppressWarnings("unchecked")
-	public void setRequire(final RequireDojoLibs libs)
+	public void setRequire(RequireDojoLibs libs)
 	{
-		libs.add("dojo.widget.ContentPane");
-	}
-
-	protected void respond(AjaxRequestTarget target)
-	{
-		//DO NOTHING
-		
+		libs.add("dojo.widget.AccordionContainer");
 	}
 
 }

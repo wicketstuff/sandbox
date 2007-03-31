@@ -24,6 +24,7 @@ import wicket.markup.ComponentTag;
  * @author Vincent Demay
  *
  */
+@SuppressWarnings("serial")
 public class DojoSimpleContainer extends AbstractDojoContainer
 {
 	/**
