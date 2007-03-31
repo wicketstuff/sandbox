@@ -1,0 +1,88 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+	<head>
+		<title>Untitled Document</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+		<style type="text/css">
+		</style>
+	</head>
+
+<body>
+	 <form wicket:id="form">
+			<input wicket:id="colorPicker" type="text"></input>
+			
+		<input value="Submit" name="Submit" type="submit" />
+	</form>
+	<br/>
+	<br/>
+	<br/>
+	<table align="center" style="border-color: navy; border-style: solid; border-width: 1px; font-size: 12px">
+		<tr>
+			<td style="color: white; background-color: navy; font-weight: bold; text-align: center;">
+				Color Picker. Can Accept toggler to display some effects 
+			</td>
+		</tr>
+		<tr>
+			<td>
+
+			</td>
+		</tr>
+		<tr>
+			<td style="color: white; background-color: navy; font-weight: bold; text-align: center;">
+				Java Code
+			</td>
+		</tr>
+		<tr>
+			<td>
+					<pre>
+package wicket.contrib.dojo.examples;
+
+import wicket.PageParameters;
+import wicket.contrib.dojo.markup.html.form.DojoColorPicker;
+import wicket.markup.html.WebPage;
+import wicket.markup.html.form.Form;
+import wicket.model.Model;
+
+public class ColorPickerShower extends WebPage {
+	
+	private String color;
+		
+	public ColorPickerShower(PageParameters parameters){
+
+		color = "FF4554"; 
+		
+		Form form = new Form("form");
+		
+		DojoColorPicker colorPicker = new DojoColorPicker("colorPicker", new Model(color));
+		add(colorPicker);
+
+		this.add(form);
+		
+	}
+}
+
+
+					</pre>
+			</td>
+		</tr>
+	</table>
+ <br/>
+ <br/>
+  <br/>
+ <br/>
+  <br/>
+ <br/>
+  <br/>
+ <br/>
+  <br/>
+ <br/>
+  <br/>
+ <br/>
+<wicket:link>
+		<ul>
+		 <li><a href="Index.html">Back to index</a></li>
+		</ul>
+</wicket:link>
+</body>
+</html>
