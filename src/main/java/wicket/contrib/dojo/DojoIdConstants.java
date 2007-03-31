@@ -39,6 +39,7 @@ public interface DojoIdConstants{
 	public static String DOJO_TYPE_RICHTEXT				 = "Editor2";
 	public static String DOJO_TYPE_DATEPICKER			 = "DropdownDatePicker";
 	public static String DOJO_TYPE_TIMEPICKER			 = "DropdownTimePicker";
+	public static String DOJO_TYPE_COLORPICKER			 = "DropdownColorPicker";
 	
 	public static String DOJO_TYPE_TABCONTAINER          = "TabContainer";
 	public static String DOJO_TYPE_ACCORDIONCONTAINER    = "AccordionContainer";
