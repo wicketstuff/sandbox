@@ -55,6 +55,7 @@ import wicket.model.Model;
  * @author Vincent Demay
  *
  */
+@SuppressWarnings("serial")
 public class DojoDialog extends HideWebMarkupContainer
 {
 

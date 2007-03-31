@@ -52,6 +52,7 @@ import wicket.model.Model;
  * @author Vincent Demay
  *
  */
+@SuppressWarnings("serial")
 public class DojoDialogCloser extends Link{
 
 	/**
@@ -63,14 +64,12 @@ public class DojoDialogCloser extends Link{
 		super(id);
 		String dialogId = dialog.getMarkupId();
 		String onClick = "";
-		onClick = "javascript:getDialog('" + dialogId + "').hide(); return false;";
+		onClick = "javascript:dojo.widget.byId('" + dialogId + "').hide(); return false;";
 		this.add(new AttributeAppender("onClick", new Model(onClick),""));
 		this.add(new AttributeModifier("href", new Model("#")));
 	}
 
-	/* (non-Javadoc)
-	 * @see wicket.markup.html.link.Link#onClick()
-	 */
+	@Override
 	public void onClick()
 	{
 		//DO NOTHING
