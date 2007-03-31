@@ -16,9 +16,8 @@
  */
 package wicket.contrib.dojo.markup.html.container.accordion;
 
-import wicket.MarkupContainer;
 import wicket.contrib.dojo.DojoIdConstants;
-import wicket.contrib.dojo.markup.html.container.AbstractDojoContainer;
+import wicket.contrib.dojo.markup.html.container.AbstractDojoChangeContainer;
 import wicket.markup.ComponentTag;
 
 /**
@@ -53,9 +52,9 @@ import wicket.markup.ComponentTag;
  * @author Vincent Demay
  *
  */
-public class DojoAccordionContainer extends AbstractDojoContainer
+@SuppressWarnings("serial")
+public class DojoAccordionContainer extends AbstractDojoChangeContainer
 {
-
 	/**
 	 * Construct a DojoAccordionContainer
 	 * @param parent parent where the container will be added
@@ -65,9 +64,9 @@ public class DojoAccordionContainer extends AbstractDojoContainer
 	public DojoAccordionContainer(String id, String title)
 	{
 		super(id, title);
-		add(new DojoAccordionHandler());
+		add(new DojoAccordionContainerHandler());
 	}
-
+	
 	/**
 	 * Construct a DojoAccordionContainer
 	 * @param parent parent where the container will be added
@@ -77,20 +76,13 @@ public class DojoAccordionContainer extends AbstractDojoContainer
 	{
 		this(id, null);
 	}
-
+	
 	protected void onComponentTag(ComponentTag tag)
 	{
 		super.onComponentTag(tag);
 		tag.put(DojoIdConstants.DOJO_TYPE, DojoIdConstants.DOJO_TYPE_ACCORDIONCONTAINER);
+		tag.put("selectedChild", getSelectedChildId());
 		tag.put("label", getTitle());
-	}
+	} 
 
-	/**
-	 * Triggered when change selection
-	 *
-	 */
-	public void onChange()
-	{
-		
-	}
 }

@@ -17,7 +17,7 @@
 package wicket.contrib.dojo.markup.html.container.tab;
 
 import wicket.contrib.dojo.DojoIdConstants;
-import wicket.contrib.dojo.markup.html.container.AbstractDojoContainer;
+import wicket.contrib.dojo.markup.html.container.AbstractDojoChangeContainer;
 import wicket.markup.ComponentTag;
 
 /**
@@ -58,26 +58,26 @@ import wicket.markup.ComponentTag;
  * @author Vincent Demay
  *
  */
-public class DojoTabContainer extends AbstractDojoContainer
+@SuppressWarnings("serial")
+public class DojoTabContainer extends AbstractDojoChangeContainer
 {
-	private AbstractDojoContainer selected;
 	
 	private String tabPosition;
 	
 	/**
-	 * Tab position on top see setTabPosition
+	 * Tab position on top see {@link #setTabPosition(String)}
 	 */
 	public final static String TAB_POS_TOP 		= "top";
 	/**
-	 * Tab position on bottom see setTabPosition
+	 * Tab position on bottom see {@link #setTabPosition(String)}
 	 */
 	public final static String TAB_POS_BOTTOM 	= "bottom";
 	/**
-	 * Tab position on left see setTabPosition
+	 * Tab position on left see {@link #setTabPosition(String)}
 	 */
 	public final static String TAB_POS_LEFT 	= "left-h";
 	/**
-	 * Tab position on right see setTabPosition
+	 * Tab position on right see {@link #setTabPosition(String)}
 	 */
 	public final static String TAB_POS_RIGHT 	= "right-h";
 	
@@ -106,7 +106,7 @@ public class DojoTabContainer extends AbstractDojoContainer
 		super.onComponentTag(tag);
 		tag.put(DojoIdConstants.DOJO_TYPE, DojoIdConstants.DOJO_TYPE_TABCONTAINER);
 		tag.put("label", getTitle());
-		tag.put("selectedChild", getSelectedTabId());
+		tag.put("selectedChild", getSelectedChildId());
 		tag.put("labelPosition", tabPosition);
 	}
 	
@@ -118,42 +118,5 @@ public class DojoTabContainer extends AbstractDojoContainer
 	{
 		this.tabPosition = tabPosition;
 	}
-
-	/**
-	 * Tab select by default
-	 * @param tab Tab select by default
-	 */
-	public void setSelectedTab(AbstractDojoContainer tab){
-		selected = tab;
-	}
-	
-	/**
-	 * return the current selected tab id
-	 * @return the current selected tab id
-	 */
-	public String getSelectedTabId(){
-		if (selected != null){
-			return selected.getMarkupId();
-		}
-		else return "";
-	}
-	
-	/**
-	 * return the current container selected in the tab container
-	 * @return the selected container in the tab container
-	 */
-	public AbstractDojoContainer getSelectedTab(){
-		return selected;
-	}
-
-	/**
-	 * Ovewrite this methos to handle clicks on tab
-	 * @param tab new tab selected
-	 */
-	public void onSelectTab(AbstractDojoContainer tab)
-	{
-				
-	}
-
 
 }
