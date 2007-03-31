@@ -23,6 +23,7 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import wicket.behavior.AttributeAppender;
+import wicket.contrib.dojo.DojoIdConstants;
 import wicket.contrib.dojo.DojoLocaleManager;
 import wicket.contrib.dojo.toggle.DojoToggle;
 import wicket.markup.ComponentTag;
@@ -101,7 +102,7 @@ public class DojoTimePicker extends TextField {
 
 	protected void onComponentTag(ComponentTag tag)	{
 		super.onComponentTag(tag);
-		tag.put("dojoType", "DropdownTimePicker");
+		tag.put(DojoIdConstants.DOJO_TYPE, DojoIdConstants.DOJO_TYPE_TIMEPICKER);
 		if(getLocaleAsString() != null) {
 			tag.put("lang", getLocaleAsString());
 		}
