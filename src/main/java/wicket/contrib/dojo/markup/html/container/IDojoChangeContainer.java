@@ -17,30 +17,25 @@
 package wicket.contrib.dojo.markup.html.container;
 
 import wicket.ajax.AjaxRequestTarget;
-import wicket.contrib.dojo.AbstractRequireDojoBehavior;
 
 /**
- * A very simple handler for Dojo containers
+ * A {@link IDojoContainer} trigering {@link #onChange()} when display change
+ * 
  * @author Vincent Demay
  *
  */
-@SuppressWarnings("serial")
-public class DojoSimpleContainerHandler extends AbstractRequireDojoBehavior
-{
+public interface IDojoChangeContainer extends IDojoContainer{
 
-	/* (non-Javadoc)
-	 * @see wicket.contrib.dojo.AbstractRequireDojoBehavior#setRequire(wicket.contrib.dojo.AbstractRequireDojoBehavior.RequireDojoLibs)
+	/**
+	 * Triggered when display part change
+	 *
 	 */
-	@SuppressWarnings("unchecked")
-	public void setRequire(final RequireDojoLibs libs)
-	{
-		libs.add("dojo.widget.ContentPane");
-	}
-
-	protected void respond(AjaxRequestTarget target)
-	{
-		//DO NOTHING
-		
-	}
-
+	public void onSelectionChange(IDojoContainer selected,  AjaxRequestTarget target);
+	
+	/**
+	 * Allow to set the display child
+	 * 
+	 * @param toSelect child to select
+	 */
+	public void setSelected(IDojoContainer toSelect);
 }

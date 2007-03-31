@@ -16,108 +16,20 @@
  */
 package wicket.contrib.dojo.markup.html.container.tab;
 
-import wicket.Component;
-import wicket.Component.IVisitor;
-import wicket.ajax.AjaxRequestTarget;
-import wicket.contrib.dojo.AbstractRequireDojoBehavior;
-import wicket.contrib.dojo.markup.html.container.AbstractDojoContainer;
-import wicket.markup.html.IHeaderResponse;
+import wicket.contrib.dojo.markup.html.container.AbstractDojoChangeContainerHandler;
 
 /**
  * AHandler for {@link DojoTabContainer}
  * @author vdemay
  *
  */
-public class DojoTabContainerHandler extends AbstractRequireDojoBehavior
+@SuppressWarnings("serial")
+public class DojoTabContainerHandler extends AbstractDojoChangeContainerHandler
 {
 
+	@SuppressWarnings("unchecked")
 	public void setRequire(RequireDojoLibs libs)
 	{
 		libs.add("dojo.widget.TabContainer");
 	}
-
-
-	protected final void respond(AjaxRequestTarget target)
-	{
-		AbstractDojoContainer container = (AbstractDojoContainer) getComponent();
-		String tabId = container.getRequest().getParameter("tabId");
-		String widgetPath = tabId;
-		if (tabId.indexOf("_") != -1){
-			widgetPath = tabId.substring(tabId.lastIndexOf('_')+1, tabId.length());
-		}
-		AbstractDojoContainer tab = (AbstractDojoContainer)container.get(widgetPath);
-		((DojoTabContainer)getComponent()).setSelectedTab(tab);
-		((DojoTabContainer)getComponent()).onSelectTab(tab);
-	}
-	
-	/**
-	 * @return javascript that will generate an ajax GET request to this
-	 *         behavior *
-	 * @param recordPageVersion
-	 *            if true the url will be encoded to execute on the current page
-	 *            version, otherwise url will be encoded to execute on the
-	 *            latest page version
-	 */
-	protected CharSequence getCallbackScript(boolean recordPageVersion)
-	{
-		return getCallbackScript("wicketAjaxGet('" + getCallbackUrl(recordPageVersion,true) + "&tabId=' + dojo.widget.byId('" + getComponent().getMarkupId() + "').selectedChildWidget.widgetId", null,null);
-	}
-	
-	
-	/**
-	 * @return javascript that will generate an ajax GET request to this
-	 *         behavior *
-	 */
-	protected CharSequence getCallbackScript(){
-		return getCallbackScript(true);
-	}
-
-
-	public void renderHead(IHeaderResponse response)
-	{
-		super.renderHead(response);
-
-		//add onShow event on each child in the tabContainer
-		DojoTabContainer container = (DojoTabContainer)getComponent();
-		RenderHeadCreator head = new RenderHeadCreator(container);
-		container.visitChildren(head);
-		
-		response.renderJavascript(head.getHead(), getComponent().getMarkupId() + "script");
-	}
-	
-	/**
-	 * Create the head contribution
-	 * @author Vincent demay
-	 */
-	private class RenderHeadCreator implements IVisitor{
-
-		private String toReturn;
-		private DojoTabContainer container;
-		
-		public RenderHeadCreator(DojoTabContainer container)
-		{
-			toReturn = "";
-			toReturn += "function initTab" + container.getMarkupId() + "(){\n";
-			
-			this.container = container;
-			
-		}
-
-		public Object component(Component component)
-		{
-			String id = component.getMarkupId();
-			toReturn += "	var widget = dojo.widget.byId('" + id + "')\n";
-			toReturn += "	dojo.event.connect(widget,'onShow', function(){" + getCallbackScript() + "})\n";
-			
-			return CONTINUE_TRAVERSAL_BUT_DONT_GO_DEEPER;
-		}
-		
-		public String getHead(){
-			toReturn += "}\n";
-			toReturn += "dojo.event.connect(dojo, \"loaded\", \"initTab" + container.getMarkupId() + "\");\n";
-			return toReturn;
-		}
-		
-	}
-
 }

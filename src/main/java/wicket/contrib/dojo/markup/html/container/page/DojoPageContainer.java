@@ -16,11 +16,10 @@
  */
 package wicket.contrib.dojo.markup.html.container.page;
 
-import wicket.MarkupContainer;
-import wicket.Page;
 import wicket.PageParameters;
 import wicket.contrib.dojo.markup.html.container.DojoSimpleContainer;
 import wicket.markup.ComponentTag;
+import wicket.markup.html.WebPage;
 
 /**
  * Container able to render a {@link WebPage} in it

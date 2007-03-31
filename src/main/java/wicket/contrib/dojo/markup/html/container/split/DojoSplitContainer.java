@@ -62,6 +62,7 @@ import wicket.markup.ComponentTag;
 public class DojoSplitContainer extends AbstractDojoContainer
 {
 	
+	//TODO make an enum instead of constants
 	public static final String ORIENTATION_VERTICAL = "vertical";
 	public static final String ORIENTATION_HORIZONTAL = "horizontal";
 	
@@ -95,9 +96,9 @@ public class DojoSplitContainer extends AbstractDojoContainer
 		super.onComponentTag(tag);
 		tag.put(DojoIdConstants.DOJO_TYPE, DojoIdConstants.DOJO_TYPE_SPLITCONTAINER);
 		tag.put("label", getTitle());
-		tag.put("orientation", orientation);
-		tag.put("sizerWidth", Integer.toString(sizerWidth));
-		tag.put("activeSizing", activeSizing.toString());
+		tag.put("orientation", getOrientation());
+		tag.put("sizerWidth", Integer.toString(getSizerWidth()));
+		tag.put("activeSizing", getActiveSizing().toString());
 		tag.put("persist", "false");
 	}
 
