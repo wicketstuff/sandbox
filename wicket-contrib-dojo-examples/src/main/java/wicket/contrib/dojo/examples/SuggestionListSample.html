@@ -89,7 +89,46 @@ public class SuggestionListSample extends WebPage {
 				return list;
 			}
 		};
+		
+		
+		ArrayList personList = new ArrayList();
+	
+		personList.add(new person("JBQ", 1));
+		personList.add(new person("Eelco", 2));
+		personList.add(new person("Igor", 3));
+		personList.add(new person("Vincent", 4));
+		
+		DojoDropDownChoice choice = new DojoDropDownChoice("dropdown", personList, new ChoiceRenderer("name", "id"));
+		choice.setHandleSelectionChange(true);
+		add(choice);
 	}
+	
+	public class person{
+		private String name;
+		private int id;
+		
+		public person(String name, int id) {
+			super();
+			this.name = name;
+			this.id = id;
+		}
+
+		public int getId() {
+			return id;
+		}
+
+		public void setId(int id) {
+			this.id = id;
+		}
+
+		public String getName() {
+			return name;
+		}
+
+		public void setName(String name) {
+			this.name = name;
+		}
+	}	
 }
 				</pre>
 			</td>
