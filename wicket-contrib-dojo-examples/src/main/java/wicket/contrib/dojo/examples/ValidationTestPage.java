@@ -10,9 +10,9 @@ import wicket.markup.html.form.Form;
 import wicket.markup.html.form.FormComponent;
 import wicket.markup.html.form.RequiredTextField;
 import wicket.markup.html.form.TextArea;
-import wicket.markup.html.form.validation.NumberValidator;
-import wicket.markup.html.form.validation.StringValidator;
 import wicket.model.PropertyModel;
+import wicket.validation.validator.NumberValidator;
+import wicket.validation.validator.StringValidator;
 
 public class ValidationTestPage extends WebPage{
 
