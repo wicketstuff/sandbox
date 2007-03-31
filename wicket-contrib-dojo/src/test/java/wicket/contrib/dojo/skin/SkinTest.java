@@ -23,14 +23,14 @@ import wicket.contrib.dojo.skin.manager.SkinManager;
 /**
  * Test {@link SkinManager} 
  */
-public class SkinnTest extends WicketTestCase
+public class SkinTest extends WicketTestCase
 {
 	/**
 	 * Construct.
 	 * 
 	 * @param name
 	 */
-	public SkinnTest(String name)
+	public SkinTest(String name)
 	{
 		super(name);
 	}
