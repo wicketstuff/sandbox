@@ -18,7 +18,6 @@ package wicket.contrib.dojo.markup.html.dialog;
 
 import wicket.ajax.AjaxRequestTarget;
 import wicket.contrib.dojo.AbstractRequireDojoBehavior;
-import wicket.contrib.dojo.templates.DojoPackagedTextTemplate;
 import wicket.markup.html.IHeaderResponse;
 
 /**
@@ -26,10 +25,9 @@ import wicket.markup.html.IHeaderResponse;
  * @author <a href="http://www.demay-fr.net/blog/index.php/en">Vincent Demay</a>
  *
  */
+@SuppressWarnings("serial")
 public class DojoDialogHandler extends AbstractRequireDojoBehavior
 {
-	private final static String TEMPLATE = "DojoDialogHandlerTemplate.js";
-	
 	protected void respond(AjaxRequestTarget target)
 	{
 		//DO NOTHING
@@ -41,12 +39,9 @@ public class DojoDialogHandler extends AbstractRequireDojoBehavior
 	public void renderHead(IHeaderResponse response)
 	{
 		super.renderHead(response);
-
-		DojoPackagedTextTemplate template = new DojoPackagedTextTemplate(this.getClass(), TEMPLATE);
-		response.renderJavascript(template.asString(), template.getStaticKey());
-		
 	}
 
+	@SuppressWarnings("unchecked")
 	public void setRequire(RequireDojoLibs libs)
 	{
 		libs.add("dojo.widget.Dialog");
