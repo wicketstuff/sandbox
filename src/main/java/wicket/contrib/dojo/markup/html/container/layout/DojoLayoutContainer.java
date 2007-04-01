@@ -13,14 +13,14 @@ import wicket.model.Model;
  * A container allowing user to layout a page.
  * <p>
  * 	Layout is done by setting position when adding a child.<br/>
- *  <b>WARNING</b> children have to be {@link AbstractDojoContainer}
+ *  <b>WARNING</b> children have to be of type {@link AbstractDojoContainer}
  * </p>
  * <p>
- * 	Each added child (see {@link #add(AbstractDojoContainer, wicket.contrib.dojo.markup.html.container.layout.DojoLayoutContainer.Position)} ) will be render on the render 
- *  position (see {@link Position}) using the <b>Html template</b> as render flow.
+ * 	Each added child (see {@link #add(AbstractDojoContainer, wicket.contrib.dojo.markup.html.container.layout.DojoLayoutContainer.Position)} )
+ *  will be placed according to the specified {@link Position}, and using the order specified in the HTML markup.
  * </p>
  * <p>
- *  example : 
+ *  <b>Example :</b> 
  *  <pre>
  *  	new DojoLayoutContainer("main")
  *  		.add(new DojoSimpleContainer("left"), Position.Left)
@@ -41,7 +41,7 @@ import wicket.model.Model;
  *  	&lt;/div>
  *  </pre>
  *  
- *  Will be render as : 
+ *  Will be rendered as : 
  *  
  *  ,------------------------------------------------------------------,
  *  |           |                        top                           |
