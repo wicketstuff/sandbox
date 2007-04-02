@@ -7,8 +7,20 @@ wicketAjaxDebugEnable=true;
 
 <script type="text/javascript" src="resources/wicket.ajax.AbstractDefaultAjaxBehavior/wicket-ajax-debug-drag.js"></script>
 <script type="text/javascript" src="resources/wicket.ajax.AbstractDefaultAjaxBehavior/wicket-ajax-debug.js"></script>
+<script type="text/javascript" id="wicket.contrib.dojo.AbstractDefaultDojoBehavior/debug"><!--/*--><![CDATA[/*><!--*/
+var djConfig = {};
+djConfig.isDebug = true;
+
+/*-->]]>*/</script>
+
 <script type="text/javascript" src="resources/wicket.contrib.dojo.AbstractDefaultDojoBehavior/dojo-0.4/dojo.js"></script>
 <script type="text/javascript" src="resources/wicket.contrib.dojo.AbstractRequireDojoBehavior/dojo-wicket/dojoWicket.js"></script>
+<script type="text/javascript" id="wicket.contrib.dojo.AbstractDefaultDojoBehavior/consoleDebug"><!--/*--><![CDATA[/*><!--*/
+dojo.require("dojo.debug.console");
+dojo.require("dojo.widget.Tree");
+
+/*-->]]>*/</script>
+
 <script type="text/javascript" id="wicket.contrib.dojo.AbstractRequireDojoBehavior"><!--/*--><![CDATA[/*><!--*/
 	dojo.require("dojo.widget.FloatingPane")
 
