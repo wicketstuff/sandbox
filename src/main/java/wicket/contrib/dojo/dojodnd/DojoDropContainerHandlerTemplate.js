@@ -1,11 +1,28 @@
 function createUrl(e, url){
 	var dragId = e.dragObject.domNode.id;
-	var all = e.dragSource.domNode.parentNode.getElementsByTagName('div')
+
+	var child = dojo.dom.getFirstChildElement(e.dragObject.domNode.parentNode);
 	var position = 0;
-	while (all[position] != e.dragSource.domNode){
+	var found = false;
+	while (child != null && !found) {
+		if (child == e.dragObject.domNode) {
+			found = true;
+			break;
+		}
 		position++;
+		child = dojo.dom.nextElement(child);
 	}
-	return url + '&dragSource=' + dragId + '&oldPosition=' + e.dragSource.domNode.getAttribute('pos') + '&position=' + position
+	
+	var queryString = "&dragSource=" + dragId + "&oldPosition=" + e.dragObject.domNode.getAttribute("pos");
+	if (found) {
+		queryString += "&position=" + position;
+		dojo.debug("Item inserted at position " + position);
+	} else {
+		dojo.debug("Unable to determine new position");
+	}
+	
+	dojo.debug("Query string: " + queryString);
+	return url + queryString;
 }
 
 function initDrop(markupId, dropIds, url){
