@@ -114,6 +114,7 @@ dojo.widget.defineWidget(
 	onUISelect:function(/* DomEvent */ e){
 		//	summary
 		//	fired when a user selects a row
+		var lastSelection=this.getSelectedIndexes();
 		var row=dojo.html.getParentByType(e.target,"tr");
 		var body=dojo.html.getParentByType(row,"tbody");
 		if(this.enableMultipleSelect){
@@ -173,7 +174,20 @@ dojo.widget.defineWidget(
 				this.resetSelections(body);
 				row.setAttribute("selected","true");
 			}
+			
+			var newSelection=this.getSelectedIndexes();
+			if(this.equals(lastSelection, newSelection)) {
+				e.stopPropagation();
+				e.preventDefault();
+				return;
+			}
+			
 		}else{
+			if(row.getAttribute("selected") == "true") {
+				e.stopPropagation();
+				e.preventDefault();
+				return;
+			}
 			//	reset the selection and go.
 			this.resetSelections(body);
 			row.setAttribute("selected","true");
@@ -205,6 +219,30 @@ dojo.widget.defineWidget(
 			}
 		}
 		return null;
+	},
+	
+	getSelectedIndexes:function(){
+		var body = this.domNode.getElementsByTagName("tbody")[0];
+		var rows=body.getElementsByTagName("tr");
+		var indexes=[];
+		for(var i=0;i<rows.length;i++){
+			if (rows[i].getAttribute("selected") ==  "true"){
+				indexes[i]=i;
+			}
+		}
+		return indexes;
+	},
+	
+	equals:function(/* arrays */ a1, a2) {
+		if(a1.length != a2.length) {
+			return false;
+		}
+		for(var i=0;i<a1.length;i++){
+			if (a1[i] != a2[i]){
+				return false;
+			}
+		}
+		return true;
 	},
 	
 	onChoose:function(/* DomEvent */ e){ 
