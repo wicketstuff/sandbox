@@ -60,7 +60,8 @@ public abstract class DojoLink extends AjaxLink
 			protected void onComponentTag(ComponentTag tag)
 			{
 				// return false to end event processing in case the DojoLink is bound to a <button> contained in a form
-				tag.put("onclick", getCallbackScript() + "; return false;");
+				// stop all event after the click : see http://wicketstuff.org/jira/browse/DOJO-45
+				tag.put("onclick", getCallbackScript() + "; dojo.event.browser.stopEvent(event); return false;"); 
 			}
 
 			protected void respond(AjaxRequestTarget target)
