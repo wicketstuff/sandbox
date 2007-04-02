@@ -93,8 +93,9 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 		List selected = ((DojoSelectableListContainer)getComponent()).getSelected();
 
 		String indexList[] = getComponent().getRequest().getParameters("select");
+		String dblClick = getComponent().getRequest().getParameter("dblClick");
 
-		if (indexList == null)
+		if ("true".equals(dblClick))
 		{
 			if (selected.size() > 0)
 				// No parameters by the name "select", so double-click has occured,
@@ -108,26 +109,28 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 			// Clear current selection
 			selected.clear();
 
-			// Compute new selection 
-			if (child instanceof ListView){
-				ListView listView = (ListView) child;
-				List all = listView.getList();
-				int pos;
-				for (int i=0; i < indexList.length; i++){
-					pos = Integer.parseInt(indexList[i]);
-					selected.add(all.get(pos));
-				}
-			}else if (child instanceof RepeatingView){
-				RepeatingView repeatingView = (RepeatingView) child;
-				Iterator ite = repeatingView.iterator();
-				List selectedIndexes = Arrays.asList(indexList);
-				int pos = 0;
-				while (ite.hasNext()){
-					Object element = ite.next();
-					if (selectedIndexes.contains(Integer.toString(pos))){
-						selected.add(((Item)element).getModelObject());
+			if(indexList != null) {
+				// Compute new selection 
+				if (child instanceof ListView){
+					ListView listView = (ListView) child;
+					List all = listView.getList();
+					int pos;
+					for (int i=0; i < indexList.length; i++){
+						pos = Integer.parseInt(indexList[i]);
+						selected.add(all.get(pos));
 					}
-					pos++;
+				}else if (child instanceof RepeatingView){
+					RepeatingView repeatingView = (RepeatingView) child;
+					Iterator ite = repeatingView.iterator();
+					List selectedIndexes = Arrays.asList(indexList);
+					int pos = 0;
+					while (ite.hasNext()){
+						Object element = ite.next();
+						if (selectedIndexes.contains(Integer.toString(pos))){
+							selected.add(((Item)element).getModelObject());
+						}
+						pos++;
+					}
 				}
 			}
 			//store selected
@@ -158,7 +161,7 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 	 */
 	protected final CharSequence getDoubleClickCallbackScripts(){
 		if (((DojoSelectableListContainer) getComponent()).isAjaxModeOnChoose()){
-			return getCallbackScript("wicketAjaxGet('" + super.getCallbackUrl(true, true) + "'", null,null);
+			return getCallbackScript("wicketAjaxGet('" + super.getCallbackUrl(true, true) + "&dblClick=true'", null,null);
 		}else{
 			CharSequence url = ((DojoSelectableListContainer) getComponent()).urlFor(ILinkListener.INTERFACE);
 			return "window.location.href='" + url + "' + getSelectableTableSelection('"+getComponent().getMarkupId()+"') ";
