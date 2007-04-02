@@ -19,13 +19,16 @@ package wicket.contrib.dojo.widgets;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
-import wicket.MarkupContainer;
 import wicket.markup.ComponentTag;
 import wicket.markup.html.WebMarkupContainer;
 import wicket.model.IModel;
 
 /**
  * {@link WebMarkupContainer} with style attribute
+ * <p>
+ * 	You can add css attribute on this container using the following behavior :
+ * Html attributes have bigger priority as java set attributes
+ * </p>
  * @author vdemay
  *
  */
@@ -58,8 +61,22 @@ public class StylingWebMarkupContainer extends WebMarkupContainer
 	protected void onComponentTag(ComponentTag tag)
 	{
 		super.onComponentTag(tag);
+		
+		//getHtmlStyle :
+		String styleAtt = (String)tag.getAttributes().get("style");
+		if(styleAtt != null){
+			String[] items = styleAtt.split(";");
+			for(int i=0; i<items.length; i++){
+				String item = items[i];
+				style.put(
+						item.substring(0, item.indexOf(":")).replaceAll(" ", ""), 
+						item.substring(item.indexOf(":") + 1, item.length()).replaceAll(" ", ""));
+			}
+		}
+		
 		onStyleAttribute(style);
 		Iterator ite = style.entrySet().iterator();
+		
 		String styleTag = "";
 		while (ite.hasNext()){
 			Entry entry = (Entry)ite.next();
