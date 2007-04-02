@@ -65,7 +65,7 @@ public abstract class AbstractDojoSkin {
 	 */
 	private final boolean exists(String file) {
 		URL res = getResourceClass().getClassLoader().getResource(
-				getResourceClass().getPackage().getName().replace('.', '/') + File.separatorChar + file);
+				getResourceClass().getPackage().getName().replace('.', '/') + '/' + file);
 		return res != null;
 	}
 
