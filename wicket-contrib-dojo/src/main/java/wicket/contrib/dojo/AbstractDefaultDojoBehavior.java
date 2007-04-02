@@ -17,8 +17,7 @@
 package wicket.contrib.dojo;
 
 
-import java.util.Iterator;
-
+import wicket.Application;
 import wicket.ResourceReference;
 import wicket.ajax.AbstractDefaultAjaxBehavior;
 import wicket.ajax.AjaxRequestTarget;
@@ -58,18 +57,43 @@ public abstract class AbstractDefaultDojoBehavior extends AbstractDefaultAjaxBeh
 	public static final ResourceReference DOJO_WICKET =  new CompressedResourceReference(
 			AbstractRequireDojoBehavior.class, "dojo-wicket/dojoWicket.js");
 
+	/** A unique ID for the JavaScript Dojo debug script */
+	private static final String JAVASCRIPT_DOJO_DEBUG_ID = AbstractDefaultDojoBehavior.class.getName() + "/debug";
+
+	/** A unique ID for the JavaScript Dojo console debug */
+	private static final String JAVASCRIPT_DOJO_CONSOLE_DEBUG_ID = AbstractDefaultDojoBehavior.class.getName() + "/consoleDebug";
+
 	/**
 	 * @see wicket.ajax.AbstractDefaultAjaxBehavior#renderHead(wicket.markup.html.IHeaderResponse)
 	 */
 	public void renderHead(IHeaderResponse response)
 	{
 		super.renderHead(response);
+
+		// enable dojo debug if our configuration type is DEVELOPMENT
+		final String configurationType = Application.get().getConfigurationType();
+		if (configurationType.equalsIgnoreCase(Application.DEVELOPMENT)) {
+			StringBuffer debugScript = new StringBuffer();
+			debugScript.append("var djConfig = {};\n");
+			debugScript.append("djConfig.isDebug = true;\n");
+			response.renderJavascript(debugScript.toString(), JAVASCRIPT_DOJO_DEBUG_ID);
+		}
+		
 		DojoLocaleManager.getInstance().renderLocale(response);
 		if (USE_DOJO_UNCOMPRESSED)
 			response.renderJavascriptReference(DOJO_UNCOMPRESSED);
 		else
 			response.renderJavascriptReference(DOJO);
 		response.renderJavascriptReference(DOJO_WICKET);
+		
+		// debug on firebug console if it is installed, otherwise it will just
+		// end up at the bottom of the page.
+		if (configurationType.equalsIgnoreCase(Application.DEVELOPMENT)) {
+			StringBuffer consoleDebugScript = new StringBuffer();
+			consoleDebugScript.append("dojo.require(\"dojo.debug.console\");\n");
+			consoleDebugScript.append("dojo.require(\"dojo.widget.Tree\");\n");
+			response.renderJavascript(consoleDebugScript.toString(), JAVASCRIPT_DOJO_CONSOLE_DEBUG_ID);
+		}
 	}
 
 	/**
