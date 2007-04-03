@@ -6,6 +6,7 @@ import wicket.ajax.AjaxRequestTarget;
 import wicket.contrib.dojo.AbstractRequireDojoBehavior;
 import wicket.contrib.dojo.DojoIdConstants;
 import wicket.contrib.dojo.markup.html.container.AbstractDojoContainer;
+import wicket.contrib.dojo.widgets.StyleAttribute;
 import wicket.markup.ComponentTag;
 import wicket.model.Model;
 
@@ -126,6 +127,14 @@ public class DojoLayoutContainer extends AbstractDojoContainer{
 	{
 		super.onComponentTag(tag);
 		tag.put(DojoIdConstants.DOJO_TYPE, DojoIdConstants.DOJO_TYPE_LAYOUTCONTAINER);
+	}
+	
+	/**
+	 * Add a default overflow hidden because of scrolling when 
+	 * calculating the layout
+     */
+	protected void onStyleAttribute(StyleAttribute styleAttribute){
+		styleAttribute.put("overflow", "hidden");
 	}
 	
 	/**
