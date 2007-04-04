@@ -25,13 +25,13 @@ import wicket.markup.html.form.Button;
 import wicket.markup.html.form.Form;
 import wicket.markup.html.form.RequiredTextField;
 import wicket.markup.html.form.TextField;
-import wicket.markup.html.form.validation.EmailAddressPatternValidator;
-import wicket.markup.html.form.validation.StringValidator;
 import wicket.model.CompoundPropertyModel;
 import wicket.model.IModel;
 import wicket.spring.injection.annot.SpringBean;
 import wicket.util.collections.MicroMap;
 import wicket.util.string.interpolator.MapVariableInterpolator;
+import wicket.validation.validator.EmailAddressValidator;
+import wicket.validation.validator.StringValidator;
 
 /**
  * Edit the Contact. Display details if an existing contact, then persist them
@@ -59,7 +59,7 @@ public class EditContactPage extends BasePage {
 	public EditContactPage(Page backPage, IModel contactModel) {
 		this.backPage = backPage;
 
-		Contact contact = (Contact) contactModel.getObject(this);
+		Contact contact = (Contact) contactModel.getObject();
 		Form form = new Form("contactForm", new CompoundPropertyModel(contact));
 		add(form);
 
@@ -73,7 +73,7 @@ public class EditContactPage extends BasePage {
 				.maximumLength(16)));
 
 		form.add(new TextField("email").add(StringValidator.maximumLength(128))
-				.add(EmailAddressPatternValidator.getInstance()));
+				.add(EmailAddressValidator.getInstance()));
 
 		form.add(new Button("cancel") {
 			public void onSubmit() {
