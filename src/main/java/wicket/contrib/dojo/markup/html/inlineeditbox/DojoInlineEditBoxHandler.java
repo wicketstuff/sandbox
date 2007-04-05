@@ -33,7 +33,7 @@ public class DojoInlineEditBoxHandler extends AbstractRequireDojoBehavior {
 	public void renderHead(IHeaderResponse response) {
 		super.renderHead(response);
 		PackagedTextTemplate packagedTextTemplate = new PackagedTextTemplate(this.getClass(), "InlineEditBox.js");
-		HashMap map = new HashMap();
+		HashMap<String, CharSequence> map = new HashMap<String, CharSequence>();
 		map.put("callbackUrl", getCallbackUrl());
 		map.put("markupId", getComponent().getMarkupId());	
 		response.renderJavascript(packagedTextTemplate.asString(map), null);
@@ -54,4 +54,14 @@ public class DojoInlineEditBoxHandler extends AbstractRequireDojoBehavior {
 		((DojoInlineEditBox)getComponent()).onSave(target);
 	}
 
+	/* (non-Javadoc)
+	 * @see wicket.contrib.dojo.AbstractRequireDojoBehavior#onComponentReRendered(wicket.ajax.AjaxRequestTarget)
+	 */
+	@Override
+	public void onComponentReRendered(AjaxRequestTarget ajaxTarget) {
+		super.onComponentReRendered(ajaxTarget);
+		
+		String markupId = getComponent().getMarkupId();
+		ajaxTarget.appendJavascript("initInlineEditBox('" + markupId + "')\n");
+	}
 }

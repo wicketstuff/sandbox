@@ -9,3 +9,8 @@ dojo.addOnLoad(function() {
 		dojo.event.connect(editTable, "onSave", "saveHandler");
 	}
 );
+
+function initInlineEditBox(markupId) {
+	var editTable = dojo.widget.byId(markupId);
+	dojo.event.connect(editTable, "onSave", "saveHandler");
+}
