@@ -24,6 +24,7 @@ import wicket.spring.injection.annot.SpringComponentInjector;
 
 public class PhonebookApplication extends WebApplication {
 
+	@SuppressWarnings("unchecked")
 	public Class getHomePage() {
 		return ListContactsPage.class;
 	}
