@@ -43,7 +43,7 @@ import wicket.validation.validator.StringValidator;
 public class EditContactPage extends BasePage {
 	private Page backPage;
 
-	@SpringBean
+	@SpringBean(name = "contactDao")
 	private ContactDao contactDao;
 
 	/**

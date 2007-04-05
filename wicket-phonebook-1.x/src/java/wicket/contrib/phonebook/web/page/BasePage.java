@@ -35,5 +35,4 @@ public class BasePage extends WebPage {
 	public BasePage() {
 		add(new FeedbackPanel("status"));
 	}
-
 }

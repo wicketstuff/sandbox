@@ -18,17 +18,12 @@
  */
 package wicket.contrib.phonebook.web.page;
 
-import wicket.Component;
 import wicket.Page;
 import wicket.contrib.phonebook.Contact;
 import wicket.contrib.phonebook.ContactDao;
 import wicket.markup.html.basic.Label;
-import wicket.markup.html.form.Button;
-import wicket.markup.html.form.Form;
 import wicket.markup.html.link.Link;
-import wicket.model.AbstractReadOnlyModel;
 import wicket.model.IModel;
-import wicket.model.PropertyModel;
 import wicket.spring.injection.annot.SpringBean;
 import wicket.util.collections.MicroMap;
 import wicket.util.string.interpolator.MapVariableInterpolator;
@@ -42,7 +37,7 @@ import wicket.util.string.interpolator.MapVariableInterpolator;
 public class DeleteContactPage extends BasePage {
 	private Page backPage;
 
-	@SpringBean
+	@SpringBean(name = "contactDao")
 	private ContactDao contactDao;
 
 	/**
