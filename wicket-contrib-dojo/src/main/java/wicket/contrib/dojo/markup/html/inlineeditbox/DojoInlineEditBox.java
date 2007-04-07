@@ -16,21 +16,21 @@
  */
 package wicket.contrib.dojo.markup.html.inlineeditbox;
 
-import wicket.Component;
 import wicket.ResourceReference;
-import wicket.WicketRuntimeException;
 import wicket.ajax.AjaxRequestTarget;
 import wicket.contrib.dojo.DojoIdConstants;
 import wicket.markup.ComponentTag;
 import wicket.markup.MarkupStream;
 import wicket.markup.html.WebComponent;
+import wicket.markup.html.basic.Label;
 import wicket.model.IModel;
 import wicket.model.Model;
+import wicket.util.string.Strings;
 
 /**
  * <p>
- * 	Dojo inlineEditBox widget for wicket
- * <p>
+ * 	Dojo inlineEditBox widget for wicket that works like {@link Label}
+ * </p>
  * <p>
  * 	<b>Sample
  *  </b>
@@ -44,36 +44,46 @@ import wicket.model.Model;
  * 
  * public class DojoInlineEditBoxSample extends WebPage {
  * 	
- * 	public static final String DISPLAY_TEXT = "displayText";
- * 
- * 	private DojoInlineEditBox dojoInlineEditBox;
- * 	private Label displayText;	
- * 	
  * 	public DojoInlineEditBoxSample() {
  * 		
- * 		add(new DojoInlineEditBox("inlineEditBox", "inlineEditBox") {
+ * 		add(new DojoInlineEditBox("message", "Hello, World!") {
  *  		protected void onSave(AjaxRequestTarget target) {
- * 				displayText.setModelObject(getModelObject());
- * 				target.addComponent(displayText);
+ * 				DatabaseSystem.updateMessage(getModelObjectAsString());
  * 			}
  * 		});
- * 		
- * 		displayText = new Label(DISPLAY_TEXT, "Label");
- * 		displayText.setOutputMarkupId(true);
- * 		add(displayText);
  * 	}
  * }
  * 
  *  </pre>
  * </p>
  * @author Gregory Maes
+ * @author <a href="mailto:jbq@apache.org">Jean-Baptiste Quenot</a>
  */
 public class DojoInlineEditBox extends WebComponent {
 
 	/**
 	 * Construct a Dojo Inline Edit Box
 	 * @param id id of the inlineEditBox
-	 * @param label Default Value
+	 */
+	public DojoInlineEditBox(final String id) {
+		super(id);
+		add(new DojoInlineEditBoxHandler());
+	}
+
+	/**
+	 * Construct a Dojo Inline Edit Box
+	 * @param id id of the inlineEditBox
+	 * @param model the Wicket model
+	 */
+	public DojoInlineEditBox(final String id, IModel model) {
+		super(id, model);
+		add(new DojoInlineEditBoxHandler());
+	}
+
+	/**
+	 * Convenience constructor. Same as DojoInlineEditBox(String, new Model(String))
+	 * @param id id of the inlineEditBox
+	 * @param label The label text
 	 */
 	public DojoInlineEditBox(final String id, String label) {
 		super(id, new Model(label));
@@ -81,12 +91,12 @@ public class DojoInlineEditBox extends WebComponent {
 	}
 	
 	/** Only the String object is allowed */
-	public Component setModel(IModel model)	{
+	/*public Component setModel(IModel model)	{
 		if (!(model.getObject() instanceof String)) {
 			throw new WicketRuntimeException("Model for a DojoInlineEditBox should be a String instance");
 		}
 		return super.setModel(model);
-	}
+	}*/
 	
 
 	/** set the dojoType */
@@ -98,7 +108,10 @@ public class DojoInlineEditBox extends WebComponent {
 	
 	/** To initialize the text field with the model value */
 	protected void onComponentTagBody(MarkupStream markupStream, ComponentTag openTag) {
-		replaceComponentTagBody(markupStream, openTag, getModelObjectAsString());
+		String value =  getModelObjectAsString();
+		if (getModelObject() == null)
+			value = Strings.escapeMarkup(getPlaceholderValue()).toString();
+		replaceComponentTagBody(markupStream, openTag, value);
 	}
 	
 	/**
@@ -109,5 +122,7 @@ public class DojoInlineEditBox extends WebComponent {
 	protected void onSave(AjaxRequestTarget target) {
 		
 	}
-	
+	protected String getPlaceholderValue() {
+		return "";
+	}
 }
