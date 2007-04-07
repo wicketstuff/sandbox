@@ -54,7 +54,7 @@ public class DojoInlineEditBoxHandler extends AbstractRequireDojoBehavior {
 		((DojoInlineEditBox)getComponent()).onSave(target);
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see wicket.contrib.dojo.AbstractRequireDojoBehavior#onComponentReRendered(wicket.ajax.AjaxRequestTarget)
 	 */
 	@Override
