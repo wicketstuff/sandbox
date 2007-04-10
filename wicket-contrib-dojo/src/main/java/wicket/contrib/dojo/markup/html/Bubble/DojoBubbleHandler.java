@@ -25,6 +25,7 @@ import wicket.contrib.dojo.AbstractRequireDojoBehavior;
  * @author Vincent Demay
  *
  */
+@SuppressWarnings("serial")
 public class DojoBubbleHandler extends AbstractRequireDojoBehavior {
 
 	public void setRequire(RequireDojoLibs libs) {

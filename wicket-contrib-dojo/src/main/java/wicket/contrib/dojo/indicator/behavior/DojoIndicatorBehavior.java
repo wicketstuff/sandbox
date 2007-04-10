@@ -27,6 +27,7 @@ import wicket.contrib.dojo.indicator.IDojoIndicator;
  * @see IDojoIndicator
  * @author Vincent Demay
  */
+@SuppressWarnings("serial")
 public class DojoIndicatorBehavior extends AbstractBehavior {
 
 	private IDojoIndicator dojoIndicator;
