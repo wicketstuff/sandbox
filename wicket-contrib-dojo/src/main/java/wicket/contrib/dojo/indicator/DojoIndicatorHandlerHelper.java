@@ -20,7 +20,6 @@ import java.util.Iterator;
 
 import wicket.Component;
 import wicket.ajax.IAjaxCallDecorator;
-import wicket.behavior.AbstractAjaxBehavior;
 import wicket.contrib.dojo.AbstractDefaultDojoBehavior;
 import wicket.contrib.dojo.indicator.behavior.DojoIndicatorBehavior;
 

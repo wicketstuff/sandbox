@@ -25,12 +25,10 @@ import wicket.contrib.dojo.indicator.behavior.DojoIndicatorBehavior;
  * @author Vincent Demay
  *
  */
+@SuppressWarnings("serial")
 public class DojoCursorIndicator implements IDojoIndicator, IAjaxCallDecorator
 {
 
-	/* (non-Javadoc)
-	 * @see wicket.contrib.dojo.indicator.IDojoIndicator#getDojoCallDecorator()
-	 */
 	public IAjaxCallDecorator getDojoCallDecorator()
 	{
 		return this;

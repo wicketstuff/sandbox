@@ -16,7 +16,6 @@
  */
 package wicket.contrib.dojo.indicator;
 
-import wicket.MarkupContainer;
 import wicket.ResourceReference;
 import wicket.ajax.IAjaxCallDecorator;
 import wicket.contrib.dojo.indicator.behavior.DojoIndicatorBehavior;
@@ -30,6 +29,7 @@ import wicket.markup.html.image.Image;
  * @author Vincent Demay
  *
  */
+@SuppressWarnings("serial")
 public class DojoImageIndicator extends Image implements IDojoIndicator
 {
 
