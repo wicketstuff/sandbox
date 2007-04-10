@@ -6,6 +6,7 @@ import wicket.ajax.AjaxRequestTarget;
 import wicket.contrib.dojo.AbstractRequireDojoBehavior;
 import wicket.contrib.dojo.DojoIdConstants;
 import wicket.contrib.dojo.markup.html.container.AbstractDojoContainer;
+import wicket.contrib.dojo.markup.html.container.IDojoContainer;
 import wicket.contrib.dojo.widgets.StyleAttribute;
 import wicket.markup.ComponentTag;
 import wicket.model.Model;
@@ -14,7 +15,12 @@ import wicket.model.Model;
  * A container allowing user to layout a page.
  * <p>
  * 	Layout is done by setting position when adding a child.<br/>
- *  <b>WARNING</b> children have to be of type {@link AbstractDojoContainer}
+ *  <b>WARNING</b> children have to be of type {@link IDojoContainer}
+ * </p>
+ * <p>
+ * This container size is 100% x 100% by default. You can change default size
+ * using setWidth and setHeight. To share inner container size set width or height
+ * on children. The space left will be used by the {@link Position#Client} child container
  * </p>
  * <p>
  * 	Each added child (see {@link #add(AbstractDojoContainer, wicket.contrib.dojo.markup.html.container.layout.DojoLayoutContainer.Position)} )
@@ -120,6 +126,8 @@ public class DojoLayoutContainer extends AbstractDojoContainer{
 	public DojoLayoutContainer(String id) {
 		super(id);
 		add(new DojoLayoutContainerHandler());
+		setWidth("100%");
+		setHeight("100%");
 	}
 	
 	@Override
@@ -160,7 +168,6 @@ public class DojoLayoutContainer extends AbstractDojoContainer{
 	 */
 	private class DojoLayoutContainerHandler extends AbstractRequireDojoBehavior
 	{
-		@SuppressWarnings("unchecked")
 		@Override
 		public void setRequire(RequireDojoLibs libs)
 		{
