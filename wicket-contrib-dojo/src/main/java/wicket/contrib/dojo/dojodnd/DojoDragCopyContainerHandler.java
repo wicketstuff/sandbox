@@ -15,6 +15,7 @@ import wicket.markup.html.IHeaderResponse;
  * @version SVN: $Id$
  * 
  */
+@SuppressWarnings("serial")
 public class DojoDragCopyContainerHandler extends AbstractDojoDragContainerHandler {
 
 	/*
