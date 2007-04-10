@@ -20,10 +20,11 @@ import wicket.ajax.AjaxRequestTarget;
 import wicket.contrib.dojo.AbstractRequireDojoBehavior;
 
 /**
- * AHandler for {@link DojoSplitContainer}
+ * a Handler for {@link DojoSplitContainer}
  * @author vdemay
  *
  */
+@SuppressWarnings("serial")
 public class DojoSplitContainerHandler extends AbstractRequireDojoBehavior
 {
 	
