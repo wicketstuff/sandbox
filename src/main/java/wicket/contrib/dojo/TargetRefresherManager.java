@@ -37,11 +37,11 @@ import wicket.ajax.AjaxRequestTarget.IListener;
 public class TargetRefresherManager implements IListener
 {
 	private static TargetRefresherManager instance;
-	private HashMap dojoComponents;
+	private HashMap<String, Component> dojoComponents;
 	private AjaxRequestTarget target;
 	
 	private TargetRefresherManager(){	
-		dojoComponents = new HashMap();
+		dojoComponents = new HashMap<String, Component>();
 	}
 	
 	public static TargetRefresherManager getInstance(){
@@ -56,7 +56,7 @@ public class TargetRefresherManager implements IListener
 	{
 		//we need to find all dojoWidget that should be reParsed
 		Iterator it = dojoComponents.entrySet().iterator();
-		HashMap real = new HashMap();
+		HashMap<String, Component> real = new HashMap<String, Component>();
 		
 		while (it.hasNext()){
 			Component c = (Component)((Entry)it.next()).getValue();
