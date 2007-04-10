@@ -33,6 +33,7 @@ import wicket.util.time.Duration;
  * 
  * @author Vincent Demay
  */
+@SuppressWarnings("serial")
 public class DojoSelfUpdatingTimerBehavior extends AbstractDojoTimerBehavior
 {
 
