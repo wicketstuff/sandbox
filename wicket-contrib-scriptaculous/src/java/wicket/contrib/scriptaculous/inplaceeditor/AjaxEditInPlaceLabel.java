@@ -28,6 +28,7 @@ public class AjaxEditInPlaceLabel<T> extends AbstractTextComponent<T>
 	private AbstractAjaxBehavior callbackBehavior;
 	private AbstractAjaxBehavior onCompleteBehavior;
 	private Map<String, Object> options = new HashMap<String, Object>();
+	private boolean enterEditMode = false;
 
 	public AjaxEditInPlaceLabel(WebMarkupContainer parent, String wicketId, IModel<T> model)
 	{
@@ -129,6 +130,15 @@ public class AjaxEditInPlaceLabel<T> extends AbstractTextComponent<T>
 
 		addOption("loadTextURL", loadBehavior.getCallbackUrl());
 	}
+	
+	/**
+	 * Sets the label to be in <i>edit mode</i> the next time the page is rendered.  
+	 * Needs to be called again when refreshing the component.
+	 */
+	public void enterEditMode()
+	{
+		enterEditMode = true;
+	}
 
 	/**
 	 * Handle the container's body.
@@ -168,7 +178,13 @@ public class AjaxEditInPlaceLabel<T> extends AbstractTextComponent<T>
 		builder.addLine("new Ajax.InPlaceEditor('" + getMarkupId() + "', ");
 		builder.addLine("  '" + callbackBehavior.getCallbackUrl() + "', ");
 		builder.addOptions(options);
-		builder.addLine(");");
+		builder.addLine(")");
+		if (enterEditMode)
+		{
+			builder.addLine(".enterEditMode()");
+			enterEditMode = false;
+		}
+		builder.addLine(";");
 		getResponse().write(builder.buildScriptTagString());
 	}
 
