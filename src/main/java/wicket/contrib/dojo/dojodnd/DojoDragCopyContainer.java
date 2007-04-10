@@ -12,6 +12,7 @@ import wicket.contrib.dojo.dojodnd.DojoDragContainer;
  * @author B. Molenkamp
  * @version SVN: $Id$
  */
+@SuppressWarnings("serial")
 public class DojoDragCopyContainer extends DojoDragContainer {
 
 	private boolean copyOnce;
