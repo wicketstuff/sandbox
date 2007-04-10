@@ -26,6 +26,7 @@ import wicket.markup.html.WebPage;
  * @author Vincent Demay
  *
  */
+@SuppressWarnings("serial")
 public class DojoPageContainer extends DojoSimpleContainer
 {
 	

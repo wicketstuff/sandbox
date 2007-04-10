@@ -46,12 +46,13 @@ import wicket.ajax.AjaxRequestTarget;
  * @author Vincent Demay
  *
  */
+@SuppressWarnings("serial")
 public class DojoMenuItem implements Serializable{
 	
 	private String caption;
 	private String accelKey;
 	private ResourceReference icon;
-	protected HashMap children;
+	protected HashMap<String, DojoMenuItem> children;
 	protected DojoMenu menu;
 	protected String id;
 
@@ -64,7 +65,7 @@ public class DojoMenuItem implements Serializable{
 	 */
 	public DojoMenuItem(String id, String caption, String accelKey, ResourceReference icon) {
 		super();
-		children = new HashMap();
+		children = new HashMap<String, DojoMenuItem>();
 		this.caption = caption;
 		this.id = id;
 		this.accelKey = accelKey;

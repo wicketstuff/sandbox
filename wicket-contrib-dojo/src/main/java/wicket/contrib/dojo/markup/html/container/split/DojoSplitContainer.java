@@ -59,6 +59,7 @@ import wicket.markup.ComponentTag;
  * @author Vincent Demay
  *
  */
+@SuppressWarnings("serial")
 public class DojoSplitContainer extends AbstractDojoContainer
 {
 	

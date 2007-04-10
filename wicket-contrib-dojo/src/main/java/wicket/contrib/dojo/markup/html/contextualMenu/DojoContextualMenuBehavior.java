@@ -42,6 +42,7 @@ import wicket.markup.html.IHeaderResponse;
  * @author Vincent Demay
  *
  */
+@SuppressWarnings("serial")
 public class DojoContextualMenuBehavior extends AbstractRequireDojoBehavior{
 	
 	private DojoMenu menu;
