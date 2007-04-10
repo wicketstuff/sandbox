@@ -20,12 +20,15 @@ import wicket.Component;
 import wicket.ResourceReference;
 import wicket.ajax.AjaxRequestTarget;
 import wicket.contrib.dojo.AbstractRequireDojoBehavior;
+import wicket.contrib.dojo.markup.html.container.layout.DojoLayoutContainer;
 import wicket.markup.html.IHeaderResponse;
 
 /**
  * Dojo behaviour that maximizes an HTML element to the whole window's viewport
  * size
+ * @deprecated use {@link DojoLayoutContainer} instead
  */
+@SuppressWarnings("serial")
 public class MaximizeBehavior extends AbstractRequireDojoBehavior {
 	/** container handler is attached to. */
 	private Component container;
