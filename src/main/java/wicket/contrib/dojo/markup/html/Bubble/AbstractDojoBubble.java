@@ -27,6 +27,7 @@ import wicket.model.IModel;
  * @author Vincent Demay
  *
  */
+@SuppressWarnings("serial")
 public  class AbstractDojoBubble extends StylingWebMarkupContainer{
 	
 	/**

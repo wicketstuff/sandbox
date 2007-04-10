@@ -16,9 +16,6 @@
  */
 package wicket.contrib.dojo.indicator;
 
-import java.awt.Dialog;
-
-import wicket.MarkupContainer;
 import wicket.ajax.IAjaxCallDecorator;
 import wicket.contrib.dojo.indicator.behavior.DojoIndicatorBehavior;
 import wicket.contrib.dojo.markup.html.dialog.DojoDialog;
@@ -31,6 +28,7 @@ import wicket.markup.ComponentTag;
  * @author Vincent Demay
  *
  */
+@SuppressWarnings("serial")
 public class DojoDialogIndicator extends DojoDialog implements IDojoIndicator, IAjaxCallDecorator
 {
 

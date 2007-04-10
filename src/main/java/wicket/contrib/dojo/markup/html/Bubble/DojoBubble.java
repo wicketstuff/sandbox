@@ -17,7 +17,6 @@
 package wicket.contrib.dojo.markup.html.Bubble;
 
 import wicket.contrib.dojo.DojoIdConstants;
-import wicket.contrib.dojo.widgets.StyleAttribute;
 import wicket.markup.ComponentTag;
 import wicket.model.IModel;
 
@@ -28,6 +27,7 @@ import wicket.model.IModel;
  * @author Vincent Demay
  *
  */
+@SuppressWarnings("serial")
 public class DojoBubble extends AbstractDojoBubble{
 	
 	/**
