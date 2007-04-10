@@ -16,7 +16,6 @@
  */
 package wicket.contrib.dojo.markup.html;
 
-import wicket.MarkupContainer;
 import wicket.ajax.AjaxRequestTarget;
 import wicket.ajax.markup.html.AjaxLink;
 import wicket.contrib.dojo.AbstractDefaultDojoBehavior;
