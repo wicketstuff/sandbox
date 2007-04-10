@@ -45,8 +45,9 @@ import wicket.ResourceReference;
  * @author Vincent Demay
  *
  */
+@SuppressWarnings("serial")
 public class DojoMenu implements Serializable{
-	private HashMap children;
+	private HashMap<String, DojoMenuItem> children;
 	private DojoContextualMenuBehavior menuBehavior;
 	private String id;
 
@@ -56,7 +57,7 @@ public class DojoMenu implements Serializable{
 	 */
 	public DojoMenu(String id) {
 		super();
-		children = new HashMap();
+		children = new HashMap<String, DojoMenuItem>();
 		this.id = id;
 	}
 	
