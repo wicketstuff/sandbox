@@ -18,6 +18,10 @@ import wicket.model.IModel;
 import wicket.request.target.basic.StringRequestTarget;
 
 /**
+ * Label that uses AJAX for editing "in place" instead of using conventional forms.
+ * There are several extension points within this class to allow for subclasses 
+ * to customize the behavior of this component.
+ * 
  * @see http://wiki.script.aculo.us/scriptaculous/show/Ajax.InPlaceEditor
  * 
  * @author <a href="mailto:wireframe6464@sf.net">Ryan Sonnek</a>
@@ -25,8 +29,8 @@ import wicket.request.target.basic.StringRequestTarget;
 public class AjaxEditInPlaceLabel<T> extends AbstractTextComponent<T>
 {
 	private static final long serialVersionUID = 1L;
-	private AbstractAjaxBehavior callbackBehavior;
-	private AbstractAjaxBehavior onCompleteBehavior;
+	private AbstractAjaxBehavior callbackBehavior = new AjaxEditInPlaceOnSaveBehavior();
+	private AbstractAjaxBehavior onCompleteBehavior = new AjaxEditInPlaceOnCompleteBehavior();
 	private Map<String, Object> options = new HashMap<String, Object>();
 	private boolean enterEditMode = false;
 
@@ -35,45 +39,15 @@ public class AjaxEditInPlaceLabel<T> extends AbstractTextComponent<T>
 		super(parent, wicketId);
 		setModel(model);
 
-		this.callbackBehavior = new ScriptaculousAjaxBehavior()
-		{
-			private static final long serialVersionUID = 1L;
-
-			public void onRequest()
-			{
-				FormComponent formComponent = (FormComponent)getComponent();
-				formComponent.validate();
-				if (formComponent.isValid())
-				{
-					formComponent.updateModel();
-				}
-				RequestCycle.get().setRequestTarget(new StringRequestTarget(getDisplayValue()));
-			}
-		};
 		add(callbackBehavior);
-
-		this.onCompleteBehavior = new ScriptaculousAjaxBehavior()
-		{
-			private static final long serialVersionUID = 1L;
-
-			public void onRequest()
-			{
-				AjaxRequestTarget target = new AjaxRequestTarget();
-				getRequestCycle().setRequestTarget(target);
-				target.appendJavascript(new Effect.Highlight(AjaxEditInPlaceLabel.this)
-						.toJavascript());
-
-				onComplete(target);
-			}
-
-		};
 		add(onCompleteBehavior);
 
-		options.put("onComplete", new JavascriptBuilder.JavascriptFunction(
+		addOption("onComplete", new JavascriptBuilder.JavascriptFunction(
 				"function() { wicketAjaxGet('" + onCompleteBehavior.getCallbackUrl() + "'); }"));
 		setOutputMarkupId(true);
 	}
 
+	@Override
 	public String getInputName()
 	{
 		return "value";
@@ -86,42 +60,50 @@ public class AjaxEditInPlaceLabel<T> extends AbstractTextComponent<T>
 	 */
 	public void setOkButton(boolean value)
 	{
-		options.put("okButton", Boolean.valueOf(value));
+		addOption("okButton", Boolean.valueOf(value));
 	}
 
 	public void setCancelLink(boolean value)
 	{
-		options.put("cancelLink", Boolean.valueOf(value));
+		addOption("cancelLink", Boolean.valueOf(value));
 	}
 
 	public void setExternalControl(WebMarkupContainer control)
 	{
-		options.put("externalControl", control.getMarkupId());
+		addOption("externalControl", control.getMarkupId());
 	}
 
 	public void setSubmitOnBlur(boolean value)
 	{
-		options.put("submitOnBlur", Boolean.valueOf(value));
+		addOption("submitOnBlur", Boolean.valueOf(value));
 	}
 
 	public void setRows(int rows)
 	{
-		options.put("rows", new Integer(rows));
+		addOption("rows", new Integer(rows));
 	}
 
 	public void setCols(int cols)
 	{
-		options.put("cols", new Integer(cols));
+		addOption("cols", new Integer(cols));
 	}
 
 	public void setSize(int size)
 	{
-		options.put("size", new Integer(size));
+		addOption("size", new Integer(size));
 	}
 
 	/**
 	 * extension point for customizing what text is loaded for editing.
-	 * 
+	 * Usually used in conjunction with <code>getDisplayValue()</code> to override 
+	 * what text is displayed in text area versus the label.
+	 * <pre>
+	 * setLoadBehavior(new AbstractAjaxBehavior() {
+	 *   public void onRequest() {
+     *     RequestCycle.get().setRequestTarget(new StringRequestTarget(getValue()));
+     *   }
+     * });
+     * </pre>
 	 * @see #getDisplayValue()
 	 */
 	public void setLoadBehavior(AbstractAjaxBehavior loadBehavior)
@@ -132,12 +114,47 @@ public class AjaxEditInPlaceLabel<T> extends AbstractTextComponent<T>
 	}
 	
 	/**
+	 * extension point to allow for manipulation of what value is displayed.
+	 * Overriding this method allows for the component to display different text
+	 * than what is edited. This may be useful when the display text is
+	 * formatted differently than the editable text (ex: textile). The default
+	 * behavior is to return the same value as the <code>getValue()</code>
+	 * method.
+	 * 
+	 * @see #getValue();
+	 * @see #setLoadBehavior(AbstractAjaxBehavior)
+	 * @see AjaxEditInPlaceOnSaveBehavior#onRequest()
+	 */
+	protected String getDisplayValue()
+	{
+		return getValue();
+	}
+
+	/**
 	 * Sets the label to be in <i>edit mode</i> the next time the page is rendered.  
 	 * Needs to be called again when refreshing the component.
 	 */
 	public void enterEditMode()
 	{
 		enterEditMode = true;
+	}
+
+	/**
+	 * extension point to override default onComplete behavior.
+	 * allows for customizing behavior once the edited value has been saved.
+	 * default implementation is to do nothing.
+	 * @see AjaxEditInPlaceOnCompleteBehavior#onRequest()
+	 */
+	protected void onComplete(final AjaxRequestTarget target)
+	{
+	}
+
+	/**
+	 * protected method to allow for subclasses to access adding additional options.
+	 */
+	protected final void addOption(String key, Object value)
+	{
+		options.put(key, value);
 	}
 
 	/**
@@ -149,27 +166,13 @@ public class AjaxEditInPlaceLabel<T> extends AbstractTextComponent<T>
 	 *            The open tag for the body
 	 * @see wicket.Component#onComponentTagBody(MarkupStream, ComponentTag)
 	 */
+	@Override
 	protected void onComponentTagBody(final MarkupStream markupStream, final ComponentTag openTag)
 	{
 		replaceComponentTagBody(markupStream, openTag, getDisplayValue());
 	}
 
-	/**
-	 * extension point to allow for manipulation of what value is displayed.
-	 * Overriding this method allows for the component to display different text
-	 * than what is edited. This may be useful when the display text is
-	 * formatted differently than the editable text (ex: textile). The default
-	 * behavior is to return the same value as the <code>getValue()</code>
-	 * method.
-	 * 
-	 * @see #getValue();
-	 * @see #setLoadBehavior(AbstractAjaxBehavior)
-	 */
-	protected String getDisplayValue()
-	{
-		return getValue();
-	}
-
+	@Override
 	protected void onRender(MarkupStream markupStream)
 	{
 		super.onRender(markupStream);
@@ -187,16 +190,34 @@ public class AjaxEditInPlaceLabel<T> extends AbstractTextComponent<T>
 		builder.addLine(";");
 		getResponse().write(builder.buildScriptTagString());
 	}
-
-	/**
-	 * extension point to override default onComplete behavior.
-	 */
-	protected void onComplete(final AjaxRequestTarget target)
+	
+	private class AjaxEditInPlaceOnCompleteBehavior extends ScriptaculousAjaxBehavior
 	{
+		private static final long serialVersionUID = 1L;
+
+		public void onRequest()
+		{
+			AjaxRequestTarget target = new AjaxRequestTarget();
+			getRequestCycle().setRequestTarget(target);
+			target.appendJavascript(new Effect.Highlight(AjaxEditInPlaceLabel.this).toJavascript());
+
+			onComplete(target);
+		}
 	}
 
-	protected void addOption(String key, Object value)
+	private class AjaxEditInPlaceOnSaveBehavior extends ScriptaculousAjaxBehavior
 	{
-		options.put(key, value);
+		private static final long serialVersionUID = 1L;
+
+		public void onRequest()
+		{
+			FormComponent formComponent = (FormComponent)getComponent();
+			formComponent.validate();
+			if (formComponent.isValid())
+			{
+				formComponent.updateModel();
+			}
+			RequestCycle.get().setRequestTarget(new StringRequestTarget(getDisplayValue()));
+		}
 	}
 }
