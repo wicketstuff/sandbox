@@ -38,7 +38,7 @@ public interface Effect
 			JavascriptBuilder builder = new JavascriptBuilder();
 			builder
 					.addLine("new Effect." + getEffectName() + "('" + component.getMarkupId()
-							+ "' ");
+							+ "', ");
 			builder.addOptions(options);
 			builder.addLine(");");
 
