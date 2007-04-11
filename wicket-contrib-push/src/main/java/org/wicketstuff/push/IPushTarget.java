@@ -14,11 +14,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package wicket.contrib.push;
+package org.wicketstuff.push;
 
-import wicket.Component;
-import wicket.ajax.AjaxRequestTarget;
-import wicket.contrib.push.timer.TimerPushBehavior;
+import org.apache.wicket.Component;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.wicketstuff.push.timer.TimerPushBehavior;
 
 /**
  * Defines an interface to trigger client updates on server side events.

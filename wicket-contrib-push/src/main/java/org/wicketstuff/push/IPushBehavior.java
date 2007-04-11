@@ -1,4 +1,4 @@
-package wicket.contrib.push;
+package org.wicketstuff.push;
 
 import java.util.Map;
 

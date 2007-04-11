@@ -1,14 +1,13 @@
-package wicket.contrib.push.cometd;
+package org.wicketstuff.push.cometd;
 
 import javax.servlet.ServletContext;
 
+import org.apache.wicket.protocol.http.WebApplication;
 import org.mortbay.cometd.Bayeux;
 import org.mortbay.cometd.Channel;
 import org.mortbay.cometd.CometdServlet;
-
-import wicket.contrib.push.IPushPublisher;
-import wicket.contrib.push.PushEvent;
-import wicket.protocol.http.WebApplication;
+import org.wicketstuff.push.IPushPublisher;
+import org.wicketstuff.push.PushEvent;
 
 /**
  * A publisher taking a cometdEvent and send it the cometd bus

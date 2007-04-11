@@ -14,12 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package wicket.contrib.push.timer;
+package org.wicketstuff.push.timer;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import wicket.contrib.push.PushEvent;
+import org.wicketstuff.push.PushEvent;
 
 /**
  * Here we are simulating a bus with this event store

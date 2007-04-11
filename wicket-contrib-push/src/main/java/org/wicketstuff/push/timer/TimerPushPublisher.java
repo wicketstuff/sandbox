@@ -14,10 +14,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package wicket.contrib.push.timer;
+package org.wicketstuff.push.timer;
 
-import wicket.contrib.push.IPushPublisher;
-import wicket.contrib.push.PushEvent;
+import org.wicketstuff.push.IPushPublisher;
+import org.wicketstuff.push.PushEvent;
 
 /**
  * Publisher that could be associated with a {@link TimerPushBehavior}

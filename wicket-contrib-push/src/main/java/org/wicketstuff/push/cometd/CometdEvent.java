@@ -1,8 +1,8 @@
-package wicket.contrib.push.cometd;
+package org.wicketstuff.push.cometd;
 
 import java.util.Map;
 
-import wicket.contrib.push.PushEvent;
+import org.wicketstuff.push.PushEvent;
 
 /**
  * Default abstract event for wicket.<br/>

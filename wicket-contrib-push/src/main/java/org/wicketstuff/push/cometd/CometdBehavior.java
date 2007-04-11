@@ -1,14 +1,14 @@
-package wicket.contrib.push.cometd;
+package org.wicketstuff.push.cometd;
 
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import wicket.RequestCycle;
-import wicket.ajax.AjaxRequestTarget;
-import wicket.contrib.dojo.templates.DojoPackagedTextTemplate;
-import wicket.contrib.push.IPushBehavior;
-import wicket.protocol.http.WebRequestCycle;
+import org.apache.wicket.RequestCycle;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.protocol.http.WebRequestCycle;
+import org.wicketstuff.dojo.templates.DojoPackagedTextTemplate;
+import org.wicketstuff.push.IPushBehavior;
 
 public abstract class CometdBehavior extends CometdAbstractBehavior implements IPushBehavior{
 
