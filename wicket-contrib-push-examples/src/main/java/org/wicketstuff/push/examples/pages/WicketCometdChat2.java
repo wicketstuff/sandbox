@@ -1,25 +1,20 @@
-package wicket.contrib.cometd.examples.pages;
+package org.wicketstuff.push.examples.pages;
 
 import java.util.Map;
 
-import wicket.PageParameters;
-import wicket.ajax.AjaxRequestTarget;
-import wicket.ajax.markup.html.form.AjaxSubmitButton;
-import wicket.contrib.push.IPushTarget;
-import wicket.contrib.push.PushEvent;
-import wicket.contrib.push.cometd.CometdBehavior;
-import wicket.contrib.push.cometd.CometdEvent;
-import wicket.contrib.push.cometd.CometdPublisher;
-import wicket.contrib.push.timer.TimerPushBehavior;
-import wicket.contrib.push.timer.TimerPushPublisher;
-import wicket.markup.html.WebPage;
-import wicket.markup.html.basic.Label;
-import wicket.markup.html.form.Form;
-import wicket.markup.html.form.TextArea;
-import wicket.markup.html.form.TextField;
-import wicket.model.CompoundPropertyModel;
-import wicket.protocol.http.WebApplication;
-import wicket.util.time.Duration;
+import org.apache.wicket.PageParameters;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.form.AjaxSubmitButton;
+import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.util.time.Duration;
+import org.wicketstuff.push.IPushTarget;
+import org.wicketstuff.push.PushEvent;
+import org.wicketstuff.push.timer.TimerPushBehavior;
+import org.wicketstuff.push.timer.TimerPushPublisher;
 
 public class WicketCometdChat2 extends WebPage{
 
