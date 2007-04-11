@@ -1,4 +1,4 @@
-package wicket.contrib.cometd.examples.launcher;
+package org.wicketstuff.push.examples.launcher;
 
 import org.mortbay.jetty.Connector;
 import org.mortbay.jetty.Server;

@@ -1,10 +1,9 @@
-package wicket.contrib.cometd.examples.application;
+package org.wicketstuff.push.examples.application;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import wicket.contrib.cometd.examples.pages.Index;
-import wicket.protocol.http.WebApplication;
+import org.apache.wicket.protocol.http.WebApplication;
+import org.wicketstuff.push.examples.pages.Index;
 
 /**
  * Runs the ExampleApplication when invoked from command line.
