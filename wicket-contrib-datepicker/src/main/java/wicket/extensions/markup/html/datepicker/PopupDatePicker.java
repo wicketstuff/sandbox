@@ -19,13 +19,14 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
 
-import wicket.AttributeModifier;
-import wicket.Component;
-import wicket.markup.html.WebMarkupContainer;
-import wicket.model.IModel;
-import wicket.model.Model;
-import wicket.util.convert.IConverter;
-import wicket.util.convert.converters.DateConverter;
+import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.Component;
+import org.apache.wicket.ResourceReference;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.util.convert.IConverter;
+import org.apache.wicket.util.convert.converters.DateConverter;
 
 /**
  * Popup mode of the DatePicker
@@ -112,7 +113,7 @@ public class PopupDatePicker extends DatePicker
 		 * @param resourceReference
 		 *            button icon reference
 		 */
-		public TriggerButton(final String id, final wicket.ResourceReference resourceReference)
+		public TriggerButton(final String id, final ResourceReference resourceReference)
 		{
 			super(id);
 			add(new PathAttributeModifier("id", this));

@@ -6,16 +6,16 @@ import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import wicket.Component;
-import wicket.Request;
-import wicket.RequestCycle;
-import wicket.WicketRuntimeException;
-import wicket.ajax.AbstractDefaultAjaxBehavior;
-import wicket.ajax.AjaxRequestTarget;
-import wicket.ajax.IAjaxCallDecorator;
-import wicket.ajax.calldecorator.AjaxCallDecorator;
-import wicket.util.string.AppendingStringBuffer;
-import wicket.util.string.Strings;
+import org.apache.wicket.Component;
+import org.apache.wicket.Request;
+import org.apache.wicket.RequestCycle;
+import org.apache.wicket.WicketRuntimeException;
+import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.IAjaxCallDecorator;
+import org.apache.wicket.ajax.calldecorator.AjaxCallDecorator;
+import org.apache.wicket.util.string.AppendingStringBuffer;
+import org.apache.wicket.util.string.Strings;
 
 /**
  * AJAX based {@link ISelectCallback}, which executes an AJAX event when the

@@ -2,7 +2,7 @@ package wicket.extensions.markup.html.datepicker;
 
 import java.io.Serializable;
 
-import wicket.Component;
+import org.apache.wicket.Component;
 
 /**
  * Interface which tells what to do when the user has selected something in
