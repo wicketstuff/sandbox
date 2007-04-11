@@ -1,8 +1,8 @@
-package wicket.contrib.push.cometd;
+package org.wicketstuff.push.cometd;
 
-import wicket.Component;
-import wicket.ajax.AjaxRequestTarget;
-import wicket.contrib.push.IPushTarget;
+import org.apache.wicket.Component;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.wicketstuff.push.IPushTarget;
 
 /**
  * This merthod is a wrapper of {@link AjaxRequestTarget} on {@link IPushTarget}

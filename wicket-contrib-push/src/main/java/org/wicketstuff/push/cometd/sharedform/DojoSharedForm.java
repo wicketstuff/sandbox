@@ -1,12 +1,12 @@
-package wicket.contrib.cometd.sharedform;
+package org.wicketstuff.push.cometd.sharedform;
 
-import wicket.Component;
-import wicket.behavior.AttributeAppender;
-import wicket.contrib.dojo.DojoIdConstants;
-import wicket.markup.ComponentTag;
-import wicket.markup.html.form.Form;
-import wicket.model.IModel;
-import wicket.model.Model;
+import org.apache.wicket.Component;
+import org.apache.wicket.behavior.AttributeAppender;
+import org.apache.wicket.markup.ComponentTag;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.wicketstuff.dojo.DojoIdConstants;
 
 /**
  * <b>WARNING : This component is a prototype, Do NOT use it. It is still internal</b><br/>

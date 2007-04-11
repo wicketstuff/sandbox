@@ -1,11 +1,11 @@
-package wicket.contrib.cometd.sharedform;
+package org.wicketstuff.push.cometd.sharedform;
 
 import java.util.HashMap;
 
-import wicket.ajax.AjaxRequestTarget;
-import wicket.contrib.dojo.AbstractRequireDojoBehavior;
-import wicket.contrib.dojo.templates.DojoPackagedTextTemplate;
-import wicket.markup.html.IHeaderResponse;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.markup.html.IHeaderResponse;
+import org.wicketstuff.dojo.AbstractRequireDojoBehavior;
+import org.wicketstuff.dojo.templates.DojoPackagedTextTemplate;
 
 public class DojoSharedFormBehavior extends AbstractRequireDojoBehavior {
 

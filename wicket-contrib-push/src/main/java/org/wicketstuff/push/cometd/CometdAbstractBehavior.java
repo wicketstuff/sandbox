@@ -1,16 +1,16 @@
-package wicket.contrib.push.cometd;
+package org.wicketstuff.push.cometd;
 
 import java.io.InputStream;
 
 import javax.servlet.ServletException;
 
-import wicket.Application;
-import wicket.WicketRuntimeException;
-import wicket.contrib.dojo.AbstractRequireDojoBehavior;
-import wicket.markup.html.IHeaderResponse;
-import wicket.markup.parser.XmlPullParser;
-import wicket.markup.parser.XmlTag;
-import wicket.protocol.http.WebApplication;
+import org.apache.wicket.Application;
+import org.apache.wicket.WicketRuntimeException;
+import org.apache.wicket.markup.html.IHeaderResponse;
+import org.apache.wicket.markup.parser.XmlPullParser;
+import org.apache.wicket.markup.parser.XmlTag;
+import org.apache.wicket.protocol.http.WebApplication;
+import org.wicketstuff.dojo.AbstractRequireDojoBehavior;
 
 
 /**

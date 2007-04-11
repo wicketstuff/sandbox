@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package wicket.contrib.push.timer;
+package org.wicketstuff.push.timer;
 
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
@@ -24,14 +24,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import wicket.Component;
-import wicket.WicketRuntimeException;
-import wicket.ajax.AbstractAjaxTimerBehavior;
-import wicket.ajax.AjaxRequestTarget;
-import wicket.contrib.push.IPushBehavior;
-import wicket.contrib.push.IPushTarget;
-import wicket.contrib.push.PushEvent;
-import wicket.util.time.Duration;
+import org.apache.wicket.Component;
+import org.apache.wicket.WicketRuntimeException;
+import org.apache.wicket.ajax.AbstractAjaxTimerBehavior;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.util.time.Duration;
+import org.wicketstuff.push.IPushBehavior;
+import org.wicketstuff.push.IPushTarget;
+import org.wicketstuff.push.PushEvent;
 
 /**
  * Behavior to listen to a {@link PushEvent} actually using polling
