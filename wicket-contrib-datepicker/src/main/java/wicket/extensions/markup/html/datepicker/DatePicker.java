@@ -24,17 +24,17 @@ import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 
-import wicket.ResourceReference;
-import wicket.markup.ComponentTag;
-import wicket.markup.MarkupStream;
-import wicket.markup.html.WebComponent;
-import wicket.markup.html.panel.Panel;
-import wicket.markup.html.resources.CompressedResourceReference;
-import wicket.markup.html.resources.JavaScriptReference;
-import wicket.markup.html.resources.StyleSheetReference;
-import wicket.model.Model;
-import wicket.util.convert.converters.DateConverter;
-import wicket.util.string.AppendingStringBuffer;
+import org.apache.wicket.ResourceReference;
+import org.apache.wicket.markup.ComponentTag;
+import org.apache.wicket.markup.MarkupStream;
+import org.apache.wicket.markup.html.WebComponent;
+import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.markup.html.resources.CompressedResourceReference;
+import org.apache.wicket.markup.html.resources.JavaScriptReference;
+import org.apache.wicket.markup.html.resources.StyleSheetReference;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.util.convert.converters.DateConverter;
+import org.apache.wicket.util.string.AppendingStringBuffer;
 
 /**
  * Datepicker component. It has two modes: A {@link PopupDatePicker popup} and a

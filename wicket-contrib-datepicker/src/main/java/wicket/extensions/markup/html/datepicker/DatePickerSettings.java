@@ -25,9 +25,8 @@ import java.util.Properties;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import wicket.ResourceReference;
-import wicket.markup.html.resources.CompressedResourceReference;
+import org.apache.wicket.ResourceReference;
+import org.apache.wicket.markup.html.resources.CompressedResourceReference;
 
 /**
  * The settings of the date picker component. Use this to customize the

@@ -18,8 +18,8 @@ package wicket.extensions.markup.html.datepicker;
 import java.util.Date;
 import java.util.Map;
 
-import wicket.Component;
-import wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.Component;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 
 /**
  * Flat mode version of the DatePicker. This means using the datepicker inline
