@@ -18,20 +18,20 @@
  */
 package wicket.contrib.phonebook.web.page;
 
-import wicket.Page;
+import org.apache.wicket.Page;
 import wicket.contrib.phonebook.Contact;
 import wicket.contrib.phonebook.ContactDao;
-import wicket.markup.html.form.Button;
-import wicket.markup.html.form.Form;
-import wicket.markup.html.form.RequiredTextField;
-import wicket.markup.html.form.TextField;
-import wicket.model.CompoundPropertyModel;
-import wicket.model.IModel;
-import wicket.spring.injection.annot.SpringBean;
-import wicket.util.collections.MicroMap;
-import wicket.util.string.interpolator.MapVariableInterpolator;
-import wicket.validation.validator.EmailAddressValidator;
-import wicket.validation.validator.StringValidator;
+import org.apache.wicket.markup.html.form.Button;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.RequiredTextField;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.util.collections.MicroMap;
+import org.apache.wicket.util.string.interpolator.MapVariableInterpolator;
+import org.apache.wicket.validation.validator.EmailAddressValidator;
+import org.apache.wicket.validation.validator.StringValidator;
 
 /**
  * Edit the Contact. Display details if an existing contact, then persist them

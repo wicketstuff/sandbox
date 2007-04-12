@@ -18,8 +18,8 @@
  */
 package wicket.contrib.phonebook.web.page;
 
-import wicket.markup.html.WebPage;
-import wicket.markup.html.panel.FeedbackPanel;
+import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
 
 /**
  * Base page class used for phonebook web pages.
