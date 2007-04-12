@@ -19,8 +19,8 @@
 package wicket.contrib.phonebook.web;
 
 import wicket.contrib.phonebook.web.page.ListContactsPage;
-import wicket.protocol.http.WebApplication;
-import wicket.spring.injection.annot.SpringComponentInjector;
+import org.apache.wicket.protocol.http.WebApplication;
+import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 
 public class PhonebookApplication extends WebApplication {
 

@@ -20,25 +20,25 @@ package wicket.contrib.phonebook.web.page;
 
 import java.util.Arrays;
 
-import wicket.Component;
+import org.apache.wicket.Component;
 import wicket.contrib.phonebook.Contact;
 import wicket.contrib.phonebook.ContactDao;
 import wicket.contrib.phonebook.web.ContactsDataProvider;
-import wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
-import wicket.extensions.markup.html.repeater.data.table.IColumn;
-import wicket.extensions.markup.html.repeater.data.table.filter.ChoiceFilteredPropertyColumn;
-import wicket.extensions.markup.html.repeater.data.table.filter.FilterForm;
-import wicket.extensions.markup.html.repeater.data.table.filter.FilterToolbar;
-import wicket.extensions.markup.html.repeater.data.table.filter.FilteredAbstractColumn;
-import wicket.extensions.markup.html.repeater.data.table.filter.GoAndClearFilter;
-import wicket.extensions.markup.html.repeater.data.table.filter.TextFilteredPropertyColumn;
-import wicket.markup.html.link.Link;
-import wicket.markup.html.panel.Panel;
-import wicket.markup.repeater.Item;
-import wicket.model.IModel;
-import wicket.model.LoadableDetachableModel;
-import wicket.model.Model;
-import wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.ChoiceFilteredPropertyColumn;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilterForm;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilterToolbar;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilteredAbstractColumn;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.GoAndClearFilter;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.TextFilteredPropertyColumn;
+import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.markup.repeater.Item;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * Display a Pageable List of Contacts.

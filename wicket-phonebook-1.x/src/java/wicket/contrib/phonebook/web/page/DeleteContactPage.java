@@ -18,15 +18,15 @@
  */
 package wicket.contrib.phonebook.web.page;
 
-import wicket.Page;
+import org.apache.wicket.Page;
 import wicket.contrib.phonebook.Contact;
 import wicket.contrib.phonebook.ContactDao;
-import wicket.markup.html.basic.Label;
-import wicket.markup.html.link.Link;
-import wicket.model.IModel;
-import wicket.spring.injection.annot.SpringBean;
-import wicket.util.collections.MicroMap;
-import wicket.util.string.interpolator.MapVariableInterpolator;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.util.collections.MicroMap;
+import org.apache.wicket.util.string.interpolator.MapVariableInterpolator;
 
 /**
  * Delete the Contact.
