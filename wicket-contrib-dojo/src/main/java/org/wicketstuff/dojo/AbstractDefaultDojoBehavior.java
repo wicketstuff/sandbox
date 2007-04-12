@@ -18,6 +18,7 @@ package org.wicketstuff.dojo;
 
 
 import org.apache.wicket.Application;
+import org.apache.wicket.MetaDataKey;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -41,6 +42,18 @@ import org.apache.wicket.markup.html.resources.CompressedResourceReference;
  * has been sent and waiting for the response. This Behavior auto manage Indicator.
  * </p>
  * 
+ * <p>
+ * By default this behavior will use the package dojo distributiuon included in this jar. If you want to use an other 
+ * Dojo Distribution (A custom one to fit to your need), You should write the following code in your {@link Application} to
+ * use a custom {@link CompressedResourceReference}
+ * <pre>
+ *  CompressedResourceReference myCustomDojo = new CompressedResourceReference([...]);
+ * 	setMetaData(AbstractDefaultDojoBeahvior.USE_CUSTOM_DOJO_DIST, myCustomDojo);
+ * </pre>
+ * <b>WARNING</b> : the package dojo distribution contains some patches on dojo. If you use your own
+ * distribution it can broke some component beahviors.
+ * </p>
+ * 
  * @see <a href="http://dojotoolkit.org/">Dojo</a>
  * @author Eelco Hillenius
  */
@@ -48,7 +61,15 @@ public abstract class AbstractDefaultDojoBehavior extends AbstractDefaultAjaxBeh
 {
 	private static final long serialVersionUID = 1L;
 	public static boolean USE_DOJO_UNCOMPRESSED = false;
-
+	
+	/** 
+	 * a Unique key to know if a CompressedResourceReference is set by the user 
+	 * in order to use a custom dojo distribution
+	 */
+	public static final MetaDataKey USE_CUSTOM_DOJO_DIST = new MetaDataKey(CompressedResourceReference.class){
+		private static final long serialVersionUID = 1L;
+	};
+	
 	/** reference to the dojo support javascript file. */
 	public static final ResourceReference DOJO = new CompressedResourceReference(
 			AbstractDefaultDojoBehavior.class, "dojo-0.4/dojo.js");
@@ -79,11 +100,17 @@ public abstract class AbstractDefaultDojoBehavior extends AbstractDefaultAjaxBeh
 			response.renderJavascript(debugScript.toString(), JAVASCRIPT_DOJO_DEBUG_ID);
 		}
 		
+		//if a CompressedResourceReference is set as metada of the applciation use it instead of default Dojo
 		DojoLocaleManager.getInstance().renderLocale(response);
-		if (USE_DOJO_UNCOMPRESSED)
-			response.renderJavascriptReference(DOJO_UNCOMPRESSED);
-		else
-			response.renderJavascriptReference(DOJO);
+		if (Application.get().getMetaData(USE_CUSTOM_DOJO_DIST) == null || !(Application.get().getMetaData(USE_CUSTOM_DOJO_DIST) instanceof CompressedResourceReference)){
+			if (USE_DOJO_UNCOMPRESSED){
+				response.renderJavascriptReference(DOJO_UNCOMPRESSED);
+			}else{
+				response.renderJavascriptReference(DOJO);
+			}
+		}else{
+			response.renderJavascriptReference((CompressedResourceReference)Application.get().getMetaData(USE_CUSTOM_DOJO_DIST));
+		}
 		response.renderJavascriptReference(DOJO_WICKET);
 		
 		// debug on firebug console if it is installed, otherwise it will just
