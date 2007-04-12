@@ -61,7 +61,7 @@ public interface ContactDao {
 	 *            Query Paramaters to use.
 	 * @return The results of the query as an Iterator.
 	 */
-	Iterator find(QueryParam qp, Contact filter);
+	Iterator<Contact> find(QueryParam qp, Contact filter);
 
 	/**
 	 * Return the number of Contacts in the DB.
@@ -75,5 +75,5 @@ public interface ContactDao {
 	 * 
 	 * @return the list of all unique last names in the database
 	 */
-	List getUniqueLastNames();
+	List<String> getUniqueLastNames();
 }

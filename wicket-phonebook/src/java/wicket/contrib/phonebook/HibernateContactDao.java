@@ -95,7 +95,8 @@ public class HibernateContactDao implements ContactDao {
 	 *            Query Paramaters to use.
 	 * @return The results of the query as an Iterator.
 	 */
-	public Iterator find(final QueryParam qp, Contact filter) {
+	@SuppressWarnings("unchecked")
+	public Iterator<Contact> find(final QueryParam qp, Contact filter) {
 		return buildFindQuery(qp, filter, false).list().iterator();
 
 	}
@@ -113,7 +114,8 @@ public class HibernateContactDao implements ContactDao {
 	/**
 	 * Returns a list of unique last names
 	 */
-	public List getUniqueLastNames() {
+	@SuppressWarnings("unchecked")
+	public List<String> getUniqueLastNames() {
 		return getSession().createQuery(
 				"select distinct target.lastname "
 						+ " from Contact target order by target.lastname")
@@ -133,8 +135,8 @@ public class HibernateContactDao implements ContactDao {
 	 */
 	protected Query buildFindQuery(QueryParam qp, Contact filter, boolean count) {
 		StringBuffer hql = new StringBuffer();
-		ArrayList params = new ArrayList();
-		ArrayList types = new ArrayList();
+		ArrayList<Object> params = new ArrayList<Object>();
+		ArrayList<Type> types = new ArrayList<Type>();
 
 		if (count) {
 			hql.append("select count(*) ");
@@ -153,13 +155,13 @@ public class HibernateContactDao implements ContactDao {
 		}
 		if (filter.getPhone() != null) {
 			hql.append("and upper(target.phone) like (?)");
-			params.add("%"+filter.getPhone().toUpperCase()+"%");
+			params.add("%" + filter.getPhone().toUpperCase() + "%");
 			types.add(Hibernate.STRING);
 
 		}
 		if (filter.getEmail() != null) {
 			hql.append("and upper(target.email) like (?)");
-			params.add("%"+filter.getEmail().toUpperCase()+"%");
+			params.add("%" + filter.getEmail().toUpperCase() + "%");
 			types.add(Hibernate.STRING);
 		}
 
@@ -169,7 +171,8 @@ public class HibernateContactDao implements ContactDao {
 		}
 
 		Query query = getSession().createQuery(hql.toString());
-		query.setParameters(params.toArray(), (Type[])types.toArray(new Type[]{}));
+		query.setParameters(params.toArray(), (Type[]) types
+				.toArray(new Type[] {}));
 
 		if (!count && qp != null) {
 			query.setFirstResult(qp.getFirst()).setMaxResults(qp.getCount());
