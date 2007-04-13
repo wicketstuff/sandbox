@@ -100,7 +100,8 @@ public abstract class AbstractDefaultDojoBehavior extends AbstractDefaultAjaxBeh
 			response.renderJavascript(debugScript.toString(), JAVASCRIPT_DOJO_DEBUG_ID);
 		}
 		
-		//if a CompressedResourceReference is set as metada of the applciation use it instead of default Dojo
+		// if a CompressedResourceReference to a custom Dojo script is set as
+		// metada of the application use it instead of the default one
 		DojoLocaleManager.getInstance().renderLocale(response);
 		if (Application.get().getMetaData(USE_CUSTOM_DOJO_DIST) == null || !(Application.get().getMetaData(USE_CUSTOM_DOJO_DIST) instanceof CompressedResourceReference)){
 			if (USE_DOJO_UNCOMPRESSED){
@@ -114,7 +115,7 @@ public abstract class AbstractDefaultDojoBehavior extends AbstractDefaultAjaxBeh
 		response.renderJavascriptReference(DOJO_WICKET);
 		
 		// debug on firebug console if it is installed, otherwise it will just
-		// end up at the bottom of the page.
+		// end up at the bottom of the page
 		if (configurationType.equalsIgnoreCase(Application.DEVELOPMENT)) {
 			StringBuffer consoleDebugScript = new StringBuffer();
 			consoleDebugScript.append("dojo.require(\"dojo.debug.console\");\n");
