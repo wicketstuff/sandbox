@@ -18,13 +18,12 @@ package org.wicketstuff.dojo.markup.html.form;
 
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.wicketstuff.dojo.AbstractDefaultDojoBehavior;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.string.AppendingStringBuffer;
-import org.apache.wicket.util.value.ValueMap;
+import org.wicketstuff.dojo.AbstractDefaultDojoBehavior;
 
 
 /**
@@ -47,6 +46,7 @@ import org.apache.wicket.util.value.ValueMap;
  * @author Marco van de Haar
  * @author Ruud Booltink
  */
+@SuppressWarnings("serial")
 public class ImmediateTextField extends TextField
 {
 	/**

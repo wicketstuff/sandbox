@@ -59,6 +59,7 @@ import org.apache.wicket.util.string.Strings;
  * @author Gregory Maes
  * @author <a href="mailto:jbq@apache.org">Jean-Baptiste Quenot</a>
  */
+@SuppressWarnings("serial")
 public class DojoInlineEditBox extends WebComponent {
 
 	/**

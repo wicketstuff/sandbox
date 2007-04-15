@@ -16,18 +16,18 @@
  */
 package org.wicketstuff.dojo.markup.html.percentage;
 
-import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.wicketstuff.dojo.AbstractRequireDojoBehavior;
-import org.wicketstuff.dojo.markup.html.percentage.model.PercentageRanges;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.IHeaderResponse;
+import org.wicketstuff.dojo.AbstractRequireDojoBehavior;
+import org.wicketstuff.dojo.markup.html.percentage.model.PercentageRanges;
 
 /**
  * Packaged Class. Can only be used by {@link DojoPercentSelector}
  * @author Vincent Demay
  *
  */
+@SuppressWarnings("serial")
 class DojoPercentSelectorHandler extends AbstractRequireDojoBehavior
 {
 

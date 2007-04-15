@@ -30,6 +30,7 @@ import org.apache.wicket.model.IModel;
  * @author vincent demay
  *
  */
+@SuppressWarnings("serial")
 public class DojoLazyLoadingListContainer extends  WebMarkupContainer
 {
 	

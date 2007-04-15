@@ -23,6 +23,7 @@ import org.wicketstuff.dojo.AbstractRequireDojoBehavior;
  * Handler for {@link DojoTimePicker}
  *
  */
+@SuppressWarnings("serial")
 public class DojoTimePickerHandler extends AbstractRequireDojoBehavior {
 
 	public void setRequire(RequireDojoLibs libs) {

@@ -27,6 +27,7 @@ import java.util.Map.Entry;
  * @author <a href="http://www.demay-fr.net/blog">Vincent Demay</a>
  *
  */
+@SuppressWarnings("serial")
 public class SuggestionList extends HashMap{
 
 	/**

@@ -24,6 +24,7 @@ import org.wicketstuff.dojo.AbstractRequireDojoBehavior;
  * @author <a href="http://www.demay-fr.net/blog">Vincent Demay</a>
  *
  */
+@SuppressWarnings("serial")
 public class DojoToasterHandler extends AbstractRequireDojoBehavior
 {
 

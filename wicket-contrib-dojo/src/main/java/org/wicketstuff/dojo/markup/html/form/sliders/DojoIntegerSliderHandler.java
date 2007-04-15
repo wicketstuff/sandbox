@@ -19,6 +19,7 @@ package org.wicketstuff.dojo.markup.html.form.sliders;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.wicketstuff.dojo.AbstractRequireDojoBehavior;
 
+@SuppressWarnings("serial")
 public class DojoIntegerSliderHandler extends AbstractRequireDojoBehavior
 {
 

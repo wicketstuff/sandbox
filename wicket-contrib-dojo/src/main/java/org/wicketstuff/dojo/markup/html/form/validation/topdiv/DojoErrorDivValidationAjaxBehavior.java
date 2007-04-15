@@ -16,15 +16,13 @@
  */
 package org.wicketstuff.dojo.markup.html.form.validation.topdiv;
 
-import java.util.HashMap;
-
 import org.apache.wicket.Component;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.wicketstuff.dojo.AbstractRequireDojoBehavior;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.form.FormComponent;
+import org.wicketstuff.dojo.AbstractRequireDojoBehavior;
 
 /**
  * Ajaxhandler to be bound to FormComponents.<br/> This handler executes wicket
@@ -34,6 +32,7 @@ import org.apache.wicket.markup.html.form.FormComponent;
  * 
  * @author Vincent Demay
  */
+@SuppressWarnings("serial")
 public class DojoErrorDivValidationAjaxBehavior extends AbstractRequireDojoBehavior
 {
 

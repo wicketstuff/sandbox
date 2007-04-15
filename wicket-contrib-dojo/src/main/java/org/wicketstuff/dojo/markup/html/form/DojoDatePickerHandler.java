@@ -18,13 +18,13 @@ package org.wicketstuff.dojo.markup.html.form;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.wicketstuff.dojo.AbstractRequireDojoBehavior;
-import org.apache.wicket.markup.html.IHeaderResponse;
 
 /**
  * Handler used in {@link DojoDatePicker}
  * @author <a href="http://www.demay-fr.net/blog">Vincent Demay</a>
  *
  */
+@SuppressWarnings("serial")
 public class DojoDatePickerHandler extends AbstractRequireDojoBehavior
 {
 	protected void respond(AjaxRequestTarget target)

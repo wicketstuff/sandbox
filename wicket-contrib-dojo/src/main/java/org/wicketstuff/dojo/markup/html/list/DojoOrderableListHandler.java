@@ -30,6 +30,7 @@ import org.apache.wicket.markup.html.IHeaderResponse;
  * @author Vincent Demay
  *
  */
+@SuppressWarnings("serial")
 public class DojoOrderableListHandler extends AbstractRequireDojoBehavior
 {
 

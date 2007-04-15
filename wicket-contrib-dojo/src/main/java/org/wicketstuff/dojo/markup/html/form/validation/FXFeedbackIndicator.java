@@ -17,11 +17,10 @@
 package org.wicketstuff.dojo.markup.html.form.validation;
 
 
-import org.apache.wicket.Component;
 import org.apache.wicket.ResourceReference;
-import org.wicketstuff.dojo.markup.html.tooltip.DojoTooltip;
 import org.apache.wicket.markup.html.form.validation.FormComponentFeedbackIndicator;
 import org.apache.wicket.markup.html.image.Image;
+import org.wicketstuff.dojo.markup.html.tooltip.DojoTooltip;
 
 /**
  * Feedback indicator that adds a small image when validation fails. Also
@@ -32,11 +31,10 @@ import org.apache.wicket.markup.html.image.Image;
  * @author Ruud Booltink
  * 
  */
+@SuppressWarnings("serial")
 public class FXFeedbackIndicator extends FormComponentFeedbackIndicator
 {
 	private DojoTooltip feedbackTooltip;
-	private Component toCheck;
-	private FXTooltipFeedbackPanel panel;
 
 	/**
 	 * Construct

@@ -25,7 +25,8 @@ import java.util.Map.Entry;
  * @author <a href="http://www.demay-fr.net/blog/index.php/en">Vincent Demay</a>
  *
  */
-public class PercentageRanges extends HashMap //<String, Integer>
+@SuppressWarnings("serial")
+public class PercentageRanges extends HashMap<String, Integer>
 {
 	/**
 	 * Create a new PencentagesRanges

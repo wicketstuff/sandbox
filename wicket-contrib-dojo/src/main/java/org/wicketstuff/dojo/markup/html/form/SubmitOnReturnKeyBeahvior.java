@@ -34,6 +34,7 @@ import org.apache.wicket.markup.html.form.FormComponent;
  * @author Vincent Demay
  *
  */
+@SuppressWarnings("serial")
 public class SubmitOnReturnKeyBeahvior  extends AbstractBehavior implements IHeaderContributor {
 
 	/** Component used on return key pressed to send the form */

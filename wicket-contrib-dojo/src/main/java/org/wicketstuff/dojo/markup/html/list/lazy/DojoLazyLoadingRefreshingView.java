@@ -39,14 +39,12 @@ public abstract class DojoLazyLoadingRefreshingView extends RefreshingView
 	public DojoLazyLoadingRefreshingView(String id, IDataProvider dataProvider) {
 		super(id);
 		this.dataProvider = dataProvider;
-		this.parent = parent;
 		setOutputMarkupId(true);
 	}
 
 
 	public DojoLazyLoadingRefreshingView(String id) {
 		super(id);
-		this.parent = parent;
 		setOutputMarkupId(true);
 	}
 

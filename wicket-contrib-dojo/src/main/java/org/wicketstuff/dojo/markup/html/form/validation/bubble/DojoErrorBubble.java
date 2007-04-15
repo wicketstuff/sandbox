@@ -27,6 +27,7 @@ import org.apache.wicket.model.IModel;
  * @author Vincent Demay
  *
  */
+@SuppressWarnings("serial")
 public class DojoErrorBubble extends AbstractDojoBubble {
 
 	/**

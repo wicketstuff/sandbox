@@ -40,6 +40,7 @@ import org.apache.wicket.markup.html.form.FormComponent;
  * @author Ruud Booltink
  * FIXME : valid and invalid rgb does not work for the moment
  */
+@SuppressWarnings("serial")
 public class FXValidationAjaxHandler extends AbstractRequireDojoBehavior
 {
 

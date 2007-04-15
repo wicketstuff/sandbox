@@ -26,6 +26,7 @@ import org.apache.wicket.markup.ComponentTag;
  * @author <a href="http://www.demay-fr.net/blog">Vincent Demay</a>
  *
  */
+@SuppressWarnings("serial")
 public class DojoDropDownChoiceHandler extends AbstractRequireDojoBehavior
 {
 

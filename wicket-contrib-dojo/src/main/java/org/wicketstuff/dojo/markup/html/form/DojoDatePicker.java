@@ -51,6 +51,7 @@ import org.apache.wicket.util.convert.ConversionException;
  * 
  * @author <a href="http://www.demay-fr.net/blog">Vincent Demay</a>
  */
+@SuppressWarnings("serial")
 public class DojoDatePicker extends TextField{
 	
 	private SimpleDateFormat formatter;

@@ -53,6 +53,7 @@ import org.apache.wicket.model.IModel;
  * @author Vincent Demay
  * 
  */
+@SuppressWarnings("serial")
 public class DojoSelectableListContainer extends StylingWebMarkupContainer implements ILinkListener {
 	/**
 	 * List of selected objects
@@ -299,7 +300,7 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer imple
 	 * @return a String[] representing position
 	 */
 	private String[] getIndexesForSelection(List selected) {
-		ArrayList positions = new ArrayList();
+		ArrayList<String> positions = new ArrayList<String>();
 
 		if (child instanceof ListView) {
 			Iterator ite = null;
