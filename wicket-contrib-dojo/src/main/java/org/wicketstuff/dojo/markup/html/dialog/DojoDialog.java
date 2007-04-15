@@ -16,13 +16,12 @@
  */
 package org.wicketstuff.dojo.markup.html.dialog;
 
-import org.wicketstuff.dojo.DojoIdConstants;
-import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.behavior.AttributeAppender;
-import org.wicketstuff.dojo.toggle.DojoToggle;
-import org.wicketstuff.dojo.widgets.HideWebMarkupContainer;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.model.Model;
+import org.wicketstuff.dojo.DojoIdConstants;
+import org.wicketstuff.dojo.toggle.DojoToggle;
+import org.wicketstuff.dojo.widgets.HideWebMarkupContainer;
 
 /**
  * <p>

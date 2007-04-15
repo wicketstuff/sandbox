@@ -68,6 +68,7 @@ import org.apache.wicket.markup.repeater.Item;
  * </p>
  * @author Vincent Demay
  */
+@SuppressWarnings("serial")
 public class DojoOrderableListRemover extends AjaxLink{
 
 	// item to remove

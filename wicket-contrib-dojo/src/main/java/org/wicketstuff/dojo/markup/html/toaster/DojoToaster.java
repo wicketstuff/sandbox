@@ -83,6 +83,7 @@ import org.apache.wicket.util.time.Duration;
  * @author <a href="http://www.demay-fr.net/blog/index.php/en">Vincent Demay</a>
  *
  */
+@SuppressWarnings("serial")
 public class DojoToaster extends WebMarkupContainer{
 
 	public static final String INFO = "INFO";

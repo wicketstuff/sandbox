@@ -29,6 +29,7 @@ import org.apache.wicket.model.IModel;
  * @author Vincent Demay
  *
  */
+@SuppressWarnings("serial")
 public class DojoErrorDiv extends StylingWebMarkupContainer {
 
 	/**

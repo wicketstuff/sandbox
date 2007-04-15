@@ -17,14 +17,15 @@
 package org.wicketstuff.dojo.markup.html.floatingpane;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.wicketstuff.dojo.AbstractRequireDojoBehavior;
 import org.apache.wicket.markup.html.IHeaderContributor;
 import org.apache.wicket.markup.html.IHeaderResponse;
+import org.wicketstuff.dojo.AbstractRequireDojoBehavior;
 
 /**
  * Lets a DojoModalFloatingPane handle the Wicket Ajax errors by defining the
  * special wicketGlobalFailureHandler() function and calling modalDialog.show()
  */
+@SuppressWarnings("serial")
 public class AjaxErrorBehavior extends AbstractRequireDojoBehavior implements IHeaderContributor {
 	public void renderHead(IHeaderResponse response) {
         String js = "window.wicketGlobalFailureHandler = function() {";

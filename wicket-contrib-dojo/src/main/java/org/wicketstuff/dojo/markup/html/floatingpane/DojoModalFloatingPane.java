@@ -36,6 +36,7 @@ import org.apache.wicket.model.Model;
  * @author Vincent Demay
  *
  */
+@SuppressWarnings("serial")
 public class DojoModalFloatingPane extends DojoAbstractFloatingPane
 {
 	private String bgColor="white";

@@ -37,6 +37,7 @@ import org.apache.wicket.markup.repeater.RepeatingView;
  * @author Vincent Demay
  *
  */
+@SuppressWarnings("serial")
 public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehavior
 {
 	/**

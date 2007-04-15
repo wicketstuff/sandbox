@@ -24,6 +24,7 @@ import org.wicketstuff.dojo.AbstractRequireDojoBehavior;
  * @author <a href="http://www.demay-fr.net/blog/index.php/en">Vincent Demay</a>
  *
  */
+@SuppressWarnings("serial")
 public class DojoFloatingPaneHandler extends AbstractRequireDojoBehavior
 {
 	protected void respond(AjaxRequestTarget target)

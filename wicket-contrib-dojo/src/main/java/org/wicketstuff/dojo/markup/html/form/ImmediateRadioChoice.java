@@ -23,19 +23,19 @@ package org.wicketstuff.dojo.markup.html.form;
 import java.util.List;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.wicketstuff.dojo.AbstractDefaultDojoBehavior;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.form.RadioChoice;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.string.AppendingStringBuffer;
-import org.apache.wicket.util.value.ValueMap;
+import org.wicketstuff.dojo.AbstractDefaultDojoBehavior;
 
 
 /**
  * @author Ruud Booltink
  * @author Marco van de Haar
  */
+@SuppressWarnings("serial")
 public class ImmediateRadioChoice extends RadioChoice
 {
 
@@ -47,8 +47,6 @@ public class ImmediateRadioChoice extends RadioChoice
 	{
 		/** checkbox this handler is attached to. */
 		private ImmediateRadioChoice radioButton;
-
-		private int size;
 
 		/**
 		 * Construct.

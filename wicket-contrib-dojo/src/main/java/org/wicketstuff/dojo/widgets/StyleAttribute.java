@@ -23,7 +23,8 @@ import java.util.HashMap;
  * @author vdemay
  *
  */
-public class StyleAttribute extends HashMap
+@SuppressWarnings("serial")
+public class StyleAttribute extends HashMap<String, String>
 {
 
 	public final static String HEIGHT      = "height";
