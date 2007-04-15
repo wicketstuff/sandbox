@@ -27,6 +27,7 @@ import org.apache.wicket.markup.html.IHeaderResponse;
  * Handler for {@link DojoInlineEditBox}
  * @author Gregory Maes
  */
+@SuppressWarnings("serial")
 public class DojoInlineEditBoxHandler extends AbstractRequireDojoBehavior {
 	
 	/** connect the onSave function of dojo with the wicket callbackUrl */

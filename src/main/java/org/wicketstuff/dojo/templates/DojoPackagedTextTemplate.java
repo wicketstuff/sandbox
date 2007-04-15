@@ -24,6 +24,7 @@ import org.apache.wicket.extensions.util.resource.PackagedTextTemplate;
  * @author Vincent Demay
  *
  */
+@SuppressWarnings("serial")
 public class DojoPackagedTextTemplate extends PackagedTextTemplate
 {
 	private String fileName;

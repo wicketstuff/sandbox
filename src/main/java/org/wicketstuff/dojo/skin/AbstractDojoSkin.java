@@ -16,7 +16,6 @@
  */
 package org.wicketstuff.dojo.skin;
 
-import java.io.File;
 import java.net.URL;
 
 import org.apache.wicket.Component;

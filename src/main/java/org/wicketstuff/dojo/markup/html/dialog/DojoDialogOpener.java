@@ -17,7 +17,6 @@
 package org.wicketstuff.dojo.markup.html.dialog;
 
 import org.apache.wicket.AttributeModifier;
-import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.Model;

@@ -28,11 +28,11 @@ public class RepeatingViewHelper
 		throw new IllegalStateException("No item at position " + pos + " in the given RepeatingView");
 	}
 	
-	public static List getListModel(RepeatingView repeater) {
+	public static List<Item> getListModel(RepeatingView repeater) {
 		Iterator it = repeater.iterator();
-		List list = new ArrayList();
+		List<Item> list = new ArrayList<Item>();
 		while (it.hasNext()) {
-			list.add(it.next());
+			list.add((Item)it.next());
 		}
 		return list;
 	}

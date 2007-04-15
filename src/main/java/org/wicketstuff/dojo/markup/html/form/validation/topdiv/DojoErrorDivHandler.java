@@ -24,6 +24,7 @@ import org.wicketstuff.dojo.AbstractRequireDojoBehavior;
  * @author Vincent Demay
  *
  */
+@SuppressWarnings("serial")
 public class DojoErrorDivHandler extends AbstractRequireDojoBehavior {
 
 	public void setRequire(RequireDojoLibs libs) {

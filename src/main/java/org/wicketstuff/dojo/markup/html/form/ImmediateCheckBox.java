@@ -18,13 +18,12 @@ package org.wicketstuff.dojo.markup.html.form;
 
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.wicketstuff.dojo.AbstractDefaultDojoBehavior;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.string.AppendingStringBuffer;
-import org.apache.wicket.util.value.ValueMap;
+import org.wicketstuff.dojo.AbstractDefaultDojoBehavior;
 
 /**
  * Checkbox that updates the server side model using AJAX whenever it is
@@ -56,12 +55,14 @@ import org.apache.wicket.util.value.ValueMap;
  * @author Eelco Hillenius
  * @author Igor Vaynberg (ivaynberg)
  */
+@SuppressWarnings("serial")
 public class ImmediateCheckBox extends CheckBox
 {
 	/**
 	 * Ajax handler that immediately updates the attached component when the
 	 * onclick event happens.
 	 */
+	@SuppressWarnings("serial")
 	public static class ImmediateUpdateAjaxHandler extends AbstractDefaultDojoBehavior
 	{
 		/** checkbox this handler is attached to. */

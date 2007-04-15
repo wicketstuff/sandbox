@@ -28,6 +28,7 @@ import org.apache.wicket.markup.html.WebComponent;
  * @author Vincent Demay
  *
  */
+@SuppressWarnings("serial")
 public class DojoSlider extends WebComponent
 {
 	//input field

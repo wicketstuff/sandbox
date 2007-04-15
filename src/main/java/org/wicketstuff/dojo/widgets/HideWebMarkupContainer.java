@@ -16,7 +16,6 @@
  */
 package org.wicketstuff.dojo.widgets;
 
-import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.model.IModel;
 
 /**
@@ -24,6 +23,7 @@ import org.apache.wicket.model.IModel;
  * @author vdemay
  *
  */
+@SuppressWarnings("serial")
 public class HideWebMarkupContainer extends StylingWebMarkupContainer
 {
 

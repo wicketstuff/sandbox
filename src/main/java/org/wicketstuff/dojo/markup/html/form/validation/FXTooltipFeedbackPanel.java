@@ -258,6 +258,7 @@ public class FXTooltipFeedbackPanel extends Panel implements IFeedback
 	 * 
 	 * @return the currently collected messages for this panel, possibly empty
 	 */
+	@SuppressWarnings("unchecked")
 	protected final List getCurrentMessages()
 	{
 		final List messages = (List) messageListView.getModelObject();

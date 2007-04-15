@@ -16,6 +16,7 @@
  */
 package org.wicketstuff.dojo.markup.html.form.validation.bubble;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 import org.apache.wicket.Component;
@@ -34,6 +35,7 @@ import org.apache.wicket.markup.html.form.FormComponent;
  * 
  * @author Vincent Demay
  */
+@SuppressWarnings("serial")
 public class DojoBubbleValidationAjaxBehavior extends AbstractRequireDojoBehavior
 {
 
@@ -47,7 +49,7 @@ public class DojoBubbleValidationAjaxBehavior extends AbstractRequireDojoBehavio
 	DojoErrorBubble bubble;
 	
 	/** who is invalid */
-	private static HashMap invalid;
+	private static HashMap<FormComponent, Serializable> invalid;
 
 
 	/**
@@ -57,6 +59,7 @@ public class DojoBubbleValidationAjaxBehavior extends AbstractRequireDojoBehavio
 	 * @param eventName
 	 * @see #eventName
 	 */
+	@SuppressWarnings("static-access")
 	public DojoBubbleValidationAjaxBehavior(String eventName, DojoErrorBubble bubble)
 	{
 		if (eventName == null)
@@ -65,7 +68,7 @@ public class DojoBubbleValidationAjaxBehavior extends AbstractRequireDojoBehavio
 		}
 		this.eventName = eventName;
 		this.bubble = bubble;
-		this.invalid = new HashMap();
+		this.invalid = new HashMap<FormComponent, Serializable>();
 	}
 
 	

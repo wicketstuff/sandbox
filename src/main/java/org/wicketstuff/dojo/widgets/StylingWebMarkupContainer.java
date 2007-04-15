@@ -32,6 +32,7 @@ import org.apache.wicket.model.IModel;
  * @author vdemay
  *
  */
+@SuppressWarnings("serial")
 public class StylingWebMarkupContainer extends WebMarkupContainer
 {
 

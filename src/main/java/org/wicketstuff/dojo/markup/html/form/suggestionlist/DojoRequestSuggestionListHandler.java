@@ -34,6 +34,7 @@ import org.apache.wicket.request.target.basic.StringRequestTarget;
  * </p>
  *
  */
+@SuppressWarnings("serial")
 public class DojoRequestSuggestionListHandler extends AbstractAjaxBehavior{
 
 	/* (non-Javadoc)

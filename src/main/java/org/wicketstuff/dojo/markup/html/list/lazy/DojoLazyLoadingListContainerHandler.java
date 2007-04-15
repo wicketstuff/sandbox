@@ -16,17 +16,16 @@
  */
 package org.wicketstuff.dojo.markup.html.list.lazy;
 
-import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.wicketstuff.dojo.AbstractRequireDojoBehavior;
 import org.apache.wicket.markup.ComponentTag;
-import org.apache.wicket.markup.html.IHeaderResponse;
+import org.wicketstuff.dojo.AbstractRequireDojoBehavior;
 
 /**
  * <b>UNDER DEVELOPMENT</b>
  * @author Vincent Demay
  *
  */
+@SuppressWarnings("serial")
 public class DojoLazyLoadingListContainerHandler extends AbstractRequireDojoBehavior
 {
 	/**

@@ -27,6 +27,7 @@ import org.apache.wicket.model.IModel;
  * @author <a href="http://www.demay-fr.net/blog">Vincent Demay</a>
  *
  */
+@SuppressWarnings("serial")
 public class DojoHtmlSuggestionList extends DropDownChoice
 {
 	/**

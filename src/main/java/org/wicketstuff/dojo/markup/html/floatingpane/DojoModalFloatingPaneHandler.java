@@ -27,6 +27,7 @@ import org.apache.wicket.protocol.http.WebRequest;
  * @author Vincent Demay
  *
  */
+@SuppressWarnings("serial")
 public class DojoModalFloatingPaneHandler extends AbstractRequireDojoBehavior
 {
 	

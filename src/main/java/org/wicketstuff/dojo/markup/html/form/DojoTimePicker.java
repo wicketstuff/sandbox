@@ -50,6 +50,7 @@ import org.apache.wicket.util.convert.ConversionException;
  * </p>
  * 
  */
+@SuppressWarnings("serial")
 public class DojoTimePicker extends TextField {
 
 	private SimpleDateFormat formatter;

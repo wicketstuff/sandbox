@@ -58,10 +58,10 @@ import org.apache.wicket.markup.ComponentTag;
  * @author vdemay
  *
  */
+@SuppressWarnings("serial")
 public class DojoFloatingPane extends DojoAbstractFloatingPane
 {
 
-	private boolean constrainToContainer;
 	
 	/**
 	 * @param id
@@ -70,7 +70,6 @@ public class DojoFloatingPane extends DojoAbstractFloatingPane
 	{
 		super(id);
 		add(new DojoFloatingPaneHandler());
-		constrainToContainer = true;
 	}
 	
 	

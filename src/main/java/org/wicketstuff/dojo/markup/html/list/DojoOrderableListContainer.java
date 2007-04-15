@@ -77,6 +77,7 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
  * </p>
  * @author Vincent Demay
  */
+@SuppressWarnings("serial")
 public class DojoOrderableListContainer extends DojoDropContainer
 {
 
