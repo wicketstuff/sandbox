@@ -3,13 +3,11 @@ package wicket.contrib.tinymce.settings;
 import java.util.regex.Pattern;
 
 import junit.framework.TestCase;
-import wicket.Component;
-import wicket.contrib.tinymce.settings.Plugin;
-import wicket.contrib.tinymce.settings.SavePlugin;
-import wicket.contrib.tinymce.settings.DateTimePlugin;
-import wicket.contrib.tinymce.settings.TinyMCESettings;
+
+import org.apache.wicket.markup.html.form.TextArea;
+import org.apache.wicket.util.tester.WicketTester;
+
 import wicket.contrib.tinymce.settings.TinyMCESettings.Mode;
-import wicket.markup.html.form.TextArea;
 
 /**
  * @author Iulian-Corneliu Costan (iulian.costan@gmail.com)
@@ -20,6 +18,7 @@ public class TinyMCESettingsTest extends TestCase
 
 	private TinyMCESettings settings;
 	private StringBuffer buffer;
+	private WicketTester tester;
 
 	protected void setUp() throws Exception
 	{
@@ -29,6 +28,7 @@ public class TinyMCESettingsTest extends TestCase
 
 	protected void tearDown() throws Exception
 	{
+		tester = new WicketTester();
 		settings = null;
 		buffer = null;
 	}

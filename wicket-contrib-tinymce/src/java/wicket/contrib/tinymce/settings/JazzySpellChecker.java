@@ -28,11 +28,10 @@ import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import wicket.markup.html.WebResource;
-import wicket.protocol.http.WebResponse;
-import wicket.util.resource.IResourceStream;
-import wicket.util.resource.StringBufferResourceStream;
+import org.apache.wicket.markup.html.WebResource;
+import org.apache.wicket.protocol.http.WebResponse;
+import org.apache.wicket.util.resource.IResourceStream;
+import org.apache.wicket.util.resource.StringBufferResourceStream;
 
 import com.swabunga.spell.engine.SpellDictionary;
 import com.swabunga.spell.engine.SpellDictionaryHashMap;

@@ -18,15 +18,16 @@
 package wicket.contrib.tinymce;
 
 import junit.framework.TestCase;
-import wicket.contrib.tinymce.TinyMCEPanel;
+
+import org.apache.wicket.markup.html.WebComponent;
+import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.markup.html.resources.JavaScriptReference;
+import org.apache.wicket.util.tester.TestPanelSource;
+import org.apache.wicket.util.tester.WicketTester;
+
 import wicket.contrib.tinymce.settings.NoneditablePlugin;
 import wicket.contrib.tinymce.settings.Plugin;
 import wicket.contrib.tinymce.settings.TinyMCESettings;
-import wicket.markup.html.WebComponent;
-import wicket.markup.html.panel.Panel;
-import wicket.markup.html.resources.JavaScriptReference;
-import wicket.util.tester.TestPanelSource;
-import wicket.util.tester.WicketTester;
 
 /**
  * Tests of the TinyMCE panel.
