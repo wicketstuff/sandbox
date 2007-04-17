@@ -17,16 +17,13 @@
  */
 package wicket.contrib.tinymce;
 
-import java.util.regex.Pattern;
+import org.apache.wicket.markup.ComponentTag;
+import org.apache.wicket.markup.MarkupStream;
+import org.apache.wicket.markup.html.WebComponent;
+import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.markup.html.resources.JavaScriptReference;
 
-import wicket.Application;
 import wicket.contrib.tinymce.settings.TinyMCESettings;
-import wicket.markup.ComponentTag;
-import wicket.markup.MarkupStream;
-import wicket.markup.html.PackageResource;
-import wicket.markup.html.WebComponent;
-import wicket.markup.html.panel.Panel;
-import wicket.markup.html.resources.JavaScriptReference;
 
 /**
  * Reusable wicket component for TinyMCE editor. If you want to create a

@@ -17,7 +17,8 @@
  */
 package wicket.contrib.tinymce.settings;
 
-import wicket.Application;
+import org.apache.wicket.Application;
+
 import wicket.contrib.tinymce.TinyMCEPanel;
 
 /**

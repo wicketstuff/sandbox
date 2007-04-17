@@ -19,8 +19,6 @@ package wicket.contrib.tinymce.settings;
 
 import java.util.Locale;
 
-import javax.swing.text.StyledEditorKit.BoldAction;
-
 /**
  * Adds a zoom drop list in MSIE5.5+.
  * 

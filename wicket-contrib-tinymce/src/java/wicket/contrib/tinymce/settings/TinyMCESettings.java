@@ -30,9 +30,8 @@ import org.apache.commons.collections.Predicate;
 import org.apache.commons.collections.set.ListOrderedSet;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import wicket.Component;
-import wicket.markup.html.form.TextArea;
+import org.apache.wicket.Component;
+import org.apache.wicket.markup.html.form.TextArea;
 
 /**
  * Settings class for TinyMCE editor. User can add/remove buttons,
