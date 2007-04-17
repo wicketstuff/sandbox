@@ -1,0 +1,13 @@
+<projectDescription>
+  <name>wicket-phonebook</name>
+  <comment>Wicket Phonebook Example - Spring &amp; [Hibernate|iBATIS] CrUD app</comment>
+  <projects/>
+  <buildSpec>
+    <buildCommand>
+      <name>org.eclipse.jdt.core.javabuilder</name>
+    </buildCommand>
+  </buildSpec>
+  <natures>
+    <nature>org.eclipse.jdt.core.javanature</nature>
+  </natures>
+</projectDescription>
