@@ -103,15 +103,7 @@ public abstract class AbstractDefaultDojoBehavior extends AbstractDefaultAjaxBeh
 		// if a CompressedResourceReference to a custom Dojo script is set as
 		// metada of the application use it instead of the default one
 		DojoLocaleManager.getInstance().renderLocale(response);
-		if (Application.get().getMetaData(USE_CUSTOM_DOJO_DIST) == null || !(Application.get().getMetaData(USE_CUSTOM_DOJO_DIST) instanceof CompressedResourceReference)){
-			if (USE_DOJO_UNCOMPRESSED){
-				response.renderJavascriptReference(DOJO_UNCOMPRESSED);
-			}else{
-				response.renderJavascriptReference(DOJO);
-			}
-		}else{
-			response.renderJavascriptReference((CompressedResourceReference)Application.get().getMetaData(USE_CUSTOM_DOJO_DIST));
-		}
+		response.renderJavascriptReference(getDojoResourceReference());
 		response.renderJavascriptReference(DOJO_WICKET);
 		
 		// debug on firebug console if it is installed, otherwise it will just
@@ -124,6 +116,22 @@ public abstract class AbstractDefaultDojoBehavior extends AbstractDefaultAjaxBeh
 		}
 	}
 
+	/**
+	 * Get the reference to the Dojo scripts.
+	 * @return
+	 */
+	protected ResourceReference getDojoResourceReference() {
+		if (Application.get().getMetaData(USE_CUSTOM_DOJO_DIST) == null || !(Application.get().getMetaData(USE_CUSTOM_DOJO_DIST) instanceof CompressedResourceReference)){
+			if (USE_DOJO_UNCOMPRESSED){
+				return DOJO_UNCOMPRESSED;
+			}else{
+				return DOJO;
+			}
+		}else{
+			return (CompressedResourceReference)Application.get().getMetaData(USE_CUSTOM_DOJO_DIST);
+		}
+	}
+	
 	/**
 	 * return the indicator Id to show it if it is in the page
 	 * @return the indicator Id to show it if it is in the page
