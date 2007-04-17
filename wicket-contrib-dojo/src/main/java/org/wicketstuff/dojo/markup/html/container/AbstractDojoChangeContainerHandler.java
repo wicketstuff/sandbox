@@ -33,6 +33,7 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
  */
 public abstract class AbstractDojoChangeContainerHandler extends AbstractRequireDojoBehavior {
 
+
 	/**
 	 * Find a direct {@link IDojoContainer} child 
 	 * @param markupId component MarkupId to find 
@@ -60,6 +61,17 @@ public abstract class AbstractDojoChangeContainerHandler extends AbstractRequire
 		container.visitChildren(head);
 		
 		response.renderJavascript(head.getHead(), getComponent().getMarkupId() + "script");
+	}
+	
+
+	@Override
+	public void onComponentReRendered(AjaxRequestTarget ajaxTarget) {
+		super.onComponentReRendered(ajaxTarget);
+		//if a tab is selected keepit on the refresh of the widget
+		AbstractDojoChangeContainer container = (AbstractDojoChangeContainer) getComponent();
+		ajaxTarget.appendJavascript("" +
+    			"var selected = dojo.widget.byId('" + container.getSelectedChildId() + ");\n" + 
+    			"dojo.widget.byId('" + container.getMarkupId() + "').selectChild(selected)");
 	}
 	
 	protected final void respond(AjaxRequestTarget target)

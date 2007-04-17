@@ -16,8 +16,20 @@
  */
 package org.wicketstuff.dojo.markup.html.container;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 
+/**
+ * All component extending this class are component having several children which some are hidden 
+ * and one is visible. <br/>
+ * So it is possible to select the child component you want to show using {@link #setSelected(IDojoContainer)} or 
+ * {@link #setSelected(int)}. The component selected will be displayed in the container. If nothing selected the first will
+ * be displayed
+ * 
+ * @author Vincent Demay
+ * @version SVN: $Id$
+ *
+ */
 public abstract class AbstractDojoChangeContainer extends AbstractDojoContainer{
 
 	public AbstractDojoChangeContainer(String id) {
@@ -32,13 +44,26 @@ public abstract class AbstractDojoChangeContainer extends AbstractDojoContainer{
 	 * Current selected 
 	 */
 	private IDojoContainer selected;
-	
+
 	/**
 	 * child select by default
+	 * This setSelected need a refresh of the component to be visible on client side
 	 * @param toSelect child select by default
 	 */
 	public void setSelected(IDojoContainer toSelect) {
 		selected = toSelect;
+	}
+	
+	/**
+	 * Set a selected child by its position on the ChageContainer. Index start on 0 .
+	 * This setSelected need a refresh of the component to be visible on client side .
+	 * @param position of the child in the javaDeclaration. <b>BE CARREFULL</b> the order in the markup (UI) can be different  
+	 * than the order in the java Declaration.
+	 */
+	public void setSelected(int position){
+		ChildByPositionFinder visitor = new ChildByPositionFinder(position);
+		this.visitChildren(visitor);
+		setSelected(visitor.getIDojoContainer());
 	}
 	
 	/**
@@ -67,6 +92,50 @@ public abstract class AbstractDojoChangeContainer extends AbstractDojoContainer{
 	public void onSelectionChange(IDojoContainer selected, AjaxRequestTarget target)
 	{
 				
+	}
+	
+	//*********************************************/
+	//**   A visitor to find a child by position **/
+	//*********************************************/
+	
+	/**
+	 * Find a IDojoContainer by a position in the widget
+	 * hierarchie
+	 */
+	public class ChildByPositionFinder implements IVisitor{
+
+		private int position;
+		private int currentPos;
+		
+		private IDojoContainer found;
+		
+		public ChildByPositionFinder(int position) {
+			this.position = position;
+			this.currentPos = 0;
+		}
+
+		/**
+		 * Visit direct children to find the IDojoContainer at position position
+		 */
+		public Object component(Component component) {
+			if (component instanceof IDojoContainer){
+				if (position == currentPos){
+					found = (IDojoContainer) component;
+					return IVisitor.STOP_TRAVERSAL;
+				}
+				currentPos++;
+			}
+			return IVisitor.CONTINUE_TRAVERSAL_BUT_DONT_GO_DEEPER;
+		}
+		
+		/**
+		 * return the IDojoContainer or null if not found
+		 * @return the IDojoContainer or null if not found
+		 */
+		public IDojoContainer getIDojoContainer(){
+			return found;
+		}
+		
 	}
 
 
