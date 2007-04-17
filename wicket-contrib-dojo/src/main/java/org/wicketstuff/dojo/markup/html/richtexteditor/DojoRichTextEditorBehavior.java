@@ -16,10 +16,11 @@
  */
 package org.wicketstuff.dojo.markup.html.richtexteditor;
 
+import org.apache.wicket.RequestCycle;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.ComponentTag;
-import org.wicketstuff.dojo.AbstractDojoWidgetBehavior;
+import org.wicketstuff.dojo.AbstractRequireDojoBehavior;
 import org.wicketstuff.dojo.DojoIdConstants;
 
 /**
@@ -28,7 +29,7 @@ import org.wicketstuff.dojo.DojoIdConstants;
  * @author <a href="mailto:jbq@apache.org">Jean-Baptiste Quenot</a>
  */
 @SuppressWarnings("serial")
-public class DojoRichTextEditorBehavior extends AbstractDojoWidgetBehavior {
+public class DojoRichTextEditorBehavior extends AbstractRequireDojoBehavior {
 
 	public static final String DOJO_EDITOR2_TOOLBAR_URL = "toolbarTemplatePath";
 	public static final String DOJO_EDITOR2_HEIGHT = "height";
@@ -80,41 +81,27 @@ public class DojoRichTextEditorBehavior extends AbstractDojoWidgetBehavior {
 		// Do nothing
 	}
 
-	/* (non-Javadoc)
-	 * @see org.wicketstuff.dojo.AbstractDojoWidgetBehavior#getWidgetType()
-	 */
-	@Override
-	protected String getWidgetType() {
-		return DojoIdConstants.DOJO_TYPE_RICHTEXT;
-	}
-	
 	protected void onComponentTag(ComponentTag tag) {
 		if (! tag.getName().equals("textarea"))
 			throw new IllegalArgumentException("Dojo Rich Text Editor works with a <textarea>, found a <" + tag.getName() + ">");
-		//tag.put(DojoIdConstants.DOJO_TYPE, DojoIdConstants.DOJO_TYPE_RICHTEXT);
-		super.onComponentTag(tag);
-	}
-	
-	/* (non-Javadoc)
-	 * @see org.wicketstuff.dojo.AbstractDojoWidgetBehavior#getWidgetProperties()
-	 */
-	@Override
-	protected WidgetProperties getWidgetProperties() {
-		WidgetProperties props = new WidgetProperties();
+		tag.put(DojoIdConstants.DOJO_TYPE, DojoIdConstants.DOJO_TYPE_RICHTEXT);
 		
+		// set the toolbar reference.
 		if (this.toolbarResourceReference != null) {
-			props.addProperty(DOJO_EDITOR2_TOOLBAR_URL, this.toolbarResourceReference);
+			CharSequence toolbarResourceUrl = RequestCycle.get().urlFor(this.toolbarResourceReference);
+			tag.put(DOJO_EDITOR2_TOOLBAR_URL, toolbarResourceUrl);
 		}
 		
-		// + ", height: 100, shareToolbar: false }";
+		// set the height. this creates a vertical scrollbar
 		if (this.height != null) {
-			props.addProperty(DOJO_EDITOR2_HEIGHT, this.height);
+			tag.put(DOJO_EDITOR2_HEIGHT, this.height);
 		}
 		
 		if (this.shareToolbar != null) {
-			props.addProperty(DOJO_EDITOR2_SHARE_TOOLBAR, this.shareToolbar);
+			tag.put(DOJO_EDITOR2_SHARE_TOOLBAR, this.shareToolbar);
 		}
 		
-		return props;
+		super.onComponentTag(tag);
 	}
+	
 }
