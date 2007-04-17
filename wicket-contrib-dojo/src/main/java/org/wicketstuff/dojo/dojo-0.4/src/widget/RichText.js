@@ -23,7 +23,17 @@ if(dojo.hostenv.post_load_){
 	(function(){
 		var savetextarea = dojo.doc().createElement('textarea');
 		savetextarea.id = "dojo.widget.RichText.savedContent";
-		savetextarea.style = "display:none;position:absolute;top:-100px;left:-100px;height:3px;width:3px;overflow:hidden;";
+//		savetextarea.style = "display:none;position:absolute;top:-100px;left:-100px;height:3px;width:3px;overflow:hidden;";
+		with (savetextarea.style) {
+			display="none";
+			position="absolute";
+			top="-100px";
+			left="-100px";
+			height="3px";
+			width="3px";
+			overflow="hidden";
+		}
+		
 		dojo.body().appendChild(savetextarea);
 	})();
 }else{
