@@ -1,7 +1,8 @@
 package wicket.contrib.examples.tinymce;
 
+import org.apache.wicket.markup.html.link.Link;
+
 import wicket.contrib.examples.WicketExamplePage;
-import wicket.markup.html.link.Link;
 
 /**
  * @author Iulian-Corneliu COSTAN
