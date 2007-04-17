@@ -1,9 +1,24 @@
 package wicket.contrib.examples.tinymce;
 
+import org.apache.wicket.markup.html.form.TextArea;
+import org.apache.wicket.model.Model;
+
 import wicket.contrib.tinymce.TinyMCEPanel;
-import wicket.contrib.tinymce.settings.*;
-import wicket.markup.html.form.TextArea;
-import wicket.model.Model;
+import wicket.contrib.tinymce.settings.ContextMenuPlugin;
+import wicket.contrib.tinymce.settings.DateTimePlugin;
+import wicket.contrib.tinymce.settings.DirectionalityPlugin;
+import wicket.contrib.tinymce.settings.EmotionsPlugin;
+import wicket.contrib.tinymce.settings.FlashPlugin;
+import wicket.contrib.tinymce.settings.FullScreenPlugin;
+import wicket.contrib.tinymce.settings.IESpellPlugin;
+import wicket.contrib.tinymce.settings.PastePlugin;
+import wicket.contrib.tinymce.settings.PreviewPlugin;
+import wicket.contrib.tinymce.settings.PrintPlugin;
+import wicket.contrib.tinymce.settings.SavePlugin;
+import wicket.contrib.tinymce.settings.SearchReplacePlugin;
+import wicket.contrib.tinymce.settings.TablePlugin;
+import wicket.contrib.tinymce.settings.TinyMCESettings;
+import wicket.contrib.tinymce.settings.ZoomPlugin;
 
 /**
  * @author Iulian-Corneliu COSTAN

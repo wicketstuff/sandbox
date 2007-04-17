@@ -1,8 +1,9 @@
 package wicket.contrib.examples.tinymce;
 
+import org.apache.wicket.markup.html.form.TextArea;
+import org.apache.wicket.model.Model;
+
 import wicket.contrib.tinymce.TinyMCEPanel;
-import wicket.markup.html.form.TextArea;
-import wicket.model.Model;
 
 /**
  * @author Iulian-Corneliu COSTAN

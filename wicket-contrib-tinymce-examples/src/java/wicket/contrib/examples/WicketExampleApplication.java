@@ -18,7 +18,7 @@
  */
 package wicket.contrib.examples;
 
-import wicket.protocol.http.WebApplication;
+import org.apache.wicket.protocol.http.WebApplication;
 
 /**
  * Wicket Application class for hello world example.
