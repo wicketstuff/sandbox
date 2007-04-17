@@ -1,0 +1,1 @@
+dojo.provide("wicket.manifest");
