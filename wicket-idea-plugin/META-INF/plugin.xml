@@ -23,7 +23,7 @@
         </ul>
 
   ]]></description>
-  <version>0.1.3</version>
+  <version>0.2</version>
   <change-notes><![CDATA[
         <ul>
             <li>Added action to toggle between the html and the java file. The default keymapping is: shift+alt+W</li>

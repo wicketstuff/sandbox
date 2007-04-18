@@ -16,6 +16,9 @@
 
 package com.holmbech.wicketassistant;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.fileEditor.OpenFileDescriptor;
@@ -24,20 +27,17 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiClassInitializer;
 import com.intellij.psi.PsiDirectory;
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiExpression;
 import com.intellij.psi.PsiExpressionList;
 import com.intellij.psi.PsiField;
 import com.intellij.psi.PsiFile;
+import com.intellij.psi.PsiLocalVariable;
 import com.intellij.psi.PsiMethod;
 import com.intellij.psi.PsiNewExpression;
 import com.intellij.psi.PsiRecursiveElementVisitor;
-import com.intellij.psi.PsiReferenceExpression;
 import com.intellij.psi.PsiReference;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiLocalVariable;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.intellij.psi.PsiReferenceExpression;
 
 /**
  * @author Anders Holmbech Brandt
@@ -52,6 +52,21 @@ public class WicketHelper {
     public static Editor openFile(PsiDirectory containingDirectory, String fileName) {
         PsiFile file = containingDirectory.findFile(fileName);
         if (file == null) return null;
+        Project project = file.getProject();
+        FileEditorManager instance = FileEditorManager.getInstance(project);
+        VirtualFile virtualFile = file.getVirtualFile();
+        return instance.openTextEditor(new OpenFileDescriptor(project, virtualFile), true);
+    }
+
+    /**
+     * Creates the file if not found in the given directory
+     * @param containingDirectory the directory to find the file in
+     * @param fileName the filename to find in the directory
+     */
+    public static Editor createFile(PsiDirectory containingDirectory, String fileName) {
+        PsiFile file = containingDirectory.findFile(fileName);
+        if (file != null) {
+        }
         Project project = file.getProject();
         FileEditorManager instance = FileEditorManager.getInstance(project);
         VirtualFile virtualFile = file.getVirtualFile();
