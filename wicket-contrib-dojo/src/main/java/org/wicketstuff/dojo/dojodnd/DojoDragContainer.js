@@ -10,11 +10,16 @@ dojo.declare("wicketstuff.dojodnd.DojoDragContainer", null, {
 	initializer: function(markupId, dragId) {
 		this.markupId = markupId;
 		this.dragId = dragId;
+	},
 
+	/**
+	 * Initialize the drag container.
+	 */
+	initializeDragSource: function() {
 		this.dragSource = this.createDragSource();
 		dojo.debug("Initialized drag contianer for " + this.markupId + ", dragId: " + this.dragId);
 	},
-
+	
 	/**
 	 * Create the drag source. Override this if you need to create a specific drag
 	 * source (e.g. drag-copy or drag-move).
