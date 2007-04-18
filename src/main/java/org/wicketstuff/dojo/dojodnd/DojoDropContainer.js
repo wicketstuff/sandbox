@@ -9,17 +9,24 @@ dojo.declare("wicketstuff.dojodnd.DojoDropContainer", null, {
 		this.markupId = markupId;
 		this.dropIds = dropIds;
 		this.url = url;
-		
-		var dl = dojo.byId(markupId);
-		this.dropTarget = new dojo.dnd.HtmlDropTarget(dl, dropIds);
+	},
+
+	/**
+	 * Initialize the drop container (should be called after construction of a new
+	 * instance of this class, to be sure all constructors are called).
+	 */
+	initializeDropContainer: function() {
+		var dl = dojo.byId(this.markupId);
+		this.dropTarget = new dojo.dnd.HtmlDropTarget(dl, this.dropIds);
 		dojo.event.connect(this.dropTarget, 'onDrop', this, "handleDrop");
 
+		// should we create a drop indicator by default?
 		//this.createDropIndicator();
 
 		dojo.debug("Initialized drop contianer for " + this.markupId + ", dropIds: " + this.dropIds + ", ");
 		dojo.debug("Callback url base: " + this.url);
 	},
-
+	
 	/**
 	 * Create a custom drop indicator.
 	 */

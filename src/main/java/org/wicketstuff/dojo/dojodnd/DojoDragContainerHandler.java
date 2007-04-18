@@ -31,7 +31,7 @@ public class DojoDragContainerHandler extends AbstractDojoDragContainerHandler
 		IRequestTarget target = RequestCycle.get().getRequestTarget();
 		if(!(target instanceof AjaxRequestTarget)){
 			response.renderJavascript("dojo.event.connect(dojo, \"loaded\", function() {" + 
-					"new wicketstuff.dojodnd.DojoDragContainer('" + container.getMarkupId() + "','" + container.getDragPattern() + "')});\n", 
+					"new wicketstuff.dojodnd.DojoDragContainer('" + container.getMarkupId() + "','" + container.getDragPattern() + "').initializeDragSource()});\n", 
 					container.getMarkupId() + "onLoad" );
 		}
 		//else will be done by onComponentReRendered
@@ -42,7 +42,7 @@ public class DojoDragContainerHandler extends AbstractDojoDragContainerHandler
 		super.onComponentReRendered(ajaxTarget);
 		
 		DojoDragContainer container = getDojoDragContainer();
-		ajaxTarget.appendJavascript("new wicketstuff.dojodnd.DojoDragContainer('" + container.getMarkupId() + "','" + container.getDragPattern() + "');\n");
+		ajaxTarget.appendJavascript("new wicketstuff.dojodnd.DojoDragContainer('" + container.getMarkupId() + "','" + container.getDragPattern() + "').initializeDragSource();\n");
 	}
 	
 	/* (non-Javadoc)
