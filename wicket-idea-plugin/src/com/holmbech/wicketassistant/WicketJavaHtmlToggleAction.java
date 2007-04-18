@@ -33,6 +33,7 @@ import com.intellij.psi.PsiFile;
  */
 public class WicketJavaHtmlToggleAction extends AnAction {
 
+    @Override
     public void actionPerformed(AnActionEvent e) {
         DataContext dataContext = e.getDataContext();
         Object data = dataContext.getData(DataConstants.PSI_FILE);

@@ -1,22 +1,22 @@
 package com.holmbech.wicketassistant;
 
-import com.intellij.testFramework.InspectionTestCase;
-import com.intellij.testFramework.TestLogger;
-import com.intellij.testFramework.PsiTestUtil;
+import java.io.IOException;
+
+import com.intellij.ide.startup.impl.StartupManagerImpl;
+import com.intellij.lang.properties.PropertiesReferenceManager;
+import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.fileTypes.FileTypeManager;
+import com.intellij.openapi.fileTypes.StdFileTypes;
 import com.intellij.openapi.module.ModuleManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ex.ProjectManagerEx;
-import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.startup.StartupManager;
-import com.intellij.openapi.fileTypes.FileTypeManager;
-import com.intellij.openapi.fileTypes.StdFileTypes;
-import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.util.Computable;
 import com.intellij.openapi.util.io.FileUtil;
-import com.intellij.lang.properties.PropertiesReferenceManager;
-import com.intellij.ide.startup.impl.StartupManagerImpl;
-
-import java.io.IOException;
+import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.testFramework.InspectionTestCase;
+import com.intellij.testFramework.PsiTestUtil;
+import com.intellij.testFramework.TestLogger;
 
 /**
  * @author Anders

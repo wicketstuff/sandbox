@@ -40,10 +40,11 @@ public class WicketIdGotoAction extends AnAction {
     public WicketIdGotoAction() {
     }
 
-    public WicketIdGotoAction(AnAction defaultGotoAction) {
-        this.defaultGotoAction = defaultGotoAction;
+    public WicketIdGotoAction(AnAction action) {
+        this.defaultGotoAction = action;
     }
 
+    @Override
     public void actionPerformed(AnActionEvent event) {
         DataContext dataContext = event.getDataContext();
         if (!gotoWicketId(dataContext)) {
