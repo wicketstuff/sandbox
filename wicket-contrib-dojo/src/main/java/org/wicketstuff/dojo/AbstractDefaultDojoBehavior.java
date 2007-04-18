@@ -17,17 +17,21 @@
 package org.wicketstuff.dojo;
 
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import org.apache.wicket.Application;
 import org.apache.wicket.MetaDataKey;
+import org.apache.wicket.RequestCycle;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.IAjaxCallDecorator;
 import org.apache.wicket.ajax.IAjaxIndicatorAware;
-import org.wicketstuff.dojo.indicator.DojoIndicatorHandlerHelper;
-import org.wicketstuff.dojo.indicator.behavior.DojoIndicatorBehavior;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.resources.CompressedResourceReference;
+import org.wicketstuff.dojo.indicator.DojoIndicatorHandlerHelper;
+import org.wicketstuff.dojo.indicator.behavior.DojoIndicatorBehavior;
 
 /**
  * Handles event requests using Dojo.
@@ -84,6 +88,12 @@ public abstract class AbstractDefaultDojoBehavior extends AbstractDefaultAjaxBeh
 	/** A unique ID for the JavaScript Dojo console debug */
 	private static final String JAVASCRIPT_DOJO_CONSOLE_DEBUG_ID = AbstractDefaultDojoBehavior.class.getName() + "/consoleDebug";
 
+	/** A unique ID for a piece of JavaScript that registers the wicketstuff dojo namespace */
+	private static final String DOJO_NAMESPACE_PREFIX = AbstractDefaultDojoBehavior.class.getName() + "/namespaces/";
+	
+	/** The wicketstuff dojo module */
+	private static final DojoModule WICKETSTUFF_MODULE = new DojoModuleImpl("wicketstuff", AbstractDefaultDojoBehavior.class);
+
 	/**
 	 * @see wicket.ajax.AbstractDefaultAjaxBehavior#renderHead(wicket.markup.html.IHeaderResponse)
 	 */
@@ -106,6 +116,11 @@ public abstract class AbstractDefaultDojoBehavior extends AbstractDefaultAjaxBeh
 		response.renderJavascriptReference(getDojoResourceReference());
 		response.renderJavascriptReference(DOJO_WICKET);
 		
+		// register the wicketstuff namespace
+		for (DojoModule module: getDojoModules()) {
+			registerDojoModulePath(response, module);
+		}
+		
 		// debug on firebug console if it is installed, otherwise it will just
 		// end up at the bottom of the page
 		if (configurationType.equalsIgnoreCase(Application.DEVELOPMENT)) {
@@ -115,12 +130,41 @@ public abstract class AbstractDefaultDojoBehavior extends AbstractDefaultAjaxBeh
 			response.renderJavascript(consoleDebugScript.toString(), JAVASCRIPT_DOJO_CONSOLE_DEBUG_ID);
 		}
 	}
+	
+	/**
+	 * Register a specific dojo module.
+	 * @param response
+	 * @param namespace
+	 * @param path
+	 */
+	public void registerDojoModulePath(IHeaderResponse response, DojoModule module) {
+		ResourceReference dojoReference = getDojoResourceReference();
+		String dojoUrl = RequestCycle.get().urlFor(dojoReference).toString();
+		
+		// count the depth to determine the relative path
+		String url = "";
+		int last = 0;
+		while (last > -1) {
+			last = dojoUrl.indexOf("/", last + 1);
+			if (last > -1) {
+				url += "../";
+			}
+		}
+		
+		ResourceReference moduleReference = new ResourceReference(module.getScope(), "");
+		String moduleUrl = RequestCycle.get().urlFor(moduleReference).toString();
+		url = url + moduleUrl;
+				
+		response.renderJavascript(
+				"dojo.registerModulePath(\"" + module.getNamespace() + "\", \"" + url + "\");",
+				DOJO_NAMESPACE_PREFIX + module.getNamespace());
+	}
 
 	/**
 	 * Get the reference to the Dojo scripts.
 	 * @return
 	 */
-	protected ResourceReference getDojoResourceReference() {
+	public ResourceReference getDojoResourceReference() {
 		if (Application.get().getMetaData(USE_CUSTOM_DOJO_DIST) == null || !(Application.get().getMetaData(USE_CUSTOM_DOJO_DIST) instanceof CompressedResourceReference)){
 			if (USE_DOJO_UNCOMPRESSED){
 				return DOJO_UNCOMPRESSED;
@@ -150,4 +194,92 @@ public abstract class AbstractDefaultDojoBehavior extends AbstractDefaultAjaxBeh
 		return new DojoIndicatorHandlerHelper(getComponent()).getAjaxCallDecorator();
 	}
 	
+	/**
+	 * Returns the collection of modules that should be registered.
+	 * @return
+	 */
+	protected final Collection<DojoModule> getDojoModules() {
+		Collection<DojoModule> modules = new ArrayList<DojoModule>();
+		setDojoModules(modules);
+		return modules;
+	}
+	
+	/**
+	 * Allow classes to override this and add their own modules.
+	 * @param modules
+	 */
+	protected void setDojoModules(Collection<DojoModule> modules) {
+		modules.add(WICKETSTUFF_MODULE);
+	}
+	
+	/**
+	 * Provides information about a dojo module.
+	 * 
+	 * @author B. Molenkamp
+	 */
+	public static interface DojoModule {
+		
+		/**
+		 * Returns the scope. This scope will be used to calculate the relative
+		 * path to this module.
+		 * 
+		 * @return the scope
+		 */
+		public Class getScope();
+		
+		/**
+		 * Returns the namespace of this module.
+		 * 
+		 * @return the module's namespace
+		 */
+		public String getNamespace();
+		
+	}
+	
+	/**
+	 * Abstract implementation of a dojo module. If the scope is not passed to
+	 * the constructor, or if it's null, it will use it's own class as a scope.
+	 * 
+	 * @author B. Molenkamp
+	 */
+	public static class DojoModuleImpl implements DojoModule {
+
+		private String moduleNamespace;
+		private Class scope;
+		
+		/**
+		 * Creates a module with the scope of the implementing class.
+		 * @param namespace
+		 */
+		public DojoModuleImpl(String namespace) {
+			this(namespace, null);
+		}
+		
+		/**
+		 * Creates a module with the given namespace at the given scope. It will
+		 * use the scope to resolve anything from the namespace.
+		 * 
+		 * @param namespace
+		 * @param scope
+		 */
+		public DojoModuleImpl(String namespace, Class scope) {
+			this.moduleNamespace = namespace;
+			this.scope = scope == null? this.getClass(): scope;
+		}
+		
+		/* (non-Javadoc)
+		 * @see org.wicketstuff.dojo.AbstractDefaultDojoBehavior.DojoModule#getNamespace()
+		 */
+		public String getNamespace() {
+			return this.moduleNamespace;
+		}
+
+		/* (non-Javadoc)
+		 * @see org.wicketstuff.dojo.AbstractDefaultDojoBehavior.DojoModule#getScope()
+		 */
+		public Class getScope() {
+			return this.scope;
+		}
+		
+	}
 }

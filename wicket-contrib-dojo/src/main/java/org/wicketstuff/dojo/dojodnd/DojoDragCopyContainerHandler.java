@@ -3,7 +3,6 @@ package org.wicketstuff.dojo.dojodnd;
 import org.apache.wicket.IRequestTarget;
 import org.apache.wicket.RequestCycle;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.wicketstuff.dojo.templates.DojoPackagedTextTemplate;
 import org.apache.wicket.markup.html.IHeaderResponse;
 
 /**
@@ -26,15 +25,13 @@ public class DojoDragCopyContainerHandler extends AbstractDojoDragContainerHandl
 	public void renderHead(IHeaderResponse response) {
 		super.renderHead(response);
 
-		DojoPackagedTextTemplate template = new DojoPackagedTextTemplate(this.getClass(), "DojoDragCopyContainerHandlerTemplate.js");
-		response.renderJavascript(template.asString(), template.getStaticKey());
-
 		// DojoOnLoad only if not AjaxRequest
 		IRequestTarget target = RequestCycle.get().getRequestTarget();
 		if (!(target instanceof AjaxRequestTarget)) {
 			DojoDragCopyContainer container = getDojoDragCopyContainer();
 			response.renderJavascript(
-					"dojo.event.connect(dojo, \"loaded\", function() {initDragCopy('" + container.getMarkupId() + "','" + container.getDragPattern() + "', " + container.isCopyOnce() + ")});\n", 
+					"dojo.event.connect(dojo, \"loaded\", function() {" +
+					"new wicketstuff.dojodnd.DojoDragCopyContainer('" + container.getMarkupId() + "','" + container.getDragPattern() + "', " + container.isCopyOnce() + ")});\n", 
 					container.getMarkupId() + "onLoad");
 		}
 		// else will be done by onComponentReRendered
@@ -44,7 +41,7 @@ public class DojoDragCopyContainerHandler extends AbstractDojoDragContainerHandl
 		super.onComponentReRendered(ajaxTarget);
 		
 		DojoDragCopyContainer container = getDojoDragCopyContainer();
-		ajaxTarget.appendJavascript("initDragCopy('" + container.getMarkupId() + "','" + container.getDragPattern() + "', " + container.isCopyOnce() + ")\n");
+		ajaxTarget.appendJavascript("new wicketstuff.dojodnd.DojoDragCopyContainer('" + container.getMarkupId() + "','" + container.getDragPattern() + "', " + container.isCopyOnce() + ");\n");
 	}
 	
 	/**
@@ -62,6 +59,7 @@ public class DojoDragCopyContainerHandler extends AbstractDojoDragContainerHandl
 	@Override
 	public void setRequire(RequireDojoLibs libs) {
 		super.setRequire(libs);
-		libs.add("dojo.dnd.HtmlDragCopy");
+		
+		libs.add("wicketstuff.dojodnd.DojoDragCopyContainer");
 	}
 }

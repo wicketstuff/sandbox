@@ -19,7 +19,6 @@ package org.wicketstuff.dojo.dojodnd;
 import org.apache.wicket.IRequestTarget;
 import org.apache.wicket.RequestCycle;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.wicketstuff.dojo.templates.DojoPackagedTextTemplate;
 import org.apache.wicket.markup.html.IHeaderResponse;
 
 /**
@@ -38,14 +37,12 @@ class DojoDropContainerHandler extends AbstractDojoDropContainerHandler
 	{
 		super.renderHead(response);
 
-		DojoPackagedTextTemplate template = new DojoPackagedTextTemplate(this.getClass(), "DojoDropContainerHandlerTemplate.js");
-
-		response.renderJavascript(template.asString(), template.getStaticKey());
-	
 		IRequestTarget target = RequestCycle.get().getRequestTarget();
 		if(!(target instanceof AjaxRequestTarget)){
 			DojoDropContainer container = getDojoDropContainer();
-			response.renderJavascript("dojo.event.connect(dojo, \"loaded\", function() {initDrop('" + container.getMarkupId() + "', " + acceptIdsToJavaScriptArray() + ", '" + getCallbackUrl() + "'); });" , container.getMarkupId() + "onLoad");
+			response.renderJavascript("dojo.event.connect(dojo, \"loaded\", function() {" +
+					"new wicketstuff.dojodnd.DojoDropContainer('" + container.getMarkupId() + "', " + acceptIdsToJavaScriptArray() + ", '" + getCallbackUrl() + "'); });" , 
+					container.getMarkupId() + "onLoad");
 		}
 	}
 	
@@ -54,6 +51,16 @@ class DojoDropContainerHandler extends AbstractDojoDropContainerHandler
 		super.onComponentReRendered(ajaxTarget);
 		
 		DojoDropContainer container = getDojoDropContainer();
-		ajaxTarget.appendJavascript("initDrop('" + container.getMarkupId() + "', " + acceptIdsToJavaScriptArray() + ", '" + getCallbackUrl() + "');\n");
+		ajaxTarget.appendJavascript("new wicketstuff.dojodnd.DojoDropContainer('" + container.getMarkupId() + "', " + acceptIdsToJavaScriptArray() + ", '" + getCallbackUrl() + "');\n");
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.wicketstuff.dojo.dojodnd.AbstractDojoDropContainerHandler#setRequire(org.wicketstuff.dojo.AbstractRequireDojoBehavior.RequireDojoLibs)
+	 */
+	@Override
+	public void setRequire(RequireDojoLibs libs) {
+		super.setRequire(libs);
+		
+		libs.add("wicketstuff.dojodnd.DojoDropContainer");
 	}
 }
