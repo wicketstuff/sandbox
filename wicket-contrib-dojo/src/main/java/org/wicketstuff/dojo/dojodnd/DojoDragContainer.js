@@ -15,7 +15,7 @@ dojo.declare("wicketstuff.dojodnd.DojoDragContainer", null, {
 	/**
 	 * Initialize the drag container.
 	 */
-	initializeDragSource: function() {
+	initializeDragContainer: function() {
 		this.dragSource = this.createDragSource();
 		dojo.debug("Initialized drag contianer for " + this.markupId + ", dragId: " + this.dragId);
 	},
