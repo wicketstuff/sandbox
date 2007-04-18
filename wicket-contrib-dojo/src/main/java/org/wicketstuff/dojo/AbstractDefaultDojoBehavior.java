@@ -154,6 +154,10 @@ public abstract class AbstractDefaultDojoBehavior extends AbstractDefaultAjaxBeh
 		ResourceReference moduleReference = new ResourceReference(module.getScope(), "");
 		String moduleUrl = RequestCycle.get().urlFor(moduleReference).toString();
 		url = url + moduleUrl;
+		//remove / at the end if exists
+		if (url.charAt(url.length()-1) == '/'){
+			url = url.substring(0, url.length() -1);
+		}
 				
 		response.renderJavascript(
 				"dojo.registerModulePath(\"" + module.getNamespace() + "\", \"" + url + "\");",
