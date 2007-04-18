@@ -81,7 +81,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.wicketstuff</groupId>
-			<artifactId>dojo</artifactId>
+			<artifactId>wicketstuff-dojo</artifactId>
 			<version>1.3.0-SNAPSHOT</version>
 		</dependency>
 		<!-- Jetty Launcher -->
