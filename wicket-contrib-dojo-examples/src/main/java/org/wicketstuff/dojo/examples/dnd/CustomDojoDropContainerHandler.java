@@ -38,7 +38,7 @@ class CustomDojoDropContainerHandler extends AbstractDojoDropContainerHandler
 		if(!(target instanceof AjaxRequestTarget)){
 			CustomDojoDropContainer container = (CustomDojoDropContainer) getDojoDropContainer();
 			response.renderJavascript("dojo.event.connect(dojo, \"loaded\", function() {" +
-					"new wicketstuff.examples.dnd.CustomDojoDropContainer('" + container.getMarkupId() + "', " + acceptIdsToJavaScriptArray() + ", '" + getCallbackUrl() + "'); });" , 
+					"new wicketstuff.examples.dnd.CustomDojoDropContainer('" + container.getMarkupId() + "', " + acceptIdsToJavaScriptArray() + ", '" + getCallbackUrl() + "').initializeDropContainer(); });" , 
 					container.getMarkupId() + "onLoad");
 		}
 	}
@@ -48,7 +48,7 @@ class CustomDojoDropContainerHandler extends AbstractDojoDropContainerHandler
 		super.onComponentReRendered(ajaxTarget);
 		
 		CustomDojoDropContainer container = (CustomDojoDropContainer) getDojoDropContainer();
-		ajaxTarget.appendJavascript("new wicketstuff.examples.dnd.CustomDojoDropContainer('" + container.getMarkupId() + "', " + acceptIdsToJavaScriptArray() + ", '" + getCallbackUrl() + "');\n");
+		ajaxTarget.appendJavascript("new wicketstuff.examples.dnd.CustomDojoDropContainer('" + container.getMarkupId() + "', " + acceptIdsToJavaScriptArray() + ", '" + getCallbackUrl() + "').initializeDropContainer();\n");
 	}
 	
 	/* (non-Javadoc)
