@@ -24,8 +24,18 @@ public class DojoDragCopyContainer extends DojoDragContainer {
 	 *            widget id
 	 */
 	public DojoDragCopyContainer(String id) {
+		this(id, true);
+	}
+
+	/**
+	 * Constructor of a drag copy container
+	 * 
+	 * @param id
+	 *            widget id
+	 */
+	public DojoDragCopyContainer(String id, boolean copyOnce) {
 		super(id);
-		setCopyOnce(true);
+		setCopyOnce(copyOnce);
 	}
 
 	/**

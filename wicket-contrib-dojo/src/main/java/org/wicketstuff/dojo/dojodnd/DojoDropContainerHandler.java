@@ -41,7 +41,7 @@ class DojoDropContainerHandler extends AbstractDojoDropContainerHandler
 		if(!(target instanceof AjaxRequestTarget)){
 			DojoDropContainer container = getDojoDropContainer();
 			response.renderJavascript("dojo.event.connect(dojo, \"loaded\", function() {" +
-					"new wicketstuff.dojodnd.DojoDropContainer('" + container.getMarkupId() + "', " + acceptIdsToJavaScriptArray() + ", '" + getCallbackUrl() + "'); });" , 
+					"new wicketstuff.dojodnd.DojoDropContainer('" + container.getMarkupId() + "', " + acceptIdsToJavaScriptArray() + ", '" + getCallbackUrl() + "').initializeDropContainer(); });" , 
 					container.getMarkupId() + "onLoad");
 		}
 	}
@@ -51,7 +51,7 @@ class DojoDropContainerHandler extends AbstractDojoDropContainerHandler
 		super.onComponentReRendered(ajaxTarget);
 		
 		DojoDropContainer container = getDojoDropContainer();
-		ajaxTarget.appendJavascript("new wicketstuff.dojodnd.DojoDropContainer('" + container.getMarkupId() + "', " + acceptIdsToJavaScriptArray() + ", '" + getCallbackUrl() + "');\n");
+		ajaxTarget.appendJavascript("new wicketstuff.dojodnd.DojoDropContainer('" + container.getMarkupId() + "', " + acceptIdsToJavaScriptArray() + ", '" + getCallbackUrl() + "').initializeDropContainer();\n");
 	}
 	
 	/* (non-Javadoc)

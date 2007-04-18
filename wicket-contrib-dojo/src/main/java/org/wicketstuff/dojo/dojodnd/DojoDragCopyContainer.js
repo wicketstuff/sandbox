@@ -11,10 +11,8 @@ dojo.declare("wicketstuff.dojodnd.DojoDragCopyContainer", wicketstuff.dojodnd.Do
 	 * Constructor
 	 */
 	initializer: function(markupId, dragId, copyOnce) {
-		// call constructor of superclass
-		// documentation says we should call it but it seems only to work when not called!
+		// superclass constructor seems to be called automatically by dojo.
 		// see http://dojotoolkit.org/node/7 for inheritance details
-		//wicketstuff.dojodnd.DojoDragCopyContainer.superclass.initializer(markupId, dragId);
 		
 		this.copyOnce = copyOnce;
 	},

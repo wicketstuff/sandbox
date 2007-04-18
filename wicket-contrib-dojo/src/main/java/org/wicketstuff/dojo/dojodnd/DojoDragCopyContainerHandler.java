@@ -31,7 +31,7 @@ public class DojoDragCopyContainerHandler extends AbstractDojoDragContainerHandl
 			DojoDragCopyContainer container = getDojoDragCopyContainer();
 			response.renderJavascript(
 					"dojo.event.connect(dojo, \"loaded\", function() {" +
-					"new wicketstuff.dojodnd.DojoDragCopyContainer('" + container.getMarkupId() + "','" + container.getDragPattern() + "', " + container.isCopyOnce() + ")});\n", 
+					"new wicketstuff.dojodnd.DojoDragCopyContainer('" + container.getMarkupId() + "','" + container.getDragPattern() + "', " + container.isCopyOnce() + ").initializeDragSource()});\n", 
 					container.getMarkupId() + "onLoad");
 		}
 		// else will be done by onComponentReRendered
@@ -41,7 +41,7 @@ public class DojoDragCopyContainerHandler extends AbstractDojoDragContainerHandl
 		super.onComponentReRendered(ajaxTarget);
 		
 		DojoDragCopyContainer container = getDojoDragCopyContainer();
-		ajaxTarget.appendJavascript("new wicketstuff.dojodnd.DojoDragCopyContainer('" + container.getMarkupId() + "','" + container.getDragPattern() + "', " + container.isCopyOnce() + ");\n");
+		ajaxTarget.appendJavascript("new wicketstuff.dojodnd.DojoDragCopyContainer('" + container.getMarkupId() + "','" + container.getDragPattern() + "', " + container.isCopyOnce() + ").initializeDragSource();\n");
 	}
 	
 	/**
