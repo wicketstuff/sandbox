@@ -20,20 +20,24 @@ public class TabContainerSample extends WebPage {
 		};
 		add(container);
 		container.setHeight("500px");
-		container.add(new DojoSimpleContainer("tab1", "title1"));
-		container.add(new DojoSimpleContainer("tab2", "title2"));
+		
+		final DojoSimpleContainer tab1 = new DojoSimpleContainer("tab1", "title1");
+		container.add(tab1);
+		
+		final DojoSimpleContainer tab2 = new DojoSimpleContainer("tab2", "title2");
+		container.add(tab2);
 		
 		DojoPageContainer page = new DojoPageContainer("tab3", DatePickerShower.class);
 		page.setTitle("title3");
 		container.add(page);
 		//select the second item
-		container.setSelected(1);
-		
+		container.setSelected(tab1);
+				
 		add(new DojoLink("refresh"){
 
 			@Override
 			public void onClick(AjaxRequestTarget target) {
-				container.setSelected(2);
+				container.setSelected(tab2);
 				target.addComponent(container);
 			}
 			
