@@ -464,6 +464,9 @@ dojo.widget.defineWidget(
 		closeWindow: function(){
 			this.hide();
 			dojo.widget.ModalFloatingPane.superclass.closeWindow.apply(this, arguments);
+		},
+		onMouseDown : function(){
+			//Do nothing, in that case we DO NOT need to bring the clicked window to the top 
 		}
 	}
 );
