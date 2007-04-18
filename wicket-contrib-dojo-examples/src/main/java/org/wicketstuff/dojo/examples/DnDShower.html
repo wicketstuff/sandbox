@@ -17,20 +17,40 @@
 	</head>
 
 <body>
-	<div>
+	<p>
+		These three drag sources demonstrate the drag-copy sources. On drop, a copy
+		of the source is created. The copyOnce setting on the drag source determines
+		if the drop-copy will create copies itself, or just move around like normal
+		drag sources.
+	</p>
+	<div style="float: left; width: 30%;">
+		<div class="drag" wicket:id="dragCopyContainer1">
+			<p>(Copy once: true)</p>
+			<img wicket:id="pic1" src="pic1.jpg"/>
+		</div>
+		<div class="drag" wicket:id="dragCopyContainer2">
+			<p>(Copy once: true)</p>
+			<img wicket:id="pic2" src="pic2.jpg"/>
+		</div>
+		<div class="drag" wicket:id="dragCopyContainer3">
+			<p>(Copy once: false - dropped copies will create copies themselves)</p>
+			<img wicket:id="pic3" src="pic3.jpg"/>
+		</div>
+	</div>
+	<div style="float: left; width: 30%;">
 		<div class="drag" wicket:id="dragContainer1"><img wicket:id="pic1" src="pic1.jpg"/></div>
 		<div class="drag" wicket:id="dragContainer2"><img wicket:id="pic2" src="pic2.jpg"/></div>
 		<div class="drag" wicket:id="dragContainer3"><img wicket:id="pic3" src="pic3.jpg"/></div>
 	</div>
-	<hr/>
-	<div wicket:id="dropContainer">
+	<div wicket:id="dropContainer" style="float: left; width: 30%;">
 		<div class="drag" wicket:id="dragContainer4"><img wicket:id="pic4" src="pic4.jpg"/></div>
-		<div class="drag" wicket:id="dragContainer5"><img wicket:id="pic5" src="pic5.jpg"/></div>	</div>
+		<div class="drag" wicket:id="dragContainer5"><img wicket:id="pic5" src="pic5.jpg"/></div>	
+	</div>
  
  	<br/>
 	<br/>
 	<br/>
-	<table align="center" style="border-color: navy; border-style: solid; border-width: 1px; font-size: 12px">
+	<table align="center" style="clear: both; border-color: navy; border-style: solid; border-width: 1px; font-size: 12px">
 		<tr>
 			<td style="color: white; background-color: navy; font-weight: bold; text-align: center;">
 				Explanation

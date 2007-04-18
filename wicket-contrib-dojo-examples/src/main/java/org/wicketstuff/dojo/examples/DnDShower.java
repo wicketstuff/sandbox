@@ -3,6 +3,7 @@ package org.wicketstuff.dojo.examples;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.wicketstuff.dojo.dojodnd.DojoDragContainer;
+import org.wicketstuff.dojo.dojodnd.DojoDragCopyContainer;
 import org.wicketstuff.dojo.dojodnd.DojoDropContainer;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.image.Image;
@@ -28,12 +29,22 @@ public class DnDShower extends WebPage {
 		add(dragContainer2);
 		add(dragContainer3);
 		
+		// some drag-copy sources.
+		DojoDragCopyContainer dragCopyContainer1 = new DojoDragCopyContainer("dragCopyContainer1", true);
+		DojoDragCopyContainer dragCopyContainer2 = new DojoDragCopyContainer("dragCopyContainer2", true);
+		DojoDragCopyContainer dragCopyContainer3 = new DojoDragCopyContainer("dragCopyContainer3", false);
+		dragCopyContainer1.add(new Image("pic1"));
+		dragCopyContainer2.add(new Image("pic2"));
+		dragCopyContainer3.add(new Image("pic3"));
+		add(dragCopyContainer1);
+		add(dragCopyContainer2);
+		add(dragCopyContainer3);
 		
 		DojoDragContainer dragContainer4 = new DojoDragContainer("dragContainer4");
 		DojoDragContainer dragContainer5 = new DojoDragContainer("dragContainer5");
 		dropContainer.add(dragContainer4);
 		dropContainer.add(dragContainer5);
-		
+
 		dragContainer1.add(new Image("pic1"));
 		dragContainer2.add(new Image("pic2"));
 		dragContainer3.add(new Image("pic3"));
