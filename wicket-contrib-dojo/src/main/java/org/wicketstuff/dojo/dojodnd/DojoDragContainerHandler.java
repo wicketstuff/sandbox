@@ -3,7 +3,6 @@ package org.wicketstuff.dojo.dojodnd;
 import org.apache.wicket.IRequestTarget;
 import org.apache.wicket.RequestCycle;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.wicketstuff.dojo.templates.DojoPackagedTextTemplate;
 import org.apache.wicket.markup.html.IHeaderResponse;
 
 /**
@@ -28,13 +27,12 @@ public class DojoDragContainerHandler extends AbstractDojoDragContainerHandler
 
 		DojoDragContainer container = getDojoDragContainer();
 		
-		DojoPackagedTextTemplate template = new DojoPackagedTextTemplate(this.getClass(), "DojoDragContainerHandlerTemplate.js");
-		response.renderJavascript(template.asString(), template.getStaticKey());
-		
 		//DojoOnLoad only if not AjaxRequest
 		IRequestTarget target = RequestCycle.get().getRequestTarget();
 		if(!(target instanceof AjaxRequestTarget)){
-			response.renderJavascript("dojo.event.connect(dojo, \"loaded\", function() {initDrag('" + container.getMarkupId() + "','" + container.getDragPattern() + "')});\n", container.getMarkupId() + "onLoad" );
+			response.renderJavascript("dojo.event.connect(dojo, \"loaded\", function() {" + 
+					"new wicketstuff.dojodnd.DojoDragContainer('" + container.getMarkupId() + "','" + container.getDragPattern() + "')});\n", 
+					container.getMarkupId() + "onLoad" );
 		}
 		//else will be done by onComponentReRendered
 	}
@@ -44,6 +42,16 @@ public class DojoDragContainerHandler extends AbstractDojoDragContainerHandler
 		super.onComponentReRendered(ajaxTarget);
 		
 		DojoDragContainer container = getDojoDragContainer();
-		ajaxTarget.appendJavascript("initDrag('" + container.getMarkupId() + "','" + container.getDragPattern() + "')\n");
+		ajaxTarget.appendJavascript("new wicketstuff.dojodnd.DojoDragContainer('" + container.getMarkupId() + "','" + container.getDragPattern() + "');\n");
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.wicketstuff.dojo.dojodnd.AbstractDojoDragContainerHandler#setRequire(org.wicketstuff.dojo.AbstractRequireDojoBehavior.RequireDojoLibs)
+	 */
+	@Override
+	public void setRequire(RequireDojoLibs libs) {
+		super.setRequire(libs);
+		
+		libs.add("wicketstuff.dojodnd.DojoDragContainer");
 	}
 }

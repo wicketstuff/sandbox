@@ -1,4 +1,4 @@
-function createUrl(e, url){
+/*function createUrl(e, url){
 	var dragId = e.dragObject.domNode.id;
 
 	var child = dojo.dom.getFirstChildElement(e.dragObject.domNode.parentNode);
@@ -24,11 +24,12 @@ function createUrl(e, url){
 	dojo.debug("Query string: " + queryString);
 	return url + queryString;
 }
-
+*/
 function initDrop(markupId, dropIds, url){
-	var dl = dojo.byId(markupId);
+	new wicketstuff.dojodnd.DojoDropContainer(markupId, dropIds, url);
+	/*var dl = dojo.byId(markupId);
 	var drop = new dojo.dnd.HtmlDropTarget(dl, dropIds);
 	dojo.event.connect(drop, 'onDrop', function(e) {
 		wicketAjaxGet(createUrl(e, url),function(){},function(){});
-	});
+	});*/
 }
