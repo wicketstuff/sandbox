@@ -37,8 +37,8 @@ import net.sf.jasperreports.engine.export.JRGraphics2DExporterParameter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import wicket.WicketRuntimeException;
-import wicket.markup.html.DynamicWebResource;
+import org.apache.wicket.WicketRuntimeException;
+import org.apache.wicket.markup.html.DynamicWebResource;
 
 /**
  * Resource class for jasper reports PDF resources.

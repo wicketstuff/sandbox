@@ -1,7 +1,7 @@
 package wicket.contrib.gmap;
 
-import wicket.markup.html.WebMarkupContainer;
-import wicket.markup.html.list.Loop;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.list.Loop;
 
 import java.util.List;
 

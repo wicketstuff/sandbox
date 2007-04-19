@@ -20,7 +20,7 @@ package wicket.contrib.database.hibernate;
 import java.io.Serializable;
 
 import wicket.contrib.database.IDatabaseObject;
-import wicket.util.lang.Classes;
+import org.apache.wicket.util.lang.Classes;
 
 /**
  * Base class for persistent entities.

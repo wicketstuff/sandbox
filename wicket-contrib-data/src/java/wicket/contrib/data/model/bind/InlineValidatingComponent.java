@@ -1,8 +1,8 @@
 package wicket.contrib.data.model.bind;
 
-import wicket.markup.html.WebMarkupContainer;
-import wicket.markup.html.form.FormComponent;
-import wicket.validation.IValidator;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.form.FormComponent;
+import org.apache.wicket.validation.IValidator;
 
 /**
  * Used for any inline component that needs to be able to add validators to

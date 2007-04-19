@@ -20,10 +20,10 @@ package wicket.contrib.examples;
 
 import javax.servlet.ServletContext;
 
-import wicket.protocol.http.WebApplication;
-import wicket.settings.ISecuritySettings;
-import wicket.util.crypt.ClassCryptFactory;
-import wicket.util.crypt.NoCrypt;
+import org.apache.wicket.protocol.http.WebApplication;
+import org.apache.wicket.settings.ISecuritySettings;
+import org.apache.wicket.util.crypt.ClassCryptFactory;
+import org.apache.wicket.util.crypt.NoCrypt;
 
 /**
  * Wicket Application class.

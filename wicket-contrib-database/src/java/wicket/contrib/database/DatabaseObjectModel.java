@@ -17,7 +17,7 @@
  */
 package wicket.contrib.database;
 
-import wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.LoadableDetachableModel;
 
 /**
  * A model class for objects persisted in a relational database that is keyed

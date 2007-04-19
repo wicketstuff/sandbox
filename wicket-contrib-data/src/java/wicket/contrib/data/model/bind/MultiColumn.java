@@ -3,8 +3,8 @@ package wicket.contrib.data.model.bind;
 import java.util.ArrayList;
 import java.util.List;
 
-import wicket.Component;
-import wicket.model.IModel;
+import org.apache.wicket.Component;
+import org.apache.wicket.model.IModel;
 
 public class MultiColumn extends AbstractColumn
 {

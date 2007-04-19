@@ -17,8 +17,8 @@
  */
 package wicket.contrib.jasperreports.examples;
 
-import wicket.protocol.http.WebApplication;
-import wicket.util.time.Duration;
+import org.apache.wicket.protocol.http.WebApplication;
+import org.apache.wicket.util.time.Duration;
 
 /**
  * Wicket application class for jasper reports example.

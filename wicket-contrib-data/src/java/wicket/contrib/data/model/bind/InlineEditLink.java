@@ -1,10 +1,10 @@
 package wicket.contrib.data.model.bind;
 
-import wicket.AttributeModifier;
-import wicket.Resource;
-import wicket.markup.html.PackageResource;
-import wicket.markup.html.image.Image;
-import wicket.markup.html.link.Link;
+import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.Resource;
+import org.apache.wicket.markup.html.PackageResource;
+import org.apache.wicket.markup.html.image.Image;
+import org.apache.wicket.markup.html.link.Link;
 
 /**
  * A link that toggles the edit status of its list item.

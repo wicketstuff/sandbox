@@ -18,8 +18,8 @@
  */
 package wicket.contrib.gmap;
 
-import wicket.Component;
-import wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.Component;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 
 /**
  * Wicket container for Google's GMarker API. It contains two components:

@@ -1,7 +1,7 @@
 package wicket.contrib.data.model;
 
-import wicket.model.IDetachable;
-import wicket.model.IModel;
+import org.apache.wicket.model.IDetachable;
+import org.apache.wicket.model.IModel;
 
 /**
  * A detachable wrapper for an OrderedList.

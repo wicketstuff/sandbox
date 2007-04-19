@@ -16,9 +16,9 @@
  */
 package wicket.contrib.util.resource;
 
-import wicket.markup.html.IHeaderResponse;
-import wicket.model.IModel;
-import wicket.util.lang.Packages;
+import org.apache.wicket.markup.html.IHeaderResponse;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.util.lang.Packages;
 
 /**
  * A derivation of VelocityContributor that uses

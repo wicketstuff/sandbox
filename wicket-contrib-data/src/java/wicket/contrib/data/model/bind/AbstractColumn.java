@@ -1,7 +1,7 @@
 package wicket.contrib.data.model.bind;
 
-import wicket.model.IModel;
-import wicket.model.PropertyModel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.PropertyModel;
 
 /**
  * A convenient place to extend from to create new {@link IColumn}s.

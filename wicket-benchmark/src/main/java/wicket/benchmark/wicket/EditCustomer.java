@@ -5,12 +5,12 @@ import java.util.Date;
 
 import wicket.benchmark.dao.Customer;
 import wicket.benchmark.dao.CustomerDao;
-import wicket.markup.html.WebPage;
-import wicket.markup.html.form.DropDownChoice;
-import wicket.markup.html.form.Form;
-import wicket.markup.html.form.TextField;
-import wicket.model.CompoundPropertyModel;
-import wicket.model.IModel;
+import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.markup.html.form.DropDownChoice;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
 
 /**
  * Edit customer benchmark page for Wicket.

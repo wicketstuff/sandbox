@@ -1,7 +1,7 @@
 package wicket.contrib.gmap;
 
-import wicket.Component;
-import wicket.markup.html.WebComponent;
+import org.apache.wicket.Component;
+import org.apache.wicket.markup.html.WebComponent;
 
 /**
  * Google Maps API's GMarker is represented by this class. Now you can set a

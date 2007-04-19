@@ -4,10 +4,10 @@ import java.io.InputStream;
 
 import org.devlib.schmidt.imageinfo.ImageInfo;
 
-import wicket.ResourceReference;
-import wicket.markup.html.PackageResource;
-import wicket.util.resource.IResourceStream;
-import wicket.util.resource.ResourceStreamNotFoundException;
+import org.apache.wicket.ResourceReference;
+import org.apache.wicket.markup.html.PackageResource;
+import org.apache.wicket.util.resource.IResourceStream;
+import org.apache.wicket.util.resource.ResourceStreamNotFoundException;
 
 /**
  * Class to handle Image Info

@@ -18,8 +18,8 @@
  */
 package wicket.contrib.gmap;
 
-import wicket.AttributeModifier;
-import wicket.model.Model;
+import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.model.Model;
 
 /**
  * This component imports Google Maps API.

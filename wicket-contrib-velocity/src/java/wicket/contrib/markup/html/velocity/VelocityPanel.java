@@ -28,15 +28,15 @@ import org.apache.velocity.exception.MethodInvocationException;
 import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
 
-import wicket.WicketRuntimeException;
-import wicket.markup.ComponentTag;
-import wicket.markup.Markup;
-import wicket.markup.MarkupStream;
-import wicket.markup.html.panel.Panel;
-import wicket.model.Model;
-import wicket.util.resource.IStringResourceStream;
-import wicket.util.resource.ResourceStreamNotFoundException;
-import wicket.util.string.Strings;
+import org.apache.wicket.WicketRuntimeException;
+import org.apache.wicket.markup.ComponentTag;
+import org.apache.wicket.markup.Markup;
+import org.apache.wicket.markup.MarkupStream;
+import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.util.resource.IStringResourceStream;
+import org.apache.wicket.util.resource.ResourceStreamNotFoundException;
+import org.apache.wicket.util.string.Strings;
 
 /**
  * Panel that displays the result of rendering a <a href="http://jakarta.apache.org/velocity">Velocity</a> template.

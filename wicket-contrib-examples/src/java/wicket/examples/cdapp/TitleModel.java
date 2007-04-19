@@ -1,9 +1,9 @@
 package wicket.examples.cdapp;
 
 import wicket.contrib.data.model.PersistentObjectModel;
-import wicket.examples.cdapp.model.CD;
-import wicket.model.IModel;
-import wicket.model.Model;
+import org.apache.wicket.examples.cdapp.model.CD;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 
 /**
  * Special model for the title header. It returns the CD title if there's a

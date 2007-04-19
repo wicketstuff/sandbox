@@ -17,7 +17,7 @@
  */
 package wicket.contrib.yui.examples;
 
-import wicket.protocol.http.WebApplication;
+import org.apache.wicket.protocol.http.WebApplication;
 
 /**
  * Wicket Application class.

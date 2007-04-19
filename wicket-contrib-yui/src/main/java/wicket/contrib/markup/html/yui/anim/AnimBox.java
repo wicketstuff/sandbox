@@ -5,14 +5,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import wicket.AttributeModifier;
+import org.apache.wicket.AttributeModifier;
 import wicket.contrib.InlineStyle;
 import wicket.contrib.YuiImage;
 import wicket.contrib.markup.html.yui.AbstractYuiPanel;
-import wicket.extensions.util.resource.PackagedTextTemplate;
-import wicket.markup.html.basic.Label;
-import wicket.markup.html.form.FormComponent;
-import wicket.model.AbstractReadOnlyModel;
+import org.apache.wicket.extensions.util.resource.PackagedTextTemplate;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.FormComponent;
+import org.apache.wicket.model.AbstractReadOnlyModel;
 
 /**
  * An AnimBox is a component which consists of four images:

@@ -4,13 +4,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import wicket.AttributeModifier;
-import wicket.behavior.StringHeaderContributor;
+import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.behavior.StringHeaderContributor;
 import wicket.contrib.YuiImage;
-import wicket.extensions.util.resource.PackagedTextTemplate;
-import wicket.markup.html.WebMarkupContainer;
-import wicket.markup.html.form.FormComponent;
-import wicket.model.AbstractReadOnlyModel;
+import org.apache.wicket.extensions.util.resource.PackagedTextTemplate;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.form.FormComponent;
+import org.apache.wicket.model.AbstractReadOnlyModel;
 
 /**
  * A SortGroup groups the images

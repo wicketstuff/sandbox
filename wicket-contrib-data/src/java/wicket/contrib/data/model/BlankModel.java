@@ -1,7 +1,7 @@
 package wicket.contrib.data.model;
 
-import wicket.WicketRuntimeException;
-import wicket.model.IModel;
+import org.apache.wicket.WicketRuntimeException;
+import org.apache.wicket.model.IModel;
 
 /**
  * A simple detachable model that creates a new bean instance on every attach.

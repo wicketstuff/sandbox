@@ -1,9 +1,9 @@
 package wicket.contrib.scriptaculous.examples;
 
-import wicket.ISessionFactory;
-import wicket.Request;
-import wicket.Session;
-import wicket.protocol.http.WebApplication;
+import org.apache.wicket.ISessionFactory;
+import org.apache.wicket.Request;
+import org.apache.wicket.Session;
+import org.apache.wicket.protocol.http.WebApplication;
 
 /**
  * 

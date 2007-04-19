@@ -18,9 +18,9 @@
  */
 package wicket.contrib.examples;
 
-import wicket.markup.html.WebPage;
-import wicket.model.IModel;
-import wicket.util.string.Strings;
+import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.util.string.Strings;
 
 /**
  * Base class for all example pages.

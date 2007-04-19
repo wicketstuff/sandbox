@@ -17,7 +17,7 @@
 package wicket.contrib.velocity;
 
 import junit.framework.TestCase;
-import wicket.util.tester.WicketTester;
+import org.apache.wicket.util.tester.WicketTester;
 
 /**
  * Test header contributions.

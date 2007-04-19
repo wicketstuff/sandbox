@@ -2,7 +2,7 @@ package wicket.contrib.data.model.bind;
 
 import java.util.List;
 
-import wicket.model.IModel;
+import org.apache.wicket.model.IModel;
 
 /**
  * A panel for a drop down choice.

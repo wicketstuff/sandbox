@@ -21,9 +21,9 @@ import java.util.List;
 
 import org.apache.velocity.app.Velocity;
 
-import wicket.WicketRuntimeException;
-import wicket.protocol.http.WebApplication;
-import wicket.util.time.Duration;
+import org.apache.wicket.WicketRuntimeException;
+import org.apache.wicket.protocol.http.WebApplication;
+import org.apache.wicket.util.time.Duration;
 
 /**
  * Application class for velocity template example.

@@ -1,15 +1,21 @@
 package wicket.benchmark;
 
+import org.apache.wicket.protocol.http.FilePageStore;
+import org.apache.wicket.protocol.http.SecondLevelCacheSessionStore;
+import org.apache.wicket.protocol.http.WebApplication;
+import org.apache.wicket.session.ISessionStore;
+
 import wicket.benchmark.wicket.CustomerList;
-import wicket.protocol.http.FilePageStore;
-import wicket.protocol.http.SecondLevelCacheSessionStore;
-import wicket.protocol.http.WebApplication;
-import wicket.session.ISessionStore;
 
 /**
  * Benchmark application for testing the second level cache.
  */
 public class WicketSecondLevelCacheApplication extends WebApplication {
+	@Override
+	public Class getHomePage() {
+		return CustomerList.class;
+	}
+
 	@Override
 	protected void init() {
 		getMarkupSettings().setStripWicketTags(true);
@@ -21,11 +27,6 @@ public class WicketSecondLevelCacheApplication extends WebApplication {
 	 * used.
 	 */
 	protected ISessionStore newSessionStore() {
-		return new SecondLevelCacheSessionStore(new FilePageStore());
-	}
-
-	@Override
-	public Class getHomePage() {
-		return CustomerList.class;
+		return new SecondLevelCacheSessionStore(this, new FilePageStore());
 	}
 }

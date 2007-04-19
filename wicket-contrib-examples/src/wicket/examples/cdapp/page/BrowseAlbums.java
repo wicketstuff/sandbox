@@ -4,14 +4,14 @@ import static wicket.examples.cdapp.CdRequestCycle.COMPONENT_DAO;
 
 import wicket.contrib.data.model.bind.*;
 import wicket.contrib.data.model.hibernate.HibernateDataSource;
-import wicket.examples.cdapp.model.Album;
-import wicket.markup.html.form.Button;
-import wicket.markup.html.form.Form;
-import wicket.markup.html.form.TextField;
-import wicket.markup.html.link.Link;
-import wicket.markup.html.panel.FeedbackPanel;
-import wicket.model.CompoundPropertyModel;
-import wicket.util.value.ValueMap;
+import org.apache.wicket.examples.cdapp.model.Album;
+import org.apache.wicket.markup.html.form.Button;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
+import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.util.value.ValueMap;
 
 public class BrowseAlbums extends CdPage {
 	GridPanel gridPanel;

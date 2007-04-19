@@ -20,10 +20,10 @@ package wicket.contrib.yui.examples.pages;
 import wicket.contrib.markup.html.yui.slider.Slider;
 import wicket.contrib.markup.html.yui.slider.SliderSettings;
 import wicket.contrib.yui.examples.WicketExamplePage;
-import wicket.markup.html.form.Form;
-import wicket.markup.html.form.TextField;
-import wicket.markup.html.panel.FeedbackPanel;
-import wicket.model.PropertyModel;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
+import org.apache.wicket.model.PropertyModel;
 
 /**
  * Page that displays the calendar component of the Yahoo UI library.

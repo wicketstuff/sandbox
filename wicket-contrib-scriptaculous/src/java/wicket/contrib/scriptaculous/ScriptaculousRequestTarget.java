@@ -6,11 +6,11 @@ package wicket.contrib.scriptaculous;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import wicket.IRequestTarget;
-import wicket.RequestCycle;
-import wicket.Session;
-import wicket.util.io.Streams;
-import wicket.util.resource.IResourceStream;
+import org.apache.wicket.IRequestTarget;
+import org.apache.wicket.RequestCycle;
+import org.apache.wicket.Session;
+import org.apache.wicket.util.io.Streams;
+import org.apache.wicket.util.resource.IResourceStream;
 
 /**
  * @author jcompagner

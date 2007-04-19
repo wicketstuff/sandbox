@@ -1,13 +1,13 @@
 package wicket.contrib.data.model.bind;
 
-import wicket.Resource;
-import wicket.WicketRuntimeException;
-import wicket.markup.html.PackageResource;
-import wicket.markup.html.image.Image;
-import wicket.model.IModel;
-import wicket.model.Model;
-import wicket.util.string.StringValueConversionException;
-import wicket.util.string.Strings;
+import org.apache.wicket.Resource;
+import org.apache.wicket.WicketRuntimeException;
+import org.apache.wicket.markup.html.PackageResource;
+import org.apache.wicket.markup.html.image.Image;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.util.string.StringValueConversionException;
+import org.apache.wicket.util.string.Strings;
 
 /**
  * A read-only check box.

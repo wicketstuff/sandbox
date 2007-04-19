@@ -19,15 +19,15 @@ package wicket.contrib.examples.velocity;
 
 import java.util.HashMap;
 
-import wicket.PageParameters;
+import org.apache.wicket.PageParameters;
 import wicket.contrib.markup.html.velocity.VelocityPanel;
-import wicket.examples.WicketExamplePage;
-import wicket.markup.html.form.Form;
-import wicket.markup.html.form.TextArea;
-import wicket.markup.html.panel.FeedbackPanel;
-import wicket.model.Model;
-import wicket.model.PropertyModel;
-import wicket.util.resource.StringBufferResourceStream;
+import org.apache.wicket.examples.WicketExamplePage;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.TextArea;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.util.resource.StringBufferResourceStream;
 
 /**
  * Template example page.

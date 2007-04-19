@@ -20,7 +20,7 @@ import junit.framework.TestCase;
 
 import org.apache.velocity.app.Velocity;
 
-import wicket.util.tester.WicketTester;
+import org.apache.wicket.util.tester.WicketTester;
 
 /**
  * Tests for <code>VelocityPanel</code>

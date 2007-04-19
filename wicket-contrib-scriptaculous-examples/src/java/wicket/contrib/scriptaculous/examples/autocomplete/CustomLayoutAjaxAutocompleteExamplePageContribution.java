@@ -3,11 +3,11 @@ package wicket.contrib.scriptaculous.examples.autocomplete;
 import java.util.ArrayList;
 import java.util.List;
 
-import wicket.PageParameters;
+import org.apache.wicket.PageParameters;
 import wicket.contrib.scriptaculous.autocomplete.CustomLayoutAutocompleteResultsPageContribution;
-import wicket.markup.html.basic.Label;
-import wicket.markup.html.list.ListItem;
-import wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
 
 public class CustomLayoutAjaxAutocompleteExamplePageContribution extends CustomLayoutAutocompleteResultsPageContribution {
 

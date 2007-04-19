@@ -18,8 +18,8 @@
  */
 package wicket.examples.cdapp;
 
-import wicket.PageParameters;
-import wicket.markup.html.link.PageLink;
+import org.apache.wicket.PageParameters;
+import org.apache.wicket.markup.html.link.PageLink;
 
 /**
  * Home page for the cd app example. It displays what this example is all about.

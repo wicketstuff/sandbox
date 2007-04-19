@@ -1,7 +1,7 @@
 package wicket.contrib.data.model.bind;
 
-import wicket.Component;
-import wicket.model.IModel;
+import org.apache.wicket.Component;
+import org.apache.wicket.model.IModel;
 
 /**
  * A column that's represented by a check mark or a check box.

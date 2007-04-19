@@ -18,8 +18,8 @@
  */
 package wicket.contrib.scriptaculous.autocomplete;
 
-import wicket.markup.ComponentTag;
-import wicket.markup.html.internal.HtmlHeaderContainer;
+import org.apache.wicket.markup.ComponentTag;
+import org.apache.wicket.markup.html.internal.HtmlHeaderContainer;
 
 /**
  *

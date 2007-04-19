@@ -1,6 +1,6 @@
 package wicket.contrib.data.model.bind;
 
-import wicket.model.IModel;
+import org.apache.wicket.model.IModel;
 
 /**
  * A convenience class to represent the attribute value in an attribute

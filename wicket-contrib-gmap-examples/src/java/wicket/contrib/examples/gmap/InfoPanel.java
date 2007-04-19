@@ -1,10 +1,10 @@
 package wicket.contrib.examples.gmap;
 
-import wicket.markup.html.basic.Label;
-import wicket.markup.html.link.ExternalLink;
-import wicket.markup.html.list.ListItem;
-import wicket.markup.html.list.ListView;
-import wicket.markup.html.panel.Panel;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.link.ExternalLink;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.html.panel.Panel;
 
 import java.io.Serializable;
 import java.util.ArrayList;

@@ -37,10 +37,10 @@ import net.sf.jasperreports.engine.util.JRLoader;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import wicket.WicketRuntimeException;
-import wicket.markup.html.DynamicWebResource;
-import wicket.markup.html.WebResource;
-import wicket.protocol.http.WebResponse;
+import org.apache.wicket.WicketRuntimeException;
+import org.apache.wicket.markup.html.DynamicWebResource;
+import org.apache.wicket.markup.html.WebResource;
+import org.apache.wicket.protocol.http.WebResponse;
 
 /**
  * Base class for jasper reports resources.

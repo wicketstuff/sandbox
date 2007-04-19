@@ -17,8 +17,8 @@
  */
 package wicket.contrib.gmap;
 
-import wicket.markup.html.form.persistence.IValuePersister;
-import wicket.markup.html.panel.Panel;
+import org.apache.wicket.markup.html.form.persistence.IValuePersister;
+import org.apache.wicket.markup.html.panel.Panel;
 
 /**
  * A reusable wicket component for <a href="http://maps.google.com">Google Maps</a>.

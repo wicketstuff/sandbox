@@ -9,7 +9,7 @@ import javax.persistence.*;
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
-import wicket.WicketRuntimeException;
+import org.apache.wicket.WicketRuntimeException;
 
 @Entity
 public class Album implements Comparable<Album> {

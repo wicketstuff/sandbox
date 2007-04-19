@@ -22,7 +22,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import wicket.WicketRuntimeException;
+import org.apache.wicket.WicketRuntimeException;
 
 /**
  * Simple DAO for cd's.

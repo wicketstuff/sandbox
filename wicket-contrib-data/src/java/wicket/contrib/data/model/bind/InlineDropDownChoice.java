@@ -2,9 +2,9 @@ package wicket.contrib.data.model.bind;
 
 import java.util.List;
 
-import wicket.markup.html.basic.Label;
-import wicket.markup.html.form.DropDownChoice;
-import wicket.model.IModel;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.DropDownChoice;
+import org.apache.wicket.model.IModel;
 
 /**
  * A drop down list that's read only when it's not being edited.

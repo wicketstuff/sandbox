@@ -26,15 +26,14 @@ import javax.servlet.ServletContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.velocity.app.Velocity;
-
-import wicket.Application;
-import wicket.IInitializer;
-import wicket.WicketRuntimeException;
-import wicket.protocol.http.WebApplication;
-import wicket.util.file.WebApplicationPath;
-import wicket.util.lang.Packages;
-import wicket.util.resource.IResourceStream;
-import wicket.util.resource.locator.ClassLoaderResourceStreamLocator;
+import org.apache.wicket.Application;
+import org.apache.wicket.IInitializer;
+import org.apache.wicket.WicketRuntimeException;
+import org.apache.wicket.protocol.http.WebApplication;
+import org.apache.wicket.util.file.WebApplicationPath;
+import org.apache.wicket.util.io.Streams;
+import org.apache.wicket.util.lang.Packages;
+import org.apache.wicket.util.resource.IResourceStream;
 
 /**
  * An implementation of {@link wicket.IInitializer} for the Velocity Runtime

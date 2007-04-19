@@ -17,10 +17,10 @@
  */
 package wicket.contrib.jasperreports;
 
-import wicket.IResourceListener;
-import wicket.ResourceReference;
-import wicket.markup.ComponentTag;
-import wicket.markup.html.WebComponent;
+import org.apache.wicket.IResourceListener;
+import org.apache.wicket.ResourceReference;
+import org.apache.wicket.markup.ComponentTag;
+import org.apache.wicket.markup.html.WebComponent;
 
 /**
  * Component for embedding a jasper report in a page. This component must be

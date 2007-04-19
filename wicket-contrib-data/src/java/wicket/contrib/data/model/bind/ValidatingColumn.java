@@ -7,9 +7,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import wicket.model.IModel;
-import wicket.validation.IValidator;
-import wicket.validation.validator.AbstractValidator;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.validation.IValidator;
+import org.apache.wicket.validation.validator.AbstractValidator;
 
 /**
  * A column that can have validators added to it. Any subclass must call

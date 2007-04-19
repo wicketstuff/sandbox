@@ -1,7 +1,7 @@
 package wicket.contrib.data.model.bind;
 
-import wicket.markup.html.panel.Panel;
-import wicket.validation.IValidator;
+import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.validation.IValidator;
 
 /**
  * A panel that wraps a validating form component.

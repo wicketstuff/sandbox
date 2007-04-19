@@ -11,7 +11,7 @@ import org.hibernate.type.Type;
 import wicket.contrib.data.model.OrderedPageableList;
 import wicket.contrib.data.model.bind.IListDataSource;
 import wicket.contrib.data.model.hibernate.IHibernateDao.IHibernateCallback;
-import wicket.model.IModel;
+import org.apache.wicket.model.IModel;
 
 public class HibernateDataSource implements IListDataSource
 {

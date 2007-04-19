@@ -18,10 +18,10 @@ package wicket.contrib.markup.html.velocity;
 
 import java.util.HashMap;
 
-import wicket.markup.html.WebPage;
-import wicket.markup.html.basic.Label;
-import wicket.model.Model;
-import wicket.util.resource.UrlResourceStream;
+import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.util.resource.UrlResourceStream;
 
 /**
  * Test page for <code>VelocityPanel</code>

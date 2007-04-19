@@ -20,9 +20,9 @@ package wicket.examples.cdapp;
 
 import org.hibernate.Session;
 
-import wicket.examples.WicketExamplePage;
-import wicket.examples.cdapp.model.CdDao;
-import wicket.model.IModel;
+import org.apache.wicket.examples.WicketExamplePage;
+import org.apache.wicket.examples.cdapp.model.CdDao;
+import org.apache.wicket.model.IModel;
 
 /**
  * Base page for the cd app example.

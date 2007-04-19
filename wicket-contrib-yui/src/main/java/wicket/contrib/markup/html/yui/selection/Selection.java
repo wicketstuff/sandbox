@@ -6,20 +6,20 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
-import wicket.AttributeModifier;
-import wicket.behavior.HeaderContributor;
+import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.behavior.HeaderContributor;
 import wicket.contrib.InlineStyle;
 import wicket.contrib.YuiAttribute;
 import wicket.contrib.YuiImage;
 import wicket.contrib.YuiTextBox;
 import wicket.contrib.markup.html.yui.AbstractYuiPanel;
-import wicket.extensions.util.resource.PackagedTextTemplate;
-import wicket.markup.html.basic.Label;
-import wicket.markup.html.basic.MultiLineLabel;
-import wicket.markup.html.form.FormComponent;
-import wicket.markup.html.list.ListItem;
-import wicket.markup.html.list.ListView;
-import wicket.model.AbstractReadOnlyModel;
+import org.apache.wicket.extensions.util.resource.PackagedTextTemplate;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.basic.MultiLineLabel;
+import org.apache.wicket.markup.html.form.FormComponent;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.model.AbstractReadOnlyModel;
 
 public class Selection extends AbstractYuiPanel {
 	private final class SelectionBox extends FormComponent implements

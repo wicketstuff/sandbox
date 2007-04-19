@@ -1,9 +1,9 @@
 package wicket.contrib.data.model.bind;
 
-import wicket.markup.html.basic.Label;
-import wicket.markup.html.panel.Panel;
-import wicket.model.IModel;
-import wicket.model.Model;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 
 /**
  * A panel that simply renders the string version of its model.

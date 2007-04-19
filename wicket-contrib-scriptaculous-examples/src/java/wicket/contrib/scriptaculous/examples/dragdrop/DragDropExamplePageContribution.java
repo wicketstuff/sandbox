@@ -5,13 +5,13 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
-import wicket.PageParameters;
+import org.apache.wicket.PageParameters;
 import wicket.contrib.scriptaculous.dragdrop.DragDropPageContribution;
 import wicket.contrib.scriptaculous.examples.ScriptaculousExamplesSession;
-import wicket.markup.html.basic.Label;
-import wicket.markup.html.list.ListItem;
-import wicket.markup.html.list.ListView;
-import wicket.protocol.http.WebSession;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.protocol.http.WebSession;
 
 public class DragDropExamplePageContribution extends DragDropPageContribution {
 

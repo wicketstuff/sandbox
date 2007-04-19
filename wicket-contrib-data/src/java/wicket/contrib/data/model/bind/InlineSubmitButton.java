@@ -1,7 +1,7 @@
 package wicket.contrib.data.model.bind;
 
-import wicket.markup.html.PackageResource;
-import wicket.markup.html.form.ImageButton;
+import org.apache.wicket.markup.html.PackageResource;
+import org.apache.wicket.markup.html.form.ImageButton;
 
 /**
  * An image button that submits the current row and is only visble when the row

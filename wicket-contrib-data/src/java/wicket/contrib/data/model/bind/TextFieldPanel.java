@@ -1,6 +1,6 @@
 package wicket.contrib.data.model.bind;
 
-import wicket.model.IModel;
+import org.apache.wicket.model.IModel;
 
 /**
  * A panel for rendering an {@link InlineTextField}

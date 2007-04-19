@@ -18,9 +18,9 @@
  */
 package wicket.contrib.yui.examples;
 
-import wicket.markup.html.WebPage;
-import wicket.model.IModel;
-import wicket.util.lang.Classes;
+import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.util.lang.Classes;
 
 /**
  * Base class for all example pages.

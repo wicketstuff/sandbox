@@ -21,8 +21,8 @@ package wicket.contrib.data.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import wicket.WicketRuntimeException;
-import wicket.markup.html.list.PageableListView;
+import org.apache.wicket.WicketRuntimeException;
+import org.apache.wicket.markup.html.list.PageableListView;
 
 /**
  * A List that behaves like a pageable object. It works with a count and a window. The

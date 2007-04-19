@@ -1,8 +1,8 @@
 package wicket.contrib.data.model.bind;
 
-import wicket.markup.html.basic.Label;
-import wicket.markup.html.list.ListView;
-import wicket.markup.html.panel.Panel;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.html.panel.Panel;
 
 /**
  * A panel that displays an order by column header.

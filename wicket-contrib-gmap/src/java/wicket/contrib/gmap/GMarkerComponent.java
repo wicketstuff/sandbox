@@ -1,7 +1,7 @@
 package wicket.contrib.gmap;
 
-import wicket.behavior.AbstractAjaxBehavior;
-import wicket.markup.html.PackageResourceReference;
+import org.apache.wicket.behavior.AbstractAjaxBehavior;
+import org.apache.wicket.markup.html.PackageResourceReference;
 
 /**
  * Wicket component for Google's GMarker API. It generates GMarker's JavaScript

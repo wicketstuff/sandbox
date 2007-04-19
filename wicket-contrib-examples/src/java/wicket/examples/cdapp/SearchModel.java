@@ -23,9 +23,9 @@ import org.hibernate.Query;
 
 import wicket.contrib.data.model.PageableList;
 import wicket.contrib.data.model.hibernate.HibernateCountAndListAction;
-import wicket.examples.cdapp.util.HibernateSessionDelegate;
-import wicket.model.AbstractReadOnlyModel;
-import wicket.model.IModel;
+import org.apache.wicket.examples.cdapp.util.HibernateSessionDelegate;
+import org.apache.wicket.model.AbstractReadOnlyModel;
+import org.apache.wicket.model.IModel;
 
 /**
  * Model that keeps a (current) search argument, and uses a pageable list as
