@@ -1,12 +1,12 @@
 package wicket.contrib.data.model.bind;
 
-import wicket.markup.html.PackageResource;
-import wicket.markup.html.image.Image;
-import wicket.markup.html.link.Link;
-import wicket.model.IModel;
-import wicket.model.Model;
-import wicket.util.collections.MicroMap;
-import wicket.util.string.Strings;
+import org.apache.wicket.markup.html.PackageResource;
+import org.apache.wicket.markup.html.image.Image;
+import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.util.collections.MicroMap;
+import org.apache.wicket.util.string.Strings;
 
 /**
  * A link that deletes the row's model object from the database.

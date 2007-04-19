@@ -1,10 +1,10 @@
 package wicket.contrib.scriptaculous.examples.autocomplete;
 
 import wicket.contrib.scriptaculous.autocomplete.AutocompleteTextField;
-import wicket.markup.html.WebPage;
-import wicket.markup.html.form.Button;
-import wicket.markup.html.form.Form;
-import wicket.model.CompoundPropertyModel;
+import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.markup.html.form.Button;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.model.CompoundPropertyModel;
 
 public class AutocompleteExamplePage extends WebPage {
 

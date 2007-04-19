@@ -29,8 +29,8 @@ import wicket.contrib.jasperreports.JRPdfResource;
 import wicket.contrib.jasperreports.JRResource;
 import wicket.contrib.jasperreports.JRRtfResource;
 import wicket.contrib.jasperreports.JRTextResource;
-import wicket.markup.html.link.ResourceLink;
-import wicket.protocol.http.WebApplication;
+import org.apache.wicket.markup.html.link.ResourceLink;
+import org.apache.wicket.protocol.http.WebApplication;
 
 /**
  * Simple Jasper reports example with PDF output and a jasper reports panel..

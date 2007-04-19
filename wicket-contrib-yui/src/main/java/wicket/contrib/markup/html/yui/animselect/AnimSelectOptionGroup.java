@@ -4,10 +4,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import wicket.extensions.util.resource.PackagedTextTemplate;
-import wicket.markup.html.WebMarkupContainer;
-import wicket.markup.html.basic.Label;
-import wicket.model.AbstractReadOnlyModel;
+import org.apache.wicket.extensions.util.resource.PackagedTextTemplate;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.model.AbstractReadOnlyModel;
 
 /**
  * Grouping of the options

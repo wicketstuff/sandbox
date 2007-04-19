@@ -22,7 +22,7 @@ import java.io.Serializable;
 
 import org.hibernate.HibernateException;
 
-import wicket.WicketRuntimeException;
+import org.apache.wicket.WicketRuntimeException;
 import wicket.contrib.data.model.ISelectObjectAction;
 
 /**

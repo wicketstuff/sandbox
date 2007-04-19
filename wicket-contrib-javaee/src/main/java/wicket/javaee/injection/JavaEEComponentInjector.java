@@ -16,10 +16,10 @@
  */
 package wicket.javaee.injection;
 
-import wicket.injection.ComponentInjector;
-import wicket.injection.web.InjectorHolder;
-import wicket.javaee.naming.IJndiNamingStrategy;
-import wicket.protocol.http.WebApplication;
+import org.apache.wicket.injection.ComponentInjector;
+import org.apache.wicket.injection.web.InjectorHolder;
+import org.apache.wicket.javaee.naming.IJndiNamingStrategy;
+import org.apache.wicket.protocol.http.WebApplication;
 
 /**
  * This injection must be initialized in the Wicket WebApplication in order to 

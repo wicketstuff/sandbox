@@ -1,7 +1,7 @@
 package wicket.contrib.data.model.bind;
 
-import wicket.markup.html.form.CheckBox;
-import wicket.model.IModel;
+import org.apache.wicket.markup.html.form.CheckBox;
+import org.apache.wicket.model.IModel;
 
 /**
  * A checkbox that is read only when it's model is not currently being editied.

@@ -18,11 +18,11 @@
  */
 package wicket.contrib.scriptaculous;
 
-import wicket.RequestCycle;
-import wicket.ResourceReference;
-import wicket.behavior.AbstractAjaxBehavior;
-import wicket.markup.html.IHeaderResponse;
-import wicket.util.resource.IResourceStream;
+import org.apache.wicket.RequestCycle;
+import org.apache.wicket.ResourceReference;
+import org.apache.wicket.behavior.AbstractAjaxBehavior;
+import org.apache.wicket.markup.html.IHeaderResponse;
+import org.apache.wicket.util.resource.IResourceStream;
 
 /**
  * Handles event requests using 'script.aculo.us'.

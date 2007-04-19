@@ -18,9 +18,9 @@
  */
 package wicket.contrib.markup.html.yui;
 
-import wicket.behavior.HeaderContributor;
-import wicket.markup.html.panel.Panel;
-import wicket.model.IModel;
+import org.apache.wicket.behavior.HeaderContributor;
+import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.IModel;
 
 /**
  * Abstract panel for contributing common classes for YUI.

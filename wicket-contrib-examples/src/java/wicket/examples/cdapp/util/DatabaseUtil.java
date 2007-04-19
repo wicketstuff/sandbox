@@ -36,9 +36,9 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.impl.SessionFactoryImpl;
 
-import wicket.examples.cdapp.model.CD;
-import wicket.examples.cdapp.model.Category;
-import wicket.examples.cdapp.model.Track;
+import org.apache.wicket.examples.cdapp.model.CD;
+import org.apache.wicket.examples.cdapp.model.Category;
+import org.apache.wicket.examples.cdapp.model.Track;
 
 
 /**

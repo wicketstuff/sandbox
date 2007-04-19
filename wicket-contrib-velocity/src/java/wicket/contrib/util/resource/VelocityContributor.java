@@ -22,14 +22,14 @@ import java.util.Map;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 
-import wicket.Component;
-import wicket.WicketRuntimeException;
-import wicket.behavior.AbstractBehavior;
-import wicket.markup.html.IHeaderContributor;
-import wicket.markup.html.IHeaderResponse;
-import wicket.model.IDetachable;
-import wicket.model.IModel;
-import wicket.util.string.Strings;
+import org.apache.wicket.Component;
+import org.apache.wicket.WicketRuntimeException;
+import org.apache.wicket.behavior.AbstractBehavior;
+import org.apache.wicket.markup.html.IHeaderContributor;
+import org.apache.wicket.markup.html.IHeaderResponse;
+import org.apache.wicket.model.IDetachable;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.util.string.Strings;
 
 /**
  * An IHeaderContributor implementation that renders a velocity template and

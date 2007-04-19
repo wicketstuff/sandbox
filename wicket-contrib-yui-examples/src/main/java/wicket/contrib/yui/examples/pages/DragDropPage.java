@@ -8,7 +8,7 @@ import wicket.contrib.markup.html.yui.dragdrop.DragableSlotList;
 import wicket.contrib.markup.html.yui.dragdrop.TargetSlot;
 import wicket.contrib.markup.html.yui.dragdrop.TargetSlotList;
 import wicket.contrib.yui.examples.WicketExamplePage;
-import wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.form.TextField;
 
 /**
  * This class demostrates how you can use the wicket.contrib.markup.html.yui.dragDrop package

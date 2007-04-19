@@ -1,9 +1,9 @@
 package wicket.benchmark;
 
 import wicket.benchmark.wicket.CustomerList;
-import wicket.protocol.http.HttpSessionStore;
-import wicket.protocol.http.WebApplication;
-import wicket.session.ISessionStore;
+import org.apache.wicket.protocol.http.HttpSessionStore;
+import org.apache.wicket.protocol.http.WebApplication;
+import org.apache.wicket.session.ISessionStore;
 
 /**
  * Benchmark application for testing using the HTTP Session store (wicket 1.2
@@ -17,7 +17,7 @@ public class WicketHttpSessionStoreApplication extends WebApplication {
 	}
 
 	protected ISessionStore newSessionStore() {
-		return new HttpSessionStore();
+		return new HttpSessionStore(this);
 	}
 
 	@Override

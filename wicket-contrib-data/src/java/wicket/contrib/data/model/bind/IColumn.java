@@ -2,8 +2,8 @@ package wicket.contrib.data.model.bind;
 
 import java.io.Serializable;
 
-import wicket.Component;
-import wicket.model.IModel;
+import org.apache.wicket.Component;
+import org.apache.wicket.model.IModel;
 
 /**
  * An IColumn represents one column in a list of objects.

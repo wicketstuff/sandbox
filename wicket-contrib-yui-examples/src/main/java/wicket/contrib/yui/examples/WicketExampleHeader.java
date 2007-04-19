@@ -17,9 +17,9 @@
  */
 package wicket.contrib.yui.examples;
 
-import wicket.markup.html.WebPage;
-import wicket.markup.html.basic.Label;
-import wicket.markup.html.panel.Panel;
+import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.panel.Panel;
 
 /**
  * Navigation panel for the examples project.

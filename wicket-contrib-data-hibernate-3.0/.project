@@ -1,19 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
 <projectDescription>
-  <name>wicket-contrib-data-hibernate-3.0</name>
-  <comment>
-  </comment>
-  <projects>
-    <project>wicket</project>
-    <project>wicket-extensions</project>
-    <project>wicket-contrib-data</project>
-  </projects>
+  <name>wicket-contrib-data-hibernate</name>
+  <comment>Wicket Data Hibernate</comment>
+  <projects/>
   <buildSpec>
     <buildCommand>
       <name>org.eclipse.jdt.core.javabuilder</name>
-      <arguments>
-      </arguments>
     </buildCommand>
   </buildSpec>
   <natures>

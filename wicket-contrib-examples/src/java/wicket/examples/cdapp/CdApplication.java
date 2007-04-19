@@ -21,15 +21,15 @@ import org.apache.commons.logging.LogFactory;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
-import wicket.IRequestCycleFactory;
-import wicket.Request;
-import wicket.RequestCycle;
-import wicket.Response;
-import wicket.Session;
-import wicket.examples.WicketExampleApplication;
-import wicket.examples.cdapp.util.DatabaseUtil;
-import wicket.protocol.http.WebRequest;
-import wicket.protocol.http.WebSession;
+import org.apache.wicket.IRequestCycleFactory;
+import org.apache.wicket.Request;
+import org.apache.wicket.RequestCycle;
+import org.apache.wicket.Response;
+import org.apache.wicket.Session;
+import org.apache.wicket.examples.WicketExampleApplication;
+import org.apache.wicket.examples.cdapp.util.DatabaseUtil;
+import org.apache.wicket.protocol.http.WebRequest;
+import org.apache.wicket.protocol.http.WebSession;
 
 /**
  * Wicket test application.

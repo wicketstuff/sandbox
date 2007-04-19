@@ -24,14 +24,14 @@ import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.persistence.PersistenceUnit;
 
-import wicket.injection.IFieldValueFactory;
-import wicket.javaee.EntityManagerFactoryLocator;
-import wicket.javaee.JavaEEBeanLocator;
-import wicket.javaee.JndiObjectLocator;
-import wicket.javaee.naming.IJndiNamingStrategy;
-import wicket.javaee.naming.StandardJndiNamingStrategy;
-import wicket.proxy.IProxyTargetLocator;
-import wicket.proxy.LazyInitProxyFactory;
+import org.apache.wicket.injection.IFieldValueFactory;
+import org.apache.wicket.javaee.EntityManagerFactoryLocator;
+import org.apache.wicket.javaee.JavaEEBeanLocator;
+import org.apache.wicket.javaee.JndiObjectLocator;
+import org.apache.wicket.javaee.naming.IJndiNamingStrategy;
+import org.apache.wicket.javaee.naming.StandardJndiNamingStrategy;
+import org.apache.wicket.proxy.IProxyTargetLocator;
+import org.apache.wicket.proxy.LazyInitProxyFactory;
 
 /**
  * {@link IFieldValueFactory} that creates

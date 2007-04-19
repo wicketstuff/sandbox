@@ -20,8 +20,8 @@ package wicket.contrib.examples.freemarker;
 import java.util.ArrayList;
 import java.util.List;
 
-import wicket.protocol.http.WebApplication;
-import wicket.util.time.Duration;
+import org.apache.wicket.protocol.http.WebApplication;
+import org.apache.wicket.util.time.Duration;
 
 /**
  * Application class for FreeMarker template example.

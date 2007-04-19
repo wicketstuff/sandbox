@@ -9,11 +9,11 @@ import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.proxy.HibernateProxy;
 import org.hibernate.proxy.LazyInitializer;
 
-import wicket.Component;
-import wicket.WicketRuntimeException;
+import org.apache.wicket.Component;
+import org.apache.wicket.WicketRuntimeException;
 import wicket.contrib.data.model.hibernate.IHibernateDao.IHibernateCallback;
-import wicket.model.IModel;
-import wicket.model.Model;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 
 /**
  * Wraps a Hibernate object.

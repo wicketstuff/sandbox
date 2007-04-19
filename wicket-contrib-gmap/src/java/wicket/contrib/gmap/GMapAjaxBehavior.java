@@ -1,14 +1,14 @@
 package wicket.contrib.gmap;
 
-import wicket.Component;
-import wicket.RequestCycle;
-import wicket.Response;
-import wicket.ajax.AbstractDefaultAjaxBehavior;
-import wicket.ajax.AjaxRequestTarget;
-import wicket.markup.html.IHeaderResponse;
-import wicket.response.StringResponse;
-import wicket.util.resource.IResourceStream;
-import wicket.util.resource.StringBufferResourceStream;
+import org.apache.wicket.Component;
+import org.apache.wicket.RequestCycle;
+import org.apache.wicket.Response;
+import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.markup.html.IHeaderResponse;
+import org.apache.wicket.response.StringResponse;
+import org.apache.wicket.util.resource.IResourceStream;
+import org.apache.wicket.util.resource.StringBufferResourceStream;
 
 /**
  * @author Iulian-Corneliu Costan

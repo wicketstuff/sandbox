@@ -18,7 +18,7 @@ package wicket.javaee;
 
 import javax.persistence.Persistence;
 
-import wicket.proxy.IProxyTargetLocator;
+import org.apache.wicket.proxy.IProxyTargetLocator;
 
 
 /**

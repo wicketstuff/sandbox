@@ -1,12 +1,12 @@
 package wicket.contrib.data.model.bind;
 
-import wicket.AttributeModifier;
-import wicket.markup.html.basic.Label;
-import wicket.markup.html.list.Loop;
-import wicket.markup.html.list.PageableListView;
-import wicket.markup.html.navigation.paging.PagingNavigation;
-import wicket.markup.html.navigation.paging.PagingNavigationLink;
-import wicket.model.Model;
+import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.list.Loop;
+import org.apache.wicket.markup.html.list.PageableListView;
+import org.apache.wicket.markup.html.navigation.paging.PagingNavigation;
+import org.apache.wicket.markup.html.navigation.paging.PagingNavigationLink;
+import org.apache.wicket.model.Model;
 
 /**
  * A page navigation that adds some CSS hooks to make it look a bit prettier.

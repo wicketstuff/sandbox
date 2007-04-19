@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import wicket.RequestCycle;
-import wicket.ResourceReference;
+import org.apache.wicket.RequestCycle;
+import org.apache.wicket.ResourceReference;
 import wicket.contrib.ImageResourceInfo;
 import wicket.contrib.InlineStyle;
 import wicket.contrib.YuiAttribute;

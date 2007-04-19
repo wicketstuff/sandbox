@@ -27,7 +27,7 @@ import wicket.contrib.examples.WicketExamplePage;
 import wicket.contrib.jasperreports.EmbeddedJRReport;
 import wicket.contrib.jasperreports.JRPdfResource;
 import wicket.contrib.jasperreports.JRResource;
-import wicket.protocol.http.WebApplication;
+import org.apache.wicket.protocol.http.WebApplication;
 
 /**
  * Simple Jasper reports example with PDF output and a jasper reports panel..

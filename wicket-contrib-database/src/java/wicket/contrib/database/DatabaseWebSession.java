@@ -1,6 +1,6 @@
 /*
- * $Id$
- * $Revision$ $Date$
+ * $Id$ $Revision:
+ * 1629 $ $Date$
  * 
  * ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -17,14 +17,14 @@
  */
 package wicket.contrib.database;
 
-import wicket.IRequestCycleFactory;
-import wicket.Request;
-import wicket.RequestCycle;
-import wicket.Response;
-import wicket.Session;
-import wicket.protocol.http.WebApplication;
-import wicket.protocol.http.WebRequest;
-import wicket.protocol.http.WebSession;
+import org.apache.wicket.Application;
+import org.apache.wicket.IRequestCycleFactory;
+import org.apache.wicket.Request;
+import org.apache.wicket.RequestCycle;
+import org.apache.wicket.Response;
+import org.apache.wicket.protocol.http.WebApplication;
+import org.apache.wicket.protocol.http.WebRequest;
+import org.apache.wicket.protocol.http.WebSession;
 
 /**
  * WebSession subclass that conveniently implements a request cycle factory that
@@ -52,6 +52,13 @@ public class DatabaseWebSession extends WebSession
 	}
 
 	/**
+	 * Called just before the database session is closed
+	 */
+	protected void beforeDatabaseSessionClose()
+	{
+	}
+
+	/**
 	 * @see wicket.Session#getRequestCycleFactory()
 	 */
 	protected IRequestCycleFactory getRequestCycleFactory()
@@ -60,18 +67,12 @@ public class DatabaseWebSession extends WebSession
 		{
 			private static final long serialVersionUID = 1L;
 
-			public RequestCycle newRequestCycle(Session session, Request request, Response response)
+			public RequestCycle newRequestCycle(Application application, Request request,
+					Response response)
 			{
-				return new DatabaseWebRequestCycle((WebSession)session, (WebRequest)request,
-						response);
+				return new DatabaseWebRequestCycle((WebApplication)application,
+						(WebRequest)request, response);
 			}
 		};
-	}
-
-	/**
-	 * Called just before the database session is closed
-	 */
-	protected void beforeDatabaseSessionClose()
-	{
 	}
 }

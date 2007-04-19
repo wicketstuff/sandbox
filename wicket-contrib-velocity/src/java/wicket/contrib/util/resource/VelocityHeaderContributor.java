@@ -20,9 +20,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import wicket.Component;
-import wicket.behavior.AbstractHeaderContributor;
-import wicket.markup.html.IHeaderContributor;
+import org.apache.wicket.Component;
+import org.apache.wicket.behavior.AbstractHeaderContributor;
+import org.apache.wicket.markup.html.IHeaderContributor;
 
 /**
  * a simple header contributor that delegates to a List of

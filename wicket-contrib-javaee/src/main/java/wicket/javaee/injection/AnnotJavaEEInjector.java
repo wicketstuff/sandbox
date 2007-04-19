@@ -16,10 +16,10 @@
  */
 package wicket.javaee.injection;
 
-import wicket.injection.ConfigurableInjector;
-import wicket.injection.IFieldValueFactory;
-import wicket.javaee.naming.IJndiNamingStrategy;
-import wicket.javaee.naming.StandardJndiNamingStrategy;
+import org.apache.wicket.injection.ConfigurableInjector;
+import org.apache.wicket.injection.IFieldValueFactory;
+import org.apache.wicket.javaee.naming.IJndiNamingStrategy;
+import org.apache.wicket.javaee.naming.StandardJndiNamingStrategy;
 
 /**
  * Injector that injects ejb references based on {@link javax.ejb.EJB} annotation

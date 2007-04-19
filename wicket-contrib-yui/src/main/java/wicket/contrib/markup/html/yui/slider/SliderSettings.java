@@ -2,8 +2,8 @@ package wicket.contrib.markup.html.yui.slider;
 
 import java.io.Serializable;
 
-import wicket.RequestCycle;
-import wicket.ResourceReference;
+import org.apache.wicket.RequestCycle;
+import org.apache.wicket.ResourceReference;
 import wicket.contrib.ImageResourceInfo;
 import wicket.contrib.InlineStyle;
 

@@ -1,10 +1,10 @@
 package wicket.contrib.gmap;
 
-import wicket.AttributeModifier;
-import wicket.markup.ComponentTag;
-import wicket.markup.MarkupStream;
-import wicket.markup.html.WebComponent;
-import wicket.model.Model;
+import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.markup.ComponentTag;
+import org.apache.wicket.markup.MarkupStream;
+import org.apache.wicket.markup.html.WebComponent;
+import org.apache.wicket.model.Model;
 
 /**
  * Base wicket component that match &ltscript&gt html tag.

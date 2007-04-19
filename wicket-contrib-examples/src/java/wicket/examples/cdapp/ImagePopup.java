@@ -18,9 +18,9 @@
  */
 package wicket.examples.cdapp;
 
-import wicket.markup.html.WebPage;
-import wicket.markup.html.WebResource;
-import wicket.markup.html.image.Image;
+import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.markup.html.WebResource;
+import org.apache.wicket.markup.html.image.Image;
 
 /**
  * Displays the an image using the provided image resource.

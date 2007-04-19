@@ -1,7 +1,7 @@
 package wicket.benchmark;
 
 import wicket.benchmark.wicket.CustomerList;
-import wicket.protocol.http.WebApplication;
+import org.apache.wicket.protocol.http.WebApplication;
 
 public class BenchmarkApplication extends WebApplication {
 	@Override

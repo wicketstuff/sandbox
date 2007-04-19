@@ -4,8 +4,8 @@ import wicket.contrib.scriptaculous.examples.autocomplete.AjaxAutocompleteExampl
 import wicket.contrib.scriptaculous.examples.autocomplete.AutocompleteExamplePage;
 import wicket.contrib.scriptaculous.examples.autocomplete.CustomLayoutAjaxAutocompleteExamplePage;
 import wicket.contrib.scriptaculous.examples.dragdrop.DragDropExamplePage;
-import wicket.markup.html.WebPage;
-import wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 
 public class ScriptaculousExamplesHomePage extends WebPage {
 

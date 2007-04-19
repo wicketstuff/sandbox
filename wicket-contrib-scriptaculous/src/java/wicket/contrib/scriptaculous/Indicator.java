@@ -17,9 +17,9 @@
  */
 package wicket.contrib.scriptaculous;
 
-import wicket.markup.html.basic.Label;
-import wicket.markup.html.image.Image;
-import wicket.markup.html.panel.Panel;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.image.Image;
+import org.apache.wicket.markup.html.panel.Panel;
 
 /**
  * Indicator panel.

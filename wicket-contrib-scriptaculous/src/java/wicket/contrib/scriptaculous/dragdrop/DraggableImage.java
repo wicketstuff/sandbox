@@ -1,9 +1,9 @@
 package wicket.contrib.scriptaculous.dragdrop;
 
 import wicket.contrib.scriptaculous.ScriptaculousAjaxHandler;
-import wicket.markup.ComponentTag;
-import wicket.markup.MarkupStream;
-import wicket.markup.html.image.Image;
+import org.apache.wicket.markup.ComponentTag;
+import org.apache.wicket.markup.MarkupStream;
+import org.apache.wicket.markup.html.image.Image;
 
 public class DraggableImage extends Image {
 

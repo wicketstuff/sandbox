@@ -18,8 +18,8 @@ package wicket.contrib.data.model;
 
 import java.io.Serializable;
 
-import wicket.model.IModel;
-import wicket.model.Model;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 
 /**
  * {@link wicket.model.IModel}that supports a (persistent) object that has a

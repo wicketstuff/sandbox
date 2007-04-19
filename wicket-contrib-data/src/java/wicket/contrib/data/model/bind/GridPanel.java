@@ -4,15 +4,15 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import wicket.Component;
+import org.apache.wicket.Component;
 import wicket.contrib.data.model.OrderedPageableList;
 import wicket.contrib.data.model.bind.IObjectDataSource.EntityField;
-import wicket.markup.html.list.ListItem;
-import wicket.markup.html.list.ListView;
-import wicket.markup.html.panel.Panel;
-import wicket.model.IModel;
-import wicket.util.convert.ConverterLocator;
-import wicket.util.string.Strings;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.util.convert.ConverterLocator;
+import org.apache.wicket.util.string.Strings;
 
 /**
  * A panel that browses and edits a list of objects. Each row maintains an

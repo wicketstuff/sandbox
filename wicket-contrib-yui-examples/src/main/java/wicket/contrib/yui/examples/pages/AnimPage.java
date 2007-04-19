@@ -10,9 +10,9 @@ import wicket.contrib.markup.html.yui.anim.AnimLabel;
 import wicket.contrib.markup.html.yui.anim.AnimOption;
 import wicket.contrib.markup.html.yui.anim.AnimSettings;
 import wicket.contrib.yui.examples.WicketExamplePage;
-import wicket.markup.html.form.TextField;
-import wicket.markup.html.list.ListItem;
-import wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
 
 /**
  * This class demostrates how you can use the wicket.contrib.markup.html.yui.anim package

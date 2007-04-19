@@ -22,9 +22,9 @@ import java.io.InputStream;
 import java.sql.Blob;
 import java.sql.SQLException;
 
-import wicket.util.resource.AbstractResourceStream;
-import wicket.util.resource.ResourceStreamNotFoundException;
-import wicket.util.time.Time;
+import org.apache.wicket.util.resource.AbstractResourceStream;
+import org.apache.wicket.util.resource.ResourceStreamNotFoundException;
+import org.apache.wicket.util.time.Time;
 
 public abstract class DatabaseResourceStream extends AbstractResourceStream
 {

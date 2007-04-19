@@ -18,8 +18,8 @@
  */
 package wicket.contrib.scriptaculous.autocomplete;
 
-import wicket.PageParameters;
-import wicket.markup.html.internal.HtmlHeaderContainer;
+import org.apache.wicket.PageParameters;
+import org.apache.wicket.markup.html.internal.HtmlHeaderContainer;
 
 /**
  * Autocomplete text field that allows for customized layout of autocomplete entries.

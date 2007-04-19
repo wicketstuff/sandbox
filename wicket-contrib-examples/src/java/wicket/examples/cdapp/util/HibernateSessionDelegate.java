@@ -20,9 +20,9 @@ package wicket.examples.cdapp.util;
 
 import org.hibernate.Session;
 
-import wicket.RequestCycle;
+import org.apache.wicket.RequestCycle;
 import wicket.contrib.data.model.hibernate.IHibernateSessionDelegate;
-import wicket.examples.cdapp.CdAppRequestCycle;
+import org.apache.wicket.examples.cdapp.CdAppRequestCycle;
 
 /**
  * Implementation of {@link wicket.contrib.data.model.hibernate.IHibernateSessionDelegate}

@@ -27,13 +27,13 @@ import java.util.Map;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
-import wicket.WicketRuntimeException;
-import wicket.markup.ComponentTag;
-import wicket.markup.MarkupStream;
-import wicket.markup.html.WebComponent;
-import wicket.model.Model;
-import wicket.util.resource.IStringResourceStream;
-import wicket.util.string.Strings;
+import org.apache.wicket.WicketRuntimeException;
+import org.apache.wicket.markup.ComponentTag;
+import org.apache.wicket.markup.MarkupStream;
+import org.apache.wicket.markup.html.WebComponent;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.util.resource.IStringResourceStream;
+import org.apache.wicket.util.string.Strings;
 /**
  * Panel that displays the result of rendering a FreeMarker template. The
  * template itself can be any IStringResourceStream implementation, of which

@@ -1,12 +1,12 @@
 package wicket.contrib.scriptaculous.autocomplete;
 
-import wicket.ResourceReference;
+import org.apache.wicket.ResourceReference;
 import wicket.contrib.scriptaculous.ScriptaculousAjaxHandler;
-import wicket.markup.ComponentTag;
-import wicket.markup.MarkupStream;
-import wicket.markup.html.PackageResourceReference;
-import wicket.markup.html.form.TextField;
-import wicket.markup.html.internal.HtmlHeaderContainer;
+import org.apache.wicket.markup.ComponentTag;
+import org.apache.wicket.markup.MarkupStream;
+import org.apache.wicket.markup.html.PackageResourceReference;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.internal.HtmlHeaderContainer;
 
 /**
  * support class for all autocomplete text fields. handles binding of needed css

@@ -22,10 +22,10 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
-import wicket.Response;
-import wicket.protocol.http.WebRequest;
-import wicket.protocol.http.WebRequestCycle;
-import wicket.protocol.http.WebSession;
+import org.apache.wicket.Response;
+import org.apache.wicket.protocol.http.WebRequest;
+import org.apache.wicket.protocol.http.WebRequestCycle;
+import org.apache.wicket.protocol.http.WebSession;
 
 /**
  * Special request cycle for this application that opens and closes a hibernate session

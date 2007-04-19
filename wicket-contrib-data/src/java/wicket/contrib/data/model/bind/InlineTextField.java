@@ -1,8 +1,8 @@
 package wicket.contrib.data.model.bind;
 
-import wicket.markup.html.basic.Label;
-import wicket.markup.html.form.TextField;
-import wicket.model.IModel;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.model.IModel;
 
 /**
  * A text field that's read only (a label) when its model is not currently being

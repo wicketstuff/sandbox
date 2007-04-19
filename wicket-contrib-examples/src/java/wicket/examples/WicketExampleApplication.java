@@ -21,10 +21,10 @@ package wicket.examples;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import wicket.protocol.http.WebApplication;
-import wicket.settings.ISecuritySettings;
-import wicket.util.crypt.ClassCryptFactory;
-import wicket.util.crypt.NoCrypt;
+import org.apache.wicket.protocol.http.WebApplication;
+import org.apache.wicket.settings.ISecuritySettings;
+import org.apache.wicket.util.crypt.ClassCryptFactory;
+import org.apache.wicket.util.crypt.NoCrypt;
 
 /**
  * WicketServlet class for hello world example.

@@ -37,7 +37,7 @@ import org.hibernate.impl.SessionFactoryImpl;
 import org.hibernate.tool.hbm2ddl.SchemaUpdate;
 import org.hibernate.type.Type;
 
-import wicket.WicketRuntimeException;
+import org.apache.wicket.WicketRuntimeException;
 import wicket.contrib.database.Database;
 import wicket.contrib.database.DatabaseSession;
 import wicket.contrib.database.IDatabaseObject;

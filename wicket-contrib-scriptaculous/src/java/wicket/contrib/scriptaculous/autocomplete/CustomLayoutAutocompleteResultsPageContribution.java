@@ -1,7 +1,7 @@
 package wicket.contrib.scriptaculous.autocomplete;
 
-import wicket.PageParameters;
-import wicket.markup.html.WebPage;
+import org.apache.wicket.PageParameters;
+import org.apache.wicket.markup.html.WebPage;
 
 public class CustomLayoutAutocompleteResultsPageContribution extends WebPage {
 

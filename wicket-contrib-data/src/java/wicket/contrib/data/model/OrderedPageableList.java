@@ -4,7 +4,7 @@ import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
 
-import wicket.model.IDetachable;
+import org.apache.wicket.model.IDetachable;
 
 /**
  * <p>

@@ -2,7 +2,7 @@ package wicket.contrib.data.model.bind;
 
 import java.util.List;
 
-import wicket.model.IModel;
+import org.apache.wicket.model.IModel;
 
 /**
  * Provides all the basic functionality needed for interacting with a datastore.

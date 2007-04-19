@@ -19,12 +19,12 @@ package wicket.contrib.velocity;
 import java.util.Map;
 
 import wicket.contrib.util.resource.VelocityJavascriptContributor;
-import wicket.markup.html.WebPage;
-import wicket.model.IModel;
-import wicket.model.Model;
-import wicket.util.collections.MiniMap;
-import wicket.util.lang.Packages;
-import wicket.util.string.JavascriptUtils;
+import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.util.collections.MiniMap;
+import org.apache.wicket.util.lang.Packages;
+import org.apache.wicket.util.string.JavascriptUtils;
 
 /**
  * Test page.

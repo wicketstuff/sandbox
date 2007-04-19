@@ -23,7 +23,7 @@ import wicket.contrib.gmap.GMap;
 import wicket.contrib.gmap.GMapPanel;
 import wicket.contrib.gmap.GMarker;
 import wicket.contrib.gmap.GPoint;
-import wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.basic.Label;
 
 /**
  * @author Iulian-Corneliu COSTAN

@@ -20,15 +20,15 @@ package wicket.examples.cdapp;
 
 import java.sql.Blob;
 
-import wicket.Page;
-import wicket.PageMap;
-import wicket.examples.cdapp.model.CD;
-import wicket.markup.html.WebResource;
-import wicket.markup.html.image.resource.BlobImageResource;
-import wicket.markup.html.link.Link;
-import wicket.markup.html.link.PopupSettings;
-import wicket.model.IModel;
-import wicket.util.resource.IResourceStream;
+import org.apache.wicket.Page;
+import org.apache.wicket.PageMap;
+import org.apache.wicket.examples.cdapp.model.CD;
+import org.apache.wicket.markup.html.WebResource;
+import org.apache.wicket.markup.html.image.resource.BlobImageResource;
+import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.markup.html.link.PopupSettings;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.util.resource.IResourceStream;
 
 /**
  * Link that displays the image of a cd in a popup window that resizes to fit.

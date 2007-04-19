@@ -21,28 +21,28 @@ import java.sql.Blob;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import wicket.Resource;
+import org.apache.wicket.Resource;
 import wicket.contrib.data.model.PersistentObjectModel;
 import wicket.contrib.data.model.hibernate.HibernateObjectModel;
-import wicket.examples.cdapp.model.CD;
-import wicket.examples.cdapp.util.HibernateSessionDelegate;
-import wicket.extensions.markup.html.image.resource.ThumbnailImageResource;
-import wicket.markup.html.PackageResource;
-import wicket.markup.html.basic.Label;
-import wicket.markup.html.form.Form;
-import wicket.markup.html.form.RequiredTextField;
-import wicket.markup.html.form.TextField;
-import wicket.markup.html.form.upload.FileUpload;
-import wicket.markup.html.form.upload.FileUploadField;
-import wicket.markup.html.image.Image;
-import wicket.markup.html.image.resource.BlobImageResource;
-import wicket.markup.html.link.Link;
-import wicket.markup.html.panel.FeedbackPanel;
-import wicket.model.IModel;
-import wicket.model.PropertyModel;
-import wicket.util.lang.Bytes;
-import wicket.validation.validator.NumberValidator;
-import wicket.validation.validator.StringValidator;
+import org.apache.wicket.examples.cdapp.model.CD;
+import org.apache.wicket.examples.cdapp.util.HibernateSessionDelegate;
+import org.apache.wicket.extensions.markup.html.image.resource.ThumbnailImageResource;
+import org.apache.wicket.markup.html.PackageResource;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.RequiredTextField;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.form.upload.FileUpload;
+import org.apache.wicket.markup.html.form.upload.FileUploadField;
+import org.apache.wicket.markup.html.image.Image;
+import org.apache.wicket.markup.html.image.resource.BlobImageResource;
+import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.util.lang.Bytes;
+import org.apache.wicket.validation.validator.NumberValidator;
+import org.apache.wicket.validation.validator.StringValidator;
 
 
 /**
