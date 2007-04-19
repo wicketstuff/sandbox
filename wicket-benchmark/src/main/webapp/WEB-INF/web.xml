@@ -28,7 +28,7 @@
 
     <servlet>
         <servlet-name>wicket-session</servlet-name>
-        <servlet-class>wicket.protocol.http.WicketServlet</servlet-class>
+        <servlet-class>org.apache.wicket.protocol.http.WicketServlet</servlet-class>
         <init-param>
           <param-name>applicationClassName</param-name>
           <param-value>wicket.benchmark.WicketHttpSessionStoreApplication</param-value>
@@ -38,7 +38,7 @@
 
     <servlet>
         <servlet-name>wicket-secondlevelcache</servlet-name>
-        <servlet-class>wicket.protocol.http.WicketServlet</servlet-class>
+        <servlet-class>org.apache.wicket.protocol.http.WicketServlet</servlet-class>
         <init-param>
           <param-name>applicationClassName</param-name>
           <param-value>wicket.benchmark.WicketSecondLevelCacheApplication</param-value>

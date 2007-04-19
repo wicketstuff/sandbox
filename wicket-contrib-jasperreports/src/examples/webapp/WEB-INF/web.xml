@@ -9,7 +9,7 @@
 
     <servlet>
         <servlet-name>JasperReportsApplication</servlet-name>
-        <servlet-class>wicket.protocol.http.WicketServlet</servlet-class>
+        <servlet-class>org.apache.wicket.protocol.http.WicketServlet</servlet-class>
         <init-param>
           <param-name>applicationClassName</param-name>
           <param-value>wicket.contrib.jasperreports.examples.JasperReportsApplication</param-value>
