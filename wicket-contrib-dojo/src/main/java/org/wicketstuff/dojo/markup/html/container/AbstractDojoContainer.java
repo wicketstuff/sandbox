@@ -26,8 +26,7 @@ import org.wicketstuff.dojo.widgets.StylingWebMarkupContainer;
 public abstract class AbstractDojoContainer extends StylingWebMarkupContainer implements IDojoContainer{
 	
 	private String title;
-	
-	
+		
 	/**
 	 * Construct a dojo container
 	 * @param parent parent where this component will be added
