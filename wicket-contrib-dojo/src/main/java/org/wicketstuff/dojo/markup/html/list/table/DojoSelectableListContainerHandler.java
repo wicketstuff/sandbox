@@ -53,7 +53,7 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 		
 		//and generate js to select them
 		if (selectedIndex != null){
-			String selected = null;
+			String selected = "";
 			for (int i=0; i < selectedIndex.length; i++){
 				int pos = Integer.parseInt(selectedIndex[i]);
 				if (i==0){
