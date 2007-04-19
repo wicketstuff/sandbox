@@ -68,12 +68,27 @@ public class VeilResources extends AbstractBehavior implements IHeaderContributo
 	public static class Javascript
 	{
 		/**
+		 * Block instantiation
+		 */
+		private Javascript()
+		{
+
+		}
+
+		/**
 		 * Javascript interface to the veil that is decoupled from wicket
 		 * 
 		 * @author ivaynberg
 		 */
 		public static class Generic
 		{
+			/**
+			 * Block instantiation
+			 */
+			private Generic()
+			{
+
+			}
 
 			/**
 			 * Generates javascript to show a veil over a tag
