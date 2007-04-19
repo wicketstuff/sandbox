@@ -20,7 +20,7 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.wicketstuff.dojo.AbstractRequireDojoBehavior;
 
 /**
- * A very simple handler for Dojo containers
+ * A very simple handler for {@link DojoSimpleContainer} and {@link DojoPanelContainer}
  * @author Vincent Demay
  *
  */

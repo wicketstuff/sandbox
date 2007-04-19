@@ -16,21 +16,74 @@
  */
 package org.wicketstuff.dojo.markup.html.container;
 
+import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.IModel;
+import org.wicketstuff.dojo.DojoIdConstants;
+import org.wicketstuff.dojo.markup.html.container.tab.DojoTabContainer;
 
 /**
- * 
+ * A panel that can be used as a {@link DojoSimpleContainer}. <br/>
+ * It can be used as child of a {@link IDojoContainer}
  * @author Vincent Demay
+ * @version SVN: $Id$
  *
- * TODO implement ;)
  */
 @SuppressWarnings("serial")
 public abstract class DojoPanelContainer extends Panel implements IDojoContainer
 {
-
-	public DojoPanelContainer(String id) {
-		super(id);
-		// TODO Auto-generated constructor stub
+	/**
+	 * Title used in titled container such as {@link DojoTabContainer}
+	 */
+	private String title;
+	
+	/**
+	 * Construct 
+	 * @param id panel id
+	 * @param model model associated with the panel
+	 * @param title Title used in titled container such as {@link DojoTabContainer}
+	 */
+	public DojoPanelContainer(String id, IModel model, String title) {
+		super(id, model);
+		this.title = title;
+		add(new DojoSimpleContainerHandler());
+	}
+	
+	/**
+	 * Construct 
+	 * @param id panel id
+	 * @param title Title used in titled container such as {@link DojoTabContainer}
+	 */
+	public DojoPanelContainer(String id, String title) {
+		this(id, null, title);
+	}
+	
+	/**
+	 * add attributes on component tag
+	 * @param tag 
+	 */
+	protected void onComponentTag(ComponentTag tag)
+	{
+		super.onComponentTag(tag);
+		tag.put(DojoIdConstants.DOJO_TYPE, DojoIdConstants.DOJO_TYPE_CONTENTPANE);
+		tag.put("label", getTitle());
+	}
+	
+	
+	/**
+	 * Return the Container title
+	 * @return container title
+	 */
+	public String getTitle(){
+		return title;
+	}
+	
+	/**
+	 * Set the container title
+	 * @param title container title
+	 */
+	public void setTitle(String title){
+		this.title = title;
 	}
 
 }
