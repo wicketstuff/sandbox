@@ -1,9 +1,9 @@
 package wicket.examples.cdapp.page;
 
-import wicket.examples.cdapp.CdRequestCycle;
-import wicket.examples.cdapp.model.Dao;
-import wicket.markup.html.WebPage;
-import wicket.markup.html.basic.Label;
+import org.apache.wicket.examples.cdapp.CdRequestCycle;
+import org.apache.wicket.examples.cdapp.model.Dao;
+import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.markup.html.basic.Label;
 
 public class CdPage extends WebPage {
 	public CdPage(String title) {

@@ -21,10 +21,9 @@ import java.util.List;
 
 import org.apache.velocity.app.Velocity;
 
-import wicket.Page;
-import wicket.WicketRuntimeException;
-import wicket.protocol.http.WebApplication;
-import wicket.util.time.Duration;
+import org.apache.wicket.WicketRuntimeException;
+import org.apache.wicket.protocol.http.WebApplication;
+import org.apache.wicket.util.time.Duration;
 
 /**
  * Application class for velocity template example.
@@ -34,7 +33,7 @@ import wicket.util.time.Duration;
 public class VelocityTemplateApplication extends WebApplication
 {
 	/** simple persons db. */
-	private static List<Person> persons = new ArrayList<Person>();
+	private static List persons = new ArrayList();
 	static
 	{
 		persons.add(new Person("Joe", "Down"));
@@ -50,7 +49,7 @@ public class VelocityTemplateApplication extends WebApplication
 	 * 
 	 * @return the dummy persons database
 	 */
-	public static List<Person> getPersons()
+	public static List getPersons()
 	{
 		return persons;
 	}
@@ -65,7 +64,6 @@ public class VelocityTemplateApplication extends WebApplication
 	/**
 	 * @see wicket.protocol.http.WebApplication#init()
 	 */
-	@Override
 	protected void init()
 	{
 		getResourceSettings().setResourcePollFrequency(Duration.ONE_SECOND);
@@ -84,8 +82,7 @@ public class VelocityTemplateApplication extends WebApplication
 	/**
 	 * @return class
 	 */
-	@Override
-	public Class< ? extends Page> getHomePage()
+	public Class getHomePage()
 	{
 		return TemplatePage.class;
 	}

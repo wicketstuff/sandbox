@@ -27,54 +27,46 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
-import wicket.WicketRuntimeException;
+import org.apache.wicket.WicketRuntimeException;
 import wicket.contrib.data.model.ISelectCountAndListAction;
 
 /**
- * Implements a count and list selection that can be used for eg a pageable
- * list. To work, this list needs a (named) select- and a count query with the
- * same number and types of parameters. The queries will be loaded from the
- * Hibernate configuration. Clients should override this class in order to
- * provide specific parameters to the queries.
+ * Implements a count and list selection that can be used for eg a pageable list. To work,
+ * this list needs a (named) select- and a count query with the same number and types of
+ * parameters. The queries will be loaded from the Hibernate configuration. Clients should
+ * override this class in order to provide specific parameters to the queries.
  * <p>
- * As these queries are static (from the configuration files), you could best
- * use a pattern like this:
+ * As these queries are static (from the configuration files), you could best use a
+ * pattern like this:
  * 
  * <pre>
- *      
- *        &lt;query name=&quot;cdapp.model.SearchCD&quot;&gt;
- *            &lt;![CDATA[
- *      		  SELECT cd FROM cdapp.model.CD as cd
- *                WHERE (:title is null or upper(cd.title) like :title)
- *                AND (:performers is null or upper(cd.performers) like :performers)
- *                AND (:year = -1 or cd.year = :year)
- *            ]]&gt;
- *        &lt;/query&gt;
- *       
+ * 
+ *   &lt;query name=&quot;cdapp.model.SearchCD&quot;&gt;
+ *       &lt;![CDATA[
+ * 		  SELECT cd FROM cdapp.model.CD as cd
+ *           WHERE (:title is null or upper(cd.title) like :title)
+ *           AND (:performers is null or upper(cd.performers) like :performers)
+ *           AND (:year = -1 or cd.year = :year)
+ *       ]]&gt;
+ *   &lt;/query&gt;
+ *  
  * </pre>
  * 
- * Take for example: 'WHERE (:title is null or upper(cd.title) like :title)'; if
- * parameter 'title' is set to null (note that you MUST explicitly set it to
- * null with Hibernate), it will be discarded on query execution time. Hence,
- * with this method, you can use static queries while still having flexible
- * where clauses.
+ * Take for example: 'WHERE (:title is null or upper(cd.title) like :title)'; if parameter
+ * 'title' is set to null (note that you MUST explicitly set it to null with Hibernate),
+ * it will be discarded on query execution time. Hence, with this method, you can use
+ * static queries while still having flexible where clauses.
  * </p>
- * 
  * @author Eelco Hillenius
  */
-public class HibernateCountAndListAction<T, V> implements
-		ISelectCountAndListAction<T, V>, Serializable
+public class HibernateCountAndListAction implements ISelectCountAndListAction,
+		Serializable
 {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
 	/** delegate that provides instances of {@link org.hibernate.Session}. */
 	private final IHibernateSessionDelegate sessionDelegate;
 
 	/** list for ordering columns. */
-	private List<Order> orderColumns = new ArrayList<Order>();
+	private List orderColumns = new ArrayList();
 
 	/** name of select query. */
 	private final String queryName;
@@ -84,9 +76,7 @@ public class HibernateCountAndListAction<T, V> implements
 
 	/**
 	 * Construct.
-	 * 
-	 * @param sessionDelegate
-	 *            delegate that provides instances of
+	 * @param sessionDelegate delegate that provides instances of
 	 *            {@link org.hibernate.Session}.
 	 */
 	public HibernateCountAndListAction(IHibernateSessionDelegate sessionDelegate)
@@ -96,13 +86,9 @@ public class HibernateCountAndListAction<T, V> implements
 
 	/**
 	 * Construct.
-	 * 
-	 * @param queryName
-	 *            name of select query
-	 * @param countQueryName
-	 *            name of count query
-	 * @param sessionDelegate
-	 *            delegate that provides instances of
+	 * @param queryName name of select query
+	 * @param countQueryName name of count query
+	 * @param sessionDelegate delegate that provides instances of
 	 *            {@link org.hibernate.Session}.
 	 */
 	public HibernateCountAndListAction(String queryName, String countQueryName,
@@ -114,10 +100,10 @@ public class HibernateCountAndListAction<T, V> implements
 	}
 
 	/**
-	 * @see wicket.contrib.data.model.ISelectListAction#execute(java.lang.Object,
-	 *      int, int)
+	 * @see wicket.contrib.data.model.ISelectListAction#execute(java.lang.Object, int,
+	 *      int)
 	 */
-	public List<T> execute(V queryObject, int startFromRow, int numberOfRows)
+	public List execute(Object queryObject, int startFromRow, int numberOfRows)
 	{
 		return load(startFromRow, numberOfRows, queryObject);
 	}
@@ -125,26 +111,24 @@ public class HibernateCountAndListAction<T, V> implements
 	/**
 	 * @see wicket.contrib.data.model.ISelectObjectAction#execute(java.lang.Object)
 	 */
-	public Integer execute(V queryObject)
+	public Object execute(Object queryObject)
 	{
 		return getCount(queryObject);
 	}
 
 	/**
 	 * Gets/ executes the count.
-	 * 
-	 * @param queryObject
-	 *            the query object (possibly null)
+	 * @param queryObject the query object (possibly null)
 	 * @return the count
 	 */
-	protected Integer getCount(V queryObject)
+	protected Integer getCount(Object queryObject)
 	{
 		try
 		{
 			Query query = getCountQuery(sessionDelegate.getSession());
 			setParameters(query, queryObject);
 			List countResult = query.list();
-			return ((Number) countResult.get(0)).intValue();
+			return (Integer) countResult.get(0);
 		}
 		catch (HibernateException e)
 		{
@@ -154,17 +138,12 @@ public class HibernateCountAndListAction<T, V> implements
 
 	/**
 	 * Gets the result list.
-	 * 
-	 * @param startFromRow
-	 *            row to start from
-	 * @param numberOfRows
-	 *            number of rows to load
-	 * @param queryObject
-	 *            the query object (possibly null)
+	 * @param startFromRow row to start from
+	 * @param numberOfRows number of rows to load
+	 * @param queryObject the query object (possibly null)
 	 * @return the (partial) list
 	 */
-	@SuppressWarnings("unchecked")
-	protected List<T> load(int startFromRow, int numberOfRows, V queryObject)
+	protected List load(int startFromRow, int numberOfRows, Object queryObject)
 	{
 		try
 		{
@@ -181,28 +160,23 @@ public class HibernateCountAndListAction<T, V> implements
 	}
 
 	/**
-	 * Sets the query parameters. This method can be provided by clients in
-	 * order to provide specific parameters for the queries. Beware that this
-	 * method will be called for both the count query and the select query, so
-	 * the number and type of parameters of both queries should match. Does
-	 * nothing by default and is thus only useable for queries without
-	 * parameters.
-	 * 
-	 * @param query
-	 *            the query to set the parameters on
-	 * @param queryObject
-	 *            the query object (possibly null)
+	 * Sets the query parameters. This method can be provided by clients in order to
+	 * provide specific parameters for the queries. Beware that this method will be called
+	 * for both the count query and the select query, so the number and type of parameters
+	 * of both queries should match. Does nothing by default and is thus only useable for
+	 * queries without parameters.
+	 * @param query the query to set the parameters on
+	 * @param queryObject the query object (possibly null)
 	 * @throws HibernateException
 	 */
-	protected void setParameters(Query query, V queryObject) throws HibernateException
+	protected void setParameters(Query query, Object queryObject)
+			throws HibernateException
 	{
 	}
 
 	/**
 	 * Gets the selection query.
-	 * 
-	 * @param session
-	 *            the hibernate session
+	 * @param session the hibernate session
 	 * @return the selection query
 	 */
 	protected Query getQuery(Session session)
@@ -211,7 +185,7 @@ public class HibernateCountAndListAction<T, V> implements
 		try
 		{
 			query = session.getNamedQuery(queryName);
-			List<Order> orderColumns = getOrderColumns();
+			List orderColumns = getOrderColumns();
 			if (!orderColumns.isEmpty())
 			{
 				StringBuffer b = new StringBuffer(query.getQueryString());
@@ -220,7 +194,8 @@ public class HibernateCountAndListAction<T, V> implements
 				{
 					Order order = (Order) i.next();
 					String direction = (order.ascending) ? "ASC" : "DESC";
-					b.append("upper(").append(order.field).append(") ").append(direction);
+					b.append("upper(").append(order.field).append(") ").append(
+							direction);
 					if (i.hasNext())
 					{
 						b.append(", ");
@@ -238,9 +213,7 @@ public class HibernateCountAndListAction<T, V> implements
 
 	/**
 	 * Gets the count query.
-	 * 
-	 * @param session
-	 *            the hibernate session
+	 * @param session the hibernate session
 	 * @return the count query
 	 */
 	protected Query getCountQuery(Session session)
@@ -259,7 +232,6 @@ public class HibernateCountAndListAction<T, V> implements
 
 	/**
 	 * Get queryName.
-	 * 
 	 * @return queryName.
 	 */
 	public final String getQueryName()
@@ -269,7 +241,6 @@ public class HibernateCountAndListAction<T, V> implements
 
 	/**
 	 * Get countQueryName.
-	 * 
 	 * @return countQueryName.
 	 */
 	public final String getCountQueryName()
@@ -278,11 +249,9 @@ public class HibernateCountAndListAction<T, V> implements
 	}
 
 	/**
-	 * Add ordering for select query. Appends the given ordering at the front of
-	 * the ordering list and removes the current if found
-	 * 
-	 * @param colName
-	 *            column name
+	 * Add ordering for select query. Appends the given ordering at the front of the
+	 * ordering list and removes the current if found
+	 * @param colName column name
 	 */
 	public void addOrdering(String colName)
 	{
@@ -291,7 +260,7 @@ public class HibernateCountAndListAction<T, V> implements
 		int i = orderColumns.indexOf(order);
 		if (i != -1)
 		{
-			Order current = orderColumns.remove(i); // remove current
+			Order current = (Order) orderColumns.remove(i); // remove current
 			ascending = !current.ascending; // switch
 		}
 		order.ascending = ascending;
@@ -300,9 +269,7 @@ public class HibernateCountAndListAction<T, V> implements
 
 	/**
 	 * Remove ordering for select query.
-	 * 
-	 * @param colName
-	 *            column name
+	 * @param colName column name
 	 */
 	public void removeOrdering(String colName)
 	{
@@ -310,27 +277,24 @@ public class HibernateCountAndListAction<T, V> implements
 		int i = orderColumns.indexOf(order);
 		if (i != -1)
 		{
-			Order current = orderColumns.remove(i); // remove
+			Order current = (Order) orderColumns.remove(i); // remove
 		}
 	}
 
 	/**
 	 * Gets orderColumns.
-	 * 
 	 * @return orderColumns.
 	 */
-	protected final List<Order> getOrderColumns()
+	protected final List getOrderColumns()
 	{
 		return orderColumns;
 	}
 
 	/**
 	 * Sets orderColumns.
-	 * 
-	 * @param orderColumns
-	 *            orderColumns.
+	 * @param orderColumns orderColumns.
 	 */
-	protected final void setOrderColumns(List<Order> orderColumns)
+	protected final void setOrderColumns(List orderColumns)
 	{
 		this.orderColumns = orderColumns;
 	}
@@ -338,11 +302,6 @@ public class HibernateCountAndListAction<T, V> implements
 	/** Wrapper class for ordering. */
 	protected static class Order implements Serializable
 	{
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;
-
 		/** order by field. */
 		String field;
 
@@ -351,9 +310,7 @@ public class HibernateCountAndListAction<T, V> implements
 
 		/**
 		 * Construct.
-		 * 
-		 * @param field
-		 *            order by field
+		 * @param field order by field
 		 */
 		public Order(String field)
 		{
@@ -361,13 +318,10 @@ public class HibernateCountAndListAction<T, V> implements
 		}
 
 		/** @see java.lang.Object#equals(java.lang.Object) */
-		@Override
 		public boolean equals(Object obj)
 		{
 			if (!(obj instanceof Order))
-			{
 				return false;
-			}
 			Order that = (Order) obj;
 			return this.field.equals(that.field);
 		}

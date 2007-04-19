@@ -1,7 +1,7 @@
 /*
- * $Id$
- * $Revision$
- * $Date$
+ * $Id: HomePage.java 922 2006-09-07 17:52:05Z syca $
+ * $Revision: 922 $
+ * $Date: 2006-09-07 10:52:05 -0700 (Thu, 07 Sep 2006) $
  *
  * ====================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,14 +18,12 @@
  */
 package wicket.contrib.examples.gmap;
 
-import wicket.MarkupContainer;
 import wicket.contrib.examples.WicketExamplePage;
-import wicket.contrib.gmap.ComponentFactory;
 import wicket.contrib.gmap.GMap;
 import wicket.contrib.gmap.GMapPanel;
 import wicket.contrib.gmap.GMarker;
 import wicket.contrib.gmap.GPoint;
-import wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.basic.Label;
 
 /**
  * @author Iulian-Corneliu COSTAN
@@ -33,70 +31,39 @@ import wicket.markup.html.basic.Label;
 public class HomePage extends WicketExamplePage
 {
 
-    private static final long serialVersionUID = 1L;
-
     public HomePage()
     {
         // add gmap
-        GMap gmap = new GMap( new GPoint( 10, 30 ), 15 );
-        gmap.setTypeControl( true );
-        gmap.setSmallMapControl( true );
+        GMap gmap = new GMap(new GPoint(10, 30), 15);
+        gmap.setTypeControl(true);
+        gmap.setSmallMapControl(true);
 
         // www.wicket-library.com
-        GMarker<Label> wicketLibrary = new GMarker<Label>( new GPoint( -112.1872f, 33.2765f ),
-            newLabelComponentFactory() );
-        gmap.addOverlay( wicketLibrary );
+        GMarker wicketLibrary = new GMarker(new GPoint(-112.1872f, 33.2765f), new Label("gmarkerInfo", "www.wicket-library.com"));
+        gmap.addOverlay(wicketLibrary);
 
         // www.wicket.org
-        GMarker<InfoPanel> wicket = new GMarker<InfoPanel>( new GPoint( -78.7073f, 35.7512f ),
-            newInfoPanelComponentFactory() );
-        gmap.addOverlay( wicket );
+        GMarker wicket = new GMarker(new GPoint(-78.7073f, 35.7512f), new InfoPanel("gmarkerInfo"));
+        gmap.addOverlay(wicket);
 
-        new GMapPanel( this, "gmap", gmap, 800, 600, LOCALHOST_8080_WICKET_CONTRIB_GMAP_KEY );
+        add(new GMapPanel("gmap", gmap, 800, 600, LOCALHOST_8080_WICKET_CONTRIB_GMAP_EXAMPLES_KEY));
     }
 
-    private final ComponentFactory<InfoPanel> newInfoPanelComponentFactory()
-    {
-        return new ComponentFactory<InfoPanel>()
-        {
-            private static final long serialVersionUID = 1L;
+    //pay attention at webapp deploy context, we need a different key for each deploy context
+    //check <a href="http://www.google.com/apis/maps/signup.html">Google Maps API - Sign Up</a> for more info
 
-            public <V extends MarkupContainer> InfoPanel createComponent( V parent, String wicketId )
-            {
-                return new InfoPanel( parent, wicketId );
-            }
-        };
-    }
-
-    private final ComponentFactory<Label> newLabelComponentFactory()
-    {
-        return new ComponentFactory<Label>()
-        {
-            private static final long serialVersionUID = 1L;
-
-            public <V extends MarkupContainer> Label createComponent( V parent, String wicketId )
-            {
-                return new Label( parent, wicketId, "www.wicket-library.com" );
-            }
-
-        };
-    }
-
-    // pay attention at webapp deploy context, we need a different key for each
-    // deploy context
-    // check <a href="http://www.google.com/apis/maps/signup.html">Google Maps
-    // API - Sign Up</a> for more info
-
-    // key for http://localhost:8080/wicket-contrib-gmap, deploy context is
-    // wicket-contrib-gmap
+    // key for http://localhost:8080/wicket-contrib-gmap-examples/
+    private static final String LOCALHOST_8080_WICKET_CONTRIB_GMAP_EXAMPLES_KEY = "ABQIAAAALjfJpigGWq5XvKwy7McLIxTEpDPjw6LRH7yL06TcOjcEpKZmCRRGeXL1BMh_MNX22hDtswyQqVAOyQ";
+    
+    //key for http://localhost:8080/wicket-contrib-gmap, deploy context is wicket-contrib-gmap
     private static final String LOCALHOST_8080_WICKET_CONTRIB_GMAP_KEY = "ABQIAAAALjfJpigGWq5XvKwy7McLIxTDxbH1TVfo7w-iwzG2OxhXSIjJdhQTwgha-mCK8wiVEq4rgi9qvz8HYw";
 
-    // key for http://localhost:8080/gmap, deploy context is gmap
+    //key for http://localhost:8080/gmap, deploy context is gmap
     private static final String GMAP_8080_KEY = "ABQIAAAALjfJpigGWq5XvKwy7McLIxTh_sjBSLCHIDZfjzu1cFb3Pz7MrRQLOeA7BMLtPnXOjHn46gG11m_VFg";
 
-    // key for http://localhost/gmap
+    //key for http://localhost/gmap
     private static final String GMAP_DEFAULT_KEY = "ABQIAAAALjfJpigGWq5XvKwy7McLIxTIqKwA3nrz2BTziwZcGRDeDRNmMxS-FtSv7KGpE1A21EJiYSIibc-oEA";
 
-    // key for http://www.wicket-library.com/wicket-examples/
+    //key for http://www.wicket-library.com/wicket-examples/
     private static final String WICKET_LIBRARY_KEY = "ABQIAAAALjfJpigGWq5XvKwy7McLIxQTV35WN9IbLCS5__wznwqtm2prcBQxH8xw59T_NZJ3NCsDSwdTwHTrhg";
 }

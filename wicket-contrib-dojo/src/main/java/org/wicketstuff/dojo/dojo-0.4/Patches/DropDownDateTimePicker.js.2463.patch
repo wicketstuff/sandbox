@@ -1,0 +1,58 @@
+Index: /Users/doume/Dev/Wicket/branch-1X/wicket-contrib-dojo/src/main/java/wicket/contrib/dojo/dojo-0.4/src/widget/DropdownDatePicker.js
+===================================================================
+--- /Users/doume/Dev/Wicket/branch-1X/wicket-contrib-dojo/src/main/java/wicket/contrib/dojo/dojo-0.4/src/widget/DropdownDatePicker.js	(revision 1765)
++++ /Users/doume/Dev/Wicket/branch-1X/wicket-contrib-dojo/src/main/java/wicket/contrib/dojo/dojo-0.4/src/widget/DropdownDatePicker.js	(working copy)
+@@ -92,6 +92,9 @@
+ 		//	disable all incremental controls, must pick a date in the current display
+ 		staticDisplay: false,
+ 		
++		templatePath:  dojo.uri.dojoUri("src/widget/templates/DatePicker.htm"),
++		templateCssPath:  dojo.uri.dojoUri("src/widget/templates/DatePicker.css"),
++		
+ 		postMixInProperties: function(localProperties, frag){
+ 			// summary: see dojo.widget.DomWidget
+ 
+@@ -116,10 +119,14 @@
+ 			// summary: see dojo.widget.DomWidget
+ 			dojo.widget.DropdownDatePicker.superclass.fillInTemplate.call(this, args, frag);
+ 			//attributes to be passed on to DatePicker
++			
+ 			var dpArgs = {widgetContainerId: this.widgetId, lang: this.lang, value: this.value,
+ 				startDate: this.startDate, endDate: this.endDate, displayWeeks: this.displayWeeks,
+-				weekStartsOn: this.weekStartsOn, adjustWeeks: this.adjustWeeks, staticDisplay: this.staticDisplay};
+-
++				weekStartsOn: this.weekStartsOn, adjustWeeks: this.adjustWeeks, staticDisplay: this.staticDisplay, 
++				templateCssPath:  this.templateCssPath, templatePath: this.templatePath
++				};
++			
++			
+ 			//build the args for DatePicker based on the public attributes of DropdownDatePicker
+ 			this.datePicker = dojo.widget.createWidget("DatePicker", dpArgs, this.containerNode, "child");
+ 			dojo.event.connect(this.datePicker, "onValueChanged", this, "onSetDate");
+Index: /Users/doume/Dev/Wicket/branch-1X/wicket-contrib-dojo/src/main/java/wicket/contrib/dojo/dojo-0.4/src/widget/DropdownTimePicker.js
+===================================================================
+--- /Users/doume/Dev/Wicket/branch-1X/wicket-contrib-dojo/src/main/java/wicket/contrib/dojo/dojo-0.4/src/widget/DropdownTimePicker.js	(revision 1765)
++++ /Users/doume/Dev/Wicket/branch-1X/wicket-contrib-dojo/src/main/java/wicket/contrib/dojo/dojo-0.4/src/widget/DropdownTimePicker.js	(working copy)
+@@ -53,6 +53,10 @@
+ 		
+ 		// 	name of the form element, used to create a hidden field by this name for form element submission.
+ 		name: "",
++		
++		
++		templatePath: dojo.uri.dojoUri("src/widget/templates/TimePicker.htm"),
++		templateCssPath: dojo.uri.dojoUri("src/widget/templates/TimePicker.css"),
+ 
+ 		postMixInProperties: function() {
+ 			dojo.widget.DropdownTimePicker.superclass.postMixInProperties.apply(this, arguments);
+@@ -63,7 +67,10 @@
+ 		fillInTemplate: function(){
+ 			dojo.widget.DropdownTimePicker.superclass.fillInTemplate.apply(this, arguments);
+ 
+-			var timeProps = { widgetContainerId: this.widgetId, lang: this.lang };
++			var timeProps = { widgetContainerId: this.widgetId, lang: this.lang , 
++				templateCssPath:  this.templateCssPath, templatePath: this.templatePath
++				};
++			
+ 			this.timePicker = dojo.widget.createWidget("TimePicker", timeProps, this.containerNode, "child");
+ 			dojo.event.connect(this.timePicker, "onSetTime", this, "onSetTime");
+ 			dojo.event.connect(this.inputNode,  "onchange",  this, "onInputChange");

@@ -1,6 +1,6 @@
 /*
- * $Id$
- * $Revision$ $Date$
+ * $Id$ $Revision$
+ * $Date$
  *
  * ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -17,28 +17,26 @@
  */
 package wicket.contrib.scriptaculous;
 
-import wicket.MarkupContainer;
-import wicket.markup.html.basic.Label;
-import wicket.markup.html.image.Image;
-import wicket.markup.html.panel.Panel;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.image.Image;
+import org.apache.wicket.markup.html.panel.Panel;
 
 /**
  * Indicator panel.
  */
-public class Indicator<T> extends Panel<T>
-{
+public class Indicator extends Panel {
+
 	private static final long serialVersionUID = 1L;
 
 	/**
+	 * 
 	 * Construct.
 	 */
-	public Indicator(MarkupContainer parent)
-	{
-		super(parent, "indicator");
+	public Indicator() {
+		super("indicator");
 
-		setOutputMarkupId(true);
-
-		new Image(this, "indicatorImage", "indicator.gif");
-		new Label(this, "indicatorLabel", "Processing...");
+		add(new Image("indicatorImage", "indicator.gif"));
+		add(new Label("indicatorLabel", "Processing..."));
 	}
+
 }

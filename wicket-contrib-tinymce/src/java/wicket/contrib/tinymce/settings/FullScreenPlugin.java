@@ -20,7 +20,7 @@ package wicket.contrib.tinymce.settings;
 /**
  * This plugin adds fullscreen editing mode to TinyMCE.
  *
- * @author Iulian Costan (iulian.costan@gmail.com)
+ * @author Iulian-Corneliu COSTAN
  */
 public class FullScreenPlugin extends Plugin
 {
@@ -31,19 +31,12 @@ public class FullScreenPlugin extends Plugin
 	private static final long serialVersionUID = 1L;
 	private PluginButton fullscreenButton;
 
-    /**
-     * Construct fullscreen plugin.
-     */
     public FullScreenPlugin()
     {
         super("fullscreen");
-        
         fullscreenButton = new PluginButton("fullscreen", this);
     }
 
-    /**
-     * @return the fullscreen button
-     */
     public PluginButton getFullscreenButton()
     {
         return fullscreenButton;

@@ -1,9 +1,8 @@
 package wicket.contrib.data.model.bind;
 
-import wicket.MarkupContainer;
-import wicket.markup.html.WebMarkupContainer;
-import wicket.markup.html.form.FormComponent;
-import wicket.validation.IValidator;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.form.FormComponent;
+import org.apache.wicket.validation.IValidator;
 
 /**
  * Used for any inline component that needs to be able to add validators to
@@ -11,7 +10,7 @@ import wicket.validation.IValidator;
  * 
  * @author Phil Kulak
  */
-public abstract class InlineValidatingComponent<T> extends WebMarkupContainer<T>
+public abstract class InlineValidatingComponent extends WebMarkupContainer
 {
 	private FormComponent formComponent;
 
@@ -19,9 +18,9 @@ public abstract class InlineValidatingComponent<T> extends WebMarkupContainer<T>
 	 * @param id
 	 *            the id of this component
 	 */
-	public InlineValidatingComponent(MarkupContainer parent, String id)
+	public InlineValidatingComponent(String id)
 	{
-		super(parent, id);
+		super(id);
 	}
 
 	/**
@@ -49,5 +48,6 @@ public abstract class InlineValidatingComponent<T> extends WebMarkupContainer<T>
 	protected void setFormComponent(FormComponent formComponent)
 	{
 		this.formComponent = formComponent;
+		add(formComponent);
 	}
 }

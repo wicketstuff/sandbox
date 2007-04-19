@@ -1,8 +1,7 @@
 package wicket.contrib.data.model.bind;
 
-import wicket.MarkupContainer;
-import wicket.markup.html.PackageResource;
-import wicket.markup.html.form.ImageButton;
+import org.apache.wicket.markup.html.PackageResource;
+import org.apache.wicket.markup.html.form.ImageButton;
 
 /**
  * An image button that submits the current row and is only visble when the row
@@ -12,25 +11,17 @@ import wicket.markup.html.form.ImageButton;
  */
 public class InlineSubmitButton extends ImageButton
 {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
 	/** an image representing a save button */
-	public static final PackageResource SAVE = PackageResource.get(
-			InlineSubmitButton.class, "save.gif");
+	public static final PackageResource SAVE = PackageResource.get(InlineSubmitButton.class, "save.gif");
 
 	/**
-	 * @param id
-	 *            the id of the button
+	 * @param id the id of the button
 	 */
-	public InlineSubmitButton(MarkupContainer parent, String id)
+	public InlineSubmitButton(String id)
 	{
-		super(parent, id, SAVE);
+		super(id, SAVE);
 	}
-
-	@Override
+	
 	public void onSubmit()
 	{
 		GridView.mergeEdit(this);
@@ -39,7 +30,6 @@ public class InlineSubmitButton extends ImageButton
 	/**
 	 * @return true when the list item is being edited
 	 */
-	@Override
 	public boolean isVisible()
 	{
 		return GridView.isEdit(this);

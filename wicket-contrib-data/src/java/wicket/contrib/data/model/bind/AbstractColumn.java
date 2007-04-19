@@ -1,14 +1,14 @@
 package wicket.contrib.data.model.bind;
 
-import wicket.model.IModel;
-import wicket.model.PropertyModel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.PropertyModel;
 
 /**
  * A convenient place to extend from to create new {@link IColumn}s.
  * 
  * @author Phil Kulak
  */
-public abstract class AbstractColumn<T> implements IColumn<T>
+public abstract class AbstractColumn implements IColumn
 {
 	private String displayName;
 
@@ -33,12 +33,12 @@ public abstract class AbstractColumn<T> implements IColumn<T>
 		{
 			setAllowOrderBy(false);
 		}
-
-		if (displayName == null)
+		
+		if(displayName == null)
 		{
 			displayName = "";
 		}
-
+		
 		this.displayName = displayName;
 		this.modelPath = modelPath;
 		this.orderByPath = modelPath;
@@ -55,7 +55,7 @@ public abstract class AbstractColumn<T> implements IColumn<T>
 	 * @param allowOrderBy
 	 * @return an IColumn to support chaining
 	 */
-	public IColumn<T> setAllowOrderBy(boolean allowOrderBy)
+	public IColumn setAllowOrderBy(boolean allowOrderBy)
 	{
 		this.allowOrderBy = allowOrderBy;
 		return this;
@@ -66,7 +66,7 @@ public abstract class AbstractColumn<T> implements IColumn<T>
 	 * @param orderByPath
 	 * @return an IColumn to support chaining
 	 */
-	public IColumn<T> setOrderByPath(String orderByPath)
+	public IColumn setOrderByPath(String orderByPath)
 	{
 		this.orderByPath = orderByPath;
 		return this;
@@ -86,9 +86,9 @@ public abstract class AbstractColumn<T> implements IColumn<T>
 	{
 		return orderByPath;
 	}
-
-	protected PropertyModel<T> makePropertyModel(IModel<T> model)
+	
+	protected PropertyModel makePropertyModel(IModel model)
 	{
-		return new PropertyModel<T>(model, getModelPath());
+		return new PropertyModel(model, getModelPath());
 	}
 }

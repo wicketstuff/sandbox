@@ -1,7 +1,7 @@
 /*
- * $Id$
- * $Revision$
- * $Date$
+ * $Id: EditContactPage.java 634 2006-03-26 18:28:10 -0800 (Sun, 26 Mar 2006) ivaynberg $
+ * $Revision: 634 $
+ * $Date: 2006-03-26 18:28:10 -0800 (Sun, 26 Mar 2006) $
  * 
  * ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -18,19 +18,20 @@
  */
 package wicket.contrib.phonebook.web.page;
 
-import wicket.Page;
+import org.apache.wicket.Page;
 import wicket.contrib.phonebook.Contact;
 import wicket.contrib.phonebook.ContactDao;
-import wicket.markup.html.form.Button;
-import wicket.markup.html.form.Form;
-import wicket.markup.html.form.TextField;
-import wicket.markup.html.panel.FeedbackPanel;
-import wicket.model.CompoundPropertyModel;
-import wicket.spring.injection.SpringBean;
-import wicket.util.collections.MicroMap;
-import wicket.util.string.interpolator.MapVariableInterpolator;
-import wicket.validation.validator.EmailAddressPatternValidator;
-import wicket.validation.validator.StringValidator;
+import org.apache.wicket.markup.html.form.Button;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.RequiredTextField;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.util.collections.MicroMap;
+import org.apache.wicket.util.string.interpolator.MapVariableInterpolator;
+import org.apache.wicket.validation.validator.EmailAddressValidator;
+import org.apache.wicket.validation.validator.StringValidator;
 
 /**
  * Edit the Contact. Display details if an existing contact, then persist them
@@ -42,8 +43,8 @@ import wicket.validation.validator.StringValidator;
 public class EditContactPage extends BasePage {
 	private Page backPage;
 
-	@SpringBean
-	private ContactDao dao;
+	@SpringBean(name = "contactDao")
+	private ContactDao contactDao;
 
 	/**
 	 * Constructor. Create or edit the contact. Note that if you don't need the
@@ -52,53 +53,49 @@ public class EditContactPage extends BasePage {
 	 * 
 	 * @param backPage
 	 *            The page that the user was on before coming here
-	 * @param contactId
-	 *            The id of the Contact to edit, or 0 for a new contact.
+	 * @param contactModel
+	 *            Model that contains the contact we will edit
 	 */
-	public EditContactPage(Page backPage, final long contactId) {
+	public EditContactPage(Page backPage, IModel contactModel) {
 		this.backPage = backPage;
-		Contact contact = (contactId == 0) ? new Contact() : dao
-				.load(contactId);
 
-		new FeedbackPanel(this, "feedback");
+		Contact contact = (Contact) contactModel.getObject();
+		Form form = new Form("contactForm", new CompoundPropertyModel(contact));
+		add(form);
 
-		Form form = new Form<Contact>(this, "contactForm",
-				new CompoundPropertyModel<Contact>(contact));
+		form.add(new RequiredTextField("firstname").add(StringValidator
+				.maximumLength(32)));
 
-		new TextField(form, "firstname").add(StringValidator.maximumLength(32))
-				.setRequired(true);
+		form.add(new RequiredTextField("lastname").add(StringValidator
+				.maximumLength(32)));
 
-		new TextField(form, "lastname").add(StringValidator.maximumLength(32))
-				.setRequired(true);
+		form.add(new RequiredTextField("phone").add(StringValidator
+				.maximumLength(16)));
 
-		new TextField(form, "phone").add(StringValidator.maximumLength(16))
-				.setRequired(true);
+		form.add(new TextField("email").add(StringValidator.maximumLength(128))
+				.add(EmailAddressValidator.getInstance()));
 
-		new TextField(form, "email").add(StringValidator.maximumLength(128))
-				.add(EmailAddressPatternValidator.getInstance());
-
-		new Button(form, "cancel") {
+		form.add(new Button("cancel") {
 			public void onSubmit() {
 				String msg = getLocalizer().getString("status.cancel", this);
 				getSession().info(msg);
 				setResponsePage(EditContactPage.this.backPage);
 			}
-		}.setDefaultFormProcessing(false);
+		}.setDefaultFormProcessing(false));
 
-		new Button(form, "save") {
+		form.add(new Button("save") {
 			public void onSubmit() {
 				Contact contact = (Contact) getForm().getModelObject();
-				dao.save(contact);
+				contactDao.save(contact);
 
 				String msg = MapVariableInterpolator.interpolate(getLocalizer()
-						.getString("status.save", this),
-						new MicroMap<String, String>("name", contact
-								.getFullName()));
+						.getString("status.save", this), new MicroMap("name",
+						contact.getFullName()));
 
 				getSession().info(msg);
 
 				setResponsePage(EditContactPage.this.backPage);
 			}
-		};
+		});
 	}
 }

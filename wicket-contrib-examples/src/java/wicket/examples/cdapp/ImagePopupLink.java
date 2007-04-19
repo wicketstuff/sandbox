@@ -1,60 +1,51 @@
 /*
- * $Id$ $Revision$ $Date$
- * 
- * ==================================================================== Licensed
- * under the Apache License, Version 2.0 (the "License"); you may not use this
- * file except in compliance with the License. You may obtain a copy of the
- * License at
- * 
- * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ * $Id$
+ * $Revision$
+ * $Date$
+ *
+ * ====================================================================
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package wicket.examples.cdapp;
 
 import java.sql.Blob;
 
-import wicket.MarkupContainer;
-import wicket.Page;
-import wicket.PageMap;
-import wicket.examples.cdapp.model.CD;
-import wicket.markup.html.WebResource;
-import wicket.markup.html.image.resource.BlobImageResource;
-import wicket.markup.html.link.Link;
-import wicket.markup.html.link.PopupSettings;
-import wicket.model.IModel;
-import wicket.util.resource.IResourceStream;
+import org.apache.wicket.Page;
+import org.apache.wicket.PageMap;
+import org.apache.wicket.examples.cdapp.model.CD;
+import org.apache.wicket.markup.html.WebResource;
+import org.apache.wicket.markup.html.image.resource.BlobImageResource;
+import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.markup.html.link.PopupSettings;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.util.resource.IResourceStream;
 
 /**
  * Link that displays the image of a cd in a popup window that resizes to fit.
- * 
+ *
  * @author Eelco Hillenius
  */
-public final class ImagePopupLink extends Link<CD>
+public final class ImagePopupLink extends Link
 {
 	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
-	/**
 	 * Construct.
-	 * 
-	 * @param parent
-	 *            The parent
-	 * @param id
-	 *            The component id
+	 * @param name
 	 * @param cdModel
-	 *            The model
 	 */
-	public ImagePopupLink(MarkupContainer parent, String id, IModel<CD> cdModel)
+	public ImagePopupLink(String name, IModel cdModel)
 	{
-		super(parent, id, cdModel);
-
+		super(name, cdModel);
+		
 		// custom popup settings that uses our automatic resize script
 		PopupSettings popupSettings = new PopupSettings(PageMap.forName("imagepopup"));
 		popupSettings.setHeight(20);
@@ -65,30 +56,17 @@ public final class ImagePopupLink extends Link<CD>
 	/**
 	 * @see wicket.markup.html.link.Link#onClick()
 	 */
-	@Override
 	public void onClick()
 	{
 		WebResource imgResource = new WebResource()
 		{
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = 1L;
-
-			@Override
 			public IResourceStream getResourceStream()
 			{
 				BlobImageResource img = new BlobImageResource()
 				{
-					/**
-					 * 
-					 */
-					private static final long serialVersionUID = 1L;
-
-					@Override
 					protected Blob getBlob()
 					{
-						CD cd = getModelObject();
+						CD cd = (CD)getModelObject();
 						return cd.getImage();
 					}
 				};
@@ -101,12 +79,11 @@ public final class ImagePopupLink extends Link<CD>
 	/**
 	 * @see wicket.markup.html.link.Link#linksTo(wicket.Page)
 	 */
-	@Override
 	protected boolean linksTo(Page page)
 	{
 		// this is kind of ugly, but as isEnabled is marked final, this
 		// is our best option; otherwise we would have to override render
-		final CD cd = getModelObject();
+		final CD cd = (CD)getModelObject();
 		return cd.getImage() == null;
 	}
 }

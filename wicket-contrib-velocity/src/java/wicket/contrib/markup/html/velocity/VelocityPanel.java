@@ -1,19 +1,18 @@
 /*
- * $Id$ $Revision:
- * 1.1 $ $Date$
- * 
- * ==============================================================================
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
- * 
- * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package wicket.contrib.markup.html.velocity;
 
@@ -29,38 +28,37 @@ import org.apache.velocity.exception.MethodInvocationException;
 import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
 
-import wicket.MarkupContainer;
-import wicket.WicketRuntimeException;
-import wicket.markup.ComponentTag;
-import wicket.markup.MarkupStream;
-import wicket.markup.html.WebComponent;
-import wicket.model.Model;
-import wicket.util.resource.IStringResourceStream;
-import wicket.util.string.Strings;
+import org.apache.wicket.WicketRuntimeException;
+import org.apache.wicket.markup.ComponentTag;
+import org.apache.wicket.markup.Markup;
+import org.apache.wicket.markup.MarkupStream;
+import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.util.resource.IStringResourceStream;
+import org.apache.wicket.util.resource.ResourceStreamNotFoundException;
+import org.apache.wicket.util.string.Strings;
 
 /**
- * Panel that displays the result of rendering a Velocity template. The template
- * itself can be any IStringResourceStream implementation, of which there are a
- * number of convenient implementations in wicket.util. The model can be any
- * normal Wicket MapModel.
- * 
- * @param <K>
- *            The key type
- * @param <V>
- *            The value type
- * 
+ * Panel that displays the result of rendering a <a href="http://jakarta.apache.org/velocity">Velocity</a> template.
+ * The template itself can be any
+ * <code><a href="http://wicket.sourceforge.net/apidocs/wicket/util/resource/IStringResourceStream.html">IStringResourceStream</a></code>
+ * implementation, of which there are a number of convenient implementations in the wicket.util package. The model can
+ * be any normal <code><a href="http://java.sun.com/j2se/1.4.2/docs/api/java/util/Map.html">Map</a></code>,
+ * which will be used to create the
+ * <code><a href="http://jakarta.apache.org/velocity/docs/api/org/apache/velocity/VelocityContext.html">VelocityContext</a></code>.
+ *
+ * <p><b>Note:</b> Be sure to properly initialize the Velocity engine before using <code>VelocityPanel</code>.</p>
+ *
  * @author Eelco Hillenius
  * @author Jonathan Locke
  */
-public final class VelocityPanel<K, V> extends WebComponent<Map<K, V>>
+public final class VelocityPanel extends Panel
 {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
 	/** Whether to escape HTML characters. The default value is false. */
 	private boolean escapeHtml = false;
+
+	/** Whether to parse the resulting Wicket markup */
+	private boolean parseGeneratedMarkup = false;
 
 	/** Velocity template resource */
 	private final IStringResourceStream templateResource;
@@ -83,8 +81,6 @@ public final class VelocityPanel<K, V> extends WebComponent<Map<K, V>>
 	/**
 	 * Construct.
 	 * 
-	 * @param parent
-	 *            The parent
 	 * @param name
 	 *            See Component
 	 * @param templateResource
@@ -92,10 +88,10 @@ public final class VelocityPanel<K, V> extends WebComponent<Map<K, V>>
 	 * @param model
 	 *            MapModel with variables that can be substituted by Velocity
 	 */
-	public VelocityPanel(final MarkupContainer parent, final String name,
-			final IStringResourceStream templateResource, final Model<Map<K, V>> model)
+	public VelocityPanel(final String name, final IStringResourceStream templateResource,
+			final Model model)
 	{
-		super(parent, name, model);
+		super(name, model);
 		this.templateResource = templateResource;
 	}
 
@@ -155,7 +151,6 @@ public final class VelocityPanel<K, V> extends WebComponent<Map<K, V>>
 	 * @see wicket.Component#onComponentTagBody(wicket.markup.MarkupStream,
 	 *      wicket.markup.ComponentTag)
 	 */
-	@Override
 	protected void onComponentTagBody(final MarkupStream markupStream,
 			final ComponentTag openTag)
 	{
@@ -163,7 +158,7 @@ public final class VelocityPanel<K, V> extends WebComponent<Map<K, V>>
 		if (templateReader != null)
 		{
 			// Get model as a map
-			final Map<K, V> map = getModelObject();
+			final Map map = (Map)getModelObject();
 
 			// create a Velocity context object using the model if set
 			final VelocityContext ctx = new VelocityContext(map);
@@ -189,9 +184,20 @@ public final class VelocityPanel<K, V> extends WebComponent<Map<K, V>>
 					result = Strings.escapeMarkup(result).toString();
 				}
 
-				// now replace the body of the tag with the velocity merge
-				// result
-				replaceComponentTagBody(markupStream, openTag, result);
+				if (! getParseGeneratedMarkup()) {
+					// now replace the body of the tag with the velocity merge
+					// result
+					replaceComponentTagBody(markupStream, openTag, result);
+				} else {
+					// now parse the velocity merge result
+					Markup markup;
+					try {
+						markup = getApplication().getMarkupSettings().getMarkupParserFactory().newMarkupParser().parse(result);
+					} catch (ResourceStreamNotFoundException e) {
+						throw new RuntimeException("Could not parse resulting markup from '" + templateResource + "'", e);
+					}
+					renderAll(new MarkupStream(markup));					
+				}
 			}
 			catch (ParseErrorException e)
 			{
@@ -255,5 +261,28 @@ public final class VelocityPanel<K, V> extends WebComponent<Map<K, V>>
 			// rethrow the exception
 			throw new WicketRuntimeException(exception);
 		}
+	}
+
+	/**
+	 * Gets whether to parse the resulting Wicket markup
+	 *
+	 * @return whether to parse the resulting Wicket markup
+	 */
+	public boolean getParseGeneratedMarkup()
+	{
+		return parseGeneratedMarkup;
+	}
+
+	/**
+	 * Sets whether to parse the resulting Wicket markup. The default value is false.
+	 * 
+	 * @param parseGeneratedMarkup
+	 *            whether to parse the resulting Wicket markup
+	 * @return This
+	 */
+	public final VelocityPanel setParseGeneratedMarkup(boolean parseGeneratedMarkup)
+	{
+		this.parseGeneratedMarkup = parseGeneratedMarkup;
+		return this;
 	}
 }

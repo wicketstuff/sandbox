@@ -1,28 +1,36 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package wicket.contrib.util.resource;
 
-import java.util.Map;
-
-import wicket.markup.html.IHeaderResponse;
-import wicket.model.IModel;
-import wicket.util.lang.Packages;
+import org.apache.wicket.markup.html.IHeaderResponse;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.util.lang.Packages;
 
 /**
  * A derivation of VelocityContributor that uses
  * {@link wicket.markup.html.IHeaderResponse#renderJavascript(CharSequence, String)}
- * 
- * @param <K>
- *            the key type
- * @param <V>
- *            the value type
- * 
  */
-public class VelocityJavascriptContributor<K, V> extends VelocityContributor<K, V>
+public class VelocityJavascriptContributor extends VelocityContributor
 {
 
 	private String id;
 
 	/**
-	 * Construct.
+	 * Ctor
 	 * 
 	 * Use this constructor if you have configured Velocity to use a
 	 * ClasspathResourceLoader. The templatePath will then be relative to the
@@ -33,15 +41,15 @@ public class VelocityJavascriptContributor<K, V> extends VelocityContributor<K, 
 	 * @param model
 	 * @param id
 	 */
-	public VelocityJavascriptContributor(Class clazz, String templatePath,
-			IModel<Map<K, V>> model, String id)
+	public VelocityJavascriptContributor(Class clazz, String templatePath, IModel model,
+			String id)
 	{
 		super(Packages.absolutePath(clazz, templatePath), model);
 		this.id = id;
 	}
 
 	/**
-	 * Construct.
+	 * Ctor
 	 * 
 	 * Use this constructor when Velocity is configured with the
 	 * FileResourceLoader. templatePath with then be relative to the loader path
@@ -51,17 +59,15 @@ public class VelocityJavascriptContributor<K, V> extends VelocityContributor<K, 
 	 * @param model
 	 * @param id
 	 */
-	public VelocityJavascriptContributor(String templatePath, IModel<Map<K, V>> model,
-			String id)
+	public VelocityJavascriptContributor(String templatePath, IModel model, String id)
 	{
 		super(templatePath, model);
 		this.id = id;
 	}
 
 	/**
-	 * @see wicket.contrib.util.resource.VelocityContributor#renderHead(wicket.markup.html.IHeaderResponse)
+	 * @see wicket.markup.html.IHeaderContributor#renderHead(wicket.markup.html.IHeaderResponse)
 	 */
-	@Override
 	public void renderHead(IHeaderResponse response)
 	{
 		String s = evaluate();

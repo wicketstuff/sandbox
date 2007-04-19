@@ -1,7 +1,7 @@
 /*
- * $Id$
- * $Revision$
- * $Date$
+ * $Id: DeleteContactPage.java 634 2006-03-26 18:28:10 -0800 (Sun, 26 Mar 2006) ivaynberg $
+ * $Revision: 634 $
+ * $Date: 2006-03-26 18:28:10 -0800 (Sun, 26 Mar 2006) $
  * 
  * ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -18,15 +18,15 @@
  */
 package wicket.contrib.phonebook.web.page;
 
-import wicket.Page;
+import org.apache.wicket.Page;
 import wicket.contrib.phonebook.Contact;
 import wicket.contrib.phonebook.ContactDao;
-import wicket.markup.html.basic.Label;
-import wicket.markup.html.form.Button;
-import wicket.markup.html.form.Form;
-import wicket.spring.injection.SpringBean;
-import wicket.util.collections.MicroMap;
-import wicket.util.string.interpolator.MapVariableInterpolator;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.util.collections.MicroMap;
+import org.apache.wicket.util.string.interpolator.MapVariableInterpolator;
 
 /**
  * Delete the Contact.
@@ -37,8 +37,9 @@ import wicket.util.string.interpolator.MapVariableInterpolator;
 public class DeleteContactPage extends BasePage {
 	private Page backPage;
 
-	@SpringBean private ContactDao dao;
-	
+	@SpringBean(name = "contactDao")
+	private ContactDao contactDao;
+
 	/**
 	 * Constructor. Display the summary (names) before asking for confirmation.
 	 * Note that if you don't need the page to be bookmarkable, you can use
@@ -46,58 +47,63 @@ public class DeleteContactPage extends BasePage {
 	 * 
 	 * @param backPage
 	 *            The page that the user was on before coming here
-	 * @param contactId
-	 *            The id of the Contact to delete.
+	 * @param contact
+	 *            Model that containst he contact to be deleted
 	 */
-	public DeleteContactPage(Page backPage, final long contactId) {
+	public DeleteContactPage(Page backPage, IModel contact) {
 		this.backPage = backPage;
+		setModel(contact);
 
-		Contact contact = dao.load(contactId);
-
-		new Label(this, "name", contact.getFirstname() + " "
-				+ contact.getLastname());
+		add(new Label("name", getContact().getFullName()));
 
 		/*
-		 * Use a form to hold the buttons, but set the default form processing
-		 * off as there's no point it trying to do anything, as all we're
-		 * interested in are the button clicks.
+		 * notice in markup this link is attached to <input type='button'/> tag,
+		 * the link is smart enough to know to generate an onclick instead of
+		 * href
 		 */
-		Form form = new Form(this, "confirmForm");
+		add(new Link("confirm") {
 
-		new Button(form, "confirm") {
-			/**
-			 * If clicked, delete the contact and return to the calling page.
-			 */
-			public void onSubmit() {
-				Contact deleted = dao.load(contactId);
+			@Override
+			public void onClick() {
+				final Contact deleted = getContact();
 
-				dao.delete(contactId);
+				contactDao.delete(deleted.getId());
 
 				String msg = MapVariableInterpolator.interpolate(getLocalizer()
-						.getString("status.deleted", this),
-						new MicroMap<String, String>("name", deleted
-								.getFullName()));
+						.getString("status.deleted", this), new MicroMap(
+						"name", deleted.getFullName()));
 
 				getSession().info(msg);
 
 				setResponsePage(DeleteContactPage.this.backPage);
 			}
-		}.setDefaultFormProcessing(false);
 
-		new Button(form, "cancel") {
-			public void onSubmit() {
-				Contact deleted = dao.load(contactId);
+		});
 
+		add(new Link("cancel") {
+
+			@Override
+			public void onClick() {
 				String msg = MapVariableInterpolator.interpolate(getLocalizer()
-						.getString("status.cancelled", this),
-						new MicroMap<String, String>("name", deleted
-								.getFullName()));
+						.getString("status.cancelled", this), new MicroMap(
+						"name", getContact().getFullName()));
 
 				getSession().info(msg);
 
 				setResponsePage(DeleteContactPage.this.backPage);
 			}
-		}.setDefaultFormProcessing(false);
+
+		});
 
 	}
+
+	/**
+	 * Type-safe way to retrieve the contact from the page's model
+	 * 
+	 * @return
+	 */
+	private Contact getContact() {
+		return (Contact) getModelObject();
+	}
+
 }

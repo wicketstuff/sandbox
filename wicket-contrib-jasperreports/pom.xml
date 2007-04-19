@@ -1,22 +1,21 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>wicket-stuff</groupId>
+	<groupId>org.wicketstuff</groupId>
 	<artifactId>wicket-contrib-jasperreports</artifactId>
 	<packaging>jar</packaging>
-	<version>2.0-SNAPSHOT</version>
+	<version>1.3-SNAPSHOT</version>
 	<name>Wicket Contrib JasperReports</name>
 	<description>JasperReports integration components and resources for Wicket.</description>
 	<url>http://wicket-stuff.sourceforge.net/wicket-contrib-jasperreports</url>
-	<inceptionYear>2006</inceptionYear>
+	<inceptionYear>2005</inceptionYear>
 
-    <organization>
-        <name>Wicket Stuff developers</name>
-        <url>http://wicket-stuff.sourceforge.net</url>
-    </organization>
+	<organization>
+		<name>Wicket developers</name>
+		<url>http://wicket.sourceforge.net</url>
+	</organization>
 
-
-    <licenses>
+	<licenses>
 		<license>
 			<name>The Apache Software License, Version 2.0</name>
 			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
@@ -30,9 +29,9 @@
 
 
 	<scm>
-        <connection>scm:svn:${maven.scm.anonymous}@https://svn.sourceforge.net/svnroot/wicket-stuff/trunk/wicket-contrib-jasperreports</connection>
-        <developerConnection>scm:svn:${maven.scm.user}@https://svn.sourceforge.net/svnroot/wicket-stuff/trunk/wicket-contrib-jasperreports</developerConnection>
-        <url>http://cvs.sourceforge.net/viewcvs.py/wicket-stuff/wicket-contrib-jasperreports</url>
+		<connection>scm:cvs:pserver:${maven.scm.anonymous}@cvs.sourceforge.net:/cvsroot/wicket-stuff:wicket-contrib-jasperreports</connection>
+		<developerConnection>scm:cvs:ext:${maven.scm.user}@cvs.sourceforge.net:/cvsroot/wicket-stuff:wicket-contrib-jasperreports</developerConnection>
+		<url>http://cvs.sourceforge.net/viewcvs.py/wicket-stuff/wicket-contrib-jasperreports</url>
 	</scm>
 
 	<mailingLists>
@@ -74,25 +73,30 @@
 			<id>Eelco</id>
 			<email>eelco12 at users.sf.net</email>
 		</developer>
-		<developer>
-			<name>Justin Lee</name>
-			<id>cheeser</id>
-			<email>jlee at antwerkz.com</email>
-		</developer>
 	</developers>
 	<dependencies>
 		<dependency>
-			<groupId>wicket</groupId>
+			<groupId>org.apache.wicket</groupId>
 			<artifactId>wicket</artifactId>
-			<version>2.0-SNAPSHOT</version>
+			<version>1.3.0-incubating-SNAPSHOT</version>		
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>3.8.1</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
+			<version>1.7.0</version>
 			<type>jar</type>
 		</dependency>
 		<dependency>
-			<groupId>org.mortbay.jetty</groupId>
-			<artifactId>jetty-util</artifactId>
-			<version>6.0.1</version>
+			<groupId>commons-collections</groupId>
+			<artifactId>commons-collections</artifactId>
+			<version>3.1</version>
 			<type>jar</type>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>commons-digester</groupId>
@@ -103,33 +107,16 @@
 		<dependency>
 			<groupId>com.lowagie</groupId>
 			<artifactId>itext</artifactId>
-			<version>1.4</version>
+			<version>1.3.1</version>
 			<type>jar</type>
 		</dependency>
 		<dependency>
 			<groupId>jasperreports</groupId>
 			<artifactId>jasperreports</artifactId>
-			<version>1.2.7</version>
+			<version>1.2.0</version>
 			<type>jar</type>
 		</dependency>
-		<dependency>
-			<groupId>poi</groupId>
-            <artifactId>poi-2.0-final</artifactId>
-            <version>20040126</version>
-            <type>jar</type>
-		</dependency>
-		<dependency>
-            <groupId>net.sourceforge.jexcelapi</groupId>
-            <artifactId>jxl</artifactId>
-            <version>2.6</version>
-            <type>jar</type>
-		</dependency>
-        <dependency>
-            <groupId>com.keypoint</groupId>
-            <artifactId>png-encoder</artifactId>
-            <version>1.5</version>
-        </dependency>
-    </dependencies>
+	</dependencies>
 
 	<build>
 		<sourceDirectory>src/java</sourceDirectory>
@@ -151,24 +138,34 @@
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
+					<descriptor>src/assembly/bin.xml</descriptor>
+					<finalName>${artifactId}-${version}</finalName>
+					<outputDirectory>target/distributions</outputDirectory>
+					<workDirectory>target/assembly/work</workDirectory>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<configuration>
 					<minmemory>128m</minmemory>
 					<maxmemory>256m</maxmemory>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<configuration>
+					<templateDirectory>file:src/site/template/</templateDirectory>
+					<template>wicket-site.vm</template>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 	<reporting>
-		<plugins> 
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>1.5</source>
-					<target>1.5</target>
-				</configuration>
-			</plugin>
+		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-project-info-reports-plugin</artifactId>
@@ -191,20 +188,4 @@
 			</plugin>
 		</plugins>
 	</reporting>
-	<repositories>
-		<repository>
-			<id>mergere.com</id>
-			<url>http://repo.mergere.com/maven2</url>
-		</repository>
-		<repository>
-			<id>Maven Snapshots</id>
-			<url>http://repository.codehaus.org/</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-		</repository>
-	</repositories>
 </project>

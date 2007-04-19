@@ -18,14 +18,16 @@
 package wicket.contrib.tinymce;
 
 import junit.framework.TestCase;
-import wicket.MarkupContainer;
+
+import org.apache.wicket.markup.html.WebComponent;
+import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.markup.html.resources.JavaScriptReference;
+import org.apache.wicket.util.tester.TestPanelSource;
+import org.apache.wicket.util.tester.WicketTester;
+
 import wicket.contrib.tinymce.settings.NoneditablePlugin;
 import wicket.contrib.tinymce.settings.Plugin;
 import wicket.contrib.tinymce.settings.TinyMCESettings;
-import wicket.markup.html.WebComponent;
-import wicket.markup.html.resources.JavaScriptReference;
-import wicket.util.tester.TestPanelSource;
-import wicket.util.tester.WicketTester;
 
 /**
  * Tests of the TinyMCE panel.
@@ -38,7 +40,6 @@ public class TinyMCEPanelTest extends TestCase
 
 	/**
 	 * For each test case we provide a new WicketTester.
-	 * 
 	 * @see junit.framework.TestCase#setUp()
 	 */
 	public void setUp()
@@ -55,11 +56,11 @@ public class TinyMCEPanelTest extends TestCase
 		{
 			private static final long serialVersionUID = 1L;
 
-			public void getTestPanel(MarkupContainer parent, String panelId)
+			public Panel getTestPanel(String panelId)
 			{
 				TinyMCESettings settings = new TinyMCESettings();
 
-				new TinyMCEPanel(parent, panelId, settings);
+				return new TinyMCEPanel("panel", settings);
 			}
 		});
 
@@ -78,12 +79,12 @@ public class TinyMCEPanelTest extends TestCase
 		{
 			private static final long serialVersionUID = 1L;
 
-			public void getTestPanel(MarkupContainer parent, String panelId)
+			public Panel getTestPanel(String panelId)
 			{
 				TinyMCESettings settings = new TinyMCESettings(TinyMCESettings.Theme.advanced);
 				settings.register(new NoneditablePlugin());
 
-				new TinyMCEPanel(parent, panelId, settings);
+				return new TinyMCEPanel("panel", settings);
 			}
 		});
 
@@ -111,12 +112,12 @@ public class TinyMCEPanelTest extends TestCase
 		{
 			private static final long serialVersionUID = 1L;
 
-			public void getTestPanel(MarkupContainer parent, String panelId)
+			public Panel getTestPanel(String panelId)
 			{
 				TinyMCESettings settings = new TinyMCESettings(TinyMCESettings.Theme.advanced);
 				settings.register(mockPlugin);
 
-				new TinyMCEPanel(parent, panelId, settings);
+				return new TinyMCEPanel("panel", settings);
 			}
 		});
 
@@ -137,7 +138,7 @@ public class TinyMCEPanelTest extends TestCase
 		final Plugin mockPlugin = new Plugin("mockplugin")
 		{
 			private static final long serialVersionUID = 1L;
-
+			
 			protected void definePluginExtensions(StringBuffer buffer)
 			{
 				buffer.append("alert('Hello Mock World');");
@@ -149,19 +150,18 @@ public class TinyMCEPanelTest extends TestCase
 		{
 			private static final long serialVersionUID = 1L;
 
-			public void getTestPanel(MarkupContainer parent, String panelId)
+			public Panel getTestPanel(String panelId)
 			{
 				TinyMCESettings settings = new TinyMCESettings();
 				settings.register(mockPlugin);
 
-				new TinyMCEPanel(parent, panelId, settings);
+				return new TinyMCEPanel("panel", settings);
 			}
 		});
 
 		assertCommonComponents();
-
-		application
-				.assertContains("tinyMCE.init\\(\\{[^\\}]+\\}\\);\nalert\\('Hello Mock World'\\);");
+		
+		application.assertContains("tinyMCE.init\\(\\{[^\\}]+\\}\\);\nalert\\('Hello Mock World'\\);");
 	}
 
 	private void assertCommonComponents()

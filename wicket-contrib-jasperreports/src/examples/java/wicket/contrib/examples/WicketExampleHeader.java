@@ -1,7 +1,6 @@
 /*
- * $Id: WicketExampleHeader.java 627 2006-03-20 07:12:13 +0000 (Mon, 20 Mar
- * 2006) eelco12 $ $Revision$ $Date: 2006-03-20 07:12:13 +0000 (Mon, 20
- * Mar 2006) $
+ * $Id$
+ * $Revision$ $Date$
  * 
  * ==================================================================== Licensed
  * under the Apache License, Version 2.0 (the "License"); you may not use this
@@ -18,25 +17,27 @@
  */
 package wicket.contrib.examples;
 
-import wicket.MarkupContainer;
-import wicket.markup.html.basic.Label;
-import wicket.markup.html.panel.Panel;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.panel.Panel;
 
 /**
  * Navigation panel for the examples project.
- *
+ * 
  * @author Eelco Hillenius
  */
-public final class WicketExampleHeader extends Panel {
-    /**
-     * Construct.
-     *
-     * @param parent The parent
-     * @param id name of the component
-     * @param exampleTitle title of the example
-     */
-    public WicketExampleHeader(MarkupContainer parent, String id, String exampleTitle) {
-        super(parent, id);
-        new Label(this, "exampleTitle", exampleTitle);
-    }
+public final class WicketExampleHeader extends Panel
+{
+	/**
+	 * Construct.
+	 * 
+	 * @param id
+	 *            name of the component
+	 * @param exampleTitle
+	 *            title of the example
+	 */
+	public WicketExampleHeader(String id, String exampleTitle)
+	{
+		super(id);
+		add(new Label("exampleTitle", exampleTitle));
+	}
 }

@@ -17,18 +17,12 @@
  */
 package wicket.contrib.yui.examples;
 
-import wicket.protocol.http.WebApplication;
-import wicket.settings.ISecuritySettings;
-import wicket.util.crypt.ClassCryptFactory;
-import wicket.util.crypt.NoCrypt;
+import org.apache.wicket.protocol.http.WebApplication;
 
 /**
- * Wicket Application class for hello world example.
- * 
- * @author Jonathan Locke
+ * Wicket Application class.
  */
 public abstract class WicketExampleApplication extends WebApplication {
-
 	/**
 	 * Constructor.
 	 */
@@ -38,18 +32,6 @@ public abstract class WicketExampleApplication extends WebApplication {
 	/**
 	 * @see wicket.protocol.http.WebApplication#init()
 	 */
-	@Override
 	protected void init() {
-		// WARNING: DO NOT do this on a real world application unless
-		// you really want your app's passwords all passed around and
-		// stored in unencrypted browser cookies (BAD IDEA!)!!!
-
-		// The NoCrypt class is being used here because not everyone
-		// has the java security classes required by Crypt installed
-		// and we want them to be able to run the examples out of the
-		// box.
-		getSecuritySettings().setCryptFactory(
-				new ClassCryptFactory(NoCrypt.class,
-						ISecuritySettings.DEFAULT_ENCRYPTION_KEY));
 	}
 }

@@ -3,16 +3,16 @@ package wicket.examples.cdapp.page;
 import java.util.Date;
 import java.util.List;
 
-import wicket.IFeedback;
-import wicket.examples.cdapp.model.Album;
-import wicket.markup.html.form.Button;
-import wicket.markup.html.form.DropDownChoice;
-import wicket.markup.html.form.Form;
-import wicket.markup.html.form.RequiredTextField;
-import wicket.markup.html.form.validation.RequiredValidator;
-import wicket.markup.html.panel.FeedbackPanel;
-import wicket.model.CompoundPropertyModel;
-import wicket.model.IModel;
+import org.apache.wicket.IFeedback;
+import org.apache.wicket.examples.cdapp.model.Album;
+import org.apache.wicket.markup.html.form.Button;
+import org.apache.wicket.markup.html.form.DropDownChoice;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.RequiredTextField;
+import org.apache.wicket.markup.html.form.validation.RequiredValidator;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
+import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
 
 public class NewAlbum extends CdPage {
 	public NewAlbum() {

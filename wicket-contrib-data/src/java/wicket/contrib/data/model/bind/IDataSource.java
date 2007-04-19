@@ -2,42 +2,39 @@ package wicket.contrib.data.model.bind;
 
 import java.util.List;
 
-import wicket.model.IModel;
+import org.apache.wicket.model.IModel;
 
 /**
  * Provides all the basic functionality needed for interacting with a datastore.
  * 
  * @author Phil Kulak
  */
-public interface IDataSource<T>
+public interface IDataSource
 {
 	/**
 	 * Saves or updates the persistent state of the given object.
 	 */
-	public void merge(T entity);
-
+	public void merge(Object entity);
+	
 	/**
 	 * Deletes the object from the database.
 	 * 
-	 * @param entity
-	 *            the object to delete
+	 * @param entity the object to delete
 	 */
-	public void delete(T entity);
-
+	public void delete(Object entity);
+	
 	/**
-	 * @param c
-	 *            the class of the object to search for
+	 * @param c the class of the object to search for
 	 * @return all persistent instances of the class
 	 */
-	public List<T> findAll(Class<T> c);
-
+	public List findAll(Class c);
+	
 	/**
 	 * Wraps the given object in an IModel. The model returned MUST properly
 	 * override equals().
 	 * 
-	 * @param entity
-	 *            the object to wrap
+	 * @param entity the object to wrap
 	 * @return the object wraped in a detachable model
 	 */
-	public IModel<T> wrap(T entity);
+	public IModel wrap(Object entity);
 }

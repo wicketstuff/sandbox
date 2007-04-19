@@ -19,33 +19,39 @@ package wicket.javaee;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
-import wicket.extensions.proxy.IProxyTargetLocator;
+import org.apache.wicket.proxy.IProxyTargetLocator;
+import org.apache.wicket.util.lang.Objects;
+
 import wicket.javaee.naming.IJndiNamingStrategy;
-import wicket.util.lang.Objects;
 
 /**
  * Implementation of {@link IProxyTargetLocator} to locate ejbs using Java EE 5
- * resource injection. 
- * To use this technique in a Wicket Page, annotate a instance variable with @EJB, e.g.<br/>
- * <p>
- * private @EJB(name="ejb/myejb") org.acme.MyEjb myejb
- * <p>
- * If the 'name' attribute is specified, the {@link JavaEEBeanLocator} will search in the JNDI
- * registry for an EJB named 'java:comp/env/&lt;name&gt;' (in the example: 'java:comp/env/ejb/myejb')
- * <p>
- * If the 'name' attribute is not specified the {@link JavaEEBeanLocator} will search in the JNDI
- * registry for an EJB named 'java:comp/env/&lt;complete-class-name-of-the-ejb&gt;' (in the example: 
- * 'java:comp/env/com.acme.MyEjb) 
+ * resource injection. To use this technique in a Wicket Page, annotate a
+ * instance variable with
+ * 
+ * @EJB, e.g.<br/>
+ *       <p>
+ *       private
+ * @EJB(name="ejb/myejb") org.acme.MyEjb myejb
+ *                        <p>
+ *                        If the 'name' attribute is specified, the
+ *                        {@link JavaEEBeanLocator} will search in the JNDI
+ *                        registry for an EJB named 'java:comp/env/&lt;name&gt;'
+ *                        (in the example: 'java:comp/env/ejb/myejb')
+ *                        <p>
+ *                        If the 'name' attribute is not specified the
+ *                        {@link JavaEEBeanLocator} will search in the JNDI
+ *                        registry for an EJB named
+ *                        'java:comp/env/&lt;complete-class-name-of-the-ejb&gt;'
+ *                        (in the example: 'java:comp/env/com.acme.MyEjb)
  * 
  * @author Filippo Diotalevi
  */
-public class JavaEEBeanLocator implements IProxyTargetLocator
-{
+public class JavaEEBeanLocator implements IProxyTargetLocator {
 
-	private Class beanType;
 	private String beanName;
+	private Class beanType;
 	private IJndiNamingStrategy namingStrategy;
-
 
 	/**
 	 * Constructor
@@ -55,11 +61,11 @@ public class JavaEEBeanLocator implements IProxyTargetLocator
 	 * @param beanType
 	 *            bean class
 	 */
-	public JavaEEBeanLocator(String beanId, Class beanType, IJndiNamingStrategy namingStrategy)
-	{
-		if (beanType == null)
-		{
-			throw new IllegalArgumentException("[beanType] argument cannot be null");
+	public JavaEEBeanLocator(String beanId, Class beanType,
+			IJndiNamingStrategy namingStrategy) {
+		if (beanType == null) {
+			throw new IllegalArgumentException(
+					"[beanType] argument cannot be null");
 		}
 		this.beanType = beanType;
 		this.beanName = beanId;
@@ -67,71 +73,16 @@ public class JavaEEBeanLocator implements IProxyTargetLocator
 	}
 
 	/**
-	 * @see wicket.extensions.proxy.IProxyTargetLocator#locateProxyTarget()
-	 */
-	public Object locateProxyTarget()
-	{
-
-		if (beanName != null && beanName.length() > 0)
-		{
-			return lookupEjb(beanName, beanType);
-		}
-		else
-		{
-			return lookupEjb(null, beanType);
-		}
-	}
-
-
-
-	private Object lookupEjb(String name, Class type)
-	{
-		String lookupName = calculateName(name, type);
-		InitialContext ic;
-		try {
-			ic = new InitialContext();
-			return ic.lookup(lookupName);
-		} catch (NamingException e) {
-			String errorMessage = "Could not locate ejb of class [["+ type + "]] ";
-			if (name != null && name.length() > 0)
-			{
-				errorMessage += "and name [[" + name + "]] ";
-			}
-			throw new RuntimeException(errorMessage, e);
-		}
-	}
-
-	private String calculateName(String name, Class type) {
-		return this.namingStrategy.calculateName(name, type);
-	}
-
-	/**
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
-	public boolean equals(Object obj)
-	{
-		if (obj instanceof JavaEEBeanLocator)
-		{
+	public boolean equals(Object obj) {
+		if (obj instanceof JavaEEBeanLocator) {
 			JavaEEBeanLocator other = (JavaEEBeanLocator) obj;
 			return beanType.equals(other.beanType)
 					&& Objects.equal(beanName, other.beanName);
 		}
 		return false;
-	}
-
-	/**
-	 * @see java.lang.Object#hashCode()
-	 */
-	@Override
-	public int hashCode()
-	{
-		int hashcode = beanType.hashCode();
-		if (beanName != null)
-		{
-			hashcode = hashcode + (127 * beanName.hashCode());
-		}
-		return hashcode;
 	}
 
 	public String getBeanName() {
@@ -140,5 +91,49 @@ public class JavaEEBeanLocator implements IProxyTargetLocator
 
 	public Class getBeanType() {
 		return beanType;
+	}
+
+	/**
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		int hashcode = beanType.hashCode();
+		if (beanName != null) {
+			hashcode = hashcode + (127 * beanName.hashCode());
+		}
+		return hashcode;
+	}
+
+	/**
+	 * @see wicket.extensions.proxy.IProxyTargetLocator#locateProxyTarget()
+	 */
+	public Object locateProxyTarget() {
+
+		if (beanName != null && beanName.length() > 0) {
+			return lookupEjb(beanName, beanType);
+		} else {
+			return lookupEjb(null, beanType);
+		}
+	}
+
+	private String calculateName(String name, Class type) {
+		return this.namingStrategy.calculateName(name, type);
+	}
+
+	private Object lookupEjb(String name, Class type) {
+		String lookupName = calculateName(name, type);
+		InitialContext ic;
+		try {
+			ic = new InitialContext();
+			return ic.lookup(lookupName);
+		} catch (NamingException e) {
+			String errorMessage = "Could not locate ejb of class [[" + type
+					+ "]] ";
+			if (name != null && name.length() > 0) {
+				errorMessage += "and name [[" + name + "]] ";
+			}
+			throw new RuntimeException(errorMessage, e);
+		}
 	}
 }

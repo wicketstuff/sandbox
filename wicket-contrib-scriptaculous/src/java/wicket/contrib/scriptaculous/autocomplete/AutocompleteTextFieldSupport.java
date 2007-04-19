@@ -1,78 +1,90 @@
 package wicket.contrib.scriptaculous.autocomplete;
 
-import java.util.HashMap;
-
-import wicket.AttributeModifier;
-import wicket.MarkupContainer;
-import wicket.ResourceReference;
-import wicket.behavior.HeaderContributor;
-import wicket.contrib.scriptaculous.JavascriptBuilder;
-import wicket.contrib.scriptaculous.ScriptaculousAjaxBehavior;
-import wicket.markup.MarkupStream;
-import wicket.markup.html.IHeaderResponse;
-import wicket.markup.html.form.TextField;
-import wicket.model.Model;
+import org.apache.wicket.ResourceReference;
+import wicket.contrib.scriptaculous.ScriptaculousAjaxHandler;
+import org.apache.wicket.markup.ComponentTag;
+import org.apache.wicket.markup.MarkupStream;
+import org.apache.wicket.markup.html.PackageResourceReference;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.internal.HtmlHeaderContainer;
 
 /**
  * support class for all autocomplete text fields. handles binding of needed css
  * and javascript.
- *
+ * 
  * @author <a href="mailto:wireframe6464@users.sourceforge.net">Ryan Sonnek</a>
  */
-public abstract class AutocompleteTextFieldSupport<T> extends TextField<T>
-{
-	private static final long serialVersionUID = 1L;
+public class AutocompleteTextFieldSupport extends TextField {
 
-	/**
-	 * Construct.
-	 *
-	 * @param id
-	 */
-	public AutocompleteTextFieldSupport(MarkupContainer parent, String id)
-	{
-		super(parent, id);
-		add(ScriptaculousAjaxBehavior.newJavascriptBindingBehavior());
-		add(new AttributeModifier("autocomplete", new Model("off")));
-		add(HeaderContributor.forCss(getCss(), "screen"));
+        private static final long serialVersionUID = 1L;
 
-		setOutputMarkupId(true);
-	}
+        /**
+         * Construct.
+         * 
+         * @param id
+         */
+        public AutocompleteTextFieldSupport(String id) {
+                super(id);
+                add(ScriptaculousAjaxHandler.newJavascriptBindingHandler());
+        }
 
-	protected abstract String getThirdAutocompleteArgument();
+        /**
+         * @see wicket.Component#onComponentTag(wicket.markup.ComponentTag)
+         */
+        protected void onComponentTag(ComponentTag tag) {
+                super.onComponentTag(tag);
+                tag.put("id", getId());
+                tag.put("autocomplete", "off");
+        }
 
-	protected abstract String getAutocompleteType();
+        /**
+         * @see wicket.Component#renderHead(wicket.markup.html.internal.HtmlHeaderContainer)
+         */
+        public void renderHead(HtmlHeaderContainer container) {
+                super.renderHead(container);
 
-	protected final String getAutocompleteId()
-	{
-		return getMarkupId() + "_autocomplete";
-	}
+                addCssReference(container, getCss());
+        }
 
-	/**
-	 * extension point to customize what css is used to style the component.
-	 * @return
-	 */
-	protected ResourceReference getCss()
-	{
-		return new ResourceReference(AutocompleteTextFieldSupport.class, "style.css");
-	}
+        private void addCssReference(HtmlHeaderContainer container,
+                        ResourceReference ref) {
+        	CharSequence url = container.getPage().urlFor(ref);
+            write(container, "\t<link rel=\"stylesheet\" type=\"text/css\" href=\"");
+            write(container, url);
+            write(container, "\"/>\n");
+        }
 
-	/**
-	 * adds a placeholder div where auto completion results will be populated.
-	 */
-	protected final void onRender(MarkupStream markupStream)
-	{
-		super.onRender(markupStream);
+        /**
+         * Writes the given string to the header container.
+         * 
+         * @param container
+         *                the header container
+         * @param s
+         *                the string to write
+         */
+        private void write(HtmlHeaderContainer container, CharSequence s) {
+                container.getResponse().write(s);
+        }
 
-		getResponse().write(
-				"<div class=\"auto_complete\" id=\"" + getAutocompleteId() + "\"></div>");
-		
-		JavascriptBuilder builder = new JavascriptBuilder();
-		builder.addLine("new " + getAutocompleteType() + "(");
-		builder.addLine("  '" + getMarkupId() + "', ");
-		builder.addLine("  '" + getAutocompleteId() + "', ");
-		builder.addLine("  '" + getThirdAutocompleteArgument() + "', ");
-		builder.addOptions(new HashMap());
-		builder.addLine(");");
-		getResponse().write(builder.buildScriptTagString());
-	}
+        protected ResourceReference getCss() {
+                return new PackageResourceReference(
+                                AutocompleteTextFieldSupport.class, "style.css");
+        }
+
+        /**
+         * adds a placeholder div where auto completion results will be
+         * populated.
+         */
+        protected void onRender(MarkupStream markupStream) {
+                super.onRender(markupStream);
+
+                getResponse().write(
+                                "<div class=\"auto_complete\" id=\""
+                                                + getAutocompleteId()
+                                                + "\"></div>");
+        }
+
+        protected final String getAutocompleteId() {
+                return getId() + "_autocomplete";
+        }
 }

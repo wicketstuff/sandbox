@@ -20,18 +20,23 @@ package wicket.contrib.tinymce.settings;
 /**
  * <p>Note: Only basic functionality is implemented, more work is needed.
  *
- * @author Iulian Costan (iulian.costan@gmail.com)
+ * @author Iulian-Corneliu COSTAN
  */
 public class NoneditablePlugin extends Plugin
 {
+
+    /**
+	 * 
+	 */
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * Construct noneditable plugin.
-	 */
 	public NoneditablePlugin()
     {
         super("noneditable");
     }
 
+    public String defineProperties()
+    {
+        return null;
+    }
 }

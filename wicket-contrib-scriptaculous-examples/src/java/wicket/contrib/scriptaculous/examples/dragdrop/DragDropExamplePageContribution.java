@@ -3,60 +3,47 @@ package wicket.contrib.scriptaculous.examples.dragdrop;
 import java.util.ArrayList;
 import java.util.List;
 
-import wicket.PageParameters;
-import wicket.contrib.scriptaculous.examples.ScriptaculousExamplesSession;
-import wicket.markup.html.WebPage;
-import wicket.markup.html.basic.Label;
-import wicket.markup.html.list.ListItem;
-import wicket.markup.html.list.ListView;
+import javax.servlet.http.HttpSession;
 
-/**
- * Page.
- */
-public class DragDropExamplePageContribution extends WebPage
-{
-	/**
-	 * Construct.
-	 * 
-	 * @param parameters
-	 */
-	public DragDropExamplePageContribution(PageParameters parameters)
-	{
+import org.apache.wicket.PageParameters;
+import wicket.contrib.scriptaculous.dragdrop.DragDropPageContribution;
+import wicket.contrib.scriptaculous.examples.ScriptaculousExamplesSession;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.protocol.http.WebSession;
+
+public class DragDropExamplePageContribution extends DragDropPageContribution {
+
+	public DragDropExamplePageContribution(PageParameters parameters) {
 		super(parameters);
 
-		addProductToCart();
+		if (null != getInputValue()) {
+			addProductToCart();
+		}
 
-		new ListView(this, "cartItem", getCartItems())
-		{
+		add(new ListView("cartItem", getCartItems()){
 
-			protected void populateItem(ListItem item)
-			{
-				new Label(item, "productId", item.getModelObjectAsString());
-			}
-		};
+			protected void populateItem(ListItem item) {
+				item.add(new Label("productId", item.getModelObjectAsString()));
+			}});
 	}
 
-	private void addProductToCart()
-	{
-		// simulate server processing
-		// allow scriptaculous indicator to display
-		try
-		{
+	private void addProductToCart() {
+		//simulate server processing
+		//allow scriptaculous indicator to display
+		try {
 			Thread.sleep(1000);
-		}
-		catch (InterruptedException e)
-		{
+		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 		getCartItems().add(getInputValue());
 	}
 
-	private List getCartItems()
-	{
-		ScriptaculousExamplesSession session = (ScriptaculousExamplesSession) getSession();
+	private List getCartItems() {
+		ScriptaculousExamplesSession session = (ScriptaculousExamplesSession)getSession();
 		List cartItems = (List) session.getCartItems();
-		if (null == cartItems)
-		{
+		if (null == cartItems) {
 			cartItems = new ArrayList();
 			session.setCartItems(cartItems);
 		}

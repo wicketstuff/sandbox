@@ -20,7 +20,7 @@ package wicket.contrib.database;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import wicket.RequestCycle;
+import org.apache.wicket.RequestCycle;
 
 /**
  * Abstraction for database sessions. Any database implementation must be able

@@ -1,4 +1,7 @@
 /*
+ * $Id$ $Revision$
+ * $Date$
+ * 
  * ==================================================================== Licensed
  * under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the
@@ -15,6 +18,7 @@
 package wicket.contrib.jasperreports.examples;
 
 import java.io.File;
+
 import javax.servlet.ServletContext;
 
 import wicket.contrib.examples.WicketExamplePage;
@@ -22,72 +26,57 @@ import wicket.contrib.jasperreports.JRCsvResource;
 import wicket.contrib.jasperreports.JRHtmlResource;
 import wicket.contrib.jasperreports.JRImageResource;
 import wicket.contrib.jasperreports.JRPdfResource;
+import wicket.contrib.jasperreports.JRResource;
 import wicket.contrib.jasperreports.JRRtfResource;
 import wicket.contrib.jasperreports.JRTextResource;
-import wicket.markup.html.link.ResourceLink;
-import wicket.protocol.http.WebApplication;
-import net.sf.jasperreports.engine.JRDataSource;
+import org.apache.wicket.markup.html.link.ResourceLink;
+import org.apache.wicket.protocol.http.WebApplication;
 
 /**
- * Simple Jasper reports example
- *
+ * Simple Jasper reports example with PDF output and a jasper reports panel..
+ * 
  * @author Eelco Hillenius
- * @author Justin Lee
  */
-public class ReportLinksPage extends WicketExamplePage {
-    /**
-     * Constructor.
-     */
-    public ReportLinksPage() {
-        ServletContext context = ((WebApplication)getApplication()).getServletContext();
-        final File reportFile = new File(context.getRealPath("/reports/example.jrxml"));
-        new ResourceLink(this, "linkToPdf", new JRPdfResource(reportFile) {
-            @Override
-            public JRDataSource getReportDataSource() {
-                return new ExampleDataSource();
-            }
-        });
-        new ResourceLink(this, "linkToRtf", new JRRtfResource(reportFile) {
-            @Override
-            public JRDataSource getReportDataSource() {
-                return new ExampleDataSource();
-            }
-        });
-        new ResourceLink(this, "linkToHtml",
-            new JRHtmlResource(reportFile) {
-                @Override
-                public JRDataSource getReportDataSource() {
-                    return new ExampleDataSource();
-                }
-            });
-        new ResourceLink(this, "linkToText",
-            new JRTextResource(reportFile) {
-                @Override
-                public JRDataSource getReportDataSource() {
-                    return new ExampleDataSource();
-                }
-            });
+public class ReportLinksPage extends WicketExamplePage
+{
+	/**
+	 * Constructor.
+	 */
+	public ReportLinksPage()
+	{
+		ServletContext context = ((WebApplication) getApplication()).getServletContext();
+		final File reportFile = new File(context.getRealPath("/reports/example.jasper"));
 
-        JRImageResource jrImageResource = new JRImageResource(reportFile) {
-            @Override
-            public JRDataSource getReportDataSource() {
-                return new ExampleDataSource();
-            }
-        };
-        // defaults to png but you can change that by setting the format
-        jrImageResource.setFormat("jpg");
-        new ResourceLink(this, "linkToImage", jrImageResource);
+		JRResource pdfResource = new JRPdfResource(reportFile)
+				.setReportDataSource(new ExampleDataSource());
+		add(new ResourceLink("linkToPdf", pdfResource));
 
-        new ResourceLink(this, "linkToCsv", new JRCsvResource(reportFile) {
-            @Override
-            public JRDataSource getReportDataSource() {
-                return new ExampleDataSource();
-            }
-        });
-    }
+		JRResource rtfResource = new JRRtfResource(reportFile)
+				.setReportDataSource(new ExampleDataSource());
+		add(new ResourceLink("linkToRtf", rtfResource));
 
-    @Override
-    public boolean isVersioned() {
-        return false;
-    }
+		JRResource htmlResource = new JRHtmlResource(reportFile)
+				.setReportDataSource(new ExampleDataSource());
+		add(new ResourceLink("linkToHtml", htmlResource));
+
+		JRResource textResource = new JRTextResource(reportFile)
+				.setReportDataSource(new ExampleDataSource());
+		add(new ResourceLink("linkToText", textResource));
+
+		JRResource imageResource = new JRImageResource(reportFile)
+				.setReportDataSource(new ExampleDataSource());
+		add(new ResourceLink("linkToImage", imageResource));
+
+		JRResource csvResource = new JRCsvResource(reportFile)
+				.setReportDataSource(new ExampleDataSource());
+		add(new ResourceLink("linkToCsv", csvResource));
+	}
+
+	/**
+	 * @see wicket.Component#isVersioned()
+	 */
+	public boolean isVersioned()
+	{
+		return false;
+	}
 }

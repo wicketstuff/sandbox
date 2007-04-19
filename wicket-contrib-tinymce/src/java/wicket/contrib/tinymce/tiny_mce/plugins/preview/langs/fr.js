@@ -1,5 +1,4 @@
-// FR lang variables
-// Modified by Motte, last updated 2006-03-23
+// French lang variables by Laurent Dran
 
 tinyMCE.addToLang('',{
 preview_desc : 'Pr&eacute;visualisation'

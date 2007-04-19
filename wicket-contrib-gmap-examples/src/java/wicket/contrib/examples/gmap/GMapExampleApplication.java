@@ -1,7 +1,7 @@
 /*
- * $Id$
- * $Revision$
- * $Date$
+ * $Id: GMapExampleApplication.java 690 2006-04-19 22:49:53Z syca $
+ * $Revision: 690 $
+ * $Date: 2006-04-19 15:49:53 -0700 (Wed, 19 Apr 2006) $
  *
  * ====================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,9 +18,8 @@
  */
 package wicket.contrib.examples.gmap;
 
-import wicket.Page;
-import wicket.protocol.http.WebApplication;
-import wicket.util.time.Duration;
+import org.apache.wicket.protocol.http.WebApplication;
+import org.apache.wicket.util.time.Duration;
 
 /**
  * @author Iulian-Corneliu COSTAN
@@ -35,11 +34,10 @@ public class GMapExampleApplication extends WebApplication
 	@Override
 	protected void init()
 	{
-        configure( DEVELOPMENT );
         getResourceSettings().setResourcePollFrequency(Duration.seconds(10));
 	}
 
-    public Class<? extends Page> getHomePage()
+    public Class getHomePage()
     {
         return HomePage.class;
     }

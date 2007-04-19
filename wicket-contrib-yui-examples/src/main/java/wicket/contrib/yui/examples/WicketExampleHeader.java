@@ -1,7 +1,6 @@
 /*
- * $Id: WicketExampleHeader.java 5838 2006-05-24 20:44:49 +0000 (Wed, 24 May
- * 2006) joco01 $ $Revision: 5896 $ $Date: 2006-05-24 20:44:49 +0000 (Wed, 24
- * May 2006) $
+ * $Id: WicketExampleHeader.java 4812 2006-03-07 22:55:20Z dashorst $
+ * $Revision: 4812 $ $Date: 2006-03-08 06:55:20 +0800 (Wed, 08 Mar 2006) $
  * 
  * ==================================================================== Licensed
  * under the Apache License, Version 2.0 (the "License"); you may not use this
@@ -18,10 +17,9 @@
  */
 package wicket.contrib.yui.examples;
 
-import wicket.MarkupContainer;
-import wicket.markup.html.WebPage;
-import wicket.markup.html.basic.Label;
-import wicket.markup.html.panel.Panel;
+import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.panel.Panel;
 
 /**
  * Navigation panel for the examples project.
@@ -30,15 +28,8 @@ import wicket.markup.html.panel.Panel;
  */
 public final class WicketExampleHeader extends Panel {
 	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
-	/**
 	 * Construct.
 	 * 
-	 * @param parent
-	 *            The parent of this component The parent of this component.
 	 * @param id
 	 *            id of the component
 	 * @param exampleTitle
@@ -46,9 +37,8 @@ public final class WicketExampleHeader extends Panel {
 	 * @param page
 	 *            The example page
 	 */
-	public WicketExampleHeader(MarkupContainer parent, final String id,
-			String exampleTitle, WebPage page) {
-		super(page, id);
-		new Label(this, "exampleTitle", exampleTitle);
+	public WicketExampleHeader(String id, String exampleTitle, WebPage page) {
+		super(id);
+		add(new Label("exampleTitle", exampleTitle));
 	}
 }

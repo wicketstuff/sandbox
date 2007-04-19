@@ -20,27 +20,23 @@ package wicket.contrib.tinymce.settings;
 /**
  * The emotions plugin is able to insert smiley images into the TinyMCE editable area.
  *
- * @author Iulian Costan (iulian.costan@gmail.com)
+ * @author Iulian-Corneliu COSTAN
  */
 public class EmotionsPlugin extends Plugin
 {
-	private static final long serialVersionUID = 1L;
-	
-	private PluginButton emotionsButton;
 
     /**
-     * Construct emotion plugin.
-     */
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private PluginButton emotionsButton;
+
     public EmotionsPlugin()
     {
         super("emotions");
-        
         emotionsButton = new PluginButton("emotions", this);
     }
 
-    /**
-     * @return the emotion button
-     */
     public PluginButton getEmotionsButton()
     {
         return emotionsButton;

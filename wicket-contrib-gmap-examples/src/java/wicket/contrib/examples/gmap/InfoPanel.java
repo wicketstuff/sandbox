@@ -1,75 +1,72 @@
 package wicket.contrib.examples.gmap;
 
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.link.ExternalLink;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.html.panel.Panel;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import wicket.MarkupContainer;
-import wicket.markup.html.basic.Label;
-import wicket.markup.html.link.ExternalLink;
-import wicket.markup.html.list.ListItem;
-import wicket.markup.html.list.ListView;
-import wicket.markup.html.panel.Panel;
-
 /**
  * @author Iulian-Corneliu Costan
  */
-public class InfoPanel extends Panel {
-	private static final long serialVersionUID = 1L;
+public class InfoPanel extends Panel
+{
+    public InfoPanel(final String id)
+    {
+        super(id);
+        add(new ExternalLink("wicketLink", "http://wicket.sourceforge.net"));
+        add(new ListView("developers", getDevelopers())
+        {
+            protected void populateItem(final ListItem item)
+            {
+                Developer developer = (Developer) item.getModelObject();
+                item.add(new Label("firstname", developer.getFirstname()));
+                item.add(new Label("lastname", developer.getLastname()));
+                item.add(new Label("email", developer.getEmail()));
+            }
+        });
+    }
 
-	public InfoPanel(MarkupContainer parent, final String id) {
-		super(parent, id);
-		new ExternalLink(this, "wicketLink", "http://wicket.sourceforge.net");
-		new ListView<Developer>(this, "developers", getDevelopers()) {
-			private static final long serialVersionUID = 1L;
+    private List<Developer> getDevelopers()
+    {
+        List<Developer> developers = new ArrayList<Developer>();
+        developers.add(new Developer("Eelco", "Hillenius", "eelco12 at users.sourceforge.net"));
+        developers.add(new Developer("Jonathan", "Locke", "jonathanlocke at users.sourceforge.net"));
+        developers.add(new Developer("Martijn", "Dashorst", "dashorst at users.sourceforge.net"));
+        developers.add(new Developer("Juergen", "Donnerstag", "jdonnerstag at users.sourceforge.net"));
+        return developers;
+    }
 
-			protected void populateItem(final ListItem<Developer> item) {
-				Developer developer = item.getModelObject();
-				new Label(item, "firstname", developer.getFirstname());
-				new Label(item, "lastname", developer.getLastname());
-				new Label(item, "email", developer.getEmail());
-			}
-		};
-	}
+    private class Developer implements Serializable
+    {
+        private String firstname;
+        private String lastname;
+        private String email;
 
-	private List<Developer> getDevelopers() {
-		List<Developer> developers = new ArrayList<Developer>();
-		developers.add(new Developer("Eelco", "Hillenius",
-				"eelco12 at users.sourceforge.net"));
-		developers.add(new Developer("Jonathan", "Locke",
-				"jonathanlocke at users.sourceforge.net"));
-		developers.add(new Developer("Martijn", "Dashorst",
-				"dashorst at users.sourceforge.net"));
-		developers.add(new Developer("Juergen", "Donnerstag",
-				"jdonnerstag at users.sourceforge.net"));
-		return developers;
-	}
+        public Developer(String firstname, String lastname, String email)
+        {
+            this.firstname = firstname;
+            this.lastname = lastname;
+            this.email = email;
+        }
 
-	private class Developer implements Serializable {
-		private static final long serialVersionUID = 1L;
+        public String getFirstname()
+        {
+            return firstname;
+        }
 
-		private String firstname;
+        public String getLastname()
+        {
+            return lastname;
+        }
 
-		private String lastname;
-
-		private String email;
-
-		public Developer(String firstname, String lastname, String email) {
-			this.firstname = firstname;
-			this.lastname = lastname;
-			this.email = email;
-		}
-
-		public String getFirstname() {
-			return firstname;
-		}
-
-		public String getLastname() {
-			return lastname;
-		}
-
-		public String getEmail() {
-			return email;
-		}
-	}
+        public String getEmail()
+        {
+            return email;
+        }
+    }
 }

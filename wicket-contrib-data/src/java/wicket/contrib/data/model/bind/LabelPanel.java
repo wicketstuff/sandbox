@@ -1,10 +1,9 @@
 package wicket.contrib.data.model.bind;
 
-import wicket.MarkupContainer;
-import wicket.markup.html.basic.Label;
-import wicket.markup.html.panel.Panel;
-import wicket.model.IModel;
-import wicket.model.Model;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 
 /**
  * A panel that simply renders the string version of its model.
@@ -13,20 +12,16 @@ import wicket.model.Model;
  */
 public class LabelPanel extends Panel
 {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
-	public LabelPanel(MarkupContainer parent, String id, IModel model)
+	public LabelPanel(String id, IModel model)
 	{
-		super(parent, id);
-		Label label = new Label(this, "label", model);
+		super(id);
+		Label label = new Label("label", model);
 		label.setRenderBodyOnly(true);
+		add(label);
 	}
 
-	public LabelPanel(MarkupContainer parent, String id, String label)
+	public LabelPanel(String id, String label)
 	{
-		this(parent, id, new Model(label));
+		this(id, new Model(label));
 	}
 }

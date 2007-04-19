@@ -1,18 +1,20 @@
 /*
- * $Id$ $Revision$ $Date$
- * 
- * ==================================================================== Licensed
- * under the Apache License, Version 2.0 (the "License"); you may not use this
- * file except in compliance with the License. You may obtain a copy of the
- * License at
- * 
- * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ * $Id$
+ * $Revision$
+ * $Date$
+ *
+ * ====================================================================
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package wicket.examples.cdapp.model;
 
@@ -21,10 +23,6 @@ package wicket.examples.cdapp.model;
  */
 public class Category extends Entity
 {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 	/** Category name. */
 	private String name;
 
@@ -38,7 +36,6 @@ public class Category extends Entity
 
 	/**
 	 * Construct.
-	 * 
 	 * @param name
 	 */
 	public Category(String name)
@@ -49,7 +46,6 @@ public class Category extends Entity
 
 	/**
 	 * get category name.
-	 * 
 	 * @return String
 	 */
 	public String getName()
@@ -59,9 +55,7 @@ public class Category extends Entity
 
 	/**
 	 * set category name.
-	 * 
-	 * @param name
-	 *            name of category
+	 * @param name name of category
 	 */
 	public void setName(String name)
 	{

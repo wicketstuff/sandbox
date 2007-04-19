@@ -2,8 +2,8 @@ package wicket.contrib.markup.html.yui.slider;
 
 import java.io.Serializable;
 
-import wicket.RequestCycle;
-import wicket.ResourceReference;
+import org.apache.wicket.RequestCycle;
+import org.apache.wicket.ResourceReference;
 import wicket.contrib.ImageResourceInfo;
 import wicket.contrib.InlineStyle;
 
@@ -11,41 +11,35 @@ public class SliderSettings implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	/* Resources needed to generate the slider bar */
-	private ResourceReference rightCornerResource;
-
-	private ResourceReference leftCornerResource;
-
-	private ResourceReference rightTickResource;
-
-	private ResourceReference leftTickResource;
-
-	private ResourceReference backgroundResource;
-
-	private ResourceReference thumbResource;
-
-	private InlineStyle background = new InlineStyle();
-
-	private InlineStyle handle = new InlineStyle();
-
-	private InlineStyle thumb = new InlineStyle();
-
-	private String leftUp;
-
-	private String rightDown;
-
-	private String tick;
-
-	private String tickSize;
-
-	private boolean showTicks = false;
-
 	/**
-	 * Contructor for custom creation of slider styles, you can use getDefault()
-	 * ti get a default SliderSettings.
+	 * Aqua version.
+	 * 
+	 * @param leftUp
+	 *            the left or up number of pixels
+	 * @param rightDown
+	 *            the right or down number of pixels
+	 * @param tick
+	 *            the number of pixels for each tick
+	 * @return a default look and feel slider bar
 	 */
+	public static SliderSettings getAqua(int leftUp, int rightDown, int tick) {
+		ResourceReference background = new ResourceReference(Slider.class,
+				"style/aqua/aqua_bg.png");
+		ResourceReference thumb = new ResourceReference(Slider.class,
+				"style/aqua/aqua_thumb.gif");
+		ResourceReference leftCorner = new ResourceReference(Slider.class,
+				"style/aqua/aqua_left.png");
+		ResourceReference leftTick = new ResourceReference(Slider.class,
+				"style/aqua/aqua_left_tick.png");
+		ResourceReference rightCorner = new ResourceReference(Slider.class,
+				"style/aqua/aqua_right.png");
+		ResourceReference rightTick = new ResourceReference(Slider.class,
+				"style/aqua/aqua_right_tick.png");
 
-	public SliderSettings() {
+		SliderSettings defSettings = new SliderSettings();
+		defSettings.setResources(leftUp, rightDown, tick, background, thumb,
+				leftCorner, leftTick, rightCorner, rightTick, true);
+		return defSettings;
 	}
 
 	/**
@@ -82,35 +76,126 @@ public class SliderSettings implements Serializable {
 		return defSettings;
 	}
 
-	/**
-	 * Aqua version.
-	 * 
-	 * @param leftUp
-	 *            the left or up number of pixels
-	 * @param rightDown
-	 *            the right or down number of pixels
-	 * @param tick
-	 *            the number of pixels for each tick
-	 * @return a default look and feel slider bar
-	 */
-	public static SliderSettings getAqua(int leftUp, int rightDown, int tick) {
-		ResourceReference background = new ResourceReference(Slider.class,
-				"style/aqua/aqua_bg.png");
-		ResourceReference thumb = new ResourceReference(Slider.class,
-				"style/aqua/aqua_thumb.gif");
-		ResourceReference leftCorner = new ResourceReference(Slider.class,
-				"style/aqua/aqua_left.png");
-		ResourceReference leftTick = new ResourceReference(Slider.class,
-				"style/aqua/aqua_left_tick.png");
-		ResourceReference rightCorner = new ResourceReference(Slider.class,
-				"style/aqua/aqua_right.png");
-		ResourceReference rightTick = new ResourceReference(Slider.class,
-				"style/aqua/aqua_right_tick.png");
+	private InlineStyle background = new InlineStyle();
 
-		SliderSettings defSettings = new SliderSettings();
-		defSettings.setResources(leftUp, rightDown, tick, background, thumb,
-				leftCorner, leftTick, rightCorner, rightTick, true);
-		return defSettings;
+	private ResourceReference backgroundResource;
+
+	private InlineStyle handle = new InlineStyle();
+
+	private ResourceReference leftCornerResource;
+
+	private ResourceReference leftTickResource;
+
+	private String leftUp;
+
+	/* Resources needed to generate the slider bar */
+	private ResourceReference rightCornerResource;
+
+	private String rightDown;
+
+	private ResourceReference rightTickResource;
+
+	private boolean showTicks = false;
+
+	private InlineStyle thumb = new InlineStyle();
+
+	private ResourceReference thumbResource;
+
+	private String tick;
+
+	private String tickSize;
+
+	/**
+	 * Contructor for custom creation of slider styles, you can use getDefault()
+	 * ti get a default SliderSettings.
+	 */
+
+	public SliderSettings() {
+	}
+
+	public InlineStyle getBackground() {
+		return background;
+	}
+
+	/*
+	 * Accessors
+	 * 
+	 */
+
+	public ResourceReference getBackgroundResource() {
+		return backgroundResource;
+	}
+
+	public InlineStyle getHandle() {
+		return handle;
+	}
+
+	public ResourceReference getLeftCornerResource() {
+		return leftCornerResource;
+	}
+
+	public ResourceReference getLeftTickResource() {
+		return leftTickResource;
+	}
+
+	public String getLeftUp() {
+		return leftUp;
+	}
+
+	public ResourceReference getRightCornerResource() {
+		return rightCornerResource;
+	}
+
+	public String getRightDown() {
+		return rightDown;
+	}
+
+	public ResourceReference getRightTickResource() {
+		return rightTickResource;
+	}
+
+	public InlineStyle getThumb() {
+		return thumb;
+	}
+
+	public ResourceReference getThumbResource() {
+		return thumbResource;
+	}
+
+	public String getTick() {
+		return tick;
+	}
+
+	public String getTickSize() {
+		return tickSize;
+	}
+
+	public boolean isShowTicks() {
+		return showTicks;
+	}
+
+	public void setBackground(InlineStyle background) {
+		this.background = background;
+	}
+
+	public void setBackgroundResource(ResourceReference backgroundResource) {
+		this.backgroundResource = backgroundResource;
+	}
+
+	public void setHandle(InlineStyle handle) {
+		this.handle = handle;
+	}
+
+	public void setLeftCornerResource(ResourceReference leftCornerResource) {
+		this.leftCornerResource = leftCornerResource;
+	}
+
+	public void setLeftTickResource(ResourceReference leftTickResource) {
+		this.leftTickResource = leftTickResource;
+	}
+
+	public void setLeftUp(String leftUp) {
+		this.leftUp = leftUp;
 	}
 
 	/**
@@ -182,121 +267,36 @@ public class SliderSettings implements Serializable {
 		getThumb().add("width", thumbWidth + "px");
 	}
 
-	/*
-	 * Accessors
-	 * 
-	 */
-
-	public InlineStyle getBackground() {
-		return background;
-	}
-
-	public void setBackground(InlineStyle background) {
-		this.background = background;
-	}
-
-	public InlineStyle getHandle() {
-		return handle;
-	}
-
-	public void setHandle(InlineStyle handle) {
-		this.handle = handle;
-	}
-
-	public InlineStyle getThumb() {
-		return thumb;
-	}
-
-	public void setThumb(InlineStyle thumb) {
-		this.thumb = thumb;
-	}
-
-	public String getLeftUp() {
-		return leftUp;
-	}
-
-	public void setLeftUp(String leftUp) {
-		this.leftUp = leftUp;
-	}
-
-	public String getRightDown() {
-		return rightDown;
+	public void setRightCornerResource(ResourceReference rightCornerResource) {
+		this.rightCornerResource = rightCornerResource;
 	}
 
 	public void setRightDown(String rightDown) {
 		this.rightDown = rightDown;
 	}
 
-	public String getTick() {
-		return tick;
+	public void setRightTickResource(ResourceReference rightTickResource) {
+		this.rightTickResource = rightTickResource;
 	}
 
-	public void setTick(String tick) {
-		this.tick = tick;
+	public void setShowTicks(boolean showTicks) {
+		this.showTicks = showTicks;
 	}
 
-	public ResourceReference getBackgroundResource() {
-		return backgroundResource;
-	}
-
-	public void setBackgroundResource(ResourceReference backgroundResource) {
-		this.backgroundResource = backgroundResource;
-	}
-
-	public ResourceReference getLeftCornerResource() {
-		return leftCornerResource;
-	}
-
-	public void setLeftCornerResource(ResourceReference leftCornerResource) {
-		this.leftCornerResource = leftCornerResource;
-	}
-
-	public ResourceReference getRightCornerResource() {
-		return rightCornerResource;
-	}
-
-	public void setRightCornerResource(ResourceReference rightCornerResource) {
-		this.rightCornerResource = rightCornerResource;
-	}
-
-	public ResourceReference getThumbResource() {
-		return thumbResource;
+	public void setThumb(InlineStyle thumb) {
+		this.thumb = thumb;
 	}
 
 	public void setThumbResource(ResourceReference thumbResource) {
 		this.thumbResource = thumbResource;
 	}
 
-	public String getTickSize() {
-		return tickSize;
+	public void setTick(String tick) {
+		this.tick = tick;
 	}
 
 	public void setTickSize(String tickSize) {
 		this.tickSize = tickSize;
-	}
-
-	public ResourceReference getLeftTickResource() {
-		return leftTickResource;
-	}
-
-	public void setLeftTickResource(ResourceReference leftTickResource) {
-		this.leftTickResource = leftTickResource;
-	}
-
-	public ResourceReference getRightTickResource() {
-		return rightTickResource;
-	}
-
-	public void setRightTickResource(ResourceReference rightTickResource) {
-		this.rightTickResource = rightTickResource;
-	}
-
-	public boolean isShowTicks() {
-		return showTicks;
-	}
-
-	public void setShowTicks(boolean showTicks) {
-		this.showTicks = showTicks;
 	}
 
 }

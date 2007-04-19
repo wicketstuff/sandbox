@@ -4,11 +4,12 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
-import wicket.model.IModel;
-import wicket.validation.IValidator;
-import wicket.validation.validator.AbstractValidator;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.validation.IValidator;
+import org.apache.wicket.validation.validator.AbstractValidator;
 
 /**
  * A column that can have validators added to it. Any subclass must call
@@ -17,11 +18,11 @@ import wicket.validation.validator.AbstractValidator;
  * 
  * @author Phil Kulak
  */
-public abstract class ValidatingColumn<T> extends AbstractColumn<T>
+public abstract class ValidatingColumn extends AbstractColumn
 {
-	private List<AbstractValidator> validators = new ArrayList<AbstractValidator>();
+	private List validators = new ArrayList();
 
-	private Class<T> type;
+	private Class type;
 
 	public ValidatingColumn(String displayName, String modelPath)
 	{
@@ -34,11 +35,20 @@ public abstract class ValidatingColumn<T> extends AbstractColumn<T>
 		return this;
 	}
 
-	protected InlineValidatingPanel prepare(InlineValidatingPanel panel, IModel<T> model)
+	/**
+	 * Sets the conversion type for this component.
+	 */
+	public ValidatingColumn setType(Class type)
 	{
-		for (Object element : validators)
+		this.type = type;
+		return this;
+	}
+
+	protected InlineValidatingPanel prepare(InlineValidatingPanel panel, IModel model)
+	{
+		for (Iterator i = validators.iterator(); i.hasNext();)
 		{
-			final AbstractValidator validator = (AbstractValidator) element;
+			final AbstractValidator validator = (AbstractValidator) i.next();
 
 			// Build the resource key.
 			final String resourceKey = model.getClass().getName()
@@ -67,14 +77,5 @@ public abstract class ValidatingColumn<T> extends AbstractColumn<T>
 			panel.setType(type);
 		}
 		return panel;
-	}
-
-	/**
-	 * Sets the conversion type for this component.
-	 */
-	public ValidatingColumn setType(Class<T> type)
-	{
-		this.type = type;
-		return this;
 	}
 }

@@ -1,7 +1,7 @@
 /*
- * $Id$
- * $Revision$
- * $Date$
+ * $Id: HibernateContactDao.java 1056 2006-10-27 22:49:28Z ivaynberg $
+ * $Revision: 1056 $
+ * $Date: 2006-10-27 15:49:28 -0700 (Fri, 27 Oct 2006) $
  * 
  * ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -18,12 +18,15 @@
  */
 package wicket.contrib.phonebook;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.type.Type;
 
 /**
  * implements {@link ContactDao}.
@@ -92,8 +95,9 @@ public class HibernateContactDao implements ContactDao {
 	 *            Query Paramaters to use.
 	 * @return The results of the query as an Iterator.
 	 */
-	public Iterator find(final QueryParam qp, Contact filter) {
-		return buildFindQuery(qp, filter, false).iterate();
+	@SuppressWarnings("unchecked")
+	public Iterator<Contact> find(final QueryParam qp, Contact filter) {
+		return buildFindQuery(qp, filter, false).list().iterator();
 
 	}
 
@@ -103,14 +107,15 @@ public class HibernateContactDao implements ContactDao {
 	 * @return count
 	 */
 	public int count(Contact filter) {
-		return ((Integer) buildFindQuery(null, filter, true).uniqueResult())
+		return ((Long) buildFindQuery(null, filter, true).uniqueResult())
 				.intValue();
 	}
 
 	/**
 	 * Returns a list of unique last names
 	 */
-	public List getUniqueLastNames() {
+	@SuppressWarnings("unchecked")
+	public List<String> getUniqueLastNames() {
 		return getSession().createQuery(
 				"select distinct target.lastname "
 						+ " from Contact target order by target.lastname")
@@ -130,21 +135,34 @@ public class HibernateContactDao implements ContactDao {
 	 */
 	protected Query buildFindQuery(QueryParam qp, Contact filter, boolean count) {
 		StringBuffer hql = new StringBuffer();
+		ArrayList<Object> params = new ArrayList<Object>();
+		ArrayList<Type> types = new ArrayList<Type>();
+
 		if (count) {
 			hql.append("select count(*) ");
 		}
 		hql.append(" from Contact target where 1=1 ");
 		if (filter.getFirstname() != null) {
-			hql.append("and upper(target.firstname) like (:firstname)");
+			hql.append("and upper(target.firstname) like (?)");
+			params.add("%" + filter.getFirstname().toUpperCase() + "%");
+			types.add(Hibernate.STRING);
 		}
 		if (filter.getLastname() != null) {
-			hql.append("and upper(target.lastname) like (:lastname)");
+			hql.append("and upper(target.lastname) like (?)");
+			params.add("%" + filter.getLastname().toUpperCase() + "%");
+			types.add(Hibernate.STRING);
+
 		}
 		if (filter.getPhone() != null) {
-			hql.append("and upper(target.phone) like (:phone)");
+			hql.append("and upper(target.phone) like (?)");
+			params.add("%" + filter.getPhone().toUpperCase() + "%");
+			types.add(Hibernate.STRING);
+
 		}
 		if (filter.getEmail() != null) {
-			hql.append("and upper(target.email) like (:email)");
+			hql.append("and upper(target.email) like (?)");
+			params.add("%" + filter.getEmail().toUpperCase() + "%");
+			types.add(Hibernate.STRING);
 		}
 
 		if (!count && qp != null && qp.hasSort()) {
@@ -153,26 +171,11 @@ public class HibernateContactDao implements ContactDao {
 		}
 
 		Query query = getSession().createQuery(hql.toString());
+		query.setParameters(params.toArray(), (Type[]) types
+				.toArray(new Type[] {}));
 
 		if (!count && qp != null) {
 			query.setFirstResult(qp.getFirst()).setMaxResults(qp.getCount());
-		}
-
-		if (filter.getFirstname() != null) {
-			query.setParameter("firstname", "%"
-					+ filter.getFirstname().toUpperCase() + "%");
-		}
-		if (filter.getLastname() != null) {
-			query.setParameter("lastname", "%"
-					+ filter.getLastname().toUpperCase() + "%");
-		}
-		if (filter.getPhone() != null) {
-			query.setParameter("phone", "%" + filter.getPhone().toUpperCase()
-					+ "%");
-		}
-		if (filter.getEmail() != null) {
-			query.setParameter("email", "%" + filter.getEmail().toUpperCase()
-					+ "%");
 		}
 
 		return query;

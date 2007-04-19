@@ -1,8 +1,7 @@
 package wicket.contrib.gmap;
 
-import wicket.MarkupContainer;
-import wicket.ResourceReference;
-import wicket.behavior.AbstractAjaxBehavior;
+import org.apache.wicket.behavior.AbstractAjaxBehavior;
+import org.apache.wicket.markup.html.PackageResourceReference;
 
 /**
  * Wicket component for Google's GMarker API. It generates GMarker's JavaScript
@@ -23,18 +22,18 @@ class GMarkerComponent extends JavaScriptComponent
 	 */
 	public static final String INDICATOR = "indicator.white.gif";
 
-	private static final ResourceReference ref = new ResourceReference(GMapPanel.class, INDICATOR);
+	private static final PackageResourceReference ref = new PackageResourceReference(
+			GMapPanel.class, INDICATOR);
 
 	/**
 	 * Construct.
 	 * 
-	 * @param parent
 	 * @param gmarker
 	 * @param behavior
 	 */
-	public GMarkerComponent(MarkupContainer parent, GMarker gmarker, AbstractAjaxBehavior behavior)
+	public GMarkerComponent(GMarker gmarker, AbstractAjaxBehavior behavior)
 	{
-		super(parent, ID);
+		super(ID);
 		this.gmarker = gmarker;
 		this.behavior = behavior;
 	}

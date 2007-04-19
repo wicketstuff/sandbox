@@ -1,57 +1,30 @@
 package wicket.contrib.scriptaculous.dragdrop;
 
-import java.util.HashMap;
-import java.util.Map;
+import wicket.contrib.scriptaculous.ScriptaculousAjaxHandler;
+import org.apache.wicket.markup.ComponentTag;
+import org.apache.wicket.markup.MarkupStream;
+import org.apache.wicket.markup.html.image.Image;
 
-import wicket.MarkupContainer;
-import wicket.contrib.scriptaculous.JavascriptBuilder;
-import wicket.contrib.scriptaculous.ScriptaculousAjaxBehavior;
-import wicket.markup.ComponentTag;
-import wicket.markup.MarkupStream;
-import wicket.markup.html.image.Image;
+public class DraggableImage extends Image {
 
-public abstract class DraggableImage extends Image
-{
-	private static final long serialVersionUID = 1L;
+    private final String id;
 
-	public DraggableImage(MarkupContainer parent, String wicketId, String img)
-	{
-		super(parent, wicketId, img);
+    public DraggableImage(String wicketId, String id, String img) {
+        super(wicketId, img);
+        this.id = id;
 
-		setOutputMarkupId(true);
-		add(ScriptaculousAjaxBehavior.newJavascriptBindingBehavior());
-	}
+		add(ScriptaculousAjaxHandler.newJavascriptBindingHandler());
+    }
 
-	protected void onComponentTag(ComponentTag tag)
-	{
-		super.onComponentTag(tag);
-		tag.put("class", getStyleClass());
-	}
+    protected void onRender(MarkupStream markupStream) {
+        super.onRender(markupStream);
 
-	/**
-	 * define the css style used to define this component. used by the draggable
-	 * target to declare what it accepts.
-	 * 
-	 * @see DraggableTarget#accepts(DraggableImage)
-	 * @return
-	 */
-	protected abstract String getStyleClass();
+        getResponse().write("\n<script type=\"text/javascript\">new Draggable('" + id + "', {revert:true})</script>");
+    }
 
-	protected void onRender(MarkupStream markupStream)
-	{
-		super.onRender(markupStream);
-
-		JavascriptBuilder builder = new JavascriptBuilder();
-		Map<String, Object> options = new HashMap<String, Object>()
-		{
-			private static final long serialVersionUID = 1L;
-			{
-				put("revert", Boolean.TRUE);
-			}
-		};
-		builder.addLine("new Draggable('" + getMarkupId() + "', ");
-		builder.addOptions(options);
-		builder.addLine(");");
-		getResponse().write(builder.buildScriptTagString());
-	}
+    protected void onComponentTag(ComponentTag tag) {
+        super.onComponentTag(tag);
+        tag.put("id", id);
+        tag.put("class", getId());
+    }
 }

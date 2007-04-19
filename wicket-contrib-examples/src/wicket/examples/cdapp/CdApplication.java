@@ -7,22 +7,22 @@ import java.util.Locale;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
 
-import wicket.IRequestCycleFactory;
-import wicket.ISessionFactory;
-import wicket.Request;
-import wicket.RequestCycle;
-import wicket.Response;
-import wicket.Session;
-import wicket.examples.cdapp.model.Album;
-import wicket.examples.cdapp.model.Category;
-import wicket.examples.cdapp.page.BrowseAlbums;
-import wicket.protocol.http.WebApplication;
-import wicket.protocol.http.WebRequest;
-import wicket.protocol.http.WebSession;
-import wicket.util.convert.Converter;
-import wicket.util.convert.IConverter;
-import wicket.util.convert.IConverterFactory;
-import wicket.util.convert.converters.DateConverter;
+import org.apache.wicket.IRequestCycleFactory;
+import org.apache.wicket.ISessionFactory;
+import org.apache.wicket.Request;
+import org.apache.wicket.RequestCycle;
+import org.apache.wicket.Response;
+import org.apache.wicket.Session;
+import org.apache.wicket.examples.cdapp.model.Album;
+import org.apache.wicket.examples.cdapp.model.Category;
+import org.apache.wicket.examples.cdapp.page.BrowseAlbums;
+import org.apache.wicket.protocol.http.WebApplication;
+import org.apache.wicket.protocol.http.WebRequest;
+import org.apache.wicket.protocol.http.WebSession;
+import org.apache.wicket.util.convert.Converter;
+import org.apache.wicket.util.convert.IConverter;
+import org.apache.wicket.util.convert.IConverterFactory;
+import org.apache.wicket.util.convert.converters.DateConverter;
 
 public class CdApplication extends WebApplication implements ISessionFactory {
     private SessionFactory sessionFactory;

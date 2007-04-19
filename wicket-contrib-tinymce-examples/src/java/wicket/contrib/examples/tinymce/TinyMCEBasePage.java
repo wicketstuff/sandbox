@@ -1,69 +1,63 @@
 package wicket.contrib.examples.tinymce;
 
+import org.apache.wicket.markup.html.link.Link;
+
 import wicket.contrib.examples.WicketExamplePage;
-import wicket.markup.html.link.Link;
 
 /**
- * @author Iulian Costan (iulian.costan@gmail.com)
+ * @author Iulian-Corneliu COSTAN
  */
 public class TinyMCEBasePage extends WicketExamplePage
 {
+
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * Construct.
-	 */
 	public TinyMCEBasePage()
 	{
-		new Link(this, "simple")
+		add(new Link("simple")
 		{
-			private static final long serialVersionUID = 1L;
 
 			public void onClick()
 			{
 				setResponsePage(SimpleTinyMCEPage.class);
 				setRedirect(true);
 			}
-		};
-		new Link(this, "advanced")
+		});
+		add(new Link("advanced")
 		{
-			private static final long serialVersionUID = 1L;
 
 			public void onClick()
 			{
 				setResponsePage(AdvancedTinyMCEPage.class);
 				setRedirect(true);
 			}
-		};
-		new Link(this, "full")
+		});
+		add(new Link("full")
 		{
-			private static final long serialVersionUID = 1L;
 
 			public void onClick()
 			{
 				setResponsePage(FullFeaturedTinyMCEPage.class);
 				setRedirect(true);
 			}
-		};
-		new Link(this, "word")
+		});
+		add(new Link("word")
 		{
-			private static final long serialVersionUID = 1L;
 
 			public void onClick()
 			{
 				setResponsePage(WordTinyMCEPage.class);
 				setRedirect(true);
 			}
-		};
-		new Link(this, "exact")
+		});
+		add(new Link("exact")
 		{
-			private static final long serialVersionUID = 1L;
 			
 			public void onClick()
 			{
 				setResponsePage(ExactModeTinyMCEPage.class);
 				setRedirect(true);
 			}
-		};
+		});
 	}
 }

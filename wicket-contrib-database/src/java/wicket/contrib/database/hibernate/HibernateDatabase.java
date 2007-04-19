@@ -37,7 +37,7 @@ import org.hibernate.impl.SessionFactoryImpl;
 import org.hibernate.tool.hbm2ddl.SchemaUpdate;
 import org.hibernate.type.Type;
 
-import wicket.WicketRuntimeException;
+import org.apache.wicket.WicketRuntimeException;
 import wicket.contrib.database.Database;
 import wicket.contrib.database.DatabaseSession;
 import wicket.contrib.database.IDatabaseObject;
@@ -94,7 +94,7 @@ public class HibernateDatabase extends Database
 	{
 		new SchemaUpdate(configuration).execute(true, true);
 	}
-
+	
 	/**
 	 * Prints schema update script to console
 	 */
@@ -212,7 +212,7 @@ public class HibernateDatabase extends Database
 	 */
 	private String[] splitAlterTables(String[] drops, boolean includeAlterFlag)
 	{
-		List<String> temp = new ArrayList<String>();
+		List temp = new ArrayList();
 		for (int i = 0; i < drops.length; i++)
 		{
 			if (drops[i].toLowerCase().trim().startsWith("alter") == includeAlterFlag)
@@ -220,6 +220,6 @@ public class HibernateDatabase extends Database
 				temp.add(drops[i]);
 			}
 		}
-		return temp.toArray(new String[temp.size()]);
+		return (String[])temp.toArray(new String[temp.size()]);
 	}
 }

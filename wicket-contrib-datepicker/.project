@@ -1,6 +1,6 @@
 <projectDescription>
   <name>wicket-contrib-datepicker</name>
-  <comment></comment>
+  <comment>Repackaging of the LGPL licensed DatePicker component for backwards compatibility.</comment>
   <projects/>
   <buildSpec>
     <buildCommand>

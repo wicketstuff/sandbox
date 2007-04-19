@@ -12,15 +12,14 @@ public abstract class HibernateDaoSupport implements IHibernateDao
 {
 	/**
 	 * Returns a session that will be passed to any hibernate callbacks.
-	 * 
 	 * @return a hibernate session
 	 */
 	protected abstract Session getSession();
-
+	
 	/**
 	 * @see wicket.contrib.data.model.hibernate.IHibernateDao#execute(IHibernateCallback)
 	 */
-	public <T> T execute(IHibernateCallback<T> callback)
+	public Object execute(IHibernateCallback callback)
 	{
 		return callback.execute(getSession());
 	}

@@ -1,9 +1,10 @@
 package wicket.contrib.scriptaculous.examples;
 
-import wicket.Page;
-import wicket.Request;
-import wicket.Session;
-import wicket.protocol.http.WebApplication;
+import org.apache.wicket.ISessionFactory;
+import org.apache.wicket.Request;
+import org.apache.wicket.Response;
+import org.apache.wicket.Session;
+import org.apache.wicket.protocol.http.WebApplication;
 
 /**
  * 
@@ -11,29 +12,31 @@ import wicket.protocol.http.WebApplication;
 public class ScriptaculousExamplesApplication extends WebApplication
 {
 
+	/**
+	 * @return class
+	 */
+	public Class getHomePage()
+	{
+		return ScriptaculousExamplesHomePage.class;
+	}
+
+	protected ISessionFactory getSessionFactory()
+	{
+		return new ISessionFactory()
+		{
+			public Session newSession(Request request, Response response)
+			{
+				return new ScriptaculousExamplesSession(
+						ScriptaculousExamplesApplication.this, request);
+			}
+		};
+	}
+
 	protected void init()
 	{
 		super.init();
 		configure("development");
 		getResourceSettings().setThrowExceptionOnMissingResource(false);
 		getMarkupSettings().setAutomaticLinking(true);
-	}
-
-	/**
-	 * @return class
-	 */
-	public Class< ? extends Page> getHomePage()
-	{
-		return ScriptaculousExamplesHomePage.class;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see wicket.protocol.http.WebApplication#newSession(wicket.Request)
-	 */
-	public Session newSession(Request request)
-	{
-		return new ScriptaculousExamplesSession(this, request);
 	}
 }

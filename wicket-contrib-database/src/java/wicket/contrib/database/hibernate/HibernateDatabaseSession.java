@@ -78,6 +78,7 @@ public class HibernateDatabaseSession extends DatabaseSession
 	{
 		if (hibernateSession != null)
 		{
+			hibernateSession.flush();
 			hibernateSession.close();
 		}
 	}
@@ -153,14 +154,16 @@ public class HibernateDatabaseSession extends DatabaseSession
 	 */
 	public void transaction(final IDatabaseTransaction transactionCode)
 	{
-		log.info("Transaction beginning");
 		final Transaction transaction = hibernateSession.beginTransaction();
 		try
 		{
+			log.info("Transaction beginning");
+			transaction.begin();
 			transactionCode.run();
 			log.info("Transaction committing");
 			transaction.commit();
 			log.info("Transaction committed");
+			hibernateSession.flush();
 		}
 		catch (Exception e)
 		{

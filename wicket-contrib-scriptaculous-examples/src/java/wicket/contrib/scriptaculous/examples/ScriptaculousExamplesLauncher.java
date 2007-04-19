@@ -1,20 +1,26 @@
 package wicket.contrib.scriptaculous.examples;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.mortbay.jetty.Connector;
 import org.mortbay.jetty.Server;
 import org.mortbay.jetty.nio.SelectChannelConnector;
 import org.mortbay.jetty.webapp.WebAppContext;
 
-/**
- * Launcher for the examples.
- */
 public class ScriptaculousExamplesLauncher
 {
+
 	/**
-	 * @param args
-	 * @throws Exception
+	 * Used for logging.
 	 */
-	public static void main(String[] args) throws Exception
+	private static final Log log = LogFactory.getLog(ScriptaculousExamplesLauncher.class);
+
+	/**
+	 * Main function, starts the jetty server.
+	 * 
+	 * @param args
+	 */
+	public static void main(String[] args)
 	{
 		Server server = new Server();
 		SelectChannelConnector connector = new SelectChannelConnector();
@@ -22,8 +28,8 @@ public class ScriptaculousExamplesLauncher
 		server.setConnectors(new Connector[] {connector});
 
 		WebAppContext web = new WebAppContext();
-		web.setContextPath("/scriptaculousexamples");
-		web.setWar("src/webapp");
+		web.setContextPath("/wicket-examples");
+		web.setWar("src/main/webapp");
 		server.addHandler(web);
 
 		// MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
@@ -41,5 +47,13 @@ public class ScriptaculousExamplesLauncher
 			e.printStackTrace();
 			System.exit(100);
 		}
+	}
+
+	/**
+	 * Construct.
+	 */
+	ScriptaculousExamplesLauncher()
+	{
+		super();
 	}
 }

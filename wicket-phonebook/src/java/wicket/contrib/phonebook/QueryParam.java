@@ -1,7 +1,7 @@
 /*
- * $Id$
- * $Revision$
- * $Date$
+ * $Id: QueryParam.java 371 2005-10-13 01:21:29 -0700 (Thu, 13 Oct 2005) gwynevans $
+ * $Revision: 371 $
+ * $Date: 2005-10-13 01:21:29 -0700 (Thu, 13 Oct 2005) $
  * 
  * ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
