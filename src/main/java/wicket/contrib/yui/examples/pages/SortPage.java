@@ -9,9 +9,9 @@ import wicket.contrib.markup.html.yui.sort.SortBox;
 import wicket.contrib.markup.html.yui.sort.SortGroup;
 import wicket.contrib.markup.html.yui.sort.SortSettings;
 import wicket.contrib.yui.examples.WicketExamplePage;
-import wicket.markup.html.form.TextField;
-import wicket.markup.html.list.ListItem;
-import wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
 
 /**
  * This class demostrates how you can use the wicket.contrib.markup.html.yui.sort package
