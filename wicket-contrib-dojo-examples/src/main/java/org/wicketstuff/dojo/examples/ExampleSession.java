@@ -37,6 +37,6 @@ public final class ExampleSession extends WebSession {
 	 * @param request 
 	 */
 	protected ExampleSession(final WebApplication application, Request request, Response response) {
-		super(application, request, response);
+		super(application, request);
 	}
 }
