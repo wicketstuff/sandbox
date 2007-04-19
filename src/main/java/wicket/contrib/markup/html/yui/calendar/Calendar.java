@@ -25,20 +25,21 @@ import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.RequestCycle;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.behavior.HeaderContributor;
-import wicket.contrib.markup.html.yui.AbstractYuiPanel;
 import org.apache.wicket.extensions.util.resource.PackagedTextTemplate;
-import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.markup.html.IHeaderContributor;
+import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.FormComponent;
-import org.apache.wicket.markup.html.internal.HtmlHeaderContainer;
 import org.apache.wicket.model.AbstractReadOnlyModel;
+
+import wicket.contrib.markup.html.yui.AbstractYuiPanel;
 
 /**
  * Calendar component based on the Calendar of Yahoo UI Library.
  * 
  * @author Eelco Hillenius
  */
-public class Calendar extends AbstractYuiPanel {
+public class Calendar extends AbstractYuiPanel implements IHeaderContributor {
 	/**
 	 * The container/ receiver of the javascript component.
 	 */
@@ -115,13 +116,10 @@ public class Calendar extends AbstractYuiPanel {
 	}
 
 	/**
-	 * @see wicket.Component#renderHead(wicket.markup.html.internal.HtmlHeaderContainer)
+	 * @see org.apache.wicket.markup.html.IHeaderContributor#renderHead(org.apache.wicket.markup.html.IHeaderResponse)
 	 */
-	@Override
-	public void renderHead(HtmlHeaderContainer container) {
-		((WebPage) getPage()).getBodyContainer().addOnLoadModifier(
-				"init" + javaScriptId + "();", null);
-		super.renderHead(container);
+	public void renderHead(IHeaderResponse response) {
+		response.renderOnLoadJavascript("init" + javaScriptId + "();");
 	}
 
 	/**

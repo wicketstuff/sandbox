@@ -23,20 +23,20 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.behavior.HeaderContributor;
-import wicket.contrib.markup.html.yui.AbstractYuiPanel;
 import org.apache.wicket.extensions.util.resource.TextTemplateHeaderContributor;
+import org.apache.wicket.markup.html.IHeaderContributor;
+import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.image.Image;
-import org.apache.wicket.markup.html.internal.HtmlHeaderContainer;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
+
+import wicket.contrib.markup.html.yui.AbstractYuiPanel;
 
 /**
  * Slider component based on the Slider of Yahoo UI Library.
@@ -44,7 +44,7 @@ import org.apache.wicket.model.PropertyModel;
  * @author Eelco Hillenius
  * @author Joshua Lim
  */
-public class Slider extends AbstractYuiPanel {
+public class Slider extends AbstractYuiPanel implements IHeaderContributor {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -259,13 +259,10 @@ public class Slider extends AbstractYuiPanel {
 	}
 
 	/**
-	 * @see wicket.Component#renderHead(wicket.markup.html.internal.HtmlHeaderContainer)
+	 * @see org.apache.wicket.markup.html.IHeaderContributor#renderHead(org.apache.wicket.markup.html.IHeaderResponse)
 	 */
-	@Override
-	public void renderHead(HtmlHeaderContainer container) {
-		((WebPage) getPage()).getBodyContainer().addOnLoadModifier(
-				"init" + javaScriptId + "();", this);
-		super.renderHead(container);
+	public void renderHead(IHeaderResponse response) {
+		response.renderOnLoadJavascript("init" + javaScriptId + "();");
 	}
 
 	/**
