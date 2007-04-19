@@ -9,7 +9,7 @@
 
     <servlet>
         <servlet-name>Wicket-Contrib-GMap</servlet-name>
-        <servlet-class>wicket.protocol.http.WicketServlet</servlet-class>
+        <servlet-class>org.apache.wicket.protocol.http.WicketServlet</servlet-class>
         <init-param>
             <param-name>applicationClassName</param-name>
             <param-value>wicket.contrib.examples.gmap.GMapExampleApplication</param-value>

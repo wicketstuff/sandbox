@@ -13,7 +13,7 @@
 
 	<servlet>
 		<servlet-name>cdapp</servlet-name>
-		<servlet-class>wicket.protocol.http.WicketServlet</servlet-class>
+		<servlet-class>org.apache.wicket.protocol.http.WicketServlet</servlet-class>
 		<init-param>
 			<param-name>applicationClassName</param-name>
 			<param-value>wicket.examples.cdapp.CdApplication</param-value>
@@ -23,7 +23,7 @@
 
     <servlet>
         <servlet-name>VelocityTemplateApplication</servlet-name>
-        <servlet-class>wicket.protocol.http.WicketServlet</servlet-class>
+        <servlet-class>org.apache.wicket.protocol.http.WicketServlet</servlet-class>
         <init-param>
           <param-name>applicationClassName</param-name>
           <param-value>wicket.contrib.examples.velocity.VelocityTemplateApplication</param-value>
@@ -33,7 +33,7 @@
 
     <servlet>
         <servlet-name>FreeMarkerTemplateApplication</servlet-name>
-        <servlet-class>wicket.protocol.http.WicketServlet</servlet-class>
+        <servlet-class>org.apache.wicket.protocol.http.WicketServlet</servlet-class>
         <init-param>
           <param-name>applicationClassName</param-name>
           <param-value>wicket.contrib.examples.freemarker.FreeMarkerTemplateApplication</param-value>
