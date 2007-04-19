@@ -200,12 +200,20 @@ dojo.widget.defineWidget(
 	
 	selectIndexes:function(/** String[] */ indexes){
 		var body = this.domNode.getElementsByTagName("tbody")[0];
-		var rows=body.getElementsByTagName("tr");
-		for(var i=0;i<rows.length;i++){
-			rows[i].setAttribute("selected", "false");
+		var children = body.childNodes;
+		//set all tr child to not selected and store them ina list
+		var rows = new Array();
+		for(var i=0;i<children.length;i++){
+			var child = children[i];
+			if(child.nodeName.toLowerCase() == "tr"){
+				children[i].setAttribute("selected", "false");
+				rows.push(child);
+			}
 		}
 		for (var i=0; i<indexes.length; i++){
-			body.getElementsByTagName('tr')[indexes[i]].setAttribute("selected", "true");
+			if(indexes[i] < rows.length){
+				rows[indexes[i]].setAttribute("selected", "true");
+			}
 		}
 		this.showSelections();
 	},
