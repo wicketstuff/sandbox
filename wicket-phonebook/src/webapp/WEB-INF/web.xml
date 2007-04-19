@@ -33,7 +33,7 @@
 
     <servlet>
         <servlet-name>phonebook</servlet-name>
-        <servlet-class>wicket.protocol.http.WicketServlet</servlet-class>
+        <servlet-class>org.apache.wicket.protocol.http.WicketServlet</servlet-class>
         <init-param>
             <param-name>applicationFactoryClassName</param-name>
             <param-value>wicket.spring.SpringWebApplicationFactory</param-value>
