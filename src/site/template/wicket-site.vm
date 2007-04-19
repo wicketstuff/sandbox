@@ -293,6 +293,7 @@
   </head>
   <body class="composite">
   <div id="container">
+  	<img src="images/wicket-stuff.png" style="z-index:10; position:absolute; top:30px; left:90px"/>
     <div id="banner">
       #banner( $decoration.bannerLeft "bannerLeft" )
       #banner( $decoration.bannerRight "bannerRight" )

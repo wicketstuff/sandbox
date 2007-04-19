@@ -10,15 +10,18 @@
 			<p>
 				The powerful and easy-to-use Object-Orriented Web framework wicket meets Dojo, 
 				a javascript toolkit which let's you make your webapps even more useable, responsive, and functional. 
-				This includes graphical decorations, AJAX functionality and other javascript enhancements.
+				This includes graphical decorations, AJAX functionality, Dojo widgets such as Drag and Drop, inline edit, etc... and other javascript enhancements.
 			</p>
+			<p>
+				Download this release to see all interesting features or take a look at the live demo.
+			</p>
+			
 			<ul>
 				<li>
-					Check the <a href="Tutorials.html">tutorials list</a>
+					Check the <a href="Tutorials.html">tutorials list</a> (not yet ready... please be patient)
 				</li>
 				<li>
-					Read <a href="http://www.jroller.com/page/ruudmarco">our weblog</a> or some
-					<a href="/Blogs.html">Wicket blogs</a>
+					See <a href="http://www.demay-fr.net:8080/Wicket-start/app">the LiveDemo</a>
 				</li>
 				<li>
 					Download <a href="http://sourceforge.net/project/showfiles.php?group_id=134391&amp;package_id=164293">wicket-contrib-dojo</a>
@@ -32,46 +35,35 @@
 			</p>
 		</section>
 		<section name="Latest News">
-			<subsection name="January 25, 2006 - Wicket-Dojo ajax-based RSS Dragon, try it now!">
+			<subsection name="January 5, 2007 - Wicket-Dojo is not dead a new release with a lot of improvement comes out">
 				<p>
-					We have just finished a demo app using some of our components. It is an Ajax-based 
-					RSS reader which uses some of Wicket's beta component-level rendering functionality.
-					It's not entirely stable, but it should give you a impression of what Wicket and Dojo
-					are capable of. Since this application depends on a HEAD version of Wicket, getting it to work
-					from the wicket-contrib-dojo-examples CVS might be a bit tricky. Therefor we have made a
-					pre-compiled war file available which you can deploy in your appserver. Get it <a href="http://wicket-stuff.sourceforge.net/wicket-contrib-dojo/files/wicket-contrib-dojo-examples.war">
-					here!</a>
+					After a year of hibernation, wicket contrib dojo awackes with a new release.<br/>
+				</p>
+				<p>
+					This project has been started by 2 students (see the <a href="http://www.jroller.com/page/ruudmarco">weblog</a>). They are now working on others stuffs.<br/>
+					Now we are two co-workers working on it
+					<ul>
+						<li><a href="http://blog.caraldi.com/jbq/">Jean Baptiste Quenot</a></li>
+						<li><a href="http://www.demay-fr.net/blog/index.php/en">Vincent Demay</a></li>
+					</ul>
+					Special thanks to eelco and igor who allow us to work on this project.<br/>
+				</p>
+				<p>
+					The first new Version is now available with a lot of features.<br/>
+					More than Validation or effects from last release, now you can find widgets such has 
+					<ul>
+						<li>Suggestion List</li>
+						<li>Inline edit</li>
+						<li>Drag and drop</li>
+						<li>and friends...</li>
+					</ul> 
+					Take a Look at the <a href="http://www.demay-fr.net:8080/Wicket-start/app">live exemple</a>.
 				</p>
 			</subsection>
 			<p>
 				See
 				<a href="News.html">the news archive</a>
 				for more (older) news.
-			</p>
-		</section>
-		<section name="Special Thanks">
-			<p>
-				We would like to thank <a href="http://www.topicus.nl">Topicus</a> for making this project possible and we would also like to thank Wicket and the entire community for making such a cool framework.
-				And of course Dojo for being the coolest javascript toolkit out there.
-				
-			</p>
-		
-			<p>
-<!--ONESTAT SCRIPTCODE START-->
-<!--
-// Het wijzigen van deze code is niet toegestaan en zal uw account definitief blokkeren!
-// Account ID : 239584
-// Website URL: http://wicket.sourceforge.net
-// Copyright (C) 2002-2005 OneStat.com All Rights Reserved
--->
-<div id="OneStatTag"><table border='0' cellpadding='0' cellspacing='0'><tr><td align='center'>
-<script type="text/javascript" src="onestat.js">
-</script>
-<noscript>
-<a href="http://www.onestat.com"><img border="0" src="http://stat.onestat.com/stat.aspx?tagver=2&amp;sid=239584&amp;js=No&amp;" ALT="online web site analyser" /></a><br /><a href="http://www.onestat.com">online web site analyser</a>
-</noscript>
-</td></tr><tr><td align='center'><div style="DISPLAY: none; FONT-WEIGHT: bold; FONT-SIZE: 7pt; COLOR: black; FONT-FAMILY: 'Verdana'; HEIGHT: 15px"><a href="http://www.onestat.com" style="text-decoration:none; COLOR: black;" target="_blank">webtraffic analysis</a></div></td></tr></table></div>
-<!--ONESTAT SCRIPTCODE END-->
 			</p>
 		</section>
 	</body>
