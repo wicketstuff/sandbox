@@ -1,4 +1,5 @@
 
+   org.wicketstuff.minis.behavior.reflection
    Contains reflection.js javascript library released under a MIT style license.
    Contributors: Cow http://cow.neondragon.net
                  Gfx http://www.jroller.com/page/gfx/
