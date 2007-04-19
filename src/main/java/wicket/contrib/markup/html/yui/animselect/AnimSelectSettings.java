@@ -4,8 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import wicket.RequestCycle;
-import wicket.ResourceReference;
+import org.apache.wicket.RequestCycle;
+import org.apache.wicket.ResourceReference;
 import wicket.contrib.ImageResourceInfo;
 import wicket.contrib.InlineStyle;
 import wicket.contrib.YuiImage;

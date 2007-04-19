@@ -5,9 +5,9 @@ import java.util.Map;
 
 import wicket.contrib.YuiImage;
 import wicket.contrib.markup.html.yui.AbstractYuiPanel;
-import wicket.extensions.util.resource.PackagedTextTemplate;
-import wicket.markup.html.basic.Label;
-import wicket.model.AbstractReadOnlyModel;
+import org.apache.wicket.extensions.util.resource.PackagedTextTemplate;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.model.AbstractReadOnlyModel;
 
 public class DragDropTargetSlot extends AbstractYuiPanel {
 

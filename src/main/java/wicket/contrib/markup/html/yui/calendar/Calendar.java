@@ -21,17 +21,17 @@ package wicket.contrib.markup.html.yui.calendar;
 import java.util.HashMap;
 import java.util.Map;
 
-import wicket.AttributeModifier;
-import wicket.RequestCycle;
-import wicket.ResourceReference;
-import wicket.behavior.HeaderContributor;
+import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.RequestCycle;
+import org.apache.wicket.ResourceReference;
+import org.apache.wicket.behavior.HeaderContributor;
 import wicket.contrib.markup.html.yui.AbstractYuiPanel;
-import wicket.extensions.util.resource.PackagedTextTemplate;
-import wicket.markup.html.WebPage;
-import wicket.markup.html.basic.Label;
-import wicket.markup.html.form.FormComponent;
-import wicket.markup.html.internal.HtmlHeaderContainer;
-import wicket.model.AbstractReadOnlyModel;
+import org.apache.wicket.extensions.util.resource.PackagedTextTemplate;
+import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.FormComponent;
+import org.apache.wicket.markup.html.internal.HtmlHeaderContainer;
+import org.apache.wicket.model.AbstractReadOnlyModel;
 
 /**
  * Calendar component based on the Calendar of Yahoo UI Library.

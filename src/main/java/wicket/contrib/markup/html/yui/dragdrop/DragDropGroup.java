@@ -3,15 +3,15 @@ package wicket.contrib.markup.html.yui.dragdrop;
 import java.util.HashMap;
 import java.util.Map;
 
-import wicket.AttributeModifier;
-import wicket.behavior.StringHeaderContributor;
+import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.behavior.StringHeaderContributor;
 import wicket.contrib.YuiImage;
-import wicket.extensions.util.resource.PackagedTextTemplate;
-import wicket.markup.html.WebMarkupContainer;
-import wicket.markup.html.form.FormComponent;
-import wicket.markup.html.list.ListItem;
-import wicket.markup.html.list.ListView;
-import wicket.model.AbstractReadOnlyModel;
+import org.apache.wicket.extensions.util.resource.PackagedTextTemplate;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.form.FormComponent;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.model.AbstractReadOnlyModel;
 
 public class DragDropGroup extends WebMarkupContainer {
 	private static final long serialVersionUID = 1L;

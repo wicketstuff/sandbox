@@ -24,19 +24,19 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import wicket.AttributeModifier;
-import wicket.behavior.HeaderContributor;
+import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.behavior.HeaderContributor;
 import wicket.contrib.markup.html.yui.AbstractYuiPanel;
-import wicket.extensions.util.resource.TextTemplateHeaderContributor;
-import wicket.markup.html.WebMarkupContainer;
-import wicket.markup.html.WebPage;
-import wicket.markup.html.form.FormComponent;
-import wicket.markup.html.image.Image;
-import wicket.markup.html.internal.HtmlHeaderContainer;
-import wicket.model.AbstractReadOnlyModel;
-import wicket.model.IModel;
-import wicket.model.Model;
-import wicket.model.PropertyModel;
+import org.apache.wicket.extensions.util.resource.TextTemplateHeaderContributor;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.markup.html.form.FormComponent;
+import org.apache.wicket.markup.html.image.Image;
+import org.apache.wicket.markup.html.internal.HtmlHeaderContainer;
+import org.apache.wicket.model.AbstractReadOnlyModel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
 
 /**
  * Slider component based on the Slider of Yahoo UI Library.
