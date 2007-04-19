@@ -31,7 +31,7 @@ import org.apache.wicket.markup.html.IHeaderResponse;
  *
  */
 @SuppressWarnings("serial")
-public class DojoOrderableListHandler extends AbstractRequireDojoBehavior
+public class DojoOrderableListContainerHandler extends AbstractRequireDojoBehavior
 {
 
 	public void setRequire(RequireDojoLibs libs)
