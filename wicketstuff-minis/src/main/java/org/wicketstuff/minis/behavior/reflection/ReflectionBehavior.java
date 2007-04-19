@@ -85,6 +85,20 @@ public class ReflectionBehavior extends AbstractBehavior
 	}
 
 	/**
+	 * Constructor
+	 * 
+	 * @param height
+	 *            see {@link #setReflectionHeight(Integer)}
+	 * @param opacity
+	 *            see {@link #setReflectionOpacity(Integer)}
+	 */
+	public ReflectionBehavior(Integer height, Integer opacity)
+	{
+		setReflectionHeight(height);
+		setReflectionOpacity(opacity);
+	}
+
+	/**
 	 * Binds the component to this behavior.
 	 * 
 	 * @see IBehavior#bind(Component)
@@ -136,11 +150,88 @@ public class ReflectionBehavior extends AbstractBehavior
 		for (Iterator iter = components.iterator(); iter.hasNext();)
 		{
 			Component component = (Component)iter.next();
-			sb.append(getAddReflectionScript(component.getMarkupId(), reflectionOpacity,
-					reflectionHeight));
-			sb.append("\n");
+			if (component.isVisibleInHierarchy())
+			{
+				sb.append(getAddReflectionScript(component.getMarkupId(), reflectionOpacity,
+						reflectionHeight));
+				sb.append("\n");
+			}
 		}
 		response.renderOnLoadJavascript(sb.toString());
+	}
+
+	/**
+	 * Container for javascript calls this behavior enables
+	 * 
+	 * @author ivaynberg
+	 * 
+	 */
+	public static class Javascript
+	{
+
+		/**
+		 * Block instantiation
+		 * 
+		 */
+		private Javascript()
+		{
+
+		}
+
+		/**
+		 * Gets the script that adds a reflection to an image. You have to
+		 * manually add the REFLECTION_JS resource reference to your page if you
+		 * use this script directly.
+		 * 
+		 * @param id
+		 *            the markup id of the image
+		 * @param opacity
+		 *            the opacity of the reflection (may be null for default
+		 *            value)
+		 * @param height
+		 *            the height of the reflection (may be null for default
+		 *            value)
+		 * @return the script
+		 */
+		public static CharSequence show(String id, Integer opacity, Integer height)
+		{
+			AppendingStringBuffer sb2 = new AppendingStringBuffer();
+			sb2.append("Reflection.add(document.getElementById('");
+			sb2.append(id);
+			sb2.append("'), { ");
+			String komma = "";
+			if (height != null)
+			{
+				sb2.append("height: ").append(height.toString()).append("/100");
+				komma = ",";
+			}
+			if (opacity != null)
+			{
+				sb2.append(komma);
+				sb2.append("opacity: ").append(opacity.toString()).append("/100");
+			}
+			sb2.append("});");
+			return sb2;
+		}
+
+		/**
+		 * Gets the Javascript for removing a reflection from an image. You have
+		 * to manually add the REFLECTION_JS resource reference to your page if
+		 * you use this script directly.
+		 * 
+		 * @param id
+		 *            the markup id of the image.
+		 * @return the script.
+		 */
+		public static CharSequence hide(String id)
+		{
+			AppendingStringBuffer sb2 = new AppendingStringBuffer();
+			sb2.append("Reflection.remove(document.getElementById('");
+			sb2.append(id);
+			sb2.append("');");
+			return sb2;
+		}
+
 	}
 
 	/**
@@ -155,26 +246,11 @@ public class ReflectionBehavior extends AbstractBehavior
 	 * @param height
 	 *            the height of the reflection (may be null for default value)
 	 * @return the script
+	 * @deprecated use {@link Javascript#show(String, Integer, Integer)}
 	 */
 	public static CharSequence getAddReflectionScript(String id, Integer opacity, Integer height)
 	{
-		AppendingStringBuffer sb2 = new AppendingStringBuffer();
-		sb2.append("Reflection.add(document.getElementById('");
-		sb2.append(id);
-		sb2.append("'), { ");
-		String komma = "";
-		if (height != null)
-		{
-			sb2.append("height: ").append(height.toString()).append("/100");
-			komma = ",";
-		}
-		if (opacity != null)
-		{
-			sb2.append(komma);
-			sb2.append("opacity: ").append(opacity.toString()).append("/100");
-		}
-		sb2.append("});");
-		return sb2;
+		return Javascript.show(id, opacity, height);
 	}
 
 	/**
@@ -185,13 +261,10 @@ public class ReflectionBehavior extends AbstractBehavior
 	 * @param id
 	 *            the markup id of the image.
 	 * @return the script.
+	 * @deprecated use {@link Javascript#hide(String)}
 	 */
 	public static CharSequence getRemoveReflectionScript(String id)
 	{
-		AppendingStringBuffer sb2 = new AppendingStringBuffer();
-		sb2.append("Reflection.remove(document.getElementById('");
-		sb2.append(id);
-		sb2.append("');");
-		return sb2;
+		return Javascript.hide(id);
 	}
 }
