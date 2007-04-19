@@ -7,6 +7,7 @@ import org.wicketstuff.dojo.dojodnd.DojoDragCopyContainer;
 import org.wicketstuff.dojo.dojodnd.DojoDropContainer;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.image.Image;
+import org.apache.wicket.model.Model;
 
 public class DnDShower extends WebPage {
 	
@@ -15,7 +16,8 @@ public class DnDShower extends WebPage {
 		
 			public void onDrop(AjaxRequestTarget target, DojoDragContainer container, int position) {
 				System.out.println("position = " + position);
-				System.out.println("DojoDragContainer" + container.getId());
+				System.out.println("DojoDragContainer = " + container.getId());
+				System.out.println("DojoDragContainerModel = " + container.getModelObjectAsString());
 				
 			}
 		
@@ -26,6 +28,7 @@ public class DnDShower extends WebPage {
 		DojoDragContainer dragContainer2 = new DojoDragContainer("dragContainer2");
 		DojoDragContainer dragContainer3 = new DojoDragContainer("dragContainer3");
 		add(dragContainer1);
+		dragContainer1.setModel(new Model("foo"));
 		add(dragContainer2);
 		add(dragContainer3);
 		
