@@ -18,17 +18,16 @@
  */
 package wicket.contrib.markup.html.yui;
 
-import wicket.MarkupContainer;
-import wicket.behavior.HeaderContributor;
-import wicket.markup.html.panel.Panel;
-import wicket.model.IModel;
+import org.apache.wicket.behavior.HeaderContributor;
+import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.IModel;
 
 /**
  * Abstract panel for contributing common classes for YUI.
  * 
  * @author Eelco Hillenius
  */
-public class AbstractYuiPanel<T> extends Panel<T> {
+public class AbstractYuiPanel extends Panel {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -36,8 +35,8 @@ public class AbstractYuiPanel<T> extends Panel<T> {
 	 * 
 	 * @param id
 	 */
-	public AbstractYuiPanel(MarkupContainer parent, String id) {
-		super(parent, id);
+	public AbstractYuiPanel(String id) {
+		super(id);
 		addHeaderContributions();
 	}
 
@@ -47,8 +46,8 @@ public class AbstractYuiPanel<T> extends Panel<T> {
 	 * @param id
 	 * @param model
 	 */
-	public AbstractYuiPanel(MarkupContainer parent, String id, IModel<T> model) {
-		super(parent, id, model);
+	public AbstractYuiPanel(String id, IModel model) {
+		super(id, model);
 		addHeaderContributions();
 	}
 
@@ -56,15 +55,19 @@ public class AbstractYuiPanel<T> extends Panel<T> {
 	 * Adds the default header contributions for all YUI components.
 	 */
 	private void addHeaderContributions() {
-		add(HeaderContributor.forJavaScript(AbstractYuiPanel.class, "YAHOO.js"));
-		add(HeaderContributor.forJavaScript(AbstractYuiPanel.class, "log.js"));
-		add(HeaderContributor.forJavaScript(AbstractYuiPanel.class, "color.js"));
-		add(HeaderContributor.forJavaScript(AbstractYuiPanel.class, "key.js"));
+		add(HeaderContributor.forJavaScript(AbstractYuiPanel.class, "yahoo.js"));
 		add(HeaderContributor.forJavaScript(AbstractYuiPanel.class, "event.js"));
 		add(HeaderContributor.forJavaScript(AbstractYuiPanel.class, "dom.js"));
-		add(HeaderContributor.forJavaScript(AbstractYuiPanel.class,
-				"animation.js"));
-		add(HeaderContributor.forJavaScript(AbstractYuiPanel.class,
-				"dragdrop.js"));
+		add(HeaderContributor.forJavaScript(AbstractYuiPanel.class, "animation.js"));
+		add(HeaderContributor.forJavaScript(AbstractYuiPanel.class, "autocomplete.js"));
+		add(HeaderContributor.forJavaScript(AbstractYuiPanel.class, "calendar.js"));
+		add(HeaderContributor.forJavaScript(AbstractYuiPanel.class, "connection.js"));
+		add(HeaderContributor.forJavaScript(AbstractYuiPanel.class, "container.js"));
+		add(HeaderContributor.forJavaScript(AbstractYuiPanel.class, "dragdrop.js"));
+		add(HeaderContributor.forJavaScript(AbstractYuiPanel.class, "logger.js"));
+		add(HeaderContributor.forJavaScript(AbstractYuiPanel.class, "menu.js"));
+		add(HeaderContributor.forJavaScript(AbstractYuiPanel.class, "slider.js"));
+		add(HeaderContributor.forJavaScript(AbstractYuiPanel.class, "treeview.js"));
+		add(HeaderContributor.forJavaScript(AbstractYuiPanel.class, "DDSwap.js"));
 	}
 }
