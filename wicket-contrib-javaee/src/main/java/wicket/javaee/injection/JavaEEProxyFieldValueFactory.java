@@ -25,40 +25,37 @@ import javax.ejb.EJB;
 import javax.persistence.PersistenceUnit;
 
 import org.apache.wicket.injection.IFieldValueFactory;
-import org.apache.wicket.javaee.EntityManagerFactoryLocator;
-import org.apache.wicket.javaee.JavaEEBeanLocator;
-import org.apache.wicket.javaee.JndiObjectLocator;
-import org.apache.wicket.javaee.naming.IJndiNamingStrategy;
-import org.apache.wicket.javaee.naming.StandardJndiNamingStrategy;
 import org.apache.wicket.proxy.IProxyTargetLocator;
 import org.apache.wicket.proxy.LazyInitProxyFactory;
 
+import wicket.javaee.EntityManagerFactoryLocator;
+import wicket.javaee.JavaEEBeanLocator;
+import wicket.javaee.JndiObjectLocator;
+import wicket.javaee.naming.IJndiNamingStrategy;
+import wicket.javaee.naming.StandardJndiNamingStrategy;
+
 /**
- * {@link IFieldValueFactory} that creates
- * proxies of EJBs based on the {@link javax.persistence.EJB} annotation
- * applied to a field. 
+ * {@link IFieldValueFactory} that creates proxies of EJBs based on the
+ * {@link javax.persistence.EJB} annotation applied to a field.
  * 
  * @author Filippo Diotalevi
  * 
  */
-public class JavaEEProxyFieldValueFactory implements IFieldValueFactory
-{
+public class JavaEEProxyFieldValueFactory implements IFieldValueFactory {
 	private final ConcurrentHashMap<IProxyTargetLocator, Object> cache = new ConcurrentHashMap<IProxyTargetLocator, Object>();
 	private IJndiNamingStrategy namingStrategy;
 
 	/**
 	 * Constructor
 	 */
-	public JavaEEProxyFieldValueFactory()
-	{
+	public JavaEEProxyFieldValueFactory() {
 		this(new StandardJndiNamingStrategy());
 	}
-	
+
 	/**
 	 * Constructor
 	 */
-	public JavaEEProxyFieldValueFactory(IJndiNamingStrategy namingStrategy)
-	{
+	public JavaEEProxyFieldValueFactory(IJndiNamingStrategy namingStrategy) {
 		this.namingStrategy = namingStrategy;
 	}
 
@@ -66,62 +63,57 @@ public class JavaEEProxyFieldValueFactory implements IFieldValueFactory
 	 * @see wicket.extensions.injection.IFieldValueFactory#getFieldValue(java.lang.reflect.Field,
 	 *      java.lang.Object)
 	 */
-	public Object getFieldValue(Field field, Object fieldOwner)
-	{
+	public Object getFieldValue(Field field, Object fieldOwner) {
 		IProxyTargetLocator locator = getProxyTargetLocator(field);
 		return getCachedProxy(field.getType(), locator);
 	}
 
-	private IProxyTargetLocator getProxyTargetLocator(Field field) {
-		if (field.isAnnotationPresent(EJB.class))
-		{
-			return new JavaEEBeanLocator(field.getAnnotation(EJB.class).name(), field.getType(), namingStrategy);
-		}
-		
-		if (field.isAnnotationPresent(PersistenceUnit.class)) 
-		{
-			return new EntityManagerFactoryLocator(field.getAnnotation(PersistenceUnit.class).unitName());
-		}
-		
-		if (field.isAnnotationPresent(Resource.class)) 
-		{
-			return new JndiObjectLocator(field.getAnnotation(Resource.class).name(), field.getType());
-		}
-		//else
-		return null;
-	}
-
-	private Object getCachedProxy(Class type, IProxyTargetLocator locator) {
-		if (locator ==  null)
-			return null;
-		
-		if (cache.containsKey(locator))
-		{
-			return cache.get(locator);
-		}
-
-		if (!Modifier.isFinal(type.getModifiers()))
-		{
-			Object proxy = LazyInitProxyFactory.createProxy(type, locator);
-			cache.put(locator, proxy);
-			return proxy;	
-		}
-		else
-		{
-			Object value = locator.locateProxyTarget();
-			cache.put(locator, value);
-			return value;	
-		}	
-		
-	}
-
-
 	/**
 	 * @see wicket.extensions.injection.IFieldValueFactory#supportsField(java.lang.reflect.Field)
 	 */
-	public boolean supportsField(Field field)
-	{
-		return field.isAnnotationPresent(EJB.class) || field.isAnnotationPresent(Resource.class) || field.isAnnotationPresent(PersistenceUnit.class);
+	public boolean supportsField(Field field) {
+		return field.isAnnotationPresent(EJB.class)
+				|| field.isAnnotationPresent(Resource.class)
+				|| field.isAnnotationPresent(PersistenceUnit.class);
+	}
+
+	private Object getCachedProxy(Class type, IProxyTargetLocator locator) {
+		if (locator == null)
+			return null;
+
+		if (cache.containsKey(locator)) {
+			return cache.get(locator);
+		}
+
+		if (!Modifier.isFinal(type.getModifiers())) {
+			Object proxy = LazyInitProxyFactory.createProxy(type, locator);
+			cache.put(locator, proxy);
+			return proxy;
+		} else {
+			Object value = locator.locateProxyTarget();
+			cache.put(locator, value);
+			return value;
+		}
+
+	}
+
+	private IProxyTargetLocator getProxyTargetLocator(Field field) {
+		if (field.isAnnotationPresent(EJB.class)) {
+			return new JavaEEBeanLocator(field.getAnnotation(EJB.class).name(),
+					field.getType(), namingStrategy);
+		}
+
+		if (field.isAnnotationPresent(PersistenceUnit.class)) {
+			return new EntityManagerFactoryLocator(field.getAnnotation(
+					PersistenceUnit.class).unitName());
+		}
+
+		if (field.isAnnotationPresent(Resource.class)) {
+			return new JndiObjectLocator(field.getAnnotation(Resource.class)
+					.name(), field.getType());
+		}
+		// else
+		return null;
 	}
 
 }

@@ -18,43 +18,43 @@ package wicket.javaee.injection;
 
 import org.apache.wicket.injection.ComponentInjector;
 import org.apache.wicket.injection.web.InjectorHolder;
-import org.apache.wicket.javaee.naming.IJndiNamingStrategy;
 import org.apache.wicket.protocol.http.WebApplication;
 
+import wicket.javaee.naming.IJndiNamingStrategy;
+
 /**
- * This injection must be initialized in the Wicket WebApplication in order to 
- * enable Java EE 5 resource injection in Wicket Pages
- * Add the initialization in WebApplication's init() method, e.g.
+ * This injection must be initialized in the Wicket WebApplication in order to
+ * enable Java EE 5 resource injection in Wicket Pages Add the initialization in
+ * WebApplication's init() method, e.g.
  * 
- * protected void init() {
- *   addComponentInstantiationListener(new JavaEEComponentInjector(this));
- * }
+ * protected void init() { addComponentInstantiationListener(new
+ * JavaEEComponentInjector(this)); }
  * 
  * @author Filippo Diotalevi
  */
-public class JavaEEComponentInjector extends ComponentInjector
-{
+public class JavaEEComponentInjector extends ComponentInjector {
 
 	/**
-	 * Constructor 
+	 * Constructor
+	 * 
 	 * @param webapp
 	 *            wicket web application
 	 */
-	public JavaEEComponentInjector(WebApplication webapp)
-	{
+	public JavaEEComponentInjector(WebApplication webapp) {
 		InjectorHolder.setInjector(new AnnotJavaEEInjector());
 	}
-	
+
 	/**
-	 * Constructor 
-	 * @param webapp - wicket web application
-	 * @param namingStrategy - a jndi naming strategy to lookup ejb references
+	 * Constructor
+	 * 
+	 * @param webapp -
+	 *            wicket web application
+	 * @param namingStrategy -
+	 *            a jndi naming strategy to lookup ejb references
 	 */
-	public JavaEEComponentInjector(WebApplication webapp, IJndiNamingStrategy namingStrategy)
-	{
+	public JavaEEComponentInjector(WebApplication webapp,
+			IJndiNamingStrategy namingStrategy) {
 		InjectorHolder.setInjector(new AnnotJavaEEInjector(namingStrategy));
 	}
-
-
 
 }
