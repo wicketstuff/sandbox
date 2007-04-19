@@ -17,91 +17,72 @@
  */
 package wicket.contrib.yui.examples.pages;
 
-import wicket.MarkupContainer;
 import wicket.contrib.markup.html.yui.slider.Slider;
 import wicket.contrib.markup.html.yui.slider.SliderSettings;
 import wicket.contrib.yui.examples.WicketExamplePage;
-import wicket.markup.html.form.Form;
-import wicket.markup.html.form.TextField;
-import wicket.markup.html.panel.FeedbackPanel;
-import wicket.model.CompoundPropertyModel;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
+import org.apache.wicket.model.PropertyModel;
 
 /**
  * Page that displays the calendar component of the Yahoo UI library.
  * 
- * @author Joshua Lim
  * @author Eelco Hillenius
  */
-public class SliderPage extends WicketExamplePage {
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
+public class SliderPage extends WicketExamplePage
+{
 	/**
 	 * Construct.
 	 */
-	public SliderPage() {
-		new SliderForm(this, "sliderForm");
-		new FeedbackPanel(this, "feedback");
+	public SliderPage()
+	{
+        add(new FeedbackPanel("feedback"));
+        add(new SliderForm("sliderForm"));
 	}
+    
+    private class SliderForm extends Form {
+        
+        private Integer wicketScore = new Integer(0);
+        private Integer strutsScore = new Integer(0);
+        private TextField tfWicket;
+        private TextField tfStruts;
+        
+        public SliderForm(String id) {
+            super(id);
+            
+            int leftUp 	  = 100;
+            int rightDown = 100;
+            int tick 	  = 1;
+            
+            add(tfWicket = new TextField("wicketScore", new PropertyModel(this, "wicketScore")));
+            add(new Slider("wicketSlider", new PropertyModel(this, "selection"),  tfWicket, SliderSettings.getDefault(leftUp, rightDown, tick)));
 
-	private class SliderForm extends Form<SliderForm> {
+            add(tfStruts = new TextField("strutsScore", new PropertyModel(this, "strutsScore")));
+            add(new Slider("strutsSlider", new PropertyModel(this, "selection"), tfStruts, SliderSettings.getAqua(0, 300, 30)));
+            
+        }
+        
+        protected void onSubmit() {
+            info("Wicket: " + this.wicketScore.toString());
+            info("Struts: " + this.strutsScore.toString());
+        }
+        
+        public Integer getStrutsScore() {
+            return strutsScore;
+        }
 
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;
+        public void setStrutsScore(Integer strutsScore) {
+            this.strutsScore = strutsScore;
+        }
 
-		private Integer wicketScore = new Integer(0);
+        public Integer getWicketScore() {
+            return wicketScore;
+        }
 
-		private Integer strutsScore = new Integer(0);
-
-		private TextField tfWicket;
-
-		private TextField tfStruts;
-
-		public SliderForm(MarkupContainer parent, String id) {
-
-			super(parent, id);
-			setModel(new CompoundPropertyModel<SliderForm>(this));
-
-			int leftUp = 100;
-			int rightDown = 100;
-			int tick = 1;
-
-			tfWicket = new TextField(this, "wicketScore");
-			new Slider(this, "wicketSlider", tfWicket, SliderSettings
-					.getDefault(leftUp, rightDown, tick));
-
-			tfStruts = new TextField(this, "strutsScore");
-			new Slider(this, "strutsSlider", tfStruts, SliderSettings.getAqua(
-					0, 300, 30));
-
-		}
-
-		@Override
-		protected void onSubmit() {
-			info("Wicket: " + this.wicketScore.toString());
-			info("Struts: " + this.strutsScore.toString());
-		}
-
-		public Integer getStrutsScore() {
-			return strutsScore;
-		}
-
-		public void setStrutsScore(Integer strutsScore) {
-			this.strutsScore = strutsScore;
-		}
-
-		public Integer getWicketScore() {
-			return wicketScore;
-		}
-
-		public void setWicketScore(Integer wicketScore) {
-			this.wicketScore = wicketScore;
-		}
-	}
+        public void setWicketScore(Integer wicketScore) {
+            this.wicketScore = wicketScore;
+        }
+    }
 
 }
