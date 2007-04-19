@@ -5,64 +5,76 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>wicket-stuff</groupId>
 	<artifactId>wicket-contrib-datepicker</artifactId>
+	<version>1.3-SNAPSHOT</version>
 	<packaging>jar</packaging>
-	<version>2.0-SNAPSHOT</version>
-	<name>Wicket Date Picker</name>
-	<description></description>
+
+	<name>Wicket Contrib DatePicker</name>
+	<description>
+		Repackaging of the LGPL licensed DatePicker component for backwards compatibility.
+	</description>
+	<url>http://wicket-stuff.sourceforge.net/wicket-contrib-datepicker</url>
+	<inceptionYear>2005</inceptionYear>
+
+	<organization>
+		<name>Wicket Stuff</name>
+		<url>http://wicket-stuff.sourceforge.net</url>
+	</organization>
+
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+		<license>
+			<name>GNU Lesser General Public License (LGPL)</name>
+			<url>http://www.gnu.org/copyleft/lesser.html</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<issueManagement>
+		<url>http://sourceforge.net/tracker/?group_id=134391</url>
+	</issueManagement>
 
 	<scm>
-		<connection>
-			scm:svn:https://svn.sourceforge.net/svnroot/wicket-stuff/trunk/wicket-contrib-datepicker
-		</connection>
-		<developerConnection>
-			scm:svn:https://svn.sourceforge.net/svnroot/wicket-stuff/trunk/wicket-contrib-datepicker
-		</developerConnection>
-		<url>
-			http://svn.sourceforge.net/viewcvs.py/wicket-stuff/trunk/wicket-contrib-data
-		</url>
+		<connection>scm:svn:http://svn.sourceforge.net/wicket-stuff/trunk/wicket-contrib-datepicker</connection>
+		<developerConnection>scm:svn:https://svn.sourceforge.net/wicket-stuff/trunk/wicket-contrib-datepicker</developerConnection>
+		<url>http://svn.sourceforge.net/viewcvs.py/wicket-stuff/trunk/wicket-contrib-datepicker</url>
 	</scm>
+
+	<mailingLists>
+		<mailingList>
+			<name>Wicket Announcements List</name>
+			<subscribe>http://lists.sourceforge.net/mailman/listinfo/wicket-announce</subscribe>
+			<unsubscribe>http://lists.sourceforge.net/mailman/listinfo/wicket-announce</unsubscribe>
+			<archive>http://sourceforge.net/mailarchive/forum.php?forum=wicket-announce</archive>
+		</mailingList>
+		<mailingList>
+			<name>Wicket User List</name>
+			<subscribe>http://lists.sourceforge.net/mailman/listinfo/wicket-user</subscribe>
+			<unsubscribe>http://lists.sourceforge.net/mailman/listinfo/wicket-user</unsubscribe>
+			<archive>http://sourceforge.net/mailarchive/forum.php?forum=wicket-user</archive>
+		</mailingList>
+		<mailingList>
+			<name>Wicket Development List</name>
+			<subscribe>mailto:wicket-dev-subscribe@incubator.apache.org</subscribe>
+			<unsubscribe>mailto:wicket-dev-unsubscribe@incubator.apache.org</unsubscribe>
+			<archive>http://www.nabble.com/Wicket---Dev-f13977.html</archive>
+		</mailingList>
+	</mailingLists>
 
 	<dependencies>
 		<dependency>
-			<groupId>wicket</groupId>
+			<groupId>org.apache.wicket</groupId>
 			<artifactId>wicket</artifactId>
-			<version>2.0-SNAPSHOT</version>
-			<type>jar</type>
+			<version>1.3.0-incubating-SNAPSHOT</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>wicket</groupId>
-			<artifactId>wicket-extensions</artifactId>
-			<version>2.0-SNAPSHOT</version>
-			<type>jar</type>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-			<version>1.1.0</version>
-			<optional>true</optional>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.mortbay.jetty</groupId>
-			<artifactId>jetty</artifactId>
-			<version>6.0.1</version>
-		</dependency>
-		<dependency>
-			<groupId>org.mortbay.jetty</groupId>
-			<artifactId>jetty-util</artifactId>
-			<version>6.0.1</version>
-		</dependency>
-		<dependency>
-			<groupId>org.mortbay.jetty</groupId>
-			<artifactId>jetty-management</artifactId>
-			<version>6.0.1</version>
-		</dependency>
-		<dependency>
-			<groupId>org.mortbay.jetty</groupId>
-			<artifactId>servlet-api</artifactId>
-			<version>2.5-6.0.0beta16</version>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>3.8.1</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -84,7 +96,7 @@
 		<testResources>
 			<testResource>
 				<filtering>false</filtering>
-				<directory>src/main/test</directory>
+				<directory>src/test/java</directory>
 				<includes>
 					<include>**</include>
 				</includes>
@@ -99,9 +111,39 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
-					<source>1.5</source>
-					<target>1.5</target>
+					<source>1.4</source>
+					<target>1.4</target>
 				</configuration>
+			</plugin>
+			<plugin>
+				<inherited>true</inherited>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<configuration>
+					<minmemory>128m</minmemory>
+					<maxmemory>256m</maxmemory>
+				</configuration>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<inherited>true</inherited>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -112,53 +154,21 @@
 						<descriptor>src/assembly/bin.xml</descriptor>
 					</descriptors>
 					<finalName>${artifactId}-${version}</finalName>
-					<outputDirectory>
-						target/distributions
-					</outputDirectory>
+					<outputDirectory>target/distributions</outputDirectory>
 					<workDirectory>target/assembly/work</workDirectory>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-war-plugin</artifactId>
-				<configuration>
-					<webXml>
-						${basedir}/src/webapp/WEB-INF/web.xml
-					</webXml>
-					<warName>wicket-quickstart</warName>
-					<warSourceDirectory>src/webapp</warSourceDirectory>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<configuration>
-					<minmemory>128m</minmemory>
-					<maxmemory>256m</maxmemory>
 				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-site-plugin</artifactId>
 				<configuration>
-					<templateDirectory>
-						src/site/template/
-					</templateDirectory>
+					<templateDirectory>src/site/template/</templateDirectory>
 					<template>wicket-site.vm</template>
 				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<configuration>
-					<includes>
-						<include>**/*Test.java</include>
-					</includes>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>surefire-report-maven-plugin</artifactId>
+				<artifactId>maven-javadoc-plugin</artifactId>
 			</plugin>
 		</plugins>
 	</build>
@@ -166,51 +176,22 @@
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>
-					maven-project-info-reports-plugin
-				</artifactId>
-				<reportSets>
-					<reportSet>
-						<reports>
-							<report>dependencies</report>
-							<report>project-team</report>
-							<report>mailing-list</report>
-							<report>issue-tracking</report>
-							<report>license</report>
-							<report>scm</report>
-						</reports>
-					</reportSet>
-				</reportSets>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>changes-maven-plugin</artifactId>
-				<version>2.0-beta-1</version>
-				<reportSets>
-					<reportSet>
-						<reports>
-							<report>changes-report</report>
-						</reports>
-					</reportSet>
-				</reportSets>
+				<artifactId>maven-project-info-reports-plugin</artifactId>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
 			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>surefire-report-maven-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>1.5</source>
-					<target>1.5</target>
-				</configuration>
-			</plugin>
 		</plugins>
 	</reporting>
-
+	<distributionManagement>
+		<site>
+			<id>wicket-site</id>
+			<url>scpexe://shell.sourceforge.net/home/groups/w/wi/wicket-stuff/htdocs/wicket-contrib-datepicker</url>
+		</site>
+		<repository>
+			<id>wicket-repo</id>
+			<url>scpexe://shell.sourceforge.net/home/groups/w/wi/wicket/htdocs/maven2</url>
+		</repository>
+	</distributionManagement>
 </project>

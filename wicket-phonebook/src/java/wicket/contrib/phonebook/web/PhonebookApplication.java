@@ -1,7 +1,7 @@
 /*
- * $Id$
- * $Revision$
- * $Date$
+ * $Id: PhonebookApplication.java 517 2006-01-04 21:53:23Z ivaynberg $
+ * $Revision: 517 $
+ * $Date: 2006-01-04 13:53:23 -0800 (Wed, 04 Jan 2006) $
  * 
  * ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -18,29 +18,21 @@
  */
 package wicket.contrib.phonebook.web;
 
-import wicket.Page;
 import wicket.contrib.phonebook.web.page.ListContactsPage;
-import wicket.protocol.http.WebApplication;
-import wicket.spring.injection.SpringComponentInjector;
-import wicket.util.time.Duration;
+import org.apache.wicket.protocol.http.WebApplication;
+import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 
 public class PhonebookApplication extends WebApplication {
 
-	public Class<? extends Page> getHomePage() {
+	@SuppressWarnings("unchecked")
+	public Class getHomePage() {
 		return ListContactsPage.class;
 	}
 
-	/**
-	 * Custom initialisation. This method is called right after this application
-	 * class is constructed, and the wicket servlet is set.
-	 */
+	@Override
 	protected void init() {
 		super.init();
-
+		// setup component injection
 		addComponentInstantiationListener(new SpringComponentInjector(this));
-
-		getResourceSettings().addResourceFolder("src/java");
-		getResourceSettings().setResourcePollFrequency(Duration.seconds(10));
-
 	}
 }

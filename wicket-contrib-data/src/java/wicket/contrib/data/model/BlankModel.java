@@ -1,7 +1,7 @@
 package wicket.contrib.data.model;
 
-import wicket.WicketRuntimeException;
-import wicket.model.AbstractDetachableModel;
+import org.apache.wicket.WicketRuntimeException;
+import org.apache.wicket.model.IModel;
 
 /**
  * A simple detachable model that creates a new bean instance on every attach.
@@ -11,16 +11,13 @@ import wicket.model.AbstractDetachableModel;
  * 
  * @author Phil Kulak
  */
-public class BlankModel<T> extends AbstractDetachableModel<T>
+public class BlankModel implements IModel
 {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+	private Object object;
 
-	private T object;
+	private Class objectClass;
 
-	private Class<T> objectClass;
+	private transient boolean attached = false;
 
 	/**
 	 * Constructor
@@ -28,16 +25,15 @@ public class BlankModel<T> extends AbstractDetachableModel<T>
 	 * @param objectClass
 	 *            the class that will be used to create new beans
 	 */
-	public BlankModel(Class<T> objectClass)
+	public BlankModel(Class objectClass)
 	{
 		this.objectClass = objectClass;
 	}
 
 	/**
-	 * @see wicket.model.AbstractDetachableModel#onAttach()
+	 * Attach.
 	 */
-	@Override
-	protected void onAttach()
+	public void attach()
 	{
 		try
 		{
@@ -50,32 +46,35 @@ public class BlankModel<T> extends AbstractDetachableModel<T>
 		}
 	}
 
-	/**
-	 * @see wicket.model.AbstractDetachableModel#onDetach()
-	 */
-	@Override
-	protected void onDetach()
+	public void detach()
 	{
 		object = null;
+		attached = false;
 	}
 
-	/**
-	 * @see wicket.model.AbstractDetachableModel#onGetObject()
-	 */
-	@Override
-	protected T onGetObject()
+	public Object getObject()
 	{
+		if (!attached)
+		{
+			attach();
+			attached = true;
+		}
 		return object;
 	}
 
 	/**
-	 * @see wicket.model.AbstractDetachableModel#onSetObject(java.lang.Object)
+	 * Whether this model has been attached to the current request.
+	 * 
+	 * @return whether this model has been attached to the current request
 	 */
-	@Override
-	@SuppressWarnings("unchecked")
-	protected void onSetObject(T object)
+	public final boolean isAttached()
+	{
+		return attached;
+	}
+
+	public void setObject(Object object)
 	{
 		this.object = object;
-		this.objectClass = (Class<T>) object.getClass();
+		this.objectClass = object.getClass();
 	}
 }

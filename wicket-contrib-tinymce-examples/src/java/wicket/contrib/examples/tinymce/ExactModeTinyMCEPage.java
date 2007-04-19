@@ -1,32 +1,37 @@
 package wicket.contrib.examples.tinymce;
 
+import org.apache.wicket.markup.html.form.TextArea;
+import org.apache.wicket.model.Model;
+
 import wicket.contrib.tinymce.TinyMCEPanel;
+import wicket.contrib.tinymce.settings.SpellCheckPlugin;
 import wicket.contrib.tinymce.settings.TinyMCESettings;
 import wicket.contrib.tinymce.settings.TinyMCESettings.Mode;
-import wicket.markup.html.form.TextArea;
-import wicket.markup.html.panel.FeedbackPanel;
-import wicket.model.Model;
+import wicket.contrib.tinymce.settings.TinyMCESettings.Theme;
 
 /**
  * @author Iulian-Corneliu COSTAN
  */
-@SuppressWarnings("unchecked")
 public class ExactModeTinyMCEPage extends TinyMCEBasePage {
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * Construct.
-	 */
 	public ExactModeTinyMCEPage() {
 
-		TextArea textArea1 = new TextArea(this, "ta1", new Model(TEXT));
-		TextArea textArea2 = new TextArea(this, "ta2", new Model(TEXT));
-		FeedbackPanel panel = new FeedbackPanel(this, "feedback");
+		TextArea textArea1 = new TextArea("ta1", new Model(TEXT));
+		TextArea textArea2 = new TextArea("ta2", new Model(TEXT));
 
-		TinyMCESettings settings = new TinyMCESettings(Mode.exact);
-		settings.setLanguage(TinyMCESettings.Language.ro);
+		TinyMCESettings settings = new TinyMCESettings(Mode.exact, Theme.advanced);
+		settings.setLanguage(TinyMCESettings.Language.RO);
+		
+        SpellCheckPlugin spellCheckPlugin = new SpellCheckPlugin();
+        settings.add(spellCheckPlugin.getSpellCheckButton(), TinyMCESettings.Toolbar.first, TinyMCESettings.Position.after);
 		settings.enableTextArea(textArea1);
-		TinyMCEPanel tinyMCEPanel = new TinyMCEPanel(this, "tinyMCE", settings);
+		
+		TinyMCEPanel tinyMCEPanel = new TinyMCEPanel("tinyMCE", settings);
+
+		add(textArea1);
+		add(textArea2);
+		add(tinyMCEPanel);
 	}
 
 	private String TEXT = "Some <b>element</b>, this is to be editor 1.";

@@ -17,17 +17,17 @@
  */
 package wicket.contrib.database;
 
-import wicket.PageParameters;
-import wicket.markup.html.WebPage;
-import wicket.model.IModel;
-import wicket.util.string.StringValueConversionException;
+import org.apache.wicket.PageParameters;
+import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.util.string.StringValueConversionException;
 
 /**
  * Base class for pages in a database driven web application.
  * 
  * @author Jonathan Locke
  */
-public class DatabaseWebPage<T> extends WebPage<T>
+public class DatabaseWebPage extends WebPage
 {
 	private static final long serialVersionUID = 1L;
 
@@ -44,7 +44,7 @@ public class DatabaseWebPage<T> extends WebPage<T>
 		this.parameters = parameters;
 	}
 
-	public DatabaseWebPage(IModel<T> model)
+	public DatabaseWebPage(IModel model)
 	{
 		super(model);
 		this.parameters = null;

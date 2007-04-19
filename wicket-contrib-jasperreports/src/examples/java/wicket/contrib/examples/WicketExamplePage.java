@@ -1,7 +1,6 @@
 /*
- * $Id: WicketExamplePage.java 627 2006-03-20 07:12:13 +0000 (Mon, 20 Mar 2006)
- * eelco12 $ $Revision$ $Date: 2006-03-20 07:12:13 +0000 (Mon, 20 Mar
- * 2006) $
+ * $Id$
+ * $Revision$ $Date$
  * 
  * ==================================================================== Licensed
  * under the Apache License, Version 2.0 (the "License"); you may not use this
@@ -18,8 +17,8 @@
  */
 package wicket.contrib.examples;
 
-import wicket.markup.html.WebPage;
-import wicket.util.string.Strings;
+import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.util.string.Strings;
 
 /**
  * Base class for all example pages.
@@ -34,7 +33,6 @@ public class WicketExamplePage extends WebPage
 	public WicketExamplePage()
 	{
 		final String packageName = getClass().getPackage().getName();
-		new WicketExampleHeader(this, "mainNavigation", Strings.afterLast(packageName,
-				'.'));
+		add(new WicketExampleHeader("mainNavigation", Strings.afterLast(packageName, '.')));
 	}
 }

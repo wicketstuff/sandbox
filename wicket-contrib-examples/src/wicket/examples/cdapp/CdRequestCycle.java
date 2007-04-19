@@ -4,13 +4,13 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
-import wicket.RequestCycle;
-import wicket.Response;
+import org.apache.wicket.RequestCycle;
+import org.apache.wicket.Response;
 import wicket.contrib.data.model.hibernate.HibernateDaoSupport;
-import wicket.examples.cdapp.model.Dao;
-import wicket.protocol.http.WebRequest;
-import wicket.protocol.http.WebRequestCycle;
-import wicket.protocol.http.WebSession;
+import org.apache.wicket.examples.cdapp.model.Dao;
+import org.apache.wicket.protocol.http.WebRequest;
+import org.apache.wicket.protocol.http.WebRequestCycle;
+import org.apache.wicket.protocol.http.WebSession;
 
 public class CdRequestCycle extends WebRequestCycle {
 	private Dao dao;

@@ -1,6 +1,6 @@
 package wicket.contrib.data.model.bind;
 
-import wicket.model.AbstractModel;
+import org.apache.wicket.model.IModel;
 
 /**
  * A convenience class to represent the attribute value in an attribute
@@ -8,14 +8,23 @@ import wicket.model.AbstractModel;
  * 
  * @author Phil Kulak
  */
-public abstract class AttributeModel extends AbstractModel<String>
+public abstract class AttributeModel implements IModel
 {
-	public String getObject()
+	public void detach()
+	{
+	}
+
+	public IModel getNestedModel()
+	{
+		return null;
+	}
+
+	public Object getObject()
 	{
 		return getAttributeValue();
 	}
 
-	public void setObject(String object)
+	public void setObject(Object object)
 	{
 		throw new UnsupportedOperationException("Attribute models can "
 				+ "not have their models set.");

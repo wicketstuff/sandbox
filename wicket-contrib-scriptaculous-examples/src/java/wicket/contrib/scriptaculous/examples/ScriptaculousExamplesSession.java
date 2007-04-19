@@ -20,9 +20,9 @@ package wicket.contrib.scriptaculous.examples;
 
 import java.util.List;
 
-import wicket.Request;
-import wicket.protocol.http.WebApplication;
-import wicket.protocol.http.WebSession;
+import org.apache.wicket.Request;
+import org.apache.wicket.protocol.http.WebApplication;
+import org.apache.wicket.protocol.http.WebSession;
 
 /**
  * @author hillenius

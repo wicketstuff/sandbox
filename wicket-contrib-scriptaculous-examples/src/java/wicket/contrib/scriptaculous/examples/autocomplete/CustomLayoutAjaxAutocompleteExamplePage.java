@@ -1,40 +1,19 @@
 package wicket.contrib.scriptaculous.examples.autocomplete;
 
-import wicket.MarkupContainer;
 import wicket.contrib.scriptaculous.autocomplete.CustomLayoutAjaxAutocompleteTextField;
-import wicket.markup.html.WebPage;
-import wicket.markup.html.form.Button;
-import wicket.markup.html.form.Form;
-import wicket.model.CompoundPropertyModel;
+import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.markup.html.form.Button;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.model.CompoundPropertyModel;
 
-public class CustomLayoutAjaxAutocompleteExamplePage extends WebPage
-{
+public class CustomLayoutAjaxAutocompleteExamplePage extends WebPage {
 
-	private class AutocompleteExampleForm extends Form
-	{
-		public AutocompleteExampleForm(MarkupContainer parent, String id)
-		{
-			super(parent, id, new CompoundPropertyModel(new EmailSearchCommand()));
-
-			new CustomLayoutAjaxAutocompleteTextField(this, "emailAddress",
-					CustomLayoutAjaxAutocompleteExamplePageContribution.class);
-			new Button(this, "submitButton")
-			{
-				@Override
-				public void onSubmit()
-				{
-				}
-			};
-		}
-
-		protected void onSubmit()
-		{
-			// do something here
-		}
+	public CustomLayoutAjaxAutocompleteExamplePage() {
+		super();
+		add(new AutocompleteExampleForm("searchForm"));
 	}
 
-	private class EmailSearchCommand
-	{
+	private class EmailSearchCommand {
 		private String emailAddress;
 
 		public String getEmailAddress()
@@ -49,9 +28,16 @@ public class CustomLayoutAjaxAutocompleteExamplePage extends WebPage
 
 	}
 
-	public CustomLayoutAjaxAutocompleteExamplePage()
-	{
-		super();
-		new AutocompleteExampleForm(this, "searchForm");
+	private class AutocompleteExampleForm extends Form {
+		public AutocompleteExampleForm(String id) {
+			super(id, new CompoundPropertyModel(new EmailSearchCommand()));
+
+			add(new CustomLayoutAjaxAutocompleteTextField("emailAddress", CustomLayoutAjaxAutocompleteExamplePageContribution.class));
+			add(new Button("submitButton"));
+		}
+
+		protected void onSubmit() {
+			//do something here
+		}
 	}
 }

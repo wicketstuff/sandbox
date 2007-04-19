@@ -1,7 +1,7 @@
 /*
- * $Id$
- * $Revision$
- * $Date$
+ * $Id: ContactDao.java 475 2005-12-08 23:44:08 -0800 (Thu, 08 Dec 2005) ivaynberg $
+ * $Revision: 475 $
+ * $Date: 2005-12-08 23:44:08 -0800 (Thu, 08 Dec 2005) $
  * 
  * ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -61,7 +61,7 @@ public interface ContactDao {
 	 *            Query Paramaters to use.
 	 * @return The results of the query as an Iterator.
 	 */
-	Iterator find(QueryParam qp, Contact filter);
+	Iterator<Contact> find(QueryParam qp, Contact filter);
 
 	/**
 	 * Return the number of Contacts in the DB.
@@ -75,5 +75,5 @@ public interface ContactDao {
 	 * 
 	 * @return the list of all unique last names in the database
 	 */
-	List getUniqueLastNames();
+	List<String> getUniqueLastNames();
 }

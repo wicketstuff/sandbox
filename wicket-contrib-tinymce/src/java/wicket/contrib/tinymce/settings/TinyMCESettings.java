@@ -28,11 +28,10 @@ import java.util.Set;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
 import org.apache.commons.collections.set.ListOrderedSet;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import wicket.Component;
-import wicket.markup.html.form.TextArea;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.wicket.Component;
+import org.apache.wicket.markup.html.form.TextArea;
 
 /**
  * Settings class for TinyMCE editor. User can add/remove buttons,
@@ -47,25 +46,26 @@ import wicket.markup.html.form.TextArea;
 public class TinyMCESettings implements Serializable
 {
 	private static final long serialVersionUID = 1L;
-	private static final Logger logger = LoggerFactory.getLogger(TinyMCESettings.class);
+	private static final Log log = LogFactory.getLog(TinyMCESettings.class);
 
 	private Mode mode;
-	private Language language = Language.en;
 	private Theme theme;
 	private Location toolbarLocation;
 	private Location statusbarLocation;
 	private Align toolbarAlign;
+	private Language language = Language.EN;
 	private boolean verticalResizing;
 	private boolean horizontalResizing;
 
-	private Set<Plugin> plugins;
-	private List<Control> controls;
+	private Set plugins;
+	private List controls;
 
-	private Set<Button> disabledButtons;
-	private Set<Component> textAreas;
+	private Set disabledButtons;
+	private Set /* <TextArea> */textAreas;
+
 
 	/**
-	 * Construct default tinymce settings.
+	 * Construct.
 	 */
 	public TinyMCESettings()
 	{
@@ -73,10 +73,11 @@ public class TinyMCESettings implements Serializable
 	}
 
 	/**
-	 * Construct tinymce settings with specific mode.
+	 * Construct.
 	 * 
 	 * @param mode
-	 *            the tinycemce's mode
+	 *            the tinymce mode, it can be textareas, exact or
+	 *            specific_textares
 	 */
 	public TinyMCESettings(Mode mode)
 	{
@@ -84,10 +85,10 @@ public class TinyMCESettings implements Serializable
 	}
 
 	/**
-	 * Construct tinymce settings based on specific theme.
+	 * Construct.
 	 * 
 	 * @param theme
-	 *            the tinymce theme
+	 *            the theme
 	 */
 	public TinyMCESettings(Theme theme)
 	{
@@ -95,22 +96,21 @@ public class TinyMCESettings implements Serializable
 	}
 
 	/**
-	 * Construct tinymce settings by specifing mode and theme.
+	 * Construct.
 	 * 
 	 * @param mode
-	 *            the tinymce mode
+	 *            the mode
 	 * @param theme
-	 *            the tinymce theme
+	 *            the theme
 	 */
 	public TinyMCESettings(Mode mode, Theme theme)
 	{
 		this.mode = mode;
 		this.theme = theme;
-
-		controls = new LinkedList<Control>();
-		plugins = new ListOrderedSet();
-		disabledButtons = new ListOrderedSet();
-		textAreas = new ListOrderedSet();
+		this.controls = new LinkedList();
+		this.plugins = new ListOrderedSet();
+		this.disabledButtons = new ListOrderedSet();
+		this.textAreas = new ListOrderedSet();
 	}
 
 	/**
@@ -164,6 +164,8 @@ public class TinyMCESettings implements Serializable
 	}
 
 	/**
+	 * Change the tinymce default language.
+	 * 
 	 * @param language
 	 *            the language
 	 */
@@ -232,10 +234,11 @@ public class TinyMCESettings implements Serializable
 	}
 
 	/**
-	 * Enable tinymce only for added components. This works in tinymce exact
-	 * mode.
+	 * Enable tinymce area only for added components. This works in tinymce
+	 * exact mode.
 	 * 
 	 * @param textArea
+	 *            the component to enable tinymce for
 	 */
 	public void enableTextArea(TextArea textArea)
 	{
@@ -249,17 +252,13 @@ public class TinyMCESettings implements Serializable
 		return plugins;
 	}
 
-	/**
-	 * todo change access
-	 * 
-	 * @return JavaScript string
-	 */
+	// todo change access
 	public String toJavaScript()
 	{
 		StringBuffer buffer = new StringBuffer();
 
 		// mode
-		buffer.append("\n\tmode : ").append("\"").append(mode.name()).append("\"");
+		buffer.append("\n\tmode : ").append("\"").append(mode.getName()).append("\"");
 		if (isExactMode())
 		{
 			if (textAreas.size() > 0)
@@ -269,7 +268,7 @@ public class TinyMCESettings implements Serializable
 				while (iterator.hasNext())
 				{
 					Component component = (Component)iterator.next();
-					buffer.append(component.getMarkupId());
+					buffer.append(component.getId());
 					if (iterator.hasNext())
 					{
 						buffer.append(", ");
@@ -279,21 +278,20 @@ public class TinyMCESettings implements Serializable
 			}
 			else
 			{
-				logger
-						.warn("tinymce is set to \"exact\" mode but there are no components attached");
+				log.warn("tinymce is set to \"exact\" mode but there are no components attached");
 			}
 		}
 
 		// theme
-		buffer.append(",\n\t").append("theme : ").append("\"").append(theme.name()).append("\"");
+		buffer.append(",\n\t").append("theme : ").append("\"").append(theme.getName()).append("\"");
+
+		// language
+		buffer.append(",\n\t").append("language : ").append("\"").append(language.getName()).append("\"");
+
 		if (Theme.advanced.equals(theme))
 		{
 			appendAdvancedSettings(buffer);
 		}
-
-		// language
-		buffer.append(",\n\t").append("language : ").append("\"").append(language.name()).append(
-				"\"");
 
 		appendPluginSettings(buffer);
 
@@ -318,9 +316,6 @@ public class TinyMCESettings implements Serializable
 		}
 	}
 
-	/**
-	 * @return JavaScript string to load custom tinymce plugin
-	 */
 	public String getLoadPluginJavaScript()
 	{
 		StringBuffer loadPluginJavaScript = new StringBuffer();
@@ -400,7 +395,7 @@ public class TinyMCESettings implements Serializable
 	{
 		if (plugins.size() > 0)
 		{
-			String value = namedObjectAsString(plugins);
+			String value = enumAsString(plugins);
 			buffer.append(",\n\t").append("plugins : ").append("\"").append(value).append("\"");
 		}
 	}
@@ -408,7 +403,7 @@ public class TinyMCESettings implements Serializable
 	private void addButtons1_Before(StringBuffer buffer)
 	{
 		ControlPredicate predicate = new ControlPredicate(Toolbar.first, Position.before);
-		Collection<Control> result = CollectionUtils.select(controls, predicate);
+		Collection result = CollectionUtils.select(controls, predicate);
 		if (result.size() > 0)
 		{
 			buffer.append(",\n\t").append("theme_advanced_buttons1_add_before : ").append("\"")
@@ -419,7 +414,7 @@ public class TinyMCESettings implements Serializable
 	private void addButtons1_After(StringBuffer buffer)
 	{
 		ControlPredicate predicate = new ControlPredicate(Toolbar.first, Position.after);
-		Collection<Control> result = CollectionUtils.select(controls, predicate);
+		Collection result = CollectionUtils.select(controls, predicate);
 		if (result.size() > 0)
 		{
 			buffer.append(",\n\t").append("theme_advanced_buttons1_add : ").append("\"").append(
@@ -430,7 +425,7 @@ public class TinyMCESettings implements Serializable
 	private void addButtons2_Before(StringBuffer buffer)
 	{
 		ControlPredicate predicate = new ControlPredicate(Toolbar.second, Position.before);
-		Collection<Control> result = CollectionUtils.select(controls, predicate);
+		Collection result = CollectionUtils.select(controls, predicate);
 		if (result.size() > 0)
 		{
 			buffer.append(",\n\t").append("theme_advanced_buttons2_add_before: ").append("\"")
@@ -441,7 +436,7 @@ public class TinyMCESettings implements Serializable
 	private void addButtons2_After(StringBuffer buffer)
 	{
 		ControlPredicate predicate = new ControlPredicate(Toolbar.second, Position.after);
-		Collection<Control> result = CollectionUtils.select(controls, predicate);
+		Collection result = CollectionUtils.select(controls, predicate);
 		if (result.size() > 0)
 		{
 			buffer.append(",\n\t").append("theme_advanced_buttons2_add : ").append("\"").append(
@@ -452,7 +447,7 @@ public class TinyMCESettings implements Serializable
 	private void addButtons3_Before(StringBuffer buffer)
 	{
 		ControlPredicate predicate = new ControlPredicate(Toolbar.third, Position.before);
-		Collection<Control> result = CollectionUtils.select(controls, predicate);
+		Collection result = CollectionUtils.select(controls, predicate);
 		if (result.size() > 0)
 		{
 			buffer.append(",\n\t").append("theme_advanced_buttons3_add_before : ").append("\"")
@@ -463,7 +458,7 @@ public class TinyMCESettings implements Serializable
 	private void addButtons3_After(StringBuffer buffer)
 	{
 		ControlPredicate predicate = new ControlPredicate(Toolbar.third, Position.after);
-		Collection<Control> result = CollectionUtils.select(controls, predicate);
+		Collection result = CollectionUtils.select(controls, predicate);
 		if (result.size() > 0)
 		{
 			buffer.append(",\n\t").append("theme_advanced_buttons3_add : ").append("\"").append(
@@ -474,7 +469,7 @@ public class TinyMCESettings implements Serializable
 	private void addButtons4(StringBuffer buffer)
 	{
 		ControlPredicate predicate = new ControlPredicate(Toolbar.fourth, Position.before);
-		Collection<Control> result = CollectionUtils.select(controls, predicate);
+		Collection result = CollectionUtils.select(controls, predicate);
 		if (result.size() > 0)
 		{
 			buffer.append(",\n\t").append("theme_advanced_buttons4 : ").append("\"").append(
@@ -494,36 +489,36 @@ public class TinyMCESettings implements Serializable
 	{
 		if (disabledButtons.size() > 0)
 		{
-			String value = namedObjectAsString(disabledButtons);
+			String value = enumAsString(disabledButtons);
 			buffer.append(",\n\t").append("theme_advanced_disable : ").append("\"").append(value)
 					.append("\"");
 		}
 	}
 
-	private String controlsAsString(Collection<Control> controls)
+	private String controlsAsString(Collection controls)
 	{
-		List<Button> buttons = new ArrayList<Button>();
+		List buttons = new ArrayList();
 		Iterator iterator = controls.iterator();
 		while (iterator.hasNext())
 		{
 			Control control = (Control)iterator.next();
 			buttons.add(control.getButton());
 		}
-		return namedObjectAsString(buttons);
+		return enumAsString(buttons);
 	}
 
-	private String namedObjectAsString(Collection<? extends NamedObject> collection)
+	private String enumAsString(Collection enums)
 	{
 		StringBuffer buffer = new StringBuffer();
-		Iterator iterator = collection.iterator();
+		Iterator iterator = enums.iterator();
 		while (iterator.hasNext())
 		{
-			NamedObject namedObject = (NamedObject)iterator.next();
+			wicket.contrib.tinymce.settings.Enum enumObject = (Enum)iterator.next();
 			if (buffer.length() > 0)
 			{
 				buffer.append(", ");
 			}
-			buffer.append(namedObject.getName());
+			buffer.append(enumObject.getName());
 		}
 		return buffer.toString();
 	}
@@ -545,7 +540,7 @@ public class TinyMCESettings implements Serializable
 		if (toolbarAlign != null)
 		{
 			buffer.append(",\n\t").append("theme_advanced_toolbar_align : ").append("\"").append(
-					toolbarAlign.name()).append("\"");
+					toolbarAlign.getName()).append("\"");
 		}
 	}
 
@@ -554,7 +549,7 @@ public class TinyMCESettings implements Serializable
 		if (toolbarLocation != null)
 		{
 			buffer.append(",\n\t").append("theme_advanced_toolbar_location : ").append("\"")
-					.append(toolbarLocation.name()).append("\"");
+					.append(toolbarLocation.getName()).append("\"");
 		}
 	}
 
@@ -563,7 +558,7 @@ public class TinyMCESettings implements Serializable
 		if (statusbarLocation != null)
 		{
 			buffer.append(",\n\t").append("theme_advanced_statusbar_location : ").append("\"")
-					.append(statusbarLocation.name()).append("\"");
+					.append(statusbarLocation.getName()).append("\"");
 		}
 	}
 
@@ -573,15 +568,12 @@ public class TinyMCESettings implements Serializable
 		private Toolbar toolbar;
 		private Position position;
 
-		ControlPredicate(Toolbar toolbar, Position position)
+		public ControlPredicate(Toolbar toolbar, Position position)
 		{
 			this.toolbar = toolbar;
 			this.position = position;
 		}
 
-		/**
-		 * @see org.apache.commons.collections.Predicate#evaluate(java.lang.Object)
-		 */
 		public boolean evaluate(Object object)
 		{
 			Control control = (Control)object;
@@ -590,7 +582,7 @@ public class TinyMCESettings implements Serializable
 	}
 
 	/**
-	 * This enum specifies how elements is to be converted into TinyMCE WYSIWYG
+	 * This class specifies how elements is to be converted into TinyMCE WYSIWYG
 	 * editor instances. This option can be set to any of the values below:
 	 * <ul>
 	 * <li>textareas - converts all textarea elements to editors when the page
@@ -600,18 +592,72 @@ public class TinyMCESettings implements Serializable
 	 * <li>specific_textares - Converts all textarea elements with the a
 	 * textarea_trigger attribute set to "true".</li>
 	 * </ul>
-	 * At this moment, only <b>textareas</b> and <b>exact</b> modes are
+	 * At this moment, only <b>textareas</b> and <b>exacat</b> modes are
 	 * supported.
 	 */
-	public enum Mode {
-		textareas, exact;
+	public static class Mode extends Enum
+	{
+		private static final long serialVersionUID = 1L;
+
+		public static final Mode textareas = new Mode("textareas");
+		/**
+		 * @see TinyMCESettings#enableTextArea(Component)
+		 */
+		public static final Mode exact = new Mode("exact");
+
+		private Mode(String name)
+		{
+			super(name);
+		}
 	}
 
-	/**
-	 * i18n support
-	 */
-	public enum Language {
-		ar, ca, cs, da, de, el, en, es, fa, fr, he, hu, it, ja, ko, nl, no, pl, pt, ro, ru, si, sk, sq, sr, sv, th, tr, tw, vi, zh
+	public static class Language extends Enum
+	{
+		private static final long serialVersionUID = 1L;
+
+		public static final Language AR = new Language("ar");
+		public static final Language CA = new Language("ca");
+		public static final Language CS = new Language("cs");
+		public static final Language DA = new Language("da");
+		public static final Language DE = new Language("de");
+		public static final Language EL = new Language("el");
+		public static final Language EN = new Language("en");
+		public static final Language ES = new Language("es");
+		public static final Language FA = new Language("fa");
+		public static final Language FR = new Language("fr");
+		public static final Language HE = new Language("he");
+		public static final Language HU = new Language("hu");
+		public static final Language IT = new Language("it");
+		public static final Language JA = new Language("ja");
+		public static final Language KO = new Language("ko");
+		public static final Language NL = new Language("nl");
+		public static final Language NO = new Language("no");
+		public static final Language PL = new Language("pl");
+		public static final Language PT = new Language("pt");
+		public static final Language RO = new Language("ro");
+		public static final Language RU = new Language("ru");
+		public static final Language SI = new Language("si");
+		public static final Language SK = new Language("sk");
+		public static final Language SQ = new Language("sq");
+		public static final Language SR = new Language("sr");
+		public static final Language SV = new Language("sv");
+		public static final Language TH = new Language("th");
+		public static final Language TR = new Language("tr");
+		public static final Language TW = new Language("tw");
+		public static final Language VI = new Language("vi");
+		public static final Language ZH = new Language("zh");
+
+		/**
+		 * Construct.
+		 * 
+		 * @param name
+		 *            the language
+		 */
+		public Language(String name)
+		{
+			super(name);
+		}
+
 	}
 
 	/**
@@ -623,40 +669,88 @@ public class TinyMCESettings implements Serializable
 	 * <li>advanced - This theme enables users to add/remove buttons and panels .</li>
 	 * </ul>
 	 */
-	public enum Theme {
-		simple, advanced;
+	public static class Theme extends Enum
+	{
+		private static final long serialVersionUID = 1L;
+
+		public static final Theme simple = new Theme("simple");
+		public static final Theme advanced = new Theme("advanced");
+
+		private Theme(String name)
+		{
+			super(name);
+		}
 	}
 
 	/**
-	 * This enum enables you to specify where the toolbar should be located.
+	 * This option enables you to specify where the toolbar should be located.
 	 * This value can be top or bottom.
 	 */
-	public enum Location {
-		top, bottom;
+	public static class Location extends Enum
+	{
+		private static final long serialVersionUID = 1L;
+
+		public static final Location top = new Location("top");
+		public static final Location bottom = new Location("bottom");
+
+		private Location(String name)
+		{
+			super(name);
+		}
 	}
 
 	/**
-	 * This enum enables you to specify the alignment of the controls. This
+	 * This class enables you to specify the alignment of the controls. This
 	 * value can be left, right or center the default value is center.
 	 */
-	public enum Align {
-		left, center, right;
+	public static class Align extends Enum
+	{
+		private static final long serialVersionUID = 1L;
+
+		public static final Align left = new Align("left");
+		public static final Align center = new Align("center");
+		public static final Align right = new Align("right");
+
+		private Align(String name)
+		{
+			super(name);
+		}
 	}
 
 	/**
-	 * This enum specifies the position of new added control. It can be before
+	 * This class specifies the position of new added control. It can be before
 	 * or after existing elements.
 	 */
-	public enum Position {
-		before, after;
+	public static class Position extends Enum
+	{
+		private static final long serialVersionUID = 1L;
+
+		public static final Position before = new Position("before");
+		public static final Position after = new Position("after");
+
+		public Position(String name)
+		{
+			super(name);
+		}
 	}
 
 	/**
 	 * This class specifices the toolbar to add specific control to. TinyMCE
 	 * editor defines three toolbars named: first, second, third.
 	 */
-	public enum Toolbar {
-		first, second, third, fourth;
+	public static class Toolbar extends Enum
+	{
+		private static final long serialVersionUID = 1L;
+
+		public static final Toolbar first = new Toolbar("first");
+		public static final Toolbar second = new Toolbar("second");
+		public static final Toolbar third = new Toolbar("third");
+		public static final Toolbar fourth = new Toolbar("fourth");
+
+		public Toolbar(String name)
+		{
+			super(name);
+		}
 	}
 
 	// default tinymce buttons

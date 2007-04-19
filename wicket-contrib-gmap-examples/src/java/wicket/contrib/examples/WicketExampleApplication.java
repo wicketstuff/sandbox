@@ -1,7 +1,7 @@
 /*
- * $Id$
- * $Revision$
- * $Date$
+ * $Id: WicketExampleApplication.java 578 2006-02-12 20:55:02Z syca $
+ * $Revision: 578 $
+ * $Date: 2006-02-12 12:55:02 -0800 (Sun, 12 Feb 2006) $
  *
  * ====================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,10 +20,10 @@ package wicket.contrib.examples;
 
 import javax.servlet.ServletContext;
 
-import wicket.protocol.http.WebApplication;
-import wicket.settings.ISecuritySettings;
-import wicket.util.crypt.ClassCryptFactory;
-import wicket.util.crypt.NoCrypt;
+import org.apache.wicket.protocol.http.WebApplication;
+import org.apache.wicket.settings.ISecuritySettings;
+import org.apache.wicket.util.crypt.ClassCryptFactory;
+import org.apache.wicket.util.crypt.NoCrypt;
 
 /**
  * Wicket Application class.

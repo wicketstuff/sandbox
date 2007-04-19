@@ -1,7 +1,7 @@
 /*
- * $Id$
- * $Revision$
- * $Date$
+ * $Id: JSUtil.java 577 2006-02-12 20:46:53Z syca $
+ * $Revision: 577 $
+ * $Date: 2006-02-12 12:46:53 -0800 (Sun, 12 Feb 2006) $
  *
  * ====================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");

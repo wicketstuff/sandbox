@@ -17,17 +17,17 @@
  */
 package wicket.contrib.tinymce;
 
-import wicket.MarkupContainer;
+import org.apache.wicket.markup.ComponentTag;
+import org.apache.wicket.markup.MarkupStream;
+import org.apache.wicket.markup.html.WebComponent;
+import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.markup.html.resources.JavaScriptReference;
+
 import wicket.contrib.tinymce.settings.TinyMCESettings;
-import wicket.markup.ComponentTag;
-import wicket.markup.MarkupStream;
-import wicket.markup.html.WebComponent;
-import wicket.markup.html.panel.Panel;
-import wicket.markup.html.resources.JavaScriptReference;
 
 /**
- * Reusable wicket component for TinyMCE editor. If you want to create a custom
- * TinyMCE editor take a look at TinyMCESettings class.
+ * Reusable wicket component for TinyMCE editor. If you want to create a
+ * custom TinyMCE editor take a look at TinyMCESettings class.
  * 
  * @author Iulian-Corneliu Costan (iulian.costan@gmail.com)
  * @author Frank Bille Jensen (fbille@avaleo.net)
@@ -45,33 +45,28 @@ public class TinyMCEPanel extends Panel
 	/**
 	 * Construct TinyMCE component with default settings.
 	 * 
-	 * @param parent
-	 *            the parent component
 	 * @param id
-	 *            the id
+	 *            wicket component id
 	 */
-	public TinyMCEPanel(MarkupContainer parent, final String id)
+	public TinyMCEPanel(final String id)
 	{
-		this(parent, id, new TinyMCESettings());
+		this(id, new TinyMCESettings());
 	}
 
 	/**
 	 * Construct TinyMCE component passing customs settings.
 	 * 
-	 * @param parent
-	 *            the parent component
 	 * @param id
-	 *            the component id
 	 * @param settings
-	 *            custom settings
+	 *            settings for tinymce component
 	 */
-	public TinyMCEPanel(MarkupContainer parent, final String id, final TinyMCESettings settings)
+	public TinyMCEPanel(final String id, final TinyMCESettings settings)
 	{
-		super(parent, id);
+		super(id);
 
 		// add tinymce init script and startup js
-		new JavaScriptReference(this, "tinymce", TinyMCEPanel.class, "tiny_mce/tiny_mce_src.js");
-		new WebComponent(this, "initScript")
+		add(new JavaScriptReference("tinymce", TinyMCEPanel.class, "tiny_mce/tiny_mce_src.js"));
+		add(new WebComponent("initScript")
 		{
 			private static final long serialVersionUID = 1L;
 
@@ -86,6 +81,6 @@ public class TinyMCEPanel extends Panel
 
 				replaceComponentTagBody(markupStream, openTag, buffer.toString());
 			}
-		};
+		});
 	}
 }

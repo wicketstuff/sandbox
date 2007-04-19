@@ -1,7 +1,7 @@
 /*
- * $Id$
- * $Revision$
- * $Date$
+ * $Id: WicketExamplePage.java 578 2006-02-12 20:55:02Z syca $
+ * $Revision: 578 $
+ * $Date: 2006-02-12 12:55:02 -0800 (Sun, 12 Feb 2006) $
  *
  * ====================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,39 +18,42 @@
  */
 package wicket.contrib.examples;
 
-import wicket.markup.html.WebPage;
-import wicket.model.IModel;
-import wicket.util.string.Strings;
+import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.util.string.Strings;
 
 /**
  * Base class for all example pages.
+ *
+ * @author Jonathan Locke
  */
-public class WicketExamplePage<T> extends WebPage<T> {
-	private static final long serialVersionUID = 1L;
+public class WicketExamplePage extends WebPage
+{
+    /**
+     * Constructor
+     */
+    public WicketExamplePage()
+    {
+        this(null);
+    }
 
-	/**
-	 * Constructor
-	 */
-	public WicketExamplePage() {
-		this(null);
-	}
+    /**
+     * Construct.
+     *
+     * @param model
+     */
+    public WicketExamplePage(IModel model)
+    {
+        super(model);
+        final String packageName = getClass().getPackage().getName();
+        add(new WicketExampleHeader("mainNavigation", Strings.afterLast(packageName, '.')));
+        explain();
+    }
 
-	/**
-	 * Construct.
-	 * 
-	 * @param model
-	 */
-	public WicketExamplePage(IModel<T> model) {
-		super(model);
-		final String packageName = getClass().getPackage().getName();
-		new WicketExampleHeader(this, "mainNavigation", Strings.afterLast(
-				packageName, '.'));
-		explain();
-	}
-
-	/**
-	 * Override base method to provide an explanation
-	 */
-	protected void explain() {
-	}
+    /**
+     * Override base method to provide an explanation
+     */
+    protected void explain()
+    {
+    }
 }

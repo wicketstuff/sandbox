@@ -1,17 +1,15 @@
 package wicket.contrib.data.model;
 
-import wicket.model.IDetachable;
-import wicket.model.IModel;
+import org.apache.wicket.model.IDetachable;
+import org.apache.wicket.model.IModel;
 
 /**
  * A detachable wrapper for an OrderedList.
  * 
  * @author Phil Kulak
  */
-public class DetachableList implements IModel<IDetachable>
+public class DetachableList implements IModel
 {
-	private static final long serialVersionUID = 1L;
-
 	private IDetachable object;
 
 	/**
@@ -25,23 +23,23 @@ public class DetachableList implements IModel<IDetachable>
 		this.object = object;
 	}
 
-	public IModel getNestedModel()
-	{
-		return null;
-	}
-
 	public void detach()
 	{
 		object.detach();
 	}
 
-	public IDetachable getObject()
+	public IModel getNestedModel()
+	{
+		return null;
+	}
+
+	public Object getObject()
 	{
 		return object;
 	}
 
-	public void setObject(IDetachable object)
+	public void setObject(Object object)
 	{
-		this.object = object;
+		this.object = (IDetachable) object;
 	}
 }

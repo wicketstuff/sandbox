@@ -18,10 +18,15 @@
  */
 package wicket.contrib.yui.examples;
 
+import java.lang.management.ManagementFactory;
+
+import javax.management.MBeanServer;
+
 import org.mortbay.jetty.Connector;
 import org.mortbay.jetty.Server;
 import org.mortbay.jetty.nio.SelectChannelConnector;
 import org.mortbay.jetty.webapp.WebAppContext;
+import org.mortbay.management.MBeanContainer;
 
 /**
  * Seperate startup class for people that want to run the examples directly.
@@ -40,9 +45,14 @@ public class StartYuiExamples {
 		server.setConnectors(new Connector[] { connector });
 
 		WebAppContext web = new WebAppContext();
-		web.setContextPath("/wicket-yui-examples");
+		web.setContextPath("/wicket-contrib-yui-examples");
 		web.setWar("src/main/webapp");
 		server.addHandler(web);
+
+		MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
+		MBeanContainer mBeanContainer = new MBeanContainer(mBeanServer);
+		server.getContainer().addEventListener(mBeanContainer);
+		mBeanContainer.start();
 
 		try {
 			server.start();

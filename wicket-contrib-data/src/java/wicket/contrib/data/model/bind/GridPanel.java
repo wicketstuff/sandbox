@@ -4,15 +4,15 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import wicket.Component;
-import wicket.MarkupContainer;
+import org.apache.wicket.Component;
 import wicket.contrib.data.model.OrderedPageableList;
 import wicket.contrib.data.model.bind.IObjectDataSource.EntityField;
-import wicket.markup.html.list.ListItem;
-import wicket.markup.html.list.ListView;
-import wicket.markup.html.panel.Panel;
-import wicket.model.IModel;
-import wicket.util.string.Strings;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.util.convert.ConverterLocator;
+import org.apache.wicket.util.string.Strings;
 
 /**
  * A panel that browses and edits a list of objects. Each row maintains an
@@ -26,13 +26,75 @@ import wicket.util.string.Strings;
  * 
  * @author Phil Kulak
  */
-public class GridPanel<T> extends Panel<T>
+public class GridPanel extends Panel
 {
-	private static final long serialVersionUID = 1L;
+	private class Columns extends ListView
+	{
+		IModel model;
 
-	private List<IColumn> columns;
+		public Columns(IModel model)
+		{
+			super("columns", columns);
+			this.model = model;
+			setOptimizeItemRemoval(true);
+		}
 
-	private IListDataSource<T> dataSource;
+		protected void populateItem(ListItem item)
+		{
+			IColumn col = (IColumn) item.getModelObject();
+			Component component = col.getComponent("column", model);
+
+			component.setRenderBodyOnly(true);
+			item.add(component);
+		}
+	}
+
+	private class LocalGridView extends GridView
+	{
+
+		public LocalGridView()
+		{
+			super("form", dataSource, perPage);
+			add(new Orderings(getListView()));
+		}
+
+		protected void populateItem(ListItem item)
+		{
+			item.add(new Columns(item.getModel()));
+		}
+	}
+
+	private class Orderings extends ListView
+	{
+		ListView mainList;
+
+		public Orderings(ListView mainList)
+		{
+			super("orderings", columns);
+			this.mainList = mainList;
+			setOptimizeItemRemoval(true);
+		}
+
+		protected void populateItem(ListItem item)
+		{
+			IColumn col = (IColumn) item.getModelObject();
+			String field = "e." + col.getOrderByPath();
+
+			if (col.allowOrderBy())
+			{
+				item.add(new OrderByPanel("orderBy", field, col.getDisplayName(),
+						mainList));
+			}
+			else
+			{
+				item.add(new LabelPanel("orderBy", col.getDisplayName()));
+			}
+		}
+	}
+
+	private List columns;
+
+	private IListDataSource dataSource;
 
 	private int perPage;
 
@@ -44,9 +106,9 @@ public class GridPanel<T> extends Panel<T>
 	 * @param dataSource
 	 *            the dataSource to use to modify and select data
 	 */
-	public GridPanel(MarkupContainer parent, String id, IListDataSource<T> dataSource)
+	public GridPanel(String id, IListDataSource dataSource)
 	{
-		this(parent, id, dataSource, 10, null);
+		this(id, dataSource, 10, null);
 	}
 
 	/**
@@ -61,10 +123,9 @@ public class GridPanel<T> extends Panel<T>
 	 * @param feedback
 	 *            the feedback collector to use for validation errors
 	 */
-	public GridPanel(MarkupContainer parent, String id, IListDataSource<T> dataSource,
-			int perPage, List<IColumn> columns)
+	public GridPanel(String id, IListDataSource dataSource, int perPage, List columns)
 	{
-		super(parent, id);
+		super(id);
 		this.dataSource = dataSource;
 		this.perPage = perPage;
 
@@ -77,8 +138,8 @@ public class GridPanel<T> extends Panel<T>
 			this.columns = columns;
 		}
 
-		gView = new LocalGridView(this);
-		new PageNav(this, "pageNav", gView.getListView());
+		add(gView = new LocalGridView());
+		add(new PageNav("pageNav", gView.getListView()));
 	}
 
 	/**
@@ -89,84 +150,14 @@ public class GridPanel<T> extends Panel<T>
 		gView.setList(list);
 	}
 
-	private class LocalGridView extends GridView<T>
-	{
-		private static final long serialVersionUID = 1L;
-
-		public LocalGridView(MarkupContainer parent)
-		{
-			super(parent, "form", dataSource, perPage);
-			new Orderings(this, getListView());
-		}
-
-		@Override
-		protected void populateItem(ListItem item)
-		{
-			new Columns(item, item.getModel());
-		}
-	}
-
-	private class Columns extends ListView<IColumn>
-	{
-		private static final long serialVersionUID = 1L;
-
-		IModel model;
-
-		public Columns(MarkupContainer parent, IModel model)
-		{
-			super(parent, "columns", columns);
-			this.model = model;
-			setReuseItems(true);
-		}
-
-		@Override
-		protected void populateItem(ListItem<IColumn> item)
-		{
-			IColumn col = item.getModelObject();
-			Component component = col.getComponent(item, "column", model);
-			component.setRenderBodyOnly(true);
-		}
-	}
-
-	private class Orderings extends ListView<IColumn>
-	{
-		private static final long serialVersionUID = 1L;
-
-		ListView mainList;
-
-		public Orderings(MarkupContainer parent, ListView mainList)
-		{
-			super(parent, "orderings", columns);
-			this.mainList = mainList;
-			setReuseItems(true);
-		}
-
-		@Override
-		protected void populateItem(ListItem<IColumn> item)
-		{
-			IColumn col = item.getModelObject();
-			String field = "e." + col.getOrderByPath();
-
-			if (col.allowOrderBy())
-			{
-				new OrderByPanel(item, "orderBy", field, col.getDisplayName(), mainList);
-			}
-			else
-			{
-				new LabelPanel(item, "orderBy", col.getDisplayName());
-			}
-		}
-	}
-
 	private String makeColHeading(String s)
 	{
 		return Strings.capitalize(s);
 	}
 
-	@SuppressWarnings("unchecked")
-	private List<IColumn> makeColumns(List fields)
+	private List makeColumns(List fields)
 	{
-		List<IColumn> cols = new ArrayList<IColumn>(fields.size());
+		List cols = new ArrayList(fields.size());
 
 		// Add the edit and delete links.
 		cols.add(new MultiColumn().add(new EditColumn()).add(new DeleteColumn()));
@@ -181,7 +172,8 @@ public class GridPanel<T> extends Panel<T>
 			if (type == EntityField.FIELD)
 			{
 				// Are we able to convert the given type?
-				if (getConverter(clazz) != null)
+				if (getConverter(clazz) instanceof ConverterLocator
+						&& ((ConverterLocator) getConverter(clazz)).get(clazz) != null)
 				{
 					cols.add(new TextFieldColumn(makeColHeading(name), name)
 							.setType(clazz));

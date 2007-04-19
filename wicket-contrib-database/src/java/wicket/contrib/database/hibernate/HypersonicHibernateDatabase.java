@@ -21,7 +21,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hsqldb.Server;
 
-import wicket.util.time.Duration;
+import org.apache.wicket.util.time.Duration;
 
 /**
  * A hibernate database that automatically uses an embedded Hypersonic SQL

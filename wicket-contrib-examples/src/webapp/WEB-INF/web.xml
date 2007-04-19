@@ -9,94 +9,55 @@
 
 	<distributable />
 
-	<context-param>
-		<param-name>configuration</param-name>
-		<param-value>development</param-value>
-	</context-param>
+	<!-- TODO replace servlets with filters -->
 
-	<filter>
-		<filter-name>cdapp</filter-name>
-		<filter-class>wicket.protocol.http.WicketFilter</filter-class>
+	<servlet>
+		<servlet-name>cdapp</servlet-name>
+		<servlet-class>org.apache.wicket.protocol.http.WicketServlet</servlet-class>
 		<init-param>
 			<param-name>applicationClassName</param-name>
-			<param-value>
-				wicket.examples.cdapp.CdApplication
-			</param-value>
+			<param-value>wicket.examples.cdapp.CdApplication</param-value>
 		</init-param>
-		<init-param>
-			<param-name>filterPath</param-name>
-			<param-value>cdapp</param-value>
-		</init-param>
-	</filter>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
 
-	<filter>
-		<filter-name>NavMenuApplication</filter-name>
-		<filter-class>wicket.protocol.http.WicketFilter</filter-class>
-		<init-param>
-			<param-name>applicationClassName</param-name>
-			<param-value>
-				wicket.examples.navmenu.NavMenuApplication
-			</param-value>
-		</init-param>
-		<init-param>
-			<param-name>filterPath</param-name>
-			<param-value>navmenu</param-value>
-		</init-param>
-	</filter>
+    <servlet>
+        <servlet-name>VelocityTemplateApplication</servlet-name>
+        <servlet-class>org.apache.wicket.protocol.http.WicketServlet</servlet-class>
+        <init-param>
+          <param-name>applicationClassName</param-name>
+          <param-value>wicket.contrib.examples.velocity.VelocityTemplateApplication</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
 
-	<filter>
-		<filter-name>VelocityTemplateApplication</filter-name>
-		<filter-class>wicket.protocol.http.WicketFilter</filter-class>
-		<init-param>
-			<param-name>applicationClassName</param-name>
-			<param-value>
-				wicket.contrib.examples.velocity.VelocityTemplateApplication
-			</param-value>
-		</init-param>
-		<init-param>
-			<param-name>filterPath</param-name>
-			<param-value>velocitytemplate</param-value>
-		</init-param>
-	</filter>
+    <servlet>
+        <servlet-name>FreeMarkerTemplateApplication</servlet-name>
+        <servlet-class>org.apache.wicket.protocol.http.WicketServlet</servlet-class>
+        <init-param>
+          <param-name>applicationClassName</param-name>
+          <param-value>wicket.contrib.examples.freemarker.FreeMarkerTemplateApplication</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
 
-	<filter>
-		<filter-name>FreeMarkerTemplateApplication</filter-name>
-		<filter-class>wicket.protocol.http.WicketFilter</filter-class>
-		<init-param>
-			<param-name>applicationClassName</param-name>
-			<param-value>
-				wicket.contrib.examples.freemarker.FreeMarkerTemplateApplication
-			</param-value>
-		</init-param>
-		<init-param>
-			<param-name>filterPath</param-name>
-			<param-value>freemarkertemplate</param-value>
-		</init-param>
-	</filter>
-
-	<filter-mapping>
-		<filter-name>cdapp</filter-name>
+	<servlet-mapping>
+		<servlet-name>cdapp</servlet-name>
 		<url-pattern>/cdapp/*</url-pattern>
-	</filter-mapping>
+	</servlet-mapping>
 
-	<filter-mapping>
-		<filter-name>NavMenuApplication</filter-name>
-		<url-pattern>/navmenu/*</url-pattern>
-	</filter-mapping>
+    <servlet-mapping>
+        <servlet-name>VelocityTemplateApplication</servlet-name>
+        <url-pattern>/velocitytemplate/*</url-pattern>
+    </servlet-mapping>
 
-	<filter-mapping>
-		<filter-name>VelocityTemplateApplication</filter-name>
-		<url-pattern>/velocitytemplate/*</url-pattern>
-	</filter-mapping>
-
-	<filter-mapping>
-		<filter-name>FreeMarkerTemplateApplication</filter-name>
-		<url-pattern>/freemarkertemplate/*</url-pattern>
-	</filter-mapping>
-
-
+    <servlet-mapping>
+        <servlet-name>FreeMarkerTemplateApplication</servlet-name>
+        <url-pattern>/freemarkertemplate/*</url-pattern>
+    </servlet-mapping>
+	
 	<welcome-file-list>
-		<welcome-file>index.html</welcome-file>
+	<welcome-file>index.html</welcome-file>
 	</welcome-file-list>
 
 </web-app>

@@ -20,27 +20,23 @@ package wicket.contrib.tinymce.settings;
 /**
  * This plugin adds a print button to TinyMCE.
  *
- * @author Iulian Costan (iulian.costan@gmail.com)
+ * @author Iulian-Corneliu COSTAN
  */
 public class PrintPlugin extends Plugin
 {
-	private static final long serialVersionUID = 1L;
-	
-	private PluginButton printButton;
 
     /**
-     * Construct print plugin.
-     */
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private PluginButton printButton;
+
     public PrintPlugin()
     {
         super("print");
-        
         printButton = new PluginButton("print", this);
     }
 
-    /**
-     * @return print button
-     */
     public PluginButton getPrintButton()
     {
         return printButton;

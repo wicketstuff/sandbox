@@ -12,12 +12,13 @@
 				component that displays the result of rendering a
 				<a href="http://jakarta.apache.org/velocity">Velocity</a>
 				template. The template itself can be any
-				<code>IStringResource</code>
+				<code><a href="http://wicket.sourceforge.net/apidocs/wicket/util/resource/IStringResourceStream.html">IStringResourceStream</a></code>
 				implementation, of which there are a number of convenient implementations in the
 				<code>wicket.util</code>
-				package. The model can be any normal Wicket
-				<code>MapModel</code>
-				.
+				package. The model can be any normal
+				<code><a href="http://java.sun.com/j2se/1.4.2/docs/api/java/util/Map.html">Map</a></code>,
+				which will be used to create the
+				<code><a href="http://jakarta.apache.org/velocity/docs/api/org/apache/velocity/VelocityContext.html">VelocityContext</a></code>.
 			</p>
 			<p>
 				The Velocity Panel is part of the

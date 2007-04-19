@@ -1,11 +1,10 @@
 package wicket.contrib.data.model.bind;
 
-import wicket.AttributeModifier;
-import wicket.MarkupContainer;
-import wicket.Resource;
-import wicket.markup.html.PackageResource;
-import wicket.markup.html.image.Image;
-import wicket.markup.html.link.Link;
+import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.Resource;
+import org.apache.wicket.markup.html.PackageResource;
+import org.apache.wicket.markup.html.image.Image;
+import org.apache.wicket.markup.html.link.Link;
 
 /**
  * A link that toggles the edit status of its list item.
@@ -14,35 +13,22 @@ import wicket.markup.html.link.Link;
  */
 public class InlineEditLink extends Link
 {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
 	/** an image for a cancel button */
-	public static final PackageResource CANCEL = PackageResource.get(
-			InlineEditLink.class, "cancel.gif");
+	public static final PackageResource CANCEL = PackageResource.get(InlineEditLink.class, "cancel.gif");
 
 	/** an image for an edit button */
-	public static final PackageResource EDIT = PackageResource.get(InlineEditLink.class,
-			"edit.gif");
+	public static final PackageResource EDIT = PackageResource.get(InlineEditLink.class, "edit.gif");
 
 	/**
 	 * @param id
 	 *            the id of this link
 	 */
-	public InlineEditLink(MarkupContainer parent, String id)
+	public InlineEditLink(String id)
 	{
-		super(parent, id);
+		super(id);
 
-		Image image = new Image(this, "image")
+		Image image = new Image("image")
 		{
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = 1L;
-
-			@Override
 			protected Resource getImageResource()
 			{
 				if (GridView.isEdit(this))
@@ -55,12 +41,6 @@ public class InlineEditLink extends Link
 
 		image.add(new AttributeModifier("alt", true, new AttributeModel()
 		{
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = 1L;
-
-			@Override
 			protected String getAttributeValue()
 			{
 				if (GridView.isEdit(InlineEditLink.this))
@@ -70,12 +50,13 @@ public class InlineEditLink extends Link
 				return getEditAlt();
 			}
 		}));
+
+		add(image);
 	}
 
 	/**
 	 * Toggles the edit status of the list item.
 	 */
-	@Override
 	public void onClick()
 	{
 		if (GridView.isEdit(this))
@@ -87,18 +68,18 @@ public class InlineEditLink extends Link
 			GridView.setEdit(this);
 		}
 	}
-
+	
 	protected String getCancelAlt()
 	{
 		return getApplication().getResourceSettings().getLocalizer().getString(
-				GridView.getResourceId(this) + ".cancelAlt", getPage(), null, null, null,
-				"Cancel");
+			GridView.getResourceId(this) + ".cancelAlt", getPage(), null, null,
+			null, "Cancel");
 	}
-
+	
 	protected String getEditAlt()
 	{
 		return getApplication().getResourceSettings().getLocalizer().getString(
-				GridView.getResourceId(this) + ".editAlt", getPage(), null, null, null,
-				"Edit");
+			GridView.getResourceId(this) + ".editAlt", getPage(), null, null,
+			null, "Edit");
 	}
 }

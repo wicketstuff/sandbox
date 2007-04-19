@@ -18,7 +18,8 @@ package wicket.javaee;
 
 import javax.persistence.Persistence;
 
-import wicket.extensions.proxy.IProxyTargetLocator;
+import org.apache.wicket.proxy.IProxyTargetLocator;
+
 
 /**
  * Implementation of {@link IProxyTargetLocator} to locate Java EE 5

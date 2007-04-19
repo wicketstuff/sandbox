@@ -18,9 +18,8 @@ package wicket.contrib.data.model;
 
 import java.io.Serializable;
 
-import wicket.model.AbstractDetachableModel;
-import wicket.model.IModel;
-import wicket.model.Model;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 
 /**
  * {@link wicket.model.IModel}that supports a (persistent) object that has a
@@ -32,10 +31,8 @@ import wicket.model.Model;
  * 
  * @author Eelco Hillenius
  */
-public class PersistentObjectModel<T, V> extends AbstractDetachableModel<T>
+public class PersistentObjectModel implements IModel
 {
-	private static final long serialVersionUID = 1L;
-
 	/**
 	 * Transient flag to prevent multiple detach/attach scenario. We need to
 	 * maintain this flag as we allow 'null' model values!
@@ -43,13 +40,13 @@ public class PersistentObjectModel<T, V> extends AbstractDetachableModel<T>
 	private transient boolean attached = false;
 
 	/** model that provides the object id. */
-	private IModel<V> idModel;
+	private IModel idModel;
 
 	/** The (temporary) detail object. */
-	private transient T object;
+	private transient Object object;
 
 	/** action that loads the object. */
-	private ISelectObjectAction<T, V> selectObjectAction;
+	private ISelectObjectAction selectObjectAction;
 
 	/**
 	 * Construct with a model that provides the id.
@@ -59,12 +56,11 @@ public class PersistentObjectModel<T, V> extends AbstractDetachableModel<T>
 	 * @param selectObjectAction
 	 *            action that loads the object
 	 */
-	public PersistentObjectModel(IModel<V> idModel,
-			ISelectObjectAction<T, V> selectObjectAction)
+	public PersistentObjectModel(IModel idModel, ISelectObjectAction selectObjectAction)
 	{
 		if (idModel == null) // consider same as null id
 		{
-			this.idModel = new Model<V>(null);
+			this.idModel = new Model(null);
 		}
 		else
 		{
@@ -79,9 +75,9 @@ public class PersistentObjectModel<T, V> extends AbstractDetachableModel<T>
 	 * @param selectObjectAction
 	 *            action that loads the object
 	 */
-	public PersistentObjectModel(ISelectObjectAction<T, V> selectObjectAction)
+	public PersistentObjectModel(ISelectObjectAction selectObjectAction)
 	{
-		this(new Model<V>(null), selectObjectAction);
+		this(new Model(null), selectObjectAction);
 	}
 
 	/**
@@ -92,10 +88,20 @@ public class PersistentObjectModel<T, V> extends AbstractDetachableModel<T>
 	 * @param selectObjectAction
 	 *            action that loads the object
 	 */
-	public PersistentObjectModel(V id, ISelectObjectAction<T, V> selectObjectAction)
+	public PersistentObjectModel(Serializable id, ISelectObjectAction selectObjectAction)
 	{
-		this.idModel = new Model<V>(id);
+		this.idModel = new Model(id);
 		this.selectObjectAction = selectObjectAction;
+	}
+
+	/**
+	 * Detach from the current request. Does nothing; Override this method if
+	 * you need to do more than the default behaviour.
+	 */
+	public void detach()
+	{
+		this.object = null;
+		attached = false;
 	}
 
 	/**
@@ -103,9 +109,9 @@ public class PersistentObjectModel<T, V> extends AbstractDetachableModel<T>
 	 * 
 	 * @return the id
 	 */
-	public final V getId()
+	public final Object getId()
 	{
-		V id = idModel.getObject();
+		Object id = idModel.getObject();
 		return id;
 	}
 
@@ -114,9 +120,22 @@ public class PersistentObjectModel<T, V> extends AbstractDetachableModel<T>
 	 * 
 	 * @return the model that provides the object id
 	 */
-	public final IModel<V> getIdModel()
+	public final IModel getIdModel()
 	{
 		return idModel;
+	}
+
+	/**
+	 * @see wicket.model.Model#gObject()
+	 */
+	public Object getObject()
+	{
+		if (!attached)
+		{
+			attach();
+			attached = true;
+		}
+		return object;
 	}
 
 	/**
@@ -124,7 +143,6 @@ public class PersistentObjectModel<T, V> extends AbstractDetachableModel<T>
 	 * 
 	 * @return whether this model has been attached to the current request
 	 */
-	@Override
 	public final boolean isAttached()
 	{
 		return attached;
@@ -138,7 +156,7 @@ public class PersistentObjectModel<T, V> extends AbstractDetachableModel<T>
 	 * @return the loaded object or null if not found (or - if that's what you
 	 *         prefer - throw an exception if the object is not found)
 	 */
-	public T loadObject(V id)
+	public Object loadObject(Serializable id)
 	{
 		return selectObjectAction.execute(id);
 	}
@@ -149,7 +167,7 @@ public class PersistentObjectModel<T, V> extends AbstractDetachableModel<T>
 	 * @param id
 	 *            the id
 	 */
-	public final void setId(V id)
+	public final void setId(Serializable id)
 	{
 		idModel.setObject(id);
 		detach();
@@ -161,10 +179,19 @@ public class PersistentObjectModel<T, V> extends AbstractDetachableModel<T>
 	 * @param idModel
 	 *            idModel
 	 */
-	public void setIdModel(IModel<V> idModel)
+	public void setIdModel(IModel idModel)
 	{
 		this.idModel = idModel;
 		detach();
+	}
+
+	/**
+	 * @see wicket.model.Model#setObject(java.lang.Object)
+	 */
+	public void setObject(Object object)
+	{
+		throw new UnsupportedOperationException(
+				"an object can only be set through its id");
 	}
 
 	/**
@@ -173,9 +200,23 @@ public class PersistentObjectModel<T, V> extends AbstractDetachableModel<T>
 	 * @param selectObjectAction
 	 *            action that loads the object.
 	 */
-	public final void setSelectObjectAction(ISelectObjectAction<T, V> selectObjectAction)
+	public final void setSelectObjectAction(ISelectObjectAction selectObjectAction)
 	{
 		this.selectObjectAction = selectObjectAction;
+	}
+
+	/**
+	 * Attach to the current request. Does nothing; Override this method if you
+	 * need to do more than the default behaviour.
+	 */
+	public void attach()
+	{
+		final Object id = getId();
+		if ((id != null) && (!(id instanceof Serializable)))
+		{
+			throw new IllegalArgumentException("id must be serializable");
+		}
+		this.object = loadObject((Serializable) id);
 	}
 
 	/**
@@ -183,52 +224,8 @@ public class PersistentObjectModel<T, V> extends AbstractDetachableModel<T>
 	 * 
 	 * @return the action that loads the object
 	 */
-	protected final ISelectObjectAction<T, V> getSelectObjectAction()
+	protected final ISelectObjectAction getSelectObjectAction()
 	{
 		return selectObjectAction;
-	}
-
-	/**
-	 * Attach to the current request. Does nothing; Override this method if you
-	 * need to do more than the default behaviour.
-	 */
-	@Override
-	protected void onAttach()
-	{
-		final V id = getId();
-		if ((id != null) && (!(id instanceof Serializable)))
-		{
-			throw new IllegalArgumentException("id must be serializable");
-		}
-		this.object = loadObject(id);
-	}
-
-	/**
-	 * Detach from the current request. Does nothing; Override this method if
-	 * you need to do more than the default behaviour.
-	 */
-	@Override
-	protected void onDetach()
-	{
-		this.object = null;
-	}
-
-	/**
-	 * @see wicket.model.AbstractDetachableModel#onGetObject()
-	 */
-	@Override
-	protected T onGetObject()
-	{
-		return object;
-	}
-
-	/**
-	 * @see wicket.model.AbstractDetachableModel#onSetObject(java.lang.Object)
-	 */
-	@Override
-	protected void onSetObject(Object T)
-	{
-		throw new UnsupportedOperationException(
-				"an object can only be set through its id");
 	}
 }

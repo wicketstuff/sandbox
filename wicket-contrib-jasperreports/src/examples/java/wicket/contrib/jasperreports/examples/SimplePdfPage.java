@@ -1,4 +1,7 @@
 /*
+ * $Id$ $Revision$
+ * $Date$
+ * 
  * ==================================================================== Licensed
  * under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the
@@ -17,38 +20,40 @@ package wicket.contrib.jasperreports.examples;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.servlet.ServletContext;
 
 import wicket.contrib.examples.WicketExamplePage;
 import wicket.contrib.jasperreports.EmbeddedJRReport;
 import wicket.contrib.jasperreports.JRPdfResource;
-import wicket.protocol.http.WebApplication;
-import net.sf.jasperreports.engine.JRDataSource;
+import wicket.contrib.jasperreports.JRResource;
+import org.apache.wicket.protocol.http.WebApplication;
 
 /**
- * Simple Jasper reports example
- *
+ * Simple Jasper reports example with PDF output and a jasper reports panel..
+ * 
  * @author Eelco Hillenius
- * @author Justin Lee
  */
-public class SimplePdfPage extends WicketExamplePage {
-    /**
-     * Constructor.
-     */
-    public SimplePdfPage() {
-        ServletContext context = ((WebApplication)getApplication()).getServletContext();
-        File reportFile = new File(context.getRealPath("/reports/example.jrxml"));
-        Map parameters = new HashMap();
-        new EmbeddedJRReport(this, "report", new JRPdfResource(reportFile) {
-            @Override
-            public JRDataSource getReportDataSource() {
-                return new ExampleDataSource();
-            }
-        }.setReportParameters(parameters));
-    }
+public class SimplePdfPage extends WicketExamplePage
+{
+	/**
+	 * Constructor.
+	 */
+	public SimplePdfPage()
+	{
+		ServletContext context = ((WebApplication) getApplication()).getServletContext();
+		final File reportFile = new File(context.getRealPath("/reports/example.jasper"));
+		final Map parameters = new HashMap();
+		JRResource pdfResource = new JRPdfResource(reportFile).setReportParameters(
+				parameters).setReportDataSource(new ExampleDataSource());
+		add(new EmbeddedJRReport("report", pdfResource));
+	}
 
-    @Override
-    public boolean isVersioned() {
-        return false;
-    }
+	/**
+	 * @see wicket.Component#isVersioned()
+	 */
+	public boolean isVersioned()
+	{
+		return false;
+	}
 }

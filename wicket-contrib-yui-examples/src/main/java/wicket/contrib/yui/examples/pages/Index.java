@@ -24,15 +24,12 @@ import wicket.contrib.yui.examples.WicketExamplePage;
  * 
  * @author Eelco Hillenius
  */
-public class Index extends WicketExamplePage {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
+public class Index extends WicketExamplePage
+{
 	/**
 	 * Constructor
 	 */
-	public Index() {
+	public Index()
+	{
 	}
 }

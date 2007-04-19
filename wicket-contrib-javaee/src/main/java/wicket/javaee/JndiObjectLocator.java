@@ -19,8 +19,8 @@ package wicket.javaee;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
-import wicket.extensions.proxy.IProxyTargetLocator;
-import wicket.util.lang.Objects;
+import org.apache.wicket.proxy.IProxyTargetLocator;
+import org.apache.wicket.util.lang.Objects;
 
 /**
  * Implementation of {@link IProxyTargetLocator} to locate object using JNDI 

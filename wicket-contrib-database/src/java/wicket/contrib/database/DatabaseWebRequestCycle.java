@@ -1,6 +1,6 @@
 /*
- * $Id$ $Revision:
- * 1.43 $ $Date$
+ * $Id$
+ * $Revision$ $Date$
  * 
  * ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -17,10 +17,10 @@
  */
 package wicket.contrib.database;
 
-import wicket.Response;
-import wicket.protocol.http.WebRequest;
-import wicket.protocol.http.WebRequestCycle;
-import wicket.protocol.http.WebSession;
+import org.apache.wicket.Response;
+import org.apache.wicket.protocol.http.WebApplication;
+import org.apache.wicket.protocol.http.WebRequest;
+import org.apache.wicket.protocol.http.WebRequestCycle;
 
 /**
  * Special request cycle implementation that lazy opens and later closes a
@@ -36,17 +36,18 @@ public class DatabaseWebRequestCycle extends WebRequestCycle
 	/**
 	 * Construct.
 	 * 
-	 * @param session
-	 *            session object
+	 * @param application
+	 *            application object
 	 * @param request
 	 *            request object
 	 * @param response
 	 *            response object
 	 */
-	public DatabaseWebRequestCycle(WebSession session, WebRequest request, Response response)
+	public DatabaseWebRequestCycle(WebApplication application, WebRequest request, Response response)
 	{
-		super(session, request, response);
+		super(application, request, response);
 	}
+
 
 	/**
 	 * Gets the database session for this request.

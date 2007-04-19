@@ -1,34 +1,20 @@
 package wicket.contrib.data.model.bind;
 
-import wicket.MarkupContainer;
-import wicket.markup.html.panel.Panel;
-import wicket.validation.IValidator;
+import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.validation.IValidator;
 
 /**
  * A panel that wraps a validating form component.
  * 
  * @author Phil Kulak
  */
-public class InlineValidatingPanel<T> extends Panel<T>
+public class InlineValidatingPanel extends Panel
 {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
 	InlineValidatingComponent component;
 
-	public InlineValidatingPanel(MarkupContainer parent, String id)
+	public InlineValidatingPanel(String id)
 	{
-		super(parent, id);
-	}
-
-	/**
-	 * Sets the component that will optionally have valildators added.
-	 */
-	public void setComponent(InlineValidatingComponent component)
-	{
-		this.component = component;
+		super(id);
 	}
 
 	/**
@@ -38,6 +24,15 @@ public class InlineValidatingPanel<T> extends Panel<T>
 	{
 		component.add(validator);
 		return this;
+	}
+
+	/**
+	 * Sets the component that will optionally have valildators added.
+	 */
+	public void setComponent(InlineValidatingComponent component)
+	{
+		this.component = component;
+		add(component);
 	}
 
 	/**

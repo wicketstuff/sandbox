@@ -3,34 +3,31 @@ package wicket.contrib.data.model.bind;
 import java.util.ArrayList;
 import java.util.List;
 
-import wicket.Component;
-import wicket.MarkupContainer;
-import wicket.model.IModel;
+import org.apache.wicket.Component;
+import org.apache.wicket.model.IModel;
 
-public class MultiColumn<T> extends AbstractColumn<T>
+public class MultiColumn extends AbstractColumn
 {
-	private static final long serialVersionUID = 1L;
-
-	private List<IColumn> allColumns = new ArrayList<IColumn>();
-
+	private List allColumns = new ArrayList();
+	
 	public MultiColumn()
 	{
 		super(null, null);
 	}
-
+	
 	public MultiColumn(String displayName, String ognlPath)
 	{
 		super(displayName, ognlPath);
 	}
-
+	
 	public MultiColumn add(IColumn column)
 	{
 		allColumns.add(column);
 		return this;
 	}
 
-	public Component getComponent(MarkupContainer parent, String id, IModel<T> model)
+	public Component getComponent(String id, IModel model)
 	{
-		return new MultiColumnPanel(parent, id, model, allColumns);
+		return new MultiColumnPanel(id, model, allColumns);
 	}
 }

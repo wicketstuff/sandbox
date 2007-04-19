@@ -1,6 +1,7 @@
 /*
  * $Id$
- * $Revision$ $Date$
+ * $Revision$
+ * $Date$
  * 
  * ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -24,11 +25,6 @@ import java.io.Serializable;
  */
 public final class Person implements Serializable
 {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
 	private String firstName;
 
 	private String lastName;
@@ -42,7 +38,6 @@ public final class Person implements Serializable
 
 	/**
 	 * Construct.
-	 * 
 	 * @param firstName
 	 * @param lastName
 	 */
@@ -54,7 +49,6 @@ public final class Person implements Serializable
 
 	/**
 	 * Gets the firstName.
-	 * 
 	 * @return firstName
 	 */
 	public final String getFirstName()
@@ -64,9 +58,7 @@ public final class Person implements Serializable
 
 	/**
 	 * Sets the firstName.
-	 * 
-	 * @param firstName
-	 *            firstName
+	 * @param firstName firstName
 	 */
 	public final void setFirstName(String firstName)
 	{
@@ -75,7 +67,6 @@ public final class Person implements Serializable
 
 	/**
 	 * Gets the lastName.
-	 * 
 	 * @return lastName
 	 */
 	public final String getLastName()
@@ -85,9 +76,7 @@ public final class Person implements Serializable
 
 	/**
 	 * Sets the lastName.
-	 * 
-	 * @param lastName
-	 *            lastName
+	 * @param lastName lastName
 	 */
 	public final void setLastName(String lastName)
 	{

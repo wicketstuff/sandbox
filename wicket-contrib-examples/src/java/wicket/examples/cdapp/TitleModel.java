@@ -1,23 +1,21 @@
 package wicket.examples.cdapp;
 
 import wicket.contrib.data.model.PersistentObjectModel;
-import wicket.examples.cdapp.model.CD;
-import wicket.model.AbstractDetachableModel;
-import wicket.model.AbstractReadOnlyDetachableModel;
+import org.apache.wicket.examples.cdapp.model.CD;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 
 /**
  * Special model for the title header. It returns the CD title if there's a
  * loaded object (when the id != null) or it returns a special string in case
  * there is no loaded object (if id == null).
  */
-public class TitleModel extends AbstractReadOnlyDetachableModel<String>
+public class TitleModel implements IModel
 {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 	/** decorated model; provides the current id. */
-	private final PersistentObjectModel<CD, Long> cdModel;
+	private final PersistentObjectModel cdModel;
+
+	private transient boolean attached = false;
 
 	/**
 	 * Construct.
@@ -25,38 +23,41 @@ public class TitleModel extends AbstractReadOnlyDetachableModel<String>
 	 * @param cdModel
 	 *            the model to decorate
 	 */
-	public TitleModel(PersistentObjectModel<CD, Long> cdModel)
+	public TitleModel(PersistentObjectModel cdModel)
 	{
 		this.cdModel = cdModel;
 	}
 
 	/**
-	 * @see wicket.model.AbstractDetachableModel#onAttach()
+	 * Attach for request.
 	 */
-	@Override
-	protected void onAttach()
+	public void attach()
 	{
 		cdModel.attach();
 	}
 
 	/**
-	 * @see AbstractDetachableModel#onDetach()
+	 * @see Model#detach()
 	 */
-	@Override
-	protected void onDetach()
+	public void detach()
 	{
 		cdModel.detach();
+		attached = false;
 	}
 
 	/**
-	 * @see AbstractDetachableModel#onGetObject()
+	 * @see wicket.model.IModel#getObject()
 	 */
-	@Override
-	protected String onGetObject()
+	public Object getObject()
 	{
+		if (!attached)
+		{
+			attach();
+			attached = true;
+		}
 		if (cdModel.getId() != null) // it is allready persistent
 		{
-			CD cd = cdModel.getObject();
+			CD cd = (CD)cdModel.getObject();
 			return cd.getTitle();
 		}
 		else
@@ -64,5 +65,13 @@ public class TitleModel extends AbstractReadOnlyDetachableModel<String>
 		{
 			return "<NEW CD>";
 		}
+	}
+
+	/**
+	 * @see IModel#setObject(Object)
+	 */
+	public void setObject(final Object object)
+	{
+		cdModel.setObject(object);
 	}
 }

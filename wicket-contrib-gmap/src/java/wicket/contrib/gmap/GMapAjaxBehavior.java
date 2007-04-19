@@ -1,22 +1,27 @@
 package wicket.contrib.gmap;
 
-import wicket.Response;
-import wicket.ajax.AbstractDefaultAjaxBehavior;
-import wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.Component;
+import org.apache.wicket.RequestCycle;
+import org.apache.wicket.Response;
+import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.markup.html.IHeaderResponse;
+import org.apache.wicket.response.StringResponse;
+import org.apache.wicket.util.resource.IResourceStream;
+import org.apache.wicket.util.resource.StringBufferResourceStream;
 
 /**
  * @author Iulian-Corneliu Costan
  */
 class GMapAjaxBehavior extends AbstractDefaultAjaxBehavior
 {
-
 	/**
-	 * @see wicket.ajax.AbstractDefaultAjaxBehavior#onRenderHeadInitContribution(wicket.Response)
+	 * @see wicket.ajax.AbstractDefaultAjaxBehavior#renderHead(wicket.markup.html.IHeaderResponse)
 	 */
 	@Override
-	protected void onRenderHeadInitContribution(Response response)
+	public void renderHead(IHeaderResponse response)
 	{
-		super.onRenderHeadInitContribution(response);
+		super.renderHead(response);
 
 		StringBuffer s = new StringBuffer(
 				"\t<script language=\"JavaScript\" type=\"text/javascript\">\n");
@@ -33,8 +38,7 @@ class GMapAjaxBehavior extends AbstractDefaultAjaxBehavior
 		s.append("\t\twicketAjaxGet(componentUrl, success, failure)\n");
 		s.append("\n\t}\n");
 		s.append("\t</script>\n");
-
-		response.write(s);
+		response.renderString(s.toString());
 	}
 
 	/**

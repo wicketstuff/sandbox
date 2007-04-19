@@ -1,8 +1,7 @@
 package wicket.contrib.data.model.bind;
 
-import wicket.Component;
-import wicket.MarkupContainer;
-import wicket.model.IModel;
+import org.apache.wicket.Component;
+import org.apache.wicket.model.IModel;
 
 /**
  * A column that represent String fields, or any field that can be represented
@@ -10,17 +9,15 @@ import wicket.model.IModel;
  * 
  * @author Phil Kulak
  */
-public class TextFieldColumn<T> extends ValidatingColumn<T>
+public class TextFieldColumn extends ValidatingColumn
 {
-	private static final long serialVersionUID = 1L;
-
 	public TextFieldColumn(String displayName, String ognlPath)
 	{
 		super(displayName, ognlPath);
 	}
 
-	public Component getComponent(MarkupContainer parent, String id, IModel<T> model)
+	public Component getComponent(String id, IModel model)
 	{
-		return prepare(new TextFieldPanel(parent, id, makePropertyModel(model)), model);
+		return prepare(new TextFieldPanel(id, makePropertyModel(model)), model);
 	}
 }

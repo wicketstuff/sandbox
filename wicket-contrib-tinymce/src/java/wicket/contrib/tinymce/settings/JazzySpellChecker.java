@@ -26,13 +26,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import wicket.markup.html.WebResource;
-import wicket.protocol.http.WebResponse;
-import wicket.util.resource.IResourceStream;
-import wicket.util.resource.StringBufferResourceStream;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.wicket.markup.html.WebResource;
+import org.apache.wicket.protocol.http.WebResponse;
+import org.apache.wicket.util.resource.IResourceStream;
+import org.apache.wicket.util.resource.StringBufferResourceStream;
 
 import com.swabunga.spell.engine.SpellDictionary;
 import com.swabunga.spell.engine.SpellDictionaryHashMap;
@@ -44,14 +43,14 @@ import com.swabunga.spell.event.StringWordTokenizer;
 
 /**
  * Wicket web resource that acts as backend spell checker for tinymce component.
- * 
  * @author ivaynberg
  * @author Iulian Costan (iulian.costan@gmail.com)
  */
 class JazzySpellChecker extends WebResource
 {
+	private static final Log log = LogFactory.getLog(JazzySpellChecker.class);
+
 	private static final long serialVersionUID = 1L;
-	private static final Logger logger = LoggerFactory.getLogger(JazzySpellChecker.class);
 
 	private static final String dictFile = "wicket/contrib/tinymce/jazzy/english.0";
 
@@ -62,7 +61,7 @@ class JazzySpellChecker extends WebResource
 	 */
 	public JazzySpellChecker()
 	{
-		// todo load dict file from jazzy.jar archive.
+		//todo load dict file from jazzy.jar archive.
 		InputStream inputStream = getClass().getClassLoader().getResourceAsStream(dictFile);
 		InputStreamReader reader = new InputStreamReader(inputStream);
 		try
@@ -111,8 +110,8 @@ class JazzySpellChecker extends WebResource
 			doSuggest(resourceStream, cmd, id, check);
 		}
 
-		logger.debug("Spellcheck response: " + resourceStream.asString());
-
+		log.debug("Spellcheck response: " + resourceStream.asString());
+		
 		return resourceStream;
 	}
 
@@ -141,7 +140,7 @@ class JazzySpellChecker extends WebResource
 	{
 		final SpellChecker checker = new SpellChecker(dict);
 
-		final Set<String> errors = new HashSet<String>();
+		final Set errors = new HashSet();
 
 		checker.addSpellCheckListener(new SpellCheckListener()
 		{

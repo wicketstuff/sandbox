@@ -1,8 +1,7 @@
 package wicket.contrib.data.model.bind;
 
-import wicket.MarkupContainer;
-import wicket.markup.html.form.CheckBox;
-import wicket.model.IModel;
+import org.apache.wicket.markup.html.form.CheckBox;
+import org.apache.wicket.model.IModel;
 
 /**
  * A checkbox that is read only when it's model is not currently being editied.
@@ -12,46 +11,29 @@ import wicket.model.IModel;
 public class InlineCheckBox extends InlineValidatingComponent
 {
 	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
-	/**
 	 * @param id
 	 *            the id of this component
 	 * @param model
 	 *            the model for this component
 	 */
-	public InlineCheckBox(MarkupContainer parent, String id, IModel model)
+	public InlineCheckBox(String id, IModel model)
 	{
-		super(parent, id);
+		super(id);
 
-		setFormComponent(new CheckBox(this, "checkBox", model)
+		setFormComponent(new CheckBox(("checkBox"), model)
 		{
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = 1L;
-
-			@Override
 			public boolean isVisible()
 			{
 				return GridView.isEdit(this);
 			}
 		});
 
-		new CheckMark(this, "image", model)
+		add(new CheckMark("image", model)
 		{
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = 1L;
-
-			@Override
 			public boolean isVisible()
 			{
 				return super.isVisible() && !GridView.isEdit(this);
 			}
-		};
+		});
 	}
 }

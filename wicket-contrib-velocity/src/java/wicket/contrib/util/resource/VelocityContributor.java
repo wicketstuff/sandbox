@@ -1,3 +1,19 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package wicket.contrib.util.resource;
 
 import java.io.StringWriter;
@@ -6,13 +22,14 @@ import java.util.Map;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 
-import wicket.WicketRuntimeException;
-import wicket.behavior.AbstractBehavior;
-import wicket.markup.html.IHeaderContributor;
-import wicket.markup.html.IHeaderResponse;
-import wicket.model.IDetachable;
-import wicket.model.IModel;
-import wicket.util.string.Strings;
+import org.apache.wicket.Component;
+import org.apache.wicket.WicketRuntimeException;
+import org.apache.wicket.behavior.AbstractBehavior;
+import org.apache.wicket.markup.html.IHeaderContributor;
+import org.apache.wicket.markup.html.IHeaderResponse;
+import org.apache.wicket.model.IDetachable;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.util.string.Strings;
 
 /**
  * An IHeaderContributor implementation that renders a velocity template and
@@ -20,27 +37,36 @@ import wicket.util.string.Strings;
  * loading mechanism, as defined in your velocity.properties. If you do not have
  * a velocity.properties for your app, it will default to a directory
  * "templates" in the root of your app.
- * 
- * @param <K>
- *            the key type
- * @param <V>
- *            the value type
- * 
  */
-public class VelocityContributor<K, V> extends AbstractBehavior implements
-		IHeaderContributor
+public class VelocityContributor extends AbstractBehavior implements IHeaderContributor
 {
-
 	private static final long serialVersionUID = 1L;
-
-	private String encoding = "ISO-8859-1";
 
 	/** Whether to escape HTML characters. The default value is false. */
 	private boolean escapeHtml = false;
 
-	private IModel<Map<K, V>> model;
+	private IModel model;
 
 	private String templateName;
+
+	private String encoding = "ISO-8859-1";
+
+	/**
+	 * @return The encoding
+	 */
+	public String getEncoding()
+	{
+		return encoding;
+	}
+
+	/**
+	 * @param encoding
+	 *            The encoding
+	 */
+	public void setEncoding(String encoding)
+	{
+		this.encoding = encoding;
+	}
 
 	/**
 	 * Ctor for VelocityContributor
@@ -56,56 +82,12 @@ public class VelocityContributor<K, V> extends AbstractBehavior implements
 	 * @param templateName
 	 * @param model
 	 */
-	public VelocityContributor(String templateName, final IModel<Map<K, V>> model)
+	public VelocityContributor(String templateName, final IModel model)
 	{
 		this.templateName = templateName;
 		this.model = model;
 	}
 
-	/**
-	 * Detach contributor's model.
-	 */
-	public void detachModel()
-	{
-		if (model instanceof IDetachable)
-		{
-			((IDetachable) model).detach();
-
-		}
-	}
-
-	/**
-	 * @return contributor encoding, ISO-8859-1 by default.
-	 */
-	public String getEncoding()
-	{
-		return encoding;
-	}
-
-	/**
-	 * @see wicket.markup.html.IHeaderContributor#renderHead(wicket.markup.html.IHeaderResponse)
-	 */
-	public void renderHead(IHeaderResponse response)
-	{
-		String s = evaluate();
-		if (null != s)
-		{
-			response.getResponse().println(s);
-		}
-	}
-
-	/**
-	 * @param encoding
-	 *            contributor encoding
-	 */
-	public void setEncoding(String encoding)
-	{
-		this.encoding = encoding;
-	}
-
-	/**
-	 * @return Evaluate template
-	 */
 	protected String evaluate()
 	{
 
@@ -114,7 +96,7 @@ public class VelocityContributor<K, V> extends AbstractBehavior implements
 			return null;
 		}
 		// create a Velocity context object using the model if set
-		final VelocityContext ctx = new VelocityContext(model.getObject());
+		final VelocityContext ctx = new VelocityContext((Map) model.getObject());
 
 		// create a writer for capturing the Velocity output
 		StringWriter writer = new StringWriter();
@@ -144,4 +126,27 @@ public class VelocityContributor<K, V> extends AbstractBehavior implements
 		}
 	}
 
+	/**
+	 * @see wicket.markup.html.IHeaderContributor#renderHead(wicket.markup.html.IHeaderResponse)
+	 */
+	public void renderHead(IHeaderResponse response)
+	{
+		String s = evaluate();
+		if (null != s)
+		{
+			response.renderString(s);
+		}
+	}
+
+	/**
+	 * @see wicket.behavior.AbstractBehavior#detachModel(wicket.Component)
+	 */
+	public void detachModel(Component c)
+	{
+		if (model instanceof IDetachable)
+		{
+			((IDetachable) model).detach();
+
+		}
+	}
 }

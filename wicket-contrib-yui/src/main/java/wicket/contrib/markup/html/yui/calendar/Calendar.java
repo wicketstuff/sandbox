@@ -18,28 +18,28 @@
  */
 package wicket.contrib.markup.html.yui.calendar;
 
+import java.util.HashMap;
 import java.util.Map;
 
-import wicket.AttributeModifier;
-import wicket.MarkupContainer;
-import wicket.RequestCycle;
-import wicket.ResourceReference;
-import wicket.behavior.HeaderContributor;
+import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.RequestCycle;
+import org.apache.wicket.ResourceReference;
+import org.apache.wicket.behavior.HeaderContributor;
+import org.apache.wicket.extensions.util.resource.PackagedTextTemplate;
+import org.apache.wicket.markup.html.IHeaderContributor;
+import org.apache.wicket.markup.html.IHeaderResponse;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.FormComponent;
+import org.apache.wicket.model.AbstractReadOnlyModel;
+
 import wicket.contrib.markup.html.yui.AbstractYuiPanel;
-import wicket.markup.html.IHeaderResponse;
-import wicket.markup.html.WebPage;
-import wicket.markup.html.basic.Label;
-import wicket.markup.html.form.FormComponent;
-import wicket.model.AbstractReadOnlyModel;
-import wicket.util.collections.MiniMap;
-import wicket.util.resource.PackagedTextTemplate;
 
 /**
  * Calendar component based on the Calendar of Yahoo UI Library.
  * 
  * @author Eelco Hillenius
  */
-public class Calendar extends AbstractYuiPanel {
+public class Calendar extends AbstractYuiPanel implements IHeaderContributor {
 	/**
 	 * The container/ receiver of the javascript component.
 	 */
@@ -49,20 +49,18 @@ public class Calendar extends AbstractYuiPanel {
 		/**
 		 * Construct.
 		 * 
-		 * @param parent
 		 * @param id
 		 */
-		public CalendarElement(MarkupContainer parent, String id) {
-			super(parent, id);
-			add(new AttributeModifier("id", true,
-					new AbstractReadOnlyModel<String>() {
-						private static final long serialVersionUID = 1L;
+		public CalendarElement(String id) {
+			super(id);
+			add(new AttributeModifier("id", true, new AbstractReadOnlyModel() {
+				private static final long serialVersionUID = 1L;
 
-						@Override
-						public String getObject() {
-							return elementId;
-						}
-					}));
+				@Override
+				public Object getObject() {
+					return elementId;
+				}
+			}));
 		}
 
 		/**
@@ -95,32 +93,33 @@ public class Calendar extends AbstractYuiPanel {
 	 * @param id
 	 *            the component id
 	 */
-	public Calendar(MarkupContainer parent, String id) {
-		super(parent, id);
+	public Calendar(String id) {
+		super(id);
 		add(HeaderContributor.forJavaScript(Calendar.class, "calendar.js"));
 		add(HeaderContributor.forCss(Calendar.class, "calendar.css"));
 
-		Label initialization = new Label(this, "initialization",
-				new AbstractReadOnlyModel<String>() {
+		Label initialization = new Label("initialization",
+				new AbstractReadOnlyModel() {
 					private static final long serialVersionUID = 1L;
 
 					/**
 					 * @see wicket.model.IModel#getObject(wicket.Component)
 					 */
 					@Override
-					public String getObject() {
+					public Object getObject() {
 						return getJavaScriptComponentInitializationScript();
 					}
 				});
 		initialization.setEscapeModelStrings(false);
-		calendarElement = new CalendarElement(this, "calendarContainer");
+		add(initialization);
+		add(calendarElement = new CalendarElement("calendarContainer"));
 	}
 
-	@Override
+	/**
+	 * @see org.apache.wicket.markup.html.IHeaderContributor#renderHead(org.apache.wicket.markup.html.IHeaderResponse)
+	 */
 	public void renderHead(IHeaderResponse response) {
-		((WebPage) getPage()).getBodyContainer().addOnLoadModifier(
-				"init" + javaScriptId + "();", null);
-		super.renderHead(response);
+		response.renderOnLoadJavascript("init" + javaScriptId + "();");
 	}
 
 	/**
@@ -140,8 +139,7 @@ public class Calendar extends AbstractYuiPanel {
 		CharSequence rightImage = RequestCycle.get().urlFor(
 				new ResourceReference(Calendar.class, "calrt.gif")).toString();
 
-		Map<String, CharSequence> variables = new MiniMap<String, CharSequence>(
-				4);
+		Map<String, Object> variables = new HashMap<String, Object>(4);
 		variables.put("javaScriptId", javaScriptId);
 		variables.put("elementId", elementId);
 		variables.put("navigationArrowLeft", leftImage);

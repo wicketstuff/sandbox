@@ -60,8 +60,7 @@ public class Start
 			}
 			jettyServer = new Server(jettyConfig);
 			jettyServer.start();
-		}
-		catch (Exception e)
+		} catch (Exception e)
 		{
 			log.fatal("Could not start the Jetty server: " + e);
 			if (jettyServer != null)
@@ -69,8 +68,7 @@ public class Start
 				try
 				{
 					jettyServer.stop();
-				}
-				catch (InterruptedException e1)
+				} catch (InterruptedException e1)
 				{
 					log.fatal("Unable to stop the jetty server: " + e1);
 				}

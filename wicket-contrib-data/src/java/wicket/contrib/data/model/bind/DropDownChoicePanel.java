@@ -2,24 +2,21 @@ package wicket.contrib.data.model.bind;
 
 import java.util.List;
 
-import wicket.MarkupContainer;
-import wicket.model.IModel;
+import org.apache.wicket.model.IModel;
 
 /**
  * A panel for a drop down choice.
  * 
  * @author Phil Kulak
  */
-public class DropDownChoicePanel<T> extends InlineValidatingPanel<T>
+public class DropDownChoicePanel extends InlineValidatingPanel
 {
-	private static final long serialVersionUID = 1L;
-
-	public DropDownChoicePanel(MarkupContainer parent, String id, IModel<T> model,
-			List<T> choices)
+	public DropDownChoicePanel(String id, IModel model, List choices)
 	{
-		super(parent, id);
-		InlineDropDownChoice<T> choice = new InlineDropDownChoice<T>(this,
-				"inlineDropDownChoice", model, choices);
+		super(id);
+		InlineDropDownChoice choice = new InlineDropDownChoice(
+			"inlineDropDownChoice", model, choices);
 		choice.setRenderBodyOnly(true);
+		add(choice);
 	}
 }

@@ -20,9 +20,8 @@ package wicket.contrib.examples.freemarker;
 import java.util.ArrayList;
 import java.util.List;
 
-import wicket.Page;
-import wicket.protocol.http.WebApplication;
-import wicket.util.time.Duration;
+import org.apache.wicket.protocol.http.WebApplication;
+import org.apache.wicket.util.time.Duration;
 
 /**
  * Application class for FreeMarker template example.
@@ -32,7 +31,7 @@ import wicket.util.time.Duration;
 public class FreeMarkerTemplateApplication extends WebApplication
 {
 	/** Dummy people database */
-	private static List<Person> people = new ArrayList<Person>();
+	private static List people = new ArrayList();
 
 	static
 	{
@@ -49,7 +48,7 @@ public class FreeMarkerTemplateApplication extends WebApplication
 	 * 
 	 * @return the dummy people database
 	 */
-	public static List<Person> getPeople()
+	public static List getPeople()
 	{
 		return people;
 	}
@@ -64,7 +63,6 @@ public class FreeMarkerTemplateApplication extends WebApplication
 	/**
 	 * @see wicket.protocol.http.WebApplication#init()
 	 */
-	@Override
 	protected void init()
 	{
 		getResourceSettings().setResourcePollFrequency(Duration.ONE_SECOND);
@@ -73,8 +71,7 @@ public class FreeMarkerTemplateApplication extends WebApplication
 	/**
 	 * @return class
 	 */
-	@Override
-	public Class< ? extends Page> getHomePage()
+	public Class getHomePage()
 	{
 		return TemplatePage.class;
 	}

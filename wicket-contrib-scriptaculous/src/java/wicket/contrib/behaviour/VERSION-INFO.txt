@@ -1,2 +1,0 @@
-this package uses:
-	- behaviour (http://bennolan.com/behaviour/) 1.1

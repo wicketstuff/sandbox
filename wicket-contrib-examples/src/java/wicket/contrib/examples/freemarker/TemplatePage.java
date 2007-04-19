@@ -1,7 +1,6 @@
 /*
- * $Id: TemplatePage.java 526 2006-01-08 11:21:16 +0000 (Sun, 08 Jan 2006)
- * jdonnerstag $ $Revision$ $Date: 2006-01-08 11:21:16 +0000 (Sun, 08 Jan
- * 2006) $
+ * $Id$ $Revision$
+ * $Date$
  * 
  * ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -19,19 +18,16 @@
 package wicket.contrib.examples.freemarker;
 
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
-import wicket.MarkupContainer;
-import wicket.PageParameters;
+import org.apache.wicket.PageParameters;
 import wicket.contrib.markup.html.freemarker.FreeMarkerPanel;
-import wicket.examples.WicketExamplePage;
-import wicket.markup.html.form.Form;
-import wicket.markup.html.form.TextArea;
-import wicket.markup.html.panel.FeedbackPanel;
-import wicket.model.Model;
-import wicket.model.PropertyModel;
-import wicket.util.resource.StringBufferResourceStream;
+import org.apache.wicket.examples.WicketExamplePage;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.TextArea;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.util.resource.StringBufferResourceStream;
 
 /**
  * Template example page.
@@ -41,13 +37,8 @@ import wicket.util.resource.StringBufferResourceStream;
 public class TemplatePage extends WicketExamplePage
 {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
 	/** Context to be used by the template */
-	private final Model<Map<String, List<Person>>> templateContext;
+	private final Model templateContext;
 
 	/** The current template contents */
 	private StringBufferResourceStream template = new StringBufferResourceStream();
@@ -73,13 +64,13 @@ public class TemplatePage extends WicketExamplePage
 	 */
 	public TemplatePage(final PageParameters parameters)
 	{
-		Map<String, List<Person>> map = new HashMap<String, List<Person>>();
+		HashMap map = new HashMap();
 		map.put("people", FreeMarkerTemplateApplication.getPeople());
 		templateContext = Model.valueOf(map);
 
-		new TemplateForm(this, "templateForm");
-		new FreeMarkerPanel<String, List<Person>>(this, "templatePanel", template, templateContext);
-		new FeedbackPanel(this, "feedback");
+		add(new TemplateForm("templateForm"));
+		add(new FreeMarkerPanel("templatePanel", template, templateContext));
+		add(new FeedbackPanel("feedback"));
 	}
 
 	/**
@@ -109,24 +100,27 @@ public class TemplatePage extends WicketExamplePage
 	 */
 	private final class TemplateForm extends Form
 	{
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;
+
+		private TextArea templateTextArea;
 
 		/**
 		 * Constructor.
 		 * 
-		 * @param parent
-		 *            The parent
 		 * @param name
 		 *            component name
 		 */
-		public TemplateForm(MarkupContainer parent, String name)
+		public TemplateForm(String name)
 		{
-			super(parent, name);
-			new TextArea<String>(this, "templateInput", new PropertyModel<String>(
-					TemplatePage.this, "template"));
+			super(name);
+			add(templateTextArea = new TextArea("templateInput", new PropertyModel(new Model(
+					TemplatePage.this), "template")));
+		}
+
+		/**
+		 * @see wicket.markup.html.form.Form#onSubmit()
+		 */
+		protected void onSubmit()
+		{
 		}
 	}
 }

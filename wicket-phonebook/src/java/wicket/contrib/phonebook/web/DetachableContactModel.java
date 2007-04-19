@@ -20,7 +20,7 @@ package wicket.contrib.phonebook.web;
 
 import wicket.contrib.phonebook.Contact;
 import wicket.contrib.phonebook.ContactDao;
-import wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.LoadableDetachableModel;
 
 /**
  * Detatchable, read-only Contact model. Ensures that memory used to load the
@@ -30,7 +30,7 @@ import wicket.model.LoadableDetachableModel;
  * 
  * @author ivaynberg
  */
-public class DetachableContactModel extends LoadableDetachableModel<Contact> {
+public class DetachableContactModel extends LoadableDetachableModel {
 	/**
 	 * database identity of the contact
 	 */
@@ -61,7 +61,7 @@ public class DetachableContactModel extends LoadableDetachableModel<Contact> {
 	 * 
 	 * @see wicket.model.LoadableDetachableModel#load()
 	 */
-	protected Contact load() {
+	protected Object load() {
 		return dao.load(id);
 	}
 

@@ -23,10 +23,9 @@ import org.hibernate.Query;
 
 import wicket.contrib.data.model.PageableList;
 import wicket.contrib.data.model.hibernate.HibernateCountAndListAction;
-import wicket.examples.cdapp.model.CD;
-import wicket.examples.cdapp.util.HibernateSessionDelegate;
-import wicket.model.AbstractDetachableModel;
-import wicket.model.AbstractReadOnlyDetachableModel;
+import org.apache.wicket.examples.cdapp.util.HibernateSessionDelegate;
+import org.apache.wicket.model.AbstractReadOnlyModel;
+import org.apache.wicket.model.IModel;
 
 /**
  * Model that keeps a (current) search argument, and uses a pageable list as
@@ -34,36 +33,26 @@ import wicket.model.AbstractReadOnlyDetachableModel;
  * 
  * @author Eelco Hillenius
  */
-@SuppressWarnings("hiding")
-public final class SearchModel extends
-		AbstractReadOnlyDetachableModel<List<CD>> {
+public final class SearchModel extends AbstractReadOnlyModel
+{
 	/** count and list action that works with this model. */
-	private final class CountAndListAction extends
-			HibernateCountAndListAction<CD, Long> {
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;
-
+	private final class CountAndListAction extends HibernateCountAndListAction
+	{
 		/**
 		 * Construct.
 		 */
-		public CountAndListAction() {
+		public CountAndListAction()
+		{
 			super("wicket.examples.cdapp.model.SearchCD",
-					"wicket.examples.cdapp.model.SearchCD.count",
-					new HibernateSessionDelegate());
+					"wicket.examples.cdapp.model.SearchCD.count", new HibernateSessionDelegate());
 		}
 
 		/**
-		 * @param query
-		 * @param queryObject
-		 * @throws HibernateException
 		 * @see wicket.contrib.data.model.hibernate.HibernateCountAndListAction#setParameters(org.hibernate.Query,
 		 *      java.lang.Object)
 		 */
-		@Override
-		protected void setParameters(Query query, Long queryObject)
-				throws HibernateException {
+		protected void setParameters(Query query, Object queryObject) throws HibernateException
+		{
 			final String searchStringParameter = getSearchStringParameter();
 			query.setString("performers", searchStringParameter);
 			query.setString("title", searchStringParameter);
@@ -71,13 +60,11 @@ public final class SearchModel extends
 		}
 	}
 
-	private static final long serialVersionUID = 1L;
-
 	/** action used by the pageable list (has our order columns). */
 	private CountAndListAction countAndListAction = new CountAndListAction();
 
 	/** the list of matches */
-	private transient PageableList<CD, Long> list;
+	private transient PageableList list;
 
 	/** number of rows on each page. */
 	private int rowsPerPage = 8;
@@ -85,10 +72,13 @@ public final class SearchModel extends
 	/** zoek opdracht. */
 	private String searchString = null;
 
+	private transient boolean attached = false;
+
 	/**
 	 * Construct.
 	 */
-	public SearchModel() {
+	public SearchModel()
+	{
 	}
 
 	/**
@@ -97,7 +87,8 @@ public final class SearchModel extends
 	 * @param rowsPerPage
 	 *            number of rows on each page
 	 */
-	public SearchModel(int rowsPerPage) {
+	public SearchModel(int rowsPerPage)
+	{
 		this.rowsPerPage = rowsPerPage;
 	}
 
@@ -107,10 +98,12 @@ public final class SearchModel extends
 	 * @param field
 	 *            the field to add
 	 */
-	public final void addOrdering(String field) {
-		PageableList<CD, Long> list = (PageableList<CD, Long>) getObject();
-		if (list != null) {
-			HibernateCountAndListAction action = (HibernateCountAndListAction) list
+	public final void addOrdering(String field)
+	{
+		PageableList list = (PageableList)getObject();
+		if (list != null)
+		{
+			HibernateCountAndListAction action = (HibernateCountAndListAction)list
 					.getCountAndListAction();
 			action.addOrdering(field);
 			list.clear();
@@ -118,20 +111,53 @@ public final class SearchModel extends
 	}
 
 	/**
+	 * Attach for request.
+	 */
+	public void attach()
+	{
+		list = new PageableList(rowsPerPage, countAndListAction);
+	}
+
+	/**
+	 * @see IModel#detach()
+	 */
+	public void detach()
+	{
+		list = null;
+		attached = false;
+	}
+
+	/**
+	 * @see IModel#getObject()
+	 */
+	public Object getObject()
+	{
+		if (!attached)
+		{
+			attach();
+			attached = true;
+		}
+		return list;
+	}
+
+	/**
 	 * Gets number of rows on each page.
 	 * 
 	 * @return number of rows on each page
 	 */
-	public final int getRowsPerPage() {
+	public final int getRowsPerPage()
+	{
 		return rowsPerPage;
 	}
+
 
 	/**
 	 * Gets the searchString.
 	 * 
 	 * @return searchString
 	 */
-	public final String getSearchString() {
+	public final String getSearchString()
+	{
 		return searchString;
 	}
 
@@ -140,8 +166,10 @@ public final class SearchModel extends
 	 * 
 	 * @return whether there are any rows found
 	 */
-	public final boolean hasResults() {
-		List results = getObject();
+	@SuppressWarnings("unchecked")
+	public final boolean hasResults()
+	{
+		List results = (List)getObject();
 		return (!results.isEmpty());
 	}
 
@@ -151,33 +179,10 @@ public final class SearchModel extends
 	 * @param searchString
 	 *            searchString
 	 */
-	public final void setSearchString(String searchString) {
+	public final void setSearchString(String searchString)
+	{
 		detach(); // force reload right away
 		this.searchString = searchString;
-	}
-
-	/**
-	 * @see wicket.model.AbstractDetachableModel#onAttach()
-	 */
-	@Override
-	protected void onAttach() {
-		list = new PageableList<CD, Long>(rowsPerPage, countAndListAction);
-	}
-
-	/**
-	 * @see AbstractDetachableModel#onDetach()
-	 */
-	@Override
-	protected void onDetach() {
-		list = null;
-	}
-
-	/**
-	 * @see wicket.model.AbstractDetachableModel#onGetObject()
-	 */
-	@Override
-	protected PageableList<CD, Long> onGetObject() {
-		return list;
 	}
 
 	/**
@@ -185,9 +190,11 @@ public final class SearchModel extends
 	 * 
 	 * @return the current search string as a query parameter
 	 */
-	private String getSearchStringParameter() {
+	private String getSearchStringParameter()
+	{
 		final String searchStringParameter;
-		if (searchString != null) {
+		if (searchString != null)
+		{
 			return '%' + searchString.toUpperCase() + '%';
 		}
 		return null;

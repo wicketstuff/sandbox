@@ -1,6 +1,6 @@
 /*
- * $Id$
- * $Revision$ $Date$
+ * $Id: Start.java 889 2006-08-16 11:01:16 -0700 (Wed, 16 Aug 2006) ivaynberg $
+ * $Revision: 889 $ $Date: 2006-08-16 11:01:16 -0700 (Wed, 16 Aug 2006) $
  * 
  * ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -19,47 +19,34 @@ package wicket.contrib.phonebook;
 
 import org.mortbay.jetty.Connector;
 import org.mortbay.jetty.Server;
-import org.mortbay.jetty.nio.SelectChannelConnector;
+import org.mortbay.jetty.bio.SocketConnector;
 import org.mortbay.jetty.webapp.WebAppContext;
 
 /**
  * Seperate startup class for people that want to run the examples directly.
- * 
- * Once started the phonebook is accessible under
- * http://localhost:8080/phonebook
  */
 public class StartPhonebook {
-
 	/**
 	 * Main function, starts the jetty server.
 	 * 
 	 * @param args
-	 * @throws Exception
 	 */
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) {
 		Server server = new Server();
-		SelectChannelConnector connector = new SelectChannelConnector();
+		SocketConnector connector = new SocketConnector();
 		connector.setPort(8080);
 		server.setConnectors(new Connector[] { connector });
 
-		WebAppContext web = new WebAppContext();
-		web.setContextPath("/phonebook");
-		web.setWar("src/webapp");
-		web.setDistributable(true);
-		server.addHandler(web);
+		WebAppContext context = new WebAppContext();
+		context.setServer(server);
+		context.setContextPath("/phonebook");
+		context.setWar("src/webapp");
 
-		// JMX
-		// MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
-		// MBeanContainer mBeanContainer = new MBeanContainer(mBeanServer);
-		// server.getContainer().addEventListener(mBeanContainer);
-		// mBeanContainer.start();
-
+		server.addHandler(context);
 		try {
 			server.start();
-			server.join();
 		} catch (Exception e) {
-			e.printStackTrace();
-			System.exit(100);
+			throw new RuntimeException(e);
 		}
 
 	}

@@ -5,10 +5,10 @@ import java.util.Iterator;
 import wicket.contrib.phonebook.Contact;
 import wicket.contrib.phonebook.ContactDao;
 import wicket.contrib.phonebook.QueryParam;
-import wicket.extensions.markup.html.repeater.data.table.filter.IFilterStateLocator;
-import wicket.extensions.markup.html.repeater.util.SortParam;
-import wicket.extensions.markup.html.repeater.util.SortableDataProvider;
-import wicket.model.IModel;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.IFilterStateLocator;
+import org.apache.wicket.extensions.markup.html.repeater.util.SortParam;
+import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
+import org.apache.wicket.model.IModel;
 
 /**
  * 

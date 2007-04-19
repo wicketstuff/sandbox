@@ -1,7 +1,7 @@
 /*
- * $Id$
- * $Revision$
- * $Date$
+ * $Id: BasePage.java 634 2006-03-27 02:28:10Z ivaynberg $
+ * $Revision: 634 $
+ * $Date: 2006-03-26 18:28:10 -0800 (Sun, 26 Mar 2006) $
  * 
  * ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -18,8 +18,8 @@
  */
 package wicket.contrib.phonebook.web.page;
 
-import wicket.markup.html.WebPage;
-import wicket.markup.html.panel.FeedbackPanel;
+import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
 
 /**
  * Base page class used for phonebook web pages.
@@ -27,15 +27,12 @@ import wicket.markup.html.panel.FeedbackPanel;
  * The markup of this files provides some common html as well as includes a
  * reference to the css file that all other pages inherit through wicket's
  * markup inheritance feature.
- * <p>
- * 
  * 
  * @author igor
  */
 public class BasePage extends WebPage {
 
 	public BasePage() {
-		new FeedbackPanel(this, "status");
+		add(new FeedbackPanel("status"));
 	}
-
 }

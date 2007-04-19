@@ -1,23 +1,20 @@
 package wicket.contrib.examples.tinymce;
 
+import org.apache.wicket.markup.html.form.TextArea;
+import org.apache.wicket.model.Model;
+
 import wicket.contrib.tinymce.TinyMCEPanel;
-import wicket.markup.html.form.TextArea;
-import wicket.model.Model;
 
 /**
- * @author Iulian Costan (iulian.costan@gmail.com)
+ * @author Iulian-Corneliu COSTAN
  */
 public class SimpleTinyMCEPage extends TinyMCEBasePage
 {
-	private static final long serialVersionUID = 1L;
 
-	/**
-	 * Construct.
-	 */
-	public SimpleTinyMCEPage()
+    public SimpleTinyMCEPage()
     {
-        new TinyMCEPanel(this, "tinyMCE");
-        new TextArea<String>(this, "ta", new Model<String>(TEXT));
+        add(new TinyMCEPanel("tinyMCE"));
+        add(new TextArea("ta", new Model(TEXT)));
     }
 
     private String TEXT = "Some <b>element</b>, this is to be editor 1.";

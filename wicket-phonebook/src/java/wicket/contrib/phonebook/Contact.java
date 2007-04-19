@@ -1,7 +1,7 @@
 /*
- * $Id$
- * $Revision$
- * $Date$
+ * $Id: Contact.java 773 2006-06-08 12:54:03 -0700 (Thu, 08 Jun 2006) gwynevans $
+ * $Revision: 773 $
+ * $Date: 2006-06-08 12:54:03 -0700 (Thu, 08 Jun 2006) $
  * 
  * ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not

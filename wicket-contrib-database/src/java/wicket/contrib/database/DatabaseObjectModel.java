@@ -17,7 +17,7 @@
  */
 package wicket.contrib.database;
 
-import wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.LoadableDetachableModel;
 
 /**
  * A model class for objects persisted in a relational database that is keyed
@@ -39,35 +39,6 @@ public class DatabaseObjectModel extends LoadableDetachableModel
 	{
 		this.c = c;
 		this.id = id;
-	}
-
-	/**
-	 * @return True if the objects are equal
-	 */
-	public boolean equals(final Object object)
-	{
-		if (object instanceof DatabaseObjectModel)
-		{
-			final DatabaseObjectModel that = (DatabaseObjectModel)object;
-			return that.id == this.id;
-		}
-		return false;
-	}
-	
-	/**
-	 * @return the id
-	 */
-	public Long getId()
-	{
-		return id;
-	}
-	
-	/**
-	 * @return Hashcode for object
-	 */
-	public int hashCode()
-	{
-		return (int)id.longValue();
 	}
 
 	/**

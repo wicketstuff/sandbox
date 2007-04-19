@@ -1,22 +1,52 @@
 package wicket.contrib.data.model.bind;
 
-import wicket.AttributeModifier;
-import wicket.Component;
-import wicket.MarkupContainer;
+import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.Component;
+import org.apache.wicket.MarkupContainer;
 import wicket.contrib.data.model.OrderedPageableList;
-import wicket.markup.html.link.Link;
-import wicket.markup.html.list.ListView;
-import wicket.model.AbstractModel;
-import wicket.model.Model;
+import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 
 /**
  * A link that changes the ordering on a field of an OrderedPageableList.
  * 
  * @author Phil Kulak
  */
-public class OrderByLink extends Link<Integer>
+public class OrderByLink extends Link
 {
-	private static final long serialVersionUID = 1L;
+	/**
+	 * The class attribute of a order by link.
+	 */
+	private class AttribModel implements IModel
+	{
+		public void detach()
+		{
+		}
+
+		/**
+		 * @see wicket.model.IModel
+		 */
+		public Object getObject()
+		{
+			Integer state = (Integer) OrderByLink.this.getModelObject();
+			if (state.equals(UP))
+				return "wicket_orderUp";
+			if (state.equals(DOWN))
+				return "wicket_orderDown";
+			else
+				return "wicket_orderNone";
+		}
+
+		/**
+		 * @see wicket.model.IModel
+		 */
+		public void setObject(Object object)
+		{
+			throw new UnsupportedOperationException();
+		}
+	}
 
 	private static final Integer UP = new Integer(0);
 
@@ -38,18 +68,27 @@ public class OrderByLink extends Link<Integer>
 	 * @param list
 	 *            the ListView that contains an OrderedPageableList
 	 */
-	public OrderByLink(MarkupContainer parent, String id, String field, ListView list)
+	public OrderByLink(String id, String field, ListView list)
 	{
-		super(parent, id, new Model<Integer>(NONE));
+		super(id, new Model(NONE));
 		this.field = field;
 		this.list = list;
 		add(new AttributeModifier("class", true, new AttribModel()));
 	}
 
 	/**
+	 * Returns the list this link operates on.
+	 * 
+	 * @return the ListView used by this link
+	 */
+	public ListView getList()
+	{
+		return list;
+	}
+
+	/**
 	 * @see wicket.markup.html.link.Link
 	 */
-	@Override
 	public void onClick()
 	{
 		OrderedPageableList listModel = (OrderedPageableList) list.getModelObject();
@@ -103,21 +142,11 @@ public class OrderByLink extends Link<Integer>
 	}
 
 	/**
-	 * Returns the list this link operates on.
-	 * 
-	 * @return the ListView used by this link
-	 */
-	public ListView getList()
-	{
-		return list;
-	}
-
-	/**
 	 * Switches the state of this link.
 	 */
 	private void switchState()
 	{
-		Integer state = getModelObject();
+		Integer state = (Integer) getModelObject();
 
 		if (state.equals(NONE) || state.equals(UP))
 		{
@@ -126,42 +155,6 @@ public class OrderByLink extends Link<Integer>
 		else
 		{
 			setModelObject(UP);
-		}
-	}
-
-	/**
-	 * The class attribute of a order by link.
-	 */
-	private class AttribModel extends AbstractModel<String>
-	{
-		private static final long serialVersionUID = 1L;
-
-		/**
-		 * @see wicket.model.IModel
-		 */
-		public String getObject()
-		{
-			Integer state = OrderByLink.this.getModelObject();
-			if (state.equals(UP))
-			{
-				return "wicket_orderUp";
-			}
-			if (state.equals(DOWN))
-			{
-				return "wicket_orderDown";
-			}
-			else
-			{
-				return "wicket_orderNone";
-			}
-		}
-
-		/**
-		 * @see wicket.model.IModel
-		 */
-		public void setObject(String object)
-		{
-			throw new UnsupportedOperationException();
 		}
 	}
 }

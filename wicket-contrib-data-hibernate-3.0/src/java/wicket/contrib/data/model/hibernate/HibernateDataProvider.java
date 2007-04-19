@@ -7,30 +7,50 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 
 import wicket.contrib.data.model.hibernate.IHibernateDao.IHibernateCallback;
-import wicket.extensions.markup.html.repeater.util.SortParam;
-import wicket.extensions.markup.html.repeater.util.SortableDataProvider;
-import wicket.model.IModel;
-import wicket.model.Model;
+import org.apache.wicket.extensions.markup.html.repeater.util.SortParam;
+import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 
 /**
  * A data provider for working with Hibernate 3.
  * 
  * @author Phil Kulak
  */
-public abstract class HibernateDataProvider<T, V> extends SortableDataProvider<T>
+public abstract class HibernateDataProvider extends SortableDataProvider
 {
-	private IModel<IHibernateDao> hibernateDao;
+	private IModel hibernateDao;
 
 	private boolean unproxy = false;
 
 	private boolean evict = false;
 
-	/**
-	 * Set to true to have all models unproxied.
-	 */
-	public void setUnproxy(boolean unproxy)
+	public HibernateDataProvider(IHibernateDao hibernateDao)
 	{
-		this.unproxy = unproxy;
+		this.hibernateDao = new Model(hibernateDao);
+	}
+
+	public HibernateDataProvider(IModel hibernateDao)
+	{
+		this.hibernateDao = hibernateDao;
+	}
+
+	public Iterator iterator(final int first, final int count)
+	{
+		return (Iterator) getHibernateDao().execute(new IHibernateCallback()
+		{
+			public Object execute(Session session)
+			{
+				return iterator(first, count, session);
+			}
+		});
+	}
+
+	public IModel model(Object object)
+	{
+		HibernateModel ret = new HibernateModel(object, hibernateDao, unproxy);
+		ret.setEvict(evict);
+		return ret;
 	}
 
 	/**
@@ -42,47 +62,64 @@ public abstract class HibernateDataProvider<T, V> extends SortableDataProvider<T
 		this.evict = evict;
 	}
 
-	public HibernateDataProvider(IHibernateDao hibernateDao)
+	/**
+	 * Set to true to have all models unproxied.
+	 */
+	public void setUnproxy(boolean unproxy)
 	{
-		this.hibernateDao = new Model<IHibernateDao>(hibernateDao);
+		this.unproxy = unproxy;
 	}
 
-	public HibernateDataProvider(IModel<IHibernateDao> hibernateDao)
-	{
-		this.hibernateDao = hibernateDao;
-	}
-
-	public IModel<T> model(T object)
-	{
-		HibernateModel<T, V> ret = new HibernateModel<T, V>(object, hibernateDao, unproxy);
-		ret.setEvict(evict);
-		return ret;
-	}
-
-	@SuppressWarnings("unchecked")
-	public Iterator<T> iterator(final int first, final int count)
-	{
-		return getHibernateDao().execute(new IHibernateCallback<Iterator<T>>()
-		{
-			public Iterator<T> execute(Session session)
-			{
-				return iterator(first, count, session);
-			}
-		});
-	}
-
-	@SuppressWarnings("unchecked")
 	public int size()
 	{
-		Integer result = getHibernateDao().execute(new IHibernateCallback<Integer>()
+		Integer result = (Integer) getHibernateDao().execute(new IHibernateCallback()
 		{
-			public Integer execute(Session session)
+			public Object execute(Session session)
 			{
 				return size(session);
 			}
 		});
 
 		return result.intValue();
+	}
+
+	private IHibernateDao getHibernateDao()
+	{
+		return (IHibernateDao) hibernateDao.getObject();
+	}
+
+	private Order makeOrder(SortParam param)
+	{
+		return param.isAscending() ? Order.asc(param.getProperty()) : Order.desc(param
+				.getProperty());
+	}
+
+	/**
+	 * Adds all the current orderings to the criteria.
+	 * 
+	 * @param criteria
+	 *            the criteria to add the orderings to
+	 * @return the criteria with the added orderings
+	 */
+	protected final Criteria addOrdering(Criteria criteria)
+	{
+		SortParam sp = getSort();
+		if (sp != null)
+		{
+			criteria.addOrder(makeOrder(sp));
+		}
+		return criteria;
+	}
+
+	/**
+	 * Formats the current sort states an a query string suitable for appending
+	 * at the end of SQL, HQL or other queries.
+	 * 
+	 * @return an ORDER BY query fragment
+	 */
+	protected String getSqlOrderBy()
+	{
+		return getSqlOrderBy(null);
 	}
 
 	/**
@@ -113,46 +150,7 @@ public abstract class HibernateDataProvider<T, V> extends SortableDataProvider<T
 		return orderBy.toString();
 	}
 
-	/**
-	 * Formats the current sort states an a query string suitable for appending
-	 * at the end of SQL, HQL or other queries.
-	 * 
-	 * @return an ORDER BY query fragment
-	 */
-	protected String getSqlOrderBy()
-	{
-		return getSqlOrderBy(null);
-	}
+	protected abstract Iterator iterator(int first, int count, Session session);
 
-	/**
-	 * Adds all the current orderings to the criteria.
-	 * 
-	 * @param criteria
-	 *            the criteria to add the orderings to
-	 * @return the criteria with the added orderings
-	 */
-	protected final Criteria addOrdering(Criteria criteria)
-	{
-		SortParam sp = getSort();
-		if (sp != null)
-		{
-			criteria.addOrder(makeOrder(sp));
-		}
-		return criteria;
-	}
-
-	private Order makeOrder(SortParam param)
-	{
-		return param.isAscending() ? Order.asc(param.getProperty()) : Order.desc(param
-				.getProperty());
-	}
-
-	private IHibernateDao getHibernateDao()
-	{
-		return hibernateDao.getObject();
-	}
-
-	protected abstract Iterator<T> iterator(int first, int count, Session session);
-
-	protected abstract Integer size(Session session);
+	protected abstract Object size(Session session);
 }
