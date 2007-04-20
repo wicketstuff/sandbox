@@ -77,9 +77,10 @@ public abstract class DojoOrderableRepeatingView extends RefreshingView
 		super.onComponentTag(tag);
 	}
 	
-	protected void onRender(MarkupStream markupStream)
-	{
-		super.onRender(markupStream);
+	@Override
+	protected void onAfterRender() {
+		super.onAfterRender();
+		//position computing should be restart : 
 		pos = 0;
 	}
 
