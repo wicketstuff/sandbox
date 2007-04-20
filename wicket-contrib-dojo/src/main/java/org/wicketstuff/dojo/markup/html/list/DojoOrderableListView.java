@@ -78,12 +78,6 @@ import org.apache.wicket.model.Model;
  */
 public abstract class DojoOrderableListView extends ListView
 {
-	@Override
-	protected void populateItem(ListItem item) {
-		// TODO Auto-generated method stub
-		
-	}
-
 	int pos = 0; 
 
 	/**
