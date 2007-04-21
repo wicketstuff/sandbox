@@ -52,7 +52,7 @@ import org.wicketstuff.dojo.indicator.behavior.DojoIndicatorBehavior;
  * use a custom {@link CompressedResourceReference}
  * <pre>
  *  CompressedResourceReference myCustomDojo = new CompressedResourceReference([...]);
- * 	setMetaData(AbstractDefaultDojoBeahvior.USE_CUSTOM_DOJO_DIST, myCustomDojo);
+ * 	setMetaData(AbstractDefaultDojoBehavior.USE_CUSTOM_DOJO_DIST, myCustomDojo);
  * </pre>
  * <b>WARNING</b> : the package dojo distribution contains some patches on dojo. If you use your own
  * distribution it can broke some component beahviors.
