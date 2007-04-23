@@ -25,6 +25,11 @@ import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.model.IModel;
 
 @SuppressWarnings("serial")
+/**
+ * Suggestion list that uses the Wicket model object to know the items in the list.
+ *
+ * @author <a href="http://www.demay-fr.net/blog">Vincent Demay</a>
+ */
 public class DojoDropDownChoice extends DropDownChoice {
 	
 	private boolean handleSelectionChange = false;
