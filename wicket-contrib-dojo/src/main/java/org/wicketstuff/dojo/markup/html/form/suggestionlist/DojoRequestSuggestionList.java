@@ -17,15 +17,17 @@
 package org.wicketstuff.dojo.markup.html.form.suggestionlist;
 
 import org.wicketstuff.dojo.DojoIdConstants;
+import org.wicketstuff.dojo.markup.html.form.DojoDropDownChoice;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.IModel;
 
 /**
- * Suggestion list that request the server to know which item
- * sould be display with the user input in the widget
+ * Suggestion list that requests the server to know which items
+ * match the user input
+ * 
+ * @see DojoDropDownChoice for a suggestion list that uses a Wicket model object
  * @author <a href="http://www.demay-fr.net/blog">Vincent Demay</a>
- *
  */
 public abstract class DojoRequestSuggestionList extends TextField
 {

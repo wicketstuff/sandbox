@@ -22,8 +22,8 @@ import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.model.IModel;
 
 /**
- * DojoInline suggestion list is a suggestion list withour server request.
- * It use a select tag and option tag to render the componant.
+ * Suggestion list without server request.
+ * It uses a select tag and option tag to render the component.
  * @author <a href="http://www.demay-fr.net/blog">Vincent Demay</a>
  *
  */
