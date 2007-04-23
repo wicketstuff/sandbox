@@ -16,51 +16,47 @@
  */
 package org.wicketstuff.dojo.markup.html.form;
 
-import org.apache.wicket.RequestCycle;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.wicketstuff.dojo.AbstractRequireDojoBehavior;
 import org.apache.wicket.markup.ComponentTag;
+import org.wicketstuff.dojo.AbstractRequireDojoBehavior;
 
 /**
  * Handler for DojoInline suggestionList
+ * 
  * @author <a href="http://www.demay-fr.net/blog">Vincent Demay</a>
- *
+ * 
  */
 @SuppressWarnings("serial")
-public class DojoDropDownChoiceHandler extends AbstractRequireDojoBehavior
-{
-
-	/* (non-Javadoc)
+public class DojoDropDownChoiceHandler extends AbstractRequireDojoBehavior {
+	/**
 	 * @see wicket.contrib.dojo.AbstractRequireDojoBehavior#setRequire(wicket.contrib.dojo.AbstractRequireDojoBehavior.RequireDojoLibs)
 	 */
-	public void setRequire(RequireDojoLibs libs){
-		libs.add("dojo.widget.ComboBox");		
+	public void setRequire(RequireDojoLibs libs) {
+		libs.add("dojo.widget.ComboBox");
 	}
 
-	protected void respond(AjaxRequestTarget target){
-		String value = RequestCycle.get().getRequest().getParameter("value");
-		System.out.println(value);
-		//TODO : needs to update model and call selectionChange
+	protected void respond(AjaxRequestTarget target) {
+		DojoDropDownChoice c = (DojoDropDownChoice) getComponent();
+		// cannot call DropDownChoice#onSelectionChanged() here because
+		// newly created values are not part of the choices model
+		c.onSetValue(target);
 	}
 
+	@Override
 	protected void onComponentTag(ComponentTag tag) {
 		super.onComponentTag(tag);
-		
-		DojoDropDownChoice c = (DojoDropDownChoice) getComponent();
 
-		if (c.isHandleSelectionChange()){
-			tag.put("onchange", getCallbackScript());
+		DojoDropDownChoice c = (DojoDropDownChoice) getComponent();
+		// Should a roundtrip be made (have onSelectionChanged called) when the
+		// selection changed?
+		if (c.isHandleSelectionChange()) {
+			tag.put("setValue", getCallbackScript());
 		}
 	}
-	
-	protected CharSequence getCallbackScript(boolean recordPageVersion, boolean onlyTargetActivePage)
-	{
-		return getCallbackScript("wicketAjaxGet('"
-				+ getCallbackUrl(recordPageVersion, onlyTargetActivePage) + "&value=' + dojo.widget.getId('" + getComponent().getMarkupId() + "')", 
-				null, null);
+
+	protected CharSequence getCallbackScript(boolean recordPageVersion, boolean onlyTargetActivePage) {
+		DojoDropDownChoice c = (DojoDropDownChoice) getComponent();
+		return getCallbackScript("wicketAjaxGet('" + getCallbackUrl(recordPageVersion, onlyTargetActivePage) + "&amp;"
+				+ c.getInputName() + "=' + arguments[0]", null, null);
 	}
-	
-	
-
-
 }
