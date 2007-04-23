@@ -18,21 +18,28 @@ package org.wicketstuff.dojo.markup.html.form;
 
 import java.util.List;
 
-import org.wicketstuff.dojo.DojoIdConstants;
+import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.model.IModel;
+import org.wicketstuff.dojo.DojoIdConstants;
 
 @SuppressWarnings("serial")
 /**
- * Suggestion list that uses the Wicket model object to know the items in the list.
- *
+ * Suggestion list that uses the Wicket model object to know the items in the
+ * list. NOTE: instead of overriding the wantOnSelectionChangedNotifications()
+ * method, use setHandleSelectionChange() to be notified when the value changes,
+ * and override #onSetValue() instead of #onSelectionChanged()
+ * 
  * @author <a href="http://www.demay-fr.net/blog">Vincent Demay</a>
  */
 public class DojoDropDownChoice extends DropDownChoice {
-	
+
 	private boolean handleSelectionChange = false;
+
+	public void onSetValue(AjaxRequestTarget target) {
+	}
 
 	public DojoDropDownChoice(String id, IModel choices, IChoiceRenderer renderer) {
 		super(id, choices, renderer);
@@ -78,10 +85,8 @@ public class DojoDropDownChoice extends DropDownChoice {
 		super(id);
 		add(new DojoDropDownChoiceHandler());
 	}
-	
-	
-	protected void onComponentTag(ComponentTag tag)
-	{
+
+	protected void onComponentTag(ComponentTag tag) {
 		checkComponentTag(tag, "select");
 		tag.put(DojoIdConstants.DOJO_TYPE, DojoIdConstants.DOJO_TYPE_COMBOBOX);
 	}
@@ -102,5 +107,4 @@ public class DojoDropDownChoice extends DropDownChoice {
 		super.onAttach();
 		this.setOutputMarkupId(true);
 	}
-
 }
