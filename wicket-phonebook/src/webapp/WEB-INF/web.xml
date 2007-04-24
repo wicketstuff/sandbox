@@ -36,7 +36,7 @@
         <servlet-class>org.apache.wicket.protocol.http.WicketServlet</servlet-class>
         <init-param>
             <param-name>applicationFactoryClassName</param-name>
-            <param-value>wicket.spring.SpringWebApplicationFactory</param-value>
+            <param-value>org.apache.wicket.spring.SpringWebApplicationFactory</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
