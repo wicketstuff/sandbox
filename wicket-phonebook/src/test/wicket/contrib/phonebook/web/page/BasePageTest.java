@@ -1,7 +1,7 @@
 /*
- * $Id: PhonebookApplication.java 517 2006-01-04 21:53:23Z ivaynberg $
- * $Revision: 517 $
- * $Date: 2006-01-04 13:53:23 -0800 (Wed, 04 Jan 2006) $
+ * $Id$
+ * $Revision$
+ * $Date$
  * 
  * ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -16,18 +16,22 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package wicket.contrib.phonebook.web;
+package wicket.contrib.phonebook.web.page;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
+import junit.framework.TestCase;
 
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
+import org.apache.wicket.util.tester.WicketTester;
+
+import wicket.contrib.phonebook.web.PhonebookApplicationForTesting;
 
 /**
  * @author Kare Nuorteva
  */
-public class PhonebookApplication extends BasePhonebookApplication {
-    @Override
-    public ApplicationContext context() {
-        return WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
+public class BasePageTest extends TestCase {
+    public void testContainsFeedbackPanel() throws Exception {
+        WicketTester wicket = new WicketTester(new PhonebookApplicationForTesting());
+        wicket.startPage(BasePage.class);
+        wicket.assertComponent("status", FeedbackPanel.class);
     }
 }
