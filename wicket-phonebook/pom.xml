@@ -40,6 +40,11 @@
             <id>gwynevans</id>
             <email>gwynevans at users.sourceforge.net</email>
         </developer>
+        <developer>
+            <name>Kare Nuorteva</name>
+            <id>kare</id>
+            <email>kare at users.sourceforge.net</email>
+        </developer>
     </developers>
 
     <organization>
@@ -136,6 +141,18 @@
 			<artifactId>shades</artifactId>
 			<version>0.0.5</version>
 		</dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>3.8.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.easymock</groupId>
+            <artifactId>easymock</artifactId>
+            <version>2.2</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>

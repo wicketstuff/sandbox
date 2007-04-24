@@ -1,7 +1,7 @@
 /*
- * $Id: PhonebookApplication.java 517 2006-01-04 21:53:23Z ivaynberg $
- * $Revision: 517 $
- * $Date: 2006-01-04 13:53:23 -0800 (Wed, 04 Jan 2006) $
+ * $Id$
+ * $Revision$
+ * $Date$
  * 
  * ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -18,16 +18,26 @@
  */
 package wicket.contrib.phonebook.web;
 
+import org.apache.wicket.protocol.http.WebApplication;
+import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.springframework.context.ApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
 
+import wicket.contrib.phonebook.web.page.ListContactsPage;
 
 /**
  * @author Kare Nuorteva
  */
-public class PhonebookApplication extends BasePhonebookApplication {
-    @Override
-    public ApplicationContext context() {
-        return WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
+public abstract class BasePhonebookApplication extends WebApplication {
+    public Class getHomePage() {
+        return ListContactsPage.class;
     }
+
+    @Override
+    protected void init() {
+        super.init();
+        // setup component injection
+        addComponentInstantiationListener(new SpringComponentInjector(this, context()));
+    }
+
+    public abstract ApplicationContext context();
 }

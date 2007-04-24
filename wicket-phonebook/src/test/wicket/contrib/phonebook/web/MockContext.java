@@ -1,7 +1,7 @@
 /*
- * $Id: PhonebookApplication.java 517 2006-01-04 21:53:23Z ivaynberg $
- * $Revision: 517 $
- * $Date: 2006-01-04 13:53:23 -0800 (Wed, 04 Jan 2006) $
+ * $Id$
+ * $Revision$
+ * $Date$
  * 
  * ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -18,16 +18,22 @@
  */
 package wicket.contrib.phonebook.web;
 
+import org.apache.wicket.injection.web.InjectorHolder;
+import org.apache.wicket.spring.ISpringContextLocator;
+import org.apache.wicket.spring.injection.annot.AnnotSpringInjector;
+import org.apache.wicket.spring.injection.annot.test.AnnotApplicationContextMock;
 import org.springframework.context.ApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
-
 
 /**
  * @author Kare Nuorteva
  */
-public class PhonebookApplication extends BasePhonebookApplication {
-    @Override
-    public ApplicationContext context() {
-        return WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
+public class MockContext extends AnnotApplicationContextMock {
+    public MockContext() {
+        InjectorHolder.setInjector(new AnnotSpringInjector(
+                new ISpringContextLocator() {
+                    public ApplicationContext getSpringContext() {
+                        return MockContext.this;
+                    }
+                }));
     }
 }

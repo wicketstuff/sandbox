@@ -33,9 +33,15 @@ public class ContactsDataProvider extends SortableDataProvider implements
 	/** reuse the contact entity to store filter information */
 	private Contact filter = new Contact();
 
-	public Object getFilterState() {
-		return filter;
-	}
+    private QueryParam queryParam;
+    
+    public void setQueryParam(QueryParam queryParam) {
+        this.queryParam = queryParam;
+    }
+    
+    public Object getFilterState() {
+        return filter;
+    }
 
 	public void setFilterState(Object state) {
 		filter = (Contact) state;
@@ -58,12 +64,16 @@ public class ContactsDataProvider extends SortableDataProvider implements
 	 * @return iterator capable of iterating over {first, first+count} contacts
 	 */
 	public Iterator iterator(int first, int count) {
-		QueryParam qp = null;
-
 		SortParam sp = getSort();
-		qp = new QueryParam(first, count, sp.getProperty(), sp.isAscending());
-
-		return dao.find(qp, filter);
+        if (queryParam == null) {
+            queryParam = new QueryParam(first, count, sp.getProperty(), sp.isAscending());
+        } else {
+            queryParam.setFirst(first);
+            queryParam.setCount(count);
+            queryParam.setSort(sp.getProperty());
+            queryParam.setSortAsc(sp.isAscending());
+        }
+		return dao.find(queryParam, filter);
 	}
 
 	/**

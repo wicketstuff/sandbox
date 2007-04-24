@@ -18,12 +18,14 @@
  */
 package wicket.contrib.phonebook;
 
+import java.io.Serializable;
+
 /**
  * Encapsulates the Query Paramaters to be passed to {@link ContactDao#find} method.
  *
  * @author igor
  */
-public class QueryParam {
+public class QueryParam implements Serializable {
 	private int first;
 	private int count;
 	private String sort;
@@ -34,7 +36,7 @@ public class QueryParam {
 	 * @param first First element to return.
 	 * @param count Number of elements to return.
 	 */
-    	public QueryParam(int first, int count) {
+   	public QueryParam(int first, int count) {
 		this(first, count, null, true);
 	}
 
@@ -52,7 +54,15 @@ public class QueryParam {
 		this.sortAsc=sortAsc;
 	}
 
-	public int getCount() {
+	public void setSort(String sort) {
+	    this.sort = sort;
+    }
+
+    public void setSortAsc(boolean sortAsc) {
+        this.sortAsc = sortAsc;
+    }
+
+    public int getCount() {
 		return count;
 	}
 
@@ -71,6 +81,12 @@ public class QueryParam {
 	public boolean hasSort() {
 		return sort!=null;
 	}
-	
-	
+
+    public void setFirst(int first) {
+        this.first = first;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
 }
