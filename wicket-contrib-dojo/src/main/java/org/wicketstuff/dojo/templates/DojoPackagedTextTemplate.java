@@ -17,7 +17,7 @@
 package org.wicketstuff.dojo.templates;
 
 import org.apache.wicket.Component;
-import org.apache.wicket.extensions.util.resource.PackagedTextTemplate;
+import org.apache.wicket.util.template.PackagedTextTemplate;
 
 /**
  * Used to externalized js in templates

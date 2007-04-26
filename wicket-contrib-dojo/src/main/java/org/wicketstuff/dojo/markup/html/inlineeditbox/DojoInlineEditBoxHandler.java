@@ -19,9 +19,9 @@ package org.wicketstuff.dojo.markup.html.inlineeditbox;
 import java.util.HashMap;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.wicketstuff.dojo.AbstractRequireDojoBehavior;
-import org.apache.wicket.extensions.util.resource.PackagedTextTemplate;
 import org.apache.wicket.markup.html.IHeaderResponse;
+import org.apache.wicket.util.template.PackagedTextTemplate;
+import org.wicketstuff.dojo.AbstractRequireDojoBehavior;
 
 /**
  * Handler for {@link DojoInlineEditBox}
