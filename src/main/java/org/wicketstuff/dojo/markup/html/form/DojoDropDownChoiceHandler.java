@@ -18,6 +18,7 @@ package org.wicketstuff.dojo.markup.html.form;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.ComponentTag;
+import org.apache.wicket.markup.html.IHeaderResponse;
 import org.wicketstuff.dojo.AbstractRequireDojoBehavior;
 
 /**
@@ -52,6 +53,15 @@ public class DojoDropDownChoiceHandler extends AbstractRequireDojoBehavior {
 		if (c.isHandleSelectionChange()) {
 			tag.put("setValue", getCallbackScript());
 		}
+	}
+
+	@Override
+	public void renderHead(IHeaderResponse response) {
+		DojoDropDownChoice c = (DojoDropDownChoice) getComponent();
+
+		if (c.getValue().equals("-1"))
+			// Reset the ComboBox value
+			response.renderOnLoadJavascript("dojo.widget.byId('" + c.getMarkupId() + "').textInputNode.value = '';");
 	}
 
 	protected CharSequence getCallbackScript(boolean recordPageVersion, boolean onlyTargetActivePage) {
