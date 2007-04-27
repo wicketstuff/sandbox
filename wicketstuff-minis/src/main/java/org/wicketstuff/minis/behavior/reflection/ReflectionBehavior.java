@@ -152,7 +152,7 @@ public class ReflectionBehavior extends AbstractBehavior
 			Component component = (Component)iter.next();
 			if (component.isVisibleInHierarchy())
 			{
-				sb.append(getAddReflectionScript(component.getMarkupId(), reflectionOpacity,
+				sb.append(Javascript.show(component.getMarkupId(), reflectionOpacity,
 						reflectionHeight));
 				sb.append("\n");
 			}
@@ -232,39 +232,5 @@ public class ReflectionBehavior extends AbstractBehavior
 			return sb2;
 		}
 
-	}
-
-	/**
-	 * Gets the script that adds a reflection to an image. You have to manually
-	 * add the REFLECTION_JS resource reference to your page if you use this
-	 * script directly.
-	 * 
-	 * @param id
-	 *            the markup id of the image
-	 * @param opacity
-	 *            the opacity of the reflection (may be null for default value)
-	 * @param height
-	 *            the height of the reflection (may be null for default value)
-	 * @return the script
-	 * @deprecated use {@link Javascript#show(String, Integer, Integer)}
-	 */
-	public static CharSequence getAddReflectionScript(String id, Integer opacity, Integer height)
-	{
-		return Javascript.show(id, opacity, height);
-	}
-
-	/**
-	 * Gets the Javascript for removing a reflection from an image. You have to
-	 * manually add the REFLECTION_JS resource reference to your page if you use
-	 * this script directly.
-	 * 
-	 * @param id
-	 *            the markup id of the image.
-	 * @return the script.
-	 * @deprecated use {@link Javascript#hide(String)}
-	 */
-	public static CharSequence getRemoveReflectionScript(String id)
-	{
-		return Javascript.hide(id);
 	}
 }
