@@ -22,10 +22,10 @@ import org.apache.wicket.markup.html.IHeaderResponse;
 import org.wicketstuff.dojo.AbstractRequireDojoBehavior;
 
 /**
- * Handler for DojoInline suggestionList
+ * Handler for Dojo ComboBox
  * 
  * @author <a href="http://www.demay-fr.net/blog">Vincent Demay</a>
- * 
+ * @author <a href="mailto:jbq@apache.org">Jean-Baptiste Quenot</a>
  */
 @SuppressWarnings("serial")
 public class DojoDropDownChoiceHandler extends AbstractRequireDojoBehavior {
@@ -53,6 +53,7 @@ public class DojoDropDownChoiceHandler extends AbstractRequireDojoBehavior {
 		if (c.isHandleSelectionChange()) {
 			tag.put("setValue", getCallbackScript());
 		}
+		// Add "name" attribute on the HTML component with the proper Wicket form input name
 		tag.put("name", c.getInputName());
 	}
 

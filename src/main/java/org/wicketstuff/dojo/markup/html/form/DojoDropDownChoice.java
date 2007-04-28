@@ -27,18 +27,33 @@ import org.wicketstuff.dojo.DojoIdConstants;
 
 @SuppressWarnings("serial")
 /**
- * Suggestion list that uses the Wicket model object to know the items in the
+ * Dojo ComboBox that uses the Wicket model object to know the items in the
  * list. NOTE: instead of overriding the wantOnSelectionChangedNotifications()
  * method, use setHandleSelectionChange() to be notified when the value changes,
- * and override #onSetValue() instead of #onSelectionChanged()
+ * and override #onSetValue() instead of #onSelectionChanged(). Override
+ * onNewValue() to be notified during updateModel() when the user does not
+ * select an existing option but types in a new value.
  * 
  * @author <a href="http://www.demay-fr.net/blog">Vincent Demay</a>
+ * @author <a href="mailto:jbq@apache.org">Jean-Baptiste Quenot</a>
  */
 public class DojoDropDownChoice extends DropDownChoice {
 
 	private boolean handleSelectionChange = false;
 
 	public void onSetValue(AjaxRequestTarget target) {
+	}
+
+	protected void onNewValue(String value) {
+	}
+
+	@Override
+	public void updateModel() {
+		String value = getRequest().getParameter(getInputName());
+		if (getModelObject() == null && value != null && value.length() > 0)
+			onNewValue(value);
+		else
+			super.updateModel();
 	}
 
 	public DojoDropDownChoice(String id, IModel choices, IChoiceRenderer renderer) {
