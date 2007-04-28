@@ -53,6 +53,7 @@ public class DojoDropDownChoiceHandler extends AbstractRequireDojoBehavior {
 		if (c.isHandleSelectionChange()) {
 			tag.put("setValue", getCallbackScript());
 		}
+		tag.put("name", c.getInputName());
 	}
 
 	@Override
