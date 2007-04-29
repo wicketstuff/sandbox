@@ -10,13 +10,17 @@ import org.wicketstuff.scriptaculous.JavascriptBuilder;
 /**
  * API for working with scriptaculous effects. 
  * 
- * @author wireframe6464
+ * @see http://wiki.script.aculo.us/scriptaculous/show/VisualEffects
+ * @author <a href="mailto:wireframe6464@users.sourceforge.net">Ryan Sonnek</a>
  */
 public interface Effect
 {
 
 	String toJavascript();
 
+	/**
+	 * Helper Base Effect class for simple effest that require a component and options.
+	 */
 	public abstract class AbstractEffect implements Effect
 	{
 		private final Component component;
@@ -57,10 +61,10 @@ public interface Effect
 		}
 
 		protected abstract String getEffectName();
-
 	}
 
 	/**
+	 * Effect for highlighting a component using the famous "yellow fade".
 	 * 
 	 * @see http://wiki.script.aculo.us/scriptaculous/show/Effect.Highlight
 	 */

@@ -13,8 +13,8 @@ import org.wicketstuff.scriptaculous.ScriptaculousAjaxBehavior;
 
 
 /**
- * support class for all autocomplete text fields. handles binding of needed css
- * and javascript.
+ * support class for all autocomplete text fields. 
+ * handles binding of required css and javascript.
  *
  * @author <a href="mailto:wireframe6464@users.sourceforge.net">Ryan Sonnek</a>
  */

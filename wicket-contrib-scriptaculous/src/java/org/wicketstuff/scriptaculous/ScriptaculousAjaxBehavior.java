@@ -33,6 +33,7 @@ import org.apache.wicket.util.resource.IResourceStream;
  * </p>
  * 
  * @see <a href="http://script.aculo.us/">script.aculo.us</a>
+ * @author <a href="mailto:wireframe6464@users.sourceforge.net">Ryan Sonnek</a>
  */
 public abstract class ScriptaculousAjaxBehavior extends AbstractAjaxBehavior {
 

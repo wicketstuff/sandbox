@@ -5,6 +5,11 @@ import java.util.Iterator;
 import java.util.Map;
 
 
+/**
+ * Helper class for programatically constructing javascript.
+ * 
+ * @author <a href="mailto:wireframe6464@users.sourceforge.net">Ryan Sonnek</a>
+ */
 public class JavascriptBuilder
 {
 	private StringBuffer buffer = new StringBuffer();

@@ -19,9 +19,10 @@ import org.wicketstuff.scriptaculous.ScriptaculousAjaxBehavior;
 
 
 /**
+ * Extension to {@link ListView} that allows for drag/drop reordering of items.
  * 
  * @see http://wiki.script.aculo.us/scriptaculous/show/Sortable.create
- * @author <a href="mailto:wireframe6464@sf.net">Ryan Sonnek</a>
+ * @author <a href="mailto:wireframe6464@users.sourceforge.net">Ryan Sonnek</a>
  */
 public abstract class SortableContainer extends WebMarkupContainer
 {

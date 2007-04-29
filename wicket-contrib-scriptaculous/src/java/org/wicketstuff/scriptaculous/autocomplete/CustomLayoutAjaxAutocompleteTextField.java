@@ -22,8 +22,8 @@ import org.apache.wicket.PageParameters;
 
 /**
  * Autocomplete text field that allows for customized layout of autocomplete
- * entries. A user defined <code>PageContribution</code> is used to display
- * the autocomplete information.
+ * entries. A user defined {@link CustomLayoutAutocompleteResultsPageContribution} 
+ * is used to display the autocomplete results.
  *
  * @author <a href="mailto:wireframe6464@users.sourceforge.net">Ryan Sonnek</a>
  */
