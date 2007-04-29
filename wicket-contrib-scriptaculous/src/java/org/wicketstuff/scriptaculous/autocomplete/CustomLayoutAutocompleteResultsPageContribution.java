@@ -1,4 +1,4 @@
-package wicketstuff.scriptaculous.autocomplete;
+package org.wicketstuff.scriptaculous.autocomplete;
 
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.html.WebPage;

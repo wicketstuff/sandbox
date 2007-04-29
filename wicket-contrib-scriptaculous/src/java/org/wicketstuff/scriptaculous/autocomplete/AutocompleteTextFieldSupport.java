@@ -1,4 +1,4 @@
-package wicketstuff.scriptaculous.autocomplete;
+package org.wicketstuff.scriptaculous.autocomplete;
 
 import java.util.HashMap;
 
@@ -8,9 +8,9 @@ import org.apache.wicket.behavior.HeaderContributor;
 import org.apache.wicket.markup.MarkupStream;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.Model;
+import org.wicketstuff.scriptaculous.JavascriptBuilder;
+import org.wicketstuff.scriptaculous.ScriptaculousAjaxBehavior;
 
-import wicketstuff.scriptaculous.JavascriptBuilder;
-import wicketstuff.scriptaculous.ScriptaculousAjaxBehavior;
 
 /**
  * support class for all autocomplete text fields. handles binding of needed css

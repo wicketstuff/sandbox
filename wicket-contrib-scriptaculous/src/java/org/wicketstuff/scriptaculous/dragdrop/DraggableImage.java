@@ -1,4 +1,4 @@
-package wicketstuff.scriptaculous.dragdrop;
+package org.wicketstuff.scriptaculous.dragdrop;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -6,9 +6,9 @@ import java.util.Map;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.MarkupStream;
 import org.apache.wicket.markup.html.image.Image;
+import org.wicketstuff.scriptaculous.JavascriptBuilder;
+import org.wicketstuff.scriptaculous.ScriptaculousAjaxBehavior;
 
-import wicketstuff.scriptaculous.JavascriptBuilder;
-import wicketstuff.scriptaculous.ScriptaculousAjaxBehavior;
 
 public abstract class DraggableImage extends Image
 {

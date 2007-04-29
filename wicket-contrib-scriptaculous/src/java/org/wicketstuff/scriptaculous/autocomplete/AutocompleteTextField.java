@@ -1,7 +1,7 @@
 /*
- * $Id: CustomLayoutAjaxAutocompleteTextField.java 648 2006-04-03 02:22:11 -0700
- * (Mon, 03 Apr 2006) joco01 $ $Revision: 1420 $ $Date: 2006-04-03 02:22:11 -0700
- * (Mon, 03 Apr 2006) $
+ * $Id: AutocompleteTextField.java 528 2006-01-08 04:14:46 -0800 (Sun, 08 Jan
+ * 2006) jdonnerstag $ $Revision: 1546 $ $Date: 2006-01-08 04:14:46 -0800 (Sun,
+ * 08 Jan 2006) $
  *
  * ==================================================================== Licensed
  * under the Apache License, Version 2.0 (the "License"); you may not use this
@@ -16,39 +16,51 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package wicketstuff.scriptaculous.autocomplete;
+package org.wicketstuff.scriptaculous.autocomplete;
 
-import org.apache.wicket.PageParameters;
+import java.util.Collection;
+import java.util.Iterator;
 
 /**
- * Autocomplete text field that allows for customized layout of autocomplete
- * entries. A user defined <code>PageContribution</code> is used to display
- * the autocomplete information.
+ * TextField that provides a static list of options to autocomplete.
  *
  * @author <a href="mailto:wireframe6464@users.sourceforge.net">Ryan Sonnek</a>
  */
-public class CustomLayoutAjaxAutocompleteTextField extends AutocompleteTextFieldSupport
+public class AutocompleteTextField extends AutocompleteTextFieldSupport
 {
 	private static final long serialVersionUID = 1L;
-	private CharSequence url;
+	private final Collection results;
 
-	public CustomLayoutAjaxAutocompleteTextField(String id,
-			Class page)
+	public AutocompleteTextField(String id, Collection results)
 	{
 		super(id);
 
-		PageParameters parameters = new PageParameters();
-		parameters.put("fieldName", this.getMarkupId());
-		this.url = urlFor(null, page, parameters);
+		this.results = results;
+	}
+
+	private String buildResults()
+	{
+		String result = "new Array(";
+		for (Iterator iter = results.iterator(); iter.hasNext();)
+		{
+			String value = (String)iter.next();
+			result += "\"" + value + "\"";
+			if (iter.hasNext())
+			{
+				result += ",";
+			}
+		}
+		result += ")";
+		return result;
 	}
 
 	protected String getAutocompleteType()
 	{
-		return "Ajax.Autocompleter";
+		return "Autocompleter.Local";
 	}
 
 	protected String getThirdAutocompleteArgument()
 	{
-		return "" + url;
+		return buildResults();
 	}
 }

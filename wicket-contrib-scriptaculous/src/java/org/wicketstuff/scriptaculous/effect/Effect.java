@@ -1,11 +1,11 @@
-package wicketstuff.scriptaculous.effect;
+package org.wicketstuff.scriptaculous.effect;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.wicket.Component;
+import org.wicketstuff.scriptaculous.JavascriptBuilder;
 
-import wicketstuff.scriptaculous.JavascriptBuilder;
 
 /**
  * API for working with scriptaculous effects. 
