@@ -8,7 +8,7 @@ import org.apache.wicket.Component;
 import wicket.contrib.scriptaculous.JavascriptBuilder;
 
 /**
- * API for working with scriptaculous effects.
+ * API for working with scriptaculous effects. 
  * 
  * @author wireframe6464
  */
