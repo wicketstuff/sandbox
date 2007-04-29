@@ -34,10 +34,10 @@ import org.apache.wicket.util.resource.IResourceStream;
  * 
  * @see <a href="http://script.aculo.us/">script.aculo.us</a>
  */
-public abstract class ScriptaculousAjaxHandler extends AbstractAjaxBehavior {
+public abstract class ScriptaculousAjaxBehavior extends AbstractAjaxBehavior {
 
-	public static ScriptaculousAjaxHandler newJavascriptBindingHandler() {
-		return new ScriptaculousAjaxHandler() {
+	public static ScriptaculousAjaxBehavior newJavascriptBindingHandler() {
+		return new ScriptaculousAjaxBehavior() {
 
 			private static final long serialVersionUID = 1L;
 
@@ -76,8 +76,8 @@ public abstract class ScriptaculousAjaxHandler extends AbstractAjaxBehavior {
 	public void renderHead(IHeaderResponse response) {
 		super.renderHead(response);
 		response.renderJavascriptReference(new ResourceReference(
-				ScriptaculousAjaxHandler.class, "prototype.js"));
+				ScriptaculousAjaxBehavior.class, "prototype.js"));
 		response.renderJavascriptReference(new ResourceReference(
-				ScriptaculousAjaxHandler.class, "scriptaculous.js"));
+				ScriptaculousAjaxBehavior.class, "scriptaculous.js"));
 	}
 }
