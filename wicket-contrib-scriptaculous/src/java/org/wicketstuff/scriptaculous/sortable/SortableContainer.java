@@ -51,10 +51,6 @@ public abstract class SortableContainer extends WebMarkupContainer
 				populateItemInternal(item);
 			}
 		});
-
-		options.put("onUpdate", new JavascriptBuilder.JavascriptFunction(
-				"function(element) { wicketAjaxGet('" + onUpdateBehavior.getCallbackUrl()
-						+ "&' + Sortable.serialize(element)); }"));
 	}
 
 	public void setConstraintVertical()
@@ -72,6 +68,11 @@ public abstract class SortableContainer extends WebMarkupContainer
 	protected void onRender(MarkupStream markupStream)
 	{
 		super.onRender(markupStream);
+
+
+		options.put("onUpdate", new JavascriptBuilder.JavascriptFunction(
+				"function(element) { wicketAjaxGet('" + onUpdateBehavior.getCallbackUrl()
+						+ "&' + Sortable.serialize(element)); }"));
 
 		JavascriptBuilder builder = new JavascriptBuilder();
 		builder.addLine("Sortable.create('" + getMarkupId() + "', ");

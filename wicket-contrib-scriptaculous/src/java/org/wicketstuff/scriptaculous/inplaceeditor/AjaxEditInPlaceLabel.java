@@ -35,18 +35,16 @@ public class AjaxEditInPlaceLabel extends AbstractTextComponent
 	private AbstractAjaxBehavior onCompleteBehavior = new AjaxEditInPlaceOnCompleteBehavior();
 	private Map options = new HashMap();
 	private boolean enterEditMode = false;
+	private AbstractAjaxBehavior loadBehavior;
 
 	public AjaxEditInPlaceLabel(String wicketId, IModel model)
 	{
 		super(wicketId);
 		setModel(model);
+		setOutputMarkupId(true);
 
 		add(callbackBehavior);
 		add(onCompleteBehavior);
-
-		addOption("onComplete", new JavascriptBuilder.JavascriptFunction(
-				"function() { wicketAjaxGet('" + onCompleteBehavior.getCallbackUrl() + "'); }"));
-		setOutputMarkupId(true);
 	}
 
 	public String getInputName()
@@ -109,9 +107,8 @@ public class AjaxEditInPlaceLabel extends AbstractTextComponent
 	 */
 	public void setLoadBehavior(AbstractAjaxBehavior loadBehavior)
 	{
+		this.loadBehavior = loadBehavior;
 		add(loadBehavior);
-
-		addOption("loadTextURL", loadBehavior.getCallbackUrl());
 	}
 	
 	/**
@@ -175,6 +172,14 @@ public class AjaxEditInPlaceLabel extends AbstractTextComponent
 	protected void onRender(MarkupStream markupStream)
 	{
 		super.onRender(markupStream);
+
+
+		addOption("onComplete", new JavascriptBuilder.JavascriptFunction(
+				"function() { wicketAjaxGet('" + onCompleteBehavior.getCallbackUrl() + "'); }"));
+
+		if (null != loadBehavior) {
+			addOption("loadTextURL", loadBehavior.getCallbackUrl());
+		}
 
 		JavascriptBuilder builder = new JavascriptBuilder();
 		builder.addLine("new Ajax.InPlaceEditor('" + getMarkupId() + "', ");
