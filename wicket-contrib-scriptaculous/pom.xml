@@ -2,8 +2,8 @@
  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
         <modelVersion>4.0.0</modelVersion>
 	<groupId>org.wicketstuff</groupId>
-	<artifactId>wicket-contrib-scriptaculous</artifactId>
-	<name>Wicket Contrib Scriptaculous Integration</name>
+	<artifactId>wicketstuff-scriptaculous</artifactId>
+	<name>Wicketstuff Scriptaculous Project</name>
 	<version>1.3-SNAPSHOT</version>
 	<organization>
 		<name>Wicket Stuff</name>
