@@ -36,7 +36,7 @@ import org.apache.wicket.util.resource.IResourceStream;
  */
 public abstract class ScriptaculousAjaxBehavior extends AbstractAjaxBehavior {
 
-	public static ScriptaculousAjaxBehavior newJavascriptBindingHandler() {
+	public static ScriptaculousAjaxBehavior newJavascriptBindingBehavior() {
 		return new ScriptaculousAjaxBehavior() {
 
 			private static final long serialVersionUID = 1L;

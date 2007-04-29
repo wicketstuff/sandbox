@@ -1,11 +1,12 @@
 package wicket.contrib.scriptaculous.dragdrop;
 
 import org.apache.wicket.PageParameters;
-import wicket.contrib.scriptaculous.Indicator;
-import wicket.contrib.scriptaculous.ScriptaculousAjaxBehavior;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.MarkupStream;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+
+import wicket.contrib.scriptaculous.Indicator;
+import wicket.contrib.scriptaculous.ScriptaculousAjaxBehavior;
 
 public class DraggableTarget extends WebMarkupContainer {
 
@@ -17,7 +18,7 @@ public class DraggableTarget extends WebMarkupContainer {
         super(id);
         this.pageContribution = pageContribution;
 
-		add(ScriptaculousAjaxBehavior.newJavascriptBindingHandler());
+		add(ScriptaculousAjaxBehavior.newJavascriptBindingBehavior());
     }
 
     public void accepts(DraggableImage image) {

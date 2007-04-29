@@ -1,9 +1,10 @@
 package wicket.contrib.scriptaculous.dragdrop;
 
-import wicket.contrib.scriptaculous.ScriptaculousAjaxBehavior;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.MarkupStream;
 import org.apache.wicket.markup.html.image.Image;
+
+import wicket.contrib.scriptaculous.ScriptaculousAjaxBehavior;
 
 public class DraggableImage extends Image {
 
@@ -13,7 +14,7 @@ public class DraggableImage extends Image {
         super(wicketId, img);
         this.id = id;
 
-		add(ScriptaculousAjaxBehavior.newJavascriptBindingHandler());
+		add(ScriptaculousAjaxBehavior.newJavascriptBindingBehavior());
     }
 
     protected void onRender(MarkupStream markupStream) {
