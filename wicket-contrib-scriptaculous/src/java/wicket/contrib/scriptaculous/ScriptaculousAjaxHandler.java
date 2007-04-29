@@ -67,14 +67,16 @@ public abstract class ScriptaculousAjaxHandler extends AbstractAjaxBehavior {
 		}
 	}
 
+	/**
+	 * TODO: what is this for?
+	 * @return
+	 */
 	protected abstract IResourceStream getResponse();
 
 	public void renderHead(IHeaderResponse response) {
 		super.renderHead(response);
 		response.renderJavascriptReference(new ResourceReference(
 				ScriptaculousAjaxHandler.class, "prototype.js"));
-		response.renderJavascriptReference(new ResourceReference(
-				ScriptaculousAjaxHandler.class, "scriptaculous.js"));
 		response.renderJavascriptReference(new ResourceReference(
 				ScriptaculousAjaxHandler.class, "scriptaculous.js"));
 	}
