@@ -1,64 +1,76 @@
 package wicket.contrib.scriptaculous.dragdrop;
 
-import org.apache.wicket.PageParameters;
-import org.apache.wicket.markup.ComponentTag;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.MarkupStream;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.util.resource.IResourceStream;
 
-import wicket.contrib.scriptaculous.Indicator;
+import wicket.contrib.scriptaculous.JavascriptBuilder;
 import wicket.contrib.scriptaculous.ScriptaculousAjaxBehavior;
+import wicket.contrib.scriptaculous.JavascriptBuilder.JavascriptFunction;
+import wicket.contrib.scriptaculous.effect.Effect;
 
-public class DraggableTarget extends WebMarkupContainer {
+/**
+ * 
+ * @see http://wiki.script.aculo.us/scriptaculous/show/Droppables.add
+ */
+public abstract class DraggableTarget extends WebMarkupContainer
+{
+	private static final long serialVersionUID = 1L;
+	private final ScriptaculousAjaxBehavior onDropBehavior;
+	private final Map dropOptions = new HashMap();
 
-    private final Class pageContribution;
-    private String draggableClass;
-	private String indicatorId;
+	public DraggableTarget(String id)
+	{
+		super(id);
 
-    public DraggableTarget(String id, Class pageContribution) {
-        super(id);
-        this.pageContribution = pageContribution;
+		setOutputMarkupId(true);
+		this.onDropBehavior = new DraggableTargetBehavior();
+		add(onDropBehavior);
 
-		add(ScriptaculousAjaxBehavior.newJavascriptBindingBehavior());
-    }
+		dropOptions.put("onDrop", new JavascriptFunction("function() { wicketAjaxGet('"
+				+ onDropBehavior.getCallbackUrl() + "'); }"));
+	}
 
-    public void accepts(DraggableImage image) {
-    	this.draggableClass = image.getId();
-    }
+	protected abstract void onDrop(String input, AjaxRequestTarget target);
 
-    public void setIndicator(Indicator indicator) {
-    	this.indicatorId = indicator.getId();
-    }
+	public void accepts(DraggableImage image)
+	{
+		// TODO: this should build a string array of classes so that one target
+		// can accept multiple classes.
+		dropOptions.put("accept", image.getStyleClass());
+	}
 
-    protected void onRender(MarkupStream markupStream) {
-        super.onRender(markupStream);
+	protected void onRender(MarkupStream markupStream)
+	{
+		super.onRender(markupStream);
 
+		JavascriptBuilder builder = new JavascriptBuilder();
+		builder.addLine("Droppables.add('" + getMarkupId() + "', ");
+		builder.addOptions(dropOptions);
+		builder.addLine(");");
 
-        CharSequence url = this.getPage().urlFor(null, pageContribution, new PageParameters());
-        getResponse().write("\n<script type=\"text/javascript\">new Ajax.Updater('" + getId() + "', '"+ url + "', " +
-                " { " +
-                " evalScripts:true, " +
-                " asynchronous:true" +
-                " })" +
-        "</script>\n");
-        getResponse().write("<script type=\"text/javascript\">Droppables.add('"+ getId() + "', " +
-                " {accept:'" + draggableClass + "', " +
-                " onDrop:function(element){ " +
-                    " new Ajax.Updater('" + getId() + "', '"+ url + "', " +
-                        " { ");
-        if (null != indicatorId) {
-        	getResponse().write(" onLoading:function(request){ Element.show('indicator')}, " +
-                  " onComplete:function(request){Element.hide('indicator')}, ");
-        }
-        getResponse().write(" parameters:'id=' + encodeURIComponent(element.id), " +
-                        " evalScripts:true, " +
-                        " asynchronous:true" +
-                        " }" +
-                ")}, " +
-                " hoverclass:'" + getId() +"-active'})</script>\n");
-    }
+		getResponse().write(builder.buildScriptTagString());
+	}
+	
+	private class DraggableTargetBehavior extends ScriptaculousAjaxBehavior
+	{
+		private static final long serialVersionUID = 1L;
 
-    protected void onComponentTag(ComponentTag tag) {
-        super.onComponentTag(tag);
-        tag.put("id", getId());
-    }
+		protected IResourceStream getResponse() {
+			String input = getRequest().getParameter("id");
+			AjaxRequestTarget target = new AjaxRequestTarget();
+			getRequestCycle().setRequestTarget(target);
+			target.addComponent(DraggableTarget.this);
+			target.appendJavascript(new Effect.Highlight(DraggableTarget.this).toJavascript());
+
+			onDrop(input, target);
+			return null;
+		}
+
+	}
+	
 }
