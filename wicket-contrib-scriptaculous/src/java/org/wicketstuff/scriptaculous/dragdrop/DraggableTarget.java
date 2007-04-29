@@ -30,9 +30,6 @@ public abstract class DraggableTarget extends WebMarkupContainer
 		setOutputMarkupId(true);
 		this.onDropBehavior = new DraggableTargetBehavior();
 		add(onDropBehavior);
-
-		dropOptions.put("onDrop", new JavascriptFunction("function() { wicketAjaxGet('"
-				+ onDropBehavior.getCallbackUrl() + "'); }"));
 	}
 
 	protected abstract void onDrop(String input, AjaxRequestTarget target);
@@ -47,6 +44,9 @@ public abstract class DraggableTarget extends WebMarkupContainer
 	protected void onRender(MarkupStream markupStream)
 	{
 		super.onRender(markupStream);
+
+		dropOptions.put("onDrop", new JavascriptFunction("function() { wicketAjaxGet('"
+				+ onDropBehavior.getCallbackUrl() + "'); }"));
 
 		JavascriptBuilder builder = new JavascriptBuilder();
 		builder.addLine("Droppables.add('" + getMarkupId() + "', ");
