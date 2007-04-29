@@ -18,7 +18,7 @@
  */
 package wicket.contrib.scriptaculous.autocomplete;
 
-import wicket.contrib.scriptaculous.ScriptaculousAjaxHandler;
+import wicket.contrib.scriptaculous.ScriptaculousAjaxBehavior;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.internal.HtmlHeaderContainer;
 import org.apache.wicket.util.resource.IResourceStream;
@@ -55,7 +55,7 @@ public abstract class AjaxAutocompleteTextField extends AutocompleteTextFieldSup
                         "</script>\n");
     }
 
-    private class AutocompleteEventHandler extends ScriptaculousAjaxHandler {
+    private class AutocompleteEventHandler extends ScriptaculousAjaxBehavior {
 
         private static final long serialVersionUID = 1L;
 
