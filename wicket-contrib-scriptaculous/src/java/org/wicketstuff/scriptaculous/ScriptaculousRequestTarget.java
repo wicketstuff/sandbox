@@ -1,7 +1,7 @@
 /**
  * 
  */
-package wicketstuff.scriptaculous;
+package org.wicketstuff.scriptaculous;
 
 import java.io.IOException;
 import java.io.OutputStream;

@@ -1,4 +1,4 @@
-package wicketstuff.scriptaculous;
+package org.wicketstuff.scriptaculous;
 
 import java.io.Serializable;
 import java.util.Iterator;

@@ -1,4 +1,4 @@
-package wicketstuff.scriptaculous.dragdrop;
+package org.wicketstuff.scriptaculous.dragdrop;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -7,11 +7,11 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.MarkupStream;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.util.resource.IResourceStream;
+import org.wicketstuff.scriptaculous.JavascriptBuilder;
+import org.wicketstuff.scriptaculous.ScriptaculousAjaxBehavior;
+import org.wicketstuff.scriptaculous.JavascriptBuilder.JavascriptFunction;
+import org.wicketstuff.scriptaculous.effect.Effect;
 
-import wicketstuff.scriptaculous.JavascriptBuilder;
-import wicketstuff.scriptaculous.ScriptaculousAjaxBehavior;
-import wicketstuff.scriptaculous.JavascriptBuilder.JavascriptFunction;
-import wicketstuff.scriptaculous.effect.Effect;
 
 /**
  * 

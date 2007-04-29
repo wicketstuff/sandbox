@@ -1,8 +1,9 @@
-package wicketstuff.scriptaculous;
+package org.wicketstuff.scriptaculous;
 
 import java.util.Collections;
 
-import wicketstuff.scriptaculous.JavascriptBuilder;
+import org.wicketstuff.scriptaculous.JavascriptBuilder;
+
 
 import junit.framework.TestCase;
 

@@ -1,4 +1,4 @@
-package wicketstuff.scriptaculous.sortable;
+package org.wicketstuff.scriptaculous.sortable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,9 +14,9 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.util.resource.IResourceStream;
+import org.wicketstuff.scriptaculous.JavascriptBuilder;
+import org.wicketstuff.scriptaculous.ScriptaculousAjaxBehavior;
 
-import wicketstuff.scriptaculous.JavascriptBuilder;
-import wicketstuff.scriptaculous.ScriptaculousAjaxBehavior;
 
 /**
  * 

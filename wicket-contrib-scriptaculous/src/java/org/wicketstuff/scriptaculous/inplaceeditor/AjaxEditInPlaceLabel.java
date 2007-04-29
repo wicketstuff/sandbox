@@ -1,4 +1,4 @@
-package wicketstuff.scriptaculous.inplaceeditor;
+package org.wicketstuff.scriptaculous.inplaceeditor;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,10 +14,10 @@ import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.target.basic.StringRequestTarget;
 import org.apache.wicket.util.resource.IResourceStream;
+import org.wicketstuff.scriptaculous.JavascriptBuilder;
+import org.wicketstuff.scriptaculous.ScriptaculousAjaxBehavior;
+import org.wicketstuff.scriptaculous.effect.Effect;
 
-import wicketstuff.scriptaculous.JavascriptBuilder;
-import wicketstuff.scriptaculous.ScriptaculousAjaxBehavior;
-import wicketstuff.scriptaculous.effect.Effect;
 
 /**
  * Label that uses AJAX for editing "in place" instead of using conventional forms.

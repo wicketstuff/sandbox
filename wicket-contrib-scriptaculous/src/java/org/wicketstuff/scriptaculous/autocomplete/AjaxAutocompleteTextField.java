@@ -16,7 +16,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package wicketstuff.scriptaculous.autocomplete;
+package org.wicketstuff.scriptaculous.autocomplete;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -24,8 +24,8 @@ import java.util.Iterator;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.util.resource.IResourceStream;
 import org.apache.wicket.util.resource.StringBufferResourceStream;
+import org.wicketstuff.scriptaculous.ScriptaculousAjaxBehavior;
 
-import wicketstuff.scriptaculous.ScriptaculousAjaxBehavior;
 
 /**
  * Ajax Autocomplete textfield provides an ajax callback for populating results.
