@@ -29,7 +29,16 @@ import org.wicketstuff.scriptaculous.ScriptaculousAjaxBehavior;
 
 /**
  * Ajax Autocomplete textfield provides an ajax callback for populating results.
+ * The ajax response is formatted as an unordered list of items.  ex:
+ * <pre>
+ *   &lt;ul&gt;
+ *     &lt;li&gt;Red&lt;/li&gt;
+ *     &lt;li&gt;Green&lt;/li&gt;
+ *     &lt;li&gt;Blue&lt;/li&gt;
+ *   &lt;/ul&gt;
+ * </pre>
  * 
+ * For customizing the layout of the response, see {@link CustomLayoutAjaxAutocompleteTextField}
  * @author <a href="mailto:wireframe6464@users.sourceforge.net">Ryan Sonnek</a>
  */
 public abstract class AjaxAutocompleteTextField extends AutocompleteTextFieldSupport

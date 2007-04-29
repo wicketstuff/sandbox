@@ -26,7 +26,7 @@ import org.wicketstuff.scriptaculous.effect.Effect;
  * 
  * @see http://wiki.script.aculo.us/scriptaculous/show/Ajax.InPlaceEditor
  * 
- * @author <a href="mailto:wireframe6464@sf.net">Ryan Sonnek</a>
+ * @author <a href="mailto:wireframe6464@users.sourceforge.net">Ryan Sonnek</a>
  */
 public class AjaxEditInPlaceLabel extends AbstractTextComponent
 {
