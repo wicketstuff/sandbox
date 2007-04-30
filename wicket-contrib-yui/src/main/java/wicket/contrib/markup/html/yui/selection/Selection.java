@@ -8,18 +8,19 @@ import java.util.Vector;
 
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.behavior.HeaderContributor;
-import wicket.contrib.InlineStyle;
-import wicket.contrib.YuiAttribute;
-import wicket.contrib.YuiImage;
-import wicket.contrib.YuiTextBox;
-import wicket.contrib.markup.html.yui.AbstractYuiPanel;
-import org.apache.wicket.extensions.util.resource.PackagedTextTemplate;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.basic.MultiLineLabel;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.AbstractReadOnlyModel;
+import org.apache.wicket.util.template.PackagedTextTemplate;
+
+import wicket.contrib.InlineStyle;
+import wicket.contrib.YuiAttribute;
+import wicket.contrib.YuiImage;
+import wicket.contrib.YuiTextBox;
+import wicket.contrib.markup.html.yui.AbstractYuiPanel;
 
 public class Selection extends AbstractYuiPanel {
 	private final class SelectionBox extends FormComponent implements

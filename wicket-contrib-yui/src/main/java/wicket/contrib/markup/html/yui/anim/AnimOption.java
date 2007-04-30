@@ -1,7 +1,8 @@
 package wicket.contrib.markup.html.yui.anim;
 
-import wicket.contrib.YuiImage;
 import java.io.Serializable;
+
+import wicket.contrib.YuiImage;
 
 /**
  * An AnimOption is an option with four images which animates upon clicking and

@@ -9,6 +9,7 @@ import java.util.Set;
 
 import org.apache.wicket.RequestCycle;
 import org.apache.wicket.ResourceReference;
+
 import wicket.contrib.ImageResourceInfo;
 import wicket.contrib.InlineStyle;
 import wicket.contrib.YuiAttribute;
