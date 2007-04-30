@@ -16,6 +16,7 @@ import org.apache.wicket.request.target.basic.StringRequestTarget;
 import org.apache.wicket.util.resource.IResourceStream;
 import org.wicketstuff.scriptaculous.JavascriptBuilder;
 import org.wicketstuff.scriptaculous.ScriptaculousAjaxBehavior;
+import org.wicketstuff.scriptaculous.JavascriptBuilder.AjaxCallbackJavascriptFunction;
 import org.wicketstuff.scriptaculous.effect.Effect;
 
 
@@ -173,9 +174,7 @@ public class AjaxEditInPlaceLabel extends AbstractTextComponent
 	{
 		super.onRender(markupStream);
 
-
-		addOption("onComplete", new JavascriptBuilder.JavascriptFunction(
-				"function() { wicketAjaxGet('" + onCompleteBehavior.getCallbackUrl() + "'); }"));
+		addOption("onComplete", new AjaxCallbackJavascriptFunction(onCompleteBehavior));
 
 		if (null != loadBehavior) {
 			addOption("loadTextURL", loadBehavior.getCallbackUrl());
