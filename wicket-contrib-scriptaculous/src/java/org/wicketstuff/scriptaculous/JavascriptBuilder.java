@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.apache.wicket.ajax.AjaxEventBehavior;
+import org.apache.wicket.behavior.AbstractAjaxBehavior;
+
 
 /**
  * Helper class for programatically constructing javascript.
@@ -95,6 +98,15 @@ public class JavascriptBuilder
 		public String getFunction()
 		{
 			return function;
+		}
+	}
+	
+	/**
+	 * Convenience {@link JavascriptFunction} for performing a wicket ajax call to an {@link AjaxEventBehavior}
+	 */
+	public static class AjaxCallbackJavascriptFunction extends JavascriptFunction {
+		public AjaxCallbackJavascriptFunction(AbstractAjaxBehavior behavior) {
+			super("function() { wicketAjaxGet('" + behavior.getCallbackUrl() + "'); }");
 		}
 	}
 }

@@ -9,7 +9,7 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.util.resource.IResourceStream;
 import org.wicketstuff.scriptaculous.JavascriptBuilder;
 import org.wicketstuff.scriptaculous.ScriptaculousAjaxBehavior;
-import org.wicketstuff.scriptaculous.JavascriptBuilder.JavascriptFunction;
+import org.wicketstuff.scriptaculous.JavascriptBuilder.AjaxCallbackJavascriptFunction;
 import org.wicketstuff.scriptaculous.effect.Effect;
 
 
@@ -32,6 +32,10 @@ public abstract class DraggableTarget extends WebMarkupContainer
 		add(onDropBehavior);
 	}
 
+	/**
+	 * extension point for defining functionality when a {@link DraggableImage} is dropped.
+	 * @param input the id attribute of the dropped component
+	 */
 	protected abstract void onDrop(String input, AjaxRequestTarget target);
 
 	public void accepts(DraggableImage image)
@@ -45,8 +49,7 @@ public abstract class DraggableTarget extends WebMarkupContainer
 	{
 		super.onRender(markupStream);
 
-		dropOptions.put("onDrop", new JavascriptFunction("function() { wicketAjaxGet('"
-				+ onDropBehavior.getCallbackUrl() + "'); }"));
+		dropOptions.put("onDrop", new AjaxCallbackJavascriptFunction(onDropBehavior));
 
 		JavascriptBuilder builder = new JavascriptBuilder();
 		builder.addLine("Droppables.add('" + getMarkupId() + "', ");
