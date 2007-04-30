@@ -2,12 +2,11 @@ package wicket.contrib;
 
 import java.io.InputStream;
 
-import org.devlib.schmidt.imageinfo.ImageInfo;
-
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.markup.html.PackageResource;
 import org.apache.wicket.util.resource.IResourceStream;
 import org.apache.wicket.util.resource.ResourceStreamNotFoundException;
+import org.devlib.schmidt.imageinfo.ImageInfo;
 
 /**
  * Class to handle Image Info
