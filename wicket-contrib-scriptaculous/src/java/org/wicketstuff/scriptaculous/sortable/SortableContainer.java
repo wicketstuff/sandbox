@@ -26,7 +26,7 @@ import org.wicketstuff.scriptaculous.ScriptaculousAjaxBehavior;
  */
 public abstract class SortableContainer extends WebMarkupContainer
 {
-	private AbstractAjaxBehavior onUpdateBehavior;
+	private AbstractAjaxBehavior onUpdateBehavior = new SortableContainerBehavior();
 	private Map options = new HashMap();
 	private final List items;
 
@@ -37,7 +37,6 @@ public abstract class SortableContainer extends WebMarkupContainer
 
 		setOutputMarkupId(true);
 
-		onUpdateBehavior = new SortableContainerBehavior();
 		add(onUpdateBehavior);
 
 		add(new ListView(itemId, items)
@@ -107,5 +106,4 @@ public abstract class SortableContainer extends WebMarkupContainer
 			return null;
 		}
 	}
-
 }
