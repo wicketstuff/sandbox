@@ -3,13 +3,20 @@ package org.wicketstuff.scriptaculous.dragdrop;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.wicket.markup.ComponentTag;
+import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.MarkupStream;
 import org.apache.wicket.markup.html.image.Image;
+import org.apache.wicket.model.Model;
 import org.wicketstuff.scriptaculous.JavascriptBuilder;
 import org.wicketstuff.scriptaculous.ScriptaculousAjaxBehavior;
 
-
+/**
+ * defines a image that a user can drag/drop
+ * 
+ * @TODO: should this be defined as a behavior that can be attached to any component?
+ * 
+ * @see DraggableTarget
+ */
 public abstract class DraggableImage extends Image
 {
 	private static final long serialVersionUID = 1L;
@@ -20,12 +27,7 @@ public abstract class DraggableImage extends Image
 
 		setOutputMarkupId(true);
 		add(ScriptaculousAjaxBehavior.newJavascriptBindingBehavior());
-	}
-
-	protected void onComponentTag(ComponentTag tag)
-	{
-		super.onComponentTag(tag);
-		tag.put("class", getStyleClass());
+		add(new AttributeAppender("class", new Model(getStyleClass()), " "));
 	}
 
 	/**
