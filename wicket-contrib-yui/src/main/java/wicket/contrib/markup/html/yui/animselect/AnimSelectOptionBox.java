@@ -6,13 +6,14 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.wicket.AttributeModifier;
-import wicket.contrib.InlineStyle;
-import wicket.contrib.YuiImage;
-import wicket.contrib.markup.html.yui.AbstractYuiPanel;
-import org.apache.wicket.extensions.util.resource.PackagedTextTemplate;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.model.AbstractReadOnlyModel;
+import org.apache.wicket.util.template.PackagedTextTemplate;
+
+import wicket.contrib.InlineStyle;
+import wicket.contrib.YuiImage;
+import wicket.contrib.markup.html.yui.AbstractYuiPanel;
 
 /**
  * Represent each options

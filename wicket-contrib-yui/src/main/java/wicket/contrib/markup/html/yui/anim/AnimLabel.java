@@ -1,7 +1,8 @@
 package wicket.contrib.markup.html.yui.anim;
 
-import wicket.contrib.markup.html.yui.AbstractYuiPanel;
 import org.apache.wicket.markup.html.basic.Label;
+
+import wicket.contrib.markup.html.yui.AbstractYuiPanel;
 
 /**
  * An AnimLabel contains the option's value
