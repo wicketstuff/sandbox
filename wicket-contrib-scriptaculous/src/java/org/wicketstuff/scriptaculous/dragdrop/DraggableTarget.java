@@ -20,7 +20,7 @@ import org.wicketstuff.scriptaculous.effect.Effect;
 public abstract class DraggableTarget extends WebMarkupContainer
 {
 	private static final long serialVersionUID = 1L;
-	private final ScriptaculousAjaxBehavior onDropBehavior;
+	private final ScriptaculousAjaxBehavior onDropBehavior = new DraggableTargetBehavior();
 	private final Map dropOptions = new HashMap();
 
 	public DraggableTarget(String id)
@@ -28,7 +28,6 @@ public abstract class DraggableTarget extends WebMarkupContainer
 		super(id);
 
 		setOutputMarkupId(true);
-		this.onDropBehavior = new DraggableTargetBehavior();
 		add(onDropBehavior);
 	}
 

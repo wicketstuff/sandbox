@@ -43,12 +43,11 @@ import org.wicketstuff.scriptaculous.ScriptaculousAjaxBehavior;
  */
 public abstract class AjaxAutocompleteTextField extends AutocompleteTextFieldSupport
 {
-	private final ScriptaculousAjaxBehavior callbackBehavior;
+	private final ScriptaculousAjaxBehavior callbackBehavior = new AjaxAutocompleteBehavior();
 
 	public AjaxAutocompleteTextField(String id)
 	{
 		super(id);
-		this.callbackBehavior = new AjaxAutocompleteBehavior();
 		add(callbackBehavior);
 	}
 
