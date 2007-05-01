@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.wicket.PageParameters;
-import wicket.contrib.scriptaculous.autocomplete.CustomLayoutAutocompleteResultsPageContribution;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
+import org.wicketstuff.scriptaculous.autocomplete.CustomLayoutAutocompleteResultsPageContribution;
 
 public class CustomLayoutAjaxAutocompleteExamplePageContribution extends CustomLayoutAutocompleteResultsPageContribution {
 

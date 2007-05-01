@@ -18,9 +18,6 @@
  */
 package org.wicketstuff.scriptaculous.autocomplete;
 
-import java.util.Collection;
-import java.util.Iterator;
-
 /**
  * TextField that provides a static list of options to autocomplete.
  *
@@ -29,9 +26,9 @@ import java.util.Iterator;
 public class AutocompleteTextField extends AutocompleteTextFieldSupport
 {
 	private static final long serialVersionUID = 1L;
-	private final Collection results;
+	private final String[] results;
 
-	public AutocompleteTextField(String id, Collection results)
+	public AutocompleteTextField(String id, String[] results)
 	{
 		super(id);
 
@@ -41,11 +38,10 @@ public class AutocompleteTextField extends AutocompleteTextFieldSupport
 	private String buildResults()
 	{
 		String result = "new Array(";
-		for (Iterator iter = results.iterator(); iter.hasNext();)
-		{
-			String value = (String)iter.next();
+		for (int x = 0; x < results.length; x++) {
+			String value = results[x];
 			result += "\"" + value + "\"";
-			if (iter.hasNext())
+			if (x < results.length - 1)
 			{
 				result += ",";
 			}
