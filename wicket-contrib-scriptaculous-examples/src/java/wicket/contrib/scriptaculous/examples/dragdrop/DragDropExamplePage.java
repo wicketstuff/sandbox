@@ -3,12 +3,13 @@ package wicket.contrib.scriptaculous.examples.dragdrop;
 import java.util.ArrayList;
 import java.util.List;
 
-import wicket.contrib.scriptaculous.Indicator;
-import wicket.contrib.scriptaculous.dragdrop.DraggableImage;
-import wicket.contrib.scriptaculous.dragdrop.DraggableTarget;
+import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
+import org.wicketstuff.scriptaculous.Indicator;
+import org.wicketstuff.scriptaculous.dragdrop.DraggableImage;
+import org.wicketstuff.scriptaculous.dragdrop.DraggableTarget;
 
 public class DragDropExamplePage extends WebPage
 {
@@ -16,9 +17,14 @@ public class DragDropExamplePage extends WebPage
 	public DragDropExamplePage()
 	{
 		Indicator indicator = new Indicator();
-		final DraggableTarget cart = new DraggableTarget("cart",
-				DragDropExamplePageContribution.class);
-		cart.setIndicator(indicator);
+		final DraggableTarget cart = new DraggableTarget("cart") {
+
+			protected void onDrop(String input, AjaxRequestTarget target)
+			{
+				System.out.println("HERE WE ARE!");
+				
+			}
+		};
 
 		List results = new ArrayList();
 		results.add(new CustomResultObject("product_123", "product.png"));
@@ -30,8 +36,12 @@ public class DragDropExamplePage extends WebPage
 			{
 				CustomResultObject result = (CustomResultObject) item.getModelObject();
 
-				DraggableImage image = new DraggableImage("product", result.getId(),
-						result.getImage());
+				DraggableImage image = new DraggableImage(result.getId(), result.getImage()) {
+
+					protected String getStyleClass()
+					{
+						return "product";
+					}};
 				cart.accepts(image);
 
 				item.add(image);
