@@ -55,7 +55,7 @@ public abstract class AjaxAutocompleteTextField extends AutocompleteTextFieldSup
 
 	protected String getThirdAutocompleteArgument()
 	{
-		return "" + callbackBehavior.getCallbackUrl();
+		return "'" + callbackBehavior.getCallbackUrl() + "'";
 	}
 
 	/**

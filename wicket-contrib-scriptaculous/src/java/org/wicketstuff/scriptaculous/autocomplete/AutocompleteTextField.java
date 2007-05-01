@@ -37,22 +37,22 @@ public class AutocompleteTextField extends AutocompleteTextFieldSupport
 
 	private String buildResults()
 	{
-		String result = "new Array(";
+		String result = "[";
 		for (int x = 0; x < results.length; x++) {
 			String value = results[x];
-			result += "\"" + value + "\"";
+			result += "'" + value + "'";
 			if (x < results.length - 1)
 			{
 				result += ",";
 			}
 		}
-		result += ")";
+		result += "]";
 		return result;
 	}
 
 	protected String getAutocompleteType()
 	{
-		return "Autocompleter.Local";
+		return "Autocompleter.Local(";
 	}
 
 	protected String getThirdAutocompleteArgument()

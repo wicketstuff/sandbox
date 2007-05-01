@@ -69,7 +69,7 @@ public abstract class AutocompleteTextFieldSupport extends TextField
 		builder.addLine("new " + getAutocompleteType() + "(");
 		builder.addLine("  '" + getMarkupId() + "', ");
 		builder.addLine("  '" + getAutocompleteId() + "', ");
-		builder.addLine("  '" + getThirdAutocompleteArgument() + "', ");
+		builder.addLine("  " + getThirdAutocompleteArgument() + ", ");
 		builder.addOptions(new HashMap());
 		builder.addLine(");");
 		getResponse().write(builder.buildScriptTagString());

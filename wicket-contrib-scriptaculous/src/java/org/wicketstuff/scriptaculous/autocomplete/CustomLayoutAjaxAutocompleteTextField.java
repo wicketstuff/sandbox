@@ -49,6 +49,6 @@ public class CustomLayoutAjaxAutocompleteTextField extends AutocompleteTextField
 
 	protected String getThirdAutocompleteArgument()
 	{
-		return "" + url;
+		return "'" + url + "'";
 	}
 }
