@@ -66,9 +66,9 @@ public class DojoDropDownChoiceHandler extends AbstractRequireDojoBehavior {
 			response.renderOnLoadJavascript("dojo.widget.byId('" + c.getMarkupId() + "').textInputNode.value = '';");
 	}
 
-	protected CharSequence getCallbackScript(boolean recordPageVersion, boolean onlyTargetActivePage) {
+	protected CharSequence getCallbackScript() {
 		DojoDropDownChoice c = (DojoDropDownChoice) getComponent();
-		return getCallbackScript("wicketAjaxGet('" + getCallbackUrl(recordPageVersion, onlyTargetActivePage) + "&amp;"
+		return getCallbackScript("wicketAjaxGet('" + getCallbackUrl() + "&amp;"
 				+ c.getInputName() + "=' + arguments[0]", null, null);
 	}
 }
