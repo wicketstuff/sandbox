@@ -6,19 +6,22 @@
 <web-app>
     <display-name>Wicket Contrib Scriptaculous Examples</display-name>
 
-    <servlet>
-        <servlet-name>wicket-contrib-scriptaculous-examples</servlet-name>
-        <servlet-class>org.apache.wicket.protocol.http.WicketServlet</servlet-class>
-        <init-param>
-          <param-name>applicationClassName</param-name>
-          <param-value>wicket.contrib.scriptaculous.examples.ScriptaculousExamplesApplication</param-value>
-        </init-param>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
+  <filter>
+    <filter-name>wicketstuff-scriptaculous-examples</filter-name>
+    <filter-class>org.apache.wicket.protocol.http.WicketFilter</filter-class>
+    <init-param>
+      <param-name>applicationClassName</param-name>
+      <param-value>wicket.contrib.scriptaculous.examples.ScriptaculousExamplesApplication</param-value>
+    </init-param>
+    <init-param>
+      <param-name>filterPath</param-name>
+      <param-value></param-value>
+    </init-param>
+  </filter>
 
-    <servlet-mapping>
-        <servlet-name>wicket-contrib-scriptaculous-examples</servlet-name>
-        <url-pattern>/*</url-pattern>
-    </servlet-mapping>
-
+  <filter-mapping>
+    <filter-name>wicketstuff-scriptaculous-examples</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  
 </web-app>
