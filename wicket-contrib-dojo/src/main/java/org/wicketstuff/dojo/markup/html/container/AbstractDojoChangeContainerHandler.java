@@ -91,18 +91,9 @@ public abstract class AbstractDojoChangeContainerHandler extends AbstractRequire
 	 *            version, otherwise url will be encoded to execute on the
 	 *            latest page version
 	 */
-	protected CharSequence getCallbackScript(boolean recordPageVersion, String id)
+	protected CharSequence getCallbackScript(String id)
 	{
-		return getCallbackScript("wicketAjaxGet('" + getCallbackUrl(recordPageVersion,true) + "&childId=" + id + "'", null,null);
-	}
-	
-	
-	/**
-	 * @return javascript that will generate an ajax GET request to this
-	 *         behavior *
-	 */
-	protected CharSequence getCallbackScript(String id){
-		return getCallbackScript(true, id);
+		return getCallbackScript("wicketAjaxGet('" + getCallbackUrl() + "&childId=" + id + "'", null,null);
 	}
 
 	/******************************************************/

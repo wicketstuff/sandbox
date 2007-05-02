@@ -165,7 +165,7 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 	 */
 	protected final CharSequence getDoubleClickCallbackScripts(){
 		if (((DojoSelectableListContainer) getComponent()).isAjaxModeOnChoose()){
-			return getCallbackScript("wicketAjaxGet('" + super.getCallbackUrl(true, true) + "&dblClick=true'", null,null);
+			return getCallbackScript("wicketAjaxGet('" + super.getCallbackUrl() + "&dblClick=true'", null,null);
 		}else{
 			CharSequence url = ((DojoSelectableListContainer) getComponent()).urlFor(ILinkListener.INTERFACE);
 			return "window.location.href='" + url + "' + getSelectableTableSelection('"+getComponent().getMarkupId()+"') ";

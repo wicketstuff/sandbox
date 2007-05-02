@@ -55,25 +55,17 @@ public class DojoLazyLoadingListContainerHandler extends AbstractRequireDojoBeha
 	protected void onComponentTag(ComponentTag tag)
 	{
 		super.onComponentTag(tag);
-		tag.put("onReload", "" + getPreCallbackScript() + getCallbackScript(true));
+		tag.put("onReload", "" + getPreCallbackScript() + getCallbackScript());
 	}
 	
 	protected CharSequence getPreCallbackScript(){
 		return "";//"this.contentTable.innerHTML='<tbody id=" + getComponent().getMarkupId() + "_contentItems><tr><td></td></tr><tr><td></td></tr><tr><td></td></tr><tr><td></td></tr><tr><td></td></tr><tr><td></td></tr><tr><td></td></tr><tr><td></td></tr><tr><td></td></tr><tr><td></td></tr><tr><td></td></tr><tr><td></td></tr><tr><td></td></tr><tr><td></td></tr><tr><td></td></tr><tr><td></td></tr><tr><td></td></tr><tr><td></td></tr><tr><td></td></tr><tr><td></td></tr><tr><td></td></tr><tr><td></td></tr><tr><td></td></tr><tr><td></td></tr><tr><td></td></tr><tr><td></td></tr><tr><td></td></tr><tr><td></td></tr><tr><td></td></tr><tr><td></td></tr></tbody>';";
 	}
 	
-	
-	/**
-	 * @return javascript that will generate an ajax GET request to this
-	 *         behavior *
-	 * @param recordPageVersion
-	 *            if true the url will be encoded to execute on the current page
-	 *            version, otherwise url will be encoded to execute on the
-	 *            latest page version
-	 */
-	protected CharSequence getCallbackScript(boolean recordPageVersion)
+
+	protected CharSequence getCallbackScript()
 	{
-		return getCallbackScript("wicketAjaxGet('" + getCallbackUrl(recordPageVersion, true) + "&start=' + arguments[0] + '&end=' +  arguments[1]", null,
+		return getCallbackScript("wicketAjaxGet('" + getCallbackUrl() + "&start=' + arguments[0] + '&end=' +  arguments[1]", null,
 				null);
 	}
 }
