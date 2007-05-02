@@ -70,7 +70,7 @@ public class DojoModalFloatingPaneHandler extends AbstractRequireDojoBehavior
 	protected CharSequence getCallbackScript(String state)
 	{
 		return getCallbackScript("wicketAjaxGet('"
-				+ getCallbackUrl(true, false) + "&state=" + state + "'", null, null);
+				+ getCallbackUrl() + "&state=" + state + "'", null, null);
 	}
 
 }
