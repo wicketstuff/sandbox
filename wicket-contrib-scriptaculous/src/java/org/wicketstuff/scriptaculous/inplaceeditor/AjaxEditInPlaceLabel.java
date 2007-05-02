@@ -13,20 +13,18 @@ import org.apache.wicket.markup.html.form.AbstractTextComponent;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.target.basic.StringRequestTarget;
-import org.apache.wicket.util.resource.IResourceStream;
 import org.wicketstuff.scriptaculous.JavascriptBuilder;
 import org.wicketstuff.scriptaculous.ScriptaculousAjaxBehavior;
 import org.wicketstuff.scriptaculous.JavascriptBuilder.AjaxCallbackJavascriptFunction;
 import org.wicketstuff.scriptaculous.effect.Effect;
 
-
 /**
  * Label that uses AJAX for editing "in place" instead of using conventional forms.
- * There are several extension points within this class to allow for subclasses 
+ * There are several extension points within this class to allow for subclasses
  * to customize the behavior of this component.
- * 
+ *
  * @see http://wiki.script.aculo.us/scriptaculous/show/Ajax.InPlaceEditor
- * 
+ *
  * @author <a href="mailto:wireframe6464@users.sourceforge.net">Ryan Sonnek</a>
  */
 public class AjaxEditInPlaceLabel extends AbstractTextComponent
@@ -55,7 +53,7 @@ public class AjaxEditInPlaceLabel extends AbstractTextComponent
 
 	/**
 	 * configure use of okButton for InPlaceEditor.
-	 * 
+	 *
 	 * @param value
 	 */
 	public void setOkButton(boolean value)
@@ -95,7 +93,7 @@ public class AjaxEditInPlaceLabel extends AbstractTextComponent
 
 	/**
 	 * extension point for customizing what text is loaded for editing.
-	 * Usually used in conjunction with <code>getDisplayValue()</code> to override 
+	 * Usually used in conjunction with <code>getDisplayValue()</code> to override
 	 * what text is displayed in text area versus the label.
 	 * <pre>
 	 * setLoadBehavior(new AbstractAjaxBehavior() {
@@ -111,7 +109,7 @@ public class AjaxEditInPlaceLabel extends AbstractTextComponent
 		this.loadBehavior = loadBehavior;
 		add(loadBehavior);
 	}
-	
+
 	/**
 	 * extension point to allow for manipulation of what value is displayed.
 	 * Overriding this method allows for the component to display different text
@@ -119,7 +117,7 @@ public class AjaxEditInPlaceLabel extends AbstractTextComponent
 	 * formatted differently than the editable text (ex: textile). The default
 	 * behavior is to return the same value as the <code>getValue()</code>
 	 * method.
-	 * 
+	 *
 	 * @see #getValue();
 	 * @see #setLoadBehavior(AbstractAjaxBehavior)
 	 * @see AjaxEditInPlaceOnSaveBehavior#onRequest()
@@ -130,7 +128,7 @@ public class AjaxEditInPlaceLabel extends AbstractTextComponent
 	}
 
 	/**
-	 * Sets the label to be in <i>edit mode</i> the next time the page is rendered.  
+	 * Sets the label to be in <i>edit mode</i> the next time the page is rendered.
 	 * Needs to be called again when refreshing the component.
 	 */
 	public void enterEditMode()
@@ -158,7 +156,7 @@ public class AjaxEditInPlaceLabel extends AbstractTextComponent
 
 	/**
 	 * Handle the container's body.
-	 * 
+	 *
 	 * @param markupStream
 	 *            The markup stream
 	 * @param openTag
@@ -193,18 +191,17 @@ public class AjaxEditInPlaceLabel extends AbstractTextComponent
 		builder.addLine(";");
 		getResponse().write(builder.buildScriptTagString());
 	}
-	
+
 	private class AjaxEditInPlaceOnCompleteBehavior extends ScriptaculousAjaxBehavior
 	{
 		private static final long serialVersionUID = 1L;
 
-		protected IResourceStream getResponse() {
+		public void onRequest() {
 			AjaxRequestTarget target = new AjaxRequestTarget();
 			getRequestCycle().setRequestTarget(target);
 			target.appendJavascript(new Effect.Highlight(AjaxEditInPlaceLabel.this).toJavascript());
 
 			onComplete(target);
-			return null;
 		}
 	}
 
@@ -212,7 +209,7 @@ public class AjaxEditInPlaceLabel extends AbstractTextComponent
 	{
 		private static final long serialVersionUID = 1L;
 
-		protected IResourceStream getResponse() {
+		public void onRequest() {
 			FormComponent formComponent = (FormComponent)getComponent();
 			formComponent.validate();
 			if (formComponent.isValid())
@@ -220,7 +217,6 @@ public class AjaxEditInPlaceLabel extends AbstractTextComponent
 				formComponent.updateModel();
 			}
 			RequestCycle.get().setRequestTarget(new StringRequestTarget(getDisplayValue()));
-			return null;
 		}
 	}
 }

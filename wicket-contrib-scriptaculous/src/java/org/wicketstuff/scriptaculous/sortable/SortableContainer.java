@@ -13,14 +13,12 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.util.resource.IResourceStream;
 import org.wicketstuff.scriptaculous.JavascriptBuilder;
 import org.wicketstuff.scriptaculous.ScriptaculousAjaxBehavior;
 
-
 /**
  * Extension to {@link ListView} that allows for drag/drop reordering of items.
- * 
+ *
  * @see http://wiki.script.aculo.us/scriptaculous/show/Sortable.create
  * @author <a href="mailto:wireframe6464@users.sourceforge.net">Ryan Sonnek</a>
  */
@@ -57,8 +55,8 @@ public abstract class SortableContainer extends WebMarkupContainer
 	{
 		options.put("constraint", "vertical");
 	}
-	
-	public void setConstraintHorizontal() 
+
+	public void setConstraintHorizontal()
 	{
 		options.put("constraint", "horizontal");
 	}
@@ -80,12 +78,12 @@ public abstract class SortableContainer extends WebMarkupContainer
 		builder.addLine(");");
 		getResponse().write(builder.buildScriptTagString());
 	}
-	
+
 	private class SortableContainerBehavior extends ScriptaculousAjaxBehavior
 	{
 		private static final long serialVersionUID = 1L;
 
-		protected IResourceStream getResponse() {
+		public void onRequest() {
 			AjaxRequestTarget target = new AjaxRequestTarget();
 			String[] parameters = getRequestCycle().getRequest().getParameters(
 					getMarkupId() + "[]");
@@ -103,7 +101,6 @@ public abstract class SortableContainer extends WebMarkupContainer
 			getRequestCycle().setRequestTarget(target);
 
 			target.addComponent(getComponent());
-			return null;
 		}
 	}
 }

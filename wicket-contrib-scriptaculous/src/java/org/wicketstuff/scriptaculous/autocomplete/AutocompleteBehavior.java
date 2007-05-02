@@ -18,8 +18,6 @@
  */
 package org.wicketstuff.scriptaculous.autocomplete;
 
-import org.apache.wicket.util.resource.IResourceStream;
-
 /**
  * Autocomplete behavior that provides a static list of options to autocomplete.
  *
@@ -44,7 +42,7 @@ public class AutocompleteBehavior extends AbstractAutocompleteBehavior
 	{
 		return buildResults();
 	}
-	
+
 	private String buildResults()
 	{
 		String result = "[";
@@ -60,7 +58,7 @@ public class AutocompleteBehavior extends AbstractAutocompleteBehavior
 		return result;
 	}
 
-	protected IResourceStream getResponse() {
-		return null;
+	public void onRequest() {
+		//do nothing
 	}
 }
