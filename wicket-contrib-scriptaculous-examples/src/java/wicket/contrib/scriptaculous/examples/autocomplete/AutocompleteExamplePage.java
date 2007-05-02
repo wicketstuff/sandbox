@@ -1,5 +1,7 @@
 package wicket.contrib.scriptaculous.examples.autocomplete;
 
+import java.io.Serializable;
+
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
@@ -13,7 +15,7 @@ public class AutocompleteExamplePage extends WebPage {
 		add(new AutocompleteExampleForm("searchForm"));
 	}
 
-	private class EmailSearchCommand {
+	private class EmailSearchCommand implements Serializable {
 		private String emailAddress;
 
 		public String getEmailAddress()
