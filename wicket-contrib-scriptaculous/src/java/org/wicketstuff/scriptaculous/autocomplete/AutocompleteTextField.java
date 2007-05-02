@@ -52,7 +52,7 @@ public class AutocompleteTextField extends AutocompleteTextFieldSupport
 
 	protected String getAutocompleteType()
 	{
-		return "Autocompleter.Local(";
+		return "Autocompleter.Local";
 	}
 
 	protected String getThirdAutocompleteArgument()
