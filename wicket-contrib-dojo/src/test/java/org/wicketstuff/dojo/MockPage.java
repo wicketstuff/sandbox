@@ -17,9 +17,6 @@
 package org.wicketstuff.dojo;
 
 import org.apache.wicket.markup.html.WebPage;
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.link.Link;
-import org.apache.wicket.model.PropertyModel;
 
 
 /**
