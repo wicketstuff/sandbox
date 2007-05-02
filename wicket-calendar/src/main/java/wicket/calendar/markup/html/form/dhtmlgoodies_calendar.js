@@ -1070,6 +1070,9 @@ function writeCalendarContent()
 	cell.style.backgroundColor = selectBoxRolloverBgColor;
 	var week = getWeek(currentYear,currentMonth,1);
 	cell.innerHTML = week;		// Week
+// WICKET ADDED
+	cell.onclick = pickDate
+// DONE WICKET ADDED	
 	for(var no=0;no<dayStartOfMonth;no++){
 		var cell = row.insertCell(-1);
 		cell.innerHTML = '&nbsp;';
@@ -1089,6 +1092,9 @@ function writeCalendarContent()
 			cell.className = 'calendar_week_column';
 			var week = getWeek(currentYear,currentMonth,no);
 			cell.innerHTML = week;		// Week	
+// WICKET ADDED
+			cell.onclick = pickDate
+// DONE WICKET ADDED							
 			cell.style.backgroundColor = selectBoxRolloverBgColor;			
 		}
 		var cell = row.insertCell(-1);
@@ -1143,14 +1149,23 @@ function pickDate(e,inputDay)
 	if(month<10)month = '0' + month;
 	var day;
 	if(!inputDay && this)day = this.innerHTML; else day = inputDay;
-	
 	if(day/1<10)day = '0' + day;
+// WICKET ADDED	
+	var week;
+	if (this.className == 'calendar_week_column')week = this.innerHTML; else week = getWeek(currentYear, currentMonth, day);
+	if(week/1<10)week = '0' + week;
+// DONE WICKET ADDED
+		
 	if(returnFormat){
 		returnFormat = returnFormat.replace('dd',day);
 		returnFormat = returnFormat.replace('mm',month);
 		returnFormat = returnFormat.replace('yyyy',currentYear);
 		returnFormat = returnFormat.replace('hh',currentHour);
 		returnFormat = returnFormat.replace('ii',currentMinute);
+// WICKET ADDED		
+		returnFormat = returnFormat.replace('ww',week);
+		returnFormat = returnFormat.replace('w',week/1);
+// DONE WICKET ADDED
 		returnFormat = returnFormat.replace('d',day/1);
 		returnFormat = returnFormat.replace('m',month/1);
 		returnFormat = returnFormat.replace('h',currentHour/1);
@@ -1505,14 +1520,20 @@ function displayCalendar(inputField,format,buttonObj,displayTime,timeInput)
 	if(inputField.value.length>0){
 		
 		if(!format.match(/^[0-9]*?$/gi)){
-			var items = inputField.value.split(/[^0-9]/gi);
+// WICKET CHANGED
+			var items = inputField.value.replace(/\s/,"").split(/[^0-9]/gi);
+// DONE WICKET CHANGED			
 			var positionArray = new Array();
 			positionArray['m'] = format.indexOf('mm');
 			if(positionArray['m']==-1)positionArray['m'] = format.indexOf('m');
 			positionArray['d'] = format.indexOf('dd');
 			if(positionArray['d']==-1)positionArray['d'] = format.indexOf('d');
 			positionArray['y'] = format.indexOf('yyyy');
-			positionArray['h'] = format.indexOf('hh');
+// WICKET ADDED
+			positionArray['w'] = format.indexOf('ww');
+			if (positionArray['w']==-1) positionArray['m'] = format.indexOf('w');
+// DONE WICKET ADDED
+			positionArray['h'] = format.indexOf('hh');			
 // WICKET ADDED
 			if(positionArray['h']==-1)positionArray['h'] = format.indexOf('h');
 // DONE WICKET ADDED
@@ -1528,6 +1549,9 @@ function displayCalendar(inputField,format,buttonObj,displayTime,timeInput)
 			positionArrayNumeric[3] = positionArray['h'];
 			positionArrayNumeric[4] = positionArray['i'];
 			positionArrayNumeric[5] = positionArray['a'];
+// WICKET ADDED			
+			positionArrayNumeric[6] = positionArray['w'];
+// DONE WICKET ADDED			
 			
 			
 			positionArrayNumeric = positionArrayNumeric.sort(calendarSortItems);
