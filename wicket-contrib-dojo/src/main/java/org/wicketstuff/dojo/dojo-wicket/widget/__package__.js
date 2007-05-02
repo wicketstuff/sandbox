@@ -7,7 +7,7 @@ dojo.kwCompoundRequire({
 		"dojoWicket.widget.ErrorDisplayer",
 		"dojoWicket.widget.PercentSelector",
 		"dojoWicket.widget.ColorPicker",
-		"dojoWicket.widget.DropdownColorPicker";
+		"dojoWicket.widget.DropdownColorPicker"
 	]
 });
 dojo.provide("dojoWicket.widget.*");
