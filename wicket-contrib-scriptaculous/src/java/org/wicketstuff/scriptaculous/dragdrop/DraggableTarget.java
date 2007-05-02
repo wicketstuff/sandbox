@@ -6,7 +6,6 @@ import java.util.Map;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.MarkupStream;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.util.resource.IResourceStream;
 import org.wicketstuff.scriptaculous.JavascriptBuilder;
 import org.wicketstuff.scriptaculous.ScriptaculousAjaxBehavior;
 import org.wicketstuff.scriptaculous.JavascriptBuilder.AjaxCallbackJavascriptFunction;
@@ -14,7 +13,7 @@ import org.wicketstuff.scriptaculous.effect.Effect;
 
 
 /**
- * 
+ *
  * @see http://wiki.script.aculo.us/scriptaculous/show/Droppables.add
  */
 public abstract class DraggableTarget extends WebMarkupContainer
@@ -57,12 +56,12 @@ public abstract class DraggableTarget extends WebMarkupContainer
 
 		getResponse().write(builder.buildScriptTagString());
 	}
-	
+
 	private class DraggableTargetBehavior extends ScriptaculousAjaxBehavior
 	{
 		private static final long serialVersionUID = 1L;
 
-		protected IResourceStream getResponse() {
+		public void onRequest() {
 			String input = getRequest().getParameter("id");
 			AjaxRequestTarget target = new AjaxRequestTarget();
 			getRequestCycle().setRequestTarget(target);
@@ -70,9 +69,8 @@ public abstract class DraggableTarget extends WebMarkupContainer
 			target.appendJavascript(new Effect.Highlight(DraggableTarget.this).toJavascript());
 
 			onDrop(input, target);
-			return null;
 		}
 
 	}
-	
+
 }

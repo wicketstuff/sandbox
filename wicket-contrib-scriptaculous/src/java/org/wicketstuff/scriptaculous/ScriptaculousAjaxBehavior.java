@@ -18,11 +18,9 @@
  */
 package org.wicketstuff.scriptaculous;
 
-import org.apache.wicket.RequestCycle;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.behavior.AbstractAjaxBehavior;
 import org.apache.wicket.markup.html.IHeaderResponse;
-import org.apache.wicket.util.resource.IResourceStream;
 
 /**
  * Handles event requests using 'script.aculo.us'.
@@ -31,7 +29,7 @@ import org.apache.wicket.util.resource.IResourceStream;
  * As header contributions are done once per class, you can have multiple
  * instances/ subclasses without having duplicate header contributions.
  * </p>
- * 
+ *
  * @see <a href="http://script.aculo.us/">script.aculo.us</a>
  * @author <a href="mailto:wireframe6464@users.sourceforge.net">Ryan Sonnek</a>
  */
@@ -42,37 +40,11 @@ public abstract class ScriptaculousAjaxBehavior extends AbstractAjaxBehavior {
 
 			private static final long serialVersionUID = 1L;
 
-			protected IResourceStream getResponse() {
-				return null;
+			public void onRequest() {
+				//do nothing
 			}
 		};
 	}
-
-	/**
-	 * @see wicket.behavior.IBehaviorListener#onRequest()
-	 */
-	public void onRequest() {
-		IResourceStream response = getResponse();
-		if (response != null) {
-			boolean isPageVersioned = true;
-			try {
-				isPageVersioned = getComponent().getPage().isVersioned();
-				getComponent().getPage().setVersioned(false);
-
-				ScriptaculousRequestTarget target = new ScriptaculousRequestTarget(
-						response);
-				RequestCycle.get().setRequestTarget(target);
-			} finally {
-				getComponent().getPage().setVersioned(isPageVersioned);
-			}
-		}
-	}
-
-	/**
-	 * TODO: what is this for?
-	 * @return
-	 */
-	protected abstract IResourceStream getResponse();
 
 	public final void renderHead(IHeaderResponse response) {
 		super.renderHead(response);
