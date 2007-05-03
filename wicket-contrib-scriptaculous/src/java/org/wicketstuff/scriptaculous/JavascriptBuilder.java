@@ -105,6 +105,7 @@ public class JavascriptBuilder
 	 * Convenience {@link JavascriptFunction} for performing a wicket ajax call to an {@link AjaxEventBehavior}
 	 */
 	public static class AjaxCallbackJavascriptFunction extends JavascriptFunction {
+		private static final long serialVersionUID = 1L;
 		public AjaxCallbackJavascriptFunction(AbstractAjaxBehavior behavior) {
 			super("function() { wicketAjaxGet('" + behavior.getCallbackUrl() + "'); }");
 		}

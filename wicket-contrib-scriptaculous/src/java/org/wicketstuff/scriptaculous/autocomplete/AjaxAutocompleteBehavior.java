@@ -50,14 +50,6 @@ public abstract class AjaxAutocompleteBehavior extends AbstractAutocompleteBehav
 		return "'" + getCallbackUrl() + "'";
 	}
 
-	/**
-	 * extension point to lookup results for user's input.
-	 *
-	 * @param input
-	 * @return
-	 */
-	protected abstract String[] getResults(String input);
-
 	public void onRequest() {
 		FormComponent formComponent = (FormComponent)getComponent();
 
@@ -83,4 +75,12 @@ public abstract class AjaxAutocompleteBehavior extends AbstractAutocompleteBehav
 		s.append("</ul>\n");
 		return s.toString();
 	}
+	
+	/**
+	 * extension point to lookup results for user's input.
+	 *
+	 * @param input value currently input by the user
+	 * @return results to autocomplete for the user
+	 */
+	protected abstract String[] getResults(String input);
 }
