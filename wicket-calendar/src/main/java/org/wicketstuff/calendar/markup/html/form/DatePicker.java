@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package wicket.calendar.markup.html.form;
+package org.wicketstuff.calendar.markup.html.form;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

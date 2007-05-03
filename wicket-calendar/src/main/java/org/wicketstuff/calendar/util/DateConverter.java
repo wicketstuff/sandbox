@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package wicket.calendar.util;
+package org.wicketstuff.calendar.util;
 
 import java.util.Date;
 import java.util.Locale;

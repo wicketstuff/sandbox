@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package wicket.calendar.util;
+package org.wicketstuff.calendar.util;
 
 import java.text.SimpleDateFormat;
 
@@ -23,8 +23,8 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.wicketstuff.calendar.markup.html.form.DateTextField;
 
-import wicket.calendar.markup.html.form.DateTextField;
 
 /**
  * Date converter that uses Joda Time and can be configured to take the time

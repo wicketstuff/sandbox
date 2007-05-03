@@ -14,15 +14,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package wicket.calendar.util;
+package org.wicketstuff.calendar.util;
 
 import org.apache.wicket.Session;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.wicketstuff.calendar.markup.html.form.DateTextField;
 
-import wicket.calendar.markup.html.form.DateTextField;
 
 /**
  * Date converter that uses Joda Time and can be configured to take the time
@@ -40,7 +40,7 @@ import wicket.calendar.markup.html.form.DateTextField;
  * 
  * @author eelcohillenius
  */
-public class StyleDateConverter extends DateConverter {
+public class StyleDateTimeConverter extends DateConverter {
 
 	private static final long serialVersionUID = 1L;
 
@@ -68,7 +68,7 @@ public class StyleDateConverter extends DateConverter {
 	 *            whether to apply the difference in time zones between client
 	 *            and server
 	 */
-	public StyleDateConverter(boolean applyTimeZoneDifference) {
+	public StyleDateTimeConverter(boolean applyTimeZoneDifference) {
 		this("S-", applyTimeZoneDifference);
 	}
 
@@ -96,7 +96,7 @@ public class StyleDateConverter extends DateConverter {
 	 * @throws IllegalArgumentException
 	 *             in case dateStyle is null
 	 */
-	public StyleDateConverter(String dateStyle, boolean applyTimeZoneDifference) {
+	public StyleDateTimeConverter(String dateStyle, boolean applyTimeZoneDifference) {
 		super(applyTimeZoneDifference);
 		if (dateStyle == null) {
 			throw new IllegalArgumentException("dateStyle must be not null");

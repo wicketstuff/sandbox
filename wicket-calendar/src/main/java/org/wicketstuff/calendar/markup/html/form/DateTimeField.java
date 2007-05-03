@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package wicket.calendar.markup.html.form;
+package org.wicketstuff.calendar.markup.html.form;
 
 import java.util.Date;
 
@@ -30,7 +30,7 @@ import org.joda.time.MutableDateTime;
  * 
  * @author eelcohillenius
  */
-public class DateField extends FormComponentPanel {
+public class DateTimeField extends FormComponentPanel {
 
 	private static final long serialVersionUID = 1L;
 
@@ -43,7 +43,7 @@ public class DateField extends FormComponentPanel {
 	 * 
 	 * @param id
 	 */
-	public DateField(String id) {
+	public DateTimeField(String id) {
 		super(id);
 		init();
 	}
@@ -54,7 +54,7 @@ public class DateField extends FormComponentPanel {
 	 * @param id
 	 * @param model
 	 */
-	public DateField(String id, IModel model) {
+	public DateTimeField(String id, IModel model) {
 		super(id, model);
 		init();
 	}
@@ -99,7 +99,7 @@ public class DateField extends FormComponentPanel {
 	private void init() {
 
 		setType(Date.class);
-		add(dateField = DateTextField.forShortDateStyle("date", new PropertyModel(
+		add(dateField = DateTextField.forShortDateTimeStyle("date", new PropertyModel(
 				this, "date")));
 		dateField.add(new DatePicker());
 	}
