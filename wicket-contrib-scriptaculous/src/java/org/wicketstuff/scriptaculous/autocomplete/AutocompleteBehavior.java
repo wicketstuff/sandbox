@@ -22,6 +22,7 @@ package org.wicketstuff.scriptaculous.autocomplete;
  * Autocomplete behavior that provides a static list of options to autocomplete.
  *
  * @author <a href="mailto:wireframe6464@users.sourceforge.net">Ryan Sonnek</a>
+ * @see http://wiki.script.aculo.us/scriptaculous/show/Autocompleter.Local
  */
 public class AutocompleteBehavior extends AbstractAutocompleteBehavior
 {

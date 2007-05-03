@@ -22,6 +22,7 @@ import org.wicketstuff.scriptaculous.ScriptaculousAjaxBehavior;
  * results are looked up.  This can be a static list of results, or an ajax callback.
  *
  * @author <a href="mailto:wireframe6464@users.sourceforge.net">Ryan Sonnek</a>
+ * @see http://wiki.script.aculo.us/scriptaculous/show/Autocompletion
  */
 public abstract class AbstractAutocompleteBehavior extends ScriptaculousAjaxBehavior
 {
@@ -56,6 +57,11 @@ public abstract class AbstractAutocompleteBehavior extends ScriptaculousAjaxBeha
 		response.write(builder.buildScriptTagString());
 	}
 
+	private final String getAutocompleteId()
+	{
+		return getComponent().getMarkupId() + "_autocomplete";
+	}
+
 	/**
 	 * extension point to customize what css is used to style the component.
 	 * @return
@@ -65,12 +71,17 @@ public abstract class AbstractAutocompleteBehavior extends ScriptaculousAjaxBeha
 		return new ResourceReference(AbstractAutocompleteBehavior.class, "style.css");
 	}
 
-	protected abstract String getThirdAutocompleteArgument();
-
+	/**
+	 * subclasses need to declare the scriptaculous autocomplete type.
+	 * @return
+	 */
 	protected abstract String getAutocompleteType();
 
-	protected final String getAutocompleteId()
-	{
-		return getComponent().getMarkupId() + "_autocomplete";
-	}
+	/**
+	 * Subclasses need to define this optional argument.
+	 * each implementation requires a different value.
+	 * @return
+	 */
+	protected abstract String getThirdAutocompleteArgument();
+
 }

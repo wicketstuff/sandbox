@@ -35,6 +35,7 @@ import org.apache.wicket.request.target.basic.StringRequestTarget;
  *
  * For customizing the layout of the response, see {@link CustomLayoutAjaxAutocompleteTextField}
  * @author <a href="mailto:wireframe6464@users.sourceforge.net">Ryan Sonnek</a>
+ * @see http://wiki.script.aculo.us/scriptaculous/show/Ajax.Autocompleter
  */
 public abstract class AjaxAutocompleteBehavior extends AbstractAutocompleteBehavior
 {
