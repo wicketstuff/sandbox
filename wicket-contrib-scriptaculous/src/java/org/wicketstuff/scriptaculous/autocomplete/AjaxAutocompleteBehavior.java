@@ -33,7 +33,18 @@ import org.apache.wicket.request.target.basic.StringRequestTarget;
  *   &lt;/ul&gt;
  * </pre>
  *
- * For customizing the layout of the response, see {@link CustomLayoutAjaxAutocompleteTextField}
+ * <p>
+ * The response can contain non-autocomplete information for display purposes.  
+ * The results returned can contain additional HTML elements (span, div) marked 
+ * with a class of <code>informal</code>.  These elements will <i>only</i> be used 
+ * for display and their contents will not be entered into the text field.  
+ * </p>
+ * <p>
+ * When customizing the response to add additional information, users will most likely 
+ * need to override the {@link #getCss()} method as well to customize the look and 
+ * layout. 
+ * </p>
+ * 
  * @author <a href="mailto:wireframe6464@users.sourceforge.net">Ryan Sonnek</a>
  * @see http://wiki.script.aculo.us/scriptaculous/show/Ajax.Autocompleter
  */
