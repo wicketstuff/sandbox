@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package wicket.calendar.markup.html.form;
+package org.wicketstuff.calendar.markup.html.form;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -26,10 +26,10 @@ import org.apache.wicket.util.convert.IConverter;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
+import org.wicketstuff.calendar.util.DateConverter;
+import org.wicketstuff.calendar.util.PatternDateConverter;
+import org.wicketstuff.calendar.util.StyleDateConverter;
 
-import wicket.calendar.util.DateConverter;
-import wicket.calendar.util.PatternDateConverter;
-import wicket.calendar.util.StyleDateConverter;
 
 /**
  * A TextField that is mapped to a <code>java.util.Date</code> object and that
