@@ -1531,7 +1531,7 @@ function displayCalendar(inputField,format,buttonObj,displayTime,timeInput)
 			positionArray['y'] = format.indexOf('yyyy');
 // WICKET ADDED
 			positionArray['w'] = format.indexOf('ww');
-			if (positionArray['w']==-1) positionArray['m'] = format.indexOf('w');
+			if (positionArray['w']==-1) positionArray['w'] = format.indexOf('w');
 // DONE WICKET ADDED
 			positionArray['h'] = format.indexOf('hh');			
 // WICKET ADDED
