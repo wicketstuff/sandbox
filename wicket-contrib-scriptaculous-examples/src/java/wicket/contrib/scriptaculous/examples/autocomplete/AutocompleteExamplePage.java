@@ -3,48 +3,61 @@ package wicket.contrib.scriptaculous.examples.autocomplete;
 import java.io.Serializable;
 
 import org.apache.wicket.markup.html.WebPage;
-import org.apache.wicket.markup.html.form.Button;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.model.CompoundPropertyModel;
-import org.wicketstuff.scriptaculous.autocomplete.AutocompleteTextField;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.model.PropertyModel;
+import org.wicketstuff.scriptaculous.autocomplete.AjaxAutocompleteBehavior;
+import org.wicketstuff.scriptaculous.autocomplete.AutocompleteBehavior;
 
 public class AutocompleteExamplePage extends WebPage {
 
 	public AutocompleteExamplePage() {
 		super();
-		add(new AutocompleteExampleForm("searchForm"));
+		
+		String[] results = new String[] {
+				"red"
+				, "rose"
+				, "red-green"
+				, "green"
+				, "grey"
+				, "gray"
+				, "blue"
+				, "black"
+				, "purple"
+				, "pink"
+				, "orange"
+				, "off-white"
+				, "white"
+				, "yellow"
+				, "yellow-green"
+		};
+		TextField color = new TextField("color");
+		color.add(new AutocompleteBehavior(results));
+		add(color);
+		
+		TextField email = new TextField("email", new PropertyModel(new User(), "email"));
+		email.add(new AjaxAutocompleteBehavior() {
+			protected String[] getResults(String input) {
+				return new String[] {
+						"bill.gates@microsoft.com", 
+						"me@yourdomain.com", 
+						"ryan@codecrate.com",
+						};
+			}
+		});
+		add(email);
 	}
+	
+	private static class User implements Serializable {
+		private String email;
 
-	private class EmailSearchCommand implements Serializable {
-		private String emailAddress;
-
-		public String getEmailAddress()
+		public String getEmail()
 		{
-			return emailAddress;
+			return email;
 		}
 
-		public void setEmailAddress(String emailAddress)
+		public void setEmail(String email)
 		{
-			this.emailAddress = emailAddress;
-		}
-
-	}
-
-	private class AutocompleteExampleForm extends Form {
-		public AutocompleteExampleForm(String id) {
-			super(id, new CompoundPropertyModel(new EmailSearchCommand()));
-
-			String[] results = new String[] {
-					"ryan sonnek"
-					, "bill gates"
-					, "alan johnson"
-			};
-			add(new AutocompleteTextField("emailAddress", results));
-			add(new Button("submitButton"));
-		}
-
-		protected void onSubmit() {
-			//do something here
+			this.email = email;
 		}
 	}
 }
