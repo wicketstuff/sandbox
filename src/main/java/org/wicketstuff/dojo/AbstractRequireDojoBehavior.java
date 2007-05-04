@@ -106,6 +106,7 @@ public abstract class AbstractRequireDojoBehavior extends AbstractDefaultDojoBeh
 	 * @author vdemay
 	 * 
 	 */
+	@SuppressWarnings("serial")
 	public class RequireDojoLibs extends HashSet<String> {
 
 	}
