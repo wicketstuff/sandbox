@@ -45,8 +45,8 @@ import org.apache.wicket.util.string.AppendingStringBuffer;
  * do is ensure the reflection.js is added to the head of the document. You can
  * use the {@link #REFLECTION_JS} resource reference for that.
  * <p>
- * The reflection.js library and more documentation can be found here:
- * {@linkplain http://cow.neondragon.net/stuff/reflection/}
+ * The reflection.js library and more documentation can be found here <a
+ * href="http://cow.neondragon.net/stuff/reflection/">http://cow.neondragon.net/stuff/reflection/</a>
  * 
  * @author Martijn Dashorst
  */
