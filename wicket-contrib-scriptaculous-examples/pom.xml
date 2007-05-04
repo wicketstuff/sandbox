@@ -23,11 +23,11 @@
 	     <distribution>repo</distribution>
 	  </license>
 	</licenses>
-  
+
         <issueManagement>
 	      <url>http://sourceforge.net/tracker/?group_id=${maven.sourceforge.project.groupId}</url>
 	</issueManagement>
-	
+
 	<scm>
 		<connection>
 			scm:cvs:pserver:anonymous@cvs.sourceforge.net:/cvsroot/${pom.groupId}:${pom.artifactId}
@@ -85,22 +85,14 @@
 		<dependency>
 			<groupId>org.apache.wicket</groupId>
 			<artifactId>wicket</artifactId>
-			<version>1.3.0-incubating-SNAPSHOT</version>		
+			<version>1.3.0-incubating-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.wicketstuff</groupId>
 			<artifactId>wicketstuff-scriptaculous</artifactId>
-			<version>1.3-SNAPSHOT</version>		
+			<version>1.3-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
-
-  <pluginRepositories>
-    <pluginRepository>
-      <id>mortbay-repo</id>
-      <name>mortbay-repo</name>
-      <url>http://www.mortbay.org/maven2/snapshot</url>
-    </pluginRepository>
-  </pluginRepositories>
 
   <build>
 		<sourceDirectory>src/java</sourceDirectory>
@@ -116,12 +108,12 @@
 				<filtering>false</filtering>
 			</resource>
 		</resources>
-		
+
       <plugins>
         <plugin>
           <groupId>org.mortbay.jetty</groupId>
           <artifactId>maven-jetty-plugin</artifactId>
-          <version>6.1-SNAPSHOT</version>
+          <version>6.1.2</version>
           <configuration>
             <webAppSourceDirectory>${basedir}/src/webapp</webAppSourceDirectory>
             <scanIntervalSeconds>10</scanIntervalSeconds>
