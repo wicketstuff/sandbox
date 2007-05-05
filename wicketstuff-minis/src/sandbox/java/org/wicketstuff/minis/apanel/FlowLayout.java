@@ -38,10 +38,9 @@ public class FlowLayout implements ILayout
 
 	/**
 	 * Constructor.
-	 * 
-	 * @param renderers
-	 *            list of renderers to customize component rendering in this
-	 *            layout
+	 *
+	 * @param renderers list of renderers to customize component rendering in this
+	 *                  layout
 	 */
 	public FlowLayout(final List<IComponentRenderer<?>> renderers)
 	{

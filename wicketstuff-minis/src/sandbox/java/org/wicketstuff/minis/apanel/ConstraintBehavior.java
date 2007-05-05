@@ -16,11 +16,17 @@
  */
 package org.wicketstuff.minis.apanel;
 
-import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.behavior.AbstractBehavior;
 
-public class TestPage extends WebPage {
-	public TestPage(final APanel aPanel) {
-		super();
-		add(aPanel);
-	}
+/**
+ * Contains information about how a component should be displayed in a layout. A
+ * component should have only one constraint.
+ * <p/>
+ * Violates the idea of {@link org.apache.wicket.behavior.IBehavior}.
+ * </p>
+ */
+public class ConstraintBehavior extends AbstractBehavior
+{
+	private static final long serialVersionUID = 1L;
+
 }

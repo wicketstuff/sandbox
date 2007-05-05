@@ -34,11 +34,13 @@ import java.io.Serializable;
 /**
  * Stores list of renderers.
  */
-class RenderersList implements Serializable {
+class RenderersList implements Serializable
+{
 	private static final long serialVersionUID = 1L;
 	private static final List<IComponentRenderer<?>> DEFAULT_RENDERERS = new ArrayList<IComponentRenderer<?>>();
 
-	static {
+	static
+	{
 		DEFAULT_RENDERERS.add(new LabelRenderer());
 		DEFAULT_RENDERERS.add(new LinkRenderer());
 		DEFAULT_RENDERERS.add(new ListViewRenderer());
@@ -48,20 +50,25 @@ class RenderersList implements Serializable {
 		DEFAULT_RENDERERS.add(new DefaultRenderer());
 	}
 
-	public static List<IComponentRenderer<?>> getDefaultRenderers() {
+	public static List<IComponentRenderer<?>> getDefaultRenderers()
+	{
 		return Collections.unmodifiableList(DEFAULT_RENDERERS);
 	}
 
 	private final List<IComponentRenderer<?>> renderers;
 
-	public RenderersList(final List<IComponentRenderer<?>> renderers) {
+	public RenderersList(final List<IComponentRenderer<?>> renderers)
+	{
 		this.renderers = renderers;
 	}
 
 	@SuppressWarnings({"unchecked"})
-	<T extends Component> IComponentRenderer<T> findRendererForClass(final Class<? extends T> aClass) {
-		for (IComponentRenderer componentRenderer : renderers) {
-			if (componentRenderer.getComponentClass().isAssignableFrom(aClass)) {
+			<T extends Component> IComponentRenderer<T> findRendererForClass(final Class<? extends T> aClass)
+	{
+		for (IComponentRenderer componentRenderer : renderers)
+		{
+			if (componentRenderer.getComponentClass().isAssignableFrom(aClass))
+			{
 				return componentRenderer;
 			}
 		}
@@ -70,52 +77,66 @@ class RenderersList implements Serializable {
 
 	// -------------- renderes --------------
 
-	public static abstract class BaseRenderer<T extends Component> implements IComponentRenderer<T> {
-		protected String getIdAttribute(final Component component) {
+	public static abstract class BaseRenderer<T extends Component> implements IComponentRenderer<T>
+	{
+		protected String getIdAttribute(final Component component)
+		{
 			return "wicket:id=\"" + component.getId() + "\"";
 		}
 	}
 
-	public static final class DefaultRenderer extends BaseRenderer<Component> {
+	public static final class DefaultRenderer extends BaseRenderer<Component>
+	{
 		private static final long serialVersionUID = 1L;
 
-		public CharSequence getMarkup(final Component component) {
+		public CharSequence getMarkup(final Component component)
+		{
 			return String.format("<span %s></span>", getIdAttribute(component));
 		}
 
-		public Class<Component> getComponentClass() {
+		public Class<Component> getComponentClass()
+		{
 			return Component.class;
 		}
 	}
 
-	public static final class LabelRenderer extends BaseRenderer<Label> {
+	public static final class LabelRenderer extends BaseRenderer<Label>
+	{
 		private static final long serialVersionUID = 1L;
 
-		public CharSequence getMarkup(final Label component) {
+		public CharSequence getMarkup(final Label component)
+		{
 			return String.format("<span %s></span>", getIdAttribute(component));
 		}
 
-		public Class<Label> getComponentClass() {
+		public Class<Label> getComponentClass()
+		{
 			return Label.class;
 		}
 	}
 
-	public static abstract class BaseWebMarkupContainerRenderer<T extends WebMarkupContainer> extends BaseRenderer<T> {
+	public static abstract class BaseWebMarkupContainerRenderer<T extends WebMarkupContainer> extends BaseRenderer<T>
+	{
 		private final ILayout layout;
 
-		protected BaseWebMarkupContainerRenderer() {
+		protected BaseWebMarkupContainerRenderer()
+		{
 			this.layout = new FlowLayout();
 		}
 
-		protected BaseWebMarkupContainerRenderer(final ILayout layout) {
+		protected BaseWebMarkupContainerRenderer(final ILayout layout)
+		{
 			this.layout = layout;
 		}
 
-		public CharSequence getBodyMarkup(final WebMarkupContainer container) {
+		public CharSequence getBodyMarkup(final WebMarkupContainer container)
+		{
 			final List<Component> componentsToRender = new ArrayList<Component>();
 
-			container.visitChildren(new Component.IVisitor() {
-				public Object component(final Component component) {
+			container.visitChildren(new Component.IVisitor()
+			{
+				public Object component(final Component component)
+				{
 					componentsToRender.add(component);
 					return Component.IVisitor.CONTINUE_TRAVERSAL_BUT_DONT_GO_DEEPER;
 				}
@@ -125,25 +146,30 @@ class RenderersList implements Serializable {
 		}
 	}
 
-	public static final class DefaultWebMarkupContainerRenderer extends BaseWebMarkupContainerRenderer<WebMarkupContainer> {
+	public static final class DefaultWebMarkupContainerRenderer extends BaseWebMarkupContainerRenderer<WebMarkupContainer>
+	{
 		private static final long serialVersionUID = 1L;
-		
-		public CharSequence getMarkup(final WebMarkupContainer component) {
+
+		public CharSequence getMarkup(final WebMarkupContainer component)
+		{
 			return String.format(
 					"<span>%s</span>",
 					getBodyMarkup(component)
 			);
 		}
 
-		public Class<? extends WebMarkupContainer> getComponentClass() {
+		public Class<? extends WebMarkupContainer> getComponentClass()
+		{
 			return WebMarkupContainer.class;
 		}
 	}
 
-	public static final class ListViewRenderer extends BaseWebMarkupContainerRenderer<ListView> {
+	public static final class ListViewRenderer extends BaseWebMarkupContainerRenderer<ListView>
+	{
 		private static final long serialVersionUID = 1L;
-		
-		public CharSequence getMarkup(final ListView component) {
+
+		public CharSequence getMarkup(final ListView component)
+		{
 			return String.format(
 					"<span %s>%s</span>",
 					getIdAttribute(component),
@@ -151,21 +177,25 @@ class RenderersList implements Serializable {
 			);
 		}
 
-		private CharSequence getListViewBodyMarkup(final ListView listView) {
+		private CharSequence getListViewBodyMarkup(final ListView listView)
+		{
 			if (listView.getList().isEmpty()) return "";
 			final ListItem listItem = (ListItem) listView.get("0");
 			return getBodyMarkup(listItem);
 		}
 
-		public Class<? extends ListView> getComponentClass() {
+		public Class<? extends ListView> getComponentClass()
+		{
 			return ListView.class;
 		}
 	}
 
-	public static final class LinkRenderer extends BaseWebMarkupContainerRenderer<Link> {
+	public static final class LinkRenderer extends BaseWebMarkupContainerRenderer<Link>
+	{
 		private static final long serialVersionUID = 1L;
-		
-		public CharSequence getMarkup(final Link component) {
+
+		public CharSequence getMarkup(final Link component)
+		{
 			return String.format(
 					"<a %s>%s</a>",
 					getIdAttribute(component),
@@ -173,15 +203,18 @@ class RenderersList implements Serializable {
 			);
 		}
 
-		public Class<? extends Link> getComponentClass() {
+		public Class<? extends Link> getComponentClass()
+		{
 			return Link.class;
 		}
 	}
 
-	public static final class FormRenderer extends BaseWebMarkupContainerRenderer<Form> {
+	public static final class FormRenderer extends BaseWebMarkupContainerRenderer<Form>
+	{
 		private static final long serialVersionUID = 1L;
 
-		public CharSequence getMarkup(final Form component) {
+		public CharSequence getMarkup(final Form component)
+		{
 			return String.format(
 					"<form %s>%s</form>",
 					getIdAttribute(component),
@@ -189,22 +222,26 @@ class RenderersList implements Serializable {
 			);
 		}
 
-		public Class<? extends Form> getComponentClass() {
+		public Class<? extends Form> getComponentClass()
+		{
 			return Form.class;
 		}
 	}
 
-	public static final class ButtonRenderer extends BaseRenderer<Button> {
+	public static final class ButtonRenderer extends BaseRenderer<Button>
+	{
 		private static final long serialVersionUID = 1L;
 
-		public CharSequence getMarkup(final Button component) {
+		public CharSequence getMarkup(final Button component)
+		{
 			return String.format(
 					"<input type=\"submit\" %s/>",
 					getIdAttribute(component)
 			);
 		}
 
-		public Class<? extends Button> getComponentClass() {
+		public Class<? extends Button> getComponentClass()
+		{
 			return Button.class;
 		}
 	}

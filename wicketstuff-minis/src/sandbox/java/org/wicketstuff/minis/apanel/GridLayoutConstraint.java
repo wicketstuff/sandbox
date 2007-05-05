@@ -20,56 +20,66 @@ package org.wicketstuff.minis.apanel;
  * Specifies position of a component for {@link org.wicketstuff.minis.apanel.GridLayout}
  * and optionally column/row span.
  */
-public class GridLayoutConstraint extends ConstraintBehavior {
+public class GridLayoutConstraint extends ConstraintBehavior
+{
 	private static final long serialVersionUID = 1L;
-	
+
 	private final int col;
 	private final int row;
 	private int colSpan;
 	private int rowSpan;
 
-	public GridLayoutConstraint(final int col, final int row) {
+	public GridLayoutConstraint(final int col, final int row)
+	{
 		this.col = col;
 		this.row = row;
 	}
 
-	public int getCol() {
+	public int getCol()
+	{
 		return col;
 	}
 
-	public int getRow() {
+	public int getRow()
+	{
 		return row;
 	}
 
-	public int getColSpan() {
+	public int getColSpan()
+	{
 		return colSpan;
 	}
 
-	public int getRowSpan() {
+	public int getRowSpan()
+	{
 		return rowSpan;
 	}
 
-	public ConstraintBehavior setColSpan(final int colSpan) {
+	public ConstraintBehavior setColSpan(final int colSpan)
+	{
 		if (colSpan < 0) throw new IllegalArgumentException("colspan can't be negative : " + colSpan);
 
 		this.colSpan = colSpan;
 		return this;
 	}
 
-	public ConstraintBehavior setRowSpan(final int rowSpan) {
+	public ConstraintBehavior setRowSpan(final int rowSpan)
+	{
 		if (rowSpan < 0) throw new IllegalArgumentException("rowspan can't be negative : " + rowSpan);
 
 		this.rowSpan = rowSpan;
 		return this;
 	}
 
-	boolean contains(final int col, final int row) {
+	boolean contains(final int col, final int row)
+	{
 		return ((col >= getCol() && col <= getCol() + getColSpan()) &&
 				(row >= getRow() && row <= getRow() + getRowSpan()));
 	}
 
 	@Override
-	public String toString() {
+	public String toString()
+	{
 		return String.format("[%s, %s, %s, %s]", col, row, colSpan, rowSpan);
 	}
 }

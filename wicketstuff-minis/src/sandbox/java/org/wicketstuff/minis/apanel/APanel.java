@@ -33,9 +33,8 @@ public class APanel extends Panel implements IMarkupResourceStreamProvider
 
 	/**
 	 * Constructor.
-	 * 
-	 * @param id
-	 *            id
+	 *
+	 * @param id id
 	 */
 	public APanel(final String id)
 	{
@@ -44,11 +43,9 @@ public class APanel extends Panel implements IMarkupResourceStreamProvider
 
 	/**
 	 * Constructor.
-	 * 
-	 * @param id
-	 *            id
-	 * @param layout
-	 *            layout to use for components in this panel.
+	 *
+	 * @param id	 id
+	 * @param layout layout to use for components in this panel.
 	 */
 	public APanel(final String id, final ILayout layout)
 	{
@@ -58,12 +55,11 @@ public class APanel extends Panel implements IMarkupResourceStreamProvider
 
 
 	/**
-	 * 
 	 * @see org.apache.wicket.markup.IMarkupResourceStreamProvider#getMarkupResourceStream(org.apache.wicket.MarkupContainer,
-	 *      java.lang.Class)
+	 *java.lang.Class)
 	 */
 	public IResourceStream getMarkupResourceStream(final MarkupContainer container,
-			final Class containerClass)
+												   final Class containerClass)
 	{
 		if (container != this)
 		{
@@ -72,13 +68,13 @@ public class APanel extends Panel implements IMarkupResourceStreamProvider
 		}
 
 		final StringBufferResourceStream resourceStream = new StringBufferResourceStream();
-		resourceStream.append(thisPanelRenderer.getMarkup((APanel)container));
+		resourceStream.append(thisPanelRenderer.getMarkup((APanel) container));
 		return resourceStream;
 	}
 
 	private static final class APanelRenderer
 			extends
-				RenderersList.BaseWebMarkupContainerRenderer<APanel>
+			RenderersList.BaseWebMarkupContainerRenderer<APanel>
 	{
 		private static final long serialVersionUID = 1L;
 
@@ -91,9 +87,9 @@ public class APanel extends Panel implements IMarkupResourceStreamProvider
 		}
 
 		/**
-		 * @see org.wicketstuff.minis.apanel.IComponentRenderer#getMarkup(org.apache.wicket.Component)
 		 * @param component
 		 * @return markup
+		 * @see org.wicketstuff.minis.apanel.IComponentRenderer#getMarkup(org.apache.wicket.Component)
 		 */
 		public CharSequence getMarkup(final APanel component)
 		{
@@ -101,7 +97,6 @@ public class APanel extends Panel implements IMarkupResourceStreamProvider
 		}
 
 		/**
-		 * 
 		 * @see org.wicketstuff.minis.apanel.IComponentRenderer#getComponentClass()
 		 */
 		public Class<? extends APanel> getComponentClass()
