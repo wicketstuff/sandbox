@@ -18,17 +18,24 @@ package org.wicketstuff.minis.apanel;
 
 import org.apache.wicket.Component;
 
-import java.util.List;
 import java.io.Serializable;
 
 /**
- * Layout is responsible for creating wicket markup for a group of components.
+ * Renderer creates wicket markup for a component.
  */
-public interface ILayout extends Serializable {
+public interface IComponentRenderer<T extends Component> extends Serializable
+{
+
 	/**
-	 * Creates wicket markup for components, adding markup specific for this layout.
-	 * @param components components to render
+	 * Creates wicket markup for a specified component.
+	 *
+	 * @param component component
 	 * @return wicket markup
 	 */
-	CharSequence renderComponents(List<? extends Component> components);
+	CharSequence getMarkup(T component);
+
+	/**
+	 * @return a class of components this renderer can render
+	 */
+	Class<? extends T> getComponentClass();
 }

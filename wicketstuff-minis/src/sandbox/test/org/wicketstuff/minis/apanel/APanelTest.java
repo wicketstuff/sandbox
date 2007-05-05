@@ -32,22 +32,28 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.io.Serializable;
 
 /**
  * Tests
  */
-public class APanelTest {
+public class APanelTest implements Serializable
+{
 	@Test
-	public void testFlowLayout() throws Exception {
+	public void testFlowLayout() throws Exception
+	{
 		final WicketTester tester = new WicketTester();
-		tester.startPage(new TestPageSource(new FlowLayout() {
+		tester.startPage(new TestPageSource(new FlowLayout()
+		{
 			@Override
-			public void onAfterTag(final Component component, final StringBuilder stringBuilder) {
+			public void onAfterTag(final Component component, final StringBuilder stringBuilder)
+			{
 				stringBuilder.append("]");
 			}
 
 			@Override
-			public void onBeforeTag(final Component component, final StringBuilder stringBuilder) {
+			public void onBeforeTag(final Component component, final StringBuilder stringBuilder)
+			{
 				stringBuilder.append("[");
 			}
 		}));
@@ -71,12 +77,15 @@ public class APanelTest {
 	}
 
 	@Test
-	public void testGridLayout() {
+	public void testGridLayout()
+	{
 		final WicketTester tester = new WicketTester();
 		// layout size is for 6 components so that to test empty cells processing
-		final TestPageSource pageSource = new TestPageSource(new GridLayout(2, 3)) {
+		final TestPageSource pageSource = new TestPageSource(new GridLayout(2, 3))
+		{
 			@Override
-			protected void addConstraints() {
+			protected void addConstraints()
+			{
 				label.add(new GridLayoutConstraint(0, 0));
 				link.add(new GridLayoutConstraint(1, 0));
 				form.add(new GridLayoutConstraint(0, 1));
@@ -110,11 +119,14 @@ public class APanelTest {
 	}
 
 	@Test
-	public void testGridLayoutWithAutoConstraints() {
+	public void testGridLayoutWithAutoConstraints()
+	{
 		final WicketTester tester = new WicketTester();
-		final TestPageSource pageSource = new TestPageSource(new GridLayout(2, 2)) {
+		final TestPageSource pageSource = new TestPageSource(new GridLayout(2, 2))
+		{
 			@Override
-			protected void addConstraints() {
+			protected void addConstraints()
+			{
 //				label.add(new GridLayoutConstraint(0, 1)); // auto added
 				link.add(new GridLayoutConstraint(1, 0));
 				form.add(new GridLayoutConstraint(0, 0));
@@ -146,18 +158,22 @@ public class APanelTest {
 	}
 
 	@Test(expected = WicketRuntimeException.class)
-	public void testGridLayoutOutOfCellsException() {
+	public void testGridLayoutOutOfCellsException()
+	{
 		final WicketTester tester = new WicketTester();
 		final TestPageSource pageSource = new TestPageSource(new GridLayout(2, 1));
 		tester.startPage(pageSource);
 	}
 
 	@Test
-	public void testGridLayoutWithSpan() {
+	public void testGridLayoutWithSpan()
+	{
 		final WicketTester tester = new WicketTester();
-		final TestPageSource pageSource = new TestPageSource(new GridLayout(2, 3)) {
+		final TestPageSource pageSource = new TestPageSource(new GridLayout(2, 3))
+		{
 			@Override
-			protected void addConstraints() {
+			protected void addConstraints()
+			{
 				label.add(new GridLayoutConstraint(0, 0).setColSpan(2));
 				form.add(new GridLayoutConstraint(0, 1).setRowSpan(2));
 				link.add(new GridLayoutConstraint(1, 1));
@@ -189,7 +205,8 @@ public class APanelTest {
 		);
 	}
 
-	private void testComponentsPresence(final WicketTester tester) {
+	private void testComponentsPresence(final WicketTester tester)
+	{
 		tester.assertComponent("aPanel", APanel.class);
 		tester.assertLabel("aPanel:label", "some text");
 
@@ -209,26 +226,31 @@ public class APanelTest {
 		tester.assertLabel("aPanel:listView:2:label", "3");
 	}
 
-	private static class TestPageSource implements ITestPageSource {
+	private static class TestPageSource implements ITestPageSource
+	{
 		private final ILayout layout;
 		protected Label label;
 		protected Link link;
 		protected Form form;
 		protected ListView listView;
 
-		public TestPageSource(final ILayout layout) {
+		public TestPageSource(final ILayout layout)
+		{
 			this.layout = layout;
 		}
 
-		public Page getTestPage() {
+		public Page getTestPage()
+		{
 			final APanel aPanel = new APanel("aPanel", layout);
 			final TestPage testPage = new TestPage(aPanel);
 
 			label = new Label("label", "some text");
 			aPanel.add(label);
 
-			link = new Link("link") {
-				public void onClick() {
+			link = new Link("link")
+			{
+				public void onClick()
+				{
 					// do nothing
 				}
 			};
@@ -240,8 +262,10 @@ public class APanelTest {
 			form.add(new Button("button"));
 			aPanel.add(form);
 
-			listView = new ListView("listView", Arrays.asList("a1", "2", "3")) {
-				protected void populateItem(final ListItem item) {
+			listView = new ListView("listView", Arrays.asList("a1", "2", "3"))
+			{
+				protected void populateItem(final ListItem item)
+				{
 					final String s = (String) item.getModelObject();
 					item.add(new Label("label", s));
 				}
@@ -253,7 +277,8 @@ public class APanelTest {
 			return testPage;
 		}
 
-		protected void addConstraints() {
+		protected void addConstraints()
+		{
 		}
 	}
 }
