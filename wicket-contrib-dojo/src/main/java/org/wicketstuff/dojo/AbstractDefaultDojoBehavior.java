@@ -55,7 +55,7 @@ import org.wicketstuff.dojo.indicator.behavior.DojoIndicatorBehavior;
  * 	setMetaData(AbstractDefaultDojoBehavior.USE_CUSTOM_DOJO_DIST, myCustomDojo);
  * </pre>
  * <b>WARNING</b> : the package dojo distribution contains some patches on dojo. If you use your own
- * distribution it can broke some component behaviors.
+ * distribution it can break some component behaviors.
  * </p>
  * 
  * @see <a href="http://dojotoolkit.org/">Dojo</a>
