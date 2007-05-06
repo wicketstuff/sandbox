@@ -18,7 +18,6 @@ package wicket.contrib.velocity;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.util.Properties;
 
 import javax.servlet.ServletContext;
@@ -31,9 +30,8 @@ import org.apache.wicket.IInitializer;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.util.file.WebApplicationPath;
-import org.apache.wicket.util.io.Streams;
-import org.apache.wicket.util.lang.Packages;
 import org.apache.wicket.util.resource.IResourceStream;
+import org.apache.wicket.util.resource.ResourceStreamNotFoundException;
 
 /**
  * An implementation of {@link wicket.IInitializer} for the Velocity Runtime
@@ -56,59 +54,60 @@ public class Initializer implements IInitializer
 	{
 		if (application instanceof WebApplication)
 		{
-			return getVelocityProperties((WebApplication) application);
-		}
-		else
-		{
-			return getVelocityProperties();
-		}
-	}
+			WebApplication webapp = (WebApplication) application;
+			ServletContext servletContext = webapp.getServletContext();
+			ServletContext sc = servletContext;
+			velocityPropertiesFolder = sc.getInitParameter("velocityPropertiesFolder");
+			String propsFile = servletContext.getInitParameter("velocity.properties");
 
-	private Properties getVelocityProperties(WebApplication webapp)
-	{
-		ServletContext servletContext = webapp.getServletContext();
-		ServletContext sc = servletContext;
-		velocityPropertiesFolder = sc.getInitParameter("velocityPropertiesFolder");
-		String propsFile = servletContext.getInitParameter("velocity.properties");
-
-		if (null != propsFile)
-		{
-			velocityPropertiesFile = propsFile;
-		}
-
-		if (null != velocityPropertiesFolder)
-		{
-			WebApplicationPath webPath = new WebApplicationPath(sc);
-			webPath.add(velocityPropertiesFolder);
-			URL url = webPath.find(velocityPropertiesFile);
-			try
+			if (null != propsFile)
 			{
-				InputStream is = url.openStream();
-				Properties props = new Properties();
-				props.load(is);
-				return props;
+				velocityPropertiesFile = propsFile;
 			}
-			catch (IOException e)
+
+			if (null != velocityPropertiesFolder)
 			{
-				throw new WicketRuntimeException(e);
+				WebApplicationPath webPath = new WebApplicationPath(sc);
+				webPath.add(velocityPropertiesFolder);
+				IResourceStream stream = webPath.find(Initializer.class,
+						velocityPropertiesFile);
+				InputStream is = null;
+				try
+				{
+					is = stream.getInputStream();
+					Properties props = new Properties();
+					props.load(is);
+					return props;
+				}
+				catch (IOException e)
+				{
+					throw new WicketRuntimeException(e);
+				}
+				catch (ResourceStreamNotFoundException e)
+				{
+					throw new WicketRuntimeException(e);
+				}
+				finally
+				{
+					if (is != null)
+					{
+						try
+						{
+							is.close();
+						}
+						catch (IOException e)
+						{
+							log.error(e.getMessage(), e);
+						}
+					}
+				}
 			}
 		}
-		else
-		{
-			return getVelocityProperties();
-		}
-	}
 
-	private Properties getVelocityProperties()
-	{
-		ClassLoaderResourceStreamLocator clrsr = new ClassLoaderResourceStreamLocator();
-		String absolutePath = Packages.absolutePath(Initializer.class,
-				velocityPropertiesFile);
-		IResourceStream irs = clrsr.locate(Initializer.class, absolutePath);
-
+		// if it's not a web app, load from the package
+		InputStream is = Initializer.class.getResourceAsStream("velocity.properties");
 		try
 		{
-			InputStream is = irs.getInputStream();
 			Properties props = new Properties();
 			props.load(is);
 			return props;
@@ -117,10 +116,24 @@ public class Initializer implements IInitializer
 		{
 			throw new WicketRuntimeException(e);
 		}
+		finally
+		{
+			if (is != null)
+			{
+				try
+				{
+					is.close();
+				}
+				catch (IOException e)
+				{
+					log.error(e.getMessage(), e);
+				}
+			}
+		}
 	}
 
 	/**
-	 * @see wicket.IInitializer#init(wicket.Application)
+	 * @see org.apache.wicket.IInitializer#init(org.apache.wicket.Application)
 	 */
 	public void init(Application application)
 	{
