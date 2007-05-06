@@ -47,20 +47,20 @@ public class VelocityHeaderContributor extends AbstractHeaderContributor
 	}
 
 	/**
-	 * @see wicket.behavior.AbstractBehavior#detachModel(wicket.Component)
+	 * @see org.apache.wicket.behavior.AbstractBehavior#detach(org.apache.wicket.Component)
 	 */
-	public void detachModel(Component component)
+	public void detach(Component component)
 	{
 		Iterator it = contributors.iterator();
 		while (it.hasNext())
 		{
 			VelocityContributor vc = (VelocityContributor) it.next();
-			vc.detachModel(component);
+			vc.detach(component);
 		}
 	}
 
 	/**
-	 * @see wicket.behavior.AbstractHeaderContributor#getHeaderContributors()
+	 * @see org.apache.wicket.behavior.AbstractHeaderContributor#getHeaderContributors()
 	 */
 	public IHeaderContributor[] getHeaderContributors()
 	{
