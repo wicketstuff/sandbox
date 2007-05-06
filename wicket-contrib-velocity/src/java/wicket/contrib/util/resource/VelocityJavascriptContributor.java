@@ -66,7 +66,7 @@ public class VelocityJavascriptContributor extends VelocityContributor
 	}
 
 	/**
-	 * @see wicket.markup.html.IHeaderContributor#renderHead(wicket.markup.html.IHeaderResponse)
+	 * @see wicket.contrib.util.resource.VelocityContributor#renderHead(org.apache.wicket.markup.html.IHeaderResponse)
 	 */
 	public void renderHead(IHeaderResponse response)
 	{
