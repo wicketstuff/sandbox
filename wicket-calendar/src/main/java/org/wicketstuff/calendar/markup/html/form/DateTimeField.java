@@ -107,7 +107,7 @@ public class DateTimeField extends FormComponentPanel {
 	/**
 	 * @see org.apache.wicket.Component#onAttach()
 	 */
-	protected void onAttach() {
+	protected void onBeforeRender() {
 
 		Date d = (Date) getModelObject();
 		if (d != null) {
@@ -116,6 +116,6 @@ public class DateTimeField extends FormComponentPanel {
 			date = null;
 		}
 
-		super.onAttach();
+		super.onBeforeRender();
 	}
 }
