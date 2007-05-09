@@ -4,10 +4,10 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.wicketstuff</groupId>
-	<artifactId>wicket-contrib-yui</artifactId>
+	<artifactId>wicketstuff-yui</artifactId>
 	<packaging>jar</packaging>
-	<version>1.3-SNAPSHOT</version>
-	<name>Wicket Contrib YUI</name>
+	<version>1.3.0-SNAPSHOT</version>
+	<name>WicketStuff YUI</name>
 	<description>
 		Wicket Components for the Yahoo User Interface (YUI) library.
 	</description>
@@ -112,6 +112,19 @@
 			<version>1.7</version>
 			<scope>compile</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.3.1</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.3.1</version>
+			<scope>compile</scope>
+		</dependency>
+
 	</dependencies>
 
 	<build>
