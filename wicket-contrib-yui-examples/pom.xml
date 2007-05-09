@@ -4,10 +4,10 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.wicketstuff</groupId>
-	<artifactId>wicket-contrib-yui-examples</artifactId>
+	<artifactId>wicketstuff-yui-examples</artifactId>
 	<packaging>war</packaging>
-	<version>1.3-SNAPSHOT</version>
-	<name>Wicket Contrib YUI examples</name>
+	<version>1.3.0-SNAPSHOT</version>
+	<name>WicketStuff YUI examples</name>
 	<description>
 		Examples for the Yahoo User Interface (YUI) library.
 	</description>
@@ -97,9 +97,9 @@
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>wicket-stuff</groupId>
-			<artifactId>wicket-contrib-yui</artifactId>
-			<version>1.3-SNAPSHOT</version>
+			<groupId>org.wicketstuff</groupId>
+			<artifactId>wicketstuff-yui</artifactId>
+			<version>1.3.0-SNAPSHOT</version>
 			<scope>compile</scope>
 		</dependency>
 		<!-- dependency>
@@ -122,17 +122,17 @@
 		<dependency>
 			<groupId>org.mortbay.jetty</groupId>
 			<artifactId>jetty</artifactId>
-			<version>6.0.1</version>
+			<version>6.1.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mortbay.jetty</groupId>
 			<artifactId>jetty-util</artifactId>
-			<version>6.0.1</version>
+			<version>6.1.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mortbay.jetty</groupId>
 			<artifactId>jetty-management</artifactId>
-			<version>6.0.1</version>
+			<version>6.1.1</version>
 		</dependency>
 	</dependencies>
 
@@ -141,6 +141,16 @@
 			<resource>
 				<filtering>false</filtering>
 				<directory>src/main/java</directory>
+				<includes>
+					<include>**</include>
+				</includes>
+				<excludes>
+					<exclude>**/*.java</exclude>
+				</excludes>
+			</resource>
+			<resource>
+				<filtering>false</filtering>
+				<directory>src/main/resources</directory>
 				<includes>
 					<include>**</include>
 				</includes>
@@ -201,6 +211,15 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
+			</plugin>
+                        <plugin>
+				<groupId>org.mortbay.jetty</groupId>
+			        <artifactId>maven-jetty-plugin</artifactId>
+				<version>6.1.1</version>
+				<configuration>
+					<scanIntervalSeconds>60</scanIntervalSeconds>
+					<webAppSourceDirectory>src/main/webapp</webAppSourceDirectory>
+																						</configuration>
 			</plugin>
 		</plugins>
 	</build>
