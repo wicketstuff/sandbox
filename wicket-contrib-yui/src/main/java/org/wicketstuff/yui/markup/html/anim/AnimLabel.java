@@ -1,0 +1,28 @@
+package org.wicketstuff.yui.markup.html.anim;
+
+import org.apache.wicket.markup.html.basic.Label;
+import org.wicketstuff.yui.markup.html.AbstractYuiPanel;
+
+
+/**
+ * An AnimLabel contains the option's value
+ * 
+ * @author cptan
+ */
+public class AnimLabel extends AbstractYuiPanel {
+
+	private static final long serialVersionUID = 1L;
+
+	/**
+	 * Creates an AnimLabel
+	 * 
+	 * @param id -
+	 *            wicket id
+	 * @param text -
+	 *            value of the option
+	 */
+	public AnimLabel(String id, String text) {
+		super(id);
+		add(new Label("label", text));
+	}
+}
