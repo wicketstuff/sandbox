@@ -1,4 +1,4 @@
-package wicket.contrib.markup.html.yui.sort;
+package org.wicketstuff.yui.markup.html.sort;
 
 import java.util.HashMap;
 import java.util.List;
@@ -11,7 +11,7 @@ import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.util.template.PackagedTextTemplate;
 
-import wicket.contrib.YuiImage;
+import org.wicketstuff.yui.YuiImage;
 
 /**
  * A SortGroup groups the images

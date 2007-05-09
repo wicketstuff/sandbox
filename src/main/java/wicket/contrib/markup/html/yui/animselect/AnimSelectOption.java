@@ -1,8 +1,8 @@
-package wicket.contrib.markup.html.yui.animselect;
+package org.wicketstuff.yui.markup.html.animselect;
 
 import java.io.Serializable;
 
-import wicket.contrib.YuiImage;
+import org.wicketstuff.yui.YuiImage;
 
 /**
  * Creates an option with four images which animates upon clicking and mouseover
