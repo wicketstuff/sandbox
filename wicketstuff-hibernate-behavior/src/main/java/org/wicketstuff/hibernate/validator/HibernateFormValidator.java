@@ -7,7 +7,9 @@ import org.hibernate.validator.ClassValidator;
 import org.hibernate.validator.InvalidValue;
 
 /**
- * <p>Validates Model's object over Hibernate Validator framework</p>
+ * <p>
+ * Validates Model's object over Hibernate Validator framework
+ * </p>
  * 
  * @author miojo
  */
@@ -20,6 +22,9 @@ public class HibernateFormValidator implements IFormValidator {
 		clazz = name;
 	}
 
+	public HibernateFormValidator() {
+	}
+
 	public FormComponent[] getDependentFormComponents() {
 		return null;
 	}
@@ -27,8 +32,10 @@ public class HibernateFormValidator implements IFormValidator {
 	@SuppressWarnings("unchecked")
 	public void validate(Form form) {
 		Object object = form.getModelObject();
-		
-		ClassValidator validator = new ClassValidator(clazz);
+
+		Class _clazz = clazz == null ? object.getClass() : clazz;
+
+		ClassValidator validator = new ClassValidator(_clazz);
 		InvalidValue[] invalidValues = validator.getInvalidValues(object);
 
 		for (InvalidValue iv : invalidValues) {
