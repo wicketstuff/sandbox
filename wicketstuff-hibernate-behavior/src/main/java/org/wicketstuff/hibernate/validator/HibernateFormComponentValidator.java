@@ -17,24 +17,12 @@ import org.hibernate.validator.InvalidValue;
  */
 public class HibernateFormComponentValidator implements IValidator {
 
-	private ClassValidator validator;
-
 	private String property;
-
-	private Object object;
+	private Class clazz;
 
 	@SuppressWarnings("unchecked")
 	public HibernateFormComponentValidator(Class name) {
-		validator = new ClassValidator(name);
-
-		// An instance is required to pass to HV framework
-		try {
-			object = name.newInstance();
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		}
+		clazz = name;
 	}
 
 	public HibernateFormComponentValidator(Class name, String property) {
@@ -61,10 +49,21 @@ public class HibernateFormComponentValidator implements IValidator {
 				property = expression;
 			}
 		}
+		
+		Object object = null;
+		// An instance is required to pass to HV framework
+		try {
+			object = clazz.newInstance();
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
 
 		PropertyResolver.setValue(property, object, validatable.getValue(),
 				null);
 
+		ClassValidator validator = new ClassValidator(clazz);
 		InvalidValue[] invalidValues = validator.getInvalidValues(object,
 				property);
 
