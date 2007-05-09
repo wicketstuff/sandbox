@@ -360,7 +360,7 @@ dojo.widget.defineWidget (
 	begin: function(div, parent){
 		dojo.debug("create")
 		this.first = div;
-		this.last = null;
+		this.last = div;
 		this.domNode = parent;
 		this.time = this._createDivSlice(div);
 		
