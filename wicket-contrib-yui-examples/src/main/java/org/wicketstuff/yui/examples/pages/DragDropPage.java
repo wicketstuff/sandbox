@@ -1,14 +1,14 @@
 package org.wicketstuff.yui.examples.pages;
 
-import wicket.contrib.YuiImage;
+import org.apache.wicket.markup.html.form.TextField;
+import org.wicketstuff.yui.YuiImage;
+import org.wicketstuff.yui.examples.WicketExamplePage;
 import org.wicketstuff.yui.markup.html.dragdrop.DragDropGroup;
 import org.wicketstuff.yui.markup.html.dragdrop.DragDropSettings;
 import org.wicketstuff.yui.markup.html.dragdrop.DragableSlot;
 import org.wicketstuff.yui.markup.html.dragdrop.DragableSlotList;
 import org.wicketstuff.yui.markup.html.dragdrop.TargetSlot;
 import org.wicketstuff.yui.markup.html.dragdrop.TargetSlotList;
-import org.wicketstuff.yui.examples.WicketExamplePage;
-import org.apache.wicket.markup.html.form.TextField;
 
 /**
  * This class demostrates how you can use the org.wicketstuff.yui.markup.html.dragDrop package
