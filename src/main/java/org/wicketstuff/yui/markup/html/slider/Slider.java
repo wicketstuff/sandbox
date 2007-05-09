@@ -21,8 +21,6 @@ package org.wicketstuff.yui.markup.html.slider;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.behavior.HeaderContributor;
 import org.apache.wicket.markup.html.IHeaderContributor;
@@ -35,8 +33,10 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.util.template.TextTemplateHeaderContributor;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.wicketstuff.yui.markup.html.AbstractYuiPanel;
+
 
 /**
  * Slider component based on the Slider of Yahoo UI Library.
@@ -62,7 +62,7 @@ public class Slider extends AbstractYuiPanel implements IHeaderContributor {
 	 */
 	private String javaScriptId;
 
-	private Log log = LogFactory.getLog(Slider.class);
+	private static final Logger log = LoggerFactory.getLogger(Slider.class);
 
 	/**
 	 * Construct.
