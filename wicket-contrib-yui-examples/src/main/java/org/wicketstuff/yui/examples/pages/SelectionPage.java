@@ -2,13 +2,13 @@ package org.wicketstuff.yui.examples.pages;
 
 import java.util.ArrayList;
 
+import org.wicketstuff.yui.YuiAttribute;
+import org.wicketstuff.yui.YuiImage;
+import org.wicketstuff.yui.YuiProperty;
+import org.wicketstuff.yui.YuiTextBox;
 import org.wicketstuff.yui.examples.WicketExamplePage;
 import org.wicketstuff.yui.markup.html.selection.Selection;
 import org.wicketstuff.yui.markup.html.selection.SelectionSettings;
-import wicket.contrib.YuiImage;
-import wicket.contrib.YuiProperty;
-import wicket.contrib.YuiAttribute;
-import wicket.contrib.YuiTextBox;
 
 public class SelectionPage extends WicketExamplePage{
 	private ArrayList imageListA= new ArrayList();

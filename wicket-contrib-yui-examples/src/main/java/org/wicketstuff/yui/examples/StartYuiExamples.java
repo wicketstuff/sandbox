@@ -45,7 +45,7 @@ public class StartYuiExamples {
 		server.setConnectors(new Connector[] { connector });
 
 		WebAppContext web = new WebAppContext();
-		web.setContextPath("/org.wicketstuff.yui-examples");
+		web.setContextPath("/wicket-contrib-yui-examples");
 		web.setWar("src/main/webapp");
 		server.addHandler(web);
 

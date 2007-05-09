@@ -3,15 +3,15 @@ package org.wicketstuff.yui.examples.pages;
 import java.util.ArrayList;
 import java.util.List;
 
-import wicket.contrib.YuiImage;
-import wicket.contrib.YuiSortConstants;
-import org.wicketstuff.yui.markup.html.sort.SortBox;
-import org.wicketstuff.yui.markup.html.sort.SortGroup;
-import org.wicketstuff.yui.markup.html.sort.SortSettings;
-import org.wicketstuff.yui.examples.WicketExamplePage;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
+import org.wicketstuff.yui.YuiImage;
+import org.wicketstuff.yui.YuiSortConstants;
+import org.wicketstuff.yui.examples.WicketExamplePage;
+import org.wicketstuff.yui.markup.html.sort.SortBox;
+import org.wicketstuff.yui.markup.html.sort.SortGroup;
+import org.wicketstuff.yui.markup.html.sort.SortSettings;
 
 /**
  * This class demostrates how you can use the org.wicketstuff.yui.markup.html.sort package

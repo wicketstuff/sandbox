@@ -2,17 +2,17 @@ package org.wicketstuff.yui.examples.pages;
 import java.util.ArrayList;
 import java.util.List;
 
-import wicket.contrib.YuiEasingConstants;
-import wicket.contrib.YuiImage;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
+import org.wicketstuff.yui.YuiEasingConstants;
+import org.wicketstuff.yui.YuiImage;
+import org.wicketstuff.yui.examples.WicketExamplePage;
 import org.wicketstuff.yui.markup.html.anim.AnimBox;
 import org.wicketstuff.yui.markup.html.anim.AnimGroup;
 import org.wicketstuff.yui.markup.html.anim.AnimLabel;
 import org.wicketstuff.yui.markup.html.anim.AnimOption;
 import org.wicketstuff.yui.markup.html.anim.AnimSettings;
-import org.wicketstuff.yui.examples.WicketExamplePage;
-import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.ListView;
 
 /**
  * This class demostrates how you can use the org.wicketstuff.yui.markup.html.anim package

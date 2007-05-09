@@ -37,7 +37,7 @@
 		<servlet-class>org.apache.wicket.protocol.http.WicketServlet</servlet-class>
 		<init-param>
 		  <param-name>applicationClassName</param-name>
-		  <param-value>wicket.contrib.yui.examples.pages.YuiApplication</param-value>
+		  <param-value>org.wicketstuff.yui.examples.pages.YuiApplication</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
