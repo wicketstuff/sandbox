@@ -1,9 +1,10 @@
 package wicket.contrib.markup.html.yui.anim;
 
 import org.apache.wicket.AttributeModifier;
-import wicket.contrib.markup.html.yui.AbstractYuiPanel;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.AbstractReadOnlyModel;
+
+import wicket.contrib.markup.html.yui.AbstractYuiPanel;
 
 /**
  * An AnimText contains the selected value(s)

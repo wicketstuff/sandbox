@@ -6,11 +6,12 @@ import java.util.Map;
 
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.behavior.StringHeaderContributor;
-import wicket.contrib.YuiImage;
-import org.apache.wicket.extensions.util.resource.PackagedTextTemplate;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.model.AbstractReadOnlyModel;
+import org.apache.wicket.util.template.PackagedTextTemplate;
+
+import wicket.contrib.YuiImage;
 
 /**
  * A SortGroup groups the images

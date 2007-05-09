@@ -3,11 +3,12 @@ package wicket.contrib.markup.html.yui.dragdrop;
 import java.util.HashMap;
 import java.util.Map;
 
-import wicket.contrib.YuiImage;
-import wicket.contrib.markup.html.yui.AbstractYuiPanel;
-import org.apache.wicket.extensions.util.resource.PackagedTextTemplate;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.AbstractReadOnlyModel;
+import org.apache.wicket.util.template.PackagedTextTemplate;
+
+import wicket.contrib.YuiImage;
+import wicket.contrib.markup.html.yui.AbstractYuiPanel;
 
 public class DragDropPlayer extends AbstractYuiPanel {
 

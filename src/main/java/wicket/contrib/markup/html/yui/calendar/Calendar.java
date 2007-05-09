@@ -25,12 +25,12 @@ import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.RequestCycle;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.behavior.HeaderContributor;
-import org.apache.wicket.extensions.util.resource.PackagedTextTemplate;
 import org.apache.wicket.markup.html.IHeaderContributor;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.model.AbstractReadOnlyModel;
+import org.apache.wicket.util.template.PackagedTextTemplate;
 
 import wicket.contrib.markup.html.yui.AbstractYuiPanel;
 
