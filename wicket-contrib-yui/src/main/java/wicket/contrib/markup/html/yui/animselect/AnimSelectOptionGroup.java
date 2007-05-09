@@ -1,4 +1,4 @@
-package wicket.contrib.markup.html.yui.animselect;
+package org.wicketstuff.yui.markup.html.animselect;
 
 import java.util.HashMap;
 import java.util.List;

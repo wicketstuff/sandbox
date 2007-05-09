@@ -1,6 +1,6 @@
-package wicket.contrib.markup.html.yui.dragdrop;
+package org.wicketstuff.yui.markup.html.dragdrop;
 
-import wicket.contrib.YuiImage;
+import org.wicketstuff.yui.YuiImage;
 
 public class TargetSlot {
 	private YuiImage slot;

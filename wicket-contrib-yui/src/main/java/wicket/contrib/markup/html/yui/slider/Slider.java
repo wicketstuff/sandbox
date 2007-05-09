@@ -16,7 +16,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package wicket.contrib.markup.html.yui.slider;
+package org.wicketstuff.yui.markup.html.slider;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,7 +36,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.util.template.TextTemplateHeaderContributor;
 
-import wicket.contrib.markup.html.yui.AbstractYuiPanel;
+import org.wicketstuff.yui.markup.html.AbstractYuiPanel;
 
 /**
  * Slider component based on the Slider of Yahoo UI Library.

@@ -1,8 +1,8 @@
-package wicket.contrib.markup.html.yui.animselect;
+package org.wicketstuff.yui.markup.html.animselect;
 
 import org.apache.wicket.markup.html.basic.Label;
 
-import wicket.contrib.markup.html.yui.AbstractYuiPanel;
+import org.wicketstuff.yui.markup.html.AbstractYuiPanel;
 
 /**
  * Represent the option's value

@@ -1,4 +1,4 @@
-package wicket.contrib.markup.html.yui.selection;
+package org.wicketstuff.yui.markup.html.selection;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -16,11 +16,11 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.util.template.PackagedTextTemplate;
 
-import wicket.contrib.InlineStyle;
-import wicket.contrib.YuiAttribute;
-import wicket.contrib.YuiImage;
-import wicket.contrib.YuiTextBox;
-import wicket.contrib.markup.html.yui.AbstractYuiPanel;
+import org.wicketstuff.yui.InlineStyle;
+import org.wicketstuff.yui.YuiAttribute;
+import org.wicketstuff.yui.YuiImage;
+import org.wicketstuff.yui.YuiTextBox;
+import org.wicketstuff.yui.markup.html.AbstractYuiPanel;
 
 public class Selection extends AbstractYuiPanel {
 	private final class SelectionBox extends FormComponent implements
