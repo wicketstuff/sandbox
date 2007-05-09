@@ -15,11 +15,11 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package wicket.contrib.yui.examples.pages;
+package org.wicketstuff.yui.examples.pages;
 
-import wicket.contrib.markup.html.yui.slider.Slider;
-import wicket.contrib.markup.html.yui.slider.SliderSettings;
-import wicket.contrib.yui.examples.WicketExamplePage;
+import org.wicketstuff.yui.markup.html.slider.Slider;
+import org.wicketstuff.yui.markup.html.slider.SliderSettings;
+import org.wicketstuff.yui.examples.WicketExamplePage;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;

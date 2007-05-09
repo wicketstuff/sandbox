@@ -15,7 +15,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package wicket.contrib.yui.examples;
+package org.wicketstuff.yui.examples;
 
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;

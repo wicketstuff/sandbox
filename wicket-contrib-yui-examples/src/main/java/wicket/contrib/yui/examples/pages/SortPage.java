@@ -1,20 +1,20 @@
-package wicket.contrib.yui.examples.pages;
+package org.wicketstuff.yui.examples.pages;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import wicket.contrib.YuiImage;
 import wicket.contrib.YuiSortConstants;
-import wicket.contrib.markup.html.yui.sort.SortBox;
-import wicket.contrib.markup.html.yui.sort.SortGroup;
-import wicket.contrib.markup.html.yui.sort.SortSettings;
-import wicket.contrib.yui.examples.WicketExamplePage;
+import org.wicketstuff.yui.markup.html.sort.SortBox;
+import org.wicketstuff.yui.markup.html.sort.SortGroup;
+import org.wicketstuff.yui.markup.html.sort.SortSettings;
+import org.wicketstuff.yui.examples.WicketExamplePage;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 
 /**
- * This class demostrates how you can use the wicket.contrib.markup.html.yui.sort package
+ * This class demostrates how you can use the org.wicketstuff.yui.markup.html.sort package
  * to create images that can be sorted and retrieve the ordering after sort.
  * <p>
  * 
