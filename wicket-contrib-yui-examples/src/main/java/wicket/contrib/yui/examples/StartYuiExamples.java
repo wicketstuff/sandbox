@@ -16,7 +16,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package wicket.contrib.yui.examples;
+package org.wicketstuff.yui.examples;
 
 import java.lang.management.ManagementFactory;
 
@@ -45,7 +45,7 @@ public class StartYuiExamples {
 		server.setConnectors(new Connector[] { connector });
 
 		WebAppContext web = new WebAppContext();
-		web.setContextPath("/wicket-contrib-yui-examples");
+		web.setContextPath("/org.wicketstuff.yui-examples");
 		web.setWar("src/main/webapp");
 		server.addHandler(web);
 

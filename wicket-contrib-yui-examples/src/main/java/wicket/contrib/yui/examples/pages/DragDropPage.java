@@ -1,17 +1,17 @@
-package wicket.contrib.yui.examples.pages;
+package org.wicketstuff.yui.examples.pages;
 
 import wicket.contrib.YuiImage;
-import wicket.contrib.markup.html.yui.dragdrop.DragDropGroup;
-import wicket.contrib.markup.html.yui.dragdrop.DragDropSettings;
-import wicket.contrib.markup.html.yui.dragdrop.DragableSlot;
-import wicket.contrib.markup.html.yui.dragdrop.DragableSlotList;
-import wicket.contrib.markup.html.yui.dragdrop.TargetSlot;
-import wicket.contrib.markup.html.yui.dragdrop.TargetSlotList;
-import wicket.contrib.yui.examples.WicketExamplePage;
+import org.wicketstuff.yui.markup.html.dragdrop.DragDropGroup;
+import org.wicketstuff.yui.markup.html.dragdrop.DragDropSettings;
+import org.wicketstuff.yui.markup.html.dragdrop.DragableSlot;
+import org.wicketstuff.yui.markup.html.dragdrop.DragableSlotList;
+import org.wicketstuff.yui.markup.html.dragdrop.TargetSlot;
+import org.wicketstuff.yui.markup.html.dragdrop.TargetSlotList;
+import org.wicketstuff.yui.examples.WicketExamplePage;
 import org.apache.wicket.markup.html.form.TextField;
 
 /**
- * This class demostrates how you can use the wicket.contrib.markup.html.yui.dragDrop package
+ * This class demostrates how you can use the org.wicketstuff.yui.markup.html.dragDrop package
  * to selection and sorting of images. 
  * <p>
  * 

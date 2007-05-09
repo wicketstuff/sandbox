@@ -15,9 +15,9 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package wicket.contrib.yui.examples.pages;
+package org.wicketstuff.yui.examples.pages;
 
-import wicket.contrib.yui.examples.WicketExamplePage;
+import org.wicketstuff.yui.examples.WicketExamplePage;
 
 /**
  * Index page for the Yahoo UI library (YUI) examples.

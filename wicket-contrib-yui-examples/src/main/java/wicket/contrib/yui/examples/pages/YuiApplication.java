@@ -15,9 +15,9 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package wicket.contrib.yui.examples.pages;
+package org.wicketstuff.yui.examples.pages;
 
-import wicket.contrib.yui.examples.WicketExampleApplication;
+import org.wicketstuff.yui.examples.WicketExampleApplication;
 
 /**
  * WicketServlet class for hello world example.

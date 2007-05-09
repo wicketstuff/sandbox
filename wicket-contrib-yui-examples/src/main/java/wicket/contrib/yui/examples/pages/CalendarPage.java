@@ -14,10 +14,10 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package wicket.contrib.yui.examples.pages;
+package org.wicketstuff.yui.examples.pages;
 
-import wicket.contrib.markup.html.yui.calendar.Calendar;
-import wicket.contrib.yui.examples.WicketExamplePage;
+import org.wicketstuff.yui.markup.html.calendar.Calendar;
+import org.wicketstuff.yui.examples.WicketExamplePage;
 
 /**
  * Page that displays the calendar component of the Yahoo UI library.

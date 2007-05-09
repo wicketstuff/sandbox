@@ -1,21 +1,21 @@
-package wicket.contrib.yui.examples.pages;
+package org.wicketstuff.yui.examples.pages;
 import java.util.ArrayList;
 import java.util.List;
 
 import wicket.contrib.YuiEasingConstants;
 import wicket.contrib.YuiImage;
-import wicket.contrib.markup.html.yui.anim.AnimBox;
-import wicket.contrib.markup.html.yui.anim.AnimGroup;
-import wicket.contrib.markup.html.yui.anim.AnimLabel;
-import wicket.contrib.markup.html.yui.anim.AnimOption;
-import wicket.contrib.markup.html.yui.anim.AnimSettings;
-import wicket.contrib.yui.examples.WicketExamplePage;
+import org.wicketstuff.yui.markup.html.anim.AnimBox;
+import org.wicketstuff.yui.markup.html.anim.AnimGroup;
+import org.wicketstuff.yui.markup.html.anim.AnimLabel;
+import org.wicketstuff.yui.markup.html.anim.AnimOption;
+import org.wicketstuff.yui.markup.html.anim.AnimSettings;
+import org.wicketstuff.yui.examples.WicketExamplePage;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 
 /**
- * This class demostrates how you can use the wicket.contrib.markup.html.yui.anim package
+ * This class demostrates how you can use the org.wicketstuff.yui.markup.html.anim package
  * to create animated inputs like radio buttons and check boxes. 
  * <p>
  * 

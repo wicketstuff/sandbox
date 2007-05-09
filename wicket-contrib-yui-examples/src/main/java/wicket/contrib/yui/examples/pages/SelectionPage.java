@@ -1,10 +1,10 @@
-package wicket.contrib.yui.examples.pages;
+package org.wicketstuff.yui.examples.pages;
 
 import java.util.ArrayList;
 
-import wicket.contrib.yui.examples.WicketExamplePage;
-import wicket.contrib.markup.html.yui.selection.Selection;
-import wicket.contrib.markup.html.yui.selection.SelectionSettings;
+import org.wicketstuff.yui.examples.WicketExamplePage;
+import org.wicketstuff.yui.markup.html.selection.Selection;
+import org.wicketstuff.yui.markup.html.selection.SelectionSettings;
 import wicket.contrib.YuiImage;
 import wicket.contrib.YuiProperty;
 import wicket.contrib.YuiAttribute;
