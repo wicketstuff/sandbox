@@ -1,4 +1,4 @@
-package wicket.contrib.markup.html.yui.selection;
+package org.wicketstuff.yui.markup.html.selection;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -10,12 +10,12 @@ import java.util.Set;
 import org.apache.wicket.RequestCycle;
 import org.apache.wicket.ResourceReference;
 
-import wicket.contrib.ImageResourceInfo;
-import wicket.contrib.InlineStyle;
-import wicket.contrib.YuiAttribute;
-import wicket.contrib.YuiImage;
-import wicket.contrib.YuiProperty;
-import wicket.contrib.YuiTextBox;
+import org.wicketstuff.yui.ImageResourceInfo;
+import org.wicketstuff.yui.InlineStyle;
+import org.wicketstuff.yui.YuiAttribute;
+import org.wicketstuff.yui.YuiImage;
+import org.wicketstuff.yui.YuiProperty;
+import org.wicketstuff.yui.YuiTextBox;
 
 public class SelectionSettings implements Serializable {
 	private static final long serialVersionUID = 1L;

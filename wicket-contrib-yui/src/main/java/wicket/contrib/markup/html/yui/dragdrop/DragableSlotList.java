@@ -1,4 +1,4 @@
-package wicket.contrib.markup.html.yui.dragdrop;
+package org.wicketstuff.yui.markup.html.dragdrop;
 
 import java.util.ArrayList;
 import java.util.List;

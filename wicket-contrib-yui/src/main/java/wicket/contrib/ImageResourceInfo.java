@@ -1,4 +1,4 @@
-package wicket.contrib;
+package org.wicketstuff.yui;
 
 import java.io.InputStream;
 

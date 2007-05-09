@@ -1,12 +1,12 @@
-package wicket.contrib.markup.html.yui.slider;
+package org.wicketstuff.yui.markup.html.slider;
 
 import java.io.Serializable;
 
 import org.apache.wicket.RequestCycle;
 import org.apache.wicket.ResourceReference;
 
-import wicket.contrib.ImageResourceInfo;
-import wicket.contrib.InlineStyle;
+import org.wicketstuff.yui.ImageResourceInfo;
+import org.wicketstuff.yui.InlineStyle;
 
 public class SliderSettings implements Serializable {
 

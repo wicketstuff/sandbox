@@ -16,7 +16,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package wicket.contrib.markup.html.yui.calendar;
+package org.wicketstuff.yui.markup.html.calendar;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,7 +32,7 @@ import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.util.template.PackagedTextTemplate;
 
-import wicket.contrib.markup.html.yui.AbstractYuiPanel;
+import org.wicketstuff.yui.markup.html.AbstractYuiPanel;
 
 /**
  * Calendar component based on the Calendar of Yahoo UI Library.

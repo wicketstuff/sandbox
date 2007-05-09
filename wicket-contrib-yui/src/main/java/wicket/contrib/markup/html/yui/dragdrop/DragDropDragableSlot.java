@@ -1,4 +1,4 @@
-package wicket.contrib.markup.html.yui.dragdrop;
+package org.wicketstuff.yui.markup.html.dragdrop;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -7,8 +7,8 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.util.template.PackagedTextTemplate;
 
-import wicket.contrib.YuiImage;
-import wicket.contrib.markup.html.yui.AbstractYuiPanel;
+import org.wicketstuff.yui.YuiImage;
+import org.wicketstuff.yui.markup.html.AbstractYuiPanel;
 
 public class DragDropDragableSlot extends AbstractYuiPanel {
 

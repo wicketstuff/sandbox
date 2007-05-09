@@ -1,4 +1,4 @@
-package wicket.contrib.markup.html.yui.animselect;
+package org.wicketstuff.yui.markup.html.animselect;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -7,9 +7,9 @@ import java.util.List;
 import org.apache.wicket.RequestCycle;
 import org.apache.wicket.ResourceReference;
 
-import wicket.contrib.ImageResourceInfo;
-import wicket.contrib.InlineStyle;
-import wicket.contrib.YuiImage;
+import org.wicketstuff.yui.ImageResourceInfo;
+import org.wicketstuff.yui.InlineStyle;
+import org.wicketstuff.yui.YuiImage;
 
 /**
  * Allows the user to define the anim select settings

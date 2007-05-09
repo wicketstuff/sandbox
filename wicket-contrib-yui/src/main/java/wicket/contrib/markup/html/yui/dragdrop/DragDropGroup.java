@@ -1,4 +1,4 @@
-package wicket.contrib.markup.html.yui.dragdrop;
+package org.wicketstuff.yui.markup.html.dragdrop;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +12,7 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.util.template.PackagedTextTemplate;
 
-import wicket.contrib.YuiImage;
+import org.wicketstuff.yui.YuiImage;
 
 public class DragDropGroup extends WebMarkupContainer {
 	private static final long serialVersionUID = 1L;

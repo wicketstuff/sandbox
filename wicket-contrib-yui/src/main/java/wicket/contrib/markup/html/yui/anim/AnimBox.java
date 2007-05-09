@@ -1,4 +1,4 @@
-package wicket.contrib.markup.html.yui.anim;
+package org.wicketstuff.yui.markup.html.anim;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -11,9 +11,9 @@ import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.util.template.PackagedTextTemplate;
 
-import wicket.contrib.InlineStyle;
-import wicket.contrib.YuiImage;
-import wicket.contrib.markup.html.yui.AbstractYuiPanel;
+import org.wicketstuff.yui.InlineStyle;
+import org.wicketstuff.yui.YuiImage;
+import org.wicketstuff.yui.markup.html.AbstractYuiPanel;
 
 /**
  * An AnimBox is a component which consists of four images:
