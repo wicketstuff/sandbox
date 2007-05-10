@@ -68,5 +68,9 @@ public class HibernateAnnotationBehavior extends AbstractBehavior {
 		public Class getTargetClass() {
 			return getTarget().getClass();
 		}
+		
+		public Object getTarget() {
+			return super.getTarget();
+		}
 	}
 }
