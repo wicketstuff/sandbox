@@ -1,7 +1,5 @@
 package org.wicketstuff.hibernate.validator;
 
-import java.util.HashMap;
-
 import junit.framework.TestCase;
 
 import org.apache.wicket.util.tester.FormTester;
@@ -33,7 +31,7 @@ public class HibernateFormValidatorTest extends TestCase {
 	@SuppressWarnings("unchecked")
 	public void testFilledNotNullFields() {
 		/*
-		 * this test fails because parameters are not been set to ModelObject
+		 * this test fails because parameters are not been set to Model's Object
 		 * internally. a bug maybe?
 		 */
 		FormTester form = tester.newFormTester("form");
