@@ -9,64 +9,109 @@ import org.apache.wicket.validation.IValidator;
 import org.apache.wicket.validation.ValidationError;
 import org.hibernate.validator.ClassValidator;
 import org.hibernate.validator.InvalidValue;
+import org.wicketstuff.hibernate.behavior.HibernateAnnotationBehavior.HibernateAnnotationPropertyModel;
 
 /**
- * <p>Validates Object's property over Hibernate Validator framework.</p>
+ * <p>
+ * Validates Object's property over Hibernate Validator framework.
+ * </p>
  * 
  * @author miojo
  */
 public class HibernateFormComponentValidator implements IValidator {
 
 	private String property;
+
 	private Class clazz;
 
-	@SuppressWarnings("unchecked")
+	/**
+	 * Default constructor
+	 */
+	public HibernateFormComponentValidator() {
+	}
+
+	/**
+	 * 
+	 * @param name
+	 *            class to be used
+	 */
 	public HibernateFormComponentValidator(Class name) {
 		clazz = name;
 	}
 
+	/**
+	 * 
+	 * @param name
+	 *            class to be used
+	 * @param property
+	 *            to be validated
+	 */
 	public HibernateFormComponentValidator(Class name, String property) {
 		this(name);
 		this.property = property;
 	}
 
-	public HibernateFormComponentValidator(Class name, FormComponent formc) {
+	/**
+	 * 
+	 * 
+	 * @param name
+	 *            class to be used
+	 * @param component
+	 *            from form to be validated
+	 */
+	public HibernateFormComponentValidator(Class name, FormComponent component) {
 		this(name);
-		property = formc.getId();
-		formc.add(this);
+		property = component.getId();
 	}
 
 	@SuppressWarnings("unchecked")
 	public void validate(IValidatable validatable) {
-		if (property == null) {
-			// Need a new implementation extending Validatable
-			// ValidatableFormComponent with a Model reference would be great for this
-			IModel model = null; // ((ValidatableFormComponent) validatable).getModel();
-			if (model instanceof PropertyModel) {
-				// PropertyModel with public propertyExpression() method is needed too 
-				String expression = null; // ((PropertyModel) model).propertyExpression();
+		Object object = null;
 
+		// if property and/or clazz are null,
+		// introspect model to get these values
+		if (property == null || clazz == null) {
+			// Need a new implementation extending Validatable:
+			// ValidatableFormComponent with a Model reference would be great
+			// for this
+			IModel model = null; // ((ValidatableFormComponent)validatable).getModel();
+			if (model instanceof PropertyModel) {
+				HibernateAnnotationPropertyModel hackedModel = null;
+
+				// PropertyModel with public propertyExpression() method is
+				// needed too
+				String expression = hackedModel.propertyExpression();
 				property = expression;
+
+				// if this is a PropertyModel, it has an Object, so get it.
+				object = hackedModel.getTarget();
+
+				// if clazz is null, get from target object
+				clazz = clazz != null ? clazz : hackedModel.getTargetClass();
 			}
 		}
-		
-		Object object = null;
+
 		// An instance is required to pass to HV framework
-		try {
-			object = clazz.newInstance();
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
+		if (object == null) {
+			try {
+				object = clazz.newInstance();
+			} catch (InstantiationException e) {
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			}
+
+			// set object property value
+			PropertyResolver.setValue(property, object, validatable.getValue(),
+					null);
 		}
 
-		PropertyResolver.setValue(property, object, validatable.getValue(),
-				null);
-
+		// creates the Class Validator
 		ClassValidator validator = new ClassValidator(clazz);
 		InvalidValue[] invalidValues = validator.getInvalidValues(object,
 				property);
 
+		// append error messages
 		for (InvalidValue iv : invalidValues)
 			validatable
 					.error(new ValidationError().setMessage(iv.getMessage()));
