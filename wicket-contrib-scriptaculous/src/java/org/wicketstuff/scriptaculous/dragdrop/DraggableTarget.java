@@ -43,6 +43,15 @@ public abstract class DraggableTarget extends WebMarkupContainer
 		dropOptions.put("accept", image.getStyleClass());
 	}
 
+	/**
+	 * set an additional CSS class for when an accepted Draggable is hovered over it.
+	 * default is none
+	 * @param className
+	 */
+	public void setHoverClass(String className) {
+		dropOptions.put("hoverclass", className);
+	}
+
 	protected void onRender(MarkupStream markupStream)
 	{
 		super.onRender(markupStream);
