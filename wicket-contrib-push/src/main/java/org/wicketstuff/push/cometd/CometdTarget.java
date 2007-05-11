@@ -2,17 +2,17 @@ package org.wicketstuff.push.cometd;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.wicketstuff.push.IPushTarget;
+import org.wicketstuff.push.IChannelTarget;
 
 /**
- * This merthod is a wrapper of {@link AjaxRequestTarget} on {@link IPushTarget}
+ * This merthod is a wrapper of {@link AjaxRequestTarget} on {@link IChannelTarget}
  * used in {@link CometdBehavior}
  * 
  * 
  * @author Vincent Demay
  *
  */
-public class CometdTarget implements IPushTarget{
+public class CometdTarget implements IChannelTarget{
 
 	private AjaxRequestTarget target;
 	

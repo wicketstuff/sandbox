@@ -29,17 +29,20 @@ import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AbstractAjaxTimerBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.util.time.Duration;
-import org.wicketstuff.push.IPushBehavior;
-import org.wicketstuff.push.IPushTarget;
-import org.wicketstuff.push.PushEvent;
+import org.wicketstuff.push.IChannelListener;
+import org.wicketstuff.push.IChannelService;
+import org.wicketstuff.push.IChannelTarget;
+import org.wicketstuff.push.ChannelEvent;
 
 /**
- * Behavior to listen to a {@link PushEvent} actually using polling
+ * Behavior to listen to a {@link ChannelEvent} actually using polling
  * to perform the client side refresh on server side events.
  * <p>
  * This Behavior will triggered the onEvent method when a push event will 
  * be triggered on the same channel as the channel on the constructor.
- * This kind of event can be triggered by {@link TimerPushPublisher}
+ * This kind of event can be triggered by {@link TimerChannelPublisher},
+ * but you usually use {@link IChannelService} implementation
+ * instead of depending directly on these implementations.
  * </p>
  * <p>
  * The polling interval is configured in the constructor. The more frequent
@@ -47,29 +50,13 @@ import org.wicketstuff.push.PushEvent;
  * more you will charge your server and your network.
  * <p>
  * 
- * Use sample : 
- * <pre>
- * 	//I want send an event when i click a button
- *  [...]
- *  	onClick(AjaxRequestTarget target){
- *  		new TimerPushPublisher(new PushEvent("channel"));
- *  	}
- *  [...]
- *  
- *  //All pages listening this event should add
- *  [...]
- *  	add(new TimerPushBehavior(Duration.secondes(10), "channel"){
- *  		public void onEvent(String channel, Map datas, IPushTarget target){
-        		target.[...]
-        	}
- *  	});
- *  [...]
- * </pre>
- * 
  * @author Xavier Hanin
+ * 
+ * @see IChannelService
+ * @see TimerChannelService
  */
-public abstract class TimerPushBehavior extends AbstractAjaxTimerBehavior 
-	implements IPushTarget, Serializable, IPushBehavior
+public class TimerChannelBehavior extends AbstractAjaxTimerBehavior 
+	implements IChannelTarget, Serializable
 {
 	private static final long serialVersionUID = 1L;
 	
@@ -236,24 +223,31 @@ public abstract class TimerPushBehavior extends AbstractAjaxTimerBehavior
 	 * channel to listen to
 	 */
 	private String channel;
+
+	/**
+	 * Listener to notify of events
+	 */
+	private IChannelListener listener;
 	
 	/**
-	 * Construct a DefaultAjaxPushBehavior which actually refreshes the clients
+	 * Construct a TimerChannelBehavior which actually refreshes the clients
 	 * by polling the server for changes at the given duration.
 	 * 
 	 * @param updateInterval the interval at which the server should be polled for changes
 	 * @channel String representing the channel to listen to
+	 * @listener the {@link IChannelListener} to notify of events
 	 */
-	public TimerPushBehavior(Duration updateInterval, String channel)
+	public TimerChannelBehavior(Duration updateInterval, String channel, IChannelListener listener)
 	{
 		super(updateInterval);
 		this.channel = channel;
+		this.listener = listener;
 		EventStore.get().addEventStoreListener(new EventStoreListener(){
 			public void EventTriggered(String channel, Map data)
 			{
-				if (channel.equals(TimerPushBehavior.this.channel)){
-					onEvent(channel, data, TimerPushBehavior.this);
-					TimerPushBehavior.this.trigger();
+				if (channel.equals(TimerChannelBehavior.this.channel)){
+					TimerChannelBehavior.this.listener.onEvent(channel, data, TimerChannelBehavior.this);
+					TimerChannelBehavior.this.trigger();
 				}
 			}
 			

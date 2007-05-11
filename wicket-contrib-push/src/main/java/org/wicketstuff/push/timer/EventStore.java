@@ -19,7 +19,7 @@ package org.wicketstuff.push.timer;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import org.wicketstuff.push.PushEvent;
+import org.wicketstuff.push.ChannelEvent;
 
 /**
  * Here we are simulating a bus with this event store
@@ -46,7 +46,7 @@ class EventStore
 		Iterator<EventStoreListener> ite = listenerList.iterator(); 
 		while(ite.hasNext()){
 			EventStoreListener listener = (EventStoreListener) ite.next();
-			listener.EventTriggered(((PushEvent)value).getChannel(), ((PushEvent)value).getData());
+			listener.EventTriggered(((ChannelEvent)value).getChannel(), ((ChannelEvent)value).getData());
 		}
 	}
 	

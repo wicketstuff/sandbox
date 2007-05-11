@@ -14,20 +14,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.wicketstuff.push;
+package org.wicketstuff.push.timer;
+
+import java.io.Serializable;
+
+import org.wicketstuff.push.IChannelPublisher;
+import org.wicketstuff.push.ChannelEvent;
 
 /**
- * A class allowing the server to send an event on listener.
- * This publisher is able to send a {@link PushEvent}
- * 
+ * Publisher that could be associated with a {@link TimerChannelBehavior}
+ * for more documentation see {@link TimerChannelBehavior}
  * 
  * @author Vincent Demay
  */
-public interface IPushPublisher
+public class TimerChannelPublisher implements IChannelPublisher, Serializable
 {
-	/**
-	 * Publish a {@link PushEvent}
-	 * @param event event to publish
-	 */
-	public void publish(PushEvent event);
+	private static final long serialVersionUID = 1L;
+
+	public void publish(ChannelEvent event)
+	{
+		EventStore.get().add(event);
+	}
 }

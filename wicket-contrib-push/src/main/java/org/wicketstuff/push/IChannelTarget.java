@@ -18,7 +18,6 @@ package org.wicketstuff.push;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.wicketstuff.push.timer.TimerPushBehavior;
 
 /**
  * Defines an interface to trigger client updates on server side events.
@@ -28,13 +27,16 @@ import org.wicketstuff.push.timer.TimerPushBehavior;
  * find their way with this interface.
  * </p>
  * <p>
- * A {@link IPushTarget} implementation can be used in a Behavior listening 
- * on Event such as {@link TimerPushBehavior}
+ * A {@link IChannelTarget} implementation can be used in {@link IChannelListener}
+ * implementations.
  * </p>
  * 
  * @author Xavier Hanin
+ * 
+ * @see IChannelListener
+ * @see IChannelService
  */
-public interface IPushTarget
+public interface IChannelTarget
 {
 	/**
 	 * Adds a component to the list of components to be rendered

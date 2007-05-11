@@ -2,7 +2,7 @@ package org.wicketstuff.push.cometd;
 
 import java.util.Map;
 
-import org.wicketstuff.push.PushEvent;
+import org.wicketstuff.push.ChannelEvent;
 
 /**
  * Default abstract event for wicket.<br/>
@@ -15,7 +15,7 @@ import org.wicketstuff.push.PushEvent;
  * @author Vincent Demay
  *
  */
-public class CometdEvent extends PushEvent{
+public class CometdEvent extends ChannelEvent{
 	
 	
 	public CometdEvent(String channel) {

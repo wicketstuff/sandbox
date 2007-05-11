@@ -22,7 +22,7 @@ import java.util.Map;
 
 /**
  * A event containing data to send by server pushing.
- * This event has to be published by {@link IPushPublisher} instance.
+ * This event has to be published by {@link IChannelPublisher} instance.
  * <p>
  * a pushEvent is specific of a channel represented by a string and can contains some 
  * datas to send to the listener.
@@ -31,7 +31,7 @@ import java.util.Map;
  * 
  * @author Vincent Demay
  */
-public class PushEvent
+public class ChannelEvent
 {
 	private String channel;
 	private HashMap<String, String> data;
@@ -40,7 +40,7 @@ public class PushEvent
 	 * Construct.
 	 * @param channel channel where the event will bve sent
 	 */
-	public PushEvent(String channel){
+	public ChannelEvent(String channel){
 		this.channel = channel;
 		data = new HashMap<String, String>();
 	}
