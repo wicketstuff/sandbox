@@ -16,14 +16,14 @@ public class HibernateAnnotationComponentInstantiaionListenerTest extends TestCa
 
 	public void testNotNullAnnotationUpdatesComponentToBeRequired() {
 		TextField component = new TextField("test", new HibernateAnnotationPropertyModel(new MyObject(), "id"));
-		
+
 		assertTrue(component.isRequired());
 	}
 
 	public class MyObject {
 		@NotNull
 		private String id;
-		
+
 		@Length(max=50)
 		private String name;
 	}
