@@ -8,16 +8,20 @@ import org.apache.wicket.RequestCycle;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.protocol.http.WebRequestCycle;
 import org.wicketstuff.dojo.templates.DojoPackagedTextTemplate;
-import org.wicketstuff.push.IPushBehavior;
+import org.wicketstuff.push.IChannelListener;
 
-public abstract class CometdBehavior extends CometdAbstractBehavior implements IPushBehavior{
+public class CometdBehavior extends CometdAbstractBehavior {
+	private static final long serialVersionUID = 1L;
 
-	public CometdBehavior(String channelId) {
+	private IChannelListener listener;
+
+	public CometdBehavior(String channelId, IChannelListener listener) {
 		super(channelId);
+		this.listener = listener;
 	}
 
 	@Override
-	public final String getCometdIntercepteurScript() {
+	public final String getCometdInterceptorScript() {
 		HashMap<String, String> map = new HashMap<String, String>();
 		map.put("markupId", getComponent().getMarkupId());
 		map.put("url", getCallbackUrl().toString());
@@ -40,7 +44,7 @@ public abstract class CometdBehavior extends CometdAbstractBehavior implements I
 			eventAttribute.put(key, ((String[])map.get(key))[0]);
 		}
 		CometdTarget cTarget = new CometdTarget(target);
-		onEvent(getChannelId(), eventAttribute, cTarget);
+		listener.onEvent(getChannelId(), eventAttribute, cTarget);
 	}
 
 }

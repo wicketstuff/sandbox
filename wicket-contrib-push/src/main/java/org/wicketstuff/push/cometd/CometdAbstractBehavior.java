@@ -2,6 +2,7 @@ package org.wicketstuff.push.cometd;
 
 import java.io.InputStream;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 
 import org.apache.wicket.Application;
@@ -19,6 +20,7 @@ import org.wicketstuff.dojo.AbstractRequireDojoBehavior;
  */
 public abstract class CometdAbstractBehavior extends AbstractRequireDojoBehavior {
 
+	// FIXME: put this in application scope, we may have several webapp using CometdBehavior in the same web container!
 	private final static String cometdServletPath = getCometdServletPath();
 	
 	private String channelId;
@@ -44,7 +46,7 @@ public abstract class CometdAbstractBehavior extends AbstractRequireDojoBehavior
 			throw new IllegalArgumentException("ChannelId in a CometdBehavior can not be null");
 		}
 		response.renderJavascript(getInitCometdScript(), "initCometd");
-		String cometdIntercepteurScript = getCometdIntercepteurScript();
+		String cometdIntercepteurScript = getCometdInterceptorScript();
 		if (cometdIntercepteurScript != null){
 			response.renderJavascript(cometdIntercepteurScript, getComponent()+"Interceptor");
 		}
@@ -62,7 +64,7 @@ public abstract class CometdAbstractBehavior extends AbstractRequireDojoBehavior
 	 * </p>
 	 * @return
 	 */
-	public abstract String getCometdIntercepteurScript();
+	public abstract String getCometdInterceptorScript();
 		
 	/**
 	 * this method should return a part of javascript (String) allowing to give code to execute
@@ -129,7 +131,8 @@ public abstract class CometdAbstractBehavior extends AbstractRequireDojoBehavior
 	 */
 	protected static String getCometdServletPath()
 	{
-		InputStream is = ((WebApplication)Application.get()).getServletContext().getResourceAsStream("/WEB-INF/web.xml");
+		ServletContext servletContext = ((WebApplication)Application.get()).getServletContext();
+		InputStream is = servletContext.getResourceAsStream("/WEB-INF/web.xml");
 		/*
 		 * get the servlet name using org.mortbay.cometd.CometdServlet
 		 */
@@ -210,7 +213,9 @@ public abstract class CometdAbstractBehavior extends AbstractRequireDojoBehavior
 			}
 
 			// Strip trailing '*' and leading '/'.
-			return urlPattern.substring(0, urlPattern.length() - 2);
+			String path = urlPattern.substring(0, urlPattern.length() - 2);
+			// prefix with context path
+			return servletContext.getContextPath() + path;
 		}
 		catch (Exception e)
 		{

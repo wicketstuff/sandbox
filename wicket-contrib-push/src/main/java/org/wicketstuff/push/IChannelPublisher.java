@@ -14,22 +14,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.wicketstuff.push.timer;
-
-import org.wicketstuff.push.IPushPublisher;
-import org.wicketstuff.push.PushEvent;
+package org.wicketstuff.push;
 
 /**
- * Publisher that could be associated with a {@link TimerPushBehavior}
- * for more documentation see {@link TimerPushBehavior}
- * 
+ * A class allowing the server to send an event on listener.
+ * This publisher is able to send a {@link ChannelEvent}
+ * <p>
  * 
  * @author Vincent Demay
+ * 
+ * @see IChannelService
  */
-public class TimerPushPublisher implements IPushPublisher
+public interface IChannelPublisher
 {
-	public void publish(PushEvent event)
-	{
-		EventStore.get().add(event);
-	}
+	/**
+	 * Publish a {@link ChannelEvent}
+	 * @param event event to publish
+	 */
+	public void publish(ChannelEvent event);
 }
