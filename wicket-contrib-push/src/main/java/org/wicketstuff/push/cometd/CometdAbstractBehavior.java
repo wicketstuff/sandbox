@@ -46,9 +46,9 @@ public abstract class CometdAbstractBehavior extends AbstractRequireDojoBehavior
 			throw new IllegalArgumentException("ChannelId in a CometdBehavior can not be null");
 		}
 		response.renderJavascript(getInitCometdScript(), "initCometd");
-		String cometdIntercepteurScript = getCometdInterceptorScript();
-		if (cometdIntercepteurScript != null){
-			response.renderJavascript(cometdIntercepteurScript, getComponent()+"Interceptor");
+		String cometdInterceptorScript = getCometdInterceptorScript();
+		if (cometdInterceptorScript != null){
+			response.renderJavascript(cometdInterceptorScript, getComponent()+"Interceptor");
 		}
 		response.renderJavascript(getSubscriberScript(), getComponent()+"Subscribe");
 	}
