@@ -1,25 +1,42 @@
 package org.wicketstuff.push.examples.pages;
 
+import java.io.Serializable;
 import java.util.Map;
 
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitButton;
-import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.util.time.Duration;
-import org.wicketstuff.push.IPushTarget;
-import org.wicketstuff.push.PushEvent;
-import org.wicketstuff.push.timer.TimerPushBehavior;
-import org.wicketstuff.push.timer.TimerPushPublisher;
+import org.wicketstuff.push.ChannelEvent;
+import org.wicketstuff.push.IChannelListener;
+import org.wicketstuff.push.IChannelService;
+import org.wicketstuff.push.IChannelTarget;
 
-public class WicketCometdChat2 extends WebPage{
+/**
+ * Examples of chat using {@link IChannelService}.
+ * <p>
+ * This example is abstract because it doesn't define which channel service
+ * implementation it uses.
+ * <p>
+ * Concrete subclasses only have to provide {@link #getChannelService()}
+ * implementation, returning any IChannelService implementation.
+ * <p>
+ * The whole example doesn't depend on which implementation is used,
+ * and show easy it is to switch between implementations.
+ * 
+ * @author Vincent Demay
+ * @author Xavier Hanin
+ */
+public abstract class WicketAbstractChat extends ExamplePage {
+	private static final long serialVersionUID = 1L;
 
-	public WicketCometdChat2(PageParameters parameters)
+
+	public WicketAbstractChat(PageParameters parameters)
 	{
+		final IChannelService channelService = getChannelService();
 		Message model = new Message();
 		
 		final Form formChat = new Form("chatForm", new CompoundPropertyModel(model));
@@ -30,9 +47,8 @@ public class WicketCometdChat2 extends WebPage{
 		
 		final Label chat = new Label("chat");
 		chat.setOutputMarkupId(true);
-		chat.add(new TimerPushBehavior(Duration.seconds(2), "chat/message"){
-			
-			public void onEvent(String channel, Map<String, String> datas, IPushTarget target) {
+		channelService.addChannelListener(this, "chat/message", new IChannelListener() {
+			public void onEvent(String channel, Map<String, String> datas, IChannelTarget target) {
 				target.appendJavascript("document.getElementById('" + chat.getMarkupId() + "').innerHTML += '<br/>" + datas.get("message") + "'");
 			}
 		});
@@ -50,9 +66,9 @@ public class WicketCometdChat2 extends WebPage{
 							((Message)form.getModelObject()).getUser() + " said " +
 							((Message)form.getModelObject()).getMessage();
 				//send an event to refesh the chat area
-				PushEvent event = new PushEvent("chat/message");
+				ChannelEvent event = new ChannelEvent("chat/message");
 				event.addData("message", currentChat);
-				new TimerPushPublisher().publish(event);
+				channelService.publish(event);
 				
 				//clear message area add focus it
 				target.appendJavascript("document.getElementById('" + mess.getMarkupId() + "').value =''");
@@ -61,9 +77,12 @@ public class WicketCometdChat2 extends WebPage{
 		});
 		add(formChat);
 	}
+
+
+	protected abstract IChannelService getChannelService();
 	
 	
-	public class Message{
+	public class Message implements Serializable {
 		private String chat;
 		private String user;
 		private String message;

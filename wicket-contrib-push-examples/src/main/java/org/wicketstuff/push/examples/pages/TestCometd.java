@@ -9,39 +9,28 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.wicketstuff.dojo.markup.html.DojoLink;
-import org.wicketstuff.push.IPushTarget;
+import org.wicketstuff.push.ChannelEvent;
+import org.wicketstuff.push.IChannelListener;
+import org.wicketstuff.push.IChannelService;
+import org.wicketstuff.push.IChannelTarget;
 import org.wicketstuff.push.cometd.CometdBehavior;
 import org.wicketstuff.push.cometd.CometdEvent;
 import org.wicketstuff.push.cometd.CometdPublisher;
+import org.wicketstuff.push.cometd.CometdService;
 
-public class TestCometd extends WebPage{
+public class TestCometd extends ExamplePage {
 
 	private TextField field;
 	private String val;
 	
 	public TestCometd(PageParameters parameters)
 	{
+		final IChannelService channelService = getCometdService();
+		
 		DojoLink link = new DojoLink("link"){
 
 			public void onClick(AjaxRequestTarget target) {
-				/*RequestCycle requestCycle = RequestCycle.get();
-				
-				Response savedResponse = requestCycle.getResponse();
-				
-				StringResponse response = new StringResponse();
-				requestCycle.setResponse(response);
-				field.renderComponent();
-				
-				requestCycle.setResponse(savedResponse);
-				CometdPublisher publisher = new CometdPublisher((WebApplication)getApplication());
-				HashMap message = new HashMap();
-				message.put(field.getMarkupId().toString(),response.toString());
-				publisher.publish("myChannel", message);*/
-				
-				CometdPublisher publisher = new CometdPublisher((WebApplication)getApplication());
-				CometdEvent event = new CometdEvent("myChannel");
-				publisher.publish(event);
-				
+				channelService.publish(new ChannelEvent("myChannel"));
 			}
 			
 		};	
@@ -49,14 +38,11 @@ public class TestCometd extends WebPage{
 		
 		field = new TextField("text", new Model(val));
 		field.setOutputMarkupId(true);
-		
-		field.add(new CometdBehavior("myChannel"){
-
-			public void onEvent(String channel, Map<String, String> datas, IPushTarget target) {
+		channelService.addChannelListener(this, "myChannel", new IChannelListener() {
+			public void onEvent(String channel, Map<String, String> datas, IChannelTarget target) {
 				field.setModel(new Model("updated"));
 				target.addComponent(field);
 			}
-			
 		});
 		add(field);
 	}
