@@ -1,9 +1,12 @@
 package org.wicketstuff.scriptaculous.dragdrop;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.behavior.IBehavior;
 import org.apache.wicket.markup.MarkupStream;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.wicketstuff.scriptaculous.JavascriptBuilder;
@@ -13,6 +16,8 @@ import org.wicketstuff.scriptaculous.effect.Effect;
 
 
 /**
+ * Target for drag/drop operations.
+ * user can drop a Draggable item onto this component to perform ajax operation.
  *
  * @see http://wiki.script.aculo.us/scriptaculous/show/Droppables.add
  */
@@ -36,11 +41,20 @@ public abstract class DraggableTarget extends WebMarkupContainer
 	 */
 	protected abstract void onDrop(String input, AjaxRequestTarget target);
 
-	public void accepts(DraggableImage image)
-	{
-		// TODO: this should build a string array of classes so that one target
-		// can accept multiple classes.
-		dropOptions.put("accept", image.getStyleClass());
+	/**
+	 * configure the draggable target to accept a component.
+	 * The component must have a {@link DraggableBehavior} attached to it.
+	 * @param component
+	 */
+	public void accepts(Component component) {
+		for (Iterator iter = component.getBehaviors().iterator(); iter.hasNext();) {
+			IBehavior behavior = (IBehavior) iter.next();
+			if (behavior instanceof DraggableBehavior) {
+				// TODO: this should build a string array of classes so that one target
+				// can accept multiple classes.
+				dropOptions.put("accept", ((DraggableBehavior)behavior).getDraggableClassName());
+			}
+		}
 	}
 
 	/**
@@ -79,7 +93,5 @@ public abstract class DraggableTarget extends WebMarkupContainer
 
 			onDrop(input, target);
 		}
-
 	}
-
 }
