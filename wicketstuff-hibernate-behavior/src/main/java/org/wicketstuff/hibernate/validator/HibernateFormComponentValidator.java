@@ -9,7 +9,7 @@ import org.apache.wicket.validation.IValidator;
 import org.apache.wicket.validation.ValidationError;
 import org.hibernate.validator.ClassValidator;
 import org.hibernate.validator.InvalidValue;
-import org.wicketstuff.hibernate.behavior.HibernateAnnotationBehavior.HibernateAnnotationPropertyModel;
+import org.wicketstuff.hibernate.HibernateAnnotationPropertyModel;
 
 /**
  * <p>
