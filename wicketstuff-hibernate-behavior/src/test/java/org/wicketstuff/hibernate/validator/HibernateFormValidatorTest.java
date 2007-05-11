@@ -14,14 +14,22 @@ import org.apache.wicket.util.tester.WicketTester;
  */
 public class HibernateFormValidatorTest extends TestCase {
 
-	WicketTester tester;
+	private WicketTester tester;
 
-	public void setUp() {
+	protected void setUp() throws Exception {
 		tester = new WicketTester();
-		tester.startPage(HibernateFormValidatorPageTest.class);
+		super.setUp();
+	}
+
+	protected void tearDown() throws Exception {
+		tester.destroy();
+		super.tearDown();
 	}
 
 	public void testNotNullFields() {
+		tester.startPage(HibernateFormValidatorPageTest.class);
+		tester.assertRenderedPage(HibernateFormValidatorPageTest.class);
+
 		FormTester form = tester.newFormTester("form", true);
 		form.submit();
 
@@ -30,11 +38,11 @@ public class HibernateFormValidatorTest extends TestCase {
 
 	@SuppressWarnings("unchecked")
 	public void testFilledNotNullFields() {
-		/*
-		 * this test fails because parameters are not been set to Model's Object
-		 * internally. a bug maybe?
-		 */
+		tester.startPage(HibernateFormValidatorPageTest.class);
+		tester.assertRenderedPage(HibernateFormValidatorPageTest.class);
+
 		FormTester form = tester.newFormTester("form");
+
 		form.setValue("id", "555");
 		form.setValue("name", "foo");
 
@@ -42,5 +50,4 @@ public class HibernateFormValidatorTest extends TestCase {
 
 		tester.assertNoErrorMessage();
 	}
-
 }
