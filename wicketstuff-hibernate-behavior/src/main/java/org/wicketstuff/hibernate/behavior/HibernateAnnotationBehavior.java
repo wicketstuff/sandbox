@@ -6,9 +6,7 @@ import org.wicketstuff.hibernate.HibernateAnnotationComponentConfigurator;
 
 /**
  * Updates behavior of wicket components based on hibernate annotations.
- * 
- * TODO: attach client side javascript as well
- * 
+ *
  * @author rsonnek
  */
 public class HibernateAnnotationBehavior extends AbstractBehavior {
