@@ -6,8 +6,7 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.util.tester.WicketTester;
 import org.hibernate.validator.Length;
 import org.hibernate.validator.NotNull;
-import org.wicketstuff.hibernate.behavior.HibernateAnnotationBehavior;
-import org.wicketstuff.hibernate.behavior.HibernateAnnotationBehavior.HibernateAnnotationPropertyModel;
+import org.wicketstuff.hibernate.HibernateAnnotationPropertyModel;
 
 public class HibernateAnnotationBehaviorTest extends TestCase {
 
