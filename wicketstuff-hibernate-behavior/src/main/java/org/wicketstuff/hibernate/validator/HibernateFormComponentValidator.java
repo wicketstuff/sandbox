@@ -9,7 +9,6 @@ import org.apache.wicket.validation.IValidator;
 import org.apache.wicket.validation.ValidationError;
 import org.hibernate.validator.ClassValidator;
 import org.hibernate.validator.InvalidValue;
-import org.wicketstuff.hibernate.HibernateAnnotationPropertyModel;
 
 /**
  * <p>
@@ -76,18 +75,18 @@ public class HibernateFormComponentValidator implements IValidator {
 			// for this
 			IModel model = null; // ((ValidatableFormComponent)validatable).getModel();
 			if (model instanceof PropertyModel) {
-				HibernateAnnotationPropertyModel hackedModel = null;
+				PropertyModel propertyModel = null;
 
 				// PropertyModel with public propertyExpression() method is
 				// needed too
-				String expression = hackedModel.propertyExpression();
+				String expression = propertyModel.getPropertyExpression();
 				property = expression;
 
 				// if this is a PropertyModel, it has an Object, so get it.
-				object = hackedModel.getTarget();
+				object = propertyModel.getTarget();
 
 				// if clazz is null, get from target object
-				clazz = clazz != null ? clazz : hackedModel.getTargetClass();
+				clazz = clazz != null ? clazz : object.getClass();
 			}
 		}
 

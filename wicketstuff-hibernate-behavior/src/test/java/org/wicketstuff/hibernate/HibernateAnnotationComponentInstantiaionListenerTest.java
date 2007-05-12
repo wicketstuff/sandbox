@@ -3,6 +3,7 @@ package org.wicketstuff.hibernate;
 import junit.framework.TestCase;
 
 import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.util.tester.WicketTester;
 import org.hibernate.validator.Length;
 import org.hibernate.validator.NotNull;
@@ -15,7 +16,7 @@ public class HibernateAnnotationComponentInstantiaionListenerTest extends TestCa
 	}
 
 	public void testNotNullAnnotationUpdatesComponentToBeRequired() {
-		TextField component = new TextField("test", new HibernateAnnotationPropertyModel(new MyObject(), "id"));
+		TextField component = new TextField("test", new PropertyModel(new MyObject(), "id"));
 
 		assertTrue(component.isRequired());
 	}
