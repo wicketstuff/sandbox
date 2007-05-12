@@ -10,6 +10,7 @@ import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.validation.validator.StringValidator;
 import org.hibernate.validator.Length;
 import org.hibernate.validator.NotNull;
@@ -35,7 +36,7 @@ public class HibernateAnnotationComponentConfigurator {
 		if (null == model) {
 			return;
 		}
-		if (!(model instanceof HibernateAnnotationPropertyModel)) {
+		if (!(model instanceof PropertyModel)) {
 			return;
 		}
 		
@@ -45,9 +46,9 @@ public class HibernateAnnotationComponentConfigurator {
 
 		FormComponent formComponent = (FormComponent)component;
 
-		HibernateAnnotationPropertyModel propertyModel = (HibernateAnnotationPropertyModel) model;
-		String fieldName = propertyModel.propertyExpression();
-		Class type = propertyModel.getTargetClass();
+		PropertyModel propertyModel = (PropertyModel) model;
+		String fieldName = propertyModel.getPropertyExpression();
+		Class type = propertyModel.getTarget().getClass();
 		try {
 			Field field = type.getDeclaredField(fieldName);
 			Annotation[] annotations = field.getAnnotations();
