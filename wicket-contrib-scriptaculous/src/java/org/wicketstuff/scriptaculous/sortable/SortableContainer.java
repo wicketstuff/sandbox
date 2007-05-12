@@ -8,6 +8,7 @@ import java.util.Map;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.behavior.AbstractAjaxBehavior;
+import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.MarkupStream;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -15,6 +16,7 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.Model;
 import org.wicketstuff.scriptaculous.JavascriptBuilder;
 import org.wicketstuff.scriptaculous.ScriptaculousAjaxBehavior;
+import org.wicketstuff.scriptaculous.dragdrop.DraggableTarget;
 
 /**
  * Extension to {@link ListView} that allows for drag/drop reordering of items.
@@ -46,6 +48,9 @@ public abstract class SortableContainer extends WebMarkupContainer
 				item.add(new AttributeModifier("id", true, new Model(getMarkupId() + "_"
 						+ item.getIndex())));
 
+				if (null != getDraggableClassName()) {
+					item.add(new AttributeAppender("class", new Model(getDraggableClassName()), " "));
+				}
 				populateItemInternal(item);
 			}
 		});
@@ -61,7 +66,20 @@ public abstract class SortableContainer extends WebMarkupContainer
 		options.put("constraint", "horizontal");
 	}
 
+	/**
+	 * callback extension point for populating each list item.
+	 * @param item
+	 */
 	protected abstract void populateItemInternal(ListItem item);
+	
+	/**
+	 * extension point for integrating with {@link DraggableTarget}
+	 * @see DraggableTarget#acceptAll(SortableContainer)
+	 * @return
+	 */
+	public String getDraggableClassName() {
+		return null;
+	}
 
 	protected void onRender(MarkupStream markupStream)
 	{
