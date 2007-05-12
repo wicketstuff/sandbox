@@ -13,6 +13,7 @@ import org.wicketstuff.scriptaculous.JavascriptBuilder;
 import org.wicketstuff.scriptaculous.ScriptaculousAjaxBehavior;
 import org.wicketstuff.scriptaculous.JavascriptBuilder.AjaxCallbackJavascriptFunction;
 import org.wicketstuff.scriptaculous.effect.Effect;
+import org.wicketstuff.scriptaculous.sortable.SortableContainer;
 
 
 /**
@@ -50,11 +51,28 @@ public abstract class DraggableTarget extends WebMarkupContainer
 		for (Iterator iter = component.getBehaviors().iterator(); iter.hasNext();) {
 			IBehavior behavior = (IBehavior) iter.next();
 			if (behavior instanceof DraggableBehavior) {
-				// TODO: this should build a string array of classes so that one target
-				// can accept multiple classes.
-				dropOptions.put("accept", ((DraggableBehavior)behavior).getDraggableClassName());
+				addAcceptClass(((DraggableBehavior)behavior).getDraggableClassName());
 			}
 		}
+	}
+
+	/**
+	 * configure the draggable target to accept any draggable item from the {@link SortableContainer}
+	 * The sortable container needs to override {@link SortableContainer#getDraggableClassName()} 
+	 * in order for the draggable target to know what to accept.
+	 * @param container
+	 */
+	public void acceptAll(SortableContainer container) {
+		addAcceptClass(container.getDraggableClassName());
+	}
+
+	/**
+	 * TODO: this should build a string array of classes so that one target
+	 * can accept multiple classes.
+	 * @param className
+	 */
+	private void addAcceptClass(String className) {
+		dropOptions.put("accept", className);
 	}
 
 	/**
