@@ -11,7 +11,7 @@ import org.apache.wicket.markup.MarkupStream;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.wicketstuff.scriptaculous.JavascriptBuilder;
 import org.wicketstuff.scriptaculous.ScriptaculousAjaxBehavior;
-import org.wicketstuff.scriptaculous.JavascriptBuilder.AjaxCallbackJavascriptFunction;
+import org.wicketstuff.scriptaculous.JavascriptBuilder.JavascriptFunction;
 import org.wicketstuff.scriptaculous.effect.Effect;
 import org.wicketstuff.scriptaculous.sortable.SortableContainer;
 
@@ -88,7 +88,9 @@ public abstract class DraggableTarget extends WebMarkupContainer
 	{
 		super.onRender(markupStream);
 
-		dropOptions.put("onDrop", new AjaxCallbackJavascriptFunction(onDropBehavior));
+		
+		dropOptions.put("onDrop", new JavascriptFunction("function(draggable, droppable, event) { wicketAjaxGet('" + onDropBehavior.getCallbackUrl()
+				+ "&id=' + draggable.id); }"));
 
 		JavascriptBuilder builder = new JavascriptBuilder();
 		builder.addLine("Droppables.add('" + getMarkupId() + "', ");
