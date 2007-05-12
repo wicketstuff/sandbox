@@ -7,9 +7,11 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.util.time.Duration;
 import org.wicketstuff.push.IChannelService;
+import org.wicketstuff.push.IPushService;
 import org.wicketstuff.push.cometd.CometdService;
 import org.wicketstuff.push.examples.pages.Index;
 import org.wicketstuff.push.timer.TimerChannelService;
+import org.wicketstuff.push.timer.TimerPushService;
 
 /**
  * Runs the ExampleApplication when invoked from command line.
@@ -20,6 +22,7 @@ public class ExampleApplication extends WebApplication implements Serializable {
 	
 	private IChannelService cometdService;
 	private IChannelService timerChannelService;
+	private IPushService timerPushService;
 
 	/**
 	 * Constructor
@@ -27,6 +30,7 @@ public class ExampleApplication extends WebApplication implements Serializable {
 	public ExampleApplication() {
 		cometdService = new CometdService(this);
 		timerChannelService = new TimerChannelService(Duration.seconds(2));
+		timerPushService = new TimerPushService(Duration.seconds(2));
 	}
 
 	/**
@@ -42,5 +46,9 @@ public class ExampleApplication extends WebApplication implements Serializable {
 
 	public IChannelService getTimerChannelService() {
 		return timerChannelService;
+	}
+
+	public IPushService getTimerPushService() {
+		return timerPushService;
 	}
 }
