@@ -1,5 +1,0 @@
-This patch fixes the following bug:
-http://trac.dojotoolkit.org/ticket/2492
-
-The change is applied to trunk, but not to the 0.4 branch. Therefore, we need to apply it again.
-http://trac.dojotoolkit.org/changeset/7421
