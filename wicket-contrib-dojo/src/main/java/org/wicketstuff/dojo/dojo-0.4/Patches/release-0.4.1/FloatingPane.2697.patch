@@ -1,7 +1,5 @@
-Index: src/widget/FloatingPane.js
-===================================================================
---- src/widget/FloatingPane.js	(revision 1880)
-+++ src/widget/FloatingPane.js	(working copy)
+--- ./FloatingPane.js	2007-05-14 16:52:00.000000000 +0200
++++ src/widget/FloatingPane.js	2007-05-14 16:52:11.000000000 +0200
 @@ -421,6 +421,7 @@
  
  		windowState: "minimized",
@@ -21,8 +19,8 @@ Index: src/widget/FloatingPane.js
  			this.hideModalDialog();
 @@ -439,11 +442,22 @@
  		},
- 		reOrderWindowsAndBg: function(){
- 			var floatingPanes= dojo.widget.manager.getWidgetsByType(this.widgetType);
+                reOrderWindowsAndBg: function(){
+                        var floatingPanes= dojo.widget.manager.getWidgetsByType(this.widgetType);
 +			for (var x=0; x<floatingPanes.length; x++) {
 +				if (this.widgetId != floatingPanes[x].widgetId) {
 +					var floating = floatingPanes[x];
@@ -35,12 +33,12 @@ Index: src/widget/FloatingPane.js
 +		giveMeFocus: function(){
 +			//disconnect onkey on all window except me
 +			var floatingPanes= dojo.widget.manager.getWidgetsByType(this.widgetType);
- 			var windows = [];
- 			for (var x=0; x<floatingPanes.length; x++) {
- 				if (this.widgetId != floatingPanes[x].widgetId) {
--						var floating = floatingPanes[x];
--						floating.bg.style.zIndex = floating.domNode.style.zIndex-1;
+                        var windows = [];
+                        for (var x=0; x<floatingPanes.length; x++) {
+                                if (this.widgetId != floatingPanes[x].widgetId) {
+-                                               var floating = floatingPanes[x];
+-                                               floating.bg.style.zIndex = floating.domNode.style.zIndex-1;
 +					dojo.event.disconnect(document.documentElement, "onkey", floatingPanes[x], "_onKey");
- 				}
- 			}
- 		},
+                                }
+                        }
+                },
