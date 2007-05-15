@@ -59,9 +59,3 @@ TimeContainer.xxxx.patch
 ************************
 This patch is used to give an id to the container. Don't remember where it is used
 TODO : check if it is usefull
-
--------------------------------------------------------------------------------
-
-alreadyApply/DropdownTimePicker.xxxxx.patch
-*******************************************
-This patch has already been apply! should be soon removed
