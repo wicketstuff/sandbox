@@ -1,43 +1,47 @@
 Index: src/widget/DropdownTimePicker.js
 ===================================================================
---- src/widget/DropdownTimePicker.js	(revision 8599)
+--- src/widget/DropdownTimePicker.js	(revision 8620)
 +++ src/widget/DropdownTimePicker.js	(working copy)
 @@ -41,6 +41,9 @@
- 		// 	name of the form element, used to create a hidden field by this name for form element submission.
- 		name: "",
+ 		//	ex: 12:00
+ 		value: "",
  
-+               templatePath: dojo.uri.dojoUri("src/widget/templates/TimePicker.htm"),
-+               templateCssPath: dojo.uri.dojoUri("src/widget/templates/TimePicker.css"),
++		templatePath: dojo.uri.dojoUri("src/widget/templates/TimePicker.htm"),
++		templateCssPath: dojo.uri.dojoUri("src/widget/templates/TimePicker.css"),
 +
  		postMixInProperties: function() {
- 			// summary: see dojo.widget.DomWidget
  			dojo.widget.DropdownTimePicker.superclass.postMixInProperties.apply(this, arguments);
-@@ -115,7 +118,9 @@
- 				value = dojo.date.fromRfc3339(d + "T" + orig);
- 			}
- 			
--			var tpArgs = { widgetContainerId: this.widgetId, lang: this.lang, value: value };
-+                       var tpArgs = { widgetContainerId: this.widgetId, lang: this.lang, value: value,
-+                               templateCssPath:  this.templateCssPath, templatePath: this.templatePath
-+                               };
- 			this.timePicker = dojo.widget.createWidget("TimePicker", tpArgs, this.containerNode, "child");
- 			
- 			dojo.event.connect(this.timePicker, "onValueChanged", this, "_updateText");
+ 			var messages = dojo.i18n.getLocalization("dojo.widget", "DropdownTimePicker", this.lang);
+@@ -50,7 +53,10 @@
+ 		fillInTemplate: function(){
+ 			dojo.widget.DropdownTimePicker.superclass.fillInTemplate.apply(this, arguments);
+ 
+-			var timeProps = { widgetContainerId: this.widgetId, lang: this.lang };
++			var timeProps = { 
++				widgetContainerId: this.widgetId, lang: this.lang ,
++				templateCssPath:  this.templateCssPath, templatePath: this.templatePath
++			};
+ 			this.timePicker = dojo.widget.createWidget("TimePicker", timeProps, this.containerNode, "child");
+ 			dojo.event.connect(this.timePicker, "onSetTime", this, "onSetTime");
+ 			dojo.event.connect(this.inputNode,  "onchange",  this, "onInputChange");
 Index: src/widget/DropdownDatePicker.js
 ===================================================================
---- src/widget/DropdownDatePicker.js	(revision 8599)
+--- src/widget/DropdownDatePicker.js	(revision 8620)
 +++ src/widget/DropdownDatePicker.js	(working copy)
-@@ -93,6 +93,9 @@
+@@ -82,6 +82,12 @@
  		//	disable all incremental controls, must pick a date in the current display
  		staticDisplay: false,
  		
-+               templatePath:  dojo.uri.dojoUri("src/widget/templates/DatePicker.htm"),
-+               templateCssPath:  dojo.uri.dojoUri("src/widget/templates/DatePicker.css"),
++		//If true disabled the input from keyboard
++		inputNotAllowed:false,
++		
++		templatePath:  dojo.uri.dojoUri("src/widget/templates/DatePicker.htm"),
++		templateCssPath:  dojo.uri.dojoUri("src/widget/templates/DatePicker.css"),
 +
  		postMixInProperties: function(localProperties, frag){
  			// summary: see dojo.widget.DomWidget
  
-@@ -120,7 +123,9 @@
+@@ -108,7 +114,9 @@
  			//attributes to be passed on to DatePicker
  			var dpArgs = {widgetContainerId: this.widgetId, lang: this.lang, value: this.value,
  				startDate: this.startDate, endDate: this.endDate, displayWeeks: this.displayWeeks,
