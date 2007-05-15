@@ -32,7 +32,7 @@
 +			for (var x=0; x<floatingPanes.length; x++) {
 +				if (this.widgetId != floatingPanes[x].widgetId) {
 +					var floating = floatingPanes[x];
-+					floating.bg.style.zIndex = floating.domNode.style.zIndex-1;
++					floating.shared.bg.style.zIndex = floating.domNode.style.zIndex-1;
 +				}
 +			}
 +			//disconnect on the hidden window, will be set again in show

@@ -6,7 +6,7 @@ Index: src/widget/DropdownTimePicker.js
  		//	ex: 12:00
  		value: "",
  
-+		templatePath: dojo.uri.dojoUri("src/widget/templates/TimePicker.htm"),
++		templatePath: dojo.uri.dojoUri("src/widget/templates/TimePicker.html"),
 +		templateCssPath: dojo.uri.dojoUri("src/widget/templates/TimePicker.css"),
 +
  		postMixInProperties: function() {
@@ -35,7 +35,7 @@ Index: src/widget/DropdownDatePicker.js
 +		//If true disabled the input from keyboard
 +		inputNotAllowed:false,
 +		
-+		templatePath:  dojo.uri.dojoUri("src/widget/templates/DatePicker.htm"),
++		templatePath:  dojo.uri.dojoUri("src/widget/templates/DatePicker.html"),
 +		templateCssPath:  dojo.uri.dojoUri("src/widget/templates/DatePicker.css"),
 +
  		postMixInProperties: function(localProperties, frag){
