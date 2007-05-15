@@ -24,13 +24,13 @@ import org.wicketstuff.scriptaculous.dragdrop.DraggableTarget;
  * @see http://wiki.script.aculo.us/scriptaculous/show/Sortable.create
  * @author <a href="mailto:wireframe6464@users.sourceforge.net">Ryan Sonnek</a>
  */
-public abstract class SortableContainer extends WebMarkupContainer
+public abstract class SortableListView extends WebMarkupContainer
 {
 	private AbstractAjaxBehavior onUpdateBehavior = new SortableContainerBehavior();
 	private Map options = new HashMap();
 	private final List items;
 
-	public SortableContainer(String id, String itemId, final List items)
+	public SortableListView(String id, String itemId, final List items)
 	{
 		super(id);
 		this.items = items;
