@@ -13,7 +13,6 @@ import org.wicketstuff.scriptaculous.JavascriptBuilder;
 import org.wicketstuff.scriptaculous.ScriptaculousAjaxBehavior;
 import org.wicketstuff.scriptaculous.JavascriptBuilder.JavascriptFunction;
 import org.wicketstuff.scriptaculous.effect.Effect;
-import org.wicketstuff.scriptaculous.sortable.SortableListView;
 
 
 /**

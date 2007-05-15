@@ -1,4 +1,4 @@
-package org.wicketstuff.scriptaculous.sortable;
+package org.wicketstuff.scriptaculous.dragdrop;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,7 +16,6 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.Model;
 import org.wicketstuff.scriptaculous.JavascriptBuilder;
 import org.wicketstuff.scriptaculous.ScriptaculousAjaxBehavior;
-import org.wicketstuff.scriptaculous.dragdrop.DraggableTarget;
 
 /**
  * Extension to {@link ListView} that allows for drag/drop reordering of items.
