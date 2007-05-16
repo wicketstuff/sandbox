@@ -31,11 +31,11 @@ public class CustomDnDShower extends WebPage {
 		dropContainer.add(dragContainer4);
 		dropContainer.add(dragContainer5);
 		
-		dragContainer1.add(new Image("pic1", PackageResource.get(Index.class, "pic1.jpg")));
-		dragContainer2.add(new Image("pic2", PackageResource.get(Index.class, "pic2.jpg")));
-		dragContainer3.add(new Image("pic3", PackageResource.get(Index.class, "pic3.jpg")));
-		dragContainer4.add(new Image("pic4", PackageResource.get(Index.class, "pic4.jpg")));
-		dragContainer5.add(new Image("pic5", PackageResource.get(Index.class, "pic5.jpg")));
+		dragContainer1.add(new Image("pic1", PackageResource.get(CustomDnDShower.class, "pic1.jpg")));
+		dragContainer2.add(new Image("pic2", PackageResource.get(CustomDnDShower.class, "pic2.jpg")));
+		dragContainer3.add(new Image("pic3", PackageResource.get(CustomDnDShower.class, "pic3.jpg")));
+		dragContainer4.add(new Image("pic4", PackageResource.get(CustomDnDShower.class, "pic4.jpg")));
+		dragContainer5.add(new Image("pic5", PackageResource.get(CustomDnDShower.class, "pic5.jpg")));
 	}
 	
 	/**
