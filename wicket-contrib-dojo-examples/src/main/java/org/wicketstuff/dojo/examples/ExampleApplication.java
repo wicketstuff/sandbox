@@ -16,7 +16,7 @@ public class ExampleApplication extends WebApplication {
 	 * Constructor
 	 */
 	public ExampleApplication() {
-			SkinManager.getInstance().setupSkin(new WindowsDojoSkin());
+		SkinManager.getInstance().setupSkin(new WindowsDojoSkin());
 	}
 
 	/**
