@@ -21,6 +21,7 @@ package org.wicketstuff.scriptaculous.autocomplete;
 import org.apache.wicket.RequestCycle;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.request.target.basic.StringRequestTarget;
+import org.wicketstuff.scriptaculous.Indicator;
 
 /**
  * Ajax autocomplete behavior provides an ajax callback for populating results.
@@ -60,6 +61,15 @@ public abstract class AjaxAutocompleteBehavior extends AbstractAutocompleteBehav
 	protected String getThirdAutocompleteArgument()
 	{
 		return "'" + getCallbackUrl() + "'";
+	}
+
+	/**
+	 * set an indicator to be used during ajax calls.
+	 * @param indicator
+	 */
+	public void setIndicator(Indicator indicator) 
+	{
+		addOption("indicator", indicator.getMarkupId());
 	}
 
 	public void onRequest() {

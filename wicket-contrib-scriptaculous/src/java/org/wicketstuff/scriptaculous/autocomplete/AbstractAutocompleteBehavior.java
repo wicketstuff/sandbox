@@ -1,6 +1,7 @@
 package org.wicketstuff.scriptaculous.autocomplete;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.RequestCycle;
@@ -27,7 +28,8 @@ import org.wicketstuff.scriptaculous.ScriptaculousAjaxBehavior;
 public abstract class AbstractAutocompleteBehavior extends ScriptaculousAjaxBehavior
 {
 	private static final long serialVersionUID = 1L;
-
+	private Map options = new HashMap();
+	
 	protected void onBind() {
 		super.onBind();
 
@@ -51,7 +53,7 @@ public abstract class AbstractAutocompleteBehavior extends ScriptaculousAjaxBeha
 		builder.addLine("  '" + getComponent().getMarkupId() + "', ");
 		builder.addLine("  '" + getAutocompleteId() + "', ");
 		builder.addLine("  " + getThirdAutocompleteArgument() + ", ");
-		builder.addOptions(new HashMap());
+		builder.addOptions(options);
 		builder.addLine(");");
 
 		response.write(builder.buildScriptTagString());
@@ -84,4 +86,7 @@ public abstract class AbstractAutocompleteBehavior extends ScriptaculousAjaxBeha
 	 */
 	protected abstract String getThirdAutocompleteArgument();
 
+	protected void addOption(String key, Object value) {
+		options.put(key, value);
+	}
 }
