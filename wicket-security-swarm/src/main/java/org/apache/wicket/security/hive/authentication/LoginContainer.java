@@ -43,10 +43,10 @@ public final class LoginContainer
 		if (context == null)
 			throw new LoginException("Context is required to login.");
 		if (subjects.containsKey(context))
-			throw new LoginException("Already logged in through context " + context);
+			throw new LoginException("Already logged in through this context ").setLoginContext(context);
 		Subject subject = context.login();
 		if (subject == null)
-			throw new LoginException("Login failed: " + context);
+			throw new LoginException("Login failed ").setLoginContext(context);
 		subjects.put(context, subject);
 		logins.add(context);
 		Collections.sort(logins);

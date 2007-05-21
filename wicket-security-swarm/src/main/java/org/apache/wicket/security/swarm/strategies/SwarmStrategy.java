@@ -28,7 +28,6 @@ import org.apache.wicket.security.strategies.SecurityException;
 import org.apache.wicket.security.swarm.actions.SwarmAction;
 import org.apache.wicket.security.swarm.models.SwarmModel;
 
-
 /**
  * @author marrink
  */
@@ -44,6 +43,7 @@ public class SwarmStrategy extends ClassAuthorizationStrategy
 	 * Key to the hive.
 	 */
 	private Object hiveQueen;
+
 	private LoginContainer loginContainer;
 
 	/**
@@ -62,7 +62,7 @@ public class SwarmStrategy extends ClassAuthorizationStrategy
 	{
 		super(secureClass);
 		this.hiveQueen = hiveQueen;
-		loginContainer=new LoginContainer();
+		loginContainer = new LoginContainer();
 	}
 
 	/**
@@ -81,15 +81,6 @@ public class SwarmStrategy extends ClassAuthorizationStrategy
 	protected final Subject getSubject()
 	{
 		return loginContainer.getSubject();
-	}
-
-	/**
-	 * @see org.apache.wicket.security.strategies.WaspAuthorizationStrategy#destroy()
-	 */
-	public void destroy()
-	{
-		// TODO Auto-generated method stub
-
 	}
 
 	/**
@@ -129,7 +120,8 @@ public class SwarmStrategy extends ClassAuthorizationStrategy
 	}
 
 	/**
-	 * @see org.apache.wicket.security.strategies.WaspAuthorizationStrategy#isModelAuthenticated(IModel, wicket.Component)
+	 * @see org.apache.wicket.security.strategies.WaspAuthorizationStrategy#isModelAuthenticated(IModel,
+	 *      wicket.Component)
 	 */
 	public boolean isModelAuthenticated(IModel model, Component component)
 	{
@@ -137,21 +129,21 @@ public class SwarmStrategy extends ClassAuthorizationStrategy
 	}
 
 	/**
-	 * Checks if some action is granted on the model.
-	 * Although {@link SwarmModel}s are prefered any {@link ISecureModel} can be used, in that case it uses the {@link ISecureModel#toString()} method as the name of the {@link DataPermission}
+	 * Checks if some action is granted on the model. Although {@link SwarmModel}s are
+	 * prefered any {@link ISecureModel} can be used, in that case it uses the
+	 * {@link ISecureModel#toString()} method as the name of the {@link DataPermission}
 	 * @see org.apache.wicket.security.strategies.WaspAuthorizationStrategy#isModelAuthorized(ISecureModel,
 	 *      wicket.Component, org.apache.wicket.security.actions.WaspAction)
 	 */
 	public boolean isModelAuthorized(ISecureModel model, Component component, WaspAction action)
 	{
 		DataPermission permission;
-		if(model instanceof SwarmModel)
-			permission=new DataPermission(component,(SwarmModel)model,(SwarmAction)action);
+		if (model instanceof SwarmModel)
+			permission = new DataPermission(component, (SwarmModel) model, (SwarmAction) action);
 		else
-			permission=new DataPermission(String.valueOf(model),action.getName());
-		return getHive().hasPermision(getSubject(),permission);
-		
-		
+			permission = new DataPermission(String.valueOf(model), action.getName());
+		return getHive().hasPermision(getSubject(), permission);
+
 	}
 
 	/**
@@ -159,12 +151,12 @@ public class SwarmStrategy extends ClassAuthorizationStrategy
 	 */
 	public void login(Object context) throws LoginException
 	{
-		if(context instanceof LoginContext)
+		if (context instanceof LoginContext)
 		{
-			loginContainer.login((LoginContext)context);
+			loginContainer.login((LoginContext) context);
 		}
 		else
-			throw new SecurityException("Unable to process login with context: "+context);
+			throw new SecurityException("Unable to process login with context: " + context);
 	}
 
 	/**
@@ -172,12 +164,12 @@ public class SwarmStrategy extends ClassAuthorizationStrategy
 	 */
 	public boolean logoff(Object context)
 	{
-		if(context instanceof LoginContext)
+		if (context instanceof LoginContext)
 		{
-			return loginContainer.logoff((LoginContext)context);
+			return loginContainer.logoff((LoginContext) context);
 		}
 		else
-			throw new SecurityException("Unable to process logoff with context: "+context);
+			throw new SecurityException("Unable to process logoff with context: " + context);
 	}
 
 }
