@@ -34,9 +34,12 @@ public class WicketIdCompletionComponent implements ProjectComponent {
     }
 
     public void projectOpened() {
-        final FileType fileType = FileTypeManager.getInstance().getFileTypeByExtension("html");
-        System.out.println("FileType: " + fileType.getName());
-        CompletionUtil.registerCompletionData(fileType, new WicketJavaIdCompletionData());
+        final FileType htmlFileType = FileTypeManager.getInstance().getFileTypeByExtension("html");
+        System.out.println("FileType: " + htmlFileType.getName());
+        CompletionUtil.registerCompletionData(htmlFileType, new WicketJavaIdCompletionData());
+        final FileType javaFileType = FileTypeManager.getInstance().getFileTypeByExtension("java");
+        System.out.println("FileType: " + javaFileType.getName());
+        CompletionUtil.registerCompletionData(javaFileType, new WicketHtmlIdCompletionData());
     }
 
     public void projectClosed() {

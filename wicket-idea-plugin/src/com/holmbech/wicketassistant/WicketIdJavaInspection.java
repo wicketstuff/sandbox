@@ -22,6 +22,7 @@ import com.intellij.codeInspection.LocalInspectionTool;
 import com.intellij.codeInspection.LocalQuickFix;
 import com.intellij.codeInspection.ProblemDescriptor;
 import com.intellij.codeInspection.ProblemHighlightType;
+import com.intellij.codeInspection.ex.InspectionManagerEx;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.psi.*;
 import com.intellij.psi.xml.XmlAttribute;
@@ -42,12 +43,12 @@ public class WicketIdJavaInspection extends LocalInspectionTool {
 
     @NotNull
     public String getGroupDisplayName() {
-        return "Wicket Assistent";
+        return "Wicket Assistant";
     }
 
     @NotNull
     public String getDisplayName() {
-        return "Wicket id java inspection";
+        return "Wicket ID Java Inspection";
     }
 
     @NotNull
@@ -64,7 +65,7 @@ public class WicketIdJavaInspection extends LocalInspectionTool {
         return true;
     }
 
-    public ProblemDescriptor[] checkClass(@NotNull PsiClass aClass, @NotNull InspectionManager manager, boolean isOnTheFly) {
+    public ProblemDescriptor[] checkClass(@NotNull PsiClass aClass, @NotNull InspectionManagerEx manager, boolean isOnTheFly) {
         PsiClassInitializer[] initializers = aClass.getInitializers();
         WicketIdVisitor visitor = new WicketIdVisitor(manager);
         for (int i = 0; i < initializers.length; i++) {
@@ -110,7 +111,7 @@ public class WicketIdJavaInspection extends LocalInspectionTool {
         }
 
         private void wicketIdChecker(PsiMethod constructor, PsiNewExpression expression) {
-            if (instanceOfWicketComponent(constructor.getContainingClass())) {
+            if (WicketHelper.instanceOfWicketComponent(constructor.getContainingClass())) {
                 PsiExpressionList expressionList = expression.getArgumentList();
                 if (expressionList == null) {
                     return;
@@ -163,16 +164,6 @@ public class WicketIdJavaInspection extends LocalInspectionTool {
                 }
             });
             return result[0];
-        }
-
-        private boolean instanceOfWicketComponent(PsiClass aClass) {
-            while (aClass != null && !"Object".equals(aClass.getQualifiedName())) {
-                if ("wicket.Component".equals(aClass.getQualifiedName())) {
-                    return true;
-                }
-                aClass = aClass.getSuperClass();
-            }
-            return false;
         }
     }
 }
