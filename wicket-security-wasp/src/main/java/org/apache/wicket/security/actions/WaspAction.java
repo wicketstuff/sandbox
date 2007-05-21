@@ -23,9 +23,9 @@ public interface WaspAction
 
 	/**
 	 * Creates a new WaspAction containing both the specified actions and the actions of this WaspAction. This method
-	 * always returns a new WaspAction.
+	 * must return a new WaspAction unless this action can be returned unmodified.
 	 * 
-	 * @param action
+	 * @param other the actions to add
 	 * @return a new WaspAction containing all the actions
 	 */
 	public WaspAction add(WaspAction other);

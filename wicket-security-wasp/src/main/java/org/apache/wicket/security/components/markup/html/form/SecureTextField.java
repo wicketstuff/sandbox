@@ -20,16 +20,12 @@ import org.apache.wicket.security.models.ISecureModel;
 
 /**
  * Textfield which automaticly switches between read and write mode based on the user
- * rights. By default it does not consider {@link ISecureModel}, unless the
- * {@link ISecurityCheck} is stripped.
+ * rights. By default it does not consider {@link ISecureModel}, unless told to do so by
+ * either removing the securitycheck or by using the specialized constructor.
  * @author marrink
  */
 public class SecureTextField extends TextField implements ISecureComponent
 {
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -94,7 +90,7 @@ public class SecureTextField extends TextField implements ISecureComponent
 	public SecureTextField(String id, ISecureModel model, boolean checkModel, Class type)
 	{
 		super(id, model, type);
-		setSecurityCheck(new ComponentSecurityCheck(this,checkModel));
+		setSecurityCheck(new ComponentSecurityCheck(this, checkModel));
 	}
 
 	/**

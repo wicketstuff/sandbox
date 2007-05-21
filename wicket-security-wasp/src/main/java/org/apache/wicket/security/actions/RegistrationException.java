@@ -16,10 +16,6 @@ package org.apache.wicket.security.actions;
  */
 public class RegistrationException extends Exception
 {
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	/**

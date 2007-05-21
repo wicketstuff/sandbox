@@ -14,7 +14,8 @@ import org.apache.wicket.security.strategies.WaspAuthorizationStrategy;
  * Basic security check for components. Tries to authorize the component and optionally
  * its {@link ISecureModel} if it exists. Note that this check does not automaticly
  * authenticate the user on a request for authorization, since this usually is already
- * done by {@link Page}s.
+ * done by {@link Page}s at the instantiation check.
+ * Both {@link ISecureModel} and this check need to authenticate / authorize the user before an approval is given.
  * @author marrink
  */
 public class ComponentSecurityCheck extends AbstractSecurityCheck
@@ -31,7 +32,7 @@ public class ComponentSecurityCheck extends AbstractSecurityCheck
 	/**
 	 * Constructs a ComponentSecurityCheck that never checks the model. Note that the
 	 * check still needs to be manually added to the component.
-	 * @param component the component holding this security check.
+	 * @param component the target component for this security check.
 	 * @see ISecureComponent#setSecurityCheck(ISecurityCheck)
 	 * @see SecureComponentHelper#setSecurityCheck(Component, ISecurityCheck)
 	 */
@@ -43,8 +44,8 @@ public class ComponentSecurityCheck extends AbstractSecurityCheck
 	/**
 	 * Constructs a ComponentSecurityCheck that optionally checks the model. Note that the
 	 * check still needs to be manually added to the component.
-	 * @param component the component holding this security check.
-	 * @param checkSecureModelIfExists
+	 * @param component the target component for this security check.
+	 * @param checkSecureModelIfExists forces the model to be checked after this check is fired
 	 * @see ISecureComponent#setSecurityCheck(ISecurityCheck)
 	 * @see SecureComponentHelper#setSecurityCheck(Component, ISecurityCheck)
 	 */
@@ -60,7 +61,7 @@ public class ComponentSecurityCheck extends AbstractSecurityCheck
 	/**
 	 * Checks if the user is authenticated for this component. if the model is also checked
 	 * both the model and the component need to be authenticated before we return true.
-	 * @see org.apache.wicket.security.ISecurityCheck#isAuthenticated()
+	 * @see ISecurityCheck#isAuthenticated()
 	 * @see WaspAuthorizationStrategy#isComponentAuthenticated(Component)
 	 */
 	public boolean isAuthenticated()
@@ -72,7 +73,7 @@ public class ComponentSecurityCheck extends AbstractSecurityCheck
 	}
 
 	/**
-	 * Returns the component holding this securitycheck.
+	 * Returns the target component for this securitycheck.
 	 * @return the component
 	 */
 	protected final Component getComponent()

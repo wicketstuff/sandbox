@@ -101,7 +101,7 @@ public final class SecureComponentHelper
 
 	/**
 	 * Default implementation for {@link ISecureComponent#isActionAuthorized(String)} and
-	 * {@link WaspAuthorizationStrategy#isActionAuthorized(Component, wicket.authorization.Action)}.
+	 * {@link WaspAuthorizationStrategy#isActionAuthorized(Component, org.apache.wicket.authorization.Action)}.
 	 * First tries to use the {@link ISecurityCheck} from the component if that is not
 	 * available it tries the {@link ISecureModel} if neither is present the action is
 	 * authorized on the component.
@@ -126,7 +126,7 @@ public final class SecureComponentHelper
 	/**
 	 * Default implementation for
 	 * {@link ISecureComponent#isActionAuthorized(AbstractWaspAction)} and
-	 * {@link WaspAuthorizationStrategy#isActionAuthorized(Component, wicket.authorization.Action)}.
+	 * {@link WaspAuthorizationStrategy#isActionAuthorized(Component, org.apache.wicket.authorization.Action)}.
 	 * First tries to use the {@link ISecurityCheck} from the component if that is not
 	 * available it tries the {@link ISecureModel} if neither is present the action is
 	 * authorized on the component.
@@ -172,7 +172,7 @@ public final class SecureComponentHelper
 	 * and the relativepath to the page (if not a page itself). Note that although it is
 	 * unlikely, it is not impossible for two components to have the same alias.
 	 * @param component
-	 * @return a name.
+	 * @return an alias.
 	 * @throws SecurityException if the component is null, or if the page of the component is not available.
 	 */
 	public static String alias(Component component)
@@ -199,7 +199,7 @@ public final class SecureComponentHelper
 	/**
 	 * Builds an alias for a class.
 	 * @param class1
-	 * @return
+	 * @return an alias
 	 */
 	public static String alias(Class class1)
 	{

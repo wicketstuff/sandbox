@@ -17,7 +17,7 @@ import org.apache.wicket.markup.html.link.Link;
 
 /**
  * the right to enable a component. For {@link Link} this means click on it, for a
- * {@link Form} submit it, for a {@link TextField} write to it, etc. Enable implies
+ * {@link Form} submit it, for a {@link TextField} write to it, etc. Enable must implie
  * {@link Render}
  * @author marrink
  * @see Action#ENABLE

@@ -77,7 +77,7 @@ public class GeneralTest extends TestCase
 
 		public void destroy()
 		{
-
+			super.destroy();
 		}
 
 		public boolean isClassAuthenticated(Class clazz)

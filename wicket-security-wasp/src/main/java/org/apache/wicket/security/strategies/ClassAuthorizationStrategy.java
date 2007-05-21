@@ -9,7 +9,9 @@ package org.apache.wicket.security.strategies;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -19,22 +21,15 @@ import org.apache.wicket.security.checks.ISecurityCheck;
 import org.apache.wicket.security.components.ISecureComponent;
 import org.apache.wicket.security.components.ISecurePage;
 
-
 /**
  * Authorization strategy to enforce security at the construction of components rather
  * then at render time. Note that it always requires a valid login, failing this condition
  * will cause a redirect to the login page as defined in the application rather then
  * returning false which will cause wicket to go to the accessdenied page. This class
- * operates by checking if the supplied class or any of its superclasses have static
+ * operates by checking if the supplied class or any of its superclasses have static final
  * fields of type ISecurityCheck. It then calls each of them with an Access action, if any
- * one of them fails the class is not allowed to instantiate. Note that this
- * implementation only allows you to go as deep as ISecureComponent because there is no
- * point in checking every Component if the strategy does not provide someway of allowing
- * all components on the loginpage to be constructed. In fact even IsecureComponent is
- * questionable because you would most likely have to grant access rights to the class of
- * the secure component thereby making it completely irrelevant on what page the component
- * is located. Therefore the most sensible and default is to check instances of
- * ISecurePage (or subclasses).
+ * one of them fails the class is not allowed to instantiate. Note that this strategy only
+ * checks (sub)classes of {@link ISecureComponent}.
  * @author marrink
  */
 public abstract class ClassAuthorizationStrategy extends WaspAuthorizationStrategy
@@ -51,13 +46,20 @@ public abstract class ClassAuthorizationStrategy extends WaspAuthorizationStrate
 	 */
 	private Class secureClass = ISecurePage.class;
 
+	private Map cache = new HashMap(100); // guess
+
+	/**
+	 * Creates a strategy that checks all implementations of {@link ISecurePage}. All
+	 * other classes are granted instantiation rights.
+	 */
 	public ClassAuthorizationStrategy()
 	{
 		super();
 	}
 
 	/**
-	 * Creates a strategy that checks all implementations of the supplied class.
+	 * Creates a strategy that checks all implementations of the supplied class. All other
+	 * classes are granted instantiation rights.
 	 * @param secureClass an {@link ISecureComponent} (sub)class.
 	 */
 	public ClassAuthorizationStrategy(Class secureClass)
@@ -101,17 +103,24 @@ public abstract class ClassAuthorizationStrategy extends WaspAuthorizationStrate
 	}
 
 	/**
-	 * Returns the static {@link ISecurityCheck}s of a class.
+	 * Returns the static {@link ISecurityCheck}s of a class. Note that found checks are
+	 * cached therefore all checks should be final.
 	 * @param clazz
 	 * @return an array containing all the {@link ISecurityCheck} of this class and all
 	 *         its superclasses, or an array of length 0 if none is found.
 	 */
 	protected final ISecurityCheck[] getClassChecks(Class clazz)
 	{
+		ISecurityCheck[] checks = (ISecurityCheck[]) cache.get(clazz);
+		if (checks != null)
+			return checks;
 		List list = getClassChecks(clazz, new ArrayList());
 		if (list == null)
-			return new ISecurityCheck[0];
-		return (ISecurityCheck[]) list.toArray(new ISecurityCheck[list.size()]);
+			checks = new ISecurityCheck[0];
+		else
+			checks = (ISecurityCheck[]) list.toArray(new ISecurityCheck[list.size()]);
+		cache.put(clazz, checks);
+		return checks;
 	}
 
 	/**
@@ -129,6 +138,7 @@ public abstract class ClassAuthorizationStrategy extends WaspAuthorizationStrate
 			for (int i = 0; i < fields.length; i++)
 			{
 				if (Modifier.isStatic(fields[i].getModifiers())
+						&& Modifier.isFinal(fields[i].getModifiers())
 						&& ISecurityCheck.class.isAssignableFrom(fields[i].getType()))
 				{
 					try
@@ -171,5 +181,13 @@ public abstract class ClassAuthorizationStrategy extends WaspAuthorizationStrate
 		if (field == null)
 			return "unable to process unknown field";
 		return "Unable to process " + field.getDeclaringClass().getName() + "#" + field.getName();
+	}
+
+	/**
+	 * @see org.apache.wicket.security.strategies.WaspAuthorizationStrategy#destroy()
+	 */
+	public void destroy()
+	{
+		cache.clear();
 	}
 }
