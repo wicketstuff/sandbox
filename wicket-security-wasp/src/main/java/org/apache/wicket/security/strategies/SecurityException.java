@@ -16,10 +16,6 @@ package org.apache.wicket.security.strategies;
  */
 public class SecurityException extends RuntimeException
 {
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	/**

@@ -23,6 +23,7 @@ import org.apache.wicket.security.models.ISecureModel;
 
 
 /**
+ * Base class for every strategy.
  * Checks Authorization and authentication at the class, component and model levels.
  * 
  * @author marrink
@@ -48,8 +49,8 @@ public abstract class WaspAuthorizationStrategy implements IAuthorizationStrateg
 	
 	/**
 	 * Performs the actual authorization check on the component class.
-	 * @param clazz
-	 * @param action
+	 * @param clazz typically a component
+	 * @param action the action to check
 	 * @return true if authorized, false otherwise
 	 */
 	public abstract boolean isClassAuthorized(Class clazz, WaspAction action);
@@ -59,7 +60,15 @@ public abstract class WaspAuthorizationStrategy implements IAuthorizationStrateg
 	 * @return true if the user is authenticated, false otherwise
 	 */
 	public abstract boolean isComponentAuthenticated(Component component);
+	/**
+	 * Performs the authentication check.
+	 * @return true if the user is authenticated, false otherwise
+	 */
 	public abstract boolean isModelAuthenticated(IModel model, Component component);
+	/**
+	 * Performs the authentication check.
+	 * @return true if the user is authenticated, false otherwise
+	 */
 	public abstract boolean isClassAuthenticated(Class clazz);
 
 	/**

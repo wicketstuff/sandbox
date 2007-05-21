@@ -17,7 +17,7 @@ import org.apache.wicket.security.checks.ISecurityCheck;
 
 
 /**
- * Some methods for secure components to easier get a hold of the securitycheck. components not implementing this
+ * Some methods for secure components to easier get a hold of the securitycheck. Components not implementing this
  * interface can still get or set a securitycheck on them with the {@link SecureComponentHelper}. implementations should as default use
  * these methods to wrap the calls to {@link SecureComponentHelper}, although classes like {@link IAuthorizationStrategy} should not depend on
  * this behaviour.
@@ -42,7 +42,7 @@ public interface ISecureComponent extends Serializable
 	 * Subclasses can use the default implementation in SecureComponentHelper.
 	 * @param waspAction
 	 * @return true if the action is allowed, false otherwise.
-	 * @see wicket.Component#isActionAuthorized(wicket.authorization.Action)
+	 * @see Component#isActionAuthorized(org.apache.wicket.authorization.Action)
 	 * @see SecureComponentHelper#isActionAuthorized(Component, String)
 	 */
 	public boolean isActionAuthorized(String waspAction);
@@ -51,8 +51,8 @@ public interface ISecureComponent extends Serializable
 	 * Subclasses can use the default implementation in SecureComponentHelper.
 	 * @param action
 	 * @return true if the action is allowed, false otherwise.
-	 * @see wicket.Component#isActionAuthorized(wicket.authorization.Action)
-	 * @see SecureComponentHelper#isActionAuthorized(Component, JaasAction)
+	 * @see Component#isActionAuthorized(org.apache.wicket.authorization.Action)
+	 * @see SecureComponentHelper#isActionAuthorized(Component, AbstractWaspAction)
 	 */
 	public boolean isActionAuthorized(AbstractWaspAction action);
 	/**

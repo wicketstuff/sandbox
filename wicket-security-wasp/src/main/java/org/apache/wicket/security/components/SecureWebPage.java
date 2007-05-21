@@ -18,10 +18,9 @@ import org.apache.wicket.security.checks.ComponentSecurityCheck;
 import org.apache.wicket.security.checks.ISecurityCheck;
 import org.apache.wicket.security.strategies.ClassAuthorizationStrategy;
 
-
 /**
- * Basic implementation of a SecureWebPage. Note that any checks added to this page are
- * too late to be considered for
+ * Basic implementation of a SecureWebPage. Note that any check added to this page using
+ * {@link #setSecurityCheck(ISecurityCheck)} is too late to be considered for
  * {@link IAuthorizationStrategy#isInstantiationAuthorized(Class)} so please check your
  * wasp implementation for details on how to do that. Or see
  * {@link ClassAuthorizationStrategy} for one way of doing it.

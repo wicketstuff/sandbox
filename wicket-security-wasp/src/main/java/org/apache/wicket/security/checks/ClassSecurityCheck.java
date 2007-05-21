@@ -9,34 +9,23 @@
  */
 package org.apache.wicket.security.checks;
 
-import org.apache.wicket.Page;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.security.WaspApplication;
 import org.apache.wicket.security.actions.AbstractWaspAction;
 import org.apache.wicket.security.actions.WaspAction;
+import org.apache.wicket.security.strategies.ClassAuthorizationStrategy;
 import org.apache.wicket.security.strategies.WaspAuthorizationStrategy;
 
-
 /**
- * Default instantiation check for any type of class. to use it create a static field on
- * the class you want to check. <code>
- * public class MyPage extends WebPage
- * {
- * 	private static ISecurityCheck classCheck=new ClassSecurityCheck(MyPage.class);
- * 	.....
- * 	rest of code here
- * }
- * </code>
- * Note that although it works on any class you should hardly ever need it on anything
- * other than a {@link Page}.
- * Also note that errorpages should not be outfitted with a securitycheck such as this that checks for instantiation.
+ * Default instantiation check for any type of class. This is used by
+ * {@link ClassAuthorizationStrategy} to test for instantiation rights. But you can use it
+ * yourself to for any kind of action. Note that errorpages should not be outfitted with a
+ * securitycheck such as this that checks for instantiation.
  * @author marrink
+ * @see ClassAuthorizationStrategy
  */
 public class ClassSecurityCheck extends AbstractSecurityCheck
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	private Class clazz;
@@ -54,6 +43,7 @@ public class ClassSecurityCheck extends AbstractSecurityCheck
 	}
 
 	/**
+	 * The class to check against.
 	 * @return Returns the clazz.
 	 */
 	public Class getClazz()
@@ -64,12 +54,13 @@ public class ClassSecurityCheck extends AbstractSecurityCheck
 	/**
 	 * Checks if the user is authorized for the action. special permission is given to the
 	 * loginpage, which is always authorized. If the user is not authenticated he is
-	 * redirected to the login page. Redirects to the strategy if the user is
-	 * authenticated.
+	 * redirected to the login page. Redirects the authorization check to the strategy if
+	 * the user is authenticated.
 	 * @return true if the user is authenticated and authorized, false otherwise.
 	 * @see org.apache.wicket.security.checks.ISecurityCheck#isActionAuthorized(org.apache.wicket.security.actions.AbstractWaspAction)
 	 * @see WaspApplication#getLoginPage()
 	 * @see WaspAuthorizationStrategy#isClassAuthorized(Class, AbstractWaspAction)
+	 * @throws RestartResponseAtInterceptPageException if the user is not authenticated.
 	 */
 	public boolean isActionAuthorized(WaspAction action)
 	{

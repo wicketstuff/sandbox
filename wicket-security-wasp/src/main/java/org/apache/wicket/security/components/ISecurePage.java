@@ -10,7 +10,7 @@ import org.apache.wicket.authorization.IAuthorizationStrategy;
 
 /**
  * Tagging interface, could be used by an {@link IAuthorizationStrategy} to check if this
- * class is authorized for instantiation.
+ * class should be checked for instantiation.
  * @author marrink
  */
 public interface ISecurePage extends ISecureComponent

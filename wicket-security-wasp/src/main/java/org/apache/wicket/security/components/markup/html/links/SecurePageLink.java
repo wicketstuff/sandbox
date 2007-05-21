@@ -17,14 +17,10 @@ import org.apache.wicket.security.checks.ISecurityCheck;
 import org.apache.wicket.security.components.ISecureComponent;
 import org.apache.wicket.security.components.SecureComponentHelper;
 
-
 /**
- * Pagelink with visibility / clickability based on user rights. Requires read rights to
- * be visible, and execute rights to be clickable. Note that the target of the link is
- * checked not the link itself. So you probably also want to grant access rights to the
- * target or you might risk not being able to instantiate the page. Instantiation rights
- * for the link are offcourse checked on the link itself, this is usually handled by
- * inherited rights on the page containing the link.
+ * Pagelink with visibility / clickability based on user rights. Requires render rights to
+ * be visible, and enable rights to be clickable. Note that the target of the link is
+ * checked not the link itself.
  * @author marrink
  * @see ClassSecurityCheck
  */

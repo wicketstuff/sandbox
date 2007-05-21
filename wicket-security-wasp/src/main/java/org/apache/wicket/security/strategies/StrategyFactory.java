@@ -1,5 +1,5 @@
 /*
- * $Id: JaasStrategyFactory.java,v 1.1 2006/06/28 10:00:16 Marrink Exp $ $Revision: 1.1 $ $Date: 2006/06/28 10:00:16 $
+ * $Id: StrategyFactory.java,v 1.1 2006/06/28 10:00:16 Marrink Exp $ $Revision: 1.1 $ $Date: 2006/06/28 10:00:16 $
  * ============================================================================== Licensed under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy
  * of the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required by applicable law or agreed to in
@@ -10,23 +10,22 @@
 
 package org.apache.wicket.security.strategies;
 
-
-
 /**
- * Factory to provide a strategy for each wicket session.
- * 
+ * Factory to provide a strategy for each wicket session. Typically each sesion will hold
+ * his own instance of a strategy, but some implementation may choose to provide one
+ * instance for multiple sessions.
  * @author marrink
  */
 public interface StrategyFactory
 {
 	/**
 	 * Create a new Strategy.
-	 * @return
+	 * @return the strategy
 	 */
 	public WaspAuthorizationStrategy newStrategy();
+
 	/**
 	 * Called at the end of the applications lifecycle to clean up resources
-	 *
 	 */
 	public void destroy();
 

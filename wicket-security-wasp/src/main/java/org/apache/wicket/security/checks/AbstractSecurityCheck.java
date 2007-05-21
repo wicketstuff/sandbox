@@ -15,7 +15,9 @@ import org.apache.wicket.security.strategies.WaspAuthorizationStrategy;
 
 /**
  * Basic check providing some utility methods.
+ * 
  * @author marrink
+ * @see ISecurityCheck
  */
 public abstract class AbstractSecurityCheck implements ISecurityCheck
 {

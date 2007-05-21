@@ -11,6 +11,7 @@ import org.apache.wicket.authorization.Action;
 /**
  * The actionFactory translates between the wicket actions, which are string based, and
  * the waspactions, which are based on something else (depending on the implementation).
+ * Swarm for instance uses bitwise or to handle implies checks.
  * @author marrink
  */
 public interface ActionFactory
@@ -32,18 +33,18 @@ public interface ActionFactory
 	public WaspAction getAction(String actions);
 
 	/**
-	 * Register a new action. By default Access, Inherit, Render and Enable are already
+	 * Register a new action. By default {@link Access}, {@link Inherit}, {@link Render} and {@link Enable} are already
 	 * registered
-	 * @param waspActionClass
-	 * @param name
-	 * @return the action
+	 * @param waspActionClass the class of the action to register (must be subclass of {@link WaspAction}
+	 * @param name the name to register the action with
+	 * @return an instance of the registered action
 	 * @throws RegistrationException if the action cannot be registered
 	 */
 	public WaspAction register(Class waspActionClass, String name) throws RegistrationException;
 
 	/**
 	 * Returns the registered action of this class.
-	 * @param waspActionClass
+	 * @param waspActionClass a subclass of {@link WaspAction}
 	 * @return a new or reused instance of this class
 	 * @throws IllegalArgumentException if the class is not registered.
 	 */
