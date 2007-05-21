@@ -1,15 +1,15 @@
 package org.wicketstuff.yui.markup.html.anim;
 
 import org.apache.wicket.markup.html.basic.Label;
-
-import org.wicketstuff.yui.markup.html.AbstractYuiPanel;
+import org.apache.wicket.markup.html.panel.Panel;
+import org.wicketstuff.yui.YuiHeaderContributor;
 
 /**
  * An AnimLabel contains the option's value
  * 
  * @author cptan
  */
-public class AnimLabel extends AbstractYuiPanel {
+public class AnimLabel extends Panel {
 
 	private static final long serialVersionUID = 1L;
 
@@ -23,6 +23,7 @@ public class AnimLabel extends AbstractYuiPanel {
 	 */
 	public AnimLabel(String id, String text) {
 		super(id);
+		add(YuiHeaderContributor.forModule("animation"));
 		add(new Label("label", text));
 	}
 }

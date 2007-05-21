@@ -12,6 +12,7 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.util.template.PackagedTextTemplate;
+import org.wicketstuff.yui.YuiHeaderContributor;
 
 /**
  * An AnimGroup groups the options
@@ -49,7 +50,7 @@ public class AnimGroup extends WebMarkupContainer {
 	public AnimGroup(String id, AnimSettings settings,
 			final FormComponent element) {
 		super(id);
-
+		add(YuiHeaderContributor.forModule("animation"));
 		this.animOptionList = settings.getAnimOptionList();
 		this.easing = settings.getEasing();
 		this.duration = settings.getDuration();

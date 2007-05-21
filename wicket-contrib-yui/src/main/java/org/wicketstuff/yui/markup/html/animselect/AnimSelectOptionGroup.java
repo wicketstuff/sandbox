@@ -8,6 +8,7 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.util.template.PackagedTextTemplate;
+import org.wicketstuff.yui.YuiHeaderContributor;
 
 /**
  * Grouping of the options
@@ -37,7 +38,7 @@ public class AnimSelectOptionGroup extends WebMarkupContainer {
 	 */
 	public AnimSelectOptionGroup(String id, AnimSelectSettings settings) {
 		super(id);
-
+		add(YuiHeaderContributor.forModule("animation"));
 		this.animSelectOptionList = settings.getAnimSelectOptionList();
 		this.easing = settings.getEasing();
 		this.duration = settings.getDuration();

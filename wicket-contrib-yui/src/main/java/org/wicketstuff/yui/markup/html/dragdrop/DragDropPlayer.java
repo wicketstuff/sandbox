@@ -3,14 +3,15 @@ package org.wicketstuff.yui.markup.html.dragdrop;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.wicket.behavior.HeaderContributor;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.util.template.PackagedTextTemplate;
-
+import org.wicketstuff.yui.YuiHeaderContributor;
 import org.wicketstuff.yui.YuiImage;
-import org.wicketstuff.yui.markup.html.AbstractYuiPanel;
 
-public class DragDropPlayer extends AbstractYuiPanel {
+public class DragDropPlayer extends Panel {
 
 	private static final long serialVersionUID = 1L;
 
@@ -25,6 +26,8 @@ public class DragDropPlayer extends AbstractYuiPanel {
 	public DragDropPlayer(final String id, final int index, YuiImage slot,
 			DragDropSettings settings) {
 		super(id);
+		add(YuiHeaderContributor.forModule("dragdrop"));
+		add(HeaderContributor.forJavaScript(DragDropPlayer.class, "DDPlayer.js"));
 		this.index = index;
 		this.slot = slot;
 		this.settings = settings;

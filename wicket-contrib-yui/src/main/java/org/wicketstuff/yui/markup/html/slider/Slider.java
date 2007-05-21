@@ -22,12 +22,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.ResourceReference;
 import org.apache.wicket.behavior.HeaderContributor;
 import org.apache.wicket.markup.html.IHeaderContributor;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.image.Image;
+import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -35,7 +37,7 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.util.template.TextTemplateHeaderContributor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.wicketstuff.yui.markup.html.AbstractYuiPanel;
+import org.wicketstuff.yui.YuiHeaderContributor;
 
 
 /**
@@ -44,8 +46,11 @@ import org.wicketstuff.yui.markup.html.AbstractYuiPanel;
  * @author Eelco Hillenius
  * @author Joshua Lim
  */
-public class Slider extends AbstractYuiPanel implements IHeaderContributor {
+public class Slider extends Panel implements IHeaderContributor {
 	private static final long serialVersionUID = 1L;
+	
+	/** Ref to CSS file */
+	private static final ResourceReference CSS = new ResourceReference(Slider.class, "css/slider.css");
 
 	/**
 	 * The id of the background element.
@@ -76,7 +81,8 @@ public class Slider extends AbstractYuiPanel implements IHeaderContributor {
 			final SliderSettings settings) {
 		super(id, model);
 
-		add(HeaderContributor.forCss(Slider.class, "css/slider.css"));
+		add(YuiHeaderContributor.forModule("slider"));
+		add(HeaderContributor.forCss(getCSS()));
 
 		/*
 		 * default settings if null
@@ -288,4 +294,9 @@ public class Slider extends AbstractYuiPanel implements IHeaderContributor {
 			javaScriptId = backgroundElementId + "JS";
 		}
 	}
+
+    protected ResourceReference getCSS()
+    {
+        return CSS;
+    }
 }
