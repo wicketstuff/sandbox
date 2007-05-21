@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -49,7 +48,7 @@ public class SwarmActionFactory implements ActionFactory
 	/**
 	 * cache that maps ints to actions and Strings to actions
 	 */
-	private ConcurrentHashMap cachedActions = new ConcurrentHashMap();
+	private Map cachedActions = new HashMap();
 	/**
 	 * Maps ints to actions. and classes to actions.
 	 */
@@ -115,7 +114,7 @@ public class SwarmActionFactory implements ActionFactory
 	 * @param name
 	 * @param action
 	 */
-	protected final void cacheAction(String name, SwarmAction action)
+	protected synchronized final void cacheAction(String name, SwarmAction action)
 	{
 		cachedActions.put(name, action);
 	}
@@ -125,7 +124,7 @@ public class SwarmActionFactory implements ActionFactory
 	 * @param name
 	 * @return the cached action or null.
 	 */
-	protected final SwarmAction getCachedAction(String name)
+	protected synchronized final SwarmAction getCachedAction(String name)
 	{
 		return (SwarmAction) cachedActions.get(name);
 	}
@@ -152,7 +151,7 @@ public class SwarmActionFactory implements ActionFactory
 	 * @param actions
 	 * @param ja
 	 */
-	protected void cacheAction(Integer actions, SwarmAction ja)
+	protected synchronized void cacheAction(Integer actions, SwarmAction ja)
 	{
 		cachedActions.put(actions, ja);
 	}
@@ -162,7 +161,7 @@ public class SwarmActionFactory implements ActionFactory
 	 * @param actions
 	 * @return the cached action or null.
 	 */
-	protected SwarmAction getCachedAction(int actions)
+	protected synchronized SwarmAction getCachedAction(int actions)
 	{
 		return (SwarmAction) cachedActions.get(new Integer(actions));
 	}
