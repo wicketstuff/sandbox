@@ -4,13 +4,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.util.template.PackagedTextTemplate;
-
+import org.wicketstuff.yui.YuiHeaderContributor;
 import org.wicketstuff.yui.YuiImage;
-import org.wicketstuff.yui.markup.html.AbstractYuiPanel;
 
-public class DragDropDragableSlot extends AbstractYuiPanel {
+public class DragDropDragableSlot extends Panel {
 
 	private static final long serialVersionUID = 1L;
 	private int index;
@@ -22,6 +22,7 @@ public class DragDropDragableSlot extends AbstractYuiPanel {
 	public DragDropDragableSlot(final String id, final int index,
 			YuiImage slot, DragDropSettings settings) {
 		super(id);
+		add(YuiHeaderContributor.forModule("dragdrop"));
 		this.index = index;
 		this.slot = slot;
 		this.settings = settings;

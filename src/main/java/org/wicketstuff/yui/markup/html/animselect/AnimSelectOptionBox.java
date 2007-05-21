@@ -8,19 +8,19 @@ import java.util.Map;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.FormComponent;
+import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.util.template.PackagedTextTemplate;
-
 import org.wicketstuff.yui.InlineStyle;
+import org.wicketstuff.yui.YuiHeaderContributor;
 import org.wicketstuff.yui.YuiImage;
-import org.wicketstuff.yui.markup.html.AbstractYuiPanel;
 
 /**
  * Represent each options
  * 
  * @author cptan
  */
-public class AnimSelectOptionBox extends AbstractYuiPanel {
+public class AnimSelectOptionBox extends Panel {
 
 	/**
 	 * Represent one of the images for each option
@@ -130,6 +130,7 @@ public class AnimSelectOptionBox extends AbstractYuiPanel {
 	public AnimSelectOptionBox(String id, final int index,
 			AnimSelectOption animSelectOption, AnimSelectSettings settings) {
 		super(id);
+		add(YuiHeaderContributor.forModule("animation"));
 		this.settings = settings;
 		this.easing = settings.getEasing();
 		this.duration = settings.getDuration();

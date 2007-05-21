@@ -6,21 +6,24 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.ResourceReference;
+import org.apache.wicket.behavior.HeaderContributor;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.FormComponent;
+import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.markup.html.resources.CompressedResourceReference;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.util.template.PackagedTextTemplate;
-
 import org.wicketstuff.yui.InlineStyle;
+import org.wicketstuff.yui.YuiHeaderContributor;
 import org.wicketstuff.yui.YuiImage;
-import org.wicketstuff.yui.markup.html.AbstractYuiPanel;
 
 /**
  * 
  * @author cptan
  * 
  */
-public class SortBox extends AbstractYuiPanel {
+public class SortBox extends Panel {
 
 	/**
 	 * Get the box's style
@@ -87,6 +90,8 @@ public class SortBox extends AbstractYuiPanel {
 		}
 	}
 
+	private static final ResourceReference DDSWAP = new CompressedResourceReference(SortBox.class, "DDSwap.js");
+	
 	private static final long serialVersionUID = 1L;
 
 	private String javaScriptId;
@@ -110,6 +115,9 @@ public class SortBox extends AbstractYuiPanel {
 	public SortBox(String id, final int index, YuiImage image,
 			SortSettings settings) {
 		super(id);
+		add(YuiHeaderContributor.forModule("dragdrop"));
+		add(HeaderContributor.forJavaScript(getDDSWAP()));
+		
 		this.settings = settings;
 		mode = settings.getMode();
 
@@ -162,4 +170,9 @@ public class SortBox extends AbstractYuiPanel {
 		super.onAttach();
 		javaScriptId = findParent(SortGroup.class).getMarkupId();
 	}
+
+    protected ResourceReference getDDSWAP()
+    {
+        return DDSWAP;
+    }
 }

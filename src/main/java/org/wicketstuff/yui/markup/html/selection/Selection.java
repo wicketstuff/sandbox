@@ -13,16 +13,17 @@ import org.apache.wicket.markup.html.basic.MultiLineLabel;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.util.template.PackagedTextTemplate;
-
 import org.wicketstuff.yui.InlineStyle;
 import org.wicketstuff.yui.YuiAttribute;
+import org.wicketstuff.yui.YuiHeaderContributor;
 import org.wicketstuff.yui.YuiImage;
 import org.wicketstuff.yui.YuiTextBox;
-import org.wicketstuff.yui.markup.html.AbstractYuiPanel;
 
-public class Selection extends AbstractYuiPanel {
+public class Selection extends Panel {
+    
 	private final class SelectionBox extends FormComponent implements
 			Serializable {
 		private static final long serialVersionUID = 1L;
@@ -90,6 +91,7 @@ public class Selection extends AbstractYuiPanel {
 
 	public Selection(String id, final SelectionSettings settings) {
 		super(id);
+		add(YuiHeaderContributor.forModule("animation"));
 		add(HeaderContributor.forCss(Selection.class, "css/style.css"));
 
 		this.elementId = id;
