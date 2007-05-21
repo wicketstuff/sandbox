@@ -65,7 +65,6 @@ public class HiveTest extends TestCase
 		
 		hive.addPermission(new EverybodyPrincipal(), new TestPermission("test","read, write"));
 		assertTrue(hive.hasPermision(null, new TestPermission("test","read")));
-		assertTrue("read, write".contains(""));
 		assertTrue(hive.hasPermision(null, new TestPermission("test")));
 	}
 }
