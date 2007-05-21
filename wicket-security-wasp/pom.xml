@@ -137,7 +137,7 @@
 						</classpathContainers>
 					</configuration>
 				</plugin>
-				<plugin>
+	<!-- 			<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-clover-plugin</artifactId>
 					<configuration>
@@ -165,17 +165,17 @@
 							</goals>
 						</execution>
 					</executions>
-				</plugin>
+				</plugin>	-->
 			</plugins>
 		</pluginManagement>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 			</plugin>
-			<plugin>
+		<!-- 	<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-clover-plugin</artifactId>
-			</plugin>
+			</plugin>	-->
 		</plugins>
 	</build>
 
@@ -227,7 +227,7 @@
 					</reportSet>
 				</reportSets>
 			</plugin>
-			<plugin>
+		<!-- 	<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-clover-plugin</artifactId>
 				<configuration>
@@ -238,7 +238,7 @@
 						<exclude>**/*Exception.java</exclude>
 					</excludes>
 				</configuration>
-			</plugin>
+			</plugin>	-->
 		</plugins>
 	</reporting>
 </project>
