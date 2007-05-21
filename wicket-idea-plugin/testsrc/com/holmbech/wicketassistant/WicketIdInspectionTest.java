@@ -17,6 +17,7 @@
 package com.holmbech.wicketassistant;
 
 import com.intellij.codeInspection.ProblemDescriptor;
+import com.intellij.codeInspection.InspectionManager;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleManager;
 import com.intellij.psi.PsiClass;

@@ -22,7 +22,6 @@ import com.intellij.codeInspection.LocalInspectionTool;
 import com.intellij.codeInspection.LocalQuickFix;
 import com.intellij.codeInspection.ProblemDescriptor;
 import com.intellij.codeInspection.ProblemHighlightType;
-import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiExpression;
 import com.intellij.psi.PsiExpressionList;
@@ -43,14 +42,18 @@ import java.util.List;
  */
 public class WicketIdHtmlInspection extends LocalInspectionTool {
 
+    public WicketIdHtmlInspection() {
+        super();
+    }
+
     @NotNull
     public String getGroupDisplayName() {
-        return "Wicket Assistent";
+        return "Wicket Assistant";
     }
 
     @NotNull
     public String getDisplayName() {
-        return "Wicket id Html inspection";
+        return "Wicket ID HTML Inspection";
     }
 
     @NotNull
@@ -68,13 +71,15 @@ public class WicketIdHtmlInspection extends LocalInspectionTool {
     }
 
     @SuppressWarnings("unchecked")
-    public ProblemDescriptor[] checkFile(@NotNull PsiFile file, @NotNull InspectionManager manager, boolean isOnTheFly) {
+    public ProblemDescriptor[] checkFile(@NotNull PsiFile file,
+        @NotNull InspectionManager manager, boolean isOnTheFly) {
+        
         WicketIdHtmlInspection.WicketIdVisitor idVisitor = new WicketIdHtmlInspection.WicketIdVisitor(manager);
         file.accept(idVisitor);
         return idVisitor.problems.toArray(new ProblemDescriptor[idVisitor.problems.size()]);
     }
 
-    private static class WicketIdVisitor extends PsiRecursiveElementVisitor {
+    private class WicketIdVisitor extends PsiRecursiveElementVisitor {
         public List<ProblemDescriptor> problems = new ArrayList<ProblemDescriptor>();
         private InspectionManager manager;
 
@@ -121,52 +126,56 @@ public class WicketIdHtmlInspection extends LocalInspectionTool {
                 return false;
             }
 
-            final boolean[] result = new boolean[]{false};
-            javaFile.accept(new PsiRecursiveElementVisitor() {
-                public void visitReferenceExpression(PsiReferenceExpression expression) {
-                    super.visitReferenceExpression(expression);
-                }
+            HtmlElementVisitor visitor = new HtmlElementVisitor(htmlWicketId, new boolean[]{false});
+            javaFile.accept(visitor);
+            return visitor.getResult()[0];
+        }
+    }
 
-                public void visitNewExpression(PsiNewExpression expression) {
-                    super.visitNewExpression(expression);
-                    PsiMethod constructor = expression.resolveConstructor();
-                    if (constructor == null || !constructor.getContainingFile().isPhysical()) {
-                        return;
-                    }
-                    
-                    if (instanceOfWicketComponent(constructor.getContainingClass())) {
-                        PsiExpressionList expressionList = expression.getArgumentList();
-                        if (expressionList == null) {
-                            return;
-                        }
+    private class HtmlElementVisitor extends PsiRecursiveElementVisitor {
 
-                        final PsiExpression[] psiExpressions = expressionList.getExpressions();
-                        if (psiExpressions.length > 0) {
-                            PsiExpression idElement = psiExpressions[0];
-                            int length = idElement.getText().length();
-                            if (length > 0) {
-                                String theWicketId = idElement.getText().substring(1, length - 1);
-                                if (theWicketId != null && htmlWicketId.equals(theWicketId)) {
-                                    result[0] = true;
-                                }
-                            }
-                        }
-                    }
-                }
-            });
-            return result[0];
+        private String htmlWicketId;
+        private boolean[] result;
+
+        public HtmlElementVisitor(String htmlWicketId, boolean[] result) {
+            this.htmlWicketId = htmlWicketId;
+            this.result = result;
         }
 
-        private boolean instanceOfWicketComponent(PsiClass aClass) {
-            while (aClass != null && !"Object".equals(aClass.getQualifiedName())) {
-                if ("wicket.Component".equals(aClass.getQualifiedName())) {
-                    return true;
-                }
-                aClass = aClass.getSuperClass();
+        public void visitReferenceExpression(PsiReferenceExpression expression) {
+            super.visitReferenceExpression(expression);
+        }
+
+        public void visitNewExpression(PsiNewExpression expression) {
+            super.visitNewExpression(expression);
+            PsiMethod constructor = expression.resolveConstructor();
+            if (constructor == null || !constructor.getContainingFile().isPhysical()) {
+                return;
             }
-            return false;
+
+            if (WicketHelper.instanceOfWicketComponent(constructor.getContainingClass())) {
+                PsiExpressionList expressionList = expression.getArgumentList();
+                if (expressionList == null) {
+                    return;
+                }
+
+                final PsiExpression[] psiExpressions = expressionList.getExpressions();
+                if (psiExpressions.length > 0) {
+                    PsiExpression idElement = psiExpressions[0];
+                    int length = idElement.getText().length();
+                    if (length > 0) {
+                        String theWicketId = idElement.getText().substring(1, length - 1);
+                        if (theWicketId != null && htmlWicketId.equals(theWicketId)) {
+                            result[0] = true;
+                        }
+                    }
+                }
+            }
         }
 
+        public boolean[] getResult() {
+            return result;
+        }
 
     }
 }

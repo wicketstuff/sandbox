@@ -162,27 +162,30 @@ public class WicketHelper {
         }
 
         /**
-         * Looks through the object hierachy to see it the object or one of its fathers is extending
-         * a wicket.Component object. If so we have a winner :-)
-         * @return true if class is a descendant of wicket.Component
-         */
-        private boolean instanceOfWicketComponent(PsiClass aClass) {
-            while (aClass != null && !"Object".equals(aClass.getQualifiedName())) {
-                if ("wicket.Component".equals(aClass.getQualifiedName())) {
-                    return true;
-                }
-                aClass = aClass.getSuperClass();
-            }
-            return false;
-        }
-
-        /**
          * This method is used to return all the wicket ids found
-         * @return
+         * @return list of wicket ids 
          */
         public List getWicketIds() {
             return wicketIds;
         }
+    }
+
+    /**
+     * Looks through the object hierachy to see it the object or one of its fathers is extending
+     * a wicket.Component object.
+     *
+     * @param aClass class
+     * @return true if class is a descendant of wicket.Component or org.apache.wicket.Component.
+     */
+    public static boolean instanceOfWicketComponent(PsiClass aClass) {
+        while (aClass != null && !"Object".equals(aClass.getQualifiedName())) {
+            if (Constants.WICKET_COMPONENT_13.equals(aClass.getQualifiedName()) ||
+                Constants.WICKET_COMPONENT_12.equals(aClass.getQualifiedName())) {
+                return true;
+            }
+            aClass = aClass.getSuperClass();
+        }
+        return false;
     }
 
 }
