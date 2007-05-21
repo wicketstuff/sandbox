@@ -128,7 +128,7 @@ public class ManyToManyMap
 	{
 		Set set = (Set) mappings.get(left);
 		if (set == null)
-			return Collections.emptySet();
+			return Collections.EMPTY_SET;
 		return Collections.unmodifiableSet(set);
 	}
 

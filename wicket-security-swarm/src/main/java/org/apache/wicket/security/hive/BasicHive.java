@@ -114,7 +114,7 @@ public class BasicHive implements Hive
 			Principal temp;
 			Set subjectPrincipals;
 			if(subject==null)
-				subjectPrincipals=Collections.emptySet();
+				subjectPrincipals=Collections.EMPTY_SET;
 			else
 				subjectPrincipals=subject.getPrincipals();
 			while(it.hasNext())
