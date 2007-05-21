@@ -29,17 +29,17 @@ import org.apache.wicket.markup.html.IHeaderContributor;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.FormComponent;
+import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.util.template.PackagedTextTemplate;
-
-import org.wicketstuff.yui.markup.html.AbstractYuiPanel;
+import org.wicketstuff.yui.YuiHeaderContributor;
 
 /**
  * Calendar component based on the Calendar of Yahoo UI Library.
  * 
  * @author Eelco Hillenius
  */
-public class Calendar extends AbstractYuiPanel implements IHeaderContributor {
+public class Calendar extends Panel implements IHeaderContributor {
 	/**
 	 * The container/ receiver of the javascript component.
 	 */
@@ -95,6 +95,7 @@ public class Calendar extends AbstractYuiPanel implements IHeaderContributor {
 	 */
 	public Calendar(String id) {
 		super(id);
+		add(YuiHeaderContributor.forModule("calendar"));
 		add(HeaderContributor.forJavaScript(Calendar.class, "calendar.js"));
 		add(HeaderContributor.forCss(Calendar.class, "calendar.css"));
 

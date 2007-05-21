@@ -4,14 +4,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.behavior.HeaderContributor;
 import org.apache.wicket.behavior.StringHeaderContributor;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.AbstractReadOnlyModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.util.template.PackagedTextTemplate;
+import org.apache.wicket.util.template.TextTemplate;
+import org.apache.wicket.util.template.TextTemplateHeaderContributor;
 
+import org.wicketstuff.yui.YuiHeaderContributor;
 import org.wicketstuff.yui.YuiImage;
 
 public class DragDropGroup extends WebMarkupContainer {
@@ -27,6 +32,7 @@ public class DragDropGroup extends WebMarkupContainer {
 			final FormComponent dragableElement,
 			final FormComponent targetElement) {
 		super(id);
+		add(YuiHeaderContributor.forModule("dragdrop"));
 		this.dragableSlotList = settings.getDragableSlotList();
 		this.targetSlotList = settings.getTargetSlotList();
 
@@ -89,7 +95,7 @@ public class DragDropGroup extends WebMarkupContainer {
 		add(dragableSlotView);
 	}
 
-	protected String getJavaScriptComponentInitializationScript() {
+	protected Map getJavaScriptComponentInitializationVariables() {
 		// targetSlot [empty, empty, empty, empty];
 		String targetSlot = "";
 		for (int i = 0; i < targetSlotList.getSize(); i++) {
@@ -140,25 +146,31 @@ public class DragDropGroup extends WebMarkupContainer {
 			}
 		}
 
-		PackagedTextTemplate template = new PackagedTextTemplate(
-				DragDropGroup.class, "init.js");
+
 		Map<String, String> variables = new HashMap<String, String>(5);
 		variables.put("javaScriptId", javaScriptId);
 		variables.put("targetSlot", targetSlot);
 		variables.put("targetSlotId", targetSlotId);
 		variables.put("dragSlot", dragSlot);
 		variables.put("dragSlotId", dragSlotId);
-		template.interpolate(variables);
-		return template.getString();
+		return variables;
 	}
 
 	protected void onAttach() {
 		super.onAttach();
 		javaScriptId = getMarkupId();
 
-		String js = "\n<script type=\"text/javascript\">"
-				+ getJavaScriptComponentInitializationScript()
-				+ "\n</script>\n";
-		add(new StringHeaderContributor(js));
+		TextTemplate template = new PackagedTextTemplate(
+		        DragDropGroup.class, "init.js");
+		
+		add(TextTemplateHeaderContributor.forJavaScript(template, new AbstractReadOnlyModel(){
+
+            @Override
+            public Object getObject()
+            {
+                return getJavaScriptComponentInitializationVariables();
+            }
+		    
+		}));
 	}
 }
