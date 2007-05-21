@@ -59,7 +59,8 @@ public class TestPermission extends Permission
 		if (permission.getClass().equals(this.getClass()))
 		{
 			TestPermission other = (TestPermission) permission;
-			return other.getName().equals(getName()) && getActions().contains(other.getActions());
+			return other.getName().equals(getName())
+					&& getActions().indexOf(other.getActions()) > -1;
 		}
 		return false;
 	}
