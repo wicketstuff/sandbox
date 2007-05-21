@@ -21,6 +21,7 @@ import org.apache.wicket.security.actions.Inherit;
 import org.apache.wicket.security.actions.RegistrationException;
 import org.apache.wicket.security.actions.Render;
 import org.apache.wicket.security.actions.WaspAction;
+import org.apache.wicket.util.string.AppendingStringBuffer;
 
 
 /**
@@ -185,7 +186,7 @@ public class SwarmActionFactory implements ActionFactory
 	 */
 	protected String buildActionString(int actions)
 	{
-		StringBuilder buff = new StringBuilder(power>0?10*power:10);
+		AppendingStringBuffer buff = new AppendingStringBuffer(power>0?10*power:10);
 		//estimate 10 chars per name
 		for(int i=-1;i<power;i++)
 		{
@@ -202,7 +203,7 @@ public class SwarmActionFactory implements ActionFactory
 	 * @param actions the available actions
 	 * @param waspAction the action it should implie in order to append the string
 	 */
-	protected final void appendActionString(StringBuilder buff, int actions, int waspAction)
+	protected final void appendActionString(AppendingStringBuffer buff, int actions, int waspAction)
 	{
 		if (implies(actions, waspAction))
 			buff.append(valueOf(new Integer(waspAction))).append(", ");
