@@ -11,9 +11,6 @@ import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvid
 import org.apache.wicket.model.IModel;
 
 /**
- * 
- * @author igor
- * 
  * note: it is important that the dao passed to the data provider be a proxy
  * from wicket-contrib-spring when used in non-testing environment. this is
  * because the dataprovider might get serialized for versioning or for
@@ -23,6 +20,8 @@ import org.apache.wicket.model.IModel;
  * needed. wicket-contrib-spring provides proxies to fix just this, the proxy
  * only serializes information it needs to locate the dao when it is
  * deserialized instead of serializing the dao itself.
+ * 
+ * @author igor
  */
 public class ContactsDataProvider extends SortableDataProvider implements
 		IFilterStateLocator {
