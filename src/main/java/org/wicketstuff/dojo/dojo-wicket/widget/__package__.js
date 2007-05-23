@@ -8,7 +8,8 @@ dojo.kwCompoundRequire({
 		"dojoWicket.widget.PercentSelector",
 		"dojoWicket.widget.ColorPicker",
 		"dojoWicket.widget.DropdownColorPicker",
-		"dojoWicket.widget.Calendar"
+		"dojoWicket.widget.Calendar",
+		"dojoWicket.widget.DropdownDatePicker"
 	]
 });
 dojo.provide("dojoWicket.widget.*");
