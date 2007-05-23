@@ -30,4 +30,13 @@ public abstract class AbstractWaspAction extends Action implements WaspAction
 	{
 		super(name);
 	}
+
+	/**
+	 * @see org.apache.wicket.authorization.Action#getName()
+	 */
+	public final String getName()
+	{
+		return super.getName();
+	}
+	
 }
