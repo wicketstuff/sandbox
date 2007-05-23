@@ -107,7 +107,8 @@ public class GeneralTest extends TestCase
 		form.setValue("username", "test");
 		form.submit();
 		mock.assertRenderedPage(MockHomePage.class);
-		mock.clickLink("secret", false);
+		// mock.clickLink("secret", false);
+		clickLink("secret");
 		mock.assertRenderedPage(SecondaryLoginPage.class);
 		form = mock.newFormTester("form");
 		form.setValue("username", "test");
@@ -120,6 +121,7 @@ public class GeneralTest extends TestCase
 	}
 
 	/**
+	 * Required untill a bug gets fixed in wicket.
 	 * Click a link on the page, unlike {@link WicketTester#clickLink(String)} this works
 	 * with continueToOriginaldestination situations. No ajax though.
 	 */
