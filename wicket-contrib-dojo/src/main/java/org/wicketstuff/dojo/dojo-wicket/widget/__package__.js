@@ -9,7 +9,7 @@ dojo.kwCompoundRequire({
 		"dojoWicket.widget.ColorPicker",
 		"dojoWicket.widget.DropdownColorPicker",
 		"dojoWicket.widget.Calendar",
-		"dojoWicket.widget.DropdownDatePicker"
+		"dojoWicket.widget.SimpleDropdownDatePicker"
 	]
 });
 dojo.provide("dojoWicket.widget.*");

@@ -35,7 +35,7 @@ public class DojoDatePickerHandler extends AbstractRequireDojoBehavior
 	public void setRequire(RequireDojoLibs libs)
 	{
 		//load dropDown date picker in dojoWicket
-		libs.add("dojoWicket.widget.DropdownDatePicker");		
+		libs.add("dojoWicket.widget.SimpleDropdownDatePicker");		
 	}
 
 }
