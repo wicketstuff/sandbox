@@ -88,15 +88,6 @@ public class DojoDatePicker extends TextField{
 		if (timeZone != null){
 			formatter.setTimeZone(timeZone);
 		}
-		/*add(new AbstractValidator(){
-
-			@Override
-			protected void onValidate(IValidatable validatable) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-		});*/
 	}
 	
 	public static String getInternalDatePattern() {
