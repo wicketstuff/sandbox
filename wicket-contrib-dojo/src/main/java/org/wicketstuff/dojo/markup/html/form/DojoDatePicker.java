@@ -32,6 +32,8 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.util.convert.ConversionException;
+import org.apache.wicket.validation.IValidatable;
+import org.apache.wicket.validation.validator.AbstractValidator;
 
 /**
  * <p>
@@ -86,6 +88,15 @@ public class DojoDatePicker extends TextField{
 		if (timeZone != null){
 			formatter.setTimeZone(timeZone);
 		}
+		/*add(new AbstractValidator(){
+
+			@Override
+			protected void onValidate(IValidatable validatable) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});*/
 	}
 	
 	public static String getInternalDatePattern() {
@@ -146,7 +157,10 @@ public class DojoDatePicker extends TextField{
 		}
 		catch (ParseException e)
 		{
-			throw new ConversionException(e);
+			ConversionException ce = new ConversionException(e);
+			ce.setLocale(locale);
+			ce.setResourceKey("dojoDatePicker");
+			throw ce;
 		}
 		
 	}
