@@ -29,6 +29,8 @@ import org.apache.wicket.security.swarm.actions.SwarmAction;
 import org.apache.wicket.security.swarm.models.SwarmModel;
 
 /**
+ * Implementation of a {@link ClassAuthorizationStrategy}. It allows for both simple
+ * logins as multi level logins.
  * @author marrink
  */
 public class SwarmStrategy extends ClassAuthorizationStrategy
@@ -47,6 +49,7 @@ public class SwarmStrategy extends ClassAuthorizationStrategy
 	private LoginContainer loginContainer;
 
 	/**
+	 * Constructs a new strategy linked to the specified hive.
 	 * @param hiveQueen A key to retrieve the {@link Hive}
 	 */
 	public SwarmStrategy(Object hiveQueen)
@@ -55,7 +58,9 @@ public class SwarmStrategy extends ClassAuthorizationStrategy
 	}
 
 	/**
-	 * @param secureClass
+	 * Constructs a new strategy linked to the specified hive.
+	 * @param secureClass instances of this class will be required to have access
+	 *            authorization.
 	 * @param hiveQueen A key to retrieve the {@link Hive}
 	 */
 	public SwarmStrategy(Class secureClass, Object hiveQueen)
@@ -78,6 +83,11 @@ public class SwarmStrategy extends ClassAuthorizationStrategy
 		return hive;
 	}
 
+	/**
+	 * The currently logged in subject, note that at any time there is at most 1 subject
+	 * logged in.
+	 * @return the subject or null if no login has succeeded yet
+	 */
 	protected final Subject getSubject()
 	{
 		return loginContainer.getSubject();
@@ -147,6 +157,7 @@ public class SwarmStrategy extends ClassAuthorizationStrategy
 	}
 
 	/**
+	 * Loggs a user in. Note that the context must be an instance of {@link LoginContext}.
 	 * @see org.apache.wicket.security.strategies.WaspAuthorizationStrategy#login(java.lang.Object)
 	 */
 	public void login(Object context) throws LoginException
@@ -160,6 +171,8 @@ public class SwarmStrategy extends ClassAuthorizationStrategy
 	}
 
 	/**
+	 * Loggs a user off. Note that the context must be an instance of {@link LoginContext}
+	 * and must be the same (or equal) to the logincontext used to log in.
 	 * @see org.apache.wicket.security.strategies.WaspAuthorizationStrategy#logoff(Object)
 	 */
 	public boolean logoff(Object context)
@@ -171,5 +184,4 @@ public class SwarmStrategy extends ClassAuthorizationStrategy
 		else
 			throw new SecurityException("Unable to process logoff with context: " + context);
 	}
-
 }

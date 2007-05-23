@@ -24,8 +24,8 @@ public interface Principal
 	 * Compares this principal to the specified object. Returns true if the object passed
 	 * in matches the principal represented by the implementation of this interface.
 	 * @param another principal to compare with.
-	 * @return true if the principal passed in is the same as that encapsulated by this
-	 *         principal, and false otherwise.
+	 * @return true if the principal passed in is the same as this principal, false
+	 *         otherwise.
 	 */
 	public boolean equals(Object another);
 
@@ -49,8 +49,12 @@ public interface Principal
 
 	/**
 	 * Eventhough a subject does not explicitly hold a principal, it may still be implied
-	 * by the subject. For example a read and a write principal, if the subject only holds
-	 * the write principal it is only logical it also implies the read principal.
+	 * by the subject. For example a 'read' and a 'write' principal, if the subject only
+	 * holds the 'write' principal it is only logical it also implies the 'read'
+	 * principal. Note principals don't have actions like permissions, the term 'read'
+	 * principal is used to describe a principal containing a set of permissions granting
+	 * a render action, just like the 'write' principal contains the same set of
+	 * permissions only granting the enable action.
 	 * @param subject
 	 * @return true if the subject in any way implies this principal, false otherwise.
 	 */

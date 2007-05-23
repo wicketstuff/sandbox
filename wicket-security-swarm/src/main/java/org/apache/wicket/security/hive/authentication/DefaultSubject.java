@@ -20,7 +20,7 @@ import org.apache.wicket.security.hive.authorization.Principal;
  * Default implementation of a Subject.
  * 
  * @author marrink
- *
+ * @see Subject
  */
 public class DefaultSubject implements Subject
 {

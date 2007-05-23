@@ -25,9 +25,8 @@ import org.apache.wicket.util.string.AppendingStringBuffer;
 
 
 /**
- * Default implementation of an action factory. It handles access, inherit, read, write
- * and execute actions. The render and enable actions from wicket are mapped to
- * respectivly read and execute actions. Because actions are inmutable and in order to
+ * Default implementation of an action factory. It handles access, inherit, render
+ * and enable actions. Because actions are inmutable and in order to
  * improve performance, generated actions are cached.
  * @author marrink
  */
@@ -36,11 +35,6 @@ public class SwarmActionFactory implements ActionFactory
 	private static final Log log = LogFactory.getLog(SwarmActionFactory.class);
 	protected static final int maxAssingableAction=(int) Math.pow(2, 30);
 	
-	/**
-	 * list of powers of for checking registrations
-	 */
-//	private int[] powersOf2=new int[]{0,1,2,4,8,16,32,64,128,256,512,1024,2048,4096,8192,16384,32768,65536,131072,262144,524288,1048576
-//			,2097152,4194304,8388608,16777216,33554432,67108864,134217728,268435456,536870912,maxAssingableAction};
 	/**
 	 * maps ints to Strings.
 	 */
@@ -59,7 +53,7 @@ public class SwarmActionFactory implements ActionFactory
 	private int maxAction=0;
 
 	/**
-	 * Registers the default actions: access, inherit, read, write and execute.
+	 * Registers the default actions: access, inherit, render and enable.
 	 */
 	public SwarmActionFactory()
 	{
@@ -69,14 +63,17 @@ public class SwarmActionFactory implements ActionFactory
 			register(Access.class,"access");
 			register(Inherit.class, "inherit");
 			register(Render.class, "render");
-			register(Enable.class, new ImpliesReadAction(nextPowerOf2(),"enable",this));
+			register(Enable.class, new ImpliesRenderAction(nextPowerOf2(),"enable",this));
 		}
 		catch (RegistrationException e)
 		{
 			log.fatal(e, e);
 		}
 	}
-
+	/**
+	 * 
+	 * @see org.apache.wicket.security.actions.ActionFactory#getAction(org.apache.wicket.authorization.Action)
+	 */
 	public WaspAction getAction(Action action)
 	{
 		if(action instanceof SwarmAction)
@@ -95,6 +92,7 @@ public class SwarmActionFactory implements ActionFactory
 
 	/**
 	 * @param actions empty string means Access
+	 * @see ActionFactory#getAction(String)
 	 */
 	public WaspAction getAction(String actions)
 	{
@@ -103,6 +101,7 @@ public class SwarmActionFactory implements ActionFactory
 		if (ja == null)
 		{
 			int actionValues = parseActions(saveActions);
+			//rebuild action name
 			String nameValues = buildActionString(actionValues);
 			ja = new SwarmAction(actionValues, nameValues);
 			cacheAction(saveActions, ja);
@@ -130,7 +129,12 @@ public class SwarmActionFactory implements ActionFactory
 		return (SwarmAction) cachedActions.get(name);
 	}
 
-	
+	/**
+	 * Returns an action based on its int value.
+	 * @param actions
+	 * @return the action
+	 * @throws IllegalArgumentException if no action can be formed based on the input
+	 */
 	public SwarmAction getAction(int actions)
 	{
 		SwarmAction ja = getCachedAction(actions);
@@ -152,7 +156,7 @@ public class SwarmActionFactory implements ActionFactory
 	 * @param actions
 	 * @param ja
 	 */
-	protected synchronized void cacheAction(Integer actions, SwarmAction ja)
+	protected synchronized final void cacheAction(Integer actions, SwarmAction ja)
 	{
 		cachedActions.put(actions, ja);
 	}
@@ -162,7 +166,7 @@ public class SwarmActionFactory implements ActionFactory
 	 * @param actions
 	 * @return the cached action or null.
 	 */
-	protected synchronized SwarmAction getCachedAction(int actions)
+	protected synchronized final SwarmAction getCachedAction(int actions)
 	{
 		return (SwarmAction) cachedActions.get(new Integer(actions));
 	}
@@ -211,6 +215,7 @@ public class SwarmActionFactory implements ActionFactory
 
 	/**
 	 * Check if the action is available in the actions.
+	 * This performs a bitwise check.
 	 * @param actions the actions that might contain action
 	 * @param action the action we check for in actions
 	 * @return true if actions contains action
@@ -222,7 +227,7 @@ public class SwarmActionFactory implements ActionFactory
 
 	/**
 	 * Parses a comma separated String containing actions. Access is the default and will also be substituted for any empty or null
-	 * String. using a string like 'read, read' is ofcourse pointless but does not brake
+	 * String. using a string like 'render, render' is ofcourse pointless but does not brake
 	 * anything. Order of the actions is also not important.
 	 * @param actions
 	 * @return a logical and of the actions.
@@ -259,7 +264,10 @@ public class SwarmActionFactory implements ActionFactory
 		}
 		return sum;
 	}
-
+	/**
+	 * 
+	 * @see org.apache.wicket.security.actions.ActionFactory#getAction(java.lang.Class)
+	 */
 	public synchronized WaspAction getAction(Class waspActionClass)
 	{
 		WaspAction action=(WaspAction)registeredActions.get(waspActionClass);
@@ -308,8 +316,8 @@ public class SwarmActionFactory implements ActionFactory
 	}
 	/**
 	 * Renames build in wicket actions to there wasp counterpart.
-	 * more specifically render to read and enable to execute. 
-	 * @param name
+	 * more specifically it converts the string to lowercase. 
+	 * @param name the name of the action
 	 * @return the converted name of the action.
 	 */
 	protected final String convertWicket2Wasp(String name)
@@ -319,14 +327,15 @@ public class SwarmActionFactory implements ActionFactory
 		return name.toLowerCase();
 	}
 	/**
-	 * Registeres a new action. Use this is in combination with {@link SwarmAction#SwarmAction(int, String, ActionFactory)}.
+	 * Registeres a new action. Use this in combination with {@link SwarmAction#SwarmAction(int, String, ActionFactory)}.
+	 * Example:<br>
 	 * <pre><code>
 	 * register(Enable.class, new ImpliesReadAction(nextPowerOf2(),"enable",this));
 	 * class ImpliesReadAction extends SwarmAction
 	 * {
 	 * 	public ImpliesReadAction(int actions, String name, ActionFactory factory)
 	 * 	{
-	 *		super(actions|((SwarmAction)factory.getAction(org.apache.wicket.security.actions.Read.class)).actions(), name);
+	 *		super(actions|((SwarmAction)factory.getAction(org.apache.wicket.security.actions.Render.class)).actions(), name);
 	 * 	}
 	 * }
 	 * </code>
@@ -363,27 +372,6 @@ public class SwarmActionFactory implements ActionFactory
 		return action;
 	}
 	/**
-	 * Any class that implies a read action.
-	 * 
-	 * @author marrink
-	 *
-	 */
-	private static final class ImpliesReadAction extends SwarmAction
-	{
-		private static final long serialVersionUID = 1L;
-
-		/**
-		 * @param actions
-		 * @param name
-		 * @param factory
-		 */
-		public ImpliesReadAction(int actions, String name, ActionFactory factory)
-		{
-			super(actions|((SwarmAction)factory.getAction(org.apache.wicket.security.actions.Render.class)).actions(), name);
-		}
-		
-	}
-	/**
 	 * Clears registration and cached values.
 	 * After you destroy this factory you must not use it again.
 	 * @see org.apache.wicket.security.actions.ActionFactory#destroy()
@@ -398,5 +386,26 @@ public class SwarmActionFactory implements ActionFactory
 		registeredActions=null;
 		cachedActions=null;
 		stringValues=null;
+	}
+	/**
+	 * Any class that implies a render action.
+	 * 
+	 * @author marrink
+	 *
+	 */
+	protected static final class ImpliesRenderAction extends SwarmAction
+	{
+		private static final long serialVersionUID = 1L;
+
+		/**
+		 * @param actions
+		 * @param name
+		 * @param factory
+		 */
+		public ImpliesRenderAction(int actions, String name, ActionFactory factory)
+		{
+			super(actions|((SwarmAction)factory.getAction(org.apache.wicket.security.actions.Render.class)).actions(), name);
+		}
+		
 	}
 }
