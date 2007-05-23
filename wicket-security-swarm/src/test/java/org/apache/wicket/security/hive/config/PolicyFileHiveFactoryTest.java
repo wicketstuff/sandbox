@@ -89,6 +89,8 @@ public class PolicyFileHiveFactoryTest extends TestCase
 		assertFalse(hive.containsPermission(new TestPermission("6.B","execute")));
 		assertFalse(hive.containsPermission(new TestPermission("6.C","read, execute")));
 		assertFalse(hive.containsPermission(new TestPermission("6.C.1","write")));
+		assertTrue(hive.containsPrincipal(new TestPrincipal("test8")));
+		assertTrue(hive.containsPermission(new TestPermission("8.A")));
+		assertTrue(hive.containsPermission(new TestPermission("8.B")));
 	}
-
 }

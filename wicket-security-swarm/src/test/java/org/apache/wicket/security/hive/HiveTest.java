@@ -35,6 +35,18 @@ public class HiveTest extends TestCase
 		permissions.add(new TestPermission("test"));
 		hive.addPrincipal(new EverybodyPrincipal(), permissions);
 		assertTrue(hive.containsPrincipal(new EverybodyPrincipal()));
+		assertFalse(hive.isLocked());
+		hive.lock();
+		assertTrue(hive.isLocked());
+		try
+		{
+			hive.addPrincipal(new EverybodyPrincipal(), permissions);
+			fail("hive should be locked");
+		}
+		catch (IllegalStateException e)
+		{
+		}
+		
 	}
 
 	public void testAddPermission()
@@ -52,6 +64,17 @@ public class HiveTest extends TestCase
 		assertFalse(hive.containsPrincipal(new EverybodyPrincipal()));
 		hive.addPermission(new EverybodyPrincipal(), new TestPermission("foobar"));
 		assertTrue(hive.containsPrincipal(new EverybodyPrincipal()));
+		assertFalse(hive.isLocked());
+		hive.lock();
+		assertTrue(hive.isLocked());
+		try
+		{
+			hive.addPermission(new EverybodyPrincipal(), new TestPermission("foobar"));
+			fail("hive should be locked");
+		}
+		catch (IllegalStateException e)
+		{
+		}
 	}
 
 	public void testHasPermision()

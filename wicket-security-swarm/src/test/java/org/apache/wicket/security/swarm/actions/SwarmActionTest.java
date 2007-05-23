@@ -11,7 +11,9 @@ package org.apache.wicket.security.swarm.actions;
 
 import junit.framework.TestCase;
 
+import org.apache.wicket.security.actions.Access;
 import org.apache.wicket.security.actions.ActionFactory;
+import org.apache.wicket.security.actions.Enable;
 import org.apache.wicket.security.actions.Inherit;
 import org.apache.wicket.security.actions.Render;
 import org.apache.wicket.security.actions.WaspAction;
@@ -23,15 +25,16 @@ import org.apache.wicket.security.swarm.SwarmWebApplication;
 import org.apache.wicket.security.swarm.actions.SwarmAction;
 import org.apache.wicket.util.tester.WicketTester;
 
-
-
 /**
  * Tests WaspAction class.
  * @author marrink
- *
  */
 public class SwarmActionTest extends TestCase
 {
+	private SwarmWebApplication application;
+
+	public WicketTester mock;
+
 	/**
 	 * Constructor for WaspActionTest.
 	 * @param arg0
@@ -41,38 +44,54 @@ public class SwarmActionTest extends TestCase
 		super(arg0);
 	}
 
-	/*
-	 * Test method for 'wicket.jaas.actions.WaspAction.hashCode()'
+	/**
+	 * Test method for {@link SwarmAction#hashCode()}
 	 */
 	public void testHashCode()
 	{
-		WaspAction action=new SwarmAction(5,"test");
-		//persistent
-		assertEquals(action.hashCode(),action.hashCode());
-		WaspAction action2=new SwarmAction(5,"test");
-		//equal
-		assertEquals(action.hashCode(),action2.hashCode());
+		WaspAction action = new SwarmAction(5, "test");
+		// persistent
+		assertEquals(action.hashCode(), action.hashCode());
+		WaspAction action2 = new SwarmAction(5, "test");
+		// equal
+		assertEquals(action.hashCode(), action2.hashCode());
+		WaspAction action3 = new TestAction(5, "does not matter");
+		assertEquals(action2, action3);
+		assertTrue(action3.hashCode() == action2.hashCode());
 
 	}
-	/*
-	 * Test method for 'wicket.jaas.actions.WaspAction.has(int)'
+
+	/**
+	 * Test method for {@link SwarmAction#implies(int)}
 	 */
-	public void testHasInt()
+	public void testImpliesInt()
 	{
-		SwarmAction action=new SwarmAction(5,"test");
+		SwarmAction action = new SwarmAction(5, "test");
 		assertTrue(action.implies(5));
 		assertTrue(action.implies(1));
 		assertFalse(action.implies(6));
 
 	}
 
-	/*
-	 * Test method for 'wicket.jaas.actions.WaspAction.has(WaspAction)'
+	/**
+	 * Test method for {@link SwarmAction#implies(WaspAction)}
 	 */
-	public void testHasWaspAction()
+	public void testImpliesWaspAction()
 	{
-		SwarmWebApplication application;
-		new WicketTester(application = new SwarmWebApplication(){
+		ActionFactory factory = application.getActionFactory();
+		WaspAction action = factory.getAction(Render.class);
+		WaspAction action2 = action.add(factory.getAction(Inherit.class));
+		assertTrue(action2.implies(action));
+		assertFalse(action.implies(action2));
+	}
+	/**
+	 * 
+	 * @see junit.framework.TestCase#setUp()
+	 */
+	protected void setUp()
+	{
+		mock = new WicketTester(application = new SwarmWebApplication()
+		{
 
 			protected Object getHiveKey()
 			{
@@ -82,7 +101,7 @@ public class SwarmActionTest extends TestCase
 			protected void setUpHive()
 			{
 				PolicyFileHiveFactory factory = new PolicyFileHiveFactory();
-				//don't need policy for this simple test
+				// don't need policy for this simple test
 				HiveMind.registerHive(getHiveKey(), factory);
 			}
 
@@ -90,96 +109,117 @@ public class SwarmActionTest extends TestCase
 			{
 				return MockHomePage.class;
 			}
+
 			public Class getLoginPage()
 			{
 				return MockLoginPage.class;
-			}},"src/test/java" + getClass().getPackage().getName().replace('.', '/'));
-		ActionFactory factory=application.getActionFactory();
-		WaspAction action=factory.getAction(Render.class);
-		WaspAction action2=action.add(factory.getAction(Inherit.class));
-		assertTrue(action2.implies(action));
-		assertFalse(action.implies(action2));
+			}
+		}, "src/test/java" + getClass().getPackage().getName().replace('.', '/'));
 	}
 
-	/*
-	 * Test method for 'wicket.jaas.actions.WaspAction.equals(Object)'
+	/**
+	 * @see junit.framework.TestCase#tearDown()
+	 */
+	protected void tearDown() throws Exception
+	{
+		mock.destroy();
+		mock = null;
+		application = null;
+		HiveMind.unregisterHive("action test");
+	}
+
+	/**
+	 * Test method for {@link SwarmAction#equals(Object)}
 	 */
 	public void testEqualsObject()
 	{
-		WaspAction action=new SwarmAction(5,"test");
-		//		null
+		WaspAction action = new SwarmAction(5, "test");
+		// null
 		assertFalse(action.equals(null));
-		//reflexive
-		assertEquals(action,action);
-		//symmetric
-		WaspAction action2=new SwarmAction(5,"test");
-		assertEquals(action,action2);
-		assertEquals(action2,action);
-		WaspAction action3=new SwarmAction(6,"test2");
+		// reflexive
+		assertEquals(action, action);
+		// symmetric
+		WaspAction action2 = new SwarmAction(5, "test");
+		assertEquals(action, action2);
+		assertEquals(action2, action);
+		WaspAction action3 = new SwarmAction(6, "test2");
 		assertFalse(action.equals(action3));
 		assertFalse(action3.equals(action));
-		//transitive
-		//TODO transitive tests
-		WaspAction action4=new SwarmAction(5,"test");
-		assertEquals(action,action4);
-		assertEquals(action4,action2);
-		//action2 already equals action
-		//consistent
-		//action is inmutable so it is consistent
+		// transitive
+		WaspAction action4 = new TestAction(5, "test");
+		assertEquals(action, action4);
+		assertEquals(action4, action2);
+		// action2 already equals action
+		// consistent
+		// action is inmutable so it is consistent
 	}
 
-	/*
-	 * Test method for 'wicket.jaas.actions.WaspAction.add(int)'
+	/**
+	 * Test method for {@link SwarmAction#add(int)}
 	 */
 	public void testAddInt()
 	{
-//		ActionFactory factory=((JaasApplication) Application.get()).getActionFactory();
-//		WaspAction action=factory.getAction(WaspAction.READ);
-//		assertEquals(WaspAction.READ,action.actions());
-//		WaspAction action2=action.add(WaspAction.ACCESS);
-//		assertEquals(WaspAction.READ,action.actions());
-//		assertEquals(WaspAction.READ,action2.actions());
-//		WaspAction action3=action.add(WaspAction.EXECUTE);
-//		assertEquals(WaspAction.READ,action.actions());
-//		assertEquals(WaspAction.READ|WaspAction.EXECUTE,action3.actions());
+		 ActionFactory factory=application.getActionFactory();
+		 SwarmAction action=(SwarmAction)factory.getAction(Render.class);
+		 assertEquals(2,action.actions());
+		 SwarmAction action2=(SwarmAction)action.add(((SwarmAction)factory.getAction(Access.class)).actions());
+		 assertEquals(2,action.actions()); //check inmutability
+		 assertEquals(2,action2.actions());
+		 assertNotSame(action, action2);
+		 SwarmAction action3=(SwarmAction)action.add(((SwarmAction)factory.getAction(Enable.class)).actions());
+		 assertEquals(2,action.actions());
+		 assertEquals(6,action3.actions());
 
 	}
 
-	/*
-	 * Test method for 'wicket.jaas.actions.WaspAction.add(WaspAction)'
+	/**
+	 * Test method for {@link SwarmAction#add(WaspAction)}
 	 */
 	public void testAddWaspAction()
 	{
-//		ActionFactory factory=((JaasApplication) Application.get()).getActionFactory();
-//		WaspAction action=factory.getAction(WaspAction.READ);
-//		assertEquals(WaspAction.READ,action.actions());
-//		WaspAction action2=action.add(factory.getAction(WaspAction.ACCESS));
-//		assertEquals(WaspAction.READ,action.actions());
-//		assertEquals(WaspAction.READ,action2.actions());
-//		WaspAction action3=action.add(factory.getAction(WaspAction.EXECUTE));
-//		assertEquals(WaspAction.READ,action.actions());
-//		assertEquals(WaspAction.READ|WaspAction.EXECUTE,action3.actions());
+		ActionFactory factory=application.getActionFactory();
+		 SwarmAction action=(SwarmAction)factory.getAction(Render.class);
+		 assertEquals(2,action.actions());
+		 SwarmAction action2=(SwarmAction)action.add(factory.getAction(Access.class));
+		 assertEquals(2,action.actions()); //check inmutability
+		 assertEquals(2,action2.actions());
+		 assertNotSame(action, action2);
+		 SwarmAction action3=(SwarmAction)action.add(factory.getAction(Enable.class));
+		 assertEquals(2,action.actions());
+		 assertEquals(6,action3.actions());
 
 	}
+
 	public void testConstructor()
 	{
 		try
 		{
-			new SwarmAction(6,null);
+			new SwarmAction(6, null);
 			fail("description should be required");
 		}
 		catch (IllegalArgumentException e)
 		{
-			//noop
+			// noop
 		}
 		try
 		{
-			new SwarmAction(-10,"foobar");
+			new SwarmAction(-10, "foobar");
 			fail("negative numbers should not be allowed");
 		}
 		catch (IllegalArgumentException e)
 		{
-			//noop
+			// noop
 		}
+	}
+
+	private static class TestAction extends SwarmAction
+	{
+		private static final long serialVersionUID = 1L;
+
+		protected TestAction(int action, String name)
+		{
+			super(action, name);
+		}
+
 	}
 }

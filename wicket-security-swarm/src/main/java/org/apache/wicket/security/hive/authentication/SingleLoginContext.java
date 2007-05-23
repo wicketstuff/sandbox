@@ -14,7 +14,7 @@ import org.apache.wicket.model.IModel;
 
 /**
  * LoginContext for Applications with a signle login. This context always operates at
- * level 0 and authenticates every class / component or model. Eventhough there is nothing
+ * level 0 and authenticates every class, component or model. Eventhough there is nothing
  * stopping you from login in multiple times with additional (other) contexts, there realy
  * is no point because the application will always think the user is already sufficient
  * authenticated.
@@ -24,7 +24,8 @@ public abstract class SingleLoginContext extends LoginContext
 {
 
 	/**
-	 * @param level
+	 * Constructs a new login context, designed to be used as the only context for this
+	 * session, at level 0.
 	 */
 	public SingleLoginContext()
 	{

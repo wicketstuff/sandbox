@@ -18,7 +18,7 @@ import org.apache.wicket.security.swarm.models.SwarmModel;
 
 /**
  * A permission for data or plain old pojo's.
- * Can have actions like access, read or write.
+ * Can have actions like access, render or enable.
  * @author marrink
  *
  */

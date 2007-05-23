@@ -22,6 +22,7 @@ public interface HiveFactory
 {
 	/**
 	 * Creates a new Hive according to the configuration (if any) of this factory.
+	 * The factory is free to return null or throw an exception if an unrecoverable problem arises.
 	 * @return the new Hive.
 	 */
 	public Hive createHive();

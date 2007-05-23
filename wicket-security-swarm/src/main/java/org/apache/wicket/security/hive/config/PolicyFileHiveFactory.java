@@ -30,13 +30,32 @@ import org.apache.wicket.security.hive.authorization.Principal;
 
 
 /**
- * A factory to produce Hive's based on policy files.
+ * A factory to produce Hive's based on policy files. This factory is designed to make a
+ * best effort when problems aoocur. Meaning any malconfiguration in the policy file is
+ * logged and then skipped. This factory accepts the following policy format<br>
+ * 
+ * <pre>
+ * grant [principal &lt;pricipal class&gt; &quot;name&quot;]
+ * {
+ * permission &lt;permission class&gt; &quot;name&quot;,[ &quot;actions&quot;];
+ * };
+ * </pre>
+ * 
+ * where [] denotes an optional block, &lt;&gt; denotes a classname.<br>
+ * Note that:
+ * <ul>
+ * <li> names and action must be quoted</li>
+ * <li>a permission statement must be on a single line and terminated by a ;</li>
+ * <li>the grant block must be terminated by a ;</li>
+ * <li>if you don't specify a principal after the grant statement, everybody will be
+ * given those permissions automagically</li>
+ * <li>at the moment you need to include the ',' even if you don't specify actions, this will change but i am having trouble getting the right regex</li>
  * @author marrink
  */
 public class PolicyFileHiveFactory implements HiveFactory
 {
 	private static final Log log = LogFactory.getLog(PolicyFileHiveFactory.class);
-
+	//TODO fix regex so the , is no longer required when not using actions
 	// TODO use JAAS to check for enough rights
 	private Set policyFiles;
 
@@ -44,7 +63,7 @@ public class PolicyFileHiveFactory implements HiveFactory
 			.compile("\\s*(grant(\\s+principal\\s+(.+)\\s+\"(.+)\")?){1}\\s*");
 
 	private static final Pattern permissionPattern = Pattern
-			.compile("\\s*(permission\\s+(.+)\\s+\"(.+)\"\\s*,\\s+(\"(.+)\")?\\s*;){1}\\s*");
+			.compile("\\s*(permission\\s+(.+)\\s+\"(.+)\"\\s*,(?:\\s+\"(.+)\")?\\s*;){1}\\s*");
 
 	private static final Class[] stringArgs1 = new Class[] {String.class};
 
@@ -147,7 +166,7 @@ public class PolicyFileHiveFactory implements HiveFactory
 									continue;
 								}
 								String name = m.group(3);
-								String actions = m.group(5);
+								String actions = m.group(4);
 								Constructor constructor = null;
 								Class[] args = stringArgs2;
 								if (actions == null)

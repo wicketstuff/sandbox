@@ -15,7 +15,7 @@ import org.apache.wicket.security.swarm.actions.SwarmAction;
 
 
 /**
- * Permission for certain components. Can have actions like access, read or write.
+ * Permission for certain components. Can have actions like access, render or enable.
  * 
  * @author marrink
  */
@@ -59,6 +59,7 @@ public class ComponentPermission extends ActionPermission
 		super(componentPath, getAction(actions));
 	}
 	/**
+	 * Creates a new ComponentPermission with the specified actions.
 	 * @param securityString
 	 * @param actions
 	 */

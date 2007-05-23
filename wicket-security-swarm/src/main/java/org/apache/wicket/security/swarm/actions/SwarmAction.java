@@ -40,37 +40,37 @@ public class SwarmAction extends AbstractWaspAction
 	/**
 	 * The default constructor for actions. Use it if your action does not inherit any
 	 * other actions (other then {@link Access}), like {@link Render}.
-	 * @param actions
-	 * @param name
+	 * @param action a power of 2 which provides the base value for this action
+	 * @param name the name of the action
 	 */
-	protected SwarmAction(int actions, String name)
+	protected SwarmAction(int action, String name)
 	{
 		super(name);
-		if (actions < 0)
-			throw new IllegalArgumentException(actions + " must be >= 0");
-		this.actions = actions;
+		if (action < 0)
+			throw new IllegalArgumentException(action + " must be >= 0");
+		this.actions = action;
 	}
 
 	/**
 	 * Alternate constructor for actions that inherit from another action. For example the
 	 * constructor for a {@link Enable} action which implies the {@link Render} action might look like this.
-	 * <code>super(actions | factory.getAction(Read.class).actions(), name);</code>
-	 * @param actions
-	 * @param name
-	 * @param factory
+	 * <code>super(actions | ((SwarmAction)factory.getAction(Render.class)).actions(), name);</code>
+	 * @param action a power of 2 which provides the base value for this action
+	 * @param name the name of the action
+	 * @param factory the factory for lookup of implied actions
 	 */
-	protected SwarmAction(int actions, String name, ActionFactory factory)
+	protected SwarmAction(int action, String name, ActionFactory factory)
 	{
-		this(actions, name);
+		this(action, name);
 	}
 
 	/**
-	 * Check if the supplied action is implied (bitwise or) by this SwarmAction.
-	 * @return true if the action is implied, false otherwise.
+	 * Check if the supplied actions are implied (bitwise or) by this SwarmAction.
+	 * @return true if the actions are implied, false otherwise.
 	 */
-	public final boolean implies(int action)
+	public final boolean implies(int actions)
 	{
-		return ((actions & action) == action);
+		return ((this.actions & actions) == actions);
 	}
 	/**
 	 * Returns the internal representation of this action.
@@ -87,7 +87,7 @@ public class SwarmAction extends AbstractWaspAction
 	 * @see Object#equals(java.lang.Object)
 	 * @see #actions()
 	 */
-	public boolean equals(Object obj)
+	public final boolean equals(Object obj)
 	{
 		if (obj instanceof SwarmAction)
 		{
@@ -100,16 +100,16 @@ public class SwarmAction extends AbstractWaspAction
 	/**
 	 * @see Object#hashCode()
 	 */
-	public int hashCode()
+	public final int hashCode()
 	{
 		int result = 4679;
-		result = 37 * result + getClass().getName().hashCode();
+		result = 37 * result + SwarmAction.class.hashCode();
 		result = 37 * result + actions;
 		return result;
 	}
 
 	/**
-	 * Check if the supplied action is implied (bitwise or) by this JaasAction.
+	 * Check if the supplied action is implied (bitwise or) by this SwarmAction.
 	 * @return true if the action is implied, false otherwise.
 	 */
 	public final boolean implies(WaspAction other)
@@ -120,12 +120,12 @@ public class SwarmAction extends AbstractWaspAction
 	 * Creates a new {@link WaspAction} containing both the specified actions and the actions of this {@link WaspAction}. This method
 	 * always returns a new SwarmAction.
 	 * 
-	 * @param action
+	 * @param actions the actions to add
 	 * @return a new WaspAction containing all the actions
 	 */
-	public final WaspAction add(int action)
+	public final WaspAction add(int actions)
 	{
-		return newInstance(actions | action);
+		return newInstance(this.actions | actions);
 	}
 	/**
 	 * Creates a new {@link WaspAction} containing both the specified actions and the actions of this {@link WaspAction}. This method
@@ -142,13 +142,13 @@ public class SwarmAction extends AbstractWaspAction
 	}
 	/**
 	 * Creates a new {@link WaspAction} with all the actions of this action except those specified.
-	 * @param action the actions to remove
+	 * @param actions the actions to remove
 	 * @return a new WaspAction or this action if the specified actions were never part of this action.
 	 */
-	public final SwarmAction remove(int action)
+	public final SwarmAction remove(int actions)
 	{
-		if(implies(action))
-			return newInstance(actions-action);
+		if(implies(actions))
+			return newInstance(this.actions-actions);
 		return this;
 	}
 	/**
@@ -173,6 +173,12 @@ public class SwarmAction extends AbstractWaspAction
 	{
 		return ((SwarmActionFactory)((WaspWebApplication)Application.get()).getActionFactory()).getAction(myActions);
 	}
+	/**
+	 * De-Serialization implementation.
+	 * @param stream
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
 	private final void readObject(ObjectInputStream stream) throws IOException,
 			ClassNotFoundException
 	{

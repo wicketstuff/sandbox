@@ -8,13 +8,15 @@ package org.apache.wicket.security.hive.authorization.permissions;
 
 import org.apache.wicket.security.actions.Inherit;
 import org.apache.wicket.security.hive.authorization.Permission;
+import org.apache.wicket.security.hive.config.HiveFactory;
 import org.apache.wicket.security.swarm.actions.SwarmAction;
 
 
 /**
  * Base class for any Permission that uses actions. Each implementation of ActionPermission should atleast
  * expose the ActionPermission(String name, String actions) constructor to the outside world, for it will be used by
- * JAAS when constructing permissions from the policy file.
+ * a {@link HiveFactory} when constructing permissions.
+ * Note if you do not wish to use actions in your permissions you should build your own permissions.
  * 
  * @see org.apache.wicket.security.ISecurityHandler
  * @author marrink

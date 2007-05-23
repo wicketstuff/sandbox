@@ -11,6 +11,7 @@ package org.apache.wicket.security.hive.authorization;
 
 import org.apache.wicket.Application;
 import org.apache.wicket.security.WaspApplication;
+import org.apache.wicket.security.actions.ActionFactory;
 import org.apache.wicket.security.swarm.actions.SwarmAction;
 import org.apache.wicket.security.swarm.actions.SwarmActionFactory;
 
@@ -50,6 +51,10 @@ public abstract class Permission
 {
 	private final String name;
 	
+	/**
+	 * Constructs a permission with a certain name.
+	 * @param name
+	 */
 	public Permission(String name)
 	{
 		this.name = name;
@@ -130,14 +135,32 @@ public abstract class Permission
 	{
 		return name;
 	}
+	/**
+	 * Utility method for getting an action.
+	 * @param action the action class
+	 * @return the action
+	 * @see ActionFactory#getAction(Class)
+	 */
 	protected static final SwarmAction getAction(Class action)
 	{
 		return (SwarmAction)((WaspApplication)Application.get()).getActionFactory().getAction(action);
 	}
+	/**
+	 * Utility method for getting an action.
+	 * @param actions a bitwise or of the actions
+	 * @return the action
+	 * @see SwarmActionFactory#getAction(int)
+	 */
 	protected static final SwarmAction getAction(int actions)
 	{
 		return ((SwarmActionFactory)((WaspApplication)Application.get()).getActionFactory()).getAction(actions);
 	}
+	/**
+	 * Utility method for getting an action.
+	 * @param actions the name of an action
+	 * @return the action
+	 * @see ActionFactory#getAction(String)
+	 */
 	protected static final SwarmAction getAction(String actions)
 	{
 		return (SwarmAction)((WaspApplication)Application.get()).getActionFactory().getAction(actions);
