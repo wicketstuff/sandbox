@@ -9,6 +9,7 @@ import org.wicketstuff.dojo.toggle.DojoFadeToggle;
 import org.wicketstuff.dojo.toggle.DojoWipeToggle;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.Model;
 
 public class DatePickerShower extends WebPage {
@@ -17,7 +18,6 @@ public class DatePickerShower extends WebPage {
 	private Date date2;
 	private Date date3;
 	private Date date4;
-	private String text1;
 		
 	public DatePickerShower(PageParameters parameters){
 
@@ -43,6 +43,8 @@ public class DatePickerShower extends WebPage {
 		DojoDatePicker date4P = new DojoDatePicker("date4", new Model(date4), "dd/MM/yyyy");
 		date4P.setToggle(new DojoExplodeToggle());
 		form.add(date4P);
+		
+		this.add(new FeedbackPanel("feedback"));
 
 		this.add(form);
 		
