@@ -1,6 +1,7 @@
-dojo.provide("dojoWicket.widget.DropDownDatePicker");
+dojo.provide("dojoWicket.widget.SimpleDropdownDatePicker");
 
 dojo.require("dojo.widget.*");
+dojo.require("dojo.widget.DropdownDatePicker");
 dojo.require("dojo.widget.DropdownContainer");
 dojo.require("dojo.widget.DatePicker");
 dojo.require("dojo.event.*");
@@ -12,7 +13,7 @@ dojo.require("dojo.i18n.common");
 dojo.requireLocalization("dojo.widget", "DropdownDatePicker");
 
 dojo.widget.defineWidget(
-	"dojo.widget.DropdownDatePicker",	//hack to overwrite dropDownDatePicker
+	"dojoWicket.widget.SimpleDropdownDatePicker",	//hack to overwrite dropDownDatePicker
 	dojo.widget.DropdownContainer,
 	{
 		/*
