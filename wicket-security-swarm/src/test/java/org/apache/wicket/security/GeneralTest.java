@@ -107,8 +107,7 @@ public class GeneralTest extends TestCase
 		form.setValue("username", "test");
 		form.submit();
 		mock.assertRenderedPage(MockHomePage.class);
-		// mock.clickLink("secret", false);
-		clickLink("secret");
+		mock.clickLink("secret", false);
 		mock.assertRenderedPage(SecondaryLoginPage.class);
 		form = mock.newFormTester("form");
 		form.setValue("username", "test");
