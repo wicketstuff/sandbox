@@ -29,7 +29,7 @@ public class JettyLauncher {
         WebAppContext web = new WebAppContext();
         String contextPath = System.getProperty("web.context.path", "");
         web.setContextPath(contextPath);
-        web.setWar("src/webapp");
+        web.setWar("src/main/webapp");
         web.setDistributable(true);
         web.setClassLoader(JettyLauncher.class.getClassLoader());
         server.addHandler(web);
