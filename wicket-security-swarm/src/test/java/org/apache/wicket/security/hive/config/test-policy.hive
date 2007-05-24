@@ -47,6 +47,6 @@ grant principal org.apache.wicket.security.hive.authorization.TestPrincipal "tes
 };
 grant principal org.apache.wicket.security.hive.authorization.TestPrincipal "test8"
 {
-	permission org.apache.wicket.security.hive.authorization.TestPermission "8.A",;
-	permission org.apache.wicket.security.hive.authorization.TestPermission "8.B",;
+	permission org.apache.wicket.security.hive.authorization.TestPermission "8.A";
+	permission org.apache.wicket.security.hive.authorization.TestPermission "8.B";
 };

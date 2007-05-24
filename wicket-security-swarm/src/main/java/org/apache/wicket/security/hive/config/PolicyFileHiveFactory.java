@@ -35,7 +35,7 @@ import org.apache.wicket.security.hive.authorization.Principal;
  * logged and then skipped. This factory accepts the following policy format<br>
  * 
  * <pre>
- * grant [principal &lt;pricipal class&gt; &quot;name&quot;]
+ * grant[ principal &lt;pricipal class&gt; &quot;name&quot;]
  * {
  * permission &lt;permission class&gt; &quot;name&quot;,[ &quot;actions&quot;];
  * };
@@ -49,21 +49,20 @@ import org.apache.wicket.security.hive.authorization.Principal;
  * <li>the grant block must be terminated by a ;</li>
  * <li>if you don't specify a principal after the grant statement, everybody will be
  * given those permissions automagically</li>
- * <li>at the moment you need to include the ',' even if you don't specify actions, this will change but i am having trouble getting the right regex</li>
+ * <li>using double quotes '"' is not allowed, instead use a single quote '''</li>
  * @author marrink
  */
 public class PolicyFileHiveFactory implements HiveFactory
 {
 	private static final Log log = LogFactory.getLog(PolicyFileHiveFactory.class);
-	//TODO fix regex so the , is no longer required when not using actions
 	// TODO use JAAS to check for enough rights
 	private Set policyFiles;
 
 	private static final Pattern principalPattern = Pattern
-			.compile("\\s*(grant(\\s+principal\\s+(.+)\\s+\"(.+)\")?){1}\\s*");
+			.compile("\\s*(?:grant(?:\\s+principal\\s+([^\"\\s]+)\\s+\"([^\"]+)\")?){1}\\s*");
 
 	private static final Pattern permissionPattern = Pattern
-			.compile("\\s*(permission\\s+(.+)\\s+\"(.+)\"\\s*,(?:\\s+\"(.+)\")?\\s*;){1}\\s*");
+			.compile("\\s*(?:permission\\s+([^\"\\s]+?)\\s+(?:(?:\"([^\"]+)\"){1}?(?:\\s*,\\s*\"([^\"]*)\")?)?\\s*;){1}\\s*");
 
 	private static final Class[] stringArgs1 = new Class[] {String.class};
 
@@ -145,7 +144,7 @@ public class PolicyFileHiveFactory implements HiveFactory
 						Matcher m = permissionPattern.matcher(line);
 						if (m.matches())
 						{
-							String classname = m.group(2);
+							String classname = m.group(1);
 							if (classname == null)
 							{
 								log.error("Missing permission class at line " + lineNr);
@@ -165,8 +164,8 @@ public class PolicyFileHiveFactory implements HiveFactory
 									line=reader.readLine();
 									continue;
 								}
-								String name = m.group(3);
-								String actions = m.group(4);
+								String name = m.group(2);
+								String actions = m.group(3);
 								Constructor constructor = null;
 								Class[] args = stringArgs2;
 								if (actions == null)
@@ -234,7 +233,7 @@ public class PolicyFileHiveFactory implements HiveFactory
 					Matcher m = principalPattern.matcher(line);
 					if (m.matches())
 					{
-						String classname = m.group(3);
+						String classname = m.group(1);
 						if (classname == null)
 							principal = new EverybodyPrincipal();
 						else
@@ -275,7 +274,7 @@ public class PolicyFileHiveFactory implements HiveFactory
 								try
 								{
 									principal = (Principal) constructor.newInstance(new Object[] {m
-											.group(4)});
+											.group(2)});
 								}
 								catch (Exception e)
 								{
