@@ -9,8 +9,10 @@
  */
 package org.apache.wicket.security.hive.config;
 
+import java.lang.reflect.Field;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.regex.Pattern;
 
 import org.apache.wicket.security.hive.Hive;
 import org.apache.wicket.security.hive.authorization.EverybodyPrincipal;
@@ -92,5 +94,83 @@ public class PolicyFileHiveFactoryTest extends TestCase
 		assertTrue(hive.containsPrincipal(new TestPrincipal("test8")));
 		assertTrue(hive.containsPermission(new TestPermission("8.A")));
 		assertTrue(hive.containsPermission(new TestPermission("8.B")));
+	}
+	public void testRegExPrincipalPattern()
+	{
+		Pattern principalPattern=null;
+		try
+		{
+			Field field = PolicyFileHiveFactory.class.getDeclaredField("principalPattern");
+			field.setAccessible(true);
+			principalPattern = (Pattern) field.get(null);
+		}
+		catch (IllegalArgumentException e)
+		{
+			fail(e.getMessage());
+		}
+		catch (SecurityException e)
+		{
+			fail(e.getMessage());
+		}
+		catch (IllegalAccessException e)
+		{
+			fail(e.getMessage());
+		}
+		catch (NoSuchFieldException e)
+		{
+			fail(e.getMessage());
+		}
+		assertNotNull(principalPattern);
+		assertFalse(principalPattern.matcher("").matches());
+		assertTrue(principalPattern.matcher("grant").matches());
+		assertTrue(principalPattern.matcher("grant principal org.apache.wicket.TestPrincipal \"render\"").matches());
+		assertFalse(principalPattern.matcher("grant foo").matches());
+		assertFalse(principalPattern.matcher("grant principal org.apache.wicket.TestPrincipal \"render").matches());
+		assertFalse(principalPattern.matcher("grant principal \"org.apache.wicket.TestPrincipal\" \"render\"").matches());
+		assertFalse(principalPattern.matcher("grant principal org.apache. wicket.TestPrincipal \"render\"").matches());
+		assertFalse(principalPattern.matcher("grant principal org.apache.wicket\".TestPrincipal \"render\"").matches());
+		assertFalse(principalPattern.matcher("grant principal org.apache.wicket.TestPrincipal \"render\" \"enable\"").matches());
+		assertTrue(principalPattern.matcher("grant principal org.apache.wicket.TestPrincipal \"some 'wicket' actions\"").matches());
+		assertFalse(principalPattern.matcher("grant principal \"org.apache.wicket.TestPrincipal\"").matches());
+		assertFalse(principalPattern.matcher("grant principal org.apache.wicket.TestPrincipal render").matches());
+	}
+	public void testRegExPermissionPattern()
+	{
+		Pattern permissionPattern=null;
+		try
+		{
+			Field field = PolicyFileHiveFactory.class.getDeclaredField("permissionPattern");
+			field.setAccessible(true);
+			permissionPattern = (Pattern) field.get(null);
+			assertTrue(permissionPattern.matcher("permission org.apache.wicket.TestPrincipal \"test\", \"render\";").matches());
+			assertTrue(permissionPattern.matcher("permission org.apache.wicket.TestPrincipal \"test\";").matches());
+			assertTrue(permissionPattern.matcher("permission org.apache.wicket.TestPrincipal \"test 123\", \"render\";").matches());
+			assertTrue(permissionPattern.matcher("permission org.apache.wicket.TestPrincipal \"test\", \"render 123\";").matches());
+			assertTrue(permissionPattern.matcher("permission org.apache.wicket.TestPrincipal \"test\", \"render 'wicket'\";").matches());
+			assertTrue(permissionPattern.matcher("permission org.apache.wicket.TestPrincipal \"test 'wicket'\", \"render\";").matches());
+			assertFalse(permissionPattern.matcher("permission org.apache.wicket.TestPrincipal;").matches());
+			assertFalse(permissionPattern.matcher("permission ").matches());
+			assertFalse(permissionPattern.matcher(" org.apache.wicket.TestPrincipal \"test\", \"render\";").matches());
+			assertFalse(permissionPattern.matcher("permission org.apache.wicket.TestPrincipal \"test\" \"test\";").matches());
+			assertFalse(permissionPattern.matcher("permission org.apache.wicket.TestPrincipal \"test\", ;").matches());
+			assertFalse(permissionPattern.matcher("permission org.apache.wicket.TestPrincipal \"test\", \"render\"").matches());
+		}
+		catch (IllegalArgumentException e)
+		{
+			fail(e.getMessage());
+		}
+		catch (SecurityException e)
+		{
+			fail(e.getMessage());
+		}
+		catch (IllegalAccessException e)
+		{
+			fail(e.getMessage());
+		}
+		catch (NoSuchFieldException e)
+		{
+			fail(e.getMessage());
+		}
+		assertNotNull(permissionPattern);
 	}
 }
