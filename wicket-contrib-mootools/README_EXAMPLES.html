@@ -6,6 +6,15 @@
       color: #69c487;
     }
     
+    p {
+    	font-family: Arial, "MS Trebuchet", sans-serif;
+    	color: #939393;
+    }
+    
+    a {
+    	color: #69c487;
+    }
+    
     pre {
       border: 1px solid #d1cda7;
       background-color: #fffaeb;
@@ -18,6 +27,17 @@
   <p>A few quick examples of what you can do with this wrapper.</p>
 
   <p>Basic use of FXStyle to animate HTML DOM elements</p>
+  
+  
+  <h3>TODO</h3>
+  <ul>
+  	<li>better examples</li>
+  	<li>example for image menu plugin</li>
+  	<li>ant build script</li>
+  </ul>
+  
+  
+  <p>All of these examples can be seen in effect on <a href="http://new.fabulously40.com/">fab40-new site</a> </p>
 
   <h3>Create flash-like effects</h3>
 
@@ -51,8 +71,8 @@ add(new MFXSmoothScroll());
 // increase the font size by +2 for each click, do it only in the dev with id #stage
 add(new WebMarkupContainer("larger").add(new MFXFontResizer(2).setContainer("stage")));
 
-// decrease the font size by -2 for each click, do it only in the dev with id #stage
-add(new WebMarkupContainer("smaller").add(new MFXFontResizer(-2).setContainer("stage")));
+// decrease the font size by -2 for each click on the whole page
+add(new WebMarkupContainer("smaller").add(new MFXFontResizer(-2)));
   </pre>
   
   <h3>Tooltip Plugin</h3>
