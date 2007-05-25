@@ -46,6 +46,9 @@ public abstract class Plugin extends wicket.contrib.tinymce.settings.Enum
 		settings = new HashMap();
 	}
 
+	/**
+	 * @return the path to custom plugin
+	 */
 	public String getPluginPath()
 	{
 		return pluginPath;

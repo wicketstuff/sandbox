@@ -86,7 +86,7 @@ class JazzySpellChecker extends WebResource
 	}
 
 	/**
-	 * @see wicket.Resource#getResourceStream()
+	 * @see org.apache.wicket.Resource#getResourceStream()
 	 */
 	public IResourceStream getResourceStream()
 	{

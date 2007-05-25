@@ -26,10 +26,6 @@ import java.util.Locale;
  */
 public class ZoomPlugin extends Plugin
 {
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	private PluginButton zoomButton;
@@ -42,12 +38,18 @@ public class ZoomPlugin extends Plugin
 	private Locale language;
 	private String title;
 
+	/**
+	 * Construct.
+	 */
 	public ZoomPlugin()
 	{
 		super("zoom");
 		zoomButton = new PluginButton("zoom", this);
 	}
 
+	/**
+	 * @return the zoom button
+	 */
 	public PluginButton getZoomButton()
 	{
 		return zoomButton;
