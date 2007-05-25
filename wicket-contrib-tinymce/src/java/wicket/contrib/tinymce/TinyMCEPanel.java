@@ -75,7 +75,7 @@ public class TinyMCEPanel extends Panel
 			{
 				StringBuffer buffer = new StringBuffer();
 
-				buffer.append("\ntinyMCE.init({" + settings.toJavaScript() + "\n});\n");
+				buffer.append("\ntinyMCE.init({" + settings.toJavaScript(true) + "\n});\n");
 				buffer.append(settings.getLoadPluginJavaScript());
 				buffer.append(settings.getAdditionalPluginJavaScript());
 
