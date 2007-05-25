@@ -252,41 +252,59 @@ public class TinyMCESettings implements Serializable
 		return plugins;
 	}
 
-	// todo change access
-	public String toJavaScript()
+	/**
+	 * TODO DO NOT CALL IT, NOT FOR PUBLIC API
+	 * 
+	 * @param ajax
+	 * 
+	 * @return
+	 */
+	public String toJavaScript(boolean ajax)
 	{
 		StringBuffer buffer = new StringBuffer();
 
 		// mode
-		buffer.append("\n\tmode : ").append("\"").append(mode.getName()).append("\"");
-		if (isExactMode())
+		if (ajax)
 		{
-			if (textAreas.size() > 0)
-			{
-				buffer.append(",\n\telements : \"");
-				Iterator iterator = textAreas.iterator();
-				while (iterator.hasNext())
-				{
-					Component component = (Component)iterator.next();
-					buffer.append(component.getId());
-					if (iterator.hasNext())
-					{
-						buffer.append(", ");
-					}
-				}
-				buffer.append("\"");
-			}
-			else
-			{
-				log.warn("tinymce is set to \"exact\" mode but there are no components attached");
-			}
+			buffer.append("\n\t").append("strict_loading_mode : ").append("\"true\"");
+			buffer.append(",\n\t").append("mode : ").append("\"exact\"");
+			buffer.append(",\n\t").append("elements : ").append("\"dummy\"");
 		}
+		else
+		{
+			buffer.append("\n\t").append("mode : \"specific_textareas\"");
+			buffer.append(",\n\t").append("editor_selector : \"mceEditor\"");
+		}
+		// if (isExactMode())
+		// {
+		// if (textAreas.size() > 0)
+		// {
+		// buffer.append(",\n\telements : \"");
+		// Iterator iterator = textAreas.iterator();
+		// while (iterator.hasNext())
+		// {
+		// Component component = (Component)iterator.next();
+		// buffer.append(component.getId());
+		// if (iterator.hasNext())
+		// {
+		// buffer.append(", ");
+		// }
+		// }
+		// buffer.append("\"");
+		// }
+		// else
+		// {
+		// log.warn("tinymce is set to \"exact\" mode but there are no
+		// components attached");
+		// }
+		// }
 
 		// theme
 		buffer.append(",\n\t").append("theme : ").append("\"").append(theme.getName()).append("\"");
 
 		// language
-		buffer.append(",\n\t").append("language : ").append("\"").append(language.getName()).append("\"");
+		buffer.append(",\n\t").append("language : ").append("\"").append(language.getName())
+				.append("\"");
 
 		if (Theme.advanced.equals(theme))
 		{

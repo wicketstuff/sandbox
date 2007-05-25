@@ -130,7 +130,7 @@ public class TinyMCESettingsTest extends TestCase
 		plugin.setDateFormat("%Y-%m-%d");
 		settings.register(plugin);
 
-		String javascript = settings.toJavaScript();
+		String javascript = settings.toJavaScript(true);
 		Pattern pattern = Pattern.compile(".*,\n\tplugin_insertdate_dateFormat : \"%Y-%m-%d\"",
 				Pattern.DOTALL);
 		assertTrue(pattern.matcher(javascript).matches());
@@ -161,7 +161,7 @@ public class TinyMCESettingsTest extends TestCase
 
 		TinyMCESettings settings = new TinyMCESettings(Mode.exact);
 		settings.enableTextArea(textArea);
-		String js = settings.toJavaScript();
+		String js = settings.toJavaScript(true);
 
 		// TODO implemnet me
 		assertNotNull(js);

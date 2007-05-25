@@ -6,6 +6,7 @@ import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.model.Model;
 
 import wicket.contrib.tinymce.TinyMCEPanel;
+import wicket.contrib.tinymce.TinyMceBehavior;
 import wicket.contrib.tinymce.settings.ContextMenuPlugin;
 import wicket.contrib.tinymce.settings.DateTimePlugin;
 import wicket.contrib.tinymce.settings.DirectionalityPlugin;
@@ -99,8 +100,9 @@ public class FullFeaturedTinyMCEPage extends TinyMCEBasePage {
         settings.setStatusbarLocation(TinyMCESettings.Location.bottom);
         settings.setVerticalResizing(true);
 
-        add(new TinyMCEPanel("tinyMCE", settings));
-        add(new TextArea("ta", new Model(TEXT)));
+        TextArea textArea = new TextArea("ta", new Model(TEXT));
+        textArea.add(new TinyMceBehavior(settings, false));
+		add(textArea);
 	}
 
 	private static final String TEXT = "<p><img src=\"logo.jpg\" alt=\" \" hspace=\"5\" vspace=\"5\" width=\"250\" height=\"48\" align=\"right\" />" +

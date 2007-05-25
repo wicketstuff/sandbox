@@ -4,6 +4,7 @@ import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.model.Model;
 
 import wicket.contrib.tinymce.TinyMCEPanel;
+import wicket.contrib.tinymce.TinyMceBehavior;
 import wicket.contrib.tinymce.settings.TinyMCESettings;
 
 /**
@@ -16,8 +17,9 @@ public class AdvancedTinyMCEPage extends TinyMCEBasePage
     {
         TinyMCESettings settings = new TinyMCESettings(TinyMCESettings.Theme.advanced);
 
-        add(new TinyMCEPanel("tinyMCE", settings));
-        add(new TextArea("ta", new Model(TEXT)));
+        TextArea textArea = new TextArea("ta", new Model(TEXT));
+        textArea.add(new TinyMceBehavior(settings, false));
+		add(textArea);
     }
 
     private String TEXT = "Some <strong>element</strong>, this is to be editor 1. <br/>\n" +
