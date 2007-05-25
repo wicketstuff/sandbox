@@ -2,6 +2,7 @@ package wicket.contrib.tinymce;
 
 import org.apache.wicket.RequestCycle;
 import org.apache.wicket.ResourceReference;
+import org.apache.wicket.Response;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.ComponentTag;
@@ -85,18 +86,24 @@ public class TinyMceBehavior extends AbstractDefaultAjaxBehavior
 		if (ajax)
 		{
 			// load editor script
-			StringBuilder builder = new StringBuilder();
-			builder.append(getCallbackScript());
-			JavascriptUtils.writeJavascript(getComponent().getResponse(), builder.toString(),
-					"load");
+			Response response = getComponent().getResponse();
+			JavascriptUtils.writeJavascript(response, getLoadEditorScript(), "load");
 		}
+	}
+
+	/**
+	 * @return the javascript to load tinymce editor
+	 */
+	public CharSequence getLoadEditorScript()
+	{
+		return getCallbackScript();
 	}
 
 	protected void respond(AjaxRequestTarget target)
 	{
 		StringBuilder builder = new StringBuilder();
-		builder.append("tinyMCE.onLoad();\n");
-		builder.append("tinyMCE.execCommand('mceAddControl', true, '"
+		builder.append("\ntinyMCE.onLoad();");
+		builder.append("\ntinyMCE.execCommand('mceAddControl', true, '"
 				+ getComponent().getMarkupId() + "');");
 
 		target.appendJavascript(JavascriptUtils.SCRIPT_OPEN_TAG);
