@@ -629,6 +629,9 @@ public class TinyMCESettings implements Serializable
 		}
 	}
 
+	/**
+	 * Language enum
+	 */
 	public static class Language extends Enum
 	{
 		private static final long serialVersionUID = 1L;

@@ -24,19 +24,21 @@ package wicket.contrib.tinymce.settings;
  */
 public class EmotionsPlugin extends Plugin
 {
-
-    /**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private PluginButton emotionsButton;
 
+    /**
+     * Construct.
+     */
     public EmotionsPlugin()
     {
         super("emotions");
         emotionsButton = new PluginButton("emotions", this);
     }
 
+    /**
+     * @return
+     */
     public PluginButton getEmotionsButton()
     {
         return emotionsButton;

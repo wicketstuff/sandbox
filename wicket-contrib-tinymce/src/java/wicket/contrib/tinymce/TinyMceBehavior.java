@@ -43,7 +43,7 @@ public class TinyMceBehavior extends AbstractDefaultAjaxBehavior
 	 * 
 	 * @param settings
 	 * @param ajax
-	 *            TODO
+	 *            if ajax is enable or not
 	 */
 	public TinyMceBehavior(TinyMCESettings settings, boolean ajax)
 	{

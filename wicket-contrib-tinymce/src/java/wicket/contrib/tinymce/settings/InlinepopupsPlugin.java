@@ -25,12 +25,12 @@ package wicket.contrib.tinymce.settings;
  */
 public class InlinepopupsPlugin extends Plugin
 {
-
-    /**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Construct.
+	 * @param name
+	 */
 	public InlinepopupsPlugin(String name)
     {
         super(name);
