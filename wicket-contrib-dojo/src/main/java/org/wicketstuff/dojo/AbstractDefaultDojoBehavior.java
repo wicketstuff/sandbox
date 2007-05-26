@@ -82,8 +82,8 @@ public abstract class AbstractDefaultDojoBehavior extends AbstractDefaultAjaxBeh
 	public static final ResourceReference DOJO_WICKET =  new CompressedResourceReference(
 			AbstractRequireDojoBehavior.class, "dojo-wicket/dojoWicket.js");
 
-	/** A unique ID for the JavaScript Dojo debug script */
-	private static final String JAVASCRIPT_DOJO_DEBUG_ID = AbstractDefaultDojoBehavior.class.getName() + "/debug";
+	/** A unique ID for the JavaScript Dojo config script */
+	private static final String JAVASCRIPT_DOJO_CONFIG_ID = AbstractDefaultDojoBehavior.class.getName() + "/debug";
 
 	/** A unique ID for the JavaScript Dojo console debug */
 	private static final String JAVASCRIPT_DOJO_CONSOLE_DEBUG_ID = AbstractDefaultDojoBehavior.class.getName() + "/consoleDebug";
@@ -100,15 +100,23 @@ public abstract class AbstractDefaultDojoBehavior extends AbstractDefaultAjaxBeh
 	public void renderHead(IHeaderResponse response)
 	{
 		super.renderHead(response);
-
+		
+		//Dojo configuration
+		StringBuffer dojoConfig = new StringBuffer();
+		dojoConfig.append("var djConfig = {};\n");
+		
 		// enable dojo debug if our configuration type is DEVELOPMENT
 		final String configurationType = Application.get().getConfigurationType();
 		if (configurationType.equalsIgnoreCase(Application.DEVELOPMENT)) {
-			StringBuffer debugScript = new StringBuffer();
-			debugScript.append("var djConfig = {};\n");
-			debugScript.append("djConfig.isDebug = true;\n");
-			response.renderJavascript(debugScript.toString(), JAVASCRIPT_DOJO_DEBUG_ID);
+			dojoConfig.append("djConfig.isDebug = true;\n");
+		}else{
+			dojoConfig.append("djConfig.isDebug = false;\n");
 		}
+		//disable dojo auto parsing
+		dojoConfig.append("djConfig.parseWidgets = false;\n");
+		dojoConfig.append("djConfig.searchIds = []\n");
+		//render dojo config
+		response.renderJavascript(dojoConfig.toString(), JAVASCRIPT_DOJO_CONFIG_ID);
 		
 		// if a CompressedResourceReference to a custom Dojo script is set as
 		// metada of the application use it instead of the default one
