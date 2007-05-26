@@ -20,6 +20,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 import org.apache.wicket.RequestCycle;
+import org.apache.wicket.Response;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.wicketstuff.dojo.skin.manager.SkinManager;
 import org.apache.wicket.markup.ComponentTag;
@@ -47,6 +48,7 @@ public abstract class AbstractRequireDojoBehavior extends AbstractDefaultDojoBeh
 	 * (non-Javadoc)
 	 * 
 	 * @see wicket.contrib.dojo.AbstractDefaultDojoBehavior#renderHead(wicket.markup.html.IHeaderResponse)
+	 * TODO : is there a way to put all dojo.require at the same place on the rendered page??????
 	 */
 	public void renderHead(IHeaderResponse response) {
 		super.renderHead(response);
@@ -57,12 +59,17 @@ public abstract class AbstractRequireDojoBehavior extends AbstractDefaultDojoBeh
 		while (ite.hasNext()) {
 			require.append("	dojo.require(\"");
 			require.append((String) ite.next());
-			require.append("\")\n");
+			require.append("\");\n");
 		}
 
 		require.append("\n");
 
 		response.renderJavascript(require, AbstractRequireDojoBehavior.class.getName());
+		
+		//Dojo auto parsing is disactivated so we declare here each widget we need to parse with dojo
+		if (!(RequestCycle.get().getRequestTarget() instanceof AjaxRequestTarget)) {
+			response.renderJavascript("djConfig.searchIds.push(\""+getComponent().getMarkupId()+"\");", getComponent().getMarkupId() + "DojoParse");
+		}
 	}
 
 	/**
@@ -77,7 +84,7 @@ public abstract class AbstractRequireDojoBehavior extends AbstractDefaultDojoBeh
 	 */
 	protected void onComponentRendered() {
 		// if a Dojo Widget is rerender needs to run some javascript to refresh
-		// it
+		// it. TargetRefresherManager contains top level dojo widgets
 		if (RequestCycle.get().getRequestTarget() instanceof AjaxRequestTarget) {
 			((AjaxRequestTarget) RequestCycle.get().getRequestTarget()).addListener(TargetRefresherManager
 					.getInstance());
