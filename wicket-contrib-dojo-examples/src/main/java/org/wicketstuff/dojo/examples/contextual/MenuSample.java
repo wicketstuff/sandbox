@@ -1,13 +1,13 @@
 package org.wicketstuff.dojo.examples.contextual;
 
 import org.apache.wicket.ResourceReference;
+import org.wicketstuff.dojo.examples.WicketExamplePage;
 import org.wicketstuff.dojo.markup.html.container.DojoSimpleContainer;
 import org.wicketstuff.dojo.markup.html.contextualMenu.DojoContextualMenuBehavior;
 import org.wicketstuff.dojo.markup.html.contextualMenu.DojoMenu;
 import org.wicketstuff.dojo.markup.html.contextualMenu.DojoMenuItem;
-import org.apache.wicket.markup.html.WebPage;
 
-public class MenuSample extends WebPage {
+public class MenuSample extends WicketExamplePage {
 
 	public MenuSample() {
 		super();

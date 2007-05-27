@@ -1,12 +1,13 @@
 package org.wicketstuff.dojo.examples.percentage;
 
 import org.apache.wicket.PageParameters;
+import org.wicketstuff.dojo.examples.WicketExamplePage;
 import org.wicketstuff.dojo.markup.html.percentage.DojoPercentSelector;
 import org.wicketstuff.dojo.markup.html.percentage.model.PercentageRanges;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.model.Model;
 
-public class PercentSelectorSample extends WebPage {
+public class PercentSelectorSample extends WicketExamplePage {
 	
 	private static PercentageRanges ranges = new PercentageRanges();
 	

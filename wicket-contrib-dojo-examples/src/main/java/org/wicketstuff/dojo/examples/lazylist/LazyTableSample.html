@@ -7,102 +7,19 @@
 	</head>
 
 <body>
-	<table wicket:id="container" style="width:600px">
-		<thead>
-			<th></th>
-			<th></th>
-		</thead>
-		<tbody>
-			<tr wicket:id="table">
-				<td style="width: 50%"><span wicket:id="label"></span></td>
-				<td style="width: 50%">I'm a test column</td>
-			</tr>
-		</tbody>
-	</table>
-	
-	<br/>
-	<br/><p></p>
-<table align="center" style="border-color: navy; border-style: solid; border-width: 1px; font-size: 12px">
-		<tr>
-			<td style="color: white; background-color: navy; font-weight: bold; text-align: center;">
-				Explanation
-			</td>
-		</tr>
-		<tr>
-			<td>
-				TODO
-			</td>
-		</tr>
-		<tr>
-			<td style="color: white; background-color: navy; font-weight: bold; text-align: center;">
-				Java Code
-			</td>
-		</tr>
-		<tr>
-			<td>
-					<pre>
-package wicket.contrib.dojo.examples;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-
-import wicket.PageParameters;
-import wicket.contrib.dojo.html.list.lazy.DojoLazyLoadingListContainer;
-import wicket.contrib.dojo.html.list.lazy.DojoLazyLoadingRefreshingView;
-import wicket.extensions.markup.html.repeater.refreshing.Item;
-import wicket.markup.html.WebPage;
-import wicket.markup.html.basic.Label;
-
-public class LazyTableSample extends WebPage {
-	
-	public LazyTableSample(PageParameters parameters){
-		DojoLazyLoadingListContainer container = new DojoLazyLoadingListContainer(this, "container", 3000)
-		DojoLazyLoadingRefreshingView list = new DojoLazyLoadingRefreshingView(container, "table"){
-
-			@Override
-			public Iterator iterator(int first, int count) {
-				ArrayList&lt;String> list = new ArrayList&lt;String>();
-				int i = 0;
-				while(i &lt; count){
-					list.add("foo" + (first + i++));
-				}
-				
-				//fake a busy and slow machine
-				int j = 0;
-				while (j &lt; 1000000000){j++;}
-				
-				return list.iterator();
-			}
-
-			@Override
-			protected void populateItem(Item item) {
-				new Label(item, "label",item.getModel());			
-			}
-			
-		};
-	}
-}
-
-					</pre>
-			</td>
-		</tr>
-	</table>
-	 <br/>
- <br/>
-  <br/>
- <br/>
-  <br/>
- <br/>
-  <br/>
- <br/>
-  <br/>
- <br/>
-  <br/>
- <br/>
-<wicket:link>
-		<ul>
-		 <li><a href="Index.html">Back to index</a></li>
-		</ul>
-</wicket:link>
+	<wicket:extend>
+		<table wicket:id="container" style="width:600px">
+			<thead>
+				<th></th>
+				<th></th>
+			</thead>
+			<tbody>
+				<tr wicket:id="table">
+					<td style="width: 50%"><span wicket:id="label"></span></td>
+					<td style="width: 50%">I'm a test column</td>
+				</tr>
+			</tbody>
+		</table>
+	</wicket:extend>
 </body>
 </html>

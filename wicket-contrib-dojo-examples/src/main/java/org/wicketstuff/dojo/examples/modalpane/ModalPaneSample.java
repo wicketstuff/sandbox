@@ -2,11 +2,11 @@ package org.wicketstuff.dojo.examples.modalpane;
 
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.wicketstuff.dojo.examples.WicketExamplePage;
 import org.wicketstuff.dojo.markup.html.DojoLink;
 import org.wicketstuff.dojo.markup.html.floatingpane.DojoModalFloatingPane;
-import org.apache.wicket.markup.html.WebPage;
 
-public class ModalPaneSample extends WebPage {
+public class ModalPaneSample extends WicketExamplePage {
 	
 	public ModalPaneSample(PageParameters parameters){
 		final DojoModalFloatingPane dialog = new DojoModalFloatingPane("dialogFloating");

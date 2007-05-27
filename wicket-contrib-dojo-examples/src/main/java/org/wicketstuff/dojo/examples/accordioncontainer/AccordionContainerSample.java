@@ -1,6 +1,7 @@
 package org.wicketstuff.dojo.examples.accordioncontainer;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.wicketstuff.dojo.examples.WicketExamplePage;
 import org.wicketstuff.dojo.examples.slider.SliderSample;
 import org.wicketstuff.dojo.markup.html.container.DojoSimpleContainer;
 import org.wicketstuff.dojo.markup.html.container.IDojoContainer;
@@ -8,7 +9,7 @@ import org.wicketstuff.dojo.markup.html.container.accordion.DojoAccordionContain
 import org.wicketstuff.dojo.markup.html.container.page.DojoPageContainer;
 import org.apache.wicket.markup.html.WebPage;
 
-public class AccordionContainerSample extends WebPage {
+public class AccordionContainerSample extends WicketExamplePage {
 
 	public AccordionContainerSample() {
 		super();

@@ -5,20 +5,17 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.wicketstuff.dojo.markup.html.container.DojoSimpleContainer;
-import org.wicketstuff.dojo.markup.html.list.DojoOrderableListRemover;
-import org.wicketstuff.dojo.markup.html.list.DojoOrderableListScrollerBehavior;
-import org.wicketstuff.dojo.markup.html.list.DojoOrderableListView;
-import org.wicketstuff.dojo.markup.html.list.DojoOrderableListContainer;
-import org.wicketstuff.dojo.markup.html.list.DojoOrderableRepeatingView;
-import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.Model;
+import org.wicketstuff.dojo.examples.WicketExamplePage;
+import org.wicketstuff.dojo.markup.html.container.DojoSimpleContainer;
+import org.wicketstuff.dojo.markup.html.list.DojoOrderableListContainer;
+import org.wicketstuff.dojo.markup.html.list.DojoOrderableListRemover;
+import org.wicketstuff.dojo.markup.html.list.DojoOrderableListScrollerBehavior;
+import org.wicketstuff.dojo.markup.html.list.DojoOrderableRepeatingView;
 
-public class OrderableListScroll extends WebPage {
+public class OrderableListScroll extends WicketExamplePage {
 
 	static final List objList  = new  ArrayList();
 	DojoOrderableRepeatingView list;

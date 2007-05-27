@@ -1,11 +1,11 @@
 package org.wicketstuff.dojo.examples.inlineedit;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.wicketstuff.dojo.markup.html.inlineeditbox.DojoInlineEditBox;
-import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
+import org.wicketstuff.dojo.examples.WicketExamplePage;
+import org.wicketstuff.dojo.markup.html.inlineeditbox.DojoInlineEditBox;
 
-public class DojoInlineEditBoxSample extends WebPage {
+public class DojoInlineEditBoxSample extends WicketExamplePage {
 	
 	public static final String DISPLAY_TEXT = "displayText";
 

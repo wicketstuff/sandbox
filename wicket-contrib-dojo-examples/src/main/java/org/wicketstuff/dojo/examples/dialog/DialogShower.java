@@ -1,13 +1,13 @@
 package org.wicketstuff.dojo.examples.dialog;
 
 import org.apache.wicket.PageParameters;
+import org.wicketstuff.dojo.examples.WicketExamplePage;
 import org.wicketstuff.dojo.markup.html.dialog.DojoDialog;
 import org.wicketstuff.dojo.markup.html.dialog.DojoDialogCloser;
 import org.wicketstuff.dojo.markup.html.dialog.DojoDialogOpener;
 import org.wicketstuff.dojo.toggle.DojoWipeToggle;
-import org.apache.wicket.markup.html.WebPage;
 
-public class DialogShower extends WebPage {
+public class DialogShower extends WicketExamplePage {
 	
 	public DialogShower(PageParameters parameters){
 		DojoDialog dialog = new DojoDialog("dialogPanel");
