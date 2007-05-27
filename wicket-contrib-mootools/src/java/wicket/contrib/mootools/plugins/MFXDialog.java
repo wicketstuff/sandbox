@@ -34,7 +34,7 @@ public class MFXDialog extends Panel {
 	private int offsetTop;
 	private Boolean shown;
 	private String body;
-	private int dialogType;
+	private MFXDialogTypes dialogType;
 	private WebMarkupContainer empty;
 	private Label titleLbl;
 	private TextArea input;
@@ -48,6 +48,8 @@ public class MFXDialog extends Panel {
 	private String color;
 	
 	private ResourceReference PLAINCSS = new CompressedResourceReference(MFXDialog.class,"MFXDialog.css");
+	
+	public static enum MFXDialogTypes { CONFIRMATION, MESSAGE, MESSAGE_WITHOUT_CLOSE, QUESTION_WITH_INPUT};
 	
 	
 	public MFXDialog(String id) {
@@ -108,7 +110,7 @@ public class MFXDialog extends Panel {
 			public void onClick(AjaxRequestTarget arg0) {
 				shown = false;
 				arg0.appendJavascript(closeWindowJavaScript());
-				onAbortCallback(arg0);
+				onConfirmCallback(arg0);
 				onCloseCallBack(arg0);
 			}
 		});
@@ -337,11 +339,11 @@ public class MFXDialog extends Panel {
 		return body;
 	}
 
-	public void setDialogType(int dialogType) {
+	public void setDialogType(MFXDialogTypes dialogType) {
 		this.dialogType = dialogType;
 	}
 
-	public int getDialogType() {
+	public MFXDialogTypes getDialogType() {
 		return dialogType;
 	}
 
