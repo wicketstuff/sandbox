@@ -87,7 +87,7 @@ public class DojoErrorDiv extends StylingWebMarkupContainer {
 	 * @param mess message to display
 	 */
 	public void setMessage (AjaxRequestTarget target, String mess){
-		target.appendJavascript("dojo.widget.byId('" + getMarkupId() + "').setMessage(\"" + mess + "\")");
+		target.appendJavascript("dojo.widget.byId('" + getMarkupId() + "').setMessage(\"" + mess.replaceAll("\"", "'") + "\")");
 	}
 
 }
