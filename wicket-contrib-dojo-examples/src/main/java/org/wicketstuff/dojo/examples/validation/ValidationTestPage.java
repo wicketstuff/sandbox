@@ -1,11 +1,6 @@
 package org.wicketstuff.dojo.examples.validation;
 
 import org.apache.wicket.PageParameters;
-import org.wicketstuff.dojo.markup.html.form.validation.FXFeedbackIndicator;
-import org.wicketstuff.dojo.markup.html.form.validation.FXValidationAjaxHandler;
-import org.wicketstuff.dojo.markup.html.form.validation.bubble.DojoBubbleValidationAjaxBehavior;
-import org.wicketstuff.dojo.markup.html.form.validation.bubble.DojoErrorBubble;
-import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.form.RequiredTextField;
@@ -13,8 +8,13 @@ import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.validation.validator.NumberValidator;
 import org.apache.wicket.validation.validator.StringValidator;
+import org.wicketstuff.dojo.examples.WicketExamplePage;
+import org.wicketstuff.dojo.markup.html.form.validation.FXFeedbackIndicator;
+import org.wicketstuff.dojo.markup.html.form.validation.FXValidationAjaxHandler;
+import org.wicketstuff.dojo.markup.html.form.validation.bubble.DojoBubbleValidationAjaxBehavior;
+import org.wicketstuff.dojo.markup.html.form.validation.bubble.DojoErrorBubble;
 
-public class ValidationTestPage extends WebPage{
+public class ValidationTestPage extends WicketExamplePage{
 
 	private static final long serialVersionUID = 1L;
 	private Form form;

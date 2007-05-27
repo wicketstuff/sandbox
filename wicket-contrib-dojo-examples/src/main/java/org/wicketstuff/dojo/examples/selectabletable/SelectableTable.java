@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.wicketstuff.dojo.examples.WicketExamplePage;
 import org.wicketstuff.dojo.markup.html.DojoLink;
 import org.wicketstuff.dojo.markup.html.list.table.DojoSelectableListContainer;
 import org.apache.wicket.markup.html.WebPage;
@@ -17,7 +18,7 @@ import org.apache.wicket.markup.repeater.RefreshingView;
 import org.apache.wicket.markup.repeater.RepeatingView;
 import org.apache.wicket.model.Model;
 
-public class SelectableTable extends WebPage {
+public class SelectableTable extends WicketExamplePage {
 
 	static final List objList  = new  ArrayList();
 

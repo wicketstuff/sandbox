@@ -9,33 +9,18 @@
 	</head>
 
 <body>
-	<div wicket:id="tabContainer">
-		<div wicket:id="tab1">
-			content
+	<wicket:extend>
+		<div wicket:id="tabContainer">
+			<div wicket:id="tab1">
+				content
+			</div>
+			<div wicket:id="tab2">
+				content 2
+			</div>
+			<div wicket:id="tab3">
+				foo bar
+			</div>
 		</div>
-		<div wicket:id="tab2">
-			content 2
-		</div>
-		<div wicket:id="tab3">
-			foo bar
-		</div>
-	</div>
- <br/>
- <br/>
-  <br/>
- <br/>
-  <br/>
- <br/>
-  <br/>
- <br/>
-  <br/>
- <br/>
-  <br/>
- <br/>
-<wicket:link>
-		<ul>
-		 <li><a href="Index.html">Back to index</a></li>
-		</ul>
-</wicket:link>
+	</wicket:extend>
 </body>
 </html>

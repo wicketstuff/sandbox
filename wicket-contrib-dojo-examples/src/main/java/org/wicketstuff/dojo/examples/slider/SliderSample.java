@@ -1,12 +1,12 @@
 package org.wicketstuff.dojo.examples.slider;
 
 import org.apache.wicket.PageParameters;
-import org.wicketstuff.dojo.markup.html.form.sliders.DojoIntegerSlider;
-import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.PropertyModel;
+import org.wicketstuff.dojo.examples.WicketExamplePage;
+import org.wicketstuff.dojo.markup.html.form.sliders.DojoIntegerSlider;
 
-public class SliderSample extends WebPage {
+public class SliderSample extends WicketExamplePage {
     private int value = 12;
 
     public SliderSample(PageParameters params) throws Exception {

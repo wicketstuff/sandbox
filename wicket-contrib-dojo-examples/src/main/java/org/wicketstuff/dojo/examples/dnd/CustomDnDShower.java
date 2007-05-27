@@ -5,12 +5,11 @@ import org.apache.wicket.ResourceReference;
 import org.apache.wicket.behavior.AbstractBehavior;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.PackageResource;
-import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.resources.CompressedResourceReference;
-import org.wicketstuff.dojo.examples.Index;
+import org.wicketstuff.dojo.examples.WicketExamplePage;
 
-public class CustomDnDShower extends WebPage {
+public class CustomDnDShower extends WicketExamplePage {
 	
 	public CustomDnDShower(PageParameters parameters) {
 		add(new CustomDnDShowerBehavior());

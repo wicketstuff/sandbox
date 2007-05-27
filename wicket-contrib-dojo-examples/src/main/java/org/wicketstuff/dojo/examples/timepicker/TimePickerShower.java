@@ -3,11 +3,11 @@ package org.wicketstuff.dojo.examples.timepicker;
 import java.util.Locale;
 
 import org.apache.wicket.PageParameters;
-import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.form.Form;
+import org.wicketstuff.dojo.examples.WicketExamplePage;
 import org.wicketstuff.dojo.markup.html.form.DojoTimePicker;
 
-public class TimePickerShower extends WebPage {
+public class TimePickerShower extends WicketExamplePage {
 	
 		
 	public TimePickerShower(PageParameters parameters){
