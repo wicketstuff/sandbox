@@ -107,6 +107,7 @@ public class GeneralTest extends TestCase
 		form.setValue("username", "test");
 		form.submit();
 		mock.assertRenderedPage(MockHomePage.class);
+		//TODO use mock.clickLink instead of our custom clickLink as soon as new wicket snapshot is available
 		// mock.clickLink("secret", false);
 		clickLink("secret");
 		mock.assertRenderedPage(SecondaryLoginPage.class);
