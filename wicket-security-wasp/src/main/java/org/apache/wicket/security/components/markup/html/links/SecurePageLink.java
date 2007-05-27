@@ -12,17 +12,18 @@ package org.apache.wicket.security.components.markup.html.links;
 import org.apache.wicket.markup.html.link.IPageLink;
 import org.apache.wicket.markup.html.link.PageLink;
 import org.apache.wicket.security.actions.AbstractWaspAction;
-import org.apache.wicket.security.checks.ClassSecurityCheck;
 import org.apache.wicket.security.checks.ISecurityCheck;
+import org.apache.wicket.security.checks.LinkSecurityCheck;
 import org.apache.wicket.security.components.ISecureComponent;
 import org.apache.wicket.security.components.SecureComponentHelper;
 
 /**
  * Pagelink with visibility / clickability based on user rights. Requires render rights to
- * be visible, and enable rights to be clickable. Note that the target of the link is
- * checked not the link itself.
+ * be visible, and enable rights to be clickable. This class is by default outfitted with
+ * a {@link LinkSecurityCheck}, please see its documentation on how to enable the
+ * alternative security check
  * @author marrink
- * @see ClassSecurityCheck
+ * @see LinkSecurityCheck
  */
 public class SecurePageLink extends PageLink implements ISecureComponent
 {
@@ -39,7 +40,7 @@ public class SecurePageLink extends PageLink implements ISecureComponent
 	public SecurePageLink(String id, Class c)
 	{
 		super(id, c);
-		setSecurityCheck(new ClassSecurityCheck(c));
+		setSecurityCheck(new LinkSecurityCheck(this, c));
 	}
 
 	/**
@@ -49,7 +50,7 @@ public class SecurePageLink extends PageLink implements ISecureComponent
 	public SecurePageLink(String id, IPageLink pageLink)
 	{
 		super(id, pageLink);
-		setSecurityCheck(new ClassSecurityCheck(pageLink.getPageIdentity()));
+		setSecurityCheck(new LinkSecurityCheck(this, pageLink.getPageIdentity()));
 	}
 
 	/**
