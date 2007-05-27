@@ -9,6 +9,8 @@ wicketAjaxDebugEnable=true;
 <script type="text/javascript" id="org.wicketstuff.dojo.AbstractDefaultDojoBehavior/debug"><!--/*--><![CDATA[/*><!--*/
 var djConfig = {};
 djConfig.isDebug = true;
+djConfig.parseWidgets = false;
+djConfig.searchIds = []
 
 /*-->]]>*/</script>
 
@@ -25,9 +27,13 @@ dojo.require("dojo.widget.Tree");
 /*-->]]>*/</script>
 
 <script type="text/javascript" id="org.wicketstuff.dojo.AbstractRequireDojoBehavior"><!--/*--><![CDATA[/*><!--*/
-	dojo.require("dojo.widget.FloatingPane")
+	dojo.require("dojo.widget.FloatingPane");
 
 
+/*-->]]>*/</script>
+
+<script type="text/javascript" id="window0DojoParse"><!--/*--><![CDATA[/*><!--*/
+djConfig.searchIds.push("window0");
 /*-->]]>*/</script>
 
 </head><body>
