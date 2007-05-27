@@ -29,7 +29,7 @@ dojo.widget.defineWidget ("dojoWicket.widget.ErrorDisplayer", dojo.widget.HtmlWi
 			parentDiv.appendChild(this.domNode);
 			parentDiv.style.position="relative";
 		}else{
-			parentDiv = document.getElementByTagName('body')[0];
+			parentDiv = document.getElementsByTagName('body')[0];
 			parentDiv.appendChild(this.domNode);
 		}
 		
