@@ -87,6 +87,10 @@ public class MFXStyle extends MFXBase {
 		return buf.toString();
 	}
 	
-
-
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	public String toString() {
+		return mooFunction();
+	}
 }
