@@ -11,6 +11,7 @@ import junit.framework.TestCase;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.wicket.Component;
+import org.apache.wicket.Page;
 import org.apache.wicket.authorization.Action;
 import org.apache.wicket.authorization.UnauthorizedActionException;
 import org.apache.wicket.authorization.UnauthorizedInstantiationException;
@@ -23,10 +24,12 @@ import org.apache.wicket.security.actions.ActionFactory;
 import org.apache.wicket.security.actions.RegistrationException;
 import org.apache.wicket.security.actions.WaspAction;
 import org.apache.wicket.security.checks.ComponentSecurityCheck;
+import org.apache.wicket.security.checks.LinkSecurityCheck;
 import org.apache.wicket.security.components.ISecureComponent;
 import org.apache.wicket.security.components.ISecurePage;
 import org.apache.wicket.security.components.SecureComponentHelper;
 import org.apache.wicket.security.components.markup.html.form.SecureTextField;
+import org.apache.wicket.security.components.markup.html.links.SecurePageLink;
 import org.apache.wicket.security.models.ISecureModel;
 import org.apache.wicket.security.pages.login.LoginPage;
 import org.apache.wicket.security.pages.secure.HomePage;
@@ -387,7 +390,26 @@ public class GeneralTest extends TestCase
 		doLogin();
 		mock.assertInvisible("link");
 		mock.assertVisible("sorry");
+		
+		Page lastPage = mock.getLastRenderedPage();
+		SecurePageLink link = (SecurePageLink)lastPage.get("link");
+		LinkSecurityCheck linkcheck = ((LinkSecurityCheck)link.getSecurityCheck()).setUseAlternativeRenderCheck(true);
+		//need to fake inherit for the link to show up.
 		Map authorized = new HashMap();
+		authorized.put(SecureComponentHelper.alias(link), application.getActionFactory().getAction("access render"));
+		login(authorized);
+		mock.startPage(lastPage);
+		mock.assertRenderedPage(getHomePage());
+		assertSame(lastPage, mock.getLastRenderedPage());
+		mock.assertInvisible("sorry");
+		mock.assertVisible("link");
+		TagTester tag=mock.getTagByWicketId("link");
+		//Note due to a bug in wicket the Link class does not automatically disable on security, all other links work fine.
+		//The bug has been fixed, but the fix won't be available untill a new snapshot is build.
+		//assertNull(tag.getAttribute("href")); //TODO enable assertion after new wicket snapshot
+		assertNull(tag.getAttribute("onclick"));
+		
+		linkcheck.setUseAlternativeRenderCheck(false);
 		authorized.put(PageA.class, application.getActionFactory().getAction("render"));
 		login(authorized);
 		mock.setupRequestAndResponse();

@@ -12,17 +12,18 @@ package org.apache.wicket.security.components.markup.html.links;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.security.actions.AbstractWaspAction;
-import org.apache.wicket.security.checks.ClassSecurityCheck;
 import org.apache.wicket.security.checks.ISecurityCheck;
+import org.apache.wicket.security.checks.LinkSecurityCheck;
 import org.apache.wicket.security.components.ISecureComponent;
 import org.apache.wicket.security.components.SecureComponentHelper;
 
 /**
  * BookmarkablePagelink with visibility / clickability based on user rights. Requires
- * render rights to be visible, and enable rights to be clickable. Note that the target of
- * the link is checked not the link itself.
+ * render rights to be visible, and enable rights to be clickable. This class is by
+ * default outfitted with a {@link LinkSecurityCheck}, please see its documentation on
+ * how to enable the alternative security check
  * @author marrink
- * @see ClassSecurityCheck
+ * @see LinkSecurityCheck
  */
 public class SecureBookmarkablePageLink extends BookmarkablePageLink implements ISecureComponent
 {
@@ -39,7 +40,7 @@ public class SecureBookmarkablePageLink extends BookmarkablePageLink implements 
 	public SecureBookmarkablePageLink(String id, Class pageClass)
 	{
 		super(id, pageClass);
-		setSecurityCheck(new ClassSecurityCheck(pageClass));
+		setSecurityCheck(new LinkSecurityCheck(this,pageClass));
 	}
 
 	/**
@@ -50,7 +51,7 @@ public class SecureBookmarkablePageLink extends BookmarkablePageLink implements 
 	public SecureBookmarkablePageLink(String id, Class pageClass, PageParameters parameters)
 	{
 		super(id, pageClass, parameters);
-		setSecurityCheck(new ClassSecurityCheck(pageClass));
+		setSecurityCheck(new LinkSecurityCheck(this,pageClass));
 	}
 
 	/**
