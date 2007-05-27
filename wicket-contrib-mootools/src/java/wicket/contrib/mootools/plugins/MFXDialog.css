@@ -1,0 +1,26 @@
+.MFXDialog {
+	border: 1px solid;
+	position: absolute;
+	z-index: 100;
+	background-color: #fff;
+	padding-bottom: 8px;
+	text-align: center;
+}
+
+.MFXDialog h3 {
+	padding-top: 5px;
+	padding-bottom: 5px;
+	color: #fff;
+}
+
+.MFXDialog .confirmAbort {
+	text-align: right;
+	margin-right: 10px;
+}
+
+.moocontent {
+	margin-left: 10px;
+	margin-right: 10px;
+	text-align: left;
+	padding-bottom: 8px;
+}
