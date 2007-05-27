@@ -59,11 +59,12 @@ public class DojoDropDownChoiceHandler extends AbstractRequireDojoBehavior {
 
 	@Override
 	public void renderHead(IHeaderResponse response) {
+		super.renderHead(response);
 		DojoDropDownChoice c = (DojoDropDownChoice) getComponent();
 
 		if (c.getValue().equals("-1"))
 			// Reset the ComboBox value
-			response.renderOnLoadJavascript("dojo.widget.byId('" + c.getMarkupId() + "').textInputNode.value = '';");
+			response.renderJavascript("dojo.addOnLoad(function(){ dojo.widget.byId('" + c.getMarkupId() + "').textInputNode.value = ''});", c.getMarkupId() + "ComboReset");
 	}
 
 	protected CharSequence getCallbackScript() {

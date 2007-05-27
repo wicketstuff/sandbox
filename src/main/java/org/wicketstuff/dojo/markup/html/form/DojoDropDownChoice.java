@@ -19,10 +19,12 @@ package org.wicketstuff.dojo.markup.html.form;
 import java.util.List;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.wicketstuff.dojo.DojoIdConstants;
 
 @SuppressWarnings("serial")
@@ -117,9 +119,11 @@ public class DojoDropDownChoice extends DropDownChoice {
 	protected final boolean wantOnSelectionChangedNotifications() {
 		return isHandleSelectionChange();
 	}
-
+	
+	@Override
 	protected void onAttach() {
 		super.onAttach();
-		this.setOutputMarkupId(true);
+		//FIXME : why setOutputMarkupId does not work??
+		add(new AttributeAppender("id", new Model(getMarkupId()),""));
 	}
 }
