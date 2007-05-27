@@ -5,16 +5,16 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.apache.wicket.PageParameters;
-import org.wicketstuff.dojo.markup.html.list.lazy.DojoLazyLoadingListContainer;
-import org.wicketstuff.dojo.markup.html.list.lazy.DojoLazyLoadingRefreshingView;
-import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.wicketstuff.dojo.examples.WicketExamplePage;
+import org.wicketstuff.dojo.markup.html.list.lazy.DojoLazyLoadingListContainer;
+import org.wicketstuff.dojo.markup.html.list.lazy.DojoLazyLoadingRefreshingView;
 
-public class LazyTableSample extends WebPage {
+public class LazyTableSample extends WicketExamplePage {
 	
 	final DojoLazyLoadingRefreshingView list;
 	

@@ -3,16 +3,16 @@ package org.wicketstuff.dojo.examples.datePicker;
 import java.util.Date;
 
 import org.apache.wicket.PageParameters;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
+import org.apache.wicket.model.Model;
+import org.wicketstuff.dojo.examples.WicketExamplePage;
 import org.wicketstuff.dojo.markup.html.form.DojoDatePicker;
 import org.wicketstuff.dojo.toggle.DojoExplodeToggle;
 import org.wicketstuff.dojo.toggle.DojoFadeToggle;
 import org.wicketstuff.dojo.toggle.DojoWipeToggle;
-import org.apache.wicket.markup.html.WebPage;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.panel.FeedbackPanel;
-import org.apache.wicket.model.Model;
 
-public class DatePickerShower extends WebPage {
+public class DatePickerShower extends WicketExamplePage {
 	
 	private Date date1;
 	private Date date2;

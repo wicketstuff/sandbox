@@ -1,12 +1,12 @@
 package org.wicketstuff.dojo.examples.splitcontainer;
 
-import org.apache.wicket.markup.html.WebPage;
+import org.wicketstuff.dojo.examples.WicketExamplePage;
 import org.wicketstuff.dojo.examples.datePicker.DatePickerShower;
 import org.wicketstuff.dojo.markup.html.container.DojoSimpleContainer;
 import org.wicketstuff.dojo.markup.html.container.page.DojoPageContainer;
 import org.wicketstuff.dojo.markup.html.container.split.DojoSplitContainer;
 
-public class SplitContainerSample extends WebPage {
+public class SplitContainerSample extends WicketExamplePage {
 
 	public SplitContainerSample() {
 		super();

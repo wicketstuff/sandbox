@@ -3,12 +3,12 @@ package org.wicketstuff.dojo.examples.toaster;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.wicketstuff.dojo.markup.html.toaster.DojoToaster;
-import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.util.time.Duration;
+import org.wicketstuff.dojo.examples.WicketExamplePage;
+import org.wicketstuff.dojo.markup.html.toaster.DojoToaster;
 
-public class ToasterSample extends WebPage {
+public class ToasterSample extends WicketExamplePage {
 	
 	public ToasterSample(PageParameters parameters){
 		final DojoToaster toaster1 = new DojoToaster("toaster1",new Model("Some messages here. Funy isn\'t it ;)"));

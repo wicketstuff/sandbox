@@ -1,7 +1,7 @@
 package org.wicketstuff.dojo.examples.tabcontainer;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.markup.html.WebPage;
+import org.wicketstuff.dojo.examples.WicketExamplePage;
 import org.wicketstuff.dojo.examples.datePicker.DatePickerShower;
 import org.wicketstuff.dojo.markup.html.DojoLink;
 import org.wicketstuff.dojo.markup.html.container.DojoSimpleContainer;
@@ -9,7 +9,7 @@ import org.wicketstuff.dojo.markup.html.container.IDojoContainer;
 import org.wicketstuff.dojo.markup.html.container.page.DojoPageContainer;
 import org.wicketstuff.dojo.markup.html.container.tab.DojoTabContainer;
 
-public class TabContainerSample extends WebPage {
+public class TabContainerSample extends WicketExamplePage {
 
 	public TabContainerSample() {
 		super();

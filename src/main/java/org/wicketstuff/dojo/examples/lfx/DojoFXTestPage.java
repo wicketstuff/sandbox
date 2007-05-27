@@ -14,8 +14,9 @@ import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.model.Model;
 import org.wicketstuff.dojo.dojofx.FXOnClickExploder;
 import org.wicketstuff.dojo.dojofx.FXOnMouseOverHighlighter;
+import org.wicketstuff.dojo.examples.WicketExamplePage;
 
-public class DojoFXTestPage extends WebPage{
+public class DojoFXTestPage extends WicketExamplePage{
 
 	private Label menuItem1;
 	private Label menuItem2;

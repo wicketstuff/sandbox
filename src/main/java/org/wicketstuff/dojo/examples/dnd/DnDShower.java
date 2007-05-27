@@ -2,14 +2,14 @@ package org.wicketstuff.dojo.examples.dnd;
 
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.markup.html.image.Image;
+import org.apache.wicket.model.Model;
 import org.wicketstuff.dojo.dojodnd.DojoDragContainer;
 import org.wicketstuff.dojo.dojodnd.DojoDragCopyContainer;
 import org.wicketstuff.dojo.dojodnd.DojoDropContainer;
-import org.apache.wicket.markup.html.WebPage;
-import org.apache.wicket.markup.html.image.Image;
-import org.apache.wicket.model.Model;
+import org.wicketstuff.dojo.examples.WicketExamplePage;
 
-public class DnDShower extends WebPage {
+public class DnDShower extends WicketExamplePage {
 	
 	public DnDShower(PageParameters parameters){
 		DojoDropContainer dropContainer = new DojoDropContainer("dropContainer"){

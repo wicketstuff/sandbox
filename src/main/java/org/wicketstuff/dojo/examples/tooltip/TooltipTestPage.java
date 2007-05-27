@@ -1,15 +1,15 @@
 package org.wicketstuff.dojo.examples.tooltip;
 
 import org.apache.wicket.PageParameters;
-import org.wicketstuff.dojo.AbstractDefaultDojoBehavior;
-import org.wicketstuff.dojo.markup.html.tooltip.DojoTooltip;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.wicketstuff.dojo.AbstractDefaultDojoBehavior;
+import org.wicketstuff.dojo.examples.WicketExamplePage;
+import org.wicketstuff.dojo.markup.html.tooltip.DojoTooltip;
 
-public class TooltipTestPage extends WebPage{
+public class TooltipTestPage extends WicketExamplePage{
 	
 	private Label target;
 	private Label target2;
