@@ -81,9 +81,7 @@ public class MFXStyle extends MFXBase {
 	public String mooFunction() {
 		StringBuffer buf = new StringBuffer();
 		buf.append("new Fx.Style('"+getTarget()+"','" +
-				getStyle()+"',{");
-		buf.append(writeOptions());
-		buf.append("});");
+				getStyle()+"',"+writeOptions()+");");
 		return buf.toString();
 	}
 	

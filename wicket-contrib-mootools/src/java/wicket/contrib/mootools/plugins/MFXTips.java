@@ -59,7 +59,7 @@ public class MFXTips extends AbstractRequireMooStatelessBehavior {
 		response.renderString(MFXJavascriptUtils.DOM_READY_OPEN());
 		
 		response.renderString("var Tips1 = new Tips($$('.mfxtip'), {"
-		+ "initialize:function(){" + "this.fx = new Fx.Style(this.toolTip, 'opacity', {"+mfxOptions.writeOptions()+"});"
+		+ "initialize:function(){" + "this.fx = new Fx.Style(this.toolTip, 'opacity', "+mfxOptions.writeOptions()+");"
 		+ "},onShow: function(toolTip) { this.fx.start(1); },onHide: function(toolTip) {"
 		+ "this.fx.start(0); }});");
 		
