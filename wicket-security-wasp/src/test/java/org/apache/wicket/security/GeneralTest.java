@@ -404,9 +404,7 @@ public class GeneralTest extends TestCase
 		mock.assertInvisible("sorry");
 		mock.assertVisible("link");
 		TagTester tag=mock.getTagByWicketId("link");
-		//Note due to a bug in wicket the Link class does not automatically disable on security, all other links work fine.
-		//The bug has been fixed, but the fix won't be available untill a new snapshot is build.
-		//assertNull(tag.getAttribute("href")); //TODO enable assertion after new wicket snapshot
+		assertNull(tag.getAttribute("href"));
 		assertNull(tag.getAttribute("onclick"));
 		
 		linkcheck.setUseAlternativeRenderCheck(false);
