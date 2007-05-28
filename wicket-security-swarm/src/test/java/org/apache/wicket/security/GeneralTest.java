@@ -13,9 +13,6 @@ import java.net.MalformedURLException;
 
 import junit.framework.TestCase;
 
-import org.apache.wicket.markup.html.link.ILinkListener;
-import org.apache.wicket.protocol.http.WebRequestCycle;
-import org.apache.wicket.request.target.component.listener.ListenerInterfaceRequestTarget;
 import org.apache.wicket.security.hive.HiveMind;
 import org.apache.wicket.security.hive.authentication.SecondaryLoginContext;
 import org.apache.wicket.security.hive.config.PolicyFileHiveFactory;
@@ -107,9 +104,7 @@ public class GeneralTest extends TestCase
 		form.setValue("username", "test");
 		form.submit();
 		mock.assertRenderedPage(MockHomePage.class);
-		//TODO use mock.clickLink instead of our custom clickLink as soon as new wicket snapshot is available
-		// mock.clickLink("secret", false);
-		clickLink("secret");
+		mock.clickLink("secret", false);
 		mock.assertRenderedPage(SecondaryLoginPage.class);
 		form = mock.newFormTester("form");
 		form.setValue("username", "test");
@@ -119,23 +114,6 @@ public class GeneralTest extends TestCase
 		mock.startPage(mock.getLastRenderedPage());
 		mock.assertRenderedPage(application.getApplicationSettings().getAccessDeniedPage());
 		//accessdenied because the page is already constructed
-	}
-
-	/**
-	 * Required untill a bug gets fixed in wicket.
-	 * Click a link on the page, unlike {@link WicketTester#clickLink(String)} this works
-	 * with continueToOriginaldestination situations. No ajax though.
-	 */
-	private void clickLink(String component)
-	{
-		mock.setupRequestAndResponse();
-		WebRequestCycle cycle = mock.createRequestCycle();
-		String url1 = cycle.urlFor(
-				new ListenerInterfaceRequestTarget(mock.getLastRenderedPage(), mock
-						.getComponentFromLastRenderedPage(component), ILinkListener.INTERFACE))
-				.toString();
-		mock.getServletRequest().setURL("/GeneralTest$1/GeneralTest$1/" + url1);
-		mock.processRequestCycle();
 	}
 	public void testInheritance()
 	{
