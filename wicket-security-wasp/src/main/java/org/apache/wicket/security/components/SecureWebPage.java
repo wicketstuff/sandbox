@@ -9,6 +9,7 @@
  */
 package org.apache.wicket.security.components;
 
+import org.apache.wicket.IPageMap;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.authorization.IAuthorizationStrategy;
 import org.apache.wicket.markup.html.WebPage;
@@ -28,10 +29,6 @@ import org.apache.wicket.security.strategies.ClassAuthorizationStrategy;
  */
 public class SecureWebPage extends WebPage implements ISecurePage
 {
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -62,6 +59,29 @@ public class SecureWebPage extends WebPage implements ISecurePage
 	public SecureWebPage(IModel model)
 	{
 		super(model);
+		setSecurityCheck(new ComponentSecurityCheck(this));
+		// Note this check does not handle the right to instantiate this class, we are to
+		// late for that, please check your implementation for how that is handled.
+	}
+
+	/**
+	 * @param pageMap
+	 * @param model
+	 */
+	public SecureWebPage(IPageMap pageMap, IModel model)
+	{
+		super(pageMap, model);
+		setSecurityCheck(new ComponentSecurityCheck(this));
+		// Note this check does not handle the right to instantiate this class, we are to
+		// late for that, please check your implementation for how that is handled.
+	}
+
+	/**
+	 * @param pageMap
+	 */
+	public SecureWebPage(IPageMap pageMap)
+	{
+		super(pageMap);
 		setSecurityCheck(new ComponentSecurityCheck(this));
 		// Note this check does not handle the right to instantiate this class, we are to
 		// late for that, please check your implementation for how that is handled.
