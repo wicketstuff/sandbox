@@ -28,6 +28,16 @@ public abstract class AbstractRequireMooStatelessBehavior extends AbstractBehavi
 	 */
 	public abstract String mooFunction();
 	
+	
+	/**
+	 * Check to see if the component in question is mootools bindable
+	 * @param c
+	 * @return
+	 */
+	public Boolean isMoobindable(Component c) {
+		return MooBase.getInstance().isMooBindable(c);
+	}
+	
 	/**
 	 * @see org.apache.wicket.behavior.AbstractBehavior#renderHead(org.apache.wicket.markup.html.IHeaderResponse)
 	 */

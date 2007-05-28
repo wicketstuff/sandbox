@@ -8,6 +8,7 @@ import org.apache.wicket.Component;
 
 
 import wicket.contrib.mootools.AbstractRequireMooStatelessBehavior;
+import wicket.contrib.mootools.MFXMooBindable;
 import wicket.contrib.mootools.effects.MFXBaseInterface;
 import wicket.contrib.mootools.effects.MFXStyle;
 
@@ -27,6 +28,10 @@ public class MFXWindowLoad extends AbstractRequireMooStatelessBehavior implement
 	 * @see wicket.contrib.mootools.AbstractRequireMooStatelessBehavior#onRendered(org.apache.wicket.Component)
 	 */
 	public void onRendered(Component arg0) {
+		
+		if(isMoobindable(arg0))
+			actions.add(((MFXMooBindable)arg0).mooFunction());
+		
 		setTarget(arg0.getMarkupId());
 		addMooDomFunction(mooFunction());
 		super.onRendered(arg0);

@@ -1,6 +1,10 @@
 package wicket.contrib.mootools;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+
 import org.apache.wicket.Application;
+import org.apache.wicket.Component;
 import org.apache.wicket.MetaDataKey;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.markup.html.resources.CompressedResourceReference;
@@ -48,6 +52,22 @@ public class MooBase {
 			mooBase = new MooBase();
 		
 		return mooBase;
+	}
+	
+	/**
+	 * Check to see if component is mooBindable
+	 * @param c
+	 * @return
+	 */
+	public Boolean isMooBindable(Component c) {
+		Method[] m = c.getClass().getDeclaredMethods();
+		for(int i = 0 ; i < m.length; i ++)
+		{
+			System.out.println(m[i].getName());
+			if(m[i].getName().equals("mooFunction"))
+				return true;
+		}
+		return false;
 	}
 	
 	/**
