@@ -1,9 +1,6 @@
-/*
- * $Id: SecurePage.java,v 1.3 2006/06/04 22:57:57 Marrink Exp $ $Revision: 1.3 $ $Date: 2006/06/04 22:57:57 $ ==================================================================== Copyright (c) 2005,
- * Topicus B.V. All rights reserved.
- */
 package org.apache.wicket.security.components;
 
+import org.apache.wicket.IPageMap;
 import org.apache.wicket.Page;
 import org.apache.wicket.authorization.IAuthorizationStrategy;
 import org.apache.wicket.model.IModel;
@@ -23,10 +20,30 @@ import org.apache.wicket.security.strategies.ClassAuthorizationStrategy;
  */
 public class SecurePage extends Page implements ISecurePage
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
+
+	/**
+	 * @param pageMap
+	 * @param model
+	 */
+	public SecurePage(IPageMap pageMap, IModel model)
+	{
+		super(pageMap, model);
+		setSecurityCheck(new ComponentSecurityCheck(this));
+		// Note this check does not handle the right to instantiate this class, we are to
+		// late for that, please check your implementation for how that is handled.
+	}
+
+	/**
+	 * @param pageMap
+	 */
+	public SecurePage(IPageMap pageMap)
+	{
+		super(pageMap);
+		setSecurityCheck(new ComponentSecurityCheck(this));
+		// Note this check does not handle the right to instantiate this class, we are to
+		// late for that, please check your implementation for how that is handled.
+	}
 
 	/**
 	 * 
