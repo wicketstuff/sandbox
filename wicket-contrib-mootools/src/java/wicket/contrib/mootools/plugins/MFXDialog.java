@@ -1,42 +1,24 @@
 package wicket.contrib.mootools.plugins;
 
-import org.apache.wicket.IClusterable;
-import org.apache.wicket.Page;
-import org.apache.wicket.RequestCycle;
-import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
-import org.apache.wicket.behavior.HeaderContributor;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextArea;
-import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.markup.html.resources.CompressedResourceReference;
 import org.apache.wicket.model.PropertyModel;
 
 import wicket.contrib.mootools.IncludeMooTools;
-import wicket.contrib.mootools.effects.MFXStyle;
-import wicket.contrib.mootools.effects.MFXTransition;
 import wicket.contrib.mootools.validators.MFXValidationHandler;
 
-public class MFXDialog extends Panel {
+public class MFXDialog extends MFXDialogBase {
 	private static final long serialVersionUID = 1L;
-	private PageCreator pageCreator;
-	private int width;
-	private int height;
-	private String unit;
-	private String title;
 	private String confirmButtonText;
 	private String abortButtonText;
-	private int offsetTop;
 	private Boolean shown;
-	private String body;
 	private MFXDialogTypes dialogType;
-	private WebMarkupContainer empty;
-	private Label titleLbl;
 	private TextArea input;
 	private String inputText;
 	private Form form;
@@ -45,12 +27,9 @@ public class MFXDialog extends Panel {
 	private AjaxSubmitLink submitLink;
 	private AjaxLink abortLink;
 	private WebMarkupContainer dialog;
-	private String color;
-	
-	private ResourceReference PLAINCSS = new CompressedResourceReference(MFXDialog.class,"MFXDialog.css");
+	private WebMarkupContainer contentPane;
 	
 	public static enum MFXDialogTypes { CONFIRMATION, MESSAGE, MESSAGE_WITHOUT_CLOSE, QUESTION_WITH_INPUT};
-	
 	
 	public MFXDialog(String id) {
 		super(id);
@@ -58,51 +37,43 @@ public class MFXDialog extends Panel {
 		add(new IncludeMooTools());
 		
 		//defaults
-		this.width=300;
-		this.height=0;
 		this.dialogType=MFXDialogTypes.MESSAGE;
-		this.offsetTop=300;
-		this.unit="px";
 		this.shown=false;
-		this.title="Modal Window";
 		this.confirmButtonText = "Ok";
 		this.abortButtonText = "Cancel";
-		this.color="#a3a3a3";
 		this.setOutputMarkupId(true);
 		
 		
-		dialog = new WebMarkupContainer("dialog") {
+		dialog=new WebMarkupContainer("dialog") {
 			private static final long serialVersionUID = 1L;
 			@Override
 			protected void onComponentTag(ComponentTag tag) {
 				super.onComponentTag(tag);
-				tag.put("style", "border: 1px solid "+color+" !important;");
+				tag.put("style", "border: 1px solid "+getColor()+" !important;");
 			}
 		};
 		dialog.setOutputMarkupId(true);
 		add(dialog);
 		
-		add(HeaderContributor.forCss(PLAINCSS));
-		
-		dialog.add(titleLbl = new Label("title",title) {
+		dialog.add(new Label("title",new PropertyModel(this,"title")) {
 			private static final long serialVersionUID = 1L;
 			@Override
 			protected void onComponentTag(ComponentTag tag) {
 				super.onComponentTag(tag);
-				tag.put("style", "background-color: "+color+";");
+				tag.put("style", "background-color: "+getColor()+";");
 			}
 		});
 		
-		dialog.add(empty = new WebMarkupContainer("content"));
+		dialog.add(contentPane = new WebMarkupContainer("content"));
 		
-		empty.add(new Label("body",new PropertyModel(this,"body")));
+		contentPane.add(new Label("body",new PropertyModel(this,"body")));
 		
 		form = new Form("inputForm");
 		input =  new TextArea("input",new PropertyModel(this,"inputText"));
 		input.setRequired(true);
 		input.add(new MFXValidationHandler("#ffffff","#fedede",true));
 		form.add(input);
-		empty.add(form);
+		contentPane.add(form);
 		
 		dialog.add(confirmLink = new AjaxLink("confirm") {
 			private static final long serialVersionUID = 1L;
@@ -174,17 +145,6 @@ public class MFXDialog extends Panel {
 		tag.put("style","display: none;");
 	}
 	
-	public interface PageCreator extends IClusterable {
-		public Page createPage();
-	}
-
-	public void setPageCreator(PageCreator pageCreator) {
-		this.pageCreator = pageCreator;
-	}
-
-	public PageCreator getPageCreator() {
-		return pageCreator;
-	}
 	
 	public void show(AjaxRequestTarget target) {
 		if(shown == false) {
@@ -223,120 +183,17 @@ public class MFXDialog extends Panel {
 		}
 	}
 	
-	private Page createPage() {
-		
-		if(pageCreator == null)
-			return null;
-		
-		try {
-			Page page = pageCreator.createPage();
-			return page;
-		} catch (Exception e) {
-			return null;
-		}
-	}
 	
 	private String closeWindowJavaScript() {
-		StringBuffer str = new StringBuffer();
-		
-		str.append("var elm = $('"+getMarkupId()+"');");
-		str.append("elm.setStyle('display','none');");
-		return str.toString();
+		return genericCloseWindowJavaScript(getMarkupId());
 	}
 	
 	private String openWindowJavaSript() {
-		
-		StringBuffer str = new StringBuffer();
-		
-		
-		Page page = createPage();
-		String url = null;
-		if(page != null)
-			url = RequestCycle.get().urlFor(page).toString();
-		
-		
-		str.append("var elm = $('"+getMarkupId()+"');");
-		str.append("var win = $('"+dialog.getMarkupId()+"');");
-		
-		str.append("elm.setStyle('display','block');");
-		
-		MFXStyle style = new MFXStyle("margin-top",0,100);
-		
-		style.setDuration(1000);
-		style.setTransition(MFXTransition.backInOut);
-		style.setTarget(dialog.getMarkupId());
-		
-		str.append("var effect = "+style.toString());
-		
-		if(getWidth() != 0)
-			str.append("win.setStyle('width','"+getWidth()+""+getUnit()+"');");
-		if(getHeight() != 0)
-			str.append("win.setStyle('height','"+getHeight()+""+getUnit()+"');");
-		
-		str.append("var winw = window.getWidth();");
-		str.append("var winh = window.getHeight();");
-		
-		str.append("win.setStyle('left',(winw-"+getWidth()+")/2);");
-		str.append("win.setStyle('top',(winh-"+getHeight()+")/2-"+getOffsetTop()+");");
-		
-		if(url != null)
-			str.append("new Ajax('"+url+"', { method: 'get', update: '"+empty.getMarkupId()+"', onComplete: function() {  effect.start("+style.getStartValue()+","+style.getEndValue()+"); } }).request();");
-		else
-			str.append("effect.start("+style.getStartValue()+","+style.getEndValue()+");");
-		
-		
-		return str.toString();
-	}
-
-	// getters and setters below
-	
-	public void setWidth(int width) {
-		this.width = width;
-	}
-
-	public int getWidth() {
-		return width;
-	}
-
-	public void setHeight(int height) {
-		this.height = height;
-	}
-
-	public int getHeight() {
-		return height;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-		titleLbl.setModelObject(this.title);
-	}
-
-	public String getTitle() {
-		return title;
-	}
-
-	public void setUnit(String unit) {
-		this.unit = unit;
-	}
-
-	public String getUnit() {
-		return unit;
-	}
-
-	public void setOffsetTop(int offsetTop) {
-		this.offsetTop = offsetTop;
-	}
-
-	public int getOffsetTop() {
-		return offsetTop;
-	}
-
-	public void setBody(String body) {
-		this.body = body;
-	}
-
-	public String getBody() {
-		return body;
+		return genericOpenJavaScript(
+				getMarkupId(), // for the display: none
+				dialog.getMarkupId(),  // for the dialog animation
+				contentPane.getMarkupId() // for the content
+		);
 	}
 
 	public void setDialogType(MFXDialogTypes dialogType) {
@@ -369,16 +226,6 @@ public class MFXDialog extends Panel {
 
 	protected String getInputText() {
 		return inputText;
-	}
-
-
-	public void setColor(String color) {
-		this.color = color;
-	}
-
-
-	public String getColor() {
-		return color;
 	}
 	
 }
