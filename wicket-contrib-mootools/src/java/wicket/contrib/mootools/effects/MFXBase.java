@@ -22,6 +22,9 @@ public abstract class  MFXBase extends AbstractRequireMooStatelessBehavior imple
 	private String fps;
 	private String startValue;
 	private String endValue;
+	private String method;
+	private String update;
+	
 	
 	
 	/**
@@ -60,11 +63,15 @@ public abstract class  MFXBase extends AbstractRequireMooStatelessBehavior imple
 			buf.append("wait: "+wait+",");
 		if(fps != null)
 			buf.append("fps: "+fps+",");
+		if(update != null)
+			buf.append("update: '"+update+"',");
+		if(method != null)
+			buf.append("method: '"+method+"',");
 		
 		if(buf.length()>0)
-			return buf.substring(0, buf.length()-1);
+			return "{"+buf.substring(0, buf.length()-1)+"}";
 		else
-			return "";
+			return "{}";
 		
 	}
 
@@ -254,6 +261,38 @@ public abstract class  MFXBase extends AbstractRequireMooStatelessBehavior imple
 	 */
 	public String getMooFunction() {
 		return mooFunction();
+	}
+
+
+	/**
+	 * @param method the method to set
+	 */
+	public void setMethod(String method) {
+		this.method = method;
+	}
+
+
+	/**
+	 * @return the method
+	 */
+	public String getMethod() {
+		return method;
+	}
+
+
+	/**
+	 * @param update the update to set
+	 */
+	public void setUpdate(String update) {
+		this.update = update;
+	}
+
+
+	/**
+	 * @return the update
+	 */
+	public String getUpdate() {
+		return update;
 	}
 
 }

@@ -8,6 +8,7 @@ import org.apache.wicket.behavior.HeaderContributor;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.html.resources.CompressedResourceReference;
 
+import wicket.contrib.mootools.components.MFXAjaxStatelessLink;
 import wicket.contrib.mootools.effects.MFXStyle;
 import wicket.contrib.mootools.effects.MFXTransition;
 
@@ -97,10 +98,13 @@ public abstract class MFXDialogBase extends Panel {
 		
 		str.append("win.setStyle('top',(winh-"+getHeight()+")/2-"+getOffsetTop()+");");
 		
-		if(url != null)
-			str.append("new Ajax('"+url+"', { method: 'get', update: '"+contentId+"', onComplete: function() {  effect.start("+style.getStartValue()+","+style.getEndValue()+"); } }).request();");
-		else
+		if(url != null) {
+			MFXAjaxStatelessLink mfxlink = new MFXAjaxStatelessLink("mfxlink",contentId,page);
+			mfxlink.getOptions().setOnComplete("effect.start("+style.getStartValue()+","+style.getEndValue()+");");
+			str.append(mfxlink.mooFunction());
+		} else {
 			str.append("effect.start("+style.getStartValue()+","+style.getEndValue()+");");
+		}
 		
 		return str.toString();
 	}

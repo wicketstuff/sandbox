@@ -28,7 +28,7 @@ public class MFXImageMenu extends AbstractRequireMooStatelessBehavior  {
 		for(WebMarkupContainer cont : components) {
 			String compid = cont.getMarkupId();
 			String styleid = compid+"style";
-			buf.append("var "+styleid+"= new Fx.Style('"+compid+"','width',{"+getMfxOptions().writeOptions()+"});");
+			buf.append("var "+styleid+"= new Fx.Style('"+compid+"','width',"+getMfxOptions().writeOptions()+");");
 			buf.append("var "+compid+" = $('"+compid+"');");
 		
 			buf.append(compid+".addEvent('mouseover', function(e) {");
