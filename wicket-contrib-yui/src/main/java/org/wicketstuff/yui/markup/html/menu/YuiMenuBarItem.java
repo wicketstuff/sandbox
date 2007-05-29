@@ -8,10 +8,12 @@ public abstract class YuiMenuBarItem extends AbstractYuiMenuItem
 
     public static final String MENU_BAR_ITEM_ID = "menuBarItem";
     
-    public YuiMenuBarItem()
+    public YuiMenuBarItem(String text)
     {
-        super(MENU_BAR_ITEM_ID);
+        super(MENU_BAR_ITEM_ID, text);
     }
+    
+    
 
     @Override
     public String getMenuClass()
