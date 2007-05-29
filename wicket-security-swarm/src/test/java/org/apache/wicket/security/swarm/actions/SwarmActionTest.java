@@ -114,7 +114,7 @@ public class SwarmActionTest extends TestCase
 			{
 				return MockLoginPage.class;
 			}
-		}, "src/test/java" + getClass().getPackage().getName().replace('.', '/'));
+		}, "src/test/java/" + getClass().getPackage().getName().replace('.', '/'));
 	}
 
 	/**
