@@ -26,13 +26,22 @@ public abstract class AbstractYuiMenuItem extends Panel
     
     private static final String CSS_DISABLED = "disabled";
     
-    private boolean selected;
+    private static final String CSS_CHECKED = "checked";
     
-    private boolean disabled;
+    private boolean checked = false;
+
+    
+    private boolean selected = false;
+    
+    private boolean disabled = false;
     
     
     private String text;
 
+    private AbstractLink menuLink;
+    
+    
+    private MarkupContainer subMenu;
 
     public AbstractYuiMenuItem(String id, String text)
     {
@@ -42,22 +51,37 @@ public abstract class AbstractYuiMenuItem extends Panel
         Label label = getLabel(MENU_ITEM_LABEL_ID);
         label.setRenderBodyOnly(true);
         
-        MarkupContainer subMenu = getSubMenu(MENU_ITEM_SUBMENU_ID);
+        
+        AttributeAppender checkedClass = new AttributeAppender("class", true, new CheckedClassModel(), " ");
+        add(checkedClass);
+        
+        WebMarkupContainer menuCheck = new WebMarkupContainer("menuCheck") {
+//            @Override
+//            public boolean isVisible()
+//            {
+//                return AbstractYuiMenuItem.this.isChecked();
+//            }
+        };
+        
+        subMenu = getSubMenu(MENU_ITEM_SUBMENU_ID);
         if(null == subMenu) {
             Fragment fragNoSubMenu = new Fragment(MENU_ITEM_ID, FRAGMENT_NO_SUBMENU_ID);
-            AbstractLink link = getLink(MENU_ITEM_LINK_ID);
-            link.add(label);
-            fragNoSubMenu.add(link);
+            menuLink = getLink(MENU_ITEM_LINK_ID);
+            menuLink.add(label);
+            fragNoSubMenu.add(menuLink);
+            fragNoSubMenu.add(menuCheck);
             fragNoSubMenu.setRenderBodyOnly(true);
             add(fragNoSubMenu);
         } else {
             Fragment fragWithSubMenu = new Fragment(MENU_ITEM_ID, FRAGMENT_WITH_SUBMENU_ID);
 
             fragWithSubMenu.add(label);
+            fragWithSubMenu.add(menuCheck);
             
             subMenu.setRenderBodyOnly(true);
             
             fragWithSubMenu.add(subMenu);
+            
             
             fragWithSubMenu.setRenderBodyOnly(true);
             
@@ -65,23 +89,6 @@ public abstract class AbstractYuiMenuItem extends Panel
             
         }
         
-        IModel classModel = new AbstractReadOnlyModel() {
-
-            @Override
-            public Object getObject()
-            {
-                if(isDisabled()) {
-                    return CSS_DISABLED;
-                }
-                else if(isSelected()) {
-                    return CSS_SELECTED;
-                }
-                return null;
-            }
-            
-        };
-        
-        add(new AttributeAppender("class", true, classModel, " "));
 
     }
 
@@ -118,6 +125,16 @@ public abstract class AbstractYuiMenuItem extends Panel
         this.disabled = disabled;
     }
 
+    public boolean isChecked()
+    {
+        return checked;
+    }
+
+    public void setChecked(boolean checked)
+    {
+        this.checked = checked;
+    }
+
     public boolean isSelected()
     {
         return selected;
@@ -126,6 +143,20 @@ public abstract class AbstractYuiMenuItem extends Panel
     public void setSelected(boolean selected)
     {
         this.selected = selected;
+    }
+    
+    class CheckedClassModel extends AbstractReadOnlyModel
+    {
+
+        @Override
+        public Object getObject()
+        {
+            if(AbstractYuiMenuItem.this.isChecked()) {
+                return "checked";
+            }
+            return null;
+        }
+        
     }
 
 }
