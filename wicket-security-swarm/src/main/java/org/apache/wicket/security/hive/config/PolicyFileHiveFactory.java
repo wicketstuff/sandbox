@@ -167,7 +167,7 @@ public final class PolicyFileHiveFactory implements HiveFactory
 		if (index < raw.length())
 			buff.append(raw.substring(index, raw.length()));
 		String temp = buff.toString();
-		if (temp.contains("${"))
+		if (temp.indexOf("${")>=0)
 			throw new IllegalStateException("Nesting aliases is not supported: " + raw);
 		return temp;
 	}
