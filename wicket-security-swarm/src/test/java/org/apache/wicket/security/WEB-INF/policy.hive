@@ -1,13 +1,13 @@
-grant principal org.apache.wicket.security.hive.authorization.TestPrincipal "basic"
+grant principal ${TestPrincipal} "basic"
 {
-	permission org.apache.wicket.security.hive.authorization.permissions.ComponentPermission "org.apache.wicket.security.pages.MockHomePage", "inherit, render";
-	permission org.apache.wicket.security.hive.authorization.permissions.ComponentPermission "org.apache.wicket.security.pages.MockHomePage", "enable";
-	permission org.apache.wicket.security.hive.authorization.permissions.ComponentPermission "org.apache.wicket.security.pages.PageA", "render";
-	permission org.apache.wicket.security.hive.authorization.permissions.ComponentPermission "org.apache.wicket.security.pages.PageA", "enable";
-	permission org.apache.wicket.security.hive.authorization.permissions.ComponentPermission "org.apache.wicket.security.pages.PageA:readonly", "render";
+	permission ${ComponentPermission} "${myPackage}.MockHomePage", "inherit, render";
+	permission ${ComponentPermission} "${myPackage}.MockHomePage", "enable";
+	permission ${ComponentPermission} "${myPackage}.PageA", "render";
+	permission ${ComponentPermission} "${myPackage}.PageA", "enable";
+	permission ${ComponentPermission} "${myPackage}.PageA:readonly", "render";
 };
-grant principal org.apache.wicket.security.hive.authorization.TestPrincipal "admin"
+grant principal ${TestPrincipal} "admin"
 {
-	permission org.apache.wicket.security.hive.authorization.permissions.ComponentPermission "org.apache.wicket.security.pages.VerySecurePage", "inherit, render";
-	permission org.apache.wicket.security.hive.authorization.permissions.ComponentPermission "org.apache.wicket.security.pages.VerySecurePage", "enable";
+	permission ${ComponentPermission} "${myPackage}.VerySecurePage", "inherit, render";
+	permission ${ComponentPermission} "${myPackage}.VerySecurePage", "enable";
 };
