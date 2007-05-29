@@ -2,6 +2,7 @@ package org.wicketstuff.yui.markup.html.menu;
 
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.behavior.AttributeAppender;
+import org.apache.wicket.markup.html.WebComponent;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
@@ -37,6 +38,6 @@ public abstract class YuiMenuGroup extends Panel
         });
     }
     
-    protected abstract MarkupContainer getGroupTitle(String id);
+    protected abstract WebComponent getGroupTitle(String id);
 
 }
