@@ -59,6 +59,8 @@ public class GeneralTest extends TestCase
 				try
 				{
 					factory.addPolicyFile(getServletContext().getResource("WEB-INF/policy.hive"));
+					factory.setAlias("TestPrincipal", "org.apache.wicket.security.hive.authorization.TestPrincipal");
+					factory.setAlias("myPackage","org.apache.wicket.security.pages");
 				}
 				catch (MalformedURLException e)
 				{

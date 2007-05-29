@@ -50,3 +50,8 @@ grant principal org.apache.wicket.security.hive.authorization.TestPrincipal "tes
 	permission org.apache.wicket.security.hive.authorization.TestPermission "8.A";
 	permission org.apache.wicket.security.hive.authorization.TestPermission "8.B";
 };
+grant principal ${auth}.TestPrincipal "${test}${nine}"
+{
+	permission ${perm} "${nine}.A";
+	permission ${perm} "${nine}.B", "test";
+};
