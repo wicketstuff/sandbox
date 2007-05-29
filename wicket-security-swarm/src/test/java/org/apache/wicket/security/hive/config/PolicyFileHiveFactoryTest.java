@@ -311,7 +311,7 @@ public class PolicyFileHiveFactoryTest extends TestCase
 		{
 			if (e.getCause() instanceof IllegalStateException)
 			{
-				assertTrue(e.getCause().getMessage().toLowerCase().contains("nesting"));
+				assertTrue(e.getCause().getMessage().toLowerCase().indexOf("nesting")>=0);
 			}
 			else
 				fail(e.getMessage());
@@ -354,7 +354,7 @@ public class PolicyFileHiveFactoryTest extends TestCase
 		{
 			if (e.getCause() instanceof IllegalStateException)
 			{
-				assertTrue(e.getCause().getMessage().toLowerCase().contains("nesting"));
+				assertTrue(e.getCause().getMessage().toLowerCase().indexOf("nesting")>=0);
 			}
 			else
 				fail(e.getMessage());
