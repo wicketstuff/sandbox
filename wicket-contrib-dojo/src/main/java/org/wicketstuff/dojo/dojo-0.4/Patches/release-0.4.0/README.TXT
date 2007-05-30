@@ -60,6 +60,7 @@ SplitContainer.xxxxx.patch [done]
 **************************
 This patch fixes a bug under firefox with sizeShare. Is more a workaround than a bug, make some 
 tests when jump to another dojo release
+see DOJO-52
 
 TimeContainer.xxxx.patch
 ************************
