@@ -116,6 +116,17 @@ dojo.widget.defineWidget(
 		this.domNode.appendChild(this.virtualSizer);
 
 		dojo.html.disableSelection(this.virtualSizer);
+		
+		for(var i=0; i<this.children.length; i++){
+            var sizeMin = this.children[i].domNode.getAttribute("sizeMin");
+            var sizeShare = this.children[i].domNode.getAttribute("sizeShare");
+            if (sizeMin != undefined && sizeMin != null) {
+			   this.children[i].sizeMin = parseInt(sizeMin);
+            }
+			if (sizeShare != undefined && sizeShare != null) {
+			   this.children[i].sizeShare = parseInt(sizeShare);
+            }
+		}
 
 		if(this.persist){
 			this.restoreState();

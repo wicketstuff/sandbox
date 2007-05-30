@@ -9,7 +9,6 @@
 */
 
 dojo.provide("dojo.widget.ComboBox");
-
 dojo.require("dojo.widget.*");
 dojo.require("dojo.event.*");
 dojo.require("dojo.io.*");
