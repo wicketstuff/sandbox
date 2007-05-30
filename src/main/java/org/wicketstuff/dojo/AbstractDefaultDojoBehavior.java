@@ -149,6 +149,7 @@ public abstract class AbstractDefaultDojoBehavior extends AbstractDefaultAjaxBeh
 		ResourceReference dojoReference = getDojoResourceReference();
 		String dojoUrl = RequestCycle.get().urlFor(dojoReference).toString();
 		
+		//FIXME : investigate on url resolving : http://81.17.46.170:8090/jira/browse/DOJO-67
 		
 		// count the depth to determine the relative path
 		String url = "";
