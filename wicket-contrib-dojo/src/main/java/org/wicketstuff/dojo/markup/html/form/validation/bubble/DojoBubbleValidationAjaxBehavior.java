@@ -26,6 +26,7 @@ import org.wicketstuff.dojo.AbstractRequireDojoBehavior;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.form.FormComponent;
+import org.apache.wicket.markup.html.form.ValidationErrorFeedback;
 
 /**
  * Ajaxhandler to be bound to FormComponents.<br/> This handler executes wicket
@@ -114,7 +115,7 @@ public class DojoBubbleValidationAjaxBehavior extends AbstractRequireDojoBehavio
 			}else{
 				FormComponent current =  (FormComponent) invalid.keySet().iterator().next();
 				current.validate();
-				bubble.setMessage(target, (String)invalid.get(current));
+				bubble.setMessage(target, ((ValidationErrorFeedback)invalid.get(current)).getMessage());
 				bubble.place(target, current);
 			}
 		}
