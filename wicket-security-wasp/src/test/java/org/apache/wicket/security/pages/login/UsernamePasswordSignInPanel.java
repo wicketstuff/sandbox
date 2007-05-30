@@ -20,8 +20,6 @@ package org.apache.wicket.security.pages.login;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.wicket.Application;
 import org.apache.wicket.Session;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -45,6 +43,8 @@ import org.apache.wicket.security.pages.secure.PageC;
 import org.apache.wicket.security.pages.secure.PageC2;
 import org.apache.wicket.security.pages.secure.PageD;
 import org.apache.wicket.util.value.ValueMap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -58,7 +58,7 @@ public class UsernamePasswordSignInPanel extends Panel
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private static final Log log=LogFactory.getLog(UsernamePasswordSignInPanel.class);
+	private static final Logger log = LoggerFactory.getLogger(UsernamePasswordSignInPanel.class);
 	/**
 	 * Constructor.
 	 */
@@ -99,7 +99,7 @@ public class UsernamePasswordSignInPanel extends Panel
 		}
 		catch (org.apache.wicket.security.strategies.LoginException e)
 		{
-			log.error(e,e);
+			log.error(e.getMessage(),e);
 		}
 		return false;
 	}

@@ -8,8 +8,6 @@ import java.util.Set;
 
 import junit.framework.TestCase;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.wicket.Component;
 import org.apache.wicket.Page;
 import org.apache.wicket.authorization.Action;
@@ -17,8 +15,6 @@ import org.apache.wicket.authorization.UnauthorizedActionException;
 import org.apache.wicket.authorization.UnauthorizedInstantiationException;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.security.WaspSession;
-import org.apache.wicket.security.WaspWebApplication;
 import org.apache.wicket.security.actions.AbstractWaspAction;
 import org.apache.wicket.security.actions.ActionFactory;
 import org.apache.wicket.security.actions.RegistrationException;
@@ -46,10 +42,12 @@ import org.apache.wicket.security.strategies.WaspAuthorizationStrategy;
 import org.apache.wicket.util.tester.FormTester;
 import org.apache.wicket.util.tester.TagTester;
 import org.apache.wicket.util.tester.WicketTester;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class GeneralTest extends TestCase
 {
-	private static final Log log = LogFactory.getLog(GeneralTest.class);
+	private static final Logger log = LoggerFactory.getLogger(GeneralTest.class);
 
 	private static final class TestStrategy extends ClassAuthorizationStrategy
 	{
@@ -442,7 +440,7 @@ public class GeneralTest extends TestCase
 		}
 		catch (LoginException e)
 		{
-			log.error(e, e);
+			log.error(e.getMessage(), e);
 			fail(e.getMessage());
 		}
 	}
@@ -542,7 +540,7 @@ public class GeneralTest extends TestCase
 		}
 		catch (Exception e)
 		{
-			log.error(e, e);
+			log.error(e.getMessage(), e);
 		}
 		doLogin();
 		// now we only check pages so all components will be created, this does not affect

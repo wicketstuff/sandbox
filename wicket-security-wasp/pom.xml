@@ -61,20 +61,11 @@
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>commons-logging</groupId>
-			<artifactId>commons-logging</artifactId>
-			<version>1.1</version>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-					<groupId>logkit</groupId>
-					<artifactId>logkit</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>avalon-framework</groupId>
-					<artifactId>avalon-framework</artifactId>
-				</exclusion>
-			</exclusions>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.3</version>
+			<type>jar</type>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 	<!-- Build environment -->
@@ -127,7 +118,6 @@
 				</plugin>
 				<plugin>
 					<artifactId>maven-eclipse-plugin</artifactId>
-					<version>2.2</version>
 					<configuration>
 						<downloadSources>true</downloadSources>
 						<classpathContainers>
@@ -137,35 +127,47 @@
 						</classpathContainers>
 					</configuration>
 				</plugin>
-	<!-- 			<plugin>
+				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-clover-plugin</artifactId>
-					<configuration>
-						<targetPercentage>50%</targetPercentage>
-						<jdk>1.4</jdk>
-						<contextFilters>catch</contextFilters>
-						<excludes>
-							<exclude>**/*Exception.java</exclude>
-						</excludes>
-					</configuration>
+					<artifactId>maven-javadoc-plugin</artifactId>
 					<executions>
 						<execution>
-							<id>verify</id>
-							<phase>verify</phase>
+							<id>attach-api-docs</id>
 							<goals>
-								<goal>instrument</goal>
-								<goal>check</goal>
-							</goals>
-						</execution>
-						<execution>
-							<id>site</id>
-							<phase>pre-site</phase>
-							<goals>
-								<goal>instrument</goal>
+								<goal>jar</goal>
 							</goals>
 						</execution>
 					</executions>
-				</plugin>	-->
+				</plugin>
+				<!-- 			<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-clover-plugin</artifactId>
+					<configuration>
+					<targetPercentage>50%</targetPercentage>
+					<jdk>1.4</jdk>
+					<contextFilters>catch</contextFilters>
+					<excludes>
+					<exclude>**/*Exception.java</exclude>
+					</excludes>
+					</configuration>
+					<executions>
+					<execution>
+					<id>verify</id>
+					<phase>verify</phase>
+					<goals>
+					<goal>instrument</goal>
+					<goal>check</goal>
+					</goals>
+					</execution>
+					<execution>
+					<id>site</id>
+					<phase>pre-site</phase>
+					<goals>
+					<goal>instrument</goal>
+					</goals>
+					</execution>
+					</executions>
+					</plugin>	-->
 			</plugins>
 		</pluginManagement>
 		<plugins>
@@ -176,10 +178,14 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
 			</plugin>
-		<!-- 	<plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+			</plugin>
+			<!-- 	<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-clover-plugin</artifactId>
-			</plugin>	-->
+				</plugin>	-->
 		</plugins>
 	</build>
 
@@ -231,18 +237,18 @@
 					</reportSet>
 				</reportSets>
 			</plugin>
-		<!-- 	<plugin>
+			<!-- 	<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-clover-plugin</artifactId>
 				<configuration>
-					<targetPercentage>50%</targetPercentage>
-					<jdk>1.4</jdk>
-					<contextFilters>catch</contextFilters>
-					<excludes>
-						<exclude>**/*Exception.java</exclude>
-					</excludes>
+				<targetPercentage>50%</targetPercentage>
+				<jdk>1.4</jdk>
+				<contextFilters>catch</contextFilters>
+				<excludes>
+				<exclude>**/*Exception.java</exclude>
+				</excludes>
 				</configuration>
-			</plugin>	-->
+				</plugin>	-->
 		</plugins>
 	</reporting>
 </project>

@@ -13,13 +13,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.wicket.security.actions.Access;
 import org.apache.wicket.security.checks.ClassSecurityCheck;
 import org.apache.wicket.security.checks.ISecurityCheck;
 import org.apache.wicket.security.components.ISecureComponent;
 import org.apache.wicket.security.components.ISecurePage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Authorization strategy to enforce security at the construction of components rather
@@ -39,7 +39,7 @@ public abstract class ClassAuthorizationStrategy extends WaspAuthorizationStrate
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private static final Log log = LogFactory.getLog(ClassAuthorizationStrategy.class);
+	private static final Logger log = LoggerFactory.getLogger(ClassAuthorizationStrategy.class);
 
 	/**
 	 * Default is to only check ISecureComponents
