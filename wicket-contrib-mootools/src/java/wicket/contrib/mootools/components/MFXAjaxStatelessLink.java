@@ -6,8 +6,10 @@ import org.apache.wicket.RequestCycle;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 
+import wicket.contrib.mootools.IncludeMooToolsStateless;
 import wicket.contrib.mootools.MFXMooBindable;
 import wicket.contrib.mootools.MFXOptions;
+import wicket.contrib.mootools.events.MFXEvent;
 
 public class MFXAjaxStatelessLink extends WebMarkupContainer implements MFXMooBindable {
 	private static final long serialVersionUID = 1L;
@@ -38,6 +40,8 @@ public class MFXAjaxStatelessLink extends WebMarkupContainer implements MFXMooBi
 	}
 	
 	private void setupLink() {
+		setOutputMarkupId(true);
+		add(new IncludeMooToolsStateless());
 		options = new MFXOptions();
 		options.setUpdate(component);
 		options.setMethod("get");
@@ -46,7 +50,18 @@ public class MFXAjaxStatelessLink extends WebMarkupContainer implements MFXMooBi
 	@Override
 	protected void onComponentTag(ComponentTag tag) {
 		super.onComponentTag(tag);
-		tag.put("href", "javascript: "+mooFunction());
+		tag.put("href", "#");
+	}
+
+	@Override
+	protected void onAfterRender() {
+		super.onAfterRender();
+		MFXEvent e = new MFXEvent(MFXEvent.CLICK);
+		e.addAction(mooFunction());
+		e.setTarget(getMarkupId());
+		getResponse().write("<script>");
+		getResponse().write(e.mooFunction());
+		getResponse().write("</script>");
 	}
 	
 	private String getResourceUrl(Page page) {

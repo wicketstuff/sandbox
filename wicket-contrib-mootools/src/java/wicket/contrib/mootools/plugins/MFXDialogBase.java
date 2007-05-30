@@ -4,9 +4,12 @@ import org.apache.wicket.IClusterable;
 import org.apache.wicket.Page;
 import org.apache.wicket.RequestCycle;
 import org.apache.wicket.ResourceReference;
+import org.apache.wicket.Session;
 import org.apache.wicket.behavior.HeaderContributor;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.html.resources.CompressedResourceReference;
+import org.apache.wicket.protocol.http.ClientProperties;
+import org.apache.wicket.protocol.http.request.WebClientInfo;
 
 import wicket.contrib.mootools.components.MFXAjaxStatelessLink;
 import wicket.contrib.mootools.effects.MFXStyle;
@@ -86,17 +89,23 @@ public abstract class MFXDialogBase extends Panel {
 		
 		str.append("var effect = "+style.toString());
 		
+		WebClientInfo clientInfo = (WebClientInfo) Session.get().getClientInfo();
+		ClientProperties properties = clientInfo.getProperties();
+		if(properties.isBrowserInternetExplorer()) {
+			str.append("var winw = document.body.offsetWidth;");
+			str.append("var winh = document.body.offsetHeight;");
+		} else {
+			str.append("var winw = window.getWidth();");
+			str.append("var winh = window.getHeight();");
+		}
+		
 		if(getWidth() != 0)
 			str.append("win.setStyle('width','"+getWidth()+""+getUnit()+"');");
 		if(getHeight() != 0)
 			str.append("win.setStyle('height','"+getHeight()+""+getUnit()+"');");
 		
-		str.append("var winw = window.getWidth();");
-		str.append("var winh = window.getHeight();");
-		
 		str.append("win.setStyle('left',(winw-"+getWidth()+")/2);");
-		
-		str.append("win.setStyle('top',(winh-"+getHeight()+")/2-"+getOffsetTop()+");");
+		str.append("win.setStyle('top',winh/2-"+getOffsetTop()+");");
 		
 		if(url != null) {
 			MFXAjaxStatelessLink mfxlink = new MFXAjaxStatelessLink("mfxlink",contentId,page);
@@ -106,6 +115,7 @@ public abstract class MFXDialogBase extends Panel {
 			str.append("effect.start("+style.getStartValue()+","+style.getEndValue()+");");
 		}
 		
+		//return "alert('hello world');";
 		return str.toString();
 	}
 
