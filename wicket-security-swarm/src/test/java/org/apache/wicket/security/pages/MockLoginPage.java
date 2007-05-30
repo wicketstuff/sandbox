@@ -9,8 +9,6 @@
  */
 package org.apache.wicket.security.pages;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.wicket.Application;
 import org.apache.wicket.Session;
 import org.apache.wicket.markup.html.WebPage;
@@ -22,6 +20,8 @@ import org.apache.wicket.security.WaspSession;
 import org.apache.wicket.security.hive.authentication.LoginContext;
 import org.apache.wicket.security.hive.authentication.PrimaryLoginContext;
 import org.apache.wicket.security.strategies.LoginException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 
@@ -35,7 +35,7 @@ public class MockLoginPage extends WebPage
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private static Log log=LogFactory.getLog(MockLoginPage.class);
+	private static final Logger log = LoggerFactory.getLogger(MockLoginPage.class);
 	
 	private Form form;
 	private TextField textField;
@@ -72,7 +72,7 @@ public class MockLoginPage extends WebPage
 		}
 		catch (LoginException e)
 		{
-			log.error(e,e);
+			log.error(e.getMessage(),e);
 		}
 		return false;
 	}

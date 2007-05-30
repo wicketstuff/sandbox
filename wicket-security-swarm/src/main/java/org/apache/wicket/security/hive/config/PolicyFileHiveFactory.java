@@ -22,14 +22,14 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.wicket.security.hive.BasicHive;
 import org.apache.wicket.security.hive.Hive;
 import org.apache.wicket.security.hive.authorization.EverybodyPrincipal;
 import org.apache.wicket.security.hive.authorization.Permission;
 import org.apache.wicket.security.hive.authorization.Principal;
 import org.apache.wicket.util.string.AppendingStringBuffer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A factory to produce Hive's based on policy files. This factory is designed to make a
@@ -68,7 +68,7 @@ import org.apache.wicket.util.string.AppendingStringBuffer;
  */
 public final class PolicyFileHiveFactory implements HiveFactory
 {
-	private static final Log log = LogFactory.getLog(PolicyFileHiveFactory.class);
+	private static final Logger log = LoggerFactory.getLogger(PolicyFileHiveFactory.class);
 
 	// TODO use JAAS to check for enough rights
 	private Set policyFiles;
