@@ -56,6 +56,11 @@ SplitContainer.2296.patch [done]
 *************************
 -
 
+SplitContainer.xxxxx.patch [done]
+**************************
+This patch fixes a bug under firefox with sizeShare. Is more a workaround than a bug, make some 
+tests when jump to another dojo release
+
 TimeContainer.xxxx.patch
 ************************
 This patch is used to give an id to the container. Don't remember where it is used
