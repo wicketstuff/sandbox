@@ -5,8 +5,6 @@ import org.apache.wicket.Request;
 import org.apache.wicket.Response;
 import org.apache.wicket.Session;
 import org.apache.wicket.protocol.http.WebApplication;
-import org.apache.wicket.util.lang.PackageName;
-import org.wicketstuff.dojo.examples.dnd.DnDShower;
 import org.wicketstuff.dojo.skin.manager.SkinManager;
 import org.wicketstuff.dojo.skin.windows.WindowsDojoSkin;
 
@@ -19,7 +17,6 @@ public class ExampleApplication extends WebApplication {
 	 */
 	public ExampleApplication() {
 		SkinManager.getInstance().setupSkin(new WindowsDojoSkin());
-		mount("/pages", PackageName.forPackage(DnDShower.class.getPackage()));
 	}
 
 	/**
