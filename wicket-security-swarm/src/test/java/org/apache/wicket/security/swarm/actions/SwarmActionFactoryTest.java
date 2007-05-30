@@ -2,8 +2,6 @@ package org.apache.wicket.security.swarm.actions;
 
 import junit.framework.TestCase;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.wicket.Component;
 import org.apache.wicket.authorization.Action;
 import org.apache.wicket.security.actions.Access;
@@ -13,13 +11,13 @@ import org.apache.wicket.security.actions.Inherit;
 import org.apache.wicket.security.actions.RegistrationException;
 import org.apache.wicket.security.actions.Render;
 import org.apache.wicket.security.actions.WaspAction;
-import org.apache.wicket.security.swarm.actions.SwarmAction;
-import org.apache.wicket.security.swarm.actions.SwarmActionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class SwarmActionFactoryTest extends TestCase
 {
-	private static final Log log = LogFactory.getLog(SwarmActionFactoryTest.class);
+	private static final Logger log = LoggerFactory.getLogger(SwarmActionFactoryTest.class);
 
 	private SwarmActionFactory factory;
 
@@ -75,7 +73,7 @@ public class SwarmActionFactoryTest extends TestCase
 		}
 		catch (IllegalArgumentException e)
 		{
-			log.debug(e);
+			log.debug(e.getMessage());
 		}
 	}
 
@@ -89,7 +87,7 @@ public class SwarmActionFactoryTest extends TestCase
 		}
 		catch (IllegalArgumentException e)
 		{
-			log.debug(e);
+			log.debug(e.getMessage());
 		}
 		String[] names = new String[] {"access", "access, inherit", "access, render",
 				"access, inherit, render", "access", "access, inherit", "access, render, enable",
@@ -107,7 +105,7 @@ public class SwarmActionFactoryTest extends TestCase
 		}
 		catch (IllegalArgumentException e)
 		{
-			log.debug(e);
+			log.debug(e.getMessage());
 		}
 	}
 
@@ -132,7 +130,7 @@ public class SwarmActionFactoryTest extends TestCase
 		}
 		catch(RegistrationException e)
 		{
-			log.debug(e);
+			log.debug(e.getMessage());
 		}
 		assertEquals(4, factory.getNumberOfRegisteredClasses());
 		try
@@ -148,7 +146,7 @@ public class SwarmActionFactoryTest extends TestCase
 		}
 		catch (RegistrationException e)
 		{
-			log.error(e,e);
+			log.error(e.getMessage(),e);
 			fail(e.getMessage());
 		}
 		try
@@ -158,7 +156,7 @@ public class SwarmActionFactoryTest extends TestCase
 		}
 		catch (RegistrationException e)
 		{
-			log.debug(e);
+			log.debug(e.getMessage());
 		}
 	}
 	private void register26Actions() throws RegistrationException
@@ -206,7 +204,7 @@ public class SwarmActionFactoryTest extends TestCase
 		}
 		catch (RegistrationException e)
 		{
-			log.debug(e);
+			log.debug(e.getMessage());
 			fail(e.getMessage());
 		}
 	}

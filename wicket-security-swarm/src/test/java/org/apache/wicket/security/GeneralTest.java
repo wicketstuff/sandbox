@@ -24,6 +24,8 @@ import org.apache.wicket.security.pages.VerySecurePage;
 import org.apache.wicket.security.swarm.SwarmWebApplication;
 import org.apache.wicket.util.tester.FormTester;
 import org.apache.wicket.util.tester.WicketTester;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -31,8 +33,7 @@ import org.apache.wicket.util.tester.WicketTester;
  */
 public class GeneralTest extends TestCase
 {
-	private static final org.apache.commons.logging.Log log = org.apache.commons.logging.LogFactory
-			.getLog(GeneralTest.class);
+	private static final Logger log = LoggerFactory.getLogger(GeneralTest.class);
 
 	private SwarmWebApplication application;
 
@@ -64,7 +65,7 @@ public class GeneralTest extends TestCase
 				}
 				catch (MalformedURLException e)
 				{
-					log.fatal(e, e);
+					log.error(e.getMessage(), e);
 				}
 				HiveMind.registerHive(getHiveKey(), factory);
 			}

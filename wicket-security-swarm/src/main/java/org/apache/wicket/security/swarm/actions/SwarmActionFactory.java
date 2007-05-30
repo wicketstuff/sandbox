@@ -11,8 +11,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.wicket.authorization.Action;
 import org.apache.wicket.security.actions.Access;
 import org.apache.wicket.security.actions.ActionFactory;
@@ -22,6 +20,8 @@ import org.apache.wicket.security.actions.RegistrationException;
 import org.apache.wicket.security.actions.Render;
 import org.apache.wicket.security.actions.WaspAction;
 import org.apache.wicket.util.string.AppendingStringBuffer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -32,7 +32,7 @@ import org.apache.wicket.util.string.AppendingStringBuffer;
  */
 public class SwarmActionFactory implements ActionFactory
 {
-	private static final Log log = LogFactory.getLog(SwarmActionFactory.class);
+	private static final Logger log = LoggerFactory.getLogger(SwarmActionFactory.class);
 	protected static final int maxAssingableAction=(int) Math.pow(2, 30);
 	
 	/**
@@ -67,7 +67,7 @@ public class SwarmActionFactory implements ActionFactory
 		}
 		catch (RegistrationException e)
 		{
-			log.fatal(e, e);
+			log.error(e.getMessage(), e);
 		}
 	}
 	/**

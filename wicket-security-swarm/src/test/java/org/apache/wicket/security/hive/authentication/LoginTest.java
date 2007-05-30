@@ -19,6 +19,8 @@ import org.apache.wicket.security.hive.authentication.Subject;
 import org.apache.wicket.security.hive.authorization.TestPrincipal;
 import org.apache.wicket.security.pages.VerySecurePage;
 import org.apache.wicket.security.strategies.LoginException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import junit.framework.TestCase;
 
@@ -27,8 +29,7 @@ import junit.framework.TestCase;
  */
 public class LoginTest extends TestCase
 {
-	private static final org.apache.commons.logging.Log log = org.apache.commons.logging.LogFactory
-			.getLog(LoginTest.class);
+	private static final Logger log = LoggerFactory.getLogger(LoginTest.class);
 
 	/**
 	 * Test method for
@@ -67,7 +68,7 @@ public class LoginTest extends TestCase
 		}
 		catch (LoginException e)
 		{
-			log.error(e, e);
+			log.error(e.getMessage(), e);
 			fail(e.getMessage());
 		}
 		assertNotNull(container.getSubject());
@@ -107,7 +108,7 @@ public class LoginTest extends TestCase
 		}
 		catch (LoginException e)
 		{
-			log.error(e, e);
+			log.error(e.getMessage(), e);
 			fail(e.getMessage());
 		}
 		assertTrue(container.isClassAuthenticated(getClass()));
@@ -141,7 +142,7 @@ public class LoginTest extends TestCase
 		}
 		catch (LoginException e)
 		{
-			log.error(e, e);
+			log.error(e.getMessage(), e);
 			fail(e.getMessage());
 		}
 		assertNotNull(container.getSubject());
@@ -170,7 +171,7 @@ public class LoginTest extends TestCase
 		}
 		catch (LoginException e)
 		{
-			log.error(e, e);
+			log.error(e.getMessage(), e);
 			fail(e.getMessage());
 		}
 	}
