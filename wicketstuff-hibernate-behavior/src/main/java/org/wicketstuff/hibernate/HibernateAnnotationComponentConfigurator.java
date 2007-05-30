@@ -32,21 +32,11 @@ public class HibernateAnnotationComponentConfigurator {
 	}};
 
 	public void configure(Component component) {
-		IModel model = component.getModel();
-		if (null == model) {
+		if (!isApplicableFor(component)) {
 			return;
 		}
-		if (!(model instanceof PropertyModel)) {
-			return;
-		}
-		
-		if ((component instanceof FormComponent)) {
-			return;
-		}
-
 		FormComponent formComponent = (FormComponent)component;
-
-		PropertyModel propertyModel = (PropertyModel) model;
+		PropertyModel propertyModel = (PropertyModel) component.getModel();
 		String fieldName = propertyModel.getPropertyExpression();
 		Class type = propertyModel.getTarget().getClass();
 		try {
@@ -65,7 +55,22 @@ public class HibernateAnnotationComponentConfigurator {
 			throw new RuntimeException("Error binding validator for component model: " + type.getName() + "."+ fieldName, e);
 		}
 	}
-	
+
+	private boolean isApplicableFor(Component component) {
+		IModel model = component.getModel();
+		if (null == model) {
+			return false;
+		}
+		if (!(model instanceof PropertyModel)) {
+			return false;
+		}
+		if (!(component instanceof FormComponent)) {
+			return false;
+		}
+
+		return true;
+	}
+
 	private static interface HibernateAnnotationConfig {
 		void onAnnotatedComponent(Annotation annotation, FormComponent component);
 	}
