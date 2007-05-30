@@ -149,14 +149,34 @@ public abstract class AbstractDefaultDojoBehavior extends AbstractDefaultAjaxBeh
 		ResourceReference dojoReference = getDojoResourceReference();
 		String dojoUrl = RequestCycle.get().urlFor(dojoReference).toString();
 		
+		
 		// count the depth to determine the relative path
 		String url = "";
+		
+		int slash = 0;  // count /
 		int last = 0;
 		while (last > -1) {
 			last = dojoUrl.indexOf("/", last + 1);
 			if (last > -1) {
-				url += "../";
+				slash ++;
 			}
+		}
+		
+		//count ../
+		//each "../" should remove 2 "/" :
+		//     - One because it is contained in "../"
+		//     - An other because of the meaning of "../"
+		last = 0;
+		while (last > -1) {
+			last = dojoUrl.indexOf("../", last);
+			if (last > -1) {
+				dojoUrl = dojoUrl.substring(last + "../".length());
+				slash = slash - 2;
+			}
+		}
+		
+		for (int i=0; i < slash; i++){
+			url += "../";
 		}
 		
 		ResourceReference moduleReference = new ResourceReference(module.getScope(), "");
@@ -171,7 +191,7 @@ public abstract class AbstractDefaultDojoBehavior extends AbstractDefaultAjaxBeh
 				"dojo.registerModulePath(\"" + module.getNamespace() + "\", \"" + url + "\");",
 				DOJO_NAMESPACE_PREFIX + module.getNamespace());
 	}
-
+	
 	/**
 	 * Get the reference to the Dojo scripts.
 	 * @return
