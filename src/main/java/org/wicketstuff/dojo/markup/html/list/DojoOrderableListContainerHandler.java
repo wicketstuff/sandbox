@@ -52,6 +52,9 @@ public class DojoOrderableListContainerHandler extends AbstractRequireDojoBehavi
 		
 		HashMap map = new HashMap();
 		response.renderJavascript(template.asString(), template.getStaticKey());
+		response.renderJavascript("dojo.addOnLoad(function(){" + 
+				((DojoOrderableListContainer)getComponent()).getChangeIDScript() +
+				"});", getComponent().getMarkupId() + "InitDnd");
 	
 		IRequestTarget target = RequestCycle.get().getRequestTarget();
 		if(!(target instanceof AjaxRequestTarget)){

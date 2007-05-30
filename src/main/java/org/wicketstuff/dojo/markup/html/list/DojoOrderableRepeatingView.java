@@ -16,15 +16,11 @@
  */
 package org.wicketstuff.dojo.markup.html.list;
 
-import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.ComponentTag;
-import org.apache.wicket.markup.MarkupStream;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.RefreshingView;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
 
 /**
  * This {@link DojoOrderableRepeatingView} should be added only in {@link DojoOrderableListContainer}
@@ -39,9 +35,7 @@ import org.apache.wicket.model.Model;
  *
  */
 public abstract class DojoOrderableRepeatingView extends RefreshingView
-{
-
-	int pos = 0; 
+{ 
 
 	/**
 	 * Construct
@@ -64,24 +58,10 @@ public abstract class DojoOrderableRepeatingView extends RefreshingView
 		setOutputMarkupId(true);
 	}
 	
-	protected void renderChild(Component child)
-	{
-		String posString = Integer.toString(pos++);
-		child.add(new AttributeAppender("pos", true, new Model(posString),""));
-		super.renderChild(child);
-	}
-	
 	protected void onComponentTag(ComponentTag tag)
 	{
 		checkComponentTag(tag, "div");
 		super.onComponentTag(tag);
-	}
-	
-	@Override
-	protected void onAfterRender() {
-		super.onAfterRender();
-		//position computing should be restart : 
-		pos = 0;
 	}
 
 	/**

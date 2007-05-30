@@ -117,7 +117,7 @@ public class DojoOrderableListContainer extends DojoDropContainer
 		}
 	}
 	
-	private String getChangeIDScript(){
+	public String getChangeIDScript(){
 		String containerId = getMarkupId();
 		String changeId = "";
 		changeId += "var children = document.getElementById('" + containerId + "').getElementsByTagName('div');\n";
