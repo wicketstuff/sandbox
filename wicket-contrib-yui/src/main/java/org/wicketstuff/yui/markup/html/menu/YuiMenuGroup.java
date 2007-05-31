@@ -14,6 +14,18 @@ public abstract class YuiMenuGroup extends Panel
     public static final String MENU_GROUP_ID = "menuGroup";
     public static final String GROUP_TITLE_ID = "groupTitle";
     
+    private int index = -1;
+    
+    public int getIndex()
+    {
+        return index;
+    }
+
+    public void setIndex(int index)
+    {
+        this.index = index;
+    }
+
     public YuiMenuGroup(YuiMenuItemListModel model)
     {
         super(MENU_GROUP_ID);
@@ -29,13 +41,15 @@ public abstract class YuiMenuGroup extends Panel
             {
                 item.setRenderBodyOnly(true);
                 AbstractYuiMenuItem mi = (AbstractYuiMenuItem) item.getModelObject();
+                mi.setIndex(item.getIndex());
+                mi.setGroupIndex(YuiMenuGroup.this.getIndex());
                 if(0 == item.getIndex()) {
                     mi.add(new AttributeAppender("class", true, new Model("first-of-type"), " "));
                 }
                 item.add(mi);
             }
             
-        });
+        }.setReuseItems(true));
     }
     
     protected abstract WebComponent getGroupTitle(String id);

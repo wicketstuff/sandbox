@@ -29,6 +29,7 @@ public abstract class YuiMenuBar extends AbstractYuiMenu
             {
                 item.setRenderBodyOnly(true);
                 AbstractYuiMenuItem mi = (AbstractYuiMenuItem) item.getModelObject();
+                mi.setIndex(item.getIndex());
                 if(0 == item.getIndex()) {
                     mi.add(new AttributeAppender("class", true, new Model("first-of-type"), " "));
                 }
@@ -38,22 +39,7 @@ public abstract class YuiMenuBar extends AbstractYuiMenu
             
         });
         add(getMenuInit());
-//        add(new AbstractBehavior () {
-//            @Override
-//            public void renderHead(IHeaderResponse response)
-//            {
-//                String menuBar = getMenuElementId() + "MenuBar";
-//                StringBuilder sb = new StringBuilder("YAHOO.example.onMenuBarReady = function() {\n");
-//                sb.append("\tvar " + menuBar);
-//                sb.append(" = new YAHOO.widget.MenuBar(\"" + getMenuElementId() + "\", {autosubmenudisplay: true, hidedelay: 750, lazyload: true});\n");
-//                sb.append("\t" + menuBar + ".render();\n");
-//                sb.append("};\n");
-//                sb.append("YAHOO.util.Event.onContentReady(\"" + getMenuElementId() + "\", YAHOO.example.onMenuBarReady);\n");
-//                
-//                
-//                response.renderJavascript(sb.toString(), getMenuElementId() + "Script");
-//            }
-//        });
+
     }
 
     @Override
@@ -68,8 +54,14 @@ public abstract class YuiMenuBar extends AbstractYuiMenu
         return "MenuBar";
     }
     
+    public String getMenuName ()
+    {
+        return "yuiMenuBar" + getMenuElementId();
+    }
+    
     protected IBehavior getMenuInit() {
-        final Map vars = new MiniMap(2);
+        final Map vars = new MiniMap(3);
+        vars.put("menuName", getMenuName());
         vars.put("elementId", getMenuElementId());
         vars.put("menuType", getMenuType());
         return new VelocityHeaderContributor()
