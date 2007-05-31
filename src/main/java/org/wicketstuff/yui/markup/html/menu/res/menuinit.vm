@@ -1,6 +1,8 @@
-var init${elementId} = function () {
-	var oMenu = new YAHOO.widget.${menuType}("${elementId}", { hidedelay: 750, lazyload:true});
-	oMenu.render();
+var ${menuName}
+
+var init${menuName} = function () {
+	${menuName} = new YAHOO.widget.${menuType}("${elementId}", { hidedelay: 750, lazyload:false});
+	${menuName}.render();
 };
 
-YAHOO.util.Event.onContentReady("${elementId}", init${elementId});
+YAHOO.util.Event.onContentReady("${elementId}", init${menuName});
