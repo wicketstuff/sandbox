@@ -10,6 +10,7 @@ import junit.framework.TestCase;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.Page;
+import org.apache.wicket.Session;
 import org.apache.wicket.authorization.Action;
 import org.apache.wicket.authorization.UnauthorizedActionException;
 import org.apache.wicket.authorization.UnauthorizedInstantiationException;
@@ -364,11 +365,13 @@ public class GeneralTest extends TestCase
 		mock.setupRequestAndResponse();
 		mock.processRequestCycle();
 		mock.assertRenderedPage(getLoginPage());
+//		assertTrue(Session.get().isTemporary()); does not work in test
 		FormTester form = mock.newFormTester("signInPanel:signInForm");
 		form.setValue("username", "test");
 		form.setValue("password", "test");
 		form.submit();
 		mock.assertRenderedPage(getHomePage());
+		assertFalse(Session.get().isTemporary());
 	}
 
 	/**

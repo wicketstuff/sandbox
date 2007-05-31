@@ -19,6 +19,7 @@ public class LoginPage extends BasePage
 	 */
 	public LoginPage()
 	{
+		setStatelessHint(true);
 		String panelId = "signInPanel";
 		newUserPasswordSignInPanel(panelId);
 	}
