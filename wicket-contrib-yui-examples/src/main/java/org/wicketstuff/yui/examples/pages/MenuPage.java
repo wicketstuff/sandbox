@@ -5,6 +5,10 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.wicket.MarkupContainer;
+import org.apache.wicket.WicketRuntimeException;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.markup.html.WebComponent;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.AbstractLink;
@@ -14,6 +18,7 @@ import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.wicketstuff.yui.examples.WicketExamplePage;
 import org.wicketstuff.yui.markup.html.menu.AbstractYuiMenuItem;
+import org.wicketstuff.yui.markup.html.menu.CheckedYuiMenuItem;
 import org.wicketstuff.yui.markup.html.menu.YuiMenuBar;
 import org.wicketstuff.yui.markup.html.menu.YuiMenuBarItem;
 import org.wicketstuff.yui.markup.html.menu.YuiMenuGroup;
@@ -50,13 +55,8 @@ public class MenuPage extends WicketExamplePage
     private List<AbstractYuiMenuItem> getMenuBarItems ()
     {
         List<AbstractYuiMenuItem> menuBarItems = new ArrayList<AbstractYuiMenuItem>();
-        menuBarItems.add(new YuiMenuBarItem() {
+        menuBarItems.add(new YuiMenuBarItem("MenuBarItem#1") {
 
-            @Override
-            public Label getLabel(String menuItemLabelId)
-            {
-                return new Label(menuItemLabelId, "MenuBarItem#1");
-            }
 
             @Override
             public AbstractLink getLink(String menuItemLinkId)
@@ -97,13 +97,8 @@ public class MenuPage extends WicketExamplePage
             
         });
         
-        menuBarItems.add(new YuiMenuBarItem() {
+        menuBarItems.add(new YuiMenuBarItem("MenuBarItem#2") {
 
-            @Override
-            public Label getLabel(String menuItemLabelId)
-            {
-                return new Label(menuItemLabelId, "MenuBarItem#2");
-            }
 
             @Override
             public AbstractLink getLink(String menuItemLinkId)
@@ -151,9 +146,9 @@ public class MenuPage extends WicketExamplePage
         YuiMenuGroup ymg = new YuiMenuGroup (menuItemListModel) {
 
             @Override
-            protected MarkupContainer getGroupTitle(String id)
+            protected WebComponent getGroupTitle(String id)
             {
-                return new WebMarkupContainer (id) {
+                return new WebComponent (id) {
                     @Override
                     public boolean isVisible()
                     {
@@ -169,14 +164,8 @@ public class MenuPage extends WicketExamplePage
     
     List<AbstractYuiMenuItem> getMenuItemsForGroupA () {
         List<AbstractYuiMenuItem> mil = new ArrayList<AbstractYuiMenuItem>();
-        
-        mil.add(new YuiMenuItem () {
 
-            @Override
-            public Label getLabel(String menuItemLabelId)
-            {
-                return new Label(menuItemLabelId, "Menu Item #1");
-            }
+        mil.add(new YuiMenuItem ("Menu Item #1") {
 
             @Override
             public AbstractLink getLink(String menuItemLinkId)
@@ -195,24 +184,12 @@ public class MenuPage extends WicketExamplePage
             @Override
             public MarkupContainer getSubMenu(String menuItemSubMenuId)
             {
-                return new WebMarkupContainer(menuItemSubMenuId) {
-                    @Override
-                    public boolean isVisible()
-                    {
-                        return false;
-                    }
-                };
+                return null;
             }
             
         });
         
-        mil.add(new YuiMenuItem() {
-
-            @Override
-            public Label getLabel(String menuItemLabelId)
-            {
-                return new Label(menuItemLabelId, "Menu Item #2");
-            }
+        mil.add(new YuiMenuItem("Menu Item #2") {
 
             @Override
             public AbstractLink getLink(String menuItemLinkId)
@@ -270,9 +247,9 @@ public class MenuPage extends WicketExamplePage
         YuiMenuGroup ymg = new YuiMenuGroup (menuItemListModel) {
 
             @Override
-            protected MarkupContainer getGroupTitle(String id)
+            protected WebComponent getGroupTitle(String id)
             {
-                return new WebMarkupContainer (id) {
+                return new WebComponent (id) {
                     @Override
                     public boolean isVisible()
                     {
@@ -290,13 +267,8 @@ public class MenuPage extends WicketExamplePage
     {
         List<AbstractYuiMenuItem> mil = new ArrayList<AbstractYuiMenuItem>();
         
-        mil.add(new YuiMenuItem () {
+        mil.add(new YuiMenuItem ("Menu Item B1") {
 
-            @Override
-            public Label getLabel(String menuItemLabelId)
-            {
-                return new Label(menuItemLabelId, "Menu Item B1");
-            }
 
             @Override
             public AbstractLink getLink(String menuItemLinkId)
@@ -315,54 +287,29 @@ public class MenuPage extends WicketExamplePage
             @Override
             public MarkupContainer getSubMenu(String menuItemSubMenuId)
             {
-                return new WebMarkupContainer(menuItemSubMenuId) {
-                    @Override
-                    public boolean isVisible()
-                    {
-                        return false;
-                    }
-                };
+                return null;
             }
             
         });
         
-        mil.add(new YuiMenuItem() {
+        final YuiMenuItem mi;
+        mil.add(mi = new CheckedYuiMenuItem("Menu Item B2") {
 
             @Override
-            public Label getLabel(String menuItemLabelId)
+            protected void onCheck(AjaxRequestTarget target)
             {
-                return new Label(menuItemLabelId, "Menu Item B2");
-            }
-
-            @Override
-            public AbstractLink getLink(String menuItemLinkId)
-            {
-                return new Link(menuItemLinkId) {
-
-                    @Override
-                    public void onClick()
-                    {
-                        // TODO Auto-generated method stub
-                        
-                    }
-                    
-                };
+                
             }
 
             @Override
             public MarkupContainer getSubMenu(String menuItemSubMenuId)
             {
-                return new WebMarkupContainer(menuItemSubMenuId) {
-                    @Override
-                    public boolean isVisible()
-                    {
-                        return false;
-                    }
-                };
+                // TODO Auto-generated method stub
+                return null;
             }
             
         });
-        
+        mi.setChecked(true);
         return mil;
 
     }
