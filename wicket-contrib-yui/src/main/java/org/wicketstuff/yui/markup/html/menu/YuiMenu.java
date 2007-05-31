@@ -20,11 +20,12 @@ public abstract  class YuiMenu extends AbstractYuiMenu
             {
                 item.setRenderBodyOnly(true);
                 YuiMenuGroup ymg = (YuiMenuGroup) item.getModelObject();
+                ymg.setIndex(item.getIndex());
                 ymg.setRenderBodyOnly(true);
                 item.add(ymg);
             }
             
-        });
+        }.setReuseItems(true));
     }
 
     @Override

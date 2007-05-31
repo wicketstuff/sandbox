@@ -46,5 +46,7 @@ public abstract class AbstractYuiMenu extends Panel
     protected abstract String getMenuElementId();
 
     protected abstract String getMenuType();
+    
+    protected abstract String getMenuName();
 
 }

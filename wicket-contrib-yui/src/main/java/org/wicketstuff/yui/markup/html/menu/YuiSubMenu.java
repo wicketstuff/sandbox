@@ -1,7 +1,5 @@
 package org.wicketstuff.yui.markup.html.menu;
 
-import org.apache.wicket.markup.html.IHeaderResponse;
-import org.apache.wicket.model.IModel;
 
 public class YuiSubMenu extends YuiMenu
 {
@@ -15,6 +13,12 @@ public class YuiSubMenu extends YuiMenu
     protected String getMenuElementId()
     {
         return null;
+    }
+
+    @Override
+    protected String getMenuName()
+    {
+        return "yuiSubMenu";
     }
 
     
