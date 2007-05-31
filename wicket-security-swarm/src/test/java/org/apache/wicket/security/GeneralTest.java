@@ -13,6 +13,7 @@ import java.net.MalformedURLException;
 
 import junit.framework.TestCase;
 
+import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.security.hive.HiveMind;
 import org.apache.wicket.security.hive.authentication.SecondaryLoginContext;
 import org.apache.wicket.security.hive.config.PolicyFileHiveFactory;
@@ -35,9 +36,9 @@ public class GeneralTest extends TestCase
 {
 	private static final Logger log = LoggerFactory.getLogger(GeneralTest.class);
 
-	private SwarmWebApplication application;
+	protected WebApplication application;
 
-	private WicketTester mock;
+	protected WicketTester mock;
 
 	/**
 	 * @see junit.framework.TestCase#setUp()
@@ -87,9 +88,9 @@ public class GeneralTest extends TestCase
 	 */
 	protected void tearDown() throws Exception
 	{
-//		mock.setupRequestAndResponse();
-//		mock.getWicketSession().invalidate();
-//		mock.processRequestCycle();
+		mock.setupRequestAndResponse();
+		mock.getWicketSession().invalidate();
+		mock.processRequestCycle();
 		mock.destroy();
 		mock = null;
 		application = null;

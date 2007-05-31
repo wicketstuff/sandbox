@@ -15,7 +15,18 @@
 	<prerequisites>
 		<maven>2.0.4</maven>
 	</prerequisites>
-
+	<repositories>
+		<repository>
+			<id>wicket-snaps</id>
+			<url>http://wicketstuff.org/maven/repository</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+		</repository>
+	</repositories>
 	<!-- Developers -->
 	<developers>
 		<developer>
@@ -64,7 +75,7 @@
 			<type>jar</type>
 			<scope>provided</scope>
 		</dependency>
-		
+
 	</dependencies>
 	<!-- Build environment -->
 	<build>
@@ -147,37 +158,37 @@
 						</excludes>
 					</configuration>
 				</plugin>
-		<!-- 		<plugin>
+				<!-- 		<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-clover-plugin</artifactId>
 					<configuration>
-						<targetPercentage>50%</targetPercentage>
-						<jdk>1.4</jdk>
-						<contextFilters>catch</contextFilters>
-						<excludes>
-							<exclude>**/*Exception.java</exclude>
-							<exclude>**/TestPermission.java</exclude>
-							<exclude>**/TestPrincipal.java</exclude>
-						</excludes>
+					<targetPercentage>50%</targetPercentage>
+					<jdk>1.4</jdk>
+					<contextFilters>catch</contextFilters>
+					<excludes>
+					<exclude>**/*Exception.java</exclude>
+					<exclude>**/TestPermission.java</exclude>
+					<exclude>**/TestPrincipal.java</exclude>
+					</excludes>
 					</configuration>
 					<executions>
-						<execution>
-							<id>verify</id>
-							<phase>verify</phase>
-							<goals>
-								<goal>instrument</goal>
-								<goal>check</goal>
-							</goals>
-						</execution>
-						<execution>
-							<id>site</id>
-							<phase>pre-site</phase>
-							<goals>
-								<goal>instrument</goal>
-							</goals>
-						</execution>
+					<execution>
+					<id>verify</id>
+					<phase>verify</phase>
+					<goals>
+					<goal>instrument</goal>
+					<goal>check</goal>
+					</goals>
+					</execution>
+					<execution>
+					<id>site</id>
+					<phase>pre-site</phase>
+					<goals>
+					<goal>instrument</goal>
+					</goals>
+					</execution>
 					</executions>
-				</plugin>	-->
+					</plugin>	-->
 			</plugins>
 		</pluginManagement>
 		<plugins>
@@ -192,10 +203,10 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
 			</plugin>
-		<!-- 	<plugin>
+			<!-- 	<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-clover-plugin</artifactId>
-			</plugin>	-->
+				</plugin>	-->
 		</plugins>
 	</build>
 
@@ -247,18 +258,18 @@
 					</reportSet>
 				</reportSets>
 			</plugin>
-		<!-- 	<plugin>
+			<!-- 	<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-clover-plugin</artifactId>
 				<configuration>
-					<targetPercentage>50%</targetPercentage>
-					<jdk>1.4</jdk>
-					<contextFilters>catch</contextFilters>
-					<excludes>
-						<exclude>**/*Exception.java</exclude>
-					</excludes>
+				<targetPercentage>50%</targetPercentage>
+				<jdk>1.4</jdk>
+				<contextFilters>catch</contextFilters>
+				<excludes>
+				<exclude>**/*Exception.java</exclude>
+				</excludes>
 				</configuration>
-			</plugin>	-->
+				</plugin>	-->
 		</plugins>
 	</reporting>
 </project>
