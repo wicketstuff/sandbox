@@ -51,6 +51,9 @@ public class WaspSession extends WebSession
 	public void login(Object context) throws LoginException
 	{
 		securityStrategy.login(context);
+		//make session permananent after login
+		if(isTemporary())
+			bind();
 	}
 
 	/**

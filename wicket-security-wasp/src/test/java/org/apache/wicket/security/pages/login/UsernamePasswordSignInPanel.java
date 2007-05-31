@@ -25,9 +25,9 @@ import org.apache.wicket.Session;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.CheckBox;
-import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.form.PasswordTextField;
+import org.apache.wicket.markup.html.form.StatelessForm;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -115,7 +115,7 @@ public class UsernamePasswordSignInPanel extends Panel
 	/**
 	 * Sign in form.
 	 */
-	public final class SignInForm extends Form
+	public final class SignInForm extends StatelessForm
 	{
 		/** Voor serializatie. */
 		private static final long serialVersionUID = 1L;
@@ -131,25 +131,9 @@ public class UsernamePasswordSignInPanel extends Panel
 		{
 			super(id, new CompoundPropertyModel(new ValueMap()));
 
-			// enkel de username bewaren voor de gebruiker. Geen wachtwoorden!
+			// only save username, not passwords
 			add(new TextField("username").setPersistent(rememberMe));
-			add(new PasswordTextField("password")
-			{
-				/** Voor serializatie. */
-				private static final long serialVersionUID = 1L;
-
-				/**
-				 * Houdt timestamp vast voor het genereren van unieke veldnamen, zodat
-				 * deze niet door de browser vastgehouden kunnen worden.
-				 */
-				private long timestamp = System.currentTimeMillis();
-
-				public String getInputName()
-				{
-					// veiligheids dingetje
-					return super.getInputName() + "_" + timestamp;
-				}
-			});
+			add(new PasswordTextField("password"));
 			// MarkupContainer row for remember me checkbox
 			WebMarkupContainer rememberMeRow = new WebMarkupContainer("rememberMeRow");
 			add(rememberMeRow);
@@ -175,9 +159,6 @@ public class UsernamePasswordSignInPanel extends Panel
 
 			if (signIn(username, password))
 			{
-				// als er al een doel pagina beschikbaar is, daar naar toe doorgaan,
-				// anders naar de home page
-
 				if (!getPage().continueToOriginalDestination())
 				{
 					setResponsePage(Application.get().getHomePage());
