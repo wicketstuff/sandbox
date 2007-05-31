@@ -14,6 +14,7 @@ import org.apache.wicket.Session;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.StatelessForm;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.security.WaspSession;
@@ -45,8 +46,9 @@ public class MockLoginPage extends WebPage
 	public MockLoginPage()
 	{
 		super();
+		setStatelessHint(true);
 		add(new Label("label","welcome please login"));
-		add(form=new Form("form"){
+		add(form=new StatelessForm("form"){
 
 			/**
 			 * 
