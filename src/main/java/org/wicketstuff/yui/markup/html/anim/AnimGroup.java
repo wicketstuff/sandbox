@@ -217,8 +217,8 @@ public class AnimGroup extends WebMarkupContainer {
 	/**
 	 * Get the markup Id on attach
 	 */
-	protected void onAttach() {
-		super.onAttach();
+	protected void onBeforeRender() {
+		super.onBeforeRender();
 		javaScriptId = getMarkupId();
 
 		String js = "\n<script type=\"text/javascript\">"
