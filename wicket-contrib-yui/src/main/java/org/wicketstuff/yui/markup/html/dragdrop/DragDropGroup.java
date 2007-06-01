@@ -156,8 +156,8 @@ public class DragDropGroup extends WebMarkupContainer {
 		return variables;
 	}
 
-	protected void onAttach() {
-		super.onAttach();
+	protected void onBeforeRender() {
+		super.onBeforeRender();
 		javaScriptId = getMarkupId();
 
 		TextTemplate template = new PackagedTextTemplate(
