@@ -1,9 +1,19 @@
 /*
- * $Id: SecureComponentHelper.java,v 1.4 2006/06/28 10:00:16 Marrink Exp $ $Revision: 1.4 $ $Date: 2006/06/28 10:00:16 $
- * ==================================================================== Copyright (c) 2005, Topicus B.V. All rights
- * reserved.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-
 package org.apache.wicket.security.components;
 
 import org.apache.wicket.Application;
@@ -22,6 +32,7 @@ import org.apache.wicket.security.strategies.WaspAuthorizationStrategy;
 
 /**
  * Utility class for secure components.
+ * 
  * @author marrink
  * @see ISecurityCheck
  * @see ISecureComponent
@@ -31,21 +42,24 @@ public final class SecureComponentHelper
 {
 
 	/**
-	 * The security check placed on the component or null. This uses the metadata of a
-	 * component to store or retrieve the {@link ISecurityCheck}.
-	 * @param component if null, null will be returned
+	 * The security check placed on the component or null. This uses the
+	 * metadata of a component to store or retrieve the {@link ISecurityCheck}.
+	 * 
+	 * @param component
+	 *            if null, null will be returned
 	 * @return the security check or null if none was placed on the component
 	 */
 	public static ISecurityCheck getSecurityCheck(Component component)
 	{
 		if (component != null)
-			return (ISecurityCheck) component.getMetaData(new WaspKey());
+			return (ISecurityCheck)component.getMetaData(new WaspKey());
 		return null;
 	}
 
 	/**
-	 * Places a security check on a component. This uses the metadata of a component to
-	 * store or retrieve the {@link ISecurityCheck}.
+	 * Places a security check on a component. This uses the metadata of a
+	 * component to store or retrieve the {@link ISecurityCheck}.
+	 * 
 	 * @param component
 	 * @param securityCheck
 	 * @return the component or null if the component was null to begin with.
@@ -59,22 +73,25 @@ public final class SecureComponentHelper
 	}
 
 	/**
-	 * We cannot assume everybody uses the here specified public methods to store the
-	 * {@link ISecurityCheck}, so we check if the component is a {@link ISecureComponent}
-	 * and ifso use the {@link ISecureComponent#getSecurityCheck()} on the secure
-	 * component else we fall back to the metadata.
+	 * We cannot assume everybody uses the here specified public methods to
+	 * store the {@link ISecurityCheck}, so we check if the component is a
+	 * {@link ISecureComponent} and ifso use the
+	 * {@link ISecureComponent#getSecurityCheck()} on the secure component else
+	 * we fall back to the metadata.
+	 * 
 	 * @param component
 	 * @return the security check or null if the component does not have one.
 	 */
 	private static ISecurityCheck saveGetSecurityCheck(Component component)
 	{
 		if (component instanceof ISecureComponent)
-			return ((ISecureComponent) component).getSecurityCheck();
+			return ((ISecureComponent)component).getSecurityCheck();
 		return getSecurityCheck(component);
 	}
 
 	/**
 	 * Checks if the component has a {@link ISecureModel}.
+	 * 
 	 * @param component
 	 * @return true if the component has a securemodel, else false.
 	 */
@@ -85,26 +102,30 @@ public final class SecureComponentHelper
 
 	/**
 	 * Gets the {@link ActionFactory}.
+	 * 
 	 * @return the cationfactory
-	 * @throws WicketRuntimeException if the ActionFactory is not found.
+	 * @throws WicketRuntimeException
+	 *             if the ActionFactory is not found.
 	 */
 	private static ActionFactory getActionFactory()
 	{
 		Application application = Application.get();
 		if (application instanceof WaspApplication)
 		{
-			WaspApplication app = (WaspApplication) application;
+			WaspApplication app = (WaspApplication)application;
 			return app.getActionFactory();
 		}
 		throw new WicketRuntimeException(application + " is not a WaspApplication");
 	}
 
 	/**
-	 * Default implementation for {@link ISecureComponent#isActionAuthorized(String)} and
+	 * Default implementation for
+	 * {@link ISecureComponent#isActionAuthorized(String)} and
 	 * {@link WaspAuthorizationStrategy#isActionAuthorized(Component, org.apache.wicket.authorization.Action)}.
-	 * First tries to use the {@link ISecurityCheck} from the component if that is not
-	 * available it tries the {@link ISecureModel} if neither is present the action is
-	 * authorized on the component.
+	 * First tries to use the {@link ISecurityCheck} from the component if that
+	 * is not available it tries the {@link ISecureModel} if neither is present
+	 * the action is authorized on the component.
+	 * 
 	 * @return true, if the component is authorized, false otherwise.
 	 * @see ISecureComponent#isActionAuthorized(String)
 	 * @see ISecurityCheck
@@ -118,7 +139,7 @@ public final class SecureComponentHelper
 		if (check != null)
 			return check.isActionAuthorized(getActionFactory().getAction(action));
 		if (hasSecureModel(component))
-			return ((ISecureModel) component.getModel()).isAuthorized(component, getActionFactory()
+			return ((ISecureModel)component.getModel()).isAuthorized(component, getActionFactory()
 					.getAction(action));
 		return true;
 	}
@@ -127,9 +148,10 @@ public final class SecureComponentHelper
 	 * Default implementation for
 	 * {@link ISecureComponent#isActionAuthorized(AbstractWaspAction)} and
 	 * {@link WaspAuthorizationStrategy#isActionAuthorized(Component, org.apache.wicket.authorization.Action)}.
-	 * First tries to use the {@link ISecurityCheck} from the component if that is not
-	 * available it tries the {@link ISecureModel} if neither is present the action is
-	 * authorized on the component.
+	 * First tries to use the {@link ISecurityCheck} from the component if that
+	 * is not available it tries the {@link ISecureModel} if neither is present
+	 * the action is authorized on the component.
+	 * 
 	 * @return true, if the component is authorized, false otherwise.
 	 * @see ISecureComponent#isActionAuthorized(AbstractWaspAction)
 	 * @see ISecurityCheck
@@ -143,15 +165,17 @@ public final class SecureComponentHelper
 		if (check != null)
 			return check.isActionAuthorized(getActionFactory().getAction(action));
 		if (hasSecureModel(component))
-			return ((ISecureModel) component.getModel()).isAuthorized(component, getActionFactory()
+			return ((ISecureModel)component.getModel()).isAuthorized(component, getActionFactory()
 					.getAction(action));
 		return true;
 	}
 
 	/**
-	 * Default implementation for {@link ISecureComponent#isAuthenticated()}. First tries
-	 * to use the {@link ISecurityCheck} from the component if that is not available it
-	 * tries the {@link ISecureModel} if neither is present the user is authenticated.
+	 * Default implementation for {@link ISecureComponent#isAuthenticated()}.
+	 * First tries to use the {@link ISecurityCheck} from the component if that
+	 * is not available it tries the {@link ISecureModel} if neither is present
+	 * the user is authenticated.
+	 * 
 	 * @return true, if the user is authenticated, false otherwise.
 	 * @see ISecureComponent#isAuthenticated()
 	 * @see ISecurityCheck
@@ -163,17 +187,21 @@ public final class SecureComponentHelper
 		if (check != null)
 			return check.isAuthenticated();
 		if (hasSecureModel(component))
-			return ((ISecureModel) component.getModel()).isAuthenticated(component);
+			return ((ISecureModel)component.getModel()).isAuthenticated(component);
 		return true;
 	}
 
 	/**
-	 * Builds a 'unique' name for the component. The name is based on the page class alias
-	 * and the relativepath to the page (if not a page itself). Note that although it is
-	 * unlikely, it is not impossible for two components to have the same alias.
+	 * Builds a 'unique' name for the component. The name is based on the page
+	 * class alias and the relativepath to the page (if not a page itself). Note
+	 * that although it is unlikely, it is not impossible for two components to
+	 * have the same alias.
+	 * 
 	 * @param component
 	 * @return an alias.
-	 * @throws SecurityException if the component is null, or if the page of the component is not available.
+	 * @throws SecurityException
+	 *             if the component is null, or if the page of the component is
+	 *             not available.
 	 */
 	public static String alias(Component component)
 	{
@@ -183,11 +211,11 @@ public final class SecureComponentHelper
 		Page page = null;
 		try
 		{
-			page=component.getPage();
+			page = component.getPage();
 		}
-		catch(IllegalStateException e)
+		catch (IllegalStateException e)
 		{
-			throw new SecurityException("Unable to create alias for component: "+component,e);
+			throw new SecurityException("Unable to create alias for component: " + component, e);
 		}
 		String alias = alias(page.getClass());
 		String relative = component.getPageRelativePath();
@@ -198,6 +226,7 @@ public final class SecureComponentHelper
 
 	/**
 	 * Builds an alias for a class.
+	 * 
 	 * @param class1
 	 * @return an alias
 	 */

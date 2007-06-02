@@ -1,3 +1,19 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.apache.wicket.security;
 
 import java.util.HashMap;
@@ -99,7 +115,7 @@ public class GeneralTest extends TestCase
 		 */
 		private boolean isAuthorized(Object obj, WaspAction action)
 		{
-			WaspAction authorizedAction = (WaspAction) authorized.get(obj);
+			WaspAction authorizedAction = (WaspAction)authorized.get(obj);
 			if (authorizedAction == null)
 				return false;
 			return authorizedAction.implies(action);
@@ -124,7 +140,7 @@ public class GeneralTest extends TestCase
 
 		public boolean isModelAuthorized(ISecureModel model, Component component, WaspAction action)
 		{
-			return isAuthorized("model:"+component.getId(), action);
+			return isAuthorized("model:" + component.getId(), action);
 		}
 
 		public void login(Object context) throws LoginException
@@ -132,7 +148,7 @@ public class GeneralTest extends TestCase
 			if (context instanceof Map)
 			{
 				loggedin = true;
-				authorized.putAll((Map) context);
+				authorized.putAll((Map)context);
 			}
 			else
 				throw new LoginException(
@@ -143,7 +159,7 @@ public class GeneralTest extends TestCase
 		{
 			if (context instanceof Map)
 			{
-				Map map = (Map) context;
+				Map map = (Map)context;
 				Iterator it = map.keySet().iterator();
 				while (it.hasNext())
 					authorized.remove(it.next());
@@ -182,13 +198,13 @@ public class GeneralTest extends TestCase
 
 		public boolean implies(WaspAction other)
 		{
-			StringAction oAction = (StringAction) other;
+			StringAction oAction = (StringAction)other;
 			return actions.containsAll(oAction.actions);
 		}
 
 		public WaspAction remove(WaspAction other)
 		{
-			StringAction oAction = (StringAction) other;
+			StringAction oAction = (StringAction)other;
 			StringAction newAction = new StringAction(getName());
 			newAction.actions.removeAll(oAction.actions);
 			return newAction;
@@ -203,9 +219,11 @@ public class GeneralTest extends TestCase
 
 	private Class loginPage = LoginPage.class;
 
-	private Class secureClass = ISecureComponent.class; // note your best option is to go
-														// for ISecurePage with this
-														// strategy
+	private Class secureClass = ISecureComponent.class; // note your best option
+														// is to go
+
+	// for ISecurePage with this
+	// strategy
 
 	protected void setUp() throws Exception
 	{
@@ -318,7 +336,8 @@ public class GeneralTest extends TestCase
 	}
 
 	/**
-	 * @param secureClass The secureClass to set.
+	 * @param secureClass
+	 *            The secureClass to set.
 	 */
 	public void setSecureClass(Class secureClass)
 	{
@@ -334,7 +353,8 @@ public class GeneralTest extends TestCase
 	}
 
 	/**
-	 * @param homePage The homePage to set.
+	 * @param homePage
+	 *            The homePage to set.
 	 */
 	public void setHomePage(Class homePage)
 	{
@@ -350,7 +370,8 @@ public class GeneralTest extends TestCase
 	}
 
 	/**
-	 * @param loginPage The loginPage to set.
+	 * @param loginPage
+	 *            The loginPage to set.
 	 */
 	public void setLoginPage(Class loginPage)
 	{
@@ -365,7 +386,7 @@ public class GeneralTest extends TestCase
 		mock.setupRequestAndResponse();
 		mock.processRequestCycle();
 		mock.assertRenderedPage(getLoginPage());
-//		assertTrue(Session.get().isTemporary()); does not work in test
+		// assertTrue(Session.get().isTemporary()); does not work in test
 		FormTester form = mock.newFormTester("signInPanel:signInForm");
 		form.setValue("username", "test");
 		form.setValue("password", "test");
@@ -391,23 +412,25 @@ public class GeneralTest extends TestCase
 		doLogin();
 		mock.assertInvisible("link");
 		mock.assertVisible("sorry");
-		
+
 		Page lastPage = mock.getLastRenderedPage();
 		SecurePageLink link = (SecurePageLink)lastPage.get("link");
-		LinkSecurityCheck linkcheck = ((LinkSecurityCheck)link.getSecurityCheck()).setUseAlternativeRenderCheck(true);
-		//need to fake inherit for the link to show up.
+		LinkSecurityCheck linkcheck = ((LinkSecurityCheck)link.getSecurityCheck())
+				.setUseAlternativeRenderCheck(true);
+		// need to fake inherit for the link to show up.
 		Map authorized = new HashMap();
-		authorized.put(SecureComponentHelper.alias(link), application.getActionFactory().getAction("access render"));
+		authorized.put(SecureComponentHelper.alias(link), application.getActionFactory().getAction(
+				"access render"));
 		login(authorized);
 		mock.startPage(lastPage);
 		mock.assertRenderedPage(getHomePage());
 		assertSame(lastPage, mock.getLastRenderedPage());
 		mock.assertInvisible("sorry");
 		mock.assertVisible("link");
-		TagTester tag=mock.getTagByWicketId("link");
+		TagTester tag = mock.getTagByWicketId("link");
 		assertNull(tag.getAttribute("href"));
 		assertNull(tag.getAttribute("onclick"));
-		
+
 		linkcheck.setUseAlternativeRenderCheck(false);
 		authorized.put(PageA.class, application.getActionFactory().getAction("render"));
 		login(authorized);
@@ -420,7 +443,8 @@ public class GeneralTest extends TestCase
 		mock.assertRenderedPage(application.getApplicationSettings().getAccessDeniedPage());
 		authorized.put(PageA.class, application.getActionFactory()
 				.getAction("access render enable"));
-		// Note that normally access is implied by render, just not in this simple
+		// Note that normally access is implied by render, just not in this
+		// simple
 		// testcase
 		login(authorized);
 		mock.startPage(getHomePage());
@@ -429,17 +453,19 @@ public class GeneralTest extends TestCase
 	}
 
 	/**
-	 * login through the session bypassing the loginpage. Note that the login page
-	 * automaticly grants access to the homepage, here you must do it yourself. Note these
-	 * rights are added to any existing ones replacing only if the class was already added
-	 * previously.
-	 * @param authorized map containing classes and the actions the users has on them.
+	 * login through the session bypassing the loginpage. Note that the login
+	 * page automaticly grants access to the homepage, here you must do it
+	 * yourself. Note these rights are added to any existing ones replacing only
+	 * if the class was already added previously.
+	 * 
+	 * @param authorized
+	 *            map containing classes and the actions the users has on them.
 	 */
 	private void login(Map authorized)
 	{
 		try
 		{
-			((WaspSession) mock.getWicketSession()).login(authorized);
+			((WaspSession)mock.getWicketSession()).login(authorized);
 		}
 		catch (LoginException e)
 		{
@@ -449,13 +475,14 @@ public class GeneralTest extends TestCase
 	}
 
 	/**
-	 * Logoff. If a map is specified only a partial logoff is performed removing only
-	 * those rights in the map.
+	 * Logoff. If a map is specified only a partial logoff is performed removing
+	 * only those rights in the map.
+	 * 
 	 * @param authorized
 	 */
 	private void logoff(Map authorized)
 	{
-		((WaspSession) mock.getWicketSession()).logoff(authorized);
+		((WaspSession)mock.getWicketSession()).logoff(authorized);
 	}
 
 	/**
@@ -515,8 +542,10 @@ public class GeneralTest extends TestCase
 		assertEquals(ISecureComponent.class, getSecureClass());
 		mock.setupRequestAndResponse();
 		new PageB();
-		// even though we added the same securitycheck to a regular textfield as a
-		// secureTextfield has there is no instantiation check because it is not an
+		// even though we added the same securitycheck to a regular textfield as
+		// a
+		// secureTextfield has there is no instantiation check because it is not
+		// an
 		// IsecureComponent
 		Map authorized = new HashMap();
 		authorized.put(PageA.class, application.getActionFactory().getAction("access"));
@@ -532,7 +561,8 @@ public class GeneralTest extends TestCase
 		}
 		catch (UnauthorizedInstantiationException e)
 		{
-			// because we are not allowed to instantiate a SecureTextField anymore
+			// because we are not allowed to instantiate a SecureTextField
+			// anymore
 		}
 		mock.processRequestCycle();
 		try
@@ -546,18 +576,20 @@ public class GeneralTest extends TestCase
 			log.error(e.getMessage(), e);
 		}
 		doLogin();
-		// now we only check pages so all components will be created, this does not affect
+		// now we only check pages so all components will be created, this does
+		// not affect
 		// the render check though
 		mock.setupRequestAndResponse();
 		logoff(authorized);
 		authorized.clear();
 		authorized.put(PageA.class, application.getActionFactory().getAction("access")); // need
-																							// to
-																							// enable
-																							// pagea
-																							// again
+		// to
+		// enable
+		// pagea
+		// again
 		login(authorized);
-		new PageA(); // only pages are checked so now securetextfield is allowed.
+		new PageA(); // only pages are checked so now securetextfield is
+						// allowed.
 		mock.processRequestCycle();
 	}
 
@@ -565,7 +597,8 @@ public class GeneralTest extends TestCase
 	{
 		doLogin();
 		mock.startPage(PageC.class);
-		// even if we are loged in and have access rights it will redirect us to the
+		// even if we are loged in and have access rights it will redirect us to
+		// the
 		// access denied page because it need render rights
 		mock.assertRenderedPage(application.getApplicationSettings().getAccessDeniedPage());
 		Map authorized = new HashMap();
@@ -578,7 +611,8 @@ public class GeneralTest extends TestCase
 		mock.assertRenderedPage(PageC2.class);
 		mock.startPage(HomePage.class);
 		logoff(authorized);
-		// but if we remove the render rights for PageC, PageC2 misses those rights and
+		// but if we remove the render rights for PageC, PageC2 misses those
+		// rights and
 		// won't be able to be instantiated anymore
 		mock.startPage(PageC2.class);
 		mock.assertRenderedPage(application.getApplicationSettings().getAccessDeniedPage());
@@ -596,7 +630,8 @@ public class GeneralTest extends TestCase
 		assertEquals(check, SecureComponentHelper.getSecurityCheck(field));
 		try
 		{
-			//can not check this because component is not attached to a page see SecureComponentHelper.alias(Component)
+			// can not check this because component is not attached to a page
+			// see SecureComponentHelper.alias(Component)
 			SecureComponentHelper.isActionAuthorized(field, "whatever");
 			fail();
 		}
@@ -640,24 +675,29 @@ public class GeneralTest extends TestCase
 		});
 		assertTrue(SecureComponentHelper.hasSecureModel(field));
 	}
+
 	public void testComponentSecurityCheckAndISecureModel()
 	{
 		doLogin();
 		mock.startPage(PageD.class);
 		mock.assertRenderedPage(PageD.class);
-		mock.assertInvisible("componentcheck"); //no render rights
+		mock.assertInvisible("componentcheck"); // no render rights
 		mock.assertVisible("modelcheck");
-		mock.assertInvisible("both"); //component says no
+		mock.assertInvisible("both"); // component says no
 		mock.assertInvisible("bothcheck");// component says no, model says yes
 		try
 		{
 			mock.getComponentFromLastRenderedPage("modelcheck").setModelObject("foobar");
 			fail("should not be able to write to model");
 		}
-		catch(UnauthorizedActionException e){}
+		catch (UnauthorizedActionException e)
+		{
+		}
 		Map authorized = new HashMap();
-		authorized.put(SecureTextField.class, application.getActionFactory().getAction("access render"));
-		authorized.put("model:modelcheck", application.getActionFactory().getAction("access render enable"));
+		authorized.put(SecureTextField.class, application.getActionFactory().getAction(
+				"access render"));
+		authorized.put("model:modelcheck", application.getActionFactory().getAction(
+				"access render enable"));
 		login(authorized);
 		mock.startPage(PageD.class);
 		mock.assertRenderedPage(PageD.class);
@@ -669,7 +709,8 @@ public class GeneralTest extends TestCase
 		assertEquals("foobar", mock.getComponentFromLastRenderedPage("modelcheck").getModelObject());
 		((ISecureComponent)mock.getComponentFromLastRenderedPage("both")).setSecurityCheck(null);
 		authorized.clear();
-		authorized.put("model:modelcheck", application.getActionFactory().getAction("access render"));
+		authorized.put("model:modelcheck", application.getActionFactory()
+				.getAction("access render"));
 		authorized.put("model:bothcheck", application.getActionFactory().getAction("access"));
 		login(authorized);
 		mock.startPage(mock.getLastRenderedPage());
@@ -678,13 +719,15 @@ public class GeneralTest extends TestCase
 		assertTrue(tag.getAttributeIs("value", "foobar"));
 		mock.assertVisible("componentcheck");
 		mock.assertVisible("modelcheck");
-		mock.assertInvisible("both"); //model says no
-		mock.assertInvisible("bothcheck"); //model says no, component says yes
+		mock.assertInvisible("both"); // model says no
+		mock.assertInvisible("bothcheck"); // model says no, component says yes
 		try
 		{
 			mock.getComponentFromLastRenderedPage("modelcheck").setModelObject("blaat");
 			fail("should not be able to write to model");
 		}
-		catch(UnauthorizedActionException e){}
+		catch (UnauthorizedActionException e)
+		{
+		}
 	}
 }
