@@ -1,9 +1,19 @@
 /*
- * $Id: JaasPageAuthorizationStrategy.java,v 1.1 2006/06/28 10:00:16 Marrink Exp $ $Revision: 1.1 $ $Date: 2005/12/02
- * 08:38:47 $ ==================================================================== Copyright (c) 2005, Topicus B.V. All
- * rights reserved.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-
 package org.apache.wicket.security.strategies;
 
 import java.lang.reflect.Field;
@@ -22,14 +32,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Authorization strategy to enforce security at the construction of components rather
- * then at render time. Note that it always requires a valid login, failing this condition
- * will cause a redirect to the login page as defined in the application rather then
- * returning false which will cause wicket to go to the accessdenied page. This class
- * operates by checking if the supplied class or any of its superclasses have static final
- * fields of type ISecurityCheck. It then calls each of them with an Access action, if any
- * one of them fails the class is not allowed to instantiate. Note that this strategy only
- * checks (sub)classes of {@link ISecureComponent}.
+ * Authorization strategy to enforce security at the construction of components
+ * rather then at render time. Note that it always requires a valid login,
+ * failing this condition will cause a redirect to the login page as defined in
+ * the application rather then returning false which will cause wicket to go to
+ * the accessdenied page. This class operates by checking if the supplied class
+ * or any of its superclasses have static final fields of type ISecurityCheck.
+ * It then calls each of them with an Access action, if any one of them fails
+ * the class is not allowed to instantiate. Note that this strategy only checks
+ * (sub)classes of {@link ISecureComponent}.
+ * 
  * @author marrink
  */
 public abstract class ClassAuthorizationStrategy extends WaspAuthorizationStrategy
@@ -49,8 +61,8 @@ public abstract class ClassAuthorizationStrategy extends WaspAuthorizationStrate
 	private Map cache = new HashMap(100); // guess
 
 	/**
-	 * Creates a strategy that checks all implementations of {@link ISecurePage}. All
-	 * other classes are granted instantiation rights.
+	 * Creates a strategy that checks all implementations of {@link ISecurePage}.
+	 * All other classes are granted instantiation rights.
 	 */
 	public ClassAuthorizationStrategy()
 	{
@@ -58,9 +70,11 @@ public abstract class ClassAuthorizationStrategy extends WaspAuthorizationStrate
 	}
 
 	/**
-	 * Creates a strategy that checks all implementations of the supplied class. All other
-	 * classes are granted instantiation rights.
-	 * @param secureClass an {@link ISecureComponent} (sub)class.
+	 * Creates a strategy that checks all implementations of the supplied class.
+	 * All other classes are granted instantiation rights.
+	 * 
+	 * @param secureClass
+	 *            an {@link ISecureComponent} (sub)class.
 	 */
 	public ClassAuthorizationStrategy(Class secureClass)
 	{
@@ -76,12 +90,14 @@ public abstract class ClassAuthorizationStrategy extends WaspAuthorizationStrate
 	}
 
 	/**
-	 * Checks if a class is allowed to be constructed. Only classes asignable to the
-	 * specified Class are checked. Note that all the found {@link ISecurityCheck}s must
-	 * return true for the authorization to succeed. If the class does not have any static
-	 * {@link ISecurityCheck}s a {@link ClassSecurityCheck} is used to simulate a static
-	 * securitycheck This way you only need to assign static checks if you want something
+	 * Checks if a class is allowed to be constructed. Only classes asignable to
+	 * the specified Class are checked. Note that all the found
+	 * {@link ISecurityCheck}s must return true for the authorization to
+	 * succeed. If the class does not have any static {@link ISecurityCheck}s a
+	 * {@link ClassSecurityCheck} is used to simulate a static securitycheck
+	 * This way you only need to assign static checks if you want something
 	 * special.
+	 * 
 	 * @see wicket.authorization.IAuthorizationStrategy#isInstantiationAuthorized(java.lang.Class)
 	 */
 	public boolean isInstantiationAuthorized(Class c)
@@ -103,29 +119,32 @@ public abstract class ClassAuthorizationStrategy extends WaspAuthorizationStrate
 	}
 
 	/**
-	 * Returns the static {@link ISecurityCheck}s of a class. Note that found checks are
-	 * cached therefore all checks should be final.
+	 * Returns the static {@link ISecurityCheck}s of a class. Note that found
+	 * checks are cached therefore all checks should be final.
+	 * 
 	 * @param clazz
-	 * @return an array containing all the {@link ISecurityCheck} of this class and all
-	 *         its superclasses, or an array of length 0 if none is found.
+	 * @return an array containing all the {@link ISecurityCheck} of this class
+	 *         and all its superclasses, or an array of length 0 if none is
+	 *         found.
 	 */
 	protected final ISecurityCheck[] getClassChecks(Class clazz)
 	{
-		ISecurityCheck[] checks = (ISecurityCheck[]) cache.get(clazz);
+		ISecurityCheck[] checks = (ISecurityCheck[])cache.get(clazz);
 		if (checks != null)
 			return checks;
 		List list = getClassChecks(clazz, new ArrayList());
 		if (list == null)
 			checks = new ISecurityCheck[0];
 		else
-			checks = (ISecurityCheck[]) list.toArray(new ISecurityCheck[list.size()]);
+			checks = (ISecurityCheck[])list.toArray(new ISecurityCheck[list.size()]);
 		cache.put(clazz, checks);
 		return checks;
 	}
 
 	/**
-	 * Appends all the {@link ISecurityCheck}s of a class and its superclasses to the
-	 * list.
+	 * Appends all the {@link ISecurityCheck}s of a class and its superclasses
+	 * to the list.
+	 * 
 	 * @param clazz
 	 * @param list
 	 * @return the list
@@ -171,8 +190,9 @@ public abstract class ClassAuthorizationStrategy extends WaspAuthorizationStrate
 	}
 
 	/**
-	 * Produces a generic exception message including information about the field that
-	 * caused the exception.
+	 * Produces a generic exception message including information about the
+	 * field that caused the exception.
+	 * 
 	 * @param field
 	 * @return generic exception message
 	 */

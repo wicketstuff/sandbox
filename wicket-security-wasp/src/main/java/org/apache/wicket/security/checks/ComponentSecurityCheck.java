@@ -1,3 +1,19 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.apache.wicket.security.checks;
 
 import org.apache.wicket.Component;
@@ -11,11 +27,13 @@ import org.apache.wicket.security.strategies.WaspAuthorizationStrategy;
 
 
 /**
- * Basic security check for components. Tries to authorize the component and optionally
- * its {@link ISecureModel} if it exists. Note that this check does not automaticly
- * authenticate the user on a request for authorization, since this usually is already
- * done by {@link Page}s at the instantiation check.
- * Both {@link ISecureModel} and this check need to authenticate / authorize the user before an approval is given.
+ * Basic security check for components. Tries to authorize the component and
+ * optionally its {@link ISecureModel} if it exists. Note that this check does
+ * not automaticly authenticate the user on a request for authorization, since
+ * this usually is already done by {@link Page}s at the instantiation check.
+ * Both {@link ISecureModel} and this check need to authenticate / authorize the
+ * user before an approval is given.
+ * 
  * @author marrink
  */
 public class ComponentSecurityCheck extends AbstractSecurityCheck
@@ -30,9 +48,11 @@ public class ComponentSecurityCheck extends AbstractSecurityCheck
 	private boolean checkModel;
 
 	/**
-	 * Constructs a ComponentSecurityCheck that never checks the model. Note that the
-	 * check still needs to be manually added to the component.
-	 * @param component the target component for this security check.
+	 * Constructs a ComponentSecurityCheck that never checks the model. Note
+	 * that the check still needs to be manually added to the component.
+	 * 
+	 * @param component
+	 *            the target component for this security check.
 	 * @see ISecureComponent#setSecurityCheck(ISecurityCheck)
 	 * @see SecureComponentHelper#setSecurityCheck(Component, ISecurityCheck)
 	 */
@@ -42,10 +62,13 @@ public class ComponentSecurityCheck extends AbstractSecurityCheck
 	}
 
 	/**
-	 * Constructs a ComponentSecurityCheck that optionally checks the model. Note that the
-	 * check still needs to be manually added to the component.
-	 * @param component the target component for this security check.
-	 * @param checkSecureModelIfExists forces the model to be checked after this check is fired
+	 * Constructs a ComponentSecurityCheck that optionally checks the model.
+	 * Note that the check still needs to be manually added to the component.
+	 * 
+	 * @param component
+	 *            the target component for this security check.
+	 * @param checkSecureModelIfExists
+	 *            forces the model to be checked after this check is fired
 	 * @see ISecureComponent#setSecurityCheck(ISecurityCheck)
 	 * @see SecureComponentHelper#setSecurityCheck(Component, ISecurityCheck)
 	 */
@@ -59,14 +82,16 @@ public class ComponentSecurityCheck extends AbstractSecurityCheck
 	}
 
 	/**
-	 * Checks if the user is authenticated for this component. if the model is also checked
-	 * both the model and the component need to be authenticated before we return true.
+	 * Checks if the user is authenticated for this component. if the model is
+	 * also checked both the model and the component need to be authenticated
+	 * before we return true.
+	 * 
 	 * @see ISecurityCheck#isAuthenticated()
 	 * @see WaspAuthorizationStrategy#isComponentAuthenticated(Component)
 	 */
 	public boolean isAuthenticated()
 	{
-		boolean result= getStrategy().isComponentAuthenticated(getComponent());
+		boolean result = getStrategy().isComponentAuthenticated(getComponent());
 		if (result && checkSecureModel() && SecureComponentHelper.hasSecureModel(getComponent()))
 			return ((ISecureModel)getComponent().getModel()).isAuthenticated(getComponent());
 		return result;
@@ -74,6 +99,7 @@ public class ComponentSecurityCheck extends AbstractSecurityCheck
 
 	/**
 	 * Returns the target component for this securitycheck.
+	 * 
 	 * @return the component
 	 */
 	protected final Component getComponent()
@@ -82,13 +108,17 @@ public class ComponentSecurityCheck extends AbstractSecurityCheck
 	}
 
 	/**
-	 * Checks if the user is authorized for this component. if the model is also checked
-	 * both the model and the component need to be authorized before we return true.
-	 * @return true if the component (and optionally the model) are authorized, false
-	 *         otherwise.
+	 * Checks if the user is authorized for this component. if the model is also
+	 * checked both the model and the component need to be authorized before we
+	 * return true.
+	 * 
+	 * @return true if the component (and optionally the model) are authorized,
+	 *         false otherwise.
 	 * @see wicket.jaas.checks.ISecurityCheck#isActionAuthorized(AbstractWaspAction)
-	 * @see WaspAuthorizationStrategy#isComponentAuthorized(Component, AbstractWaspAction)
-	 * @see WaspAuthorizationStrategy#isModelAuthorized(ISecureModel, Component, AbstractWaspAction)
+	 * @see WaspAuthorizationStrategy#isComponentAuthorized(Component,
+	 *      AbstractWaspAction)
+	 * @see WaspAuthorizationStrategy#isModelAuthorized(ISecureModel, Component,
+	 *      AbstractWaspAction)
 	 */
 	public boolean isActionAuthorized(WaspAction action)
 	{
@@ -99,8 +129,9 @@ public class ComponentSecurityCheck extends AbstractSecurityCheck
 	}
 
 	/**
-	 * Flags if we need to check the {@link ISecureModel} of a component if it exists at
-	 * all.
+	 * Flags if we need to check the {@link ISecureModel} of a component if it
+	 * exists at all.
+	 * 
 	 * @return true if we must check the model, false otherwise.
 	 */
 	protected final boolean checkSecureModel()

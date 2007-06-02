@@ -1,19 +1,18 @@
 /*
- * $Id: UsernamePasswordSignInPanel.java,v 1.3 2007/03/05 12:40:32 dashorst Exp $
- * $Revision: 1.3 $ $Date: 2007/03/05 12:40:32 $
- * 
- * ==============================================================================
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
- * 
- * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.wicket.security.pages.login;
 
@@ -50,7 +49,7 @@ import org.slf4j.LoggerFactory;
 /**
  * 
  * @author marrink
- *
+ * 
  */
 public class UsernamePasswordSignInPanel extends Panel
 {
@@ -59,6 +58,7 @@ public class UsernamePasswordSignInPanel extends Panel
 	 */
 	private static final long serialVersionUID = 1L;
 	private static final Logger log = LoggerFactory.getLogger(UsernamePasswordSignInPanel.class);
+
 	/**
 	 * Constructor.
 	 */
@@ -79,18 +79,27 @@ public class UsernamePasswordSignInPanel extends Panel
 	 */
 	public boolean signIn(String username, String password)
 	{
-		Map authorized =new HashMap();
-		authorized.put(HomePage.class, getWaspApplication().getActionFactory().getAction("access render"));
-		authorized.put(PageB.class, getWaspApplication().getActionFactory().getAction("access render"));
+		Map authorized = new HashMap();
+		authorized.put(HomePage.class, getWaspApplication().getActionFactory().getAction(
+				"access render"));
+		authorized.put(PageB.class, getWaspApplication().getActionFactory().getAction(
+				"access render"));
 		authorized.put(PageC.class, getWaspApplication().getActionFactory().getAction("access"));
-		authorized.put(PageC2.class, getWaspApplication().getActionFactory().getAction("access render foo"));
-		authorized.put(PageD.class, getWaspApplication().getActionFactory().getAction("access render"));
-		//because this test uses the ISecureComponent class as base class for instantiation checks we need to grant all ISecureComponents access
-		authorized.put(SecurePageLink.class, getWaspApplication().getActionFactory().getAction("access"));
-		authorized.put(SecureTextField.class, getWaspApplication().getActionFactory().getAction("access"));
-		//grant models rights Page D
-		authorized.put("model:modelcheck", getWaspApplication().getActionFactory().getAction("access render"));
-		authorized.put("model:bothcheck", getWaspApplication().getActionFactory().getAction("access render"));
+		authorized.put(PageC2.class, getWaspApplication().getActionFactory().getAction(
+				"access render foo"));
+		authorized.put(PageD.class, getWaspApplication().getActionFactory().getAction(
+				"access render"));
+		// because this test uses the ISecureComponent class as base class for
+		// instantiation checks we need to grant all ISecureComponents access
+		authorized.put(SecurePageLink.class, getWaspApplication().getActionFactory().getAction(
+				"access"));
+		authorized.put(SecureTextField.class, getWaspApplication().getActionFactory().getAction(
+				"access"));
+		// grant models rights Page D
+		authorized.put("model:modelcheck", getWaspApplication().getActionFactory().getAction(
+				"access render"));
+		authorized.put("model:bothcheck", getWaspApplication().getActionFactory().getAction(
+				"access render"));
 		WaspSession session = getSecureSession();
 		try
 		{
@@ -99,14 +108,16 @@ public class UsernamePasswordSignInPanel extends Panel
 		}
 		catch (org.apache.wicket.security.strategies.LoginException e)
 		{
-			log.error(e.getMessage(),e);
+			log.error(e.getMessage(), e);
 		}
 		return false;
 	}
+
 	protected final WaspSession getSecureSession()
 	{
-		return(WaspSession)Session.get();
+		return (WaspSession)Session.get();
 	}
+
 	protected final WaspWebApplication getWaspApplication()
 	{
 		return (WaspWebApplication)Application.get();
@@ -125,7 +136,9 @@ public class UsernamePasswordSignInPanel extends Panel
 
 		/**
 		 * Constructor.
-		 * @param id id of the form component
+		 * 
+		 * @param id
+		 *            id of the form component
 		 */
 		public SignInForm(final String id)
 		{
@@ -153,7 +166,7 @@ public class UsernamePasswordSignInPanel extends Panel
 				getPage().removePersistedFormData(SignInForm.class, true);
 			}
 
-			ValueMap values = (ValueMap) getModelObject();
+			ValueMap values = (ValueMap)getModelObject();
 			String username = values.getString("username");
 			String password = values.getString("password");
 
@@ -174,7 +187,8 @@ public class UsernamePasswordSignInPanel extends Panel
 		}
 
 		/**
-		 * Geeft terug of de waarden van het formulier bewaard moeten worden of niet.
+		 * Geeft terug of de waarden van het formulier bewaard moeten worden of
+		 * niet.
 		 */
 		public boolean getRememberMe()
 		{
@@ -187,7 +201,7 @@ public class UsernamePasswordSignInPanel extends Panel
 		public void setRememberMe(boolean rememberMe)
 		{
 			this.rememberMe = rememberMe;
-			((FormComponent) get("username")).setPersistent(rememberMe);
+			((FormComponent)get("username")).setPersistent(rememberMe);
 		}
 	}
 }
