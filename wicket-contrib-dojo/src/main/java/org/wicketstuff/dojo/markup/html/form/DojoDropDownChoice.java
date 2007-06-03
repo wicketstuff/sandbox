@@ -69,7 +69,7 @@ public class DojoDropDownChoice extends DropDownChoice {
 	}
 
 	public DojoDropDownChoice(String id, IModel model, IModel choices) {
-		super(id, model, choices);
+		super(id, model, choices, new DojoChoiceRenderer());
 		add(new DojoDropDownChoiceHandler());
 	}
 
@@ -79,12 +79,12 @@ public class DojoDropDownChoice extends DropDownChoice {
 	}
 
 	public DojoDropDownChoice(String id, IModel model, List choices) {
-		super(id, model, choices);
+		super(id, model, choices, new DojoChoiceRenderer());
 		add(new DojoDropDownChoiceHandler());
 	}
 
 	public DojoDropDownChoice(String id, IModel choices) {
-		super(id, choices);
+		super(id, choices, new DojoChoiceRenderer());
 		add(new DojoDropDownChoiceHandler());
 	}
 
@@ -94,7 +94,7 @@ public class DojoDropDownChoice extends DropDownChoice {
 	}
 
 	public DojoDropDownChoice(String id, List choices) {
-		super(id, choices);
+		super(id, choices, new DojoChoiceRenderer());
 		add(new DojoDropDownChoiceHandler());
 	}
 
