@@ -256,9 +256,9 @@ public abstract class DatePicker extends Panel
 
 			b.append("\nvar defaultDate = new Date();");
 			b.append("\ndefaultDate.setFullYear(").append(calendar.get(Calendar.YEAR)).append(");");
-			b.append("\ndefaultDate.setMonth(").append(calendar.get(Calendar.MONTH)).append(");");
 			b.append("\ndefaultDate.setDate(").append(calendar.get(Calendar.DAY_OF_MONTH)).append(
-					");");
+			");");
+			b.append("\ndefaultDate.setMonth(").append(calendar.get(Calendar.MONTH)).append(");");
 			b.append("\ndefaultDate.setHours(").append(calendar.get(Calendar.HOUR_OF_DAY)).append(
 					");");
 			b.append("\ndefaultDate.setMinutes(").append(calendar.get(Calendar.MINUTE)).append(
