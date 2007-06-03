@@ -17,7 +17,7 @@
 package org.apache.wicket.security.checks;
 
 import org.apache.wicket.Component;
-import org.apache.wicket.Page;
+import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.security.actions.AbstractWaspAction;
 import org.apache.wicket.security.actions.WaspAction;
 import org.apache.wicket.security.components.ISecureComponent;
@@ -28,11 +28,12 @@ import org.apache.wicket.security.strategies.WaspAuthorizationStrategy;
 
 /**
  * Basic security check for components. Tries to authorize the component and
- * optionally its {@link ISecureModel} if it exists. Note that this check does
- * not automaticly authenticate the user on a request for authorization, since
- * this usually is already done by {@link Page}s at the instantiation check.
- * Both {@link ISecureModel} and this check need to authenticate / authorize the
- * user before an approval is given.
+ * optionally its {@link ISecureModel} if it exists. Note that this check always
+ * authenticates the user, this is only to make it easier to put a
+ * securecomponent on a non securepage and have it redirect to the login.
+ * Usually the secure page will have checked authentication already. Both
+ * {@link ISecureModel} and this check need to authenticate / authorize the user
+ * before an approval is given.
  * 
  * @author marrink
  */
@@ -122,6 +123,8 @@ public class ComponentSecurityCheck extends AbstractSecurityCheck
 	 */
 	public boolean isActionAuthorized(WaspAction action)
 	{
+		if (!isAuthenticated())
+			throw new RestartResponseAtInterceptPageException(getLoginPage());
 		boolean result = getStrategy().isComponentAuthorized(getComponent(), action);
 		if (result && checkSecureModel() && SecureComponentHelper.hasSecureModel(getComponent()))
 			return ((ISecureModel)getComponent().getModel()).isAuthorized(getComponent(), action);

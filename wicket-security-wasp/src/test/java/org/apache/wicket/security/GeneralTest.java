@@ -26,12 +26,15 @@ import junit.framework.TestCase;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.Page;
+import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.Session;
 import org.apache.wicket.authorization.Action;
 import org.apache.wicket.authorization.UnauthorizedActionException;
 import org.apache.wicket.authorization.UnauthorizedInstantiationException;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.protocol.http.WebRequestCycle;
+import org.apache.wicket.request.target.component.BookmarkablePageRequestTarget;
 import org.apache.wicket.security.actions.AbstractWaspAction;
 import org.apache.wicket.security.actions.ActionFactory;
 import org.apache.wicket.security.actions.RegistrationException;
@@ -44,6 +47,8 @@ import org.apache.wicket.security.components.SecureComponentHelper;
 import org.apache.wicket.security.components.markup.html.form.SecureTextField;
 import org.apache.wicket.security.components.markup.html.links.SecurePageLink;
 import org.apache.wicket.security.models.ISecureModel;
+import org.apache.wicket.security.pages.insecure.SecureComponentPage;
+import org.apache.wicket.security.pages.insecure.SecureLinkPage;
 import org.apache.wicket.security.pages.login.LoginPage;
 import org.apache.wicket.security.pages.secure.HomePage;
 import org.apache.wicket.security.pages.secure.PageA;
@@ -403,6 +408,52 @@ public class GeneralTest extends TestCase
 		mock.startPage(org.apache.wicket.security.pages.insecure.HomePage.class);
 		mock.assertRenderedPage(org.apache.wicket.security.pages.insecure.HomePage.class);
 	}
+	/**
+	 * Test accessability of an unprotected page with a secure component.
+	 */
+	public void testUnsecuredPage2()
+	{
+		//continueto originaldestination does not work if there is no url available, so we need to fake one here(testing only hack)
+		mock.setupRequestAndResponse();
+		WebRequestCycle cycle = mock.createRequestCycle();
+		String url1 = cycle.urlFor(new BookmarkablePageRequestTarget(SecureComponentPage.class,null)).toString();
+		mock.getServletRequest().setURL("/GeneralTest$1/GeneralTest$1/" +url1);
+		mock.processRequestCycle();
+		mock.assertRenderedPage(getLoginPage());
+		FormTester form = mock.newFormTester("signInPanel:signInForm");
+		form.setValue("username", "test");
+		form.setValue("password", "test");
+		form.submit();
+		mock.assertRenderedPage(SecureComponentPage.class);
+		mock.assertInvisible("secure"); //no render rights on the component
+	}
+	/**
+	 * Test accessability of an unprotected page with a secure link.
+	 */
+	public void testUnsecuredPage3()
+	{
+		//continueto originaldestination does not work if there is no url available, so we need to fake one here(testing only hack)
+		mock.setupRequestAndResponse();
+		WebRequestCycle cycle = mock.createRequestCycle();
+		String url1 = cycle.urlFor(new BookmarkablePageRequestTarget(SecureLinkPage.class,null)).toString();
+		mock.getServletRequest().setURL("/GeneralTest$1/GeneralTest$1/" +url1);
+		mock.processRequestCycle();
+		mock.assertRenderedPage(getLoginPage());
+		FormTester form = mock.newFormTester("signInPanel:signInForm");
+		form.setValue("username", "test");
+		form.setValue("password", "test");
+		form.submit();
+		mock.assertRenderedPage(SecureLinkPage.class);
+		//need to arrange enable rights for homepage
+		Map authorized = new HashMap();
+		authorized.put(getHomePage(), application.getActionFactory().getAction(
+				"access render enable"));
+		login(authorized);
+		mock.startPage(mock.getLastRenderedPage());
+		mock.assertVisible("secure");
+		mock.clickLink("secure", false);
+		mock.assertRenderedPage(getHomePage());
+	}
 
 	/**
 	 * Test visibility and clickability of a secure link.
@@ -634,6 +685,9 @@ public class GeneralTest extends TestCase
 			// see SecureComponentHelper.alias(Component)
 			SecureComponentHelper.isActionAuthorized(field, "whatever");
 			fail();
+		}
+		catch(RestartResponseAtInterceptPageException e)
+		{
 		}
 		catch (SecurityException e)
 		{
