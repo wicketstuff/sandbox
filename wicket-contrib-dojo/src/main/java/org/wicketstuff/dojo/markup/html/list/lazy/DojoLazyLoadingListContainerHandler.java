@@ -45,10 +45,10 @@ public class DojoLazyLoadingListContainerHandler extends AbstractRequireDojoBeha
 		DojoLazyLoadingRefreshingView child = ((DojoLazyLoadingRefreshingView)((DojoLazyLoadingListContainer)getComponent()).getChild());
 		child.setFirst(first);
 		child.setCount(count);
-		target.addComponent(child);
+		target.addComponent(getComponent());
 		
 		target.prependJavascript("dojo.widget.byId(\"" + getComponent().getMarkupId() + "\").contentTable.getElementsByTagName('tbody')[0].id='" + child.getMarkupId() + "'");
-		target.appendJavascript("dojo.widget.byId('" + getComponent().getMarkupId() + "').postUpdate()");
+		//target.appendJavascript("dojo.widget.byId('" + getComponent().getMarkupId() + "').postUpdate()");
 	}
 
 

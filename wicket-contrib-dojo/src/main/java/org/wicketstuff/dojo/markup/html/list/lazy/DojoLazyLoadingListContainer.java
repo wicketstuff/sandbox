@@ -57,6 +57,7 @@ public class DojoLazyLoadingListContainer extends  WebMarkupContainer
 		super.onComponentTag(tag);
 		tag.put(DojoIdConstants.DOJO_TYPE, DojoIdConstants.DOJO_TYPE_LAZYTABLE);
 		tag.put("maxKnewItem","" + max);
+		tag.put("first", ((DojoLazyLoadingRefreshingView)getChild()).getFirst());
 	}
 	
 	/**
@@ -99,10 +100,4 @@ public class DojoLazyLoadingListContainer extends  WebMarkupContainer
 			return component;
 		}
 	}
-	
-	
-
-
-
-	
 }
