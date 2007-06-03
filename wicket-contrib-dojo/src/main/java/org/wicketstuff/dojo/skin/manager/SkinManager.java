@@ -109,4 +109,12 @@ public class SkinManager {
 			}
 		}
 	}
+	
+	/**
+	 * return the current used skin
+	 * @return the current used skin
+	 */
+	public AbstractDojoSkin getSkin(){
+		return skin;
+	}
 }
