@@ -2,12 +2,18 @@
     <head>
         <title>WicketStuff-Dojo-Examples</title>
         <style>
-        	body {
+        	body{
 				color:#6F6F6F;
 				font-family:'Lucida Sans','Helvetica','Sans-serif','sans';
 				font-size:9pt;
 				line-height:1.8em;
 				background-color: #EFEFEF;
+			}
+			table {
+				color:#6F6F6F;
+				font-family:'Lucida Sans','Helvetica','Sans-serif','sans';
+				font-size:9pt;
+				line-height:1.8em;
 			}
 			.main {
 				background-color: white;
@@ -46,6 +52,25 @@
 	        	and functional. This includes graphical decorations, AJAX functionality and
 	        	other javascript enhancements.
 	        </p>
+        	<fieldset>
+        		<legend>Skin</legend>
+	        	<p>
+					You can select a skin on the following list. Some widgets have differents skins but not all. See Floating Pane sample to see the differents skin
+				</p>
+	        	<table width="100%">
+	        		<tr>
+	        			<td width="70%">
+				        	<form wicket:id="selectSkin">
+				        		Select a skin <select wicket:id="skins"/>
+				        		<input wicket:id="submit" type="submit" value="submit" name="chooseSkin"/>
+				        	</form>
+				        </td>
+				        <td>
+				        	Selected Skin : <b><span wicket:id="skinSelected"></span></b>
+				        </td>
+				    </tr>
+				</table>
+			</fieldset>
 	        <p>Click a link to view an example page.</p>
 	        <hr/>
 	        <table width="100%">

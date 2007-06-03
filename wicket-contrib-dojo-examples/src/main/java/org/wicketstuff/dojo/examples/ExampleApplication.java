@@ -5,19 +5,11 @@ import org.apache.wicket.Request;
 import org.apache.wicket.Response;
 import org.apache.wicket.Session;
 import org.apache.wicket.protocol.http.WebApplication;
-import org.wicketstuff.dojo.skin.manager.SkinManager;
-import org.wicketstuff.dojo.skin.windows.WindowsDojoSkin;
 
 /**
  * Runs the ExampleApplication when invoked from command line.
  */
 public class ExampleApplication extends WebApplication {
-	/**
-	 * Constructor
-	 */
-	public ExampleApplication() {
-		SkinManager.getInstance().setupSkin(new WindowsDojoSkin());
-	}
 
 	/**
 	 * @see wicket.Application#getHomePage()
