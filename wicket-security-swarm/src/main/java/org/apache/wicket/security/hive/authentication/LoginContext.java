@@ -25,21 +25,24 @@ import org.apache.wicket.security.strategies.WaspAuthorizationStrategy;
 import org.apache.wicket.security.swarm.strategies.SwarmStrategy;
 
 /**
- * A LoginContext has al the information to log someone in and check which Components,
- * classes or models are authenticated by this subject. Because a {@link SwarmStrategy}
- * allows multiple logins a level is required. where-in the higher levels get queried
- * first by the {@link LoginContainer}. Note that a logincontext does not need a
- * logincontainer to function, you are welcome to subclass SwarmStrategy to use a single
- * logincontext for authentication if you really want to :).
+ * A LoginContext has al the information to log someone in and check which
+ * Components, classes or models are authenticated by this subject. Because a
+ * {@link SwarmStrategy} allows multiple logins a level is required. where-in
+ * the higher levels get queried first by the {@link LoginContainer}. Note that
+ * a logincontext does not need a logincontainer to function, you are welcome to
+ * subclass SwarmStrategy to use a single logincontext for authentication if you
+ * really want to :).
+ * 
  * @author marrink
+ * @see #preventsAdditionalLogins()
  */
 public abstract class LoginContext implements Comparable, Serializable
 {
 	private int level;
 
 	/**
-	 * Constructs a new context at the specified level.
-	 * levels go from 0 upward.
+	 * Constructs a new context at the specified level. levels go from 0 upward.
+	 * 
 	 * @param level
 	 */
 	public LoginContext(int level)
@@ -50,36 +53,45 @@ public abstract class LoginContext implements Comparable, Serializable
 	}
 
 	/**
-	 * Perform a login. If the login fails in any way a {@link LoginException} must be
-	 * thrown rather then returning null.
+	 * Perform a login. If the login fails in any way a {@link LoginException}
+	 * must be thrown rather then returning null.
+	 * 
 	 * @return a {@link Subject}, never null.
 	 */
 	public abstract Subject login() throws LoginException;
-	
+
 	/**
 	 * Performs the authentication check on a class.
+	 * 
 	 * @param class1
 	 * @return true if the class is authenticated, false otherwise.
 	 * @see WaspAuthorizationStrategy#isClassAuthenticated(Class)
 	 */
 	public abstract boolean isClassAuthenticated(Class class1);
+
 	/**
 	 * Performs the authentication check on a component.
+	 * 
 	 * @param component
 	 * @return true if the component is authenticated, false otherwise
 	 * @see WaspAuthorizationStrategy#isComponentAuthenticated(Component)
 	 */
 	public abstract boolean isComponentAuthenticated(Component component);
+
 	/**
 	 * Performs the authentication check on a model.
+	 * 
 	 * @param model
 	 * @param component
 	 * @return true if the model is authenticated, false otherwise
 	 * @see WaspAuthorizationStrategy#isModelAuthenticated(IModel, Component)
 	 */
 	public abstract boolean isModelAuthenticated(IModel model, Component component);
+
 	/**
-	 * Indicates the level of this context. the higher the level the more you are authorised / authenticated for.
+	 * Indicates the level of this context. the higher the level the more you
+	 * are authorised / authenticated for.
+	 * 
 	 * @return the level
 	 */
 	protected final int getLevel()
@@ -89,17 +101,18 @@ public abstract class LoginContext implements Comparable, Serializable
 
 	/**
 	 * Compares contexts by level.
+	 * 
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
 	public int compareTo(Object arg0)
 	{
 		if (arg0 instanceof LoginContext)
 		{
-			LoginContext lc0 = (LoginContext) arg0;
+			LoginContext lc0 = (LoginContext)arg0;
 			return getLevel() - lc0.getLevel();
 		}
-		throw new IllegalArgumentException("Can only compare with "
-				+ LoginContext.class + " not with " + arg0);
+		throw new IllegalArgumentException("Can only compare with " + LoginContext.class
+				+ " not with " + arg0);
 	}
 
 	/**
@@ -115,8 +128,9 @@ public abstract class LoginContext implements Comparable, Serializable
 	}
 
 	/**
-	 * A loginContext is equal to a LoginContext of the same class (not subclass) and
-	 * level.
+	 * A loginContext is equal to a LoginContext of the same class (not
+	 * subclass) and level.
+	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	public boolean equals(Object obj)
@@ -127,8 +141,20 @@ public abstract class LoginContext implements Comparable, Serializable
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		final LoginContext other = (LoginContext) obj;
+		final LoginContext other = (LoginContext)obj;
 		return level == other.level;
 	}
 
+	/**
+	 * Signals to the {@link LoginContainer} that no additional context should
+	 * be allowed to login. This flag is checked once by the container
+	 * inmediatly after {@link #login()}. Note in a multi login environment you
+	 * will want your logincontext with the highest level to prevent additional
+	 * logins. In a single login environment your logincontext should always
+	 * prevent additional logins (as {@link SingleLoginContext} does.
+	 * 
+	 * @return true if you do not want additional logins for this session, false
+	 *         otherwise.
+	 */
+	public abstract boolean preventsAdditionalLogins();
 }

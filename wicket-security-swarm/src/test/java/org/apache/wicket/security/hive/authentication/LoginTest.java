@@ -53,7 +53,7 @@ public class LoginTest extends TestCase
 		catch (LoginException e)
 		{
 		}
-		LoginContext ctx = new SingleLoginContext()
+		LoginContext ctx = new SingleLoginContext(true)
 		{
 
 			/**
@@ -107,6 +107,13 @@ public class LoginTest extends TestCase
 			public Subject login() throws LoginException
 			{
 				return new DefaultSubject();
+			}
+			/**
+			 * @see org.apache.wicket.security.hive.authentication.LoginContext#preventsAdditionalLogins()
+			 */
+			public boolean preventsAdditionalLogins()
+			{
+				return true;
 			}
 		};
 		try
@@ -181,5 +188,50 @@ public class LoginTest extends TestCase
 			log.error(e.getMessage(), e);
 			fail(e.getMessage());
 		}
+	}
+	/**
+	 * tests if the preventadditionallogin flag works as expected
+	 *
+	 */
+	public void testPreventLogin()
+	{
+		LoginContainer container = new LoginContainer();
+		try
+		{
+			container.login(new myContext());
+		}
+		catch (LoginException e)
+		{
+			log.error(e.getMessage(), e);
+			fail(e.getMessage());
+		}
+		try
+		{
+			container.login(new myContext());
+			fail("Should not be able to login");
+		}
+		catch (LoginException e)
+		{
+		}
+		container.logoff(new myContext());
+		try
+		{
+			container.login(new myContext());
+		}
+		catch (LoginException e)
+		{
+			log.error(e.getMessage(), e);
+			fail(e.getMessage());
+		}
+	}
+	private static final class myContext extends SingleLoginContext
+	{
+		private static final long serialVersionUID = 1L;
+
+		public Subject login() throws LoginException
+		{
+			return new DefaultSubject();
+		}
+		
 	}
 }

@@ -60,4 +60,11 @@ public final class SecondaryLoginContext extends LoginContext
 		defaultSubject.addPrincipal(new TestPrincipal("admin"));
 		return defaultSubject;
 	}
+	/**
+	 * @see org.apache.wicket.security.hive.authentication.LoginContext#preventsAdditionalLogins()
+	 */
+	public boolean preventsAdditionalLogins()
+	{
+		return true;
+	}
 }
