@@ -20,23 +20,36 @@ import org.apache.wicket.Component;
 import org.apache.wicket.model.IModel;
 
 /**
- * LoginContext for Applications with a signle login. This context always operates at
- * level 0 and authenticates every class, component or model. Eventhough there is nothing
- * stopping you from login in multiple times with additional (other) contexts, there realy
- * is no point because the application will always think the user is already sufficient
- * authenticated.
+ * LoginContext for Applications with a signle login. This context always
+ * operates at level 0 and authenticates every class, component or model. By
+ * default this context prevents additional logins.
+ * 
  * @author marrink
  */
 public abstract class SingleLoginContext extends LoginContext
 {
+	private boolean additionalLoginsPrevented = true;
 
 	/**
-	 * Constructs a new login context, designed to be used as the only context for this
-	 * session, at level 0.
+	 * Constructs a new login context, designed to be used as the only context
+	 * for this session, at level 0.
 	 */
 	public SingleLoginContext()
 	{
 		super(0);
+	}
+
+	/**
+	 * Constructor that will allow additional logins. Note that there realy is
+	 * no good reason to want this other then for testing purposes.
+	 * 
+	 * @param allowAdditionalLogins
+	 *            flag if additional logins are allowed (to grant more rights)
+	 */
+	protected SingleLoginContext(boolean allowAdditionalLogins)
+	{
+		super(0);
+		additionalLoginsPrevented = !allowAdditionalLogins;
 	}
 
 	/**
@@ -63,4 +76,13 @@ public abstract class SingleLoginContext extends LoginContext
 	{
 		return true;
 	}
+
+	/**
+	 * @see org.apache.wicket.security.hive.authentication.LoginContext#preventsAdditionalLogins()
+	 */
+	public boolean preventsAdditionalLogins()
+	{
+		return additionalLoginsPrevented;
+	}
+
 }

@@ -43,6 +43,8 @@ public final class LoginContainer
 	private Map subjects = new HashMap();
 
 	private Subject subject = null;
+	
+	private LoginContext preventsLogin=null;
 
 	/**
 	 * Attempts to login through the context, if successfull the subject and all its
@@ -53,6 +55,8 @@ public final class LoginContainer
 	 */
 	public void login(LoginContext context) throws LoginException
 	{
+		if(preventsLogin!=null)
+			throw new LoginException("Additional Logins are not allowed");
 		if (context == null)
 			throw new LoginException("Context is required to login.");
 		if (subjects.containsKey(context))
@@ -61,6 +65,8 @@ public final class LoginContainer
 		Subject subject = context.login();
 		if (subject == null)
 			throw new LoginException("Login failed ").setLoginContext(context);
+		if(context.preventsAdditionalLogins())
+			preventsLogin=context;
 		subjects.put(context, subject);
 		logins.add(context);
 		Collections.sort(logins);
@@ -77,6 +83,8 @@ public final class LoginContainer
 	{
 		if (subjects.remove(context) != null)
 		{
+			if(preventsLogin!=null && preventsLogin.equals(context))
+				preventsLogin=null;
 			logins.remove(context);
 			if (logins.isEmpty())
 				subject = null;
