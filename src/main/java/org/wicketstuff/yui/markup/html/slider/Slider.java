@@ -67,42 +67,68 @@ public class Slider extends Panel implements IHeaderContributor {
 	 */
 	private String javaScriptId;
 
+	/**
+	 * the form Element that holds the value for the slider, ususally a Textfield
+	 * or a Hidden Field.
+	 */
+	private FormComponent element;
+	
+	/**
+	 * default divisor to divide the slider value by so that you can get a nicer range
+	 * of numbers and not limited by the pixel size
+	 */
+	private float divisor;
+
+	/**
+	 * logger
+	 */
 	private static final Logger log = LoggerFactory.getLogger(Slider.class);
 
 	/**
-	 * Construct.
-	 * 
+	 * Construct
 	 * @param id
-	 *            the component id
 	 * @param model
-	 *            the model for this component
+	 * @param element
+	 * @param settings
 	 */
 	public Slider(String id, IModel model, final FormComponent element,
 			final SliderSettings settings) {
+		this(id, model, element, settings, 1);
+	}
+
+	/**
+	 * 
+	 * @param id
+	 * @param model
+	 * @param element
+	 * @param settings
+	 * @param divisor
+	 * 			Use this float to divide out the pixel value to give a nicer value
+	 * 			e.g. the total size in pixel specified in the SliderSettings is 300 pixels (from -150 to 150)
+	 * 			and you want the values of the slider to be -15 to 15 then the divisor will be 10.
+	 * 			the default divisor is 1 so that the orignal value is retained
+	 */
+	public Slider(String id, IModel model, final FormComponent element,
+			final SliderSettings settings, float divisor) {
 		super(id, model);
 
 		add(YuiHeaderContributor.forModule("slider"));
 		add(HeaderContributor.forCss(getCSS()));
 
+		this.divisor = divisor;
+		
 		/*
 		 * default settings if null
 		 */
-
 		if (settings == null) {
 			// error
 		}
 
 		/* handle form element */
-		if (element != null) {
-			element.add(new AttributeModifier("id", true,
-					new AbstractReadOnlyModel() {
-						private static final long serialVersionUID = 1L;
-
-						@Override
-						public Object getObject() {
-							return element.getId();
-						}
-					}));
+		if (element != null)
+		{
+			element.setOutputMarkupId(true);
+			this.element = element;
 		}
 
 		IModel variablesModel = new AbstractReadOnlyModel() {
@@ -117,14 +143,16 @@ public class Slider extends Panel implements IHeaderContributor {
 			@Override
 			public Object getObject() {
 				if (variables == null) {
-					this.variables = new HashMap<String, Object>(7);
+					this.variables = new HashMap<String, Object>(8);
 					variables.put("javaScriptId", javaScriptId);
 					variables.put("backGroundElementId", backgroundElementId);
 					variables.put("imageElementId", imageElementId);
 					variables.put("leftUp", settings.getLeftUp());
 					variables.put("rightDown", settings.getRightDown());
 					variables.put("tick", settings.getTick());
-					variables.put("formElementId", element.getId());
+					variables.put("formElementId", element.getMarkupId());
+					variables.put("startValue", element.getModelObject());
+					variables.put("divisor", getDivisor());
 				}
 				return variables;
 			}
@@ -268,7 +296,7 @@ public class Slider extends Panel implements IHeaderContributor {
 	 * @see org.apache.wicket.markup.html.IHeaderContributor#renderHead(org.apache.wicket.markup.html.IHeaderResponse)
 	 */
 	public void renderHead(IHeaderResponse response) {
-		response.renderOnLoadJavascript("init" + javaScriptId + "();");
+		response.renderOnLoadJavascript("init" + javaScriptId + "(" + this.element.getModelObject() + ");");
 	}
 
 	/**
@@ -278,13 +306,14 @@ public class Slider extends Panel implements IHeaderContributor {
 		log.info("updateModel");
 	}
 
-	/**
-	 * @see wicket.Component#onAttach()
+	/*
+	 * (non-Javadoc)
+	 * @see org.apache.wicket.Component#onAttach()
 	 */
 	@Override
 	protected void onAttach() {
 		super.onAttach();
-
+		
 		// initialize lazily
 		if (backgroundElementId == null) {
 			// assign the markup id
@@ -295,8 +324,20 @@ public class Slider extends Panel implements IHeaderContributor {
 		}
 	}
 
+	
+	public float getDivisor()
+	{
+		return divisor;
+	}
+
+	public void setDivisor(float divisor)
+	{
+		this.divisor = divisor;
+	}
+
     protected ResourceReference getCSS()
     {
         return CSS;
     }
+
 }
