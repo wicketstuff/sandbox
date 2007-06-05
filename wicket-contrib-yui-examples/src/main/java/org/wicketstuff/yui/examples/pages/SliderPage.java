@@ -29,6 +29,7 @@ import org.apache.wicket.model.PropertyModel;
  * Page that displays the calendar component of the Yahoo UI library.
  * 
  * @author Eelco Hillenius
+ * @author Josh
  */
 public class SliderPage extends WicketExamplePage
 {
@@ -43,29 +44,48 @@ public class SliderPage extends WicketExamplePage
     
     private class SliderForm extends Form {
         
-        private Integer wicketScore = new Integer(0);
-        private Integer strutsScore = new Integer(0);
+        private Integer wicketScore 	= new Integer(0);
+        private Integer strutsScore 	= new Integer(0);
+        private Integer tapestryScore 	= new Integer(0);
+        private Integer jsfScore 		= new Integer(0);
+        
         private TextField tfWicket;
         private TextField tfStruts;
+        private TextField tfTapestry;
+        private TextField tfJSF;
         
         public SliderForm(String id) {
             super(id);
             
-            int leftUp 	  = 100;
-            int rightDown = 100;
+            int leftUp 	  = 150;
+            int rightDown = 150;
             int tick 	  = 1;
+            float divisor = 10f;
+            
+            /*
+             * leftup and rightup are in pixel sizes so that we can make sure the HTML will fit the overall size
+             * of the slider. Through "width" settings on html or css 
+             * 
+             */
             
             add(tfWicket = new TextField("wicketScore", new PropertyModel(this, "wicketScore")));
-            add(new Slider("wicketSlider", new PropertyModel(this, "selection"),  tfWicket, SliderSettings.getDefault(leftUp, rightDown, tick)));
+            add(new Slider("wicketSlider", new PropertyModel(this, "selection"),  tfWicket, SliderSettings.getDefault(leftUp, rightDown, tick), divisor));
 
             add(tfStruts = new TextField("strutsScore", new PropertyModel(this, "strutsScore")));
-            add(new Slider("strutsSlider", new PropertyModel(this, "selection"), tfStruts, SliderSettings.getAqua(0, 300, 30)));
+            add(new Slider("strutsSlider", new PropertyModel(this, "selection"), tfStruts, SliderSettings.getDefault(leftUp, rightDown, tick), 30));
             
+            add(tfTapestry = new TextField("tapestryScore", new PropertyModel(this, "tapestryScore")));
+            add(new Slider("tapestrySlider", new PropertyModel(this, "selection"),  tfTapestry, SliderSettings.getAqua(leftUp, rightDown, tick), 30));
+
+            add(tfJSF= new TextField("jsfScore", new PropertyModel(this, "jsfScore")));
+            add(new Slider("jsfSlider", new PropertyModel(this, "selection"), tfJSF, SliderSettings.getAqua(leftUp, rightDown, tick), 30));
         }
         
         protected void onSubmit() {
-            info("Wicket: " + this.wicketScore.toString());
-            info("Struts: " + this.strutsScore.toString());
+            info("Wicket: " 	+ this.wicketScore.toString());
+            info("Struts: " 	+ this.strutsScore.toString());
+            info("Tapestry: " 	+ this.tapestryScore.toString());
+            info("JSF: " 		+ this.jsfScore.toString());
         }
         
         public Integer getStrutsScore() {
@@ -83,6 +103,66 @@ public class SliderPage extends WicketExamplePage
         public void setWicketScore(Integer wicketScore) {
             this.wicketScore = wicketScore;
         }
+
+		public Integer getJsfScore()
+		{
+			return jsfScore;
+		}
+
+		public void setJsfScore(Integer jsfScore)
+		{
+			this.jsfScore = jsfScore;
+		}
+
+		public Integer getTapestryScore()
+		{
+			return tapestryScore;
+		}
+
+		public void setTapestryScore(Integer tapestryScore)
+		{
+			this.tapestryScore = tapestryScore;
+		}
+
+		public TextField getTfJSF()
+		{
+			return tfJSF;
+		}
+
+		public void setTfJSF(TextField tfJSF)
+		{
+			this.tfJSF = tfJSF;
+		}
+
+		public TextField getTfStruts()
+		{
+			return tfStruts;
+		}
+
+		public void setTfStruts(TextField tfStruts)
+		{
+			this.tfStruts = tfStruts;
+		}
+
+		public TextField getTfTapestry()
+		{
+			return tfTapestry;
+		}
+
+		public void setTfTapestry(TextField tfTapestry)
+		{
+			this.tfTapestry = tfTapestry;
+		}
+
+		public TextField getTfWicket()
+		{
+			return tfWicket;
+		}
+
+		public void setTfWicket(TextField tfWicket)
+		{
+			this.tfWicket = tfWicket;
+		}
     }
 
 }
