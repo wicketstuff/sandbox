@@ -41,6 +41,7 @@ public class AjaxEditInPlaceLabel extends AbstractTextComponent
 		super(wicketId);
 		setModel(model);
 		setOutputMarkupId(true);
+        setEscapeModelStrings(false);
 
 		add(callbackBehavior);
 		add(onCompleteBehavior);
