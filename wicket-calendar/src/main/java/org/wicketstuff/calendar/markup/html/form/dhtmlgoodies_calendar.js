@@ -1521,7 +1521,7 @@ function displayCalendar(inputField,format,buttonObj,displayTime,timeInput)
 		
 		if(!format.match(/^[0-9]*?$/gi)){
 // WICKET CHANGED
-			var items = inputField.value.replace(/\s/,"").split(/[^0-9]/gi);
+			var items = inputField.value.split(/[^0-9]/gi);
 // DONE WICKET CHANGED			
 			var positionArray = new Array();
 			positionArray['m'] = format.indexOf('mm');
