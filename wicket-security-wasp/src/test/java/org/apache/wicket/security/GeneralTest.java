@@ -481,6 +481,15 @@ public class GeneralTest extends TestCase
 		TagTester tag = mock.getTagByWicketId("link");
 		assertNull(tag.getAttribute("href"));
 		assertNull(tag.getAttribute("onclick"));
+		authorized.clear();
+		authorized.put(PageA.class, application.getActionFactory().getAction(
+		"access render enable"));
+		login(authorized);
+		mock.startPage(mock.getLastRenderedPage());
+		tag = mock.getTagByWicketId("link");
+		assertNotNull(tag.getAttribute("href"));
+		logoff(authorized);
+		authorized.clear();
 
 		linkcheck.setUseAlternativeRenderCheck(false);
 		authorized.put(PageA.class, application.getActionFactory().getAction("render"));
