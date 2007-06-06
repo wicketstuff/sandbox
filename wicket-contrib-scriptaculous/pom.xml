@@ -137,6 +137,18 @@
 				<filtering>false</filtering>
 			</testResource>
 		</testResources>
+
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <configuration>
+            <excludes>
+              <exclude>**/*Panel*</exclude>
+            </excludes>
+          </configuration>
+        </plugin>
+      </plugins>
 	</build>
 	<reports>
 		<report>maven-license-plugin</report>
