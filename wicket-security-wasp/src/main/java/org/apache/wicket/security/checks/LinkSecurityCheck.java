@@ -19,6 +19,7 @@ package org.apache.wicket.security.checks;
 import org.apache.wicket.Page;
 import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.security.actions.Enable;
 import org.apache.wicket.security.actions.Render;
 import org.apache.wicket.security.actions.WaspAction;
 import org.apache.wicket.security.components.SecureComponentHelper;
@@ -105,7 +106,7 @@ public class LinkSecurityCheck extends ComponentSecurityCheck
 	public boolean isActionAuthorized(WaspAction action)
 	{
 		if (isUseAlternativeRenderCheck()
-				&& action.implies(getActionFactory().getAction(Render.class)))
+				&& !action.implies(getActionFactory().getAction(Enable.class)))
 			return super.isActionAuthorized(action);
 		//no authentication like in super since the regular instantiation checks will handle authentication
 		boolean result = getStrategy().isClassAuthorized(getClickTarget(), action);
