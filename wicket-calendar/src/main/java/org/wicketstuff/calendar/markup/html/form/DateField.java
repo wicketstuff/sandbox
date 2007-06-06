@@ -76,22 +76,31 @@ public class DateField extends FormComponentPanel {
 	 */
 	public void setDate(Date date) {
 		this.date = (date != null) ? new MutableDateTime(date) : null;
+		setModelObject(date);
 	}
 
 	/**
-	 * @see org.apache.wicket.markup.html.form.FormComponent#updateModel()
+	 * Gets the converted input. In this case, we're really just interested in
+	 * the nested date field, as that is the element that receives the real user
+	 * input. So we're just passing that on.
+	 * <p>
+	 * Note that overriding this method is a better option than overriding
+	 * {@link #updateModel()} like the first versions of this class did. The
+	 * reason for that is that this method can be used by form validators
+	 * without having to depend on the actual model being updated, and this
+	 * method is called by the default implementation of {@link #updateModel()}
+	 * anyway (so we don't have to override that anymore).
+	 * </p>
+	 * 
+	 * @return instance of {@link Date}, possibly null
+	 * 
+	 * @see org.apache.wicket.markup.html.form.FormComponent#getConvertedInput()
 	 */
-	public void updateModel() {
-
-		dateField.updateModel();
-
-		if (date != null) {
-			Date d = date.toDate();
-			setModelObject(d);
-		} else {
-			setModelObject(null);
-		}
+	public Object getConvertedInput()
+	{
+		return dateField.getConvertedInput();
 	}
+
 
 	/**
 	 * Initialize.
