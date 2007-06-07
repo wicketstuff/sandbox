@@ -61,9 +61,14 @@ public class ImageProvider implements IDataProvider {
 		return new Model((Serializable) object);
 	}
 
-	public String getImagePath(File imageFile) {
+	/**
+	 * Returns the path to the image relative to image directory root
+	 * @param imageFile
+	 * @return
+	 */
+	public String getImageRelativePath(File imageFile) {
 		try {
-			return imagePath + ImageUtils.getRelativePath(settings, imageFile);
+			return imageFile.getCanonicalPath().substring((int) settings.getImageDirectoryRoot().getCanonicalPath().length() + 1);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
