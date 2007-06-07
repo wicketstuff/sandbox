@@ -1,13 +1,11 @@
 package org.wicketstuff.scriptaculous.inplaceeditor;
 
-import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.model.Model;
 
-public class TestPanel extends Panel {
+public class TestPage extends WebPage {
 
-	public TestPanel(String id) {
-		super(id);
-		
+	public TestPage() {
 		add(new AjaxEditInPlaceLabel("label", new Model("me & you")));
 	}
 }
