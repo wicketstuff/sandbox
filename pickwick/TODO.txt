@@ -1,0 +1,20 @@
+NEW FEATURES
+
+* Metadata editor
+* Add rotation features to ImageConverter interface
+* Take code from ThumbnailImageResource to implement Java2DConverter
+
+
+TASKS
+
+* Styling of image page
+
+
+FIXES
+
+* don't write images in webapp, use temporary path
+
+
+LONG TERM
+
+* wilcard page mount => /sequence/**/*.JPG == ImagePage.class
