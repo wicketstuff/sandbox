@@ -1,6 +1,5 @@
 package org.wicketstuff.pickwick;
 
-import java.io.File;
 import java.io.IOException;
 
 import org.apache.wicket.AttributeModifier;
@@ -13,13 +12,16 @@ import org.apache.wicket.markup.repeater.data.GridView;
 import org.apache.wicket.model.Model;
 
 public class SequencePage extends WebPage {
-	public SequencePage() {
+	public SequencePage(PageParameters parameters) {
 		final Settings settings = TestApplication.get().getSettings();
 		final ImageProvider imageProvider = new ImageProvider(settings);
 		// FIXME handle includes and excludes
 		imageProvider.setPattern("*.JPG");
-		// FIXME get request URI
-		imageProvider.setImagePath("");
+		String uri = parameters.getString("uri");
+		if (uri == null){
+			uri = "";
+		}
+		imageProvider.setImagePath("/" + uri);
 		GridView grid;
 		add(grid = new GridView("rows", imageProvider) {
 			@Override
@@ -36,7 +38,7 @@ public class SequencePage extends WebPage {
 					if (!imageProperties.file.getCanonicalPath().startsWith(settings.getImageDirectoryRoot().getCanonicalPath()))
 						throw new RuntimeException("Requested image directory not within the root image directory");
 					WebMarkupContainer link;
-					String imagePath = imageProvider.getImagePath(imageProperties.file);
+					String imagePath = imageProvider.getImageRelativePath(imageProperties.file);
 					PageParameters params = new PageParameters();
 					params.add("uri", imagePath);
 					item.add(link = new WebMarkupContainer("link"));
