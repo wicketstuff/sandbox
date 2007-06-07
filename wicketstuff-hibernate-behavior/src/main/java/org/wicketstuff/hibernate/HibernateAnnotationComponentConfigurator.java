@@ -57,14 +57,14 @@ public class HibernateAnnotationComponentConfigurator {
 	}
 
 	private boolean isApplicableFor(Component component) {
+		if (!(component instanceof FormComponent)) {
+			return false;
+		}
 		IModel model = component.getModel();
 		if (null == model) {
 			return false;
 		}
 		if (!(model instanceof PropertyModel)) {
-			return false;
-		}
-		if (!(component instanceof FormComponent)) {
 			return false;
 		}
 
