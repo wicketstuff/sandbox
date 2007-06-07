@@ -1,8 +1,9 @@
 package org.wicketstuff.pickwick;
 
 import java.io.File;
+import java.io.Serializable;
 
-public class Settings {
+public class Settings implements Serializable{
 	File imageDirectoryRoot;
 
 	File baseURL;

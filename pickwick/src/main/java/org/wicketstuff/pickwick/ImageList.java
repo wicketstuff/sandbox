@@ -1,13 +1,14 @@
 package org.wicketstuff.pickwick;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import org.apache.wicket.application.WildcardMatcherHelper;
 
-public class ImageList {
+public class ImageList implements Serializable{
     private List imageList;
 
     public Object get(int index) {
