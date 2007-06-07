@@ -27,7 +27,6 @@ public class EditableComponent extends Label {
 		add(tinyMceBehavior);
 		add(new AjaxEventBehavior("onclick") {
 
-			@Override
 			protected void onEvent(AjaxRequestTarget target) {
 				String loadScript = tinyMceBehavior.getLoadEditorScript()
 						.toString();
