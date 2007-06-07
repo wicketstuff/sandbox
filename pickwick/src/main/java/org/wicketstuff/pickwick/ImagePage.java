@@ -12,7 +12,7 @@ public class ImagePage extends WebPage {
 		WebComponent image = new WebComponent("scaled");
 		// FIXME compute relative path instead of using absolute path
 		String contextPath = getApplication().getApplicationSettings().getContextPath();
-		image.add(new AttributeModifier("src", true, new Model(contextPath + "/" + TestApplication.SCALED_IMAGE_PATH + "/" + uri)));
+		image.add(new AttributeModifier("src", true, new Model(contextPath + "/" + PickWickApplication.SCALED_IMAGE_PATH + "/" + uri)));
 		add(image);
 	}
 }

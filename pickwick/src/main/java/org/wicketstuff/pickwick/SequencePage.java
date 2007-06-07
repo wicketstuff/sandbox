@@ -10,10 +10,12 @@ import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.GridView;
 import org.apache.wicket.model.Model;
+import org.wicketstuff.pickwick.bean.provider.ImageProvider;
+import org.wicketstuff.pickwick.frontend.panel.FolderTreePanel;
 
 public class SequencePage extends WebPage {
 	public SequencePage(PageParameters parameters) {
-		final Settings settings = TestApplication.get().getSettings();
+		final Settings settings = PickWickApplication.get().getSettings();
 		final ImageProvider imageProvider = new ImageProvider(settings);
 		// FIXME handle includes and excludes
 		imageProvider.setPattern("*.JPG");
@@ -46,16 +48,18 @@ public class SequencePage extends WebPage {
 					// path
 					String contextPath = getApplication().getApplicationSettings().getContextPath();
 					link.add(new AttributeModifier("href", true, new Model(contextPath + "/"
-							+ TestApplication.IMAGE_PAGE_PATH + "/" + imagePath)));
+							+ PickWickApplication.IMAGE_PAGE_PATH + "/" + imagePath)));
 					WebComponent image;
 					link.add(image = new WebComponent("thumbnail"));
 					image.add(new AttributeModifier("src", true, new Model(contextPath + "/"
-							+ TestApplication.THUMBNAIL_IMAGE_PATH + "/" + imagePath)));
+							+ PickWickApplication.THUMBNAIL_IMAGE_PATH + "/" + imagePath)));
 				} catch (IOException e) {
 					throw new RuntimeException(e);
 				}
 			}
 		});
 		grid.setColumns(5);
+		
+		add(new FolderTreePanel("treePanel"));
 	}
 }

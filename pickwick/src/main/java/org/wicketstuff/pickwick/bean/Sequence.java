@@ -1,4 +1,4 @@
-package org.wicketstuff.pickwick;
+package org.wicketstuff.pickwick.bean;
 
 public class Sequence {
 	private String title;

@@ -19,7 +19,7 @@ import org.apache.wicket.request.target.resource.ResourceStreamRequestTarget;
 import org.apache.wicket.util.resource.FileResourceStream;
 import org.apache.wicket.util.resource.IResourceStream;
 
-public class TestApplication extends WebApplication {
+public class PickWickApplication extends WebApplication {
 	public static final String SEQUENCE_PAGE_PATH = "sequence";
 
 	public static final String SCALED_IMAGE_PATH = "scaled";
@@ -28,7 +28,7 @@ public class TestApplication extends WebApplication {
 
 	public static final String IMAGE_PAGE_PATH = "image";
 
-	private static final Log log = LogFactory.getLog(TestApplication.class);
+	private static final Log log = LogFactory.getLog(PickWickApplication.class);
 
 	@Override
 	public Class getHomePage() {
@@ -120,7 +120,7 @@ public class TestApplication extends WebApplication {
 		settings.setImageDirectoryRoot(new File("src/main/webapp/images"));
 		return settings;
 	}
-	public static TestApplication get() {
-		return (TestApplication)Application.get();
+	public static PickWickApplication get() {
+		return (PickWickApplication)Application.get();
 	}
 }
