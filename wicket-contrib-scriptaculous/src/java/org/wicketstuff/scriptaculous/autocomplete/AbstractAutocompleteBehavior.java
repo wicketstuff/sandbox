@@ -8,8 +8,11 @@ import org.apache.wicket.RequestCycle;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.Response;
 import org.apache.wicket.behavior.HeaderContributor;
+import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.util.template.PackagedTextTemplate;
 import org.wicketstuff.scriptaculous.JavascriptBuilder;
+import org.wicketstuff.scriptaculous.OnLoadJavascriptTemplate;
 import org.wicketstuff.scriptaculous.ScriptaculousAjaxBehavior;
 
 /**
@@ -36,6 +39,12 @@ public abstract class AbstractAutocompleteBehavior extends ScriptaculousAjaxBeha
 		getComponent().setOutputMarkupId(true);
 		getComponent().add(new AttributeModifier("autocomplete", new Model("off")));
 		getComponent().add(HeaderContributor.forCss(getCss(), "screen"));
+	}
+
+	public void renderHead(IHeaderResponse response) {
+		super.renderHead(response);
+		
+		OnLoadJavascriptTemplate template = new OnLoadJavascriptTemplate(new PackagedTextTemplate(AbstractAutocompleteBehavior.class, "AbstractAutocompleteBehavior.js"));
 	}
 
 	/**

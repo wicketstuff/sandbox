@@ -8,7 +8,7 @@ public class AjaxEditInPlaceLabelTest extends TestCase {
 
 	public void testModelIsNotEscaped() {
 		WicketTester tester = new WicketTester();
-		tester.startPanel(TestPanel.class);
+		tester.startPage(TestPage.class);
 
 		tester.assertContains("me & you");
 	}
