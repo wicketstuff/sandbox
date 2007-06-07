@@ -1,4 +1,4 @@
-package org.wicketstuff.pickwick;
+package org.wicketstuff.pickwick.bean.provider;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,9 +10,12 @@ import java.util.List;
 import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.wicketstuff.pickwick.ImageList;
+import org.wicketstuff.pickwick.ImageProperties;
+import org.wicketstuff.pickwick.Settings;
 
 /**
- * An {@link IDataProvider} that provides images from a sequence
+ * An {@link IDataProvider} that provides images from a given sequence
  * 
  * @author jbq
  */

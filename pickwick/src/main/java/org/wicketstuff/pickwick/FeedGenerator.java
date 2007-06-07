@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.io.DirectoryWalker;
+import org.wicketstuff.pickwick.bean.Sequence;
 
 import com.sun.syndication.feed.synd.SyndContent;
 import com.sun.syndication.feed.synd.SyndEntry;
@@ -55,7 +56,7 @@ public class FeedGenerator {
 				entry.setTitle(sequence.getTitle());
 			}
 
-			entry.setLink(settings.getBaseURL() + TestApplication.SEQUENCE_PAGE_PATH + ImageUtils.getRelativePath(settings, dir));
+			entry.setLink(settings.getBaseURL() + PickWickApplication.SEQUENCE_PAGE_PATH + ImageUtils.getRelativePath(settings, dir));
 			entry.setLink(settings.getBaseURL() + "/" + ImageUtils.buildSequencePath(settings, dir));
 			// entry.setPublishedDate(DATE_PARSER.parse("2004-06-08"));
 

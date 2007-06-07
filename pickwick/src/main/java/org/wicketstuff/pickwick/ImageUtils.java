@@ -21,6 +21,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import org.apache.wicket.util.string.Strings;
+import org.wicketstuff.pickwick.bean.Sequence;
 
 /**
  * FIXME remove this class, we don't need it at all in fact
@@ -72,7 +73,7 @@ final public class ImageUtils {
 	}
 
 	public static String buildSequencePath(Settings settings, File dir) throws IOException {
-		return TestApplication.SEQUENCE_PAGE_PATH + "/"
+		return PickWickApplication.SEQUENCE_PAGE_PATH + "/"
 				+ ImageUtils.getRelativePath(settings, dir);
 	}
 }
