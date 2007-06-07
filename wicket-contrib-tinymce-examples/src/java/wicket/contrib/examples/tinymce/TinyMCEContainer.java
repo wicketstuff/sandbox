@@ -15,7 +15,6 @@ public class TinyMCEContainer extends Panel {
 
 		TextArea textArea = new TextArea("ta") {
 
-			@Override
 			public boolean isVisible() {
 				return enableTinymce;
 			}

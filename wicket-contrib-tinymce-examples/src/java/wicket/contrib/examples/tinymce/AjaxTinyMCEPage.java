@@ -24,7 +24,6 @@ public class AjaxTinyMCEPage extends TinyMCEBasePage {
 		add(container);
 		add(new AjaxLink("toggle") {
 
-			@Override
 			public void onClick(AjaxRequestTarget target) {
 				visible = !visible;
 				container.setEnableTinymce(visible);
