@@ -11,6 +11,8 @@ public class FeedGeneratorTest extends TestCase {
     public void testGenerate() throws Exception {
     	Settings settings = new Settings();
     	settings.setImageDirectoryRoot(new File("/tmp/a"));
-        new FeedGenerator(settings, new File("/tmp/a")).generate();
+    	settings.setBaseURL("http://localhost:8080");
+        new FeedGenerator(settings, new File("/tmp/a")).generate("atom_1.0", new File("/tmp/top10.atom"));
+        new FeedGenerator(settings, new File("/tmp/a")).generate("rss_0.9", new File("/tmp/top10.rss"));
     }
 }

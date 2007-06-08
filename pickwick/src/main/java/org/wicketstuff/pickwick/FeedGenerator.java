@@ -1,7 +1,9 @@
 package org.wicketstuff.pickwick;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -17,9 +19,12 @@ import com.sun.syndication.feed.synd.SyndEntry;
 import com.sun.syndication.feed.synd.SyndEntryImpl;
 import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.feed.synd.SyndFeedImpl;
+import com.sun.syndication.io.FeedException;
+import com.sun.syndication.io.SyndFeedOutput;
 
 public class FeedGenerator {
 	File imagesDir;
+
 	Settings settings;
 
 	public FeedGenerator(Settings settings, final File imagesDir) {
@@ -27,22 +32,19 @@ public class FeedGenerator {
 		this.imagesDir = imagesDir;
 	}
 
-	public void generate() throws IOException {
+	public void generate(String feedType, File outputFile) throws IOException, FeedException {
 		List<File> results;
 		results = new SequenceWalker().generate();
 		System.out.println(results);
 		SyndFeed feed = new SyndFeedImpl();
-		feed.setFeedType("rss_2.0");
+		feed.setFeedType(feedType);
 
 		int n = 10;
 		feed.setTitle("Last " + n + " Sequences");
-		// FIXME set feed link
-		// feed.setLink("http://rome.dev.java.net");
-		// feed
-		// .setDescription("This feed has been created using ROME (Java
-		// syndication utilities");
+		feed.setLink(settings.getBaseURL());
+		feed.setDescription("");
 
-		List entries = new ArrayList();
+		List<SyndEntry> entries = new ArrayList<SyndEntry>();
 		SyndEntry entry;
 		SyndContent description;
 
@@ -56,18 +58,20 @@ public class FeedGenerator {
 				entry.setTitle(sequence.getTitle());
 			}
 
-			entry.setLink(settings.getBaseURL() + PickWickApplication.SEQUENCE_PAGE_PATH + ImageUtils.getRelativePath(settings, dir));
-			entry.setLink(settings.getBaseURL() + "/" + ImageUtils.buildSequencePath(settings, dir));
-			// entry.setPublishedDate(DATE_PARSER.parse("2004-06-08"));
+			entry.setLink(settings.getBaseURL() + "/"
+					+ ImageUtils.buildSequencePath(settings, dir));
 
 			// FIXME add a description == sequence caption
-/*			description = new SyndContentImpl();
-			description.setType("text/plain");
-			description.setValue("Initial release of ROME");
-			entry.setDescription(description);*/
+			/*
+			 * description = new SyndContentImpl();
+			 * description.setType("text/plain"); description.setValue("Initial
+			 * release of ROME"); entry.setDescription(description);
+			 */
 			entries.add(entry);
 		}
-		System.out.println(entries);
+		feed.setEntries(entries);
+		SyndFeedOutput out = new SyndFeedOutput();
+		out.output(feed, outputFile);
 	}
 
 	public class SequenceWalker extends DirectoryWalker {
