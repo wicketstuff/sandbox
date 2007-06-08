@@ -6,13 +6,13 @@ import java.io.Serializable;
 public class Settings implements Serializable{
 	File imageDirectoryRoot;
 
-	File baseURL;
+	String baseURL;
 
-	public File getBaseURL() {
+	public String getBaseURL() {
 		return baseURL;
 	}
 
-	public void setBaseURL(File baseURL) {
+	public void setBaseURL(String baseURL) {
 		this.baseURL = baseURL;
 	}
 
