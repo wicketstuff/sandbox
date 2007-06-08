@@ -69,7 +69,7 @@ public class DojoDropDownChoiceHandler extends AbstractRequireDojoBehavior {
 
 	protected CharSequence getCallbackScript() {
 		DojoDropDownChoice c = (DojoDropDownChoice) getComponent();
-		return getCallbackScript("wicketAjaxGet('" + getCallbackUrl() + "&amp;"
-				+ c.getInputName() + "=' + arguments[0]", null, null);
+		return generateCallbackScript("wicketAjaxGet('" + getCallbackUrl() + "&amp;"
+				+ c.getInputName() + "=' + arguments[0]");
 	}
 }

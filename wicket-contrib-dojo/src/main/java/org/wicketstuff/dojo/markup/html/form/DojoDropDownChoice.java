@@ -41,6 +41,8 @@ import org.wicketstuff.dojo.DojoIdConstants;
  */
 public class DojoDropDownChoice extends DropDownChoice {
 
+
+
 	private boolean handleSelectionChange = false;
 
 	public void onSetValue(AjaxRequestTarget target) {
@@ -121,9 +123,9 @@ public class DojoDropDownChoice extends DropDownChoice {
 	}
 	
 	@Override
-	protected void onAttach() {
-		super.onAttach();
-		//FIXME : why setOutputMarkupId does not work??
+	protected void onBeforeRender() {
+		// TODO Auto-generated method stub
+		super.onBeforeRender();
 		add(new AttributeAppender("id", new Model(getMarkupId()),""));
 	}
 }
