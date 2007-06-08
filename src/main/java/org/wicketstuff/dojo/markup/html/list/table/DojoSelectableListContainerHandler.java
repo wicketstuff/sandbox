@@ -155,8 +155,7 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 	protected final CharSequence getCallbackScript()
 	{
 		lockIndicator = ((DojoSelectableListContainer)getComponent()).isLockIndicatorOnClick();
-		return getCallbackScript("wicketAjaxGet('" + super.getCallbackUrl() + "' + getSelectableTableSelection('"+getComponent().getMarkupId()+"')", null,
-				null);
+		return generateCallbackScript("wicketAjaxGet('" + super.getCallbackUrl() + "' + getSelectableTableSelection('"+getComponent().getMarkupId()+"')");
 	}
 	
 	/**
@@ -165,7 +164,7 @@ public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehav
 	 */
 	protected final CharSequence getDoubleClickCallbackScripts(){
 		if (((DojoSelectableListContainer) getComponent()).isAjaxModeOnChoose()){
-			return getCallbackScript("wicketAjaxGet('" + super.getCallbackUrl() + "&dblClick=true'", null,null);
+			return generateCallbackScript("wicketAjaxGet('" + super.getCallbackUrl() + "&dblClick=true'");
 		}else{
 			CharSequence url = ((DojoSelectableListContainer) getComponent()).urlFor(ILinkListener.INTERFACE);
 			return "window.location.href='" + url + "' + getSelectableTableSelection('"+getComponent().getMarkupId()+"') ";

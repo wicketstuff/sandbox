@@ -73,8 +73,8 @@ public class DojoContextualMenuBehavior extends AbstractRequireDojoBehavior{
 	}
 	
 	protected CharSequence getCallBackScriptForMenu(String id){
-		return getCallbackScript("wicketAjaxGet('"
-				+ getCallbackUrl() + "&amp;action=" + id + "'", null, null);
+		return generateCallbackScript("wicketAjaxGet('"
+				+ getCallbackUrl() + "&amp;action=" + id + "'");
 	}
 
 	/**

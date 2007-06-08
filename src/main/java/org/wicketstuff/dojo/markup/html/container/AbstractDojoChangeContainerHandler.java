@@ -93,7 +93,7 @@ public abstract class AbstractDojoChangeContainerHandler extends AbstractRequire
 	 */
 	protected CharSequence getCallbackScript(String id)
 	{
-		return getCallbackScript("wicketAjaxGet('" + getCallbackUrl() + "&childId=" + id + "'", null,null);
+		return generateCallbackScript("wicketAjaxGet('" + getCallbackUrl() + "&childId=" + id + "'");
 	}
 
 	/******************************************************/
