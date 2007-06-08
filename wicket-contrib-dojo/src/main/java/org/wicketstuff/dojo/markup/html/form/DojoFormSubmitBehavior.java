@@ -91,7 +91,7 @@ public abstract class DojoFormSubmitBehavior extends AbstractDefaultDojoBehavior
 			call.append("null");
 		}
 
-		return getCallbackScript(call, null, null) + ";";
+		return generateCallbackScript(call) + ";";
 	}
 	
 	protected void respond(AjaxRequestTarget target)

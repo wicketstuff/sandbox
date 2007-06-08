@@ -65,7 +65,6 @@ public class DojoLazyLoadingListContainerHandler extends AbstractRequireDojoBeha
 
 	protected CharSequence getCallbackScript()
 	{
-		return getCallbackScript("wicketAjaxGet('" + getCallbackUrl() + "&start=' + arguments[0] + '&end=' +  arguments[1]", null,
-				null);
+		return generateCallbackScript("wicketAjaxGet('" + getCallbackUrl() + "&start=' + arguments[0] + '&end=' +  arguments[1]");
 	}
 }
