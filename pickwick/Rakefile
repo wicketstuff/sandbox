@@ -7,6 +7,7 @@
 require "buildr"
 
 VERSION_NUMBER = "1.0"
+WICKET="org.apache.wicket:wicket:jar:1.3.0-incubating-SNAPSHOT"
 
 repositories.remote << "http://repo1.maven.org/maven2/"
 
@@ -18,7 +19,7 @@ define "pickwick" do
 
   # FIXME read pom.xml instead of redefining dependencies here
   # FIXME jetty-util should be depended upon automatically
-  compile.with ["org.apache.wicket:wicket:jar:1.3.0-incubating-SNAPSHOT", "commons-logging:commons-logging:jar:1.1", "org.mortbay.jetty:jetty-util:jar:6.1.1", "org.mortbay.jetty:jetty:jar:6.1.1", "commons-lang:commons-lang:jar:2.3", "commons-io:commons-io:jar:1.3.1", "rome:rome:jar:0.9"]
+  compile.with "jdom:jdom:jar:1.0", WICKET, "commons-logging:commons-logging:jar:1.1", "org.mortbay.jetty:jetty-util:jar:6.1.1", "org.mortbay.jetty:jetty:jar:6.1.1", "commons-lang:commons-lang:jar:2.3", "commons-io:commons-io:jar:1.3.1", "rome:rome:jar:0.9"
   package :jar
 
   package :war
