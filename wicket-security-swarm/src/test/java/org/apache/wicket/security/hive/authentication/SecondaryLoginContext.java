@@ -36,30 +36,35 @@ public final class SecondaryLoginContext extends LoginContext
 		super(1);
 	}
 
-	public boolean isClassAuthenticated(Class class1)
-	{
-		return true;
-		// we also could just return true if the class is a HighSecurityPage
-		// if we did that we would have to login again for a "normal" page
-		// now the 2nd login is good for all pages
-	}
-
-	public boolean isComponentAuthenticated(Component component)
-	{
-		return true;
-	}
-
-	public boolean isModelAuthenticated(IModel model, Component component)
-	{
-		return true;
-	}
 
 	public Subject login()
 	{
-		DefaultSubject defaultSubject = new DefaultSubject();
+		DefaultSubject defaultSubject = new DefaultSubject()
+		{
+			private static final long serialVersionUID = 1L;
+
+			public boolean isClassAuthenticated(Class class1)
+			{
+				return true;
+				// we also could just return true if the class is a HighSecurityPage
+				// if we did that we would have to login again for a "normal" page
+				// now the 2nd login is good for all pages
+			}
+			
+			public boolean isComponentAuthenticated(Component component)
+			{
+				return true;
+			}
+			
+			public boolean isModelAuthenticated(IModel model, Component component)
+			{
+				return true;
+			}
+		};
 		defaultSubject.addPrincipal(new TestPrincipal("admin"));
 		return defaultSubject;
 	}
+
 	/**
 	 * @see org.apache.wicket.security.hive.authentication.LoginContext#preventsAdditionalLogins()
 	 */

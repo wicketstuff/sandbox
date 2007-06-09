@@ -19,38 +19,75 @@ package org.apache.wicket.security.hive.authentication;
 import java.io.Serializable;
 import java.util.Set;
 
+import org.apache.wicket.Component;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.security.hive.authorization.Principal;
+import org.apache.wicket.security.strategies.WaspAuthorizationStrategy;
 
 /**
- * Subject represents an authenticated entity. It can be decorated with certain rights ({@link Principal}s).
- * A hive subject is very similar to a jaas subject.
+ * Subject represents (part of) an authenticated entity. It can be decorated
+ * with certain rights ({@link Principal}s). Most implementations will provide
+ * some means to add (and sometimes remove) principals, however all must honor
+ * the readonly flag. {@link #setReadOnly()} is automatically triggerd after a
+ * login. Subjects are created by {@link LoginContext}s as placeholders for the
+ * rights of a user for the duration of the session. In addition Subjects play
+ * an importeand part in multi-login scenario's as they define what they
+ * authenticate. For example one subject might authenticate all subclassses of
+ * BasicSecurePage where another might authenicate all subclasses of
+ * AdvancedSecurePage. Effectivly requiring a use to login twice if both type of
+ * pages are to be visited.
+ * 
  * @author marrink
  */
 public interface Subject extends Serializable
 {
 	/**
 	 * A readonly view of the principals.
-	 * @return
+	 * 
+	 * @return the principals
 	 */
 	public Set getPrincipals();
 
 	/**
-	 * When set it is no longer possible to add anymore principals to this subject.
+	 * When set it is no longer possible to change the set of principals of this
+	 * subject.
+	 * 
 	 * @return
 	 */
 	public boolean isReadOnly();
 
 	/**
-	 * Mark this subject as readonly. preventing more principals to be added.
+	 * Mark this subject as readonly. preventing principals to be added or
+	 * removed. Note this method is always called on a subject after it has been handed over to the security layer.
 	 */
 	public void setReadOnly();
 
 	/**
-	 * Adds a new principal to this subject.
-	 * @param principal
-	 * @return true if the principal was added, false if it wasn't for instance because
-	 *         the subject is readonly.
+	 * Performs the authentication check on a class.
+	 * 
+	 * @param class1
+	 * @return true if the class is authenticated, false otherwise.
+	 * @see WaspAuthorizationStrategy#isClassAuthenticated(Class)
 	 */
-	public boolean addPrincipal(Principal principal);
+	public abstract boolean isClassAuthenticated(Class class1);
+
+	/**
+	 * Performs the authentication check on a component.
+	 * 
+	 * @param component
+	 * @return true if the component is authenticated, false otherwise
+	 * @see WaspAuthorizationStrategy#isComponentAuthenticated(Component)
+	 */
+	public abstract boolean isComponentAuthenticated(Component component);
+
+	/**
+	 * Performs the authentication check on a model.
+	 * 
+	 * @param model
+	 * @param component
+	 * @return true if the model is authenticated, false otherwise
+	 * @see WaspAuthorizationStrategy#isModelAuthenticated(IModel, Component)
+	 */
+	public abstract boolean isModelAuthenticated(IModel model, Component component);
 
 }

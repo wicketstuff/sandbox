@@ -16,41 +16,83 @@
  */
 package org.apache.wicket.security.hive.authentication;
 
-import java.io.Serializable;
-
-import org.apache.wicket.Component;
-import org.apache.wicket.model.IModel;
 import org.apache.wicket.security.strategies.LoginException;
-import org.apache.wicket.security.strategies.WaspAuthorizationStrategy;
-import org.apache.wicket.security.swarm.strategies.SwarmStrategy;
 
 /**
- * A LoginContext has al the information to log someone in and check which
- * Components, classes or models are authenticated by this subject. Because a
- * {@link SwarmStrategy} allows multiple logins a level is required. where-in
- * the higher levels get queried first by the {@link LoginContainer}. Note that
- * a logincontext does not need a logincontainer to function, you are welcome to
- * subclass SwarmStrategy to use a single logincontext for authentication if you
- * really want to :).
+ * A LoginContext is little more than a factory to create a {@link Subject} and
+ * can be discarded afterwards. Usually it contains some credentials such as
+ * username and password. Note that generally it is no a good idea to store
+ * those type of credentials in the session, so if you plan on keeping a this
+ * context in the session be sure to clear them before you return a Subject in
+ * {@link #login()}. Some applications will require you to login with two or
+ * more different LoginContexts before a user is fully authenticated. For that
+ * purpose a sortOrder is available in the context. which is used in descending
+ * order to pass authentication requests to the subjects untill one of them
+ * authenticates. Sort orders are &gt;=0 and are not required to have an
+ * interval of 1. For example 0, 5,6 are all perfectly legal sort orders for one
+ * user. Duplicates are also allowed, in that case they are queried in reverse
+ * order of login. The context also contains a flag to indicate if an additional
+ * login is allowed. Note that both the sort order and the addiotional login
+ * flag must be constant. Also note that all LoginContexts of the same class and
+ * with the same sort order are equal, thus for logoff you do need to keep a
+ * reference to the context but can simply use a new instance.
  * 
  * @author marrink
  * @see #preventsAdditionalLogins()
  */
-public abstract class LoginContext implements Comparable, Serializable
+public abstract class LoginContext
 {
-	private int level;
+	private final int sortOrder;
+	private final boolean additionalLoginsPrevented;
 
 	/**
-	 * Constructs a new context at the specified level. levels go from 0 upward.
-	 * 
-	 * @param level
+	 * Constructs a context for single login applications. At sortorder 0 and
+	 * preventing additional logins.
 	 */
-	public LoginContext(int level)
+	public LoginContext()
 	{
-		this.level = level;
-		if (level < 0)
-			throw new IllegalArgumentException("0 is the lowest level allowed, not " + level);
+		this(0, true);
 	}
+
+	/**
+	 * Constructs a new context at the specified sort order. Additional logins are prevented.
+	 * This constructor is usually used in mult-login scenario's for the context with the the highest sort order. 
+	 * 
+	 * @param sortOrder a number of 0 or higher.
+	 */
+	public LoginContext(int sortOrder)
+	{
+		this(sortOrder, true);
+	}
+
+	/**
+	 * Constructs a new context with sort order 0 and a customizable flag for preventing additional logins.
+	 * This constructor is mostly used in multi-login scenario's.
+	 * 
+	 * @param sortOrder
+	 * @param allowAdditionalLogings
+	 */
+	public LoginContext(boolean allowAdditionalLogings)
+	{
+		this(0, allowAdditionalLogings);
+	}
+
+	/**
+	 * Constructs a new context with customizable sort order and  flag for preventing additional logins.
+	 * This constructor is mostly used in multi-login scenario's.
+	 * 
+	 * @param sortOrder
+	 * @param allowAdditionalLogins
+	 */
+	public LoginContext(int sortOrder, boolean allowAdditionalLogins)
+	{
+		if (sortOrder < 0)
+			throw new IllegalArgumentException("0 is the lowest sort order allowed, not "
+					+ sortOrder);
+		this.sortOrder = sortOrder;
+		this.additionalLoginsPrevented = !allowAdditionalLogins;
+	}
+
 
 	/**
 	 * Perform a login. If the login fails in any way a {@link LoginException}
@@ -61,69 +103,25 @@ public abstract class LoginContext implements Comparable, Serializable
 	public abstract Subject login() throws LoginException;
 
 	/**
-	 * Performs the authentication check on a class.
-	 * 
-	 * @param class1
-	 * @return true if the class is authenticated, false otherwise.
-	 * @see WaspAuthorizationStrategy#isClassAuthenticated(Class)
-	 */
-	public abstract boolean isClassAuthenticated(Class class1);
-
-	/**
-	 * Performs the authentication check on a component.
-	 * 
-	 * @param component
-	 * @return true if the component is authenticated, false otherwise
-	 * @see WaspAuthorizationStrategy#isComponentAuthenticated(Component)
-	 */
-	public abstract boolean isComponentAuthenticated(Component component);
-
-	/**
-	 * Performs the authentication check on a model.
-	 * 
-	 * @param model
-	 * @param component
-	 * @return true if the model is authenticated, false otherwise
-	 * @see WaspAuthorizationStrategy#isModelAuthenticated(IModel, Component)
-	 */
-	public abstract boolean isModelAuthenticated(IModel model, Component component);
-
-	/**
 	 * Indicates the level of this context. the higher the level the more you
 	 * are authorised / authenticated for.
 	 * 
 	 * @return the level
 	 */
-	protected final int getLevel()
+	protected final int getSortOrder()
 	{
-		return level;
-	}
-
-	/**
-	 * Compares contexts by level.
-	 * 
-	 * @see java.lang.Comparable#compareTo(java.lang.Object)
-	 */
-	public int compareTo(Object arg0)
-	{
-		if (arg0 instanceof LoginContext)
-		{
-			LoginContext lc0 = (LoginContext)arg0;
-			return getLevel() - lc0.getLevel();
-		}
-		throw new IllegalArgumentException("Can only compare with " + LoginContext.class
-				+ " not with " + arg0);
+		return sortOrder;
 	}
 
 	/**
 	 * @see java.lang.Object#hashCode()
 	 */
-	public int hashCode()
+	public final int hashCode()
 	{
 		final int PRIME = 31;
 		int result = 1;
 		result = PRIME * result + getClass().hashCode();
-		result = PRIME * result + level;
+		result = PRIME * result + sortOrder;
 		return result;
 	}
 
@@ -133,7 +131,7 @@ public abstract class LoginContext implements Comparable, Serializable
 	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
-	public boolean equals(Object obj)
+	public final boolean equals(Object obj)
 	{
 		if (this == obj)
 			return true;
@@ -142,19 +140,24 @@ public abstract class LoginContext implements Comparable, Serializable
 		if (getClass() != obj.getClass())
 			return false;
 		final LoginContext other = (LoginContext)obj;
-		return level == other.level;
+		return sortOrder == other.sortOrder;
 	}
 
 	/**
 	 * Signals to the {@link LoginContainer} that no additional context should
-	 * be allowed to login. This flag is checked once by the container
-	 * inmediatly after {@link #login()}. Note in a multi login environment you
-	 * will want your logincontext with the highest level to prevent additional
-	 * logins. In a single login environment your logincontext should always
-	 * prevent additional logins (as {@link SingleLoginContext} does.
+	 * be allowed to login. The return value must be constant from one
+	 * invocation to another for this instance.This flag is checked once by the
+	 * container inmediatly after {@link #login()}. Note in a multi login
+	 * environment you will want your logincontext with the highest possible
+	 * sort order to prevent additional logins. In a single login environment
+	 * your logincontext should always prevent additional logins (as
+	 * {@link SingleLoginContext} does.
 	 * 
 	 * @return true if you do not want additional logins for this session, false
 	 *         otherwise.
 	 */
-	public abstract boolean preventsAdditionalLogins();
+	public boolean preventsAdditionalLogins()
+	{
+		return additionalLoginsPrevented;
+	}
 }
