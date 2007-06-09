@@ -25,15 +25,18 @@ public class FolderProvider {
 	 * @return  a tree representation of the folders in imageDirectoryRoot
 	 */
 	public Folder getFolder(){
-		return new Folder(this.settings.getImageDirectoryRoot().getName(),getSubFolder(this.settings.getImageDirectoryRoot()));
+		return new Folder("",getSubFolder(this.settings.getImageDirectoryRoot(), null), null);
 	}
 	
-	private ArrayList<Folder> getSubFolder(File folder){
+	private ArrayList<Folder> getSubFolder(File folder, Folder parent){
 		if (folder.isDirectory()){
 			ArrayList<Folder> toReturn = new ArrayList<Folder>();
 			for (File file : folder.listFiles()){
 				if (file.isDirectory()){
-					toReturn.add(new Folder(file.getName(),getSubFolder(file)));
+					Folder current = new Folder(file.getName());
+					current.setSubFolders(getSubFolder(file, current));
+					current.setParent(parent);
+					toReturn.add(current);
 				}
 			}
 			return toReturn;
