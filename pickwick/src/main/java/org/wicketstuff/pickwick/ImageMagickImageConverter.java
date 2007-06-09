@@ -10,7 +10,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 /**
- * {@link ImageConverter} implemented with ImageMagick
+ * {@link ImageConverter} implemented with ImageMagick. Please make sure
+ * environment variable PATH contains path to the "convert" program.
  * 
  * @author <a href="mailto:jbq@apache.org">Jean-Baptiste Quenot</a>
  */
@@ -29,7 +30,7 @@ public class ImageMagickImageConverter implements ImageConverter {
 		logger.info("Converting image " + source + " to " + destination + " at size " + size);
 		String geometry = size + "x" + size + ">";
 		List<String> commandArgs = new ArrayList<String>();
-		commandArgs.add("/opt/local/bin/convert");
+		commandArgs.add("convert");
 		commandArgs.add("-geometry");
 		commandArgs.add(geometry);
 		if (quality != null) {
@@ -48,8 +49,7 @@ public class ImageMagickImageConverter implements ImageConverter {
 		try {
 			exitValue = p.waitFor();
 		} catch (InterruptedException e) {
-			throw new RuntimeException("Interrupted while running " +
-					StringUtils.join(commandArgs.iterator(), ' '), e);
+			throw new RuntimeException("Interrupted while running " + StringUtils.join(commandArgs.iterator(), ' '), e);
 		}
 		if (exitValue != 0) {
 			throw new RuntimeException("Failed to run " + StringUtils.join(commandArgs.iterator(), ' '));
