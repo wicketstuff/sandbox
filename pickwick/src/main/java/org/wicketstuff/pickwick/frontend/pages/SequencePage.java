@@ -1,4 +1,4 @@
-package org.wicketstuff.pickwick;
+package org.wicketstuff.pickwick.frontend.pages;
 
 import java.io.IOException;
 
@@ -10,6 +10,9 @@ import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.GridView;
 import org.apache.wicket.model.Model;
+import org.wicketstuff.pickwick.ImageProperties;
+import org.wicketstuff.pickwick.PickWickApplication;
+import org.wicketstuff.pickwick.Settings;
 import org.wicketstuff.pickwick.bean.provider.ImageProvider;
 import org.wicketstuff.pickwick.frontend.panel.FolderTreePanel;
 

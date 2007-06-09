@@ -11,10 +11,10 @@ import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.tree.Tree;
-import org.wicketstuff.pickwick.ImagePage;
 import org.wicketstuff.pickwick.PickWickApplication;
-import org.wicketstuff.pickwick.SequencePage;
 import org.wicketstuff.pickwick.bean.Folder;
+import org.wicketstuff.pickwick.frontend.pages.ImagePage;
+import org.wicketstuff.pickwick.frontend.pages.SequencePage;
 
 /**
  * A folderTree representing the image directory
