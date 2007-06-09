@@ -16,20 +16,15 @@
  */
 package org.apache.wicket.security.hive.authentication;
 
+import junit.framework.TestCase;
+
 import org.apache.wicket.Component;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.security.hive.authentication.DefaultSubject;
-import org.apache.wicket.security.hive.authentication.LoginContainer;
-import org.apache.wicket.security.hive.authentication.LoginContext;
-import org.apache.wicket.security.hive.authentication.SingleLoginContext;
-import org.apache.wicket.security.hive.authentication.Subject;
 import org.apache.wicket.security.hive.authorization.TestPrincipal;
 import org.apache.wicket.security.pages.VerySecurePage;
 import org.apache.wicket.security.strategies.LoginException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import junit.framework.TestCase;
 
 /**
  * @author marrink
@@ -53,17 +48,13 @@ public class LoginTest extends TestCase
 		catch (LoginException e)
 		{
 		}
-		LoginContext ctx = new SingleLoginContext(true)
+		LoginContext ctx = new LoginContext(true)
 		{
-
-			/**
-			 * 
-			 */
 			private static final long serialVersionUID = 1L;
 
 			public Subject login()
 			{
-				Subject subject = new DefaultSubject();
+				DefaultSubject subject = new DefaultSubject();
 				subject.addPrincipal(new TestPrincipal("home"));
 				return subject;
 			}
@@ -89,24 +80,28 @@ public class LoginTest extends TestCase
 			 */
 			private static final long serialVersionUID = 1L;
 
-			public boolean isClassAuthenticated(Class class1)
-			{
-				return false;
-			}
-
-			public boolean isComponentAuthenticated(Component component)
-			{
-				return false;
-			}
-
-			public boolean isModelAuthenticated(IModel model, Component component)
-			{
-				return false;
-			}
 
 			public Subject login() throws LoginException
 			{
-				return new DefaultSubject();
+				return new DefaultSubject()
+				{
+					private static final long serialVersionUID = 1L;
+
+					public boolean isClassAuthenticated(Class class1)
+					{
+						return false;
+					}
+					
+					public boolean isComponentAuthenticated(Component component)
+					{
+						return false;
+					}
+					
+					public boolean isModelAuthenticated(IModel model, Component component)
+					{
+						return false;
+					}
+				};
 			}
 			/**
 			 * @see org.apache.wicket.security.hive.authentication.LoginContext#preventsAdditionalLogins()
@@ -137,7 +132,7 @@ public class LoginTest extends TestCase
 	public void testLogoff()
 	{
 		LoginContainer container = new LoginContainer();
-		LoginContext ctx = new SingleLoginContext()
+		LoginContext ctx = new LoginContext()
 		{
 
 			/**
@@ -224,7 +219,7 @@ public class LoginTest extends TestCase
 			fail(e.getMessage());
 		}
 	}
-	private static final class myContext extends SingleLoginContext
+	private static final class myContext extends LoginContext
 	{
 		private static final long serialVersionUID = 1L;
 

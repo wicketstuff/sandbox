@@ -16,8 +16,8 @@
  */
 package org.apache.wicket.security.hive.authentication;
 
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -28,7 +28,6 @@ import java.util.Set;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.security.hive.authorization.Principal;
 import org.apache.wicket.security.strategies.LoginException;
 
 /**
@@ -44,7 +43,7 @@ public final class LoginContainer
 
 	private Subject subject = null;
 	
-	private LoginContext preventsLogin=null;
+	private HashKey preventsLogin=null;
 
 	/**
 	 * Attempts to login through the context, if successfull the subject and all its
@@ -59,20 +58,21 @@ public final class LoginContainer
 			throw new LoginException("Additional Logins are not allowed");
 		if (context == null)
 			throw new LoginException("Context is required to login.");
-		if (subjects.containsKey(context))
+		HashKey key = new HashKey(context);
+		if (subjects.containsKey(key))
 			throw new LoginException("Already logged in through this context ")
 					.setLoginContext(context);
 		Subject subject = context.login();
 		if (subject == null)
 			throw new LoginException("Login failed ").setLoginContext(context);
-		if(context.preventsAdditionalLogins())
-			preventsLogin=context;
-		subjects.put(context, subject);
-		logins.add(context);
+		subject.setReadOnly();
+		if(key.preventsAdditionalLogins())
+			preventsLogin=key;
+		subjects.put(key, subject);
+		logins.add(key);
 		Collections.sort(logins);
-		this.subject = new MultiSubject(subjects.values());
+		this.subject = new MultiSubject(logins,subjects);
 	}
-
 	/**
 	 * Removes the subject and all its rights asociated with a certain context from this
 	 * container.
@@ -81,80 +81,19 @@ public final class LoginContainer
 	 */
 	public boolean logoff(LoginContext context)
 	{
-		if (subjects.remove(context) != null)
+		if(context==null)
+			return false;
+		HashKey key=new HashKey(context);
+		if (subjects.remove(key) != null)
 		{
-			if(preventsLogin!=null && preventsLogin.equals(context))
+			if(preventsLogin!=null && preventsLogin.equals(key))
 				preventsLogin=null;
-			logins.remove(context);
+			logins.remove(key);
 			if (logins.isEmpty())
 				subject = null;
 			else
-				subject = new MultiSubject(subjects.values());
+				subject = new MultiSubject(logins,subjects);
 			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * Forces the container to re-evaluated the principals in subjects. Note that you
-	 * would only need this if somewhere else the principals in the subjects returned in
-	 * the logincontext where changed. You do not need to trigger a reload after a login
-	 * or logoff since that is automaticly done.
-	 * @return the subject from this container
-	 */
-	public Subject reloadSubject()
-	{
-		return subject = new MultiSubject(subjects.values());
-	}
-	/**
-	 * Queries all available logincontext (higher levels first) for the authentication of a model.
-	 * @param model the model
-	 * @param component the component holding the model
-	 * @return true if atleast one of the registered logincontexts authenticates the model, false otherwise.
-	 * @see LoginContext#isModelAuthenticated(IModel, Component)
-	 */
-	public boolean isModelAuthenticated(IModel model, Component component)
-	{
-		LoginContext ctx = null;
-		for (int i = 0; i < logins.size(); i++)
-		{
-			ctx = (LoginContext) logins.get(i);
-			if (ctx.isModelAuthenticated(model, component))
-				return true;
-		}
-		return false;
-	}
-	/**
-	 * Queries all available logincontext (higher levels first) for the authentication of a component.
-	 * @param component the component
-	 * @return true if atleast one of the registered logincontexts authenticates the component, false otherwise.
-	 * @see LoginContext#isComponentAuthenticated(Component)
-	 */
-	public boolean isComponentAuthenticated(Component component)
-	{
-		LoginContext ctx = null;
-		for (int i = 0; i < logins.size(); i++)
-		{
-			ctx = (LoginContext) logins.get(i);
-			if (ctx.isComponentAuthenticated(component))
-				return true;
-		}
-		return false;
-	}
-	/**
-	 * Queries all available logincontext (higher levels first) for the authentication of a class.
-	 * @param clazz the (component) class
-	 * @return true if atleast one of the registered logincontexts authenticates the class, false otherwise.
-	 * @see LoginContext#isClassAuthenticated(Class)
-	 */
-	public boolean isClassAuthenticated(Class clazz)
-	{
-		LoginContext ctx = null;
-		for (int i = 0; i < logins.size(); i++)
-		{
-			ctx = (LoginContext) logins.get(i);
-			if (ctx.isClassAuthenticated(clazz))
-				return true;
 		}
 		return false;
 	}
@@ -172,57 +111,76 @@ public final class LoginContainer
 	}
 
 	/**
-	 * Returns the number of {@link LoginContext}s contained here.
+	 * Returns the number of {@link Subject}s contained here.
 	 * @return the size
 	 */
 	public int size()
 	{
 		return logins.size();
 	}
-
 	/**
-	 * Readonly subject merging all the subjects from the logincontainer into one. Note
-	 * this subject is not backed by the logincontainer.
+	 * Queries all available subjects (descending sort order) for the authentication of a model.
+	 * @param model the model
+	 * @param component the component holding the model
+	 * @return true if atleast one of the registered logincontexts authenticates the model, false otherwise.
+	 * @see LoginContext#isModelAuthenticated(IModel, Component)
+	 */
+	public boolean isModelAuthenticated(IModel model, Component component)
+	{
+		return subject==null?false:subject.isModelAuthenticated(model, component);
+	}
+	/**
+	 * Queries all available subjects (descending sort order) for the authentication of a component.
+	 * @param component the component
+	 * @return true if atleast one of the registered logincontexts authenticates the component, false otherwise.
+	 * @see LoginContext#isComponentAuthenticated(Component)
+	 */
+	public boolean isComponentAuthenticated(Component component)
+	{
+		return subject==null?false:subject.isComponentAuthenticated(component);
+	}
+	/**
+	 * Queries all available subjects (descending sort order) for the authentication of a class.
+	 * @param clazz the (component) class
+	 * @return true if atleast one of the registered logincontexts authenticates the class, false otherwise.
+	 * @see LoginContext#isClassAuthenticated(Class)
+	 */
+	public boolean isClassAuthenticated(Class clazz)
+	{
+		return subject==null?false:subject.isClassAuthenticated(clazz);
+	}
+	/**
+	 * Subject merging all the subjects from the logincontainer into one. This subject is backed by the logincontainer.
 	 * @author marrink
 	 */
-	private static class MultiSubject implements Subject
+	private static final class MultiSubject implements Subject
 	{
-
-		/**
-		 * 
-		 */
 		private static final long serialVersionUID = 1L;
 
 		private Set principals;
 
 		private Set readOnlyPrincipals;
 
+		private final List keys;
+
+		private final Map mySubjects;
+
 		/**
 		 * Creates a new MultiSubject containing only the principals of the subjects at this time.
 		 * @param subjects a collection of subjects
 		 */
-		public MultiSubject(Collection subjects)
+		public MultiSubject(List keys,Map values)
 		{
 			super();
+			this.keys = keys;
+			this.mySubjects = values;
 			principals = new HashSet(100);
-			// we dont keep the original collection because we might get
-			// concurrentmodificationexceptions, besides this way we dont have to rebuild
-			// the set every time because of possible logins/logoffs
-			Iterator it = subjects.iterator();
-			while (it.hasNext())
+			Iterator subjects=values.values().iterator();
+			while (subjects.hasNext())
 			{
-				principals.addAll(((Subject) it.next()).getPrincipals());
+				principals.addAll(((Subject) subjects.next()).getPrincipals());
 			}
 			readOnlyPrincipals = Collections.unmodifiableSet(principals);
-		}
-		/**
-		 * This subject is readonly hence no principals may be added.
-		 * @return false
-		 * @see org.apache.wicket.security.hive.authentication.Subject#addPrincipal(org.apache.wicket.security.hive.authorization.Principal)
-		 */
-		public boolean addPrincipal(Principal principal)
-		{
-			return false;
 		}
 		/**
 		 * 
@@ -249,6 +207,137 @@ public final class LoginContainer
 		{
 			// noop
 		}
-
+		/**
+		 * Queries all available logincontext (higher levels first) for the authentication of a model.
+		 * @param model the model
+		 * @param component the component holding the model
+		 * @return true if atleast one of the registered logincontexts authenticates the model, false otherwise.
+		 * @see LoginContext#isModelAuthenticated(IModel, Component)
+		 */
+		public boolean isModelAuthenticated(IModel model, Component component)
+		{
+			HashKey ctx = null;
+			for (int i = 0; i < keys.size(); i++)
+			{
+				ctx = (HashKey) keys.get(i);
+				if (((Subject)mySubjects.get(ctx)).isModelAuthenticated(model, component))
+					return true;
+			}
+			return false;
+		}
+		/**
+		 * Queries all available logincontext (higher levels first) for the authentication of a component.
+		 * @param component the component
+		 * @return true if atleast one of the registered logincontexts authenticates the component, false otherwise.
+		 * @see LoginContext#isComponentAuthenticated(Component)
+		 */
+		public boolean isComponentAuthenticated(Component component)
+		{
+			HashKey ctx = null;
+			for (int i = 0; i < keys.size(); i++)
+			{
+				ctx = (HashKey) keys.get(i);
+				if (((Subject)mySubjects.get(ctx)).isComponentAuthenticated(component))
+					return true;
+			}
+			return false;
+		}
+		/**
+		 * Queries all available logincontext (higher levels first) for the authentication of a class.
+		 * @param clazz the (component) class
+		 * @return true if atleast one of the registered logincontexts authenticates the class, false otherwise.
+		 * @see LoginContext#isClassAuthenticated(Class)
+		 */
+		public boolean isClassAuthenticated(Class clazz)
+		{
+			HashKey ctx = null;
+			for (int i = 0; i < keys.size(); i++)
+			{
+				ctx = (HashKey) keys.get(i);
+				if (((Subject)mySubjects.get(ctx)).isClassAuthenticated(clazz))
+					return true;
+			}
+			return false;
+		}
+	}
+	/**
+	 * Simle key for storing the hashcode, sort order and preventsAdditionalLogins flag of a {@link LoginContext}
+	 * As it is better to not keep a reference to the context especially when it contains user credentials.
+	 * @author marrink
+	 */
+	private static final class HashKey implements Serializable,Comparable
+	{
+		private static final long serialVersionUID = 1L;
+		
+		private final int contextHash;
+		private final boolean preventsAdditionalLogin;
+		private int sortOrder;
+		
+		public HashKey(LoginContext context)
+		{
+			contextHash=context.hashCode();
+			preventsAdditionalLogin=context.preventsAdditionalLogins();
+			this.sortOrder=context.getSortOrder();
+		}
+		/**
+		 * Compares contexts by level.
+		 * 
+		 * @see java.lang.Comparable#compareTo(java.lang.Object)
+		 */
+		public int compareTo(Object arg0)
+		{
+			if (arg0 instanceof HashKey)
+			{
+				HashKey lc0 = (HashKey)arg0;
+				return sortOrder - lc0.sortOrder;
+			}
+			throw new IllegalArgumentException("Can only compare with " + LoginContext.class
+					+ " not with " + arg0);
+		}
+		/**
+		 * Gets contextHash.
+		 * @return contextHash
+		 */
+		public int getContextHash()
+		{
+			return contextHash;
+		}
+		/**
+		 * Gets preventsLogin.
+		 * @return preventsLogin
+		 */
+		public boolean preventsAdditionalLogins()
+		{
+			return preventsAdditionalLogin;
+		}
+		/**
+		 * @see java.lang.Object#hashCode()
+		 */
+		public int hashCode()
+		{
+			final int PRIME = 31;
+			int result = 1;
+			result = PRIME * result + contextHash;
+			result = PRIME * result + (preventsAdditionalLogin ? 1231 : 1237);
+			return result;
+		}
+		/**
+		 * @see java.lang.Object#equals(java.lang.Object)
+		 */
+		public boolean equals(Object obj)
+		{
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			final HashKey other = (HashKey)obj;
+			if (contextHash != other.contextHash)
+				return false;
+			if (preventsAdditionalLogin != other.preventsAdditionalLogin)
+				return false;
+			return true;
+		}
 	}
 }
