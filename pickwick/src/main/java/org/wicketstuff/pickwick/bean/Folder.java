@@ -11,8 +11,16 @@ public class Folder
 {
 	private String name;
 	private ArrayList<Folder> subFolders;
+	private Folder parent;
 
 
+	public Folder(String name, ArrayList<Folder> subFolders, Folder parent) {
+		super();
+		this.name = name;
+		this.subFolders = subFolders;
+		this.parent = parent;
+	}
+	
 	public Folder(String name, ArrayList<Folder> subFolders) {
 		super();
 		this.name = name;
@@ -42,5 +50,27 @@ public class Folder
 	
 	public void addFolder(Folder folder){
 		this.subFolders.add(folder);
+	}
+
+	public Folder getParent() {
+		return parent;
+	}
+
+	public void setParent(Folder parent) {
+		this.parent = parent;
+	}
+	
+	/**
+	 * return the relative path of the current folder.
+	 * @return the relative path of the current folder.
+	 */
+	public String getPath(){
+		String toReturn =  "";
+		Folder parent = getParent();
+		while (parent != null){
+			toReturn += "/" + parent.getName();
+			parent = parent.getParent();
+		}
+		return toReturn + "/" + getName();
 	}
 }

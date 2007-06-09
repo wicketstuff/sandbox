@@ -6,7 +6,6 @@ import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeModel;
-import javax.swing.tree.TreeNode;
 
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.html.tree.AbstractTree;
@@ -14,12 +13,11 @@ import org.apache.wicket.markup.html.tree.Tree;
 import org.wicketstuff.pickwick.PickWickApplication;
 import org.wicketstuff.pickwick.bean.Folder;
 import org.wicketstuff.pickwick.bean.provider.FolderProvider;
+import org.wicketstuff.pickwick.frontend.FolderTree;
 
 /**
  * Panel displaying the image folder structure
  * @author Vincent Demay
- * TODO : add some methods to control click on item and current page
- * TODO : change default tree images
  *
  */
 public class FolderTreePanel extends Panel{
@@ -30,13 +28,7 @@ public class FolderTreePanel extends Panel{
 	 */
 	public FolderTreePanel(String id) {
 		super(id);
-		tree = new Tree("folderTree", createTreeModel()) {
-			protected String renderNode(TreeNode node) {
-				Folder bean = (Folder) ((DefaultMutableTreeNode) node)
-						.getUserObject();
-				return bean.getName();
-			}
-		};
+		tree = new FolderTree("folderTree", createTreeModel());
 		add(tree);
 	}
 	private Tree tree;
