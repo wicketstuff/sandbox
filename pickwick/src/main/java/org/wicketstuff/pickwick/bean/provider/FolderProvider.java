@@ -25,7 +25,7 @@ public class FolderProvider {
 	 * @return  a tree representation of the folders in imageDirectoryRoot
 	 */
 	public Folder getFolder(){
-		return new Folder("",getSubFolder(this.settings.getImageDirectoryRoot(), null), null);
+		return new Folder(settings.getImageDirectoryRoot(),getSubFolder(this.settings.getImageDirectoryRoot(), null), null);
 	}
 	
 	private ArrayList<Folder> getSubFolder(File folder, Folder parent){
@@ -33,7 +33,7 @@ public class FolderProvider {
 			ArrayList<Folder> toReturn = new ArrayList<Folder>();
 			for (File file : folder.listFiles()){
 				if (file.isDirectory()){
-					Folder current = new Folder(file.getName());
+					Folder current = new Folder(file);
 					current.setSubFolders(getSubFolder(file, current));
 					current.setParent(parent);
 					toReturn.add(current);

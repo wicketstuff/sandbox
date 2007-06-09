@@ -1,43 +1,37 @@
 package org.wicketstuff.pickwick.bean;
 
+import java.io.File;
 import java.util.ArrayList;
 
 /**
  * This class represent a folder where image are physically stored
+ * 
  * @author Vincent Demay
- *
+ * 
  */
-public class Folder
-{
-	private String name;
+public class Folder {
+	private File file;
+
 	private ArrayList<Folder> subFolders;
+
 	private Folder parent;
 
-
-	public Folder(String name, ArrayList<Folder> subFolders, Folder parent) {
+	public Folder(File file, ArrayList<Folder> subFolders, Folder parent) {
 		super();
-		this.name = name;
+		this.file = file;
 		this.subFolders = subFolders;
 		this.parent = parent;
 	}
-	
-	public Folder(String name, ArrayList<Folder> subFolders) {
+
+	public Folder(File file, ArrayList<Folder> subFolders) {
 		super();
-		this.name = name;
+		this.file = file;
 		this.subFolders = subFolders;
 	}
 
-	public Folder(String name) {
+	public Folder(File file) {
 		super();
-		this.name = name;
-	}
-	
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
+		this.file = file;
 	}
 
 	public ArrayList<Folder> getSubFolders() {
@@ -47,8 +41,8 @@ public class Folder
 	public void setSubFolders(ArrayList<Folder> subFolders) {
 		this.subFolders = subFolders;
 	}
-	
-	public void addFolder(Folder folder){
+
+	public void addFolder(Folder folder) {
 		this.subFolders.add(folder);
 	}
 
@@ -59,18 +53,12 @@ public class Folder
 	public void setParent(Folder parent) {
 		this.parent = parent;
 	}
-	
-	/**
-	 * return the relative path of the current folder.
-	 * @return the relative path of the current folder.
-	 */
-	public String getPath(){
-		String toReturn =  "";
-		Folder parent = getParent();
-		while (parent != null){
-			toReturn += "/" + parent.getName();
-			parent = parent.getParent();
-		}
-		return toReturn + "/" + getName();
+
+	public File getFile() {
+		return file;
+	}
+
+	public void setFile(File file) {
+		this.file = file;
 	}
 }

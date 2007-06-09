@@ -1,19 +1,26 @@
 package org.wicketstuff.pickwick.frontend.panel;
 
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeModel;
+import javax.swing.tree.TreeNode;
 
+import org.apache.wicket.MarkupContainer;
+import org.apache.wicket.PageParameters;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.html.tree.AbstractTree;
 import org.apache.wicket.markup.html.tree.Tree;
+import org.wicketstuff.pickwick.ImageUtils;
 import org.wicketstuff.pickwick.PickWickApplication;
+import org.wicketstuff.pickwick.Settings;
 import org.wicketstuff.pickwick.bean.Folder;
 import org.wicketstuff.pickwick.bean.provider.FolderProvider;
-import org.wicketstuff.pickwick.frontend.FolderTree;
+import org.wicketstuff.pickwick.frontend.pages.SequencePage;
 
 /**
  * Panel displaying the image folder structure
@@ -28,7 +35,31 @@ public class FolderTreePanel extends Panel{
 	 */
 	public FolderTreePanel(String id) {
 		super(id);
-		tree = new FolderTree("folderTree", createTreeModel());
+
+		tree = new Tree("folderTree", createTreeModel()) {
+			protected String renderNode(TreeNode node) {
+				Folder bean = (Folder) ((DefaultMutableTreeNode) node)
+						.getUserObject();
+				return bean.getFile().getName();
+			}
+
+			@Override
+			protected MarkupContainer newNodeLink(MarkupContainer parent, String id, TreeNode node) {
+				PageParameters params = new PageParameters();
+				Folder folder = (Folder)((DefaultMutableTreeNode)node).getUserObject();
+				Settings settings = PickWickApplication.get().getSettings();
+				BookmarkablePageLink nodeLink = new BookmarkablePageLink(id, SequencePage.class, params);
+				try {
+					// FIXME pass pretty URL!!!
+					params.add("uri", ImageUtils.getRelativePath(settings, folder.getFile()));
+				} catch (IOException e) {
+					throw new RuntimeException(e);
+				}
+
+				return nodeLink;
+			}
+		};
+
 		add(tree);
 	}
 	private Tree tree;
@@ -44,7 +75,7 @@ public class FolderTreePanel extends Panel{
 	 */
 	protected TreeModel createTreeModel() 
 	{
-		FolderProvider folderProvider = new FolderProvider(((PickWickApplication)getApplication()).getSettings());
+		FolderProvider folderProvider = new FolderProvider(PickWickApplication.get().getSettings());
 		return convertToTreeModel(folderProvider.getFolder());
 	}
 	
