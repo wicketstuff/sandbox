@@ -1,10 +1,11 @@
-package org.wicketstuff.pickwick;
+package org.wicketstuff.pickwick.frontend.pages;
 
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.html.WebComponent;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.model.Model;
+import org.wicketstuff.pickwick.PickWickApplication;
 
 /**
  * Page to display a single image

@@ -18,6 +18,8 @@ import org.apache.wicket.request.target.component.BookmarkablePageRequestTarget;
 import org.apache.wicket.request.target.resource.ResourceStreamRequestTarget;
 import org.apache.wicket.util.resource.FileResourceStream;
 import org.apache.wicket.util.resource.IResourceStream;
+import org.wicketstuff.pickwick.frontend.pages.ImagePage;
+import org.wicketstuff.pickwick.frontend.pages.SequencePage;
 
 /**
  * Wicket application for PickWick
