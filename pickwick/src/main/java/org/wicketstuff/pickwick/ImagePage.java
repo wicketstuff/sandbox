@@ -6,6 +6,11 @@ import org.apache.wicket.markup.html.WebComponent;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.model.Model;
 
+/**
+ * Page to display a single image
+ * 
+ * @author <a href="mailto:jbq@apache.org">Jean-Baptiste Quenot</a>
+ */
 public class ImagePage extends WebPage {
 	public ImagePage(PageParameters params) {
 		String uri = params.getString("uri");

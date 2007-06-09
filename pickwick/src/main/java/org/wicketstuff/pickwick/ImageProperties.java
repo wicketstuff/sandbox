@@ -20,7 +20,7 @@ import java.io.File;
 import java.io.Serializable;
 
 /**
- * @author <a href="mailto:tcurdt@apache.org">Torsten Curdt</a>
+ * @author <a href="mailto:jbq@apache.org">Jean-Baptiste Quenot</a>
  * @version CVS $Id$
  */
 final public class ImageProperties implements Serializable {

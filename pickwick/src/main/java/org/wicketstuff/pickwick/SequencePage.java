@@ -13,6 +13,11 @@ import org.apache.wicket.model.Model;
 import org.wicketstuff.pickwick.bean.provider.ImageProvider;
 import org.wicketstuff.pickwick.frontend.panel.FolderTreePanel;
 
+/**
+ * Page to display a sequence with image thumbnails
+ * 
+ * @author <a href="mailto:jbq@apache.org">Jean-Baptiste Quenot</a>
+ */
 public class SequencePage extends WebPage {
 	public SequencePage(PageParameters parameters) {
 		final Settings settings = PickWickApplication.get().getSettings();
