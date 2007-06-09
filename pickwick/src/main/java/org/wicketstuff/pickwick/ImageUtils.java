@@ -20,11 +20,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import org.apache.wicket.util.string.Strings;
 import org.wicketstuff.pickwick.bean.Sequence;
 
 /**
- * FIXME remove this class, we don't need it at all in fact
+ * Various utility methods
+ * 
+ * @author <a href="mailto:jbq@apache.org">Jean-Baptiste Quenot</a>
  */
 final public class ImageUtils {
 

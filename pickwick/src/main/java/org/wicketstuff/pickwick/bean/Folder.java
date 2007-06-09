@@ -3,7 +3,7 @@ package org.wicketstuff.pickwick.bean;
 import java.util.ArrayList;
 
 /**
- * This class represent a folder where image are phisicaly stored
+ * This class represent a folder where image are physically stored
  * @author Vincent Demay
  *
  */

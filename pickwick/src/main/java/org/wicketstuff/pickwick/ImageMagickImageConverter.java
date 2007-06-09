@@ -9,6 +9,11 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+/**
+ * {@link ImageConverter} implemented with ImageMagick
+ * 
+ * @author <a href="mailto:jbq@apache.org">Jean-Baptiste Quenot</a>
+ */
 public class ImageMagickImageConverter implements ImageConverter {
 	private static final Log logger = LogFactory.getLog(ImageMagickImageConverter.class);
 

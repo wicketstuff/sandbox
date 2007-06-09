@@ -7,7 +7,13 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.wicket.application.WildcardMatcherHelper;
+import org.wicketstuff.pickwick.bean.provider.ImageProvider;
 
+/**
+ * List of images from a sequence, used in {@link ImageProvider}
+ * 
+ * @author <a href="mailto:jbq@apache.org">Jean-Baptiste Quenot</a>
+ */
 public class ImageList implements Serializable{
     private List imageList;
 

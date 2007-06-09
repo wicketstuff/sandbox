@@ -17,7 +17,7 @@ import org.wicketstuff.pickwick.Settings;
 /**
  * An {@link IDataProvider} that provides images from a given sequence
  * 
- * @author jbq
+ * @author <a href="mailto:jbq@apache.org">Jean-Baptiste Quenot</a>
  */
 public class ImageProvider implements IDataProvider {
 	Settings settings;

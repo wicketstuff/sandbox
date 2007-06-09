@@ -3,6 +3,11 @@ package org.wicketstuff.pickwick;
 import java.io.File;
 import java.io.Serializable;
 
+/**
+ * PickWick settings
+ * 
+ * @author <a href="mailto:jbq@apache.org">Jean-Baptiste Quenot</a>
+ */
 public class Settings implements Serializable{
 	File imageDirectoryRoot;
 

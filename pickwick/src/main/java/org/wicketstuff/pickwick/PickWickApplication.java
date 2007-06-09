@@ -19,6 +19,11 @@ import org.apache.wicket.request.target.resource.ResourceStreamRequestTarget;
 import org.apache.wicket.util.resource.FileResourceStream;
 import org.apache.wicket.util.resource.IResourceStream;
 
+/**
+ * Wicket application for PickWick
+ * 
+ * @author <a href="mailto:jbq@apache.org">Jean-Baptiste Quenot</a>
+ */
 public class PickWickApplication extends WebApplication {
 	public static final String SEQUENCE_PAGE_PATH = "sequence";
 

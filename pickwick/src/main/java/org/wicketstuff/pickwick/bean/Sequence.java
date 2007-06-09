@@ -1,5 +1,8 @@
 package org.wicketstuff.pickwick.bean;
 
+/**
+ * A folder containing images, with metadata added
+ */
 public class Sequence {
 	private String title;
 

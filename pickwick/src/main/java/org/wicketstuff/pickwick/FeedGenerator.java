@@ -22,6 +22,11 @@ import com.sun.syndication.feed.synd.SyndFeedImpl;
 import com.sun.syndication.io.FeedException;
 import com.sun.syndication.io.SyndFeedOutput;
 
+/**
+ * Generates RSS or Atom feeds for the last n sequences
+ * 
+ * @author <a href="mailto:jbq@apache.org">Jean-Baptiste Quenot</a>
+ */
 public class FeedGenerator {
 	File imagesDir;
 
