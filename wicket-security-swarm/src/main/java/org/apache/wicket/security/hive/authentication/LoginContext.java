@@ -51,7 +51,7 @@ public abstract class LoginContext
 	 */
 	public LoginContext()
 	{
-		this(0, true);
+		this(0, false);
 	}
 
 	/**
@@ -62,7 +62,7 @@ public abstract class LoginContext
 	 */
 	public LoginContext(int sortOrder)
 	{
-		this(sortOrder, true);
+		this(sortOrder, false);
 	}
 
 	/**
