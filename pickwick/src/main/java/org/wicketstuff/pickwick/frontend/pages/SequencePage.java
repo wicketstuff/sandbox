@@ -28,7 +28,7 @@ public class SequencePage extends WebPage {
 		// FIXME handle includes and excludes
 		imageProvider.setPattern("*.JPG");
 		String uri = parameters.getString("uri");
-		if (uri == null){
+		if (uri == null) {
 			uri = "";
 		}
 		imageProvider.setImagePath("/" + uri);
@@ -45,21 +45,21 @@ public class SequencePage extends WebPage {
 			protected void populateItem(Item item) {
 				try {
 					ImageProperties imageProperties = (ImageProperties) item.getModelObject();
-					if (!imageProperties.file.getCanonicalPath().startsWith(settings.getImageDirectoryRoot().getCanonicalPath()))
+					if (!imageProperties.file.getCanonicalPath().startsWith(
+							settings.getImageDirectoryRoot().getCanonicalPath()))
 						throw new RuntimeException("Requested image directory not within the root image directory");
 					WebMarkupContainer link;
 					String imagePath = imageProvider.getImageRelativePath(imageProperties.file);
 					PageParameters params = new PageParameters();
 					params.add("uri", imagePath);
 					item.add(link = new WebMarkupContainer("link"));
-					// FIXME compute relative path instead of using absolute
-					// path
-					String contextPath = getApplication().getApplicationSettings().getContextPath();
-					link.add(new AttributeModifier("href", true, new Model(contextPath + "/"
+					link.add(new AttributeModifier("href", true, new Model(getRequest()
+							.getRelativePathPrefixToContextRoot()
 							+ PickWickApplication.IMAGE_PAGE_PATH + "/" + imagePath)));
 					WebComponent image;
 					link.add(image = new WebComponent("thumbnail"));
-					image.add(new AttributeModifier("src", true, new Model(contextPath + "/"
+					image.add(new AttributeModifier("src", true, new Model(getRequest()
+							.getRelativePathPrefixToContextRoot()
 							+ PickWickApplication.THUMBNAIL_IMAGE_PATH + "/" + imagePath)));
 				} catch (IOException e) {
 					throw new RuntimeException(e);
@@ -67,7 +67,7 @@ public class SequencePage extends WebPage {
 			}
 		});
 		grid.setColumns(5);
-		
+
 		add(new FolderTreePanel("treePanel"));
 	}
 }
