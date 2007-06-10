@@ -19,7 +19,7 @@ define "pickwick" do
 
   # FIXME read pom.xml instead of redefining dependencies here
   # FIXME jetty-util should be depended upon automatically
-  compile.with "commons-digester:commons-digester:jar:1.7", "commons-betwixt:commons-betwixt:jar:0.8", "jdom:jdom:jar:1.0", WICKET, "commons-logging:commons-logging:jar:1.1", "org.mortbay.jetty:jetty-util:jar:6.1.1", "org.mortbay.jetty:jetty:jar:6.1.1", "commons-lang:commons-lang:jar:2.3", "commons-io:commons-io:jar:1.3.1", "rome:rome:jar:0.9"
+  compile.with "log4j:log4j:jar:1.2.12", "org.slf4j:slf4j-log4j12:jar:1.3.1", "org.slf4j:slf4j-api:jar:1.3.1", "org.mortbay.jetty:servlet-api-2.5:jar:6.1.1", "commons-digester:commons-digester:jar:1.7", "commons-betwixt:commons-betwixt:jar:0.8", "jdom:jdom:jar:1.0", WICKET, "commons-logging:commons-logging:jar:1.1", "org.mortbay.jetty:jetty-util:jar:6.1.1", "org.mortbay.jetty:jetty:jar:6.1.1", "commons-lang:commons-lang:jar:2.3", "commons-io:commons-io:jar:1.3.1", "rome:rome:jar:0.9"
   package :jar
 
   package :war
