@@ -17,6 +17,7 @@
 package org.wicketstuff.pickwick;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Arrays;
@@ -32,7 +33,7 @@ import org.wicketstuff.pickwick.bean.Sequence;
 final public class ImageUtils {
 	private Settings settings;
 
-	private ImageFilter imageFilter;
+	private FileFilter imageFilter;
 
 	public Settings getSettings() {
 		return settings;
@@ -151,11 +152,11 @@ final public class ImageUtils {
 		return children[children.length - 1];
 	}
 
-	public ImageFilter getImageFilter() {
+	public FileFilter getImageFilter() {
 		return imageFilter;
 	}
 
-	public void setImageFilter(ImageFilter imageFilter) {
+	public void setImageFilter(FileFilter imageFilter) {
 		this.imageFilter = imageFilter;
 	}
 }

@@ -18,6 +18,8 @@ import org.wicketstuff.pickwick.PickWickApplication;
 public class ImagePage extends WebPage {
 	public ImagePage(PageParameters params) {
 		String uri = params.getString("uri");
+		if (uri == null)
+			throw new RuntimeException("No uri provided!");
 		WebComponent image = new WebComponent("scaled");
 		image.add(new AttributeModifier("src", true, new Model(getRequest().getRelativePathPrefixToContextRoot()
 				+ PickWickApplication.SCALED_IMAGE_PATH + "/" + uri)));

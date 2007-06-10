@@ -2,6 +2,8 @@ package org.wicketstuff.pickwick;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -26,20 +28,17 @@ import com.sun.syndication.io.SyndFeedOutput;
  * @author <a href="mailto:jbq@apache.org">Jean-Baptiste Quenot</a>
  */
 public class FeedGenerator {
-	File imagesDir;
-
 	Settings settings;
 
 	ImageUtils imageUtils;
 
-	public FeedGenerator(Settings settings, final File imagesDir) {
+	public FeedGenerator() {
 		this.settings = settings;
-		this.imagesDir = imagesDir;
 	}
 
-	public void generate(String feedType, File outputFile) throws IOException, FeedException {
+	public void generate(File imagesDir, String feedType, OutputStream output) throws IOException, FeedException {
 		List<File> results;
-		results = new SequenceWalker().generate();
+		results = new SequenceWalker().generate(imagesDir);
 		System.out.println(results);
 		SyndFeed feed = new SyndFeedImpl();
 		feed.setFeedType(feedType);
@@ -75,7 +74,7 @@ public class FeedGenerator {
 		}
 		feed.setEntries(entries);
 		SyndFeedOutput out = new SyndFeedOutput();
-		out.output(feed, outputFile);
+		out.output(feed, new OutputStreamWriter(output));
 	}
 
 	public class SequenceWalker extends DirectoryWalker {
@@ -83,7 +82,7 @@ public class FeedGenerator {
 
 		boolean sequence;
 
-		public List generate() throws IOException {
+		public List generate(File imagesDir) throws IOException {
 			results = new ArrayList<File>();
 			walk(imagesDir, results);
 			Collections.sort(results, new SequenceComparator());
@@ -120,5 +119,13 @@ public class FeedGenerator {
 
 	public void setImageUtils(ImageUtils imageUtils) {
 		this.imageUtils = imageUtils;
+	}
+
+	public Settings getSettings() {
+		return settings;
+	}
+
+	public void setSettings(Settings settings) {
+		this.settings = settings;
 	}
 }

@@ -1,24 +1,38 @@
 package org.wicketstuff.pickwick;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
+import java.io.PipedReader;
+import java.io.PipedWriter;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.wicket.Application;
 import org.apache.wicket.IRequestTarget;
 import org.apache.wicket.PageParameters;
+import org.apache.wicket.RequestCycle;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.protocol.http.WebApplication;
+import org.apache.wicket.protocol.http.WebRequestCycle;
 import org.apache.wicket.request.RequestParameters;
 import org.apache.wicket.request.target.basic.EmptyRequestTarget;
 import org.apache.wicket.request.target.basic.URIRequestTargetUrlCodingStrategy;
 import org.apache.wicket.request.target.component.BookmarkablePageRequestTarget;
 import org.apache.wicket.request.target.component.IBookmarkablePageRequestTarget;
 import org.apache.wicket.request.target.resource.ResourceStreamRequestTarget;
+import org.apache.wicket.util.resource.AbstractResourceStream;
 import org.apache.wicket.util.resource.FileResourceStream;
 import org.apache.wicket.util.resource.IResourceStream;
+import org.apache.wicket.util.resource.ResourceStreamNotFoundException;
+import org.apache.wicket.util.time.Time;
 import org.wicketstuff.pickwick.frontend.pages.ImagePage;
 import org.wicketstuff.pickwick.frontend.pages.SequencePage;
 
@@ -30,7 +44,11 @@ import org.wicketstuff.pickwick.frontend.pages.SequencePage;
 public class PickWickApplication extends WebApplication {
 	ImageUtils imageUtils;
 
-	ImageFilter imageFilter;
+	FileFilter imageFilter;
+
+	FeedGenerator feedGenerator;
+
+	Settings settings;
 
 	public static final String SEQUENCE_PAGE_PATH = "sequence";
 
@@ -40,11 +58,31 @@ public class PickWickApplication extends WebApplication {
 
 	public static final String IMAGE_PAGE_PATH = "image";
 
+	public static final String FEED_PATH = "feed";
+
 	private static final Log log = LogFactory.getLog(PickWickApplication.class);
 
 	@Override
 	public Class getHomePage() {
 		return SequencePage.class;
+	}
+
+	public PickWickApplication() {
+		settings = new Settings();
+		// settings.setBaseURL(((WebRequestCycle)
+		// RequestCycle.get()).getWebRequest().getHttpServletRequest()
+		// .getRequestURL().toString());
+		settings.setBaseURL("http://localhost:8080/");
+		settings.setImageDirectoryRoot(new File("src/main/webapp/images"));
+
+		imageFilter = new ImageFilter();
+		imageUtils = new ImageUtils();
+		imageUtils.setSettings(settings);
+		imageUtils.setImageFilter(imageFilter);
+
+		feedGenerator = new FeedGenerator();
+		feedGenerator.setSettings(settings);
+		feedGenerator.setImageUtils(imageUtils);
 	}
 
 	@Override
@@ -102,20 +140,34 @@ public class PickWickApplication extends WebApplication {
 				}
 			}
 		});
-	}
+		mount(new URIRequestTargetUrlCodingStrategy("/" + FEED_PATH) {
+			@Override
+			public IRequestTarget decode(RequestParameters requestParameters) {
+				try {
+					final ByteArrayOutputStream pout = new ByteArrayOutputStream();
+					getFeedGenerator().generate(settings.getImageDirectoryRoot(), getURI(requestParameters), pout);
 
-	/*
-	 * @Override protected IRequestCycleProcessor newRequestCycleProcessor() {
-	 * return new WebRequestCycleProcessor() { @Override protected Page
-	 * onRuntimeException(Page page, RuntimeException e) { String path =
-	 * RequestCycle.get().getRequest().getPath(); if
-	 * (path.startsWith(SCALED_IMAGE_PATH + "/") ||
-	 * path.startsWith(THUMBNAIL_IMAGE_PATH + "/")) { // Error already logged by
-	 * RequestCycle //log.error("Error occured when serving image", e); // FIXME
-	 * onRuntimeException() should return an IRequestTarget
-	 * RequestCycle.get().setRequestTarget(EmptyRequestTarget.getInstance());
-	 * return null; } else { return super.onRuntimeException(page, e); } } }; }
-	 */
+					IResourceStream resource = new AbstractResourceStream() {
+						public InputStream getInputStream() throws ResourceStreamNotFoundException {
+							return new ByteArrayInputStream(pout.toByteArray());
+						}
+
+						public void close() throws IOException {
+							pout.close();
+						}
+
+						@Override
+						public long length() {
+							return pout.size();
+						}
+					};
+					return new ResourceStreamRequestTarget(resource);
+				} catch (Exception e) {
+					throw new WicketRuntimeException(e);
+				}
+			}
+		});
+	}
 
 	IRequestTarget processImage(String uri, int size) throws IOException, FileNotFoundException,
 			ImageConversionException {
@@ -145,9 +197,7 @@ public class PickWickApplication extends WebApplication {
 	}
 
 	public Settings getSettings() {
-		Settings settings = new Settings();
-		settings.setImageDirectoryRoot(new File("src/main/webapp/images"));
-		return settings;
+		return this.settings;
 	}
 
 	public static PickWickApplication get() {
@@ -155,21 +205,35 @@ public class PickWickApplication extends WebApplication {
 	}
 
 	public ImageUtils getImageUtils() {
-		ImageUtils imageUtils = new ImageUtils();
-		imageUtils.setSettings(getSettings());
-		imageUtils.setImageFilter(getImageFilter());
-		return imageUtils;
+		return this.imageUtils;
 	}
 
 	public void setImageUtils(ImageUtils imageUtils) {
 		this.imageUtils = imageUtils;
 	}
 
-	public ImageFilter getImageFilter() {
-		return new ImageFilter();
+	/**
+	 * Filters the images in the sequences
+	 * 
+	 * @return an instance of {@link ImageFilter}
+	 */
+	public FileFilter getImageFilter() {
+		return this.imageFilter;
 	}
 
-	public void setImageFilter(ImageFilter imageFilter) {
+	public void setImageFilter(FileFilter imageFilter) {
 		this.imageFilter = imageFilter;
+	}
+
+	public FeedGenerator getFeedGenerator() {
+		return this.feedGenerator;
+	}
+
+	public void setFeedGenerator(FeedGenerator feedGenerator) {
+		this.feedGenerator = feedGenerator;
+	}
+
+	public void setSettings(Settings settings) {
+		this.settings = settings;
 	}
 }

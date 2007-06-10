@@ -3,6 +3,11 @@ package org.wicketstuff.pickwick;
 import java.io.File;
 import java.io.FileFilter;
 
+/**
+ * Only keeps filenames having .jpg extension (case insensitive) and that are not hidden (ie not starting with a dot)
+ * 
+ * @author <a href="mailto:jbq@apache.org">Jean-Baptiste Quenot</a>
+ */
 public class ImageFilter implements FileFilter {
 	public boolean accept(File pathname) {
 		if (pathname.getName().startsWith("."))
