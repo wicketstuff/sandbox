@@ -13,6 +13,9 @@ public class Settings implements Serializable{
 
 	String baseURL;
 
+	/**
+	 * @return base URL of the application for use in the RSS feed, see {@link FeedGenerator}
+	 */
 	public String getBaseURL() {
 		return baseURL;
 	}
@@ -21,6 +24,9 @@ public class Settings implements Serializable{
 		this.baseURL = baseURL;
 	}
 
+	/**
+	 * @return {@link File} pointing to the directory containing the images
+	 */
 	public File getImageDirectoryRoot() {
 		return imageDirectoryRoot;
 	}
