@@ -51,7 +51,7 @@ public class FolderTreePanel extends Panel{
 				BookmarkablePageLink nodeLink = new BookmarkablePageLink(id, SequencePage.class, params);
 				try {
 					// FIXME pass pretty URL!!!
-					params.add("uri", ImageUtils.getRelativePath(settings, folder.getFile()));
+					params.add("uri", PickWickApplication.get().getImageUtils().getRelativePath(folder.getFile()));
 				} catch (IOException e) {
 					throw new RuntimeException(e);
 				}

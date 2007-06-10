@@ -28,6 +28,10 @@ import org.wicketstuff.pickwick.frontend.pages.SequencePage;
  * @author <a href="mailto:jbq@apache.org">Jean-Baptiste Quenot</a>
  */
 public class PickWickApplication extends WebApplication {
+	ImageUtils imageUtils;
+
+	ImageFilter imageFilter;
+
 	public static final String SEQUENCE_PAGE_PATH = "sequence";
 
 	public static final String SCALED_IMAGE_PATH = "scaled";
@@ -53,10 +57,11 @@ public class PickWickApplication extends WebApplication {
 				params.add("uri", getURI(requestParameters));
 				return new BookmarkablePageRequestTarget(SequencePage.class, params);
 			}
+
 			@Override
 			public boolean matches(IRequestTarget requestTarget) {
 				if (requestTarget instanceof IBookmarkablePageRequestTarget) {
-					return ((IBookmarkablePageRequestTarget)requestTarget).getPageClass().equals(SequencePage.class);
+					return ((IBookmarkablePageRequestTarget) requestTarget).getPageClass().equals(SequencePage.class);
 				}
 				return false;
 			}
@@ -67,6 +72,14 @@ public class PickWickApplication extends WebApplication {
 				PageParameters params = new PageParameters();
 				params.add("uri", getURI(requestParameters));
 				return new BookmarkablePageRequestTarget(ImagePage.class, params);
+			}
+
+			@Override
+			public boolean matches(IRequestTarget requestTarget) {
+				if (requestTarget instanceof IBookmarkablePageRequestTarget) {
+					return ((IBookmarkablePageRequestTarget) requestTarget).getPageClass().equals(ImagePage.class);
+				}
+				return false;
 			}
 		});
 		mount(new URIRequestTargetUrlCodingStrategy("/" + THUMBNAIL_IMAGE_PATH) {
@@ -104,7 +117,8 @@ public class PickWickApplication extends WebApplication {
 	 * return null; } else { return super.onRuntimeException(page, e); } } }; }
 	 */
 
-	IRequestTarget processImage(String uri, int size) throws IOException, FileNotFoundException, ImageConversionException {
+	IRequestTarget processImage(String uri, int size) throws IOException, FileNotFoundException,
+			ImageConversionException {
 		File baseDirectory = new File("src/main/webapp/" + size);
 		File file = new File(baseDirectory, uri);
 		if (!file.getCanonicalPath().startsWith(baseDirectory.getCanonicalPath())) {
@@ -129,13 +143,33 @@ public class PickWickApplication extends WebApplication {
 	public ImageConverter getImageConverter() {
 		return new ImageMagickImageConverter();
 	}
-	
+
 	public Settings getSettings() {
 		Settings settings = new Settings();
 		settings.setImageDirectoryRoot(new File("src/main/webapp/images"));
 		return settings;
 	}
+
 	public static PickWickApplication get() {
-		return (PickWickApplication)Application.get();
+		return (PickWickApplication) Application.get();
+	}
+
+	public ImageUtils getImageUtils() {
+		ImageUtils imageUtils = new ImageUtils();
+		imageUtils.setSettings(getSettings());
+		imageUtils.setImageFilter(getImageFilter());
+		return imageUtils;
+	}
+
+	public void setImageUtils(ImageUtils imageUtils) {
+		this.imageUtils = imageUtils;
+	}
+
+	public ImageFilter getImageFilter() {
+		return new ImageFilter();
+	}
+
+	public void setImageFilter(ImageFilter imageFilter) {
+		this.imageFilter = imageFilter;
 	}
 }

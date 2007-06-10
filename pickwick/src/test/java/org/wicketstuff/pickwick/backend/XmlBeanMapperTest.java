@@ -3,14 +3,13 @@ package org.wicketstuff.pickwick.backend;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.util.ArrayList;
 
 import junit.framework.TestCase;
 
 public class XmlBeanMapperTest extends TestCase {
 
     public void testGenerate() throws Exception {
-    	File file = new File("/tmp/person.xml");
+    	File file = File.createTempFile(XmlBeanMapperTest.class.getName(), null);
         XmlBeanMapper<PersonBean> mapper = new XmlBeanMapper<PersonBean>();
         FileWriter fw = new FileWriter(file);
         
@@ -19,7 +18,7 @@ public class XmlBeanMapperTest extends TestCase {
         fw.flush();
         fw.close();
         
-        assertTrue(new File("/tmp/person.xml").exists());
+        assertTrue(file.exists());
         
         PersonBean person = new PersonBean();
         person = mapper.bindInBean(new FileReader(file), person);
