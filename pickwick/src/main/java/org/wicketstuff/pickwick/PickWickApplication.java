@@ -15,6 +15,7 @@ import org.apache.wicket.request.RequestParameters;
 import org.apache.wicket.request.target.basic.EmptyRequestTarget;
 import org.apache.wicket.request.target.basic.URIRequestTargetUrlCodingStrategy;
 import org.apache.wicket.request.target.component.BookmarkablePageRequestTarget;
+import org.apache.wicket.request.target.component.IBookmarkablePageRequestTarget;
 import org.apache.wicket.request.target.resource.ResourceStreamRequestTarget;
 import org.apache.wicket.util.resource.FileResourceStream;
 import org.apache.wicket.util.resource.IResourceStream;
@@ -51,6 +52,13 @@ public class PickWickApplication extends WebApplication {
 				PageParameters params = new PageParameters();
 				params.add("uri", getURI(requestParameters));
 				return new BookmarkablePageRequestTarget(SequencePage.class, params);
+			}
+			@Override
+			public boolean matches(IRequestTarget requestTarget) {
+				if (requestTarget instanceof IBookmarkablePageRequestTarget) {
+					return ((IBookmarkablePageRequestTarget)requestTarget).getPageClass().equals(SequencePage.class);
+				}
+				return false;
 			}
 		});
 		mount(new URIRequestTargetUrlCodingStrategy("/" + IMAGE_PAGE_PATH) {
