@@ -22,8 +22,6 @@ import org.wicketstuff.pickwick.Settings;
 public class ImageProvider implements IDataProvider {
 	Settings settings;
 
-	String pattern;
-
 	String imagePath;
 
 	ImageList imageList;
@@ -34,9 +32,7 @@ public class ImageProvider implements IDataProvider {
 
 	private void computeImageList() {
 		if (imageList == null)
-			imageList = new ImageList(pattern, new File(settings
-					.getImageDirectoryRoot().getPath()
-					+ imagePath));
+			imageList = new ImageList(new File(settings.getImageDirectoryRoot().getPath() + imagePath));
 	}
 
 	public Iterator iterator(int first, int count) {
@@ -66,12 +62,14 @@ public class ImageProvider implements IDataProvider {
 
 	/**
 	 * Returns the path to the image relative to image directory root
+	 * 
 	 * @param imageFile
 	 * @return
 	 */
 	public String getImageRelativePath(File imageFile) {
 		try {
-			return imageFile.getCanonicalPath().substring((int) settings.getImageDirectoryRoot().getCanonicalPath().length() + 1);
+			return imageFile.getCanonicalPath().substring(
+					(int) settings.getImageDirectoryRoot().getCanonicalPath().length() + 1);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
@@ -83,13 +81,5 @@ public class ImageProvider implements IDataProvider {
 
 	public void setImagePath(String imagePath) {
 		this.imagePath = imagePath;
-	}
-
-	public String getPattern() {
-		return pattern;
-	}
-
-	public void setPattern(String pattern) {
-		this.pattern = pattern;
 	}
 }

@@ -19,6 +19,8 @@ package org.wicketstuff.pickwick;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 import org.wicketstuff.pickwick.bean.Sequence;
 
@@ -28,9 +30,19 @@ import org.wicketstuff.pickwick.bean.Sequence;
  * @author <a href="mailto:jbq@apache.org">Jean-Baptiste Quenot</a>
  */
 final public class ImageUtils {
+	private Settings settings;
 
-	final public static ImageProperties getImageProperties(File file)
-			throws FileNotFoundException, IOException {
+	private ImageFilter imageFilter;
+
+	public Settings getSettings() {
+		return settings;
+	}
+
+	public void setSettings(Settings settings) {
+		this.settings = settings;
+	}
+
+	final public static ImageProperties getImageProperties(File file) throws FileNotFoundException, IOException {
 		ImageProperties p = new ImageProperties();
 		p.setFile(file);
 		return p;
@@ -63,18 +75,87 @@ final public class ImageUtils {
 		return null;
 	}
 
-	public static String getRelativePath(Settings settings, File imageFile)
-			throws IOException {
-		if (settings.getImageDirectoryRoot().getCanonicalPath().equals(
-				imageFile.getCanonicalPath()))
+	public String getRelativePath(File imageFile) throws IOException {
+		if (settings.getImageDirectoryRoot().getCanonicalPath().equals(imageFile.getCanonicalPath()))
 			return new String();
 		return imageFile.getCanonicalPath().substring(
-				(int) settings.getImageDirectoryRoot().getCanonicalPath()
-						.length() + 1);
+				(int) settings.getImageDirectoryRoot().getCanonicalPath().length() + 1);
 	}
 
-	public static String buildSequencePath(Settings settings, File dir) throws IOException {
-		return PickWickApplication.SEQUENCE_PAGE_PATH + "/"
-				+ ImageUtils.getRelativePath(settings, dir);
+	public String buildSequencePath(File dir) throws IOException {
+		return PickWickApplication.SEQUENCE_PAGE_PATH + "/" + getRelativePath(dir);
+	}
+
+	public String getPreviousImage(String uri) throws IOException {
+		File file = new File(settings.getImageDirectoryRoot(), uri);
+		File previous = getSiblingImage(file, -1);
+		if (previous == null)
+			return null;
+		return getRelativePath(previous);
+	}
+
+	public String getNextImage(String uri) throws IOException {
+		File file = new File(settings.getImageDirectoryRoot(), uri);
+		File next = getSiblingImage(file, 1);
+		if (next == null)
+			return null;
+		return getRelativePath(next);
+	}
+
+	public File getSiblingImage(File file, int offset) {
+		File folder = file.getParentFile();
+		boolean next = false;
+		File[] children = folder.listFiles(imageFilter);
+		if (children.length == 0)
+			throw new RuntimeException("Nothing in sequence " + folder);
+		List list = Arrays.asList(children);
+		int index = list.indexOf(file);
+		if (index + offset < 0 || index + offset > children.length - 1)
+			return null;
+		return children[index + offset];
+	}
+
+	public String getFirstImage(String uri) throws IOException {
+		File file = new File(settings.getImageDirectoryRoot(), uri);
+		File first = getFirstImage(file);
+		if (first == null)
+			return null;
+		return getRelativePath(first);
+	}
+
+	public String getLastImage(String uri) throws IOException {
+		File file = new File(settings.getImageDirectoryRoot(), uri);
+		File last = getLastImage(file);
+		if (last == null)
+			return null;
+		return getRelativePath(last);
+	}
+
+	public File getFirstImage(File file) {
+		File folder = file.getParentFile();
+		File[] children = folder.listFiles(imageFilter);
+		if (children.length == 0)
+			throw new RuntimeException("Nothing in sequence " + folder);
+		if (children[0].equals(file))
+			return null;
+		return children[0];
+	}
+
+	public File getLastImage(File file) {
+		File folder = file.getParentFile();
+		File[] children = folder.listFiles(imageFilter);
+		if (children.length == 0)
+			throw new RuntimeException("Nothing in sequence " + folder);
+		if (children[children.length - 1].equals(file))
+			return null;
+		return children[children.length - 1];
+	}
+
+	public ImageFilter getImageFilter() {
+		return imageFilter;
+	}
+
+	public void setImageFilter(ImageFilter imageFilter) {
+		this.imageFilter = imageFilter;
 	}
 }

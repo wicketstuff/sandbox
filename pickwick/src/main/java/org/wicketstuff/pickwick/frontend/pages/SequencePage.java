@@ -25,8 +25,6 @@ public class SequencePage extends WebPage {
 	public SequencePage(PageParameters parameters) {
 		final Settings settings = PickWickApplication.get().getSettings();
 		final ImageProvider imageProvider = new ImageProvider(settings);
-		// FIXME handle includes and excludes
-		imageProvider.setPattern("*.JPG");
 		String uri = parameters.getString("uri");
 		if (uri == null) {
 			uri = "";

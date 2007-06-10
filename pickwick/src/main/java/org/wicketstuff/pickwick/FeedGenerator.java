@@ -1,9 +1,7 @@
 package org.wicketstuff.pickwick;
 
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -31,6 +29,8 @@ public class FeedGenerator {
 	File imagesDir;
 
 	Settings settings;
+
+	ImageUtils imageUtils;
 
 	public FeedGenerator(Settings settings, final File imagesDir) {
 		this.settings = settings;
@@ -63,8 +63,7 @@ public class FeedGenerator {
 				entry.setTitle(sequence.getTitle());
 			}
 
-			entry.setLink(settings.getBaseURL() + "/"
-					+ ImageUtils.buildSequencePath(settings, dir));
+			entry.setLink(settings.getBaseURL() + "/" + imageUtils.buildSequencePath(dir));
 
 			// FIXME add a description == sequence caption
 			/*
@@ -92,21 +91,18 @@ public class FeedGenerator {
 		}
 
 		@Override
-		protected void handleDirectoryStart(File arg0, int arg1, Collection arg2)
-				throws IOException {
+		protected void handleDirectoryStart(File arg0, int arg1, Collection arg2) throws IOException {
 			sequence = false;
 		}
 
 		@Override
-		protected void handleFile(File arg0, int arg1, Collection arg2)
-				throws IOException {
+		protected void handleFile(File arg0, int arg1, Collection arg2) throws IOException {
 			if (ImageUtils.isImage(arg0))
 				sequence = true;
 		}
 
 		@Override
-		protected void handleDirectoryEnd(File arg0, int arg1, Collection arg2)
-				throws IOException {
+		protected void handleDirectoryEnd(File arg0, int arg1, Collection arg2) throws IOException {
 			if (sequence)
 				results.add(arg0);
 		}
@@ -114,8 +110,15 @@ public class FeedGenerator {
 
 	public class SequenceComparator implements Comparator<File> {
 		public int compare(File o1, File o2) {
-			return (int) (ImageUtils.getSequenceDateMillis(o2) - ImageUtils
-					.getSequenceDateMillis(o1));
+			return (int) (ImageUtils.getSequenceDateMillis(o2) - ImageUtils.getSequenceDateMillis(o1));
 		}
+	}
+
+	public ImageUtils getImageUtils() {
+		return imageUtils;
+	}
+
+	public void setImageUtils(ImageUtils imageUtils) {
+		this.imageUtils = imageUtils;
 	}
 }
