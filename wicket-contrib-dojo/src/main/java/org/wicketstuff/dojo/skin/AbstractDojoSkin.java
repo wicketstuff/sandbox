@@ -99,8 +99,8 @@ public abstract class AbstractDojoSkin {
 	 * @return the htm to used for the widget is this file exist otherwise
 	 *         return null
 	 */
-	public final String getTemplateHtmlPath(Component component, AbstractRequireDojoBehavior behavio) {
-		String htmlTemplate = getClassName(component.getClass().getName().replaceAll("Handler", "")) + ".htm";
+	public final String getTemplateHtmlPath(Component component, AbstractRequireDojoBehavior behavior) {
+		String htmlTemplate = getClassName(behavior.getClass().getName().replaceAll("Handler", "")) + ".htm";
 		if (exists(htmlTemplate)) {
 			return (String) component.urlFor(new ResourceReference(getResourceClass(), htmlTemplate));
 		} else {
