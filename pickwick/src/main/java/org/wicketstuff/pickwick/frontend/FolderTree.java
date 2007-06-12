@@ -7,6 +7,7 @@ import javax.swing.tree.TreeNode;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.markup.html.tree.Tree;
 import org.wicketstuff.pickwick.bean.Folder;
+import org.wicketstuff.pickwick.frontend.pages.FrontendBasePage;
 
 /**
  * A folderTree representing the image directory
@@ -40,4 +41,11 @@ public class FolderTree extends Tree{
 	protected ResourceReference getNodeIcon(TreeNode node) {
 		return getFolderClosed();
 	}
+
+	protected ResourceReference getCSS()
+	{
+		return new ResourceReference(FrontendBasePage.class, "css/tree.css");
+	}
+	
+	
 }

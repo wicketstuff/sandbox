@@ -15,11 +15,11 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.html.tree.AbstractTree;
 import org.apache.wicket.markup.html.tree.Tree;
-import org.wicketstuff.pickwick.ImageUtils;
 import org.wicketstuff.pickwick.PickWickApplication;
 import org.wicketstuff.pickwick.Settings;
 import org.wicketstuff.pickwick.bean.Folder;
 import org.wicketstuff.pickwick.bean.provider.FolderProvider;
+import org.wicketstuff.pickwick.frontend.FolderTree;
 import org.wicketstuff.pickwick.frontend.pages.SequencePage;
 
 /**
@@ -36,12 +36,7 @@ public class FolderTreePanel extends Panel{
 	public FolderTreePanel(String id) {
 		super(id);
 
-		tree = new Tree("folderTree", createTreeModel()) {
-			protected String renderNode(TreeNode node) {
-				Folder bean = (Folder) ((DefaultMutableTreeNode) node)
-						.getUserObject();
-				return bean.getFile().getName();
-			}
+		tree = new FolderTree("folderTree", createTreeModel()) {
 
 			@Override
 			protected MarkupContainer newNodeLink(MarkupContainer parent, String id, TreeNode node) {

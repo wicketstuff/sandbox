@@ -1,0 +1,38 @@
+.thumbnail{
+	text-decoration: none;
+	
+}
+
+.thumbnail table{
+	font-size: 0.8em;
+	border-spacing: 0px;
+	width : 125px;
+	height : 80px;
+	border: 1px black;
+}
+
+.thumbnail table .label{
+	color: white;
+	text-decoration:Ê none;
+	height: 20px;
+}
+
+.thumbnail:hover table .label{
+	color: white;
+	background-color: #46c308;
+	overflow: hidden;
+}
+	
+.thumbnail:hover table{
+	border: 1px dotted #46c308;
+}
+
+.thumbnail img {
+	border: 0px;
+}
+
+
+.thumbnail table td {
+	text-align: center;
+}
+
