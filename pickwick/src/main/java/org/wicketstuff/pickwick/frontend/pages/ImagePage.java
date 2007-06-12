@@ -5,7 +5,6 @@ import java.io.IOException;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.html.WebComponent;
-import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.Model;
 import org.wicketstuff.pickwick.PickWickApplication;
@@ -15,7 +14,7 @@ import org.wicketstuff.pickwick.PickWickApplication;
  * 
  * @author <a href="mailto:jbq@apache.org">Jean-Baptiste Quenot</a>
  */
-public class ImagePage extends WebPage {
+public class ImagePage extends FrontendBasePage {
 	public ImagePage(PageParameters params) {
 		String uri = params.getString("uri");
 		if (uri == null)

@@ -6,7 +6,6 @@ import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.html.WebComponent;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.GridView;
 import org.apache.wicket.model.Model;
@@ -21,7 +20,7 @@ import org.wicketstuff.pickwick.frontend.panel.FolderTreePanel;
  * 
  * @author <a href="mailto:jbq@apache.org">Jean-Baptiste Quenot</a>
  */
-public class SequencePage extends WebPage {
+public class SequencePage extends FrontendBasePage {
 	public SequencePage(PageParameters parameters) {
 		final Settings settings = PickWickApplication.get().getSettings();
 		final ImageProvider imageProvider = new ImageProvider(settings);

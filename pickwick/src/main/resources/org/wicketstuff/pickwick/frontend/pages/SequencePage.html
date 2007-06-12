@@ -1,24 +1,44 @@
 <html>
 	<head>
-		<link type="application/rss+xml" href="/feed/rss_0.9" title="Last 10 Sequences (RSS feed)" rel="alternate">
-		<link type="application/atom+xml" href="/feed/atom_1.0" title="Last 10 Sequences (Atom feed)" rel="alternate">
+		<wicket:head>
+			<link type="application/rss+xml" href="/feed/rss_0.9" title="Last 10 Sequences (RSS feed)" rel="alternate">
+			<link type="application/atom+xml" href="/feed/atom_1.0" title="Last 10 Sequences (Atom feed)" rel="alternate">
+		</wicket:head>
 	</head>
 	<body>
+		<wicket:extend>
 		<table>
 			<tr>
 				<td>
 					<div wicket:id="treePanel"></div>
 				</td>
 				<td>
-					<table cellpadding="0" cellspacing="0" border="0">
-						<tr wicket:id="rows">
-							<td wicket:id="cols">
-								<a wicket:id="link"><img wicket:id="thumbnail"></a>
-							</td>
-						</tr>
-					</table>
+					<!-- TODO : a panel -->
+					<div class="thumbnailArea">
+						<table cellpadding="0" cellspacing="0" border="0">
+							<tr wicket:id="rows">
+								<td wicket:id="cols">
+									<a wicket:id="link"  class="thumbnail">
+							        	<table>
+							        		<tr>
+							        			<td>
+							          				<img wicket:id="thumbnail">
+							          			</td>
+							          		</tr>
+							          		<tr>
+							          			<td class="label">
+							          				Nom de la vignette
+							          			</td>
+							          		</tr>
+							          	</table>
+						          	</a>
+								</td>
+							</tr>
+						</table>
+					</div>
 				</td>
 			</tr>
 		</table>
+		</wicket:extend>
 	</body>
 </html>
