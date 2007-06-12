@@ -1,0 +1,381 @@
+package wicket.contrib.gmap;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.wicket.Component;
+import org.apache.wicket.ResourceReference;
+import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
+import org.apache.wicket.ajax.AjaxEventBehavior;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.AjaxRequestTarget.IJavascriptResponse;
+import org.apache.wicket.ajax.AjaxRequestTarget.IListener;
+import org.apache.wicket.markup.html.IHeaderContributor;
+import org.apache.wicket.markup.html.IHeaderResponse;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.panel.EmptyPanel;
+import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.markup.html.resources.JavascriptResourceReference;
+import org.apache.wicket.model.CompoundPropertyModel;
+
+import wicket.contrib.gmap.api.GLatLng;
+import wicket.contrib.gmap.api.GLatLngFactory;
+import wicket.contrib.gmap.api.GMap2;
+import wicket.contrib.gmap.api.GMarker;
+import wicket.contrib.gmap.api.events.ClickEvent;
+import wicket.contrib.gmap.api.events.ClickListener;
+import wicket.contrib.gmap.api.events.MoveEndEvent;
+import wicket.contrib.gmap.api.events.MoveEndListener;
+
+/**
+ * A reusable wicket component for <a href="http://maps.google.com">Google Maps</a>.
+ * Becasue Maps API requires a different key for each deployment context you
+ * have to either generate a new key (check <a
+ * href="http://www.google.com/apis/maps/signup.html">Google Maps API - Sign Up</a>
+ * for more info).
+ */
+public class GMap2Panel extends Panel
+{
+	private static final long serialVersionUID = 1L;
+
+	public static final String GMAP_URL = "http://maps.google.com/maps?file=api&amp;v=2&amp;key=";
+
+	private final int height;
+
+	private final int width;
+
+	private final DivMapComponent div;
+
+	private Panel divInfoWindowPanel;
+
+	private WebMarkupContainer divDisplayNone;
+
+	private final List<MoveEndListener> moveEndListeners = new ArrayList<MoveEndListener>();
+
+	private final List<ClickListener> clickListeners = new ArrayList<ClickListener>();
+
+	/**
+	 * Construct.
+	 * 
+	 * @param id
+	 * @param gMapKey
+	 * @param model
+	 */
+	public GMap2Panel(final String id, final String gMapKey, final GMap2 model)
+	{
+		this(id, gMapKey, 500, 300, model);
+	}
+
+	/**
+	 * Construct.
+	 * 
+	 * @param id
+	 * @param gMapKey
+	 * @param width
+	 * @param height
+	 * @param model
+	 */
+	public GMap2Panel(final String id, final String gMapKey, final int width, final int height,
+			final GMap2 model)
+	{
+		super(id, new CompoundPropertyModel(model));
+		setOutputMarkupId(true);
+		this.width = width;
+		this.height = height;
+		model.setGMap2Panel(this);
+
+		add(new AbstractDefaultAjaxBehavior()
+		{
+			/**
+			 * Default serailVersionUID
+			 */
+			private static final long serialVersionUID = 1L;
+
+			/** reference to the default support javascript file. */
+			private final ResourceReference GMAPSCRIPT = new JavascriptResourceReference(
+					GMap2Panel.class, "wicket-gmap.js");
+
+			@Override
+			public void renderHead(IHeaderResponse response)
+			{
+				response.renderJavascriptReference(GMAP_URL + gMapKey);
+				super.renderHead(response);
+				response.renderJavascriptReference(GMAPSCRIPT);
+
+				response.renderOnLoadJavascript(getCallbackScript().toString());
+			}
+
+			@Override
+			protected void respond(AjaxRequestTarget target)
+			{
+				target.appendJavascript("Wicket.Event.add(window, \"unload\", function() { GUnLoad();});");
+			}
+		});
+
+		divInfoWindowPanel = new EmptyPanel("divInfoWindowPanel");
+		divInfoWindowPanel.setOutputMarkupId(true);
+		divDisplayNone = new WebMarkupContainer("divDisplayNone");
+		divDisplayNone.setOutputMarkupId(true);
+		divDisplayNone.add(divInfoWindowPanel);
+		add(divDisplayNone);
+
+		div = new DivMapComponent(this, "divMapComponent", model);
+		add(div);
+	}
+
+	/**
+	 * @param listener
+	 */
+	public void removeMoveEndListener(Component listener)
+	{
+		moveEndListeners.remove(listener);
+	}
+
+	/**
+	 * @param listener
+	 */
+	public void removeClickListener(Component listener)
+	{
+		clickListeners.remove(listener);
+	}
+
+	/**
+	 * Binds a 'zoomOut()' call on this map, to the given event of the given
+	 * Component.
+	 * href="http://www.google.com/apis/maps/documentation/reference.html#GMap2">GMap2</a>
+	 * 
+	 * @param comp
+	 */
+	public void addZoomOutControll(final Component comp, final String event)
+	{
+		comp.add(new AjaxEventBehavior(event)
+		{
+			/**
+			 * Default serialVersionUID.
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected CharSequence getFailureScript()
+			{
+				return "alert('Failure on: " + comp.getId() + "')";
+			}
+
+			/**
+			 * @see org.apache.wicket.ajax.AjaxEventBehavior#onEvent(org.apache.wicket.ajax.AjaxRequestTarget)
+			 */
+			@Override
+			protected void onEvent(AjaxRequestTarget target)
+			{
+				target.appendJavascript("Wicket.gmaps['" + getMarkupId() + "']" + ".zoomOut();");
+			}
+		});
+	}
+
+	/**
+	 * Binds a 'zoomIn()' call on this map, to the 'onclick' event of the given
+	 * Component. <a
+	 * href="http://www.google.com/apis/maps/documentation/reference.html#GMap2">GMap2</a>
+	 * 
+	 * @param comp
+	 */
+	public void addZoomInControll(final Component comp, final String event)
+	{
+		comp.add(new AjaxEventBehavior(event)
+		{
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected CharSequence getFailureScript()
+			{
+				return "alert('Failure on: " + comp.getId() + "')";
+			}
+
+			/**
+			 * @see org.apache.wicket.ajax.AjaxEventBehavior#onEvent(org.apache.wicket.ajax.AjaxRequestTarget)
+			 */
+			@Override
+			protected void onEvent(AjaxRequestTarget target)
+			{
+				target.appendJavascript("Wicket.gmaps['" + getMarkupId() + "']" + ".zoomIn();");
+			}
+		});
+	}
+
+	/**
+	 * Binds a 'panDirection(dx, dy)' call on this map, to the 'onclick' event
+	 * of the given Component. <a
+	 * href="http://www.google.com/apis/maps/documentation/reference.html#GMap2">GMap2</a>
+	 * 
+	 * @param dx
+	 * @param dy
+	 * @param comp
+	 */
+	public void addPanDirectionControll(final Component comp, final int dx, final int dy,
+			final String event)
+	{
+		comp.add(new AjaxEventBehavior(event)
+		{
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected CharSequence getFailureScript()
+			{
+				return "alert('Failure on: " + comp.getId() + "')";
+			}
+
+			/**
+			 * @see org.apache.wicket.ajax.AjaxEventBehavior#onEvent(org.apache.wicket.ajax.AjaxRequestTarget)
+			 */
+			@Override
+			protected void onEvent(AjaxRequestTarget target)
+			{
+				target.appendJavascript("Wicket.gmaps['" + getMarkupId() + "']" + ".panDirection("
+						+ dx + "," + dy + ");");
+			}
+		});
+	}
+
+	/**
+	 * @param model
+	 * @param comp
+	 */
+	public void addAddOverlayControll(final Component comp, final GLatLngFactory factory)
+	{
+		comp.add(new AjaxEventBehavior("onclick")
+		{
+			/**
+			 * Default serialVersionUID.
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected CharSequence getFailureScript()
+			{
+				return "alert('Failure on: " + comp.getId() + "')";
+			}
+
+			@Override
+			protected void onEvent(AjaxRequestTarget target)
+			{
+				GMarker marker = new GMarker(factory.getGLatLng());
+				target.appendJavascript("addOverlay(\"" + getMarkupId() + "\", '"
+						+ marker.hashCode() + "', '" + marker.getJSConstructor() + "');");
+			}
+		});
+	}
+
+	/**
+	 * @param listener
+	 */
+	public void addMoveEndListener(MoveEndListener listener)
+	{
+		moveEndListeners.add(listener);
+	}
+
+	/**
+	 * @param listener
+	 */
+	public void addClickListener(ClickListener listener)
+	{
+		clickListeners.add(listener);
+	}
+
+	/**
+	 * @param target
+	 */
+	public void processMoveEndEvent(MoveEndEvent event, AjaxRequestTarget target)
+	{
+		for (MoveEndListener listener : moveEndListeners)
+		{
+			listener.moveEndPerformed(event, target);
+		}
+	}
+
+	/**
+	 * All Listeners will be notified of the event. And also all listeners will
+	 * be added to the AjaxRequestTarget to be redrawn.
+	 * 
+	 * @param clickEvent
+	 * @param target
+	 */
+	public void processClickEvent(ClickEvent clickEvent, AjaxRequestTarget target)
+	{
+		for (ClickListener listener : clickListeners)
+		{
+			listener.clickPerformed(clickEvent, target);
+		}
+	}
+
+	public int getHeight()
+	{
+		return height;
+	}
+
+	public int getWidth()
+	{
+		return width;
+	}
+
+	public void addOpenInfoWindowControl(final Component comp, final GLatLng point,
+			final InfoWindowPanel panel, String event)
+	{
+		comp.add(new AjaxEventBehavior(event)
+		{
+			/**
+			 * Default serialVersionUID.
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected CharSequence getFailureScript()
+			{
+				return "alert('Failure on: " + comp.getId() + "')";
+			}
+
+			/**
+			 * @see org.apache.wicket.ajax.AjaxEventBehavior#onEvent(org.apache.wicket.ajax.AjaxRequestTarget)
+			 */
+			@Override
+			protected void onEvent(AjaxRequestTarget target)
+			{
+				panel.setOutputMarkupId(true);
+				divDisplayNone.replace(panel);
+				target.addComponent(divDisplayNone);
+				target.appendJavascript("openInfoWindow('" + getMarkupId() + "'," + "'"
+						+ point.getJSConstructor() + "','" + divInfoWindowPanel.getMarkupId()
+						+ "')");
+			}
+		});
+
+	}
+
+	public IListener getJSOpenInfoWindow(final GLatLng latLng, final InfoWindowPanel panel)
+	{
+		return new AjaxRequestTarget.IListener()
+		{
+
+			public void onBeforeRespond(Map map, AjaxRequestTarget target)
+			{
+				panel.setOutputMarkupId(true);
+				divDisplayNone.replace(panel);
+				target.addComponent(divDisplayNone);
+			}
+
+			public void onAfterRespond(Map map, IJavascriptResponse response)
+			{
+				response.addJavascript("openInfoWindow('" + getMarkupId() + "'," + "'"
+						+ latLng.getJSConstructor() + "','" + divInfoWindowPanel.getMarkupId()
+						+ "')");
+			}
+
+		};
+	}
+}
