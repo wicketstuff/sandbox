@@ -35,7 +35,7 @@ public class DojoInlineEditBoxHandler extends AbstractRequireDojoBehavior {
 		super.renderHead(response);
 		PackagedTextTemplate packagedTextTemplate = new PackagedTextTemplate(this.getClass(), "InlineEditBox.js");
 		HashMap<String, CharSequence> map = new HashMap<String, CharSequence>();
-		map.put("callbackUrl", getCallbackUrl());
+		map.put("callbackScript", generateCallbackScript("wicketAjaxGet('" + getCallbackUrl() + "&newTextValue=' + newValue"));
 		map.put("markupId", getComponent().getMarkupId());	
 		response.renderJavascript(packagedTextTemplate.asString(map), null);
 	}
@@ -61,8 +61,7 @@ public class DojoInlineEditBoxHandler extends AbstractRequireDojoBehavior {
 	@Override
 	public void onComponentReRendered(AjaxRequestTarget ajaxTarget) {
 		super.onComponentReRendered(ajaxTarget);
-		
 		String markupId = getComponent().getMarkupId();
-		ajaxTarget.appendJavascript("initInlineEditBox('" + markupId + "')\n");
+		ajaxTarget.appendJavascript("initInlineEditBox('" + markupId + "', \"" + generateCallbackScript("wicketAjaxGet('" + getCallbackUrl() + "&newTextValue=' + newValue") + "\");");
 	}
 }
