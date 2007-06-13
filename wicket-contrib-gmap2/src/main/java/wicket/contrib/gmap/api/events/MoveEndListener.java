@@ -7,7 +7,7 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 
 
 /**
- * Listener of MoveEnd Events of GEvent.
+ * Listener of MoveEnd Events of GMap2Event.
  */
 public abstract class MoveEndListener extends GMap2Listener implements Serializable
 {

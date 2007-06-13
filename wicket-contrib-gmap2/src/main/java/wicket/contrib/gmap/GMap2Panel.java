@@ -11,7 +11,6 @@ import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.AjaxRequestTarget.IJavascriptResponse;
 import org.apache.wicket.ajax.AjaxRequestTarget.IListener;
-import org.apache.wicket.markup.html.IHeaderContributor;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.panel.EmptyPanel;
@@ -47,8 +46,14 @@ public class GMap2Panel extends Panel
 
 	private final DivMapComponent div;
 
+	/**
+	 * Panel containing the node to be displayed in the GMap.
+	 */
 	private Panel divInfoWindowPanel;
 
+	/**
+	 * Invisible container that holds the information about the InfoWindow.
+	 */
 	private WebMarkupContainer divDisplayNone;
 
 	private final List<MoveEndListener> moveEndListeners = new ArrayList<MoveEndListener>();
@@ -85,6 +90,7 @@ public class GMap2Panel extends Panel
 		this.height = height;
 		model.setGMap2Panel(this);
 
+		//Set up the JavaScript context for this Panel.
 		add(new AbstractDefaultAjaxBehavior()
 		{
 			/**
@@ -109,6 +115,8 @@ public class GMap2Panel extends Panel
 			@Override
 			protected void respond(AjaxRequestTarget target)
 			{
+				//Adds a call to GUnLoad() to the unload event of the body element.
+				//TODO Bug, doesen't work.
 				target.appendJavascript("Wicket.Event.add(window, \"unload\", function() { GUnLoad();});");
 			}
 		});
@@ -207,13 +215,14 @@ public class GMap2Panel extends Panel
 	}
 
 	/**
-	 * Binds a 'panDirection(dx, dy)' call on this map, to the 'onclick' event
-	 * of the given Component. <a
+	 * Binds a 'panDirection(dx, dy)' call on this map, to the event
+	 * of the given component. <a
 	 * href="http://www.google.com/apis/maps/documentation/reference.html#GMap2">GMap2</a>
 	 * 
+	 * @param comp
 	 * @param dx
 	 * @param dy
-	 * @param comp
+	 * @param event
 	 */
 	public void addPanDirectionControll(final Component comp, final int dx, final int dy,
 			final String event)
@@ -244,12 +253,17 @@ public class GMap2Panel extends Panel
 	}
 
 	/**
-	 * @param model
+	 * Binds a 'addOverlay' call on this map, to the given event
+	 * of the given component. <a
+	 * href="http://www.google.com/apis/maps/documentation/reference.html#GMap2">GMap2</a>
+	 * 
 	 * @param comp
+	 * @param factory
+	 * @param event
 	 */
-	public void addAddOverlayControll(final Component comp, final GLatLngFactory factory)
+	public void addAddOverlayControll(final Component comp, final GLatLngFactory factory, final String event)
 	{
-		comp.add(new AjaxEventBehavior("onclick")
+		comp.add(new AjaxEventBehavior(event)
 		{
 			/**
 			 * Default serialVersionUID.
@@ -300,8 +314,7 @@ public class GMap2Panel extends Panel
 	}
 
 	/**
-	 * All Listeners will be notified of the event. And also all listeners will
-	 * be added to the AjaxRequestTarget to be redrawn.
+	 * All Listeners will be notified of the event.
 	 * 
 	 * @param clickEvent
 	 * @param target
@@ -324,6 +337,15 @@ public class GMap2Panel extends Panel
 		return width;
 	}
 
+	/**
+	 * Binds a 'openInfoWindow' call on this map, to the given event
+	 * of the given component. <a
+	 * href="http://www.google.com/apis/maps/documentation/reference.html#GMap2">GMap2</a>
+	 * 
+	 * @param comp
+	 * @param factory
+	 * @param event
+	 */
 	public void addOpenInfoWindowControl(final Component comp, final GLatLng point,
 			final InfoWindowPanel panel, String event)
 	{
@@ -346,17 +368,27 @@ public class GMap2Panel extends Panel
 			@Override
 			protected void onEvent(AjaxRequestTarget target)
 			{
+				//replace the panel held, by the invisible div element.
 				panel.setOutputMarkupId(true);
 				divDisplayNone.replace(panel);
 				target.addComponent(divDisplayNone);
+				
 				target.appendJavascript("openInfoWindow('" + getMarkupId() + "'," + "'"
 						+ point.getJSConstructor() + "','" + divInfoWindowPanel.getMarkupId()
 						+ "')");
 			}
 		});
-
 	}
 
+	/**
+	 * Provides an AjaxRequestTarget.IListener providing JavaScript code to call the openInfoWindow
+	 * method on the GMap.
+	 * This is typically used by Listeners on the client programmers side to be
+	 * able to add InfoWindow within a AjaxCallCycle.
+	 * @param latLng
+	 * @param panel
+	 * @return
+	 */
 	public IListener getJSOpenInfoWindow(final GLatLng latLng, final InfoWindowPanel panel)
 	{
 		return new AjaxRequestTarget.IListener()

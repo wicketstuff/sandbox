@@ -3,7 +3,6 @@ package wicket.contrib.gmap.api;
 import java.util.Map;
 
 import org.apache.wicket.Component;
-import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.AjaxRequestTarget.IJavascriptResponse;
 
@@ -36,6 +35,12 @@ public class GMarker<T extends Component> extends GOverlay
 		return "new GMarker(" + point.getJSConstructor() + ")";
 	}
 
+	/**
+	 * Provides an AjaxRequestTarget.IListener providing JavaScript code to call the
+	 * addOverlay method on the GMap. This is typically used by Listeners on the
+	 * client programmers side to be able to add this GMarker as an Overlay within
+	 * a AjaxCallCycle.
+	 */
 	public AjaxRequestTarget.IListener getJSAdd()
 	{
 		return new AjaxRequestTarget.IListener()
