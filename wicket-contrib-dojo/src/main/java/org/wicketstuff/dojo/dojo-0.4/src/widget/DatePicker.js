@@ -87,7 +87,7 @@ dojo.widget.defineWidget(
 			currentDate: "currentDate",
 			selectedDate: "selectedItem"
 		},
-		templatePath:  dojo.uri.dojoUri("src/widget/templates/DatePicker.htm"),
+		templatePath:  dojo.uri.dojoUri("src/widget/templates/DatePicker.html"),
 		templateCssPath:  dojo.uri.dojoUri("src/widget/templates/DatePicker.css"),
 
 		postMixInProperties: function(){
