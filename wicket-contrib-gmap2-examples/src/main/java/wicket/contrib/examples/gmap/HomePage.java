@@ -19,6 +19,7 @@ import wicket.contrib.gmap.api.events.MoveEndEvent;
 import wicket.contrib.gmap.api.events.MoveEndListener;
 
 /**
+ * Example HomePage for the wicket-contrib-gmap2 project
  */
 public class HomePage extends WicketExamplePage
 {
@@ -88,7 +89,7 @@ public class HomePage extends WicketExamplePage
 						* (0.9995 + Math.random() / 1000));
 			}
 
-		});
+		}, "onclick");
 
 		add(topPanel);
 		add(zoomIn);
@@ -149,6 +150,11 @@ public class HomePage extends WicketExamplePage
 
 		bottomPanel.addClickListener(new ClickListener()
 		{
+			/**
+			 * Default serialVersionUID.
+			 */
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public void clickPerformed(ClickEvent event, AjaxRequestTarget target)
 			{
