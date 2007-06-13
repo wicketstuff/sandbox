@@ -38,7 +38,7 @@ dojo.widget.defineWidget("dojo.widget.TabContainer", dojo.widget.PageContainer, 
 	closeButton: "none",
 
 	templateString: null,	// override setting in PageContainer
-	templatePath: dojo.uri.dojoUri("src/widget/templates/TabContainer.htm"),
+	templatePath: dojo.uri.dojoUri("src/widget/templates/TabContainer.html"),
 	templateCssPath: dojo.uri.dojoUri("src/widget/templates/TabContainer.css"),
 
 	// String
