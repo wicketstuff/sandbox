@@ -36,7 +36,7 @@ Index: src/widget/DropdownTimePicker.js
 +		//If true disabled the input from keyboard
 +		inputNotAllowed:false,
  
- 		templatePath: dojo.uri.dojoUri("src/widget/templates/TimePicker.htm"),
+ 		templatePath: dojo.uri.dojoUri("src/widget/templates/TimePicker.html"),
  		templateCssPath: dojo.uri.dojoUri("src/widget/templates/TimePicker.css"),
 @@ -69,6 +75,12 @@
  				this.timePicker.initUI();
