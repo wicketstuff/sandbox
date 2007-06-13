@@ -6,9 +6,8 @@ import wicket.contrib.gmap.api.GLatLng;
 import wicket.contrib.gmap.api.GMarker;
 
 /**
- * @author fnk64
  */
-public class ClickEvent extends GEvent implements Serializable
+public class ClickEvent extends GMap2Event implements Serializable
 {
 
 	/**

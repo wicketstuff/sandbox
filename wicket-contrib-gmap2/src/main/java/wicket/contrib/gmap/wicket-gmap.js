@@ -8,7 +8,6 @@ if (Function.prototype.bind == null) {
 }
 
 // Wicket Namespace
-
 if (typeof(Wicket) == "undefined")
 	Wicket = { };
 

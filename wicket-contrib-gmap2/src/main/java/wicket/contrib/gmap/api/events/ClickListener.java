@@ -2,7 +2,6 @@ package wicket.contrib.gmap.api.events;
 
 import java.io.Serializable;
 
-import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 
 
