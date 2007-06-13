@@ -210,7 +210,7 @@ dojo.widget.defineWidget(
 	//	if true, this is the open pane
 	selected: false,
 
-	templatePath: dojo.uri.dojoUri("src/widget/templates/AccordionPane.htm"),
+	templatePath: dojo.uri.dojoUri("src/widget/templates/AccordionPane.html"),
 	templateCssPath: dojo.uri.dojoUri("src/widget/templates/AccordionPane.css"),
 
 	isContainer: true,
