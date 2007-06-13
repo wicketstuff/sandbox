@@ -85,7 +85,7 @@ dojo.widget.defineWidget(
 		//If true disabled the input from keyboard
 		inputNotAllowed:false,
 		
-		templatePath:  dojo.uri.dojoUri("src/widget/templates/DatePicker.htm"),
+		templatePath:  dojo.uri.dojoUri("src/widget/templates/DatePicker.html"),
 		templateCssPath:  dojo.uri.dojoUri("src/widget/templates/DatePicker.css"),
 		
 		//store a bad value
