@@ -264,7 +264,7 @@ dojo.widget.defineWidget(
 		//the old implementation has builtin fade toggle, so we mimic it here
 		dropdownToggle: "fade",
 
-		templatePath: dojo.uri.dojoUri("src/widget/templates/ComboBox.htm"),
+		templatePath: dojo.uri.dojoUri("src/widget/templates/ComboBox.html"),
 		templateCssPath: dojo.uri.dojoUri("src/widget/templates/ComboBox.css"),
 
 
