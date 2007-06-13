@@ -37,7 +37,9 @@ import wicket.contrib.gmap.api.events.ClickEvent;
 import wicket.contrib.gmap.api.events.MoveEndEvent;
 
 /**
- * Div Element of the GMap2Panel.
+ * Div Element of the GMap2Panel. This element contains the map.
+ * See: <a
+ * href="http://www.google.com/apis/maps/documentation/#The_Hello_World_of_Google_Maps">The_Hello_World_of_Google_Maps</a>
  */
 class DivMapComponent extends WebComponent
 {
@@ -61,7 +63,9 @@ class DivMapComponent extends WebComponent
 				+ panel.getHeight() + "px")));
 
 		// moveend event
-		final AbstractDefaultAjaxBehavior movendBehaviour = new AbstractDefaultAjaxBehavior()
+		//Nothing is provided to the generated page, this behaviour waits for calls generated
+		//by other behaviours.
+		final AbstractDefaultAjaxBehavior moveendBehaviour = new AbstractDefaultAjaxBehavior()
 		{
 			/**
 			 * Default serailVersionUID
@@ -81,9 +85,11 @@ class DivMapComponent extends WebComponent
 				panel.processMoveEndEvent(event, target);
 			}
 		};
-		add(movendBehaviour);
+		add(moveendBehaviour);
 
 		// click event
+		//Nothing is provided to the generated page, this behaviour waits for calls generated
+		//by other behaviours.
 		final AbstractDefaultAjaxBehavior clickBehaviour = new AbstractDefaultAjaxBehavior()
 		{
 			/**
@@ -114,12 +120,15 @@ class DivMapComponent extends WebComponent
 
 			public void renderHead(IHeaderResponse response)
 			{
+				//Once the page is loaded, the client executes a script that
+				//calls back right to this behavior.
 				response.renderOnLoadJavascript(getCallbackScript().toString());
 			}
 
 			@Override
 			protected void respond(AjaxRequestTarget target)
 			{
+				//Call all scripts nessessary to set up the GMap in the browser.
 				target.appendJavascript(getAddGMapScript(model));
 				for (Iterator<GControl> iterator = model.getControls().iterator(); iterator.hasNext();) {
 					target.appendJavascript(getAddControls(iterator.next()));
@@ -152,7 +161,9 @@ class DivMapComponent extends WebComponent
 						+ model.getCenter().getLat() + ", "
 						+ model.getCenter().getLng() + ", "
 						+ model.getZoomLevel() + ", \""
-						+ movendBehaviour.getCallbackUrl() + "\", " + "\""
+						//provides the GMap with information which script to call
+						//on a moveend or a click event.
+						+ moveendBehaviour.getCallbackUrl() + "\", " + "\""
 						+ clickBehaviour.getCallbackUrl() + "\")";
 			}
 		};
