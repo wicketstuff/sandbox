@@ -29,7 +29,7 @@
 	    </svn>
 	</target>
 	
-	<target name="patch">
+	<target name="patch" depends="checkout">
 		<patch strip="0"  patchfile="${patches.path}/${dojo.release}/calendarFr.2376.patch" dir="./dojo/${dojo.release}"/>
 		<patch strip="0"  patchfile="${patches.path}/${dojo.release}/DropDownDateTimePicker.2463.patch" dir="./dojo/${dojo.release}"/>
 		<patch strip="0"  patchfile="${patches.path}/${dojo.release}/DropDownDateTimePicker.2568.patch" dir="./dojo/${dojo.release}"/>
@@ -42,7 +42,7 @@
 		<patch strip="0"  patchfile="${patches.path}/${dojo.release}/TimePicker.xxxxx.patch" dir="./dojo/${dojo.release}"/>
 	</target>
 	
-	<target name="buildDojo">
+	<target name="buildDojo" depends="patch">
 		<!-- copy wicket widgets -->
 		<copydir dest="./dojo/dojo-wicket" src="../src/main/java/org/wicketstuff/dojo/dojo-wicket"/>
 		<exec command="ant clean release -DprofileFile=../../../${profile.path}" dir="./dojo/${dojo.release}/buildscripts"/>
