@@ -1,19 +1,8 @@
 package org.wicketstuff.pickwick.frontend.pages;
 
-import java.io.IOException;
-
-import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.PageParameters;
-import org.apache.wicket.markup.html.WebComponent;
-import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.repeater.Item;
-import org.apache.wicket.markup.repeater.data.GridView;
-import org.apache.wicket.model.Model;
-import org.wicketstuff.pickwick.ImageProperties;
-import org.wicketstuff.pickwick.PickWickApplication;
-import org.wicketstuff.pickwick.Settings;
-import org.wicketstuff.pickwick.bean.provider.ImageProvider;
 import org.wicketstuff.pickwick.frontend.panel.FolderTreePanel;
+import org.wicketstuff.pickwick.frontend.panel.SequenceGridPanel;
 
 /**
  * Page to display a sequence with image thumbnails
@@ -22,49 +11,11 @@ import org.wicketstuff.pickwick.frontend.panel.FolderTreePanel;
  */
 public class SequencePage extends FrontendBasePage {
 	public SequencePage(PageParameters parameters) {
-		final Settings settings = PickWickApplication.get().getSettings();
-		final ImageProvider imageProvider = new ImageProvider(settings);
 		String uri = parameters.getString("uri");
 		if (uri == null) {
 			uri = "";
 		}
-		imageProvider.setImagePath("/" + uri);
-		GridView grid;
-		add(grid = new GridView("rows", imageProvider) {
-			@Override
-			protected void populateEmptyItem(Item item) {
-				WebMarkupContainer link;
-				item.add(link = new WebMarkupContainer("link"));
-				link.setVisible(false);
-			}
-
-			@Override
-			protected void populateItem(Item item) {
-				try {
-					ImageProperties imageProperties = (ImageProperties) item.getModelObject();
-					if (!imageProperties.file.getCanonicalPath().startsWith(
-							settings.getImageDirectoryRoot().getCanonicalPath()))
-						throw new RuntimeException("Requested image directory not within the root image directory");
-					WebMarkupContainer link;
-					String imagePath = imageProvider.getImageRelativePath(imageProperties.file);
-					PageParameters params = new PageParameters();
-					params.add("uri", imagePath);
-					item.add(link = new WebMarkupContainer("link"));
-					link.add(new AttributeModifier("href", true, new Model(getRequest()
-							.getRelativePathPrefixToContextRoot()
-							+ PickWickApplication.IMAGE_PAGE_PATH + "/" + imagePath)));
-					WebComponent image;
-					link.add(image = new WebComponent("thumbnail"));
-					image.add(new AttributeModifier("src", true, new Model(getRequest()
-							.getRelativePathPrefixToContextRoot()
-							+ PickWickApplication.THUMBNAIL_IMAGE_PATH + "/" + imagePath)));
-				} catch (IOException e) {
-					throw new RuntimeException(e);
-				}
-			}
-		});
-		grid.setColumns(5);
-
+		add(new SequenceGridPanel("thumbnails", uri));
 		add(new FolderTreePanel("treePanel"));
 	}
 }
