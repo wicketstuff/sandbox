@@ -127,6 +127,7 @@ dojo.widget.defineWidget(
 			//build the args for DatePicker based on the public attributes of DropdownDatePicker
 			this.datePicker = dojo.widget.createWidget("DatePicker", dpArgs, this.containerNode, "child");
 			dojo.event.connect(this.datePicker, "onValueChanged", this, "onSetDate");
+			dojo.event.connect(this.inputNode, "onblur", this, "onInputChange");
 			
 			if(this.value){
 				this.onSetDate();
@@ -187,12 +188,13 @@ dojo.widget.defineWidget(
 						{formatLength:this.formatLength, datePattern:this.displayFormat, selector:'dateOnly', locale:this.lang});			
 				if(inputDate){
 					this.setDate(inputDate);
+				} else {
+					//If the date can not be parsed, just duplicate user entry in valueNode... Wicket will validate that
+					this.valueNode.value = input;
 				}
 			} else {
 				this.valueNode.value = input;
 			}
-			//If the date can not be parsed, just duplicate user entry in valueNode... Wicket will validate that
-			if(input){ this.valueNode.value = input }
 		},
 
 		_synchValueNode: function(){
