@@ -2,6 +2,8 @@ package org.wicketstuff.pickwick.backend;
 
 import java.util.ArrayList;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+@XStreamAlias("person")
 public class PersonBean {
     
     private String name;
