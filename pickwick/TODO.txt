@@ -19,3 +19,4 @@ FIXES
 LONG TERM
 
 * wilcard page mount => /sequence/**/*.JPG == ImagePage.class
+* Study jMagick to replace hard coded "convert" instruction
