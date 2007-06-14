@@ -6,21 +6,22 @@
 .thumbnail table{
 	font-size: 0.8em;
 	border-spacing: 0px;
-	width : 125px;
+	width : 115px;
 	height : 80px;
 	border: 1px black;
+	margin: 5px;
 }
 
 .thumbnail table .label{
 	color: white;
 	text-decoration:Ê none;
-	height: 20px;
+	height: 15px;
+	overflow:hidden;
+	width:100%;
 }
 
 .thumbnail:hover table .label{
-	color: white;
 	background-color: #46c308;
-	overflow: hidden;
 }
 	
 .thumbnail:hover table{
