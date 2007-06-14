@@ -28,7 +28,7 @@ public class YuiDependencyResolver implements Serializable
 
     private static final Logger log = LoggerFactory.getLogger(YuiDependencyResolver.class);
 
-    public Set<String> resolveDependecies(String module, String path) {
+    public Set<String> resolveDependencies(String module, String path) {
         if(deps.containsKey(module)) {
             return deps.get(module);
         } else {

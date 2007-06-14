@@ -59,7 +59,7 @@ public class YuiHeaderContributor extends AbstractHeaderContributor
     public static YuiHeaderContributor forModule(String name, String[] optionalDependencies, boolean debug, String build)
     {
         YuiHeaderContributor yhc = new YuiHeaderContributor();
-        Set<String> dependencies = dependencyResolver.resolveDependecies(name, YUI_BUILD_ROOT + "/" + build);
+        Set<String> dependencies = dependencyResolver.resolveDependencies(name, YUI_BUILD_ROOT + "/" + build);
         for (String dep : dependencies) {
             yhc.addModuleHeaderContributor(dep, build, debug);
         }
