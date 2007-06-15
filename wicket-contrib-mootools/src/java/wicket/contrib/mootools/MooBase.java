@@ -1,6 +1,5 @@
 package wicket.contrib.mootools;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 import org.apache.wicket.Application;
