@@ -28,7 +28,7 @@ import org.apache.wicket.security.models.ISecureModel;
 import org.apache.wicket.security.strategies.ClassAuthorizationStrategy;
 import org.apache.wicket.security.strategies.LoginException;
 
-final class TestStrategy extends ClassAuthorizationStrategy
+public class TestStrategy extends ClassAuthorizationStrategy
 {
 	/**
 	 * 
