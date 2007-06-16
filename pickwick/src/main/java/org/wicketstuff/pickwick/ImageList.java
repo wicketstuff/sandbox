@@ -7,7 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.wicketstuff.pickwick.backend.ImageUtils;
-import org.wicketstuff.pickwick.bean.provider.ImageProvider;
+import org.wicketstuff.pickwick.frontend.ImageProvider;
 
 /**
  * List of images from a sequence, used in {@link ImageProvider}

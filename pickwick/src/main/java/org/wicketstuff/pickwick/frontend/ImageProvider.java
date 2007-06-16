@@ -1,4 +1,4 @@
-package org.wicketstuff.pickwick.bean.provider;
+package org.wicketstuff.pickwick.frontend;
 
 import java.io.File;
 import java.io.IOException;
