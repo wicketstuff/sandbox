@@ -12,6 +12,8 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.io.DirectoryWalker;
+import org.wicketstuff.pickwick.backend.ImageUtils;
+import org.wicketstuff.pickwick.backend.Settings;
 import org.wicketstuff.pickwick.bean.Sequence;
 
 import com.sun.syndication.feed.synd.SyndContent;

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.wicketstuff.pickwick.backend.ImageUtils;
 import org.wicketstuff.pickwick.bean.provider.ImageProvider;
 
 /**

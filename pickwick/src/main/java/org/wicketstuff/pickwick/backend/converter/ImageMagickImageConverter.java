@@ -1,4 +1,4 @@
-package org.wicketstuff.pickwick;
+package org.wicketstuff.pickwick.backend.converter;
 
 import java.io.File;
 import java.io.IOException;
@@ -8,6 +8,7 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.wicketstuff.pickwick.ImageConversionException;
 
 /**
  * {@link ImageConverter} implemented with ImageMagick. Please make sure

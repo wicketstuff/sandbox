@@ -33,6 +33,10 @@ import org.apache.wicket.util.resource.FileResourceStream;
 import org.apache.wicket.util.resource.IResourceStream;
 import org.apache.wicket.util.resource.ResourceStreamNotFoundException;
 import org.apache.wicket.util.time.Time;
+import org.wicketstuff.pickwick.backend.ImageUtils;
+import org.wicketstuff.pickwick.backend.Settings;
+import org.wicketstuff.pickwick.backend.converter.ImageConverter;
+import org.wicketstuff.pickwick.backend.converter.ImageMagickImageConverter;
 import org.wicketstuff.pickwick.frontend.pages.ImagePage;
 import org.wicketstuff.pickwick.frontend.pages.SequencePage;
 

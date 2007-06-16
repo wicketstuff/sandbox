@@ -1,7 +1,9 @@
-package org.wicketstuff.pickwick;
+package org.wicketstuff.pickwick.backend;
 
 import java.io.File;
 import java.io.Serializable;
+
+import org.wicketstuff.pickwick.FeedGenerator;
 
 /**
  * PickWick settings

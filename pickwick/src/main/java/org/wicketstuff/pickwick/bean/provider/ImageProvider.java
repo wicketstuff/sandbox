@@ -12,7 +12,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.wicketstuff.pickwick.ImageList;
 import org.wicketstuff.pickwick.ImageProperties;
-import org.wicketstuff.pickwick.Settings;
+import org.wicketstuff.pickwick.backend.Settings;
 
 /**
  * An {@link IDataProvider} that provides images from a given sequence

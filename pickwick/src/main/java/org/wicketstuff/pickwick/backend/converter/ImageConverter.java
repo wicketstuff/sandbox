@@ -1,6 +1,8 @@
-package org.wicketstuff.pickwick;
+package org.wicketstuff.pickwick.backend.converter;
 
 import java.io.File;
+
+import org.wicketstuff.pickwick.ImageConversionException;
 
 /**
  * Converter that operates on a picture to achieve scaling, rotation, etc.

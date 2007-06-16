@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.wicketstuff.pickwick;
+package org.wicketstuff.pickwick.backend;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -23,6 +23,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import org.wicketstuff.pickwick.ImageProperties;
+import org.wicketstuff.pickwick.PickWickApplication;
 import org.wicketstuff.pickwick.bean.Sequence;
 
 /**
