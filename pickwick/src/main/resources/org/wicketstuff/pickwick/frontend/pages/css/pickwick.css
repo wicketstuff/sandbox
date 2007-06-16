@@ -10,11 +10,7 @@ body {
 	background-repeat: no-repeat;
 	height: 100px;
 }
-
-#mainArea{
-}
-
-.thumbnailArea{
+.box{
 	white-space: nowrap;	
 	border: 1px solid #555555;
 	background-color: black;
