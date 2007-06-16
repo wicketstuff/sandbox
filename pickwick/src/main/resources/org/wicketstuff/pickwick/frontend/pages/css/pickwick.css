@@ -3,19 +3,16 @@
 
 body {
 	background : url('images/bg.jpg');
+	padding: 0 100px;
 }
 
 #header{
 	background-image : url('images/pickwick-w.png');
 	background-repeat: no-repeat;
 	height: 100px;
-	margin-left:100px;
-	margin-right:100px;
 }
 
 #mainArea{
-	margin-left:100px;
-	margin-right:100px;
 }
 
 .thumbnailArea{
@@ -24,7 +21,6 @@ body {
 	background-color: black;
 	height:260px;
 	-moz-border-radius: 15px;
-	width: 40em;
 	overflow: auto;
 	margin: 10px;
 	line-height: 1.5em;
