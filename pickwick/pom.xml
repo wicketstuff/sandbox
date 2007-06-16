@@ -37,9 +37,9 @@
 			<version>1.3.0-incubating-SNAPSHOT</version>
 		</dependency>
 		<dependency>
-			<groupId>wicket-stuff</groupId>
-			<artifactId>wicket-contrib-dojo</artifactId>
-			<version>1.3.0-incubating-SNAPSHOT</version>
+			<groupId>org.wicketstuff</groupId>
+			<artifactId>wicketstuff-dojo</artifactId>
+			<version>1.3.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-lang</groupId>
