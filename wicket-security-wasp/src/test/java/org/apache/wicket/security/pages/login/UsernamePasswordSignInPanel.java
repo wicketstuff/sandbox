@@ -36,6 +36,7 @@ import org.apache.wicket.security.WaspSession;
 import org.apache.wicket.security.WaspWebApplication;
 import org.apache.wicket.security.components.markup.html.form.SecureTextField;
 import org.apache.wicket.security.components.markup.html.links.SecurePageLink;
+import org.apache.wicket.security.pages.container.MySecurePanel;
 import org.apache.wicket.security.pages.secure.HomePage;
 import org.apache.wicket.security.pages.secure.PageB;
 import org.apache.wicket.security.pages.secure.PageC;
@@ -100,6 +101,8 @@ public class UsernamePasswordSignInPanel extends Panel
 				"access render"));
 		authorized.put("model:bothcheck", getWaspApplication().getActionFactory().getAction(
 				"access render"));
+		//panels
+		authorized.put(MySecurePanel.class, getWaspApplication().getActionFactory().getAction("access"));
 		WaspSession session = getSecureSession();
 		try
 		{

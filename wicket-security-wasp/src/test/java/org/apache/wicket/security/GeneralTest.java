@@ -17,10 +17,7 @@
 package org.apache.wicket.security;
 
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
 
 import junit.framework.TestCase;
 
@@ -32,21 +29,21 @@ import org.apache.wicket.authorization.Action;
 import org.apache.wicket.authorization.UnauthorizedActionException;
 import org.apache.wicket.authorization.UnauthorizedInstantiationException;
 import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.model.IModel;
 import org.apache.wicket.protocol.http.WebRequestCycle;
 import org.apache.wicket.request.target.component.BookmarkablePageRequestTarget;
-import org.apache.wicket.security.actions.AbstractWaspAction;
 import org.apache.wicket.security.actions.ActionFactory;
 import org.apache.wicket.security.actions.RegistrationException;
 import org.apache.wicket.security.actions.WaspAction;
 import org.apache.wicket.security.checks.ComponentSecurityCheck;
 import org.apache.wicket.security.checks.LinkSecurityCheck;
 import org.apache.wicket.security.components.ISecureComponent;
+import org.apache.wicket.security.components.ISecureContainer;
 import org.apache.wicket.security.components.ISecurePage;
 import org.apache.wicket.security.components.SecureComponentHelper;
 import org.apache.wicket.security.components.markup.html.form.SecureTextField;
 import org.apache.wicket.security.components.markup.html.links.SecurePageLink;
 import org.apache.wicket.security.models.ISecureModel;
+import org.apache.wicket.security.pages.container.MySecurePanel;
 import org.apache.wicket.security.pages.insecure.SecureComponentPage;
 import org.apache.wicket.security.pages.insecure.SecureLinkPage;
 import org.apache.wicket.security.pages.login.LoginPage;
@@ -67,154 +64,13 @@ import org.apache.wicket.util.tester.WicketTester;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Some general tests.
+ * @author marrink
+ */
 public class GeneralTest extends TestCase
 {
 	private static final Logger log = LoggerFactory.getLogger(GeneralTest.class);
-
-	private static final class TestStrategy extends ClassAuthorizationStrategy
-	{
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;
-
-		private boolean loggedin = false;
-
-		private Map authorized = new HashMap();
-
-		/**
-		 * 
-		 */
-		public TestStrategy()
-		{
-			super();
-		}
-
-		/**
-		 * @param secureClass
-		 */
-		public TestStrategy(Class secureClass)
-		{
-			super(secureClass);
-		}
-
-		public void destroy()
-		{
-			super.destroy();
-		}
-
-		public boolean isClassAuthenticated(Class clazz)
-		{
-			return loggedin;
-		}
-
-		public boolean isClassAuthorized(Class clazz, WaspAction action)
-		{
-			return isAuthorized(clazz, action);
-		}
-
-		/**
-		 * @param obj
-		 * @param action
-		 * @return
-		 */
-		private boolean isAuthorized(Object obj, WaspAction action)
-		{
-			WaspAction authorizedAction = (WaspAction)authorized.get(obj);
-			if (authorizedAction == null)
-				return false;
-			return authorizedAction.implies(action);
-		}
-
-		public boolean isComponentAuthenticated(Component component)
-		{
-			return loggedin;
-		}
-
-		public boolean isComponentAuthorized(Component component, WaspAction action)
-		{
-			if (!isAuthorized(component.getClass(), action))
-				return isAuthorized(SecureComponentHelper.alias(component), action);
-			return true;
-		}
-
-		public boolean isModelAuthenticated(IModel model, Component component)
-		{
-			return loggedin;
-		}
-
-		public boolean isModelAuthorized(ISecureModel model, Component component, WaspAction action)
-		{
-			return isAuthorized("model:" + component.getId(), action);
-		}
-
-		public void login(Object context) throws LoginException
-		{
-			if (context instanceof Map)
-			{
-				loggedin = true;
-				authorized.putAll((Map)context);
-			}
-			else
-				throw new LoginException(
-						"Specify a map containing all the classes/components and what actions are authorized");
-		}
-
-		public boolean logoff(Object context)
-		{
-			if (context instanceof Map)
-			{
-				Map map = (Map)context;
-				Iterator it = map.keySet().iterator();
-				while (it.hasNext())
-					authorized.remove(it.next());
-			}
-			else
-				authorized.clear();
-			loggedin = !authorized.isEmpty();
-			return true;
-		}
-	}
-
-	private static final class StringAction extends AbstractWaspAction
-	{
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;
-
-		private Set actions;
-
-		private StringAction(String name)
-		{
-			super(name);
-			actions = new HashSet();
-			String[] names = name.split(" ");
-			for (int i = 0; i < names.length; i++)
-			{
-				actions.add(names[i].replace(',', ' ').trim());
-			}
-		}
-
-		public WaspAction add(WaspAction other)
-		{
-			return new StringAction(getName() + " " + other.getName());
-		}
-
-		public boolean implies(WaspAction other)
-		{
-			StringAction oAction = (StringAction)other;
-			return actions.containsAll(oAction.actions);
-		}
-
-		public WaspAction remove(WaspAction other)
-		{
-			StringAction oAction = (StringAction)other;
-			StringAction newAction = new StringAction(getName());
-			newAction.actions.removeAll(oAction.actions);
-			return newAction;
-		}
-	}
 
 	private WicketTester mock = null;
 
@@ -792,5 +648,39 @@ public class GeneralTest extends TestCase
 		catch (UnauthorizedActionException e)
 		{
 		}
+	}
+	public void testPanelReplacement()
+	{
+		try
+		{
+			tearDown();
+			setHomePage(org.apache.wicket.security.pages.container.HomePage.class);
+			setSecureClass(ISecureContainer.class);
+			setUp();
+		}
+		catch (Exception e)
+		{
+			log.error(e.getMessage(), e);
+		}
+		mock.startPage(getHomePage());
+		mock.assertRenderedPage(getHomePage());
+		mock.clickLink("link");
+		mock.assertRenderedPage(getLoginPage());
+		FormTester form = mock.newFormTester("signInPanel:signInForm");
+		form.setValue("username", "test");
+		form.setValue("password", "test");
+		form.submit();
+		mock.assertRenderedPage(getHomePage());
+		assertFalse(Session.get().isTemporary());
+		mock.assertInvisible("panel");
+		//note by adding a second panel visible if the main panel is invisible we could tell the user he is not authorized or something like that
+		Map authorized = new HashMap();
+		authorized.put(MySecurePanel.class, application.getActionFactory().getAction(
+				"access render"));
+		login(authorized);
+		mock.startPage(mock.getLastRenderedPage());
+		mock.assertVisible("panel");
+		mock.clickLink("link");
+		mock.assertVisible("panel");		
 	}
 }
