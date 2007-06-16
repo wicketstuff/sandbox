@@ -3,6 +3,8 @@ package org.wicketstuff.pickwick;
 import java.io.File;
 import java.io.FileOutputStream;
 
+import org.wicketstuff.pickwick.backend.Settings;
+
 import junit.framework.TestCase;
 
 public class FeedGeneratorTest extends TestCase {

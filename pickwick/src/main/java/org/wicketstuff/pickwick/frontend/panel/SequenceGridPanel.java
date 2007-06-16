@@ -13,7 +13,7 @@ import org.apache.wicket.markup.repeater.data.GridView;
 import org.apache.wicket.model.Model;
 import org.wicketstuff.pickwick.ImageProperties;
 import org.wicketstuff.pickwick.PickWickApplication;
-import org.wicketstuff.pickwick.Settings;
+import org.wicketstuff.pickwick.backend.Settings;
 import org.wicketstuff.pickwick.bean.provider.ImageProvider;
 
 /**

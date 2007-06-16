@@ -3,7 +3,7 @@ package org.wicketstuff.pickwick.bean.provider;
 import java.io.File;
 import java.util.ArrayList;
 
-import org.wicketstuff.pickwick.Settings;
+import org.wicketstuff.pickwick.backend.Settings;
 import org.wicketstuff.pickwick.bean.Folder;
 
 

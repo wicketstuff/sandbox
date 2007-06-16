@@ -16,7 +16,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.html.tree.AbstractTree;
 import org.apache.wicket.extensions.markup.html.tree.Tree;
 import org.wicketstuff.pickwick.PickWickApplication;
-import org.wicketstuff.pickwick.Settings;
+import org.wicketstuff.pickwick.backend.Settings;
 import org.wicketstuff.pickwick.bean.Folder;
 import org.wicketstuff.pickwick.bean.provider.FolderProvider;
 import org.wicketstuff.pickwick.frontend.FolderTree;
