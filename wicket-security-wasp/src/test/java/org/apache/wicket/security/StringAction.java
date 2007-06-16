@@ -22,7 +22,7 @@ import java.util.Set;
 import org.apache.wicket.security.actions.AbstractWaspAction;
 import org.apache.wicket.security.actions.WaspAction;
 
-final class StringAction extends AbstractWaspAction
+public class StringAction extends AbstractWaspAction
 {
 	/**
 	 * 
