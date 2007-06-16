@@ -24,9 +24,20 @@ import java.io.Serializable;
  * @version CVS $Id$
  */
 final public class ImageProperties implements Serializable {
-    public File file;
+    private File file;
+    private String title;
 
-    public String toString() {
+    public String getTitle() {
+    	if (title == null)
+    		return file.getName();
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String toString() {
         StringBuffer sb = new StringBuffer();
         sb.append("file: ").append(file);
         return sb.toString();
