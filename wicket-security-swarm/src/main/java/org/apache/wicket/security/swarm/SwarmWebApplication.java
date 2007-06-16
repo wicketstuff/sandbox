@@ -23,8 +23,10 @@ import org.apache.wicket.security.swarm.actions.SwarmActionFactory;
 import org.apache.wicket.security.swarm.strategies.SwarmStrategyFactory;
 
 /**
- * A default webapp. It sets up the strategy and action factories and triggers the hive
- * setup. but you must remember to call super in the init or do your own factory setups.
+ * A default webapp. It sets up the strategy and action factories and triggers
+ * the hive setup. but you must remember to call super in the init or do your
+ * own factory setups.
+ * 
  * @author marrink
  */
 public abstract class SwarmWebApplication extends WaspWebApplication
@@ -38,11 +40,24 @@ public abstract class SwarmWebApplication extends WaspWebApplication
 	 */
 	protected void setupActionFactory()
 	{
+		setActionFactory(new SwarmActionFactory());
+
+	}
+
+	/**
+	 * Allows the {@link ActionFactory} field to be set once.
+	 * 
+	 * @param factory
+	 *            the actionfactory
+	 * @throws IllegalStateException
+	 *             if the factory is set more than once.
+	 */
+	protected final void setActionFactory(ActionFactory factory)
+	{
 		if (actionFactory == null)
-			actionFactory = new SwarmActionFactory();
+			actionFactory = factory;
 		else
 			throw new IllegalStateException("Can not initialize ActionFactory more then once");
-
 	}
 
 	/**
@@ -50,8 +65,21 @@ public abstract class SwarmWebApplication extends WaspWebApplication
 	 */
 	protected void setupStrategyFactory()
 	{
+		setStrategyFactory(new SwarmStrategyFactory(getHiveKey()));
+	}
+
+	/**
+	 * Allows the {@link StrategyFactory} field to be set once.
+	 * 
+	 * @param factory
+	 *            the strategyfactory
+	 * @throws IllegalStateException
+	 *             if the factory is set more than once.
+	 */
+	protected final void setStrategyFactory(StrategyFactory factory)
+	{
 		if (strategyFactory == null)
-			strategyFactory = new SwarmStrategyFactory(getHiveKey());
+			strategyFactory = factory;
 		else
 			throw new IllegalStateException("Can not initialize StrategyFactory more then once");
 	}
@@ -59,6 +87,7 @@ public abstract class SwarmWebApplication extends WaspWebApplication
 	/**
 	 * triggers the setup of the factories and the hive. Please remember to call
 	 * super.init when you override this method.
+	 * 
 	 * @see org.apache.wicket.security.WaspWebApplication#init()
 	 */
 	protected void init()
@@ -75,10 +104,10 @@ public abstract class SwarmWebApplication extends WaspWebApplication
 	 * factory.addPolicyFile("/policy.hive");
 	 * HiveMind.registerHive(getHiveKey(), factory);
 	 * </code>
-	 * Note that you must setup the actionfactory before you can setup the hive. Note that
-	 * the hive is not automatically unregistered since there is a chance you want to
-	 * share it with another webapp. If you want to unregister the hive please do so in
-	 * the {@link #destroy()}
+	 * Note that you must setup the actionfactory before you can setup the hive.
+	 * Note that the hive is not automatically unregistered since there is a
+	 * chance you want to share it with another webapp. If you want to
+	 * unregister the hive please do so in the {@link #destroy()}
 	 */
 	protected abstract void setUpHive();
 
@@ -100,6 +129,7 @@ public abstract class SwarmWebApplication extends WaspWebApplication
 
 	/**
 	 * Returns the key to specify the hive.
+	 * 
 	 * @return the key
 	 */
 	protected abstract Object getHiveKey();
