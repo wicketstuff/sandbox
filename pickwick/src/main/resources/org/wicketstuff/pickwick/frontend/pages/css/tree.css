@@ -16,15 +16,6 @@
  */
 
 div.wicket-tree {
-	white-space: nowrap;	
-	border: 1px solid #555555;
-	background-color: black;
-	-moz-border-radius: 15px;
-	width: 20em;
-	overflow: auto;
-	margin: 10px;
-	line-height: 1.5em;
-	padding: 1em 0;
 }
 
 div.wicket-tree a {
