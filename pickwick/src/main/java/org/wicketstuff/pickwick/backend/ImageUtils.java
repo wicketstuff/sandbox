@@ -20,11 +20,13 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import org.wicketstuff.pickwick.ImageProperties;
 import org.wicketstuff.pickwick.PickWickApplication;
+import org.wicketstuff.pickwick.bean.Folder;
 import org.wicketstuff.pickwick.bean.Sequence;
 
 /**
@@ -160,5 +162,27 @@ final public class ImageUtils {
 
 	public void setImageFilter(FileFilter imageFilter) {
 		this.imageFilter = imageFilter;
+	}
+	/**
+	 * return a tree representation of the folders in imageDirectoryRoot
+	 * @return  a tree representation of the folders in imageDirectoryRoot
+	 */
+	public Folder getFolder(){
+		return new Folder(settings.getImageDirectoryRoot(), getSubFolder(this.settings.getImageDirectoryRoot()));
+	}
+	
+	private ArrayList<Folder> getSubFolder(File folder){
+		if (folder.isDirectory()){
+			ArrayList<Folder> toReturn = new ArrayList<Folder>();
+			for (File file : folder.listFiles()){
+				if (file.isDirectory()){
+					Folder current = new Folder(file);
+					current.setSubFolders(getSubFolder(file));
+					toReturn.add(current);
+				}
+			}
+			return toReturn;
+		}
+		return null;
 	}
 }

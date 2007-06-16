@@ -14,15 +14,6 @@ public class Folder {
 
 	private ArrayList<Folder> subFolders;
 
-	private Folder parent;
-
-	public Folder(File file, ArrayList<Folder> subFolders, Folder parent) {
-		super();
-		this.file = file;
-		this.subFolders = subFolders;
-		this.parent = parent;
-	}
-
 	public Folder(File file, ArrayList<Folder> subFolders) {
 		super();
 		this.file = file;
@@ -44,14 +35,6 @@ public class Folder {
 
 	public void addFolder(Folder folder) {
 		this.subFolders.add(folder);
-	}
-
-	public Folder getParent() {
-		return parent;
-	}
-
-	public void setParent(Folder parent) {
-		this.parent = parent;
 	}
 
 	public File getFile() {
