@@ -1,4 +1,3 @@
-
 @import url(thumbnail.css);
 
 body {
@@ -19,7 +18,6 @@ body {
 	white-space: nowrap;	
 	border: 1px solid #555555;
 	background-color: black;
-	height:260px;
 	-moz-border-radius: 15px;
 	overflow: auto;
 	margin: 10px;
