@@ -490,6 +490,7 @@ public class GeneralTest extends TestCase
 		catch (Exception e)
 		{
 			log.error(e.getMessage(), e);
+			fail(e.getMessage());
 		}
 		doLogin();
 		// now we only check pages so all components will be created, this does
@@ -661,6 +662,7 @@ public class GeneralTest extends TestCase
 		catch (Exception e)
 		{
 			log.error(e.getMessage(), e);
+			fail(e.getMessage());
 		}
 		mock.startPage(getHomePage());
 		mock.assertRenderedPage(getHomePage());
@@ -682,5 +684,25 @@ public class GeneralTest extends TestCase
 		mock.assertVisible("panel");
 		mock.clickLink("link");
 		mock.assertVisible("panel");		
+	}
+	public void testBogusLoginPage()
+	{
+		try
+		{
+			tearDown();
+			setHomePage(HomePage.class);
+			setLoginPage(PageD.class);
+			setSecureClass(ISecurePage.class);
+			setUp();
+		}
+		catch (Exception e)
+		{
+			log.error(e.getMessage(), e);
+			fail(e.getMessage());
+		}
+		mock.startPage(getHomePage());
+		log.info(""+mock.getLastRenderedPage().getClass());
+		mock.assertRenderedPage(getLoginPage());
+		//even though we accidentally made it a secure page!
 	}
 }
