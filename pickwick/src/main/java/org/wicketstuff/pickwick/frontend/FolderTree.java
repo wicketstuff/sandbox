@@ -5,7 +5,7 @@ import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreeNode;
 
 import org.apache.wicket.ResourceReference;
-import org.apache.wicket.markup.html.tree.Tree;
+import org.apache.wicket.extensions.markup.html.tree.Tree;
 import org.wicketstuff.pickwick.bean.Folder;
 import org.wicketstuff.pickwick.frontend.pages.FrontendBasePage;
 
