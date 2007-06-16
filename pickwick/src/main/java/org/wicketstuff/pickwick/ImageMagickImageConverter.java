@@ -30,7 +30,7 @@ public class ImageMagickImageConverter implements ImageConverter {
 		logger.info("Converting image " + source + " to " + destination + " at size " + size);
 		String geometry = size + "x" + size + ">";
 		List<String> commandArgs = new ArrayList<String>();
-		commandArgs.add("/opt/local/bin/convert");
+		commandArgs.add("convert");
 		commandArgs.add("-geometry");
 		commandArgs.add(geometry);
 		if (quality != null) {
