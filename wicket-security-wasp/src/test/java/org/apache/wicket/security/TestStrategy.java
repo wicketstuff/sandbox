@@ -21,6 +21,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.apache.wicket.Component;
+import org.apache.wicket.Page;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.security.actions.WaspAction;
 import org.apache.wicket.security.components.SecureComponentHelper;
@@ -102,7 +103,7 @@ public class TestStrategy extends ClassAuthorizationStrategy
 
 	public boolean isModelAuthorized(ISecureModel model, Component component, WaspAction action)
 	{
-		return isAuthorized("model:" + component.getId(), action);
+		return isAuthorized("model:" + (component instanceof Page?component.getClass().getName():component.getId()), action);
 	}
 
 	public void login(Object context) throws LoginException

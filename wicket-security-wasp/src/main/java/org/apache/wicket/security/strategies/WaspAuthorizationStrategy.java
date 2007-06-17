@@ -135,7 +135,7 @@ public abstract class WaspAuthorizationStrategy implements IAuthorizationStrateg
 			return check.isActionAuthorized(getActionFactory().getAction(action));
 		IModel model = component.getModel();
 		if (model instanceof ISecureModel)
-			return isModelAuthorized(null, component, getActionFactory().getAction(action));
+			return isModelAuthorized((ISecureModel)model, component, getActionFactory().getAction(action));
 		return true;
 	}
 
