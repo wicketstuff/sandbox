@@ -46,6 +46,7 @@ import org.apache.wicket.security.models.ISecureModel;
 import org.apache.wicket.security.pages.container.MySecurePanel;
 import org.apache.wicket.security.pages.insecure.SecureComponentPage;
 import org.apache.wicket.security.pages.insecure.SecureLinkPage;
+import org.apache.wicket.security.pages.insecure.SecureModelPage;
 import org.apache.wicket.security.pages.login.LoginPage;
 import org.apache.wicket.security.pages.secure.HomePage;
 import org.apache.wicket.security.pages.secure.PageA;
@@ -704,5 +705,51 @@ public class GeneralTest extends TestCase
 		log.info(""+mock.getLastRenderedPage().getClass());
 		mock.assertRenderedPage(getLoginPage());
 		//even though we accidentally made it a secure page!
+	}
+	public void testSecureCompoundPropertyModel()
+	{
+		doLogin();
+		Map authorized = new HashMap();
+		authorized.put("model:"+SecureModelPage.class.getName(), application.getActionFactory().getAction("render"));
+		authorized.put("model:_<body>", application.getActionFactory().getAction("render"));
+		//need to grant enough rights to the page and bodycontainer, see apidoc
+		login(authorized);
+		mock.startPage(SecureModelPage.class);
+		mock.assertRenderedPage(SecureModelPage.class);
+		mock.assertInvisible("label");
+		mock.assertInvisible("input");
+		authorized.put("model:label", application.getActionFactory().getAction("render"));
+		login(authorized);
+		mock.startPage(mock.getLastRenderedPage());
+		mock.assertVisible("label");
+		mock.assertInvisible("input");
+		authorized.put("model:input", application.getActionFactory().getAction("render"));
+		login(authorized);
+		mock.startPage(mock.getLastRenderedPage());
+		mock.assertVisible("label");
+		mock.assertVisible("input");
+		TagTester tag = mock.getTagByWicketId("input");
+		assertTrue(tag.hasAttribute("disabled"));
+		try
+		{
+			mock.getComponentFromLastRenderedPage("input").setModelObject("writing in textfield");
+			fail("should not be able to write in textfield");
+		}
+		catch (UnauthorizedActionException e)
+		{
+		}
+		authorized.put("model:input", application.getActionFactory().getAction("render enable"));
+		login(authorized);
+		mock.startPage(mock.getLastRenderedPage());
+		tag = mock.getTagByWicketId("input");
+		assertFalse(tag.hasAttribute("disabled"));
+		String writings = "now we are getting somewhere";
+		mock.getComponentFromLastRenderedPage("input").setModelObject(writings);
+		assertEquals(writings, mock.getComponentFromLastRenderedPage("input").getModelObject());
+		mock.startPage(mock.getLastRenderedPage());
+		mock.assertRenderedPage(SecureModelPage.class);
+		tag = mock.getTagByWicketId("input");
+		assertTrue(tag.getAttributeIs("value", writings));
+		
 	}
 }
