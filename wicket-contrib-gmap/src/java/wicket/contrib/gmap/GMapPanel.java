@@ -34,12 +34,13 @@ import org.apache.wicket.markup.html.panel.Panel;
  */
 public class GMapPanel extends Panel
 {
-	private static final long serialVersionUID = 1L; 
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Creates a GMapPanel with width=400, height=300 and using default
-	 * {GMapPanel.GMAP_DEFAULT_KEY} key. Make sure that deployment context of your
-	 * application is <a href="http://localhost/gmap/">http://localhost/gmap/</a>
+	 * {GMapPanel.GMAP_DEFAULT_KEY} key. Make sure that deployment context of
+	 * your application is <a
+	 * href="http://localhost/gmap/">http://localhost/gmap/</a>
 	 * 
 	 * @param id
 	 *            wicket component id
@@ -52,8 +53,9 @@ public class GMapPanel extends Panel
 	}
 
 	/**
-	 * Creates GMapPanel component using default {@link GMapPanel.GMAP_DEFAULT_KEY} key.
-	 * Make sure that deployment context of your application is <a
+	 * Creates GMapPanel component using default
+	 * {@link GMapPanel.GMAP_DEFAULT_KEY} key. Make sure that deployment context
+	 * of your application is <a
 	 * href="http://localhost/gmap">http://localhost/gmap/</a>
 	 * 
 	 * @param id
@@ -90,12 +92,21 @@ public class GMapPanel extends Panel
 		super(id);
 
 		add(new GMapScript("script", GMAP_URL + gmapKey));
+		add(new GMapInitializer(gmap));
 		add(new GMapContainer(gmap));
 		add(new Map("map", width, height));
 	}
 
+	/**
+	 * @param clickListener
+	 */
+	public void addClickListener(GMapClickListener clickListener)
+	{
+		add(new GMapClickEventBehavior(clickListener));
+	}
+
 	// gmap url
-	private static final String GMAP_URL = "http://maps.google.com/maps?file=api&v=1&key=";
+	private static final String GMAP_URL = "http://maps.google.com/maps?file=api&v=2&key=";
 
 	/**
 	 * GMap key for root context <a href="http://localhost/">http://localhost</a>

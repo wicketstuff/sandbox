@@ -29,20 +29,31 @@ public class GIcon implements Serializable
 {
 
     private String image;
-    private GPoint anchor;
+    private GLatLng anchor;
 
-    public GIcon(String image, GPoint anchor)
+    /**
+     * Construct.
+     * @param image
+     * @param anchor
+     */
+    public GIcon(String image, GLatLng anchor)
     {
         this.image = image;
         this.anchor = anchor;
     }
 
+    /**
+     * @return
+     */
     public String getImage()
     {
         return image;
     }
 
-    public GPoint getAnchor()
+    /**
+     * @return
+     */
+    public GLatLng getAnchor()
     {
         return anchor;
     }

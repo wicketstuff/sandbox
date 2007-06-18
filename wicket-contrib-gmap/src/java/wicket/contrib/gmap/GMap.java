@@ -34,7 +34,7 @@ public class GMap implements Serializable
 {
 	private static final long serialVersionUID = 1L; 
 
-	private GPoint center;
+	private GLatLng center;
 	private int zoomLevel;
 	private List<Overlay> overlays = new ArrayList<Overlay>();
 	private boolean typeControl;
@@ -48,7 +48,7 @@ public class GMap implements Serializable
 	 * @param zoomLevel
 	 *            only values between 1 and 15 are allowed.
 	 */
-	public GMap(GPoint center, int zoomLevel)
+	public GMap(GLatLng center, int zoomLevel)
 	{
 		if (center == null)
 		{
@@ -115,7 +115,7 @@ public class GMap implements Serializable
 		return smallMapControl;
 	}
 
-	public GPoint getCenter()
+	public GLatLng getCenter()
 	{
 		return center;
 	}
