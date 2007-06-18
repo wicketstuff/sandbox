@@ -15,6 +15,11 @@ import org.apache.wicket.validation.validator.StringValidator;
 import org.hibernate.validator.Length;
 import org.hibernate.validator.NotNull;
 
+/**
+ * Configure a wicket component based on hibernate annotations.
+ * This object is <em>stateless</em>, and the same instance can be reused to configure 
+ * multiple components.
+ */
 public class HibernateAnnotationComponentConfigurator {
 	private static Map configs = new HashMap() {{
 		put(NotNull.class, new HibernateAnnotationConfig() {

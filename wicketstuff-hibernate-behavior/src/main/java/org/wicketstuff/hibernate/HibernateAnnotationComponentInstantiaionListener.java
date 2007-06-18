@@ -14,9 +14,9 @@ import org.wicketstuff.hibernate.behavior.HibernateAnnotationBehavior;
  * @author rsonnek
  */
 public class HibernateAnnotationComponentInstantiaionListener implements IComponentInstantiationListener {
+	private final HibernateAnnotationBehavior behavior = new HibernateAnnotationBehavior();
 
 	public void onInstantiation(Component component) {
-		component.add(new HibernateAnnotationBehavior());
+		component.add(behavior);
 	}
-
 }
