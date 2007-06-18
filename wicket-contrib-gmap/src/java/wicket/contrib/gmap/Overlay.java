@@ -26,9 +26,9 @@ import java.io.Serializable;
 public abstract class Overlay implements Serializable
 {
 
-    private GPoint point;
+    private GLatLng point;
 
-    Overlay(GPoint point)
+    Overlay(GLatLng point)
     {
         if (point == null)
         {
@@ -44,7 +44,7 @@ public abstract class Overlay implements Serializable
      */
     public abstract String getFactoryMethod();
 
-    public GPoint getPoint()
+    public GLatLng getPoint()
     {
         return point;
     }

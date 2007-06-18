@@ -22,8 +22,8 @@ abstract class JavaScriptComponent extends WebComponent
     protected void onComponentTag(final ComponentTag tag)
     {
         checkComponentTag(tag, "script");
-        add(new AttributeModifier("type", true, new Model("text/javascript")));
-        add(new AttributeModifier("language", true, new Model("JavaScript")));
+//        add(new AttributeModifier("type", true, new Model("text/javascript")));
+//        add(new AttributeModifier("language", true, new Model("JavaScript")));
 
     }
 

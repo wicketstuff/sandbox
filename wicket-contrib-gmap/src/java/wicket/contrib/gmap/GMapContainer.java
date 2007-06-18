@@ -19,8 +19,6 @@ class GMapContainer extends WebMarkupContainer
     {
         super(ID);
         final List<Overlay> overlays = gmap.getOverlays();
-
-        add(new GMapComponent(gmap));
         add(new Loop("gmarkersLoop", overlays.size())
         {
             protected void populateItem(LoopItem item)

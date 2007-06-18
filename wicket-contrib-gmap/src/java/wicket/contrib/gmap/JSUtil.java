@@ -29,12 +29,12 @@ class JSUtil
         return "function " + name + "() {\n" + body + "\n}";
     }
 
-    public static String longitudeAsString(GPoint point)
+    public static String longitudeAsString(GLatLng point)
     {
         return Float.toString(point.getLongitude()).replace(".", "").replace("-", "1");
     }
 
-    public static String latitudeAsString(GPoint point)
+    public static String latitudeAsString(GLatLng point)
     {
         return Float.toString(point.getLatitude()).replace(".", "").replace("-", "1");
     }

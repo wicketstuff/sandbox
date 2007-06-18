@@ -27,9 +27,9 @@ public class GMarker extends Overlay
 	 * 
 	 * @param point
 	 *            the point on the map where this marker will be anchored
-	 * @see GPoint
+	 * @see GLatLng
 	 */
-	public GMarker(GPoint point)
+	public GMarker(GLatLng point)
 	{
 		this(point, new WebComponent("gmarkerInfo"));
 	}
@@ -42,9 +42,9 @@ public class GMarker extends Overlay
 	 *            the point on the map where this marker will be anchored
 	 * @param component
 	 *            wicket component that needs to be rendered
-	 * @see GPoint
+	 * @see GLatLng
 	 */
-	public GMarker(GPoint point, Component component)
+	public GMarker(GLatLng point, Component component)
 	{
 		super(point);
 		this.component = component;
