@@ -50,12 +50,13 @@ public abstract class WicketExampleApplication extends WebApplication {
 	 * Determine operations mode: deployment or development
 	 */
 	protected void init() {
-		ServletContext servletContext = getServletContext();
-		if (servletContext.getInitParameter("deployment") != null) {
-			// Use deployment settings
-			configure("deployment");
-		} else {
-			configure("development");
-		}
+//		ServletContext servletContext = getServletContext();
+//		if (servletContext.getInitParameter("deployment") != null) {
+//			// Use deployment settings
+//			configure("deployment");
+//			con
+//		} else {
+//			configure("development");
+//		}
 	}
 }
