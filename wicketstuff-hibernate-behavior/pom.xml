@@ -46,6 +46,11 @@
       <name>Wicket-Stuff Repository</name>
       <url>http://www.wicketstuff.org/maven/repository/</url>
     </repository>
+    <repository>
+      <id>mergere</id>
+      <name>Mergere Maestro Repository</name>
+      <url>http://repo.mergere.com/maven2</url>
+    </repository>  
   </repositories>
 </project>
 
