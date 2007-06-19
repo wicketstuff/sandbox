@@ -66,7 +66,7 @@ function addGMap(id, divId, lat, lng, zoom, moveendCallBack, clickCallBack) {
 				"'" + clickCallBack 
 				+ '&marker=' + marker
 				+ '&point=' + point),
-				function(){alert("success call on refreshOverlays")},
+				function(){},
 				function(){alert("ooops on ClickDeff of!" + map)}};
 		GEvent.addListener( map , 'click', clickCall );
 		
