@@ -14,10 +14,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.wicket.security.examples.multilogin.pages;
+package org.apache.wicket.security.examples.customactions.pages;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import org.apache.wicket.behavior.SimpleAttributeModifier;
@@ -26,16 +25,17 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.security.examples.customactions.entities.Department;
+import org.apache.wicket.security.examples.customactions.entities.Organisation;
 import org.apache.wicket.security.examples.multilogin.components.navigation.ButtonContainer;
-import org.apache.wicket.security.examples.multilogin.entities.Entry;
 import org.apache.wicket.security.examples.pages.MySecurePage;
 
 /**
- * Page for showing the balance of a bank account.
+ * Page for showing the departments in our organisation.
  * 
  * @author marrink
  */
-public class BankAccountBalancePage extends MySecurePage
+public class DepartmentsPage extends MySecurePage
 {
 
 	/**
@@ -46,7 +46,7 @@ public class BankAccountBalancePage extends MySecurePage
 	/**
 	 * Construct.
 	 */
-	public BankAccountBalancePage()
+	public DepartmentsPage()
 	{
 		add(new ButtonContainer("buttoncontainer", ButtonContainer.BUTTON_OVERVIEW));
 		add(new ListView("transactions", generateData())
@@ -54,11 +54,8 @@ public class BankAccountBalancePage extends MySecurePage
 			private static final long serialVersionUID = 1L;
 			protected void populateItem(ListItem item)
 			{
-				item.add(new Label("when"));
-				item.add(new Label("from"));
-				item.add(new Label("to"));
+				item.add(new Label("name"));
 				item.add(new Label("description"));
-				item.add(new Label("amount"));
 				if(item.getIndex()%2==0)
 					item.add(new SimpleAttributeModifier("class","outside halfhour"));
 			}
@@ -78,15 +75,18 @@ public class BankAccountBalancePage extends MySecurePage
 	 */
 	private List generateData()
 	{
-		int size=(int)(Math.random()*90)+10;
+		Organisation organisation=new Organisation();
+		organisation.name="Bee Hive: Honey Production (inc)";
+		String[] departments=new String[]{"Tracking","Tracks swarm movements","false",
+				"H.I.E","Honey Industrial Espionage","true",
+				"C.B.I.A","Counter Bee Interrogation Agency","true",
+				"Honey Gathering","Gathers honey from all the swarms","false",
+				"Storage","Stores all the honey","false"};
+		int size=5;
 		List data=new ArrayList(size);
-		String to=""+System.currentTimeMillis();
 		for(int i=0;i<size;i++)
 		{
-			Calendar cal = Calendar.getInstance();
-			cal.add(Calendar.DAY_OF_YEAR, (-1*size)+i);
-			cal.add(Calendar.HOUR_OF_DAY, (int)Math.random()*12);
-			data.add(new Entry(""+cal.getTimeInMillis(),to,cal.getTime().toString(),"foobar","$"+(Math.random()*2546.789)));
+			data.add(new Department(organisation,departments[i*3],departments[(i*3)+1], Boolean.valueOf(departments[(i*3)+2]).booleanValue()));
 		}
 		return data;
 	}

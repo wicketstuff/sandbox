@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.wicket.security.examples.multilogin.authorization;
+package org.apache.wicket.security.examples.authorization;
 
 import org.apache.wicket.security.hive.authentication.Subject;
 import org.apache.wicket.security.hive.authorization.Principal;

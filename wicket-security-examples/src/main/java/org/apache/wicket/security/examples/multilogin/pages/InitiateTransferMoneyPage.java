@@ -26,7 +26,7 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.security.examples.components.navigation.ButtonContainer;
+import org.apache.wicket.security.examples.multilogin.components.navigation.ButtonContainer;
 import org.apache.wicket.security.examples.multilogin.MySession;
 import org.apache.wicket.security.examples.multilogin.entities.Entry;
 import org.apache.wicket.security.examples.pages.MySecurePage;

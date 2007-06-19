@@ -1,0 +1,15 @@
+grant
+{
+	permission ${ComponentPermission} "${hp}", "inherit, render";
+	permission ${ComponentPermission} "${hp}", "enable";
+};
+grant principal org.apache.wicket.security.examples.authorization.MyPrincipal "organisation.rights"
+{
+	permission ${ComponentPermission} "org.apache.wicket.security.examples.multilogin.pages.DepartmentsPage", "inherit, render, organisation";
+	permission ${ComponentPermission} "org.apache.wicket.security.examples.multilogin.pages.DepartmentsPage", "enable, organisation";
+};
+grant principal org.apache.wicket.security.examples.authorization.MyPrincipal "department.rights"
+{
+	permission ${ComponentPermission} "org.apache.wicket.security.examples.multilogin.pages.DepartmentsPage", "inherit, render, department";
+	permission ${ComponentPermission} "org.apache.wicket.security.examples.multilogin.pages.DepartmentsPage", "enable, department";
+};

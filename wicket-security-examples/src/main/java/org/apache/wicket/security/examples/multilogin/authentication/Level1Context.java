@@ -18,7 +18,7 @@ package org.apache.wicket.security.examples.multilogin.authentication;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.security.examples.multilogin.authorization.MyPrincipal;
+import org.apache.wicket.security.examples.authorization.MyPrincipal;
 import org.apache.wicket.security.hive.authentication.DefaultSubject;
 import org.apache.wicket.security.hive.authentication.LoginContext;
 import org.apache.wicket.security.hive.authentication.Subject;
