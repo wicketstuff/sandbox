@@ -14,26 +14,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.wicket.security.examples.multilogin.pages;
-
-import org.apache.wicket.security.examples.multilogin.components.navigation.ButtonContainer;
-import org.apache.wicket.security.examples.pages.MySecurePage;
+package org.apache.wicket.security.examples.customactions.entities;
 
 /**
- * The home page, this one is secured with a login.
  * @author marrink
- *
  */
-public class HomePage extends MySecurePage
+public class Organisation
 {
-
-	private static final long serialVersionUID = 1L;
-
+	public String name;
+	
 	/**
-	 * 
+	 * Construct.
 	 */
-	public HomePage()
+	public Organisation()
 	{
-		add(new ButtonContainer("buttoncontainer",ButtonContainer.BUTTON_HOME));
 	}
+
 }

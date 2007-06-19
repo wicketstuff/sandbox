@@ -26,7 +26,7 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.security.examples.components.navigation.ButtonContainer;
+import org.apache.wicket.security.examples.multilogin.components.navigation.ButtonContainer;
 import org.apache.wicket.security.examples.multilogin.MySession;
 import org.apache.wicket.security.examples.pages.MySecurePage;
 import org.apache.wicket.security.examples.pages.TopSecretPage;

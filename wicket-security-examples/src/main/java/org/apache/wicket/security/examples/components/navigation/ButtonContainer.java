@@ -27,30 +27,18 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.security.checks.LinkSecurityCheck;
 import org.apache.wicket.security.components.markup.html.links.SecurePageLink;
-import org.apache.wicket.security.examples.multilogin.pages.BankAccountBalancePage;
-import org.apache.wicket.security.examples.multilogin.pages.CommitTransferMoneyPage;
-import org.apache.wicket.security.examples.multilogin.pages.HomePage;
-import org.apache.wicket.security.examples.multilogin.pages.InitiateTransferMoneyPage;
 
 /**
  * Simple container to display some menu buttons.
  * @author marrink
  * 
  */
-public class ButtonContainer extends Panel
+public abstract class ButtonContainer extends Panel
 {
 	private static final long serialVersionUID = 1L;
-	public static final Integer BUTTON_HOME = new Integer(0);
-	public static final Integer BUTTON_OVERVIEW = new Integer(1);
-	public static final Integer BUTTON_TRANSACTION = new Integer(2);
-	public static final Integer BUTTON_COMMIT = new Integer(3);
-	private static final Integer[] BUTTONS = new Integer[] { BUTTON_HOME, BUTTON_OVERVIEW,
-			BUTTON_TRANSACTION, BUTTON_COMMIT };
-	private static final String[] NAMES = new String[] { "Home", "Account balance", "Transfer",
-			"Commit transfers" };
-	private static final Class[] PAGES = new Class[] { HomePage.class,
-			BankAccountBalancePage.class, InitiateTransferMoneyPage.class,
-			CommitTransferMoneyPage.class };
+	protected Integer[] BUTTONS;
+	protected String[] NAMES;
+	protected Class[] PAGES;
 
 	/**
 	 * 
@@ -61,6 +49,7 @@ public class ButtonContainer extends Panel
 	public ButtonContainer(String id, final Integer selectedButton)
 	{
 		super(id);
+		setupButtons();
 		setRenderBodyOnly(true);
 		ListView buttons = new ListView("buttons", Arrays.asList(BUTTONS))
 		{
@@ -114,4 +103,5 @@ public class ButtonContainer extends Panel
 		};
 		add(buttons);
 	}
+	protected abstract void setupButtons();
 }
