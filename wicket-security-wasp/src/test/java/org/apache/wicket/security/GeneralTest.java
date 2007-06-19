@@ -43,6 +43,7 @@ import org.apache.wicket.security.components.SecureComponentHelper;
 import org.apache.wicket.security.components.markup.html.form.SecureTextField;
 import org.apache.wicket.security.components.markup.html.links.SecurePageLink;
 import org.apache.wicket.security.models.ISecureModel;
+import org.apache.wicket.security.models.SecureCompoundPropertyModel;
 import org.apache.wicket.security.pages.container.MySecurePanel;
 import org.apache.wicket.security.pages.insecure.SecureComponentPage;
 import org.apache.wicket.security.pages.insecure.SecureLinkPage;
@@ -750,6 +751,7 @@ public class GeneralTest extends TestCase
 		mock.assertRenderedPage(SecureModelPage.class);
 		tag = mock.getTagByWicketId("input");
 		assertTrue(tag.getAttributeIs("value", writings));
+		assertEquals(SecureCompoundPropertyModel.class.getName()+":input", mock.getComponentFromLastRenderedPage("input").getModel().toString());
 		
 	}
 }

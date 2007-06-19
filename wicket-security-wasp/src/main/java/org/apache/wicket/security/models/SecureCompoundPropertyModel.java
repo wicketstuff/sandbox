@@ -126,7 +126,10 @@ public class SecureCompoundPropertyModel extends CompoundPropertyModel implement
 	{
 		return getStrategy().isModelAuthorized(this, component, action);
 	}
-
+	public String toString()
+	{
+		return getClass().getName();
+	}
 	/**
 	 * Component aware variation of the {@link SecureCompoundPropertyModel} that
 	 * components that inherit the model get. Copy of
@@ -198,6 +201,10 @@ public class SecureCompoundPropertyModel extends CompoundPropertyModel implement
 			return SecureCompoundPropertyModel.this.isAuthorized(component != null
 					? component
 					: owner, action);
+		}
+		public String toString()
+		{
+			return SecureCompoundPropertyModel.this.toString()+":"+(getOwner()!=null?getOwner().getId():"null");
 		}
 	}
 
