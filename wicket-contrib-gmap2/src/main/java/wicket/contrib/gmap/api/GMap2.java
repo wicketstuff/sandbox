@@ -54,7 +54,7 @@ public class GMap2 implements Serializable
 	 * @param center
 	 *            of the gmap
 	 * @param zoomLevel
-	 *            only values between 1 and 15 are allowed.
+	 *            only values between 1 and 17 are allowed.
 	 */
 	public GMap2(GLatLng center, int zoomLevel)
 	{

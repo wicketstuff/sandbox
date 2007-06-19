@@ -120,8 +120,8 @@ class DivMapComponent extends WebComponent
 
 			public void renderHead(IHeaderResponse response)
 			{
-				//Once the page is loaded, the client executes a script that
-				//calls back right to this behavior.
+				//Once the page is loaded, the client executes a javascript
+				//that will call an ajax GET request to this behavior
 				response.renderOnLoadJavascript(getCallbackScript().toString());
 			}
 
