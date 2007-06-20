@@ -96,8 +96,9 @@ public abstract class WaspAuthorizationStrategy implements IAuthorizationStrateg
 	public abstract boolean isClassAuthenticated(Class clazz);
 
 	/**
-	 * Attemps to log the user in.
-	 * Note to implementations: It is generally considered a bad idea to store the context if it contains sensitive data (like a plaintext password)
+	 * Attemps to log the user in. Note to implementations: It is generally
+	 * considered a bad idea to store the context if it contains sensitive data
+	 * (like a plaintext password)
 	 * 
 	 * @param context
 	 *            a not further specified object that provides all the
@@ -128,14 +129,16 @@ public abstract class WaspAuthorizationStrategy implements IAuthorizationStrateg
 	 */
 	public boolean isActionAuthorized(Component component, Action action)
 	{
-		if (component == null)
-			return true;
-		ISecurityCheck check = getSecurityCheck(component);
-		if (check != null)
-			return check.isActionAuthorized(getActionFactory().getAction(action));
-		IModel model = component.getModel();
-		if (model instanceof ISecureModel)
-			return isModelAuthorized((ISecureModel)model, component, getActionFactory().getAction(action));
+		if (component != null)
+		{
+			ISecurityCheck check = getSecurityCheck(component);
+			if (check != null)
+				return check.isActionAuthorized(getActionFactory().getAction(action));
+			IModel model = component.getModel();
+			if (model instanceof ISecureModel)
+				return ((ISecureModel)model).isAuthorized(component, getActionFactory().getAction(
+						action));
+		}
 		return true;
 	}
 
