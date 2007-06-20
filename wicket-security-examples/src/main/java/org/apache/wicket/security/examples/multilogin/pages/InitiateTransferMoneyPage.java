@@ -29,7 +29,6 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.security.examples.multilogin.components.navigation.ButtonContainer;
 import org.apache.wicket.security.examples.multilogin.MySession;
 import org.apache.wicket.security.examples.multilogin.entities.Entry;
-import org.apache.wicket.security.examples.pages.MySecurePage;
 
 /**
  * Page for starting some money transfers. Note that you will need to
@@ -37,7 +36,7 @@ import org.apache.wicket.security.examples.pages.MySecurePage;
  * 
  * @author marrink
  */
-public class InitiateTransferMoneyPage extends MySecurePage
+public class InitiateTransferMoneyPage extends SecurePage
 {
 
 	/**

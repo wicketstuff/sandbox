@@ -28,7 +28,6 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.security.examples.multilogin.components.navigation.ButtonContainer;
 import org.apache.wicket.security.examples.multilogin.MySession;
-import org.apache.wicket.security.examples.pages.MySecurePage;
 import org.apache.wicket.security.examples.pages.TopSecretPage;
 
 /**
@@ -36,7 +35,7 @@ import org.apache.wicket.security.examples.pages.TopSecretPage;
  * 
  * @author marrink
  */
-public class CommitTransferMoneyPage extends MySecurePage implements TopSecretPage
+public class CommitTransferMoneyPage extends SecurePage implements TopSecretPage
 {
 
 	/**

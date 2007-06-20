@@ -16,17 +16,20 @@
  */
 package org.apache.wicket.security.examples.customactions.entities;
 
+import java.io.Serializable;
+
 /**
  * @author marrink
  */
-public class Organisation
+public class Organization implements Serializable
 {
+	private static final long serialVersionUID = 1L;
 	public String name;
 	
 	/**
 	 * Construct.
 	 */
-	public Organisation()
+	public Organization()
 	{
 	}
 

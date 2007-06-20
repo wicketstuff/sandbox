@@ -16,12 +16,15 @@
  */
 package org.apache.wicket.security.examples.customactions.entities;
 
+import java.io.Serializable;
+
 /**
  * @author marrink
  */
-public class Department
+public class Department implements Serializable
 {
-	public Organisation organisation;
+	private static final long serialVersionUID = 1L;
+	public Organization organization;
 	public String name;
 	public String description;
 	/**
@@ -37,15 +40,15 @@ public class Department
 	}
 	/**
 	 * Construct.
-	 * @param organisation
+	 * @param organization
 	 * @param name
 	 * @param description
 	 * @param secure TODO
 	 */
-	public Department(Organisation organisation, String name, String description, boolean secure)
+	public Department(Organization organization, String name, String description, boolean secure)
 	{
 		super();
-		this.organisation = organisation;
+		this.organization = organization;
 		this.name = name;
 		this.description = description;
 		this.secure=secure;

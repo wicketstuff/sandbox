@@ -5,11 +5,15 @@ grant
 };
 grant principal org.apache.wicket.security.examples.authorization.MyPrincipal "organisation.rights"
 {
-	permission ${ComponentPermission} "org.apache.wicket.security.examples.multilogin.pages.DepartmentsPage", "inherit, render, organisation";
-	permission ${ComponentPermission} "org.apache.wicket.security.examples.multilogin.pages.DepartmentsPage", "enable, organisation";
+	permission ${ComponentPermission} "org.apache.wicket.security.examples.customactions.pages.DepartmentsPage", "inherit, render";
+	permission ${ComponentPermission} "org.apache.wicket.security.examples.customactions.pages.DepartmentsPage", "enable";
+	permission ${DataPermission} "department", "inherit, render, organization";
+#	permission ${DataPermission} "department", "enable, organization";
 };
 grant principal org.apache.wicket.security.examples.authorization.MyPrincipal "department.rights"
 {
-	permission ${ComponentPermission} "org.apache.wicket.security.examples.multilogin.pages.DepartmentsPage", "inherit, render, department";
-	permission ${ComponentPermission} "org.apache.wicket.security.examples.multilogin.pages.DepartmentsPage", "enable, department";
+	permission ${ComponentPermission} "org.apache.wicket.security.examples.customactions.pages.DepartmentsPage", "inherit, render";
+	permission ${ComponentPermission} "org.apache.wicket.security.examples.customactions.pages.DepartmentsPage", "enable";
+	permission ${DataPermission} "department", "inherit, render, department";
+#	permission ${DataPermission} "department", "enable, department";
 };

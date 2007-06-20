@@ -17,13 +17,10 @@
 package org.apache.wicket.security.examples.customactions.pages;
 
 import org.apache.wicket.security.WaspSession;
-import org.apache.wicket.security.examples.authorization.MyPrincipal;
+import org.apache.wicket.security.examples.customactions.authentication.MyLoginContext;
 import org.apache.wicket.security.examples.pages.login.UsernamePasswordSignInPanel;
-import org.apache.wicket.security.hive.authentication.DefaultSubject;
 import org.apache.wicket.security.hive.authentication.LoginContext;
-import org.apache.wicket.security.hive.authentication.Subject;
 import org.apache.wicket.security.strategies.LoginException;
-import org.apache.wicket.util.lang.Objects;
 
 /**
  * @author marrink
@@ -44,29 +41,7 @@ public class LoginPage extends org.apache.wicket.security.examples.pages.login.L
 
 			public boolean signIn(final String username, final String password)
 			{
-				LoginContext context = new LoginContext()
-				{
-					/**
-					 * @see org.apache.wicket.security.hive.authentication.LoginContext#login()
-					 */
-					public Subject login() throws LoginException
-					{
-						// irrelevant check
-						if (username != null && Objects.equal(username, password))
-						{
-							DefaultSubject subject = new DefaultSubject();
-							if ("ceo".equals(username))
-							{
-								subject.addPrincipal(new MyPrincipal("organisation.rights"));
-							}
-							else
-								subject.addPrincipal(new MyPrincipal("department.rights"));
-							return subject;
-						}
-						throw new LoginException(
-								"Username and password do not match any known user.");
-					}
-				};
+				LoginContext context = new MyLoginContext(username, password);
 				try
 				{
 					((WaspSession)getSession()).login(context);

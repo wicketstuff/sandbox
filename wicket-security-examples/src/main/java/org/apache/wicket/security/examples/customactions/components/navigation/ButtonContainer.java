@@ -16,10 +16,7 @@
  */
 package org.apache.wicket.security.examples.customactions.components.navigation;
 
-import org.apache.wicket.security.examples.multilogin.pages.BankAccountBalancePage;
-import org.apache.wicket.security.examples.multilogin.pages.CommitTransferMoneyPage;
-import org.apache.wicket.security.examples.multilogin.pages.HomePage;
-import org.apache.wicket.security.examples.multilogin.pages.InitiateTransferMoneyPage;
+import org.apache.wicket.security.examples.customactions.pages.DepartmentsPage;
 
 /**
  * @author marrink
@@ -31,10 +28,10 @@ public class ButtonContainer
 
 	private static final long serialVersionUID = 1L;
 
-	public static final Integer BUTTON_HOME = new Integer(0);
-	public static final Integer BUTTON_OVERVIEW = new Integer(1);
-	public static final Integer BUTTON_TRANSACTION = new Integer(2);
-	public static final Integer BUTTON_COMMIT = new Integer(3);
+	public static final Integer BUTTON_DEPARTMENTS = new Integer(0);
+//	public static final Integer BUTTON_OVERVIEW = new Integer(1);
+//	public static final Integer BUTTON_TRANSACTION = new Integer(2);
+//	public static final Integer BUTTON_COMMIT = new Integer(3);
 
 	/**
 	 * Construct.
@@ -52,10 +49,9 @@ public class ButtonContainer
 	 */
 	protected void setupButtons()
 	{
-		BUTTONS = new Integer[] { BUTTON_HOME, BUTTON_OVERVIEW, BUTTON_TRANSACTION, BUTTON_COMMIT };
-		NAMES = new String[] { "Home", "Account balance", "Transfer", "Commit transfers" };
-		PAGES = new Class[] { HomePage.class, BankAccountBalancePage.class,
-				InitiateTransferMoneyPage.class, CommitTransferMoneyPage.class };
+		BUTTONS = new Integer[] { BUTTON_DEPARTMENTS};
+		NAMES = new String[] { "Departments"};
+		PAGES = new Class[] { DepartmentsPage.class};
 	}
 
 }

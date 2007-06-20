@@ -70,7 +70,7 @@ public class MyApplication extends SwarmWebApplication
 		//-whatever you can think of
 		
 		//for this example we will be using a fixed string
-		return "multi-login";
+		return "custom-actions";
 		
 	}
 
