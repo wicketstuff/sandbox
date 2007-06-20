@@ -52,7 +52,18 @@ public abstract class AbstractRequireDojoBehavior extends AbstractDefaultDojoBeh
 	 */
 	public void renderHead(IHeaderResponse response) {
 		super.renderHead(response);
-		setRequire(libs);
+		StringBuffer require = getRequire();
+
+		response.renderJavascript(require, AbstractRequireDojoBehavior.class.getName());
+		
+		//Dojo auto parsing is disactivated so we declare here each widget we need to parse with dojo
+		if (!(RequestCycle.get().getRequestTarget() instanceof AjaxRequestTarget)) {
+			response.renderJavascript("djConfig.searchIds.push(\""+getComponent().getMarkupId()+"\");", getComponent().getMarkupId() + "DojoParse");
+		}
+	}
+	
+	private StringBuffer getRequire(){
+		setRequire(libs); // will be implemented by childs
 		StringBuffer require = new StringBuffer();
 
 		Iterator ite = libs.iterator();
@@ -63,13 +74,8 @@ public abstract class AbstractRequireDojoBehavior extends AbstractDefaultDojoBeh
 		}
 
 		require.append("\n");
-
-		response.renderJavascript(require, AbstractRequireDojoBehavior.class.getName());
 		
-		//Dojo auto parsing is disactivated so we declare here each widget we need to parse with dojo
-		if (!(RequestCycle.get().getRequestTarget() instanceof AjaxRequestTarget)) {
-			response.renderJavascript("djConfig.searchIds.push(\""+getComponent().getMarkupId()+"\");", getComponent().getMarkupId() + "DojoParse");
-		}
+		return require;
 	}
 
 	/**
@@ -83,15 +89,22 @@ public abstract class AbstractRequireDojoBehavior extends AbstractDefaultDojoBeh
 	 * this method is used to interpret dojoWidgets rendered via XMLHTTPRequest
 	 */
 	protected void onComponentRendered() {
+		
 		// if a Dojo Widget is rerender needs to run some javascript to refresh
 		// it. TargetRefresherManager contains top level dojo widgets
 		if (RequestCycle.get().getRequestTarget() instanceof AjaxRequestTarget) {
-			((AjaxRequestTarget) RequestCycle.get().getRequestTarget()).addListener(TargetRefresherManager
+			AjaxRequestTarget target = (AjaxRequestTarget) RequestCycle.get().getRequestTarget();
+			//add required needed 
+			//TODO : added for dnd ## Is it really always needed. It seems yes
+			target.appendJavascript(getRequire().toString());
+			//and register listener
+			target.addListener(TargetRefresherManager
 					.getInstance());
 			TargetRefresherManager.getInstance().addComponent(getComponent());
-			onComponentReRendered(((AjaxRequestTarget) RequestCycle.get().getRequestTarget()));
+			onComponentReRendered(target);
 		}
 	}
+	
 
 	/**
 	 * Add Javascript scripts when a dojo component is Rerender in a
