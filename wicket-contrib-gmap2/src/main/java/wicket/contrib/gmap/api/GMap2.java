@@ -74,8 +74,6 @@ public class GMap2 implements Serializable
 	 * Add a overlay to this map.
 	 * 
 	 * @see GOverlay
-	 * @see GMarker
-	 * 
 	 * @param overlay
 	 */
 	public void addOverlay(GOverlay overlay)
@@ -83,6 +81,17 @@ public class GMap2 implements Serializable
 		overlay.setGMap2(this);
 		overlays.add(overlay);
 	}
+	
+    /**
+     * Remove an overlay from this map.
+     *
+     * @see GOverlay
+     * @param overlay
+     */
+    public void removeOverlay(GOverlay overlay)
+    {
+        overlays.remove(overlay);
+    } 
 
 	/**
 	 * Gets a unmodifyable List of all overlays.
