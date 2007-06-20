@@ -47,9 +47,9 @@
       <url>http://www.wicketstuff.org/maven/repository/</url>
     </repository>
     <repository>
-      <id>mergere</id>
-      <name>Mergere Maestro Repository</name>
-      <url>http://repo.mergere.com/maven2</url>
+      <id>codecrate-repository</id>
+      <name>Codecrate Maven Repository</name>
+      <url>http://maven.codecrate.com/</url>
     </repository>  
   </repositories>
 </project>
