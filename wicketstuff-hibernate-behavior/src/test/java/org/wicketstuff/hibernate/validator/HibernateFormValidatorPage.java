@@ -12,9 +12,9 @@ import org.apache.wicket.model.CompoundPropertyModel;
  * 
  * @author miojo
  */
-public class HibernateFormValidatorPageTest extends WebPage {
+public class HibernateFormValidatorPage extends WebPage {
 
-	public HibernateFormValidatorPageTest() {
+	public HibernateFormValidatorPage() {
 		Form form = new Form("form", new CompoundPropertyModel(new MyObject()));
 		form.add(new TextField("id"));
 		form.add(new TextField("name"));
