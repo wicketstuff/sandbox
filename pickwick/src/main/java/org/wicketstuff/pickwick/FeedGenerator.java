@@ -16,6 +16,8 @@ import org.wicketstuff.pickwick.backend.ImageUtils;
 import org.wicketstuff.pickwick.backend.Settings;
 import org.wicketstuff.pickwick.bean.Sequence;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import com.sun.syndication.feed.synd.SyndContent;
 import com.sun.syndication.feed.synd.SyndEntry;
 import com.sun.syndication.feed.synd.SyndEntryImpl;
@@ -29,14 +31,13 @@ import com.sun.syndication.io.SyndFeedOutput;
  * 
  * @author <a href="mailto:jbq@apache.org">Jean-Baptiste Quenot</a>
  */
+@Singleton
 public class FeedGenerator {
+	@Inject
 	Settings settings;
 
+	@Inject
 	ImageUtils imageUtils;
-
-	public FeedGenerator() {
-		this.settings = settings;
-	}
 
 	public void generate(File imagesDir, String feedType, OutputStream output) throws IOException, FeedException {
 		List<File> results;
@@ -113,21 +114,5 @@ public class FeedGenerator {
 		public int compare(File o1, File o2) {
 			return (int) (ImageUtils.getSequenceDateMillis(o2) - ImageUtils.getSequenceDateMillis(o1));
 		}
-	}
-
-	public ImageUtils getImageUtils() {
-		return imageUtils;
-	}
-
-	public void setImageUtils(ImageUtils imageUtils) {
-		this.imageUtils = imageUtils;
-	}
-
-	public Settings getSettings() {
-		return settings;
-	}
-
-	public void setSettings(Settings settings) {
-		this.settings = settings;
 	}
 }

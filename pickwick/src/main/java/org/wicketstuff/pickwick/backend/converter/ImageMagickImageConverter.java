@@ -10,12 +10,15 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.wicketstuff.pickwick.ImageConversionException;
 
+import com.google.inject.Singleton;
+
 /**
  * {@link ImageConverter} implemented with ImageMagick. Please make sure
  * environment variable PATH contains path to the "convert" program.
  * 
  * @author <a href="mailto:jbq@apache.org">Jean-Baptiste Quenot</a>
  */
+@Singleton
 public class ImageMagickImageConverter implements ImageConverter {
 	private static final Log logger = LogFactory.getLog(ImageMagickImageConverter.class);
 

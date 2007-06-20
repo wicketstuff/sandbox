@@ -5,35 +5,22 @@ import java.io.Serializable;
 
 import org.wicketstuff.pickwick.FeedGenerator;
 
+import com.google.inject.ImplementedBy;
+
 /**
  * PickWick settings
  * 
  * @author <a href="mailto:jbq@apache.org">Jean-Baptiste Quenot</a>
  */
-public class Settings implements Serializable{
-	File imageDirectoryRoot;
-
-	String baseURL;
-
+@ImplementedBy(DefaultSettings.class)
+public interface Settings extends Serializable{
 	/**
 	 * @return base URL of the application for use in the RSS feed, see {@link FeedGenerator}
 	 */
-	public String getBaseURL() {
-		return baseURL;
-	}
-
-	public void setBaseURL(String baseURL) {
-		this.baseURL = baseURL;
-	}
+	String getBaseURL();
 
 	/**
 	 * @return {@link File} pointing to the directory containing the images
 	 */
-	public File getImageDirectoryRoot() {
-		return imageDirectoryRoot;
-	}
-
-	public void setImageDirectoryRoot(File imageDirectoryRoot) {
-		this.imageDirectoryRoot = imageDirectoryRoot;
-	}
+	File getImageDirectoryRoot();
 }
