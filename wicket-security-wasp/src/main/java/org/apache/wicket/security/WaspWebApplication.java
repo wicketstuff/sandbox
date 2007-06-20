@@ -98,9 +98,9 @@ public abstract class WaspWebApplication extends WebApplication
 	 * Destroys the strategy factory and the action factory. In that order. If
 	 * you override ths method you must call super.destroy().
 	 * 
-	 * @see wicket.Application#destroy()
+	 * @see Application#onDestroy();
 	 */
-	protected void destroy()
+	protected void onDestroy()
 	{
 		StrategyFactory factory = getStrategyFactory();
 		if (factory != null)
