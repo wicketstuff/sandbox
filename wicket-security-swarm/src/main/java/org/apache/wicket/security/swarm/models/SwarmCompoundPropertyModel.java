@@ -62,18 +62,30 @@ public abstract class SwarmCompoundPropertyModel extends SecureCompoundPropertyM
 	{
 		return super.wrapOnInheritance(component);
 	}
-
+	/**
+	 * A wrapping model delegating all security calls to the {@link SwarmCompoundPropertyModel} instance. 
+	 * @author marrink
+	 */
 	protected class AttachedSwarmCompoundPropertyModel extends AttachedSecureCompoundPropertyModel
 			implements
 				SwarmModel
 	{
 		private static final long serialVersionUID = 1L;
 
+		/**
+		 * 
+		 * Construct.
+		 * @param owner
+		 */
 		public AttachedSwarmCompoundPropertyModel(Component owner)
 		{
 			super(owner);
 		}
 
+		/**
+		 * 
+		 * @see org.apache.wicket.security.swarm.models.SwarmModel#getSecurityId(org.apache.wicket.Component)
+		 */
 		public String getSecurityId(Component component)
 		{
 			return SwarmCompoundPropertyModel.this.getSecurityId(component != null
