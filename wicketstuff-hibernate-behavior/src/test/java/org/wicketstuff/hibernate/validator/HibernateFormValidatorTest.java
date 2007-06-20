@@ -27,8 +27,8 @@ public class HibernateFormValidatorTest extends TestCase {
 	}
 
 	public void testNotNullFields() {
-		tester.startPage(HibernateFormValidatorPageTest.class);
-		tester.assertRenderedPage(HibernateFormValidatorPageTest.class);
+		tester.startPage(HibernateFormValidatorPage.class);
+		tester.assertRenderedPage(HibernateFormValidatorPage.class);
 
 		FormTester form = tester.newFormTester("form", true);
 		form.submit();
@@ -38,8 +38,8 @@ public class HibernateFormValidatorTest extends TestCase {
 
 	@SuppressWarnings("unchecked")
 	public void testFilledNotNullFields() {
-		tester.startPage(HibernateFormValidatorPageTest.class);
-		tester.assertRenderedPage(HibernateFormValidatorPageTest.class);
+		tester.startPage(HibernateFormValidatorPage.class);
+		tester.assertRenderedPage(HibernateFormValidatorPage.class);
 
 		FormTester form = tester.newFormTester("form");
 
