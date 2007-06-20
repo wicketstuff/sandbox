@@ -3,6 +3,7 @@ NEW FEATURES
 * Metadata editor
 * Add rotation features to ImageConverter interface
 * Take code from ThumbnailImageResource to implement Java2DConverter
+* VideoConverter: provide both Quicktime and AVI streams
 
 
 TASKS

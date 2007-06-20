@@ -1,6 +1,8 @@
 package org.wicketstuff.pickwick.frontend.panel;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.PageParameters;
@@ -10,11 +12,15 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.GridView;
+import org.apache.wicket.markup.repeater.data.IDataProvider;
+import org.apache.wicket.markup.repeater.data.ListDataProvider;
 import org.apache.wicket.model.Model;
 import org.wicketstuff.pickwick.ImageProperties;
 import org.wicketstuff.pickwick.PickWickApplication;
+import org.wicketstuff.pickwick.backend.ImageUtils;
 import org.wicketstuff.pickwick.backend.Settings;
-import org.wicketstuff.pickwick.frontend.ImageProvider;
+
+import com.google.inject.Inject;
 
 /**
  * A panel displaying a table of all thumbnail given by the uri
@@ -23,23 +29,26 @@ import org.wicketstuff.pickwick.frontend.ImageProvider;
  * @author Vincent Demay
  */
 public class SequenceGridPanel extends Panel {
+	@Inject
+	private Settings settings;
+
+	@Inject
+	ImageUtils imageUtils;
 
 	public SequenceGridPanel(String id, String uri) {
 		super(id);
 
-		final Settings settings = PickWickApplication.get().getSettings();
-		final ImageProvider imageProvider = new ImageProvider(settings);
-
-		imageProvider.setImagePath("/" + uri);
+		List imageList = imageUtils.getImageList(new File(settings.getImageDirectoryRoot(), uri));
+		final IDataProvider imageProvider = new ListDataProvider(imageList);
 		add(newGridView("rows", imageProvider));
 	}
 
-	protected GridView newGridView(String id, ImageProvider imageProvider) {
+	protected GridView newGridView(String id, IDataProvider imageProvider) {
 		return new SequenceGridView(id, imageProvider);
 	}
 
 	public class SequenceGridView extends GridView {
-		public SequenceGridView(String id, ImageProvider dataProvider) {
+		public SequenceGridView(String id, IDataProvider dataProvider) {
 			super(id, dataProvider);
 		}
 
@@ -53,13 +62,12 @@ public class SequenceGridPanel extends Panel {
 		@Override
 		protected void populateItem(Item item) {
 			try {
-				final Settings settings = PickWickApplication.get().getSettings();
 				ImageProperties imageProperties = (ImageProperties) item.getModelObject();
 				if (!imageProperties.getFile().getCanonicalPath().startsWith(
 						settings.getImageDirectoryRoot().getCanonicalPath()))
 					throw new RuntimeException("Requested image directory not within the root image directory");
 				WebMarkupContainer link;
-				String imagePath = ((ImageProvider)getDataProvider()).getImageRelativePath(imageProperties.getFile());
+				String imagePath = imageUtils.getRelativePath(imageProperties.getFile());
 				PageParameters params = new PageParameters();
 				params.add("uri", imagePath);
 				item.add(link = new WebMarkupContainer("link"));

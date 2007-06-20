@@ -29,14 +29,18 @@ import org.wicketstuff.pickwick.PickWickApplication;
 import org.wicketstuff.pickwick.bean.Folder;
 import org.wicketstuff.pickwick.bean.Sequence;
 
+import com.google.inject.Inject;
+
 /**
  * Various utility methods
  * 
  * @author <a href="mailto:jbq@apache.org">Jean-Baptiste Quenot</a>
  */
-final public class ImageUtils {
+public class ImageUtils {
+	@Inject
 	private Settings settings;
 
+	@Inject
 	private FileFilter imageFilter;
 
 	public Settings getSettings() {
@@ -45,6 +49,24 @@ final public class ImageUtils {
 
 	public void setSettings(Settings settings) {
 		this.settings = settings;
+	}
+
+	public List getImageList(File directory) {
+		List imageList = new ArrayList();
+		File[] files = directory.listFiles(imageFilter);
+		if (files == null) {
+			throw new RuntimeException("Not a directory: " + directory);
+		}
+
+		for (int i = 0; i < files.length; i++) {
+			File file = files[i];
+			try {
+				imageList.add(ImageUtils.getImageProperties(file));
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
+		}
+		return imageList;
 	}
 
 	final public static ImageProperties getImageProperties(File file) throws FileNotFoundException, IOException {
@@ -80,6 +102,12 @@ final public class ImageUtils {
 		return null;
 	}
 
+	/**
+	 * Get file's path relative to the root image directory
+	 * @param imageFile
+	 * @return
+	 * @throws IOException
+	 */
 	public String getRelativePath(File imageFile) throws IOException {
 		if (settings.getImageDirectoryRoot().getCanonicalPath().equals(imageFile.getCanonicalPath()))
 			return new String();
@@ -156,13 +184,6 @@ final public class ImageUtils {
 		return children[children.length - 1];
 	}
 
-	public FileFilter getImageFilter() {
-		return imageFilter;
-	}
-
-	public void setImageFilter(FileFilter imageFilter) {
-		this.imageFilter = imageFilter;
-	}
 	/**
 	 * return a tree representation of the folders in imageDirectoryRoot
 	 * @return  a tree representation of the folders in imageDirectoryRoot

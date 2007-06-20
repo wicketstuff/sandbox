@@ -15,11 +15,12 @@ import org.apache.wicket.extensions.markup.html.tree.Tree;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.html.tree.AbstractTree;
-import org.wicketstuff.pickwick.PickWickApplication;
-import org.wicketstuff.pickwick.backend.Settings;
+import org.wicketstuff.pickwick.backend.ImageUtils;
 import org.wicketstuff.pickwick.bean.Folder;
 import org.wicketstuff.pickwick.frontend.FolderTree;
 import org.wicketstuff.pickwick.frontend.pages.SequencePage;
+
+import com.google.inject.Inject;
 
 /**
  * Panel displaying the image folder structure
@@ -27,6 +28,8 @@ import org.wicketstuff.pickwick.frontend.pages.SequencePage;
  *
  */
 public class FolderTreePanel extends Panel{
+	@Inject
+	private ImageUtils imageUtils;
 
 	/**
 	 * There isn't any model because model is auto binded using {@link FolderProvider}
@@ -41,11 +44,10 @@ public class FolderTreePanel extends Panel{
 			protected MarkupContainer newNodeLink(MarkupContainer parent, String id, TreeNode node) {
 				PageParameters params = new PageParameters();
 				Folder folder = (Folder)((DefaultMutableTreeNode)node).getUserObject();
-				Settings settings = PickWickApplication.get().getSettings();
 				BookmarkablePageLink nodeLink = new BookmarkablePageLink(id, SequencePage.class, params);
 				try {
 					// FIXME pass pretty URL!!!
-					params.add("uri", PickWickApplication.get().getImageUtils().getRelativePath(folder.getFile()));
+					params.add("uri", imageUtils.getRelativePath(folder.getFile()));
 				} catch (IOException e) {
 					throw new RuntimeException(e);
 				}
@@ -69,7 +71,7 @@ public class FolderTreePanel extends Panel{
 	 */
 	protected TreeModel createTreeModel() 
 	{
-		return convertToTreeModel(PickWickApplication.get().getImageUtils().getFolder());
+		return convertToTreeModel(imageUtils.getFolder());
 	}
 	
 	private TreeModel convertToTreeModel(Folder folder)
