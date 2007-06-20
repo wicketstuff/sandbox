@@ -45,22 +45,11 @@ public abstract class SwarmCompoundPropertyModel extends SecureCompoundPropertyM
 	}
 
 	/**
-	 * @param component
-	 *            the component, if left null the component is automaticly
-	 *            resolved.
-	 * @see org.apache.wicket.security.swarm.models.SwarmModel#getSecurityId(org.apache.wicket.Component)
-	 */
-	public String getSecurityId(Component component)
-	{
-		return null;
-	}
-
-	/**
 	 * @see org.apache.wicket.security.models.SecureCompoundPropertyModel#wrapOnInheritance(org.apache.wicket.Component)
 	 */
 	public IWrapModel wrapOnInheritance(Component component)
 	{
-		return super.wrapOnInheritance(component);
+		return new AttachedSwarmCompoundPropertyModel(component);
 	}
 	/**
 	 * A wrapping model delegating all security calls to the {@link SwarmCompoundPropertyModel} instance. 
