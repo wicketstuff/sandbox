@@ -23,19 +23,18 @@ import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.security.examples.customactions.authorization.DepartmentModel;
+import org.apache.wicket.security.examples.customactions.components.navigation.ButtonContainer;
 import org.apache.wicket.security.examples.customactions.entities.Department;
-import org.apache.wicket.security.examples.customactions.entities.Organisation;
-import org.apache.wicket.security.examples.multilogin.components.navigation.ButtonContainer;
-import org.apache.wicket.security.examples.pages.MySecurePage;
+import org.apache.wicket.security.examples.customactions.entities.Organization;
 
 /**
  * Page for showing the departments in our organisation.
  * 
  * @author marrink
  */
-public class DepartmentsPage extends MySecurePage
+public class DepartmentsPage extends SecurePage
 {
 
 	/**
@@ -48,8 +47,8 @@ public class DepartmentsPage extends MySecurePage
 	 */
 	public DepartmentsPage()
 	{
-		add(new ButtonContainer("buttoncontainer", ButtonContainer.BUTTON_OVERVIEW));
-		add(new ListView("transactions", generateData())
+		add(new ButtonContainer("buttoncontainer", ButtonContainer.BUTTON_DEPARTMENTS));
+		add(new ListView("departments", generateData())
 		{
 			private static final long serialVersionUID = 1L;
 			protected void populateItem(ListItem item)
@@ -65,7 +64,7 @@ public class DepartmentsPage extends MySecurePage
 			 */
 			protected IModel getListItemModel(IModel listViewModel, int index)
 			{
-				return new CompoundPropertyModel(super.getListItemModel(listViewModel, index));
+				return new DepartmentModel(super.getListItemModel(listViewModel, index));
 			}
 		});
 	}
@@ -75,8 +74,8 @@ public class DepartmentsPage extends MySecurePage
 	 */
 	private List generateData()
 	{
-		Organisation organisation=new Organisation();
-		organisation.name="Bee Hive: Honey Production (inc)";
+		Organization organization=new Organization();
+		organization.name="Bee Hive: Honey Production (inc)";
 		String[] departments=new String[]{"Tracking","Tracks swarm movements","false",
 				"H.I.E","Honey Industrial Espionage","true",
 				"C.B.I.A","Counter Bee Interrogation Agency","true",
@@ -86,7 +85,7 @@ public class DepartmentsPage extends MySecurePage
 		List data=new ArrayList(size);
 		for(int i=0;i<size;i++)
 		{
-			data.add(new Department(organisation,departments[i*3],departments[(i*3)+1], Boolean.valueOf(departments[(i*3)+2]).booleanValue()));
+			data.add(new Department(organization,departments[i*3],departments[(i*3)+1], Boolean.valueOf(departments[(i*3)+2]).booleanValue()));
 		}
 		return data;
 	}

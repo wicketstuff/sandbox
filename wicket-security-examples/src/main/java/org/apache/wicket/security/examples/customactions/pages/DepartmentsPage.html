@@ -50,26 +50,20 @@
 <div id="buttoncontainer" wicket:id="buttoncontainer"></div>
 </div>
 <div id="contentbox"><wicket:extend>
-	<div class="title" id="centerTitle">HOME</div>
+	<div class="title" id="centerTitle">Departments</div>
 	<br />
 	<div id="agendaView">
 	<table>
 		<thead>
 			<tr>
-				<th><span>Date</span></th>
-				<th><span>From account nr</span></th>
-				<th><span>To account nr</span></th>
+				<th><span>Name</span></th>
 				<th><span>Description</span></th>
-				<th><span>Amount</span></th>
 			</tr>
 		</thead>
 		<tbody>
-			<tr wicket:id="transactions" class="outside">
-				<td wicket:id="when"></td>
-				<td wicket:id="from"></td>
-				<td wicket:id="to"></td>
+			<tr wicket:id="departments" class="outside">
+				<td wicket:id="name"></td>
 				<td wicket:id="description"></td>
-				<td wicket:id="amount"></td>
 			</tr>
 		</tbody>
 	</table>

@@ -18,14 +18,13 @@ package org.apache.wicket.security.examples.customactions.authorization;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.security.actions.WaspAction;
-import org.apache.wicket.security.models.SecureCompoundPropertyModel;
-import org.apache.wicket.security.swarm.models.SwarmModel;
 import org.apache.wicket.security.examples.customactions.entities.Department;
+import org.apache.wicket.security.swarm.models.SwarmCompoundPropertyModel;
 
 /**
  * @author marrink
  */
-public class DepartmentModel extends SecureCompoundPropertyModel implements SwarmModel
+public class DepartmentModel extends SwarmCompoundPropertyModel
 {
 	private static final long serialVersionUID = 1L;
 

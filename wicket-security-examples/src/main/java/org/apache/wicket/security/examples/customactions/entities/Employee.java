@@ -16,11 +16,14 @@
  */
 package org.apache.wicket.security.examples.customactions.entities;
 
+import java.io.Serializable;
+
 /**
  * @author marrink
  */
-public class Employee
+public class Employee implements Serializable
 {
+	private static final long serialVersionUID = 1L;
 	public Department department;
 	public String name;
 	public String adres;

@@ -23,7 +23,7 @@ import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.security.WaspSession;
 import org.apache.wicket.security.components.SecureWebPage;
-import org.apache.wicket.security.examples.multilogin.authentication.Level0Context;
+import org.apache.wicket.security.hive.authentication.LoginContext;
 import org.apache.wicket.security.swarm.SwarmWebApplication;
 
 /**
@@ -32,7 +32,7 @@ import org.apache.wicket.security.swarm.SwarmWebApplication;
  * @author marrink
  *
  */
-public class MySecurePage extends SecureWebPage
+public abstract class MySecurePage extends SecureWebPage
 {
 
 	private static final long serialVersionUID = 1L;
@@ -73,7 +73,7 @@ public class MySecurePage extends SecureWebPage
 			public void onClick()
 			{
 				WaspSession waspSession = ((WaspSession)getSession());
-				if(waspSession.logoff(new Level0Context()))
+				if(waspSession.logoff(getLogoffContext()))
 				{
 					//homepage is not allowed anymore so we end up at the loginpage
 					setResponsePage(Application.get().getHomePage());
@@ -93,4 +93,9 @@ public class MySecurePage extends SecureWebPage
 	{
 		return (SwarmWebApplication)Application.get();
 	}
+
+	/**
+	 * @return
+	 */
+	protected abstract LoginContext getLogoffContext();
 }

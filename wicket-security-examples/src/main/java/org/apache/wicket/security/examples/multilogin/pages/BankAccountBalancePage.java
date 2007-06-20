@@ -28,14 +28,13 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.security.examples.multilogin.components.navigation.ButtonContainer;
 import org.apache.wicket.security.examples.multilogin.entities.Entry;
-import org.apache.wicket.security.examples.pages.MySecurePage;
 
 /**
  * Page for showing the balance of a bank account.
  * 
  * @author marrink
  */
-public class BankAccountBalancePage extends MySecurePage
+public class BankAccountBalancePage extends SecurePage
 {
 
 	/**

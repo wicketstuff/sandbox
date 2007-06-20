@@ -14,25 +14,56 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.wicket.security.examples.multilogin.pages;
+package org.apache.wicket.security.examples.customactions.pages;
 
-import org.apache.wicket.security.examples.multilogin.components.navigation.ButtonContainer;
+import org.apache.wicket.PageParameters;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.security.examples.customactions.authentication.MyLoginContext;
+import org.apache.wicket.security.examples.pages.MySecurePage;
+import org.apache.wicket.security.hive.authentication.LoginContext;
 
 /**
- * The home page, this one is secured with a login.
  * @author marrink
- *
  */
-public class HomePage extends SecurePage
+public class SecurePage extends MySecurePage
 {
-
-	private static final long serialVersionUID = 1L;
 
 	/**
 	 * 
 	 */
-	public HomePage()
+	private static final long serialVersionUID = 1L;
+
+	/**
+	 * Construct.
+	 */
+	public SecurePage()
 	{
-		add(new ButtonContainer("buttoncontainer",ButtonContainer.BUTTON_HOME));
 	}
+
+	/**
+	 * Construct.
+	 * @param parameters
+	 */
+	public SecurePage(PageParameters parameters)
+	{
+		super(parameters);
+	}
+
+	/**
+	 * Construct.
+	 * @param model
+	 */
+	public SecurePage(IModel model)
+	{
+		super(model);
+	}
+
+	/**
+	 * @see org.apache.wicket.security.examples.pages.MySecurePage#getLogoffContext()
+	 */
+	protected LoginContext getLogoffContext()
+	{
+		return new MyLoginContext();
+	}
+
 }
