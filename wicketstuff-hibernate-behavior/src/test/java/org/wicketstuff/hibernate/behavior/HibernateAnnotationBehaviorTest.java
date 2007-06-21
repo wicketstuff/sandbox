@@ -2,37 +2,24 @@ package org.wicketstuff.hibernate.behavior;
 
 import junit.framework.TestCase;
 
-import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.util.tester.WicketTester;
-import org.hibernate.validator.Length;
-import org.hibernate.validator.NotNull;
 
 public class HibernateAnnotationBehaviorTest extends TestCase {
+	private WicketTester tester;
 
 	public void setUp() {
-		new WicketTester();
+		tester = new WicketTester();
 	}
 	
 	public void testNotNullAnnotationUpdatesComponentToBeRequired() {
-		TextField component = new TextField("test", new PropertyModel(new MyObject(), "id"));
-		new HibernateAnnotationBehavior().bind(component);
-		
-		assertTrue(component.isRequired());
+		TestPage page = (TestPage) tester.startPage(TestPage.class);
+
+		assertTrue(page.getIdField().isRequired());
 	}
 
-	public void testLengthAnnotationAddsMaxLengthAttributeToComponent() {
-		TextField component = new TextField("test", new PropertyModel(new MyObject(), "name"));
-		new HibernateAnnotationBehavior().bind(component);
-
-		//TODO: verify maxlength attribute is added to component
-	}
-
-	public class MyObject {
-		@NotNull
-		private String id;
-		
-		@Length(max=50)
-		private String name;
-	}
+//	public void testLengthAnnotationAddsMaxLengthAttributeToComponent() {
+//		tester.startPage(TestPage.class);
+//
+//		tester.assertContains("maxlength=\"50\"");
+//	}
 }

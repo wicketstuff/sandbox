@@ -50,7 +50,8 @@ public class HibernateAnnotationComponentConfigurator {
 			if (null != annotations) {
 				for (int y = 0; y < annotations.length; y++) {
 					Annotation annotation = annotations[y];
-					HibernateAnnotationConfig config = (HibernateAnnotationConfig) configs.get(annotation.getClass());
+					Class<? extends Annotation> annotationType = annotation.annotationType();
+					HibernateAnnotationConfig config = (HibernateAnnotationConfig) configs.get(annotationType);
 					if (null != config) {
 						config.onAnnotatedComponent(annotation, formComponent);
 					}

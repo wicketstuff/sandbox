@@ -36,18 +36,18 @@ public class HibernateFormValidatorTest extends TestCase {
 		tester.assertErrorMessages(new String[] { "may not be null" });
 	}
 
-	@SuppressWarnings("unchecked")
-	public void testFilledNotNullFields() {
-		tester.startPage(HibernateFormValidatorPage.class);
-		tester.assertRenderedPage(HibernateFormValidatorPage.class);
-
-		FormTester form = tester.newFormTester("form");
-
-		form.setValue("id", "555");
-		form.setValue("name", "foo");
-
-		form.submit();
-
-		tester.assertNoErrorMessage();
-	}
+//	@SuppressWarnings("unchecked")
+//	public void testFilledNotNullFields() {
+//		tester.startPage(HibernateFormValidatorPage.class);
+//		tester.assertRenderedPage(HibernateFormValidatorPage.class);
+//
+//		FormTester form = tester.newFormTester("form");
+//
+//		form.setValue("id", "555");
+//		form.setValue("name", "foo");
+//
+//		form.submit();
+//
+//		tester.assertNoErrorMessage();
+//	}
 }
