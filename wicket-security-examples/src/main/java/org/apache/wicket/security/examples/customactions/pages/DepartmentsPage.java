@@ -19,11 +19,15 @@ package org.apache.wicket.security.examples.customactions.pages;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.wicket.Page;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.link.IPageLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.security.components.markup.html.links.SecurePageLink;
+import org.apache.wicket.security.examples.customactions.authorization.DepartmentLinkCheck;
 import org.apache.wicket.security.examples.customactions.authorization.DepartmentModel;
 import org.apache.wicket.security.examples.customactions.components.navigation.ButtonContainer;
 import org.apache.wicket.security.examples.customactions.entities.Department;
@@ -51,41 +55,75 @@ public class DepartmentsPage extends SecurePage
 		add(new ListView("departments", generateData())
 		{
 			private static final long serialVersionUID = 1L;
-			protected void populateItem(ListItem item)
+
+			protected void populateItem(final ListItem item)
 			{
 				item.add(new Label("name"));
 				item.add(new Label("description"));
-				if(item.getIndex()%2==0)
-					item.add(new SimpleAttributeModifier("class","outside halfhour"));
+				if (item.getIndex() % 2 == 0)
+					item.add(new SimpleAttributeModifier("class", "outside halfhour"));
+				// Having a custom securitycheck is a bit of overkill,
+				// esspecially because we are already filtering out the secure
+				// departments. However should you replace the DepartmentModel
+				// below for a regular CompoundPropertyModel (and thus showing
+				// all departments), then the
+				// securitycheck of the link kicks in preventing you from
+				// clicking on the secure departments.
+				SecurePageLink link = new SecurePageLink("link", new IPageLink()
+				{
+					private static final long serialVersionUID = 1L;
+
+					public Page getPage()
+					{
+						return new DepartmentPage((Department)item.getModelObject());
+					}
+
+					public Class getPageIdentity()
+					{
+						return DepartmentPage.class;
+					}
+				});
+				link.setSecurityCheck(new DepartmentLinkCheck(link, DepartmentPage.class,
+						(Department)item.getModelObject()));
+				item.add(link);
+
 			}
+
 			/**
 			 * 
-			 * @see org.apache.wicket.markup.html.list.ListView#getListItemModel(org.apache.wicket.model.IModel, int)
+			 * @see org.apache.wicket.markup.html.list.ListView#getListItemModel(org.apache.wicket.model.IModel,
+			 *      int)
 			 */
 			protected IModel getListItemModel(IModel listViewModel, int index)
 			{
+				// by using a securemodel we are preventing the secure
+				// departments from showing up.
 				return new DepartmentModel(super.getListItemModel(listViewModel, index));
+//				return new CompoundPropertyModel(super.getListItemModel(listViewModel, index));
 			}
 		});
 	}
+
 	/**
 	 * Generate some random data
+	 * 
 	 * @return
 	 */
 	private List generateData()
 	{
-		Organization organization=new Organization();
-		organization.name="Bee Hive: Honey Production (inc)";
-		String[] departments=new String[]{"Tracking","Tracks swarm movements","false",
-				"H.I.E","Honey Industrial Espionage","true",
-				"C.B.I.A","Counter Bee Interrogation Agency","true",
-				"Honey Gathering","Gathers honey from all the swarms","false",
-				"Storage","Stores all the honey","false"};
-		int size=5;
-		List data=new ArrayList(size);
-		for(int i=0;i<size;i++)
+		Organization organization = new Organization();
+		organization.name = "Bee Hive: Honey Production (inc)";
+		String[] departments = new String[] { "Tracking", "Tracks swarm movements", "false",
+				"H.I.E", "Honey Industrial Espionage", "true", "C.B.I.A",
+				"Counter Bee Interrogation Agency", "true", "Honey Gathering",
+				"Gathers honey from all the swarms", "false", "Storage", "Stores all the honey",
+				"false" };
+		int size = 5;
+		List data = new ArrayList(size);
+		for (int i = 0; i < size; i++)
 		{
-			data.add(new Department(organization,departments[i*3],departments[(i*3)+1], Boolean.valueOf(departments[(i*3)+2]).booleanValue()));
+			data.add(new Department(organization, departments[i * 3], departments[(i * 3) + 1],
+					Boolean.valueOf(departments[(i * 3) + 2]).booleanValue()));
 		}
 		return data;
 	}
