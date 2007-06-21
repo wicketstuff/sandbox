@@ -34,7 +34,21 @@
 		<scope>provided</scope>
 	</dependency>
   </dependencies>
+
   <build>
+	<testResources>
+		<testResource>
+			<directory>src/test/java</directory>
+			<includes>
+				<include>**</include>
+			</includes>
+			<excludes>
+				<exclude>**/*.java</exclude>
+			</excludes>
+			<filtering>false</filtering>
+		</testResource>
+	</testResources>
+
     <plugins>
 	  <plugin>
 		<groupId>org.apache.maven.plugins</groupId>
