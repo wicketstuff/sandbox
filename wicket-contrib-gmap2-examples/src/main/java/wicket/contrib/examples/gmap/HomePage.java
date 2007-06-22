@@ -60,7 +60,6 @@ public class HomePage extends WicketExamplePage
 		topPanel.addZoomOutControll(zoomOut, "onclick");
 
 		final Label clickLabel = new Label("clickLabel", new Model(new GLatLng(50f, 50f)));
-		clickLabel.add(new AttributeModifier("lat", true, clickLabel.getModel()));
 		topPanel.addClickListener(new ClickListener()
 		{
 			/**
