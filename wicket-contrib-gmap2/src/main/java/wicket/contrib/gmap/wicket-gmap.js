@@ -53,7 +53,7 @@ function addGMap(id, divId, lat, lng, zoom, moveendCallBack, clickCallBack) {
 		var map = new GMap2(document.getElementById(divId));
 		map.setCenter(new GLatLng(lat, lng), zoom);
 		var moveendCall = function () {wicketAjaxGet( 
-				"'" + moveendCallBack 
+				moveendCallBack 
 				+ '&center=' + map.getCenter()
 				+ '&bounds=' + map.getBounds()
 				+ '&size=' + map.getSize()
@@ -63,7 +63,7 @@ function addGMap(id, divId, lat, lng, zoom, moveendCallBack, clickCallBack) {
 		GEvent.addListener( map , 'moveend', moveendCall );
 						
 		var clickCall = function (marker, point) {wicketAjaxGet( 
-				"'" + clickCallBack 
+				clickCallBack 
 				+ '&marker=' + marker
 				+ '&point=' + point),
 				function(){},
