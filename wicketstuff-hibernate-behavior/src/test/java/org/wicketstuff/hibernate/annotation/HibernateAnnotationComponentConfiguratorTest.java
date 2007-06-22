@@ -24,6 +24,23 @@ public class HibernateAnnotationComponentConfiguratorTest extends TestCase {
 		assertTrue(textField.isRequired());
 	}
 
+	public void testConfiguringPropertyModelWithNoAnnotationsDoesNotCauseError() {
+		HibernateAnnotationComponentConfigurator configurator = new HibernateAnnotationComponentConfigurator();
+
+		TextField textField = new TextField("id", new PropertyModel(new MyObject(), "description"));
+		configurator.configure(textField);
+
+		assertFalse(textField.isRequired());
+	}
+
+	public void testOgnlPropertyPathDoesNotCauseError() {
+		HibernateAnnotationComponentConfigurator configurator = new HibernateAnnotationComponentConfigurator();
+
+		TextField textField = new TextField("id", new PropertyModel(new MyObject(), "innerObject.name"));
+		configurator.configure(textField);
+
+		assertFalse(textField.isRequired());
+	}
 
 	public void testComponentListenerConfiguresComponent() {
 		tester.getApplication().addComponentOnBeforeRenderListener(new HibernateAnnotationComponentConfigurator());
@@ -39,5 +56,7 @@ public class HibernateAnnotationComponentConfiguratorTest extends TestCase {
 
 		@Length(max=50)
 		private String name;
+		
+		private String description;
 	}
 }
