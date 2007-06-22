@@ -2,7 +2,11 @@ package org.wicketstuff.hibernate.annotation;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import org.apache.wicket.AttributeModifier;
@@ -95,24 +99,27 @@ public class HibernateAnnotationComponentConfigurator extends AbstractBehavior i
 		}
 		FormComponent formComponent = (FormComponent)component;
 		PropertyModel propertyModel = (PropertyModel) component.getModel();
+		
+		for (Iterator iter = getAnnotations(propertyModel).iterator(); iter.hasNext();) {
+			Annotation annotation = (Annotation) iter.next();
+			Class<? extends Annotation> annotationType = annotation.annotationType();
+			HibernateAnnotationConfig config = (HibernateAnnotationConfig) configs.get(annotationType);
+			if (null != config) {
+				config.onAnnotatedComponent(annotation, formComponent);
+			}
+		}
+	}
+
+	private Collection getAnnotations(PropertyModel propertyModel) {
 		String fieldName = propertyModel.getPropertyExpression();
 		Class type = propertyModel.getTarget().getClass();
 		try {
 			Field field = type.getDeclaredField(fieldName);
-			Annotation[] annotations = field.getAnnotations();
-			if (null != annotations) {
-				for (int y = 0; y < annotations.length; y++) {
-					Annotation annotation = annotations[y];
-					Class<? extends Annotation> annotationType = annotation.annotationType();
-					HibernateAnnotationConfig config = (HibernateAnnotationConfig) configs.get(annotationType);
-					if (null != config) {
-						config.onAnnotatedComponent(annotation, formComponent);
-					}
-				}
-			}
+			return Arrays.asList(field.getAnnotations());
 		} catch (Exception e) {
-			throw new RuntimeException("Error configuring component: " + component, e);
-		}
+			LOGGER.warn("Unable to find annotations for PropertyModel: " + propertyModel, e);
+		} 
+		return Collections.EMPTY_LIST;
 	}
 
 	private boolean isApplicableFor(Component component) {
