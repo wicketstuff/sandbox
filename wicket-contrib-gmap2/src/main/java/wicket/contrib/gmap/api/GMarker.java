@@ -35,8 +35,6 @@ public class GMarker<T extends Component> extends GOverlay
 	/**
 	 * @param point
 	 *            the point on the map where this marker will be anchored
-	 * @param componentFactory
-	 *            wicket component factory that needs to be rendered
 	 */
 	public GMarker(GLatLng point)
 	{
