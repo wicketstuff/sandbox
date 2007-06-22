@@ -17,12 +17,9 @@
 package org.apache.wicket.security.examples.customactions.authorization;
 
 import org.apache.wicket.Component;
-import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.security.actions.WaspAction;
 import org.apache.wicket.security.checks.ComponentSecurityCheck;
-import org.apache.wicket.security.components.SecureComponentHelper;
 import org.apache.wicket.security.examples.customactions.entities.Department;
-import org.apache.wicket.security.models.ISecureModel;
 
 /**
  * @author marrink
@@ -31,9 +28,7 @@ public class DepartmentCheck extends ComponentSecurityCheck
 {
 	private static final long serialVersionUID = 1L;
 
-	// Note always have some way of detaching your bussiness entities, unlike
-	// this example
-	private Department department;
+	private boolean secureDepartment;
 
 	/**
 	 * Construct.
@@ -43,7 +38,7 @@ public class DepartmentCheck extends ComponentSecurityCheck
 	public DepartmentCheck(Component component, Department department)
 	{
 		super(component);
-		this.department = department;
+		secureDepartment = department.secure;
 	}
 
 	/**
@@ -52,9 +47,10 @@ public class DepartmentCheck extends ComponentSecurityCheck
 	 * @param component
 	 * @param checkSecureModelIfExists
 	 */
-	public DepartmentCheck(Component component, boolean checkSecureModelIfExists)
+	public DepartmentCheck(Component component, Department department, boolean checkSecureModelIfExists)
 	{
 		super(component, checkSecureModelIfExists);
+		secureDepartment = department.secure;
 	}
 
 	/**
@@ -62,15 +58,10 @@ public class DepartmentCheck extends ComponentSecurityCheck
 	 */
 	public boolean isActionAuthorized(WaspAction action)
 	{
-		if (!isAuthenticated())
-			throw new RestartResponseAtInterceptPageException(getLoginPage());
 		//for secure departments you need organization rights, else department rights are sufficient
 		WaspAction myAction = action.add(getActionFactory().getAction(
-				department.secure ? Organization.class : org.apache.wicket.security.examples.customactions.authorization.Department.class));
-		boolean result = getStrategy().isComponentAuthorized(getComponent(), myAction);
-		if (result && checkSecureModel() && SecureComponentHelper.hasSecureModel(getComponent()))
-			return ((ISecureModel)getComponent().getModel()).isAuthorized(getComponent(), myAction);
-		return result;
+				secureDepartment ? Organization.class : org.apache.wicket.security.examples.customactions.authorization.Department.class));
+		return super.isActionAuthorized(myAction);
 	}
 
 }

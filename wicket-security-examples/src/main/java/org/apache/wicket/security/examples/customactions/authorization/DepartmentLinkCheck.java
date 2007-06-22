@@ -17,12 +17,9 @@
 package org.apache.wicket.security.examples.customactions.authorization;
 
 import org.apache.wicket.markup.html.link.AbstractLink;
-import org.apache.wicket.security.actions.Enable;
 import org.apache.wicket.security.actions.WaspAction;
 import org.apache.wicket.security.checks.LinkSecurityCheck;
-import org.apache.wicket.security.components.SecureComponentHelper;
 import org.apache.wicket.security.examples.customactions.entities.Department;
-import org.apache.wicket.security.models.ISecureModel;
 
 /**
  * @author marrink
@@ -35,9 +32,7 @@ public class DepartmentLinkCheck extends LinkSecurityCheck
 	 */
 	private static final long serialVersionUID = 1L;
 	
-//	 Note always have some way of detaching your bussiness entities, unlike
-	// this example
-	private Department department;
+	private boolean secureDepartment;
 
 	/**
 	 * Construct.
@@ -47,7 +42,7 @@ public class DepartmentLinkCheck extends LinkSecurityCheck
 	public DepartmentLinkCheck(AbstractLink component, Class clickTarget, Department department)
 	{
 		super(component, clickTarget);
-		this.department = department;
+		secureDepartment = department.secure;
 	}
 
 	/**
@@ -57,10 +52,10 @@ public class DepartmentLinkCheck extends LinkSecurityCheck
 	 * @param checkSecureModelIfExists
 	 */
 	public DepartmentLinkCheck(AbstractLink component, Class clickTarget,
-			boolean checkSecureModelIfExists, Department department)
+			Department department, boolean checkSecureModelIfExists)
 	{
 		super(component, clickTarget, checkSecureModelIfExists);
-		this.department = department;
+		secureDepartment = department.secure;
 	}
 
 	/**
@@ -70,15 +65,8 @@ public class DepartmentLinkCheck extends LinkSecurityCheck
 	{
 //		for secure departments you need organization rights, else department rights are sufficient
 		WaspAction myAction = action.add(getActionFactory().getAction(
-				department.secure ? Organization.class : org.apache.wicket.security.examples.customactions.authorization.Department.class));
-		if (isUseAlternativeRenderCheck()
-				&& !myAction.implies(getActionFactory().getAction(Enable.class)))
-			return super.isActionAuthorized(myAction);
-		//no authentication like in super since the regular instantiation checks will handle authentication
-		boolean result = getStrategy().isClassAuthorized(getClickTarget(), myAction);
-		if (result && checkSecureModel() && SecureComponentHelper.hasSecureModel(getComponent()))
-			return ((ISecureModel)getComponent().getModel()).isAuthorized(getComponent(), myAction);
-		return result;
+				secureDepartment ? Organization.class : org.apache.wicket.security.examples.customactions.authorization.Department.class));
+		return super.isActionAuthorized(myAction);
 	}
 
 }
