@@ -52,7 +52,7 @@ import org.slf4j.LoggerFactory;
  * <pre>
  * public class MyApplication extends WebApplication {
  *   public void init() {
- *     addComponentInstantiationListener(new HibernateAnnotationComponentConfigurator());
+ *     addComponentOnBeforeRenderListener(new HibernateAnnotationComponentConfigurator());
  *   }
  * }
  * </pre>
