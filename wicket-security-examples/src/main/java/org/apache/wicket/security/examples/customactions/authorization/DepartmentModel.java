@@ -52,20 +52,16 @@ public class DepartmentModel extends SwarmCompoundPropertyModel
 	 */
 	public boolean isAuthorized(Component component, WaspAction action)
 	{
-		if (getStrategy().isModelAuthorized(this, component,
-				action.add(getActionFactory().getAction(Organization.class))))
-			return true;
-		if (getStrategy().isModelAuthorized(this, component,
-				action.add(getActionFactory().getAction(org.apache.wicket.security.examples.customactions.authorization.Department.class))))
+		WaspAction myAction=action;
+		Object obj = getObject();
+		if (obj instanceof Department)
 		{
-			Object obj = getObject();
-			if (obj instanceof Department)
-			{
-				Department department = (Department)obj;
-				return !department.secure;
-			}
+			Department department = (Department)obj;
+//			for secure departments you need organization rights, else department rights are sufficient
+			myAction = action.add(getActionFactory().getAction(
+					department.secure ? Organization.class : org.apache.wicket.security.examples.customactions.authorization.Department.class));
 		}
-		return false;
+		return super.isAuthorized(component, myAction);
 	}
 
 }
