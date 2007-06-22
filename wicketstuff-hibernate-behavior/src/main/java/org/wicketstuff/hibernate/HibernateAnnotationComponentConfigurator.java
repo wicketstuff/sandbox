@@ -14,13 +14,27 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.validation.validator.StringValidator;
 import org.hibernate.validator.Length;
 import org.hibernate.validator.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Configure a wicket component based on hibernate annotations.
+ * <p>
+ * Inspects the Model of a FormComponent and configures the component according 
+ * to the declared Hibernate Annotations used on the model object.  This means the 
+ * Component's Model <em>must</em> be known when {@link #configure(Component) configuring} 
+ * a Component.
+ * </p>
+ * 
+ * <p>
  * This object is <em>stateless</em>, and the same instance can be reused to configure 
  * multiple components.
+ * </p>
+ * 
  */
 public class HibernateAnnotationComponentConfigurator {
+	private static final Logger LOGGER = LoggerFactory.getLogger(HibernateAnnotationComponentConfigurator.class);
+	
 	private static Map configs = new HashMap() {{
 		put(NotNull.class, new HibernateAnnotationConfig() {
 			public void onAnnotatedComponent(Annotation annotation, FormComponent component) {
@@ -58,7 +72,7 @@ public class HibernateAnnotationComponentConfigurator {
 				}
 			}
 		} catch (Exception e) {
-			throw new RuntimeException("Error binding validator for component model: " + type.getName() + "."+ fieldName, e);
+			throw new RuntimeException("Error configuring component: " + component, e);
 		}
 	}
 
@@ -67,10 +81,8 @@ public class HibernateAnnotationComponentConfigurator {
 			return false;
 		}
 		IModel model = component.getModel();
-		if (null == model) {
-			return false;
-		}
-		if (!(model instanceof PropertyModel)) {
+		if (null == model || !(model instanceof PropertyModel)) {
+			LOGGER.info("No PropertyModel available for configuring Component: " + component);
 			return false;
 		}
 
