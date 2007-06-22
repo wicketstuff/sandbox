@@ -63,18 +63,18 @@ public class GMap2Panel extends Panel
 	private final DivMapComponent div;
 
 	/**
-	 * Panel containing the node to be displayed in the GMap.
-	 */
-	private Panel divInfoWindowPanel;
-
-	/**
 	 * Invisible container that holds the information about the InfoWindow.
 	 */
 	private WebMarkupContainer divDisplayNone;
 
-	private final List<MoveEndListener> moveEndListeners = new ArrayList<MoveEndListener>();
+	/**
+	 * Panel containing the node to be displayed in the GMap.
+	 */
+	private Panel divInfoWindowPanel;
 
 	private final List<ClickListener> clickListeners = new ArrayList<ClickListener>();
+
+	private final List<MoveEndListener> moveEndListeners = new ArrayList<MoveEndListener>();
 
 	/**
 	 * Construct.
@@ -106,7 +106,7 @@ public class GMap2Panel extends Panel
 		this.height = height;
 		model.setGMap2Panel(this);
 
-		//Set up the JavaScript context for this Panel.
+		// Set up the JavaScript context for this Panel.
 		add(new AbstractDefaultAjaxBehavior()
 		{
 			/**
@@ -131,9 +131,11 @@ public class GMap2Panel extends Panel
 			@Override
 			protected void respond(AjaxRequestTarget target)
 			{
-				//Adds a call to GUnLoad() to the unload event of the body element.
-				//TODO Bug, doesen't work.
-				target.appendJavascript("Wicket.Event.add(window, \"unload\", function() { GUnLoad();});");
+				// Adds a call to GUnLoad() to the unload event of the body
+				// element.
+				// TODO Bug, doesen't work.
+				target
+						.appendJavascript("Wicket.Event.add(window, \"unload\", function() { GUnLoad();});");
 			}
 		});
 
@@ -149,29 +151,59 @@ public class GMap2Panel extends Panel
 	}
 
 	/**
-	 * @param listener
-	 */
-	public void removeMoveEndListener(Component listener)
-	{
-		moveEndListeners.remove(listener);
-	}
-
-	/**
-	 * @param listener
-	 */
-	public void removeClickListener(Component listener)
-	{
-		clickListeners.remove(listener);
-	}
-
-	/**
-	 * Binds a 'zoomOut()' call on this map, to the given event of the given
-	 * Component.
+	 * Binds a 'openInfoWindow' call on this map, to the given event of the
+	 * given component. <a
 	 * href="http://www.google.com/apis/maps/documentation/reference.html#GMap2">GMap2</a>
 	 * 
 	 * @param comp
+	 * @param factory
+	 * @param event
 	 */
-	public void addZoomOutControll(final Component comp, final String event)
+	public void addOpenInfoWindowControl(final Component comp, final GLatLng point,
+			final InfoWindowPanel panel, String event)
+	{
+		comp.add(new AjaxEventBehavior(event)
+		{
+			/**
+			 * Default serialVersionUID.
+			 */
+			private static final long serialVersionUID = 1L;
+	
+			@Override
+			protected CharSequence getFailureScript()
+			{
+				return "alert('Failure on: " + comp.getId() + "')";
+			}
+	
+			/**
+			 * @see org.apache.wicket.ajax.AjaxEventBehavior#onEvent(org.apache.wicket.ajax.AjaxRequestTarget)
+			 */
+			@Override
+			protected void onEvent(AjaxRequestTarget target)
+			{
+				// replace the panel held, by the invisible div element.
+				panel.setOutputMarkupId(true);
+				divDisplayNone.replace(panel);
+				target.addComponent(divDisplayNone);
+	
+				target.appendJavascript("openInfoWindow('" + getMarkupId() + "'," + "'"
+						+ point.getJSConstructor() + "','" + divInfoWindowPanel.getMarkupId()
+						+ "')");
+			}
+		});
+	}
+
+	/**
+	 * Binds a 'addOverlay' call on this map, to the given event of the given
+	 * component. <a
+	 * href="http://www.google.com/apis/maps/documentation/reference.html#GMap2">GMap2</a>
+	 * 
+	 * @param comp
+	 * @param factory
+	 * @param event
+	 */
+	public void addAddOverlayControll(final Component comp, final GLatLngFactory factory,
+			final String event)
 	{
 		comp.add(new AjaxEventBehavior(event)
 		{
@@ -181,18 +213,11 @@ public class GMap2Panel extends Panel
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected CharSequence getFailureScript()
-			{
-				return "alert('Failure on: " + comp.getId() + "')";
-			}
-
-			/**
-			 * @see org.apache.wicket.ajax.AjaxEventBehavior#onEvent(org.apache.wicket.ajax.AjaxRequestTarget)
-			 */
-			@Override
 			protected void onEvent(AjaxRequestTarget target)
 			{
-				target.appendJavascript("Wicket.gmaps['" + getMarkupId() + "']" + ".zoomOut();");
+				GMarker marker = new GMarker(factory.getGLatLng());
+				target.appendJavascript("addOverlay(\"" + getMarkupId() + "\", '"
+						+ marker.hashCode() + "', '" + marker.getJSConstructor() + "');");
 			}
 		});
 	}
@@ -212,13 +237,7 @@ public class GMap2Panel extends Panel
 			 * 
 			 */
 			private static final long serialVersionUID = 1L;
-
-			@Override
-			protected CharSequence getFailureScript()
-			{
-				return "alert('Failure on: " + comp.getId() + "')";
-			}
-
+	
 			/**
 			 * @see org.apache.wicket.ajax.AjaxEventBehavior#onEvent(org.apache.wicket.ajax.AjaxRequestTarget)
 			 */
@@ -231,8 +250,8 @@ public class GMap2Panel extends Panel
 	}
 
 	/**
-	 * Binds a 'panDirection(dx, dy)' call on this map, to the event
-	 * of the given component. <a
+	 * Binds a 'panDirection(dx, dy)' call on this map, to the event of the
+	 * given component. <a
 	 * href="http://www.google.com/apis/maps/documentation/reference.html#GMap2">GMap2</a>
 	 * 
 	 * @param comp
@@ -249,13 +268,7 @@ public class GMap2Panel extends Panel
 			 * 
 			 */
 			private static final long serialVersionUID = 1L;
-
-			@Override
-			protected CharSequence getFailureScript()
-			{
-				return "alert('Failure on: " + comp.getId() + "')";
-			}
-
+	
 			/**
 			 * @see org.apache.wicket.ajax.AjaxEventBehavior#onEvent(org.apache.wicket.ajax.AjaxRequestTarget)
 			 */
@@ -269,15 +282,13 @@ public class GMap2Panel extends Panel
 	}
 
 	/**
-	 * Binds a 'addOverlay' call on this map, to the given event
-	 * of the given component. <a
+	 * Binds a 'zoomOut()' call on this map, to the given event of the given
+	 * Component.
 	 * href="http://www.google.com/apis/maps/documentation/reference.html#GMap2">GMap2</a>
 	 * 
 	 * @param comp
-	 * @param factory
-	 * @param event
 	 */
-	public void addAddOverlayControll(final Component comp, final GLatLngFactory factory, final String event)
+	public void addZoomOutControll(final Component comp, final String event)
 	{
 		comp.add(new AjaxEventBehavior(event)
 		{
@@ -285,29 +296,16 @@ public class GMap2Panel extends Panel
 			 * Default serialVersionUID.
 			 */
 			private static final long serialVersionUID = 1L;
-
-			@Override
-			protected CharSequence getFailureScript()
-			{
-				return "alert('Failure on: " + comp.getId() + "')";
-			}
-
+	
+			/**
+			 * @see org.apache.wicket.ajax.AjaxEventBehavior#onEvent(org.apache.wicket.ajax.AjaxRequestTarget)
+			 */
 			@Override
 			protected void onEvent(AjaxRequestTarget target)
 			{
-				GMarker marker = new GMarker(factory.getGLatLng());
-				target.appendJavascript("addOverlay(\"" + getMarkupId() + "\", '"
-						+ marker.hashCode() + "', '" + marker.getJSConstructor() + "');");
+				target.appendJavascript("Wicket.gmaps['" + getMarkupId() + "']" + ".zoomOut();");
 			}
 		});
-	}
-
-	/**
-	 * @param listener
-	 */
-	public void addMoveEndListener(MoveEndListener listener)
-	{
-		moveEndListeners.add(listener);
 	}
 
 	/**
@@ -319,14 +317,11 @@ public class GMap2Panel extends Panel
 	}
 
 	/**
-	 * @param target
+	 * @param listener
 	 */
-	public void processMoveEndEvent(MoveEndEvent event, AjaxRequestTarget target)
+	public void removeClickListener(Component listener)
 	{
-		for (MoveEndListener listener : moveEndListeners)
-		{
-			listener.moveEndPerformed(event, target);
-		}
+		clickListeners.remove(listener);
 	}
 
 	/**
@@ -343,64 +338,42 @@ public class GMap2Panel extends Panel
 		}
 	}
 
-	public int getHeight()
-	{
-		return height;
-	}
-
-	public int getWidth()
-	{
-		return width;
-	}
-
 	/**
-	 * Binds a 'openInfoWindow' call on this map, to the given event
-	 * of the given component. <a
-	 * href="http://www.google.com/apis/maps/documentation/reference.html#GMap2">GMap2</a>
-	 * 
-	 * @param comp
-	 * @param factory
-	 * @param event
+	 * @param listener
 	 */
-	public void addOpenInfoWindowControl(final Component comp, final GLatLng point,
-			final InfoWindowPanel panel, String event)
+	public void addMoveEndListener(MoveEndListener listener)
 	{
-		comp.add(new AjaxEventBehavior(event)
-		{
-			/**
-			 * Default serialVersionUID.
-			 */
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			protected CharSequence getFailureScript()
-			{
-				return "alert('Failure on: " + comp.getId() + "')";
-			}
-
-			/**
-			 * @see org.apache.wicket.ajax.AjaxEventBehavior#onEvent(org.apache.wicket.ajax.AjaxRequestTarget)
-			 */
-			@Override
-			protected void onEvent(AjaxRequestTarget target)
-			{
-				//replace the panel held, by the invisible div element.
-				panel.setOutputMarkupId(true);
-				divDisplayNone.replace(panel);
-				target.addComponent(divDisplayNone);
-				
-				target.appendJavascript("openInfoWindow('" + getMarkupId() + "'," + "'"
-						+ point.getJSConstructor() + "','" + divInfoWindowPanel.getMarkupId()
-						+ "')");
-			}
-		});
+		moveEndListeners.add(listener);
 	}
 
 	/**
-	 * Provides an AjaxRequestTarget.IListener providing JavaScript code to call the openInfoWindow
-	 * method on the GMap.
-	 * This is typically used by Listeners on the client programmers side to be
-	 * able to add InfoWindow within a AjaxCallCycle.
+	 * @param listener
+	 */
+	public void removeMoveEndListener(Component listener)
+	{
+		moveEndListeners.remove(listener);
+	}
+
+	/**
+	 * All Listeners will be notified of the event.
+	 * 
+	 * @param event
+	 * @param target
+	 */
+	public void processMoveEndEvent(MoveEndEvent event, AjaxRequestTarget target)
+	{
+		for (MoveEndListener listener : moveEndListeners)
+		{
+			listener.moveEndPerformed(event, target);
+		}
+	}
+
+	/**
+	 * Provides an AjaxRequestTarget.IListener providing JavaScript code to call
+	 * the openInfoWindow method on the GMap. This is typically used by
+	 * Listeners on the client programmers side to be able to add InfoWindow
+	 * within a AjaxCallCycle.
+	 * 
 	 * @param latLng
 	 * @param panel
 	 * @return
@@ -410,13 +383,6 @@ public class GMap2Panel extends Panel
 		return new AjaxRequestTarget.IListener()
 		{
 
-			public void onBeforeRespond(Map map, AjaxRequestTarget target)
-			{
-				panel.setOutputMarkupId(true);
-				divDisplayNone.replace(panel);
-				target.addComponent(divDisplayNone);
-			}
-
 			public void onAfterRespond(Map map, IJavascriptResponse response)
 			{
 				response.addJavascript("openInfoWindow('" + getMarkupId() + "'," + "'"
@@ -424,6 +390,23 @@ public class GMap2Panel extends Panel
 						+ "')");
 			}
 
+			public void onBeforeRespond(Map map, AjaxRequestTarget target)
+			{
+				panel.setOutputMarkupId(true);
+				divDisplayNone.replace(panel);
+				target.addComponent(divDisplayNone);
+			}
+
 		};
+	}
+
+	public int getHeight()
+	{
+		return height;
+	}
+
+	public int getWidth()
+	{
+		return width;
 	}
 }
