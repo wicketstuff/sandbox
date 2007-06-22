@@ -83,6 +83,10 @@ function addOverlay(id, overlayId, jsConstructor) {
 	Wicket.gmaps[id].addOverlay(Wicket.gmaps[id][overlayId]);
 }
 
+function removeOverlay(id, overlayId) {
+	Wicket.gmaps[id].removeOverlay(Wicket.gmaps[id][overlayId]);
+}
+
 function openInfoWindow(id, point, domId) {
 	Wicket.gmaps[id].openInfoWindow(eval(point), document.getElementById(domId));
 }
