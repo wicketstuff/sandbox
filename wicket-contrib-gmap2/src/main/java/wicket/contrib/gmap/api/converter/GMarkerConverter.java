@@ -50,7 +50,7 @@ public class GMarkerConverter implements IConverter
 
 	public String convertToString(Object value, Locale locale)
 	{
-		return null;
+		return value.toString();
 	}
 
 }

@@ -47,10 +47,10 @@ function initGMaps() {
 	}
 }
 
-function addGMap(id, divId, lat, lng, zoom, moveendCallBack, clickCallBack) {
+function addGMap(id, lat, lng, zoom, moveendCallBack, clickCallBack) {
 	initGMaps();
 	if (GBrowserIsCompatible()) {
-		var map = new GMap2(document.getElementById(divId));
+		var map = new GMap2(document.getElementById(id));
 		map.setCenter(new GLatLng(lat, lng), zoom);
 		var moveendCall = function () {wicketAjaxGet( 
 				moveendCallBack 
