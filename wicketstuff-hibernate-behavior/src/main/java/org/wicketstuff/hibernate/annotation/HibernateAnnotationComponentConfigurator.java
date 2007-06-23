@@ -95,7 +95,9 @@ public class HibernateAnnotationComponentConfigurator extends AbstractBehavior i
 	}
 
 	public void onBeforeRender(Component component) {
-		configure(component);
+		if (!component.hasBeenRendered()) {
+			configure(component);
+		}
 	}
 
 	void configure(Component component) {
