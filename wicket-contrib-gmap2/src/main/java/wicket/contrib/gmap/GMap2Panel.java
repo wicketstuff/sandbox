@@ -198,6 +198,8 @@ public class GMap2Panel extends Panel
 			@Override
 			protected void onEvent(AjaxRequestTarget target)
 			{
+				//TODO Buggy. using hashCode is bad and once this appendJavaScript
+				//is executed the Marker is close to unreachable.
 				GMarker marker = new GMarker(factory.getGLatLng());
 				target.appendJavascript("addOverlay(\"" + getMarkupId() + "\", '"
 						+ marker.hashCode() + "', '" + marker.getJSConstructor() + "');");

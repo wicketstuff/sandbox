@@ -100,6 +100,7 @@ class DivMapComponent extends WebComponent
 			@Override
 			protected void respond(AjaxRequestTarget target)
 			{
+				//TODO Buggy. A marker is returned, but wich one is it?
 				GMarker marker = (GMarker)GMarkerConverter.INSTANCE.convertToObject(getRequest()
 						.getParameter("marker"), Locale.getDefault());
 				GLatLng point = (GLatLng)GLatLngConverter.INSTANCE.convertToObject(getRequest()
