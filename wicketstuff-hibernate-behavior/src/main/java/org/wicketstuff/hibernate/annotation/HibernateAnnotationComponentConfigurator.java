@@ -28,7 +28,8 @@ import org.slf4j.LoggerFactory;
  * <p>
  * Inspects the <code>Model</code> of a <code>FormComponent</code> and 
  * configures the <code>Component</code> according to the declared Hibernate Annotations 
- * used on the <code>PropertyModel</code> object.  This means the
+ * used on the <code>PropertyModel</code> object.  <br />
+ * <strong>NOTE:</strong> This means the
  * <code>Component</code>'s <code>Model</code> <em>must</em> be known 
  * when {@link #configure(Component) configuring} a <code>Component</code>.
  * </p>
