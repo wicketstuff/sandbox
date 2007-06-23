@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxEventBehavior;
@@ -38,6 +39,7 @@ import org.apache.wicket.markup.html.WicketEventReference;
 import org.apache.wicket.markup.html.panel.EmptyPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.html.resources.JavascriptResourceReference;
+import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.util.convert.converters.IntegerConverter;
@@ -95,9 +97,9 @@ public class GMap2Panel extends Panel
 	 * 
 	 * @param id
 	 * @param gMapKey Google gmap API KEY
-	 * @param model
+	 * @param overlays
 	 */
-	public GMap2Panel(final String id, final String gMapKey, List overlays)
+	public GMap2Panel(final String id, final String gMapKey, List<? extends GOverlay> overlays)
 	{
 		this(id, gMapKey, new Model((Serializable)overlays));
 	}
@@ -123,12 +125,11 @@ public class GMap2Panel extends Panel
 				response.renderJavascriptReference(WicketEventReference.INSTANCE);
 				response.renderJavascriptReference(WICKET_AJAX_JS);
 				response.renderJavascriptReference(WICKET_GMAP_JS);
-				
 				// see: http://www.google.com/apis/maps/documentation/#Memory_Leaks
-				response.renderOnBeforeUnloadJavascript("Wicket.Event.add(window, \"unload\", function() { GUnload();});");
+				response.renderOnBeforeUnloadJavascript("GUnload();");
 			}
 		}));
-
+		
 		infoWindowContainer = new WebMarkupContainer("infoWindow");
 		infoWindowContainer.setOutputMarkupId(true);
 		add(infoWindowContainer);
@@ -137,6 +138,16 @@ public class GMap2Panel extends Panel
 
 		mapContainer = new WebMarkupContainer("map");
 		mapContainer.setOutputMarkupId(true);
+		mapContainer.add(new AttributeModifier("style" , true, new AbstractReadOnlyModel() {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public Object getObject() {
+				return "width: " + getWidth() + getWidthUnit() + "; height: " + getHeight() + getHeightUnit() + ";";
+			}
+			
+		}));
 		add(mapContainer);
 		
 		final AbstractDefaultAjaxBehavior moveendBehaviour = new AbstractDefaultAjaxBehavior()
@@ -404,5 +415,21 @@ public class GMap2Panel extends Panel
 						+ dx + "," + dy + ");");
 			}
 		};
+	}
+		
+	public int getWidth() {
+		return 400;
+	}
+
+	public int getHeight() {
+		return 300;
+	}
+
+	public String getWidthUnit() {
+		return "px";
+	}
+
+	public String getHeightUnit() {
+		return "px";
 	}
 }
