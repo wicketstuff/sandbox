@@ -24,18 +24,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Configure a wicket component based on hibernate annotations.
+ * Configure a Wicket <code>Component</code> based on Hibernate annotations.
  * <p>
- * Inspects the Model of a FormComponent and configures the component according
- * to the declared Hibernate Annotations used on the model object.  This means the
- * Component's Model <em>must</em> be known when {@link #configure(Component) configuring}
- * a Component.
+ * Inspects the <code>Model</code> of a <code>FormComponent</code> and 
+ * configures the <code>Component</code> according to the declared Hibernate Annotations 
+ * used on the <code>PropertyModel</code> object.  This means the
+ * <code>Component</code>'s <code>Model</code> <em>must</em> be known 
+ * when {@link #configure(Component) configuring} a <code>Component</code>.
  * </p>
  *
  * <p>
- * This object can be used as a behavior to configure a single component.
- * NOTE: this object is <em>stateless</em>, and the same instance can be reused to
- * configure multiple components.
+ * This object can be used as a <code>Behavior</code> to configure a single <code>Component</code>. <br />
+ * <strong>NOTE:</strong> this object is <em>stateless</em>, and the same instance can be reused to
+ * configure multiple <code>Component</code>s.
  * </p>
  * <pre>
  * public class MyWebPage extends WebPage {
@@ -49,9 +50,10 @@ import org.slf4j.LoggerFactory;
  * </pre>
  *
  * <p>
- * Can also use this object as a component listener that will automatically configure <em>all</em>
- * form components based on hibernate annotations. This helps ensure that an entire application
- * respects  annotations without adding custom validators or behaviors to each form component.
+ * This object can also be used as a component listener that will automatically configure <em>all</em>
+ * <code>FormComponent</code>s based on Hibernate annotations. This ensures that an entire application
+ * respects annotations without adding custom <code>Validator</code>s or <code>Behavior</code>s to each 
+ * <code>FormComponent</code>.
  * </p>
  * <pre>
  * public class MyApplication extends WebApplication {
@@ -61,6 +63,8 @@ import org.slf4j.LoggerFactory;
  * }
  * </pre>
  *
+ * @see http://jroller.com/page/wireframe/?anchor=hibernateannotationcomponentconfigurator
+ * @see http://jroller.com/page/wireframe/?anchor=hibernate_annotations_and_wicket
  */
 @SuppressWarnings("serial")
 public class HibernateAnnotationComponentConfigurator extends AbstractBehavior implements IComponentOnBeforeRenderListener {
