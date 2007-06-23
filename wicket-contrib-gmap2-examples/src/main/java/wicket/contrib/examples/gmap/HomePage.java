@@ -1,6 +1,8 @@
 package wicket.contrib.examples.gmap;
 
-import org.apache.wicket.AttributeModifier;
+import java.util.ArrayList;
+
+import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.Model;
@@ -10,13 +12,7 @@ import wicket.contrib.examples.WicketExamplePage;
 import wicket.contrib.gmap.GMap2Panel;
 import wicket.contrib.gmap.api.GControl;
 import wicket.contrib.gmap.api.GLatLng;
-import wicket.contrib.gmap.api.GLatLngFactory;
-import wicket.contrib.gmap.api.GMap2;
 import wicket.contrib.gmap.api.GMarker;
-import wicket.contrib.gmap.api.events.ClickEvent;
-import wicket.contrib.gmap.api.events.ClickListener;
-import wicket.contrib.gmap.api.events.MoveEndEvent;
-import wicket.contrib.gmap.api.events.MoveEndListener;
 
 /**
  * Example HomePage for the wicket-contrib-gmap2 project
@@ -25,155 +21,132 @@ public class HomePage extends WicketExamplePage
 {
 
 	private static final long serialVersionUID = 1L;
+	
+	private Label markerLabel;
+	private Label zoomLabel;
+	private Label center;
 
 	public HomePage()
 	{
-
-		final GMap2 topMap = new GMap2();
-		topMap.addControl(GControl.GLargeMapControl);
-		topMap.addControl(GControl.GMapTypeControl);
-		topMap.addOverlay(new GMarker(new GLatLng(49f, 49f)));
-
-		final GMap2Panel topPanel = new GMap2Panel("topPanel",
-				LOCALHOST_8080_WICKET_CONTRIB_GMAP2_EXAMPLES_KEY, topMap);
-
-		final Label zoomIn = new Label("zoomInLabel", "ZoomIn");
-		topPanel.addZoomInControll(zoomIn, "onclick");
+		final ArrayList<GMarker> markers = new ArrayList<GMarker>();
+		markers.add(new GMarker(new GLatLng(49f, 49f), "Home"));
 		
-		final Label zoomLabel = new Label("glabel", new PropertyModel(topMap, "zoomLevel"));
-		zoomLabel.setOutputMarkupId(true);
-		topPanel.addMoveEndListener(new MoveEndListener()
-		{
-			/**
-			 * Default serialVersionUID.
-			 */
-			private static final long serialVersionUID = 1L;
-
+		final GMap2Panel topPanel = new GMap2Panel("topPanel",
+				LOCALHOST_8080_WICKET_CONTRIB_GMAP2_EXAMPLES_KEY, markers) {
+			
 			@Override
-			public void moveEndPerformed(MoveEndEvent event, AjaxRequestTarget target)
-			{
+			public void onMoveEnd(AjaxRequestTarget target) {
 				target.addComponent(zoomLabel);
 			}
-		});
-		
-		final Label zoomOut = new Label("zoomOutLabel", "ZoomOut");
-		topPanel.addZoomOutControll(zoomOut, "onclick");
+			
+			@Override
+			public void onClick(GMarker marker, GLatLng gLatLng, AjaxRequestTarget target) {
+				// create new marker if no click on previous marker
+				if (marker == null) {
+					marker = new GMarker(gLatLng);
+					
+					markers.add(marker);
+					overlayAdded(marker, target);
+				}
+				markerLabel.getModel().setObject(marker);
+				target.addComponent(markerLabel);
+			}
+		};
+		topPanel.addControl(GControl.GLargeMapControl);
+		topPanel.addControl(GControl.GMapTypeControl);
+		add(topPanel);
 
-		final Label clickLabel = new Label("clickLabel", new Model(new GLatLng(50f, 50f)));
-		topPanel.addClickListener(new ClickListener()
+		zoomLabel = new Label("glabel", new PropertyModel(topPanel, "zoomLevel"));
+		zoomLabel.setOutputMarkupId(true);
+		add(zoomLabel);
+
+		markerLabel = new Label("markerLabel", new Model(null));
+		markerLabel.add(new AjaxEventBehavior("onclick")
 		{
-			/**
-			 * Defauls serialVersionUID.
-			 */
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void clickPerformed(ClickEvent clickEvent, AjaxRequestTarget target)
+			protected void onEvent(AjaxRequestTarget target)
 			{
-				GMarker marker = new GMarker(clickEvent.getPoint());
-				topMap.addOverlay(marker);
-				clickLabel.getModel().setObject(clickEvent.getPoint());
-				target.addComponent(clickLabel);
-				target.addListener(marker.getJSAdd());
-			}
+				GLatLng point = ((GMarker)markerLabel.getModelObject()).getLagLng();
+				
+				GMarker marker = new GMarker(new GLatLng(point.getLat() * (0.9995 + Math.random() / 1000), point.getLng()
+						* (0.9995 + Math.random() / 1000)));
 
+				markers.add(marker);
+				topPanel.overlayAdded(marker, target);
+			}
 		});
-		topPanel.addAddOverlayControll(clickLabel, new GLatLngFactory()
-		{
+		add(markerLabel);
 
-			public GLatLng getGLatLng()
-			{
-				GLatLng point = (GLatLng)clickLabel.getModel().getObject();
-				return new GLatLng(point.getLat() * (0.9995 + Math.random() / 1000), point.getLng()
-						* (0.9995 + Math.random() / 1000));
-			}
-
-		}, "onclick");
-
-		add(topPanel);
+		final Label zoomIn = new Label("zoomInLabel", "ZoomIn");
+		zoomIn.add(topPanel.createZoomInBehavior("onclick"));		
 		add(zoomIn);
-		add(clickLabel);
-		add(zoomLabel);
+	
+		final Label zoomOut = new Label("zoomOutLabel", "ZoomOut");
+		zoomOut.add(topPanel.createZoomOutBehavior("onclick"));
 		add(zoomOut);
 
-		final GMap2 bottomMap = new GMap2();
-		bottomMap.addControl(GControl.GSmallMapControl);
+	
+		
 		final GMap2Panel bottomPanel = new GMap2Panel("bottomPanel",
-				LOCALHOST_8080_WICKET_CONTRIB_GMAP2_EXAMPLES_KEY, bottomMap);
-
-		final Label n = new Label("n", "N");
-		bottomPanel.addPanDirectionControll(n, 0, 1, "onclick");
-
-		final Label ne = new Label("ne", "NE");
-		bottomPanel.addPanDirectionControll(ne, -1, 1, "onclick");
-
-		final Label e = new Label("e", "E");
-		bottomPanel.addPanDirectionControll(e, -1, 0, "onclick");
-
-		final Label se = new Label("se", "SE");
-		bottomPanel.addPanDirectionControll(se, -1, -1, "onclick");
-
-		final Label s = new Label("s", "S");
-		bottomPanel.addPanDirectionControll(s, 0, -1, "onclick");
-
-		final Label sw = new Label("sw", "SW");
-		bottomPanel.addPanDirectionControll(sw, 1, -1, "onclick");
-
-		final Label w = new Label("w", "W");
-		bottomPanel.addPanDirectionControll(w, 1, 0, "onclick");
-
-		final Label nw = new Label("nw", "NW");
-		bottomPanel.addPanDirectionControll(nw, 1, 1, "onclick");
-
-		final Label center = new Label("center", new PropertyModel(bottomMap, "center"));
-		center.setOutputMarkupId(true);
-		bottomPanel.addMoveEndListener(new MoveEndListener()
-		{
-
-			/**
-			 * Default serialVersionUID.
-			 */
-			private static final long serialVersionUID = 1L;
-
+				LOCALHOST_8080_WICKET_CONTRIB_GMAP2_EXAMPLES_KEY) {
+			
 			@Override
-			public void moveEndPerformed(MoveEndEvent event, AjaxRequestTarget target)
-			{
+			public void onMoveEnd(AjaxRequestTarget target) {
 				target.addComponent(center);
 			}
+			
+			@Override
+			public void onClick(GMarker marker, GLatLng point, AjaxRequestTarget target) {
+				if (point != null) {
+					openInfoWindow(new HelloPanel(), point, target);
+				}
+			}
+		};
+		bottomPanel.addControl(GControl.GSmallMapControl);
+		add(bottomPanel);
+		
+		center = new Label("center", new PropertyModel(bottomPanel, "center"));
+		center.setOutputMarkupId(true);
+		add(center);
 
-		});
+		final Label n = new Label("n", "N");
+		n.add(bottomPanel.createPanDirectionBehaviour(0, 1, "onclick"));
+		add(n);
+
+		final Label ne = new Label("ne", "NE");
+		ne.add(bottomPanel.createPanDirectionBehaviour(-1, 1, "onclick"));
+		add(ne);
+
+		final Label e = new Label("e", "E");
+		e.add(bottomPanel.createPanDirectionBehaviour(-1, 0, "onclick"));
+		add(e);
+
+		final Label se = new Label("se", "SE");
+		se.add(bottomPanel.createPanDirectionBehaviour(-1, -1, "onclick"));
+		add(se);
+
+		final Label s = new Label("s", "S");
+		s.add(bottomPanel.createPanDirectionBehaviour(0, -1, "onclick"));
+		add(s);
+
+		final Label sw = new Label("sw", "SW");
+		sw.add(bottomPanel.createPanDirectionBehaviour(1, -1, "onclick"));
+		add(sw);
+
+		final Label w = new Label("w", "W");
+		w.add(bottomPanel.createPanDirectionBehaviour(1, 0, "onclick"));
+		add(w);
+
+		final Label nw = new Label("nw", "NW");
+		nw.add(bottomPanel.createPanDirectionBehaviour(1, 1, "onclick"));
+		add(nw);
 
 		final Label infoWindow = new Label("infoWindow", "openInfoWindow");
-		bottomPanel.addOpenInfoWindowControl(infoWindow, new GLatLng(44.0f, 44.0f),
-				new HelloPanel(), "onclick");
-
-		bottomPanel.addClickListener(new ClickListener()
-		{
-			/**
-			 * Default serialVersionUID.
-			 */
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void clickPerformed(ClickEvent event, AjaxRequestTarget target)
-			{
-				target.addListener(bottomPanel.getJSOpenInfoWindow(event.getPoint(),
-						new HelloPanel()));
-			}
-
-		});
-
-		add(n);
-		add(ne);
-		add(e);
-		add(se);
-		add(s);
-		add(sw);
-		add(w);
-		add(nw);
-		add(center);
+		infoWindow.add(bottomPanel.createOpenInfoWindowBehavior(new GLatLng(44.0f, 44.0f),
+				new HelloPanel(), "onclick"));
 		add(infoWindow);
-		add(bottomPanel);
 	}
 
 	// pay attention at webapp deploy context, we need a different key for each

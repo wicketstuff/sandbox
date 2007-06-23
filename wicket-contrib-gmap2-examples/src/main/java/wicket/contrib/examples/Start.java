@@ -53,8 +53,8 @@ public class Start
 		server.setConnectors(new Connector[] { connector });
 
 		WebAppContext web = new WebAppContext();
-		web.setContextPath("/wicket-contrib-gmap-examples");
-		web.setWar("target/wicket-contrib-gmap2-examples-1.3.0-SNAPSHOT");
+		web.setContextPath("/wicket-contrib-gmap2-examples");
+		web.setWar("src/main/webapp");
 		server.addHandler(web);
 
 		MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
