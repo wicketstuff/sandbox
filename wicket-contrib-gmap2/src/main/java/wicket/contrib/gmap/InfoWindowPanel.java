@@ -31,12 +31,12 @@ public class InfoWindowPanel extends Panel
 
 	public InfoWindowPanel()
 	{
-		super("divInfoWindowPanel");
+		super("infoWindow");
 	}
 
 	public InfoWindowPanel(IModel model)
 	{
-		super("divInfoWindowPanel", model);
+		super("infoWindow", model);
 	}
 
 }

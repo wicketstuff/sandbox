@@ -15,11 +15,6 @@
  */
 package wicket.contrib.gmap.api;
 
-import java.util.Map;
-
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.AjaxRequestTarget.IJavascriptResponse;
-
 /**
  * Represents an Google Maps API's GMarker
  * <a href="http://www.google.com/apis/maps/documentation/reference.html#GMarker">GMarker</a>
@@ -30,6 +25,8 @@ public class GMarker extends GOverlay
 	private static final long serialVersionUID = 1L;
 
 	private GLatLng point;
+	
+	private String title;
 
 	/**
 	 * @param point
@@ -37,61 +34,40 @@ public class GMarker extends GOverlay
 	 */
 	public GMarker(GLatLng point)
 	{
+		this(point, null);
+	}
+	
+	public GMarker(GLatLng point, String title)
+	{
 		super();
+		
 		this.point = point;
+		this.title = title;
 	}
 
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	
 	@Override
 	public String getJSConstructor()
 	{
-		return "new GMarker(" + point.getJSConstructor() + ")";
+		return "new GMarker(" + point.getJSConstructor() + ",{" + getOptions() + "})";
 	}
 
-	/**
-	 * Provides an AjaxRequestTarget.IListener providing JavaScript code to call the
-	 * addOverlay method on the GMap. This is typically used by Listeners on the
-	 * client programmers side to be able to add this GMarker as an Overlay within
-	 * a AjaxCallCycle.
-	 */
-	public AjaxRequestTarget.IListener getJSAdd()
-	{
-		return new AjaxRequestTarget.IListener()
-		{
-
-			public void onBeforeRespond(Map map, AjaxRequestTarget target)
-			{
-			}
-
-			public void onAfterRespond(Map map, IJavascriptResponse response)
-			{
-				response.addJavascript("addOverlay('"
-						+ GMarker.this.getGMap2().getGMap2Panel().getMarkupId() + "', '"
-						+ GMarker.this.hashCode() + "', '" + GMarker.this.getJSConstructor() + "')");
-			}
-		};
+	public GLatLng getLagLng() {
+		return point;
 	}
 	
-	/**
-	 * Provides an AjaxRequestTarget.IListener providing JavaScript code to call the
-	 * removeOverlay method on the GMap. This is typically used by Listeners on the
-	 * client programmers side to be able to remove this GMarker as an Overlay within
-	 * a AjaxCallCycle.
-	 */
-	public AjaxRequestTarget.IListener getJSRemove()
-	{
-		return new AjaxRequestTarget.IListener()
-		{
-
-			public void onBeforeRespond(Map map, AjaxRequestTarget target)
-			{
-			}
-
-			public void onAfterRespond(Map map, IJavascriptResponse response)
-			{
-				response.addJavascript("removeOverlay('"
-						+ GMarker.this.getGMap2().getGMap2Panel().getMarkupId() + "', '"
-						+ GMarker.this.hashCode() + "', '" + GMarker.this.getJSConstructor() + "')");
-			}
-		};
+	private String getOptions() {
+		StringBuffer options = new StringBuffer();
+		
+		if (title != null) {
+			options.append("title: \"");
+			options.append(title);
+			options.append("\"");
+		}
+		
+		return options.toString();
 	}
 }
