@@ -123,9 +123,8 @@ public class GMap2Panel extends Panel
 				response.renderJavascriptReference(WICKET_AJAX_JS);
 				response.renderJavascriptReference(WICKET_GMAP_JS);
 				
-				// TODO: Add the GUnload() method to wicket-gmap.js to do whatever it
-				// is the original author intended in his previous todo. ;-) --Al
-				// response.renderOnBeforeUnloadJavascript("Wicket.Event.add(window, \"unload\", function() { GUnload();});");
+				// see: http://www.google.com/apis/maps/documentation/#Memory_Leaks
+				response.renderOnBeforeUnloadJavascript("Wicket.Event.add(window, \"unload\", function() { GUnload();});");
 			}
 		}));
 
