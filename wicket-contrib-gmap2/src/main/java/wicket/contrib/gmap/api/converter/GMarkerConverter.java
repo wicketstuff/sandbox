@@ -23,22 +23,21 @@ import wicket.contrib.gmap.api.GMarker;
 
 public class GMarkerConverter implements IConverter
 {
-
-	/**
-	 * Default serialVersionUID.
-	 */
 	private static final long serialVersionUID = 1L;
 	
 	/**
 	 * The singleton instance for a marker converter
 	 */
-	public static final IConverter INSTANCE = new GMarkerConverter();
+	public static final GMarkerConverter INSTANCE = new GMarkerConverter();
 
+	private GMarkerConverter() {
+		// Prevent construction - use INSTANCE.
+	}
 
 	/**
 	 * @see wicket.util.convert.IConverter#convertToObject(java.lang.String, java.util.Locale)
 	 */
-	public Object convertToObject(String value, Locale locale)
+	public GMarker convertToObject(String value, Locale locale)
 	{
 		if (value == null || value.equals("null")){
 			return null;
@@ -48,6 +47,9 @@ public class GMarkerConverter implements IConverter
 		}
 	}
 
+	/**
+	 * @see org.apache.wicket.util.convert.IConverter#convertToString(java.lang.Object, java.util.Locale)
+	 */
 	public String convertToString(Object value, Locale locale)
 	{
 		return value.toString();
