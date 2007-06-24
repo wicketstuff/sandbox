@@ -40,14 +40,9 @@ public class HomePage extends WicketExamplePage
 			}
 			
 			@Override
-			public void onClick(GMarker marker, GLatLng gLatLng, AjaxRequestTarget target) {
-				// create new marker if no click on previous marker
-				if (marker == null) {
-					marker = new GMarker(gLatLng);
-					
-					markers.add(marker);
-					overlayAdded(marker, target);
-				}
+			public void onClick(GLatLng gLatLng, AjaxRequestTarget target) {
+				GMarker marker = new GMarker(gLatLng);
+				markers.add(marker);
 				markerLabel.getModel().setObject(marker);
 				target.addComponent(markerLabel);
 			}
@@ -74,7 +69,7 @@ public class HomePage extends WicketExamplePage
 						* (0.9995 + Math.random() / 1000)));
 
 				markers.add(marker);
-				topPanel.overlayAdded(marker, target);
+				topPanel.updateControlsAndOverlays(target);
 			}
 		});
 		add(markerLabel);
@@ -98,10 +93,8 @@ public class HomePage extends WicketExamplePage
 			}
 			
 			@Override
-			public void onClick(GMarker marker, GLatLng point, AjaxRequestTarget target) {
-				if (point != null) {
-					openInfoWindow(new HelloPanel(), point, target);
-				}
+			public void onClick(GLatLng point, AjaxRequestTarget target) {
+				openInfoWindow(new HelloPanel(), point, target);
 			}
 		};
 		bottomPanel.addControl(GControl.GSmallMapControl);
