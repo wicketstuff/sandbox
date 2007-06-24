@@ -40,7 +40,6 @@ public class GMarker extends GOverlay
 	public GMarker(GLatLng point, String title)
 	{
 		super();
-		
 		this.point = point;
 		this.title = title;
 	}
@@ -69,5 +68,22 @@ public class GMarker extends GOverlay
 		}
 		
 		return options.toString();
+	}
+	
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (obj instanceof GMarker)
+		{
+			GMarker t = (GMarker)obj;
+			return t.point.equals(point) && (t.title == null && title == null || t.title != null && t.title.equals(title));
+		}
+		return false;
+	}
+	
+	@Override
+	public int hashCode()
+	{
+		return point.hashCode() ^ title.hashCode();
 	}
 }
