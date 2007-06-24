@@ -160,12 +160,11 @@ public class GMap2Panel extends Panel
 			@Override
 			protected void respond(AjaxRequestTarget target)
 			{
-				setCenter(
-						(GLatLng)GLatLngConverter.INSTANCE.convertToObject(getRequest()
-								.getParameter("center"), Locale.getDefault()));
-				setZoomLevel(
-						(Integer)IntegerConverter.INSTANCE.convertToObject(getRequest()
-								.getParameter("zoom"), Locale.getDefault()));
+				setCenter(GLatLngConverter.INSTANCE.convertToObject(
+						getRequest().getParameter("center"), null));
+				setZoomLevel((Integer) IntegerConverter.INSTANCE
+						.convertToObject(getRequest().getParameter("zoom"),
+								Locale.getDefault()));
 				onMoveEnd(target);
 			}
 		};

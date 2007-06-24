@@ -24,20 +24,23 @@ import wicket.contrib.gmap.api.GLatLng;
 
 public class GLatLngConverter implements IConverter
 {
-	/**
-	 * Default serialVersionUID.
-	 */
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * The singleton instance for a integer converter
 	 */
-	public static final IConverter INSTANCE = new GLatLngConverter();
+	public static final GLatLngConverter INSTANCE = new GLatLngConverter();
 
-
-	// (37.442061079130895, -122.13905453681946)
-	public Object convertToObject(String value, Locale locale)
+	private GLatLngConverter() {
+		// Prevent construction - use INSTANCE.
+	}
+	
+	/**
+	 * @see org.apache.wicket.util.convert.IConverter#convertToObject(java.lang.String, java.util.Locale)
+	 */
+	public GLatLng convertToObject(String value, Locale locale)
 	{
+		// Expects values like: "(37.442061079130895, -122.13905453681946)"
 		if (value == null || value.equals("undefined"))
 		{
 			return null;
@@ -60,6 +63,9 @@ public class GLatLngConverter implements IConverter
 		return new GLatLng(lat, lng);
 	}
 
+	/**
+	 * @see org.apache.wicket.util.convert.IConverter#convertToString(java.lang.Object, java.util.Locale)
+	 */
 	public String convertToString(Object value, Locale locale)
 	{
 		return null;
