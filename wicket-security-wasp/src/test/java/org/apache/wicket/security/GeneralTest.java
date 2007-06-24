@@ -40,6 +40,7 @@ import org.apache.wicket.security.components.ISecureComponent;
 import org.apache.wicket.security.components.ISecureContainer;
 import org.apache.wicket.security.components.ISecurePage;
 import org.apache.wicket.security.components.SecureComponentHelper;
+import org.apache.wicket.security.components.markup.html.form.SecureForm;
 import org.apache.wicket.security.components.markup.html.form.SecureTextField;
 import org.apache.wicket.security.components.markup.html.links.SecurePageLink;
 import org.apache.wicket.security.models.ISecureModel;
@@ -49,6 +50,7 @@ import org.apache.wicket.security.pages.insecure.SecureComponentPage;
 import org.apache.wicket.security.pages.insecure.SecureLinkPage;
 import org.apache.wicket.security.pages.insecure.SecureModelPage;
 import org.apache.wicket.security.pages.login.LoginPage;
+import org.apache.wicket.security.pages.secure.FormPage;
 import org.apache.wicket.security.pages.secure.HomePage;
 import org.apache.wicket.security.pages.secure.PageA;
 import org.apache.wicket.security.pages.secure.PageB;
@@ -752,6 +754,54 @@ public class GeneralTest extends TestCase
 		tag = mock.getTagByWicketId("input");
 		assertTrue(tag.getAttributeIs("value", writings));
 		assertEquals(SecureCompoundPropertyModel.class.getName()+":input", mock.getComponentFromLastRenderedPage("input").getModel().toString());
+		
+	}
+	public void testSecureForm()
+	{
+		doLogin();
+		mock.startPage(FormPage.class);
+		mock.assertRenderedPage(FormPage.class);
+		mock.assertInvisible("form");
+		Map authorized = new HashMap();
+		authorized.put(SecureForm.class, application.getActionFactory().getAction(
+		"access render"));
+		login(authorized);
+		mock.startPage(FormPage.class);
+		mock.assertRenderedPage(FormPage.class);
+		mock.assertVisible("form");
+		TagTester tag=mock.getTagByWicketId("form");
+		assertEquals("div", tag.getName());
+		tag=mock.getTagByWicketId("text");
+		assertEquals("disabled",tag.getAttribute("disabled"));
+		tag=mock.getTagByWicketId("area");
+		assertEquals("disabled",tag.getAttribute("disabled"));
+		tag=mock.getTagByWicketId("button");
+		assertEquals("disabled",tag.getAttribute("disabled"));
+		//fake form submit since the tag can not
+		FormTester form = mock.newFormTester("form");
+		form.setValue("text", "not allowed");
+		form.setValue("area", "also not allowed");
+		form.submit();
+		mock.assertRenderedPage(application.getApplicationSettings().getAccessDeniedPage());
+		authorized.put(SecureForm.class, application.getActionFactory().getAction(
+		"access render enable"));
+		login(authorized);
+		mock.startPage(FormPage.class);
+		mock.assertRenderedPage(FormPage.class);
+		mock.assertVisible("form");
+		tag=mock.getTagByWicketId("text");
+		assertNull(tag.getAttribute("disabled"));
+		tag=mock.getTagByWicketId("area");
+		assertNull(tag.getAttribute("disabled"));
+		tag=mock.getTagByWicketId("button");
+		assertNull(tag.getAttribute("disabled"));
+		form = mock.newFormTester("form");
+		form.setValue("text", "allowed");
+		form.setValue("area", "also allowed");
+		form.submit();
+		mock.assertRenderedPage(FormPage.class);
+		assertEquals("allowed", mock.getComponentFromLastRenderedPage("form:text").getModelObject());
+		assertEquals("also allowed", mock.getComponentFromLastRenderedPage("form:area").getModelObject());
 		
 	}
 }
