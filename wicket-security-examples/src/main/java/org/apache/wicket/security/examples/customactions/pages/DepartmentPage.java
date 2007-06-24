@@ -16,14 +16,26 @@
  */
 package org.apache.wicket.security.examples.customactions.pages;
 
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.Button;
+import org.apache.wicket.markup.html.form.TextArea;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.security.checks.InverseSecurityCheck;
+import org.apache.wicket.security.components.SecureComponentHelper;
+import org.apache.wicket.security.components.markup.html.form.SecureForm;
+import org.apache.wicket.security.examples.customactions.authorization.EnableCheck;
+import org.apache.wicket.security.examples.customactions.authorization.OrganizationCheck;
 import org.apache.wicket.security.examples.customactions.components.navigation.ButtonContainer;
 import org.apache.wicket.security.examples.customactions.entities.Department;
 
 
 /**
- * Page for showing some department info. Only a user with organization rights is allowed to edit.
+ * Page for showing some department info. Only a user with organization rights
+ * is allowed to edit.
+ * 
  * @author marrink
- *
+ * 
  */
 public class DepartmentPage extends SecurePage
 {
@@ -35,7 +47,28 @@ public class DepartmentPage extends SecurePage
 	 */
 	public DepartmentPage(Department department)
 	{
-		add(new ButtonContainer("buttoncontainer",ButtonContainer.BUTTON_DEPARTMENTS));
-		//TODO add form
+		add(new ButtonContainer("buttoncontainer", ButtonContainer.BUTTON_DEPARTMENTS));
+		SecureForm form = new SecureForm("form", new CompoundPropertyModel(department));
+		// make sure we have organization rights
+		form.setSecurityCheck(new OrganizationCheck(form));
+		add(form);
+		// no need to secure the child components, the form will automatically disable them
+		// when required
+		form.add(new TextField("name"));
+		form.add(new TextArea("description"));
+		form.add(new Button("button")
+		{
+			private static final long serialVersionUID = 1L;
+
+			public void onSubmit()
+			{
+				setResponsePage(DepartmentsPage.class);
+			}
+		});
+		Label label=new Label("label","You do not have sufficient rights to make changes");
+		//make the label show up when the form is disabled
+		SecureComponentHelper.setSecurityCheck(label, new InverseSecurityCheck(new EnableCheck(form.getSecurityCheck())));
+		form.add(label);
+
 	}
 }
