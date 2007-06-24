@@ -34,9 +34,11 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.security.WaspSession;
 import org.apache.wicket.security.WaspWebApplication;
+import org.apache.wicket.security.components.markup.html.form.SecureForm;
 import org.apache.wicket.security.components.markup.html.form.SecureTextField;
 import org.apache.wicket.security.components.markup.html.links.SecurePageLink;
 import org.apache.wicket.security.pages.container.MySecurePanel;
+import org.apache.wicket.security.pages.secure.FormPage;
 import org.apache.wicket.security.pages.secure.HomePage;
 import org.apache.wicket.security.pages.secure.PageB;
 import org.apache.wicket.security.pages.secure.PageC;
@@ -90,12 +92,16 @@ public class UsernamePasswordSignInPanel extends Panel
 				"access render foo"));
 		authorized.put(PageD.class, getWaspApplication().getActionFactory().getAction(
 				"access render"));
+		authorized.put(FormPage.class, getWaspApplication().getActionFactory().getAction(
+		"access render"));
 		// because this test uses the ISecureComponent class as base class for
 		// instantiation checks we need to grant all ISecureComponents access
 		authorized.put(SecurePageLink.class, getWaspApplication().getActionFactory().getAction(
 				"access"));
 		authorized.put(SecureTextField.class, getWaspApplication().getActionFactory().getAction(
 				"access"));
+		authorized.put(SecureForm.class, getWaspApplication().getActionFactory().getAction(
+		"access"));
 		// grant models rights Page D
 		authorized.put("model:modelcheck", getWaspApplication().getActionFactory().getAction(
 				"access render"));
