@@ -19,6 +19,13 @@ package org.apache.wicket.security.examples.customactions.entities;
 import java.io.Serializable;
 
 /**
+ * The department entity. it has a boolean secure which is used by the security
+ * checks to decide if
+ * {@link org.apache.wicket.security.examples.customactions.authorization.Department}
+ * or
+ * {@link org.apache.wicket.security.examples.customactions.authorization.Organization}
+ * rights are required.
+ * 
  * @author marrink
  */
 public class Department implements Serializable
@@ -28,22 +35,27 @@ public class Department implements Serializable
 	public String name;
 	public String description;
 	/**
-	 * indicates if this department is only visible to users with organisation clearance.
+	 * indicates if this department is only visible to users with organisation
+	 * clearance.
 	 */
 	public final boolean secure;
+
 	/**
 	 * Construct.
 	 */
 	public Department()
 	{
-		secure=false;
+		secure = false;
 	}
+
 	/**
 	 * Construct.
+	 * 
 	 * @param organization
 	 * @param name
 	 * @param description
-	 * @param secure TODO
+	 * @param secure
+	 *            
 	 */
 	public Department(Organization organization, String name, String description, boolean secure)
 	{
@@ -51,8 +63,9 @@ public class Department implements Serializable
 		this.organization = organization;
 		this.name = name;
 		this.description = description;
-		this.secure=secure;
+		this.secure = secure;
 	}
+
 	/**
 	 * @see java.lang.Object#hashCode()
 	 */
@@ -63,6 +76,7 @@ public class Department implements Serializable
 		result = PRIME * result + ((name == null) ? 0 : name.hashCode());
 		return result;
 	}
+
 	/**
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
@@ -84,6 +98,6 @@ public class Department implements Serializable
 			return false;
 		return true;
 	}
-	
+
 
 }

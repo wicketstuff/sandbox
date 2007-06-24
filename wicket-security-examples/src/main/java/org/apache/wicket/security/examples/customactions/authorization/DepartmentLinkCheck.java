@@ -22,6 +22,11 @@ import org.apache.wicket.security.checks.LinkSecurityCheck;
 import org.apache.wicket.security.examples.customactions.entities.Department;
 
 /**
+ * A check for {@link Department}s (not to be confused with the
+ * {@link org.apache.wicket.security.examples.customactions.authorization.Department}
+ * action which is used to do that. there are two type of departments, secure
+ * (which you can only see/edit when you have organization rights and unsecure
+ * departments where department rights are sufficient.
  * @author marrink
  */
 public class DepartmentLinkCheck extends LinkSecurityCheck

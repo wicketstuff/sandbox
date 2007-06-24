@@ -20,7 +20,7 @@ import org.apache.wicket.security.examples.customactions.components.navigation.B
 
 
 /**
- * The home page, this one is secured with a login.
+ * The home page, this one is secured with a login. Dummy page really
  * @author marrink
  *
  */

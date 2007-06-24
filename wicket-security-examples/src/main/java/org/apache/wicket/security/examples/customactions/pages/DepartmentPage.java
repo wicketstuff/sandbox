@@ -67,6 +67,7 @@ public class DepartmentPage extends SecurePage
 		});
 		Label label=new Label("label","You do not have sufficient rights to make changes");
 		//make the label show up when the form is disabled
+		//notice the use of security check chaining.
 		SecureComponentHelper.setSecurityCheck(label, new InverseSecurityCheck(new EnableCheck(form.getSecurityCheck())));
 		form.add(label);
 

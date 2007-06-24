@@ -24,7 +24,7 @@ import org.apache.wicket.security.swarm.actions.SwarmAction;
 import org.apache.wicket.security.swarm.actions.SwarmActionFactory;
 
 /**
- * Custom action factory.
+ * Custom action factory. Registers {@link Department} and {@link Organization} actions.
  * @author marrink
  */
 public class MyActionFactory extends SwarmActionFactory
@@ -38,7 +38,8 @@ public class MyActionFactory extends SwarmActionFactory
 		super();
 		try
 		{
-			//note none of the actions registered this way will implement the interface defined here, you will simply get the default action
+			//note none of the actions registered this way will implement the interface defined here, you will simply get the default action.
+			//that's just the way swarm implementes wasp
 			register(Department.class,"department");
 			//registering an action this way will retun the actual implementation specified here
 			//however the reason we are using a custom implementation here is because we need to inherit the department action not because we want our actions to be a certain subclass.

@@ -19,6 +19,7 @@ package org.apache.wicket.security.examples.customactions.entities;
 import java.io.Serializable;
 
 /**
+ * A simple Pojo. 
  * @author marrink
  */
 public class Organization implements Serializable
