@@ -64,7 +64,7 @@ function addGMap(id, lat, lng, zoom, moveendCallBack, clickCallBack) {
 						
 		var clickCall = function (marker, point) {wicketAjaxGet( 
 				clickCallBack 
-				+ '&marker=' + marker
+				+ '&marker=' + (marker == null ? "" : marker.overlayId)
 				+ '&point=' + point),
 				function(){},
 				function(){alert("ooops on ClickDeff of!" + map)}};
@@ -74,17 +74,29 @@ function addGMap(id, lat, lng, zoom, moveendCallBack, clickCallBack) {
 	}
 }
 
-function addControl(id, control) {
-	Wicket.gmaps[id].addControl(eval(control));
+function addControl(id, controlId, control) {
+	Wicket.gmaps[id][controlId] = eval(control);
+	Wicket.gmaps[id].addControl(Wicket.gmaps[id][controlId]);
+}
+
+function removeControl(id, controlId) {
+	if (Wicket.gmaps[id][controlId] != null) {
+		Wicket.gmaps[id].removeControl(Wicket.gmaps[id][controlId]);
+		Wicket.gmaps[id][controlId] = null;
+	}
 }
 
 function addOverlay(id, overlayId, jsConstructor) {
     Wicket.gmaps[id][overlayId] = eval(jsConstructor);
+    Wicket.gmaps[id][overlayId].overlayId = overlayId;
 	Wicket.gmaps[id].addOverlay(Wicket.gmaps[id][overlayId]);
 }
 
 function removeOverlay(id, overlayId) {
-	Wicket.gmaps[id].removeOverlay(Wicket.gmaps[id][overlayId]);
+	if (Wicket.gmaps[id][overlayId] != null) {
+		Wicket.gmaps[id].removeOverlay(Wicket.gmaps[id][overlayId]);
+		Wicket.gmaps[id][overlayId] = null;
+	}
 }
 
 function openInfoWindow(id, point, domId) {
