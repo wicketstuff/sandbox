@@ -20,9 +20,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 import java.util.Set;
 
 import org.apache.wicket.AttributeModifier;
@@ -42,14 +40,12 @@ import org.apache.wicket.markup.html.resources.JavascriptResourceReference;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.util.convert.converters.IntegerConverter;
 
 import wicket.contrib.gmap.api.GControl;
 import wicket.contrib.gmap.api.GLatLng;
-import wicket.contrib.gmap.api.GMarker;
 import wicket.contrib.gmap.api.GOverlay;
-import wicket.contrib.gmap.api.converter.GLatLngConverter;
-import wicket.contrib.gmap.api.converter.GMarkerConverter;
+import wicket.contrib.gmap.behaviour.ClickBehaviour;
+import wicket.contrib.gmap.behaviour.MoveEndBehaviour;
 
 /**
  * Wicket component to embed <a href="http://maps.google.com">Google Maps</a> into your pages.
@@ -65,21 +61,27 @@ public class GMap2Panel extends Panel
 	private static final String GMAP_API_URL = "http://maps.google.com/maps?file=api&amp;v=2&amp;key=";
 
 	// We have some custom Javascript.
-	private static final ResourceReference WICKET_GMAP_JS = new JavascriptResourceReference(GMap2Panel.class, "wicket-gmap.js");
-	
+	private static final ResourceReference WICKET_GMAP_JS = new JavascriptResourceReference(
+			GMap2Panel.class, "wicket-gmap.js");
+
 	// We also depend on wicket-ajax.js within wicket-gmap.js 
-	private static final ResourceReference WICKET_AJAX_JS = new JavascriptResourceReference(AbstractDefaultAjaxBehavior.class,
-			"wicket-ajax.js");
-	
+	private static final ResourceReference WICKET_AJAX_JS = new JavascriptResourceReference(
+			AbstractDefaultAjaxBehavior.class, "wicket-ajax.js");
+
 	private GLatLng center = new GLatLng(37.4419, -122.1419);
 	private int zoomLevel = 13;
 	private Set<GControl> controls = new HashSet<GControl>();
+	private Set<GControl> previousUpdateControls;
+	private List<GOverlay> previousUpdateOverlays;
 
 	private final WebMarkupContainer mapContainer;
 
 	/** Invisible container that holds the information about the InfoWindow. */
 	private WebMarkupContainer infoWindowContainer;
 
+	private final MoveEndBehaviour moveEndBehaviour;
+	private final ClickBehaviour clickBehaviour;
+	
 	/**
 	 * Construct.
 	 * 
@@ -99,11 +101,11 @@ public class GMap2Panel extends Panel
 	 * @param gMapKey Google gmap API KEY
 	 * @param overlays
 	 */
-	public GMap2Panel(final String id, final String gMapKey, List<? extends GOverlay> overlays)
+	public GMap2Panel(final String id, final String gMapKey, List< ? extends GOverlay> overlays)
 	{
 		this(id, gMapKey, new Model((Serializable)overlays));
 	}
-	
+
 	/**
 	 * Construct.
 	 * 
@@ -114,22 +116,13 @@ public class GMap2Panel extends Panel
 	public GMap2Panel(final String id, final String gMapKey, final IModel overlays)
 	{
 		super(id, overlays);
-		
-		// Set up the JavaScript context for this Panel.
-		add(new HeaderContributor(new IHeaderContributor() {
-			private static final long serialVersionUID = 1L;
-			
-			public void renderHead(IHeaderResponse response) {
-				response.renderJavascriptReference(GMAP_API_URL + gMapKey);
-				// We don't want to have to fake in a 
-				response.renderJavascriptReference(WicketEventReference.INSTANCE);
-				response.renderJavascriptReference(WICKET_AJAX_JS);
-				response.renderJavascriptReference(WICKET_GMAP_JS);
-				// see: http://www.google.com/apis/maps/documentation/#Memory_Leaks
-				response.renderOnBeforeUnloadJavascript("GUnload();");
-			}
-		}));
-		
+		moveEndBehaviour = new MoveEndBehaviour(this);
+		clickBehaviour = new ClickBehaviour(this);
+
+		add(getHeaderContributor(gMapKey));
+		add(moveEndBehaviour);
+		add(clickBehaviour);
+
 		infoWindowContainer = new WebMarkupContainer("infoWindow");
 		infoWindowContainer.setOutputMarkupId(true);
 		add(infoWindowContainer);
@@ -138,101 +131,118 @@ public class GMap2Panel extends Panel
 
 		mapContainer = new WebMarkupContainer("map");
 		mapContainer.setOutputMarkupId(true);
-		mapContainer.add(new AttributeModifier("style" , true, new AbstractReadOnlyModel() {
-
+		mapContainer.add(new AttributeModifier("style", true, new AbstractReadOnlyModel()
+		{
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public Object getObject() {
-				return "width: " + getWidth() + getWidthUnit() + "; height: " + getHeight() + getHeightUnit() + ";";
+			public Object getObject()
+			{
+				return "width: " + getWidth() + getWidthUnit() + "; height: " + getHeight()
+						+ getHeightUnit() + ";";
 			}
-			
 		}));
 		add(mapContainer);
-		
-		final AbstractDefaultAjaxBehavior moveendBehaviour = new AbstractDefaultAjaxBehavior()
-		{
-			/**
-			 * Default serailVersionUID
-			 */
-			private static final long serialVersionUID = 1L;
+	}
 
-			@Override
-			protected void respond(AjaxRequestTarget target)
-			{
-				setCenter(GLatLngConverter.INSTANCE.convertToObject(
-						getRequest().getParameter("center"), null));
-				setZoomLevel((Integer) IntegerConverter.INSTANCE
-						.convertToObject(getRequest().getParameter("zoom"),
-								Locale.getDefault()));
-				onMoveEnd(target);
-			}
-		};
-		add(moveendBehaviour);
-
-		final AbstractDefaultAjaxBehavior clickBehaviour = new AbstractDefaultAjaxBehavior()
+	private HeaderContributor getHeaderContributor(final String gMapKey)
+	{
+		// Set up the JavaScript context for this Panel.
+		return new HeaderContributor(new IHeaderContributor()
 		{
-			/**
-			 * Default serailVersionUID
-			 */
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			protected void respond(AjaxRequestTarget target)
-			{
-				GMarker marker = (GMarker)GMarkerConverter.INSTANCE.convertToObject(getRequest()
-						.getParameter("marker"), Locale.getDefault());
-				GLatLng point = (GLatLng)GLatLngConverter.INSTANCE.convertToObject(getRequest()
-						.getParameter("point"), Locale.getDefault());
-				onClick(marker, point, target);
-			}
-		};
-		add(clickBehaviour);
-		
-		final AbstractDefaultAjaxBehavior windowLoadBehavior = new AbstractDefaultAjaxBehavior()
-		{
-			/**
-			 * Default serailVersionUID
-			 */
 			private static final long serialVersionUID = 1L;
 
 			public void renderHead(IHeaderResponse response)
 			{
-				//Once the page is loaded, the client executes a javascript
-				//that will call an ajax GET request to this behavior
-				response.renderOnLoadJavascript(getCallbackScript().toString());
+				response.renderJavascriptReference(GMAP_API_URL + gMapKey);
+				// We don't want to have to fake in a 
+				response.renderJavascriptReference(WicketEventReference.INSTANCE);
+				response.renderJavascriptReference(WICKET_AJAX_JS);
+				response.renderJavascriptReference(WICKET_GMAP_JS);
+				// see: http://www.google.com/apis/maps/documentation/#Memory_Leaks
+				response.renderOnBeforeUnloadJavascript("GUnload();");
+				response.renderOnDomReadyJavascript(getJSOnLoad() + getJSControlAndOverlayUpdate());
 			}
-
-			@Override
-			protected void respond(AjaxRequestTarget target)
-			{
-				//Call all scripts nessessary to set up the GMap in the browser.
-				target.appendJavascript("addGMap(\"" + getMapId() + "\", "
-						+ getCenter().getLat() + ", "
-						+ getCenter().getLng() + ", "
-						+ getZoomLevel() + ", \""
-						//provides the GMap with information which script to call
-						//on a moveend or a click event.
-						+ moveendBehaviour.getCallbackUrl() + "\", " + "\""
-						+ clickBehaviour.getCallbackUrl() + "\")");
-				
-				for (Iterator<GControl> iterator = getControls().iterator(); iterator.hasNext();) {
-					controlAdded(iterator.next(), target);
-				}
-				
-				for (Iterator<GOverlay> iterator = ((List)getModelObject()).iterator(); iterator.hasNext();)
-				{
-					overlayAdded(iterator.next(), target);
-				}
-			}
-		};
-		add(windowLoadBehavior);
-	}
-
-	private String getMapId() {
-		return mapContainer.getMarkupId(); 
+		});
 	}
 	
+	private String getJSOnLoad() {
+		String js = "addGMap(\"" + getMapId() + "\", " + getCenter().getLat()
+		+ ", " + getCenter().getLng() + ", "
+		+ getZoomLevel()
+		+ ", \""
+		// provides the GMap with information which script to
+		// call
+		// on a moveend or a click event.
+		+ moveEndBehaviour.getCallbackUrl() + "\", " + "\""
+		+ clickBehaviour.getCallbackUrl() + "\");\n";
+		return js;
+	}
+	
+	private String getJSControlAndOverlayUpdate() {
+		String js = "";
+		
+		HashSet<GControl> newControls = new HashSet<GControl>(getControls());
+		if (previousUpdateControls != null && !previousUpdateControls.equals(newControls))
+		{
+			// Remove previous controls that are no longer present.
+			for (GControl control : previousUpdateControls)
+			{
+				if (!newControls.contains(control))
+				{
+					js += getJSControlRemoved(control);
+				}
+			}
+		}
+		if (previousUpdateControls != null)
+		{
+			// Remove any previous controls from our new set of overlays, which will
+			// leave only new items to add.
+			newControls.removeAll(previousUpdateControls);
+		}
+		
+		// Add the new controls.
+		for (GControl control : newControls)
+		{
+			js += getJSControlAdded(control);
+		}
+
+		HashSet<GOverlay> newOverlays = new HashSet<GOverlay>((List<GOverlay>)getModelObject());
+		if (previousUpdateOverlays != null && !previousUpdateOverlays.equals(newOverlays))
+		{
+			// Remove previous overlays that are no longer present.
+			for (GOverlay overlay : previousUpdateOverlays)
+			{
+				if (!newOverlays.contains(overlay))
+				{
+					js += getJSOverlayRemoved(overlay);
+				}
+			}
+		}
+		if (previousUpdateOverlays != null)
+		{
+			// Remove any previous overlays from our new set of overlays, which will
+			// leave only new items to add.
+			newOverlays.removeAll(previousUpdateOverlays);
+		}
+
+		// Add the new overlays.
+		for (GOverlay overlay : newOverlays)
+		{
+			js += getJSOverlayAdded(overlay);
+		}
+		
+		previousUpdateControls = getControls();
+		previousUpdateOverlays = new ArrayList((List<GOverlay>)getModelObject());
+		
+		return js;
+	}
+
+	private String getMapId()
+	{
+		return mapContainer.getMarkupId();
+	}
+
 	public void addControl(GControl control)
 	{
 		controls.add(control);
@@ -263,17 +273,31 @@ public class GMap2Panel extends Panel
 		this.center = center;
 	}
 
-	public void controlAdded(GControl control, AjaxRequestTarget target)
+	public String getJSControlAdded(GControl control)
 	{
-		target.appendJavascript("addControl(\"" + getMapId() + "\", "
-		+ control.getJSConstructor()
-		+ ")");
+		return "addControl('" + getMapId() + "', '" + control.hashCode() + "', '"
+				+ control.getJSConstructor() + "');\n";
+	}
+
+	public String getJSControlRemoved(GControl control)
+	{
+		return "removeControl('" + getMapId() + "', '" + control.hashCode() + "');\n";
+	}
+
+	public String getJSOverlayAdded(GOverlay overlay)
+	{
+		return "addOverlay('" + getMapId() + "', '" + overlay.hashCode() + "', '"
+				+ overlay.getJSConstructor() + "');\n";
+	}
+
+	public String getJSOverlayRemoved(GOverlay overlay)
+	{
+		return "removeOverlay('" + getMapId() + "', '" + overlay.hashCode() + "');\n";
 	}
 	
-	public void overlayAdded(GOverlay overlay, AjaxRequestTarget target)
+	public void updateControlsAndOverlays(AjaxRequestTarget target)
 	{
-		target.appendJavascript("addOverlay(\"" + getMapId() + "\", '"
-				+ overlay.hashCode() + "', '" + overlay.getJSConstructor() + "');");
+		target.appendJavascript(getJSControlAndOverlayUpdate());
 	}
 	
 	public void openInfoWindow(InfoWindowPanel panel, GLatLng point, AjaxRequestTarget target)
@@ -281,35 +305,34 @@ public class GMap2Panel extends Panel
 		// replace the panel held, by the invisible div element.
 		panel.setOutputMarkupId(true);
 		infoWindowContainer.replace(panel);
-		
+
 		target.addComponent(infoWindowContainer);
 		target.appendJavascript("openInfoWindow('" + getMapId() + "'," + "'"
 				+ point.getJSConstructor() + "','" + panel.getMarkupId() + "')");
 	}
-	
+
 	/**
 	 * Notify of a click.
 	 * 
-	 * @param marker
 	 * @param gLatLng
 	 * @param target
 	 */
-	public void onClick(GMarker marker, GLatLng gLatLng, AjaxRequestTarget target)
+	public void onClick(GLatLng gLatLng, AjaxRequestTarget target)
 	{
-				//TODO Buggy. using hashCode is bad and once this appendJavaScript
-				//is executed the Marker is close to unreachable.
+		// Override me.
 	}
 
 	/**
-	 * Notify of end of move.
+	 * Event handler invoked when map finishes moving. You can get the new
+	 * center coordinates of the map by calling {@link #getCenter()}.
 	 * 
-	 * @param event
 	 * @param target
 	 */
 	public void onMoveEnd(AjaxRequestTarget target)
 	{
+		// Override me.
 	}
-	
+
 	/**
 	 * Binds a 'zoomOut()' call on this map, to the given event of the given
 	 * Component.
@@ -325,7 +348,7 @@ public class GMap2Panel extends Panel
 			 * Default serialVersionUID.
 			 */
 			private static final long serialVersionUID = 1L;
-	
+
 			/**
 			 * @see org.apache.wicket.ajax.AjaxEventBehavior#onEvent(org.apache.wicket.ajax.AjaxRequestTarget)
 			 */
@@ -345,13 +368,13 @@ public class GMap2Panel extends Panel
 	 * @param factory
 	 * @param event
 	 */
-	public IBehavior createOpenInfoWindowBehavior(final GLatLng point,
-			final InfoWindowPanel panel, String event)
+	public IBehavior createOpenInfoWindowBehavior(final GLatLng point, final InfoWindowPanel panel,
+			String event)
 	{
 		return new AjaxEventBehavior(event)
 		{
 			private static final long serialVersionUID = 1L;
-	
+
 			/**
 			 * @see org.apache.wicket.ajax.AjaxEventBehavior#onEvent(org.apache.wicket.ajax.AjaxRequestTarget)
 			 */
@@ -375,7 +398,7 @@ public class GMap2Panel extends Panel
 		return new AjaxEventBehavior(event)
 		{
 			private static final long serialVersionUID = 1L;
-	
+
 			/**
 			 * @see org.apache.wicket.ajax.AjaxEventBehavior#onEvent(org.apache.wicket.ajax.AjaxRequestTarget)
 			 */
@@ -397,13 +420,12 @@ public class GMap2Panel extends Panel
 	 * @param dy
 	 * @param event
 	 */
-	public IBehavior createPanDirectionBehaviour(final int dx, final int dy,
-			final String event)
+	public IBehavior createPanDirectionBehaviour(final int dx, final int dy, final String event)
 	{
 		return new AjaxEventBehavior(event)
 		{
 			private static final long serialVersionUID = 1L;
-	
+
 			/**
 			 * @see org.apache.wicket.ajax.AjaxEventBehavior#onEvent(org.apache.wicket.ajax.AjaxRequestTarget)
 			 */
@@ -415,20 +437,24 @@ public class GMap2Panel extends Panel
 			}
 		};
 	}
-		
-	public int getWidth() {
+
+	public int getWidth()
+	{
 		return 400;
 	}
 
-	public int getHeight() {
+	public int getHeight()
+	{
 		return 300;
 	}
 
-	public String getWidthUnit() {
+	public String getWidthUnit()
+	{
 		return "px";
 	}
 
-	public String getHeightUnit() {
+	public String getHeightUnit()
+	{
 		return "px";
 	}
 }

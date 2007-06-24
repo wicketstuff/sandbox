@@ -15,6 +15,8 @@
  */
 package wicket.contrib.gmap.api;
 
+import org.apache.wicket.ajax.AjaxRequestTarget;
+
 /**
  * Represents an Google Maps API's GMarker
  * <a href="http://www.google.com/apis/maps/documentation/reference.html#GMarker">GMarker</a>
@@ -85,5 +87,15 @@ public class GMarker extends GOverlay
 	public int hashCode()
 	{
 		return point.hashCode() ^ (title != null ? title.hashCode() : 1337);
+	}
+	
+	/**
+	 * Override this to be called when a marker is clicked on.
+	 * 
+	 * @param target
+	 */
+	public void onClick(AjaxRequestTarget target)
+	{
+		
 	}
 }

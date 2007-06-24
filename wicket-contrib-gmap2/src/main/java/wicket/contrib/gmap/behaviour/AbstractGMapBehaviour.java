@@ -1,4 +1,7 @@
 /*
+ * $Id: org.eclipse.jdt.ui.prefs 5004 2006-03-17 20:47:08 -0800 (Fri, 17 Mar 2006) eelco12 $
+ * $Revision: 5004 $
+ * $Date: 2006-03-17 20:47:08 -0800 (Fri, 17 Mar 2006) $
  * 
  * ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -13,38 +16,18 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package wicket.contrib.gmap.api.converter;
+package wicket.contrib.gmap.behaviour;
 
-import java.util.Locale;
 import java.util.StringTokenizer;
 
-import org.apache.wicket.util.convert.IConverter;
+import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 
 import wicket.contrib.gmap.api.GLatLng;
 
-public class GLatLngConverter implements IConverter
+public abstract class AbstractGMapBehaviour extends AbstractDefaultAjaxBehavior
 {
-	private static final long serialVersionUID = 1L;
-
-	/**
-	 * The singleton instance for a integer converter
-	 */
-	public static final GLatLngConverter INSTANCE = new GLatLngConverter();
-
-	private GLatLngConverter() {
-		// Prevent construction - use INSTANCE.
-	}
-	
-	/**
-	 * @see org.apache.wicket.util.convert.IConverter#convertToObject(java.lang.String, java.util.Locale)
-	 */
-	public GLatLng convertToObject(String value, Locale locale)
+	protected final GLatLng convertToGLatLng(String value)
 	{
-		// Expects values like: "(37.442061079130895, -122.13905453681946)"
-		if (value == null || value.equals("undefined"))
-		{
-			return null;
-		}
 		StringTokenizer tokenizer;
 		try
 		{
@@ -61,13 +44,5 @@ public class GLatLngConverter implements IConverter
 		float lat = Float.valueOf(tokenizer.nextToken());
 		float lng = Float.valueOf(tokenizer.nextToken());
 		return new GLatLng(lat, lng);
-	}
-
-	/**
-	 * @see org.apache.wicket.util.convert.IConverter#convertToString(java.lang.Object, java.util.Locale)
-	 */
-	public String convertToString(Object value, Locale locale)
-	{
-		return null;
 	}
 }
