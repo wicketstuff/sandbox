@@ -22,6 +22,7 @@ import org.apache.wicket.security.examples.customactions.entities.Department;
 import org.apache.wicket.security.swarm.models.SwarmCompoundPropertyModel;
 
 /**
+ * A model for departments. It automatically handles security for all components using this model.
  * @author marrink
  */
 public class DepartmentModel extends SwarmCompoundPropertyModel

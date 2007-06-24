@@ -23,6 +23,7 @@ import org.apache.wicket.security.examples.pages.MySecurePage;
 import org.apache.wicket.security.hive.authentication.LoginContext;
 
 /**
+ * Custom secure page, required, because the way all these examples are set up, to return the context for logging off.
  * @author marrink
  */
 public class SecurePage extends MySecurePage

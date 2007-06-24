@@ -46,6 +46,7 @@ public class MyApplication extends SwarmWebApplication
 	public MyApplication()
 	{
 		super();
+		//set up the departments, only required because this is an example, normally yoy would get them from a db or something else.
 		Organization organization = new Organization();
 		organization.name = "Bee Hive: Honey Production (inc)";
 		String[] departments = new String[] { "Tracking", "Tracks swarm movements", "false",

@@ -20,6 +20,7 @@ import org.apache.wicket.security.examples.customactions.pages.DepartmentsPage;
 import org.apache.wicket.security.examples.customactions.pages.OverviewPage;
 
 /**
+ * Custom menu.
  * @author marrink
  */
 public class ButtonContainer
