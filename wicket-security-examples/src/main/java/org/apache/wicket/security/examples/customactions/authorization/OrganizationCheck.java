@@ -14,43 +14,48 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.wicket.security.examples.customactions.components.navigation;
+package org.apache.wicket.security.examples.customactions.authorization;
 
-import org.apache.wicket.security.examples.customactions.pages.DepartmentsPage;
-import org.apache.wicket.security.examples.customactions.pages.OverviewPage;
+import org.apache.wicket.Component;
+import org.apache.wicket.security.actions.WaspAction;
+import org.apache.wicket.security.checks.ComponentSecurityCheck;
 
 /**
  * @author marrink
  */
-public class ButtonContainer
-		extends
-			org.apache.wicket.security.examples.components.navigation.ButtonContainer
+public class OrganizationCheck extends ComponentSecurityCheck
 {
-
 	private static final long serialVersionUID = 1L;
 
-	public static final Integer BUTTON_OVERVIEW = new Integer(0);
-	public static final Integer BUTTON_DEPARTMENTS = new Integer(1);
 
 	/**
 	 * Construct.
 	 * 
-	 * @param id
-	 * @param selectedButton
+	 * @param component
 	 */
-	public ButtonContainer(String id, Integer selectedButton)
+	public OrganizationCheck(Component component)
 	{
-		super(id, selectedButton);
+		super(component);
 	}
 
 	/**
-	 * @see org.apache.wicket.security.examples.components.navigation.ButtonContainer#setupButtons()
+	 * Construct.
+	 * 
+	 * @param component
+	 * @param checkSecureModelIfExists
 	 */
-	protected void setupButtons()
+	public OrganizationCheck(Component component, boolean checkSecureModelIfExists)
 	{
-		BUTTONS = new Integer[] { BUTTON_OVERVIEW, BUTTON_DEPARTMENTS };
-		NAMES = new String[] { "Overview", "Departments" };
-		PAGES = new Class[] { OverviewPage.class, DepartmentsPage.class };
+		super(component, checkSecureModelIfExists);
+	}
+
+	/**
+	 * @see org.apache.wicket.security.checks.ComponentSecurityCheck#isActionAuthorized(org.apache.wicket.security.actions.WaspAction)
+	 */
+	public boolean isActionAuthorized(WaspAction action)
+	{
+		WaspAction myAction = action.add(getActionFactory().getAction(Organization.class));
+		return super.isActionAuthorized(myAction);
 	}
 
 }

@@ -34,42 +34,24 @@
 </head>
 <body>
 <div id="container">
-<div id="menubar">
-<ul id="topmenu">
-	<li><a href="#">Logoff</a></li>
-	<li><a href="#">Help</a></li>
-</ul>
-</div>
-<div id="actionbar">
-<ul id="actionmenu">
-	<li></li>
-</ul>
-</div>
+	<div id="menubar">
+		<ul id="topmenu">
+			<li><a href="#" wicket:id="logoff">Logoff</a></li>
+			<li><a href="#" onclick="alert('Sorry, no help available');return false;">Help</a></li>
+		</ul>
+	</div>
+	<div id="actionbar">
+		<ul id="actionmenu">
+			<li></li>
+		</ul>
+	</div>
 <div id="content">
 <div id="navcontent">
-<div id="buttoncontainer" wicket:id="buttoncontainer"></div>
+<div wicket:id="buttoncontainer"></div>
 </div>
-<div id="contentbox"><wicket:extend>
-	<div class="title" id="centerTitle">Department</div>
-	<br/>
-	<div id="agendaView">
-	<form wicket:id="form">
-	<table>
-		<tbody>
-			<tr class="outside">
-				<td>Name</td><td><input type="text" wicket:id="name"/></td>
-			</tr>
-			<tr class="outside halfhour">
-				<td>Description</td><td><textarea wicket:id="description" style="width: 99%;"></textarea></td>
-			</tr>
-			<tr class="outside">
-				<td><button wicket:id="button">Submit changes</button></td><td><span wicket:id="label" class="error">not enough rights</span></td>
-			</tr>
-		</tbody>
-	</table>
-	</form>
-	</div>
-</wicket:extend></div>
+<div id="contentbox">
+<wicket:child/>
+</div>
 </div>
 <div id="footer">Bee Hive Example version 0.1 - Powered by Swarm</div>
 </div>
