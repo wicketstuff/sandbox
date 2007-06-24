@@ -84,6 +84,6 @@ public class GMarker extends GOverlay
 	@Override
 	public int hashCode()
 	{
-		return point.hashCode() ^ title.hashCode();
+		return point.hashCode() ^ (title != null ? title.hashCode() : 1337);
 	}
 }
