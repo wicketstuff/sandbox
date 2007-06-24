@@ -78,4 +78,21 @@ public class GLatLng extends GMapApi implements Serializable
 	{
         return "new GLatLng(" + lat + ", " + lng + ", " + unbounded + ")";
 	}
+	
+	@Override
+	public int hashCode()
+	{
+		return new Double(lat).hashCode() ^ new Double(lng).hashCode() ^ new Boolean(unbounded).hashCode();
+	}
+	
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (obj instanceof GLatLng)
+		{
+			GLatLng t = (GLatLng)obj;
+			return t.lat == lat && t.lng == lng && t.unbounded == unbounded;
+		}
+		return false;
+	}
 }
