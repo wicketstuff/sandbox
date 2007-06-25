@@ -1,15 +1,15 @@
 package wicket.contrib.examples.gmap;
 
-import java.util.ArrayList;
-
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
 import wicket.contrib.examples.WicketExamplePage;
 import wicket.contrib.gmap.GMap2Panel;
+import wicket.contrib.gmap.InfoWindowPanel;
 import wicket.contrib.gmap.api.GControl;
 import wicket.contrib.gmap.api.GLatLng;
 import wicket.contrib.gmap.api.GMarker;
@@ -28,11 +28,9 @@ public class HomePage extends WicketExamplePage
 
 	public HomePage()
 	{
-		final ArrayList<GMarker> markers = new ArrayList<GMarker>();
-		markers.add(new GMarker(new GLatLng(49f, 49f), "Home"));
 
 		final GMap2Panel topPanel = new GMap2Panel("topPanel",
-				LOCALHOST_8080_WICKET_CONTRIB_GMAP2_EXAMPLES_KEY, markers)
+				LOCALHOST_8080_WICKET_CONTRIB_GMAP2_EXAMPLES_KEY)
 		{
 
 			@Override
@@ -45,11 +43,12 @@ public class HomePage extends WicketExamplePage
 			public void onClick(GLatLng gLatLng, AjaxRequestTarget target)
 			{
 				GMarker marker = new GMarker(gLatLng);
-				markers.add(marker);
+				addOverlay(marker);
 				markerLabel.getModel().setObject(marker);
 				target.addComponent(markerLabel);
 			}
 		};
+		topPanel.addOverlay(new GMarker(new GLatLng(49f, 49f), "Home"));
 		topPanel.addControl(GControl.GLargeMapControl);
 		topPanel.addControl(GControl.GMapTypeControl);
 		add(topPanel);
@@ -72,8 +71,7 @@ public class HomePage extends WicketExamplePage
 						* (0.9995 + Math.random() / 1000), point.getLng()
 						* (0.9995 + Math.random() / 1000)));
 
-				markers.add(marker);
-				topPanel.updateControlsAndOverlays(target);
+				topPanel.addOverlay(marker);
 			}
 		});
 		add(markerLabel);
@@ -99,11 +97,13 @@ public class HomePage extends WicketExamplePage
 			@Override
 			public void onClick(GLatLng point, AjaxRequestTarget target)
 			{
-				openInfoWindow(new HelloPanel(), point, target);
+				openInfoWindow(new HelloPanel(point));
 			}
 		};
 		bottomPanel.addControl(GControl.GSmallMapControl);
+		bottomPanel.openInfoWindow(new HelloPanel(new GLatLng(45.0, 45.0)));
 		add(bottomPanel);
+		
 
 		center = new Label("center", new PropertyModel(bottomPanel, "center"));
 		center.setOutputMarkupId(true);
@@ -142,9 +142,17 @@ public class HomePage extends WicketExamplePage
 		add(nw);
 
 		final Label infoWindow = new Label("infoWindow", "openInfoWindow");
-		infoWindow.add(bottomPanel.createOpenInfoWindowBehavior(new GLatLng(44.0f, 44.0f),
-				new HelloPanel(), "onclick"));
+		infoWindow.add(bottomPanel.new OpenInfoWindow("onclick"){
+			protected InfoWindowPanel getInfoWindow(){
+				return new HelloPanel(new GLatLng(44.0, 44.0));
+			}
+		});
 		add(infoWindow);
+		add(new Link("reload") {
+			@Override
+			public void onClick() {
+			}
+		});
 	}
 
 	// pay attention at webapp deploy context, we need a different key for each
