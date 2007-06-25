@@ -26,4 +26,6 @@ public interface GMapApi extends Serializable
 	 * @return A JavaScript constructor that represents this element.
 	 */
 	public String getJSConstructor();
+	
+	public String getIdentifier();
 }

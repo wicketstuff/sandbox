@@ -22,5 +22,25 @@ package wicket.contrib.gmap.api;
  * 
  */
 public abstract class GOverlay implements GMapApi
-{
+{	
+	public String getIdentifier() {
+		return "" + System.identityHashCode(this);
+	}
+	
+	@Override
+	public int hashCode()
+	{
+		return getIdentifier().hashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (obj instanceof GOverlay)
+		{
+			GOverlay overlay = (GOverlay)obj;
+			return overlay.getIdentifier().equals(getIdentifier());
+		}
+		return false;
+	}
 }
