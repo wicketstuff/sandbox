@@ -32,8 +32,44 @@ import org.apache.wicket.util.lang.Objects;
  */
 public class Level1Context extends LoginContext
 {
+	/**
+	 * Subject for secondary Login. authenticates all pages.
+	 * @author marrink
+	 */
+	private static final class MySecondarySubject extends DefaultSubject
+	{
+		private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = 1L;
+		/**
+		 * @see org.apache.wicket.security.hive.authentication.LoginContext#isClassAuthenticated(java.lang.Class)
+		 */
+		public boolean isClassAuthenticated(Class class1)
+		{
+			// we could return true only if the page is a Topsecretpage,
+			// but this way we can also login inmediatly on the second
+			// login page, without being required to go through the first.
+			//if we had a bookmarkable link to this page.
+			return true;
+		}
+
+		/**
+		 * @see org.apache.wicket.security.hive.authentication.LoginContext#isComponentAuthenticated(org.apache.wicket.Component)
+		 */
+		public boolean isComponentAuthenticated(Component component)
+		{
+			return true;
+		}
+
+		/**
+		 * @see org.apache.wicket.security.hive.authentication.LoginContext#isModelAuthenticated(org.apache.wicket.model.IModel,
+		 *      org.apache.wicket.Component)
+		 */
+		public boolean isModelAuthenticated(IModel model, Component component)
+		{
+			return true;
+		}
+	}
+
 	private String username;
 	private String token;
 
@@ -58,39 +94,7 @@ public class Level1Context extends LoginContext
 		if (Objects.equal(username, token))
 		{
 			// usually there will be a db call to verify the credentials
-			DefaultSubject subject = new DefaultSubject()
-			{
-				private static final long serialVersionUID = 1L;
-
-				/**
-				 * @see org.apache.wicket.security.hive.authentication.LoginContext#isClassAuthenticated(java.lang.Class)
-				 */
-				public boolean isClassAuthenticated(Class class1)
-				{
-					// we could return true only if the page is a Topsecretpage,
-					// but this way we can also login inmediatly on the second
-					// login page, without being required to go through the first.
-					//if we had a bookmarkable link to this page.
-					return true;
-				}
-
-				/**
-				 * @see org.apache.wicket.security.hive.authentication.LoginContext#isComponentAuthenticated(org.apache.wicket.Component)
-				 */
-				public boolean isComponentAuthenticated(Component component)
-				{
-					return true;
-				}
-
-				/**
-				 * @see org.apache.wicket.security.hive.authentication.LoginContext#isModelAuthenticated(org.apache.wicket.model.IModel,
-				 *      org.apache.wicket.Component)
-				 */
-				public boolean isModelAuthenticated(IModel model, Component component)
-				{
-					return true;
-				}
-			};
+			DefaultSubject subject = new MySecondarySubject();
 			// add principals as required
 			//Note if topsecret implied basic we would not have to add it here.
 			//Also we only need this because we can login through a bookmarkable url, thereby bypassing the first login page.
