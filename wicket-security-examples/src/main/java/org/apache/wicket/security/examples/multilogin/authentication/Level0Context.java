@@ -36,8 +36,44 @@ import org.apache.wicket.util.lang.Objects;
  */
 public class Level0Context extends LoginContext
 {
+	/**
+	 * Subject for primary login. Only authenticates non {@link TopSecretPage}s.
+	 * @author marrink
+	 */
+	private static final class MyPrimarySubject extends DefaultSubject
+	{
+		private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = 1L;
+		/**
+		 * @see org.apache.wicket.security.hive.authentication.LoginContext#isClassAuthenticated(java.lang.Class)
+		 */
+		public boolean isClassAuthenticated(Class class1)
+		{
+			//only authenticate non topsecret pages
+			return !TopSecretPage.class.isAssignableFrom(class1);
+		}
+
+		/**
+		 * @see org.apache.wicket.security.hive.authentication.LoginContext#isComponentAuthenticated(org.apache.wicket.Component)
+		 */
+		public boolean isComponentAuthenticated(Component component)
+		{
+			// we only care about pages
+			if (component instanceof Page)
+				return isClassAuthenticated(component.getClass());
+			return true;
+		}
+
+		/**
+		 * @see org.apache.wicket.security.hive.authentication.LoginContext#isModelAuthenticated(org.apache.wicket.model.IModel,
+		 *      org.apache.wicket.Component)
+		 */
+		public boolean isModelAuthenticated(IModel model, Component component)
+		{
+			return true;
+		}
+	}
+
 	private final String username;
 	private final String password;
 
@@ -74,39 +110,7 @@ public class Level0Context extends LoginContext
 		if (Objects.equal(username, password))
 		{
 			// usually there will be a db call to verify the credentials
-			DefaultSubject subject = new DefaultSubject()
-			{
-				private static final long serialVersionUID = 1L;
-
-				/**
-				 * @see org.apache.wicket.security.hive.authentication.LoginContext#isClassAuthenticated(java.lang.Class)
-				 */
-				public boolean isClassAuthenticated(Class class1)
-				{
-					//only authenticate non topsecret pages
-					return !TopSecretPage.class.isAssignableFrom(class1);
-				}
-
-				/**
-				 * @see org.apache.wicket.security.hive.authentication.LoginContext#isComponentAuthenticated(org.apache.wicket.Component)
-				 */
-				public boolean isComponentAuthenticated(Component component)
-				{
-					// we only care about pages
-					if (component instanceof Page)
-						return isClassAuthenticated(component.getClass());
-					return true;
-				}
-
-				/**
-				 * @see org.apache.wicket.security.hive.authentication.LoginContext#isModelAuthenticated(org.apache.wicket.model.IModel,
-				 *      org.apache.wicket.Component)
-				 */
-				public boolean isModelAuthenticated(IModel model, Component component)
-				{
-					return true;
-				}
-			};
+			DefaultSubject subject = new MyPrimarySubject();
 			// add principals as required, usually these come from a db
 			subject.addPrincipal(new MyPrincipal("basic"));
 			return subject;

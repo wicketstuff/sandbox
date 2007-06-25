@@ -26,6 +26,7 @@ import org.apache.wicket.security.hive.authorization.Principal;
  */
 public class MyPrincipal implements Principal
 {
+	private static final long serialVersionUID = 1L;
 	private String name;
 	
 	
