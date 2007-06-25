@@ -4,6 +4,7 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.Model;
 
 import wicket.contrib.gmap.InfoWindowPanel;
+import wicket.contrib.gmap.api.GLatLng;
 
 /**
  * Panel used as an InfoWindow in the GMap.
@@ -18,9 +19,9 @@ public class HelloPanel extends InfoWindowPanel
 
 	private static int i;
 
-	public HelloPanel()
+	public HelloPanel(GLatLng gLatLng)
 	{
-		super();
+		super(gLatLng);
 		add(new Label("label", new Model()
 		{
 
