@@ -25,6 +25,8 @@ import java.net.MalformedURLException;
 
 import junit.framework.TestCase;
 
+import org.apache.wicket.Page;
+import org.apache.wicket.Session;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.security.hive.HiveMind;
 import org.apache.wicket.security.hive.authentication.SecondaryLoginContext;
@@ -152,7 +154,22 @@ public class GeneralTest extends TestCase
 	 */
 	public void testSerialization()
 	{
-		testMultiLogin();
+		//setup session
+		mock.startPage(MockHomePage.class);
+		mock.assertRenderedPage(MockLoginPage.class);
+		FormTester form = mock.newFormTester("form");
+		form.setValue("username", "test");
+		form.submit();
+		mock.assertRenderedPage(MockHomePage.class);
+		mock.clickLink("secret", false);
+		mock.assertRenderedPage(SecondaryLoginPage.class);
+		form = mock.newFormTester("form");
+		form.setValue("username", "test");
+		form.submit();
+		mock.assertRenderedPage(VerySecurePage.class);
+		Page lastRendered=mock.getLastRenderedPage();
+		
+		//prepare serialization
 		WaspSession session=(WaspSession)mock.getWicketSession();
 		assertNotNull(session);
 		assertFalse(session.isTemporary());
@@ -162,7 +179,14 @@ public class GeneralTest extends TestCase
 			ByteArrayOutputStream bytes = new ByteArrayOutputStream(512*1024);
 			ObjectOutputStream stream=new ObjectOutputStream(bytes);
 			stream.writeObject(session);
-			assertNotNull(new ObjectInputStream(new ByteArrayInputStream(bytes.toByteArray())).readObject());
+			WaspSession session2 = (WaspSession)new ObjectInputStream(new ByteArrayInputStream(bytes.toByteArray())).readObject();
+			assertNotNull(session2);
+			assertNotSame(session, session2);
+			//fake restore session from disk
+			mock.setupRequestAndResponse();
+			Session.set(session2);
+			application.getSessionStore().bind(mock.getWicketRequest(), session2);
+			mock.processRequestCycle();
 		}
 		catch (IOException e)
 		{
@@ -174,5 +198,12 @@ public class GeneralTest extends TestCase
 			log.error(e.getMessage(), e);
 			fail(e.getMessage());
 		}
+		//attempt logoff
+		WaspSession waspSession = ((WaspSession)mock.getWicketSession());
+		assertNotSame(session, waspSession);
+		//TODO simulate logincontext from different jvm by using a different classloader
+		assertTrue(waspSession.logoff(new SecondaryLoginContext()));
+		mock.startPage(lastRendered);
+		mock.assertRenderedPage(application.getApplicationSettings().getAccessDeniedPage());
 	}
 }
