@@ -29,17 +29,20 @@ import org.apache.wicket.util.crypt.NoCrypt;
 /**
  * Wicket Application class.
  */
-public abstract class WicketExampleApplication extends WebApplication {
+public abstract class WicketExampleApplication extends WebApplication
+{
 	/**
 	 * Constructor.
 	 */
-	public WicketExampleApplication() {
+	public WicketExampleApplication()
+	{
 	}
 
 	/**
 	 * Determine operations mode: deployment or development
 	 */
-	protected void init() {
+	protected void init()
+	{
 		ServletContext servletContext = getServletContext();
 		// WARNING: DO NOT do this on a real world application unless
 		// you really want your app's passwords all passed around and
@@ -50,7 +53,6 @@ public abstract class WicketExampleApplication extends WebApplication {
 		// and we want them to be able to run the examples out of the
 		// box.
 		getSecuritySettings().setCryptFactory(
-				new ClassCryptFactory(NoCrypt.class,
-						ISecuritySettings.DEFAULT_ENCRYPTION_KEY));
+				new ClassCryptFactory(NoCrypt.class, ISecuritySettings.DEFAULT_ENCRYPTION_KEY));
 	}
 }

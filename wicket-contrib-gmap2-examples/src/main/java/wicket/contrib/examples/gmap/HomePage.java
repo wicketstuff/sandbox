@@ -21,7 +21,7 @@ public class HomePage extends WicketExamplePage
 {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private Label markerLabel;
 	private Label zoomLabel;
 	private Label center;
@@ -30,17 +30,20 @@ public class HomePage extends WicketExamplePage
 	{
 		final ArrayList<GMarker> markers = new ArrayList<GMarker>();
 		markers.add(new GMarker(new GLatLng(49f, 49f), "Home"));
-		
+
 		final GMap2Panel topPanel = new GMap2Panel("topPanel",
-				LOCALHOST_8080_WICKET_CONTRIB_GMAP2_EXAMPLES_KEY, markers) {
-			
+				LOCALHOST_8080_WICKET_CONTRIB_GMAP2_EXAMPLES_KEY, markers)
+		{
+
 			@Override
-			public void onMoveEnd(AjaxRequestTarget target) {
+			public void onMoveEnd(AjaxRequestTarget target)
+			{
 				target.addComponent(zoomLabel);
 			}
-			
+
 			@Override
-			public void onClick(GLatLng gLatLng, AjaxRequestTarget target) {
+			public void onClick(GLatLng gLatLng, AjaxRequestTarget target)
+			{
 				GMarker marker = new GMarker(gLatLng);
 				markers.add(marker);
 				markerLabel.getModel().setObject(marker);
@@ -64,8 +67,9 @@ public class HomePage extends WicketExamplePage
 			protected void onEvent(AjaxRequestTarget target)
 			{
 				GLatLng point = ((GMarker)markerLabel.getModelObject()).getLagLng();
-				
-				GMarker marker = new GMarker(new GLatLng(point.getLat() * (0.9995 + Math.random() / 1000), point.getLng()
+
+				GMarker marker = new GMarker(new GLatLng(point.getLat()
+						* (0.9995 + Math.random() / 1000), point.getLng()
 						* (0.9995 + Math.random() / 1000)));
 
 				markers.add(marker);
@@ -73,67 +77,70 @@ public class HomePage extends WicketExamplePage
 			}
 		});
 		add(markerLabel);
- 		 
- 		final Label zoomIn = new Label("zoomInLabel", "ZoomIn");
-		zoomIn.add(topPanel.new ZoomIn("onclick"));		
- 		add(zoomIn);
- 	
- 		final Label zoomOut = new Label("zoomOutLabel", "ZoomOut");
+
+		final Label zoomIn = new Label("zoomInLabel", "ZoomIn");
+		zoomIn.add(topPanel.new ZoomIn("onclick"));
+		add(zoomIn);
+
+		final Label zoomOut = new Label("zoomOutLabel", "ZoomOut");
 		zoomOut.add(topPanel.new ZoomOut("onclick"));
- 		add(zoomOut);
-		
+		add(zoomOut);
+
 		final GMap2Panel bottomPanel = new GMap2Panel("bottomPanel",
-				LOCALHOST_8080_WICKET_CONTRIB_GMAP2_EXAMPLES_KEY) {
-			
+				LOCALHOST_8080_WICKET_CONTRIB_GMAP2_EXAMPLES_KEY)
+		{
+
 			@Override
-			public void onMoveEnd(AjaxRequestTarget target) {
+			public void onMoveEnd(AjaxRequestTarget target)
+			{
 				target.addComponent(center);
 			}
-			
+
 			@Override
-			public void onClick(GLatLng point, AjaxRequestTarget target) {
+			public void onClick(GLatLng point, AjaxRequestTarget target)
+			{
 				openInfoWindow(new HelloPanel(), point, target);
 			}
 		};
 		bottomPanel.addControl(GControl.GSmallMapControl);
 		add(bottomPanel);
-		
+
 		center = new Label("center", new PropertyModel(bottomPanel, "center"));
 		center.setOutputMarkupId(true);
 		add(center);
- 		 
- 		final Label n = new Label("n", "N");
- 		n.add(bottomPanel.new PanDirection("onclick", 0, 1));
- 		add(n);
- 
- 		final Label ne = new Label("ne", "NE");
+
+		final Label n = new Label("n", "N");
+		n.add(bottomPanel.new PanDirection("onclick", 0, 1));
+		add(n);
+
+		final Label ne = new Label("ne", "NE");
 		ne.add(bottomPanel.new PanDirection("onclick", -1, 1));
- 		add(ne);
- 
- 		final Label e = new Label("e", "E");
+		add(ne);
+
+		final Label e = new Label("e", "E");
 		e.add(bottomPanel.new PanDirection("onclick", -1, 0));
- 		add(e);
- 
- 		final Label se = new Label("se", "SE");
+		add(e);
+
+		final Label se = new Label("se", "SE");
 		se.add(bottomPanel.new PanDirection("onclick", -1, -1));
- 		add(se);
- 
- 		final Label s = new Label("s", "S");
+		add(se);
+
+		final Label s = new Label("s", "S");
 		s.add(bottomPanel.new PanDirection("onclick", 0, -1));
- 		add(s);
- 
- 		final Label sw = new Label("sw", "SW");
+		add(s);
+
+		final Label sw = new Label("sw", "SW");
 		sw.add(bottomPanel.new PanDirection("onclick", 1, -1));
- 		add(sw);
- 
- 		final Label w = new Label("w", "W");
+		add(sw);
+
+		final Label w = new Label("w", "W");
 		w.add(bottomPanel.new PanDirection("onclick", 1, 0));
- 		add(w);
- 
- 		final Label nw = new Label("nw", "NW");
+		add(w);
+
+		final Label nw = new Label("nw", "NW");
 		nw.add(bottomPanel.new PanDirection("onclick", 1, 1));
- 		add(nw);
- 
+		add(nw);
+
 		final Label infoWindow = new Label("infoWindow", "openInfoWindow");
 		infoWindow.add(bottomPanel.createOpenInfoWindowBehavior(new GLatLng(44.0f, 44.0f),
 				new HelloPanel(), "onclick"));
