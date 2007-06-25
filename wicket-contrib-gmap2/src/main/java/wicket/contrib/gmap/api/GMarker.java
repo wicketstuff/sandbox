@@ -26,7 +26,7 @@ public class GMarker extends GOverlay
 {
 	private static final long serialVersionUID = 1L;
 
-	private GLatLng point;
+	private GLatLng gLatLng;
 	
 	private String title;
 
@@ -39,10 +39,10 @@ public class GMarker extends GOverlay
 		this(point, null);
 	}
 	
-	public GMarker(GLatLng point, String title)
+	public GMarker(GLatLng gLatLng, String title)
 	{
 		super();
-		this.point = point;
+		this.gLatLng = gLatLng;
 		this.title = title;
 	}
 
@@ -50,14 +50,13 @@ public class GMarker extends GOverlay
 		this.title = title;
 	}
 	
-	@Override
 	public String getJSConstructor()
 	{
-		return "new GMarker(" + point.getJSConstructor() + ",{" + getOptions() + "})";
+		return "new GMarker(" + gLatLng.getJSConstructor() + ",{" + getOptions() + "})";
 	}
 
 	public GLatLng getLagLng() {
-		return point;
+		return gLatLng;
 	}
 	
 	private String getOptions() {
@@ -78,7 +77,7 @@ public class GMarker extends GOverlay
 		if (obj instanceof GMarker)
 		{
 			GMarker t = (GMarker)obj;
-			return t.point.equals(point) && (t.title == null && title == null || t.title != null && t.title.equals(title));
+			return t.gLatLng.equals(gLatLng) && (t.title == null && title == null || t.title != null && t.title.equals(title));
 		}
 		return false;
 	}
@@ -86,7 +85,7 @@ public class GMarker extends GOverlay
 	@Override
 	public int hashCode()
 	{
-		return point.hashCode() ^ (title != null ? title.hashCode() : 1337);
+		return gLatLng.hashCode() ^ (title != null ? title.hashCode() : 1337);
 	}
 	
 	/**
