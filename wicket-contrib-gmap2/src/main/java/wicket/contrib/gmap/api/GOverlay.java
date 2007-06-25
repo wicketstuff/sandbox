@@ -15,13 +15,12 @@
  */
 package wicket.contrib.gmap.api;
 
-import java.io.Serializable;
 
 /**
  * Represents an Google Maps API's GOverlay.
  * <a href="http://www.google.com/apis/maps/documentation/reference.html#GOverlay">GOverlay</a>
  *
  */
-public abstract class GOverlay extends GMapApi implements Serializable
+public abstract class GOverlay implements GMapApi
 {
 }

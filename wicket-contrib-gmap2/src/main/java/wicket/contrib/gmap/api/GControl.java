@@ -20,7 +20,7 @@ package wicket.contrib.gmap.api;
  * href="http://www.google.com/apis/maps/documentation/reference.html#GControl">GControl</a>
  * 
  */
-public enum GControl {
+public enum GControl implements GMapApi {
 	GSmallMapControl, GLargeMapControl, GSmallZoomControl, GScaleControl, GMapTypeControl;
 	
 	public String getJSConstructor() {

@@ -22,7 +22,7 @@ import java.io.Serializable;
  * <a href="http://www.google.com/apis/maps/documentation/reference.html#GLatLng">GLatLng</a>
  *
  */
-public class GLatLng extends GMapApi implements Serializable
+public class GLatLng implements GMapApi
 {
 	/**
 	 * Default serialVersionUID.
@@ -73,7 +73,6 @@ public class GLatLng extends GMapApi implements Serializable
 	/**
 	 * @see wicket.contrib.gmap.api.GMapApi#getJSConstructor()
 	 */
-	@Override
 	public String getJSConstructor()
 	{
         return "new GLatLng(" + lat + ", " + lng + ", " + unbounded + ")";
