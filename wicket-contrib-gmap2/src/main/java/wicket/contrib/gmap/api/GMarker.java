@@ -18,16 +18,16 @@ package wicket.contrib.gmap.api;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 
 /**
- * Represents an Google Maps API's GMarker
- * <a href="http://www.google.com/apis/maps/documentation/reference.html#GMarker">GMarker</a>
- *
+ * Represents an Google Maps API's GMarker <a
+ * href="http://www.google.com/apis/maps/documentation/reference.html#GMarker">GMarker</a>
+ * 
  */
 public class GMarker extends GOverlay
 {
 	private static final long serialVersionUID = 1L;
 
 	private GLatLng gLatLng;
-	
+
 	private String title;
 
 	/**
@@ -38,7 +38,7 @@ public class GMarker extends GOverlay
 	{
 		this(point, null);
 	}
-	
+
 	public GMarker(GLatLng gLatLng, String title)
 	{
 		super();
@@ -46,48 +46,54 @@ public class GMarker extends GOverlay
 		this.title = title;
 	}
 
-	public void setTitle(String title) {
+	public void setTitle(String title)
+	{
 		this.title = title;
 	}
-	
+
 	public String getJSConstructor()
 	{
 		return "new GMarker(" + gLatLng.getJSConstructor() + ",{" + getOptions() + "})";
 	}
 
-	public GLatLng getLagLng() {
+	public GLatLng getLagLng()
+	{
 		return gLatLng;
 	}
-	
-	private String getOptions() {
+
+	private String getOptions()
+	{
 		StringBuffer options = new StringBuffer();
-		
-		if (title != null) {
+
+		if (title != null)
+		{
 			options.append("title: \"");
 			options.append(title);
 			options.append("\"");
 		}
-		
+
 		return options.toString();
 	}
-	
+
 	@Override
 	public boolean equals(Object obj)
 	{
 		if (obj instanceof GMarker)
 		{
 			GMarker t = (GMarker)obj;
-			return t.gLatLng.equals(gLatLng) && (t.title == null && title == null || t.title != null && t.title.equals(title));
+			return t.gLatLng.equals(gLatLng)
+					&& (t.title == null && title == null || t.title != null
+							&& t.title.equals(title));
 		}
 		return false;
 	}
-	
+
 	@Override
 	public int hashCode()
 	{
 		return gLatLng.hashCode() ^ (title != null ? title.hashCode() : 1337);
 	}
-	
+
 	/**
 	 * Override this to be called when a marker is clicked on.
 	 * 
@@ -95,6 +101,6 @@ public class GMarker extends GOverlay
 	 */
 	public void onClick(AjaxRequestTarget target)
 	{
-		
+
 	}
 }

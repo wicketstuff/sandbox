@@ -18,9 +18,9 @@ package wicket.contrib.gmap.api;
 import java.io.Serializable;
 
 /**
- * Represents an Google Maps API's GLatLng.
- * <a href="http://www.google.com/apis/maps/documentation/reference.html#GLatLng">GLatLng</a>
- *
+ * Represents an Google Maps API's GLatLng. <a
+ * href="http://www.google.com/apis/maps/documentation/reference.html#GLatLng">GLatLng</a>
+ * 
  */
 public class GLatLng implements GMapApi
 {
@@ -29,61 +29,64 @@ public class GLatLng implements GMapApi
 	 */
 	private static final long serialVersionUID = 1L;
 	private final double lat;
-    private final double lng;
-    private final boolean unbounded;
+	private final double lng;
+	private final boolean unbounded;
 
-    /**
-     * Construct.
-     * @param lat
-     * @param lng
-     */
-    public GLatLng(double lat, double lng)
-    {
-    	this(lat, lng, false);
-    }
+	/**
+	 * Construct.
+	 * 
+	 * @param lat
+	 * @param lng
+	 */
+	public GLatLng(double lat, double lng)
+	{
+		this(lat, lng, false);
+	}
 
-    /**
-     * Construct.
-     * @param lat
-     * @param lng
-     * @param unbounded
-     */
-    public GLatLng(double lat, double lng, boolean unbounded)
-    {
-        this.lat = lat;
-        this.lng = lng;
-        this.unbounded = unbounded;
-    }
+	/**
+	 * Construct.
+	 * 
+	 * @param lat
+	 * @param lng
+	 * @param unbounded
+	 */
+	public GLatLng(double lat, double lng, boolean unbounded)
+	{
+		this.lat = lat;
+		this.lng = lng;
+		this.unbounded = unbounded;
+	}
 
-    public double getLat()
-    {
-        return lat;
-    }
+	public double getLat()
+	{
+		return lat;
+	}
 
-    public double getLng()
-    {
-        return lng;
-    }
+	public double getLng()
+	{
+		return lng;
+	}
 
-    public String toString()
-    {
-        return getJSConstructor();
-    }
+	public String toString()
+	{
+		return getJSConstructor();
+	}
 
 	/**
 	 * @see wicket.contrib.gmap.api.GMapApi#getJSConstructor()
 	 */
 	public String getJSConstructor()
 	{
-        return "new GLatLng(" + lat + ", " + lng + ", " + unbounded + ")";
+		return "new GLatLng(" + lat + ", " + lng + ", " + unbounded + ")";
 	}
-	
+
 	@Override
 	public int hashCode()
 	{
-		return new Double(lat).hashCode() ^ new Double(lng).hashCode() ^ new Boolean(unbounded).hashCode();
+		return new Double(lat).hashCode() ^ new Double(lng).hashCode()
+				^ new Boolean(unbounded).hashCode();
 	}
-	
+
 	@Override
 	public boolean equals(Object obj)
 	{
