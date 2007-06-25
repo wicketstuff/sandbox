@@ -36,6 +36,9 @@ public class MoveEndBehaviour extends AbstractGMapBehaviour
 		this.gmap2Panel = gmap2Panel;
 	}
 
+	/*
+	 * TODO update bounds
+	 */
 	@Override
 	protected void respond(AjaxRequestTarget target)
 	{
