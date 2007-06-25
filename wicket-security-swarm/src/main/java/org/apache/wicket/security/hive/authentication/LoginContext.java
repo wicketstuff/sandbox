@@ -120,7 +120,8 @@ public abstract class LoginContext
 	{
 		final int PRIME = 31;
 		int result = 1;
-		result = PRIME * result + getClass().hashCode();
+		//classname to get consistent hash over different jvm instances.
+		result = PRIME * result + getClass().getName().hashCode();
 		result = PRIME * result + sortOrder;
 		return result;
 	}
@@ -137,7 +138,7 @@ public abstract class LoginContext
 			return true;
 		if (obj == null)
 			return false;
-		if (getClass() != obj.getClass())
+		if (!getClass().getName().equals(obj.getClass().getName()))
 			return false;
 		final LoginContext other = (LoginContext)obj;
 		return sortOrder == other.sortOrder;
