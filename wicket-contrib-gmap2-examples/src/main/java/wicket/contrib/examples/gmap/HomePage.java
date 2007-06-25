@@ -47,6 +47,11 @@ public class HomePage extends WicketExamplePage
 				markerLabel.getModel().setObject(marker);
 				target.addComponent(markerLabel);
 			}
+			
+			@Override
+			public void onClick(GMarker marker, AjaxRequestTarget target) {
+				removeOverlay(marker);
+			}
 		};
 		topPanel.addOverlay(new GMarker(new GLatLng(49f, 49f), "Home"));
 		topPanel.addControl(GControl.GLargeMapControl);
