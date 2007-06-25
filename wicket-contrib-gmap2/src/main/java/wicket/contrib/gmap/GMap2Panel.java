@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.RequestCycle;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxEventBehavior;
@@ -74,8 +75,7 @@ public class GMap2Panel extends Panel
 	private GLatLng center = new GLatLng(37.4419, -122.1419);
 	private int zoomLevel = 13;
 	private Set<GControl> controls = new HashSet<GControl>();
-	private Set<GControl> previousUpdateControls;
-	private List<GOverlay> previousUpdateOverlays;
+	private List<GOverlay> overlays = new ArrayList<GOverlay>();
 
 	private final WebMarkupContainer mapContainer;
 
@@ -95,7 +95,7 @@ public class GMap2Panel extends Panel
 	 */
 	public GMap2Panel(final String id, final String gMapKey)
 	{
-		this(id, gMapKey, new Model(new ArrayList<GOverlay>()));
+		this(id, gMapKey, new ArrayList<GOverlay>());
 	}
 
 	/**
@@ -106,22 +106,10 @@ public class GMap2Panel extends Panel
 	 *            Google gmap API KEY
 	 * @param overlays
 	 */
-	public GMap2Panel(final String id, final String gMapKey, List<? extends GOverlay> overlays)
+	public GMap2Panel(final String id, final String gMapKey, List overlays)
 	{
-		this(id, gMapKey, new Model((Serializable)overlays));
-	}
-
-	/**
-	 * Construct.
-	 * 
-	 * @param id
-	 * @param gMapKey
-	 *            Google gmap API KEY
-	 * @param model
-	 */
-	public GMap2Panel(final String id, final String gMapKey, final IModel overlays)
-	{
-		super(id, overlays);
+		super(id);
+		this.overlays = overlays;
 		moveEndBehaviour = new MoveEndBehaviour(this);
 		clickBehaviour = new ClickBehaviour(this);
 
@@ -168,12 +156,12 @@ public class GMap2Panel extends Panel
 				// see:
 				// http://www.google.com/apis/maps/documentation/#Memory_Leaks
 				response.renderOnBeforeUnloadJavascript("GUnload();");
-				response.renderOnDomReadyJavascript(getJSOnLoad() + getJSControlAndOverlayUpdate());
+				response.renderOnDomReadyJavascript(getJSInit());
 			}
 		});
 	}
 
-	private String getJSOnLoad()
+	private String getJSInit()
 	{
 		String js = "addGMap(\"" + getMapId() + "\", " + getCenter().getLat() + ", "
 				+ getCenter().getLng() + ", "
@@ -184,68 +172,22 @@ public class GMap2Panel extends Panel
 				// on a moveend or a click event.
 				+ moveEndBehaviour.getCallbackUrl() + "\", " + "\""
 				+ clickBehaviour.getCallbackUrl() + "\");\n";
-		return js;
-	}
 
-	private String getJSControlAndOverlayUpdate()
-	{
-		String js = "";
-
-		HashSet<GControl> newControls = new HashSet<GControl>(getControls());
-		if (previousUpdateControls != null && !previousUpdateControls.equals(newControls))
-		{
-			// Remove previous controls that are no longer present.
-			for (GControl control : previousUpdateControls)
-			{
-				if (!newControls.contains(control))
-				{
-					js += getJSControlRemoved(control);
-				}
-			}
-		}
-		if (previousUpdateControls != null)
-		{
-			// Remove any previous controls from our new set of overlays, which
-			// will
-			// leave only new items to add.
-			newControls.removeAll(previousUpdateControls);
-		}
-
-		// Add the new controls.
-		for (GControl control : newControls)
+		// Add the controls.
+		for (GControl control : controls)
 		{
 			js += getJSControlAdded(control);
 		}
 
-		HashSet<GOverlay> newOverlays = new HashSet<GOverlay>((List<GOverlay>)getModelObject());
-		if (previousUpdateOverlays != null && !previousUpdateOverlays.equals(newOverlays))
-		{
-			// Remove previous overlays that are no longer present.
-			for (GOverlay overlay : previousUpdateOverlays)
-			{
-				if (!newOverlays.contains(overlay))
-				{
-					js += getJSOverlayRemoved(overlay);
-				}
-			}
-		}
-		if (previousUpdateOverlays != null)
-		{
-			// Remove any previous overlays from our new set of overlays, which
-			// will
-			// leave only new items to add.
-			newOverlays.removeAll(previousUpdateOverlays);
-		}
-
-		// Add the new overlays.
-		for (GOverlay overlay : newOverlays)
+		// Add the overlays.
+		for (GOverlay overlay : overlays)
 		{
 			js += getJSOverlayAdded(overlay);
 		}
 
-		previousUpdateControls = getControls();
-		previousUpdateOverlays = new ArrayList((List<GOverlay>)getModelObject());
-
+		if (infoWindowContainer.get("infoWindow") instanceof InfoWindowPanel) {
+			js += getJSInfoWindowOpened(((InfoWindowPanel)infoWindowContainer.get("infoWindow")));
+		}
 		return js;
 	}
 
@@ -257,6 +199,23 @@ public class GMap2Panel extends Panel
 	public void addControl(GControl control)
 	{
 		controls.add(control);
+
+		if (RequestCycle.get().getRequestTarget() instanceof AjaxRequestTarget)
+		{
+			((AjaxRequestTarget)RequestCycle.get().getRequestTarget())
+					.appendJavascript(getJSControlAdded(control));
+		}
+	}
+
+	public void addOverlay(GOverlay overlay)
+	{
+		overlays.add(overlay);
+
+		if (RequestCycle.get().getRequestTarget() instanceof AjaxRequestTarget)
+		{
+			((AjaxRequestTarget)RequestCycle.get().getRequestTarget())
+					.appendJavascript(getJSOverlayAdded(overlay));
+		}
 	}
 
 	public Set<GControl> getControls()
@@ -306,20 +265,24 @@ public class GMap2Panel extends Panel
 		return "removeOverlay('" + getMapId() + "', '" + overlay.hashCode() + "');\n";
 	}
 
-	public void updateControlsAndOverlays(AjaxRequestTarget target)
-	{
-		target.appendJavascript(getJSControlAndOverlayUpdate());
-	}
-
-	public void openInfoWindow(InfoWindowPanel panel, GLatLng point, AjaxRequestTarget target)
+	public void openInfoWindow(InfoWindowPanel panel)
 	{
 		// replace the panel held, by the invisible div element.
-		panel.setOutputMarkupId(true);
 		infoWindowContainer.replace(panel);
 
-		target.addComponent(infoWindowContainer);
-		target.appendJavascript("openInfoWindow('" + getMapId() + "'," + "'"
-				+ point.getJSConstructor() + "','" + panel.getMarkupId() + "')");
+		if (RequestCycle.get().getRequestTarget() instanceof AjaxRequestTarget)
+		{
+			((AjaxRequestTarget)RequestCycle.get().getRequestTarget())
+					.appendJavascript(getJSInfoWindowOpened(panel));
+			((AjaxRequestTarget)RequestCycle.get().getRequestTarget())
+					.addComponent(infoWindowContainer);
+		}
+	}
+
+	private String getJSInfoWindowOpened(InfoWindowPanel panel)
+	{
+		return "openInfoWindow('" + getMapId() + "'," + "'" + panel.getGLatLng().getJSConstructor()
+				+ "','" + panel.getMarkupId() + "')";
 	}
 
 	/**
@@ -389,31 +352,25 @@ public class GMap2Panel extends Panel
 		}
 	}
 
-	/**
-	 * Binds an 'openInfoWindow' call on this map, to the given event of the
-	 * given component. <a
-	 * href="http://www.google.com/apis/maps/documentation/reference.html#GMap2">GMap2</a>
-	 * 
-	 * @param component
-	 * @param factory
-	 * @param event
-	 */
-	public IBehavior createOpenInfoWindowBehavior(final GLatLng point, final InfoWindowPanel panel,
-			String event)
+	public abstract class OpenInfoWindow extends AjaxEventBehavior
 	{
-		return new AjaxEventBehavior(event)
-		{
-			private static final long serialVersionUID = 1L;
+		private static final long serialVersionUID = 1L;
 
-			/**
-			 * @see org.apache.wicket.ajax.AjaxEventBehavior#onEvent(org.apache.wicket.ajax.AjaxRequestTarget)
-			 */
-			@Override
-			protected void onEvent(AjaxRequestTarget target)
-			{
-				openInfoWindow(panel, point, target);
-			}
-		};
+		public OpenInfoWindow(String event)
+		{
+			super(event);
+		}
+
+		/**
+		 * @see org.apache.wicket.ajax.AjaxEventBehavior#onEvent(org.apache.wicket.ajax.AjaxRequestTarget)
+		 */
+		@Override
+		protected void onEvent(AjaxRequestTarget target)
+		{
+			openInfoWindow(getInfoWindow());
+		}
+
+		protected abstract InfoWindowPanel getInfoWindow();
 	}
 
 	public class PanDirection extends AjaxEventBehavior
