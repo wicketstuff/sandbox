@@ -30,23 +30,24 @@ import org.apache.wicket.util.time.Duration;
 public class GMapExampleApplication extends WebApplication
 {
 
-	
-    /**
+
+	/**
 	 * @see wicket.protocol.http.WebApplication#init()
 	 */
 	@Override
 	protected void init()
 	{
-        getResourceSettings().setResourcePollFrequency(Duration.seconds(10));
+		getResourceSettings().setResourcePollFrequency(Duration.seconds(10));
 	}
 
-    public Class<? extends Page> getHomePage()
-    {
-        return HomePage.class;
-    }
-    
-    @Override
-    protected ISessionStore newSessionStore() {
-    return new HttpSessionStore(this);
-    } 
+	public Class<? extends Page> getHomePage()
+	{
+		return HomePage.class;
+	}
+
+	@Override
+	protected ISessionStore newSessionStore()
+	{
+		return new HttpSessionStore(this);
+	}
 }

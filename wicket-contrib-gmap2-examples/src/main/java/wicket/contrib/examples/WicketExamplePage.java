@@ -26,13 +26,15 @@ import org.apache.wicket.util.string.Strings;
 /**
  * Base class for all example pages.
  */
-public class WicketExamplePage<T> extends WebPage {
+public class WicketExamplePage<T> extends WebPage
+{
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Constructor
 	 */
-	public WicketExamplePage() {
+	public WicketExamplePage()
+	{
 		this(null);
 	}
 
@@ -41,17 +43,18 @@ public class WicketExamplePage<T> extends WebPage {
 	 * 
 	 * @param model
 	 */
-	public WicketExamplePage(IModel model) {
+	public WicketExamplePage(IModel model)
+	{
 		super(model);
 		final String packageName = getClass().getPackage().getName();
-		add(new WicketExampleHeader("mainNavigation", Strings.afterLast(
-				packageName, '.')));
+		add(new WicketExampleHeader("mainNavigation", Strings.afterLast(packageName, '.')));
 		explain();
 	}
 
 	/**
 	 * Override base method to provide an explanation
 	 */
-	protected void explain() {
+	protected void explain()
+	{
 	}
 }
