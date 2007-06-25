@@ -16,6 +16,8 @@
  */
 package org.apache.wicket.security.hive.authorization;
 
+import java.io.Serializable;
+
 import org.apache.wicket.security.hive.authentication.Subject;
 
 /**
@@ -24,7 +26,7 @@ import org.apache.wicket.security.hive.authentication.Subject;
  * @see java.security.Principal
  * @author marrink
  */
-public interface Principal
+public interface Principal extends Serializable
 {
 
 	/**

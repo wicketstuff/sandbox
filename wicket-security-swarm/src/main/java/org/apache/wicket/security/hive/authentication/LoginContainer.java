@@ -35,8 +35,10 @@ import org.apache.wicket.security.strategies.LoginException;
  * login. Note this class is not thread safe.
  * @author marrink
  */
-public final class LoginContainer
+public final class LoginContainer implements Serializable
 {
+	private static final long serialVersionUID = 1L;
+
 	private List logins = new ArrayList();
 
 	private Map subjects = new HashMap();

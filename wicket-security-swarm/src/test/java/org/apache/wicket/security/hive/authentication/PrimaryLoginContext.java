@@ -28,9 +28,32 @@ import org.apache.wicket.security.pages.HighSecurityPage;
 public final class PrimaryLoginContext extends LoginContext
 {
 	/**
-	 * 
+	 * Custom Subject.
+	 * Note try not to serialize the logincontext with the subject.
+	 * @author marrink
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final class MySubject extends DefaultSubject
+	{
+		private static final long serialVersionUID = 1L;
+
+		public boolean isClassAuthenticated(Class class1)
+		{
+			// for this test class authentication is enough
+			if (class1 == null)
+				return false;
+			return !HighSecurityPage.class.isAssignableFrom(class1);
+		}
+
+		public boolean isComponentAuthenticated(Component component)
+		{
+			return true;
+		}
+
+		public boolean isModelAuthenticated(IModel model, Component component)
+		{
+			return true;
+		}
+	}
 
 	public PrimaryLoginContext()
 	{
@@ -40,29 +63,7 @@ public final class PrimaryLoginContext extends LoginContext
 
 	public Subject login()
 	{
-		DefaultSubject defaultSubject = new DefaultSubject()
-		{
-			private static final long serialVersionUID = 1L;
-
-			public boolean isClassAuthenticated(Class class1)
-			{
-				// for this test class authentication is enough
-				if (class1 == null)
-					return false;
-				return !HighSecurityPage.class.isAssignableFrom(class1);
-			}
-			
-			public boolean isComponentAuthenticated(Component component)
-			{
-				return true;
-			}
-			
-			public boolean isModelAuthenticated(IModel model, Component component)
-			{
-				return true;
-			}
-
-		};
+		DefaultSubject defaultSubject = new MySubject();
 		defaultSubject.addPrincipal(new TestPrincipal("basic"));
 		return defaultSubject;
 	}

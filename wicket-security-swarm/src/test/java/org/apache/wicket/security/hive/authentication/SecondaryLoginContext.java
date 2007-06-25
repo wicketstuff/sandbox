@@ -27,9 +27,32 @@ import org.apache.wicket.security.hive.authorization.TestPrincipal;
 public final class SecondaryLoginContext extends LoginContext
 {
 	/**
-	 * 
+	 * Subject for secondary logins.
+	 * Note try not to serialize the logincontext with the subject.
+	 * @author marrink
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final class MySecondSubject extends DefaultSubject
+	{
+		private static final long serialVersionUID = 1L;
+
+		public boolean isClassAuthenticated(Class class1)
+		{
+			return true;
+			// we also could just return true if the class is a HighSecurityPage
+			// if we did that we would have to login again for a "normal" page
+			// now the 2nd login is good for all pages
+		}
+
+		public boolean isComponentAuthenticated(Component component)
+		{
+			return true;
+		}
+
+		public boolean isModelAuthenticated(IModel model, Component component)
+		{
+			return true;
+		}
+	}
 
 	public SecondaryLoginContext()
 	{
@@ -39,28 +62,7 @@ public final class SecondaryLoginContext extends LoginContext
 
 	public Subject login()
 	{
-		DefaultSubject defaultSubject = new DefaultSubject()
-		{
-			private static final long serialVersionUID = 1L;
-
-			public boolean isClassAuthenticated(Class class1)
-			{
-				return true;
-				// we also could just return true if the class is a HighSecurityPage
-				// if we did that we would have to login again for a "normal" page
-				// now the 2nd login is good for all pages
-			}
-			
-			public boolean isComponentAuthenticated(Component component)
-			{
-				return true;
-			}
-			
-			public boolean isModelAuthenticated(IModel model, Component component)
-			{
-				return true;
-			}
-		};
+		DefaultSubject defaultSubject = new MySecondSubject();
 		defaultSubject.addPrincipal(new TestPrincipal("admin"));
 		return defaultSubject;
 	}
