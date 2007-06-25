@@ -25,7 +25,7 @@ public class InfoWindowPanel extends Panel
 {
 
 	/**
-	 * Default serialVersionUID. 
+	 * Default serialVersionUID.
 	 */
 	private static final long serialVersionUID = 1L;
 

@@ -48,10 +48,13 @@ import wicket.contrib.gmap.behaviour.ClickBehaviour;
 import wicket.contrib.gmap.behaviour.MoveEndBehaviour;
 
 /**
- * Wicket component to embed <a href="http://maps.google.com">Google Maps</a> into your pages.
+ * Wicket component to embed <a href="http://maps.google.com">Google Maps</a>
+ * into your pages.
  * <p>
- * The Google Maps API requires an API key to use it. You will need to generate one for each deployment context you have. See the
- * <a href="http://www.google.com/apis/maps/signup.html">Google Maps API sign up page</a> for more information.
+ * The Google Maps API requires an API key to use it. You will need to generate
+ * one for each deployment context you have. See the <a
+ * href="http://www.google.com/apis/maps/signup.html">Google Maps API sign up
+ * page</a> for more information.
  */
 public class GMap2Panel extends Panel
 {
@@ -64,7 +67,7 @@ public class GMap2Panel extends Panel
 	private static final ResourceReference WICKET_GMAP_JS = new JavascriptResourceReference(
 			GMap2Panel.class, "wicket-gmap.js");
 
-	// We also depend on wicket-ajax.js within wicket-gmap.js 
+	// We also depend on wicket-ajax.js within wicket-gmap.js
 	private static final ResourceReference WICKET_AJAX_JS = new JavascriptResourceReference(
 			AbstractDefaultAjaxBehavior.class, "wicket-ajax.js");
 
@@ -81,12 +84,13 @@ public class GMap2Panel extends Panel
 
 	private final MoveEndBehaviour moveEndBehaviour;
 	private final ClickBehaviour clickBehaviour;
-	
+
 	/**
 	 * Construct.
 	 * 
 	 * @param id
-	 * @param gMapKey Google gmap API KEY
+	 * @param gMapKey
+	 *            Google gmap API KEY
 	 * @param model
 	 */
 	public GMap2Panel(final String id, final String gMapKey)
@@ -98,10 +102,11 @@ public class GMap2Panel extends Panel
 	 * Construct.
 	 * 
 	 * @param id
-	 * @param gMapKey Google gmap API KEY
+	 * @param gMapKey
+	 *            Google gmap API KEY
 	 * @param overlays
 	 */
-	public GMap2Panel(final String id, final String gMapKey, List< ? extends GOverlay> overlays)
+	public GMap2Panel(final String id, final String gMapKey, List<? extends GOverlay> overlays)
 	{
 		this(id, gMapKey, new Model((Serializable)overlays));
 	}
@@ -110,7 +115,8 @@ public class GMap2Panel extends Panel
 	 * Construct.
 	 * 
 	 * @param id
-	 * @param gMapKey Google gmap API KEY
+	 * @param gMapKey
+	 *            Google gmap API KEY
 	 * @param model
 	 */
 	public GMap2Panel(final String id, final String gMapKey, final IModel overlays)
@@ -155,33 +161,36 @@ public class GMap2Panel extends Panel
 			public void renderHead(IHeaderResponse response)
 			{
 				response.renderJavascriptReference(GMAP_API_URL + gMapKey);
-				// We don't want to have to fake in a 
+				// We don't want to have to fake in a
 				response.renderJavascriptReference(WicketEventReference.INSTANCE);
 				response.renderJavascriptReference(WICKET_AJAX_JS);
 				response.renderJavascriptReference(WICKET_GMAP_JS);
-				// see: http://www.google.com/apis/maps/documentation/#Memory_Leaks
+				// see:
+				// http://www.google.com/apis/maps/documentation/#Memory_Leaks
 				response.renderOnBeforeUnloadJavascript("GUnload();");
 				response.renderOnDomReadyJavascript(getJSOnLoad() + getJSControlAndOverlayUpdate());
 			}
 		});
 	}
-	
-	private String getJSOnLoad() {
-		String js = "addGMap(\"" + getMapId() + "\", " + getCenter().getLat()
-		+ ", " + getCenter().getLng() + ", "
-		+ getZoomLevel()
-		+ ", \""
-		// provides the GMap with information which script to
-		// call
-		// on a moveend or a click event.
-		+ moveEndBehaviour.getCallbackUrl() + "\", " + "\""
-		+ clickBehaviour.getCallbackUrl() + "\");\n";
+
+	private String getJSOnLoad()
+	{
+		String js = "addGMap(\"" + getMapId() + "\", " + getCenter().getLat() + ", "
+				+ getCenter().getLng() + ", "
+				+ getZoomLevel()
+				+ ", \""
+				// provides the GMap with information which script to
+				// call
+				// on a moveend or a click event.
+				+ moveEndBehaviour.getCallbackUrl() + "\", " + "\""
+				+ clickBehaviour.getCallbackUrl() + "\");\n";
 		return js;
 	}
-	
-	private String getJSControlAndOverlayUpdate() {
+
+	private String getJSControlAndOverlayUpdate()
+	{
 		String js = "";
-		
+
 		HashSet<GControl> newControls = new HashSet<GControl>(getControls());
 		if (previousUpdateControls != null && !previousUpdateControls.equals(newControls))
 		{
@@ -196,11 +205,12 @@ public class GMap2Panel extends Panel
 		}
 		if (previousUpdateControls != null)
 		{
-			// Remove any previous controls from our new set of overlays, which will
+			// Remove any previous controls from our new set of overlays, which
+			// will
 			// leave only new items to add.
 			newControls.removeAll(previousUpdateControls);
 		}
-		
+
 		// Add the new controls.
 		for (GControl control : newControls)
 		{
@@ -221,7 +231,8 @@ public class GMap2Panel extends Panel
 		}
 		if (previousUpdateOverlays != null)
 		{
-			// Remove any previous overlays from our new set of overlays, which will
+			// Remove any previous overlays from our new set of overlays, which
+			// will
 			// leave only new items to add.
 			newOverlays.removeAll(previousUpdateOverlays);
 		}
@@ -231,10 +242,10 @@ public class GMap2Panel extends Panel
 		{
 			js += getJSOverlayAdded(overlay);
 		}
-		
+
 		previousUpdateControls = getControls();
 		previousUpdateOverlays = new ArrayList((List<GOverlay>)getModelObject());
-		
+
 		return js;
 	}
 
@@ -294,12 +305,12 @@ public class GMap2Panel extends Panel
 	{
 		return "removeOverlay('" + getMapId() + "', '" + overlay.hashCode() + "');\n";
 	}
-	
+
 	public void updateControlsAndOverlays(AjaxRequestTarget target)
 	{
 		target.appendJavascript(getJSControlAndOverlayUpdate());
 	}
-	
+
 	public void openInfoWindow(InfoWindowPanel panel, GLatLng point, AjaxRequestTarget target)
 	{
 		// replace the panel held, by the invisible div element.
@@ -334,13 +345,15 @@ public class GMap2Panel extends Panel
 	}
 
 
-	public class ZoomOut extends AjaxEventBehavior {
+	public class ZoomOut extends AjaxEventBehavior
+	{
 		/**
 		 * Default serialVersionUID.
 		 */
 		private static final long serialVersionUID = 1L;
 
-		public ZoomOut(String event) {
+		public ZoomOut(String event)
+		{
 			super(event);
 		}
 
@@ -348,19 +361,21 @@ public class GMap2Panel extends Panel
 		 * @see org.apache.wicket.ajax.AjaxEventBehavior#onEvent(org.apache.wicket.ajax.AjaxRequestTarget)
 		 */
 		@Override
-		protected void onEvent(AjaxRequestTarget target) {
-			target.appendJavascript("Wicket.gmaps['" + getMapId() + "']"
-					+ ".zoomOut();");
+		protected void onEvent(AjaxRequestTarget target)
+		{
+			target.appendJavascript("Wicket.gmaps['" + getMapId() + "']" + ".zoomOut();");
 		}
 	}
 
-	public class ZoomIn extends AjaxEventBehavior {
+	public class ZoomIn extends AjaxEventBehavior
+	{
 		/**
 		 * Default serialVersionUID.
 		 */
 		private static final long serialVersionUID = 1L;
 
-		public ZoomIn(String event) {
+		public ZoomIn(String event)
+		{
 			super(event);
 		}
 
@@ -368,14 +383,15 @@ public class GMap2Panel extends Panel
 		 * @see org.apache.wicket.ajax.AjaxEventBehavior#onEvent(org.apache.wicket.ajax.AjaxRequestTarget)
 		 */
 		@Override
-		protected void onEvent(AjaxRequestTarget target) {
-			target.appendJavascript("Wicket.gmaps['" + getMapId() + "']"
-					+ ".zoomIn();");
+		protected void onEvent(AjaxRequestTarget target)
+		{
+			target.appendJavascript("Wicket.gmaps['" + getMapId() + "']" + ".zoomIn();");
 		}
 	}
-	 
+
 	/**
-	 * Binds an 'openInfoWindow' call on this map, to the given event of the given component. <a
+	 * Binds an 'openInfoWindow' call on this map, to the given event of the
+	 * given component. <a
 	 * href="http://www.google.com/apis/maps/documentation/reference.html#GMap2">GMap2</a>
 	 * 
 	 * @param component
@@ -400,7 +416,8 @@ public class GMap2Panel extends Panel
 		};
 	}
 
-	public class PanDirection extends AjaxEventBehavior {
+	public class PanDirection extends AjaxEventBehavior
+	{
 		/**
 		 * Default serialVersionUID.
 		 */
@@ -410,7 +427,8 @@ public class GMap2Panel extends Panel
 
 		private int dy;
 
-		public PanDirection(String event, final int dx, final int dy) {
+		public PanDirection(String event, final int dx, final int dy)
+		{
 			super(event);
 
 			this.dx = dx;
@@ -421,12 +439,13 @@ public class GMap2Panel extends Panel
 		 * @see org.apache.wicket.ajax.AjaxEventBehavior#onEvent(org.apache.wicket.ajax.AjaxRequestTarget)
 		 */
 		@Override
-		protected void onEvent(AjaxRequestTarget target) {
-			target.appendJavascript("Wicket.gmaps['" + getMapId() + "']"
-					+ ".panDirection(" + dx + "," + dy + ");");
+		protected void onEvent(AjaxRequestTarget target)
+		{
+			target.appendJavascript("Wicket.gmaps['" + getMapId() + "']" + ".panDirection(" + dx
+					+ "," + dy + ");");
 		}
 	}
-		 
+
 
 	public int getWidth()
 	{
