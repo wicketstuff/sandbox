@@ -73,16 +73,14 @@ public class HomePage extends WicketExamplePage
 			}
 		});
 		add(markerLabel);
-
-		final Label zoomIn = new Label("zoomInLabel", "ZoomIn");
-		zoomIn.add(topPanel.createZoomInBehavior("onclick"));		
-		add(zoomIn);
-	
-		final Label zoomOut = new Label("zoomOutLabel", "ZoomOut");
-		zoomOut.add(topPanel.createZoomOutBehavior("onclick"));
-		add(zoomOut);
-
-	
+ 		 
+ 		final Label zoomIn = new Label("zoomInLabel", "ZoomIn");
+		zoomIn.add(topPanel.new ZoomIn("onclick"));		
+ 		add(zoomIn);
+ 	
+ 		final Label zoomOut = new Label("zoomOutLabel", "ZoomOut");
+		zoomOut.add(topPanel.new ZoomOut("onclick"));
+ 		add(zoomOut);
 		
 		final GMap2Panel bottomPanel = new GMap2Panel("bottomPanel",
 				LOCALHOST_8080_WICKET_CONTRIB_GMAP2_EXAMPLES_KEY) {
