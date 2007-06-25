@@ -201,8 +201,10 @@ public class GeneralTest extends TestCase
 		//attempt logoff
 		WaspSession waspSession = ((WaspSession)mock.getWicketSession());
 		assertNotSame(session, waspSession);
-		//TODO simulate logincontext from different jvm by using a different classloader
-		assertTrue(waspSession.logoff(new SecondaryLoginContext()));
+		//instead of simulating a different jvm we can make sure the hashcode always stays the same
+		SecondaryLoginContext logoff = new SecondaryLoginContext();
+		assertEquals(22889663, logoff.hashCode());
+		assertTrue(waspSession.logoff(logoff));
 		mock.startPage(lastRendered);
 		mock.assertRenderedPage(application.getApplicationSettings().getAccessDeniedPage());
 	}
