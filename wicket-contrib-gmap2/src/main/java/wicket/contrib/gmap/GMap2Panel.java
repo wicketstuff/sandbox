@@ -333,33 +333,47 @@ public class GMap2Panel extends Panel
 		// Override me.
 	}
 
-	/**
-	 * Binds a 'zoomOut()' call on this map, to the given event of the given
-	 * Component.
-	 * href="http://www.google.com/apis/maps/documentation/reference.html#GMap2">GMap2</a>
-	 * 
-	 * @param comp
-	 */
-	public IBehavior createZoomOutBehavior(final String event)
-	{
-		return new AjaxEventBehavior(event)
-		{
-			/**
-			 * Default serialVersionUID.
-			 */
-			private static final long serialVersionUID = 1L;
 
-			/**
-			 * @see org.apache.wicket.ajax.AjaxEventBehavior#onEvent(org.apache.wicket.ajax.AjaxRequestTarget)
-			 */
-			@Override
-			protected void onEvent(AjaxRequestTarget target)
-			{
-				target.appendJavascript("Wicket.gmaps['" + getMapId() + "']" + ".zoomOut();");
-			}
-		};
+	public class ZoomOut extends AjaxEventBehavior {
+		/**
+		 * Default serialVersionUID.
+		 */
+		private static final long serialVersionUID = 1L;
+
+		public ZoomOut(String event) {
+			super(event);
+		}
+
+		/**
+		 * @see org.apache.wicket.ajax.AjaxEventBehavior#onEvent(org.apache.wicket.ajax.AjaxRequestTarget)
+		 */
+		@Override
+		protected void onEvent(AjaxRequestTarget target) {
+			target.appendJavascript("Wicket.gmaps['" + getMapId() + "']"
+					+ ".zoomOut();");
+		}
 	}
 
+	public class ZoomIn extends AjaxEventBehavior {
+		/**
+		 * Default serialVersionUID.
+		 */
+		private static final long serialVersionUID = 1L;
+
+		public ZoomIn(String event) {
+			super(event);
+		}
+
+		/**
+		 * @see org.apache.wicket.ajax.AjaxEventBehavior#onEvent(org.apache.wicket.ajax.AjaxRequestTarget)
+		 */
+		@Override
+		protected void onEvent(AjaxRequestTarget target) {
+			target.appendJavascript("Wicket.gmaps['" + getMapId() + "']"
+					+ ".zoomIn();");
+		}
+	}
+	 
 	/**
 	 * Binds an 'openInfoWindow' call on this map, to the given event of the given component. <a
 	 * href="http://www.google.com/apis/maps/documentation/reference.html#GMap2">GMap2</a>
@@ -382,30 +396,6 @@ public class GMap2Panel extends Panel
 			protected void onEvent(AjaxRequestTarget target)
 			{
 				openInfoWindow(panel, point, target);
-			}
-		};
-	}
-
-	/**
-	 * Binds a 'zoomIn()' call on this map, to the 'onclick' event of the given
-	 * Component. <a
-	 * href="http://www.google.com/apis/maps/documentation/reference.html#GMap2">GMap2</a>
-	 * 
-	 * @param component
-	 */
-	public IBehavior createZoomInBehavior(final String event)
-	{
-		return new AjaxEventBehavior(event)
-		{
-			private static final long serialVersionUID = 1L;
-
-			/**
-			 * @see org.apache.wicket.ajax.AjaxEventBehavior#onEvent(org.apache.wicket.ajax.AjaxRequestTarget)
-			 */
-			@Override
-			protected void onEvent(AjaxRequestTarget target)
-			{
-				target.appendJavascript("Wicket.gmaps['" + getMapId() + "']" + ".zoomIn();");
 			}
 		};
 	}
