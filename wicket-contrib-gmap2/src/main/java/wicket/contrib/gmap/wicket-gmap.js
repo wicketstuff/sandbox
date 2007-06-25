@@ -74,6 +74,14 @@ function addGMap(id, lat, lng, zoom, moveendCallBack, clickCallBack) {
 	}
 }
 
+function setZoom(id, level) {
+	Wicket.gmaps[id].setZoom(level);
+}
+
+function setCenter(id, center) {
+	Wicket.gmaps[id].setCenter(eval(center));
+}
+
 function addControl(id, controlId, control) {
 	Wicket.gmaps[id][controlId] = eval(control);
 	Wicket.gmaps[id].addControl(Wicket.gmaps[id][controlId]);
