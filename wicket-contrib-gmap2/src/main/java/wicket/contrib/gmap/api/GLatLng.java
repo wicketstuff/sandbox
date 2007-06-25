@@ -15,7 +15,7 @@
  */
 package wicket.contrib.gmap.api;
 
-import java.io.Serializable;
+import java.util.StringTokenizer;
 
 /**
  * Represents an Google Maps API's GLatLng. <a
@@ -80,11 +80,14 @@ public class GLatLng implements GMapApi
 		return "new GLatLng(" + lat + ", " + lng + ", " + unbounded + ")";
 	}
 
+	public String getIdentifier() {
+		return "" + System.identityHashCode(this);
+	}
+	
 	@Override
 	public int hashCode()
 	{
-		return new Double(lat).hashCode() ^ new Double(lng).hashCode()
-				^ new Boolean(unbounded).hashCode();
+		return getIdentifier().hashCode();
 	}
 
 	@Override
@@ -92,9 +95,29 @@ public class GLatLng implements GMapApi
 	{
 		if (obj instanceof GLatLng)
 		{
-			GLatLng t = (GLatLng)obj;
-			return t.lat == lat && t.lng == lng && t.unbounded == unbounded;
+			GLatLng gLatLng = (GLatLng)obj;
+			return gLatLng.getIdentifier().equals(getIdentifier());
 		}
 		return false;
+	}
+	
+	public static GLatLng fromString(String value)
+	{
+		StringTokenizer tokenizer;
+		try
+		{
+			tokenizer = new StringTokenizer(value, "(, )");
+		}
+		catch (NullPointerException e)
+		{
+			return null;
+		}
+		if (tokenizer.countTokens() != 2)
+		{
+			return null;
+		}
+		float lat = Float.valueOf(tokenizer.nextToken());
+		float lng = Float.valueOf(tokenizer.nextToken());
+		return new GLatLng(lat, lng);
 	}
 }

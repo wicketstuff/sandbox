@@ -23,6 +23,10 @@ package wicket.contrib.gmap.api;
 public enum GControl implements GMapApi {
 	GSmallMapControl, GLargeMapControl, GSmallZoomControl, GScaleControl, GMapTypeControl;
 
+	public String getIdentifier() {
+		return name();
+	}	
+	
 	public String getJSConstructor()
 	{
 		return "new " + this.toString() + "()";

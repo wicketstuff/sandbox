@@ -75,25 +75,6 @@ public class GMarker extends GOverlay
 		return options.toString();
 	}
 
-	@Override
-	public boolean equals(Object obj)
-	{
-		if (obj instanceof GMarker)
-		{
-			GMarker t = (GMarker)obj;
-			return t.gLatLng.equals(gLatLng)
-					&& (t.title == null && title == null || t.title != null
-							&& t.title.equals(title));
-		}
-		return false;
-	}
-
-	@Override
-	public int hashCode()
-	{
-		return gLatLng.hashCode() ^ (title != null ? title.hashCode() : 1337);
-	}
-
 	/**
 	 * Override this to be called when a marker is clicked on.
 	 * 
