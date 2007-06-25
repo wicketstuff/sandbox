@@ -410,33 +410,33 @@ public class GMap2Panel extends Panel
 		};
 	}
 
-	/**
-	 * Binds a 'panDirection(dx, dy)' call on this map, to the event of the
-	 * given component. <a
-	 * href="http://www.google.com/apis/maps/documentation/reference.html#GMap2">GMap2</a>
-	 * 
-	 * @param comp
-	 * @param dx
-	 * @param dy
-	 * @param event
-	 */
-	public IBehavior createPanDirectionBehaviour(final int dx, final int dy, final String event)
-	{
-		return new AjaxEventBehavior(event)
-		{
-			private static final long serialVersionUID = 1L;
+	public class PanDirection extends AjaxEventBehavior {
+		/**
+		 * Default serialVersionUID.
+		 */
+		private static final long serialVersionUID = 1L;
 
-			/**
-			 * @see org.apache.wicket.ajax.AjaxEventBehavior#onEvent(org.apache.wicket.ajax.AjaxRequestTarget)
-			 */
-			@Override
-			protected void onEvent(AjaxRequestTarget target)
-			{
-				target.appendJavascript("Wicket.gmaps['" + getMapId() + "']" + ".panDirection("
-						+ dx + "," + dy + ");");
-			}
-		};
+		private int dx;
+
+		private int dy;
+
+		public PanDirection(String event, final int dx, final int dy) {
+			super(event);
+
+			this.dx = dx;
+			this.dy = dy;
+		}
+
+		/**
+		 * @see org.apache.wicket.ajax.AjaxEventBehavior#onEvent(org.apache.wicket.ajax.AjaxRequestTarget)
+		 */
+		@Override
+		protected void onEvent(AjaxRequestTarget target) {
+			target.appendJavascript("Wicket.gmaps['" + getMapId() + "']"
+					+ ".panDirection(" + dx + "," + dy + ");");
+		}
 	}
+		 
 
 	public int getWidth()
 	{
