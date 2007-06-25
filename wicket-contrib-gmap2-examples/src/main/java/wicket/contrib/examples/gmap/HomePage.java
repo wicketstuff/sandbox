@@ -103,39 +103,39 @@ public class HomePage extends WicketExamplePage
 		center = new Label("center", new PropertyModel(bottomPanel, "center"));
 		center.setOutputMarkupId(true);
 		add(center);
-
-		final Label n = new Label("n", "N");
-		n.add(bottomPanel.createPanDirectionBehaviour(0, 1, "onclick"));
-		add(n);
-
-		final Label ne = new Label("ne", "NE");
-		ne.add(bottomPanel.createPanDirectionBehaviour(-1, 1, "onclick"));
-		add(ne);
-
-		final Label e = new Label("e", "E");
-		e.add(bottomPanel.createPanDirectionBehaviour(-1, 0, "onclick"));
-		add(e);
-
-		final Label se = new Label("se", "SE");
-		se.add(bottomPanel.createPanDirectionBehaviour(-1, -1, "onclick"));
-		add(se);
-
-		final Label s = new Label("s", "S");
-		s.add(bottomPanel.createPanDirectionBehaviour(0, -1, "onclick"));
-		add(s);
-
-		final Label sw = new Label("sw", "SW");
-		sw.add(bottomPanel.createPanDirectionBehaviour(1, -1, "onclick"));
-		add(sw);
-
-		final Label w = new Label("w", "W");
-		w.add(bottomPanel.createPanDirectionBehaviour(1, 0, "onclick"));
-		add(w);
-
-		final Label nw = new Label("nw", "NW");
-		nw.add(bottomPanel.createPanDirectionBehaviour(1, 1, "onclick"));
-		add(nw);
-
+ 		 
+ 		final Label n = new Label("n", "N");
+ 		n.add(bottomPanel.new PanDirection("onclick", 0, 1));
+ 		add(n);
+ 
+ 		final Label ne = new Label("ne", "NE");
+		ne.add(bottomPanel.new PanDirection("onclick", -1, 1));
+ 		add(ne);
+ 
+ 		final Label e = new Label("e", "E");
+		e.add(bottomPanel.new PanDirection("onclick", -1, 0));
+ 		add(e);
+ 
+ 		final Label se = new Label("se", "SE");
+		se.add(bottomPanel.new PanDirection("onclick", -1, -1));
+ 		add(se);
+ 
+ 		final Label s = new Label("s", "S");
+		s.add(bottomPanel.new PanDirection("onclick", 0, -1));
+ 		add(s);
+ 
+ 		final Label sw = new Label("sw", "SW");
+		sw.add(bottomPanel.new PanDirection("onclick", 1, -1));
+ 		add(sw);
+ 
+ 		final Label w = new Label("w", "W");
+		w.add(bottomPanel.new PanDirection("onclick", 1, 0));
+ 		add(w);
+ 
+ 		final Label nw = new Label("nw", "NW");
+		nw.add(bottomPanel.new PanDirection("onclick", 1, 1));
+ 		add(nw);
+ 
 		final Label infoWindow = new Label("infoWindow", "openInfoWindow");
 		infoWindow.add(bottomPanel.createOpenInfoWindowBehavior(new GLatLng(44.0f, 44.0f),
 				new HelloPanel(), "onclick"));
