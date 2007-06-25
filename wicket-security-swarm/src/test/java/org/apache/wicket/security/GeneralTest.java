@@ -16,6 +16,11 @@
  */
 package org.apache.wicket.security;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.MalformedURLException;
 
 import junit.framework.TestCase;
@@ -140,5 +145,34 @@ public class GeneralTest extends TestCase
 		mock.assertVisible("readonly");
 		assertTrue(mock.getTagByWicketId("readonly").hasAttribute("disabled"));
 		mock.assertVisible("readonly");
+	}
+	/**
+	 * Tests the serialization of the wicket session.
+	 *
+	 */
+	public void testSerialization()
+	{
+		testMultiLogin();
+		WaspSession session=(WaspSession)mock.getWicketSession();
+		assertNotNull(session);
+		assertFalse(session.isTemporary());
+		assertFalse(session.isSessionInvalidated());
+		try
+		{
+			ByteArrayOutputStream bytes = new ByteArrayOutputStream(512*1024);
+			ObjectOutputStream stream=new ObjectOutputStream(bytes);
+			stream.writeObject(session);
+			assertNotNull(new ObjectInputStream(new ByteArrayInputStream(bytes.toByteArray())).readObject());
+		}
+		catch (IOException e)
+		{
+			log.error(e.getMessage(), e);
+			fail(e.getMessage());
+		}
+		catch (ClassNotFoundException e)
+		{
+			log.error(e.getMessage(), e);
+			fail(e.getMessage());
+		}
 	}
 }

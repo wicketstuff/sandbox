@@ -28,6 +28,7 @@ import org.apache.wicket.security.hive.authentication.Subject;
  */
 public final class EverybodyPrincipal implements Principal
 {
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 *  creates a new Principal named "everybody";

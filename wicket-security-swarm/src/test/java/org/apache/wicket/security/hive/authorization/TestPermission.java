@@ -20,6 +20,7 @@ import org.apache.wicket.security.hive.authorization.Permission;
 
 public class TestPermission extends Permission
 {
+	private static final long serialVersionUID = 1L;
 	private String actions = "";
 
 	public TestPermission(String name)

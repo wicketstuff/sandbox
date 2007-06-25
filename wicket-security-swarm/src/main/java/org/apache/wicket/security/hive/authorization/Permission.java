@@ -16,6 +16,8 @@
  */
 package org.apache.wicket.security.hive.authorization;
 
+import java.io.Serializable;
+
 import org.apache.wicket.Application;
 import org.apache.wicket.security.WaspApplication;
 import org.apache.wicket.security.actions.ActionFactory;
@@ -54,7 +56,7 @@ import org.apache.wicket.security.swarm.actions.SwarmActionFactory;
  * @author marrink
  *
  */
-public abstract class Permission
+public abstract class Permission implements Serializable
 {
 	private final String name;
 	
