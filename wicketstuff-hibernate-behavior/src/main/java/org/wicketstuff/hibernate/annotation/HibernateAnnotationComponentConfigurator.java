@@ -106,7 +106,6 @@ public class HibernateAnnotationComponentConfigurator extends AbstractBehavior i
 		}
 		FormComponent formComponent = (FormComponent)component;
 		PropertyModel propertyModel = (PropertyModel) component.getModel();
-		
 		for (Iterator iter = getAnnotations(propertyModel).iterator(); iter.hasNext();) {
 			Annotation annotation = (Annotation) iter.next();
 			Class<? extends Annotation> annotationType = annotation.annotationType();
@@ -118,15 +117,12 @@ public class HibernateAnnotationComponentConfigurator extends AbstractBehavior i
 	}
 
 	private Collection getAnnotations(PropertyModel propertyModel) {
-		String fieldName = propertyModel.getPropertyExpression();
-		Class type = propertyModel.getTarget().getClass();
-		try {
-			Field field = type.getDeclaredField(fieldName);
-			return Arrays.asList(field.getAnnotations());
-		} catch (Exception e) {
-			LOGGER.warn("Unable to find annotations for PropertyModel: " + propertyModel, e);
-		} 
-		return Collections.EMPTY_LIST;
+		Field field = propertyModel.getPropertyField();
+		if (field == null) {
+			LOGGER.warn("Unable to find annotations for PropertyModel: " + propertyModel);
+			return Collections.EMPTY_LIST;
+		}
+		return Arrays.asList(field.getAnnotations());
 	}
 
 	private boolean isApplicableFor(Component component) {

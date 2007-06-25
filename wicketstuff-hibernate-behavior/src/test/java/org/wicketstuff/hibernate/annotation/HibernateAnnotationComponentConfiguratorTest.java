@@ -33,13 +33,13 @@ public class HibernateAnnotationComponentConfiguratorTest extends TestCase {
 		assertFalse(textField.isRequired());
 	}
 
-	public void testOgnlPropertyPathDoesNotCauseError() {
+	public void testAnnotationsFromOgnlPropertyPathCanBeResolved() {
 		HibernateAnnotationComponentConfigurator configurator = new HibernateAnnotationComponentConfigurator();
 
 		TextField textField = new TextField("id", new PropertyModel(new MyObject(), "innerObject.name"));
 		configurator.configure(textField);
 
-		assertFalse(textField.isRequired());
+		assertTrue(textField.isRequired());
 	}
 
 	public void testComponentListenerConfiguresComponent() {
@@ -58,5 +58,12 @@ public class HibernateAnnotationComponentConfiguratorTest extends TestCase {
 		private String name;
 		
 		private String description;
+		
+		private InnerObject innerObject = new InnerObject();
+	}
+	
+	public class InnerObject {
+		@NotNull
+		private String name;
 	}
 }
