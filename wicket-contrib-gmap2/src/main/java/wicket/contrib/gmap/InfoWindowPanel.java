@@ -18,6 +18,8 @@ package wicket.contrib.gmap;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 
+import wicket.contrib.gmap.api.GLatLng;
+
 /**
  * Panel to be used as a InfoWindow of a GMap.
  */
@@ -29,14 +31,24 @@ public class InfoWindowPanel extends Panel
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public InfoWindowPanel()
+	private GLatLng gLatLng;
+
+	public InfoWindowPanel(GLatLng gLatLng)
 	{
 		super("infoWindow");
+		this.gLatLng = gLatLng;
+		setOutputMarkupId(true);
 	}
 
-	public InfoWindowPanel(IModel model)
+	public InfoWindowPanel(GLatLng gLatLng, IModel model)
 	{
 		super("infoWindow", model);
+		this.gLatLng = gLatLng;
+		setOutputMarkupId(true);
 	}
 
+	public GLatLng getGLatLng()
+	{
+		return gLatLng;
+	}
 }
