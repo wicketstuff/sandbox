@@ -1,6 +1,5 @@
 package wicket.contrib.examples.gmap;
 
-import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
@@ -13,6 +12,7 @@ import wicket.contrib.gmap.InfoWindowPanel;
 import wicket.contrib.gmap.api.GControl;
 import wicket.contrib.gmap.api.GLatLng;
 import wicket.contrib.gmap.api.GMarker;
+import wicket.contrib.gmap.api.GOverlay;
 
 /**
  * Example HomePage for the wicket-contrib-gmap2 project
@@ -53,25 +53,22 @@ public class HomePage extends WicketExamplePage
 		topPanel.addControl(GControl.GMapTypeControl);
 		add(topPanel);
 
-		zoomLabel = new Label("glabel", new PropertyModel(topPanel, "zoomLevel"));
+		zoomLabel = new Label("zoomLabel", new PropertyModel(topPanel, "zoomLevel"));
+		zoomLabel.add(topPanel.new SetZoom("onclick", 5));
 		zoomLabel.setOutputMarkupId(true);
 		add(zoomLabel);
 
 		markerLabel = new Label("markerLabel", new Model(null));
-		markerLabel.add(new AjaxEventBehavior("onclick")
+		markerLabel.add(topPanel.new AddOverlay("onclick")
 		{
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			protected void onEvent(AjaxRequestTarget target)
-			{
+			protected GOverlay getOverlay() {
 				GLatLng point = ((GMarker)markerLabel.getModelObject()).getLagLng();
 
 				GMarker marker = new GMarker(new GLatLng(point.getLat()
 						* (0.9995 + Math.random() / 1000), point.getLng()
 						* (0.9995 + Math.random() / 1000)));
 
-				topPanel.addOverlay(marker);
+				return marker;
 			}
 		});
 		add(markerLabel);
@@ -106,6 +103,11 @@ public class HomePage extends WicketExamplePage
 		
 
 		center = new Label("center", new PropertyModel(bottomPanel, "center"));
+		center.add(bottomPanel.new SetCenter("onclick") {
+			protected GLatLng getCenter() {
+				return new GLatLng(45.30580139160156, 44.483642578125, false);
+			}
+		});
 		center.setOutputMarkupId(true);
 		add(center);
 
