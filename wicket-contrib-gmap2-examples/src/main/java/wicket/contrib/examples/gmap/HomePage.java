@@ -22,9 +22,9 @@ public class HomePage extends WicketExamplePage
 
 	private static final long serialVersionUID = 1L;
 
-	private Label markerLabel;
-	private Label zoomLabel;
-	private Label center;
+	private final Label markerLabel;
+	private final Label zoomLabel;
+	private final Label center;
 
 	public HomePage()
 	{
@@ -32,7 +32,6 @@ public class HomePage extends WicketExamplePage
 		final GMap2Panel topPanel = new GMap2Panel("topPanel",
 				LOCALHOST_8080_WICKET_CONTRIB_GMAP2_EXAMPLES_KEY)
 		{
-
 			@Override
 			public void onMoveEnd(AjaxRequestTarget target)
 			{
@@ -47,9 +46,10 @@ public class HomePage extends WicketExamplePage
 				markerLabel.getModel().setObject(marker);
 				target.addComponent(markerLabel);
 			}
-			
+
 			@Override
-			public void onClick(GMarker marker, AjaxRequestTarget target) {
+			public void onClick(GMarker marker, AjaxRequestTarget target)
+			{
 				removeOverlay(marker);
 			}
 		};
@@ -66,7 +66,8 @@ public class HomePage extends WicketExamplePage
 		markerLabel = new Label("markerLabel", new Model(null));
 		markerLabel.add(topPanel.new AddOverlay("onclick")
 		{
-			protected GOverlay getOverlay() {
+			protected GOverlay getOverlay()
+			{
 				GLatLng point = ((GMarker)markerLabel.getModelObject()).getLagLng();
 
 				GMarker marker = new GMarker(new GLatLng(point.getLat()
@@ -79,7 +80,9 @@ public class HomePage extends WicketExamplePage
 		add(markerLabel);
 
 		final Label zoomIn = new Label("zoomInLabel", "ZoomIn");
-		zoomIn.add(topPanel.new ZoomIn("onclick"));
+		zoomIn.add(topPanel.new ZoomIn("onclick"){
+			
+		});
 		add(zoomIn);
 
 		final Label zoomOut = new Label("zoomOutLabel", "ZoomOut");
@@ -105,11 +108,13 @@ public class HomePage extends WicketExamplePage
 		bottomPanel.addControl(GControl.GSmallMapControl);
 		bottomPanel.openInfoWindow(new HelloPanel(new GLatLng(45.0, 45.0)));
 		add(bottomPanel);
-		
+
 
 		center = new Label("center", new PropertyModel(bottomPanel, "center"));
-		center.add(bottomPanel.new SetCenter("onclick") {
-			protected GLatLng getCenter() {
+		center.add(bottomPanel.new SetCenter("onclick")
+		{
+			protected GLatLng getCenter()
+			{
 				return new GLatLng(45.30580139160156, 44.483642578125, false);
 			}
 		});
@@ -149,15 +154,19 @@ public class HomePage extends WicketExamplePage
 		add(nw);
 
 		final Label infoWindow = new Label("infoWindow", "openInfoWindow");
-		infoWindow.add(bottomPanel.new OpenInfoWindow("onclick"){
-			protected InfoWindowPanel getInfoWindow(){
+		infoWindow.add(bottomPanel.new OpenInfoWindow("onclick")
+		{
+			protected InfoWindowPanel getInfoWindow()
+			{
 				return new HelloPanel(new GLatLng(44.0, 44.0));
 			}
 		});
 		add(infoWindow);
-		add(new Link("reload") {
+		add(new Link("reload")
+		{
 			@Override
-			public void onClick() {
+			public void onClick()
+			{
 			}
 		});
 	}
