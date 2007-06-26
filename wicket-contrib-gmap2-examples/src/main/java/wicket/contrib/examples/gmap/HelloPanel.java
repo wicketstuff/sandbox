@@ -1,7 +1,6 @@
 package wicket.contrib.examples.gmap;
 
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.model.Model;
 
 import wicket.contrib.gmap.GInfoWindow;
 import wicket.contrib.gmap.api.GLatLng;
@@ -18,23 +17,11 @@ public class HelloPanel extends GInfoWindow
 	private static final long serialVersionUID = 1L;
 
 	private static int i;
-
+	
 	public HelloPanel(GLatLng gLatLng)
 	{
 		super(gLatLng);
-		add(new Label("label", new Model()
-		{
-
-			/**
-			 * Default serialVersionUID.
-			 */
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public Object getObject()
-			{
-				return Integer.toString(i++);
-			}
-		}));
+		
+		add(new Label("label", "" + (i++)));
 	}
 }
