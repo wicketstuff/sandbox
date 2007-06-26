@@ -20,10 +20,10 @@ package wicket.contrib.gmap.api;
  * href="http://www.google.com/apis/maps/documentation/reference.html#GControl">GControl</a>
  * 
  */
-public enum GControl implements GMapApi {
+public enum GControl implements Identifiable {
 	GSmallMapControl, GLargeMapControl, GSmallZoomControl, GScaleControl, GMapTypeControl;
 
-	public String getIdentifier() {
+	public String getJSIdentifier() {
 		return name();
 	}	
 	

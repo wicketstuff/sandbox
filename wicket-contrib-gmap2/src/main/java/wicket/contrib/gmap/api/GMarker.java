@@ -31,12 +31,12 @@ public class GMarker extends GOverlay
 	private String title;
 
 	/**
-	 * @param point
+	 * @param gLatLng
 	 *            the point on the map where this marker will be anchored
 	 */
-	public GMarker(GLatLng point)
+	public GMarker(GLatLng gLatLng)
 	{
-		this(point, null);
+		this(gLatLng, null);
 	}
 
 	public GMarker(GLatLng gLatLng, String title)
@@ -51,14 +51,14 @@ public class GMarker extends GOverlay
 		this.title = title;
 	}
 
-	public String getJSConstructor()
-	{
-		return "new GMarker(" + gLatLng.getJSConstructor() + ",{" + getOptions() + "})";
-	}
-
 	public GLatLng getLagLng()
 	{
 		return gLatLng;
+	}
+
+	public String getJSConstructor()
+	{
+		return "new GMarker(" + gLatLng.getJSConstructor() + ",{" + getOptions() + "})";
 	}
 
 	private String getOptions()

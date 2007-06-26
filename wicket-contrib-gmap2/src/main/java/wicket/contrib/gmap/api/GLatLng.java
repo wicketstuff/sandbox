@@ -80,14 +80,11 @@ public class GLatLng implements GMapApi
 		return "new GLatLng(" + lat + ", " + lng + ", " + unbounded + ")";
 	}
 
-	public String getIdentifier() {
-		return "" + System.identityHashCode(this);
-	}
-	
 	@Override
 	public int hashCode()
 	{
-		return getIdentifier().hashCode();
+		return new Double(lat).hashCode() ^ new Double(lng).hashCode()
+				^ new Boolean(unbounded).hashCode();
 	}
 
 	@Override
@@ -95,8 +92,8 @@ public class GLatLng implements GMapApi
 	{
 		if (obj instanceof GLatLng)
 		{
-			GLatLng gLatLng = (GLatLng)obj;
-			return gLatLng.getIdentifier().equals(getIdentifier());
+			GLatLng t = (GLatLng)obj;
+			return t.lat == lat && t.lng == lng && t.unbounded == unbounded;
 		}
 		return false;
 	}
