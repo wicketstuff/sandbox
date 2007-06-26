@@ -7,8 +7,8 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
 import wicket.contrib.examples.WicketExamplePage;
-import wicket.contrib.gmap.GMap2Panel;
-import wicket.contrib.gmap.InfoWindowPanel;
+import wicket.contrib.gmap.GMap2;
+import wicket.contrib.gmap.InfoWindow;
 import wicket.contrib.gmap.api.GControl;
 import wicket.contrib.gmap.api.GLatLng;
 import wicket.contrib.gmap.api.GMarker;
@@ -29,7 +29,7 @@ public class HomePage extends WicketExamplePage
 	public HomePage()
 	{
 
-		final GMap2Panel topPanel = new GMap2Panel("topPanel",
+		final GMap2 topPanel = new GMap2("topPanel",
 				LOCALHOST_8080_WICKET_CONTRIB_GMAP2_EXAMPLES_KEY)
 		{
 			@Override
@@ -89,7 +89,7 @@ public class HomePage extends WicketExamplePage
 		zoomOut.add(topPanel.new ZoomOut("onclick"));
 		add(zoomOut);
 
-		final GMap2Panel bottomPanel = new GMap2Panel("bottomPanel",
+		final GMap2 bottomPanel = new GMap2("bottomPanel",
 				LOCALHOST_8080_WICKET_CONTRIB_GMAP2_EXAMPLES_KEY)
 		{
 
@@ -156,7 +156,7 @@ public class HomePage extends WicketExamplePage
 		final Label infoWindow = new Label("infoWindow", "openInfoWindow");
 		infoWindow.add(bottomPanel.new OpenInfoWindow("onclick")
 		{
-			protected InfoWindowPanel getInfoWindow()
+			protected InfoWindow getInfoWindow()
 			{
 				return new HelloPanel(new GLatLng(44.0, 44.0));
 			}
