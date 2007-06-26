@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
-import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.Request;
 import org.apache.wicket.RequestCycle;
@@ -31,7 +30,6 @@ import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.behavior.HeaderContributor;
-import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.IHeaderContributor;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -39,7 +37,6 @@ import org.apache.wicket.markup.html.WicketEventReference;
 import org.apache.wicket.markup.html.panel.EmptyPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.html.resources.JavascriptResourceReference;
-import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.util.convert.converters.IntegerConverter;
 
 import wicket.contrib.gmap.api.GControl;
@@ -83,8 +80,6 @@ public class GMap2 extends Panel
 	private final MoveEndBehaviour moveEndBehaviour;
 	private final ClickBehaviour clickBehaviour;
 
-	private String style;
-
 	/**
 	 * Construct.
 	 * 
@@ -127,24 +122,7 @@ public class GMap2 extends Panel
 
 		mapContainer = new WebMarkupContainer("map");
 		mapContainer.setOutputMarkupId(true);
-		mapContainer.add(new AttributeModifier("style", true, new AbstractReadOnlyModel()
-		{
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public Object getObject()
-			{
-				return style;
-			}
-		}));
 		add(mapContainer);
-	}
-
-	@Override
-	protected void onComponentTag(ComponentTag tag)
-	{
-		super.onComponentTag(tag);
-		this.style = tag.getAttributes().getString("style", "width: 500px; height: 300px;");
 	}
 
 	private HeaderContributor getHeaderContributor(final String gMapKey)
