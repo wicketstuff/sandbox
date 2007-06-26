@@ -3,13 +3,13 @@ package wicket.contrib.examples.gmap;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.Model;
 
-import wicket.contrib.gmap.InfoWindowPanel;
+import wicket.contrib.gmap.InfoWindow;
 import wicket.contrib.gmap.api.GLatLng;
 
 /**
  * Panel used as an InfoWindow in the GMap.
  */
-public class HelloPanel extends InfoWindowPanel
+public class HelloPanel extends InfoWindow
 {
 
 	/**
