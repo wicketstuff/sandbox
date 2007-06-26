@@ -88,7 +88,6 @@ public class GMap2Panel extends Panel
 	 * @param id
 	 * @param gMapKey
 	 *            Google gmap API KEY
-	 * @param model
 	 */
 	public GMap2Panel(final String id, final String gMapKey)
 	{
@@ -106,9 +105,9 @@ public class GMap2Panel extends Panel
 	public GMap2Panel(final String id, final String gMapKey, List<GOverlay> overlays)
 	{
 		super(id);
-		
+
 		this.overlays = overlays;
-		
+
 		moveEndBehaviour = new MoveEndBehaviour();
 		clickBehaviour = new ClickBehaviour();
 
@@ -185,10 +184,11 @@ public class GMap2Panel extends Panel
 			js += getJSOverlayAdded(overlay);
 		}
 
-		if (infoWindow instanceof InfoWindowPanel) {
+		if (infoWindow instanceof InfoWindowPanel)
+		{
 			js += getJSInfoWindowOpened(((InfoWindowPanel)infoWindow));
 		}
-		
+
 		return js;
 	}
 
@@ -233,7 +233,7 @@ public class GMap2Panel extends Panel
 	public void removeOverlay(GOverlay overlay)
 	{
 		overlays.remove(overlay);
-		
+
 		if (RequestCycle.get().getRequestTarget() instanceof AjaxRequestTarget)
 		{
 			((AjaxRequestTarget)RequestCycle.get().getRequestTarget())
@@ -241,10 +241,11 @@ public class GMap2Panel extends Panel
 		}
 	}
 
-	public List<GOverlay> getOverlays() {
+	public List<GOverlay> getOverlays()
+	{
 		return Collections.unmodifiableList(overlays);
 	}
-	
+
 	public Set<GControl> getControls()
 	{
 		return Collections.unmodifiableSet(controls);
@@ -262,9 +263,10 @@ public class GMap2Panel extends Panel
 
 	public void setZoomLevel(int parameter)
 	{
-		if (this.zoomLevel != parameter) {
+		if (this.zoomLevel != parameter)
+		{
 			this.zoomLevel = parameter;
-			
+
 			if (RequestCycle.get().getRequestTarget() instanceof AjaxRequestTarget)
 			{
 				((AjaxRequestTarget)RequestCycle.get().getRequestTarget())
@@ -275,9 +277,10 @@ public class GMap2Panel extends Panel
 
 	public void setCenter(GLatLng center)
 	{
-		if (!this.center.equals(center)) {
+		if (!this.center.equals(center))
+		{
 			this.center = center;
-			
+
 			if (RequestCycle.get().getRequestTarget() instanceof AjaxRequestTarget)
 			{
 				((AjaxRequestTarget)RequestCycle.get().getRequestTarget())
@@ -296,19 +299,23 @@ public class GMap2Panel extends Panel
 		{
 			((AjaxRequestTarget)RequestCycle.get().getRequestTarget())
 					.appendJavascript(getJSInfoWindowOpened(panel));
-			((AjaxRequestTarget)RequestCycle.get().getRequestTarget())
-					.addComponent(infoWindow.getParent());
+			((AjaxRequestTarget)RequestCycle.get().getRequestTarget()).addComponent(infoWindow
+					.getParent());
 		}
 	}
 
-	public InfoWindowPanel getInfoWindow() {
-		if (infoWindow instanceof InfoWindowPanel) {
+	public InfoWindowPanel getInfoWindow()
+	{
+		if (infoWindow instanceof InfoWindowPanel)
+		{
 			return (InfoWindowPanel)infoWindow;
-		} else {
+		}
+		else
+		{
 			return null;
 		}
 	}
-	
+
 	private String getJSZoomSet(int zoom)
 	{
 		return "setZoom('" + getMapId() + "', " + zoom + ");\n";
@@ -361,7 +368,7 @@ public class GMap2Panel extends Panel
 	/**
 	 * Notify of a click.
 	 * 
-	 * @param gLatLng
+	 * @param target
 	 * @param target
 	 */
 	public void onClick(GMarker marker, AjaxRequestTarget target)
@@ -522,7 +529,7 @@ public class GMap2Panel extends Panel
 		{
 			addOverlay(getOverlay());
 		}
-		
+
 		protected abstract GOverlay getOverlay();
 	}
 
@@ -546,7 +553,7 @@ public class GMap2Panel extends Panel
 		{
 			setCenter(getCenter());
 		}
-		
+
 		protected abstract GLatLng getCenter();
 	}
 
@@ -569,7 +576,7 @@ public class GMap2Panel extends Panel
 	{
 		return "px";
 	}
-	
+
 	public class MoveEndBehaviour extends AbstractDefaultAjaxBehavior
 	{
 
@@ -583,15 +590,16 @@ public class GMap2Panel extends Panel
 		{
 			Request request = RequestCycle.get().getRequest();
 
-			// Attention: don't use setters as this will result in an endless loop
+			// Attention: don't use setters as this will result in an endless
+			// loop
 			center = GLatLng.fromString(request.getParameter("center"));
 			zoomLevel = (Integer)IntegerConverter.INSTANCE.convertToObject(request
 					.getParameter("zoom"), Locale.getDefault());
-			
+
 			onMoveEnd(target);
 		}
 	}
-	
+
 	public class ClickBehaviour extends AbstractDefaultAjaxBehavior
 	{
 		private static final long serialVersionUID = 1L;
@@ -600,7 +608,7 @@ public class GMap2Panel extends Panel
 		protected void respond(AjaxRequestTarget target)
 		{
 			Request request = RequestCycle.get().getRequest();
-			
+
 			String markerString = request.getParameter("marker");
 			if ("".equals(markerString))
 			{
@@ -609,14 +617,16 @@ public class GMap2Panel extends Panel
 			}
 			else
 			{
-				for (GOverlay overlay : overlays) {
-					if (overlay.getIdentifier().equals(markerString)) {
+				for (GOverlay overlay : overlays)
+				{
+					if (overlay.getIdentifier().equals(markerString))
+					{
 						((GMarker)overlay).onClick(target);
 						onClick((GMarker)overlay, target);
 						break;
 					}
 				}
-			}		
+			}
 		}
 	}
 }
