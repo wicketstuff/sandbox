@@ -62,10 +62,10 @@ function addGMap(id, lat, lng, zoom, moveendCallBack, clickCallBack) {
 				function(){alert("ooops!")}};
 		GEvent.addListener( map , 'moveend', moveendCall );
 						
-		var clickCall = function (marker, point) {wicketAjaxGet( 
+		var clickCall = function (marker, gLatLng) {wicketAjaxGet( 
 				clickCallBack 
 				+ '&marker=' + (marker == null ? "" : marker.overlayId)
-				+ '&point=' + point),
+				+ '&gLatLng=' + gLatLng),
 				function(){},
 				function(){alert("ooops on ClickDeff of!" + map)}};
 		GEvent.addListener( map , 'click', clickCall );
@@ -94,8 +94,8 @@ function removeControl(id, controlId) {
 	}
 }
 
-function addOverlay(id, overlayId, jsConstructor) {
-    Wicket.gmaps[id][overlayId] = eval(jsConstructor);
+function addOverlay(id, overlayId, overlay) {
+    Wicket.gmaps[id][overlayId] = eval(overlay);
     Wicket.gmaps[id][overlayId].overlayId = overlayId;
 	Wicket.gmaps[id].addOverlay(Wicket.gmaps[id][overlayId]);
 }
@@ -107,6 +107,6 @@ function removeOverlay(id, overlayId) {
 	}
 }
 
-function openInfoWindow(id, point, domId) {
-	Wicket.gmaps[id].openInfoWindow(eval(point), document.getElementById(domId));
+function openInfoWindow(id, gLatLng, domId) {
+	Wicket.gmaps[id].openInfoWindow(eval(gLatLng), document.getElementById(domId));
 }

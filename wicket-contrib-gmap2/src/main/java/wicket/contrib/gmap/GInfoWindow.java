@@ -21,9 +21,10 @@ import org.apache.wicket.model.IModel;
 import wicket.contrib.gmap.api.GLatLng;
 
 /**
- * Panel to be used as a InfoWindow of a GMap.
+ * Panel to be used as a InfoWindow of a GMap, see <a
+ * href="http://www.google.com/apis/maps/documentation/reference.html#GInfoWindow">InfoWindow</a>
  */
-public class InfoWindow extends Panel
+public class GInfoWindow extends Panel
 {
 
 	/**
@@ -33,14 +34,14 @@ public class InfoWindow extends Panel
 
 	private GLatLng gLatLng;
 
-	public InfoWindow(GLatLng gLatLng)
+	public GInfoWindow(GLatLng gLatLng)
 	{
 		super("window");
 		this.gLatLng = gLatLng;
 		setOutputMarkupId(true);
 	}
 
-	public InfoWindow(GLatLng gLatLng, IModel model)
+	public GInfoWindow(GLatLng gLatLng, IModel model)
 	{
 		super("window", model);
 		this.gLatLng = gLatLng;

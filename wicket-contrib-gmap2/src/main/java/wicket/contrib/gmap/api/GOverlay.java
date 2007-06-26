@@ -15,32 +15,13 @@
  */
 package wicket.contrib.gmap.api;
 
-
 /**
  * Represents an Google Maps API's GOverlay. <a
- * href="http://www.google.com/apis/maps/documentation/reference.html#GOverlay">GOverlay</a>
- * 
+ * href="http://www.google.com/apis/maps/documentation/reference.html#GOverlay">GOverlay</a>.
  */
-public abstract class GOverlay implements GMapApi
-{	
-	public String getIdentifier() {
+public abstract class GOverlay implements Identifiable
+{
+	public String getJSIdentifier() {
 		return "" + System.identityHashCode(this);
-	}
-	
-	@Override
-	public int hashCode()
-	{
-		return getIdentifier().hashCode();
-	}
-
-	@Override
-	public boolean equals(Object obj)
-	{
-		if (obj instanceof GOverlay)
-		{
-			GOverlay overlay = (GOverlay)obj;
-			return overlay.getIdentifier().equals(getIdentifier());
-		}
-		return false;
-	}
+	}	
 }

@@ -193,9 +193,9 @@ public class GMap2 extends Panel
 			js += getJSOverlayAdded(overlay);
 		}
 
-		if (infoWindow instanceof InfoWindow)
+		if (infoWindow instanceof GInfoWindow)
 		{
-			js += getJSInfoWindowOpened(((InfoWindow)infoWindow));
+			js += getJSInfoWindowOpened(((GInfoWindow)infoWindow));
 		}
 
 		return js;
@@ -241,7 +241,10 @@ public class GMap2 extends Panel
 
 	public void removeOverlay(GOverlay overlay)
 	{
-		overlays.remove(overlay);
+		for (int o = 0; o < overlays.size(); o++)
+		{
+			overlays.remove(overlay);
+		}
 
 		if (RequestCycle.get().getRequestTarget() instanceof AjaxRequestTarget)
 		{
@@ -298,7 +301,7 @@ public class GMap2 extends Panel
 		}
 	}
 
-	public void openInfoWindow(InfoWindow panel)
+	public void openInfoWindow(GInfoWindow panel)
 	{
 		// replace the panel held, by the invisible div element.
 		infoWindow.replaceWith(panel);
@@ -313,11 +316,11 @@ public class GMap2 extends Panel
 		}
 	}
 
-	public InfoWindow getInfoWindow()
+	public GInfoWindow getInfoWindow()
 	{
-		if (infoWindow instanceof InfoWindow)
+		if (infoWindow instanceof GInfoWindow)
 		{
-			return (InfoWindow)infoWindow;
+			return (GInfoWindow)infoWindow;
 		}
 		else
 		{
@@ -337,27 +340,27 @@ public class GMap2 extends Panel
 
 	private String getJSControlAdded(GControl control)
 	{
-		return "addControl('" + getMapId() + "', '" + control.getIdentifier() + "', '"
+		return "addControl('" + getMapId() + "', '" + control.getJSIdentifier() + "', '"
 				+ control.getJSConstructor() + "');\n";
 	}
 
 	private String getJSControlRemoved(GControl control)
 	{
-		return "removeControl('" + getMapId() + "', '" + control.getIdentifier() + "');\n";
+		return "removeControl('" + getMapId() + "', '" + control.getJSIdentifier() + "');\n";
 	}
 
 	private String getJSOverlayAdded(GOverlay overlay)
 	{
-		return "addOverlay('" + getMapId() + "', '" + overlay.getIdentifier() + "', '"
+		return "addOverlay('" + getMapId() + "', '" + overlay.getJSIdentifier() + "', '"
 				+ overlay.getJSConstructor() + "');\n";
 	}
 
 	private String getJSOverlayRemoved(GOverlay overlay)
 	{
-		return "removeOverlay('" + getMapId() + "', '" + overlay.getIdentifier() + "');\n";
+		return "removeOverlay('" + getMapId() + "', '" + overlay.getJSIdentifier() + "');\n";
 	}
 
-	private String getJSInfoWindowOpened(InfoWindow panel)
+	private String getJSInfoWindowOpened(GInfoWindow panel)
 	{
 		return "openInfoWindow('" + getMapId() + "'," + "'" + panel.getGLatLng().getJSConstructor()
 				+ "','" + panel.getMarkupId() + "')";
@@ -459,7 +462,7 @@ public class GMap2 extends Panel
 			openInfoWindow(getInfoWindow());
 		}
 
-		protected abstract InfoWindow getInfoWindow();
+		protected abstract GInfoWindow getInfoWindow();
 	}
 
 	public class PanDirection extends AjaxEventBehavior
@@ -580,7 +583,7 @@ public class GMap2 extends Panel
 			Request request = RequestCycle.get().getRequest();
 
 			// Attention: don't use setters as this will result in an endless
-			// loop
+			// AJAX request loop
 			center = GLatLng.fromString(request.getParameter("center"));
 			zoomLevel = (Integer)IntegerConverter.INSTANCE.convertToObject(request
 					.getParameter("zoom"), Locale.getDefault());
@@ -601,14 +604,14 @@ public class GMap2 extends Panel
 			String markerString = request.getParameter("marker");
 			if ("".equals(markerString))
 			{
-				GLatLng gLatLng = GLatLng.fromString(request.getParameter("point"));
+				GLatLng gLatLng = GLatLng.fromString(request.getParameter("gLatLng"));
 				onClick(gLatLng, target);
 			}
 			else
 			{
 				for (GOverlay overlay : overlays)
 				{
-					if (overlay.getIdentifier().equals(markerString))
+					if (overlay.getJSIdentifier().equals(markerString))
 					{
 						((GMarker)overlay).onClick(target);
 						onClick((GMarker)overlay, target);
