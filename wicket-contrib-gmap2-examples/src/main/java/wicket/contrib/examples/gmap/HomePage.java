@@ -8,7 +8,7 @@ import org.apache.wicket.model.PropertyModel;
 
 import wicket.contrib.examples.WicketExamplePage;
 import wicket.contrib.gmap.GMap2;
-import wicket.contrib.gmap.InfoWindow;
+import wicket.contrib.gmap.GInfoWindow;
 import wicket.contrib.gmap.api.GControl;
 import wicket.contrib.gmap.api.GLatLng;
 import wicket.contrib.gmap.api.GMarker;
@@ -156,7 +156,7 @@ public class HomePage extends WicketExamplePage
 		final Label infoWindow = new Label("infoWindow", "openInfoWindow");
 		infoWindow.add(bottomPanel.new OpenInfoWindow("onclick")
 		{
-			protected InfoWindow getInfoWindow()
+			protected GInfoWindow getInfoWindow()
 			{
 				return new HelloPanel(new GLatLng(44.0, 44.0));
 			}
