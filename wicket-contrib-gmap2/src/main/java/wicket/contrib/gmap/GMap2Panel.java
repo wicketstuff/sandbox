@@ -31,6 +31,7 @@ import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.behavior.HeaderContributor;
+import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.IHeaderContributor;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -82,6 +83,8 @@ public class GMap2Panel extends Panel
 	private final MoveEndBehaviour moveEndBehaviour;
 	private final ClickBehaviour clickBehaviour;
 
+	private String style;
+
 	/**
 	 * Construct.
 	 * 
@@ -115,11 +118,11 @@ public class GMap2Panel extends Panel
 		add(moveEndBehaviour);
 		add(clickBehaviour);
 
-		WebMarkupContainer infoWindowContainer = new WebMarkupContainer("infoWindow");
+		WebMarkupContainer infoWindowContainer = new WebMarkupContainer("info");
 		infoWindowContainer.setOutputMarkupId(true);
 		add(infoWindowContainer);
 
-		infoWindow = new EmptyPanel("infoWindow");
+		infoWindow = new EmptyPanel("window");
 		infoWindowContainer.add(infoWindow);
 
 		mapContainer = new WebMarkupContainer("map");
@@ -131,11 +134,17 @@ public class GMap2Panel extends Panel
 			@Override
 			public Object getObject()
 			{
-				return "width: " + getWidth() + getWidthUnit() + "; height: " + getHeight()
-						+ getHeightUnit() + ";";
+				return style;
 			}
 		}));
 		add(mapContainer);
+	}
+
+	@Override
+	protected void onComponentTag(ComponentTag tag)
+	{
+		super.onComponentTag(tag);
+		this.style = tag.getAttributes().getString("style", "width: 500px; height: 300px;");
 	}
 
 	private HeaderContributor getHeaderContributor(final String gMapKey)
@@ -555,26 +564,6 @@ public class GMap2Panel extends Panel
 		}
 
 		protected abstract GLatLng getCenter();
-	}
-
-	public int getWidth()
-	{
-		return 400;
-	}
-
-	public int getHeight()
-	{
-		return 300;
-	}
-
-	public String getWidthUnit()
-	{
-		return "px";
-	}
-
-	public String getHeightUnit()
-	{
-		return "px";
 	}
 
 	public class MoveEndBehaviour extends AbstractDefaultAjaxBehavior

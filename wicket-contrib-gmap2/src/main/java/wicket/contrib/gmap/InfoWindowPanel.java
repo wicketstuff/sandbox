@@ -35,14 +35,14 @@ public class InfoWindowPanel extends Panel
 
 	public InfoWindowPanel(GLatLng gLatLng)
 	{
-		super("infoWindow");
+		super("window");
 		this.gLatLng = gLatLng;
 		setOutputMarkupId(true);
 	}
 
 	public InfoWindowPanel(GLatLng gLatLng, IModel model)
 	{
-		super("infoWindow", model);
+		super("window", model);
 		this.gLatLng = gLatLng;
 		setOutputMarkupId(true);
 	}
