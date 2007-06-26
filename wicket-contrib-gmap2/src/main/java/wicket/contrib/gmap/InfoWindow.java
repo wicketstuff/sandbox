@@ -23,7 +23,7 @@ import wicket.contrib.gmap.api.GLatLng;
 /**
  * Panel to be used as a InfoWindow of a GMap.
  */
-public class InfoWindowPanel extends Panel
+public class InfoWindow extends Panel
 {
 
 	/**
@@ -33,14 +33,14 @@ public class InfoWindowPanel extends Panel
 
 	private GLatLng gLatLng;
 
-	public InfoWindowPanel(GLatLng gLatLng)
+	public InfoWindow(GLatLng gLatLng)
 	{
 		super("window");
 		this.gLatLng = gLatLng;
 		setOutputMarkupId(true);
 	}
 
-	public InfoWindowPanel(GLatLng gLatLng, IModel model)
+	public InfoWindow(GLatLng gLatLng, IModel model)
 	{
 		super("window", model);
 		this.gLatLng = gLatLng;
