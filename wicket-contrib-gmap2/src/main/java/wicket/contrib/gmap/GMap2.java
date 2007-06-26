@@ -169,44 +169,13 @@ public class GMap2 extends Panel
 		});
 	}
 
-	private String getJSInit()
-	{
-		String js = "addGMap(\"" + getMapId() + "\", " + getCenter().getLat() + ", "
-				+ getCenter().getLng() + ", "
-				+ getZoomLevel()
-				+ ", \""
-				// provides the GMap with information which script to
-				// call
-				// on a moveend or a click event.
-				+ moveEndBehaviour.getCallbackUrl() + "\", " + "\""
-				+ clickBehaviour.getCallbackUrl() + "\");\n";
-
-		// Add the controls.
-		for (GControl control : controls)
-		{
-			js += getJSControlAdded(control);
-		}
-
-		// Add the overlays.
-		for (GOverlay overlay : overlays)
-		{
-			js += getJSOverlayAdded(overlay);
-		}
-
-		if (infoWindow instanceof GInfoWindow)
-		{
-			js += getJSInfoWindowOpened(((GInfoWindow)infoWindow));
-		}
-
-		return js;
-	}
-
-	private String getMapId()
-	{
-		return mapContainer.getMarkupId();
-	}
-
-	public void addControl(GControl control)
+	/**
+	 * Add a control.
+	 * 
+	 * @param control	control to add
+	 * @return	This
+	 */
+	public GMap2 addControl(GControl control)
 	{
 		controls.add(control);
 
@@ -215,9 +184,17 @@ public class GMap2 extends Panel
 			((AjaxRequestTarget)RequestCycle.get().getRequestTarget())
 					.appendJavascript(getJSControlAdded(control));
 		}
+		
+		return this;
 	}
 
-	public void removeControl(GControl control)
+	/**
+	 * Remove a control.
+	 * 
+	 * @param control	control to remove
+	 * @return	This
+	 */
+	public GMap2 removeControl(GControl control)
 	{
 		controls.remove(control);
 
@@ -226,9 +203,17 @@ public class GMap2 extends Panel
 			((AjaxRequestTarget)RequestCycle.get().getRequestTarget())
 					.appendJavascript(getJSControlRemoved(control));
 		}
+		
+		return this;
 	}
 
-	public void addOverlay(GOverlay overlay)
+	/**
+	 * Add an overlay.
+	 * 
+	 * @param overlay	overlay to add
+	 * @return	This
+	 */
+	public GMap2 addOverlay(GOverlay overlay)
 	{
 		overlays.add(overlay);
 
@@ -237,9 +222,17 @@ public class GMap2 extends Panel
 			((AjaxRequestTarget)RequestCycle.get().getRequestTarget())
 					.appendJavascript(getJSOverlayAdded(overlay));
 		}
+		
+		return this;
 	}
 
-	public void removeOverlay(GOverlay overlay)
+	/**
+	 * Remove an overlay.
+	 * 
+	 * @param overlay	overlay to remove
+	 * @return	This
+	 */
+	public GMap2 removeOverlay(GOverlay overlay)
 	{
 		for (int o = 0; o < overlays.size(); o++)
 		{
@@ -251,6 +244,8 @@ public class GMap2 extends Panel
 			((AjaxRequestTarget)RequestCycle.get().getRequestTarget())
 					.appendJavascript(getJSOverlayRemoved(overlay));
 		}
+		
+		return this;
 	}
 
 	public List<GOverlay> getOverlays()
@@ -287,6 +282,11 @@ public class GMap2 extends Panel
 		}
 	}
 
+	/**
+	 * Set the center.
+	 * 
+	 * @param center	center to set
+	 */
 	public void setCenter(GLatLng center)
 	{
 		if (!this.center.equals(center))
@@ -301,21 +301,34 @@ public class GMap2 extends Panel
 		}
 	}
 
-	public void openInfoWindow(GInfoWindow panel)
+	/**
+	 * Open an info window.
+	 * 
+	 * @param infoWindow	info window to open
+	 * @return	This
+	 */
+	public GMap2 openInfoWindow(GInfoWindow infoWindow)
 	{
 		// replace the panel held, by the invisible div element.
-		infoWindow.replaceWith(panel);
-		this.infoWindow = panel;
+		this.infoWindow.replaceWith(infoWindow);
+		this.infoWindow = infoWindow;
 
 		if (RequestCycle.get().getRequestTarget() instanceof AjaxRequestTarget)
 		{
 			((AjaxRequestTarget)RequestCycle.get().getRequestTarget())
-					.appendJavascript(getJSInfoWindowOpened(panel));
+					.appendJavascript(getJSInfoWindowOpened(infoWindow));
 			((AjaxRequestTarget)RequestCycle.get().getRequestTarget()).addComponent(infoWindow
 					.getParent());
 		}
+
+		return this;		
 	}
 
+	/**
+	 * Get the current info window.
+	 * 
+	 * @return	the current info window or <code>null</code> if no current
+	 */
 	public GInfoWindow getInfoWindow()
 	{
 		if (infoWindow instanceof GInfoWindow)
@@ -328,83 +341,116 @@ public class GMap2 extends Panel
 		}
 	}
 
+	private String getJSMapId()
+	{
+		return mapContainer.getMarkupId();
+	}
+
+	private String getJSInit()
+	{
+		String js = "addGMap(\"" + getJSMapId() + "\", " + getCenter().getLat() + ", "
+				+ getCenter().getLng() + ", "
+				+ getZoomLevel()
+				+ ", \""
+				// provides the GMap with information which script to
+				// call
+				// on a moveend or a click event.
+				+ moveEndBehaviour.getCallbackUrl() + "\", " + "\""
+				+ clickBehaviour.getCallbackUrl() + "\");\n";
+
+		// Add the controls.
+		for (GControl control : controls)
+		{
+			js += getJSControlAdded(control);
+		}
+
+		// Add the overlays.
+		for (GOverlay overlay : overlays)
+		{
+			js += getJSOverlayAdded(overlay);
+		}
+
+		if (infoWindow instanceof GInfoWindow)
+		{
+			js += getJSInfoWindowOpened(((GInfoWindow)infoWindow));
+		}
+
+		return js;
+	}
+	
 	private String getJSZoomSet(int zoom)
 	{
-		return "setZoom('" + getMapId() + "', " + zoom + ");\n";
+		return "setZoom('" + getJSMapId() + "', " + zoom + ");\n";
 	}
 
 	private String getJSCenterSet(GLatLng center)
 	{
-		return "setCenter('" + getMapId() + "', '" + center.getJSConstructor() + "');\n";
+		return "setCenter('" + getJSMapId() + "', '" + center.getJSConstructor() + "');\n";
 	}
 
 	private String getJSControlAdded(GControl control)
 	{
-		return "addControl('" + getMapId() + "', '" + control.getJSIdentifier() + "', '"
+		return "addControl('" + getJSMapId() + "', '" + control.getJSIdentifier() + "', '"
 				+ control.getJSConstructor() + "');\n";
 	}
 
 	private String getJSControlRemoved(GControl control)
 	{
-		return "removeControl('" + getMapId() + "', '" + control.getJSIdentifier() + "');\n";
+		return "removeControl('" + getJSMapId() + "', '" + control.getJSIdentifier() + "');\n";
 	}
 
 	private String getJSOverlayAdded(GOverlay overlay)
 	{
-		return "addOverlay('" + getMapId() + "', '" + overlay.getJSIdentifier() + "', '"
+		return "addOverlay('" + getJSMapId() + "', '" + overlay.getJSIdentifier() + "', '"
 				+ overlay.getJSConstructor() + "');\n";
 	}
 
 	private String getJSOverlayRemoved(GOverlay overlay)
 	{
-		return "removeOverlay('" + getMapId() + "', '" + overlay.getJSIdentifier() + "');\n";
+		return "removeOverlay('" + getJSMapId() + "', '" + overlay.getJSIdentifier() + "');\n";
 	}
 
 	private String getJSInfoWindowOpened(GInfoWindow panel)
 	{
-		return "openInfoWindow('" + getMapId() + "'," + "'" + panel.getGLatLng().getJSConstructor()
+		return "openInfoWindow('" + getJSMapId() + "'," + "'" + panel.getGLatLng().getJSConstructor()
 				+ "','" + panel.getMarkupId() + "')";
 	}
 
 	/**
-	 * Notify of a click.
+	 * Override this method to provide handling of a click on a GLatLng.
 	 * 
-	 * @param gLatLng
-	 * @param target
+	 * @param gLatLng	the clicked GLatLng
+	 * @param target	the target that initiated the click
 	 */
 	public void onClick(GLatLng gLatLng, AjaxRequestTarget target)
 	{
-		// Override me.
 	}
 
 	/**
-	 * Notify of a click.
+	 * Override this method to provide handling of a click on a marker.<br>
+	 * This default implementation forwards the click to the marker.
 	 * 
-	 * @param target
-	 * @param target
+	 * @param marker	the clicked marker
+	 * @param target	the target that initiated the click
 	 */
 	public void onClick(GMarker marker, AjaxRequestTarget target)
 	{
-		// Override me.
+		marker.onClick(target);
 	}
 
 	/**
-	 * Event handler invoked when map finishes moving. You can get the new
-	 * center coordinates of the map by calling {@link #getCenter()}.
+	 * Override this method to provide handling of a move.<br>
+	 * You can get the new center coordinates of the map by calling {@link #getCenter()}.
 	 * 
-	 * @param target
+	 * @param target	the target that initiated the move
 	 */
 	public void onMoveEnd(AjaxRequestTarget target)
 	{
-		// Override me.
 	}
-
 
 	public class ZoomOut extends AjaxEventBehavior
 	{
-		/**
-		 * Default serialVersionUID.
-		 */
+
 		private static final long serialVersionUID = 1L;
 
 		public ZoomOut(String event)
@@ -418,15 +464,13 @@ public class GMap2 extends Panel
 		@Override
 		protected void onEvent(AjaxRequestTarget target)
 		{
-			target.appendJavascript("Wicket.gmaps['" + getMapId() + "']" + ".zoomOut();");
+			target.appendJavascript("Wicket.gmaps['" + getJSMapId() + "']" + ".zoomOut();");
 		}
 	}
 
 	public class ZoomIn extends AjaxEventBehavior
 	{
-		/**
-		 * Default serialVersionUID.
-		 */
+		
 		private static final long serialVersionUID = 1L;
 
 		public ZoomIn(String event)
@@ -440,7 +484,7 @@ public class GMap2 extends Panel
 		@Override
 		protected void onEvent(AjaxRequestTarget target)
 		{
-			target.appendJavascript("Wicket.gmaps['" + getMapId() + "']" + ".zoomIn();");
+			target.appendJavascript("Wicket.gmaps['" + getJSMapId() + "']" + ".zoomIn();");
 		}
 	}
 
@@ -467,9 +511,7 @@ public class GMap2 extends Panel
 
 	public class PanDirection extends AjaxEventBehavior
 	{
-		/**
-		 * Default serialVersionUID.
-		 */
+
 		private static final long serialVersionUID = 1L;
 
 		private int dx;
@@ -490,16 +532,14 @@ public class GMap2 extends Panel
 		@Override
 		protected void onEvent(AjaxRequestTarget target)
 		{
-			target.appendJavascript("Wicket.gmaps['" + getMapId() + "']" + ".panDirection(" + dx
+			target.appendJavascript("Wicket.gmaps['" + getJSMapId() + "']" + ".panDirection(" + dx
 					+ "," + dy + ");");
 		}
 	}
 
 	public class SetZoom extends AjaxEventBehavior
 	{
-		/**
-		 * Default serialVersionUID.
-		 */
+
 		private static final long serialVersionUID = 1L;
 
 		private int zoom;
@@ -523,9 +563,7 @@ public class GMap2 extends Panel
 
 	public abstract class AddOverlay extends AjaxEventBehavior
 	{
-		/**
-		 * Default serialVersionUID.
-		 */
+
 		private static final long serialVersionUID = 1L;
 
 		public AddOverlay(String event)
@@ -547,9 +585,7 @@ public class GMap2 extends Panel
 
 	public abstract class SetCenter extends AjaxEventBehavior
 	{
-		/**
-		 * Default serialVersionUID.
-		 */
+
 		private static final long serialVersionUID = 1L;
 
 		public SetCenter(String event)
@@ -613,7 +649,6 @@ public class GMap2 extends Panel
 				{
 					if (overlay.getJSIdentifier().equals(markerString))
 					{
-						((GMarker)overlay).onClick(target);
 						onClick((GMarker)overlay, target);
 						break;
 					}
