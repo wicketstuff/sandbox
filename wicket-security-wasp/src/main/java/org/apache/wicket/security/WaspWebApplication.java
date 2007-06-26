@@ -16,7 +16,6 @@
  */
 package org.apache.wicket.security;
 
-import org.apache.wicket.ISessionFactory;
 import org.apache.wicket.Request;
 import org.apache.wicket.Response;
 import org.apache.wicket.Session;
@@ -31,7 +30,6 @@ import org.apache.wicket.security.strategies.StrategyFactory;
  */
 public abstract class WaspWebApplication extends WebApplication
 		implements
-			ISessionFactory,
 			WaspApplication
 {
 
@@ -47,7 +45,6 @@ public abstract class WaspWebApplication extends WebApplication
 	public WaspWebApplication()
 	{
 		super();
-		setSessionFactory(this);
 
 	}
 
