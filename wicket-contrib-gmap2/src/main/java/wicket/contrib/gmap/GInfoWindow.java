@@ -22,7 +22,7 @@ import wicket.contrib.gmap.api.GLatLng;
 
 /**
  * Panel to be used as a InfoWindow of a GMap, see <a
- * href="http://www.google.com/apis/maps/documentation/reference.html#GInfoWindow">InfoWindow</a>
+ * href="http://www.google.com/apis/maps/documentation/reference.html#GInfoWindow">GInfoWindow</a>
  */
 public class GInfoWindow extends Panel
 {
