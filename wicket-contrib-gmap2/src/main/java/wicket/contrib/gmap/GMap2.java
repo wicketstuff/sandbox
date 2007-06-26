@@ -56,7 +56,7 @@ import wicket.contrib.gmap.api.GOverlay;
  * href="http://www.google.com/apis/maps/signup.html">Google Maps API sign up
  * page</a> for more information.
  */
-public class GMap2Panel extends Panel
+public class GMap2 extends Panel
 {
 	private static final long serialVersionUID = 1L;
 
@@ -65,7 +65,7 @@ public class GMap2Panel extends Panel
 
 	// We have some custom Javascript.
 	private static final ResourceReference WICKET_GMAP_JS = new JavascriptResourceReference(
-			GMap2Panel.class, "wicket-gmap.js");
+			GMap2.class, "wicket-gmap.js");
 
 	// We also depend on wicket-ajax.js within wicket-gmap.js
 	private static final ResourceReference WICKET_AJAX_JS = new JavascriptResourceReference(
@@ -92,7 +92,7 @@ public class GMap2Panel extends Panel
 	 * @param gMapKey
 	 *            Google gmap API KEY
 	 */
-	public GMap2Panel(final String id, final String gMapKey)
+	public GMap2(final String id, final String gMapKey)
 	{
 		this(id, gMapKey, new ArrayList<GOverlay>());
 	}
@@ -105,7 +105,7 @@ public class GMap2Panel extends Panel
 	 *            Google gmap API KEY
 	 * @param overlays
 	 */
-	public GMap2Panel(final String id, final String gMapKey, List<GOverlay> overlays)
+	public GMap2(final String id, final String gMapKey, List<GOverlay> overlays)
 	{
 		super(id);
 
@@ -193,9 +193,9 @@ public class GMap2Panel extends Panel
 			js += getJSOverlayAdded(overlay);
 		}
 
-		if (infoWindow instanceof InfoWindowPanel)
+		if (infoWindow instanceof InfoWindow)
 		{
-			js += getJSInfoWindowOpened(((InfoWindowPanel)infoWindow));
+			js += getJSInfoWindowOpened(((InfoWindow)infoWindow));
 		}
 
 		return js;
@@ -298,7 +298,7 @@ public class GMap2Panel extends Panel
 		}
 	}
 
-	public void openInfoWindow(InfoWindowPanel panel)
+	public void openInfoWindow(InfoWindow panel)
 	{
 		// replace the panel held, by the invisible div element.
 		infoWindow.replaceWith(panel);
@@ -313,11 +313,11 @@ public class GMap2Panel extends Panel
 		}
 	}
 
-	public InfoWindowPanel getInfoWindow()
+	public InfoWindow getInfoWindow()
 	{
-		if (infoWindow instanceof InfoWindowPanel)
+		if (infoWindow instanceof InfoWindow)
 		{
-			return (InfoWindowPanel)infoWindow;
+			return (InfoWindow)infoWindow;
 		}
 		else
 		{
@@ -357,7 +357,7 @@ public class GMap2Panel extends Panel
 		return "removeOverlay('" + getMapId() + "', '" + overlay.getIdentifier() + "');\n";
 	}
 
-	private String getJSInfoWindowOpened(InfoWindowPanel panel)
+	private String getJSInfoWindowOpened(InfoWindow panel)
 	{
 		return "openInfoWindow('" + getMapId() + "'," + "'" + panel.getGLatLng().getJSConstructor()
 				+ "','" + panel.getMarkupId() + "')";
@@ -459,7 +459,7 @@ public class GMap2Panel extends Panel
 			openInfoWindow(getInfoWindow());
 		}
 
-		protected abstract InfoWindowPanel getInfoWindow();
+		protected abstract InfoWindow getInfoWindow();
 	}
 
 	public class PanDirection extends AjaxEventBehavior
