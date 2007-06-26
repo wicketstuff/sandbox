@@ -16,19 +16,28 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package wicket.contrib.input.events;
+package wicket.contrib.input.events.key;
 
-import org.apache.wicket.behavior.AttributeAppender;
-import org.apache.wicket.model.IModel;
+import org.apache.wicket.Component;
+import org.apache.wicket.model.Model;
 
-/**
- * 
- * @author Nino Martinez Wael (nino.martinez@jayway.dk)
- */
-public abstract class Input extends AttributeAppender {
+import wicket.contrib.input.events.EventType;
+import wicket.contrib.input.events.Input;
 
-	public Input(String arg0, IModel arg1, String arg2) {
-		super(arg0, arg1, arg2);
+public class KeyInput extends Input {
+
+	/**
+	 * Binds KeyInput KeyType to a certain eventType on a specific component
+	 * Construct.
+	 * 
+	 * @param keyType
+	 * @param eventType
+	 * @param component
+	 */
+	public KeyInput(KeyType keyType, EventType eventType, Component component) {
+		super("onkeydown", new Model("keyPressed(event, "
+				+ keyType.getKeyCode() + ", '" + component.getMarkupId()
+				+ "', '" + eventType + "')"), ";");
 	}
 
 }

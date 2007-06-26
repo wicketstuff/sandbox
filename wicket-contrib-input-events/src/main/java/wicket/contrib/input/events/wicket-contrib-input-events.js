@@ -21,13 +21,13 @@
  * @author Nino Martinez(nino.martinez@jayway.dk)
  */
 
-function keypressed(event) {
-var keyCode=75;
+function keyPressed(event, keyCode, componentID, componentEvent) {
+
 if(event.keyCode==keyCode)
 {
 	alert('keyPressed:'+event.keyCode);
-	var component=document.getElementById("componentId");
-	pokeComponent(component);
+	var component=document.getElementById(componentId);
+	component.componentEvent;
 }
 function mousepressed(event){
 
@@ -35,5 +35,9 @@ function mousepressed(event){
 function pokeComponent(component)
 {
 	component.submit;
+}
+function focusComponent(component)
+{
+	component.focus;
 }
 

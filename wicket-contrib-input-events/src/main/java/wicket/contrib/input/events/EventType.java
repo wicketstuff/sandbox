@@ -19,6 +19,16 @@
 package wicket.contrib.input.events;
 
 public enum EventType {
-	onChange,onFocus
+	onChange,onFocus,onClick;
+	
+	private String eventType;
+	
+	private EventType() {
+		eventType=this.name();
+		
+	}
+	public String getEvent() {
+		return eventType;
+	}
 
 }
