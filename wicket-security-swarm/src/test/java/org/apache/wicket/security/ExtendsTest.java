@@ -18,7 +18,6 @@ package org.apache.wicket.security;
 
 import java.net.MalformedURLException;
 
-import org.apache.wicket.ISessionFactory;
 import org.apache.wicket.Request;
 import org.apache.wicket.Response;
 import org.apache.wicket.Session;
@@ -45,8 +44,7 @@ import org.slf4j.LoggerFactory;
  */
 public class ExtendsTest extends GeneralTest
 {
-	private static final class TestApplication extends WebApplication implements WaspApplication,
-			ISessionFactory
+	private static final class TestApplication extends WebApplication implements WaspApplication
 	{
 
 		private ActionFactory actionFactory;
@@ -59,7 +57,6 @@ public class ExtendsTest extends GeneralTest
 		public TestApplication()
 		{
 			super();
-			setSessionFactory(this);
 		}
 
 		protected Object getHiveKey()
