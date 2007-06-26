@@ -46,10 +46,16 @@
 			<version>1.2.13</version>
 			<optional>true</optional>
 		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			 <version>3.8.2</version>
+			 <scope>test</scope>
+		</dependency>
 	</dependencies>
 
     <build>
-        <sourceDirectory>src/java</sourceDirectory>
+        <sourceDirectory>src/main/java</sourceDirectory>
         <testSourceDirectory>src/test/java</testSourceDirectory>
 
         <resources>

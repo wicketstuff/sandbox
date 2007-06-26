@@ -16,9 +16,21 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package wicket.contrib.input.events.key;
+package wicket.contrib.input.events;
 
-public enum keyType {
-	Arrow_left,Arrow_right,Arrow_up,Arrow_down,Enter
+public class InputEventsTest extends WicketTestCase {
+
+	public InputEventsTest(String name) {
+		super(name);
+	}
+
+	public void testCorrectComponentBinding() throws Exception {
+		assertFalse(true);
+		executeTest(Page.class, "Page_expectedResult.html");
+	}
+
+	public void testCorrectJavaScriptSyntax() {
+
+	}
 
 }

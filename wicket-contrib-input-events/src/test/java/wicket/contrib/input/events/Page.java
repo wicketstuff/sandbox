@@ -1,3 +1,12 @@
+package wicket.contrib.input.events;
+
+import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.Button;
+
+import wicket.contrib.input.events.key.KeyInput;
+import wicket.contrib.input.events.key.KeyType;
+
 /*
  * $Id: org.eclipse.jdt.ui.prefs 5004 2006-03-17 20:47:08 -0800 (Fri, 17 Mar 2006) eelco12 $
  * $Revision: 5004 $
@@ -16,19 +25,34 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package wicket.contrib.input.events;
 
-import org.apache.wicket.behavior.AttributeAppender;
-import org.apache.wicket.model.IModel;
+public class Page extends WebPage {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
-/**
- * 
- * @author Nino Martinez Wael (nino.martinez@jayway.dk)
- */
-public abstract class Input extends AttributeAppender {
+	public Page() {
+		Label label = new Label("id");
+		label.setOutputMarkupId(true);
+		add(label);
+		Button button = new Button("button") {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
 
-	public Input(String arg0, IModel arg1, String arg2) {
-		super(arg0, arg1, arg2);
+			@Override
+			public void onSubmit() {
+				warn("you clicked me!");
+			}
+		};
+		add(button);
+
+		KeyInput keyInput = new KeyInput(KeyType.Arrow_up, EventType.onClick,
+				label);
+		label.add(new InputBehavior(keyInput));
+
 	}
 
 }
