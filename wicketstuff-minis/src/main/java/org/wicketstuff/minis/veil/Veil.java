@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.wicketstuff.minis.behavior.veil;
+package org.wicketstuff.minis.veil;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.IHeaderResponse;
@@ -54,7 +54,7 @@ public class Veil extends VeilResources
 	}
 
 	/**
-	 * @see org.wicketstuff.minis.behavior.veil.VeilResources#bind(org.apache.wicket.Component)
+	 * @see org.wicketstuff.minis.veil.VeilResources#bind(org.apache.wicket.Component)
 	 */
 	public void bind(Component component)
 	{
@@ -75,7 +75,7 @@ public class Veil extends VeilResources
 
 
 	/**
-	 * @see org.wicketstuff.minis.behavior.veil.VeilResources#renderHead(org.apache.wicket.markup.html.IHeaderResponse)
+	 * @see org.wicketstuff.minis.veil.VeilResources#renderHead(org.apache.wicket.markup.html.IHeaderResponse)
 	 */
 	public void renderHead(IHeaderResponse response)
 	{
