@@ -13,6 +13,8 @@ import wicket.contrib.gmap.api.GControl;
 import wicket.contrib.gmap.api.GLatLng;
 import wicket.contrib.gmap.api.GMarker;
 import wicket.contrib.gmap.api.GOverlay;
+import wicket.contrib.gmap.api.GPolygon;
+import wicket.contrib.gmap.api.GPolyline;
 
 /**
  * Example HomePage for the wicket-contrib-gmap2 project
@@ -53,7 +55,10 @@ public class HomePage extends WicketExamplePage
 				removeOverlay(marker);
 			}
 		};
-		topPanel.addOverlay(new GMarker(new GLatLng(49f, 49f), "Home"));
+		topPanel.setZoomLevel(10);
+		topPanel.addOverlay(new GMarker(new GLatLng(37.4, -122.1), "Home"));
+		topPanel.addOverlay(new GPolygon("#000000", 4, 0.7f, "#E9601A", 0.7f, new GLatLng(37.3, -122.4), new GLatLng(37.2, -122.2), new GLatLng(37.3, -122.0), new GLatLng(37.4, -122.2), new GLatLng(37.3, -122.4)));
+		topPanel.addOverlay(new GPolyline("#FFFFFF", 8, 1.0f, new GLatLng(37.35, -122.3), new GLatLng(37.25, -122.25), new GLatLng(37.3, -122.2), new GLatLng(37.25, -122.15), new GLatLng(37.35, -122.1)));
 		topPanel.addControl(GControl.GLargeMapControl);
 		topPanel.addControl(GControl.GMapTypeControl);
 		add(topPanel);
@@ -106,9 +111,8 @@ public class HomePage extends WicketExamplePage
 			}
 		};
 		bottomPanel.addControl(GControl.GSmallMapControl);
-		bottomPanel.openInfoWindow(new HelloPanel(new GLatLng(45.0, 45.0)));
+		bottomPanel.openInfoWindow(new HelloPanel(new GLatLng(37.5, -122.1)));
 		add(bottomPanel);
-
 
 		center = new Label("center", new PropertyModel(bottomPanel, "center"));
 		center.add(bottomPanel.new SetCenter("onclick")
@@ -158,7 +162,7 @@ public class HomePage extends WicketExamplePage
 		{
 			protected GInfoWindow getInfoWindow()
 			{
-				return new HelloPanel(new GLatLng(44.0, 44.0));
+				return new HelloPanel(new GLatLng(37.5, -122.1));
 			}
 		});
 		add(infoWindow);
