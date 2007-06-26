@@ -79,9 +79,9 @@ public abstract class WicketTestCase extends TestCase
 	protected void executeTest(final Class pageClass, final String filename) throws Exception
 	{
 		System.out.println("=== " + pageClass.getName() + " ===");
-
 		tester.startPage(pageClass);
 		tester.assertRenderedPage(pageClass);
+		tester.dumpPage();
 		tester.assertResultPage(this.getClass(), filename);
 	}
 

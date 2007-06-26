@@ -25,7 +25,6 @@ public class InputEventsTest extends WicketTestCase {
 	}
 
 	public void testCorrectComponentBinding() throws Exception {
-		assertFalse(true);
 		executeTest(Page.class, "Page_expectedResult.html");
 	}
 

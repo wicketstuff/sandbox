@@ -34,7 +34,6 @@ public class Page extends WebPage {
 
 	public Page() {
 		Label label = new Label("id");
-		label.setOutputMarkupId(true);
 		add(label);
 		Button button = new Button("button") {
 			/**
@@ -47,10 +46,11 @@ public class Page extends WebPage {
 				warn("you clicked me!");
 			}
 		};
+		button.setOutputMarkupId(true);
 		add(button);
 
 		KeyInput keyInput = new KeyInput(KeyType.Arrow_up, EventType.onClick,
-				label);
+				button);
 		label.add(new InputBehavior(keyInput));
 
 	}
