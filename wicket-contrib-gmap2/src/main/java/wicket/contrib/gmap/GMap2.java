@@ -28,7 +28,6 @@ import org.apache.wicket.Request;
 import org.apache.wicket.RequestCycle;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
-import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.behavior.HeaderContributor;
 import org.apache.wicket.markup.html.IHeaderContributor;
@@ -136,7 +135,7 @@ public class GMap2 extends Panel
 				// see:
 				// http://www.google.com/apis/maps/documentation/#Memory_Leaks
 				response.renderOnBeforeUnloadJavascript("GUnload();");
-				response.renderOnDomReadyJavascript(getJSInit());
+				response.renderOnDomReadyJavascript(getJSinit());
 			}
 		});
 	}
@@ -155,7 +154,7 @@ public class GMap2 extends Panel
 		if (RequestCycle.get().getRequestTarget() instanceof AjaxRequestTarget)
 		{
 			((AjaxRequestTarget)RequestCycle.get().getRequestTarget())
-					.appendJavascript(getJSControlAdded(control));
+					.appendJavascript(getJSaddControl(control));
 		}
 
 		return this;
@@ -175,7 +174,7 @@ public class GMap2 extends Panel
 		if (RequestCycle.get().getRequestTarget() instanceof AjaxRequestTarget)
 		{
 			((AjaxRequestTarget)RequestCycle.get().getRequestTarget())
-					.appendJavascript(getJSControlRemoved(control));
+					.appendJavascript(getJSremoveControl(control));
 		}
 
 		return this;
@@ -195,7 +194,7 @@ public class GMap2 extends Panel
 		if (RequestCycle.get().getRequestTarget() instanceof AjaxRequestTarget)
 		{
 			((AjaxRequestTarget)RequestCycle.get().getRequestTarget())
-					.appendJavascript(getJSOverlayAdded(overlay));
+					.appendJavascript(getJSaddOverlay(overlay));
 		}
 
 		return this;
@@ -218,7 +217,7 @@ public class GMap2 extends Panel
 		if (RequestCycle.get().getRequestTarget() instanceof AjaxRequestTarget)
 		{
 			((AjaxRequestTarget)RequestCycle.get().getRequestTarget())
-					.appendJavascript(getJSOverlayRemoved(overlay));
+					.appendJavascript(getJSremoveOverlay(overlay));
 		}
 
 		return this;
@@ -253,7 +252,7 @@ public class GMap2 extends Panel
 			if (RequestCycle.get().getRequestTarget() instanceof AjaxRequestTarget)
 			{
 				((AjaxRequestTarget)RequestCycle.get().getRequestTarget())
-						.appendJavascript(getJSZoomSet(parameter));
+						.appendJavascript(getJSsetZoom(parameter));
 			}
 		}
 	}
@@ -273,7 +272,7 @@ public class GMap2 extends Panel
 			if (RequestCycle.get().getRequestTarget() instanceof AjaxRequestTarget)
 			{
 				((AjaxRequestTarget)RequestCycle.get().getRequestTarget())
-						.appendJavascript(getJSCenterSet(center));
+						.appendJavascript(getJSsetCenter(center));
 			}
 		}
 	}
@@ -294,7 +293,7 @@ public class GMap2 extends Panel
 		if (RequestCycle.get().getRequestTarget() instanceof AjaxRequestTarget)
 		{
 			((AjaxRequestTarget)RequestCycle.get().getRequestTarget())
-					.appendJavascript(getJSInfoWindowOpened(infoWindow));
+					.appendJavascript(getJSopenInfoWindow(infoWindow));
 			((AjaxRequestTarget)RequestCycle.get().getRequestTarget()).addComponent(infoWindow
 					.getParent());
 		}
@@ -324,7 +323,7 @@ public class GMap2 extends Panel
 		return mapContainer.getMarkupId();
 	}
 
-	private String getJSInit()
+	private String getJSinit()
 	{
 		String js = "addGMap(\"" + getJSMapId() + "\", " + getCenter().getLat() + ", "
 				+ getCenter().getLng() + ", " + getZoomLevel() + ");\n";
@@ -332,71 +331,76 @@ public class GMap2 extends Panel
 		// Add the controls.
 		for (GControl control : controls)
 		{
-			js += getJSControlAdded(control);
+			js += getJSaddControl(control);
 		}
 
 		// Add the overlays.
 		for (GOverlay overlay : overlays)
 		{
-			js += getJSOverlayAdded(overlay);
+			js += getJSaddOverlay(overlay);
 		}
 
 		if (infoWindow instanceof GInfoWindow)
 		{
-			js += getJSInfoWindowOpened(((GInfoWindow)infoWindow));
+			js += getJSopenInfoWindow(((GInfoWindow)infoWindow));
 		}
 
 		for (Object behavior : getBehaviors(ListenerBehavior.class)) {
-			js += getJSListenerAdded((ListenerBehavior)behavior);
+			js += getJSaddListener((ListenerBehavior)behavior);
 		}
 
 		return js;
 	}
 
-	private String getJSListenerAdded(ListenerBehavior behavior)
+	private String getJSaddListener(ListenerBehavior behavior)
 	{
 		return "addMapListener(\"" + getJSMapId() + "\", " + "\"" + behavior.getJSEvent() + "\", " + "\""
 					+ behavior.getCallbackUrl() + "\");\n";
 	}
 
-	private String getJSZoomSet(int zoom)
+	private String getJSsetZoom(int zoom)
 	{
 		return "setZoom('" + getJSMapId() + "', " + zoom + ");\n";
 	}
 
-	private String getJSCenterSet(GLatLng center)
+	private String getJSsetCenter(GLatLng center)
 	{
 		return "setCenter('" + getJSMapId() + "', '" + center.getJSConstructor() + "');\n";
 	}
 
-	private String getJSControlAdded(GControl control)
+	private String getJSaddControl(GControl control)
 	{
 		return "addControl('" + getJSMapId() + "', '" + control.getJSIdentifier() + "', '"
 				+ control.getJSConstructor() + "');\n";
 	}
 
-	private String getJSControlRemoved(GControl control)
+	private String getJSremoveControl(GControl control)
 	{
 		return "removeControl('" + getJSMapId() + "', '" + control.getJSIdentifier() + "');\n";
 	}
 
-	private String getJSOverlayAdded(GOverlay overlay)
+	private String getJSaddOverlay(GOverlay overlay)
 	{
 		return "addOverlay('" + getJSMapId() + "', '" + overlay.getJSIdentifier() + "', '"
 				+ overlay.getJSConstructor() + "');\n";
 	}
 
-	private String getJSOverlayRemoved(GOverlay overlay)
+	private String getJSremoveOverlay(GOverlay overlay)
 	{
 		return "removeOverlay('" + getJSMapId() + "', '" + overlay.getJSIdentifier() + "');\n";
 	}
 
-	private String getJSInfoWindowOpened(GInfoWindow panel)
+	private String getJSopenInfoWindow(GInfoWindow panel)
 	{
 		return "openInfoWindow('" + getJSMapId() + "'," + "'"
 				+ panel.getGLatLng().getJSConstructor() + "','" + panel.getMarkupId() + "');\n";
 	}
 
+	private String getJSpanDirection(int dx, int dy) {
+		return "Wicket.gmaps['" + getJSMapId() + "']" + ".panDirection(" + dx
+		+ "," + dy + ");\n";
+	}
+	
 	public class ZoomOut extends AttributeModifier
 	{
 
@@ -419,27 +423,6 @@ public class GMap2 extends Panel
 		}
 	}
 
-	public abstract class OpenInfoWindow extends AjaxEventBehavior
-	{
-		private static final long serialVersionUID = 1L;
-
-		public OpenInfoWindow(String event)
-		{
-			super(event);
-		}
-
-		/**
-		 * @see org.apache.wicket.ajax.AjaxEventBehavior#onEvent(org.apache.wicket.ajax.AjaxRequestTarget)
-		 */
-		@Override
-		protected void onEvent(AjaxRequestTarget target)
-		{
-			openInfoWindow(getInfoWindow());
-		}
-
-		protected abstract GInfoWindow getInfoWindow();
-	}
-
 	public class PanDirection extends AttributeModifier
 	{
 
@@ -447,8 +430,7 @@ public class GMap2 extends Panel
 
 		public PanDirection(String event, final int dx, final int dy)
 		{
-			super(event, true, new Model("javascript:Wicket.gmaps['" + getJSMapId() + "']" + ".panDirection(" + dx
-					+ "," + dy + ");"));
+			super(event, true, new Model("javascript:" + getJSpanDirection(dx, dy)));
 		}
 	}
 
@@ -459,30 +441,8 @@ public class GMap2 extends Panel
 
 		public SetZoom(String event, final int zoom)
 		{
-			super(event, true, new Model("javascript:" + getJSZoomSet(zoom)));
+			super(event, true, new Model("javascript:" + getJSsetZoom(zoom)));
 		}
-	}
-
-	public abstract class AddOverlay extends AjaxEventBehavior
-	{
-
-		private static final long serialVersionUID = 1L;
-
-		public AddOverlay(String event)
-		{
-			super(event);
-		}
-
-		/**
-		 * @see org.apache.wicket.ajax.AjaxEventBehavior#onEvent(org.apache.wicket.ajax.AjaxRequestTarget)
-		 */
-		@Override
-		protected void onEvent(AjaxRequestTarget target)
-		{
-			addOverlay(getOverlay());
-		}
-
-		protected abstract GOverlay getOverlay();
 	}
 
 	public class SetCenter extends AttributeModifier
@@ -492,7 +452,7 @@ public class GMap2 extends Panel
 
 		public SetCenter(String event, GLatLng gLatLng)
 		{
-			super(event, true, new Model("javascript:" + getJSCenterSet(gLatLng)));
+			super(event, true, new Model("javascript:" + getJSsetCenter(gLatLng)));
 		}
 	}
 
