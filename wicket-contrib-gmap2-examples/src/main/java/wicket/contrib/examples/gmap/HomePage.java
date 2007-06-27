@@ -62,7 +62,7 @@ public class HomePage extends WicketExamplePage
 			}
 
 		});
-		topPanel.setZoomLevel(10);
+		topPanel.setZoom(10);
 		topPanel.addOverlay(new GMarker(new GLatLng(37.4, -122.1), "Home"));
 		topPanel.addOverlay(new GPolygon("#000000", 4, 0.7f, "#E9601A", 0.7f, new GLatLng(37.3,
 				-122.4), new GLatLng(37.2, -122.2), new GLatLng(37.3, -122.0), new GLatLng(37.4,
@@ -74,7 +74,7 @@ public class HomePage extends WicketExamplePage
 		topPanel.addControl(GControl.GMapTypeControl);
 		add(topPanel);
 
-		zoomLabel = new Label("zoomLabel", new PropertyModel(topPanel, "zoomLevel"));
+		zoomLabel = new Label("zoomLabel", new PropertyModel(topPanel, "zoom"));
 		zoomLabel.add(topPanel.new SetZoom("onclick", 10));
 		zoomLabel.setOutputMarkupId(true);
 		add(zoomLabel);
