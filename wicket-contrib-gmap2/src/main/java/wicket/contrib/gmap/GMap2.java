@@ -150,8 +150,9 @@ public class GMap2 extends Panel
 	/**
 	 * Add a control.
 	 * 
-	 * @param control	control to add
-	 * @return	This
+	 * @param control
+	 *            control to add
+	 * @return This
 	 */
 	public GMap2 addControl(GControl control)
 	{
@@ -162,15 +163,16 @@ public class GMap2 extends Panel
 			((AjaxRequestTarget)RequestCycle.get().getRequestTarget())
 					.appendJavascript(getJSControlAdded(control));
 		}
-		
+
 		return this;
 	}
 
 	/**
 	 * Remove a control.
 	 * 
-	 * @param control	control to remove
-	 * @return	This
+	 * @param control
+	 *            control to remove
+	 * @return This
 	 */
 	public GMap2 removeControl(GControl control)
 	{
@@ -181,15 +183,16 @@ public class GMap2 extends Panel
 			((AjaxRequestTarget)RequestCycle.get().getRequestTarget())
 					.appendJavascript(getJSControlRemoved(control));
 		}
-		
+
 		return this;
 	}
 
 	/**
 	 * Add an overlay.
 	 * 
-	 * @param overlay	overlay to add
-	 * @return	This
+	 * @param overlay
+	 *            overlay to add
+	 * @return This
 	 */
 	public GMap2 addOverlay(GOverlay overlay)
 	{
@@ -200,15 +203,16 @@ public class GMap2 extends Panel
 			((AjaxRequestTarget)RequestCycle.get().getRequestTarget())
 					.appendJavascript(getJSOverlayAdded(overlay));
 		}
-		
+
 		return this;
 	}
 
 	/**
 	 * Remove an overlay.
 	 * 
-	 * @param overlay	overlay to remove
-	 * @return	This
+	 * @param overlay
+	 *            overlay to remove
+	 * @return This
 	 */
 	public GMap2 removeOverlay(GOverlay overlay)
 	{
@@ -222,7 +226,7 @@ public class GMap2 extends Panel
 			((AjaxRequestTarget)RequestCycle.get().getRequestTarget())
 					.appendJavascript(getJSOverlayRemoved(overlay));
 		}
-		
+
 		return this;
 	}
 
@@ -263,7 +267,8 @@ public class GMap2 extends Panel
 	/**
 	 * Set the center.
 	 * 
-	 * @param center	center to set
+	 * @param center
+	 *            center to set
 	 */
 	public void setCenter(GLatLng center)
 	{
@@ -282,8 +287,9 @@ public class GMap2 extends Panel
 	/**
 	 * Open an info window.
 	 * 
-	 * @param infoWindow	info window to open
-	 * @return	This
+	 * @param infoWindow
+	 *            info window to open
+	 * @return This
 	 */
 	public GMap2 openInfoWindow(GInfoWindow infoWindow)
 	{
@@ -299,13 +305,13 @@ public class GMap2 extends Panel
 					.getParent());
 		}
 
-		return this;		
+		return this;
 	}
 
 	/**
 	 * Get the current info window.
 	 * 
-	 * @return	the current info window or <code>null</code> if no current
+	 * @return the current info window or <code>null</code> if no current
 	 */
 	public GInfoWindow getInfoWindow()
 	{
@@ -355,7 +361,7 @@ public class GMap2 extends Panel
 
 		return js;
 	}
-	
+
 	private String getJSZoomSet(int zoom)
 	{
 		return "setZoom('" + getJSMapId() + "', " + zoom + ");\n";
@@ -390,15 +396,17 @@ public class GMap2 extends Panel
 
 	private String getJSInfoWindowOpened(GInfoWindow panel)
 	{
-		return "openInfoWindow('" + getJSMapId() + "'," + "'" + panel.getGLatLng().getJSConstructor()
-				+ "','" + panel.getMarkupId() + "')";
+		return "openInfoWindow('" + getJSMapId() + "'," + "'"
+				+ panel.getGLatLng().getJSConstructor() + "','" + panel.getMarkupId() + "')";
 	}
 
 	/**
 	 * Override this method to provide handling of a click on a GLatLng.
 	 * 
-	 * @param gLatLng	the clicked GLatLng
-	 * @param target	the target that initiated the click
+	 * @param gLatLng
+	 *            the clicked GLatLng
+	 * @param target
+	 *            the target that initiated the click
 	 */
 	public void onClick(GLatLng gLatLng, AjaxRequestTarget target)
 	{
@@ -408,8 +416,10 @@ public class GMap2 extends Panel
 	 * Override this method to provide handling of a click on a marker.<br>
 	 * This default implementation forwards the click to the marker.
 	 * 
-	 * @param marker	the clicked marker
-	 * @param target	the target that initiated the click
+	 * @param marker
+	 *            the clicked marker
+	 * @param target
+	 *            the target that initiated the click
 	 */
 	public void onClick(GMarker marker, AjaxRequestTarget target)
 	{
@@ -418,9 +428,11 @@ public class GMap2 extends Panel
 
 	/**
 	 * Override this method to provide handling of a move.<br>
-	 * You can get the new center coordinates of the map by calling {@link #getCenter()}.
+	 * You can get the new center coordinates of the map by calling
+	 * {@link #getCenter()}.
 	 * 
-	 * @param target	the target that initiated the move
+	 * @param target
+	 *            the target that initiated the move
 	 */
 	public void onMoveEnd(AjaxRequestTarget target)
 	{
@@ -448,7 +460,7 @@ public class GMap2 extends Panel
 
 	public class ZoomIn extends AjaxEventBehavior
 	{
-		
+
 		private static final long serialVersionUID = 1L;
 
 		public ZoomIn(String event)
