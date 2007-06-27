@@ -57,8 +57,12 @@ public class HomePage extends WicketExamplePage
 		};
 		topPanel.setZoomLevel(10);
 		topPanel.addOverlay(new GMarker(new GLatLng(37.4, -122.1), "Home"));
-		topPanel.addOverlay(new GPolygon("#000000", 4, 0.7f, "#E9601A", 0.7f, new GLatLng(37.3, -122.4), new GLatLng(37.2, -122.2), new GLatLng(37.3, -122.0), new GLatLng(37.4, -122.2), new GLatLng(37.3, -122.4)));
-		topPanel.addOverlay(new GPolyline("#FFFFFF", 8, 1.0f, new GLatLng(37.35, -122.3), new GLatLng(37.25, -122.25), new GLatLng(37.3, -122.2), new GLatLng(37.25, -122.15), new GLatLng(37.35, -122.1)));
+		topPanel.addOverlay(new GPolygon("#000000", 4, 0.7f, "#E9601A", 0.7f, new GLatLng(37.3,
+				-122.4), new GLatLng(37.2, -122.2), new GLatLng(37.3, -122.0), new GLatLng(37.4,
+				-122.2), new GLatLng(37.3, -122.4)));
+		topPanel.addOverlay(new GPolyline("#FFFFFF", 8, 1.0f, new GLatLng(37.35, -122.3),
+				new GLatLng(37.25, -122.25), new GLatLng(37.3, -122.2),
+				new GLatLng(37.25, -122.15), new GLatLng(37.35, -122.1)));
 		topPanel.addControl(GControl.GLargeMapControl);
 		topPanel.addControl(GControl.GMapTypeControl);
 		add(topPanel);
@@ -85,8 +89,9 @@ public class HomePage extends WicketExamplePage
 		add(markerLabel);
 
 		final Label zoomIn = new Label("zoomInLabel", "ZoomIn");
-		zoomIn.add(topPanel.new ZoomIn("onclick"){
-			
+		zoomIn.add(topPanel.new ZoomIn("onclick")
+		{
+
 		});
 		add(zoomIn);
 

@@ -17,11 +17,11 @@ public class HelloPanel extends GInfoWindow
 	private static final long serialVersionUID = 1L;
 
 	private static int i;
-	
+
 	public HelloPanel(GLatLng gLatLng)
 	{
 		super(gLatLng);
-		
+
 		add(new Label("label", "" + (i++)));
 	}
 }
