@@ -77,10 +77,6 @@ public class GMap2 extends Panel
 
 	private Component infoWindow;
 
-	private enum EVENTS {
-		moveend, click;
-	}
-
 	/**
 	 * Construct.
 	 * 
@@ -348,24 +344,17 @@ public class GMap2 extends Panel
 			js += getJSInfoWindowOpened(((GInfoWindow)infoWindow));
 		}
 
-		js += getAddMapListener(MoveEndBehaviour.class, EVENTS.moveend);
-
-		js += getAddMapListener(ClickBehaviour.class, EVENTS.click);
+		for (Object behavior : getBehaviors(ListenerBehavior.class)) {
+			js += getJSListenerAdded((ListenerBehavior)behavior);
+		}
 
 		return js;
 	}
 
-	// TODO get rid of the event parameter.
-	private String getAddMapListener(Class<? extends EventBehaviour> clazz, EVENTS event)
+	private String getJSListenerAdded(ListenerBehavior behavior)
 	{
-		List behaviours = getBehaviors(clazz);
-		String js = "";
-		for (Object behaviour : behaviours)
-		{
-			js += "addMapListener(\"" + getJSMapId() + "\", " + "\"" + event + "\", " + "\""
-					+ ((AbstractDefaultAjaxBehavior)behaviour).getCallbackUrl() + "\");\n";
-		}
-		return js;
+		return "addMapListener(\"" + getJSMapId() + "\", " + "\"" + behavior.getJSEvent() + "\", " + "\""
+					+ behavior.getCallbackUrl() + "\");\n";
 	}
 
 	private String getJSZoomSet(int zoom)
@@ -563,14 +552,20 @@ public class GMap2 extends Panel
 		protected abstract GLatLng getCenter();
 	}
 
-	private abstract class EventBehaviour extends AbstractDefaultAjaxBehavior
+	private abstract class ListenerBehavior extends AbstractDefaultAjaxBehavior
 	{
+		public abstract String getJSEvent();
 	}
 
-	public abstract class MoveEndBehaviour extends EventBehaviour
+	public abstract class MoveEndBehavior extends ListenerBehavior
 	{
 
 		private static final long serialVersionUID = 1L;
+
+		@Override
+		public String getJSEvent() {
+			return "moveend";
+		}
 
 		/*
 		 * TODO update bounds
@@ -586,7 +581,7 @@ public class GMap2 extends Panel
 			zoomLevel = (Integer)IntegerConverter.INSTANCE.convertToObject(request
 					.getParameter("zoom"), Locale.getDefault());
 
-			MoveEndBehaviour.this.onMoveEnd(target);
+			MoveEndBehavior.this.onMoveEnd(target);
 		}
 
 		/**
@@ -600,9 +595,14 @@ public class GMap2 extends Panel
 		protected abstract void onMoveEnd(AjaxRequestTarget target);
 	}
 
-	public abstract class ClickBehaviour extends EventBehaviour
+	public abstract class ClickBehavior extends ListenerBehavior
 	{
 		private static final long serialVersionUID = 1L;
+
+		@Override
+		public String getJSEvent() {
+			return "click";
+		}
 
 		@Override
 		protected final void respond(AjaxRequestTarget target)
@@ -613,7 +613,7 @@ public class GMap2 extends Panel
 			if ("".equals(markerString))
 			{
 				GLatLng gLatLng = GLatLng.fromString(request.getParameter("gLatLng"));
-				ClickBehaviour.this.onClick(gLatLng, target);
+				ClickBehavior.this.onClick(gLatLng, target);
 			}
 			else
 			{
@@ -621,7 +621,7 @@ public class GMap2 extends Panel
 				{
 					if (overlay.getJSIdentifier().equals(markerString))
 					{
-						ClickBehaviour.this.onClick((GMarker)overlay, target);
+						ClickBehavior.this.onClick((GMarker)overlay, target);
 						break;
 					}
 				}
