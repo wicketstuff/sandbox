@@ -140,15 +140,7 @@ public class HomePage extends WicketExamplePage
 		add(bottomPanel);
 
 		center = new Label("center", new PropertyModel(bottomPanel, "center"));
-		center.add(bottomPanel.new SetCenter("onclick")
-		{
-			private static final long serialVersionUID = 1L;
-
-			protected GLatLng getCenter()
-			{
-				return new GLatLng(37.5, -122.1, false);
-			}
-		});
+		center.add(bottomPanel.new SetCenter("onclick", new GLatLng(37.5, -122.1, false)));
 		center.setOutputMarkupId(true);
 		add(center);
 
