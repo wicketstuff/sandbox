@@ -33,7 +33,7 @@ public class HomePage extends WicketExamplePage
 
 		final GMap2 topPanel = new GMap2("topPanel",
 				LOCALHOST_8080_WICKET_CONTRIB_GMAP2_EXAMPLES_KEY);
-		topPanel.add(topPanel.new MoveEndBehaviour()
+		topPanel.add(topPanel.new MoveEndBehavior()
 		{
 			private static final long serialVersionUID = 1L;
 
@@ -43,7 +43,7 @@ public class HomePage extends WicketExamplePage
 				target.addComponent(zoomLabel);
 			}
 		});
-		topPanel.add(topPanel.new ClickBehaviour()
+		topPanel.add(topPanel.new ClickBehavior()
 		{
 			private static final long serialVersionUID = 1L;
 
@@ -108,7 +108,7 @@ public class HomePage extends WicketExamplePage
 
 		final GMap2 bottomPanel = new GMap2("bottomPanel",
 				LOCALHOST_8080_WICKET_CONTRIB_GMAP2_EXAMPLES_KEY);
-		bottomPanel.add(bottomPanel.new MoveEndBehaviour()
+		bottomPanel.add(bottomPanel.new MoveEndBehavior()
 		{
 			private static final long serialVersionUID = 1L;
 
@@ -118,7 +118,7 @@ public class HomePage extends WicketExamplePage
 				target.addComponent(center);
 			}
 		});
-		bottomPanel.add(bottomPanel.new ClickBehaviour()
+		bottomPanel.add(bottomPanel.new ClickBehavior()
 		{
 			private static final long serialVersionUID = 1L;
 
@@ -146,7 +146,7 @@ public class HomePage extends WicketExamplePage
 
 			protected GLatLng getCenter()
 			{
-				return new GLatLng(45.30580139160156, 44.483642578125, false);
+				return new GLatLng(37.5, -122.1, false);
 			}
 		});
 		center.setOutputMarkupId(true);
