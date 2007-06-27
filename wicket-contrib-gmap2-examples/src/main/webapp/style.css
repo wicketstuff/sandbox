@@ -78,6 +78,7 @@ h1,h2 {
 	border-color: #E9601A;
 	background-color: #BBBBBB;
 	color: white;
+	cursor: pointer;
 }
 
 .myButton:hover {
@@ -86,6 +87,7 @@ h1,h2 {
 	border-color: #E9601A;
 	background-color: #999999;
 	color: white;
+	cursor: pointer;
 }
 
 #hellomessage {
