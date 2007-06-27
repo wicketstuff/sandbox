@@ -35,12 +35,6 @@ public class HomePage extends WicketExamplePage
 				LOCALHOST_8080_WICKET_CONTRIB_GMAP2_EXAMPLES_KEY)
 		{
 			@Override
-			public void onMoveEnd(AjaxRequestTarget target)
-			{
-				target.addComponent(zoomLabel);
-			}
-
-			@Override
 			public void onClick(GLatLng gLatLng, AjaxRequestTarget target)
 			{
 				GMarker marker = new GMarker(gLatLng);
@@ -55,6 +49,16 @@ public class HomePage extends WicketExamplePage
 				removeOverlay(marker);
 			}
 		};
+		topPanel.add(topPanel.new MoveEndBehaviour()
+		{
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void onMoveEnd(AjaxRequestTarget target)
+			{
+				target.addComponent(zoomLabel);
+			}
+		});
 		topPanel.setZoomLevel(10);
 		topPanel.addOverlay(new GMarker(new GLatLng(37.4, -122.1), "Home"));
 		topPanel.addOverlay(new GPolygon("#000000", 4, 0.7f, "#E9601A", 0.7f, new GLatLng(37.3,
@@ -102,19 +106,22 @@ public class HomePage extends WicketExamplePage
 		final GMap2 bottomPanel = new GMap2("bottomPanel",
 				LOCALHOST_8080_WICKET_CONTRIB_GMAP2_EXAMPLES_KEY)
 		{
-
-			@Override
-			public void onMoveEnd(AjaxRequestTarget target)
-			{
-				target.addComponent(center);
-			}
-
 			@Override
 			public void onClick(GLatLng point, AjaxRequestTarget target)
 			{
 				openInfoWindow(new HelloPanel(point));
 			}
 		};
+		bottomPanel.add(bottomPanel.new MoveEndBehaviour()
+		{
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void onMoveEnd(AjaxRequestTarget target)
+			{
+				target.addComponent(center);
+			}
+		});
 		bottomPanel.addControl(GControl.GSmallMapControl);
 		bottomPanel.openInfoWindow(new HelloPanel(new GLatLng(37.5, -122.1)));
 		add(bottomPanel);
