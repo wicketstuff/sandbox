@@ -1,5 +1,6 @@
 package wicket.contrib.examples.gmap;
 
+import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
@@ -8,11 +9,9 @@ import org.apache.wicket.model.PropertyModel;
 
 import wicket.contrib.examples.WicketExamplePage;
 import wicket.contrib.gmap.GMap2;
-import wicket.contrib.gmap.GInfoWindow;
 import wicket.contrib.gmap.api.GControl;
 import wicket.contrib.gmap.api.GLatLng;
 import wicket.contrib.gmap.api.GMarker;
-import wicket.contrib.gmap.api.GOverlay;
 import wicket.contrib.gmap.api.GPolygon;
 import wicket.contrib.gmap.api.GPolyline;
 
@@ -76,16 +75,20 @@ public class HomePage extends WicketExamplePage
 		add(topPanel);
 
 		zoomLabel = new Label("zoomLabel", new PropertyModel(topPanel, "zoomLevel"));
-		zoomLabel.add(topPanel.new SetZoom("onclick", 5));
+		zoomLabel.add(topPanel.new SetZoom("onclick", 10));
 		zoomLabel.setOutputMarkupId(true);
 		add(zoomLabel);
 
 		markerLabel = new Label("markerLabel", new Model(null));
-		markerLabel.add(topPanel.new AddOverlay("onclick")
+		markerLabel.add(new AjaxEventBehavior("onclick")
 		{
 			private static final long serialVersionUID = 1L;
 
-			protected GOverlay getOverlay()
+			/**
+			 * @see org.apache.wicket.ajax.AjaxEventBehavior#onEvent(org.apache.wicket.ajax.AjaxRequestTarget)
+			 */
+			@Override
+			protected void onEvent(AjaxRequestTarget target)
 			{
 				GLatLng point = ((GMarker)markerLabel.getModelObject()).getLagLng();
 
@@ -93,7 +96,7 @@ public class HomePage extends WicketExamplePage
 						* (0.9995 + Math.random() / 1000), point.getLng()
 						* (0.9995 + Math.random() / 1000)));
 
-				return marker;
+				topPanel.addOverlay(marker);
 			}
 		});
 		add(markerLabel);
@@ -177,11 +180,15 @@ public class HomePage extends WicketExamplePage
 		add(nw);
 
 		final Label infoWindow = new Label("infoWindow", "openInfoWindow");
-		infoWindow.add(bottomPanel.new OpenInfoWindow("onclick")
+		infoWindow.add(new AjaxEventBehavior("onclick")
 		{
-			protected GInfoWindow getInfoWindow()
+			/**
+			 * @see org.apache.wicket.ajax.AjaxEventBehavior#onEvent(org.apache.wicket.ajax.AjaxRequestTarget)
+			 */
+			@Override
+			protected void onEvent(AjaxRequestTarget target)
 			{
-				return new HelloPanel(new GLatLng(37.5, -122.1));
+				bottomPanel.openInfoWindow(new HelloPanel(new GLatLng(37.5, -122.1)));
 			}
 		});
 		add(infoWindow);
