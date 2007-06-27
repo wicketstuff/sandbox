@@ -15,8 +15,8 @@ import org.apache.wicket.application.IComponentOnBeforeRenderListener;
 import org.apache.wicket.behavior.AbstractBehavior;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.IPropertyReflectionAwareModel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.validation.validator.StringValidator;
 import org.hibernate.validator.Length;
 import org.hibernate.validator.NotNull;
@@ -28,7 +28,7 @@ import org.slf4j.LoggerFactory;
  * <p>
  * Inspects the <code>Model</code> of a <code>FormComponent</code> and 
  * configures the <code>Component</code> according to the declared Hibernate Annotations 
- * used on the <code>PropertyModel</code> object.  <br />
+ * used on the model object.  <br />
  * <strong>NOTE:</strong> This means the
  * <code>Component</code>'s <code>Model</code> <em>must</em> be known 
  * when {@link #configure(Component) configuring} a <code>Component</code>.
@@ -105,7 +105,7 @@ public class HibernateAnnotationComponentConfigurator extends AbstractBehavior i
 			return;
 		}
 		FormComponent formComponent = (FormComponent)component;
-		PropertyModel propertyModel = (PropertyModel) component.getModel();
+		IPropertyReflectionAwareModel propertyModel = (IPropertyReflectionAwareModel) component.getModel();
 		for (Iterator iter = getAnnotations(propertyModel).iterator(); iter.hasNext();) {
 			Annotation annotation = (Annotation) iter.next();
 			Class<? extends Annotation> annotationType = annotation.annotationType();
@@ -116,10 +116,10 @@ public class HibernateAnnotationComponentConfigurator extends AbstractBehavior i
 		}
 	}
 
-	private Collection getAnnotations(PropertyModel propertyModel) {
+	private Collection getAnnotations(IPropertyReflectionAwareModel propertyModel) {
 		Field field = propertyModel.getPropertyField();
 		if (field == null) {
-			LOGGER.warn("Unable to find annotations for PropertyModel: " + propertyModel);
+			LOGGER.warn("Unable to find annotations for model: " + propertyModel);
 			return Collections.EMPTY_LIST;
 		}
 		return Arrays.asList(field.getAnnotations());
@@ -130,8 +130,8 @@ public class HibernateAnnotationComponentConfigurator extends AbstractBehavior i
 			return false;
 		}
 		IModel model = component.getModel();
-		if (null == model || !(model instanceof PropertyModel)) {
-			LOGGER.info("No PropertyModel available for configuring Component: " + component);
+		if (null == model || !IPropertyReflectionAwareModel.class.isAssignableFrom(model.getClass())) {
+			LOGGER.info("No valid model is available for configuring Component: " + component);
 			return false;
 		}
 
