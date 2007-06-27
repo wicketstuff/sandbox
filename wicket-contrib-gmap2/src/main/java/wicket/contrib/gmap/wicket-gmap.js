@@ -56,7 +56,7 @@ function addGMap(id, lat, lng, zoom) {
 	}
 }
 
-function addMapListener(id, event, callBack) {
+function addListener(id, event, callBack) {
 	if (GBrowserIsCompatible()) {
 		var map = Wicket.gmaps[id];
 		// TODO this is so procedural, someone ought

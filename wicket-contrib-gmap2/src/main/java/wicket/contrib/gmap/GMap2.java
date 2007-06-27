@@ -70,8 +70,11 @@ public class GMap2 extends Panel
 			AbstractDefaultAjaxBehavior.class, "wicket-ajax.js");
 
 	private GLatLng center = new GLatLng(37.4419, -122.1419);
-	private int zoomLevel = 13;
+
+	private int zoom = 13;
+
 	private Set<GControl> controls = new HashSet<GControl>();
+
 	private List<GOverlay> overlays = new ArrayList<GOverlay>();
 
 	private final WebMarkupContainer mapContainer;
@@ -238,21 +241,21 @@ public class GMap2 extends Panel
 		return center;
 	}
 
-	public int getZoomLevel()
+	public int getZoom()
 	{
-		return zoomLevel;
+		return zoom;
 	}
 
-	public void setZoomLevel(int parameter)
+	public void setZoom(int level)
 	{
-		if (this.zoomLevel != parameter)
+		if (this.zoom != level)
 		{
-			this.zoomLevel = parameter;
+			this.zoom = level;
 
 			if (RequestCycle.get().getRequestTarget() instanceof AjaxRequestTarget)
 			{
 				((AjaxRequestTarget)RequestCycle.get().getRequestTarget())
-						.appendJavascript(getJSsetZoom(parameter));
+						.appendJavascript(getJSsetZoom(zoom));
 			}
 		}
 	}
@@ -326,7 +329,7 @@ public class GMap2 extends Panel
 	private String getJSinit()
 	{
 		String js = "addGMap(\"" + getJSMapId() + "\", " + getCenter().getLat() + ", "
-				+ getCenter().getLng() + ", " + getZoomLevel() + ");\n";
+				+ getCenter().getLng() + ", " + getZoom() + ");\n";
 
 		// Add the controls.
 		for (GControl control : controls)
@@ -354,7 +357,7 @@ public class GMap2 extends Panel
 
 	private String getJSaddListener(ListenerBehavior behavior)
 	{
-		return "addMapListener(\"" + getJSMapId() + "\", " + "\"" + behavior.getJSEvent() + "\", " + "\""
+		return "addListener(\"" + getJSMapId() + "\", " + "\"" + behavior.getJSEvent() + "\", " + "\""
 					+ behavior.getCallbackUrl() + "\");\n";
 	}
 
@@ -482,7 +485,7 @@ public class GMap2 extends Panel
 			// Attention: don't use setters as this will result in an endless
 			// AJAX request loop
 			center = GLatLng.fromString(request.getParameter("center"));
-			zoomLevel = (Integer)IntegerConverter.INSTANCE.convertToObject(request
+			zoom = (Integer)IntegerConverter.INSTANCE.convertToObject(request
 					.getParameter("zoom"), Locale.getDefault());
 
 			MoveEndBehavior.this.onMoveEnd(target);
