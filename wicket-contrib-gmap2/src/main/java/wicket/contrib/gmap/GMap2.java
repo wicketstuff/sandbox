@@ -77,8 +77,11 @@ public class GMap2 extends Panel
 
 	private Component infoWindow;
 
-	private final MoveEndBehaviour moveEndBehaviour;
 	private final ClickBehaviour clickBehaviour;
+
+	private enum EVENTS {
+		moveend;
+	}
 
 	/**
 	 * Construct.
@@ -106,11 +109,9 @@ public class GMap2 extends Panel
 
 		this.overlays = overlays;
 
-		moveEndBehaviour = new MoveEndBehaviour();
 		clickBehaviour = new ClickBehaviour();
 
 		add(getHeaderContributor(gMapKey));
-		add(moveEndBehaviour);
 		add(clickBehaviour);
 
 		WebMarkupContainer infoWindowContainer = new WebMarkupContainer("info");
@@ -333,13 +334,10 @@ public class GMap2 extends Panel
 	private String getJSInit()
 	{
 		String js = "addGMap(\"" + getJSMapId() + "\", " + getCenter().getLat() + ", "
-				+ getCenter().getLng() + ", "
-				+ getZoomLevel()
-				+ ", \""
+				+ getCenter().getLng() + ", " + getZoomLevel() + ", \""
 				// provides the GMap with information which script to
 				// call
 				// on a moveend or a click event.
-				+ moveEndBehaviour.getCallbackUrl() + "\", " + "\""
 				+ clickBehaviour.getCallbackUrl() + "\");\n";
 
 		// Add the controls.
@@ -357,6 +355,13 @@ public class GMap2 extends Panel
 		if (infoWindow instanceof GInfoWindow)
 		{
 			js += getJSInfoWindowOpened(((GInfoWindow)infoWindow));
+		}
+
+		List moveEndBehaviours = getBehaviors(MoveEndBehaviour.class);
+		for (Object moveEndBehaviour : moveEndBehaviours)
+		{
+			js += "addMapListener(\"" + getJSMapId() + "\", " + "\"" + EVENTS.moveend + "\", "
+					+ "\"" + ((MoveEndBehaviour)moveEndBehaviour).getCallbackUrl() + "\");\n";
 		}
 
 		return js;
@@ -397,7 +402,7 @@ public class GMap2 extends Panel
 	private String getJSInfoWindowOpened(GInfoWindow panel)
 	{
 		return "openInfoWindow('" + getJSMapId() + "'," + "'"
-				+ panel.getGLatLng().getJSConstructor() + "','" + panel.getMarkupId() + "')";
+				+ panel.getGLatLng().getJSConstructor() + "','" + panel.getMarkupId() + "');\n";
 	}
 
 	/**
@@ -424,18 +429,6 @@ public class GMap2 extends Panel
 	public void onClick(GMarker marker, AjaxRequestTarget target)
 	{
 		marker.onClick(target);
-	}
-
-	/**
-	 * Override this method to provide handling of a move.<br>
-	 * You can get the new center coordinates of the map by calling
-	 * {@link #getCenter()}.
-	 * 
-	 * @param target
-	 *            the target that initiated the move
-	 */
-	public void onMoveEnd(AjaxRequestTarget target)
-	{
 	}
 
 	public class ZoomOut extends AjaxEventBehavior
@@ -595,7 +588,7 @@ public class GMap2 extends Panel
 		protected abstract GLatLng getCenter();
 	}
 
-	public class MoveEndBehaviour extends AbstractDefaultAjaxBehavior
+	public abstract class MoveEndBehaviour extends AbstractDefaultAjaxBehavior
 	{
 
 		private static final long serialVersionUID = 1L;
@@ -614,8 +607,18 @@ public class GMap2 extends Panel
 			zoomLevel = (Integer)IntegerConverter.INSTANCE.convertToObject(request
 					.getParameter("zoom"), Locale.getDefault());
 
-			onMoveEnd(target);
+			MoveEndBehaviour.this.onMoveEnd(target);
 		}
+
+		/**
+		 * Override this method to provide handling of a move.<br>
+		 * You can get the new center coordinates of the map by calling
+		 * {@link #getCenter()}.
+		 * 
+		 * @param target
+		 *            the target that initiated the move
+		 */
+		protected abstract void onMoveEnd(AjaxRequestTarget target);
 	}
 
 	public class ClickBehaviour extends AbstractDefaultAjaxBehavior

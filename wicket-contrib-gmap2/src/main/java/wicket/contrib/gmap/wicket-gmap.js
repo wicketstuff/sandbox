@@ -47,20 +47,11 @@ function initGMaps() {
 	}
 }
 
-function addGMap(id, lat, lng, zoom, moveendCallBack, clickCallBack) {
+function addGMap(id, lat, lng, zoom, clickCallBack) {
 	initGMaps();
 	if (GBrowserIsCompatible()) {
 		var map = new GMap2(document.getElementById(id));
 		map.setCenter(new GLatLng(lat, lng), zoom);
-		var moveendCall = function () {wicketAjaxGet( 
-				moveendCallBack 
-				+ '&center=' + map.getCenter()
-				+ '&bounds=' + map.getBounds()
-				+ '&size=' + map.getSize()
-				+ '&zoom=' + map.getZoom()),
-				function(){},
-				function(){alert("ooops!")}};
-		GEvent.addListener( map , 'moveend', moveendCall );
 						
 		var clickCall = function (marker, gLatLng) {wicketAjaxGet( 
 				clickCallBack 
@@ -68,9 +59,24 @@ function addGMap(id, lat, lng, zoom, moveendCallBack, clickCallBack) {
 				+ '&gLatLng=' + gLatLng),
 				function(){},
 				function(){alert("ooops on ClickDeff of!" + map)}};
-		GEvent.addListener( map , 'click', clickCall );
+		GEvent.addListener( map , 'click', clickCall);
 		
 		Wicket.gmaps[id] = map;
+	}
+}
+
+function addMapListener(id, event, callBack) {
+	if (GBrowserIsCompatible()) {
+		var map = Wicket.gmaps[id];
+		var call = function () {wicketAjaxGet( 
+				callBack 
+				+ '&center=' + map.getCenter()
+				+ '&bounds=' + map.getBounds()
+				+ '&size=' + map.getSize()
+				+ '&zoom=' + map.getZoom()),
+				function(){},
+				function(){alert("ooops!")}};
+		GEvent.addListener( map , event, call);
 	}
 }
 
