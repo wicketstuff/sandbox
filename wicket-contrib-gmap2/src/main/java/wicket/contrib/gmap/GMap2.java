@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.Request;
 import org.apache.wicket.RequestCycle;
@@ -37,6 +38,7 @@ import org.apache.wicket.markup.html.WicketEventReference;
 import org.apache.wicket.markup.html.panel.EmptyPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.html.resources.JavascriptResourceReference;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.util.convert.converters.IntegerConverter;
 
 import wicket.contrib.gmap.api.GControl;
@@ -395,43 +397,25 @@ public class GMap2 extends Panel
 				+ panel.getGLatLng().getJSConstructor() + "','" + panel.getMarkupId() + "');\n";
 	}
 
-	public class ZoomOut extends AjaxEventBehavior
+	public class ZoomOut extends AttributeModifier
 	{
 
 		private static final long serialVersionUID = 1L;
 
 		public ZoomOut(String event)
 		{
-			super(event);
-		}
-
-		/**
-		 * @see org.apache.wicket.ajax.AjaxEventBehavior#onEvent(org.apache.wicket.ajax.AjaxRequestTarget)
-		 */
-		@Override
-		protected void onEvent(AjaxRequestTarget target)
-		{
-			target.appendJavascript("Wicket.gmaps['" + getJSMapId() + "']" + ".zoomOut();");
+			super(event, true, new Model("javascript:Wicket.gmaps['" + getJSMapId() + "']" + ".zoomOut();"));
 		}
 	}
 
-	public class ZoomIn extends AjaxEventBehavior
+	public class ZoomIn extends AttributeModifier
 	{
 
 		private static final long serialVersionUID = 1L;
 
 		public ZoomIn(String event)
 		{
-			super(event);
-		}
-
-		/**
-		 * @see org.apache.wicket.ajax.AjaxEventBehavior#onEvent(org.apache.wicket.ajax.AjaxRequestTarget)
-		 */
-		@Override
-		protected void onEvent(AjaxRequestTarget target)
-		{
-			target.appendJavascript("Wicket.gmaps['" + getJSMapId() + "']" + ".zoomIn();");
+			super(event, true, new Model("javascript:Wicket.gmaps['" + getJSMapId() + "']" + ".zoomIn();"));
 		}
 	}
 
@@ -456,55 +440,26 @@ public class GMap2 extends Panel
 		protected abstract GInfoWindow getInfoWindow();
 	}
 
-	public class PanDirection extends AjaxEventBehavior
+	public class PanDirection extends AttributeModifier
 	{
 
 		private static final long serialVersionUID = 1L;
-
-		private int dx;
-
-		private int dy;
 
 		public PanDirection(String event, final int dx, final int dy)
 		{
-			super(event);
-
-			this.dx = dx;
-			this.dy = dy;
-		}
-
-		/**
-		 * @see org.apache.wicket.ajax.AjaxEventBehavior#onEvent(org.apache.wicket.ajax.AjaxRequestTarget)
-		 */
-		@Override
-		protected void onEvent(AjaxRequestTarget target)
-		{
-			target.appendJavascript("Wicket.gmaps['" + getJSMapId() + "']" + ".panDirection(" + dx
-					+ "," + dy + ");");
+			super(event, true, new Model("javascript:Wicket.gmaps['" + getJSMapId() + "']" + ".panDirection(" + dx
+					+ "," + dy + ");"));
 		}
 	}
 
-	public class SetZoom extends AjaxEventBehavior
+	public class SetZoom extends AttributeModifier
 	{
 
 		private static final long serialVersionUID = 1L;
 
-		private int zoom;
-
 		public SetZoom(String event, final int zoom)
 		{
-			super(event);
-
-			this.zoom = zoom;
-		}
-
-		/**
-		 * @see org.apache.wicket.ajax.AjaxEventBehavior#onEvent(org.apache.wicket.ajax.AjaxRequestTarget)
-		 */
-		@Override
-		protected void onEvent(AjaxRequestTarget target)
-		{
-			setZoomLevel(zoom);
+			super(event, true, new Model("javascript:" + getJSZoomSet(zoom)));
 		}
 	}
 
@@ -530,26 +485,15 @@ public class GMap2 extends Panel
 		protected abstract GOverlay getOverlay();
 	}
 
-	public abstract class SetCenter extends AjaxEventBehavior
+	public class SetCenter extends AttributeModifier
 	{
 
 		private static final long serialVersionUID = 1L;
 
-		public SetCenter(String event)
+		public SetCenter(String event, GLatLng gLatLng)
 		{
-			super(event);
+			super(event, true, new Model("javascript:" + getJSCenterSet(gLatLng)));
 		}
-
-		/**
-		 * @see org.apache.wicket.ajax.AjaxEventBehavior#onEvent(org.apache.wicket.ajax.AjaxRequestTarget)
-		 */
-		@Override
-		protected void onEvent(AjaxRequestTarget target)
-		{
-			setCenter(getCenter());
-		}
-
-		protected abstract GLatLng getCenter();
 	}
 
 	private abstract class ListenerBehavior extends AbstractDefaultAjaxBehavior
