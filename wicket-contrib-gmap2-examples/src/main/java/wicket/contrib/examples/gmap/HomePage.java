@@ -32,23 +32,7 @@ public class HomePage extends WicketExamplePage
 	{
 
 		final GMap2 topPanel = new GMap2("topPanel",
-				LOCALHOST_8080_WICKET_CONTRIB_GMAP2_EXAMPLES_KEY)
-		{
-			@Override
-			public void onClick(GLatLng gLatLng, AjaxRequestTarget target)
-			{
-				GMarker marker = new GMarker(gLatLng);
-				addOverlay(marker);
-				markerLabel.getModel().setObject(marker);
-				target.addComponent(markerLabel);
-			}
-
-			@Override
-			public void onClick(GMarker marker, AjaxRequestTarget target)
-			{
-				removeOverlay(marker);
-			}
-		};
+				LOCALHOST_8080_WICKET_CONTRIB_GMAP2_EXAMPLES_KEY);
 		topPanel.add(topPanel.new MoveEndBehaviour()
 		{
 			private static final long serialVersionUID = 1L;
@@ -58,6 +42,26 @@ public class HomePage extends WicketExamplePage
 			{
 				target.addComponent(zoomLabel);
 			}
+		});
+		topPanel.add(topPanel.new ClickBehaviour()
+		{
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void onClick(GMarker marker, AjaxRequestTarget target)
+			{
+				topPanel.removeOverlay(marker);
+			}
+
+			@Override
+			protected void onClick(GLatLng gLatLng, AjaxRequestTarget target)
+			{
+				GMarker marker = new GMarker(gLatLng);
+				topPanel.addOverlay(marker);
+				markerLabel.getModel().setObject(marker);
+				target.addComponent(markerLabel);
+			}
+
 		});
 		topPanel.setZoomLevel(10);
 		topPanel.addOverlay(new GMarker(new GLatLng(37.4, -122.1), "Home"));
@@ -79,6 +83,8 @@ public class HomePage extends WicketExamplePage
 		markerLabel = new Label("markerLabel", new Model(null));
 		markerLabel.add(topPanel.new AddOverlay("onclick")
 		{
+			private static final long serialVersionUID = 1L;
+
 			protected GOverlay getOverlay()
 			{
 				GLatLng point = ((GMarker)markerLabel.getModelObject()).getLagLng();
@@ -93,10 +99,7 @@ public class HomePage extends WicketExamplePage
 		add(markerLabel);
 
 		final Label zoomIn = new Label("zoomInLabel", "ZoomIn");
-		zoomIn.add(topPanel.new ZoomIn("onclick")
-		{
-
-		});
+		zoomIn.add(topPanel.new ZoomIn("onclick"));
 		add(zoomIn);
 
 		final Label zoomOut = new Label("zoomOutLabel", "ZoomOut");
@@ -104,14 +107,7 @@ public class HomePage extends WicketExamplePage
 		add(zoomOut);
 
 		final GMap2 bottomPanel = new GMap2("bottomPanel",
-				LOCALHOST_8080_WICKET_CONTRIB_GMAP2_EXAMPLES_KEY)
-		{
-			@Override
-			public void onClick(GLatLng point, AjaxRequestTarget target)
-			{
-				openInfoWindow(new HelloPanel(point));
-			}
-		};
+				LOCALHOST_8080_WICKET_CONTRIB_GMAP2_EXAMPLES_KEY);
 		bottomPanel.add(bottomPanel.new MoveEndBehaviour()
 		{
 			private static final long serialVersionUID = 1L;
@@ -122,6 +118,23 @@ public class HomePage extends WicketExamplePage
 				target.addComponent(center);
 			}
 		});
+		bottomPanel.add(bottomPanel.new ClickBehaviour()
+		{
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void onClick(GMarker marker, AjaxRequestTarget target)
+			{
+				// empty on purpose
+			}
+
+			@Override
+			protected void onClick(GLatLng gLatLng, AjaxRequestTarget target)
+			{
+				bottomPanel.openInfoWindow(new HelloPanel(gLatLng));
+			}
+
+		});
 		bottomPanel.addControl(GControl.GSmallMapControl);
 		bottomPanel.openInfoWindow(new HelloPanel(new GLatLng(37.5, -122.1)));
 		add(bottomPanel);
@@ -129,6 +142,8 @@ public class HomePage extends WicketExamplePage
 		center = new Label("center", new PropertyModel(bottomPanel, "center"));
 		center.add(bottomPanel.new SetCenter("onclick")
 		{
+			private static final long serialVersionUID = 1L;
+
 			protected GLatLng getCenter()
 			{
 				return new GLatLng(45.30580139160156, 44.483642578125, false);
