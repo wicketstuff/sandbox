@@ -77,10 +77,8 @@ public class GMap2 extends Panel
 
 	private Component infoWindow;
 
-	private final ClickBehaviour clickBehaviour;
-
 	private enum EVENTS {
-		moveend;
+		moveend, click;
 	}
 
 	/**
@@ -109,10 +107,7 @@ public class GMap2 extends Panel
 
 		this.overlays = overlays;
 
-		clickBehaviour = new ClickBehaviour();
-
 		add(getHeaderContributor(gMapKey));
-		add(clickBehaviour);
 
 		WebMarkupContainer infoWindowContainer = new WebMarkupContainer("info");
 		infoWindowContainer.setOutputMarkupId(true);
@@ -334,11 +329,7 @@ public class GMap2 extends Panel
 	private String getJSInit()
 	{
 		String js = "addGMap(\"" + getJSMapId() + "\", " + getCenter().getLat() + ", "
-				+ getCenter().getLng() + ", " + getZoomLevel() + ", \""
-				// provides the GMap with information which script to
-				// call
-				// on a moveend or a click event.
-				+ clickBehaviour.getCallbackUrl() + "\");\n";
+				+ getCenter().getLng() + ", " + getZoomLevel() + ");\n";
 
 		// Add the controls.
 		for (GControl control : controls)
@@ -357,13 +348,23 @@ public class GMap2 extends Panel
 			js += getJSInfoWindowOpened(((GInfoWindow)infoWindow));
 		}
 
-		List moveEndBehaviours = getBehaviors(MoveEndBehaviour.class);
-		for (Object moveEndBehaviour : moveEndBehaviours)
-		{
-			js += "addMapListener(\"" + getJSMapId() + "\", " + "\"" + EVENTS.moveend + "\", "
-					+ "\"" + ((MoveEndBehaviour)moveEndBehaviour).getCallbackUrl() + "\");\n";
-		}
+		js += getAddMapListener(MoveEndBehaviour.class, EVENTS.moveend);
 
+		js += getAddMapListener(ClickBehaviour.class, EVENTS.click);
+
+		return js;
+	}
+
+	// TODO get rid of the event parameter.
+	private String getAddMapListener(Class<? extends EventBehaviour> clazz, EVENTS event)
+	{
+		List behaviours = getBehaviors(clazz);
+		String js = "";
+		for (Object behaviour : behaviours)
+		{
+			js += "addMapListener(\"" + getJSMapId() + "\", " + "\"" + event + "\", " + "\""
+					+ ((AbstractDefaultAjaxBehavior)behaviour).getCallbackUrl() + "\");\n";
+		}
 		return js;
 	}
 
@@ -403,32 +404,6 @@ public class GMap2 extends Panel
 	{
 		return "openInfoWindow('" + getJSMapId() + "'," + "'"
 				+ panel.getGLatLng().getJSConstructor() + "','" + panel.getMarkupId() + "');\n";
-	}
-
-	/**
-	 * Override this method to provide handling of a click on a GLatLng.
-	 * 
-	 * @param gLatLng
-	 *            the clicked GLatLng
-	 * @param target
-	 *            the target that initiated the click
-	 */
-	public void onClick(GLatLng gLatLng, AjaxRequestTarget target)
-	{
-	}
-
-	/**
-	 * Override this method to provide handling of a click on a marker.<br>
-	 * This default implementation forwards the click to the marker.
-	 * 
-	 * @param marker
-	 *            the clicked marker
-	 * @param target
-	 *            the target that initiated the click
-	 */
-	public void onClick(GMarker marker, AjaxRequestTarget target)
-	{
-		marker.onClick(target);
 	}
 
 	public class ZoomOut extends AjaxEventBehavior
@@ -588,7 +563,11 @@ public class GMap2 extends Panel
 		protected abstract GLatLng getCenter();
 	}
 
-	public abstract class MoveEndBehaviour extends AbstractDefaultAjaxBehavior
+	private abstract class EventBehaviour extends AbstractDefaultAjaxBehavior
+	{
+	}
+
+	public abstract class MoveEndBehaviour extends EventBehaviour
 	{
 
 		private static final long serialVersionUID = 1L;
@@ -597,7 +576,7 @@ public class GMap2 extends Panel
 		 * TODO update bounds
 		 */
 		@Override
-		protected void respond(AjaxRequestTarget target)
+		protected final void respond(AjaxRequestTarget target)
 		{
 			Request request = RequestCycle.get().getRequest();
 
@@ -621,12 +600,12 @@ public class GMap2 extends Panel
 		protected abstract void onMoveEnd(AjaxRequestTarget target);
 	}
 
-	public class ClickBehaviour extends AbstractDefaultAjaxBehavior
+	public abstract class ClickBehaviour extends EventBehaviour
 	{
 		private static final long serialVersionUID = 1L;
 
 		@Override
-		protected void respond(AjaxRequestTarget target)
+		protected final void respond(AjaxRequestTarget target)
 		{
 			Request request = RequestCycle.get().getRequest();
 
@@ -634,7 +613,7 @@ public class GMap2 extends Panel
 			if ("".equals(markerString))
 			{
 				GLatLng gLatLng = GLatLng.fromString(request.getParameter("gLatLng"));
-				onClick(gLatLng, target);
+				ClickBehaviour.this.onClick(gLatLng, target);
 			}
 			else
 			{
@@ -642,11 +621,33 @@ public class GMap2 extends Panel
 				{
 					if (overlay.getJSIdentifier().equals(markerString))
 					{
-						onClick((GMarker)overlay, target);
+						ClickBehaviour.this.onClick((GMarker)overlay, target);
 						break;
 					}
 				}
 			}
 		}
+
+		/**
+		 * Override this method to provide handling of a click on a GLatLng.
+		 * 
+		 * @param gLatLng
+		 *            the clicked GLatLng
+		 * @param target
+		 *            the target that initiated the click
+		 */
+		protected abstract void onClick(GLatLng gLatLng, AjaxRequestTarget target);
+
+		/**
+		 * Override this method to provide handling of a click on a marker.<br>
+		 * This default implementation forwards the click to the marker.
+		 * 
+		 * @param marker
+		 *            the clicked marker
+		 * @param target
+		 *            the target that initiated the click
+		 */
+		protected abstract void onClick(GMarker marker, AjaxRequestTarget target);
+
 	}
 }

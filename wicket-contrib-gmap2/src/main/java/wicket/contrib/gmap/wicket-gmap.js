@@ -47,20 +47,11 @@ function initGMaps() {
 	}
 }
 
-function addGMap(id, lat, lng, zoom, clickCallBack) {
+function addGMap(id, lat, lng, zoom) {
 	initGMaps();
 	if (GBrowserIsCompatible()) {
 		var map = new GMap2(document.getElementById(id));
 		map.setCenter(new GLatLng(lat, lng), zoom);
-						
-		var clickCall = function (marker, gLatLng) {wicketAjaxGet( 
-				clickCallBack 
-				+ '&marker=' + (marker == null ? "" : marker.overlayId)
-				+ '&gLatLng=' + gLatLng),
-				function(){},
-				function(){alert("ooops on ClickDeff of!" + map)}};
-		GEvent.addListener( map , 'click', clickCall);
-		
 		Wicket.gmaps[id] = map;
 	}
 }
@@ -68,17 +59,32 @@ function addGMap(id, lat, lng, zoom, clickCallBack) {
 function addMapListener(id, event, callBack) {
 	if (GBrowserIsCompatible()) {
 		var map = Wicket.gmaps[id];
-		var call = function () {wicketAjaxGet( 
-				callBack 
-				+ '&center=' + map.getCenter()
-				+ '&bounds=' + map.getBounds()
-				+ '&size=' + map.getSize()
-				+ '&zoom=' + map.getZoom()),
-				function(){},
-				function(){alert("ooops!")}};
-		GEvent.addListener( map , event, call);
+		// TODO this is so procedural, someone ought
+		// to optimize this.
+		if (event == 'moveend') {
+			var call = function () {wicketAjaxGet( 
+					callBack 
+					+ '&center=' + map.getCenter()
+					+ '&bounds=' + map.getBounds()
+					+ '&size=' + map.getSize()
+					+ '&zoom=' + map.getZoom()),
+					function(){},
+					function(){alert("ooops!")}};
+			GEvent.addListener( map , event, call);
+		} else if (event == 'click') {
+			var call = function (marker, gLatLng) {wicketAjaxGet( 
+					callBack 
+					+ '&marker=' + (marker == null ? "" : marker.overlayId)
+					+ '&gLatLng=' + gLatLng),
+					function(){},
+					function(){alert("ooops on ClickDeff of!" + map)}};
+			GEvent.addListener( map , event, call);
+		}
 	}
 }
+
+						
+
 
 function setZoom(id, level) {
 	Wicket.gmaps[id].setZoom(level);
