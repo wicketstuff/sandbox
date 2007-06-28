@@ -403,7 +403,15 @@ public class GMap2 extends Panel
 		return "Wicket.gmaps['" + getJSMapId() + "']" + ".panDirection(" + dx
 		+ "," + dy + ");\n";
 	}
-	
+
+	private String getJSzoomOut() {
+		return "Wicket.gmaps['" + getJSMapId() + "']" + ".zoomOut();\n";
+	}
+		
+	private String getJSzoomIn() {
+		return "Wicket.gmaps['" + getJSMapId() + "']" + ".zoomIn();\n";
+	}
+		
 	public class ZoomOut extends AttributeModifier
 	{
 
@@ -411,7 +419,7 @@ public class GMap2 extends Panel
 
 		public ZoomOut(String event)
 		{
-			super(event, true, new Model("javascript:Wicket.gmaps['" + getJSMapId() + "']" + ".zoomOut();"));
+			super(event, true, new Model("javascript:" + getJSzoomOut()));
 		}
 	}
 
@@ -422,7 +430,7 @@ public class GMap2 extends Panel
 
 		public ZoomIn(String event)
 		{
-			super(event, true, new Model("javascript:Wicket.gmaps['" + getJSMapId() + "']" + ".zoomIn();"));
+			super(event, true, new Model("javascript:" + getJSzoomIn()));
 		}
 	}
 
@@ -546,8 +554,7 @@ public class GMap2 extends Panel
 		protected abstract void onClick(GLatLng gLatLng, AjaxRequestTarget target);
 
 		/**
-		 * Override this method to provide handling of a click on a marker.<br>
-		 * This default implementation forwards the click to the marker.
+		 * Override this method to provide handling of a click on a GMarker.
 		 * 
 		 * @param marker
 		 *            the clicked marker
