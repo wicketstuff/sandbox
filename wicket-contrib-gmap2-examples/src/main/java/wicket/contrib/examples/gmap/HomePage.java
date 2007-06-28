@@ -49,7 +49,7 @@ public class HomePage extends WicketExamplePage
 			@Override
 			protected void onClick(GMarker marker, AjaxRequestTarget target)
 			{
-				topPanel.removeOverlay(marker);
+				topPanel.openInfoWindow(new HelloPanel(), marker);
 			}
 
 			@Override
@@ -134,12 +134,12 @@ public class HomePage extends WicketExamplePage
 			@Override
 			protected void onClick(GLatLng gLatLng, AjaxRequestTarget target)
 			{
-				bottomPanel.openInfoWindow(new HelloPanel(gLatLng));
+				bottomPanel.openInfoWindow(new HelloPanel(), gLatLng);
 			}
 
 		});
 		bottomPanel.addControl(GControl.GSmallMapControl);
-		bottomPanel.openInfoWindow(new HelloPanel(new GLatLng(37.5, -122.1)));
+		bottomPanel.openInfoWindow(new HelloPanel(), new GLatLng(37.5, -122.1));
 		add(bottomPanel);
 
 		center = new Label("center", new PropertyModel(bottomPanel, "center"));
@@ -188,7 +188,7 @@ public class HomePage extends WicketExamplePage
 			@Override
 			protected void onEvent(AjaxRequestTarget target)
 			{
-				bottomPanel.openInfoWindow(new HelloPanel(new GLatLng(37.5, -122.1)));
+				bottomPanel.openInfoWindow(new HelloPanel(), new GLatLng(37.5, -122.1));
 			}
 		});
 		add(infoWindow);

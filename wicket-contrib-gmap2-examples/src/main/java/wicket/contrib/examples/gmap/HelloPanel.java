@@ -3,7 +3,6 @@ package wicket.contrib.examples.gmap;
 import org.apache.wicket.markup.html.basic.Label;
 
 import wicket.contrib.gmap.GInfoWindow;
-import wicket.contrib.gmap.api.GLatLng;
 
 /**
  * Panel used as an InfoWindow in the GMap.
@@ -18,10 +17,8 @@ public class HelloPanel extends GInfoWindow
 
 	private static int i;
 
-	public HelloPanel(GLatLng gLatLng)
+	public HelloPanel()
 	{
-		super(gLatLng);
-
 		add(new Label("label", "" + (i++)));
 	}
 }
