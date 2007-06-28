@@ -119,6 +119,14 @@ function removeOverlay(id, overlayId) {
 	}
 }
 
-function openInfoWindow(id, gLatLng, domId) {
-	Wicket.gmaps[id].openInfoWindow(eval(gLatLng), document.getElementById(domId));
+function openInfoWindow(id, latLng, domId) {
+	Wicket.gmaps[id].openInfoWindow(eval(latLng), document.getElementById(domId));
+}
+
+function openMarkerInfoWindow(id, markerId, domId) {
+	Wicket.gmaps[id][markerId].openInfoWindow(document.getElementById(domId));
+}
+
+function closeInfoWindow(id) {
+	Wicket.gmaps[id].closeInfoWindow();
 }

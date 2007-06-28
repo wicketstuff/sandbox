@@ -32,24 +32,17 @@ public class GInfoWindow extends Panel
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private GLatLng gLatLng;
-
-	public GInfoWindow(GLatLng gLatLng)
+	public GInfoWindow()
 	{
 		super("window");
-		this.gLatLng = gLatLng;
+
 		setOutputMarkupId(true);
 	}
 
-	public GInfoWindow(GLatLng gLatLng, IModel model)
+	public GInfoWindow(IModel model)
 	{
 		super("window", model);
-		this.gLatLng = gLatLng;
-		setOutputMarkupId(true);
-	}
 
-	public GLatLng getGLatLng()
-	{
-		return gLatLng;
+		setOutputMarkupId(true);
 	}
 }
