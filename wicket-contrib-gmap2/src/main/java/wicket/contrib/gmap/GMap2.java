@@ -415,7 +415,7 @@ public class GMap2 extends Panel
 
 	private String getJSaddListener(ListenerBehavior behavior)
 	{
-		return "addListener(\"" + getJSid() + "\", " + "\"" + behavior.getJSEvent() + "\", " + "\""
+		return "Wicket.GMaps[\"" + behavior.getJSEvent() + "\"](" + "\"" + getJSid() + "\", " + "\""
 					+ behavior.getCallbackUrl() + "\");\n";
 	}
 

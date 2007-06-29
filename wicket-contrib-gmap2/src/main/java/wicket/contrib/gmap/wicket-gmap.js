@@ -56,34 +56,27 @@ function addGMap(id, lat, lng, zoom) {
 	}
 }
 
-function addListener(id, event, callBack) {
-	if (GBrowserIsCompatible()) {
-		var map = Wicket.gmaps[id];
-		// TODO this is so procedural, someone ought
-		// to optimize this.
-		if (event == 'moveend') {
-			var call = function () {wicketAjaxGet( 
-					callBack 
-					+ '&center=' + map.getCenter()
-					+ '&bounds=' + map.getBounds()
-					+ '&size=' + map.getSize()
-					+ '&zoom=' + map.getZoom()),
-					function(){},
-					function(){alert("ooops!")}};
-			GEvent.addListener( map , event, call);
-		} else if (event == 'click') {
-			var call = function (marker, gLatLng) {wicketAjaxGet( 
-					callBack 
-					+ '&marker=' + (marker == null ? "" : marker.overlayId)
-					+ '&gLatLng=' + gLatLng),
-					function(){},
-					function(){alert("ooops on ClickDeff of!" + map)}};
-			GEvent.addListener( map , event, call);
-		}
-	}
+Wicket.GMaps.moveend = function (id, callBack) {
+	var map = Wicket.gmaps[id];
+	GEvent.addListener( map , 'moveend',
+		function () {wicketAjaxGet(callBack 
+			+ '&center=' + map.getCenter()
+			+ '&bounds=' + map.getBounds()
+			+ '&size=' + map.getSize()
+			+ '&zoom=' + map.getZoom()),
+		function(){},
+		function(){alert("ooops!")}});
 }
 
-						
+Wicket.GMaps.click = function (id, callBack) {
+	var map = Wicket.gmaps[id];
+	GEvent.addListener( map , 'click',
+		function (marker, gLatLng) {wicketAjaxGet(callBack 
+			+ '&marker=' + (marker == null ? "" : marker.overlayId)
+			+ '&gLatLng=' + gLatLng),
+		function(){},
+		function(){alert("ooops on ClickDeff of!" + map)}});
+}
 
 
 function setZoom(id, level) {
