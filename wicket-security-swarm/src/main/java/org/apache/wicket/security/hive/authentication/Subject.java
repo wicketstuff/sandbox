@@ -25,17 +25,17 @@ import org.apache.wicket.security.hive.authorization.Principal;
 import org.apache.wicket.security.strategies.WaspAuthorizationStrategy;
 
 /**
- * Subject represents (part of) an authenticated entity. It can be decorated
- * with certain rights ({@link Principal}s). Most implementations will provide
- * some means to add (and sometimes remove) principals, however all must honor
- * the readonly flag. {@link #setReadOnly()} is automatically triggerd after a
- * login. Subjects are created by {@link LoginContext}s as placeholders for the
- * rights of a user for the duration of the session. In addition Subjects play
- * an importeand part in multi-login scenario's as they define what they
- * authenticate. For example one subject might authenticate all subclassses of
- * BasicSecurePage where another might authenicate all subclasses of
- * AdvancedSecurePage. Effectivly requiring a use to login twice if both type of
- * pages are to be visited.
+ * Subject represents (part of) an authenticated entity, such as an individual,
+ * a corporation, or a login id. It can be decorated with certain rights ({@link Principal}s).
+ * Most implementations will provide some means to add (and sometimes remove)
+ * principals, however all must honor the readonly flag. {@link #setReadOnly()}
+ * is automatically triggerd after a login. Subjects are created by
+ * {@link LoginContext}s as placeholders for the rights of a user for the
+ * duration of the session. In addition Subjects play an importeand part in
+ * multi-login scenario's as they define what they authenticate. For example one
+ * subject might authenticate all subclassses of BasicSecurePage where another
+ * might authenicate all subclasses of AdvancedSecurePage. Effectivly requiring
+ * a user to login twice if both type of pages are to be visited.
  * 
  * @author marrink
  */
@@ -58,7 +58,8 @@ public interface Subject extends Serializable
 
 	/**
 	 * Mark this subject as readonly. preventing principals to be added or
-	 * removed. Note this method is always called on a subject after it has been handed over to the security layer.
+	 * removed. Note this method is always called on a subject after it has been
+	 * handed over to the security layer.
 	 */
 	public void setReadOnly();
 
