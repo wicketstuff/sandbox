@@ -13,7 +13,7 @@ import wicket.contrib.mootools.events.MFXEvent;
 
 public class MFXAjaxStatelessLink extends WebMarkupContainer implements MFXMooBindable {
 	private static final long serialVersionUID = 1L;
-	private String component;
+	private String domId;
 	private String url;
 	private MFXOptions options;
 	
@@ -21,20 +21,20 @@ public class MFXAjaxStatelessLink extends WebMarkupContainer implements MFXMooBi
 	public MFXAjaxStatelessLink(String id, String component , Page page) {
 		super(id);
 		this.url = getResourceUrl(page);
-		this.component = component;
+		this.domId = component;
 		setupLink();
 	}
 	
 	public MFXAjaxStatelessLink(String id, Component component, Page page) {
 		super(id);
 		this.url = getResourceUrl(page);
-		this.component = component.getMarkupId();
+		this.domId = component.getMarkupId();
 		setupLink();
 	}
 	
 	public MFXAjaxStatelessLink(String id, String component, String url) {
 		super(id);
-		this.component = component;
+		this.domId = component;
 		this.url = url;
 		setupLink();
 	}
@@ -43,7 +43,7 @@ public class MFXAjaxStatelessLink extends WebMarkupContainer implements MFXMooBi
 		setOutputMarkupId(true);
 		add(new IncludeMooToolsStateless());
 		options = new MFXOptions();
-		options.setUpdate(component);
+		options.setUpdate(domId);
 		options.setMethod("get");
 	}
 

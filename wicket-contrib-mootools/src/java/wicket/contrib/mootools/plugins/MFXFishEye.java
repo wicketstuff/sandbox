@@ -7,7 +7,6 @@ import org.apache.wicket.RequestCycle;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.behavior.AbstractBehavior;
 import org.apache.wicket.behavior.HeaderContributor;
-import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -28,6 +27,7 @@ public abstract class MFXFishEye extends Panel {
 	
 	
 	public class Shim extends AbstractBehavior {
+		private static final long serialVersionUID = 1L;
 		@Override
 		public void renderHead(IHeaderResponse response) {
 			response.renderString(JavascriptUtils.SCRIPT_OPEN_TAG);

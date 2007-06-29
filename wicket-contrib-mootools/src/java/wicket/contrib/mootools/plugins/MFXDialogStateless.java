@@ -21,12 +21,16 @@ public class MFXDialogStateless extends MFXDialogBase implements MFXMooBindable 
 	private static enum MFXDialogStatelessTypes { MESSAGE_WITH_CLOSE , MESSAGE_WITHOUT_CLOSE };
 	
 	public MFXDialogStateless(final String id) {
+		this(id,MFXDialogStatelessTypes.MESSAGE_WITH_CLOSE);
+	}
+	
+	public MFXDialogStateless(final String id,MFXDialogStatelessTypes type) {
 		super(id);
 		add(new IncludeMooToolsStateless());
 		
 		this.id = id;
 		this.contentId = id+"0";
-		this.dialogType = MFXDialogStatelessTypes.MESSAGE_WITH_CLOSE;
+		this.dialogType = type;
 		this.closeButtonText = "Close";
 		
 		dialog= new WebMarkupContainer("dialog") {
