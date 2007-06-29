@@ -10,7 +10,6 @@ import wicket.contrib.mootools.MFXOptions;
 public class MFXFontResizer extends AbstractRequireMooStatelessBehavior {
 	private static final long serialVersionUID = 1L;
 	private int size;
-	private int maxSize;
 	private Component target;
 	private MFXOptions mfxOptions = new MFXOptions();
 	private String container;

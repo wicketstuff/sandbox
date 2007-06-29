@@ -29,15 +29,19 @@ public class MFXDialog extends MFXDialogBase {
 	private WebMarkupContainer dialog;
 	private WebMarkupContainer contentPane;
 	
-	public static enum MFXDialogTypes { CONFIRMATION, MESSAGE, MESSAGE_WITHOUT_CLOSE, QUESTION_WITH_INPUT};
+	public static enum MFXDialogTypes { CONFIRMATION, MESSAGE, MESSAGE_WITHOUT_CLOSE, QUESTION_WITH_INPUT };
 	
 	public MFXDialog(String id) {
+		this(id,MFXDialogTypes.MESSAGE);
+	}
+	
+	public MFXDialog(String id,MFXDialogTypes type) {
 		super(id);
 		
 		add(new IncludeMooTools());
 		
 		//defaults
-		this.dialogType=MFXDialogTypes.MESSAGE;
+		this.dialogType=type;
 		this.shown=false;
 		this.confirmButtonText = "Ok";
 		this.abortButtonText = "Cancel";
@@ -66,7 +70,7 @@ public class MFXDialog extends MFXDialogBase {
 		
 		dialog.add(contentPane = new WebMarkupContainer("content"));
 		
-		contentPane.add(new Label("body",new PropertyModel(this,"body")));
+		contentPane.add(new Label("body",new PropertyModel(this,"body")).setEscapeModelStrings(false));
 		
 		form = new Form("inputForm");
 		input =  new TextArea("input",new PropertyModel(this,"inputText"));
@@ -125,6 +129,7 @@ public class MFXDialog extends MFXDialogBase {
 		submitLink.add(new Label("submitText",new PropertyModel(this,"confirmButtonText")));
 		
 	}
+	
 
 
 	protected void onConfirmCallback(AjaxRequestTarget targ) {
@@ -169,18 +174,18 @@ public class MFXDialog extends MFXDialogBase {
 			closeLink.setVisible(true);
 		
 
+		if(getDialogType() == MFXDialogTypes.QUESTION_WITH_INPUT) {
+			input.setVisible(true);
+			form.setVisible(true);
+			abortLink.setVisible(true);
+			submitLink.setVisible(true);
+		}
+		
 		if(getDialogType() == MFXDialogTypes.CONFIRMATION) {
 			abortLink.setVisible(true);
 			confirmLink.setVisible(true);
 		}
 		
-		if(getDialogType() == MFXDialogTypes.QUESTION_WITH_INPUT) {
-			input.setVisible(true);
-			form.setVisible(true);
-			abortLink.setVisible(true);
-			confirmLink.setVisible(false);
-			submitLink.setVisible(true);
-		}
 	}
 	
 	

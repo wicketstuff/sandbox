@@ -1,0 +1,31 @@
+div.MFXDragPane { 
+	padding: 0; 
+	border: 0; 
+	position: relative; 
+	display: block; 
+	margin: 0 0 10px 0; 
+	z-index: 1; 
+}
+div.dragBar { 
+	padding: 2px; 
+	background: black; 
+	color: white; 
+	display: block; 
+	cursor: move; 
+}
+div.content { 
+	padding: 5px; 
+	background: white; 
+}
+
+div.webBoxMarker { 
+	border: 1px dotted black; 
+	margin: 0 0 8px 0; 
+}
+
+table#webBoxContainer { 
+	width: 800px; 
+}
+table#webBoxContainer td { 
+	vertical-align: top 
+}

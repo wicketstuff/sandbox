@@ -45,10 +45,7 @@ public class MFXStyle extends MFXBase {
 	 * @param end end value
 	 */
 	public MFXStyle(String style,String transition,int start,int end) {
-		setStyle(style);
-		setTransition(transition);
-		setStartValue(String.valueOf(start));
-		setEndValue(String.valueOf(end));
+		this(style,transition,String.valueOf(start),String.valueOf(end));
 	}
 	
 	/**
@@ -58,9 +55,7 @@ public class MFXStyle extends MFXBase {
 	 * @param end end value
 	 */
 	public MFXStyle(String style,String start,String end) {
-		setStyle(style);
-		setStartValue(start);
-		setEndValue(end);
+		this(style,null,start,end);
 	}
 	
 	/**
@@ -70,9 +65,7 @@ public class MFXStyle extends MFXBase {
 	 * @param end end value
 	 */
 	public MFXStyle(String style,int start,int end) {
-		setStyle(style);
-		setStartValue(String.valueOf(start));
-		setEndValue(String.valueOf(end));
+		this(style,String.valueOf(start),String.valueOf(end));
 	}
 	
 	/* (non-Javadoc)

@@ -80,7 +80,6 @@ public class MFXValidationHandler extends AbstractRequireMooBehavior {
 	
 	protected void respond(AjaxRequestTarget target)
 	{
-		Boolean wasValid = formComponent.isValid();
 		formComponent.validate();
 		String componentId = getComponent().getMarkupId();
 		
