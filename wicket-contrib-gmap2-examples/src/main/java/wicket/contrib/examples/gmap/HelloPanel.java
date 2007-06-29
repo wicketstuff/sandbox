@@ -1,13 +1,14 @@
 package wicket.contrib.examples.gmap;
 
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.panel.Panel;
 
-import wicket.contrib.gmap.GInfoWindow;
+import wicket.contrib.gmap.GMap2;
 
 /**
  * Panel used as an InfoWindow in the GMap.
  */
-public class HelloPanel extends GInfoWindow
+public class HelloPanel extends Panel
 {
 
 	/**
@@ -19,6 +20,8 @@ public class HelloPanel extends GInfoWindow
 
 	public HelloPanel()
 	{
+		super(GMap2.CONTENT_ID);
+		
 		add(new Label("label", "" + (i++)));
 	}
 }
