@@ -22,7 +22,7 @@ import org.apache.wicket.security.hive.authentication.Subject;
 
 /**
  * This interface represents the abstract notion of a principal, which can be used to
- * represent any entity, such as an individual, a corporation, or a login id.
+ * represent a set of permissions on the system.
  * @see java.security.Principal
  * @author marrink
  */
