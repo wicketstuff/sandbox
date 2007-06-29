@@ -191,4 +191,13 @@ public class SwarmStrategy extends ClassAuthorizationStrategy
 		else
 			throw new SecurityException("Unable to process logoff with context: " + context);
 	}
+
+	/**
+	 * The {@link LoginContainer} keeps track of all Subjects for this session..
+	 * @return loginContainer
+	 */
+	protected final LoginContainer getLoginContainer()
+	{
+		return loginContainer;
+	}
 }
