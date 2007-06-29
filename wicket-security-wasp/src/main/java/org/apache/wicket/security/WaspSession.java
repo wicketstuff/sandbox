@@ -56,7 +56,10 @@ public class WaspSession extends WebSession
 	}
 
 	/**
-	 * Attempts to login with the current login info.
+	 * Attempts to login with the current login info. Even though this call
+	 * allready handles temporary sessions and dirty flags. The
+	 * {@link WaspAuthorizationStrategy} should also do the same as it is not
+	 * guranteed that every login comes from the session.
 	 * 
 	 * @param context
 	 *            any type of information required to login
@@ -69,20 +72,26 @@ public class WaspSession extends WebSession
 		// make session permananent after login
 		if (isTemporary())
 			bind();
+		else
+			dirty(); // for cluster replication.
 	}
 
 	/**
-	 * Attempst to log off the current user.
+	 * Attempst to log off the current user. Even though this call
+	 * allready handles dirty flags. The
+	 * {@link WaspAuthorizationStrategy} should also do the same as it is not
+	 * guranteed that every logoff comes from the session.
 	 * 
 	 * @see WaspAuthorizationStrategy#logoff(Object)
 	 */
 	public boolean logoff(Object context)
 	{
-		if (securityStrategy != null)
+		if (securityStrategy != null && securityStrategy.logoff(context))
 		{
-			return securityStrategy.logoff(context);
+			dirty();
+			return true;
 		}
-		return true;
+		return false;
 	}
 
 	/**
