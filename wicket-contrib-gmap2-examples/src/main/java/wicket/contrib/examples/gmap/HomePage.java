@@ -2,6 +2,8 @@ package wicket.contrib.examples.gmap;
 
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.markup.ComponentTag;
+import org.apache.wicket.markup.MarkupStream;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.Model;
@@ -9,6 +11,7 @@ import org.apache.wicket.model.PropertyModel;
 
 import wicket.contrib.examples.WicketExamplePage;
 import wicket.contrib.gmap.GMap2;
+import wicket.contrib.gmap.GMap2.MoveEndBehavior;
 import wicket.contrib.gmap.api.GControl;
 import wicket.contrib.gmap.api.GLatLng;
 import wicket.contrib.gmap.api.GMarker;
@@ -27,6 +30,8 @@ public class HomePage extends WicketExamplePage
 	private final Label zoomLabel;
 	private final Label center;
 
+	private MoveEndBehavior moveEndBehavior;
+	
 	public HomePage()
 	{
 
@@ -111,7 +116,7 @@ public class HomePage extends WicketExamplePage
 
 		final GMap2 bottomPanel = new GMap2("bottomPanel",
 				LOCALHOST_8080_WICKET_CONTRIB_GMAP2_EXAMPLES_KEY);
-		bottomPanel.add(bottomPanel.new MoveEndBehavior()
+		moveEndBehavior = bottomPanel.new MoveEndBehavior()
 		{
 			private static final long serialVersionUID = 1L;
 
@@ -120,7 +125,8 @@ public class HomePage extends WicketExamplePage
 			{
 				target.addComponent(center);
 			}
-		});
+		};
+		bottomPanel.add(moveEndBehavior);
 		bottomPanel.add(bottomPanel.new ClickBehavior()
 		{
 			private static final long serialVersionUID = 1L;
@@ -199,6 +205,47 @@ public class HomePage extends WicketExamplePage
 			{
 			}
 		});
+		final Label enabledMoveEnd = new Label("enabledMoveEnd",
+				"the move end behavior is enabled:");
+		add(enabledMoveEnd);
+		final Label enabledLabel = new Label("enabled", new Model()
+		{
+			@Override
+			public Object getObject()
+			{
+				return bottomPanel.getBehaviors().contains(moveEndBehavior);
+			}
+		});
+		enabledLabel.add(new AjaxEventBehavior("onclick")
+		{
+			@Override
+			protected void onEvent(AjaxRequestTarget target)
+			{
+				if (bottomPanel.getBehaviors().contains(moveEndBehavior))
+				{
+					bottomPanel.remove(moveEndBehavior);
+				}
+				else
+				{
+					//TODO AbstractAjaxBehaviors are not reusable, so we have to recreate:
+					//https://issues.apache.org/jira/browse/WICKET-713
+					moveEndBehavior = bottomPanel.new MoveEndBehavior()
+					{
+						private static final long serialVersionUID = 1L;
+
+						@Override
+						protected void onMoveEnd(AjaxRequestTarget target)
+						{
+							target.addComponent(center);
+						}
+					};
+					bottomPanel.add(moveEndBehavior);
+				}
+				target.addComponent(bottomPanel);
+				target.addComponent(enabledLabel);
+			}
+		});
+		add(enabledLabel);
 	}
 
 	// pay attention at webapp deploy context, we need a different key for each
