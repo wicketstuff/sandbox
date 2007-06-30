@@ -10,6 +10,9 @@ import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.panel.EmptyPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.wicketstuff.dojo.markup.html.DojoLink;
+import org.wicketstuff.dojo.markup.html.container.DojoSimpleContainer;
+import org.wicketstuff.dojo.markup.html.container.layout.DojoLayoutContainer;
+import org.wicketstuff.dojo.markup.html.container.layout.DojoLayoutContainer.Position;
 import org.wicketstuff.pickwick.backend.ImageUtils;
 import org.wicketstuff.pickwick.backend.panel.SequencePropertiesPanel;
 import org.wicketstuff.pickwick.bean.Folder;
@@ -17,7 +20,7 @@ import org.wicketstuff.pickwick.frontend.panel.FolderTreePanel;
 
 import com.google.inject.Inject;
 
-public class SequenceEditPage extends WebPage {
+public class SequenceEditPage extends BackendBasePage {
 	
 	@Inject
 	private transient ImageUtils imageUtils = new ImageUtils();
@@ -26,10 +29,19 @@ public class SequenceEditPage extends WebPage {
 	
 	public SequenceEditPage(PageParameters params) {
 		
+		DojoLayoutContainer layout;
+		addOnClient(layout = new DojoLayoutContainer("mainArea"));
+		DojoSimpleContainer s1 = new DojoSimpleContainer("form");
+		layout.add(s1, Position.Client);
+		
+		DojoSimpleContainer s2 = new DojoSimpleContainer("tree");
+		s2.setWidth("250px");
+		layout.add(s2, Position.Left);
+		
 		panel = new EmptyPanel("properties");
 		panel.setOutputMarkupId(true);
 		
-		add(new FolderTreePanel("folders"){
+		s2.add(new FolderTreePanel("folders"){
 			@Override
 			public MarkupContainer newNodeLink(MarkupContainer parent, String id, TreeNode node) {
 				final Folder folder = (Folder)((DefaultMutableTreeNode)node).getUserObject();
@@ -51,7 +63,7 @@ public class SequenceEditPage extends WebPage {
 			}
 		});
 		
-		add(panel);
+		s1.add(panel);
 		
 	}
 }
