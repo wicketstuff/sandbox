@@ -24,9 +24,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.wicketstuff.pickwick.ImageProperties;
 import org.wicketstuff.pickwick.PickWickApplication;
 import org.wicketstuff.pickwick.bean.Folder;
+import org.wicketstuff.pickwick.bean.Image;
 import org.wicketstuff.pickwick.bean.Sequence;
 
 import com.google.inject.Inject;
@@ -69,8 +69,8 @@ public class ImageUtils {
 		return imageList;
 	}
 
-	final public static ImageProperties getImageProperties(File file) throws FileNotFoundException, IOException {
-		ImageProperties p = new ImageProperties();
+	final public static Image getImageProperties(File file) throws FileNotFoundException, IOException {
+		Image p = new Image();
 		p.setFile(file);
 		return p;
 		// TODO load sequence information: image title, caption, date, ...
