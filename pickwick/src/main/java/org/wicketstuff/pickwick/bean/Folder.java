@@ -1,6 +1,7 @@
 package org.wicketstuff.pickwick.bean;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -9,7 +10,7 @@ import java.util.ArrayList;
  * @author Vincent Demay
  * 
  */
-public class Folder {
+public class Folder implements Serializable{
 	private File file;
 
 	private ArrayList<Folder> subFolders;
