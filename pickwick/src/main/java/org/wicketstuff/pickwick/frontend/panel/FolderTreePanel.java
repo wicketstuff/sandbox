@@ -30,6 +30,9 @@ import com.google.inject.Inject;
 public class FolderTreePanel extends Panel{
 	@Inject
 	private ImageUtils imageUtils;
+	
+
+	private Tree tree;
 
 	/**
 	 * There isn't any model because model is auto binded using {@link FolderProvider}
@@ -42,23 +45,26 @@ public class FolderTreePanel extends Panel{
 
 			@Override
 			protected MarkupContainer newNodeLink(MarkupContainer parent, String id, TreeNode node) {
-				PageParameters params = new PageParameters();
-				Folder folder = (Folder)((DefaultMutableTreeNode)node).getUserObject();
-				BookmarkablePageLink nodeLink = new BookmarkablePageLink(id, SequencePage.class, params);
-				try {
-					// FIXME pass pretty URL!!!
-					params.add("uri", imageUtils.getRelativePath(folder.getFile()));
-				} catch (IOException e) {
-					throw new RuntimeException(e);
-				}
-
-				return nodeLink;
+				return FolderTreePanel.this.newNodeLink(parent, id, node);
 			}
 		};
 
 		add(tree);
 	}
-	private Tree tree;
+	
+	public MarkupContainer newNodeLink(MarkupContainer parent, String id, TreeNode node) {		
+		PageParameters params = new PageParameters();
+		Folder folder = (Folder)((DefaultMutableTreeNode)node).getUserObject();
+		BookmarkablePageLink nodeLink = new BookmarkablePageLink(id, SequencePage.class, params);
+		try {
+			// FIXME pass pretty URL!!!
+			params.add("uri", imageUtils.getRelativePath(folder.getFile()));
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+
+		return nodeLink;
+	}
 
 	protected AbstractTree getTree() {
 		return tree;

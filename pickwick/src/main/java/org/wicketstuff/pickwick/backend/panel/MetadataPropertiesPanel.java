@@ -2,7 +2,6 @@ package org.wicketstuff.pickwick.backend.panel;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -12,22 +11,23 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.RefreshingView;
-import org.apache.wicket.markup.repeater.data.IDataProvider;
-import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-import org.wicketstuff.dojo.markup.html.list.lazy.DojoLazyLoadingListContainer;
-import org.wicketstuff.dojo.markup.html.list.lazy.DojoLazyLoadingRefreshingView;
-import org.wicketstuff.pickwick.PickWickApplication;
 import org.wicketstuff.pickwick.backend.ImageMetadataReader;
+import org.wicketstuff.pickwick.backend.Settings;
+
+import com.google.inject.Inject;
 
 public class MetadataPropertiesPanel extends Panel{
 	
 	Map<String, String> properties;
 	
+	@Inject
+	private Settings settings;
+	
 	public MetadataPropertiesPanel(String id, String uri) {
 		super(id);
 		
-		ImageMetadataReader reader = new ImageMetadataReader(((PickWickApplication)getApplication()).getSettings().getImageDirectoryRoot() + "/" + uri);
+		ImageMetadataReader reader = new ImageMetadataReader(settings.getImageDirectoryRoot() + "/" + uri);
 		properties = reader.getMetadata();
 		
 		RefreshingView list     = new RefreshingView("list"){
