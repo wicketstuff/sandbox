@@ -3,13 +3,16 @@ package org.wicketstuff.pickwick.backend.panel;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.PageLink;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
-import org.wicketstuff.pickwick.backend.pages.SequenceEditPage;
 
+/**
+ * A panel displaying a backend action
+ * @author Vincent Demay
+ *
+ */
 public class BackendMenuItemPanel extends Panel{
 
 	private String imagePath;
