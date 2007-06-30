@@ -5,14 +5,43 @@ div.MFXDragPane {
 	display: block; 
 	margin: 0 0 10px 0; 
 	z-index: 1; 
+	overflow: hidden;
+	border: 1px solid;
 }
 div.dragBar { 
 	padding: 2px; 
-	background: black; 
-	color: white; 
+	background-image: url('bar.gif');
+	color: white;
+	height: 16px;
 	display: block; 
 	cursor: move; 
 }
+
+div.paneTitle {
+	float: left;
+	text-indent: 5px;
+	width: 90%;
+	font-size: 12px;
+}
+
+div.closeButton {
+	background: url('close.gif') top right no-repeat;
+	cursor: pointer; 
+	height: 12px;
+	width: 12px;
+	float: right;
+}
+
+div.minimizeButton {
+	background: url('minimize.gif') top right no-repeat;
+	cursor: pointer; 
+	height: 12px;
+	width: 12px;
+	margin-right: 3px;
+	float: right;
+}
+
+
 div.content { 
 	padding: 5px; 
 	background: white; 

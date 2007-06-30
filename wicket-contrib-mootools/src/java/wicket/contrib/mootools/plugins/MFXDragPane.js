@@ -1,3 +1,18 @@
+	
+	function getColumndId(el) {
+		var columnId;
+		var selectedElement = el;
+		while(isNaN(columnId)) {
+			selectedElement = selectedElement.getParent();
+			columnId = selectedElement.id;
+		}
+		if (isNaN(columnId)) {
+			columnId = el.getParent().getParent().id;
+		}
+		return columnId;
+	}
+	
+	
 	function makeDraggables(){
 		
 			// WebBoxes shared vars
@@ -8,24 +23,50 @@
         // WebBoxes drag behavior for each
 			draggables.each(function(el){
 				
-				
 				var callbackUrl = el.getProperty('callbackUrl');
 				//var callbackScript = el.getProperty('callbackScript');
 				var componentId = el.id;
 				
 				var closeButton = el.getElementsBySelector('.closeButton')[0];
-				
 				closeButton.addEvent("click", function() { 
-	  		  		//var getData = "&callback=close&id="+componentId+"&column="+columnId;
-					//new Ajax(callbackUrl,{method: 'get', data: getData }).request();
-					//el.setStyle('display','none');
+					var effect = new Fx.Style(el,'opacity',{duration: 500, onComplete: function() {
+						el.setStyle('display','none');
+					}});
+					effect.start(0.9,0.1);
+					
+					var columnId = getColumndId(el);
+					var getData = "&callback=close&id="+componentId+"&column="+columnId;
+					var response = callbackUrl+getData;
+					wicketAjaxGet(response, function() { }.bind(this), function() { }.bind(this));
+	  		  	});
+	  		  	
+	  		  	var minButton = el.getElementsBySelector('.minimizeButton')[0];
+	  		  	var content = el.getElementsBySelector('.content')[0];
+	  		  	var size = el.getStyle('height');
+	  		  	minButton.addEvent("click", function() {
+	  		  		var columnId = getColumndId(el);
+	  		  		var effect = new Fx.Style(el,'height',{duration: 500});
+	  		  		if(el.getStyle('height') == '16px') {
+	  		  			effect.start(el.getStyle('height'),size);
+	  		  			var getData = "&callback=maximized&id="+componentId+"&column="+columnId;
+						var response = callbackUrl+getData;
+						wicketAjaxGet(response, function() { }.bind(this), function() { }.bind(this));
+	  		  		} else {
+						effect.start(el.getStyle('height'),'16px');
+						var getData = "&callback=minimize&id="+componentId+"&column="+columnId;
+						var response = callbackUrl+getData;
+						wicketAjaxGet(response, function() { }.bind(this), function() { }.bind(this));
+	  		  		}
+	  		  		
+	  		  		
 	  		  	});
 				
 
 				// Make each webBox draggable using the handle
 				el.makeDraggable({
-					handle: el.getElementsBySelector('.dragBar')[0],
+					handle: el.getElementsBySelector('.paneTitle')[0],
 					'onBeforeStart': function() {
+						
 						// Introduce the marking box, change the draging box to absolute
 						// The order the next 4 lines seems to be important for it to work right in Firefox
 						webBoxMarker.injectAfter(el).setStyles({'display': 'block', 'height': el.getStyle('height')});
@@ -43,9 +84,7 @@
 						webBoxMarker.injectInside($E('body')).setStyles({'display': 'none'});
 						
 						// Callback to wicket
-						//eval(callbackScript);
-						//alert(callbackScript);
-						var columnId = el.getParent().id;
+						var columnId = getColumndId(el);
 						var getData = "&callback=drop&id="+componentId+"&column="+columnId;
 						var response = callbackUrl+getData;
 						wicketAjaxGet(response, function() { }.bind(this), function() { }.bind(this));
