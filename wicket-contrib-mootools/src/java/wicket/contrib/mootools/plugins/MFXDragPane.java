@@ -50,7 +50,9 @@ public abstract class MFXDragPane extends Panel {
 	
 	public static interface MFXDragPaneCallbacks extends IClusterable {
 		public void onDropCallback(AjaxRequestTarget target,int column);
-		public void onCloseCallbac(AjaxRequestTarget target,int column);
+		public void onCloseCallback(AjaxRequestTarget target,int column);
+		public void onMinimizeCallback(AjaxRequestTarget target,int column);
+		public void onMaximizedCallback(AjaxRequestTarget target,int column);
 	}
 	
 	protected class AjaxSetBehavior extends AbstractDefaultAjaxBehavior {
@@ -71,10 +73,16 @@ public abstract class MFXDragPane extends Panel {
 				int column  = Integer.valueOf(requestCycle.getRequest().getParameter("column"));
 				
 				if(callback.equals("close"))
-					mfxDropCallback.onCloseCallbac(arg0, column);
+					mfxDropCallback.onCloseCallback(arg0, column);
 				
 				if(callback.equals("drop"))
 					mfxDropCallback.onDropCallback(arg0, column);
+				
+				if(callback.equals("minimize"))
+					mfxDropCallback.onMinimizeCallback(arg0, column);
+				
+				if(callback.equals("maximized"))
+					mfxDropCallback.onMaximizedCallback(arg0, column);
 			}
 		}
 	}
