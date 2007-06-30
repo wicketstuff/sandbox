@@ -31,7 +31,6 @@ import org.apache.wicket.security.components.SecureComponentHelper;
  * with sufficient rights to access the page.
  * 
  * @author marrink
- * @see KryptonStrategy
  */
 public class SecureTestPage extends BasePage implements ISecurePage
 {

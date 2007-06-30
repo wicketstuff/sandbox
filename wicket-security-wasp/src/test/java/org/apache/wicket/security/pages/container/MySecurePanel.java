@@ -32,14 +32,14 @@ public class MySecurePanel extends SecurePanel
 
 	/**
 	 * Construct.
+	 * 
 	 * @param id
 	 */
 	public MySecurePanel(String id)
 	{
 		super(id);
-		add(new Label("welcome","This panel is restricted"));
+		add(new Label("welcome", "This panel is restricted"));
 	}
 
-	
 
 }

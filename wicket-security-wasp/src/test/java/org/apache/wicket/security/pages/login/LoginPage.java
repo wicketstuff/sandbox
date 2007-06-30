@@ -18,6 +18,11 @@ package org.apache.wicket.security.pages.login;
 
 import org.apache.wicket.security.pages.BasePage;
 
+/**
+ * Login page for test purposes.
+ * 
+ * @author marrink
+ */
 public class LoginPage extends BasePage
 {
 
@@ -35,11 +40,9 @@ public class LoginPage extends BasePage
 	}
 
 	/**
-	 * Creeert een sign in panel voor instellingen die hun authenticatie enkel
-	 * baseren op username/wachtwoord.
+	 * create new sign in panel.
 	 * 
 	 * @param panelId
-	 * @param info
 	 */
 	private void newUserPasswordSignInPanel(String panelId)
 	{

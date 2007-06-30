@@ -22,6 +22,11 @@ import java.util.Set;
 import org.apache.wicket.security.actions.AbstractWaspAction;
 import org.apache.wicket.security.actions.WaspAction;
 
+/**
+ * A test implementation for class based actions.
+ * 
+ * @author marrink
+ */
 public class StringAction extends AbstractWaspAction
 {
 	/**
@@ -42,17 +47,29 @@ public class StringAction extends AbstractWaspAction
 		}
 	}
 
+	/**
+	 * 
+	 * @see org.apache.wicket.security.actions.WaspAction#add(org.apache.wicket.security.actions.WaspAction)
+	 */
 	public WaspAction add(WaspAction other)
 	{
 		return new StringAction(getName() + " " + other.getName());
 	}
 
+	/**
+	 * 
+	 * @see org.apache.wicket.security.actions.WaspAction#implies(org.apache.wicket.security.actions.WaspAction)
+	 */
 	public boolean implies(WaspAction other)
 	{
 		StringAction oAction = (StringAction)other;
 		return actions.containsAll(oAction.actions);
 	}
 
+	/**
+	 * 
+	 * @see org.apache.wicket.security.actions.WaspAction#remove(org.apache.wicket.security.actions.WaspAction)
+	 */
 	public WaspAction remove(WaspAction other)
 	{
 		StringAction oAction = (StringAction)other;

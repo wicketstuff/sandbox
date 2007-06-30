@@ -29,11 +29,11 @@ import org.apache.wicket.security.strategies.WaspAuthorizationStrategy;
  * A securitycheck knows how to authorize or authenticate a user. and will
  * decide if the class, component, model or any combination of those 3 or
  * something entirely different will be checked. Usually a securitycheck is
- * triggerd by the
+ * triggered by the
  * {@link WaspAuthorizationStrategy#isActionAuthorized(org.apache.wicket.Component, org.apache.wicket.authorization.Action)} ,
  * {@link ISecureComponent#isActionAuthorized(AbstractWaspAction)} or by
  * {@link ISecureComponent#isAuthenticated()}. Usually they just redirect the
- * call to the {@link WaspAuthorizationStrategy}, but it is not unimagenable
+ * call to the {@link WaspAuthorizationStrategy}, but it is not unimaginable
  * that securitychecks are targeted at specific wasp implementations and take
  * care of there authentication or authorization themself.
  * 
@@ -43,17 +43,16 @@ public interface ISecurityCheck extends Serializable
 {
 	/**
 	 * Checks if there are sufficient rights to perform the desired action(s).
-	 * Note that we dont ask what needs to have these rights, the implementation
-	 * will decide if it checks the class, component, model or whatever they
-	 * like.
+	 * Note that we don't ask what needs to have these rights, the
+	 * implementation will decide if it checks the class, component, model or
+	 * whatever they like.
 	 * 
-	 * @param actions
+	 * @param action
 	 *            the action(s) like render or enable.
 	 * @return true if there are sufficient rights, false otherwise.
 	 * @see WaspAuthorizationStrategy#isComponentAuthorized(org.apache.wicket.Component,
 	 *      WaspAction)
-	 * @see WaspAuthorizationStrategy#isClassAuthorized(Class,
-	 *      AbstractWaspAction)
+	 * @see WaspAuthorizationStrategy#isClassAuthorized(Class, WaspAction)
 	 * @see ISecureModel#isAuthorized(org.apache.wicket.Component, WaspAction)
 	 */
 	public boolean isActionAuthorized(WaspAction action);

@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.wicket.authorization.IAuthorizationStrategy;
 import org.apache.wicket.security.actions.Access;
 import org.apache.wicket.security.checks.ClassSecurityCheck;
 import org.apache.wicket.security.checks.ISecurityCheck;
@@ -90,15 +91,15 @@ public abstract class ClassAuthorizationStrategy extends WaspAuthorizationStrate
 	}
 
 	/**
-	 * Checks if a class is allowed to be constructed. Only classes asignable to
-	 * the specified Class are checked. Note that all the found
+	 * Checks if a class is allowed to be constructed. Only classes assignable
+	 * to the specified Class are checked. Note that all the found
 	 * {@link ISecurityCheck}s must return true for the authorization to
 	 * succeed. If the class does not have any static {@link ISecurityCheck}s a
 	 * {@link ClassSecurityCheck} is used to simulate a static securitycheck
 	 * This way you only need to assign static checks if you want something
 	 * special.
 	 * 
-	 * @see wicket.authorization.IAuthorizationStrategy#isInstantiationAuthorized(java.lang.Class)
+	 * @see IAuthorizationStrategy#isInstantiationAuthorized(java.lang.Class)
 	 */
 	public boolean isInstantiationAuthorized(Class c)
 	{
@@ -124,7 +125,7 @@ public abstract class ClassAuthorizationStrategy extends WaspAuthorizationStrate
 	 * 
 	 * @param clazz
 	 * @return an array containing all the {@link ISecurityCheck} of this class
-	 *         and all its superclasses, or an array of length 0 if none is
+	 *         and all its super classes, or an array of length 0 if none is
 	 *         found.
 	 */
 	protected final ISecurityCheck[] getClassChecks(Class clazz)

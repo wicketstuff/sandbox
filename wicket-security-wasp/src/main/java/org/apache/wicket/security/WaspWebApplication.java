@@ -16,6 +16,7 @@
  */
 package org.apache.wicket.security;
 
+import org.apache.wicket.Application;
 import org.apache.wicket.Request;
 import org.apache.wicket.Response;
 import org.apache.wicket.Session;
@@ -28,9 +29,7 @@ import org.apache.wicket.security.strategies.StrategyFactory;
  * 
  * @author marrink
  */
-public abstract class WaspWebApplication extends WebApplication
-		implements
-			WaspApplication
+public abstract class WaspWebApplication extends WebApplication implements WaspApplication
 {
 
 	/**
@@ -39,8 +38,7 @@ public abstract class WaspWebApplication extends WebApplication
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * creates a new secure webapplication. sets itself up as a
-	 * {@link ISessionFactory}.
+	 * creates a new secure webapplication.
 	 */
 	public WaspWebApplication()
 	{
@@ -53,7 +51,7 @@ public abstract class WaspWebApplication extends WebApplication
 	 * this method you must either call super.init() or setup the actionfactory
 	 * and the strategyfactory yourself. In that order.
 	 * 
-	 * @see wicket.protocol.http.WebApplication#init()
+	 * @see WebApplication#init()
 	 */
 	protected void init()
 	{
@@ -93,9 +91,9 @@ public abstract class WaspWebApplication extends WebApplication
 
 	/**
 	 * Destroys the strategy factory and the action factory. In that order. If
-	 * you override ths method you must call super.destroy().
+	 * you override this method you must call super.destroy().
 	 * 
-	 * @see Application#onDestroy();
+	 * @see Application#onDestroy()
 	 */
 	protected void onDestroy()
 	{

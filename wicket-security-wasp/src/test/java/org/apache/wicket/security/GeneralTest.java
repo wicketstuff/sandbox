@@ -70,6 +70,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Some general tests.
+ * 
  * @author marrink
  */
 public class GeneralTest extends TestCase
@@ -85,11 +86,15 @@ public class GeneralTest extends TestCase
 	private Class loginPage = LoginPage.class;
 
 	private Class secureClass = ISecureComponent.class; // note your best option
-														// is to go
+
+	// is to go
 
 	// for ISecurePage with this
 	// strategy
 
+	/**
+	 * @see junit.framework.TestCase#setUp()
+	 */
 	protected void setUp() throws Exception
 	{
 		mock = new WicketTester(application = new WaspWebApplication()
@@ -102,11 +107,19 @@ public class GeneralTest extends TestCase
 			{
 				actionFactory = new ActionFactory()
 				{
+					/**
+					 * 
+					 * @see org.apache.wicket.security.actions.ActionFactory#getAction(org.apache.wicket.authorization.Action)
+					 */
 					public WaspAction getAction(Action actions)
 					{
 						return new StringAction(convertActions(actions.getName()));
 					}
 
+					/**
+					 * 
+					 * @see org.apache.wicket.security.actions.ActionFactory#getAction(java.lang.String)
+					 */
 					public WaspAction getAction(String actions)
 					{
 						return new StringAction(convertActions(actions));
@@ -119,12 +132,21 @@ public class GeneralTest extends TestCase
 						return name.toLowerCase();
 					}
 
+					/**
+					 * 
+					 * @see org.apache.wicket.security.actions.ActionFactory#getAction(java.lang.Class)
+					 */
 					public WaspAction getAction(Class waspActionClass)
 					{
 						return new StringAction(waspActionClass.getName().substring(
 								waspActionClass.getName().lastIndexOf('.') + 1).toLowerCase());
 					}
 
+					/**
+					 * 
+					 * @see org.apache.wicket.security.actions.ActionFactory#register(java.lang.Class,
+					 *      java.lang.String)
+					 */
 					public WaspAction register(Class waspActionClass, String name)
 							throws RegistrationException
 					{
@@ -132,6 +154,10 @@ public class GeneralTest extends TestCase
 								"this test factory does not allow registration");
 					}
 
+					/**
+					 * 
+					 * @see org.apache.wicket.security.actions.ActionFactory#destroy()
+					 */
 					public void destroy()
 					{
 						// noop
@@ -178,6 +204,10 @@ public class GeneralTest extends TestCase
 		}, "src/test/java/" + getClass().getPackage().getName().replace('.', '/'));
 	}
 
+	/**
+	 * 
+	 * @see junit.framework.TestCase#tearDown()
+	 */
 	protected void tearDown() throws Exception
 	{
 		mock.setupRequestAndResponse();
@@ -268,16 +298,19 @@ public class GeneralTest extends TestCase
 		mock.startPage(org.apache.wicket.security.pages.insecure.HomePage.class);
 		mock.assertRenderedPage(org.apache.wicket.security.pages.insecure.HomePage.class);
 	}
+
 	/**
 	 * Test accessability of an unprotected page with a secure component.
 	 */
 	public void testUnsecuredPage2()
 	{
-		//continueto originaldestination does not work if there is no url available, so we need to fake one here(testing only hack)
+		// continueto originaldestination does not work if there is no url
+		// available, so we need to fake one here(testing only hack)
 		mock.setupRequestAndResponse();
 		WebRequestCycle cycle = mock.createRequestCycle();
-		String url1 = cycle.urlFor(new BookmarkablePageRequestTarget(SecureComponentPage.class,null)).toString();
-		mock.getServletRequest().setURL("/GeneralTest$1/GeneralTest$1/" +url1);
+		String url1 = cycle.urlFor(
+				new BookmarkablePageRequestTarget(SecureComponentPage.class, null)).toString();
+		mock.getServletRequest().setURL("/GeneralTest$1/GeneralTest$1/" + url1);
 		mock.processRequestCycle();
 		mock.assertRenderedPage(getLoginPage());
 		FormTester form = mock.newFormTester("signInPanel:signInForm");
@@ -285,18 +318,21 @@ public class GeneralTest extends TestCase
 		form.setValue("password", "test");
 		form.submit();
 		mock.assertRenderedPage(SecureComponentPage.class);
-		mock.assertInvisible("secure"); //no render rights on the component
+		mock.assertInvisible("secure"); // no render rights on the component
 	}
+
 	/**
 	 * Test accessability of an unprotected page with a secure link.
 	 */
 	public void testUnsecuredPage3()
 	{
-		//continueto originaldestination does not work if there is no url available, so we need to fake one here(testing only hack)
+		// continueto originaldestination does not work if there is no url
+		// available, so we need to fake one here(testing only hack)
 		mock.setupRequestAndResponse();
 		WebRequestCycle cycle = mock.createRequestCycle();
-		String url1 = cycle.urlFor(new BookmarkablePageRequestTarget(SecureLinkPage.class,null)).toString();
-		mock.getServletRequest().setURL("/GeneralTest$1/GeneralTest$1/" +url1);
+		String url1 = cycle.urlFor(new BookmarkablePageRequestTarget(SecureLinkPage.class, null))
+				.toString();
+		mock.getServletRequest().setURL("/GeneralTest$1/GeneralTest$1/" + url1);
 		mock.processRequestCycle();
 		mock.assertRenderedPage(getLoginPage());
 		FormTester form = mock.newFormTester("signInPanel:signInForm");
@@ -304,7 +340,7 @@ public class GeneralTest extends TestCase
 		form.setValue("password", "test");
 		form.submit();
 		mock.assertRenderedPage(SecureLinkPage.class);
-		//need to arrange enable rights for homepage
+		// need to arrange enable rights for homepage
 		Map authorized = new HashMap();
 		authorized.put(getHomePage(), application.getActionFactory().getAction(
 				"access render enable"));
@@ -342,8 +378,8 @@ public class GeneralTest extends TestCase
 		assertNull(tag.getAttribute("href"));
 		assertNull(tag.getAttribute("onclick"));
 		authorized.clear();
-		authorized.put(PageA.class, application.getActionFactory().getAction(
-		"access render enable"));
+		authorized.put(PageA.class, application.getActionFactory()
+				.getAction("access render enable"));
 		login(authorized);
 		mock.startPage(mock.getLastRenderedPage());
 		tag = mock.getTagByWicketId("link");
@@ -503,24 +539,23 @@ public class GeneralTest extends TestCase
 		mock.setupRequestAndResponse();
 		logoff(authorized);
 		authorized.clear();
-		authorized.put(PageA.class, application.getActionFactory().getAction("access")); // need
-		// to
-		// enable
-		// pagea
-		// again
+		authorized.put(PageA.class, application.getActionFactory().getAction("access"));
+		// need to enable page a again
 		login(authorized);
 		new PageA(); // only pages are checked so now securetextfield is
 						// allowed.
 		mock.processRequestCycle();
 	}
 
+	/**
+	 * More instantiation testing.
+	 */
 	public void testAdvancedInstantiationChecks()
 	{
 		doLogin();
 		mock.startPage(PageC.class);
-		// even if we are loged in and have access rights it will redirect us to
-		// the
-		// access denied page because it need render rights
+		// even if we are logged in and have access rights it will redirect us
+		// to the access denied page because it need render rights
 		mock.assertRenderedPage(application.getApplicationSettings().getAccessDeniedPage());
 		Map authorized = new HashMap();
 		authorized.put(PageC.class, application.getActionFactory().getAction("access render"));
@@ -533,12 +568,14 @@ public class GeneralTest extends TestCase
 		mock.startPage(HomePage.class);
 		logoff(authorized);
 		// but if we remove the render rights for PageC, PageC2 misses those
-		// rights and
-		// won't be able to be instantiated anymore
+		// rights and won't be able to be instantiated anymore
 		mock.startPage(PageC2.class);
 		mock.assertRenderedPage(application.getApplicationSettings().getAccessDeniedPage());
 	}
 
+	/**
+	 * Test methods of {@link SecureComponentHelper}.
+	 */
 	public void testSecureComponentHelper()
 	{
 		TextField field = new TextField("id");
@@ -556,7 +593,7 @@ public class GeneralTest extends TestCase
 			SecureComponentHelper.isActionAuthorized(field, "whatever");
 			fail();
 		}
-		catch(RestartResponseAtInterceptPageException e)
+		catch (RestartResponseAtInterceptPageException e)
 		{
 		}
 		catch (SecurityException e)
@@ -576,21 +613,38 @@ public class GeneralTest extends TestCase
 				// noop
 			}
 
+			/**
+			 * 
+			 * @see org.apache.wicket.model.IModel#setObject(java.lang.Object)
+			 */
 			public void setObject(Object object)
 			{
 				// noop
 			}
 
+			/**
+			 * 
+			 * @see org.apache.wicket.model.IModel#getObject()
+			 */
 			public Object getObject()
 			{
 				return "test";
 			}
 
+			/**
+			 * 
+			 * @see org.apache.wicket.security.models.ISecureModel#isAuthorized(org.apache.wicket.Component,
+			 *      org.apache.wicket.security.actions.WaspAction)
+			 */
 			public boolean isAuthorized(Component component, WaspAction action)
 			{
 				return false;
 			}
 
+			/**
+			 * 
+			 * @see org.apache.wicket.security.models.ISecureModel#isAuthenticated(org.apache.wicket.Component)
+			 */
 			public boolean isAuthenticated(Component component)
 			{
 				return false;
@@ -600,6 +654,9 @@ public class GeneralTest extends TestCase
 		assertTrue(SecureComponentHelper.hasSecureModel(field));
 	}
 
+	/**
+	 * Test mixing security check with secure model.
+	 */
 	public void testComponentSecurityCheckAndISecureModel()
 	{
 		doLogin();
@@ -654,6 +711,11 @@ public class GeneralTest extends TestCase
 		{
 		}
 	}
+
+	/**
+	 * Test workings if we are not using a page strategy but a panel replace
+	 * strategy.
+	 */
 	public void testPanelReplacement()
 	{
 		try
@@ -679,7 +741,8 @@ public class GeneralTest extends TestCase
 		mock.assertRenderedPage(getHomePage());
 		assertFalse(Session.get().isTemporary());
 		mock.assertInvisible("panel");
-		//note by adding a second panel visible if the main panel is invisible we could tell the user he is not authorized or something like that
+		// note by adding a second panel visible if the main panel is invisible
+		// we could tell the user he is not authorized or something like that
 		Map authorized = new HashMap();
 		authorized.put(MySecurePanel.class, application.getActionFactory().getAction(
 				"access render"));
@@ -687,8 +750,13 @@ public class GeneralTest extends TestCase
 		mock.startPage(mock.getLastRenderedPage());
 		mock.assertVisible("panel");
 		mock.clickLink("link");
-		mock.assertVisible("panel");		
+		mock.assertVisible("panel");
 	}
+
+	/**
+	 * Test what happens if someone goofed up and made an illogical choice for a
+	 * login page.
+	 */
 	public void testBogusLoginPage()
 	{
 		try
@@ -705,17 +773,22 @@ public class GeneralTest extends TestCase
 			fail(e.getMessage());
 		}
 		mock.startPage(getHomePage());
-		log.info(""+mock.getLastRenderedPage().getClass());
+		log.info("" + mock.getLastRenderedPage().getClass());
 		mock.assertRenderedPage(getLoginPage());
-		//even though we accidentally made it a secure page!
+		// even though we accidentally made it a secure page!
 	}
+
+	/**
+	 * Test secure model.
+	 */
 	public void testSecureCompoundPropertyModel()
 	{
 		doLogin();
 		Map authorized = new HashMap();
-		authorized.put("model:"+SecureModelPage.class.getName(), application.getActionFactory().getAction("render"));
+		authorized.put("model:" + SecureModelPage.class.getName(), application.getActionFactory()
+				.getAction("render"));
 		authorized.put("model:_<body>", application.getActionFactory().getAction("render"));
-		//need to grant enough rights to the page and bodycontainer, see apidoc
+		// need to grant enough rights to the page and bodycontainer, see apidoc
 		login(authorized);
 		mock.startPage(SecureModelPage.class);
 		mock.assertRenderedPage(SecureModelPage.class);
@@ -753,9 +826,14 @@ public class GeneralTest extends TestCase
 		mock.assertRenderedPage(SecureModelPage.class);
 		tag = mock.getTagByWicketId("input");
 		assertTrue(tag.getAttributeIs("value", writings));
-		assertEquals(SecureCompoundPropertyModel.class.getName()+":input", mock.getComponentFromLastRenderedPage("input").getModel().toString());
-		
+		assertEquals(SecureCompoundPropertyModel.class.getName() + ":input", mock
+				.getComponentFromLastRenderedPage("input").getModel().toString());
+
 	}
+
+	/**
+	 * Test secure form component.
+	 */
 	public void testSecureForm()
 	{
 		doLogin();
@@ -763,37 +841,36 @@ public class GeneralTest extends TestCase
 		mock.assertRenderedPage(FormPage.class);
 		mock.assertInvisible("form");
 		Map authorized = new HashMap();
-		authorized.put(SecureForm.class, application.getActionFactory().getAction(
-		"access render"));
+		authorized.put(SecureForm.class, application.getActionFactory().getAction("access render"));
 		login(authorized);
 		mock.startPage(FormPage.class);
 		mock.assertRenderedPage(FormPage.class);
 		mock.assertVisible("form");
-		TagTester tag=mock.getTagByWicketId("form");
+		TagTester tag = mock.getTagByWicketId("form");
 		assertEquals("div", tag.getName());
-		tag=mock.getTagByWicketId("text");
-		assertEquals("disabled",tag.getAttribute("disabled"));
-		tag=mock.getTagByWicketId("area");
-		assertEquals("disabled",tag.getAttribute("disabled"));
-		tag=mock.getTagByWicketId("button");
-		assertEquals("disabled",tag.getAttribute("disabled"));
-		//fake form submit since the tag can not
+		tag = mock.getTagByWicketId("text");
+		assertEquals("disabled", tag.getAttribute("disabled"));
+		tag = mock.getTagByWicketId("area");
+		assertEquals("disabled", tag.getAttribute("disabled"));
+		tag = mock.getTagByWicketId("button");
+		assertEquals("disabled", tag.getAttribute("disabled"));
+		// fake form submit since the tag can not
 		FormTester form = mock.newFormTester("form");
 		form.setValue("text", "not allowed");
 		form.setValue("area", "also not allowed");
 		form.submit();
 		mock.assertRenderedPage(application.getApplicationSettings().getAccessDeniedPage());
 		authorized.put(SecureForm.class, application.getActionFactory().getAction(
-		"access render enable"));
+				"access render enable"));
 		login(authorized);
 		mock.startPage(FormPage.class);
 		mock.assertRenderedPage(FormPage.class);
 		mock.assertVisible("form");
-		tag=mock.getTagByWicketId("text");
+		tag = mock.getTagByWicketId("text");
 		assertNull(tag.getAttribute("disabled"));
-		tag=mock.getTagByWicketId("area");
+		tag = mock.getTagByWicketId("area");
 		assertNull(tag.getAttribute("disabled"));
-		tag=mock.getTagByWicketId("button");
+		tag = mock.getTagByWicketId("button");
 		assertNull(tag.getAttribute("disabled"));
 		form = mock.newFormTester("form");
 		form.setValue("text", "allowed");
@@ -801,7 +878,8 @@ public class GeneralTest extends TestCase
 		form.submit();
 		mock.assertRenderedPage(FormPage.class);
 		assertEquals("allowed", mock.getComponentFromLastRenderedPage("form:text").getModelObject());
-		assertEquals("also allowed", mock.getComponentFromLastRenderedPage("form:area").getModelObject());
-		
+		assertEquals("also allowed", mock.getComponentFromLastRenderedPage("form:area")
+				.getModelObject());
+
 	}
 }

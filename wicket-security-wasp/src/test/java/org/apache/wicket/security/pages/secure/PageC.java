@@ -32,7 +32,7 @@ import org.apache.wicket.security.components.SecureWebPage;
  * @author marrink
  */
 public class PageC extends SecureWebPage // or SecureTestPage, really does
-											// not matter
+// not matter
 {
 
 	/**

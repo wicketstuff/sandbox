@@ -17,6 +17,7 @@
 package org.apache.wicket.security;
 
 import org.apache.wicket.Request;
+import org.apache.wicket.Session;
 import org.apache.wicket.authorization.IAuthorizationStrategy;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.protocol.http.WebSession;
@@ -38,6 +39,8 @@ public class WaspSession extends WebSession
 	/**
 	 * @param application
 	 *            a webapplication
+	 * @param request
+	 * @see WebSession#WebSession(WebApplication, Request)
 	 */
 	public WaspSession(WaspApplication application, Request request)
 	{
@@ -48,7 +51,7 @@ public class WaspSession extends WebSession
 	/**
 	 * Returns a session scoped WaspAuthorizationStrategy.
 	 * 
-	 * @see wicket.Session#getAuthorizationStrategy()
+	 * @see Session#getAuthorizationStrategy()
 	 */
 	public IAuthorizationStrategy getAuthorizationStrategy()
 	{
@@ -57,9 +60,9 @@ public class WaspSession extends WebSession
 
 	/**
 	 * Attempts to login with the current login info. Even though this call
-	 * allready handles temporary sessions and dirty flags. The
+	 * already handles temporary sessions and dirty flags. The
 	 * {@link WaspAuthorizationStrategy} should also do the same as it is not
-	 * guranteed that every login comes from the session.
+	 * guaranteed that every login comes from the session.
 	 * 
 	 * @param context
 	 *            any type of information required to login
@@ -69,7 +72,7 @@ public class WaspSession extends WebSession
 	public void login(Object context) throws LoginException
 	{
 		securityStrategy.login(context);
-		// make session permananent after login
+		// make session permanent after login
 		if (isTemporary())
 			bind();
 		else
@@ -77,10 +80,14 @@ public class WaspSession extends WebSession
 	}
 
 	/**
-	 * Attempst to log off the current user. Even though this call
-	 * allready handles dirty flags. The
-	 * {@link WaspAuthorizationStrategy} should also do the same as it is not
-	 * guranteed that every logoff comes from the session.
+	 * Attempts to log off the current user. Even though this call Already
+	 * handles dirty flags. The {@link WaspAuthorizationStrategy} should also do
+	 * the same as it is not guaranteed that every logoff comes from the
+	 * session.
+	 * 
+	 * @param context
+	 *            the context to use for logging off
+	 * @return true, if the logoff was successful, false otherwise
 	 * 
 	 * @see WaspAuthorizationStrategy#logoff(Object)
 	 */
@@ -98,7 +105,7 @@ public class WaspSession extends WebSession
 	 * Cleans up the WaspAuthorizationStrategy before killing this session. If
 	 * you override this method you must call super.invalidateNow().
 	 * 
-	 * @see wicket.protocol.http.WebSession#invalidateNow()
+	 * @see WebSession#invalidateNow()
 	 */
 	public void invalidateNow()
 	{

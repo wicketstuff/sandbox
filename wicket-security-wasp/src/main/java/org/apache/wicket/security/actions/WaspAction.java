@@ -19,7 +19,7 @@ package org.apache.wicket.security.actions;
 import org.apache.wicket.authorization.Action;
 
 /**
- * Inmutable {@link Action} with added logic for implies checks. These actions
+ * Immutable {@link Action} with added logic for implies checks. These actions
  * are instantiated by an {@link ActionFactory}.
  * 
  * @author marrink
@@ -35,6 +35,9 @@ public interface WaspAction
 
 	/**
 	 * Check if the supplied action is implied by this WaspAction.
+	 * 
+	 * @param other
+	 *            the action to check
 	 * 
 	 * @return true if the action is implied, false otherwise.
 	 */

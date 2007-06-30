@@ -108,7 +108,8 @@ public class LinkSecurityCheck extends ComponentSecurityCheck
 		if (isUseAlternativeRenderCheck()
 				&& !action.implies(getActionFactory().getAction(Enable.class)))
 			return super.isActionAuthorized(action);
-		//no authentication like in super since the regular instantiation checks will handle authentication
+		// no authentication like in super since the regular instantiation
+		// checks will handle authentication
 		boolean result = getStrategy().isClassAuthorized(getClickTarget(), action);
 		if (result && checkSecureModel() && SecureComponentHelper.hasSecureModel(getComponent()))
 			return ((ISecureModel)getComponent().getModel()).isAuthorized(getComponent(), action);

@@ -29,6 +29,11 @@ import org.apache.wicket.security.models.ISecureModel;
 import org.apache.wicket.security.strategies.ClassAuthorizationStrategy;
 import org.apache.wicket.security.strategies.LoginException;
 
+/**
+ * Implementation of a strategy for test purposes.
+ * 
+ * @author marrink
+ */
 public class TestStrategy extends ClassAuthorizationStrategy
 {
 	/**
@@ -56,16 +61,29 @@ public class TestStrategy extends ClassAuthorizationStrategy
 		super(secureClass);
 	}
 
+	/**
+	 * 
+	 * @see org.apache.wicket.security.strategies.ClassAuthorizationStrategy#destroy()
+	 */
 	public void destroy()
 	{
 		super.destroy();
 	}
 
+	/**
+	 * 
+	 * @see org.apache.wicket.security.strategies.WaspAuthorizationStrategy#isClassAuthenticated(java.lang.Class)
+	 */
 	public boolean isClassAuthenticated(Class clazz)
 	{
 		return loggedin;
 	}
 
+	/**
+	 * 
+	 * @see org.apache.wicket.security.strategies.WaspAuthorizationStrategy#isClassAuthorized(java.lang.Class,
+	 *      org.apache.wicket.security.actions.WaspAction)
+	 */
 	public boolean isClassAuthorized(Class clazz, WaspAction action)
 	{
 		return isAuthorized(clazz, action);
@@ -84,11 +102,20 @@ public class TestStrategy extends ClassAuthorizationStrategy
 		return authorizedAction.implies(action);
 	}
 
+	/**
+	 * 
+	 * @see org.apache.wicket.security.strategies.WaspAuthorizationStrategy#isComponentAuthenticated(org.apache.wicket.Component)
+	 */
 	public boolean isComponentAuthenticated(Component component)
 	{
 		return loggedin;
 	}
 
+	/**
+	 * 
+	 * @see org.apache.wicket.security.strategies.WaspAuthorizationStrategy#isComponentAuthorized(org.apache.wicket.Component,
+	 *      org.apache.wicket.security.actions.WaspAction)
+	 */
 	public boolean isComponentAuthorized(Component component, WaspAction action)
 	{
 		if (!isAuthorized(component.getClass(), action))
@@ -96,16 +123,33 @@ public class TestStrategy extends ClassAuthorizationStrategy
 		return true;
 	}
 
+	/**
+	 * 
+	 * @see org.apache.wicket.security.strategies.WaspAuthorizationStrategy#isModelAuthenticated(org.apache.wicket.model.IModel,
+	 *      org.apache.wicket.Component)
+	 */
 	public boolean isModelAuthenticated(IModel model, Component component)
 	{
 		return loggedin;
 	}
 
+	/**
+	 * 
+	 * @see org.apache.wicket.security.strategies.WaspAuthorizationStrategy#isModelAuthorized(org.apache.wicket.security.models.ISecureModel,
+	 *      org.apache.wicket.Component,
+	 *      org.apache.wicket.security.actions.WaspAction)
+	 */
 	public boolean isModelAuthorized(ISecureModel model, Component component, WaspAction action)
 	{
-		return isAuthorized("model:" + (component instanceof Page?component.getClass().getName():component.getId()), action);
+		return isAuthorized("model:"
+				+ (component instanceof Page ? component.getClass().getName() : component.getId()),
+				action);
 	}
 
+	/**
+	 * 
+	 * @see org.apache.wicket.security.strategies.WaspAuthorizationStrategy#login(java.lang.Object)
+	 */
 	public void login(Object context) throws LoginException
 	{
 		if (context instanceof Map)
@@ -118,6 +162,10 @@ public class TestStrategy extends ClassAuthorizationStrategy
 					"Specify a map containing all the classes/components and what actions are authorized");
 	}
 
+	/**
+	 * 
+	 * @see org.apache.wicket.security.strategies.WaspAuthorizationStrategy#logoff(java.lang.Object)
+	 */
 	public boolean logoff(Object context)
 	{
 		if (context instanceof Map)

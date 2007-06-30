@@ -102,8 +102,9 @@ public class SecureForm extends Form implements ISecureComponent
 	}
 
 	/**
-	 * Override to make sure the form can not be submitted clientside.
-	 * Offcourse this does not prevent fake urls send to the server.
+	 * Override to make sure the form can not be submitted clientside. Offcourse
+	 * this does not prevent fake urls send to the server.
+	 * 
 	 * @see org.apache.wicket.markup.html.form.Form#onComponentTag(org.apache.wicket.markup.ComponentTag)
 	 */
 	protected void onComponentTag(ComponentTag tag)

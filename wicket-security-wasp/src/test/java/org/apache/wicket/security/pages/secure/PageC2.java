@@ -38,7 +38,7 @@ public class PageC2 extends PageC
 	 * Instantiation check that requires foo rights instead of the default
 	 * access rights.
 	 */
-	static final ISecurityCheck alternate = new ClassSecurityCheck(PageC2.class)
+	static final ISecurityCheck alternate2 = new ClassSecurityCheck(PageC2.class)
 	{
 
 		/**
