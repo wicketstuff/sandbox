@@ -4,11 +4,15 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.Serializable;
 
 import org.wicketstuff.pickwick.bean.Sequence;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.annotations.Annotations;
+import com.thoughtworks.xstream.io.xml.AbstractXmlDriver;
+import com.thoughtworks.xstream.io.xml.QNameMap;
+import com.thoughtworks.xstream.io.xml.StaxDriver;
 
 /**
  * Maps a {@link Sequence} bean to an XML file
@@ -21,13 +25,15 @@ import com.thoughtworks.xstream.annotations.Annotations;
  * 
  * TODO : JavaDoc
  */
-public class XmlBeanMapper<T extends Object> {
+public class XmlBeanMapper<T extends Object>{
 
 	XStream xstream;
 	
 	public XmlBeanMapper(Class<T> clazz) {
 		super();
-		this.xstream = new XStream();
+		//StaxDriver driver = new StaxDriver();
+		//driver.setQnameMap(new QNameMap());
+		this.xstream = new XStream(/**driver*/);
 		Annotations.configureAliases(xstream, clazz);
 	}
 

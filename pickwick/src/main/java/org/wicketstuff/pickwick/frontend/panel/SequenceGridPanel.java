@@ -15,10 +15,10 @@ import org.apache.wicket.markup.repeater.data.GridView;
 import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.markup.repeater.data.ListDataProvider;
 import org.apache.wicket.model.Model;
-import org.wicketstuff.pickwick.ImageProperties;
 import org.wicketstuff.pickwick.PickWickApplication;
 import org.wicketstuff.pickwick.backend.ImageUtils;
 import org.wicketstuff.pickwick.backend.Settings;
+import org.wicketstuff.pickwick.bean.Image;
 
 import com.google.inject.Inject;
 
@@ -62,7 +62,7 @@ public class SequenceGridPanel extends Panel {
 		@Override
 		protected void populateItem(Item item) {
 			try {
-				ImageProperties imageProperties = (ImageProperties) item.getModelObject();
+				Image imageProperties = (Image) item.getModelObject();
 				if (!imageProperties.getFile().getCanonicalPath().startsWith(
 						settings.getImageDirectoryRoot().getCanonicalPath()))
 					throw new RuntimeException("Requested image directory not within the root image directory");
