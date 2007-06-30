@@ -19,9 +19,7 @@ public class SequencePage extends FrontendBasePage {
 			uri = "";
 		}
 		DojoLayoutContainer layout;
-		add(layout = new DojoLayoutContainer("mainArea"));
-		layout.setHeight("550px");
-		layout.setWidth("100%");
+		addOnClient(layout = new DojoLayoutContainer("mainArea"));
 		DojoSimpleContainer s1 = new DojoSimpleContainer("thumbnails");
 		s1.add(new SequenceGridPanel("thumbnails", uri));
 		layout.add(s1, Position.Client);
