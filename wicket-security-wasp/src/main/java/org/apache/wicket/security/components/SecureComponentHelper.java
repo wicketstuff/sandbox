@@ -126,6 +126,11 @@ public final class SecureComponentHelper
 	 * is not available it tries the {@link ISecureModel} if neither is present
 	 * the action is authorized on the component.
 	 * 
+	 * @param component
+	 *            the component to check
+	 * @param action
+	 *            the required action(s)
+	 * 
 	 * @return true, if the component is authorized, false otherwise.
 	 * @see ISecureComponent#isActionAuthorized(String)
 	 * @see ISecurityCheck
@@ -152,6 +157,11 @@ public final class SecureComponentHelper
 	 * is not available it tries the {@link ISecureModel} if neither is present
 	 * the action is authorized on the component.
 	 * 
+	 * @param component
+	 *            the component to check
+	 * @param action
+	 *            the required action(s)
+	 * 
 	 * @return true, if the component is authorized, false otherwise.
 	 * @see ISecureComponent#isActionAuthorized(AbstractWaspAction)
 	 * @see ISecurityCheck
@@ -176,6 +186,9 @@ public final class SecureComponentHelper
 	 * is not available it tries the {@link ISecureModel} if neither is present
 	 * the user is authenticated.
 	 * 
+	 * @param component
+	 *            the component to check
+	 * 
 	 * @return true, if the user is authenticated, false otherwise.
 	 * @see ISecureComponent#isAuthenticated()
 	 * @see ISecurityCheck
@@ -193,9 +206,9 @@ public final class SecureComponentHelper
 
 	/**
 	 * Builds a 'unique' name for the component. The name is based on the page
-	 * class alias and the relativepath to the page (if not a page itself). Note
-	 * that although it is unlikely, it is not impossible for two components to
-	 * have the same alias.
+	 * class alias and the relative path to the page (if not a page itself).
+	 * Note that although it is unlikely, it is not impossible for two
+	 * components to have the same alias.
 	 * 
 	 * @param component
 	 * @return an alias.

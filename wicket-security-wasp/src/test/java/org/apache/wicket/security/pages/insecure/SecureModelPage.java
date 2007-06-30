@@ -25,6 +25,7 @@ import org.apache.wicket.util.value.ValueMap;
 
 /**
  * Page showing the use of a {@link SecureCompoundPropertyModel}.
+ * 
  * @author marrink
  * 
  */
@@ -41,7 +42,7 @@ public class SecureModelPage extends BasePage
 	 */
 	public SecureModelPage()
 	{
-		ValueMap map=new ValueMap("label=hello,input=type in me");
+		ValueMap map = new ValueMap("label=hello,input=type in me");
 		setModel(new SecureCompoundPropertyModel(map));
 		add(new Label("label"));
 		add(new TextField("input"));

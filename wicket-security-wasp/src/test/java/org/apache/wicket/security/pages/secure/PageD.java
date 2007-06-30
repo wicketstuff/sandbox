@@ -43,6 +43,10 @@ public class PageD extends SecureTestPage
 
 		private String value = "foo";
 
+		/**
+		 * 
+		 * @see org.apache.wicket.security.models.ISecureModel#isAuthenticated(org.apache.wicket.Component)
+		 */
 		public boolean isAuthenticated(Component component)
 		{
 			return getStrategy().isModelAuthenticated(this, component);
@@ -56,21 +60,38 @@ public class PageD extends SecureTestPage
 			return ((WaspAuthorizationStrategy)getSecureSession().getAuthorizationStrategy());
 		}
 
+		/**
+		 * 
+		 * @see org.apache.wicket.security.models.ISecureModel#isAuthorized(org.apache.wicket.Component,
+		 *      org.apache.wicket.security.actions.WaspAction)
+		 */
 		public boolean isAuthorized(Component component, WaspAction action)
 		{
 			return getStrategy().isModelAuthorized(this, component, action);
 		}
 
+		/**
+		 * 
+		 * @see org.apache.wicket.model.IModel#getObject()
+		 */
 		public Object getObject()
 		{
 			return value;
 		}
 
+		/**
+		 * 
+		 * @see org.apache.wicket.model.IModel#setObject(java.lang.Object)
+		 */
 		public void setObject(Object object)
 		{
 			value = String.valueOf(object);
 		}
 
+		/**
+		 * 
+		 * @see org.apache.wicket.model.IDetachable#detach()
+		 */
 		public void detach()
 		{
 			// noop

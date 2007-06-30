@@ -40,8 +40,9 @@ public class SecureComponentPage extends BasePage
 	public SecureComponentPage()
 	{
 		add(new Label("welcome", "Welcome Anyone can see this page as long as they are logged in"));
-		Label secureLabel=new Label("secure","this label is what forces you to login");
-		add(SecureComponentHelper.setSecurityCheck(secureLabel, new ComponentSecurityCheck(secureLabel)));
+		Label secureLabel = new Label("secure", "this label is what forces you to login");
+		add(SecureComponentHelper.setSecurityCheck(secureLabel, new ComponentSecurityCheck(
+				secureLabel)));
 	}
 
 }

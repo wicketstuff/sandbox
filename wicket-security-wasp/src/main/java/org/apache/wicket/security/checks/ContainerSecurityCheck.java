@@ -23,8 +23,10 @@ import org.apache.wicket.security.components.SecureComponentHelper;
 import org.apache.wicket.security.models.ISecureModel;
 
 /**
- * Security check for when you replace panels on a page instead of using new pages.
- * This is done by checking if the panel / container class is authorized just like it does with pages.
+ * Security check for when you replace panels on a page instead of using new
+ * pages. This is done by checking if the panel / container class is authorized
+ * just like it does with pages.
+ * 
  * @author marrink
  */
 public class ContainerSecurityCheck extends ComponentSecurityCheck
@@ -34,6 +36,7 @@ public class ContainerSecurityCheck extends ComponentSecurityCheck
 
 	/**
 	 * Construct.
+	 * 
 	 * @param component
 	 */
 	public ContainerSecurityCheck(MarkupContainer component)
@@ -43,6 +46,7 @@ public class ContainerSecurityCheck extends ComponentSecurityCheck
 
 	/**
 	 * Construct.
+	 * 
 	 * @param component
 	 * @param checkSecureModelIfExists
 	 */
@@ -53,6 +57,7 @@ public class ContainerSecurityCheck extends ComponentSecurityCheck
 
 	/**
 	 * Checks the container class.
+	 * 
 	 * @see org.apache.wicket.security.checks.ComponentSecurityCheck#isActionAuthorized(org.apache.wicket.security.actions.WaspAction)
 	 */
 	public boolean isActionAuthorized(WaspAction action)

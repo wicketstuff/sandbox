@@ -18,7 +18,6 @@ package org.apache.wicket.security.checks;
 
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.security.WaspApplication;
-import org.apache.wicket.security.actions.AbstractWaspAction;
 import org.apache.wicket.security.actions.WaspAction;
 import org.apache.wicket.security.strategies.ClassAuthorizationStrategy;
 import org.apache.wicket.security.strategies.WaspAuthorizationStrategy;
@@ -72,10 +71,9 @@ public class ClassSecurityCheck extends AbstractSecurityCheck
 	 * 
 	 * @return true if the user is authenticated and authorized, false
 	 *         otherwise.
-	 * @see org.apache.wicket.security.checks.ISecurityCheck#isActionAuthorized(org.apache.wicket.security.actions.AbstractWaspAction)
+	 * @see org.apache.wicket.security.checks.ISecurityCheck#isActionAuthorized(org.apache.wicket.security.actions.WaspAction)
 	 * @see WaspApplication#getLoginPage()
-	 * @see WaspAuthorizationStrategy#isClassAuthorized(Class,
-	 *      AbstractWaspAction)
+	 * @see WaspAuthorizationStrategy#isClassAuthorized(Class, WaspAction)
 	 * @throws RestartResponseAtInterceptPageException
 	 *             if the user is not authenticated.
 	 */

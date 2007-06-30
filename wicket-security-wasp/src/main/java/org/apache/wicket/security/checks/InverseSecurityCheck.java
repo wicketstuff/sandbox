@@ -16,7 +16,6 @@
  */
 package org.apache.wicket.security.checks;
 
-import org.apache.wicket.security.actions.AbstractWaspAction;
 import org.apache.wicket.security.actions.WaspAction;
 
 /**
@@ -50,7 +49,7 @@ public class InverseSecurityCheck implements ISecurityCheck
 	 * Returns false if the user is authorized and true if the user is not
 	 * authorized.
 	 * 
-	 * @see wicket.jaas.checks.ISecurityCheck#isActionAuthorized(AbstractWaspAction)
+	 * @see ISecurityCheck#isActionAuthorized(WaspAction)
 	 */
 	public boolean isActionAuthorized(WaspAction action)
 	{
@@ -58,7 +57,7 @@ public class InverseSecurityCheck implements ISecurityCheck
 	}
 
 	/**
-	 * @see wicket.jaas.checks.ISecurityCheck#isAuthenticated()
+	 * @see ISecurityCheck#isAuthenticated()
 	 */
 	public boolean isAuthenticated()
 	{

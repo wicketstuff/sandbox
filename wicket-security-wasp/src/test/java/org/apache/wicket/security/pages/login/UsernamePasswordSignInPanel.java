@@ -64,6 +64,9 @@ public class UsernamePasswordSignInPanel extends Panel
 
 	/**
 	 * Constructor.
+	 * 
+	 * @param id
+	 *            component id
 	 */
 	public UsernamePasswordSignInPanel(final String id)
 	{
@@ -78,7 +81,7 @@ public class UsernamePasswordSignInPanel extends Panel
 	 * 
 	 * @param username
 	 * @param password
-	 * @return
+	 * @return true if the user signed in successfully
 	 */
 	public boolean signIn(String username, String password)
 	{
@@ -93,22 +96,23 @@ public class UsernamePasswordSignInPanel extends Panel
 		authorized.put(PageD.class, getWaspApplication().getActionFactory().getAction(
 				"access render"));
 		authorized.put(FormPage.class, getWaspApplication().getActionFactory().getAction(
-		"access render"));
+				"access render"));
 		// because this test uses the ISecureComponent class as base class for
 		// instantiation checks we need to grant all ISecureComponents access
 		authorized.put(SecurePageLink.class, getWaspApplication().getActionFactory().getAction(
 				"access"));
 		authorized.put(SecureTextField.class, getWaspApplication().getActionFactory().getAction(
 				"access"));
-		authorized.put(SecureForm.class, getWaspApplication().getActionFactory().getAction(
-		"access"));
+		authorized.put(SecureForm.class, getWaspApplication().getActionFactory()
+				.getAction("access"));
 		// grant models rights Page D
 		authorized.put("model:modelcheck", getWaspApplication().getActionFactory().getAction(
 				"access render"));
 		authorized.put("model:bothcheck", getWaspApplication().getActionFactory().getAction(
 				"access render"));
-		//panels
-		authorized.put(MySecurePanel.class, getWaspApplication().getActionFactory().getAction("access"));
+		// panels
+		authorized.put(MySecurePanel.class, getWaspApplication().getActionFactory().getAction(
+				"access"));
 		WaspSession session = getSecureSession();
 		try
 		{
@@ -122,11 +126,21 @@ public class UsernamePasswordSignInPanel extends Panel
 		return false;
 	}
 
+	/**
+	 * Shortcut to the session.
+	 * 
+	 * @return the wasp session
+	 */
 	protected final WaspSession getSecureSession()
 	{
 		return (WaspSession)Session.get();
 	}
 
+	/**
+	 * Shortcut to the application.
+	 * 
+	 * @return the wasp application
+	 */
 	protected final WaspWebApplication getWaspApplication()
 	{
 		return (WaspWebApplication)Application.get();
@@ -137,10 +151,8 @@ public class UsernamePasswordSignInPanel extends Panel
 	 */
 	public final class SignInForm extends StatelessForm
 	{
-		/** Voor serializatie. */
 		private static final long serialVersionUID = 1L;
 
-		/** Moeten de inlog waarden bewaard blijven? */
 		private boolean rememberMe = true;
 
 		/**
@@ -165,13 +177,13 @@ public class UsernamePasswordSignInPanel extends Panel
 		}
 
 		/**
-		 * @see wicket.markup.html.form.Form#onSubmit()
+		 * 
+		 * @see org.apache.wicket.markup.html.form.Form#onSubmit()
 		 */
 		public final void onSubmit()
 		{
 			if (!rememberMe)
 			{
-				// Verwijder de persistente waarden van het formulier
 				getPage().removePersistedFormData(SignInForm.class, true);
 			}
 
@@ -196,8 +208,9 @@ public class UsernamePasswordSignInPanel extends Panel
 		}
 
 		/**
-		 * Geeft terug of de waarden van het formulier bewaard moeten worden of
-		 * niet.
+		 * Should form values be persisted.
+		 * 
+		 * @return true if form values should be persisted, false otherwise
 		 */
 		public boolean getRememberMe()
 		{
@@ -205,7 +218,9 @@ public class UsernamePasswordSignInPanel extends Panel
 		}
 
 		/**
-		 * Zet of de waarden van het formulier bewaard moeten worden of niet.
+		 * 
+		 * @param rememberMe
+		 *            persist form values
 		 */
 		public void setRememberMe(boolean rememberMe)
 		{

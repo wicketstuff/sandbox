@@ -17,6 +17,7 @@
 package org.apache.wicket.security.checks;
 
 import org.apache.wicket.Application;
+import org.apache.wicket.Session;
 import org.apache.wicket.security.WaspApplication;
 import org.apache.wicket.security.WaspSession;
 import org.apache.wicket.security.actions.AbstractWaspAction;
@@ -59,8 +60,7 @@ public abstract class AbstractSecurityCheck implements ISecurityCheck
 	 */
 	protected final WaspAuthorizationStrategy getStrategy()
 	{
-		return (WaspAuthorizationStrategy)((WaspSession)WaspSession.get())
-				.getAuthorizationStrategy();
+		return (WaspAuthorizationStrategy)((WaspSession)Session.get()).getAuthorizationStrategy();
 	}
 
 	/**

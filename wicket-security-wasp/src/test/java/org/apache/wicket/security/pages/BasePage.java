@@ -63,13 +63,20 @@ public class BasePage extends WebPage
 	}
 
 	/**
-	 * @return
+	 * Shortcut to the session.
+	 * 
+	 * @return the wasp session
 	 */
 	protected final WaspSession getSecureSession()
 	{
 		return (WaspSession)Session.get();
 	}
 
+	/**
+	 * Shortcut to the application.
+	 * 
+	 * @return the wasp application
+	 */
 	protected final WaspWebApplication getWaspApplication()
 	{
 		return (WaspWebApplication)Application.get();

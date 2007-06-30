@@ -58,7 +58,7 @@ import org.apache.wicket.security.strategies.WaspAuthorizationStrategy;
  * setting this model on a page the model is shared with every component on this
  * page including the page itself and a {@link HtmlBodyContainer}, failing to
  * grant enough rights to the page will result in an {@link AccessDeniedPage}.
- * Failing the 2nd will result in wicket complaining about missing components.
+ * Failing the 2nd will result in Wicket complaining about missing components.
  * Therefore it is best to set this model on a {@link Panel} or {@link Form}.
  * 
  * @author marrink
@@ -126,14 +126,20 @@ public class SecureCompoundPropertyModel extends CompoundPropertyModel implement
 	{
 		return getStrategy().isModelAuthorized(this, component, action);
 	}
+
+	/**
+	 * 
+	 * @see org.apache.wicket.model.CompoundPropertyModel#toString()
+	 */
 	public String toString()
 	{
 		return getClass().getName();
 	}
+
 	/**
 	 * Component aware variation of the {@link SecureCompoundPropertyModel} that
 	 * components that inherit the model get. Copy of
-	 * {@link AttachedCompoundPropertyModel}.
+	 * AttachedCompoundPropertyModel.
 	 * 
 	 * @author ivaynberg
 	 * @author marrink
@@ -159,6 +165,11 @@ public class SecureCompoundPropertyModel extends CompoundPropertyModel implement
 			this.owner = owner;
 		}
 
+		/**
+		 * The component bound to this model.
+		 * 
+		 * @return the owing component of this model
+		 */
 		protected final Component getOwner()
 		{
 			return owner;
@@ -189,6 +200,10 @@ public class SecureCompoundPropertyModel extends CompoundPropertyModel implement
 			SecureCompoundPropertyModel.this.detach();
 		}
 
+		/**
+		 * 
+		 * @see org.apache.wicket.security.models.ISecureModel#isAuthenticated(org.apache.wicket.Component)
+		 */
 		public boolean isAuthenticated(Component component)
 		{
 			return SecureCompoundPropertyModel.this.isAuthenticated(component != null
@@ -196,15 +211,26 @@ public class SecureCompoundPropertyModel extends CompoundPropertyModel implement
 					: owner);
 		}
 
+		/**
+		 * 
+		 * @see org.apache.wicket.security.models.ISecureModel#isAuthorized(org.apache.wicket.Component,
+		 *      org.apache.wicket.security.actions.WaspAction)
+		 */
 		public boolean isAuthorized(Component component, WaspAction action)
 		{
 			return SecureCompoundPropertyModel.this.isAuthorized(component != null
 					? component
 					: owner, action);
 		}
+
+		/**
+		 * 
+		 * @see org.apache.wicket.model.AbstractPropertyModel#toString()
+		 */
 		public String toString()
 		{
-			return SecureCompoundPropertyModel.this.toString()+":"+(getOwner()!=null?getOwner().getId():"null");
+			return SecureCompoundPropertyModel.this.toString() + ":"
+					+ (getOwner() != null ? getOwner().getId() : "null");
 		}
 	}
 

@@ -40,7 +40,8 @@ public class HomePage extends BasePage
 	public HomePage()
 	{
 		add(new InsecurePanel("panel"));
-		add(new Link("link"){
+		add(new Link("link")
+		{
 
 			/**
 			 * 
@@ -49,13 +50,14 @@ public class HomePage extends BasePage
 
 			public void onClick()
 			{
-				Panel panel=(Panel)HomePage.this.get("panel");
+				Panel panel = (Panel)HomePage.this.get("panel");
 				HomePage.this.remove(panel);
-				if(panel instanceof SecurePanel)
+				if (panel instanceof SecurePanel)
 					HomePage.this.add(new InsecurePanel("panel"));
 				else
 					HomePage.this.add(new MySecurePanel("panel"));
-			}});
+			}
+		});
 	}
 
 }
