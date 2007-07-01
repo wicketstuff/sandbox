@@ -30,21 +30,33 @@ import org.apache.wicket.security.components.markup.html.links.SecurePageLink;
 
 /**
  * Simple container to display some menu buttons.
+ * 
  * @author marrink
  * 
  */
 public abstract class ButtonContainer extends Panel
 {
 	private static final long serialVersionUID = 1L;
+	/**
+	 * The buttons.
+	 */
 	protected Integer[] BUTTONS;
+	/**
+	 * Names for the buttons.
+	 */
 	protected String[] NAMES;
+	/**
+	 * The destination for the button clicks.
+	 */
 	protected Class[] PAGES;
 
 	/**
 	 * 
 	 * Construct.
+	 * 
 	 * @param id
-	 * @param selectedButton one of BUTTON_....
+	 * @param selectedButton
+	 *            one of BUTTON_....
 	 */
 	public ButtonContainer(String id, final Integer selectedButton)
 	{
@@ -63,8 +75,9 @@ public abstract class ButtonContainer extends Panel
 					private static final long serialVersionUID = 1L;
 
 					/**
-					 * Overrides default behaviour purely for the sake of the
-					 * stylesheet. The wicket default already does a good job in disabeling the links
+					 * Overrides default behavior purely for the sake of the
+					 * stylesheet. The wicket default already does a good job in
+					 * disabling the links
 					 * 
 					 * @see org.apache.wicket.markup.html.link.AbstractLink#disableLink(org.apache.wicket.markup.ComponentTag)
 					 */
@@ -89,11 +102,12 @@ public abstract class ButtonContainer extends Panel
 						}
 					}
 				};
-				//always render the buttons unless the link itself does not have enough rights
+				// always render the buttons unless the link itself does not
+				// have enough rights
 				((LinkSecurityCheck)link.getSecurityCheck()).setUseAlternativeRenderCheck(true);
 				link.add(new Label("title", NAMES[button.intValue()]).setRenderBodyOnly(true));
 				item.add(link);
-				//stylesheet stuff
+				// stylesheet stuff
 				if (selectedButton.equals(button))
 				{
 					link.add(new AttributeModifier("id", true, new Model("activeButton")));
@@ -103,5 +117,9 @@ public abstract class ButtonContainer extends Panel
 		};
 		add(buttons);
 	}
+
+	/**
+	 * Allows subclasses to setup the buttons.
+	 */
 	protected abstract void setupButtons();
 }

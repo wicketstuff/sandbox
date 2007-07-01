@@ -21,6 +21,7 @@ import org.apache.wicket.security.examples.customactions.pages.OverviewPage;
 
 /**
  * Custom menu.
+ * 
  * @author marrink
  */
 public class ButtonContainer
@@ -30,7 +31,13 @@ public class ButtonContainer
 
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * A button.
+	 */
 	public static final Integer BUTTON_OVERVIEW = new Integer(0);
+	/**
+	 * A button.
+	 */
 	public static final Integer BUTTON_DEPARTMENTS = new Integer(1);
 
 	/**

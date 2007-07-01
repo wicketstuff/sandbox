@@ -23,13 +23,18 @@ import org.apache.wicket.security.checks.ISecurityCheck;
 import org.apache.wicket.security.examples.multilogin.authentication.LoginPage2;
 
 /**
- * Tagging interface to differentiate between page where 1 login is sufficient and pages
- * where a secondary login is required.
+ * Tagging interface to differentiate between page where 1 login is sufficient
+ * and pages where a secondary login is required.
+ * 
  * @author marrink
  */
 public interface TopSecretPage
 {
-	// if required you can place a similar check on all implementations of this page
+	/**
+	 * Custom check.
+	 */
+	// if required you can place a similar check on all implementations of this
+	// page
 	static final ISecurityCheck customcheck = new ClassSecurityCheck(TopSecretPage.class)
 	{
 		private static final long serialVersionUID = 1L;
@@ -39,7 +44,8 @@ public interface TopSecretPage
 		 */
 		public boolean isActionAuthorized(WaspAction action)
 		{
-			//if not authenticated for topsecret pages go to the secondary login page.
+			// if not authenticated for topsecret pages go to the secondary
+			// login page.
 			if (isAuthenticated())
 				return getStrategy().isClassAuthorized(getClazz(), action);
 			throw new RestartResponseAtInterceptPageException(LoginPage2.class);

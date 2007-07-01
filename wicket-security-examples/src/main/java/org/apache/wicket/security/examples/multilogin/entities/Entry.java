@@ -17,8 +17,10 @@
 package org.apache.wicket.security.examples.multilogin.entities;
 
 import java.io.Serializable;
+
 /**
  * A simple data object. Completely irrelevant to security.
+ * 
  * @author marrink
  */
 public final class Entry implements Serializable
@@ -27,14 +29,35 @@ public final class Entry implements Serializable
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	/**
+	 * Who initiated the transfer
+	 */
 	public String from;
+	/**
+	 * What was the destination.
+	 */
 	public String to;
+	/**
+	 * When was it send.
+	 */
 	public String when;
+	/**
+	 * Why was it send.
+	 */
 	public String description;
+	/**
+	 * How much was send.
+	 */
 	public String amount;
+	/**
+	 * The name of the beneficiary.
+	 */
 	public String owner;
+	/**
+	 * The bank of the beneficiary
+	 */
 	public String bank;
-	
+
 	/**
 	 * Construct.
 	 */
@@ -45,6 +68,7 @@ public final class Entry implements Serializable
 
 	/**
 	 * Construct.
+	 * 
 	 * @param from
 	 * @param to
 	 * @param when
@@ -60,5 +84,5 @@ public final class Entry implements Serializable
 		this.description = description;
 		this.amount = amount;
 	}
-	
+
 }

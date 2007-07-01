@@ -28,8 +28,8 @@ import org.apache.wicket.security.strategies.LoginException;
 import org.apache.wicket.util.lang.Objects;
 
 /**
- * Context for primary login.
- * It will let you use the home, balance and transfer pages. just not the commit page. you will need a secondary login for that.
+ * Context for primary login. It will let you use the home, balance and transfer
+ * pages. just not the commit page. you will need a secondary login for that.
  * 
  * @author marrink
  * 
@@ -38,6 +38,7 @@ public class Level0Context extends LoginContext
 {
 	/**
 	 * Subject for primary login. Only authenticates non {@link TopSecretPage}s.
+	 * 
 	 * @author marrink
 	 */
 	private static final class MyPrimarySubject extends DefaultSubject
@@ -45,16 +46,16 @@ public class Level0Context extends LoginContext
 		private static final long serialVersionUID = 1L;
 
 		/**
-		 * @see org.apache.wicket.security.hive.authentication.LoginContext#isClassAuthenticated(java.lang.Class)
+		 * @see Subject#isClassAuthenticated(java.lang.Class)
 		 */
 		public boolean isClassAuthenticated(Class class1)
 		{
-			//only authenticate non topsecret pages
+			// only authenticate non topsecret pages
 			return !TopSecretPage.class.isAssignableFrom(class1);
 		}
 
 		/**
-		 * @see org.apache.wicket.security.hive.authentication.LoginContext#isComponentAuthenticated(org.apache.wicket.Component)
+		 * @see Subject#isComponentAuthenticated(org.apache.wicket.Component)
 		 */
 		public boolean isComponentAuthenticated(Component component)
 		{
@@ -65,7 +66,7 @@ public class Level0Context extends LoginContext
 		}
 
 		/**
-		 * @see org.apache.wicket.security.hive.authentication.LoginContext#isModelAuthenticated(org.apache.wicket.model.IModel,
+		 * @see Subject#isModelAuthenticated(org.apache.wicket.model.IModel,
 		 *      org.apache.wicket.Component)
 		 */
 		public boolean isModelAuthenticated(IModel model, Component component)
@@ -106,7 +107,7 @@ public class Level0Context extends LoginContext
 	 */
 	public Subject login() throws LoginException
 	{
-		//irrelevant check
+		// irrelevant check
 		if (Objects.equal(username, password))
 		{
 			// usually there will be a db call to verify the credentials

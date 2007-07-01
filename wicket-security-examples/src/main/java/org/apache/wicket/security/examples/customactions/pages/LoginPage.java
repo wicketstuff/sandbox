@@ -24,6 +24,7 @@ import org.apache.wicket.security.strategies.LoginException;
 
 /**
  * Custom login page.
+ * 
  * @author marrink
  */
 public class LoginPage extends org.apache.wicket.security.examples.pages.login.LoginPage
@@ -42,7 +43,8 @@ public class LoginPage extends org.apache.wicket.security.examples.pages.login.L
 
 			public boolean signIn(final String username, final String password)
 			{
-				//authentication in swarm is handled by contexts, which are disposed after use.
+				// authentication in swarm is handled by contexts, which are
+				// disposed after use.
 				LoginContext context = new MyLoginContext(username, password);
 				try
 				{

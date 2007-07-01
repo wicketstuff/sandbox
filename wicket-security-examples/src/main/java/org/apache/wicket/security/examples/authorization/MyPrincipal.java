@@ -21,20 +21,26 @@ import org.apache.wicket.security.hive.authorization.Principal;
 
 /**
  * Simplest of principal.
+ * 
  * @author marrink
- *
+ * 
  */
 public class MyPrincipal implements Principal
 {
 	private static final long serialVersionUID = 1L;
 	private String name;
-	
-	
+
+	/**
+	 * 
+	 * Construct.
+	 * 
+	 * @param name
+	 */
 	public MyPrincipal(String name)
 	{
 		super();
 		this.name = name;
-		if(name==null)
+		if (name == null)
 			throw new IllegalArgumentException("Name must be specified");
 	}
 
@@ -51,19 +57,22 @@ public class MyPrincipal implements Principal
 	 */
 	public boolean implies(Subject subject)
 	{
-		//no inheritance structure in these principals.
+		// no inheritance structure in these principals.
 		return false;
 	}
+
 	/**
 	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	public String toString()
 	{
-		return getClass().getName()+": "+getName();
+		return getClass().getName() + ": " + getName();
 	}
+
 	/**
 	 * generated hash based on class and name.
+	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
 	public int hashCode()
@@ -74,8 +83,10 @@ public class MyPrincipal implements Principal
 		result = PRIME * result + getClass().hashCode();
 		return result;
 	}
+
 	/**
 	 * generated equals based on class and name.
+	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	public boolean equals(Object obj)
@@ -86,7 +97,7 @@ public class MyPrincipal implements Principal
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		final MyPrincipal other = (MyPrincipal) obj;
+		final MyPrincipal other = (MyPrincipal)obj;
 		if (name == null)
 		{
 			if (other.name != null)

@@ -23,8 +23,9 @@ import org.apache.wicket.model.IModel;
 
 /**
  * Base page for all pages that do not require a login.
+ * 
  * @author marrink
- *
+ * 
  */
 public class MyUnSecurePage extends WebPage
 {

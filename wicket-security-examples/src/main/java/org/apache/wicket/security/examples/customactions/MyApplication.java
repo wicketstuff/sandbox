@@ -32,12 +32,16 @@ import org.apache.wicket.security.swarm.SwarmWebApplication;
 
 /**
  * default implementation of a swarm app with a custom actionfactory.
+ * 
  * @author marrink
- *
+ * 
  */
 public class MyApplication extends SwarmWebApplication
 {
 
+	/**
+	 * List of departments so we can make changes to them.
+	 */
 	public final List DEPARTMENTS;
 
 	/**
@@ -46,7 +50,8 @@ public class MyApplication extends SwarmWebApplication
 	public MyApplication()
 	{
 		super();
-		//set up the departments, only required because this is an example, normally yoy would get them from a db or something else.
+		// set up the departments, only required because this is an example,
+		// normally you would get them from a db or something else.
 		Organization organization = new Organization();
 		organization.name = "Bee Hive: Honey Production (inc)";
 		String[] departments = new String[] { "Tracking", "Tracks swarm movements", "false",
@@ -61,16 +66,16 @@ public class MyApplication extends SwarmWebApplication
 			data.add(new Department(organization, departments[i * 3], departments[(i * 3) + 1],
 					Boolean.valueOf(departments[(i * 3) + 2]).booleanValue()));
 		}
-		DEPARTMENTS=data;
+		DEPARTMENTS = data;
 	}
-	
+
 	/**
 	 * @see org.apache.wicket.security.swarm.SwarmWebApplication#init()
 	 */
 	protected void init()
 	{
 		super.init();
-//		misc settings
+		// misc settings
 		getMarkupSettings().setCompressWhitespace(true);
 		getMarkupSettings().setStripComments(true);
 		getMarkupSettings().setStripWicketTags(true);
@@ -82,18 +87,18 @@ public class MyApplication extends SwarmWebApplication
 	 */
 	protected Object getHiveKey()
 	{
-		//if you are using servlet api 2.5 i would suggest using:
-		//return getServletContext().getContextPath();
-		
-		//if not you have several options:
-		//-an initparam in web.xml
-		//-a static object
-		//-a random object
-		//-whatever you can think of
-		
-		//for this example we will be using a fixed string
+		// if you are using servlet api 2.5 i would suggest using:
+		// return getServletContext().getContextPath();
+
+		// if not you have several options:
+		// -an initparam in web.xml
+		// -a static object
+		// -a random object
+		// -whatever you can think of
+
+		// for this example we will be using a fixed string
 		return "custom-actions";
-		
+
 	}
 
 	/**
@@ -101,18 +106,19 @@ public class MyApplication extends SwarmWebApplication
 	 */
 	protected void setUpHive()
 	{
-		//create factory
+		// create factory
 		PolicyFileHiveFactory factory = new PolicyFileHiveFactory();
 		try
 		{
-			//this example uses 1 policy file but you can add as many as you like
+			// this example uses 1 policy file but you can add as many as you
+			// like
 			factory.addPolicyFile(getServletContext().getResource("/WEB-INF/customactions.hive"));
 		}
 		catch (MalformedURLException e)
 		{
 			throw new WicketRuntimeException(e);
 		}
-		//register factory
+		// register factory
 		HiveMind.registerHive(getHiveKey(), factory);
 
 	}
@@ -140,5 +146,5 @@ public class MyApplication extends SwarmWebApplication
 	{
 		setActionFactory(new MyActionFactory());
 	}
-	
+
 }

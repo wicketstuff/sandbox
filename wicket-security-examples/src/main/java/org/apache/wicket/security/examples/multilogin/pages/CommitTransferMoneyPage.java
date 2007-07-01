@@ -44,15 +44,14 @@ public class CommitTransferMoneyPage extends SecurePage implements TopSecretPage
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Construct.
-	 * the transfers are read from the session.
+	 * Construct. the transfers are read from the session.
 	 */
 	public CommitTransferMoneyPage()
 	{
 		add(new ButtonContainer("buttoncontainer", ButtonContainer.BUTTON_COMMIT));
-		//copy list as it is at this moment
-		final ListView transactions = new ListView("transactions", new ArrayList(MySession.getSessesion()
-				.getMoneyTransfers()))
+		// copy list as it is at this moment
+		final ListView transactions = new ListView("transactions", new ArrayList(MySession
+				.getSessesion().getMoneyTransfers()))
 		{
 			private static final long serialVersionUID = 1L;
 
@@ -78,7 +77,7 @@ public class CommitTransferMoneyPage extends SecurePage implements TopSecretPage
 			}
 		};
 		add(transactions);
-		//not a secure link because the page itself is already secure.
+		// not a secure link because the page itself is already secure.
 		add(new Link("commit")
 		{
 			/**
@@ -88,12 +87,13 @@ public class CommitTransferMoneyPage extends SecurePage implements TopSecretPage
 
 			public void onClick()
 			{
-				List temp=(List)transactions.getModelObject();
-				for(int i=0;i<temp.size();i++)
+				List temp = (List)transactions.getModelObject();
+				for (int i = 0; i < temp.size(); i++)
 				{
-					if(MySession.getSessesion().getMoneyTransfers().remove(temp.get(i)))
+					if (MySession.getSessesion().getMoneyTransfers().remove(temp.get(i)))
 					{
-						//ok this is not the most briliant and optimized code, it is an example :)
+						// ok this is not the most briliant and optimized code,
+						// it is an example :)
 						temp.remove(i);
 						i--;
 					}

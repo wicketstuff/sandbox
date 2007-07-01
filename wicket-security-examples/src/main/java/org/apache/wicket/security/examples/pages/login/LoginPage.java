@@ -25,6 +25,7 @@ import org.apache.wicket.security.strategies.LoginException;
 
 /**
  * primary loginpage uses username and password.
+ * 
  * @author marrink
  */
 public class LoginPage extends WebPage
@@ -57,22 +58,19 @@ public class LoginPage extends WebPage
 	}
 
 	/**
-	 * Creeert een sign in panel voor instellingen die hun authenticatie enkel
-	 * baseren op username/wachtwoord.
+	 * Creates a sign in panel with a username and a password field.
 	 * 
 	 * @param panelId
-	 * @param info
 	 */
 	protected void newUserPasswordSignInPanel(String panelId)
 	{
 		add(new UsernamePasswordSignInPanel(panelId)
 		{
-			/** Voor serializatie. */
 			private static final long serialVersionUID = 1L;
 
 			public boolean signIn(String username, String password)
 			{
-				LoginContext ctx=new Level0Context(username, password);
+				LoginContext ctx = new Level0Context(username, password);
 				try
 				{
 					((WaspSession)getSession()).login(ctx);

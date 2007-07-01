@@ -30,8 +30,9 @@ import org.apache.wicket.security.swarm.SwarmWebApplication;
 
 /**
  * default implementation of a swarm app with a custom session.
+ * 
  * @author marrink
- *
+ * 
  */
 public class MyApplication extends SwarmWebApplication
 {
@@ -43,14 +44,14 @@ public class MyApplication extends SwarmWebApplication
 	{
 
 	}
-	
+
 	/**
 	 * @see org.apache.wicket.security.swarm.SwarmWebApplication#init()
 	 */
 	protected void init()
 	{
 		super.init();
-//		misc settings
+		// misc settings
 		getMarkupSettings().setCompressWhitespace(true);
 		getMarkupSettings().setStripComments(true);
 		getMarkupSettings().setStripWicketTags(true);
@@ -62,18 +63,18 @@ public class MyApplication extends SwarmWebApplication
 	 */
 	protected Object getHiveKey()
 	{
-		//if you are using servlet api 2.5 i would suggest using:
-		//return getServletContext().getContextPath();
-		
-		//if not you have several options:
-		//-an initparam in web.xml
-		//-a static object
-		//-a random object
-		//-whatever you can think of
-		
-		//for this example we will be using a fixed string
+		// if you are using servlet api 2.5 i would suggest using:
+		// return getServletContext().getContextPath();
+
+		// if not you have several options:
+		// -an initparam in web.xml
+		// -a static object
+		// -a random object
+		// -whatever you can think of
+
+		// for this example we will be using a fixed string
 		return "multi-login";
-		
+
 	}
 
 	/**
@@ -81,11 +82,12 @@ public class MyApplication extends SwarmWebApplication
 	 */
 	protected void setUpHive()
 	{
-		//create factory
+		// create factory
 		PolicyFileHiveFactory factory = new PolicyFileHiveFactory();
 		try
 		{
-			//this example uses 1 policy file but you can add as many as you like
+			// this example uses 1 policy file but you can add as many as you
+			// like
 			factory.addPolicyFile(getServletContext().getResource("/WEB-INF/multilogin.hive"));
 			factory.setAlias("hp", "org.apache.wicket.security.examples.multilogin.pages.HomePage");
 		}
@@ -93,7 +95,7 @@ public class MyApplication extends SwarmWebApplication
 		{
 			throw new WicketRuntimeException(e);
 		}
-		//register factory
+		// register factory
 		HiveMind.registerHive(getHiveKey(), factory);
 
 	}
@@ -113,12 +115,15 @@ public class MyApplication extends SwarmWebApplication
 	{
 		return LoginPage.class;
 	}
+
 	/**
 	 * We store some data in the session, so we need our own session.
-	 * @see org.apache.wicket.security.WaspWebApplication#newSession(org.apache.wicket.Request, org.apache.wicket.Response)
+	 * 
+	 * @see org.apache.wicket.security.WaspWebApplication#newSession(org.apache.wicket.Request,
+	 *      org.apache.wicket.Response)
 	 */
 	public Session newSession(Request request, Response response)
 	{
-		return new MySession(this,request);
+		return new MySession(this, request);
 	}
 }

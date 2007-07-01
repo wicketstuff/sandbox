@@ -99,7 +99,9 @@ public class DepartmentsPage extends SecurePage
 				// by using a securemodel we are preventing the secure
 				// departments from showing up.
 				return new DepartmentModel(super.getListItemModel(listViewModel, index));
-//				return new CompoundPropertyModel(super.getListItemModel(listViewModel, index));
+				// return new
+				// CompoundPropertyModel(super.getListItemModel(listViewModel,
+				// index));
 			}
 		});
 	}

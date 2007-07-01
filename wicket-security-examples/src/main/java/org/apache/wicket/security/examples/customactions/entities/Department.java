@@ -31,11 +31,20 @@ import java.io.Serializable;
 public class Department implements Serializable
 {
 	private static final long serialVersionUID = 1L;
+	/**
+	 * the organization of this department.
+	 */
 	public Organization organization;
+	/**
+	 * The name.
+	 */
 	public String name;
+	/**
+	 * A description.
+	 */
 	public String description;
 	/**
-	 * indicates if this department is only visible to users with organisation
+	 * indicates if this department is only visible to users with organization
 	 * clearance.
 	 */
 	public final boolean secure;
@@ -55,7 +64,7 @@ public class Department implements Serializable
 	 * @param name
 	 * @param description
 	 * @param secure
-	 *            
+	 * 
 	 */
 	public Department(Organization organization, String name, String description, boolean secure)
 	{

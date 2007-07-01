@@ -42,6 +42,7 @@ public class SecurePage extends MySecurePage
 
 	/**
 	 * Construct.
+	 * 
 	 * @param parameters
 	 */
 	public SecurePage(PageParameters parameters)
@@ -51,6 +52,7 @@ public class SecurePage extends MySecurePage
 
 	/**
 	 * Construct.
+	 * 
 	 * @param model
 	 */
 	public SecurePage(IModel model)

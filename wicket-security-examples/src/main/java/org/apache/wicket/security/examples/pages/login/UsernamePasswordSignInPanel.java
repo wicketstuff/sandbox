@@ -29,12 +29,16 @@ import org.apache.wicket.util.value.ValueMap;
 
 /**
  * Panel for user authentication.
+ * 
  * @author marrink
  */
 public abstract class UsernamePasswordSignInPanel extends Panel
 {
 	/**
 	 * Constructor.
+	 * 
+	 * @param id
+	 *            component id
 	 */
 	public UsernamePasswordSignInPanel(final String id)
 	{
@@ -43,10 +47,11 @@ public abstract class UsernamePasswordSignInPanel extends Panel
 	}
 
 	/**
-	 * The actual login proces.
+	 * The actual login process.
+	 * 
 	 * @param username
 	 * @param password
-	 * @return
+	 * @return true, if the login was successful, false otherwise
 	 */
 	public abstract boolean signIn(String username, String password);
 
@@ -64,7 +69,9 @@ public abstract class UsernamePasswordSignInPanel extends Panel
 
 		/**
 		 * Constructor.
-		 * @param id id of the form component
+		 * 
+		 * @param id
+		 *            id of the form component
 		 */
 		public SignInForm(final String id)
 		{
@@ -75,13 +82,20 @@ public abstract class UsernamePasswordSignInPanel extends Panel
 			add(new PasswordTextField("password").setOutputMarkupId(false));
 			add(new CheckBox("rememberMe", new PropertyModel(this, "rememberMe")));
 		}
+
+		/**
+		 * 
+		 * @see org.apache.wicket.Component#getMarkupId()
+		 */
 		public String getMarkupId()
 		{
-			//fix javascript id
+			// fix javascript id
 			return getId();
 		}
+
 		/**
-		 * @see wicket.markup.html.form.Form#onSubmit()
+		 * 
+		 * @see org.apache.wicket.markup.html.form.Form#onSubmit()
 		 */
 		public final void onSubmit()
 		{
@@ -91,7 +105,7 @@ public abstract class UsernamePasswordSignInPanel extends Panel
 				getPage().removePersistedFormData(SignInForm.class, true);
 			}
 
-			ValueMap values = (ValueMap) getModelObject();
+			ValueMap values = (ValueMap)getModelObject();
 			String username = values.getString("username");
 			String password = values.getString("password");
 
@@ -113,7 +127,8 @@ public abstract class UsernamePasswordSignInPanel extends Panel
 		}
 
 		/**
-		 * @return true if formdata should be made persistent (cookie) for later logins.
+		 * @return true if formdata should be made persistent (cookie) for later
+		 *         logins.
 		 */
 		public boolean getRememberMe()
 		{
@@ -122,12 +137,14 @@ public abstract class UsernamePasswordSignInPanel extends Panel
 
 		/**
 		 * Remember form values for later logins?.
-		 * @param rememberMe true if formdata should be remembered
+		 * 
+		 * @param rememberMe
+		 *            true if formdata should be remembered
 		 */
 		public void setRememberMe(boolean rememberMe)
 		{
 			this.rememberMe = rememberMe;
-			((FormComponent) get("username")).setPersistent(rememberMe);
+			((FormComponent)get("username")).setPersistent(rememberMe);
 		}
 	}
 }

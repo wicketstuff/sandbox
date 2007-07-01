@@ -51,6 +51,7 @@ public class BankAccountBalancePage extends SecurePage
 		add(new ListView("transactions", generateData())
 		{
 			private static final long serialVersionUID = 1L;
+
 			protected void populateItem(ListItem item)
 			{
 				item.add(new Label("when"));
@@ -58,12 +59,14 @@ public class BankAccountBalancePage extends SecurePage
 				item.add(new Label("to"));
 				item.add(new Label("description"));
 				item.add(new Label("amount"));
-				if(item.getIndex()%2==0)
-					item.add(new SimpleAttributeModifier("class","outside halfhour"));
+				if (item.getIndex() % 2 == 0)
+					item.add(new SimpleAttributeModifier("class", "outside halfhour"));
 			}
+
 			/**
 			 * 
-			 * @see org.apache.wicket.markup.html.list.ListView#getListItemModel(org.apache.wicket.model.IModel, int)
+			 * @see org.apache.wicket.markup.html.list.ListView#getListItemModel(org.apache.wicket.model.IModel,
+			 *      int)
 			 */
 			protected IModel getListItemModel(IModel listViewModel, int index)
 			{
@@ -71,21 +74,24 @@ public class BankAccountBalancePage extends SecurePage
 			}
 		});
 	}
+
 	/**
 	 * Generate some random data
+	 * 
 	 * @return
 	 */
 	private List generateData()
 	{
-		int size=(int)(Math.random()*90)+10;
-		List data=new ArrayList(size);
-		String to=""+System.currentTimeMillis();
-		for(int i=0;i<size;i++)
+		int size = (int)(Math.random() * 90) + 10;
+		List data = new ArrayList(size);
+		String to = "" + System.currentTimeMillis();
+		for (int i = 0; i < size; i++)
 		{
 			Calendar cal = Calendar.getInstance();
-			cal.add(Calendar.DAY_OF_YEAR, (-1*size)+i);
-			cal.add(Calendar.HOUR_OF_DAY, (int)Math.random()*12);
-			data.add(new Entry(""+cal.getTimeInMillis(),to,cal.getTime().toString(),"foobar","$"+(Math.random()*2546.789)));
+			cal.add(Calendar.DAY_OF_YEAR, (-1 * size) + i);
+			cal.add(Calendar.HOUR_OF_DAY, (int)Math.random() * 12);
+			data.add(new Entry("" + cal.getTimeInMillis(), to, cal.getTime().toString(), "foobar",
+					"$" + (Math.random() * 2546.789)));
 		}
 		return data;
 	}

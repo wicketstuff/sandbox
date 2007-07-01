@@ -59,17 +59,14 @@ public class LoginPage2 extends WebPage
 	}
 
 	/**
-	 * Creeert een sign in panel voor instellingen die hun authenticatie enkel
-	 * baseren op username/wachtwoord.
+	 * Creates a sign in panel with a username and a password.
 	 * 
 	 * @param panelId
-	 * @param info
 	 */
 	protected void newUserPasswordSignInPanel(String panelId)
 	{
 		add(new UsernamePasswordSignInPanel(panelId)
 		{
-			/** Voor serializatie. */
 			private static final long serialVersionUID = 1L;
 
 			public boolean signIn(String username, String password)
