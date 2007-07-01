@@ -62,7 +62,6 @@ Wicket.GMaps.moveend = function (id, callBack) {
 		function () {wicketAjaxGet(callBack 
 			+ '&center=' + map.getCenter()
 			+ '&bounds=' + map.getBounds()
-			+ '&size=' + map.getSize()
 			+ '&zoom=' + map.getZoom()),
 		function(){},
 		function(){alert("ooops!")}});
@@ -72,6 +71,9 @@ Wicket.GMaps.click = function (id, callBack) {
 	var map = Wicket.gmaps[id];
 	GEvent.addListener( map , 'click',
 		function (marker, gLatLng) {wicketAjaxGet(callBack 
+			+ '&center=' + map.getCenter()
+			+ '&bounds=' + map.getBounds()
+			+ '&zoom=' + map.getZoom()
 			+ '&marker=' + (marker == null ? "" : marker.overlayId)
 			+ '&gLatLng=' + gLatLng),
 		function(){},

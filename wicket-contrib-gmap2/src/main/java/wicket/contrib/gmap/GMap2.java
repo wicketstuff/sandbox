@@ -428,6 +428,21 @@ public class GMap2 extends Panel
 		return "Wicket.gmaps['" + getJSid() + "']" + ".zoomIn();\n";
 	}
 	
+	/**
+	 * Update state from a request to an AJAX target.
+	 * 
+	 * TODO update bounds
+	 */
+	private void update(AjaxRequestTarget target) {
+		Request request = RequestCycle.get().getRequest();
+
+		// Attention: don't use setters as this will result in an endless
+		// AJAX request loop
+		center = GLatLng.fromString(request.getParameter("center"));
+		zoom = (Integer)IntegerConverter.INSTANCE.convertToObject(request
+				.getParameter("zoom"), Locale.getDefault());
+	}
+
 	private class InfoWindow extends WebMarkupContainer
 	{
 
@@ -642,19 +657,10 @@ public class GMap2 extends Panel
 			return "moveend";
 		}
 
-		/*
-		 * TODO update bounds
-		 */
 		@Override
 		protected final void respond(AjaxRequestTarget target)
 		{
-			Request request = RequestCycle.get().getRequest();
-
-			// Attention: don't use setters as this will result in an endless
-			// AJAX request loop
-			center = GLatLng.fromString(request.getParameter("center"));
-			zoom = (Integer)IntegerConverter.INSTANCE.convertToObject(request
-					.getParameter("zoom"), Locale.getDefault());
+			update(target);
 
 			MoveEndBehavior.this.onMoveEnd(target);
 		}
@@ -683,6 +689,8 @@ public class GMap2 extends Panel
 		protected final void respond(AjaxRequestTarget target)
 		{
 			Request request = RequestCycle.get().getRequest();
+
+			update(target);
 
 			String markerString = request.getParameter("marker");
 			if ("".equals(markerString))
