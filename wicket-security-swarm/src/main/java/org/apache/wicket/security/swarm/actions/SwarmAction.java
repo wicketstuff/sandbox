@@ -73,15 +73,16 @@ public class SwarmAction extends AbstractWaspAction
 
 	/**
 	 * Check if the supplied actions are implied (bitwise or) by this SwarmAction.
+	 * @param otherActions internal value of some other action(s)
 	 * @return true if the actions are implied, false otherwise.
 	 */
-	public final boolean implies(int actions)
+	public final boolean implies(int otherActions)
 	{
-		return ((this.actions & actions) == actions);
+		return ((this.actions & otherActions) == otherActions);
 	}
 	/**
 	 * Returns the internal representation of this action.
-	 * @return
+	 * @return the internal value
 	 */
 	public final int actions()
 	{
@@ -117,6 +118,7 @@ public class SwarmAction extends AbstractWaspAction
 
 	/**
 	 * Check if the supplied action is implied (bitwise or) by this SwarmAction.
+	 * @param other the other action
 	 * @return true if the action is implied, false otherwise.
 	 */
 	public final boolean implies(WaspAction other)
@@ -127,18 +129,18 @@ public class SwarmAction extends AbstractWaspAction
 	 * Creates a new {@link WaspAction} containing both the specified actions and the actions of this {@link WaspAction}. This method
 	 * always returns a new SwarmAction.
 	 * 
-	 * @param actions the actions to add
+	 * @param otherActions the actions to add
 	 * @return a new WaspAction containing all the actions
 	 */
-	public final WaspAction add(int actions)
+	public final WaspAction add(int otherActions)
 	{
-		return newInstance(this.actions | actions);
+		return newInstance(this.actions | otherActions);
 	}
 	/**
 	 * Creates a new {@link WaspAction} containing both the specified actions and the actions of this {@link WaspAction}. This method
 	 * always returns a new SwarmAction.
 	 * 
-	 * @param action
+	 * @param other the other action(s)
 	 * @return a new WaspAction containing all the actions
 	 */
 	public final WaspAction add(WaspAction other)
@@ -149,13 +151,13 @@ public class SwarmAction extends AbstractWaspAction
 	}
 	/**
 	 * Creates a new {@link WaspAction} with all the actions of this action except those specified.
-	 * @param actions the actions to remove
+	 * @param otherActions the actions to remove
 	 * @return a new WaspAction or this action if the specified actions were never part of this action.
 	 */
-	public final SwarmAction remove(int actions)
+	public final SwarmAction remove(int otherActions)
 	{
-		if(implies(actions))
-			return newInstance(this.actions-actions);
+		if(implies(otherActions))
+			return newInstance(this.actions-otherActions);
 		return this;
 	}
 	/**

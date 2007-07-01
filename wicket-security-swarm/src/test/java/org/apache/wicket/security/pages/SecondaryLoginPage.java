@@ -67,6 +67,11 @@ public class SecondaryLoginPage extends WebPage
 			});
 		form.add(textField=new TextField("username",new Model()));
 	}
+	/**
+	 * Login using a username.
+	 * @param username
+	 * @return true if the login was successful, false otherwise
+	 */
 	public boolean login(String username)
 	{
 		try
@@ -83,12 +88,18 @@ public class SecondaryLoginPage extends WebPage
 		}
 		return false;
 	}
-	
+	/**
+	 * 
+	 * @return the form
+	 */
 	public final Form getForm()
 	{
 		return form;
 	}
-	
+	/**
+	 * 
+	 * @return the username textfield
+	 */
 	public final TextField getTextField()
 	{
 		return textField;

@@ -21,6 +21,7 @@ import org.apache.wicket.Component;
 import org.apache.wicket.security.actions.Access;
 import org.apache.wicket.security.components.SecureComponentHelper;
 import org.apache.wicket.security.hive.authorization.Permission;
+import org.apache.wicket.security.hive.config.HiveFactory;
 import org.apache.wicket.security.swarm.actions.SwarmAction;
 
 
@@ -43,6 +44,12 @@ public class ComponentPermission extends ActionPermission
 	{
 		super(SecureComponentHelper.alias(component), getAction(Access.class));
 	}
+	/**
+	 * 
+	 * Creates a new ComponentPermission with the specified actions.
+	 * @param component the component
+	 * @param actions the internal value of the actions granted in this permission
+	 */
 	public ComponentPermission(Component component, int actions)
 	{
 		super(SecureComponentHelper.alias(component), getAction(actions));
@@ -50,8 +57,8 @@ public class ComponentPermission extends ActionPermission
 	/**
 	 * Creates a new ComponentPermission with the specified actions.
 	 * 
-	 * @param component
-	 * @param action
+	 * @param component the component
+	 * @param action the action(s)
 	 */
 	public ComponentPermission(Component component, SwarmAction action)
 	{
@@ -60,22 +67,23 @@ public class ComponentPermission extends ActionPermission
 
 	/**
 	 * Creates a new ComponentPermission with the specified actions.
+	 * This constructor is primarily for use by the {@link HiveFactory}
 	 * 
-	 * @param componentPath
-	 * @param actions
+	 * @param componentAlias an alias as produced by {@link SecureComponentHelper}
+	 * @param actions a string representation of the action(s)
 	 */
-	public ComponentPermission(String componentPath, String actions)
+	public ComponentPermission(String componentAlias, String actions)
 	{
-		super(componentPath, getAction(actions));
+		super(componentAlias, getAction(actions));
 	}
 	/**
 	 * Creates a new ComponentPermission with the specified actions.
-	 * @param securityString
-	 * @param actions
+	 * @param componentAlias an alias as produced by {@link SecureComponentHelper} 
+	 * @param actions the granted action(s)
 	 */
-	public ComponentPermission(String securityString, SwarmAction actions)
+	public ComponentPermission(String componentAlias, SwarmAction actions)
 	{
-		super(securityString, actions);
+		super(componentAlias, actions);
 	}
 
 	/**

@@ -34,18 +34,20 @@ import org.apache.wicket.security.hive.Hive;
 import org.apache.wicket.security.hive.authorization.EverybodyPrincipal;
 import org.apache.wicket.security.hive.authorization.Permission;
 import org.apache.wicket.security.hive.authorization.Principal;
+import org.apache.wicket.security.hive.authorization.permissions.ComponentPermission;
+import org.apache.wicket.security.hive.authorization.permissions.DataPermission;
 import org.apache.wicket.util.string.AppendingStringBuffer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * A factory to produce Hive's based on policy files. This factory is designed
- * to make a best effort when problems aoocur. Meaning any malconfiguration in
+ * to make a best effort when problems occur. Meaning any malconfiguration in
  * the policy file is logged and then skipped. This factory accepts the
  * following policy format<br>
  * 
  * <pre>
- * grant[ principal &lt;pricipal class&gt; &quot;name&quot;]
+ * grant[ principal &lt;principal class&gt; &quot;name&quot;]
  * {
  * permission &lt;permission class&gt; &quot;name&quot;,[ &quot;actions&quot;];
  * };
@@ -70,11 +72,11 @@ import org.slf4j.LoggerFactory;
  * <li>aliases are not allowed in actions or reserved words (grant, permission,
  * principal)</li>
  * <li>aliases are case sensitive</li>
- * By default de following aliases are available ComponentPermission and
+ * By default the following aliases are available ComponentPermission and
  * DataPermission for
  * org.apache.wicket.security.hive.authorization.permissions.ComponentPermission
  * and org.apache.wicket.security.hive.authorization.permissions.DataPermission
- * respectivly.
+ * respectively.
  * 
  * @author marrink
  */
@@ -99,6 +101,11 @@ public class PolicyFileHiveFactory implements HiveFactory
 
 	private Map aliases = new HashMap();
 
+	/**
+	 * 
+	 * Constructs a new factory that builds a Hive out of one (1) or more policy files.
+	 * It registers an alias for {@link ComponentPermission} and {@link DataPermission}.
+	 */
 	public PolicyFileHiveFactory()
 	{
 		policyFiles = new HashSet();
@@ -109,7 +116,7 @@ public class PolicyFileHiveFactory implements HiveFactory
 	}
 
 	/**
-	 * Adds a new Hive policy file to this factory. The file is not used untill
+	 * Adds a new Hive policy file to this factory. The file is not used until
 	 * {@link #createHive()} is executed.
 	 * 
 	 * @param file
@@ -669,7 +676,7 @@ public class PolicyFileHiveFactory implements HiveFactory
 	 *            the faulty line
 	 * @param principal
 	 *            the principal we are currently working on
-	 * @param permissons
+	 * @param permissions
 	 *            the permission collected for the current principal so far.
 	 */
 	protected void skipIllegalPrincipal(int lineNr, Principal principal, Set permissions)

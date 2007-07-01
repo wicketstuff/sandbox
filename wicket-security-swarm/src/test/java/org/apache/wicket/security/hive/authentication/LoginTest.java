@@ -75,28 +75,33 @@ public class LoginTest extends TestCase
 		// previous one does
 		ctx = new LoginContext(1)
 		{
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = 1L;
-
-
-			public Subject login() throws LoginException
+			//bad example, do not create an anonymous Subject in a LoginContext as it will cause the context to be serialized along with the subject
+			public Subject login()
 			{
 				return new DefaultSubject()
 				{
 					private static final long serialVersionUID = 1L;
 
+					/**
+					 * 
+					 * @see org.apache.wicket.security.hive.authentication.DefaultSubject#isClassAuthenticated(java.lang.Class)
+					 */
 					public boolean isClassAuthenticated(Class class1)
 					{
 						return false;
 					}
-					
+					/**
+					 * 
+					 * @see org.apache.wicket.security.hive.authentication.DefaultSubject#isComponentAuthenticated(org.apache.wicket.Component)
+					 */
 					public boolean isComponentAuthenticated(Component component)
 					{
 						return false;
 					}
-					
+					/**
+					 * 
+					 * @see org.apache.wicket.security.hive.authentication.DefaultSubject#isModelAuthenticated(org.apache.wicket.model.IModel, org.apache.wicket.Component)
+					 */
 					public boolean isModelAuthenticated(IModel model, Component component)
 					{
 						return false;
@@ -140,7 +145,7 @@ public class LoginTest extends TestCase
 			 */
 			private static final long serialVersionUID = 1L;
 
-			public Subject login() throws LoginException
+			public Subject login()
 			{
 				return new DefaultSubject();
 			}
@@ -223,7 +228,10 @@ public class LoginTest extends TestCase
 	{
 		private static final long serialVersionUID = 1L;
 
-		public Subject login() throws LoginException
+		/**
+		 * @see org.apache.wicket.security.hive.authentication.LoginContext#login()
+		 */
+		public Subject login()
 		{
 			return new DefaultSubject();
 		}

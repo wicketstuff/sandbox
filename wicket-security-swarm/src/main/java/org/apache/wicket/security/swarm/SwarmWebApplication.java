@@ -107,7 +107,7 @@ public abstract class SwarmWebApplication extends WaspWebApplication
 	 * Note that you must setup the actionfactory before you can setup the hive.
 	 * Note that the hive is not automatically unregistered since there is a
 	 * chance you want to share it with another webapp. If you want to
-	 * unregister the hive please do so in the {@link #destroy()}
+	 * unregister the hive please do so in the {@link #onDestroy()}
 	 */
 	protected abstract void setUpHive();
 

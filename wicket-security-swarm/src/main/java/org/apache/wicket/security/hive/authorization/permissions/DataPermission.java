@@ -64,7 +64,8 @@ public class DataPermission extends ActionPermission
 	}
 
 	/**
-	 * @see wicket.extensions.security.jaas.ActionPermission#equals(java.lang.Object)
+	 * 
+	 * @see org.apache.wicket.security.hive.authorization.permissions.ActionPermission#equals(java.lang.Object)
 	 */
 	public boolean equals(Object obj)
 	{
@@ -74,7 +75,8 @@ public class DataPermission extends ActionPermission
 	}
 
 	/**
-	 * @see wicket.extensions.security.jaas.ActionPermission#hashCode()
+	 * 
+	 * @see org.apache.wicket.security.hive.authorization.permissions.ActionPermission#hashCode()
 	 */
 	public int hashCode()
 	{

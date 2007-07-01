@@ -23,12 +23,11 @@ import org.apache.wicket.security.swarm.actions.SwarmAction;
 
 
 /**
- * Base class for any Permission that uses actions. Each implementation of ActionPermission should atleast
+ * Base class for any Permission that uses actions. Each implementation of ActionPermission should at least
  * expose the ActionPermission(String name, String actions) constructor to the outside world, for it will be used by
  * a {@link HiveFactory} when constructing permissions.
  * Note if you do not wish to use actions in your permissions you should build your own permissions.
  * 
- * @see org.apache.wicket.security.ISecurityHandler
  * @author marrink
  */
 public class ActionPermission extends Permission
@@ -52,23 +51,23 @@ public class ActionPermission extends Permission
 		if(actions == null)
 			throw new IllegalArgumentException("Actions is required.");
 		this.actions = actions;
-		//SwarmAction is inmutable
+		//SwarmAction is immutable
 	}
 
 	/**
-	 * Performes a logical and to see if this permission has atleast all the actions as the other permission and thus if
-	 * this permission implies the other permission. Inheritted actions are considered.
+	 * Performs a logical and to see if this permission has at least all the actions as the other permission and thus if
+	 * this permission implies the other permission. Inherited actions are considered.
 	 * 
 	 * <pre>
 	 *  Some basic rules about implies:
-	 * <li> if 2 permissions are equal both should implie the other.
+	 * <li> if 2 permissions are equal both should imply the other.
 	 * </li>
-	 * <li> if 2 permissions are not equal they might still implie each other, or 1 might implies the other but not viceversa
+	 * <li> if 2 permissions are not equal they might still imply each other, or 1 might implies the other but not vice versa
 	 * </li>
-	 * <li> a permission should implie another permission if they are of the same class and the first has atleast,
+	 * <li> a permission should imply another permission if they are of the same class and the first has at least,
 	 *      all the actions of the second permission and they have the same name.
 	 * </li>
-	 * <li> a permission should implie another permission if there is some kind of hierarchical structure between them
+	 * <li> a permission should imply another permission if there is some kind of hierarchical structure between them
 	 *       and the other permission is able to inherit the required actions from the first permission.
 	 *  
 	 *  To further clarify the part about inheritance. This implementation implies any type of ActionPermission under the following conditions.
@@ -118,7 +117,7 @@ public class ActionPermission extends Permission
 
 	/**
 	 * generates a hashcode including the classname.
-	 * @see java.security.Permission#hashCode()
+	 * @see Permission#hashCode()
 	 */
 	public int hashCode()
 	{
@@ -132,7 +131,7 @@ public class ActionPermission extends Permission
 	/**
 	 * A logically ordered comma separated string containing each action this permission has.
 	 * 
-	 * @see java.security.Permission#getActions()
+	 * @see Permission#getActions()
 	 */
 	public final String getActions()
 	{
@@ -140,18 +139,17 @@ public class ActionPermission extends Permission
 	}
 
 	/**
-	 * Returns a brief description of this permission.
 	 * 
-	 * @see java.security.Permission#toString()
+	 * @see java.lang.Object#toString()
 	 */
 	public String toString()
 	{
 		return getClass().getName() + " \"" + getName() + "\" \""+getActions()+"\"";
 	}
 	/**
-	 * 
-	 * @param myActions
-	 * @return
+	 * Check if an action is implied by this permission.
+	 * @param myActions the internal value of the action
+	 * @return true if the action is implied, false otherwise
 	 */
 	public boolean hasAction(int myActions)
 	{

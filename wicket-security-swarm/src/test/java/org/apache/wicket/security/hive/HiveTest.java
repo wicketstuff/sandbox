@@ -25,14 +25,24 @@ import org.apache.wicket.security.hive.authorization.TestPermission;
 
 import junit.framework.TestCase;
 
+/**
+ * Test hive operations.
+ * @author marrink
+ */
 public class HiveTest extends TestCase
 {
-
+	/**
+	 * 
+	 * Construct.
+	 * @param name
+	 */
 	public HiveTest(String name)
 	{
 		super(name);
 	}
-
+	/**
+	 * @see BasicHive#addPrincipal(org.apache.wicket.security.hive.authorization.Principal, java.util.Collection)
+	 */
 	public void testAddPrincipal()
 	{
 		BasicHive hive = new BasicHive();
@@ -64,7 +74,9 @@ public class HiveTest extends TestCase
 		}
 		
 	}
-
+	/**
+	 * @see BasicHive#addPermission(org.apache.wicket.security.hive.authorization.Principal, org.apache.wicket.security.hive.authorization.Permission)
+	 */
 	public void testAddPermission()
 	{
 		BasicHive hive = new BasicHive();
@@ -92,7 +104,9 @@ public class HiveTest extends TestCase
 		{
 		}
 	}
-
+	/**
+	 * @see BasicHive#hasPermision(org.apache.wicket.security.hive.authentication.Subject, org.apache.wicket.security.hive.authorization.Permission)
+	 */
 	public void testHasPermision()
 	{
 		BasicHive hive = new BasicHive();

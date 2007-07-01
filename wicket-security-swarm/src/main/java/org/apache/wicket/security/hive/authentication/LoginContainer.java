@@ -50,7 +50,7 @@ public final class LoginContainer implements Serializable
 	private HashKey preventsLogin = null;
 
 	/**
-	 * Attempts to login through the context, if successfull the subject and all
+	 * Attempts to login through the context, if successful the subject and all
 	 * its rights are included in the overall user rights. When successful this
 	 * binds the session if not already bound and marks it dirty to support
 	 * cluster replication.
@@ -58,7 +58,7 @@ public final class LoginContainer implements Serializable
 	 * @param context
 	 * @throws LoginException
 	 *             if the login fails
-	 * @see {@link LoginContext#login()}
+	 * @see LoginContext#login()
 	 */
 	public void login(LoginContext context) throws LoginException
 	{
@@ -70,13 +70,13 @@ public final class LoginContainer implements Serializable
 		if (subjects.containsKey(key))
 			throw new LoginException("Already logged in through this context ")
 					.setLoginContext(context);
-		Subject subject = context.login();
-		if (subject == null)
+		Subject mySubject = context.login();
+		if (mySubject == null)
 			throw new LoginException("Login failed ").setLoginContext(context);
-		subject.setReadOnly();
+		mySubject.setReadOnly();
 		if (key.preventsAdditionalLogins())
 			preventsLogin = key;
-		subjects.put(key, subject);
+		subjects.put(key, mySubject);
 		logins.add(key);
 		Collections.sort(logins);
 		this.subject = new MultiSubject(logins, subjects);
@@ -88,11 +88,11 @@ public final class LoginContainer implements Serializable
 	}
 
 	/**
-	 * Removes the subject and all its rights asociated with a certain context
+	 * Removes the subject and all its rights associated with a certain context
 	 * from this container.
 	 * 
 	 * @param context
-	 * @return true if the logoff was successfull, false otherwise
+	 * @return true if the logoff was successful, false otherwise
 	 */
 	public boolean logoff(LoginContext context)
 	{
@@ -115,7 +115,7 @@ public final class LoginContainer implements Serializable
 	}
 
 	/**
-	 * returns an inmutable Subject which Contains all the principals of the
+	 * returns an immutable Subject which Contains all the principals of the
 	 * subjects in the loginContexts. Note that the Subject is replaced by a new
 	 * one if a login or logoff is performed, so don't keep a reference to this
 	 * subject any longer then required.
@@ -145,9 +145,9 @@ public final class LoginContainer implements Serializable
 	 *            the model
 	 * @param component
 	 *            the component holding the model
-	 * @return true if atleast one of the registered logincontexts authenticates
+	 * @return true if at least one of the registered subjects authenticates
 	 *         the model, false otherwise.
-	 * @see LoginContext#isModelAuthenticated(IModel, Component)
+	 * @see Subject#isModelAuthenticated(IModel, Component)
 	 */
 	public boolean isModelAuthenticated(IModel model, Component component)
 	{
@@ -160,9 +160,9 @@ public final class LoginContainer implements Serializable
 	 * 
 	 * @param component
 	 *            the component
-	 * @return true if atleast one of the registered logincontexts authenticates
+	 * @return true if at least one of the registered subjects authenticates
 	 *         the component, false otherwise.
-	 * @see LoginContext#isComponentAuthenticated(Component)
+	 * @see Subject#isComponentAuthenticated(Component)
 	 */
 	public boolean isComponentAuthenticated(Component component)
 	{
@@ -175,9 +175,9 @@ public final class LoginContainer implements Serializable
 	 * 
 	 * @param clazz
 	 *            the (component) class
-	 * @return true if atleast one of the registered logincontexts authenticates
+	 * @return true if at least one of the registered subjects authenticates
 	 *         the class, false otherwise.
-	 * @see LoginContext#isClassAuthenticated(Class)
+	 * @see Subject#isClassAuthenticated(Class)
 	 */
 	public boolean isClassAuthenticated(Class clazz)
 	{
@@ -186,7 +186,7 @@ public final class LoginContainer implements Serializable
 
 	/**
 	 * Subject merging all the subjects from the logincontainer into one. This
-	 * subject is backed by the logincontainer.
+	 * subject is not fully backed by the logincontainer.
 	 * 
 	 * @author marrink
 	 */
@@ -205,13 +205,14 @@ public final class LoginContainer implements Serializable
 		/**
 		 * Creates a new MultiSubject containing only the principals of the
 		 * subjects at this time.
+		 * @param keys keys of the logincontexts
+		 * @param values subjects mapped to keys
 		 * 
-		 * @param subjects
-		 *            a collection of subjects
 		 */
 		public MultiSubject(List keys, Map values)
 		{
 			super();
+			//TODO make this subject fully backed by the logincontainer or not at all and then copy the list and map. because right now the principals don't change 
 			this.keys = keys;
 			this.mySubjects = values;
 			principals = new HashSet(100);
@@ -254,16 +255,16 @@ public final class LoginContainer implements Serializable
 		}
 
 		/**
-		 * Queries all available logincontext (higher levels first) for the
+		 * Queries all available subjects (higher levels first) for the
 		 * authentication of a model.
 		 * 
 		 * @param model
 		 *            the model
 		 * @param component
 		 *            the component holding the model
-		 * @return true if atleast one of the registered logincontexts
+		 * @return true if at least one of the registered subjects
 		 *         authenticates the model, false otherwise.
-		 * @see LoginContext#isModelAuthenticated(IModel, Component)
+		 * @see Subject#isModelAuthenticated(IModel, Component)
 		 */
 		public boolean isModelAuthenticated(IModel model, Component component)
 		{
@@ -278,14 +279,14 @@ public final class LoginContainer implements Serializable
 		}
 
 		/**
-		 * Queries all available logincontext (higher levels first) for the
+		 * Queries all available subjects (higher levels first) for the
 		 * authentication of a component.
 		 * 
 		 * @param component
 		 *            the component
-		 * @return true if atleast one of the registered logincontexts
+		 * @return true if at least one of the registered subjects
 		 *         authenticates the component, false otherwise.
-		 * @see LoginContext#isComponentAuthenticated(Component)
+		 * @see Subject#isComponentAuthenticated(Component)
 		 */
 		public boolean isComponentAuthenticated(Component component)
 		{
@@ -300,14 +301,14 @@ public final class LoginContainer implements Serializable
 		}
 
 		/**
-		 * Queries all available logincontext (higher levels first) for the
+		 * Queries all available subjects (higher levels first) for the
 		 * authentication of a class.
 		 * 
 		 * @param clazz
 		 *            the (component) class
-		 * @return true if atleast one of the registered logincontexts
+		 * @return true if at least one of the registered subjects
 		 *         authenticates the class, false otherwise.
-		 * @see LoginContext#isClassAuthenticated(Class)
+		 * @see Subject#isClassAuthenticated(Class)
 		 */
 		public boolean isClassAuthenticated(Class clazz)
 		{
@@ -322,7 +323,7 @@ public final class LoginContainer implements Serializable
 		}
 	}
 	/**
-	 * Simle key for storing the hashcode, sort order and
+	 * Simple key for storing the hashcode, sort order and
 	 * preventsAdditionalLogins flag of a {@link LoginContext} As it is better
 	 * to not keep a reference to the context especially when it contains user
 	 * credentials.
@@ -337,6 +338,10 @@ public final class LoginContainer implements Serializable
 		private final boolean preventsAdditionalLogin;
 		private int sortOrder;
 
+		/**
+		 * Construct. a new key based on the context
+		 * @param context the logincontext
+		 */
 		public HashKey(LoginContext context)
 		{
 			contextHash = context.hashCode();

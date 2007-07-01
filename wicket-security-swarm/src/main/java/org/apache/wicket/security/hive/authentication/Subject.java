@@ -52,7 +52,7 @@ public interface Subject extends Serializable
 	 * When set it is no longer possible to change the set of principals of this
 	 * subject.
 	 * 
-	 * @return
+	 * @return true if this Subject is readonly, false otherwise
 	 */
 	public boolean isReadOnly();
 
