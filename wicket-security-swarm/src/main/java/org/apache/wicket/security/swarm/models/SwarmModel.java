@@ -35,7 +35,7 @@ public interface SwarmModel extends ISecureModel
 	/**
 	 * Returns a string identifying this model for security purposes. This id is used as
 	 * the name of a {@link DataPermission} by
-	 * {@link SwarmStrategy#isModelAuthorized(ISecureModel, wicket.Component, org.apache.wicket.security.actions.WaspAction)}
+	 * {@link SwarmStrategy#isModelAuthorized(ISecureModel, Component, org.apache.wicket.security.actions.WaspAction)}
 	 * And is therefore required to remain consistent or each invocation provided the same
 	 * component is used.
 	 * @param component the component requesting the id

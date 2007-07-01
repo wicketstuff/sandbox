@@ -16,11 +16,9 @@
  */
 package org.apache.wicket.security.hive;
 
-import java.security.CodeSource;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 
 import org.apache.wicket.security.hive.authentication.Subject;
@@ -41,7 +39,10 @@ public class BasicHive implements Hive
 	private ManyToManyMap principals;
 
 	private boolean locked = false;
-
+	/**
+	 * 
+	 * Construct.
+	 */
 	public BasicHive()
 	{
 		principals = new ManyToManyMap(500); // guess lots of principals
@@ -82,15 +83,18 @@ public class BasicHive implements Hive
 			throw new IllegalArgumentException("At least one permission is required for principal "
 					+ principal);
 		Iterator it = permissions.iterator();
+		Permission next=null;
 		while (it.hasNext())
-			principals.add((Permission) it.next(), principal);
+		{
+			next = (Permission) it.next();
+			principals.add(next, principal);
+		}
 	}
 
 	/**
 	 * Adds a new permission to a principal.
 	 * @param principal the principal
 	 * @param permission the permission granted
-	 * @see #addPrincipal(CodeSource, Principal, List)
 	 * @throws IllegalStateException if the hive is locked
 	 * @throws IllegalArgumentException if either parameter is null
 	 */

@@ -119,7 +119,8 @@ public class SwarmStrategy extends ClassAuthorizationStrategy
 	}
 
 	/**
-	 * @see org.apache.wicket.security.strategies.WaspAuthorizationStrategy#isComponentAuthenticated(wicket.Component)
+	 * 
+	 * @see org.apache.wicket.security.strategies.WaspAuthorizationStrategy#isComponentAuthenticated(org.apache.wicket.Component)
 	 */
 	public boolean isComponentAuthenticated(Component component)
 	{
@@ -127,8 +128,8 @@ public class SwarmStrategy extends ClassAuthorizationStrategy
 	}
 
 	/**
-	 * @see org.apache.wicket.security.strategies.WaspAuthorizationStrategy#isComponentAuthorized(wicket.Component,
-	 *      org.apache.wicket.security.actions.WaspAction)
+	 * 
+	 * @see org.apache.wicket.security.strategies.WaspAuthorizationStrategy#isComponentAuthorized(org.apache.wicket.Component, org.apache.wicket.security.actions.WaspAction)
 	 */
 	public boolean isComponentAuthorized(Component component, WaspAction action)
 	{
@@ -137,8 +138,8 @@ public class SwarmStrategy extends ClassAuthorizationStrategy
 	}
 
 	/**
-	 * @see org.apache.wicket.security.strategies.WaspAuthorizationStrategy#isModelAuthenticated(IModel,
-	 *      wicket.Component)
+	 * 
+	 * @see org.apache.wicket.security.strategies.WaspAuthorizationStrategy#isModelAuthenticated(org.apache.wicket.model.IModel, org.apache.wicket.Component)
 	 */
 	public boolean isModelAuthenticated(IModel model, Component component)
 	{
@@ -147,10 +148,9 @@ public class SwarmStrategy extends ClassAuthorizationStrategy
 
 	/**
 	 * Checks if some action is granted on the model. Although {@link SwarmModel}s are
-	 * prefered any {@link ISecureModel} can be used, in that case it uses the
+	 * preferred any {@link ISecureModel} can be used, in that case it uses the
 	 * {@link ISecureModel#toString()} method as the name of the {@link DataPermission}
-	 * @see org.apache.wicket.security.strategies.WaspAuthorizationStrategy#isModelAuthorized(ISecureModel,
-	 *      wicket.Component, org.apache.wicket.security.actions.WaspAction)
+	 * @see org.apache.wicket.security.strategies.WaspAuthorizationStrategy#isModelAuthorized(ISecureModel, Component, WaspAction)
 	 */
 	public boolean isModelAuthorized(ISecureModel model, Component component, WaspAction action)
 	{
@@ -188,8 +188,7 @@ public class SwarmStrategy extends ClassAuthorizationStrategy
 		{
 			return loginContainer.logoff((LoginContext) context);
 		}
-		else
-			throw new SecurityException("Unable to process logoff with context: " + context);
+		throw new SecurityException("Unable to process logoff with context: " + context);
 	}
 
 	/**

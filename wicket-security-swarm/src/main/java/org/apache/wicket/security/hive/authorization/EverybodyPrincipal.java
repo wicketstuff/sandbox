@@ -39,6 +39,7 @@ public final class EverybodyPrincipal implements Principal
 
 	/**
 	 * Returns the name everybody.
+	 * @return the name of this principal
 	 * @see java.security.Principal#getName()
 	 */
 	public String getName()
@@ -75,6 +76,10 @@ public final class EverybodyPrincipal implements Principal
 		return getClass().hashCode();
 	}
 
+	/**
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
 	public String toString()
 	{
 		return getName();

@@ -17,23 +17,41 @@
 package org.apache.wicket.security.hive.authorization;
 
 import org.apache.wicket.security.hive.authorization.Permission;
+import org.apache.wicket.security.hive.config.HiveFactory;
 
+/**
+ * Very simple permission for testing purposes.
+ * @author marrink
+ */
 public class TestPermission extends Permission
 {
 	private static final long serialVersionUID = 1L;
 	private String actions = "";
 
+	/**
+	 * 
+	 * Construct.
+	 * @param name
+	 */
 	public TestPermission(String name)
 	{
 		super(name);
 	}
-
+	/**
+	 * 
+	 * Constructor required by the {@link HiveFactory}.
+	 * @param name
+	 * @param actions
+	 */
 	public TestPermission(String name, String actions)
 	{
 		super(name);
 		this.actions = actions;
 	}
-
+	/**
+	 * 
+	 * @see org.apache.wicket.security.hive.authorization.Permission#equals(java.lang.Object)
+	 */
 	public boolean equals(Object obj)
 	{
 		if (obj == this)
@@ -47,17 +65,26 @@ public class TestPermission extends Permission
 		}
 		return false;
 	}
-
+	/**
+	 * 
+	 * @see org.apache.wicket.security.hive.authorization.Permission#getActions()
+	 */
 	public String getActions()
 	{
 		return actions;
 	}
-
+	/**
+	 * 
+	 * @see org.apache.wicket.security.hive.authorization.Permission#hashCode()
+	 */
 	public int hashCode()
 	{
 		return getName().hashCode();
 	}
-
+	/**
+	 * 
+	 * @see org.apache.wicket.security.hive.authorization.Permission#implies(org.apache.wicket.security.hive.authorization.Permission)
+	 */
 	public boolean implies(Permission permission)
 	{
 		if (permission == this)

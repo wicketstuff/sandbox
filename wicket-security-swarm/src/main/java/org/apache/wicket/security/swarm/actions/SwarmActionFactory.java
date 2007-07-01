@@ -36,13 +36,16 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Default implementation of an action factory. It handles access, inherit, render
- * and enable actions. Because actions are inmutable and in order to
+ * and enable actions. Because actions are immutable and in order to
  * improve performance, generated actions are cached.
  * @author marrink
  */
 public class SwarmActionFactory implements ActionFactory
 {
 	private static final Logger log = LoggerFactory.getLogger(SwarmActionFactory.class);
+	/**
+	 * Maximum power of 2 that can be used to assign to an action.
+	 */
 	protected static final int maxAssingableAction=(int) Math.pow(2, 30);
 	
 	/**
@@ -162,7 +165,7 @@ public class SwarmActionFactory implements ActionFactory
 	}
 
 	/**
-	 * Caches an action under its int vorm.
+	 * Caches an action under its int form.
 	 * @param actions
 	 * @param ja
 	 */
@@ -182,8 +185,9 @@ public class SwarmActionFactory implements ActionFactory
 	}
 
 	/**
-	 * Returns the registerd string value of the given action.
-	 * @return the registerd string or null if no string value was registered for this
+	 * Returns the registered string value of the given action.
+	 * @param action the internal value of the action
+	 * @return the registered string or null if no string value was registered for this
 	 *         action.
 	 */
 	protected final String valueOf(Integer action)
@@ -195,8 +199,9 @@ public class SwarmActionFactory implements ActionFactory
 	 * Builds a logically ordered comma separated string of all the actions this
 	 * permission has. Based on the logical and of the supplied actions. Subclasses should
 	 * always return the same string (action order) for the same action.
+	 * @param actions the internal action value
 	 * @return string containing all the actions.
-	 * @see #getActions()
+	 * 
 	 */
 	protected String buildActionString(int actions)
 	{
@@ -212,10 +217,10 @@ public class SwarmActionFactory implements ActionFactory
 	}
 
 	/**
-	 * Appends the string value of the action only if the actions implie the waspAction
-	 * @param buff where the string wil be appended to.
+	 * Appends the string value of the action only if the actions imply the waspAction
+	 * @param buff where the string will be appended to.
 	 * @param actions the available actions
-	 * @param waspAction the action it should implie in order to append the string
+	 * @param waspAction the action it should imply in order to append the string
 	 */
 	protected final void appendActionString(AppendingStringBuffer buff, int actions, int waspAction)
 	{
@@ -237,7 +242,7 @@ public class SwarmActionFactory implements ActionFactory
 
 	/**
 	 * Parses a comma separated String containing actions. Access is the default and will also be substituted for any empty or null
-	 * String. using a string like 'render, render' is ofcourse pointless but does not brake
+	 * String. using a string like 'render, render' is pointless but does not brake
 	 * anything. Order of the actions is also not important.
 	 * @param actions
 	 * @return a logical and of the actions.
@@ -303,7 +308,6 @@ public class SwarmActionFactory implements ActionFactory
 			int action = nextPowerOf2();
 			return register(waspActionClass,new SwarmAction(action,name));
 		}
-		else
 			throw new RegistrationException(waspActionClass
 					+ " is not a " + WaspAction.class.getName());
 	}
@@ -337,7 +341,7 @@ public class SwarmActionFactory implements ActionFactory
 		return name.toLowerCase();
 	}
 	/**
-	 * Registeres a new action. Use this in combination with {@link SwarmAction#SwarmAction(int, String, ActionFactory)}.
+	 * Registers a new action. Use this in combination with {@link SwarmAction#SwarmAction(int, String, ActionFactory)}.
 	 * Example:<br>
 	 * <pre><code>
 	 * register(Enable.class, new ImpliesReadAction(nextPowerOf2(),"enable",this));
@@ -350,7 +354,7 @@ public class SwarmActionFactory implements ActionFactory
 	 * }
 	 * </code>
 	 * <pre>
-	 * Note all actions registered in this way must use nextPowerOf2() and then inmediatly register the action to preserve consistency.
+	 * Note all actions registered in this way must use nextPowerOf2() and then immediately register the action to preserve consistency.
 	 * @param waspActionClass the class under which to register the action
 	 * @param action the actual implementation (note that it does not need to implement the supplied waspActionClass)
 	 * @return the action
@@ -360,7 +364,7 @@ public class SwarmActionFactory implements ActionFactory
 	 */
 	protected final synchronized SwarmAction register(Class waspActionClass,SwarmAction action) throws RegistrationException
 	{
-		//sanity chekcs
+		//sanity checks
 		if (power > 30)
 			throw new RegistrationException("Can not register more then 32 different actions.");
 		int assignedPowerOf2=nextPowerOf2();

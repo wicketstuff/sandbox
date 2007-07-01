@@ -40,7 +40,7 @@ public class SwarmActionTest extends TestCase
 {
 	private SwarmWebApplication application;
 
-	public WicketTester mock;
+	private WicketTester mock;
 
 	/**
 	 * Constructor for WaspActionTest.
@@ -196,7 +196,9 @@ public class SwarmActionTest extends TestCase
 		 assertEquals(6,action3.actions());
 
 	}
-
+	/**
+	 * Test various constructor scenarios.
+	 */
 	public void testConstructor()
 	{
 		try
@@ -223,6 +225,11 @@ public class SwarmActionTest extends TestCase
 	{
 		private static final long serialVersionUID = 1L;
 
+		/**
+		 * Construct.
+		 * @param action
+		 * @param name
+		 */
 		protected TestAction(int action, String name)
 		{
 			super(action, name);

@@ -24,7 +24,10 @@ import org.apache.wicket.security.hive.authentication.Subject;
 import org.apache.wicket.security.hive.authorization.TestPrincipal;
 import org.apache.wicket.security.pages.HighSecurityPage;
 
-
+/**
+ * A context for multi login, this context is used to grant the least amount of permissions.
+ * @author marrink
+ */
 public final class PrimaryLoginContext extends LoginContext
 {
 	/**
@@ -36,6 +39,10 @@ public final class PrimaryLoginContext extends LoginContext
 	{
 		private static final long serialVersionUID = 1L;
 
+		/**
+		 * 
+		 * @see org.apache.wicket.security.hive.authentication.DefaultSubject#isClassAuthenticated(java.lang.Class)
+		 */
 		public boolean isClassAuthenticated(Class class1)
 		{
 			// for this test class authentication is enough
@@ -43,24 +50,36 @@ public final class PrimaryLoginContext extends LoginContext
 				return false;
 			return !HighSecurityPage.class.isAssignableFrom(class1);
 		}
-
+		/**
+		 * 
+		 * @see org.apache.wicket.security.hive.authentication.DefaultSubject#isComponentAuthenticated(org.apache.wicket.Component)
+		 */
 		public boolean isComponentAuthenticated(Component component)
 		{
 			return true;
 		}
-
+		/**
+		 * 
+		 * @see org.apache.wicket.security.hive.authentication.DefaultSubject#isModelAuthenticated(org.apache.wicket.model.IModel, org.apache.wicket.Component)
+		 */
 		public boolean isModelAuthenticated(IModel model, Component component)
 		{
 			return true;
 		}
 	}
-
+	/**
+	 * 
+	 * Construct.
+	 */
 	public PrimaryLoginContext()
 	{
 		super(0);
 	}
 
-
+	/**
+	 * 
+	 * @see org.apache.wicket.security.hive.authentication.LoginContext#login()
+	 */
 	public Subject login()
 	{
 		DefaultSubject defaultSubject = new MySubject();

@@ -16,6 +16,7 @@
  */
 package org.apache.wicket.security.hive.authentication;
 
+import org.apache.wicket.security.WaspSession;
 import org.apache.wicket.security.strategies.LoginException;
 
 /**
@@ -27,12 +28,12 @@ import org.apache.wicket.security.strategies.LoginException;
  * {@link #login()}. Some applications will require you to login with two or
  * more different LoginContexts before a user is fully authenticated. For that
  * purpose a sortOrder is available in the context. which is used in descending
- * order to pass authentication requests to the subjects untill one of them
+ * order to pass authentication requests to the subjects until one of them
  * authenticates. Sort orders are &gt;=0 and are not required to have an
  * interval of 1. For example 0, 5,6 are all perfectly legal sort orders for one
  * user. Duplicates are also allowed, in that case they are queried in reverse
  * order of login. The context also contains a flag to indicate if an additional
- * login is allowed. Note that both the sort order and the addiotional login
+ * login is allowed. Note that both the sort order and the additional login
  * flag must be constant. Also note that all LoginContexts of the same class and
  * with the same sort order are equal, thus for logoff you do need to keep a
  * reference to the context but can simply use a new instance.
@@ -69,8 +70,7 @@ public abstract class LoginContext
 	 * Constructs a new context with sort order 0 and a customizable flag for preventing additional logins.
 	 * This constructor is mostly used in multi-login scenario's.
 	 * 
-	 * @param sortOrder
-	 * @param allowAdditionalLogings
+	 * @param allowAdditionalLogings indicates if additional calls to {@link WaspSession#login(Object) are allowed}
 	 */
 	public LoginContext(boolean allowAdditionalLogings)
 	{
@@ -99,12 +99,13 @@ public abstract class LoginContext
 	 * must be thrown rather then returning null.
 	 * 
 	 * @return a {@link Subject}, never null.
+	 * @throws LoginException if an exception occurs or if the subject could not login for some other reason
 	 */
 	public abstract Subject login() throws LoginException;
 
 	/**
-	 * Indicates the level of this context. the higher the level the more you
-	 * are authorised / authenticated for.
+	 * Indicates the sort order of this context. the higher the value the more you
+	 * are authorized / authenticated for.
 	 * 
 	 * @return the level
 	 */
@@ -147,12 +148,11 @@ public abstract class LoginContext
 	/**
 	 * Signals to the {@link LoginContainer} that no additional context should
 	 * be allowed to login. The return value must be constant from one
-	 * invocation to another for this instance.This flag is checked once by the
-	 * container inmediatly after {@link #login()}. Note in a multi login
+	 * invocation to another for this instance. This flag is checked once by the
+	 * container immediately after {@link #login()}. Note in a multi login
 	 * environment you will want your logincontext with the highest possible
 	 * sort order to prevent additional logins. In a single login environment
-	 * your logincontext should always prevent additional logins (as
-	 * {@link SingleLoginContext} does.
+	 * your logincontext should always prevent additional logins.
 	 * 
 	 * @return true if you do not want additional logins for this session, false
 	 *         otherwise.

@@ -30,13 +30,21 @@ import org.apache.wicket.security.actions.WaspAction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
+/**
+ * Tests for the {@link SwarmActionFactory}.
+ * @author marrink
+ */
 public class SwarmActionFactoryTest extends TestCase
 {
 	private static final Logger log = LoggerFactory.getLogger(SwarmActionFactoryTest.class);
 
 	private SwarmActionFactory factory;
 
+	/**
+	 * 
+	 * Construct.
+	 * @param name
+	 */
 	public SwarmActionFactoryTest(String name)
 	{
 		super(name);
@@ -57,7 +65,9 @@ public class SwarmActionFactoryTest extends TestCase
 	{
 		factory = null;
 	}
-
+	/**
+	 * @see SwarmActionFactory#getAction(Action)
+	 */
 	public void testGetActionAction()
 	{
 		WaspAction action = factory.getAction(Component.RENDER);
@@ -74,7 +84,10 @@ public class SwarmActionFactoryTest extends TestCase
 		assertNull(factory.getAction((Action) null));
 		assertNull(factory.getAction(new Action("foo")));
 	}
-
+	/**
+	 * 
+	 * @see SwarmActionFactory#getAction(String)
+	 */
 	public void testGetActionString()
 	{
 		WaspAction action = factory.getAction(Action.RENDER);
@@ -92,13 +105,16 @@ public class SwarmActionFactoryTest extends TestCase
 			log.debug(e.getMessage());
 		}
 	}
-
+	/**
+	 * Test if defaults are correctly registered.
+	 * @see SwarmActionFactory#getAction(int)
+	 */
 	public void testGetActionInt()
 	{
 		WaspAction action;
 		try
 		{
-			action = factory.getAction(-1);// -1 bestaat niet
+			action = factory.getAction(-1);// -1 does not exist
 			fail("found action that should not be registered by the default factory: " + action);
 		}
 		catch (IllegalArgumentException e)
@@ -116,7 +132,7 @@ public class SwarmActionFactoryTest extends TestCase
 		}
 		try
 		{
-			action = factory.getAction(8);// 8 bestaat niet
+			action = factory.getAction(8);// 8 does not exist
 			fail("found action that should not be registered by the default factory: " + action);
 		}
 		catch (IllegalArgumentException e)
@@ -124,7 +140,10 @@ public class SwarmActionFactoryTest extends TestCase
 			log.debug(e.getMessage());
 		}
 	}
-
+	/**
+	 * Test if defaults are correctly registered.
+	 * @see SwarmActionFactory#getAction(Class)
+	 */
 	public void testGetActionClass()
 	{
 		assertNotNull(factory.getAction(Access.class));
@@ -136,7 +155,10 @@ public class SwarmActionFactoryTest extends TestCase
 		assertFalse(factory.getAction(Render.class).implies(factory.getAction(Inherit.class)));
 		assertTrue(factory.getAction(Enable.class).implies(factory.getAction(Render.class)));
 	}
-
+	/**
+	 * Test registering a String.
+	 * @see SwarmActionFactory#register(Class, String)
+	 */
 	public void testRegisterClassString()
 	{
 		try
@@ -205,7 +227,11 @@ public class SwarmActionFactoryTest extends TestCase
 		factory.register(Superman.class, "superman");
 		
 	}
-	public void testRegisterClassSwarmActionInt()
+	/**
+	 * Test registration of actions.
+	 * @see SwarmActionFactory#register(Class, SwarmAction)
+	 */
+	public void testRegisterClassSwarmAction()
 	{
 		try
 		{
@@ -214,8 +240,8 @@ public class SwarmActionFactoryTest extends TestCase
 			Bugsy bugsy=new Bugsy(factory.nextPowerOf2(),"bugs bunny",factory);
 			factory.register(BugsBunny.class, bugsy);
 			assertEquals(bugsy, factory.getAction(BugsBunny.class));
-			assertTrue(factory.nextPowerOf2()==Integer.MAX_VALUE); //hier dus al overflow
-			assertTrue(Integer.MAX_VALUE+"<="+bugsy.actions(),Integer.MAX_VALUE>bugsy.actions());
+			assertTrue(factory.nextPowerOf2()==Integer.MAX_VALUE); //overflow happens here
+			assertTrue(Integer.MAX_VALUE+"!="+bugsy.actions(),Integer.MAX_VALUE==bugsy.actions());
 			assertEquals(32, factory.getNumberOfRegisteredClasses());
 		}
 		catch (RegistrationException e)
@@ -224,6 +250,7 @@ public class SwarmActionFactoryTest extends TestCase
 			fail(e.getMessage());
 		}
 	}
+	//whole bunch of action interfaces
 	private static interface Hack extends WaspAction
 	{
 		
@@ -343,6 +370,12 @@ public class SwarmActionFactoryTest extends TestCase
 	private static class Bugsy extends SwarmAction implements BugsBunny
 	{
 		private static final long serialVersionUID = 1L;
+		/**
+		 * Construct.
+		 * @param actions
+		 * @param name
+		 * @param factory
+		 */
 		protected Bugsy(int actions, String name, ActionFactory factory)
 		{
 			super(getIt(actions, factory), name);
@@ -367,7 +400,7 @@ public class SwarmActionFactoryTest extends TestCase
 		}
 		private static int getAction(ActionFactory factory, Class action)
 		{
-			return ((SwarmAction)factory.getAction(MightyMouse.class)).actions();
+			return ((SwarmAction)factory.getAction(action)).actions();
 		}
 	}
 	

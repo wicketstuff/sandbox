@@ -113,7 +113,9 @@ public class PolicyFileHiveFactoryTest extends TestCase
 		assertTrue(hive.containsPermission(new TestPermission("9.A")));
 		assertTrue(hive.containsPermission(new TestPermission("9.B", "test")));
 	}
-
+	/**
+	 * Test if the regex used in the factory is OK.
+	 */
 	public void testRegExPrincipalPattern()
 	{
 		Pattern principalPattern = null;
@@ -163,7 +165,9 @@ public class PolicyFileHiveFactoryTest extends TestCase
 		assertFalse(principalPattern.matcher(
 				"grant principal org.apache.wicket.TestPrincipal render").matches());
 	}
-
+	/**
+	 * Test if the regex used in the factory is OK.
+	 */
 	public void testRegExPermissionPattern()
 	{
 		Pattern permissionPattern = null;
@@ -221,7 +225,9 @@ public class PolicyFileHiveFactoryTest extends TestCase
 		}
 		assertNotNull(permissionPattern);
 	}
-
+	/**
+	 * Test if the regex used in the factory is OK.
+	 */
 	public void testRegExAliasPattern()
 	{
 		Pattern aliasPattern = null;
@@ -281,7 +287,7 @@ public class PolicyFileHiveFactoryTest extends TestCase
 		assertNotNull(aliasPattern);
 	}
 
-	/*
+	/**
 	 * test handling of nested aliases
 	 */
 	public void testResolveAliases()
@@ -324,7 +330,7 @@ public class PolicyFileHiveFactoryTest extends TestCase
 				fail(e.getMessage());
 		}
 	}
-	/*
+	/**
 	 * test handling of nested aliases
 	 */
 	public void testResolveAliases2()

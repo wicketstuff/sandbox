@@ -18,6 +18,7 @@ package org.apache.wicket.security;
 
 import java.net.MalformedURLException;
 
+import org.apache.wicket.Application;
 import org.apache.wicket.Request;
 import org.apache.wicket.Response;
 import org.apache.wicket.Session;
@@ -37,9 +38,9 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Test if everything still works if we don't inherit from {@link SwarmWebApplication} but
- * simply implement all the required interfaces. This simply runs all the tet from
+ * simply implement all the required interfaces. This simply runs all the tests from
  * {@link GeneralTest} and if we don't get a {@link ClassCastException} or something like
- * that everythings works ok.
+ * that everything works OK.
  * @author marrink
  */
 public class ExtendsTest extends GeneralTest
@@ -58,14 +59,19 @@ public class ExtendsTest extends GeneralTest
 		{
 			super();
 		}
-
+		/**
+		 * 
+		 * @return a key to retrieve the hive for this application.
+		 */
 		protected Object getHiveKey()
 		{
 			// if we were using servlet-api 2.5 we could get the contextpath from the
 			// servletcontext
 			return "test";
 		}
-
+		/**
+		 * Set up for the hive.
+		 */
 		protected void setUpHive()
 		{
 			PolicyFileHiveFactory factory = new PolicyFileHiveFactory();
@@ -82,17 +88,26 @@ public class ExtendsTest extends GeneralTest
 			}
 			HiveMind.registerHive(getHiveKey(), factory);
 		}
-
+		/**
+		 * 
+		 * @see org.apache.wicket.Application#getHomePage()
+		 */
 		public Class getHomePage()
 		{
 			return MockHomePage.class;
 		}
-
+		/**
+		 * 
+		 * @see org.apache.wicket.security.WaspApplication#getLoginPage()
+		 */
 		public Class getLoginPage()
 		{
 			return MockLoginPage.class;
 		}
-
+		/**
+		 * 
+		 * @see org.apache.wicket.protocol.http.WebApplication#newSession(org.apache.wicket.Request, org.apache.wicket.Response)
+		 */
 		public Session newSession(Request request, Response response)
 		{
 			return new WaspSession(this, request);
@@ -151,7 +166,7 @@ public class ExtendsTest extends GeneralTest
 
 		/**
 		 * Destroys the strategy factory and the action factory. In that order. If you
-		 * override ths method you must call super.destroy().
+		 * override this method you must call super.destroy().
 		 * @see Application#onDestroy()
 		 */
 		protected void onDestroy()

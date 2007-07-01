@@ -29,9 +29,6 @@ import org.apache.wicket.security.components.markup.html.links.SecurePageLink;
  */
 public class MockHomePage extends SecureWebPage
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -48,7 +45,11 @@ public class MockHomePage extends SecureWebPage
 		
 		add(new SecurePageLink("link",PageA.class));
 	}
-
+	/**
+	 * shortcut to {@link WaspSession#logoff(Object)}
+	 * @param context
+	 * @return true if the logoff was successful, false otherwise.
+	 */
 	public boolean logoff(Object context)
 	{
 		return ((WaspSession) Session.get()).logoff(context);

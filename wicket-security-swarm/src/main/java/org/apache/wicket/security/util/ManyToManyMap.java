@@ -88,8 +88,9 @@ public class ManyToManyMap
 	}
 
 	/**
-	 * Removes a manny to manny mapping.
-	 * @param left
+	 * Removes a many to many mapping between two objects.
+	 * @param left left side of the mapping
+	 * @param right right side of the mapping
 	 * @return false if the mapping did not exist, true otherwise
 	 */
 	public boolean remove(Object left, Object right)
@@ -110,7 +111,11 @@ public class ManyToManyMap
 		}
 		return false;
 	}
-
+	/**
+	 * Remove all mappings for an object.
+	 * @param leftOrRight the left or right side of the many to many mapping
+	 * @return the mappings that will be removed by this action
+	 */
 	public Set removeAllMappings(Object leftOrRight)
 	{
 		Set manys = (Set) mappings.remove(leftOrRight);
@@ -130,7 +135,11 @@ public class ManyToManyMap
 		}
 		return manys;
 	}
-
+	/**
+	 * 
+	 * @param left
+	 * @return the many to many mappings for this object
+	 */
 	public Set get(Object left)
 	{
 		Set set = (Set) mappings.get(left);
@@ -188,8 +197,9 @@ public class ManyToManyMap
 	}
 
 	/**
-	 * Returns an <tt>Iterator</tt> over every left and righthand mapping in this map.
+	 * Returns an <tt>Iterator</tt> over every left and right hand mapping in this map.
 	 * In no particular order.
+	 * @return an iterator over this map
 	 * @see java.lang.Iterable#iterator()
 	 */
 	public Iterator iterator()

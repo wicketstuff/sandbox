@@ -50,8 +50,13 @@ public class GeneralTest extends TestCase
 {
 	private static final Logger log = LoggerFactory.getLogger(GeneralTest.class);
 
+	/**
+	 * The swarm application used for the test.
+	 */
 	protected WebApplication application;
-
+	/**
+	 * Handle to the mock environment.
+	 */
 	protected WicketTester mock;
 
 	/**
@@ -131,8 +136,11 @@ public class GeneralTest extends TestCase
 		assertTrue(((WaspSession)mock.getWicketSession()).logoff(new SecondaryLoginContext()));
 		mock.startPage(mock.getLastRenderedPage());
 		mock.assertRenderedPage(application.getApplicationSettings().getAccessDeniedPage());
-		//accessdenied because the page is already constructed
+		//access denied because the page is already constructed
 	}
+	/**
+	 * test permission inheritance.
+	 */
 	public void testInheritance()
 	{
 		mock.startPage(MockHomePage.class);
