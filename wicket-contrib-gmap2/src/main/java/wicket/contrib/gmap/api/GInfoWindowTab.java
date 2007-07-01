@@ -39,10 +39,23 @@ public class GInfoWindowTab implements GMapApi
 	 * @param lat
 	 * @param lng
 	 */
+	public GInfoWindowTab(Component content)
+	{
+		this(content.getId(), content);
+	}
+
+	/**
+	 * Construct.
+	 * 
+	 * @param lat
+	 * @param lng
+	 */
 	public GInfoWindowTab(String title, Component content)
 	{
 		this.title = title;
 		this.content = content;
+		
+		content.setOutputMarkupId(true);
 	}
 
 	public String getTitle()
@@ -60,6 +73,6 @@ public class GInfoWindowTab implements GMapApi
 	 */
 	public String getJSConstructor()
 	{
-		return "new GInfoWindowTab('" + title + "', document.getElementById(" + content.getMarkupId() + "))";
+		return "new GInfoWindowTab('" + title + "', document.getElementById('" + content.getMarkupId() + "'))";
 	}
 }

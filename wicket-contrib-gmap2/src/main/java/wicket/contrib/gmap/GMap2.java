@@ -34,13 +34,14 @@ import org.apache.wicket.markup.html.IHeaderContributor;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.WicketEventReference;
-import org.apache.wicket.markup.html.panel.EmptyPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.html.resources.JavascriptResourceReference;
+import org.apache.wicket.markup.repeater.RepeatingView;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.util.convert.converters.IntegerConverter;
 
 import wicket.contrib.gmap.api.GControl;
+import wicket.contrib.gmap.api.GInfoWindowTab;
 import wicket.contrib.gmap.api.GLatLng;
 import wicket.contrib.gmap.api.GMarker;
 import wicket.contrib.gmap.api.GOverlay;
@@ -56,7 +57,6 @@ import wicket.contrib.gmap.api.GOverlay;
  */
 public class GMap2 extends Panel
 {
-	public static final String CONTENT_ID = "content";
 	
 	private static final long serialVersionUID = 1L;
 
@@ -285,9 +285,9 @@ public class GMap2 extends Panel
 	 *            content to open in info window
 	 * @return This
 	 */
-	public GMap2 openInfoWindow(Component content, GLatLng latLng)
+	public GMap2 openInfoWindow(GLatLng latLng, Component content)
 	{
-		infoWindow.open(content, latLng);
+		infoWindow.open(latLng, new GInfoWindowTab(content));
 
 		return this;
 	}
@@ -299,9 +299,37 @@ public class GMap2 extends Panel
 	 *            content to open in info window
 	 * @return This
 	 */
-	public GMap2 openInfoWindow(Component content, GMarker marker)
+	public GMap2 openInfoWindow(GMarker marker, Component content)
 	{
-		infoWindow.open(content, marker);
+		infoWindow.open(marker, new GInfoWindowTab(content));
+
+		return this;
+	}
+
+	/**
+	 * Open an info window.
+	 * 
+	 * @param content
+	 *            content to open in info window
+	 * @return This
+	 */
+	public GMap2 openInfoWindow(GLatLng latLng, GInfoWindowTab... tabs)
+	{
+		infoWindow.open(latLng, tabs);
+
+		return this;
+	}
+
+	/**
+	 * Open an info window.
+	 * 
+	 * @param content
+	 *            content to open in info window
+	 * @return This
+	 */
+	public GMap2 openInfoWindow(GMarker marker, GInfoWindowTab... tabs)
+	{
+		infoWindow.open(marker, tabs);
 
 		return this;
 	}
@@ -387,23 +415,6 @@ public class GMap2 extends Panel
 		return "removeOverlay('" + getJSid() + "', '" + overlay.getJSIdentifier() + "');\n";
 	}
 
-	private String getJSopenInfoWindow(Component content, GLatLng latLng)
-	{
-		return "openInfoWindow('" + getJSid() + "'," + "'"
-				+ latLng.getJSConstructor() + "','" + content.getMarkupId() + "');\n";
-	}
-
-	private String getJSopenMarkerInfoWindow(Component content, GMarker marker)
-	{
-		return "openMarkerInfoWindow('" + getJSid() + "'," + "'"
-				+ marker.getJSIdentifier() + "','" + content.getMarkupId() + "');\n";
-	}
-
-	private String getJScloseInfoWindow()
-	{
-		return "closeInfoWindow('" + getJSid() + "');\n";
-	}
-
 	private String getJSpanDirection(int dx, int dy) {
 		return "Wicket.gmaps['" + getJSid() + "']" + ".panDirection(" + dx
 		+ "," + dy + ");\n";
@@ -420,11 +431,13 @@ public class GMap2 extends Panel
 	private class InfoWindow extends WebMarkupContainer
 	{
 
-		private Component content;
+		private GInfoWindowTab[] tabs;
 		
 		private GLatLng latLng;
 		
 		private GMarker marker;
+		
+		private RepeatingView repeater = new RepeatingView("content");
 
 		public InfoWindow()
 		{
@@ -432,34 +445,36 @@ public class GMap2 extends Panel
 
 			setOutputMarkupId(true);
 			
-			add(content = new EmptyPanel(CONTENT_ID));
+			add(repeater);
 		}
 
 		public String getJSinit() {
 			if (latLng != null)
 			{
-				return getJSopenInfoWindow(content, latLng);
+				return getJSopen(latLng, tabs);
 			}
 
 			if (marker != null)
 			{
-				return getJSopenMarkerInfoWindow(content, marker);
+				return getJSopen(marker, tabs);
 			}
 			
 			return "";
 		}
 
-		private void setContent(Component content)
+		private void setTabs(GInfoWindowTab[] tabs)
 		{
-			this.content = content;
-			
-			this.content.setOutputMarkupId(true);
-			replace(this.content);
+			repeater.removeAll();
+				
+			this.tabs = tabs;
+			for (GInfoWindowTab tab : tabs) {
+				repeater.add(tab.getContent());
+			}
 		}
 		
-		public void open(Component content, GLatLng latLng)
+		public void open(GLatLng latLng, GInfoWindowTab... tabs)
 		{
-			setContent(content);
+			setTabs(tabs);
 			
 			this.latLng = latLng;
 			this.marker = null;
@@ -467,14 +482,14 @@ public class GMap2 extends Panel
 			if (RequestCycle.get().getRequestTarget() instanceof AjaxRequestTarget)
 			{
 				((AjaxRequestTarget)RequestCycle.get().getRequestTarget())
-						.appendJavascript(getJSopenInfoWindow(content, latLng));
+						.appendJavascript(getJSopen(latLng, tabs));
 				((AjaxRequestTarget)RequestCycle.get().getRequestTarget()).addComponent(this);
 			}
 		}
 		
-		public void open(Component content, GMarker marker)
+		public void open(GMarker marker, GInfoWindowTab... tabs)
 		{
-			setContent(content);
+			setTabs(tabs);
 			
 			this.latLng = null;
 			this.marker = marker;
@@ -482,13 +497,14 @@ public class GMap2 extends Panel
 			if (RequestCycle.get().getRequestTarget() instanceof AjaxRequestTarget)
 			{
 				((AjaxRequestTarget)RequestCycle.get().getRequestTarget())
-						.appendJavascript(getJSopenMarkerInfoWindow(content, marker));
+						.appendJavascript(getJSopen(marker, tabs));
 				((AjaxRequestTarget)RequestCycle.get().getRequestTarget()).addComponent(this);
 			}
 		}
 		
 		public void close() {
-			setContent(new EmptyPanel(CONTENT_ID));
+			tabs = null;
+			repeater.removeAll();
 
 			this.marker = null;
 			this.latLng = null;
@@ -496,10 +512,64 @@ public class GMap2 extends Panel
 			if (RequestCycle.get().getRequestTarget() instanceof AjaxRequestTarget)
 			{
 				((AjaxRequestTarget)RequestCycle.get().getRequestTarget())
-						.appendJavascript(getJScloseInfoWindow());
+						.appendJavascript(getJSclose());
 				((AjaxRequestTarget)RequestCycle.get().getRequestTarget()).addComponent(this);
 			}
 		}
+		
+		private String getJSopen(GLatLng latLng, GInfoWindowTab[] tabs)
+		{
+			StringBuffer buffer = new StringBuffer();
+
+			buffer.append("openInfoWindowTabs('");
+			buffer.append(getJSid());
+			buffer.append("',");
+			buffer.append(latLng.getJSConstructor());
+			buffer.append(",[");
+			
+			boolean first = true;
+			for (GInfoWindowTab tab : tabs) {
+				if (!first) {
+					buffer.append(",");
+				}
+				buffer.append(tab.getJSConstructor());
+				first = false;
+			}
+			
+			buffer.append("])\n");
+			
+			return buffer.toString();			
+		}
+
+		private String getJSopen(GMarker marker, GInfoWindowTab[] tabs)
+		{
+			StringBuffer buffer = new StringBuffer();
+
+			buffer.append("openMarkerInfoWindowTabs('");
+			buffer.append(getJSid());
+			buffer.append("',");
+			buffer.append(marker.getJSIdentifier());
+			buffer.append(",[");
+			
+			boolean first = true;
+			for (GInfoWindowTab tab : tabs) {
+				if (!first) {
+					buffer.append(",");
+				}
+				buffer.append(tab.getJSConstructor());
+				first = false;
+			}
+			
+			buffer.append("])\n");
+			
+			return buffer.toString();			
+		}
+
+		private String getJSclose()
+		{
+			return "closeInfoWindow('" + getJSid() + "');\n";
+		}
+
 	}
 	
 	public class ZoomOut extends AttributeModifier
