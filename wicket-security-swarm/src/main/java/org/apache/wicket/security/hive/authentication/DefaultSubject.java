@@ -84,6 +84,7 @@ public class DefaultSubject implements Subject
 			throw new IllegalArgumentException("principal can not be null.");
 		return principals.add(principal);
 	}
+
 	/**
 	 * 
 	 * @see org.apache.wicket.security.hive.authentication.Subject#isClassAuthenticated(java.lang.Class)
@@ -92,6 +93,7 @@ public class DefaultSubject implements Subject
 	{
 		return true;
 	}
+
 	/**
 	 * 
 	 * @see org.apache.wicket.security.hive.authentication.Subject#isComponentAuthenticated(org.apache.wicket.Component)
@@ -100,9 +102,11 @@ public class DefaultSubject implements Subject
 	{
 		return true;
 	}
+
 	/**
 	 * 
-	 * @see org.apache.wicket.security.hive.authentication.Subject#isModelAuthenticated(org.apache.wicket.model.IModel, org.apache.wicket.Component)
+	 * @see org.apache.wicket.security.hive.authentication.Subject#isModelAuthenticated(org.apache.wicket.model.IModel,
+	 *      org.apache.wicket.Component)
 	 */
 	public boolean isModelAuthenticated(IModel model, Component component)
 	{

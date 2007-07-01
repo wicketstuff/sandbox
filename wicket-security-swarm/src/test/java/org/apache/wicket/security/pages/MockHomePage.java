@@ -38,20 +38,24 @@ public class MockHomePage extends SecureWebPage
 	{
 		super();
 		add(new Label("label", "this page is secured"));
-		// In this test setup it is not possible to use a SecurePageLink, if you do want
-		// one you need to replace the securitycheck on the link with one that does use
+		// In this test setup it is not possible to use a SecurePageLink, if you
+		// do want
+		// one you need to replace the securitycheck on the link with one that
+		// does use
 		// the target page.
 		add(new PageLink("secret", VerySecurePage.class));
-		
-		add(new SecurePageLink("link",PageA.class));
+
+		add(new SecurePageLink("link", PageA.class));
 	}
+
 	/**
 	 * shortcut to {@link WaspSession#logoff(Object)}
+	 * 
 	 * @param context
 	 * @return true if the logoff was successful, false otherwise.
 	 */
 	public boolean logoff(Object context)
 	{
-		return ((WaspSession) Session.get()).logoff(context);
+		return ((WaspSession)Session.get()).logoff(context);
 	}
 }

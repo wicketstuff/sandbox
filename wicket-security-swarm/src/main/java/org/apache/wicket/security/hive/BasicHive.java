@@ -27,8 +27,10 @@ import org.apache.wicket.security.hive.authorization.Principal;
 import org.apache.wicket.security.util.ManyToManyMap;
 
 /**
- * Basic implementation of a Hive. It contains basic add methods to facilitate factories.
- * It also might be locked after which no changes can be made to the hive.
+ * Basic implementation of a Hive. It contains basic add methods to facilitate
+ * factories. It also might be locked after which no changes can be made to the
+ * hive.
+ * 
  * @author marrink
  */
 public class BasicHive implements Hive
@@ -39,6 +41,7 @@ public class BasicHive implements Hive
 	private ManyToManyMap principals;
 
 	private boolean locked = false;
+
 	/**
 	 * 
 	 * Construct.
@@ -49,8 +52,8 @@ public class BasicHive implements Hive
 	}
 
 	/**
-	 * Locks this hive. No changes are allowed anymore. After this {@link #isLocked()}
-	 * will return true;
+	 * Locks this hive. No changes are allowed anymore. After this
+	 * {@link #isLocked()} will return true;
 	 */
 	public final void lock()
 	{
@@ -58,7 +61,9 @@ public class BasicHive implements Hive
 	}
 
 	/**
-	 * Check if the hive is locked. If the hive is locked no changes can be made.
+	 * Check if the hive is locked. If the hive is locked no changes can be
+	 * made.
+	 * 
 	 * @return true if the hive is locked, false otherwise.
 	 */
 	public boolean isLocked()
@@ -68,10 +73,15 @@ public class BasicHive implements Hive
 
 	/**
 	 * Adds a new Principal to the hive.
-	 * @param principal the principal
-	 * @param permissions a required collection of granted permissions for the principal
-	 * @throws IllegalStateException if the hive is locked
-	 * @throws IllegalArgumentException if either parameter is null
+	 * 
+	 * @param principal
+	 *            the principal
+	 * @param permissions
+	 *            a required collection of granted permissions for the principal
+	 * @throws IllegalStateException
+	 *             if the hive is locked
+	 * @throws IllegalArgumentException
+	 *             if either parameter is null
 	 */
 	public void addPrincipal(Principal principal, Collection permissions)
 	{
@@ -83,20 +93,25 @@ public class BasicHive implements Hive
 			throw new IllegalArgumentException("At least one permission is required for principal "
 					+ principal);
 		Iterator it = permissions.iterator();
-		Permission next=null;
+		Permission next = null;
 		while (it.hasNext())
 		{
-			next = (Permission) it.next();
+			next = (Permission)it.next();
 			principals.add(next, principal);
 		}
 	}
 
 	/**
 	 * Adds a new permission to a principal.
-	 * @param principal the principal
-	 * @param permission the permission granted
-	 * @throws IllegalStateException if the hive is locked
-	 * @throws IllegalArgumentException if either parameter is null
+	 * 
+	 * @param principal
+	 *            the principal
+	 * @param permission
+	 *            the permission granted
+	 * @throws IllegalStateException
+	 *             if the hive is locked
+	 * @throws IllegalArgumentException
+	 *             if either parameter is null
 	 */
 	public void addPermission(Principal principal, Permission permission)
 	{
@@ -135,7 +150,7 @@ public class BasicHive implements Hive
 			temp = it.next();
 			if (temp instanceof Permission)
 			{
-				possibleMatch = (Permission) temp;
+				possibleMatch = (Permission)temp;
 				if (!possibleMatch.implies(permission))
 					continue;
 				if (hasPrincipal(subject, principals.get(possibleMatch)))
@@ -147,10 +162,13 @@ public class BasicHive implements Hive
 
 	/**
 	 * Checks if the subject has or implies any of the principals in the set.
-	 * @param subject optional authenticated subject
-	 * @param principalSet set of principals
-	 * @return true if the subject has or implies atleast one of the principals, false
-	 *         otherwise.
+	 * 
+	 * @param subject
+	 *            optional authenticated subject
+	 * @param principalSet
+	 *            set of principals
+	 * @return true if the subject has or implies atleast one of the principals,
+	 *         false otherwise.
 	 */
 	private boolean hasPrincipal(Subject subject, Set principalSet)
 	{
@@ -165,7 +183,7 @@ public class BasicHive implements Hive
 				subjectPrincipals = subject.getPrincipals();
 			while (it.hasNext())
 			{
-				temp = (Principal) it.next();
+				temp = (Principal)it.next();
 				if (subjectPrincipals.contains(temp) || temp.implies(subject))
 					return true;
 			}

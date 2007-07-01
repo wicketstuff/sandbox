@@ -24,13 +24,12 @@ import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import junit.framework.TestCase;
+
 import org.apache.wicket.security.hive.Hive;
 import org.apache.wicket.security.hive.authorization.EverybodyPrincipal;
 import org.apache.wicket.security.hive.authorization.TestPermission;
 import org.apache.wicket.security.hive.authorization.TestPrincipal;
-import org.apache.wicket.security.hive.config.PolicyFileHiveFactory;
-
-import junit.framework.TestCase;
 
 /**
  * @author marrink
@@ -78,7 +77,8 @@ public class PolicyFileHiveFactoryTest extends TestCase
 		factory.setAlias("nine", "9");
 		factory.setAlias("test", "test");
 		factory.setAlias("auth", "org.apache.wicket.security.hive.authorization");
-		// based on policy content we can expect the following principals/permissions
+		// based on policy content we can expect the following
+		// principals/permissions
 		Hive hive = factory.createHive();
 		assertTrue(hive.containsPrincipal(new EverybodyPrincipal()));
 		assertTrue(hive.containsPrincipal(new TestPrincipal("test1")));
@@ -113,6 +113,7 @@ public class PolicyFileHiveFactoryTest extends TestCase
 		assertTrue(hive.containsPermission(new TestPermission("9.A")));
 		assertTrue(hive.containsPermission(new TestPermission("9.B", "test")));
 	}
+
 	/**
 	 * Test if the regex used in the factory is OK.
 	 */
@@ -123,7 +124,7 @@ public class PolicyFileHiveFactoryTest extends TestCase
 		{
 			Field field = PolicyFileHiveFactory.class.getDeclaredField("principalPattern");
 			field.setAccessible(true);
-			principalPattern = (Pattern) field.get(null);
+			principalPattern = (Pattern)field.get(null);
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -165,6 +166,7 @@ public class PolicyFileHiveFactoryTest extends TestCase
 		assertFalse(principalPattern.matcher(
 				"grant principal org.apache.wicket.TestPrincipal render").matches());
 	}
+
 	/**
 	 * Test if the regex used in the factory is OK.
 	 */
@@ -175,7 +177,7 @@ public class PolicyFileHiveFactoryTest extends TestCase
 		{
 			Field field = PolicyFileHiveFactory.class.getDeclaredField("permissionPattern");
 			field.setAccessible(true);
-			permissionPattern = (Pattern) field.get(null);
+			permissionPattern = (Pattern)field.get(null);
 			assertTrue(permissionPattern.matcher(
 					"permission org.apache.wicket.TestPrincipal \"test\", \"render\";").matches());
 			assertTrue(permissionPattern.matcher(
@@ -225,6 +227,7 @@ public class PolicyFileHiveFactoryTest extends TestCase
 		}
 		assertNotNull(permissionPattern);
 	}
+
 	/**
 	 * Test if the regex used in the factory is OK.
 	 */
@@ -235,7 +238,7 @@ public class PolicyFileHiveFactoryTest extends TestCase
 		{
 			Field field = PolicyFileHiveFactory.class.getDeclaredField("aliasPattern");
 			field.setAccessible(true);
-			aliasPattern = (Pattern) field.get(null);
+			aliasPattern = (Pattern)field.get(null);
 			assertFalse(aliasPattern.matcher("no alias used whatsoever").find());
 			Matcher m = aliasPattern.matcher("foo${bar}");
 			assertTrue(m.find());
@@ -295,12 +298,12 @@ public class PolicyFileHiveFactoryTest extends TestCase
 		try
 		{
 			Method method = PolicyFileHiveFactory.class.getDeclaredMethod("resolveAliases",
-					new Class[] {String.class});
+					new Class[] { String.class });
 			method.setAccessible(true);
 			PolicyFileHiveFactory factory = new PolicyFileHiveFactory();
 			factory.setAlias("foo", "foo");
 			factory.setAlias("foobar", "foobar");
-			String result = (String) method.invoke(factory, new Object[] {"${${foo}bar}"});
+			String result = (String)method.invoke(factory, new Object[] { "${${foo}bar}" });
 			fail("Unable to detect nested aliases: " + result);
 
 		}
@@ -324,12 +327,13 @@ public class PolicyFileHiveFactoryTest extends TestCase
 		{
 			if (e.getCause() instanceof IllegalStateException)
 			{
-				assertTrue(e.getCause().getMessage().toLowerCase().indexOf("nesting")>=0);
+				assertTrue(e.getCause().getMessage().toLowerCase().indexOf("nesting") >= 0);
 			}
 			else
 				fail(e.getMessage());
 		}
 	}
+
 	/**
 	 * test handling of nested aliases
 	 */
@@ -338,12 +342,12 @@ public class PolicyFileHiveFactoryTest extends TestCase
 		try
 		{
 			Method method = PolicyFileHiveFactory.class.getDeclaredMethod("resolveAliases",
-					new Class[] {String.class});
+					new Class[] { String.class });
 			method.setAccessible(true);
 			PolicyFileHiveFactory factory = new PolicyFileHiveFactory();
 			factory.setAlias("foo", "foo");
 			factory.setAlias("foobar", "foobar");
-			String result = (String) method.invoke(factory, new Object[] {"${${foo}"});
+			String result = (String)method.invoke(factory, new Object[] { "${${foo}" });
 			fail("Unable to detect nested aliases: " + result);
 
 		}
@@ -367,7 +371,7 @@ public class PolicyFileHiveFactoryTest extends TestCase
 		{
 			if (e.getCause() instanceof IllegalStateException)
 			{
-				assertTrue(e.getCause().getMessage().toLowerCase().indexOf("nesting")>=0);
+				assertTrue(e.getCause().getMessage().toLowerCase().indexOf("nesting") >= 0);
 			}
 			else
 				fail(e.getMessage());

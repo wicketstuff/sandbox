@@ -31,10 +31,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-
 /**
  * @author marrink
- *
+ * 
  */
 public class SecondaryLoginPage extends WebPage
 {
@@ -43,17 +42,19 @@ public class SecondaryLoginPage extends WebPage
 	 */
 	private static final long serialVersionUID = 1L;
 	private static final Logger log = LoggerFactory.getLogger(SecondaryLoginPage.class);
-	
+
 	private Form form;
 	private TextField textField;
+
 	/**
 	 * 
 	 */
 	public SecondaryLoginPage()
 	{
 		super();
-		add(new Label("label","welcome please login to continue to the secret"));
-		add(form=new Form("form"){
+		add(new Label("label", "welcome please login to continue to the secret"));
+		add(form = new Form("form")
+		{
 
 			/**
 			 * 
@@ -64,11 +65,13 @@ public class SecondaryLoginPage extends WebPage
 			{
 				login(get("username").getModelObjectAsString());
 			}
-			});
-		form.add(textField=new TextField("username",new Model()));
+		});
+		form.add(textField = new TextField("username", new Model()));
 	}
+
 	/**
 	 * Login using a username.
+	 * 
 	 * @param username
 	 * @return true if the login was successful, false otherwise
 	 */
@@ -76,7 +79,7 @@ public class SecondaryLoginPage extends WebPage
 	{
 		try
 		{
-			LoginContext context=new SecondaryLoginContext();
+			LoginContext context = new SecondaryLoginContext();
 			((WaspSession)Session.get()).login(context);
 			if (!continueToOriginalDestination())
 				setResponsePage(Application.get().getHomePage());
@@ -84,10 +87,11 @@ public class SecondaryLoginPage extends WebPage
 		}
 		catch (LoginException e)
 		{
-			log.error(e.getMessage(),e);
+			log.error(e.getMessage(), e);
 		}
 		return false;
 	}
+
 	/**
 	 * 
 	 * @return the form
@@ -96,6 +100,7 @@ public class SecondaryLoginPage extends WebPage
 	{
 		return form;
 	}
+
 	/**
 	 * 
 	 * @return the username textfield

@@ -17,21 +17,22 @@
 package org.apache.wicket.security.hive.authorization;
 
 import org.apache.wicket.security.hive.authentication.Subject;
-import org.apache.wicket.security.hive.authorization.Principal;
 
 /**
  * principal for testing purposes.
+ * 
  * @author marrink
- *
+ * 
  */
 public class TestPrincipal implements Principal
 {
 	private static final long serialVersionUID = 1L;
 	private String name;
-	
+
 	/**
 	 * 
 	 * Construct.
+	 * 
 	 * @param name
 	 */
 	public TestPrincipal(String name)
@@ -55,14 +56,16 @@ public class TestPrincipal implements Principal
 	{
 		return false;
 	}
+
 	/**
 	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	public String toString()
 	{
-		return getClass().getName()+": "+getName();
+		return getClass().getName() + ": " + getName();
 	}
+
 	/**
 	 * 
 	 * @see java.lang.Object#hashCode()
@@ -74,6 +77,7 @@ public class TestPrincipal implements Principal
 		result = PRIME * result + ((name == null) ? 0 : name.hashCode());
 		return result;
 	}
+
 	/**
 	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
@@ -86,7 +90,7 @@ public class TestPrincipal implements Principal
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		final TestPrincipal other = (TestPrincipal) obj;
+		final TestPrincipal other = (TestPrincipal)obj;
 		if (name == null)
 		{
 			if (other.name != null)

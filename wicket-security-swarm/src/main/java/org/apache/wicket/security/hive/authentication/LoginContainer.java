@@ -145,8 +145,8 @@ public final class LoginContainer implements Serializable
 	 *            the model
 	 * @param component
 	 *            the component holding the model
-	 * @return true if at least one of the registered subjects authenticates
-	 *         the model, false otherwise.
+	 * @return true if at least one of the registered subjects authenticates the
+	 *         model, false otherwise.
 	 * @see Subject#isModelAuthenticated(IModel, Component)
 	 */
 	public boolean isModelAuthenticated(IModel model, Component component)
@@ -160,8 +160,8 @@ public final class LoginContainer implements Serializable
 	 * 
 	 * @param component
 	 *            the component
-	 * @return true if at least one of the registered subjects authenticates
-	 *         the component, false otherwise.
+	 * @return true if at least one of the registered subjects authenticates the
+	 *         component, false otherwise.
 	 * @see Subject#isComponentAuthenticated(Component)
 	 */
 	public boolean isComponentAuthenticated(Component component)
@@ -175,8 +175,8 @@ public final class LoginContainer implements Serializable
 	 * 
 	 * @param clazz
 	 *            the (component) class
-	 * @return true if at least one of the registered subjects authenticates
-	 *         the class, false otherwise.
+	 * @return true if at least one of the registered subjects authenticates the
+	 *         class, false otherwise.
 	 * @see Subject#isClassAuthenticated(Class)
 	 */
 	public boolean isClassAuthenticated(Class clazz)
@@ -205,14 +205,19 @@ public final class LoginContainer implements Serializable
 		/**
 		 * Creates a new MultiSubject containing only the principals of the
 		 * subjects at this time.
-		 * @param keys keys of the logincontexts
-		 * @param values subjects mapped to keys
+		 * 
+		 * @param keys
+		 *            keys of the logincontexts
+		 * @param values
+		 *            subjects mapped to keys
 		 * 
 		 */
 		public MultiSubject(List keys, Map values)
 		{
 			super();
-			//TODO make this subject fully backed by the logincontainer or not at all and then copy the list and map. because right now the principals don't change 
+			// TODO make this subject fully backed by the logincontainer or not
+			// at all and then copy the list and map. because right now the
+			// principals don't change
 			this.keys = keys;
 			this.mySubjects = values;
 			principals = new HashSet(100);
@@ -262,8 +267,8 @@ public final class LoginContainer implements Serializable
 		 *            the model
 		 * @param component
 		 *            the component holding the model
-		 * @return true if at least one of the registered subjects
-		 *         authenticates the model, false otherwise.
+		 * @return true if at least one of the registered subjects authenticates
+		 *         the model, false otherwise.
 		 * @see Subject#isModelAuthenticated(IModel, Component)
 		 */
 		public boolean isModelAuthenticated(IModel model, Component component)
@@ -284,8 +289,8 @@ public final class LoginContainer implements Serializable
 		 * 
 		 * @param component
 		 *            the component
-		 * @return true if at least one of the registered subjects
-		 *         authenticates the component, false otherwise.
+		 * @return true if at least one of the registered subjects authenticates
+		 *         the component, false otherwise.
 		 * @see Subject#isComponentAuthenticated(Component)
 		 */
 		public boolean isComponentAuthenticated(Component component)
@@ -306,8 +311,8 @@ public final class LoginContainer implements Serializable
 		 * 
 		 * @param clazz
 		 *            the (component) class
-		 * @return true if at least one of the registered subjects
-		 *         authenticates the class, false otherwise.
+		 * @return true if at least one of the registered subjects authenticates
+		 *         the class, false otherwise.
 		 * @see Subject#isClassAuthenticated(Class)
 		 */
 		public boolean isClassAuthenticated(Class clazz)
@@ -340,7 +345,9 @@ public final class LoginContainer implements Serializable
 
 		/**
 		 * Construct. a new key based on the context
-		 * @param context the logincontext
+		 * 
+		 * @param context
+		 *            the logincontext
 		 */
 		public HashKey(LoginContext context)
 		{

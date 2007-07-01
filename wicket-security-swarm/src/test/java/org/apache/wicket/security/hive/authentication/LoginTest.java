@@ -71,11 +71,14 @@ public class LoginTest extends TestCase
 		}
 		assertNotNull(container.getSubject());
 		assertTrue(container.isClassAuthenticated(getClass()));
-		// shows that even though the new context does not authenticate anything the
+		// shows that even though the new context does not authenticate anything
+		// the
 		// previous one does
 		ctx = new LoginContext(1)
 		{
-			//bad example, do not create an anonymous Subject in a LoginContext as it will cause the context to be serialized along with the subject
+			// bad example, do not create an anonymous Subject in a LoginContext
+			// as it will cause the context to be serialized along with the
+			// subject
 			public Subject login()
 			{
 				return new DefaultSubject()
@@ -90,6 +93,7 @@ public class LoginTest extends TestCase
 					{
 						return false;
 					}
+
 					/**
 					 * 
 					 * @see org.apache.wicket.security.hive.authentication.DefaultSubject#isComponentAuthenticated(org.apache.wicket.Component)
@@ -98,9 +102,11 @@ public class LoginTest extends TestCase
 					{
 						return false;
 					}
+
 					/**
 					 * 
-					 * @see org.apache.wicket.security.hive.authentication.DefaultSubject#isModelAuthenticated(org.apache.wicket.model.IModel, org.apache.wicket.Component)
+					 * @see org.apache.wicket.security.hive.authentication.DefaultSubject#isModelAuthenticated(org.apache.wicket.model.IModel,
+					 *      org.apache.wicket.Component)
 					 */
 					public boolean isModelAuthenticated(IModel model, Component component)
 					{
@@ -108,6 +114,7 @@ public class LoginTest extends TestCase
 					}
 				};
 			}
+
 			/**
 			 * @see org.apache.wicket.security.hive.authentication.LoginContext#preventsAdditionalLogins()
 			 */
@@ -126,7 +133,8 @@ public class LoginTest extends TestCase
 			fail(e.getMessage());
 		}
 		assertTrue(container.isClassAuthenticated(getClass()));
-		// note changing the order does not matter since the first that authenticates true
+		// note changing the order does not matter since the first that
+		// authenticates true
 		// is used.
 	}
 
@@ -169,7 +177,8 @@ public class LoginTest extends TestCase
 	 */
 	public void testIsClassAuthenticated()
 	{
-		// for multilogin to work the least authenticating login should be at the bottom
+		// for multilogin to work the least authenticating login should be at
+		// the bottom
 		LoginContainer container = new LoginContainer();
 		LoginContext low = new PrimaryLoginContext();
 		LoginContext high = new SecondaryLoginContext();
@@ -189,9 +198,10 @@ public class LoginTest extends TestCase
 			fail(e.getMessage());
 		}
 	}
+
 	/**
 	 * tests if the preventadditionallogin flag works as expected
-	 *
+	 * 
 	 */
 	public void testPreventLogin()
 	{
@@ -224,6 +234,7 @@ public class LoginTest extends TestCase
 			fail(e.getMessage());
 		}
 	}
+
 	private static final class myContext extends LoginContext
 	{
 		private static final long serialVersionUID = 1L;
@@ -235,6 +246,6 @@ public class LoginTest extends TestCase
 		{
 			return new DefaultSubject();
 		}
-		
+
 	}
 }

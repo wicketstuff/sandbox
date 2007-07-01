@@ -32,10 +32,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-
 /**
  * @author marrink
- *
+ * 
  */
 public class MockLoginPage extends WebPage
 {
@@ -44,9 +43,10 @@ public class MockLoginPage extends WebPage
 	 */
 	private static final long serialVersionUID = 1L;
 	private static final Logger log = LoggerFactory.getLogger(MockLoginPage.class);
-	
+
 	private Form form;
 	private TextField textField;
+
 	/**
 	 * 
 	 */
@@ -54,8 +54,9 @@ public class MockLoginPage extends WebPage
 	{
 		super();
 		setStatelessHint(true);
-		add(new Label("label","welcome please login"));
-		add(form=new StatelessForm("form"){
+		add(new Label("label", "welcome please login"));
+		add(form = new StatelessForm("form")
+		{
 
 			/**
 			 * 
@@ -66,9 +67,10 @@ public class MockLoginPage extends WebPage
 			{
 				login(get("username").getModelObjectAsString());
 			}
-			});
-		form.add(textField=new TextField("username",new Model()));
+		});
+		form.add(textField = new TextField("username", new Model()));
 	}
+
 	/**
 	 * 
 	 * @param username
@@ -78,7 +80,7 @@ public class MockLoginPage extends WebPage
 	{
 		try
 		{
-			LoginContext context=new PrimaryLoginContext();
+			LoginContext context = new PrimaryLoginContext();
 			((WaspSession)Session.get()).login(context);
 			if (!continueToOriginalDestination())
 				setResponsePage(Application.get().getHomePage());
@@ -86,10 +88,11 @@ public class MockLoginPage extends WebPage
 		}
 		catch (LoginException e)
 		{
-			log.error(e.getMessage(),e);
+			log.error(e.getMessage(), e);
 		}
 		return false;
 	}
+
 	/**
 	 * 
 	 * @return the form
@@ -98,6 +101,7 @@ public class MockLoginPage extends WebPage
 	{
 		return form;
 	}
+
 	/**
 	 * 
 	 * @return the username textfield

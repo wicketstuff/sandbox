@@ -33,9 +33,9 @@ import org.apache.wicket.security.strategies.LoginException;
  * interval of 1. For example 0, 5,6 are all perfectly legal sort orders for one
  * user. Duplicates are also allowed, in that case they are queried in reverse
  * order of login. The context also contains a flag to indicate if an additional
- * login is allowed. Note that both the sort order and the additional login
- * flag must be constant. Also note that all LoginContexts of the same class and
- * with the same sort order are equal, thus for logoff you do need to keep a
+ * login is allowed. Note that both the sort order and the additional login flag
+ * must be constant. Also note that all LoginContexts of the same class and with
+ * the same sort order are equal, thus for logoff you do need to keep a
  * reference to the context but can simply use a new instance.
  * 
  * @author marrink
@@ -56,10 +56,12 @@ public abstract class LoginContext
 	}
 
 	/**
-	 * Constructs a new context at the specified sort order. Additional logins are prevented.
-	 * This constructor is usually used in mult-login scenario's for the context with the the highest sort order. 
+	 * Constructs a new context at the specified sort order. Additional logins
+	 * are prevented. This constructor is usually used in mult-login scenario's
+	 * for the context with the the highest sort order.
 	 * 
-	 * @param sortOrder a number of 0 or higher.
+	 * @param sortOrder
+	 *            a number of 0 or higher.
 	 */
 	public LoginContext(int sortOrder)
 	{
@@ -67,10 +69,13 @@ public abstract class LoginContext
 	}
 
 	/**
-	 * Constructs a new context with sort order 0 and a customizable flag for preventing additional logins.
-	 * This constructor is mostly used in multi-login scenario's.
+	 * Constructs a new context with sort order 0 and a customizable flag for
+	 * preventing additional logins. This constructor is mostly used in
+	 * multi-login scenario's.
 	 * 
-	 * @param allowAdditionalLogings indicates if additional calls to {@link WaspSession#login(Object) are allowed}
+	 * @param allowAdditionalLogings
+	 *            indicates if additional calls to
+	 *            {@link WaspSession#login(Object) are allowed}
 	 */
 	public LoginContext(boolean allowAdditionalLogings)
 	{
@@ -78,8 +83,9 @@ public abstract class LoginContext
 	}
 
 	/**
-	 * Constructs a new context with customizable sort order and  flag for preventing additional logins.
-	 * This constructor is mostly used in multi-login scenario's.
+	 * Constructs a new context with customizable sort order and flag for
+	 * preventing additional logins. This constructor is mostly used in
+	 * multi-login scenario's.
 	 * 
 	 * @param sortOrder
 	 * @param allowAdditionalLogins
@@ -99,13 +105,15 @@ public abstract class LoginContext
 	 * must be thrown rather then returning null.
 	 * 
 	 * @return a {@link Subject}, never null.
-	 * @throws LoginException if an exception occurs or if the subject could not login for some other reason
+	 * @throws LoginException
+	 *             if an exception occurs or if the subject could not login for
+	 *             some other reason
 	 */
 	public abstract Subject login() throws LoginException;
 
 	/**
-	 * Indicates the sort order of this context. the higher the value the more you
-	 * are authorized / authenticated for.
+	 * Indicates the sort order of this context. the higher the value the more
+	 * you are authorized / authenticated for.
 	 * 
 	 * @return the level
 	 */
@@ -121,7 +129,7 @@ public abstract class LoginContext
 	{
 		final int PRIME = 31;
 		int result = 1;
-		//classname to get consistent hash over different jvm instances.
+		// classname to get consistent hash over different jvm instances.
 		result = PRIME * result + getClass().getName().hashCode();
 		result = PRIME * result + sortOrder;
 		return result;

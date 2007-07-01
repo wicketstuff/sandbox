@@ -103,8 +103,9 @@ public class PolicyFileHiveFactory implements HiveFactory
 
 	/**
 	 * 
-	 * Constructs a new factory that builds a Hive out of one (1) or more policy files.
-	 * It registers an alias for {@link ComponentPermission} and {@link DataPermission}.
+	 * Constructs a new factory that builds a Hive out of one (1) or more policy
+	 * files. It registers an alias for {@link ComponentPermission} and
+	 * {@link DataPermission}.
 	 */
 	public PolicyFileHiveFactory()
 	{
