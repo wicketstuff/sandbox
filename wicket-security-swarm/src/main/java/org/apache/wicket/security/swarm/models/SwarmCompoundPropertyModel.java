@@ -51,8 +51,11 @@ public abstract class SwarmCompoundPropertyModel extends SecureCompoundPropertyM
 	{
 		return new AttachedSwarmCompoundPropertyModel(component);
 	}
+
 	/**
-	 * A wrapping model delegating all security calls to the {@link SwarmCompoundPropertyModel} instance. 
+	 * A wrapping model delegating all security calls to the
+	 * {@link SwarmCompoundPropertyModel} instance.
+	 * 
 	 * @author marrink
 	 */
 	protected class AttachedSwarmCompoundPropertyModel extends AttachedSecureCompoundPropertyModel
@@ -64,6 +67,7 @@ public abstract class SwarmCompoundPropertyModel extends SecureCompoundPropertyM
 		/**
 		 * 
 		 * Construct.
+		 * 
 		 * @param owner
 		 */
 		public AttachedSwarmCompoundPropertyModel(Component owner)

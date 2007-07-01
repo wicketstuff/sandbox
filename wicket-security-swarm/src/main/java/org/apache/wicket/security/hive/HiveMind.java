@@ -23,9 +23,11 @@ import org.apache.wicket.security.hive.config.HiveFactory;
 
 
 /**
- * HiveMind maintains the collection of {@link Hive}s. There can only be one HiveMind in
- * each virtual machine. As the HiveMind is supposed to be created and configured early
- * during the lifetime of an application none of its methods are synchronized.
+ * HiveMind maintains the collection of {@link Hive}s. There can only be one
+ * HiveMind in each virtual machine. As the HiveMind is supposed to be created
+ * and configured early during the lifetime of an application none of its
+ * methods are synchronized.
+ * 
  * @author marrink
  */
 public class HiveMind
@@ -45,22 +47,31 @@ public class HiveMind
 
 	/**
 	 * Returns the Hive stored with the key.
-	 * @param queen the key
+	 * 
+	 * @param queen
+	 *            the key
 	 * @return the Hive or null if no Hive is registered with that key
 	 */
 	public static Hive getHive(Object queen)
 	{
-		return (Hive) INSTANCE.hiveCollection.get(queen);
+		return (Hive)INSTANCE.hiveCollection.get(queen);
 	}
 
 	/**
 	 * Registers a new Hive for anybody knowing the right key to be retrieved.
-	 * It is not possible to overwrite a registration without first unregistering the previous Hive.
-	 * @param queen the key to store the Hive with.
-	 * @param factory the factory that will produce the Hive.
-	 * @throws IllegalArgumentException if the factory is null
-	 * @throws IllegalArgumentException if an attempt is made to overwrite the registration.
-	 * @throws RuntimeException if the factory does not produce a Hive.
+	 * It is not possible to overwrite a registration without first
+	 * unregistering the previous Hive.
+	 * 
+	 * @param queen
+	 *            the key to store the Hive with.
+	 * @param factory
+	 *            the factory that will produce the Hive.
+	 * @throws IllegalArgumentException
+	 *             if the factory is null
+	 * @throws IllegalArgumentException
+	 *             if an attempt is made to overwrite the registration.
+	 * @throws RuntimeException
+	 *             if the factory does not produce a Hive.
 	 * @see #unregisterHive(Object)
 	 */
 	public static void registerHive(Object queen, HiveFactory factory)
@@ -81,11 +92,13 @@ public class HiveMind
 
 	/**
 	 * Removes the registration of a single Hive.
-	 * @param queen the key the Hive is registered with
+	 * 
+	 * @param queen
+	 *            the key the Hive is registered with
 	 * @return the registered Hive or null if none was registered with the key.
 	 */
 	public static Hive unregisterHive(Object queen)
 	{
-		return (Hive) INSTANCE.hiveCollection.remove(queen);
+		return (Hive)INSTANCE.hiveCollection.remove(queen);
 	}
 }

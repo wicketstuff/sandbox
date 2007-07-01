@@ -24,29 +24,36 @@ import org.apache.wicket.security.swarm.models.SwarmModel;
 
 
 /**
- * A permission for data or plain old pojo's.
- * Can have actions like access, render or enable.
+ * A permission for data or plain old pojo's. Can have actions like access,
+ * render or enable.
+ * 
  * @author marrink
- *
+ * 
  */
 public class DataPermission extends ActionPermission
 {
 	private static final long serialVersionUID = 5192668688933417376L;
+
 	/**
-	 * Creats a new DataPermission for a components model.
-	 * The model will specify the name for this permission.
-	 * Currently we dont check if the component really has the model you specified here.
-	 * @param component component containing the model
-	 * @param model the model of the component
-	 * @param actions a logical and of all the allowed / required actions
+	 * Creats a new DataPermission for a components model. The model will
+	 * specify the name for this permission. Currently we dont check if the
+	 * component really has the model you specified here.
+	 * 
+	 * @param component
+	 *            component containing the model
+	 * @param model
+	 *            the model of the component
+	 * @param actions
+	 *            a logical and of all the allowed / required actions
 	 */
-	public DataPermission(Component component,SwarmModel model, SwarmAction actions)
+	public DataPermission(Component component, SwarmModel model, SwarmAction actions)
 	{
-		super(model.getSecurityId(component),actions);
+		super(model.getSecurityId(component), actions);
 	}
 
 	/**
 	 * Creates a new DataPermission with the specified name and actions.
+	 * 
 	 * @param name
 	 * @param actions
 	 */
@@ -69,7 +76,7 @@ public class DataPermission extends ActionPermission
 	 */
 	public boolean equals(Object obj)
 	{
-		if(obj instanceof DataPermission)
+		if (obj instanceof DataPermission)
 			return super.equals(obj);
 		return false;
 	}
@@ -80,7 +87,8 @@ public class DataPermission extends ActionPermission
 	 */
 	public int hashCode()
 	{
-		// super implementation already gives out distinct hashcodes per subclass
+		// super implementation already gives out distinct hashcodes per
+		// subclass
 		return super.hashCode();
 	}
 }

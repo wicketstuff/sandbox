@@ -26,7 +26,8 @@ import org.apache.wicket.security.swarm.actions.SwarmAction;
 
 
 /**
- * Permission for certain components. Can have actions like access, render or enable.
+ * Permission for certain components. Can have actions like access, render or
+ * enable.
  * 
  * @author marrink
  */
@@ -44,21 +45,28 @@ public class ComponentPermission extends ActionPermission
 	{
 		super(SecureComponentHelper.alias(component), getAction(Access.class));
 	}
+
 	/**
 	 * 
 	 * Creates a new ComponentPermission with the specified actions.
-	 * @param component the component
-	 * @param actions the internal value of the actions granted in this permission
+	 * 
+	 * @param component
+	 *            the component
+	 * @param actions
+	 *            the internal value of the actions granted in this permission
 	 */
 	public ComponentPermission(Component component, int actions)
 	{
 		super(SecureComponentHelper.alias(component), getAction(actions));
 	}
+
 	/**
 	 * Creates a new ComponentPermission with the specified actions.
 	 * 
-	 * @param component the component
-	 * @param action the action(s)
+	 * @param component
+	 *            the component
+	 * @param action
+	 *            the action(s)
 	 */
 	public ComponentPermission(Component component, SwarmAction action)
 	{
@@ -66,20 +74,26 @@ public class ComponentPermission extends ActionPermission
 	}
 
 	/**
-	 * Creates a new ComponentPermission with the specified actions.
-	 * This constructor is primarily for use by the {@link HiveFactory}
+	 * Creates a new ComponentPermission with the specified actions. This
+	 * constructor is primarily for use by the {@link HiveFactory}
 	 * 
-	 * @param componentAlias an alias as produced by {@link SecureComponentHelper}
-	 * @param actions a string representation of the action(s)
+	 * @param componentAlias
+	 *            an alias as produced by {@link SecureComponentHelper}
+	 * @param actions
+	 *            a string representation of the action(s)
 	 */
 	public ComponentPermission(String componentAlias, String actions)
 	{
 		super(componentAlias, getAction(actions));
 	}
+
 	/**
 	 * Creates a new ComponentPermission with the specified actions.
-	 * @param componentAlias an alias as produced by {@link SecureComponentHelper} 
-	 * @param actions the granted action(s)
+	 * 
+	 * @param componentAlias
+	 *            an alias as produced by {@link SecureComponentHelper}
+	 * @param actions
+	 *            the granted action(s)
 	 */
 	public ComponentPermission(String componentAlias, SwarmAction actions)
 	{

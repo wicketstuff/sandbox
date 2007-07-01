@@ -37,10 +37,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Test if everything still works if we don't inherit from {@link SwarmWebApplication} but
- * simply implement all the required interfaces. This simply runs all the tests from
- * {@link GeneralTest} and if we don't get a {@link ClassCastException} or something like
- * that everything works OK.
+ * Test if everything still works if we don't inherit from
+ * {@link SwarmWebApplication} but simply implement all the required interfaces.
+ * This simply runs all the tests from {@link GeneralTest} and if we don't get a
+ * {@link ClassCastException} or something like that everything works OK.
+ * 
  * @author marrink
  */
 public class ExtendsTest extends GeneralTest
@@ -59,16 +60,19 @@ public class ExtendsTest extends GeneralTest
 		{
 			super();
 		}
+
 		/**
 		 * 
 		 * @return a key to retrieve the hive for this application.
 		 */
 		protected Object getHiveKey()
 		{
-			// if we were using servlet-api 2.5 we could get the contextpath from the
+			// if we were using servlet-api 2.5 we could get the contextpath
+			// from the
 			// servletcontext
 			return "test";
 		}
+
 		/**
 		 * Set up for the hive.
 		 */
@@ -88,6 +92,7 @@ public class ExtendsTest extends GeneralTest
 			}
 			HiveMind.registerHive(getHiveKey(), factory);
 		}
+
 		/**
 		 * 
 		 * @see org.apache.wicket.Application#getHomePage()
@@ -96,6 +101,7 @@ public class ExtendsTest extends GeneralTest
 		{
 			return MockHomePage.class;
 		}
+
 		/**
 		 * 
 		 * @see org.apache.wicket.security.WaspApplication#getLoginPage()
@@ -104,9 +110,11 @@ public class ExtendsTest extends GeneralTest
 		{
 			return MockLoginPage.class;
 		}
+
 		/**
 		 * 
-		 * @see org.apache.wicket.protocol.http.WebApplication#newSession(org.apache.wicket.Request, org.apache.wicket.Response)
+		 * @see org.apache.wicket.protocol.http.WebApplication#newSession(org.apache.wicket.Request,
+		 *      org.apache.wicket.Response)
 		 */
 		public Session newSession(Request request, Response response)
 		{
@@ -153,8 +161,9 @@ public class ExtendsTest extends GeneralTest
 		}
 
 		/**
-		 * triggers the setup of the factories and the hive. Please remember to call
-		 * super.init when you override this method.
+		 * triggers the setup of the factories and the hive. Please remember to
+		 * call super.init when you override this method.
+		 * 
 		 * @see org.apache.wicket.security.WaspWebApplication#init()
 		 */
 		protected void init()
@@ -165,8 +174,9 @@ public class ExtendsTest extends GeneralTest
 		}
 
 		/**
-		 * Destroys the strategy factory and the action factory. In that order. If you
-		 * override this method you must call super.destroy().
+		 * Destroys the strategy factory and the action factory. In that order.
+		 * If you override this method you must call super.destroy().
+		 * 
 		 * @see Application#onDestroy()
 		 */
 		protected void onDestroy()

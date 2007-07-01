@@ -19,14 +19,14 @@ package org.apache.wicket.security.hive;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.wicket.security.hive.BasicHive;
+import junit.framework.TestCase;
+
 import org.apache.wicket.security.hive.authorization.EverybodyPrincipal;
 import org.apache.wicket.security.hive.authorization.TestPermission;
 
-import junit.framework.TestCase;
-
 /**
  * Test hive operations.
+ * 
  * @author marrink
  */
 public class HiveTest extends TestCase
@@ -34,14 +34,17 @@ public class HiveTest extends TestCase
 	/**
 	 * 
 	 * Construct.
+	 * 
 	 * @param name
 	 */
 	public HiveTest(String name)
 	{
 		super(name);
 	}
+
 	/**
-	 * @see BasicHive#addPrincipal(org.apache.wicket.security.hive.authorization.Principal, java.util.Collection)
+	 * @see BasicHive#addPrincipal(org.apache.wicket.security.hive.authorization.Principal,
+	 *      java.util.Collection)
 	 */
 	public void testAddPrincipal()
 	{
@@ -72,10 +75,12 @@ public class HiveTest extends TestCase
 		catch (IllegalStateException e)
 		{
 		}
-		
+
 	}
+
 	/**
-	 * @see BasicHive#addPermission(org.apache.wicket.security.hive.authorization.Principal, org.apache.wicket.security.hive.authorization.Permission)
+	 * @see BasicHive#addPermission(org.apache.wicket.security.hive.authorization.Principal,
+	 *      org.apache.wicket.security.hive.authorization.Permission)
 	 */
 	public void testAddPermission()
 	{
@@ -104,8 +109,10 @@ public class HiveTest extends TestCase
 		{
 		}
 	}
+
 	/**
-	 * @see BasicHive#hasPermision(org.apache.wicket.security.hive.authentication.Subject, org.apache.wicket.security.hive.authorization.Permission)
+	 * @see BasicHive#hasPermision(org.apache.wicket.security.hive.authentication.Subject,
+	 *      org.apache.wicket.security.hive.authorization.Permission)
 	 */
 	public void testHasPermision()
 	{
@@ -115,9 +122,9 @@ public class HiveTest extends TestCase
 		assertTrue(hive.containsPrincipal(new EverybodyPrincipal()));
 		assertTrue(hive.hasPermision(null, new TestPermission("foobar")));
 		assertFalse(hive.hasPermision(null, new TestPermission("foo.bar")));
-		
-		hive.addPermission(new EverybodyPrincipal(), new TestPermission("test","read, write"));
-		assertTrue(hive.hasPermision(null, new TestPermission("test","read")));
+
+		hive.addPermission(new EverybodyPrincipal(), new TestPermission("test", "read, write"));
+		assertTrue(hive.hasPermision(null, new TestPermission("test", "read")));
 		assertTrue(hive.hasPermision(null, new TestPermission("test")));
 	}
 }

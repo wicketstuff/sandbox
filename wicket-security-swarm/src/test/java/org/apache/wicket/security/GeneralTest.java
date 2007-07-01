@@ -69,7 +69,8 @@ public class GeneralTest extends TestCase
 
 			protected Object getHiveKey()
 			{
-				// if we were using servlet-api 2.5 we could get the contextpath from the
+				// if we were using servlet-api 2.5 we could get the contextpath
+				// from the
 				// servletcontext
 				return "test";
 			}
@@ -80,8 +81,9 @@ public class GeneralTest extends TestCase
 				try
 				{
 					factory.addPolicyFile(getServletContext().getResource("WEB-INF/policy.hive"));
-					factory.setAlias("TestPrincipal", "org.apache.wicket.security.hive.authorization.TestPrincipal");
-					factory.setAlias("myPackage","org.apache.wicket.security.pages");
+					factory.setAlias("TestPrincipal",
+							"org.apache.wicket.security.hive.authorization.TestPrincipal");
+					factory.setAlias("myPackage", "org.apache.wicket.security.pages");
 				}
 				catch (MalformedURLException e)
 				{
@@ -136,8 +138,9 @@ public class GeneralTest extends TestCase
 		assertTrue(((WaspSession)mock.getWicketSession()).logoff(new SecondaryLoginContext()));
 		mock.startPage(mock.getLastRenderedPage());
 		mock.assertRenderedPage(application.getApplicationSettings().getAccessDeniedPage());
-		//access denied because the page is already constructed
+		// access denied because the page is already constructed
 	}
+
 	/**
 	 * test permission inheritance.
 	 */
@@ -156,13 +159,14 @@ public class GeneralTest extends TestCase
 		assertTrue(mock.getTagByWicketId("readonly").hasAttribute("disabled"));
 		mock.assertVisible("readonly");
 	}
+
 	/**
 	 * Tests the serialization of the wicket session.
-	 *
+	 * 
 	 */
 	public void testSerialization()
 	{
-		//setup session
+		// setup session
 		mock.startPage(MockHomePage.class);
 		mock.assertRenderedPage(MockLoginPage.class);
 		FormTester form = mock.newFormTester("form");
@@ -175,22 +179,23 @@ public class GeneralTest extends TestCase
 		form.setValue("username", "test");
 		form.submit();
 		mock.assertRenderedPage(VerySecurePage.class);
-		Page lastRendered=mock.getLastRenderedPage();
-		
-		//prepare serialization
-		WaspSession session=(WaspSession)mock.getWicketSession();
+		Page lastRendered = mock.getLastRenderedPage();
+
+		// prepare serialization
+		WaspSession session = (WaspSession)mock.getWicketSession();
 		assertNotNull(session);
 		assertFalse(session.isTemporary());
 		assertFalse(session.isSessionInvalidated());
 		try
 		{
-			ByteArrayOutputStream bytes = new ByteArrayOutputStream(512*1024);
-			ObjectOutputStream stream=new ObjectOutputStream(bytes);
+			ByteArrayOutputStream bytes = new ByteArrayOutputStream(512 * 1024);
+			ObjectOutputStream stream = new ObjectOutputStream(bytes);
 			stream.writeObject(session);
-			WaspSession session2 = (WaspSession)new ObjectInputStream(new ByteArrayInputStream(bytes.toByteArray())).readObject();
+			WaspSession session2 = (WaspSession)new ObjectInputStream(new ByteArrayInputStream(
+					bytes.toByteArray())).readObject();
 			assertNotNull(session2);
 			assertNotSame(session, session2);
-			//fake restore session from disk
+			// fake restore session from disk
 			mock.setupRequestAndResponse();
 			Session.set(session2);
 			application.getSessionStore().bind(mock.getWicketRequest(), session2);
@@ -206,10 +211,11 @@ public class GeneralTest extends TestCase
 			log.error(e.getMessage(), e);
 			fail(e.getMessage());
 		}
-		//attempt logoff
+		// attempt logoff
 		WaspSession waspSession = ((WaspSession)mock.getWicketSession());
 		assertNotSame(session, waspSession);
-		//instead of simulating a different jvm we can make sure the hashcode always stays the same
+		// instead of simulating a different jvm we can make sure the hashcode
+		// always stays the same
 		SecondaryLoginContext logoff = new SecondaryLoginContext();
 		assertEquals(22889663, logoff.hashCode());
 		assertTrue(waspSession.logoff(logoff));

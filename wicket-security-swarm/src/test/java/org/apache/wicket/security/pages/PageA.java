@@ -42,18 +42,20 @@ public class PageA extends SecureWebPage
 	{
 		super();
 		add(new Label("label", "this page shows security inheritance"));
-		add(new SecurePageLink("link",MockHomePage.class));
+		add(new SecurePageLink("link", MockHomePage.class));
 		add(new SecureTextField("invisible"));
 		add(new SecureTextField("readonly"));
 		add(new TextField("unchecked"));
 	}
+
 	/**
 	 * Shortcut to {@link WaspSession#logoff(Object)}
+	 * 
 	 * @param context
 	 * @return true if the logoff was successful, false otherwise
 	 */
 	public boolean logoff(Object context)
 	{
-		return ((WaspSession) Session.get()).logoff(context);
+		return ((WaspSession)Session.get()).logoff(context);
 	}
 }

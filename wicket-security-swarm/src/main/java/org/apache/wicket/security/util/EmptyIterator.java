@@ -21,7 +21,7 @@ import java.util.NoSuchElementException;
 
 /**
  * @author marrink
- *
+ * 
  */
 public final class EmptyIterator implements Iterator
 {
@@ -49,5 +49,5 @@ public final class EmptyIterator implements Iterator
 	{
 		throw new UnsupportedOperationException();
 	}
-	
+
 }

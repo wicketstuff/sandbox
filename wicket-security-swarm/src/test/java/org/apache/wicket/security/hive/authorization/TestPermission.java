@@ -16,11 +16,11 @@
  */
 package org.apache.wicket.security.hive.authorization;
 
-import org.apache.wicket.security.hive.authorization.Permission;
 import org.apache.wicket.security.hive.config.HiveFactory;
 
 /**
  * Very simple permission for testing purposes.
+ * 
  * @author marrink
  */
 public class TestPermission extends Permission
@@ -31,15 +31,18 @@ public class TestPermission extends Permission
 	/**
 	 * 
 	 * Construct.
+	 * 
 	 * @param name
 	 */
 	public TestPermission(String name)
 	{
 		super(name);
 	}
+
 	/**
 	 * 
 	 * Constructor required by the {@link HiveFactory}.
+	 * 
 	 * @param name
 	 * @param actions
 	 */
@@ -48,6 +51,7 @@ public class TestPermission extends Permission
 		super(name);
 		this.actions = actions;
 	}
+
 	/**
 	 * 
 	 * @see org.apache.wicket.security.hive.authorization.Permission#equals(java.lang.Object)
@@ -60,11 +64,12 @@ public class TestPermission extends Permission
 			return false;
 		if (obj.getClass().equals(this.getClass()))
 		{
-			TestPermission other = (TestPermission) obj;
+			TestPermission other = (TestPermission)obj;
 			return other.getName().equals(getName()) && other.getActions().equals(getActions());
 		}
 		return false;
 	}
+
 	/**
 	 * 
 	 * @see org.apache.wicket.security.hive.authorization.Permission#getActions()
@@ -73,6 +78,7 @@ public class TestPermission extends Permission
 	{
 		return actions;
 	}
+
 	/**
 	 * 
 	 * @see org.apache.wicket.security.hive.authorization.Permission#hashCode()
@@ -81,6 +87,7 @@ public class TestPermission extends Permission
 	{
 		return getName().hashCode();
 	}
+
 	/**
 	 * 
 	 * @see org.apache.wicket.security.hive.authorization.Permission#implies(org.apache.wicket.security.hive.authorization.Permission)
@@ -93,7 +100,7 @@ public class TestPermission extends Permission
 			return false;
 		if (permission.getClass().equals(this.getClass()))
 		{
-			TestPermission other = (TestPermission) permission;
+			TestPermission other = (TestPermission)permission;
 			return other.getName().equals(getName())
 					&& getActions().indexOf(other.getActions()) > -1;
 		}

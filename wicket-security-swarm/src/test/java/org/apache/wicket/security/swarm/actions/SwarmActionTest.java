@@ -29,11 +29,11 @@ import org.apache.wicket.security.hive.config.PolicyFileHiveFactory;
 import org.apache.wicket.security.pages.MockHomePage;
 import org.apache.wicket.security.pages.MockLoginPage;
 import org.apache.wicket.security.swarm.SwarmWebApplication;
-import org.apache.wicket.security.swarm.actions.SwarmAction;
 import org.apache.wicket.util.tester.WicketTester;
 
 /**
  * Tests WaspAction class.
+ * 
  * @author marrink
  */
 public class SwarmActionTest extends TestCase
@@ -44,6 +44,7 @@ public class SwarmActionTest extends TestCase
 
 	/**
 	 * Constructor for WaspActionTest.
+	 * 
 	 * @param arg0
 	 */
 	public SwarmActionTest(String arg0)
@@ -91,6 +92,7 @@ public class SwarmActionTest extends TestCase
 		assertTrue(action2.implies(action));
 		assertFalse(action.implies(action2));
 	}
+
 	/**
 	 * 
 	 * @see junit.framework.TestCase#setUp()
@@ -166,16 +168,18 @@ public class SwarmActionTest extends TestCase
 	 */
 	public void testAddInt()
 	{
-		 ActionFactory factory=application.getActionFactory();
-		 SwarmAction action=(SwarmAction)factory.getAction(Render.class);
-		 assertEquals(2,action.actions());
-		 SwarmAction action2=(SwarmAction)action.add(((SwarmAction)factory.getAction(Access.class)).actions());
-		 assertEquals(2,action.actions()); //check inmutability
-		 assertEquals(2,action2.actions());
-		 assertNotSame(action, action2);
-		 SwarmAction action3=(SwarmAction)action.add(((SwarmAction)factory.getAction(Enable.class)).actions());
-		 assertEquals(2,action.actions());
-		 assertEquals(6,action3.actions());
+		ActionFactory factory = application.getActionFactory();
+		SwarmAction action = (SwarmAction)factory.getAction(Render.class);
+		assertEquals(2, action.actions());
+		SwarmAction action2 = (SwarmAction)action
+				.add(((SwarmAction)factory.getAction(Access.class)).actions());
+		assertEquals(2, action.actions()); // check inmutability
+		assertEquals(2, action2.actions());
+		assertNotSame(action, action2);
+		SwarmAction action3 = (SwarmAction)action
+				.add(((SwarmAction)factory.getAction(Enable.class)).actions());
+		assertEquals(2, action.actions());
+		assertEquals(6, action3.actions());
 
 	}
 
@@ -184,18 +188,19 @@ public class SwarmActionTest extends TestCase
 	 */
 	public void testAddWaspAction()
 	{
-		ActionFactory factory=application.getActionFactory();
-		 SwarmAction action=(SwarmAction)factory.getAction(Render.class);
-		 assertEquals(2,action.actions());
-		 SwarmAction action2=(SwarmAction)action.add(factory.getAction(Access.class));
-		 assertEquals(2,action.actions()); //check inmutability
-		 assertEquals(2,action2.actions());
-		 assertNotSame(action, action2);
-		 SwarmAction action3=(SwarmAction)action.add(factory.getAction(Enable.class));
-		 assertEquals(2,action.actions());
-		 assertEquals(6,action3.actions());
+		ActionFactory factory = application.getActionFactory();
+		SwarmAction action = (SwarmAction)factory.getAction(Render.class);
+		assertEquals(2, action.actions());
+		SwarmAction action2 = (SwarmAction)action.add(factory.getAction(Access.class));
+		assertEquals(2, action.actions()); // check inmutability
+		assertEquals(2, action2.actions());
+		assertNotSame(action, action2);
+		SwarmAction action3 = (SwarmAction)action.add(factory.getAction(Enable.class));
+		assertEquals(2, action.actions());
+		assertEquals(6, action3.actions());
 
 	}
+
 	/**
 	 * Test various constructor scenarios.
 	 */
@@ -227,6 +232,7 @@ public class SwarmActionTest extends TestCase
 
 		/**
 		 * Construct.
+		 * 
 		 * @param action
 		 * @param name
 		 */

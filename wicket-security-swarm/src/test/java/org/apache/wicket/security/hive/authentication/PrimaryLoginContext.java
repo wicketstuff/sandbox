@@ -18,21 +18,21 @@ package org.apache.wicket.security.hive.authentication;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.security.hive.authentication.DefaultSubject;
-import org.apache.wicket.security.hive.authentication.LoginContext;
-import org.apache.wicket.security.hive.authentication.Subject;
 import org.apache.wicket.security.hive.authorization.TestPrincipal;
 import org.apache.wicket.security.pages.HighSecurityPage;
 
 /**
- * A context for multi login, this context is used to grant the least amount of permissions.
+ * A context for multi login, this context is used to grant the least amount of
+ * permissions.
+ * 
  * @author marrink
  */
 public final class PrimaryLoginContext extends LoginContext
 {
 	/**
-	 * Custom Subject.
-	 * Note try not to serialize the logincontext with the subject.
+	 * Custom Subject. Note try not to serialize the logincontext with the
+	 * subject.
+	 * 
 	 * @author marrink
 	 */
 	private static final class MySubject extends DefaultSubject
@@ -50,6 +50,7 @@ public final class PrimaryLoginContext extends LoginContext
 				return false;
 			return !HighSecurityPage.class.isAssignableFrom(class1);
 		}
+
 		/**
 		 * 
 		 * @see org.apache.wicket.security.hive.authentication.DefaultSubject#isComponentAuthenticated(org.apache.wicket.Component)
@@ -58,15 +59,18 @@ public final class PrimaryLoginContext extends LoginContext
 		{
 			return true;
 		}
+
 		/**
 		 * 
-		 * @see org.apache.wicket.security.hive.authentication.DefaultSubject#isModelAuthenticated(org.apache.wicket.model.IModel, org.apache.wicket.Component)
+		 * @see org.apache.wicket.security.hive.authentication.DefaultSubject#isModelAuthenticated(org.apache.wicket.model.IModel,
+		 *      org.apache.wicket.Component)
 		 */
 		public boolean isModelAuthenticated(IModel model, Component component)
 		{
 			return true;
 		}
 	}
+
 	/**
 	 * 
 	 * Construct.

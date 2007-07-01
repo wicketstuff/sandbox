@@ -24,6 +24,7 @@ import org.apache.wicket.security.strategies.WaspAuthorizationStrategy;
 
 /**
  * A factory to return new {@link SwarmStrategy}s.
+ * 
  * @author marrink
  */
 public class SwarmStrategyFactory implements StrategyFactory
@@ -33,9 +34,11 @@ public class SwarmStrategyFactory implements StrategyFactory
 	private Object hiveQueen;
 
 	/**
-	 * Constructs a new factory. All the strategies will require {@link ISecurePage}s to
-	 * have access rights.
-	 * @param hiveQueen the key to get the {@link Hive}
+	 * Constructs a new factory. All the strategies will require
+	 * {@link ISecurePage}s to have access rights.
+	 * 
+	 * @param hiveQueen
+	 *            the key to get the {@link Hive}
 	 */
 	public SwarmStrategyFactory(Object hiveQueen)
 	{
@@ -44,8 +47,12 @@ public class SwarmStrategyFactory implements StrategyFactory
 
 	/**
 	 * Constructs a new factory.
-	 * @param secureClass instances of this class will be required to have access rights.
-	 * @param hiveQueen hiveQueen the key to get the {@link Hive}
+	 * 
+	 * @param secureClass
+	 *            instances of this class will be required to have access
+	 *            rights.
+	 * @param hiveQueen
+	 *            hiveQueen the key to get the {@link Hive}
 	 */
 	public SwarmStrategyFactory(Class secureClass, Object hiveQueen)
 	{
@@ -59,7 +66,8 @@ public class SwarmStrategyFactory implements StrategyFactory
 	 */
 	public void destroy()
 	{
-		// should we clean up all sessions or is that taken care of automaticly when the
+		// should we clean up all sessions or is that taken care of automaticly
+		// when the
 		// session is invalidated
 
 	}
@@ -74,6 +82,7 @@ public class SwarmStrategyFactory implements StrategyFactory
 
 	/**
 	 * The key to the hive.
+	 * 
 	 * @return the key
 	 */
 	protected final Object getHiveKey()
@@ -82,8 +91,9 @@ public class SwarmStrategyFactory implements StrategyFactory
 	}
 
 	/**
-	 * All instance of this class will be required to have {@link ComponentPermission}
-	 * with atleast the access action.
+	 * All instance of this class will be required to have
+	 * {@link ComponentPermission} with atleast the access action.
+	 * 
 	 * @return the class required to have instantiation rights
 	 */
 	protected final Class getSecureClass()

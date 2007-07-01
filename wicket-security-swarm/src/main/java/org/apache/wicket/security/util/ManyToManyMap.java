@@ -64,8 +64,9 @@ public class ManyToManyMap
 	}
 
 	/**
-	 * Adds a key value mapping in this map. Since this maps many to many relations no
-	 * previous mappings will be overriddden.
+	 * Adds a key value mapping in this map. Since this maps many to many
+	 * relations no previous mappings will be overriddden.
+	 * 
 	 * @param left
 	 * @param right
 	 */
@@ -75,12 +76,12 @@ public class ManyToManyMap
 			throw new NullPointerException("left must not be null.");
 		if (right == null)
 			throw new NullPointerException("right must not be null.");
-		Set manys = (Set) mappings.get(left);
+		Set manys = (Set)mappings.get(left);
 		if (manys == null)
 			manys = new HashSet();
 		manys.add(right);
 		mappings.put(left, manys);
-		manys = (Set) mappings.get(right);
+		manys = (Set)mappings.get(right);
 		if (manys == null)
 			manys = new HashSet();
 		manys.add(left);
@@ -89,20 +90,23 @@ public class ManyToManyMap
 
 	/**
 	 * Removes a many to many mapping between two objects.
-	 * @param left left side of the mapping
-	 * @param right right side of the mapping
+	 * 
+	 * @param left
+	 *            left side of the mapping
+	 * @param right
+	 *            right side of the mapping
 	 * @return false if the mapping did not exist, true otherwise
 	 */
 	public boolean remove(Object left, Object right)
 	{
-		Set manys = (Set) mappings.get(left);
+		Set manys = (Set)mappings.get(left);
 		if (manys != null)
 		{
 			if (manys.remove(right))
 			{
 				if (manys.isEmpty())
 					mappings.remove(left);
-				manys = (Set) mappings.get(right);
+				manys = (Set)mappings.get(right);
 				manys.remove(left);
 				if (manys.isEmpty())
 					mappings.remove(right);
@@ -111,14 +115,17 @@ public class ManyToManyMap
 		}
 		return false;
 	}
+
 	/**
 	 * Remove all mappings for an object.
-	 * @param leftOrRight the left or right side of the many to many mapping
+	 * 
+	 * @param leftOrRight
+	 *            the left or right side of the many to many mapping
 	 * @return the mappings that will be removed by this action
 	 */
 	public Set removeAllMappings(Object leftOrRight)
 	{
-		Set manys = (Set) mappings.remove(leftOrRight);
+		Set manys = (Set)mappings.remove(leftOrRight);
 		if (manys != null)
 		{
 			Iterator it = manys.iterator();
@@ -127,7 +134,7 @@ public class ManyToManyMap
 			while (it.hasNext())
 			{
 				next = it.next();
-				temp = (Set) mappings.get(next);
+				temp = (Set)mappings.get(next);
 				temp.remove(leftOrRight);
 				if (temp.isEmpty())
 					mappings.remove(next);
@@ -135,6 +142,7 @@ public class ManyToManyMap
 		}
 		return manys;
 	}
+
 	/**
 	 * 
 	 * @param left
@@ -142,7 +150,7 @@ public class ManyToManyMap
 	 */
 	public Set get(Object left)
 	{
-		Set set = (Set) mappings.get(left);
+		Set set = (Set)mappings.get(left);
 		if (set == null)
 			return Collections.EMPTY_SET;
 		return Collections.unmodifiableSet(set);
@@ -158,12 +166,13 @@ public class ManyToManyMap
 
 	/**
 	 * Returns the number of keys mapped to a value.
+	 * 
 	 * @param value
 	 * @return the number of keys mapped to this value
 	 */
 	public int numberOfmappings(Object value)
 	{
-		Set set = (Set) mappings.get(value);
+		Set set = (Set)mappings.get(value);
 		if (set == null)
 			return 0;
 		return set.size();
@@ -171,6 +180,7 @@ public class ManyToManyMap
 
 	/**
 	 * Check if this map contains a key.
+	 * 
 	 * @param key
 	 * @return true if this map contains the key, false otherwise
 	 */
@@ -181,6 +191,7 @@ public class ManyToManyMap
 
 	/**
 	 * Check if this map contains a key value mapping.
+	 * 
 	 * @return true if no key value mappings are pressent, false otherwise
 	 */
 	public boolean isEmpty()
@@ -197,8 +208,9 @@ public class ManyToManyMap
 	}
 
 	/**
-	 * Returns an <tt>Iterator</tt> over every left and right hand mapping in this map.
-	 * In no particular order.
+	 * Returns an <tt>Iterator</tt> over every left and right hand mapping in
+	 * this map. In no particular order.
+	 * 
 	 * @return an iterator over this map
 	 * @see java.lang.Iterable#iterator()
 	 */
@@ -215,7 +227,7 @@ public class ManyToManyMap
 	public boolean equals(Object obj)
 	{
 		if (obj instanceof ManyToManyMap)
-			return mappings.equals(((ManyToManyMap) obj).mappings);
+			return mappings.equals(((ManyToManyMap)obj).mappings);
 		return false;
 	}
 
