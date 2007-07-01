@@ -20,8 +20,9 @@ import org.apache.wicket.security.examples.multilogin.components.navigation.Butt
 
 /**
  * The home page, this one is secured with a login.
+ * 
  * @author marrink
- *
+ * 
  */
 public class HomePage extends SecurePage
 {
@@ -33,6 +34,6 @@ public class HomePage extends SecurePage
 	 */
 	public HomePage()
 	{
-		add(new ButtonContainer("buttoncontainer",ButtonContainer.BUTTON_HOME));
+		add(new ButtonContainer("buttoncontainer", ButtonContainer.BUTTON_HOME));
 	}
 }

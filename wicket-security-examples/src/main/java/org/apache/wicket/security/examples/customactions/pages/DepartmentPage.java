@@ -44,6 +44,9 @@ public class DepartmentPage extends SecurePage
 
 	/**
 	 * 
+	 * Construct.
+	 * 
+	 * @param department
 	 */
 	public DepartmentPage(Department department)
 	{
@@ -52,7 +55,8 @@ public class DepartmentPage extends SecurePage
 		// make sure we have organization rights
 		form.setSecurityCheck(new OrganizationCheck(form));
 		add(form);
-		// no need to secure the child components, the form will automatically disable them
+		// no need to secure the child components, the form will automatically
+		// disable them
 		// when required
 		form.add(new TextField("name"));
 		form.add(new TextArea("description"));
@@ -65,10 +69,11 @@ public class DepartmentPage extends SecurePage
 				setResponsePage(DepartmentsPage.class);
 			}
 		});
-		Label label=new Label("label","You do not have sufficient rights to make changes");
-		//make the label show up when the form is disabled
-		//notice the use of security check chaining.
-		SecureComponentHelper.setSecurityCheck(label, new InverseSecurityCheck(new EnableCheck(form.getSecurityCheck())));
+		Label label = new Label("label", "You do not have sufficient rights to make changes");
+		// make the label show up when the form is disabled
+		// notice the use of security check chaining.
+		SecureComponentHelper.setSecurityCheck(label, new InverseSecurityCheck(new EnableCheck(form
+				.getSecurityCheck())));
 		form.add(label);
 
 	}

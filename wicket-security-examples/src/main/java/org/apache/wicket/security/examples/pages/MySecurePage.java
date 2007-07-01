@@ -30,7 +30,7 @@ import org.apache.wicket.security.swarm.SwarmWebApplication;
  * Base page for all my other pages.
  * 
  * @author marrink
- *
+ * 
  */
 public abstract class MySecurePage extends SecureWebPage
 {
@@ -62,9 +62,13 @@ public abstract class MySecurePage extends SecureWebPage
 		super(model);
 		init();
 	}
+
+	/**
+	 * initialize the page.
+	 */
 	protected void init()
 	{
-		//not a secure link because everyone can logoff.
+		// not a secure link because everyone can logoff.
 		Link logoff = new Link("logoff")
 		{
 
@@ -73,9 +77,10 @@ public abstract class MySecurePage extends SecureWebPage
 			public void onClick()
 			{
 				WaspSession waspSession = ((WaspSession)getSession());
-				if(waspSession.logoff(getLogoffContext()))
+				if (waspSession.logoff(getLogoffContext()))
 				{
-					//homepage is not allowed anymore so we end up at the loginpage
+					// homepage is not allowed anymore so we end up at the
+					// loginpage
 					setResponsePage(Application.get().getHomePage());
 					waspSession.invalidate();
 				}
@@ -85,17 +90,32 @@ public abstract class MySecurePage extends SecureWebPage
 		};
 		add(logoff);
 	}
+
+	/**
+	 * shortcut to the {@link WaspSession}.
+	 * 
+	 * @return the session.
+	 */
 	protected final WaspSession getSecureSession()
 	{
 		return (WaspSession)Session.get();
 	}
+
+	/**
+	 * Shortcut to the application.
+	 * 
+	 * @return the application
+	 */
 	protected final SwarmWebApplication getSecureApplication()
 	{
 		return (SwarmWebApplication)Application.get();
 	}
 
 	/**
-	 * @return
+	 * Allows subclasses to specify which context should be used when logging
+	 * off
+	 * 
+	 * @return the context
 	 */
 	protected abstract LoginContext getLogoffContext();
 }

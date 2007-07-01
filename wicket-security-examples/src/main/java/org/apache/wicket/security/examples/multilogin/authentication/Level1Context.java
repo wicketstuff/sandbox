@@ -26,7 +26,9 @@ import org.apache.wicket.security.strategies.LoginException;
 import org.apache.wicket.util.lang.Objects;
 
 /**
- * Secondary authentication for topsecret pages like the commit page for transactions.
+ * Secondary authentication for topsecret pages like the commit page for
+ * transactions.
+ * 
  * @author marrink
  * 
  */
@@ -34,6 +36,7 @@ public class Level1Context extends LoginContext
 {
 	/**
 	 * Subject for secondary Login. authenticates all pages.
+	 * 
 	 * @author marrink
 	 */
 	private static final class MySecondarySubject extends DefaultSubject
@@ -41,19 +44,19 @@ public class Level1Context extends LoginContext
 		private static final long serialVersionUID = 1L;
 
 		/**
-		 * @see org.apache.wicket.security.hive.authentication.LoginContext#isClassAuthenticated(java.lang.Class)
+		 * @see Subject#isClassAuthenticated(java.lang.Class)
 		 */
 		public boolean isClassAuthenticated(Class class1)
 		{
 			// we could return true only if the page is a Topsecretpage,
 			// but this way we can also login inmediatly on the second
 			// login page, without being required to go through the first.
-			//if we had a bookmarkable link to this page.
+			// if we had a bookmarkable link to this page.
 			return true;
 		}
 
 		/**
-		 * @see org.apache.wicket.security.hive.authentication.LoginContext#isComponentAuthenticated(org.apache.wicket.Component)
+		 * @see Subject#isComponentAuthenticated(org.apache.wicket.Component)
 		 */
 		public boolean isComponentAuthenticated(Component component)
 		{
@@ -61,7 +64,7 @@ public class Level1Context extends LoginContext
 		}
 
 		/**
-		 * @see org.apache.wicket.security.hive.authentication.LoginContext#isModelAuthenticated(org.apache.wicket.model.IModel,
+		 * @see Subject#isModelAuthenticated(org.apache.wicket.model.IModel,
 		 *      org.apache.wicket.Component)
 		 */
 		public boolean isModelAuthenticated(IModel model, Component component)
@@ -90,15 +93,17 @@ public class Level1Context extends LoginContext
 	 */
 	public Subject login() throws LoginException
 	{
-		//irrelevant check
+		// irrelevant check
 		if (Objects.equal(username, token))
 		{
 			// usually there will be a db call to verify the credentials
 			DefaultSubject subject = new MySecondarySubject();
 			// add principals as required
-			//Note if topsecret implied basic we would not have to add it here.
-			//Also we only need this because we can login through a bookmarkable url, thereby bypassing the first login page.
-			//if we know we always come through the first loginpage we can remove basic here.
+			// Note if topsecret implied basic we would not have to add it here.
+			// Also we only need this because we can login through a
+			// bookmarkable url, thereby bypassing the first login page.
+			// if we know we always come through the first loginpage we can
+			// remove basic here.
 			subject.addPrincipal(new MyPrincipal("basic"));
 			subject.addPrincipal(new MyPrincipal("topsecret"));
 			return subject;
@@ -106,9 +111,14 @@ public class Level1Context extends LoginContext
 		throw new LoginException("username does not match token");
 	}
 
+	/**
+	 * 
+	 * @see org.apache.wicket.security.hive.authentication.LoginContext#preventsAdditionalLogins()
+	 */
 	public boolean preventsAdditionalLogins()
 	{
-		//we don't want / need to upgrade the credentials of this user any further
+		// we don't want / need to upgrade the credentials of this user any
+		// further
 		return true;
 	}
 

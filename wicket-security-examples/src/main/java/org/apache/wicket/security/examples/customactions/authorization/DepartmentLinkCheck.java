@@ -27,6 +27,7 @@ import org.apache.wicket.security.examples.customactions.entities.Department;
  * action which is used to do that. there are two type of departments, secure
  * (which you can only see/edit when you have organization rights and unsecure
  * departments where department rights are sufficient.
+ * 
  * @author marrink
  */
 public class DepartmentLinkCheck extends LinkSecurityCheck
@@ -36,13 +37,16 @@ public class DepartmentLinkCheck extends LinkSecurityCheck
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	private boolean secureDepartment;
 
 	/**
 	 * Construct.
+	 * 
 	 * @param component
 	 * @param clickTarget
+	 * @param department
+	 *            the department to check
 	 */
 	public DepartmentLinkCheck(AbstractLink component, Class clickTarget, Department department)
 	{
@@ -52,12 +56,15 @@ public class DepartmentLinkCheck extends LinkSecurityCheck
 
 	/**
 	 * Construct.
+	 * 
 	 * @param component
 	 * @param clickTarget
+	 * @param department
+	 *            the department to check
 	 * @param checkSecureModelIfExists
 	 */
-	public DepartmentLinkCheck(AbstractLink component, Class clickTarget,
-			Department department, boolean checkSecureModelIfExists)
+	public DepartmentLinkCheck(AbstractLink component, Class clickTarget, Department department,
+			boolean checkSecureModelIfExists)
 	{
 		super(component, clickTarget, checkSecureModelIfExists);
 		secureDepartment = department.secure;
@@ -68,9 +75,14 @@ public class DepartmentLinkCheck extends LinkSecurityCheck
 	 */
 	public boolean isActionAuthorized(WaspAction action)
 	{
-//		for secure departments you need organization rights, else department rights are sufficient
-		WaspAction myAction = action.add(getActionFactory().getAction(
-				secureDepartment ? Organization.class : org.apache.wicket.security.examples.customactions.authorization.Department.class));
+		// for secure departments you need organization rights, else department
+		// rights are sufficient
+		WaspAction myAction = action
+				.add(getActionFactory()
+						.getAction(
+								secureDepartment
+										? Organization.class
+										: org.apache.wicket.security.examples.customactions.authorization.Department.class));
 		return super.isActionAuthorized(myAction);
 	}
 

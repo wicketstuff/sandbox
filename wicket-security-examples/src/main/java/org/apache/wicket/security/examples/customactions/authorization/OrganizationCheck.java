@@ -22,6 +22,7 @@ import org.apache.wicket.security.checks.ComponentSecurityCheck;
 
 /**
  * Checks for {@link Organization} rights.
+ * 
  * @author marrink
  */
 public class OrganizationCheck extends ComponentSecurityCheck

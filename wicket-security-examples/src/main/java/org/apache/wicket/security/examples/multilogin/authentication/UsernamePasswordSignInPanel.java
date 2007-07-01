@@ -26,12 +26,16 @@ import org.apache.wicket.util.value.ValueMap;
 
 /**
  * Panel for user authentication. Uses a username and a token.
+ * 
  * @author marrink
  */
 public abstract class UsernamePasswordSignInPanel extends Panel
 {
 	/**
 	 * Constructor.
+	 * 
+	 * @param id
+	 *            component id
 	 */
 	public UsernamePasswordSignInPanel(final String id)
 	{
@@ -40,10 +44,11 @@ public abstract class UsernamePasswordSignInPanel extends Panel
 	}
 
 	/**
-	 * The actual login proces.
+	 * The actual login process.
+	 * 
 	 * @param username
 	 * @param password
-	 * @return
+	 * @return true if the login was successful, false otherwise
 	 */
 	public abstract boolean signIn(String username, String password);
 
@@ -56,7 +61,9 @@ public abstract class UsernamePasswordSignInPanel extends Panel
 
 		/**
 		 * Constructor.
-		 * @param id id of the form component
+		 * 
+		 * @param id
+		 *            id of the form component
 		 */
 		public SignInForm(final String id)
 		{
@@ -64,16 +71,17 @@ public abstract class UsernamePasswordSignInPanel extends Panel
 
 			// only remember username, not passwords
 			add(new TextField("username").setOutputMarkupId(false));
-			//the token
+			// the token
 			add(new PasswordTextField("password").setOutputMarkupId(false));
 		}
 
 		/**
-		 * @see wicket.markup.html.form.Form#onSubmit()
+		 * 
+		 * @see org.apache.wicket.markup.html.form.Form#onSubmit()
 		 */
 		public final void onSubmit()
 		{
-			ValueMap values = (ValueMap) getModelObject();
+			ValueMap values = (ValueMap)getModelObject();
 			String username = values.getString("username");
 			String password = values.getString("password");
 

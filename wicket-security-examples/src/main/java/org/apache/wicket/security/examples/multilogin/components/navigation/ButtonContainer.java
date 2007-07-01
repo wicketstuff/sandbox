@@ -31,9 +31,21 @@ public class ButtonContainer
 
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * A button.
+	 */
 	public static final Integer BUTTON_HOME = new Integer(0);
+	/**
+	 * A button.
+	 */
 	public static final Integer BUTTON_OVERVIEW = new Integer(1);
+	/**
+	 * A button.
+	 */
 	public static final Integer BUTTON_TRANSACTION = new Integer(2);
+	/**
+	 * A button.
+	 */
 	public static final Integer BUTTON_COMMIT = new Integer(3);
 
 	/**

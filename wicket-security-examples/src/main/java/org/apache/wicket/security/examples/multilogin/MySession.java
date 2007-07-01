@@ -26,6 +26,7 @@ import org.apache.wicket.security.WaspSession;
 
 /**
  * custom session to keep track of moneytransfers.
+ * 
  * @author marrink
  */
 public class MySession extends WaspSession
@@ -35,28 +36,36 @@ public class MySession extends WaspSession
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	private List moneyTransfers;
 
 	/**
 	 * Construct.
+	 * 
 	 * @param application
 	 * @param request
 	 */
 	public MySession(WaspApplication application, Request request)
 	{
 		super(application, request);
-		moneyTransfers=new ArrayList();
+		moneyTransfers = new ArrayList();
 	}
 
 	/**
 	 * Gets moneytransfers.
+	 * 
 	 * @return moneytransfers
 	 */
 	public List getMoneyTransfers()
 	{
 		return moneyTransfers;
 	}
+
+	/**
+	 * Return the session.
+	 * 
+	 * @return the session
+	 */
 	public static final MySession getSessesion()
 	{
 		return (MySession)Session.get();

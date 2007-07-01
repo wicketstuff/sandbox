@@ -22,8 +22,9 @@ import org.apache.wicket.security.checks.AbstractSecurityCheck;
 import org.apache.wicket.security.checks.ISecurityCheck;
 
 /**
- * Shows how to chain securitychecks rather than overriding them.
- * It enforces the "enable" action on every check.
+ * Shows how to chain securitychecks rather than overriding them. It enforces
+ * the "enable" action on every check.
+ * 
  * @author marrink
  */
 public class EnableCheck extends AbstractSecurityCheck
@@ -33,16 +34,19 @@ public class EnableCheck extends AbstractSecurityCheck
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	private ISecurityCheck wrapped;
 
 	/**
 	 * Construct.
+	 * 
+	 * @param check
+	 *            the check we are chaining
 	 */
 	public EnableCheck(ISecurityCheck check)
 	{
-		wrapped=check;
-		if(check==null)
+		wrapped = check;
+		if (check == null)
 			throw new IllegalArgumentException("Must supplie a security check.");
 	}
 

@@ -21,8 +21,9 @@ import org.apache.wicket.security.examples.customactions.components.navigation.B
 
 /**
  * The home page, this one is secured with a login. Dummy page really
+ * 
  * @author marrink
- *
+ * 
  */
 public class OverviewPage extends SecurePage
 {
@@ -34,6 +35,6 @@ public class OverviewPage extends SecurePage
 	 */
 	public OverviewPage()
 	{
-		add(new ButtonContainer("buttoncontainer",ButtonContainer.BUTTON_OVERVIEW));
+		add(new ButtonContainer("buttoncontainer", ButtonContainer.BUTTON_OVERVIEW));
 	}
 }

@@ -31,8 +31,8 @@ import org.apache.wicket.security.examples.multilogin.MySession;
 import org.apache.wicket.security.examples.multilogin.entities.Entry;
 
 /**
- * Page for starting some money transfers. Note that you will need to
- * commit these transfers on a 2nd page. which is more secured.
+ * Page for starting some money transfers. Note that you will need to commit
+ * these transfers on a 2nd page. which is more secured.
  * 
  * @author marrink
  */
