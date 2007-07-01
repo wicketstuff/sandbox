@@ -2,8 +2,6 @@ package wicket.contrib.examples.gmap;
 
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.markup.ComponentTag;
-import org.apache.wicket.markup.MarkupStream;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.Model;
@@ -13,6 +11,7 @@ import wicket.contrib.examples.WicketExamplePage;
 import wicket.contrib.gmap.GMap2;
 import wicket.contrib.gmap.GMap2.MoveEndBehavior;
 import wicket.contrib.gmap.api.GControl;
+import wicket.contrib.gmap.api.GInfoWindowTab;
 import wicket.contrib.gmap.api.GLatLng;
 import wicket.contrib.gmap.api.GMarker;
 import wicket.contrib.gmap.api.GPolygon;
@@ -54,7 +53,7 @@ public class HomePage extends WicketExamplePage
 			@Override
 			protected void onClick(GMarker marker, AjaxRequestTarget target)
 			{
-				topPanel.openInfoWindow(new HelloPanel(), marker);
+				topPanel.openInfoWindow(marker, new HelloPanel());
 			}
 
 			@Override
@@ -140,12 +139,12 @@ public class HomePage extends WicketExamplePage
 			@Override
 			protected void onClick(GLatLng gLatLng, AjaxRequestTarget target)
 			{
-				bottomPanel.openInfoWindow(new HelloPanel(), gLatLng);
+				bottomPanel.openInfoWindow(gLatLng, new HelloPanel());
 			}
 
 		});
 		bottomPanel.addControl(GControl.GSmallMapControl);
-		bottomPanel.openInfoWindow(new HelloPanel(), new GLatLng(37.5, -122.1));
+		bottomPanel.openInfoWindow(new GLatLng(37.5, -122.1), new GInfoWindowTab("One", new HelloPanel()), new GInfoWindowTab("Two", new HelloPanel()));
 		add(bottomPanel);
 
 		center = new Label("center", new PropertyModel(bottomPanel, "center"));
@@ -194,7 +193,7 @@ public class HomePage extends WicketExamplePage
 			@Override
 			protected void onEvent(AjaxRequestTarget target)
 			{
-				bottomPanel.openInfoWindow(new HelloPanel(), new GLatLng(37.5, -122.1));
+				bottomPanel.openInfoWindow(new GLatLng(37.5, -122.1), new HelloPanel());
 			}
 		});
 		add(infoWindow);
