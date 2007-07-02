@@ -22,10 +22,22 @@
  */
 
 // Wicket Namespace
-if (typeof(Wicket) == "undefined") {
-	Wicket = { };
+var Wicket;
+if(!Wicket)
+{
+	Wicket = {}
+} else if (typeof Wicket != "object")
+{
+	throw new Error("Wicket already exists and is not an object");
 }
 
+// Wicket.GMap2 Namespace
+if(Wicket.GMap2)
+{
+	throw new Error("Wicket.GMap2 already exists");
+}
+
+// Now create and populate it.
 Wicket.GMap2 = {
 	addMap: function(id, center, zoom) {
 		var map = new GMap2(document.getElementById(id));
