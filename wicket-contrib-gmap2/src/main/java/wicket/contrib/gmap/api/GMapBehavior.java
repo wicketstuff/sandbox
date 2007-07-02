@@ -15,17 +15,26 @@
  */
 package wicket.contrib.gmap.api;
 
-import java.io.Serializable;
+import org.apache.wicket.behavior.AbstractAjaxBehavior;
+import org.apache.wicket.markup.html.IHeaderResponse;
 
 /**
  * Root class for any class that represents a GMap JavaScript class or object.
- * @deprecated Look for GMapBehavior instead.
  */
-@Deprecated
-public interface GMapApi extends Serializable
-{
+public abstract class GMapBehavior extends AbstractAjaxBehavior implements
+		Identifiable {
+
 	/**
-	 * @return A JavaScript constructor that represents this element.
+	 * @see wicket.contrib.gmap.api.Identifiable#getJSIdentifier()
 	 */
-	public String getJSConstructor();
+	public String getJSIdentifier() {
+		return "" + System.identityHashCode(this);
+
+	}
+
+	/**
+	 * @see org.apache.wicket.behavior.AbstractAjaxBehavior#renderHead(org.apache.wicket.markup.html.IHeaderResponse)
+	 */
+	@Override
+	public abstract void renderHead(IHeaderResponse response);
 }
