@@ -353,8 +353,7 @@ public class GMap2 extends Panel
 
 	private String getJSinit()
 	{
-		String js = "addGMap(\"" + getJSid() + "\", " + getCenter().getLat() + ", "
-				+ getCenter().getLng() + ", " + getZoom() + ");\n";
+		String js = "Wicket.GMap2.addMap(\"" + getJSid() + "\", " + getCenter().getJSConstructor() + ", " + getZoom() + ");\n";
 
 		// Add the controls.
 		for (GControl control : controls)
@@ -371,61 +370,55 @@ public class GMap2 extends Panel
 		js += infoWindow.getJSinit();
 		
 		for (Object behavior : getBehaviors(ListenerBehavior.class)) {
-			js += getJSaddListener((ListenerBehavior)behavior);
+			js += ((ListenerBehavior)behavior).getJSaddListener();
 		}
 
 		return js;
 	}
 
-	private String getJSaddListener(ListenerBehavior behavior)
-	{
-		return "Wicket.GMaps[\"" + behavior.getJSEvent() + "\"](" + "\"" + getJSid() + "\", " + "\""
-					+ behavior.getCallbackUrl() + "\");\n";
-	}
-
 	private String getJSsetZoom(int zoom)
 	{
-		return "setZoom('" + getJSid() + "', " + zoom + ");\n";
+		return "Wicket.GMap2.setZoom('" + getJSid() + "', " + zoom + ");\n";
 	}
 
 	private String getJSsetCenter(GLatLng center)
 	{
-		return "setCenter('" + getJSid() + "', '" + center.getJSConstructor() + "');\n";
+		return "Wicket.GMap2.setCenter('" + getJSid() + "', '" + center.getJSConstructor() + "');\n";
 	}
 
 	private String getJSaddControl(GControl control)
 	{
-		return "addControl('" + getJSid() + "', '" + control.getJSIdentifier() + "', '"
+		return "Wicket.GMap2.addControl('" + getJSid() + "', '" + control.getJSIdentifier() + "', '"
 				+ control.getJSConstructor() + "');\n";
 	}
 
 	private String getJSremoveControl(GControl control)
 	{
-		return "removeControl('" + getJSid() + "', '" + control.getJSIdentifier() + "');\n";
+		return "Wicket.GMap2.removeControl('" + getJSid() + "', '" + control.getJSIdentifier() + "');\n";
 	}
 
 	private String getJSaddOverlay(GOverlay overlay)
 	{
-		return "addOverlay('" + getJSid() + "', '" + overlay.getJSIdentifier() + "', '"
+		return "Wicket.GMap2.addOverlay('" + getJSid() + "', '" + overlay.getJSIdentifier() + "', '"
 				+ overlay.getJSConstructor() + "');\n";
 	}
 
 	private String getJSremoveOverlay(GOverlay overlay)
 	{
-		return "removeOverlay('" + getJSid() + "', '" + overlay.getJSIdentifier() + "');\n";
+		return "Wicket.GMap2.removeOverlay('" + getJSid() + "', '" + overlay.getJSIdentifier() + "');\n";
 	}
 
 	private String getJSpanDirection(int dx, int dy) {
-		return "Wicket.gmaps['" + getJSid() + "']" + ".panDirection(" + dx
+		return "Wicket.GMap2.panDirection('" + getJSid() + "'," + dx
 		+ "," + dy + ");\n";
 	}
 
 	private String getJSzoomOut() {
-		return "Wicket.gmaps['" + getJSid() + "']" + ".zoomOut();\n";
+		return "Wicket.GMap2.zoomOut('" + getJSid() + "');\n";
 	}
 		
 	private String getJSzoomIn() {
-		return "Wicket.gmaps['" + getJSid() + "']" + ".zoomIn();\n";
+		return "Wicket.GMap2.zoomIn('" + getJSid() + "');\n";
 	}
 	
 	/**
@@ -536,7 +529,7 @@ public class GMap2 extends Panel
 		{
 			StringBuffer buffer = new StringBuffer();
 
-			buffer.append("openInfoWindowTabs('");
+			buffer.append("Wicket.GMap2.openInfoWindowTabs('");
 			buffer.append(getJSid());
 			buffer.append("',");
 			buffer.append(latLng.getJSConstructor());
@@ -560,7 +553,7 @@ public class GMap2 extends Panel
 		{
 			StringBuffer buffer = new StringBuffer();
 
-			buffer.append("openMarkerInfoWindowTabs('");
+			buffer.append("Wicket.GMap2.openMarkerInfoWindowTabs('");
 			buffer.append(getJSid());
 			buffer.append("',");
 			buffer.append(marker.getJSIdentifier());
@@ -582,7 +575,7 @@ public class GMap2 extends Panel
 
 		private String getJSclose()
 		{
-			return "closeInfoWindow('" + getJSid() + "');\n";
+			return "Wicket.GMap2.closeInfoWindow('" + getJSid() + "');\n";
 		}
 
 	}
@@ -644,7 +637,7 @@ public class GMap2 extends Panel
 
 	private abstract class ListenerBehavior extends AbstractDefaultAjaxBehavior
 	{
-		public abstract String getJSEvent();
+		public abstract String getJSaddListener();
 	}
 
 	public abstract class MoveEndBehavior extends ListenerBehavior
@@ -653,8 +646,10 @@ public class GMap2 extends Panel
 		private static final long serialVersionUID = 1L;
 
 		@Override
-		public String getJSEvent() {
-			return "moveend";
+		public String getJSaddListener()
+		{
+			return "Wicket.GMap2.addMoveendListener(\"" + getJSid() + "\", \""
+						+ getCallbackUrl() + "\");\n";
 		}
 
 		@Override
@@ -681,8 +676,10 @@ public class GMap2 extends Panel
 		private static final long serialVersionUID = 1L;
 
 		@Override
-		public String getJSEvent() {
-			return "click";
+		public String getJSaddListener()
+		{
+			return "Wicket.GMap2.addClickListener(\"" + getJSid() + "\", \""
+						+ getCallbackUrl() + "\");\n";
 		}
 
 		@Override

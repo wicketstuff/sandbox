@@ -20,108 +20,115 @@
  *
  * @author Martin Funk
  */
-if (Function.prototype.bind == null) {
-	Function.prototype.bind = function(object) {
-		var __method = this;
-		return function() {
-			return __method.apply(object, arguments);
-		}
-	}
-}
 
 // Wicket Namespace
-if (typeof(Wicket) == "undefined")
+if (typeof(Wicket) == "undefined") {
 	Wicket = { };
-
-
-Wicket.GMaps = Wicket.Class.create();
-Wicket.GMaps.prototype = {
-	initialize: function() {
-		//this.maps = new Array();
-	}
 }
 
-function initGMaps() {
-	if (typeof(Wicket.gmaps) == "undefined") {
-		Wicket.gmaps = new Wicket.GMaps();
-	}
-}
-
-function addGMap(id, lat, lng, zoom) {
-	initGMaps();
-	if (GBrowserIsCompatible()) {
+Wicket.GMap2 = {
+	addMap: function(id, center, zoom) {
 		var map = new GMap2(document.getElementById(id));
-		map.setCenter(new GLatLng(lat, lng), zoom);
-		Wicket.gmaps[id] = map;
+		map.setCenter(eval(center), zoom);
+		this[id] = map;
+	},
+
+	getMap: function(id) {
+		return this[id];
+	},
+
+	addMoveendListener: function(id, callBack) {
+		var map = this.getMap(id);
+		GEvent.addListener( map , 'moveend',
+			function () {wicketAjaxGet(callBack 
+				+ '&center=' + map.getCenter()
+				+ '&bounds=' + map.getBounds()
+				+ '&zoom=' + map.getZoom()),
+			function(){},
+			function(){alert("ooops!")}}
+		);
+	},
+
+	addClickListener: function(id, callBack) {
+		var map = this.getMap(id);
+		GEvent.addListener( map , 'click',
+			function (marker, gLatLng) {wicketAjaxGet(callBack 
+				+ '&center=' + map.getCenter()
+				+ '&bounds=' + map.getBounds()
+				+ '&zoom=' + map.getZoom()
+				+ '&marker=' + (marker == null ? "" : marker.overlayId)
+				+ '&gLatLng=' + gLatLng),
+			function(){},
+			function(){alert("ooops on ClickDeff of!" + map)}}
+		);
+	},
+
+	setZoom: function(id, level) {
+		var map = this.getMap(id);
+		map.setZoom(level);
+	},
+
+	setCenter: function(id, center) {
+		var map = this.getMap(id);
+		map.setCenter(eval(center));
+	},
+
+	panDirection: function(id, dx, dy) {
+		var map = this.getMap(id);
+		map.panDirection(dx, dy);
+	},
+
+	zoomOut: function(id) {
+		var map = this.getMap(id);
+		map.zoomOut();
+	},
+
+	zoomIn: function(id) {
+		var map = this.getMap(id);
+		map.zoomIn();
+	},
+
+	addControl: function(id, controlId, control) {
+		var map = this.getMap(id);
+		map[controlId] = eval(control);
+		map.addControl(map[controlId]);
+	},
+
+	removeControl: function(id, controlId) {
+		var map = this.getMap(id);
+		if (map[controlId] != null) {
+			map.removeControl(map[controlId]);
+			map[controlId] = null;
+		}
+	},
+
+	addOverlay: function(id, overlayId, overlay) {
+		var map = this.getMap(id);
+		map[overlayId] = eval(overlay);
+		map[overlayId].overlayId = overlayId;
+		map.addOverlay(map[overlayId]);
+	},
+
+	removeOverlay: function(id, overlayId) {
+		var map = this.getMap(id);
+		if (map[overlayId] != null) {
+			map.removeOverlay(map[overlayId]);
+			map[overlayId] = null;
+		}
+	},
+
+	openInfoWindowTabs: function(id, latLng, tabs) {
+		var map = this.getMap(id);
+		map.openInfoWindowTabs(eval(latLng), eval(tabs));
+	},
+
+	openMarkerInfoWindowTabs: function(id, markerId, tabs) {
+		var map = this.getMap(id);
+		map[markerId].openInfoWindowTabs(eval(tabs));
+	},
+
+	closeInfoWindow: function(id) {
+		var map = this.getMap(id);
+		map.closeInfoWindow();
 	}
-}
-
-Wicket.GMaps.moveend = function (id, callBack) {
-	var map = Wicket.gmaps[id];
-	GEvent.addListener( map , 'moveend',
-		function () {wicketAjaxGet(callBack 
-			+ '&center=' + map.getCenter()
-			+ '&bounds=' + map.getBounds()
-			+ '&zoom=' + map.getZoom()),
-		function(){},
-		function(){alert("ooops!")}});
-}
-
-Wicket.GMaps.click = function (id, callBack) {
-	var map = Wicket.gmaps[id];
-	GEvent.addListener( map , 'click',
-		function (marker, gLatLng) {wicketAjaxGet(callBack 
-			+ '&center=' + map.getCenter()
-			+ '&bounds=' + map.getBounds()
-			+ '&zoom=' + map.getZoom()
-			+ '&marker=' + (marker == null ? "" : marker.overlayId)
-			+ '&gLatLng=' + gLatLng),
-		function(){},
-		function(){alert("ooops on ClickDeff of!" + map)}});
-}
-
-
-function setZoom(id, level) {
-	Wicket.gmaps[id].setZoom(level);
-}
-
-function setCenter(id, center) {
-	Wicket.gmaps[id].setCenter(eval(center));
-}
-
-function addControl(id, controlId, control) {
-	Wicket.gmaps[id][controlId] = eval(control);
-	Wicket.gmaps[id].addControl(Wicket.gmaps[id][controlId]);
-}
-
-function removeControl(id, controlId) {
-	if (Wicket.gmaps[id][controlId] != null) {
-		Wicket.gmaps[id].removeControl(Wicket.gmaps[id][controlId]);
-		Wicket.gmaps[id][controlId] = null;
-	}
-}
-
-function addOverlay(id, overlayId, overlay) {
-    Wicket.gmaps[id][overlayId] = eval(overlay);
-    Wicket.gmaps[id][overlayId].overlayId = overlayId;
-	Wicket.gmaps[id].addOverlay(Wicket.gmaps[id][overlayId]);
-}
-
-function removeOverlay(id, overlayId) {
-	if (Wicket.gmaps[id][overlayId] != null) {
-		Wicket.gmaps[id].removeOverlay(Wicket.gmaps[id][overlayId]);
-		Wicket.gmaps[id][overlayId] = null;
-	}
-}
-
-function openInfoWindowTabs(id, latLng, tabs) {
-	Wicket.gmaps[id].openInfoWindowTabs(eval(latLng), eval(tabs));
-}
-
-function openMarkerInfoWindowTabs(id, markerId, tabs) {
-	Wicket.gmaps[id][markerId].openInfoWindowTabs(eval(tabs));
-}
-
-function closeInfoWindow(id) {
-	Wicket.gmaps[id].closeInfoWindow();
 }
