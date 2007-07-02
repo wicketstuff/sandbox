@@ -296,7 +296,7 @@ public class Slider extends Panel implements IHeaderContributor {
 	 * @see org.apache.wicket.markup.html.IHeaderContributor#renderHead(org.apache.wicket.markup.html.IHeaderResponse)
 	 */
 	public void renderHead(IHeaderResponse response) {
-		response.renderOnLoadJavascript("init" + javaScriptId + "(" + this.element.getModelObject() + ");");
+		response.renderOnLoadJavascript("init" + javaScriptId + "(" + this.element.getConvertedInput() + ");");
 	}
 
 	/**
