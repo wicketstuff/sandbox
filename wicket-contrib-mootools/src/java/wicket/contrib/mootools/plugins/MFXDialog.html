@@ -1,17 +1,19 @@
+<style>
+	@import "MFXDialog.css";
+</style>
 <wicket:panel>
 <div class="MFXDialog" wicket:id="dialog">
-	<h3 wicket:id="title"></h3>
-	<br/>
-	<div class="moocontent" wicket:id="content">
-		<p><span wicket:id="body"></span></p><br/>
+	<div class="MFXDialogBar"><span class="MFXDialogTitle" wicket:id="title">Title</span></div>
+	<div class="MFXDialogContent" wicket:id="content">
+		<p><span wicket:id="body">Question to answer?</span></p>
 		<form wicket:id="inputForm">
 			<textarea wicket:id="input" class="inputArea" cols="35" rows="5"></textarea>
 		</form>
 	</div>
 	
-	<a href="#" wicket:id="close"><span wicket:id="closeText"></span></a>
-	<a href="#" wicket:id="abort"><span wicket:id="abortText"></span></a>&nbsp;
-	<a href="#" wicket:id="confirm"><span wicket:id="confirmText"></span></a>
-	<a href="#" wicket:id="submitLink"><span wicket:id="submitText"></span></a>
+	<a href="#" wicket:id="close"><span wicket:id="closeText">Close</span></a>
+	<a href="#" wicket:id="abort"><span wicket:id="abortText">Abort</span></a>&nbsp;
+	<a href="#" wicket:id="confirm"><span wicket:id="confirmText">Confirm</span></a>
+	<a href="#" wicket:id="submitLink"><span wicket:id="submitText">Submit</span></a>
 </div>
 </wicket:panel>

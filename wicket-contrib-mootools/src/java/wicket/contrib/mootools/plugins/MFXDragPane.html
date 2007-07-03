@@ -1,11 +1,16 @@
+<style>
+	@import "MFXDragPane.css";
+</style>
+
 <wicket:panel>
 <div class="MFXDragPane" wicket:id="ajaxPane">
-	<div class="dragBar">
-		<div wicket:id="title" class="paneTitle"></div>
-		<div class="closeButton"></div>	
-		<div class="minimizeButton"></div>	
+	<div class="MFXDragPaneBar">
+		<div wicket:id="title" class="MFXDragPaneTitle">Draggable Pane</div>
+		<div class="MFXDragPaneCloseButton"></div>	
+		<div class="MFXDragPaneMinimizeButton"></div>	
 	</div>
-	<div class="content" wicket:id="content">
+	<div class="MFXDragPaneContent" wicket:id="content">
+	 Hello world!
 	</div>
 </div>
 </wicket:panel>

@@ -24,7 +24,6 @@ public abstract class MFXDialogBase extends Panel {
 	private String title;
 	private int offsetTop;
 	private String body;
-	private String color;
 	
 	private ResourceReference PLAINCSS = new CompressedResourceReference(MFXDialog.class,"MFXDialog.css");
 	
@@ -36,7 +35,6 @@ public abstract class MFXDialogBase extends Panel {
 		this.offsetTop=300;
 		this.unit="px";
 		this.title="Modal Window";
-		this.color="#a3a3a3";
 		
 		add(HeaderContributor.forCss(PLAINCSS));
 	}
@@ -165,14 +163,6 @@ public abstract class MFXDialogBase extends Panel {
 
 	public void setOffsetTop(int offsetTop) {
 		this.offsetTop = offsetTop;
-	}
-
-	public String getColor() {
-		return color;
-	}
-
-	public void setColor(String color) {
-		this.color = color;
 	}
 
 	public void setBody(String body) {

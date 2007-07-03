@@ -33,25 +33,10 @@ public class MFXDialogStateless extends MFXDialogBase implements MFXMooBindable 
 		this.dialogType = type;
 		this.closeButtonText = "Close";
 		
-		dialog= new WebMarkupContainer("dialog") {
-			private static final long serialVersionUID = 1L;
-			@Override
-			protected void onComponentTag(ComponentTag tag) {
-				super.onComponentTag(tag);
-				tag.put("style", "border: 1px solid "+getColor()+" !important;");
-				tag.put("id",id);
-			}
-		};
+		dialog= new WebMarkupContainer("dialog");
 		add(dialog);
 		
-		dialog.add(new Label("title",new PropertyModel(this,"title")) {
-			private static final long serialVersionUID = 1L;
-			@Override
-			protected void onComponentTag(ComponentTag tag) {
-				super.onComponentTag(tag);
-				tag.put("style", "background-color: "+getColor()+";");
-			}
-		});
+		dialog.add(new Label("title",new PropertyModel(this,"title")));
 		
 		contentPane=new WebMarkupContainer("content") { 
 			private static final long serialVersionUID = 1L;

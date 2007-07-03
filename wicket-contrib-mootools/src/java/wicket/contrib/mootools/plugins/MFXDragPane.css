@@ -6,9 +6,9 @@ div.MFXDragPane {
 	margin: 0 0 10px 0; 
 	z-index: 1; 
 	overflow: hidden;
-	border: 1px solid;
+	border: 1px solid #4e8ee2;
 }
-div.dragBar { 
+div.MFXDragPaneBar { 
 	padding: 2px; 
 	background-image: url('bar.gif');
 	color: white;
@@ -17,14 +17,14 @@ div.dragBar {
 	cursor: move; 
 }
 
-div.paneTitle {
+div.MFXDragPaneTitle {
 	float: left;
 	text-indent: 5px;
 	width: 90%;
 	font-size: 12px;
 }
 
-div.closeButton {
+div.MFXDragPaneCloseButton {
 	background: url('close.gif') top right no-repeat;
 	cursor: pointer; 
 	height: 12px;
@@ -32,7 +32,7 @@ div.closeButton {
 	float: right;
 }
 
-div.minimizeButton {
+div.MFXDragPaneMinimizeButton {
 	background: url('minimize.gif') top right no-repeat;
 	cursor: pointer; 
 	height: 12px;
@@ -42,7 +42,7 @@ div.minimizeButton {
 }
 
 
-div.content { 
+div.MFXDragPaneContent { 
 	padding: 5px; 
 	background: white; 
 }
