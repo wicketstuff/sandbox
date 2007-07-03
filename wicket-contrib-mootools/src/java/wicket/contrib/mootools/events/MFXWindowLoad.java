@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.wicket.Component;
+import org.apache.wicket.IClusterable;
 
 
 import wicket.contrib.mootools.AbstractRequireMooStatelessBehavior;
@@ -23,6 +24,7 @@ public class MFXWindowLoad extends AbstractRequireMooStatelessBehavior implement
 	private List mfxStyles = new ArrayList();	
 	private List actions = new ArrayList();
 	private String target;
+	
 	
 	/* (non-Javadoc)
 	 * @see wicket.contrib.mootools.AbstractRequireMooStatelessBehavior#onRendered(org.apache.wicket.Component)
@@ -124,7 +126,7 @@ public class MFXWindowLoad extends AbstractRequireMooStatelessBehavior implement
 	public List getActions() {
 		return actions;
 	}
-
+	
 	/**
 	 * Set target DOM Element
 	 * @param target
