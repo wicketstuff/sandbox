@@ -11,7 +11,6 @@ public class MFXReflector extends AbstractRequireMooStatelessBehavior {
 	private static final long serialVersionUID = 1L;
 	private CompressedResourceReference REFLECTOR_JS = new CompressedResourceReference(MFXReflector.class,"reflection.js");
 	
-	
 	@Override
 	public void renderHead(IHeaderResponse response) {
 		super.renderHead(response);

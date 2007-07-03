@@ -1,17 +1,23 @@
 .MFXDialog {
-	border: 1px solid;
 	position: absolute;
 	z-index: 100;
 	background-color: #fff;
 	padding-bottom: 8px;
 	text-align: center;
+	border: 1px solid #4e8ee2;
 }
 
-.MFXDialog h3 {
-	padding-top: 5px;
-	margin: 0 !important;
-	padding-bottom: 5px;
+.MFXDialogBar {
+	padding: 2px; 
+	background-image: url('bar.gif');
+	color: white;
+	height: 16px;
+	display: block; 
+}
+
+.MFXDialogTitle {
 	color: #fff;
+	font-size: 14px;
 }
 
 .MFXDialog .confirmAbort {
@@ -19,9 +25,14 @@
 	margin-right: 10px;
 }
 
-.moocontent {
+.MFXDialogContent {
+	margin-top: 10px;
 	margin-left: 10px;
 	margin-right: 10px;
 	text-align: left;
 	padding-bottom: 8px;
+}
+
+.MFXDialogContent p {
+	font-family: Verdana;
 }

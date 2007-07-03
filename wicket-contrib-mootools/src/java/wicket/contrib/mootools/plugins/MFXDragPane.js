@@ -27,7 +27,7 @@
 				//var callbackScript = el.getProperty('callbackScript');
 				var componentId = el.id;
 				
-				var closeButton = el.getElementsBySelector('.closeButton')[0];
+				var closeButton = el.getElementsBySelector('.MFXDragPaneCloseButton')[0];
 				closeButton.addEvent("click", function() { 
 					var effect = new Fx.Style(el,'opacity',{duration: 500, onComplete: function() {
 						el.setStyle('display','none');
@@ -40,8 +40,8 @@
 					wicketAjaxGet(response, function() { }.bind(this), function() { }.bind(this));
 	  		  	});
 	  		  	
-	  		  	var minButton = el.getElementsBySelector('.minimizeButton')[0];
-	  		  	var content = el.getElementsBySelector('.content')[0];
+	  		  	var minButton = el.getElementsBySelector('.MFXDragPaneMinimizeButton')[0];
+	  		  	var content = el.getElementsBySelector('.MFXDragPaneContent')[0];
 	  		  	var size = el.getStyle('height');
 	  		  	minButton.addEvent("click", function() {
 	  		  		var columnId = getColumndId(el);
@@ -64,7 +64,7 @@
 
 				// Make each webBox draggable using the handle
 				el.makeDraggable({
-					handle: el.getElementsBySelector('.paneTitle')[0],
+					handle: el.getElementsBySelector('.MFXDragPaneTitle')[0],
 					'onBeforeStart': function() {
 						
 						// Introduce the marking box, change the draging box to absolute

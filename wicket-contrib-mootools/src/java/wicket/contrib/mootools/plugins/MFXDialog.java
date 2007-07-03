@@ -48,25 +48,11 @@ public class MFXDialog extends MFXDialogBase {
 		this.setOutputMarkupId(true);
 		
 		
-		dialog=new WebMarkupContainer("dialog") {
-			private static final long serialVersionUID = 1L;
-			@Override
-			protected void onComponentTag(ComponentTag tag) {
-				super.onComponentTag(tag);
-				tag.put("style", "border: 1px solid "+getColor()+" !important;");
-			}
-		};
+		dialog=new WebMarkupContainer("dialog");
 		dialog.setOutputMarkupId(true);
 		add(dialog);
 		
-		dialog.add(new Label("title",new PropertyModel(this,"title")) {
-			private static final long serialVersionUID = 1L;
-			@Override
-			protected void onComponentTag(ComponentTag tag) {
-				super.onComponentTag(tag);
-				tag.put("style", "background-color: "+getColor()+";");
-			}
-		});
+		dialog.add(new Label("title",new PropertyModel(this,"title")));
 		
 		dialog.add(contentPane = new WebMarkupContainer("content"));
 		
@@ -232,5 +218,4 @@ public class MFXDialog extends MFXDialogBase {
 	protected String getInputText() {
 		return inputText;
 	}
-	
 }
