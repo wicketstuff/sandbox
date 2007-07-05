@@ -4,18 +4,21 @@ import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
 import wicket.contrib.examples.WicketExamplePage;
 import wicket.contrib.gmap.GMap2;
-import wicket.contrib.gmap.GMap2.MoveEndBehavior;
 import wicket.contrib.gmap.api.GControl;
 import wicket.contrib.gmap.api.GInfoWindowTab;
 import wicket.contrib.gmap.api.GLatLng;
 import wicket.contrib.gmap.api.GMarker;
 import wicket.contrib.gmap.api.GPolygon;
 import wicket.contrib.gmap.api.GPolyline;
+import wicket.contrib.gmap.event.ClickListener;
+import wicket.contrib.gmap.event.InfoWindowListener;
+import wicket.contrib.gmap.event.MoveListener;
 
 /**
  * Example HomePage for the wicket-contrib-gmap2 project
@@ -25,18 +28,23 @@ public class HomePage extends WicketExamplePage
 
 	private static final long serialVersionUID = 1L;
 
+	private final FeedbackPanel feedback;
+	
 	private final Label markerLabel;
 	private final Label zoomLabel;
 	private final Label center;
 
-	private MoveEndBehavior moveEndBehavior;
+	private MoveListener moveEndBehavior;
 	
 	public HomePage()
 	{
+		feedback = new FeedbackPanel("feedback");
+		feedback.setOutputMarkupId(true);
+		add(feedback);
 
 		final GMap2 topPanel = new GMap2("topPanel",
 				LOCALHOST_8080_WICKET_CONTRIB_GMAP2_EXAMPLES_KEY);
-		topPanel.add(topPanel.new MoveEndBehavior()
+		topPanel.add(new MoveListener()
 		{
 			private static final long serialVersionUID = 1L;
 
@@ -46,18 +54,18 @@ public class HomePage extends WicketExamplePage
 				target.addComponent(zoomLabel);
 			}
 		});
-		topPanel.add(topPanel.new ClickBehavior()
+		topPanel.add(new ClickListener()
 		{
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void onClick(GMarker marker, AjaxRequestTarget target)
+			protected void onMarkerClick(AjaxRequestTarget target, GMarker marker)
 			{
 				topPanel.openInfoWindow(marker, new HelloPanel());
 			}
 
 			@Override
-			protected void onClick(GLatLng gLatLng, AjaxRequestTarget target)
+			protected void onMapClick(AjaxRequestTarget target, GLatLng gLatLng)
 			{
 				GMarker marker = new GMarker(gLatLng);
 				topPanel.addOverlay(marker);
@@ -115,7 +123,7 @@ public class HomePage extends WicketExamplePage
 
 		final GMap2 bottomPanel = new GMap2("bottomPanel",
 				LOCALHOST_8080_WICKET_CONTRIB_GMAP2_EXAMPLES_KEY);
-		moveEndBehavior = bottomPanel.new MoveEndBehavior()
+		moveEndBehavior = new MoveListener()
 		{
 			private static final long serialVersionUID = 1L;
 
@@ -126,22 +134,29 @@ public class HomePage extends WicketExamplePage
 			}
 		};
 		bottomPanel.add(moveEndBehavior);
-		bottomPanel.add(bottomPanel.new ClickBehavior()
+		bottomPanel.add(new ClickListener()
 		{
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void onClick(GMarker marker, AjaxRequestTarget target)
+			protected void onMarkerClick(AjaxRequestTarget target, GMarker marker)
 			{
 				// empty on purpose
 			}
 
 			@Override
-			protected void onClick(GLatLng gLatLng, AjaxRequestTarget target)
+			protected void onMapClick(AjaxRequestTarget target, GLatLng gLatLng)
 			{
 				bottomPanel.openInfoWindow(gLatLng, new HelloPanel());
 			}
 
+		});
+		bottomPanel.add(new InfoWindowListener() {
+			@Override
+			protected void onInfoWindowClose(AjaxRequestTarget target) {
+				info("InfoWindow was closed");
+				target.addComponent(feedback);
+			}
 		});
 		bottomPanel.addControl(GControl.GSmallMapControl);
 		bottomPanel.openInfoWindow(new GLatLng(37.5, -122.1), new GInfoWindowTab("One", new HelloPanel()), new GInfoWindowTab("Two", new HelloPanel()));
@@ -228,7 +243,7 @@ public class HomePage extends WicketExamplePage
 				{
 					//TODO AbstractAjaxBehaviors are not reusable, so we have to recreate:
 					//https://issues.apache.org/jira/browse/WICKET-713
-					moveEndBehavior = bottomPanel.new MoveEndBehavior()
+					moveEndBehavior = new MoveListener()
 					{
 						private static final long serialVersionUID = 1L;
 
