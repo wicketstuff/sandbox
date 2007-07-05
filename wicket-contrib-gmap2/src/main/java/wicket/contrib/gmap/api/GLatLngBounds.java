@@ -19,53 +19,40 @@ import java.util.StringTokenizer;
 
 /**
  * Represents an Google Maps API's
- * <a href="http://www.google.com/apis/maps/documentation/reference.html#GLatLng">GLatLng</a>.
+ * <a href="http://www.google.com/apis/maps/documentation/reference.html#GLatLngBounds">GLatLngBounds</a>.
  */
-public class GLatLng implements GMapApi
+public class GLatLngBounds implements GMapApi
 {
 	/**
 	 * Default serialVersionUID.
 	 */
 	private static final long serialVersionUID = 1L;
-	private final double lat;
-	private final double lng;
-	private final boolean unbounded;
+	
+	private final GLatLng sw;
+	private final GLatLng ne;
 
 	/**
 	 * Construct.
 	 * 
-	 * @param lat
-	 * @param lng
+	 * @param sw
+	 * @param ne
 	 */
-	public GLatLng(double lat, double lng)
+	public GLatLngBounds(GLatLng sw, GLatLng ne)
 	{
-		this(lat, lng, false);
+		this.sw = sw;
+		this.ne = ne;
 	}
 
-	/**
-	 * Construct.
-	 * 
-	 * @param lat
-	 * @param lng
-	 * @param unbounded
-	 */
-	public GLatLng(double lat, double lng, boolean unbounded)
+	public GLatLng getSW()
 	{
-		this.lat = lat;
-		this.lng = lng;
-		this.unbounded = unbounded;
+		return sw;
 	}
 
-	public double getLat()
+	public GLatLng getNE()
 	{
-		return lat;
+		return ne;
 	}
-
-	public double getLng()
-	{
-		return lng;
-	}
-
+	
 	public String toString()
 	{
 		return getJSConstructor();
@@ -76,31 +63,30 @@ public class GLatLng implements GMapApi
 	 */
 	public String getJSConstructor()
 	{
-		return "new GLatLng(" + lat + ", " + lng + ", " + unbounded + ")";
+		return "new GLatLngBounds(" + sw.getJSConstructor() + ", " + ne.getJSConstructor() + ")";
 	}
 
 	@Override
 	public int hashCode()
 	{
-		return new Double(lat).hashCode() ^ new Double(lng).hashCode()
-				^ new Boolean(unbounded).hashCode();
+		return sw.hashCode() ^ ne.hashCode();
 	}
 
 	@Override
 	public boolean equals(Object obj)
 	{
-		if (obj instanceof GLatLng)
+		if (obj instanceof GLatLngBounds)
 		{
-			GLatLng t = (GLatLng)obj;
-			return t.lat == lat && t.lng == lng && t.unbounded == unbounded;
+			GLatLngBounds t = (GLatLngBounds)obj;
+			return t.sw.equals(sw) && t.ne.equals(ne);
 		}
 		return false;
 	}
 	
 	/**
-	 * (37.34068368469045, -122.48519897460936)
+	 * ((37.34068368469045, -122.48519897460936), (37.72184917678752, -121.79855346679686))
 	 */
-	public static GLatLng parse(String value)
+	public static GLatLngBounds parse(String value)
 	{
 		StringTokenizer tokenizer;
 		try
@@ -111,12 +97,13 @@ public class GLatLng implements GMapApi
 		{
 			return null;
 		}
-		if (tokenizer.countTokens() != 2)
+		if (tokenizer.countTokens() != 4)
 		{
 			return null;
 		}
-		float lat = Float.valueOf(tokenizer.nextToken());
-		float lng = Float.valueOf(tokenizer.nextToken());
-		return new GLatLng(lat, lng);
+		
+		GLatLng sw = new GLatLng(Float.valueOf(tokenizer.nextToken()), Float.valueOf(tokenizer.nextToken()));
+		GLatLng ne = new GLatLng(Float.valueOf(tokenizer.nextToken()), Float.valueOf(tokenizer.nextToken()));
+		return new GLatLngBounds(sw, ne);
 	}
 }

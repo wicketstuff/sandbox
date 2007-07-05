@@ -19,7 +19,7 @@ import java.io.Serializable;
 
 /**
  * Root class for any class that represents a GMap JavaScript class or object.
- * @deprecated Look for GMapBehavior instead.
+ * @deprecated Look for {@link GMapBehavior} instead.
  */
 @Deprecated
 public interface GMapApi extends Serializable

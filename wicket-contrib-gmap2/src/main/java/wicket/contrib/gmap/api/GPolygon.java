@@ -16,9 +16,8 @@
 package wicket.contrib.gmap.api;
 
 /**
- * Represents an Google Maps API's GPolygon <a
- * href="http://www.google.com/apis/maps/documentation/reference.html#GPolygon">GPolygon</a>
- * 
+ * Represents an Google Maps API's 
+ * <a href="http://www.google.com/apis/maps/documentation/reference.html#GPolygon">GPolygon</a>.
  */
 public class GPolygon extends GOverlay
 {

@@ -16,8 +16,8 @@
 package wicket.contrib.gmap.api;
 
 /**
- * Represents an Google Maps API's GOverlay. <a
- * href="http://www.google.com/apis/maps/documentation/reference.html#GOverlay">GOverlay</a>.
+ * Represents an Google Maps API's
+ * <a href="http://www.google.com/apis/maps/documentation/reference.html#GOverlay">GOverlay</a>.
  */
 public abstract class GOverlay implements Identifiable
 {

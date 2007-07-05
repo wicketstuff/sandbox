@@ -16,25 +16,12 @@
 package wicket.contrib.gmap.api;
 
 import org.apache.wicket.behavior.AbstractAjaxBehavior;
-import org.apache.wicket.markup.html.IHeaderResponse;
 
 /**
  * Root class for any class that represents a GMap JavaScript class or object.
+ * 
+ * TODO should every GMap object be a behaviour? See event package.
  */
-public abstract class GMapBehavior extends AbstractAjaxBehavior implements
-		Identifiable {
+public abstract class GMapBehavior extends AbstractAjaxBehavior {
 
-	/**
-	 * @see wicket.contrib.gmap.api.Identifiable#getJSIdentifier()
-	 */
-	public String getJSIdentifier() {
-		return "" + System.identityHashCode(this);
-
-	}
-
-	/**
-	 * @see org.apache.wicket.behavior.AbstractAjaxBehavior#renderHead(org.apache.wicket.markup.html.IHeaderResponse)
-	 */
-	@Override
-	public abstract void renderHead(IHeaderResponse response);
 }

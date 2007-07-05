@@ -16,9 +16,8 @@
 package wicket.contrib.gmap.api;
 
 /**
- * Represents an Google Maps API's GPolyline <a
- * href="http://www.google.com/apis/maps/documentation/reference.html#GPolyline">GPolyline</a>
- * 
+ * Represents an Google Maps API's
+ * <a href="http://www.google.com/apis/maps/documentation/reference.html#GPolyline">GPolyline</a>.
  */
 public class GPolyline extends GOverlay
 {

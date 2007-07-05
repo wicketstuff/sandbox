@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Set;
 
 import org.apache.wicket.AttributeModifier;
@@ -38,11 +37,11 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.html.resources.JavascriptResourceReference;
 import org.apache.wicket.markup.repeater.RepeatingView;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.util.convert.converters.IntegerConverter;
 
 import wicket.contrib.gmap.api.GControl;
 import wicket.contrib.gmap.api.GInfoWindowTab;
 import wicket.contrib.gmap.api.GLatLng;
+import wicket.contrib.gmap.api.GLatLngBounds;
 import wicket.contrib.gmap.api.GMarker;
 import wicket.contrib.gmap.api.GOverlay;
 
@@ -77,11 +76,13 @@ public class GMap2 extends Panel
 
 	private Set<GControl> controls = new HashSet<GControl>();
 
-	private List<GOverlay> overlays = new ArrayList<GOverlay>();
+	List<GOverlay> overlays = new ArrayList<GOverlay>();
 
 	private final WebMarkupContainer map;
 
 	private InfoWindow infoWindow;
+
+	private GLatLngBounds bounds;
 
 	/**
 	 * Construct.
@@ -239,6 +240,10 @@ public class GMap2 extends Panel
 		return center;
 	}
 
+	public GLatLngBounds getBounds() {
+		return bounds;
+	}
+	
 	public int getZoom()
 	{
 		return zoom;
@@ -341,7 +346,9 @@ public class GMap2 extends Panel
 	 */
 	public GMap2 closeInfoWindow()
 	{
-		infoWindow.close();
+		if (infoWindow.isOpen()) {
+			infoWindow.close();
+		}
 
 		return this;
 	}
@@ -370,7 +377,7 @@ public class GMap2 extends Panel
 		js += infoWindow.getJSinit();
 		
 		for (Object behavior : getBehaviors(ListenerBehavior.class)) {
-			js += ((ListenerBehavior)behavior).getJSaddListener();
+			js += ((ListenerBehavior)behavior).getJSinit();
 		}
 
 		return js;
@@ -423,19 +430,24 @@ public class GMap2 extends Panel
 	
 	/**
 	 * Update state from a request to an AJAX target.
-	 * 
-	 * TODO update bounds
 	 */
 	private void update(AjaxRequestTarget target) {
 		Request request = RequestCycle.get().getRequest();
 
 		// Attention: don't use setters as this will result in an endless
 		// AJAX request loop
-		center = GLatLng.fromString(request.getParameter("center"));
-		zoom = (Integer)IntegerConverter.INSTANCE.convertToObject(request
-				.getParameter("zoom"), Locale.getDefault());
+		bounds = GLatLngBounds.parse(request.getParameter("bounds"));
+		center = GLatLng.parse(request.getParameter("center"));
+		zoom = Integer.parseInt(request.getParameter("zoom"));
+		if (Boolean.parseBoolean(request.getParameter("hidden"))) {
+			closeInfoWindow();
+		}
 	}
 
+	/**
+	 * Represents an Google Maps API's
+	 * <a href="http://www.google.com/apis/maps/documentation/reference.html#GInfoWindow">GInfoWindow</a>.
+	 */
 	private class InfoWindow extends WebMarkupContainer
 	{
 
@@ -493,6 +505,10 @@ public class GMap2 extends Panel
 						.appendJavascript(getJSopen(latLng, tabs));
 				((AjaxRequestTarget)RequestCycle.get().getRequestTarget()).addComponent(this);
 			}
+		}
+		
+		public boolean isOpen() {
+			return (latLng != null || marker != null);
 		}
 		
 		public void open(GMarker marker, GInfoWindowTab... tabs)
@@ -635,98 +651,39 @@ public class GMap2 extends Panel
 		}
 	}
 
-	private abstract class ListenerBehavior extends AbstractDefaultAjaxBehavior
-	{
-		public abstract String getJSaddListener();
-	}
-
-	public abstract class MoveEndBehavior extends ListenerBehavior
-	{
-
+	public static abstract class ListenerBehavior extends AbstractDefaultAjaxBehavior
+	{	
 		private static final long serialVersionUID = 1L;
 
-		@Override
-		public String getJSaddListener()
+		private String getJSinit()
 		{
-			return "Wicket.GMap2.addMoveendListener(\"" + getJSid() + "\", \""
-						+ getCallbackUrl() + "\");\n";
-		}
+			StringBuffer buffer = new StringBuffer();
 
+			buffer.append("Wicket.GMap2.");
+			buffer.append(getJSadd());
+			buffer.append("(\"");
+			buffer.append(getGMap2().getJSid());
+			buffer.append("\", \"");
+			buffer.append(getCallbackUrl());
+			buffer.append("\");\n");
+			
+			return buffer.toString();
+		}
+		
+		protected abstract String getJSadd();
+		
+		protected final GMap2 getGMap2() {
+			return (GMap2)getComponent();
+		}
+		
 		@Override
 		protected final void respond(AjaxRequestTarget target)
 		{
-			update(target);
-
-			MoveEndBehavior.this.onMoveEnd(target);
+			getGMap2().update(target);
+			
+			onEvent(target);
 		}
 
-		/**
-		 * Override this method to provide handling of a move.<br>
-		 * You can get the new center coordinates of the map by calling
-		 * {@link #getCenter()}.
-		 * 
-		 * @param target
-		 *            the target that initiated the move
-		 */
-		protected abstract void onMoveEnd(AjaxRequestTarget target);
-	}
-
-	public abstract class ClickBehavior extends ListenerBehavior
-	{
-		private static final long serialVersionUID = 1L;
-
-		@Override
-		public String getJSaddListener()
-		{
-			return "Wicket.GMap2.addClickListener(\"" + getJSid() + "\", \""
-						+ getCallbackUrl() + "\");\n";
-		}
-
-		@Override
-		protected final void respond(AjaxRequestTarget target)
-		{
-			Request request = RequestCycle.get().getRequest();
-
-			update(target);
-
-			String markerString = request.getParameter("marker");
-			if ("".equals(markerString))
-			{
-				GLatLng gLatLng = GLatLng.fromString(request.getParameter("gLatLng"));
-				ClickBehavior.this.onClick(gLatLng, target);
-			}
-			else
-			{
-				for (GOverlay overlay : overlays)
-				{
-					if (overlay.getJSIdentifier().equals(markerString))
-					{
-						ClickBehavior.this.onClick((GMarker)overlay, target);
-						break;
-					}
-				}
-			}
-		}
-
-		/**
-		 * Override this method to provide handling of a click on a GLatLng.
-		 * 
-		 * @param gLatLng
-		 *            the clicked GLatLng
-		 * @param target
-		 *            the target that initiated the click
-		 */
-		protected abstract void onClick(GLatLng gLatLng, AjaxRequestTarget target);
-
-		/**
-		 * Override this method to provide handling of a click on a GMarker.
-		 * 
-		 * @param marker
-		 *            the clicked marker
-		 * @param target
-		 *            the target that initiated the click
-		 */
-		protected abstract void onClick(GMarker marker, AjaxRequestTarget target);
-
+		protected abstract void onEvent(AjaxRequestTarget target);
 	}
 }

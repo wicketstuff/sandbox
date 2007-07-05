@@ -16,9 +16,8 @@
 package wicket.contrib.gmap.api;
 
 /**
- * Represents an Google Maps API's GControl. <a
- * href="http://www.google.com/apis/maps/documentation/reference.html#GControl">GControl</a>
- * 
+ * Represents an Google Maps API's
+ * <a href="http://www.google.com/apis/maps/documentation/reference.html#GControl">GControl</a>.
  */
 public enum GControl implements Identifiable {
 	GSmallMapControl, GLargeMapControl, GSmallZoomControl, GScaleControl, GMapTypeControl;
