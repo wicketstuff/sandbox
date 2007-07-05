@@ -49,29 +49,69 @@ Wicket.GMap2 = {
 		return this[id];
 	},
 
-	addMoveendListener: function(id, callBack) {
+	ajaxGet: function(id, callBack, params) {
 		var map = this.getMap(id);
-		GEvent.addListener( map , 'moveend',
-			function () {wicketAjaxGet(callBack 
-				+ '&center=' + map.getCenter()
-				+ '&bounds=' + map.getBounds()
-				+ '&zoom=' + map.getZoom()),
-			function(){},
-			function(){alert("ooops!")}}
+		
+		params['center'] = map.getCenter();
+		params['bounds'] = map.getBounds();
+		params['zoom'] = map.getZoom();
+		params['hidden'] = map.getInfoWindow().isHidden();
+		
+		for (var key in params) {
+			callBack = callBack + '&' + key + '=' + params[key];
+		}
+		
+		wicketAjaxGet(
+			callBack,
+			function() {
+			},
+			function() {
+			}
+		);
+	},
+
+	addListener: function(id, event, handler) {
+		var map = this.getMap(id);
+		GEvent.addListener(map, event, handler);
+	},
+	
+	addMoveListener: function(id, callBack) {
+		this.addListener(
+			id,
+			'moveend',
+			function () {
+				Wicket.GMap2.ajaxGet(id, callBack, {});
+			}
+		);
+	},
+
+	addDragListener: function(id, callBack) {
+		this.addListener(
+			id,
+			'dragend',
+			function () {
+				Wicket.GMap2.ajaxGet(id, callBack, {});
+			}
 		);
 	},
 
 	addClickListener: function(id, callBack) {
-		var map = this.getMap(id);
-		GEvent.addListener( map , 'click',
-			function (marker, gLatLng) {wicketAjaxGet(callBack 
-				+ '&center=' + map.getCenter()
-				+ '&bounds=' + map.getBounds()
-				+ '&zoom=' + map.getZoom()
-				+ '&marker=' + (marker == null ? "" : marker.overlayId)
-				+ '&gLatLng=' + gLatLng),
-			function(){},
-			function(){alert("ooops on ClickDeff of!" + map)}}
+		this.addListener(
+			id,
+			'click',
+			function (marker, gLatLng) {
+				Wicket.GMap2.ajaxGet(id, callBack, {'marker':(marker == null ? "" : marker.overlayId), 'gLatLng':gLatLng});
+			}
+		);
+	},
+
+	addInfoWindowListener: function(id, callBack) {
+		this.addListener(
+			id,
+			'infowindowclose',
+			function () {
+				Wicket.GMap2.ajaxGet(id, callBack);
+			}
 		);
 	},
 

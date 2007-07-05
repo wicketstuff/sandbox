@@ -16,9 +16,8 @@
 package wicket.contrib.gmap.api;
 
 /**
- * Represents an Google Maps API's GMarker <a
- * href="http://www.google.com/apis/maps/documentation/reference.html#GMarker">GMarker</a>
- * 
+ * Represents an Google Maps API's
+ * <a href="http://www.google.com/apis/maps/documentation/reference.html#GMarker">GMarker</a>.
  */
 public class GMarker extends GOverlay
 {

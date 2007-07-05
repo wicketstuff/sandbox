@@ -18,9 +18,8 @@ package wicket.contrib.gmap.api;
 import org.apache.wicket.Component;
 
 /**
- * Represents an Google Maps API's GInfoWindowTab. <a
- * href="http://www.google.com/apis/maps/documentation/reference.html#GInfoWindowTab">GInfoWindowTab</a>
- * 
+ * Represents an Google Maps API's
+ * <a href="http://www.google.com/apis/maps/documentation/reference.html#GInfoWindowTab">GInfoWindowTab</a>.
  */
 public class GInfoWindowTab implements GMapApi 
 {
