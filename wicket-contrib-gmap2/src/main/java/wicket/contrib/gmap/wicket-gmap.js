@@ -110,7 +110,7 @@ Wicket.GMap2 = {
 			id,
 			'infowindowclose',
 			function () {
-				Wicket.GMap2.ajaxGet(id, callBack);
+				Wicket.GMap2.ajaxGet(id, callBack, {});
 			}
 		);
 	},
