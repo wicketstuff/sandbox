@@ -116,7 +116,7 @@ public class ImmediateRadioChoice extends RadioChoice
 		protected final void respond(AjaxRequestTarget target)
 		{
 			// let the form component update its model
-			radioButton.convert();
+			radioButton.convertInput();
 			radioButton.updateModel();
 			radioButton.onAjaxModelUpdated(target);
 		}

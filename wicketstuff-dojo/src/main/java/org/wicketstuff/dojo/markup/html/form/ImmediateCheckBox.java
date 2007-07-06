@@ -107,7 +107,7 @@ public class ImmediateCheckBox extends CheckBox
 		protected final void respond(AjaxRequestTarget target)
 		{
 			// let the form component update its model
-			checkBox.convert();
+			checkBox.convertInput();
 			checkBox.updateModel();
 			checkBox.onAjaxModelUpdated(target);
 		}
