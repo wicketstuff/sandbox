@@ -39,9 +39,8 @@ if(Wicket.GMap2)
 
 // Now create and populate it.
 Wicket.GMap2 = {
-	addMap: function(id, center, zoom) {
+	addMap: function(id) {
 		var map = new GMap2(document.getElementById(id));
-		map.setCenter(eval(center), zoom);
 		this[id] = map;
 	},
 
@@ -113,6 +112,38 @@ Wicket.GMap2 = {
 				Wicket.GMap2.ajaxGet(id, callBack, {});
 			}
 		);
+	},
+
+	setDraggingEnabled: function(id, enabled) {
+		var map = this.getMap(id);
+		if (enabled) {
+			map.enableDragging(true);
+		} else {
+			map.disableDragging(true);
+		}
+	},
+
+	setDoubleClickZoomEnabled: function(id, enabled) {
+		var map = this.getMap(id);
+		if (enabled) {
+			map.enableDoubleClickZoom(true);
+		} else {
+			map.disableDoubleClickZoom(true);
+		}
+	},
+
+	setScrollWheelZoomEnabled: function(id, enabled) {
+		var map = this.getMap(id);
+		if (enabled) {
+			map.enableScrollWheelZoom(true);
+		} else {
+			map.disableScrollWheelZoom(true);
+		}
+	},
+
+	setMapType: function(id, mapType) {
+		var map = this.getMap(id);
+		map.setMapType(mapType);
 	},
 
 	setZoom: function(id, level) {

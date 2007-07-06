@@ -42,6 +42,7 @@ import wicket.contrib.gmap.api.GControl;
 import wicket.contrib.gmap.api.GInfoWindowTab;
 import wicket.contrib.gmap.api.GLatLng;
 import wicket.contrib.gmap.api.GLatLngBounds;
+import wicket.contrib.gmap.api.GMapType;
 import wicket.contrib.gmap.api.GMarker;
 import wicket.contrib.gmap.api.GOverlay;
 
@@ -72,6 +73,14 @@ public class GMap2 extends Panel
 
 	private GLatLng center = new GLatLng(37.4419, -122.1419);
 
+	private boolean draggingEnabled = true;
+	
+	private boolean doubleClickZoomEnabled = false;
+	
+	private boolean scrollWheelZoomEnabled = false;
+	
+	private GMapType mapType = GMapType.G_NORMAL_MAP;
+	
 	private int zoom = 13;
 
 	private Set<GControl> controls = new HashSet<GControl>();
@@ -244,6 +253,82 @@ public class GMap2 extends Panel
 		return bounds;
 	}
 	
+	public void setDraggingEnabled(boolean enabled)
+	{
+		if (this.draggingEnabled != enabled)
+		{
+			draggingEnabled = enabled;
+
+			if (RequestCycle.get().getRequestTarget() instanceof AjaxRequestTarget)
+			{
+				((AjaxRequestTarget)RequestCycle.get().getRequestTarget())
+						.appendJavascript(getJSsetDraggingEnabled(enabled));
+			}
+		}
+	}
+	
+	public boolean isDraggingEnabled()
+	{
+		return draggingEnabled;
+	}
+	
+	public void setDoubleClickZoomEnabled(boolean enabled)
+	{
+		if (this.doubleClickZoomEnabled != enabled)
+		{
+			doubleClickZoomEnabled = enabled;
+
+			if (RequestCycle.get().getRequestTarget() instanceof AjaxRequestTarget)
+			{
+				((AjaxRequestTarget)RequestCycle.get().getRequestTarget())
+						.appendJavascript(getJSsetDoubleClickZoomEnabled(enabled));
+			}
+		}
+	}
+	
+	public boolean isDoubleClickZoomEnabled()
+	{
+		return doubleClickZoomEnabled;
+	}
+	
+	public void setScrollWheelZoomEnabled(boolean enabled)
+	{
+		if (this.scrollWheelZoomEnabled != enabled)
+		{
+			scrollWheelZoomEnabled = enabled;
+
+			if (RequestCycle.get().getRequestTarget() instanceof AjaxRequestTarget)
+			{
+				((AjaxRequestTarget)RequestCycle.get().getRequestTarget())
+						.appendJavascript(getJSsetScrollWheelZoomEnabled(enabled));
+			}
+		}
+	}
+	
+	public boolean isScrollWheelZoomEnabled()
+	{
+		return scrollWheelZoomEnabled;
+	}
+	
+	public GMapType getMapType()
+	{
+		return mapType;
+	}
+
+	public void setMapType(GMapType mapType)
+	{
+		if (this.mapType != mapType)
+		{
+			this.mapType = mapType;
+
+			if (RequestCycle.get().getRequestTarget() instanceof AjaxRequestTarget)
+			{
+				((AjaxRequestTarget)RequestCycle.get().getRequestTarget())
+						.appendJavascript(getJSsetMapType(mapType));
+			}
+		}
+	}
+	
 	public int getZoom()
 	{
 		return zoom;
@@ -262,7 +347,7 @@ public class GMap2 extends Panel
 			}
 		}
 	}
-
+	
 	/**
 	 * Set the center.
 	 * 
@@ -360,29 +445,56 @@ public class GMap2 extends Panel
 
 	private String getJSinit()
 	{
-		String js = "Wicket.GMap2.addMap(\"" + getJSid() + "\", " + getCenter().getJSConstructor() + ", " + getZoom() + ");\n";
+		StringBuffer js = new StringBuffer("Wicket.GMap2.addMap('" + getJSid() + "');\n");
 
+		js.append(getJSsetCenter(center));
+		js.append(getJSsetZoom(zoom));
+		js.append(getJSsetMapType(mapType));
+		js.append(getJSsetDraggingEnabled(draggingEnabled));
+		js.append(getJSsetDoubleClickZoomEnabled(doubleClickZoomEnabled));
+		js.append(getJSsetScrollWheelZoomEnabled(scrollWheelZoomEnabled));
+		
 		// Add the controls.
 		for (GControl control : controls)
 		{
-			js += getJSaddControl(control);
+			js.append(getJSaddControl(control));
 		}
 
 		// Add the overlays.
 		for (GOverlay overlay : overlays)
 		{
-			js += getJSaddOverlay(overlay);
+			js.append(getJSaddOverlay(overlay));
 		}
 
-		js += infoWindow.getJSinit();
+		js.append(infoWindow.getJSinit());
 		
 		for (Object behavior : getBehaviors(ListenerBehavior.class)) {
-			js += ((ListenerBehavior)behavior).getJSinit();
+			js.append(((ListenerBehavior)behavior).getJSinit());
 		}
 
-		return js;
+		return js.toString();
 	}
 
+	private String getJSsetDraggingEnabled(boolean enabled)
+	{
+		return "Wicket.GMap2.setDraggingEnabled('" + getJSid() + "', " + enabled + ");\n";
+	}
+
+	private String getJSsetDoubleClickZoomEnabled(boolean enabled)
+	{
+		return "Wicket.GMap2.setDoubleClickZoomEnabled('" + getJSid() + "', " + enabled + ");\n";
+	}
+
+	private String getJSsetScrollWheelZoomEnabled(boolean enabled)
+	{
+		return "Wicket.GMap2.setScrollWheelZoomEnabled('" + getJSid() + "', " + enabled + ");\n";
+	}
+
+	private String getJSsetMapType(GMapType mapType)
+	{
+		return "Wicket.GMap2.setMapType('" + getJSid() + "', " + mapType.getJSConstructor() + ");\n";
+	}
+	
 	private String getJSsetZoom(int zoom)
 	{
 		return "Wicket.GMap2.setZoom('" + getJSid() + "', " + zoom + ");\n";
@@ -415,23 +527,27 @@ public class GMap2 extends Panel
 		return "Wicket.GMap2.removeOverlay('" + getJSid() + "', '" + overlay.getJSIdentifier() + "');\n";
 	}
 
-	private String getJSpanDirection(int dx, int dy) {
+	private String getJSpanDirection(int dx, int dy)
+	{
 		return "Wicket.GMap2.panDirection('" + getJSid() + "'," + dx
 		+ "," + dy + ");\n";
 	}
 
-	private String getJSzoomOut() {
+	private String getJSzoomOut()
+	{
 		return "Wicket.GMap2.zoomOut('" + getJSid() + "');\n";
 	}
 		
-	private String getJSzoomIn() {
+	private String getJSzoomIn()
+	{
 		return "Wicket.GMap2.zoomIn('" + getJSid() + "');\n";
 	}
 	
 	/**
 	 * Update state from a request to an AJAX target.
 	 */
-	private void update(AjaxRequestTarget target) {
+	private void update(AjaxRequestTarget target)
+	{
 		Request request = RequestCycle.get().getRequest();
 
 		// Attention: don't use setters as this will result in an endless
