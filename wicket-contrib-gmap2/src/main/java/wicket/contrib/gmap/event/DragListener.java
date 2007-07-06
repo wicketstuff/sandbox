@@ -29,7 +29,7 @@ public abstract class DragListener extends GMap2.ListenerBehavior
 {
 
 	@Override
-	protected String getJSadd() {
+	protected String getJSmethod() {
 		return "addDragListener";
 	}
 
