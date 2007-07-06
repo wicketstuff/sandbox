@@ -163,7 +163,7 @@ public class ImmediateTextField extends TextField
 		protected final void respond(AjaxRequestTarget target)
 		{
 			// let the form component update its model
-			textField.convert();
+			textField.convertInput();
 			textField.updateModel();
 			textField.onAjaxModelUpdated(target);
 		}
