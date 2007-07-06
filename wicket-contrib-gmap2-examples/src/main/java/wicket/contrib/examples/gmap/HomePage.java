@@ -13,6 +13,7 @@ import wicket.contrib.gmap.GMap2;
 import wicket.contrib.gmap.api.GControl;
 import wicket.contrib.gmap.api.GInfoWindowTab;
 import wicket.contrib.gmap.api.GLatLng;
+import wicket.contrib.gmap.api.GMapType;
 import wicket.contrib.gmap.api.GMarker;
 import wicket.contrib.gmap.api.GPolygon;
 import wicket.contrib.gmap.api.GPolyline;
@@ -44,6 +45,7 @@ public class HomePage extends WicketExamplePage
 
 		final GMap2 topPanel = new GMap2("topPanel",
 				LOCALHOST_8080_WICKET_CONTRIB_GMAP2_EXAMPLES_KEY);
+		topPanel.setDoubleClickZoomEnabled(true);
 		topPanel.add(new MoveListener()
 		{
 			private static final long serialVersionUID = 1L;
@@ -123,6 +125,8 @@ public class HomePage extends WicketExamplePage
 
 		final GMap2 bottomPanel = new GMap2("bottomPanel",
 				LOCALHOST_8080_WICKET_CONTRIB_GMAP2_EXAMPLES_KEY);
+		bottomPanel.setMapType(GMapType.G_SATELLITE_MAP);
+		bottomPanel.setScrollWheelZoomEnabled(true);
 		moveEndBehavior = new MoveListener()
 		{
 			private static final long serialVersionUID = 1L;
