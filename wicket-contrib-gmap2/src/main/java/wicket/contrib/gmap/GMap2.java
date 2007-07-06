@@ -439,9 +439,8 @@ public class GMap2 extends Panel
 		bounds = GLatLngBounds.parse(request.getParameter("bounds"));
 		center = GLatLng.parse(request.getParameter("center"));
 		zoom = Integer.parseInt(request.getParameter("zoom"));
-		if (Boolean.parseBoolean(request.getParameter("hidden"))) {
-			closeInfoWindow();
-		}
+		
+		infoWindow.update(target);
 	}
 
 	/**
@@ -457,7 +456,7 @@ public class GMap2 extends Panel
 		
 		private GMarker marker;
 		
-		private RepeatingView repeater = new RepeatingView("content");
+		private RepeatingView content = new RepeatingView("content");
 
 		public InfoWindow()
 		{
@@ -465,10 +464,27 @@ public class GMap2 extends Panel
 
 			setOutputMarkupId(true);
 			
-			add(repeater);
+			add(content);
 		}
 
-		public String getJSinit() {
+		/**
+		 * Update state from a request to an AJAX target.
+		 */
+		private void update(AjaxRequestTarget target)
+		{
+			Request request = RequestCycle.get().getRequest();
+
+			if (Boolean.parseBoolean(request.getParameter("hidden"))) {
+				// Attention: don't use close() as this might result in an
+				// endless AJAX request loop
+				setTabs(new GInfoWindowTab[0]);
+				marker = null;
+				latLng = null;
+			}
+		}
+		
+		public String getJSinit()
+		{
 			if (latLng != null)
 			{
 				return getJSopen(latLng, tabs);
@@ -484,11 +500,11 @@ public class GMap2 extends Panel
 
 		private void setTabs(GInfoWindowTab[] tabs)
 		{
-			repeater.removeAll();
+			content.removeAll();
 				
 			this.tabs = tabs;
 			for (GInfoWindowTab tab : tabs) {
-				repeater.add(tab.getContent());
+				content.add(tab.getContent());
 			}
 		}
 		
@@ -527,11 +543,10 @@ public class GMap2 extends Panel
 		}
 		
 		public void close() {
-			tabs = null;
-			repeater.removeAll();
-
-			this.marker = null;
-			this.latLng = null;
+            setTabs(new GInfoWindowTab[0]);
+            
+            marker = null;
+            latLng = null;
 			
 			if (RequestCycle.get().getRequestTarget() instanceof AjaxRequestTarget)
 			{

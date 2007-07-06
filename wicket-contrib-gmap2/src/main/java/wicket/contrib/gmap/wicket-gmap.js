@@ -100,7 +100,7 @@ Wicket.GMap2 = {
 			id,
 			'click',
 			function (marker, gLatLng) {
-				Wicket.GMap2.ajaxGet(id, callBack, {'marker':(marker == null ? "" : marker.overlayId), 'gLatLng':gLatLng});
+				Wicket.GMap2.ajaxGet(id, callBack, {'marker':(marker == null ? "" : marker.overlayId), 'latLng':gLatLng});
 			}
 		);
 	},
