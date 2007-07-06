@@ -17,10 +17,10 @@ package wicket.contrib.gmap.api;
 
 /**
  * Represents an Google Maps API's
- * <a href="http://www.google.com/apis/maps/documentation/reference.html#GControl">GControl</a>.
+ * <a href="http://www.google.com/apis/maps/documentation/reference.html#GMapType">GMapType</a>.
  */
-public enum GControl implements Identifiable {
-	GSmallMapControl, GLargeMapControl, GSmallZoomControl, GScaleControl, GMapTypeControl;
+public enum GMapType implements Identifiable {
+	G_NORMAL_MAP, G_SATELLITE_MAP, G_HYBRID_MAP;
 
 	public String getJSIdentifier() {
 		return name();
@@ -28,6 +28,6 @@ public enum GControl implements Identifiable {
 	
 	public String getJSConstructor()
 	{
-		return "new " + this.name() + "()";
+		return name();
 	}
 }
