@@ -69,17 +69,17 @@ public class DojoDialogIndicator extends DojoDialog implements IDojoIndicator, I
 
 	public CharSequence decorateOnFailureScript(CharSequence script)
 	{
-		return "getDialog('" + this.getMarkupId()+ "').hide()" + script;
+		return "dojo.widget.byId('" + this.getMarkupId()+ "').hide()" + script;
 	}
 
 	public CharSequence decorateOnSuccessScript(CharSequence script)
 	{
-		return "getDialog('" + this.getMarkupId()+ "').hide()" + script;
+		return "dojo.widget.byId('" + this.getMarkupId()+ "').hide()" + script;
 	}
 
 	public CharSequence decorateScript(CharSequence script)
 	{
-		return "getDialog('" + this.getMarkupId()+ "').show();" + script;
+		return "dojo.widget.byId('" + this.getMarkupId()+ "').show();" + script;
 	}
 
 }
