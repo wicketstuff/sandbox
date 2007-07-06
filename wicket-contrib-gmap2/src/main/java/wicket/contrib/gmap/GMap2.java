@@ -447,29 +447,29 @@ public class GMap2 extends Panel
 	{
 		StringBuffer js = new StringBuffer("Wicket.GMap2.addMap('" + getJSid() + "');\n");
 
-		js.append(getJSsetCenter(center));
-		js.append(getJSsetZoom(zoom));
-		js.append(getJSsetMapType(mapType));
-		js.append(getJSsetDraggingEnabled(draggingEnabled));
-		js.append(getJSsetDoubleClickZoomEnabled(doubleClickZoomEnabled));
-		js.append(getJSsetScrollWheelZoomEnabled(scrollWheelZoomEnabled));
+		js.append(getJSsetCenter(center) + "\n");
+		js.append(getJSsetZoom(zoom) + "\n");
+		js.append(getJSsetMapType(mapType) + "\n");
+		js.append(getJSsetDraggingEnabled(draggingEnabled) + "\n");
+		js.append(getJSsetDoubleClickZoomEnabled(doubleClickZoomEnabled) + "\n");
+		js.append(getJSsetScrollWheelZoomEnabled(scrollWheelZoomEnabled) + "\n");
 		
 		// Add the controls.
 		for (GControl control : controls)
 		{
-			js.append(getJSaddControl(control));
+			js.append(getJSaddControl(control) + "\n");
 		}
 
 		// Add the overlays.
 		for (GOverlay overlay : overlays)
 		{
-			js.append(getJSaddOverlay(overlay));
+			js.append(getJSaddOverlay(overlay) + "\n");
 		}
 
-		js.append(infoWindow.getJSinit());
+		js.append(infoWindow.getJSopen() + "\n");
 		
 		for (Object behavior : getBehaviors(ListenerBehavior.class)) {
-			js.append(((ListenerBehavior)behavior).getJSinit());
+			js.append(((ListenerBehavior)behavior).getJSadd() + "\n");
 		}
 
 		return js.toString();
@@ -477,70 +477,70 @@ public class GMap2 extends Panel
 
 	private String getJSsetDraggingEnabled(boolean enabled)
 	{
-		return "Wicket.GMap2.setDraggingEnabled('" + getJSid() + "', " + enabled + ");\n";
+		return "Wicket.GMap2.setDraggingEnabled('" + getJSid() + "', " + enabled + ");";
 	}
 
 	private String getJSsetDoubleClickZoomEnabled(boolean enabled)
 	{
-		return "Wicket.GMap2.setDoubleClickZoomEnabled('" + getJSid() + "', " + enabled + ");\n";
+		return "Wicket.GMap2.setDoubleClickZoomEnabled('" + getJSid() + "', " + enabled + ");";
 	}
 
 	private String getJSsetScrollWheelZoomEnabled(boolean enabled)
 	{
-		return "Wicket.GMap2.setScrollWheelZoomEnabled('" + getJSid() + "', " + enabled + ");\n";
+		return "Wicket.GMap2.setScrollWheelZoomEnabled('" + getJSid() + "', " + enabled + ");";
 	}
 
 	private String getJSsetMapType(GMapType mapType)
 	{
-		return "Wicket.GMap2.setMapType('" + getJSid() + "', " + mapType.getJSConstructor() + ");\n";
+		return "Wicket.GMap2.setMapType('" + getJSid() + "', " + mapType.getJSConstructor() + ");";
 	}
 	
 	private String getJSsetZoom(int zoom)
 	{
-		return "Wicket.GMap2.setZoom('" + getJSid() + "', " + zoom + ");\n";
+		return "Wicket.GMap2.setZoom('" + getJSid() + "', " + zoom + ");";
 	}
 
 	private String getJSsetCenter(GLatLng center)
 	{
-		return "Wicket.GMap2.setCenter('" + getJSid() + "', '" + center.getJSConstructor() + "');\n";
+		return "Wicket.GMap2.setCenter('" + getJSid() + "', " + center.getJSConstructor() + ");";
 	}
 
 	private String getJSaddControl(GControl control)
 	{
-		return "Wicket.GMap2.addControl('" + getJSid() + "', '" + control.getJSIdentifier() + "', '"
-				+ control.getJSConstructor() + "');\n";
+		return "Wicket.GMap2.addControl('" + getJSid() + "', '" + control.getJSIdentifier() + "', "
+				+ control.getJSConstructor() + ");";
 	}
 
 	private String getJSremoveControl(GControl control)
 	{
-		return "Wicket.GMap2.removeControl('" + getJSid() + "', '" + control.getJSIdentifier() + "');\n";
+		return "Wicket.GMap2.removeControl('" + getJSid() + "', '" + control.getJSIdentifier() + "');";
 	}
 
 	private String getJSaddOverlay(GOverlay overlay)
 	{
-		return "Wicket.GMap2.addOverlay('" + getJSid() + "', '" + overlay.getJSIdentifier() + "', '"
-				+ overlay.getJSConstructor() + "');\n";
+		return "Wicket.GMap2.addOverlay('" + getJSid() + "', '" + overlay.getJSIdentifier() + "', "
+				+ overlay.getJSConstructor() + ");";
 	}
 
 	private String getJSremoveOverlay(GOverlay overlay)
 	{
-		return "Wicket.GMap2.removeOverlay('" + getJSid() + "', '" + overlay.getJSIdentifier() + "');\n";
+		return "Wicket.GMap2.removeOverlay('" + getJSid() + "', '" + overlay.getJSIdentifier() + "');";
 	}
 
 	private String getJSpanDirection(int dx, int dy)
 	{
 		return "Wicket.GMap2.panDirection('" + getJSid() + "'," + dx
-		+ "," + dy + ");\n";
+		+ "," + dy + ");";
 	}
 
 	private String getJSzoomOut()
 	{
-		return "Wicket.GMap2.zoomOut('" + getJSid() + "');\n";
+		return "Wicket.GMap2.zoomOut('" + getJSid() + "');";
 	}
 		
 	private String getJSzoomIn()
 	{
-		return "Wicket.GMap2.zoomIn('" + getJSid() + "');\n";
+		return "Wicket.GMap2.zoomIn('" + getJSid() + "');";
 	}
 	
 	/**
@@ -599,7 +599,7 @@ public class GMap2 extends Panel
 			}
 		}
 		
-		public String getJSinit()
+		private String getJSopen()
 		{
 			if (latLng != null)
 			{
@@ -691,7 +691,7 @@ public class GMap2 extends Panel
 				first = false;
 			}
 			
-			buffer.append("])\n");
+			buffer.append("]);");
 			
 			return buffer.toString();			
 		}
@@ -715,14 +715,14 @@ public class GMap2 extends Panel
 				first = false;
 			}
 			
-			buffer.append("])\n");
+			buffer.append("]);");
 			
 			return buffer.toString();			
 		}
 
 		private String getJSclose()
 		{
-			return "Wicket.GMap2.closeInfoWindow('" + getJSid() + "');\n";
+			return "Wicket.GMap2.closeInfoWindow('" + getJSid() + "');";
 		}
 
 	}
@@ -786,22 +786,22 @@ public class GMap2 extends Panel
 	{	
 		private static final long serialVersionUID = 1L;
 
-		private String getJSinit()
+		private String getJSadd()
 		{
 			StringBuffer buffer = new StringBuffer();
 
 			buffer.append("Wicket.GMap2.");
-			buffer.append(getJSadd());
-			buffer.append("(\"");
+			buffer.append(getJSmethod());
+			buffer.append("('");
 			buffer.append(getGMap2().getJSid());
-			buffer.append("\", \"");
+			buffer.append("', '");
 			buffer.append(getCallbackUrl());
-			buffer.append("\");\n");
+			buffer.append("');");
 			
 			return buffer.toString();
 		}
 		
-		protected abstract String getJSadd();
+		protected abstract String getJSmethod();
 		
 		protected final GMap2 getGMap2() {
 			return (GMap2)getComponent();

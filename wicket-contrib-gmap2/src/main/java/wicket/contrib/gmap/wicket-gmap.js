@@ -153,7 +153,7 @@ Wicket.GMap2 = {
 
 	setCenter: function(id, center) {
 		var map = this.getMap(id);
-		map.setCenter(eval(center));
+		map.setCenter(center);
 	},
 
 	panDirection: function(id, dx, dy) {
@@ -173,7 +173,7 @@ Wicket.GMap2 = {
 
 	addControl: function(id, controlId, control) {
 		var map = this.getMap(id);
-		map[controlId] = eval(control);
+		map[controlId] = control;
 		map.addControl(map[controlId]);
 	},
 
@@ -187,7 +187,7 @@ Wicket.GMap2 = {
 
 	addOverlay: function(id, overlayId, overlay) {
 		var map = this.getMap(id);
-		map[overlayId] = eval(overlay);
+		map[overlayId] = overlay;
 		map[overlayId].overlayId = overlayId;
 		map.addOverlay(map[overlayId]);
 	},
@@ -202,12 +202,12 @@ Wicket.GMap2 = {
 
 	openInfoWindowTabs: function(id, latLng, tabs) {
 		var map = this.getMap(id);
-		map.openInfoWindowTabs(eval(latLng), eval(tabs));
+		map.openInfoWindowTabs(latLng, tabs);
 	},
 
 	openMarkerInfoWindowTabs: function(id, markerId, tabs) {
 		var map = this.getMap(id);
-		map[markerId].openInfoWindowTabs(eval(tabs));
+		map[markerId].openInfoWindowTabs(tabs);
 	},
 
 	closeInfoWindow: function(id) {
