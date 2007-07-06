@@ -18,8 +18,6 @@
  */
 package wicket.contrib.examples;
 
-import javax.servlet.ServletContext;
-
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.settings.ISecuritySettings;
 import org.apache.wicket.util.crypt.ClassCryptFactory;
@@ -43,7 +41,6 @@ public abstract class WicketExampleApplication extends WebApplication
 	 */
 	protected void init()
 	{
-		ServletContext servletContext = getServletContext();
 		// WARNING: DO NOT do this on a real world application unless
 		// you really want your app's passwords all passed around and
 		// stored in unencrypted browser cookies (BAD IDEA!)!!!

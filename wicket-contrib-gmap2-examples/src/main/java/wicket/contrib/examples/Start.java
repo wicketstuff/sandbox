@@ -20,8 +20,6 @@ import java.lang.management.ManagementFactory;
 
 import javax.management.MBeanServer;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.mortbay.jetty.Connector;
 import org.mortbay.jetty.Server;
 import org.mortbay.jetty.nio.SelectChannelConnector;
@@ -35,10 +33,6 @@ import org.mortbay.management.MBeanContainer;
  */
 public class Start
 {
-	/**
-	 * Used for logging.
-	 */
-	private static final Log log = LogFactory.getLog(Start.class);
 
 	/**
 	 * Main function, starts the jetty server.
