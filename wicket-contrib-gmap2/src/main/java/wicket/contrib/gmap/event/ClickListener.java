@@ -45,10 +45,10 @@ public abstract class ClickListener extends GMap2.ListenerBehavior
 		String markerString = request.getParameter("marker");
 		if ("".equals(markerString))
 		{
-			GLatLng gLatLng = GLatLng.parse(request.getParameter("gLatLng"));
+			GLatLng latLng = GLatLng.parse(request.getParameter("latLng"));
 
 			// TODO decide between mapClick/mapDblClick
-			onMapClick(target, gLatLng);
+			onMapClick(target, latLng);
 		}
 		else
 		{
@@ -66,23 +66,25 @@ public abstract class ClickListener extends GMap2.ListenerBehavior
 	/**
 	 * Override this method to provide handling of a click on the map.
 	 * 
-	 * @param gLatLng
+	 * @param latLng
 	 *            the clicked GLatLng
 	 * @param target
 	 *            the target that initiated the click
 	 */
-	protected void onMapClick(AjaxRequestTarget target, GLatLng gLatLng) {
+	protected void onMapClick(AjaxRequestTarget target, GLatLng latLng)
+	{
 	}
 
 	/**
 	 * Override this method to provide handling of a click on the map.
 	 * 
-	 * @param gLatLng
+	 * @param latLng
 	 *            the clicked GLatLng
 	 * @param target
 	 *            the target that initiated the click
 	 */
-	protected void onMapDblClick(AjaxRequestTarget target, GLatLng gLatLng) {
+	protected void onMapDblClick(AjaxRequestTarget target, GLatLng latLng)
+	{
 	}
 	
 	/**
@@ -93,7 +95,8 @@ public abstract class ClickListener extends GMap2.ListenerBehavior
 	 * @param target
 	 *            the target that initiated the click
 	 */
-	protected void onMarkerClick(AjaxRequestTarget target, GMarker marker) {
+	protected void onMarkerClick(AjaxRequestTarget target, GMarker marker)
+	{
 	}
 
 }
