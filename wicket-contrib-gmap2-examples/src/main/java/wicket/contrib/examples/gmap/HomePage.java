@@ -64,6 +64,8 @@ public class HomePage extends WicketExamplePage
 			protected void onMarkerClick(AjaxRequestTarget target, GMarker marker)
 			{
 				topPanel.openInfoWindow(marker, new HelloPanel());
+				
+				markerSelected(target, marker);
 			}
 
 			@Override
@@ -71,8 +73,8 @@ public class HomePage extends WicketExamplePage
 			{
 				GMarker marker = new GMarker(gLatLng);
 				topPanel.addOverlay(marker);
-				markerLabel.getModel().setObject(marker);
-				target.addComponent(markerLabel);
+				
+				markerSelected(target, marker);
 			}
 
 		});
@@ -266,6 +268,11 @@ public class HomePage extends WicketExamplePage
 		add(enabledLabel);
 	}
 
+	private void markerSelected(AjaxRequestTarget target, GMarker marker) {
+		markerLabel.getModel().setObject(marker);
+		target.addComponent(markerLabel);
+	}
+	
 	// pay attention at webapp deploy context, we need a different key for each
 	// deploy context
 	// check <a href="http://www.google.com/apis/maps/signup.html">Google Maps
