@@ -69,4 +69,8 @@ public class GMarker extends GOverlay
 		
 		return buffer.toString();
 	}
+	
+	public String toString() {
+		return "GMarker[identifier=" + getJSIdentifier() + "]";
+	}
 }
