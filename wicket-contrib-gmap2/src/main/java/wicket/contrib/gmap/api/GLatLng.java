@@ -68,7 +68,7 @@ public class GLatLng implements GMapApi
 
 	public String toString()
 	{
-		return getJSConstructor();
+		return "GLatLng[lat=" + lat + ", lng=" + lng + ", unbounded=" + unbounded + "]";
 	}
 
 	/**
