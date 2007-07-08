@@ -18,6 +18,7 @@ package org.wicketstuff.dojo;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -25,6 +26,7 @@ import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.AjaxRequestTarget.IJavascriptResponse;
 import org.apache.wicket.ajax.AjaxRequestTarget.IListener;
+import org.apache.wicket.behavior.IBehavior;
 
 /**
  * A Manager to deal with {@link AjaxRequestTarget} and makeWidget in dojo.
@@ -57,9 +59,17 @@ public class TargetRefresherManager implements IListener
 		//we need to find all dojoWidget that should be reParsed
 		Iterator it = dojoComponents.entrySet().iterator();
 		HashMap<String, Component> real = new HashMap<String, Component>();
+		String requires = "";
 		
 		while (it.hasNext()){
 			Component c = (Component)((Entry)it.next()).getValue();
+			
+			for (IBehavior behavior : (List<IBehavior>)c.getBehaviors()){
+				if (behavior instanceof AbstractRequireDojoBehavior){
+					requires += ((AbstractRequireDojoBehavior)behavior).getRequire();
+				}
+			}
+			
 			if (!hasParentAdded(c)){
 				//we do not need to reParse This widget, remove it
 				real.put(c.getMarkupId(), c);
@@ -68,7 +78,7 @@ public class TargetRefresherManager implements IListener
 		dojoComponents = real;
 
 		if (generateReParseJs()!=null){
-			response.addJavascript(generateReParseJs());
+			response.addJavascript(requires + generateReParseJs());
 		}
 		instance=null;
 		
