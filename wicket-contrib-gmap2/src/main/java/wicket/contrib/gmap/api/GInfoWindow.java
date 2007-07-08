@@ -15,9 +15,6 @@ import wicket.contrib.gmap.GMap2;
  */
 public class GInfoWindow extends WebMarkupContainer
 {
-
-	private final GMap2 map2;
-
 	private GInfoWindowTab[] tabs;
 	
 	private GLatLng latLng;
@@ -26,12 +23,10 @@ public class GInfoWindow extends WebMarkupContainer
 	
 	private RepeatingView content = new RepeatingView("content");
 
-	public GInfoWindow(GMap2 map2)
+	public GInfoWindow()
 	{
 		super("infoWindow");
 		
-		this.map2 = map2;
-
 		setOutputMarkupId(true);
 		add(content);
 	}
@@ -157,9 +152,7 @@ public class GInfoWindow extends WebMarkupContainer
 	{
 		StringBuffer buffer = new StringBuffer();
 
-		buffer.append("Wicket.GMap2.openInfoWindowTabs('");
-		buffer.append(this.map2.getJSIdentifier());
-		buffer.append("',");
+		buffer.append("openInfoWindowTabs(");
 		buffer.append(latLng.getJSconstructor());
 		buffer.append(",[");
 		
@@ -172,20 +165,18 @@ public class GInfoWindow extends WebMarkupContainer
 			first = false;
 		}
 		
-		buffer.append("]);");
+		buffer.append("])");
 		
-		return buffer.toString();			
+		return getGMap2().getJSinvoke(buffer.toString());			
 	}
 
 	private String getJSopen(GMarker marker, GInfoWindowTab[] tabs)
 	{
 		StringBuffer buffer = new StringBuffer();
 
-		buffer.append("Wicket.GMap2.openMarkerInfoWindowTabs('");
-		buffer.append(this.map2.getJSIdentifier());
-		buffer.append("',");
-		buffer.append(marker.getJSidentifier());
-		buffer.append(",[");
+		buffer.append("openMarkerInfoWindowTabs('");
+		buffer.append(marker.getId());
+		buffer.append("',[");
 		
 		boolean first = true;
 		for (GInfoWindowTab tab : tabs) {
@@ -196,14 +187,18 @@ public class GInfoWindow extends WebMarkupContainer
 			first = false;
 		}
 		
-		buffer.append("]);");
+		buffer.append("])");
 		
-		return buffer.toString();			
+		return getGMap2().getJSinvoke(buffer.toString());			
 	}
 
 	private String getJSclose()
 	{
-		return "Wicket.GMap2.closeInfoWindow('" + this.map2.getJSIdentifier() + "');";
+		return getGMap2().getJSinvoke("closeInfoWindow()");
+	}
+	
+	private GMap2 getGMap2() {
+		return (GMap2)findParent(GMap2.class);
 	}
 
 }
