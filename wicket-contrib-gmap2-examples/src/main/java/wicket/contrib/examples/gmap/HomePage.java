@@ -127,6 +127,7 @@ public class HomePage extends WicketExamplePage
 
 		final GMap2 bottomPanel = new GMap2("bottomPanel",
 				LOCALHOST_8080_WICKET_CONTRIB_GMAP2_EXAMPLES_KEY);
+		bottomPanel.setOutputMarkupId(true);
 		bottomPanel.setMapType(GMapType.G_SATELLITE_MAP);
 		bottomPanel.setScrollWheelZoomEnabled(true);
 		moveEndBehavior = new MoveListener()
