@@ -21,7 +21,7 @@ import org.apache.wicket.Component;
  * Represents an Google Maps API's
  * <a href="http://www.google.com/apis/maps/documentation/reference.html#GInfoWindowTab">GInfoWindowTab</a>.
  */
-public class GInfoWindowTab implements GMapApi 
+public class GInfoWindowTab implements GValue 
 {
 
 	/**
@@ -70,7 +70,7 @@ public class GInfoWindowTab implements GMapApi
 	/**
 	 * @return A JavaScript constructor that represents this element.
 	 */
-	public String getJSConstructor()
+	public String getJSconstructor()
 	{
 		return "new GInfoWindowTab('" + title + "', document.getElementById('" + content.getMarkupId() + "'))";
 	}

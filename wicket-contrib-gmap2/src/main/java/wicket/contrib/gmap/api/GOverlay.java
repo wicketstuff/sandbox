@@ -15,13 +15,30 @@
  */
 package wicket.contrib.gmap.api;
 
+import java.io.Serializable;
+
+import wicket.contrib.gmap.GMap2;
+
 /**
  * Represents an Google Maps API's
  * <a href="http://www.google.com/apis/maps/documentation/reference.html#GOverlay">GOverlay</a>.
  */
-public abstract class GOverlay implements Identifiable
+public abstract class GOverlay implements Serializable
 {
-	public String getJSIdentifier() {
-		return "" + System.identityHashCode(this);
-	}	
+	public String getJSadd(GMap2 map)
+	{
+		return "Wicket.GMap2.addOverlay('" + map.getJSIdentifier() + "', '" + getJSidentifier() + "', "
+				+ getJSconstructor() + ");";
+	}
+
+	public String getJSremove(GMap2 map)
+	{
+		return "Wicket.GMap2.removeOverlay('" + map.getJSIdentifier() + "', '" + getJSidentifier() + "');";
+	}
+	
+	public String getJSidentifier() {
+		return String.valueOf(System.identityHashCode(this));
+	}
+	
+	protected abstract String getJSconstructor();
 }

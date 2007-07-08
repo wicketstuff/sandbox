@@ -21,7 +21,7 @@ import java.util.StringTokenizer;
  * Represents an Google Maps API's
  * <a href="http://www.google.com/apis/maps/documentation/reference.html#GLatLng">GLatLng</a>.
  */
-public class GLatLng implements GMapApi
+public class GLatLng implements GValue
 {
 	/**
 	 * Default serialVersionUID.
@@ -72,9 +72,9 @@ public class GLatLng implements GMapApi
 	}
 
 	/**
-	 * @see wicket.contrib.gmap.api.GMapApi#getJSConstructor()
+	 * @see wicket.contrib.gmap.api.GValue#getJSconstructor()
 	 */
-	public String getJSConstructor()
+	public String getJSconstructor()
 	{
 		return "new GLatLng(" + lat + ", " + lng + ", " + unbounded + ")";
 	}

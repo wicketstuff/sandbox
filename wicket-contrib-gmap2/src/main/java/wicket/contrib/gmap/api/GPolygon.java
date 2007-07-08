@@ -43,7 +43,7 @@ public class GPolygon extends GOverlay
 		this.fillOpacity = fillOpacity;
 	}
 
-	public String getJSConstructor()
+	protected String getJSconstructor()
 	{
 		StringBuffer buffer = new StringBuffer();
 		
@@ -54,7 +54,7 @@ public class GPolygon extends GOverlay
 			if (!first) {
 				buffer.append(",");
 			}
-			buffer.append(gLatLng.getJSConstructor());
+			buffer.append(gLatLng.getJSconstructor());
 			first = false;
 		}
 		

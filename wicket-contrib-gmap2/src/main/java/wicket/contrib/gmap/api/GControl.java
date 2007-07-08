@@ -15,19 +15,26 @@
  */
 package wicket.contrib.gmap.api;
 
+import java.io.Serializable;
+
+import wicket.contrib.gmap.GMap2;
+
 /**
  * Represents an Google Maps API's
  * <a href="http://www.google.com/apis/maps/documentation/reference.html#GControl">GControl</a>.
  */
-public enum GControl implements Identifiable {
+public enum GControl implements Serializable
+{
 	GSmallMapControl, GLargeMapControl, GSmallZoomControl, GScaleControl, GMapTypeControl;
 
-	public String getJSIdentifier() {
-		return name();
-	}	
-	
-	public String getJSConstructor()
+	public String getJSadd(GMap2 map)
 	{
-		return "new " + this.name() + "()";
+		return "Wicket.GMap2.addControl('" + map.getJSIdentifier() + "', '" + name() + "', new "
+				+ name() + "());";
+	}
+
+	public String getJSremove(GMap2 map)
+	{
+		return "Wicket.GMap2.removeControl('" + map.getJSIdentifier() + "', '" + name() + "');";
 	}
 }

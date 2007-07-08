@@ -53,11 +53,11 @@ public class GMarker extends GOverlay
 		return gLatLng;
 	}
 
-	public String getJSConstructor()
+	protected String getJSconstructor()
 	{
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("new GMarker(");
-		buffer.append(gLatLng.getJSConstructor());
+		buffer.append(gLatLng.getJSconstructor());
 		buffer.append(",{");
 		if (title != null)
 		{
@@ -68,9 +68,5 @@ public class GMarker extends GOverlay
 		buffer.append("})");
 		
 		return buffer.toString();
-	}
-	
-	public String toString() {
-		return "GMarker[identifier=" + getJSIdentifier() + "]";
-	}
+	}	
 }
