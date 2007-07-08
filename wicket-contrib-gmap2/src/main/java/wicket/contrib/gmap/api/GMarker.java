@@ -25,7 +25,7 @@ public class GMarker extends GOverlay
 
 	private GLatLng gLatLng;
 
-	private String title;
+	private GMarkerOptions options;
 
 	/**
 	 * @param gLatLng
@@ -36,16 +36,11 @@ public class GMarker extends GOverlay
 		this(gLatLng, null);
 	}
 
-	public GMarker(GLatLng gLatLng, String title)
+	public GMarker(GLatLng gLatLng, GMarkerOptions options)
 	{
 		super();
 		this.gLatLng = gLatLng;
-		this.title = title;
-	}
-
-	public void setTitle(String title)
-	{
-		this.title = title;
+		this.options = options;
 	}
 
 	public GLatLng getLagLng()
@@ -58,14 +53,12 @@ public class GMarker extends GOverlay
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("new GMarker(");
 		buffer.append(gLatLng.getJSconstructor());
-		buffer.append(",{");
-		if (title != null)
+		if (options != null)
 		{
-			buffer.append("title: \"");
-			buffer.append(title);
-			buffer.append("\"");
+			buffer.append(",");
+			buffer.append(options.getJSconstructor());
 		}
-		buffer.append("})");
+		buffer.append(")");
 		
 		return buffer.toString();
 	}	

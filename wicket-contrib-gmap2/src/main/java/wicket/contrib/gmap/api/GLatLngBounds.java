@@ -59,7 +59,7 @@ public class GLatLngBounds implements GValue
 	}
 
 	/**
-	 * @see wicket.contrib.gmap.api.GValue#getJSConstructor()
+	 * @see wicket.contrib.gmap.api.GValue#getJSconstructor()
 	 */
 	public String getJSconstructor()
 	{

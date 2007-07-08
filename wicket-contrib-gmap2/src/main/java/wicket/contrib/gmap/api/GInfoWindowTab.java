@@ -34,9 +34,7 @@ public class GInfoWindowTab implements GValue
 
 	/**
 	 * Construct.
-	 * 
-	 * @param lat
-	 * @param lng
+	 * @param content
 	 */
 	public GInfoWindowTab(Component content)
 	{
@@ -45,9 +43,8 @@ public class GInfoWindowTab implements GValue
 
 	/**
 	 * Construct.
-	 * 
-	 * @param lat
-	 * @param lng
+	 * @param title
+	 * @param content
 	 */
 	public GInfoWindowTab(String title, Component content)
 	{
