@@ -38,7 +38,7 @@ public class GPolyline extends GOverlay
 		this.opacity = opacity;
 	}
 
-	public String getJSConstructor()
+	protected String getJSconstructor()
 	{
 		StringBuffer buffer = new StringBuffer();
 		
@@ -49,7 +49,7 @@ public class GPolyline extends GOverlay
 			if (!first) {
 				buffer.append(",");
 			}
-			buffer.append(gLatLng.getJSConstructor());
+			buffer.append(gLatLng.getJSconstructor());
 			first = false;
 		}
 		

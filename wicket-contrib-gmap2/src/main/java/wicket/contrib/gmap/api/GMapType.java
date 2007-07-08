@@ -15,19 +15,19 @@
  */
 package wicket.contrib.gmap.api;
 
+import java.io.Serializable;
+
+import wicket.contrib.gmap.GMap2;
+
 /**
  * Represents an Google Maps API's
  * <a href="http://www.google.com/apis/maps/documentation/reference.html#GMapType">GMapType</a>.
  */
-public enum GMapType implements Identifiable {
+public enum GMapType implements Serializable {
 	G_NORMAL_MAP, G_SATELLITE_MAP, G_HYBRID_MAP;
 
-	public String getJSIdentifier() {
-		return name();
-	}	
-	
-	public String getJSConstructor()
+	public String getJSset(GMap2 map)
 	{
-		return name();
-	}
+		return "Wicket.GMap2.setMapType('" + map.getJSIdentifier() + "', " + name() + ");";
+	}	
 }

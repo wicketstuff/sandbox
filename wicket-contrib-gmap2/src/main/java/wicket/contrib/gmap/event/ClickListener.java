@@ -42,8 +42,8 @@ public abstract class ClickListener extends GMap2.ListenerBehavior
 	protected void onEvent(AjaxRequestTarget target) {
 		Request request = RequestCycle.get().getRequest();
 
-		String markerString = request.getParameter("marker");
-		if ("".equals(markerString))
+		String marker = request.getParameter("marker");
+		if ("".equals(marker))
 		{
 			GLatLng latLng = GLatLng.parse(request.getParameter("latLng"));
 
@@ -54,7 +54,7 @@ public abstract class ClickListener extends GMap2.ListenerBehavior
 		{
 			for (GOverlay overlay : getGMap2().getOverlays())
 			{
-				if (overlay.getJSIdentifier().equals(markerString))
+				if (overlay.getJSidentifier().equals(marker))
 				{
 					onMarkerClick(target, (GMarker)overlay);
 					break;

@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.wicket.AttributeModifier;
-import org.apache.wicket.Component;
 import org.apache.wicket.Request;
 import org.apache.wicket.RequestCycle;
 import org.apache.wicket.ResourceReference;
@@ -35,15 +34,13 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.WicketEventReference;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.html.resources.JavascriptResourceReference;
-import org.apache.wicket.markup.repeater.RepeatingView;
 import org.apache.wicket.model.Model;
 
 import wicket.contrib.gmap.api.GControl;
-import wicket.contrib.gmap.api.GInfoWindowTab;
+import wicket.contrib.gmap.api.GInfoWindow;
 import wicket.contrib.gmap.api.GLatLng;
 import wicket.contrib.gmap.api.GLatLngBounds;
 import wicket.contrib.gmap.api.GMapType;
-import wicket.contrib.gmap.api.GMarker;
 import wicket.contrib.gmap.api.GOverlay;
 
 /**
@@ -89,7 +86,7 @@ public class GMap2 extends Panel
 
 	private final WebMarkupContainer map;
 
-	private InfoWindow infoWindow;
+	private GInfoWindow infoWindow;
 
 	private GLatLngBounds bounds;
 
@@ -121,7 +118,7 @@ public class GMap2 extends Panel
 
 		add(getHeaderContributor(gMapKey));
 
-		infoWindow = new InfoWindow();
+		infoWindow = new GInfoWindow(this);
 		add(infoWindow);
 
 		map = new WebMarkupContainer("map");
@@ -165,7 +162,7 @@ public class GMap2 extends Panel
 		if (RequestCycle.get().getRequestTarget() instanceof AjaxRequestTarget)
 		{
 			((AjaxRequestTarget)RequestCycle.get().getRequestTarget())
-					.appendJavascript(getJSaddControl(control));
+					.appendJavascript(control.getJSadd(GMap2.this));
 		}
 
 		return this;
@@ -185,7 +182,7 @@ public class GMap2 extends Panel
 		if (RequestCycle.get().getRequestTarget() instanceof AjaxRequestTarget)
 		{
 			((AjaxRequestTarget)RequestCycle.get().getRequestTarget())
-					.appendJavascript(getJSremoveControl(control));
+					.appendJavascript(control.getJSremove(GMap2.this));
 		}
 
 		return this;
@@ -205,7 +202,7 @@ public class GMap2 extends Panel
 		if (RequestCycle.get().getRequestTarget() instanceof AjaxRequestTarget)
 		{
 			((AjaxRequestTarget)RequestCycle.get().getRequestTarget())
-					.appendJavascript(getJSaddOverlay(overlay));
+					.appendJavascript(overlay.getJSadd(GMap2.this));
 		}
 
 		return this;
@@ -228,7 +225,7 @@ public class GMap2 extends Panel
 		if (RequestCycle.get().getRequestTarget() instanceof AjaxRequestTarget)
 		{
 			((AjaxRequestTarget)RequestCycle.get().getRequestTarget())
-					.appendJavascript(getJSremoveOverlay(overlay));
+					.appendJavascript(overlay.getJSremove(GMap2.this));
 		}
 
 		return this;
@@ -324,7 +321,7 @@ public class GMap2 extends Panel
 			if (RequestCycle.get().getRequestTarget() instanceof AjaxRequestTarget)
 			{
 				((AjaxRequestTarget)RequestCycle.get().getRequestTarget())
-						.appendJavascript(getJSsetMapType(mapType));
+						.appendJavascript(mapType.getJSset(GMap2.this));
 			}
 		}
 	}
@@ -368,105 +365,40 @@ public class GMap2 extends Panel
 		}
 	}
 
-	/**
-	 * Open an info window.
-	 * 
-	 * @param content
-	 *            content to open in info window
-	 * @return This
-	 */
-	public GMap2 openInfoWindow(GLatLng latLng, Component content)
-	{
-		infoWindow.open(latLng, new GInfoWindowTab(content));
-
-		return this;
+	public GInfoWindow getInfoWindow() {
+		return infoWindow;
 	}
-
-	/**
-	 * Open an info window.
-	 * 
-	 * @param content
-	 *            content to open in info window
-	 * @return This
-	 */
-	public GMap2 openInfoWindow(GMarker marker, Component content)
-	{
-		infoWindow.open(marker, new GInfoWindowTab(content));
-
-		return this;
-	}
-
-	/**
-	 * Open an info window.
-	 * 
-	 * @param content
-	 *            content to open in info window
-	 * @return This
-	 */
-	public GMap2 openInfoWindow(GLatLng latLng, GInfoWindowTab... tabs)
-	{
-		infoWindow.open(latLng, tabs);
-
-		return this;
-	}
-
-	/**
-	 * Open an info window.
-	 * 
-	 * @param content
-	 *            content to open in info window
-	 * @return This
-	 */
-	public GMap2 openInfoWindow(GMarker marker, GInfoWindowTab... tabs)
-	{
-		infoWindow.open(marker, tabs);
-
-		return this;
-	}
-
-	/**
-	 * Close the info window.
-	 * 
-	 * @return This
-	 */
-	public GMap2 closeInfoWindow()
-	{
-		if (infoWindow.isOpen()) {
-			infoWindow.close();
-		}
-
-		return this;
-	}
-
-	private String getJSid()
+	
+	public String getJSIdentifier()
 	{
 		return map.getMarkupId();
 	}
 
 	private String getJSinit()
 	{
-		StringBuffer js = new StringBuffer("Wicket.GMap2.addMap('" + getJSid() + "');\n");
+		StringBuffer js = new StringBuffer("Wicket.GMap2.addMap('" + getJSIdentifier() + "');\n");
 
 		js.append(getJSsetCenter(center) + "\n");
 		js.append(getJSsetZoom(zoom) + "\n");
-		js.append(getJSsetMapType(mapType) + "\n");
 		js.append(getJSsetDraggingEnabled(draggingEnabled) + "\n");
 		js.append(getJSsetDoubleClickZoomEnabled(doubleClickZoomEnabled) + "\n");
 		js.append(getJSsetScrollWheelZoomEnabled(scrollWheelZoomEnabled) + "\n");
 		
+		js.append(mapType.getJSset(this) + "\n");
+
 		// Add the controls.
 		for (GControl control : controls)
 		{
-			js.append(getJSaddControl(control) + "\n");
+			js.append(control.getJSadd(this) + "\n");
 		}
 
 		// Add the overlays.
 		for (GOverlay overlay : overlays)
 		{
-			js.append(getJSaddOverlay(overlay) + "\n");
+			js.append(overlay.getJSadd(this) + "\n");
 		}
 
-		js.append(infoWindow.getJSopen() + "\n");
+		js.append(infoWindow.getJSinit() + "\n");
 		
 		for (Object behavior : getBehaviors(ListenerBehavior.class)) {
 			js.append(((ListenerBehavior)behavior).getJSadd() + "\n");
@@ -477,76 +409,49 @@ public class GMap2 extends Panel
 
 	private String getJSsetDraggingEnabled(boolean enabled)
 	{
-		return "Wicket.GMap2.setDraggingEnabled('" + getJSid() + "', " + enabled + ");";
+		return "Wicket.GMap2.setDraggingEnabled('" + getJSIdentifier() + "', " + enabled + ");";
 	}
 
 	private String getJSsetDoubleClickZoomEnabled(boolean enabled)
 	{
-		return "Wicket.GMap2.setDoubleClickZoomEnabled('" + getJSid() + "', " + enabled + ");";
+		return "Wicket.GMap2.setDoubleClickZoomEnabled('" + getJSIdentifier() + "', " + enabled + ");";
 	}
 
 	private String getJSsetScrollWheelZoomEnabled(boolean enabled)
 	{
-		return "Wicket.GMap2.setScrollWheelZoomEnabled('" + getJSid() + "', " + enabled + ");";
+		return "Wicket.GMap2.setScrollWheelZoomEnabled('" + getJSIdentifier() + "', " + enabled + ");";
 	}
 
-	private String getJSsetMapType(GMapType mapType)
-	{
-		return "Wicket.GMap2.setMapType('" + getJSid() + "', " + mapType.getJSConstructor() + ");";
-	}
-	
 	private String getJSsetZoom(int zoom)
 	{
-		return "Wicket.GMap2.setZoom('" + getJSid() + "', " + zoom + ");";
+		return "Wicket.GMap2.setZoom('" + getJSIdentifier() + "', " + zoom + ");";
 	}
 
 	private String getJSsetCenter(GLatLng center)
 	{
-		return "Wicket.GMap2.setCenter('" + getJSid() + "', " + center.getJSConstructor() + ");";
-	}
-
-	private String getJSaddControl(GControl control)
-	{
-		return "Wicket.GMap2.addControl('" + getJSid() + "', '" + control.getJSIdentifier() + "', "
-				+ control.getJSConstructor() + ");";
-	}
-
-	private String getJSremoveControl(GControl control)
-	{
-		return "Wicket.GMap2.removeControl('" + getJSid() + "', '" + control.getJSIdentifier() + "');";
-	}
-
-	private String getJSaddOverlay(GOverlay overlay)
-	{
-		return "Wicket.GMap2.addOverlay('" + getJSid() + "', '" + overlay.getJSIdentifier() + "', "
-				+ overlay.getJSConstructor() + ");";
-	}
-
-	private String getJSremoveOverlay(GOverlay overlay)
-	{
-		return "Wicket.GMap2.removeOverlay('" + getJSid() + "', '" + overlay.getJSIdentifier() + "');";
+		return "Wicket.GMap2.setCenter('" + getJSIdentifier() + "', " + center.getJSconstructor() + ");";
 	}
 
 	private String getJSpanDirection(int dx, int dy)
 	{
-		return "Wicket.GMap2.panDirection('" + getJSid() + "'," + dx
+		return "Wicket.GMap2.panDirection('" + getJSIdentifier() + "'," + dx
 		+ "," + dy + ");";
 	}
 
 	private String getJSzoomOut()
 	{
-		return "Wicket.GMap2.zoomOut('" + getJSid() + "');";
+		return "Wicket.GMap2.zoomOut('" + getJSIdentifier() + "');";
 	}
 		
 	private String getJSzoomIn()
 	{
-		return "Wicket.GMap2.zoomIn('" + getJSid() + "');";
+		return "Wicket.GMap2.zoomIn('" + getJSIdentifier() + "');";
 	}
 	
 	/**
 	 * Update state from a request to an AJAX target.
 	 */
-	private void update(AjaxRequestTarget target)
+	public void update(AjaxRequestTarget target)
 	{
 		Request request = RequestCycle.get().getRequest();
 
@@ -559,174 +464,6 @@ public class GMap2 extends Panel
 		infoWindow.update(target);
 	}
 
-	/**
-	 * Represents an Google Maps API's
-	 * <a href="http://www.google.com/apis/maps/documentation/reference.html#GInfoWindow">GInfoWindow</a>.
-	 */
-	private class InfoWindow extends WebMarkupContainer
-	{
-
-		private GInfoWindowTab[] tabs;
-		
-		private GLatLng latLng;
-		
-		private GMarker marker;
-		
-		private RepeatingView content = new RepeatingView("content");
-
-		public InfoWindow()
-		{
-			super("infoWindow");
-
-			setOutputMarkupId(true);
-			
-			add(content);
-		}
-
-		/**
-		 * Update state from a request to an AJAX target.
-		 */
-		private void update(AjaxRequestTarget target)
-		{
-			Request request = RequestCycle.get().getRequest();
-
-			if (Boolean.parseBoolean(request.getParameter("hidden"))) {
-				// Attention: don't use close() as this might result in an
-				// endless AJAX request loop
-				setTabs(new GInfoWindowTab[0]);
-				marker = null;
-				latLng = null;
-			}
-		}
-		
-		private String getJSopen()
-		{
-			if (latLng != null)
-			{
-				return getJSopen(latLng, tabs);
-			}
-
-			if (marker != null)
-			{
-				return getJSopen(marker, tabs);
-			}
-			
-			return "";
-		}
-
-		private void setTabs(GInfoWindowTab[] tabs)
-		{
-			content.removeAll();
-				
-			this.tabs = tabs;
-			for (GInfoWindowTab tab : tabs) {
-				content.add(tab.getContent());
-			}
-		}
-		
-		public void open(GLatLng latLng, GInfoWindowTab... tabs)
-		{
-			setTabs(tabs);
-			
-			this.latLng = latLng;
-			this.marker = null;
-			
-			if (RequestCycle.get().getRequestTarget() instanceof AjaxRequestTarget)
-			{
-				((AjaxRequestTarget)RequestCycle.get().getRequestTarget())
-						.appendJavascript(getJSopen(latLng, tabs));
-				((AjaxRequestTarget)RequestCycle.get().getRequestTarget()).addComponent(this);
-			}
-		}
-		
-		public boolean isOpen() {
-			return (latLng != null || marker != null);
-		}
-		
-		public void open(GMarker marker, GInfoWindowTab... tabs)
-		{
-			setTabs(tabs);
-			
-			this.latLng = null;
-			this.marker = marker;
-			
-			if (RequestCycle.get().getRequestTarget() instanceof AjaxRequestTarget)
-			{
-				((AjaxRequestTarget)RequestCycle.get().getRequestTarget())
-						.appendJavascript(getJSopen(marker, tabs));
-				((AjaxRequestTarget)RequestCycle.get().getRequestTarget()).addComponent(this);
-			}
-		}
-		
-		public void close() {
-            setTabs(new GInfoWindowTab[0]);
-            
-            marker = null;
-            latLng = null;
-			
-			if (RequestCycle.get().getRequestTarget() instanceof AjaxRequestTarget)
-			{
-				((AjaxRequestTarget)RequestCycle.get().getRequestTarget())
-						.appendJavascript(getJSclose());
-				((AjaxRequestTarget)RequestCycle.get().getRequestTarget()).addComponent(this);
-			}
-		}
-		
-		private String getJSopen(GLatLng latLng, GInfoWindowTab[] tabs)
-		{
-			StringBuffer buffer = new StringBuffer();
-
-			buffer.append("Wicket.GMap2.openInfoWindowTabs('");
-			buffer.append(getJSid());
-			buffer.append("',");
-			buffer.append(latLng.getJSConstructor());
-			buffer.append(",[");
-			
-			boolean first = true;
-			for (GInfoWindowTab tab : tabs) {
-				if (!first) {
-					buffer.append(",");
-				}
-				buffer.append(tab.getJSConstructor());
-				first = false;
-			}
-			
-			buffer.append("]);");
-			
-			return buffer.toString();			
-		}
-
-		private String getJSopen(GMarker marker, GInfoWindowTab[] tabs)
-		{
-			StringBuffer buffer = new StringBuffer();
-
-			buffer.append("Wicket.GMap2.openMarkerInfoWindowTabs('");
-			buffer.append(getJSid());
-			buffer.append("',");
-			buffer.append(marker.getJSIdentifier());
-			buffer.append(",[");
-			
-			boolean first = true;
-			for (GInfoWindowTab tab : tabs) {
-				if (!first) {
-					buffer.append(",");
-				}
-				buffer.append(tab.getJSConstructor());
-				first = false;
-			}
-			
-			buffer.append("]);");
-			
-			return buffer.toString();			
-		}
-
-		private String getJSclose()
-		{
-			return "Wicket.GMap2.closeInfoWindow('" + getJSid() + "');";
-		}
-
-	}
-	
 	private class JSMethod extends AttributeModifier {
 	
 		private static final long serialVersionUID = 1L;
@@ -788,7 +525,7 @@ public class GMap2 extends Panel
 			buffer.append("Wicket.GMap2.");
 			buffer.append(getJSmethod());
 			buffer.append("('");
-			buffer.append(getGMap2().getJSid());
+			buffer.append(getGMap2().getJSIdentifier());
 			buffer.append("', '");
 			buffer.append(getCallbackUrl());
 			buffer.append("');");
