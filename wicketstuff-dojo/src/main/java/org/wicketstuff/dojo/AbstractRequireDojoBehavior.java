@@ -62,7 +62,7 @@ public abstract class AbstractRequireDojoBehavior extends AbstractDefaultDojoBeh
 		}
 	}
 	
-	private StringBuffer getRequire(){
+	public StringBuffer getRequire(){
 		setRequire(libs); // will be implemented by childs
 		StringBuffer require = new StringBuffer();
 
@@ -94,9 +94,6 @@ public abstract class AbstractRequireDojoBehavior extends AbstractDefaultDojoBeh
 		// it. TargetRefresherManager contains top level dojo widgets
 		if (RequestCycle.get().getRequestTarget() instanceof AjaxRequestTarget) {
 			AjaxRequestTarget target = (AjaxRequestTarget) RequestCycle.get().getRequestTarget();
-			//add required needed 
-			//TODO : added for dnd ## Is it really always needed. It seems yes
-			target.appendJavascript(getRequire().toString());
 			//and register listener
 			target.addListener(TargetRefresherManager
 					.getInstance());
