@@ -107,7 +107,7 @@ function WicketGMap2(id) {
 		if (enabled) {
 			this.map.enableDragging(true);
 		} else {
-			this.map.disableDragging(true);
+			this.map.disableDragging(false);
 		}
 	}
 
@@ -115,7 +115,7 @@ function WicketGMap2(id) {
 		if (enabled) {
 			this.map.enableDoubleClickZoom(true);
 		} else {
-			this.map.disableDoubleClickZoom(true);
+			this.map.disableDoubleClickZoom(false);
 		}
 	}
 
@@ -123,7 +123,7 @@ function WicketGMap2(id) {
 		if (enabled) {
 			this.map.enableScrollWheelZoom(true);
 		} else {
-			this.map.disableScrollWheelZoom(true);
+			this.map.disableScrollWheelZoom(false);
 		}
 	}
 
