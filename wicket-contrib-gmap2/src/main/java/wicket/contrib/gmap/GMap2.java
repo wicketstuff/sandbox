@@ -727,58 +727,53 @@ public class GMap2 extends Panel
 
 	}
 	
-	public class ZoomOut extends AttributeModifier
-	{
-
+	private class JSMethod extends AttributeModifier {
+	
 		private static final long serialVersionUID = 1L;
-
+		
+		public JSMethod(String event, String javascript)
+		{
+			super(event, true, new Model(event.equalsIgnoreCase("href") ? "javascript:" + javascript : javascript));
+		}
+	}
+	
+	public class ZoomOut extends JSMethod
+	{
 		public ZoomOut(String event)
 		{
-			super(event, true, new Model("javascript:" + getJSzoomOut()));
+			super(event, getJSzoomOut());
 		}
 	}
 
-	public class ZoomIn extends AttributeModifier
+	public class ZoomIn extends JSMethod
 	{
-
-		private static final long serialVersionUID = 1L;
-
 		public ZoomIn(String event)
 		{
-			super(event, true, new Model("javascript:" + getJSzoomIn()));
+			super(event, getJSzoomIn());
 		}
 	}
 
-	public class PanDirection extends AttributeModifier
+	public class PanDirection extends JSMethod
 	{
-
-		private static final long serialVersionUID = 1L;
-
 		public PanDirection(String event, final int dx, final int dy)
 		{
-			super(event, true, new Model("javascript:" + getJSpanDirection(dx, dy)));
+			super(event, getJSpanDirection(dx, dy));
 		}
 	}
 
-	public class SetZoom extends AttributeModifier
+	public class SetZoom extends JSMethod
 	{
-
-		private static final long serialVersionUID = 1L;
-
 		public SetZoom(String event, final int zoom)
 		{
-			super(event, true, new Model("javascript:" + getJSsetZoom(zoom)));
+			super(event, getJSsetZoom(zoom));
 		}
 	}
 
-	public class SetCenter extends AttributeModifier
+	public class SetCenter extends JSMethod
 	{
-
-		private static final long serialVersionUID = 1L;
-
 		public SetCenter(String event, GLatLng gLatLng)
 		{
-			super(event, true, new Model("javascript:" + getJSsetCenter(gLatLng)));
+			super(event, getJSsetCenter(gLatLng));
 		}
 	}
 
