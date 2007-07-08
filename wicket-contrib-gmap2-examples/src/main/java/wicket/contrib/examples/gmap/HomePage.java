@@ -15,6 +15,7 @@ import wicket.contrib.gmap.api.GInfoWindowTab;
 import wicket.contrib.gmap.api.GLatLng;
 import wicket.contrib.gmap.api.GMapType;
 import wicket.contrib.gmap.api.GMarker;
+import wicket.contrib.gmap.api.GMarkerOptions;
 import wicket.contrib.gmap.api.GPolygon;
 import wicket.contrib.gmap.api.GPolyline;
 import wicket.contrib.gmap.event.ClickListener;
@@ -79,7 +80,9 @@ public class HomePage extends WicketExamplePage
 
 		});
 		topPanel.setZoom(10);
-		topPanel.addOverlay(new GMarker(new GLatLng(37.4, -122.1), "Home"));
+		GMarkerOptions options = new GMarkerOptions();
+		options.setTitle("Home");
+		topPanel.addOverlay(new GMarker(new GLatLng(37.4, -122.1), options));
 		topPanel.addOverlay(new GPolygon("#000000", 4, 0.7f, "#E9601A", 0.7f, new GLatLng(37.3,
 				-122.4), new GLatLng(37.2, -122.2), new GLatLng(37.3, -122.0), new GLatLng(37.4,
 				-122.2), new GLatLng(37.3, -122.4)));
