@@ -20,12 +20,11 @@ package wicket.contrib.gmap.event;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 
-import wicket.contrib.gmap.GMap2;
 
 /**
  * TODO should we put 'dragstart', 'drag' and 'dragend' together in this listener?
  */
-public abstract class DragListener extends GMap2.ListenerBehavior
+public abstract class DragListener extends MapListener
 {
 
 	@Override

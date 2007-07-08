@@ -28,6 +28,6 @@ public enum GMapType implements Serializable {
 
 	public String getJSset(GMap2 map)
 	{
-		return "Wicket.GMap2.setMapType('" + map.getJSIdentifier() + "', " + name() + ");";
+		return map.getJSinvoke("setMapType(" + name() + ")");
 	}	
 }

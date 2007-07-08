@@ -42,6 +42,7 @@ import wicket.contrib.gmap.api.GLatLng;
 import wicket.contrib.gmap.api.GLatLngBounds;
 import wicket.contrib.gmap.api.GMapType;
 import wicket.contrib.gmap.api.GOverlay;
+import wicket.contrib.gmap.event.MapListener;
 
 /**
  * Wicket component to embed <a href="http://maps.google.com">Google Maps</a>
@@ -118,7 +119,7 @@ public class GMap2 extends Panel
 
 		add(getHeaderContributor(gMapKey));
 
-		infoWindow = new GInfoWindow(this);
+		infoWindow = new GInfoWindow();
 		add(infoWindow);
 
 		map = new WebMarkupContainer("map");
@@ -369,14 +370,9 @@ public class GMap2 extends Panel
 		return infoWindow;
 	}
 	
-	public String getJSIdentifier()
-	{
-		return map.getMarkupId();
-	}
-
 	private String getJSinit()
 	{
-		StringBuffer js = new StringBuffer("Wicket.GMap2.addMap('" + getJSIdentifier() + "');\n");
+		StringBuffer js = new StringBuffer("new WicketGMap2('" + map.getMarkupId() + "');\n");
 
 		js.append(getJSsetCenter(center) + "\n");
 		js.append(getJSsetZoom(zoom) + "\n");
@@ -400,52 +396,55 @@ public class GMap2 extends Panel
 
 		js.append(infoWindow.getJSinit() + "\n");
 		
-		for (Object behavior : getBehaviors(ListenerBehavior.class)) {
-			js.append(((ListenerBehavior)behavior).getJSadd() + "\n");
+		for (Object behavior : getBehaviors(MapListener.class)) {
+			js.append(((MapListener)behavior).getJSadd() + "\n");
 		}
 
 		return js.toString();
 	}
 
+	public String getJSinvoke(String invocation) {
+		return "Wicket.maps['" + map.getMarkupId() + "']." + invocation + ";";
+	}
+	
 	private String getJSsetDraggingEnabled(boolean enabled)
 	{
-		return "Wicket.GMap2.setDraggingEnabled('" + getJSIdentifier() + "', " + enabled + ");";
+		return getJSinvoke("setDraggingEnabled(" + enabled + ")");
 	}
 
 	private String getJSsetDoubleClickZoomEnabled(boolean enabled)
 	{
-		return "Wicket.GMap2.setDoubleClickZoomEnabled('" + getJSIdentifier() + "', " + enabled + ");";
+		return getJSinvoke("setDoubleClickZoomEnabled(" + enabled + ")");
 	}
 
 	private String getJSsetScrollWheelZoomEnabled(boolean enabled)
 	{
-		return "Wicket.GMap2.setScrollWheelZoomEnabled('" + getJSIdentifier() + "', " + enabled + ");";
+		return getJSinvoke("setScrollWheelZoomEnabled(" + enabled + ")");
 	}
 
 	private String getJSsetZoom(int zoom)
 	{
-		return "Wicket.GMap2.setZoom('" + getJSIdentifier() + "', " + zoom + ");";
+		return getJSinvoke("setZoom(" + zoom + ")");
 	}
 
 	private String getJSsetCenter(GLatLng center)
 	{
-		return "Wicket.GMap2.setCenter('" + getJSIdentifier() + "', " + center.getJSconstructor() + ");";
+		return getJSinvoke("setCenter(" +  center.getJSconstructor() + ")");
 	}
 
 	private String getJSpanDirection(int dx, int dy)
 	{
-		return "Wicket.GMap2.panDirection('" + getJSIdentifier() + "'," + dx
-		+ "," + dy + ");";
+		return getJSinvoke("panDirection(" + dx + "," + dy + ")");
 	}
 
 	private String getJSzoomOut()
 	{
-		return "Wicket.GMap2.zoomOut('" + getJSIdentifier() + "');";
+		return getJSinvoke("zoomOut('" + map.getMarkupId() + "')");
 	}
 		
 	private String getJSzoomIn()
 	{
-		return "Wicket.GMap2.zoomIn('" + getJSIdentifier() + "');";
+		return getJSinvoke("zoomIn('" + map.getMarkupId() + "')");
 	}
 	
 	/**
@@ -512,41 +511,5 @@ public class GMap2 extends Panel
 		{
 			super(event, getJSsetCenter(gLatLng));
 		}
-	}
-
-	public static abstract class ListenerBehavior extends AbstractDefaultAjaxBehavior
-	{	
-		private static final long serialVersionUID = 1L;
-
-		private String getJSadd()
-		{
-			StringBuffer buffer = new StringBuffer();
-
-			buffer.append("Wicket.GMap2.");
-			buffer.append(getJSmethod());
-			buffer.append("('");
-			buffer.append(getGMap2().getJSIdentifier());
-			buffer.append("', '");
-			buffer.append(getCallbackUrl());
-			buffer.append("');");
-			
-			return buffer.toString();
-		}
-		
-		protected abstract String getJSmethod();
-		
-		protected final GMap2 getGMap2() {
-			return (GMap2)getComponent();
-		}
-		
-		@Override
-		protected final void respond(AjaxRequestTarget target)
-		{
-			getGMap2().update(target);
-			
-			onEvent(target);
-		}
-
-		protected abstract void onEvent(AjaxRequestTarget target);
 	}
 }

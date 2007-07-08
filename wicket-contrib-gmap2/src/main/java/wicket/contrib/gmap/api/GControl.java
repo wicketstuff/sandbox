@@ -29,12 +29,11 @@ public enum GControl implements Serializable
 
 	public String getJSadd(GMap2 map)
 	{
-		return "Wicket.GMap2.addControl('" + map.getJSIdentifier() + "', '" + name() + "', new "
-				+ name() + "());";
+		return map.getJSinvoke("addControl('" + name() + "', new " + name() + "())");
 	}
 
 	public String getJSremove(GMap2 map)
 	{
-		return "Wicket.GMap2.removeControl('" + map.getJSIdentifier() + "', '" + name() + "');";
+		return map.getJSinvoke("removeControl('" + name() + "')");
 	}
 }

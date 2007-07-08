@@ -20,12 +20,11 @@ package wicket.contrib.gmap.event;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 
-import wicket.contrib.gmap.GMap2;
 
 /**
  * TODO should we put 'movestart', 'move' and 'moveend' together in this listener?
  */
-public abstract class MoveListener extends GMap2.ListenerBehavior
+public abstract class MoveListener extends MapListener
 {
 
 	@Override

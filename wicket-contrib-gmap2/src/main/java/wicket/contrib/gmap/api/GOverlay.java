@@ -27,16 +27,16 @@ public abstract class GOverlay implements Serializable
 {
 	public String getJSadd(GMap2 map)
 	{
-		return "Wicket.GMap2.addOverlay('" + map.getJSIdentifier() + "', '" + getJSidentifier() + "', "
-				+ getJSconstructor() + ");";
+		return map.getJSinvoke("addOverlay('" + getId() + "', "		
+				+ getJSconstructor() + ")");
 	}
 
 	public String getJSremove(GMap2 map)
 	{
-		return "Wicket.GMap2.removeOverlay('" + map.getJSIdentifier() + "', '" + getJSidentifier() + "');";
+		return map.getJSinvoke("removeOverlay('" + getId() + "')");
 	}
 	
-	public String getJSidentifier() {
+	public String getId() {
 		return String.valueOf(System.identityHashCode(this));
 	}
 	

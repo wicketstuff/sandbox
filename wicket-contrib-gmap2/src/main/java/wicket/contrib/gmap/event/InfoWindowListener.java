@@ -20,13 +20,12 @@ package wicket.contrib.gmap.event;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 
-import wicket.contrib.gmap.GMap2;
 
 /**
  * TODO should we put 'infoWindowOpen', 'infoWindowBeforeClose' and 'infoWindowClose'
  * together in this listener?
  */
-public abstract class InfoWindowListener extends GMap2.ListenerBehavior
+public abstract class InfoWindowListener extends MapListener
 {
 
 	@Override

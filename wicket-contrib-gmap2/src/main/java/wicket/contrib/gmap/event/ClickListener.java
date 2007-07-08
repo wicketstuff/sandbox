@@ -22,7 +22,6 @@ import org.apache.wicket.Request;
 import org.apache.wicket.RequestCycle;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 
-import wicket.contrib.gmap.GMap2;
 import wicket.contrib.gmap.api.GLatLng;
 import wicket.contrib.gmap.api.GMarker;
 import wicket.contrib.gmap.api.GOverlay;
@@ -30,7 +29,7 @@ import wicket.contrib.gmap.api.GOverlay;
 /**
  * TODO should we put 'click' and 'dblclkick' together in this listener?
  */
-public abstract class ClickListener extends GMap2.ListenerBehavior
+public abstract class ClickListener extends MapListener
 {
 
 	@Override
@@ -54,7 +53,7 @@ public abstract class ClickListener extends GMap2.ListenerBehavior
 		{
 			for (GOverlay overlay : getGMap2().getOverlays())
 			{
-				if (overlay.getJSidentifier().equals(marker))
+				if (overlay.getId().equals(marker))
 				{
 					onMarkerClick(target, (GMarker)overlay);
 					break;

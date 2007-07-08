@@ -31,30 +31,20 @@ if(!Wicket)
 	throw new Error("Wicket already exists and is not an object");
 }
 
-// Wicket.GMap2 Namespace
-if(Wicket.GMap2)
-{
-	throw new Error("Wicket.GMap2 already exists");
-}
+Wicket.maps = { }
 
-// Now create and populate it.
-Wicket.GMap2 = {
-	addMap: function(id) {
-		var map = new GMap2(document.getElementById(id));
-		this[id] = map;
-	},
+function WicketGMap2(id) {
+    Wicket.maps[id] = this;
 
-	getMap: function(id) {
-		return this[id];
-	},
+    this.map = new GMap2(document.getElementById(id));
+	this.controls = {};
+	this.overlays = {};
 
-	ajaxGet: function(id, callBack, params) {
-		var map = this.getMap(id);
-		
-		params['center'] = map.getCenter();
-		params['bounds'] = map.getBounds();
-		params['zoom'] = map.getZoom();
-		params['hidden'] = map.getInfoWindow().isHidden();
+	this.ajaxGet = function(callBack, params) {		
+		params['center'] = this.map.getCenter();
+		params['bounds'] = this.map.getBounds();
+		params['zoom'] = this.map.getZoom();
+		params['hidden'] = this.map.getInfoWindow().isHidden();
 		
 		for (var key in params) {
 			callBack = callBack + '&' + key + '=' + params[key];
@@ -67,151 +57,138 @@ Wicket.GMap2 = {
 			function() {
 			}
 		);
-	},
+	}
 
-	addListener: function(id, event, handler) {
-		var map = this.getMap(id);
-		GEvent.addListener(map, event, handler);
-	},
+	this.addListener = function(event, handler) {
+		GEvent.addListener(this.map, event, handler);
+	}
 	
-	addMoveListener: function(id, callBack) {
+	this.addMoveListener = function(callBack) {
+		var self = this;
 		this.addListener(
-			id,
 			'moveend',
 			function () {
-				Wicket.GMap2.ajaxGet(id, callBack, {});
+				self.ajaxGet(callBack, {});
 			}
 		);
-	},
+	}
 
-	addDragListener: function(id, callBack) {
+	this.addDragListener = function(callBack) {
+		var self = this;
 		this.addListener(
-			id,
 			'dragend',
 			function () {
-				Wicket.GMap2.ajaxGet(id, callBack, {});
+				self.ajaxGet(callBack, {});
 			}
 		);
-	},
+	}
 
-	addClickListener: function(id, callBack) {
+	this.addClickListener = function(callBack) {
+		var self = this;
 		this.addListener(
-			id,
 			'click',
 			function (marker, gLatLng) {
-				Wicket.GMap2.ajaxGet(id, callBack, {'marker':(marker == null ? "" : marker.overlayId), 'latLng':gLatLng});
+				self.ajaxGet(callBack, {'marker':(marker == null ? "" : marker.overlayId), 'latLng':gLatLng});
 			}
 		);
-	},
+	}
 
-	addInfoWindowListener: function(id, callBack) {
+	this.addInfoWindowListener = function(callBack) {
+		var self = this;
 		this.addListener(
-			id,
 			'infowindowclose',
 			function () {
-				Wicket.GMap2.ajaxGet(id, callBack, {});
+				self.ajaxGet(callBack, {});
 			}
 		);
-	},
+	}
 
-	setDraggingEnabled: function(id, enabled) {
-		var map = this.getMap(id);
+	this.setDraggingEnabled = function(enabled) {
 		if (enabled) {
-			map.enableDragging(true);
+			this.map.enableDragging(true);
 		} else {
-			map.disableDragging(true);
+			this.map.disableDragging(true);
 		}
-	},
+	}
 
-	setDoubleClickZoomEnabled: function(id, enabled) {
-		var map = this.getMap(id);
+	this.setDoubleClickZoomEnabled = function(enabled) {
 		if (enabled) {
-			map.enableDoubleClickZoom(true);
+			this.map.enableDoubleClickZoom(true);
 		} else {
-			map.disableDoubleClickZoom(true);
+			this.map.disableDoubleClickZoom(true);
 		}
-	},
+	}
 
-	setScrollWheelZoomEnabled: function(id, enabled) {
-		var map = this.getMap(id);
+	this.setScrollWheelZoomEnabled = function(enabled) {
 		if (enabled) {
-			map.enableScrollWheelZoom(true);
+			this.map.enableScrollWheelZoom(true);
 		} else {
-			map.disableScrollWheelZoom(true);
+			this.map.disableScrollWheelZoom(true);
 		}
-	},
+	}
 
-	setMapType: function(id, mapType) {
-		var map = this.getMap(id);
-		map.setMapType(mapType);
-	},
+	this.setMapType = function(mapType) {
+		this.map.setMapType(mapType);
+	}
 
-	setZoom: function(id, level) {
-		var map = this.getMap(id);
-		map.setZoom(level);
-	},
+	this.setZoom = function(level) {
+		this.map.setZoom(level);
+	}
 
-	setCenter: function(id, center) {
-		var map = this.getMap(id);
-		map.setCenter(center);
-	},
+	this.setCenter = function(center) {
+		this.map.setCenter(center);
+	}
 
-	panDirection: function(id, dx, dy) {
-		var map = this.getMap(id);
-		map.panDirection(dx, dy);
-	},
+	this.panDirection = function(dx, dy) {
+		this.map.panDirection(dx, dy);
+	}
 
-	zoomOut: function(id) {
-		var map = this.getMap(id);
-		map.zoomOut();
-	},
+	this.zoomOut = function() {
+		this.map.zoomOut();
+	}
 
-	zoomIn: function(id) {
-		var map = this.getMap(id);
-		map.zoomIn();
-	},
+	this.zoomIn = function() {
+		this.map.zoomIn();
+	}
 
-	addControl: function(id, controlId, control) {
-		var map = this.getMap(id);
-		map[controlId] = control;
-		map.addControl(map[controlId]);
-	},
+	this.addControl = function(controlId, control) {
+		this.controls[controlId] = control;
+		
+		this.map.addControl(control);
+	}
 
-	removeControl: function(id, controlId) {
-		var map = this.getMap(id);
-		if (map[controlId] != null) {
-			map.removeControl(map[controlId]);
-			map[controlId] = null;
+	this.removeControl = function(controlId) {
+		if (this.controls[controlId] != null) {
+			this.map.removeControl(this.controls[controlId]);
+			
+			this.controls[controlId] = null;
 		}
-	},
+	}
 
-	addOverlay: function(id, overlayId, overlay) {
-		var map = this.getMap(id);
-		map[overlayId] = overlay;
-		map[overlayId].overlayId = overlayId;
-		map.addOverlay(map[overlayId]);
-	},
+	this.addOverlay = function(overlayId, overlay) {
+		this.overlays[overlayId] = overlay;
+		overlay.overlayId = overlayId;
+		
+		this.map.addOverlay(overlay);
+	}
 
-	removeOverlay: function(id, overlayId) {
-		var map = this.getMap(id);
-		if (map[overlayId] != null) {
-			map.removeOverlay(map[overlayId]);
-			map[overlayId] = null;
+	this.removeOverlay = function(overlayId) {
+		if (this.overlays[overlayId] != null) {
+			this.map.removeOverlay(this.overlays[overlayId]);
+			
+			this.overlays[overlayId] = null;
 		}
-	},
+	}
 
-	openInfoWindowTabs: function(id, latLng, tabs) {
-		var map = this.getMap(id);
-		map.openInfoWindowTabs(latLng, tabs);
-	},
+	this.openInfoWindowTabs = function(latLng, tabs) {
+		this.map.openInfoWindowTabs(latLng, tabs);
+	}
 
-	openMarkerInfoWindowTabs: function(id, markerId, tabs) {
-		var map = this.getMap(id);
-		map[markerId].openInfoWindowTabs(tabs);
-	},
+	this.openMarkerInfoWindowTabs = function(markerId, tabs) {
+		this.overlays[markerId].openInfoWindowTabs(tabs);
+	}
 
-	closeInfoWindow: function(id) {
-		var map = this.getMap(id);
-		map.closeInfoWindow();
+	this.closeInfoWindow = function() {
+		this.map.closeInfoWindow();
 	}
 }
