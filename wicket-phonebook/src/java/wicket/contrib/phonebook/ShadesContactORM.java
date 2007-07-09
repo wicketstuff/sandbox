@@ -34,7 +34,7 @@ public class ShadesContactORM extends DefaultHsqlORMapping{
      */
 
     
-    public Class getBeanClass() {
+    public Class<?> getBeanClass() {
         return Contact.class;
     }
 

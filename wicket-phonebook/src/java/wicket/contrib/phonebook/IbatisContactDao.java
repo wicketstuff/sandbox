@@ -95,7 +95,7 @@ public class IbatisContactDao extends SqlMapClientDaoSupport implements
 	 * @return count
 	 */
 	public int count(Contact filter) {
-		Map map = createMap(filter);
+		Map<String, String> map = createMap(filter);
 
 		Integer count = (Integer) getSqlMapClientTemplate().queryForObject(
 				"getContactCount", map);

@@ -62,7 +62,7 @@ public class ContactsDataProvider extends SortableDataProvider implements
 	 *            number of rows to retrieve
 	 * @return iterator capable of iterating over {first, first+count} contacts
 	 */
-	public Iterator iterator(int first, int count) {
+	public Iterator<Contact> iterator(int first, int count) {
 		SortParam sp = getSort();
         if (queryParam == null) {
             queryParam = new QueryParam(first, count, sp.getProperty(), sp.isAscending());

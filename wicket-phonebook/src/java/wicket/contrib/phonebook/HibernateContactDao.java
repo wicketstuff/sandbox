@@ -51,7 +51,7 @@ public class HibernateContactDao implements ContactDao {
 	/**
 	 * Helper method for retrieving hibernate session
 	 * 
-	 * @return
+	 * @return hibernate session
 	 */
 	protected Session getSession() {
 		return factory.getCurrentSession();
@@ -171,8 +171,7 @@ public class HibernateContactDao implements ContactDao {
 		}
 
 		Query query = getSession().createQuery(hql.toString());
-		query.setParameters(params.toArray(), (Type[]) types
-				.toArray(new Type[] {}));
+		query.setParameters(params.toArray(), types.toArray(new Type[] {}));
 
 		if (!count && qp != null) {
 			query.setFirstResult(qp.getFirst()).setMaxResults(qp.getCount());

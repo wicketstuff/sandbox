@@ -18,6 +18,7 @@
  */
 package wicket.contrib.phonebook.web;
 
+import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.springframework.context.ApplicationContext;
@@ -28,14 +29,13 @@ import wicket.contrib.phonebook.web.page.ListContactsPage;
  * @author Kare Nuorteva
  */
 public abstract class BasePhonebookApplication extends WebApplication {
-    public Class getHomePage() {
+    public Class<? extends WebPage> getHomePage() {
         return ListContactsPage.class;
     }
 
     @Override
     protected void init() {
         super.init();
-        // setup component injection
         addComponentInstantiationListener(new SpringComponentInjector(this, context()));
     }
 
