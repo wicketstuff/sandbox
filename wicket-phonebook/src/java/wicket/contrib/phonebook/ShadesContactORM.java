@@ -1,59 +1,70 @@
 /*
- * ContactORM.java
+ * $Id$
+ * $Revision$
+ * $Date$
  *
- * Created on September 14, 2006, 9:04 PM
+ * ==============================================================================
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
  *
- * Copyright Geoffrey Rummens Hendrey 2006.
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
-
 package wicket.contrib.phonebook;
 
 import hendrey.shades.DefaultHsqlORMapping;
 
 /**
  *
- * @author ghendrey
+ * @author Geoffrey Rummens Hendrey
  */
-public class ShadesContactORM extends DefaultHsqlORMapping{
+public class ShadesContactORM extends DefaultHsqlORMapping {
 
-    @Override
-	public String[] getColumnNames(){
-        return new String[]{"ID", "FIRSTNAME", "LASTNAME", "EMAIL", "PHONE"};
-    }
+	@Override
+	public String[] getColumnNames() {
+		return new String[] { "ID", "FIRSTNAME", "LASTNAME", "EMAIL", "PHONE" };
+	}
 
+	@Override
+	public String[] getColumnSet(String columnSetName) {
+		if (columnSetName.equalsIgnoreCase("NonKeyFields")) {
+			return new String[] { "FIRSTNAME", "LASTNAME", "EMAIL", "PHONE" };
+		} else {
+			throw new RuntimeException("unknown columnSetName: "
+					+ columnSetName);
+		}
+	}
 
-    @Override
-	public String[] getColumnSet(String columnSetName){
-        if(columnSetName.equalsIgnoreCase("NonKeyFields")) return new String[]{"FIRSTNAME", "LASTNAME", "EMAIL", "PHONE"};
-        else throw new RuntimeException("unknown columnSetName: "+ columnSetName);
-    }
+	/*
+	 * public Object getColumn(String columnName, ResultSet resultSet) throws
+	 * SQLException { if(columnName.endsWith("ID"))return
+	 * resultSet.getLong(columnName); return resultSet.getString(columnName) }
+	 */
 
-    /*
-    public Object getColumn(String columnName, ResultSet resultSet) throws SQLException {
-        if(columnName.endsWith("ID"))return resultSet.getLong(columnName);
-        return resultSet.getString(columnName)
-    }
-     */
-
-
-    @Override
+	@Override
 	public Class<?> getBeanClass() {
-        return Contact.class;
-    }
+		return Contact.class;
+	}
 
-    @Override
-	public boolean isGeneratedKey(String columnName){
-        return isIdentityColumn(columnName);
-    }
+	@Override
+	public boolean isGeneratedKey(String columnName) {
+		return isIdentityColumn(columnName);
+	}
 
-    @Override
-	public boolean isIdentityColumn(String columnName){
-        return columnName.endsWith("ID");
-    }
+	@Override
+	public boolean isIdentityColumn(String columnName) {
+		return columnName.endsWith("ID");
+	}
 
-    @Override
+	@Override
 	public String[] getNonPojoColumns() {
-        return new String[]{};
-    }
+		return new String[] {};
+	}
 
 }

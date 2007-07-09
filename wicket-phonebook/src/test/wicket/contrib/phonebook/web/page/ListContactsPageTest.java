@@ -31,36 +31,39 @@ import wicket.contrib.phonebook.web.PhonebookFixture;
  * @author Kare Nuorteva
  */
 public class ListContactsPageTest extends TestCase {
-    private WicketTester wicket;
+	private WicketTester wicket;
 
-    @Override
-    protected void setUp() throws Exception {
-        PhonebookApplicationForTesting app = new PhonebookApplicationForTesting();
-        PhonebookFixture fixture = new PhonebookFixture();
-        fixture.addStubs(app.context);
-        wicket = new WicketTester(app);
-        wicket.startPage(ListContactsPage.class);
-        wicket.assertRenderedPage(ListContactsPage.class);
-    }
+	@Override
+	protected void setUp() throws Exception {
+		PhonebookApplicationForTesting app = new PhonebookApplicationForTesting();
+		PhonebookFixture fixture = new PhonebookFixture();
+		fixture.addStubs(app.context);
+		wicket = new WicketTester(app);
+		wicket.startPage(ListContactsPage.class);
+		wicket.assertRenderedPage(ListContactsPage.class);
+	}
 
-    public void testContainsLinkToCreateContacs() throws Exception {
-        wicket.clickLink("createLink");
-        wicket.assertRenderedPage(EditContactPage.class);
-    }
+	public void testContainsLinkToCreateContacs() throws Exception {
+		wicket.clickLink("createLink");
+		wicket.assertRenderedPage(EditContactPage.class);
+	}
 
-    public void testContainsUserList() throws Exception {
-        wicket.assertComponent("users", DefaultDataTable.class);
-    }
+	public void testContainsUserList() throws Exception {
+		wicket.assertComponent("users", DefaultDataTable.class);
+	}
 
-    public void testDeleteLinkOpensConfirmPage() throws Exception {
-        wicket.assertComponent("users:rows:1:cells:1:cell:deleteLink", Link.class);
-        wicket.clickLink("users:rows:1:cells:1:cell:deleteLink");
-        wicket.assertRenderedPage(DeleteContactPage.class);
-    }
+	public void testDeleteLinkOpensConfirmPage() throws Exception {
+		wicket.assertComponent("users:rows:1:cells:1:cell:deleteLink",
+				Link.class);
+		wicket.clickLink("users:rows:1:cells:1:cell:deleteLink");
+		wicket.assertRenderedPage(DeleteContactPage.class);
+	}
 
-    public void testEditLinkOpensContactEditor() throws Exception {
-        wicket.assertComponent("users:rows:1:cells:1:cell:editLink", Link.class);
-        wicket.clickLink("users:rows:1:cells:1:cell:editLink");
-        wicket.assertRenderedPage(EditContactPage.class);
-    }
+	public void testEditLinkOpensContactEditor() throws Exception {
+		wicket
+				.assertComponent("users:rows:1:cells:1:cell:editLink",
+						Link.class);
+		wicket.clickLink("users:rows:1:cells:1:cell:editLink");
+		wicket.assertRenderedPage(EditContactPage.class);
+	}
 }

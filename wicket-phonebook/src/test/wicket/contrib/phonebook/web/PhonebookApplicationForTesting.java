@@ -26,15 +26,15 @@ import org.springframework.context.ApplicationContext;
  * @author Kare Nuorteva
  */
 public class PhonebookApplicationForTesting extends BasePhonebookApplication {
-    public final MockContext context = new MockContext();
+	public final MockContext context = new MockContext();
 
-    @Override
-    public ApplicationContext context() {
-        return context;
-    }
+	@Override
+	public ApplicationContext context() {
+		return context;
+	}
 
-    @Override
-    protected ISessionStore newSessionStore() {
-        return new HttpSessionStore(this);
-    }
+	@Override
+	protected ISessionStore newSessionStore() {
+		return new HttpSessionStore(this);
+	}
 }

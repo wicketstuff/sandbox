@@ -144,7 +144,8 @@ public class ListContactsPage extends BasePage {
 		return new FilteredAbstractColumn(new Model(getString("actions"))) {
 			// return the go-and-clear filter for the filter toolbar
 			public Component getFilter(String componentId, FilterForm form) {
-				return new GoAndClearFilter(componentId, form, new ResourceModel("filter"), new ResourceModel("clear"));
+				return new GoAndClearFilter(componentId, form,
+						new ResourceModel("filter"), new ResourceModel("clear"));
 			}
 
 			// add the UserActionsPanel to the cell item

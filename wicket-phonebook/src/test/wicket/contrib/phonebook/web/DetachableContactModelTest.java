@@ -29,17 +29,17 @@ import wicket.contrib.phonebook.ContactDao;
  * @author Kare Nuorteva
  */
 public class DetachableContactModelTest extends TestCase {
-    public void testLoad() throws Exception {
-        ContactDao dao = EasyMock.createStrictMock(ContactDao.class);
-        Contact expected = new Contact();
-        expected.setId(007);
-        expected.setFirstname("James");
-        expected.setLastname("Bond");
-        expected.setEmail("james.bond@mi5.gov.uk");
-        EasyMock.expect(dao.load(expected.getId())).andReturn(expected);
-        EasyMock.replay(dao);
-        DetachableContactModel model = new DetachableContactModel(expected, dao);
-        assertEquals(expected, model.load());
-        EasyMock.verify(dao);
-    }
+	public void testLoad() throws Exception {
+		ContactDao dao = EasyMock.createStrictMock(ContactDao.class);
+		Contact expected = new Contact();
+		expected.setId(007);
+		expected.setFirstname("James");
+		expected.setLastname("Bond");
+		expected.setEmail("james.bond@mi5.gov.uk");
+		EasyMock.expect(dao.load(expected.getId())).andReturn(expected);
+		EasyMock.replay(dao);
+		DetachableContactModel model = new DetachableContactModel(expected, dao);
+		assertEquals(expected, model.load());
+		EasyMock.verify(dao);
+	}
 }
