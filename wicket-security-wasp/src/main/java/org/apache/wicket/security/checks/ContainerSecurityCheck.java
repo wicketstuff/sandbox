@@ -33,26 +33,42 @@ public class ContainerSecurityCheck extends ComponentSecurityCheck
 {
 
 	private static final long serialVersionUID = 1L;
+	
+	private final boolean enableAuthentication;
 
 	/**
-	 * Construct.
+	 * Constructs a new check on the container. By default neither the model or the authentication is checked.
 	 * 
-	 * @param component
+	 * @param component the container
 	 */
 	public ContainerSecurityCheck(MarkupContainer component)
 	{
 		super(component);
+		enableAuthentication=false;
 	}
 
 	/**
-	 * Construct.
+	 * Constructs a new check on the container. By default authentication is not checked.
 	 * 
-	 * @param component
-	 * @param checkSecureModelIfExists
+	 * @param component the container
+	 * @param checkSecureModelIfExists flag for enabling or disabling the securitycheck on the model
 	 */
 	public ContainerSecurityCheck(MarkupContainer component, boolean checkSecureModelIfExists)
 	{
+		this(component, checkSecureModelIfExists, false);
+	}
+
+	/**
+	 * Constructs a new check on the container with the given flags for model and authentication checks.
+	 * 
+	 * @param component
+	 * @param checkSecureModelIfExists flag for enabling or disabling the securitycheck on the model
+	 * @param enableAuthenticationCheck flag if authentication should be checked for this component
+	 */
+	public ContainerSecurityCheck(MarkupContainer component, boolean checkSecureModelIfExists, boolean enableAuthenticationCheck)
+	{
 		super(component, checkSecureModelIfExists);
+		this.enableAuthentication=enableAuthenticationCheck;
 	}
 
 	/**
@@ -62,7 +78,7 @@ public class ContainerSecurityCheck extends ComponentSecurityCheck
 	 */
 	public boolean isActionAuthorized(WaspAction action)
 	{
-		if (!isAuthenticated())
+		if (enableAuthentication && !isAuthenticated())
 			throw new RestartResponseAtInterceptPageException(getLoginPage());
 		boolean result = getStrategy().isClassAuthorized(getComponent().getClass(), action);
 		if (result && checkSecureModel() && SecureComponentHelper.hasSecureModel(getComponent()))
