@@ -1,0 +1,12 @@
+grant
+{
+	permission ${ComponentPermission} "org.apache.wicket.security.examples.tabs.pages.MasterPage", "render, enable";
+};
+grant principal org.apache.wicket.security.examples.authorization.MyPrincipal "basic"
+{
+	permission ${ComponentPermission} "org.apache.wicket.security.examples.tabs.panels.Gifkikker", "render, enable";
+};
+grant principal org.apache.wicket.security.examples.authorization.MyPrincipal "super"
+{
+
+};

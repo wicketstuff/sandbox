@@ -2,7 +2,7 @@
 <html xmlns:wicket>
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-<title>Swarm custom actions example</title>
+<title>Swarm panel replacement example</title>
 
 <!-- STYLESHEETS -->
 <link rel="stylesheet" href="css/reset-fonts-grids.css" type="text/css"
@@ -34,26 +34,30 @@
 </head>
 <body>
 <div id="container">
-	<div id="menubar">
-		<ul id="topmenu">
-			<li><a href="#" wicket:id="logoff">Logoff</a></li>
-			<li><a href="#" onclick="alert('Sorry, no help available');return false;">Help</a></li>
-		</ul>
-	</div>
-	<div id="actionbar">
-		<ul id="actionmenu">
-			<li></li>
-		</ul>
-	</div>
+<div id="menubar">
+<ul id="topmenu">
+	<li><a href="#">Logoff</a></li>
+	<li><a href="#">Help</a></li>
+</ul>
+</div>
+<div id="actionbar">
+<ul id="actionmenu">
+	<li></li>
+</ul>
+</div>
 <div id="content">
 <div id="navcontent">
-<div wicket:id="buttoncontainer"></div>
+<div id="buttoncontainer" wicketid="buttoncontainer"></div>
 </div>
-<div id="contentbox">
-<wicket:child/>
+<div id="contentbox"><wicket:extend>
+	<div class="title" id="centerTitle">Beer Tabs</div>
+	<br/>
+	<div id="agendaView">
+	<span wicket:id="tabs" class="tabpanel">[tabbed panel will be here]</span>
+	</div>
+</wicket:extend></div>
 </div>
-</div>
-<div id="footer">Bee Hive Example version 0.1 - Powered by Swarm</div>
+<div id="footer">Beer Tab Example version 0.1 - Powered by Swarm</div>
 </div>
 </body>
 </html>
