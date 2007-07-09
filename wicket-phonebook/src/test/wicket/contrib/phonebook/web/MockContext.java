@@ -28,12 +28,12 @@ import org.springframework.context.ApplicationContext;
  * @author Kare Nuorteva
  */
 public class MockContext extends AnnotApplicationContextMock {
-    public MockContext() {
-        InjectorHolder.setInjector(new AnnotSpringInjector(
-                new ISpringContextLocator() {
-                    public ApplicationContext getSpringContext() {
-                        return MockContext.this;
-                    }
-                }));
-    }
+	public MockContext() {
+		InjectorHolder.setInjector(new AnnotSpringInjector(
+				new ISpringContextLocator() {
+					public ApplicationContext getSpringContext() {
+						return MockContext.this;
+					}
+				}));
+	}
 }

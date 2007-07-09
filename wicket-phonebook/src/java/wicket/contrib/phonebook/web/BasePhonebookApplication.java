@@ -29,16 +29,17 @@ import wicket.contrib.phonebook.web.page.ListContactsPage;
  * @author Kare Nuorteva
  */
 public abstract class BasePhonebookApplication extends WebApplication {
-    @Override
+	@Override
 	public Class<? extends WebPage> getHomePage() {
-        return ListContactsPage.class;
-    }
+		return ListContactsPage.class;
+	}
 
-    @Override
-    protected void init() {
-        super.init();
-        addComponentInstantiationListener(new SpringComponentInjector(this, context()));
-    }
+	@Override
+	protected void init() {
+		super.init();
+		addComponentInstantiationListener(new SpringComponentInjector(this,
+				context()));
+	}
 
-    public abstract ApplicationContext context();
+	public abstract ApplicationContext context();
 }

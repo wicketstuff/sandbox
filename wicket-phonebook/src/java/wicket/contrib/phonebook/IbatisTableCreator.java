@@ -1,20 +1,35 @@
+/*
+ * $Id$
+ * $Revision$
+ * $Date$
+ *
+ * ==============================================================================
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package wicket.contrib.phonebook;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.orm.ibatis.support.SqlMapClientDaoSupport;
 
 /**
- * Created by IntelliJ IDEA.
- * User: gwyeva1
- * Date: 28-May-2006
- * Time: 09:05:59
- * To change this template use File | Settings | File Templates.
+ * @author gwyeva1
  */
-public class IbatisTableCreator extends SqlMapClientDaoSupport implements InitializingBean {
+public class IbatisTableCreator extends SqlMapClientDaoSupport implements
+		InitializingBean {
 
-    @Override
+	@Override
 	protected void initDao() throws Exception {
-        super.initDao();
-        getSqlMapClientTemplate().insert("createTable", null);
-    }
+		super.initDao();
+		getSqlMapClientTemplate().insert("createTable", null);
+	}
 }

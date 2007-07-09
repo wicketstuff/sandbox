@@ -21,13 +21,13 @@ package wicket.contrib.phonebook.web;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
-
 /**
  * @author Kare Nuorteva
  */
 public class PhonebookApplication extends BasePhonebookApplication {
-    @Override
-    public ApplicationContext context() {
-        return WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
-    }
+	@Override
+	public ApplicationContext context() {
+		return WebApplicationContextUtils
+				.getRequiredWebApplicationContext(getServletContext());
+	}
 }
