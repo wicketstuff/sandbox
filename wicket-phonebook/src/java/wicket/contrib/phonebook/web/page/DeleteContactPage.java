@@ -50,7 +50,7 @@ public class DeleteContactPage extends BasePage {
 	 * @param backPage
 	 *            The page that the user was on before coming here
 	 * @param contact
-	 *            Model that containst he contact to be deleted
+	 *            Model that contains the contact to be deleted
 	 */
 	public DeleteContactPage(Page backPage, IModel contact) {
 		this.backPage = backPage;
@@ -58,6 +58,11 @@ public class DeleteContactPage extends BasePage {
 
 		add(new Label("name", getContact().getFullName()));
 
+	    /*
+         * notice in mark-up this link is attached to <input type='button'/> tag,
+         * the link is smart enough to know to generate an onclick instead of
+         * href
+         */
 		add(new Link("confirm", new ResourceModel("confirm")) {
 
             @Override
