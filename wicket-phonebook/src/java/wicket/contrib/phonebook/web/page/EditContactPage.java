@@ -19,19 +19,21 @@
 package wicket.contrib.phonebook.web.page;
 
 import org.apache.wicket.Page;
-import wicket.contrib.phonebook.Contact;
-import wicket.contrib.phonebook.ContactDao;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.collections.MicroMap;
 import org.apache.wicket.util.string.interpolator.MapVariableInterpolator;
 import org.apache.wicket.validation.validator.EmailAddressValidator;
 import org.apache.wicket.validation.validator.StringValidator;
+
+import wicket.contrib.phonebook.Contact;
+import wicket.contrib.phonebook.ContactDao;
 
 /**
  * Edit the Contact. Display details if an existing contact, then persist them
@@ -75,7 +77,7 @@ public class EditContactPage extends BasePage {
 		form.add(new TextField("email").add(StringValidator.maximumLength(128))
 				.add(EmailAddressValidator.getInstance()));
 
-		form.add(new Button("cancel") {
+		form.add(new Button("cancel", new ResourceModel("cancel")) {
 			public void onSubmit() {
 				String msg = getLocalizer().getString("status.cancel", this);
 				getSession().info(msg);
@@ -83,7 +85,7 @@ public class EditContactPage extends BasePage {
 			}
 		}.setDefaultFormProcessing(false));
 
-		form.add(new Button("save") {
+		form.add(new Button("save", new ResourceModel("save")) {
 			public void onSubmit() {
 				Contact contact = (Contact) getForm().getModelObject();
 				contactDao.save(contact);

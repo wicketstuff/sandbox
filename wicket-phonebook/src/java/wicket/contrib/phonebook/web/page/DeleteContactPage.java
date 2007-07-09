@@ -19,14 +19,16 @@
 package wicket.contrib.phonebook.web.page;
 
 import org.apache.wicket.Page;
-import wicket.contrib.phonebook.Contact;
-import wicket.contrib.phonebook.ContactDao;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.collections.MicroMap;
 import org.apache.wicket.util.string.interpolator.MapVariableInterpolator;
+
+import wicket.contrib.phonebook.Contact;
+import wicket.contrib.phonebook.ContactDao;
 
 /**
  * Delete the Contact.
@@ -37,7 +39,7 @@ import org.apache.wicket.util.string.interpolator.MapVariableInterpolator;
 public class DeleteContactPage extends BasePage {
 	private Page backPage;
 
-	@SpringBean(name = "contactDao")
+    @SpringBean(name = "contactDao")
 	private ContactDao contactDao;
 
 	/**
@@ -56,15 +58,10 @@ public class DeleteContactPage extends BasePage {
 
 		add(new Label("name", getContact().getFullName()));
 
-		/*
-		 * notice in markup this link is attached to <input type='button'/> tag,
-		 * the link is smart enough to know to generate an onclick instead of
-		 * href
-		 */
-		add(new Link("confirm") {
+		add(new Link("confirm", new ResourceModel("confirm")) {
 
-			@Override
-			public void onClick() {
+            @Override
+            public void onClick() {
 				final Contact deleted = getContact();
 
 				contactDao.delete(deleted.getId());
@@ -80,7 +77,7 @@ public class DeleteContactPage extends BasePage {
 
 		});
 
-		add(new Link("cancel") {
+		add(new Link("cancel", new ResourceModel("cancel")) {
 
 			@Override
 			public void onClick() {
@@ -100,7 +97,7 @@ public class DeleteContactPage extends BasePage {
 	/**
 	 * Type-safe way to retrieve the contact from the page's model
 	 * 
-	 * @return
+	 * @return <code>Contact</code> instance stored in model
 	 */
 	private Contact getContact() {
 		return (Contact) getModelObject();
