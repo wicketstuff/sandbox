@@ -5,11 +5,18 @@
   <buildSpec>
     <buildCommand>
       <name>org.eclipse.jdt.core.javabuilder</name>
-      <arguments/>
+    </buildCommand>
+    <buildCommand>
+      <name>org.springframework.ide.eclipse.core.springbuilder</name>
+    </buildCommand>
+    <buildCommand>
+      <name>com.stateofflow.eclipse.metrics.MetricsBuilder</name>
     </buildCommand>
   </buildSpec>
   <natures>
     <nature>org.eclipse.jdt.core.javanature</nature>
     <nature>com.sysdeo.eclipse.tomcat.tomcatnature</nature>
+    <nature>org.springframework.ide.eclipse.core.springnature</nature>
+    <nature>com.stateofflow.eclipse.metrics.MetricsNature</nature>
   </natures>
 </projectDescription>
