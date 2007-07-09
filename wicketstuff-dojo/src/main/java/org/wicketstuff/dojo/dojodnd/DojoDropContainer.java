@@ -21,7 +21,6 @@ import java.util.Set;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.wicketstuff.dojo.markup.html.form.ImmediateCheckBox;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 
 /**
