@@ -223,6 +223,22 @@
         </resources>
         <plugins>
             <plugin>
+                <artifactId>maven-eclipse-plugin</artifactId>
+                <version>2.3</version>
+                <configuration>
+                    <additionalProjectnatures>
+                        <projectnature>org.springframework.ide.eclipse.core.springnature</projectnature>
+                        <projectnature>com.sysdeo.eclipse.tomcat.tomcatnature</projectnature>
+                        <projectnature>com.stateofflow.eclipse.metrics.MetricsNature</projectnature>
+                    </additionalProjectnatures>
+                    <additionalBuildcommands>
+                        <buildcommand>org.springframework.ide.eclipse.core.springbuilder</buildcommand>
+                        <buildcommand>com.stateofflow.eclipse.metrics.MetricsBuilder</buildcommand>
+                    </additionalBuildcommands>
+                    <downloadSources>true</downloadSources>
+                </configuration>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <configuration>
