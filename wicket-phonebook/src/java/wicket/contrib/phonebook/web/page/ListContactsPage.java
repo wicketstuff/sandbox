@@ -19,11 +19,9 @@
 package wicket.contrib.phonebook.web.page;
 
 import java.util.Arrays;
+import java.util.List;
 
 import org.apache.wicket.Component;
-import wicket.contrib.phonebook.Contact;
-import wicket.contrib.phonebook.ContactDao;
-import wicket.contrib.phonebook.web.ContactsDataProvider;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.ChoiceFilteredPropertyColumn;
@@ -38,7 +36,12 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import wicket.contrib.phonebook.Contact;
+import wicket.contrib.phonebook.ContactDao;
+import wicket.contrib.phonebook.web.ContactsDataProvider;
 
 /**
  * Display a Pageable List of Contacts.
@@ -46,6 +49,8 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  * @author igor
  */
 public class ListContactsPage extends BasePage {
+	@SpringBean(name = "contactDao")
+	private ContactDao dao;
 
 	/**
 	 * Provides a composite User Actions panel for the Actions column.
@@ -53,21 +58,13 @@ public class ListContactsPage extends BasePage {
 	 * @author igor
 	 */
 	private static class UserActionsPanel extends Panel {
-
 		public UserActionsPanel(String id, IModel contactModel) {
 			super(id);
+			addEditLink(contactModel);
+			addDeleteLink(contactModel);
+		}
 
-			add(new Link("editLink", contactModel) {
-				/**
-				 * Go to the Edit page, passing this page and the id of the
-				 * Contact involved.
-				 */
-				public void onClick() {
-					setResponsePage(new EditContactPage(getPage(), getModel()));
-				}
-
-			});
-
+		private void addDeleteLink(IModel contactModel) {
 			add(new Link("deleteLink", contactModel) {
 				/**
 				 * Go to the Delete page, passing this page and the id of the
@@ -76,22 +73,86 @@ public class ListContactsPage extends BasePage {
 				public void onClick() {
 					setResponsePage(new DeleteContactPage(getPage(), getModel()));
 				}
-
 			});
+		}
 
+		private void addEditLink(IModel contactModel) {
+			add(new Link("editLink", contactModel) {
+				/**
+				 * Go to the Edit page, passing this page and the id of the
+				 * Contact involved.
+				 */
+				public void onClick() {
+					setResponsePage(new EditContactPage(getPage(), getModel()));
+				}
+			});
 		}
 
 	}
-
-	@SpringBean(name = "contactDao")
-	private ContactDao dao;
 
 	/**
 	 * Constructor. Having this constructor public means that the page is
 	 * 'bookmarkable' and hence can be called/ created from anywhere.
 	 */
 	public ListContactsPage() {
+		addCreateLink();
+		IColumn[] columns = createColumns();
+		// set up data provider
+		ContactsDataProvider dataProvider = new ContactsDataProvider(dao);
+		// create the data table
+		DefaultDataTable users = new DefaultDataTable("users", Arrays
+				.asList(columns), dataProvider, 10);
+		users.addTopToolbar(new FilterToolbar(users, dataProvider));
+		add(users);
 
+	}
+
+	private IColumn[] createColumns() {
+		IColumn[] columns = new IColumn[5];
+		/*
+		 * This is a composite column, created by extending
+		 * FilteredAbstractColumn. This column adds a UserActionsPanel as its
+		 * cell contents. It also provides the go-and-clear filter control
+		 * panel.
+		 */
+		columns[0] = createActionsColumn();
+		columns[1] = createColumn("first.name", "firstname", "firstname");
+		columns[2] = new ChoiceFilteredPropertyColumn(new ResourceModel(
+				"last.name"), "lastname", "lastname",
+				new LoadableDetachableModel() {
+					protected Object load() {
+						List<String> uniqueLastNames = dao.getUniqueLastNames();
+						uniqueLastNames.add(0, "");
+						return uniqueLastNames;
+					}
+				});
+		columns[3] = createColumn("phone", "phone", "phone");
+		columns[4] = createColumn("email", "email", "email");
+		return columns;
+	}
+
+	private TextFilteredPropertyColumn createColumn(String key,
+			String sortProperty, String propertyExpression) {
+		return new TextFilteredPropertyColumn(new ResourceModel(key),
+				sortProperty, propertyExpression);
+	}
+
+	private FilteredAbstractColumn createActionsColumn() {
+		return new FilteredAbstractColumn(new Model(getString("actions"))) {
+			// return the go-and-clear filter for the filter toolbar
+			public Component getFilter(String componentId, FilterForm form) {
+				return new GoAndClearFilter(componentId, form, new ResourceModel("filter"), new ResourceModel("clear"));
+			}
+
+			// add the UserActionsPanel to the cell item
+			public void populateItem(Item cellItem, String componentId,
+					IModel model) {
+				cellItem.add(new UserActionsPanel(componentId, model));
+			}
+		};
+	}
+
+	private void addCreateLink() {
 		add(new Link("createLink") {
 			/**
 			 * Go to the Edit page when the link is clicked, passing an empty
@@ -101,60 +162,6 @@ public class ListContactsPage extends BasePage {
 				setResponsePage(new EditContactPage(getPage(), new Model(
 						new Contact())));
 			}
-
 		});
-
-		IColumn[] columns = new IColumn[5];
-
-		/*
-		 * This is a composite column, created by extending
-		 * FilteredAbstractColumn. This column adds a UserActionsPanel as its
-		 * cell contents. It also provides the go-and-clear filter control
-		 * panel.
-		 */
-		columns[0] = new FilteredAbstractColumn(new Model("Actions")) {
-
-			// return the go-and-clear filter for the filter toolbar
-			public Component getFilter(String componentId, FilterForm form) {
-				return new GoAndClearFilter(componentId, form);
-			}
-
-			// addd the UserActionsPanel to the cell item
-			public void populateItem(Item cellItem, String componentId,
-					IModel model) {
-				cellItem.add(new UserActionsPanel(componentId, model));
-			}
-
-		};
-
-		// creates a column with a text filter
-		columns[1] = new TextFilteredPropertyColumn(new Model("First Name"),
-				"firstname", "firstname");
-
-		columns[2] = new ChoiceFilteredPropertyColumn(new Model("Last Name"),
-				"lastname", "lastname", new LoadableDetachableModel() {
-
-					protected Object load() {
-						return dao.getUniqueLastNames();
-					}
-
-				});
-
-		columns[3] = new TextFilteredPropertyColumn(new Model("Phone Number"),
-				"phone", "phone");
-
-		columns[4] = new TextFilteredPropertyColumn(new Model("Email"),
-				"email", "email");
-
-		// set up data provider
-		ContactsDataProvider dataProvider = new ContactsDataProvider(dao);
-
-		// create the data table
-		DefaultDataTable users = new DefaultDataTable("users", Arrays
-				.asList(columns), dataProvider, 10);
-
-		users.addTopToolbar(new FilterToolbar(users, dataProvider));
-		add(users);
-
 	}
 }
