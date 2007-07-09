@@ -57,7 +57,7 @@ dojo.widget.defineWidget(
 		//If true disabled the input from keyboard
 		inputNotAllowed:false,
 		
-		templatePath: dojo.uri.dojoUri("src/widget/templates/TimePicker.htm"),
+		templatePath: dojo.uri.dojoUri("src/widget/templates/TimePicker.html"),
 		templateCssPath: dojo.uri.dojoUri("src/widget/templates/TimePicker.css"),
 
 		postMixInProperties: function() {
