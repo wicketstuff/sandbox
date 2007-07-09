@@ -91,7 +91,7 @@ public abstract class WaspWebApplication extends WebApplication implements WaspA
 
 	/**
 	 * Destroys the strategy factory and the action factory. In that order. If
-	 * you override this method you must call super.destroy().
+	 * you override this method you must call super.onDestroy().
 	 * 
 	 * @see Application#onDestroy()
 	 */
