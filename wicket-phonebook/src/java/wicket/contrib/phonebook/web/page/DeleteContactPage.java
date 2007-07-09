@@ -34,12 +34,10 @@ import wicket.contrib.phonebook.ContactDao;
  * Delete the Contact.
  * 
  * @author igor
- * 
  */
 public class DeleteContactPage extends BasePage {
 	private Page backPage;
-
-    @SpringBean(name = "contactDao")
+	@SpringBean(name = "contactDao")
 	private ContactDao contactDao;
 
 	/**
@@ -55,48 +53,42 @@ public class DeleteContactPage extends BasePage {
 	public DeleteContactPage(Page backPage, IModel contact) {
 		this.backPage = backPage;
 		setModel(contact);
-
 		add(new Label("name", getContact().getFullName()));
+		addConfimButton();
+		addCancelButton();
+	}
 
-	    /*
-         * notice in mark-up this link is attached to <input type='button'/> tag,
-         * the link is smart enough to know to generate an onclick instead of
-         * href
-         */
+	private void addConfimButton() {
+		/*
+		 * notice in mark-up this link is attached to <input type='button'/>
+		 * tag, the link is smart enough to know to generate an onclick instead
+		 * of href
+		 */
 		add(new Link("confirm", new ResourceModel("confirm")) {
-
-            @Override
-            public void onClick() {
+			@Override
+			public void onClick() {
 				final Contact deleted = getContact();
-
 				contactDao.delete(deleted.getId());
-
 				String msg = MapVariableInterpolator.interpolate(getLocalizer()
 						.getString("status.deleted", this), new MicroMap(
 						"name", deleted.getFullName()));
-
 				getSession().info(msg);
-
 				setResponsePage(DeleteContactPage.this.backPage);
 			}
-
 		});
+	}
 
+	private void addCancelButton() {
 		add(new Link("cancel", new ResourceModel("cancel")) {
-
 			@Override
 			public void onClick() {
 				String msg = MapVariableInterpolator.interpolate(getLocalizer()
 						.getString("status.cancelled", this), new MicroMap(
 						"name", getContact().getFullName()));
-
 				getSession().info(msg);
-
 				setResponsePage(DeleteContactPage.this.backPage);
 			}
-
 		});
-
 	}
 
 	/**
