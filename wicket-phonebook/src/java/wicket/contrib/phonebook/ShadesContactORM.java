@@ -15,17 +15,19 @@ import hendrey.shades.DefaultHsqlORMapping;
  * @author ghendrey
  */
 public class ShadesContactORM extends DefaultHsqlORMapping{
-     
-    public String[] getColumnNames(){
-        return new String[]{"ID", "FIRSTNAME", "LASTNAME", "EMAIL", "PHONE"};       
+
+    @Override
+	public String[] getColumnNames(){
+        return new String[]{"ID", "FIRSTNAME", "LASTNAME", "EMAIL", "PHONE"};
     }
-       
-    
-    public String[] getColumnSet(String columnSetName){
+
+
+    @Override
+	public String[] getColumnSet(String columnSetName){
         if(columnSetName.equalsIgnoreCase("NonKeyFields")) return new String[]{"FIRSTNAME", "LASTNAME", "EMAIL", "PHONE"};
         else throw new RuntimeException("unknown columnSetName: "+ columnSetName);
     }
-    
+
     /*
     public Object getColumn(String columnName, ResultSet resultSet) throws SQLException {
         if(columnName.endsWith("ID"))return resultSet.getLong(columnName);
@@ -33,21 +35,25 @@ public class ShadesContactORM extends DefaultHsqlORMapping{
     }
      */
 
-    
-    public Class<?> getBeanClass() {
+
+    @Override
+	public Class<?> getBeanClass() {
         return Contact.class;
     }
 
-    public boolean isGeneratedKey(String columnName){
+    @Override
+	public boolean isGeneratedKey(String columnName){
         return isIdentityColumn(columnName);
     }
-    
-    public boolean isIdentityColumn(String columnName){
+
+    @Override
+	public boolean isIdentityColumn(String columnName){
         return columnName.endsWith("ID");
     }
 
-    public String[] getNonPojoColumns() {
+    @Override
+	public String[] getNonPojoColumns() {
         return new String[]{};
     }
-    
+
 }

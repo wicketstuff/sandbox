@@ -2,14 +2,14 @@
  * $Id: HibernateContactDao.java 1056 2006-10-27 22:49:28Z ivaynberg $
  * $Revision: 1056 $
  * $Date: 2006-10-27 15:49:28 -0700 (Fri, 27 Oct 2006) $
- * 
+ *
  * ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -30,7 +30,7 @@ import org.hibernate.type.Type;
 
 /**
  * implements {@link ContactDao}.
- * 
+ *
  * @author igor
  */
 public class HibernateContactDao implements ContactDao {
@@ -40,7 +40,7 @@ public class HibernateContactDao implements ContactDao {
 	/**
 	 * Setter for session factory. Spring will use this to inject the session
 	 * factory into the dao.
-	 * 
+	 *
 	 * @param factory
 	 *            hibernate session factory
 	 */
@@ -50,7 +50,7 @@ public class HibernateContactDao implements ContactDao {
 
 	/**
 	 * Helper method for retrieving hibernate session
-	 * 
+	 *
 	 * @return hibernate session
 	 */
 	protected Session getSession() {
@@ -59,7 +59,7 @@ public class HibernateContactDao implements ContactDao {
 
 	/**
 	 * Load a {@link Contact} from the DB, given it's <tt>id</tt> .
-	 * 
+	 *
 	 * @param id
 	 *            The id of the Contact to load.
 	 * @return Contact
@@ -70,7 +70,7 @@ public class HibernateContactDao implements ContactDao {
 
 	/**
 	 * Save the contact to the DB
-	 * 
+	 *
 	 * @param contact
 	 * @return persistent instance of contact
 	 */
@@ -80,7 +80,7 @@ public class HibernateContactDao implements ContactDao {
 
 	/**
 	 * Delete a {@link Contact} from the DB, given it's <tt>id</tt>.
-	 * 
+	 *
 	 * @param id
 	 *            The id of the Contact to delete.
 	 */
@@ -90,7 +90,7 @@ public class HibernateContactDao implements ContactDao {
 
 	/**
 	 * Query the DB, using the supplied query details.
-	 * 
+	 *
 	 * @param qp
 	 *            Query Paramaters to use.
 	 * @return The results of the query as an Iterator.
@@ -103,7 +103,7 @@ public class HibernateContactDao implements ContactDao {
 
 	/**
 	 * Return the number of Contacts in the DB.
-	 * 
+	 *
 	 * @return count
 	 */
 	public int count(Contact filter) {
@@ -124,7 +124,7 @@ public class HibernateContactDao implements ContactDao {
 
 	/**
 	 * builds a query object to statify the provided parameters
-	 * 
+	 *
 	 * @param qp
 	 *            sorting and paging criteria
 	 * @param filter

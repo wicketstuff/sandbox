@@ -2,14 +2,14 @@
  * $Id: Contact.java 773 2006-06-08 12:54:03 -0700 (Thu, 08 Jun 2006) gwynevans $
  * $Revision: 773 $
  * $Date: 2006-06-08 12:54:03 -0700 (Thu, 08 Jun 2006) $
- * 
+ *
  * ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -72,6 +72,7 @@ public class Contact implements Serializable {
 		return firstname+" "+lastname;
 	}
 
+	@Override
 	public String toString() {
 		return ("[Contact id="+id+", firstname="+firstname+", lastname="+lastname+", phone="+phone+", email="+email);
 	}

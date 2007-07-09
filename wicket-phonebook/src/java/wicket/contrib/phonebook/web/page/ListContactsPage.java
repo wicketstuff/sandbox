@@ -2,14 +2,14 @@
  * $Id: ListContactsPage.java 903 2006-08-30 09:08:51Z ivaynberg $
  * $Revision: 903 $
  * $Date: 2006-08-30 02:08:51 -0700 (Wed, 30 Aug 2006) $
- * 
+ *
  * ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -45,7 +45,7 @@ import wicket.contrib.phonebook.web.ContactsDataProvider;
 
 /**
  * Display a Pageable List of Contacts.
- * 
+ *
  * @author igor
  */
 public class ListContactsPage extends BasePage {
@@ -54,7 +54,7 @@ public class ListContactsPage extends BasePage {
 
 	/**
 	 * Provides a composite User Actions panel for the Actions column.
-	 * 
+	 *
 	 * @author igor
 	 */
 	private static class UserActionsPanel extends Panel {
@@ -70,6 +70,7 @@ public class ListContactsPage extends BasePage {
 				 * Go to the Delete page, passing this page and the id of the
 				 * Contact involved.
 				 */
+				@Override
 				public void onClick() {
 					setResponsePage(new DeleteContactPage(getPage(), getModel()));
 				}
@@ -82,6 +83,7 @@ public class ListContactsPage extends BasePage {
 				 * Go to the Edit page, passing this page and the id of the
 				 * Contact involved.
 				 */
+				@Override
 				public void onClick() {
 					setResponsePage(new EditContactPage(getPage(), getModel()));
 				}
@@ -120,6 +122,7 @@ public class ListContactsPage extends BasePage {
 		columns[2] = new ChoiceFilteredPropertyColumn(new ResourceModel(
 				"last.name"), "lastname", "lastname",
 				new LoadableDetachableModel() {
+					@Override
 					protected Object load() {
 						List<String> uniqueLastNames = dao.getUniqueLastNames();
 						uniqueLastNames.add(0, "");
@@ -158,6 +161,7 @@ public class ListContactsPage extends BasePage {
 			 * Go to the Edit page when the link is clicked, passing an empty
 			 * Contact details
 			 */
+			@Override
 			public void onClick() {
 				setResponsePage(new EditContactPage(getPage(), new Model(
 						new Contact())));

@@ -2,14 +2,14 @@
  * $Id: EditContactPage.java 634 2006-03-26 18:28:10 -0800 (Sun, 26 Mar 2006) ivaynberg $
  * $Revision: 634 $
  * $Date: 2006-03-26 18:28:10 -0800 (Sun, 26 Mar 2006) $
- * 
+ *
  * ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -38,12 +38,12 @@ import wicket.contrib.phonebook.ContactDao;
 /**
  * Edit the Contact. Display details if an existing contact, then persist them
  * if saved.
- * 
+ *
  * @author igor
- * 
+ *
  */
 public class EditContactPage extends BasePage {
-	private Page backPage;
+	private final Page backPage;
 	@SpringBean(name = "contactDao")
 	private ContactDao contactDao;
 
@@ -51,7 +51,7 @@ public class EditContactPage extends BasePage {
 	 * Constructor. Create or edit the contact. Note that if you don't need the
 	 * page to be bookmarkable, you can use whatever constructor you need, such
 	 * as is done here.
-	 * 
+	 *
 	 * @param backPage
 	 *            The page that the user was on before coming here
 	 * @param contactModel
@@ -85,6 +85,7 @@ public class EditContactPage extends BasePage {
 			setDefaultFormProcessing(false);
 		}
 
+		@Override
 		public void onSubmit() {
 			String msg = getLocalizer().getString("status.cancel", this);
 			getSession().info(msg);
@@ -97,6 +98,7 @@ public class EditContactPage extends BasePage {
 			super("save", new ResourceModel("save"));
 		}
 
+		@Override
 		public void onSubmit() {
 			Contact contact = (Contact) getForm().getModelObject();
 			contactDao.save(contact);
