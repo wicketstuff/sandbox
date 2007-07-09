@@ -2,14 +2,14 @@
  * $Id: IbatisContactDao.java 479 2005-12-11 07:05:45Z ivaynberg $
  * $Revision: 479 $
  * $Date: 2005-12-11 07:05:45 +0000 (Sun, 11 Dec 2005) $
- * 
+ *
  * ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -28,7 +28,7 @@ import org.springframework.orm.ibatis.support.SqlMapClientDaoSupport;
 
 /**
  * implements {@link ContactDao}.
- * 
+ *
  * @author igor
  */
 public class IbatisContactDao extends SqlMapClientDaoSupport implements
@@ -36,7 +36,7 @@ public class IbatisContactDao extends SqlMapClientDaoSupport implements
 
 	/**
 	 * Load a {@link Contact} from the DB, given it's <tt>id</tt> .
-	 * 
+	 *
 	 * @param id
 	 *            The id of the Contact to load.
 	 * @return Contact
@@ -48,7 +48,7 @@ public class IbatisContactDao extends SqlMapClientDaoSupport implements
 
 	/**
 	 * Save the contact to the DB
-	 * 
+	 *
 	 * @param contact
 	 * @return persistent instance of contact
 	 */
@@ -63,7 +63,7 @@ public class IbatisContactDao extends SqlMapClientDaoSupport implements
 
 	/**
 	 * Delete a {@link Contact} from the DB, given it's <tt>id</tt>.
-	 * 
+	 *
 	 * @param id
 	 *            The id of the Contact to delete.
 	 */
@@ -73,10 +73,10 @@ public class IbatisContactDao extends SqlMapClientDaoSupport implements
 
 	/**
 	 * Query the DB, using the supplied query details.
-	 * 
+	 *
 	 * @param qp
 	 *            Query Paramaters to use.
-	 * 
+	 *
 	 * @return The results of the query as an Iterator.
 	 */
 	@SuppressWarnings("unchecked")
@@ -91,7 +91,7 @@ public class IbatisContactDao extends SqlMapClientDaoSupport implements
 
 	/**
 	 * Return the number of Configs in the DB.
-	 * 
+	 *
 	 * @return count
 	 */
 	public int count(Contact filter) {
@@ -112,7 +112,7 @@ public class IbatisContactDao extends SqlMapClientDaoSupport implements
 	}
 
 	/**
-	 * 
+	 *
 	 * @param filter
 	 * @return
 	 */

@@ -32,35 +32,35 @@ public class ShadesORMDictionary implements InitializingBean{
     static{
         ORMapping orm = new ShadesContactORM();
         dict.defineORMapping("CONTACT", orm);
-        
+
         /************************* DEFINE QUERY BY ID *********************************/
         Query q = QueryFactory.newQuery(dict);
-        q.candidate(orm).where("ID=${id}", new String[]{});     
+        q.candidate(orm).where("ID=${id}", new String[]{});
         dict.defineQuery("byId", q);
         /***************************************************************************************/
-        
+
         /************************DEFINE QUERY BY RESEMBLANCE******************/
         q = QueryFactory.newQuery(dict);
         q.candidate(orm, "CONTACT");
-        dict.defineQuery("byResemblance", q);  
+        dict.defineQuery("byResemblance", q);
         /***************************************************************************************/
-                
+
          /*******************DEFINE QUERY BY RESEMBLENCE WITH FILTER*******/
         q = QueryFactory.newQuery(dict);
         filterCandidate = q.candidate(orm, "CONTACT");
 	q.clause("ORDER BY").append("${order} ${direction} LIMIT ${count} OFFSET ${first}");
-        dict.defineQuery("byOrderedResemblance", q);        
-        /***************************************************************************************/       
-        
+        dict.defineQuery("byOrderedResemblance", q);
+        /***************************************************************************************/
+
         /*******************DEFINE QUERY FOR DISTINCT LASTNAME ***************/
         q = QueryFactory.newImmutableQuery("SELECT DISTINCT LASTNAME AS \"CONTACT.LASTNAME\" FROM CONTACT");
         q.candidate(orm).setFetchColumns(new String[]{"LASTNAME"});
-        dict.defineQuery("selectDistinctLastnameOnly", q); 
+        dict.defineQuery("selectDistinctLastnameOnly", q);
         /****************************************************************************************/
-        
+
     }
-    
-    public static ORMDictionary getInstance(){ 
+
+    public static ORMDictionary getInstance(){
         return dict; //return the static, configured ORMDictionary
     }
 
@@ -78,7 +78,7 @@ public class ShadesORMDictionary implements InitializingBean{
             c.close();
         }
     }
-    
+
     /** Creates a new instance of ShadesPhonebookORMDictionary */
     private ShadesORMDictionary() {
     }
@@ -90,7 +90,7 @@ public class ShadesORMDictionary implements InitializingBean{
     public void setDataSource(DataSource dataSource) {
         this.dataSource = dataSource;
     }
-    
+
 
 }
-    
+

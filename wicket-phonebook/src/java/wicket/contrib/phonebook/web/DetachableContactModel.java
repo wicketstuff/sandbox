@@ -2,14 +2,14 @@
  * $Id: DetachableContactModel.java 1061 2006-11-01 05:58:32Z ivaynberg $
  * $Revision: 1061 $
  * $Date: 2006-10-31 21:58:32 -0800 (Tue, 31 Oct 2006) $
- * 
+ *
  * ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -27,7 +27,7 @@ import org.apache.wicket.model.LoadableDetachableModel;
  * contact details is immediately freed rather than held in the session.
  * Typically used by <tt>List</tt>-type pages, where multiple elements are
  * loaded at a time.
- * 
+ *
  * @author ivaynberg
  */
 public class DetachableContactModel extends LoadableDetachableModel {
@@ -46,7 +46,7 @@ public class DetachableContactModel extends LoadableDetachableModel {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param contact
 	 * @param dao
 	 */
@@ -58,9 +58,10 @@ public class DetachableContactModel extends LoadableDetachableModel {
 
 	/**
 	 * Loads the contact from the database
-	 * 
+	 *
 	 * @see wicket.model.LoadableDetachableModel#load()
 	 */
+	@Override
 	protected Object load() {
 		return dao.load(id);
 	}

@@ -25,7 +25,7 @@ import java.util.List;
 import javax.sql.DataSource;
 
 /**
- * 
+ *
  * @author ghendrey
  */
 public class ShadesContactDao implements ContactDao {

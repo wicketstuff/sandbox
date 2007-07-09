@@ -20,24 +20,24 @@ import org.apache.wicket.model.IModel;
  * needed. wicket-contrib-spring provides proxies to fix just this, the proxy
  * only serializes information it needs to locate the dao when it is
  * deserialized instead of serializing the dao itself.
- * 
+ *
  * @author igor
  */
 public class ContactsDataProvider extends SortableDataProvider implements
 		IFilterStateLocator {
 
 	/** dao that will be used to retrieve the list of contacts */
-	private ContactDao dao;
+	private final ContactDao dao;
 
 	/** reuse the contact entity to store filter information */
 	private Contact filter = new Contact();
 
     private QueryParam queryParam;
-    
+
     public void setQueryParam(QueryParam queryParam) {
         this.queryParam = queryParam;
     }
-    
+
     public Object getFilterState() {
         return filter;
     }
@@ -55,7 +55,7 @@ public class ContactsDataProvider extends SortableDataProvider implements
 
 	/**
 	 * Gets an iterator for the subset of contacts.
-	 * 
+	 *
 	 * @param first
 	 *            offset for the first row of data to retrieve
 	 * @param count
@@ -77,7 +77,7 @@ public class ContactsDataProvider extends SortableDataProvider implements
 
 	/**
 	 * Gets total number of items in the collection.
-	 * 
+	 *
 	 * @return total item count
 	 */
 	public int size() {
@@ -87,7 +87,7 @@ public class ContactsDataProvider extends SortableDataProvider implements
 	/**
 	 * Converts the object in the collection to its model representation. A good
 	 * place to wrap the object in a detachable model.
-	 * 
+	 *
 	 * @param object
 	 *            The object that needs to be wrapped
 	 * @return The model representation of the object
