@@ -54,7 +54,7 @@ public class ContactsDataProviderTest extends TestCase {
         ContactsDataProvider provider = new ContactsDataProvider(dao);
         provider.setQueryParam(qp);
         provider.setFilterState(contact);
-        Iterator result = provider.iterator(0, 10);
+        Iterator<Contact> result = provider.iterator(0, 10);
         assertEquals(expected, result);
     }
 
