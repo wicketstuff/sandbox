@@ -44,7 +44,6 @@ import wicket.contrib.phonebook.ContactDao;
  */
 public class EditContactPage extends BasePage {
 	private Page backPage;
-
 	@SpringBean(name = "contactDao")
 	private ContactDao contactDao;
 
@@ -65,39 +64,47 @@ public class EditContactPage extends BasePage {
 		Form form = new Form("contactForm", new CompoundPropertyModel(contact));
 		add(form);
 
-		form.add(new RequiredTextField("firstname").add(StringValidator
-				.maximumLength(32)));
-
-		form.add(new RequiredTextField("lastname").add(StringValidator
-				.maximumLength(32)));
-
-		form.add(new RequiredTextField("phone").add(StringValidator
-				.maximumLength(16)));
-
+		form.add(newRequiredTextField("firstname", 32));
+		form.add(newRequiredTextField("lastname", 32));
+		form.add(newRequiredTextField("phone", 16));
 		form.add(new TextField("email").add(StringValidator.maximumLength(128))
 				.add(EmailAddressValidator.getInstance()));
+		form.add(new CancelButton());
+		form.add(new SaveButton());
+	}
 
-		form.add(new Button("cancel", new ResourceModel("cancel")) {
-			public void onSubmit() {
-				String msg = getLocalizer().getString("status.cancel", this);
-				getSession().info(msg);
-				setResponsePage(EditContactPage.this.backPage);
-			}
-		}.setDefaultFormProcessing(false));
+	private RequiredTextField newRequiredTextField(String id, int maxLenght) {
+		RequiredTextField textField = new RequiredTextField(id);
+		textField.add(StringValidator.maximumLength(maxLenght));
+		return textField;
+	}
 
-		form.add(new Button("save", new ResourceModel("save")) {
-			public void onSubmit() {
-				Contact contact = (Contact) getForm().getModelObject();
-				contactDao.save(contact);
+	private final class CancelButton extends Button {
+		private CancelButton() {
+			super("cancel", new ResourceModel("cancel"));
+			setDefaultFormProcessing(false);
+		}
 
-				String msg = MapVariableInterpolator.interpolate(getLocalizer()
-						.getString("status.save", this), new MicroMap("name",
-						contact.getFullName()));
+		public void onSubmit() {
+			String msg = getLocalizer().getString("status.cancel", this);
+			getSession().info(msg);
+			setResponsePage(EditContactPage.this.backPage);
+		}
+	}
 
-				getSession().info(msg);
+	private final class SaveButton extends Button {
+		private SaveButton() {
+			super("save", new ResourceModel("save"));
+		}
 
-				setResponsePage(EditContactPage.this.backPage);
-			}
-		});
+		public void onSubmit() {
+			Contact contact = (Contact) getForm().getModelObject();
+			contactDao.save(contact);
+			String msg = MapVariableInterpolator.interpolate(getLocalizer()
+					.getString("status.save", this), new MicroMap("name",
+					contact.getFullName()));
+			getSession().info(msg);
+			setResponsePage(EditContactPage.this.backPage);
+		}
 	}
 }
