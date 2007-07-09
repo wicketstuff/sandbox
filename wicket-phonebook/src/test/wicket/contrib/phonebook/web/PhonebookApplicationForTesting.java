@@ -18,6 +18,8 @@
  */
 package wicket.contrib.phonebook.web;
 
+import org.apache.wicket.protocol.http.HttpSessionStore;
+import org.apache.wicket.session.ISessionStore;
 import org.springframework.context.ApplicationContext;
 
 /**
@@ -29,5 +31,10 @@ public class PhonebookApplicationForTesting extends BasePhonebookApplication {
     @Override
     public ApplicationContext context() {
         return context;
+    }
+
+    @Override
+    protected ISessionStore newSessionStore() {
+        return new HttpSessionStore(this);
     }
 }
