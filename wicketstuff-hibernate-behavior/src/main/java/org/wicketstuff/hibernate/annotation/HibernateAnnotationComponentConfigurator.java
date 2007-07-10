@@ -6,7 +6,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import org.apache.wicket.AttributeModifier;
@@ -106,8 +105,7 @@ public class HibernateAnnotationComponentConfigurator extends AbstractBehavior i
 		}
 		FormComponent formComponent = (FormComponent)component;
 		IPropertyReflectionAwareModel propertyModel = (IPropertyReflectionAwareModel) component.getModel();
-		for (Iterator iter = getAnnotations(propertyModel).iterator(); iter.hasNext();) {
-			Annotation annotation = (Annotation) iter.next();
+		for (Annotation annotation : getAnnotations(propertyModel)) {
 			Class<? extends Annotation> annotationType = annotation.annotationType();
 			HibernateAnnotationConfig config = (HibernateAnnotationConfig) configs.get(annotationType);
 			if (null != config) {
@@ -116,7 +114,7 @@ public class HibernateAnnotationComponentConfigurator extends AbstractBehavior i
 		}
 	}
 
-	private Collection getAnnotations(IPropertyReflectionAwareModel propertyModel) {
+	private Collection<Annotation> getAnnotations(IPropertyReflectionAwareModel propertyModel) {
 		Field field = propertyModel.getPropertyField();
 		if (field == null) {
 			LOGGER.warn("Unable to find annotations for model: " + propertyModel);
@@ -131,7 +129,7 @@ public class HibernateAnnotationComponentConfigurator extends AbstractBehavior i
 		}
 		IModel model = component.getModel();
 		if (null == model || !IPropertyReflectionAwareModel.class.isAssignableFrom(model.getClass())) {
-			LOGGER.info("No valid model is available for configuring Component: " + component);
+			LOGGER.debug("No valid model is available for configuring Component: " + component);
 			return false;
 		}
 
