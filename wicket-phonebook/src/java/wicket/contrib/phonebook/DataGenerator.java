@@ -20,7 +20,22 @@ package wicket.contrib.phonebook;
 
 import org.springframework.beans.factory.InitializingBean;
 
+/**
+ * @author ivaynberg
+ * @author Kare Nuorteva
+ */
 public class DataGenerator implements InitializingBean {
+	private static final String[] FIRSTNAMES = { "Jacob", "Emily", "Michael", "Sarah",
+			"Matthew", "Brianna", "Nicholas", "Samantha", "Christopher",
+			"Hailey", "Abner", "Abby", "Joshua", "Douglas", "Jack",
+			"Keith", "Gerald", "Samuel", "Willie", "Larry", "Jose",
+			"Timothy", "Sandra", "Kathleen", "Pamela", "Virginia", "Debra",
+			"Maria", "Linda" };
+	private static final String[] LASTNAMES = { "Smiith", "Johnson", "Williams", "Jones",
+			"Brown", "Donahue", "Bailey", "Rose", "Allen", "Black",
+			"Davis", "Clark", "Hall", "Lee", "Baker", "Gonzalez", "Nelson",
+			"Moore", "Wilson", "Graham", "Fisher", "Cruz", "Ortiz",
+			"Gomez", "Murray" };
 	private ContactDao dao;
 	private int count = 30;
 
@@ -33,22 +48,10 @@ public class DataGenerator implements InitializingBean {
 	}
 
 	public void afterPropertiesSet() throws Exception {
-		String[] firstnames = { "Jacob", "Emily", "Michael", "Sarah",
-				"Matthew", "Brianna", "Nicholas", "Samantha", "Christopher",
-				"Hailey", "Abner", "Abby", "Joshua", "Douglas", "Jack",
-				"Keith", "Gerald", "Samuel", "Willie", "Larry", "Jose",
-				"Timothy", "Sandra", "Kathleen", "Pamela", "Virginia", "Debra",
-				"Maria", "Linda" };
-		String[] lastnames = { "Smiith", "Johnson", "Williams", "Jones",
-				"Brown", "Donahue", "Bailey", "Rose", "Allen", "Black",
-				"Davis", "Clark", "Hall", "Lee", "Baker", "Gonzalez", "Nelson",
-				"Moore", "Wilson", "Graham", "Fisher", "Cruz", "Ortiz",
-				"Gomez", "Murray" };
-
 		for (int i = 0; i < count; i++) {
 			Contact contact = new Contact();
-			contact.setFirstname(randomString(firstnames));
-			contact.setLastname(randomString(lastnames));
+			contact.setFirstname(randomString(FIRSTNAMES));
+			contact.setLastname(randomString(LASTNAMES));
 			contact.setPhone(generatePhoneNumber());
 
 			String email = contact.getFirstname() + "@" + contact.getLastname()
@@ -73,5 +76,4 @@ public class DataGenerator implements InitializingBean {
 	private int rint(int min, int max) {
 		return (int) (Math.random() * (max - min) + min);
 	}
-
 }
