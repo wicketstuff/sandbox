@@ -39,13 +39,10 @@ import javax.sql.DataSource;
  * @author Geoffrey Rummens Hendrey
  */
 public class ShadesContactDao implements ContactDao {
-	ORMDictionary dict = ShadesORMDictionary.getInstance();
-
-	ORMapping orm = dict.getORM("CONTACT");
-
-	DatabaseSession dbSess = DatabaseSessionFactory.newSession(dict);
-
-	public javax.sql.DataSource dataSource;
+	private final ORMDictionary dict = ShadesORMDictionary.getInstance();
+	private final ORMapping orm = dict.getORM("CONTACT");
+	private final DatabaseSession dbSess = DatabaseSessionFactory.newSession(dict);
+	private DataSource dataSource;
 
 	/** Creates a new instance of ShadesContactDao */
 	public ShadesContactDao() {
@@ -61,14 +58,13 @@ public class ShadesContactDao implements ContactDao {
 			return (Contact) dbSess.executeQuery(con, q).populateNext(
 					new Contact());
 		} catch (SQLException ex) {
-			ex.printStackTrace();
-			throw new RuntimeException(ex.getMessage(), ex);
+			throw new RuntimeException(ex);
 		} finally {
 			try {
 				// dbSess.clear();
 				con.close();
 			} catch (SQLException ex) {
-				ex.printStackTrace();
+				throw new RuntimeException(ex);
 			}
 		}
 
@@ -89,14 +85,13 @@ public class ShadesContactDao implements ContactDao {
 			}
 			return contact;
 		} catch (SQLException ex) {
-			ex.printStackTrace();
-			throw new RuntimeException(ex.getMessage(), ex);
+			throw new RuntimeException(ex);
 		} finally {
 			try {
 				dbSess.clear();
 				con.close();
 			} catch (SQLException ex) {
-				ex.printStackTrace();
+				throw new RuntimeException(ex);
 			}
 		}
 	}
@@ -107,14 +102,13 @@ public class ShadesContactDao implements ContactDao {
 			con = dataSource.getConnection();
 			dbSess.delete(con, dbSess.getRecords(load(id)));
 		} catch (SQLException ex) {
-			ex.printStackTrace();
-			throw new RuntimeException(ex.getMessage(), ex);
+			throw new RuntimeException(ex);
 		} finally {
 			try {
 				dbSess.clear();
 				con.close();
 			} catch (SQLException ex) {
-				ex.printStackTrace();
+				throw new RuntimeException(ex);
 			}
 		}
 	}
@@ -148,14 +142,13 @@ public class ShadesContactDao implements ContactDao {
 			System.out.println(list);
 			return list.iterator();
 		} catch (SQLException ex) {
-			ex.printStackTrace();
-			throw new RuntimeException(ex.getMessage(), ex);
+			throw new RuntimeException(ex);
 		} finally {
 			try {
 				dbSess.clear();
 				con.close();
 			} catch (SQLException ex) {
-				ex.printStackTrace();
+				throw new RuntimeException(ex);
 			}
 		}
 	}
@@ -169,13 +162,12 @@ public class ShadesContactDao implements ContactDao {
 		try {
 			return dbSess.count(con = dataSource.getConnection(), q);
 		} catch (SQLException ex) {
-			ex.printStackTrace();
-			throw new RuntimeException(ex.getMessage(), ex);
+			throw new RuntimeException(ex);
 		} finally {
 			try {
 				con.close();
 			} catch (SQLException ex) {
-				ex.printStackTrace();
+				throw new RuntimeException(ex);
 			}
 		}
 	}
@@ -194,14 +186,13 @@ public class ShadesContactDao implements ContactDao {
 			}
 			return lastnames;
 		} catch (SQLException ex) {
-			ex.printStackTrace();
-			throw new RuntimeException(ex.getMessage(), ex);
+			throw new RuntimeException(ex);
 		} finally {
 			try {
 				dbSess.clear();
 				con.close();
 			} catch (SQLException ex) {
-				ex.printStackTrace();
+				throw new RuntimeException(ex);
 			}
 		}
 	}
@@ -213,5 +204,4 @@ public class ShadesContactDao implements ContactDao {
 	public final DataSource getDataSource() {
 		return this.dataSource;
 	}
-
 }

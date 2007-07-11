@@ -21,11 +21,9 @@ package wicket.contrib.phonebook;
 import hendrey.shades.DefaultHsqlORMapping;
 
 /**
- *
  * @author Geoffrey Rummens Hendrey
  */
 public class ShadesContactORM extends DefaultHsqlORMapping {
-
 	@Override
 	public String[] getColumnNames() {
 		return new String[] { "ID", "FIRSTNAME", "LASTNAME", "EMAIL", "PHONE" };
@@ -40,12 +38,6 @@ public class ShadesContactORM extends DefaultHsqlORMapping {
 					+ columnSetName);
 		}
 	}
-
-	/*
-	 * public Object getColumn(String columnName, ResultSet resultSet) throws
-	 * SQLException { if(columnName.endsWith("ID"))return
-	 * resultSet.getLong(columnName); return resultSet.getString(columnName) }
-	 */
 
 	@Override
 	public Class<?> getBeanClass() {
@@ -66,5 +58,4 @@ public class ShadesContactORM extends DefaultHsqlORMapping {
 	public String[] getNonPojoColumns() {
 		return new String[] {};
 	}
-
 }

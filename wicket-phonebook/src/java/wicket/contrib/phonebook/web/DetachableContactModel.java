@@ -23,7 +23,7 @@ import wicket.contrib.phonebook.ContactDao;
 import org.apache.wicket.model.LoadableDetachableModel;
 
 /**
- * Detatchable, read-only Contact model. Ensures that memory used to load the
+ * Detachable, read-only Contact model. Ensures that memory used to load the
  * contact details is immediately freed rather than held in the session.
  * Typically used by <tt>List</tt>-type pages, where multiple elements are
  * loaded at a time.
@@ -39,7 +39,7 @@ public class DetachableContactModel extends LoadableDetachableModel {
 	/**
 	 * dao reference - must be a wicket-wrapped proxy, holding onto a reference
 	 * to the real dao will cause its serialization into session or a
-	 * not-serializable exception when the servelt container serializes the
+	 * not-serializable exception when the servlet container serializes the
 	 * session.
 	 */
 	private final ContactDao dao;
@@ -65,5 +65,4 @@ public class DetachableContactModel extends LoadableDetachableModel {
 	protected Object load() {
 		return dao.load(id);
 	}
-
 }

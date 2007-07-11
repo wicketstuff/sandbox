@@ -111,12 +111,6 @@ public class ListContactsPage extends BasePage {
 
 	private IColumn[] createColumns() {
 		IColumn[] columns = new IColumn[5];
-		/*
-		 * This is a composite column, created by extending
-		 * FilteredAbstractColumn. This column adds a UserActionsPanel as its
-		 * cell contents. It also provides the go-and-clear filter control
-		 * panel.
-		 */
 		columns[0] = createActionsColumn();
 		columns[1] = createColumn("first.name", "firstname", "firstname");
 		columns[2] = new ChoiceFilteredPropertyColumn(new ResourceModel(
@@ -140,6 +134,11 @@ public class ListContactsPage extends BasePage {
 				sortProperty, propertyExpression);
 	}
 
+	/**
+	 * Create a composite column extending FilteredAbstractColumn. This column
+	 * adds a UserActionsPanel as its cell contents. It also provides the
+	 * go-and-clear filter control panel.
+	 */
 	private FilteredAbstractColumn createActionsColumn() {
 		return new FilteredAbstractColumn(new Model(getString("actions"))) {
 			// return the go-and-clear filter for the filter toolbar

@@ -36,41 +36,46 @@ public class ShadesORMDictionary implements InitializingBean {
 	private static final ORMDictionary dict = ORMDictionaryFactory
 			.getInstance("phonebook-schema");
 	private DataSource dataSource; // required for table creation
-	static RecordCandidate filterCandidate; // DAO can grab filterCandidate and
-											// call .resembles on the fly to
-											// dynamical reconfigure the query
+	/*
+	 * DAO can grab filterCandidate and call .resembles on the fly to
+	 * dynamically reconfigure the query
+	 */
+	static RecordCandidate filterCandidate;
 
 	static {
 		ORMapping orm = new ShadesContactORM();
 		dict.defineORMapping("CONTACT", orm);
+		defineQueryById(orm);
+		defineQueryByResemblance(orm);
+		defineQueryByResemblanceWithFilter(orm);
+		defineQueryforDistinctLastname(orm);
+	}
 
-		/***************** DEFINE QUERY BY ID *********************************/
+	private static void defineQueryforDistinctLastname(ORMapping orm) {
+		Query q = QueryFactory
+				.newImmutableQuery("SELECT DISTINCT LASTNAME AS \"CONTACT.LASTNAME\" FROM CONTACT");
+		q.candidate(orm).setFetchColumns(new String[] { "LASTNAME" });
+		dict.defineQuery("selectDistinctLastnameOnly", q);
+	}
+
+	private static void defineQueryByResemblanceWithFilter(ORMapping orm) {
 		Query q = QueryFactory.newQuery(dict);
-		q.candidate(orm).where("ID=${id}", new String[] {});
-		dict.defineQuery("byId", q);
-		/**********************************************************************/
-
-		/***************** DEFINE QUERY BY RESEMBLANCE ************************/
-		q = QueryFactory.newQuery(dict);
-		q.candidate(orm, "CONTACT");
-		dict.defineQuery("byResemblance", q);
-		/**********************************************************************/
-
-		/***************** DEFINE QUERY BY RESEMBLENCE WITH FILTER ************/
-		q = QueryFactory.newQuery(dict);
 		filterCandidate = q.candidate(orm, "CONTACT");
 		q.clause("ORDER BY").append(
 				"${order} ${direction} LIMIT ${count} OFFSET ${first}");
 		dict.defineQuery("byOrderedResemblance", q);
-		/**********************************************************************/
+	}
 
-		/***************** DEFINE QUERY FOR DISTINCT LASTNAME *****************/
-		q = QueryFactory
-				.newImmutableQuery("SELECT DISTINCT LASTNAME AS \"CONTACT.LASTNAME\" FROM CONTACT");
-		q.candidate(orm).setFetchColumns(new String[] { "LASTNAME" });
-		dict.defineQuery("selectDistinctLastnameOnly", q);
-		/**********************************************************************/
+	private static void defineQueryByResemblance(ORMapping orm) {
+		Query q = QueryFactory.newQuery(dict);
+		q.candidate(orm, "CONTACT");
+		dict.defineQuery("byResemblance", q);
+	}
 
+	private static void defineQueryById(ORMapping orm) {
+		Query q = QueryFactory.newQuery(dict);
+		q.candidate(orm).where("ID=${id}", new String[] {});
+		dict.defineQuery("byId", q);
 	}
 
 	public static ORMDictionary getInstance() {
@@ -84,9 +89,6 @@ public class ShadesORMDictionary implements InitializingBean {
 			c = dataSource.getConnection();
 			c.createStatement().execute(ddl);
 			c.commit();
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw e;
 		} finally {
 			c.close();
 		}
