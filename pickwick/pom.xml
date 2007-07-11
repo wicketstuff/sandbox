@@ -24,7 +24,7 @@
 	<artifactId>pickwick</artifactId>
 	<version>1.0-SNAPSHOT</version>
 	<packaging>war</packaging>
-	<name>Pickwick, a Wicket Photo Gallery</name>
+	<name>Pickwick, a Wicket-based Photo Gallery</name>
 	<dependencies>
 		<dependency>
 			<groupId>commons-logging</groupId>
