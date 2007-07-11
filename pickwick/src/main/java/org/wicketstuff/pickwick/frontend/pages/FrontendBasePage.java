@@ -12,7 +12,8 @@ import org.wicketstuff.pickwick.backend.pages.BackendLandingPage;
 
 public class FrontendBasePage extends WebPage {
 	
-	private DojoSimpleContainer client;
+	protected DojoSimpleContainer client;
+	protected DojoLayoutContainer mainLayout;
 
 	public FrontendBasePage() {
 		super();
@@ -27,13 +28,13 @@ public class FrontendBasePage extends WebPage {
 	}
 	
 	public void createLayout(){
-		DojoLayoutContainer layout = new DojoLayoutContainer("page");
-		add(layout);
+		mainLayout = new DojoLayoutContainer("page");
+		add(mainLayout);
 		DojoSimpleContainer top = new DojoSimpleContainer("top");
 		top.setHeight("100px");
-		layout.add(top, Position.Top);
+		mainLayout.add(top, Position.Top);
 		client = new DojoSimpleContainer("client");
-		layout.add(client, Position.Client);
+		mainLayout.add(client, Position.Client);
 		
 		top.add(new PageLink("back", BackendLandingPage.class));
 	}
