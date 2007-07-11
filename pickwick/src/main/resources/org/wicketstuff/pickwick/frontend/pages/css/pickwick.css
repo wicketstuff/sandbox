@@ -7,12 +7,12 @@ body {
 	padding: 0 100px;
 }
 
-#header{
+#header {
 	background-image : url('images/pickwick-w.png');
 	background-repeat: no-repeat;
 	height: 100px;
 }
-.box{
+.box {
 	white-space: nowrap;	
 	border: 1px solid #555555;
 	background-color: black;
@@ -23,10 +23,8 @@ body {
 	padding : 20px;
 }
 
-.photo{
-	border: 2px black solid;
+/* padding and height computed automatically */
+.photo img {
+	border: 1px black solid;
 	background-color: white;
-	padding : 15px;
-	padding-bottom : 100px; 
-	width: 640px;
 }
