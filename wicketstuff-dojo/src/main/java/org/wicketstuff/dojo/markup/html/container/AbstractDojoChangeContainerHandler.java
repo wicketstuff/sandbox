@@ -70,7 +70,7 @@ public abstract class AbstractDojoChangeContainerHandler extends AbstractRequire
 		//if a tab is selected keepit on the refresh of the widget
 		AbstractDojoChangeContainer container = (AbstractDojoChangeContainer) getComponent();
 		ajaxTarget.appendJavascript("" +
-    			"var selected = dojo.widget.byId('" + container.getSelectedChildId() + ");\n" + 
+    			"var selected = dojo.widget.byId('" + container.getSelectedChildId() + "');\n" + 
     			"dojo.widget.byId('" + container.getMarkupId() + "').selectChild(selected)");
 	}
 	
