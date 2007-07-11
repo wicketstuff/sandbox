@@ -1,12 +1,16 @@
 package org.wicketstuff.push.timer;
 
+import java.util.Iterator;
+
 import org.apache.wicket.Component;
+import org.apache.wicket.Page;
+import org.apache.wicket.behavior.IBehavior;
 import org.apache.wicket.util.time.Duration;
 import org.wicketstuff.push.IPushService;
 import org.wicketstuff.push.IPushTarget;
 
 /**
- * An implementaiton of IPushService based on a polling mechanism.
+ * An implementation of IPushService based on a polling mechanism.
  * 
  * This class is thread safe, and can be safely reused.
  * 
