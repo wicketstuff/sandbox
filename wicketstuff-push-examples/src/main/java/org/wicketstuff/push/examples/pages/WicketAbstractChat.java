@@ -36,7 +36,6 @@ public abstract class WicketAbstractChat extends ExamplePage {
 
 	public WicketAbstractChat(PageParameters parameters)
 	{
-		final IChannelService channelService = getChannelService();
 		Message model = new Message();
 		
 		final Form formChat = new Form("chatForm", new CompoundPropertyModel(model));
@@ -47,7 +46,7 @@ public abstract class WicketAbstractChat extends ExamplePage {
 		
 		final Label chat = new Label("chat");
 		chat.setOutputMarkupId(true);
-		channelService.addChannelListener(this, "chat/message", new IChannelListener() {
+		getChannelService().addChannelListener(this, "chat/message", new IChannelListener() {
 			public void onEvent(String channel, Map<String, String> datas, IChannelTarget target) {
 				target.appendJavascript("document.getElementById('" + chat.getMarkupId() + "').innerHTML += '<br/>" + datas.get("message") + "'");
 			}
@@ -68,7 +67,7 @@ public abstract class WicketAbstractChat extends ExamplePage {
 				//send an event to refesh the chat area
 				ChannelEvent event = new ChannelEvent("chat/message");
 				event.addData("message", currentChat);
-				channelService.publish(event);
+				getChannelService().publish(event);
 				
 				//clear message area add focus it
 				target.appendJavascript("document.getElementById('" + mess.getMarkupId() + "').value =''");
