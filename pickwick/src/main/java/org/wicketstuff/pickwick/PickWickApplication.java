@@ -37,10 +37,6 @@ import com.google.inject.Inject;
  * @author <a href="mailto:jbq@apache.org">Jean-Baptiste Quenot</a>
  */
 public class PickWickApplication extends WebApplication {
-	/*ImageUtils imageUtils;
-
-	FileFilter imageFilter;*/
-
 	@Inject
 	FeedGenerator feedGenerator;
 
@@ -68,21 +64,6 @@ public class PickWickApplication extends WebApplication {
 	}
 
 	public PickWickApplication() {
-		/*settings = new Settings();
-		// settings.setBaseURL(((WebRequestCycle)
-		// RequestCycle.get()).getWebRequest().getHttpServletRequest()
-		// .getRequestURL().toString());
-		settings.setBaseURL("http://localhost:8080/");
-		settings.setImageDirectoryRoot(new File("src/main/webapp/images"));
-
-		imageFilter = new ImageFilter();
-		imageUtils = new ImageUtils();
-		imageUtils.setSettings(settings);
-		imageUtils.setImageFilter(imageFilter);
-
-		feedGenerator = new FeedGenerator();
-		feedGenerator.setSettings(settings);
-		feedGenerator.setImageUtils(imageUtils);*/
 	}
 
 	@Override
