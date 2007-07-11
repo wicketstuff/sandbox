@@ -48,9 +48,9 @@ public abstract class CometdAbstractBehavior extends AbstractRequireDojoBehavior
 		response.renderJavascript(getInitCometdScript(), "initCometd");
 		String cometdInterceptorScript = getCometdInterceptorScript();
 		if (cometdInterceptorScript != null){
-			response.renderJavascript(cometdInterceptorScript, getComponent()+"Interceptor");
+			response.renderJavascript(cometdInterceptorScript, getComponent().getMarkupId()+"Interceptor");
 		}
-		response.renderJavascript(getSubscriberScript(), getComponent()+"Subscribe");
+		response.renderJavascript(getSubscriberScript(), getComponent().getMarkupId()+"Subscribe");
 	}
 	
 	/**
