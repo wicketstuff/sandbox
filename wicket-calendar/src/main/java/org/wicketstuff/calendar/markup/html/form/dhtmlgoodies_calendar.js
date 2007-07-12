@@ -209,6 +209,10 @@ function EIS_FIX_EI1(where2fixit)
 
 		if(!iframeObj2)return;
 		iframeObj2.style.display = 'block';
+		setTimeout("EIS_FIX_EI2('" +where2fixit+ "')",0);
+}
+function EIS_FIX_EI2(where2fixit)
+{
 		iframeObj2.style.height =document.getElementById(where2fixit).offsetHeight+1;
 		iframeObj2.style.width=document.getElementById(where2fixit).offsetWidth;
 		iframeObj2.style.left=getleftPos(document.getElementById(where2fixit))+1-calendar_offsetLeft;
@@ -1665,13 +1669,7 @@ function displayCalendar(inputField,format,buttonObj,displayTime,timeInput)
 		iframeObj2.style.width = '195px';
 	}
 	
-	setTimeProperties();	
-	updateYearDiv();
-	updateMonthDiv();
-	updateHourDiv();
-	updateMinuteDiv();
-	updateAMPMDiv();
-	
+	setTimeout(updateAllProperties,0);
 }
 
 function displayCalendarSelectBox(yearInput,monthInput,dayInput,hourInput,minuteInput,buttonObj)
@@ -1724,13 +1722,16 @@ function displayCalendarSelectBox(yearInput,monthInput,dayInput,hourInput,minute
 		iframeObj2.style.height = calendarDiv.offsetHeight + 'px';
 		iframeObj2.style.width = calendarDiv.offsetWidth + 'px'
 	}
+	
+	setTimeout(updateAllProperties,0);
+}
+
+function updateAllProperties() 
+{	
 	setTimeProperties();
 	updateYearDiv();
 	updateMonthDiv();
 	updateHourDiv();
 	updateMinuteDiv();
 	updateAMPMDiv();
-		
 }
-
-
