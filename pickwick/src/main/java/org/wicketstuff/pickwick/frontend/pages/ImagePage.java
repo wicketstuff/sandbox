@@ -1,6 +1,8 @@
 package org.wicketstuff.pickwick.frontend.pages;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.PageParameters;
@@ -33,6 +35,11 @@ public class ImagePage extends FrontendBasePage {
 		String uri = params.getString("uri");
 		if (uri == null)
 			throw new RuntimeException("No uri provided!");
+		try {
+			uri = URLDecoder.decode(uri, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			//Ignore
+		}
 		final WebComponent image = new WebComponent("scaled");
 		image.setOutputMarkupId(true);
 		image.add(new AttributeModifier("src", true, new Model(getRequest().getRelativePathPrefixToContextRoot()
