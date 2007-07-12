@@ -1,5 +1,9 @@
 package org.wicketstuff.pickwick.frontend.pages;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URL;
+import java.net.URLDecoder;
+
 import org.apache.wicket.PageParameters;
 import org.wicketstuff.dojo.markup.html.container.DojoSimpleContainer;
 import org.wicketstuff.dojo.markup.html.container.layout.DojoLayoutContainer;
@@ -17,6 +21,11 @@ public class SequencePage extends FrontendBasePage {
 		String uri = parameters.getString("uri");
 		if (uri == null) {
 			uri = "";
+		}
+		try {
+			uri = URLDecoder.decode(uri, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			//Ignore
 		}
 		DojoLayoutContainer layout;
 		addOnClient(layout = new DojoLayoutContainer("mainArea"));
