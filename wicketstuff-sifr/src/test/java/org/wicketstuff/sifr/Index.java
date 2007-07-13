@@ -31,7 +31,9 @@ public class Index extends WebPage
 		add(header);
 
 		Label paragraph = new Label("paragraph", "Lorem ipsum dolor sit amet!");
-		paragraph.add(new FlashTextBehavior(FlashTextBehavior.VANDENKEERE_FONT, "#445566"));
+		FlashTextBehavior sifr = new FlashTextBehavior(FlashTextBehavior.VANDENKEERE_FONT, "#445566");
+		sifr.getSettings().setBgColor("#dddddd");
+		paragraph.add(sifr);
 		add(paragraph);
 	}
 }
