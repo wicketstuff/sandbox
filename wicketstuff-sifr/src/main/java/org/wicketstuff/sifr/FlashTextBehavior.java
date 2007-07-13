@@ -37,6 +37,11 @@ public class FlashTextBehavior extends AbstractFlashTextBehavior
 	public final static ResourceReference VANDENKEERE_FONT = new ResourceReference(FlashTextBehavior.class, "vandenkeere.swf");
 	public final static ResourceReference TRADEGOTHIC_FONT = new ResourceReference(FlashTextBehavior.class, "tradegothic.swf");
 
+	public FlashTextBehavior(FlashTextSettings settings)
+	{
+		this.settings = settings;
+	}
+	
 	public FlashTextBehavior()
 	{
 		this(TRADEGOTHIC_FONT);
