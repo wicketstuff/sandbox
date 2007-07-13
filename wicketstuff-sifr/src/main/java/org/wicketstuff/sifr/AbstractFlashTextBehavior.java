@@ -59,30 +59,45 @@ public class AbstractFlashTextBehavior extends AbstractBehavior implements IHead
 		response.write("sIFR.replaceElement(\"" + id + "\", ");
 		response.write("named({sFlashSrc: \"" + RequestCycle.get().urlFor(settings.font) + "\"");
 
-		if (settings.color != null) {
-			response.write(", sColor:\"" + settings.color + "\"");
-		}
-
-		if (settings.transparent) {
-			response.write(", sWmode: \"transparent\"");
-		}
+		writeProperty(response, "sColor", settings.color);
+		writeProperty(response, "sWmode", settings.transparent != null ? "transparent" : null);
+		writeProperty(response, "sLinkColor", settings.linkColor);
+		writeProperty(response, "sHoverColor", settings.hoverColor);
+		writeProperty(response, "sBgColor", settings.bgColor);
+		writeProperty(response, "nPaddingTop", settings.paddingTop);
+		writeProperty(response, "nPaddingRight", settings.paddingRight);
+		writeProperty(response, "nPaddingBottom", settings.paddingBottom);
+		writeProperty(response, "nPaddingLeft", settings.paddingLeft);
 		response.write("}));");
 		response.write(JavascriptUtils.SCRIPT_CLOSE_TAG);
 
+	}
+
+	private void writeProperty(Response response, String key, Object value)
+	{
+		if (value != null)
+			response.write(", " + key + ":\"" + value.toString() + "\"");
 	}
 
 	public static class FlashTextSettings implements IClusterable
 	{
 		private static final long serialVersionUID = 1L;
 
+		ResourceReference font;
+		String color;
+		String linkColor;
+		String hoverColor;
+		String bgColor;
+		Integer paddingTop;
+		Integer paddingRight;
+		Integer paddingBottom;
+		Integer paddingLeft;
+		Boolean transparent;
+
 		public FlashTextSettings(ResourceReference font)
 		{
 			this.font = font;
 		}
-
-		ResourceReference font;
-		String color;
-		boolean transparent = true;
 
 		public ResourceReference getFont()
 		{
@@ -104,6 +119,76 @@ public class AbstractFlashTextBehavior extends AbstractBehavior implements IHead
 			this.color = color;
 		}
 
+		public String getLinkColor()
+		{
+			return linkColor;
+		}
+
+		public void setLinkColor(String linkColor)
+		{
+			this.linkColor = linkColor;
+		}
+
+		public String getHoverColor()
+		{
+			return hoverColor;
+		}
+
+		public void setHoverColor(String hoverColor)
+		{
+			this.hoverColor = hoverColor;
+		}
+
+		public String getBgColor()
+		{
+			return bgColor;
+		}
+
+		public void setBgColor(String bgColor)
+		{
+			this.bgColor = bgColor;
+		}
+
+		public Integer getPaddingTop()
+		{
+			return paddingTop;
+		}
+
+		public void setPaddingTop(Integer paddingTop)
+		{
+			this.paddingTop = paddingTop;
+		}
+
+		public Integer getPaddingRight()
+		{
+			return paddingRight;
+		}
+
+		public void setPaddingRight(Integer paddingRight)
+		{
+			this.paddingRight = paddingRight;
+		}
+
+		public Integer getPaddingBottom()
+		{
+			return paddingBottom;
+		}
+
+		public void setPaddingBottom(Integer paddingBottom)
+		{
+			this.paddingBottom = paddingBottom;
+		}
+
+		public Integer getPaddingLeft()
+		{
+			return paddingLeft;
+		}
+
+		public void setPaddingLeft(Integer paddingLeft)
+		{
+			this.paddingLeft = paddingLeft;
+		}
+
 		public boolean isTransparent()
 		{
 			return transparent;
@@ -113,6 +198,5 @@ public class AbstractFlashTextBehavior extends AbstractBehavior implements IHead
 		{
 			this.transparent = transparent;
 		}
-
 	}
 }

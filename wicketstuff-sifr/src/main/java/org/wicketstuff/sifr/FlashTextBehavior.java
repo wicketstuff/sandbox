@@ -20,9 +20,9 @@ import org.apache.wicket.Component;
 import org.apache.wicket.ResourceReference;
 
 /**
- * FlashTextBehavior uses sIFR 2.0 (http://www.mikeindustries.com/sifr/) to decorate text
- * with "a method to insert rich typography into web pages without sacrificing 
- * accessibility, search engine friendliness, or markup semantics."
+ * FlashTextBehavior uses sIFR 2.0 (http://www.mikeindustries.com/sifr/) to
+ * decorate text with "a method to insert rich typography into web pages without
+ * sacrificing accessibility, search engine friendliness, or markup semantics."
  * 
  * @author Janne Hietam&auml;ki
  * 
@@ -55,9 +55,9 @@ public class FlashTextBehavior extends AbstractFlashTextBehavior
 		settings.setColor(color);
 	}
 
-	public void setTransparent(boolean value)
+	public FlashTextSettings getSettings()
 	{
-		settings.setTransparent(value);
+		return settings;
 	}
 
 	public void bind(Component component)
