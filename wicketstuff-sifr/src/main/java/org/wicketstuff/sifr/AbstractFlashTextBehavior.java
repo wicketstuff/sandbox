@@ -104,9 +104,10 @@ public class AbstractFlashTextBehavior extends AbstractBehavior implements IHead
 			return font;
 		}
 
-		public void setFont(ResourceReference font)
+		public FlashTextSettings setFont(ResourceReference font)
 		{
 			this.font = font;
+			return this;
 		}
 
 		public String getColor()
@@ -114,9 +115,10 @@ public class AbstractFlashTextBehavior extends AbstractBehavior implements IHead
 			return color;
 		}
 
-		public void setColor(String color)
+		public FlashTextSettings setColor(String color)
 		{
 			this.color = color;
+			return this;
 		}
 
 		public String getLinkColor()
@@ -124,9 +126,10 @@ public class AbstractFlashTextBehavior extends AbstractBehavior implements IHead
 			return linkColor;
 		}
 
-		public void setLinkColor(String linkColor)
+		public FlashTextSettings setLinkColor(String linkColor)
 		{
 			this.linkColor = linkColor;
+			return this;
 		}
 
 		public String getHoverColor()
@@ -134,9 +137,10 @@ public class AbstractFlashTextBehavior extends AbstractBehavior implements IHead
 			return hoverColor;
 		}
 
-		public void setHoverColor(String hoverColor)
+		public FlashTextSettings setHoverColor(String hoverColor)
 		{
 			this.hoverColor = hoverColor;
+			return this;
 		}
 
 		public String getBgColor()
@@ -144,9 +148,10 @@ public class AbstractFlashTextBehavior extends AbstractBehavior implements IHead
 			return bgColor;
 		}
 
-		public void setBgColor(String bgColor)
+		public FlashTextSettings setBgColor(String bgColor)
 		{
 			this.bgColor = bgColor;
+			return this;
 		}
 
 		public Integer getPaddingTop()
@@ -154,9 +159,10 @@ public class AbstractFlashTextBehavior extends AbstractBehavior implements IHead
 			return paddingTop;
 		}
 
-		public void setPaddingTop(Integer paddingTop)
+		public FlashTextSettings setPaddingTop(Integer paddingTop)
 		{
 			this.paddingTop = paddingTop;
+			return this;
 		}
 
 		public Integer getPaddingRight()
@@ -164,9 +170,10 @@ public class AbstractFlashTextBehavior extends AbstractBehavior implements IHead
 			return paddingRight;
 		}
 
-		public void setPaddingRight(Integer paddingRight)
+		public FlashTextSettings setPaddingRight(Integer paddingRight)
 		{
 			this.paddingRight = paddingRight;
+			return this;
 		}
 
 		public Integer getPaddingBottom()
@@ -174,9 +181,10 @@ public class AbstractFlashTextBehavior extends AbstractBehavior implements IHead
 			return paddingBottom;
 		}
 
-		public void setPaddingBottom(Integer paddingBottom)
+		public FlashTextSettings setPaddingBottom(Integer paddingBottom)
 		{
 			this.paddingBottom = paddingBottom;
+			return this;
 		}
 
 		public Integer getPaddingLeft()
@@ -184,9 +192,10 @@ public class AbstractFlashTextBehavior extends AbstractBehavior implements IHead
 			return paddingLeft;
 		}
 
-		public void setPaddingLeft(Integer paddingLeft)
+		public FlashTextSettings setPaddingLeft(Integer paddingLeft)
 		{
 			this.paddingLeft = paddingLeft;
+			return this;
 		}
 
 		public Boolean isTransparent()
@@ -194,9 +203,10 @@ public class AbstractFlashTextBehavior extends AbstractBehavior implements IHead
 			return transparent;
 		}
 
-		public void setTransparent(Boolean transparent)
+		public FlashTextSettings setTransparent(Boolean transparent)
 		{
 			this.transparent = transparent;
+			return this;
 		}
 	}
 }
