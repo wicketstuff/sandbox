@@ -18,6 +18,8 @@ import wicket.contrib.mootools.IncludeMooToolsStateless;
 public abstract class MFXDragPane extends Panel {
 	private String title;
 	private String width;
+	private int row = 0;
+	private int column = 0;
 	private MFXDragPaneCallbacks mfxDropCallback;
 	
 	private static final long serialVersionUID = 1L;
@@ -49,10 +51,10 @@ public abstract class MFXDragPane extends Panel {
 	}
 	
 	public static interface MFXDragPaneCallbacks extends IClusterable {
-		public void onDropCallback(AjaxRequestTarget target,int column);
-		public void onCloseCallback(AjaxRequestTarget target,int column);
-		public void onMinimizeCallback(AjaxRequestTarget target,int column);
-		public void onMaximizedCallback(AjaxRequestTarget target,int column);
+		public void onDropCallback(AjaxRequestTarget target,int column,int row);
+		public void onCloseCallback(AjaxRequestTarget target,int column,int row);
+		public void onMinimizeCallback(AjaxRequestTarget target,int column,int row);
+		public void onMaximizedCallback(AjaxRequestTarget target,int column,int row);
 	}
 	
 	protected class AjaxSetBehavior extends AbstractDefaultAjaxBehavior {
@@ -71,18 +73,19 @@ public abstract class MFXDragPane extends Panel {
 			if(mfxDropCallback != null) {
 				String callback = requestCycle.getRequest().getParameter("callback");
 				int column  = Integer.valueOf(requestCycle.getRequest().getParameter("column"));
+				int row = Integer.valueOf(requestCycle.getRequest().getParameter("row"));
 				
 				if(callback.equals("close"))
-					mfxDropCallback.onCloseCallback(arg0, column);
+					mfxDropCallback.onCloseCallback(arg0, column,row);
 				
 				if(callback.equals("drop"))
-					mfxDropCallback.onDropCallback(arg0, column);
+					mfxDropCallback.onDropCallback(arg0, column,row);
 				
 				if(callback.equals("minimize"))
-					mfxDropCallback.onMinimizeCallback(arg0, column);
+					mfxDropCallback.onMinimizeCallback(arg0, column,row);
 				
 				if(callback.equals("maximized"))
-					mfxDropCallback.onMaximizedCallback(arg0, column);
+					mfxDropCallback.onMaximizedCallback(arg0, column,row);
 			}
 		}
 	}
@@ -132,5 +135,21 @@ public abstract class MFXDragPane extends Panel {
 
 	public String getWidth() {
 		return width;
+	}
+
+	public void setColumn(int column) {
+		this.column = column;
+	}
+
+	public int getColumn() {
+		return column;
+	}
+
+	public void setRow(int row) {
+		this.row = row;
+	}
+
+	public int getRow() {
+		return row;
 	}
 }

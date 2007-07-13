@@ -28,166 +28,172 @@ public class MFXDialog extends MFXDialogBase {
 	private AjaxLink abortLink;
 	private WebMarkupContainer dialog;
 	private WebMarkupContainer contentPane;
-	
-	public static enum MFXDialogTypes { CONFIRMATION, MESSAGE, MESSAGE_WITHOUT_CLOSE, QUESTION_WITH_INPUT };
-	
-	public MFXDialog(String id) {
-		this(id,MFXDialogTypes.MESSAGE);
+
+	public static enum MFXDialogTypes {
+		CONFIRMATION, MESSAGE, MESSAGE_WITHOUT_CLOSE, QUESTION_WITH_INPUT
+	};
+
+	public MFXDialog(final String id) {
+		this(id, CSSCOLOR.BLUE, MFXDialogTypes.MESSAGE);
 	}
-	
-	public MFXDialog(String id,MFXDialogTypes type) {
-		super(id);
-		
+
+	public MFXDialog(final String id, final CSSCOLOR color,
+			final MFXDialogTypes type) {
+		super(id, color);
+
 		add(new IncludeMooTools());
-		
-		//defaults
-		this.dialogType=type;
-		this.shown=false;
+
+		// defaults
+		this.dialogType = type;
+		this.shown = false;
 		this.confirmButtonText = "Ok";
 		this.abortButtonText = "Cancel";
 		this.setOutputMarkupId(true);
-		
-		
-		dialog=new WebMarkupContainer("dialog");
+
+		dialog = new WebMarkupContainer("dialog");
 		dialog.setOutputMarkupId(true);
 		add(dialog);
-		
-		dialog.add(new Label("title",new PropertyModel(this,"title")));
-		
+
+		dialog.add(new Label("title", new PropertyModel(this, "title")));
+
 		dialog.add(contentPane = new WebMarkupContainer("content"));
-		
-		contentPane.add(new Label("body",new PropertyModel(this,"body")).setEscapeModelStrings(false));
-		
+
+		contentPane.add(new Label("body", new PropertyModel(this, "body"))
+				.setEscapeModelStrings(false));
+
 		form = new Form("inputForm");
-		input =  new TextArea("input",new PropertyModel(this,"inputText"));
+		input = new TextArea("input", new PropertyModel(this, "inputText"));
 		input.setRequired(true);
-		input.add(new MFXValidationHandler("#ffffff","#fedede",true));
+		input.add(new MFXValidationHandler("#ffffff", "#fedede", true));
 		form.add(input);
 		contentPane.add(form);
-		
+
 		dialog.add(confirmLink = new AjaxLink("confirm") {
 			private static final long serialVersionUID = 1L;
+
 			@Override
-			public void onClick(AjaxRequestTarget arg0) {
+			public void onClick(final AjaxRequestTarget arg0) {
 				shown = false;
 				arg0.appendJavascript(closeWindowJavaScript());
 				onConfirmCallback(arg0);
 				onCloseCallBack(arg0);
 			}
 		});
-		
+
 		dialog.add(abortLink = new AjaxLink("abort") {
 			private static final long serialVersionUID = 1L;
+
 			@Override
-			public void onClick(AjaxRequestTarget arg0) {
+			public void onClick(final AjaxRequestTarget arg0) {
 				shown = false;
 				arg0.appendJavascript(closeWindowJavaScript());
 				onAbortCallback(arg0);
 				onCloseCallBack(arg0);
 			}
 		});
-		
+
 		dialog.add(closeLink = new AjaxLink("close") {
 			private static final long serialVersionUID = 1L;
+
 			@Override
-			public void onClick(AjaxRequestTarget arg0) {
+			public void onClick(final AjaxRequestTarget arg0) {
 				shown = false;
 				arg0.appendJavascript(closeWindowJavaScript());
 				onAbortCallback(arg0);
 				onCloseCallBack(arg0);
 			}
 		});
-		
-		dialog.add(submitLink = new AjaxSubmitLink("submitLink",form) {
+
+		dialog.add(submitLink = new AjaxSubmitLink("submitLink", form) {
 			private static final long serialVersionUID = 1L;
+
 			@Override
-			protected void onSubmit(AjaxRequestTarget arg0, Form arg1) {
+			protected void onSubmit(final AjaxRequestTarget arg0,
+					final Form arg1) {
 				shown = false;
 				arg0.appendJavascript(closeWindowJavaScript());
 				onConfirmCallback(arg0);
 				onCloseCallBack(arg0);
 			}
 		});
-		
-		abortLink.add(new Label("abortText",new PropertyModel(this,"abortButtonText")));
-		confirmLink.add(new Label("confirmText",new PropertyModel(this,"confirmButtonText")));
-		closeLink.add(new Label("closeText",new PropertyModel(this,"confirmButtonText")));
-		submitLink.add(new Label("submitText",new PropertyModel(this,"confirmButtonText")));
-		
-	}
-	
 
+		abortLink.add(new Label("abortText", new PropertyModel(this,
+				"abortButtonText")));
+		confirmLink.add(new Label("confirmText", new PropertyModel(this,
+				"confirmButtonText")));
+		closeLink.add(new Label("closeText", new PropertyModel(this,
+				"confirmButtonText")));
+		submitLink.add(new Label("submitText", new PropertyModel(this,
+				"confirmButtonText")));
 
-	protected void onConfirmCallback(AjaxRequestTarget targ) {
 	}
-	
-	protected void onAbortCallback(AjaxRequestTarget targ) {
+
+	protected void onConfirmCallback(final AjaxRequestTarget targ) {
 	}
-	
-	protected void onCloseCallBack(AjaxRequestTarget targ) {
+
+	protected void onAbortCallback(final AjaxRequestTarget targ) {
 	}
-	
-	protected void onOpenCallBack(AjaxRequestTarget targ) {
+
+	protected void onCloseCallBack(final AjaxRequestTarget targ) {
 	}
-	
+
+	protected void onOpenCallBack(final AjaxRequestTarget targ) {
+	}
+
 	@Override
-	protected void onComponentTag(ComponentTag tag) {
+	protected void onComponentTag(final ComponentTag tag) {
 		super.onComponentTag(tag);
-		tag.put("style","display: none;");
+		tag.put("style", "display: none;");
 	}
-	
-	
-	public void show(AjaxRequestTarget target) {
-		if(shown == false) {
+
+	public void show(final AjaxRequestTarget target) {
+		if (shown == false) {
 			target.addComponent(this);
 			target.appendJavascript(openWindowJavaSript());
 			onOpenCallBack(target);
 			shown = true;
 		}
 	}
-	
+
 	@Override
 	protected void onBeforeRender() {
 		super.onBeforeRender();
-	
+
 		closeLink.setVisible(false);
 		abortLink.setVisible(false);
 		confirmLink.setVisible(false);
 		submitLink.setVisible(false);
 		form.setVisible(false);
-		
-		if(getDialogType() == MFXDialogTypes.MESSAGE)
-			closeLink.setVisible(true);
-		
 
-		if(getDialogType() == MFXDialogTypes.QUESTION_WITH_INPUT) {
+		if (getDialogType() == MFXDialogTypes.MESSAGE)
+			closeLink.setVisible(true);
+
+		if (getDialogType() == MFXDialogTypes.QUESTION_WITH_INPUT) {
 			input.setVisible(true);
 			form.setVisible(true);
 			abortLink.setVisible(true);
 			submitLink.setVisible(true);
 		}
-		
-		if(getDialogType() == MFXDialogTypes.CONFIRMATION) {
+
+		if (getDialogType() == MFXDialogTypes.CONFIRMATION) {
 			abortLink.setVisible(true);
 			confirmLink.setVisible(true);
 		}
-		
+
 	}
-	
-	
+
 	private String closeWindowJavaScript() {
 		return genericCloseWindowJavaScript(getMarkupId());
 	}
-	
+
 	private String openWindowJavaSript() {
-		return genericOpenJavaScript(
-				getMarkupId(), // for the display: none
-				dialog.getMarkupId(),  // for the dialog animation
+		return genericOpenJavaScript(getMarkupId(), // for the display: none
+				dialog.getMarkupId(), // for the dialog animation
 				contentPane.getMarkupId() // for the content
 		);
 	}
 
-	public void setDialogType(MFXDialogTypes dialogType) {
+	public void setDialogType(final MFXDialogTypes dialogType) {
 		this.dialogType = dialogType;
 	}
 
@@ -195,7 +201,7 @@ public class MFXDialog extends MFXDialogBase {
 		return dialogType;
 	}
 
-	public void setConfirmButtonText(String confirmButtonText) {
+	public void setConfirmButtonText(final String confirmButtonText) {
 		this.confirmButtonText = confirmButtonText;
 	}
 
@@ -203,7 +209,7 @@ public class MFXDialog extends MFXDialogBase {
 		return confirmButtonText;
 	}
 
-	public void setAbortButtonText(String abortButtonText) {
+	public void setAbortButtonText(final String abortButtonText) {
 		this.abortButtonText = abortButtonText;
 	}
 
@@ -211,7 +217,7 @@ public class MFXDialog extends MFXDialogBase {
 		return abortButtonText;
 	}
 
-	protected void setInputText(String inputText) {
+	protected void setInputText(final String inputText) {
 		this.inputText = inputText;
 	}
 

@@ -5,7 +5,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.wicket.Component;
-import org.apache.wicket.IClusterable;
 
 
 import wicket.contrib.mootools.AbstractRequireMooStatelessBehavior;
