@@ -60,13 +60,11 @@ public class FlashTextBehavior extends AbstractFlashTextBehavior
 		settings.setTransparent(value);
 	}
 
-	@Override
 	public void bind(Component component)
 	{
 		component.setOutputMarkupId(true);
 	}
 
-	@Override
 	public void onRendered(Component component)
 	{
 		final String id = component.getMarkupId();
