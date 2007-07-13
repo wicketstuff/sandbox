@@ -12,6 +12,23 @@
 		return columnId;
 	}
 	
+	function getRowNum(el) {
+		var paneId = el.id;
+		//var panes = $ES('.MFXDragPane');
+		var columns = $ES('.column');
+		
+		for(var j = 0 ; j < columns.length ; j++) {
+			var panes = columns[j].getElementsBySelector('.MFXDragPane');
+			for(var i = 0 ; i < panes.length ; i++) {
+				if(panes[i].id == paneId) {
+					return i;				
+				}	
+			}	
+		}
+		// got nothing but returning 0
+		return 0;
+	}
+	
 	
 	function makeDraggables(){
 		
@@ -33,9 +50,9 @@
 						el.setStyle('display','none');
 					}});
 					effect.start(0.9,0.1);
-					
+					var rowNum = getRowNum(el);
 					var columnId = getColumndId(el);
-					var getData = "&callback=close&id="+componentId+"&column="+columnId;
+					var getData = "&callback=close&id="+componentId+"&column="+columnId+"&row="+rowNum;
 					var response = callbackUrl+getData;
 					wicketAjaxGet(response, function() { }.bind(this), function() { }.bind(this));
 	  		  	});
@@ -45,15 +62,16 @@
 	  		  	var size = el.getStyle('height');
 	  		  	minButton.addEvent("click", function() {
 	  		  		var columnId = getColumndId(el);
+	  		  		var rowNum = getRowNum(el);
 	  		  		var effect = new Fx.Style(el,'height',{duration: 500});
 	  		  		if(el.getStyle('height') == '16px') {
 	  		  			effect.start(el.getStyle('height'),size);
-	  		  			var getData = "&callback=maximized&id="+componentId+"&column="+columnId;
+	  		  			var getData = "&callback=maximized&id="+componentId+"&column="+columnId+"&row="+rowNum;
 						var response = callbackUrl+getData;
 						wicketAjaxGet(response, function() { }.bind(this), function() { }.bind(this));
 	  		  		} else {
 						effect.start(el.getStyle('height'),'16px');
-						var getData = "&callback=minimize&id="+componentId+"&column="+columnId;
+						var getData = "&callback=minimize&id="+componentId+"&column="+columnId+"&row="+rowNum;
 						var response = callbackUrl+getData;
 						wicketAjaxGet(response, function() { }.bind(this), function() { }.bind(this));
 	  		  		}
@@ -83,9 +101,9 @@
 						// Remove the marking box
 						webBoxMarker.injectInside($E('body')).setStyles({'display': 'none'});
 						
-						// Callback to wicket
+						var rowNum = getRowNum(el);
 						var columnId = getColumndId(el);
-						var getData = "&callback=drop&id="+componentId+"&column="+columnId;
+						var getData = "&callback=drop&id="+componentId+"&column="+columnId+"&row="+rowNum;
 						var response = callbackUrl+getData;
 						wicketAjaxGet(response, function() { }.bind(this), function() { }.bind(this));
 						//new Ajax(callbackUrl,{method: 'get', data: getData }).request();

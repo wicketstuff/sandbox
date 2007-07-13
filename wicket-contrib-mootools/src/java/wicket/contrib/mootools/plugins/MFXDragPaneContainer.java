@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
+import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -37,6 +38,7 @@ public class MFXDragPaneContainer extends Panel {
 			setOutputMarkupId(true);
 			add(new AttributeModifier("width", true,
 					new PropertyModel(MFXDragPaneContainer.this, "columnWidth")));
+			add(new SimpleAttributeModifier("class","column"));
 			add(new RepeatingView("repeater"));
 		}
 		
@@ -67,8 +69,10 @@ public class MFXDragPaneContainer extends Panel {
 		return getInternalRepeater(column).getParent();
 	}
 	
-	public MFXDragPaneContainer add(final MFXDragPane pane,int column) {
-		getInternalRepeater(column).add(pane);
+	public MFXDragPaneContainer add(final MFXDragPane pane) {
+		RepeatingView rp = getInternalRepeater(pane.getColumn());
+		rp.add(pane);
+		//getInternalRepeater(pane.getColumn()).add(pane);
 		return this;
 	}
 	

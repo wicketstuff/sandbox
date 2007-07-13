@@ -7,7 +7,7 @@ import wicket.contrib.mootools.effects.MFXBase;
  * @author victori
  *
  */
-public class MFXOptions extends MFXBase {
+public class MFXOptions extends MFXBase implements MFXMooBindable {
 	private static final long serialVersionUID = 1L;
 	
 	/**

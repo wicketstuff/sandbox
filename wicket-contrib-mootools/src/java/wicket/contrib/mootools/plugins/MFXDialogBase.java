@@ -24,30 +24,47 @@ public abstract class MFXDialogBase extends Panel {
 	private String title;
 	private int offsetTop;
 	private String body;
-	
-	private ResourceReference PLAINCSS = new CompressedResourceReference(MFXDialog.class,"MFXDialog.css");
-	
-	public MFXDialogBase(String id) {
-		super(id);
-		
-		this.width=300;
-		this.height=0;
-		this.offsetTop=300;
-		this.unit="px";
-		this.title="Modal Window";
-		
-		add(HeaderContributor.forCss(PLAINCSS));
+
+	private ResourceReference PLAINCSS = new CompressedResourceReference(
+			MFXDialog.class, "MFXDialog.css");
+	private ResourceReference REDPLAINCSS = new CompressedResourceReference(
+			MFXDialog.class, "MFXDialog-red.css");
+
+	public enum CSSCOLOR {
+		RED, BLUE
 	}
-	
+
+	public MFXDialogBase(final String id, final CSSCOLOR color) {
+		super(id);
+
+		this.width = 300;
+		this.height = 0;
+		this.offsetTop = 300;
+		this.unit = "px";
+		this.title = "Modal Window";
+
+		if (color.equals(CSSCOLOR.BLUE)) {
+			add(HeaderContributor.forCss(PLAINCSS));
+		}
+		if (color.equals(CSSCOLOR.RED)) {
+			add(HeaderContributor.forCss(REDPLAINCSS));
+		}
+	}
+
+	public MFXDialogBase(final String id) {
+		this(id, CSSCOLOR.BLUE);
+	}
+
 	public interface PageCreator extends IClusterable {
 		public Page createPage();
 	}
-	
+
 	protected Page createPage() {
-		
-		if(pageCreator == null)
+
+		if (pageCreator == null) {
 			return null;
-		
+		}
+
 		try {
 			Page page = pageCreator.createPage();
 			return page;
@@ -55,65 +72,79 @@ public abstract class MFXDialogBase extends Panel {
 			return null;
 		}
 	}
-	
-	protected String genericOpenJavaScript(String id,String contentId) {
-		return genericOpenJavaScript(id, id,contentId);
+
+	protected String genericOpenJavaScript(final String id,
+			final String contentId) {
+		return genericOpenJavaScript(id, id, contentId);
 	}
-	
-	protected String genericCloseWindowJavaScript(String id) {
+
+	protected String genericCloseWindowJavaScript(final String id) {
 		StringBuffer str = new StringBuffer();
-		str.append("var win = $('"+id+"');");
+		str.append("var win = $('" + id + "');");
 		str.append("win.setStyle('display','none');");
 		return str.toString();
 	}
-	
-	protected String genericOpenJavaScript(String id,String dialogId,String contentId) {
+
+	protected String genericOpenJavaScript(final String id,
+			final String dialogId, final String contentId) {
 		StringBuffer str = new StringBuffer();
-		
+
 		Page page = createPage();
 		String url = null;
-		if(page != null)
+		if (page != null) {
 			url = RequestCycle.get().urlFor(page).toString();
-		
-		str.append("var elm = $('"+id+"');");
-		str.append("var win = $('"+dialogId+"');");
+		}
+
+		str.append("var elm = $('" + id + "');");
+		str.append("var win = $('" + dialogId + "');");
 		str.append("elm.setStyle('display','block');");
-		
-		MFXStyle style = new MFXStyle("margin-top",0,100);
-		
+
+		MFXStyle style = new MFXStyle("margin-top", 0, 100);
+
 		style.setDuration(1000);
 		style.setTransition(MFXTransition.backInOut);
 		style.setTarget(dialogId);
-		
-		str.append("var effect = "+style.toString());
-		
-		WebClientInfo clientInfo = (WebClientInfo) Session.get().getClientInfo();
+
+		str.append("var effect = " + style.toString());
+
+		WebClientInfo clientInfo = (WebClientInfo) Session.get()
+				.getClientInfo();
 		ClientProperties properties = clientInfo.getProperties();
-		if(properties.isBrowserInternetExplorer()) {
+		if (properties.isBrowserInternetExplorer()) {
 			str.append("var winw = document.body.offsetWidth;");
 			str.append("var winh = document.body.offsetHeight;");
 		} else {
 			str.append("var winw = window.getWidth();");
 			str.append("var winh = window.getHeight();");
 		}
-		
-		if(getWidth() != 0)
-			str.append("win.setStyle('width','"+getWidth()+""+getUnit()+"');");
-		if(getHeight() != 0)
-			str.append("win.setStyle('height','"+getHeight()+""+getUnit()+"');");
-		
-		str.append("win.setStyle('left',(winw-"+getWidth()+")/2);");
-		str.append("win.setStyle('top',winh/2-"+getOffsetTop()+");");
-		
-		if(url != null) {
-			MFXAjaxStatelessLink mfxlink = new MFXAjaxStatelessLink("mfxlink",contentId,page);
-			mfxlink.getOptions().setOnComplete("effect.start("+style.getStartValue()+","+style.getEndValue()+");");
+
+		if (getWidth() != 0) {
+			str.append("win.setStyle('width','" + getWidth() + "" + getUnit()
+					+ "');");
+		}
+		if (getHeight() != 0) {
+			str.append("win.setStyle('height','" + getHeight() + "" + getUnit()
+					+ "');");
+		}
+		// window.getHeight()/2 + window.getScrollTop()
+		str.append("win.setStyle('left',(winw-" + getWidth() + ")/2);");
+		// str.append("win.setStyle('top',winh/2-" + getOffsetTop() + ");");
+		str.append("win.setStyle('top',winh/2 + window.getScrollTop() -"
+				+ getOffsetTop() + " );");
+
+		if (url != null) {
+			MFXAjaxStatelessLink mfxlink = new MFXAjaxStatelessLink("mfxlink",
+					contentId, page);
+			mfxlink.getOptions().setOnComplete(
+					"effect.start(" + style.getStartValue() + ","
+							+ style.getEndValue() + ");");
 			str.append(mfxlink.mooFunction());
 		} else {
-			str.append("effect.start("+style.getStartValue()+","+style.getEndValue()+");");
+			str.append("effect.start(" + style.getStartValue() + ","
+					+ style.getEndValue() + ");");
 		}
-		
-		//return "alert('hello world');";
+
+		// return "alert('hello world');";
 		return str.toString();
 	}
 
@@ -121,7 +152,7 @@ public abstract class MFXDialogBase extends Panel {
 		return pageCreator;
 	}
 
-	public void setPageCreator(PageCreator pageCreator) {
+	public void setPageCreator(final PageCreator pageCreator) {
 		this.pageCreator = pageCreator;
 	}
 
@@ -129,7 +160,7 @@ public abstract class MFXDialogBase extends Panel {
 		return width;
 	}
 
-	public void setWidth(int width) {
+	public void setWidth(final int width) {
 		this.width = width;
 	}
 
@@ -137,7 +168,7 @@ public abstract class MFXDialogBase extends Panel {
 		return height;
 	}
 
-	public void setHeight(int height) {
+	public void setHeight(final int height) {
 		this.height = height;
 	}
 
@@ -145,7 +176,7 @@ public abstract class MFXDialogBase extends Panel {
 		return unit;
 	}
 
-	public void setUnit(String unit) {
+	public void setUnit(final String unit) {
 		this.unit = unit;
 	}
 
@@ -153,7 +184,7 @@ public abstract class MFXDialogBase extends Panel {
 		return title;
 	}
 
-	public void setTitle(String title) {
+	public void setTitle(final String title) {
 		this.title = title;
 	}
 
@@ -161,11 +192,11 @@ public abstract class MFXDialogBase extends Panel {
 		return offsetTop;
 	}
 
-	public void setOffsetTop(int offsetTop) {
+	public void setOffsetTop(final int offsetTop) {
 		this.offsetTop = offsetTop;
 	}
 
-	public void setBody(String body) {
+	public void setBody(final String body) {
 		this.body = body;
 	}
 
