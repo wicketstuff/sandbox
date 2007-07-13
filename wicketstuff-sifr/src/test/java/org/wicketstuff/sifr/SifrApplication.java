@@ -21,7 +21,6 @@ import org.apache.wicket.protocol.http.WebApplication;
 public class SifrApplication extends WebApplication
 {
 
-	@Override
 	public Class getHomePage()
 	{
 		return Index.class;
