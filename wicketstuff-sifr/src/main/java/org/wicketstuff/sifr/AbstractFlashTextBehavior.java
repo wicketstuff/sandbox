@@ -189,12 +189,12 @@ public class AbstractFlashTextBehavior extends AbstractBehavior implements IHead
 			this.paddingLeft = paddingLeft;
 		}
 
-		public boolean isTransparent()
+		public Boolean isTransparent()
 		{
 			return transparent;
 		}
 
-		public void setTransparent(boolean transparent)
+		public void setTransparent(Boolean transparent)
 		{
 			this.transparent = transparent;
 		}
