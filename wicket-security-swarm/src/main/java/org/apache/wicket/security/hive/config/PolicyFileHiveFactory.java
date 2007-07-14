@@ -54,7 +54,7 @@ import org.slf4j.LoggerFactory;
  * </pre>
  * 
  * where [] denotes an optional block, &lt;&gt; denotes a classname.<br>
- * For brevity aliases are allowed in / for classnames and permission /
+ * For brevity aliases are allowed in / for classnames and permission-,
  * principal names. An alias takes the form of ${foo} the alias (the part
  * between {}) must be at least 1 character long and must not contain one of the
  * following 4 characters "${} For example: permission ${ComponentPermission}
@@ -91,7 +91,7 @@ public class PolicyFileHiveFactory implements HiveFactory
 			.compile("\\s*(?:grant(?:\\s+principal\\s+([^\"]+)\\s+\"([^\"]+)\")?){1}\\s*");
 
 	private static final Pattern permissionPattern = Pattern
-			.compile("\\s*(?:permission\\s+([^\"]+?)\\s+(?:(?:\"([^\"]+)\"){1}?(?:\\s*,\\s*\"([^\"]*)\")?)?\\s*;){1}\\s*");
+			.compile("\\s*(?:permission\\s+([^\",]+?)\\s+(?:(?:\"([^\"]+)\"){1}?(?:\\s*,\\s*\"([^\"]*)\")?)?\\s*;){1}\\s*");
 
 	private static final Pattern aliasPattern = Pattern.compile("(\\$\\{[^\"\\{\\}\\$]+?\\})+?");
 
