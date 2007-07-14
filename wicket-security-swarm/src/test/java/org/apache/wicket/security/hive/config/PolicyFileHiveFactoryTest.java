@@ -208,6 +208,18 @@ public class PolicyFileHiveFactoryTest extends TestCase
 					"permission org.apache.wicket.TestPrincipal \"test\", ;").matches());
 			assertFalse(permissionPattern.matcher(
 					"permission org.apache.wicket.TestPrincipal \"test\", \"render\"").matches());
+			assertFalse(permissionPattern.matcher(
+					"permission ${ComponentPermission} ${ml}, \"inherit, render\";").matches());
+			assertTrue(permissionPattern.matcher(
+					"permission ${ComponentPermission} \"${ml}\", \"inherit, render\";").matches());
+			assertTrue(permissionPattern.matcher(
+					"permission ${ComponentPermission} ${ml} \"${ml}\", \"inherit, render\";")
+					.matches());
+			assertFalse(permissionPattern.matcher(
+					"permission ${ComponentPermission} ${ml}, \"whatever\", \"inherit, render\";")
+					.matches());
+			// technically spaces and some other characters are not allowed in
+			// classnames either but they don't cause any problems yet "," did
 		}
 		catch (IllegalArgumentException e)
 		{
