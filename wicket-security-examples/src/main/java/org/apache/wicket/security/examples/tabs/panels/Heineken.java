@@ -17,11 +17,11 @@
 package org.apache.wicket.security.examples.tabs.panels;
 
 /**
- * Panel showing information about the delicious Gifkikker beer.
+ * Panel showing information about Heineken beer.
  * 
  * @author marrink
  */
-public class Gifkikker extends BeerPanel
+public class Heineken extends BeerPanel
 {
 
 	/**
@@ -34,7 +34,7 @@ public class Gifkikker extends BeerPanel
 	 * 
 	 * @param id
 	 */
-	public Gifkikker(String id)
+	public Heineken(String id)
 	{
 		super(id);
 	}
@@ -44,9 +44,14 @@ public class Gifkikker extends BeerPanel
 	 */
 	public String getDescription()
 	{
-		return "<img src='../img/beer/logo_gifkikker.jpg' />\r\n\r\n"
-				+ "On November 24 2005, Topicus employees brewed for the very first time this original beer.\r\n"
-				+ "This unique beer after own recepy was proudly crissened 'Gifkikker'. A surprisingly tastefull and headstrong beer from the east of the Netherlands.";
+		return "<img src='../img/beer/heineken.jpg' />\r\n\r\n"
+				+ "Heineken has wide international presence through a global network of "
+				+ "distributors and breweries. Heineken owns and manages one of the world’s "
+				+ "leading portfolios of beer brands and is one of the world’s leading brewers "
+				+ "in terms of sales volume and profitability. Our principal international brands are "
+				+ "Heineken and Amstel, but the group brews and sells more than 170 international premium, "
+				+ "regional, local and specialty beers, including Cruzcampo, Tiger, Zywiec, "
+				+ "Birra Moretti, Ochota, Murphy’s and Star.";
 	}
 
 	/**
@@ -54,7 +59,7 @@ public class Gifkikker extends BeerPanel
 	 */
 	public String getName()
 	{
-		return "Topicus Gifkikker";
+		return "Heineken";
 	}
 
 	/**
@@ -62,7 +67,7 @@ public class Gifkikker extends BeerPanel
 	 */
 	public String getUrl()
 	{
-		return "http://gifkikker.topicus.nl/";
+		return "http://heineken.com/";
 	}
 
 }

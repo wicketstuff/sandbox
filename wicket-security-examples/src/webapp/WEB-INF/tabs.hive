@@ -8,5 +8,6 @@ grant principal org.apache.wicket.security.examples.authorization.MyPrincipal "b
 };
 grant principal org.apache.wicket.security.examples.authorization.MyPrincipal "super"
 {
-
+	permission ${ComponentPermission} "org.apache.wicket.security.examples.tabs.panels.Heineken", "render, enable";
+	permission ${ComponentPermission} "org.apache.wicket.security.examples.tabs.panels.Grolsch", "render, enable";
 };

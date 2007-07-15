@@ -26,6 +26,8 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.security.examples.tabs.components.tabs.SecureTab;
 import org.apache.wicket.security.examples.tabs.panels.Gifkikker;
+import org.apache.wicket.security.examples.tabs.panels.Grolsch;
+import org.apache.wicket.security.examples.tabs.panels.Heineken;
 
 
 /**
@@ -67,7 +69,7 @@ public class MasterPage extends SecurePage
 
 			public Panel getPanel(String panelId)
 			{
-				return new Gifkikker(panelId);
+				return new Heineken(panelId);
 			}
 
 			public IModel getTitle()
@@ -81,7 +83,7 @@ public class MasterPage extends SecurePage
 
 			public Panel getPanel(String panelId)
 			{
-				return new Gifkikker(panelId);
+				return new Grolsch(panelId);
 			}
 
 			public IModel getTitle()
