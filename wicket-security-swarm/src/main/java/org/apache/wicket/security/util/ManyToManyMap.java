@@ -65,7 +65,7 @@ public class ManyToManyMap
 
 	/**
 	 * Adds a key value mapping in this map. Since this maps many to many
-	 * relations no previous mappings will be overriddden.
+	 * relations no previous mappings will be overridden.
 	 * 
 	 * @param left
 	 * @param right
@@ -192,7 +192,7 @@ public class ManyToManyMap
 	/**
 	 * Check if this map contains a key value mapping.
 	 * 
-	 * @return true if no key value mappings are pressent, false otherwise
+	 * @return true if no key value mappings are present, false otherwise
 	 */
 	public boolean isEmpty()
 	{
@@ -212,7 +212,6 @@ public class ManyToManyMap
 	 * this map. In no particular order.
 	 * 
 	 * @return an iterator over this map
-	 * @see java.lang.Iterable#iterator()
 	 */
 	public Iterator iterator()
 	{

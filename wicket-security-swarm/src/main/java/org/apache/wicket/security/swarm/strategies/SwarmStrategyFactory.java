@@ -66,7 +66,7 @@ public class SwarmStrategyFactory implements StrategyFactory
 	 */
 	public void destroy()
 	{
-		// should we clean up all sessions or is that taken care of automaticly
+		// should we clean up all sessions or is that taken care of automatically
 		// when the
 		// session is invalidated
 
@@ -92,7 +92,7 @@ public class SwarmStrategyFactory implements StrategyFactory
 
 	/**
 	 * All instance of this class will be required to have
-	 * {@link ComponentPermission} with atleast the access action.
+	 * {@link ComponentPermission} with at least the access action.
 	 * 
 	 * @return the class required to have instantiation rights
 	 */
