@@ -19,10 +19,12 @@ package org.apache.wicket.security.hive.authentication;
 import junit.framework.TestCase;
 
 import org.apache.wicket.Component;
+import org.apache.wicket.Session;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.security.hive.authorization.TestPrincipal;
 import org.apache.wicket.security.pages.VerySecurePage;
 import org.apache.wicket.security.strategies.LoginException;
+import org.apache.wicket.util.tester.WicketTester;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -62,7 +64,12 @@ public class LoginTest extends TestCase
 		assertFalse(container.isClassAuthenticated(getClass()));
 		try
 		{
+			WicketTester mock=new WicketTester();
+			mock.setupRequestAndResponse();
 			container.login(ctx);
+			mock.processRequestCycle();
+			mock.destroy();
+
 		}
 		catch (LoginException e)
 		{
@@ -125,7 +132,11 @@ public class LoginTest extends TestCase
 		};
 		try
 		{
+			WicketTester mock=new WicketTester();
+			mock.setupRequestAndResponse();
 			container.login(ctx);
+			mock.processRequestCycle();
+			mock.destroy();
 		}
 		catch (LoginException e)
 		{
@@ -160,7 +171,11 @@ public class LoginTest extends TestCase
 		};
 		try
 		{
+			WicketTester mock=new WicketTester();
+			mock.setupRequestAndResponse();
 			container.login(ctx);
+			mock.processRequestCycle();
+			mock.destroy();
 		}
 		catch (LoginException e)
 		{
@@ -168,7 +183,11 @@ public class LoginTest extends TestCase
 			fail(e.getMessage());
 		}
 		assertNotNull(container.getSubject());
+		WicketTester mock=new WicketTester();
+		mock.setupRequestAndResponse();
 		container.logoff(ctx);
+		mock.processRequestCycle();
+		mock.destroy();
 		assertNull(container.getSubject());
 	}
 
@@ -184,6 +203,8 @@ public class LoginTest extends TestCase
 		LoginContext high = new SecondaryLoginContext();
 		try
 		{
+			WicketTester mock=new WicketTester();
+			mock.setupRequestAndResponse();
 			container.login(low);
 			assertFalse(container.isClassAuthenticated(VerySecurePage.class));
 			assertTrue(container.getSubject().getPrincipals().contains(new TestPrincipal("basic")));
@@ -191,6 +212,8 @@ public class LoginTest extends TestCase
 			container.login(high);
 			assertTrue(container.isClassAuthenticated(VerySecurePage.class));
 			assertTrue(container.getSubject().getPrincipals().contains(new TestPrincipal("admin")));
+			mock.processRequestCycle();
+			mock.destroy();
 		}
 		catch (LoginException e)
 		{
@@ -208,7 +231,11 @@ public class LoginTest extends TestCase
 		LoginContainer container = new LoginContainer();
 		try
 		{
+			WicketTester mock=new WicketTester();
+			mock.setupRequestAndResponse();
 			container.login(new myContext());
+			mock.processRequestCycle();
+			mock.destroy();
 		}
 		catch (LoginException e)
 		{
@@ -217,16 +244,28 @@ public class LoginTest extends TestCase
 		}
 		try
 		{
+			WicketTester mock=new WicketTester();
+			mock.setupRequestAndResponse();
 			container.login(new myContext());
 			fail("Should not be able to login");
+			mock.processRequestCycle();
+			mock.destroy();
 		}
 		catch (LoginException e)
 		{
 		}
+		WicketTester mock=new WicketTester();
+		mock.setupRequestAndResponse();
 		container.logoff(new myContext());
+		mock.processRequestCycle();
+		mock.destroy();
 		try
 		{
+			mock=new WicketTester();
+			mock.setupRequestAndResponse();
 			container.login(new myContext());
+			mock.processRequestCycle();
+			mock.destroy();
 		}
 		catch (LoginException e)
 		{
