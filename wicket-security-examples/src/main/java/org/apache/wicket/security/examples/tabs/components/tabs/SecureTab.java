@@ -33,7 +33,9 @@ import org.apache.wicket.security.components.SecureComponentHelper;
  * caches the panel for improved performance. All methods from
  * {@link ISecureComponent} operate on this cached panel which automatically
  * receives the {@link ISecurityCheck} specified in
- * {@link #getSecurityCheckForPanel(Panel)}.
+ * {@link #getSecurityCheckForPanel(Panel)}. Note unlike the {@link ISecureTab}
+ * this tab will always show up, even if the contents is forbidden. So there
+ * really is no point in this component implementing or wrapping an ISecureTab
  * 
  * @author marrink
  */
