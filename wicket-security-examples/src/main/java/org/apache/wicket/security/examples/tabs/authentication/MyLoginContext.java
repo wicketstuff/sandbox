@@ -68,6 +68,7 @@ public final class MyLoginContext extends LoginContext
 			if ("super".equals(username))
 			{
 				subject.addPrincipal(new MyPrincipal("super"));
+				subject.addPrincipal(new MyPrincipal("basic"));
 			}
 			else
 				subject.addPrincipal(new MyPrincipal("basic"));
