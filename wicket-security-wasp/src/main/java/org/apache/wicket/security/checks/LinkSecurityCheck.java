@@ -19,6 +19,7 @@ package org.apache.wicket.security.checks;
 import org.apache.wicket.Page;
 import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.security.actions.Enable;
 import org.apache.wicket.security.actions.Render;
 import org.apache.wicket.security.actions.WaspAction;
@@ -33,7 +34,7 @@ import org.apache.wicket.security.models.ISecureModel;
  * alternative mode the check behaves as a {@link ComponentSecurityCheck}
  * (render action only) allowing the link to be visible but disabled. Note that
  * for all other actions this check behaves a ClassSecurityCheck (with option to
- * check the model).
+ * check the model). Although the check was designed to work on pages it now also works on any class.
  * 
  * @author marrink
  */
@@ -51,19 +52,18 @@ public class LinkSecurityCheck extends ComponentSecurityCheck
 	 * @param component
 	 *            the link
 	 * @param clickTarget
-	 *            the {@link Page} redirected to when clicking on the link.
+	 *            the {@link Class} redirected to when clicking on the link.
+	 *            This could be a {@link Page} or a {@link Panel} or something
+	 *            completely different.
 	 * @throws IllegalArgumentException
-	 *             if clickTarget is not a Page class
+	 *             if clickTarget is null
 	 */
 	public LinkSecurityCheck(AbstractLink component, Class clickTarget)
 	{
 		super(component);
 		this.clickTarget = clickTarget;
-		if (!Page.class.isAssignableFrom(clickTarget))
-		{
-			throw new IllegalArgumentException("Class " + clickTarget
-					+ " is not a subclass of Page");
-		}
+		if (clickTarget==null)
+			throw new IllegalArgumentException("A clickTarget is mandatory.");
 	}
 
 	/**
@@ -72,22 +72,22 @@ public class LinkSecurityCheck extends ComponentSecurityCheck
 	 * @param component
 	 *            the link
 	 * @param clickTarget
-	 *            the {@link Page} redirected to when clicking on the link.
+	 *            the {@link Class} redirected to when clicking on the link.
+	 *            This could be a {@link Page} or a {@link Panel} or something
+	 *            completely different.
+	 * 
 	 * @param checkSecureModelIfExists
 	 *            forces the model to be checked after this check is fired
 	 * @throws IllegalArgumentException
-	 *             if clickTarget is not a Page class
+	 *             if clickTarget is null
 	 */
 	public LinkSecurityCheck(AbstractLink component, Class clickTarget,
 			boolean checkSecureModelIfExists)
 	{
 		super(component, checkSecureModelIfExists);
 		this.clickTarget = clickTarget;
-		if (!Page.class.isAssignableFrom(clickTarget))
-		{
-			throw new IllegalArgumentException("Class " + clickTarget
-					+ " is not a subclass of Page");
-		}
+		if (clickTarget==null)
+			throw new IllegalArgumentException("A clickTarget is mandatory.");
 	}
 
 	/**
