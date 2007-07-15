@@ -20,110 +20,109 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.wicket.extensions.markup.html.tabs.ITab;
-import org.apache.wicket.extensions.markup.html.tabs.TabbedPanel;
+import org.apache.wicket.markup.html.pages.AccessDeniedPage;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.security.checks.ContainerSecurityCheck;
+import org.apache.wicket.security.components.ISecureComponent;
+import org.apache.wicket.security.components.SecureComponentHelper;
 import org.apache.wicket.security.examples.tabs.components.navigation.ButtonContainer;
-import org.apache.wicket.security.examples.tabs.components.tabs.SecureTab;
 import org.apache.wicket.security.examples.tabs.panels.Gifkikker;
 import org.apache.wicket.security.examples.tabs.panels.Grolsch;
 import org.apache.wicket.security.examples.tabs.panels.Heineken;
 
-
 /**
- * Basic page showing a tab bar. The tabs used have an additional feature of a
- * warningpanel. If you are not allowed to see the tab contents you will instead
- * see a nice message telling you that you can not see the contents.
+ * Basic page showing a tab bar. Although all tabs are visible the contents of
+ * the tab will not show if there are insufficient rights. The reason the tab
+ * panels are not shown rather than throwing a AccessDeniedPage is because the
+ * panels do not implement {@link ISecureComponent}. You might recall that by
+ * default only ISecureComponents are checked for instantiation, and since
+ * wicket only shows an {@link AccessDeniedPage} if the instantiation fails the
+ * panels are just not rendered. So if you want an AccessDeniedPage all you have
+ * to do is make your panels implement ISecureComponent.
  * 
  * @author marrink
- * 
  */
-public class MasterPage extends SecurePage
+public class MasterPageHiddenContents extends MasterPage
 {
 
+	/**
+	 * 
+	 */
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * 
+	 * Construct.
 	 */
-	public MasterPage()
+	public MasterPageHiddenContents()
 	{
-		add(new ButtonContainer("buttoncontainer", getActiveMenuButton()));
-		add(getTabBar("tabs"));
 	}
 
 	/**
-	 * The component displaying all the tabs. like a {@link TabbedPanel}.
-	 * 
-	 * @param id
-	 * @return the component
-	 */
-	protected Panel getTabBar(String id)
-	{
-		return new TabbedPanel(id, getTabs());
-	}
-
-	/**
-	 * Return one of the buttons in {@link ButtonContainer}.
-	 * 
-	 * @return the active menu button.
+	 * @see org.apache.wicket.security.examples.tabs.pages.MasterPage#getActiveMenuButton()
 	 */
 	protected Integer getActiveMenuButton()
 	{
-		return ButtonContainer.BUTTON_SHOW_WARNING_PANEL;
+		return ButtonContainer.BUTTON_HIDE_CONTENT;
 	}
 
 	/**
-	 * A list containing {@link ITab}s representing all the tabs.
-	 * 
-	 * @return the tabs
+	 * @see org.apache.wicket.security.examples.tabs.pages.MasterPage#getTabs()
 	 */
 	protected List getTabs()
 	{
 		List tabs = new ArrayList();
-		tabs.add(new SecureTab(new ITab()
+		tabs.add(new ITab()
 		{
 			private static final long serialVersionUID = 1L;
 
 			public Panel getPanel(String panelId)
 			{
-				return new Gifkikker(panelId);
+				Gifkikker panel = new Gifkikker(panelId);
+				// not an ISecureComponent but with an ISecurityCheck to check
+				// for enough rights when rendering
+				SecureComponentHelper.setSecurityCheck(panel, new ContainerSecurityCheck(panel));
+				return panel;
 			}
 
 			public IModel getTitle()
 			{
 				return new Model("Gifkikker");
 			}
-		}));
-		tabs.add(new SecureTab(new ITab()
+		});
+		tabs.add(new ITab()
 		{
 			private static final long serialVersionUID = 1L;
 
 			public Panel getPanel(String panelId)
 			{
-				return new Heineken(panelId);
+				Heineken panel = new Heineken(panelId);
+				SecureComponentHelper.setSecurityCheck(panel, new ContainerSecurityCheck(panel));
+				return panel;
 			}
 
 			public IModel getTitle()
 			{
 				return new Model("Heineken");
 			}
-		}));
-		tabs.add(new SecureTab(new ITab()
+		});
+		tabs.add(new ITab()
 		{
 			private static final long serialVersionUID = 1L;
 
 			public Panel getPanel(String panelId)
 			{
-				return new Grolsch(panelId);
+				Grolsch panel = new Grolsch(panelId);
+				SecureComponentHelper.setSecurityCheck(panel, new ContainerSecurityCheck(panel));
+				return panel;
 			}
 
 			public IModel getTitle()
 			{
 				return new Model("Grolsch");
 			}
-		}));
+		});
 		return tabs;
 	}
 }
