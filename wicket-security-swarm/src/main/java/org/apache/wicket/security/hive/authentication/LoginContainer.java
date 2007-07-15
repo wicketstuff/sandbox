@@ -30,6 +30,7 @@ import org.apache.wicket.Component;
 import org.apache.wicket.Session;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.security.strategies.LoginException;
+import org.apache.wicket.util.string.AppendingStringBuffer;
 
 /**
  * Container class for multiple {@link LoginContext}s. Allows the concept of
@@ -201,6 +202,7 @@ public final class LoginContainer implements Serializable
 		private final List keys;
 
 		private final Map mySubjects;
+		private transient String toStringCache = null;
 
 		/**
 		 * Creates a new MultiSubject containing only the principals of the
@@ -326,6 +328,30 @@ public final class LoginContainer implements Serializable
 			}
 			return false;
 		}
+
+		/**
+		 * @see java.lang.Object#toString()
+		 */
+		public String toString()
+		{
+			if (toStringCache != null)
+				return toStringCache;
+			AppendingStringBuffer buffer = new AppendingStringBuffer(10 + mySubjects.size() * 25); // guess
+			buffer.append("Subjects[");
+			boolean comma = false;
+			HashKey ctx = null;
+			for (int i = 0; i < keys.size(); i++)
+			{
+				ctx = (HashKey)keys.get(i);
+				buffer.append(ctx).append(" = ").append(mySubjects.get(ctx));
+				if (comma)
+					buffer.append(", ");
+				else
+					comma = true;
+			}
+			buffer.append("]");
+			return toStringCache = buffer.toString();
+		}
 	}
 	/**
 	 * Simple key for storing the hashcode, sort order and
@@ -342,6 +368,7 @@ public final class LoginContainer implements Serializable
 		private final int contextHash;
 		private final boolean preventsAdditionalLogin;
 		private int sortOrder;
+		private String toStringCache;
 
 		/**
 		 * Construct. a new key based on the context
@@ -354,6 +381,17 @@ public final class LoginContainer implements Serializable
 			contextHash = context.hashCode();
 			preventsAdditionalLogin = context.preventsAdditionalLogins();
 			this.sortOrder = context.getSortOrder();
+			// guess size
+			toStringCache = new AppendingStringBuffer(25).append("HashKey: ").append(contextHash)
+					.append(", sortOrder ").append(sortOrder).toString();
+		}
+
+		/**
+		 * @see java.lang.Object#toString()
+		 */
+		public String toString()
+		{
+			return toStringCache;
 		}
 
 		/**

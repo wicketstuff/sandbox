@@ -25,6 +25,8 @@ import org.apache.wicket.security.hive.authentication.Subject;
 import org.apache.wicket.security.hive.authorization.Permission;
 import org.apache.wicket.security.hive.authorization.Principal;
 import org.apache.wicket.security.util.ManyToManyMap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Basic implementation of a Hive. It contains basic add methods to facilitate
@@ -35,6 +37,7 @@ import org.apache.wicket.security.util.ManyToManyMap;
  */
 public class BasicHive implements Hive
 {
+	private static final Logger log= LoggerFactory.getLogger(BasicHive.class);
 	/**
 	 * Maps {@link Permission}s to {@link Principal}s
 	 */
@@ -58,6 +61,8 @@ public class BasicHive implements Hive
 	public final void lock()
 	{
 		locked = true;
+		if(log.isDebugEnabled())
+			log.debug("Locking Hive, permissions can not be added anymore.");
 	}
 
 	/**
@@ -94,10 +99,13 @@ public class BasicHive implements Hive
 					+ principal);
 		Iterator it = permissions.iterator();
 		Permission next = null;
+		boolean debug=log.isDebugEnabled();
 		while (it.hasNext())
 		{
 			next = (Permission)it.next();
 			principals.add(next, principal);
+			if(debug)
+				log.debug("Adding "+next+" to "+principal);
 		}
 	}
 
@@ -122,6 +130,8 @@ public class BasicHive implements Hive
 		if (permission == null)
 			throw new IllegalArgumentException("A permission is required.");
 		principals.add(permission, principal);
+		if(log.isDebugEnabled())
+			log.debug("Adding "+permission+" to "+principal);
 	}
 
 	/**
@@ -140,7 +150,11 @@ public class BasicHive implements Hive
 	{
 		// TODO caching
 		if (hasPrincipal(subject, principals.get(permission)))
+		{
+			if(log.isDebugEnabled())
+				log.debug(subject+" has an exact match for "+permission);
 			return true;
+		}
 		// permission has no exact match, perform an implies check
 		Iterator it = principals.iterator();
 		Object temp = null;
@@ -154,9 +168,15 @@ public class BasicHive implements Hive
 				if (!possibleMatch.implies(permission))
 					continue;
 				if (hasPrincipal(subject, principals.get(possibleMatch)))
+				{
+					if(log.isDebugEnabled())
+						log.debug(subject+" implies "+permission);
 					return true;
+				}
 			}
 		}
+		if(log.isDebugEnabled())
+			log.debug(subject+" does not have or implies "+permission);
 		return false;
 	}
 
