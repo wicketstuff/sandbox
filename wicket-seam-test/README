@@ -21,7 +21,7 @@ longer term, we should keep an eye on WebBeans.
 ---------------- Setting it up ----------------
 
 Currently, the only way to get this running is to check out this project from
-https://wicket-stuff.svn.sourceforge.net/svnroot/wicket-stuff/trunk/wicket-seam-test, and
+http://wicket-stuff.svn.sourceforge.net/svnroot/wicket-stuff/trunk/wicket-seam-test, and
 check out and build Seam from anoncvs.forge.jboss.com, repo '/cvsroot/jboss', module 'jboss-seam'.
 The Eclipse project files are set up for this and the wicket and wicket-ioc project to be
 all in your workspace and use each other as project dependencies. Only extra thing you need to do
