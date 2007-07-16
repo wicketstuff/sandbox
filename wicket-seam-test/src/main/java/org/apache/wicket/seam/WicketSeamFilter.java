@@ -20,6 +20,7 @@ import static org.jboss.seam.ScopeType.APPLICATION;
 import static org.jboss.seam.annotations.Install.FRAMEWORK;
 
 import java.io.IOException;
+import java.util.Set;
 
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -28,6 +29,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.wicket.Application;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.protocol.http.WicketFilter;
 import org.jboss.seam.annotations.Install;
@@ -50,6 +52,14 @@ import org.slf4j.LoggerFactory;
  * {@link WicketFilter} like they would normally do. This Seam component
  * automatically attaches to it.
  * </p>
+ * <p>
+ * The filter automatically picks up the {@link WebApplication} when there is
+ * only one active for the web application this filter is configured for. If
+ * there are multiple Wicket applications active in the web application, you'll
+ * have to explicitly configure which one to use by providing filter init
+ * parameter 'applicationName', which corresponds to the filter name of the
+ * Wicket filter for the application you want to use this filter with.
+ * </p>
  * 
  * @author eelcohillenius
  */
@@ -61,12 +71,20 @@ import org.slf4j.LoggerFactory;
 @Filter()
 public class WicketSeamFilter extends AbstractFilter {
 
+	private static final class WicketSeamFilterConfigurationException extends
+			IllegalStateException {
+		public WicketSeamFilterConfigurationException(String msg) {
+			super(msg);
+		}
+	}
+
+	private static final String APPLICATION_NONE = "<none>";
+
 	private static Logger log = LoggerFactory.getLogger(WicketSeamFilter.class);
 
-	private WicketFilter delegate = null;
+	private String applicationName = null;
 
-	/** See javax.servlet.FilterConfig */
-	private FilterConfig filterConfig;
+	private WicketFilter delegate = null;
 
 	/**
 	 * Construct.
@@ -74,19 +92,48 @@ public class WicketSeamFilter extends AbstractFilter {
 	public WicketSeamFilter() {
 	}
 
+	@SuppressWarnings("unchecked")
 	public void doFilter(ServletRequest servletRequest,
 			ServletResponse servletResponse, FilterChain filterChain)
 			throws IOException, ServletException {
 
 		// Check for the Wicket filter (which might be initialized after this
 		// filter, hence the lazy loading). Synchronization is not important.
-		if (delegate == null) {
-			WebApplication webApplication = (WebApplication) filterConfig
-					.getServletContext().getAttribute(
-							WebApplication.SERVLET_CONTEXT_APPLICATION_KEY);
+		if (delegate == null && !APPLICATION_NONE.equals(applicationName)) {
+
+			if (applicationName == null) {
+				Set<String> applicationKeys = Application.getApplicationKeys();
+				if (applicationKeys.size() > 1) {
+					throw new WicketSeamFilterConfigurationException(
+							"If you run this filter in the context of multiple Wicket "
+									+ "application instances (/ filters) you have to provide filer "
+									+ "init parameter 'applicationName' which should correspond to "
+									+ "the filter name you want to use this filter with.");
+				} else if (applicationKeys.size() == 0) {
+					// no Wicket apps configured... set to special name
+					applicationName = APPLICATION_NONE;
+				} else {
+					applicationName = applicationKeys.iterator().next();
+				}
+			}
+			Application application = (!APPLICATION_NONE
+					.equals(applicationName)) ? Application
+					.get(applicationName) : null;
+			if (application != null && !(application instanceof WebApplication)) {
+				log
+						.warn("This filter can only be used with Wicket WebApplications. Currently, "
+								+ "it is configured to work with an application of type "
+								+ application.getClass().getName());
+				applicationName = APPLICATION_NONE;
+				filterChain.doFilter(servletRequest, servletResponse);
+				return;
+			}
+
+			WebApplication webApplication = (WebApplication) application;
 			if (webApplication == null) {
 				log
 						.warn("ignoring request: no Wicket web application instance found");
+				applicationName = APPLICATION_NONE;
 				filterChain.doFilter(servletRequest, servletResponse);
 				return;
 			}
@@ -102,6 +149,6 @@ public class WicketSeamFilter extends AbstractFilter {
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
 		super.init(filterConfig);
-		this.filterConfig = filterConfig;
+		this.applicationName = filterConfig.getInitParameter("applicationName");
 	}
 }
