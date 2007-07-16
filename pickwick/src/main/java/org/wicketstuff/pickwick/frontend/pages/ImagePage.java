@@ -64,7 +64,9 @@ public class ImagePage extends FrontendBasePage {
 				super.renderHead(response);
 				response.renderJavascriptReference(new ResourceReference(ImagePage.class, "ImagePage.js"));
 				// FIXME onResize is ignored
-				response.renderJavascript("dojo.addOnLoad(function() {resizeImage('"+image.getMarkupId()+"', '" + top.getMarkupId() + "'); dojo.event.connect(dojo.byId('"+ mainLayout.getMarkupId() +"'), 'onResize', function() {resizeImage('"+image.getMarkupId()+"', '" + top.getMarkupId() + "');});});", ImagePage.class.getName());
+				// Don't use dojo.addOnLoad() because images are not yet loaded
+				//response.renderJavascript("dojo.addOnLoad(function() {resizeImage('"+image.getMarkupId()+"', '" + top.getMarkupId() + "'); dojo.event.connect(dojo.byId('"+ mainLayout.getMarkupId() +"'), 'onResize', function() {resizeImage('"+image.getMarkupId()+"', '" + top.getMarkupId() + "');});});", ImagePage.class.getName());
+				response.renderOnLoadJavascript("resizeImage('"+image.getMarkupId()+"', '" + top.getMarkupId() + "'); dojo.event.connect(dojo.byId('"+ mainLayout.getMarkupId() +"'), 'onResize', function() {resizeImage('"+image.getMarkupId()+"', '" + top.getMarkupId() + "');});");
 			}
 			@Override
 			protected void respond(AjaxRequestTarget target) {
