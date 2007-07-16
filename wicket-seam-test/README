@@ -29,6 +29,15 @@ is to export most of the classpath entries of Seam. At the end of this document,
 contents of my Eclipse .classpath file for jboss-seam. Contributions for other IDEs are welcome.
 Hopefully Seam gets a proper maven 2 build soon and we can make this a decent project.
 
+---------------- Starting the example ----------------
+
+Hey, you know us: we like to keep it lean and mean. So find your Jetty starter class in src/test.
+The difference with the usual Jetty starter is that this one uses Jetty plus, which has some
+support for JNDI etc. Unfortunately, at this time Seam won't start without such support. Of course,
+it should run excellent on JBoss :)
+
+Supply -Dwicket.configuration=development as a VM argument if you want to play around and turn
+on template reloading.
 
 -----------------------------------------------
 
