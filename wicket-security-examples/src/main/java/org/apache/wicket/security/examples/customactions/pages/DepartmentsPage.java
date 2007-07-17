@@ -34,7 +34,7 @@ import org.apache.wicket.security.examples.customactions.components.navigation.B
 import org.apache.wicket.security.examples.customactions.entities.Department;
 
 /**
- * Page for showing the departments in our organisation.
+ * Page for showing the departments in our organization.
  * 
  * @author marrink
  */
@@ -63,7 +63,7 @@ public class DepartmentsPage extends SecurePage
 				if (item.getIndex() % 2 == 0)
 					item.add(new SimpleAttributeModifier("class", "outside halfhour"));
 				// Having a custom securitycheck is a bit of overkill,
-				// esspecially because we are already filtering out the secure
+				// especially because we are already filtering out the secure
 				// departments. However should you replace the DepartmentModel
 				// below for a regular CompoundPropertyModel (and thus showing
 				// all departments), then the
