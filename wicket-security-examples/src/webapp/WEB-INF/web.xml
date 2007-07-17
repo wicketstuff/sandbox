@@ -54,6 +54,18 @@
 			</param-value>
 		</init-param>
 	</filter>
+	<filter>
+		<filter-name>basichttp</filter-name>
+		<filter-class>
+			org.apache.wicket.protocol.http.WicketFilter
+		</filter-class>
+		<init-param>
+			<param-name>applicationClassName</param-name>
+			<param-value>
+				org.apache.wicket.security.examples.httplogin.basic.MyApplication
+			</param-value>
+		</init-param>
+	</filter>
 	<filter-mapping>
 		<filter-name>multilogin</filter-name>
 		<url-pattern>/multilogin/*</url-pattern>
@@ -65,5 +77,9 @@
 	<filter-mapping>
 		<filter-name>tabs</filter-name>
 		<url-pattern>/tabs/*</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>basichttp</filter-name>
+		<url-pattern>/basichttp/*</url-pattern>
 	</filter-mapping>
 </web-app>

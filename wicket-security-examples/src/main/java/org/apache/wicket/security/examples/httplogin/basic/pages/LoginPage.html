@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-<title>Swarm Examples</title>
+<title>Basic http logon example</title>
 
 <!-- STYLESHEETS -->
 <link rel="stylesheet" href="css/reset-fonts-grids.css" type="text/css"
@@ -16,17 +16,18 @@
 </head>
 <body>
 <div id="loginBox">
-<div class="loginTitle">Choose your example</div>
-<div class="loginFormBox">
-<ul>
-	<li><a href="multilogin">Multi login example</a></li>
-	<li><a href="customactions">Custom actions example</a></li>
-	<li><a href="tabs">Panel replacement example</a></li>
-	<li><a href="basichttp">Basic http logon example</a></li>
-	<li>More examples to come</li>
-</ul>
+<div class="loginTitle">Logon to the Swarm</div>
+<div class="loginError" wicket:id="feedback">Username or password
+incorrect</div>
+<div class="loginFormBox" id="signInPanel">This site requires
+basic http authentication.<br />
+Log in using any nonzero username password combination <br/>as long as both
+are the same.<br />
+Oops did i realy just told you that ;)<br /><br/>
+<button wicket:id="link">Login</button>
 </div>
-<div class="loginFooter">Stylesheet by Vincent van den Noort</div>
+<div class="loginFooter">Basic http logon example version 0.1 -
+Powered by Swarm</div>
 </div>
 </body>
 </html>
