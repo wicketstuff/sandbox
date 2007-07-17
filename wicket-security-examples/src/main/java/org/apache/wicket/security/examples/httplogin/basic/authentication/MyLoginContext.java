@@ -24,6 +24,8 @@ import org.apache.wicket.security.strategies.LoginException;
 import org.apache.wicket.util.lang.Objects;
 
 /**
+ * Standard context.
+ * 
  * @author marrink
  */
 public class MyLoginContext extends UsernamePasswordContext
