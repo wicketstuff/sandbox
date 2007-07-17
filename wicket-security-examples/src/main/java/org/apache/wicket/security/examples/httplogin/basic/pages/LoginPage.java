@@ -22,6 +22,15 @@ import org.apache.wicket.security.examples.httplogin.basic.authentication.MyLogi
 import org.apache.wicket.security.login.http.HttpAuthenticationLoginPage;
 
 /**
+ * The login page. compared to login pages from the other examples it is a bit
+ * different because there is no login form. Using http authentication the
+ * browser is going to take care of that for us. In order to display a little
+ * message to the user this page is rendered normally and the authentication is
+ * only requested after the login button is pushed. If you do not want a login
+ * button you can request authentication immediately by calling the
+ * {@link #doAuthentication()} directly in the constructor instead of when the
+ * button is clicked.
+ * 
  * @author marrink
  */
 public class LoginPage extends HttpAuthenticationLoginPage
@@ -39,6 +48,9 @@ public class LoginPage extends HttpAuthenticationLoginPage
 	{
 		// stateless so the login page will not throw a timeout exception
 		setStatelessHint(true);
+		// I have added a nice feedbackpanel but this is not going to help us to
+		// show messages to the user because as soon as doAuthentication has
+		// been called the browser will not show this page anymore.
 		add(new FeedbackPanel("feedback")
 		{
 			private static final long serialVersionUID = 1L;
@@ -51,6 +63,8 @@ public class LoginPage extends HttpAuthenticationLoginPage
 				return anyMessage();
 			}
 		});
+		// either allow the user to postpone logging in until the button has
+		// been pushed
 		add(new Link("link")
 		{
 
@@ -61,6 +75,10 @@ public class LoginPage extends HttpAuthenticationLoginPage
 				doAuthentication();
 			}
 		});
+		// or ask them for their username and password immediately
+		// doAuthentication();
+		// remember this page will not be shown by the browser because of the
+		// 401 header after using doAuthentication
 	}
 
 	/**
