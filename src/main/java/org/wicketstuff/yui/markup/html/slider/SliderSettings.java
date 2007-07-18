@@ -43,6 +43,22 @@ public class SliderSettings implements Serializable {
 		return defSettings;
 	}
 
+    /**
+     * 
+     * @param leftUp
+     * @param rightDown
+     * @param tick
+     * @param startValue
+     * @return
+     *      an Aqua based Slider Settings
+     */
+    public static SliderSettings getAqua(int leftUp, int rightDown, int tick, int startValue)
+    {
+        SliderSettings settings = getAqua(leftUp, rightDown, tick);
+        settings.setStartValue(startValue);
+        return settings;
+    }
+    
 	/**
 	 * returns a default SliderSettings. This returns all the deafult images for
 	 * the slider, but does not include the sizes. at the time this is created,
@@ -77,7 +93,33 @@ public class SliderSettings implements Serializable {
 		return defSettings;
 	}
 
-	private InlineStyle background = new InlineStyle();
+    /**
+     * a default Slider setting with startvalue.
+     * 
+     * provide a start value
+     * @param leftUp
+     * @param rightDown
+     * @param tick
+     * @param startValue
+     * @return
+     *      a sliderSetting
+     */
+    public static SliderSettings getDefault(int leftUp, int rightDown, int tick, int startValue)
+    {
+        SliderSettings settings = getDefault(leftUp, rightDown, tick);
+        settings.setStartValue(startValue);
+        return settings;
+    }
+    
+    /**
+     * startValue is the value that the slider should be
+     * at at the point it is rendered. this value if present is set at the 
+     * begining when the attached text field is null. subsequently the textfields'
+     * value will be used.
+     */
+	private Integer startValue;
+    
+    private InlineStyle background = new InlineStyle();
 
 	private ResourceReference backgroundResource;
 
@@ -299,5 +341,15 @@ public class SliderSettings implements Serializable {
 	public void setTickSize(String tickSize) {
 		this.tickSize = tickSize;
 	}
+
+    public Integer getStartValue()
+    {
+        return startValue;
+    }
+
+    public void setStartValue(Integer startValue)
+    {
+        this.startValue = startValue;
+    }
 
 }
