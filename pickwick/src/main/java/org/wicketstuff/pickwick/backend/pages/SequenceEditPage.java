@@ -49,7 +49,7 @@ public class SequenceEditPage extends BackendBasePage {
 
 					@Override
 					public void onClick(AjaxRequestTarget target) {
-						SequencePropertiesPanel newPanel =  new SequencePropertiesPanel("properties", folder.getFile() + "/_sequence.xml");
+						SequencePropertiesPanel newPanel =  new SequencePropertiesPanel("properties", folder.getFile());
 						newPanel.setOutputMarkupId(true);
 						panel.replaceWith(newPanel);
 						panel = newPanel;

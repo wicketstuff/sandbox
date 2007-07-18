@@ -11,7 +11,6 @@ public class Sequence implements Serializable{
 	private String description;
 	private Date date;
 	
-	
 	public Date getDate() {
 		return date;
 	}

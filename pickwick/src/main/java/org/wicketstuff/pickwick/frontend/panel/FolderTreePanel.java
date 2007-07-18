@@ -31,7 +31,6 @@ public class FolderTreePanel extends Panel{
 	@Inject
 	private ImageUtils imageUtils;
 	
-
 	private Tree tree;
 
 	/**

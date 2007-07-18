@@ -72,8 +72,9 @@ public class PickWickApplication extends WebApplication {
 
 	@Override
 	protected void init() {
-		//addComponentInstantiationListener(new GuiceComponentInjector(this, getModule()));
-
+		if (getConfigurationType().equals(DEVELOPMENT) && new File("src/main/resources").exists()) {
+			getResourceSettings().addResourceFolder("src/main/resources");
+		}
 		// FIXME how to specify url coding strategy for the home page?
 		mount(new URIRequestTargetUrlCodingStrategy("/" + SEQUENCE_PAGE_PATH) {
 			@Override

@@ -18,12 +18,19 @@ package org.wicketstuff.pickwick.backend;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.wicketstuff.pickwick.PickWickApplication;
 import org.wicketstuff.pickwick.bean.Folder;
 import org.wicketstuff.pickwick.bean.Image;
@@ -37,6 +44,8 @@ import com.google.inject.Inject;
  * @author <a href="mailto:jbq@apache.org">Jean-Baptiste Quenot</a>
  */
 public class ImageUtils {
+	private static final Logger log = LoggerFactory.getLogger(ImageUtils.class);
+	
 	@Inject
 	private Settings settings;
 
@@ -90,7 +99,7 @@ public class ImageUtils {
 	}
 
 	private static File getSequenceFile(File o1) {
-		return new File(o1, "sequence.xml");
+		return new File(o1, "_sequence.xml");
 	}
 
 	public static Sequence getSequence(File dir) {
@@ -205,5 +214,42 @@ public class ImageUtils {
 			return toReturn;
 		}
 		return null;
+	}
+
+	public File toFile(String uri) {
+		return new File(settings.getImageDirectoryRoot(), uri);
+	}
+
+	/**
+	 * Returns a {@link Sequence} or null if the sequence file does not exist
+	 * @param imageDirectory the directory containing images and a sequence file
+	 * @return
+	 */
+	public Sequence readSequence(File imageDirectory) {
+		XmlBeanMapper<Sequence> mapper = new XmlBeanMapper<Sequence>(Sequence.class);
+		Sequence sequence = new Sequence();
+		InputStream in = null;
+		try {
+			in = new FileInputStream(getSequenceFile(imageDirectory));
+			sequence = mapper.bindInBean(in);
+		} catch (FileNotFoundException e) {	
+			return null;
+		} finally {
+			IOUtils.closeQuietly(in);
+		}
+		return sequence;
+	}
+
+	public void writeSequence(Sequence sequence, File imageDirectory) {
+		XmlBeanMapper<Sequence> mapper = new XmlBeanMapper<Sequence>(Sequence.class);
+		OutputStream out = null;
+		try {
+			 out = new FileOutputStream(getSequenceFile(imageDirectory));
+			 mapper.serializeInXml(sequence, out);
+		} catch (FileNotFoundException e) {
+			throw new RuntimeException("Cannot write sequence for " + imageDirectory, e);
+		} finally {
+			IOUtils.closeQuietly(out);
+		}
 	}
 }
