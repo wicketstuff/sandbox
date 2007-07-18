@@ -78,6 +78,11 @@ public class Slider extends Panel implements IHeaderContributor {
 	 * of numbers and not limited by the pixel size
 	 */
 	private float divisor;
+    
+    /**
+     * the slider settings 
+     */
+    SliderSettings sliderSettings;
 
 	/**
 	 * logger
@@ -111,7 +116,9 @@ public class Slider extends Panel implements IHeaderContributor {
 	public Slider(String id, IModel model, final FormComponent element,
 			final SliderSettings settings, float divisor) {
 		super(id, model);
-
+		
+        this.sliderSettings = settings;
+        add(YuiHeaderContributor.forModule("animation"));
 		add(YuiHeaderContributor.forModule("slider"));
 		add(HeaderContributor.forCss(getCSS()));
 
@@ -296,7 +303,11 @@ public class Slider extends Panel implements IHeaderContributor {
 	 * @see org.apache.wicket.markup.html.IHeaderContributor#renderHead(org.apache.wicket.markup.html.IHeaderResponse)
 	 */
 	public void renderHead(IHeaderResponse response) {
-		response.renderOnLoadJavascript("init" + javaScriptId + "(" + this.element.getConvertedInput() + ");");
+        Integer value = (Integer) this.element.getConvertedInput();
+        if (value == null) 
+            value = getSliderSettings().getStartValue();
+        
+		response.renderOnLoadJavascript("init" + javaScriptId + "(" + value + ");");
 	}
 
 	/**
@@ -338,6 +349,16 @@ public class Slider extends Panel implements IHeaderContributor {
     protected ResourceReference getCSS()
     {
         return CSS;
+    }
+
+    public SliderSettings getSliderSettings()
+    {
+        return sliderSettings;
+    }
+
+    public void setSliderSettings(SliderSettings sliderSettings)
+    {
+        this.sliderSettings = sliderSettings;
     }
 
 }
