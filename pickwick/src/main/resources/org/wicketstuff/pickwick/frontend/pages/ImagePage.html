@@ -1,14 +1,16 @@
 <wicket:extend>
 	<div wicket:id="image">
 		<div class="photo" wicket:id="top">
-			<img wicket:id="scaled"/>
-		</div>
-		<div wicket:id="bottom">
-			<a wicket:id="first">First</a>
-			<a wicket:id="prev">Previous</a>
-			<a wicket:id="next">Next</a>
-			<a wicket:id="last">Last</a>
-			<a wicket:id="meta">meta</a>
+			<div id="photoContainer">
+				<img wicket:id="scaled" style="visibility:hidden"/>
+				<div class="nav" wicket:id="nav">
+					<a wicket:id="first">First</a>
+					<a wicket:id="prev">Previous</a>
+					<a wicket:id="next">Next</a>
+					<a wicket:id="last">Last</a>
+					<a wicket:id="meta">meta</a>
+				</div>
+			</div>
 		</div>
 	</div>
 </wicket:extend>
