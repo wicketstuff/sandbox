@@ -4,6 +4,7 @@ import java.io.File;
 
 import org.apache.wicket.RequestCycle;
 import org.apache.wicket.protocol.http.WebRequestCycle;
+import org.wicketstuff.pickwick.auth.PickwickDefaultAuthenticationModule;
 
 import com.google.inject.Singleton;
 
@@ -17,5 +18,9 @@ public class DefaultSettings implements Settings {
 		// return "http://localhost:8080/";
 		return ((WebRequestCycle) RequestCycle.get()).getWebRequest().getHttpServletRequest().getRequestURL()
 				.toString();
+	}
+
+	public String getAuthenticationModule() {
+		return PickwickDefaultAuthenticationModule.class.getName();
 	}
 }

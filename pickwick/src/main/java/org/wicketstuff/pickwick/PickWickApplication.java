@@ -6,14 +6,18 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.security.Principal;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.wicket.Application;
 import org.apache.wicket.IRequestTarget;
 import org.apache.wicket.PageParameters;
+import org.apache.wicket.RequestCycle;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.protocol.http.WebApplication;
+import org.apache.wicket.protocol.http.WebRequest;
+import org.apache.wicket.protocol.http.WebRequestCycle;
 import org.apache.wicket.request.RequestParameters;
 import org.apache.wicket.request.target.basic.EmptyRequestTarget;
 import org.apache.wicket.request.target.basic.URIRequestTargetUrlCodingStrategy;
@@ -177,5 +181,9 @@ public class PickWickApplication extends WebApplication {
 
 	public static PickWickApplication get() {
 		return (PickWickApplication) Application.get();
+	}
+	
+	public Principal getUserPrincipal(){
+		return ((WebRequest)((WebRequestCycle)RequestCycle.get()).getRequest()).getHttpServletRequest().getUserPrincipal();
 	}
 }

@@ -38,7 +38,7 @@ public class GuiceWebApplicationFactory extends ContextParamWebApplicationFactor
 		return app;
 	}
 
-	protected Module getModule() {
+	public static Module getModule() {
 		return new Module() {
 			public void configure(Binder binder) {
 				binder.bind(FileFilter.class).to(ImageFilter.class);

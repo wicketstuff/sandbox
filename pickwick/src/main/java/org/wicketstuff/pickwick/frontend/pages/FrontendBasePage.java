@@ -3,11 +3,14 @@ package org.wicketstuff.pickwick.frontend.pages;
 import org.apache.wicket.Component;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.PageLink;
 import org.apache.wicket.markup.html.resources.StyleSheetReference;
+import org.apache.wicket.model.Model;
 import org.wicketstuff.dojo.markup.html.container.DojoSimpleContainer;
 import org.wicketstuff.dojo.markup.html.container.layout.DojoLayoutContainer;
 import org.wicketstuff.dojo.markup.html.container.layout.DojoLayoutContainer.Position;
+import org.wicketstuff.pickwick.PickWickApplication;
 import org.wicketstuff.pickwick.backend.pages.BackendLandingPage;
 
 public class FrontendBasePage extends WebPage {
@@ -37,6 +40,7 @@ public class FrontendBasePage extends WebPage {
 		mainLayout.add(client, Position.Client);
 		
 		top.add(new PageLink("back", BackendLandingPage.class));
+		top.add(new Label("userName", new Model(PickWickApplication.get().getUserPrincipal().getName())));
 	}
 	
 	public void addOnClient(Component c){

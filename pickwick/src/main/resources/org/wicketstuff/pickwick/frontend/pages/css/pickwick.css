@@ -28,3 +28,19 @@ body {
 	border: 1px black solid;
 	background-color: white;
 }
+
+.photoContainer{
+	position: relative;
+}
+
+.photo .nav {
+	position: absolute;
+	z-index:9999;
+	top:0px;
+	background-color: #F0F0F0;
+	border: 1px solid black;
+	width:300px;
+	height: 30px;
+	-moz-border-radius : 5px;
+	display: block;
+}
