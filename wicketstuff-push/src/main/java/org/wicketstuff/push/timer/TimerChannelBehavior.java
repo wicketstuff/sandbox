@@ -437,6 +437,11 @@ public class TimerChannelBehavior extends AbstractAjaxTimerBehavior
 	@Override
 	public void renderHead(IHeaderResponse response) {
 		String timerChannelPageId = getComponent().getPage().getId()+":updateInterval:"+updateInterval;
+		if (!getPageId(getComponent().getApplication(), id).equals(id)) 
+		{
+			// page has already been redirected, we can skip this rendering
+			return;
+		}
 		if (!response.wasRendered(timerChannelPageId)) 
 		{
 			super.renderHead(response);
@@ -680,6 +685,11 @@ public class TimerChannelBehavior extends AbstractAjaxTimerBehavior
 			 * always have the same touch rates
 			 */ 
 		}
+	}
+	
+	@Override
+	public String toString() {
+		return "TimerChannelBehavior::"+id;
 	}
 
 	public Duration getUpdateInterval() {
