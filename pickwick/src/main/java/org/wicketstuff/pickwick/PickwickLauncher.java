@@ -11,7 +11,7 @@ import org.mortbay.jetty.webapp.WebAppContext;
  * Once started the phonebook is accessible under
  * http://localhost:8080/phonebook
  */
-public class JettyLauncher {
+public class PickwickLauncher {
 
 	/**
 	 * Main function, starts the jetty server.
@@ -30,7 +30,7 @@ public class JettyLauncher {
 		web.setContextPath("/");
 		web.setWar("src/main/webapp");
 		web.setDistributable(true);
-		web.setClassLoader(JettyLauncher.class.getClassLoader());
+		web.setClassLoader(PickwickLauncher.class.getClassLoader());
 		server.addHandler(web);
 
 		try {
