@@ -1,26 +1,32 @@
-function resizeImage(id, parentid) {
-	image = dojo.html.getContentBox(id);
-	dojo.log.debug("image="+getProperties(image));
-	parent = dojo.html.getContentBox(parentid);
-	dojo.log.debug("parent="+getProperties(parent));
+var baseImage;
 
-	if (image.height > parent.height) {
-		newheight = parent.height;
-		newwidth = newheight / image.height * image.width;
-	} else {
-		newheight = image.height;
-		newwidth = image.width;
+function resizeImage(id, parentid) {
+	if (!baseImage){
+		baseImage = dojo.html.getContentBox(id);
 	}
-	padding = newheight * 4 / 100;
+	dojo.log.debug("image="+getProperties(baseImage));
+	var parent = dojo.html.getContentBox(parentid);
+	dojo.log.debug("parent="+getProperties(parent));
+	var newheight;
+	var newwidth;
+
+	if (baseImage.height > parent.height) {
+		newheight = parent.height;
+		newwidth = newheight / baseImage.height * baseImage.width;
+	} else {
+		newheight = baseImage.height;
+		newwidth = baseImage.width;
+	}
+	var padding = newheight * 4 / 100;
 	// Border has 2 pixels
-	margin = padding * 2 + 2;
+	var margin = padding * 2 + 2;
 	newheight = newheight - margin;
 	newwidth = newwidth - margin;
 	var el = dojo.byId(id)
 	el.style.padding = padding + "px";
 	dojo.log.debug("padding="+padding)
 	dojo.html.setContentBox(el, {width: newwidth, height: newheight});
-	image = dojo.html.getContentBox(id);
+	var image = dojo.html.getContentBox(id);
 	dojo.log.debug("newimage="+getProperties(image));
 }
 function getProperties(/*Object*/ obj){
