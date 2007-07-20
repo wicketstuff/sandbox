@@ -41,12 +41,6 @@ public abstract class AbstractAutocompleteBehavior extends ScriptaculousAjaxBeha
 		getComponent().add(HeaderContributor.forCss(getCss(), "screen"));
 	}
 
-	public void renderHead(IHeaderResponse response) {
-		super.renderHead(response);
-		
-		OnLoadJavascriptTemplate template = new OnLoadJavascriptTemplate(new PackagedTextTemplate(AbstractAutocompleteBehavior.class, "AbstractAutocompleteBehavior.js"));
-	}
-
 	/**
 	 * render a placeholder div for the autocomplete results.
 	 */
