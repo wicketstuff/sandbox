@@ -21,7 +21,7 @@ public class ClusteredHttpServletRequest extends HttpServletRequestWrapper {
 		this.sender = sender;
 	}
 	
-	private HttpSession cachedSession = null;
+	private ClusteredHttpSession cachedSession = null;
 	
 	@Override
 	public HttpSession getSession() {
@@ -43,5 +43,11 @@ public class ClusteredHttpServletRequest extends HttpServletRequestWrapper {
 			}
 		}
 		return cachedSession;
+	}
+	
+	public void flush() {
+		if (cachedSession != null) {
+			cachedSession.flush();
+		}
 	}
 }

@@ -23,12 +23,13 @@ public class ClusteredFilter implements Filter {
 			ServletException {
 		
 		HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-		HttpServletRequest clusteredRequest = new ClusteredHttpServletRequest(httpServletRequest, communicationModule);
+		ClusteredHttpServletRequest clusteredRequest = new ClusteredHttpServletRequest(httpServletRequest, communicationModule);
 		
 		communicationModule.beginMessagesBatch();
 		try {
 			chain.doFilter(clusteredRequest, response);
 		} finally {
+			clusteredRequest.flush();
 			communicationModule.endMessagesBatch();
 		}
 	}
