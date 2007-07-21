@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.Serializable;
 
 import org.wicketstuff.pickwick.FeedGenerator;
+import org.wicketstuff.pickwick.backend.users.UserManagement;
 
 import com.google.inject.ImplementedBy;
 
@@ -28,4 +29,9 @@ public interface Settings extends Serializable{
 	 * @return class name of authentication module
 	 */
 	String getAuthenticationModule();
+	
+	/**
+	 * @return UserMangement implementation used on the application
+	 */
+	UserManagement getUserManagementModule();
 }

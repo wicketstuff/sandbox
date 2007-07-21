@@ -233,7 +233,7 @@ public class ImageUtils {
 			in = new FileInputStream(getSequenceFile(imageDirectory));
 			sequence = mapper.bindInBean(in);
 		} catch (FileNotFoundException e) {	
-			return null;
+			return sequence;
 		} finally {
 			IOUtils.closeQuietly(in);
 		}

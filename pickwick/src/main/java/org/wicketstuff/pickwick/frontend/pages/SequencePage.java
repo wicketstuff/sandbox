@@ -56,6 +56,9 @@ public class SequencePage extends FrontendBasePage {
 				DateFormat f = DateFormat.getDateInstance(DateFormat.FULL, getSession().getLocale());
 				Date date = ((DisplaySequence)getModelObject()).getDate();
 				log.debug("date: " + date);
+				if (date == null){
+					return null;
+				}
 				return f.format(date);
 			}
 		}));

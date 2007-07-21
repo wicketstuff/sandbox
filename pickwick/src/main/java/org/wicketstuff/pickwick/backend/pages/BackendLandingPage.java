@@ -20,7 +20,7 @@ public class BackendLandingPage extends BackendBasePage {
 	}
 
 	private void addIcons(DojoSimpleContainer container) {
-		container.add(new BackendMenuItemPanel("users", "users", SequenceEditPage.class, "Users Management", "Add, remove, edit users and groups"));
+		container.add(new BackendMenuItemPanel("users", "users", UserEditPage.class, "Users Management", "Add, remove, edit users and groups"));
 		container.add(new BackendMenuItemPanel("sequences", "sequence", SequenceEditPage.class, "Sequences Management", "Edit sequences metadata"));
 		container.add(new BackendMenuItemPanel("import", "users", SequenceEditPage.class, "Sequences Import", "Import a sequence from Http"));
 		container.add(new BackendMenuItemPanel("config", "config", SequenceEditPage.class, "Configuration", "Configure Pickwick"));
