@@ -3,6 +3,7 @@ package org.wicketstuff.pickwick.backend.pages;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -26,6 +27,7 @@ public class SequenceEditPage extends BackendBasePage {
 	private transient ImageUtils imageUtils = new ImageUtils();
 	
 	private Panel panel = null;
+	private FolderTreePanel tree = null;
 	
 	public SequenceEditPage(PageParameters params) {
 		
@@ -41,7 +43,7 @@ public class SequenceEditPage extends BackendBasePage {
 		panel = new EmptyPanel("properties");
 		panel.setOutputMarkupId(true);
 		
-		s2.add(new FolderTreePanel("folders"){
+		tree = new FolderTreePanel("folders"){
 			@Override
 			public MarkupContainer newNodeLink(MarkupContainer parent, String id, TreeNode node) {
 				final Folder folder = (Folder)((DefaultMutableTreeNode)node).getUserObject();
@@ -49,7 +51,12 @@ public class SequenceEditPage extends BackendBasePage {
 
 					@Override
 					public void onClick(AjaxRequestTarget target) {
-						SequencePropertiesPanel newPanel =  new SequencePropertiesPanel("properties", folder.getFile());
+						SequencePropertiesPanel newPanel =  new SequencePropertiesPanel("properties", folder.getFile()){
+							@Override
+							public void onSave(AjaxRequestTarget target) {
+								target.addComponent(SequenceEditPage.this.getTree());
+							}
+						};
 						newPanel.setOutputMarkupId(true);
 						panel.replaceWith(newPanel);
 						panel = newPanel;
@@ -61,9 +68,16 @@ public class SequenceEditPage extends BackendBasePage {
 
 				return nodeLink;
 			}
-		});
+		};
+		tree.setOutputMarkupId(true);
+		
+		s2.add(tree);
 		
 		s1.add(panel);
 		
+	}
+
+	protected Component getTree() {
+		return tree;
 	}
 }
