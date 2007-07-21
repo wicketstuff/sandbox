@@ -5,6 +5,8 @@ import java.io.File;
 import org.apache.wicket.RequestCycle;
 import org.apache.wicket.protocol.http.WebRequestCycle;
 import org.wicketstuff.pickwick.auth.PickwickDefaultAuthenticationModule;
+import org.wicketstuff.pickwick.backend.users.UserManagement;
+import org.wicketstuff.pickwick.backend.users.XmlUserManagement;
 
 import com.google.inject.Singleton;
 
@@ -22,5 +24,9 @@ public class DefaultSettings implements Settings {
 
 	public String getAuthenticationModule() {
 		return PickwickDefaultAuthenticationModule.class.getName();
+	}
+
+	public UserManagement getUserManagementModule() {
+		return new XmlUserManagement();
 	}
 }

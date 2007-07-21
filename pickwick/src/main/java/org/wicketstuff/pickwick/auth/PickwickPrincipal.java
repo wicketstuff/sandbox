@@ -2,6 +2,8 @@ package org.wicketstuff.pickwick.auth;
 
 import java.security.Principal;
 
+import javax.servlet.ServletRequest;
+
 import org.apache.wicket.WicketRuntimeException;
 import org.wicketstuff.pickwick.GuiceWebApplicationFactory;
 import org.wicketstuff.pickwick.backend.Settings;
@@ -14,6 +16,8 @@ import com.google.inject.Stage;
 public class PickwickPrincipal implements Principal {
 	@Inject
 	Settings settings;
+	
+	private ServletRequest request;
 
 	public String getName() {
 		String authenticationClassName = settings.getAuthenticationModule();
@@ -36,7 +40,15 @@ public class PickwickPrincipal implements Principal {
 		}
 
 		AuthenticationModule auth = (AuthenticationModule)inj.getInstance(authenticationClass);
-		return auth.getUserName();
+		return auth.getUserName(request);
+	}
+
+	public ServletRequest getRequest() {
+		return request;
+	}
+
+	public void setRequest(ServletRequest request) {
+		this.request = request;
 	}
 
 }
