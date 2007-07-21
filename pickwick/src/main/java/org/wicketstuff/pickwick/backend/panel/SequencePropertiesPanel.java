@@ -55,6 +55,7 @@ public abstract class SequencePropertiesPanel extends Panel {
 		log.debug("sequence: " + sequenceProperties);
 		
 		final FeedbackPanel feedbackPanel = new FeedbackPanel("feedback");
+		feedbackPanel.setOutputMarkupId(true);
 		
 		Form form = new Form(FORM, new CompoundPropertyModel(sequenceProperties));
 		
@@ -79,7 +80,7 @@ public abstract class SequencePropertiesPanel extends Panel {
 			@Override
 			protected void onError(AjaxRequestTarget target, Form form) {
 				super.onError(target, form);
-				add(feedbackPanel);
+				target.addComponent(feedbackPanel);
 			}
 			
 		});
