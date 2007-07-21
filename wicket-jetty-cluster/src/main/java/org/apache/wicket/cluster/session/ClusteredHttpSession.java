@@ -1,5 +1,8 @@
 package org.apache.wicket.cluster.session;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.servlet.http.HttpSession;
 
 import org.apache.wicket.cluster.MessageSender;
@@ -9,10 +12,18 @@ import org.apache.wicket.cluster.session.message.SetAttributeMessage;
 import org.apache.wicket.cluster.session.message.SetMaxInactiveIntervalMessage;
 
 
-
+/**
+ * Wrapper for HTTP session. The lifecycle of an ClustedHttpSession shouldn't
+ * span over multiple requests 
+ * @author Matej Knopp
+ *
+ */
 public class ClusteredHttpSession extends HttpSessionWrapper {
 	
 	private final MessageSender messageSender;
+	
+	// set of modified attributes
+	private Set<String> modified = new HashSet<String>();
 	
 	public ClusteredHttpSession(HttpSession delegate, MessageSender messageSender) {
 		super(delegate);
@@ -33,7 +44,7 @@ public class ClusteredHttpSession extends HttpSessionWrapper {
 	@Override
 	public void setAttribute(String name, Object value) {
 		super.setAttribute(name, value);
-		messageSender.sendMessage(new SetAttributeMessage(getId(), name, value));
+		modified.add(name);
 	}
 	
 	@Override
@@ -73,5 +84,12 @@ public class ClusteredHttpSession extends HttpSessionWrapper {
 			super.setAttribute(name, attribute);
 		}
 		return attribute;
+	}
+	
+	public void flush() {
+		for (String name : modified) {
+			Object value = super.getAttribute(name);
+			messageSender.sendMessage(new SetAttributeMessage(getId(), name, value));
+		}
 	}
 }
