@@ -32,6 +32,8 @@ public class StyleAttribute extends HashMap<String, String>
 	public final static String DISPLAY     = "display";
 	public final static String MIN_HEIGHT  = "min-height";
 	public final static String MIN_WIDTH   = "min-width";
+	public final static String TOP		   = "top";
+	public final static String LEFT		   = "left";
 	
 	/**
 	 * Constructor
@@ -39,6 +41,14 @@ public class StyleAttribute extends HashMap<String, String>
 	public StyleAttribute()
 	{
 		super();
+	}
+	
+	public void setTop(String top){
+		put(TOP, top);
+	}
+	
+	public void setLeft(String left){
+		put(LEFT, left);
 	}
 	
 	public void setHeight(String height){
