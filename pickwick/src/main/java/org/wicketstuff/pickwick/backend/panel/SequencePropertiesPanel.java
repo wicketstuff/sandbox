@@ -55,17 +55,7 @@ public abstract class SequencePropertiesPanel extends Panel {
 	public SequencePropertiesPanel(String id) {
 		super(id);
 
-		form = new Form(FORM) {
-
-			@Override
-			protected void onSubmit() {
-				Sequence sequence = (Sequence) getModelObject();
-				imageUtils.writeSequence(sequence, imageDirectory);
-				log.info("Wrote sequence: " + sequence + " to image directory: " + imageDirectory);
-			}
-
-		};
-
+		form = new Form(FORM);
 		final FeedbackPanel feedbackPanel = new FeedbackPanel("feedback");
 		feedbackPanel.setOutputMarkupId(true);
 
