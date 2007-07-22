@@ -26,8 +26,19 @@ import org.apache.wicket.model.IModel;
 /**
  * {@link WebMarkupContainer} with style attribute
  * <p>
- * 	You can add css attribute on this container using the following behavior :
- * Html attributes have bigger priority as java set attributes
+ * You can add css attribute on this container using the following behavior :
+ * Html attributes have bigger priority as java set attributes. Priority order 
+ * of the css attribute is : <br/>
+ * file.css &lt; style attribute in markup &lt; style attribute added with java
+ * </p>
+ * <p>
+ * If you need to set attributes which are not available in this class you can extend
+ * <code>onStyleAttribute</code> as the following:
+ * <pre>
+ * protected void onStyleAttribute(StyleAttribute styleAttribute){
+ *		styleAttribute.put("myCssAttribute", "itsValue");		
+ *	}
+ * </pre>
  * </p>
  * @author vdemay
  *
@@ -89,6 +100,16 @@ public class StylingWebMarkupContainer extends WebMarkupContainer
 	}
 	
 	/**
+	 * Method to overwrite in order to add new css Attributes
+	 * @param styleAttribute see {@link StyleAttribute} to add new css attributes
+	 */
+	protected void onStyleAttribute(StyleAttribute styleAttribute){
+		
+	}
+	
+	//-----------------------------------------------------------------------//
+	
+	/**
 	 * @param height
 	 */
 	public final void setHeight(String height){
@@ -123,9 +144,17 @@ public class StylingWebMarkupContainer extends WebMarkupContainer
 		style.setDisplay(display);
 	}
 	
-	protected void onStyleAttribute(StyleAttribute styleAttribute){
-		
+	/**
+	 * @param left
+	 */
+	public void setLeft(String left){
+		style.setLeft(left);
 	}
 	
-
+	/**
+	 * @param top
+	 */
+	public final void setTop(String top){
+		style.setTop(top);
+	}
 }
