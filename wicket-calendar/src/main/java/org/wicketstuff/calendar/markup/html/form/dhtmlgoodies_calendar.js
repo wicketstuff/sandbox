@@ -60,6 +60,7 @@ var intervalSelectBox_minutes = 5;	// Minute select box - interval between each 
 var calendar_offsetTop = 0;		// Offset - calendar placement - You probably have to modify this value if you're not using a strict doctype
 var calendar_offsetLeft = 0;	// Offset - calendar placement - You probably have to modify this value if you're not using a strict doctype
 var calendarDiv = false;
+var lastFormatString = false;
 
 var MSIE = false;
 var Opera = false;
@@ -1169,6 +1170,7 @@ function pickDate(e,inputDay)
 // WICKET ADDED		
 		returnFormat = returnFormat.replace('ww',week);
 		returnFormat = returnFormat.replace('w',week/1);
+		returnFormat = returnFormat.replace('yy',currentYear);
 // DONE WICKET ADDED
 		returnFormat = returnFormat.replace('d',day/1);
 		returnFormat = returnFormat.replace('m',month/1);
@@ -1438,7 +1440,7 @@ function positionCalendar(inputObj)
 	
 function initCalendar()
 {
-	if(MSIE){
+	if(MSIE && !iframeObj){
 		iframeObj = document.createElement('IFRAME');
 		iframeObj.style.filter = 'alpha(opacity=0)';
 		iframeObj.style.position = 'absolute';
@@ -1534,6 +1536,7 @@ function displayCalendar(inputField,format,buttonObj,displayTime,timeInput)
 			if(positionArray['d']==-1)positionArray['d'] = format.indexOf('d');
 			positionArray['y'] = format.indexOf('yyyy');
 // WICKET ADDED
+			if (positionArray['y']==-1) positionArray['y'] = format.indexOf('yy');
 			positionArray['w'] = format.indexOf('ww');
 			if (positionArray['w']==-1) positionArray['w'] = format.indexOf('w');
 // DONE WICKET ADDED
@@ -1628,6 +1631,7 @@ function displayCalendar(inputField,format,buttonObj,displayTime,timeInput)
 			}else{
 				currentMinute = '00';
 			}	
+			currentAMPM = format.indexOf('a') > -1;
 		}
 	}else{
 		var d = new Date();
@@ -1636,13 +1640,27 @@ function displayCalendar(inputField,format,buttonObj,displayTime,timeInput)
 		currentHour = '08';
 		currentMinute = '00';
 		tmpDay = d.getDate();
+		currentAMPM = format.indexOf('a') > -1;
 	}
 	
 	inputYear = currentYear;
 	inputMonth = currentMonth;
 	inputDay = tmpDay/1;
 	
-	
+	if (lastFormatString != format)
+	{
+		if(calendarDiv)
+		{
+			if(calendarDiv.style.display=='block'){
+				closeCalendar();
+			}
+			document.body.removeChild(calendarDiv);
+		}
+		calendarContentDiv = false;
+		calendarDiv = false;
+	} 
+	lastFormatString = format;
+	 	
 	if(!calendarDiv){
 		initCalendar();			
 	}else{
