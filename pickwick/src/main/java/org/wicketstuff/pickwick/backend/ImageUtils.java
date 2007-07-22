@@ -237,7 +237,7 @@ public class ImageUtils {
 			in = new FileInputStream(getSequenceFile(imageDirectory));
 			sequence = mapper.bindInBean(in);
 		} catch (FileNotFoundException e) {	
-			return sequence;
+			return null;
 		} finally {
 			IOUtils.closeQuietly(in);
 		}
