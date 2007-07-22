@@ -3,13 +3,15 @@ package org.wicketstuff.pickwick;
 import java.io.File;
 import java.io.FileOutputStream;
 
+import org.wicketstuff.pickwick.backend.DefaultSettings;
 import org.wicketstuff.pickwick.backend.Settings;
 
 import junit.framework.TestCase;
 
 public class FeedGeneratorTest extends TestCase {
 	public void testGenerate() throws Exception {
-		Settings settings = new Settings() {
+		// FIXME use those settings by wiring Settings interface to this instance
+		Settings settings = new DefaultSettings() {
 			public File getImageDirectoryRoot() {
 				return new File("/tmp/a");
 			}

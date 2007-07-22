@@ -11,15 +11,22 @@ public class DisplaySequence implements Serializable {
 
 	File imageDirectory;
 
+	/**
+	 * @param sequence
+	 *            null allowed
+	 * @param imageDirectory
+	 */
 	public DisplaySequence(Sequence sequence, File imageDirectory) {
 		this.sequence = sequence;
 		this.imageDirectory = imageDirectory;
 	}
 
 	public Date getDate() {
-		Date d = sequence.getDate();
-		if (d != null)
-			return null;
+		if (sequence != null) {
+			Date d = sequence.getDate();
+			if (d != null)
+				return null;
+		}
 		return new Date(imageDirectory.lastModified());
 	}
 
@@ -27,13 +34,17 @@ public class DisplaySequence implements Serializable {
 	 * @return the sequence's description or null if there is none
 	 */
 	public String getDescription() {
-		return sequence.getDescription();
+		if (sequence != null)
+			return sequence.getDescription();
+		return null;
 	}
 
 	public String getTitle() {
-		String t = sequence.getTitle();
-		if (t != null)
-			return t;
+		if (sequence != null) {
+			String t = sequence.getTitle();
+			if (t != null)
+				return t;
+		}
 		return imageDirectory.getName();
 	}
 }

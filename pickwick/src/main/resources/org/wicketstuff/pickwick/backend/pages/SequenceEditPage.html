@@ -1,10 +1,26 @@
 <wicket:extend>
-	<div wicket:id="mainArea">
-		<div class="box" wicket:id="tree">
-			<div wicket:id="folders"></div>
-		</div>
-		<div class="box" wicket:id="form">
-			<div wicket:id="properties" class="backendForm"></div>
+<div wicket:id="page" class="sequence">
+	<div wicket:id="top">
+		<div id="header" >
+			<a wicket:id="back">backend</a>
+
+			<div wicket:id="userName" style="color:blue"></div>
+			<div wicket:id="meta" class="meta">
+				<div wicket:id="date" class="date"></div>
+				<div wicket:id="title" class="title"></div>
+				<a wicket:id="edit">Edit</a>
+			</div>
 		</div>
 	</div>
+	<div wicket:id="client">
+		<div wicket:id="mainArea">
+			<div class="box" wicket:id="tree">
+				<div wicket:id="folders"></div>
+			</div>
+			<div class="box" wicket:id="form">
+				<div wicket:id="properties" class="backendForm"></div>
+			</div>
+		</div>
+	</div>
+</div>
 </wicket:extend>
