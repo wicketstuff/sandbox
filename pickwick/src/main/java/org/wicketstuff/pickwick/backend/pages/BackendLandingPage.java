@@ -4,8 +4,9 @@ import org.wicketstuff.dojo.markup.html.container.DojoSimpleContainer;
 import org.wicketstuff.dojo.markup.html.container.layout.DojoLayoutContainer;
 import org.wicketstuff.dojo.markup.html.container.layout.DojoLayoutContainer.Position;
 import org.wicketstuff.pickwick.backend.panel.BackendMenuItemPanel;
+import org.wicketstuff.pickwick.frontend.pages.BasePage;
 
-public class BackendLandingPage extends BackendBasePage {
+public class BackendLandingPage extends BasePage {
 	public BackendLandingPage() {
 		
 		DojoLayoutContainer layout;

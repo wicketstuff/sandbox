@@ -4,6 +4,7 @@ import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.PageLink;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
@@ -26,7 +27,7 @@ public class BackendMenuItemPanel extends Panel{
 		over = new ResourceReference(BackendMenuItemPanel.class, "images/" + imagePath + "_hover.gif");
 		out = new ResourceReference(BackendMenuItemPanel.class, "images/" + imagePath + ".gif");
 	
-		PageLink link = new PageLink("link", webPageClass);
+		BookmarkablePageLink link = new BookmarkablePageLink("link", webPageClass);
 		add(link);
 		link.add(new WebMarkupContainer("image"){
 			@Override

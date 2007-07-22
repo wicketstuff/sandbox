@@ -55,13 +55,7 @@ public class FolderTreePanel extends Panel{
 		PageParameters params = new PageParameters();
 		Folder folder = (Folder)((DefaultMutableTreeNode)node).getUserObject();
 		BookmarkablePageLink nodeLink = new BookmarkablePageLink(id, SequencePage.class, params);
-		try {
-			// FIXME pass pretty URL!!!
-			params.add("uri", imageUtils.getRelativePath(folder.getFile()));
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-
+		params.add("uri", imageUtils.getRelativePath(folder.getFile()));
 		return nodeLink;
 	}
 

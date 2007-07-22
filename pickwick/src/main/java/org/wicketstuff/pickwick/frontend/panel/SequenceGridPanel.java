@@ -2,6 +2,7 @@ package org.wicketstuff.pickwick.frontend.panel;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.wicket.AttributeModifier;
@@ -14,8 +15,9 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.GridView;
 import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.markup.repeater.data.ListDataProvider;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-import org.wicketstuff.pickwick.PickWickApplication;
+import org.wicketstuff.pickwick.PickwickApplication;
 import org.wicketstuff.pickwick.backend.ImageUtils;
 import org.wicketstuff.pickwick.backend.Settings;
 import org.wicketstuff.pickwick.bean.Image;
@@ -23,24 +25,43 @@ import org.wicketstuff.pickwick.bean.Image;
 import com.google.inject.Inject;
 
 /**
- * A panel displaying a table of all thumbnail given by the uri
+ * A panel displaying a table of all thumbnail given by the uri.  The uri is the model object.
  * 
  * @author <a href="mailto:jbq@apache.org">Jean-Baptiste Quenot</a>
  * @author Vincent Demay
  */
-public class SequenceGridPanel extends Panel {
+public class SequenceGridPanel extends Panel implements IDataProvider {
+	IDataProvider imageProvider;
+	public Iterator iterator(int first, int count) {
+		if (imageProvider == null) {
+			List imageList = imageUtils.getImageList(new File(settings.getImageDirectoryRoot(), getModelObjectAsString()));
+			imageProvider = new ListDataProvider(imageList);
+		}
+		return imageProvider.iterator(first, count);
+	}
+
+	public IModel model(Object object) {
+		return imageProvider.model(object);
+	}
+
+	@Override
+	protected void onDetach() {
+		// FIXME DataViewBase.onDetach() leads to stack overflow as this component implements IDataProvider but also IDetachable
+	}
+
 	@Inject
 	private Settings settings;
 
 	@Inject
 	ImageUtils imageUtils;
 
-	public SequenceGridPanel(String id, String uri) {
-		super(id);
+	public SequenceGridPanel(String id, IModel model) {
+		super(id, model);
+		add(newGridView("rows", this));
+	}
 
-		List imageList = imageUtils.getImageList(new File(settings.getImageDirectoryRoot(), uri));
-		final IDataProvider imageProvider = new ListDataProvider(imageList);
-		add(newGridView("rows", imageProvider));
+	public SequenceGridPanel(String id) {
+		this(id, null);
 	}
 
 	protected GridView newGridView(String id, IDataProvider imageProvider) {
@@ -73,12 +94,12 @@ public class SequenceGridPanel extends Panel {
 				item.add(link = new WebMarkupContainer("link"));
 				link.add(new AttributeModifier("href", true, new Model(getRequest()
 						.getRelativePathPrefixToContextRoot()
-						+ PickWickApplication.IMAGE_PAGE_PATH + "/" + imagePath)));
+						+ PickwickApplication.IMAGE_PAGE_PATH + "/" + imagePath)));
 				WebComponent image;
 				link.add(image = new WebComponent("thumbnail"));
 				image.add(new AttributeModifier("src", true, new Model(getRequest()
 						.getRelativePathPrefixToContextRoot()
-						+ PickWickApplication.THUMBNAIL_IMAGE_PATH + "/" + imagePath)));
+						+ PickwickApplication.THUMBNAIL_IMAGE_PATH + "/" + imagePath)));
 				link.add(new Label("thumbnailLabel", imageProperties.getTitle()));
 			} catch (IOException e) {
 				throw new RuntimeException(e);

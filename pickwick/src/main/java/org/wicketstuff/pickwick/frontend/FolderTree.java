@@ -13,7 +13,7 @@ import org.wicketstuff.pickwick.backend.ImageUtils;
 import org.wicketstuff.pickwick.bean.Folder;
 import org.wicketstuff.pickwick.bean.Sequence;
 import org.wicketstuff.pickwick.frontend.pages.DisplaySequence;
-import org.wicketstuff.pickwick.frontend.pages.FrontendBasePage;
+import org.wicketstuff.pickwick.frontend.pages.BasePage;
 
 import com.google.inject.Inject;
 
@@ -55,7 +55,7 @@ public class FolderTree extends Tree {
 
 	protected ResourceReference getCSS()
 	{
-		return new ResourceReference(FrontendBasePage.class, "css/tree.css");
+		return new ResourceReference(BasePage.class, "css/tree.css");
 	}
 	
 	

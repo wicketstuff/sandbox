@@ -31,7 +31,7 @@ import java.util.List;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.wicketstuff.pickwick.PickWickApplication;
+import org.wicketstuff.pickwick.PickwickApplication;
 import org.wicketstuff.pickwick.bean.Folder;
 import org.wicketstuff.pickwick.bean.Image;
 import org.wicketstuff.pickwick.bean.Sequence;
@@ -117,15 +117,19 @@ public class ImageUtils {
 	 * @return
 	 * @throws IOException
 	 */
-	public String getRelativePath(File imageFile) throws IOException {
-		if (settings.getImageDirectoryRoot().getCanonicalPath().equals(imageFile.getCanonicalPath()))
-			return new String();
-		return imageFile.getCanonicalPath().substring(
-				(int) settings.getImageDirectoryRoot().getCanonicalPath().length() + 1);
+	public String getRelativePath(File imageFile) {
+		try {
+			if (settings.getImageDirectoryRoot().getCanonicalPath().equals(imageFile.getCanonicalPath()))
+				return new String();
+			return imageFile.getCanonicalPath().substring(
+					(int) settings.getImageDirectoryRoot().getCanonicalPath().length() + 1);
+		} catch (IOException e) {
+			throw new RuntimeException("Could not compute relative path for " + imageFile, e);
+		}
 	}
 
 	public String buildSequencePath(File dir) throws IOException {
-		return PickWickApplication.SEQUENCE_PAGE_PATH + "/" + getRelativePath(dir);
+		return PickwickApplication.SEQUENCE_PAGE_PATH + "/" + getRelativePath(dir);
 	}
 
 	public String getPreviousImage(String uri) throws IOException {
