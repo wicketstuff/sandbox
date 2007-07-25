@@ -32,6 +32,7 @@ import org.apache.wicket.protocol.http.WebRequest;
 import org.apache.wicket.protocol.http.WebResponse;
 import org.apache.wicket.security.WaspSession;
 import org.apache.wicket.security.strategies.LoginException;
+import org.apache.wicket.security.strategies.WaspAuthorizationStrategy;
 import org.apache.wicket.util.crypt.Base64;
 import org.apache.wicket.util.string.Strings;
 import org.slf4j.Logger;
@@ -49,7 +50,7 @@ import org.slf4j.LoggerFactory;
 public abstract class HttpAuthenticationLoginPage extends WebPage
 {
 	private static final Logger log = LoggerFactory.getLogger(HttpAuthenticationLoginPage.class);
-	private boolean doAuthentication=false;
+	private boolean doAuthentication = false;
 
 	/**
 	 * Basic constructor.
@@ -104,13 +105,14 @@ public abstract class HttpAuthenticationLoginPage extends WebPage
 	{
 		super(pageMap, model);
 	}
+
 	/**
 	 * @see org.apache.wicket.markup.html.WebPage#configureResponse()
 	 */
 	protected void configureResponse()
 	{
 		super.configureResponse();
-		if(doAuthentication)
+		if (doAuthentication)
 		{
 			if (getWebRequestCycle().getResponse() instanceof WebResponse)
 			{
@@ -139,6 +141,7 @@ public abstract class HttpAuthenticationLoginPage extends WebPage
 			}
 		}
 	}
+
 	/**
 	 * Sets a flag to handle authentication headers and sets response to request
 	 * authentication if required. This method needs to be called manually. I
@@ -153,7 +156,7 @@ public abstract class HttpAuthenticationLoginPage extends WebPage
 	 */
 	protected final void doAuthentication()
 	{
-		doAuthentication=true;
+		doAuthentication = true;
 	}
 
 	/**
@@ -194,7 +197,10 @@ public abstract class HttpAuthenticationLoginPage extends WebPage
 
 	/**
 	 * Delegates authentication. Subclasses should first try there custom
-	 * authentication scheme before letting super handle the call
+	 * authentication scheme before letting super handle the call. Subclasses
+	 * should either return a boolean value (see
+	 * {@link #handleBasicAuthentication(WebRequest, WebResponse, String, String)})
+	 * if processing should continue or throw an exception.
 	 * 
 	 * @param request
 	 * @param response
@@ -223,7 +229,7 @@ public abstract class HttpAuthenticationLoginPage extends WebPage
 	 * general authentication attempts by the next scheme should only proceed if
 	 * the scheme was of the wrong type. False will generally be returned when
 	 * a) the user has been authenticated or b) the scheme is correct but
-	 * another problem arrises, like missing additional header.
+	 * another problem arises, like missing additional headers.
 	 * 
 	 * @param request
 	 * @param response
@@ -236,6 +242,9 @@ public abstract class HttpAuthenticationLoginPage extends WebPage
 	 * @throws LoginException
 	 *             If the supplied credentials do not grant enough credits for
 	 *             the requested resource
+	 * @throws RestartResponseAtInterceptPageException
+	 *             to the home page if the login was successfull but when there
+	 *             is no page to continue to.
 	 */
 	protected boolean handleBasicAuthentication(WebRequest request, WebResponse response,
 			String scheme, String param) throws LoginException
@@ -255,13 +264,29 @@ public abstract class HttpAuthenticationLoginPage extends WebPage
 		Session session = Session.get();
 		if (session instanceof WaspSession)
 		{
-			((WaspSession)session).login(loginContext);
+			if (!isAuthenticated())
+				((WaspSession)session).login(loginContext);
 			if (!continueToOriginalDestination())
-				setResponsePage(Application.get().getHomePage());
+			{
+				throw new RestartResponseAtInterceptPageException(Application.get().getHomePage());
+			}
 		}
 		else
 			log.error("Unable to find WaspSession");
 		return false;
+	}
+
+	/**
+	 * Check if already someone is authenticated to prevent duplicate logins. By
+	 * default this checks if the home page is authenticated.
+	 * 
+	 * @return true if the user is already authenticated, false otherwise
+	 */
+	protected boolean isAuthenticated()
+	{
+		WaspAuthorizationStrategy strategy = (WaspAuthorizationStrategy)Session.get()
+				.getAuthorizationStrategy();
+		return strategy.isClassAuthenticated(Application.get().getHomePage());
 	}
 
 	/**
