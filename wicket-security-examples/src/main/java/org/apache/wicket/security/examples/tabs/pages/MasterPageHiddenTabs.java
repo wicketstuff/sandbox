@@ -25,11 +25,11 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.security.checks.ContainerSecurityCheck;
 import org.apache.wicket.security.components.SecureComponentHelper;
 import org.apache.wicket.security.examples.tabs.components.navigation.ButtonContainer;
-import org.apache.wicket.security.examples.tabs.components.tabs.ISecureTab;
-import org.apache.wicket.security.examples.tabs.components.tabs.SecureTabbedPanel;
 import org.apache.wicket.security.examples.tabs.panels.Gifkikker;
 import org.apache.wicket.security.examples.tabs.panels.Grolsch;
 import org.apache.wicket.security.examples.tabs.panels.Heineken;
+import org.apache.wicket.security.extensions.markup.html.tabs.ISecureTab;
+import org.apache.wicket.security.extensions.markup.html.tabs.SecureTabbedPanel;
 
 /**
  * Basic page showing a tab bar. Only tabs you are allowed to see will be shown.

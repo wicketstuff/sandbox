@@ -19,6 +19,7 @@ package org.apache.wicket.security.examples.tabs.components.tabs;
 import org.apache.wicket.extensions.markup.html.tabs.PanelCachingTab;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.security.extensions.markup.html.tabs.ISecureTab;
 
 /**
  * Wrapper around {@link ISecureTab}. behaves just like {@link PanelCachingTab}.
@@ -49,8 +50,7 @@ public class SecurePanelCachingTab implements ISecureTab
 
 	/**
 	 * 
-	 * 
-	 * @see org.apache.wicket.security.examples.tabs.components.tabs.ISecureTab#getPanel()
+	 * @see org.apache.wicket.security.extensions.markup.html.tabs.ISecureTab#getPanel()
 	 */
 	public Class getPanel()
 	{
