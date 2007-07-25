@@ -46,6 +46,7 @@ public class LoginPage extends HttpAuthenticationLoginPage
 	 */
 	public LoginPage()
 	{
+		// http://localhost:8080/examples/basichttp/?wicket:bookmarkablePage=%3Aorg.apache.wicket.security.examples.httplogin.basic.pages.LoginPage
 		// stateless so the login page will not throw a timeout exception
 		setStatelessHint(true);
 		// I have added a nice feedbackpanel but this is not going to help us to
