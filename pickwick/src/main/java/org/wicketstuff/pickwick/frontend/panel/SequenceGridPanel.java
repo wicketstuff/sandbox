@@ -30,24 +30,7 @@ import com.google.inject.Inject;
  * @author <a href="mailto:jbq@apache.org">Jean-Baptiste Quenot</a>
  * @author Vincent Demay
  */
-public class SequenceGridPanel extends Panel implements IDataProvider {
-	IDataProvider imageProvider;
-	public Iterator iterator(int first, int count) {
-		if (imageProvider == null) {
-			List imageList = imageUtils.getImageList(new File(settings.getImageDirectoryRoot(), getModelObjectAsString()));
-			imageProvider = new ListDataProvider(imageList);
-		}
-		return imageProvider.iterator(first, count);
-	}
-
-	public IModel model(Object object) {
-		return imageProvider.model(object);
-	}
-
-	@Override
-	protected void onDetach() {
-		// FIXME DataViewBase.onDetach() leads to stack overflow as this component implements IDataProvider but also IDetachable
-	}
+public class SequenceGridPanel extends Panel{
 
 	@Inject
 	private Settings settings;
@@ -57,7 +40,8 @@ public class SequenceGridPanel extends Panel implements IDataProvider {
 
 	public SequenceGridPanel(String id, IModel model) {
 		super(id, model);
-		add(newGridView("rows", this));
+		List imageList = imageUtils.getImageList(new File(settings.getImageDirectoryRoot(), getModelObjectAsString()));
+		add(newGridView("rows",  new ListDataProvider(imageList)));
 	}
 
 	public SequenceGridPanel(String id) {
