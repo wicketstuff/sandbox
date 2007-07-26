@@ -44,7 +44,7 @@ public abstract class AbstractYuiMenuItem extends Panel
     
     private String text;
 
-    private AbstractLink menuLink;
+    private WebMarkupContainer menuLink;
     
     
     private MarkupContainer subMenu;
@@ -113,7 +113,7 @@ public abstract class AbstractYuiMenuItem extends Panel
 
     
 
-    public abstract AbstractLink getLink(String menuItemLinkId);
+    public abstract WebMarkupContainer getLink(String menuItemLinkId);
 
 
     public abstract MarkupContainer getSubMenu(String menuItemSubMenuId);
