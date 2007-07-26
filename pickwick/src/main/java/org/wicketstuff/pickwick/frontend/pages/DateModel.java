@@ -19,6 +19,9 @@ public class DateModel extends AbstractReadOnlyModel {
 		if (o == null)
 			return null;
 		Date date = o.getDate();
+		if (date == null){
+			return null;
+		}
 		return f.format(date);
 	}
 }
