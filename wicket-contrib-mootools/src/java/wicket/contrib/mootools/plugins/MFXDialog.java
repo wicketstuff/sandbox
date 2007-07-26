@@ -34,12 +34,11 @@ public class MFXDialog extends MFXDialogBase {
 	};
 
 	public MFXDialog(final String id) {
-		this(id, CSSCOLOR.BLUE, MFXDialogTypes.MESSAGE);
+		this(id, MFXDialogTypes.MESSAGE);
 	}
 
-	public MFXDialog(final String id, final CSSCOLOR color,
-			final MFXDialogTypes type) {
-		super(id, color);
+	public MFXDialog(final String id, final MFXDialogTypes type) {
+		super(id);
 
 		add(new IncludeMooTools());
 
@@ -165,8 +164,9 @@ public class MFXDialog extends MFXDialogBase {
 		submitLink.setVisible(false);
 		form.setVisible(false);
 
-		if (getDialogType() == MFXDialogTypes.MESSAGE)
+		if (getDialogType() == MFXDialogTypes.MESSAGE) {
 			closeLink.setVisible(true);
+		}
 
 		if (getDialogType() == MFXDialogTypes.QUESTION_WITH_INPUT) {
 			input.setVisible(true);

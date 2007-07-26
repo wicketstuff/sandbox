@@ -12,15 +12,11 @@ public class MFXErrorDialog extends MFXDialog {
 	private StringBuffer error = new StringBuffer();
 	private FeedbackMessagesModel feedbackModel;
 
-	public MFXErrorDialog(final String id, final CSSCOLOR color) {
-		super(id, color, MFXDialogTypes.MESSAGE);
+	public MFXErrorDialog(final String id) {
+		super(id, MFXDialogTypes.MESSAGE);
 		setTitle("Notice");
 		setBody("");
 		setFeedbackComponent(this);
-	}
-
-	public MFXErrorDialog(final String id) {
-		this(id, CSSCOLOR.BLUE);
 	}
 
 	@Override

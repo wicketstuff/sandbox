@@ -27,14 +27,8 @@ public abstract class MFXDialogBase extends Panel {
 
 	private ResourceReference PLAINCSS = new CompressedResourceReference(
 			MFXDialog.class, "MFXDialog.css");
-	private ResourceReference REDPLAINCSS = new CompressedResourceReference(
-			MFXDialog.class, "MFXDialog-red.css");
 
-	public enum CSSCOLOR {
-		RED, BLUE
-	}
-
-	public MFXDialogBase(final String id, final CSSCOLOR color) {
+	public MFXDialogBase(final String id) {
 		super(id);
 
 		this.width = 300;
@@ -43,16 +37,7 @@ public abstract class MFXDialogBase extends Panel {
 		this.unit = "px";
 		this.title = "Modal Window";
 
-		if (color.equals(CSSCOLOR.BLUE)) {
-			add(HeaderContributor.forCss(PLAINCSS));
-		}
-		if (color.equals(CSSCOLOR.RED)) {
-			add(HeaderContributor.forCss(REDPLAINCSS));
-		}
-	}
-
-	public MFXDialogBase(final String id) {
-		this(id, CSSCOLOR.BLUE);
+		add(HeaderContributor.forCss(PLAINCSS));
 	}
 
 	public interface PageCreator extends IClusterable {
@@ -98,6 +83,10 @@ public abstract class MFXDialogBase extends Panel {
 		str.append("var elm = $('" + id + "');");
 		str.append("var win = $('" + dialogId + "');");
 		str.append("elm.setStyle('display','block');");
+
+		str
+				.append("win.makeDraggable( { handle: win, 'onBeforeStart': function() { win.setStyle('opacity',0.5); },   "
+						+ "'onComplete': function() { win.setStyle('opacity',1); }});");
 
 		MFXStyle style = new MFXStyle("margin-top", 0, 100);
 
