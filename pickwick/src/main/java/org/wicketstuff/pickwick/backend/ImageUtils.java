@@ -221,6 +221,9 @@ public class ImageUtils {
 	}
 
 	public File toFile(String uri) {
+		if (uri == null){
+			return settings.getImageDirectoryRoot();
+		}
 		return new File(settings.getImageDirectoryRoot(), uri);
 	}
 
