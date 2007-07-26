@@ -24,11 +24,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.wicket.WicketRuntimeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wicketstuff.pickwick.PickwickApplication;
@@ -223,6 +226,11 @@ public class ImageUtils {
 	public File toFile(String uri) {
 		if (uri == null){
 			return settings.getImageDirectoryRoot();
+		}
+		try {
+			uri = URLDecoder.decode(uri, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			throw new WicketRuntimeException("can not decode " + uri, e);
 		}
 		return new File(settings.getImageDirectoryRoot(), uri);
 	}
