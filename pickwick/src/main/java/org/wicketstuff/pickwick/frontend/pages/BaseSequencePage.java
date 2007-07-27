@@ -56,15 +56,6 @@ public class BaseSequencePage extends BasePage {
 	public BaseSequencePage(PageParameters parameters) {
 		uri = parameters.getString("uri");
 
-		if (uri != null) {
-			// BackendLandingPage does not pass parameters
-			try {
-				uri = URLDecoder.decode(uri, "UTF-8");
-			} catch (UnsupportedEncodingException e) {
-				// Ignore
-			}
-		}
-
 		addOnTop(meta = new WebMarkupContainer("meta"));
 		meta.add(new Label("date", new DateModel(this)));
 		meta.add(new Label("title"));

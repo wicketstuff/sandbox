@@ -2,8 +2,6 @@ package org.wicketstuff.pickwick.frontend.pages;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.PageParameters;
@@ -55,12 +53,6 @@ public class ImagePage extends BasePage {
 
 	public ImagePage(PageParameters params) {
 		uri = params.getString("uri");
-
-		try {
-			uri = URLDecoder.decode(uri, "UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			// Ignore
-		}
 
 		addOnTop(new Label("date", new DateModel(this)));
 		PageParameters sparams = new PageParameters();
