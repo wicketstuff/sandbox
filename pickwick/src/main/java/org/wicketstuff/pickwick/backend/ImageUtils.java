@@ -223,10 +223,11 @@ public class ImageUtils {
 		return null;
 	}
 
+	/**
+	 * @param uri encoded request URI, cannot be null
+	 * @return
+	 */
 	public File toFile(String uri) {
-		if (uri == null){
-			return settings.getImageDirectoryRoot();
-		}
 		try {
 			uri = URLDecoder.decode(uri, "UTF-8");
 		} catch (UnsupportedEncodingException e) {
