@@ -42,7 +42,7 @@ import org.slf4j.LoggerFactory;
  * Login Page that uses httpauthentication to login. Currently it only supports
  * Basic Http authentication as defined in RFC 2616 section 14.47 HTTP 1.1. But
  * the way it is setup it should be able to support addition protocols like RFC
- * 2617. Thanks go to Jesse Barnum and Johan Compagner
+ * 2617. Thanks go to Jesse Barnum and Johan Compagner.
  * 
  * @author marrink
  * @see <a href="http://tools.ietf.org/html/rfc2616#section-14.47">rfc2616</a>
@@ -184,16 +184,19 @@ public abstract class HttpAuthenticationLoginPage extends WebPage
 	protected void addBasicHeaders(WebRequest request, WebResponse response)
 	{
 		response.getHttpServletResponse().addHeader("WWW-Authenticate",
-				"Basic realm=\"" + getRealm() + "\"");
+				"Basic realm=\"" + getRealm(request, response) + "\"");
 	}
 
 	/**
 	 * The authentication realm. The realm is required by the authentication
 	 * headers and will be shown by the browser.
 	 * 
+	 * @param request
+	 * @param response
+	 * 
 	 * @return the realm
 	 */
-	public abstract String getRealm();
+	public abstract String getRealm(WebRequest request, WebResponse response);
 
 	/**
 	 * Delegates authentication. Subclasses should first try there custom
