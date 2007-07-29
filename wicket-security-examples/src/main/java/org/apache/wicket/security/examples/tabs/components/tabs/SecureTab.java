@@ -26,6 +26,7 @@ import org.apache.wicket.security.checks.ISecurityCheck;
 import org.apache.wicket.security.components.ISecureComponent;
 import org.apache.wicket.security.components.ISecureContainer;
 import org.apache.wicket.security.components.SecureComponentHelper;
+import org.apache.wicket.security.extensions.markup.html.tabs.ISecureTab;
 
 /**
  * Secure Tab showing a warning panel when the content is forbidden. This is
