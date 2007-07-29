@@ -18,6 +18,8 @@ package org.apache.wicket.security.examples.httplogin.basic.pages;
 
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
+import org.apache.wicket.protocol.http.WebRequest;
+import org.apache.wicket.protocol.http.WebResponse;
 import org.apache.wicket.security.examples.httplogin.basic.authentication.MyLoginContext;
 import org.apache.wicket.security.login.http.HttpAuthenticationLoginPage;
 
@@ -92,11 +94,13 @@ public class LoginPage extends HttpAuthenticationLoginPage
 	}
 
 	/**
-	 * @see org.apache.wicket.security.login.http.HttpAuthenticationLoginPage#getRealm()
+	 * @see org.apache.wicket.security.login.http.HttpAuthenticationLoginPage#getRealm(org.apache.wicket.protocol.http.WebRequest,
+	 *      org.apache.wicket.protocol.http.WebResponse)
 	 */
-	public String getRealm()
+	public String getRealm(WebRequest request, WebResponse response)
 	{
-		return "examples"; // could be anything according to the http spec
+		return "examples-basic"; // could be anything according to the http
+									// spec
 	}
 
 }
