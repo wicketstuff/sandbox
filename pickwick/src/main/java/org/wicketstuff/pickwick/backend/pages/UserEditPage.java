@@ -9,7 +9,7 @@ public class UserEditPage extends BasePage {
 	public UserEditPage(PageParameters params) {
 		
 
-		addOnClient(new UserPanel("users", null));
+		add(new UserPanel("users", null));
 		
 	}
 }

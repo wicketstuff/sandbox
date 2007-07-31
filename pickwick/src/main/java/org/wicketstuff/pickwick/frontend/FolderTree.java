@@ -10,9 +10,9 @@ import org.apache.wicket.ResourceReference;
 import org.apache.wicket.extensions.markup.html.tree.Tree;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.wicketstuff.pickwick.backend.ImageUtils;
+import org.wicketstuff.pickwick.bean.DisplaySequence;
 import org.wicketstuff.pickwick.bean.Folder;
 import org.wicketstuff.pickwick.bean.Sequence;
-import org.wicketstuff.pickwick.frontend.pages.DisplaySequence;
 import org.wicketstuff.pickwick.frontend.pages.BasePage;
 
 import com.google.inject.Inject;

@@ -1,0 +1,84 @@
+package org.wicketstuff.pickwick.frontend.panel;
+
+import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+
+import org.apache.wicket.PageParameters;
+import org.apache.wicket.markup.ComponentTag;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.CompoundPropertyModel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.wicketstuff.pickwick.auth.PickwickSession;
+import org.wicketstuff.pickwick.backend.ImageUtils;
+import org.wicketstuff.pickwick.backend.pages.SequenceEditPage;
+import org.wicketstuff.pickwick.bean.DisplaySequence;
+import org.wicketstuff.pickwick.bean.Sequence;
+import org.wicketstuff.pickwick.frontend.pages.DateModel;
+
+import com.google.inject.Inject;
+
+/**
+ * A panel display meta datas from a folder
+ * @author Vincent Demay
+ *
+ */
+public class MetaDisplayPanel extends Panel {
+
+	private static final Logger log = LoggerFactory.getLogger(MetaDisplayPanel.class);
+
+	@Inject
+	protected ImageUtils imageUtils;
+	
+	private String uri;
+	
+	public MetaDisplayPanel(String id, String uri) {
+		super(id);
+		if (uri != null) {
+			// BackendLandingPage does not pass parameters
+			try {
+				uri = URLDecoder.decode(uri, "UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				// Ignore
+			}
+		}
+
+		add(new Label("date", new DateModel(this)));
+		add(new Label("title"));
+		setOutputMarkupId(true);
+		if (PickwickSession.get().getUser().isAdmin()) {
+			PageParameters params = new PageParameters();
+			params.add("uri", uri);
+			add(new BookmarkablePageLink("edit", SequenceEditPage.class, params));
+		}
+		this.uri = uri;
+	}
+	
+	/**
+	 * Need to read sequence information everytime the page is displayed to
+	 * ensure to have uptodate information
+	 */
+	@Override
+	protected void onBeforeRender() {
+		super.onBeforeRender();
+		readSequence();
+	}
+	
+	@Override
+	protected void onComponentTag(ComponentTag tag) {
+		super.onComponentTag(tag);
+		tag.put("class", "metaDisplay");
+	}
+	
+	public void readSequence() {
+		if (uri != null) {
+			File imageDir = imageUtils.toFile(uri);
+			Sequence sequence = imageUtils.readSequence(imageDir);
+			setModel(new CompoundPropertyModel(new DisplaySequence(sequence, imageDir)));
+		}
+	}
+
+}

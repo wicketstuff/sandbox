@@ -22,6 +22,18 @@ body {
 	margin: 10px;
 	line-height: 1.5em;
 	padding : 20px;
+	min-height: 400px;
+}
+
+.fixed{
+	position:fixed;
+	width:200px;
+}
+
+.metaDisplay{
+	position: absolute;
+	top: 20px;
+	left: 500px;
 }
 
 /* padding and height computed automatically */

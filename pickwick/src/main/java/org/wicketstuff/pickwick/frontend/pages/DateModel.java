@@ -6,6 +6,7 @@ import java.util.Date;
 import org.apache.wicket.Component;
 import org.apache.wicket.Session;
 import org.apache.wicket.model.AbstractReadOnlyModel;
+import org.wicketstuff.pickwick.bean.DisplaySequence;
 
 public class DateModel extends AbstractReadOnlyModel {
 	Component c;

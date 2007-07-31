@@ -1,34 +1,19 @@
 <wicket:extend>
-		<div wicket:id="page" class="image">
-			<div wicket:id="top">
-				<div  id="header" >
-					<a wicket:id="back">backend</a>
-					
-				<div wicket:id="userName" style="color:blue"></div>
-			<div class="meta">
-				<div wicket:id="date" class="date"></div>
-				<div class="title">
-					<a wicket:id="sequenceLink"><span wicket:id="title"></span></a>
+	<div wicket:id="meta"></div>
+	<table width="100%" height="100%">
+		<tr>
+			<td align="center">
+				<div id="photoContainer">
+					<img wicket:id="scaled" style="visibility:hidden"/>
+					<div class="nav" wicket:id="nav">
+						<a wicket:id="first">First</a>
+						<a wicket:id="prev">Previous</a>
+						<a wicket:id="next">Next</a>
+						<a wicket:id="last">Last</a>
+						<a wicket:id="meta">meta</a>
+					</div>
 				</div>
-				<a wicket:id="edit">Edit</a>
-			</div>
-				</div>
-			</div>
-			<div wicket:id="client">
-	<div wicket:id="image">
-		<div class="photo" wicket:id="top">
-			<div id="photoContainer">
-				<img wicket:id="scaled" style="visibility:hidden"/>
-				<div class="nav" wicket:id="nav">
-					<a wicket:id="first">First</a>
-					<a wicket:id="prev">Previous</a>
-					<a wicket:id="next">Next</a>
-					<a wicket:id="last">Last</a>
-					<a wicket:id="meta">meta</a>
-				</div>
-			</div>
-		</div>
-	</div>
-			</div>
-		</div>
+			</td>
+		</tr>
+	</table>
 </wicket:extend>
