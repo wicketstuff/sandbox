@@ -1,4 +1,4 @@
-package org.wicketstuff.dojo.examples.launcher;
+package org.wicketstuff.dojo.examples;
 
 import org.mortbay.jetty.Connector;
 import org.mortbay.jetty.Server;
@@ -11,7 +11,7 @@ import org.mortbay.jetty.webapp.WebAppContext;
  * Once started the phonebook is accessible under
  * http://localhost:8080/phonebook
  */
-public class JettyLauncher {
+public class DojoExamplesLauncher {
 
     /**
      * Main function, starts the jetty server.
@@ -31,7 +31,7 @@ public class JettyLauncher {
         web.setContextPath(contextPath);
         web.setWar("src/main/webapp");
         web.setDistributable(true);
-        web.setClassLoader(JettyLauncher.class.getClassLoader());
+        web.setClassLoader(DojoExamplesLauncher.class.getClassLoader());
         server.addHandler(web);
         
         try {
