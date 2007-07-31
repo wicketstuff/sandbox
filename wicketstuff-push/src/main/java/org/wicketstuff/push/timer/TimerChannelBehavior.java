@@ -430,7 +430,7 @@ public class TimerChannelBehavior extends AbstractAjaxTimerBehavior
 	 * @return an IPushTarget to which triggers can be sent in any thread.
 	 */
 	public IPushTarget newPushTarget() {
-		return new TimerPushTarget(getComponent().getApplication(), id, timeout);
+		return new TimerPushTarget(Application.get(), id, timeout);
 	}
 
 	
