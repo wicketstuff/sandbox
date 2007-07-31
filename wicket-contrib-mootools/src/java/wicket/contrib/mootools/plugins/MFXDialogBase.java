@@ -44,6 +44,10 @@ public abstract class MFXDialogBase extends Panel {
 		public Page createPage();
 	}
 
+	protected Boolean hasBlackscreen() {
+		return true;
+	}
+
 	protected Page createPage() {
 
 		if (pageCreator == null) {
@@ -65,6 +69,12 @@ public abstract class MFXDialogBase extends Panel {
 
 	protected String genericCloseWindowJavaScript(final String id) {
 		StringBuffer str = new StringBuffer();
+
+		if (hasBlackscreen()) {
+			str.append("var bg = $('mfxbg');");
+			str.append("bg.setStyle('display','none'); bg.remove();");
+		}
+
 		str.append("var win = $('" + id + "');");
 		str.append("win.setStyle('display','none');");
 		return str.toString();
@@ -84,8 +94,24 @@ public abstract class MFXDialogBase extends Panel {
 		str.append("var win = $('" + dialogId + "');");
 		str.append("elm.setStyle('display','block');");
 
+		/*
+		 * 'display':'block', 'position':'fixed', 'top':'0px', 'left':'0px',
+		 * 'width':'100%', 'height':'100%', 'z-index':this.modalOptions.zIndex,
+		 * 'background-color':this.modalOptions.color,
+		 * 'opacity':this.modalOptions.opacity
+		 */
+
+		if (hasBlackscreen()) {
+			str
+					.append("var bg = new Element('div',{'style':'z-index:98; display:block; "
+							+ "position:fixed; top:0; left:0; width:100%; height:100%;"
+							+ "background-color: #000; opacity: 0.6;','id':'mfxbg'});");
+			str.append("bg.inject(document.body);");
+		}
+
+		str.append("var bar = win.getElementsBySelector('.MFXDialogBar')[0];");
 		str
-				.append("win.makeDraggable( { handle: win, 'onBeforeStart': function() { win.setStyle('opacity',0.5); },   "
+				.append("win.makeDraggable( { handle: bar, 'onBeforeStart': function() { win.setStyle('opacity',0.5); },   "
 						+ "'onComplete': function() { win.setStyle('opacity',1); }});");
 
 		MFXStyle style = new MFXStyle("margin-top", 0, 100);
