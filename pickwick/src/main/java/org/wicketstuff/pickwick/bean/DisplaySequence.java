@@ -1,10 +1,9 @@
-package org.wicketstuff.pickwick.frontend.pages;
+package org.wicketstuff.pickwick.bean;
 
 import java.io.File;
 import java.io.Serializable;
 import java.util.Date;
 
-import org.wicketstuff.pickwick.bean.Sequence;
 
 public class DisplaySequence implements Serializable {
 	Sequence sequence;

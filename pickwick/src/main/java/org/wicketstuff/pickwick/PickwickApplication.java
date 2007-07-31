@@ -6,6 +6,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.security.Principal;
 
 import org.apache.commons.logging.Log;
@@ -93,7 +95,7 @@ public class PickwickApplication extends WebApplication {
 			public IRequestTarget decode(RequestParameters requestParameters) {
 				// Get request URI
 				String uri = getURI(requestParameters);
-
+				
 				// check that folder exists!
 				File imageFolder = imageUtils.toFile(uri);
 				log.debug("imageFile: " + imageFolder);

@@ -5,6 +5,20 @@
 		<link type="application/atom+xml" href="feed/atom_1.0" title="Last 10 Sequences (Atom feed)" rel="alternate">
 	</head>
 	<body>
-		<wicket:child></wicket:child>
+		<table width="100%" height="100%">
+			<tr height="100px">
+				<td>
+					<div id="header" >
+						<a wicket:id="back">backend</a>
+						<div wicket:id="userName" style="color:blue"></div>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<wicket:child></wicket:child>
+				</td>
+			</tr>
+		</table>
 	</body>
 </html>

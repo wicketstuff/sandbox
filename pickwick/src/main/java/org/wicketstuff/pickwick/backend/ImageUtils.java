@@ -35,6 +35,7 @@ import org.apache.wicket.WicketRuntimeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wicketstuff.pickwick.PickwickApplication;
+import org.wicketstuff.pickwick.Utils;
 import org.wicketstuff.pickwick.bean.Folder;
 import org.wicketstuff.pickwick.bean.Image;
 import org.wicketstuff.pickwick.bean.Sequence;
@@ -228,11 +229,7 @@ public class ImageUtils {
 	 * @return
 	 */
 	public File toFile(String uri) {
-		try {
-			uri = URLDecoder.decode(uri, "UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			throw new WicketRuntimeException("can not decode " + uri, e);
-		}
+		uri = Utils.decodeUri(uri);
 		return new File(settings.getImageDirectoryRoot(), uri);
 	}
 

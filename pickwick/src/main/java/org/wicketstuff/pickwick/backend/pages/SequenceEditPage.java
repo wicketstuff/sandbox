@@ -9,32 +9,38 @@ import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.model.CompoundPropertyModel;
 import org.wicketstuff.dojo.markup.html.DojoLink;
 import org.wicketstuff.dojo.markup.html.container.DojoSimpleContainer;
 import org.wicketstuff.dojo.markup.html.container.layout.DojoLayoutContainer;
 import org.wicketstuff.dojo.markup.html.container.layout.DojoLayoutContainer.Position;
+import org.wicketstuff.pickwick.backend.ImageUtils;
 import org.wicketstuff.pickwick.backend.panel.SequencePropertiesPanel;
+import org.wicketstuff.pickwick.bean.DisplaySequence;
 import org.wicketstuff.pickwick.bean.Folder;
-import org.wicketstuff.pickwick.frontend.pages.BaseSequencePage;
+import org.wicketstuff.pickwick.bean.Sequence;
+import org.wicketstuff.pickwick.frontend.pages.BasePage;
 import org.wicketstuff.pickwick.frontend.panel.FolderTreePanel;
+import org.wicketstuff.pickwick.frontend.panel.MetaDisplayPanel;
 
-public class SequenceEditPage extends BaseSequencePage {
+import com.google.inject.Inject;
+
+public class SequenceEditPage extends BasePage {
 	SequencePropertiesPanel panel;
+	
+	@Inject
+	private ImageUtils imageUtils;
 
 	private FolderTreePanel tree;
 
+	private String uri;
+	
+	private MetaDisplayPanel meta;
+	
 	public SequenceEditPage(PageParameters params) {
-		super(params);
-
-		DojoLayoutContainer layout;
-		addOnClient(layout = new DojoLayoutContainer("mainArea"));
-		DojoSimpleContainer s1 = new DojoSimpleContainer("form");
-		layout.add(s1, Position.Client);
-
-		DojoSimpleContainer s2 = new DojoSimpleContainer("tree");
-		s2.setWidth("250px");
-		layout.add(s2, Position.Left);
-
+		super();
+		uri = params.getString("uri");
+		
 		File imageDirectory = null;
 		if (uri != null)
 			imageDirectory = imageUtils.toFile(uri);
@@ -68,13 +74,21 @@ public class SequenceEditPage extends BaseSequencePage {
 		};
 		tree.setOutputMarkupId(true);
 
-		s2.add(tree);
-
-		s1.add(panel);
+		add(tree);
+		add(panel);
+		add(meta = new MetaDisplayPanel("meta", uri));
 
 	}
 
 	protected Component getTree() {
 		return tree;
+	}
+	
+	public void readSequence() {
+		if (uri != null) {
+			File imageDir = imageUtils.toFile(uri);
+			Sequence sequence = imageUtils.readSequence(imageDir);
+			setModel(new CompoundPropertyModel(new DisplaySequence(sequence, imageDir)));
+		}
 	}
 }

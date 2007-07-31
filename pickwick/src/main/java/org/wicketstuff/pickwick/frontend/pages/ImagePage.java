@@ -20,11 +20,14 @@ import org.wicketstuff.dojo.markup.html.container.DojoSimpleContainer;
 import org.wicketstuff.dojo.markup.html.container.layout.DojoLayoutContainer;
 import org.wicketstuff.dojo.markup.html.container.layout.DojoLayoutContainer.Position;
 import org.wicketstuff.pickwick.PickwickApplication;
+import org.wicketstuff.pickwick.Utils;
 import org.wicketstuff.pickwick.auth.PickwickSession;
 import org.wicketstuff.pickwick.backend.ImageUtils;
 import org.wicketstuff.pickwick.backend.pages.MetadataViewPage;
 import org.wicketstuff.pickwick.backend.pages.SequenceEditPage;
+import org.wicketstuff.pickwick.bean.DisplaySequence;
 import org.wicketstuff.pickwick.bean.Sequence;
+import org.wicketstuff.pickwick.frontend.panel.MetaDisplayPanel;
 
 import com.google.inject.Inject;
 
@@ -52,34 +55,23 @@ public class ImagePage extends BasePage {
 	}
 
 	public ImagePage(PageParameters params) {
-		uri = params.getString("uri");
+		uri = Utils.getUri(params);
 
-		addOnTop(new Label("date", new DateModel(this)));
+		add(new MetaDisplayPanel("meta", uri));
+
 		PageParameters sparams = new PageParameters();
 		File imageFile = imageUtils.toFile(uri);
 		sparams.add("uri", imageUtils.getRelativePath(imageFile.getParentFile()));
-		BookmarkablePageLink link;
-		addOnTop(link = new BookmarkablePageLink("sequenceLink", SequencePage.class, sparams));
-		link.add(new Label("title"));
-
-		if (PickwickSession.get().getUser().isAdmin()) {
-			addOnTop(new BookmarkablePageLink("edit", SequenceEditPage.class, sparams));
-		}
 
 		final WebComponent image = new WebComponent("scaled");
 		image.setOutputMarkupId(true);
 		image.add(new AttributeModifier("src", true, new Model(getRequest().getRelativePathPrefixToContextRoot()
 				+ PickwickApplication.SCALED_IMAGE_PATH + "/" + uri)));
-		DojoLayoutContainer imageLayout = new DojoLayoutContainer("image");
-		addOnClient(imageLayout);
-		final DojoSimpleContainer top, bottom;
-		top = new DojoSimpleContainer("top");
-		imageLayout.add(top, Position.Client);
-		top.add(image);
+		add(image);
 
 		// FIXME : create a widget with that
 		final WebMarkupContainer nav = new WebMarkupContainer("nav");
-		top.add(nav);
+		add(nav);
 		nav.setOutputMarkupId(true);
 		// FIXME fade to 100% transparency to avoid visual annoyance
 		nav.add(new FXOnMouseOverFader(300, nav, false, 0.2, 1.0));
@@ -94,10 +86,10 @@ public class ImagePage extends BasePage {
 				super.renderHead(response);
 				response.renderJavascriptReference(new ResourceReference(ImagePage.class, "ImagePage.js"));
 				// connect to the resize event the image resize
-				response.renderOnLoadJavascript("" + "resizeImage('" + image.getMarkupId() + "', '" + top.getMarkupId()
+				/*response.renderOnLoadJavascript("" + "resizeImage('" + image.getMarkupId() + "', '" + top.getMarkupId()
 						+ "'); " + "dojo.event.connect(dojo.widget.byId('" + mainLayout.getMarkupId()
 						+ "'), 'onResized', function() {" + "resizeImage('" + image.getMarkupId() + "', '"
-						+ top.getMarkupId() + "');" + "});");
+						+ top.getMarkupId() + "');" + "});");*/
 				// by default, the image is not visible when everythink is
 				// loaded, make it visible
 				response.renderOnLoadJavascript("dojo.byId('" + image.getMarkupId() + "').style.visibility='visible'");
