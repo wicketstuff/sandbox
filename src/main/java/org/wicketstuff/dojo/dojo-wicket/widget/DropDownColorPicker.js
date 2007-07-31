@@ -75,7 +75,7 @@ dojo.widget.defineWidget(
 
 		onValueChanged: function(/*Date*/dateObj){
 		//summary: triggered when this.value is changed
-		},
+		}
 		
 	}
 );
