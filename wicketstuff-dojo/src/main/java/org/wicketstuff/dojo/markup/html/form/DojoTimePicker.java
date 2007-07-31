@@ -32,6 +32,8 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.util.convert.ConversionException;
+import org.apache.wicket.util.convert.IConverter;
+import org.apache.wicket.util.convert.converters.AbstractConverter;
 
 /**
  * <p>
@@ -76,6 +78,11 @@ public class DojoTimePicker extends TextField {
 			formatter.setTimeZone(timeZone);
 		}
 	}
+    
+    @Override
+    public IConverter getConverter(Class type) {
+        return new TimePickerConvertor();
+    }
 	
 	/**
 	 * @param id
@@ -126,30 +133,6 @@ public class DojoTimePicker extends TextField {
 		this.add(new AttributeAppender("containerToggleDuration", new Model(toggle.getDuration() + ""),""));
 	}
 
-	/**
-	 * @see FormComponent#getModelValue()
-	 */
-	public final String getModelValue()	{
-		if (getModelObject() != null) {
-			return formatter.format((Date)getModelObject());
-		}
-		return null;
-	}
-
-	protected Object convertValue(String[] value) throws ConversionException {
-		//	FIXME hack waiting for a new dojo version (must get the hidden value (value[0]) instead of the display value (value[1]))
-		if (value == null || "".equals(value[1])) {
-			return null;
-		}
-		
-		try {
-			return formatter.parse(value[1]);
-		} catch (ParseException e) {
-			throw new ConversionException(e);
-		}
-		
-	}
-
 	public String getDisplayFormat() {
 		return displayFormat;
 	}
@@ -180,6 +163,50 @@ public class DojoTimePicker extends TextField {
 	public void setAllowInput(boolean allowInput) {
 		this.allowInput = allowInput;
 	}
+    
+	@Override
+	//  FIXME hack waiting for a new dojo version (must get the hidden value (value[0]) instead of the display value (value[1]))
+    //remove me when value will be store in input[1]
+    public String getInput()
+    {
+        String[] input = getInputAsArray();
+        if (input == null || input.length == 0)
+        {
+            return null;
+        }
+        else
+        {
+            return input[1];
+        }
+    }
 	
+    /**
+     * A convertor to use with {@link DojoTimePicker}
+     * @author Vincent Demay
+     *
+     */
+    public class TimePickerConvertor implements IConverter{
+        
+        public Object convertToObject(String value, Locale locale) {
+            if (value == null || "".equals(value)) {
+                return null;
+            }
+            
+            try {
+                return formatter.parse(value);
+            } catch (ParseException e) {
+                throw new ConversionException(e);
+            }
+        }
+
+        public String convertToString(Object value, Locale locale) {
+            if (getModelObject() != null) {
+                return formatter.format((Date)getModelObject());
+            }
+            return null;
+        }
+
+        
+    }
 
 }
