@@ -1,10 +1,10 @@
 package org.wicketstuff.pickwick.backend.panel;
 
+import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.validation.validator.EmailAddressValidator;
 import org.wicketstuff.pickwick.backend.Settings;
 import org.wicketstuff.pickwick.bean.User;
 
@@ -46,6 +46,9 @@ public class UserPanel extends Panel {
 		
 		TextField role = new TextField("role");
 		form.add(role);
+		
+		CheckBox admin = new CheckBox("admin");
+		form.add(admin);
 	}
 
 }
