@@ -1,6 +1,5 @@
 package org.wicketstuff.pickwick.frontend.panel;
 
-import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 
@@ -15,6 +14,7 @@ import org.apache.wicket.extensions.markup.html.tree.Tree;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.html.tree.AbstractTree;
+import org.wicketstuff.pickwick.PickwickApplication;
 import org.wicketstuff.pickwick.backend.ImageUtils;
 import org.wicketstuff.pickwick.bean.Folder;
 import org.wicketstuff.pickwick.frontend.FolderTree;
@@ -70,10 +70,10 @@ public class FolderTreePanel extends Panel{
 	 */
 	protected TreeModel createTreeModel() 
 	{
-		return convertToTreeModel(imageUtils.getFolder());
+		return convertToTreeModel(imageUtils.getFolderFor(PickwickApplication.get().getUserName()));
 	}
 	
-	private TreeModel convertToTreeModel(Folder folder)
+	protected TreeModel convertToTreeModel(Folder folder)
 	{
 		TreeModel model = null;
 		DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode(folder);
@@ -89,7 +89,9 @@ public class FolderTreePanel extends Panel{
 			Folder folder = folderIt.next();
 			DefaultMutableTreeNode child = new DefaultMutableTreeNode(folder);
 			parent.add(child);
-			add(child, folder.getSubFolders());
+			if (folder.getSubFolders() != null){
+				add(child, folder.getSubFolders());
+			}
 		}
 	}
 

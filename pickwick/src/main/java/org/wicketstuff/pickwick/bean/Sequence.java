@@ -10,6 +10,7 @@ public class Sequence implements Serializable{
 	private String title;
 	private String description;
 	private Date date;
+	private String role;
 	
 	public Date getDate() {
 		return date;
@@ -28,5 +29,11 @@ public class Sequence implements Serializable{
 	}
 	public void setTitle(String title) {
 		this.title = title;
+	}
+	public String getRole() {
+		return role;
+	}
+	public void setRole(String role) {
+		this.role = role;
 	}
 }

@@ -206,17 +206,29 @@ public class ImageUtils {
 	 * @return  a tree representation of the folders in imageDirectoryRoot
 	 */
 	public Folder getFolder(){
-		return new Folder(settings.getImageDirectoryRoot(), getSubFolder(this.settings.getImageDirectoryRoot()));
+		return new Folder(settings.getImageDirectoryRoot(), getSubFolder(this.settings.getImageDirectoryRoot(), null));
 	}
 	
-	private ArrayList<Folder> getSubFolder(File folder){
+	public Folder getFolderFor(String userRole){
+		return new Folder(settings.getImageDirectoryRoot(), getSubFolder(this.settings.getImageDirectoryRoot(), userRole));
+	}
+	
+	private ArrayList<Folder> getSubFolder(File folder, String userRole){
+		
 		if (folder.isDirectory()){
 			ArrayList<Folder> toReturn = new ArrayList<Folder>();
 			for (File file : folder.listFiles()){
 				if (file.isDirectory()){
-					Folder current = new Folder(file);
-					current.setSubFolders(getSubFolder(file));
-					toReturn.add(current);
+					Sequence sequence = readSequence(file);
+					String role = null;
+					if (sequence != null){
+						role = sequence.getRole();
+					}
+					if (userRole == null || role == null || role.equals(userRole)){
+						Folder current = new Folder(file);
+						current.setSubFolders(getSubFolder(file, userRole));
+						toReturn.add(current);
+					}
 				}
 			}
 			return toReturn;
