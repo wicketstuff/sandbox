@@ -24,11 +24,6 @@ public interface Settings extends Serializable{
 	 * @return {@link File} pointing to the directory containing the images
 	 */
 	File getImageDirectoryRoot();
-
-	/**
-	 * @return class name of authentication module
-	 */
-	String getAuthenticationModule();
 	
 	/**
 	 * @return UserMangement implementation used on the application

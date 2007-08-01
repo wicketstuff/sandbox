@@ -1,9 +1,8 @@
-package org.wicketstuff.pickwick.auth;
+package org.wicketstuff.pickwick.bean;
 
-import org.wicketstuff.pickwick.frontend.pages.Role;
 
 public class User {
-	private Role role;
+	private String role;
 	private String name;
 	private boolean admin;
 	public boolean isAdmin() {
@@ -17,5 +16,11 @@ public class User {
 	}
 	public void setAdmin(boolean admin) {
 		this.admin = admin;
+	}
+	public String getRole() {
+		return role;
+	}
+	public void setRole(String role) {
+		this.role = role;
 	}
 }

@@ -6,7 +6,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.validation.validator.EmailAddressValidator;
 import org.wicketstuff.pickwick.backend.Settings;
-import org.wicketstuff.pickwick.backend.users.UserBean;
+import org.wicketstuff.pickwick.bean.User;
 
 import com.google.inject.Inject;
 
@@ -24,18 +24,18 @@ public class UserPanel extends Panel {
 		super(id);
 		
 		//get real user from userName
-		UserBean user = null;
+		User user = null;
 		if (settings.getUserManagementModule() != null){
 			user = settings.getUserManagementModule().getUser(UserEmail);
 		}
 		if(user == null){
-			user = new UserBean();
+			user = new User();
 		}
 		
 		Form form = new Form("userForm", new CompoundPropertyModel(user)){
 			@Override
 			protected void onSubmit() {
-				UserBean user = (UserBean)getModelObject();
+				User user = (User)getModelObject();
 				settings.getUserManagementModule().addUser(user);
 			}
 		};
@@ -43,10 +43,6 @@ public class UserPanel extends Panel {
 		
 		TextField name = new TextField("name");
 		form.add(name);
-		
-		TextField email = new TextField("email");
-		email.add(EmailAddressValidator.getInstance());
-		form.add(email);
 		
 		TextField role = new TextField("role");
 		form.add(role);

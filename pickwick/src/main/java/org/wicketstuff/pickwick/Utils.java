@@ -9,6 +9,9 @@ import org.apache.wicket.WicketRuntimeException;
 public class Utils {
 
 	public static String getUri(PageParameters params){
+		if(params == null){ //can be null because of authentication
+			return "";
+		}
 		String uri = params.getString("uri");
 		return decodeUri(uri);
 	}
