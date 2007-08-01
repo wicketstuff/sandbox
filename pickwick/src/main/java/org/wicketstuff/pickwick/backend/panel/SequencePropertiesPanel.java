@@ -1,33 +1,20 @@
 package org.wicketstuff.pickwick.backend.panel;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 
-import org.apache.commons.io.IOUtils;
-import org.apache.wicket.AttributeModifier;
-import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitButton;
-import org.apache.wicket.markup.ComponentTag;
-import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.model.Model;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wicketstuff.dojo.markup.html.form.DojoDatePicker;
 import org.wicketstuff.dojo.markup.html.richtexteditor.DojoRichTextEditorBehavior;
-import org.wicketstuff.pickwick.backend.DefaultSettings;
 import org.wicketstuff.pickwick.backend.ImageUtils;
-import org.wicketstuff.pickwick.backend.XmlBeanMapper;
 import org.wicketstuff.pickwick.bean.Sequence;
 
 import com.google.inject.Inject;
@@ -49,6 +36,8 @@ public abstract class SequencePropertiesPanel extends Panel {
 	public static final String DESCRIPTION = "description";
 
 	public static final String DATE = "date";
+	
+	public static final String ROLE = "role";
 
 	Form form;
 
@@ -68,6 +57,7 @@ public abstract class SequencePropertiesPanel extends Panel {
 		form.add(title);
 		form.add(description);
 		form.add(date);
+		form.add(new TextField(ROLE));
 		form.add(new AjaxSubmitButton("save", form) {
 
 			@Override

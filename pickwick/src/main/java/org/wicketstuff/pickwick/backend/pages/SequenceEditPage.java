@@ -3,6 +3,7 @@ package org.wicketstuff.pickwick.backend.pages;
 import java.io.File;
 
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreeNode;
 
 import org.apache.wicket.Component;
@@ -14,6 +15,7 @@ import org.wicketstuff.dojo.markup.html.DojoLink;
 import org.wicketstuff.dojo.markup.html.container.DojoSimpleContainer;
 import org.wicketstuff.dojo.markup.html.container.layout.DojoLayoutContainer;
 import org.wicketstuff.dojo.markup.html.container.layout.DojoLayoutContainer.Position;
+import org.wicketstuff.pickwick.PickwickApplication;
 import org.wicketstuff.pickwick.backend.ImageUtils;
 import org.wicketstuff.pickwick.backend.panel.SequencePropertiesPanel;
 import org.wicketstuff.pickwick.bean.DisplaySequence;
@@ -70,6 +72,16 @@ public class SequenceEditPage extends BasePage {
 				};
 
 				return nodeLink;
+			}
+			
+			/**
+			 * Creates the model that feeds the tree.
+			 * @return
+			 * 		New instance of tree model.
+			 */
+			protected TreeModel createTreeModel() 
+			{
+				return convertToTreeModel(imageUtils.getFolder());
 			}
 		};
 		tree.setOutputMarkupId(true);
