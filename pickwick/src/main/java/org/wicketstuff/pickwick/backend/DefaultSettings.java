@@ -4,7 +4,6 @@ import java.io.File;
 
 import org.apache.wicket.RequestCycle;
 import org.apache.wicket.protocol.http.WebRequestCycle;
-import org.wicketstuff.pickwick.auth.DummyAuthenticationModule;
 import org.wicketstuff.pickwick.backend.users.UserManagement;
 import org.wicketstuff.pickwick.backend.users.XmlUserManagement;
 
@@ -20,10 +19,6 @@ public class DefaultSettings implements Settings {
 		// return "http://localhost:8080/";
 		return ((WebRequestCycle) RequestCycle.get()).getWebRequest().getHttpServletRequest().getRequestURL()
 				.toString();
-	}
-
-	public String getAuthenticationModule() {
-		return DummyAuthenticationModule.class.getName();
 	}
 
 	public UserManagement getUserManagementModule() {

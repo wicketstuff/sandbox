@@ -12,7 +12,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.wicketstuff.pickwick.auth.PickwickSession;
+import org.wicketstuff.pickwick.PickwickApplication;
 import org.wicketstuff.pickwick.backend.ImageUtils;
 import org.wicketstuff.pickwick.backend.pages.SequenceEditPage;
 import org.wicketstuff.pickwick.bean.DisplaySequence;
@@ -49,11 +49,17 @@ public class MetaDisplayPanel extends Panel {
 		add(new Label("date", new DateModel(this)));
 		add(new Label("title"));
 		setOutputMarkupId(true);
-		if (PickwickSession.get().getUser().isAdmin()) {
-			PageParameters params = new PageParameters();
-			params.add("uri", uri);
-			add(new BookmarkablePageLink("edit", SequenceEditPage.class, params));
+		
+		PageParameters params = new PageParameters();
+		params.add("uri", uri);
+		BookmarkablePageLink adminLink = new BookmarkablePageLink("edit", SequenceEditPage.class, params);
+		add(adminLink);
+		if (PickwickApplication.get().getPickwickSession().getUser()!= null && PickwickApplication.get().getPickwickSession().getUser().isAdmin()) {
+			adminLink.setVisible(true);
+		}else{
+			adminLink.setVisible(false);
 		}
+		
 		this.uri = uri;
 	}
 	

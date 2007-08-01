@@ -73,8 +73,6 @@ public class ImagePage extends BasePage {
 		final WebMarkupContainer nav = new WebMarkupContainer("nav");
 		add(nav);
 		nav.setOutputMarkupId(true);
-		// FIXME fade to 100% transparency to avoid visual annoyance
-		nav.add(new FXOnMouseOverFader(300, nav, false, 0.2, 1.0));
 		add(new AbstractRequireDojoBehavior() {
 			@Override
 			public void setRequire(RequireDojoLibs libs) {

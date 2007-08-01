@@ -11,70 +11,94 @@ import java.util.Map.Entry;
 
 import org.apache.commons.io.IOUtils;
 import org.wicketstuff.pickwick.backend.XmlBeanMapper;
+import org.wicketstuff.pickwick.bean.User;
+import org.wicketstuff.pickwick.bean.Users;
+
+import sun.security.action.GetLongAction;
 
 
 public class XmlUserManagement implements UserManagement{
 	
 	private static final String USER_URI = "users.xml";
 	
-	XmlBeanMapper<Users> mapper;
-	Users users;
+	private XmlBeanMapper<Users> mapper;
+	private static Users users;
+	
+	private Users getUserList(){
+		if (users == null){
+			users = new Users();
+			readUsers();
+		}
+		return users;
+	}
 	
 	public XmlUserManagement() {
-		users = new Users();
 		mapper = new XmlBeanMapper<Users>(Users.class);
+	}
+	
+	/**
+	 * method reading the list of all users
+	 * @param users2
+	 */
+	private void readUsers() {
 		//try to read the file
 		FileInputStream in = null;
 		try {
 			users = mapper.bindInBean(in = new FileInputStream(new File(USER_URI)));
 		} catch (FileNotFoundException e) {
-			//Nothing to do if file does not exists
+			System.out.println(e);
 		}finally{
 			IOUtils.closeQuietly(in);
 		}
 	}
 
-	public void addUser(UserBean user) {
-		UserBean existing = users.get(user.getEmail());
+	public void addUser(User user) {
+		User existing = getUserList().get(user.getName());
 		if (existing == null){
 			existing = user;
 		}else{
 			existing.setName(user.getName());
 			existing.setRole(user.getRole());
 		}
-		users.put(user.getEmail(), existing);
+		getUserList().put(user.getName(), existing);
 		saveUsers();
 	}
 
-	public List<UserBean> getAllUsers() {
-		ArrayList<UserBean> toReturn = new ArrayList<UserBean>();
-		Iterator<Entry<String, UserBean>> ite = users.entrySet().iterator();
+	public List<User> getAllUsers() {
+		ArrayList<User> toReturn = new ArrayList<User>();
+		Iterator<Entry<String, User>> ite = getUserList().entrySet().iterator();
 		while(ite.hasNext()){
 			toReturn.add(ite.next().getValue());
 		}
 		return toReturn;
 	}
 
-	public UserBean getUser(String email) {
-		// TODO Auto-generated method stub
-		return null;
+	public User getUser(String name) {
+		return getUserList().get(name);
 	}
 
-	public void removeUser(String email) {
-		// TODO Auto-generated method stub
-		
+	public void removeUser(String name) {
+		getUserList().remove(name);
 	}
 	
+	/**
+	 * Save user on the file
+	 *
+	 */
 	private void saveUsers(){
 		FileOutputStream out = null;
 		try {
-			mapper.serializeInXml(users, out = new FileOutputStream(new File(USER_URI)));
+			mapper.serializeInXml(getUserList(), out = new FileOutputStream(new File(USER_URI)));
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally{
 			IOUtils.closeQuietly(out);
 		}
+	}
+
+	public boolean checkUser(String userName, String password) {
+		return getUserList().get(userName) != null;
 	}
 	
 	

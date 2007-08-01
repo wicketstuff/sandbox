@@ -6,22 +6,17 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.security.Principal;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.wicket.Application;
 import org.apache.wicket.IRequestTarget;
 import org.apache.wicket.PageParameters;
-import org.apache.wicket.Request;
 import org.apache.wicket.RequestCycle;
-import org.apache.wicket.Response;
-import org.apache.wicket.Session;
 import org.apache.wicket.WicketRuntimeException;
-import org.apache.wicket.protocol.http.WebApplication;
-import org.apache.wicket.protocol.http.WebRequest;
+import org.apache.wicket.authentication.AuthenticatedWebApplication;
+import org.apache.wicket.authentication.AuthenticatedWebSession;
+import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.protocol.http.WebRequestCycle;
 import org.apache.wicket.request.RequestParameters;
 import org.apache.wicket.request.target.basic.EmptyRequestTarget;
@@ -33,7 +28,7 @@ import org.apache.wicket.util.resource.AbstractResourceStream;
 import org.apache.wicket.util.resource.FileResourceStream;
 import org.apache.wicket.util.resource.IResourceStream;
 import org.apache.wicket.util.resource.ResourceStreamNotFoundException;
-import org.wicketstuff.pickwick.auth.AuthenticationModule;
+import org.wicketstuff.pickwick.auth.PickwickLoginPage;
 import org.wicketstuff.pickwick.auth.PickwickSession;
 import org.wicketstuff.pickwick.backend.ImageUtils;
 import org.wicketstuff.pickwick.backend.Settings;
@@ -48,9 +43,7 @@ import com.google.inject.Inject;
  * 
  * @author <a href="mailto:jbq@apache.org">Jean-Baptiste Quenot</a>
  */
-public class PickwickApplication extends WebApplication {
-	@Inject
-	private AuthenticationModule auth;
+public class PickwickApplication extends AuthenticatedWebApplication {
 
 	@Inject
 	ImageUtils imageUtils;
@@ -217,17 +210,37 @@ public class PickwickApplication extends WebApplication {
 	}
 
 	public static PickwickApplication get() {
+		System.out.println(Application.get().getClass().getName());
 		return (PickwickApplication) Application.get();
 	}
 	
-	public Principal getUserPrincipal(){
-		return ((WebRequest)((WebRequestCycle)RequestCycle.get()).getRequest()).getHttpServletRequest().getUserPrincipal();
+	public String getUserName(){
+		PickwickSession pickwickSession = getPickwickSession();
+		if (pickwickSession.getUser() == null){
+			return pickwickSession.getDefaultUser().getName();
+		}
+		return pickwickSession.getUser().getName();
 	}
 	
+	/**
+	 * return the current pickwickSession
+	 * @return the current pickwickSession
+	 */
+	public PickwickSession getPickwickSession(){
+		return ((PickwickSession)((WebRequestCycle)RequestCycle.get()).getSession());
+	}
+
 	@Override
-	public Session newSession(Request request, Response response) {
-		PickwickSession session = new PickwickSession(this, request);
-		session.setUser(auth.getUser(((WebRequest)request).getHttpServletRequest()));
-		return session;
+	protected Class<? extends WebPage> getSignInPageClass() {
+		return PickwickLoginPage.class;
+	}
+
+	@Override
+	protected Class<? extends AuthenticatedWebSession> getWebSessionClass() {
+		return PickwickSession.class;
+	}
+
+	public Settings getSettings() {
+		return settings;
 	}
 }
