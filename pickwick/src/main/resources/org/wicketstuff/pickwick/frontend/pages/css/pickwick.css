@@ -93,16 +93,15 @@ a:hover {
 	position: relative;
 }
 
-.photo .nav {
+.nav {
 	position: absolute;
 	z-index:9999;
-	top:0px;
-	background-color: #F0F0F0;
+	background-color: #dfecf3;
 	border: 1px solid black;
 	width:300px;
 	height: 30px;
-	-moz-border-radius : 5px;
-	display: block;
+	opacity: .2;
+	filter: alpha(opacity=20);
 }
 
 #userInfo {

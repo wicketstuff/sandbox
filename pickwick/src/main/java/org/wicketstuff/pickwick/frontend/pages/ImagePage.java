@@ -15,6 +15,7 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.Model;
 import org.wicketstuff.dojo.AbstractRequireDojoBehavior;
+import org.wicketstuff.dojo.dojofx.DojoFXHandler;
 import org.wicketstuff.dojo.dojofx.FXOnMouseOverFader;
 import org.wicketstuff.dojo.markup.html.container.DojoSimpleContainer;
 import org.wicketstuff.dojo.markup.html.container.layout.DojoLayoutContainer;
@@ -68,15 +69,17 @@ public class ImagePage extends BasePage {
 		image.add(new AttributeModifier("src", true, new Model(getRequest().getRelativePathPrefixToContextRoot()
 				+ PickwickApplication.SCALED_IMAGE_PATH + "/" + uri)));
 		add(image);
-
 		// FIXME : create a widget with that
 		final WebMarkupContainer nav = new WebMarkupContainer("nav");
 		add(nav);
+
+		//nav.add(new FXOnMouseOverFader(500,image,false,1.0,0.5));
 		nav.setOutputMarkupId(true);
 		add(new AbstractRequireDojoBehavior() {
 			@Override
 			public void setRequire(RequireDojoLibs libs) {
 				libs.add("dojo.html");
+				libs.add("dojo.lfx.*");
 			}
 
 			@Override
@@ -92,6 +95,10 @@ public class ImagePage extends BasePage {
 				// loaded, make it visible
 				response.renderOnLoadJavascript("dojo.byId('" + image.getMarkupId() + "').style.visibility='visible'");
 				// response.renderOnLoadJavascript("dojo.byId('"+nav.getMarkupId()+"').style.visibility='visible'");
+				
+				response.renderJavascript("dojo.addOnLoad( function(){" +
+						"	connectProgresTransparency('" + image.getMarkupId() + "','" + nav.getMarkupId() + "')" +
+						"})", "fader");
 			}
 
 			@Override
