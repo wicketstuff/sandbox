@@ -14,7 +14,6 @@ import org.apache.wicket.extensions.markup.html.tree.Tree;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.html.tree.AbstractTree;
-import org.wicketstuff.pickwick.PickwickApplication;
 import org.wicketstuff.pickwick.auth.PickwickSession;
 import org.wicketstuff.pickwick.backend.ImageUtils;
 import org.wicketstuff.pickwick.bean.Folder;

@@ -61,6 +61,9 @@ public class PickwickSession extends AuthenticatedWebSession {
 	 * @return
 	 */
 	public User getUser() {
+		if (user == null){
+			return getDefaultUser();
+		}
 		return user;
 	}
 	

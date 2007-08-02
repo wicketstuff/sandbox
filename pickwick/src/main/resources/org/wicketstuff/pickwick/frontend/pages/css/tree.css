@@ -20,7 +20,7 @@ div.wicket-tree {
 
 div.wicket-tree a {
 	text-decoration: none;
-	color: white;
+	color: #7E7E7E;
 	float: left;	
 }
 
@@ -96,7 +96,7 @@ div.wicket-tree span.indent {
 
 div.wicket-tree a:hover {
 	text-decoration: none;
-	color : #46c308;
+	color : #FF3399;
 }
 
 
