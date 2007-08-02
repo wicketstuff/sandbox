@@ -214,14 +214,6 @@ public class PickwickApplication extends AuthenticatedWebApplication {
 		return (PickwickApplication) Application.get();
 	}
 	
-	public String getUserName(){
-		PickwickSession pickwickSession = getPickwickSession();
-		if (pickwickSession.getUser() == null){
-			return pickwickSession.getDefaultUser().getName();
-		}
-		return pickwickSession.getUser().getName();
-	}
-	
 	/**
 	 * return the current pickwickSession
 	 * @return the current pickwickSession
