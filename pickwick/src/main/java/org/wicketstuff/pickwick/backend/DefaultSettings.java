@@ -21,7 +21,7 @@ public class DefaultSettings implements Settings {
 				.toString();
 	}
 
-	public UserManagement getUserManagementModule() {
+	public UserManagement getUserManagement() {
 		return new XmlUserManagement();
 	}
 }
