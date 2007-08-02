@@ -6,14 +6,14 @@
 .thumbnail table{
 	font-size: 0.8em;
 	border-spacing: 0px;
-	width : 115px;
-	height : 80px;
+	width : 90px;
+	height : 90px;
 	border: 1px black;
 	margin: 5px;
 }
 
 .thumbnail table .label{
-	color: white;
+	color: #7E7E7E;
 	text-decoration: none;
 	height: 15px;
 	overflow:hidden;
@@ -21,16 +21,16 @@
 }
 
 .thumbnail:hover table .label {
-	background-color: #46c308;
+	background-color: #FF3399;
+	color: white;
 }
 	
 .thumbnail:hover table {
-	border: 1px dotted #46c308;
+	border: 1px solid #FF3399;
 }
 
 .thumbnail table {
-	/* need an invisible border to avoid flickering on hover */
-	border: 1px dotted black;
+	border: 1px solid #7E7E7E;
 }
 
 .thumbnail img {
