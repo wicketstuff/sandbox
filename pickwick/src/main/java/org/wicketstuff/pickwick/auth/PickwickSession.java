@@ -1,6 +1,7 @@
 package org.wicketstuff.pickwick.auth;
 
 import org.apache.wicket.Request;
+import org.apache.wicket.Session;
 import org.apache.wicket.authentication.AuthenticatedWebApplication;
 import org.apache.wicket.authentication.AuthenticatedWebSession;
 import org.apache.wicket.authorization.strategies.role.Roles;
@@ -42,6 +43,14 @@ public class PickwickSession extends AuthenticatedWebSession {
 		}
 	}
 
+	public String getUserName(){
+		if (getUser() == null){
+			return getDefaultUser().getName();
+		}
+		return getUser().getName();
+	}
+	
+
 	@Override
 	public Roles getRoles() {
 		return new Roles(user.getRole());
@@ -63,4 +72,7 @@ public class PickwickSession extends AuthenticatedWebSession {
 		return user;
 	}
 
+	public static PickwickSession get() {
+		return (PickwickSession) Session.get();
+	}
 }

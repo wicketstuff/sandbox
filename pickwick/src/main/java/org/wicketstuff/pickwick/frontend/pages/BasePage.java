@@ -9,6 +9,7 @@ import org.apache.wicket.model.Model;
 import org.wicketstuff.pickwick.PickwickApplication;
 import org.wicketstuff.pickwick.auth.PickwickLoginPage;
 import org.wicketstuff.pickwick.auth.PickwickLogoutPage;
+import org.wicketstuff.pickwick.auth.PickwickSession;
 import org.wicketstuff.pickwick.backend.pages.BackendLandingPage;
 
 public class BasePage extends WebPage {
@@ -22,7 +23,7 @@ public class BasePage extends WebPage {
 	public void addHeader(){
 
 		add(new BookmarkablePageLink("back", BackendLandingPage.class));
-		String name = PickwickApplication.get().getUserName();
+		String name = PickwickSession.get().getUserName();
 		
 		Label userName = new Label("userName", new Model(name));
 		PageLink auth = new PageLink("auth", PickwickLoginPage.class);

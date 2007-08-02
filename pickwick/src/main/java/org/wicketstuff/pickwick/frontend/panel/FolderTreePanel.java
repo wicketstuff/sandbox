@@ -15,6 +15,7 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.html.tree.AbstractTree;
 import org.wicketstuff.pickwick.PickwickApplication;
+import org.wicketstuff.pickwick.auth.PickwickSession;
 import org.wicketstuff.pickwick.backend.ImageUtils;
 import org.wicketstuff.pickwick.bean.Folder;
 import org.wicketstuff.pickwick.frontend.FolderTree;
@@ -70,7 +71,7 @@ public class FolderTreePanel extends Panel{
 	 */
 	protected TreeModel createTreeModel() 
 	{
-		return convertToTreeModel(imageUtils.getFolderFor(PickwickApplication.get().getUserName()));
+		return convertToTreeModel(imageUtils.getFolderFor(PickwickSession.get().getUser().getRole()));
 	}
 	
 	protected TreeModel convertToTreeModel(Folder folder)
