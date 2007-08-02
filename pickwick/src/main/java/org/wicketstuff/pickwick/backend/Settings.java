@@ -28,5 +28,5 @@ public interface Settings extends Serializable{
 	/**
 	 * @return UserMangement implementation used on the application
 	 */
-	UserManagement getUserManagementModule();
+	UserManagement getUserManagement();
 }

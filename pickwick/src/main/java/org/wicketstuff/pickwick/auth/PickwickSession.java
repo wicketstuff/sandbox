@@ -4,10 +4,13 @@ import org.apache.wicket.Request;
 import org.apache.wicket.authentication.AuthenticatedWebApplication;
 import org.apache.wicket.authentication.AuthenticatedWebSession;
 import org.apache.wicket.authorization.strategies.role.Roles;
+import org.wicketstuff.pickwick.GuiceWebApplicationFactory;
 import org.wicketstuff.pickwick.PickwickApplication;
-import org.wicketstuff.pickwick.backend.users.UserManagement;
-import org.wicketstuff.pickwick.backend.users.XmlUserManagement;
+import org.wicketstuff.pickwick.backend.Settings;
 import org.wicketstuff.pickwick.bean.User;
+
+import com.google.inject.Inject;
+import com.google.inject.Injector;
 
 /**
  * A session for the {@link PickwickApplication}.
@@ -16,22 +19,22 @@ import org.wicketstuff.pickwick.bean.User;
  *
  */
 public class PickwickSession extends AuthenticatedWebSession {
-
+	@Inject
+	Settings settings;
 	
 	private User user;
-	private UserManagement userManagement;
 	
 	public PickwickSession(AuthenticatedWebApplication application, Request request) {
 		super(application, request);
+		// Injects dependencies into the fields and methods of this session object
+		Injector inj = (Injector) application.getServletContext().getAttribute(GuiceWebApplicationFactory.GUICE);
+		inj.injectMembers(this);
 	}
 	
 	@Override
 	public boolean authenticate(String username, String password) {
-		//FIXME : how to inject that. We are in a thread (session)
-		//Jbq?
-		userManagement = new XmlUserManagement();
-		if (userManagement.checkUser(username, password)){
-			user = userManagement.getUser(username);
+		if (settings.getUserManagement().checkUser(username, password)){
+			user = settings.getUserManagement().getUser(username);
 			return true;
 		}else{
 			user = getDefaultUser();

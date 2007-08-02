@@ -4,12 +4,14 @@ import java.util.List;
 
 import org.wicketstuff.pickwick.bean.User;
 
+import com.google.inject.ImplementedBy;
+
 /**
  * Interface in charge of user management: add delete modify user
  * 
  * @author Vincent Demay
- *
  */
+@ImplementedBy(XmlUserManagement.class)
 public interface UserManagement {
 	/**
 	 * Called when an user should be added to the system

@@ -25,8 +25,8 @@ public class UserPanel extends Panel {
 		
 		//get real user from userName
 		User user = null;
-		if (settings.getUserManagementModule() != null){
-			user = settings.getUserManagementModule().getUser(UserEmail);
+		if (settings.getUserManagement() != null){
+			user = settings.getUserManagement().getUser(UserEmail);
 		}
 		if(user == null){
 			user = new User();
@@ -36,7 +36,7 @@ public class UserPanel extends Panel {
 			@Override
 			protected void onSubmit() {
 				User user = (User)getModelObject();
-				settings.getUserManagementModule().addUser(user);
+				settings.getUserManagement().addUser(user);
 			}
 		};
 		add(form);
