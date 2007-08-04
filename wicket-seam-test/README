@@ -20,21 +20,16 @@ longer term, we should keep an eye on WebBeans.
 
 ---------------- Setting it up ----------------
 
-Currently, the only way to get this running is to check out this project from
-http://wicket-stuff.svn.sourceforge.net/svnroot/wicket-stuff/trunk/wicket-seam-test, and
-check out and build Seam from anoncvs.forge.jboss.com, repo '/cvsroot/jboss', module 'jboss-seam'.
-The Eclipse project files are set up for this and the wicket and wicket-ioc project to be
-all in your workspace and use each other as project dependencies. Only extra thing you need to do
-is to export most of the classpath entries of Seam. At the end of this document, you can find the
-contents of my Eclipse .classpath file for jboss-seam. Contributions for other IDEs are welcome.
-Hopefully Seam gets a proper maven 2 build soon and we can make this a decent project.
+Check out this project from http://wicket-stuff.svn.sourceforge.net/svnroot/wicket-stuff/trunk/wicket-seam-test, 
+and check out and build Seam from anoncvs.forge.jboss.com, repo '/cvsroot/jboss', module 'jboss-seam'
+using mvn clean install to install it in your local maven repository. You can then build this project as you like, 
+or just check it out with the Eclipse project definitions directly.
 
 ---------------- Starting the example ----------------
 
-Hey, you know us: we like to keep it lean and mean. So find your Jetty starter class in src/test.
-The difference with the usual Jetty starter is that this one uses Jetty plus, which has some
-support for JNDI etc. Unfortunately, at this time Seam won't start without such support. Of course,
-it should run excellent on JBoss :)
+Find your Jetty starter class in src/test. The difference with the usual Jetty starter is that this 
+one uses Jetty plus, which has some support for JNDI etc. Unfortunately, at this time Seam won't start 
+without such support. Of course, it should run excellent on JBoss :)
 
 Supply -Dwicket.configuration=development as a VM argument if you want to play around and turn
 on template reloading.
@@ -43,66 +38,3 @@ on template reloading.
 
 July 15th 2007,
 Eelco
-
-TODO remove this when the project gets picked up :)
-
-
-my .classpath file for Eclipse:
-
-<?xml version="1.0" encoding="UTF-8"?>
-<classpath>
-	<classpathentry kind="src" path="src/main"/>
-	<classpathentry kind="src" path="src/test/misc"/>
-	<classpathentry kind="src" path="ui/src/main/java"/>
-	<classpathentry kind="src" path="src/remoting"/>
-	<classpathentry kind="src" path="src/ioc"/>
-	<classpathentry kind="src" path="src/mail"/>
-	<classpathentry kind="src" path="src/pdf"/>
-	<classpathentry kind="src" path="src/debug"/>
-	<classpathentry kind="src" path="src/gen"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry exported="true" kind="lib" path="lib/portlet-api-lib.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/servlet-api.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/hibernate-all.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jgroups.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jboss-cache-jdk50.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jsf-facelets.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/activation.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/spring.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jboss-jaxws.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jboss-el-api.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jboss-el.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jsf-api.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jsp-api.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/gwt-servlet.jar"/>
-	<classpathentry exported="true" kind="lib" path="mail/buni-meldware/lib/mailapi.jar"/>
-	<classpathentry exported="true" kind="lib" path="drools/lib/drools-compiler-4.0.0.MR2.jar"/>
-	<classpathentry exported="true" kind="lib" path="drools/lib/drools-core-4.0.0.MR2.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/groovy-all-1.1-BETA-1.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/quartz-1.6.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jboss-embedded-all.jar"/>
-	<classpathentry exported="true" kind="lib" path="bootstrap"/>
-	<classpathentry exported="true" kind="lib" path="lib/mail.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/ajax4jsf-1.1.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="mail/buni-meldware/lib/mailjmx.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/testng-5.6-jdk15.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jbpm-jpdl.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jcaptcha-all-1.0-RC6.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/ant.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/thirdparty-all.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/bsh.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jsf-impl.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/lucene-core-2.1.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/hibernate-search.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/hibernate-commons-annotations.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jboss-saaj.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/ant-nodeps.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jcommon-1.0.10.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jfreechart-1.0.6.jar"/>
-	<classpathentry kind="lib" path="lib/slf4j-api-1.3.1.jar"/>
-	<classpathentry kind="lib" path="lib/slf4j-log4j12-1.3.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/itext-2.0.4.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/commons-digester-1.6.jar"/>
-	<classpathentry kind="lib" path="lib/commons-beanutils-1.7.0.jar"/>
-	<classpathentry kind="output" path="output/classes"/>
-</classpath>
