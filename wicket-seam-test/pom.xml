@@ -18,11 +18,50 @@
 		</license>
 	</licenses>
 
+	<pluginRepositories>
+		<pluginRepository>
+			<releases />
+			<snapshots>
+				<enabled>false</enabled>
+				<updatePolicy>never</updatePolicy>
+			</snapshots>
+			<id>repository.jboss.com</id>
+			<name>JBoss Repository</name>
+			<url>http://repository.jboss.com/maven2</url>
+		</pluginRepository>
+	</pluginRepositories>
 	<repositories>
+		<repository>
+			<id>wicket-stuff.org</id>
+			<url>http://wicketstuff.org/maven/repository/</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
 		<repository>
 			<id>repository.jboss.com</id>
 			<name>JBoss Repository</name>
 			<url>http://repository.jboss.com/maven2</url>
+		</repository>
+		<repository>
+			<id>maven1.java.net</id>
+			<name>Java.net Maven1 Repositiory</name>
+			<url>http://download.java.net/maven/1</url>
+			<layout>legacy</layout>
+		</repository>
+		<repository>
+			<id>gwt-maven</id>
+			<url>
+				http://gwt-maven.googlecode.com/svn/trunk/mavenrepo/
+			</url>
+		</repository>
+		<repository>
+			<id>glassfish.java.net</id>
+			<url>http://download.java.net/maven/glassfish/</url>
+		</repository>
+		<repository>
+			<id>maven2.java.net</id>
+			<url>http://download.java.net/maven/2/</url>
 		</repository>
 	</repositories>
 
@@ -54,9 +93,41 @@
 		</dependency>
 
 		<!-- SEAM DEPENDENCIES -->
-
-		<!-- TODO get the current SEAM version as a maven dep -->
-
+		<dependency>
+			<groupId>jboss</groupId>
+			<artifactId>jboss-seam-core</artifactId>
+			<version>2.0.0.BETA</version>
+		</dependency>
+		<dependency>
+			<groupId>javassist</groupId>
+			<artifactId>javassist</artifactId>
+			<version>3.5-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>dom4j</groupId>
+			<artifactId>dom4j</artifactId>
+			<version>1.6.1-jboss</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.el</groupId>
+			<artifactId>el-api</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.faces</groupId>
+			<artifactId>jsf-api</artifactId>
+			<version>1.2_04-p01</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.persistence</groupId>
+			<artifactId>persistence-api</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-annotations</artifactId>
+			<version>3.2.0.ga</version>
+		</dependency>
 
 		<!--  JETTY DEPENDENCIES FOR TESTING  -->
 
@@ -88,6 +159,40 @@
 	</dependencies>
 
 	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.5</source>
+					<target>1.5</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-eclipse-plugin</artifactId>
+				<version>2.3</version>
+				<configuration>
+					<downloadSources>true</downloadSources>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+					<warSourceDirectory>
+						src/main/webapp
+					</warSourceDirectory>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.mortbay.jetty</groupId>
+				<artifactId>maven-jetty-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>surefire-report-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
 		<resources>
 			<resource>
 				<filtering>false</filtering>
@@ -116,17 +221,12 @@
 				</excludes>
 			</testResource>
 		</testResources>
-		<plugins>
-			<plugin>
-				<groupId>org.mortbay.jetty</groupId>
-				<artifactId>maven-jetty-plugin</artifactId>
-			</plugin>
-		</plugins>
 	</build>
 
 	<properties>
 		<wicket.version>1.3.0-SNAPSHOT</wicket.version>
 		<jetty.version>6.0.1</jetty.version>
+		<maven.test.skip>true</maven.test.skip>
 	</properties>
 
 </project>
