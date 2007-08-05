@@ -22,39 +22,28 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 
 import wicket.contrib.gmap.GMap2;
 
-
-/**
- * TODO should we put 'movestart', 'move' and 'moveend' together in this listener?
- */
-public abstract class MoveListener extends MapListener
+public abstract class MoveListener extends GEventListener
 {
 
 	@Override
-	protected String getJSmethod() {
-		return "addMoveListener";
+	protected String getEvent() {
+		return "move";
 	}
 
 	@Override
 	protected void onEvent(AjaxRequestTarget target)
 	{
-		// TODO decide between moveStart/move/moveEnd
-		onMoveEnd(target);
+		onMove(target);
 	}
 
-	protected void onMoveStart(AjaxRequestTarget target) {
-	}
-	
-	protected void onMove(AjaxRequestTarget target) {
-	}
 
 	/**
-	 * Override this method to provide handling of a move end.<br>
+	 * Override this method to provide handling of a move.<br>
 	 * You can get the new center coordinates of the map by calling
 	 * {@link GMap2#getCenter()}.
 	 * 
 	 * @param target
 	 *            the target that initiated the move
 	 */
-	protected void onMoveEnd(AjaxRequestTarget target) {
-	}
+	protected abstract void onMove(AjaxRequestTarget target);
 }

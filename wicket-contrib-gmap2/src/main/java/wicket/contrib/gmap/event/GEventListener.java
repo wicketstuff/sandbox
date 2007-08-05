@@ -23,7 +23,7 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 
 import wicket.contrib.gmap.GMap2;
 
-public abstract class MapListener extends AbstractDefaultAjaxBehavior
+public abstract class GEventListener extends AbstractDefaultAjaxBehavior
 {	
 	private static final long serialVersionUID = 1L;
 
@@ -36,10 +36,10 @@ public abstract class MapListener extends AbstractDefaultAjaxBehavior
 	
 	public String getJSadd()
 	{
-		return getGMap2().getJSinvoke(getJSmethod() + "('" + getCallbackUrl() + "')");
+		return getGMap2().getJSinvoke("addListener('" + getEvent() + "', '" + getCallbackUrl() + "')");
 	}
 	
-	protected abstract String getJSmethod();
+	protected abstract String getEvent();
 	
 	protected final GMap2 getGMap2() {
 		return (GMap2)getComponent();
