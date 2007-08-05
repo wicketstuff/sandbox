@@ -14,12 +14,16 @@ body, input, textarea, select, table {
 	color: #001667;
 }
 
-a{
+a, a table{
 	color : #001667;
 }
 
-a:hover {
+a:hover, a:hover table {
 	color : #FF3399;
+}
+
+img{
+	border:0px;
 }
 
 #header {

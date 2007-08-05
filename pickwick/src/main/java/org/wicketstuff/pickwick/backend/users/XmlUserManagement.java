@@ -53,11 +53,12 @@ public class XmlUserManagement implements UserManagement {
 	public void addUser(User user) {
 		User existing = getUserList().get(user.getName());
 		if (existing == null) {
-			existing = user;
-		} else {
-			existing.setName(user.getName());
-			existing.setRole(user.getRole());
+			existing = new User();
 		}
+		
+		existing.setName(user.getName());
+		existing.setRole(user.getRole());
+		
 		getUserList().put(user.getName(), existing);
 		saveUsers();
 	}
