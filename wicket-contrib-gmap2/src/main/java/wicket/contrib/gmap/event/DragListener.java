@@ -20,34 +20,19 @@ package wicket.contrib.gmap.event;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 
-
-/**
- * TODO should we put 'dragstart', 'drag' and 'dragend' together in this listener?
- */
-public abstract class DragListener extends MapListener
+public abstract class DragListener extends GEventListener
 {
 
 	@Override
-	protected String getJSmethod() {
-		return "addDragListener";
+	protected String getEvent() {
+		return "drag";
 	}
 
 	@Override
 	protected void onEvent(AjaxRequestTarget target)
 	{
-		// TODO decide between dragStart/drag/dragEnd
-		onDragEnd(target);
+		onDrag(target);
 	}
 
-	protected void onDragStart(AjaxRequestTarget target)
-	{
-	}
-	
-	protected void onDrag(AjaxRequestTarget target)
-	{
-	}
-	
-	protected void onDragEnd(AjaxRequestTarget target)
-	{
-	}
+	protected abstract void onDrag(AjaxRequestTarget target);
 }

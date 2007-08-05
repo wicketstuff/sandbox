@@ -20,35 +20,19 @@ package wicket.contrib.gmap.event;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 
-
-/**
- * TODO should we put 'infoWindowOpen', 'infoWindowBeforeClose' and 'infoWindowClose'
- * together in this listener?
- */
-public abstract class InfoWindowListener extends MapListener
+public abstract class InfoWindowOpenListener extends GEventListener
 {
 
 	@Override
-	protected String getJSmethod() {
-		return "addInfoWindowListener";
+	protected String getEvent() {
+		return "infowindowopen";
 	}
 
 	@Override
 	protected void onEvent(AjaxRequestTarget target)
 	{
-		// TODO decide between infoWindowOpen/infoWindowBeforeClose/infoWindowClose
-		onInfoWindowClose(target);
+		onInfoWindowOpen(target);
 	}
 
-	protected void onInfoWindowOpen(AjaxRequestTarget target)
-    {
-	}
-    
-	protected void onInfoWindowBeforeClose(AjaxRequestTarget target)
-    {
-	}
-	
-	protected void onInfoWindowClose(AjaxRequestTarget target)
-    {
-	}
+	protected abstract void onInfoWindowOpen(AjaxRequestTarget target);
 }

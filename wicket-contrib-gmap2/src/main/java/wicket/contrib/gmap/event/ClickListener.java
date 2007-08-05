@@ -29,37 +29,39 @@ import wicket.contrib.gmap.api.GOverlay;
 /**
  * TODO should we put 'click' and 'dblclkick' together in this listener?
  */
-public abstract class ClickListener extends MapListener
+public abstract class ClickListener extends GEventListener
 {
 
 	@Override
-	protected String getJSmethod() {
-		return "addClickListener";
+	protected String getEvent() {
+		return "click";
 	}
 
 	@Override
 	protected void onEvent(AjaxRequestTarget target) {
 		Request request = RequestCycle.get().getRequest();
 
-		String marker = request.getParameter("marker");
-		if ("".equals(marker))
-		{
-			GLatLng latLng = GLatLng.parse(request.getParameter("latLng"));
-
-			// TODO decide between mapClick/mapDblClick
-			onMapClick(target, latLng);
-		}
-		else
-		{
+		GMarker marker = null;
+		GLatLng latLng = null;
+		
+		String markerParameter = request.getParameter("marker");
+		if (markerParameter != null) {
 			for (GOverlay overlay : getGMap2().getOverlays())
 			{
-				if (overlay.getId().equals(marker))
+				if (overlay.getId().equals(markerParameter))
 				{
-					onMarkerClick(target, (GMarker)overlay);
+					marker = (GMarker)overlay;
 					break;
 				}
 			}
 		}
+
+		String latLngParameter = request.getParameter("latLng");
+		if (latLngParameter != null) {
+			latLng = GLatLng.parse(latLngParameter);
+		}
+
+		onClick(target, latLng, marker);
 	}
 
 	/**
@@ -67,35 +69,10 @@ public abstract class ClickListener extends MapListener
 	 * 
 	 * @param latLng
 	 *            the clicked GLatLng
-	 * @param target
-	 *            the target that initiated the click
-	 */
-	protected void onMapClick(AjaxRequestTarget target, GLatLng latLng)
-	{
-	}
-
-	/**
-	 * Override this method to provide handling of a click on the map.
-	 * 
-	 * @param latLng
-	 *            the clicked GLatLng
-	 * @param target
-	 *            the target that initiated the click
-	 */
-	protected void onMapDblClick(AjaxRequestTarget target, GLatLng latLng)
-	{
-	}
-	
-	/**
-	 * Override this method to provide handling of a click on a GMarker.
-	 * 
 	 * @param marker
 	 *            the clicked marker
 	 * @param target
 	 *            the target that initiated the click
 	 */
-	protected void onMarkerClick(AjaxRequestTarget target, GMarker marker)
-	{
-	}
-
+	protected abstract void onClick(AjaxRequestTarget target, GLatLng latLng, GMarker marker);
 }

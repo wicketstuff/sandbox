@@ -34,9 +34,9 @@ if(!Wicket)
 Wicket.maps = { }
 
 function WicketGMap2(id) {
-    Wicket.maps[id] = this;
+	Wicket.maps[id] = this;
 
-    this.map = new GMap2(document.getElementById(id));
+	this.map = new GMap2(document.getElementById(id));
 	this.controls = {};
 	this.overlays = {};
 
@@ -59,48 +59,24 @@ function WicketGMap2(id) {
 		);
 	}
 
-	this.addListener = function(event, handler) {
-		GEvent.addListener(this.map, event, handler);
-	}
-	
-	this.addMoveListener = function(callBack) {
+	this.addListener = function(event, callBack) {
 		var self = this;
-		this.addListener(
-			'moveend',
-			function () {
-				self.ajaxGet(callBack, {});
-			}
-		);
-	}
-
-	this.addDragListener = function(callBack) {
-		var self = this;
-		this.addListener(
-			'dragend',
-			function () {
-				self.ajaxGet(callBack, {});
-			}
-		);
-	}
-
-	this.addClickListener = function(callBack) {
-		var self = this;
-		this.addListener(
-			'click',
-			function (marker, gLatLng) {
-				self.ajaxGet(callBack, {'marker':(marker == null ? "" : marker.overlayId), 'latLng':gLatLng});
-			}
-		);
-	}
-
-	this.addInfoWindowListener = function(callBack) {
-		var self = this;
-		this.addListener(
-			'infowindowclose',
-			function () {
-				self.ajaxGet(callBack, {});
-			}
-		);
+		
+		if (event == 'click' || event == 'dblclick') {
+			GEvent.addListener(this.map,
+				event,
+				function (marker, gLatLng) {
+					self.ajaxGet(callBack, {'marker':(marker == null ? "" : marker.overlayId), 'latLng':gLatLng});
+				}
+			);
+		} else {
+			GEvent.addListener(this.map,
+				event,
+				function () {
+					self.ajaxGet(callBack, {});
+				}
+			);
+		}
 	}
 
 	this.setDraggingEnabled = function(enabled) {

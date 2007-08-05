@@ -42,7 +42,7 @@ import wicket.contrib.gmap.api.GLatLng;
 import wicket.contrib.gmap.api.GLatLngBounds;
 import wicket.contrib.gmap.api.GMapType;
 import wicket.contrib.gmap.api.GOverlay;
-import wicket.contrib.gmap.event.MapListener;
+import wicket.contrib.gmap.event.GEventListener;
 
 /**
  * Wicket component to embed <a href="http://maps.google.com">Google Maps</a>
@@ -396,8 +396,8 @@ public class GMap2 extends Panel
 
 		js.append(infoWindow.getJSinit() + "\n");
 		
-		for (Object behavior : getBehaviors(MapListener.class)) {
-			js.append(((MapListener)behavior).getJSadd() + "\n");
+		for (Object behavior : getBehaviors(GEventListener.class)) {
+			js.append(((GEventListener)behavior).getJSadd() + "\n");
 		}
 
 		return js.toString();
