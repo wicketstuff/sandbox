@@ -19,8 +19,9 @@ import wicket.contrib.gmap.api.GMarkerOptions;
 import wicket.contrib.gmap.api.GPolygon;
 import wicket.contrib.gmap.api.GPolyline;
 import wicket.contrib.gmap.event.ClickListener;
-import wicket.contrib.gmap.event.InfoWindowListener;
-import wicket.contrib.gmap.event.MoveListener;
+import wicket.contrib.gmap.event.InfoWindowCloseListener;
+import wicket.contrib.gmap.event.InfoWindowOpenListener;
+import wicket.contrib.gmap.event.MoveEndListener;
 
 /**
  * Example HomePage for the wicket-contrib-gmap2 project
@@ -36,7 +37,7 @@ public class HomePage extends WicketExamplePage
 	private final Label zoomLabel;
 	private final Label center;
 
-	private MoveListener moveEndBehavior;
+	private MoveEndListener moveEndBehavior;
 	
 	public HomePage()
 	{
@@ -47,7 +48,7 @@ public class HomePage extends WicketExamplePage
 		final GMap2 topPanel = new GMap2("topPanel",
 				LOCALHOST_8080_WICKET_CONTRIB_GMAP2_EXAMPLES_KEY);
 		topPanel.setDoubleClickZoomEnabled(true);
-		topPanel.add(new MoveListener()
+		topPanel.add(new MoveEndListener()
 		{
 			private static final long serialVersionUID = 1L;
 
@@ -62,22 +63,19 @@ public class HomePage extends WicketExamplePage
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void onMarkerClick(AjaxRequestTarget target, GMarker marker)
+			protected void onClick(AjaxRequestTarget target, GLatLng latLng, GMarker marker)
 			{
-				topPanel.getInfoWindow().open(marker, new HelloPanel());
-				
+				if (marker != null)
+				{
+					topPanel.getInfoWindow().open(marker, new HelloPanel());
+				}
+				else if (latLng != null)
+				{
+					marker = new GMarker(latLng);
+					topPanel.addOverlay(marker);
+				}
 				markerSelected(target, marker);
 			}
-
-			@Override
-			protected void onMapClick(AjaxRequestTarget target, GLatLng gLatLng)
-			{
-				GMarker marker = new GMarker(gLatLng);
-				topPanel.addOverlay(marker);
-				
-				markerSelected(target, marker);
-			}
-
 		});
 		topPanel.setZoom(10);
 		GMarkerOptions options = new GMarkerOptions();
@@ -133,7 +131,7 @@ public class HomePage extends WicketExamplePage
 		bottomPanel.setOutputMarkupId(true);
 		bottomPanel.setMapType(GMapType.G_SATELLITE_MAP);
 		bottomPanel.setScrollWheelZoomEnabled(true);
-		moveEndBehavior = new MoveListener()
+		moveEndBehavior = new MoveEndListener()
 		{
 			private static final long serialVersionUID = 1L;
 
@@ -149,22 +147,25 @@ public class HomePage extends WicketExamplePage
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void onMarkerClick(AjaxRequestTarget target, GMarker marker)
+			protected void onClick(AjaxRequestTarget target, GLatLng gLatLng, GMarker marker)
 			{
-				// empty on purpose
-			}
-
-			@Override
-			protected void onMapClick(AjaxRequestTarget target, GLatLng gLatLng)
-			{
-				bottomPanel.getInfoWindow().open(gLatLng, new HelloPanel());
+				if (gLatLng != null) {
+					bottomPanel.getInfoWindow().open(gLatLng, new HelloPanel());
+				}
 			}
 
 		});
-		bottomPanel.add(new InfoWindowListener() {
+		bottomPanel.add(new InfoWindowCloseListener() {
 			@Override
 			protected void onInfoWindowClose(AjaxRequestTarget target) {
 				info("InfoWindow was closed");
+				target.addComponent(feedback);
+			}
+		});
+		bottomPanel.add(new InfoWindowOpenListener() {
+			@Override
+			protected void onInfoWindowOpen(AjaxRequestTarget target) {
+				info("InfoWindow was opened");
 				target.addComponent(feedback);
 			}
 		});
@@ -253,7 +254,7 @@ public class HomePage extends WicketExamplePage
 				{
 					//TODO AbstractAjaxBehaviors are not reusable, so we have to recreate:
 					//https://issues.apache.org/jira/browse/WICKET-713
-					moveEndBehavior = new MoveListener()
+					moveEndBehavior = new MoveEndListener()
 					{
 						private static final long serialVersionUID = 1L;
 
