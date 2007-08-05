@@ -1,7 +1,9 @@
 package org.wicketstuff.pickwick.bean;
 
+import java.io.Serializable;
 
-public class User {
+
+public class User implements Serializable, Comparable<User>{
 	private String role;
 	private String name;
 	private boolean admin;
@@ -22,5 +24,9 @@ public class User {
 	}
 	public void setRole(String role) {
 		this.role = role;
+	}
+	public int compareTo(User arg0) {
+		if (this.name==null || arg0.getName() == null) return 0;
+		return this.name.compareTo(arg0.getName());
 	}
 }

@@ -1,21 +1,37 @@
 /** FORMS **/
 
 .backendForm table {
-	color :white;
+	color :#001667;
 }
 
-.backendForm iframe {
+/*.backendForm iframe {
 	background-color : #EEEEEE;
 	color: black;
 	border: solid 1px #666666;
+}*/
+
+.backendForm input{
+	border:1px solid #001667;
 }
 
-.backendForm input {
-	background-color : #EEEEEE;
-	color: black;
-	border: solid 1px #666666;
+.backendForm input:HOVER{
+	color:#FF3399;
 }
 
+.backendForm input:FOCUS{
+	background-color:#dfecf3;
+	color:#FF3399;
+}
+
+.info {
+	font-style: italic;
+	padding-top: 15px;
+	padding-bottom: 15px;
+}
+
+h2{
+	color: #FF3399;
+}
 
 /** ITEMS **/
 
@@ -28,13 +44,12 @@
 }
 
 .backendItem a{
-	color : white;
+	color : #001667;
 	text-decoration: none;
 }
 
 .backendItem a:HOVER{
-	color : white;
-	text-decoration: underline;
+	color : #FF3399;
 }
 
 .backendItem img {
@@ -55,4 +70,18 @@
 	top: 18px;
 	font-style: italic;
 	font-size: 0.9em;
+}
+
+/** Backgrounds */
+
+.user{
+	background-image: url('images/UserBg.jpg');
+	background-position: bottom right;
+	background-repeat: no-repeat;	                 
+}
+
+.sequence{
+	background-image: url('images/SequenceBg.jpg');
+	background-position: bottom right;
+	background-repeat: no-repeat;	                 
 }
