@@ -40,8 +40,11 @@ public class SequenceEditPage extends BasePage {
 		uri = params.getString("uri");
 		
 		File imageDirectory = null;
-		if (uri != null)
+		if (uri != null){
 			imageDirectory = imageUtils.toFile(uri);
+		}else{
+			imageDirectory = imageUtils.toFile("");
+		}
 
 		panel = new SequencePropertiesPanel("properties") {
 			@Override
