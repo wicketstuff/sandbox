@@ -83,6 +83,9 @@ public abstract class SequencePropertiesPanel extends Panel {
 	public void setImageDirectory(File file) {
 		this.imageDirectory = file;
 		Sequence sequenceProperties = imageUtils.readSequence(file);
+		if (sequenceProperties == null){
+			sequenceProperties = new Sequence();
+		}
 		log.debug("sequence: " + sequenceProperties);
 		form.setModel(new CompoundPropertyModel(sequenceProperties));
 	}
