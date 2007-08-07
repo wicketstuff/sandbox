@@ -4,7 +4,7 @@
 	<groupId>org.wicketstuff</groupId>
 	<artifactId>wicketstuff-dojo</artifactId>
 	<packaging>jar</packaging>
-	<version>1.3.0-SNAPSHOT</version>
+	<version>1.3.0-beta</version>
 	<name>WicketStuff Dojo</name>
 	<description>An integration project for the Ajax JavaScript library Dojo. This project provides the basic AjaxHandler
 		for DOJO processing at the serverside, and Dojo/Wicket components.</description>
@@ -96,7 +96,7 @@
 		<dependency>
 			<groupId>org.apache.wicket</groupId>
 			<artifactId>wicket</artifactId>
-			<version>1.3.0-SNAPSHOT</version>		
+			<version>1.3.0-beta2</version>		
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>

@@ -58,7 +58,7 @@ public abstract class AbstractRequireDojoBehavior extends AbstractDefaultDojoBeh
 		
 		//Dojo auto parsing is disactivated so we declare here each widget we need to parse with dojo
 		if (!(RequestCycle.get().getRequestTarget() instanceof AjaxRequestTarget)) {
-			response.renderJavascript("djConfig.searchIds.push(\""+getComponent().getMarkupId()+"\");", "DojoParse" + getComponent().getMarkupId());
+			response.renderJavascript("djConfig.searchIds.push(\""+getComponent().getMarkupId()+"\");", getComponent().getMarkupId() + "DojoParse");
 		}
 	}
 	
