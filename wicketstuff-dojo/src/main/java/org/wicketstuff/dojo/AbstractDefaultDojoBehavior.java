@@ -83,13 +83,13 @@ public abstract class AbstractDefaultDojoBehavior extends AbstractDefaultAjaxBeh
 			AbstractRequireDojoBehavior.class, "dojo-wicket/dojoWicket.js");
 
 	/** A unique ID for the JavaScript Dojo config script */
-	private static final String JAVASCRIPT_DOJO_CONFIG_ID = AbstractDefaultDojoBehavior.class.getName() + "/debug";
+	private static final String JAVASCRIPT_DOJO_CONFIG_ID = AbstractDefaultDojoBehavior.class.getName() + "::debug";
 
 	/** A unique ID for the JavaScript Dojo console debug */
-	private static final String JAVASCRIPT_DOJO_CONSOLE_DEBUG_ID = AbstractDefaultDojoBehavior.class.getName() + "/consoleDebug";
+	private static final String JAVASCRIPT_DOJO_CONSOLE_DEBUG_ID = AbstractDefaultDojoBehavior.class.getName() + "::consoleDebug";
 
 	/** A unique ID for a piece of JavaScript that registers the wicketstuff dojo namespace */
-	private static final String DOJO_NAMESPACE_PREFIX = AbstractDefaultDojoBehavior.class.getName() + "/namespaces/";
+	private static final String DOJO_NAMESPACE_PREFIX = AbstractDefaultDojoBehavior.class.getName() + "::namespaces::";
 	
 	/** The wicketstuff dojo module */
 	private static final DojoModule WICKETSTUFF_MODULE = new DojoModuleImpl("wicketstuff", AbstractDefaultDojoBehavior.class);
