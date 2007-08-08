@@ -22,8 +22,10 @@ import org.wicketstuff.dojo.markup.html.container.layout.DojoLayoutContainer;
 import org.wicketstuff.dojo.markup.html.container.layout.DojoLayoutContainer.Position;
 import org.wicketstuff.pickwick.PickwickApplication;
 import org.wicketstuff.pickwick.Utils;
+import org.wicketstuff.pickwick.auth.PickwickAuthorization;
 import org.wicketstuff.pickwick.auth.PickwickSession;
 import org.wicketstuff.pickwick.backend.ImageUtils;
+import org.wicketstuff.pickwick.backend.Settings;
 import org.wicketstuff.pickwick.backend.pages.MetadataViewPage;
 import org.wicketstuff.pickwick.backend.pages.SequenceEditPage;
 import org.wicketstuff.pickwick.bean.DisplaySequence;
@@ -40,6 +42,9 @@ import com.google.inject.Inject;
 public class ImagePage extends BasePage {
 	@Inject
 	private ImageUtils imageUtils;
+	
+	@Inject
+	private Settings settings;
 
 	String uri;
 
@@ -57,6 +62,10 @@ public class ImagePage extends BasePage {
 
 	public ImagePage(PageParameters params) {
 		uri = Utils.getUri(params);
+		//check user authorisation
+		if(uri != ""){
+			PickwickAuthorization.check(settings.getImageDirectoryRoot() + "/" + uri, PickwickSession.get());
+		}
 
 		add(new MetaDisplayPanel("meta", uri));
 

@@ -57,7 +57,7 @@ public class FeedGenerator {
 
 		for (File dir : results) {
 			entry = new SyndEntryImpl();
-			Sequence sequence = ImageUtils.getSequence(dir);
+			Sequence sequence = ImageUtils.readSequence(dir);
 			if (sequence == null) {
 				entry.setTitle(dir.getName());
 				entry.setUpdatedDate(new Date(dir.lastModified()));
