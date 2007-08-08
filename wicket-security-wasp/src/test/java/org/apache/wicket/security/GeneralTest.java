@@ -543,7 +543,7 @@ public class GeneralTest extends TestCase
 		// need to enable page a again
 		login(authorized);
 		new PageA(); // only pages are checked so now securetextfield is
-						// allowed.
+		// allowed.
 		mock.processRequestCycle();
 	}
 
@@ -787,11 +787,12 @@ public class GeneralTest extends TestCase
 		Map authorized = new HashMap();
 		authorized.put("model:" + SecureModelPage.class.getName(), application.getActionFactory()
 				.getAction("render"));
-		authorized.put("model:_<body>", application.getActionFactory().getAction("render"));
+		authorized.put("model:_body_", application.getActionFactory().getAction("render"));
 		// need to grant enough rights to the page and bodycontainer, see apidoc
 		login(authorized);
 		mock.startPage(SecureModelPage.class);
 		mock.assertRenderedPage(SecureModelPage.class);
+		mock.assertContains("<body>");
 		mock.assertInvisible("label");
 		mock.assertInvisible("input");
 		authorized.put("model:label", application.getActionFactory().getAction("render"));
