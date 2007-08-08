@@ -218,7 +218,7 @@ public class GMap2 extends Panel
 	 */
 	public GMap2 removeOverlay(GOverlay overlay)
 	{
-		for (int o = 0; o < overlays.size(); o++)
+		while (overlays.contains(overlay))
 		{
 			overlays.remove(overlay);
 		}
