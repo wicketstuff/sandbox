@@ -1,11 +1,10 @@
 <projectDescription>
-  <name>wicket-contrib-yui-examples</name>
+  <name>wicketstuff-yui-examples</name>
   <comment>Examples for the Yahoo User Interface (YUI) library.</comment>
   <projects/>
   <buildSpec>
     <buildCommand>
       <name>org.eclipse.jdt.core.javabuilder</name>
-      <arguments/>
     </buildCommand>
   </buildSpec>
   <natures>
