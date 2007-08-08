@@ -1,5 +1,6 @@
 package org.wicketstuff.pickwick.backend.panel;
 
+
 import java.io.File;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -17,8 +18,6 @@ import org.wicketstuff.dojo.markup.html.richtexteditor.DojoRichTextEditorBehavio
 import org.wicketstuff.pickwick.backend.ImageUtils;
 import org.wicketstuff.pickwick.bean.Sequence;
 
-import com.google.inject.Inject;
-
 /**
  * FIXME get image directory using wrapped model to avoid replacing the whole
  * panel
@@ -26,8 +25,6 @@ import com.google.inject.Inject;
 public abstract class SequencePropertiesPanel extends Panel {
 	private static final Logger log = LoggerFactory.getLogger(SequencePropertiesPanel.class);
 	private File imageDirectory;
-	@Inject
-	private ImageUtils imageUtils;
 
 	public static final String FORM = "sequenceForm";
 
@@ -63,7 +60,7 @@ public abstract class SequencePropertiesPanel extends Panel {
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form form) {
 				Sequence sequence = (Sequence) form.getModelObject();
-				imageUtils.writeSequence(sequence, imageDirectory);
+				ImageUtils.writeSequence(sequence, imageDirectory);
 				log.info("Wrote sequence: " + sequence + " to image directory: " + imageDirectory);
 				onSave(target);
 			}
@@ -82,7 +79,7 @@ public abstract class SequencePropertiesPanel extends Panel {
 
 	public void setImageDirectory(File file) {
 		this.imageDirectory = file;
-		Sequence sequenceProperties = imageUtils.readSequence(file);
+		Sequence sequenceProperties = ImageUtils.readSequence(file);
 		if (sequenceProperties == null){
 			sequenceProperties = new Sequence();
 		}

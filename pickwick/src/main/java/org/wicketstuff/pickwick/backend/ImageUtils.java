@@ -36,6 +36,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wicketstuff.pickwick.PickwickApplication;
 import org.wicketstuff.pickwick.Utils;
+import org.wicketstuff.pickwick.auth.PickwickAuthorization;
 import org.wicketstuff.pickwick.bean.Folder;
 import org.wicketstuff.pickwick.bean.Image;
 import org.wicketstuff.pickwick.bean.Sequence;
@@ -104,15 +105,6 @@ public class ImageUtils {
 
 	private static File getSequenceFile(File o1) {
 		return new File(o1, "_sequence.xml");
-	}
-
-	public static Sequence getSequence(File dir) {
-		File sequence = getSequenceFile(dir);
-		if (sequence.exists()) {
-			// FIXME
-			return null;
-		}
-		return null;
 	}
 
 	/**
@@ -224,7 +216,7 @@ public class ImageUtils {
 					if (sequence != null){
 						role = sequence.getRole();
 					}
-					if (userRole == null || role == null || role.equals(userRole)){
+					if (PickwickAuthorization.isAuthorized(userRole, role)){
 						Folder current = new Folder(file);
 						current.setSubFolders(getSubFolder(file, userRole));
 						toReturn.add(current);
@@ -250,7 +242,7 @@ public class ImageUtils {
 	 * @param imageDirectory the directory containing images and a sequence file
 	 * @return
 	 */
-	public Sequence readSequence(File imageDirectory) {
+	public static Sequence readSequence(File imageDirectory) {
 		XmlBeanMapper<Sequence> mapper = new XmlBeanMapper<Sequence>(Sequence.class);
 		Sequence sequence = new Sequence();
 		InputStream in = null;
@@ -265,7 +257,7 @@ public class ImageUtils {
 		return sequence;
 	}
 
-	public void writeSequence(Sequence sequence, File imageDirectory) {
+	public static void writeSequence(Sequence sequence, File imageDirectory) {
 		XmlBeanMapper<Sequence> mapper = new XmlBeanMapper<Sequence>(Sequence.class);
 		OutputStream out = null;
 		try {

@@ -82,7 +82,7 @@ public class MetaDisplayPanel extends Panel {
 	public void readSequence() {
 		if (uri != null) {
 			File imageDir = imageUtils.toFile(uri);
-			Sequence sequence = imageUtils.readSequence(imageDir);
+			Sequence sequence = ImageUtils.readSequence(imageDir);
 			setModel(new CompoundPropertyModel(new DisplaySequence(sequence, imageDir)));
 		}
 	}
