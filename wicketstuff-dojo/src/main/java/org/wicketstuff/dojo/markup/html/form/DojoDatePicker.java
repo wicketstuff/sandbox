@@ -25,6 +25,7 @@ import java.util.TimeZone;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.util.convert.ConversionException;
@@ -37,6 +38,12 @@ import org.wicketstuff.dojo.toggle.DojoToggle;
  * A DatePicker to select a Date in a popup (not navigator but Js)
  * You can add effect to this popup adding a {@link DojoToggle} with the setToggle method.<br/>
  * This component should be associated to an <b>input</b> in the markup
+ * </p>
+ * <p>
+ * This picker can accept a minimum/maximun Date : 
+ * use {@link #setMinimumDate(Date)} / {@link #setMaximumDate(Date)} 
+ * If a input date in not in the range a {@link ConversionException} will be thrown
+ * and handle by a {@link FeedbackPanel}
  * </p>
  * <p>
  * <b><u>Sample</u></b>
@@ -57,6 +64,9 @@ public class DojoDatePicker extends TextField {
     private String displayFormat;
     private Locale locale;
     private boolean allowInput = true;
+    
+    private Date minimumDate;
+    private Date maximumDate;
 
     /**
      * @param parent
@@ -130,7 +140,17 @@ public class DojoDatePicker extends TextField {
 				}
   
 				try {
-					return formatter.parse(value);
+					Date parsed = formatter.parse(value);
+					Long parsedTime = parsed.getTime();
+					//check if the date is in the range
+					if (minimumDate != null && minimumDate.getTime() > parsedTime) {
+						throw new ConversionException(getInputName() + " should not be less than " + formatter.format(minimumDate));
+					}
+					if (maximumDate != null && maximumDate.getTime() < parsedTime) {
+						throw new ConversionException(getInputName() + " should not be greater than " + formatter.format(maximumDate));
+					}
+					
+					return parsed;
 				} catch (ParseException e) {
 					throw new ConversionException(getInputName() + " is not a valid date");
 				}
@@ -182,5 +202,22 @@ public class DojoDatePicker extends TextField {
     public void setAllowInput(boolean allowInput) {
         this.allowInput = allowInput;
     }
+    
+    /**
+     * Set the minimun date that could be inpu in the field
+     * @param minimumDate minimun date that could be inpu in the field
+     */
+    public void setMinimumDate(Date minimumDate){
+    	this.minimumDate = minimumDate;
+    }
+
+	/**
+     * Set the maximum date that could be inpu in the field
+     * @param maximumDate maximum date that could be inpu in the field
+     */
+	public void setMaximumDate(Date maximumDate)
+	{
+		this.maximumDate = maximumDate;
+	}
     
 }
