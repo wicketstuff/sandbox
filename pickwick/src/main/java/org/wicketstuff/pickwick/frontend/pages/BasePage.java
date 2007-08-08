@@ -1,7 +1,9 @@
 package org.wicketstuff.pickwick.frontend.pages;
 
+import org.apache.wicket.ResourceReference;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.PageLink;
 import org.apache.wicket.markup.html.resources.StyleSheetReference;
@@ -28,6 +30,9 @@ public class BasePage extends WebPage {
 		Label userName = new Label("userName", new Model(name));
 		PageLink auth = new PageLink("auth", PickwickLoginPage.class);
 		PageLink logout = new PageLink("logout", PickwickLogoutPage.class);
+		PageLink home = new PageLink("home", getApplication().getHomePage());
+		add(home);
+		home.add(new Image("homeImage", new ResourceReference(BasePage.class, "home.png")));
 		add(userName);
 		add(auth);
 		add(logout);
@@ -38,6 +43,8 @@ public class BasePage extends WebPage {
 		}else{
 			auth.setVisible(false);
 		}
+		
+		
 	}
 
 }
