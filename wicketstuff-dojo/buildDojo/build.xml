@@ -45,7 +45,7 @@
 	<target name="buildDojo" depends="patch">
 		<!-- copy wicket widgets -->
 		<copydir dest="./dojo/dojo-wicket" src="../src/main/java/org/wicketstuff/dojo/dojo-wicket"/>
-		<exec command="ant clean release -DprofileFile=../../../${profile.path}" dir="./dojo/${dojo.release}/buildscripts"/>
+		<exec command="ant clean release intern-strings -DprofileFile=../../../${profile.path}" dir="./dojo/${dojo.release}/buildscripts"/>
 		<!-- todo why task does not work asked with ant??? -->
 		<!--ant dir="./dojo/${dojo.release}/buildscripts" target="clean"/>
 		<ant dir="./dojo/${dojo.release}/buildscripts" target="release">
