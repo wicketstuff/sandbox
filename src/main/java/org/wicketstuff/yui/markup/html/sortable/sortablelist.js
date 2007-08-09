@@ -31,12 +31,13 @@ YAHOO.extend(Wicket.yui.SortableList, YAHOO.util.DDProxy, {
         // make the proxy look like the source element
         var dragEl = this.getDragEl();
         var clickEl = this.getEl();
-        YAHOO.util.Dom.setStyle(clickEl, "visibility", "hidden");
+
+   	    YAHOO.util.Dom.setStyle(clickEl, "visibility", "hidden");
 
         dragEl.innerHTML = clickEl.innerHTML;
 
-        YAHOO.util.Dom.setStyle(dragEl, "color", YAHOO.util.Dom.getStyle(clickEl, "color"));
-        YAHOO.util.Dom.setStyle(dragEl, "backgroundColor", YAHOO.util.Dom.getStyle(clickEl, "backgroundColor"));
+       	YAHOO.util.Dom.setStyle(dragEl, "color", YAHOO.util.Dom.getStyle(clickEl, "color"));
+   	    YAHOO.util.Dom.setStyle(dragEl, "backgroundColor", YAHOO.util.Dom.getStyle(clickEl, "backgroundColor"));
         YAHOO.util.Dom.setStyle(dragEl, "border", "2px solid gray");
     },
 
@@ -44,10 +45,13 @@ YAHOO.extend(Wicket.yui.SortableList, YAHOO.util.DDProxy, {
 
         var srcEl = this.getEl();
         var proxy = this.getDragEl();
-
-		var callback = this.callbackUrl+'&did='+srcEl.id+'&dindex='+this.index;
-		wicketAjaxGet(callback, function() { }.bind(this), function() { }.bind(this));
-			
+		
+		var index = this.index;
+		
+		if(index != "undefined") {
+			var callback = this.callbackUrl+'&did='+srcEl.id+'&dindex='+index;
+			wicketAjaxGet(callback, function() { }.bind(this), function() { }.bind(this));
+		}			
 
         // Show the proxy element and animate it to the src element's location
         YAHOO.util.Dom.setStyle(proxy, "visibility", "");
@@ -87,10 +91,12 @@ YAHOO.extend(Wicket.yui.SortableList, YAHOO.util.DDProxy, {
             // the negative space (the area of the list without any list items)
             if (!region.intersect(pt)) {
                 var destEl = YAHOO.util.Dom.get(id);
-                var destDD = YAHOO.util.DragDropMgr.getDDById(id);
-                destEl.appendChild(this.getEl());
-                destDD.isEmpty = false;
-                YAHOO.util.DragDropMgr.refreshCache();
+				if(destEl.nodeName.toLowerCase() == "ul"){
+	                var destDD = YAHOO.util.DragDropMgr.getDDById(id);
+	                destEl.appendChild(this.getEl());
+    	            destDD.isEmpty = false;
+        	        YAHOO.util.DragDropMgr.refreshCache();
+        	    }
             }
         }
     },
