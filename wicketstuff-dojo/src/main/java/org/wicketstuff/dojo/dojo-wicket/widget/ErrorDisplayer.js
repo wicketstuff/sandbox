@@ -9,7 +9,7 @@ dojo.require("dojo.dom.*");
 
 dojo.widget.defineWidget ("dojoWicket.widget.ErrorDisplayer", dojo.widget.HtmlWidget, {
 
-	templatePath : dojo.uri.dojoUri("../dojo-wicket/widget/template/ErrorDisplayer.htm"),
+	templatePath : dojo.uri.dojoUri("../dojo-wicket/widget/template/ErrorDisplayer.html"),
 	templateCssPath : dojo.uri.dojoUri("../dojo-wicket/widget/template/ErrorDisplayer.css"),
 	
 	isContainer: true,
