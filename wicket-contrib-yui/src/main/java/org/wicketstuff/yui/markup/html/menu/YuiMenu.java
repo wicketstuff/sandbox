@@ -1,11 +1,7 @@
 package org.wicketstuff.yui.markup.html.menu;
 
-import org.apache.wicket.markup.html.IHeaderContributor;
-import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.IModel;
 
 public abstract  class YuiMenu extends AbstractYuiMenu
 {
