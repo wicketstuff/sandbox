@@ -9,35 +9,38 @@ import org.wicketstuff.yui.YuiImage;
  * @author cptan
  *
  */
-public class AnimSelectOption implements Serializable{
+public class AnimSelectOption implements Serializable
+{
 	private static final long serialVersionUID = 1L;
-	
-    private YuiImage defaultImg;
-    private YuiImage defaultImgOver;
-    private YuiImage selectedImg;
-    private YuiImage selectedImgOver;
-    private String selectedValue;
-    
-    /**
-     * Constructor
-     * @param defaultImg
-     * @param defaultImgOver
-     * @param selectedImg
-     * @param selectedImgOver
-     */
-    public AnimSelectOption(YuiImage defaultImg, YuiImage defaultImgOver, YuiImage selectedImg, YuiImage selectedImgOver, String selectedValue){
-    	this.defaultImg= defaultImg;
-    	this.defaultImgOver = defaultImgOver;
-    	this.selectedImg= selectedImg;
-    	this.selectedImgOver= selectedImgOver;
-    	this.selectedValue= selectedValue;
-    }
-    
-    /**
-     * Get the selected value
+
+	private YuiImage defaultImg;
+	private YuiImage defaultImgOver;
+	private YuiImage selectedImg;
+	private YuiImage selectedImgOver;
+	private String selectedValue;
+
+	/**
+	 * Constructor
+	 * @param defaultImg
+	 * @param defaultImgOver
+	 * @param selectedImg
+	 * @param selectedImgOver
+	 */
+	public AnimSelectOption(YuiImage defaultImg, YuiImage defaultImgOver, YuiImage selectedImg, YuiImage selectedImgOver, String selectedValue)
+	{
+		this.defaultImg = defaultImg;
+		this.defaultImgOver = defaultImgOver;
+		this.selectedImg = selectedImg;
+		this.selectedImgOver = selectedImgOver;
+		this.selectedValue = selectedValue;
+	}
+
+	/**
+	 * Get the selected value
 	 * @return the selectedValue
 	 */
-	public String getSelectedValue() {
+	public String getSelectedValue()
+	{
 		return selectedValue;
 	}
 
@@ -45,15 +48,17 @@ public class AnimSelectOption implements Serializable{
 	 * Set the selected value
 	 * @param selectedValue 
 	 */
-	public void setSelectedValue(String selectedValue) {
+	public void setSelectedValue(String selectedValue)
+	{
 		this.selectedValue = selectedValue;
 	}
 
 	/**
-     * Get the default image
-     * @return YuiImage
-     */
-	public YuiImage getDefaultImg() {
+	 * Get the default image
+	 * @return YuiImage
+	 */
+	public YuiImage getDefaultImg()
+	{
 		return defaultImg;
 	}
 
@@ -61,7 +66,8 @@ public class AnimSelectOption implements Serializable{
 	 * Set the default image 
 	 * @param defaultImg
 	 */
-	public void setDefaultImg(YuiImage defaultImg) {
+	public void setDefaultImg(YuiImage defaultImg)
+	{
 		this.defaultImg = defaultImg;
 	}
 
@@ -69,7 +75,8 @@ public class AnimSelectOption implements Serializable{
 	 * Get the default mouseover image
 	 * @return YuiImage
 	 */
-	public YuiImage getDefaultImgOver() {
+	public YuiImage getDefaultImgOver()
+	{
 		return defaultImgOver;
 	}
 
@@ -77,7 +84,8 @@ public class AnimSelectOption implements Serializable{
 	 * Set the default mouseover image
 	 * @param defaultImgOver
 	 */
-	public void setDefaultImgOver(YuiImage defaultImgOver) {
+	public void setDefaultImgOver(YuiImage defaultImgOver)
+	{
 		this.defaultImgOver = defaultImgOver;
 	}
 
@@ -85,7 +93,8 @@ public class AnimSelectOption implements Serializable{
 	 * Get the selected image
 	 * @return YuiImage
 	 */
-	public YuiImage getSelectedImg() {
+	public YuiImage getSelectedImg()
+	{
 		return selectedImg;
 	}
 
@@ -93,7 +102,8 @@ public class AnimSelectOption implements Serializable{
 	 * Set the selected image
 	 * @param selectedImg
 	 */
-	public void setSelectedImg(YuiImage selectedImg) {
+	public void setSelectedImg(YuiImage selectedImg)
+	{
 		this.selectedImg = selectedImg;
 	}
 
@@ -101,7 +111,8 @@ public class AnimSelectOption implements Serializable{
 	 * Get the selected Mouseover Image
 	 * @return YuiImage
 	 */
-	public YuiImage getSelectedImgOver() {
+	public YuiImage getSelectedImgOver()
+	{
 		return selectedImgOver;
 	}
 
@@ -109,10 +120,9 @@ public class AnimSelectOption implements Serializable{
 	 * Set the selected mouseOver Image
 	 * @param selectedImgOver
 	 */
-	public void setSelectedImgOver(YuiImage selectedImgOver) {
+	public void setSelectedImgOver(YuiImage selectedImgOver)
+	{
 		this.selectedImgOver = selectedImgOver;
 	}
 
-}	
-
-		
+}

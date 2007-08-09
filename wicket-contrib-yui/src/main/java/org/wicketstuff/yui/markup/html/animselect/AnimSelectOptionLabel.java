@@ -9,7 +9,8 @@ import org.wicketstuff.yui.YuiHeaderContributor;
  * 
  * @author cptan
  */
-public class AnimSelectOptionLabel extends Panel {
+public class AnimSelectOptionLabel extends Panel
+{
 
 	private static final long serialVersionUID = 1L;
 
@@ -19,7 +20,8 @@ public class AnimSelectOptionLabel extends Panel {
 	 * @param id
 	 * @param text
 	 */
-	public AnimSelectOptionLabel(String id, String text) {
+	public AnimSelectOptionLabel(String id, String text)
+	{
 		super(id);
 		add(YuiHeaderContributor.forModule("animation"));
 		add(new Label("label", text));

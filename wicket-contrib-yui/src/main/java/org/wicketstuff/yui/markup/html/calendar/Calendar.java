@@ -39,11 +39,13 @@ import org.wicketstuff.yui.YuiHeaderContributor;
  * 
  * @author Eelco Hillenius
  */
-public class Calendar extends Panel implements IHeaderContributor {
+public class Calendar extends Panel implements IHeaderContributor
+{
 	/**
 	 * The container/ receiver of the javascript component.
 	 */
-	private final class CalendarElement extends FormComponent {
+	private final class CalendarElement extends FormComponent
+	{
 		private static final long serialVersionUID = 1L;
 
 		/**
@@ -51,13 +53,16 @@ public class Calendar extends Panel implements IHeaderContributor {
 		 * 
 		 * @param id
 		 */
-		public CalendarElement(String id) {
+		public CalendarElement(String id)
+		{
 			super(id);
-			add(new AttributeModifier("id", true, new AbstractReadOnlyModel() {
+			add(new AttributeModifier("id", true, new AbstractReadOnlyModel()
+			{
 				private static final long serialVersionUID = 1L;
 
 				@Override
-				public Object getObject() {
+				public Object getObject()
+				{
 					return elementId;
 				}
 			}));
@@ -67,7 +72,8 @@ public class Calendar extends Panel implements IHeaderContributor {
 		 * @see wicket.markup.html.form.FormComponent#updateModel()
 		 */
 		@Override
-		public void updateModel() {
+		public void updateModel()
+		{
 			Calendar.this.updateModel();
 		}
 	}
@@ -93,24 +99,26 @@ public class Calendar extends Panel implements IHeaderContributor {
 	 * @param id
 	 *            the component id
 	 */
-	public Calendar(String id) {
+	public Calendar(String id)
+	{
 		super(id);
 		add(YuiHeaderContributor.forModule("calendar"));
 		add(HeaderContributor.forJavaScript(Calendar.class, "calendar.js"));
 		add(HeaderContributor.forCss(Calendar.class, "calendar.css"));
 
-		Label initialization = new Label("initialization",
-				new AbstractReadOnlyModel() {
-					private static final long serialVersionUID = 1L;
+		Label initialization = new Label("initialization", new AbstractReadOnlyModel()
+		{
+			private static final long serialVersionUID = 1L;
 
-					/**
-					 * @see wicket.model.IModel#getObject(wicket.Component)
-					 */
-					@Override
-					public Object getObject() {
-						return getJavaScriptComponentInitializationScript();
-					}
-				});
+			/**
+			 * @see wicket.model.IModel#getObject(wicket.Component)
+			 */
+			@Override
+			public Object getObject()
+			{
+				return getJavaScriptComponentInitializationScript();
+			}
+		});
 		initialization.setEscapeModelStrings(false);
 		add(initialization);
 		add(calendarElement = new CalendarElement("calendarContainer"));
@@ -119,14 +127,16 @@ public class Calendar extends Panel implements IHeaderContributor {
 	/**
 	 * @see org.apache.wicket.markup.html.IHeaderContributor#renderHead(org.apache.wicket.markup.html.IHeaderResponse)
 	 */
-	public void renderHead(IHeaderResponse response) {
+	public void renderHead(IHeaderResponse response)
+	{
 		response.renderOnLoadJavascript("init" + javaScriptId + "();");
 	}
 
 	/**
 	 * TODO implement
 	 */
-	public void updateModel() {
+	public void updateModel()
+	{
 	}
 
 	/**
@@ -134,11 +144,10 @@ public class Calendar extends Panel implements IHeaderContributor {
 	 * 
 	 * @return the initilization script
 	 */
-	protected String getJavaScriptComponentInitializationScript() {
-		CharSequence leftImage = RequestCycle.get().urlFor(
-				new ResourceReference(Calendar.class, "callt.gif")).toString();
-		CharSequence rightImage = RequestCycle.get().urlFor(
-				new ResourceReference(Calendar.class, "calrt.gif")).toString();
+	protected String getJavaScriptComponentInitializationScript()
+	{
+		CharSequence leftImage = RequestCycle.get().urlFor(new ResourceReference(Calendar.class, "callt.gif")).toString();
+		CharSequence rightImage = RequestCycle.get().urlFor(new ResourceReference(Calendar.class, "calrt.gif")).toString();
 
 		Map<String, Object> variables = new HashMap<String, Object>(4);
 		variables.put("javaScriptId", javaScriptId);
@@ -146,8 +155,7 @@ public class Calendar extends Panel implements IHeaderContributor {
 		variables.put("navigationArrowLeft", leftImage);
 		variables.put("navigationArrowRight", rightImage);
 
-		PackagedTextTemplate template = new PackagedTextTemplate(
-				Calendar.class, "init.js");
+		PackagedTextTemplate template = new PackagedTextTemplate(Calendar.class, "init.js");
 		template.interpolate(variables);
 
 		return template.getString();
@@ -157,7 +165,8 @@ public class Calendar extends Panel implements IHeaderContributor {
 	 * @see wicket.Component#onAttach()
 	 */
 	@Override
-	protected void onAttach() {
+	protected void onAttach()
+	{
 		super.onAttach();
 
 		// initialize lazily
