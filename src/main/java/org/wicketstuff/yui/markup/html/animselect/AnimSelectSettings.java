@@ -17,7 +17,8 @@ import org.wicketstuff.yui.YuiImage;
  * @author cptan
  * 
  */
-public class AnimSelectSettings implements Serializable {
+public class AnimSelectSettings implements Serializable
+{
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -29,11 +30,10 @@ public class AnimSelectSettings implements Serializable {
 	 * @param animSelectOptionList
 	 * @return
 	 */
-	public static AnimSelectSettings getDefault(String easing, double duration,
-			int maxSelection, List<AnimSelectOption> animSelectOptionList) {
+	public static AnimSelectSettings getDefault(String easing, double duration, int maxSelection, List<AnimSelectOption> animSelectOptionList)
+	{
 		AnimSelectSettings settings = new AnimSelectSettings();
-		settings.setResources(easing, duration, maxSelection,
-				animSelectOptionList);
+		settings.setResources(easing, duration, maxSelection, animSelectOptionList);
 		return settings;
 	}
 
@@ -47,12 +47,10 @@ public class AnimSelectSettings implements Serializable {
 	 * @param animSelectOptionList
 	 * @return
 	 */
-	public static AnimSelectSettings getDefault(String easing, double duration,
-			int maxSelection, String message,
-			List<AnimSelectOption> animSelectOptionList) {
+	public static AnimSelectSettings getDefault(String easing, double duration, int maxSelection, String message, List<AnimSelectOption> animSelectOptionList)
+	{
 		AnimSelectSettings settings = new AnimSelectSettings();
-		settings.setResources(easing, duration, maxSelection, message,
-				animSelectOptionList);
+		settings.setResources(easing, duration, maxSelection, message, animSelectOptionList);
 		return settings;
 	}
 
@@ -82,7 +80,8 @@ public class AnimSelectSettings implements Serializable {
 	 * Constructor
 	 * 
 	 */
-	public AnimSelectSettings() {
+	public AnimSelectSettings()
+	{
 	}
 
 	/**
@@ -90,7 +89,8 @@ public class AnimSelectSettings implements Serializable {
 	 * 
 	 * @return
 	 */
-	public List<AnimSelectOption> getAnimSelectOptionList() {
+	public List<AnimSelectOption> getAnimSelectOptionList()
+	{
 		return animSelectOptionList;
 	}
 
@@ -99,7 +99,8 @@ public class AnimSelectSettings implements Serializable {
 	 * 
 	 * @return
 	 */
-	public List<InlineStyle> getDefaultImgOverStyleList() {
+	public List<InlineStyle> getDefaultImgOverStyleList()
+	{
 		return defaultImgOverStyleList;
 	}
 
@@ -108,7 +109,8 @@ public class AnimSelectSettings implements Serializable {
 	 * 
 	 * @return
 	 */
-	public List<InlineStyle> getDefaultImgStyleList() {
+	public List<InlineStyle> getDefaultImgStyleList()
+	{
 		return defaultImgStyleList;
 	}
 
@@ -117,7 +119,8 @@ public class AnimSelectSettings implements Serializable {
 	 * 
 	 * @return
 	 */
-	public double getDuration() {
+	public double getDuration()
+	{
 		return duration;
 	}
 
@@ -126,7 +129,8 @@ public class AnimSelectSettings implements Serializable {
 	 * 
 	 * @return
 	 */
-	public String getEasing() {
+	public String getEasing()
+	{
 		return easing;
 	}
 
@@ -135,7 +139,8 @@ public class AnimSelectSettings implements Serializable {
 	 * 
 	 * @return
 	 */
-	public int getHeight() {
+	public int getHeight()
+	{
 		return height;
 	}
 
@@ -144,7 +149,8 @@ public class AnimSelectSettings implements Serializable {
 	 * 
 	 * @return
 	 */
-	public int getMaxSelection() {
+	public int getMaxSelection()
+	{
 		return maxSelection;
 	}
 
@@ -153,7 +159,8 @@ public class AnimSelectSettings implements Serializable {
 	 * 
 	 * @return
 	 */
-	public String getMessage() {
+	public String getMessage()
+	{
 		return message;
 	}
 
@@ -162,7 +169,8 @@ public class AnimSelectSettings implements Serializable {
 	 * 
 	 * @return
 	 */
-	public List<InlineStyle> getSelectedImgOverStyleList() {
+	public List<InlineStyle> getSelectedImgOverStyleList()
+	{
 		return selectedImgOverStyleList;
 	}
 
@@ -171,7 +179,8 @@ public class AnimSelectSettings implements Serializable {
 	 * 
 	 * @return
 	 */
-	public List<InlineStyle> getSelectedImgStyleList() {
+	public List<InlineStyle> getSelectedImgStyleList()
+	{
 		return selectedImgStyleList;
 	}
 
@@ -180,7 +189,8 @@ public class AnimSelectSettings implements Serializable {
 	 * 
 	 * @return
 	 */
-	public int getWidth() {
+	public int getWidth()
+	{
 		return width;
 	}
 
@@ -189,8 +199,8 @@ public class AnimSelectSettings implements Serializable {
 	 * 
 	 * @param animSelectOptionList
 	 */
-	public void setAnimSelectOptionList(
-			List<AnimSelectOption> animSelectOptionList) {
+	public void setAnimSelectOptionList(List<AnimSelectOption> animSelectOptionList)
+	{
 		this.animSelectOptionList = animSelectOptionList;
 	}
 
@@ -199,8 +209,8 @@ public class AnimSelectSettings implements Serializable {
 	 * 
 	 * @param defaultImgOverStyleList
 	 */
-	public void setDefaultImgOverStyleList(
-			List<InlineStyle> defaultImgOverStyleList) {
+	public void setDefaultImgOverStyleList(List<InlineStyle> defaultImgOverStyleList)
+	{
 		this.defaultImgOverStyleList = defaultImgOverStyleList;
 	}
 
@@ -209,7 +219,8 @@ public class AnimSelectSettings implements Serializable {
 	 * 
 	 * @param defaultImgStyleList
 	 */
-	public void setDefaultImgStyleList(List<InlineStyle> defaultImgStyleList) {
+	public void setDefaultImgStyleList(List<InlineStyle> defaultImgStyleList)
+	{
 		this.defaultImgStyleList = defaultImgStyleList;
 	}
 
@@ -218,7 +229,8 @@ public class AnimSelectSettings implements Serializable {
 	 * 
 	 * @param duration
 	 */
-	public void setDuration(double duration) {
+	public void setDuration(double duration)
+	{
 		this.duration = duration;
 	}
 
@@ -227,7 +239,8 @@ public class AnimSelectSettings implements Serializable {
 	 * 
 	 * @param easing
 	 */
-	public void setEasing(String easing) {
+	public void setEasing(String easing)
+	{
 		this.easing = easing;
 	}
 
@@ -236,7 +249,8 @@ public class AnimSelectSettings implements Serializable {
 	 * 
 	 * @param height
 	 */
-	public void setHeight(int height) {
+	public void setHeight(int height)
+	{
 		this.height = height;
 	}
 
@@ -245,65 +259,50 @@ public class AnimSelectSettings implements Serializable {
 	 * 
 	 * @param animSelectGroupOption
 	 */
-	public void setImageResources(List<AnimSelectOption> animSelectOptionList) {
+	public void setImageResources(List<AnimSelectOption> animSelectOptionList)
+	{
 
 		for (int i = animSelectOptionList.size() - 1; i >= 0; i--) {
-			YuiImage defaultImg = (animSelectOptionList
-					.get(i)).getDefaultImg();
-			YuiImage defaultImgOver = (animSelectOptionList
-					.get(i)).getDefaultImgOver();
-			YuiImage selectedImg = (animSelectOptionList
-					.get(i)).getSelectedImg();
-			YuiImage selectedImgOver = (animSelectOptionList
-					.get(i)).getSelectedImgOver();
+			YuiImage defaultImg = (animSelectOptionList.get(i)).getDefaultImg();
+			YuiImage defaultImgOver = (animSelectOptionList.get(i)).getDefaultImgOver();
+			YuiImage selectedImg = (animSelectOptionList.get(i)).getSelectedImg();
+			YuiImage selectedImgOver = (animSelectOptionList.get(i)).getSelectedImgOver();
 
-			ResourceReference defaultImgRR = new ResourceReference(
-					AnimSelectSettings.class, defaultImg.getFileName());
-			ResourceReference defaultImgOverRR = new ResourceReference(
-					AnimSelectSettings.class, defaultImgOver.getFileName());
-			ResourceReference selectedImgRR = new ResourceReference(
-					AnimSelectSettings.class, selectedImg.getFileName());
-			ResourceReference selectedImgOverRR = new ResourceReference(
-					AnimSelectSettings.class, selectedImgOver.getFileName());
+			ResourceReference defaultImgRR = new ResourceReference(AnimSelectSettings.class, defaultImg.getFileName());
+			ResourceReference defaultImgOverRR = new ResourceReference(AnimSelectSettings.class, defaultImgOver.getFileName());
+			ResourceReference selectedImgRR = new ResourceReference(AnimSelectSettings.class, selectedImg.getFileName());
+			ResourceReference selectedImgOverRR = new ResourceReference(AnimSelectSettings.class, selectedImgOver.getFileName());
 
-			ImageResourceInfo defaultImgInfo = new ImageResourceInfo(
-					defaultImgRR);
+			ImageResourceInfo defaultImgInfo = new ImageResourceInfo(defaultImgRR);
 			int defaultImgWidth = defaultImgInfo.getWidth();
 			int defaultImgHeight = defaultImgInfo.getHeight();
-			ImageResourceInfo defaultImgOverInfo = new ImageResourceInfo(
-					defaultImgOverRR);
+			ImageResourceInfo defaultImgOverInfo = new ImageResourceInfo(defaultImgOverRR);
 			int defaultImgOverWidth = defaultImgOverInfo.getWidth();
 			int defaultImgOverHeight = defaultImgOverInfo.getHeight();
-			ImageResourceInfo selectedImgInfo = new ImageResourceInfo(
-					selectedImgRR);
+			ImageResourceInfo selectedImgInfo = new ImageResourceInfo(selectedImgRR);
 			int selectedImgWidth = selectedImgInfo.getWidth();
 			int selectedImgHeight = selectedImgInfo.getHeight();
-			ImageResourceInfo selectedImgOverInfo = new ImageResourceInfo(
-					selectedImgOverRR);
+			ImageResourceInfo selectedImgOverInfo = new ImageResourceInfo(selectedImgOverRR);
 			int selectedImgOverWidth = selectedImgOverInfo.getWidth();
 			int selectedImgOverHeight = selectedImgOverInfo.getHeight();
 
 			InlineStyle defaultImgStyle = new InlineStyle();
-			defaultImgStyle.add("background", "url("
-					+ RequestCycle.get().urlFor(defaultImgRR) + ")");
+			defaultImgStyle.add("background", "url(" + RequestCycle.get().urlFor(defaultImgRR) + ")");
 			defaultImgStyle.add("width", defaultImgWidth + "px");
 			defaultImgStyle.add("height", defaultImgHeight + "px");
 
 			InlineStyle defaultImgOverStyle = new InlineStyle();
-			defaultImgOverStyle.add("background", "url("
-					+ RequestCycle.get().urlFor(defaultImgOverRR) + ")");
+			defaultImgOverStyle.add("background", "url(" + RequestCycle.get().urlFor(defaultImgOverRR) + ")");
 			defaultImgOverStyle.add("width", defaultImgOverWidth + "px");
 			defaultImgOverStyle.add("height", defaultImgOverHeight + "px");
 
 			InlineStyle selectedImgStyle = new InlineStyle();
-			selectedImgStyle.add("background", "url("
-					+ RequestCycle.get().urlFor(selectedImgRR) + ")");
+			selectedImgStyle.add("background", "url(" + RequestCycle.get().urlFor(selectedImgRR) + ")");
 			selectedImgStyle.add("width", selectedImgWidth + "px");
 			selectedImgStyle.add("height", selectedImgHeight + "px");
 
 			InlineStyle selectedImgOverStyle = new InlineStyle();
-			selectedImgOverStyle.add("background", "url("
-					+ RequestCycle.get().urlFor(selectedImgOverRR) + ")");
+			selectedImgOverStyle.add("background", "url(" + RequestCycle.get().urlFor(selectedImgOverRR) + ")");
 			selectedImgOverStyle.add("width", selectedImgOverWidth + "px");
 			selectedImgOverStyle.add("height", selectedImgOverHeight + "px");
 
@@ -322,7 +321,8 @@ public class AnimSelectSettings implements Serializable {
 	 * 
 	 * @param maxSelection
 	 */
-	public void setMaxSelection(int maxSelection) {
+	public void setMaxSelection(int maxSelection)
+	{
 		this.maxSelection = maxSelection;
 	}
 
@@ -331,7 +331,8 @@ public class AnimSelectSettings implements Serializable {
 	 * 
 	 * @param message
 	 */
-	public void setMessage(String message) {
+	public void setMessage(String message)
+	{
 		this.message = message;
 	}
 
@@ -343,8 +344,8 @@ public class AnimSelectSettings implements Serializable {
 	 * @param maxSelection
 	 * @param animSelectGroupOption
 	 */
-	public void setResources(String easing, double duration, int maxSelection,
-			List<AnimSelectOption> animSelectOptionList) {
+	public void setResources(String easing, double duration, int maxSelection, List<AnimSelectOption> animSelectOptionList)
+	{
 		setEasing(easing);
 		setDuration(duration);
 		setMaxSelection(maxSelection);
@@ -361,8 +362,8 @@ public class AnimSelectSettings implements Serializable {
 	 * @param message
 	 * @param animSelectOptionList
 	 */
-	public void setResources(String easing, double duration, int maxSelection,
-			String message, List<AnimSelectOption> animSelectOptionList) {
+	public void setResources(String easing, double duration, int maxSelection, String message, List<AnimSelectOption> animSelectOptionList)
+	{
 		setEasing(easing);
 		setDuration(duration);
 		setMaxSelection(maxSelection);
@@ -376,8 +377,8 @@ public class AnimSelectSettings implements Serializable {
 	 * 
 	 * @param selectedImgOverStyleList
 	 */
-	public void setSelectedImgOverStyleList(
-			List<InlineStyle> selectedImgOverStyleList) {
+	public void setSelectedImgOverStyleList(List<InlineStyle> selectedImgOverStyleList)
+	{
 		this.selectedImgOverStyleList = selectedImgOverStyleList;
 	}
 
@@ -386,7 +387,8 @@ public class AnimSelectSettings implements Serializable {
 	 * 
 	 * @param selectedImgStyleList
 	 */
-	public void setSelectedImgStyleList(List<InlineStyle> selectedImgStyleList) {
+	public void setSelectedImgStyleList(List<InlineStyle> selectedImgStyleList)
+	{
 		this.selectedImgStyleList = selectedImgStyleList;
 	}
 
@@ -395,7 +397,8 @@ public class AnimSelectSettings implements Serializable {
 	 * 
 	 * @param width
 	 */
-	public void setWidth(int width) {
+	public void setWidth(int width)
+	{
 		this.width = width;
 	}
 }

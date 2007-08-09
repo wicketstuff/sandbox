@@ -15,7 +15,8 @@ import org.wicketstuff.yui.YuiHeaderContributor;
  * 
  * @author cptan
  */
-public class AnimSelectOptionGroup extends WebMarkupContainer {
+public class AnimSelectOptionGroup extends WebMarkupContainer
+{
 	private static final long serialVersionUID = 1L;
 
 	private List<AnimSelectOption> animSelectOptionList;
@@ -36,7 +37,8 @@ public class AnimSelectOptionGroup extends WebMarkupContainer {
 	 * @param id
 	 * @param settings
 	 */
-	public AnimSelectOptionGroup(String id, AnimSelectSettings settings) {
+	public AnimSelectOptionGroup(String id, AnimSelectSettings settings)
+	{
 		super(id);
 		add(YuiHeaderContributor.forModule("animation"));
 		this.animSelectOptionList = settings.getAnimSelectOptionList();
@@ -54,11 +56,13 @@ public class AnimSelectOptionGroup extends WebMarkupContainer {
 			}
 		}
 
-		Label initialization = new Label("init", new AbstractReadOnlyModel() {
+		Label initialization = new Label("init", new AbstractReadOnlyModel()
+		{
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public Object getObject() {
+			public Object getObject()
+			{
 				return getJavaScriptComponentInitializationScript();
 			}
 		});
@@ -71,9 +75,9 @@ public class AnimSelectOptionGroup extends WebMarkupContainer {
 	 * 
 	 * @return
 	 */
-	protected String getJavaScriptComponentInitializationScript() {
-		PackagedTextTemplate template = new PackagedTextTemplate(
-				AnimSelectOptionGroup.class, "init.js");
+	protected String getJavaScriptComponentInitializationScript()
+	{
+		PackagedTextTemplate template = new PackagedTextTemplate(AnimSelectOptionGroup.class, "init.js");
 		Map<String, Object> variables = new HashMap<String, Object>(6);
 		variables.put("javaScriptId", javaScriptId);
 		variables.put("easing", "YAHOO.util.Easing." + easing);
@@ -89,7 +93,8 @@ public class AnimSelectOptionGroup extends WebMarkupContainer {
 	 * Get the markup Id on attach
 	 */
 	@Override
-	protected void onAttach() {
+	protected void onAttach()
+	{
 		super.onAttach();
 		javaScriptId = getMarkupId();
 	}
