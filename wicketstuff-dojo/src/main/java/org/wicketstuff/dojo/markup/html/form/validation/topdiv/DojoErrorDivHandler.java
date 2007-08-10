@@ -16,8 +16,7 @@
  */
 package org.wicketstuff.dojo.markup.html.form.validation.topdiv;
 
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.wicketstuff.dojo.AbstractRequireDojoBehavior;
+import org.wicketstuff.dojo.AbstractDojoWidgetBehavior;
 
 /**
  * A handler for {@link DojoErrorDiv}
@@ -25,13 +24,9 @@ import org.wicketstuff.dojo.AbstractRequireDojoBehavior;
  *
  */
 @SuppressWarnings("serial")
-public class DojoErrorDivHandler extends AbstractRequireDojoBehavior {
+public class DojoErrorDivHandler extends AbstractDojoWidgetBehavior {
 
 	public void setRequire(RequireDojoLibs libs) {
 		libs.add("dojoWicket.widget.ErrorDisplayer");
 	}
-
-	protected void respond(AjaxRequestTarget target) {
-	}
-
 }

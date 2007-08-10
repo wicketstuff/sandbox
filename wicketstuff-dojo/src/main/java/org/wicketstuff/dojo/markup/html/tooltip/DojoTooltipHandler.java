@@ -17,6 +17,7 @@
 package org.wicketstuff.dojo.markup.html.tooltip;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.wicketstuff.dojo.AbstractDojoWidgetBehavior;
 import org.wicketstuff.dojo.AbstractRequireDojoBehavior;
 
 /**
@@ -25,7 +26,7 @@ import org.wicketstuff.dojo.AbstractRequireDojoBehavior;
  *
  */
 @SuppressWarnings("serial")
-public class DojoTooltipHandler extends AbstractRequireDojoBehavior
+public class DojoTooltipHandler extends AbstractDojoWidgetBehavior
 {
 
 	protected void respond(AjaxRequestTarget target)

@@ -17,6 +17,7 @@
 package org.wicketstuff.dojo.markup.html.form;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.wicketstuff.dojo.AbstractDojoWidgetBehavior;
 import org.wicketstuff.dojo.AbstractRequireDojoBehavior;
 
 /**
@@ -24,14 +25,10 @@ import org.wicketstuff.dojo.AbstractRequireDojoBehavior;
  *
  */
 @SuppressWarnings("serial")
-public class DojoTimePickerHandler extends AbstractRequireDojoBehavior {
+public class DojoTimePickerHandler extends AbstractDojoWidgetBehavior {
 
 	public void setRequire(RequireDojoLibs libs) {
 		libs.add("dojo.widget.DropdownTimePicker");
-	}
-
-	protected void respond(AjaxRequestTarget target) {
-		// DO NOTHING
 	}
 
 }

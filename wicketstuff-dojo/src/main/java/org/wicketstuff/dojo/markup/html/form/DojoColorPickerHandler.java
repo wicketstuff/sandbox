@@ -17,6 +17,7 @@
 package org.wicketstuff.dojo.markup.html.form;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.wicketstuff.dojo.AbstractDojoWidgetBehavior;
 import org.wicketstuff.dojo.AbstractRequireDojoBehavior;
 
 /**
@@ -24,15 +25,11 @@ import org.wicketstuff.dojo.AbstractRequireDojoBehavior;
  *
  */
 @SuppressWarnings("serial")
-public class DojoColorPickerHandler extends AbstractRequireDojoBehavior {
+public class DojoColorPickerHandler extends AbstractDojoWidgetBehavior {
 
 	@SuppressWarnings("unchecked")
 	public void setRequire(RequireDojoLibs libs) {
 		libs.add("dojoWicket.widget.DropdownColorPicker");
-	}
-
-	protected void respond(AjaxRequestTarget target) {
-		// DO NOTHING
 	}
 
 }

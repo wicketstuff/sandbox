@@ -26,6 +26,7 @@ import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.wicketstuff.dojo.DojoIdConstants;
+import org.wicketstuff.dojo.IDojoWidget;
 
 @SuppressWarnings("serial")
 /**
@@ -39,7 +40,7 @@ import org.wicketstuff.dojo.DojoIdConstants;
  * @author <a href="http://www.demay-fr.net/blog">Vincent Demay</a>
  * @author <a href="mailto:jbq@apache.org">Jean-Baptiste Quenot</a>
  */
-public class DojoDropDownChoice extends DropDownChoice {
+public class DojoDropDownChoice extends DropDownChoice implements IDojoWidget {
 
 
 
@@ -104,10 +105,17 @@ public class DojoDropDownChoice extends DropDownChoice {
 		super(id);
 		add(new DojoDropDownChoiceHandler());
 	}
+	
+	/**
+	 * @see org.wicketstuff.dojo.IDojoWidget#getDojoType()
+	 */
+	public String getDojoType()
+	{
+		return DojoIdConstants.DOJO_TYPE_COMBOBOX;
+	}
 
 	protected void onComponentTag(ComponentTag tag) {
 		checkComponentTag(tag, "select");
-		tag.put(DojoIdConstants.DOJO_TYPE, DojoIdConstants.DOJO_TYPE_COMBOBOX);
 	}
 
 	public boolean isHandleSelectionChange() {

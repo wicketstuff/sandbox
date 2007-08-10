@@ -21,6 +21,7 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
+import org.wicketstuff.dojo.IDojoWidget;
 
 /**
  * A Slider a get an Integer
@@ -34,7 +35,7 @@ import org.apache.wicket.model.IModel;
  *
  */
 @SuppressWarnings("serial")
-public class DojoIntegerSlider extends Panel
+public class DojoIntegerSlider extends Panel 
 {
 	
 	private TextField value;

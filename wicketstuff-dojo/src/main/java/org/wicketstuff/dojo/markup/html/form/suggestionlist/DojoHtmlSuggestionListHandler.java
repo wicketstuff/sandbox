@@ -17,6 +17,7 @@
 package org.wicketstuff.dojo.markup.html.form.suggestionlist;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.wicketstuff.dojo.AbstractDojoWidgetBehavior;
 import org.wicketstuff.dojo.AbstractRequireDojoBehavior;
 
 /**
@@ -25,7 +26,7 @@ import org.wicketstuff.dojo.AbstractRequireDojoBehavior;
  *
  */
 @SuppressWarnings("serial")
-public class DojoHtmlSuggestionListHandler extends AbstractRequireDojoBehavior
+public class DojoHtmlSuggestionListHandler extends AbstractDojoWidgetBehavior
 {
 
 	/* (non-Javadoc)
@@ -34,10 +35,4 @@ public class DojoHtmlSuggestionListHandler extends AbstractRequireDojoBehavior
 	public void setRequire(RequireDojoLibs libs){
 		libs.add("dojo.widget.ComboBox");		
 	}
-
-	protected void respond(AjaxRequestTarget target){
-		//DO Nothing in inline suggestionlist
-	}
-
-
 }

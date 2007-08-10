@@ -16,8 +16,7 @@
  */
 package org.wicketstuff.dojo.markup.html.floatingpane;
 
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.wicketstuff.dojo.AbstractRequireDojoBehavior;
+import org.wicketstuff.dojo.AbstractDojoWidgetBehavior;
 
 /**
  * Handler for {@link DojoFloatingPane}
@@ -25,12 +24,8 @@ import org.wicketstuff.dojo.AbstractRequireDojoBehavior;
  *
  */
 @SuppressWarnings("serial")
-public class DojoFloatingPaneHandler extends AbstractRequireDojoBehavior
+public class DojoFloatingPaneHandler extends AbstractDojoWidgetBehavior
 {
-	protected void respond(AjaxRequestTarget target)
-	{
-		//DO NOTHING
-	}
 	public void setRequire(RequireDojoLibs libs)
 	{
 		libs.add("dojo.widget.FloatingPane");

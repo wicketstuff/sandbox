@@ -19,6 +19,7 @@ package org.wicketstuff.dojo.markup.html.percentage;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.IHeaderResponse;
+import org.wicketstuff.dojo.AbstractDojoWidgetBehavior;
 import org.wicketstuff.dojo.AbstractRequireDojoBehavior;
 import org.wicketstuff.dojo.markup.html.percentage.model.PercentageRanges;
 
@@ -28,7 +29,7 @@ import org.wicketstuff.dojo.markup.html.percentage.model.PercentageRanges;
  *
  */
 @SuppressWarnings("serial")
-class DojoPercentSelectorHandler extends AbstractRequireDojoBehavior
+class DojoPercentSelectorHandler extends AbstractDojoWidgetBehavior
 {
 
 	public void setRequire(RequireDojoLibs libs)

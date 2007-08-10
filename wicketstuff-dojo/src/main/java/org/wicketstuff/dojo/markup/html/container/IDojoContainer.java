@@ -16,6 +16,8 @@
  */
 package org.wicketstuff.dojo.markup.html.container;
 
+import org.wicketstuff.dojo.IDojoWidget;
+
 
 /**
  * Interface defining a DojoContainer, Directly implentede by {@link AbstractDojoContainer}
@@ -24,7 +26,7 @@ package org.wicketstuff.dojo.markup.html.container;
  * @author Vincent Demay
  *
  */
-public interface IDojoContainer {
+public interface IDojoContainer extends IDojoWidget {
 
 	/**
 	 * Return the Container title

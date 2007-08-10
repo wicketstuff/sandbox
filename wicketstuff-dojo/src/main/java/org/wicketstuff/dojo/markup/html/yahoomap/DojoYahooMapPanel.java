@@ -11,9 +11,9 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.util.convert.IConverter;
-import org.wicketstuff.dojo.DojoIdConstants;
+import org.wicketstuff.dojo.IDojoWidget;
 
-public class DojoYahooMapPanel extends Panel {
+public class DojoYahooMapPanel extends Panel implements IDojoWidget {
 
 	public static final String MAP_DATA = "mapData";
 	public static final String DESCRIPTION = "description";
@@ -34,11 +34,19 @@ public class DojoYahooMapPanel extends Panel {
 		});
 	}
 	
+	/**
+	 * @see org.wicketstuff.dojo.IDojoWidget#getDojoType()
+	 * FIXME yahoomap hardcoded
+	 */
+	public String getDojoType()
+	{
+		return "yahoomap";
+	}
+	
 	@Override
 	protected void onComponentTag(ComponentTag tag) {
 		// TODO Auto-generated method stub
 		super.onComponentTag(tag);
-		tag.put(DojoIdConstants.DOJO_TYPE, "yahoomap");
 		tag.put("datasrc",MAP_DATA);
 	}
 	

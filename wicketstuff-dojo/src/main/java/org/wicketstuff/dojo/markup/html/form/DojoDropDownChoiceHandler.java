@@ -19,7 +19,7 @@ package org.wicketstuff.dojo.markup.html.form;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.IHeaderResponse;
-import org.wicketstuff.dojo.AbstractRequireDojoBehavior;
+import org.wicketstuff.dojo.AbstractDojoWidgetBehavior;
 
 /**
  * Handler for Dojo ComboBox
@@ -28,7 +28,7 @@ import org.wicketstuff.dojo.AbstractRequireDojoBehavior;
  * @author <a href="mailto:jbq@apache.org">Jean-Baptiste Quenot</a>
  */
 @SuppressWarnings("serial")
-public class DojoDropDownChoiceHandler extends AbstractRequireDojoBehavior {
+public class DojoDropDownChoiceHandler extends AbstractDojoWidgetBehavior {
 	/**
 	 * @see wicket.contrib.dojo.AbstractRequireDojoBehavior#setRequire(wicket.contrib.dojo.AbstractRequireDojoBehavior.RequireDojoLibs)
 	 */

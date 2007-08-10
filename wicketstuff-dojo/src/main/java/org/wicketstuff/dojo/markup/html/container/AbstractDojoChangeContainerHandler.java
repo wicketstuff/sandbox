@@ -19,6 +19,7 @@ package org.wicketstuff.dojo.markup.html.container;
 import org.apache.wicket.Component;
 import org.apache.wicket.Component.IVisitor;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.wicketstuff.dojo.AbstractDojoWidgetBehavior;
 import org.wicketstuff.dojo.AbstractRequireDojoBehavior;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -31,7 +32,7 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
  * @author Vincent Demay
  *
  */
-public abstract class AbstractDojoChangeContainerHandler extends AbstractRequireDojoBehavior {
+public abstract class AbstractDojoChangeContainerHandler extends AbstractDojoWidgetBehavior {
 
 
 	/**

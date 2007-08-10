@@ -70,7 +70,7 @@ public class TargetRefresherManager implements IListener
 				}
 			}
 			
-			if (!hasParentAdded(c)){
+			if (!hasParentAdded(c) || !(c instanceof IDojoWidget)){
 				//we do not need to reParse This widget, remove it
 				real.put(c.getMarkupId(), c);
 			}
@@ -119,7 +119,7 @@ public class TargetRefresherManager implements IListener
 	private boolean hasParentAdded(Component component){
 		Component current = component;
 		while(current.getParent()!= null){
-			 if (dojoComponents.containsKey(current.getParent().getMarkupId())){
+			 if (dojoComponents.containsKey(current.getParent().getMarkupId()) && (current.getParent() instanceof IDojoWidget)){
 				 return true;
 			 }
 			 current = current.getParent();

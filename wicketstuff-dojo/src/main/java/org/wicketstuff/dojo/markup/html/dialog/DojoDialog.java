@@ -20,6 +20,7 @@ import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.model.Model;
 import org.wicketstuff.dojo.DojoIdConstants;
+import org.wicketstuff.dojo.IDojoWidget;
 import org.wicketstuff.dojo.toggle.DojoToggle;
 import org.wicketstuff.dojo.widgets.HideWebMarkupContainer;
 
@@ -55,7 +56,7 @@ import org.wicketstuff.dojo.widgets.HideWebMarkupContainer;
  *
  */
 @SuppressWarnings("serial")
-public class DojoDialog extends HideWebMarkupContainer
+public class DojoDialog extends HideWebMarkupContainer implements IDojoWidget
 {
 
 	/**
@@ -76,10 +77,12 @@ public class DojoDialog extends HideWebMarkupContainer
 		this.add(new AttributeAppender("toggle", new Model(toggle.getToggle()),""));
 		this.add(new AttributeAppender("toggleDuration", new Model(toggle.getDuration() + ""),""));
 	}
-
-	protected void onComponentTag(ComponentTag tag)
+	
+	/**
+	 * @see org.wicketstuff.dojo.IDojoWidget#getDojoType()
+	 */
+	public String getDojoType()
 	{
-		super.onComponentTag(tag);
-		tag.put(DojoIdConstants.DOJO_TYPE, DojoIdConstants.DOJO_TYPE_DIALOG);
+		return DojoIdConstants.DOJO_TYPE_DIALOG;
 	}
 }

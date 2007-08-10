@@ -18,6 +18,7 @@ package org.wicketstuff.dojo.markup.html.Bubble;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.wicketstuff.dojo.IDojoWidget;
 import org.wicketstuff.dojo.widgets.StylingWebMarkupContainer;
 import org.apache.wicket.model.IModel;
 
@@ -46,6 +47,7 @@ public  class AbstractDojoBubble extends StylingWebMarkupContainer{
 	public AbstractDojoBubble(String id) {
 		super(id);
 	}
+
 
 	/**
 	 * Show the bubble

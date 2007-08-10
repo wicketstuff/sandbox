@@ -17,6 +17,7 @@
 package org.wicketstuff.dojo.markup.html.form;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.wicketstuff.dojo.AbstractDojoWidgetBehavior;
 import org.wicketstuff.dojo.AbstractRequireDojoBehavior;
 
 /**
@@ -25,17 +26,13 @@ import org.wicketstuff.dojo.AbstractRequireDojoBehavior;
  *
  */
 @SuppressWarnings("serial")
-public class DojoDatePickerHandler extends AbstractRequireDojoBehavior
+public class DojoDatePickerHandler extends AbstractDojoWidgetBehavior
 {
-	protected void respond(AjaxRequestTarget target)
-	{
-		//DO NOTHING	
-	}
 
 	public void setRequire(RequireDojoLibs libs)
 	{
 		//load dropDown date picker in dojoWicket
 		libs.add("dojoWicket.widget.SimpleDropdownDatePicker");		
-	}
+	}	
 
 }

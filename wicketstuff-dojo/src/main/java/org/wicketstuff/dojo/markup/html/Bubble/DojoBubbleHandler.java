@@ -16,8 +16,7 @@
  */
 package org.wicketstuff.dojo.markup.html.Bubble;
 
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.wicketstuff.dojo.AbstractRequireDojoBehavior;
+import org.wicketstuff.dojo.AbstractDojoWidgetBehavior;
 
 /**
  * Handler for {@link DojoBubble}
@@ -26,13 +25,10 @@ import org.wicketstuff.dojo.AbstractRequireDojoBehavior;
  *
  */
 @SuppressWarnings("serial")
-public class DojoBubbleHandler extends AbstractRequireDojoBehavior {
+public class DojoBubbleHandler extends AbstractDojoWidgetBehavior {
 
 	public void setRequire(RequireDojoLibs libs) {
 		libs.add("dojoWicket.widget.Bubble");
-	}
-
-	protected void respond(AjaxRequestTarget target) {
 	}
 
 }

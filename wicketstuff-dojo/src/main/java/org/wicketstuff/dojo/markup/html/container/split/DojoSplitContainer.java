@@ -90,12 +90,19 @@ public class DojoSplitContainer extends AbstractDojoContainer
 	{
 		this(id, null);
 	}
+	
+	/**
+	 * @see org.wicketstuff.dojo.IDojoWidget#getDojoType()
+	 */
+	public String getDojoType()
+	{
+		return DojoIdConstants.DOJO_TYPE_SPLITCONTAINER;
+	}
 
 	
 	protected void onComponentTag(ComponentTag tag)
 	{
 		super.onComponentTag(tag);
-		tag.put(DojoIdConstants.DOJO_TYPE, DojoIdConstants.DOJO_TYPE_SPLITCONTAINER);
 		tag.put("label", getTitle());
 		tag.put("orientation", getOrientation());
 		tag.put("sizerWidth", Integer.toString(getSizerWidth()));

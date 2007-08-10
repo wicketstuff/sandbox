@@ -16,11 +16,12 @@
  */
 package org.wicketstuff.dojo.markup.html.form.suggestionlist;
 
-import org.wicketstuff.dojo.DojoIdConstants;
-import org.wicketstuff.dojo.markup.html.form.DojoDropDownChoice;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.IModel;
+import org.wicketstuff.dojo.DojoIdConstants;
+import org.wicketstuff.dojo.IDojoWidget;
+import org.wicketstuff.dojo.markup.html.form.DojoDropDownChoice;
 
 /**
  * Suggestion list that requests the server to know which items
@@ -29,7 +30,7 @@ import org.apache.wicket.model.IModel;
  * @see DojoDropDownChoice for a suggestion list that uses a Wicket model object
  * @author <a href="http://www.demay-fr.net/blog">Vincent Demay</a>
  */
-public abstract class DojoRequestSuggestionList extends TextField
+public abstract class DojoRequestSuggestionList extends TextField implements IDojoWidget
 {
 
 	/**

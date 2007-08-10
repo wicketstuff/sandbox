@@ -14,23 +14,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.wicketstuff.dojo.markup.html.dialog;
-
-import org.wicketstuff.dojo.AbstractDojoWidgetBehavior;
+package org.wicketstuff.dojo;
 
 /**
- * Handler for {@link DojoDialog}
- * @author <a href="http://www.demay-fr.net/blog/index.php/en">Vincent Demay</a>
- *
+ * Interface to use with {@link AbstractDojoWidgetBehavior}. Interface should be 
+ * used on each dojo widget. 
+ * 
+ * @author Vincent Demay 
  */
-@SuppressWarnings("serial")
-public class DojoDialogHandler extends AbstractDojoWidgetBehavior
+public interface IDojoWidget
 {
-	@SuppressWarnings("unchecked")
-	public void setRequire(RequireDojoLibs libs)
-	{
-		libs.add("dojo.widget.Dialog");
-		
-	}
-
+	
+	/**
+	 * This method should return the dojoTyme of this Components
+	 * This method will be called on {@link AbstractDojoWidgetBehavior} to add 
+	 * the dojoType to the componentTag
+	 * <p>
+	 * DojoType constants are available in {@link DojoIdConstants}
+	 * </p>
+	 * @return the dojoType of the component
+	 */
+	public String getDojoType();
 }

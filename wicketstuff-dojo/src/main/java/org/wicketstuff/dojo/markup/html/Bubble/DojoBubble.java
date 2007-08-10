@@ -17,6 +17,7 @@
 package org.wicketstuff.dojo.markup.html.Bubble;
 
 import org.wicketstuff.dojo.DojoIdConstants;
+import org.wicketstuff.dojo.IDojoWidget;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.model.IModel;
 
@@ -28,7 +29,7 @@ import org.apache.wicket.model.IModel;
  *
  */
 @SuppressWarnings("serial")
-public class DojoBubble extends AbstractDojoBubble{
+public class DojoBubble extends AbstractDojoBubble  implements IDojoWidget{
 	
 	/**
 	 * Construct
@@ -49,9 +50,13 @@ public class DojoBubble extends AbstractDojoBubble{
 		super(id);
 		add(new DojoBubbleHandler());
 	}
-
-	protected void onComponentTag(ComponentTag tag) {
-		super.onComponentTag(tag);
-		tag.put(DojoIdConstants.DOJO_TYPE, DojoIdConstants.DOJO_TYPE_BUBBLE);
+	
+	/**
+	 * @see org.wicketstuff.dojo.IDojoWidget#getDojoType()
+	 */
+	public String getDojoType()
+	{
+		return DojoIdConstants.DOJO_TYPE_BUBBLE;
 	}
+
 }

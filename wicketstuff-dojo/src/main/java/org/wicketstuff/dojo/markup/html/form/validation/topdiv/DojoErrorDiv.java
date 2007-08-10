@@ -19,6 +19,7 @@ package org.wicketstuff.dojo.markup.html.form.validation.topdiv;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.wicketstuff.dojo.DojoIdConstants;
+import org.wicketstuff.dojo.IDojoWidget;
 import org.wicketstuff.dojo.widgets.StylingWebMarkupContainer;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.model.IModel;
@@ -30,7 +31,7 @@ import org.apache.wicket.model.IModel;
  *
  */
 @SuppressWarnings("serial")
-public class DojoErrorDiv extends StylingWebMarkupContainer {
+public class DojoErrorDiv extends StylingWebMarkupContainer implements IDojoWidget {
 
 	/**
 	 * Constructs
@@ -50,10 +51,13 @@ public class DojoErrorDiv extends StylingWebMarkupContainer {
 		super(id);
 		add(new DojoErrorDivHandler());
 	}
-
-	protected void onComponentTag(ComponentTag tag) {
-		super.onComponentTag(tag);
-		tag.put(DojoIdConstants.DOJO_TYPE, DojoIdConstants.DOJO_TYPE_ERRORDIV);
+	
+	/**
+	 * @see org.wicketstuff.dojo.IDojoWidget#getDojoType()
+	 */
+	public String getDojoType()
+	{
+		return DojoIdConstants.DOJO_TYPE_ERRORDIV;
 	}
 	
 	/**

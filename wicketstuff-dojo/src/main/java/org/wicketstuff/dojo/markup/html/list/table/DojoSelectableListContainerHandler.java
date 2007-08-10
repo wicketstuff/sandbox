@@ -22,8 +22,6 @@ import java.util.List;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.IAjaxCallDecorator;
-import org.wicketstuff.dojo.AbstractRequireDojoBehavior;
-import org.wicketstuff.dojo.templates.DojoPackagedTextTemplate;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -31,6 +29,8 @@ import org.apache.wicket.markup.html.link.ILinkListener;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.RepeatingView;
+import org.wicketstuff.dojo.AbstractDojoWidgetBehavior;
+import org.wicketstuff.dojo.templates.DojoPackagedTextTemplate;
 
 /**
  * Handler associated with {@link DojoSelectableListContainer}
@@ -38,7 +38,7 @@ import org.apache.wicket.markup.repeater.RepeatingView;
  *
  */
 @SuppressWarnings("serial")
-public class DojoSelectableListContainerHandler extends AbstractRequireDojoBehavior
+public class DojoSelectableListContainerHandler extends AbstractDojoWidgetBehavior
 {
 	/**
 	 * Allow to lock indicator on a request
