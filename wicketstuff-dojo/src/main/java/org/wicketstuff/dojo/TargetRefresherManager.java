@@ -70,7 +70,7 @@ public class TargetRefresherManager implements IListener
 				}
 			}
 			
-			if (!hasParentAdded(c) || !(c instanceof IDojoWidget)){
+			if (!hasParentAdded(c) && c instanceof IDojoWidget){
 				//we do not need to reParse This widget, remove it
 				real.put(c.getMarkupId(), c);
 			}
