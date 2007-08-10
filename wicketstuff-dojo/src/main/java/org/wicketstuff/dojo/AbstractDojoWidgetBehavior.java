@@ -24,6 +24,8 @@ import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.model.Model;
 import org.wicketstuff.dojo.skin.manager.SkinManager;
+import org.wicketstuff.dojo.widgetloadingpolicy.DefaultLoadingPolicy;
+import org.wicketstuff.dojo.widgetloadingpolicy.IDojoWidgetLoadingPolicy;
 
 /**
  * A behavior to use instead of {@link AbstractRequireDojoBehavior} to load 
@@ -38,6 +40,21 @@ import org.wicketstuff.dojo.skin.manager.SkinManager;
 public abstract class AbstractDojoWidgetBehavior extends AbstractRequireDojoBehavior
 {
 	private boolean deportWidgetInit = false;
+	private IDojoWidgetLoadingPolicy loadingPolicy;
+	
+	public AbstractDojoWidgetBehavior()
+	{
+		this(null);
+	}
+	
+	public AbstractDojoWidgetBehavior(IDojoWidgetLoadingPolicy loadingPolicy)
+	{
+		super();
+		if (loadingPolicy == null){
+			loadingPolicy = new DefaultLoadingPolicy();
+		}
+		this.loadingPolicy = loadingPolicy;
+	}
 	
 	/**
 	 * Check if the component is a {@link IDojoWidget}
@@ -68,11 +85,7 @@ public abstract class AbstractDojoWidgetBehavior extends AbstractRequireDojoBeha
 		super.renderHead(response);
 		//Dojo auto parsing is disactivated so we declare here each widget we need to parse with dojo
 		if (!(RequestCycle.get().getRequestTarget() instanceof AjaxRequestTarget)) {
-			//if (!getDeportWidgetInit()){
-				response.renderJavascript("djConfig.searchIds.push(\""+getComponent().getMarkupId()+"\");", "DojoParse" + getComponent().getMarkupId());		
-			//}else{
-			//	response.renderOnLoadJavascript("window.setTimeout(function(){djConfig.searchIds.push(\""+getComponent().getMarkupId()+"\");dojo.hostenv.makeWidgets()}, 10)");
-			//}
+			loadingPolicy.renderHead(response, getComponent());
 		}
 	}
 	
@@ -86,6 +99,16 @@ public abstract class AbstractDojoWidgetBehavior extends AbstractRequireDojoBeha
 		super.onComponentTag(tag);
 		tag.put("widgetId", getComponent().getMarkupId());
 		SkinManager.getInstance().setSkinOnComponent(getComponent(), this, tag);
+	}
+	
+	/**
+	 * @see org.wicketstuff.dojo.AbstractRequireDojoBehavior#onComponentReRendered(org.apache.wicket.ajax.AjaxRequestTarget)
+	 */
+	@Override
+	public void onComponentReRendered(AjaxRequestTarget ajaxTarget)
+	{
+		super.onComponentReRendered(ajaxTarget);
+		loadingPolicy.onComponentReRendered(ajaxTarget);
 	}
 
 }

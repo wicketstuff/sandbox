@@ -17,6 +17,7 @@
 package org.wicketstuff.dojo.markup.html.container.tab;
 
 import org.wicketstuff.dojo.markup.html.container.AbstractDojoChangeContainerHandler;
+import org.wicketstuff.dojo.widgetloadingpolicy.IDojoWidgetLoadingPolicy;
 
 /**
  * AHandler for {@link DojoTabContainer}
@@ -26,6 +27,17 @@ import org.wicketstuff.dojo.markup.html.container.AbstractDojoChangeContainerHan
 @SuppressWarnings("serial")
 public class DojoTabContainerHandler extends AbstractDojoChangeContainerHandler
 {
+
+
+	public DojoTabContainerHandler()
+	{
+		super();
+	}
+
+	public DojoTabContainerHandler(IDojoWidgetLoadingPolicy loadingPolicy)
+	{
+		super(loadingPolicy);
+	}
 
 	@SuppressWarnings("unchecked")
 	public void setRequire(RequireDojoLibs libs)

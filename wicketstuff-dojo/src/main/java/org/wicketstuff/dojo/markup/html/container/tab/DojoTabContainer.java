@@ -18,6 +18,7 @@ package org.wicketstuff.dojo.markup.html.container.tab;
 
 import org.wicketstuff.dojo.DojoIdConstants;
 import org.wicketstuff.dojo.markup.html.container.AbstractDojoChangeContainer;
+import org.wicketstuff.dojo.widgetloadingpolicy.IDojoWidgetLoadingPolicy;
 import org.apache.wicket.markup.ComponentTag;
 
 /**
@@ -80,6 +81,19 @@ public class DojoTabContainer extends AbstractDojoChangeContainer
 	 * Tab position on right see {@link #setTabPosition(String)}
 	 */
 	public final static String TAB_POS_RIGHT 	= "right-h";
+	
+	
+	/**
+	 * Construct a DojoTabContainer
+	 * @param id container id
+	 * @param title container title
+	 * @param loadingPolicy
+	 */
+	public DojoTabContainer(String id, String title, IDojoWidgetLoadingPolicy loadingPolicy)
+	{
+		super(id, title);
+		add(new DojoTabContainerHandler(loadingPolicy));
+	}
 	
 	/**
 	 * Construct a DojoTabContainer

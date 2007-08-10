@@ -21,6 +21,7 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.protocol.http.WebRequest;
 import org.wicketstuff.dojo.AbstractDojoWidgetBehavior;
+import org.wicketstuff.dojo.widgetloadingpolicy.IDojoWidgetLoadingPolicy;
 
 /**
  * Handler for {@link DojoModalFloatingPane}
@@ -28,11 +29,20 @@ import org.wicketstuff.dojo.AbstractDojoWidgetBehavior;
  *
  */
 @SuppressWarnings("serial")
-public class DojoModalFloatingPaneHandler extends AbstractDojoWidgetBehavior
-{
-	
+public class DojoModalFloatingPaneHandler extends AbstractDojoWidgetBehavior{
+
 	private static final String SHOW = "show";
 	private static final String HIDE = "hide"; 
+	
+	public DojoModalFloatingPaneHandler()
+	{
+		super();
+	}
+
+	public DojoModalFloatingPaneHandler(IDojoWidgetLoadingPolicy loadingPolicy)
+	{
+		super(loadingPolicy);
+	}
 	
 	protected void respond(AjaxRequestTarget target)
 	{

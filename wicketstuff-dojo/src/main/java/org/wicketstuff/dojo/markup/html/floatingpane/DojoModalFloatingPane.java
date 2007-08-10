@@ -20,6 +20,7 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.wicketstuff.dojo.DojoIdConstants;
 import org.wicketstuff.dojo.toggle.DojoToggle;
+import org.wicketstuff.dojo.widgetloadingpolicy.IDojoWidgetLoadingPolicy;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.model.Model;
 
@@ -47,6 +48,11 @@ public class DojoModalFloatingPane extends DojoAbstractFloatingPane
 	 */
 	private boolean notifyHide = false;
 	private boolean notifyShow = false;
+	
+	/**
+	 * Window loading policy
+	 */
+	private IDojoWidgetLoadingPolicy loadingPolicy;
 
 	/**
 	 * Modal floating pane constructor
@@ -54,8 +60,19 @@ public class DojoModalFloatingPane extends DojoAbstractFloatingPane
 	 */
 	public DojoModalFloatingPane(String id)
 	{
+		this(id, null);
+	}
+	
+	/**
+	 * Modal floating pane constructor
+	 * @param id widget Id
+	 * @param loadingPolicy policy for the widget loading
+	 */
+	public DojoModalFloatingPane(String id, IDojoWidgetLoadingPolicy loadingPolicy)
+	{
 		super(id);
-		add(new DojoModalFloatingPaneHandler());
+		this.loadingPolicy = loadingPolicy;
+		add(new DojoModalFloatingPaneHandler(loadingPolicy));
 		setOutputMarkupId(true);
 	}
 	
@@ -170,6 +187,11 @@ public class DojoModalFloatingPane extends DojoAbstractFloatingPane
 	 */
 	public boolean isNotifyShow() {
 		return notifyShow;
+	}
+
+	public IDojoWidgetLoadingPolicy getLoadingPolicy()
+	{
+		return loadingPolicy;
 	}
 	
 	
