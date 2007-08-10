@@ -19,6 +19,7 @@ package org.wicketstuff.dojo.markup.html.percentage;
 import org.apache.wicket.Component;
 import org.apache.wicket.WicketRuntimeException;
 import org.wicketstuff.dojo.DojoIdConstants;
+import org.wicketstuff.dojo.IDojoWidget;
 import org.wicketstuff.dojo.markup.html.percentage.model.PercentageRanges;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -43,7 +44,7 @@ import org.apache.wicket.model.IModel;
  *
  */
 @SuppressWarnings("serial")
-public class DojoPercentSelector extends WebMarkupContainer {
+public class DojoPercentSelector extends WebMarkupContainer implements IDojoWidget {
 
 	/**
 	 * The widget Constructor
@@ -82,15 +83,20 @@ public class DojoPercentSelector extends WebMarkupContainer {
 		super(id);
 		this.add(new DojoPercentSelectorHandler());
 	}
+	
+	/**
+	 * @see org.wicketstuff.dojo.IDojoWidget#getDojoType()
+	 */
+	public String getDojoType()
+	{
+		return DojoIdConstants.DOJO_TYPE_PERCENTSELECTOR;
+	}
 
+	//FIXME : Usefull????
 	protected void onComponentTag(ComponentTag tag)
 	{
 		super.onComponentTag(tag);
-		tag.put(DojoIdConstants.DOJO_TYPE, DojoIdConstants.DOJO_TYPE_PERCENTSELECTOR);
 		tag.put("widgetId", getMarkupId());
-
-		//tag.put("templatePath", urlFor(new ResourceReference(DojoPercentSelector.class, "PercentSelector.htm")));
-		//tag.put("templateCssPath", urlFor(new ResourceReference(DojoPercentSelector.class, "PercentSelector.css")));
 	}
 
 }

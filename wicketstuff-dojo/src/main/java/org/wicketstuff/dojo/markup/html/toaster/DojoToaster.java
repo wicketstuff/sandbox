@@ -19,6 +19,7 @@ package org.wicketstuff.dojo.markup.html.toaster;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.wicketstuff.dojo.DojoIdConstants;
+import org.wicketstuff.dojo.IDojoWidget;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.IModel;
@@ -84,7 +85,7 @@ import org.apache.wicket.util.time.Duration;
  *
  */
 @SuppressWarnings("serial")
-public class DojoToaster extends WebMarkupContainer{
+public class DojoToaster extends WebMarkupContainer implements IDojoWidget{
 
 	public static final String INFO = "INFO";
 	public static final String WARNING = "WARNING";
@@ -120,10 +121,17 @@ public class DojoToaster extends WebMarkupContainer{
 		super(id);
 		add(new DojoToasterHandler());
 	}
+	
+	/**
+	 * @see org.wicketstuff.dojo.IDojoWidget#getDojoType()
+	 */
+	public String getDojoType()
+	{
+		return DojoIdConstants.DOJO_TYPE_TOASTER;
+	}
 
 	protected void onComponentTag(ComponentTag tag){
 		super.onComponentTag(tag);
-		tag.put(DojoIdConstants.DOJO_TYPE, DojoIdConstants.DOJO_TYPE_TOASTER);
 		if (position != null){
 			tag.put("positionDirection", position);
 		}

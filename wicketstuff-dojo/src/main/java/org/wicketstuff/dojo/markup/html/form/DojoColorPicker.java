@@ -18,6 +18,7 @@ package org.wicketstuff.dojo.markup.html.form;
 
 import org.apache.wicket.behavior.AttributeAppender;
 import org.wicketstuff.dojo.DojoIdConstants;
+import org.wicketstuff.dojo.IDojoWidget;
 import org.wicketstuff.dojo.toggle.DojoToggle;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.form.TextField;
@@ -28,7 +29,7 @@ import org.apache.wicket.model.Model;
  * 
  */
 @SuppressWarnings("serial")
-public class DojoColorPicker extends TextField {
+public class DojoColorPicker extends TextField implements IDojoWidget {
 
 	private boolean allowInput = false;
 	
@@ -48,10 +49,17 @@ public class DojoColorPicker extends TextField {
 	public DojoColorPicker(String id) {
 		this(id, null);
 	}
+	
+	/**
+	 * @see org.wicketstuff.dojo.IDojoWidget#getDojoType()
+	 */
+	public String getDojoType()
+	{
+		return DojoIdConstants.DOJO_TYPE_COLORPICKER;
+	}
 
 	protected void onComponentTag(ComponentTag tag)	{
 		super.onComponentTag(tag);
-		tag.put(DojoIdConstants.DOJO_TYPE, DojoIdConstants.DOJO_TYPE_COLORPICKER);
 		if (!this.allowInput){
 			tag.put("inputNotAllowed", "true");
 		}

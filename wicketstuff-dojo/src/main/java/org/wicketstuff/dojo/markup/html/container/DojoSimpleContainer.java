@@ -47,6 +47,15 @@ public class DojoSimpleContainer extends AbstractDojoContainer
 		this(id, null);
 	}
 	
+
+	/**
+	 * @see org.wicketstuff.dojo.IDojoWidget#getDojoType()
+	 */
+	public String getDojoType()
+	{
+		return DojoIdConstants.DOJO_TYPE_CONTENTPANE;
+	}
+	
 	/**
 	 * add attributes on component tag
 	 * @param tag 
@@ -54,8 +63,8 @@ public class DojoSimpleContainer extends AbstractDojoContainer
 	protected void onComponentTag(ComponentTag tag)
 	{
 		super.onComponentTag(tag);
-		tag.put(DojoIdConstants.DOJO_TYPE, DojoIdConstants.DOJO_TYPE_CONTENTPANE);
 		tag.put("label", getTitle());
 	}
+
 
 }

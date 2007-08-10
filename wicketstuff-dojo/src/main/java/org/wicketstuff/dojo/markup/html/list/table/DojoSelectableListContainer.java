@@ -25,6 +25,7 @@ import org.apache.wicket.ResourceReference;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.wicketstuff.dojo.DojoIdConstants;
+import org.wicketstuff.dojo.IDojoWidget;
 import org.wicketstuff.dojo.indicator.behavior.DojoIndicatorBehavior;
 import org.wicketstuff.dojo.skin.manager.SkinManager;
 import org.wicketstuff.dojo.widgets.StylingWebMarkupContainer;
@@ -54,7 +55,7 @@ import org.apache.wicket.model.IModel;
  * 
  */
 @SuppressWarnings("serial")
-public class DojoSelectableListContainer extends StylingWebMarkupContainer implements ILinkListener {
+public class DojoSelectableListContainer extends StylingWebMarkupContainer implements ILinkListener, IDojoWidget {
 	/**
 	 * List of selected objects
 	 */
@@ -126,6 +127,14 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer imple
 		setPermanentSelection(false);
 		selected = new ArrayList();
 	}
+	
+	/**
+	 * @see org.wicketstuff.dojo.IDojoWidget#getDojoType()
+	 */
+	public String getDojoType()
+	{
+		return "SelectableTable";
+	}
 
 	protected void onComponentTag(ComponentTag tag) {
 		super.onComponentTag(tag);
@@ -133,7 +142,6 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer imple
 			throw new WicketRuntimeException("Encountered tag name: '" + getMarkupStream().getTag().getName()
 					+ "', should be 'table'");
 		}
-		tag.put(DojoIdConstants.DOJO_TYPE, "SelectableTable");
 		tag.put("enableMultipleSelect", enableMultipleSelect + "");
 		tag.put("enableAlternateRows", enableAlternateRows + "");
 		tag.put("rowAlternateClass", alternateRowClass);

@@ -18,6 +18,7 @@ package org.wicketstuff.dojo.markup.html.list.lazy;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.ComponentTag;
+import org.wicketstuff.dojo.AbstractDojoWidgetBehavior;
 import org.wicketstuff.dojo.AbstractRequireDojoBehavior;
 
 /**
@@ -26,7 +27,7 @@ import org.wicketstuff.dojo.AbstractRequireDojoBehavior;
  *
  */
 @SuppressWarnings("serial")
-public class DojoLazyLoadingListContainerHandler extends AbstractRequireDojoBehavior
+public class DojoLazyLoadingListContainerHandler extends AbstractDojoWidgetBehavior
 {
 	/**
 	 * 

@@ -18,15 +18,16 @@ package org.wicketstuff.dojo.markup.html.floatingpane;
 
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.wicketstuff.dojo.widgets.StylingWebMarkupContainer;
 import org.apache.wicket.markup.ComponentTag;
+import org.wicketstuff.dojo.IDojoWidget;
+import org.wicketstuff.dojo.widgets.StylingWebMarkupContainer;
 
 /**
  * Dojo Abstract floating pane
  * @author Vincent Demay
  *
  */
-public abstract class DojoAbstractFloatingPane extends StylingWebMarkupContainer
+public abstract class DojoAbstractFloatingPane extends StylingWebMarkupContainer implements IDojoWidget 
 {
 	
 	private String title;

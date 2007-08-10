@@ -30,7 +30,9 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.util.convert.ConversionException;
 import org.apache.wicket.util.convert.IConverter;
+import org.wicketstuff.dojo.DojoIdConstants;
 import org.wicketstuff.dojo.DojoLocaleManager;
+import org.wicketstuff.dojo.IDojoWidget;
 import org.wicketstuff.dojo.toggle.DojoToggle;
 
 /**
@@ -58,7 +60,7 @@ import org.wicketstuff.dojo.toggle.DojoToggle;
  * @author <a href="http://www.demay-fr.net/blog">Vincent Demay</a>
  */
 @SuppressWarnings("serial")
-public class DojoDatePicker extends TextField {
+public class DojoDatePicker extends TextField implements IDojoWidget {
     
     private SimpleDateFormat formatter;
     private String displayFormat;
@@ -103,11 +105,18 @@ public class DojoDatePicker extends TextField {
     public DojoDatePicker(String id, String displayFormat) {
         this(id, null, displayFormat);
     }
+    
+
+	/**
+	 * @see org.wicketstuff.dojo.IDojoWidget#getDojoType()
+	 */
+	public String getDojoType()
+	{
+		return DojoIdConstants.DOJO_TYPE_DATEPICKER;
+	}
 
     protected void onComponentTag(ComponentTag tag) {
         super.onComponentTag(tag);
-
-        tag.put("dojoType", "SimpleDropdownDatePicker");
         tag.put("displayFormat", getDisplayFormat());
         String localeString = getLocaleAsString();
         if (localeString != null) {

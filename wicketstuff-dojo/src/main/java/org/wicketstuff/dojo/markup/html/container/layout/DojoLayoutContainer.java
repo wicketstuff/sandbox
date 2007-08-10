@@ -130,11 +130,12 @@ public class DojoLayoutContainer extends AbstractDojoContainer{
 		setHeight("100%");
 	}
 	
-	@Override
-	protected void onComponentTag(ComponentTag tag)
+	/**
+	 * @see org.wicketstuff.dojo.IDojoWidget#getDojoType()
+	 */
+	public String getDojoType()
 	{
-		super.onComponentTag(tag);
-		tag.put(DojoIdConstants.DOJO_TYPE, DojoIdConstants.DOJO_TYPE_LAYOUTCONTAINER);
+		return DojoIdConstants.DOJO_TYPE_LAYOUTCONTAINER;
 	}
 	
 	/**

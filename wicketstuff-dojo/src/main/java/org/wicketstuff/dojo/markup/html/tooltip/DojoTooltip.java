@@ -21,6 +21,7 @@ import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.model.Model;
 import org.wicketstuff.dojo.DojoIdConstants;
+import org.wicketstuff.dojo.IDojoWidget;
 import org.wicketstuff.dojo.toggle.DojoToggle;
 import org.wicketstuff.dojo.widgets.HideWebMarkupContainer;
 
@@ -32,7 +33,7 @@ import org.wicketstuff.dojo.widgets.HideWebMarkupContainer;
  *
  */
 @SuppressWarnings("serial")
-public class DojoTooltip extends HideWebMarkupContainer
+public class DojoTooltip extends HideWebMarkupContainer implements IDojoWidget
 {
 	
 	private Component component;
@@ -48,10 +49,17 @@ public class DojoTooltip extends HideWebMarkupContainer
 		add(new DojoTooltipHandler());
 	}
 	
+	/**
+	 * @see org.wicketstuff.dojo.IDojoWidget#getDojoType()
+	 */
+	public String getDojoType()
+	{
+		return DojoIdConstants.DOJO_TYPE_TOOLTIP;
+	}
+	
 	protected void onComponentTag(ComponentTag tag)
 	{
 		super.onComponentTag(tag);
-		tag.put(DojoIdConstants.DOJO_TYPE, DojoIdConstants.DOJO_TYPE_TOOLTIP);
 		tag.put("connectId", component.getMarkupId());
 	}
 	

@@ -58,11 +58,18 @@ public class DojoModalFloatingPane extends DojoAbstractFloatingPane
 		add(new DojoModalFloatingPaneHandler());
 		setOutputMarkupId(true);
 	}
+	
+	/**
+	 * @see org.wicketstuff.dojo.IDojoWidget#getDojoType()
+	 */
+	public String getDojoType()
+	{
+		return DojoIdConstants.DOJO_TYPE_MODALFLOATINGPANE;
+	}
 
 	protected void onComponentTag(ComponentTag tag)
 	{
 		super.onComponentTag(tag);
-		tag.put(DojoIdConstants.DOJO_TYPE, DojoIdConstants.DOJO_TYPE_MODALFLOATINGPANE);
 		tag.put("bgColor", bgColor);
 		tag.put("bgOpacity", bgOpacity);
 	}

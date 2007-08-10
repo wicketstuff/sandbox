@@ -20,6 +20,7 @@ package org.wicketstuff.dojo.markup.html.list.lazy;
 import org.apache.wicket.Component;
 import org.apache.wicket.WicketRuntimeException;
 import org.wicketstuff.dojo.DojoIdConstants;
+import org.wicketstuff.dojo.IDojoWidget;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.IModel;
@@ -31,7 +32,7 @@ import org.apache.wicket.model.IModel;
  *
  */
 @SuppressWarnings("serial")
-public class DojoLazyLoadingListContainer extends  WebMarkupContainer
+public class DojoLazyLoadingListContainer extends  WebMarkupContainer implements IDojoWidget
 {
 	
 	private int max;
@@ -52,10 +53,17 @@ public class DojoLazyLoadingListContainer extends  WebMarkupContainer
 		setOutputMarkupId(true);
 	}
 	
+	/**
+	 * @see org.wicketstuff.dojo.IDojoWidget#getDojoType()
+	 */
+	public String getDojoType()
+	{
+		return DojoIdConstants.DOJO_TYPE_LAZYTABLE;
+	}
+	
 	protected void onComponentTag(ComponentTag tag)
 	{
 		super.onComponentTag(tag);
-		tag.put(DojoIdConstants.DOJO_TYPE, DojoIdConstants.DOJO_TYPE_LAZYTABLE);
 		tag.put("maxKnewItem","" + max);
 		tag.put("first", ((DojoLazyLoadingRefreshingView)getChild()).getFirst());
 	}

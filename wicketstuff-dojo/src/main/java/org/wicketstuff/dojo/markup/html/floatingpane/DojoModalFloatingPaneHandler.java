@@ -18,9 +18,9 @@ package org.wicketstuff.dojo.markup.html.floatingpane;
 
 import org.apache.wicket.RequestCycle;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.wicketstuff.dojo.AbstractRequireDojoBehavior;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.protocol.http.WebRequest;
+import org.wicketstuff.dojo.AbstractDojoWidgetBehavior;
 
 /**
  * Handler for {@link DojoModalFloatingPane}
@@ -28,7 +28,7 @@ import org.apache.wicket.protocol.http.WebRequest;
  *
  */
 @SuppressWarnings("serial")
-public class DojoModalFloatingPaneHandler extends AbstractRequireDojoBehavior
+public class DojoModalFloatingPaneHandler extends AbstractDojoWidgetBehavior
 {
 	
 	private static final String SHOW = "show";

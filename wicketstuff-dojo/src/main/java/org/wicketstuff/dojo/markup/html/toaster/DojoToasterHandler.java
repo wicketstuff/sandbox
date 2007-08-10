@@ -16,8 +16,7 @@
  */
 package org.wicketstuff.dojo.markup.html.toaster;
 
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.wicketstuff.dojo.AbstractRequireDojoBehavior;
+import org.wicketstuff.dojo.AbstractDojoWidgetBehavior;
 
 /**
  * A dojo Toaster. allow to show a message in a toaster in a screen corner
@@ -25,15 +24,10 @@ import org.wicketstuff.dojo.AbstractRequireDojoBehavior;
  *
  */
 @SuppressWarnings("serial")
-public class DojoToasterHandler extends AbstractRequireDojoBehavior
+public class DojoToasterHandler extends AbstractDojoWidgetBehavior
 {
 
 	public void setRequire(RequireDojoLibs libs){
 		libs.add("dojo.widget.Toaster");
 	}
-
-	protected void respond(AjaxRequestTarget target){
-		
-	}
-
 }

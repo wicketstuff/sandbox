@@ -16,8 +16,8 @@
  */
 package org.wicketstuff.dojo.markup.html.floatingpane;
 
-import org.wicketstuff.dojo.DojoIdConstants;
 import org.apache.wicket.markup.ComponentTag;
+import org.wicketstuff.dojo.DojoIdConstants;
 
 /**
  * <p>
@@ -72,10 +72,11 @@ public class DojoFloatingPane extends DojoAbstractFloatingPane
 		add(new DojoFloatingPaneHandler());
 	}
 	
-	
-	protected void onComponentTag(ComponentTag tag)
+	/**
+	 * @see org.wicketstuff.dojo.IDojoWidget#getDojoType()
+	 */
+	public String getDojoType()
 	{
-		super.onComponentTag(tag);
-		tag.put(DojoIdConstants.DOJO_TYPE, DojoIdConstants.DOJO_TYPE_FLOATINGPANE);
+		return DojoIdConstants.DOJO_TYPE_FLOATINGPANE;
 	}
 }

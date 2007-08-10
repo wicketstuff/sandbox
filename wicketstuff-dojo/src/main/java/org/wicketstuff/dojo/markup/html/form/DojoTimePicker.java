@@ -25,6 +25,7 @@ import java.util.TimeZone;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.wicketstuff.dojo.DojoIdConstants;
 import org.wicketstuff.dojo.DojoLocaleManager;
+import org.wicketstuff.dojo.IDojoWidget;
 import org.wicketstuff.dojo.toggle.DojoToggle;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.form.FormComponent;
@@ -53,7 +54,7 @@ import org.apache.wicket.util.convert.converters.AbstractConverter;
  * 
  */
 @SuppressWarnings("serial")
-public class DojoTimePicker extends TextField {
+public class DojoTimePicker extends TextField implements IDojoWidget {
 
 	private SimpleDateFormat formatter;
 	private String displayFormat;
@@ -107,10 +108,17 @@ public class DojoTimePicker extends TextField {
 		if (locale == null) return null;
 		return locale.toString().replace('_', '-').toLowerCase();
 	}
+	
+	/**
+	 * @see org.wicketstuff.dojo.IDojoWidget#getDojoType()
+	 */
+	public String getDojoType()
+	{
+		return DojoIdConstants.DOJO_TYPE_TIMEPICKER;
+	}
 
 	protected void onComponentTag(ComponentTag tag)	{
 		super.onComponentTag(tag);
-		tag.put(DojoIdConstants.DOJO_TYPE, DojoIdConstants.DOJO_TYPE_TIMEPICKER);
 		if(getLocaleAsString() != null) {
 			tag.put("lang", getLocaleAsString());
 		}

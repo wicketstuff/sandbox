@@ -17,6 +17,7 @@
 package org.wicketstuff.dojo.markup.html.form.suggestionlist;
 
 import org.wicketstuff.dojo.DojoIdConstants;
+import org.wicketstuff.dojo.IDojoWidget;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.model.IModel;
@@ -28,7 +29,7 @@ import org.apache.wicket.model.IModel;
  *
  */
 @SuppressWarnings("serial")
-public class DojoHtmlSuggestionList extends DropDownChoice
+public class DojoHtmlSuggestionList extends DropDownChoice implements IDojoWidget
 {
 	/**
 	 * Create a DojoInlineSuggestionList
@@ -48,10 +49,12 @@ public class DojoHtmlSuggestionList extends DropDownChoice
 		super(id);
 		add(new DojoHtmlSuggestionListHandler());
 	}
-
-	protected void onComponentTag(ComponentTag tag)
+	
+	/**
+	 * @see org.wicketstuff.dojo.IDojoWidget#getDojoType()
+	 */
+	public String getDojoType()
 	{
-		tag.put(DojoIdConstants.DOJO_TYPE, DojoIdConstants.DOJO_TYPE_COMBOBOX);
+		return DojoIdConstants.DOJO_TYPE_COMBOBOX;
 	}
-
 }

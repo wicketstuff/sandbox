@@ -20,6 +20,7 @@ import org.apache.wicket.RequestCycle;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.ComponentTag;
+import org.wicketstuff.dojo.AbstractDojoWidgetBehavior;
 import org.wicketstuff.dojo.AbstractRequireDojoBehavior;
 import org.wicketstuff.dojo.DojoIdConstants;
 
@@ -29,7 +30,7 @@ import org.wicketstuff.dojo.DojoIdConstants;
  * @author <a href="mailto:jbq@apache.org">Jean-Baptiste Quenot</a>
  */
 @SuppressWarnings("serial")
-public class DojoRichTextEditorBehavior extends AbstractRequireDojoBehavior {
+public class DojoRichTextEditorBehavior extends AbstractDojoWidgetBehavior {
 
 	public static final String DOJO_EDITOR2_TOOLBAR_URL = "toolbarTemplatePath";
 	public static final String DOJO_EDITOR2_HEIGHT = "height";

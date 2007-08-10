@@ -16,8 +16,7 @@
  */
 package org.wicketstuff.dojo.markup.html.form.validation.bubble;
 
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.wicketstuff.dojo.AbstractRequireDojoBehavior;
+import org.wicketstuff.dojo.AbstractDojoWidgetBehavior;
 
 /**
  * A handlezr for {@link DojoErrorBubble}
@@ -25,13 +24,9 @@ import org.wicketstuff.dojo.AbstractRequireDojoBehavior;
  *
  */
 @SuppressWarnings("serial")
-public class DojoErrorBubbleHandler extends AbstractRequireDojoBehavior {
+public class DojoErrorBubbleHandler extends AbstractDojoWidgetBehavior {
 
 	public void setRequire(RequireDojoLibs libs) {
 		libs.add("dojoWicket.widget.ErrorBubble");
 	}
-
-	protected void respond(AjaxRequestTarget target) {
-	}
-
 }

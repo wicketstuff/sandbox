@@ -19,6 +19,7 @@ package org.wicketstuff.dojo.markup.html.inlineeditbox;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.IHeaderResponse;
+import org.wicketstuff.dojo.AbstractDojoWidgetBehavior;
 import org.wicketstuff.dojo.AbstractRequireDojoBehavior;
 
 /**
@@ -27,7 +28,7 @@ import org.wicketstuff.dojo.AbstractRequireDojoBehavior;
  * @author Gregory Maes
  */
 @SuppressWarnings("serial")
-public class DojoInlineEditBoxHandler extends AbstractRequireDojoBehavior
+public class DojoInlineEditBoxHandler extends AbstractDojoWidgetBehavior
 {
 
 	/** connect the onSave function of dojo with the wicket callbackUrl */

@@ -26,6 +26,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.util.string.Strings;
 import org.wicketstuff.dojo.DojoIdConstants;
+import org.wicketstuff.dojo.IDojoWidget;
 
 /**
  * <p>
@@ -65,7 +66,7 @@ import org.wicketstuff.dojo.DojoIdConstants;
  * @author <a href="mailto:jbq@apache.org">Jean-Baptiste Quenot</a>
  */
 @SuppressWarnings("serial")
-public class DojoInlineEditBox extends WebComponent
+public class DojoInlineEditBox extends WebComponent implements IDojoWidget
 {
 
 	/**
@@ -107,11 +108,18 @@ public class DojoInlineEditBox extends WebComponent
 		this(id, new Model(label));
 	}
 
+	/**
+	 * @see org.wicketstuff.dojo.IDojoWidget#getDojoType()
+	 */
+	public String getDojoType()
+	{
+		return DojoIdConstants.DOJO_TYPE_INLINE_EDIT_BOX;
+	}
+
 	/** set the dojoType */
 	protected void onComponentTag(ComponentTag tag)
 	{
 		super.onComponentTag(tag);
-		tag.put(DojoIdConstants.DOJO_TYPE, DojoIdConstants.DOJO_TYPE_INLINE_EDIT_BOX);
 		tag.put("templatePath", urlFor(new ResourceReference(DojoInlineEditBox.class,
 				"InlineEditBox.htm")));
 	}

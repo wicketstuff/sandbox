@@ -20,10 +20,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 import org.apache.wicket.RequestCycle;
-import org.apache.wicket.Response;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.wicketstuff.dojo.skin.manager.SkinManager;
-import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.IHeaderResponse;
 
 /**
@@ -35,13 +32,30 @@ import org.apache.wicket.markup.html.IHeaderResponse;
  * </p>
  * 
  * <p>
- * This behavior also takes care to refresh a Dojo component when it is
- * re-rendered via an ajax request.
+ * This behavior also takes care to add needed require on a ajaxRequestTarget
+ * </p>
+ * 
+ * <p>
+ * Since 1.3.0-beta<br/>
+ * This method is not adapted to be used with widget, see {@link AbstractDojoWidgetBehavior}.
+ * This behavior only deals with dojoRequire statements ans is not in charge of
+ * the widget dojo parsing
  * </p>
  * 
  * @author vdemay
  */
 public abstract class AbstractRequireDojoBehavior extends AbstractDefaultDojoBehavior {
+	
+	/**
+	 * A class to deals with require
+	 * @author vdemay
+	 * 
+	 */
+	@SuppressWarnings("serial")
+	public class RequireDojoLibs extends HashSet<String> {
+
+	}
+	
 	private RequireDojoLibs libs = new RequireDojoLibs();
 
 	/*
@@ -54,21 +68,22 @@ public abstract class AbstractRequireDojoBehavior extends AbstractDefaultDojoBeh
 		super.renderHead(response);
 		StringBuffer require = getRequire();
 
+		//render dojo.require
 		response.renderJavascript(require, AbstractRequireDojoBehavior.class.getName());
-		
-		//Dojo auto parsing is disactivated so we declare here each widget we need to parse with dojo
-		if (!(RequestCycle.get().getRequestTarget() instanceof AjaxRequestTarget)) {
-			response.renderJavascript("djConfig.searchIds.push(\""+getComponent().getMarkupId()+"\");", "DojoParse" + getComponent().getMarkupId());
-		}
 	}
 	
-	public StringBuffer getRequire(){
+	/**
+	 * Method to generate list of the <code>dojo.require</code>
+	 * Also called in {@link TargetRefresherManager} 
+	 * @return the stringBuffer containing the <code>dojo.require</code> list
+	 */
+	public final StringBuffer getRequire(){
 		setRequire(libs); // will be implemented by childs
 		StringBuffer require = new StringBuffer();
 
 		Iterator ite = libs.iterator();
 		while (ite.hasNext()) {
-			require.append("	dojo.require(\"");
+			require.append("dojo.require(\"");
 			require.append((String) ite.next());
 			require.append("\");\n");
 		}
@@ -87,6 +102,7 @@ public abstract class AbstractRequireDojoBehavior extends AbstractDefaultDojoBeh
 
 	/**
 	 * this method is used to interpret dojoWidgets rendered via XMLHTTPRequest
+	 * FIXME : in TargetRefresherMPanager differency AbstractRequire and DojoWidgetBehavior
 	 */
 	protected void onComponentRendered() {
 		
@@ -110,21 +126,6 @@ public abstract class AbstractRequireDojoBehavior extends AbstractDefaultDojoBeh
 	 * @param ajaxTarget
 	 */
 	public void onComponentReRendered(AjaxRequestTarget ajaxTarget) {
-
-	}
-
-	protected void onComponentTag(ComponentTag tag) {
-		super.onComponentTag(tag);
-		tag.put("widgetId", getComponent().getMarkupId());
-		SkinManager.getInstance().setSkinOnComponent(getComponent(), this, tag);
-	}
-
-	/**
-	 * @author vdemay
-	 * 
-	 */
-	@SuppressWarnings("serial")
-	public class RequireDojoLibs extends HashSet<String> {
 
 	}
 
