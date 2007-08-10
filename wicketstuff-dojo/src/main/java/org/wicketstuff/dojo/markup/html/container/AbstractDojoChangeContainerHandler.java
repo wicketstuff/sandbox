@@ -21,6 +21,7 @@ import org.apache.wicket.Component.IVisitor;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.wicketstuff.dojo.AbstractDojoWidgetBehavior;
 import org.wicketstuff.dojo.AbstractRequireDojoBehavior;
+import org.wicketstuff.dojo.widgetloadingpolicy.IDojoWidgetLoadingPolicy;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 
@@ -34,6 +35,16 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
  */
 public abstract class AbstractDojoChangeContainerHandler extends AbstractDojoWidgetBehavior {
 
+
+	public AbstractDojoChangeContainerHandler()
+	{
+		super();
+	}
+
+	public AbstractDojoChangeContainerHandler(IDojoWidgetLoadingPolicy loadingPolicy)
+	{
+		super(loadingPolicy);
+	}
 
 	/**
 	 * Find a direct {@link IDojoContainer} child 
