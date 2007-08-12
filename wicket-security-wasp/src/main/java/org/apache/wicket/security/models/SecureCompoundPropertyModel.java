@@ -21,7 +21,6 @@ import org.apache.wicket.Component;
 import org.apache.wicket.Session;
 import org.apache.wicket.authorization.IAuthorizationStrategy;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.internal.HtmlBodyContainer;
 import org.apache.wicket.markup.html.pages.AccessDeniedPage;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractPropertyModel;
