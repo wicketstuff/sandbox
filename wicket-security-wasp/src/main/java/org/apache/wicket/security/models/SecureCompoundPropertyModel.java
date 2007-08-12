@@ -55,10 +55,10 @@ import org.apache.wicket.security.strategies.WaspAuthorizationStrategy;
  * note that Wicket by default only checks the setter and not the getter as that
  * is generally equivalent to the render check on the component. Note when
  * setting this model on a page the model is shared with every component on this
- * page including the page itself and a {@link HtmlBodyContainer}, failing to
- * grant enough rights to the page will result in an {@link AccessDeniedPage}.
- * Failing the 2nd will result in Wicket complaining about missing components.
- * Therefore it is best to set this model on a {@link Panel} or {@link Form}.
+ * page including the page itself, failing to grant enough rights to the page
+ * will result in an {@link AccessDeniedPage}. Failing the 2nd will result in
+ * Wicket complaining about missing components. Therefore it is best to set this
+ * model on a {@link Panel} or {@link Form}.
  * 
  * @author marrink
  */

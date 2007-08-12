@@ -787,8 +787,6 @@ public class GeneralTest extends TestCase
 		Map authorized = new HashMap();
 		authorized.put("model:" + SecureModelPage.class.getName(), application.getActionFactory()
 				.getAction("render"));
-		authorized.put("model:_body_", application.getActionFactory().getAction("render"));
-		// need to grant enough rights to the page and bodycontainer, see apidoc
 		login(authorized);
 		mock.startPage(SecureModelPage.class);
 		mock.assertRenderedPage(SecureModelPage.class);
