@@ -9,6 +9,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
 import wicket.contrib.examples.WicketExamplePage;
+import wicket.contrib.examples.gmap.geocode.GClientGeocoder;
 import wicket.contrib.gmap.GMap2;
 import wicket.contrib.gmap.api.GControl;
 import wicket.contrib.gmap.api.GInfoWindowTab;
@@ -32,13 +33,13 @@ public class HomePage extends WicketExamplePage
 	private static final long serialVersionUID = 1L;
 
 	private final FeedbackPanel feedback;
-	
+
 	private final Label markerLabel;
 	private final Label zoomLabel;
 	private final Label center;
 
 	private MoveEndListener moveEndBehavior;
-	
+
 	public HomePage()
 	{
 		feedback = new FeedbackPanel("feedback");
@@ -149,28 +150,35 @@ public class HomePage extends WicketExamplePage
 			@Override
 			protected void onClick(AjaxRequestTarget target, GLatLng gLatLng, GMarker marker)
 			{
-				if (gLatLng != null) {
+				if (gLatLng != null)
+				{
 					bottomPanel.getInfoWindow().open(gLatLng, new HelloPanel());
 				}
 			}
 
 		});
-		bottomPanel.add(new InfoWindowCloseListener() {
+		bottomPanel.add(new InfoWindowCloseListener()
+		{
 			@Override
-			protected void onInfoWindowClose(AjaxRequestTarget target) {
+			protected void onInfoWindowClose(AjaxRequestTarget target)
+			{
 				info("InfoWindow was closed");
 				target.addComponent(feedback);
 			}
 		});
-		bottomPanel.add(new InfoWindowOpenListener() {
+		bottomPanel.add(new InfoWindowOpenListener()
+		{
 			@Override
-			protected void onInfoWindowOpen(AjaxRequestTarget target) {
+			protected void onInfoWindowOpen(AjaxRequestTarget target)
+			{
 				info("InfoWindow was opened");
 				target.addComponent(feedback);
 			}
 		});
 		bottomPanel.addControl(GControl.GSmallMapControl);
-		bottomPanel.getInfoWindow().open(new GLatLng(37.5, -122.1), new GInfoWindowTab("One", new HelloPanel()), new GInfoWindowTab("Two", new HelloPanel()));
+		bottomPanel.getInfoWindow().open(new GLatLng(37.5, -122.1),
+				new GInfoWindowTab("One", new HelloPanel()),
+				new GInfoWindowTab("Two", new HelloPanel()));
 		add(bottomPanel);
 
 		center = new Label("center", new PropertyModel(bottomPanel, "center"));
@@ -252,8 +260,9 @@ public class HomePage extends WicketExamplePage
 				}
 				else
 				{
-					//TODO AbstractAjaxBehaviors are not reusable, so we have to recreate:
-					//https://issues.apache.org/jira/browse/WICKET-713
+					// TODO AbstractAjaxBehaviors are not reusable, so we have
+					// to recreate:
+					// https://issues.apache.org/jira/browse/WICKET-713
 					moveEndBehavior = new MoveEndListener()
 					{
 						private static final long serialVersionUID = 1L;
@@ -271,13 +280,17 @@ public class HomePage extends WicketExamplePage
 			}
 		});
 		add(enabledLabel);
+		GClientGeocoder geoCodePanel = new GClientGeocoder("geoCoder", bottomPanel,
+				LOCALHOST_8080_WICKET_CONTRIB_GMAP2_EXAMPLES_KEY);
+		add(geoCodePanel);
 	}
 
-	private void markerSelected(AjaxRequestTarget target, GMarker marker) {
+	private void markerSelected(AjaxRequestTarget target, GMarker marker)
+	{
 		markerLabel.getModel().setObject(marker);
 		target.addComponent(markerLabel);
 	}
-	
+
 	// pay attention at webapp deploy context, we need a different key for each
 	// deploy context
 	// check <a href="http://www.google.com/apis/maps/signup.html">Google Maps
