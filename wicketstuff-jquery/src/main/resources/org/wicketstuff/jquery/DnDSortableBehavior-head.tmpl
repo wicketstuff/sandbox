@@ -1,0 +1,37 @@
+<style type="text/css">
+/*<![CDATA[*/    
+${containerSelector}{
+	margin-right: 1%;
+}
+${handleSelector}{
+	cursor: move;
+}
+.${helperclass}{
+    border: 1px dashed #666;
+    width: auto !important;
+}
+/*]]>*/
+</style>
+<script type="text/javascript">
+var ${dndHandlerInit} = function(){
+	$('${containerSelector}').Sortable({
+		${options}
+		onStart : function(){
+			$.debug(true); $.log(this); $.log($(this).parent('${containerSelector}'));
+			DnDSortableBehavior.start(this,'${containerSelector}', '.dndItem');
+			$.iAutoscroller.start(this, document.getElementsByTagName('body'));
+	        },
+		onStop : function(){
+			$.debug(true); $.log(this); $.log($(this).parent('${containerSelector}'));
+			$.iAutoscroller.stop();
+			DnDSortableBehavior.stop(this,'${containerSelector}', '${itemSelector}');
+			if (DnDSortableBehavior.isMoved()) {
+				var wcall = wicketAjaxGet('${callbackUrl}&' + DnDSortableBehavior.asQueryString(), function(){}, function(){});
+			}
+		},
+		onChange : function(changed) {
+		}
+	});
+};
+$(document).ready(${dndHandlerInit});
+</script>
