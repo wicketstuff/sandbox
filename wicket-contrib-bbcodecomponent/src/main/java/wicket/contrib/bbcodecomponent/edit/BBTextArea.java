@@ -21,9 +21,9 @@ import org.apache.wicket.model.IModel;
 import wicket.contrib.bbcodecomponent.control.bbCodeSetActiveTextFieldAttributeModifier;
 
 
-public class TextArea extends org.apache.wicket.markup.html.form.TextArea {
+public class BBTextArea extends org.apache.wicket.markup.html.form.TextArea {
 
-	public TextArea(String id, IModel model) {
+	public BBTextArea(String id, IModel model) {
 		super(id, model);
 		setOutputMarkupId(true);
 	}
