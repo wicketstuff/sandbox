@@ -10,7 +10,7 @@
     <groupId>org.wicketstuff.jquery</groupId>
 	<artifactId>wicketstuff-jquery</artifactId>
 	<packaging>jar</packaging>
-	<version>0.1</version>
+	<version>0.1-SNAPSHOT</version>
 	<properties>
 		<wicket.version>1.3.0-beta2</wicket.version>
 	</properties>
