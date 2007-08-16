@@ -30,14 +30,14 @@ import wicket.contrib.bbcodecomponent.core.Tags;
  * @author Nino Martinez Wael (nino.martinez@jayway.dk)
  * 
  */
-public class Label extends org.apache.wicket.markup.html.basic.Label {
+public class BBLabel extends org.apache.wicket.markup.html.basic.Label {
 
-	public Label(String id, IModel model) {
+	public BBLabel(String id, IModel model) {
 		super(id, model);
 		setEscapeModelStrings(false);
 	}
 
-	public Label(String id, String model) {
+	public BBLabel(String id, String model) {
 		this(id, new Model(model));
 	}
 
