@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 package wicket.contrib.bbcodecomponent.display;
 
 import org.apache.wicket.markup.ComponentTag;
@@ -25,9 +25,10 @@ import org.apache.wicket.model.Model;
 import wicket.contrib.bbcodecomponent.core.Tags;
 
 /**
- *  BBCode Label that interprets bbcode and shows html equalent
- * 	@author Nino Martinez Wael (nino.martinez@jayway.dk)
- *
+ * BBCode Label that interprets bbcode and shows html equalent
+ * 
+ * @author Nino Martinez Wael (nino.martinez@jayway.dk)
+ * 
  */
 public class Label extends org.apache.wicket.markup.html.basic.Label {
 
@@ -39,15 +40,15 @@ public class Label extends org.apache.wicket.markup.html.basic.Label {
 	public Label(String id, String model) {
 		this(id, new Model(model));
 	}
-@Override
-protected void onComponentTagBody(MarkupStream markupStream, ComponentTag openTag) {
-	String display=getModelObjectAsString();
-	
-	for(Tags t:Tags.values())
-	{
-		display=display.replaceAll(t.getStartBBTag(), t.getStartHTMLTag());
-		display=display.replaceAll(t.getEndBBTag(), t.getEndHTMLTag());
+
+	@Override
+	protected void onComponentTagBody(MarkupStream markupStream,
+			ComponentTag openTag) {
+		String display = getModelObjectAsString();
+		for (Tags t : Tags.values()) {
+			display = display.replace(t.getStartBBTag(), t.getStartHTMLTag());
+			display = display.replace(t.getEndBBTag(), t.getEndHTMLTag());
+		}
+		replaceComponentTagBody(markupStream, openTag, display);
 	}
-	replaceComponentTagBody(markupStream, openTag, display);
-}
 }
