@@ -31,6 +31,8 @@ public class PageSupport extends WebPage {
         add(new BookmarkablePageLink("simpleList", Page4SimpleList.class));
         add(new BookmarkablePageLink("oneGroup", Page4OneGroup.class));
         add(new BookmarkablePageLink("multiGroup", Page4MultiGroup.class));
+        add(new BookmarkablePageLink("accordion", Page4Accordion.class));
+        add(new BookmarkablePageLink("tabs", Page4Tabs.class));
 
         add(new FeedbackPanel("feedback").setOutputMarkupId(true));
     }
