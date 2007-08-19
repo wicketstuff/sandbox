@@ -256,7 +256,7 @@ public abstract class HttpAuthenticationLoginPage extends WebPage
 			return true;
 		if (param == null)
 		{
-			log.error("Username, passowrd not supplied");
+			log.error("Username, password not supplied");
 			return false;
 		}
 		byte[] decoded = Base64.decodeBase64(param.getBytes());
