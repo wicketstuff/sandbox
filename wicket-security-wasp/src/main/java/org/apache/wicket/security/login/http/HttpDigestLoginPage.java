@@ -16,19 +16,28 @@
  */
 package org.apache.wicket.security.login.http;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.wicket.Application;
 import org.apache.wicket.IPageMap;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
+import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.protocol.http.WebRequest;
 import org.apache.wicket.protocol.http.WebResponse;
 import org.apache.wicket.security.strategies.LoginException;
 import org.apache.wicket.util.crypt.Base64;
 import org.apache.wicket.util.lang.Objects;
+import org.apache.wicket.util.lang.PropertyResolver;
+import org.apache.wicket.util.lang.PropertyResolverConverter;
 import org.apache.wicket.util.string.AppendingStringBuffer;
+import org.apache.wicket.util.string.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,6 +51,15 @@ import org.slf4j.LoggerFactory;
 public abstract class HttpDigestLoginPage extends HttpAuthenticationLoginPage
 {
 	private static final Logger log = LoggerFactory.getLogger(HttpDigestLoginPage.class);
+	/**
+	 * Matches recurring patterns like : key="some value" or key=value separated
+	 * by a comma (,). groups are as following 1:key-value pair, 2:key, 3:value
+	 * without quotes if value was quoted, 4: value if value was not quoted.
+	 */
+	private static final Pattern HEADER_FIELDS = Pattern
+			.compile("(([a-zA-Z]+)=(?:\"([\\p{Graph}\\p{Blank}]+?)\"|([^\\s\",]+)))+,?");
+
+
 	private boolean allowBasicAuthenication = true;
 
 	/**
@@ -127,8 +145,112 @@ public abstract class HttpDigestLoginPage extends HttpAuthenticationLoginPage
 	protected boolean handleDigestAuthentication(WebRequest request, WebResponse response,
 			String scheme, String param)
 	{
+		if (!"Digest".equalsIgnoreCase(scheme))
+			return true;
+		if (param == null)
+		{
+			log.error("Digest headers not supplied");
+			return false;
+		}
+		DigestAuthorizationRequestHeader header = parseHeader(request);
+		if (header == null)
+		{
+			log.error("Invalid Digest headers supplied:" + param);
+			return false;
+		}
+		// is there anything we should do with the digest-uri?
+		String supportedQop = getQop(request, response);
+		boolean qopSupport = !Strings.isEmpty(supportedQop);
+		if (qopSupport)
+		{
+			// if we sent qop header the client must return one of the options
+			String[] qopOptions = supportedQop.split(" ");
+			boolean supported = false;
+			for (int i = 0; i < qopOptions.length && !supported; i++)
+				supported = qopOptions[i].equals(header.getQop());
+			if (!supported)
+			{
+				response.getHttpServletResponse().setStatus(HttpServletResponse.SC_BAD_REQUEST);
+				return false;
+			}
+			// we requested qop so these headers must be present
+			if (Strings.isEmpty(header.getCnonce()) || Strings.isEmpty(header.getNc()))
+			{
+				response.getHttpServletResponse().setStatus(HttpServletResponse.SC_BAD_REQUEST);
+				return false;
+			}
+			// TODO validate nonce-count (nc)
+		}
+		else
+		{
+			// no qop support so these headers are not allowed
+			if (!(Strings.isEmpty(header.getCnonce()) && Strings.isEmpty(header.getNc())))
+			{
+				response.getHttpServletResponse().setStatus(HttpServletResponse.SC_BAD_REQUEST);
+				return false;
+			}
+		}
+		// verify response (request-digest)
+
+
 		// TODO finish this
-		return true;
+		return false;
+	}
+
+	/**
+	 * Performs a digest over a secret and some data as required by the
+	 * algorithm. The default only supports MD5 and MD5-sess.
+	 * 
+	 * @param header
+	 * @param secret
+	 * @param data
+	 * @return the digest or null if the algorithm is not supported
+	 * @see #checksum(String, String)
+	 * @see <a href="http://tools.ietf.org/html/rfc2617#section-3.2.1">section
+	 *      3.2.1 (algorithm)</a>
+	 */
+	protected String digest(DigestAuthorizationRequestHeader header, String secret, String data)
+	{
+		// TODO replace header with algorithm, if we don't need the complete
+		// header
+		String algorithm = header.getAlgorithm();
+		if ("MD5".equals(algorithm) || "MD5-sess".equals(algorithm))
+		{
+			return checksum(algorithm, secret + ":" + data);
+		}
+		return null;
+	}
+
+	/**
+	 * Performs a checksum operation over the data as required by the algorithm.
+	 * The default only supports MD5 and MD5-sess.
+	 * 
+	 * @param algorithm
+	 * @param data
+	 * @return a checksum or null if the algorithm is not supported
+	 * @throws WicketRuntimeException
+	 *             if the algorithm could not be located
+	 * @see <a href="http://tools.ietf.org/html/rfc2617#section-3.2.1">section
+	 *      3.2.1 (algorithm)</a>
+	 */
+	protected String checksum(String algorithm, String data)
+	{
+		if ("MD5".equals(algorithm) || "MD5-sess".equals(algorithm))
+		{
+			MessageDigest digest = null;
+			try
+			{
+				digest = MessageDigest.getInstance(algorithm);
+			}
+			catch (NoSuchAlgorithmException e)
+			{
+				throw new WicketRuntimeException("Client requested " + algorithm
+						+ ", but the algorithm could not be located");
+			}
+			digest.update(data.getBytes());
+			return new String(digest.digest());
+		}
+		return null;
 	}
 
 	/**
@@ -319,8 +441,24 @@ public abstract class HttpDigestLoginPage extends HttpAuthenticationLoginPage
 		String header = request.getHttpServletRequest().getHeader("Authorization");
 		if (header == null)
 			return null;
-		// TODO finish this
-		return null;
+		if (!header.startsWith("Digest "))
+			return null;
+		header = header.substring(7);
+		Matcher m = HEADER_FIELDS.matcher(header);
+		if (!m.matches())
+			return null;
+		DigestAuthorizationRequestHeader digestHeader = new DigestAuthorizationRequestHeader();
+		m.reset();
+		while (m.find())
+		{
+			String key = m.group(2);
+			String value = m.group(3);
+			if (Strings.isEmpty(value))
+				value = m.group(4);
+			if (!digestHeader.addKeyValuePair(key, value))
+				log.warn("Unknown header: " + key + ", skipping header.");
+		}
+		return digestHeader;
 	}
 
 	/**
@@ -331,23 +469,51 @@ public abstract class HttpDigestLoginPage extends HttpAuthenticationLoginPage
 	 */
 	protected static final class DigestAuthorizationRequestHeader
 	{
+		private static final PropertyResolverConverter converter = new NoOpPropertyResolverConverter();
+		private String username;
 		private String realm;
 		private String nonce;
+		private String uri;
+		private String qop;
+		private String nc;
+		private String cnonce;
+		private String response;
 		private String opaque;
+		private String algorithm;
 
 		/**
-		 * Construct.
+		 * Constructor to be used when key value pairs are going to be added
+		 * later.
 		 * 
-		 * @param realm
-		 * @param nonce
-		 * @param opaque
+		 * @see #addKeyValuePair(String, String)
 		 */
-		protected DigestAuthorizationRequestHeader(String realm, String nonce, String opaque)
+		protected DigestAuthorizationRequestHeader()
 		{
-			super();
-			this.realm = realm;
-			this.nonce = nonce;
-			this.opaque = opaque;
+
+		}
+
+		/**
+		 * Dynamically resolves a header to the correct field and sets it value.
+		 * 
+		 * @param key
+		 * @param value
+		 * @return true, if the value was set, false if the value could not be
+		 *         set
+		 */
+		public boolean addKeyValuePair(String key, String value)
+		{
+			if (Strings.isEmpty(key))
+				return false;
+			try
+			{
+				PropertyResolver.setValue(key, this, value, converter);
+			}
+			catch (WicketRuntimeException e)
+			{
+				log.debug("Failed to set header: " + key, e);
+				return false;
+			}
+			return true;
 		}
 
 		/**
@@ -379,5 +545,207 @@ public abstract class HttpDigestLoginPage extends HttpAuthenticationLoginPage
 		{
 			return opaque;
 		}
+
+		/**
+		 * Gets username.
+		 * 
+		 * @return username
+		 */
+		public String getUsername()
+		{
+			return username;
+		}
+
+		/**
+		 * Sets username.
+		 * 
+		 * @param username
+		 *            username
+		 */
+		public void setUsername(String username)
+		{
+			this.username = username;
+		}
+
+		/**
+		 * Gets uri.
+		 * 
+		 * @return uri
+		 */
+		public String getUri()
+		{
+			return uri;
+		}
+
+		/**
+		 * Sets uri.
+		 * 
+		 * @param uri
+		 *            uri
+		 */
+		public void setUri(String uri)
+		{
+			this.uri = uri;
+		}
+
+		/**
+		 * Gets qop.
+		 * 
+		 * @return qop
+		 */
+		public String getQop()
+		{
+			return qop;
+		}
+
+		/**
+		 * Sets qop.
+		 * 
+		 * @param qop
+		 *            qop
+		 */
+		public void setQop(String qop)
+		{
+			this.qop = qop;
+		}
+
+		/**
+		 * Gets nc.
+		 * 
+		 * @return nc
+		 */
+		public String getNc()
+		{
+			return nc;
+		}
+
+		/**
+		 * Sets nc.
+		 * 
+		 * @param nc
+		 *            nc
+		 */
+		public void setNc(String nc)
+		{
+			this.nc = nc;
+		}
+
+		/**
+		 * Gets cnonce.
+		 * 
+		 * @return cnonce
+		 */
+		public String getCnonce()
+		{
+			return cnonce;
+		}
+
+		/**
+		 * Sets cnonce.
+		 * 
+		 * @param cnonce
+		 *            cnonce
+		 */
+		public void setCnonce(String cnonce)
+		{
+			this.cnonce = cnonce;
+		}
+
+		/**
+		 * Gets response.
+		 * 
+		 * @return response
+		 */
+		public String getResponse()
+		{
+			return response;
+		}
+
+		/**
+		 * Sets response.
+		 * 
+		 * @param response
+		 *            response
+		 */
+		public void setResponse(String response)
+		{
+			this.response = response;
+		}
+
+		/**
+		 * Sets realm.
+		 * 
+		 * @param realm
+		 *            realm
+		 */
+		public void setRealm(String realm)
+		{
+			this.realm = realm;
+		}
+
+		/**
+		 * Sets nonce.
+		 * 
+		 * @param nonce
+		 *            nonce
+		 */
+		public void setNonce(String nonce)
+		{
+			this.nonce = nonce;
+		}
+
+		/**
+		 * Sets opaque.
+		 * 
+		 * @param opaque
+		 *            opaque
+		 */
+		public void setOpaque(String opaque)
+		{
+			this.opaque = opaque;
+		}
+
+		/**
+		 * Gets algorithm.
+		 * 
+		 * @return algorithm
+		 */
+		public String getAlgorithm()
+		{
+			return algorithm;
+		}
+
+		/**
+		 * Sets algorithm.
+		 * 
+		 * @param algorithm
+		 *            algorithm
+		 */
+		public void setAlgorithm(String algorithm)
+		{
+			this.algorithm = algorithm;
+		}
+	}
+	private static class NoOpPropertyResolverConverter extends PropertyResolverConverter
+	{
+		private static final long serialVersionUID = 1L;
+
+		/**
+		 * Construct.
+		 */
+		public NoOpPropertyResolverConverter()
+		{
+			super(null, null);
+		}
+
+		/**
+		 * @see org.apache.wicket.util.lang.PropertyResolverConverter#convert(java.lang.Object,
+		 *      java.lang.Class)
+		 */
+		public Object convert(Object object, Class clz)
+		{
+			return object; // assume correct type.
+		}
+
 	}
 }
