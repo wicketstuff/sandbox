@@ -87,9 +87,21 @@ public class GMap2 extends Panel
 	 * @param gMapKey
 	 *            Google gmap API KEY
 	 */
+	public GMap2(final String id, final GMapHeaderContributor headerContrib)
+	{
+		this(id, headerContrib, new ArrayList<GOverlay>());
+	}
+
+	/**
+	 * Construct.
+	 * 
+	 * @param id
+	 * @param gMapKey
+	 *            Google gmap API KEY
+	 */
 	public GMap2(final String id, final String gMapKey)
 	{
-		this(id, gMapKey, new ArrayList<GOverlay>());
+		this(id, new GMapHeaderContributor(gMapKey), new ArrayList<GOverlay>());
 	}
 
 	/**
