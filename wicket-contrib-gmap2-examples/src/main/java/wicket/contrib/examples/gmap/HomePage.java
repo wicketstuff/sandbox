@@ -10,6 +10,7 @@ import org.apache.wicket.model.PropertyModel;
 
 import wicket.contrib.examples.WicketExamplePage;
 import wicket.contrib.examples.gmap.geocode.GClientGeocoder;
+import wicket.contrib.examples.gmap.geocode.GeocoderForm;
 import wicket.contrib.gmap.GMap2;
 import wicket.contrib.gmap.GMapHeaderContributor;
 import wicket.contrib.gmap.api.GControl;
@@ -281,9 +282,9 @@ public class HomePage extends WicketExamplePage
 			}
 		});
 		add(enabledLabel);
-		GClientGeocoder geoCodePanel = new GClientGeocoder("geoCoder", bottomPanel,
+		GeocoderForm geoCodeForm = new GeocoderForm("geoCoder", bottomPanel,
 				LOCALHOST_8080_WICKET_CONTRIB_GMAP2_EXAMPLES_KEY);
-		add(geoCodePanel);
+		add(geoCodeForm);
 	}
 
 	private void markerSelected(AjaxRequestTarget target, GMarker marker)
