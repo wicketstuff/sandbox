@@ -57,7 +57,7 @@ public class DojoSelectableListContainerHandler extends AbstractDojoWidgetBehavi
 			for (int i=0; i < selectedIndex.length; i++){
 				int pos = Integer.parseInt(selectedIndex[i]);
 				if (i==0){
-					selected += "[";
+					selected = "[";
 				}
 				if (i == selectedIndex.length -1){
 					selected += pos + "]";
