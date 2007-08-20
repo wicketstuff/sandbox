@@ -9,7 +9,6 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
 import wicket.contrib.examples.WicketExamplePage;
-import wicket.contrib.examples.gmap.geocode.GClientGeocoder;
 import wicket.contrib.examples.gmap.geocode.GeocoderForm;
 import wicket.contrib.gmap.GMap2;
 import wicket.contrib.gmap.GMapHeaderContributor;
