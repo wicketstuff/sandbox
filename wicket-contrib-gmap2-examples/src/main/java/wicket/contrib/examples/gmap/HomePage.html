@@ -63,7 +63,14 @@ can part of your site.
 				<td><span class="myButton" wicket:id="enabled">toBeEditet</span></td>
 			</tr>
 			<tr>
-				<td colspan="3"><div wicket:id="geoCoder">geoCoder</div></td>
+				<td colspan="3">
+					<form wicket:id = "geoCoder">
+						<p>
+        					<input type="text" size="60" id="address" wicket:id="address" />
+        					<input type="submit" value="Go!" wicket:id="submit"/>
+      					</p>
+    				</form>
+    			</td>
 			</tr>
 		</table>
 		</td>
