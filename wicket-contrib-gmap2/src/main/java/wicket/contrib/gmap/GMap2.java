@@ -55,30 +55,19 @@ import wicket.contrib.gmap.event.GEventListener;
  */
 public class GMap2 extends Panel
 {
-	
+
 	private static final long serialVersionUID = 1L;
-
-	/** URL for Google Maps' API endpoint. */
-	private static final String GMAP_API_URL = "http://maps.google.com/maps?file=api&amp;v=2&amp;key=";
-
-	// We have some custom Javascript.
-	private static final ResourceReference WICKET_GMAP_JS = new JavascriptResourceReference(
-			GMap2.class, "wicket-gmap.js");
-
-	// We also depend on wicket-ajax.js within wicket-gmap.js
-	private static final ResourceReference WICKET_AJAX_JS = new JavascriptResourceReference(
-			AbstractDefaultAjaxBehavior.class, "wicket-ajax.js");
 
 	private GLatLng center = new GLatLng(37.4419, -122.1419);
 
 	private boolean draggingEnabled = true;
-	
+
 	private boolean doubleClickZoomEnabled = false;
-	
+
 	private boolean scrollWheelZoomEnabled = false;
-	
+
 	private GMapType mapType = GMapType.G_NORMAL_MAP;
-	
+
 	private int zoom = 13;
 
 	private Set<GControl> controls = new HashSet<GControl>();
@@ -113,11 +102,33 @@ public class GMap2 extends Panel
 	 */
 	public GMap2(final String id, final String gMapKey, List<GOverlay> overlays)
 	{
+		this(id, new GMapHeaderContributor(gMapKey), overlays);
+	}
+
+	/**
+	 * Construct.
+	 * 
+	 * @param id
+	 * @param gMapKey
+	 *            Google gmap API KEY
+	 * @param overlays
+	 */
+	public GMap2(final String id, final GMapHeaderContributor headerContrib, List<GOverlay> overlays)
+	{
 		super(id);
 
 		this.overlays = overlays;
 
-		add(getHeaderContributor(gMapKey));
+		add(headerContrib);
+		add(new HeaderContributor(new IHeaderContributor()
+		{
+			private static final long serialVersionUID = 1L;
+
+			public void renderHead(IHeaderResponse response)
+			{
+				response.renderOnDomReadyJavascript(getJSinit());
+			}
+		}));
 
 		infoWindow = new GInfoWindow();
 		add(infoWindow);
@@ -125,28 +136,6 @@ public class GMap2 extends Panel
 		map = new WebMarkupContainer("map");
 		map.setOutputMarkupId(true);
 		add(map);
-	}
-
-	private HeaderContributor getHeaderContributor(final String gMapKey)
-	{
-		// Set up the JavaScript context for this Panel.
-		return new HeaderContributor(new IHeaderContributor()
-		{
-			private static final long serialVersionUID = 1L;
-
-			public void renderHead(IHeaderResponse response)
-			{
-				response.renderJavascriptReference(GMAP_API_URL + gMapKey);
-				// We don't want to have to fake in a
-				response.renderJavascriptReference(WicketEventReference.INSTANCE);
-				response.renderJavascriptReference(WICKET_AJAX_JS);
-				response.renderJavascriptReference(WICKET_GMAP_JS);
-				// see:
-				// http://www.google.com/apis/maps/documentation/#Memory_Leaks
-				response.renderOnBeforeUnloadJavascript("GUnload();");
-				response.renderOnDomReadyJavascript(getJSinit());
-			}
-		});
 	}
 
 	/**
@@ -162,8 +151,8 @@ public class GMap2 extends Panel
 
 		if (RequestCycle.get().getRequestTarget() instanceof AjaxRequestTarget)
 		{
-			((AjaxRequestTarget)RequestCycle.get().getRequestTarget())
-					.appendJavascript(control.getJSadd(GMap2.this));
+			((AjaxRequestTarget)RequestCycle.get().getRequestTarget()).appendJavascript(control
+					.getJSadd(GMap2.this));
 		}
 
 		return this;
@@ -182,8 +171,8 @@ public class GMap2 extends Panel
 
 		if (RequestCycle.get().getRequestTarget() instanceof AjaxRequestTarget)
 		{
-			((AjaxRequestTarget)RequestCycle.get().getRequestTarget())
-					.appendJavascript(control.getJSremove(GMap2.this));
+			((AjaxRequestTarget)RequestCycle.get().getRequestTarget()).appendJavascript(control
+					.getJSremove(GMap2.this));
 		}
 
 		return this;
@@ -202,8 +191,8 @@ public class GMap2 extends Panel
 
 		if (RequestCycle.get().getRequestTarget() instanceof AjaxRequestTarget)
 		{
-			((AjaxRequestTarget)RequestCycle.get().getRequestTarget())
-					.appendJavascript(overlay.getJSadd(GMap2.this));
+			((AjaxRequestTarget)RequestCycle.get().getRequestTarget()).appendJavascript(overlay
+					.getJSadd(GMap2.this));
 		}
 
 		return this;
@@ -225,8 +214,8 @@ public class GMap2 extends Panel
 
 		if (RequestCycle.get().getRequestTarget() instanceof AjaxRequestTarget)
 		{
-			((AjaxRequestTarget)RequestCycle.get().getRequestTarget())
-					.appendJavascript(overlay.getJSremove(GMap2.this));
+			((AjaxRequestTarget)RequestCycle.get().getRequestTarget()).appendJavascript(overlay
+					.getJSremove(GMap2.this));
 		}
 
 		return this;
@@ -247,10 +236,11 @@ public class GMap2 extends Panel
 		return center;
 	}
 
-	public GLatLngBounds getBounds() {
+	public GLatLngBounds getBounds()
+	{
 		return bounds;
 	}
-	
+
 	public void setDraggingEnabled(boolean enabled)
 	{
 		if (this.draggingEnabled != enabled)
@@ -264,12 +254,12 @@ public class GMap2 extends Panel
 			}
 		}
 	}
-	
+
 	public boolean isDraggingEnabled()
 	{
 		return draggingEnabled;
 	}
-	
+
 	public void setDoubleClickZoomEnabled(boolean enabled)
 	{
 		if (this.doubleClickZoomEnabled != enabled)
@@ -283,12 +273,12 @@ public class GMap2 extends Panel
 			}
 		}
 	}
-	
+
 	public boolean isDoubleClickZoomEnabled()
 	{
 		return doubleClickZoomEnabled;
 	}
-	
+
 	public void setScrollWheelZoomEnabled(boolean enabled)
 	{
 		if (this.scrollWheelZoomEnabled != enabled)
@@ -302,12 +292,12 @@ public class GMap2 extends Panel
 			}
 		}
 	}
-	
+
 	public boolean isScrollWheelZoomEnabled()
 	{
 		return scrollWheelZoomEnabled;
 	}
-	
+
 	public GMapType getMapType()
 	{
 		return mapType;
@@ -321,12 +311,12 @@ public class GMap2 extends Panel
 
 			if (RequestCycle.get().getRequestTarget() instanceof AjaxRequestTarget)
 			{
-				((AjaxRequestTarget)RequestCycle.get().getRequestTarget())
-						.appendJavascript(mapType.getJSset(GMap2.this));
+				((AjaxRequestTarget)RequestCycle.get().getRequestTarget()).appendJavascript(mapType
+						.getJSset(GMap2.this));
 			}
 		}
 	}
-	
+
 	public int getZoom()
 	{
 		return zoom;
@@ -345,7 +335,7 @@ public class GMap2 extends Panel
 			}
 		}
 	}
-	
+
 	/**
 	 * Set the center.
 	 * 
@@ -366,10 +356,11 @@ public class GMap2 extends Panel
 		}
 	}
 
-	public GInfoWindow getInfoWindow() {
+	public GInfoWindow getInfoWindow()
+	{
 		return infoWindow;
 	}
-	
+
 	private String getJSinit()
 	{
 		StringBuffer js = new StringBuffer("new WicketGMap2('" + map.getMarkupId() + "');\n");
@@ -379,7 +370,7 @@ public class GMap2 extends Panel
 		js.append(getJSsetDraggingEnabled(draggingEnabled) + "\n");
 		js.append(getJSsetDoubleClickZoomEnabled(doubleClickZoomEnabled) + "\n");
 		js.append(getJSsetScrollWheelZoomEnabled(scrollWheelZoomEnabled) + "\n");
-		
+
 		js.append(mapType.getJSset(this) + "\n");
 
 		// Add the controls.
@@ -395,18 +386,20 @@ public class GMap2 extends Panel
 		}
 
 		js.append(infoWindow.getJSinit() + "\n");
-		
-		for (Object behavior : getBehaviors(GEventListener.class)) {
+
+		for (Object behavior : getBehaviors(GEventListener.class))
+		{
 			js.append(((GEventListener)behavior).getJSadd() + "\n");
 		}
 
 		return js.toString();
 	}
 
-	public String getJSinvoke(String invocation) {
+	public String getJSinvoke(String invocation)
+	{
 		return "Wicket.maps['" + map.getMarkupId() + "']." + invocation + ";";
 	}
-	
+
 	private String getJSsetDraggingEnabled(boolean enabled)
 	{
 		return getJSinvoke("setDraggingEnabled(" + enabled + ")");
@@ -429,7 +422,7 @@ public class GMap2 extends Panel
 
 	private String getJSsetCenter(GLatLng center)
 	{
-		return getJSinvoke("setCenter(" +  center.getJSconstructor() + ")");
+		return getJSinvoke("setCenter(" + center.getJSconstructor() + ")");
 	}
 
 	private String getJSpanDirection(int dx, int dy)
@@ -441,12 +434,12 @@ public class GMap2 extends Panel
 	{
 		return getJSinvoke("zoomOut('" + map.getMarkupId() + "')");
 	}
-		
+
 	private String getJSzoomIn()
 	{
 		return getJSinvoke("zoomIn('" + map.getMarkupId() + "')");
 	}
-	
+
 	/**
 	 * Update state from a request to an AJAX target.
 	 */
@@ -459,20 +452,22 @@ public class GMap2 extends Panel
 		bounds = GLatLngBounds.parse(request.getParameter("bounds"));
 		center = GLatLng.parse(request.getParameter("center"));
 		zoom = Integer.parseInt(request.getParameter("zoom"));
-		
+
 		infoWindow.update(target);
 	}
 
-	private class JSMethod extends AttributeModifier {
-	
+	private class JSMethod extends AttributeModifier
+	{
+
 		private static final long serialVersionUID = 1L;
-		
+
 		public JSMethod(String event, String javascript)
 		{
-			super(event, true, new Model(event.equalsIgnoreCase("href") ? "javascript:" + javascript : javascript));
+			super(event, true, new Model(event.equalsIgnoreCase("href") ? "javascript:"
+					+ javascript : javascript));
 		}
 	}
-	
+
 	public class ZoomOut extends JSMethod
 	{
 		public ZoomOut(String event)
