@@ -27,9 +27,9 @@ import wicket.contrib.bbcodecomponent.control.bbCodeSetActiveTextFieldAttributeM
  * 
  * @author Nino Martinez Wael (nino.martinez@jayway.dk)
  */
-public class BBTextField extends org.apache.wicket.markup.html.form.TextField {
+public class BbCodeTextField extends org.apache.wicket.markup.html.form.TextField {
 
-	public BBTextField(String id, IModel text) {
+	public BbCodeTextField(String id, IModel text) {
 		super(id, text);
 		setOutputMarkupId(true);
 
