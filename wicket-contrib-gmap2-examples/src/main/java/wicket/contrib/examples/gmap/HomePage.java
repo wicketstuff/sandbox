@@ -11,6 +11,7 @@ import org.apache.wicket.model.PropertyModel;
 import wicket.contrib.examples.WicketExamplePage;
 import wicket.contrib.examples.gmap.geocode.GClientGeocoder;
 import wicket.contrib.gmap.GMap2;
+import wicket.contrib.gmap.GMapHeaderContributor;
 import wicket.contrib.gmap.api.GControl;
 import wicket.contrib.gmap.api.GInfoWindowTab;
 import wicket.contrib.gmap.api.GLatLng;
@@ -127,8 +128,8 @@ public class HomePage extends WicketExamplePage
 		zoomOut.add(topPanel.new ZoomOut("onclick"));
 		add(zoomOut);
 
-		final GMap2 bottomPanel = new GMap2("bottomPanel",
-				LOCALHOST_8080_WICKET_CONTRIB_GMAP2_EXAMPLES_KEY);
+		final GMap2 bottomPanel = new GMap2("bottomPanel", new GMapHeaderContributor(
+				LOCALHOST_8080_WICKET_CONTRIB_GMAP2_EXAMPLES_KEY));
 		bottomPanel.setOutputMarkupId(true);
 		bottomPanel.setMapType(GMapType.G_SATELLITE_MAP);
 		bottomPanel.setScrollWheelZoomEnabled(true);
