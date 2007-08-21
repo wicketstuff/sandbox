@@ -17,6 +17,7 @@
 package org.wicketstuff.jquery.demo;
 
 import org.apache.wicket.protocol.http.WebApplication;
+import org.wicketstuff.jquery.demo.dnd.Page4ClientSideOnly;
 
 public class DemoApplication extends WebApplication {
 

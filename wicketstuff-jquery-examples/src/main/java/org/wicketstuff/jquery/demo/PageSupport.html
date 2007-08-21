@@ -8,12 +8,20 @@
     <link rel="stylesheet" type="text/css" href="static/wicket/style.css" />
   </head>
   <body>
-    <a href="#" wicket:id="clientSideOnly">clientSideOnly</a>,
-    <a href="#" wicket:id="simpleList">simpleList</a>,
-    <a href="#" wicket:id="oneGroup">oneGroup</a>,
-    <a href="#" wicket:id="multiGroup">multiGroup</a>,
-    <a href="#" wicket:id="accordion">accordion</a>,
-    <a href="#" wicket:id="tabs">tabs</a>,
+    <div id ="menu">
+    <ul>
+     <li>Drag and Drop Sortable
+        <ul>
+            <li><a href="#" wicket:id="clientSideOnly">clientSideOnly</a></li>
+            <li><a href="#" wicket:id="simpleList">simpleList</a></li>
+            <li><a href="#" wicket:id="oneGroup">oneGroup</a></li>
+            <li><a href="#" wicket:id="multiGroup">multiGroup</a></li>
+        </ul>
+     </li>
+     <li><a href="#" wicket:id="accordion">accordion</a></li>
+     <li><a href="#" wicket:id="tabs">tabs</a></li>
+    </ul>
+    </div>
     <hr />
     <div id="feedbackPanel">
       <span wicket:id="feedback" />

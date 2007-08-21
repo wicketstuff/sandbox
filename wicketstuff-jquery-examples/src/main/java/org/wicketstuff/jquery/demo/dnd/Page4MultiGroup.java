@@ -24,7 +24,7 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
-import org.wicketstuff.jquery.DnDSortableHandler;
+import org.wicketstuff.jquery.dnd.DnDSortableHandler;
 import org.wicketstuff.jquery.demo.PageSupport;
 
 @SuppressWarnings("serial")

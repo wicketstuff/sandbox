@@ -18,7 +18,7 @@ package org.wicketstuff.jquery.demo.dnd;
 
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.wicketstuff.jquery.DnDSortableHandler;
+import org.wicketstuff.jquery.dnd.DnDSortableHandler;
 import org.wicketstuff.jquery.Options;
 import org.wicketstuff.jquery.demo.PageSupport;
 
@@ -29,7 +29,7 @@ public class Page4ClientSideOnly extends PageSupport {
         add(new DnDSortableHandler("dnd0",
                 new Options()
                     .set("accept", "groupItem")
-                    .set("containerCSSClass", "groupWrapper")
+                    .set("containerclass", "groupWrapper")
                     //.set("helperclass", "sortHelper")
                     //.set("activeclass", "sortableactive")
                     //.set("hoverclass", "sortablehover")
