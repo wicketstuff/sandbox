@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.wicketstuff.jquery;
+package org.wicketstuff.jquery.dnd;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,6 +29,8 @@ import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.resources.JavascriptResourceReference;
 import org.apache.wicket.util.template.PackagedTextTemplate;
+import org.wicketstuff.jquery.JQueryInterfaceBehavior;
+import org.wicketstuff.jquery.Options;
 
 // TODO: disable callback to serverside if clientsideonly
 @SuppressWarnings("serial")
@@ -36,41 +38,30 @@ class DnDSortableBehavior extends JQueryInterfaceBehavior implements IBehaviorLi
     // create a reference to the base javascript file.
     // we use JavascriptResourceReference so that the included file will have
     // its comments stripped and gzipped.
-    private static final JavascriptResourceReference DNDSORTABLEBEHAVIOR_JS = new JavascriptResourceReference(JQueryBehavior.class, DnDSortableBehavior.class.getSimpleName() + ".js");
+    private static final JavascriptResourceReference DNDSORTABLEBEHAVIOR_JS = new JavascriptResourceReference(DnDSortableBehavior.class, DnDSortableBehavior.class.getSimpleName() + ".js");
 
     protected Options options_;
-    protected String containerCSSClass_;
 
     protected ArrayList<MarkupContainer> containers_;
 
     public DnDSortableBehavior() throws Exception {
-        this(null, null);
+        this(null);
     }
 
     /**
-     * the Sortable's options (see http://interface.eyecon.ro/docs/sort for the
-     * list of options).
+     * Create a DnDSortableBehavior with default options override.
+     * <ul>
+     * <li> options include every optionsof the js component (see http://interface.eyecon.ro/docs/sort for the
+     * base list of options).</li>
+     * <li> "containerclass" : the CSS' class of every container to be sortable (default is bind component (handler) + "_dndContainer"</li>
+     * <li> "startOnLoad" : boolean, true => sortable feature is started on page load (default) else, the client side must call the JSFunctionName4Start.</li>
+     * <ul>
      *
      * @param options
      * @see http://interface.eyecon.ro/docs/sort
      */
     public DnDSortableBehavior(Options options) throws Exception {
-        this(options, null);
-    }
-
-    /**
-     * the Sortable's options (see http://interface.eyecon.ro/docs/sort for the
-     * list of options).
-     *
-     * @param options
-     * @see http://interface.eyecon.ro/docs/sort
-     */
-    public DnDSortableBehavior(Options options, String containerCSSClass) throws Exception {
         super();
-        if ((containerCSSClass == null) || (containerCSSClass.length() == 0)) {
-            containerCSSClass = "dndContainer";
-        }
-        containerCSSClass_ = containerCSSClass;
         if (options == null) {
             options = new Options();
         }
@@ -81,6 +72,7 @@ class DnDSortableBehavior extends JQueryInterfaceBehavior implements IBehaviorLi
             .set("hoverclass", "sortablehover", false)
             //.set("handle", ".dndItem", false)
             .set("tolerance", "pointer", false)
+            .set("startOnLoad", Boolean.TRUE, false)
         ;
         containers_ = new ArrayList<MarkupContainer>();
     }
@@ -95,7 +87,7 @@ class DnDSortableBehavior extends JQueryInterfaceBehavior implements IBehaviorLi
     private CharSequence getHead() {
         try {
             // load the css template we created form the res package
-            PackagedTextTemplate template = new PackagedTextTemplate(JQueryBehavior.class, DnDSortableBehavior.class.getSimpleName() + "-head.tmpl");
+            PackagedTextTemplate template = new PackagedTextTemplate(DnDSortableBehavior.class, DnDSortableBehavior.class.getSimpleName() + "-head.tmpl");
             // create a variable subsitution map
             CharSequence itemSelector = "." + options_.get("accept");
             CharSequence handleSelector = (CharSequence)options_.get("handle");
@@ -104,13 +96,15 @@ class DnDSortableBehavior extends JQueryInterfaceBehavior implements IBehaviorLi
                 handleSelector = itemSelector;
             }
             HashMap<String, CharSequence> params = new HashMap<String, CharSequence>();
-            params.put("containerSelector", "."+ containerCSSClass_);
+            params.put("containerSelector", "."+ getContainerCSSClass());
             params.put("helperclass", options_.get("helperclass", "").toString());
             params.put("handleSelector", handleSelector);
             params.put("itemSelector", itemSelector);
             params.put("options", options_.toString(true));
             params.put("callbackUrl", getCallbackUrl());
-            params.put("dndHandlerInit", getDnDHandlerInitName());
+            params.put("dndHandlerStart", getJSFunctionName4Start());
+            params.put("dndHandlerStop", getJSFunctionName4Stop());
+            params.put("startOnLoad", options_.get("startOnLoad", "true").toString());
             // perform subsitution and return the result
             CharSequence back = template.asString(params);
             return back;
@@ -121,9 +115,26 @@ class DnDSortableBehavior extends JQueryInterfaceBehavior implements IBehaviorLi
         }
     }
 
+    private CharSequence getContainerCSSClass() throws Exception {
+        CharSequence back = (CharSequence)options_.get("containerclass", null);
+        if (back == null) {
+            back = getComponent().getId() + "_dndContainer";
+        }
+        return back;
+    }
 
-    private CharSequence getDnDHandlerInitName() {
-        return getComponent().getId() + "_dndInit";
+    /**
+     * @return the name of the javascript function to start the behavior on client side.
+     */
+    public CharSequence getJSFunctionName4Start() {
+        return getComponent().getId() + "_dndStart";
+    }
+
+    /**
+     * @return the name of the javascript function to stop the behavior on client side.
+     */
+    public CharSequence getJSFunctionName4Stop() {
+        return getComponent().getId() + "_dndStop";
     }
 
     @Override
@@ -195,7 +206,7 @@ class DnDSortableBehavior extends JQueryInterfaceBehavior implements IBehaviorLi
             if (srcContainer != destContainer) {
                 target.addComponent(destContainer);
             }
-            target.appendJavascript(getDnDHandlerInitName() + "();");
+            target.appendJavascript(getJSFunctionName4Start() + "();");
         }
     }
 
@@ -228,7 +239,7 @@ class DnDSortableBehavior extends JQueryInterfaceBehavior implements IBehaviorLi
      * @throws Exception
      */
     protected DnDSortableBehavior registerContainer(MarkupContainer v) throws Exception {
-        v.add(new SimpleAttributeModifier("class", containerCSSClass_));
+        v.add(new SimpleAttributeModifier("class", getContainerCSSClass()));
         v.setOutputMarkupId(true);
         containers_.add(v);
         return this;

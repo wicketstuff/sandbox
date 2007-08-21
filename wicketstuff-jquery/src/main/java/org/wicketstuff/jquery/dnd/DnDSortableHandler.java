@@ -14,19 +14,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.wicketstuff.jquery;
+package org.wicketstuff.jquery.dnd;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebComponent;
+import org.wicketstuff.jquery.Options;
 
 @SuppressWarnings("serial")
 public abstract class DnDSortableHandler extends WebComponent {
     private DnDSortableBehavior dnd_;
 
     public DnDSortableHandler(String id) throws Exception {
-        this(id, null, null);
+        this(id, null);
     }
 
     /**
@@ -37,19 +38,8 @@ public abstract class DnDSortableHandler extends WebComponent {
      * @see http://interface.eyecon.ro/docs/sort
      */
     public DnDSortableHandler(String id, Options options) throws Exception {
-        this(id, options, null);
-    }
-
-    /**
-     * the Sortable's options (see http://interface.eyecon.ro/docs/sort for the
-     * list of options).
-     *
-     * @param options
-     * @see http://interface.eyecon.ro/docs/sort
-     */
-    public DnDSortableHandler(String id, Options options, String containerCSSClass) throws Exception {
         super(id);
-        dnd_ = new DnDSortableBehavior(options, containerCSSClass){
+        dnd_ = new DnDSortableBehavior(options){
             @Override
             public boolean onDnD(AjaxRequestTarget target, MarkupContainer srcContainer, int srcPos, MarkupContainer destContainer, int destPos) throws Exception {
                 return ((DnDSortableHandler)getComponent()).onDnD(target, srcContainer, srcPos, destContainer, destPos);
@@ -98,4 +88,20 @@ public abstract class DnDSortableHandler extends WebComponent {
         dnd_.registerItem(v);
         return this;
     }
+
+    /**
+     * @return the name of the javascript function to start the behavior on client side.
+     */
+    public CharSequence getJSFunctionName4Start() {
+        return dnd_.getJSFunctionName4Start();
+    }
+
+    /**
+     * @return the name of the javascript function to stop the behavior on client side.
+     */
+    public CharSequence getJSFunctionName4Stop() {
+        return dnd_.getJSFunctionName4Stop();
+    }
+
+
 }
