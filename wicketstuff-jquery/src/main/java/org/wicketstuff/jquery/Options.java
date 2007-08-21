@@ -78,6 +78,8 @@ public class Options implements Serializable {
                     .append(entry.getValue())
                     .append('\'')
                     ;
+            /*} else if (entry.getValue() instanceof Boolean) {
+                str.append(((Boolean)entry.getValue())?1:0);*/
             } else {
                 str.append(entry.getValue());
             }
