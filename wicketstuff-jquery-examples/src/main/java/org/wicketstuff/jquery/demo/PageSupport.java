@@ -21,6 +21,10 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.wicketstuff.jquery.demo.dnd.Page4ClientSideOnly;
+import org.wicketstuff.jquery.demo.dnd.Page4MultiGroup;
+import org.wicketstuff.jquery.demo.dnd.Page4OneGroup;
+import org.wicketstuff.jquery.demo.dnd.Page4SimpleList;
 
 @SuppressWarnings("serial")
 public class PageSupport extends WebPage {

@@ -22,11 +22,12 @@ import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.PropertyModel;
-import org.wicketstuff.jquery.DnDSortableHandler;
+import org.wicketstuff.jquery.dnd.DnDSortableHandler;
 import org.wicketstuff.jquery.demo.PageSupport;
 
 @SuppressWarnings("serial")
@@ -69,6 +70,36 @@ public class Page4SimpleList extends PageSupport {
 
         // add the DnD handler to the page
         add(dnd);
+        add(new Link("start_dnd"){
+            @Override
+            protected CharSequence getOnClickScript(CharSequence url) {
+                return dnd.getJSFunctionName4Start() + "();";
+            }
+            @Override
+            protected CharSequence getURL() {
+                return "#";
+            }
+            @Override
+            public void onClick() {
+                throw new UnsupportedOperationException("NOT CALLABLE");
+            }
+
+        });
+        add(new Link("stop_dnd"){
+            @Override
+            protected CharSequence getOnClickScript(CharSequence url) {
+                return dnd.getJSFunctionName4Stop() + "();";
+            }
+            @Override
+            protected CharSequence getURL() {
+                return "#";
+            }
+            @Override
+            public void onClick() {
+                throw new UnsupportedOperationException("NOT CALLABLE");
+            }
+
+        });
 
         // create a container
         WebMarkupContainer webList = new WebMarkupContainer("myItemList");

@@ -1,4 +1,4 @@
-package org.wicketstuff.jquery.demo;
+package org.wicketstuff.jquery.demo.dnd;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -9,7 +9,7 @@ import org.apache.wicket.util.tester.WicketTester;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import org.wicketstuff.jquery.DnDSortableHandler;
+import org.wicketstuff.jquery.dnd.DnDSortableHandler;
 
 @Test
 @SuppressWarnings("serial")
