@@ -2,16 +2,20 @@ package wicket.contrib.examples.gmap;
 
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.behavior.HeaderContributor;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.Button;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
 import wicket.contrib.examples.WicketExamplePage;
-import wicket.contrib.examples.gmap.geocode.GeocoderForm;
 import wicket.contrib.gmap.GMap2;
 import wicket.contrib.gmap.GMapHeaderContributor;
+import wicket.contrib.gmap.GeoCodingBehavior;
 import wicket.contrib.gmap.api.GControl;
 import wicket.contrib.gmap.api.GInfoWindowTab;
 import wicket.contrib.gmap.api.GLatLng;
@@ -47,8 +51,7 @@ public class HomePage extends WicketExamplePage
 		feedback.setOutputMarkupId(true);
 		add(feedback);
 
-		final GMap2 topPanel = new GMap2("topPanel",
-				LOCALHOST_8080_WICKET_CONTRIB_GMAP2_EXAMPLES_KEY);
+		final GMap2 topPanel = new GMap2("topPanel", LOCALHOST);
 		topPanel.setDoubleClickZoomEnabled(true);
 		topPanel.add(new MoveEndListener()
 		{
@@ -128,8 +131,7 @@ public class HomePage extends WicketExamplePage
 		zoomOut.add(topPanel.new ZoomOut("onclick"));
 		add(zoomOut);
 
-		final GMap2 bottomPanel = new GMap2("bottomPanel", new GMapHeaderContributor(
-				LOCALHOST_8080_WICKET_CONTRIB_GMAP2_EXAMPLES_KEY));
+		final GMap2 bottomPanel = new GMap2("bottomPanel", new GMapHeaderContributor(LOCALHOST));
 		bottomPanel.setOutputMarkupId(true);
 		bottomPanel.setMapType(GMapType.G_SATELLITE_MAP);
 		bottomPanel.setScrollWheelZoomEnabled(true);
@@ -281,8 +283,22 @@ public class HomePage extends WicketExamplePage
 			}
 		});
 		add(enabledLabel);
-		GeocoderForm geoCodeForm = new GeocoderForm("geoCoder", bottomPanel,
-				LOCALHOST_8080_WICKET_CONTRIB_GMAP2_EXAMPLES_KEY);
+		Form geoCodeForm = new Form("geoCoder");
+		TextField address = new TextField("address", new Model(""));
+		geoCodeForm.add(address);
+		geoCodeForm.add(new GeoCodingBehavior("onsubmit", address, new GMapHeaderContributor(
+				LOCALHOST))
+		{
+			public void onGeoCode(String address, GLatLng point)
+			{
+				if (point != null)
+				{
+					bottomPanel.getInfoWindow().open(point,
+							new GInfoWindowTab(address, new Label(address, address)));
+				}
+			};
+		});
+		geoCodeForm.add(new Button("button"));
 		add(geoCodeForm);
 	}
 
@@ -292,32 +308,18 @@ public class HomePage extends WicketExamplePage
 		target.addComponent(markerLabel);
 	}
 
-	// pay attention at webapp deploy context, we need a different key for each
-	// deploy context
-	// check <a href="http://www.google.com/apis/maps/signup.html">Google Maps
-	// API - Sign Up</a> for more info
 
-	// key for http://localhost:8080/wicket-contrib-gmap-examples/
-	@SuppressWarnings("unused")
-	private static final String LOCALHOST_8080_WICKET_CONTRIB_GMAP_EXAMPLES_KEY = "ABQIAAAAf5yszl-6vzOSQ0g_Sk9hsxQwbIpmX_ZriduCDVKZPANEQcosVRSYYl2q0zAQNI9wY7N10hRcPVFbLw";
-
-	// http://localhost:8080/wicket-contrib-gmap2-examples/gmap/
-	private static final String LOCALHOST_8080_WICKET_CONTRIB_GMAP2_EXAMPLES_KEY = "ABQIAAAAf5yszl-6vzOSQ0g_Sk9hsxSRJOeFm910afBJASoNgKJoF-fSURRPODotP7LZxsDKHpLi_jvawkMyrQ";
-
-	// key for http://localhost:8080/wicket-contrib-gmap, deploy context is
-	// wicket-contrib-gmap
-	@SuppressWarnings("unused")
-	private static final String LOCALHOST_8080_WICKET_CONTRIB_GMAP_KEY = "ABQIAAAALjfJpigGWq5XvKwy7McLIxTDxbH1TVfo7w-iwzG2OxhXSIjJdhQTwgha-mCK8wiVEq4rgi9qvz8HYw";
-
-	// key for http://localhost:8080/gmap, deploy context is gmap
-	@SuppressWarnings("unused")
-	private static final String GMAP_8080_KEY = "ABQIAAAALjfJpigGWq5XvKwy7McLIxTh_sjBSLCHIDZfjzu1cFb3Pz7MrRQLOeA7BMLtPnXOjHn46gG11m_VFg";
-
-	// key for http://localhost/gmap
-	@SuppressWarnings("unused")
-	private static final String GMAP_DEFAULT_KEY = "ABQIAAAALjfJpigGWq5XvKwy7McLIxTIqKwA3nrz2BTziwZcGRDeDRNmMxS-FtSv7KGpE1A21EJiYSIibc-oEA";
-
-	// key for http://www.wicket-library.com/wicket-examples/
-	@SuppressWarnings("unused")
-	private static final String WICKET_LIBRARY_KEY = "ABQIAAAALjfJpigGWq5XvKwy7McLIxQTV35WN9IbLCS5__wznwqtm2prcBQxH8xw59T_NZJ3NCsDSwdTwHTrhg";
+	/**
+	 * pay attention at webapp deploy context, we need a different key for each
+	 * deploy context check <a
+	 * href="http://www.google.com/apis/maps/signup.html">Google Maps API - Sign
+	 * Up</a> for more info. Also the GClientGeocoder is pickier on this than
+	 * the GMap2. Running on 'localhost' GMap2 will ignore the key and the maps
+	 * will show up, but GClientGeocoder wount. So if the key doesnt match the
+	 * url down to the directory GClientGeocoder will not work.
+	 * 
+	 * This key is good for all URLs in this directory:
+	 * http://localhost:8080/wicket-contrib-gmap2-examples/gmap/
+	 */
+	private static final String LOCALHOST = "ABQIAAAAzaZpf6nHOd9w1PfLaM9u2xSRJOeFm910afBJASoNgKJoF-fSURQRJ7dNBq-d-8hD7iUYeN2jQHZi8Q";
 }
