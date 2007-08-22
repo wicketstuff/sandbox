@@ -33,6 +33,32 @@ if(!Wicket)
 
 Wicket.maps = { }
 
+Wicket.geocoder = { }
+
+function WicketGClientGeocoder(id) {
+	Wicket.geocoder[id] = this;
+	
+	this.coder = new GClientGeocoder();
+	
+	this.wicketAjaxGetLatLng = function(callBackUrl, addressId) {
+		
+		address = Wicket.$(addressId).value;
+		
+		this.coder.getLatLng(address, function(point) {
+			
+			wicketAjaxGet(
+				callBackUrl + '&address=' + address
+				+ '&point=' + point,
+				function() {
+				 },
+				function() {
+				 }
+			);
+			
+		});
+	}
+}
+
 function WicketGMap2(id) {
 	Wicket.maps[id] = this;
 

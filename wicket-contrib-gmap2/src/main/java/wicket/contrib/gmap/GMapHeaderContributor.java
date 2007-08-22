@@ -13,7 +13,7 @@ public class GMapHeaderContributor extends HeaderContributor
 	private static final long serialVersionUID = 1L;
 
 	/** URL for Google Maps' API endpoint. */
-	private static final String GMAP_API_URL = "http://maps.google.com/maps?file=api&amp;v=2&amp;key=";
+	private static final String GMAP_API_URL = "http://maps.google.com/maps?file=api&amp;v=2.x&amp;key=";
 
 	// We also depend on wicket-ajax.js within wicket-gmap.js
 	private static final ResourceReference WICKET_AJAX_JS = new JavascriptResourceReference(
