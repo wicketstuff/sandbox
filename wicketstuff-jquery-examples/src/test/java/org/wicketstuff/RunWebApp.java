@@ -18,9 +18,9 @@
  */
 package org.wicketstuff;
 
-import java.util.HashMap;
-
 import winstone.Launcher;
+
+import java.util.HashMap;
 
 /**
  * Seperate startup class for people that want to run the examples directly.
@@ -30,21 +30,18 @@ public class RunWebApp {
     /**
      * Main function, starts the jetty server.
      *
-     * @param args
+     * @param args unused
      */
     public static void main(String[] args) {
         try {
             HashMap<String, String> params = new HashMap<String, String>();
             params.put("webroot", "src/main/webapp"); // or any other command line
-                                                    // args, eg port
+            // args, eg port
             Launcher.initLogger(params);
-            Launcher winstone = new Launcher(params); // spawns threads (not daemon), so your
-                                            // application doesn't block
+            new Launcher(params); // spawns threads (not daemon), so your application doesn't block
         } catch (Exception exc) {
             exc.printStackTrace();
             System.exit(100);
-        } finally {
-            //winstone.shutdown();
         }
     }
 }
