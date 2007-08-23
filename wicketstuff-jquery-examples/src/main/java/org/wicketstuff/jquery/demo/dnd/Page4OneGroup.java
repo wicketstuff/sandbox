@@ -20,8 +20,8 @@ import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
-import org.wicketstuff.jquery.dnd.DnDSortableHandler;
 import org.wicketstuff.jquery.demo.PageSupport;
+import org.wicketstuff.jquery.dnd.DnDSortableHandler;
 
 @SuppressWarnings("serial")
 public class Page4OneGroup extends PageSupport {
@@ -43,8 +43,9 @@ public class Page4OneGroup extends PageSupport {
         // define the action on DnD
         final DnDSortableHandler dnd = new DnDSortableHandler("dnd") {
             private int actionCnt_ = 0;
+
             @Override
-            public boolean onDnD(AjaxRequestTarget target, MarkupContainer srcContainer, int srcPos, MarkupContainer destContainer, int destPos) throws Exception {
+            public boolean onDnD(AjaxRequestTarget target, MarkupContainer srcContainer, int srcPos, MarkupContainer destContainer, int destPos) {
                 // apply modification on model
                 MyGroup srcGroup = (MyGroup) srcContainer.getModelObject();
                 MyGroup destGroup = (MyGroup) destContainer.getModelObject();
@@ -68,7 +69,7 @@ public class Page4OneGroup extends PageSupport {
                 return false;
             }
 
-            private void updateContainerHeader(AjaxRequestTarget target, MarkupContainer container, MyGroup group) throws Exception {
+            private void updateContainerHeader(AjaxRequestTarget target, MarkupContainer container, MyGroup group) {
                 Label itemCnt = (Label) container.getParent().get("itemCnt");
                 itemCnt.setModelObject(group.items.size());
                 target.addComponent(itemCnt);

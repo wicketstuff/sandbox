@@ -16,16 +16,16 @@
  */
 package org.wicketstuff.jquery.demo.dnd;
 
-import java.util.List;
-
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
-import org.wicketstuff.jquery.dnd.DnDSortableHandler;
 import org.wicketstuff.jquery.demo.PageSupport;
+import org.wicketstuff.jquery.dnd.DnDSortableHandler;
+
+import java.util.List;
 
 @SuppressWarnings("serial")
 public class Page4MultiGroup extends PageSupport {
@@ -47,8 +47,9 @@ public class Page4MultiGroup extends PageSupport {
         // define the action on DnD
         final DnDSortableHandler dnd = new DnDSortableHandler("dnd") {
             private int actionCnt_ = 0;
+
             @Override
-            public boolean onDnD(AjaxRequestTarget target, MarkupContainer srcContainer, int srcPos, MarkupContainer destContainer, int destPos) throws Exception {
+            public boolean onDnD(AjaxRequestTarget target, MarkupContainer srcContainer, int srcPos, MarkupContainer destContainer, int destPos) {
                 // apply modification on model
                 MyGroup srcGroup = (MyGroup) srcContainer.getModelObject();
                 MyGroup destGroup = (MyGroup) destContainer.getModelObject();
@@ -72,7 +73,7 @@ public class Page4MultiGroup extends PageSupport {
                 return false;
             }
 
-            private void updateContainerHeader(AjaxRequestTarget target, MarkupContainer container, MyGroup group) throws Exception {
+            private void updateContainerHeader(AjaxRequestTarget target, MarkupContainer container, MyGroup group) {
                 Label itemCnt = (Label) container.getParent().get("itemCnt");
                 itemCnt.setModelObject(group.items.size());
                 target.addComponent(itemCnt);
@@ -86,11 +87,11 @@ public class Page4MultiGroup extends PageSupport {
         // add the DnD handler to the page
         add(dnd);
 
-        add(new ListView("myGroups", myGroups){
+        add(new ListView("myGroups", myGroups) {
             @Override
             protected void populateItem(ListItem listitem) {
                 try {
-                    listitem.add(new Panel4MyGroup("myGroup", (MyGroup)listitem.getModelObject(), dnd));
+                    listitem.add(new Panel4MyGroup("myGroup", (MyGroup) listitem.getModelObject(), dnd));
                 } catch (RuntimeException exc) {
                     throw exc;
                 } catch (Exception exc) {

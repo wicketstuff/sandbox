@@ -16,8 +16,6 @@
  */
 package org.wicketstuff.jquery.demo.dnd;
 
-import java.util.List;
-
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -27,8 +25,10 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.PropertyModel;
-import org.wicketstuff.jquery.dnd.DnDSortableHandler;
 import org.wicketstuff.jquery.demo.PageSupport;
+import org.wicketstuff.jquery.dnd.DnDSortableHandler;
+
+import java.util.List;
 
 @SuppressWarnings("serial")
 public class Page4SimpleList extends PageSupport {
@@ -48,9 +48,9 @@ public class Page4SimpleList extends PageSupport {
     // Component
     public Page4SimpleList() throws Exception {
         // define the action on DnD
-        final DnDSortableHandler dnd = new DnDSortableHandler("dnd"){
+        final DnDSortableHandler dnd = new DnDSortableHandler("dnd") {
             @Override
-            public boolean onDnD(AjaxRequestTarget target, MarkupContainer srcContainer, int srcPos, MarkupContainer destContainer, int destPos) throws Exception {
+            public boolean onDnD(AjaxRequestTarget target, MarkupContainer srcContainer, int srcPos, MarkupContainer destContainer, int destPos) {
                 // apply modification on model
                 MyItem myItem = dataList_.remove(srcPos);
                 dataList_.add(destPos, myItem);
@@ -70,30 +70,34 @@ public class Page4SimpleList extends PageSupport {
 
         // add the DnD handler to the page
         add(dnd);
-        add(new Link("start_dnd"){
+        add(new Link("start_dnd") {
             @Override
             protected CharSequence getOnClickScript(CharSequence url) {
                 return dnd.getJSFunctionName4Start() + "();";
             }
+
             @Override
             protected CharSequence getURL() {
                 return "#";
             }
+
             @Override
             public void onClick() {
                 throw new UnsupportedOperationException("NOT CALLABLE");
             }
 
         });
-        add(new Link("stop_dnd"){
+        add(new Link("stop_dnd") {
             @Override
             protected CharSequence getOnClickScript(CharSequence url) {
                 return dnd.getJSFunctionName4Stop() + "();";
             }
+
             @Override
             protected CharSequence getURL() {
                 return "#";
             }
+
             @Override
             public void onClick() {
                 throw new UnsupportedOperationException("NOT CALLABLE");
@@ -107,7 +111,7 @@ public class Page4SimpleList extends PageSupport {
         add(webList);
 
         // create items (add as children of the container)
-        webList.add(new ListView("myItem", dataList_){
+        webList.add(new ListView("myItem", dataList_) {
             @Override
             protected void populateItem(ListItem listitem) {
                 try {
