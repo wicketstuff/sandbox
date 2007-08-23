@@ -128,8 +128,8 @@ public class GeneralTest extends TestCase
 		FormTester form = mock.newFormTester("form");
 		form.setValue("username", "test");
 		form.submit();
-		//mock.assertRenderedPage(MockHomePage.class);
-		Hack(MockHomePage.class);
+		mock.assertRenderedPage(MockHomePage.class);
+//		Hack(MockHomePage.class);
 		mock.clickLink("secret", false);
 		mock.assertRenderedPage(SecondaryLoginPage.class);
 		form = mock.newFormTester("form");
@@ -143,22 +143,6 @@ public class GeneralTest extends TestCase
 	}
 
 	/**
-	 * Hack to work around a wicket-1.3-beta-3 (pre-release) that causes the
-	 * continueToOrgDestination to fail in the junit test. More info: 
-	 * http://www.wicketstuff.org/bamboo/browse/WICKET1X-WICKET-840/commit
-	 * http://svn.apache.org/viewvc?view=rev&revision=568661
-	 * 
-	 * @param destination the page we want to go to and where the continue should have brought us
-	 */
-	private void Hack(Class destination)
-	{
-		//TODO remove hack after wicket fixes this
-		log.error("Applying hack to make continueToOriginalDestination work.");
-		mock.startPage(destination);
-		mock.assertRenderedPage(destination);
-	}
-
-	/**
 	 * test permission inheritance.
 	 */
 	public void testInheritance()
@@ -168,8 +152,7 @@ public class GeneralTest extends TestCase
 		FormTester form = mock.newFormTester("form");
 		form.setValue("username", "test");
 		form.submit();
-//		mock.assertRenderedPage(MockHomePage.class);
-		Hack(MockHomePage.class);
+		mock.assertRenderedPage(MockHomePage.class);
 		mock.clickLink("link");
 		mock.assertRenderedPage(PageA.class);
 		mock.assertInvisible("invisible");
@@ -190,8 +173,7 @@ public class GeneralTest extends TestCase
 		FormTester form = mock.newFormTester("form");
 		form.setValue("username", "test");
 		form.submit();
-//		mock.assertRenderedPage(MockHomePage.class);
-		Hack(MockHomePage.class);
+		mock.assertRenderedPage(MockHomePage.class);
 		mock.clickLink("secret", false);
 		mock.assertRenderedPage(SecondaryLoginPage.class);
 		form = mock.newFormTester("form");
