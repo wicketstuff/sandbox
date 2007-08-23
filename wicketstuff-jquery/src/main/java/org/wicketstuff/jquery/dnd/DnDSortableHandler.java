@@ -31,18 +31,18 @@ public abstract class DnDSortableHandler extends WebComponent {
     }
 
     /**
-     * the Sortable's options (see http://interface.eyecon.ro/docs/sort for the
+     * the Sortable's options (see <a href="http://interface.eyecon.ro/docs/sort">http://interface.eyecon.ro/docs/sort</a> for the
      * list of options).
      *
-     * @param options
-     * @see http://interface.eyecon.ro/docs/sort
+     * @param id      See Component
+     * @param options the undefault options
      */
-    public DnDSortableHandler(String id, Options options) throws Exception {
+    public DnDSortableHandler(String id, Options options) {
         super(id);
-        dnd_ = new DnDSortableBehavior(options){
+        dnd_ = new DnDSortableBehavior(options) {
             @Override
-            public boolean onDnD(AjaxRequestTarget target, MarkupContainer srcContainer, int srcPos, MarkupContainer destContainer, int destPos) throws Exception {
-                return ((DnDSortableHandler)getComponent()).onDnD(target, srcContainer, srcPos, destContainer, destPos);
+            public boolean onDnD(AjaxRequestTarget target, MarkupContainer srcContainer, int srcPos, MarkupContainer destContainer, int destPos) {
+                return ((DnDSortableHandler) getComponent()).onDnD(target, srcContainer, srcPos, destContainer, destPos);
             }
         };
         add(dnd_);
@@ -50,17 +50,16 @@ public abstract class DnDSortableHandler extends WebComponent {
 
     /**
      * Call when a component has been moved on client side.
-     * @param target a target, provide if a response,
-     * @param item the moved component(null if not a child (direct or indirect) of srcContainer or destContainer.
-     * @param srcContainer the source container from where item come, (null if not previously registered by via registerContainer(...)).
-     * @param srcPos the position/index of item into srcContainer before moving.
+     *
+     * @param target        a target, provide if a response,
+     * @param srcContainer  the source container from where item come, (null if not previously registered by via registerContainer(...)).
+     * @param srcPos        the position/index of item into srcContainer before moving.
      * @param destContainer the destination container where item is, (null if not previously registered by via registerContainer(...)).
-     * @param destPos the position/index of item into srcContainer after moving.
+     * @param destPos       the position/index of item into srcContainer after moving.
      * @return false if you don't need to keep in sync component, markupId on serverside and client side,
-     *  else return true to send to client side the srcContainer and destContainer and to update the handler (consume more resource, server, network, client).
-     * @throws Exception
+     *         else return true to send to client side the srcContainer and destContainer and to update the handler (consume more resource, server, network, client).
      */
-    public abstract boolean onDnD(AjaxRequestTarget target, MarkupContainer srcContainer, int srcPos, MarkupContainer destContainer, int destPos) throws Exception;
+    public abstract boolean onDnD(AjaxRequestTarget target, MarkupContainer srcContainer, int srcPos, MarkupContainer destContainer, int destPos);
 
 
     /**
@@ -69,9 +68,8 @@ public abstract class DnDSortableHandler extends WebComponent {
      *
      * @param v the container to register.
      * @return this
-     * @throws Exception
      */
-    public DnDSortableHandler registerContainer(MarkupContainer v) throws Exception {
+    public DnDSortableHandler registerContainer(MarkupContainer v) {
         dnd_.registerContainer(v);
         return this;
     }
@@ -82,9 +80,8 @@ public abstract class DnDSortableHandler extends WebComponent {
      *
      * @param v the component to register.
      * @return this
-     * @throws Exception
      */
-    public DnDSortableHandler registerItem(Component v) throws Exception {
+    public DnDSortableHandler registerItem(Component v) {
         dnd_.registerItem(v);
         return this;
     }

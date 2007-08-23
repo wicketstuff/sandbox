@@ -16,9 +16,6 @@
  */
 package org.wicketstuff.jquery.dnd;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.Request;
@@ -32,6 +29,9 @@ import org.apache.wicket.util.template.PackagedTextTemplate;
 import org.wicketstuff.jquery.JQueryInterfaceBehavior;
 import org.wicketstuff.jquery.Options;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 // TODO: disable callback to serverside if clientsideonly
 @SuppressWarnings("serial")
 class DnDSortableBehavior extends JQueryInterfaceBehavior implements IBehaviorListener {
@@ -44,36 +44,35 @@ class DnDSortableBehavior extends JQueryInterfaceBehavior implements IBehaviorLi
 
     protected ArrayList<MarkupContainer> containers_;
 
-    public DnDSortableBehavior() throws Exception {
+    public DnDSortableBehavior() {
         this(null);
     }
 
     /**
      * Create a DnDSortableBehavior with default options override.
      * <ul>
-     * <li> options include every optionsof the js component (see http://interface.eyecon.ro/docs/sort for the
+     * <li> options include every optionsof the js component (see <a href="http://interface.eyecon.ro/docs/sort">http://interface.eyecon.ro/docs/sort</a> for the
      * base list of options).</li>
      * <li> "containerclass" : the CSS' class of every container to be sortable (default is bind component (handler) + "_dndContainer"</li>
      * <li> "startOnLoad" : boolean, true => sortable feature is started on page load (default) else, the client side must call the JSFunctionName4Start.</li>
      * <ul>
      *
-     * @param options
-     * @see http://interface.eyecon.ro/docs/sort
+     * @param options the overriden options to use
      */
-    public DnDSortableBehavior(Options options) throws Exception {
+    public DnDSortableBehavior(Options options) {
         super();
         if (options == null) {
             options = new Options();
         }
         options_ = options;
         options_.set("accept", "dndItem", false)
-            .set("helperclass", "sortHelper", false)
-            .set("activeclass", "sortableactive", false)
-            .set("hoverclass", "sortablehover", false)
-            //.set("handle", ".dndItem", false)
-            .set("tolerance", "pointer", false)
-            .set("startOnLoad", Boolean.TRUE, false)
-        ;
+                .set("helperclass", "sortHelper", false)
+                .set("activeclass", "sortableactive", false)
+                .set("hoverclass", "sortablehover", false)
+                        //.set("handle", ".dndItem", false)
+                .set("tolerance", "pointer", false)
+                .set("startOnLoad", Boolean.TRUE, false)
+                ;
         containers_ = new ArrayList<MarkupContainer>();
     }
 
@@ -85,38 +84,31 @@ class DnDSortableBehavior extends JQueryInterfaceBehavior implements IBehaviorLi
     }
 
     private CharSequence getHead() {
-        try {
-            // load the css template we created form the res package
-            PackagedTextTemplate template = new PackagedTextTemplate(DnDSortableBehavior.class, DnDSortableBehavior.class.getSimpleName() + "-head.tmpl");
-            // create a variable subsitution map
-            CharSequence itemSelector = "." + options_.get("accept");
-            CharSequence handleSelector = (CharSequence)options_.get("handle");
-            if (handleSelector == null) {
-                //only for CSS
-                handleSelector = itemSelector;
-            }
-            HashMap<String, CharSequence> params = new HashMap<String, CharSequence>();
-            params.put("containerSelector", "."+ getContainerCSSClass());
-            params.put("helperclass", options_.get("helperclass", "").toString());
-            params.put("handleSelector", handleSelector);
-            params.put("itemSelector", itemSelector);
-            params.put("options", options_.toString(true));
-            params.put("callbackUrl", getCallbackUrl());
-            params.put("dndHandlerStart", getJSFunctionName4Start());
-            params.put("dndHandlerStop", getJSFunctionName4Stop());
-            params.put("startOnLoad", options_.get("startOnLoad", "true").toString());
-            // perform subsitution and return the result
-            CharSequence back = template.asString(params);
-            return back;
-        } catch (RuntimeException exc) {
-            throw exc;
-        } catch (Exception exc) {
-            throw new RuntimeException("wrap: " + exc.getMessage(), exc);
+        // load the css template we created form the res package
+        PackagedTextTemplate template = new PackagedTextTemplate(DnDSortableBehavior.class, DnDSortableBehavior.class.getSimpleName() + "-head.tmpl");
+        // create a variable subsitution map
+        CharSequence itemSelector = "." + options_.get("accept");
+        CharSequence handleSelector = (CharSequence) options_.get("handle");
+        if (handleSelector == null) {
+            //only for CSS
+            handleSelector = itemSelector;
         }
+        HashMap<String, CharSequence> params = new HashMap<String, CharSequence>();
+        params.put("containerSelector", "." + getContainerCSSClass());
+        params.put("helperclass", options_.get("helperclass", "").toString());
+        params.put("handleSelector", handleSelector);
+        params.put("itemSelector", itemSelector);
+        params.put("options", options_.toString(true));
+        params.put("callbackUrl", getCallbackUrl());
+        params.put("dndHandlerStart", getJSFunctionName4Start());
+        params.put("dndHandlerStop", getJSFunctionName4Stop());
+        params.put("startOnLoad", options_.get("startOnLoad", "true").toString());
+        // perform subsitution and return the result
+        return template.asString(params);
     }
 
-    private CharSequence getContainerCSSClass() throws Exception {
-        CharSequence back = (CharSequence)options_.get("containerclass", null);
+    private CharSequence getContainerCSSClass() {
+        CharSequence back = (CharSequence) options_.get("containerclass", null);
         if (back == null) {
             back = getComponent().getId() + "_dndContainer";
         }
@@ -163,14 +155,13 @@ class DnDSortableBehavior extends JQueryInterfaceBehavior implements IBehaviorLi
      * The default implementation log (as debug) the incomming parameters,
      * search the component and forward to onDnD(AjaxRequestTarget target, String itemId, String srcContainerId, int srcPos, String destContainerId, int destPos).
      *
-     * @param target a target, provide if a response,
-     * @param srcContainer the source container from where item come, (null if not previously registered by via registerContainer(...)).
-     * @param srcPos the position/index of item into srcContainer before moving.
-     * @param destContainer the destination container where item is, (null if not previously registered by via registerContainer(...)).
-     * @param destPos the position/index of item into srcContainer after moving.
-     * @throws Exception
+     * @param target          a target, provide if a response,
+     * @param srcContainerId  the html id of source container from where item come, (null if not previously registered by via registerContainer(...)).
+     * @param srcPos          the position/index of item into srcContainer before moving.
+     * @param destContainerId the html id of destination container where item is, (null if not previously registered by via registerContainer(...)).
+     * @param destPos         the position/index of item into srcContainer after moving.
      */
-    public void onDnD(AjaxRequestTarget target, String srcContainerId, int srcPos, String destContainerId, int destPos) throws Exception {
+    public void onDnD(AjaxRequestTarget target, String srcContainerId, int srcPos, String destContainerId, int destPos) {
         if (logger().isDebugEnabled()) {
             logger().debug("srcContainerId={}, srcPos={}, destContainerId={}, destPos={}", new Object[]{
                     srcContainerId,
@@ -181,7 +172,7 @@ class DnDSortableBehavior extends JQueryInterfaceBehavior implements IBehaviorLi
         }
         MarkupContainer srcContainer = null;
         MarkupContainer destContainer = null;
-        for(MarkupContainer container : containers_) {
+        for (MarkupContainer container : containers_) {
             if ((srcContainerId != null) && srcContainerId.equals(container.getMarkupId())) {
                 srcContainer = container;
             }
@@ -213,19 +204,18 @@ class DnDSortableBehavior extends JQueryInterfaceBehavior implements IBehaviorLi
     /**
      * Call when a component has been moved on client side (to be overwrited).
      * The default implementation log (as debug) the incomming parameters.
-     * @param target a target, provide if a response,
-     * @param item the moved component(null if not a child (direct or indirect) of srcContainer or destContainer.
-     * @param srcContainer the source container from where item come, (null if not previously registered by via registerContainer(...)).
-     * @param srcPos the position/index of item into srcContainer before moving.
+     *
+     * @param target        a target, provide if a response,
+     * @param srcContainer  the source container from where item come, (null if not previously registered by via registerContainer(...)).
+     * @param srcPos        the position/index of item into srcContainer before moving.
      * @param destContainer the destination container where item is, (null if not previously registered by via registerContainer(...)).
-     * @param destPos the position/index of item into srcContainer after moving.
+     * @param destPos       the position/index of item into srcContainer after moving.
      * @return false if you don't need to keep in sync component, markupId on serverside and client side,
-     *  else return true to send to client side the srcContainer and destContainer and to update the handler (consume more resource, server, network, client).
-     * @throws Exception
+     *         else return true to send to client side the srcContainer and destContainer and to update the handler (consume more resource, server, network, client).
      */
-    public boolean onDnD(AjaxRequestTarget target, MarkupContainer srcContainer, int srcPos, MarkupContainer destContainer, int destPos) throws Exception {
+    public boolean onDnD(AjaxRequestTarget target, MarkupContainer srcContainer, int srcPos, MarkupContainer destContainer, int destPos) {
         if (logger().isDebugEnabled()) {
-            logger().debug("srcContainer={}, srcPos={}, destContainer={}, destPos={}", new Object[] { srcContainer, srcPos, destContainer, destPos });
+            logger().debug("srcContainer={}, srcPos={}, destContainer={}, destPos={}", new Object[]{srcContainer, srcPos, destContainer, destPos});
         }
         return false;
     }
@@ -236,9 +226,8 @@ class DnDSortableBehavior extends JQueryInterfaceBehavior implements IBehaviorLi
      *
      * @param v the container to register.
      * @return this
-     * @throws Exception
      */
-    protected DnDSortableBehavior registerContainer(MarkupContainer v) throws Exception {
+    protected DnDSortableBehavior registerContainer(MarkupContainer v) {
         v.add(new SimpleAttributeModifier("class", getContainerCSSClass()));
         v.setOutputMarkupId(true);
         containers_.add(v);
@@ -251,14 +240,12 @@ class DnDSortableBehavior extends JQueryInterfaceBehavior implements IBehaviorLi
      *
      * @param v the component to register.
      * @return this
-     * @throws Exception
      */
-    protected DnDSortableBehavior registerItem(Component v) throws Exception {
+    protected DnDSortableBehavior registerItem(Component v) {
         v.add(new SimpleAttributeModifier("class", String.valueOf(options_.get("accept"))));
         v.setOutputMarkupId(true);
         return this;
     }
-
 
 
 }

@@ -63,7 +63,7 @@ public class JQueryBehavior extends AbstractDefaultAjaxBehavior {
      *
      * @return the script to execute when the dom is ready, or null (default)
      */
-    protected CharSequence getOnReadyScript() throws Exception {
+    protected CharSequence getOnReadyScript() {
         return null;
     }
 

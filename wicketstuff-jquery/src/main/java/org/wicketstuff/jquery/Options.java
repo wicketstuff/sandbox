@@ -23,13 +23,13 @@ import java.util.Map;
 @SuppressWarnings("serial")
 public class Options implements Serializable {
 
-    protected Map<String, Object> options_ = new HashMap<String,Object>();
+    protected Map<String, Object> options_ = new HashMap<String, Object>();
 
-    public Object get(String name) throws Exception {
+    public Object get(String name) {
         return options_.get(name);
     }
 
-    public Object get(String name, Object defaultValue) throws Exception {
+    public Object get(String name, Object defaultValue) {
         Object back = options_.get(name);
         if (back == null) {
             back = defaultValue;
@@ -39,20 +39,25 @@ public class Options implements Serializable {
 
     /**
      * shortcut method, call set with overwrite = true.
-     * @see #set(String name, Object value, boolean overwrite)
+     *
+     * @param name  name of the option
+     * @param value new value of the option (if null, then remove the option)
+     * @return this
+     * @see #set(String,Object,boolean)
      */
-    public Options set(String name, Object value) throws Exception {
+    public Options set(String name, Object value) {
         return set(name, value, true);
     }
 
     /**
      * set an option.
-     * @param name name of the option
-     * @param value new value of the option (if null, then remove the option)
+     *
+     * @param name      name of the option
+     * @param value     new value of the option (if null, then remove the option)
      * @param overwrite if false and the value is already set, then the option is unchanged
      * @return this
      */
-    public Options set(String name, Object value, boolean overwrite) throws Exception {
+    public Options set(String name, Object value, boolean overwrite) {
         if (!overwrite && options_.containsKey(name)) {
             return this;
         }
@@ -63,22 +68,22 @@ public class Options implements Serializable {
         return this;
     }
 
-    public CharSequence toString(boolean asFragment) throws Exception {
+    public CharSequence toString(boolean asFragment) {
         StringBuilder str = new StringBuilder();
         if (!asFragment) {
             str.append("{\n");
         }
-        for(Map.Entry<String, Object> entry : options_.entrySet()) {
+        for (Map.Entry<String, Object> entry : options_.entrySet()) {
             str.append('\t')
-                .append(entry.getKey())
-                .append(':')
-                ;
+                    .append(entry.getKey())
+                    .append(':')
+                    ;
             if (entry.getValue() instanceof String) {
                 str.append('\'')
-                    .append(entry.getValue())
-                    .append('\'')
-                    ;
-            /*} else if (entry.getValue() instanceof Boolean) {
+                        .append(entry.getValue())
+                        .append('\'')
+                        ;
+                /*} else if (entry.getValue() instanceof Boolean) {
                 str.append(((Boolean)entry.getValue())?1:0);*/
             } else {
                 str.append(entry.getValue());
