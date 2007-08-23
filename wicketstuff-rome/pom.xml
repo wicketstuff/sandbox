@@ -22,19 +22,6 @@
   </dependencies>
 
   <build>
-	<testResources>
-		<testResource>
-			<directory>src/test/java</directory>
-			<includes>
-				<include>**</include>
-			</includes>
-			<excludes>
-				<exclude>**/*.java</exclude>
-			</excludes>
-			<filtering>false</filtering>
-		</testResource>
-	</testResources>
-
     <plugins>
 	  <plugin>
 		<groupId>org.apache.maven.plugins</groupId>
@@ -44,19 +31,9 @@
 			<target>1.5</target>
 		</configuration>
 	  </plugin>
-	  
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <configuration>
-          <excludes>
-            <exclude>**/*Panel*</exclude>
-            <exclude>**/*Page*</exclude>
-          </excludes>
-        </configuration>
-      </plugin>
     </plugins>
   </build>
+
   <repositories>
     <repository>
       <id>wicket-stuff-repository</id>
