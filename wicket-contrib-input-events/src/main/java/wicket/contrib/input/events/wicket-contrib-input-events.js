@@ -21,15 +21,48 @@
  * @author Nino Martinez(nino.martinez@jayway.dk)
  */
 
-function keyPressed(event, keyCode, componentID, componentEvent) {
-
-if(event.keyCode==keyCode)
+function getKeyPressed(e)
 {
-	alert('keyPressed:'+event.keyCode);
+  if( !e ) {
+    //if the browser did not pass the event information to the
+    //function, we will have to obtain it from the event register
+    if( window.event ) {
+      //Internet Explorer
+      e = window.event;
+    } else {
+      //total failure, we have no way of referencing the event
+      return;
+    }
+  }
+  if( typeof( e.keyCode ) == 'number'  ) {
+    //DOM
+    e = e.keyCode;
+  } else if( typeof( e.which ) == 'number' ) {
+    //NS 4 compatible
+    e = e.which;
+  } else if( typeof( e.charCode ) == 'number'  ) {
+    //also NS 6+, Mozilla 0.9+
+    e = e.charCode;
+  } else {
+    //total failure, we have no way of obtaining the key code
+    return;
+  }
+
+	return String.fromCharCode( e );
+
+}
+
+
+function keyPressed(event, keyCode, componentID, componentEvent) {
+var keyPressed=getKeyPressed(event);
+
+if(keyPressed==keyCode)
+{
+	alert('keyPressed:'+keyPressed);
 	var component=document.getElementById(componentId);
 	component.componentEvent;
 }
-function mousepressed(event){
+function mousepressed(event,desiredClick,componentID,componentEvent){
 
 }
 function pokeComponent(component)

@@ -23,6 +23,7 @@ import org.apache.wicket.ResourceReference;
 import org.apache.wicket.behavior.HeaderContributor;
 import org.apache.wicket.behavior.IBehavior;
 import org.apache.wicket.markup.ComponentTag;
+import org.apache.wicket.markup.html.internal.HeaderResponse;
 import org.apache.wicket.markup.html.resources.CompressedResourceReference;
 
 public class InputBehavior implements IBehavior {
@@ -47,6 +48,7 @@ public class InputBehavior implements IBehavior {
 
 	public void beforeRender(Component arg0) {
 	}
+	
 
 	public void bind(Component component) {
 		component.add(HeaderContributor.forJavaScript(JAVASCRIPT));
