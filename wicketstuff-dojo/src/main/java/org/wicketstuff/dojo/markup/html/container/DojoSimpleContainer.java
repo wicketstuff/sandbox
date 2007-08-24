@@ -17,6 +17,7 @@
 package org.wicketstuff.dojo.markup.html.container;
 
 import org.wicketstuff.dojo.DojoIdConstants;
+import org.wicketstuff.dojo.widgetloadingpolicy.IDojoWidgetLoadingPolicy;
 import org.apache.wicket.markup.ComponentTag;
 
 /**
@@ -45,6 +46,18 @@ public class DojoSimpleContainer extends AbstractDojoContainer
 	public DojoSimpleContainer(String id)
 	{
 		this(id, null);
+	}
+
+	/**
+	 * Construct a Dojo container.
+	 * @param id container id
+	 * @param title container title
+	 * @param policy loading policy
+	 */
+	public DojoSimpleContainer(String id, String title, IDojoWidgetLoadingPolicy policy)
+	{
+		super(id, title);
+		add(new DojoSimpleContainerHandler(policy));
 	}
 	
 

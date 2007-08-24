@@ -19,6 +19,7 @@ package org.wicketstuff.dojo.markup.html.container;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.wicketstuff.dojo.AbstractDojoWidgetBehavior;
 import org.wicketstuff.dojo.AbstractRequireDojoBehavior;
+import org.wicketstuff.dojo.widgetloadingpolicy.IDojoWidgetLoadingPolicy;
 
 /**
  * A very simple handler for {@link DojoSimpleContainer} and {@link DojoPanelContainer}
@@ -28,6 +29,16 @@ import org.wicketstuff.dojo.AbstractRequireDojoBehavior;
 @SuppressWarnings("serial")
 public class DojoSimpleContainerHandler extends AbstractDojoWidgetBehavior
 {
+	
+	public DojoSimpleContainerHandler()
+	{
+		super();
+	}
+
+	public DojoSimpleContainerHandler(IDojoWidgetLoadingPolicy loadingPolicy)
+	{
+		super(loadingPolicy);
+	}
 
 	/* (non-Javadoc)
 	 * @see wicket.contrib.dojo.AbstractRequireDojoBehavior#setRequire(wicket.contrib.dojo.AbstractRequireDojoBehavior.RequireDojoLibs)
