@@ -19,11 +19,11 @@
 package wicket.contrib.input.events.key;
 
 public enum KeyType {
-	Arrow_left, Arrow_up, Enter, Shift;
+	Arrow_left ("arrow"), Arrow_up("arrow"), Enter("enter"), Shift("shift");
 
 	private final String keyCode;
-	private KeyType() {
-		keyCode=this.name();
+	private KeyType(String keyCode) {
+		this.keyCode=keyCode;
 	}
 	public String getKeyCode() {
 		return keyCode;
