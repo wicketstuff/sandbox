@@ -38,13 +38,13 @@ public class WaspSession extends WebSession
 
 	/**
 	 * @param application
-	 *            a webapplication
+	 *            a {@link WebApplication}
 	 * @param request
 	 * @see WebSession#WebSession(WebApplication, Request)
 	 */
 	public WaspSession(WaspApplication application, Request request)
 	{
-		super((WebApplication)application, request);
+		super(request);
 		securityStrategy = application.getStrategyFactory().newStrategy();
 	}
 
