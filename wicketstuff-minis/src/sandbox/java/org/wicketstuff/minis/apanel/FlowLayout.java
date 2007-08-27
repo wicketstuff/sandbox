@@ -58,7 +58,7 @@ public class FlowLayout implements ILayout
 		{
 			final IComponentRenderer<Component> componentRenderer = renderersList
 					.findRendererForClass(component.getClass());
-			CharSequence markup = componentRenderer.getMarkup(component);
+			final CharSequence markup = componentRenderer.getMarkup(component);
 
 			onBeforeTag(component, stringBuilder);
 			stringBuilder.append(markup);

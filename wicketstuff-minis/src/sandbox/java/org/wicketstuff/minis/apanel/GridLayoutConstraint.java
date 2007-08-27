@@ -20,14 +20,14 @@ package org.wicketstuff.minis.apanel;
  * Specifies position of a component for {@link org.wicketstuff.minis.apanel.GridLayout}
  * and optionally column/row span.
  */
-public class GridLayoutConstraint extends ConstraintBehavior
+public class GridLayoutConstraint extends ConstraintBehavior implements Comparable<GridLayoutConstraint>
 {
 	private static final long serialVersionUID = 1L;
 
 	private final int col;
 	private final int row;
-	private int colSpan;
-	private int rowSpan;
+	private int colSpan = 1;
+	private int rowSpan = 1;
 
 	public GridLayoutConstraint(final int col, final int row)
 	{
@@ -55,17 +55,17 @@ public class GridLayoutConstraint extends ConstraintBehavior
 		return rowSpan;
 	}
 
-	public ConstraintBehavior setColSpan(final int colSpan)
+	public GridLayoutConstraint setColSpan(final int colSpan)
 	{
-		if (colSpan < 0) throw new IllegalArgumentException("colspan can't be negative : " + colSpan);
+		if (colSpan < 1) throw new IllegalArgumentException("colspan can't be zero or negative : " + colSpan);
 
 		this.colSpan = colSpan;
 		return this;
 	}
 
-	public ConstraintBehavior setRowSpan(final int rowSpan)
+	public GridLayoutConstraint setRowSpan(final int rowSpan)
 	{
-		if (rowSpan < 0) throw new IllegalArgumentException("rowspan can't be negative : " + rowSpan);
+		if (rowSpan < 1) throw new IllegalArgumentException("rowspan can't be zero or negative : " + rowSpan);
 
 		this.rowSpan = rowSpan;
 		return this;
@@ -73,14 +73,56 @@ public class GridLayoutConstraint extends ConstraintBehavior
 
 	boolean contains(final int col, final int row)
 	{
-		return ((col >= getCol() && col <= getCol() + getColSpan()) &&
-				(row >= getRow() && row <= getRow() + getRowSpan()));
+		return ((col >= getCol() && col < getCol() + getColSpan()) &&
+				(row >= getRow() && row < getRow() + getRowSpan()));
+	}
+
+	boolean intersectsWith(final GridLayoutConstraint constraint)
+	{
+		for (int col = constraint.getCol(); col < constraint.getCol() + constraint.getColSpan(); col++)
+		{
+			for (int row = constraint.getRow(); row < constraint.getRow() + constraint.getRowSpan(); row++)
+			{
+				if (contains(col, row))
+				{
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	@Override
 	public String toString()
 	{
 		return String.format("[%s, %s, %s, %s]", col, row, colSpan, rowSpan);
+	}
+
+	public int compareTo(final GridLayoutConstraint constraint)
+	{
+		if (getRow() > constraint.getRow()) return 1;
+		if (getRow() < constraint.getRow()) return -1;
+		if (getCol() > constraint.getCol()) return 1;
+		if (getCol() < constraint.getCol()) return -1;
+		return 0;
+	}
+
+	public boolean equals(final Object o)
+	{
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		final GridLayoutConstraint that = (GridLayoutConstraint) o;
+
+		return col == that.col && row == that.row;
+	}
+
+	public int hashCode()
+	{
+		int result;
+		result = col;
+		result = 31 * result + row;
+		return result;
 	}
 }
 	
