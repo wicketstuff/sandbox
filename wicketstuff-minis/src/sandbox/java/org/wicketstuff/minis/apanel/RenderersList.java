@@ -19,17 +19,19 @@ package org.wicketstuff.minis.apanel;
 import org.apache.wicket.Component;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.WebMarkupContainerWithAssociatedMarkup;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.repeater.RepeatingView;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Collections;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Stores list of renderers.
@@ -39,13 +41,17 @@ class RenderersList implements Serializable
 	private static final long serialVersionUID = 1L;
 	private static final List<IComponentRenderer<?>> DEFAULT_RENDERERS = new ArrayList<IComponentRenderer<?>>();
 
+	private final List<IComponentRenderer<?>> renderers;
+
 	static
 	{
 		DEFAULT_RENDERERS.add(new LabelRenderer());
 		DEFAULT_RENDERERS.add(new LinkRenderer());
 		DEFAULT_RENDERERS.add(new ListViewRenderer());
+		DEFAULT_RENDERERS.add(new RepeatingViewRenderer());
 		DEFAULT_RENDERERS.add(new FormRenderer());
 		DEFAULT_RENDERERS.add(new ButtonRenderer());
+		DEFAULT_RENDERERS.add(new DefaultWebMarkupContainerWithMarkupRenderer());
 		DEFAULT_RENDERERS.add(new DefaultWebMarkupContainerRenderer());
 		DEFAULT_RENDERERS.add(new DefaultRenderer());
 	}
@@ -55,21 +61,28 @@ class RenderersList implements Serializable
 		return Collections.unmodifiableList(DEFAULT_RENDERERS);
 	}
 
-	private final List<IComponentRenderer<?>> renderers;
-
 	public RenderersList(final List<IComponentRenderer<?>> renderers)
 	{
 		this.renderers = renderers;
 	}
 
+	/**
+	 * Note: unchecked cast is suppressed because this method is intended to return renderer that
+	 * should be used with {@link org.apache.wicket.Component} collections but
+	 * {@link org.wicketstuff.minis.apanel.IComponentRenderer#getMarkup(org.apache.wicket.Component)}
+	 * method can only handle certain subtype of {@link org.apache.wicket.Component}.
+	 *
+	 * @param aClass class of the component
+	 * @return {@link org.wicketstuff.minis.apanel.IComponentRenderer} for specified component class
+	 */
 	@SuppressWarnings({"unchecked"})
-			<T extends Component> IComponentRenderer<T> findRendererForClass(final Class<? extends T> aClass)
+	IComponentRenderer<Component> findRendererForClass(final Class<? extends Component> aClass)
 	{
-		for (IComponentRenderer componentRenderer : renderers)
+		for (IComponentRenderer<?> componentRenderer : renderers)
 		{
 			if (componentRenderer.getComponentClass().isAssignableFrom(aClass))
 			{
-				return componentRenderer;
+				return (IComponentRenderer<Component>)componentRenderer;
 			}
 		}
 		throw new WicketRuntimeException("Can't find renderer for class " + aClass);
@@ -117,7 +130,7 @@ class RenderersList implements Serializable
 
 	public static abstract class BaseWebMarkupContainerRenderer<T extends WebMarkupContainer> extends BaseRenderer<T>
 	{
-		private final ILayout layout;
+		protected final ILayout layout;
 
 		protected BaseWebMarkupContainerRenderer()
 		{
@@ -129,7 +142,7 @@ class RenderersList implements Serializable
 			this.layout = layout;
 		}
 
-		public CharSequence getBodyMarkup(final WebMarkupContainer container)
+		protected CharSequence getBodyMarkup(final WebMarkupContainer container)
 		{
 			final List<Component> componentsToRender = new ArrayList<Component>();
 
@@ -153,14 +166,68 @@ class RenderersList implements Serializable
 		public CharSequence getMarkup(final WebMarkupContainer component)
 		{
 			return String.format(
-					"<span>%s</span>",
+					"<span %s>%s</span>",
+					getIdAttribute(component),
 					getBodyMarkup(component)
 			);
 		}
 
-		public Class<? extends WebMarkupContainer> getComponentClass()
+		public Class<WebMarkupContainer> getComponentClass()
 		{
 			return WebMarkupContainer.class;
+		}
+	}
+
+	public static final class DefaultWebMarkupContainerWithMarkupRenderer extends
+			BaseWebMarkupContainerRenderer<WebMarkupContainerWithAssociatedMarkup>
+	{
+		private static final long serialVersionUID = 1L;
+
+		public CharSequence getMarkup(final WebMarkupContainerWithAssociatedMarkup component)
+		{
+			return String.format(
+					"<span %s></span>",
+					getIdAttribute(component)
+			);
+		}
+
+		public Class<WebMarkupContainerWithAssociatedMarkup> getComponentClass()
+		{
+			return WebMarkupContainerWithAssociatedMarkup.class;
+		}
+	}
+
+	public static final class RepeatingViewRenderer extends BaseWebMarkupContainerRenderer<RepeatingView>
+	{
+		private static final long serialVersionUID = 1L;
+
+		public CharSequence getMarkup(final RepeatingView component)
+		{
+			final String[] markup = new String[1];
+			component.visitChildren(new Component.IVisitor()
+			{
+				public Object component(final Component component)
+				{
+					final CharSequence c = layout.renderComponents(Collections.singletonList(component));
+					markup[0] = c.toString().replace(getIdAttribute(component), "%s");
+					return Component.IVisitor.STOP_TRAVERSAL;
+				}
+			});
+
+			if (markup[0] == null)
+			{
+				markup[0] = "<span %s></span>";
+			}
+
+			return String.format(
+					markup[0],
+					getIdAttribute(component)
+			);
+		}
+
+		public Class<RepeatingView> getComponentClass()
+		{
+			return RepeatingView.class;
 		}
 	}
 
@@ -184,7 +251,7 @@ class RenderersList implements Serializable
 			return getBodyMarkup(listItem);
 		}
 
-		public Class<? extends ListView> getComponentClass()
+		public Class<ListView> getComponentClass()
 		{
 			return ListView.class;
 		}
@@ -203,7 +270,7 @@ class RenderersList implements Serializable
 			);
 		}
 
-		public Class<? extends Link> getComponentClass()
+		public Class<Link> getComponentClass()
 		{
 			return Link.class;
 		}
@@ -222,7 +289,7 @@ class RenderersList implements Serializable
 			);
 		}
 
-		public Class<? extends Form> getComponentClass()
+		public Class<Form> getComponentClass()
 		{
 			return Form.class;
 		}
@@ -240,7 +307,7 @@ class RenderersList implements Serializable
 			);
 		}
 
-		public Class<? extends Button> getComponentClass()
+		public Class<Button> getComponentClass()
 		{
 			return Button.class;
 		}

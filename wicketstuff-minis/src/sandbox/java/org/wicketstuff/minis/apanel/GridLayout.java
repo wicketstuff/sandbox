@@ -22,7 +22,6 @@ import org.apache.wicket.behavior.IBehavior;
 import org.apache.wicket.markup.parser.XmlTag;
 
 import java.util.*;
-import java.io.Serializable;
 
 /**
  * GridLayout puts markup of components in &lt;table&gt;&lt;table/&gt; according to
@@ -39,8 +38,12 @@ public class GridLayout implements ILayout
 	private final int width;
 	private final int height;
 
+	/**
+	 * Holds constraints for components. It is sorted to write markup output in the right order.
+	 * @see org.wicketstuff.minis.apanel.GridLayoutConstraint#compareTo(GridLayoutConstraint)
+	 */
 	private final SortedMap<GridLayoutConstraint, Component> constraintsMap =
-			new TreeMap<GridLayoutConstraint, Component>(new GridLayoutConstraintComparator());
+			new TreeMap<GridLayoutConstraint, Component>();
 
 	/**
 	 * Constructor.
@@ -71,8 +74,7 @@ public class GridLayout implements ILayout
 	{
 		constraintsMap.clear();
 
-		// TODO check constraints
-
+		checkConstraints(components);
 		fillConstraintsMap(components);
 
 		final StringBuilder stringBuilder = new StringBuilder();
@@ -80,52 +82,23 @@ public class GridLayout implements ILayout
 		return stringBuilder;
 	}
 
-	private void fillConstraintsMap(final List<? extends Component> components)
+	/**
+	 * May be overriden to modify &lt;tr&gt; tag
+	 *
+	 * @param xmlTag &lt;tr&gt; tag
+	 */
+	protected void onGridRow(final XmlTag xmlTag)
 	{
-		final List<Component> componentsWithNoConstraint = new ArrayList<Component>();
+	}
 
-		for (Component component : components)
-		{
-			//noinspection unchecked
-			final List<IBehavior> behaviors = component.getBehaviors();
-
-			boolean isConstraintFound = false;
-			for (IBehavior behavior : behaviors)
-			{
-				if (behavior instanceof GridLayoutConstraint)
-				{
-					constraintsMap.put((GridLayoutConstraint) behavior, component);
-					isConstraintFound = true;
-					break;
-				}
-			}
-
-			if (!isConstraintFound)
-			{
-				componentsWithNoConstraint.add(component);
-			}
-		}
-
-		for (Component component : componentsWithNoConstraint)
-		{
-			final GridLayoutConstraint constraint = findEmptyCell();
-			if (constraint != null)
-			{
-				constraintsMap.put(constraint, component);
-			}
-			else
-			{
-				throw new WicketRuntimeException("There is no free cells in grid for the component " + component);
-			}
-		}
-
-		assert constraintsMap.size() == components.size();
-
-		// filling cells that has no components so that they can be rendered
-		for (GridLayoutConstraint constraint = findEmptyCell(); constraint != null; constraint = findEmptyCell())
-		{
-			constraintsMap.put(constraint, EMPTY_CELL_COMPONENT);
-		}
+	/**
+	 * May be overriden to modify &lt;td&gt; tag
+	 *
+	 * @param component component
+	 * @param xmlTag	&lt;td&gt; tag
+	 */
+	protected void onGridCell(final Component component, final XmlTag xmlTag)
+	{
 	}
 
 	private void writeOutput(final StringBuilder stringBuilder)
@@ -178,32 +151,92 @@ public class GridLayout implements ILayout
 		return xmlTag;
 	}
 
-	/**
-	 * Might be overriden to modify &lt;tr&gt; tag
-	 *
-	 * @param xmlTag &lt;tr&gt; tag
-	 */
-	protected void onGridRow(final XmlTag xmlTag)
+	private void checkConstraints(final List<? extends Component> components)
 	{
+		for (int i = 0; i < components.size(); i++)
+		{
+			final GridLayoutConstraint constraint = getGridConstraint(components.get(i));
+
+			if (constraint == null) continue;
+
+			// skip current component and all components before because
+			// their constraints have already been checked
+			for (int j = i + 1; j < components.size(); j++)
+			{
+				final GridLayoutConstraint anotherConstraint = getGridConstraint(components.get(j));
+
+				if (anotherConstraint == null) continue;
+
+				if (constraint.intersectsWith(anotherConstraint))
+				{
+					throw new WicketRuntimeException("Component " + components.get(i) + " and component " +
+													 components.get(j) + " has intersecting constraints");
+				}
+			}
+		}
 	}
 
-	/**
-	 * Might be overriden to modify &lt;td&gt; tag
-	 *
-	 * @param component component
-	 * @param xmlTag	&lt;td&gt; tag
-	 */
-	protected void onGridCell(final Component component, final XmlTag xmlTag)
+	private GridLayoutConstraint getGridConstraint(final Component component)
 	{
+		//noinspection unchecked
+		for (IBehavior behavior : (List<IBehavior>) component.getBehaviors())
+		{
+			if (behavior instanceof GridLayoutConstraint)
+			{
+				return (GridLayoutConstraint) behavior;
+			}
+		}
+		return null;
 	}
 
-	private GridLayoutConstraint findEmptyCell()
+	private void fillConstraintsMap(final List<? extends Component> components)
+	{
+		final List<Component> componentsWithNoConstraint = new ArrayList<Component>();
+
+		for (Component component : components)
+		{
+			final GridLayoutConstraint constraint = getGridConstraint(component);
+
+			if (constraint != null)
+			{
+				constraintsMap.put(constraint, component);
+			}
+			else
+			{
+				componentsWithNoConstraint.add(component);
+			}
+		}
+
+		for (Component component : componentsWithNoConstraint)
+		{
+			final GridLayoutConstraint constraint = findEmptyCellConstraint();
+			if (constraint != null)
+			{
+				constraintsMap.put(constraint, component);
+			}
+			else
+			{
+				throw new WicketRuntimeException("There is no free cells in grid for the component " + component);
+			}
+		}
+
+		assert constraintsMap.size() == components.size();
+
+		// filling cells that has no components so that they can be rendered
+		for (GridLayoutConstraint constraint = findEmptyCellConstraint();
+		     constraint != null; constraint = findEmptyCellConstraint())
+		{
+			constraintsMap.put(constraint, EMPTY_CELL_COMPONENT);
+		}
+	}
+
+	private GridLayoutConstraint findEmptyCellConstraint()
 	{
 		for (int row = 0; row < height; row++)
 		{
 			for (int col = 0; col < width; col++)
 			{
-				if (!isIntersectingWithAnyConstraint(col, row))
+				if (!isWithinAnyConstraint(col, row))
 				{
 					return new GridLayoutConstraint(col, row);
 				}
@@ -212,7 +245,7 @@ public class GridLayout implements ILayout
 		return null;
 	}
 
-	private boolean isIntersectingWithAnyConstraint(final int col, final int row)
+	private boolean isWithinAnyConstraint(final int col, final int row)
 	{
 		for (GridLayoutConstraint constraint : constraintsMap.keySet())
 		{
@@ -273,20 +306,6 @@ public class GridLayout implements ILayout
 		public boolean isNewRow()
 		{
 			return isNewRow;
-		}
-	}
-
-	private static class GridLayoutConstraintComparator implements Comparator<GridLayoutConstraint>, Serializable
-	{
-		private static final long serialVersionUID = 1L;
-
-		public int compare(final GridLayoutConstraint o1, final GridLayoutConstraint o2)
-		{
-			if (o1.getRow() > o2.getRow()) return 1;
-			if (o1.getRow() < o2.getRow()) return -1;
-			if (o1.getCol() > o2.getCol()) return 1;
-			if (o1.getCol() < o2.getCol()) return -1;
-			return 0;
 		}
 	}
 }

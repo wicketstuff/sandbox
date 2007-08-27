@@ -25,10 +25,14 @@ import org.apache.wicket.util.resource.StringBufferResourceStream;
 /**
  * Panel that generates markup for added components, so that it doesn't need to
  * have a markup file.
+ * <p>
+ * Components of type {@link org.apache.wicket.markup.html.WebMarkupContainer}
+ * added to a panel will have their own layout.
  */
 public class APanel extends Panel implements IMarkupResourceStreamProvider
 {
 	private static final long serialVersionUID = 1L;
+
 	private final APanelRenderer thisPanelRenderer;
 
 	/**
@@ -45,7 +49,7 @@ public class APanel extends Panel implements IMarkupResourceStreamProvider
 	 * Constructor.
 	 *
 	 * @param id	 id
-	 * @param layout layout to use for components in this panel.
+	 * @param layout layout to be used for components arrangement in this panel
 	 */
 	public APanel(final String id, final ILayout layout)
 	{
@@ -53,18 +57,15 @@ public class APanel extends Panel implements IMarkupResourceStreamProvider
 		thisPanelRenderer = new APanelRenderer(layout);
 	}
 
-
 	/**
-	 * @see org.apache.wicket.markup.IMarkupResourceStreamProvider#getMarkupResourceStream(org.apache.wicket.MarkupContainer,
-	 *java.lang.Class)
+	 * @inheritDoc
 	 */
 	public IResourceStream getMarkupResourceStream(final MarkupContainer container,
 												   final Class containerClass)
 	{
 		if (container != this)
 		{
-			throw new IllegalArgumentException("Conatainer " + container + " must be instance "
-					+ this);
+			throw new IllegalArgumentException("Conatainer " + container + " must be instance " + this);
 		}
 
 		final StringBufferResourceStream resourceStream = new StringBufferResourceStream();
@@ -72,9 +73,7 @@ public class APanel extends Panel implements IMarkupResourceStreamProvider
 		return resourceStream;
 	}
 
-	private static final class APanelRenderer
-			extends
-			RenderersList.BaseWebMarkupContainerRenderer<APanel>
+	private static final class APanelRenderer extends RenderersList.BaseWebMarkupContainerRenderer<APanel>
 	{
 		private static final long serialVersionUID = 1L;
 
@@ -87,9 +86,7 @@ public class APanel extends Panel implements IMarkupResourceStreamProvider
 		}
 
 		/**
-		 * @param component
-		 * @return markup
-		 * @see org.wicketstuff.minis.apanel.IComponentRenderer#getMarkup(org.apache.wicket.Component)
+		 * @inheritDoc
 		 */
 		public CharSequence getMarkup(final APanel component)
 		{
@@ -97,9 +94,9 @@ public class APanel extends Panel implements IMarkupResourceStreamProvider
 		}
 
 		/**
-		 * @see org.wicketstuff.minis.apanel.IComponentRenderer#getComponentClass()
+		 * @inheritDoc
 		 */
-		public Class<? extends APanel> getComponentClass()
+		public Class<APanel> getComponentClass()
 		{
 			return APanel.class;
 		}

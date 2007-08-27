@@ -20,22 +20,18 @@ import org.apache.wicket.Component;
 
 import java.io.Serializable;
 
-/**
- * Renderer creates wicket markup for a component.
- */
+/** Renderer creates wicket markup for a component. */
 public interface IComponentRenderer<T extends Component> extends Serializable
 {
-
 	/**
 	 * Creates wicket markup for a specified component.
 	 *
-	 * @param component component
+	 * @param component component (generic parameter is used only 
+	 *                  for convenience of this method implementation)
 	 * @return wicket markup
 	 */
 	CharSequence getMarkup(T component);
 
-	/**
-	 * @return a class of components this renderer can render
-	 */
-	Class<? extends T> getComponentClass();
+	/** @return a class of components this renderer can render */
+	Class<T> getComponentClass();
 }

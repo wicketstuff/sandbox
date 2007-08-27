@@ -18,11 +18,9 @@ package org.wicketstuff.minis.apanel;
 
 import org.apache.wicket.markup.html.WebPage;
 
-public class TestPage extends WebPage
+/**
+ * Page that has common layout for test pages.
+ */
+public abstract class TestPage extends WebPage
 {
-	public TestPage(final APanel aPanel)
-	{
-		super();
-		add(aPanel);
-	}
 }
