@@ -42,7 +42,7 @@ public class JmxTreeColumn extends AbstractTreeColumn
 	{
 		super(location, header);
 	}
-
+	
 	@Override
 	public String renderNode(TreeNode node)
 	{
