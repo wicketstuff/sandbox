@@ -19,6 +19,7 @@ package org.wicketstuff.jmx.markup.html;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -78,9 +79,43 @@ public class JmxPanel extends Panel
 			JmxTreeNode domain = new JmxTreeNode(domains[i], null);
 			rootNode.add(domain);
 			// find all MBeans in the current domain
-			List mBeans = new ArrayList(serverModel.getServer().queryNames(
+			List<ObjectName> mBeans = new ArrayList<ObjectName>(serverModel.getServer().queryNames(
 					getObjectName(domains[i] + ":*"), null));
-			Collections.sort(mBeans);
+			Collections.sort(mBeans, new Comparator<ObjectName>()
+			{
+				public int compare(ObjectName object1, ObjectName object2)
+				{
+					// (1) Compare domains
+					//
+					int domainValue = object1.getDomain().compareTo(object2.getDomain());
+					if (domainValue != 0)
+						return domainValue;
+
+					// (2) Compare "type=" keys
+					//
+					// Within a given domain, all names with missing or empty
+					// "type="
+					// come before all names with non-empty type.
+					//
+					// When both types are missing or empty, canonical-name
+					// ordering
+					// applies which is a total order.
+					//
+					String thisTypeKey = object1.getKeyProperty("type");
+					String anotherTypeKey = object2.getKeyProperty("type");
+					if (thisTypeKey == null)
+						thisTypeKey = "";
+					if (anotherTypeKey == null)
+						anotherTypeKey = "";
+					int typeKeyValue = thisTypeKey.compareTo(anotherTypeKey);
+					if (typeKeyValue != 0)
+						return typeKeyValue;
+
+					// (3) Compare canonical names
+					//
+					return object1.getCanonicalName().compareTo(object2.getCanonicalName());
+				}
+			});
 
 			// add all MBeans to the current domain
 			for (Iterator iter = mBeans.iterator(); iter.hasNext();)
