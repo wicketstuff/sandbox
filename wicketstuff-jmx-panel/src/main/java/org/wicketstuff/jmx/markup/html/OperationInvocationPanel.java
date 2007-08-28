@@ -69,7 +69,6 @@ public class OperationInvocationPanel extends Panel
 			fields.add(row);
 
 			IModel labelModel = new Model(param.getName());
-			// row.add(new Label("name", labelModel));
 
 			// Create a model to bind our editor component to the bean.
 			IModel model = new PropertyModel(modelMap, param.getName());
