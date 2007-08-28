@@ -1,0 +1,12 @@
+div.wicket-tree-table .writeable {
+	color: #3311aa;
+}
+
+div.wicket-tree-table .editorContainer,div.wicket-tree-table .editorContainer li,div.wicket-tree-table .editorContainer input {
+	display: inline;
+	font-size: 8pt;
+}
+div.wicket-tree-table .editorContainer a {
+	cursor: pointer;
+	float: none;
+}
