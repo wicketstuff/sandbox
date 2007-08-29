@@ -13,7 +13,6 @@ import org.apache.catalina.tribes.ChannelException;
 import org.apache.catalina.tribes.ChannelListener;
 import org.apache.catalina.tribes.Member;
 import org.apache.catalina.tribes.MembershipListener;
-import org.apache.catalina.tribes.MembershipService;
 import org.apache.catalina.tribes.group.GroupChannel;
 import org.apache.catalina.tribes.membership.McastService;
 import org.apache.catalina.tribes.transport.ReceiverBase;
@@ -35,8 +34,21 @@ public class TribesCommunicationModule implements CommunicationModule {
 	}
 
 	private Channel newTribesChannel() {
-
-		MembershipService membership = new McastService();
+		
+		McastService membership = new McastService();
+		
+		// default multicast address is 228.0.0.4
+		// default multicast port is 45564
+		
+		Integer customPort = Integer.getInteger("wjc-multicast-port");
+		if (customPort != null)
+			membership.setPort(customPort.intValue());
+		
+		
+		String customAddress = System.getProperty("wjc-multicast-address");
+		if (customAddress != null)
+			membership.setAddress(customAddress);
+		
 		ReceiverBase receiver = new NioReceiver();
 		receiver.setAddress("auto");
 
