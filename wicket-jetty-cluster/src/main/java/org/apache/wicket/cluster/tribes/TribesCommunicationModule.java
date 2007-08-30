@@ -203,6 +203,7 @@ public class TribesCommunicationModule implements CommunicationModule {
 
 	private class DefaultMembershipListener implements MembershipListener {
 		public void memberAdded(Member member) {
+			log.info("Member added - " + member.toString());
 			List<MemberListener> copy = new ArrayList<MemberListener>(memberListeners);
 			for (MemberListener listener : copy) {
 				listener.onMemberAdded(new TribesMember(member));
@@ -210,6 +211,7 @@ public class TribesCommunicationModule implements CommunicationModule {
 		}
 
 		public void memberDisappeared(Member member) {
+			log.info("Member disappeared - " + member.toString());
 			List<MemberListener> copy = new ArrayList<MemberListener>(memberListeners);
 			for (MemberListener listener : copy) {
 				listener.onMemberRemoved(new TribesMember(member));
