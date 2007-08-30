@@ -4,12 +4,14 @@ import java.util.Set;
 
 import javax.servlet.http.HttpSession;
 
+import org.mortbay.jetty.SessionManager;
+
 /**
  * Interface that the session manager must implement.
  * 
  * @author Matej Knopp
  */
-public interface SessionProvider {
+public interface SessionProvider extends SessionManager {
 
 	/**
 	 * Returns the http session with given Id. If the session doesn't exist and

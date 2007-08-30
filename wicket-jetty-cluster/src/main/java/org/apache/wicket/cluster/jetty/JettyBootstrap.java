@@ -12,6 +12,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServlet;
 
 import org.apache.wicket.cluster.CommunicationModule;
+import org.apache.wicket.cluster.SessionProvider;
 import org.apache.wicket.cluster.initializer.NodeInitializerComponent;
 import org.apache.wicket.cluster.pagestore.PageStoreComponent;
 import org.apache.wicket.cluster.session.SessionComponent;
@@ -28,7 +29,7 @@ import org.slf4j.LoggerFactory;
 public class JettyBootstrap {
 	
 	private ForceSessionIdManager sessionIdManager;
-	private HashSessionManager sessionManager;
+	private SessionProvider sessionManager;
 	
 	public JettyBootstrap() {
 		if (instance != null) {
@@ -135,7 +136,7 @@ public class JettyBootstrap {
 		return sessionIdManager;
 	}
 	
-	public HashSessionManager getSessionManager() {
+	public SessionProvider getSessionManager() {
 		return sessionManager;
 	}
 	
