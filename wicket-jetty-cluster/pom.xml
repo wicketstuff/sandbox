@@ -98,7 +98,7 @@
 		<dependency>
 			<groupId>org.mortbay.jetty</groupId>
 			<artifactId>jetty</artifactId>
-			<version>6.1.4</version>
+			<version>6.1.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mortbay.jetty</groupId>
@@ -108,7 +108,7 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>1.4.2</version>
+			<version>1.4.3</version>
 		</dependency>
 
 		<dependency>
