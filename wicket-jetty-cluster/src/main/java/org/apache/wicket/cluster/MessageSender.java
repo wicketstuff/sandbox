@@ -17,7 +17,7 @@ public interface MessageSender {
 	public void sendMessage(Serializable message);
 
 	/**
-	 * Sends message to given node of cluster. Unlinke
+	 * Sends message to given node of cluster. Unlike
 	 * {@link #sendMessage(Serializable)}, this method throws an exception when
 	 * sending of the message fails
 	 * @throws RuntimeException

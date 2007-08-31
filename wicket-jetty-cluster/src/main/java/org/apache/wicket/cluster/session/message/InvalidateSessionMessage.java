@@ -7,11 +7,17 @@ import org.apache.wicket.cluster.SessionProvider;
 public class InvalidateSessionMessage implements SessionMessage {
 
 	private static final long serialVersionUID = 1L;
-	
+		
+	private final String contextPath;
 	private final String sessionId;
 
-	public InvalidateSessionMessage(String sessionId) {
+	public InvalidateSessionMessage(String contextPath, String sessionId) {
+		this.contextPath = contextPath;
 		this.sessionId = sessionId;
+	}
+	
+	public String getContextPath() {
+		return contextPath;
 	}
 	
 	public void execute(SessionProvider sessionProvider) {
