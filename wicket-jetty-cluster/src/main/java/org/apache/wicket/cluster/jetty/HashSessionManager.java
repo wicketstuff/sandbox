@@ -34,8 +34,15 @@ public class HashSessionManager extends AbstractSessionManager implements Sessio
 
 	protected Map<String, Session> sessions;
 
-	public HashSessionManager() {
+	private final String contextPath;
+	
+	public HashSessionManager(String contextPath) {
 		super();
+		
+		if (contextPath.endsWith("/")) {
+			contextPath = contextPath.substring(0, contextPath.length() - 1);
+		}
+		this.contextPath = contextPath;
 	}
 
 	public void doStart() throws Exception {
@@ -47,6 +54,10 @@ public class HashSessionManager extends AbstractSessionManager implements Sessio
 		setScavengePeriod(getScavengePeriod());
 	}
 
+	public String getContextPath() {
+		return contextPath;		
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * 

@@ -1,5 +1,8 @@
 package org.apache.wicket.cluster.initializer;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
@@ -9,9 +12,9 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.servlet.http.HttpSession;
 
-import org.apache.wicket.cluster.PageStoreReplicator;
 import org.apache.wicket.cluster.Member;
 import org.apache.wicket.cluster.MessageSender;
+import org.apache.wicket.cluster.PageStoreReplicator;
 import org.apache.wicket.cluster.SessionProvider;
 import org.apache.wicket.cluster.initializer.message.AddSessionCountMessage;
 import org.apache.wicket.cluster.initializer.message.ReplicateSessionMessage;
@@ -54,7 +57,8 @@ public class NodeInitializer {
 	 * 
 	 * @author Matej Knopp
 	 */
-	private static class MemberSessionCount implements Comparable<MemberSessionCount> {
+	private static class MemberSessionCount implements
+			Comparable<MemberSessionCount> {
 		Member member;
 
 		int sessionCount;
@@ -65,7 +69,8 @@ public class NodeInitializer {
 		}
 
 		public int compareTo(MemberSessionCount that) {
-			return this.sessionCount < that.sessionCount ? -1 : (this.sessionCount == that.sessionCount ? 0 : 1);
+			return this.sessionCount < that.sessionCount ? -1
+					: (this.sessionCount == that.sessionCount ? 0 : 1);
 		}
 	}
 
@@ -76,20 +81,35 @@ public class NodeInitializer {
 
 	private final MessageSender messageSender;
 
-	private final SessionProvider sessionProvider;
-	
+	private final List<SessionProvider> sessionProviders = Collections
+			.synchronizedList(new ArrayList<SessionProvider>());
+
 	private final PageStoreReplicator clusteredPageStore;
 
-	public NodeInitializer(MessageSender messageSender, SessionProvider sessionProvider, PageStoreReplicator clusteredPageStore) {
+	public NodeInitializer(MessageSender messageSender,
+			PageStoreReplicator clusteredPageStore) {
 		this.messageSender = messageSender;
-		this.sessionProvider = sessionProvider;
 		this.clusteredPageStore = clusteredPageStore;
 	}
 
+	public void registerSessionProvider(SessionProvider provider) {
+		sessionProviders.add(provider);
+	}
+
 	/**
-	 * Whether we have alrady started the main thread.
+	 * Whether we have already started the main thread.
 	 */
 	private boolean threadStarted = false;
+
+	private int getActiveSessionsCount() {
+		int count = 0;
+		List<SessionProvider> copy = new ArrayList<SessionProvider>(
+				sessionProviders);
+		for (SessionProvider provider : copy) {
+			count += provider.getActiveSessionsCount();
+		}
+		return count;
+	}
 
 	/**
 	 * Adds the given member->sessionCount pair, and starts the main thread if
@@ -103,10 +123,11 @@ public class NodeInitializer {
 		// (this message is sent from new members to existing members as well,
 		// so
 		// we need to filter that out)
-		if (sessionProvider.getActiveSessionsCount() < sessionCount) {
+		if (getActiveSessionsCount() < sessionCount) {
 			boolean startThread = false;
 			synchronized (this) {
-				memberSessionCounts.add(new MemberSessionCount(member, sessionCount));
+				memberSessionCounts.add(new MemberSessionCount(member,
+						sessionCount));
 				if (threadStarted == false) {
 					startThread = threadStarted = true;
 				}
@@ -188,7 +209,9 @@ public class NodeInitializer {
 
 				// if we are not yet done
 				if (replicationTimestamp != -1) {
-					log.info("Member ceased to provide replication information " + member);
+					log
+							.info("Member ceased to provide replication information "
+									+ member);
 					// continue the cycle
 				} else {
 					// we are done, replication successful
@@ -214,7 +237,8 @@ public class NodeInitializer {
 		}
 
 		log.info("Sending replication request to " + highest.member);
-		messageSender.sendMessage(new ReplicationRequestMessage(), highest.member);
+		messageSender.sendMessage(new ReplicationRequestMessage(),
+				highest.member);
 		return highest.member;
 	}
 
@@ -251,12 +275,14 @@ public class NodeInitializer {
 	/**
 	 * Replicates the sessions from this member to target member
 	 * 
+	 * @param sessionProvider
 	 * @param member
 	 *            target member
 	 */
-	private void replicateSessionsInternal(Member member) {
+	private void replicateSessionsInternal(SessionProvider sessionProvider,	Member member) {
 		Set<String> active = sessionProvider.getActiveSessions();
-		log.info("Replicating " + active.size() + " sessions - destination " + member);
+		log.info("Replicating " + active.size() + " sessions - destination "
+				+ member);
 
 		try {
 			for (String id : active) {
@@ -268,10 +294,11 @@ public class NodeInitializer {
 
 				HttpSession session = sessionProvider.getSession(id, false);
 				if (session != null) {
-					ReplicateSessionMessage action = new ReplicateSessionMessage(session);
+					ReplicateSessionMessage action = new ReplicateSessionMessage(
+							session);
 					messageSender.sendMessage(action, member);
 				}
-				
+
 				clusteredPageStore.replicatePageStore(id, member);
 			}
 
@@ -280,6 +307,13 @@ public class NodeInitializer {
 			log.info("Replicating sessions done - OK");
 		} catch (RuntimeException e) {
 			log.error("Replicating sessions error", e);
+		}
+	}
+
+	private void replicateSessionsInternal(Member member) {
+		List<SessionProvider> copy = new ArrayList<SessionProvider>(sessionProviders);
+		for (SessionProvider provider : copy) {
+			replicateSessionsInternal(provider, member);
 		}
 	}
 
@@ -309,28 +343,46 @@ public class NodeInitializer {
 	 */
 	private volatile long replicationTimestamp = -1;
 
+	private SessionProvider getSessionProvider(String contextPath) {
+		List<SessionProvider> copy = new ArrayList<SessionProvider>(sessionProviders);
+		for (SessionProvider provider: copy) {
+			if (provider.getContextPath().equals(contextPath)) {
+				return provider;
+			}
+		}
+		return null;
+	}
+	
 	/**
 	 * Message invoked on new node to store session provided by existing node.
+	 * 
 	 * @param id
 	 * @param maxInactiveInterval
 	 * @param attributes
 	 */
-	public void replicateSession(String id, int maxInactiveInterval, Map<String, SessionAttributeHolder> attributes) {
-		log.debug("Replicating session " + id);
-		HttpSession session = sessionProvider.getSession(id, true);
-		session.setMaxInactiveInterval(maxInactiveInterval);
-		for (Entry<String, SessionAttributeHolder> entry : attributes.entrySet()) {
-			session.setAttribute(entry.getKey(), entry.getValue());
-		}
-		if (replicationTimestamp != -1) {
-			replicationTimestamp = System.currentTimeMillis();
+	public void replicateSession(String contextPath, String id, int maxInactiveInterval,
+			Map<String, SessionAttributeHolder> attributes) {
+		log.debug("Replicating session " + id + " in context " + contextPath);
+		SessionProvider sessionProvider = getSessionProvider(contextPath);
+		if (sessionProvider == null) {
+			log.warn("Couldn't find session provider for context " + contextPath);
+		} else {		
+			HttpSession session = sessionProvider.getSession(id, true);
+			session.setMaxInactiveInterval(maxInactiveInterval);
+			for (Entry<String, SessionAttributeHolder> entry : attributes
+					.entrySet()) {
+				session.setAttribute(entry.getKey(), entry.getValue());
+			}
+			if (replicationTimestamp != -1) {
+				replicationTimestamp = System.currentTimeMillis();
+			}
 		}
 	}
 
 	/**
-	 * Invoked on new node when replication is done. This is to let the main thread know
-	 * that th replication finished ok and there is no need to request replication from
-	 * another member.
+	 * Invoked on new node when replication is done. This is to let the main
+	 * thread know that th replication finished ok and there is no need to
+	 * request replication from another member.
 	 */
 	public void replicationDone() {
 		replicationTimestamp = -1;
@@ -338,19 +390,23 @@ public class NodeInitializer {
 
 	/**
 	 * Called when new member is added to cluster.
+	 * 
 	 * @param member
 	 */
 	public void memberAdded(Member member) {
-		int count = sessionProvider.getActiveSessionsCount();
+		int count = getActiveSessionsCount();
 		try {
 			if (count > 0) {
-				// if we have any sessions inform the added member about our session count
-				messageSender.sendMessage(new AddSessionCountMessage(count), member);
+				// if we have any sessions inform the added member about our
+				// session count
+				messageSender.sendMessage(new AddSessionCountMessage(count),
+						member);
 			}
 		} catch (RuntimeException e) {
 			log.error("Error informing new member about sessions count", e);
 		}
 	}
 
-	private static final Logger log = LoggerFactory.getLogger(NodeInitializer.class);
+	private static final Logger log = LoggerFactory
+			.getLogger(NodeInitializer.class);
 }

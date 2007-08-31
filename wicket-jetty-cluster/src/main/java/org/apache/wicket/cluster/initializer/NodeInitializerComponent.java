@@ -13,13 +13,16 @@ public class NodeInitializerComponent implements MemberListener, MessageListener
 
 	private final NodeInitializer nodeInitializer;
 	
-	public NodeInitializerComponent(MessageSender messageSender, SessionProvider sessionProvider, PageStoreReplicator clusteredPageStore) {
-		nodeInitializer = new NodeInitializer(messageSender, sessionProvider, clusteredPageStore);
+	public NodeInitializerComponent(MessageSender messageSender, PageStoreReplicator pageStoreReplicator) {
+		nodeInitializer = new NodeInitializer(messageSender, pageStoreReplicator);
+	}
+	
+	public void registerSessionProvider(SessionProvider provider) {
+		nodeInitializer.registerSessionProvider(provider);
 	}
 	
 	public void onMemberAdded(Member member) {
 		nodeInitializer.memberAdded(member);
-
 	}
 
 	public void onMemberRemoved(Member member) {

@@ -20,13 +20,16 @@ import org.apache.wicket.cluster.session.message.SetMaxInactiveIntervalMessage;
  */
 public class ClusteredHttpSession extends HttpSessionWrapper {
 	
+	private final String contextPath;
 	private final MessageSender messageSender;
 	
 	// set of modified attributes
 	private Set<String> modified = new HashSet<String>();
 	
-	public ClusteredHttpSession(HttpSession delegate, MessageSender messageSender) {
+	public ClusteredHttpSession(String contextPath, HttpSession delegate, MessageSender messageSender) {
 		super(delegate);
+		this.contextPath = contextPath;
+		
 		if (delegate == null) {
 			throw new IllegalArgumentException("Session delegate may not be null");
 		}
@@ -55,20 +58,20 @@ public class ClusteredHttpSession extends HttpSessionWrapper {
 	@Override
 	public void removeAttribute(String name) {
 		super.removeAttribute(name);
-		messageSender.sendMessage(new RemoveAttributeMessage(getId(), name));
+		messageSender.sendMessage(new RemoveAttributeMessage(contextPath, getId(), name));
 	}
 	
 	@Override
 	public void setMaxInactiveInterval(int interval) {
 		super.setMaxInactiveInterval(interval);
-		messageSender.sendMessage(new SetMaxInactiveIntervalMessage(getId(), interval));
+		messageSender.sendMessage(new SetMaxInactiveIntervalMessage(contextPath, getId(), interval));
 	}
 	
 	@Override
 	public void invalidate() {
 		String id = getId();
 		super.invalidate();
-		messageSender.sendMessage(new InvalidateSessionMessage(id));
+		messageSender.sendMessage(new InvalidateSessionMessage(contextPath, id));
 	}
 	
 	@Override
@@ -89,7 +92,7 @@ public class ClusteredHttpSession extends HttpSessionWrapper {
 	public void flush() {
 		for (String name : modified) {
 			Object value = super.getAttribute(name);
-			messageSender.sendMessage(new SetAttributeMessage(getId(), name, value));
+			messageSender.sendMessage(new SetAttributeMessage(contextPath, getId(), name, value));
 		}
 	}
 }

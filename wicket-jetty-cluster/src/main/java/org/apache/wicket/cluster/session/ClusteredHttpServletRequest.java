@@ -1,5 +1,6 @@
 package org.apache.wicket.cluster.session;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpSession;
@@ -10,15 +11,17 @@ import org.apache.wicket.cluster.MessageSender;
 public class ClusteredHttpServletRequest extends HttpServletRequestWrapper {
 	
 	private final MessageSender sender;
+	private final String contextPath;
 	
-	public ClusteredHttpServletRequest(HttpServletRequest delegate, MessageSender sender) {
+	public ClusteredHttpServletRequest(HttpServletRequest delegate, ServletContext context, MessageSender sender) {
 		super(delegate);
 		
 		if (sender == null) {
 			throw new IllegalArgumentException("Message sender may not be null");
 		}
 		
-		this.sender = sender;
+		this.contextPath = context.getContextPath();
+		this.sender = sender;		
 	}
 	
 	private ClusteredHttpSession cachedSession = null;
@@ -28,7 +31,8 @@ public class ClusteredHttpServletRequest extends HttpServletRequestWrapper {
 		if (cachedSession == null) {
 			HttpSession session = super.getSession();
 			if (session != null) {
-				cachedSession = new ClusteredHttpSession(session, sender);
+				
+				cachedSession = new ClusteredHttpSession(contextPath, session, sender);
 			}
 		}
 		return cachedSession;
@@ -39,7 +43,7 @@ public class ClusteredHttpServletRequest extends HttpServletRequestWrapper {
 		if (cachedSession == null) {
 			HttpSession session = super.getSession(create);
 			if (session != null) {
-				cachedSession = new ClusteredHttpSession(session, sender);
+				cachedSession = new ClusteredHttpSession(contextPath, session, sender);
 			}
 		}
 		return cachedSession;

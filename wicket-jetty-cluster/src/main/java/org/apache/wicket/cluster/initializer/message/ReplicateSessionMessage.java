@@ -15,11 +15,13 @@ public class ReplicateSessionMessage implements InitializerMessage {
 
 	private static final long serialVersionUID = 1L;
 
+	private final String contextPath;
 	private final String id;
 	private final int maxInactiveInterval;
 	private final Map<String, SessionAttributeHolder> attributes;
 	
 	public ReplicateSessionMessage(HttpSession session) {
+		this.contextPath = session.getServletContext().getContextPath();
 		this.id = session.getId();
 		this.maxInactiveInterval = session.getMaxInactiveInterval();
 		
@@ -36,7 +38,7 @@ public class ReplicateSessionMessage implements InitializerMessage {
 	}
 	
 	public void execute(NodeInitializer initializer, Member member) {
-		initializer.replicateSession(id, maxInactiveInterval, attributes);
+		initializer.replicateSession(contextPath, id, maxInactiveInterval, attributes);
 	}
 
 }
