@@ -30,6 +30,7 @@ import org.apache.wicket.Session;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.security.hive.HiveMind;
 import org.apache.wicket.security.hive.authentication.SecondaryLoginContext;
+import org.apache.wicket.security.hive.authorization.permissions.AllPermissions;
 import org.apache.wicket.security.hive.config.PolicyFileHiveFactory;
 import org.apache.wicket.security.pages.MockHomePage;
 import org.apache.wicket.security.pages.MockLoginPage;
@@ -70,8 +71,7 @@ public class GeneralTest extends TestCase
 			protected Object getHiveKey()
 			{
 				// if we were using servlet-api 2.5 we could get the contextpath
-				// from the
-				// servletcontext
+				// from the servletcontext
 				return "test";
 			}
 
@@ -129,7 +129,6 @@ public class GeneralTest extends TestCase
 		form.setValue("username", "test");
 		form.submit();
 		mock.assertRenderedPage(MockHomePage.class);
-//		Hack(MockHomePage.class);
 		mock.clickLink("secret", false);
 		mock.assertRenderedPage(SecondaryLoginPage.class);
 		form = mock.newFormTester("form");
@@ -159,6 +158,32 @@ public class GeneralTest extends TestCase
 		mock.assertVisible("readonly");
 		assertTrue(mock.getTagByWicketId("readonly").hasAttribute("disabled"));
 		mock.assertVisible("readonly");
+	}
+
+	/**
+	 * Tests the {@link AllPermissions} permission with the "all" action.
+	 */
+	public void testAllPermission()
+	{
+		mock.startPage(MockHomePage.class);
+		mock.assertRenderedPage(MockLoginPage.class);
+		FormTester form = mock.newFormTester("form");
+		form.setValue("username", "all");
+		form.submit();
+		mock.assertRenderedPage(MockHomePage.class);
+		mock.clickLink("link");
+		mock.assertRenderedPage(PageA.class);
+		mock.assertVisible("invisible");
+		mock.assertVisible("readonly");
+		assertFalse(mock.getTagByWicketId("readonly").hasAttribute("disabled"));
+		mock.assertVisible("readonly");
+		mock.startPage(MockHomePage.class);
+		mock.assertRenderedPage(MockHomePage.class);
+		// normally having all permissions is not enough to get passed the
+		// authentication we have setup for the secondary login, but in this
+		// case we cheated by using a logincontext that does authenticate us
+		mock.clickLink("secret", false);
+		mock.assertRenderedPage(VerySecurePage.class);
 	}
 
 	/**

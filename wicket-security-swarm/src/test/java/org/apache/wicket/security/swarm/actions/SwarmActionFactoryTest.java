@@ -16,17 +16,22 @@
  */
 package org.apache.wicket.security.swarm.actions;
 
+import java.util.List;
+
 import junit.framework.TestCase;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.authorization.Action;
 import org.apache.wicket.security.actions.Access;
 import org.apache.wicket.security.actions.ActionFactory;
+import org.apache.wicket.security.actions.AllActions;
 import org.apache.wicket.security.actions.Enable;
 import org.apache.wicket.security.actions.Inherit;
 import org.apache.wicket.security.actions.RegistrationException;
 import org.apache.wicket.security.actions.Render;
 import org.apache.wicket.security.actions.WaspAction;
+import org.apache.wicket.security.swarm.SwarmWebApplication;
+import org.apache.wicket.util.tester.WicketTester;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -66,6 +71,61 @@ public class SwarmActionFactoryTest extends TestCase
 	protected void tearDown() throws Exception
 	{
 		factory = null;
+	}
+
+	/**
+	 * Test for {@link AllActions}.
+	 */
+	public void testAllActions()
+	{
+		SwarmWebApplication application;
+		WicketTester mock = new WicketTester(application = new SwarmWebApplication()
+		{
+
+			protected Object getHiveKey()
+			{
+				return "test";
+			}
+
+			protected void setUpHive()
+			{
+				// not relevant for this test
+			}
+
+			public Class getHomePage()
+			{
+				return null;
+			}
+
+			public Class getLoginPage()
+			{
+				return null;
+			}
+		}, "src/test/java/" + getClass().getPackage().getName().replace('.', '/'));
+		factory = (SwarmActionFactory)application.getActionFactory();
+		WaspAction action = factory.getAction(AllActions.class);
+		assertNotNull(action);
+		List actions = factory.getRegisteredActions();
+		assertFalse(actions.isEmpty());
+		for (int i = 0; i < actions.size(); i++)
+		{
+			assertTrue(action.implies((WaspAction)actions.get(i)));
+		}
+		try
+		{
+			factory.register(AllActions.class, "all");
+			fail("Should not be able to register the 'all' action");
+		}
+		catch (RegistrationException e)
+		{
+			log.debug(e.getMessage());
+		}
+		WaspAction action2 = factory.getAction("all"); // caches the name all
+		assertEquals(action, action2);
+		assertNotSame(action, action2);
+		// not same since AllActions.class will always deliver a new instance
+		assertSame(action2, factory.getAction("all")); // cache lookup
+		mock.destroy();
 	}
 
 	/**
@@ -253,9 +313,8 @@ public class SwarmActionFactoryTest extends TestCase
 			Bugsy bugsy = new Bugsy(factory.nextPowerOf2(), "bugs bunny", factory);
 			factory.register(BugsBunny.class, bugsy);
 			assertEquals(bugsy, factory.getAction(BugsBunny.class));
-			assertTrue(factory.nextPowerOf2() == Integer.MAX_VALUE); // overflow
-																		// happens
-																		// here
+			assertTrue(factory.nextPowerOf2() == Integer.MAX_VALUE);
+			// overflow happens here
 			assertTrue(Integer.MAX_VALUE + "!=" + bugsy.actions(), Integer.MAX_VALUE == bugsy
 					.actions());
 			assertEquals(32, factory.getNumberOfRegisteredClasses());

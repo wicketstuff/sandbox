@@ -21,7 +21,7 @@ import java.io.ObjectInputStream;
 
 import org.apache.wicket.Application;
 import org.apache.wicket.authorization.Action;
-import org.apache.wicket.security.WaspWebApplication;
+import org.apache.wicket.security.WaspApplication;
 import org.apache.wicket.security.actions.AbstractWaspAction;
 import org.apache.wicket.security.actions.Access;
 import org.apache.wicket.security.actions.ActionFactory;
@@ -217,7 +217,7 @@ public class SwarmAction extends AbstractWaspAction
 	 */
 	private SwarmAction newInstance(int myActions)
 	{
-		return ((SwarmActionFactory)((WaspWebApplication)Application.get()).getActionFactory())
+		return ((SwarmActionFactory)((WaspApplication)Application.get()).getActionFactory())
 				.getAction(myActions);
 	}
 
