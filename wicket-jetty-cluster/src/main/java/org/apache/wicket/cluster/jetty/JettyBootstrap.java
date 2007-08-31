@@ -1,18 +1,14 @@
 package org.apache.wicket.cluster.jetty;
 
-import java.io.IOException;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServlet;
 
 import org.apache.wicket.cluster.CommunicationModule;
-import org.apache.wicket.cluster.SessionProvider;
 import org.apache.wicket.cluster.initializer.NodeInitializerComponent;
 import org.apache.wicket.cluster.pagestore.PageStoreComponent;
 import org.apache.wicket.cluster.session.SessionComponent;
@@ -28,20 +24,17 @@ import org.slf4j.LoggerFactory;
 
 public class JettyBootstrap {
 	
-	private ForceSessionIdManager sessionIdManager;
-	private SessionProvider sessionManager;
+	private ForceSessionIdManager sessionIdManager;	
 	
 	public JettyBootstrap() {
 		if (instance != null) {
 			throw new IllegalStateException("Only one instance of JettyBootstrap is allowed.");
 		}
 		instance = this;
-		
-		sessionManager = new HashSessionManager();
-		sessionIdManager = new ForceSessionIdManager();
+				
+		beforeServerStarted();
 	}
 	
-
 	private static JettyBootstrap instance;
 	
 	private CommunicationModule communicationModule;
@@ -49,23 +42,29 @@ public class JettyBootstrap {
 	private PageStoreComponent pageStoreComponent;
 	private NodeInitializerComponent nodeInitializerComponent;
 	
-	public void configureServer(Server server, WebAppContext context) {
+	private Set<String> contextsToInitialize = Collections.synchronizedSet(new HashSet<String>());
+	
+	public void configureServer(Server server) {
 		server.setSessionIdManager(getSessionIdManager());
-
-		SessionHandler handler = new SessionHandler(getSessionManager());
+	}
+	
+	public void configureContext(WebAppContext context) {
+		HashSessionManager manager = new HashSessionManager(context.getContextPath());
+		SessionHandler handler = new SessionHandler(manager);
 		context.setSessionHandler(handler);
-		
-		context.addFilter(StartFilter.class, "", Handler.ERROR);
 
+		sessionComponent.registerSessionProvider(manager);
+		nodeInitializerComponent.registerSessionProvider(manager);
+		
 		context.addFilter(SessionComponent.getFilterClass(), "/*", Handler.ALL);
 		
+		// we need to store contextpaths of all context, so that the last initialized
+		// StartServlet instance would start the communication module
+		contextsToInitialize.add(manager.getContextPath());
 		
 		ServletHolder holder = new ServletHolder(StartServlet.class);
 		holder.setInitOrder(Integer.MAX_VALUE);
-		context.addServlet(holder, "");
-		
-		
-		
+		context.addServlet(holder, "");			
 	}
 	
 	public CommunicationModule getCommunicationModule() {
@@ -85,40 +84,29 @@ public class JettyBootstrap {
 	}
 	
 	private void beforeServerStarted() {
-		log.info("Initializing components - phase 1 - before context initialized");
+		log.info("Initializing components");
 
+		sessionIdManager = new ForceSessionIdManager();
+		
 		communicationModule = new TribesCommunicationModule();
 		
-		sessionComponent = new SessionComponent(communicationModule, sessionManager);
+		sessionComponent = new SessionComponent(communicationModule);
 		communicationModule.addMessageListener(sessionComponent);
-	}
+
 	
-	private void afterServerStarted() {
-		
-		log.info("Initializing components - phase 2 - after context initialized");
-		
 		pageStoreComponent = new PageStoreComponent(communicationModule);
-		nodeInitializerComponent = new NodeInitializerComponent(communicationModule, sessionManager, pageStoreComponent);
+		nodeInitializerComponent = new NodeInitializerComponent(communicationModule, pageStoreComponent);
 		
 		communicationModule.addMessageListener(pageStoreComponent);
 		communicationModule.addMessageListener(nodeInitializerComponent);
 		communicationModule.addMemberListener(nodeInitializerComponent);
-		
-		communicationModule.run();
 	}
 	
-	public static class StartFilter implements Filter {
-		public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException,
-				ServletException {
-			chain.doFilter(request, response);
-			
-		}
-		public void init(FilterConfig filterConfig) throws ServletException {
-			instance.beforeServerStarted();
-		}
-		public void destroy() {
-			
-		}
+	private void afterServerStarted() {
+		
+		log.info("Starting communication module");
+		
+		communicationModule.run();
 	}
 	
 	public static class StartServlet extends HttpServlet {
@@ -127,17 +115,17 @@ public class JettyBootstrap {
 
 		@Override
 		public void init(ServletConfig config) throws ServletException {
-			instance.afterServerStarted();
+			JettyBootstrap bootstrap = JettyBootstrap.instance;
+			bootstrap.contextsToInitialize.remove(config.getServletContext().getContextPath());
+			if (bootstrap.contextsToInitialize.isEmpty()) {
+				instance.afterServerStarted();
+			}
 		}			
 	}
 
 	
 	public ForceSessionIdManager getSessionIdManager() {
 		return sessionIdManager;
-	}
-	
-	public SessionProvider getSessionManager() {
-		return sessionManager;
 	}
 	
 	private static final Logger log = LoggerFactory.getLogger(JettyBootstrap.class);
