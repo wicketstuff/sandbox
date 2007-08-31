@@ -16,6 +16,8 @@
  */
 package org.apache.wicket.security.actions;
 
+import java.util.List;
+
 import org.apache.wicket.authorization.Action;
 
 /**
@@ -73,6 +75,14 @@ public interface ActionFactory
 	 *             if the class is not registered.
 	 */
 	public WaspAction getAction(Class waspActionClass);
+
+	/**
+	 * Returns a list of all the registered actions at the time of the
+	 * invocation. This list is not kept in sync with the factory.
+	 * 
+	 * @return a list of actions (instances, not classes)
+	 */
+	public List getRegisteredActions();
 
 	/**
 	 * Clean up any resources this factory holds.
