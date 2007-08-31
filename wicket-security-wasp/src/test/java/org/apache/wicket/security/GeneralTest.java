@@ -16,7 +16,9 @@
  */
 package org.apache.wicket.security;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import junit.framework.TestCase;
@@ -152,6 +154,15 @@ public class GeneralTest extends TestCase
 					{
 						throw new RegistrationException(
 								"this test factory does not allow registration");
+					}
+
+					/**
+					 * 
+					 * @see org.apache.wicket.security.actions.ActionFactory#getRegisteredActions()
+					 */
+					public List getRegisteredActions()
+					{
+						return Collections.EMPTY_LIST;
 					}
 
 					/**
