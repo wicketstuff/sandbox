@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.wicket.Application;
+import org.apache.wicket.Page;
 import org.apache.wicket.cluster.Member;
 import org.apache.wicket.cluster.MessageSender;
 import org.apache.wicket.protocol.http.WebApplication;
@@ -15,6 +16,13 @@ import org.slf4j.LoggerFactory;
 
 
 public class ClusteredDiskPageStore extends DiskPageStore implements ClusteredPageStore {
+
+	@Override
+	public void storePage(String sessionId, Page page) {
+		super.storePage(sessionId, page);
+		// TODO remove or make DEBUG later
+		log.info("page " + page + " stored  for session " + sessionId);
+	}
 
 	public ClusteredDiskPageStore()
 	{
