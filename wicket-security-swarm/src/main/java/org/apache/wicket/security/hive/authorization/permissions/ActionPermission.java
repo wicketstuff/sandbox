@@ -174,4 +174,14 @@ public class ActionPermission extends Permission
 	{
 		return this.actions.implies(myActions);
 	}
+
+	/**
+	 * The internal representation of this action.
+	 * 
+	 * @return the action
+	 */
+	protected final SwarmAction getAction()
+	{
+		return actions;
+	}
 }

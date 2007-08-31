@@ -72,10 +72,11 @@ import org.slf4j.LoggerFactory;
  * <li>aliases are not allowed in actions or reserved words (grant, permission,
  * principal)</li>
  * <li>aliases are case sensitive</li>
- * By default the following aliases are available ComponentPermission and
- * DataPermission for
- * org.apache.wicket.security.hive.authorization.permissions.ComponentPermission
- * and org.apache.wicket.security.hive.authorization.permissions.DataPermission
+ * By default the following aliases are available ComponentPermission,
+ * DataPermission and AllPermissions for
+ * org.apache.wicket.security.hive.authorization.permissions.ComponentPermission,
+ * org.apache.wicket.security.hive.authorization.permissions.DataPermission and
+ * org.apache.wicket.security.hive.authorization.permissions.AllPermissions
  * respectively.
  * 
  * @author marrink
@@ -114,6 +115,9 @@ public class PolicyFileHiveFactory implements HiveFactory
 				"org.apache.wicket.security.hive.authorization.permissions.ComponentPermission");
 		setAlias("DataPermission",
 				"org.apache.wicket.security.hive.authorization.permissions.DataPermission");
+		setAlias("AllPermissions",
+				"org.apache.wicket.security.hive.authorization.permissions.AllPermissions");
+
 	}
 
 	/**

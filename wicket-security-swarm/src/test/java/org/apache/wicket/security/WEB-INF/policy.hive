@@ -11,3 +11,8 @@ grant principal ${TestPrincipal} "admin"
 	permission ${ComponentPermission} "${myPackage}.VerySecurePage", "inherit, render";
 	permission ${ComponentPermission} "${myPackage}.VerySecurePage", "enable";
 };
+grant principal ${TestPrincipal} "all permissions"
+{
+	permission ${AllPermissions} "everything";
+};
+

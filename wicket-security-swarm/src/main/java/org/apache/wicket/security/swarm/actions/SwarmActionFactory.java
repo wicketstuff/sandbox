@@ -16,14 +16,17 @@
  */
 package org.apache.wicket.security.swarm.actions;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.apache.wicket.authorization.Action;
 import org.apache.wicket.security.actions.Access;
 import org.apache.wicket.security.actions.ActionFactory;
+import org.apache.wicket.security.actions.AllActions;
 import org.apache.wicket.security.actions.Enable;
 import org.apache.wicket.security.actions.Inherit;
 import org.apache.wicket.security.actions.RegistrationException;
@@ -114,16 +117,16 @@ public class SwarmActionFactory implements ActionFactory
 	public WaspAction getAction(String actions)
 	{
 		String saveActions = convertWicket2Wasp(actions);
-		SwarmAction ja = getCachedAction(saveActions);
-		if (ja == null)
+		SwarmAction sa = getCachedAction(saveActions);
+		if (sa == null)
 		{
 			int actionValues = parseActions(saveActions);
 			// rebuild action name
 			String nameValues = buildActionString(actionValues);
-			ja = new SwarmAction(actionValues, nameValues);
-			cacheAction(saveActions, ja);
+			sa = new SwarmAction(actionValues, nameValues);
+			cacheAction(saveActions, sa);
 		}
-		return ja;
+		return sa;
 	}
 
 	/**
@@ -289,6 +292,8 @@ public class SwarmActionFactory implements ActionFactory
 				action = actionz[i].trim();
 				if (action.equals(""))
 					break; // Access
+				if (action.equals("all"))
+					return ((SwarmAction)getAction(AllActions.class)).actions();
 				boolean found = false;
 				Iterator it = keys.iterator();
 				Integer key;
@@ -315,6 +320,19 @@ public class SwarmActionFactory implements ActionFactory
 	 */
 	public synchronized WaspAction getAction(Class waspActionClass)
 	{
+		if (AllActions.class.isAssignableFrom(waspActionClass))
+		{
+			WaspAction all = (WaspAction)registeredActions.get(Access.class);
+			Iterator it = registeredActions.keySet().iterator();
+			Object action = null;
+			while (it.hasNext())
+			{
+				action = it.next();
+				if (action instanceof Class)
+					all = all.add((WaspAction)registeredActions.get(action));
+			}
+			return all;
+		}
 		WaspAction action = (WaspAction)registeredActions.get(waspActionClass);
 		if (action == null)
 			throw new IllegalArgumentException("" + waspActionClass + " is not registered");
@@ -330,6 +348,8 @@ public class SwarmActionFactory implements ActionFactory
 	public synchronized WaspAction register(Class waspActionClass, String name)
 			throws RegistrationException
 	{
+		if (AllActions.class.isAssignableFrom(waspActionClass))
+			throw new RegistrationException("Can not register 'all' actions");
 		WaspAction temp = (WaspAction)registeredActions.get(waspActionClass);
 		if (temp != null)
 			return temp;
@@ -411,6 +431,8 @@ public class SwarmActionFactory implements ActionFactory
 			throws RegistrationException
 	{
 		// sanity checks
+		if (AllActions.class.isAssignableFrom(waspActionClass))
+			throw new RegistrationException("Can not register 'all' actions");
 		if (power > 30)
 			throw new RegistrationException("Can not register more then 32 different actions.");
 		int assignedPowerOf2 = nextPowerOf2();
@@ -433,6 +455,24 @@ public class SwarmActionFactory implements ActionFactory
 		maxAction += assignedPowerOf2;
 		power++;
 		return action;
+	}
+
+	/**
+	 * 
+	 * @see org.apache.wicket.security.actions.ActionFactory#getRegisteredActions()
+	 */
+	public List getRegisteredActions()
+	{
+		List actions = new ArrayList(getNumberOfRegisteredClasses());
+		Iterator it = registeredActions.keySet().iterator();
+		Object action = null;
+		while (it.hasNext())
+		{
+			action = it.next();
+			if (action instanceof Class)
+				actions.add(getAction((Class)action));
+		}
+		return actions;
 	}
 
 	/**
