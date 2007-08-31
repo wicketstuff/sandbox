@@ -52,6 +52,8 @@ public class ListContactsPage extends BasePage {
 	@SpringBean(name = "contactDao")
 	private ContactDao dao;
 
+	private final DefaultDataTable users;
+
 	/**
 	 * Provides a composite User Actions panel for the Actions column.
 	 *
@@ -97,16 +99,32 @@ public class ListContactsPage extends BasePage {
 	 * 'bookmarkable' and hence can be called/ created from anywhere.
 	 */
 	public ListContactsPage() {
+
 		addCreateLink();
-		IColumn[] columns = createColumns();
+
 		// set up data provider
 		ContactsDataProvider dataProvider = new ContactsDataProvider(dao);
-		// create the data table
-		DefaultDataTable users = new DefaultDataTable("users", Arrays
-				.asList(columns), dataProvider, 10);
-		users.addTopToolbar(new FilterToolbar(users, dataProvider));
-		add(users);
 
+		// create the form used to contain all filter components
+		final FilterForm form = new FilterForm("filter-form", dataProvider)
+		{
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void onSubmit()
+			{
+				users.setCurrentPage(0);
+			}
+		};
+
+		// create the data table
+		IColumn[] columns = createColumns();
+		users = new DefaultDataTable("users", Arrays
+				.asList(columns), dataProvider, 10);
+		users.addTopToolbar(new FilterToolbar(users, form, dataProvider));
+		form.add(users);
+
+		add(form);
 	}
 
 	private IColumn[] createColumns() {
