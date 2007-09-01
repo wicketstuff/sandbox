@@ -8,11 +8,8 @@ import org.apache.wicket.RequestCycle;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.Response;
 import org.apache.wicket.behavior.HeaderContributor;
-import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.util.template.PackagedTextTemplate;
 import org.wicketstuff.scriptaculous.JavascriptBuilder;
-import org.wicketstuff.scriptaculous.OnLoadJavascriptTemplate;
 import org.wicketstuff.scriptaculous.ScriptaculousAjaxBehavior;
 
 /**
