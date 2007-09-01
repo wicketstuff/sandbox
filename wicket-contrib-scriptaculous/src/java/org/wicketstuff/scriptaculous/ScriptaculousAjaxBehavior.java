@@ -18,9 +18,9 @@
  */
 package org.wicketstuff.scriptaculous;
 
-import org.apache.wicket.ResourceReference;
 import org.apache.wicket.behavior.AbstractAjaxBehavior;
 import org.apache.wicket.markup.html.IHeaderResponse;
+import org.apache.wicket.markup.html.resources.JavascriptResourceReference;
 
 /**
  * Handles event requests using 'script.aculo.us'.
@@ -48,9 +48,9 @@ public abstract class ScriptaculousAjaxBehavior extends AbstractAjaxBehavior {
 
 	public void renderHead(IHeaderResponse response) {
 		super.renderHead(response);
-		response.renderJavascriptReference(new ResourceReference(
+		response.renderJavascriptReference(new JavascriptResourceReference(
 				ScriptaculousAjaxBehavior.class, "prototype.js"));
-		response.renderJavascriptReference(new ResourceReference(
+		response.renderJavascriptReference(new JavascriptResourceReference(
 				ScriptaculousAjaxBehavior.class, "scriptaculous.js"));
 	}
 }
