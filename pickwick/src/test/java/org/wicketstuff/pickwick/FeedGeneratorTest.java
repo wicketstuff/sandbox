@@ -8,8 +8,8 @@ import org.wicketstuff.pickwick.backend.Settings;
 
 import junit.framework.TestCase;
 
-public class FeedGeneratorTest extends TestCase {
-	public void testGenerate() throws Exception {
+public class FeedGeneratorTest {
+	public static void main() throws Exception {
 		// FIXME use those settings by wiring Settings interface to this instance
 		Settings settings = new DefaultSettings() {
 			public File getImageDirectoryRoot() {
