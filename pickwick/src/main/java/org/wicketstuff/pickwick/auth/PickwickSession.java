@@ -29,6 +29,7 @@ public class PickwickSession extends AuthenticatedWebSession {
 	public PickwickSession(AuthenticatedWebApplication application, Request request) {
 		super(application, request);
 		// Injects dependencies into the fields and methods of this session object
+		// FIXME AuthenticatedWebApplication should probably allow to use GuiceComponentInjector
 		Injector inj = ((GuiceInjectorHolder)application.getMetaData(GuiceInjectorHolder.INJECTOR_KEY)).getInjector();
 		inj.injectMembers(this);
 	}
