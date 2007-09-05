@@ -52,6 +52,7 @@ public abstract class ScriptaculousAjaxBehavior extends AbstractAjaxBehavior {
 		addJavascriptReference(response, "prototype.js");
 		addJavascriptReference(response, "builder.js");
 		addJavascriptReference(response, "effects.js");
+		addJavascriptReference(response, "dragdrop.js");
 		addJavascriptReference(response, "controls.js");
 	}
 
