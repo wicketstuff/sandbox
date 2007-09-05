@@ -1,0 +1,18 @@
+<classpath>
+  <classpathentry kind="src" path="src/main/java"/>
+  <classpathentry kind="output" path="target/classes"/>
+  <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+  <classpathentry kind="var" path="M2_REPO/org/mortbay/jetty/jetty-util/6.1.4/jetty-util-6.1.4.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/apache/tomcat/tribes/6.0.13/tribes-6.0.13.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/mortbay/jetty/servlet-api-2.5/6.1.5/servlet-api-2.5-6.1.5.jar" sourcepath="M2_REPO/org/mortbay/jetty/servlet-api-2.5/6.1.5/servlet-api-2.5-6.1.5-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/mortbay/jetty/jetty/6.1.5/jetty-6.1.5.jar" sourcepath="M2_REPO/org/mortbay/jetty/jetty/6.1.5/jetty-6.1.5-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/junit/junit/3.8.1/junit-3.8.1.jar" sourcepath="M2_REPO/junit/junit/3.8.1/junit-3.8.1-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/wicket-stuff/wicket-jetty-cluster/1.3-SNAPSHOT/wicket-jetty-cluster-1.3-SNAPSHOT.jar" sourcepath="M2_REPO/wicket-stuff/wicket-jetty-cluster/1.3-SNAPSHOT/wicket-jetty-cluster-1.3-SNAPSHOT-sources.jar">
+    <attributes>
+      <attribute value="jar:file://Users/eelcohillenius/.m2/repository/wicket-stuff/wicket-jetty-cluster/1.3-SNAPSHOT/wicket-jetty-cluster-1.3-SNAPSHOT-javadoc.jar!/" name="javadoc_location"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/org/apache/wicket/wicket/1.3.0-beta3/wicket-1.3.0-beta3.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/slf4j/slf4j-api/1.4.2/slf4j-api-1.4.2.jar" sourcepath="M2_REPO/org/slf4j/slf4j-api/1.4.2/slf4j-api-1.4.2-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/apache/tomcat/juli/6.0.13/juli-6.0.13.jar"/>
+</classpath>
