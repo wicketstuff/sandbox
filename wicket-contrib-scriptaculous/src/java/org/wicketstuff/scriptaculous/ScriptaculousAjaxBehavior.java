@@ -48,9 +48,14 @@ public abstract class ScriptaculousAjaxBehavior extends AbstractAjaxBehavior {
 
 	public void renderHead(IHeaderResponse response) {
 		super.renderHead(response);
-		response.renderJavascriptReference(new JavascriptResourceReference(
-				ScriptaculousAjaxBehavior.class, "prototype.js"));
-		response.renderJavascriptReference(new JavascriptResourceReference(
-				ScriptaculousAjaxBehavior.class, "scriptaculous.js"));
+
+		addJavascriptReference(response, "prototype.js");
+		addJavascriptReference(response, "builder.js");
+		addJavascriptReference(response, "effects.js");
+		addJavascriptReference(response, "controls.js");
+	}
+
+	private void addJavascriptReference(IHeaderResponse response, String resource) {
+		response.renderJavascriptReference(new JavascriptResourceReference(ScriptaculousAjaxBehavior.class, resource));
 	}
 }
