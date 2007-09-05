@@ -125,6 +125,7 @@
 			<url>
 				file:/home/wicket/tomcat/webapps/maven/repository/
 			</url>
+			<uniqueVersion>false</uniqueVersion>
 		</snapshotRepository>
 		<repository>
 			<id>repo</id>
