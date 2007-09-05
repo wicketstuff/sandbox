@@ -44,7 +44,8 @@ public class GuiceWebApplicationFactory extends ContextParamWebApplicationFactor
 		}
 
 		WebApplication app = inj.getInstance((Class<WebApplication>) applicationClass);
-		app.setMetaData(GuiceInjectorHolder.INJECTOR_KEY, new GuiceInjectorHolder(inj));
+		// XXX is it really up to GuiceComponentInjector to set application metadata?
+		//app.setMetaData(GuiceInjectorHolder.INJECTOR_KEY, new GuiceInjectorHolder(inj));
 		app.addComponentInstantiationListener(new GuiceComponentInjector(app, inj));
 		return app;
 	}
