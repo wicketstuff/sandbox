@@ -126,6 +126,22 @@
 		</dependency>
 	</dependencies>
 	<!-- Build environment -->
+	<distributionManagement>
+		<snapshotRepository>
+			<id>repo</id>
+			<name>Local Bamboo/Tomcat repository</name>
+			<url>
+				file:/home/wicket/tomcat/webapps/maven/repository/
+			</url>
+		</snapshotRepository>
+		<repository>
+			<id>repo</id>
+			<name>Local Bamboo/Tomcat repository</name>
+			<url>
+				file:/home/wicket/tomcat/webapps/maven/repository/
+			</url>
+		</repository>
+	</distributionManagement>
 	<build>
 		<defaultGoal>package</defaultGoal>
 		<sourceDirectory>src/main/java</sourceDirectory>
