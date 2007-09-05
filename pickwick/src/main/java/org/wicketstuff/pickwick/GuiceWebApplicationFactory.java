@@ -4,6 +4,7 @@ import java.io.FileFilter;
 
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.guice.GuiceComponentInjector;
+import org.apache.wicket.guice.GuiceInjectorHolder;
 import org.apache.wicket.protocol.http.ContextParamWebApplicationFactory;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.protocol.http.WicketFilter;
@@ -15,8 +16,6 @@ import com.google.inject.Module;
 import com.google.inject.Stage;
 
 public class GuiceWebApplicationFactory extends ContextParamWebApplicationFactory {
-	public static final String GUICE = "guice";
-
 	WicketFilter filter;
 
 	@Override
@@ -28,7 +27,6 @@ public class GuiceWebApplicationFactory extends ContextParamWebApplicationFactor
 	@Override
 	protected WebApplication createApplication(String applicationClassName) {
 		Injector inj = Guice.createInjector(Stage.DEVELOPMENT, getModule());
-		filter.getFilterConfig().getServletContext().setAttribute(GUICE, inj);
 		ClassLoader loader = Thread.currentThread().getContextClassLoader();
 		if (loader == null) {
 			loader = getClass().getClassLoader();
@@ -46,6 +44,7 @@ public class GuiceWebApplicationFactory extends ContextParamWebApplicationFactor
 		}
 
 		WebApplication app = inj.getInstance((Class<WebApplication>) applicationClass);
+		app.setMetaData(GuiceInjectorHolder.INJECTOR_KEY, new GuiceInjectorHolder(inj));
 		app.addComponentInstantiationListener(new GuiceComponentInjector(app, inj));
 		return app;
 	}

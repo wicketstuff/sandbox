@@ -5,6 +5,7 @@ import org.apache.wicket.Session;
 import org.apache.wicket.authentication.AuthenticatedWebApplication;
 import org.apache.wicket.authentication.AuthenticatedWebSession;
 import org.apache.wicket.authorization.strategies.role.Roles;
+import org.apache.wicket.guice.GuiceInjectorHolder;
 import org.wicketstuff.pickwick.GuiceWebApplicationFactory;
 import org.wicketstuff.pickwick.PickwickApplication;
 import org.wicketstuff.pickwick.backend.Settings;
@@ -28,7 +29,7 @@ public class PickwickSession extends AuthenticatedWebSession {
 	public PickwickSession(AuthenticatedWebApplication application, Request request) {
 		super(application, request);
 		// Injects dependencies into the fields and methods of this session object
-		Injector inj = (Injector) application.getServletContext().getAttribute(GuiceWebApplicationFactory.GUICE);
+		Injector inj = ((GuiceInjectorHolder)application.getMetaData(GuiceInjectorHolder.INJECTOR_KEY)).getInjector();
 		inj.injectMembers(this);
 	}
 	
