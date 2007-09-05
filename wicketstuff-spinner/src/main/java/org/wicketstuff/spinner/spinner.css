@@ -1,0 +1,22 @@
+.spinnerContainer {
+    border: 1px solid #999;
+}
+
+.spinnerContainer span{
+    cursor: pointer;
+    background-color: #EEE;
+    padding: 0em 0.4em;
+}
+
+.spinnerContainer span:hover {
+	background-color: #E0E0E0;
+}
+
+.spinnerContainer span:focus {
+	background-color: red;
+}
+
+.spinnerContainer input {
+    border-width: 0px;
+    text-align: center;   
+}
