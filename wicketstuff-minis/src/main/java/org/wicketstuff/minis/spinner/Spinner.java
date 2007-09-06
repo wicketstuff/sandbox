@@ -27,6 +27,7 @@ import org.apache.wicket.behavior.AbstractBehavior;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.resources.JavascriptResourceReference;
+import org.apache.wicket.util.string.JavascriptUtils;
 import org.apache.wicket.util.string.Strings;
 
 /**
@@ -85,7 +86,8 @@ public class Spinner extends AbstractBehavior
 
 	/**
 	 * Transforms a {@link Properties} instance into an associative javascript
-	 * array.
+	 * array. <br/> TODO: this is copied from wicket-datetime/DatePicker and
+	 * should be moved to {@link JavascriptUtils}
 	 * 
 	 * @param p
 	 *            the {@link Properties} to process.
