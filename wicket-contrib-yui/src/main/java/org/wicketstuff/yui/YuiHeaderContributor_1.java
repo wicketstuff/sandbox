@@ -112,42 +112,18 @@
 //            return null;
 //        }
 //
+//        /**
+//         *  Renders the Header for the YuiLoader
+//         *
+//         */        
 //        public void renderHead(IHeaderResponse response)
 //        {
-//            final String buildPath = YUI_BUILD_ROOT + "/" + build;
-//            
-//            final String realName = getRealModuleName(buildPath, name);
-//            
-//            
-//            if (null != realName) {
-//                final String path = buildPath + "/" + name + "/" + realName + ((debug) ? "-debug.js" : ".js");
-//                final ResourceReference moduleScript;
-//                if (YuiHeaderContributor.this.moduleCache.containsKey(path)) {
-//                    moduleScript = YuiHeaderContributor.this.moduleCache.get(path);
-//                } else {
-//                    if (debug) {
-//                        moduleScript = new ResourceReference(YuiHeaderContributor.class, path);
-//                    } else {
-//                        moduleScript = new JavascriptResourceReference(YuiHeaderContributor.class, path);
-//                    }
-//                    YuiHeaderContributor.this.moduleCache.put(path, moduleScript);
-//                }
-//                response.renderJavascriptReference(moduleScript);
-//                if (dependencyResolver.hasCssAsset(name, YUI_BUILD_ROOT + "/" + build)) {
-//                    final String assetPath = YUI_BUILD_ROOT + "/" + build + "/" + name + "/assets/" + name + ".css";
-//                    final ResourceReference assetRef;
-//                    if (YuiHeaderContributor.this.moduleCache.containsKey(assetPath)) {
-//                        assetRef = YuiHeaderContributor.this.moduleCache.get(assetPath);
-//                    } else {
-//                        assetRef = new CompressedResourceReference(YuiHeaderContributor.class, assetPath);
-//                        YuiHeaderContributor.this.moduleCache.put(assetPath, assetRef);
-//                    }
+//            final String yuiLoaderPath = YUI_BUILD_ROOT + "/" + build + "/yuiloader/yuiloader-beta-min.js";
 //
-//                    response.renderCSSReference(assetRef, "screen");
-//                }
-//            } else {
-//                log.error("Unable to find realName for Yui Module " + name);
-//            }
+//            final ResourceReference yuiLoader = new ResourceReference(YuiHeaderContributor.class, yuiLoaderPath);
+//            response.renderJavascriptReference(yuiLoader);
+//
+//        }
 //            
 //        }
 //        
