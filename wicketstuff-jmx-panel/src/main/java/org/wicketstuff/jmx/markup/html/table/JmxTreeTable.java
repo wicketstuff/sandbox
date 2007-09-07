@@ -69,23 +69,27 @@ public class JmxTreeTable extends TreeTable
 	@Override
 	protected ResourceReference getNodeIcon(TreeNode node)
 	{
-		if (!node.isLeaf())
-		{
-			return super.getNodeIcon(node);
-		}
 		Object obj = ((DefaultMutableTreeNode)node).getUserObject();
 
 		if (obj instanceof MBeanAttributeInfo)
 		{
-			return ATTRIBUTE_ICON;
+			return JmxPanel.ATTRIBUTE_ICON;
 		}
 		else if (obj instanceof MBeanOperationInfo)
 		{
-			return OPERATION_ICON;
+			return JmxPanel.OPERATION_ICON;
+		}
+		else if ("attributes".equals(obj.toString()))
+		{
+			return JmxPanel.ATTRIBUTES_ICON;
+		}
+		else if ("operations".equals(obj.toString()))
+		{
+			return JmxPanel.OPERATIONS_ICON;
 		}
 		else
 		{
-			return super.getItem();
+			return super.getNodeIcon(node);
 		}
 	}
 

@@ -61,7 +61,15 @@ public class JmxPanel extends Panel implements IHeaderContributor
 	private static final long serialVersionUID = 1L;
 
 	public static final ResourceReference CSS = new ResourceReference(JmxPanel.class,
-			"res/JmxTreeTable.css");
+			"res/JmxPanel.css");
+	public static final ResourceReference ATTRIBUTE_ICON = new ResourceReference(JmxPanel.class,
+			"res/attribute.gif");
+	public static final ResourceReference ATTRIBUTES_ICON = new ResourceReference(JmxPanel.class,
+			"res/attributes.gif");
+	public static final ResourceReference OPERATION_ICON = new ResourceReference(JmxPanel.class,
+			"res/operation.gif");
+	public static final ResourceReference OPERATIONS_ICON = new ResourceReference(JmxPanel.class,
+			"res/operations.gif");
 
 	private JmxMBeanServerWrapper serverModel = new JmxMBeanServerWrapper();
 
