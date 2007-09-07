@@ -31,36 +31,78 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeModel;
 
+import org.apache.wicket.ResourceReference;
 import org.apache.wicket.WicketRuntimeException;
+import org.apache.wicket.markup.html.IHeaderContributor;
+import org.apache.wicket.markup.html.IHeaderResponse;
+import org.apache.wicket.markup.html.panel.EmptyPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.wicketstuff.jmx.markup.html.table.IDomainFilter;
 import org.wicketstuff.jmx.markup.html.table.JmxTreeNode;
 import org.wicketstuff.jmx.markup.html.table.JmxTreeTable;
+import org.wicketstuff.jmx.markup.html.tree.JmxTree;
 import org.wicketstuff.jmx.util.JmxMBeanServerWrapper;
 import org.wicketstuff.jmx.util.JmxMBeanWrapper;
 
 /**
- * @author Gerolf
+ * Use this panel to display a Tree or a TreeTable filled with
+ * {@link ObjectName}s and it's operations and attributes.<br/>
+ * 
+ * By default the Tree implementation is used, but you can tell JmxPanel to use
+ * the TreeTable implementation by passing {@link JmxPanelRenderer#TreeTable} to
+ * the constructor.
+ * 
+ * @author Gerolf Seitz
  * 
  */
-public class JmxPanel extends Panel
+public class JmxPanel extends Panel implements IHeaderContributor
 {
-
 	private static final long serialVersionUID = 1L;
 
-	private ObjectName appBeanName;
+	public static final ResourceReference CSS = new ResourceReference(JmxPanel.class,
+			"res/JmxTreeTable.css");
 
 	private JmxMBeanServerWrapper serverModel = new JmxMBeanServerWrapper();
 
+	/**
+	 * Constructs the JmxPanel with the Tree implementation.
+	 * 
+	 * @param id
+	 *            the id of the panel
+	 */
 	public JmxPanel(String id)
 	{
+		this(id, JmxPanelRenderer.Tree);
+
+	}
+
+	/**
+	 * Constructs the JmxPanel and uses the param <code>renderer</code> to
+	 * decide which implementation should be used.
+	 * 
+	 * @param id
+	 *            the id of the panel
+	 * @param renderer
+	 *            indicates which renderer (Tree/TreeTable) should be used.
+	 */
+	public JmxPanel(String id, JmxPanelRenderer renderer)
+	{
 		super(id);
-		add(new JmxTreeTable("jmxBeanTable", createTreeModel(appBeanName)));
+		Panel detailPanel = new EmptyPanel("detailPanel");
+		add(detailPanel.setOutputMarkupId(true));
+		if (JmxPanelRenderer.Tree.equals(renderer))
+		{
+			add(new JmxTree("jmxBeanTable", createTreeModel(), detailPanel));
+		}
+		else
+		{
+			add(new JmxTreeTable("jmxBeanTable", createTreeModel()));
+		}
 	}
 
 	@SuppressWarnings("unchecked")
-	private TreeModel createTreeModel(ObjectName name)
+	private TreeModel createTreeModel()
 	{
 		TreeModel model = null;
 		DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode(new Model("ROOT"));
@@ -127,6 +169,16 @@ public class JmxPanel extends Panel
 		return model;
 	}
 
+	/**
+	 * This method creates a {@link JmxTreeNode} for the given
+	 * {@link ObjectName} and adds it as a child to the "parent" parameter).
+	 * Also, nodes for operations and attributes are created.
+	 * 
+	 * @param parent
+	 *            the parent JmxTreeNode
+	 * @param name
+	 *            the {@link ObjectName} instance
+	 */
 	private void add(JmxTreeNode parent, ObjectName name)
 	{
 		String n = name.getDomain() + ":" + name.getKeyPropertyListString();
@@ -137,28 +189,70 @@ public class JmxPanel extends Panel
 		// create nodes for all subpaths
 		for (int level = 0; level < parts.length; level++)
 		{
-			ObjectName node = getObjectName(getPath(parts, level));
+			ObjectName objectName = getObjectName(getPath(parts, level));
 			// check whether node is already a child of the current node
-			JmxTreeNode child = current.findNodeWithObjectName(node);
+			JmxTreeNode child = current.findNodeWithObjectName(objectName);
 			if (child == null)
 			{
 				// node was not found, create a new node
-				JmxMBeanWrapper mbean = new JmxMBeanWrapper(node, serverModel);
-				child = new JmxTreeNode(node, mbean);
+				JmxMBeanWrapper mbean = new JmxMBeanWrapper(objectName, serverModel);
+				child = new JmxTreeNode(objectName, mbean);
 				current.add(child);
-				// create nodes for all attributes
-				for (MBeanAttributeInfo attribute : mbean.getAttributes())
-				{
-					child.add(new JmxTreeNode(attribute, mbean));
-				}
 
-				// create nodes for all operations
-				for (MBeanOperationInfo operation : mbean.getOperations())
-				{
-					child.add(new JmxTreeNode(operation, mbean));
-				}
+				addAttributes(child, mbean);
+				addOperations(child, mbean);
 			}
 			current = child;
+		}
+	}
+
+	/**
+	 * Adds nodes for operations
+	 * 
+	 * @param current
+	 *            the current node for which operation nodes should be created.
+	 * @param mbean
+	 *            the wrapper around the current {@link ObjectName}
+	 */
+	private void addOperations(JmxTreeNode current, JmxMBeanWrapper mbean)
+	{
+		MBeanOperationInfo[] operations = mbean.getOperations();
+		if (operations.length == 0)
+		{
+			return;
+		}
+
+		JmxTreeNode tmp = new JmxTreeNode("operations", mbean);
+		current.add(tmp);
+		// create nodes for all operations
+		for (MBeanOperationInfo operation : operations)
+		{
+			tmp.add(new JmxTreeNode(operation, mbean));
+		}
+	}
+
+	/**
+	 * Adds nodes for attributes
+	 * 
+	 * @param current
+	 *            the current node for which attribute nodes should be created.
+	 * @param mbean
+	 *            the wrapper around the current {@link ObjectName}
+	 */
+	private void addAttributes(JmxTreeNode current, JmxMBeanWrapper mbean)
+	{
+		MBeanAttributeInfo[] attributes = mbean.getAttributes();
+		if (attributes.length == 0)
+		{
+			return;
+		}
+
+		JmxTreeNode tmp = new JmxTreeNode("attributes", mbean);
+		current.add(tmp);
+		// create nodes for all attributes
+		for (MBeanAttributeInfo attribute : mbean.getAttributes())
+		{
+			tmp.add(new JmxTreeNode(attribute, mbean));
 		}
 	}
 
@@ -197,5 +291,13 @@ public class JmxPanel extends Panel
 		{
 			throw new WicketRuntimeException(e);
 		}
+	}
+
+	/**
+	 * @see org.apache.wicket.markup.html.IHeaderContributor#renderHead(org.apache.wicket.markup.html.IHeaderResponse)
+	 */
+	public void renderHead(IHeaderResponse response)
+	{
+		response.renderCSSReference(CSS);
 	}
 }

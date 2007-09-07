@@ -42,17 +42,15 @@ public class EditorPanel extends Panel
 
 	private static final long serialVersionUID = 1L;
 
+	private Component editor;
 
-	public EditorPanel(String id, IModel model, IModel labelModel, final Class clazz,
+	public EditorPanel(String id, final IModel model, IModel labelModel, final Class clazz,
 			boolean isInplaceEditor)
 	{
 		super(id);
-
-		Component editor;
-		if (String.class.isAssignableFrom(clazz) || Integer.class.isAssignableFrom(clazz)
-				|| int.class.isAssignableFrom(clazz) || Long.class.isAssignableFrom(clazz)
-				|| long.class.isAssignableFrom(clazz) || Character.class.isAssignableFrom(clazz)
-				|| char.class.isAssignableFrom(clazz))
+		setRenderBodyOnly(true);
+		if (String.class.isAssignableFrom(clazz) || Number.class.isAssignableFrom(clazz)
+				|| (clazz.isPrimitive() && !boolean.class.equals(clazz)))
 		{
 			// Check for @Required on the field.
 			editor = isInplaceEditor ? new AjaxEditableLabel("editor", model).setType(clazz)
@@ -82,11 +80,34 @@ public class EditorPanel extends Panel
 			editor = isInplaceEditor ? getAjaxEditableChoiceLabel(model, labelModel, enumChoices,
 					clazz) : new EnumEditor("editor", model, labelModel, enumChoices);
 		}
+		else if (clazz.isArray())
+		{
+			IModel arrayChoices = new AbstractReadOnlyModel()
+			{
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				public Object getObject()
+				{
+					return Arrays.asList(model.getObject());
+				}
+
+			};
+			editor = isInplaceEditor ? getAjaxEditableChoiceLabel(new Model(null), labelModel,
+					arrayChoices, clazz) : new EnumEditor("editor", new Model(null), labelModel,
+					arrayChoices);
+		}
 		else
 		{
-			throw new RuntimeException("Type " + clazz + " not supported.");
+			editor = new Label("editor", model);
+			// throw new RuntimeException("Type " + clazz + " not supported.");
 		}
 		add(editor);
+	}
+
+	public Component getEditor()
+	{
+		return editor;
 	}
 
 	private Component getAjaxEditableChoiceLabel(IModel model, IModel labelModel,
