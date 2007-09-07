@@ -64,11 +64,11 @@ public class JmxTree extends BaseTree
 				Object obj = ((DefaultMutableTreeNode)node).getUserObject();
 				if (obj instanceof MBeanAttributeInfo)
 				{
-					return ATTRIBUTE_ICON;
+					return JmxPanel.ATTRIBUTE_ICON;
 				}
 				else if (obj instanceof MBeanOperationInfo)
 				{
-					return OPERATION_ICON;
+					return JmxPanel.OPERATION_ICON;
 				}
 				return super.getResourceItemLeaf(node);
 			}
@@ -79,11 +79,11 @@ public class JmxTree extends BaseTree
 				Object obj = ((DefaultMutableTreeNode)node).getUserObject();
 				if ("operations".equals(obj.toString()))
 				{
-					return OPERATIONS_ICON;
+					return JmxPanel.OPERATIONS_ICON;
 				}
 				else if ("attributes".equals(obj.toString()))
 				{
-					return ATTRIBUTES_ICON;
+					return JmxPanel.ATTRIBUTES_ICON;
 				}
 				return super.getResourceFolderOpen(node);
 			}
@@ -94,11 +94,11 @@ public class JmxTree extends BaseTree
 				Object obj = ((DefaultMutableTreeNode)node).getUserObject();
 				if ("operations".equals(obj.toString()))
 				{
-					return OPERATIONS_ICON;
+					return JmxPanel.OPERATIONS_ICON;
 				}
 				else if ("attributes".equals(obj.toString()))
 				{
-					return ATTRIBUTES_ICON;
+					return JmxPanel.ATTRIBUTES_ICON;
 				}
 				return super.getResourceFolderClosed(node);
 			}
@@ -183,13 +183,4 @@ public class JmxTree extends BaseTree
 			}
 		};
 	}
-
-	private static final ResourceReference ATTRIBUTE_ICON = new ResourceReference(JmxPanel.class,
-			"res/attribute.gif");
-	private static final ResourceReference ATTRIBUTES_ICON = new ResourceReference(JmxPanel.class,
-			"res/attributes.gif");
-	private static final ResourceReference OPERATION_ICON = new ResourceReference(JmxPanel.class,
-			"res/operation.gif");
-	private static final ResourceReference OPERATIONS_ICON = new ResourceReference(JmxPanel.class,
-			"res/operations.gif");
 }
