@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.wicketstuff.jmx.markup.html;
+package org.wicketstuff.jmx.markup.html.table;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,6 +26,7 @@ import org.apache.wicket.Component;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
+import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
@@ -36,6 +37,7 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
+import org.wicketstuff.jmx.markup.html.EditorPanel;
 import org.wicketstuff.jmx.util.JmxMBeanWrapper;
 import org.wicketstuff.jmx.util.JmxUtil;
 
@@ -58,6 +60,7 @@ public class OperationInvocationPanel extends Panel
 		setOutputMarkupId(true);
 		final Map modelMap = new HashMap();
 		Form form = new Form("form", new CompoundPropertyModel(modelMap));
+		form.add(new SimpleAttributeModifier("class", "inlineForm"));
 		add(form);
 
 		RepeatingView fields = new RepeatingView("fields");
@@ -90,6 +93,8 @@ public class OperationInvocationPanel extends Panel
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form form)
 			{
+				// collect operation parameter data from the form and invoke the
+				// operation
 				MBeanParameterInfo[] params = operation.getSignature();
 				Object[] values = new Object[params.length];
 				String[] signature = new String[params.length];
@@ -107,6 +112,8 @@ public class OperationInvocationPanel extends Panel
 				{
 					result = e;
 				}
+				// replace this panel with an OperationInvocationPanel to render
+				// the results
 				Panel panel = new OperationInvocationResultPanel(OperationInvocationPanel.this
 						.getId(), operation, result, mbean, OperationInvocationPanel.this);
 				OperationInvocationPanel.this.replaceWith(panel);

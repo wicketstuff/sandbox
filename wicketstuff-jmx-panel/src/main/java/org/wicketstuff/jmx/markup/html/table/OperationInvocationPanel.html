@@ -15,7 +15,17 @@
    limitations under the License.
 -->
 <wicket:panel>
-	<div wicket:id="jmxBeanTable"></div>
-	<div wicket:id="detailPanel"></div>
-	<div style="clear:both"></div>
+	<form wicket:id="form">
+	<div class="editorContainer">
+		<div wicket:id="fields">
+			<div wicket:id="label">[label]</div>
+			<div wicket:id="editor"></div>	
+		</div>
+		<div><a wicket:id="invoke"><wicket:message key="jmx.invokeLink.label"/></a>
+			<div wicket:id="feedback"></div>
+		</div>
+	</div>
+	</form>
+	
+	
 </wicket:panel>
