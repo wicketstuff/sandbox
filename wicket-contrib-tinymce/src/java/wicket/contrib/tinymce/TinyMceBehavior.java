@@ -12,7 +12,7 @@ import org.apache.wicket.util.string.JavascriptUtils;
 import wicket.contrib.tinymce.settings.TinyMCESettings;
 
 /**
- * @author Iulian-Corneliu Costan (iulian.costan@gmail.com)
+ * @author Iulian Costan (iulian.costan@gmail.com)
  */
 public class TinyMceBehavior extends AbstractDefaultAjaxBehavior
 {
@@ -25,8 +25,18 @@ public class TinyMceBehavior extends AbstractDefaultAjaxBehavior
 	private ResourceReference reference = new ResourceReference(TinyMCEPanel.class,
 			"tiny_mce/tiny_mce_src.js");
 
-	/** not used yet, think about it * */
+	/** EXPERIMENTAL, it allows you to load tinymce using ajax */
 	private boolean ajax;
+
+	/**
+	 * Construct.
+	 * 
+	 * @param ajax
+	 */
+	public TinyMceBehavior()
+	{
+		this(new TinyMCESettings(), false);
+	}
 
 	/**
 	 * Construct.
@@ -37,6 +47,17 @@ public class TinyMceBehavior extends AbstractDefaultAjaxBehavior
 	public TinyMceBehavior(boolean ajax)
 	{
 		this(new TinyMCESettings(), ajax);
+	}
+
+	/**
+	 * Construct.
+	 * 
+	 * @param settings
+	 * @param ajax
+	 */
+	public TinyMceBehavior(TinyMCESettings settings)
+	{
+		this.settings = settings;
 	}
 
 	/**
@@ -60,18 +81,25 @@ public class TinyMceBehavior extends AbstractDefaultAjaxBehavior
 		// add wicket-ajax support
 		super.renderHead(response);
 
-		// since wicket modifies the src attribute of a pre-loaded script tag
-		// then we
-		// need this workaround to safely import tinymce script
 
 		// import script
-		StringBuilder importBuilder = new StringBuilder();
-		importBuilder.append("var script = document.createElement('script');\n");
-		importBuilder.append("script.id='tinyMCEScript';\n");
-		importBuilder.append("script.src='" + RequestCycle.get().urlFor(reference) + "';\n");
-		importBuilder.append("script.type='text/javascript';\n");
-		importBuilder.append("document.getElementsByTagName('head')[0].appendChild(script);\n");
-		response.renderJavascript(importBuilder.toString(), "import");
+		if (ajax)
+		{
+			// since wicket modifies the src attribute of a pre-loaded script tag
+			// then we
+			// need this workaround to safely import tinymce script using ajax
+			StringBuilder importBuilder = new StringBuilder();
+			importBuilder.append("var script = document.createElement('script');\n");
+			importBuilder.append("script.id='tinyMCEScript';\n");
+			importBuilder.append("script.src='" + RequestCycle.get().urlFor(reference) + "';\n");
+			importBuilder.append("script.type='text/javascript';\n");
+			importBuilder.append("document.getElementsByTagName('head')[0].appendChild(script);\n");
+			response.renderJavascript(importBuilder.toString(), "import");
+		}
+		else
+		{
+			response.renderJavascriptReference(reference);
+		}
 
 		// init script
 		StringBuilder initBuilder = new StringBuilder();
