@@ -9,6 +9,7 @@
 
 package org.wicketstuff.yui.examples.pages;
 
+import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.Model;
 import org.wicketstuff.yui.examples.WicketExamplePage;
 import org.wicketstuff.yui.markup.html.editor.YuiEditor;
@@ -23,7 +24,10 @@ public class YuiEditorPage extends WicketExamplePage {
      * Creates a new instance of YuiEditorPage
      */
     public YuiEditorPage() {
-        add(new YuiEditor("yuieditor", new Model("This is the Modelcontent.")));
+        Model model = new Model("This is some content - feel free to edit it!");
+        Form form = new Form("someForm");
+        form.add(new YuiEditor("yuiEditor", model));
+        add(form);
     }
     
 }
