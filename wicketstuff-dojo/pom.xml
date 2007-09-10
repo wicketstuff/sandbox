@@ -27,6 +27,14 @@
 	<issueManagement>
 		<url>http://sourceforge.net/tracker/?group_id=119783</url>
 	</issueManagement>
+	
+	<distributionManagement>
+      	<snapshotRepository>
+             <id>repo</id>
+             <name>Local Bamboo/Tomcat repository</name>
+             <url>file:/home/wicket/tomcat/webapps/maven/repository/</url>
+      	</snapshotRepository>
+	</distributionManagement>
 
 
 	<mailingLists>
