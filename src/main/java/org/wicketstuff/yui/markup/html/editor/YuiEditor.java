@@ -19,12 +19,13 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.wicketstuff.yui.YuiHeaderContributor;
+import org.wicketstuff.yui.YuiLoaderHeaderContributor;
 
 /**
  *
  * @author korbinianbachl
  */
-public class YuiEditor extends Panel implements IHeaderContributor{
+public class YuiEditor extends Panel {
     
     private static final long serialVersionUID = 1L;
 
@@ -40,42 +41,44 @@ public class YuiEditor extends Panel implements IHeaderContributor{
     public YuiEditor(String id, IModel model) {
         super(id);
         
-        add(YuiHeaderContributor.forModule("editor", new String[]{"utilities","container","menu","button"}));
-        add(HeaderContributor.forCss(CSS));
-        //add(HeaderContributor.forJavaScript(YuiEditor.class,"YuiEditor.js"));
+        String js = "\n " +
+                "var myEditor = new YAHOO.widget.Editor('yuiEditor', { \n" +
+             	   " height: '300px', \n" +
+              	   " width: '522px', \n" +
+              	   " dompath: true, \n" +
+              	   " animate: true \n" +
+              	 " }); \n" +
+             " myEditor.render(); \n";
+        
+        add(YuiLoaderHeaderContributor.forModule("editor", js));
+        //add(YuiHeaderContributor.forModule("editor", new String[]{"utilities","container","menu","button"}));
+        //add(HeaderContributor.forCss(CSS));
         TextArea ta = new TextArea("editorArea", model);
-        ta.setMarkupId("msgpost");
+
       
         add(ta);
     }
     
     
-    /**
-     * @see org.apache.wicket.markup.html.IHeaderContributor#renderHead(org.apache.wicket.markup.html.IHeaderResponse)
-     */
-    public void renderHead(IHeaderResponse response)
-    {
-            response.renderOnLoadJavascript("\n var myEditor = new YAHOO.widget.Editor('msgpost', { \n" +
-             	   " height: '300px', \n" +
-              	   " width: '522px', \n" +
-              	   " dompath: true, //Turns on the bar at the bottom \n" +
-              	   " animate: true //Animates the opening, closing and moving of Editor windows \n" +
-              	 " }); \n" +
-             " myEditor.render(); \n");
-            
-            
-             
-            
-    }
+//    /**
+//     * @see org.apache.wicket.markup.html.IHeaderContributor#renderHead(org.apache.wicket.markup.html.IHeaderResponse)
+//     */
+//    public void renderHead(IHeaderResponse response)
+//    {
+//            response.renderOnLoadJavascript("\n var myEditor = new YAHOO.widget.Editor('yuiEditor', { \n" +
+//             	   " height: '300px', \n" +
+//              	   " width: '522px', \n" +
+//              	   " dompath: true, //Turns on the bar at the bottom \n" +
+//              	   " animate: true //Animates the opening, closing and moving of Editor windows \n" +
+//              	 " }); \n" +
+//             " myEditor.render(); \n");
+//            
+//            
+//             
+//            
+//    }
     
 }
-
-
-
-
-
-
-
 
 
 
