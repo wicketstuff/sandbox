@@ -1,0 +1,65 @@
+.writable {
+	color: #3311aa;
+}
+
+.readonly {
+	color: #888;
+}
+
+.wicket-tree-table .editorContainer * { /*,div.wicket-tree-table .editorContainer li,div.wicket-tree-table .editorContainer input {*/
+	display: inline;
+	font-size: 8pt;
+}
+.wicket-tree-table .editorContainer a {
+	cursor: pointer;
+	float: none;
+}
+
+.jmxTree {
+	float: left;	
+}
+
+.detailPanel {
+	margin-bottom: 15px;	
+}
+
+.detailPanel th {
+	color: #123456;	
+}
+
+.detailPanel td {
+	padding: 10px;	
+}
+
+.detailPanel table {
+	border: 1px solid #CCCCCC;
+	color: #6789AB;
+	border-collapse: collapse;
+}
+
+.detailPanel .header {
+	background-color: #EEEEEE;
+	border-bottom: 1px solid #DDDDDD;	
+}
+
+.detailPanel .editor {
+	display: inline;	
+}
+
+div.detailPanel .inlineform, div.detailPanel .inlineForm div {
+	display: inline;
+}
+
+.detailPanel .operation .paramType {
+	font-size: 0.8em;
+	margin-left: 2em;
+	font-style: italic;
+}
+
+.detailPanel .operation button {
+	color: #123456;
+}
+
+.detailPanel .operation .parameter {
+	margin: 2px 0px;	
+}
