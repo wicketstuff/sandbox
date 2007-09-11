@@ -162,4 +162,12 @@
 		<report>maven-javadoc-plugin</report>
 	</reports>
 	<properties />
+	
+  <distributionManagement>
+    <snapshotRepository>
+      <id>wicketstuff-repo</id>
+      <name>Local Bamboo/Tomcat repository</name>
+      <url>file:/home/wicket/tomcat/webapps/maven/repository/</url>
+    </snapshotRepository>
+  </distributionManagement>
 </project>
