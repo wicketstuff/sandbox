@@ -32,9 +32,7 @@ public abstract class AbstractYuiMenuItem extends Panel
         super(id);
         setOutputMarkupId(true);
         add(new CheckedMenuItemBehavior());   
-        subMenu = new Label( MENU_ITEM_SUBMENU_ID, "" );
-        subMenu.setVisible( false );
-        getItemContainer().add( subMenu );
+
     }
     
     public YuiMenu addSubMenu( String menuId ) {
@@ -43,14 +41,15 @@ public abstract class AbstractYuiMenuItem extends Panel
     	return subMenu;
     }
     
-    private void setSubMenu( YuiMenu newSubMenu ) {
-    	if ( subMenu != null ) {
-    		remove( subMenu );
+    private void setSubMenu( Component newSubMenu ) {
+    	if ( subMenu != null ) {    		
+    		getItemContainer().remove( subMenu );
     		subMenu = null;
     	}
+
         newSubMenu.setRenderBodyOnly(true);
-        subMenu = newSubMenu;
         getItemContainer().add(newSubMenu);
+        subMenu = newSubMenu;
     }
     
     protected WebMarkupContainer getItemContainer() {
