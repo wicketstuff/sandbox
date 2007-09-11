@@ -19,6 +19,7 @@ public class YuiMenuItem extends AbstractYuiMenuItem
         	}
         });
         link.add( new Label( "linkLabel", new Model( action.getName() )).setRenderBodyOnly( true ));
+        addSubMenu( "emptyMenu" ).setVisible( false );
     }
     
     public YuiMenuItem( final String label, final Link link ) {
@@ -29,6 +30,7 @@ public class YuiMenuItem extends AbstractYuiMenuItem
     	
     	add( link );
         link.add( new Label( "linkLabel", new Model( label )).setRenderBodyOnly(true));
+        addSubMenu( "emptyMenu" ).setVisible( false );
     }
     
     @Override
