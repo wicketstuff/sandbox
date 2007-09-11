@@ -58,5 +58,13 @@
       <url>http://maven.codecrate.com/</url>
     </repository>  
   </repositories>
+
+  <distributionManagement>
+    <snapshotRepository>
+      <id>wicketstuff-repo</id>
+      <name>Local Bamboo/Tomcat repository</name>
+      <url>file:/home/wicket/tomcat/webapps/maven/repository/</url>
+    </snapshotRepository>
+  </distributionManagement>
 </project>
 
