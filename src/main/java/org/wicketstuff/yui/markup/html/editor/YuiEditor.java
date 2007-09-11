@@ -48,13 +48,45 @@ public class YuiEditor extends Panel {
               	   " dompath: true, \n" +
               	   " animate: true \n" +
               	 " }); \n" +
+               "myEditor.on  ( 'toolbarLoaded' , function() { \n" +
+                "myEditor.saveHTML(); \n" +
+                "alert('mybutton1 was clicked');  \n " +
+                "} \n" +
+                " , myEditor , document ); \n" +
+                " \n" +
+                " \n" +
+                " \n" +
              " myEditor.render(); \n";
         
-        add(YuiLoaderHeaderContributor.forModule("editor", js));
+        String js2 = "" +
+                "var Dom = YAHOO.util.Dom, \n" +
+                "    Event = YAHOO.util.Event, \n" +
+                "    myEditor = null, \n" +
+                "    timer = null; \n" +
+                "myEditor = new YAHOO.widget.Editor('yuiEditor', { \n" +
+             	"   height: '300px', \n" +
+              	"   width: '522px', \n" +
+              	"   dompath: true, \n" +
+              	"   animate: true \n" +
+              	"   }); \n" +
+                "var update = function(ev) { " +
+                "   if(timer) { \n" +
+	        "       clearTimeout(timer); \n" +
+                "       } \n" +
+                "   timer = setTimeout(function() { \n " +
+                "       myEditor.saveHTML(); \n" +
+                "       }, 100);  \n" +
+                "   } \n" +
+                "myEditor.on('editorKeyDown', update); \n" +
+                "myEditor.on('afterNodeChange', update); \n" +
+                "myEditor.render(); \n";
+        
+        
+        add(YuiLoaderHeaderContributor.forModule("editor", js2));
         //add(YuiHeaderContributor.forModule("editor", new String[]{"utilities","container","menu","button"}));
         //add(HeaderContributor.forCss(CSS));
         TextArea ta = new TextArea("editorArea", model);
-        ta.setEscapeModelStrings(false);
+        //ta.setEscapeModelStrings(false);
 
       
         add(ta);
