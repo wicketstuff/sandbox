@@ -45,14 +45,14 @@ public class YuiLoaderHeaderContributor {
                             ResourceReference yuiRef = new ResourceReference(YuiLoaderHeaderContributor.class, resource);
                             response.renderJavascriptReference(yuiRef);
                             
-                            response.renderJavascript("" +
+                            response.renderOnLoadJavascript("" +
                                     " loader = new YAHOO.util.YUILoader(); \n" +
                                     " loader.require(\"editor\");  \n" +
                                     " loader.loadOptional = true;  \n" +
                                     " loader.insert(function() { \n" +
                                     executeJS + "  \n"+
                                     " }); \n" +
-                                    " \n", null);
+                                    " \n");
 			}
 		});
 	} 
