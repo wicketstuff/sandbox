@@ -54,6 +54,7 @@ public class YuiEditor extends Panel {
         //add(YuiHeaderContributor.forModule("editor", new String[]{"utilities","container","menu","button"}));
         //add(HeaderContributor.forCss(CSS));
         TextArea ta = new TextArea("editorArea", model);
+        ta.setEscapeModelStrings(false);
 
       
         add(ta);
