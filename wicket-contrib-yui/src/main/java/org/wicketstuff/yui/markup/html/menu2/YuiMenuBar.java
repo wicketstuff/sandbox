@@ -3,8 +3,8 @@ package org.wicketstuff.yui.markup.html.menu2;
 import java.util.ArrayList;
 import java.util.Map;
 
-import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.behavior.IBehavior;
+import org.apache.wicket.behavior.StringHeaderContributor;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -29,6 +29,8 @@ public class YuiMenuBar extends Panel {
 		setRenderBodyOnly(true);
 		
 		add(YuiHeaderContributor.forModule("menu", null, false, "2.3.0"));
+		add( new StringHeaderContributor("<style> #" + elementId + " {visibility:visible;} </style>" ) );
+
 
 		
 		WebMarkupContainer mg = new WebMarkupContainer(MENU_BAR_ID) {
