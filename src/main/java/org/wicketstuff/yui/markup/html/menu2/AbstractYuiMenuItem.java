@@ -7,7 +7,6 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.behavior.AbstractBehavior;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
 
 public abstract class AbstractYuiMenuItem extends Panel
@@ -35,7 +34,7 @@ public abstract class AbstractYuiMenuItem extends Panel
 
     }
     
-    public YuiMenu addSubMenu( String menuId ) {
+    public YuiMenu newSubMenu( String menuId ) {
     	YuiMenu subMenu = new YuiMenu( menuId, false, false );
     	setSubMenu( subMenu );
     	return subMenu;
@@ -142,6 +141,7 @@ public abstract class AbstractYuiMenuItem extends Panel
 
     public static class YuiMenuPath implements Serializable
     {
+    	private static final long serialVersionUID = 1L;
         protected final int index;
         protected final int groupIndex;
         private final YuiMenuPath parent;
@@ -168,6 +168,7 @@ public abstract class AbstractYuiMenuItem extends Panel
     
     public static class YuiMenuPathEmpty extends YuiMenuPath
     {
+    	private static final long serialVersionUID = 1L;
 
         public YuiMenuPathEmpty(int index, int groupIndex)
         {
@@ -183,6 +184,7 @@ public abstract class AbstractYuiMenuItem extends Panel
     
     class CheckedMenuItemBehavior extends AbstractBehavior
     {
+    	private static final long serialVersionUID = 1L;
         @Override
         public void renderHead(IHeaderResponse response)
         {

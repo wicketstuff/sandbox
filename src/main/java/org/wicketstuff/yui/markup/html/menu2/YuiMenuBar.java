@@ -18,7 +18,7 @@ import org.apache.wicket.velocity.VelocityJavascriptContributor;
 import org.wicketstuff.yui.YuiHeaderContributor;
 
 public class YuiMenuBar extends Panel {
-	
+	private static final long serialVersionUID = 1L;
 	public static final String MENU_BAR_ID = "menuBar";
 	public static final String MENU_ITEMS_ID = "menuItems";
 
@@ -68,24 +68,24 @@ public class YuiMenuBar extends Panel {
 	
 	public YuiMenuBarItem addMenu( String label ) {
 		YuiMenuBarItem item = new YuiMenuBarItem( label );
-		add( item );
+		addMenuItem( item );
 		return item;
 	}
 	
-	public YuiMenuBarItem addMenu( IAction action ) {
+	public YuiMenuBarItem addMenu( IYuiMenuAction action ) {
 		YuiMenuBarItem item = new YuiMenuBarItem( action );
-		add( item );
+		addMenuItem( item );
 		return item;
 	}
 	
-	private void add( YuiMenuBarItem menuItem ) {
+	private void addMenuItem( YuiMenuBarItem menuItem ) {
 		ArrayList<YuiMenuBarItem> newList = new ArrayList<YuiMenuBarItem>();
 		newList.addAll( list.getList( ) );
 		newList.add( menuItem );
 		list.setList(newList );
 	}
 	
-	public AbstractYuiMenuItem getItem( int idx ) {
+	public AbstractYuiMenuItem getMenuItem( int idx ) {
 		ListItem item = (ListItem)list.getList().get(idx );
 		return item == null ? null : (YuiMenuBarItem)item.getModelObject();
 	}
