@@ -26,6 +26,7 @@ public abstract class AbstractYuiMenu extends Panel {
 	protected WebMarkupContainer getMenuContainer() {
 		if (menucontainer == null) {
 			menucontainer = new WebMarkupContainer("menucontainer") {
+				private static final long serialVersionUID = 1L;
 				@Override
 				protected void onComponentTag(ComponentTag tag) {
 					super.onComponentTag(tag);
