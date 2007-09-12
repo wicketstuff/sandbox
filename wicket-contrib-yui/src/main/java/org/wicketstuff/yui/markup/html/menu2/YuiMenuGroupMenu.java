@@ -32,7 +32,6 @@ class YuiMenuGroupMenu extends YuiMenu {
 		super(null, false, addInit);
 
 		Label lbl = new Label(LABEL_ID, label);
-System.out.println( "FIRST MENU: " + firstMenu );
 		if (firstMenu) {
 			lbl.add(new AttributeAppender("class", true, new Model(
 					"first-of-type"), " "));
