@@ -258,7 +258,7 @@ public abstract class CrudPanel extends Panel
 	public void setFilterModel(IModel filterModel)
 	{
 		this.filterModel = filterModel;
-		dirty=true;
+		dirty = true;
 	}
 
 

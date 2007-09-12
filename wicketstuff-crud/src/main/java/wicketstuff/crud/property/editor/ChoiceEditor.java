@@ -21,7 +21,7 @@ public class ChoiceEditor extends Panel
 		field.setRequired(required);
 	}
 
-	public void addValidator(IValidator validator)
+	public void add(IValidator validator)
 	{
 		field.add(validator);
 	}
