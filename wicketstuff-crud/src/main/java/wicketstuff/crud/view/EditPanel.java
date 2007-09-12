@@ -1,4 +1,4 @@
-package wicketstuff.crud;
+package wicketstuff.crud.view;
 
 import java.util.List;
 
@@ -12,6 +12,8 @@ import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.RepeatingView;
 import org.apache.wicket.model.IModel;
+
+import wicketstuff.crud.Property;
 
 public abstract class EditPanel extends Panel
 {
