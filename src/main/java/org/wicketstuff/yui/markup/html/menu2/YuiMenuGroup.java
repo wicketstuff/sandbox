@@ -10,6 +10,7 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.util.collections.MiniMap;
 import org.apache.wicket.util.string.Strings;
@@ -18,6 +19,7 @@ import org.apache.wicket.velocity.VelocityJavascriptContributor;
 import org.wicketstuff.yui.YuiHeaderContributor;
 
 public class YuiMenuGroup extends Panel {
+	private static final long serialVersionUID = 1L;
 	public static final String MENU_GROUP_ID = "menuGroup";
 
 
@@ -66,8 +68,18 @@ public class YuiMenuGroup extends Panel {
 		mg.add(list);
 		add(getMenuInit(elementId));
 	}
+	
+	public YuiMenu addMenu( IModel label ) {
+		YuiMenuGroupMenu subMenu = new YuiMenuGroupMenu(label, menus.size() == 0, false);
+		menus.add( subMenu );
+		list.setList( menus );
 
-
+		return subMenu;
+	}
+	
+	public YuiMenu addMenu( String label ) {
+		return addMenu( new Model( label ));
+	}
 
 	public YuiMenu addMenu() {
 		YuiMenuGroupMenu subMenu = new YuiMenuGroupMenu(false, false);
