@@ -24,7 +24,13 @@ public class GMarkerOptions implements GValue
 {
 	private String title;
 	
-	private boolean draggable;
+	private boolean clickable = true;
+	
+	private boolean draggable = false;
+	
+	private boolean bouncy = true;
+	
+	private boolean autoPan = false;
 
 	public String getJSconstructor()
 	{
@@ -34,9 +40,21 @@ public class GMarkerOptions implements GValue
 		{
 			literal.set("title", "\"" + title + "\"");
 		}
+		if (!clickable)
+		{
+			literal.set("clickable", "false");
+		}
 		if (draggable)
 		{
 			literal.set("draggable", "true");
+		}
+		if (!bouncy)
+		{
+			literal.set("bouncy", "false");
+		}
+		if (autoPan)
+		{
+			literal.set("autoPan", "true");
 		}
 
 		return literal.toString();
@@ -58,6 +76,30 @@ public class GMarkerOptions implements GValue
 
 	public void setDraggable(boolean draggable) {
 		this.draggable = draggable;
+	}
+
+	public boolean isClickable() {
+		return clickable;
+	}
+
+	public void setClickable(boolean clickable) {
+		this.clickable = clickable;
+	}
+
+	public boolean isBouncy() {
+		return bouncy;
+	}
+
+	public void setBouncy(boolean bouncy) {
+		this.bouncy = bouncy;
+	}
+
+	public boolean isAutoPan() {
+		return autoPan;
+	}
+
+	public void setAutoPan(boolean autoPan) {
+		this.autoPan = autoPan;
 	}
 
 }
