@@ -9,6 +9,11 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.version.undo.Change;
 
+import wicketstuff.crud.view.DeletePanel;
+import wicketstuff.crud.view.EditPanel;
+import wicketstuff.crud.view.ListPanel;
+import wicketstuff.crud.view.ViewPanel;
+
 
 public abstract class CrudPanel extends Panel
 {
@@ -16,7 +21,7 @@ public abstract class CrudPanel extends Panel
 
 	private boolean dirty = true;
 	private List<Property> properties = new ArrayList<Property>(1);
-	private final IModel filterModel;
+	private IModel filterModel;
 	private final ISortableDataProvider dataProvider;
 
 	private ICreateBeanModelFactory createBeanModelFactory;
@@ -28,11 +33,10 @@ public abstract class CrudPanel extends Panel
 	private Stack<Mode> mode = new Stack<Mode>();
 
 
-	public CrudPanel(String id, ISortableDataProvider dp, IModel filterModel)
+	public CrudPanel(String id, ISortableDataProvider dp)
 	{
 		super(id);
 		this.dataProvider = dp;
-		this.filterModel = filterModel;
 		mode.push(Mode.LIST);
 
 	}
@@ -71,7 +75,7 @@ public abstract class CrudPanel extends Panel
 			switch (mode.peek())
 			{
 				case LIST :
-					addOrReplace(new ListPanel("view", properties, dataProvider, filterModel)
+					addOrReplace(new ListPanel("view", properties, dataProvider)
 					{
 
 						@Override
@@ -104,7 +108,7 @@ public abstract class CrudPanel extends Panel
 							return createBeanModelFactory != null;
 						}
 
-					});
+					}.setFilterModel(filterModel));
 					break;
 				case EDIT :
 					addOrReplace(new EditPanel("view", selected, properties)
@@ -245,5 +249,17 @@ public abstract class CrudPanel extends Panel
 	protected abstract void onDelete(IModel model);
 
 	protected abstract void onSave(IModel model);
+
+	public IModel getFilterModel()
+	{
+		return filterModel;
+	}
+
+	public void setFilterModel(IModel filterModel)
+	{
+		this.filterModel = filterModel;
+		dirty=true;
+	}
+
 
 }

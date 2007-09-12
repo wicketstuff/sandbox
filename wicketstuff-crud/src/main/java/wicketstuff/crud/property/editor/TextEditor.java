@@ -4,6 +4,7 @@ import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.validation.IValidator;
 
 public class TextEditor extends Panel
 {
@@ -36,6 +37,14 @@ public class TextEditor extends Panel
 	{
 		this.maxLength = maxLength;
 		return this;
+	}
+	
+	public void setRequired(boolean required) {
+		field.setRequired(required);
+	}
+	
+	public void addValidator(IValidator validator) {
+		field.add(validator);
 	}
 
 

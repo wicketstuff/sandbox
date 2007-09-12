@@ -4,6 +4,7 @@ import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.validation.IValidator;
 
 public class ChoiceEditor extends Panel
 {
@@ -13,5 +14,15 @@ public class ChoiceEditor extends Panel
 	{
 		super(id);
 		add(field = new DropDownChoice("choice", model, choices, renderer));
+	}
+
+	public void setRequired(boolean required)
+	{
+		field.setRequired(required);
+	}
+
+	public void addValidator(IValidator validator)
+	{
+		field.add(validator);
 	}
 }

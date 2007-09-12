@@ -90,7 +90,7 @@ public class Index extends QuickStartPage
 	{
 		SDP dataProvider = new SDP();
 
-		CrudPanel panel = new CrudPanel("crud", dataProvider, new PropertyModel(this, "criteria"))
+		CrudPanel panel = new CrudPanel("crud", dataProvider)
 		{
 
 			@Override
@@ -106,7 +106,7 @@ public class Index extends QuickStartPage
 			}
 
 		};
-
+		panel.setFilterModel(new PropertyModel(this, "criteria"));
 		panel.add(new ReflectionPropertySource(Contact.class));
 		panel.setCreateBeanModelFactory(new ReflectionCreateBeanModelFactory(Contact.class));
 		add(panel);

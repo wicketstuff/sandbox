@@ -1,4 +1,4 @@
-package wicketstuff.crud;
+package wicketstuff.crud.view;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,15 +17,19 @@ import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.PropertyModel;
 
+import wicketstuff.crud.Property;
+import wicketstuff.crud.PropertyColumn;
 import wicketstuff.crud.filter.ApplyAndClearFilter;
 import wicketstuff.crud.filter.FilterToolbar;
 import wicketstuff.crud.filter.IFilterableColumn;
 
 public abstract class ListPanel extends Panel
 {
+	private IModel filterModel;
 
-	public ListPanel(String id, List<Property> properties, ISortableDataProvider dp, IModel filter)
+	public ListPanel(String id, List<Property> properties, ISortableDataProvider dp)
 	{
 		super(id);
 
@@ -60,7 +64,13 @@ public abstract class ListPanel extends Panel
 
 		DataTable table = new DataTable("list", cols.toArray(new IColumn[cols.size()]), dp, 15);
 		table.addTopToolbar(new NavigationToolbar(table));
-		table.addTopToolbar(new FilterToolbar(table, filter));
+		table.addTopToolbar(new FilterToolbar(table, new PropertyModel(this, "filterModel")) {
+			@Override
+			public boolean isVisible()
+			{
+				return filterModel!=null;
+			}
+		});
 		table.addTopToolbar(new HeadersToolbar(table, dp));
 		table.addBottomToolbar(new NoRecordsToolbar(table));
 
@@ -68,6 +78,8 @@ public abstract class ListPanel extends Panel
 	}
 
 
+	
+	
 	private class ActionsColumn extends HeaderlessColumn implements IFilterableColumn
 	{
 		public void populateItem(Item cellItem, String componentId, IModel rowModel)
@@ -126,5 +138,16 @@ public abstract class ListPanel extends Panel
 	protected boolean allowCreateNewBean()
 	{
 		return true;
+	}
+
+	public IModel getFilterModel()
+	{
+		return filterModel;
+	}
+
+	public ListPanel setFilterModel(IModel filter)
+	{
+		this.filterModel = filter;
+		return this;
 	}
 }

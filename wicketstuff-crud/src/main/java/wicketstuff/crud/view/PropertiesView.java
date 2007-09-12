@@ -1,4 +1,4 @@
-package wicketstuff.crud;
+package wicketstuff.crud.view;
 
 import java.util.List;
 
@@ -10,7 +10,9 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.RepeatingView;
 import org.apache.wicket.model.IModel;
 
-public class PropertiesView extends Panel
+import wicketstuff.crud.Property;
+
+class PropertiesView extends Panel
 {
 
 	public PropertiesView(String id, IModel model, List<Property> properties)
