@@ -31,16 +31,12 @@ if(!Wicket)
 	throw new Error("Wicket already exists and is not an object");
 }
 
-Wicket.maps = { }
+Wicket.geocoder = new WicketGeoCoder();
 
-Wicket.geocoder = { }
-
-function WicketGClientGeocoder(id) {
-	Wicket.geocoder[id] = this;
-	
+function WicketGeoCoder() {
 	this.coder = new GClientGeocoder();
 	
-	this.wicketAjaxGetLatLng = function(callBackUrl, addressId) {
+	this.getLatLng = function(callBackUrl, addressId) {
 		
 		address = Wicket.$(addressId).value;
 		
@@ -50,14 +46,15 @@ function WicketGClientGeocoder(id) {
 				callBackUrl + '&address=' + address
 				+ '&point=' + point,
 				function() {
-				 },
+				},
 				function() {
-				 }
-			);
-			
+				}
+			);			
 		});
 	}
 }
+
+Wicket.maps = { }
 
 function WicketGMap2(id) {
 	Wicket.maps[id] = this;
@@ -66,7 +63,7 @@ function WicketGMap2(id) {
 	this.controls = {};
 	this.overlays = {};
 
-	this.ajaxGet = function(callBack, params) {		
+	this.onEvent = function(callBack, params) {		
 		params['center'] = this.map.getCenter();
 		params['bounds'] = this.map.getBounds();
 		params['zoom'] = this.map.getZoom();
@@ -92,14 +89,14 @@ function WicketGMap2(id) {
 			GEvent.addListener(this.map,
 				event,
 				function (marker, gLatLng) {
-					self.ajaxGet(callBack, {'marker':(marker == null ? "" : marker.overlayId), 'latLng':gLatLng});
+					self.onEvent(callBack, {'marker':(marker == null ? "" : marker.overlayId), 'latLng':gLatLng});
 				}
 			);
 		} else {
 			GEvent.addListener(this.map,
 				event,
 				function () {
-					self.ajaxGet(callBack, {});
+					self.onEvent(callBack, {});
 				}
 			);
 		}
