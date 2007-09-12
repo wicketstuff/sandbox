@@ -2,9 +2,7 @@ package wicket.contrib.examples.gmap;
 
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.behavior.HeaderContributor;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.Link;
@@ -86,6 +84,7 @@ public class HomePage extends WicketExamplePage
 		GMarkerOptions options = new GMarkerOptions();
 		options.setTitle("Home");
 		options.setDraggable(true);
+		options.setAutoPan(true);
 		topPanel.addOverlay(new GMarker(new GLatLng(37.4, -122.1), options));
 		topPanel.addOverlay(new GPolygon("#000000", 4, 0.7f, "#E9601A", 0.7f, new GLatLng(37.3,
 				-122.4), new GLatLng(37.2, -122.2), new GLatLng(37.3, -122.0), new GLatLng(37.4,
@@ -290,8 +289,7 @@ public class HomePage extends WicketExamplePage
 		Form geoCodeForm = new Form("geoCoder");
 		TextField address = new TextField("address", new Model(""));
 		geoCodeForm.add(address);
-		geoCodeForm.add(new GeoCodingBehavior("onsubmit", address, new GMapHeaderContributor(
-				LOCALHOST))
+		geoCodeForm.add(new GeoCodingBehavior("onsubmit", address, LOCALHOST)
 		{
 			public void onGeoCode(String address, GLatLng point)
 			{
@@ -302,7 +300,6 @@ public class HomePage extends WicketExamplePage
 				}
 			};
 		});
-		geoCodeForm.add(new Button("button"));
 		add(geoCodeForm);
 	}
 
