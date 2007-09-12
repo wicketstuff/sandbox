@@ -8,11 +8,10 @@ import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WicketEventReference;
 import org.apache.wicket.markup.html.resources.JavascriptResourceReference;
 
-public class GMapHeaderContributor extends HeaderContributor
-{
+public class GMapHeaderContributor extends HeaderContributor {
 	private static final long serialVersionUID = 1L;
 
-	/** URL for Google Maps' API endpoint. */
+	// URL for Google Maps' API endpoint.
 	private static final String GMAP_API_URL = "http://maps.google.com/maps?file=api&amp;v=2.x&amp;key=";
 
 	// We also depend on wicket-ajax.js within wicket-gmap.js
@@ -23,16 +22,14 @@ public class GMapHeaderContributor extends HeaderContributor
 	private static final ResourceReference WICKET_GMAP_JS = new JavascriptResourceReference(
 			GMap2.class, "wicket-gmap.js");
 
-	public GMapHeaderContributor(final String gMapKey)
-	{
-		super(new IHeaderContributor()
-		{
+	public GMapHeaderContributor(final String gMapKey) {
+		super(new IHeaderContributor() {
 			private static final long serialVersionUID = 1L;
 
-			public void renderHead(IHeaderResponse response)
-			{
+			public void renderHead(IHeaderResponse response) {
 				response.renderJavascriptReference(GMAP_API_URL + gMapKey);
-				response.renderJavascriptReference(WicketEventReference.INSTANCE);
+				response
+						.renderJavascriptReference(WicketEventReference.INSTANCE);
 				response.renderJavascriptReference(WICKET_AJAX_JS);
 				response.renderJavascriptReference(WICKET_GMAP_JS);
 				// see:
