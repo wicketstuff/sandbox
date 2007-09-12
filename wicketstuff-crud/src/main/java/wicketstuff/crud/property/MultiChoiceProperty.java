@@ -9,11 +9,13 @@ import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.validation.IValidator;
 
+import wicketstuff.crud.Property;
 import wicketstuff.crud.property.editor.ChoiceEditor;
 
 
-public class MultiChoiceProperty extends AbstractProperty
+public class MultiChoiceProperty extends Property
 {
 	private IModel choices;
 	private IChoiceRenderer renderer;
@@ -53,9 +55,17 @@ public class MultiChoiceProperty extends AbstractProperty
 
 	public Component getEditor(String id, IModel object)
 	{
-		return new ChoiceEditor(id, new PropertyModel(object, getPath()), choices, renderer);
+		ChoiceEditor editor = new ChoiceEditor(id, new PropertyModel(object, getPath()), choices,
+				renderer);
+		editor.setRequired(isRequired());
+		for (IValidator validator : getValidators())
+		{
+			editor.add(validator);
+		}
+		return editor;
 	}
 
+	@Override
 	public Component getViewer(String id, IModel object)
 	{
 		final PropertyModel prop = new PropertyModel(object, getPath());

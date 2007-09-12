@@ -3,11 +3,13 @@ package wicketstuff.crud.property;
 import org.apache.wicket.Component;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.validation.IValidator;
 
+import wicketstuff.crud.Property;
 import wicketstuff.crud.property.editor.TextEditor;
 
 
-public class StringProperty extends AbstractProperty
+public class StringProperty extends Property
 {
 	private int maxLength;
 
@@ -19,7 +21,14 @@ public class StringProperty extends AbstractProperty
 
 	public Component getEditor(String id, IModel object)
 	{
-		return new TextEditor(id, new PropertyModel(object, getPath())).setMaxLength(maxLength);
+		TextEditor editor = new TextEditor(id, new PropertyModel(object, getPath()))
+				.setMaxLength(maxLength);
+		editor.setRequired(isRequired());
+		for (IValidator validator : getValidators())
+		{
+			editor.addValidator(validator);
+		}
+		return editor;
 	}
 
 	public int getMaxLength()
