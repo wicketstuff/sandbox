@@ -17,6 +17,7 @@ import org.apache.wicket.velocity.VelocityHeaderContributor;
 import org.apache.wicket.velocity.VelocityJavascriptContributor;
 
 public class YuiMenu extends AbstractYuiMenu {
+	private static final long serialVersionUID = 1L;
 	private static final String MENU_ID = "menu";
 	private static final String MENU_ITEMS_ID = "menuItems";
 
@@ -70,27 +71,26 @@ public class YuiMenu extends AbstractYuiMenu {
 					"first-of-type"), " "));
 			firstOfType = true;
 		}
-
 	}
 
-	public AbstractYuiMenuItem add(String label, Link link) {
+	public AbstractYuiMenuItem addMenuItem(String label, Link link) {
 		YuiMenuItem item = new YuiMenuItem(label, link);
-		add(item);
+		addMenuItem(item);
 		return item;
 	}
 
-	public AbstractYuiMenuItem add(IAction action) {
+	public AbstractYuiMenuItem addMenuItem(IYuiMenuAction action) {
 		YuiMenuItem item = new YuiMenuItem(action);
-		add(item);
+		addMenuItem(item);
 		return item;
 	}
 
-	public void add(AbstractYuiMenuItem menuItem) {
+	public void addMenuItem(AbstractYuiMenuItem menuItem) {
 		items.add(menuItem);
 		list.setList(items);
 	}
 
-	public AbstractYuiMenuItem getItem(int idx) {
+	public AbstractYuiMenuItem getMenuItem(int idx) {
 		ListItem item = (ListItem) list.getList().get(idx);
 		return item == null ? null : (YuiMenuItem) item.getModelObject();
 	}
