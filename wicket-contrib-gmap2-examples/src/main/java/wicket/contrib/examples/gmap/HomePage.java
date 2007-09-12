@@ -85,6 +85,7 @@ public class HomePage extends WicketExamplePage
 		topPanel.setZoom(10);
 		GMarkerOptions options = new GMarkerOptions();
 		options.setTitle("Home");
+		options.setDraggable(true);
 		topPanel.addOverlay(new GMarker(new GLatLng(37.4, -122.1), options));
 		topPanel.addOverlay(new GPolygon("#000000", 4, 0.7f, "#E9601A", 0.7f, new GLatLng(37.3,
 				-122.4), new GLatLng(37.2, -122.2), new GLatLng(37.3, -122.0), new GLatLng(37.4,
@@ -112,13 +113,16 @@ public class HomePage extends WicketExamplePage
 			@Override
 			protected void onEvent(AjaxRequestTarget target)
 			{
-				GLatLng point = ((GMarker)markerLabel.getModelObject()).getLagLng();
+				GMarker marker = (GMarker)markerLabel.getModelObject();
+				if (marker != null) {
+					GLatLng point = marker.getLagLng();
+					
+					GMarker random = new GMarker(new GLatLng(point.getLat()
+							* (0.9995 + Math.random() / 1000), point.getLng()
+							* (0.9995 + Math.random() / 1000)));
 
-				GMarker marker = new GMarker(new GLatLng(point.getLat()
-						* (0.9995 + Math.random() / 1000), point.getLng()
-						* (0.9995 + Math.random() / 1000)));
-
-				topPanel.addOverlay(marker);
+					topPanel.addOverlay(random);
+				}
 			}
 		});
 		add(markerLabel);
