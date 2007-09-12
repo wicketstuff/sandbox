@@ -16,48 +16,28 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package wicket.contrib.gmap.api;
+package wicket.contrib.gmap.js;
 
-import wicket.contrib.gmap.js.ObjectLiteral;
-
-public class GMarkerOptions implements GValue
+public class ObjectLiteral
 {
-	private String title;
+	private StringBuffer buffer = new StringBuffer("{");
 	
-	private boolean draggable;
-
-	public String getJSconstructor()
-	{
-		ObjectLiteral literal = new ObjectLiteral();
-
-		if (title != null)
-		{
-			literal.set("title", "\"" + title + "\"");
+	public void set(String name, String value) {
+		if (buffer.length() > 1) {
+			buffer.append(", ");
 		}
-		if (draggable)
-		{
-			literal.set("draggable", "true");
-		}
-
-		return literal.toString();
+		buffer.append(name);
+		buffer.append(": ");
+		buffer.append(value);
 	}
 
-	public String getTitle()
-	{
-		return title;
+	public String toString() {
+		buffer.append("}");
+		
+		String string = buffer.toString();
+		
+		buffer.deleteCharAt(buffer.length() - 1);
+		
+		return string;
 	}
-
-	public void setTitle(String title)
-	{
-		this.title = title;
-	}
-
-	public boolean isDraggable() {
-		return draggable;
-	}
-
-	public void setDraggable(boolean draggable) {
-		this.draggable = draggable;
-	}
-
 }
