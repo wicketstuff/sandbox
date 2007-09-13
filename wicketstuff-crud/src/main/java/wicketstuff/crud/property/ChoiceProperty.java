@@ -6,7 +6,6 @@ import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.validation.IValidator;
 
 import wicketstuff.crud.Property;
 import wicketstuff.crud.property.editor.ChoiceEditor;
@@ -48,15 +47,12 @@ public class ChoiceProperty extends Property
 	}
 
 
+	@Override
 	public Component getEditor(String id, IModel object)
 	{
 		ChoiceEditor editor = new ChoiceEditor(id, new PropertyModel(object, getPath()), choices,
 				renderer);
-		editor.setRequired(isRequired());
-		for (IValidator validator : getValidators())
-		{
-			editor.add(validator);
-		}
+		configure(editor);
 		return editor;
 	}
 

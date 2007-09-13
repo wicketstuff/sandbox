@@ -8,11 +8,9 @@ import wicketstuff.crud.Property;
 import wicketstuff.crud.property.editor.TextEditor;
 
 
-public class StringProperty extends Property
+public class DateProperty extends Property
 {
-	private int maxLength;
-
-	public StringProperty(String path, IModel label)
+	public DateProperty(String path, IModel label)
 	{
 		super(path);
 		setLabel(label);
@@ -21,22 +19,9 @@ public class StringProperty extends Property
 	@Override
 	public Component getEditor(String id, IModel object)
 	{
-		TextEditor editor = new TextEditor(id, new PropertyModel(object, getPath()))
-				.setMaxLength(maxLength);
+		TextEditor editor = new TextEditor(id, new PropertyModel(object, getPath()));
 		configure(editor);
 		return editor;
 	}
-
-	public int getMaxLength()
-	{
-		return maxLength;
-	}
-
-	public StringProperty setMaxLength(int maxLength)
-	{
-		this.maxLength = maxLength;
-		return this;
-	}
-
 
 }
