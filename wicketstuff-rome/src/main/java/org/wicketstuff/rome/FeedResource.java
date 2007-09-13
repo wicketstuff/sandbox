@@ -12,20 +12,24 @@ import com.sun.syndication.io.SyndFeedOutput;
 /**
  * Wicket WebResource for streaming RSS/Atom Feeds.
  * 
+ * @see https://rome.dev.java.net/
  */
 public abstract class FeedResource extends WebResource {
+
+    /**
+     * get the feed to display.
+     */
+	protected abstract SyndFeed getFeed();
 
 	@Override
 	public final IResourceStream getResourceStream() {
 		return new FeedResourceStream(getFeed());
 	}
 
-	protected abstract SyndFeed getFeed();
-
 	/**
 	 * decode the correct content type depending on the {@link SyndFeed#getFeedType() feed type}
 	 */
-	public static String getFeedContentType(SyndFeed feed) {
+	static String getFeedContentType(SyndFeed feed) {
 		String type = feed.getFeedType();
 		if (type.startsWith("atom")) {
 			return "application/atom+xml";
@@ -36,7 +40,7 @@ public abstract class FeedResource extends WebResource {
 	}
 
 	/**
-	 * resource stream for handling setting content type of content.
+	 * resource stream for streaming feed content.
 	 */
 	private static class FeedResourceStream extends AbstractStringResourceStream {
 		private final SyndFeedOutput output = new SyndFeedOutput();
