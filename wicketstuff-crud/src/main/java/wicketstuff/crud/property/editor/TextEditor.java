@@ -56,10 +56,5 @@ public class TextEditor extends Panel implements Editor
 		field.setLabel(label);
 	}
 
-	protected TextField getField()
-	{
-		return field;
-	}
-
 
 }
