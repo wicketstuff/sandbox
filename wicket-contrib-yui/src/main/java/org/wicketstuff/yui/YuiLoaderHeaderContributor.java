@@ -13,7 +13,6 @@ import org.apache.wicket.ResourceReference;
 import org.apache.wicket.behavior.HeaderContributor;
 import org.apache.wicket.markup.html.IHeaderContributor;
 import org.apache.wicket.markup.html.IHeaderResponse;
-import org.apache.wicket.markup.html.resources.CompressedResourceReference;
 
 /**
  *
@@ -42,17 +41,21 @@ public class YuiLoaderHeaderContributor {
 			public void renderHead(IHeaderResponse response)
 			{
                             String resource = YUI_BUILD_ROOT + "/" + DEFAULT_YUI_BUILD + "/yuiloader/yuiloader-beta-min.js";
-                            ResourceReference yuiRef = new ResourceReference(YuiLoaderHeaderContributor.class, resource);
-                            response.renderJavascriptReference(yuiRef);
+                            String yahooResource = "http://yui.yahooapis.com/2.3.0/build/yuiloader/yuiloader-beta-min.js";
                             
-                            response.renderJavascript("" +
+                            ResourceReference yuiRef = new ResourceReference(YuiLoaderHeaderContributor.class, resource);
+                            
+                            response.renderJavascriptReference(yuiRef);
+                            //response.renderJavascriptReference(yahooResource);
+                            
+                            response.renderOnLoadJavascript("" +
                                     " loader = new YAHOO.util.YUILoader(); \n" +
-                                    " loader.require(\"editor\", \"dom\", \"event\");  \n" +
+                                    " loader.require(\"editor\");  \n" +
                                     " loader.loadOptional = true;  \n" +
                                     " loader.insert(function() { \n" +
                                     executeJS + "  \n"+
                                     " }); \n" +
-                                    " \n", null);
+                                    " \n");
 			}
 		});
 	} 
