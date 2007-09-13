@@ -21,6 +21,7 @@ import java.util.Map;
 import javax.management.ObjectName;
 
 import org.apache.wicket.markup.html.panel.EmptyPanel;
+import org.wicketstuff.jmx.markup.html.tree.DetailPanel;
 import org.wicketstuff.jmx.util.JmxMBeanWrapper;
 
 /**

@@ -15,11 +15,21 @@
    limitations under the License.
 -->
 <wicket:panel>
-	<table class="nameValue">
-		<tr class="header"><th>Name</th><th>Value</th></tr>
-		<tr wicket:id="attributes">
-			<td wicket:id="name">[name]</td>
-			<td><div wicket:id="editor">[editor]</div></td>
-		</tr>
-	</table>
+	<div class="operation">	
+		<div class="operationBody">
+			<div>
+				<form wicket:id="form">	
+					<button wicket:id="operationName"><span wicket:id="label">[operationName]</span></button><span> (</span>
+					<div wicket:id="parameters">
+						<span wicket:id="type">[type]</span>
+						<span wicket:id="paramName">[paramName]</span>
+						<div wicket:id="editor">[editor]</div>
+					</div> )
+				</form>
+			</div>		
+			<div>
+				<wicket:child/>
+			</div>
+		</div>	
+	</div>
 </wicket:panel>

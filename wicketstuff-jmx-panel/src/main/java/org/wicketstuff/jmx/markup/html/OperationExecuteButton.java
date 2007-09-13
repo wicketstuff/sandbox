@@ -1,4 +1,4 @@
-package org.wicketstuff.jmx.markup.html.tree;
+package org.wicketstuff.jmx.markup.html;
 
 import java.util.Map;
 

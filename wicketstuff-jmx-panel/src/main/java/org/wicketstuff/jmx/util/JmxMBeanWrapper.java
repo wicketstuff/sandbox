@@ -82,15 +82,18 @@ public class JmxMBeanWrapper implements Serializable
 		}
 		catch (InstanceNotFoundException e)
 		{
-			logger.error("could not retrieve MBeanInfo of " + objectName.getCanonicalName(), e);
+			// logger.error("could not retrieve MBeanInfo of " +
+			// objectName.getCanonicalName(), e);
 		}
 		catch (IntrospectionException e)
 		{
-			logger.error("could not retrieve MBeanInfo of " + objectName.getCanonicalName(), e);
+			// logger.error("could not retrieve MBeanInfo of " +
+			// objectName.getCanonicalName(), e);
 		}
 		catch (ReflectionException e)
 		{
-			logger.error("could not retrieve MBeanInfo of " + objectName.getCanonicalName(), e);
+			// logger.error("could not retrieve MBeanInfo of " +
+			// objectName.getCanonicalName(), e);
 		}
 		return info;
 	}

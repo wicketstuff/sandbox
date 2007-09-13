@@ -16,30 +16,13 @@
  */
 package org.wicketstuff.jmx.markup.html.table;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.management.MBeanOperationInfo;
-import javax.management.MBeanParameterInfo;
 
-import org.apache.wicket.Component;
-import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.markup.html.form.AjaxButton;
-import org.apache.wicket.behavior.SimpleAttributeModifier;
-import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.markup.repeater.RepeatingView;
-import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
-import org.wicketstuff.jmx.markup.html.EditorPanel;
+import org.wicketstuff.jmx.markup.html.AbstractOperationPanel;
 import org.wicketstuff.jmx.util.JmxMBeanWrapper;
-import org.wicketstuff.jmx.util.JmxUtil;
 
 /**
  * This panel displays FormComponents for the various parameters of an
@@ -48,7 +31,7 @@ import org.wicketstuff.jmx.util.JmxUtil;
  * @author Gerolf Seitz
  * 
  */
-public class OperationInvocationPanel extends Panel
+public class OperationInvocationPanel extends AbstractOperationPanel
 {
 	private static final long serialVersionUID = 1L;
 
@@ -56,70 +39,16 @@ public class OperationInvocationPanel extends Panel
 	public OperationInvocationPanel(String id, final JmxMBeanWrapper mbean,
 			final MBeanOperationInfo operation)
 	{
-		super(id);
-		setOutputMarkupId(true);
-		final Map modelMap = new HashMap();
-		Form form = new Form("form", new CompoundPropertyModel(modelMap));
-		form.add(new SimpleAttributeModifier("class", "inlineForm"));
-		add(form);
+		super(id, mbean, operation);
+		add(new Label("result", ""));
+	}
 
-		RepeatingView fields = new RepeatingView("fields");
-		form.add(fields);
-
-		for (MBeanParameterInfo param : operation.getSignature())
-		{
-			WebMarkupContainer row = new WebMarkupContainer(fields.newChildId());
-			fields.add(row);
-
-			IModel labelModel = new Model(param.getName());
-
-			// Create a model to bind our editor component to the bean.
-			IModel model = new PropertyModel(modelMap, param.getName());
-
-			final Class type = JmxUtil.getType(param.getType());
-
-			Component editor = new EditorPanel("editor", model, labelModel, type, false);
-
-			row.add(editor);
-			row.add(new Label("label", labelModel));
-		}
-
-		form.add(new FeedbackPanel("feedback"));
-
-		form.add(new AjaxButton("invoke", form)
-		{
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			protected void onSubmit(AjaxRequestTarget target, Form form)
-			{
-				// collect operation parameter data from the form and invoke the
-				// operation
-				MBeanParameterInfo[] params = operation.getSignature();
-				Object[] values = new Object[params.length];
-				String[] signature = new String[params.length];
-				Object result = null;
-				for (int i = 0; i < params.length; i++)
-				{
-					values[i] = modelMap.get(params[i].getName());
-					signature[i] = JmxUtil.getType(params[i].getType()).getName();
-				}
-				try
-				{
-					result = mbean.invoke(operation, values, signature);
-				}
-				catch (WicketRuntimeException e)
-				{
-					result = e;
-				}
-				// replace this panel with an OperationInvocationPanel to render
-				// the results
-				Panel panel = new OperationInvocationResultPanel(OperationInvocationPanel.this
-						.getId(), operation, result, mbean, OperationInvocationPanel.this);
-				OperationInvocationPanel.this.replaceWith(panel);
-				target.addComponent(panel);
-			}
-		});
-
+	@Override
+	protected void onOperationExecute(AjaxRequestTarget target, Object result)
+	{
+		Panel panel = new OperationInvocationResultPanel(OperationInvocationPanel.this.getId(),
+				operation, result, jmxBean, OperationInvocationPanel.this);
+		OperationInvocationPanel.this.replaceWith(panel);
+		target.addComponent(panel);
 	}
 }

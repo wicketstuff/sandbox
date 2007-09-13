@@ -31,17 +31,16 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeModel;
 
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.WicketRuntimeException;
-import org.apache.wicket.markup.html.IHeaderContributor;
-import org.apache.wicket.markup.html.IHeaderResponse;
-import org.apache.wicket.markup.html.panel.EmptyPanel;
+import org.apache.wicket.behavior.HeaderContributor;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
-import org.wicketstuff.jmx.markup.html.table.IDomainFilter;
 import org.wicketstuff.jmx.markup.html.table.JmxTreeNode;
 import org.wicketstuff.jmx.markup.html.table.JmxTreeTable;
-import org.wicketstuff.jmx.markup.html.tree.JmxTree;
+import org.wicketstuff.jmx.markup.html.tree.JmxTreePanel;
+import org.wicketstuff.jmx.util.IDomainFilter;
 import org.wicketstuff.jmx.util.JmxMBeanServerWrapper;
 import org.wicketstuff.jmx.util.JmxMBeanWrapper;
 
@@ -56,7 +55,7 @@ import org.wicketstuff.jmx.util.JmxMBeanWrapper;
  * @author Gerolf Seitz
  * 
  */
-public class JmxPanel extends Panel implements IHeaderContributor
+public class JmxPanel extends Panel
 {
 	private static final long serialVersionUID = 1L;
 
@@ -70,6 +69,17 @@ public class JmxPanel extends Panel implements IHeaderContributor
 			"res/operation.gif");
 	public static final ResourceReference OPERATIONS_ICON = new ResourceReference(JmxPanel.class,
 			"res/operations.gif");
+
+	/**
+	 * Used to specify which rendering implementation should be used by the
+	 * {@link JmxPanel}.
+	 * 
+	 * @author Gerolf Seitz
+	 * 
+	 */
+	public static enum JmxPanelRenderer {
+		Tree, TreeTable
+	}
 
 	private JmxMBeanServerWrapper serverModel = new JmxMBeanServerWrapper();
 
@@ -97,16 +107,18 @@ public class JmxPanel extends Panel implements IHeaderContributor
 	public JmxPanel(String id, JmxPanelRenderer renderer)
 	{
 		super(id);
-		Panel detailPanel = new EmptyPanel("detailPanel");
-		add(detailPanel.setOutputMarkupId(true));
+
 		if (JmxPanelRenderer.Tree.equals(renderer))
 		{
-			add(new JmxTree("jmxBeanTable", createTreeModel(), detailPanel));
+			add(new JmxTreePanel("jmxBeanTable", createTreeModel()).add(new AttributeModifier(
+					"class", true, new Model("jmxTreePanel"))));
 		}
 		else
 		{
-			add(new JmxTreeTable("jmxBeanTable", createTreeModel()));
+			add(new JmxTreeTable("jmxBeanTable", createTreeModel()).add(new AttributeModifier(
+					"class", true, new Model("jmxTreeTable"))));
 		}
+		add(HeaderContributor.forCss(CSS));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -230,8 +242,17 @@ public class JmxPanel extends Panel implements IHeaderContributor
 			return;
 		}
 
-		JmxTreeNode tmp = new JmxTreeNode("operations", mbean);
-		current.add(tmp);
+		JmxTreeNode tmp;
+		if (groupAttributesAndOperations())
+		{
+			tmp = new JmxTreeNode("operations", mbean);
+			current.add(tmp);
+		}
+		else
+		{
+			tmp = current;
+		}
+
 		// create nodes for all operations
 		for (MBeanOperationInfo operation : operations)
 		{
@@ -255,8 +276,18 @@ public class JmxPanel extends Panel implements IHeaderContributor
 			return;
 		}
 
-		JmxTreeNode tmp = new JmxTreeNode("attributes", mbean);
-		current.add(tmp);
+
+		JmxTreeNode tmp;
+		if (groupAttributesAndOperations())
+		{
+			tmp = new JmxTreeNode("attributes", mbean);
+			current.add(tmp);
+		}
+		else
+		{
+			tmp = current;
+		}
+
 		// create nodes for all attributes
 		for (MBeanAttributeInfo attribute : mbean.getAttributes())
 		{
@@ -302,10 +333,14 @@ public class JmxPanel extends Panel implements IHeaderContributor
 	}
 
 	/**
-	 * @see org.apache.wicket.markup.html.IHeaderContributor#renderHead(org.apache.wicket.markup.html.IHeaderResponse)
+	 * Override this method and let it return false, if you don't want to group
+	 * attributes and operations in a dedicated "attributes" and "operations"
+	 * node.
+	 * 
+	 * @return default: true
 	 */
-	public void renderHead(IHeaderResponse response)
+	protected boolean groupAttributesAndOperations()
 	{
-		response.renderCSSReference(CSS);
+		return true;
 	}
 }

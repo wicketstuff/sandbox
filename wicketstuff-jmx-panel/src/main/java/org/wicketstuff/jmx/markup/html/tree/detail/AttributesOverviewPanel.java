@@ -22,6 +22,7 @@ import javax.management.ObjectName;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.repeater.RepeatingView;
+import org.wicketstuff.jmx.markup.html.tree.DetailPanel;
 import org.wicketstuff.jmx.util.JmxMBeanWrapper;
 import org.wicketstuff.jmx.util.JmxUtil;
 
