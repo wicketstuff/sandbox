@@ -17,19 +17,18 @@
 package wicket.contrib.examples.gmap.geocode;
 
 import java.io.IOException;
-import java.io.Serializable;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.PropertyModel;
 
 import wicket.contrib.gmap.GMap2;
 import wicket.contrib.gmap.api.GLatLng;
 import wicket.contrib.gmap.api.GMarker;
 import wicket.contrib.gmap.api.GMarkerOptions;
+import wicket.contrib.gmap.util.GeocoderException;
 
 /**
  * Wicket component to embed a GClientGeocoder, using the <a
@@ -42,15 +41,15 @@ import wicket.contrib.gmap.api.GMarkerOptions;
  * 
  * @author Thijs Vonk
  */
-public class GeocoderForm extends Form
-{
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private GClientGeocoderUtil geoUtil;
-	private GMarker temp;
+public class GeocoderForm extends Form {
 
+	private static final long serialVersionUID = 1L;
+
+	private HttpClientGeocoder geocoder;
+
+	private String address;
+
+	private GMarker marker;
 
 	/**
 	 * Construct.
@@ -58,73 +57,45 @@ public class GeocoderForm extends Form
 	 * @param id
 	 * @param map
 	 */
-	public GeocoderForm(String id, final GMap2 map, final String gMapKey)
-	{
-		super(id, new CompoundPropertyModel(new GeocoderModel()));
-		geoUtil = new GClientGeocoderUtil(gMapKey);
-		TextField address = new TextField("address");
-		address.setOutputMarkupId(true);
-		add(address);
-		add(new AjaxButton("submit", GeocoderForm.this)
-		{
-			/**
-			 * 
-			 */
+	public GeocoderForm(String id, final GMap2 map, final String gMapKey) {
+		super(id);
+
+		geocoder = new HttpClientGeocoder(gMapKey);
+
+		TextField addressTextField = new TextField("address",
+				new PropertyModel(this, "address"));
+		addressTextField.setOutputMarkupId(true);
+		add(addressTextField);
+
+		add(new AjaxButton("submit", GeocoderForm.this) {
+
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void onSubmit(AjaxRequestTarget target, Form form)
-			{
-				GLatLng ll;
-				GeocoderModel address = (GeocoderModel)form.getModelObject();
-				try
-				{
-					ll = geoUtil.findAddress(address.getAddress());
-					map.setCenter(ll);
-					GMarkerOptions options = new GMarkerOptions();
-					options.setTitle(address.getAddress());
-					if (temp != null)
-					{
-						map.removeOverlay(temp);
+			protected void onSubmit(AjaxRequestTarget target, Form form) {
+				try {
+					GLatLng latLng = geocoder.findAddress(address);
+
+					if (marker != null) {
+						map.removeOverlay(marker);
 					}
-					temp = new GMarker(ll, options);
-					map.addOverlay(temp);
-				}
-				catch (GMapException e)
-				{
-					target.appendJavascript("alert('Address not found, exit status" + e.getStatus()
-							+ "');");
-				}
-				catch (IOException e)
-				{
-					target.appendJavascript("alert('Address not found, exited with "
-							+ e.getMessage() + "');");
+
+					map.setCenter(latLng);
+
+					GMarkerOptions options = new GMarkerOptions();
+					options.setTitle(address);
+					marker = new GMarker(latLng, options);
+					map.addOverlay(marker);
+				} catch (GeocoderException e) {
+					target
+							.appendJavascript("alert('Address not found, exit status"
+									+ e.getStatus() + "');");
+				} catch (IOException e) {
+					target
+							.appendJavascript("alert('Address not found, exited with "
+									+ e.getMessage() + "');");
 				}
 			}
-
 		});
 	}
 }
-class GeocoderModel implements Serializable
-{
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private String address;
-
-	public GeocoderModel()
-	{
-	}
-
-	public String getAddress()
-	{
-		return address;
-	}
-
-	public void setAddress(String address)
-	{
-		this.address = address;
-	}
-}
-
