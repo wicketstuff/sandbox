@@ -34,7 +34,7 @@ public class GMapHeaderContributor extends HeaderContributor {
 				response.renderJavascriptReference(WICKET_GMAP_JS);
 				// see:
 				// http://www.google.com/apis/maps/documentation/#Memory_Leaks
-				response.renderOnBeforeUnloadJavascript("GUnload();");
+				response.renderOnEventJavacript("window", "onUnload", "GUnload();");
 			}
 		});
 	}

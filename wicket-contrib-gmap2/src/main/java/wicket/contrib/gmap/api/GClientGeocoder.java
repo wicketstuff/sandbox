@@ -1,4 +1,4 @@
-package wicket.contrib.gmap;
+package wicket.contrib.gmap.api;
 
 import org.apache.wicket.Request;
 import org.apache.wicket.RequestCycle;
@@ -7,15 +7,16 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.form.TextField;
 
-import wicket.contrib.gmap.api.GLatLng;
+import wicket.contrib.gmap.GMapHeaderContributor;
 
 /**
  */
-public abstract class GeoCodingBehavior extends AjaxEventBehavior {
+public abstract class GClientGeocoder extends AjaxEventBehavior {
+
 	private static final long serialVersionUID = 1L;
 
 	// the TextField providing the requested address.
-	private TextField requestField;
+	private TextField addressField;
 
 	private GMapHeaderContributor headerContrib;
 
@@ -24,11 +25,11 @@ public abstract class GeoCodingBehavior extends AjaxEventBehavior {
 	 * 
 	 * @param event
 	 */
-	public GeoCodingBehavior(String event, TextField requestField, String key) {
+	public GClientGeocoder(String event, TextField addressField, String key) {
 		super(event);
 
-		this.requestField = requestField;
-		this.requestField.setOutputMarkupId(true);
+		this.addressField = addressField;
+		this.addressField.setOutputMarkupId(true);
 
 		this.headerContrib = new GMapHeaderContributor(key);
 	}
@@ -42,15 +43,16 @@ public abstract class GeoCodingBehavior extends AjaxEventBehavior {
 	@Override
 	protected void onEvent(AjaxRequestTarget target) {
 		Request request = RequestCycle.get().getRequest();
+		
 		onGeoCode(request.getParameter("address"), GLatLng.parse(request
 				.getParameter("point")));
 	}
 
-	public abstract void onGeoCode(String address, GLatLng point);
+	public abstract void onGeoCode(String address, GLatLng latLng);
 
 	@Override
 	protected CharSequence generateCallbackScript(CharSequence partialCall) {
 		return "Wicket.geocoder.getLatLng('" + getCallbackUrl() + "', '"
-				+ requestField.getMarkupId() + "');" + "return false;";
+				+ addressField.getMarkupId() + "');" + "return false;";
 	}
 }

@@ -31,9 +31,9 @@ if(!Wicket)
 	throw new Error("Wicket already exists and is not an object");
 }
 
-Wicket.geocoder = new WicketGeoCoder();
+Wicket.geocoder = new WicketGClientGeocoder();
 
-function WicketGeoCoder() {
+function WicketGClientGeocoder() {
 	this.coder = new GClientGeocoder();
 	
 	this.getLatLng = function(callBackUrl, addressId) {
