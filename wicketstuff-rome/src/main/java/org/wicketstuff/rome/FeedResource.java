@@ -9,11 +9,15 @@ import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.io.FeedException;
 import com.sun.syndication.io.SyndFeedOutput;
 
+/**
+ * Wicket WebResource for streaming RSS/Atom Feeds.
+ * 
+ */
 public abstract class FeedResource extends WebResource {
 
 	@Override
 	public final IResourceStream getResourceStream() {
-		return new FeedResourceStream();
+		return new FeedResourceStream(getFeed());
 	}
 
 	protected abstract SyndFeed getFeed();
@@ -21,8 +25,8 @@ public abstract class FeedResource extends WebResource {
 	/**
 	 * decode the correct content type depending on the {@link SyndFeed#getFeedType() feed type}
 	 */
-	public String getFeedContentType() {
-		String type = getFeed().getFeedType();
+	public static String getFeedContentType(SyndFeed feed) {
+		String type = feed.getFeedType();
 		if (type.startsWith("atom")) {
 			return "application/atom+xml";
 		} else if (type.startsWith("rss_0")) {
@@ -34,18 +38,23 @@ public abstract class FeedResource extends WebResource {
 	/**
 	 * resource stream for handling setting content type of content.
 	 */
-	private class FeedResourceStream extends AbstractStringResourceStream {
+	private static class FeedResourceStream extends AbstractStringResourceStream {
 		private final SyndFeedOutput output = new SyndFeedOutput();
+		private final SyndFeed feed;
+		
+		public FeedResourceStream(SyndFeed feed) {
+			this.feed = feed;
+		}
 
 		@Override
 		public String getContentType() {
-			return getFeedContentType();
+			return getFeedContentType(feed);
 		}
 
 		@Override
 		protected String getString() {
 			try {
-				return output.outputString(getFeed());
+				return output.outputString(feed);
 			} catch (FeedException e) {
 				throw new RuntimeException("Error streaming feed.", e);
 			}
@@ -53,7 +62,7 @@ public abstract class FeedResource extends WebResource {
 
 		@Override
 		public Time lastModifiedTime() {
-			return Time.valueOf(getFeed().getPublishedDate());
+			return Time.valueOf(feed.getPublishedDate());
 		}
 	}
 }
