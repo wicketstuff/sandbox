@@ -6,7 +6,9 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.validation.IValidator;
 
-public class TextEditor extends Panel
+import wicketstuff.crud.Editor;
+
+public class TextEditor extends Panel implements Editor
 {
 	private final TextField field;
 	private int maxLength;
@@ -38,13 +40,25 @@ public class TextEditor extends Panel
 		this.maxLength = maxLength;
 		return this;
 	}
-	
-	public void setRequired(boolean required) {
+
+	public void setRequired(boolean required)
+	{
 		field.setRequired(required);
 	}
-	
-	public void addValidator(IValidator validator) {
+
+	public void add(IValidator validator)
+	{
 		field.add(validator);
+	}
+
+	public void setLabel(IModel label)
+	{
+		field.setLabel(label);
+	}
+
+	protected TextField getField()
+	{
+		return field;
 	}
 
 

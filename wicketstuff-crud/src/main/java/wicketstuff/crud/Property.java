@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.validation.IValidator;
@@ -93,5 +94,37 @@ public abstract class Property implements Serializable
 		return this;
 	}
 
+	protected void configureEditor(final FormComponent editor)
+	{
+		configure(new Editor()
+		{
+
+			public void add(IValidator validator)
+			{
+				editor.add(validator);
+			}
+
+			public void setLabel(IModel label)
+			{
+				editor.setLabel(label);
+			}
+
+			public void setRequired(boolean required)
+			{
+				editor.setRequired(required);
+			}
+
+		});
+	}
+
+	protected void configure(Editor editor)
+	{
+		editor.setRequired(isRequired());
+		for (IValidator validator : getValidators())
+		{
+			editor.add(validator);
+		}
+		editor.setLabel(getLabel());
+	}
 
 }

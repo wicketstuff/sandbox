@@ -6,7 +6,9 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.validation.IValidator;
 
-public class ChoiceEditor extends Panel
+import wicketstuff.crud.Editor;
+
+public class ChoiceEditor extends Panel implements Editor
 {
 	private final DropDownChoice field;
 
@@ -24,5 +26,11 @@ public class ChoiceEditor extends Panel
 	public void add(IValidator validator)
 	{
 		field.add(validator);
+	}
+
+	public void setLabel(IModel label)
+	{
+		field.setLabel(label);
+
 	}
 }
