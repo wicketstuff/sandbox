@@ -46,11 +46,6 @@ import org.wicketstuff.jmx.markup.html.JmxPanel;
  */
 public class JmxTreeTable extends TreeTable
 {
-	private static final ResourceReference ATTRIBUTE_ICON = new ResourceReference(JmxPanel.class,
-			"res/attribute.gif");
-	private static final ResourceReference OPERATION_ICON = new ResourceReference(JmxPanel.class,
-			"res/operation.gif");
-
 	private static final long serialVersionUID = 1L;
 
 	public JmxTreeTable(String id, TreeModel model)

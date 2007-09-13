@@ -14,18 +14,6 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 -->
-<wicket:panel>
-	<form wicket:id="form">
-	<div class="editorContainer">
-		<div wicket:id="fields">
-			<div wicket:id="label">[label]</div>
-			<div wicket:id="editor"></div>	
-		</div>
-		<div><a wicket:id="invoke"><wicket:message key="jmx.invokeLink.label"/></a>
-			<div wicket:id="feedback"></div>
-		</div>
-	</div>
-	</form>
-	
-	
-</wicket:panel>
+<wicket:extend>
+	<span wicket:id="result">[result]</span>
+</wicket:extend>

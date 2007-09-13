@@ -47,7 +47,6 @@ public class JmxTree extends BaseTree
 		getTreeState().collapseAll();
 		setRootLess(true);
 		this.detailPanel = detailPanel;
-
 		add(new AttributeModifier("class", true, new Model("jmxTree")));
 	}
 

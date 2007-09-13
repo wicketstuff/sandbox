@@ -1,4 +1,4 @@
-package org.wicketstuff.jmx.markup.html.table;
+package org.wicketstuff.jmx.util;
 
 import org.apache.wicket.Application;
 import org.apache.wicket.IClusterable;

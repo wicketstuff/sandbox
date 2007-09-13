@@ -14,12 +14,6 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 -->
-<wicket:panel>
-	<table class="nameValue">
-		<tr class="header"><th>Name</th><th>Value</th></tr>
-		<tr wicket:id="attributes">
-			<td wicket:id="name">[name]</td>
-			<td><div wicket:id="editor">[editor]</div></td>
-		</tr>
-	</table>
-</wicket:panel>
+<wicket:extend>
+	<div wicket:id="result">[result]</div>
+</wicket:extend>

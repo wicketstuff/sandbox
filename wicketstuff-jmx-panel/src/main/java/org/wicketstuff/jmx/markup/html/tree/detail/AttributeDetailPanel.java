@@ -20,6 +20,7 @@ import java.util.Map;
 
 import javax.management.MBeanAttributeInfo;
 
+import org.wicketstuff.jmx.markup.html.tree.DetailPanel;
 import org.wicketstuff.jmx.util.JmxMBeanWrapper;
 
 /**

@@ -14,45 +14,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.wicketstuff.jmx.markup.html.tree.detail;
-
-import javax.management.MBeanOperationInfo;
-import javax.management.ObjectName;
+package org.wicketstuff.jmx.markup.html.tree;
 
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.markup.repeater.RepeatingView;
 import org.apache.wicket.model.Model;
-import org.wicketstuff.jmx.markup.html.tree.DetailPanel;
-import org.wicketstuff.jmx.util.JmxMBeanWrapper;
 
 /**
- * This panel renders all available operations ({@link MBeanOperationInfo}) of
- * an {@link ObjectName} instance (wrapped by {@link JmxMBeanWrapper}).
+ * Base class for panels that are shown to the right of the tree.
  * 
  * @author Gerolf Seitz
  * 
  */
-public class OperationsOverviewPanel extends DetailPanel
+public abstract class DetailPanel extends Panel
 {
-
 	private static final long serialVersionUID = 1L;
 
-	public OperationsOverviewPanel(String id, JmxMBeanWrapper bean)
+	public DetailPanel(String id)
 	{
 		super(id);
 		setOutputMarkupId(true);
-
-		RepeatingView view = new RepeatingView("operations");
-		for (int i = 0; i < bean.getOperations().length; i++)
-		{
-			Panel panel = new OperationPanel(view.newChildId(), bean, bean.getOperations()[i]);
-			if (i == bean.getOperations().length - 1)
-			{
-				panel.add(new AttributeModifier("class", true, new Model("operation-last")));
-			}
-			view.add(panel);
-		}
-		add(view);
+		add(new AttributeModifier("class", true, new Model("detailPanel")));
 	}
 }

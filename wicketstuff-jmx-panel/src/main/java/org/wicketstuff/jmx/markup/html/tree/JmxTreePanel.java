@@ -14,26 +14,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.wicketstuff.jmx.markup.html.tree.detail;
+package org.wicketstuff.jmx.markup.html.tree;
 
-import org.apache.wicket.AttributeModifier;
+import javax.swing.tree.TreeModel;
+
+import org.apache.wicket.markup.html.panel.EmptyPanel;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.Model;
 
-/**
- * Base class for panels that are shown to the right of the tree.
- * 
- * @author Gerolf Seitz
- * 
- */
-public abstract class DetailPanel extends Panel
+public class JmxTreePanel extends Panel
 {
+
 	private static final long serialVersionUID = 1L;
 
-	public DetailPanel(String id)
+	public JmxTreePanel(String id, TreeModel treeModel)
 	{
 		super(id);
-		setOutputMarkupId(true);
-		add(new AttributeModifier("class", true, new Model("detailPanel")));
+		Panel detailPanel = new EmptyPanel("detailPanel");
+		add(detailPanel.setOutputMarkupId(true));
+
+		add(new JmxTree("tree", treeModel, detailPanel));
 	}
 }
