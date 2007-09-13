@@ -19,21 +19,19 @@ package org.apache.wicket.quickstart;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Iterator;
-import java.util.List;
 
 import org.apache.wicket.PageParameters;
-import org.apache.wicket.extensions.markup.html.repeater.data.sort.ISortState;
-import org.apache.wicket.extensions.markup.html.repeater.data.table.ISortableDataProvider;
 import org.apache.wicket.extensions.markup.html.repeater.util.SortParam;
 import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
-import org.apache.wicket.markup.repeater.data.ListDataProvider;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
 import wicketstuff.crud.CrudPanel;
 import wicketstuff.crud.ReflectionCreateBeanModelFactory;
-import wicketstuff.crud.ReflectionPropertySource;
+import wicketstuff.crud.property.DateProperty;
+import wicketstuff.crud.property.NumericProperty;
+import wicketstuff.crud.property.StringProperty;
 
 
 /**
@@ -107,12 +105,17 @@ public class Index extends QuickStartPage
 
 		};
 		panel.setFilterModel(new PropertyModel(this, "criteria"));
-		panel.add(new ReflectionPropertySource(Contact.class));
+		panel.add(new StringProperty("firstname", new Model("First Name")));
+		panel.add(new StringProperty("lastname", new Model("Last Name")));
+		panel.add(new StringProperty("phone", new Model("Phone")));
+		panel.add(new StringProperty("email", new Model("Email")));
+		panel.add(new NumericProperty("age", new Model("Age")));
+		panel.add(new DateProperty("dob", new Model("D.O.B.")));
+
 		panel.setCreateBeanModelFactory(new ReflectionCreateBeanModelFactory(Contact.class));
 		add(panel);
 
 
 	}
-
 
 }

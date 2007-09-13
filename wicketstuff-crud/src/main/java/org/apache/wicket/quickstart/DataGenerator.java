@@ -18,6 +18,8 @@
  */
 package org.apache.wicket.quickstart;
 
+import java.util.Date;
+
 
 public class DataGenerator
 {
@@ -55,6 +57,9 @@ public class DataGenerator
 			email = email.toLowerCase();
 
 			contact.setEmail(email);
+
+			contact.setAge(rint(18, 50));
+			contact.setDob(new Date());
 			dao.save(contact);
 		}
 	}
