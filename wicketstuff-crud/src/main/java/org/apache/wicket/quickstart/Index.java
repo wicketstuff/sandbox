@@ -105,7 +105,7 @@ public class Index extends QuickStartPage
 
 		};
 		panel.setFilterModel(new PropertyModel(this, "criteria"));
-		panel.add(new StringProperty("firstname", new Model("First Name")));
+		panel.add(new StringProperty("firstname", new Model("First Name")).setRequired(true));
 		panel.add(new StringProperty("lastname", new Model("Last Name")));
 		panel.add(new StringProperty("phone", new Model("Phone")));
 		panel.add(new StringProperty("email", new Model("Email")));

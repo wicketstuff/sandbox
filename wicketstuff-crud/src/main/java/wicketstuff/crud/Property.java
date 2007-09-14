@@ -62,9 +62,10 @@ public abstract class Property implements Serializable
 	}
 
 
-	public void setRequired(boolean required)
+	public Property setRequired(boolean required)
 	{
 		this.required = required;
+		return this;
 	}
 
 
@@ -112,6 +113,16 @@ public abstract class Property implements Serializable
 			public void setRequired(boolean required)
 			{
 				editor.setRequired(required);
+			}
+
+			public IModel getLabel()
+			{
+				return editor.getLabel();
+			}
+
+			public boolean isRequired()
+			{
+				return editor.isRequired();
 			}
 
 		});

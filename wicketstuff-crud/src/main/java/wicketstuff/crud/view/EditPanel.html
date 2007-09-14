@@ -1,21 +1,13 @@
 <wicket:panel>
-
-<form wicket:id="form">
-<table>
-
-<tr wicket:id="props">
-<td><label wicket:id="label"></label>:</td><td><div wicket:id="editor"></div></td>
-</tr>
-
-<tr><td>&nbsp;</td><td><input wicket:id="save" type="submit" value="save"/>&nbsp;<input wicket:id="cancel" type="submit" value="cancel"/></td></tr>
-
-
-
-
-</table>
-
-
-
-</form>
-
+<div class="wicket-crud-edit">
+	<form wicket:id="form">
+		<wicket:container wicket:id="form-body-border">
+			<wicket:container wicket:id="props">
+				<wicket:container wicket:id="border">
+					<div wicket:id="editor" class="wicket-crud-edit-editor"></div>
+				</wicket:container>
+			</wicket:container>
+		</wicket:container>
+	</form>
+</div>
 </wicket:panel>

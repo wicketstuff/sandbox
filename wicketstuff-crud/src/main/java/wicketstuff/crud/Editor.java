@@ -7,7 +7,11 @@ public interface Editor
 {
 	void setRequired(boolean required);
 
+	boolean isRequired();
+
 	void add(IValidator validator);
 
 	void setLabel(IModel label);
+
+	IModel getLabel();
 }

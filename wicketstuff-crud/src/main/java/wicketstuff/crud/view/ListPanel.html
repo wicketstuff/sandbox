@@ -1,14 +1,16 @@
 <wicket:panel>
-	<wicket:enclosure><a wicket:id="create">create new object</a><br/><br/></wicket:enclosure>
+	<wicket:enclosure><div class="wicket-crud-create"><a wicket:id="create">create new object</a></div></wicket:enclosure>
 	
 	<form wicket:id="form">
-	<table wicket:id="list"></table>
+	<table wicket:id="list" class="wicket-crud-datatable"></table>
 	</form>
 
 	<wicket:fragment wicket:id="actions-fragment">
-		[<a wicket:id="view">view</a>]
-		[<a wicket:id="edit">edit</a>]
-		[<a wicket:id="delete">delete</a>]
+		<div class="wicket-crud-list-commands">
+			[<a wicket:id="view">view</a>]
+			[<a wicket:id="edit">edit</a>]
+			[<a wicket:id="delete">delete</a>]
+		</div>
 	</wicket:fragment>
 
 </wicket:panel>

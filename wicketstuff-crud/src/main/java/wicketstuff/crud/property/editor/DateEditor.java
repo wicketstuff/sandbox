@@ -2,13 +2,12 @@ package wicketstuff.crud.property.editor;
 
 import org.apache.wicket.datetime.markup.html.form.DateTextField;
 import org.apache.wicket.extensions.yui.calendar.DatePicker;
-import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.validation.IValidator;
 
 import wicketstuff.crud.Editor;
 
-public class DateEditor extends Panel implements Editor
+public class DateEditor extends FormComponentEditor implements Editor
 {
 	private final DateTextField field;
 
@@ -19,19 +18,10 @@ public class DateEditor extends Panel implements Editor
 		field.add(new DatePicker());
 	}
 
-	public void setRequired(boolean required)
+	@Override
+	protected FormComponent getFormComponent()
 	{
-		field.setRequired(required);
-	}
-
-	public void add(IValidator validator)
-	{
-		field.add(validator);
-	}
-
-	public void setLabel(IModel label)
-	{
-		field.setLabel(label);
+		return field;
 	}
 
 

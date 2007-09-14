@@ -1,14 +1,13 @@
 package wicketstuff.crud.property.editor;
 
 import org.apache.wicket.markup.html.form.DropDownChoice;
+import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.validation.IValidator;
 
 import wicketstuff.crud.Editor;
 
-public class ChoiceEditor extends Panel implements Editor
+public class ChoiceEditor extends FormComponentEditor implements Editor
 {
 	private final DropDownChoice field;
 
@@ -18,19 +17,9 @@ public class ChoiceEditor extends Panel implements Editor
 		add(field = new DropDownChoice("choice", model, choices, renderer));
 	}
 
-	public void setRequired(boolean required)
+	@Override
+	protected FormComponent getFormComponent()
 	{
-		field.setRequired(required);
-	}
-
-	public void add(IValidator validator)
-	{
-		field.add(validator);
-	}
-
-	public void setLabel(IModel label)
-	{
-		field.setLabel(label);
-
+		return field;
 	}
 }
