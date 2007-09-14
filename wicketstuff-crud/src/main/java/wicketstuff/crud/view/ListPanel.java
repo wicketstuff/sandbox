@@ -19,27 +19,31 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 
+import wicketstuff.crud.ICrudListener;
 import wicketstuff.crud.Property;
 import wicketstuff.crud.PropertyColumn;
 import wicketstuff.crud.filter.ApplyAndClearFilter;
 import wicketstuff.crud.filter.FilterToolbar;
 import wicketstuff.crud.filter.IFilterableColumn;
 
-public abstract class ListPanel extends Panel
+public class ListPanel extends Panel
 {
 	private IModel filterModel;
+	private final ICrudListener crudListener;
 
-	public ListPanel(String id, List<Property> properties, ISortableDataProvider dp)
+	public ListPanel(String id, List<Property> properties, ISortableDataProvider dp,
+			ICrudListener crudListener)
 	{
 		super(id);
 
+		this.crudListener = crudListener;
 		add(new Link("create")
 		{
 
 			@Override
 			public void onClick()
 			{
-				onCreate();
+				ListPanel.this.crudListener.onCreate();
 			}
 
 			@Override
@@ -64,11 +68,12 @@ public abstract class ListPanel extends Panel
 
 		DataTable table = new DataTable("list", cols.toArray(new IColumn[cols.size()]), dp, 15);
 		table.addTopToolbar(new NavigationToolbar(table));
-		table.addTopToolbar(new FilterToolbar(table, new PropertyModel(this, "filterModel")) {
+		table.addTopToolbar(new FilterToolbar(table, new PropertyModel(this, "filterModel"))
+		{
 			@Override
 			public boolean isVisible()
 			{
-				return filterModel!=null;
+				return filterModel != null;
 			}
 		});
 		table.addTopToolbar(new HeadersToolbar(table, dp));
@@ -78,8 +83,6 @@ public abstract class ListPanel extends Panel
 	}
 
 
-	
-	
 	private class ActionsColumn extends HeaderlessColumn implements IFilterableColumn
 	{
 		public void populateItem(Item cellItem, String componentId, IModel rowModel)
@@ -92,7 +95,7 @@ public abstract class ListPanel extends Panel
 				@Override
 				public void onClick()
 				{
-					onEdit(getModel());
+					crudListener.onEdit(getModel());
 				}
 
 			});
@@ -102,7 +105,7 @@ public abstract class ListPanel extends Panel
 				@Override
 				public void onClick()
 				{
-					onDelete(getModel());
+					crudListener.onDelete(getModel());
 				}
 
 			});
@@ -112,7 +115,7 @@ public abstract class ListPanel extends Panel
 				@Override
 				public void onClick()
 				{
-					onView(getModel());
+					crudListener.onView(getModel());
 				}
 
 			});
@@ -126,14 +129,6 @@ public abstract class ListPanel extends Panel
 		}
 
 	}
-
-	protected abstract void onEdit(IModel model);
-
-	protected abstract void onDelete(IModel model);
-
-	protected abstract void onView(IModel model);
-
-	protected abstract void onCreate();
 
 	protected boolean allowCreateNewBean()
 	{

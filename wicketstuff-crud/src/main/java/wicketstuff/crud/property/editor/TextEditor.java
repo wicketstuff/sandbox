@@ -1,14 +1,13 @@
 package wicketstuff.crud.property.editor;
 
 import org.apache.wicket.markup.ComponentTag;
+import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.validation.IValidator;
 
 import wicketstuff.crud.Editor;
 
-public class TextEditor extends Panel implements Editor
+public class TextEditor extends FormComponentEditor implements Editor
 {
 	private final TextField field;
 	private int maxLength;
@@ -41,19 +40,11 @@ public class TextEditor extends Panel implements Editor
 		return this;
 	}
 
-	public void setRequired(boolean required)
-	{
-		field.setRequired(required);
-	}
 
-	public void add(IValidator validator)
+	@Override
+	protected FormComponent getFormComponent()
 	{
-		field.add(validator);
-	}
-
-	public void setLabel(IModel label)
-	{
-		field.setLabel(label);
+		return field;
 	}
 
 

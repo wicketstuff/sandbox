@@ -1,13 +1,15 @@
 package wicketstuff.crud;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Stack;
 
+import org.apache.wicket.Component;
+import org.apache.wicket.IClusterable;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.ISortableDataProvider;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.version.undo.Change;
 
 import wicketstuff.crud.view.DeletePanel;
 import wicketstuff.crud.view.EditPanel;
@@ -17,50 +19,44 @@ import wicketstuff.crud.view.ViewPanel;
 
 public abstract class CrudPanel extends Panel
 {
-	private IModel selected;
+	private static final String VIEW_ID = "view";
 
-	private boolean dirty = true;
+	private final ICrudListener listener = new CrudListenerAdapter();
+
 	private List<Property> properties = new ArrayList<Property>(1);
 	private IModel filterModel;
 	private final ISortableDataProvider dataProvider;
 
 	private ICreateBeanModelFactory createBeanModelFactory;
 
-	private static enum Mode {
-		LIST, EDIT, DELETE, VIEW
-	}
-
-	private Stack<Mode> mode = new Stack<Mode>();
+	private ViewsManager views = new ViewsManager();
 
 
 	public CrudPanel(String id, ISortableDataProvider dp)
 	{
 		super(id);
 		this.dataProvider = dp;
-		mode.push(Mode.LIST);
-
 	}
 
 	public void add(Property property)
 	{
-		// TODO add state change
 		properties.add(property);
-		dirty = true;
 	}
 
-	public void add(PropertySource source)
+	public void add(Collection<Property> properties)
 	{
-		for (Property prop : source.getProperties())
+		for (Property prop : properties)
 		{
 			add(prop);
 		}
 	}
 
 
-	public ICreateBeanModelFactory getCreateBeanModelFactory()
+	public void add(PropertySource source)
 	{
-		return createBeanModelFactory;
+		add(source.getProperties());
 	}
+
 
 	public void setCreateBeanModelFactory(ICreateBeanModelFactory createBeanModelFactory)
 	{
@@ -70,195 +66,103 @@ public abstract class CrudPanel extends Panel
 	@Override
 	protected void onBeforeRender()
 	{
-		if (dirty)
+		if (views.isEmpty())
 		{
-			switch (mode.peek())
+			// initialize with the list view
+			ListPanel list = new ListPanel(VIEW_ID, properties, dataProvider, listener);
+			if (views.isEmpty())
 			{
-				case LIST :
-					addOrReplace(new ListPanel("view", properties, dataProvider)
-					{
-
-						@Override
-						protected void onEdit(IModel model)
-						{
-							pushEdit(model);
-						}
-
-						@Override
-						protected void onDelete(IModel model)
-						{
-							pushDelete(model);
-						}
-
-						@Override
-						protected void onView(IModel model)
-						{
-							pushView(model);
-						}
-
-						@Override
-						protected void onCreate()
-						{
-							pushEdit(createBeanModelFactory.newModel());
-						}
-
-						@Override
-						protected boolean allowCreateNewBean()
-						{
-							return createBeanModelFactory != null;
-						}
-
-					}.setFilterModel(filterModel));
-					break;
-				case EDIT :
-					addOrReplace(new EditPanel("view", selected, properties)
-					{
-
-						@Override
-						protected void onCancel()
-						{
-							back();
-						}
-
-						@Override
-						protected void onSave(IModel model)
-						{
-							CrudPanel.this.onSave(model);
-							back();
-						}
-
-					});
-					break;
-				case VIEW :
-					addOrReplace(new ViewPanel("view", selected, properties)
-					{
-
-						@Override
-						protected void onBack()
-						{
-							back();
-						}
-
-						@Override
-						protected void onDelete(IModel model)
-						{
-							pushDelete(model);
-
-						}
-
-						@Override
-						protected void onEdit(IModel model)
-						{
-							pushEdit(model);
-						}
-
-					});
-					break;
-				case DELETE :
-					addOrReplace(new DeletePanel("view", selected, properties)
-					{
-
-						@Override
-						protected void onCancel()
-						{
-							back();
-						}
-
-						@Override
-						protected void onConfirm(IModel model)
-						{
-							onDelete(model);
-							backToList();
-						}
-
-					});
-					break;
+				views.push(list);
 			}
 
-			dirty = false;
-			addStateChange(new PropertiesDirtyChange());
 
 		}
+
 		super.onBeforeRender();
-	}
-
-	protected void backToList()
-	{
-		while (mode.peek() != Mode.LIST)
-		{
-			mode.pop();
-		}
-
-		dirty = true;
-	}
-
-	private void pushView(IModel model)
-	{
-		selected = model;
-		mode.push(Mode.VIEW);
-		dirty = true;
-		// TODO state change
-
-	}
-
-	private void pushEdit(IModel model)
-	{
-		selected = model;
-		mode.push(Mode.EDIT);
-		dirty = true;
-		// TODO state change
-
-	}
-
-	private void pushList()
-	{
-		mode.push(Mode.LIST);
-		dirty = true;
-		// TODO state change
-
-	}
-
-	private void pushDelete(IModel model)
-	{
-		selected = model;
-		mode.push(Mode.DELETE);
-		dirty = true;
-		// TODO state change
-
-	}
-
-
-	private void back()
-	{
-		mode.pop();
-		dirty = true;
-	}
-
-	private class PropertiesDirtyChange extends Change
-
-	{
-
-		@Override
-		public void undo()
-		{
-			dirty = !dirty;
-		}
-
 	}
 
 	protected abstract void onDelete(IModel model);
 
 	protected abstract void onSave(IModel model);
 
-	public IModel getFilterModel()
-	{
-		return filterModel;
-	}
-
 	public void setFilterModel(IModel filterModel)
 	{
 		this.filterModel = filterModel;
-		dirty = true;
+	}
+
+	private class CrudListenerAdapter implements ICrudListener
+	{
+
+		public void onCancel()
+		{
+			views.pop();
+		}
+
+		public void onCreate()
+		{
+			final IModel create = createBeanModelFactory.newModel();
+			views.push(new EditPanel(VIEW_ID, create, properties, this));
+		}
+
+		public void onDelete(IModel selected)
+		{
+			views.push(new DeletePanel(VIEW_ID, selected, properties, this));
+		}
+
+		public void onDeleteConfirmed(IModel selected)
+		{
+			CrudPanel.this.onDelete(selected);
+			// rewind back to listview
+			views.popUntilFirst();
+		}
+
+		public void onEdit(IModel selected)
+		{
+			views.push(new EditPanel(VIEW_ID, selected, properties, this));
+		}
+
+		public void onSave(IModel selected)
+		{
+			CrudPanel.this.onSave(selected);
+			views.pop();
+		}
+
+		public void onView(IModel selected)
+		{
+			views.push(new ViewPanel(VIEW_ID, selected, properties, this));
+		}
+	}
+
+	private class ViewsManager implements IClusterable
+	{
+		private Stack<Component> views = new Stack<Component>();
+
+		public void push(Component view)
+		{
+			addOrReplace(view);
+			views.push(view);
+		}
+
+		public void pop()
+		{
+			views.pop();
+			addOrReplace(views.peek());
+		}
+
+		public void popUntilFirst()
+		{
+			while (views.size() > 1)
+			{
+				views.pop();
+			}
+			addOrReplace(views.peek());
+		}
+
+		public boolean isEmpty()
+		{
+			return views.isEmpty();
+		}
+
 	}
 
 

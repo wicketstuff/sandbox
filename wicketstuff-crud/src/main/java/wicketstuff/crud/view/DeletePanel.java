@@ -6,12 +6,14 @@ import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 
+import wicketstuff.crud.ICrudListener;
 import wicketstuff.crud.Property;
 
-public abstract class DeletePanel extends Panel
+public class DeletePanel extends Panel
 {
 
-	public DeletePanel(String id, IModel model, List<Property> properties)
+	public DeletePanel(String id, IModel model, List<Property> properties,
+			final ICrudListener crudListener)
 	{
 		super(id, model);
 
@@ -23,7 +25,7 @@ public abstract class DeletePanel extends Panel
 			@Override
 			public void onClick()
 			{
-				onConfirm(getModel());
+				crudListener.onDeleteConfirmed(getModel());
 			}
 
 		});
@@ -35,15 +37,12 @@ public abstract class DeletePanel extends Panel
 			@Override
 			public void onClick()
 			{
-				onCancel();
+				crudListener.onCancel();
 			}
 
 		});
 
 	}
 
-	protected abstract void onConfirm(IModel model);
-
-	protected abstract void onCancel();
 
 }
