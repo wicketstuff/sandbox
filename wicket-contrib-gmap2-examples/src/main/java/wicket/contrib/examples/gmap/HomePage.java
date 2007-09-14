@@ -27,6 +27,7 @@ import wicket.contrib.gmap.event.ClickListener;
 import wicket.contrib.gmap.event.InfoWindowCloseListener;
 import wicket.contrib.gmap.event.InfoWindowOpenListener;
 import wicket.contrib.gmap.event.MoveEndListener;
+import wicket.contrib.gmap.util.GeocoderException;
 
 /**
  * Example HomePage for the wicket-contrib-gmap2 project
@@ -50,9 +51,9 @@ public class HomePage extends WicketExamplePage {
 		feedback.setOutputMarkupId(true);
 		add(feedback);
 
-		final GMap2 topPanel = new GMap2("topPanel", LOCALHOST);
-		topPanel.setDoubleClickZoomEnabled(true);
-		topPanel.add(new MoveEndListener() {
+		final GMap2 topMap = new GMap2("topPanel", LOCALHOST);
+		topMap.setDoubleClickZoomEnabled(true);
+		topMap.add(new MoveEndListener() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -60,41 +61,41 @@ public class HomePage extends WicketExamplePage {
 				target.addComponent(zoomLabel);
 			}
 		});
-		topPanel.add(new ClickListener() {
+		topMap.add(new ClickListener() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected void onClick(AjaxRequestTarget target, GLatLng latLng,
 					GMarker marker) {
 				if (marker != null) {
-					topPanel.getInfoWindow().open(marker, new HelloPanel());
+					topMap.getInfoWindow().open(marker, new HelloPanel());
 				} else if (latLng != null) {
 					marker = new GMarker(latLng);
-					topPanel.addOverlay(marker);
+					topMap.addOverlay(marker);
 				}
 				markerSelected(target, marker);
 			}
 		});
-		topPanel.setZoom(10);
+		topMap.setZoom(10);
 		GMarkerOptions options = new GMarkerOptions();
 		options.setTitle("Home");
 		options.setDraggable(true);
 		options.setAutoPan(true);
-		topPanel.addOverlay(new GMarker(new GLatLng(37.4, -122.1), options));
-		topPanel.addOverlay(new GPolygon("#000000", 4, 0.7f, "#E9601A", 0.7f,
+		topMap.addOverlay(new GMarker(new GLatLng(37.4, -122.1), options));
+		topMap.addOverlay(new GPolygon("#000000", 4, 0.7f, "#E9601A", 0.7f,
 				new GLatLng(37.3, -122.4), new GLatLng(37.2, -122.2),
 				new GLatLng(37.3, -122.0), new GLatLng(37.4, -122.2),
 				new GLatLng(37.3, -122.4)));
-		topPanel.addOverlay(new GPolyline("#FFFFFF", 8, 1.0f, new GLatLng(
-				37.35, -122.3), new GLatLng(37.25, -122.25), new GLatLng(37.3,
-				-122.2), new GLatLng(37.25, -122.15),
+		topMap.addOverlay(new GPolyline("#FFFFFF", 8, 1.0f, new GLatLng(37.35,
+				-122.3), new GLatLng(37.25, -122.25),
+				new GLatLng(37.3, -122.2), new GLatLng(37.25, -122.15),
 				new GLatLng(37.35, -122.1)));
-		topPanel.addControl(GControl.GLargeMapControl);
-		topPanel.addControl(GControl.GMapTypeControl);
-		add(topPanel);
+		topMap.addControl(GControl.GLargeMapControl);
+		topMap.addControl(GControl.GMapTypeControl);
+		add(topMap);
 
-		zoomLabel = new Label("zoomLabel", new PropertyModel(topPanel, "zoom"));
-		zoomLabel.add(topPanel.new SetZoom("onclick", 10));
+		zoomLabel = new Label("zoomLabel", new PropertyModel(topMap, "zoom"));
+		zoomLabel.add(topMap.new SetZoom("onclick", 10));
 		zoomLabel.setOutputMarkupId(true);
 		add(zoomLabel);
 
@@ -115,25 +116,25 @@ public class HomePage extends WicketExamplePage {
 							* (0.9995 + Math.random() / 1000), point.getLng()
 							* (0.9995 + Math.random() / 1000)));
 
-					topPanel.addOverlay(random);
+					topMap.addOverlay(random);
 				}
 			}
 		});
 		add(markerLabel);
 
 		final Label zoomIn = new Label("zoomInLabel", "ZoomIn");
-		zoomIn.add(topPanel.new ZoomIn("onclick"));
+		zoomIn.add(topMap.new ZoomIn("onclick"));
 		add(zoomIn);
 
 		final Label zoomOut = new Label("zoomOutLabel", "ZoomOut");
-		zoomOut.add(topPanel.new ZoomOut("onclick"));
+		zoomOut.add(topMap.new ZoomOut("onclick"));
 		add(zoomOut);
 
-		final GMap2 bottomPanel = new GMap2("bottomPanel",
+		final GMap2 bottomMap = new GMap2("bottomPanel",
 				new GMapHeaderContributor(LOCALHOST));
-		bottomPanel.setOutputMarkupId(true);
-		bottomPanel.setMapType(GMapType.G_SATELLITE_MAP);
-		bottomPanel.setScrollWheelZoomEnabled(true);
+		bottomMap.setOutputMarkupId(true);
+		bottomMap.setMapType(GMapType.G_SATELLITE_MAP);
+		bottomMap.setScrollWheelZoomEnabled(true);
 		moveEndBehavior = new MoveEndListener() {
 			private static final long serialVersionUID = 1L;
 
@@ -142,75 +143,75 @@ public class HomePage extends WicketExamplePage {
 				target.addComponent(center);
 			}
 		};
-		bottomPanel.add(moveEndBehavior);
-		bottomPanel.add(new ClickListener() {
+		bottomMap.add(moveEndBehavior);
+		bottomMap.add(new ClickListener() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected void onClick(AjaxRequestTarget target, GLatLng gLatLng,
 					GMarker marker) {
 				if (gLatLng != null) {
-					bottomPanel.getInfoWindow().open(gLatLng, new HelloPanel());
+					bottomMap.getInfoWindow().open(gLatLng, new HelloPanel());
 				}
 			}
 
 		});
-		bottomPanel.add(new InfoWindowCloseListener() {
+		bottomMap.add(new InfoWindowCloseListener() {
 			@Override
 			protected void onInfoWindowClose(AjaxRequestTarget target) {
 				info("InfoWindow was closed");
 				target.addComponent(feedback);
 			}
 		});
-		bottomPanel.add(new InfoWindowOpenListener() {
+		bottomMap.add(new InfoWindowOpenListener() {
 			@Override
 			protected void onInfoWindowOpen(AjaxRequestTarget target) {
 				info("InfoWindow was opened");
 				target.addComponent(feedback);
 			}
 		});
-		bottomPanel.addControl(GControl.GSmallMapControl);
-		bottomPanel.getInfoWindow().open(new GLatLng(37.5, -122.1),
+		bottomMap.addControl(GControl.GSmallMapControl);
+		bottomMap.getInfoWindow().open(new GLatLng(37.5, -122.1),
 				new GInfoWindowTab("One", new HelloPanel()),
 				new GInfoWindowTab("Two", new HelloPanel()));
-		add(bottomPanel);
+		add(bottomMap);
 
-		center = new Label("center", new PropertyModel(bottomPanel, "center"));
-		center.add(bottomPanel.new SetCenter("onclick", new GLatLng(37.5,
-				-122.1, false)));
+		center = new Label("center", new PropertyModel(bottomMap, "center"));
+		center.add(bottomMap.new SetCenter("onclick", new GLatLng(37.5, -122.1,
+				false)));
 		center.setOutputMarkupId(true);
 		add(center);
 
 		final Label n = new Label("n", "N");
-		n.add(bottomPanel.new PanDirection("onclick", 0, 1));
+		n.add(bottomMap.new PanDirection("onclick", 0, 1));
 		add(n);
 
 		final Label ne = new Label("ne", "NE");
-		ne.add(bottomPanel.new PanDirection("onclick", -1, 1));
+		ne.add(bottomMap.new PanDirection("onclick", -1, 1));
 		add(ne);
 
 		final Label e = new Label("e", "E");
-		e.add(bottomPanel.new PanDirection("onclick", -1, 0));
+		e.add(bottomMap.new PanDirection("onclick", -1, 0));
 		add(e);
 
 		final Label se = new Label("se", "SE");
-		se.add(bottomPanel.new PanDirection("onclick", -1, -1));
+		se.add(bottomMap.new PanDirection("onclick", -1, -1));
 		add(se);
 
 		final Label s = new Label("s", "S");
-		s.add(bottomPanel.new PanDirection("onclick", 0, -1));
+		s.add(bottomMap.new PanDirection("onclick", 0, -1));
 		add(s);
 
 		final Label sw = new Label("sw", "SW");
-		sw.add(bottomPanel.new PanDirection("onclick", 1, -1));
+		sw.add(bottomMap.new PanDirection("onclick", 1, -1));
 		add(sw);
 
 		final Label w = new Label("w", "W");
-		w.add(bottomPanel.new PanDirection("onclick", 1, 0));
+		w.add(bottomMap.new PanDirection("onclick", 1, 0));
 		add(w);
 
 		final Label nw = new Label("nw", "NW");
-		nw.add(bottomPanel.new PanDirection("onclick", 1, 1));
+		nw.add(bottomMap.new PanDirection("onclick", 1, 1));
 		add(nw);
 
 		final Label infoWindow = new Label("infoWindow", "openInfoWindow");
@@ -220,7 +221,7 @@ public class HomePage extends WicketExamplePage {
 			 */
 			@Override
 			protected void onEvent(AjaxRequestTarget target) {
-				bottomPanel.getInfoWindow().open(new GLatLng(37.5, -122.1),
+				bottomMap.getInfoWindow().open(new GLatLng(37.5, -122.1),
 						new HelloPanel());
 			}
 		});
@@ -236,14 +237,14 @@ public class HomePage extends WicketExamplePage {
 		final Label enabledLabel = new Label("enabled", new Model() {
 			@Override
 			public Object getObject() {
-				return bottomPanel.getBehaviors().contains(moveEndBehavior);
+				return bottomMap.getBehaviors().contains(moveEndBehavior);
 			}
 		});
 		enabledLabel.add(new AjaxEventBehavior("onclick") {
 			@Override
 			protected void onEvent(AjaxRequestTarget target) {
-				if (bottomPanel.getBehaviors().contains(moveEndBehavior)) {
-					bottomPanel.remove(moveEndBehavior);
+				if (bottomMap.getBehaviors().contains(moveEndBehavior)) {
+					bottomMap.remove(moveEndBehavior);
 				} else {
 					// TODO AbstractAjaxBehaviors are not reusable, so we have
 					// to recreate:
@@ -256,9 +257,9 @@ public class HomePage extends WicketExamplePage {
 							target.addComponent(center);
 						}
 					};
-					bottomPanel.add(moveEndBehavior);
+					bottomMap.add(moveEndBehavior);
 				}
-				target.addComponent(bottomPanel);
+				target.addComponent(bottomMap);
 				target.addComponent(enabledLabel);
 			}
 		});
@@ -267,15 +268,21 @@ public class HomePage extends WicketExamplePage {
 		Form geocodeForm = new Form("geocoder");
 		add(geocodeForm);
 
-		TextField address = new TextField("address", new Model(""));
-		geocodeForm.add(address);
-		geocodeForm.add(new GClientGeocoder("onsubmit", address, LOCALHOST) {
-			public void onGeoCode(String address, GLatLng point) {
-				if (point != null) {
-					bottomPanel.getInfoWindow().open(
+		TextField addressTextField = new TextField("address", new Model(""));
+		geocodeForm.add(addressTextField);
+		geocodeForm.add(new GClientGeocoder("onsubmit", addressTextField,
+				LOCALHOST) {
+			@Override
+			public void onGeoCode(AjaxRequestTarget target, int status,
+					String address, GLatLng point) {
+				if (status == GeocoderException.G_GEO_SUCCESS) {
+					bottomMap.getInfoWindow().open(
 							point,
 							new GInfoWindowTab(address, new Label(address,
 									address)));
+				} else {
+					error("Unable to geocode (" + status + ")");
+					target.addComponent(feedback);
 				}
 			};
 		});
