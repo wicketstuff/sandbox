@@ -38,13 +38,22 @@ function WicketGClientGeocoder() {
 	
 	this.getLatLng = function(callBackUrl, addressId) {
 		
-		address = Wicket.$(addressId).value;
+		var address = Wicket.$(addressId).value;
 		
-		this.coder.getLatLng(address, function(point) {
+		this.coder.getLocations(address, function(response) {
+
+			var address;
+			var point;			
+			if (response.Status.code == 200) {
+				address = response.Placemark[0].address;
+				point = response.Placemark[0].Point;
+			}
 			
 			wicketAjaxGet(
-				callBackUrl + '&address=' + address
-				+ '&point=' + point,
+				callBackUrl
+					+ '&status=' + response.Status.code
+					+ '&address=' + address
+					+ '&point=' + point,
 				function() {
 				},
 				function() {
