@@ -20,14 +20,15 @@ package wicket.contrib.examples.gmap;
 
 import org.apache.wicket.Page;
 import org.apache.wicket.protocol.http.HttpSessionStore;
-import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.session.ISessionStore;
 import org.apache.wicket.util.time.Duration;
+
+import wicket.contrib.examples.WicketExampleApplication;
 
 /**
  * @author Iulian-Corneliu COSTAN
  */
-public class GMapExampleApplication extends WebApplication
+public class GMapExampleApplication extends WicketExampleApplication
 {
 
 

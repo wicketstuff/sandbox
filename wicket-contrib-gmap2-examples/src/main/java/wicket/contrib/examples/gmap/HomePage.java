@@ -304,7 +304,7 @@ public class HomePage extends WicketExamplePage {
 	 * url down to the directory GClientGeocoder will not work.
 	 * 
 	 * This key is good for all URLs in this directory:
-	 * http://localhost:8080/wicket-contrib-gmap2-examples/gmap/
+	 * http://localhost:8080/wicket-contrib-gmap2-examples/gmap2/
 	 */
-	private static final String LOCALHOST = "ABQIAAAAzaZpf6nHOd9w1PfLaM9u2xSRJOeFm910afBJASoNgKJoF-fSURQRJ7dNBq-d-8hD7iUYeN2jQHZi8Q";
+	private static final String LOCALHOST = "ABQIAAAAzaZpf6nHOd9w1PfLaM9u2xQRS2YPSd8S9D1NKPBvdB1fr18_CxR-svEYj6URCf5QDFq3i03mqrDlbA";
 }
