@@ -7,10 +7,23 @@ import org.apache.wicket.model.IModel;
 
 import wicketstuff.crud.Editor;
 
+/**
+ * Date editor
+ * 
+ * @author igor.vaynberg
+ * 
+ */
 public class DateEditor extends FormComponentEditor implements Editor
 {
 	private final DateTextField field;
 
+	/**
+	 * Constructor
+	 * 
+	 * @param id
+	 * @param model
+	 * @param pattern
+	 */
 	public DateEditor(String id, IModel model, String pattern)
 	{
 		super(id);

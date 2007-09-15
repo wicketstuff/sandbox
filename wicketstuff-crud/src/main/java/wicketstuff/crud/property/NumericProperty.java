@@ -7,15 +7,26 @@ import org.apache.wicket.model.PropertyModel;
 import wicketstuff.crud.Property;
 import wicketstuff.crud.property.editor.TextEditor;
 
-
+/**
+ * Numeric property
+ * 
+ * @author igor.vaynberg
+ * 
+ */
 public class NumericProperty extends Property
 {
+	/**
+	 * Constructor
+	 * 
+	 * @param path
+	 * @param label
+	 */
 	public NumericProperty(String path, IModel label)
 	{
-		super(path);
-		setLabel(label);
+		super(path, label);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Component getEditor(String id, IModel object)
 	{

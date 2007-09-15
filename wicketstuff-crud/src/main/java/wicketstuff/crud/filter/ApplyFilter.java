@@ -25,9 +25,15 @@ import org.apache.wicket.markup.html.panel.Panel;
  * @author Igor Vaynberg (ivaynberg)
  * 
  */
-public class ApplyAndClearFilter extends Panel
+public class ApplyFilter extends Panel
 {
-	public ApplyAndClearFilter(String id)
+	/**
+	 * Constructor
+	 * 
+	 * @param id
+	 *            component id
+	 */
+	public ApplyFilter(String id)
 	{
 		super(id);
 
@@ -42,18 +48,6 @@ public class ApplyAndClearFilter extends Panel
 			}
 		}.setVisible(true));
 
-
-		Button clear = new Button("clear")
-		{
-			public void onSubmit()
-			{
-				FilterToolbar toolbar = (FilterToolbar)findParent(FilterToolbar.class);
-				toolbar.onClearFilter();
-			}
-		};
-		clear.setDefaultFormProcessing(false).setVisible(false);
-
-		add(clear);
 	}
 
 

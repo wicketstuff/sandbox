@@ -7,10 +7,24 @@ import org.apache.wicket.model.IModel;
 
 import wicketstuff.crud.Editor;
 
+/**
+ * Single-choice editor
+ * 
+ * @author igor.vaynberg
+ * 
+ */
 public class ChoiceEditor extends FormComponentEditor implements Editor
 {
 	private final DropDownChoice field;
 
+	/**
+	 * Constructor
+	 * 
+	 * @param id
+	 * @param model
+	 * @param choices
+	 * @param renderer
+	 */
 	public ChoiceEditor(String id, IModel model, IModel choices, IChoiceRenderer renderer)
 	{
 		super(id);

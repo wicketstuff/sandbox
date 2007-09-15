@@ -12,56 +12,130 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.validation.IValidator;
 
-
+/**
+ * Represents a bean property from crud panel's point of view
+ * 
+ * @author igor.vaynberg
+ * 
+ */
 public abstract class Property implements Serializable
 {
+	/** label model */
 	private IModel label;
+
+	/** property dot-notation path */
 	private final String path;
 
+	/** required flag */
 	private boolean required;
+
+	/** validators */
 	private List<IValidator> validators;
 
+	/**
+	 * Constructor
+	 * 
+	 * @param path
+	 *            property path in dot notation
+	 */
 	public Property(String path)
 	{
 		this.path = path;
 	}
 
 
+	/**
+	 * Constructor
+	 * 
+	 * @param path
+	 *            property path in dot notation
+	 * @param label
+	 *            property label
+	 */
+	public Property(String path, IModel label)
+	{
+		this.path = path;
+		this.label = label;
+	}
+
+
+	/**
+	 * @return property path
+	 */
 	public String getPath()
 	{
 		return path;
 	}
 
 
+	/**
+	 * @return property label
+	 */
 	public IModel getLabel()
 	{
 		return label;
 	}
 
+	/**
+	 * Sets property label
+	 * 
+	 * @param label
+	 */
 	public void setLabel(IModel label)
 	{
 		this.label = label;
 	}
 
+	/**
+	 * Gets the component that will be used to view the property
+	 * 
+	 * @param id
+	 * @param object
+	 * @return
+	 */
 	public Component getViewer(String id, IModel object)
 	{
 		return new Label(id, new PropertyModel(object, getPath()));
 	}
 
+	/**
+	 * Gets the component that will be used to enter values for filtering on
+	 * this property
+	 * 
+	 * @param id
+	 * @param object
+	 * @return
+	 */
 	public Component getFilter(String id, IModel object)
 	{
 		return getEditor(id, object);
 	}
 
+	/**
+	 * Gets the component that will be used to edit the property
+	 * 
+	 * @param id
+	 * @param model
+	 * @return
+	 */
 	public abstract Component getEditor(String id, IModel model);
 
 
+	/**
+	 * @return required flag
+	 */
 	public boolean isRequired()
 	{
 		return required;
 	}
 
 
+	/**
+	 * Sets the reuqired flag
+	 * 
+	 * @param required
+	 * @return
+	 */
 	public Property setRequired(boolean required)
 	{
 		this.required = required;
@@ -69,6 +143,9 @@ public abstract class Property implements Serializable
 	}
 
 
+	/**
+	 * @return validators for this property
+	 */
 	public List<IValidator> getValidators()
 	{
 		if (validators == null)
@@ -81,6 +158,12 @@ public abstract class Property implements Serializable
 		}
 	}
 
+	/**
+	 * Adds a validator to this property
+	 * 
+	 * @param validator
+	 * @return
+	 */
 	public Property add(IValidator validator)
 	{
 		if (validator == null)
@@ -95,6 +178,12 @@ public abstract class Property implements Serializable
 		return this;
 	}
 
+	/**
+	 * Method used by subclasses to perform a common initialization on editor
+	 * components
+	 * 
+	 * @param editor
+	 */
 	protected void configureEditor(final FormComponent editor)
 	{
 		configure(new Editor()
@@ -128,6 +217,12 @@ public abstract class Property implements Serializable
 		});
 	}
 
+	/**
+	 * Method used by subclasses to perform a common initialization on editor
+	 * components
+	 * 
+	 * @param editor
+	 */
 	protected void configure(Editor editor)
 	{
 		editor.setRequired(isRequired());

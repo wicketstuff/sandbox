@@ -21,22 +21,37 @@ import org.apache.wicket.model.PropertyModel;
 
 import wicketstuff.crud.ICrudListener;
 import wicketstuff.crud.Property;
-import wicketstuff.crud.PropertyColumn;
-import wicketstuff.crud.filter.ApplyAndClearFilter;
+import wicketstuff.crud.filter.ApplyFilter;
 import wicketstuff.crud.filter.FilterToolbar;
 import wicketstuff.crud.filter.IFilterableColumn;
 
+/**
+ * List screen
+ * 
+ * @author igor.vaynberg
+ * 
+ */
 public class ListPanel extends Panel
 {
 	private IModel filterModel;
 	private final ICrudListener crudListener;
 
+	/**
+	 * Constructor
+	 * 
+	 * @param id
+	 * @param properties
+	 * @param dp
+	 * @param crudListener
+	 */
 	public ListPanel(String id, List<Property> properties, ISortableDataProvider dp,
 			ICrudListener crudListener)
 	{
 		super(id);
 
 		this.crudListener = crudListener;
+
+		// create new object link
 		add(new Link("create")
 		{
 
@@ -55,19 +70,25 @@ public class ListPanel extends Panel
 		});
 
 
+		// form for filter form components
 		Form form = new Form("form");
 		addOrReplace(form);
 
+		// data table
 		List<Property> props = properties;
 		List<IColumn> cols = new ArrayList<IColumn>(props.size());
 		for (Property prop : props)
 		{
-			cols.add(new PropertyColumn(prop));
+			cols.add(new PropertyColumnAdapter(prop));
 		}
 		cols.add(new ActionsColumn());
 
 		DataTable table = new DataTable("list", cols.toArray(new IColumn[cols.size()]), dp, 15);
 		table.addTopToolbar(new NavigationToolbar(table));
+		table.addTopToolbar(new HeadersToolbar(table, dp));
+		table.addBottomToolbar(new NoRecordsToolbar(table));
+
+		// filter toolbar
 		table.addTopToolbar(new FilterToolbar(table, new PropertyModel(this, "filterModel"))
 		{
 			@Override
@@ -76,15 +97,21 @@ public class ListPanel extends Panel
 				return filterModel != null;
 			}
 		});
-		table.addTopToolbar(new HeadersToolbar(table, dp));
-		table.addBottomToolbar(new NoRecordsToolbar(table));
+
 
 		form.add(table);
 	}
 
 
+	/**
+	 * Actions column
+	 * 
+	 * @author igor.vaynberg
+	 * 
+	 */
 	private class ActionsColumn extends HeaderlessColumn implements IFilterableColumn
 	{
+		/** {@inheritDoc} */
 		public void populateItem(Item cellItem, String componentId, IModel rowModel)
 		{
 			Fragment actions = new Fragment(componentId, "actions-fragment", ListPanel.this);
@@ -123,23 +150,32 @@ public class ListPanel extends Panel
 
 		}
 
+		/** {@inheritDoc} */
 		public Component getFilter(String id, IModel model)
 		{
-			return new ApplyAndClearFilter(id);
+			return new ApplyFilter(id);
 		}
 
 	}
 
+	/**
+	 * Overridable flag for whether or not create-new-object link should be
+	 * shown or not
+	 * 
+	 * @return
+	 */
 	protected boolean allowCreateNewBean()
 	{
 		return true;
 	}
 
-	public IModel getFilterModel()
-	{
-		return filterModel;
-	}
-
+	/**
+	 * Sets model used to store filter properties. If this model is set to a
+	 * non-null value the filter toolbar will be shown.
+	 * 
+	 * @param filter
+	 * @return
+	 */
 	public ListPanel setFilterModel(IModel filter)
 	{
 		this.filterModel = filter;

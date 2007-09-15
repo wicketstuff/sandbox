@@ -12,16 +12,29 @@ import org.apache.wicket.model.IModel;
 
 import wicketstuff.crud.Editor;
 
+/**
+ * Border that is created around every editor in edit screen
+ * 
+ * @author igor.vaynberg
+ * 
+ */
 public class EditorBorder extends Border
 {
 	private static final String ERROR_CSS_CLASS = "wicket-crud-error ";
 	private Component editorCache = null;
 	private final FeedbackPanel feedback;
 
+	/**
+	 * Constructor
+	 * 
+	 * @param id
+	 */
 	public EditorBorder(String id)
 	{
 		super(id);
 
+		// add container that will add the error class when editor did not
+		// validate
 		WebMarkupContainer container = new WebMarkupContainer("container")
 		{
 			@Override
@@ -36,6 +49,7 @@ public class EditorBorder extends Border
 		};
 		add(container);
 
+		// create label for editor
 		container.add(new Label("label", new LabelModel())
 		{
 			@Override
@@ -45,6 +59,8 @@ public class EditorBorder extends Border
 				tag.put("for", getEditor().getMarkupId());
 			}
 		});
+
+		// create required indicator for the label
 		container.add(new WebMarkupContainer("required-indicator")
 		{
 			@Override
@@ -53,11 +69,20 @@ public class EditorBorder extends Border
 				return ((Editor)getEditor()).isRequired();
 			}
 		});
+
+		// create feedback that will be used to show errors just for the editor
 		container.add(feedback = new FeedbackPanel("feedback", new ContainerFeedbackMessageFilter(
 				this)));
+
+		// realign border body with hierarchy
 		container.add(getBodyContainer());
 	}
 
+	/**
+	 * finds {@link Editor} component inside this border
+	 * 
+	 * @return
+	 */
 	private Component getEditor()
 	{
 		if (editorCache == null)
@@ -92,14 +117,26 @@ public class EditorBorder extends Border
 
 	}
 
+	/**
+	 * Performs one-time border-releated initialization of the component
+	 * 
+	 * @param editor
+	 */
 	private void initializeEditor(Component editor)
 	{
 		editor.setOutputMarkupId(true);
 	}
 
 
+	/**
+	 * Model used to construct editor label text
+	 * 
+	 * @author igor.vaynberg
+	 * 
+	 */
 	private class LabelModel extends AbstractReadOnlyModel
 	{
+		/** {@inheritDoc} */
 		@Override
 		public Object getObject()
 		{
@@ -115,6 +152,7 @@ public class EditorBorder extends Border
 
 		}
 
+		/** {@inheritDoc} */
 		@Override
 		public void detach()
 		{

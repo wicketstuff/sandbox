@@ -7,11 +7,23 @@ import org.apache.wicket.model.IModel;
 
 import wicketstuff.crud.Editor;
 
+/**
+ * Text editor
+ * 
+ * @author igor.vaynberg
+ * 
+ */
 public class TextEditor extends FormComponentEditor implements Editor
 {
 	private final TextField field;
 	private int maxLength;
 
+	/**
+	 * Constructor
+	 * 
+	 * @param id
+	 * @param model
+	 */
 	public TextEditor(String id, IModel model)
 	{
 		super(id);
@@ -29,18 +41,19 @@ public class TextEditor extends FormComponentEditor implements Editor
 		});
 	}
 
-	public int getMaxLength()
-	{
-		return maxLength;
-	}
-
+	/**
+	 * Sets max length
+	 * 
+	 * @param maxLength
+	 * @return
+	 */
 	public TextEditor setMaxLength(int maxLength)
 	{
 		this.maxLength = maxLength;
 		return this;
 	}
 
-
+	/** {@inheritDoc} */
 	@Override
 	protected FormComponent getFormComponent()
 	{
