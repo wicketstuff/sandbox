@@ -18,8 +18,8 @@ package wicket.contrib.gmap.api;
 import java.util.StringTokenizer;
 
 /**
- * Represents an Google Maps API's
- * <a href="http://www.google.com/apis/maps/documentation/reference.html#GLatLng">GLatLng</a>.
+ * Represents an Google Maps API's <a
+ * href="http://www.google.com/apis/maps/documentation/reference.html#GLatLng">GLatLng</a>.
  */
 public class GLatLng implements GValue
 {
@@ -96,7 +96,7 @@ public class GLatLng implements GValue
 		}
 		return false;
 	}
-	
+
 	/**
 	 * (37.34068368469045, -122.48519897460936)
 	 */
@@ -115,8 +115,15 @@ public class GLatLng implements GValue
 		{
 			return null;
 		}
-		float lat = Float.valueOf(tokenizer.nextToken());
-		float lng = Float.valueOf(tokenizer.nextToken());
-		return new GLatLng(lat, lng);
+		try
+		{
+			float lat = Float.valueOf(tokenizer.nextToken());
+			float lng = Float.valueOf(tokenizer.nextToken());
+			return new GLatLng(lat, lng);
+		}
+		catch (NumberFormatException e)
+		{
+			return null;
+		}
 	}
 }
