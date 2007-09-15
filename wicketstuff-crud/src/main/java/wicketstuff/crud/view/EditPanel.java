@@ -15,11 +15,27 @@ import org.apache.wicket.model.IModel;
 import wicketstuff.crud.ICrudListener;
 import wicketstuff.crud.Property;
 
+/**
+ * Edit screen.
+ * 
+ * @see #newFormBorder(String)
+ * @see #newEditorBorder(String, Component)
+ * @author igor.vaynberg
+ * 
+ */
 public class EditPanel extends Panel
 {
 	private final List<Property> properties;
 	private final ICrudListener crudListener;
 
+	/**
+	 * Constructor
+	 * 
+	 * @param id
+	 * @param model
+	 * @param properties
+	 * @param crudListener
+	 */
 	public EditPanel(String id, IModel model, List<Property> properties,
 			final ICrudListener crudListener)
 	{
@@ -85,11 +101,21 @@ public class EditPanel extends Panel
 	}
 
 
+	/**
+	 * Factory method used to create a border around form-body
+	 */
 	protected Border newFormBorder(String id)
 	{
 		return new FormBorder(id);
 	}
 
+	/**
+	 * Factory method used to create a border that goes around each editor
+	 * 
+	 * @param id
+	 * @param editor
+	 * @return
+	 */
 	protected Border newEditorBorder(String id, Component editor)
 	{
 		return new EditorBorder(id);

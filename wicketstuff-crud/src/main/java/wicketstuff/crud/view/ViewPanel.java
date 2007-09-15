@@ -9,9 +9,23 @@ import org.apache.wicket.model.IModel;
 import wicketstuff.crud.ICrudListener;
 import wicketstuff.crud.Property;
 
+/**
+ * View panel
+ * 
+ * @author igor.vaynberg
+ * 
+ */
 public class ViewPanel extends Panel
 {
 
+	/**
+	 * Constructor
+	 * 
+	 * @param id
+	 * @param model
+	 * @param properties
+	 * @param crudListener
+	 */
 	public ViewPanel(String id, IModel model, List<Property> properties,
 			final ICrudListener crudListener)
 	{

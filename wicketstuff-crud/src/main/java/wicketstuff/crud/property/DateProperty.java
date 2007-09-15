@@ -10,22 +10,42 @@ import wicketstuff.crud.Property;
 import wicketstuff.crud.property.editor.DateEditor;
 
 
+/**
+ * Represents a property of date type
+ * 
+ * @author igor.vaynberg
+ * 
+ */
 public class DateProperty extends Property
 {
 	private String pattern = "MM/dd/yyyy";
 
+	/**
+	 * Constructor
+	 * 
+	 * @param path
+	 * @param label
+	 */
 	public DateProperty(String path, IModel label)
 	{
-		super(path);
-		setLabel(label);
+		super(path, label);
 	}
 
+	/**
+	 * Constructor
+	 * 
+	 * @param path
+	 * @param label
+	 * @param pattern
+	 *            pattern used to format date value
+	 */
 	public DateProperty(String path, IModel label, String pattern)
 	{
 		this(path, label);
 		this.pattern = pattern;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Component getEditor(String id, IModel object)
 	{
@@ -35,6 +55,7 @@ public class DateProperty extends Property
 	}
 
 
+	/** {@inheritDoc} */
 	@Override
 	public Component getViewer(String id, IModel object)
 	{

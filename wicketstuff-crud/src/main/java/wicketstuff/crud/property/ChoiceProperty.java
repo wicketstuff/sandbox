@@ -10,43 +10,51 @@ import org.apache.wicket.model.PropertyModel;
 import wicketstuff.crud.Property;
 import wicketstuff.crud.property.editor.ChoiceEditor;
 
-
+/**
+ * Property that represents a single-choice from a list of choices
+ * 
+ * @author igor.vaynberg
+ * 
+ */
 public class ChoiceProperty extends Property
 {
 	private IModel choices;
 	private IChoiceRenderer renderer;
 
+	/**
+	 * Constructor
+	 * 
+	 * @param path
+	 * @param label
+	 */
 	public ChoiceProperty(String path, IModel label)
 	{
-		super(path);
-		setLabel(label);
+		super(path, label);
 	}
 
-
-	public IModel getChoicesModel()
-	{
-		return choices;
-	}
-
-
+	/**
+	 * Sets model that will be used to provide a list of choices to select from
+	 * 
+	 * @param choicesModel
+	 */
 	public void setChoices(IModel choicesModel)
 	{
 		this.choices = choicesModel;
 	}
 
 
-	public IChoiceRenderer getRenderer()
-	{
-		return renderer;
-	}
-
-
+	/**
+	 * Sets renderer used to render choices
+	 * 
+	 * @param renderer
+	 */
 	public void setRenderer(IChoiceRenderer renderer)
 	{
 		this.renderer = renderer;
 	}
 
 
+	/** {@inheritDoc} */
 	@Override
 	public Component getEditor(String id, IModel object)
 	{
@@ -56,6 +64,7 @@ public class ChoiceProperty extends Property
 		return editor;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Component getViewer(String id, IModel object)
 	{

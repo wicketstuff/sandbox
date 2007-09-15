@@ -12,9 +12,22 @@ import org.apache.wicket.model.IModel;
 
 import wicketstuff.crud.Property;
 
+/**
+ * Used to view properties
+ * 
+ * @author igor.vaynberg
+ * 
+ */
 class PropertiesView extends Panel
 {
 
+	/**
+	 * Constructor
+	 * 
+	 * @param id
+	 * @param model
+	 * @param properties
+	 */
 	public PropertiesView(String id, IModel model, List<Property> properties)
 	{
 		super(id, model);

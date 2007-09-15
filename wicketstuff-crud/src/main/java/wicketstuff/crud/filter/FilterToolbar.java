@@ -27,6 +27,8 @@ import org.apache.wicket.model.IModel;
 
 
 /**
+ * Toolbar that is used to filter on crud panel properties
+ * 
  * @author Igor Vaynberg (ivaynber)
  * 
  */
@@ -40,13 +42,12 @@ public class FilterToolbar extends AbstractToolbar
 		super(table);
 		setModel(model);
 
-
 		if (table == null)
 		{
 			throw new IllegalArgumentException("argument [table] cannot be null");
 		}
-		// populate the toolbar with components provided by filtered columns
 
+		// populate the toolbar with components provided by filtered columns
 		RepeatingView filters = new RepeatingView("filters");
 		filters.setRenderBodyOnly(true);
 		add(filters);
@@ -88,16 +89,9 @@ public class FilterToolbar extends AbstractToolbar
 
 	}
 
-	protected void onClearFilter()
-	{
-		getTable().setCurrentPage(0);
-		// TODO figure out how to clear it
-	}
-
 	protected void onApplyFilter()
 	{
 		getTable().setCurrentPage(0);
-		// TODO figure out if we need a callback for this
 	}
 
 }

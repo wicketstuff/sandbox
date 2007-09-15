@@ -13,25 +13,35 @@ import org.apache.wicket.model.PropertyModel;
 import wicketstuff.crud.Property;
 import wicketstuff.crud.property.editor.ChoiceEditor;
 
-
+/**
+ * Multiple-choice property
+ * 
+ * @author igor.vaynberg
+ * 
+ */
 public class MultiChoiceProperty extends Property
 {
 	private IModel choices;
 	private IChoiceRenderer renderer;
 
+	/**
+	 * Constructor
+	 * 
+	 * @param path
+	 * @param label
+	 */
 	public MultiChoiceProperty(String path, IModel label)
 	{
-		super(path);
-		setLabel(label);
+		super(path, label);
 	}
 
 
-	public IModel getChoicesModel()
-	{
-		return choices;
-	}
-
-
+	/**
+	 * Sets model used to provide a list of choices
+	 * 
+	 * @param choicesModel
+	 * @return
+	 */
 	public MultiChoiceProperty setChoices(IModel choicesModel)
 	{
 		this.choices = choicesModel;
@@ -39,19 +49,14 @@ public class MultiChoiceProperty extends Property
 	}
 
 
-	public IChoiceRenderer getRenderer()
-	{
-		return renderer;
-	}
-
-
+	/** Sets renderer used to render choices */
 	public MultiChoiceProperty setRenderer(IChoiceRenderer renderer)
 	{
 		this.renderer = renderer;
 		return this;
 	}
 
-
+	/** {@inheritDoc} */
 	@Override
 	public Component getEditor(String id, IModel object)
 	{
