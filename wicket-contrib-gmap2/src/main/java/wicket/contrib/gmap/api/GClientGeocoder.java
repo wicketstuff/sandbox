@@ -44,8 +44,8 @@ public abstract class GClientGeocoder extends AjaxEventBehavior {
 	protected void onEvent(AjaxRequestTarget target) {
 		Request request = RequestCycle.get().getRequest();
 		
-		onGeoCode(target, Integer.parseInt(request.getParameter("status")), request.getParameter("address"), GLatLng.parse(request
-				.getParameter("point")));
+		onGeoCode(target, Integer.parseInt(request.getParameter("status")), request.getParameter("address"), GLatLng.parseCoordinates(request
+				.getParameter("coordinates")));
 	}
 
 	public abstract void onGeoCode(AjaxRequestTarget target, int status, String address, GLatLng latLng);
