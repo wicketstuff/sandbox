@@ -43,17 +43,17 @@ function WicketGClientGeocoder() {
 		this.coder.getLocations(address, function(response) {
 
 			var address;
-			var point;			
+			var coordinates;			
 			if (response.Status.code == 200) {
 				address = response.Placemark[0].address;
-				point = response.Placemark[0].Point;
+				coordinates = response.Placemark[0].Point.coordinates;
 			}
 			
 			wicketAjaxGet(
 				callBackUrl
 					+ '&status=' + response.Status.code
 					+ '&address=' + address
-					+ '&point=' + point,
+					+ '&coordinates=' + coordinates,
 				function() {
 				},
 				function() {

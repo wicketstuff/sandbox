@@ -126,4 +126,31 @@ public class GLatLng implements GValue
 			return null;
 		}
 	}
+
+	public static GLatLng parseCoordinates(String value)
+	{
+		StringTokenizer tokenizer;
+		try
+		{
+			tokenizer = new StringTokenizer(value, ",");
+		}
+		catch (NullPointerException e)
+		{
+			return null;
+		}
+		if (tokenizer.countTokens() != 3)
+		{
+			return null;
+		}
+		try
+		{
+			float lng = Float.valueOf(tokenizer.nextToken());
+			float lat = Float.valueOf(tokenizer.nextToken());
+			return new GLatLng(lat, lng);
+		}
+		catch (NumberFormatException e)
+		{
+			return null;
+		}
+	}
 }
