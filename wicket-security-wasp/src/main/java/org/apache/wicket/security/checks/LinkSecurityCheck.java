@@ -33,8 +33,9 @@ import org.apache.wicket.security.models.ISecureModel;
  * target class of the link, If not the link will not be rendered. In the
  * alternative mode the check behaves as a {@link ComponentSecurityCheck}
  * (render action only) allowing the link to be visible but disabled. Note that
- * for all other actions this check behaves a ClassSecurityCheck (with option to
- * check the model). Although the check was designed to work on pages it now also works on any class.
+ * for all other actions this check behaves as a ClassSecurityCheck (with option
+ * to check the model). Although the check was designed to work on pages it now
+ * also works on any class.
  * 
  * @author marrink
  */
@@ -62,7 +63,7 @@ public class LinkSecurityCheck extends ComponentSecurityCheck
 	{
 		super(component);
 		this.clickTarget = clickTarget;
-		if (clickTarget==null)
+		if (clickTarget == null)
 			throw new IllegalArgumentException("A clickTarget is mandatory.");
 	}
 
@@ -86,7 +87,7 @@ public class LinkSecurityCheck extends ComponentSecurityCheck
 	{
 		super(component, checkSecureModelIfExists);
 		this.clickTarget = clickTarget;
-		if (clickTarget==null)
+		if (clickTarget == null)
 			throw new IllegalArgumentException("A clickTarget is mandatory.");
 	}
 

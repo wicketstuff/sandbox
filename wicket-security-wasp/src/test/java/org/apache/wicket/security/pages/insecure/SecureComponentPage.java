@@ -16,18 +16,55 @@
  */
 package org.apache.wicket.security.pages.insecure;
 
+import org.apache.wicket.Component;
+import org.apache.wicket.MarkupContainer;
+import org.apache.wicket.markup.ComponentTag;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.security.checks.ComponentSecurityCheck;
+import org.apache.wicket.security.components.ISecureComponent;
 import org.apache.wicket.security.components.SecureComponentHelper;
+import org.apache.wicket.security.components.markup.html.links.SecureContainerLink;
 import org.apache.wicket.security.pages.BasePage;
 
 
 /**
+ * Insecure page with secure components. Any logged in user can see this page.
+ * 
  * @author marrink
  * 
  */
 public class SecureComponentPage extends BasePage
 {
+
+	/**
+	 * Simple container. This is not an anonymous inner class of the
+	 * {@link SecureContainerLink} because that would make it an
+	 * {@link ISecureComponent} and we do not want that for this test.
+	 * 
+	 * @author marrink
+	 */
+	public static final class MyReplacementContainer extends WebMarkupContainer
+	{
+		private static final long serialVersionUID = 1L;
+
+		private MyReplacementContainer(String id)
+		{
+			super(id);
+		}
+
+		/**
+		 * 
+		 * @see org.apache.wicket.Component#onComponentTag(org.apache.wicket.markup.ComponentTag)
+		 */
+		protected void onComponentTag(ComponentTag tag)
+		{
+			super.onComponentTag(tag);
+			tag.setName("div"); // turn span into div, just do
+			// anything to prove we really
+			// changed the containers
+		}
+	}
 
 	/**
 	 * 
@@ -43,6 +80,30 @@ public class SecureComponentPage extends BasePage
 		Label secureLabel = new Label("secure", "this label is what forces you to login");
 		add(SecureComponentHelper.setSecurityCheck(secureLabel, new ComponentSecurityCheck(
 				secureLabel)));
+
+		add(new WebMarkupContainer("replaceMe")); // content is irrelevant in
+		// this example so i will
+		// just use 2 containers
+		// without there own markup.
+		// this link will only show up if you have the enable action for a
+		// WebMarkupContainer
+		add(new SecureContainerLink("link", MyReplacementContainer.class, this, "replaceMe")
+		{
+
+			private static final long serialVersionUID = 1L;
+
+			/**
+			 * 
+			 * @see org.apache.wicket.security.components.markup.html.links.SecureContainerLink#getReplacementFor(org.apache.wicket.Component,
+			 *      java.lang.String, java.lang.Class)
+			 */
+			protected MarkupContainer getReplacementFor(Component current, String id,
+					Class replacementClass)
+			{
+				setVisible(false);
+				return new MyReplacementContainer(id);
+			}
+		});
 	}
 
 }
