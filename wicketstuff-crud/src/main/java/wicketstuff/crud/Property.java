@@ -10,6 +10,7 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.util.string.Strings;
 import org.apache.wicket.validation.IValidator;
 
 /**
@@ -40,6 +41,10 @@ public abstract class Property implements Serializable
 	 */
 	public Property(String path)
 	{
+		if (Strings.isEmpty(path))
+		{
+			throw new IllegalArgumentException("Property path cannot be null or empty");
+		}
 		this.path = path;
 	}
 
@@ -54,7 +59,11 @@ public abstract class Property implements Serializable
 	 */
 	public Property(String path, IModel label)
 	{
-		this.path = path;
+		this(path);
+		if (label == null)
+		{
+			throw new IllegalArgumentException("Property label cannot be null");
+		}
 		this.label = label;
 	}
 
