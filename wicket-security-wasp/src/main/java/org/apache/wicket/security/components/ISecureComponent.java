@@ -32,7 +32,7 @@ import org.apache.wicket.security.checks.ISecurityCheck;
  * securitycheck on them with the {@link SecureComponentHelper}.
  * implementations should as default use these methods to wrap the calls to
  * {@link SecureComponentHelper}, although classes like
- * {@link IAuthorizationStrategy} should not depend on this behaviour.
+ * {@link IAuthorizationStrategy} should not depend on this behavior.
  * 
  * @author marrink
  */
