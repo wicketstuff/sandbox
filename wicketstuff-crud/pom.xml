@@ -28,7 +28,7 @@
 	</parent>
 
 	<artifactId>wicket-quickstart</artifactId>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 
 	<name>Wicket Quickstart</name>
 	<description>
