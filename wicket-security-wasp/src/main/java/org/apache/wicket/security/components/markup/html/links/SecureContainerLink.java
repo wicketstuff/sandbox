@@ -42,15 +42,10 @@ import org.apache.wicket.security.components.SecureComponentHelper;
  * parent.add(new FirstPanel("replaceMe",new Model("hello"));
  * parent.add(new SecureContainerLink("link",SecondPanel.class,parent,"replaceMe"){....});
  * </code>
- * Note that although this component has all the methods of
- * {@link ISecureComponent} it is not a subclass of ISecureComponent because
- * this would trigger an instantiation check on the link. And because this class
- * is abstract you would be required to grant permissions for each (anonymous)
- * subclass of this link. This is typically undesired behavior :).
  * 
  * @author marrink
  */
-public abstract class SecureContainerLink extends Link
+public abstract class SecureContainerLink extends Link implements ISecureComponent
 {
 	/**
 	 * 
@@ -224,9 +219,7 @@ public abstract class SecureContainerLink extends Link
 	}
 
 	/**
-	 * Gets the security check attached to this component.
 	 * 
-	 * @return the check or null if there is no check
 	 * @see org.apache.wicket.security.components.ISecureComponent#getSecurityCheck()
 	 */
 	public ISecurityCheck getSecurityCheck()
@@ -235,6 +228,7 @@ public abstract class SecureContainerLink extends Link
 	}
 
 	/**
+	 * 
 	 * @see org.apache.wicket.security.components.ISecureComponent#isActionAuthorized(java.lang.String)
 	 */
 	public boolean isActionAuthorized(String waspAction)
@@ -243,6 +237,7 @@ public abstract class SecureContainerLink extends Link
 	}
 
 	/**
+	 * 
 	 * @see org.apache.wicket.security.components.ISecureComponent#isActionAuthorized(org.apache.wicket.security.actions.AbstractWaspAction)
 	 */
 	public boolean isActionAuthorized(AbstractWaspAction action)
@@ -251,6 +246,7 @@ public abstract class SecureContainerLink extends Link
 	}
 
 	/**
+	 * 
 	 * @see org.apache.wicket.security.components.ISecureComponent#isAuthenticated()
 	 */
 	public boolean isAuthenticated()
@@ -259,6 +255,7 @@ public abstract class SecureContainerLink extends Link
 	}
 
 	/**
+	 * 
 	 * @see org.apache.wicket.security.components.ISecureComponent#setSecurityCheck(org.apache.wicket.security.checks.ISecurityCheck)
 	 */
 	public void setSecurityCheck(ISecurityCheck check)

@@ -30,6 +30,7 @@ import org.apache.wicket.Session;
 import org.apache.wicket.authorization.Action;
 import org.apache.wicket.authorization.UnauthorizedActionException;
 import org.apache.wicket.authorization.UnauthorizedInstantiationException;
+import org.apache.wicket.extensions.markup.html.tabs.ITab;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.protocol.http.WebRequestCycle;
 import org.apache.wicket.request.target.component.BookmarkablePageRequestTarget;
@@ -97,7 +98,7 @@ public class GeneralTest extends TestCase
 	/**
 	 * @see junit.framework.TestCase#setUp()
 	 */
-	protected void setUp() throws Exception
+	protected void setUp()
 	{
 		mock = new WicketTester(application = new WaspWebApplication()
 		{
@@ -315,6 +316,9 @@ public class GeneralTest extends TestCase
 	 */
 	public void testUnsecuredPage2()
 	{
+		// change to default behavior of ClassAuthorizationStrategy
+		setSecureClass(ISecurePage.class);
+		setUp();
 		// continueto originaldestination does not work if there is no url
 		// available, so we need to fake one here(testing only hack)
 		mock.setupRequestAndResponse();
@@ -362,8 +366,15 @@ public class GeneralTest extends TestCase
 		mock.assertRenderedPage(getHomePage());
 	}
 
+	/**
+	 * Test a link that will allow people to replace panels / containers much
+	 * like the {@link ITab} from extensions
+	 */
 	public void testContainerLink()
 	{
+		// change to default behavior of ClassAuthorizationStrategy
+		setSecureClass(ISecurePage.class);
+		setUp();
 		// continueto originaldestination does not work if there is no url
 		// available, so we need to fake one here(testing only hack)
 		mock.setupRequestAndResponse();
