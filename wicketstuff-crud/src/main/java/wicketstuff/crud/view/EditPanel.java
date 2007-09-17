@@ -34,6 +34,13 @@ import wicketstuff.crud.Property;
 /**
  * Edit screen.
  * 
+ * I18N Keys:
+ * 
+ * <pre>
+ * wicket-crud.edit.save=save button text
+ * wicket-crud.edit.cancel=cancel button text
+ * </pre>
+ * 
  * @see #newFormBorder(String)
  * @see #newEditorBorder(String, Component)
  * @author igor.vaynberg

@@ -15,7 +15,13 @@
    limitations under the License.
 -->
 <wicket:panel>
-	<wicket:enclosure><div class="wicket-crud-create"><a wicket:id="create">create new object</a></div></wicket:enclosure>
+	<wicket:enclosure>
+		<div class="wicket-crud-create">
+			<a wicket:id="create">
+				<wicket:message key="wicket-crud.list.action.create">Create new object</wicket:message>
+			</a>
+		</div>
+	</wicket:enclosure>
 	
 	<form wicket:id="form">
 	<table wicket:id="list" class="wicket-crud-datatable"></table>
@@ -23,9 +29,9 @@
 
 	<wicket:fragment wicket:id="actions-fragment">
 		<div class="wicket-crud-list-commands">
-			[<a wicket:id="view">view</a>]
-			[<a wicket:id="edit">edit</a>]
-			[<a wicket:id="delete">delete</a>]
+			[<a wicket:id="view"><wicket:message key="wicket-crud.list.action.view">view</wicket:message></a>]
+			[<a wicket:id="edit"><wicket:message key="wicket-crud.list.action.edit">edit</wicket:message></a>]
+			[<a wicket:id="delete"><wicket:message key="wicket-crud.list.action.delete">delete</wicket:message></a>]
 		</div>
 	</wicket:fragment>
 

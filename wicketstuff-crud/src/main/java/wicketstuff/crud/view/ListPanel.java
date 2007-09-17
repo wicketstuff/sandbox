@@ -44,6 +44,16 @@ import wicketstuff.crud.filter.IFilterableColumn;
 /**
  * List screen
  * 
+ * I18N Keys:
+ * 
+ * <pre>
+ * wicket-crud.list.action.view=view action text
+ * wicket-crud.list.action.create=create action text
+ * wicket-crud.list.action.edit=edit action text
+ * wicket-crud.list.action.delete=delete action text
+ * wicket-crud.list.filter.apply=delete action text
+ * </pre>
+ * 
  * @author igor.vaynberg
  * 
  */
@@ -133,40 +143,7 @@ public class ListPanel extends Panel
 		/** {@inheritDoc} */
 		public void populateItem(Item cellItem, String componentId, IModel rowModel)
 		{
-			Fragment actions = new Fragment(componentId, "actions-fragment", ListPanel.this);
-			cellItem.add(actions);
-			actions.add(new Link("edit", rowModel)
-			{
-
-				@Override
-				public void onClick()
-				{
-					crudListener.onEdit(getModel());
-				}
-
-			});
-			actions.add(new Link("delete", rowModel)
-			{
-
-				@Override
-				public void onClick()
-				{
-					crudListener.onDelete(getModel());
-				}
-
-			});
-			actions.add(new Link("view", rowModel)
-			{
-
-				@Override
-				public void onClick()
-				{
-					crudListener.onView(getModel());
-				}
-
-			});
-
-
+			cellItem.add(newActionView(componentId, rowModel));
 		}
 
 		/** {@inheritDoc} */
@@ -186,6 +163,60 @@ public class ListPanel extends Panel
 	protected boolean allowCreateNewBean()
 	{
 		return true;
+	}
+
+	/**
+	 * @return crud listener
+	 */
+	protected final ICrudListener getCrudListener()
+	{
+		return crudListener;
+	}
+
+	/**
+	 * Creates the component responsible for listing actions in the list view.
+	 * Usually a {@link Panel} or a {@link Fragment}
+	 * 
+	 * @param componentId
+	 * @param rowModel
+	 * @return
+	 */
+	protected Component newActionView(String componentId, IModel rowModel)
+	{
+		Fragment actions = new Fragment(componentId, "actions-fragment", ListPanel.this);
+
+		actions.add(new Link("edit", rowModel)
+		{
+
+			@Override
+			public void onClick()
+			{
+				crudListener.onEdit(getModel());
+			}
+
+		});
+		actions.add(new Link("delete", rowModel)
+		{
+
+			@Override
+			public void onClick()
+			{
+				crudListener.onDelete(getModel());
+			}
+
+		});
+		actions.add(new Link("view", rowModel)
+		{
+
+			@Override
+			public void onClick()
+			{
+				crudListener.onView(getModel());
+			}
+
+		});
+
+		return actions;
 	}
 
 	/**
