@@ -50,10 +50,14 @@ public abstract class CrudPanel extends Panel
 	 * @param dp
 	 *            data provider
 	 */
-	public CrudPanel(String id, ISortableDataProvider dp)
+	public CrudPanel(String id, ISortableDataProvider dataProvider)
 	{
 		super(id);
-		this.dataProvider = dp;
+		if (dataProvider == null)
+		{
+			throw new IllegalArgumentException("Argument `dataProvider` cannot be null");
+		}
+		this.dataProvider = dataProvider;
 	}
 
 	/**
@@ -77,6 +81,10 @@ public abstract class CrudPanel extends Panel
 	 */
 	public void add(Collection<Property> properties)
 	{
+		if (properties == null)
+		{
+			throw new IllegalArgumentException("Argument `properties` cannot be null");
+		}
 		for (Property prop : properties)
 		{
 			add(prop);
@@ -91,6 +99,10 @@ public abstract class CrudPanel extends Panel
 	 */
 	public void add(PropertySource source)
 	{
+		if (source == null)
+		{
+			throw new IllegalArgumentException("Argument `source` cannot be null");
+		}
 		add(source.getProperties());
 	}
 
@@ -103,6 +115,7 @@ public abstract class CrudPanel extends Panel
 	 */
 	public void setCreateBeanModelFactory(ICreateBeanModelFactory createBeanModelFactory)
 	{
+		// TODO state change
 		this.createBeanModelFactory = createBeanModelFactory;
 	}
 
@@ -148,6 +161,7 @@ public abstract class CrudPanel extends Panel
 	 */
 	public void setFilterModel(IModel filterModel)
 	{
+		// TODO state change
 		this.filterModel = filterModel;
 	}
 
