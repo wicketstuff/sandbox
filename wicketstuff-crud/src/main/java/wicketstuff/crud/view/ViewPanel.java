@@ -28,6 +28,15 @@ import wicketstuff.crud.Property;
 /**
  * View panel
  * 
+ * I18N Keys:
+ * 
+ * <pre>
+ * wicket-crud.view.edit=edit button text
+ * wicket-crud.view.delete=delete button text
+ * wicket-crud.view.back=back button text
+ * </pre>
+ * 
+ * 
  * @author igor.vaynberg
  * 
  */

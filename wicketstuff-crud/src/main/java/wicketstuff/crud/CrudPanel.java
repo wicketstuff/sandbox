@@ -35,6 +35,32 @@ import wicketstuff.crud.view.ListPanel;
 import wicketstuff.crud.view.ViewPanel;
 
 
+/**
+ * CRUD Panel
+ * 
+ * I18N Keys:
+ * 
+ * <pre>
+ * wicket-crud.list.action.view=view action text
+ * wicket-crud.list.action.create=create action text
+ * wicket-crud.list.action.edit=edit action text
+ * wicket-crud.list.action.delete=delete action text
+ * wicket-crud.list.filter.apply=delete action text
+ * 
+ * wicket-crud.edit.save=save button text
+ * wicket-crud.edit.cancel=cancel button text
+ * 
+ * wicket-crud.delete.confirm=confirm button text
+ * wicket-crud.delete.cancel=cancel button text
+ * 
+ * wicket-crud.view.edit=edit button text
+ * wicket-crud.view.delete=delete button text
+ * wicket-crud.view.back=back button text
+ * </pre>
+ * 
+ * @author igor.vaynberg
+ * 
+ */
 public abstract class CrudPanel extends Panel
 {
 	/** id of view panels */

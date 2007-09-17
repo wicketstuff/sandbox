@@ -28,6 +28,13 @@ import wicketstuff.crud.Property;
 /**
  * Confirm delete screen
  * 
+ * I18N Keys:
+ * 
+ * <pre>
+ * wicket-crud.delete.confirm=confirm button text
+ * wicket-crud.delete.cancel=cancel button text
+ * </pre>
+ * 
  * @author igor.vaynberg
  * 
  */

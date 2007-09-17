@@ -18,6 +18,7 @@ package wicketstuff.crud.filter;
 
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.ResourceModel;
 
 /**
  * Filter component that generates a 'go' and 'clear' buttons.
@@ -37,7 +38,7 @@ public class ApplyFilter extends Panel
 	{
 		super(id);
 
-		add(new Button("apply")
+		add(new Button("apply", new ResourceModel("wicket-crud.list.filter.apply"))
 		{
 			@Override
 			public void onSubmit()
