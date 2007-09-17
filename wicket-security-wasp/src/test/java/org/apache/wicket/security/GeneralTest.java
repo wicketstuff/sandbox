@@ -302,7 +302,7 @@ public class GeneralTest extends TestCase
 	}
 
 	/**
-	 * Test accessability of an unprotected page.
+	 * Test accessibility of an unprotected page.
 	 */
 	public void testUnsecuredPage()
 	{
@@ -311,7 +311,7 @@ public class GeneralTest extends TestCase
 	}
 
 	/**
-	 * Test accessability of an unprotected page with a secure component.
+	 * Test accessibility of an unprotected page with a secure component.
 	 */
 	public void testUnsecuredPage2()
 	{
@@ -333,7 +333,7 @@ public class GeneralTest extends TestCase
 	}
 
 	/**
-	 * Test accessability of an unprotected page with a secure link.
+	 * Test accessibility of an unprotected page with a secure link.
 	 */
 	public void testUnsecuredPage3()
 	{
@@ -360,6 +360,45 @@ public class GeneralTest extends TestCase
 		mock.assertVisible("secure");
 		mock.clickLink("secure", false);
 		mock.assertRenderedPage(getHomePage());
+	}
+
+	public void testContainerLink()
+	{
+		// continueto originaldestination does not work if there is no url
+		// available, so we need to fake one here(testing only hack)
+		mock.setupRequestAndResponse();
+		WebRequestCycle cycle = mock.createRequestCycle();
+		String url1 = cycle.urlFor(
+				new BookmarkablePageRequestTarget(SecureComponentPage.class, null)).toString();
+		mock.getServletRequest().setURL("/GeneralTest$1/GeneralTest$1/" + url1);
+		mock.processRequestCycle();
+		mock.assertRenderedPage(getLoginPage());
+		FormTester form = mock.newFormTester("signInPanel:signInForm");
+		form.setValue("username", "test");
+		form.setValue("password", "test");
+		form.submit();
+		mock.assertRenderedPage(SecureComponentPage.class);
+		mock.assertVisible("replaceMe");
+		mock.assertInvisible("link"); // no enable action on
+		// webmarkupcontainer
+		// need to arrange enable rights for webmarkupcontainer
+		Map authorized = new HashMap();
+		authorized.put(SecureComponentPage.MyReplacementContainer.class, application
+				.getActionFactory().getAction("access render enable"));
+		login(authorized);
+		mock.startPage(mock.getLastRenderedPage());
+		mock.assertRenderedPage(SecureComponentPage.class);
+		mock.assertVisible("replaceMe");
+		mock.assertVisible("link");
+		TagTester tag = mock.getTagByWicketId("replaceMe");
+		assertEquals("span", tag.getName());
+		mock.clickLink("link", false);
+		mock.assertRenderedPage(SecureComponentPage.class);
+		mock.assertVisible("replaceMe");
+		mock.assertInvisible("link");
+		tag = mock.getTagByWicketId("replaceMe");
+		assertEquals("div", tag.getName());
+
 	}
 
 	/**
