@@ -23,6 +23,7 @@
 	<groupId>org.wicketstuff</groupId>
 	<artifactId>wicketstuff-crud</artifactId>
 	<packaging>jar</packaging>
+	<version>1.3.0-SNAPSHOT</version>
 
 	<name>Wicket CRUD Panel</name>
 	<description>
