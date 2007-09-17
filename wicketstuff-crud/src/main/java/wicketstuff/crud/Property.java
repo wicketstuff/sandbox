@@ -33,6 +33,9 @@ public abstract class Property implements Serializable
 	/** validators */
 	private List<IValidator> validators;
 
+	private boolean visibleInList = true;
+
+
 	/**
 	 * Constructor
 	 * 
@@ -241,5 +244,29 @@ public abstract class Property implements Serializable
 		}
 		editor.setLabel(getLabel());
 	}
+
+
+	/**
+	 * @return true if this property will be shown in the list view, false
+	 *         otherwise
+	 */
+	public boolean isVisibleInList()
+	{
+		return visibleInList;
+	}
+
+
+	/**
+	 * Sets whether or not the property is listed in the listview
+	 * 
+	 * @param showInList
+	 * @return
+	 */
+	public Property setVisibleInList(boolean showInList)
+	{
+		this.visibleInList = showInList;
+		return this;
+	}
+
 
 }

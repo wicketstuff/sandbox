@@ -2,6 +2,7 @@ package wicketstuff.crud;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Stack;
 
@@ -47,7 +48,7 @@ public abstract class CrudPanel extends Panel
 	 * 
 	 * @param id
 	 *            component id
-	 * @param dp
+	 * @param dateProvider
 	 *            data provider
 	 */
 	public CrudPanel(String id, ISortableDataProvider dataProvider)
@@ -125,8 +126,7 @@ public abstract class CrudPanel extends Panel
 		if (views.isEmpty())
 		{
 			// initialize with the list view
-			ListPanel list = new ListPanel(VIEW_ID, properties, dataProvider, listener);
-			list.setFilterModel(filterModel);
+			Component list = newListView(VIEW_ID);
 			if (views.isEmpty())
 			{
 				views.push(list);
@@ -184,13 +184,13 @@ public abstract class CrudPanel extends Panel
 		public void onCreate()
 		{
 			final IModel create = createBeanModelFactory.newModel();
-			views.push(new EditPanel(VIEW_ID, create, properties, this));
+			views.push(newEditView(VIEW_ID, create));
 		}
 
 		/** {@inheritDoc} */
 		public void onDelete(IModel selected)
 		{
-			views.push(new DeletePanel(VIEW_ID, selected, properties, this));
+			views.push(newDeleteView(VIEW_ID, selected));
 		}
 
 		/** {@inheritDoc} */
@@ -204,8 +204,9 @@ public abstract class CrudPanel extends Panel
 		/** {@inheritDoc} */
 		public void onEdit(IModel selected)
 		{
-			views.push(new EditPanel(VIEW_ID, selected, properties, this));
+			views.push(newEditView(VIEW_ID, selected));
 		}
+
 
 		/** {@inheritDoc} */
 		public void onSave(IModel selected)
@@ -217,7 +218,7 @@ public abstract class CrudPanel extends Panel
 		/** {@inheritDoc} */
 		public void onView(IModel selected)
 		{
-			views.push(new ViewPanel(VIEW_ID, selected, properties, this));
+			views.push(newReadView(VIEW_ID, selected));
 		}
 	}
 
@@ -325,6 +326,81 @@ public abstract class CrudPanel extends Panel
 			views.pop();
 		}
 
+	}
+
+	protected Component newListView(String viewId)
+	{
+		ListPanel list = new ListPanel(viewId, properties, dataProvider, listener);
+		list.setFilterModel(filterModel);
+		return list;
+	}
+
+	/**
+	 * Creates delete view
+	 * 
+	 * @param viewId
+	 * @param selected
+	 * @return
+	 */
+	public Component newDeleteView(String viewId, IModel selected)
+	{
+		return new DeletePanel(viewId, selected, properties, listener);
+	}
+
+	/**
+	 * Creates edit view
+	 * 
+	 * @param viewId
+	 * @param selected
+	 * @return
+	 */
+	private Component newEditView(String viewId, IModel selected)
+	{
+		return new EditPanel(viewId, selected, properties, listener);
+	}
+
+	/**
+	 * Create read view
+	 * 
+	 * @param viewId
+	 * @param selected
+	 * @return
+	 */
+	protected Component newReadView(String viewId, IModel selected)
+	{
+		return new ViewPanel(viewId, selected, properties, listener);
+	}
+
+	/**
+	 * @return data provider
+	 */
+	protected final ISortableDataProvider getDataProvider()
+	{
+		return dataProvider;
+	}
+
+	/**
+	 * @return unmodifiable list of properties
+	 */
+	protected final List<Property> getProperties()
+	{
+		return Collections.unmodifiableList(properties);
+	}
+
+	/**
+	 * @return filter model
+	 */
+	protected final IModel getFilterModel()
+	{
+		return filterModel;
+	}
+
+	/**
+	 * @return crud listener
+	 */
+	protected final ICrudListener getListener()
+	{
+		return listener;
 	}
 
 

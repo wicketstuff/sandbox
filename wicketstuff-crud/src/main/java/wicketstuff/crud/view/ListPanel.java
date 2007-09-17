@@ -79,7 +79,10 @@ public class ListPanel extends Panel
 		List<IColumn> cols = new ArrayList<IColumn>(props.size());
 		for (Property prop : props)
 		{
-			cols.add(new PropertyColumnAdapter(prop));
+			if (prop.isVisibleInList())
+			{
+				cols.add(new PropertyColumnAdapter(prop));
+			}
 		}
 		cols.add(new ActionsColumn());
 
