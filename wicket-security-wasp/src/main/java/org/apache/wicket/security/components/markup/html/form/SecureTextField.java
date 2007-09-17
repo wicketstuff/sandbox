@@ -26,9 +26,9 @@ import org.apache.wicket.security.components.SecureComponentHelper;
 import org.apache.wicket.security.models.ISecureModel;
 
 /**
- * Textfield which automaticly switches between read and write mode based on the
- * user rights. By default it does not consider {@link ISecureModel}, unless
- * told to do so by either removing the securitycheck or by using the
+ * Textfield which automatically switches between read and write mode based on
+ * the user rights. By default it does not consider {@link ISecureModel},
+ * unless told to do so by either removing the securitycheck or by using the
  * specialized constructor.
  * 
  * @author marrink
