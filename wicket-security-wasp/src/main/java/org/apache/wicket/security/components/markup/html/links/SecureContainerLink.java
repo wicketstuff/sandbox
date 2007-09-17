@@ -23,7 +23,6 @@ import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.security.actions.AbstractWaspAction;
 import org.apache.wicket.security.actions.Enable;
-import org.apache.wicket.security.checks.AlwaysGrantedSecurityCheck;
 import org.apache.wicket.security.checks.ISecurityCheck;
 import org.apache.wicket.security.checks.LinkSecurityCheck;
 import org.apache.wicket.security.components.ISecureComponent;
@@ -43,18 +42,20 @@ import org.apache.wicket.security.components.SecureComponentHelper;
  * parent.add(new FirstPanel("replaceMe",new Model("hello"));
  * parent.add(new SecureContainerLink("link",SecondPanel.class,parent,"replaceMe"){....});
  * </code>
+ * Note that although this component has all the methods of
+ * {@link ISecureComponent} it is not a subclass of ISecureComponent because
+ * this would trigger an instantiation check on the link. And because this class
+ * is abstract you would be required to grant permissions for each (anonymous)
+ * subclass of this link. This is typically undesired behavior :).
  * 
  * @author marrink
  */
-public abstract class SecureContainerLink extends Link implements ISecureComponent
+public abstract class SecureContainerLink extends Link
 {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
-	// Custom check because not the link itself is important but the replacement
-	private static final ISecurityCheck CHECK = new AlwaysGrantedSecurityCheck();
 
 	private Class replacementClass;
 	private MarkupContainer containerParent;
@@ -223,6 +224,9 @@ public abstract class SecureContainerLink extends Link implements ISecureCompone
 	}
 
 	/**
+	 * Gets the security check attached to this component.
+	 * 
+	 * @return the check or null if there is no check
 	 * @see org.apache.wicket.security.components.ISecureComponent#getSecurityCheck()
 	 */
 	public ISecurityCheck getSecurityCheck()
