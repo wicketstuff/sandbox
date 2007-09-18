@@ -90,7 +90,7 @@ public abstract class CrudPanel extends Panel
 	 * 
 	 * @param id
 	 *            component id
-	 * @param dateProvider
+	 * @param dataProvider
 	 *            data provider
 	 */
 	public CrudPanel(String id, ISortableDataProvider dataProvider)
