@@ -19,7 +19,9 @@ package org.apache.wicket.security.hive.authentication;
 import org.apache.wicket.security.strategies.LoginException;
 
 /**
- * Simple {@link LoginContext} for a username and password, which may or may not be encrypted.
+ * Simple {@link LoginContext} for a username and password, which may or may not
+ * be encrypted.
+ * 
  * @author marrink
  */
 public abstract class UsernamePasswordContext extends LoginContext
@@ -27,24 +29,29 @@ public abstract class UsernamePasswordContext extends LoginContext
 	/**
 	 * The user attempting to login.
 	 */
-	private final String username;
+	private String username;
 	/**
 	 * The password for that user.
 	 */
-	private final String password;
+	private String password;
+
 	/**
 	 * Constructor for logoff purposes.
 	 */
 	public UsernamePasswordContext()
 	{
-		username=null;
-		password=null;
+		username = null;
+		password = null;
 	}
+
 	/**
 	 * 
 	 * Constructor for login purposes.
-	 * @param username the user attempting to login
-	 * @param password the password for the user
+	 * 
+	 * @param username
+	 *            the user attempting to login
+	 * @param password
+	 *            the password for the user
 	 */
 	public UsernamePasswordContext(String username, String password)
 	{
@@ -53,7 +60,9 @@ public abstract class UsernamePasswordContext extends LoginContext
 	}
 
 	/**
-	 * Constructor for logoff purposes should you have chosen allow additional logins.
+	 * Constructor for logoff purposes should you have chosen allow additional
+	 * logins.
+	 * 
 	 * @param sortOrder
 	 * @param allowAdditionalLogins
 	 * @see LoginContext#LoginContext(int, boolean)
@@ -61,39 +70,55 @@ public abstract class UsernamePasswordContext extends LoginContext
 	protected UsernamePasswordContext(int sortOrder, boolean allowAdditionalLogins)
 	{
 		super(sortOrder, allowAdditionalLogins);
-		username=null;
-		password=null;
+		username = null;
+		password = null;
 	}
+
 	/**
-	 * Constructor for login purposes should you have chosen allow additional logins.
-	 * @param username the user attempting to login
-	 * @param password the password for the user 
+	 * Constructor for login purposes should you have chosen allow additional
+	 * logins.
+	 * 
+	 * @param username
+	 *            the user attempting to login
+	 * @param password
+	 *            the password for the user
 	 * @param sortOrder
 	 * @param allowAdditionalLogins
 	 * @see LoginContext#LoginContext(int, boolean)
 	 */
-	protected UsernamePasswordContext(String username, String password,int sortOrder, boolean allowAdditionalLogins)
+	protected UsernamePasswordContext(String username, String password, int sortOrder,
+			boolean allowAdditionalLogins)
 	{
 		super(sortOrder, allowAdditionalLogins);
-		this.username=username;
-		this.password=password;
+		this.username = username;
+		this.password = password;
 	}
 
 	/**
+	 * The username and password are always null after this method returns.
+	 * 
 	 * @see org.apache.wicket.security.hive.authentication.LoginContext#login()
 	 */
 	public final Subject login() throws LoginException
 	{
-		if(username==null || password==null)
+		if (username == null || password == null)
 			throw new LoginException("Insufficient information to login");
-		return getSubject(username,password);
+		Subject subject = getSubject(username, password);
+		username = null;
+		password = null;
+		return subject;
 	}
+
 	/**
 	 * Validates the username and password.
-	 * @param username the user attempting to login
-	 * @param password the password for the user
+	 * 
+	 * @param username
+	 *            the user attempting to login
+	 * @param password
+	 *            the password for the user
 	 * @return a {@link Subject} representing the user.
-	 * @throws LoginException if the user could not be validated
+	 * @throws LoginException
+	 *             if the user could not be validated
 	 */
-	protected abstract Subject getSubject(String username, String password)throws LoginException;
+	protected abstract Subject getSubject(String username, String password) throws LoginException;
 }

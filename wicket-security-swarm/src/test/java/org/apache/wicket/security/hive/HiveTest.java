@@ -111,7 +111,7 @@ public class HiveTest extends TestCase
 	}
 
 	/**
-	 * @see BasicHive#hasPermision(org.apache.wicket.security.hive.authentication.Subject,
+	 * @see BasicHive#hasPermission(org.apache.wicket.security.hive.authentication.Subject,
 	 *      org.apache.wicket.security.hive.authorization.Permission)
 	 */
 	public void testHasPermision()
@@ -120,11 +120,11 @@ public class HiveTest extends TestCase
 		assertFalse(hive.containsPrincipal(new EverybodyPrincipal()));
 		hive.addPermission(new EverybodyPrincipal(), new TestPermission("foobar"));
 		assertTrue(hive.containsPrincipal(new EverybodyPrincipal()));
-		assertTrue(hive.hasPermision(null, new TestPermission("foobar")));
-		assertFalse(hive.hasPermision(null, new TestPermission("foo.bar")));
+		assertTrue(hive.hasPermission(null, new TestPermission("foobar")));
+		assertFalse(hive.hasPermission(null, new TestPermission("foo.bar")));
 
 		hive.addPermission(new EverybodyPrincipal(), new TestPermission("test", "read, write"));
-		assertTrue(hive.hasPermision(null, new TestPermission("test", "read")));
-		assertTrue(hive.hasPermision(null, new TestPermission("test")));
+		assertTrue(hive.hasPermission(null, new TestPermission("test", "read")));
+		assertTrue(hive.hasPermission(null, new TestPermission("test")));
 	}
 }

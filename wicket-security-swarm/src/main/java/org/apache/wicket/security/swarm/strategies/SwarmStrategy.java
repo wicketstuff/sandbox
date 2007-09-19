@@ -26,6 +26,7 @@ import org.apache.wicket.security.hive.HiveMind;
 import org.apache.wicket.security.hive.authentication.LoginContainer;
 import org.apache.wicket.security.hive.authentication.LoginContext;
 import org.apache.wicket.security.hive.authentication.Subject;
+import org.apache.wicket.security.hive.authorization.Permission;
 import org.apache.wicket.security.hive.authorization.permissions.ComponentPermission;
 import org.apache.wicket.security.hive.authorization.permissions.DataPermission;
 import org.apache.wicket.security.models.ISecureModel;
@@ -110,6 +111,23 @@ public class SwarmStrategy extends ClassAuthorizationStrategy
 	}
 
 	/**
+	 * Performs the actual permission check at the {@link Hive}.
+	 * 
+	 * @param permission
+	 *            the permission to verify
+	 * @return true if the subject has or implies the permission, false
+	 *         otherwise
+	 * @throws SecurityException
+	 *             if the permission is null
+	 */
+	public boolean hasPermission(Permission permission)
+	{
+		if (permission == null)
+			throw new SecurityException("permission is not allowed to be null");
+		return getHive().hasPermission(getSubject(), permission);
+	}
+
+	/**
 	 * @see org.apache.wicket.security.strategies.WaspAuthorizationStrategy#isClassAuthenticated(java.lang.Class)
 	 */
 	public boolean isClassAuthenticated(Class clazz)
@@ -123,8 +141,8 @@ public class SwarmStrategy extends ClassAuthorizationStrategy
 	 */
 	public boolean isClassAuthorized(Class clazz, WaspAction action)
 	{
-		return getHive().hasPermision(getSubject(),
-				new ComponentPermission(SecureComponentHelper.alias(clazz), (SwarmAction)action));
+		return hasPermission(new ComponentPermission(SecureComponentHelper.alias(clazz),
+				(SwarmAction)action));
 	}
 
 	/**
@@ -143,8 +161,7 @@ public class SwarmStrategy extends ClassAuthorizationStrategy
 	 */
 	public boolean isComponentAuthorized(Component component, WaspAction action)
 	{
-		return getHive().hasPermision(getSubject(),
-				new ComponentPermission(component, (SwarmAction)action));
+		return hasPermission(new ComponentPermission(component, (SwarmAction)action));
 	}
 
 	/**
@@ -173,7 +190,7 @@ public class SwarmStrategy extends ClassAuthorizationStrategy
 			permission = new DataPermission(component, (SwarmModel)model, (SwarmAction)action);
 		else
 			permission = new DataPermission(String.valueOf(model), action.getName());
-		return getHive().hasPermision(getSubject(), permission);
+		return hasPermission(permission);
 
 	}
 

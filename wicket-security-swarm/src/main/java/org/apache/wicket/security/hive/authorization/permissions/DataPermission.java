@@ -57,6 +57,17 @@ public class DataPermission extends ActionPermission
 	 * @param name
 	 * @param actions
 	 */
+	public DataPermission(String name, SwarmAction actions)
+	{
+		super(name, actions);
+	}
+
+	/**
+	 * Creates a new DataPermission with the specified name and actions.
+	 * 
+	 * @param name
+	 * @param actions
+	 */
 	public DataPermission(String name, String actions)
 	{
 		super(name, getAction(actions));
