@@ -23,7 +23,7 @@ import org.apache.wicket.security.strategies.LoginException;
  * A LoginContext is little more than a factory to create a {@link Subject} and
  * can be discarded afterwards. Usually it contains some credentials such as
  * username and password. Note that generally it is no a good idea to store
- * those type of credentials in the session, so if you plan on keeping a this
+ * those type of credentials in the session, so if you plan on keeping this
  * context in the session be sure to clear them before you return a Subject in
  * {@link #login()}. Some applications will require you to login with two or
  * more different LoginContexts before a user is fully authenticated. For that
@@ -35,7 +35,7 @@ import org.apache.wicket.security.strategies.LoginException;
  * order of login. The context also contains a flag to indicate if an additional
  * login is allowed. Note that both the sort order and the additional login flag
  * must be constant. Also note that all LoginContexts of the same class and with
- * the same sort order are equal, thus for logoff you do need to keep a
+ * the same sort order are equal, thus for logoff you do not need to keep a
  * reference to the context but can simply use a new instance.
  * 
  * @author marrink

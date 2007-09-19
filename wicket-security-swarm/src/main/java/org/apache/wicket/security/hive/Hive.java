@@ -31,7 +31,7 @@ import org.apache.wicket.security.hive.authorization.Principal;
  * The {@link HiveMind} keeps a registry of hives based on keys, everyone with
  * the right key can access that hive, this allows you to choose if multiple
  * (different) webapps all share the same same hive or let each instance of an
- * application have there own hive. The key (sometimes refered to as the
+ * application have there own hive. The key (sometimes referred to as the
  * "queen", to stick with wasp terminology ;)) can be any object. A good choice
  * would be the application itself or if it is a web application the contextname
  * could be used.
@@ -49,7 +49,7 @@ public interface Hive
 	public boolean containsPrincipal(Principal principal);
 
 	/**
-	 * Checks if this hive contains exactly the permision.
+	 * Checks if this hive contains exactly the permission.
 	 * 
 	 * @param permission
 	 * @return true if the hive contains the permission.
@@ -63,8 +63,8 @@ public interface Hive
 	 * @param subject
 	 *            the (optional) subject
 	 * @param permission
-	 *            the permision to check.
+	 *            the permission to check.
 	 * @return true if the subject has the permission, false otherwise.
 	 */
-	public boolean hasPermision(Subject subject, Permission permission);
+	public boolean hasPermission(Subject subject, Permission permission);
 }

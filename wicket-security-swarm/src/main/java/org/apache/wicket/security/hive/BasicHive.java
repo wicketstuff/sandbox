@@ -143,10 +143,10 @@ public class BasicHive implements Hive
 	}
 
 	/**
-	 * @see org.apache.wicket.security.hive.Hive#hasPermision(org.apache.wicket.security.hive.authentication.Subject,
+	 * @see org.apache.wicket.security.hive.Hive#hasPermission(org.apache.wicket.security.hive.authentication.Subject,
 	 *      org.apache.wicket.security.hive.authorization.Permission)
 	 */
-	public boolean hasPermision(Subject subject, Permission permission)
+	public boolean hasPermission(Subject subject, Permission permission)
 	{
 		// TODO caching
 		if (hasPrincipal(subject, principals.get(permission)))
