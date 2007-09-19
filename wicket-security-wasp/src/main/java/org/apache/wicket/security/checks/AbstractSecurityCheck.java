@@ -64,7 +64,7 @@ public abstract class AbstractSecurityCheck implements ISecurityCheck
 	}
 
 	/**
-	 * Utility meyhod to get the class of the loginpage.
+	 * Utility method to get the class of the loginpage.
 	 * 
 	 * @return the login page
 	 * @see WaspApplication#getLoginPage()
