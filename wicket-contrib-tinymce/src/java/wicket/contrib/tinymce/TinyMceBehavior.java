@@ -143,7 +143,7 @@ public class TinyMceBehavior extends AbstractDefaultAjaxBehavior
 	{
 		if (!ajax)
 		{
-			tag.put("class", "mceEditor");
+			tag.put("class", settings.getId());
 		}
 	}
 
