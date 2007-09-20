@@ -1,10 +1,14 @@
 package org.wicketstuff.pickwick.auth;
 
 import java.io.File;
+import java.util.Collections;
+import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.wicketstuff.pickwick.backend.ImageUtils;
 import org.wicketstuff.pickwick.backend.Settings;
+import org.wicketstuff.pickwick.bean.Role;
 import org.wicketstuff.pickwick.bean.Sequence;
 
 import com.google.inject.Inject;
@@ -25,14 +29,14 @@ public class PickwickAuthorization {
 	 * @param session current {@link PickwickSession}
 	 */
 	public static void check(String imagePath, PickwickSession session){
-		String role = session.getUser().getRole();
+		List<Role> roles = session.getUser().getRoles();
 		File f = new File(imagePath);
 		if (f.exists()){
 			while (!f.isDirectory()) {
 				f = new File(f.getParent());
 				Sequence s = ImageUtils.readSequence(f);
 				if (s != null){
-					if (!isAuthorized(role, s.getRole())){
+					if (!isAuthorized(roles, s.getRoles())){
 						throw new RestartResponseAtInterceptPageException(PickwickLoginPage.class);
 					}else{
 						return;
@@ -51,8 +55,31 @@ public class PickwickAuthorization {
 	 * @param sequenceRole sequence role
 	 * @return true if roles match
 	 */
-	public static boolean isAuthorized(String userRole, String sequenceRole){
-		return userRole == null || sequenceRole == null || sequenceRole.equals(userRole);
+	public static boolean isAuthorized(List<Role> userRoles, List<Role> sequenceRoles){
+		if(sequenceRoles == null){
+			return true;
+		}
+		
+		if (userRoles == null || userRoles.isEmpty()){
+			if(sequenceRoles == null){
+				return true;
+			}else{
+				return false;
+			}
+		}else{
+			return sequenceRoles.isEmpty() || intersect(userRoles, sequenceRoles);
+		}
+	}
+	
+	private static boolean intersect(List<Role> list1, List<Role> list2){
+		for (Role role1 : list1){
+			for(Role role2 : list2){
+				if(role1.getLabel().equals(role2.getLabel())){
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 }

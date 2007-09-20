@@ -2,21 +2,30 @@ package org.wicketstuff.pickwick.backend.panel;
 
 
 import java.io.File;
+import java.util.ArrayList;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitButton;
+import org.apache.wicket.extensions.markup.html.form.palette.Palette;
+import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.Model;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wicketstuff.dojo.markup.html.form.DojoDatePicker;
 import org.wicketstuff.dojo.markup.html.richtexteditor.DojoRichTextEditorBehavior;
 import org.wicketstuff.pickwick.backend.ImageUtils;
+import org.wicketstuff.pickwick.backend.Settings;
+import org.wicketstuff.pickwick.bean.Role;
+import org.wicketstuff.pickwick.bean.Roles;
 import org.wicketstuff.pickwick.bean.Sequence;
+
+import com.google.inject.Inject;
 
 /**
  * FIXME get image directory using wrapped model to avoid replacing the whole
@@ -26,6 +35,9 @@ public abstract class SequencePropertiesPanel extends Panel {
 	private static final Logger log = LoggerFactory.getLogger(SequencePropertiesPanel.class);
 	private File imageDirectory;
 
+	@Inject
+	Settings settings;
+	
 	public static final String FORM = "sequenceForm";
 
 	public static final String TITLE = "title";
@@ -34,7 +46,7 @@ public abstract class SequencePropertiesPanel extends Panel {
 
 	public static final String DATE = "date";
 	
-	public static final String ROLE = "role";
+	public static final String ROLE = "roles";
 
 	Form form;
 
@@ -54,7 +66,11 @@ public abstract class SequencePropertiesPanel extends Panel {
 		form.add(title);
 		form.add(description);
 		form.add(date);
-		form.add(new TextField(ROLE));
+		
+		Roles roles = settings.getUserManagement().getAllRoles();
+		Palette role = new Palette("roles", new Model(roles), new ChoiceRenderer("label", "label"), 6, false);
+		form.add(role);
+		
 		form.add(new AjaxSubmitButton("save", form) {
 
 			@Override
@@ -82,6 +98,7 @@ public abstract class SequencePropertiesPanel extends Panel {
 		Sequence sequenceProperties = ImageUtils.readSequence(file);
 		if (sequenceProperties == null){
 			sequenceProperties = new Sequence();
+			sequenceProperties.setRoles(new ArrayList<Role>());
 		}
 		log.debug("sequence: " + sequenceProperties);
 		form.setModel(new CompoundPropertyModel(sequenceProperties));

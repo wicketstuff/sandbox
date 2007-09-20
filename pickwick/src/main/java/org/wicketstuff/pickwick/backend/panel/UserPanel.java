@@ -1,10 +1,14 @@
 package org.wicketstuff.pickwick.backend.panel;
 
+import java.util.ArrayList;
+
 import org.apache.wicket.Component;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
+import org.apache.wicket.extensions.markup.html.form.palette.Palette;
 import org.apache.wicket.markup.html.form.CheckBox;
+import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -12,6 +16,8 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.wicketstuff.pickwick.backend.Settings;
+import org.wicketstuff.pickwick.bean.Role;
+import org.wicketstuff.pickwick.bean.Roles;
 import org.wicketstuff.pickwick.bean.User;
 
 import com.google.inject.Inject;
@@ -36,7 +42,9 @@ public abstract class UserPanel extends Panel {
 		form = new Form("userForm", userModel);
 		
 		if (userModel == null){
-			form.setModel(new CompoundPropertyModel(new User()));
+			User user = new User();
+			user.setRoles(new ArrayList<Role>());
+			form.setModel(new CompoundPropertyModel(user));
 		}
 		add(form);
 		
@@ -44,7 +52,8 @@ public abstract class UserPanel extends Panel {
 		name.setOutputMarkupId(true);
 		form.add(name);
 
-		TextField role = new TextField("role");
+		Roles roles = settings.getUserManagement().getAllRoles();
+		Palette role = new Palette("roles", new Model(roles), new ChoiceRenderer("label", "label"), 6, false);
 		form.add(role);
 		
 		CheckBox admin = new CheckBox("admin");

@@ -1,10 +1,11 @@
 package org.wicketstuff.pickwick.bean;
 
 import java.io.Serializable;
+import java.util.List;
 
 
 public class User implements Serializable, Comparable<User>{
-	private String role;
+	private List<Role> roles;
 	private String name;
 	private boolean admin;
 	public boolean isAdmin() {
@@ -19,11 +20,11 @@ public class User implements Serializable, Comparable<User>{
 	public void setAdmin(boolean admin) {
 		this.admin = admin;
 	}
-	public String getRole() {
-		return role;
+	public List<Role> getRoles() {
+		return roles;
 	}
-	public void setRole(String role) {
-		this.role = role;
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
 	}
 	public int compareTo(User arg0) {
 		if (this.name==null || arg0.getName() == null) return 0;

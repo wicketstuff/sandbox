@@ -39,6 +39,7 @@ import org.wicketstuff.pickwick.Utils;
 import org.wicketstuff.pickwick.auth.PickwickAuthorization;
 import org.wicketstuff.pickwick.bean.Folder;
 import org.wicketstuff.pickwick.bean.Image;
+import org.wicketstuff.pickwick.bean.Role;
 import org.wicketstuff.pickwick.bean.Sequence;
 
 import com.google.inject.Inject;
@@ -201,22 +202,22 @@ public class ImageUtils {
 		return new Folder(settings.getImageDirectoryRoot(), getSubFolder(this.settings.getImageDirectoryRoot(), null));
 	}
 	
-	public Folder getFolderFor(String userRole){
+	public Folder getFolderFor(List<Role> userRole){
 		return new Folder(settings.getImageDirectoryRoot(), getSubFolder(this.settings.getImageDirectoryRoot(), userRole));
 	}
 	
-	private ArrayList<Folder> getSubFolder(File folder, String userRole){
+	private ArrayList<Folder> getSubFolder(File folder, List<Role> userRole){
 		
 		if (folder.isDirectory()){
 			ArrayList<Folder> toReturn = new ArrayList<Folder>();
 			for (File file : folder.listFiles()){
 				if (file.isDirectory()){
 					Sequence sequence = readSequence(file);
-					String role = null;
+					List<Role> roles = null;
 					if (sequence != null){
-						role = sequence.getRole();
+						roles = sequence.getRoles();
 					}
-					if (PickwickAuthorization.isAuthorized(userRole, role)){
+					if (PickwickAuthorization.isAuthorized(userRole, roles)){
 						Folder current = new Folder(file);
 						current.setSubFolders(getSubFolder(file, userRole));
 						toReturn.add(current);
