@@ -24,6 +24,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
+import java.util.UUID;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
@@ -48,6 +50,7 @@ public class TinyMCESettings implements Serializable
 	private static final long serialVersionUID = 1L;
 	private static final Log log = LogFactory.getLog(TinyMCESettings.class);
 
+	private final String id = UUID.randomUUID().toString();
 	private Mode mode;
 	private Theme theme;
 	private Location toolbarLocation;
@@ -273,7 +276,7 @@ public class TinyMCESettings implements Serializable
 		else
 		{
 			buffer.append("\n\t").append("mode : \"specific_textareas\"");
-			buffer.append(",\n\t").append("editor_selector : \"mceEditor\"");
+			buffer.append(",\n\t").append("editor_selector : \"" + id + "\"");
 		}
 		// if (isExactMode())
 		// {
@@ -580,6 +583,14 @@ public class TinyMCESettings implements Serializable
 		}
 	}
 
+	/**
+	 * @return
+	 */
+	public String getId()
+	{
+		return id;
+	}
+
 	private class ControlPredicate implements Predicate
 	{
 
@@ -814,5 +825,6 @@ public class TinyMCESettings implements Serializable
 	public static final Button fontsizeselect = new Button("fontsizeselect");
 	public static final Button forecolor = new Button("forecolor");
 	public static final Button backcolor = new Button("backcolor");
+
 
 }
