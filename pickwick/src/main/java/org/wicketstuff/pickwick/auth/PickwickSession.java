@@ -1,5 +1,7 @@
 package org.wicketstuff.pickwick.auth;
 
+import java.util.ArrayList;
+
 import org.apache.wicket.Request;
 import org.apache.wicket.Session;
 import org.apache.wicket.authentication.AuthenticatedWebApplication;
@@ -9,6 +11,7 @@ import org.apache.wicket.guice.GuiceInjectorHolder;
 import org.wicketstuff.pickwick.GuiceWebApplicationFactory;
 import org.wicketstuff.pickwick.PickwickApplication;
 import org.wicketstuff.pickwick.backend.Settings;
+import org.wicketstuff.pickwick.bean.Role;
 import org.wicketstuff.pickwick.bean.User;
 
 import com.google.inject.Inject;
@@ -55,7 +58,11 @@ public class PickwickSession extends AuthenticatedWebSession {
 
 	@Override
 	public Roles getRoles() {
-		return new Roles(user.getRole());
+		ArrayList<String> labels = new ArrayList();
+		for(Role role : user.getRoles()){
+			labels.add(role.getLabel());
+		}
+		return new Roles(labels.toArray(new String[labels.size()]));
 	}
 
 	/**
@@ -72,7 +79,7 @@ public class PickwickSession extends AuthenticatedWebSession {
 	public User getDefaultUser(){
 		User user = new User();
 		user.setName("anonymous");
-		user.setRole("anonymous");
+		//user.setRole("anonymous");
 		user.setAdmin(false);
 		return user;
 	}

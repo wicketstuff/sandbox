@@ -2,6 +2,8 @@ package org.wicketstuff.pickwick.backend.users;
 
 import java.util.List;
 
+import org.wicketstuff.pickwick.bean.Role;
+import org.wicketstuff.pickwick.bean.Roles;
 import org.wicketstuff.pickwick.bean.User;
 
 import com.google.inject.ImplementedBy;
@@ -45,5 +47,17 @@ public interface UserManagement {
 	 * @return true if the user is authenticated, otherwise return false
 	 */
 	public boolean checkUser(String userName, String password); 
+	
+	/**
+	 * Return the role list
+	 * @return the role list
+	 */
+	public Roles getAllRoles();
+	
+	/**
+	 * Add a new Role
+	 *
+	 */
+	public void addRole(Role role);
 	
 }

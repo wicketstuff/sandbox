@@ -2,6 +2,7 @@ package org.wicketstuff.pickwick.bean;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
@@ -10,7 +11,7 @@ public class Sequence implements Serializable{
 	private String title;
 	private String description;
 	private Date date;
-	private String role;
+	private List<Role> roles;
 	
 	public Date getDate() {
 		return date;
@@ -30,10 +31,10 @@ public class Sequence implements Serializable{
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	public String getRole() {
-		return role;
+	public List<Role> getRoles() {
+		return roles;
 	}
-	public void setRole(String role) {
-		this.role = role;
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
 	}
 }

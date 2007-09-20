@@ -11,15 +11,20 @@ import java.util.Map.Entry;
 
 import org.apache.commons.io.IOUtils;
 import org.wicketstuff.pickwick.backend.XmlBeanMapper;
+import org.wicketstuff.pickwick.bean.Role;
+import org.wicketstuff.pickwick.bean.Roles;
 import org.wicketstuff.pickwick.bean.User;
 import org.wicketstuff.pickwick.bean.Users;
 
 public class XmlUserManagement implements UserManagement {
 	private static final String USER_URI = "users.xml";
+	private static final String ROLE_URI = "roles.xml";
 
-	private XmlBeanMapper<Users> mapper;
+	private XmlBeanMapper<Users> userMapper;
+	private XmlBeanMapper<Roles> roleMapper;
 
 	private static Users users;
+	private static Roles roles;
 
 	private Users getUserList() {
 		if (users == null) {
@@ -28,9 +33,18 @@ public class XmlUserManagement implements UserManagement {
 		}
 		return users;
 	}
+	
+	public Roles getAllRoles() {
+		if (roles == null){
+			roles = new Roles();
+			readRoles();
+		}
+		return roles;
+	}
 
 	public XmlUserManagement() {
-		mapper = new XmlBeanMapper<Users>(Users.class);
+		userMapper = new XmlBeanMapper<Users>(Users.class);
+		roleMapper = new XmlBeanMapper<Roles>(Roles.class);
 	}
 
 	/**
@@ -42,7 +56,24 @@ public class XmlUserManagement implements UserManagement {
 		// try to read the file
 		FileInputStream in = null;
 		try {
-			users = mapper.bindInBean(in = new FileInputStream(new File(USER_URI)));
+			users = userMapper.bindInBean(in = new FileInputStream(new File(USER_URI)));
+		} catch (FileNotFoundException e) {
+			System.out.println(e);
+		} finally {
+			IOUtils.closeQuietly(in);
+		}
+	}
+	
+	/**
+	 * method reading the list of all users
+	 * 
+	 * @param users2
+	 */
+	private void readRoles() {
+		// try to read the file
+		FileInputStream in = null;
+		try {
+			roles = roleMapper.bindInBean(in = new FileInputStream(new File(ROLE_URI)));
 		} catch (FileNotFoundException e) {
 			System.out.println(e);
 		} finally {
@@ -57,7 +88,7 @@ public class XmlUserManagement implements UserManagement {
 		}
 		
 		existing.setName(user.getName());
-		existing.setRole(user.getRole());
+		existing.setRoles(user.getRoles());
 		
 		getUserList().put(user.getName(), existing);
 		saveUsers();
@@ -87,7 +118,7 @@ public class XmlUserManagement implements UserManagement {
 	private void saveUsers() {
 		FileOutputStream out = null;
 		try {
-			mapper.serializeInXml(getUserList(), out = new FileOutputStream(new File(USER_URI)));
+			userMapper.serializeInXml(getUserList(), out = new FileOutputStream(new File(USER_URI)));
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -95,9 +126,32 @@ public class XmlUserManagement implements UserManagement {
 			IOUtils.closeQuietly(out);
 		}
 	}
+	
+	/**
+	 * Save role in the file
+	 * 
+	 */
+	private void saveRoles() {
+		FileOutputStream out = null;
+		try {
+			roleMapper.serializeInXml(getAllRoles(), out = new FileOutputStream(new File(ROLE_URI)));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			IOUtils.closeQuietly(out);
+		}
+	}
+	
 
 	public boolean checkUser(String userName, String password) {
 		return getUserList().get(userName) != null;
 	}
+
+	public void addRole(Role role) {
+		roles.add(role);
+		saveRoles();
+	}
+
 
 }

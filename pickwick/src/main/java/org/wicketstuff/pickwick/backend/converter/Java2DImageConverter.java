@@ -22,10 +22,12 @@ public class Java2DImageConverter implements ImageConverter {
 
 	public void scaleImage(File source, File destination, int size, Float quality) throws ImageConversionException {
 		BufferedImage image = null;
-
 		try {
 		    image = ImageIO.read(source);
-		} catch (IOException ioe) {}
+			if(!destination.exists()) destination.createNewFile();
+		} catch (IOException ioe) {
+		    throw new RuntimeException(ioe);
+		}
 
 		int x = image.getWidth();
 		int y = image.getHeight();
@@ -38,7 +40,7 @@ public class Java2DImageConverter implements ImageConverter {
 			os = new FileOutputStream(destination);
 		    ImageIO.write(createResizedCopy(image, new_x, new_y, true), "jpeg", os);
 		} catch (IOException e) {
-		    // TODO log error
+		    throw new RuntimeException(e);
 		} finally{
 			IOUtils.closeQuietly(os);
 		}

@@ -70,7 +70,8 @@ public class FolderTreePanel extends Panel{
 	 */
 	protected TreeModel createTreeModel() 
 	{
-		return convertToTreeModel(imageUtils.getFolderFor(PickwickSession.get().getUser().getRole()));
+		return convertToTreeModel(imageUtils.getFolderFor(PickwickSession.get().getUser().getRoles()));
+		//return convertToTreeModel(imageUtils.getFolder());
 	}
 	
 	protected TreeModel convertToTreeModel(Folder folder)
