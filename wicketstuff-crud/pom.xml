@@ -26,6 +26,14 @@
 
 	<name>Wicket CRUD Panel</name>
 
+	<scm>
+		<connection>scm:svn:https://wicket-stuff.svn.sourceforge.net/svnroot/wicket-stuff/trunk/wicketstuff-crud</connection>
+		<developerConnection>scm:svn:https://wicket-stuff.svn.sourceforge.net/svnroot/wicket-stuff/trunk/wicketstuff-crud</developerConnection>
+		<url>scm:svn:https://wicket-stuff.svn.sourceforge.net/svnroot/wicket-stuff/trunk/wicketstuff-crud</url>
+	</scm>
+
+
+
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.wicket</groupId>
