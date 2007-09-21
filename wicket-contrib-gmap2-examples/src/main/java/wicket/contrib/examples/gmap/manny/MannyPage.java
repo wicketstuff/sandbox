@@ -1,9 +1,11 @@
 package wicket.contrib.examples.gmap.manny;
 
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.AjaxFallbackLink;
+import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.RepeatingView;
 
 import wicket.contrib.examples.WicketExamplePage;
-import wicket.contrib.gmap.GMap2;
 
 /**
  * SimplePage for the wicket-contrib-gmap2 project
@@ -12,12 +14,49 @@ public class MannyPage extends WicketExamplePage {
 
 	private static final long serialVersionUID = 1L;
 
+	final RepeatingView repeating;
+
+	int panels = 1;
+
 	public MannyPage() {
-		RepeatingView repeating = new RepeatingView("repeating");
-		add(repeating);
-		repeating.add(new MannyPanel("1", LOCALHOST));
-		repeating.add(new MannyPanel("2", LOCALHOST));
-		repeating.add(new MannyPanel("3", LOCALHOST));
+		final Panel repeaterPanel = new RepeaterPanel("repeater");
+		add(repeaterPanel);
+		repeating = new RepeatingView("repeating");
+		repeaterPanel.add(repeating);
+
+		AjaxFallbackLink more = new AjaxFallbackLink("more") {
+			@Override
+			public void onClick(AjaxRequestTarget target) {
+				MannyPage.this.addPanel();
+				target.addComponent(repeaterPanel);
+			}
+		};
+		add(more);
+
+		AjaxFallbackLink less = new AjaxFallbackLink("less") {
+			@Override
+			public void onClick(AjaxRequestTarget target) {
+				MannyPage.this.removePanel();
+				target.addComponent(repeaterPanel);
+			}
+		};
+		add(less);
+
+		for (int i = 1; i <= panels; i++) {
+			repeating.add(new MannyPanel(Integer.toString(i), LOCALHOST));
+		}
+	}
+
+	protected void removePanel() {
+		if (panels > 0) {
+			panels--;
+			repeating.remove(Integer.toString(panels));
+		}
+	}
+
+	protected void addPanel() {
+		panels++;
+		repeating.add(new MannyPanel(Integer.toString(panels), LOCALHOST));
 	}
 
 	/**
