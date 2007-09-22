@@ -66,6 +66,7 @@ public class GLatLng implements GValue
 		return lng;
 	}
 
+	@Override
 	public String toString()
 	{
 		return "GLatLng[lat=" + lat + ", lng=" + lng + ", unbounded=" + unbounded + "]";
@@ -102,53 +103,15 @@ public class GLatLng implements GValue
 	 */
 	public static GLatLng parse(String value)
 	{
-		StringTokenizer tokenizer;
 		try
 		{
-			tokenizer = new StringTokenizer(value, "(, )");
-		}
-		catch (NullPointerException e)
-		{
-			return null;
-		}
-		if (tokenizer.countTokens() != 2)
-		{
-			return null;
-		}
-		try
-		{
+			StringTokenizer tokenizer = new StringTokenizer(value, "(, )");
+			
 			float lat = Float.valueOf(tokenizer.nextToken());
 			float lng = Float.valueOf(tokenizer.nextToken());
 			return new GLatLng(lat, lng);
 		}
-		catch (NumberFormatException e)
-		{
-			return null;
-		}
-	}
-
-	public static GLatLng parseCoordinates(String value)
-	{
-		StringTokenizer tokenizer;
-		try
-		{
-			tokenizer = new StringTokenizer(value, ",");
-		}
-		catch (NullPointerException e)
-		{
-			return null;
-		}
-		if (tokenizer.countTokens() != 3)
-		{
-			return null;
-		}
-		try
-		{
-			float lng = Float.valueOf(tokenizer.nextToken());
-			float lat = Float.valueOf(tokenizer.nextToken());
-			return new GLatLng(lat, lng);
-		}
-		catch (NumberFormatException e)
+		catch (Exception e)
 		{
 			return null;
 		}

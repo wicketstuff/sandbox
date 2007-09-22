@@ -53,6 +53,7 @@ public class GLatLngBounds implements GValue
 		return ne;
 	}
 	
+	@Override
 	public String toString()
 	{
 		return getJSconstructor();

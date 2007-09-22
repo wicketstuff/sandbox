@@ -31,6 +31,7 @@ public class ObjectLiteral
 		buffer.append(value);
 	}
 
+	@Override
 	public String toString() {
 		buffer.append("}");
 		

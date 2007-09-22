@@ -43,6 +43,7 @@ public class GPolygon extends GOverlay
 		this.fillOpacity = fillOpacity;
 	}
 
+	@Override
 	protected String getJSconstructor()
 	{
 		StringBuffer buffer = new StringBuffer();

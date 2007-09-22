@@ -38,6 +38,7 @@ public class GPolyline extends GOverlay
 		this.opacity = opacity;
 	}
 
+	@Override
 	protected String getJSconstructor()
 	{
 		StringBuffer buffer = new StringBuffer();
