@@ -27,6 +27,7 @@ public abstract class GEventListener extends AbstractDefaultAjaxBehavior
 {	
 	private static final long serialVersionUID = 1L;
 
+	@Override
 	protected void onBind()
 	{
 		if (!(getComponent() instanceof GMap2)) {

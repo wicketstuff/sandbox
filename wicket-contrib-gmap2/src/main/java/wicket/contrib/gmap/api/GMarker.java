@@ -48,6 +48,7 @@ public class GMarker extends GOverlay
 		return gLatLng;
 	}
 
+	@Override
 	protected String getJSconstructor()
 	{
 		StringBuffer buffer = new StringBuffer();
