@@ -18,11 +18,16 @@
 <body>
 
 <span wicket:id="mainNavigation" />
-How manny do you need?
+How many do you need?
 <center>
+
 <a wicket:id="more">more</a>
 <a wicket:id="less">less</a>
-<wicket:panel wicket:id="repeater"></wicket:panel>
+
+<div wicket:id="container">
+	<div wicket:id="repeating" style="width: 600px; height: 400px;">Map</div>
+</div>
+
 </center>
 </body>
 </html>

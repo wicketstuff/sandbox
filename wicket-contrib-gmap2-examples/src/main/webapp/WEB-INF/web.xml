@@ -43,11 +43,11 @@
 	</filter>
 
 	<filter>
-		<filter-name>MannyGMapsApplication</filter-name>
+		<filter-name>ManyGMapsApplication</filter-name>
 		<filter-class>org.apache.wicket.protocol.http.WicketFilter</filter-class>
 		<init-param>
 		  <param-name>applicationClassName</param-name>
-		  <param-value>wicket.contrib.examples.gmap.manny.MannyGMapsApplication</param-value>
+		  <param-value>wicket.contrib.examples.gmap.many.ManyGMapsApplication</param-value>
 		</init-param>
 	</filter>
 
@@ -58,7 +58,7 @@
 
 	<filter-mapping>
 		<filter-name>BottomGMapApplication</filter-name>
-		<url-pattern>/bottom/*</url-pattern>
+		<url-pattern>/gmap2/*</url-pattern>
 	</filter-mapping>
 
 	<filter-mapping>
@@ -72,8 +72,8 @@
 	</filter-mapping>
 
 	<filter-mapping>
-		<filter-name>MannyGMapsApplication</filter-name>
-		<url-pattern>/manny/*</url-pattern>
+		<filter-name>ManyGMapsApplication</filter-name>
+		<url-pattern>/many/*</url-pattern>
 	</filter-mapping>
 
     <welcome-file-list>

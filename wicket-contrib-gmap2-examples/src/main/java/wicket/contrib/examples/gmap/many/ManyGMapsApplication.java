@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package wicket.contrib.examples.gmap.manny;
+package wicket.contrib.examples.gmap.many;
 
 import org.apache.wicket.Page;
 import org.apache.wicket.protocol.http.HttpSessionStore;
@@ -25,7 +25,7 @@ import org.apache.wicket.util.time.Duration;
 
 import wicket.contrib.examples.WicketExampleApplication;
 
-public class MannyGMapsApplication extends WicketExampleApplication
+public class ManyGMapsApplication extends WicketExampleApplication
 {
 
 
@@ -40,7 +40,7 @@ public class MannyGMapsApplication extends WicketExampleApplication
 
 	public Class<? extends Page> getHomePage()
 	{
-		return MannyPage.class;
+		return ManyPage.class;
 	}
 
 	@Override
