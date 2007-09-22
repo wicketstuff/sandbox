@@ -7,11 +7,20 @@
     <display-name>Wicket Examples</display-name>
 
 	<filter>
-		<filter-name>GMapExampleApplication</filter-name>
+		<filter-name>TopGMapApplication</filter-name>
 		<filter-class>org.apache.wicket.protocol.http.WicketFilter</filter-class>
 		<init-param>
 		  <param-name>applicationClassName</param-name>
-		  <param-value>wicket.contrib.examples.gmap.GMapExampleApplication</param-value>
+		  <param-value>wicket.contrib.examples.gmap.top.TopGMapApplication</param-value>
+		</init-param>
+	</filter>
+
+	<filter>
+		<filter-name>BottomGMapApplication</filter-name>
+		<filter-class>org.apache.wicket.protocol.http.WicketFilter</filter-class>
+		<init-param>
+		  <param-name>applicationClassName</param-name>
+		  <param-value>wicket.contrib.examples.gmap.bottom.BottomGMapApplication</param-value>
 		</init-param>
 	</filter>
 
@@ -43,8 +52,13 @@
 	</filter>
 
 	<filter-mapping>
-		<filter-name>GMapExampleApplication</filter-name>
-		<url-pattern>/gmap2/*</url-pattern>
+		<filter-name>TopGMapApplication</filter-name>
+		<url-pattern>/top/*</url-pattern>
+	</filter-mapping>
+
+	<filter-mapping>
+		<filter-name>BottomGMapApplication</filter-name>
+		<url-pattern>/bottom/*</url-pattern>
 	</filter-mapping>
 
 	<filter-mapping>
