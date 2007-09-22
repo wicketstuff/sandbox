@@ -1,34 +1,33 @@
-package wicket.contrib.examples.gmap.manny;
+package wicket.contrib.examples.gmap.many;
 
+import java.util.Iterator;
+
+import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxFallbackLink;
-import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.repeater.RepeatingView;
 
 import wicket.contrib.examples.WicketExamplePage;
+import wicket.contrib.gmap.GMap2;
 
 /**
  * SimplePage for the wicket-contrib-gmap2 project
  */
-public class MannyPage extends WicketExamplePage {
+public class ManyPage extends WicketExamplePage {
 
 	private static final long serialVersionUID = 1L;
 
-	final RepeatingView repeating;
+	private final WebMarkupContainer container;
 
-	int panels = 1;
+	private final RepeatingView repeating;
 
-	public MannyPage() {
-		final Panel repeaterPanel = new RepeaterPanel("repeater");
-		add(repeaterPanel);
-		repeating = new RepeatingView("repeating");
-		repeaterPanel.add(repeating);
-
+	public ManyPage() {
 		AjaxFallbackLink more = new AjaxFallbackLink("more") {
 			@Override
 			public void onClick(AjaxRequestTarget target) {
-				MannyPage.this.addPanel();
-				target.addComponent(repeaterPanel);
+				ManyPage.this.addPanel();
+				target.addComponent(container);
 			}
 		};
 		add(more);
@@ -36,27 +35,39 @@ public class MannyPage extends WicketExamplePage {
 		AjaxFallbackLink less = new AjaxFallbackLink("less") {
 			@Override
 			public void onClick(AjaxRequestTarget target) {
-				MannyPage.this.removePanel();
-				target.addComponent(repeaterPanel);
+				ManyPage.this.removePanel();
+				target.addComponent(container);
 			}
 		};
 		add(less);
 
-		for (int i = 1; i <= panels; i++) {
-			repeating.add(new MannyPanel(Integer.toString(i), LOCALHOST));
-		}
+		container = new WebMarkupContainer("container");
+		container.setOutputMarkupId(true);
+		add(container);
+
+		repeating = new RepeatingView("repeating");
+		container.add(repeating);
+
+		addPanel();
 	}
 
+	@SuppressWarnings("unchecked")
 	protected void removePanel() {
-		if (panels > 0) {
-			panels--;
-			repeating.remove(Integer.toString(panels));
+
+		Component component = null;
+		Iterator<Component> iterator = repeating.iterator();
+		while (iterator.hasNext()) {
+			component = iterator.next();
+		}
+
+		// remove last component (if any)
+		if (component != null) {
+			repeating.remove(component);
 		}
 	}
 
 	protected void addPanel() {
-		panels++;
-		repeating.add(new MannyPanel(Integer.toString(panels), LOCALHOST));
+		repeating.add(new GMap2(repeating.newChildId(), LOCALHOST));
 	}
 
 	/**
