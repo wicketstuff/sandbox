@@ -16,21 +16,16 @@
  */
 package wicket.contrib.examples;
 
-import org.apache.wicket.PageMap;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.link.Link;
-import org.apache.wicket.markup.html.link.PopupSettings;
 import org.apache.wicket.markup.html.panel.Panel;
-
 
 /**
  * Navigation panel for the examples project.
  * 
  * @author Eelco Hillenius
  */
-public final class WicketExampleHeader extends Panel
-{
+public final class WicketExampleHeader extends Panel {
 	/**
 	 * Construct.
 	 * 
@@ -41,8 +36,7 @@ public final class WicketExampleHeader extends Panel
 	 * @param page
 	 *            The example page
 	 */
-	public WicketExampleHeader(String id, String exampleTitle, WebPage page)
-	{
+	public WicketExampleHeader(String id, String exampleTitle, WebPage page) {
 		super(id);
 		add(new Label("exampleTitle", exampleTitle));
 	}

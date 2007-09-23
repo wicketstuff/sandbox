@@ -7,27 +7,23 @@ import org.apache.wicket.util.time.Duration;
 
 import wicket.contrib.examples.WicketExampleApplication;
 
-public class TopGMapApplication extends WicketExampleApplication
-{
-
+public class TopGMapApplication extends WicketExampleApplication {
 
 	/**
 	 * @see wicket.protocol.http.WebApplication#init()
 	 */
 	@Override
-	protected void init()
-	{
+	protected void init() {
 		getResourceSettings().setResourcePollFrequency(Duration.seconds(10));
 	}
 
-	public Class<? extends Page> getHomePage()
-	{
+	@Override
+	public Class<? extends Page> getHomePage() {
 		return HomePage.class;
 	}
 
 	@Override
-	protected ISessionStore newSessionStore()
-	{
+	protected ISessionStore newSessionStore() {
 		return new HttpSessionStore(this);
 	}
 }
