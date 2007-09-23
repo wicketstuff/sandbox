@@ -1,14 +1,8 @@
 package wicket.contrib.examples.gmap.bottom;
 
-import java.io.IOException;
-
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.Button;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.Model;
@@ -17,7 +11,6 @@ import org.apache.wicket.model.PropertyModel;
 import wicket.contrib.examples.WicketExamplePage;
 import wicket.contrib.gmap.GMap2;
 import wicket.contrib.gmap.GMapHeaderContributor;
-import wicket.contrib.gmap.api.GClientGeocoder;
 import wicket.contrib.gmap.api.GControl;
 import wicket.contrib.gmap.api.GInfoWindowTab;
 import wicket.contrib.gmap.api.GLatLng;
@@ -27,7 +20,6 @@ import wicket.contrib.gmap.event.ClickListener;
 import wicket.contrib.gmap.event.InfoWindowCloseListener;
 import wicket.contrib.gmap.event.InfoWindowOpenListener;
 import wicket.contrib.gmap.event.MoveEndListener;
-import wicket.contrib.gmap.util.GeocoderException;
 
 /**
  * Example HomePage for the wicket-contrib-gmap2 project
@@ -41,8 +33,6 @@ public class HomePage extends WicketExamplePage {
 	private final Label center;
 
 	private MoveEndListener moveEndBehavior;
-	
-	private ServerGeocoder geocoder = new ServerGeocoder(LOCALHOST);
 
 	public HomePage() {
 		feedback = new FeedbackPanel("feedback");
@@ -183,53 +173,6 @@ public class HomePage extends WicketExamplePage {
 			}
 		});
 		add(enabledLabel);
-
-		Form geocodeForm = new Form("geocoder");
-		add(geocodeForm);
-
-		final TextField addressTextField = new TextField("address", new Model(""));
-		geocodeForm.add(addressTextField);
-
-		Button button = new Button("client");
-		button.add(new GClientGeocoder("onclick", addressTextField,
-				LOCALHOST) {
-			@Override
-			public void onGeoCode(AjaxRequestTarget target, int status,
-					String address, GLatLng latLng) {
-				if (status == GeocoderException.G_GEO_SUCCESS) {
-					bottomMap.getInfoWindow().open(
-							latLng,
-							new GInfoWindowTab(address, new Label(address,
-									address)));
-				} else {
-					error("Unable to geocode (" + status + ")");
-					target.addComponent(feedback);
-				}
-			};
-		});
-		geocodeForm.add(button);
-		
-		geocodeForm.add(new AjaxButton("server", geocodeForm) {
-
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			protected void onSubmit(AjaxRequestTarget target, Form form) {
-				try {
-					String address = addressTextField.getModelObjectAsString();
-					
-					GLatLng latLng = geocoder.findAddress(address);
-
-					bottomMap.getInfoWindow().open(
-							latLng,
-							new GInfoWindowTab(address, new Label(address,
-									address)));
-				} catch (IOException e) {
-					target
-							.appendJavascript("Unable to geocode (" + e.getMessage() + ")");
-				}
-			}
-		});
 	}
 
 	/**
