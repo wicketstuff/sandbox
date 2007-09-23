@@ -21,6 +21,8 @@ import wicket.contrib.gmap.api.GLatLng;
 
 /**
  * Geocoder.
+ * See:
+ * http://www.google.com/apis/maps/documentation/services.html#Geocoding_Direct
  * 
  * @author Thijs Vonk
  */
