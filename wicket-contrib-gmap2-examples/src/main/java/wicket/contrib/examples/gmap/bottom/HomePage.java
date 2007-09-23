@@ -1,7 +1,10 @@
 package wicket.contrib.examples.gmap.bottom;
 
+import java.io.IOException;
+
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
@@ -38,6 +41,8 @@ public class HomePage extends WicketExamplePage {
 	private final Label center;
 
 	private MoveEndListener moveEndBehavior;
+	
+	private ServerGeocoder geocoder = new ServerGeocoder(LOCALHOST);
 
 	public HomePage() {
 		feedback = new FeedbackPanel("feedback");
@@ -182,16 +187,18 @@ public class HomePage extends WicketExamplePage {
 		Form geocodeForm = new Form("geocoder");
 		add(geocodeForm);
 
-		TextField addressTextField = new TextField("address", new Model(""));
+		final TextField addressTextField = new TextField("address", new Model(""));
 		geocodeForm.add(addressTextField);
-		geocodeForm.add(new GClientGeocoder("onsubmit", addressTextField,
+
+		Button button = new Button("client");
+		button.add(new GClientGeocoder("onclick", addressTextField,
 				LOCALHOST) {
 			@Override
 			public void onGeoCode(AjaxRequestTarget target, int status,
-					String address, GLatLng point) {
+					String address, GLatLng latLng) {
 				if (status == GeocoderException.G_GEO_SUCCESS) {
 					bottomMap.getInfoWindow().open(
-							point,
+							latLng,
 							new GInfoWindowTab(address, new Label(address,
 									address)));
 				} else {
@@ -200,7 +207,29 @@ public class HomePage extends WicketExamplePage {
 				}
 			};
 		});
-		geocodeForm.add(new Button("submit"));
+		geocodeForm.add(button);
+		
+		geocodeForm.add(new AjaxButton("server", geocodeForm) {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void onSubmit(AjaxRequestTarget target, Form form) {
+				try {
+					String address = addressTextField.getModelObjectAsString();
+					
+					GLatLng latLng = geocoder.findAddress(address);
+
+					bottomMap.getInfoWindow().open(
+							latLng,
+							new GInfoWindowTab(address, new Label(address,
+									address)));
+				} catch (IOException e) {
+					target
+							.appendJavascript("Unable to geocode (" + e.getMessage() + ")");
+				}
+			}
+		});
 	}
 
 	/**

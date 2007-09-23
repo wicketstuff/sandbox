@@ -13,28 +13,22 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package wicket.contrib.examples.gmap.geocode;
+package wicket.contrib.examples.gmap.bottom;
 
 import java.io.IOException;
+import java.net.URL;
+import java.net.URLConnection;
 
-import org.apache.commons.httpclient.DefaultHttpMethodRetryHandler;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.methods.PostMethod;
-import org.apache.commons.httpclient.params.HttpClientParams;
+import org.apache.wicket.util.io.Streams;
 
 import wicket.contrib.gmap.api.GLatLng;
 import wicket.contrib.gmap.util.Geocoder;
 import wicket.contrib.gmap.util.GeocoderException;
 
 /**
- * HttpClientGeocoder
- * 
- * @author Thijs Vonk
+ * A serverside Geocoder.
  */
-
-public class HttpClientGeocoder {
-
-	private HttpClient httpClient;
+public class ServerGeocoder {
 
 	private Geocoder geocoder;
 
@@ -44,21 +38,12 @@ public class HttpClientGeocoder {
 	 * @throws IllegalArgumentException
 	 *             If the API key is <code>null</code>
 	 */
-	public HttpClientGeocoder(String gMapKey) {
+	public ServerGeocoder(String gMapKey) {
 		if (gMapKey == null) {
 			throw new IllegalArgumentException("API key cannot be null");
 		}
 
 		this.geocoder = new Geocoder(gMapKey);
-
-		this.httpClient = new HttpClient();
-
-		HttpClientParams httpClientParams = new HttpClientParams();
-		DefaultHttpMethodRetryHandler defaultHttpMethodRetryHandler = new DefaultHttpMethodRetryHandler(
-				0, false);
-		httpClientParams.setParameter(HttpClientParams.RETRY_HANDLER,
-				defaultHttpMethodRetryHandler);
-		this.httpClient.setParams(httpClientParams);
 	}
 
 	/**
@@ -70,17 +55,14 @@ public class HttpClientGeocoder {
 	 * @throws IOException
 	 *             If a connection error happened
 	 */
-	public GLatLng findAddress(String address) throws GeocoderException,
-			IOException {
+	public GLatLng findAddress(String address) throws IOException {
 
-		PostMethod post = new PostMethod(geocoder.encode(address));
-		post.addRequestHeader("Content-Type",
-				"application/x-www-form-urlencoded; charset=utf-8");
+		URL url = new URL(geocoder.encode(address));
 
-		httpClient.executeMethod(post);
+		URLConnection connection = url.openConnection();
 
-		String response = post.getResponseBodyAsString();
+		String content = Streams.readString(connection.getInputStream());
 
-		return geocoder.decode(response);
+		return geocoder.decode(content);
 	}
 }

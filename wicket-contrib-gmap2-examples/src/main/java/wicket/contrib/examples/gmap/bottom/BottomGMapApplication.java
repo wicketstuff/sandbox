@@ -20,6 +20,7 @@ public class BottomGMapApplication extends WicketExampleApplication
 		getResourceSettings().setResourcePollFrequency(Duration.seconds(10));
 	}
 
+	@Override
 	public Class<? extends Page> getHomePage()
 	{
 		return HomePage.class;
