@@ -70,7 +70,7 @@ public abstract class SortableListView extends WebMarkupContainer
 	 * @param item
 	 */
 	protected abstract void populateItemInternal(ListItem item);
-	
+
 	/**
 	 * extension point for integrating with {@link DraggableTarget}
 	 * @see DraggableTarget#acceptAll(SortableContainer)
@@ -100,8 +100,8 @@ public abstract class SortableListView extends WebMarkupContainer
 	{
 		private static final long serialVersionUID = 1L;
 
-		public void onRequest() {
-			AjaxRequestTarget target = new AjaxRequestTarget();
+		@Override
+		protected void respond(AjaxRequestTarget target) {
 			String[] parameters = getRequestCycle().getRequest().getParameters(
 					getMarkupId() + "[]");
 
@@ -114,8 +114,6 @@ public abstract class SortableListView extends WebMarkupContainer
 					items.set(index, originalItems.get(newIndex));
 				}
 			}
-
-			getRequestCycle().setRequestTarget(target);
 
 			target.addComponent(getComponent());
 		}

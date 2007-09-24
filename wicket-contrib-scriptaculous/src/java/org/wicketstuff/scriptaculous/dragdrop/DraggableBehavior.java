@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.wicket.RequestCycle;
 import org.apache.wicket.Response;
+import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.model.Model;
 import org.wicketstuff.scriptaculous.JavascriptBuilder;
@@ -12,8 +13,8 @@ import org.wicketstuff.scriptaculous.ScriptaculousAjaxBehavior;
 
 /**
  * adds draggable behavior to any component.
- * 
- * Can use a {@link DraggableTarget} to perform work when a Draggable object 
+ *
+ * Can use a {@link DraggableTarget} to perform work when a Draggable object
  * is dropped on a component.
  *
  * @see http://wiki.script.aculo.us/scriptaculous/show/Draggable
@@ -31,7 +32,8 @@ public abstract class DraggableBehavior extends ScriptaculousAjaxBehavior
 		getComponent().add(new AttributeAppender("class", new Model(getDraggableClassName()), " "));
 	}
 
-	public void onRequest() {
+	@Override
+	protected void respond(AjaxRequestTarget target) {
 		//no callback...yet
 	}
 
