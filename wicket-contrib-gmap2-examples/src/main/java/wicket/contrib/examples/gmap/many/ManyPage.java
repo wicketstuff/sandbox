@@ -67,7 +67,7 @@ public class ManyPage extends WicketExamplePage {
 	}
 
 	protected void addPanel() {
-		repeating.add(new GMap2(repeating.newChildId(), LOCALHOST));
+		repeating.add(new ManyPanel(repeating.newChildId(), LOCALHOST));
 	}
 
 	/**
