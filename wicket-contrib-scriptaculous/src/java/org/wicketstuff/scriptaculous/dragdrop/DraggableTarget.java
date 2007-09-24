@@ -57,7 +57,7 @@ public abstract class DraggableTarget extends WebMarkupContainer
 
 	/**
 	 * configure the draggable target to accept any draggable item from the {@link SortableListView}
-	 * The sortable container needs to override {@link SortableListView#getDraggableClassName()} 
+	 * The sortable container needs to override {@link SortableListView#getDraggableClassName()}
 	 * in order for the draggable target to know what to accept.
 	 * @param container
 	 */
@@ -87,7 +87,7 @@ public abstract class DraggableTarget extends WebMarkupContainer
 	{
 		super.onRender(markupStream);
 
-		
+
 		dropOptions.put("onDrop", new JavascriptFunction("function(draggable, droppable, event) { wicketAjaxGet('" + onDropBehavior.getCallbackUrl()
 				+ "&id=' + draggable.id); }"));
 
@@ -103,10 +103,9 @@ public abstract class DraggableTarget extends WebMarkupContainer
 	{
 		private static final long serialVersionUID = 1L;
 
-		public void onRequest() {
+		@Override
+		protected void respond(AjaxRequestTarget target) {
 			String input = getRequest().getParameter("id");
-			AjaxRequestTarget target = new AjaxRequestTarget();
-			getRequestCycle().setRequestTarget(target);
 			target.addComponent(DraggableTarget.this);
 			target.appendJavascript(new Effect.Highlight(DraggableTarget.this).toJavascript());
 

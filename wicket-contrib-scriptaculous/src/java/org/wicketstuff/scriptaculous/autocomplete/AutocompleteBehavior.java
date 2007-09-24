@@ -18,6 +18,8 @@
  */
 package org.wicketstuff.scriptaculous.autocomplete;
 
+import org.apache.wicket.ajax.AjaxRequestTarget;
+
 /**
  * Autocomplete behavior that provides a static list of options to autocomplete.
  *
@@ -34,11 +36,13 @@ public class AutocompleteBehavior extends AbstractAutocompleteBehavior
 		this.results = results;
 	}
 
+	@Override
 	protected String getAutocompleteType()
 	{
 		return "Autocompleter.Local";
 	}
 
+	@Override
 	protected String getThirdAutocompleteArgument()
 	{
 		return buildResults();
@@ -59,7 +63,8 @@ public class AutocompleteBehavior extends AbstractAutocompleteBehavior
 		return result;
 	}
 
-	public void onRequest() {
+	@Override
+	protected void respond(AjaxRequestTarget target) {
 		//do nothing
 	}
 }

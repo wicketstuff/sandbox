@@ -18,7 +18,8 @@
  */
 package org.wicketstuff.scriptaculous;
 
-import org.apache.wicket.behavior.AbstractAjaxBehavior;
+import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
+import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.resources.JavascriptResourceReference;
 
@@ -33,15 +34,16 @@ import org.apache.wicket.markup.html.resources.JavascriptResourceReference;
  * @see <a href="http://script.aculo.us/">script.aculo.us</a>
  * @author <a href="mailto:wireframe6464@users.sourceforge.net">Ryan Sonnek</a>
  */
-public abstract class ScriptaculousAjaxBehavior extends AbstractAjaxBehavior {
+public abstract class ScriptaculousAjaxBehavior extends AbstractDefaultAjaxBehavior {
 
 	public static ScriptaculousAjaxBehavior newJavascriptBindingBehavior() {
 		return new ScriptaculousAjaxBehavior() {
 
 			private static final long serialVersionUID = 1L;
 
-			public void onRequest() {
-				//do nothing
+			@Override
+			protected void respond(AjaxRequestTarget target) {
+				// do nothing
 			}
 		};
 	}

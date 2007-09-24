@@ -197,9 +197,8 @@ public class AjaxEditInPlaceLabel extends AbstractTextComponent
 	{
 		private static final long serialVersionUID = 1L;
 
-		public void onRequest() {
-			AjaxRequestTarget target = new AjaxRequestTarget();
-			getRequestCycle().setRequestTarget(target);
+		@Override
+		protected void respond(AjaxRequestTarget target) {
 			target.appendJavascript(new Effect.Highlight(AjaxEditInPlaceLabel.this).toJavascript());
 
 			onComplete(target);
@@ -210,7 +209,8 @@ public class AjaxEditInPlaceLabel extends AbstractTextComponent
 	{
 		private static final long serialVersionUID = 1L;
 
-		public void onRequest() {
+		@Override
+		protected void respond(AjaxRequestTarget target) {
 			FormComponent formComponent = (FormComponent)getComponent();
 			formComponent.validate();
 			if (formComponent.isValid())

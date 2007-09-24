@@ -19,6 +19,7 @@
 package org.wicketstuff.scriptaculous.autocomplete;
 
 import org.apache.wicket.RequestCycle;
+import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.request.target.basic.StringRequestTarget;
 import org.wicketstuff.scriptaculous.Indicator;
@@ -35,17 +36,17 @@ import org.wicketstuff.scriptaculous.Indicator;
  * </pre>
  *
  * <p>
- * The response can contain non-autocomplete information for display purposes.  
- * The results returned can contain additional HTML elements (span, div) marked 
- * with a class of <code>informal</code>.  These elements will <i>only</i> be used 
- * for display and their contents will not be entered into the text field.  
+ * The response can contain non-autocomplete information for display purposes.
+ * The results returned can contain additional HTML elements (span, div) marked
+ * with a class of <code>informal</code>.  These elements will <i>only</i> be used
+ * for display and their contents will not be entered into the text field.
  * </p>
  * <p>
- * When customizing the response to add additional information, users will most likely 
- * need to override the {@link #getCss()} method as well to customize the look and 
- * layout. 
+ * When customizing the response to add additional information, users will most likely
+ * need to override the {@link #getCss()} method as well to customize the look and
+ * layout.
  * </p>
- * 
+ *
  * @author <a href="mailto:wireframe6464@users.sourceforge.net">Ryan Sonnek</a>
  * @see http://wiki.script.aculo.us/scriptaculous/show/Ajax.Autocompleter
  */
@@ -53,11 +54,13 @@ public abstract class AjaxAutocompleteBehavior extends AbstractAutocompleteBehav
 {
 	private static final long serialVersionUID = 1L;
 
+	@Override
 	protected String getAutocompleteType()
 	{
 		return "Ajax.Autocompleter";
 	}
 
+	@Override
 	protected String getThirdAutocompleteArgument()
 	{
 		return "'" + getCallbackUrl() + "'";
@@ -67,12 +70,13 @@ public abstract class AjaxAutocompleteBehavior extends AbstractAutocompleteBehav
 	 * set an indicator to be used during ajax calls.
 	 * @param indicator
 	 */
-	public void setIndicator(Indicator indicator) 
+	public void setIndicator(Indicator indicator)
 	{
 		addOption("indicator", indicator.getMarkupId());
 	}
 
-	public void onRequest() {
+	@Override
+	protected void respond(AjaxRequestTarget target) {
 		FormComponent formComponent = (FormComponent)getComponent();
 
 		formComponent.validate();
@@ -97,7 +101,7 @@ public abstract class AjaxAutocompleteBehavior extends AbstractAutocompleteBehav
 		s.append("</ul>\n");
 		return s.toString();
 	}
-	
+
 	/**
 	 * extension point to lookup results for user's input.
 	 *
