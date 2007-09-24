@@ -19,22 +19,28 @@ public class DragDropExamplePage extends WebPage
 			}
 		};
 
-		DraggableBehavior draggableBehavior = new DraggableBehavior() {
+		WebMarkupContainer product1 = new WebMarkupContainer("product1");
+		product1.add(new DraggableBehavior() {
 			public String getDraggableClassName()
 			{
 				return "draggable";
 			}
-		};
-		WebMarkupContainer product1 = new WebMarkupContainer("product1");
-		product1.add(draggableBehavior);
+		});
 
 		WebMarkupContainer product2 = new WebMarkupContainer("product2");
-		product1.add(draggableBehavior);
+		product2.add(new DraggableBehavior() {
+			public String getDraggableClassName()
+			{
+				return "draggable";
+			}
+		});
 
 		cart.accepts(product1);
 		cart.accepts(product2);
 
 		add(cart);
+		add(product1);
+		add(product2);
 		add(indicator);
 	}
 }
