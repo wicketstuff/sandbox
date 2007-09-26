@@ -18,7 +18,7 @@ package org.apache.wicket.security.components.markup.html.links;
 
 import org.apache.wicket.markup.html.link.IPageLink;
 import org.apache.wicket.markup.html.link.PageLink;
-import org.apache.wicket.security.actions.AbstractWaspAction;
+import org.apache.wicket.security.actions.WaspAction;
 import org.apache.wicket.security.checks.ISecurityCheck;
 import org.apache.wicket.security.checks.LinkSecurityCheck;
 import org.apache.wicket.security.components.ISecureComponent;
@@ -78,9 +78,9 @@ public class SecurePageLink extends PageLink implements ISecureComponent
 	}
 
 	/**
-	 * @see org.apache.wicket.security.components.ISecureComponent#isActionAuthorized(org.apache.wicket.security.actions.AbstractWaspAction)
+	 * @see org.apache.wicket.security.components.ISecureComponent#isActionAuthorized(WaspAction)
 	 */
-	public boolean isActionAuthorized(AbstractWaspAction action)
+	public boolean isActionAuthorized(WaspAction action)
 	{
 		return SecureComponentHelper.isActionAuthorized(this, action);
 	}

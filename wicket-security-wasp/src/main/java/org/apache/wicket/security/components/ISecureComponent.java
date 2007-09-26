@@ -22,7 +22,7 @@ import java.io.Serializable;
 import org.apache.wicket.Component;
 import org.apache.wicket.Page;
 import org.apache.wicket.authorization.IAuthorizationStrategy;
-import org.apache.wicket.security.actions.AbstractWaspAction;
+import org.apache.wicket.security.actions.WaspAction;
 import org.apache.wicket.security.checks.ISecurityCheck;
 
 
@@ -71,10 +71,9 @@ public interface ISecureComponent extends Serializable
 	 * @param action
 	 * @return true if the action is allowed, false otherwise.
 	 * @see Component#isActionAuthorized(org.apache.wicket.authorization.Action)
-	 * @see SecureComponentHelper#isActionAuthorized(Component,
-	 *      AbstractWaspAction)
+	 * @see SecureComponentHelper#isActionAuthorized(Component, WaspAction)
 	 */
-	public boolean isActionAuthorized(AbstractWaspAction action);
+	public boolean isActionAuthorized(WaspAction action);
 
 	/**
 	 * authenticates the user for this component. Note authentication should

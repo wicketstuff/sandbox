@@ -19,7 +19,7 @@ package org.apache.wicket.security.pages;
 
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.security.actions.AbstractWaspAction;
+import org.apache.wicket.security.actions.WaspAction;
 import org.apache.wicket.security.checks.ComponentSecurityCheck;
 import org.apache.wicket.security.checks.ISecurityCheck;
 import org.apache.wicket.security.components.ISecurePage;
@@ -93,9 +93,9 @@ public class SecureTestPage extends BasePage implements ISecurePage
 	}
 
 	/**
-	 * @see org.apache.wicket.security.components.ISecureComponent#isActionAuthorized(org.apache.wicket.security.actions.AbstractWaspAction)
+	 * @see org.apache.wicket.security.components.ISecureComponent#isActionAuthorized(WaspAction)
 	 */
-	public boolean isActionAuthorized(AbstractWaspAction action)
+	public boolean isActionAuthorized(WaspAction action)
 	{
 		return SecureComponentHelper.isActionAuthorized(this, action);
 	}
