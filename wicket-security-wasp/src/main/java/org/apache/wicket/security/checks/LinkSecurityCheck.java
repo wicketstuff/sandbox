@@ -16,6 +16,7 @@
  */
 package org.apache.wicket.security.checks;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.Page;
 import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.markup.html.link.Link;
@@ -35,7 +36,8 @@ import org.apache.wicket.security.models.ISecureModel;
  * (render action only) allowing the link to be visible but disabled. Note that
  * for all other actions this check behaves as a ClassSecurityCheck (with option
  * to check the model). Although the check was designed to work on pages it now
- * also works on any class.
+ * also works on any class. So {@link Panel} and the like may be used as
+ * clickTarget
  * 
  * @author marrink
  */
@@ -51,7 +53,8 @@ public class LinkSecurityCheck extends ComponentSecurityCheck
 	 * Constructs a new check, the check uses the regular mode.
 	 * 
 	 * @param component
-	 *            the link
+	 *            the link, although any component may be used this should
+	 *            typically be a subclass of {@link AbstractLink}
 	 * @param clickTarget
 	 *            the {@link Class} redirected to when clicking on the link.
 	 *            This could be a {@link Page} or a {@link Panel} or something
@@ -59,7 +62,7 @@ public class LinkSecurityCheck extends ComponentSecurityCheck
 	 * @throws IllegalArgumentException
 	 *             if clickTarget is null
 	 */
-	public LinkSecurityCheck(AbstractLink component, Class clickTarget)
+	public LinkSecurityCheck(Component component, Class clickTarget)
 	{
 		super(component);
 		this.clickTarget = clickTarget;
