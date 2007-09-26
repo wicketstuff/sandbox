@@ -20,7 +20,7 @@ import org.apache.wicket.extensions.markup.html.tabs.ITab;
 import org.apache.wicket.extensions.markup.html.tabs.PanelCachingTab;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.security.actions.AbstractWaspAction;
+import org.apache.wicket.security.actions.WaspAction;
 import org.apache.wicket.security.checks.ContainerSecurityCheck;
 import org.apache.wicket.security.checks.ISecurityCheck;
 import org.apache.wicket.security.components.ISecureComponent;
@@ -144,7 +144,7 @@ public class SecureTab implements ITab, ISecureContainer
 	 * 
 	 * @see org.apache.wicket.security.components.ISecureComponent#isActionAuthorized(org.apache.wicket.security.actions.AbstractWaspAction)
 	 */
-	public boolean isActionAuthorized(AbstractWaspAction action)
+	public boolean isActionAuthorized(WaspAction action)
 	{
 		if (cachedWrapper == null)
 			return true;
