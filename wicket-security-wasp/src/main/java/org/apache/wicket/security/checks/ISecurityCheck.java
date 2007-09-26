@@ -18,7 +18,6 @@ package org.apache.wicket.security.checks;
 
 import java.io.Serializable;
 
-import org.apache.wicket.security.actions.AbstractWaspAction;
 import org.apache.wicket.security.actions.WaspAction;
 import org.apache.wicket.security.components.ISecureComponent;
 import org.apache.wicket.security.models.ISecureModel;
@@ -31,7 +30,7 @@ import org.apache.wicket.security.strategies.WaspAuthorizationStrategy;
  * something entirely different will be checked. Usually a securitycheck is
  * triggered by the
  * {@link WaspAuthorizationStrategy#isActionAuthorized(org.apache.wicket.Component, org.apache.wicket.authorization.Action)} ,
- * {@link ISecureComponent#isActionAuthorized(AbstractWaspAction)} or by
+ * {@link ISecureComponent#isActionAuthorized(WaspAction)} or by
  * {@link ISecureComponent#isAuthenticated()}. Usually they just redirect the
  * call to the {@link WaspAuthorizationStrategy}, but it is not unimaginable
  * that securitychecks are targeted at specific wasp implementations and take

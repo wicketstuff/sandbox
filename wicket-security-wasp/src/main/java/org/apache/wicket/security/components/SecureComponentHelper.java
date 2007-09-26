@@ -21,8 +21,8 @@ import org.apache.wicket.Component;
 import org.apache.wicket.Page;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.security.WaspApplication;
-import org.apache.wicket.security.actions.AbstractWaspAction;
 import org.apache.wicket.security.actions.ActionFactory;
+import org.apache.wicket.security.actions.WaspAction;
 import org.apache.wicket.security.checks.ISecurityCheck;
 import org.apache.wicket.security.checks.WaspKey;
 import org.apache.wicket.security.models.ISecureModel;
@@ -151,7 +151,7 @@ public final class SecureComponentHelper
 
 	/**
 	 * Default implementation for
-	 * {@link ISecureComponent#isActionAuthorized(AbstractWaspAction)} and
+	 * {@link ISecureComponent#isActionAuthorized(WaspAction)} and
 	 * {@link WaspAuthorizationStrategy#isActionAuthorized(Component, org.apache.wicket.authorization.Action)}.
 	 * First tries to use the {@link ISecurityCheck} from the component if that
 	 * is not available it tries the {@link ISecureModel} if neither is present
@@ -163,20 +163,19 @@ public final class SecureComponentHelper
 	 *            the required action(s)
 	 * 
 	 * @return true, if the component is authorized, false otherwise.
-	 * @see ISecureComponent#isActionAuthorized(AbstractWaspAction)
+	 * @see ISecureComponent#isActionAuthorized(WaspAction)
 	 * @see ISecurityCheck
 	 * @see ISecureModel
 	 */
-	public static boolean isActionAuthorized(Component component, AbstractWaspAction action)
+	public static boolean isActionAuthorized(Component component, WaspAction action)
 	{
 		if (action == null)
 			return true;
 		ISecurityCheck check = saveGetSecurityCheck(component);
 		if (check != null)
-			return check.isActionAuthorized(getActionFactory().getAction(action));
+			return check.isActionAuthorized(action);
 		if (hasSecureModel(component))
-			return ((ISecureModel)component.getModel()).isAuthorized(component, getActionFactory()
-					.getAction(action));
+			return ((ISecureModel)component.getModel()).isAuthorized(component, action);
 		return true;
 	}
 

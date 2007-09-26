@@ -18,7 +18,7 @@ package org.apache.wicket.security.components.markup.html.form;
 
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.security.actions.AbstractWaspAction;
+import org.apache.wicket.security.actions.WaspAction;
 import org.apache.wicket.security.checks.ComponentSecurityCheck;
 import org.apache.wicket.security.checks.ISecurityCheck;
 import org.apache.wicket.security.components.ISecureComponent;
@@ -121,9 +121,9 @@ public class SecureTextField extends TextField implements ISecureComponent
 	}
 
 	/**
-	 * @see org.apache.wicket.security.components.ISecureComponent#isActionAuthorized(org.apache.wicket.security.actions.AbstractWaspAction)
+	 * @see org.apache.wicket.security.components.ISecureComponent#isActionAuthorized(WaspAction)
 	 */
-	public boolean isActionAuthorized(AbstractWaspAction action)
+	public boolean isActionAuthorized(WaspAction action)
 	{
 		return SecureComponentHelper.isActionAuthorized(this, action);
 	}

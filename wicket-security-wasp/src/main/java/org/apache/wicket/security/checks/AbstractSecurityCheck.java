@@ -20,8 +20,8 @@ import org.apache.wicket.Application;
 import org.apache.wicket.Session;
 import org.apache.wicket.security.WaspApplication;
 import org.apache.wicket.security.WaspSession;
-import org.apache.wicket.security.actions.AbstractWaspAction;
 import org.apache.wicket.security.actions.ActionFactory;
+import org.apache.wicket.security.actions.WaspAction;
 import org.apache.wicket.security.strategies.WaspAuthorizationStrategy;
 
 
@@ -42,7 +42,7 @@ public abstract class AbstractSecurityCheck implements ISecurityCheck
 	}
 
 	/**
-	 * Utility method to get the factory to create {@link AbstractWaspAction}s.
+	 * Utility method to get the factory to create {@link WaspAction}s.
 	 * 
 	 * @return the factory
 	 * @see WaspApplication#getActionFactory()
