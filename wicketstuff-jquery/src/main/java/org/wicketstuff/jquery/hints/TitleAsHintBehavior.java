@@ -17,7 +17,7 @@
 package org.wicketstuff.jquery.hints;
 
 import org.apache.wicket.markup.html.IHeaderResponse;
-import org.apache.wicket.markup.html.resources.JavascriptResourceReference;
+import org.apache.wicket.markup.html.resources.CompressedResourceReference;
 import org.wicketstuff.jquery.JQueryBehavior;
 
 /**
@@ -27,7 +27,7 @@ import org.wicketstuff.jquery.JQueryBehavior;
 @SuppressWarnings(value = "serial")
 public class TitleAsHintBehavior extends JQueryBehavior {
 
-    public static final JavascriptResourceReference HINTS_JS = new JavascriptResourceReference(TitleAsHintBehavior.class, "jquery.hints.js");
+    public static final CompressedResourceReference HINTS_JS = new CompressedResourceReference(TitleAsHintBehavior.class, "jquery.hints.js");
 
     @Override
     public void renderHead(IHeaderResponse response) {
