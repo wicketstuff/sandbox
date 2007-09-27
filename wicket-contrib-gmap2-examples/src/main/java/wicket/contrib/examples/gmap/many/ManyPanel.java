@@ -14,6 +14,7 @@ import wicket.contrib.gmap.api.GMapType;
 public class ManyPanel extends Panel {
 
 	final GMap2 gMap;
+	private Label n, ne, e, se, s, sw, w, nw;
 	
 	public ManyPanel(String id, String gMapKey) {
 		super(id);
@@ -41,41 +42,33 @@ public class ManyPanel extends Panel {
 			}
 		};
 		add(hybrid);
+		n = new Label("n", "N");
+		add(n);
+		ne = new Label("ne", "NE");
+		add(ne);
+		e = new Label("e", "E");
+		add(e);
+		se = new Label("se", "SE");
+		add(se);
+		s = new Label("s", "S");
+		add(s);
+		sw = new Label("sw", "SW");
+		add(sw);
+		w = new Label("w", "W");
+		add(w);
+		nw = new Label("nw", "NW");
+		add(nw);
 	}
 
-	@Override
-	protected void onBeforeRender() {
-//		final Label n = new Label("n", "N");
-//		n.add(gMap.new PanDirection("onclick", 0, 1));
-//		add(n);
-//
-//		final Label ne = new Label("ne", "NE");
-//		ne.add(gMap.new PanDirection("onclick", -1, 1));
-//		add(ne);
-//
-//		final Label e = new Label("e", "E");
-//		e.add(gMap.new PanDirection("onclick", -1, 0));
-//		add(e);
-//
-//		final Label se = new Label("se", "SE");
-//		se.add(gMap.new PanDirection("onclick", -1, -1));
-//		add(se);
-//
-//		final Label s = new Label("s", "S");
-//		s.add(gMap.new PanDirection("onclick", 0, -1));
-//		add(s);
-//
-//		final Label sw = new Label("sw", "SW");
-//		sw.add(gMap.new PanDirection("onclick", 1, -1));
-//		add(sw);
-//
-//		final Label w = new Label("w", "W");
-//		w.add(gMap.new PanDirection("onclick", 1, 0));
-//		add(w);
-//
-//		final Label nw = new Label("nw", "NW");
-//		nw.add(gMap.new PanDirection("onclick", 1, 1));
-//		add(nw);
-		super.onBeforeRender();
+	protected ManyPanel init() {
+		n.add(gMap.new PanDirection("onclick", 0, 1));
+		ne.add(gMap.new PanDirection("onclick", -1, 1));
+		e.add(gMap.new PanDirection("onclick", -1, 0));
+		se.add(gMap.new PanDirection("onclick", -1, -1));
+		s.add(gMap.new PanDirection("onclick", 0, -1));
+		sw.add(gMap.new PanDirection("onclick", 1, -1));
+		w.add(gMap.new PanDirection("onclick", 1, 0));
+		nw.add(gMap.new PanDirection("onclick", 1, 1));
+		return this;
 	}
 }
