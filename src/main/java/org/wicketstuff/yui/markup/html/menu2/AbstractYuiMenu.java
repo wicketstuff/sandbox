@@ -15,7 +15,7 @@ public abstract class AbstractYuiMenu extends Panel {
 
 		this.menuId = menuId;
 
-		add(YuiHeaderContributor.forModule("menu", null, false, "2.3.0"));
+		add(YuiHeaderContributor.forModule("menu", null, false, "2.3.1"));
 
 		menucontainer = getMenuContainer();
 		if (menucontainer != null) {
