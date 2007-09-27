@@ -67,7 +67,9 @@ public class ManyPage extends WicketExamplePage {
 	}
 
 	protected void addPanel() {
-		repeating.add(new ManyPanel(repeating.newChildId(), LOCALHOST));
+		ManyPanel newPanel = new ManyPanel(repeating.newChildId(), LOCALHOST);
+		repeating.add(newPanel);
+		newPanel.init();
 	}
 
 	/**
