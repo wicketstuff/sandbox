@@ -33,6 +33,28 @@
                     <target>1.5</target>
                 </configuration>
             </plugin>
+			<plugin>
+				<groupId>net.sf.alchim</groupId>
+				<artifactId>yuicompressor-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>process-resources</phase>
+						<goals>
+							<!--goal>jslint</goal-->
+							<goal>compress</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<nosuffix>true</nosuffix>
+					<force>true</force>
+					<excludes>
+						<exclude>**/interface-*.js</exclude>
+						<exclude>**/*pack.js</exclude>
+						<exclude>**/compressed.css</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
         </plugins>
     </build>
 	<dependencies>
