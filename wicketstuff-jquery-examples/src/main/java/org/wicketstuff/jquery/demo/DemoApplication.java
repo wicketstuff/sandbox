@@ -16,14 +16,34 @@
  */
 package org.wicketstuff.jquery.demo;
 
+import java.util.Date;
+import org.apache.wicket.IConverterLocator;
+import org.apache.wicket.datetime.PatternDateConverter;
 import org.apache.wicket.protocol.http.WebApplication;
+import org.apache.wicket.util.convert.ConverterLocator;
+import org.apache.wicket.util.lang.PackageName;
 import org.wicketstuff.jquery.demo.dnd.Page4ClientSideOnly;
 
 public class DemoApplication extends WebApplication {
 
     @Override
+    protected void init() {
+        getMarkupSettings().setStripWicketTags(true);
+        mount("/samples", PackageName.forClass(DemoApplication.class));
+        mount("/samples/dnd", PackageName.forClass(Page4ClientSideOnly.class));
+        super.init();
+    }
+
+    @Override
     public Class<?> getHomePage() {
         return Page4ClientSideOnly.class;
+    }
+
+    @Override
+    protected IConverterLocator newConverterLocator() {
+        ConverterLocator back = new ConverterLocator();
+        back.set(Date.class, new PatternDateConverter("yyyy-MM-dd", true));
+        return back;
     }
 
 }

@@ -37,6 +37,7 @@ public class PageSupport extends WebPage {
         add(new BookmarkablePageLink("multiGroup", Page4MultiGroup.class));
         add(new BookmarkablePageLink("accordion", Page4Accordion.class));
         add(new BookmarkablePageLink("tabs", Page4Tabs.class));
+        add(new BookmarkablePageLink("datePicker", Page4DatePicker.class));
 
         add(new FeedbackPanel("feedback").setOutputMarkupId(true));
     }
