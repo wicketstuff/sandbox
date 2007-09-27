@@ -21,7 +21,6 @@ import java.util.List;
 
 import org.apache.wicket.behavior.HeaderContributor;
 import org.apache.wicket.extensions.markup.html.tabs.ITab;
-import org.apache.wicket.extensions.markup.html.tabs.TabbedPanel;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
