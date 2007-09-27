@@ -20,7 +20,7 @@ import org.apache.wicket.Application;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.IHeaderResponse;
-import org.apache.wicket.markup.html.resources.JavascriptResourceReference;
+import org.apache.wicket.markup.html.resources.CompressedResourceReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,37 +34,37 @@ import org.slf4j.LoggerFactory;
 public class JQueryBehavior extends AbstractDefaultAjaxBehavior {
 
     // create a reference to the base javascript file.
-    // we use JavascriptResourceReference so that the included file will have
+    // we use CompressedResourceReference so that the included file will have
     // its comments stripped and gzipped.
     /**
      *  ResourceReference for <a href="http://jquery.com">jquery-1.2.1</a> (include by default when you add the current Behavior).
      */
-    public static final JavascriptResourceReference JQUERY_1_2_JS = new JavascriptResourceReference(JQueryBehavior.class, "jquery-1.2.1.js");
+    public static final CompressedResourceReference JQUERY_1_2_JS = new CompressedResourceReference(JQueryBehavior.class, "jquery-1.2.1.js");
 
     /**
      *  ResourceReference for <a href="http://jquery.com">jquery</a> (include by default when you add the current Behavior).
      */
-    public static final JavascriptResourceReference JQUERY_JS = JQUERY_1_2_JS;
+    public static final CompressedResourceReference JQUERY_JS = JQUERY_1_2_JS;
     
     /**
      *  ResourceReference for <a href="http://jquery.glyphix.com/">jquery.debug.js</a> (include by default if wicket's configuration is "development")
      */
-    public static final JavascriptResourceReference JQUERY_DEBUG_JS = new JavascriptResourceReference(JQueryBehavior.class, "jquery.debug.js");
+    public static final CompressedResourceReference JQUERY_DEBUG_JS = new CompressedResourceReference(JQueryBehavior.class, "jquery.debug.js");
 
     /**
      *  ResourceReference for <a href="http://interface.eyecon.ro">interface-1.2.js</a> (not include in reponse header)
      */
-    public static final JavascriptResourceReference INTERFACE_JS = new JavascriptResourceReference(JQueryBehavior.class, "interface-1.2.js");
+    public static final CompressedResourceReference INTERFACE_JS = new CompressedResourceReference(JQueryBehavior.class, "interface-1.2.js");
 
     /**
      *  ResourceReference for <a href="http://jquery.com/plugins/project/dimensions">jquery.dimensions-1.1.2.js</a> (not include in reponse header)
      */
-    public static final JavascriptResourceReference JQUERY_DIMENSIONS_JS = new JavascriptResourceReference(JQueryBehavior.class, "jquery.dimensions-1.1.2.js");
+    public static final CompressedResourceReference JQUERY_DIMENSIONS_JS = new CompressedResourceReference(JQueryBehavior.class, "jquery.dimensions-1.1.2.js");
 
     /**
      *  ResourceReference for <a href="http://jquery.com/plugins/project/bgiframe">jquery.bgiframe-2.1.1.js</a> (not include in reponse header)
      */
-    public static final JavascriptResourceReference JQUERY_BGIFRAME_JS = new JavascriptResourceReference(JQueryBehavior.class, "jquery.dimensions-2.1.1.js");
+    public static final CompressedResourceReference JQUERY_BGIFRAME_JS = new CompressedResourceReference(JQueryBehavior.class, "jquery.dimensions-2.1.1.js");
 
     private transient Logger logger_;
 

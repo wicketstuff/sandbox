@@ -18,7 +18,6 @@ package org.wicketstuff.jquery.datepicker;
 
 import java.util.Date;
 import org.apache.wicket.Application;
-import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.Page;
 import org.apache.wicket.RequestCycle;
@@ -28,12 +27,10 @@ import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.datetime.DateConverter;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.resources.JavascriptResourceReference;
-import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.markup.html.resources.CompressedResourceReference;
 import org.apache.wicket.protocol.http.request.WebClientInfo;
 import org.apache.wicket.util.convert.IConverter;
 import org.wicketstuff.jquery.JQueryBehavior;
-import org.wicketstuff.jquery.hints.TitleAsHintBehavior;
 import org.wicketstuff.misc.behaviors.SimpleAttributeAppender;
 import org.wicketstuff.misc.behaviors.CompositeBehavior;
 
@@ -46,9 +43,9 @@ import org.wicketstuff.misc.behaviors.CompositeBehavior;
 @SuppressWarnings(value = "serial")
 public class DatePickerBehavior extends JQueryBehavior {
 
-    public static final JavascriptResourceReference DATE_JS = new JavascriptResourceReference(DatePickerBehavior.class, "date.js");
-    public static final JavascriptResourceReference JQUERY_DATEPICKER_JS = new JavascriptResourceReference(DatePickerBehavior.class, "jquery.datePicker-2.0.1-beta.js");
-    public static final ResourceReference DATEPICKER_CSS = new ResourceReference(DatePickerBehavior.class, "datePicker.css");
+    public static final ResourceReference DATE_JS = new CompressedResourceReference(DatePickerBehavior.class, "date.js");
+    public static final ResourceReference JQUERY_DATEPICKER_JS = new CompressedResourceReference(DatePickerBehavior.class, "jquery.datePicker-2.0.1-beta.js");
+    public static final ResourceReference DATEPICKER_CSS = new CompressedResourceReference(DatePickerBehavior.class, "datePicker.css");
     private DatePickerOptions options_;
     private String format_;
 
