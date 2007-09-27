@@ -1,6 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
-	>
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.wicketstuff</groupId>
@@ -9,8 +8,9 @@
 	</parent>
 	<groupId>org.wicketstuff.jquery</groupId>
 	<artifactId>wicketstuff-jquery</artifactId>
-	<packaging>jar</packaging>
 	<version>0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
+	<name>${artifactId}</name>
 	<developers>
 		<developer>
 			<id>david.bernard</id>
@@ -18,14 +18,23 @@
 			<email>dwayneb at users.sf.net</email>
 			<timezone>+1</timezone>
 		</developer>
-        <developer>
-            <id>xhanin</id>
-            <name>Xavier Hanin</name>
-        </developer>
-	</developers>	
-	<properties>
-		<wicket.version>1.3.0-beta2</wicket.version>
-	</properties>
+		<developer>
+			<id>xhanin</id>
+			<name>Xavier Hanin</name>
+		</developer>
+	</developers>
+	<build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>RELEASE</version>
+                <configuration>
+                    <source>1.5</source>
+                    <target>1.5</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 	<dependencies>
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -40,12 +49,21 @@
 			<groupId>org.apache.wicket</groupId>
 			<artifactId>wicket-extensions</artifactId>
 		</dependency>
-		
+		<dependency>
+			<groupId>org.apache.wicket</groupId>
+			<artifactId>wicket-datetime</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.wicketstuff</groupId>
+			<artifactId>wicketstuff-misc</artifactId>
+			<version>0.1</version>
+		</dependency>
 		<dependency>
 			<groupId>org.testng</groupId>
 			<artifactId>testng</artifactId>
 			<classifier>jdk15</classifier>
 			<scope>test</scope>
-		</dependency>		
+		</dependency>
 	</dependencies>
 </project>

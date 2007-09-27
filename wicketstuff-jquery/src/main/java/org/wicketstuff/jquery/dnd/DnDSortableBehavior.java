@@ -16,25 +16,27 @@
  */
 package org.wicketstuff.jquery.dnd;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.Request;
 import org.apache.wicket.RequestCycle;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.behavior.IBehaviorListener;
-import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.resources.JavascriptResourceReference;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.util.template.PackagedTextTemplate;
-import org.wicketstuff.jquery.JQueryInterfaceBehavior;
+import org.wicketstuff.jquery.JQueryBehavior;
 import org.wicketstuff.jquery.Options;
-
-import java.util.ArrayList;
-import java.util.HashMap;
 
 // TODO: disable callback to serverside if clientsideonly
 @SuppressWarnings("serial")
-class DnDSortableBehavior extends JQueryInterfaceBehavior implements IBehaviorListener {
+class DnDSortableBehavior extends JQueryBehavior implements IBehaviorListener {
     // create a reference to the base javascript file.
     // we use JavascriptResourceReference so that the included file will have
     // its comments stripped and gzipped.
@@ -79,6 +81,7 @@ class DnDSortableBehavior extends JQueryInterfaceBehavior implements IBehaviorLi
     @Override
     public void renderHead(IHeaderResponse response) {
         super.renderHead(response);
+        response.renderJavascriptReference(INTERFACE_JS);
         response.renderJavascriptReference(DNDSORTABLEBEHAVIOR_JS);
         response.renderString(getHead());
     }
@@ -228,7 +231,7 @@ class DnDSortableBehavior extends JQueryInterfaceBehavior implements IBehaviorLi
      * @return this
      */
     protected DnDSortableBehavior registerContainer(MarkupContainer v) {
-        v.add(new SimpleAttributeModifier("class", getContainerCSSClass()));
+        v.add(new AttributeAppender("class", new Model((Serializable) getContainerCSSClass()), " "));
         v.setOutputMarkupId(true);
         containers_.add(v);
         return this;
@@ -242,7 +245,7 @@ class DnDSortableBehavior extends JQueryInterfaceBehavior implements IBehaviorLi
      * @return this
      */
     protected DnDSortableBehavior registerItem(Component v) {
-        v.add(new SimpleAttributeModifier("class", String.valueOf(options_.get("accept"))));
+        v.add(new AttributeAppender("class", new Model(String.valueOf(options_.get("accept"))), " "));
         v.setOutputMarkupId(true);
         return this;
     }

@@ -69,6 +69,9 @@ public class Options implements Serializable {
     }
 
     public CharSequence toString(boolean asFragment) {
+        if (options_.isEmpty()) {
+            return "";
+        }
         StringBuilder str = new StringBuilder();
         if (!asFragment) {
             str.append("{\n");
