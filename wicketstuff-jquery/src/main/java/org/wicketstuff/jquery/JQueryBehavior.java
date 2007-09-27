@@ -24,14 +24,48 @@ import org.apache.wicket.markup.html.resources.JavascriptResourceReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ *
+ * @author David Bernard (dwayne)
+ * @created 2007-08-08
+ */
+// http://jquery.com/plugins for a list a jquery plugins
 @SuppressWarnings("serial")
 public class JQueryBehavior extends AbstractDefaultAjaxBehavior {
 
     // create a reference to the base javascript file.
     // we use JavascriptResourceReference so that the included file will have
     // its comments stripped and gzipped.
-    private static final JavascriptResourceReference JQUERY_JS = new JavascriptResourceReference(JQueryBehavior.class, "jquery.pack.js");
-    private static final JavascriptResourceReference JQUERY_DEBUG_JS = new JavascriptResourceReference(JQueryBehavior.class, "jquery.debug.js");
+    /**
+     *  ResourceReference for <a href="http://jquery.com">jquery-1.2.1</a> (include by default when you add the current Behavior).
+     */
+    public static final JavascriptResourceReference JQUERY_1_2_JS = new JavascriptResourceReference(JQueryBehavior.class, "jquery-1.2.1.js");
+
+    /**
+     *  ResourceReference for <a href="http://jquery.com">jquery</a> (include by default when you add the current Behavior).
+     */
+    public static final JavascriptResourceReference JQUERY_JS = JQUERY_1_2_JS;
+    
+    /**
+     *  ResourceReference for <a href="http://jquery.glyphix.com/">jquery.debug.js</a> (include by default if wicket's configuration is "development")
+     */
+    public static final JavascriptResourceReference JQUERY_DEBUG_JS = new JavascriptResourceReference(JQueryBehavior.class, "jquery.debug.js");
+
+    /**
+     *  ResourceReference for <a href="http://interface.eyecon.ro">interface-1.2.js</a> (not include in reponse header)
+     */
+    public static final JavascriptResourceReference INTERFACE_JS = new JavascriptResourceReference(JQueryBehavior.class, "interface-1.2.js");
+
+    /**
+     *  ResourceReference for <a href="http://jquery.com/plugins/project/dimensions">jquery.dimensions-1.1.2.js</a> (not include in reponse header)
+     */
+    public static final JavascriptResourceReference JQUERY_DIMENSIONS_JS = new JavascriptResourceReference(JQueryBehavior.class, "jquery.dimensions-1.1.2.js");
+
+    /**
+     *  ResourceReference for <a href="http://jquery.com/plugins/project/bgiframe">jquery.bgiframe-2.1.1.js</a> (not include in reponse header)
+     */
+    public static final JavascriptResourceReference JQUERY_BGIFRAME_JS = new JavascriptResourceReference(JQueryBehavior.class, "jquery.dimensions-2.1.1.js");
+
     private transient Logger logger_;
 
     @Override
@@ -45,7 +79,7 @@ public class JQueryBehavior extends AbstractDefaultAjaxBehavior {
             CharSequence script = getOnReadyScript();
             if ((script != null) && (script.length() > 0)) {
                 StringBuilder builder = new StringBuilder(script.length() + 61);
-                builder.append("<script>$(document).ready(function(){\n");
+                builder.append("<script type=\"text/javascript\">\n$(function(){\n");
                 builder.append(script);
                 builder.append("\n});</script>");
                 response.renderString(builder.toString());

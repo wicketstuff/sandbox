@@ -26,7 +26,7 @@ import org.wicketstuff.jquery.Options;
 public abstract class DnDSortableHandler extends WebComponent {
     private DnDSortableBehavior dnd_;
 
-    public DnDSortableHandler(String id) throws Exception {
+    public DnDSortableHandler(String id) {
         this(id, null);
     }
 
