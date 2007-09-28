@@ -28,7 +28,7 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.behavior.IBehaviorListener;
 import org.apache.wicket.markup.html.IHeaderResponse;
-import org.apache.wicket.markup.html.resources.JavascriptResourceReference;
+import org.apache.wicket.markup.html.resources.CompressedResourceReference;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.util.template.PackagedTextTemplate;
 import org.wicketstuff.jquery.JQueryBehavior;
@@ -37,10 +37,7 @@ import org.wicketstuff.jquery.Options;
 // TODO: disable callback to serverside if clientsideonly
 @SuppressWarnings("serial")
 class DnDSortableBehavior extends JQueryBehavior implements IBehaviorListener {
-    // create a reference to the base javascript file.
-    // we use JavascriptResourceReference so that the included file will have
-    // its comments stripped and gzipped.
-    private static final JavascriptResourceReference DNDSORTABLEBEHAVIOR_JS = new JavascriptResourceReference(DnDSortableBehavior.class, DnDSortableBehavior.class.getSimpleName() + ".js");
+    private static final CompressedResourceReference DNDSORTABLEBEHAVIOR_JS = new CompressedResourceReference(DnDSortableBehavior.class, DnDSortableBehavior.class.getSimpleName() + ".js");
 
     protected Options options_;
 
