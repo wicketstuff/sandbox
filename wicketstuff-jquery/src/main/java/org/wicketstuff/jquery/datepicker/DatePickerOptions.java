@@ -26,9 +26,9 @@ import org.wicketstuff.jquery.Options;
  */
 public class DatePickerOptions extends Options{
     
-    public static enum SHOW_HEADER {NONE, SHORT, LONG,};
-    public static enum VPOS {TOP, BOTTOM};
-    public static enum HPOS {LEFT, RIGHT};
+    /*public static enum ShowHeader {NONE, SHORT, LONG,};*/
+    public static enum VPos {TOP, BOTTOM};
+    public static enum HPos {LEFT, RIGHT};
                         
     /** month (Number): The month to render when the date picker is opened (NOTE that months are zero based). Default is today's month.*/
     public DatePickerOptions month(int v) {
@@ -81,12 +81,12 @@ public class DatePickerOptions extends Options{
         return this;
     }
     /** verticalPosition (Number): The vertical alignment of the popped up date picker to the matched element. Default is TOP.*/
-    public DatePickerOptions verticalPosition(VPOS v) {
+    public DatePickerOptions verticalPosition(VPos v) {
         set("verticalPosition", v.ordinal());
         return this;
     }
     /** horizontalPosition (Number): The horizontal alignment of the popped up date picker to the matched element. One of $.dpConst.POS_LEFT and $.dpConst.POS_RIGHT.*/
-    public DatePickerOptions horizontalPosition(HPOS v) {
+    public DatePickerOptions horizontalPosition(HPos v) {
         set("horizontalPosition", v.ordinal());
         return this;
     }

@@ -19,6 +19,7 @@ package org.wicketstuff.jquery;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import org.apache.wicket.util.string.Strings;
 
 @SuppressWarnings("serial")
 public class Options implements Serializable {
@@ -67,6 +68,11 @@ public class Options implements Serializable {
         options_.put(name, value);
         return this;
     }
+    
+    @Override
+    public String toString() {
+        return toString(false).toString();
+    }
 
     public CharSequence toString(boolean asFragment) {
         if (options_.isEmpty()) {
@@ -77,9 +83,9 @@ public class Options implements Serializable {
             str.append("{\n");
         }
         for (Map.Entry<String, Object> entry : options_.entrySet()) {
-            str.append('\t')
+            str.append("\t'")
                     .append(entry.getKey())
-                    .append(':')
+                    .append("':")
                     ;
             if (entry.getValue() instanceof String) {
                 str.append('\'')
