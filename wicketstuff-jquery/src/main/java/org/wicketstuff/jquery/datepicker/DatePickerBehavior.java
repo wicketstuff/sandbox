@@ -108,6 +108,7 @@ public class DatePickerBehavior extends JQueryBehavior {
 
     @Override
     protected void onBind() {
+        super.onBind();
         Component component = getComponent();
         if (component instanceof TextField) {
             component.setOutputMarkupId(true);
