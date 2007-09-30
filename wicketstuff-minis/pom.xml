@@ -16,6 +16,26 @@
 		behaviors that are too small to warrant their own project
 	</description>
 
+	<profiles>
+		<profile>
+			<id>bamboo</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<distributionManagement>
+				<snapshotRepository>
+					<id>repo</id>
+					<name>Local Bamboo/Tomcat repository</name>
+					<url>
+						file:/home/wicket/tomcat/webapps/maven/repository/
+					</url>
+					<uniqueVersion>false</uniqueVersion>
+				</snapshotRepository>
+			</distributionManagement>
+		</profile>
+	</profiles>
+
+
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.wicket</groupId>
@@ -60,14 +80,14 @@
 			</resource>
 		</resources>
 		<plugins>
-		<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-compiler-plugin</artifactId>
-					<configuration>
-						<source>1.5</source>
-						<target>1.5</target>
-					</configuration>
-				</plugin>
-    </plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.5</source>
+					<target>1.5</target>
+				</configuration>
+			</plugin>
+		</plugins>
 	</build>
 </project>
