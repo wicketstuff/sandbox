@@ -25,11 +25,11 @@ import org.slf4j.LoggerFactory;
 /**
  * Configure a Wicket <code>Component</code> based on Hibernate annotations.
  * <p>
- * Inspects the <code>Model</code> of a <code>FormComponent</code> and 
- * configures the <code>Component</code> according to the declared Hibernate Annotations 
+ * Inspects the <code>Model</code> of a <code>FormComponent</code> and
+ * configures the <code>Component</code> according to the declared Hibernate Annotations
  * used on the model object.  <br />
  * <strong>NOTE:</strong> This means the
- * <code>Component</code>'s <code>Model</code> <em>must</em> be known 
+ * <code>Component</code>'s <code>Model</code> <em>must</em> be known
  * when {@link #configure(Component) configuring} a <code>Component</code>.
  * </p>
  *
@@ -52,7 +52,7 @@ import org.slf4j.LoggerFactory;
  * <p>
  * This object can also be used as a component listener that will automatically configure <em>all</em>
  * <code>FormComponent</code>s based on Hibernate annotations. This ensures that an entire application
- * respects annotations without adding custom <code>Validator</code>s or <code>Behavior</code>s to each 
+ * respects annotations without adding custom <code>Validator</code>s or <code>Behavior</code>s to each
  * <code>FormComponent</code>.
  * </p>
  * <pre>
@@ -87,13 +87,13 @@ public class HibernateAnnotationComponentConfigurator extends AbstractBehavior i
 	}};
 
 	@Override
-	public void bind(Component component) {
+	public final void bind(Component component) {
 		super.bind(component);
 
 		configure(component);
 	}
 
-	public void onBeforeRender(Component component) {
+	public final void onBeforeRender(Component component) {
 		if (!component.hasBeenRendered()) {
 			configure(component);
 		}
