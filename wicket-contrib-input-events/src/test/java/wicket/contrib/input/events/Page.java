@@ -1,10 +1,14 @@
 package wicket.contrib.input.events;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.wicket.ajax.AjaxEventBehavior;
+import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
 
-import wicket.contrib.input.events.key.KeyInput;
 import wicket.contrib.input.events.key.KeyType;
 
 /*
@@ -46,12 +50,36 @@ public class Page extends WebPage {
 				warn("you clicked me!");
 			}
 		};
-		button.setOutputMarkupId(true);
+		List<KeyType> keys = new ArrayList<KeyType>();
+		keys.add(KeyType.a);
+		button.add(new AjaxEventBehavior("onClick"){@Override
+		protected void onEvent(AjaxRequestTarget target) {
+			// TODO Auto-generated method stub
+			
+		}});
+		button.add(new InputBehavior(keys, EventType.click));
 		add(button);
+		
+		Button button2 = new Button("button2") {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
 
-		KeyInput keyInput = new KeyInput(KeyType.Arrow_up, EventType.onClick,
-				button);
-		label.add(new InputBehavior(keyInput));
+			@Override
+			public void onSubmit() {
+				warn("you clicked me!");
+			}
+		};
+		keys = new ArrayList<KeyType>();
+		keys.add(KeyType.a);
+		button2.add(new AjaxEventBehavior("onClick"){@Override
+		protected void onEvent(AjaxRequestTarget target) {
+			// TODO Auto-generated method stub
+			
+		}});
+		button2.add(new InputBehavior(keys, true));
+		add(button2);
 
 	}
 
