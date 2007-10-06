@@ -66,8 +66,8 @@ public class ImageUtils {
 		this.settings = settings;
 	}
 
-	public List getImageList(File directory) {
-		List imageList = new ArrayList();
+	public List<Image> getImageList(File directory) {
+		List<Image> imageList = new ArrayList<Image>();
 		File[] files = directory.listFiles(imageFilter);
 		if (files == null) {
 			throw new RuntimeException("Not a directory: " + directory);

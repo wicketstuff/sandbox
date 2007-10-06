@@ -135,6 +135,11 @@ public class ImagePage extends BasePage {
 
 			// FIXME : remove me, just for tests
 			nav.add(new BookmarkablePageLink("meta", MetadataViewPage.class, params));
+			
+			String folder = uri.substring(0, uri.lastIndexOf("/"));
+			PageParameters folderParams = new PageParameters();
+			folderParams.add("uri", folder);
+			nav.add(new BookmarkablePageLink("diapo", DiaporamaPage.class, folderParams));
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
