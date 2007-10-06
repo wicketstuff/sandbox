@@ -12,6 +12,9 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.Item;
+import org.apache.wicket.markup.repeater.RefreshingView;
+import org.apache.wicket.markup.repeater.RepeatingView;
+import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.markup.repeater.data.GridView;
 import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.markup.repeater.data.ListDataProvider;
@@ -41,27 +44,20 @@ public class SequenceGridPanel extends Panel{
 	public SequenceGridPanel(String id, IModel model) {
 		super(id, model);
 		List imageList = imageUtils.getImageList(new File(settings.getImageDirectoryRoot(), getModelObjectAsString()));
-		add(newGridView("rows",  new ListDataProvider(imageList)));
+		add(newGridView("item",  new ListDataProvider(imageList)));
 	}
 
 	public SequenceGridPanel(String id) {
 		this(id, null);
 	}
 
-	protected GridView newGridView(String id, IDataProvider imageProvider) {
+	protected DataView newGridView(String id, IDataProvider imageProvider) {
 		return new SequenceGridView(id, imageProvider);
 	}
 
-	public class SequenceGridView extends GridView {
+	public class SequenceGridView extends DataView {
 		public SequenceGridView(String id, IDataProvider dataProvider) {
 			super(id, dataProvider);
-		}
-
-		@Override
-		protected void populateEmptyItem(Item item) {
-			WebMarkupContainer link;
-			item.add(link = new WebMarkupContainer("link"));
-			link.setVisible(false);
 		}
 
 		@Override
@@ -88,11 +84,6 @@ public class SequenceGridPanel extends Panel{
 			} catch (IOException e) {
 				throw new RuntimeException(e);
 			}
-		}
-
-		@Override
-		public int getColumns() {
-			return 5;
 		}
 	}
 }
