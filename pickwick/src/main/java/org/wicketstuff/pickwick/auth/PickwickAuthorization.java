@@ -56,12 +56,12 @@ public class PickwickAuthorization {
 	 * @return true if roles match
 	 */
 	public static boolean isAuthorized(List<Role> userRoles, List<Role> sequenceRoles){
-		if(sequenceRoles == null){
+		if(sequenceRoles == null || sequenceRoles.isEmpty()){
 			return true;
 		}
 		
 		if (userRoles == null || userRoles.isEmpty()){
-			if(sequenceRoles == null){
+			if(sequenceRoles == null  || sequenceRoles.isEmpty()){
 				return true;
 			}else{
 				return false;

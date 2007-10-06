@@ -24,7 +24,8 @@ public class DisplaySequence implements Serializable {
 		if (sequence != null) {
 			Date d = sequence.getDate();
 			if (d != null)
-				return null;
+				return d;
+			return null;
 		}
 		return new Date(imageDirectory.lastModified());
 	}
