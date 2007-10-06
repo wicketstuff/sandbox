@@ -61,18 +61,12 @@ public class HomePage extends WebPage {
 				labelModel.setObject("std btn was clicked");
 			}
 		}.setDefaultFormProcessing(false);
-		List<KeyType> keys = new ArrayList<KeyType>();
-		keys.add(KeyType.b);
-		button.add(new InputBehavior(keys, EventType.click));
+		button.add(new InputBehavior(new KeyType[] { KeyType.b }, EventType.click));
 
-		keys = new ArrayList<KeyType>();
-		keys.add(KeyType.a);
 
-		form.add(new InputBehavior(keys, EventType.submit));
+		form.add(new InputBehavior(new KeyType[] { KeyType.a }, EventType.submit));
 		form.add(button);
 		Button button2 = new Button("button2").setDefaultFormProcessing(false);
-		keys = new ArrayList<KeyType>();
-		keys.add(KeyType.c);
 		button2.add(new AjaxEventBehavior("onClick") {
 			@Override
 			protected void onEvent(AjaxRequestTarget target) {
@@ -80,7 +74,7 @@ public class HomePage extends WebPage {
 				target.addComponent(label);
 			}
 		});
-		button2.add(new InputBehavior(keys, true));
+		button2.add(new InputBehavior(new KeyType[] { KeyType.c }));
 		form.add(button2);
 
 	}
