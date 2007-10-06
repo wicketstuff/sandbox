@@ -1,8 +1,5 @@
 package wicket.contrib.input.events;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebPage;
@@ -50,16 +47,17 @@ public class Page extends WebPage {
 				warn("you clicked me!");
 			}
 		};
-		List<KeyType> keys = new ArrayList<KeyType>();
-		keys.add(KeyType.a);
-		button.add(new AjaxEventBehavior("onClick"){@Override
-		protected void onEvent(AjaxRequestTarget target) {
-			// TODO Auto-generated method stub
-			
-		}});
-		button.add(new InputBehavior(keys, EventType.click));
+		button.add(new AjaxEventBehavior("onClick") {
+			@Override
+			protected void onEvent(AjaxRequestTarget target) {
+				// TODO Auto-generated method stub
+
+			}
+		});
+		button.add(new InputBehavior(new KeyType[] { KeyType.b },
+				EventType.click));
 		add(button);
-		
+
 		Button button2 = new Button("button2") {
 			/**
 			 * 
@@ -71,16 +69,15 @@ public class Page extends WebPage {
 				warn("you clicked me!");
 			}
 		};
-		keys = new ArrayList<KeyType>();
-		keys.add(KeyType.a);
-		button2.add(new AjaxEventBehavior("onClick"){@Override
-		protected void onEvent(AjaxRequestTarget target) {
-			// TODO Auto-generated method stub
-			
-		}});
-		button2.add(new InputBehavior(keys, true));
+		button2.add(new AjaxEventBehavior("onClick") {
+			@Override
+			protected void onEvent(AjaxRequestTarget target) {
+				// TODO Auto-generated method stub
+
+			}
+		});
+		button2.add(new InputBehavior(new KeyType[] { KeyType.a }));
 		add(button2);
 
 	}
-
 }
