@@ -50,9 +50,6 @@ public class InputBehavior extends AbstractBehavior implements
 
 	private ResourceReference SHORTCUTS_JAVASCRIPT = new CompressedResourceReference(
 			InputBehavior.class, "shortcuts.js");
-	private ResourceReference safeLoad = new CompressedResourceReference(
-			InputBehavior.class, "wicket-contrib-input-behavior-safeonLoad.js");
-
 	private final KeyType[] keyCombo;
 	private EventType eventType;
 
@@ -78,7 +75,8 @@ public class InputBehavior extends AbstractBehavior implements
 	 * The shortcut keys should be specified in this format ...
 	 * Modifier[+Modifier..]+Key
 	 * 
-	 * Meaning that you should specify in this order, modifier keys first like 'ctrl' and then normal keys like 'a'
+	 * Meaning that you should specify in this order, modifier keys first like
+	 * 'ctrl' and then normal keys like 'a'
 	 * 
 	 * @param keyCombo
 	 * @param autoHook
@@ -100,11 +98,10 @@ public class InputBehavior extends AbstractBehavior implements
 	}
 
 	/**
-	 * Gets the escaped DOM id that the calendar widget will get attached to.
-	 * All non word characters (\W) will be removed from the string.
+	 * Gets the escaped DOM id that the input will get attached to. All non word
+	 * characters (\W) will be removed from the string.
 	 * 
-	 * @return The DOM id of the calendar widget - same as the component's
-	 *         markup id + 'Dp'}
+	 * @return The DOM id of the input - same as the component's markup id}
 	 */
 	protected final String getEscapedComponentMarkupId() {
 		return component.getMarkupId().replaceAll("\\W", "");
@@ -115,9 +112,8 @@ public class InputBehavior extends AbstractBehavior implements
 	public void renderHead(IHeaderResponse response) {
 		super.renderHead(response);
 		response.renderJavascriptReference(SHORTCUTS_JAVASCRIPT);
-		response.renderJavascriptReference(safeLoad);
 		if (!autoHook) {
-			response.renderJavascript(generateString(shortcutJs), null);
+			response.renderOnLoadJavascript(generateString(shortcutJs));
 		}
 	}
 

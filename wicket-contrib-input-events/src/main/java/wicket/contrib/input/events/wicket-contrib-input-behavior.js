@@ -9,6 +9,6 @@ function init${wicketComponentId}() {
 	
 	});
 }
-SafeAddOnload(init${wicketComponentId});
+init${wicketComponentId}();
 
 
