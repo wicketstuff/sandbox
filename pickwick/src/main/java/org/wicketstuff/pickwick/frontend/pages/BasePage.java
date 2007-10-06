@@ -24,8 +24,14 @@ public class BasePage extends WebPage {
 	
 	public void addHeader(){
 
-		add(new BookmarkablePageLink("back", BackendLandingPage.class));
+		BookmarkablePageLink backend = new BookmarkablePageLink("back", BackendLandingPage.class);
+		add(backend);
 		String name = PickwickSession.get().getUserName();
+		if(PickwickSession.get().getUser().isAdmin()){
+			backend.setVisible(true);
+		}else{
+			backend.setVisible(false);
+		}
 		
 		Label userName = new Label("userName", new Model(name));
 		PageLink auth = new PageLink("auth", PickwickLoginPage.class);

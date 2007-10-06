@@ -10,6 +10,7 @@ import org.apache.wicket.extensions.markup.html.form.palette.Palette;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
@@ -34,6 +35,7 @@ public abstract class UserPanel extends Panel {
 	
 	private Form form;
 	private TextField name;
+	private PasswordTextField password;
 	
 	public UserPanel(String id, CompoundPropertyModel userModel) {
 		super(id, new Model());
@@ -49,8 +51,10 @@ public abstract class UserPanel extends Panel {
 		add(form);
 		
 		name = new TextField("name");
+		password = new PasswordTextField("password");
 		name.setOutputMarkupId(true);
 		form.add(name);
+		form.add(password);
 
 		Roles roles = settings.getUserManagement().getAllRoles();
 		Palette role = new Palette("roles", new Model(roles), new ChoiceRenderer("label", "label"), 6, false);

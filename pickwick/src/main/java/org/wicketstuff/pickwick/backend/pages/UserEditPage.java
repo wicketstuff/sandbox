@@ -3,7 +3,6 @@ package org.wicketstuff.pickwick.backend.pages;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.model.Model;
 import org.wicketstuff.pickwick.backend.panel.UserListPanel;
 import org.wicketstuff.pickwick.backend.panel.UserPanel;
 import org.wicketstuff.pickwick.bean.User;

@@ -145,7 +145,13 @@ public class XmlUserManagement implements UserManagement {
 	
 
 	public boolean checkUser(String userName, String password) {
-		return getUserList().get(userName) != null;
+		User user = getUserList().get(userName);
+		if (user != null){
+			if (user.getPassword().equals(password)){
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public void addRole(Role role) {
