@@ -1,8 +1,8 @@
 <script type="text/javascript">
-function init() {
+function init${wicketComponentId}() {
 	shortcut.add("${keys}",function() {
 		${wicketComponentId}.${event}();
-	});
+	},{'disable_in_input':true});
 }
-window.onload=init;
+SafeAddOnload(init${wicketComponentId});
 </script>

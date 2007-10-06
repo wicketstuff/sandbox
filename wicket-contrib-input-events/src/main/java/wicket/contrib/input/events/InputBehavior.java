@@ -45,8 +45,10 @@ import wicket.contrib.input.events.key.KeyType;
 public class InputBehavior extends AbstractBehavior implements
 		IHeaderContributor {
 
-	private static ResourceReference SHORTCUTS_JAVASCRIPT = new CompressedResourceReference(
+	private ResourceReference SHORTCUTS_JAVASCRIPT = new CompressedResourceReference(
 			InputBehavior.class, "shortcuts.js");
+	private ResourceReference safeLoad = new CompressedResourceReference(
+			InputBehavior.class, "wicket-contrib-input-behavior-safeonLoad.js");
 
 	private final List<KeyType> keyCombo;
 	private EventType eventType;
@@ -102,6 +104,7 @@ public class InputBehavior extends AbstractBehavior implements
 	public void renderHead(IHeaderResponse response) {
 		super.renderHead(response);
 		response.renderJavascriptReference(SHORTCUTS_JAVASCRIPT);
+		response.renderJavascriptReference(safeLoad);
 		if (!autoHook) {
 			response.renderJavascript(generateString(shortcutJs), null);
 		}
