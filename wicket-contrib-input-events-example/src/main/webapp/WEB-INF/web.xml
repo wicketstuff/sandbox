@@ -17,16 +17,16 @@
 	-->
 
 	<filter>
-		<filter-name>wicket.myproject2</filter-name>
+		<filter-name>wicket.inputexample</filter-name>
  		<filter-class>org.apache.wicket.protocol.http.WicketFilter</filter-class>
 		<init-param>
 			<param-name>applicationClassName</param-name>
-			<param-value>com.mycompany2.WicketApplication</param-value>
+			<param-value>inputexample.WicketApplication</param-value>
  		</init-param>
  	</filter>
 
  <filter-mapping>
-  <filter-name>wicket.myproject2</filter-name>
+  <filter-name>wicket.inputexample</filter-name>
 	<url-pattern>/*</url-pattern>
  </filter-mapping>
 
