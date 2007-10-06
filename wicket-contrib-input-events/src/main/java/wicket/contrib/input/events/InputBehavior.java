@@ -34,6 +34,7 @@ import org.apache.wicket.markup.html.resources.CompressedResourceReference;
 import org.apache.wicket.util.template.PackagedTextTemplate;
 import org.apache.wicket.util.template.TextTemplate;
 
+import wicket.contrib.input.events.key.KeyHookOn;
 import wicket.contrib.input.events.key.KeyType;
 
 /**
@@ -50,7 +51,7 @@ public class InputBehavior extends AbstractBehavior implements
 	private ResourceReference safeLoad = new CompressedResourceReference(
 			InputBehavior.class, "wicket-contrib-input-behavior-safeonLoad.js");
 
-	private final List<KeyType> keyCombo;
+	private final KeyType[] keyCombo;
 	private EventType eventType;
 
 	private boolean autoHook = false;
@@ -59,7 +60,7 @@ public class InputBehavior extends AbstractBehavior implements
 	private final TextTemplate shortcutJsAutoHook = new PackagedTextTemplate(
 			InputBehavior.class, "wicket-contrib-input-behavior-autohook.js");
 
-	public InputBehavior(List<KeyType> keyCombo, EventType eventType) {
+	public InputBehavior(KeyType[] keyCombo, EventType eventType) {
 		this.keyCombo = keyCombo;
 		this.eventType = eventType;
 	}
@@ -69,10 +70,18 @@ public class InputBehavior extends AbstractBehavior implements
 	 * not pickup the event.. Also it will only hook up to the last event if
 	 * more are present (use other constructor to specify manually)
 	 * 
+	 * 
+	 * Note on keyCombo
+	 * 
+	 * The shortcut keys should be specified in this format ...
+	 * Modifier[+Modifier..]+Key
+	 * 
+	 * Meaning that you should specify in this order, modifier keys first like 'ctrl' and then normal keys like 'a'
+	 * 
 	 * @param keyCombo
 	 * @param autoHook
 	 */
-	public InputBehavior(List<KeyType> keyCombo, boolean autoHook) {
+	public InputBehavior(KeyType[] keyCombo) {
 		this.keyCombo = keyCombo;
 		this.autoHook = true;
 	}
@@ -162,9 +171,54 @@ public class InputBehavior extends AbstractBehavior implements
 		variables.put("event", eventType.toString());
 		variables.put("keys", keyComboString);
 		variables.put("wicketComponentId", widgetId);
+
+		variables.put("disable_in_input", getDisable_in_input().toString());
+		variables.put("type", getType().toString());
+		variables.put("propagate", getPropagate().toString());
+		variables.put("target", getTarget());
+
 		textTemplate.interpolate(variables);
 		return textTemplate.asString();
 
+	}
+
+	/**
+	 * If this is set to true, keyboard capture will be disabled in input and
+	 * textarea fields. If these elements have focus, the keyboard shortcut will
+	 * not work. This is very useful for single key shortcuts. Default: false
+	 * 
+	 * @return
+	 */
+	protected Boolean getDisable_in_input() {
+		return false;
+	}
+
+	/**
+	 * The event type - can be 'keydown','keyup','keypress'. Default: 'keydown'
+	 * 
+	 * @return
+	 */
+	protected KeyHookOn getType() {
+		return KeyHookOn.keydown;
+	}
+
+	/**
+	 * Should the command be passed onto the browser afterwards?
+	 * 
+	 * @return
+	 */
+	protected Boolean getPropagate() {
+		return false;
+	}
+
+	/**
+	 * target - DOM Node The element that should be watched for the keyboard
+	 * event. Default : document
+	 * 
+	 * @return
+	 */
+	protected String getTarget() {
+		return "document";
 	}
 
 }

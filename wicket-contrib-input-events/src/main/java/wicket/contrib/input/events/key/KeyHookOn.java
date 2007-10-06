@@ -16,19 +16,12 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package wicket.contrib.input.events;
+package wicket.contrib.input.events.key;
 
-import org.apache.wicket.behavior.AttributeAppender;
-import org.apache.wicket.model.IModel;
+public enum KeyHookOn {
+	keydown, keyup, keypress;
 
-/**
- * 
- * @author Nino Martinez Wael (nino.martinez@jayway.dk)
- */
-public abstract class Input extends AttributeAppender {
-
-	public Input(String arg0, IModel arg1, String arg2) {
-		super(arg0, arg1, arg2);
+	private KeyHookOn() {
 	}
 
 }
