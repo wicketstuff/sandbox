@@ -40,6 +40,8 @@ import wicket.contrib.input.events.key.KeyType;
 /**
  * Add this to your button, link whatever to create a shortcut key..
  * 
+ * <strong>WARNING:this behavior uses a special script for calling window.onload</strong>
+ * 
  * @author Nino Martinez Wael (nino.martinez@jayway.dk)
  * 
  */
