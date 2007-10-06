@@ -8,6 +8,7 @@ public class User implements Serializable, Comparable<User>{
 	private List<Role> roles;
 	private String name;
 	private boolean admin;
+	private String password;
 	public boolean isAdmin() {
 		return admin;
 	}
@@ -29,5 +30,11 @@ public class User implements Serializable, Comparable<User>{
 	public int compareTo(User arg0) {
 		if (this.name==null || arg0.getName() == null) return 0;
 		return this.name.compareTo(arg0.getName());
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
 	}
 }
