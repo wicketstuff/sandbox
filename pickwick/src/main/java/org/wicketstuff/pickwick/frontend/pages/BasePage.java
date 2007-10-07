@@ -26,6 +26,8 @@ public class BasePage extends WebPage {
 
 		BookmarkablePageLink backend = new BookmarkablePageLink("back", BackendLandingPage.class);
 		add(backend);
+		Image bckImg = new Image("bckImage", new ResourceReference(BasePage.class, "images/backend.png"));
+		backend.add(bckImg);
 		String name = PickwickSession.get().getUserName();
 		if(PickwickSession.get().getUser().isAdmin()){
 			backend.setVisible(true);
@@ -38,13 +40,22 @@ public class BasePage extends WebPage {
 		PageLink logout = new PageLink("logout", PickwickLogoutPage.class);
 		PageLink home = new PageLink("home", getApplication().getHomePage());
 		add(home);
-		home.add(new Image("homeImage", new ResourceReference(BasePage.class, "home.png")));
+		home.add(new Image("homeImage", new ResourceReference(BasePage.class, "images/home.png")));
 		add(userName);
 		add(auth);
 		add(logout);
+		
+		Image userImg = new Image("userImage", new ResourceReference(BasePage.class, "images/users.png"));
+		add(userImg);
+		Image logInImg = new Image("logInImage", new ResourceReference(BasePage.class, "images/log-in.png"));
+		auth.add(logInImg);
+		Image logOutImg = new Image("logOutImage", new ResourceReference(BasePage.class, "images/log-out.png"));
+		logout.add(logOutImg);
+		
 		if (PickwickApplication.get().getPickwickSession().getDefaultUser().getName().equals(name)){
 			//anonymous
 			userName.setVisible(false);
+			userImg.setVisible(false);
 			logout.setVisible(false);
 		}else{
 			auth.setVisible(false);

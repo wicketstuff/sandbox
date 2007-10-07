@@ -1,18 +1,22 @@
 <wicket:extend>
 	<div wicket:id="meta"></div>
-	<table width="100%" height="100%">
+	<table width="100%" height="100%"  class="box">
+		<tr>
+			<td align="center">
+				<div class="nav" wicket:id="nav">
+					<a wicket:id="first"><img wicket:id="firstImage"/></a>
+					<a wicket:id="prev"><img wicket:id="prevImage"/></a>
+					<a wicket:id="next"><img wicket:id="nextImage"/></a>
+					<a wicket:id="last"><img wicket:id="lastImage"/></a>
+					<a wicket:id="meta"><img wicket:id="metaImage"/></a>
+					<a wicket:id="diapo"><img wicket:id="diapoImage"/></a>
+				</div>
+			</td>
+		</tr>
 		<tr>
 			<td align="center" valign="top">
-				<div id="photoContainer" class="box">
-					<img wicket:id="scaled" style="visibility:hidden;"/>
-					<div class="nav" wicket:id="nav">
-						<a wicket:id="first">First</a>
-						<a wicket:id="prev">Previous</a>
-						<a wicket:id="next">Next</a>
-						<a wicket:id="last">Last</a>
-						<a wicket:id="meta">meta</a>
-						<a wicket:id="diapo">diapo</a>
-					</div>
+				<div id="photoContainer">
+					<img wicket:id="scaled"/>
 				</div>
 			</td>
 		</tr>

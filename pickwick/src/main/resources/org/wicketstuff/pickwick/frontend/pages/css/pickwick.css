@@ -98,14 +98,11 @@ img{
 }
 
 .nav {
-	position: absolute;
 	z-index:9999;
 	background-color: #dfecf3;
 	border: 1px solid black;
 	width:300px;
 	height: 30px;
-	opacity: .2;
-	filter: alpha(opacity=20);
 }
 
 #userInfo {
