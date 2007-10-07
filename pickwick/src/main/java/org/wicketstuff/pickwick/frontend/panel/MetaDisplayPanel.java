@@ -22,6 +22,7 @@ import org.wicketstuff.pickwick.bean.DisplaySequence;
 import org.wicketstuff.pickwick.bean.Sequence;
 import org.wicketstuff.pickwick.frontend.pages.DateModel;
 import org.wicketstuff.pickwick.frontend.pages.DiaporamaPage;
+import org.wicketstuff.pickwick.frontend.pages.GmapPage;
 import org.wicketstuff.pickwick.frontend.pages.ImagePage;
 
 import com.google.inject.Inject;
@@ -74,6 +75,11 @@ public class MetaDisplayPanel extends Panel {
 		add(diapo = new BookmarkablePageLink("diapo", DiaporamaPage.class, params));
 		Image diapoImage = new Image("diapoImage", new ResourceReference(MetaDisplayPanel.class, "images/diaporama.png"));
 		diapo.add(diapoImage);
+		
+		BookmarkablePageLink map;
+		add(map = new BookmarkablePageLink("map", GmapPage.class, params));
+		Image mapImage = new Image("mapImage", new ResourceReference(MetaDisplayPanel.class, "images/word.png"));
+		map.add(mapImage);
 	}
 	
 	/**

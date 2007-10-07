@@ -13,6 +13,9 @@ public class Sequence implements Serializable{
 	private Date date;
 	private List<Role> roles;
 	
+	private float latitude;
+	private float longitude;
+	
 	public Date getDate() {
 		return date;
 	}
@@ -36,5 +39,17 @@ public class Sequence implements Serializable{
 	}
 	public void setRoles(List<Role> roles) {
 		this.roles = roles;
+	}
+	public float getLatitude() {
+		return latitude;
+	}
+	public void setLatitude(float latitude) {
+		this.latitude = latitude;
+	}
+	public float getLongitude() {
+		return longitude;
+	}
+	public void setLongitude(float longitude) {
+		this.longitude = longitude;
 	}
 }
