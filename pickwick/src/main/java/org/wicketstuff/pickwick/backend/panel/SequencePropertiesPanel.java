@@ -17,6 +17,8 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.validation.IValidator;
+import org.apache.wicket.validation.validator.NumberValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wicketstuff.pickwick.backend.ImageUtils;
@@ -44,6 +46,9 @@ public abstract class SequencePropertiesPanel extends Panel {
 	public static final String TITLE = "title";
 
 	public static final String DESCRIPTION = "description";
+	
+	public static final String LATITUDE = "latitude";
+	public static final String LONGITUDE = "longitude";
 
 	public static final String DATE = "date";
 	
@@ -62,11 +67,16 @@ public abstract class SequencePropertiesPanel extends Panel {
 		TextField title = new TextField(TITLE);
 		description = new TextArea(DESCRIPTION);
 		DateField date = new DateField(DATE);
+		TextField longitude = new TextField(LONGITUDE);
+		//longitude.add(new NumberValidator());
+		TextField latitude = new TextField(LATITUDE);
 		
 
 		form.add(title);
 		form.add(description);
 		form.add(date);
+		form.add(longitude);
+		form.add(latitude);
 		
 		Roles roles = settings.getUserManagement().getAllRoles();
 		Palette role = new Palette("roles", new Model(roles), new ChoiceRenderer("label", "label"), 6, false);
