@@ -5,6 +5,7 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
+import org.apache.wicket.markup.html.link.Link;
 
 import wicket.contrib.input.events.key.KeyType;
 
@@ -78,6 +79,15 @@ public class Page extends WebPage {
 		});
 		button2.add(new InputBehavior(new KeyType[] { KeyType.a }));
 		add(button2);
+		Link link = new Link("link") {
+			@Override
+			public void onClick() {
+
+			}
+		};
+		link.add(new InputBehavior(new KeyType[] { KeyType.d }));
+		add(link);
+
 
 	}
 }
