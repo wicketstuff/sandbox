@@ -5,9 +5,12 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
 import org.apache.wicket.PageParameters;
+import org.apache.wicket.ResourceReference;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.markup.html.link.PageLink;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.slf4j.Logger;
@@ -18,6 +21,8 @@ import org.wicketstuff.pickwick.backend.pages.SequenceEditPage;
 import org.wicketstuff.pickwick.bean.DisplaySequence;
 import org.wicketstuff.pickwick.bean.Sequence;
 import org.wicketstuff.pickwick.frontend.pages.DateModel;
+import org.wicketstuff.pickwick.frontend.pages.DiaporamaPage;
+import org.wicketstuff.pickwick.frontend.pages.ImagePage;
 
 import com.google.inject.Inject;
 
@@ -54,6 +59,8 @@ public class MetaDisplayPanel extends Panel {
 		params.add("uri", uri);
 		BookmarkablePageLink adminLink = new BookmarkablePageLink("edit", SequenceEditPage.class, params);
 		add(adminLink);
+		Image editImage = new Image("editImage", new ResourceReference(MetaDisplayPanel.class, "images/edit.png"));
+		adminLink.add(editImage);
 		if (PickwickApplication.get().getPickwickSession().getUser()!= null && PickwickApplication.get().getPickwickSession().getUser().isAdmin()) {
 			adminLink.setVisible(true);
 		}else{
@@ -61,6 +68,12 @@ public class MetaDisplayPanel extends Panel {
 		}
 		
 		this.uri = uri;
+		
+		//actions
+		BookmarkablePageLink diapo;
+		add(diapo = new BookmarkablePageLink("diapo", DiaporamaPage.class, params));
+		Image diapoImage = new Image("diapoImage", new ResourceReference(MetaDisplayPanel.class, "images/diaporama.png"));
+		diapo.add(diapoImage);
 	}
 	
 	/**
