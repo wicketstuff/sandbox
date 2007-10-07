@@ -1,8 +1,5 @@
 package inputexample;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -10,6 +7,7 @@ import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
@@ -44,11 +42,13 @@ public class HomePage extends WebPage {
 		final Label label = new Label("id", labelModel);
 		label.setOutputMarkupId(true);
 		add(label);
-		Form form = new Form("form"){@Override
-		protected void onSubmit() {
-			super.onSubmit();
-			labelModel.setObject("form was submitted");
-		}};
+		Form form = new Form("form") {
+			@Override
+			protected void onSubmit() {
+				super.onSubmit();
+				labelModel.setObject("form was submitted");
+			}
+		};
 		add(form);
 		Button button = new Button("button") {
 			/**
@@ -61,10 +61,11 @@ public class HomePage extends WebPage {
 				labelModel.setObject("std btn was clicked");
 			}
 		}.setDefaultFormProcessing(false);
-		button.add(new InputBehavior(new KeyType[] { KeyType.b }, EventType.click));
+		button.add(new InputBehavior(new KeyType[] { KeyType.b },
+				EventType.click));
 
-
-		form.add(new InputBehavior(new KeyType[] { KeyType.a }, EventType.submit));
+		form.add(new InputBehavior(new KeyType[] {KeyType.Ctrl,KeyType.a },
+				EventType.submit));
 		form.add(button);
 		Button button2 = new Button("button2").setDefaultFormProcessing(false);
 		button2.add(new AjaxEventBehavior("onClick") {
@@ -76,6 +77,15 @@ public class HomePage extends WebPage {
 		});
 		button2.add(new InputBehavior(new KeyType[] { KeyType.c }));
 		form.add(button2);
+		Link link = new Link("link") {
+			@Override
+			public void onClick() {
+				labelModel.setObject("link clicked");
+
+			}
+		};
+		link.add(new InputBehavior(new KeyType[] { KeyType.d }));
+		add(link);
 
 	}
 }
