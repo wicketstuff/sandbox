@@ -10,18 +10,29 @@
 				<td>
 					<div id="header" >
 						<div id="userInfo">
-							<table width="100%">
+							<table width="100%" cellspacing="0" cellpadding="0" style="padding-bottom:5px">
 								<tr>
 									<td>
 										<a wicket:id="home"><img wicket:id="homeImage"></img></a>
 									</td>
-									<td align="right"><div wicket:id="userName"></div></td>
+									<td align="right">
+										<table>
+											<tr>
+												<td>
+													<img wicket:id="userImage"/>
+												</td>
+												<td>
+													<div wicket:id="userName"></div>
+												</td>
+											</tr>
+										</table>
+									</td>
 								</tr>
 							</table>
 							
-							<a wicket:id="auth">Authentication</a>
-							<a wicket:id="logout">Logout</a>
-							<a wicket:id="back">backend</a>
+							<a wicket:id="auth"><img wicket:id="logInImage" title="Log in"/><span></span></a>
+							<a wicket:id="logout"><img wicket:id="logOutImage" title="Log out"/></a>
+							<a wicket:id="back"><img wicket:id="bckImage" title="backend"/></a>
 						</div>
 					</div>
 				</td>
