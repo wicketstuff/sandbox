@@ -10,8 +10,8 @@ import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.model.CompoundPropertyModel;
-import org.wicketstuff.dojo.markup.html.DojoLink;
 import org.wicketstuff.pickwick.backend.ImageUtils;
 import org.wicketstuff.pickwick.backend.panel.SequencePropertiesPanel;
 import org.wicketstuff.pickwick.bean.DisplaySequence;
@@ -61,7 +61,7 @@ public class SequenceEditPage extends BasePage {
 			@Override
 			public MarkupContainer newNodeLink(MarkupContainer parent, String id, TreeNode node) {
 				final Folder folder = (Folder) ((DefaultMutableTreeNode) node).getUserObject();
-				DojoLink nodeLink = new DojoLink(id) {
+				AjaxLink nodeLink = new AjaxLink(id) {
 
 					@Override
 					public void onClick(AjaxRequestTarget target) {
