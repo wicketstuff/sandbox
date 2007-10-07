@@ -1,6 +1,7 @@
 function init${wicketComponentId}() {
 	shortcut.add("${keys}",function() {
-		${wicketComponentId}.${event}();
+		
+		document.getElementById('${wicketComponentId}').${event}();
 	},{
 	'disable_in_input':${disable_in_input},
 	'type':'${type}',
