@@ -30,6 +30,7 @@ import org.apache.wicket.behavior.AbstractBehavior;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.IHeaderContributor;
 import org.apache.wicket.markup.html.IHeaderResponse;
+import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.resources.CompressedResourceReference;
 import org.apache.wicket.util.template.PackagedTextTemplate;
 import org.apache.wicket.util.template.TextTemplate;
@@ -121,6 +122,10 @@ public class InputBehavior extends AbstractBehavior implements
 	public void onComponentTag(Component component, ComponentTag tag) {
 		super.onComponentTag(component, tag);
 		if (autoHook) {
+			if (component instanceof Link) {
+				eventType = EventType.click;
+				return;
+			}
 			Map<String, String> attribs = tag.getAttributes();
 			for (String attrib : attribs.keySet()) {
 
