@@ -2,7 +2,7 @@
 function init${wicketComponentId}() {
 	shortcut.add("${keys}",function() {
 				
-				document.getElementById('${wicketComponentId}').${event}();
+				window.location=document.getElementById('${wicketComponentId}').href;
 				
 	},{
 	'disable_in_input':${disable_in_input},
