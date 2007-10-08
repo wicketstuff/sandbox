@@ -55,10 +55,15 @@ public class InputBehavior extends AbstractBehavior implements
 	private EventType eventType;
 
 	private boolean autoHook = false;
+	private boolean linkUnbound = false;
 	private final TextTemplate shortcutJs = new PackagedTextTemplate(
 			InputBehavior.class, "wicket-contrib-input-behavior.js");
 	private final TextTemplate shortcutJsAutoHook = new PackagedTextTemplate(
 			InputBehavior.class, "wicket-contrib-input-behavior-autohook.js");
+
+	private final TextTemplate shortcutJsAutoHookLink = new PackagedTextTemplate(
+			InputBehavior.class,
+			"wicket-contrib-input-behavior-autohook-link.js");
 
 	public InputBehavior(KeyType[] keyCombo, EventType eventType) {
 		this.keyCombo = keyCombo;
@@ -122,10 +127,6 @@ public class InputBehavior extends AbstractBehavior implements
 	public void onComponentTag(Component component, ComponentTag tag) {
 		super.onComponentTag(component, tag);
 		if (autoHook) {
-			if (component instanceof Link) {
-				eventType = EventType.click;
-				return;
-			}
 			Map<String, String> attribs = tag.getAttributes();
 			for (String attrib : attribs.keySet()) {
 
@@ -139,6 +140,12 @@ public class InputBehavior extends AbstractBehavior implements
 					}
 				}
 			}
+			// Try to bind to link so shortcut will work. Should only be done if
+			// no other handlers were found
+			if (component instanceof Link && eventType == null) {
+				linkUnbound = true;
+				return;
+			}
 
 		}
 	}
@@ -149,7 +156,11 @@ public class InputBehavior extends AbstractBehavior implements
 		super.onRendered(component);
 		if (autoHook) {
 			Response response = component.getResponse();
-			response.write(generateString(shortcutJsAutoHook));
+			if (linkUnbound) {
+				response.write(generateString(shortcutJsAutoHookLink));
+			} else {
+				response.write(generateString(shortcutJsAutoHook));
+			}
 
 		}
 	}
@@ -171,7 +182,9 @@ public class InputBehavior extends AbstractBehavior implements
 			}
 			keyComboString += keyType.toString();
 		}
-		variables.put("event", eventType.toString());
+		if (eventType != null) {
+			variables.put("event", eventType.toString());
+		}
 		variables.put("keys", keyComboString);
 		variables.put("wicketComponentId", widgetId);
 
