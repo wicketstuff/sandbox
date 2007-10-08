@@ -9,8 +9,10 @@
 		<span wicket:id="message">message will be here</span>
 		<br />
 		<p>
-			Press ctrl+a,b or c to fire either form submission, button submit or ajax
-			event.
+			Press ctrl+a or b,c to fire either form submission, button submit
+			or ajax event.
+			
+			d,e to focus textfield or e to click link
 		</p>
 		<br />
 		Event was fired:
@@ -19,9 +21,11 @@
 			<input type="submit" wicket:id="button" value="clickme!" />
 
 			<input type="submit" wicket:id="button2" value="clickme!ajax" />
+
+			<input type="text" wicket:id="text" />
 		</form>
 
-		<a href="#" wicket:id="link"></a>
+		<a href="#" wicket:id="link">Click here!</a>
 
 	</body>
 </html>
