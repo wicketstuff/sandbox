@@ -7,6 +7,7 @@ import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -64,7 +65,7 @@ public class HomePage extends WebPage {
 		button.add(new InputBehavior(new KeyType[] { KeyType.b },
 				EventType.click));
 
-		form.add(new InputBehavior(new KeyType[] {KeyType.Ctrl,KeyType.a },
+		form.add(new InputBehavior(new KeyType[] { KeyType.Ctrl, KeyType.a },
 				EventType.submit));
 		form.add(button);
 		Button button2 = new Button("button2").setDefaultFormProcessing(false);
@@ -84,7 +85,10 @@ public class HomePage extends WebPage {
 
 			}
 		};
-		link.add(new InputBehavior(new KeyType[] { KeyType.d }));
+		form.add(new TextField("text", new Model("")).add(new InputBehavior(
+				new KeyType[] { KeyType.d }, EventType.focus)));
+		
+		link.add(new InputBehavior(new KeyType[] { KeyType.e }));
 		add(link);
 
 	}
