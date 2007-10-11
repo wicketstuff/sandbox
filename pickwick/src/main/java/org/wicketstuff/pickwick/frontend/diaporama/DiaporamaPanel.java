@@ -82,7 +82,7 @@ public class DiaporamaPanel extends Panel {
 		public void renderHead(IHeaderResponse response) {
 			super.renderHead(response);
 			
-			StringBuffer buffer = new StringBuffer("var imageList = [\n");
+			StringBuffer buffer = new StringBuffer("var imageList = ['',\n");
 			for(Image image : imageList){
 				String imagePath = imageUtils.getRelativePath(image.getFile());
 				buffer.append("\"" + getRequest()
@@ -92,7 +92,7 @@ public class DiaporamaPanel extends Panel {
 			buffer.deleteCharAt(buffer.length() - 1);
 			buffer.append("];\n");
 			
-			buffer.append("var urlList = [\n");
+			buffer.append("var urlList = ['',\n");
 			for(Image image : imageList){
 				String imagePath = imageUtils.getRelativePath(image.getFile());
 				buffer.append("\"" + getRequest()

@@ -188,7 +188,7 @@ public class PickwickApplication extends AuthenticatedWebApplication {
 
 	IRequestTarget serveImage(String uri, int size) throws IOException, FileNotFoundException,
 			ImageConversionException {
-		File baseDirectory = new File("src/main/webapp/" + size);
+		File baseDirectory = new File(settings.getGeneratedImageDirectoryPath() + "/" + size);
 		File file = new File(baseDirectory, uri);
 		if (!file.getCanonicalPath().startsWith(baseDirectory.getCanonicalPath())) {
 			// For security matters, we don't serve a file above the base
@@ -220,6 +220,11 @@ public class PickwickApplication extends AuthenticatedWebApplication {
 	 */
 	public PickwickSession getPickwickSession(){
 		return ((PickwickSession)((WebRequestCycle)RequestCycle.get()).getSession());
+	}
+	
+	@Override
+	public String getConfigurationType() {
+		return settings.getConfigurationType();
 	}
 
 	@Override

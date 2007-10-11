@@ -13,7 +13,7 @@ import com.google.inject.ImplementedBy;
  * 
  * @author <a href="mailto:jbq@apache.org">Jean-Baptiste Quenot</a>
  */
-@ImplementedBy(DefaultSettings.class)
+@ImplementedBy(PropertyFileSettings.class)
 public interface Settings extends Serializable{
 	/**
 	 * @return base URL of the application for use in the RSS feed, see {@link FeedGenerator}
@@ -26,7 +26,23 @@ public interface Settings extends Serializable{
 	File getImageDirectoryRoot();
 	
 	/**
+	 * @return the base generation folder
+	 */
+	String getGeneratedImageDirectoryPath() ;
+	
+	/**
 	 * @return UserMangement implementation used on the application
 	 */
 	UserManagement getUserManagement();
+	
+	/**
+	 * @return the google key to display the map
+	 */
+	String getGoogleKey();
+	
+	/**
+	 * 
+	 * @return the configuration type
+	 */
+	String getConfigurationType();
 }

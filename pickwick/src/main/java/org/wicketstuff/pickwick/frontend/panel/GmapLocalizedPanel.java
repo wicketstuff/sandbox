@@ -45,8 +45,6 @@ public class GmapLocalizedPanel extends Panel{
 	private Settings settings;
 	
 	private List<Folder> folders;
-	
-	private static final String LOCALHOST_8080_WICKET_CONTRIB_GMAP_EXAMPLES_KEY = "ABQIAAAALjfJpigGWq5XvKwy7McLIxTEpDPjw6LRH7yL06TcOjcEpKZmCRRGeXL1BMh_MNX22hDtswyQqVAOyQ";
 
 
 	/**
@@ -57,7 +55,7 @@ public class GmapLocalizedPanel extends Panel{
 		super(id);
 		
 		//add gmap
-		GMap gmap = new GMap(new GLatLng(30, 10), 2);
+		GMap gmap = new GMap(new GLatLng(40, 10), 3);
 		gmap.setTypeControl(true);
 		gmap.setSmallMapControl(true);
 		
@@ -77,7 +75,7 @@ public class GmapLocalizedPanel extends Panel{
 		}
 		
 		GMapPanel mapPanel = new GMapPanel("gmap", gmap, 800, 600,
-				LOCALHOST_8080_WICKET_CONTRIB_GMAP_EXAMPLES_KEY);
+				settings.getGoogleKey());
 		/*mapPanel.addClickListener(new GMapClickListener() {
 
 			public void onClick(AjaxRequestTarget target, GLatLng point) {

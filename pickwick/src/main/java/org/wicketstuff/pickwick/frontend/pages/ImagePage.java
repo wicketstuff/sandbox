@@ -109,7 +109,7 @@ public class ImagePage extends BasePage {
 			Image metaImage = new Image("metaImage", new ResourceReference(ImagePage.class, "images/information.png"));
 			meta.add(metaImage);
 			
-			String folder = uri.substring(0, uri.lastIndexOf("/"));
+			String folder = Utils.getFolderFor(uri);
 			PageParameters folderParams = new PageParameters();
 			folderParams.add("uri", folder);
 			BookmarkablePageLink diapo;
