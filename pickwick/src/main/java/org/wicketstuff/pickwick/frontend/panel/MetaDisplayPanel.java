@@ -10,12 +10,12 @@ import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.markup.html.link.PageLink;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wicketstuff.pickwick.PickwickApplication;
+import org.wicketstuff.pickwick.Utils;
 import org.wicketstuff.pickwick.backend.ImageUtils;
 import org.wicketstuff.pickwick.backend.pages.SequenceEditPage;
 import org.wicketstuff.pickwick.bean.DisplaySequence;
@@ -23,7 +23,6 @@ import org.wicketstuff.pickwick.bean.Sequence;
 import org.wicketstuff.pickwick.frontend.pages.DateModel;
 import org.wicketstuff.pickwick.frontend.pages.DiaporamaPage;
 import org.wicketstuff.pickwick.frontend.pages.GmapPage;
-import org.wicketstuff.pickwick.frontend.pages.ImagePage;
 
 import com.google.inject.Inject;
 
@@ -71,8 +70,10 @@ public class MetaDisplayPanel extends Panel {
 		this.uri = uri;
 		
 		//actions
+		PageParameters folderParams = new PageParameters();
 		BookmarkablePageLink diapo;
-		add(diapo = new BookmarkablePageLink("diapo", DiaporamaPage.class, params));
+		folderParams.add("uri", Utils.getFolderFor(uri));
+		add(diapo = new BookmarkablePageLink("diapo", DiaporamaPage.class, folderParams));
 		Image diapoImage = new Image("diapoImage", new ResourceReference(MetaDisplayPanel.class, "images/diaporama.png"));
 		diapo.add(diapoImage);
 		

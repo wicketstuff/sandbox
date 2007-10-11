@@ -26,4 +26,19 @@ public class Utils {
 			throw new WicketRuntimeException("can not decode " + uri, e);
 		}
 	}
+	
+	public static String getFolderFor(String uri){
+		if (uri != null){
+			if (uri.lastIndexOf("/") == -1){
+				return uri;
+			}
+			String folder = uri.substring(0, uri.lastIndexOf("/"));
+			//still an image remove last name
+			if (folder.endsWith(".jpg") || folder.endsWith(".JPG")){
+				folder = folder.substring(0, folder.lastIndexOf("/"));
+			}
+			return folder;
+		}
+		return null;
+	}
 }
