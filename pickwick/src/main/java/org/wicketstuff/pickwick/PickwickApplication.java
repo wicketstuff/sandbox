@@ -24,6 +24,8 @@ import org.apache.wicket.request.target.basic.URIRequestTargetUrlCodingStrategy;
 import org.apache.wicket.request.target.component.BookmarkablePageRequestTarget;
 import org.apache.wicket.request.target.component.IBookmarkablePageRequestTarget;
 import org.apache.wicket.request.target.resource.ResourceStreamRequestTarget;
+import org.apache.wicket.settings.IApplicationSettings;
+import org.apache.wicket.settings.ISessionSettings;
 import org.apache.wicket.util.resource.AbstractResourceStream;
 import org.apache.wicket.util.resource.FileResourceStream;
 import org.apache.wicket.util.resource.IResourceStream;
@@ -239,5 +241,12 @@ public class PickwickApplication extends AuthenticatedWebApplication {
 
 	public Settings getSettings() {
 		return settings;
+	}
+	
+	@Override
+	public IApplicationSettings getApplicationSettings() {
+		IApplicationSettings appSettings = super.getApplicationSettings();
+		appSettings.setPageExpiredErrorPage(SequencePage.class);
+		return appSettings;
 	}
 }
