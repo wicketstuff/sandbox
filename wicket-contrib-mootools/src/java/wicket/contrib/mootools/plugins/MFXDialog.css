@@ -25,6 +25,11 @@
 	margin-right: 10px;
 }
 
+.MFXInput {
+	width: 220px;
+	height: 80px;
+}
+
 .MFXDialogContent {
 	margin-top: 10px;
 	margin-left: 10px;

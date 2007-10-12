@@ -25,8 +25,7 @@ public abstract class MFXDialogBase extends Panel {
 	private int offsetTop;
 	private String body;
 
-	private ResourceReference PLAINCSS = new CompressedResourceReference(
-			MFXDialog.class, "MFXDialog.css");
+	private ResourceReference PLAINCSS = new CompressedResourceReference(MFXDialog.class, "MFXDialog.css");
 
 	public MFXDialogBase(final String id) {
 		super(id);
@@ -48,6 +47,10 @@ public abstract class MFXDialogBase extends Panel {
 		return true;
 	}
 
+	protected Boolean bounceDialog() {
+		return true;
+	}
+
 	protected Page createPage() {
 
 		if (pageCreator == null) {
@@ -62,8 +65,7 @@ public abstract class MFXDialogBase extends Panel {
 		}
 	}
 
-	protected String genericOpenJavaScript(final String id,
-			final String contentId) {
+	protected String genericOpenJavaScript(final String id, final String contentId) {
 		return genericOpenJavaScript(id, id, contentId);
 	}
 
@@ -80,8 +82,7 @@ public abstract class MFXDialogBase extends Panel {
 		return str.toString();
 	}
 
-	protected String genericOpenJavaScript(final String id,
-			final String dialogId, final String contentId) {
+	protected String genericOpenJavaScript(final String id, final String dialogId, final String contentId) {
 		StringBuffer str = new StringBuffer();
 
 		Page page = createPage();
@@ -102,19 +103,17 @@ public abstract class MFXDialogBase extends Panel {
 		 */
 
 		if (hasBlackscreen()) {
-			str
-					.append("var bg = new Element('div',{'style':'z-index:98; display:block; "
-							+ "position:fixed; top:0; left:0; width:100%; height:100%;"
-							+ "background-color: #000; opacity: 0.6;','id':'mfxbg'});");
+			str.append("var bg = new Element('div',{'style':'z-index:98; display:block; "
+					+ "position:fixed; top:0; left:0; width:100%; height:100%;"
+					+ "background-color: #000; opacity: 0.6;','id':'mfxbg'});");
 			str.append("bg.inject(document.body);");
 		}
 
 		str.append("var bar = win.getElementsBySelector('.MFXDialogBar')[0];");
-		str
-				.append("win.makeDraggable( { handle: bar, 'onBeforeStart': function() { win.setStyle('opacity',0.5); },   "
-						+ "'onComplete': function() { win.setStyle('opacity',1); }});");
+		str.append("win.makeDraggable( { handle: bar, 'onBeforeStart': function() { win.setStyle('opacity',0.5); },   "
+				+ "'onComplete': function() { win.setStyle('opacity',1); }});");
 
-		MFXStyle style = new MFXStyle("margin-top", 0, 100);
+		MFXStyle style = new MFXStyle("margin-top", 0, 200);
 
 		style.setDuration(1000);
 		style.setTransition(MFXTransition.backInOut);
@@ -122,8 +121,7 @@ public abstract class MFXDialogBase extends Panel {
 
 		str.append("var effect = " + style.toString());
 
-		WebClientInfo clientInfo = (WebClientInfo) Session.get()
-				.getClientInfo();
+		WebClientInfo clientInfo = (WebClientInfo) Session.get().getClientInfo();
 		ClientProperties properties = clientInfo.getProperties();
 		if (properties.isBrowserInternetExplorer()) {
 			str.append("var winw = document.body.offsetWidth;");
@@ -134,32 +132,35 @@ public abstract class MFXDialogBase extends Panel {
 		}
 
 		if (getWidth() != 0) {
-			str.append("win.setStyle('width','" + getWidth() + "" + getUnit()
-					+ "');");
+			str.append("win.setStyle('width','" + getWidth() + "" + getUnit() + "');");
 		}
 		if (getHeight() != 0) {
-			str.append("win.setStyle('height','" + getHeight() + "" + getUnit()
-					+ "');");
+			str.append("win.setStyle('height','" + getHeight() + "" + getUnit() + "');");
 		}
 		// window.getHeight()/2 + window.getScrollTop()
 		str.append("win.setStyle('left',(winw-" + getWidth() + ")/2);");
 		// str.append("win.setStyle('top',winh/2-" + getOffsetTop() + ");");
-		str.append("win.setStyle('top',winh/2 + window.getScrollTop() -"
-				+ getOffsetTop() + " );");
+		str.append("win.setStyle('top',winh/2 + window.getScrollTop() -" + getOffsetTop() + " );");
 
 		if (url != null) {
-			MFXAjaxStatelessLink mfxlink = new MFXAjaxStatelessLink("mfxlink",
-					contentId, page);
-			mfxlink.getOptions().setOnComplete(
-					"effect.start(" + style.getStartValue() + ","
-							+ style.getEndValue() + ");");
+			MFXAjaxStatelessLink mfxlink = new MFXAjaxStatelessLink("mfxlink", contentId, page);
+
+			String result = "";
+			if (bounceDialog()) {
+				result = "effect.start(" + style.getStartValue() + "," + style.getEndValue() + ");";
+			} else {
+				result = "win.setStyle('margin-top',200);";
+			}
+			mfxlink.getOptions().setOnComplete(result);
 			str.append(mfxlink.mooFunction());
 		} else {
-			str.append("effect.start(" + style.getStartValue() + ","
-					+ style.getEndValue() + ");");
+			if (bounceDialog()) {
+				str.append("effect.start(" + style.getStartValue() + "," + style.getEndValue() + ");");
+			} else {
+				str.append("win.setStyle('margin-top',200);");
+			}
 		}
 
-		// return "alert('hello world');";
 		return str.toString();
 	}
 

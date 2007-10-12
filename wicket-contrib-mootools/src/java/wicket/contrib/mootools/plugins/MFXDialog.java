@@ -57,8 +57,7 @@ public class MFXDialog extends MFXDialogBase {
 
 		dialog.add(contentPane = new WebMarkupContainer("content"));
 
-		contentPane.add(new Label("body", new PropertyModel(this, "body"))
-				.setEscapeModelStrings(false));
+		contentPane.add(new Label("body", new PropertyModel(this, "body")).setEscapeModelStrings(false));
 
 		form = new Form("inputForm");
 		input = new TextArea("input", new PropertyModel(this, "inputText"));
@@ -107,8 +106,7 @@ public class MFXDialog extends MFXDialogBase {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void onSubmit(final AjaxRequestTarget arg0,
-					final Form arg1) {
+			protected void onSubmit(final AjaxRequestTarget arg0, final Form arg1) {
 				shown = false;
 				arg0.appendJavascript(closeWindowJavaScript());
 				onConfirmCallback(arg0);
@@ -116,14 +114,10 @@ public class MFXDialog extends MFXDialogBase {
 			}
 		});
 
-		abortLink.add(new Label("abortText", new PropertyModel(this,
-				"abortButtonText")));
-		confirmLink.add(new Label("confirmText", new PropertyModel(this,
-				"confirmButtonText")));
-		closeLink.add(new Label("closeText", new PropertyModel(this,
-				"confirmButtonText")));
-		submitLink.add(new Label("submitText", new PropertyModel(this,
-				"confirmButtonText")));
+		abortLink.add(new Label("abortText", new PropertyModel(this, "abortButtonText")));
+		confirmLink.add(new Label("confirmText", new PropertyModel(this, "confirmButtonText")));
+		closeLink.add(new Label("closeText", new PropertyModel(this, "confirmButtonText")));
+		submitLink.add(new Label("submitText", new PropertyModel(this, "confirmButtonText")));
 
 	}
 
