@@ -30,6 +30,7 @@ import org.apache.wicket.util.resource.AbstractResourceStream;
 import org.apache.wicket.util.resource.FileResourceStream;
 import org.apache.wicket.util.resource.IResourceStream;
 import org.apache.wicket.util.resource.ResourceStreamNotFoundException;
+import org.apache.wicket.util.resource.ZipResourceStream;
 import org.wicketstuff.pickwick.auth.PickwickLoginPage;
 import org.wicketstuff.pickwick.auth.PickwickSession;
 import org.wicketstuff.pickwick.backend.ImageUtils;
@@ -157,6 +158,14 @@ public class PickwickApplication extends AuthenticatedWebApplication {
 				} catch (Exception e) {
 					throw new WicketRuntimeException(e);
 				}
+			}
+		});
+		mount(new URIRequestTargetUrlCodingStrategy("/" + "ZipFolder") {
+			public IRequestTarget decode(RequestParameters requestParameters) {
+				String uri = getURI(requestParameters);
+				uri = uri.substring(0, uri.length() - ".zip".length());
+				org.apache.wicket.util.file.File file = new org.apache.wicket.util.file.File(new File(settings.getImageDirectoryRoot(), uri));
+				return new ResourceStreamRequestTarget(new ZipResourceStream(file));
 			}
 		});
 		mount(new URIRequestTargetUrlCodingStrategy("/" + FEED_PATH) {

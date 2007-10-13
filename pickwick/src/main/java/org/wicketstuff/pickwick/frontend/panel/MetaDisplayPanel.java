@@ -7,6 +7,7 @@ import java.net.URLDecoder;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.markup.ComponentTag;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -76,6 +77,17 @@ public class MetaDisplayPanel extends Panel {
 		add(diapo = new BookmarkablePageLink("diapo", DiaporamaPage.class, folderParams));
 		Image diapoImage = new Image("diapoImage", new ResourceReference(MetaDisplayPanel.class, "images/diaporama.png"));
 		diapo.add(diapoImage);
+	
+		WebMarkupContainer zip;
+		add(zip = new WebMarkupContainer("zip"){
+			@Override
+			protected void onComponentTag(ComponentTag tag) {
+				super.onComponentTag(tag);
+				tag.put("href", "/ZipFolder/" + Utils.getFolderFor(MetaDisplayPanel.this.uri) + ".zip");
+			}
+		});
+		Image zipImage = new Image("zipImage", new ResourceReference(MetaDisplayPanel.class, "images/save.png"));
+		zip.add(zipImage);
 		
 		BookmarkablePageLink map;
 		add(map = new BookmarkablePageLink("map", GmapPage.class, params));
