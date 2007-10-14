@@ -1,15 +1,11 @@
 package wicket.contrib.examples.gmap.many;
 
-import java.util.Iterator;
-
-import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxFallbackLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.repeater.RepeatingView;
 
 import wicket.contrib.examples.WicketExamplePage;
-import wicket.contrib.gmap.GMap2;
 
 /**
  * SimplePage for the wicket-contrib-gmap2 project
@@ -23,23 +19,17 @@ public class ManyPage extends WicketExamplePage {
 	private final RepeatingView repeating;
 
 	public ManyPage() {
-		AjaxFallbackLink more = new AjaxFallbackLink("more") {
+		AjaxFallbackLink create = new AjaxFallbackLink("create") {
 			@Override
 			public void onClick(AjaxRequestTarget target) {
 				ManyPage.this.addPanel();
-				target.addComponent(container);
-			}
-		};
-		add(more);
 
-		AjaxFallbackLink less = new AjaxFallbackLink("less") {
-			@Override
-			public void onClick(AjaxRequestTarget target) {
-				ManyPage.this.removePanel();
-				target.addComponent(container);
+				if (target != null) {
+					target.addComponent(container);
+				}
 			}
 		};
-		add(less);
+		add(create);
 
 		container = new WebMarkupContainer("container");
 		container.setOutputMarkupId(true);
@@ -51,25 +41,18 @@ public class ManyPage extends WicketExamplePage {
 		addPanel();
 	}
 
-	@SuppressWarnings("unchecked")
-	protected void removePanel() {
-
-		Component component = null;
-		Iterator<Component> iterator = repeating.iterator();
-		while (iterator.hasNext()) {
-			component = iterator.next();
-		}
-
-		// remove last component (if any)
-		if (component != null) {
-			repeating.remove(component);
-		}
-	}
-
 	protected void addPanel() {
-		ManyPanel newPanel = new ManyPanel(repeating.newChildId(), LOCALHOST);
+		ManyPanel newPanel = new ManyPanel(repeating.newChildId(), LOCALHOST) {
+			@Override
+			protected void closing(AjaxRequestTarget target) {
+				repeating.remove(this);
+
+				if (target != null) {
+					target.addComponent(container);
+				}
+			}
+		};
 		repeating.add(newPanel);
-		newPanel.init();
 	}
 
 	/**
