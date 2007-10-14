@@ -21,16 +21,17 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.Component;
 import org.apache.wicket.Request;
 import org.apache.wicket.RequestCycle;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.behavior.AbstractBehavior;
 import org.apache.wicket.behavior.HeaderContributor;
+import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.IHeaderContributor;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.Model;
 
 import wicket.contrib.gmap.api.GControl;
 import wicket.contrib.gmap.api.GInfoWindow;
@@ -412,44 +413,94 @@ public class GMap2 extends Panel {
 		infoWindow.update(target);
 	}
 
-	private class JSMethod extends AttributeModifier {
+	private abstract class JSMethod extends AbstractBehavior {
 
 		private static final long serialVersionUID = 1L;
 
-		public JSMethod(String event, String javascript) {
-			super(event, true, new Model(
-					event.equalsIgnoreCase("href") ? "javascript:" + javascript
-							: javascript));
+		private String attribute;
+
+		public JSMethod(final String attribute) {
+			this.attribute = attribute;
 		}
+
+		@Override
+		public void onComponentTag(Component component, ComponentTag tag) {
+			String invoke = getJSinvoke();
+
+			if (attribute.equalsIgnoreCase("href")) {
+				invoke = "javascript:" + invoke;
+			}
+			
+			tag.put(attribute, invoke);
+		}
+
+		protected abstract String getJSinvoke();
 	}
 
 	public class ZoomOut extends JSMethod {
 		public ZoomOut(String event) {
-			super(event, getJSzoomOut());
+			super(event);
+		}
+
+		@Override
+		protected String getJSinvoke() {
+			return getJSzoomOut();
 		}
 	}
 
 	public class ZoomIn extends JSMethod {
 		public ZoomIn(String event) {
-			super(event, getJSzoomIn());
+			super(event);
+		}
+
+		@Override
+		protected String getJSinvoke() {
+			return getJSzoomIn();
 		}
 	}
 
 	public class PanDirection extends JSMethod {
+		private int dx;
+
+		private int dy;
+
 		public PanDirection(String event, final int dx, final int dy) {
-			super(event, getJSpanDirection(dx, dy));
+			super(event);
+			this.dx = dx;
+			this.dy = dy;
+		}
+
+		@Override
+		protected String getJSinvoke() {
+			return getJSpanDirection(dx, dy);
 		}
 	}
 
 	public class SetZoom extends JSMethod {
+		private int zoom;
+
 		public SetZoom(String event, final int zoom) {
-			super(event, getJSsetZoom(zoom));
+			super(event);
+			this.zoom = zoom;
+		}
+
+		@Override
+		protected String getJSinvoke() {
+			return getJSsetZoom(zoom);
 		}
 	}
 
 	public class SetCenter extends JSMethod {
+		private GLatLng gLatLng;
+
 		public SetCenter(String event, GLatLng gLatLng) {
-			super(event, getJSsetCenter(gLatLng));
+			super(event);
+			this.gLatLng = gLatLng;
+		}
+
+		@Override
+		protected String getJSinvoke() {
+			return getJSsetCenter(gLatLng);
 		}
 	}
 }
