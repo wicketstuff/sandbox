@@ -165,8 +165,8 @@ public class DojoSelectableListContainer extends StylingWebMarkupContainer imple
 		}
 	}
 
-	protected void onAttach() {
-		super.onAttach();
+	protected void onBeforeRender() {
+		super.onBeforeRender();
 		this.child = getChild();
 		containerHandler.setChild(child);
 	}
