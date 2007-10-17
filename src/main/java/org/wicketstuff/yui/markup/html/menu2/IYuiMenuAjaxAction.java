@@ -4,6 +4,6 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 
 public interface IYuiMenuAjaxAction extends IYuiMenuAction {
 	
-	void onClick( AjaxRequestTarget target );
+	void onClick( AjaxRequestTarget target, String targetId );
 
 }
