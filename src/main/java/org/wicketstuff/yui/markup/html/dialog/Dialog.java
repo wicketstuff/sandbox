@@ -125,8 +125,8 @@ public abstract class Dialog extends Panel implements IHeaderContributor {
      * @see org.apache.wicket.Component#onAttach()
      */
     @Override
-    protected void onAttach() {
-        super.onAttach();
+    protected void onBeforeRender() {
+        super.onBeforeRender();
         
         String id = getMarkupId();
         javaScriptId = id + "Dialog";

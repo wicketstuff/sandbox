@@ -9,10 +9,15 @@
 
 package org.wicketstuff.yui.markup.html.editor;
 
+import org.apache.wicket.IRequestTarget;
+import org.apache.wicket.RequestCycle;
 import org.apache.wicket.ResourceReference;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.protocol.http.WebRequestCycle;
 import org.wicketstuff.yui.YuiHeaderContributor;
 import org.wicketstuff.yui.YuiLoaderHeaderContributor;
 
@@ -39,27 +44,7 @@ public class YuiEditor extends Panel {
     public YuiEditor(String id, IModel model) {
         super(id);
        
-        String jsInit = "" +
-                "var Dom = YAHOO.util.Dom, \n" +
-                "    myEditor = null, \n" +
-                "    timer = null; \n" +
-                "myEditor = new YAHOO.widget.Editor('yuiEditor', { \n" +
-             	"   height: '300px', \n" +
-              	"   width: '522px', \n" +
-              	"   dompath: true, \n" +
-              	"   animate: true \n" +
-              	"   }); \n" +
-                "var update = function(ev) { " +
-                "   if(timer) { \n" +
-	        "       clearTimeout(timer); \n" +
-                "       } \n" +
-                "   timer = setTimeout(function() { \n " +
-                "       myEditor.saveHTML(); \n" +
-                "       }, 200);  \n" +
-                "   } \n" +
-                "myEditor.on('editorKeyDown', update); \n" +
-                "myEditor.on('afterNodeChange', update); \n" +
-                "myEditor.render(); \n";
+        String jsInit = getInitJs();
         
         add(YuiLoaderHeaderContributor.forModule("editor", jsInit));
         //add(YuiHeaderContributor.forModule("editor", new String[]{"utilities","container","menu","button"}));
@@ -68,6 +53,41 @@ public class YuiEditor extends Panel {
         ta.setEscapeModelStrings(false);    
         add(ta);
     }
+    
+	@Override
+	protected void onBeforeRender() {
+		super.onBeforeRender();
+		IRequestTarget target = ((WebRequestCycle)RequestCycle.get()).getRequestTarget();
+		if(target instanceof AjaxRequestTarget){
+			//if refreshed by ajax render it again
+			((AjaxRequestTarget)target).appendJavascript(getInitJs());
+		}
+	}
+	
+	private String getInitJs(){
+		String jsInit = "" +
+	        "var Dom = YAHOO.util.Dom, \n" +
+	        "    myEditor = null, \n" +
+	        "    timer = null; \n" +
+	        "myEditor = new YAHOO.widget.Editor('yuiEditor', { \n" +
+	     	"   height: '300px', \n" +
+	      	"   width: '522px', \n" +
+	      	"   dompath: true, \n" +
+	      	"   animate: true \n" +
+	      	"   }); \n" +
+	        "var update = function(ev) { " +
+	        "   if(timer) { \n" +
+	        "       clearTimeout(timer); \n" +
+	        "       } \n" +
+	        "   timer = setTimeout(function() { \n " +
+	        "       myEditor.saveHTML(); \n" +
+	        "       }, 200);  \n" +
+	        "   } \n" +
+	        "myEditor.on('editorKeyDown', update); \n" +
+	        "myEditor.on('afterNodeChange', update); \n" +
+	        "myEditor.render(); \n";
+		return jsInit;
+	}
     
     
 //    /**
