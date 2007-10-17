@@ -44,10 +44,10 @@ public class MenuItem extends AbstractMenuItem {
 		}
 	}
 
-	public void onClick(AjaxRequestTarget target) {
+	public void onClick(AjaxRequestTarget target, String targetId) {
 		
 		if ( action instanceof IYuiMenuAjaxAction ) {
-			((IYuiMenuAjaxAction)action).onClick(target);
+			((IYuiMenuAjaxAction)action).onClick(target, targetId);
 		}
 	}
 

@@ -56,7 +56,7 @@ public class YuiContextMenuBehavior extends AbstractDefaultAjaxBehavior {
 		menu = (menu == null) ? defaultMenu : menu;
 		MenuItem item = menu.getMenuItem(action);
 		if (item != null) {
-			item.onClick(target);
+			item.onClick(target, targetId);
 		} else {
 			System.out.println("Invalid action: " + action);
 		}
