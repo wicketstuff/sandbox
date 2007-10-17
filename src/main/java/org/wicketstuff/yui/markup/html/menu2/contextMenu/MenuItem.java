@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.wicketstuff.yui.markup.html.menu2.IYuiMenuAction;
 import org.wicketstuff.yui.markup.html.menu2.IYuiMenuAjaxAction;
 
 public class MenuItem extends AbstractMenuItem {
@@ -18,9 +19,9 @@ public class MenuItem extends AbstractMenuItem {
 	private String classname;
 	private String onClick;
 	
-	private IYuiMenuAjaxAction action;
+	private IYuiMenuAction action;
 	
-	public MenuItem( String id, IYuiMenuAjaxAction action ) {
+	public MenuItem( String id, IYuiMenuAction action ) {
 		this( id, id );
 		this.action = action;
 		
@@ -36,13 +37,18 @@ public class MenuItem extends AbstractMenuItem {
 	public MenuItem(String id, String text) {
 		super(id, text);
 	}
+	
+	public void onClick() {
+		if ( action != null ) {
+			action.onClick();
+		}
+	}
 
 	public void onClick(AjaxRequestTarget target) {
 		
-		if ( action != null ) {
-			action.onClick(target);
+		if ( action instanceof IYuiMenuAjaxAction ) {
+			((IYuiMenuAjaxAction)action).onClick(target);
 		}
-		System.out.println( "MenuItem[" + getMenuId() + "] clicked" );
 	}
 
 	public String getHelpText() {
