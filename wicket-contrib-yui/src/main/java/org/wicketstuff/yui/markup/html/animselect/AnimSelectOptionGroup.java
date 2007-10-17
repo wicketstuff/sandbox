@@ -93,9 +93,9 @@ public class AnimSelectOptionGroup extends WebMarkupContainer
 	 * Get the markup Id on attach
 	 */
 	@Override
-	protected void onAttach()
+	protected void onBeforeRender()
 	{
-		super.onAttach();
+		super.onBeforeRender();
 		javaScriptId = getMarkupId();
 	}
 }

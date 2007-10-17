@@ -322,8 +322,8 @@ public class Slider extends Panel implements IHeaderContributor {
 	 * @see org.apache.wicket.Component#onAttach()
 	 */
 	@Override
-	protected void onAttach() {
-		super.onAttach();
+	protected void onBeforeRender() {
+		super.onBeforeRender();
 		
 		// initialize lazily
 		if (backgroundElementId == null) {

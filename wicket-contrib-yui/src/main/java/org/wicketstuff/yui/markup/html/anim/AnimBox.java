@@ -195,8 +195,8 @@ public class AnimBox extends Panel {
 	/**
 	 * Get the markup Id of the super parent class on attach
 	 */
-	protected void onAttach() {
-		super.onAttach();
+	protected void onBeforeRender() {
+		super.onBeforeRender();
 		javaScriptId = findParent(AnimGroup.class).getMarkupId();
 	}
 }
