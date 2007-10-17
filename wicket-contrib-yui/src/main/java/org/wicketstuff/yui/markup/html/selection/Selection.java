@@ -213,8 +213,8 @@ public class Selection extends Panel {
 	}
 
 	@Override
-	protected void onAttach() {
-		super.onAttach();
+	protected void onBeforeRender() {
+		super.onBeforeRender();
 		javaScriptId = getMarkupId();
 	}
 

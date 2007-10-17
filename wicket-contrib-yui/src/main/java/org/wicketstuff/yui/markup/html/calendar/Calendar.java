@@ -165,9 +165,9 @@ public class Calendar extends Panel implements IHeaderContributor
 	 * @see wicket.Component#onAttach()
 	 */
 	@Override
-	protected void onAttach()
+	protected void onBeforeRender()
 	{
-		super.onAttach();
+		super.onBeforeRender();
 
 		// initialize lazily
 		if (elementId == null) {

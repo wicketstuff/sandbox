@@ -98,8 +98,8 @@ public class DragDropDragableSlot extends Panel {
 		return template.getString();
 	}
 
-	protected void onAttach() {
-		super.onAttach();
+	protected void onBeforeRender() {
+		super.onBeforeRender();
 		javaScriptId = findParent(DragDropGroup.class).getMarkupId();
 	}
 

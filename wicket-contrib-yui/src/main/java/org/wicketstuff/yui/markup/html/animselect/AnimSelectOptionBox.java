@@ -184,9 +184,9 @@ public class AnimSelectOptionBox extends Panel
 	 * Get the markup Id of the super parent class on attach
 	 */
 	@Override
-	protected void onAttach()
+	protected void onBeforeRender()
 	{
-		super.onAttach();
+		super.onBeforeRender();
 		javaScriptId = findParent(AnimSelectOptionGroup.class).getMarkupId();
 	}
 }
