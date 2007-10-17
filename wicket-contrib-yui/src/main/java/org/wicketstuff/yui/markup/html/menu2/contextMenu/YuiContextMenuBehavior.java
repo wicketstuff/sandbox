@@ -49,8 +49,8 @@ public class YuiContextMenuBehavior extends AbstractDefaultAjaxBehavior {
 		String targetId = RequestCycle.get().getRequest().getParameter(
 				"targetId");
 		String menuId = RequestCycle.get().getRequest().getParameter("contextMenuId");
-		System.out.println("TARGET ID: " + targetId);
-		System.out.println("MENU ID: " + menuId);
+		//System.out.println("TARGET ID: " + targetId);
+		//System.out.println("MENU ID: " + menuId);
 
 		YuiContextMenu menu = getMenuById(menuId);
 		menu = (menu == null) ? defaultMenu : menu;
