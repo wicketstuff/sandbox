@@ -68,14 +68,8 @@ function GetMenuFromEventTarget(p_oNode, menus) {
 
     } 
     
-    if ( id == null ) {
-        for ( i in menus ) {
-           return menus[i];
-        }
-    }
-    else {
-         return menus[ id ];
-    }
+   
+    return id == null ? null : menus[id];
 
 }
 
@@ -86,8 +80,11 @@ function onContextMenuBeforeShow(p_sType, p_aArgs) {
 
     var aMenuItems = GetMenuFromEventTarget( this.contextEventTarget, this.menus );
 
-    
     this.clearContent();
-    this.addItems(aMenuItems);
-    this.render();
+    
+    if ( aMenuItems != null ) {
+   		this.addItems(aMenuItems);
+   		this.render();
+   	}
+
 }
