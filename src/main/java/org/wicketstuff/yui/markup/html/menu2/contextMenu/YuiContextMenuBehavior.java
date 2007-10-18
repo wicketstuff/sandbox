@@ -94,7 +94,7 @@ public class YuiContextMenuBehavior extends AbstractDefaultAjaxBehavior {
 				YuiContextMenuBehavior.class, "contextMenu.js"));
 
 		StringBuffer buf = new StringBuffer();
-
+		
 		for (YuiContextMenu menu : menus) {
 			List<MenuItem> items = menu.getAllMenuItems();
 
@@ -107,9 +107,19 @@ public class YuiContextMenuBehavior extends AbstractDefaultAjaxBehavior {
 			}
 
 		}
-
+		
 		buf.append("YAHOO.util.Event.onContentReady(\"").append(
 				getComponent().getMarkupId()).append("\", function () {\n");
+		buf.append( getMenuCreationScript());
+		buf.append("} );\n");
+		
+		response.renderJavascript(buf.toString(), getComponent().getMarkupId()
+				+ "z");
+
+	}
+	
+	public String getMenuCreationScript() {
+		StringBuffer buf = new StringBuffer();
 
 		StringBuffer menuDefn = new StringBuffer();
 		menuDefn.append("var oContextMenuItems = {");
@@ -132,9 +142,6 @@ public class YuiContextMenuBehavior extends AbstractDefaultAjaxBehavior {
 
 		buf.append(menuDefn.toString());
 
-		buf.append("var defaultContextMenu = oContextMenuItems[\""
-				+ defaultMenu.getMenuId() + "\"];\n");
-
 		String menuName = getComponent().getMarkupId() + "ContextMenu";
 
 		buf.append("\nvar ").append(menuName).append(
@@ -151,10 +158,9 @@ public class YuiContextMenuBehavior extends AbstractDefaultAjaxBehavior {
 		buf.append(menuName).append(
 				".beforeShowEvent.subscribe(onContextMenuBeforeShow);\n");
 
-		buf.append("} );\n");
 
-		response.renderJavascript(buf.toString(), getComponent().getMarkupId()
-				+ "z");
+		
+		return buf.toString();
 
 	}
 
