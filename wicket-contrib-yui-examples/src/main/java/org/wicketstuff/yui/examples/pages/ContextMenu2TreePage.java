@@ -17,19 +17,15 @@ package org.wicketstuff.yui.examples.pages;
  * limitations under the License.
  */
 
-import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreeNode;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.extensions.markup.html.tree.DefaultAbstractTree.LinkType;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.tree.LinkTree;
 import org.apache.wicket.model.IModel;
@@ -67,6 +63,11 @@ public class ContextMenu2TreePage extends WicketExamplePage {
 		nodeMenu.add(new MenuItem("addNode", new AddNodeAction()));
 		nodeMenu.add(new MenuItem("moveNodeUp", new MoveNodeUpAction()));
 		nodeMenu.add(new MenuItem("moveNodeDown", new MoveNodeDownAction()));
+		
+		
+		WebMarkupContainer treeContainer = new WebMarkupContainer( "treeContextMenu");
+		
+		add( treeContainer );
 
 
 		// create a tree
@@ -93,7 +94,7 @@ public class ContextMenu2TreePage extends WicketExamplePage {
 			}
 		};
 
-		add(tree);
+		treeContainer.add(tree);
 		add(new Link("expandAll") {
 			public void onClick() {
 				tree.getTreeState().expandAll();
@@ -107,7 +108,7 @@ public class ContextMenu2TreePage extends WicketExamplePage {
 		});
 		
 		cmBehavior = new YuiContextMenuBehavior(nodeMenu );
-		tree.add(cmBehavior);
+		treeContainer.add(cmBehavior);
 
 	}
 
@@ -178,12 +179,9 @@ public class ContextMenu2TreePage extends WicketExamplePage {
 
 			DefaultMutableTreeNode parent = getTreeNode(treeModel, targetId);
 
-			DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(
-					"Node: " + newNodeCounter++);
+			DefaultMutableTreeNode newNode = createNode("Node: " + newNodeCounter++);
 			treeModel.insertNodeInto(newNode, parent, parent.getChildCount());
 			target.addComponent(tree);
-			target.appendJavascript(cmBehavior.getMenuCreationScript());
-
 		}
 
 		@Override
@@ -201,18 +199,19 @@ public class ContextMenu2TreePage extends WicketExamplePage {
 		}
 
 		public void onClick(AjaxRequestTarget target, String targetId) {
-			DefaultMutableTreeNode tNode = getTreeNode(treeModel, targetId);
+			DefaultMutableTreeNode folderNode = getTreeNode(treeModel, targetId);
 
-			DefaultMutableTreeNode parent = (DefaultMutableTreeNode) tNode
+			DefaultMutableTreeNode parent = (DefaultMutableTreeNode) folderNode
 					.getParent();
-			int idx = parent.getIndex(tNode);
-			treeModel.removeNodeFromParent(tNode);
+			int idx = parent.getIndex(folderNode);
+			treeModel.removeNodeFromParent(folderNode);
 			idx--;
-			idx = Math.max(0, idx);
-			treeModel.insertNodeInto(tNode, parent, idx);
-			target.addComponent(tree);
-			target.appendJavascript(cmBehavior.getMenuCreationScript());
+			int newIdx = Math.max(0, idx);
+			
+			System.out.println( "Moving: " + folderNode.getUserObject() + " from " + idx );
 
+			treeModel.insertNodeInto(folderNode, parent, newIdx);
+			target.addComponent(tree);
 		}
 
 		@Override
@@ -230,20 +229,23 @@ public class ContextMenu2TreePage extends WicketExamplePage {
 		}
 
 		public void onClick(AjaxRequestTarget target, String targetId) {
-			DefaultMutableTreeNode floorNode = getTreeNode(treeModel, targetId);
+			DefaultMutableTreeNode folderNode = getTreeNode(treeModel, targetId);
 
-			DefaultMutableTreeNode parent = (DefaultMutableTreeNode) floorNode
+			DefaultMutableTreeNode parent = (DefaultMutableTreeNode) folderNode
 					.getParent();
 
-			int idx = parent.getIndex(floorNode);
-			treeModel.removeNodeFromParent(floorNode);
-
+			int idx = parent.getIndex(folderNode);
+			treeModel.removeNodeFromParent(folderNode);
+			
+		
 			idx++;
-			idx = Math.min(parent.getChildCount(), idx);
+			int newIdx = Math.min(parent.getChildCount(), idx);
+			
+			System.out.println( "Moving: " + folderNode.getUserObject() + " from " + idx );
 
-			treeModel.insertNodeInto(floorNode, parent, idx);
+
+			treeModel.insertNodeInto(folderNode, parent, newIdx);
 			target.addComponent(tree);
-			target.appendJavascript(cmBehavior.getMenuCreationScript());
 		}
 
 		@Override
