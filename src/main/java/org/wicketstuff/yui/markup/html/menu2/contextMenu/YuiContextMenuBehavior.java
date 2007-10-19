@@ -49,8 +49,6 @@ public class YuiContextMenuBehavior extends AbstractDefaultAjaxBehavior {
 		String targetId = RequestCycle.get().getRequest().getParameter(
 				"targetId");
 		String menuId = RequestCycle.get().getRequest().getParameter("contextMenuId");
-		//System.out.println("TARGET ID: " + targetId);
-		//System.out.println("MENU ID: " + menuId);
 
 		YuiContextMenu menu = getMenuById(menuId);
 		menu = (menu == null) ? defaultMenu : menu;
@@ -95,6 +93,15 @@ public class YuiContextMenuBehavior extends AbstractDefaultAjaxBehavior {
 
 		StringBuffer buf = new StringBuffer();
 		
+
+		
+		buf.append( getMenuCreationScript() );
+		response.renderOnDomReadyJavascript(buf.toString() );
+	}
+	
+	public String getMenuCreationScript() {
+		StringBuffer buf = new StringBuffer();
+		
 		for (YuiContextMenu menu : menus) {
 			List<MenuItem> items = menu.getAllMenuItems();
 
@@ -107,20 +114,6 @@ public class YuiContextMenuBehavior extends AbstractDefaultAjaxBehavior {
 			}
 
 		}
-		
-		buf.append("YAHOO.util.Event.onContentReady(\"").append(
-				getComponent().getMarkupId()).append("\", function () {\n");
-		buf.append( getMenuCreationScript());
-		buf.append("} );\n");
-		
-		response.renderJavascript(buf.toString(), getComponent().getMarkupId()
-				+ "z");
-
-	}
-	
-	public String getMenuCreationScript() {
-		StringBuffer buf = new StringBuffer();
-
 		StringBuffer menuDefn = new StringBuffer();
 		menuDefn.append("var oContextMenuItems = {");
 
@@ -152,8 +145,8 @@ public class YuiContextMenuBehavior extends AbstractDefaultAjaxBehavior {
 
 		buf.append(menuName).append(".menus = ").append("oContextMenuItems;\n");
 
-		buf.append(menuName).append(".render(").append(
-				getComponent().getMarkupId()).append(");\n");
+		buf.append(menuName).append(".render( document.getElementById(\"").append(
+				getComponent().getMarkupId()).append("\"));\n");
 
 		buf.append(menuName).append(
 				".beforeShowEvent.subscribe(onContextMenuBeforeShow);\n");
