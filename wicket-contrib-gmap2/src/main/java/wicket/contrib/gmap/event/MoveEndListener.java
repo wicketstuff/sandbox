@@ -38,7 +38,7 @@ public abstract class MoveEndListener extends GEventListener
 
 
 	/**
-	 * Override this method to provide handling of a move.<br>
+	 * Override this method to provide handling of a moveend.<br>
 	 * You can get the new center coordinates of the map by calling
 	 * {@link GMap2#getCenter()}.
 	 * 
