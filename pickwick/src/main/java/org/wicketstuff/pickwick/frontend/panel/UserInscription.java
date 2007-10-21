@@ -1,4 +1,4 @@
-package org.wicketstuff.pickwick.backend.panel;
+package org.wicketstuff.pickwick.frontend.panel;
 
 import java.util.ArrayList;
 
@@ -6,38 +6,32 @@ import org.apache.wicket.Component;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
-import org.apache.wicket.extensions.markup.html.form.palette.Palette;
-import org.apache.wicket.markup.html.form.CheckBox;
-import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-import org.wicketstuff.pickwick.backend.Settings;
 import org.wicketstuff.pickwick.bean.Role;
-import org.wicketstuff.pickwick.bean.Roles;
 import org.wicketstuff.pickwick.bean.User;
-
-import com.google.inject.Inject;
 
 /**
  * a panel to add or edit a user.
  * @author Vincent Demay
  *
  */
-public abstract class UserPanel extends Panel {
-
-	@Inject
-	Settings settings;
+public abstract class UserInscription extends Panel {
 	
 	private Form form;
 	private TextField name;
-	private TextField password;
+	private PasswordTextField password;
+	private PasswordTextField passwordRepeat;
 	
-	public UserPanel(String id, CompoundPropertyModel userModel) {
+	private String passwordRepeated;
+	
+	public UserInscription(String id, CompoundPropertyModel userModel) {
 		super(id, new Model());
 		setOutputMarkupId(true);
 		
@@ -51,31 +45,31 @@ public abstract class UserPanel extends Panel {
 		add(form);
 		
 		name = new TextField("name");
-		password = new TextField("password");
+		password = new PasswordTextField("password");
+		passwordRepeat = new PasswordTextField("passwordRepeat", new Model(passwordRepeated));
 		name.setOutputMarkupId(true);
+		
+		name.setRequired(true);
+		password.setRequired(true);
+		passwordRepeat.setRequired(true);
+		
 		form.add(name);
 		form.add(password);
+		form.add(passwordRepeat);
+		
+		form.add(new FeedbackPanel("feedback"));
 
-		Roles roles = settings.getUserManagement().getAllRoles();
-		Palette role = new Palette("roles", new Model(roles), new ChoiceRenderer("label", "label"), 6, false);
-		form.add(role);
-		
-		CheckBox admin = new CheckBox("admin");
-		form.add(admin);
-		
 		form.add(new AjaxButton("save",form){
 
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form form) {
-				User user = (User)form.getModelObject();
-				settings.getUserManagement().addUser(user);
-				onSave(target);
+				onSave(target, form);
 			}
 
 		});
 	}
 	
-	public abstract void onSave(AjaxRequestTarget target);
+	public abstract void onSave(AjaxRequestTarget target, Form form);
 	
 	@Override
 	public Component setModel(IModel model) {
@@ -86,14 +80,8 @@ public abstract class UserPanel extends Panel {
 		form.setModel(model);
 		return this;
 	}
-	
-	public void disableName(AjaxRequestTarget target){
-		target.appendJavascript("document.getElementById('" + name.getMarkupId() + "').disabled='disabled'");
-	}
-	
-	public void enableName(AjaxRequestTarget target){
-		target.appendJavascript("document.getElementById('" + name.getMarkupId() + "').disabled='false'");
-	}
-	
 
+	public String getPasswordRepeated() {
+		return passwordRepeated;
+	}
 }
