@@ -7,6 +7,15 @@
     <display-name>Wicket Examples</display-name>
 
 	<filter>
+		<filter-name>ControlsGMapApplication</filter-name>
+		<filter-class>org.apache.wicket.protocol.http.WicketFilter</filter-class>
+		<init-param>
+		  <param-name>applicationClassName</param-name>
+		  <param-value>wicket.contrib.examples.gmap.controls.ControlsGMapApplication</param-value>
+		</init-param>
+	</filter>
+
+	<filter>
 		<filter-name>TopGMapApplication</filter-name>
 		<filter-class>org.apache.wicket.protocol.http.WicketFilter</filter-class>
 		<init-param>
@@ -63,6 +72,11 @@
 	<filter-mapping>
 		<filter-name>GeoCodeGMapApplication</filter-name>
 		<url-pattern>/geocode/*</url-pattern>
+	</filter-mapping>
+
+	<filter-mapping>
+		<filter-name>ControlsGMapApplication</filter-name>
+		<url-pattern>/controls/*</url-pattern>
 	</filter-mapping>
 
 	<filter-mapping>
