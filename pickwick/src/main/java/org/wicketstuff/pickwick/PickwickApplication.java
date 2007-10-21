@@ -216,7 +216,12 @@ public class PickwickApplication extends AuthenticatedWebApplication {
 		if (!file.exists() || srcfile.lastModified() > file.lastModified()) {
 			imageConverter.scaleImage(srcfile, file, size, null);
 		}
-		IResourceStream fileResource = new FileResourceStream(new org.apache.wicket.util.file.File(file));
+		IResourceStream fileResource = new FileResourceStream(new org.apache.wicket.util.file.File(file)){
+			@Override
+			public String getContentType() {
+				return "image/jpeg";
+			}
+		};
 		return new ResourceStreamRequestTarget(fileResource);
 	}
 
