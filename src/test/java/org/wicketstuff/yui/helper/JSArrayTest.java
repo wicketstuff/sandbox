@@ -24,7 +24,7 @@ public class JSArrayTest extends TestCase
     	.add("value2")
     	.add(yuiProperty);
     	
-    	assertEquals("['value1',value2]", jso.toString());
+    	assertEquals("['value1',value2,{to:1,from:0}]", jso.toString());
     }
     
 }
