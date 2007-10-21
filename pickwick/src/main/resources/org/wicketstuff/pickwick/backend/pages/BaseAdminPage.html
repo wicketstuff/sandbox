@@ -19,17 +19,7 @@
                     region:'north',
                     el: 'north',
                     height:50
-                }),{
-                    region:'south',
-                   	contentEl: 'south',
-                    split:true,
-                    height: 100,
-                    minSize: 100,
-                    maxSize: 200,
-                    collapsible: true,
-                    title:'Additionnal',
-                    margins:'0 0 0 0'
-                }, {
+                }), {
                     region:'east',
                     contentEl: 'east',
                     title: 'Actions',
@@ -44,7 +34,7 @@
                     region:'west',
                     contentEl: 'west',
                     id:'west-panel',
-                    title:'Image hierachy',
+                    title:'Information',
                     split:true,
                     width: 200,
                     minSize: 175,
@@ -99,9 +89,6 @@
 						</tr>
 					</table>
 			</div>
-		</div>
-		<div id="south">
-			<div wicket:id="south"></div>
 		</div>
 		<div id="east">
 			<div wicket:id="east"></div>

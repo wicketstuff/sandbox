@@ -1,9 +1,7 @@
-package org.wicketstuff.pickwick.frontend.pages;
+package org.wicketstuff.pickwick.backend.pages;
 
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.ResourceReference;
-import org.apache.wicket.markup.ComponentTag;
-import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
@@ -18,10 +16,10 @@ import org.wicketstuff.pickwick.PickwickApplication;
 import org.wicketstuff.pickwick.auth.PickwickLoginPage;
 import org.wicketstuff.pickwick.auth.PickwickLogoutPage;
 import org.wicketstuff.pickwick.auth.PickwickSession;
-import org.wicketstuff.pickwick.backend.pages.BackendLandingPage;
 import org.wicketstuff.pickwick.ext.ExtAnchor;
+import org.wicketstuff.pickwick.frontend.pages.BasePage;
 
-public class BasePage extends WebPage {
+public class BaseAdminPage extends WebPage {
 	
 	private static final String WEST = "west";
 	private Panel west;
@@ -29,10 +27,7 @@ public class BasePage extends WebPage {
 	private static final String EAST = "east";
 	private Panel east;
 	
-	private static final String SOUTH = "south";
-	private Panel south;
-	
-	public BasePage(PageParameters parameters) {
+	public BaseAdminPage(PageParameters parameters) {
 		super();
 		add(new JavaScriptReference("extBase", ExtAnchor.class, "2.0/adapter/ext/ext-base.js"));
 		add(new JavaScriptReference("extAll", ExtAnchor.class, "2.0/ext-all.js"));
@@ -44,7 +39,6 @@ public class BasePage extends WebPage {
 		addHeader();
 		add(west = getWestPanel(WEST));
 		add(east = getEastPanel(EAST));
-		add(south = getSouthPanel(SOUTH));
 	}
 	
 	/**
@@ -60,15 +54,6 @@ public class BasePage extends WebPage {
 	 * @return
 	 */
 	protected Panel getWestPanel(String id) {
-		return new EmptyPanel(id);
-	}
-	
-	/**
-	 * panel to put on the south
-	 * @param id
-	 * @return
-	 */
-	protected Panel getSouthPanel(String id) {
 		return new EmptyPanel(id);
 	}
 	
@@ -100,13 +85,7 @@ public class BasePage extends WebPage {
 		Label userName = new Label("userName", new Model(name));
 		PageLink auth = new PageLink("auth", PickwickLoginPage.class);
 		PageLink logout = new PageLink("logout", PickwickLogoutPage.class);
-		WebMarkupContainer home = new WebMarkupContainer("home"){
-			@Override
-			protected void onComponentTag(ComponentTag tag) {
-				super.onComponentTag(tag);
-				tag.put("href", "./");
-			}
-		};
+		PageLink home = new PageLink("home", getApplication().getHomePage());
 		add(home);
 		home.add(new Image("homeImage", new ResourceReference(BasePage.class, "images/home.png")));
 		add(userName);

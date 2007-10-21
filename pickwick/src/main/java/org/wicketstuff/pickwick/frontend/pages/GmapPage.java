@@ -1,7 +1,9 @@
 package org.wicketstuff.pickwick.frontend.pages;
 
 import org.apache.wicket.PageParameters;
+import org.apache.wicket.markup.html.panel.Panel;
 import org.wicketstuff.pickwick.backend.Settings;
+import org.wicketstuff.pickwick.frontend.panel.FolderTreePanel;
 import org.wicketstuff.pickwick.frontend.panel.GmapLocalizedPanel;
 
 import com.google.inject.Inject;
@@ -17,7 +19,12 @@ public class GmapPage extends BasePage {
 	Settings settings;
 	
 	public GmapPage(PageParameters parameters) {
-		super();
+		super(null);
 		add(new GmapLocalizedPanel("map"));
+	}
+	
+	@Override
+	protected Panel getWestPanel(String id) {
+		return new FolderTreePanel(id);
 	}
 }

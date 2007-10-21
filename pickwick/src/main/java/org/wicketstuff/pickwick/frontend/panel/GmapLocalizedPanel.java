@@ -1,33 +1,18 @@
 package org.wicketstuff.pickwick.frontend.panel;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreeModel;
-import javax.swing.tree.TreeNode;
-
-import org.apache.wicket.MarkupContainer;
-import org.apache.wicket.PageParameters;
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.extensions.markup.html.tree.Tree;
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.markup.html.panel.EmptyPanel;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.markup.html.tree.AbstractTree;
 import org.wicketstuff.pickwick.auth.PickwickSession;
 import org.wicketstuff.pickwick.backend.ImageUtils;
 import org.wicketstuff.pickwick.backend.Settings;
 import org.wicketstuff.pickwick.bean.Folder;
 import org.wicketstuff.pickwick.bean.Sequence;
-import org.wicketstuff.pickwick.frontend.FolderTree;
-import org.wicketstuff.pickwick.frontend.pages.SequencePage;
 
 import wicket.contrib.gmap.GLatLng;
 import wicket.contrib.gmap.GMap;
-import wicket.contrib.gmap.GMapClickListener;
 import wicket.contrib.gmap.GMapPanel;
 import wicket.contrib.gmap.GMarker;
 
@@ -68,8 +53,9 @@ public class GmapLocalizedPanel extends Panel{
 			Sequence sequence = ImageUtils.readSequence(current.getFile());
 			if (sequence != null && sequence.getLatitude() != 0 && sequence.getLongitude() != 0){
 				GMarker wicketLibrary = new GMarker(new GLatLng(sequence.getLatitude(), sequence.getLongitude()),
-						new DescriptionPanel("gmarkerInfo", sequence, current));
-				gmap.addOverlay(wicketLibrary);
+						//new EmptyPanel("gmarkerInfo"));//("gmarkerInfo", sequence, current));
+						new DescriptionPanel("gmarkerInfo", current.getFile().getAbsolutePath().substring(settings.getImageDirectoryRoot().getAbsolutePath().length(), current.getFile().getAbsolutePath().length())));
+						gmap.addOverlay(wicketLibrary);
 			}
 			
 		}

@@ -10,6 +10,7 @@ import org.apache.wicket.markup.html.WebComponent;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.Model;
 import org.wicketstuff.pickwick.PickwickApplication;
@@ -21,7 +22,9 @@ import org.wicketstuff.pickwick.backend.Settings;
 import org.wicketstuff.pickwick.backend.pages.MetadataViewPage;
 import org.wicketstuff.pickwick.bean.DisplaySequence;
 import org.wicketstuff.pickwick.bean.Sequence;
-import org.wicketstuff.pickwick.frontend.panel.MetaDisplayPanel;
+import org.wicketstuff.pickwick.frontend.panel.ActionPanel;
+import org.wicketstuff.pickwick.frontend.panel.DescriptionPanel;
+import org.wicketstuff.pickwick.frontend.panel.FolderTreePanel;
 
 import com.google.inject.Inject;
 
@@ -52,14 +55,8 @@ public class ImagePage extends BasePage {
 	}
 
 	public ImagePage(PageParameters params) {
-		uri = Utils.getUri(params);
-		//check user authorisation
-		if(uri != ""){
-			PickwickAuthorization.check(settings.getImageDirectoryRoot() + "/" + uri, PickwickSession.get());
-		}
-
-		add(new MetaDisplayPanel("meta", uri));
-
+		super(params);
+		
 		PageParameters sparams = new PageParameters();
 		File imageFile = imageUtils.toFile(uri);
 		sparams.add("uri", imageUtils.getRelativePath(imageFile.getParentFile()));
@@ -120,6 +117,31 @@ public class ImagePage extends BasePage {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
+	}
+	
+	@Override
+	protected void initPage(PageParameters parameters) {
+		super.initPage(parameters);
+		uri = Utils.getUri(parameters);
+		//check user authorisation
+		if(uri != ""){
+			PickwickAuthorization.check(settings.getImageDirectoryRoot() + "/" + uri, PickwickSession.get());
+		}
+	}
+	
+	@Override
+	protected Panel getEastPanel(String id) {
+		return new ActionPanel(id, uri);
+	}
+	
+	@Override
+	protected Panel getWestPanel(String id) {
+		return new FolderTreePanel(id);
+	}
+	
+	@Override
+	protected Panel getSouthPanel(String id) {
+		return new DescriptionPanel(id, uri);
 	}
 
 	public class URIBookmarkablePageLink extends BookmarkablePageLink {

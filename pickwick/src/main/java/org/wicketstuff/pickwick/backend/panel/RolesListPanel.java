@@ -3,15 +3,10 @@ package org.wicketstuff.pickwick.backend.panel;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.RefreshingView;
-import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.wicketstuff.pickwick.backend.Settings;
@@ -25,24 +20,18 @@ import com.google.inject.Inject;
  * @author Vincent Demay
  *
  */
-public class RolesPanel extends Panel {
+public class RolesListPanel extends Panel {
 
 	@Inject
 	Settings settings;
 	
-	private Form form;
-	
 	private RefreshingView roleList;
-	
-	private String newRole;
-	
-	public RolesPanel(String id) {
+
+	public RolesListPanel(String id) {
 		super(id, new Model());
 		setOutputMarkupId(true);
-		
-		form = new Form("roleForm");
-		
-		form.add(roleList = new RefreshingView("roles"){
+
+		add(roleList = new RefreshingView("roles"){
 
 			@Override
 			protected Iterator getItemModels() {
@@ -62,21 +51,5 @@ public class RolesPanel extends Panel {
 			
 		});
 		roleList.setOutputMarkupId(true);
-		
-		form.add(new TextField("role", new Model(newRole)));
-		
-		form.add(new AjaxButton("submit", form){
-
-			@Override
-			protected void onSubmit(AjaxRequestTarget target, Form form) {
-				Role role = new Role();
-				role.setLabel(form.get("role").getModelObjectAsString());
-				settings.getUserManagement().addRole(role);
-				target.addComponent(form);
-			}
-			
-		});
-		add(form);
-		form.setOutputMarkupId(true);
 	}
 }
