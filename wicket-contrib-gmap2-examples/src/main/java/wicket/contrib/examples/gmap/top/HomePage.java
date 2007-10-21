@@ -98,13 +98,6 @@ public class HomePage extends WicketExamplePage {
 		});
 		add(markerLabel);
 
-		final Label zoomIn = new Label("zoomInLabel", "ZoomIn");
-		zoomIn.add(topMap.new ZoomIn("onclick"));
-		add(zoomIn);
-
-		final Label zoomOut = new Label("zoomOutLabel", "ZoomOut");
-		zoomOut.add(topMap.new ZoomOut("onclick"));
-		add(zoomOut);
 		add(new Link("reload") {
 			@Override
 			public void onClick() {
