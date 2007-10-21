@@ -158,6 +158,7 @@ public class XmlUserManagement implements UserManagement {
 	}
 
 	public void addRole(Role role) {
+		getAllRoles();
 		roles.add(role);
 		saveRoles();
 	}

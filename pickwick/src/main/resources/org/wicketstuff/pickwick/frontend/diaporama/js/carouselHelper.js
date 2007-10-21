@@ -163,7 +163,7 @@ function preview(carousel) {
 	var previewWidth = previewRegion.right - previewRegion.left;
 	var nextRegion = YAHOO.util.Dom.getRegion(next);
 	var nextWidth = nextRegion.right - nextRegion.left; 
-	next.style.left = (previewWidth - nextWidth)/2 + 110 + "px";
+	next.style.left = (previewWidth - nextWidth)/2 + "px";
 	
 	if(previous != undefined){
 		previous.style.zIndex=2;

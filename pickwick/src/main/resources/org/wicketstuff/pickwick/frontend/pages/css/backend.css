@@ -77,11 +77,13 @@ h2{
 .user{
 	background-image: url('images/UserBg.jpg');
 	background-position: bottom right;
-	background-repeat: no-repeat;	                 
+	background-repeat: no-repeat;	   
+	height: 100%;              
 }
 
 .sequence{
 	background-image: url('images/SequenceBg.jpg');
 	background-position: bottom right;
-	background-repeat: no-repeat;	                 
+	background-repeat: no-repeat;	  
+	height: 100%;               
 }

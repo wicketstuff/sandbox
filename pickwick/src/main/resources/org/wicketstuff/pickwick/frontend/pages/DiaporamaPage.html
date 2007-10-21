@@ -1,3 +1,41 @@
-<wicket:extend>
-	<div wicket:id="diapo"></div>
-</wicket:extend>
+<html>
+	<head>
+		<link wicket:id="pickwickCss" rel="Stylesheet" type="text/css"/>
+	</head>
+	<body>
+		<div id="header" width="100%">
+				<table width="100%" cellspacing="0" cellpadding="0" style="padding-bottom:5px">
+					<tr>
+						<td>
+							<a wicket:id="home"><img wicket:id="homeImage">Home page</img></a>
+						</td>
+						<td align="right">
+							<table>
+								<tr>
+									<td>
+										<img wicket:id="userImage"/>
+									</td>
+									<td>
+										<div wicket:id="userName"></div>
+									</td>
+									<td width="300px"></td>
+								</tr>
+							</table>
+						</td>
+						</tr>
+					</table>
+					<table cellspacing="0" cellpadding="0" style="padding-bottom:5px">
+						<tr>
+							<td width="100px">		
+								<a wicket:id="auth"><img wicket:id="logInImage" title="Log in"/>Log in</a>	
+								<a wicket:id="logout"><img wicket:id="logOutImage" title="Log out"/>Log out</a>
+							</td>
+							<td width="100px">
+								<a wicket:id="back"><img wicket:id="bckImage" title="backend"/>Admin</a>
+							</td>
+						</tr>
+					</table>
+			</div>
+		<div wicket:id="diapo"></div>
+	</body>
+</html>

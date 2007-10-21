@@ -6,11 +6,10 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.form.TextField;
 import org.wicketstuff.pickwick.backend.Settings;
 import org.wicketstuff.pickwick.backend.panel.ImportAppletPanel;
-import org.wicketstuff.pickwick.frontend.pages.BasePage;
 
 import com.google.inject.Inject;
 
-public class ImportPage extends BasePage {
+public class ImportPage extends BaseAdminPage {
 
 	@Inject
 	private Settings settings;
@@ -18,6 +17,7 @@ public class ImportPage extends BasePage {
 	ImportAppletPanel importPanel;
 	
 	public ImportPage(PageParameters params) {
+		super(params);
 		TextField path = new TextField("path");
 		importPanel = new ImportAppletPanel("import", settings.getImageDirectoryRoot()+"");
 		path.add(new AjaxEventBehavior("onchange"){

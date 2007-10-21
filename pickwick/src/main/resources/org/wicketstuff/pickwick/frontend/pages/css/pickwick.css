@@ -1,11 +1,9 @@
 @import url(thumbnail.css);
 @import url(backend.css);
 @import url(auth.css);
-
 body {
 	background : url('images/bg-body.jpg');
 	background-repeat:repeat-x;
-	padding: 0 100px;
 }
 
 body, input, textarea, select, table {
@@ -16,6 +14,7 @@ body, input, textarea, select, table {
 
 a, a table{
 	color : #001667;
+	text-decoration: none;
 }
 
 a:hover, a:hover table {
@@ -30,19 +29,8 @@ img{
 	background-image : url('images/pickwickColor.png');
 	background-repeat: no-repeat;
 	background-position: right;
-	margin-right: 50px;
+	margin-right: 70px;
 	height:50px;
-}
-.box{
-	white-space: nowrap;	
-	border: 1px dotted #001667;
-	/*-moz-border-radius: 15px;*/
-	background-color: white;
-	overflow: auto;
-	margin: 10px;
-	line-height: 1.5em;
-	padding : 20px;
-	min-height: 400px;
 }
 
 .fixed{
@@ -103,18 +91,6 @@ img{
 	border: 1px solid black;
 	width:300px;
 	height: 30px;
-}
-
-#userInfo {
-	overflow: hidden;
-	width : 200px;
-	height : 40px;
-	right: 125px;
-	white-space: nowrap;	
-	border: 1px dotted #001667;
-	background-color: white;
-	padding: 5px;
-	margin-left: 267px;
 }
 
 .feedbackPanelERROR{
