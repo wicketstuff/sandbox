@@ -83,6 +83,13 @@ public class ActionPanel extends Panel {
 		add(map = new BookmarkablePageLink("map", GmapPage.class, params));
 		Image mapImage = new Image("mapImage", new ResourceReference(ActionPanel.class, "images/word.png"));
 		map.add(mapImage);
+		
+		//find if we are in a foler
+		if("".equals(uri)){
+			zip.setVisible(false);
+			adminLink.setVisible(false);
+			diapo.setVisible(false);
+		}
 	}
 
 }
