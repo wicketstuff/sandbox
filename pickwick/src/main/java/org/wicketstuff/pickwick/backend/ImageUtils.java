@@ -83,6 +83,43 @@ public class ImageUtils {
 		}
 		return imageList;
 	}
+	
+	/**
+	 * returna list of direct folders authorized
+	 * @param directory
+	 * @return
+	 */
+	public List<Folder> getFolderList(File directory,  List<Role> userRole) {
+		List<Folder> folderList = new ArrayList<Folder>();
+		File[] files = directory.listFiles(new FileFilter(){
+
+			public boolean accept(File pathname) {
+				return pathname.isDirectory();
+			}
+			
+		});
+		if (files == null) {
+			throw new RuntimeException("Not a directory: " + directory);
+		}
+
+		for (int i = 0; i < files.length; i++) {
+			File file = files[i];
+			try {
+				Sequence sequence = readSequence(file);
+				List<Role> roles = null;
+				if (sequence != null){
+					roles = sequence.getRoles();
+				}
+				if (PickwickAuthorization.isAuthorized(userRole, roles)){
+					Folder current = new Folder(file);
+					folderList.add(current);
+				}
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
+		}
+		return folderList;
+	}
 
 	final public static Image getImageProperties(File file) throws FileNotFoundException, IOException {
 		Image p = new Image();
