@@ -391,11 +391,11 @@ public class GMap2 extends Panel {
 	}
 
 	private String getJSzoomOut() {
-		return getJSinvoke("zoomOut('" + map.getMarkupId() + "')");
+		return getJSinvoke("zoomOut()");
 	}
 
 	private String getJSzoomIn() {
-		return getJSinvoke("zoomIn('" + map.getMarkupId() + "')");
+		return getJSinvoke("zoomIn()");
 	}
 
 	/**
