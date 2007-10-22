@@ -105,7 +105,10 @@ public class SequenceGridPanel extends Panel{
 							tag.put("src", urlFor(new ResourceReference(SequenceGridPanel.class, "images/folder.png")));
 						}
 					});
-					String title = sequence.getTitle();
+					String title;
+					if (sequence != null){
+						title = sequence.getTitle();
+					}
 					if (title == null){
 						title = folder.getFile().getName();
 					}
