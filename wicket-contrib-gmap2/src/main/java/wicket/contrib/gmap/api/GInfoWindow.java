@@ -117,17 +117,16 @@ public class GInfoWindow extends WebMarkupContainer
 	public GInfoWindow open(GMarker marker, GInfoWindowTab... tabs)
 	{
 		setTabs(tabs);
-		
+
 		this.latLng = null;
 		this.marker = marker;
-		
+
 		if (AjaxRequestTarget.get() != null)
 		{
-			AjaxRequestTarget.get()
-					.appendJavascript(getJSopen(marker, tabs));
+			AjaxRequestTarget.get().appendJavascript(getJSopen(marker, tabs));
 			AjaxRequestTarget.get().addComponent(this);
 		}
-		
+
 		return this;
 	}
 
@@ -136,16 +135,16 @@ public class GInfoWindow extends WebMarkupContainer
 		return (latLng != null || marker != null);
 	}
 
-	public void close() {
-        setTabs(new GInfoWindowTab[0]);
-        
-        marker = null;
-        latLng = null;
-		
+	public void close()
+	{
+		setTabs(new GInfoWindowTab[0]);
+
+		marker = null;
+		latLng = null;
+
 		if (AjaxRequestTarget.get() != null)
 		{
-			AjaxRequestTarget.get()
-					.appendJavascript(getJSclose());
+			AjaxRequestTarget.get().appendJavascript(getJSclose());
 			AjaxRequestTarget.get().addComponent(this);
 		}
 	}
