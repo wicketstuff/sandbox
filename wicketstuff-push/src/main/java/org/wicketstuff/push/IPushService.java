@@ -28,20 +28,32 @@ import org.apache.wicket.Component;
  * <p>
  * Here is a common example of usage:
  * <pre>
- * final IPushTarget pushTarget = pushService.installPush(myPage);
- * myServerEventService.addListener(new MyListener() {
+ * private static final IPushInstaller PUSH_INSTALLER = new IPushInstaller() {
+ *   public void install(Component component, final IPushTarget pushTarget) {
+ *     myServerEventService.addListener(new MyListener() {
  * 		public void onEvent(Event ev) {
  *     		if (pushTarget.isConnected()) {
  *				pushTarget.addComponent(myComponentToUpdate);
- *				pushTarget.appendJavascript("alert('event recevied from server:"+ev+"');");
+ *				pushTarget.appendJavascript("alert('event received from server:"+ev+"');");
  *				pushTarget.trigger();
  * 			} else {
  *				myServerEventService.removeListener(this);
  *			}
  *		}
- * });
+ *     });
+ *   }  
+ * }
+ * 
+ * ...
+ * 
+ * pushService.installPush(myComponent, PUSH_INSTALLER);
  * </pre>
  * 
+ * Using a unique instance of push installer is highly recommended, since it is then referenced
+ * in the Wicket Application (using a different instance each time could thus lead to
+ * a memory leak). If you need to pass different instances each time, you are responsible
+ * for calling uninstallPush on the component to free the reference to the installer.
+ * <p>
  * This service is usually used when you already have a facility for triggering and 
  * listening server side events that you want to propagate to the clients.
  * <p>
@@ -50,19 +62,31 @@ import org.apache.wicket.Component;
  * @author Xavier Hanin
  * 
  * @see IChannelService
- * @see IPushTarget
+ * @see IPushInstaller
  */
 public interface IPushService {
 	/**
 	 * Installs a push facility on the given component.
 	 * <p>
 	 * The component on which the push facility is installed doesn't really matter
-	 * as soon as it is visible.
+	 * as soon as it is visible, except that only one push service can be installed by component.
 	 * <p>
 	 * Usually the page is used as component.
 	 * 
 	 * @param component the component on which the push facility must be installed
-	 * @return an {@link IPushTarget} allowing to send events to the components of the same page
+	 * @param pushInstaller a Runnable which will be run any time the push is installed
 	 */
-	IPushTarget installPush(Component component);
+	void installPush(Component component, IPushInstaller pushInstaller);
+	
+	/**
+	 * Uninstalls a push installer which has previously been installed on
+	 * a component. 
+	 * <p>
+	 * Calling this method after calling {@link #installPush(Component, IPushInstaller)}
+	 * is mandatory if you use a different push installer instance for each component
+	 * instance.
+	 *  
+	 * @param component the component on which push service must be uninstalled
+	 */
+	void uninstallPush(Component component);
 }

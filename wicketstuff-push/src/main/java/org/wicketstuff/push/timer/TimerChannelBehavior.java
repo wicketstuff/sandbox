@@ -79,7 +79,7 @@ public class TimerChannelBehavior extends AbstractAjaxTimerBehavior
 	/**
 	 * The default margin after a polling interval to consider the page is disconnected
 	 */
-	private static final Duration TIMEOUT_MARGIN = Duration.seconds(5);
+	static final Duration TIMEOUT_MARGIN = Duration.seconds(5);
 	
 	static {
 		try
@@ -333,24 +333,7 @@ public class TimerChannelBehavior extends AbstractAjaxTimerBehavior
 		
 		public boolean isConnected() 
 		{
-			Time time = TimerChannelBehavior.getLastPollEvent(application, id);
-			boolean isConnected;
-			if (time == null) 
-			{
-				// the behavior has not been polled yet (or maybe it has been cleaned)
-				// we can't know exactly the reason, so we check the timeout against this 
-				// PushTarget creation timestamp
-				time = timestamp;
-			}
-			isConnected = time.elapsedSince().compareTo(timeout) < 0;
-			if (!isConnected) 
-			{
-				// timeout expired, the page is probably not connected anymore
-
-				// we clean the metadata to avoid memory leak
-				TimerChannelBehavior.cleanMetadata(application, id);
-			}
-			return isConnected;
+			return TimerChannelBehavior.isConnected(application, id, timeout);
 		}
 
 		/**
@@ -365,7 +348,6 @@ public class TimerChannelBehavior extends AbstractAjaxTimerBehavior
 	}
 	
 	private final String id;
-	private final Duration updateInterval;
 	private final Duration timeout;
 
 	/**
@@ -390,11 +372,14 @@ public class TimerChannelBehavior extends AbstractAjaxTimerBehavior
 		super(updateInterval);
 		id = String.valueOf(COUNTER.incrementAndGet());
 		this.timeout = timeout;
-		this.updateInterval = updateInterval;
+	}
+
+	@Override
+	protected void onBind() {
+		super.onBind();
+		touch(getComponent().getApplication(), id);
 	}
 	
-	
-
 	/**
 	 * @see AbstractAjaxTimerBehavior#onTimer(AjaxRequestTarget)
 	 */
@@ -432,14 +417,14 @@ public class TimerChannelBehavior extends AbstractAjaxTimerBehavior
 	public IPushTarget newPushTarget() {
 		return new TimerPushTarget(Application.get(), id, timeout);
 	}
-
 	
 	@Override
 	public void renderHead(IHeaderResponse response) {
-		String timerChannelPageId = getComponent().getPage().getId()+":updateInterval:"+updateInterval;
+		touch(getComponent().getApplication(), id);
+		String timerChannelPageId = getComponent().getPage().getId()+":updateInterval:"+getUpdateInterval();
 		if (!getPageId(getComponent().getApplication(), id).equals(id)) 
 		{
-			// page has already been redirected, we can skip this rendering
+			// behavior has already been redirected, we can skip this rendering
 			return;
 		}
 		if (!response.wasRendered(timerChannelPageId)) 
@@ -482,6 +467,26 @@ public class TimerChannelBehavior extends AbstractAjaxTimerBehavior
 		private static final long serialVersionUID = 1L;
 	};
 	
+	public static boolean isConnected(Application application, String id, Duration timeout) 
+	{
+		Time time = TimerChannelBehavior.getLastPollEvent(application, id);
+		boolean isConnected;
+		if (time == null) 
+		{
+			// the behavior has been cleaned
+			return false;
+		}
+		isConnected = time.elapsedSince().compareTo(timeout) < 0;
+		if (!isConnected) 
+		{
+			// timeout expired, the page is probably not connected anymore
+
+			// we clean the metadata to avoid memory leak
+			TimerChannelBehavior.cleanMetadata(application, id);
+		}
+		return isConnected;
+	}
+
 	/**
 	 * Methods used to access the triggers queued for the behavior
 	 * 
@@ -692,7 +697,7 @@ public class TimerChannelBehavior extends AbstractAjaxTimerBehavior
 		return "TimerChannelBehavior::"+id;
 	}
 
-	public Duration getUpdateInterval() {
-		return updateInterval;
+	public String getId() {
+		return id;
 	}
 }
