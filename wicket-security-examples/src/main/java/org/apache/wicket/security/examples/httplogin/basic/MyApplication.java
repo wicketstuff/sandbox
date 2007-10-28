@@ -69,29 +69,35 @@ public class MyApplication extends SwarmWebApplication
 		// -whatever you can think of
 
 		// for this example we will be using a fixed string
-		return "basic http";
+		return "http auth";
 
 	}
 
 	/**
 	 * @see org.apache.wicket.security.swarm.SwarmWebApplication#setUpHive()
 	 */
-	protected void setUpHive()
+	protected synchronized void setUpHive()
 	{
-		// create factory
-		PolicyFileHiveFactory factory = new PolicyFileHiveFactory();
-		try
+		// example of shared hive
+		// check first
+		if (HiveMind.getHive(getHiveKey()) == null)
 		{
-			// this example uses 1 policy file but you can add as many as you
-			// like
-			factory.addPolicyFile(getServletContext().getResource("/WEB-INF/basichttp.hive"));
+			// create factory
+			PolicyFileHiveFactory factory = new PolicyFileHiveFactory();
+			try
+			{
+				// this example uses 1 policy file but you can add as many as
+				// you
+				// like
+				factory.addPolicyFile(getServletContext().getResource("/WEB-INF/httpauth.hive"));
+			}
+			catch (MalformedURLException e)
+			{
+				throw new WicketRuntimeException(e);
+			}
+			// register factory
+			HiveMind.registerHive(getHiveKey(), factory);
 		}
-		catch (MalformedURLException e)
-		{
-			throw new WicketRuntimeException(e);
-		}
-		// register factory
-		HiveMind.registerHive(getHiveKey(), factory);
 
 	}
 
