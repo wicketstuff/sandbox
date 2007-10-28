@@ -14,6 +14,8 @@ public class MFXFontResizer extends AbstractRequireMooStatelessBehavior {
 	private MFXOptions mfxOptions = new MFXOptions();
 	private String container;
 	private String tag = "p";
+	private int maxSize = 16;
+	private int minSize = 8;
 
 	public MFXFontResizer(final int size) {
 		this.size = size;
@@ -21,6 +23,13 @@ public class MFXFontResizer extends AbstractRequireMooStatelessBehavior {
 
 	public MFXFontResizer(final int size, final int maxSize) {
 		this.size = size;
+		this.maxSize = maxSize;
+	}
+
+	public MFXFontResizer(final int size, final int maxSize, final int minSize) {
+		this.size = size;
+		this.maxSize = maxSize;
+		this.minSize = minSize;
 	}
 
 	@Override
@@ -48,9 +57,19 @@ public class MFXFontResizer extends AbstractRequireMooStatelessBehavior {
 
 		buf.append("texts.each(function(t,i) {");
 		buf.append("var csize = t.getStyle('font-size').toInt();");
+
+		if (size > 0) {
+			buf.append("if (csize >= " + maxSize + ") { t.setStyle('font-size'," + maxSize + "); return;  } ");
+		}
+
+		if (size < 0) {
+			buf.append("if (csize <= " + minSize + ") { t.setStyle('font-size'," + minSize + "); return;  } ");
+		}
+
 		buf.append("new Fx.Style(t,'font-size'," + mfxOptions.writeOptions() + ").start(csize, (csize+(" + size
 				+ ")));");
 		buf.append("});});");
+
 		return buf.toString();
 	}
 

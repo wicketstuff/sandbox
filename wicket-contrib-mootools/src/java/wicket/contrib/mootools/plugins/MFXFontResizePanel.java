@@ -16,9 +16,9 @@ public class MFXFontResizePanel extends Panel {
 
 		WebMarkupContainer container1, container2;
 		add(container1 = new WebMarkupContainer("smaller"));
-		container1.add(new MFXFontResizer(-2, 16).setContainer(domId));
+		container1.add(new MFXFontResizer(-2).setContainer(domId));
 		add(container2 = new WebMarkupContainer("larger"));
-		container2.add(new MFXFontResizer(2, 10).setContainer(domId));
+		container2.add(new MFXFontResizer(2).setContainer(domId));
 
 		String smallerurl = RequestCycle.get().urlFor(SMALLER).toString();
 		String largerurl = RequestCycle.get().urlFor(LARGER).toString();
