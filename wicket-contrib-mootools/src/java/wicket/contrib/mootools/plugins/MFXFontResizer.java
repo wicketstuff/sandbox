@@ -48,7 +48,6 @@ public class MFXFontResizer extends AbstractRequireMooStatelessBehavior {
 
 		buf.append("texts.each(function(t,i) {");
 		buf.append("var csize = t.getStyle('font-size').toInt();");
-		buf.append("if (csize >= 100) { csize = 12 } ");
 		buf.append("new Fx.Style(t,'font-size'," + mfxOptions.writeOptions() + ").start(csize, (csize+(" + size
 				+ ")));");
 		buf.append("});});");
