@@ -80,7 +80,8 @@ public class SwarmActionFactory implements ActionFactory
 			register(Access.class, "access");
 			register(Inherit.class, "inherit");
 			register(Render.class, "render");
-			register(Enable.class, new ImpliesRenderAction(nextPowerOf2(), "enable", this));
+			register(Enable.class, new ImpliesOtherAction(nextPowerOf2(), "enable", this,
+					Render.class));
 		}
 		catch (RegistrationException e)
 		{
@@ -417,12 +418,19 @@ public class SwarmActionFactory implements ActionFactory
 	 * 	}
 	 * }
 	 * </code>
-	 * &lt;pre&gt;
-	 * Note all actions registered in this way must use nextPowerOf2() and then immediately register the action to preserve consistency.
-	 * @param waspActionClass the class under which to register the action
-	 * @param action the actual implementation (note that it does not need to implement the supplied waspActionClass)
+	 * </pre>
+	 * 
+	 * Note all actions registered in this way must use nextPowerOf2() and then
+	 * immediately register the action to preserve consistency.
+	 * 
+	 * @param waspActionClass
+	 *            the class under which to register the action
+	 * @param action
+	 *            the actual implementation (note that it does not need to
+	 *            implement the supplied waspActionClass)
 	 * @return the action
-	 * @throws RegistrationException if the action can not be registered.
+	 * @throws RegistrationException
+	 *             if the action can not be registered.
 	 * @see #nextPowerOf2()
 	 * @see SwarmAction#SwarmAction(int, String, ActionFactory)
 	 * 
@@ -494,27 +502,67 @@ public class SwarmActionFactory implements ActionFactory
 	}
 
 	/**
-	 * Any class that implies a render action.
+	 * Any class that implies another action.
 	 * 
 	 * @author marrink
-	 * 
 	 */
-	protected static final class ImpliesRenderAction extends SwarmAction
+	protected static final class ImpliesOtherAction extends SwarmAction
 	{
 		private static final long serialVersionUID = 1L;
 
 		/**
 		 * @param actions
+		 *            the base action value
 		 * @param name
+		 *            name of the new action
 		 * @param factory
+		 *            factory where this class will be registered
+		 * @param otherAction
+		 *            a single action class to imply, not null
 		 */
-		public ImpliesRenderAction(int actions, String name, ActionFactory factory)
+		public ImpliesOtherAction(int actions, String name, ActionFactory factory, Class otherAction)
 		{
-			super(actions
-					| ((SwarmAction)factory
-							.getAction(org.apache.wicket.security.actions.Render.class)).actions(),
-					name);
+			super(actions | ((SwarmAction)factory.getAction(otherAction)).actions(), name);
 		}
 
+		/**
+		 * @param actions
+		 *            the base action value
+		 * @param name
+		 *            name of the new action
+		 * @param factory
+		 *            factory where this class will be registered
+		 * @param otherActions
+		 *            any number of action classes to imply
+		 */
+		public ImpliesOtherAction(int actions, String name, ActionFactory factory,
+				Class[] otherActions)
+		{
+			super(actions | bitwiseOr(factory, otherActions), name);
+		}
+
+		/**
+		 * Creates a bitwise or of all the actions supplied. Note that all these
+		 * classes must already be registered.
+		 * 
+		 * @param factory
+		 * @param otherActions
+		 *            any number of action classes to imply
+		 * @return
+		 */
+		private static final int bitwiseOr(ActionFactory factory, Class[] otherActions)
+		{
+			int result = 0;
+			if (otherActions != null)
+			{
+				Class action;
+				for (int i = 0; i < otherActions.length; i++)
+				{
+					action = otherActions[i];
+					result = result | ((SwarmAction)factory.getAction(action)).actions();
+				}
+			}
+			return result;
+		}
 	}
 }

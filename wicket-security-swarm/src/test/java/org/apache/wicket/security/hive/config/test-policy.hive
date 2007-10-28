@@ -49,9 +49,15 @@ grant principal org.apache.wicket.security.hive.authorization.TestPrincipal "tes
 {
 	permission org.apache.wicket.security.hive.authorization.TestPermission "8.A";
 	permission org.apache.wicket.security.hive.authorization.TestPermission "8.B";
+	permission org.apache.wicket.security.hive.authorization.PestTermission "8.C";
+	permission org.apache.wicket.security.hive.authorization.FaultyPermission "8.D";
 };
 grant principal ${auth}.TestPrincipal "${test}${nine}"
 {
 	permission ${perm} "${nine}.A";
 	permission ${perm} "${nine}.B", "test";
 };
+grant principal org.apache.wicket.security.hive.authorization.TestPrincipal "test10"
+	permission org.apache.wicket.security.hive.authorization.TestPermission "10.A";
+{
+	permission org.apache.wicket.security.hive.authorization.TestPermission "10.B";

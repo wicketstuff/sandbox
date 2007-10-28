@@ -21,6 +21,7 @@ import java.io.Serializable;
 import org.apache.wicket.Application;
 import org.apache.wicket.security.WaspApplication;
 import org.apache.wicket.security.actions.ActionFactory;
+import org.apache.wicket.security.hive.authorization.permissions.ActionPermission;
 import org.apache.wicket.security.swarm.actions.SwarmAction;
 import org.apache.wicket.security.swarm.actions.SwarmActionFactory;
 
@@ -40,7 +41,7 @@ import org.apache.wicket.security.swarm.actions.SwarmActionFactory;
  * files in the specified directory). The actions list is optional for
  * Permission objects, such as <code>java.lang.RuntimePermission</code>, that
  * don't need such a list; you either have the named permission (such as
- * "system.exit") or you don't.
+ * "system.exit") or you don't. See {@link ActionPermission}.
  * 
  * <p>
  * An important method that must be implemented by each subclass is the
@@ -53,6 +54,11 @@ import org.apache.wicket.security.swarm.actions.SwarmActionFactory;
  * Permission objects are similar to String objects in that they are immutable
  * once they have been created. Subclasses should not provide methods that can
  * change the state of a permission once it has been created.
+ * 
+ * All permissions must at least have a public constructor accepting a String
+ * parameter which will be used as name for the permission. Note that the
+ * {@link ActionPermission} should also have a 2 argument constructor accepting
+ * 2 strings where the first is the name and the second a (list of) action(s).
  * 
  * @author marrink
  * 
@@ -73,8 +79,7 @@ public abstract class Permission implements Serializable
 	}
 
 	/**
-	 * Check if this permission implies the specified permission. Default
-	 * returns false;
+	 * Check if this permission implies the specified permission.
 	 * 
 	 * @param permission
 	 * @return true if this implies the permission, false otherwise.

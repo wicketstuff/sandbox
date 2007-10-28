@@ -28,6 +28,7 @@ import junit.framework.TestCase;
 
 import org.apache.wicket.security.hive.Hive;
 import org.apache.wicket.security.hive.authorization.EverybodyPrincipal;
+import org.apache.wicket.security.hive.authorization.FaultyPermission;
 import org.apache.wicket.security.hive.authorization.TestPermission;
 import org.apache.wicket.security.hive.authorization.TestPrincipal;
 
@@ -109,9 +110,12 @@ public class PolicyFileHiveFactoryTest extends TestCase
 		assertTrue(hive.containsPrincipal(new TestPrincipal("test8")));
 		assertTrue(hive.containsPermission(new TestPermission("8.A")));
 		assertTrue(hive.containsPermission(new TestPermission("8.B")));
+		assertFalse(hive.containsPermission(new FaultyPermission()));
 		assertTrue(hive.containsPrincipal(new TestPrincipal("test9")));
 		assertTrue(hive.containsPermission(new TestPermission("9.A")));
 		assertTrue(hive.containsPermission(new TestPermission("9.B", "test")));
+		assertTrue(hive.containsPrincipal(new TestPrincipal("test10")));
+		assertTrue(hive.containsPermission(new TestPermission("10.B")));
 	}
 
 	/**

@@ -342,6 +342,12 @@ public class PolicyFileHiveFactory implements HiveFactory
 									line = reader.readLine();
 									continue;
 								}
+								if (permissions == null)
+								{
+									skipIllegalPermission(lineNr, principal, temp);
+									line = reader.readLine();
+									continue;
+								}
 								if (!permissions.add(temp))
 									skipPermission(lineNr, principal, temp);
 								else
@@ -433,6 +439,19 @@ public class PolicyFileHiveFactory implements HiveFactory
 				}
 				line = reader.readLine();
 			}
+			// catch forgotten closeStatement
+			if (inPrincipalBlock)
+			{
+				warnUnclosedPrincipalBlock(principal, lineNr);
+				inPrincipalBlock = false;
+				if (permissions != null && permissions.size() > 0)
+					hive.addPrincipal(principal, permissions);
+				else
+					skipEmptyPrincipal(lineNr, principal);
+
+				permissions = null;
+				principal = null;
+			}
 		}
 		finally
 		{
@@ -440,6 +459,20 @@ public class PolicyFileHiveFactory implements HiveFactory
 			if (reader != null)
 				reader.close();
 		}
+	}
+
+	/**
+	 * Warning when the last principal of a file is not properly closed.
+	 * Although the principal is automatically closed the user should complete
+	 * the block statement for the principal.
+	 * 
+	 * @param principal
+	 * @param lineNr
+	 */
+	protected void warnUnclosedPrincipalBlock(Principal principal, int lineNr)
+	{
+		log.warn("The principal " + principal + " running to line " + lineNr
+				+ " is not properly closed with '};'.");
 	}
 
 	/**
@@ -510,6 +543,23 @@ public class PolicyFileHiveFactory implements HiveFactory
 	{
 		log.debug(permission + " skipped because it was already added to the permission set for "
 				+ principal + ", line nr " + lineNr);
+	}
+
+	/**
+	 * Notifies of permissions located outside the { and }; block statements but
+	 * after a valid principal was found.
+	 * 
+	 * @param lineNr
+	 *            the line declaring the illegal permission
+	 * @param principal
+	 *            the declared principal
+	 * @param permission
+	 *            the declared permission
+	 */
+	protected void skipIllegalPermission(int lineNr, Principal principal, Permission permission)
+	{
+		log.debug(permission + " skipped because the pricipal " + principal
+				+ " has not yet declared its opening block statement '{', line nr " + lineNr);
 	}
 
 	/**
@@ -617,7 +667,32 @@ public class PolicyFileHiveFactory implements HiveFactory
 	protected void skipPermission(int lineNr, Class permissionClass, Object[] argValues, Exception e)
 	{
 		log.error("Unable to create new instance of class " + permissionClass.getName()
-				+ " using the following arguments " + argValues + ", line nr " + lineNr, e);
+				+ " using the following argument(s) " + arrayToString(argValues) + ", line nr "
+				+ lineNr, e);
+	}
+
+	/**
+	 * Generates a comma (,) separated string of all the items in the array
+	 * 
+	 * @param array
+	 *            the input
+	 * @return a comma separated string, an empty string or null if the input
+	 *         array has 1 or more items, zero items or is null respectively.
+	 */
+	protected final String arrayToString(Object[] array)
+	{
+		if (array == null)
+			return null;
+		if (array.length < 1)
+			return "";
+		StringBuffer buffer = new StringBuffer(array.length * 12);// guess
+		for (int i = 0; i < array.length; i++)
+		{
+			buffer.append(array[i]);
+			if (i < array.length - 1)
+				buffer.append(", ");
+		}
+		return buffer.toString();
 	}
 
 	/**
@@ -634,8 +709,8 @@ public class PolicyFileHiveFactory implements HiveFactory
 	 */
 	protected void skipPermission(int lineNr, Class permissionClass, Class[] args)
 	{
-		log.error("No constructor found matching " + args + " for class "
-				+ permissionClass.getName() + ", line nr " + lineNr);
+		log.error("No constructor found matching argument(s) " + arrayToString(args)
+				+ " for class " + permissionClass.getName() + ", line nr " + lineNr);
 	}
 
 	/**
