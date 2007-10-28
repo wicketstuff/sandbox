@@ -67,6 +67,18 @@
 		</init-param>
 	</filter>
 	<filter>
+		<filter-name>digesthttp</filter-name>
+		<filter-class>
+			org.apache.wicket.protocol.http.WicketFilter
+		</filter-class>
+		<init-param>
+			<param-name>applicationClassName</param-name>
+			<param-value>
+				org.apache.wicket.security.examples.httplogin.digest.MyApplication
+			</param-value>
+		</init-param>
+	</filter>
+	<filter>
 		<filter-name>denial</filter-name>
 		<filter-class>
 			org.apache.wicket.protocol.http.WicketFilter
@@ -93,6 +105,10 @@
 	<filter-mapping>
 		<filter-name>basichttp</filter-name>
 		<url-pattern>/basichttp/*</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>digesthttp</filter-name>
+		<url-pattern>/digesthttp/*</url-pattern>
 	</filter-mapping>
 	<filter-mapping>
 		<filter-name>denial</filter-name>
