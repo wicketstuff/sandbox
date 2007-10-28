@@ -66,7 +66,7 @@
 			</param-value>
 		</init-param>
 	</filter>
-	<filter>
+<!-- 	<filter>
 		<filter-name>digesthttp</filter-name>
 		<filter-class>
 			org.apache.wicket.protocol.http.WicketFilter
@@ -78,7 +78,7 @@
 			</param-value>
 		</init-param>
 	</filter>
-	<filter>
+-->	<filter>
 		<filter-name>denial</filter-name>
 		<filter-class>
 			org.apache.wicket.protocol.http.WicketFilter
@@ -106,11 +106,11 @@
 		<filter-name>basichttp</filter-name>
 		<url-pattern>/basichttp/*</url-pattern>
 	</filter-mapping>
-	<filter-mapping>
+<!-- 	<filter-mapping>
 		<filter-name>digesthttp</filter-name>
 		<url-pattern>/digesthttp/*</url-pattern>
 	</filter-mapping>
-	<filter-mapping>
+-->	<filter-mapping>
 		<filter-name>denial</filter-name>
 		<url-pattern>/denial/*</url-pattern>
 	</filter-mapping>
