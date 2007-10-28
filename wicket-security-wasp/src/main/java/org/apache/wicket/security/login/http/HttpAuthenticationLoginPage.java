@@ -293,8 +293,8 @@ public abstract class HttpAuthenticationLoginPage extends WebPage
 	}
 
 	/**
-	 * Delivers a context suitable for loging in with the specified username and
-	 * password. Please refer to your specific wasp implementation for a
+	 * Delivers a context suitable for logging in with the specified username
+	 * and password. Please refer to your specific wasp implementation for a
 	 * suitable context.
 	 * 
 	 * @param username

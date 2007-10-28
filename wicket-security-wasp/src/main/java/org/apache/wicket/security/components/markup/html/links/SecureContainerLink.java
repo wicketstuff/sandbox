@@ -159,7 +159,7 @@ public abstract class SecureContainerLink extends Link implements ISecureCompone
 	 *		Class replacementClass)
 	 *	{
 	 *		//does a one time replace
-	 *		if(MyPanel.class.isAssignalbeFrom(replacementClass)
+	 *		if(MyPanel.class.isAssignableFrom(replacementClass)
 	 *		{
 	 *			//if this link is not a child of current, you might want to hide it after the replace has taken place
 	 *			this.setVisible(false);
@@ -178,7 +178,7 @@ public abstract class SecureContainerLink extends Link implements ISecureCompone
 	 *		//prepare the next replacement
 	 *		setReplacementClass(current.getClass();
 	 *		//do the switch
-	 *		if(MyPanel.class.isAssignalbeFrom(replacementClass)
+	 *		if(MyPanel.class.isAssignableFrom(replacementClass)
 	 *		{
 	 *			return new MyPanel(id, current.getModel());
 	 *		}
