@@ -16,7 +16,12 @@
  */
 package org.apache.wicket.security.components;
 
+import org.apache.wicket.security.strategies.ClassAuthorizationStrategy;
+
 /**
+ * Tagging interface to identify secured containers. Could be used with
+ * {@link ClassAuthorizationStrategy}.
+ * 
  * @author marrink
  */
 public interface ISecureContainer extends ISecureComponent

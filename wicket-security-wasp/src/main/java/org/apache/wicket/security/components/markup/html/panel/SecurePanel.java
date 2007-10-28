@@ -26,8 +26,8 @@ import org.apache.wicket.security.components.SecureComponentHelper;
 
 /**
  * A standard secure panel. The {@link ISecurityCheck} checks if the class is
- * authorized / authenticated just like with pages. This is especially usefull
- * if your strategy is to replace panels.
+ * authorized / authenticated just like with pages. This is especially useful if
+ * your strategy is to replace panels.
  * 
  * @author marrink
  */
