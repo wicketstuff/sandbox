@@ -506,7 +506,7 @@ public class SwarmActionFactory implements ActionFactory
 	 * 
 	 * @author marrink
 	 */
-	protected static final class ImpliesOtherAction extends SwarmAction
+	protected static class ImpliesOtherAction extends SwarmAction
 	{
 		private static final long serialVersionUID = 1L;
 
