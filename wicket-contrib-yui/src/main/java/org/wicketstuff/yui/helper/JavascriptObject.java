@@ -1,5 +1,6 @@
 package org.wicketstuff.yui.helper;
 
+
 /**
  * Interface for Javscript
  * 
@@ -9,4 +10,6 @@ package org.wicketstuff.yui.helper;
 public interface JavascriptObject 
 {
 	public String toString();
+
+	public JavascriptObject add(String string);
 }

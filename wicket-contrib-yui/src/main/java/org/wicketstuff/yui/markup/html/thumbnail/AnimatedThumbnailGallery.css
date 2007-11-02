@@ -1,0 +1,9 @@
+/*
+ * CSS for this Class Thumbnail Gallery 
+ */
+
+DIV.AnimatedThumbnailGallery,
+DIV.AnimatedThumbnailGallery TABLE 
+{
+    position : relative;
+}
