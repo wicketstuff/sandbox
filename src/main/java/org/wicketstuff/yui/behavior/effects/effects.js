@@ -124,6 +124,7 @@ YAHOO.widget.Effects.Appear = function(inElm, opts) {
 
     YAHOO.util.Dom.setStyle(this.element, 'opacity', '0');
     YAHOO.widget.Effects.Show(this.element);
+	
     var attributes = {
         opacity: { from: 0, to: 1 }
     };
@@ -153,6 +154,8 @@ YAHOO.widget.Effects.Appear = function(inElm, opts) {
 * Fires off the embedded Animation.
 */
 YAHOO.widget.Effects.Appear.prototype.animate = function() {
+	// josh added
+	YAHOO.widget.Effects.Show(this.element);
     this.effect.animate();
 }
 /**

@@ -51,4 +51,12 @@ public class JSObject<T> extends NameValuePair<T> implements JavascriptObject
 		add(name, object.toString());
 		return this;
 	}
+
+	/**
+	 * 
+	 */
+	public JavascriptObject add(String string)
+	{
+		return null;
+	}
 }

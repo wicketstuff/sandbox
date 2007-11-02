@@ -4,6 +4,11 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * TODO : move to helper
+ * @author josh
+ *
+ */
 public class InlineStyle implements Serializable {
 
 	// valid Styles....
@@ -76,4 +81,8 @@ public class InlineStyle implements Serializable {
 		return true;
 	}
 
+	public void add(String element, int int_value)
+	{
+		this.add(element, Integer.toString(int_value));
+	}
 }

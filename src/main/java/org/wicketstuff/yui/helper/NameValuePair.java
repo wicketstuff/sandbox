@@ -43,6 +43,17 @@ public abstract class NameValuePair<T> extends TokenSeparatedValues
 	{
 		if (isValid(element, value)) 
 		{
+			if (!value.startsWith("{"))
+			{
+				try 
+				{
+					Float.parseFloat(value);
+				}
+				catch (Exception e) 
+				{
+					value = "\"" + value + "\"";
+				}
+			}
 			propertyMap.put(element, value);
 		}
 		return (T) this;

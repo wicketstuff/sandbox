@@ -1,10 +1,12 @@
+if (typeof(Wicket) == "undefined") Wicket = { };
+if (typeof(Wicket.yui) == "undefined") Wicket.yui = { };
 /**
  * 
  * Animator acts as the orchestrator of all Animation within a page where Animations are used.
  * It's role is to create keep a list of Animations and create its listeners.Itis a Singleton
  * 
  */
-WicketYuiAnimator = function () {
+Wicket.yui.Animator = function () {
 
     /**
      * array of AnimGroups. to keep track of all the AnimGroups created.
@@ -87,15 +89,18 @@ WicketYuiAnimator = function () {
 	 */
     callback = function(e, animGroup) {
 		
-        trigger_id = YAHOO.util.Event.getTarget(e).id;
-        animList = animGroup.map[trigger_id];
+        var trigger_id = YAHOO.util.Event.getTarget(e).id;
+        var animList = animGroup.map[trigger_id];
 		
-		// splice first element an animate it
-		var anim = animList.splice(0,1);
-		anim[0].animate();
-
-		// add this element back to the list
-		animList.push(anim[0]);
+		if (animList)
+		{
+	        // splice first element an animate it
+	        var anim = animList.splice(0,1);
+	        anim[0].animate();
+	        
+	        // add this element back to the list
+	        animList.push(anim[0]);
+	   }
     };
 	
     return {
