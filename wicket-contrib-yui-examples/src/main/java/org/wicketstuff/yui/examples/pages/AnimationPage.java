@@ -28,33 +28,28 @@ public class AnimationPage extends WicketExamplePage
 
 		// Shadow Fade Appear ShakeLR ShakeTB
 		newAnimatedComponent("shadow", 	OnEvent.click, Effect.Type.Shadow, true);  // needs position:relative 
-		newAnimatedComponent("appear", 	OnEvent.click, Effect.Type.Appear, false);
-		newAnimatedComponent("shakelr", OnEvent.click, Effect.Type.ShakeLR, true); // needs position:relative 
-		newAnimatedComponent("shaketb", OnEvent.click, Effect.Type.ShakeTB, true); // needs position:relative 
 		
 		// Attributes
 		Attributes delay = new Attributes("delay", "true");
 		
-		// fade followed by appear
-		WebMarkupContainer fade;
-		add(fade = new WebMarkupContainer("fade"));
-		fade.setOutputMarkupId(true);
-		fade.add(new Animation(OnEvent.click)
-						.add(new Effect(Effect.Type.Fade, delay))
-						.add(new Effect(Effect.Type.Appear, delay)));
+		// Appear
+		newAnimatedComponent("appear", OnEvent.click, Effect.Type.Appear, false);
+		newAnimatedComponent("shakelr", OnEvent.click, Effect.Type.ShakeLR, true); // needs position:relative 
+		newAnimatedComponent("shaketb", OnEvent.click, Effect.Type.ShakeTB, true); // needs position:relative 
 		
-		// Drop 
-		WebMarkupContainer drop;
-		add(drop = new WebMarkupContainer("drop"));
-		drop.setOutputMarkupId(true);
-		drop.add(new Animation(OnEvent.click)
-						.add(new Effect(Effect.Type.Drop, delay))
-						.add(new Effect(Effect.Type.Appear, delay)));
+		// fade followed by appear
+		newAnimatedComponent("fade", OnEvent.click, Effect.Type.Fade, true);
+		newAnimatedComponent("drop", OnEvent.click, Effect.Type.Drop, true);
 		
 		// TV 
-		newAnimatedComponent("tv", OnEvent.click, Effect.Type.TV, true);
-		newAnimatedComponent("fade_mouseover", OnEvent.mouseover, Effect.Type.Fade, true);
+		WebMarkupContainer tv;
+		add(tv = new WebMarkupContainer("tv"));
+		tv.add(new Animation(OnEvent.click)
+						.add(new Effect(Effect.Type.TV, delay))
+						.add(new Effect(Effect.Type.Appear)));
 		
+		// mouse over 
+		newAnimatedComponent("fade_mouseover", OnEvent.mouseover, Effect.Type.Fade, true);
 		
 		// Blind Up / Down + attributes...
 		Attributes ghost_attr = delay.add(new Attributes("ghost", "true"));
@@ -62,7 +57,6 @@ public class AnimationPage extends WicketExamplePage
 		
 		WebMarkupContainer ghost;
 		add(ghost = new WebMarkupContainer("ghost"));
-		ghost.setOutputMarkupId(true);
 		ghost.add(new Animation(OnEvent.click)
 						.add(new Effect(Effect.Type.BlindUp,  ghost_attr))
 						.add(new Effect(Effect.Type.BlindDown, easing)));
@@ -71,7 +65,6 @@ public class AnimationPage extends WicketExamplePage
 		// Batch Blind Up / Down / Right / Drop / Appear 
 		WebMarkupContainer batch;
 		add(batch = new WebMarkupContainer("batch"));
-		batch.setOutputMarkupId(true);
 		batch.add(new Animation(OnEvent.click)
 						.add(new Effect(Effect.Type.BlindUp, delay))
 						.add(new Effect(Effect.Type.BlindDown))
@@ -88,7 +81,6 @@ public class AnimationPage extends WicketExamplePage
 		// Blind Right + with attributes
 		WebMarkupContainer blindright;
 		add(blindright = new WebMarkupContainer("blindright_binded"));
-		blindright.setOutputMarkupId(true);
 		
 		// set up attributes
 		Attributes blindrightAttributes = new Attributes("bind", "'right'");
@@ -100,13 +92,9 @@ public class AnimationPage extends WicketExamplePage
 		// Click for Info ... 
 		WebMarkupContainer info;
 		add(info = new WebMarkupContainer("info"));
-		info.setOutputMarkupId(true);
-		
 
 		info.add(new ClickInfoAnimation("clickformore",OnEvent.click).add(new Effect(Effect.Type.BlindDown, delay)));
 		info.add(new ClickInfoAnimation("clickformore",OnEvent.click).add(new Effect(Effect.Type.BlindUp, delay)));
-//		info.add(new ClickInfoAnimation("clickformore",OnEvent.mouseover).add(new Effect(Effect.Type.BlindDown, ghost_attr)));
-//		info.add(new ClickInfoAnimation("clickformore",OnEvent.mouseout).add(new Effect(Effect.Type.BlindUp, ghost_attr)));
 	}
 	
 	/**
@@ -129,8 +117,9 @@ public class AnimationPage extends WicketExamplePage
 		}
 		
 		add(comp);
-		comp.setOutputMarkupId(true);
-		comp.add(new Animation(onEvent).add(new Effect(effectType, attributes)));
+		comp.add(new Animation(onEvent)
+						.add(new Effect(effectType, attributes))
+						.add(new Effect(Effect.Type.Appear)));
 		return comp;
 	}
 

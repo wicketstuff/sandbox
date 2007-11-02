@@ -18,6 +18,7 @@
     font-size   : 10pt;
     color       : #FFFFFF;
     padding     : 2px;
+    position    : relative; /* THIS IS RELLY NEEDED FOR TV/SHAKER ETC...*/
 }
 
 td 
@@ -43,7 +44,7 @@ code
     font-size : 10pt;
     line-height : 12pt;
     border-bottom : 0px dashed #666666;
-    width : 100px;
+    width : 250px;
     text-decoration : underline;
     
 }
@@ -71,7 +72,7 @@ div.info
 			        <tr>
 			            <td><div wicket:id="shrink" class="demo">Shrink</div></td>
 			            <td><div wicket:id="grow"   class="demo">Grow(on click)</div></td>
-			            <td><div wicket:id="fold"   class="demo">Fold +<br/>Appear</div></td>
+			            <td><div wicket:id="fold"   class="demo">Fold</div></td>
 			            <td><div wicket:id="unfold" class="demo">Unfold  </div></td>
 			            <td><div wicket:id="pulse"  class="demo">Pulse</div></td>
 			       </tr>
@@ -80,10 +81,10 @@ div.info
 			           <td><div wicket:id="appear"  class="demo">Appear </div></td>
 			           <td><div wicket:id="shakelr" class="demo">Shake LR</div></td>
 			           <td><div wicket:id="shaketb" class="demo">Shake TB</div></td>
-			           <td><div wicket:id="fade"    class="demo">Fade +<br/>Appear</div></td>
+			           <td><div wicket:id="fade"    class="demo">Fade</div></td>
 			        </tr>
 			        <tr>
-			            <td><div wicket:id="drop"           class="demo">Drop +<br/> Appear</div></td>
+			            <td><div wicket:id="drop"           class="demo">Drop</div></td>
 			            <td><div wicket:id="tv"             class="demo">TV </div></td>
 			            <td><div wicket:id="fade_mouseover" class="demo">Fade<br/>(on mouse over)</div></td>
 			            <td><div wicket:id="ghost"          class="demo">Blind Up<br>(with ghost) +<br> Blind Down<br>(with bounce)</div></td>
@@ -101,7 +102,7 @@ div.info
             <td style="width:400px;">
                 <!-- 2nd Column -->
                   <div id="clickformore">
-			        click for more <br>
+			        click for more - click again for less <br>
 			    </div>
 			    <div  class="info" wicket:id="info" >
 			    <div style="overflow:scroll;height:100%;">
