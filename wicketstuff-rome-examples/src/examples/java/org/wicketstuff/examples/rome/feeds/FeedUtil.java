@@ -34,7 +34,8 @@ public class FeedUtil
 	
 	static public HeaderContributor createAutodiscoveryLink(Class feedClass)
 	{
-		return FeedResource.autodiscoveryLink(createResourceReference(feedClass));
+		HeaderContributor contributor = FeedResource.autodiscoveryLink(createResourceReference(feedClass));
+		return contributor;
 	}
 	
 	static public FeedResource createFeedResource(final Class feedClass)
