@@ -3,6 +3,7 @@
 	<name>wicketstuff-rome-examples</name>
 	<comment></comment>
 	<projects>
+		<project>wicketstuff-rome</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
