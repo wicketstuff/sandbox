@@ -24,17 +24,17 @@ public class ExampleFeedApplication extends WebApplication
 	{
 		super.init();
 		
-		registerFeeds();
+		mountFeeds();
 		
 	}
 
-	protected void registerFeeds()
+	protected void mountFeeds()
 	{
-		registerFeed(NewsFeed.class, "news");
-		registerFeed(BlogFeed.class, "blog");
+		mountFeed(NewsFeed.class, "news");
+		mountFeed(BlogFeed.class, "blog");
 	}
 	
-	protected void registerFeed(Class feedClass, String alias)
+	protected void mountFeed(Class feedClass, String alias)
 	{
 		SharedResources resources = this.getSharedResources();
 		
