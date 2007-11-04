@@ -31,6 +31,7 @@
   </dependencies>
 
   <build>
+    <sourceDirectory>src/examples/java</sourceDirectory>
     <resources>
       <resource>
         <directory>src/examples/java</directory>
@@ -52,16 +53,6 @@
 			<target>1.5</target>
 		</configuration>
 	  </plugin>
-      <plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<configuration>
-					<descriptor>src/assembly/bin.xml</descriptor>
-					<finalName>${artifactId}-${version}</finalName>
-					<outputDirectory>target/distributions</outputDirectory>
-					<workDirectory>target/assembly/work</workDirectory>
-				</configuration>
-		</plugin>
 		<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
