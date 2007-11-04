@@ -44,7 +44,7 @@ public class FeedUtil
 
 			protected SyndFeed getFeed()
 			{
-				return newInstance(feedClass);
+				return createFeed(feedClass);
 			}
 			
 		};
@@ -56,7 +56,7 @@ public class FeedUtil
 	}
 
 	
-	private static SyndFeed newInstance(Class feedClass)
+	private static SyndFeed createFeed(Class feedClass)
 	{
 		try
 		{
