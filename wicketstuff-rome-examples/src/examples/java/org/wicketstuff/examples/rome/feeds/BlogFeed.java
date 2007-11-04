@@ -22,6 +22,7 @@ public class BlogFeed extends SyndFeedImpl
 		this.setPublishedDate(new java.util.Date());
 		this.setTitle("Joe's blog (" + this.getClass().getName() + ")");
 		this.setFeedType(FeedUtil.getDefaultFeedType());
+		this.setDescription("Joe's blog");
 		
 		List entries = new ArrayList();
 		

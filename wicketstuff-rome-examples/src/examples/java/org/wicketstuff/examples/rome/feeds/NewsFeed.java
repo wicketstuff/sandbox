@@ -22,6 +22,8 @@ public class NewsFeed extends SyndFeedImpl
 		this.setPublishedDate(new java.util.Date());
 		this.setTitle("News (" + this.getClass().getName() + ")");
 		this.setFeedType(FeedUtil.getDefaultFeedType());
+		this.setDescription("News desk feed");
+
 		
 		List entries = new ArrayList();
 		
