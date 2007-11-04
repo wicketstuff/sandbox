@@ -30,11 +30,11 @@ public class ExampleFeedApplication extends WebApplication
 
 	protected void mountFeeds()
 	{
-		mountFeed(NewsFeed.class, "news");
-		mountFeed(BlogFeed.class, "blog");
+		mountFeed(NewsFeed.class, FEED_ROOT + "/news");
+		mountFeed(BlogFeed.class, FEED_ROOT + "/blog");
 	}
 	
-	protected void mountFeed(Class feedClass, String alias)
+	protected void mountFeed(Class feedClass, String resourcePath)
 	{
 		SharedResources resources = this.getSharedResources();
 		
@@ -43,11 +43,11 @@ public class ExampleFeedApplication extends WebApplication
 		
 		resources.add(resourceName, resource);
 		
-		resources.putClassAlias(feedClass, alias);
+		// resources.putClassAlias(feedClass, alias);
 		
 		ResourceReference ref = FeedUtil.createResourceReference(feedClass);
 		
-		mountSharedResource(FEED_ROOT, ref.getSharedResourceKey());
+		mountSharedResource(resourcePath, ref.getSharedResourceKey());
 		
 	}
 	
