@@ -10,8 +10,14 @@ public class HomePage extends WebPage
 	{
 		super();
 		
-		add(FeedUtil.createAutodiscoveryLink(NewsFeed.class));
+		addFeed(NewsFeed.class);
 		
-		add(FeedUtil.createAutodiscoveryLink(BlogFeed.class));
+		addFeed(BlogFeed.class);
+		
+	}
+	
+	protected void addFeed(Class feedClass)
+	{
+		add(FeedUtil.createAutodiscoveryLink(feedClass));
 	}
 }
