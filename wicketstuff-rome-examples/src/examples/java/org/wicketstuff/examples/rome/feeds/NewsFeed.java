@@ -33,6 +33,14 @@ public class NewsFeed extends SyndFeedImpl
 			SyndEntry entry = new SyndEntryImpl();
 			entry.setTitle("Entry-" + i);
 			entry.setLink("http://wicket.apache.org/");
+			com.sun.syndication.feed.synd.SyndContent desc = new SyndContentImpl();
+			desc.setType("text/plain");
+			desc.setValue("Hello-" + i);
+			
+			entry.setDescription(desc);
+			
+			entries.add(entry);
+			
 		}
 		
 		this.setEntries(entries);
