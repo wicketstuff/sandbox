@@ -5,7 +5,7 @@ import org.apache.wicket.ResourceReference;
 import org.apache.wicket.SharedResources;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.wicketstuff.examples.rome.feeds.BlogFeed;
-import org.wicketstuff.examples.rome.feeds.FeedUtil;
+import org.wicketstuff.examples.rome.feeds.FeedManager;
 import org.wicketstuff.examples.rome.feeds.NewsFeed;
 import org.wicketstuff.rome.FeedResource;
 
@@ -18,8 +18,6 @@ import org.wicketstuff.rome.FeedResource;
  */
 public class ExampleFeedApplication extends WebApplication
 {
-	public static final String FEED_ROOT = "feeds";
-	
 	protected void init()
 	{
 		super.init();
@@ -30,26 +28,12 @@ public class ExampleFeedApplication extends WebApplication
 
 	protected void mountFeeds()
 	{
-		mountFeed(NewsFeed.class, FEED_ROOT + "/news");
-		mountFeed(BlogFeed.class, FEED_ROOT + "/blog");
+		final String FEED_ROOT = "feeds";
+		
+		FeedManager.mountFeed(this, NewsFeed.class, FEED_ROOT + "/news");
+		FeedManager.mountFeed(this, BlogFeed.class, FEED_ROOT + "/blog");
 	}
 	
-	protected void mountFeed(Class feedClass, String resourcePath)
-	{
-		SharedResources resources = this.getSharedResources();
-		
-		String resourceName = FeedUtil.getResourceName(feedClass);
-		FeedResource resource = FeedUtil.createFeedResource(feedClass);
-		
-		resources.add(resourceName, resource);
-		
-		// resources.putClassAlias(feedClass, alias);
-		
-		ResourceReference ref = FeedUtil.createResourceReference(feedClass);
-		
-		mountSharedResource(resourcePath, ref.getSharedResourceKey());
-		
-	}
 	
 	public Class getHomePage()
 	{
