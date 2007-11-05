@@ -83,7 +83,7 @@ public class AnimationPage extends WicketExamplePage
 		add(blindright = new WebMarkupContainer("blindright_binded"));
 		
 		// set up attributes
-		Attributes blindrightAttributes = new Attributes("bind", "'right'");
+		Attributes blindrightAttributes = new Attributes("bind", "right");
 		blindrightAttributes.add(delay);
 		blindright.add(new Animation(OnEvent.click)
 						.add(new Effect(Effect.Type.BlindRight, blindrightAttributes))
@@ -94,7 +94,7 @@ public class AnimationPage extends WicketExamplePage
 		add(info = new WebMarkupContainer("info"));
 
 		info.add(new ClickInfoAnimation("clickformore",OnEvent.click).add(new Effect(Effect.Type.BlindDown, delay)));
-		info.add(new ClickInfoAnimation("clickformore",OnEvent.click).add(new Effect(Effect.Type.BlindUp, delay)));
+		info.add(new ClickInfoAnimation("clickformore",OnEvent.click).add(new Effect(Effect.Type.BlindUp, 	delay)));
 	}
 	
 	/**
