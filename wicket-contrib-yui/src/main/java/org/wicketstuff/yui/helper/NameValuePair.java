@@ -43,7 +43,8 @@ public abstract class NameValuePair<T> extends TokenSeparatedValues
 	{
 		if (isValid(element, value)) 
 		{
-			if (!value.startsWith("{"))
+			if ((!value.startsWith("{")) &&
+				(!value.startsWith("\"")))
 			{
 				try 
 				{
@@ -54,6 +55,7 @@ public abstract class NameValuePair<T> extends TokenSeparatedValues
 					value = "\"" + value + "\"";
 				}
 			}
+			System.out.println(element + ":" + value);
 			propertyMap.put(element, value);
 		}
 		return (T) this;
