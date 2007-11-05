@@ -21,6 +21,8 @@ import com.sun.syndication.io.SyndFeedOutput;
  * so that browsers can display icons for available RSS/Atom feeds.
  * 
  * @see https://rome.dev.java.net/
+ * @see http://en.wikipedia.org/wiki/Web_syndication
+ * 
  */
 public abstract class FeedResource extends WebResource {
 
