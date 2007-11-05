@@ -23,6 +23,7 @@ public class BlogFeed extends SyndFeedImpl
 		this.setTitle("Joe's blog (" + this.getClass().getName() + ")");
 		this.setFeedType(FeedUtil.getDefaultFeedType());
 		this.setDescription("Joe's blog");
+		this.setLink("http://www.google.com/");
 		
 		List entries = new ArrayList();
 		
