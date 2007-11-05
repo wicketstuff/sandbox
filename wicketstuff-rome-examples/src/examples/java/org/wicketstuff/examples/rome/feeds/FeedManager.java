@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.wicket.Resource;
 import org.apache.wicket.ResourceReference;
+import org.apache.wicket.SharedResources;
 import org.apache.wicket.behavior.HeaderContributor;
 import org.apache.wicket.protocol.http.*;
 import org.wicketstuff.rome.FeedResource;
@@ -17,7 +18,7 @@ import com.sun.syndication.feed.synd.SyndFeed;
  * @author Sean C. Sullivan
  *
  */
-public class FeedUtil
+public class FeedManager
 {
 	static String getDefaultFeedType()
 	{
@@ -109,4 +110,20 @@ public class FeedUtil
 		}
 		
 	}
+	
+	static public void mountFeed(WebApplication app, Class feedClass, String feedPath)
+	{
+		SharedResources resources = app.getSharedResources();
+		
+		String resourceName = getResourceName(feedClass);
+		FeedResource resource = createFeedResource(feedClass);
+		
+		resources.add(resourceName, resource);
+		
+		ResourceReference ref = createResourceReference(feedClass);
+		
+		app.mountSharedResource(feedPath, ref.getSharedResourceKey());
+		
+	}
+	
 }

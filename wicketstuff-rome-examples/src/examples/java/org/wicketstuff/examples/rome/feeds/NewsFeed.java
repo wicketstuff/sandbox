@@ -21,7 +21,7 @@ public class NewsFeed extends SyndFeedImpl
 		this.setAuthor("News desk");
 		this.setPublishedDate(new java.util.Date());
 		this.setTitle("News (" + this.getClass().getName() + ")");
-		this.setFeedType(FeedUtil.getDefaultFeedType());
+		this.setFeedType(FeedManager.getDefaultFeedType());
 		this.setDescription("News desk feed");
 		this.setLink("http://www.google.com/");
 

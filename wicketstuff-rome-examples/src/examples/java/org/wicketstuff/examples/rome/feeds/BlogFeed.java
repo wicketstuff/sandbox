@@ -21,7 +21,7 @@ public class BlogFeed extends SyndFeedImpl
 		this.setAuthor("Joe Blogger");
 		this.setPublishedDate(new java.util.Date());
 		this.setTitle("Joe's blog (" + this.getClass().getName() + ")");
-		this.setFeedType(FeedUtil.getDefaultFeedType());
+		this.setFeedType(FeedManager.getDefaultFeedType());
 		this.setDescription("Joe's blog");
 		this.setLink("http://www.google.com/");
 		

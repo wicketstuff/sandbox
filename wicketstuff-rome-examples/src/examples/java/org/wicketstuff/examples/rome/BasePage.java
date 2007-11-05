@@ -13,6 +13,6 @@ abstract public class BasePage extends WebPage
 	
 	protected void addFeed(Class feedClass)
 	{
-		add(FeedUtil.createAutodiscoveryLink(feedClass));
+		add(FeedManager.createAutodiscoveryLink(feedClass));
 	}
 }
