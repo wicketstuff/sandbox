@@ -11,8 +11,13 @@ abstract public class BasePage extends WebPage
 		super();
 	}
 	
-	protected void addFeed(Class feedClass)
+	protected void addFeedAutoDiscovery(Class feedClass)
 	{
-		add(FeedManager.createAutodiscoveryLink(feedClass));
+		add(FeedManager.createAutoDiscovery(feedClass));
+	}
+	
+	protected void addFeedLink(String id, Class feedClass)
+	{
+		add(FeedManager.createLink(id, feedClass));
 	}
 }
