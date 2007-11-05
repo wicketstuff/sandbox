@@ -8,6 +8,8 @@ import org.apache.wicket.Resource;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.SharedResources;
 import org.apache.wicket.behavior.HeaderContributor;
+import org.apache.wicket.markup.html.link.AbstractLink;
+import org.apache.wicket.markup.html.link.ResourceLink;
 import org.apache.wicket.protocol.http.*;
 import org.wicketstuff.rome.FeedResource;
 import com.sun.syndication.feed.synd.SyndFeed;
@@ -26,6 +28,11 @@ public class FeedManager
 	static String getDefaultFeedType()
 	{
 		return "rss_2.0";
+	}
+	
+	static public AbstractLink createLink(String id, Class feedClass)
+	{
+		return new ResourceLink(id, createResourceReference(feedClass));
 	}
 	
 	static public String getFeedUrl(Class feedClass)
@@ -71,7 +78,7 @@ public class FeedManager
 		};
 	}
 	
-	static public HeaderContributor createAutodiscoveryLink(Class feedClass)
+	static public HeaderContributor createAutoDiscovery(Class feedClass)
 	{
 		HeaderContributor contributor = FeedResource.autodiscoveryLink(createResourceReference(feedClass));
 		return contributor;

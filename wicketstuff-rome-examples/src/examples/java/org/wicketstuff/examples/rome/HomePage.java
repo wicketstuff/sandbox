@@ -10,10 +10,13 @@ public class HomePage extends BasePage
 	{
 		super();
 		
-		addFeed(NewsFeed.class);
+		addFeedAutoDiscovery(NewsFeed.class);
 		
-		addFeed(BlogFeed.class);
+		addFeedLink("newsFeedLink", NewsFeed.class);
 		
+		addFeedAutoDiscovery(BlogFeed.class);
+		
+		addFeedLink("blogFeedLink", BlogFeed.class);
 	}
 	
 }
