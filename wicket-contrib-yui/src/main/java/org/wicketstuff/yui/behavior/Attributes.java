@@ -129,5 +129,5 @@ public class Attributes extends JSObject<Attributes>
 		return "{}".equals(toString());
 	}
 	
-	public static Attributes DELAY = new Attributes("delay", "'true'");
+	public static Attributes DELAY = new Attributes("delay", "true");
 }
