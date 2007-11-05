@@ -6,6 +6,7 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.repeater.RepeatingView;
 
 import wicket.contrib.examples.WicketExamplePage;
+import wicket.contrib.gmap.GMapHeaderContributor;
 
 /**
  * SimplePage for the wicket-contrib-gmap2 project
@@ -33,10 +34,12 @@ public class ManyPage extends WicketExamplePage {
 
 		container = new WebMarkupContainer("container");
 		container.setOutputMarkupId(true);
+		// optional: do this if no GMap2 is added initially
+		container.add(new GMapHeaderContributor(LOCALHOST));
 		add(container);
 
 		repeating = new RepeatingView("repeating");
-		container.add(repeating);
+		container.add(repeating);	
 
 		addPanel();
 	}
