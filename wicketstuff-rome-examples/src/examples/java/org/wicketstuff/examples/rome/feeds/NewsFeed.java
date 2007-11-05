@@ -23,6 +23,7 @@ public class NewsFeed extends SyndFeedImpl
 		this.setTitle("News (" + this.getClass().getName() + ")");
 		this.setFeedType(FeedUtil.getDefaultFeedType());
 		this.setDescription("News desk feed");
+		this.setLink("http://www.google.com/");
 
 		
 		List entries = new ArrayList();
