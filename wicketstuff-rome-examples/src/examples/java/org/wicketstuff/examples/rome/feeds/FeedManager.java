@@ -11,6 +11,7 @@ import org.apache.wicket.behavior.HeaderContributor;
 import org.apache.wicket.protocol.http.*;
 import org.wicketstuff.rome.FeedResource;
 import com.sun.syndication.feed.synd.SyndFeed;
+import java.util.*;
 
 /**
  * 
@@ -20,15 +21,13 @@ import com.sun.syndication.feed.synd.SyndFeed;
  */
 public class FeedManager
 {
+	private static Map mountMap = new HashMap();
+	
 	static String getDefaultFeedType()
 	{
 		return "rss_2.0";
 	}
 	
-	/* 
-	  
-	 todo (?)
-	  
 	static public String getFeedUrl(Class feedClass)
 	{
 		WebApplication webApp = (WebApplication) WebApplication.get();
@@ -39,7 +38,7 @@ public class FeedManager
 		
 		HttpServletRequest httpRequest = request.getHttpServletRequest();
 		
-		ServletContext context = webApp.getServletContext();
+		String feedMount = getMount(feedClass);
 		
 		StringBuffer url = new StringBuffer();
 		url.append( httpRequest.isSecure() ? "https" : "http");
@@ -53,12 +52,12 @@ public class FeedManager
 		url.append(request.getPath());
 		url.append("/");
 		
-		String feedPath = ???; 
+		url.append(feedMount);
 		
-		return "todo";
+		return url.toString();
 	}
 	
-	*/
+
 	
 	static public ResourceReference createResourceReference(final Class feedClass)
 	{
@@ -76,6 +75,11 @@ public class FeedManager
 	{
 		HeaderContributor contributor = FeedResource.autodiscoveryLink(createResourceReference(feedClass));
 		return contributor;
+	}
+	
+	static public String getMount(Class feedClass)
+	{
+		return (String) mountMap.get(feedClass.getName());
 	}
 	
 	static public FeedResource createFeedResource(final Class feedClass)
@@ -123,7 +127,8 @@ public class FeedManager
 		ResourceReference ref = createResourceReference(feedClass);
 		
 		app.mountSharedResource(feedPath, ref.getSharedResourceKey());
-		
+
+		mountMap.put(feedClass.getName(), feedPath);
 	}
 	
 }
