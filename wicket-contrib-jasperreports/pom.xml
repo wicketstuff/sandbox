@@ -29,8 +29,8 @@
 
 
 	<scm>
-		<connection>scm:cvs:pserver:${maven.scm.anonymous}@wicket-stuff.svn.sourceforge.net:/svnroot/wicket-stuff/trunk/wicket-contrib-jasperreports</connection>
-		<developerConnection>scm:cvs:ext:${maven.scm.user}@wicket-stuff.svn.sourceforge.net:/svnroot/wicket-stuff/trunk/wicket-contrib-jasperreports</developerConnection>
+		<connection>scm:svn:${maven.scm.anonymous}@wicket-stuff.svn.sourceforge.net:/svnroot/wicket-stuff/trunk/wicket-contrib-jasperreports</connection>
+		<developerConnection>scm:svn:${maven.scm.user}@wicket-stuff.svn.sourceforge.net:/svnroot/wicket-stuff/trunk/wicket-contrib-jasperreports</developerConnection>
 		<url>http://wicket-stuff.svn.sourceforge.net/viewvc/wicket-stuff/trunk/wicket-contrib-jasperreports/</url>
 	</scm>
 
