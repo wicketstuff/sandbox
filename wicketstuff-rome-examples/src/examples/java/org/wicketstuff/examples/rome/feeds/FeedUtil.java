@@ -1,9 +1,13 @@
 
 package org.wicketstuff.examples.rome.feeds;
 
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.wicket.Resource;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.behavior.HeaderContributor;
+import org.apache.wicket.protocol.http.*;
 import org.wicketstuff.rome.FeedResource;
 import com.sun.syndication.feed.synd.SyndFeed;
 
@@ -19,6 +23,41 @@ public class FeedUtil
 	{
 		return "rss_2.0";
 	}
+	
+	/* 
+	  
+	 todo (?)
+	  
+	static public String getFeedUrl(Class feedClass)
+	{
+		WebApplication webApp = (WebApplication) WebApplication.get();
+		
+		WebRequestCycle cycle = (WebRequestCycle) WebRequestCycle.get();
+		
+		WebRequest request = cycle.getWebRequest();
+		
+		HttpServletRequest httpRequest = request.getHttpServletRequest();
+		
+		ServletContext context = webApp.getServletContext();
+		
+		StringBuffer url = new StringBuffer();
+		url.append( httpRequest.isSecure() ? "https" : "http");
+		url.append("://");
+		url.append(httpRequest.getServerName());
+		url.append(":");
+		url.append(httpRequest.getServerPort());
+		url.append("/");
+		url.append(httpRequest.getContextPath());
+		url.append("/");
+		url.append(request.getPath());
+		url.append("/");
+		
+		String feedPath = ???; 
+		
+		return "todo";
+	}
+	
+	*/
 	
 	static public ResourceReference createResourceReference(final Class feedClass)
 	{
