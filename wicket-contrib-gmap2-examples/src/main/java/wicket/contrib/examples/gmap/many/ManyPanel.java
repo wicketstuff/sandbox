@@ -17,6 +17,7 @@ public abstract class ManyPanel extends Panel {
 	public ManyPanel(String id, String gMapKey) {
 		super(id);
 		gMap = new GMap2("gMap", gMapKey);
+		gMap.setZoom(7);
 		gMap.setOutputMarkupId(true);
 		add(gMap);
 		final AjaxFallbackLink normal = new AjaxFallbackLink("normal") {
