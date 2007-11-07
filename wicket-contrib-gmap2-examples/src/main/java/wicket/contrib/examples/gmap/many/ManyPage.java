@@ -41,7 +41,7 @@ public class ManyPage extends WicketExamplePage {
 		repeating = new RepeatingView("repeating");
 		container.add(repeating);	
 
-		addPanel();
+		//addPanel();
 	}
 
 	protected void addPanel() {
