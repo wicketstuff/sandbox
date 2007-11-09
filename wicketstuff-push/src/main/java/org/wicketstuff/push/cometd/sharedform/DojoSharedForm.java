@@ -64,11 +64,21 @@ public class DojoSharedForm extends Form {
 		tag.put(DojoIdConstants.DOJO_TYPE, DojoIdConstants.DOJO_FORM);
 	}
 
-	protected void onAttach() {
-		super.onAttach();
+	// msparer: deprecated method made final in current wicket version
+//	protected void onAttach() {
+//		super.onAttach();
+//		visitChildren(new OnChangeAppennerVisitor());
+//	}
+	
+		
+	// msparer: suggested by wicket to user this method instead of onAttach
+	protected void onBeforeRender() {		
+		super.onBeforeRender();
 		visitChildren(new OnChangeAppennerVisitor());
 	}
-	
+
+
+
 	protected class OnChangeAppennerVisitor implements IVisitor{
 
 		public Object component(Component component) {
