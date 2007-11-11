@@ -58,4 +58,12 @@ public class CSSInlineStyle extends NameValuePair<CSSInlineStyle>
 		}
 		return ret;
 	}
+	
+	protected String wrapValue(String value)
+	{
+		// no wrapping for CSS values
+		// just return the parameter value
+		return value;
+	}
+
 }
