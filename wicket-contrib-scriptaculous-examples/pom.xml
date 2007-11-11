@@ -30,10 +30,10 @@
 
 	<scm>
 		<connection>
-			scm:svn:anonymous@wicket-stuff.svn.sourceforge.net:/svnroot/wicket-stuff/trunk/${pom.groupId}:${pom.artifactId}
+			scm:svn:http://wicket-stuff.svn.sourceforge.net:/svnroot/wicket-stuff/trunk/${pom.groupId}:${pom.artifactId}
 		</connection>
 		<developerConnection>
-			scm:svn:${maven.username}@wicket-stuff.svn.sourceforge.net:/svnroot/wicket-stuff/trunk/${pom.groupId}:${pom.artifactId}
+			scm:svn:https://wicket-stuff.svn.sourceforge.net:/svnroot/wicket-stuff/trunk/${pom.groupId}:${pom.artifactId}
 		</developerConnection>
 		<url>http://wicket-stuff.svn.sourceforge.net/viewvc/wicket-stuff/trunk/wicket-contrib-scriptaculous-examples/</url>
 	</scm>
