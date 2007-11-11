@@ -26,7 +26,7 @@ import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.PropertyModel;
 
 /**
- * Page that displays the calendar component of the Yahoo UI library.
+ * Page that displays the Slider component of the Yahoo UI library.
  * 
  * @author Eelco Hillenius
  * @author Josh
