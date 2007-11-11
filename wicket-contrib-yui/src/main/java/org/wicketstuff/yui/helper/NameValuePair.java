@@ -52,16 +52,14 @@ public abstract class NameValuePair<T> extends TokenSeparatedValues
 				}
 				catch (Exception e) 
 				{
-					value = "\"" + value + "\"";
+					value = wrapValue(value);
 				}
 			}
-			System.out.println(element + ":" + value);
 			propertyMap.put(element, value);
 		}
 		return (T) this;
 	}
 	
-
 	@SuppressWarnings("unchecked")
 	public T add(NameValuePair another)
 	{
@@ -106,4 +104,11 @@ public abstract class NameValuePair<T> extends TokenSeparatedValues
 	 * @return
 	 */
 	public abstract String getNameValueSeparator();
+	
+	protected String wrapValue(String value) 
+	{
+		return "\"" + value + "\"";
+	}
+	
+	
 }
