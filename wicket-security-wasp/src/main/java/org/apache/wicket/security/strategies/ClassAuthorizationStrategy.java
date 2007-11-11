@@ -205,6 +205,9 @@ public abstract class ClassAuthorizationStrategy extends WaspAuthorizationStrate
 	}
 
 	/**
+	 * Does some cleaning up. If you override this method you must call
+	 * super.destroy();.
+	 * 
 	 * @see org.apache.wicket.security.strategies.WaspAuthorizationStrategy#destroy()
 	 */
 	public void destroy()
