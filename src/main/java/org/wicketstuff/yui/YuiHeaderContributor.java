@@ -23,7 +23,7 @@ public class YuiHeaderContributor extends AbstractHeaderContributor
     
     private static final Logger log = LoggerFactory.getLogger(YuiHeaderContributor.class);
     
-    static final String DEFAULT_YUI_BUILD = "2.3.0";
+    static final String DEFAULT_YUI_BUILD = "2.3.1";
     static final String YUI_BUILD_ROOT = "inc";
     
     static final Map<String, ResourceReference> moduleCache = Collections.synchronizedMap(new HashMap<String, ResourceReference>());
