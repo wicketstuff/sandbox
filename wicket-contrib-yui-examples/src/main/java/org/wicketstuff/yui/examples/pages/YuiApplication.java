@@ -20,9 +20,9 @@ package org.wicketstuff.yui.examples.pages;
 import org.wicketstuff.yui.examples.WicketExampleApplication;
 
 /**
- * WicketServlet class for hello world example.
  * 
- * @author Jonathan Locke
+ *  Wicket application that uses the Yahoo YUI library
+ * 
  */
 public class YuiApplication extends WicketExampleApplication
 {
