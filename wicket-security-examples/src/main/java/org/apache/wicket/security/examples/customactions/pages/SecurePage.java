@@ -18,9 +18,7 @@ package org.apache.wicket.security.examples.customactions.pages;
 
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.security.examples.customactions.authentication.MyLoginContext;
 import org.apache.wicket.security.examples.pages.MySecurePage;
-import org.apache.wicket.security.hive.authentication.LoginContext;
 
 /**
  * Custom secure page, required, because the way all these examples are set up,
@@ -61,14 +59,6 @@ public class SecurePage extends MySecurePage
 	public SecurePage(IModel model)
 	{
 		super(model);
-	}
-
-	/**
-	 * @see org.apache.wicket.security.examples.pages.MySecurePage#getLogoffContext()
-	 */
-	protected LoginContext getLogoffContext()
-	{
-		return new MyLoginContext();
 	}
 
 }

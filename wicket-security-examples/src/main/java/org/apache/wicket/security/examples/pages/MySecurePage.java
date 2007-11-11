@@ -19,10 +19,12 @@ package org.apache.wicket.security.examples.pages;
 import org.apache.wicket.Application;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.Session;
+import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.security.WaspSession;
 import org.apache.wicket.security.components.SecureWebPage;
+import org.apache.wicket.security.examples.MultiUsableApplication;
 import org.apache.wicket.security.hive.authentication.LoginContext;
 import org.apache.wicket.security.swarm.SwarmWebApplication;
 
@@ -117,5 +119,12 @@ public abstract class MySecurePage extends SecureWebPage
 	 * 
 	 * @return the context
 	 */
-	protected abstract LoginContext getLogoffContext();
+	protected final LoginContext getLogoffContext()
+	{
+		Application app = Application.get();
+		if (app instanceof MultiUsableApplication)
+			return ((MultiUsableApplication)app).getLogoffContext();
+		throw new WicketRuntimeException("Application is not a subclass of "
+				+ MultiUsableApplication.class);
+	}
 }

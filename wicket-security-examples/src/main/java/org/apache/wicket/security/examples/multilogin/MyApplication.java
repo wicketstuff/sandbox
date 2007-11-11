@@ -22,11 +22,13 @@ import org.apache.wicket.Request;
 import org.apache.wicket.Response;
 import org.apache.wicket.Session;
 import org.apache.wicket.WicketRuntimeException;
+import org.apache.wicket.security.examples.MultiUsableApplication;
+import org.apache.wicket.security.examples.multilogin.authentication.Level0Context;
 import org.apache.wicket.security.examples.multilogin.pages.HomePage;
 import org.apache.wicket.security.examples.pages.login.LoginPage;
 import org.apache.wicket.security.hive.HiveMind;
+import org.apache.wicket.security.hive.authentication.LoginContext;
 import org.apache.wicket.security.hive.config.PolicyFileHiveFactory;
-import org.apache.wicket.security.swarm.SwarmWebApplication;
 
 /**
  * default implementation of a swarm app with a custom session.
@@ -34,7 +36,7 @@ import org.apache.wicket.security.swarm.SwarmWebApplication;
  * @author marrink
  * 
  */
-public class MyApplication extends SwarmWebApplication
+public class MyApplication extends MultiUsableApplication
 {
 
 	/**
@@ -125,5 +127,14 @@ public class MyApplication extends SwarmWebApplication
 	public Session newSession(Request request, Response response)
 	{
 		return new MySession(this, request);
+	}
+
+	/**
+	 * 
+	 * @see org.apache.wicket.security.examples.MultiUsableApplication#getLogoffContext()
+	 */
+	public LoginContext getLogoffContext()
+	{
+		return new Level0Context();
 	}
 }
