@@ -21,14 +21,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.wicket.WicketRuntimeException;
+import org.apache.wicket.security.examples.MultiUsableApplication;
+import org.apache.wicket.security.examples.customactions.authentication.MyLoginContext;
 import org.apache.wicket.security.examples.customactions.entities.Department;
 import org.apache.wicket.security.examples.customactions.entities.Organization;
 import org.apache.wicket.security.examples.customactions.factories.MyActionFactory;
 import org.apache.wicket.security.examples.customactions.pages.LoginPage;
 import org.apache.wicket.security.examples.customactions.pages.OverviewPage;
 import org.apache.wicket.security.hive.HiveMind;
+import org.apache.wicket.security.hive.authentication.LoginContext;
 import org.apache.wicket.security.hive.config.PolicyFileHiveFactory;
-import org.apache.wicket.security.swarm.SwarmWebApplication;
 
 /**
  * default implementation of a swarm app with a custom actionfactory.
@@ -36,7 +38,7 @@ import org.apache.wicket.security.swarm.SwarmWebApplication;
  * @author marrink
  * 
  */
-public class MyApplication extends SwarmWebApplication
+public class MyApplication extends MultiUsableApplication
 {
 
 	/**
@@ -106,20 +108,27 @@ public class MyApplication extends SwarmWebApplication
 	 */
 	protected void setUpHive()
 	{
-		// create factory
-		PolicyFileHiveFactory factory = new PolicyFileHiveFactory();
-		try
+		// example of shared hive
+		// check first
+		if (HiveMind.getHive(getHiveKey()) == null)
 		{
-			// this example uses 1 policy file but you can add as many as you
-			// like
-			factory.addPolicyFile(getServletContext().getResource("/WEB-INF/customactions.hive"));
+			// create factory
+			PolicyFileHiveFactory factory = new PolicyFileHiveFactory();
+			try
+			{
+				// this example uses 1 policy file but you can add as many as
+				// you
+				// like
+				factory.addPolicyFile(getServletContext()
+						.getResource("/WEB-INF/customactions.hive"));
+			}
+			catch (MalformedURLException e)
+			{
+				throw new WicketRuntimeException(e);
+			}
+			// register factory
+			HiveMind.registerHive(getHiveKey(), factory);
 		}
-		catch (MalformedURLException e)
-		{
-			throw new WicketRuntimeException(e);
-		}
-		// register factory
-		HiveMind.registerHive(getHiveKey(), factory);
 
 	}
 
@@ -145,6 +154,15 @@ public class MyApplication extends SwarmWebApplication
 	protected void setupActionFactory()
 	{
 		setActionFactory(new MyActionFactory());
+	}
+
+	/**
+	 * 
+	 * @see org.apache.wicket.security.examples.MultiUsableApplication#getLogoffContext()
+	 */
+	public LoginContext getLogoffContext()
+	{
+		return new MyLoginContext();
 	}
 
 }

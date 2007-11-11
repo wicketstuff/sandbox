@@ -18,9 +18,7 @@ package org.apache.wicket.security.examples.multilogin.pages;
 
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.security.examples.multilogin.authentication.Level0Context;
 import org.apache.wicket.security.examples.pages.MySecurePage;
-import org.apache.wicket.security.hive.authentication.LoginContext;
 
 /**
  * @author marrink
@@ -58,14 +56,6 @@ public class SecurePage extends MySecurePage
 	public SecurePage(IModel model)
 	{
 		super(model);
-	}
-
-	/**
-	 * @see org.apache.wicket.security.examples.pages.MySecurePage#getLogoffContext()
-	 */
-	protected LoginContext getLogoffContext()
-	{
-		return new Level0Context();
 	}
 
 }

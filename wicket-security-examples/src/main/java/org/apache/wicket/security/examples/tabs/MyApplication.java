@@ -19,11 +19,13 @@ package org.apache.wicket.security.examples.tabs;
 import java.net.MalformedURLException;
 
 import org.apache.wicket.WicketRuntimeException;
+import org.apache.wicket.security.examples.MultiUsableApplication;
+import org.apache.wicket.security.examples.tabs.authentication.MyLoginContext;
 import org.apache.wicket.security.examples.tabs.pages.LoginPage;
 import org.apache.wicket.security.examples.tabs.pages.MasterPage;
 import org.apache.wicket.security.hive.HiveMind;
+import org.apache.wicket.security.hive.authentication.LoginContext;
 import org.apache.wicket.security.hive.config.PolicyFileHiveFactory;
-import org.apache.wicket.security.swarm.SwarmWebApplication;
 
 /**
  * default implementation of a swarm app.
@@ -31,7 +33,7 @@ import org.apache.wicket.security.swarm.SwarmWebApplication;
  * @author marrink
  * 
  */
-public class MyApplication extends SwarmWebApplication
+public class MyApplication extends MultiUsableApplication
 {
 	/**
 	 * 
@@ -109,6 +111,15 @@ public class MyApplication extends SwarmWebApplication
 	public Class getLoginPage()
 	{
 		return LoginPage.class;
+	}
+
+	/**
+	 * 
+	 * @see org.apache.wicket.security.examples.MultiUsableApplication#getLogoffContext()
+	 */
+	public LoginContext getLogoffContext()
+	{
+		return new MyLoginContext();
 	}
 
 }
