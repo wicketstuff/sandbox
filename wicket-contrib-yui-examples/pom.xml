@@ -226,6 +226,7 @@
 				<configuration>
 					<scanIntervalSeconds>30</scanIntervalSeconds>
 					<webAppSourceDirectory>src/main/webapp</webAppSourceDirectory>
+		            <contextPath>/yui</contextPath>
 																						</configuration>
 			</plugin>
 		</plugins>
