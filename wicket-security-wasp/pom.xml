@@ -57,6 +57,22 @@
 			</releases>
 		</repository>
 	</repositories>
+	<!-- Unfortunatly the latest eclipse plugin still does not solve the JRE container issue http://jira.codehaus.org/browse/MECLIPSE-172 -->
+	<!-- 
+	<pluginRepositories>
+        <pluginRepository>
+          <id>apache.org</id>
+          <name>Maven Plugin Snapshots</name>
+          <url>http://people.apache.org/maven-snapshot-repository/</url>
+          <releases>
+            <enabled>false</enabled>
+          </releases>
+          <snapshots>
+            <enabled>true</enabled>
+          </snapshots>
+        </pluginRepository>
+      </pluginRepositories>
+      -->
 	<!-- Developers -->
 	<developers>
 		<developer>
@@ -201,6 +217,7 @@
 							</classpathContainer>
 						</classpathContainers>
 					</configuration>
+				<!-- 	<version>2.5-SNAPSHOT</version> -->
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
