@@ -100,7 +100,9 @@ public final class LoginContainer implements Serializable
 		if (context == null)
 			return false;
 		HashKey key = new HashKey(context);
-		if (subjects.remove(key) != null)
+
+		Subject removed = (Subject)subjects.remove(key);
+		if (removed != null)
 		{
 			if (preventsLogin != null && preventsLogin.equals(key))
 				preventsLogin = null;
@@ -110,6 +112,7 @@ public final class LoginContainer implements Serializable
 			else
 				subject = new MultiSubject(logins, subjects);
 			Session.get().dirty();
+			context.notifyLogoff(removed);
 			return true;
 		}
 		return false;

@@ -102,7 +102,9 @@ public abstract class LoginContext
 
 	/**
 	 * Perform a login. If the login fails in any way a {@link LoginException}
-	 * must be thrown rather then returning null.
+	 * must be thrown rather then returning null. You should clear all sensitive
+	 * data stored in this context before returning the subject or throwing an
+	 * exception.
 	 * 
 	 * @return a {@link Subject}, never null.
 	 * @throws LoginException
@@ -168,5 +170,20 @@ public abstract class LoginContext
 	public boolean preventsAdditionalLogins()
 	{
 		return additionalLoginsPrevented;
+	}
+
+	/**
+	 * Callback to take some action after a subject has been logged off. Note
+	 * that the LoginContext receiving this notification is not necessarily the
+	 * same instance that created the subject. This is because Swarm does not
+	 * store LoginContexts as they may contain sensitive data. By default this
+	 * method does nothing.
+	 * 
+	 * @param subject
+	 *            the user that has just been logged off
+	 */
+	public void notifyLogoff(Subject subject)
+	{
+
 	}
 }
