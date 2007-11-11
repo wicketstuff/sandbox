@@ -29,13 +29,13 @@ import org.apache.wicket.security.strategies.WaspAuthorizationStrategy;
  * a corporation, or a login id. It can be decorated with certain rights ({@link Principal}s).
  * Most implementations will provide some means to add (and sometimes remove)
  * principals, however all must honor the readonly flag. {@link #setReadOnly()}
- * is automatically triggerd after a login. Subjects are created by
+ * is automatically triggered after a login. Subjects are created by
  * {@link LoginContext}s as placeholders for the rights of a user for the
- * duration of the session. In addition Subjects play an importeand part in
+ * duration of the session. In addition Subjects play an important part in
  * multi-login scenario's as they define what they authenticate. For example one
- * subject might authenticate all subclassses of BasicSecurePage where another
- * might authenicate all subclasses of AdvancedSecurePage. Effectivly requiring
- * a user to login twice if both type of pages are to be visited.
+ * subject might authenticate all subclasses of BasicSecurePage where another
+ * might authenticate all subclasses of AdvancedSecurePage. Effectively
+ * requiring a user to login twice if both type of pages are to be visited.
  * 
  * @author marrink
  */
