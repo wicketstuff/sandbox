@@ -47,7 +47,8 @@ public class ApacheLicenceHeaderTest extends ApacheLicenseHeaderTestCase
 		 */
 		"src/webapp" };
 
-		xmlIgnore = new String[] { "EclipseCodeFormat.xml", "codetemplates.xml" };
+		xmlIgnore = new String[] { "EclipseCodeFormat.xml", "codetemplates.xml",
+				"src/webapp/WEB-INF/applicationContext.xml" };
 
 		javaIgnore = new String[] {};
 
