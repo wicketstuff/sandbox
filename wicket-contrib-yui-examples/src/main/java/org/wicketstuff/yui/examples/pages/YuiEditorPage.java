@@ -1,10 +1,7 @@
 /*
  * YuiEditorPage.java
  *
- * Created on 7. September 2007, 11:37
- *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
+ * 
  */
 
 package org.wicketstuff.yui.examples.pages;
