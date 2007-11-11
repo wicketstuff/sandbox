@@ -32,21 +32,19 @@
 	  <param-value>development</param-value>
 	</context-param>
 
-	<servlet>
-		<servlet-name>YuiApplication</servlet-name>
-		<servlet-class>org.apache.wicket.protocol.http.WicketServlet</servlet-class>
+	<filter>
+		<filter-name>WicketFilter</filter-name>
+		<filter-class>org.apache.wicket.protocol.http.WicketFilter</filter-class>
 		<init-param>
 		  <param-name>applicationClassName</param-name>
 		  <param-value>org.wicketstuff.yui.examples.pages.YuiApplication</param-value>
 		</init-param>
-		<load-on-startup>1</load-on-startup>
-	</servlet>
-	
-	<servlet-mapping>
-		<servlet-name>YuiApplication</servlet-name>
+	</filter>
+	<filter-mapping>
+		<filter-name>WicketFilter</filter-name>
 		<url-pattern>/yui/*</url-pattern>
-	</servlet-mapping>
-	
+	</filter-mapping>
+
 	<welcome-file-list>
 	<welcome-file>index.html</welcome-file>
 	<welcome-file>index.jsp</welcome-file>
