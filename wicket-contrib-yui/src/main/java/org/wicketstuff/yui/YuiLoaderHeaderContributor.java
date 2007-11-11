@@ -41,7 +41,7 @@ public class YuiLoaderHeaderContributor {
 			public void renderHead(IHeaderResponse response)
 			{
                             String resource = YUI_BUILD_ROOT + "/" + DEFAULT_YUI_BUILD + "/yuiloader/yuiloader-beta-min.js";
-                            String yahooResource = "http://yui.yahooapis.com/2.3.0/build/yuiloader/yuiloader-beta-min.js";
+                            String yahooResource = "http://yui.yahooapis.com/" + DEFAULT_YUI_BUILD + "/build/yuiloader/yuiloader-beta-min.js";
                             
                             ResourceReference yuiRef = new ResourceReference(YuiLoaderHeaderContributor.class, resource);
                             
