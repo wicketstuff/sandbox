@@ -9,27 +9,28 @@ import wicket.contrib.mootools.AbstractRequireMooStatelessBehavior;
 
 public class MFXReflector extends AbstractRequireMooStatelessBehavior {
 	private static final long serialVersionUID = 1L;
-	private CompressedResourceReference REFLECTOR_JS = new CompressedResourceReference(MFXReflector.class,"reflection.js");
-	
+	private CompressedResourceReference REFLECTOR_JS = new CompressedResourceReference(MFXReflector.class,
+			"reflection.js");
+
 	@Override
-	public void renderHead(IHeaderResponse response) {
+	public void renderHead(final IHeaderResponse response) {
 		super.renderHead(response);
 		response.renderJavascriptReference(REFLECTOR_JS);
 	}
-	
+
 	@Override
-	public void onComponentTag(Component arg0, ComponentTag arg1) {
+	public void onComponentTag(final Component arg0, final ComponentTag arg1) {
 		super.onComponentTag(arg0, arg1);
-		
+
 		String currentClass = "";
-		if(arg1.getString("class") != null)
+		if (arg1.getString("class") != null) {
 			currentClass = arg1.getString("class").toString();
+		}
 		arg1.put("class", currentClass + " reflect");
 	}
-	
+
 	@Override
 	public String mooFunction() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

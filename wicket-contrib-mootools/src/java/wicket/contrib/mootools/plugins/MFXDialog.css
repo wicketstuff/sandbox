@@ -38,11 +38,6 @@
 	padding-bottom: 8px;
 }
 
-.MFXDialogContent p {
+.MFXDialogContent span {
 	font-family: Verdana;
-}
-
-.MFXLinks a {
-	font-size: 16px;
-	font-weight: bold;
 }
