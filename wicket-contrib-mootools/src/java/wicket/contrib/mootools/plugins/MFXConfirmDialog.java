@@ -18,10 +18,10 @@ public abstract class MFXConfirmDialog extends MFXDialog {
 
 	@Override
 	protected void onConfirmCallback(final AjaxRequestTarget targ) {
-		onConfirmDelete(targ, targetModel);
+		onConfirm(targ, targetModel);
 	}
 
-	protected abstract void onConfirmDelete(AjaxRequestTarget targ, IModel targetModel);
+	protected abstract void onConfirm(AjaxRequestTarget targ, IModel targetModel);
 
 	public void setTarget(final IModel targetModel) {
 		this.targetModel = targetModel;

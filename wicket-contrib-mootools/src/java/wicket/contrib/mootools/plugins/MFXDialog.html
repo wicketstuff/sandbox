@@ -4,18 +4,12 @@
 <wicket:panel>
 <div class="MFXDialog" wicket:id="dialog">
 	<div class="MFXDialogBar"><span class="MFXDialogTitle" wicket:id="title">Title</span></div>
+	
 	<div class="MFXDialogContent" wicket:id="content">
-		<p><span wicket:id="body">Question to answer?</span></p>
-		<form wicket:id="inputForm">
-			<textarea wicket:id="input" class="MFXInput"></textarea>
-		</form>
+		<span wicket:id="body">Question to answer?</span>
 	</div>
 	
-	<div class="MFXLinks">
-    	<a href="#" wicket:id="submitLink"><span wicket:id="submitText">Submit</span></a>
-    	<a href="#" wicket:id="close"><span wicket:id="closeText">Close</span></a>
-    	<a href="#" wicket:id="confirm"><span wicket:id="confirmText">Confirm</span></a> &nbsp;
-    	<a href="#" wicket:id="abort"><span wicket:id="abortText">Abort</span></a>&nbsp;
-	</div>
+    <a href="#" wicket:id="confirm"><span wicket:id="confirmText">Confirm</span></a> &nbsp;
+    <a href="#" wicket:id="abort"><span wicket:id="abortText">Abort</span></a>
 </div>
 </wicket:panel>

@@ -2,7 +2,6 @@ package wicket.contrib.mootools.plugins;
 
 import org.apache.wicket.IClusterable;
 import org.apache.wicket.Page;
-import org.apache.wicket.RequestCycle;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.Session;
 import org.apache.wicket.behavior.HeaderContributor;
@@ -11,7 +10,6 @@ import org.apache.wicket.markup.html.resources.CompressedResourceReference;
 import org.apache.wicket.protocol.http.ClientProperties;
 import org.apache.wicket.protocol.http.request.WebClientInfo;
 
-import wicket.contrib.mootools.components.MFXAjaxStatelessLink;
 import wicket.contrib.mootools.effects.MFXStyle;
 import wicket.contrib.mootools.effects.MFXTransition;
 
@@ -43,11 +41,11 @@ public abstract class MFXDialogBase extends Panel {
 		public Page createPage();
 	}
 
-	protected Boolean hasBlackscreen() {
+	protected Boolean getBlackScreen() {
 		return true;
 	}
 
-	protected Boolean bounceDialog() {
+	protected Boolean getBounceDialog() {
 		return true;
 	}
 
@@ -72,7 +70,7 @@ public abstract class MFXDialogBase extends Panel {
 	protected String genericCloseWindowJavaScript(final String id) {
 		StringBuffer str = new StringBuffer();
 
-		if (hasBlackscreen()) {
+		if (getBlackScreen()) {
 			str.append("var bg = $('mfxbg');");
 			str.append("bg.setStyle('display','none'); bg.remove();");
 		}
@@ -86,10 +84,6 @@ public abstract class MFXDialogBase extends Panel {
 		StringBuffer str = new StringBuffer();
 
 		Page page = createPage();
-		String url = null;
-		if (page != null) {
-			url = RequestCycle.get().urlFor(page).toString();
-		}
 
 		str.append("var elm = $('" + id + "');");
 		str.append("var win = $('" + dialogId + "');");
@@ -102,7 +96,7 @@ public abstract class MFXDialogBase extends Panel {
 		 * 'opacity':this.modalOptions.opacity
 		 */
 
-		if (hasBlackscreen()) {
+		if (getBlackScreen()) {
 			str.append("var bg = new Element('div',{'style':'z-index:98; display:block; "
 					+ "position:fixed; top:0; left:0; width:100%; height:100%;"
 					+ "background-color: #000; opacity: 0.4;','id':'mfxbg'});");
@@ -142,23 +136,10 @@ public abstract class MFXDialogBase extends Panel {
 		// str.append("win.setStyle('top',winh/2-" + getOffsetTop() + ");");
 		str.append("win.setStyle('top',winh/2 + window.getScrollTop() -" + getOffsetTop() + " );");
 
-		if (url != null) {
-			MFXAjaxStatelessLink mfxlink = new MFXAjaxStatelessLink("mfxlink", contentId, page);
-
-			String result = "";
-			if (bounceDialog()) {
-				result = "effect.start(" + style.getStartValue() + "," + style.getEndValue() + ");";
-			} else {
-				result = "win.setStyle('margin-top',200);";
-			}
-			mfxlink.getOptions().setOnComplete(result);
-			str.append(mfxlink.mooFunction());
+		if (getBounceDialog()) {
+			str.append("effect.start(" + style.getStartValue() + "," + style.getEndValue() + ");");
 		} else {
-			if (bounceDialog()) {
-				str.append("effect.start(" + style.getStartValue() + "," + style.getEndValue() + ");");
-			} else {
-				str.append("win.setStyle('margin-top',200);");
-			}
+			str.append("win.setStyle('margin-top',200);");
 		}
 
 		return str.toString();

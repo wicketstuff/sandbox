@@ -80,4 +80,4 @@ Element.extend({
 	removeReflection: function(options) { Reflection.remove(this, options); return this; }
 });
 
-Window.addEvent("domready", Reflection.addFromClass);
+Window.addEvent("load", Reflection.addFromClass);
