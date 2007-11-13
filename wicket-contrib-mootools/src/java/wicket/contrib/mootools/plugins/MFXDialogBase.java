@@ -105,7 +105,7 @@ public abstract class MFXDialogBase extends Panel {
 		if (hasBlackscreen()) {
 			str.append("var bg = new Element('div',{'style':'z-index:98; display:block; "
 					+ "position:fixed; top:0; left:0; width:100%; height:100%;"
-					+ "background-color: #000; opacity: 0.6;','id':'mfxbg'});");
+					+ "background-color: #000; opacity: 0.4;','id':'mfxbg'});");
 			str.append("bg.inject(document.body);");
 		}
 

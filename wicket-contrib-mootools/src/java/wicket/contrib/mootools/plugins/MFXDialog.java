@@ -45,7 +45,7 @@ public class MFXDialog extends MFXDialogBase {
 		// defaults
 		this.dialogType = type;
 		this.shown = false;
-		this.confirmButtonText = "Ok";
+		this.confirmButtonText = "Confirm";
 		this.abortButtonText = "Cancel";
 		this.setOutputMarkupId(true);
 
