@@ -42,7 +42,7 @@ public abstract class MFXDialogBase extends Panel {
 	}
 
 	protected Boolean getBlackScreen() {
-		return true;
+		return false;
 	}
 
 	protected Boolean getBounceDialog() {
