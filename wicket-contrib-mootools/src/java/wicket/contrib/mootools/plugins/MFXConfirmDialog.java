@@ -3,23 +3,13 @@ package wicket.contrib.mootools.plugins;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.model.IModel;
 
-import wicket.contrib.mootools.plugins.MFXDialog;
-
 public abstract class MFXConfirmDialog extends MFXDialog {
 	private IModel targetModel;
 
 	public MFXConfirmDialog(final String id) {
 		this(id, MFXDialogTypes.CONFIRMATION);
-	}
-
-	@Override
-	public String getTitle() {
-		return "Notification";
-	}
-
-	@Override
-	public String getBody() {
-		return "Confirm selection?";
+		setTitle("Notifcation");
+		setBody("Confirm selection?");
 	}
 
 	protected MFXConfirmDialog(final String id, final MFXDialogTypes type) {
@@ -31,8 +21,7 @@ public abstract class MFXConfirmDialog extends MFXDialog {
 		onConfirmDelete(targ, targetModel);
 	}
 
-	protected abstract void onConfirmDelete(AjaxRequestTarget targ,
-			IModel targetModel);
+	protected abstract void onConfirmDelete(AjaxRequestTarget targ, IModel targetModel);
 
 	public void setTarget(final IModel targetModel) {
 		this.targetModel = targetModel;
