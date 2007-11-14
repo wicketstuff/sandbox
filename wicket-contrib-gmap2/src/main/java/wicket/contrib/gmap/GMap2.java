@@ -158,7 +158,7 @@ public class GMap2 extends Panel
 	{
 		controls.add(control);
 
-		if (AjaxRequestTarget.get() != null)
+		if (AjaxRequestTarget.get() != null && findPage() != null)
 		{
 			AjaxRequestTarget.get().appendJavascript(control.getJSadd(GMap2.this));
 		}
@@ -177,7 +177,7 @@ public class GMap2 extends Panel
 	{
 		controls.remove(control);
 
-		if (AjaxRequestTarget.get() != null)
+		if (AjaxRequestTarget.get() != null && findPage() != null)
 		{
 			AjaxRequestTarget.get().appendJavascript(control.getJSremove(GMap2.this));
 		}
@@ -196,7 +196,7 @@ public class GMap2 extends Panel
 	{
 		overlays.add(overlay);
 
-		if (AjaxRequestTarget.get() != null)
+		if (AjaxRequestTarget.get() != null && findPage() != null)
 		{
 			AjaxRequestTarget.get().appendJavascript(overlay.getJSadd(GMap2.this));
 		}
@@ -218,7 +218,7 @@ public class GMap2 extends Panel
 			overlays.remove(overlay);
 		}
 
-		if (AjaxRequestTarget.get() != null)
+		if (AjaxRequestTarget.get() != null && findPage() != null)
 		{
 			AjaxRequestTarget.get().appendJavascript(overlay.getJSremove(GMap2.this));
 		}
@@ -252,7 +252,7 @@ public class GMap2 extends Panel
 		{
 			draggingEnabled = enabled;
 
-			if (AjaxRequestTarget.get() != null && isAttached())
+			if (AjaxRequestTarget.get() != null && findPage() != null)
 			{
 				AjaxRequestTarget.get().appendJavascript(getJSsetDraggingEnabled(enabled));
 			}
@@ -270,7 +270,7 @@ public class GMap2 extends Panel
 		{
 			doubleClickZoomEnabled = enabled;
 
-			if (AjaxRequestTarget.get() != null && isAttached())
+			if (AjaxRequestTarget.get() != null && findPage() != null)
 			{
 				AjaxRequestTarget.get().appendJavascript(getJSsetDoubleClickZoomEnabled(enabled));
 			}
@@ -288,7 +288,7 @@ public class GMap2 extends Panel
 		{
 			scrollWheelZoomEnabled = enabled;
 
-			if (AjaxRequestTarget.get() != null && isAttached())
+			if (AjaxRequestTarget.get() != null && findPage() != null)
 			{
 				AjaxRequestTarget.get().appendJavascript(getJSsetScrollWheelZoomEnabled(enabled));
 			}
@@ -311,7 +311,7 @@ public class GMap2 extends Panel
 		{
 			this.mapType = mapType;
 
-			if (AjaxRequestTarget.get() != null && isAttached())
+			if (AjaxRequestTarget.get() != null && findPage() != null)
 			{
 				AjaxRequestTarget.get().appendJavascript(mapType.getJSset(GMap2.this));
 			}
@@ -329,7 +329,7 @@ public class GMap2 extends Panel
 		{
 			this.zoom = level;
 
-			if (AjaxRequestTarget.get() != null && isAttached())
+			if (AjaxRequestTarget.get() != null && findPage() != null)
 			{
 				AjaxRequestTarget.get().appendJavascript(getJSsetZoom(zoom));
 			}
@@ -348,7 +348,7 @@ public class GMap2 extends Panel
 		{
 			this.center = center;
 
-			if (AjaxRequestTarget.get() != null && isAttached())
+			if (AjaxRequestTarget.get() != null && findPage() != null)
 			{
 				AjaxRequestTarget.get().appendJavascript(getJSsetCenter(center));
 			}
