@@ -118,11 +118,11 @@ public class GMap2 extends Panel
 	 * Construct.
 	 * 
 	 * @param id
-	 * @param gMapKey
-	 *            Google gmap API KEY
+	 * @param googleHeaderContrib
 	 * @param overlays
 	 */
-	public GMap2(final String id, final GMapHeaderContributor headerContrib, List<GOverlay> overlays)
+	public GMap2(final String id, final GMapHeaderContributor headerContrib,
+			List<GOverlay> overlays)
 	{
 		super(id);
 
@@ -360,6 +360,12 @@ public class GMap2 extends Panel
 		return infoWindow;
 	}
 
+	/**
+	 * Generates the JavaScript used to instantiate this GMap2 as an JavaScript
+	 * class on the client side.
+	 * 
+	 * @return The generated JavaScript
+	 */
 	private String getJSinit()
 	{
 		StringBuffer js = new StringBuffer("new WicketGMap2('" + map.getMarkupId() + "');\n");
@@ -394,6 +400,15 @@ public class GMap2 extends Panel
 		return js.toString();
 	}
 
+	/**
+	 * Convenience method for generating a JavaScript call on this GMap2 with
+	 * the given invocation.
+	 * 
+	 * @param invocation
+	 *            The JavaScript call to invoke on this GMap2.
+	 * @return The generated JavaScript.
+	 */
+	// TODO Could this become default or protected?
 	public String getJSinvoke(String invocation)
 	{
 		return "Wicket.maps['" + map.getMarkupId() + "']." + invocation + ";";
@@ -455,18 +470,22 @@ public class GMap2 extends Panel
 		infoWindow.update(target);
 	}
 
-	private abstract class JSMethod extends AbstractBehavior
+	private abstract class JSMethodBehavior extends AbstractBehavior
 	{
 
 		private static final long serialVersionUID = 1L;
 
 		private String attribute;
 
-		public JSMethod(final String attribute)
+		public JSMethodBehavior(final String attribute)
 		{
 			this.attribute = attribute;
 		}
 
+		/**
+		 * @see org.apache.wicket.behavior.AbstractBehavior#onComponentTag(org.apache.wicket.Component,
+		 *      org.apache.wicket.markup.ComponentTag)
+		 */
 		@Override
 		public void onComponentTag(Component component, ComponentTag tag)
 		{
@@ -483,7 +502,7 @@ public class GMap2 extends Panel
 		protected abstract String getJSinvoke();
 	}
 
-	public class ZoomOut extends JSMethod
+	public class ZoomOut extends JSMethodBehavior
 	{
 		public ZoomOut(String event)
 		{
@@ -497,7 +516,7 @@ public class GMap2 extends Panel
 		}
 	}
 
-	public class ZoomIn extends JSMethod
+	public class ZoomIn extends JSMethodBehavior
 	{
 		public ZoomIn(String event)
 		{
@@ -511,7 +530,7 @@ public class GMap2 extends Panel
 		}
 	}
 
-	public class PanDirection extends JSMethod
+	public class PanDirection extends JSMethodBehavior
 	{
 		private int dx;
 
@@ -531,7 +550,7 @@ public class GMap2 extends Panel
 		}
 	}
 
-	public class SetZoom extends JSMethod
+	public class SetZoom extends JSMethodBehavior
 	{
 		private int zoom;
 
@@ -548,7 +567,7 @@ public class GMap2 extends Panel
 		}
 	}
 
-	public class SetCenter extends JSMethod
+	public class SetCenter extends JSMethodBehavior
 	{
 		private GLatLng gLatLng;
 
