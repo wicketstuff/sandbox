@@ -26,7 +26,7 @@ import wicket.contrib.gmap.GMap2;
 public enum GMapType implements Serializable {
 	G_NORMAL_MAP, G_SATELLITE_MAP, G_HYBRID_MAP;
 
-	public String getJSset(GMap2 map)
+	public String getJSsetMapType(GMap2 map)
 	{
 		return map.getJSinvoke("setMapType(" + name() + ")");
 	}	

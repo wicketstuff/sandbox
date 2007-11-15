@@ -20,7 +20,7 @@ package wicket.contrib.gmap.event;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 
-public abstract class InfoWindowOpenListener extends GEventListener
+public abstract class InfoWindowOpenListener extends GEventListenerBehavior
 {
 
 	@Override
