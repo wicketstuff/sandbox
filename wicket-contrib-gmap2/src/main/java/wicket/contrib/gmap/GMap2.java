@@ -502,9 +502,11 @@ public class GMap2 extends Panel
 		protected abstract String getJSinvoke();
 	}
 
-	public class ZoomOut extends JSMethodBehavior
+	public class ZoomOutBehavior extends JSMethodBehavior
 	{
-		public ZoomOut(String event)
+		private static final long serialVersionUID = 1L;
+
+		public ZoomOutBehavior(String event)
 		{
 			super(event);
 		}
@@ -516,9 +518,11 @@ public class GMap2 extends Panel
 		}
 	}
 
-	public class ZoomIn extends JSMethodBehavior
+	public class ZoomInBehavior extends JSMethodBehavior
 	{
-		public ZoomIn(String event)
+		private static final long serialVersionUID = 1L;
+
+		public ZoomInBehavior(String event)
 		{
 			super(event);
 		}
@@ -530,13 +534,15 @@ public class GMap2 extends Panel
 		}
 	}
 
-	public class PanDirection extends JSMethodBehavior
+	public class PanDirectionBehavior extends JSMethodBehavior
 	{
+		private static final long serialVersionUID = 1L;
+
 		private int dx;
 
 		private int dy;
 
-		public PanDirection(String event, final int dx, final int dy)
+		public PanDirectionBehavior(String event, final int dx, final int dy)
 		{
 			super(event);
 			this.dx = dx;
@@ -550,11 +556,13 @@ public class GMap2 extends Panel
 		}
 	}
 
-	public class SetZoom extends JSMethodBehavior
+	public class SetZoomBehavior extends JSMethodBehavior
 	{
+		private static final long serialVersionUID = 1L;
+
 		private int zoom;
 
-		public SetZoom(String event, final int zoom)
+		public SetZoomBehavior(String event, final int zoom)
 		{
 			super(event);
 			this.zoom = zoom;
@@ -567,11 +575,13 @@ public class GMap2 extends Panel
 		}
 	}
 
-	public class SetCenter extends JSMethodBehavior
+	public class SetCenterBehavior extends JSMethodBehavior
 	{
+		private static final long serialVersionUID = 1L;
+
 		private GLatLng gLatLng;
 
-		public SetCenter(String event, GLatLng gLatLng)
+		public SetCenterBehavior(String event, GLatLng gLatLng)
 		{
 			super(event);
 			this.gLatLng = gLatLng;
