@@ -20,7 +20,7 @@ package wicket.contrib.gmap.event;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 
-public abstract class DragEndListener extends GEventListener
+public abstract class DragEndListener extends GEventListenerBehavior
 {
 
 	@Override

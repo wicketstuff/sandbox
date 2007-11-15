@@ -29,7 +29,7 @@ import wicket.contrib.gmap.api.GOverlay;
 /**
  * TODO should we put 'click' and 'dblclkick' together in this listener?
  */
-public abstract class ClickListener extends GEventListener
+public abstract class ClickListener extends GEventListenerBehavior
 {
 
 	@Override

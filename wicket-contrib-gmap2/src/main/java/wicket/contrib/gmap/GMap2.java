@@ -39,7 +39,7 @@ import wicket.contrib.gmap.api.GLatLng;
 import wicket.contrib.gmap.api.GLatLngBounds;
 import wicket.contrib.gmap.api.GMapType;
 import wicket.contrib.gmap.api.GOverlay;
-import wicket.contrib.gmap.event.GEventListener;
+import wicket.contrib.gmap.event.GEventListenerBehavior;
 
 /**
  * Wicket component to embed <a href="http://maps.google.com">Google Maps</a>
@@ -313,7 +313,7 @@ public class GMap2 extends Panel
 
 			if (AjaxRequestTarget.get() != null && findPage() != null)
 			{
-				AjaxRequestTarget.get().appendJavascript(mapType.getJSset(GMap2.this));
+				AjaxRequestTarget.get().appendJavascript(mapType.getJSsetMapType(GMap2.this));
 			}
 		}
 	}
@@ -376,7 +376,7 @@ public class GMap2 extends Panel
 		js.append(getJSsetDoubleClickZoomEnabled(doubleClickZoomEnabled) + "\n");
 		js.append(getJSsetScrollWheelZoomEnabled(scrollWheelZoomEnabled) + "\n");
 
-		js.append(mapType.getJSset(this) + "\n");
+		js.append(mapType.getJSsetMapType(this) + "\n");
 
 		// Add the controls.
 		for (GControl control : controls)
@@ -392,9 +392,9 @@ public class GMap2 extends Panel
 
 		js.append(infoWindow.getJSinit() + "\n");
 
-		for (Object behavior : getBehaviors(GEventListener.class))
+		for (Object behavior : getBehaviors(GEventListenerBehavior.class))
 		{
-			js.append(((GEventListener)behavior).getJSadd() + "\n");
+			js.append(((GEventListenerBehavior)behavior).getJSaddListener() + "\n");
 		}
 
 		return js.toString();

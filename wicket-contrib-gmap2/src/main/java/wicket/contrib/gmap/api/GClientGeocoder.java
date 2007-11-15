@@ -11,7 +11,7 @@ import wicket.contrib.gmap.GMapHeaderContributor;
 
 /**
  */
-public abstract class GClientGeocoderBehavior extends AjaxEventBehavior {
+public abstract class GClientGeocoder extends AjaxEventBehavior {
 
 	private static final long serialVersionUID = 1L;
 
@@ -25,7 +25,7 @@ public abstract class GClientGeocoderBehavior extends AjaxEventBehavior {
 	 * 
 	 * @param event
 	 */
-	public GClientGeocoderBehavior(String event, TextField addressField, String key) {
+	public GClientGeocoder(String event, TextField addressField, String key) {
 		super(event);
 
 		this.addressField = addressField;

@@ -27,7 +27,7 @@ import wicket.contrib.gmap.api.GLatLng;
 /**
  * TODO should we put 'click' and 'dblclkick' together in this listener?
  */
-public abstract class DblClickListener extends GEventListener
+public abstract class DblClickListener extends GEventListenerBehavior
 {
 
 	@Override

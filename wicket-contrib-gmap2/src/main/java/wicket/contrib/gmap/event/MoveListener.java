@@ -22,7 +22,7 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 
 import wicket.contrib.gmap.GMap2;
 
-public abstract class MoveListener extends GEventListener
+public abstract class MoveListener extends GEventListenerBehavior
 {
 
 	@Override
