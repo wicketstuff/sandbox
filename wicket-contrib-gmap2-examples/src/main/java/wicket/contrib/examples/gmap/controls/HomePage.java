@@ -1,21 +1,11 @@
 package wicket.contrib.examples.gmap.controls;
 
-import org.apache.wicket.ajax.AjaxEventBehavior;
-import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.link.Link;
-import org.apache.wicket.markup.html.panel.FeedbackPanel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
 
 import wicket.contrib.examples.WicketExamplePage;
 import wicket.contrib.gmap.GMap2;
 import wicket.contrib.gmap.api.GControl;
-import wicket.contrib.gmap.api.GLatLng;
-import wicket.contrib.gmap.api.GMarker;
 import wicket.contrib.gmap.api.GMarkerOptions;
-import wicket.contrib.gmap.event.ClickListener;
-import wicket.contrib.gmap.event.MoveEndListener;
 
 /**
  * Example HomePage for the wicket-contrib-gmap2 project
@@ -37,11 +27,11 @@ public class HomePage extends WicketExamplePage {
 		add(topMap);
 
 		final Label zoomIn = new Label("zoomInLabel", "ZoomIn");
-		zoomIn.add(topMap.new ZoomIn("onclick"));
+		zoomIn.add(topMap.new ZoomInBehavior("onclick"));
 		add(zoomIn);
 
 		final Label zoomOut = new Label("zoomOutLabel", "ZoomOut");
-		zoomOut.add(topMap.new ZoomOut("onclick"));
+		zoomOut.add(topMap.new ZoomOutBehavior("onclick"));
 		add(zoomOut);
 	}
 

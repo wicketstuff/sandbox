@@ -86,41 +86,41 @@ public class HomePage extends WicketExamplePage {
 		add(bottomMap);
 
 		center = new Label("center", new PropertyModel(bottomMap, "center"));
-		center.add(bottomMap.new SetCenter("onclick", new GLatLng(37.5, -122.1,
+		center.add(bottomMap.new SetCenterBehavior("onclick", new GLatLng(37.5, -122.1,
 				false)));
 		center.setOutputMarkupId(true);
 		add(center);
 
 		final Label n = new Label("n", "N");
-		n.add(bottomMap.new PanDirection("onclick", 0, 1));
+		n.add(bottomMap.new PanDirectionBehavior("onclick", 0, 1));
 		add(n);
 
 		final Label ne = new Label("ne", "NE");
-		ne.add(bottomMap.new PanDirection("onclick", -1, 1));
+		ne.add(bottomMap.new PanDirectionBehavior("onclick", -1, 1));
 		add(ne);
 
 		final Label e = new Label("e", "E");
-		e.add(bottomMap.new PanDirection("onclick", -1, 0));
+		e.add(bottomMap.new PanDirectionBehavior("onclick", -1, 0));
 		add(e);
 
 		final Label se = new Label("se", "SE");
-		se.add(bottomMap.new PanDirection("onclick", -1, -1));
+		se.add(bottomMap.new PanDirectionBehavior("onclick", -1, -1));
 		add(se);
 
 		final Label s = new Label("s", "S");
-		s.add(bottomMap.new PanDirection("onclick", 0, -1));
+		s.add(bottomMap.new PanDirectionBehavior("onclick", 0, -1));
 		add(s);
 
 		final Label sw = new Label("sw", "SW");
-		sw.add(bottomMap.new PanDirection("onclick", 1, -1));
+		sw.add(bottomMap.new PanDirectionBehavior("onclick", 1, -1));
 		add(sw);
 
 		final Label w = new Label("w", "W");
-		w.add(bottomMap.new PanDirection("onclick", 1, 0));
+		w.add(bottomMap.new PanDirectionBehavior("onclick", 1, 0));
 		add(w);
 
 		final Label nw = new Label("nw", "NW");
-		nw.add(bottomMap.new PanDirection("onclick", 1, 1));
+		nw.add(bottomMap.new PanDirectionBehavior("onclick", 1, 1));
 		add(nw);
 
 		final Label infoWindow = new Label("infoWindow", "openInfoWindow");
