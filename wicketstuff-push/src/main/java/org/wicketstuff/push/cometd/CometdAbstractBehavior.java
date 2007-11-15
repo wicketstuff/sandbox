@@ -11,6 +11,7 @@ import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.parser.XmlPullParser;
 import org.apache.wicket.markup.parser.XmlTag;
 import org.apache.wicket.protocol.http.WebApplication;
+import org.mortbay.cometd.CometdServlet;
 import org.wicketstuff.dojo.AbstractRequireDojoBehavior;
 
 
@@ -134,7 +135,7 @@ public abstract class CometdAbstractBehavior extends AbstractRequireDojoBehavior
 		ServletContext servletContext = ((WebApplication)Application.get()).getServletContext();
 		InputStream is = servletContext.getResourceAsStream("/WEB-INF/web.xml");
 		/*
-		 * get the servlet name using org.mortbay.cometd.CometdServlet
+		 * get the servlet name from class assignable to org.mortbay.cometd.CometdServlet
 		 */
 		try
 		{
@@ -164,7 +165,8 @@ public abstract class CometdAbstractBehavior extends AbstractRequireDojoBehavior
 					} else if (elem.isClose() && elem.getName().equals("servlet-class")) {
 						servletClass = parser.getInputFromPositionMarker(elem.getPos()).toString();
 					}
-				} while (!"org.mortbay.cometd.CometdServlet".equals(servletClass));
+				// msparer: taking isAssignAbleFrom enables the use of subclasses of CometdServlet
+				} while (servletClass == null || !CometdServlet.class.isAssignableFrom(Class.forName(servletClass)));
 				
 				
 				//go down until servlet is found
