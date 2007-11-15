@@ -14,7 +14,7 @@ import org.apache.wicket.model.Model;
 import wicket.contrib.examples.WicketExamplePage;
 import wicket.contrib.gmap.GMap2;
 import wicket.contrib.gmap.GMapHeaderContributor;
-import wicket.contrib.gmap.api.GClientGeocoder;
+import wicket.contrib.gmap.api.GClientGeocoderBehavior;
 import wicket.contrib.gmap.api.GControl;
 import wicket.contrib.gmap.api.GInfoWindowTab;
 import wicket.contrib.gmap.api.GLatLng;
@@ -54,7 +54,7 @@ public class HomePage extends WicketExamplePage {
 		Button button = new Button("client");
 		//Using GClientGeocoder the geocoding request
 		//is performed on the client using JavaScript 
-		button.add(new GClientGeocoder("onclick", addressTextField,
+		button.add(new GClientGeocoderBehavior("onclick", addressTextField,
 				LOCALHOST) {
 			@Override
 			public void onGeoCode(AjaxRequestTarget target, int status,

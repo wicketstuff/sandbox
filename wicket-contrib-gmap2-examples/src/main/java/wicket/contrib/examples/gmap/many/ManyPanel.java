@@ -58,14 +58,14 @@ public abstract class ManyPanel extends Panel {
 		nw = new Label("nw", "NW");
 		add(nw);
 
-		n.add(gMap.new PanDirection("onclick", 0, 1));
-		ne.add(gMap.new PanDirection("onclick", -1, 1));
-		e.add(gMap.new PanDirection("onclick", -1, 0));
-		se.add(gMap.new PanDirection("onclick", -1, -1));
-		s.add(gMap.new PanDirection("onclick", 0, -1));
-		sw.add(gMap.new PanDirection("onclick", 1, -1));
-		w.add(gMap.new PanDirection("onclick", 1, 0));
-		nw.add(gMap.new PanDirection("onclick", 1, 1));
+		n.add(gMap.new PanDirectionBehavior("onclick", 0, 1));
+		ne.add(gMap.new PanDirectionBehavior("onclick", -1, 1));
+		e.add(gMap.new PanDirectionBehavior("onclick", -1, 0));
+		se.add(gMap.new PanDirectionBehavior("onclick", -1, -1));
+		s.add(gMap.new PanDirectionBehavior("onclick", 0, -1));
+		sw.add(gMap.new PanDirectionBehavior("onclick", 1, -1));
+		w.add(gMap.new PanDirectionBehavior("onclick", 1, 0));
+		nw.add(gMap.new PanDirectionBehavior("onclick", 1, 1));
 		
 		AjaxFallbackLink close = new AjaxFallbackLink("close") {
 			@Override

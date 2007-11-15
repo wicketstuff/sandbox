@@ -71,7 +71,7 @@ public class HomePage extends WicketExamplePage {
 		add(topMap);
 
 		zoomLabel = new Label("zoomLabel", new PropertyModel(topMap, "zoom"));
-		zoomLabel.add(topMap.new SetZoom("onclick", 10));
+		zoomLabel.add(topMap.new SetZoomBehavior("onclick", 10));
 		zoomLabel.setOutputMarkupId(true);
 		add(zoomLabel);
 
