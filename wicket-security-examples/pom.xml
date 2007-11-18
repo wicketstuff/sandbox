@@ -94,6 +94,41 @@
 			<artifactId>acegi-security</artifactId>
 			<version>1.0.5</version>
 			<scope>compile</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-core</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-remoting</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-jdbc</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-support</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-aop</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-beans</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-context</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>oro</groupId>
+					<artifactId>oro</artifactId>
+				</exclusion>
+
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>net.sf.ehcache</groupId>
@@ -258,7 +293,7 @@
 						<warSourceDirectory>
 							src/webapp
 						</warSourceDirectory>
-						<warSourceExcludes>WEB-INF/lib/servlet-api-2.3.jar,WEB-INF/lib/commons-logging-1.1.jar</warSourceExcludes>
+						<warSourceExcludes>WEB-INF/lib/servlet-api-2.3.jar</warSourceExcludes>
 					</configuration>
 				</plugin>
 			</plugins>
