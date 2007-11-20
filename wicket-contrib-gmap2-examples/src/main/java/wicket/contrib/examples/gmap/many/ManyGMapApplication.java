@@ -25,7 +25,7 @@ import org.apache.wicket.util.time.Duration;
 
 import wicket.contrib.examples.WicketExampleApplication;
 
-public class ManyGMapsApplication extends WicketExampleApplication {
+public class ManyGMapApplication extends WicketExampleApplication {
 
 	/**
 	 * @see wicket.protocol.http.WebApplication#init()

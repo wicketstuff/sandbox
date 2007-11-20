@@ -16,13 +16,6 @@ public class HomePage extends WicketExamplePage {
 
 	public HomePage() {
 		final GMap2 topMap = new GMap2("topPanel", LOCALHOST);
-		topMap.setDoubleClickZoomEnabled(true);
-		topMap.setZoom(10);
-		GMarkerOptions options = new GMarkerOptions();
-		options.setTitle("Home");
-		options.setDraggable(true);
-		options.setAutoPan(true);
-		topMap.addControl(GControl.GLargeMapControl);
 		topMap.addControl(GControl.GMapTypeControl);
 		add(topMap);
 

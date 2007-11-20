@@ -41,7 +41,6 @@ public class HomePage extends WicketExamplePage {
 				new GMapHeaderContributor(LOCALHOST));
 		bottomMap.setOutputMarkupId(true);
 		bottomMap.setMapType(GMapType.G_SATELLITE_MAP);
-		bottomMap.setScrollWheelZoomEnabled(true);
 		bottomMap.addControl(GControl.GSmallMapControl);
 		add(bottomMap);
 
