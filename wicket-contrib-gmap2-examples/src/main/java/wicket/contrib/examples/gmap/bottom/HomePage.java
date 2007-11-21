@@ -15,7 +15,7 @@ import wicket.contrib.gmap.api.GControl;
 import wicket.contrib.gmap.api.GInfoWindowTab;
 import wicket.contrib.gmap.api.GLatLng;
 import wicket.contrib.gmap.api.GMapType;
-import wicket.contrib.gmap.api.GMarker;
+import wicket.contrib.gmap.api.GOverlay;
 import wicket.contrib.gmap.event.ClickListener;
 import wicket.contrib.gmap.event.InfoWindowCloseListener;
 import wicket.contrib.gmap.event.InfoWindowOpenListener;
@@ -58,7 +58,7 @@ public class HomePage extends WicketExamplePage {
 
 			@Override
 			protected void onClick(AjaxRequestTarget target, GLatLng gLatLng,
-					GMarker marker) {
+					GOverlay overlay) {
 				if (gLatLng != null) {
 					bottomMap.getInfoWindow().open(gLatLng, new HelloPanel());
 				}
