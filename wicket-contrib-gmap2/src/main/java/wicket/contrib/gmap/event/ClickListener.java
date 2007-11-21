@@ -41,16 +41,16 @@ public abstract class ClickListener extends GEventListenerBehavior
 	protected void onEvent(AjaxRequestTarget target) {
 		Request request = RequestCycle.get().getRequest();
 
-		GMarker marker = null;
+		GOverlay overlay = null;
 		GLatLng latLng = null;
 		
 		String markerParameter = request.getParameter("marker");
 		if (markerParameter != null) {
-			for (GOverlay overlay : getGMap2().getOverlays())
+			for (GOverlay ovl : getGMap2().getOverlays())
 			{
-				if (overlay.getId().equals(markerParameter))
+				if (ovl.getId().equals(markerParameter))
 				{
-					marker = (GMarker)overlay;
+					overlay = ovl;
 					break;
 				}
 			}
@@ -61,7 +61,7 @@ public abstract class ClickListener extends GEventListenerBehavior
 			latLng = GLatLng.parse(latLngParameter);
 		}
 
-		onClick(target, latLng, marker);
+		onClick(target, latLng, overlay);
 	}
 
 	/**
@@ -69,10 +69,10 @@ public abstract class ClickListener extends GEventListenerBehavior
 	 * 
 	 * @param latLng
 	 *            the clicked GLatLng
-	 * @param marker
-	 *            the clicked marker
+	 * @param overlay
+	 *            the clicked overlay
 	 * @param target
 	 *            the target that initiated the click
 	 */
-	protected abstract void onClick(AjaxRequestTarget target, GLatLng latLng, GMarker marker);
+	protected abstract void onClick(AjaxRequestTarget target, GLatLng latLng, GOverlay overlay);
 }
