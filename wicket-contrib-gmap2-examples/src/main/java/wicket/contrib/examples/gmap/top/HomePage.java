@@ -14,6 +14,7 @@ import wicket.contrib.gmap.api.GControl;
 import wicket.contrib.gmap.api.GLatLng;
 import wicket.contrib.gmap.api.GMarker;
 import wicket.contrib.gmap.api.GMarkerOptions;
+import wicket.contrib.gmap.api.GOverlay;
 import wicket.contrib.gmap.event.ClickListener;
 import wicket.contrib.gmap.event.MoveEndListener;
 
@@ -54,8 +55,9 @@ public class HomePage extends WicketExamplePage
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void onClick(AjaxRequestTarget target, GLatLng latLng, GMarker marker)
+			protected void onClick(AjaxRequestTarget target, GLatLng latLng, GOverlay overlay)
 			{
+				GMarker marker = (overlay instanceof GMarker) ? (GMarker) overlay : null; 
 				if (marker != null)
 				{
 					topMap.getInfoWindow().open(marker, new HelloPanel());
