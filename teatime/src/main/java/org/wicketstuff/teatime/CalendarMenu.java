@@ -34,7 +34,8 @@ public class CalendarMenu extends Panel {
         });
         IModel files = new LoadableDetachableModel() {
             protected Object load() {
-                List<File> list = Arrays.asList(new File("/tmp/logbot").listFiles(new FilenameFilter() {
+                String dir = WicketApplication.get().getIrcLogDir();
+                List<File> list = Arrays.asList(new File(dir).listFiles(new FilenameFilter() {
                     public boolean accept(File dir, String name) {
                         return name.startsWith("20") && name.endsWith(".log");
                     }
