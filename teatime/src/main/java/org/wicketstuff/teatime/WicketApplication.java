@@ -25,7 +25,7 @@ public class WicketApplication extends WebApplication {
     private static final Logger logger = LoggerFactory.getLogger(WicketApplication.class);
     private CacheManager manager;
     private String ircLogDir = "/tmp/logbot/";
-    private String nick = "teatime";
+    private String nick = "Teh-ah-time-eh";
     private String joinMessage = "It's pronounced Teh-ah-tim-eh";
     private String server = "irc.freenode.net";
     private String channel = "##wicket";
@@ -44,6 +44,9 @@ public class WicketApplication extends WebApplication {
         if (value != null) {
             ircLogDir = value;
         }
+    	if(!ircLogDir.endsWith("/")) {
+    		ircLogDir = ircLogDir + "/";
+    	}
         value = getInitParameter("irc.nick");
         if (value != null) {
             nick = value;
@@ -81,7 +84,10 @@ public class WicketApplication extends WebApplication {
         for (String name : cacheNamesForManager) logger.info("Cache: " + name);
         mount(new IndexedHybridUrlCodingStrategy("/log", HomePage.class));
     }
-
+    
+    public String getIrcLogDir() {
+        return ircLogDir;
+    }
     protected void onDestroy() {
         if (bot != null) {
             try {

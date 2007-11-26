@@ -60,21 +60,21 @@ public class LogBot extends PircBot {
 
     public void onJoin(String channel, String sender, String login, String hostname) {
         append(GREEN, "* " + sender + " (" + login + "@" + hostname + ") has joined " + channel);
-        if (sender.equals(getNick())) {
-            sendNotice(channel, joinMessage);
-        }
-        else {
-            sendNotice(sender, joinMessage);
-        }
+//        if (sender.equals(getNick())) {
+//            sendNotice(channel, joinMessage);
+//        }
+//        else {
+//            sendNotice(sender, joinMessage);
+//        }
     }
 
     public void onMessage(String channel, String sender, String login, String hostname, String message) {
         append(BLACK, "<" + sender + "> " + message);
 
-        message = message.toLowerCase();
-        if (message.startsWith(getNick().toLowerCase()) && message.indexOf("help") > 0) {
-            sendMessage(channel, joinMessage);
-        }
+//        message = message.toLowerCase();
+//        if (message.startsWith(getNick().toLowerCase()) && message.indexOf("help") > 0) {
+//            sendMessage(channel, joinMessage);
+//        }
     }
 
     public void onMode(String channel, String sourceNick, String sourceLogin, String sourceHostname, String mode) {
