@@ -1,0 +1,1 @@
+Note there are lots of tests for this library, but due to some quirks they are in the persistence facade models project
