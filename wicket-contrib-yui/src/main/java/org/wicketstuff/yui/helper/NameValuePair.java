@@ -44,6 +44,7 @@ public abstract class NameValuePair<T> extends TokenSeparatedValues
 		if (isValid(element, value)) 
 		{
 			if ((!value.startsWith("{")) &&
+				(!value.startsWith("[")) &&
 				(!value.startsWith("\"")))
 			{
 				try 
@@ -71,6 +72,18 @@ public abstract class NameValuePair<T> extends TokenSeparatedValues
 		}
 		return (T)this;
 	}
+	
+	/**
+	 * 
+	 * @param element
+	 * @param int_value
+	 * @return
+	 */
+	public T add(String element, int int_value)
+	{
+		return this.add(element, Integer.toString(int_value));
+	}
+
 	
 	/*
 	 * the List to be used by TSV

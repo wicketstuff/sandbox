@@ -1,4 +1,4 @@
-package org.wicketstuff.yui.markup.html.thumbnail;
+package org.wicketstuff.yui.markup.html.animation.thumbnail;
 
 import java.util.Iterator;
 import java.util.List;

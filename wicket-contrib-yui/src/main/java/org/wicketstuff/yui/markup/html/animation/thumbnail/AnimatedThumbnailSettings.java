@@ -1,4 +1,4 @@
-package org.wicketstuff.yui.markup.html.thumbnail;
+package org.wicketstuff.yui.markup.html.animation.thumbnail;
 
 import java.io.Serializable;
 
@@ -31,6 +31,16 @@ public class AnimatedThumbnailSettings implements Serializable
 	 * the height of the picture 
 	 */
 	private int pictureHeight = 100;
+	
+	/**
+	 * the display position for the picture top  
+	 */
+	private int pictureTop = 0;
+	
+	/**
+	 * the display left position for the picture
+	 */
+	private int pictureLeft = 0;
 	
 	/**
 	 * the opacity setting for 
@@ -188,5 +198,36 @@ public class AnimatedThumbnailSettings implements Serializable
 	public int getFontSize()
 	{
 		return fontSize;
+	}
+
+	public int getPictureTop()
+	{
+		return pictureTop;
+	}
+
+	public int getPictureLeft()
+	{
+		return pictureLeft;
+	}
+
+	public void setPictureLeft(int pictureLeft)
+	{
+		this.pictureLeft = pictureLeft;
+	}
+
+	public void setPictureTop(int pictureTop)
+	{
+		this.pictureTop = pictureTop;
+	}
+
+	/**
+	 * the position for the Picture display
+	 * @param left
+	 * @param top
+	 */
+	public void setPicturePosition(int left, int top)
+	{
+		setPictureLeft(left);
+		setPictureTop(top);
 	}
 }

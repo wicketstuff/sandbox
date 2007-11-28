@@ -6,10 +6,9 @@ import java.util.List;
 
 import org.apache.wicket.RequestCycle;
 import org.apache.wicket.ResourceReference;
-
-import org.wicketstuff.yui.ImageResourceInfo;
-import org.wicketstuff.yui.InlineStyle;
 import org.wicketstuff.yui.YuiImage;
+import org.wicketstuff.yui.helper.CSSInlineStyle;
+import org.wicketstuff.yui.helper.ImageResourceInfo;
 
 /**
  * An AnimSettings allows the user to define the anim select settings
@@ -30,13 +29,13 @@ public class AnimSettings implements Serializable {
 
 	private List<AnimOption> animOptionList;
 
-	private List<InlineStyle> defaultImgStyleList = new ArrayList<InlineStyle>();
+	private List<CSSInlineStyle> defaultImgStyleList = new ArrayList<CSSInlineStyle>();
 
-	private List<InlineStyle> defaultImgOverStyleList = new ArrayList<InlineStyle>();
+	private List<CSSInlineStyle> defaultImgOverStyleList = new ArrayList<CSSInlineStyle>();
 
-	private List<InlineStyle> selectedImgStyleList = new ArrayList<InlineStyle>();
+	private List<CSSInlineStyle> selectedImgStyleList = new ArrayList<CSSInlineStyle>();
 
-	private List<InlineStyle> selectedImgOverStyleList = new ArrayList<InlineStyle>();
+	private List<CSSInlineStyle> selectedImgOverStyleList = new ArrayList<CSSInlineStyle>();
 
 	private int width;
 
@@ -180,25 +179,25 @@ public class AnimSettings implements Serializable {
 			int selectedImgOverWidth = selectedImgOverInfo.getWidth();
 			int selectedImgOverHeight = selectedImgOverInfo.getHeight();
 
-			InlineStyle defaultImgStyle = new InlineStyle();
+			CSSInlineStyle defaultImgStyle = new CSSInlineStyle();
 			defaultImgStyle.add("background", "url("
 					+ RequestCycle.get().urlFor(defaultImgRR) + ")");
 			defaultImgStyle.add("width", defaultImgWidth + "px");
 			defaultImgStyle.add("height", defaultImgHeight + "px");
 
-			InlineStyle defaultImgOverStyle = new InlineStyle();
+			CSSInlineStyle defaultImgOverStyle = new CSSInlineStyle();
 			defaultImgOverStyle.add("background", "url("
 					+ RequestCycle.get().urlFor(defaultImgOverRR) + ")");
 			defaultImgOverStyle.add("width", defaultImgOverWidth + "px");
 			defaultImgOverStyle.add("height", defaultImgOverHeight + "px");
 
-			InlineStyle selectedImgStyle = new InlineStyle();
+			CSSInlineStyle selectedImgStyle = new CSSInlineStyle();
 			selectedImgStyle.add("background", "url("
 					+ RequestCycle.get().urlFor(selectedImgRR) + ")");
 			selectedImgStyle.add("width", selectedImgWidth + "px");
 			selectedImgStyle.add("height", selectedImgHeight + "px");
 
-			InlineStyle selectedImgOverStyle = new InlineStyle();
+			CSSInlineStyle selectedImgOverStyle = new CSSInlineStyle();
 			selectedImgOverStyle.add("background", "url("
 					+ RequestCycle.get().urlFor(selectedImgOverRR) + ")");
 			selectedImgOverStyle.add("width", selectedImgOverWidth + "px");
@@ -314,8 +313,8 @@ public class AnimSettings implements Serializable {
 	 * 
 	 * @return the default mouseover image style list
 	 */
-	public List<InlineStyle> getDefaultImgOverStyleList() {
-		return (List<InlineStyle>) defaultImgOverStyleList;
+	public List<CSSInlineStyle> getDefaultImgOverStyleList() {
+		return (List<CSSInlineStyle>) defaultImgOverStyleList;
 	}
 
 	/**
@@ -325,7 +324,7 @@ public class AnimSettings implements Serializable {
 	 *            the new default mouseover image style list
 	 */
 	public void setDefaultImgOverStyleList(
-			List<InlineStyle> defaultImgOverStyleList) {
+			List<CSSInlineStyle> defaultImgOverStyleList) {
 		this.defaultImgOverStyleList = defaultImgOverStyleList;
 	}
 
@@ -334,8 +333,8 @@ public class AnimSettings implements Serializable {
 	 * 
 	 * @return the default image style list
 	 */
-	public List<InlineStyle> getDefaultImgStyleList() {
-		return (List<InlineStyle>) defaultImgStyleList;
+	public List<CSSInlineStyle> getDefaultImgStyleList() {
+		return (List<CSSInlineStyle>) defaultImgStyleList;
 	}
 
 	/**
@@ -344,7 +343,7 @@ public class AnimSettings implements Serializable {
 	 * @param defaultImgStyleList -
 	 *            set the new default image style list
 	 */
-	public void setDefaultImgStyleList(List<InlineStyle> defaultImgStyleList) {
+	public void setDefaultImgStyleList(List<CSSInlineStyle> defaultImgStyleList) {
 		this.defaultImgStyleList = defaultImgStyleList;
 	}
 
@@ -353,8 +352,8 @@ public class AnimSettings implements Serializable {
 	 * 
 	 * @return the selected mouseover image style list
 	 */
-	public List<InlineStyle> getSelectedImgOverStyleList() {
-		return (List<InlineStyle>) selectedImgOverStyleList;
+	public List<CSSInlineStyle> getSelectedImgOverStyleList() {
+		return (List<CSSInlineStyle>) selectedImgOverStyleList;
 	}
 
 	/**
@@ -364,7 +363,7 @@ public class AnimSettings implements Serializable {
 	 *            the new selected mouseover image style list
 	 */
 	public void setSelectedImgOverStyleList(
-			List<InlineStyle> selectedImgOverStyleList) {
+			List<CSSInlineStyle> selectedImgOverStyleList) {
 		this.selectedImgOverStyleList = selectedImgOverStyleList;
 	}
 
@@ -373,8 +372,8 @@ public class AnimSettings implements Serializable {
 	 * 
 	 * @return the selected image style list
 	 */
-	public List<InlineStyle> getSelectedImgStyleList() {
-		return (List<InlineStyle>) selectedImgStyleList;
+	public List<CSSInlineStyle> getSelectedImgStyleList() {
+		return (List<CSSInlineStyle>) selectedImgStyleList;
 	}
 
 	/**
@@ -383,7 +382,7 @@ public class AnimSettings implements Serializable {
 	 * @param selectedImgStyleList -
 	 *            the new selected image style list
 	 */
-	public void setSelectedImgStyleList(List<InlineStyle> selectedImgStyleList) {
+	public void setSelectedImgStyleList(List<CSSInlineStyle> selectedImgStyleList) {
 		this.selectedImgStyleList = selectedImgStyleList;
 	}
 

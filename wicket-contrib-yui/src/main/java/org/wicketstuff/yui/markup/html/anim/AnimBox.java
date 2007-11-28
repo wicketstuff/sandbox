@@ -11,9 +11,9 @@ import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.util.template.PackagedTextTemplate;
-import org.wicketstuff.yui.InlineStyle;
 import org.wicketstuff.yui.YuiHeaderContributor;
 import org.wicketstuff.yui.YuiImage;
+import org.wicketstuff.yui.helper.CSSInlineStyle;
 
 /**
  * An AnimBox is a component which consists of four images:
@@ -53,29 +53,29 @@ public class AnimBox extends Panel {
 
 						public Object getObject() {
 							if (name.equals("DefaultImg")) {
-								List aInlineStyleList = settings
+								List aCSSInlineStyleList = settings
 										.getDefaultImgStyleList();
-								InlineStyle aInlineStyle = (InlineStyle) aInlineStyleList
+								CSSInlineStyle aCSSInlineStyle = (CSSInlineStyle) aCSSInlineStyleList
 										.get(0);
-								return aInlineStyle.getStyle();
+								return aCSSInlineStyle.getStyle();
 							} else if (name.equals("DefaultImgOver")) {
-								List aInlineStyleList = settings
+								List aCSSInlineStyleList = settings
 										.getDefaultImgOverStyleList();
-								InlineStyle aInlineStyle = (InlineStyle) aInlineStyleList
+								CSSInlineStyle aCSSInlineStyle = (CSSInlineStyle) aCSSInlineStyleList
 										.get(0);
-								return aInlineStyle.getStyle();
+								return aCSSInlineStyle.getStyle();
 							} else if (name.equals("SelectedImg")) {
-								List aInlineStyleList = settings
+								List aCSSInlineStyleList = settings
 										.getSelectedImgStyleList();
-								InlineStyle aInlineStyle = (InlineStyle) aInlineStyleList
+								CSSInlineStyle aCSSInlineStyle = (CSSInlineStyle) aCSSInlineStyleList
 										.get(0);
-								return aInlineStyle.getStyle();
+								return aCSSInlineStyle.getStyle();
 							} else if (name.equals("SelectedImgOver")) {
-								List aInlineStyleList = settings
+								List aCSSInlineStyleList = settings
 										.getSelectedImgOverStyleList();
-								InlineStyle aInlineStyle = (InlineStyle) aInlineStyleList
+								CSSInlineStyle aCSSInlineStyle = (CSSInlineStyle) aCSSInlineStyleList
 										.get(0);
-								return aInlineStyle.getStyle();
+								return aCSSInlineStyle.getStyle();
 							} else
 								return new String("");
 						}

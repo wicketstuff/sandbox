@@ -7,9 +7,9 @@ import java.util.List;
 import org.apache.wicket.RequestCycle;
 import org.apache.wicket.ResourceReference;
 
-import org.wicketstuff.yui.ImageResourceInfo;
-import org.wicketstuff.yui.InlineStyle;
 import org.wicketstuff.yui.YuiImage;
+import org.wicketstuff.yui.helper.ImageResourceInfo;
+import org.wicketstuff.yui.helper.CSSInlineStyle;
 
 /**
  * A SortSettings allows the user to define the sort settings
@@ -22,7 +22,7 @@ public class SortSettings implements Serializable {
 
 	private int height;
 
-	private List<InlineStyle> imgStyleList = new ArrayList<InlineStyle>();
+	private List<CSSInlineStyle> imgStyleList = new ArrayList<CSSInlineStyle>();
 
 	private String mode;
 
@@ -66,7 +66,7 @@ public class SortSettings implements Serializable {
 	 * 
 	 * @return the image style list
 	 */
-	public List<InlineStyle> getImgStyleList() {
+	public List<CSSInlineStyle> getImgStyleList() {
 		return imgStyleList;
 	}
 
@@ -124,7 +124,7 @@ public class SortSettings implements Serializable {
 			int imgWidth = imgInfo.getWidth();
 			int imgHeight = imgInfo.getHeight();
 
-			InlineStyle imgStyle = new InlineStyle();
+			CSSInlineStyle imgStyle = new CSSInlineStyle();
 			imgStyle.add("background", "url("
 					+ RequestCycle.get().urlFor(imgRR) + ")");
 			imgStyle.add("width", imgWidth + "px");
@@ -146,7 +146,7 @@ public class SortSettings implements Serializable {
 	 * @param imgStyleList -
 	 *            the new image style list
 	 */
-	public void setImgStyleList(List<InlineStyle> imgStyleList) {
+	public void setImgStyleList(List<CSSInlineStyle> imgStyleList) {
 		this.imgStyleList = imgStyleList;
 	}
 
