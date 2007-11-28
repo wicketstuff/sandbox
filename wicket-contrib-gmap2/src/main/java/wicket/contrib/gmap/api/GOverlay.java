@@ -20,8 +20,8 @@ import java.io.Serializable;
 import wicket.contrib.gmap.GMap2;
 
 /**
- * Represents an Google Maps API's
- * <a href="http://www.google.com/apis/maps/documentation/reference.html#GOverlay">GOverlay</a>.
+ * Represents an Google Maps API's <a
+ * href="http://www.google.com/apis/maps/documentation/reference.html#GOverlay">GOverlay</a>.
  */
 public abstract class GOverlay implements Serializable
 {
@@ -39,6 +39,6 @@ public abstract class GOverlay implements Serializable
 	public String getId() {
 		return String.valueOf(System.identityHashCode(this));
 	}
-	
+
 	protected abstract String getJSconstructor();
 }
