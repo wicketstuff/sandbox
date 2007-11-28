@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.wicketstuff.persistence.*;
@@ -65,6 +66,10 @@ public final class PojoCollectionModel<T> extends AbstractReadOnlyModel implemen
      */
     public Iterator<T> iterator() {
         return new Iter<T>(get().iterator());
+    }
+    
+    public IDataProvider createDataProvider() {
+        return new PojoCollectionModelDataProvider(this);
     }
     
     /**
