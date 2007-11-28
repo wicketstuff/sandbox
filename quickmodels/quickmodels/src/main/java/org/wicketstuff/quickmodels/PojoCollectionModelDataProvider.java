@@ -21,7 +21,7 @@ import org.apache.wicket.model.IModel;
  * Takes a PojoCollectionModel and provides individual models from it.
  * @author Tim Boudreau
  */
-public class PojoCollectionModelDataProvider<T> implements IDataProvider {
+class PojoCollectionModelDataProvider<T> implements IDataProvider {
     private PojoCollectionModel<T> mdl;
     public PojoCollectionModelDataProvider(PojoCollectionModel<T> mdl) {
         this.mdl = mdl;
