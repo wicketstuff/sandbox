@@ -30,8 +30,6 @@ public class HomePage extends WicketExamplePage
 
 	private final Label markerLabel;
 
-	private final Label zoomLabel;
-
 	public HomePage()
 	{
 		feedback = new FeedbackPanel("feedback");
@@ -40,16 +38,6 @@ public class HomePage extends WicketExamplePage
 
 		final GMap2 topMap = new GMap2("topPanel", LOCALHOST);
 		topMap.setDoubleClickZoomEnabled(true);
-		topMap.add(new MoveEndListener()
-		{
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			protected void onMoveEnd(AjaxRequestTarget target)
-			{
-				target.addComponent(zoomLabel);
-			}
-		});
 		topMap.add(new ClickListener()
 		{
 			private static final long serialVersionUID = 1L;
@@ -79,11 +67,6 @@ public class HomePage extends WicketExamplePage
 		topMap.addControl(GControl.GLargeMapControl);
 		topMap.addControl(GControl.GMapTypeControl);
 		add(topMap);
-
-		zoomLabel = new Label("zoomLabel", new PropertyModel(topMap, "zoom"));
-		zoomLabel.add(topMap.new SetZoomBehavior("onclick", 10));
-		zoomLabel.setOutputMarkupId(true);
-		add(zoomLabel);
 
 		markerLabel = new Label("markerLabel", new Model(null));
 		markerLabel.add(new AjaxEventBehavior("onclick")

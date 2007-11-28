@@ -1,13 +1,15 @@
-package wicket.contrib.examples.gmap.marker;
+package wicket.contrib.examples.gmap.both;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.model.PropertyModel;
 
 import wicket.contrib.examples.WicketExamplePage;
 import wicket.contrib.gmap.GMap2;
-import wicket.contrib.gmap.api.GLatLng;
-import wicket.contrib.gmap.api.GMarker;
-import wicket.contrib.gmap.api.GOverlay;
-import wicket.contrib.gmap.event.ClickListener;
+import wicket.contrib.gmap.GMap2.SetZoomBehavior;
+import wicket.contrib.gmap.api.GControl;
+import wicket.contrib.gmap.api.GMarkerOptions;
+import wicket.contrib.gmap.event.MoveEndListener;
 
 /**
  * Example HomePage for the wicket-contrib-gmap2 project
@@ -16,24 +18,28 @@ public class HomePage extends WicketExamplePage {
 
 	private static final long serialVersionUID = 1L;
 	
+	private final GMap2 topMap;
+	
+	private final Label zoomLabel;
+
 	public HomePage() {
-		final GMap2 topMap = new GMap2("topPanel", LOCALHOST);
+		topMap = new GMap2("topPanel", LOCALHOST);
+		topMap.addControl(GControl.GLargeMapControl);
 		add(topMap);
-		topMap.add(new ClickListener()
+		topMap.add(new MoveEndListener()
 		{
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void onClick(AjaxRequestTarget target, GLatLng latLng, GOverlay overlay)
+			protected void onMoveEnd(AjaxRequestTarget target)
 			{
-				if (latLng != null) {
-					if(topMap.getOverlays().size() >= 3) {
-						topMap.removeOverlay(topMap.getOverlays().get(0));
-					}
-					topMap.addOverlay(new GMarker(latLng));
-				}
+				target.addComponent(zoomLabel);
 			}
 		});
+		zoomLabel = new Label("zoomLabel", new PropertyModel(topMap, "zoom"));
+		zoomLabel.add(topMap.new SetZoomBehavior("onclick", 10));
+		zoomLabel.setOutputMarkupId(true);
+		add(zoomLabel);
 	}
 
 	/**
