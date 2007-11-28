@@ -6,10 +6,9 @@ import java.util.List;
 
 import org.apache.wicket.RequestCycle;
 import org.apache.wicket.ResourceReference;
-
-import org.wicketstuff.yui.ImageResourceInfo;
-import org.wicketstuff.yui.InlineStyle;
 import org.wicketstuff.yui.YuiImage;
+import org.wicketstuff.yui.helper.CSSInlineStyle;
+import org.wicketstuff.yui.helper.ImageResourceInfo;
 
 /**
  * A SortSettings allows the user to define the sort settings
@@ -25,15 +24,15 @@ public class DragDropSettings implements Serializable {
 	// the target list consists of target slots images
 	private TargetSlotList targetSlotList;
 
-	private List<InlineStyle> dragableImgStyleList = new ArrayList<InlineStyle>();
+	private List<CSSInlineStyle> dragableImgStyleList = new ArrayList<CSSInlineStyle>();
 	private int dragableImgWidth;
 	private int dragableImgHeight;
 
-	private List<InlineStyle> targetSlotStyleList = new ArrayList<InlineStyle>();
+	private List<CSSInlineStyle> targetSlotStyleList = new ArrayList<CSSInlineStyle>();
 	private int targetSlotWidth;
 	private int targetSlotHeight;
 
-	private List<InlineStyle> dragableSlotStyleList = new ArrayList<InlineStyle>();
+	private List<CSSInlineStyle> dragableSlotStyleList = new ArrayList<CSSInlineStyle>();
 	private int dragableSlotWidth;
 	private int dragableSlotHeight;
 
@@ -67,7 +66,7 @@ public class DragDropSettings implements Serializable {
 			int imgWidth = imgInfo.getWidth();
 			int imgHeight = imgInfo.getHeight();
 
-			InlineStyle imgStyle = new InlineStyle();
+			CSSInlineStyle imgStyle = new CSSInlineStyle();
 
 			imgStyle.add("background", "url("
 					+ RequestCycle.get().urlFor(imgRR) + ")");
@@ -97,7 +96,7 @@ public class DragDropSettings implements Serializable {
 			int imgWidth = imgInfo.getWidth();
 			int imgHeight = imgInfo.getHeight();
 
-			InlineStyle imgStyle = new InlineStyle();
+			CSSInlineStyle imgStyle = new CSSInlineStyle();
 			imgStyle.add("background", "url("
 					+ RequestCycle.get().urlFor(imgRR) + ")");
 			imgStyle.add("width", imgWidth + "px");
@@ -125,7 +124,7 @@ public class DragDropSettings implements Serializable {
 			int imgWidth = imgInfo.getWidth();
 			int imgHeight = imgInfo.getHeight();
 
-			InlineStyle imgStyle = new InlineStyle();
+			CSSInlineStyle imgStyle = new CSSInlineStyle();
 			imgStyle.add("background", "url("
 					+ RequestCycle.get().urlFor(imgRR) + ")");
 			imgStyle.add("width", imgWidth + "px");
@@ -158,14 +157,14 @@ public class DragDropSettings implements Serializable {
 	/**
 	 * @return the dragableImgStyleList
 	 */
-	public List<InlineStyle> getDragableImgStyleList() {
+	public List<CSSInlineStyle> getDragableImgStyleList() {
 		return dragableImgStyleList;
 	}
 
 	/**
 	 * @param dragableImgStyleList the dragableImgStyleList to set
 	 */
-	public void setDragableImgStyleList(List<InlineStyle> dragableImgStyleList) {
+	public void setDragableImgStyleList(List<CSSInlineStyle> dragableImgStyleList) {
 		this.dragableImgStyleList = dragableImgStyleList;
 	}
 
@@ -214,14 +213,14 @@ public class DragDropSettings implements Serializable {
 	/**
 	 * @return the dragableSlotStyleList
 	 */
-	public List<InlineStyle> getDragableSlotStyleList() {
+	public List<CSSInlineStyle> getDragableSlotStyleList() {
 		return dragableSlotStyleList;
 	}
 
 	/**
 	 * @param dragableSlotStyleList the dragableSlotStyleList to set
 	 */
-	public void setDragableSlotStyleList(List<InlineStyle> dragableSlotStyleList) {
+	public void setDragableSlotStyleList(List<CSSInlineStyle> dragableSlotStyleList) {
 		this.dragableSlotStyleList = dragableSlotStyleList;
 	}
 
@@ -270,14 +269,14 @@ public class DragDropSettings implements Serializable {
 	/**
 	 * @return the targetSlotStyleList
 	 */
-	public List<InlineStyle> getTargetSlotStyleList() {
+	public List<CSSInlineStyle> getTargetSlotStyleList() {
 		return targetSlotStyleList;
 	}
 
 	/**
 	 * @param targetSlotStyleList the targetSlotStyleList to set
 	 */
-	public void setTargetSlotStyleList(List<InlineStyle> targetSlotStyleList) {
+	public void setTargetSlotStyleList(List<CSSInlineStyle> targetSlotStyleList) {
 		this.targetSlotStyleList = targetSlotStyleList;
 	}
 

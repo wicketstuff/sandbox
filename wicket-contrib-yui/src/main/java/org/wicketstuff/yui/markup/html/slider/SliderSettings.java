@@ -4,9 +4,8 @@ import java.io.Serializable;
 
 import org.apache.wicket.RequestCycle;
 import org.apache.wicket.ResourceReference;
-
-import org.wicketstuff.yui.ImageResourceInfo;
-import org.wicketstuff.yui.InlineStyle;
+import org.wicketstuff.yui.helper.CSSInlineStyle;
+import org.wicketstuff.yui.helper.ImageResourceInfo;
 
 public class SliderSettings implements Serializable {
 
@@ -119,11 +118,11 @@ public class SliderSettings implements Serializable {
      */
 	private Integer startValue;
     
-    private InlineStyle background = new InlineStyle();
+    private CSSInlineStyle background = new CSSInlineStyle();
 
 	private ResourceReference backgroundResource;
 
-	private InlineStyle handle = new InlineStyle();
+	private CSSInlineStyle handle = new CSSInlineStyle();
 
 	private ResourceReference leftCornerResource;
 
@@ -140,7 +139,7 @@ public class SliderSettings implements Serializable {
 
 	private boolean showTicks = false;
 
-	private InlineStyle thumb = new InlineStyle();
+	private CSSInlineStyle thumb = new CSSInlineStyle();
 
 	private ResourceReference thumbResource;
 
@@ -156,7 +155,7 @@ public class SliderSettings implements Serializable {
 	public SliderSettings() {
 	}
 
-	public InlineStyle getBackground() {
+	public CSSInlineStyle getBackground() {
 		return background;
 	}
 
@@ -169,7 +168,7 @@ public class SliderSettings implements Serializable {
 		return backgroundResource;
 	}
 
-	public InlineStyle getHandle() {
+	public CSSInlineStyle getHandle() {
 		return handle;
 	}
 
@@ -197,7 +196,7 @@ public class SliderSettings implements Serializable {
 		return rightTickResource;
 	}
 
-	public InlineStyle getThumb() {
+	public CSSInlineStyle getThumb() {
 		return thumb;
 	}
 
@@ -217,7 +216,7 @@ public class SliderSettings implements Serializable {
 		return showTicks;
 	}
 
-	public void setBackground(InlineStyle background) {
+	public void setBackground(CSSInlineStyle background) {
 		this.background = background;
 	}
 
@@ -225,7 +224,7 @@ public class SliderSettings implements Serializable {
 		this.backgroundResource = backgroundResource;
 	}
 
-	public void setHandle(InlineStyle handle) {
+	public void setHandle(CSSInlineStyle handle) {
 		this.handle = handle;
 	}
 
@@ -326,7 +325,7 @@ public class SliderSettings implements Serializable {
 		this.showTicks = showTicks;
 	}
 
-	public void setThumb(InlineStyle thumb) {
+	public void setThumb(CSSInlineStyle thumb) {
 		this.thumb = thumb;
 	}
 

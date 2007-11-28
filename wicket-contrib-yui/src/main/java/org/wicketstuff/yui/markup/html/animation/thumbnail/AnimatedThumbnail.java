@@ -1,4 +1,4 @@
-package org.wicketstuff.yui.markup.html.thumbnail;
+package org.wicketstuff.yui.markup.html.animation.thumbnail;
 
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
@@ -8,13 +8,14 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.Model;
-import org.wicketstuff.yui.InlineStyle;
 import org.wicketstuff.yui.behavior.Anim;
 import org.wicketstuff.yui.behavior.AnimEffect;
 import org.wicketstuff.yui.behavior.Animation;
 import org.wicketstuff.yui.behavior.Attributes;
 import org.wicketstuff.yui.behavior.Easing;
 import org.wicketstuff.yui.behavior.OnEvent;
+import org.wicketstuff.yui.helper.CSSInlineStyle;
+import org.wicketstuff.yui.markup.html.image.URIImage;
 
 /**
  * This component shows a thumbnail image which will 
@@ -99,15 +100,7 @@ public class AnimatedThumbnail extends Panel
 			attributes.add("color",  new Attributes("to", getSettings().getColor()));
 		}
 		
-		return new Animation(OnEvent.mouseover)
-		{
-			@Override
-			public String getTriggerId()
-			{
-				AnimatedThumbnail.this.thumbnail.setOutputMarkupId(true);
-				return AnimatedThumbnail.this.thumbnail.getMarkupId();
-			}
-		}
+		return new Animation(OnEvent.mouseover, this.thumbnail)
 		.add(new Anim(Anim.Type.ColorAnim, attributes, 0, Easing.bounceBoth));
 	}
 
@@ -122,15 +115,7 @@ public class AnimatedThumbnail extends Panel
 		attributes.add("opacity", new Attributes("from", getSettings().getOpacity(), "to", 0f));
 		attributes.add("zIndex",  new Attributes("from", "2", "to", "1"));
 	
-		return new Animation(OnEvent.mouseout)
-		{
-			@Override
-			public String getTriggerId()
-			{
-				AnimatedThumbnail.this.caption.setOutputMarkupId(true);
-				return AnimatedThumbnail.this.caption.getMarkupId();
-			}
-		}
+		return new Animation(OnEvent.mouseout, this.caption)
 		.add(new Anim(Anim.Type.Anim, attributes, 1, Easing.easeIn));
 	}
 	
@@ -145,21 +130,15 @@ public class AnimatedThumbnail extends Panel
 		display
 		.add("width", 		new Attributes("to", getSettings().getPictureWidth()).add("from", "0"))
 		.add("height", 		new Attributes("to", getSettings().getPictureHeight()).add("from", "0"))
-		.add("top", 		new Attributes("from", "0", "to", "0"))
-		.add("left",		new Attributes("from", "0", "to", "0"))
+		.add("top", 		new Attributes("from", 0, "to", getSettings().getPictureTop()))
+		.add("left",		new Attributes("from", 0, "to", getSettings().getPictureLeft()))
 		.add("opacity", 	new Attributes("from",  0, "to", 1))
 		.add("borderWidth", new Attributes("from", getSettings().getOpacity(), "to", 2))
 		.add("zIndex", 		new Attributes("from", "9",    "to", "9"));
 		
 		AnimEffect grow = new Anim(AnimEffect.Type.Anim, display, 1, Easing.easeNone);
-		return new Animation(OnEvent.click)
-		{
-			@Override
-			public String getTriggerId()
-			{
-				return AnimatedThumbnail.this.caption.getMarkupId();
-			}
-		}.add(grow);
+		return new Animation(OnEvent.click, this.caption)
+		.add(grow);
 	}
 
 	/**
@@ -177,15 +156,7 @@ public class AnimatedThumbnail extends Panel
 		.add("left",	new Attributes("to",  getSettings().getPictureWidth()))
 		.add("zIndex", 	new Attributes("from", 99, "to", 1));
 				
-		return new Animation(OnEvent.click)
-		{
-			@Override
-			public String getTriggerId()
-			{
-				AnimatedThumbnail.this.pictureImage.setOutputMarkupId(true);
-				return AnimatedThumbnail.this.pictureImage.getMarkupId();
-			}
-		}
+		return new Animation(OnEvent.click, this.pictureImage)
 		.add(new Anim(Anim.Type.Anim, hide, 1, Easing.easeNone));
 	}
 
@@ -203,7 +174,7 @@ public class AnimatedThumbnail extends Panel
 				@Override
 				public Object getObject()
 				{
-					InlineStyle style = new InlineStyle();
+					CSSInlineStyle style = new CSSInlineStyle();
 					style.add("width", getSettings().getThumbnailWidth());
 					style.add("height", getSettings().getThumbnailHeight());
 					return style.getStyle();

@@ -1,0 +1,11 @@
+.EllipsePanel
+{
+	position : relative;
+	border : 0px dashed #CCCCCC;
+}
+
+.EllipseItem
+{
+	position : absolute;
+	border : 0px dashed #CCCCCC;
+}

@@ -1,7 +1,9 @@
 package org.wicketstuff.yui.helper;
 
 /**
- * Inline Style 
+ * This is a CSS Inline Style "Style=..." where it's toString method will return the
+ * string suitable  to be used for the Attribute Modifier
+ * 
  * @author josh
  *
  */
@@ -66,4 +68,11 @@ public class CSSInlineStyle extends NameValuePair<CSSInlineStyle>
 		return value;
 	}
 
+	/**
+	 * @return
+	 */
+	public String getStyle()
+	{
+		return toString();
+	}
 }

@@ -14,9 +14,9 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.html.resources.CompressedResourceReference;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.util.template.PackagedTextTemplate;
-import org.wicketstuff.yui.InlineStyle;
 import org.wicketstuff.yui.YuiHeaderContributor;
 import org.wicketstuff.yui.YuiImage;
+import org.wicketstuff.yui.helper.CSSInlineStyle;
 
 /**
  * 
@@ -52,9 +52,9 @@ public class SortBox extends Panel {
 						@Override
 						public Object getObject() {
 							if (name.equals("dd")) {
-								List<InlineStyle> aInlineStyleList = settings
+								List<CSSInlineStyle> aInlineStyleList = settings
 										.getImgStyleList();
-								InlineStyle aInlineStyle = aInlineStyleList
+								CSSInlineStyle aInlineStyle = aInlineStyleList
 										.get(count);
 								return aInlineStyle.getStyle();
 							} else {

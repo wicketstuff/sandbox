@@ -32,6 +32,15 @@ public class JSArray extends TokenSeparatedValues implements JavascriptObject
 	}
 
 	/**
+	 * constructor for a list of array
+	 * @param array
+	 */
+	public JSArray(List<String> array)
+	{
+		values.addAll(array);
+	}
+	
+	/**
 	 * 
 	 * @param string
 	 */

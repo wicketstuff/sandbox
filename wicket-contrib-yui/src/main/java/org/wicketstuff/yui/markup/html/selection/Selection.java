@@ -16,11 +16,11 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.util.template.PackagedTextTemplate;
-import org.wicketstuff.yui.InlineStyle;
 import org.wicketstuff.yui.YuiAttribute;
 import org.wicketstuff.yui.YuiHeaderContributor;
 import org.wicketstuff.yui.YuiImage;
 import org.wicketstuff.yui.YuiTextBox;
+import org.wicketstuff.yui.helper.CSSInlineStyle;
 
 public class Selection extends Panel {
     
@@ -45,11 +45,11 @@ public class Selection extends Panel {
 
 						@Override
 						public Object getObject() {
-							List<InlineStyle> aInlineStyleList = settings
-									.getInlineStyleList();
-							InlineStyle aInlineStyle = aInlineStyleList
+							List<CSSInlineStyle> aCSSInlineStyleList = settings
+									.getCSSInlineStyleList();
+							CSSInlineStyle aCSSInlineStyle = aCSSInlineStyleList
 									.get(imageId);
-							return aInlineStyle.getStyle();
+							return aCSSInlineStyle.getStyle();
 						}
 					}));
 		}

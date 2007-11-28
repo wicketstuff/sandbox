@@ -1,4 +1,4 @@
-package org.wicketstuff.yui;
+package org.wicketstuff.yui.helper;
 
 import java.io.InputStream;
 
