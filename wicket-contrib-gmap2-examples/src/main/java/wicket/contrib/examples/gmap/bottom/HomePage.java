@@ -91,38 +91,6 @@ public class HomePage extends WicketExamplePage {
 		center.setOutputMarkupId(true);
 		add(center);
 
-		final Label n = new Label("n", "N");
-		n.add(bottomMap.new PanDirectionBehavior("onclick", 0, 1));
-		add(n);
-
-		final Label ne = new Label("ne", "NE");
-		ne.add(bottomMap.new PanDirectionBehavior("onclick", -1, 1));
-		add(ne);
-
-		final Label e = new Label("e", "E");
-		e.add(bottomMap.new PanDirectionBehavior("onclick", -1, 0));
-		add(e);
-
-		final Label se = new Label("se", "SE");
-		se.add(bottomMap.new PanDirectionBehavior("onclick", -1, -1));
-		add(se);
-
-		final Label s = new Label("s", "S");
-		s.add(bottomMap.new PanDirectionBehavior("onclick", 0, -1));
-		add(s);
-
-		final Label sw = new Label("sw", "SW");
-		sw.add(bottomMap.new PanDirectionBehavior("onclick", 1, -1));
-		add(sw);
-
-		final Label w = new Label("w", "W");
-		w.add(bottomMap.new PanDirectionBehavior("onclick", 1, 0));
-		add(w);
-
-		final Label nw = new Label("nw", "NW");
-		nw.add(bottomMap.new PanDirectionBehavior("onclick", 1, 1));
-		add(nw);
-
 		final Label infoWindow = new Label("infoWindow", "openInfoWindow");
 		infoWindow.add(new AjaxEventBehavior("onclick") {
 			/**
