@@ -93,8 +93,8 @@ public class AnimationPage extends WicketExamplePage
 		WebMarkupContainer info;
 		add(info = new WebMarkupContainer("info"));
 
-		info.add(new ClickInfoAnimation("clickformore",OnEvent.click).add(new Effect(Effect.Type.BlindDown, delay)));
-		info.add(new ClickInfoAnimation("clickformore",OnEvent.click).add(new Effect(Effect.Type.BlindUp, 	delay)));
+		info.add(new Animation(OnEvent.click, "clickformore").add(new Effect(Effect.Type.BlindDown, delay)));
+		info.add(new Animation(OnEvent.click, "clickformore").add(new Effect(Effect.Type.BlindUp, 	delay)));
 	}
 	
 	/**
@@ -121,28 +121,5 @@ public class AnimationPage extends WicketExamplePage
 						.add(new Effect(effectType, attributes))
 						.add(new Effect(Effect.Type.Appear)));
 		return comp;
-	}
-
-	/**
-	 * my Animation Class for displaying the Info Div
-	 * @author josh
-	 *
-	 */
-	private class ClickInfoAnimation extends Animation
-	{
-		private String triggerId;
-		
-		public ClickInfoAnimation(String trigger_id, OnEvent onEvent)
-		{
-			super(onEvent);
-			this.triggerId = trigger_id;
-		}
-		
-		@Override
-		public String getTriggerId()
-		{
-			return this.triggerId;
-		}
-		
 	}
 }
