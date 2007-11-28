@@ -3,9 +3,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.wicketstuff.yui.examples.WicketExamplePage;
-import org.wicketstuff.yui.markup.html.thumbnail.AnimatedThumbnail;
-import org.wicketstuff.yui.markup.html.thumbnail.AnimatedThumbnailGallery;
-import org.wicketstuff.yui.markup.html.thumbnail.AnimatedThumbnailSettings;
+import org.wicketstuff.yui.markup.html.animation.thumbnail.AnimatedThumbnail;
+import org.wicketstuff.yui.markup.html.animation.thumbnail.AnimatedThumbnailGallery;
+import org.wicketstuff.yui.markup.html.animation.thumbnail.AnimatedThumbnailSettings;
 
 /**
  * Example on using Animation...
