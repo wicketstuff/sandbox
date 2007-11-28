@@ -5,7 +5,6 @@ import org.apache.wicket.markup.html.basic.Label;
 import wicket.contrib.examples.WicketExamplePage;
 import wicket.contrib.gmap.GMap2;
 import wicket.contrib.gmap.api.GControl;
-import wicket.contrib.gmap.api.GMarkerOptions;
 
 /**
  * Example HomePage for the wicket-contrib-gmap2 project

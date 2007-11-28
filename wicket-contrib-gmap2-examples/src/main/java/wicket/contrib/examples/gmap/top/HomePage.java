@@ -6,7 +6,6 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
 
 import wicket.contrib.examples.WicketExamplePage;
 import wicket.contrib.gmap.GMap2;
@@ -16,7 +15,6 @@ import wicket.contrib.gmap.api.GMarker;
 import wicket.contrib.gmap.api.GMarkerOptions;
 import wicket.contrib.gmap.api.GOverlay;
 import wicket.contrib.gmap.event.ClickListener;
-import wicket.contrib.gmap.event.MoveEndListener;
 
 /**
  * Example HomePage for the wicket-contrib-gmap2 project

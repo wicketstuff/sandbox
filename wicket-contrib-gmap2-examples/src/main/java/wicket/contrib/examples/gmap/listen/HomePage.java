@@ -6,9 +6,7 @@ import org.apache.wicket.model.PropertyModel;
 
 import wicket.contrib.examples.WicketExamplePage;
 import wicket.contrib.gmap.GMap2;
-import wicket.contrib.gmap.GMap2.SetZoomBehavior;
 import wicket.contrib.gmap.api.GControl;
-import wicket.contrib.gmap.api.GMarkerOptions;
 import wicket.contrib.gmap.event.MoveEndListener;
 
 /**
