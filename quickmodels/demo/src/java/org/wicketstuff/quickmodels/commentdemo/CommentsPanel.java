@@ -15,9 +15,9 @@ package org.wicketstuff.quickmodels.commentdemo;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
+import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.wicketstuff.quickmodels.DbPanel;
 import org.wicketstuff.quickmodels.PojoCollectionModel;
-import org.wicketstuff.quickmodels.PojoCollectionModelDataProvider;
 
 /**
  * Abstract base class for a Comments panel.  Subclassed in Home.java to
@@ -31,8 +31,7 @@ abstract class CommentsPanel extends DbPanel<Comment> {
         super (id);
         PojoCollectionModel<Comment> model = createModel();
         setModel (model);
-        PojoCollectionModelDataProvider<Comment> dataProvider = new 
-                PojoCollectionModelDataProvider (model);
+        IDataProvider dataProvider = model.createDataProvider();
         
         DataView view = new DataView ("repeater", dataProvider) {
             @Override

@@ -79,8 +79,7 @@ final class CommentsPanel extends DbPanel<Comment> {
   <pre>
         <font color="gray">//A data provider for repeaters which </font>
         <font color="gray">//works with a PojoCollectionModel</font>
-        PojoCollectionModelDataProvider&lt;Comment&gt; dataProvider = new 
-                PojoCollectionModelDataProvider (model);
+        IDataProvider dataProvider = model.createDataProvider();
         DataView view = new DataView (&quot;repeater&quot;, dataProvider) {
             protected void populateItem(Item item) {
                 <font color="gray">//All we need to do here is set </font>
