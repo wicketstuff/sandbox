@@ -562,7 +562,7 @@ public class GMap2 extends Panel
 
 		private int zoom;
 
-		public SetZoomBehavior(String event, final int zoom)
+		public SetZoomBehavior(final String event, final int zoom)
 		{
 			super(event);
 			this.zoom = zoom;
