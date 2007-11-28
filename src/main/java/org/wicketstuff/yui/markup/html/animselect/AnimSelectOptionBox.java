@@ -11,9 +11,9 @@ import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.util.template.PackagedTextTemplate;
-import org.wicketstuff.yui.InlineStyle;
 import org.wicketstuff.yui.YuiHeaderContributor;
 import org.wicketstuff.yui.YuiImage;
+import org.wicketstuff.yui.helper.CSSInlineStyle;
 
 /**
  * Represent each options
@@ -53,21 +53,21 @@ public class AnimSelectOptionBox extends Panel
 				public Object getObject()
 				{
 					if (name.equals("DefaultImg")) {
-						List<InlineStyle> aInlineStyleList = settings.getDefaultImgStyleList();
-						InlineStyle aInlineStyle = aInlineStyleList.get(0);
-						return aInlineStyle.getStyle();
+						List<CSSInlineStyle> aCSSInlineStyleList = settings.getDefaultImgStyleList();
+						CSSInlineStyle aCSSInlineStyle = aCSSInlineStyleList.get(0);
+						return aCSSInlineStyle.getStyle();
 					} else if (name.equals("DefaultImgOver")) {
-						List<InlineStyle> aInlineStyleList = settings.getDefaultImgOverStyleList();
-						InlineStyle aInlineStyle = aInlineStyleList.get(0);
-						return aInlineStyle.getStyle();
+						List<CSSInlineStyle> aCSSInlineStyleList = settings.getDefaultImgOverStyleList();
+						CSSInlineStyle aCSSInlineStyle = aCSSInlineStyleList.get(0);
+						return aCSSInlineStyle.getStyle();
 					} else if (name.equals("SelectedImg")) {
-						List<InlineStyle> aInlineStyleList = settings.getSelectedImgStyleList();
-						InlineStyle aInlineStyle = aInlineStyleList.get(0);
-						return aInlineStyle.getStyle();
+						List<CSSInlineStyle> aCSSInlineStyleList = settings.getSelectedImgStyleList();
+						CSSInlineStyle aCSSInlineStyle = aCSSInlineStyleList.get(0);
+						return aCSSInlineStyle.getStyle();
 					} else if (name.equals("SelectedImgOver")) {
-						List<InlineStyle> aInlineStyleList = settings.getSelectedImgOverStyleList();
-						InlineStyle aInlineStyle = aInlineStyleList.get(0);
-						return aInlineStyle.getStyle();
+						List<CSSInlineStyle> aCSSInlineStyleList = settings.getSelectedImgOverStyleList();
+						CSSInlineStyle aCSSInlineStyle = aCSSInlineStyleList.get(0);
+						return aCSSInlineStyle.getStyle();
 					} else {
 						return new String("");
 					}

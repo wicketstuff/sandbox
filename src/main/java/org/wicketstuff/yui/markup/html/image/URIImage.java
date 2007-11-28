@@ -1,4 +1,4 @@
-package org.wicketstuff.yui.markup.html.thumbnail;
+package org.wicketstuff.yui.markup.html.image;
 
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.image.ContextImage;

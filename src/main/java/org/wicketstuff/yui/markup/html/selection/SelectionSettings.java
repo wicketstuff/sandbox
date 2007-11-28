@@ -10,12 +10,12 @@ import java.util.Set;
 import org.apache.wicket.RequestCycle;
 import org.apache.wicket.ResourceReference;
 
-import org.wicketstuff.yui.ImageResourceInfo;
-import org.wicketstuff.yui.InlineStyle;
 import org.wicketstuff.yui.YuiAttribute;
 import org.wicketstuff.yui.YuiImage;
 import org.wicketstuff.yui.YuiProperty;
 import org.wicketstuff.yui.YuiTextBox;
+import org.wicketstuff.yui.helper.ImageResourceInfo;
+import org.wicketstuff.yui.helper.CSSInlineStyle;
 
 public class SelectionSettings implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -78,7 +78,7 @@ public class SelectionSettings implements Serializable {
 
 	private int height;
 
-	private List<InlineStyle> inlineStyleList = new ArrayList<InlineStyle>();
+	private List<CSSInlineStyle> CSSInlineStyleList = new ArrayList<CSSInlineStyle>();
 
 	private List list;
 
@@ -116,8 +116,8 @@ public class SelectionSettings implements Serializable {
 		return height;
 	}
 
-	public List<InlineStyle> getInlineStyleList() {
-		return inlineStyleList;
+	public List<CSSInlineStyle> getCSSInlineStyleList() {
+		return CSSInlineStyleList;
 	}
 
 	public List getList() {
@@ -180,12 +180,12 @@ public class SelectionSettings implements Serializable {
 				int width = backgroundInfo.getWidth();
 				int height = backgroundInfo.getHeight();
 
-				InlineStyle aInlineStyle = new InlineStyle();
+				CSSInlineStyle aCSSInlineStyle = new CSSInlineStyle();
 
-				aInlineStyle.add("background", "url("
+				aCSSInlineStyle.add("background", "url("
 						+ RequestCycle.get().urlFor(aResourceReference) + ")");
-				aInlineStyle.add("width", width + "px");
-				aInlineStyle.add("height", height + "px");
+				aCSSInlineStyle.add("width", width + "px");
+				aCSSInlineStyle.add("height", height + "px");
 
 				Map propertyMap = yuiAttribute.getPropertyMap();
 				Set keySet = propertyMap.keySet();
@@ -194,18 +194,18 @@ public class SelectionSettings implements Serializable {
 					String aKey = (String) iter.next();
 					YuiProperty aYuiProperty = (YuiProperty) propertyMap
 							.get(aKey);
-					aInlineStyle.add("border", "solid "
+					aCSSInlineStyle.add("border", "solid "
 							+ removeQuote(aYuiProperty.getFrom()));
 				}
-				inlineStyleList.add(aInlineStyle);
+				CSSInlineStyleList.add(aCSSInlineStyle);
 			} else {
 				YuiTextBox aTextBox = (YuiTextBox) list.get(i);
 
-				InlineStyle aInlineStyle = new InlineStyle();
+				CSSInlineStyle aCSSInlineStyle = new CSSInlineStyle();
 
-				aInlineStyle.add("background", aTextBox.getBackground());
-				aInlineStyle.add("width", aTextBox.getWidth() + "px");
-				aInlineStyle.add("height", aTextBox.getHeight() + "px");
+				aCSSInlineStyle.add("background", aTextBox.getBackground());
+				aCSSInlineStyle.add("width", aTextBox.getWidth() + "px");
+				aCSSInlineStyle.add("height", aTextBox.getHeight() + "px");
 
 				Map propertyMap = yuiAttribute.getPropertyMap();
 				Set keySet = propertyMap.keySet();
@@ -214,16 +214,16 @@ public class SelectionSettings implements Serializable {
 					String aKey = (String) iter.next();
 					YuiProperty aYuiProperty = (YuiProperty) propertyMap
 							.get(aKey);
-					aInlineStyle.add("border", "solid "
+					aCSSInlineStyle.add("border", "solid "
 							+ removeQuote(aYuiProperty.getFrom()));
 				}
-				inlineStyleList.add(aInlineStyle);
+				CSSInlineStyleList.add(aCSSInlineStyle);
 			}
 		}
 	}
 
-	public void setInlineStyleList(List<InlineStyle> inlineStyleList) {
-		this.inlineStyleList = inlineStyleList;
+	public void setCSSInlineStyleList(List<CSSInlineStyle> CSSInlineStyleList) {
+		this.CSSInlineStyleList = CSSInlineStyleList;
 	}
 
 	public void setList(List list) {
