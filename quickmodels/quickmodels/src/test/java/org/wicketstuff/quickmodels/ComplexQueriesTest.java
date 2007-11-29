@@ -97,7 +97,6 @@ public class ComplexQueriesTest extends TestCase {
         
     }
      */ 
-    
     public void sanityCheck() throws Exception {
         System.out.println("sanityCheck");
         Collection<A> c = db.getPersistenceUtils().fetchAllOfType(A.class);
@@ -252,21 +251,29 @@ public class ComplexQueriesTest extends TestCase {
         System.out.println("testSimpleCompoundAnd exit");
         System.out.println("testSimpleCompoundOrNegated exit");
     }
-    /*
+
     public void testComplexCompoundAnd() throws Exception {
         System.out.println("testComplexCompoundAnd");
+//        oneA = new A ("oneA", true, 1, 1, "one", "A");
+//        oneB = new A ("oneB", true, 1, 2, "one", "A");
 //        oneA1 = new A ("oneA1", false, 1, 3, "foo", "A");
+//        oneA2 = new A ("oneA2", false, 2, 4, "one", "B");
+        //Name must be oneA
         FieldQueryElement nameDesc = new FieldQueryElement("name", String.class, "oneA", false);
+        //intval must be 1
         FieldQueryElement intValDesc = new FieldQueryElement("b.c.intval", Integer.TYPE, new Integer(1), false);
-        FieldQueryElement longValDesc = new FieldQueryElement("b.c.longval", Long.TYPE, new Long(3L), false);
-        FieldQueryElement boolValDesc = new FieldQueryElement("b.c.boolval", Boolean.TYPE, new Boolean(false), false);
+        //longVal must be 1
+        FieldQueryElement longValDesc = new FieldQueryElement("b.c.longval", Long.TYPE, new Long(1L), false);
+        //boolVal must be false
+        FieldQueryElement boolValDesc = new FieldQueryElement("b.c.boolval", Boolean.TYPE, new Boolean(true), false);
+        //otherString must be A
         FieldQueryElement otherStringDesc = new FieldQueryElement("otherString", String.class, "A", false);
         
         QueryElement compound = nameDesc.and(intValDesc).and(longValDesc).and(boolValDesc).and(otherStringDesc);
         System.out.println("COMPOUND IS " + compound);
         Collection<A> c = utils.fetchByComplexQuery(A.class, compound);
         assertEquals ("Bad result: " + c, 1, c.size());
-        assertTrue (c.contains(oneA1));
+        assertTrue (c.contains(oneA));
 
         Collection<PersistenceFacade<A>> mdls = db.getFacadeFactory().forComplexQuery(A.class, compound, null, null, null);
         assertEquals (c.size(), mdls.size());
@@ -277,8 +284,7 @@ public class ComplexQueriesTest extends TestCase {
         assertEquals (c.size(), mmdl.get().size());
         System.out.println("testComplexCompoundAnd exit");
     }
-     */ 
-    
+ 
     public void testComplexCompoundOr() throws Exception {
         System.out.println("testComplexCompoundOr");
         FieldQueryElement stringValDesc = new FieldQueryElement("b.stringVal", String.class, "foo", false);
