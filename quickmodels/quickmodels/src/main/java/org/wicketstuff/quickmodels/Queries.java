@@ -1,12 +1,15 @@
-/*
- * Queries.java
- * 
- * Created on Aug 3, 2007, 6:52:43 PM
- * 
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/* Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
-
 package org.wicketstuff.quickmodels;
 
 import java.util.Arrays;
@@ -43,7 +46,7 @@ public enum Queries {
      * returns a collection of objects
      */
     CUSTOM_QUERY(
-        QueryFields.TYPE, QueryFields.CUSTOM_QUERY), 
+        QueryFields.CUSTOM_QUERY), 
     /**
      * Query that returns objects which match a prototype object that has
      * some fields set
@@ -75,7 +78,7 @@ public enum Queries {
      * get a model from its single() or multi() methods.
      */
     UUID(
-        QueryFields.UUID), 
+        QueryFields.TYPE, QueryFields.UUID), 
     /**
      * Creates queries which look up objects by long unique id.  You must
      * call setUid() or setUids() on the resulting builder before trying to
