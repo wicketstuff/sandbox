@@ -7,6 +7,10 @@ import org.apache.wicket.Component;
 import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.wicketstuff.yui.behavior.Anim;
+import org.wicketstuff.yui.behavior.AnimEffect;
+import org.wicketstuff.yui.behavior.Attributes;
+import org.wicketstuff.yui.behavior.Easing;
 import org.wicketstuff.yui.examples.WicketExamplePage;
 import org.wicketstuff.yui.markup.html.animation.thumbnail.AnimatedThumbnail;
 import org.wicketstuff.yui.markup.html.animation.thumbnail.AnimatedThumbnailSettings;
@@ -38,17 +42,54 @@ public class AnimationPage3 extends WicketExamplePage
 		add(ellipsePanel = new EllipsePanel("ep1", new ThumbnailProvider())
 		{
 			@Override
-			public Component newEllipseItem(String id, Object object)
+			public Component newEllipseItem(String id, IModel model, int left, int top)
 			{
-				AnimatedThumbnailSettings settings = (AnimatedThumbnailSettings)object;
+				AnimatedThumbnailSettings settings = (AnimatedThumbnailSettings) model.getObject();
 				settings.setThumbnailDimension(getItemWidth(), getItemHeight());
 				settings.setPictureDimension(PIC_WIDTH, PIC_HEIGHT);
-				settings.setPicturePosition(PIC_LEFT, PIC_TOP);
-				return new AnimatedThumbnail(id, settings);
+				settings.setPicturePosition(PIC_LEFT - left, PIC_TOP - top);
+				return new MyAnimatedThumbnail(id, settings);
 			}
 		});
-		ellipsePanel.setDimension(PANEL_WIDTH, PANEL_HEIGHT);
-		ellipsePanel.setItemDimension(ITEM_WIDTH, ITEM_HEIGHT);
+		ellipsePanel.setDimension(PANEL_WIDTH, PANEL_HEIGHT, ITEM_WIDTH, ITEM_HEIGHT);
+	}
+	
+	
+	@SuppressWarnings("unused")
+	private class MyAnimatedThumbnail extends AnimatedThumbnail
+	{
+		public MyAnimatedThumbnail(String id, AnimatedThumbnailSettings settings)
+		{
+			super(id, settings);
+		}
+		
+		@Override
+		public AnimEffect onselectEffect()
+		{
+			Attributes attributes = new Attributes();
+			attributes.add(SHOW_ATTRIBUTE);
+			attributes.add(new Attributes("width", 0, getSettings().getPictureWidth()));
+			attributes.add(new Attributes("height", 0, getSettings().getPictureHeight()));
+			attributes.add(new Attributes("left", 0, getSettings().getPictureLeft()));
+			attributes.add(new Attributes("top", 0, getSettings().getPictureTop()));
+			attributes.add(new Attributes("opacity", 0, 1));
+			
+			return new Anim(AnimEffect.Type.Anim, attributes, 1, Easing.bounceIn);	
+		}
+		
+		@Override
+		public AnimEffect onunselectEffect()
+		{
+			Attributes attributes = new Attributes();
+			attributes.add(HIDE_ATTRIBUTE);
+			attributes.add(new Attributes("width", getSettings().getPictureWidth(), 0));
+			attributes.add(new Attributes("height", getSettings().getPictureHeight(), 0));
+			attributes.add(new Attributes("left", getSettings().getPictureLeft(), 0));
+			attributes.add(new Attributes("top", getSettings().getPictureTop(), 0));
+			attributes.add(new Attributes("opacity", 0.5f, 0f));
+			
+			return new Anim(AnimEffect.Type.Anim, attributes, 1, Easing.bounceOut);
+		}
 	}
 	
 	/**

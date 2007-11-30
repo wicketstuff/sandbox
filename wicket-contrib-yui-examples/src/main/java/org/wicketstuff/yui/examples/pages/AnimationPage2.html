@@ -6,63 +6,66 @@
 	<link rel="stylesheet" type="text/css" href="style.css">
 	<style>
 	
-	#gallery DIV.AnimatedThumbnail DIV.Caption 
-    {
-       font-family : "Arial";
-       color       : #222222;
-       font-size   : 12pt;
-       font-weight : bold;
-       line-height : 18pt;
-       background-color : #EEEEEE !important;
-    }
-    
-	#gallery DIV.Picture 
-	{
-	   background-color : #EEEEEE;
-	}
-	
-	#gallery DIV.Picture IMG
-    {
-	   /*
-	    uncomment this to stretch the image
-		this will cause the img to be distorted...
+	/* THUMBNAIL 1 */
 		
-	   width : 100%;
-       height : 100%;
-	   */
-    }
-    
-    #thumbnail DIV.AnimatedThumbnail DIV.Caption 
+	#thumbnail1 .AnimatedItem 
 	{
-	   font-family : "Times New Roman";
-	   color       : #FFFFFF;
-	   font-size   : 14px;
-	   line-height : 18pt;
-	   font-weight : bold;
-	   background-color : #333333 !important;
+		float : left;
 	}
 	
+	#thumbnail1 .AnimatedItem,
+	#thumbnail1 .AnimatedItem .OnloadItem,
+	#thumbnail1 .AnimatedItem .MouseoverItem,
+	#thumbnail1 .AnimatedItem .OnclickItem
+	{
+		border : 0px dashed #CCCCCC;
+		width  : 150px;
+		height : 150px;
+	}
+			
+	#thumbnail1 IMG 
+	{
+		width : 100%;
+		height : 100%;
+	}
+	
+	/* THUMBNAIL 2 */
+	
+	#thumbnail2 
+	{ 
+		position : relative;
+	}
+		
+	#thumbnail2 .AnimatedItem .MouseoverItem
+	{
+		font-size		: 8pt;
+		line-height		: 10pt;
+		color 			: #FFFFFF;
+		background-color: #CCCCCC;
+		text-align		: center;
+	}
 	</style>
 </head>
 <body>
     <span wicket:id="mainNavigation" />
-
     <br/>  
-	<table border="1" cellpadding="2" cellspacing="2">
-	    <tr>
-	        <td valign="top" id="gallery">
-	            Example : Animated Thumbnail Gallery
-			    <div wicket:id ="gallery">
-			        [Thumbnail Gallery]
-			    </div>
-	        </td>
-	        <td valign="top" align="center" id="thumbnail">
-	           Example : Animated Thumbnail
-	           <div wicket:id="thumbnail">
-	                [Thumbnail]
-	            </div>
-	        </td>
-	    </tr>
-	</table>
+
+	<div id="thumbnail1" wicket:id="thumbnail1">
+		[Thumbnail]
+	</div>
+	Example : Animated Thumbnail 1 <br/>
+	this abstract class needs more Effects to make it more interesting. But this component is basically
+	a 3 panels overlaying each other and with 4 different effects. See the next example to see how 
+	a component can extend this class and add more effects.
+    <br/>  
+    <br/> 
+        <br/>  
+    <br/> 
+        <br/>  
+    <br/>  
+	Example : Animated Thumbnail 2
+	<div id="thumbnail2" wicket:id="thumbnail2">
+		[Thumbnail]
+	</div>  
 </body>
 </html>
