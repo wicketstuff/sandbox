@@ -1,63 +1,16 @@
 /*
- * CSS for Animated Thumbanil
+ * Customise the CSS for AnimatedItem to suit my class AnimatedThumbnail
  */
-DIV.AnimatedThumbnailContainer
+.AnimatedItem
 {
-    display : table-cell;
-}
- 
-DIV.AnimatedThumbnail
-{
-    position : relative;
+	z-index : 0;
 }
 
-DIV.AnimatedThumbnail IMG.Thumbnail 
-{
-    position : relative;
-	z-index  : 2;
-	border   : 0px solid #FF0000;
-	cursor   : pointer;
+.AnimatedItem .MouseoverItem,
+.AnimatedItem .OnclickItem,
+.AnimatedItem .OnloadItem
+{	
+	width 	: 0px;
+	height 	: 0px;
+	border  : 0px dashed #CCCCCC;
 }
-
-DIV.AnimatedThumbnail DIV.Caption 
-{
-    position    : absolute;
-	width       : 0px;
-	height      : 0px;
-    border      : 0px dashed #888888;
-    overflow    : hidden;
-	text-align  : center;
-	cursor      : pointer;
-	left        : 0;
-	top         : 0;
-}
-
-DIV.Picture 
-{
-    position : absolute;
-	overflow : hidden;
-	width    : 0px;
-	height   : 0px;
-	padding  : 0px;
-	margin   : 0px;
-	z-index  : 2;
-	background-color : #EEEEEE;
-	border-style : solid;
-	border-color : #DDDDDD;
-    border-width : 0px;
-    text-align : center;
-}
-
-DIV.Picture Table 
-{
-    width : 100%;
-	height : 100%;
-	text-align : center;
-}
-
-DIV.Picture TABLE img
-{
-	vertical-align : middle;
-    cursor : pointer;
-}
-

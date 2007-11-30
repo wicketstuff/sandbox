@@ -3,6 +3,7 @@ package org.wicketstuff.yui.markup.html.animation.thumbnail;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.behavior.HeaderContributor;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -67,7 +68,7 @@ public class AnimatedThumbnailGallery extends Panel
 	 * @param cols
 	 */
 	@SuppressWarnings("serial")
-	private void init(IDataProvider provider, int cols, int rows)
+	private void init(IDataProvider provider, final int cols, final int rows)
 	{
 		add(HeaderContributor.forCss(AnimatedThumbnailGallery.class, "AnimatedThumbnailGallery.css"));
 		GridView view;
@@ -82,16 +83,30 @@ public class AnimatedThumbnailGallery extends Panel
 			@Override
 			protected void populateItem(Item item)
 			{
+				int index = item.getIndex();
 				AnimatedThumbnailSettings settings = (AnimatedThumbnailSettings)item.getModelObject();
-				settings.setThumbnailWidth(thumbnailWidth);
-				settings.setThumbnailHeight(thumbnailHeight);
-				settings.setPictureWidth(pictureWidth);
-				settings.setPictureHeight(pictureHeight);
-				item.add(new AnimatedThumbnail("animatedThumbnail", settings));
+				settings.setThumbnailDimension(thumbnailWidth, thumbnailHeight);
+				settings.setPictureDimension(pictureWidth, pictureHeight);
+				settings.setPicturePosition(getPositionLeft(index, cols), getPositionTop(index, cols));
+				item.add(new AnimatedThumbnail("animatedThumbnail", settings)
+							.add(new AttributeAppender("style", true, 
+										new Model("width:"+thumbnailWidth+";height:"+thumbnailHeight+";"),"")));
 			}
 		});
 		view.setColumns(cols);
 		view.setRows(rows);
+	}
+
+	private int getPositionLeft(int index, int cols)
+	{
+		int offset_w = index % cols;
+		return (0 - (offset_w * thumbnailWidth)) + (cols * thumbnailWidth);
+	}
+	
+	protected int getPositionTop(int index, int cols)
+	{
+		int offset_h = index / cols; 
+		return (0 - (offset_h * thumbnailHeight));
 	}
 
 	public void setThumbnailSize(int tn_width, int tn_height)

@@ -101,6 +101,28 @@ public class Attributes extends JSObject<Attributes>
 	}
 	
 	/**
+	 * 
+	 * @param element
+	 * @param from
+	 * @param to
+	 */
+	public Attributes(String element, int from, int to)
+	{
+		this.add(element, new Attributes("from", from, "to", to));
+	}
+
+	/**
+	 * 
+	 * @param element
+	 * @param from
+	 * @param to
+	 */
+	public Attributes(String element, float from, float to)
+	{
+		this.add(element, new Attributes("from", from, "to", to));
+	}
+
+	/**
 	 * allow adding of int values
 	 * @param element
 	 * @param int_value
