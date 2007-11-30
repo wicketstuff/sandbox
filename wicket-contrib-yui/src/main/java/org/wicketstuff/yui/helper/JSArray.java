@@ -41,6 +41,17 @@ public class JSArray extends TokenSeparatedValues implements JavascriptObject
 	}
 	
 	/**
+	 * @param int_values
+	 */
+	public JSArray(int ... int_values)
+	{
+		for (int a_int : int_values)
+		{
+			values.add(Integer.toString(a_int));
+		}
+	}
+
+	/**
 	 * 
 	 * @param string
 	 */

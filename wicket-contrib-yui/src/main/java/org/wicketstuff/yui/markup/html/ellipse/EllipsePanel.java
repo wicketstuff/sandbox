@@ -9,11 +9,12 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.AbstractReadOnlyModel;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.wicketstuff.yui.helper.CSSInlineStyle;
 
 /**
- * a Panel that can layout it's child in an Ellipse. 
+ * a Panel that can layout it's child in an Ellipse.
  * 
  * @author josh
  *
@@ -40,7 +41,6 @@ public abstract class EllipsePanel extends Panel
 	{
 		super(id);
 		add(HeaderContributor.forCss(EllipsePanel.class, "EllipsePanel.css"));
-		
 		this.ellipseHelper = new EllipseHelper(provider.size());
 	
 		WebMarkupContainer panel;
@@ -62,67 +62,59 @@ public abstract class EllipsePanel extends Panel
 			@Override
 			protected void populateItem(Item item)
 			{
+				int index = item.getIndex();
+				int left = ellipseHelper.getLeft(index);
+				int top = ellipseHelper.getTop(index);
 				Component child;
-				item.add(child = newEllipseItem("item", item.getModelObject()));
+				item.add(child = newEllipseItem("item", item.getModel(), left, top));
+				child.add(new AttributeAppender("style", true, new Model("left:"+left+";top:"+top+";"), ""));
+				child.add(new AttributeAppender("style", true, new Model(getItemDimention()), ""));
 				item.setRenderBodyOnly(true);
-				child.add(new AttributeAppender("style", true, new Model(getPosition(item.getIndex())), ""));
-				child.add(new AttributeAppender("style", true, new Model(getDimention()), ""));
+
 			}
 		});
 	}
 	
 	/**
-	 * 
+	 * the Dimension of an Item in this Ellipse
 	 * @return
 	 */
-	private String getDimention()
+	protected String getItemDimention()
 	{
 		CSSInlineStyle dimension = new CSSInlineStyle();
-		dimension.add("width", getWidth());
-		dimension.add("height", getHeight());
+		dimension.add("width", getItemWidth());
+		dimension.add("height", getItemHeight());
 		return dimension.toString();
 	}
-	
-	/**
-	 * 
-	 * @param index
-	 * @return
-	 */
-	public String getPosition(int index)
-	{
-		this.ellipseHelper.setWidth(getWidth() - getItemWidth());
-		this.ellipseHelper.setHeight(getHeight() - getItemHeight());
-		
-		CSSInlineStyle position = new CSSInlineStyle();
-		position.add("top", "0");
-		position.add("left", "0");
-		position.add("padding-top", this.ellipseHelper.getTop(index));
-		position.add("padding-left", this.ellipseHelper.getLeft(index));
-		return position.toString();
-	}
-	
-	public abstract Component newEllipseItem(String id, Object modelObject);
 
 	/**
-	 * the dimension of this Panel
+	 * this is the factory method that returns the Component to be added
+	 * at the position "left" and "top" in the ellipse
+	 * 
+	 * @param id
+	 * @param model
+	 * @param left
+	 * @param top
+	 * @return
+	 */
+	public abstract Component newEllipseItem(String id, IModel model, int left, int top);
+
+	/**
+	 * the dimension of this Panel and its items
+	 * 
 	 * @param width
 	 * @param height
+	 * @param item_height 
+	 * @param item_width 
 	 */
-	public void setDimension(int width, int height)
+	public void setDimension(int width, int height, int item_width, int item_height)
 	{
 		setWidth(width);
 		setHeight(height);
-	}
-
-	/**
-	 * the dimension of the item within the Ellipse
-	 * @param width
-	 * @param height
-	 */
-	public void setItemDimension(int width, int height)
-	{
-		setItemWidth(width);
-		setItemHeight(height);
+		setItemWidth(item_width);
+		setItemHeight(item_height);
+		getEllipseHelper().setWidth(width - item_width);
+		getEllipseHelper().setHeight(height - item_height);
 	}
 
 	public int getWidth()
@@ -163,5 +155,15 @@ public abstract class EllipsePanel extends Panel
 	public void setItemHeight(int itemHeight)
 	{
 		this.itemHeight = itemHeight;
+	}
+	
+	public EllipseHelper getEllipseHelper()
+	{
+		return ellipseHelper;
+	}
+
+	public void setEllipseHelper(EllipseHelper ellipseHelper)
+	{
+		this.ellipseHelper = ellipseHelper;
 	}
 }

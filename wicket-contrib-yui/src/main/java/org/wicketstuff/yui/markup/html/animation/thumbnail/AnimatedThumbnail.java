@@ -3,20 +3,14 @@ package org.wicketstuff.yui.markup.html.animation.thumbnail;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.behavior.HeaderContributor;
-import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
-import org.apache.wicket.model.Model;
 import org.wicketstuff.yui.behavior.Anim;
 import org.wicketstuff.yui.behavior.AnimEffect;
-import org.wicketstuff.yui.behavior.Animation;
 import org.wicketstuff.yui.behavior.Attributes;
 import org.wicketstuff.yui.behavior.Easing;
-import org.wicketstuff.yui.behavior.OnEvent;
 import org.wicketstuff.yui.helper.CSSInlineStyle;
-import org.wicketstuff.yui.markup.html.image.URIImage;
-
+import org.wicketstuff.yui.markup.html.image.URIImagePanel;
 /**
  * This component shows a thumbnail image which will 
  * a) animate when the mouseover it with some caption
@@ -26,148 +20,107 @@ import org.wicketstuff.yui.markup.html.image.URIImage;
  *
  */
 @SuppressWarnings("serial")
-public class AnimatedThumbnail extends Panel 
+public class AnimatedThumbnail extends AnimatedItem 
 {
-	private static final long serialVersionUID = 1L;
-		
-	/**
-	 * the settings that control this AnimatedThumbnail object.
-	 */
 	private AnimatedThumbnailSettings settings;
-
-	private Component caption;
 	
-	private Component thumbnail;
-
-	private Component pictureImage;
-
-	/**
-	 * 
-	 * @param id
-	 * @param settings
-	 */
 	public AnimatedThumbnail(String id, AnimatedThumbnailSettings settings)
 	{
 		super(id);
-		add(HeaderContributor.forCss(AnimatedThumbnail.class, "AnimatedThumbnail.css"));
 		this.settings = settings;
-		
-		// Thumbnail
-		add(thumbnail = new URIImage("thumbnail", new Model(settings.getThumbnailURI())));
-		thumbnail.add(new StyleAttributeModifier());		
-		
-		// Caption
-		add(caption = new Label("caption", settings.getCaptionText()));
-		caption.add(animationOnMouseOverThumbnail());
-		caption.add(animationOnMouseOut());
-		caption.add(new StyleAttributeModifier());
-		
-		// picture
-		WebMarkupContainer picture = new WebMarkupContainer("picture");
-		picture.add(pictureImage = new URIImage("picture_image", new Model(settings.getPictureURI())));
-		picture.add(animationOnThumbnailClicked());
-		picture.add(animationOnPictureClicked());
-		add(picture);
+		add(HeaderContributor.forCss(AnimatedThumbnail.class, "AnimatedThumbnail.css"));
+		init();
 	}
 
-	/**
-	 * the Animation when mouse over the thumbnail
-	 * 
-	 * @return
+	/*
+	 * (non-Javadoc)
+	 * @see org.wicketstuff.yui.markup.html.animation.thumbnail.AnimatedItem#newMouseoverItem(java.lang.String)
 	 */
-	private Animation animationOnMouseOverThumbnail()
+	@Override
+	public Component newMouseoverItem(String id)
+	{
+		Component mouseover = new Label(id, getSettings().getCaptionText());
+		mouseover.add(new StyleSizeModifier());
+		return mouseover;
+	}
+
+	@Override
+	public AnimEffect mouseoverEffect()
 	{
 		Attributes attributes = new Attributes();
-		attributes
-		.add("zIndex", 			new Attributes("from", "1","to", "2"))
-		.add("backgroundColor", new Attributes("from", "#FFFFFF", "to", "#CCCCCC"))
-		.add("opacity", 		new Attributes("from", 0f, "to", getSettings().getOpacity()))
-		.add("height",			new Attributes("to", getSettings().getThumbnailHeight()))
-		.add("width", 			new Attributes("to", getSettings().getThumbnailWidth()));
-		
-		if (getSettings().getFontSize() > 0)
-		{
-			attributes.add("fontSize", new Attributes("from", 0, "to", getSettings().getFontSize()));
-		}
-		
-		if (getSettings().getFontFamily() != null)
-		{
-			attributes.add("fontFamily", new Attributes("to", getSettings().getFontFamily()));
-		}
-		
-		if (getSettings().getColor() != null)
-		{
-			attributes.add("color",  new Attributes("to", getSettings().getColor()));
-		}
-		
-		return new Animation(OnEvent.mouseover, this.thumbnail)
-		.add(new Anim(Anim.Type.ColorAnim, attributes, 0, Easing.bounceBoth));
-	}
-
-	/**
-	 * the Animation when the mouse out of the thumbnail
-	 * 
-	 * @return
-	 */
-	private Animation animationOnMouseOut()
-	{
-		Attributes attributes =   new Attributes();
-		attributes.add("opacity", new Attributes("from", getSettings().getOpacity(), "to", 0f));
-		attributes.add("zIndex",  new Attributes("from", "2", "to", "1"));
-	
-		return new Animation(OnEvent.mouseout, this.caption)
-		.add(new Anim(Anim.Type.Anim, attributes, 1, Easing.easeIn));
+		attributes.add(SHOW_ATTRIBUTE);
+		attributes.add(new Attributes("opacity", 0, getSettings().getOpacity()));
+		return new Anim(AnimEffect.Type.Anim, attributes, 0, Easing.easeNone);	
 	}
 	
-	/**
-	 * the Animation when this thumbnail is clicked.
-	 * 
-	 * @return
-	 */
-	private Animation animationOnThumbnailClicked()
+	@Override
+	public AnimEffect mouseoutEffect()
 	{
-		Attributes display = new Attributes();
-		display
-		.add("width", 		new Attributes("to", getSettings().getPictureWidth()).add("from", "0"))
-		.add("height", 		new Attributes("to", getSettings().getPictureHeight()).add("from", "0"))
-		.add("top", 		new Attributes("from", 0, "to", getSettings().getPictureTop()))
-		.add("left",		new Attributes("from", 0, "to", getSettings().getPictureLeft()))
-		.add("opacity", 	new Attributes("from",  0, "to", 1))
-		.add("borderWidth", new Attributes("from", getSettings().getOpacity(), "to", 2))
-		.add("zIndex", 		new Attributes("from", "9",    "to", "9"));
+		Attributes attributes = new Attributes();
+		attributes.add(HIDE_ATTRIBUTE);
+		attributes.add(new Attributes("opacity", getSettings().getOpacity(), 0f));
+		return new Anim(AnimEffect.Type.Anim, attributes, 1, Easing.easeNone);	
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.wicketstuff.yui.markup.html.animation.thumbnail.AnimatedItem#newOnclickItem(java.lang.String)
+	 */
+	@Override
+	public Component newOnclickItem(String id)
+	{
+		Component onclick = new URIImagePanel(id, getSettings().getPictureURI());
+		onclick.add(new StyleSizeModifier());
+		return onclick;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.wicketstuff.yui.markup.html.animation.thumbnail.AnimatedItem#onselectEffect()
+	 */
+	@Override
+	public AnimEffect onselectEffect()
+	{
+		Attributes attributes = new Attributes();
+		attributes.add(SHOW_ATTRIBUTE);
+		attributes.add(new Attributes("width", 0, getSettings().getPictureWidth()));
+		attributes.add(new Attributes("height", 0, getSettings().getPictureHeight()));
+		attributes.add(new Attributes("top", 0, getSettings().getPictureTop()));
+		attributes.add(new Attributes("left", 0, getSettings().getPictureLeft()));
 		
-		AnimEffect grow = new Anim(AnimEffect.Type.Anim, display, 1, Easing.easeNone);
-		return new Animation(OnEvent.click, this.caption)
-		.add(grow);
+		return new Anim(AnimEffect.Type.Anim, attributes, 1, Easing.easeNone);	
 	}
-
-	/**
-	 * the Animation when the picture is clicked
-	 * @return
-	 */
-	public Animation animationOnPictureClicked()
+	
+	@Override
+	public AnimEffect onunselectEffect()
 	{
-		Attributes hide = new Attributes();
-		hide
-		.add("width",	new Attributes("from", getSettings().getPictureWidth(), "to", 0))
-		.add("height", 	new Attributes("from", getSettings().getPictureHeight(), "to", 0))
-		.add("opacity", new Attributes("from", 1,"to", 0))
-		.add("top", 	new Attributes("to",  getSettings().getPictureHeight()))
-		.add("left",	new Attributes("to",  getSettings().getPictureWidth()))
-		.add("zIndex", 	new Attributes("from", 99, "to", 1));
-				
-		return new Animation(OnEvent.click, this.pictureImage)
-		.add(new Anim(Anim.Type.Anim, hide, 1, Easing.easeNone));
+		Attributes attributes = new Attributes();
+		attributes.add(HIDE_ATTRIBUTE);
+		attributes.add(new Attributes("width", getSettings().getPictureWidth(), 0));
+		attributes.add(new Attributes("height", getSettings().getPictureHeight(), 0));
+		return new Anim(AnimEffect.Type.Anim, attributes, 1, Easing.easeNone);	
 	}
-
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.wicketstuff.yui.markup.html.animation.thumbnail.AnimatedItem#newOnloadItem(java.lang.String)
+	 */
+	@Override
+	public Component newOnloadItem(String id)
+	{
+		Component onload = new URIImagePanel(id, getSettings().getThumbnailURI());
+		onload.add(new StyleSizeModifier());
+		return onload;
+	}
+	
 	/**
-	 * private class to add the styles for thumbnail and caption
+	 * Style modifier to modifier the width and height 
 	 * @author josh
 	 *
 	 */
-	private class StyleAttributeModifier extends AttributeModifier
+	private class StyleSizeModifier extends AttributeModifier
 	{
-		public StyleAttributeModifier()
+		public StyleSizeModifier()
 		{
 			super("style", true, new AbstractReadOnlyModel()
 			{
@@ -175,14 +128,14 @@ public class AnimatedThumbnail extends Panel
 				public Object getObject()
 				{
 					CSSInlineStyle style = new CSSInlineStyle();
-					style.add("width", getSettings().getThumbnailWidth());
-					style.add("height", getSettings().getThumbnailHeight());
+					style.add("width", getSettings().getThumbnailWidth() + "px");
+					style.add("height", getSettings().getThumbnailHeight() + "px");
 					return style.getStyle();
 				}
 			});
 		}
 	}
-
+	
 	public AnimatedThumbnailSettings getSettings()
 	{
 		return settings;

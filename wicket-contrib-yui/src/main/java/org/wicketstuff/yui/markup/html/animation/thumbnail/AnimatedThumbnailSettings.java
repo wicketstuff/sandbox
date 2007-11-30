@@ -230,4 +230,5 @@ public class AnimatedThumbnailSettings implements Serializable
 		setPictureLeft(left);
 		setPictureTop(top);
 	}
+
 }
