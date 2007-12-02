@@ -110,11 +110,9 @@ public class MFXDialog extends MFXDialogBase {
 		super.onBeforeRender();
 
 		abortLink.setVisible(false);
-		confirmLink.setVisible(false);
 
 		if (getDialogType() == MFXDialogTypes.CONFIRMATION) {
 			abortLink.setVisible(true);
-			confirmLink.setVisible(true);
 		}
 
 	}
