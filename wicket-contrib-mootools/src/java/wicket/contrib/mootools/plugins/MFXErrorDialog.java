@@ -16,6 +16,7 @@ public class MFXErrorDialog extends MFXDialog {
 		super(id, MFXDialogTypes.MESSAGE);
 		setTitle("Notice");
 		setBody("");
+		setConfirmButtonText("Okay!");
 		setFeedbackComponent(this);
 	}
 

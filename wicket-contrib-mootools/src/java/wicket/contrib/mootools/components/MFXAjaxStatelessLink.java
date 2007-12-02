@@ -16,29 +16,28 @@ public class MFXAjaxStatelessLink extends WebMarkupContainer implements MFXMooBi
 	private String domId;
 	private String url;
 	private MFXOptions options;
-	
-	
-	public MFXAjaxStatelessLink(String id, String component , Page page) {
+
+	public MFXAjaxStatelessLink(final String id, final String component, final Page page) {
 		super(id);
 		this.url = getResourceUrl(page);
 		this.domId = component;
 		setupLink();
 	}
-	
-	public MFXAjaxStatelessLink(String id, Component component, Page page) {
+
+	public MFXAjaxStatelessLink(final String id, final Component component, final Page page) {
 		super(id);
 		this.url = getResourceUrl(page);
 		this.domId = component.getMarkupId();
 		setupLink();
 	}
-	
-	public MFXAjaxStatelessLink(String id, String component, String url) {
+
+	public MFXAjaxStatelessLink(final String id, final String component, final String url) {
 		super(id);
 		this.domId = component;
 		this.url = url;
 		setupLink();
 	}
-	
+
 	private void setupLink() {
 		setOutputMarkupId(true);
 		add(new IncludeMooToolsStateless());
@@ -48,7 +47,7 @@ public class MFXAjaxStatelessLink extends WebMarkupContainer implements MFXMooBi
 	}
 
 	@Override
-	protected void onComponentTag(ComponentTag tag) {
+	protected void onComponentTag(final ComponentTag tag) {
 		super.onComponentTag(tag);
 		tag.put("href", "#");
 	}
@@ -56,22 +55,23 @@ public class MFXAjaxStatelessLink extends WebMarkupContainer implements MFXMooBi
 	@Override
 	protected void onAfterRender() {
 		super.onAfterRender();
-		MFXEvent e = new MFXEvent(MFXEvent.CLICK);
+		MFXEvent e = new MFXEvent(MFXEvent.EVENT.CLICK);
 		e.addAction(mooFunction());
 		e.setTarget(getMarkupId());
 		getResponse().write("<script>");
 		getResponse().write(e.mooFunction());
 		getResponse().write("</script>");
 	}
-	
-	private String getResourceUrl(Page page) {
+
+	private String getResourceUrl(final Page page) {
 		return RequestCycle.get().urlFor(page).toString();
 	}
 
 	/**
-	 * @param options the options to set
+	 * @param options
+	 *            the options to set
 	 */
-	public void setOptions(MFXOptions options) {
+	public void setOptions(final MFXOptions options) {
 		this.options = options;
 	}
 
@@ -83,6 +83,6 @@ public class MFXAjaxStatelessLink extends WebMarkupContainer implements MFXMooBi
 	}
 
 	public String mooFunction() {
-		return "new Ajax('"+url+"',"+options.writeOptions()+").request();";
+		return "new Ajax('" + url + "'," + options.writeOptions() + ").request();";
 	}
 }
