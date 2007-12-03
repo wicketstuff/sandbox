@@ -55,6 +55,7 @@ class PojoCollectionModelDataProvider<T> implements IDataProvider {
     private List <T> list;
     Map <T, PojoModel<T>> objs2mdls = new HashMap<T, PojoModel<T>>();
     private List <T> list() {
+        //PENDING:  This could be made more lazy
         if (list == null) {
             List <PojoModel<T>> sbs = mdl.get();
             list = new ArrayList<T>();
