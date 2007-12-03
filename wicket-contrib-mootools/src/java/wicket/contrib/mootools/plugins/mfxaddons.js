@@ -44,6 +44,69 @@ Logger.implement({
     }
 });
 
+var MFXDialog = new Class({
+	initialize: function(dialog) {
+		this.initialize(dialog,null);
+	},
+	initialize: function(dialog,logger) {
+		this.dialog = dialog;
+		if(logger == null) {
+			this.logger = new Logger();
+		} else {
+			this.logger = logger;
+		}
+	}
+});
+MFXDialog.implement({
+	makeScreenDark : function () {
+			var bg = new Element('div', {'style' : 
+				'z:index:98; display: block; position: absolute; top:0; left:0; background-color: #000; opacity: 0.4;',
+				'id':'mfxbg'});
+			bg.setStyle('width',Window.getScrollWidth()); 
+			bg.setStyle('height', Window.getScrollHeight());
+			bg.inject(document.body);
+	},
+	closeDialog: function () {
+    	try {
+    		var bg = $('mfxbg');
+    		bg.setStyle('display','none'); bg.remove();
+		} catch (err) {}
+		var win =  this.dialog;
+		win.setStyle('display','none');
+	},
+	showDialog : function () {
+		var win = this.dialog;
+		
+		var bar = win.getElementsBySelector('.MFXDialogBar')[0];
+		win.makeDraggable( { handle: bar, 
+		'onBeforeStart':  function() {win.setStyle('opacity',0.5); },  
+		'onComplete': function() { win.setStyle('opacity',1); }});
+		
+		if(window.ie == true) {
+			var winw = document.body.offsetWidth;
+			var winh = document.body.offsetHeight;
+		} else {
+			var winw = window.getWidth();
+			var winh = window.getHeight();
+		}
+		
+		win.setStyle('width','300px');
+		win.setStyle('left',(winw-300)/2)
+		win.setStyle('top',winh/2 + (window.getScrollTop() - 300) );
+		win.setStyle('margin-top',200);
+		
+		win.setStyle('display','block');
+		
+		var style = null;
+		if(MooTools.version == '1.11') {
+			style = new Fx.Style(win,'margin-top', { duration: 1000, transition: Fx.Transitions.backInOut });
+		} else {
+    		style = new Fx.Tween(win,'margin-top', { duration: 'long', transition: 'back:inOut' });
+		}
+		style.start(0,200);
+	}
+});
+
 
 var BoxFactory = new Class({
     initialize: function(picture,size, callback ) {

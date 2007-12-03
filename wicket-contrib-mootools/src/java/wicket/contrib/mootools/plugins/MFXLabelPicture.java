@@ -14,15 +14,13 @@ import org.apache.wicket.markup.MarkupStream;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.internal.HtmlHeaderContainer;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.markup.html.resources.CompressedResourceReference;
 
 import wicket.contrib.mootools.IncludeMooTools;
+import wicket.contrib.mootools.MFXJavascriptUtils;
 import wicket.contrib.mootools.events.MFXWindowLoad;
 
 public abstract class MFXLabelPicture extends Panel {
 	private static final long serialVersionUID = 1L;
-	private CompressedResourceReference MOOADDON = new CompressedResourceReference(MFXLabelPicture.class,
-			"mfxaddons.js");
 	private List<MFXLabel> labels = new ArrayList<MFXLabel>();
 	private Component comp;
 	private MFXWindowLoad winLoad;
@@ -124,7 +122,7 @@ public abstract class MFXLabelPicture extends Panel {
 		super(id);
 		this.labels = labels;
 		add(new IncludeMooTools());
-		add(HeaderContributor.forJavaScript(MOOADDON));
+		add(HeaderContributor.forJavaScript(MFXJavascriptUtils.getMooAddons()));
 		comp = getPicture("picture");
 		comp.setOutputMarkupId(true);
 		add(comp);

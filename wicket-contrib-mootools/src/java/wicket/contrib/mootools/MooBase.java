@@ -40,7 +40,7 @@ public class MooBase {
 	/**
 	 * Use the latest and greatest mootools
 	 */
-	public static boolean USE_MOOTOOLS_TRUNK = false;
+	public static boolean USE_MOOTOOLS_TRUNK = true;
 
 	/**
 	 * a Unique key to know if a CompressedResourceReference is set by the user
