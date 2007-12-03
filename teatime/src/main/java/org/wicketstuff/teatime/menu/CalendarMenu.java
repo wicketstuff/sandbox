@@ -1,4 +1,4 @@
-package org.wicketstuff.teatime;
+package org.wicketstuff.teatime.menu;
 
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.html.basic.Label;
@@ -10,6 +10,9 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.util.string.AppendingStringBuffer;
 import org.wicketstuff.teatime.HomePage;
+import org.wicketstuff.teatime.WicketApplication;
+import org.wicketstuff.teatime.logbot.StatusPage;
+import org.wicketstuff.teatime.secure.AdminPage;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -27,6 +30,8 @@ import java.util.*;
 public class CalendarMenu extends Panel {
     public CalendarMenu(String id) {
         super(id);
+        add(new BookmarkablePageLink("admin", AdminPage.class));
+        add(new BookmarkablePageLink("status", StatusPage.class));
         add(new BookmarkablePageLink("today", HomePage.class, new PageParameters("0=today")){
             protected CharSequence getURL() {
                 return new AppendingStringBuffer(super.getURL()).append("#now");

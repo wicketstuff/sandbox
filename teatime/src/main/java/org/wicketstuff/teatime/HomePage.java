@@ -4,13 +4,14 @@ import net.sf.ehcache.Cache;
 import net.sf.ehcache.Element;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.RestartResponseException;
-import org.wicketstuff.teatime.CalendarMenu;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.wicketstuff.teatime.WicketApplication;
+import org.wicketstuff.teatime.logbot.LogBotPanel;
+import org.wicketstuff.teatime.menu.CalendarMenu;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -20,7 +21,7 @@ import java.util.Date;
 /**
  * Homepage
  */
-public class HomePage extends WebPage {
+public class HomePage extends BasePage {
 
     private static final long serialVersionUID = 1L;
 
@@ -32,9 +33,12 @@ public class HomePage extends WebPage {
      * @param parameters Page parameters
      */
     public HomePage(final PageParameters parameters) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        CompoundPropertyModel model = new CompoundPropertyModel(this);
+    	super(parameters);
+
+		CompoundPropertyModel model = new CompoundPropertyModel(this);
         setModel(model);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
         String value = parameters.getString("0", "today");
         if ("today".equalsIgnoreCase(value)) {
@@ -47,12 +51,8 @@ public class HomePage extends WebPage {
             }
         }
         IModel dailyLog = new ChannelLogModel(sdf.format(selectedDate));
-        add(new Label("title"));
         add(new Label("logTitle", model.bind("title")));
         add(new Label("log", dailyLog).setEscapeModelStrings(false));
-        add(new CalendarMenu("menu").setRenderBodyOnly(true));
-
-
     }
     public String getTitle() {
         return "##wicket logs for " + getDate();
