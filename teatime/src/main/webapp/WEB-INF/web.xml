@@ -24,7 +24,7 @@
             <param-value>org.wicketstuff.teatime.WicketApplication</param-value>
         </init-param>
         <init-param>
-            <param-name>wicket.configuration</param-name>
+            <param-name>configuration</param-name>
             <param-value>deployment</param-value>
         </init-param>
         <!--
@@ -44,20 +44,37 @@
             <param-value>irc.freenode.net</param-value>
         </init-param>
         <init-param>
-            <param-name>irc.joinMessage</param-name>
-            <param-value>I'm logging this conversation...</param-value>
+            <param-name>irc.output</param-name>
+            <!-- 
+             -->
+            <param-value>/home/wicket/var/data/logbot</param-value>
+            <!-- 
+             <param-value>target/logbot</param-value>
+            -->
         </init-param>
         <init-param>
             <param-name>irc.nick</param-name>
-            <param-value>ChangeMe!?</param-value>
+            <param-value>Teh-ah-time-eh</param-value>
         </init-param>
         <init-param>
             <param-name>irc.channel</param-name>
-            <param-value>#test</param-value>
+            <param-value>##wicket</param-value>
         </init-param>
         <init-param>
             <param-name>irc.start</param-name>
-            <param-value>false</param-value>
+            <param-value>true</param-value>
+        </init-param>
+        <init-param>
+            <param-name>teatime.username</param-name>
+<!--
+            <param-value></param-value>
+-->
+        </init-param>
+        <init-param>
+            <param-name>teatime.password</param-name>
+<!--
+            <param-value></param-value>
+-->
         </init-param>
     </filter>
 
@@ -65,6 +82,4 @@
         <filter-name>wicket.teatime</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
-
-
 </web-app>
