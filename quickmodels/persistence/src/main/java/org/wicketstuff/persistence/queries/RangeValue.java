@@ -22,6 +22,12 @@ public final class RangeValue<T extends Number> {
     public final T start;
     public final T finish;
     public final Class<T> numberType;
+    /**
+     * Create a range from a starting to an ending number.
+     * @param start The starting value
+     * @param finish The ending value
+     * @param numberType The type of the number, such as Integer
+     */
     public RangeValue(T start, T finish, Class<T> numberType) {
         this.start = start;
         this.finish = finish;

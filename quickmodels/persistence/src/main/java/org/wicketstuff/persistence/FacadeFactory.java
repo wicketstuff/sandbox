@@ -29,6 +29,7 @@ import org.wicketstuff.persistence.queries.QueryElement;
  * PENDING:  Get rid of some of the silly overloads in this interface.<br/>
  * PENDING:  Would be nicer to wrap this and make it a final class - makes more
  * sense than interfaces in API.
+ * PENDING:  Change return types to be Collection, not List
  *
  * @author Tim Boudreau
  */
@@ -45,7 +46,7 @@ public interface FacadeFactory <ContainerType> {
      * Create an instance of <code>type</code> using the passed factory,
      * and return PersistenceFacade for that object.
      * @param type The object type
-     * @param factory A factory for objects of <code>type</code>
+     * @param factory Optional factory for objects of <code>type</code>
      * @return A facade that can manage the lifecycle of that object
      */
     <T> PersistenceFacade<T> forNew(Class<T> type,
@@ -281,10 +282,14 @@ public interface FacadeFactory <ContainerType> {
      <T> Collection<PersistenceFacade<T>> forComplexQuery(Class<T> type, QueryElement element, Comparator<T> comparator, LoadFailurePolicy policy, NewObjectFactory<T> factory);
 
     /**
+     * Run a custom query against the database - a DbJob that interacts
+     * directly with the native container and returns a collection of
+     * objects.
      *
-     * @param job
-     * @param arg
-     * @return
+     * @param job The code that will interact with the database
+     * @param arg Optional argument to the job's run method
+     * @return A collection of facades for the collection of objects
+     * found by the DbJob
      */
     <T, P> Collection<PersistenceFacade<T>> runCustomQuery (
             DbJob<ContainerType, Collection<T>, P> job, P arg);

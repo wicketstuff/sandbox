@@ -22,8 +22,29 @@ public final class FieldQueryElement<T> implements QueryElement {
     public final Class<T> type;
     public final Object value;
     public final boolean negated;
-    
+    /**
+     * Create a field query element, representing something you wish to match
+     * against a persisted object.
+     * @param name The name of the field (<i>not</i> getter method) on the
+     * class you are querying.  Note that this name may specify a field on
+     * a child object - i.e. <code>&quot;user.address.city&quot;</code> 
+     * specifies to find a field named user on the initial object, then
+     * an address field on that object, and a city field on the address
+     * object.
+     * @param type The type of the <i>field</i>, i.e. if the field is of
+     * type String, pass String.class here
+     * @param value The desired value you want to match.  This may be an 
+     * instance of the type passed in the type parameter, or it may be an 
+     * instance of one of the special value classes in this package, 
+     * RangeValue, StringContainsValue, StringStartsWithValue or 
+     * StringEndsWithValue
+     * @param negated Whether the query should be a logical NOT, finding all
+     * non-matches
+     */
     public FieldQueryElement(String name, Class<T> type, Object value, boolean negated) {
+        if (name == null) throw new NullPointerException("Name is null");
+        if (type == null) throw new NullPointerException("Type is null");
+        if (value == null) throw new NullPointerException("Value is null");
         this.name = name;
         this.type = type;
         this.value = value;

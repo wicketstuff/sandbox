@@ -83,7 +83,7 @@ public interface PersistenceUtils extends Serializable {
     /**
      * Get a unique, potetntially system-independent ID for an object.
      * @param o An object that has been persisted
-     * @return A unique id as a string
+     * @return A unique id as a string, or null if the object is not persisted
      */
     String getUuid(Object o);
     /**
@@ -140,6 +140,12 @@ public interface PersistenceUtils extends Serializable {
      * query terms
      */
     <T,P> List<T> fetchAllByQuery(Class<T> type, String fieldName, Class<P> fieldType, P fieldValue, Comparator<T> compare);
-    
+    /**
+     * Fetch a collection of objects that matches a complex query that may
+     * specify multiple object fields and values.
+     * @param expectedType The type of objects in the returned collection
+     * @param query The query
+     * @return A collection of objects of the passed type
+     */
     <T> Collection<T> fetchByComplexQuery (Class<T> expectedType, QueryElement<T> query);
 }

@@ -25,6 +25,18 @@ import java.io.Serializable;
  * @author Tim Boudreau
  */
 public interface QueryElement<T> extends Serializable {
+    /**
+     * Create a compound query element representing a logical OR 
+     * of this query element and the passed one..
+     * @param element The element to or with this one
+     * @return A compound query element
+     */
     public CompoundQueryElement<T> or(QueryElement element);
+    /**
+     * Create a compound query element representing a logical AND
+     * of this query element and the passed one..
+     * @param element The element to or with this one
+     * @return A compound query element
+     */
     public CompoundQueryElement<T> and(QueryElement element);
 }

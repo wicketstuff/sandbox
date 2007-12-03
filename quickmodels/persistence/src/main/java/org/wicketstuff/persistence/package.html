@@ -30,7 +30,7 @@ the License.
   <p/>
   In particular, <code>PersistenceFacade</code>s are useful for memory
   management - a <code>PersistenceFacade</code> is a serializable object which
-  can be hibernated into a state where it is only retaining an id for an
+  can be hibernated into a state where the facade only retains an id for the
   object in the database, not the object itself.  This is particularly useful
   for frameworks like Wicket which serialize objects for session replication - 
   this library makes it easy to serialize only an object's ID, not the object
@@ -55,7 +55,7 @@ the License.
   <p/>
   To get a <code>PersistenceFacade</code> for an object, simply call
   <pre>
-      someDatabase.getPersistenceFactory().*
+      someDatabase.getFacadeFactory().*
   </pre>
   There are a variety of methods on FacadeFactory for querying the database,
   creating new objects, etc...
