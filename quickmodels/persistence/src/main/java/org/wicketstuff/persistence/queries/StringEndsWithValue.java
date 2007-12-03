@@ -28,12 +28,4 @@ public final class StringEndsWithValue {
         this.text = text;
         this.ignoreCase = ignoreCase;
     }
-
-    public boolean match (String against) {
-        if (ignoreCase) {
-            return this.text.toUpperCase().indexOf(against.toUpperCase()) == 0;
-        } else {
-            return this.text.indexOf(against) == 0;
-        }
-    }
 }

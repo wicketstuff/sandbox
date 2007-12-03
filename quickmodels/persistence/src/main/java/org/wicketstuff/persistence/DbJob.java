@@ -17,7 +17,7 @@ package org.wicketstuff.persistence;
  * it is best if all implementations override <code>toString()</code> to
  * describe what is being done in the database.
  *
- * @see org.netbeans.libs.persistencefacade.FacadeFactory
+ * @see org.wicketstuff.persistence.FacadeFactory
  * 
  * @author Tim Boudreau
  */

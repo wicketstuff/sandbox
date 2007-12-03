@@ -13,6 +13,9 @@
 package org.wicketstuff.persistence;
 import org.wicketstuff.persistence.FetchStrategy.ObjectReceiver;
 /**
+ * Persistence facade implementation.  Mainly delegates to its current
+ * FetchStrategy, which is responsible for fetching and/or caching the
+ * object.
  *
  * @author Tim Boudreau
  */

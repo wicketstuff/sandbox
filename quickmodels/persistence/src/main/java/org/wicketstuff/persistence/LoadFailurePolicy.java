@@ -19,7 +19,16 @@ import java.io.Serializable;
  * @author Tim Boudreau
  */
 public enum LoadFailurePolicy implements Serializable {
+    /**
+     * Failure should result in null being returned, no exception thrown.
+     */
     RETURN_NULL_ON_FAILURE, 
+    /**
+     * Failure should trigger a LookupFailedException
+     */
     THROW_EXCEPTION_ON_FAILURE, 
+    /**
+     * If the query fails, create a new instance of the requested type
+     */
     CREATE_NEW_OBJECT_ON_FAILURE
 }
