@@ -217,7 +217,7 @@ public final class SecureComponentHelper
 	 */
 	public static String alias(Component component)
 	{
-		// might be usefull in wicket core itself
+		// might be useful in wicket core itself
 		if (component == null)
 			throw new SecurityException("Specified component is null");
 		Page page = null;
