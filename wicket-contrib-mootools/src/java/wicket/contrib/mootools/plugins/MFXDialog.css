@@ -15,29 +15,19 @@
 	display: block; 
 }
 
-.MFXDialogTitle {
+.MFXDialog p {
+	margin-top: 5px;	
+	font-family: Arial;
+	font-size: 14px;
+}
+
+.MFXDialogBar span {
 	color: #fff;
 	font-size: 14px;
+	font-family: Verdana;
 }
 
 .MFXDialog .confirmAbort {
 	text-align: right;
 	margin-right: 10px;
-}
-
-.MFXInput {
-	width: 220px;
-	height: 80px;
-}
-
-.MFXDialogContent {
-	margin-top: 10px;
-	margin-left: 10px;
-	margin-right: 10px;
-	text-align: left;
-	padding-bottom: 8px;
-}
-
-.MFXDialogContent span {
-	font-family: Verdana;
 }

@@ -3,25 +3,21 @@ package wicket.contrib.mootools.plugins;
 import org.apache.wicket.IClusterable;
 import org.apache.wicket.Page;
 import org.apache.wicket.ResourceReference;
-import org.apache.wicket.Session;
 import org.apache.wicket.behavior.HeaderContributor;
+import org.apache.wicket.markup.html.internal.HtmlHeaderContainer;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.html.resources.CompressedResourceReference;
-import org.apache.wicket.protocol.http.ClientProperties;
-import org.apache.wicket.protocol.http.request.WebClientInfo;
 
-import wicket.contrib.mootools.effects.MFXStyle;
-import wicket.contrib.mootools.effects.MFXTransition;
+import wicket.contrib.mootools.MFXJavascriptUtils;
 
 public abstract class MFXDialogBase extends Panel {
 	private static final long serialVersionUID = 1L;
 	private PageCreator pageCreator;
 	private int width;
-	private int height;
-	private String unit;
 	private String title;
 	private int offsetTop;
 	private String body;
+	private String domId;
 
 	private ResourceReference PLAINCSS = new CompressedResourceReference(MFXDialog.class, "MFXDialog.css");
 
@@ -29,11 +25,10 @@ public abstract class MFXDialogBase extends Panel {
 		super(id);
 
 		this.width = 300;
-		this.height = 0;
 		this.offsetTop = 300;
-		this.unit = "px";
 		this.title = "Modal Window";
 
+		add(HeaderContributor.forJavaScript(MFXJavascriptUtils.getMooAddons()));
 		add(HeaderContributor.forCss(PLAINCSS));
 	}
 
@@ -63,84 +58,32 @@ public abstract class MFXDialogBase extends Panel {
 		}
 	}
 
-	protected String genericOpenJavaScript(final String id, final String contentId) {
-		return genericOpenJavaScript(id, id, contentId);
+	@Override
+	public void renderHead(final HtmlHeaderContainer container) {
+		container.getResponse().write("<script type='text/javascript'>var dialog" + getDomId() + " = null;</script>");
+		super.renderHead(container);
 	}
 
-	protected String genericCloseWindowJavaScript(final String id) {
-		StringBuffer str = new StringBuffer();
-
-		if (getBlackScreen()) {
-			str.append("var bg = $('mfxbg');");
-			str.append("bg.setStyle('display','none'); bg.remove();");
-		}
-
-		str.append("var win = $('" + id + "');");
-		str.append("win.setStyle('display','none');");
-		return str.toString();
+	private String getDialogDomId() {
+		return "dialog" + getDomId();
 	}
 
-	protected String genericOpenJavaScript(final String id, final String dialogId, final String contentId) {
+	protected String genericCloseWindowJavaScript(final String dialogId) {
+		String dialog = "dialog" + dialogId;
+		return dialog + ".closeDialog();";
+	}
+
+	protected String genericOpenJavaScript() {
 		StringBuffer str = new StringBuffer();
 
 		Page page = createPage();
 
-		str.append("var elm = $('" + id + "');");
-		str.append("var win = $('" + dialogId + "');");
-		str.append("elm.setStyle('display','block');");
-
-		/*
-		 * 'display':'block', 'position':'fixed', 'top':'0px', 'left':'0px',
-		 * 'width':'100%', 'height':'100%', 'z-index':this.modalOptions.zIndex,
-		 * 'background-color':this.modalOptions.color,
-		 * 'opacity':this.modalOptions.opacity
-		 */
+		str.append(getDialogDomId() + " = new MFXDialog($('" + getDomId() + "'));");
 
 		if (getBlackScreen()) {
-			str.append("var bg = new Element('div',{'style':'z-index:98; display:block; "
-					+ "position:fixed; top:0; left:0; width:100%; height:100%;"
-					+ "background-color: #000; opacity: 0.4;','id':'mfxbg'});");
-			str.append("bg.inject(document.body);");
+			str.append(getDialogDomId() + ".makeScreenDark();");
 		}
-
-		str.append("var bar = win.getElementsBySelector('.MFXDialogBar')[0];");
-		str.append("win.makeDraggable( { handle: bar, 'onBeforeStart': function() { win.setStyle('opacity',0.5); },   "
-				+ "'onComplete': function() { win.setStyle('opacity',1); }});");
-
-		MFXStyle style = new MFXStyle("margin-top", 0, 200);
-
-		style.setDuration(1000);
-		style.setTransition(MFXTransition.backInOut);
-		style.setTarget(dialogId);
-
-		str.append("var effect = " + style.toString());
-
-		WebClientInfo clientInfo = (WebClientInfo) Session.get().getClientInfo();
-		ClientProperties properties = clientInfo.getProperties();
-		if (properties.isBrowserInternetExplorer()) {
-			str.append("var winw = document.body.offsetWidth;");
-			str.append("var winh = document.body.offsetHeight;");
-		} else {
-			str.append("var winw = window.getWidth();");
-			str.append("var winh = window.getHeight();");
-		}
-
-		if (getWidth() != 0) {
-			str.append("win.setStyle('width','" + getWidth() + "" + getUnit() + "');");
-		}
-		if (getHeight() != 0) {
-			str.append("win.setStyle('height','" + getHeight() + "" + getUnit() + "');");
-		}
-		// window.getHeight()/2 + window.getScrollTop()
-		str.append("win.setStyle('left',(winw-" + getWidth() + ")/2);");
-		// str.append("win.setStyle('top',winh/2-" + getOffsetTop() + ");");
-		str.append("win.setStyle('top',winh/2 + window.getScrollTop() -" + getOffsetTop() + " );");
-
-		if (getBounceDialog()) {
-			str.append("effect.start(" + style.getStartValue() + "," + style.getEndValue() + ");");
-		} else {
-			str.append("win.setStyle('margin-top',200);");
-		}
+		str.append(getDialogDomId() + ".showDialog();");
 
 		return str.toString();
 	}
@@ -159,22 +102,6 @@ public abstract class MFXDialogBase extends Panel {
 
 	public void setWidth(final int width) {
 		this.width = width;
-	}
-
-	public int getHeight() {
-		return height;
-	}
-
-	public void setHeight(final int height) {
-		this.height = height;
-	}
-
-	public String getUnit() {
-		return unit;
-	}
-
-	public void setUnit(final String unit) {
-		this.unit = unit;
 	}
 
 	public String getTitle() {
@@ -199,6 +126,14 @@ public abstract class MFXDialogBase extends Panel {
 
 	public String getBody() {
 		return body;
+	}
+
+	protected void setDomId(final String domId) {
+		this.domId = domId;
+	}
+
+	protected String getDomId() {
+		return domId;
 	}
 
 }

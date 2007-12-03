@@ -18,7 +18,6 @@ public class MFXDialog extends MFXDialogBase {
 	private AjaxLink confirmLink;
 	private AjaxLink abortLink;
 	private WebMarkupContainer dialog;
-	private WebMarkupContainer contentPane;
 
 	public static enum MFXDialogTypes {
 		CONFIRMATION, MESSAGE
@@ -40,15 +39,19 @@ public class MFXDialog extends MFXDialogBase {
 		this.abortButtonText = "Cancel";
 		this.setOutputMarkupId(true);
 
-		dialog = new WebMarkupContainer("dialog");
+		dialog = new WebMarkupContainer("dialog") {
+			@Override
+			protected void onComponentTag(final ComponentTag tag) {
+				super.onComponentTag(tag);
+				tag.put("style", "display: none;");
+			}
+		};
 		dialog.setOutputMarkupId(true);
 		add(dialog);
 
 		dialog.add(new Label("title", new PropertyModel(this, "title")));
 
-		dialog.add(contentPane = new WebMarkupContainer("content"));
-
-		contentPane.add(new Label("body", new PropertyModel(this, "body")).setEscapeModelStrings(false));
+		dialog.add(new Label("body", new PropertyModel(this, "body")).setEscapeModelStrings(false));
 
 		dialog.add(confirmLink = new AjaxLink("confirm") {
 			private static final long serialVersionUID = 1L;
@@ -90,12 +93,6 @@ public class MFXDialog extends MFXDialogBase {
 	protected void onOpenCallBack(final AjaxRequestTarget targ) {
 	}
 
-	@Override
-	protected void onComponentTag(final ComponentTag tag) {
-		super.onComponentTag(tag);
-		tag.put("style", "display: none;");
-	}
-
 	public void show(final AjaxRequestTarget target) {
 		if (shown == false) {
 			target.addComponent(this);
@@ -107,6 +104,7 @@ public class MFXDialog extends MFXDialogBase {
 
 	@Override
 	protected void onBeforeRender() {
+		setDomId(dialog.getMarkupId());
 		super.onBeforeRender();
 
 		abortLink.setVisible(false);
@@ -118,14 +116,11 @@ public class MFXDialog extends MFXDialogBase {
 	}
 
 	private String closeWindowJavaScript() {
-		return genericCloseWindowJavaScript(getMarkupId());
+		return genericCloseWindowJavaScript(dialog.getMarkupId());
 	}
 
 	private String openWindowJavaSript() {
-		return genericOpenJavaScript(getMarkupId(), // for the display: none
-				dialog.getMarkupId(), // for the dialog animation
-				contentPane.getMarkupId() // for the content
-		);
+		return genericOpenJavaScript();
 	}
 
 	public void setDialogType(final MFXDialogTypes dialogType) {
