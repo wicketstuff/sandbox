@@ -48,7 +48,7 @@ public class DefaultSubject implements Subject
 	/**
 	 * @see org.apache.wicket.security.hive.authentication.Subject#getPrincipals()
 	 */
-	public Set getPrincipals()
+	public final Set getPrincipals()
 	{
 		return readOnlyPrincipals;
 	}
@@ -76,7 +76,7 @@ public class DefaultSubject implements Subject
 	 * @return true if the principal was added, false if it wasn't for instance
 	 *         because the subject is readonly.
 	 */
-	public boolean addPrincipal(Principal principal)
+	public final boolean addPrincipal(Principal principal)
 	{
 		if (readOnly)
 			return false;
