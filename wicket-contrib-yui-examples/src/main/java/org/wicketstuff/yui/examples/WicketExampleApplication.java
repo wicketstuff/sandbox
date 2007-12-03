@@ -33,5 +33,6 @@ public abstract class WicketExampleApplication extends WebApplication {
 	 * @see wicket.protocol.http.WebApplication#init()
 	 */
 	protected void init() {
+		getMarkupSettings().setStripWicketTags(true);
 	}
 }
