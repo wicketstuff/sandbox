@@ -35,9 +35,14 @@ import static org.wicketstuff.quickmodels.QueryFields.*;
  * 
  * This class contains methods for setting all parameters of all supported
  * query types;  different types of queries have different sets of required,
- * optional and unused (illegal) parameters.
+ * optional and unused (illegal) parameters.  If a setter is called for a
+ * parameter that is not actually used by the query type, an exception will
+ * be thrown.
  * <p/>
  * A ModelBuilder is meant to be used once and then discarded.
+ * <br/>
+ * PENDING:  Remove field queries now that we have complex queries
+ * Remove setType() method as this is always called in the constructor
  * 
  * @see Queries.builder()
  * @author Tim Boudreau
@@ -274,36 +279,94 @@ public final class ModelBuilder<T, P> {
         }
     }
 
+    /**
+     * Provide a custom query that will be run directly against the database
+     * using its native interface.  Used with Queries.CUSTOM.
+     * 
+     * @param customQuery A custom query that returns a collection of the
+     * appropriate type for this ModelBuilder.
+     */
     public void setCustomQuery(DbJob<?, Collection<T>, P> customQuery) {
         usedField(CUSTOM_QUERY, customQuery);
         this.customQuery = customQuery;
     }
 
+    /**
+     * Set an optional argument to be passed into the run() method of the
+     * DbJob passed to setCustomQuery().  Used with Queries.CUSTOM.
+     * 
+     * @param customQueryArg
+     */
     public void setCustomQueryArg(P customQueryArg) {
         usedField(CUSTOM_QUERY_ARG, customQueryArg);
         this.customQueryArg = customQueryArg;
     }
 
+    /**
+     * Provide a NewObjectFactory which will be used to create a new instance
+     * of this query's type in the event that no object in the database
+     * matches the query.  Calling this method with a non-null value has
+     * the side effect of setting the LoadFailurePolicy to 
+     * LoadFailurePolicy.CREATE_NEW_OBJECT_ON_FAILURE.  Used with any query
+     * type.
+     * <p/>
+     * If the type of object this query is for has a default constructor,
+     * it is not necessary to provide a factory - just set the
+     * policy to LoadFailurePolicy.CREATE_NEW_OBJECT_ON_FAILURE and
+     * a new instance will be created by reflection.
+     * 
+     * @param factory A factory that can create objects.
+     */
     public void setFactory(NewObjectFactory factory) {
         usedField(FACTORY, factory);
         this.factory = factory;
+        usedField(POLICY, LoadFailurePolicy.CREATE_NEW_OBJECT_ON_FAILURE);
+        this.policy = LoadFailurePolicy.CREATE_NEW_OBJECT_ON_FAILURE;
     }
 
+    /**
+     * Set the name of a field that should be matched.
+     * 
+     * Used with Queries.QUERY.
+     * @param fieldName The name of the field
+     */
     public void setFieldName(String fieldName) {
         usedField (FIELD_NAME, fieldName);
         this.fieldName = fieldName;
     }
 
+    /**
+     * Set the expected type of a field that should be matched.
+     * 
+     * Used with Queries.QUERY.
+     * @param fieldName The type of the field
+     */
     public void setFieldType(Class<P> fieldType) {
         usedField (FIELD_TYPE, fieldType);
         this.fieldType = fieldType;
     }
 
+    /**
+     * Set the expected value of a field that should be matched.
+     * 
+     * Used with Queries.QUERY.
+     * @param fieldName The type of the field
+     */
     public void setFieldValue(P fieldValue) {
         usedField (FIELD_VALUE, fieldValue);
         this.fieldValue = fieldValue;
     }
 
+    /**
+     * Set the number of new objects that should be created in the event
+     * that the query cannot be satisfied.  Only meaningful in the case that
+     * the LoadFailurePolicy is CREATE_NEW_OBJECT_ON_FAILURE and you are
+     * calling QueryBuilder.multi() to get a model over multiple objects,
+     * and want multiple new objects created in the case that the query fails.
+     * 
+     * @param newObjectCount The number of new objects to create in the case
+     * of query failure.
+     */
     public void setNewObjectCount(int newObjectCount) {
         usedField(NEW_OBJECT_COUNT, newObjectCount > 1 ?
                 newObjectCount : null);
@@ -319,6 +382,13 @@ public final class ModelBuilder<T, P> {
         return kind;
     }
 
+    /**
+     * Set the object used for this query.  Used with Queries.EXISTING_OBJECTS,
+     * Queries.PROTOTYPE, Queries.COMPLEX.
+     * 
+     * @param object The object.  In the case of Queries.COMPLEX, must be an
+     * instance of QueryElement, such as FieldQueryElement.
+     */
     public void setObject(Object object) {
         if (object != null && this.objects != null) {
             throw new IllegalArgumentException ("Use setObject() or " +
@@ -336,16 +406,33 @@ public final class ModelBuilder<T, P> {
         this.object = object;
     }
 
+    /**
+     * Set the policy for what to do if the query fails.
+     * 
+     * @param policy The policy
+     */
     public void setPolicy(LoadFailurePolicy policy) {
         usedField (POLICY, policy);
         this.policy = policy;
     }
 
+    /**
+     * Set the type of the query.  Generally this is called when the query builder is
+     * constructed.
+     * //PENDING: make private
+     * @param type
+     */
     public void setType(Class<T> type) {
         usedField (TYPE, type);
         this.type = type;
     }
 
+    /**
+     * Set the unique id of a single object that should be looked up by the
+     * query.
+     * 
+     * @param uid A unique id
+     */
     public void setUid(long uid) {
         if (uid != -1L && uids != null && !uids.isEmpty()) {
             throw new IllegalStateException("Cannot call both setUid() and " +
@@ -355,6 +442,11 @@ public final class ModelBuilder<T, P> {
         this.uid = uid;
     }
 
+    /**
+     * A universal unique id of a single object that should be looked up by
+     * the query.
+     * @param uuid A universal unique string id identifying one object
+     */
     public void setUuid(String uuid) {
         if (uuid != null && uuids != null && !uuids.isEmpty()) {
             throw new IllegalArgumentException("Cannot call both setUuid() and " +
@@ -364,10 +456,22 @@ public final class ModelBuilder<T, P> {
         this.uuid = uuid;
     }
     
+    /**
+     * Set a comparator for sorting the results of the query.  Only meaningful
+     * if you are going to call QueryBuilder.multi() to create a model of a
+     * collection of objects.
+     * 
+     * @param comparator A comparator.
+     */
     public void setComparator(Comparator<T> comparator) {
         this.comparator = comparator;
     }
     
+    /**
+     * Set a collection of unique ids for a collection of objects that should
+     * be found by the query.  Used by Queries.UID.
+     * @param uids Some unique ids
+     */
     public void setUids(Collection<Long> uids) {
         if (uid != -1L) {
             throw new IllegalArgumentException("Cannot call both setUid() and " +
@@ -377,11 +481,22 @@ public final class ModelBuilder<T, P> {
         this.uids = uids;
     }
     
+    /**
+     * Set a collection of universal unique ids that should be looked up to
+     * produce the result of the query.  Used by Queries.UUID.
+     * @param uuids A collection of universal unique ids
+     */
     public void setUUids(Collection<String> uuids) {
         usedField(UUID, uuids == null || uuids.isEmpty() ? null : uuids);
         this.uuids = uuids;
     }
     
+    /**
+     * Set a collection of objects you want a model for.  Only meaningful if
+     * you are going to call QueryBuilder.multi(). 
+     * Used by Queries.EXISTING_OBJECTS.
+     * @param objects
+     */
     public void setObjects(Collection<T> objects) {
         if (object != null && objects != null) {
             throw new IllegalArgumentException ("Use setObject() or " +
@@ -460,6 +575,4 @@ public final class ModelBuilder<T, P> {
         hash = 67 * hash + (this.type != null ? this.type.hashCode() : 0);
         return hash;
     }
-    
-    
 }

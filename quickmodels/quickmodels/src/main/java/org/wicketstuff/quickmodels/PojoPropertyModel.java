@@ -16,6 +16,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import org.apache.wicket.Application;
 import org.apache.wicket.Session;
+import org.apache.wicket.model.IDetachable;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.IObjectClassAwareModel;
 import org.apache.wicket.model.IPropertyReflectionAwareModel;
@@ -34,7 +35,7 @@ import org.wicketstuff.persistence.PersistenceFacade;
  *
  * @author Tim Boudreau
  */
-final class PojoPropertyModel<P> implements IObjectClassAwareModel, IPropertyReflectionAwareModel, IWrapModel {
+final class PojoPropertyModel<P> implements IObjectClassAwareModel, IPropertyReflectionAwareModel, IWrapModel, IDetachable {
     private transient Object value;
     private String propName;
     private final PersistenceFacade<P> facade;

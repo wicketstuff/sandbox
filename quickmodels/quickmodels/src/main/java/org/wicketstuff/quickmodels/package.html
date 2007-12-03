@@ -257,7 +257,7 @@ final class AddCommentPanel extends DbPanel&lt;Comment&gt; {
       <font color="gray">//Pass it the details of our query</font>
       builder.setObject (theQuery);
       <font color="gray">//And have it make a model representing the result of the query</font>
-      PojoCollectionModel&lt;Blog&gt; model = builder.multi();
+      PojoCollectionModel&lt;Blog&gt; model = builder.multi(getDatabase());
       setModel (model);
   </pre>
 
