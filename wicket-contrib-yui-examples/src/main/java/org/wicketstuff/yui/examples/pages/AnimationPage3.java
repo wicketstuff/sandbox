@@ -4,14 +4,18 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.wicket.Component;
+import org.apache.wicket.markup.html.form.FormComponent;
+import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
 import org.wicketstuff.yui.behavior.Anim;
 import org.wicketstuff.yui.behavior.AnimEffect;
 import org.wicketstuff.yui.behavior.Attributes;
 import org.wicketstuff.yui.behavior.Easing;
 import org.wicketstuff.yui.examples.WicketExamplePage;
+import org.wicketstuff.yui.markup.html.animation.thumbnail.AnimatedItem;
 import org.wicketstuff.yui.markup.html.animation.thumbnail.AnimatedThumbnail;
 import org.wicketstuff.yui.markup.html.animation.thumbnail.AnimatedThumbnailSettings;
 import org.wicketstuff.yui.markup.html.ellipse.EllipsePanel;
@@ -36,8 +40,15 @@ public class AnimationPage3 extends WicketExamplePage
 	private static int PIC_LEFT = (PANEL_WIDTH - PIC_WIDTH) / 2;
 	private static int PIC_TOP = (PANEL_HEIGHT - PIC_HEIGHT) / 2;
 	
+	private String textfield;
+	
+	private List<AnimatedItem> items = new ArrayList<AnimatedItem>();
+	
 	public AnimationPage3()
 	{
+		final TextField tf;
+		add(tf = new TextField("textfield", new PropertyModel(this, "textfield")));
+		
 		EllipsePanel ellipsePanel;
 		add(ellipsePanel = new EllipsePanel("ep1", new ThumbnailProvider())
 		{
@@ -48,7 +59,26 @@ public class AnimationPage3 extends WicketExamplePage
 				settings.setThumbnailDimension(getItemWidth(), getItemHeight());
 				settings.setPictureDimension(PIC_WIDTH, PIC_HEIGHT);
 				settings.setPicturePosition(PIC_LEFT - left, PIC_TOP - top);
-				return new MyAnimatedThumbnail(id, settings);
+				
+				AnimatedItem item = new MyAnimatedThumbnail(id, tf, settings);
+				items.add(item);
+				
+				return item;
+			}
+			
+			@Override
+			protected void onBeforeRender()
+			{
+				super.onBeforeRender();
+				for (AnimatedItem anItem : items) 
+				{
+					for (AnimatedItem anItem2 : items)
+					{
+						String value = anItem.getSelectValue();
+						if (anItem != anItem2)
+							anItem.getOnunselectAnimation().addTriggerOnValue(anItem2.getMouseoverItem(), tf , value);
+					}
+				}
 			}
 		});
 		ellipsePanel.setDimension(PANEL_WIDTH, PANEL_HEIGHT, ITEM_WIDTH, ITEM_HEIGHT);
@@ -58,9 +88,9 @@ public class AnimationPage3 extends WicketExamplePage
 	@SuppressWarnings("unused")
 	private class MyAnimatedThumbnail extends AnimatedThumbnail
 	{
-		public MyAnimatedThumbnail(String id, AnimatedThumbnailSettings settings)
+		public MyAnimatedThumbnail(String id, FormComponent element, AnimatedThumbnailSettings settings)
 		{
-			super(id, settings);
+			super(id, element, settings);
 		}
 		
 		@Override
@@ -86,7 +116,7 @@ public class AnimationPage3 extends WicketExamplePage
 			attributes.add(new Attributes("height", getSettings().getPictureHeight(), 0));
 			attributes.add(new Attributes("left", getSettings().getPictureLeft(), 0));
 			attributes.add(new Attributes("top", getSettings().getPictureTop(), 0));
-			attributes.add(new Attributes("opacity", 0.5f, 0f));
+			attributes.add(new Attributes("opacity", 0.6f, 0f));
 			
 			return new Anim(AnimEffect.Type.Anim, attributes, 1, Easing.bounceOut);
 		}
@@ -103,12 +133,12 @@ public class AnimationPage3 extends WicketExamplePage
 		
 		public ThumbnailProvider()
 		{
-			listOfThumbnails.add(new AnimatedThumbnailSettings("images/singapore.png", 	"images/sgp.jpg", 		"Singapore"));
-			listOfThumbnails.add(new AnimatedThumbnailSettings("images/malaysia.png", 	"images/kl.jpg", 		"Malaysia"));
-			listOfThumbnails.add(new AnimatedThumbnailSettings("images/indonesia.png", 	"images/jakarta.jpg", 	"Indonesia"));
-			listOfThumbnails.add(new AnimatedThumbnailSettings("images/philippines.png","images/makati.jpg", 	"Philippines"));
-			listOfThumbnails.add(new AnimatedThumbnailSettings("images/thailand.png", 	"images/bangkok.jpg", 	"Thailand"));
-			listOfThumbnails.add(new AnimatedThumbnailSettings("images/hongkong.png", 	"images/hk.jpg", 		"Hong Kong"));			
+			listOfThumbnails.add(new AnimatedThumbnailSettings("images/singapore.png", 	"images/sgp.jpg",  	  "Singapore",  "sg"));
+			listOfThumbnails.add(new AnimatedThumbnailSettings("images/malaysia.png", 	"images/kl.jpg", 	  "Malaysia",   "my"));
+			listOfThumbnails.add(new AnimatedThumbnailSettings("images/indonesia.png", 	"images/jakarta.jpg", "Indonesia",  "in"));
+			listOfThumbnails.add(new AnimatedThumbnailSettings("images/philippines.png","images/makati.jpg",  "Philippines","ph"));
+			listOfThumbnails.add(new AnimatedThumbnailSettings("images/thailand.png", 	"images/bangkok.jpg", "Thailand", 	"th"));
+			listOfThumbnails.add(new AnimatedThumbnailSettings("images/hongkong.png", 	"images/hk.jpg",      "Hong Kong",  "hk"));			
 		}
 
 		@SuppressWarnings("unchecked")
@@ -130,5 +160,15 @@ public class AnimationPage3 extends WicketExamplePage
 		public void detach()
 		{
 		}
+	}
+
+	public String getTextfield()
+	{
+		return textfield;
+	}
+
+	public void setTextfield(String textfield)
+	{
+		this.textfield = textfield;
 	}
 }

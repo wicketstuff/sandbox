@@ -1,6 +1,7 @@
 package org.wicketstuff.yui.examples.pages;
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.Model;
 import org.wicketstuff.yui.examples.WicketExamplePage;
 import org.wicketstuff.yui.markup.html.animation.thumbnail.AnimatedItem;
@@ -21,12 +22,24 @@ public class AnimationPage2 extends WicketExamplePage
 		// thumbnail 1
 		add(new MyAnimatedItem("thumbnail1"));
 		
+//		Link testLabel = new Link("test")
+//		{
+//			@Override
+//			public void onClick()
+//			{
+//			}
+//			
+//		};
+//		add(testLabel);
+		
 		// thumbnail 2
 		AnimatedThumbnailSettings settings = new AnimatedThumbnailSettings("images/neuschwanstein_tn.jpg", "images/neuschwanstein.jpg" , "Neuschwanstein Castle" );
 		settings.setOpacity(0.7f);
 		settings.setPictureDimension(800, 583);
 		settings.setThumbnailDimension(100, 74);
-		add(new AnimatedThumbnail("thumbnail2", settings));
+		AnimatedItem a;
+		add(a = new AnimatedThumbnail("thumbnail2", settings));
+		a.getOnunselectAnimation().addTrigger("test");
 	}
 	
 	private class MyAnimatedItem extends AnimatedItem

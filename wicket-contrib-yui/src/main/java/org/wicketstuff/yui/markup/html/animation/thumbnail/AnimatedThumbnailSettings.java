@@ -12,6 +12,8 @@ public class AnimatedThumbnailSettings implements Serializable
 	
 	private String captionText;
 	
+	private String selectValue;
+	
 	/**
 	 * the thubmail width
 	 */
@@ -66,6 +68,12 @@ public class AnimatedThumbnailSettings implements Serializable
 		this.thumbnailURI = thumbnailRes;
 		this.pictureURI = pictureRes;
 		this.captionText = caption;
+	}
+
+	public AnimatedThumbnailSettings(String thumbnailRes, String pictureRes, String caption, String value)
+	{
+		this(thumbnailRes, pictureRes, caption);
+		this.selectValue = value;
 	}
 
 	public String getThumbnailURI()
@@ -200,15 +208,6 @@ public class AnimatedThumbnailSettings implements Serializable
 		return fontSize;
 	}
 
-	public int getPictureTop()
-	{
-		return pictureTop;
-	}
-
-	public int getPictureLeft()
-	{
-		return pictureLeft;
-	}
 
 	public void setPictureLeft(int pictureLeft)
 	{
@@ -229,6 +228,26 @@ public class AnimatedThumbnailSettings implements Serializable
 	{
 		setPictureLeft(left);
 		setPictureTop(top);
+	}
+
+	public String getSelectValue()
+	{
+		return selectValue;
+	}
+
+	public void setSelectValue(String selectValue)
+	{
+		this.selectValue = selectValue;
+	}
+
+	public int getPictureTop()
+	{
+		return this.pictureTop;
+	}
+
+	public int getPictureLeft()
+	{
+		return this.pictureLeft;
 	}
 
 }

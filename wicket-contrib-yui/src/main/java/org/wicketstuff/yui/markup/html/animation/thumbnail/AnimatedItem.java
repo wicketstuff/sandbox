@@ -2,6 +2,7 @@ package org.wicketstuff.yui.markup.html.animation.thumbnail;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.behavior.HeaderContributor;
+import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.wicketstuff.yui.behavior.Anim;
 import org.wicketstuff.yui.behavior.AnimEffect;
@@ -32,6 +33,14 @@ public abstract class AnimatedItem extends Panel
 
 	private Component onclickItem;
 
+	private FormComponent element;
+
+	private String selectValue;
+
+	private String unselectValue;
+
+	private Animation onunselectAnimation;
+
 	public static Attributes SHOW_ATTRIBUTE = new Attributes("zIndex", 0, 1);
 	
 	public static Attributes HIDE_ATTRIBUTE = new Attributes("zIndex", 1, 0);
@@ -46,9 +55,25 @@ public abstract class AnimatedItem extends Panel
 		super(id);
 		add(HeaderContributor.forCss(AnimatedItem.class, "AnimatedItem.css"));
 	}
+	
+	/**
+	 * 
+	 * @param id
+	 * @param element
+	 * @param selectValue
+	 * @param unselectValue
+	 */
+	public AnimatedItem(String id, FormComponent element, String selectValue, String unselectValue)
+	{
+		this(id);
+		this.element = element;
+		this.selectValue = selectValue;
+		this.unselectValue = unselectValue;
+	}
 
 	/**
-	 * CHILD CLASS MUST CALL THIS !!
+	 * CHILD CLASS MUST CALL THIS !! 
+	 * TODO : but how to ensure this???
 	 */
 	public void init()
 	{
@@ -57,10 +82,16 @@ public abstract class AnimatedItem extends Panel
 		add(onclickItem = newOnclickItem("onclick_item"));
 		
 		// animation
-		mouseoverItem.add(new Animation(OnEvent.mouseover, onloadItem).add(mouseoverEffect()));
-		mouseoverItem.add(new Animation(OnEvent.mouseout, mouseoverItem).add(mouseoutEffect()));
-		onclickItem.add(new Animation(OnEvent.click, mouseoverItem).add(onselectEffect()));
-		onclickItem.add(new Animation(OnEvent.click, onclickItem).add(onunselectEffect()));
+		mouseoverItem.add(new Animation(OnEvent.mouseover, onloadItem).addEffect(mouseoverEffect()));
+		mouseoverItem.add(new Animation(OnEvent.mouseout, mouseoverItem).addEffect(mouseoutEffect()));
+		
+		// this is the "select"
+		onclickItem.add(new Animation(OnEvent.click, mouseoverItem, getElement(), getSelectValue())
+							.addEffect(onselectEffect()));
+		
+		// this is the "unselect"
+		onclickItem.add(onunselectAnimation = new Animation(OnEvent.click, onclickItem, getElement(), getUnselectValue())
+							.addEffect(onunselectEffect()));
 	}
 	
 	public AnimEffect onunselectEffect()
@@ -89,4 +120,53 @@ public abstract class AnimatedItem extends Panel
 	
 	public abstract Component newOnclickItem(String id);
 
+	public FormComponent getElement()
+	{
+		return element;
+	}
+
+	public void setElement(FormComponent element)
+	{
+		this.element = element;
+	}
+
+	public String getSelectValue()
+	{
+		return selectValue;
+	}
+
+	public void setSelectValue(String selectValue)
+	{
+		this.selectValue = selectValue;
+	}
+
+	public String getUnselectValue()
+	{
+		return unselectValue;
+	}
+
+	public void setUnselectValue(String unselectValue)
+	{
+		this.unselectValue = unselectValue;
+	}
+
+	public Animation getOnunselectAnimation()
+	{
+		return onunselectAnimation;
+	}
+
+	public void setOnunselectAnimation(Animation onunselectAnimation)
+	{
+		this.onunselectAnimation = onunselectAnimation;
+	}
+
+	public Component getMouseoverItem()
+	{
+		return mouseoverItem;
+	}
+
+	public void setMouseoverItem(Component mouseoverItem)
+	{
+		this.mouseoverItem = mouseoverItem;
+	}
 }
