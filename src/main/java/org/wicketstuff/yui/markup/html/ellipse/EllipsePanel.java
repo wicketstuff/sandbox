@@ -32,6 +32,7 @@ public abstract class EllipsePanel extends Panel
 	private int itemHeight;
 	
 	private EllipseHelper ellipseHelper;
+	
 	/**
 	 * Constructor
 	 * @param id
@@ -62,15 +63,17 @@ public abstract class EllipsePanel extends Panel
 			@Override
 			protected void populateItem(Item item)
 			{
+				// coordinates for the ellipse item
 				int index = item.getIndex();
 				int left = ellipseHelper.getLeft(index);
 				int top = ellipseHelper.getTop(index);
+				
+				// positions the child item 
 				Component child;
 				item.add(child = newEllipseItem("item", item.getModel(), left, top));
 				child.add(new AttributeAppender("style", true, new Model("left:"+left+";top:"+top+";"), ""));
 				child.add(new AttributeAppender("style", true, new Model(getItemDimention()), ""));
 				item.setRenderBodyOnly(true);
-
 			}
 		});
 	}

@@ -4,6 +4,7 @@ import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.behavior.HeaderContributor;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.wicketstuff.yui.behavior.Anim;
 import org.wicketstuff.yui.behavior.AnimEffect;
@@ -24,12 +25,28 @@ public class AnimatedThumbnail extends AnimatedItem
 {
 	private AnimatedThumbnailSettings settings;
 	
-	public AnimatedThumbnail(String id, AnimatedThumbnailSettings settings)
+	/**
+	 * 
+	 * @param id
+	 * @param element 
+	 * @param settings
+	 */
+	public AnimatedThumbnail(String id, FormComponent element, AnimatedThumbnailSettings settings)
 	{
-		super(id);
+		super(id, element, settings.getSelectValue(), null);
 		this.settings = settings;
 		add(HeaderContributor.forCss(AnimatedThumbnail.class, "AnimatedThumbnail.css"));
 		init();
+	}
+
+	/**
+	 * 
+	 * @param string
+	 * @param settings
+	 */
+	public AnimatedThumbnail(String id, AnimatedThumbnailSettings settings)
+	{
+		this(id, null, settings);
 	}
 
 	/*

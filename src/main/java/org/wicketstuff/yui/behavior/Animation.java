@@ -1,5 +1,6 @@
 package org.wicketstuff.yui.behavior;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,6 +8,7 @@ import org.apache.wicket.Component;
 import org.apache.wicket.behavior.AbstractBehavior;
 import org.apache.wicket.behavior.HeaderContributor;
 import org.apache.wicket.markup.html.IHeaderResponse;
+import org.apache.wicket.markup.html.form.FormComponent;
 import org.wicketstuff.yui.YuiHeaderContributor;
 import org.wicketstuff.yui.helper.JSArray;
 
@@ -42,13 +44,7 @@ public class Animation extends AbstractBehavior
 	/**
 	 * a list of triggers for this Animation. Each An
 	 */
-	private List<String> triggers = new ArrayList<String>();
-
-	/**
-	 * a list of triggers which are components that may not have their markup
-	 * ids ready.
-	 */
-	private List<Component> componentTriggers = new ArrayList<Component>();
+	private List<AnimValueGroup> triggers = new ArrayList<AnimValueGroup>();
 
 	/**
 	 * defines if the attached component should trigger the Animation
@@ -91,6 +87,7 @@ public class Animation extends AbstractBehavior
 
 	/**
 	 * Constructor for an Anmation that will be triggered by the component
+	 * 
 	 * @param onEvent
 	 * @param component
 	 */
@@ -100,6 +97,21 @@ public class Animation extends AbstractBehavior
 		addTrigger(component);
 		isTriggeredByAttachedComponent = false;
 	}
+
+	/**
+	 * 
+	 * @param onEvent
+	 * @param component
+	 * @param element
+	 * @param unselectValue
+	 */
+	public Animation(OnEvent onEvent, Component component, FormComponent element, String value)
+	{
+		this.onEvent = onEvent;
+		addTrigger(component, element, value);
+		isTriggeredByAttachedComponent = false;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -126,8 +138,8 @@ public class Animation extends AbstractBehavior
 	 * Renders the javascript for this animation. basically 2 lines of
 	 * javascript. 1/ var a_anim_object = new new YAHOO.util.Anim('yim-6-pic',
 	 * hide_attributes, 1, YAHOO.util.Easing.easeIn); 2/
-	 * Wicketstuff.yui.Animator.add(trigger_ids, trigger_event, animation_id,
-	 * a_anim_object);
+	 * Wicketstuff.yui.Animator.add(animValueGroups, trigger_event,
+	 * animation_id);
 	 * 
 	 * (non-Javadoc)
 	 * 
@@ -138,32 +150,27 @@ public class Animation extends AbstractBehavior
 	{
 		StringBuffer buffer = new StringBuffer().append("var ").append(getAnimVar()).append(" = ")
 				.append(buildEffectsJS()).append("Wicket.yui.Animator.add(")
-				.append(getTriggerIds()).append(",") 							// trigger_ids : the id of the group
-				.append("'").append(getOnEvent()).append("'").append(",") 		// trigger_event: the event 'click'
-				.append("'").append(getComponentId()).append("'").append(",")	// animation_id : the id of the animation obj
-				.append(getAnimVar()) 											// a_anim_object : the animation object
+				.append(getAnimValueGroups()).append(",") 
+				.append("'").append(getOnEvent()).append("'").append(",") 
+				.append("'").append(getComponentId()).append("'") 
 				.append(")");
 		response.renderOnDomReadyJavascript(buffer.toString());
 	}
 
 	/**
-	 * return a list of triggers as an Array
+	 * return a list of AnimValueGroup as an Array
 	 * 
 	 * @return
 	 */
-	private String getTriggerIds()
+	private String getAnimValueGroups()
 	{
 		JSArray triggers = new JSArray();
-		
-		for (String aTrigger : getTriggers())
+
+		for (AnimValueGroup aAvg : getTriggers())
 		{
-			triggers.add("'" + aTrigger + "'");
+			triggers.add(aAvg.newJS());
 		}
-		
-		for (Component aComponent : getComponentTriggers())
-		{
-			triggers.add("'" + aComponent.getMarkupId() + "'");
-		}
+
 		return triggers.toString();
 	}
 
@@ -174,17 +181,6 @@ public class Animation extends AbstractBehavior
 	private OnEvent getOnEvent()
 	{
 		return this.onEvent;
-	}
-
-	/**
-	 * 
-	 * @param effect
-	 * @return
-	 */
-	public Animation add(AnimEffect effect)
-	{
-		getEffects().add(effect);
-		return this;
 	}
 
 	/**
@@ -275,12 +271,12 @@ public class Animation extends AbstractBehavior
 		this.effects = effects;
 	}
 
-	public List<String> getTriggers()
+	public List<AnimValueGroup> getTriggers()
 	{
 		return triggers;
 	}
 
-	public void setTriggers(List<String> triggers)
+	public void setTriggers(List<AnimValueGroup> triggers)
 	{
 		this.triggers = triggers;
 	}
@@ -310,35 +306,189 @@ public class Animation extends AbstractBehavior
 		this.onEvent = onEvent;
 	}
 
-	public List<Component> getComponentTriggers()
-	{
-		return componentTriggers;
-	}
-
-	public void setComponentTriggers(List<Component> componentTriggers)
-	{
-		this.componentTriggers = componentTriggers;
-	}
-	
 	/**
-	 * adds a trigger for this Animation
-	 * @param triggerId
+	 * adds an Anim Effect to the list of Effects that will be batched up and
+	 * run one after another.
+	 * 
+	 * @param effect
+	 * @return
 	 */
-	private Animation addTrigger(String triggerId)
+	public Animation addEffect(AnimEffect effect)
 	{
-		getTriggers().add(triggerId);
+		getEffects().add(effect);
 		return this;
 	}
-	
+
+	/**
+	 * adds a trigger for this Animation
+	 * 
+	 * @param triggerId
+	 */
+	public Animation addTrigger(String triggerId)
+	{
+		getTriggers().add(new AnimValueGroup(triggerId, null, null, false));
+		return this;
+	}
+
 	/**
 	 * adds a component which will be a trigger
+	 * 
 	 * @param component
 	 * @return
 	 */
 	public Animation addTrigger(Component component)
 	{
-		component.setOutputMarkupPlaceholderTag(true);
-		getComponentTriggers().add(component);
+		getTriggers().add(new AnimValueGroup(component, null, null, false));
 		return this;
+	}
+
+	/**
+	 * 
+	 * @param component
+	 * @param element
+	 * @param value
+	 * @return
+	 */
+	private Animation addTrigger(Component component, FormComponent element, String value)
+	{
+		getTriggers().add(new AnimValueGroup(component, element, value, false));
+		return this;
+	}
+
+	/**
+	 * adds a component which will be a trigger
+	 * 
+	 * @param component
+	 * @param value
+	 * @param element
+	 * @return
+	 */
+	public Animation addTriggerOnValue(Component component, FormComponent element, String value)
+	{
+		getTriggers().add(new AnimValueGroup(component, element, value, true));
+		return this;
+	}
+
+	/**
+	 * an AnimValueGroup
+	 * 
+	 * @author josh
+	 */
+	private class AnimValueGroup implements Serializable
+	{
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
+		FormComponent element;
+
+		String value;
+
+		Component triggerComponent;
+
+		String triggerId;
+
+		boolean isAnimateOnValue;
+
+		String anim;
+
+		/**
+		 * 
+		 * @param triggerId
+		 * @param element
+		 * @param value
+		 * @param animateOnValue
+		 */
+		public AnimValueGroup(String triggerId, FormComponent element, String value,
+				boolean animateOnValue)
+		{
+			this.triggerId = triggerId;
+			this.isAnimateOnValue = animateOnValue;
+			this.element = element;
+			this.value = value;
+		}
+
+		/**
+		 * 
+		 * @param triggerComponent
+		 * @param element
+		 * @param value
+		 * @param animateOnValue
+		 */
+		public AnimValueGroup(Component triggerComponent, FormComponent element, String value,
+				boolean animateOnValue)
+		{
+			this.triggerComponent = triggerComponent;
+			this.isAnimateOnValue = animateOnValue;
+			this.element = element;
+			this.value = value;
+			if (this.element != null)
+				this.element.setOutputMarkupId(true);
+			if (this.triggerComponent != null)
+				this.triggerComponent.setOutputMarkupId(true);
+		}
+
+		/**
+		 * generates the new AnimValueGroup javascript
+		 * Wicket.yui.AnimValueGroup(trigger_id, anim, element_id,
+		 * element_value, animate_on_value)
+		 * 
+		 * @return
+		 */
+		public String newJS()
+		{
+			StringBuffer script = new StringBuffer();
+
+			script.append("new Wicket.yui.AnimValueGroup(")
+							.append("'").append(getTriggerId()).append("'")
+							.append(",").append(getAnimVar()).append(",")
+							.append(getElementId()).append(",")
+							.append(getElementValue()).append(",")
+							.append(this.isAnimateOnValue).append(")");
+
+			return script.toString();
+		}
+
+		/**
+		 * the value to be returned when this animation occurs
+		 * 
+		 * @return
+		 */
+		private String getElementValue()
+		{
+			String value = null;
+			if (this.value != null)
+			{
+				value = "\"" + this.value + "\"";
+			}
+			return value;
+		}
+
+		/**
+		 * 
+		 * @return
+		 */
+		private String getElementId()
+		{
+			String markupId = null;
+			if (this.element != null)
+			{
+				markupId = "\"" + this.element.getMarkupId() + "\"";
+			}
+			return markupId;
+		}
+
+		/**
+		 * 
+		 * @return
+		 */
+		private String getTriggerId()
+		{
+			if (this.triggerComponent != null)
+				return this.triggerComponent.getMarkupId();
+			else
+				return this.triggerId;
+		}
 	}
 }
