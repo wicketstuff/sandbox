@@ -37,7 +37,7 @@ import org.slf4j.LoggerFactory;
  */
 public class BasicHive implements Hive
 {
-	private static final Logger log= LoggerFactory.getLogger(BasicHive.class);
+	private static final Logger log = LoggerFactory.getLogger(BasicHive.class);
 	/**
 	 * Maps {@link Permission}s to {@link Principal}s
 	 */
@@ -61,7 +61,7 @@ public class BasicHive implements Hive
 	public final void lock()
 	{
 		locked = true;
-		if(log.isDebugEnabled())
+		if (log.isDebugEnabled())
 			log.debug("Locking Hive, permissions can not be added anymore.");
 	}
 
@@ -99,13 +99,13 @@ public class BasicHive implements Hive
 					+ principal);
 		Iterator it = permissions.iterator();
 		Permission next = null;
-		boolean debug=log.isDebugEnabled();
+		boolean debug = log.isDebugEnabled();
 		while (it.hasNext())
 		{
 			next = (Permission)it.next();
 			principals.add(next, principal);
-			if(debug)
-				log.debug("Adding "+next+" to "+principal);
+			if (debug)
+				log.debug("Adding " + next + " to " + principal);
 		}
 	}
 
@@ -130,8 +130,8 @@ public class BasicHive implements Hive
 		if (permission == null)
 			throw new IllegalArgumentException("A permission is required.");
 		principals.add(permission, principal);
-		if(log.isDebugEnabled())
-			log.debug("Adding "+permission+" to "+principal);
+		if (log.isDebugEnabled())
+			log.debug("Adding " + permission + " to " + principal);
 	}
 
 	/**
@@ -151,8 +151,8 @@ public class BasicHive implements Hive
 		// TODO caching
 		if (hasPrincipal(subject, principals.get(permission)))
 		{
-			if(log.isDebugEnabled())
-				log.debug(subject+" has an exact match for "+permission);
+			if (log.isDebugEnabled())
+				log.debug(subject + " has an exact match for " + permission);
 			return true;
 		}
 		// permission has no exact match, perform an implies check
@@ -169,14 +169,14 @@ public class BasicHive implements Hive
 					continue;
 				if (hasPrincipal(subject, principals.get(possibleMatch)))
 				{
-					if(log.isDebugEnabled())
-						log.debug(subject+" implies "+permission);
+					if (log.isDebugEnabled())
+						log.debug(subject + " implies " + permission);
 					return true;
 				}
 			}
 		}
-		if(log.isDebugEnabled())
-			log.debug(subject+" does not have or implies "+permission);
+		if (log.isDebugEnabled())
+			log.debug(subject + " does not have or implies " + permission);
 		return false;
 	}
 
@@ -187,8 +187,8 @@ public class BasicHive implements Hive
 	 *            optional authenticated subject
 	 * @param principalSet
 	 *            set of principals
-	 * @return true if the subject has or implies atleast one of the principals,
-	 *         false otherwise.
+	 * @return true if the subject has or implies at least one of the
+	 *         principals, false otherwise.
 	 */
 	private boolean hasPrincipal(Subject subject, Set principalSet)
 	{
