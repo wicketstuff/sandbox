@@ -45,8 +45,8 @@ public class AnimationPage extends WicketExamplePage
 		WebMarkupContainer tv;
 		add(tv = new WebMarkupContainer("tv"));
 		tv.add(new Animation(OnEvent.click)
-						.add(new Effect(Effect.Type.TV, delay))
-						.add(new Effect(Effect.Type.Appear)));
+						.addEffect(new Effect(Effect.Type.TV, delay))
+						.addEffect(new Effect(Effect.Type.Appear)));
 		
 		// mouse over 
 		newAnimatedComponent("fade_mouseover", OnEvent.mouseover, Effect.Type.Fade, true);
@@ -58,19 +58,19 @@ public class AnimationPage extends WicketExamplePage
 		WebMarkupContainer ghost;
 		add(ghost = new WebMarkupContainer("ghost"));
 		ghost.add(new Animation(OnEvent.click)
-						.add(new Effect(Effect.Type.BlindUp,  ghost_attr))
-						.add(new Effect(Effect.Type.BlindDown, easing)));
+						.addEffect(new Effect(Effect.Type.BlindUp,  ghost_attr))
+						.addEffect(new Effect(Effect.Type.BlindDown, easing)));
 		
 		
 		// Batch Blind Up / Down / Right / Drop / Appear 
 		WebMarkupContainer batch;
 		add(batch = new WebMarkupContainer("batch"));
 		batch.add(new Animation(OnEvent.click)
-						.add(new Effect(Effect.Type.BlindUp, delay))
-						.add(new Effect(Effect.Type.BlindDown))
-						.add(new Effect(Effect.Type.BlindRight, delay))
-						.add(new Effect(Effect.Type.Drop))
-						.add(new Effect(Effect.Type.Appear, delay)));
+						.addEffect(new Effect(Effect.Type.BlindUp, delay))
+						.addEffect(new Effect(Effect.Type.BlindDown))
+						.addEffect(new Effect(Effect.Type.BlindRight, delay))
+						.addEffect(new Effect(Effect.Type.Drop))
+						.addEffect(new Effect(Effect.Type.Appear, delay)));
 		
 		// Blind
 		newAnimatedComponent("blindup", OnEvent.click, Effect.Type.BlindUp, true);
@@ -86,15 +86,15 @@ public class AnimationPage extends WicketExamplePage
 		Attributes blindrightAttributes = new Attributes("bind", "right");
 		blindrightAttributes.add(delay);
 		blindright.add(new Animation(OnEvent.click)
-						.add(new Effect(Effect.Type.BlindRight, blindrightAttributes))
-						.add(new Effect(Effect.Type.Appear, delay)));
+						.addEffect(new Effect(Effect.Type.BlindRight, blindrightAttributes))
+						.addEffect(new Effect(Effect.Type.Appear, delay)));
 		
 		// Click for Info ... 
 		WebMarkupContainer info;
 		add(info = new WebMarkupContainer("info"));
 
-		info.add(new Animation(OnEvent.click, "clickformore").add(new Effect(Effect.Type.BlindDown, delay)));
-		info.add(new Animation(OnEvent.click, "clickformore").add(new Effect(Effect.Type.BlindUp, 	delay)));
+		info.add(new Animation(OnEvent.click, "clickformore").addEffect(new Effect(Effect.Type.BlindDown, delay)));
+		info.add(new Animation(OnEvent.click, "clickformore").addEffect(new Effect(Effect.Type.BlindUp, 	delay)));
 	}
 	
 	/**
@@ -118,8 +118,8 @@ public class AnimationPage extends WicketExamplePage
 		
 		add(comp);
 		comp.add(new Animation(onEvent)
-						.add(new Effect(effectType, attributes))
-						.add(new Effect(Effect.Type.Appear)));
+						.addEffect(new Effect(effectType, attributes))
+						.addEffect(new Effect(Effect.Type.Appear)));
 		return comp;
 	}
 }

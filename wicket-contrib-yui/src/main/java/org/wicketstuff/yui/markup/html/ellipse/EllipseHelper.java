@@ -1,5 +1,7 @@
 package org.wicketstuff.yui.markup.html.ellipse;
 
+import java.io.Serializable;
+
 /**
  * EllipseHelper will help generate the points needed.
  * 
@@ -9,8 +11,13 @@ package org.wicketstuff.yui.markup.html.ellipse;
  * @author josh
  *
  */
-public class EllipseHelper
+public class EllipseHelper implements Serializable
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	/**
 	 * width (major axis)
 	 */
