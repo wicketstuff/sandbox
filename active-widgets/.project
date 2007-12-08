@@ -1,0 +1,13 @@
+<projectDescription>
+  <name>active-widgets</name>
+  <comment>Wicket Components for the Active Widgets (http://www.activewidgets.com) library.</comment>
+  <projects/>
+  <buildSpec>
+    <buildCommand>
+      <name>org.eclipse.jdt.core.javabuilder</name>
+    </buildCommand>
+  </buildSpec>
+  <natures>
+    <nature>org.eclipse.jdt.core.javanature</nature>
+  </natures>
+</projectDescription>
