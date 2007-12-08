@@ -1,6 +1,5 @@
 package wicket.contrib.activewidgets;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,15 +14,54 @@ public class AWHeaderContributor extends AbstractHeaderContributor {
 
 
 	private static final Logger log = LoggerFactory.getLogger(AWHeaderContributor.class);
-    public static final String DEFAULT_AW_BUILD = "trial";
+    public static final String AW_LICENSE_TYPE;
+    public static final String AW_VERSION;
+    public static final String LATEST_AW_VERSION = "2.5";
+	private static final String KEY_AW_VERSION = "active.widgets.version";
+	private static final String KEY_AW_LICENSE = "active.widgets.license";
     public static final String AW_BUILD_ROOT = "runtime";
+    public static final String AW_DEVELOPER_LICENSE = "developer";
+	private static final String AW_LIB_HOME_PATH;
+    
+	/**
+	 * Active Widgets version and license type could be override by server startup.
+	 * Use -Dactive.widgets.version and -Dactive.widgets.license JVM's arguments. 
+	 * Be sure, runtime of the selected version and license exists in the deploy folders.
+	 */
+    static { 
+    	StringBuffer awLicenseMsg = new StringBuffer();
+    	
+		// look for the used version
+    	String awVersion = System.getProperty(KEY_AW_VERSION);
+    	if (awVersion != null && !"".equals(awVersion)) {
+    		AW_VERSION = awVersion;
+    	} else {
+    		AW_VERSION = LATEST_AW_VERSION;
+    	}
+		awLicenseMsg.append(AW_VERSION).append(" ");
+    	
+    	// look for the license key
+		String awLicense = System.getProperty(KEY_AW_LICENSE);
+		if (awLicense != null && AW_DEVELOPER_LICENSE.equals(awLicense)) {
+    		awLicenseMsg.append("Developer License");
+    		AW_LICENSE_TYPE = awLicense;
+    	} else {
+    		AW_LICENSE_TYPE = "trial";
+    		awLicenseMsg.append("Free Trial");
+		}
+		
+    	log.info("Used Active Widget library: \"" + awLicenseMsg.toString() + "\" version");
+    	AW_LIB_HOME_PATH = AW_BUILD_ROOT + "/" +  AW_VERSION + "/" +  AW_LICENSE_TYPE;
+    	log.debug("Path to Active Widget library: " + AW_LIB_HOME_PATH);
+    }
+    
     
 	@Override
 	public IHeaderContributor[] getHeaderContributors() {
 		List<IHeaderContributor> contributors = new ArrayList<IHeaderContributor>();
 		IHeaderContributor mainJs = new IHeaderContributor () {
 
-			ResourceReference mainJs = new ResourceReference(AWHeaderContributor.class, AW_BUILD_ROOT + "/" +  DEFAULT_AW_BUILD + "/lib/aw.js");
+			ResourceReference mainJs = new ResourceReference(AWHeaderContributor.class, AW_LIB_HOME_PATH + "/lib/aw.js");
 			public void renderHead(IHeaderResponse response) {
 				response.renderJavascriptReference(mainJs);
 			}
@@ -33,7 +71,7 @@ public class AWHeaderContributor extends AbstractHeaderContributor {
 		contributors.add(mainJs);
 
 		IHeaderContributor mainCss = new IHeaderContributor () {
-			ResourceReference mainCss = new ResourceReference(AWHeaderContributor.class, AW_BUILD_ROOT + "/" + DEFAULT_AW_BUILD + "/styles/xp/aw.css");
+			ResourceReference mainCss = new ResourceReference(AWHeaderContributor.class, AW_LIB_HOME_PATH + "/styles/xp/aw.css");
 			public void renderHead(IHeaderResponse response) {
 				response.renderCSSReference(mainCss);
 			}
@@ -44,65 +82,4 @@ public class AWHeaderContributor extends AbstractHeaderContributor {
         return contributors.toArray(new IHeaderContributor[]{});
 	}
 	
-	
-
-/*	
-    private String getRealModuleName(String path, String module) {
-        final String fullPath = path + "/" + module + "/";
-        URL url = getClass().getResource( fullPath + module + ".js");
-        if(null != url) {
-            return module;
-        }
-        
-        url = getClass().getResource(fullPath + module + "-beta.js");
-        
-        if(null != url) {
-            return module + "-beta";
-        }
-        
-        url = getClass().getResource(fullPath + module + "-experimental.js");
-        
-        if(null != url) {
-            return module + "experimental";
-        }
-        
-        return null;
-    }
-
-
-    public class AWModuleHeaderContributor implements IHeaderContributor {
-
-        private final String name;
-        private final String build;
-        private final boolean debug;
-
-        public AWModuleHeaderContributor(String name, String build, boolean debug)
-        {
-            this.name = name;
-            this.build = build;
-            this.debug = debug;
-        }
-
-        public void renderHead(IHeaderResponse response) {
-            final String buildPath = AW_BUILD_ROOT + "/" + build;
-            
-            final String realName = getRealModuleName(buildPath, name);
-            
-            
-            if (null != realName) {
-                final String path = buildPath + "/" + name + "/" + realName + ((debug) ? "-debug.js" : ".js");
-                final ResourceReference moduleScript;
-                response.renderJavascriptReference(moduleScript);
-//                response.renderCSSReference(assetRef, "screen");
-            } else {
-                log.error("Unable to find realName for AW Module " + name);
-            }
-            
-        
-			
-		}
-
-        
-	}
-*/	
 }
