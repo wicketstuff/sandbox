@@ -1,0 +1,13 @@
+<projectDescription>
+  <name>active-widgets-examples</name>
+  <comment>Examples for wicket Active Widgets library.</comment>
+  <projects/>
+  <buildSpec>
+    <buildCommand>
+      <name>org.eclipse.jdt.core.javabuilder</name>
+    </buildCommand>
+  </buildSpec>
+  <natures>
+    <nature>org.eclipse.jdt.core.javanature</nature>
+  </natures>
+</projectDescription>
