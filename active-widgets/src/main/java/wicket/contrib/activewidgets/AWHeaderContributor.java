@@ -15,7 +15,7 @@ public class AWHeaderContributor extends AbstractHeaderContributor {
 
 
 	private static final Logger log = LoggerFactory.getLogger(AWHeaderContributor.class);
-    public static final String DEFAULT_AW_BUILD = "development";
+    public static final String DEFAULT_AW_BUILD = "trial";
     public static final String AW_BUILD_ROOT = "runtime";
     
 	@Override
@@ -23,7 +23,7 @@ public class AWHeaderContributor extends AbstractHeaderContributor {
 		List<IHeaderContributor> contributors = new ArrayList<IHeaderContributor>();
 		IHeaderContributor mainJs = new IHeaderContributor () {
 
-			ResourceReference mainJs = new ResourceReference(AWHeaderContributor.class, AW_BUILD_ROOT + "/" +  DEFAULT_AW_BUILD + "/" + DEFAULT_AW_BUILD + "/lib/aw.js");
+			ResourceReference mainJs = new ResourceReference(AWHeaderContributor.class, AW_BUILD_ROOT + "/" +  DEFAULT_AW_BUILD + "/lib/aw.js");
 			public void renderHead(IHeaderResponse response) {
 				response.renderJavascriptReference(mainJs);
 			}
