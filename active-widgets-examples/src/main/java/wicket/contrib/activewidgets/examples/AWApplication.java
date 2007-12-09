@@ -19,6 +19,8 @@ package wicket.contrib.activewidgets.examples;
 
 import java.util.TreeSet;
 
+import wicket.contrib.activewidgets.ActiveWidgetsConfiguration;
+
 
 
 /**
@@ -33,9 +35,7 @@ public class AWApplication extends WicketExampleApplication
 	 */
 	public AWApplication()
 	{
-		TreeSet<Object> set = new TreeSet<Object>();
-		set.add("abcd");
-		
+		System.setProperty(ActiveWidgetsConfiguration.KEY_AW_LICENSE, ActiveWidgetsConfiguration.AW_DEVELOPER_LICENSE);
 	}
 
 	/**
