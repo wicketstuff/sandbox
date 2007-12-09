@@ -26,15 +26,6 @@ var myRow = ["MSFT","Microsoft Corporation", "314,571.156", "32,187.000", "55000
 
 var myHeaders = ["Ticker", "Company Name", "Market Cap.", "$ Sales", "Employees"];
 
-var ${javaScriptId} = new AW.Grid.Extended;
-${javaScriptId}.setId("${activeWidgetsId}");
-
 ${javaScriptId}.setCellText(myData);	// 2-dimensional js array
 ${javaScriptId}.setHeaderText(myHeaders);	// js array (see top of this page)
-
 ${javaScriptId}.setColumnCount(5);
-${javaScriptId}.setRowCount(20);
-${javaScriptId}.setSelectorVisible(true);
-
-
-document.write(${javaScriptId});
