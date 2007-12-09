@@ -1,9 +1,13 @@
 package wicket.contrib.activewidgets.markup.html;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.IHeaderContributor;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.basic.Label;
@@ -17,27 +21,111 @@ import wicket.contrib.activewidgets.AWHeaderContributor;
 
 public class Grid extends Panel  implements IHeaderContributor {
 
+	static final int DEFAULT_PROIRITY = 1000;
+	static final int JS_DEBUT = DEFAULT_PROIRITY / 2;
+	static final int JS_MITTELSPIEL = DEFAULT_PROIRITY;
+	static final int JS_ENDSPEIL = DEFAULT_PROIRITY * 2;
+	static final int JS_MATT = JS_ENDSPEIL * 2;
+	
 	interface IToken {
 		String getToken();
 		String getTokenName();
+		void setValue(String value);
+		//Object getDefaultValue();
 	}
 	
-	abstract class Token implements IToken {
+	abstract class Token implements IToken, Comparable<Grid.Token> {
 
 		/*** serialization 	 */
 		private static final long serialVersionUID = 1L;
 		protected String value;
+		protected int priority;
+		
+		public Token() {
+			this.priority = DEFAULT_PROIRITY;
+		}
+		public Token(int priority) {
+			this.priority = priority;
+		}
+		public Token(int priorrity, String value) {
+			this.priority = priorrity;
+			this.value = value;
+		}
+		
+		public String getValue() {
+			return value;
+		}
+		public void setValue(String value) {
+			this.value = value;
+		}
+		public int compareTo(Grid.Token o) {
+			return this.priority - o.priority;
+		}
 		
 	}
 	
 	abstract class JavascriptToken extends Token {
+		public JavascriptToken(int priority) {
+			super(priority);
+		}
+
+		public JavascriptToken(int priority, String value) {
+			super(priority);
+			this.value = value;
+		}
 
 		/*** serialization 	 */
 		private static final long serialVersionUID = 1L;
 		
+		public String getToken() {
+			return 	"\n" + varId + "." + getTokenName() + "(" + getValue() + ");";
+		}
 	}
 	
-	abstract class StyleTokenPx extends Token {
+	abstract class DocumentWrite extends JavascriptToken {
+		public DocumentWrite(int priority, String value) {
+			super(priority);
+			this.value = value;
+		}
+
+		/*** serialization 	 */
+		private static final long serialVersionUID = 1L;
+		
+		public String getToken() {
+			return 	"\n" + "document.write(" + getValue() + ");";
+		}
+
+		public String getTokenName() {
+			return null;
+		}
+	}
+	
+	abstract class ConstructorToken extends JavascriptToken {
+		public ConstructorToken(int priority, String activeWidgetsClass) {
+			super(priority);
+			this.value = activeWidgetsClass;
+		}
+		/*** serialization 	 */
+		private static final long serialVersionUID = 1L;
+		public String getToken() {
+			return 	"\n" + "var " + varId + " = new " + getValue() + ";";
+		}
+		public String getTokenName() {
+			return null;
+		}
+	}
+	
+	abstract class StyleToken extends Token {
+
+		/*** serialization 	 */
+		private static final long serialVersionUID = 1L;
+
+		public String getToken() {
+			return 	"\n\t" + "#" + activeWidgetsId + " {" + getTokenName() + ":" + value + "}";
+		}
+		
+	}
+	abstract class StyleTokenPx extends StyleToken {
 
 		/*** serialization 	 */
 		private static final long serialVersionUID = 1L;
@@ -51,41 +139,6 @@ public class Grid extends Panel  implements IHeaderContributor {
 		
 	}
 	
-	class Width extends StyleTokenPx{
-
-		public Width(int width) {
-			this.setPxValue(width);
-		}
-
-		public void setWidth(int width) {
-			this.setPxValue(width);
-		}
-
-		public String getTokenName() {
-			return "width";
-		}
-
-	}
-
-
-	public class Height extends StyleTokenPx {
-
-		public Height(int height) {
-			this.setPxValue(height);
-		}
-
-
-		public void setHeight(int height) {
-			this.setPxValue(height);
-		}
-
-
-		public String getTokenName() {
-			return "height";
-		}
-
-	}
-
 
 	/**
 	 * 
@@ -109,13 +162,41 @@ public class Grid extends Panel  implements IHeaderContributor {
 	 */
 	private String activeWidgetsId;
 	
-	@SuppressWarnings("unused")
 	private GirdElement gridElement;
 	
-	private Width width;
+	private StyleTokenPx width = new StyleTokenPx() {
 
-	private Height height;
+		public String getTokenName() {
+			return "width";
+		}
+		
+	};
 
+	private StyleTokenPx height = new StyleTokenPx() {
+
+		public String getTokenName() {
+			return "height";
+		}
+		
+	};
+
+
+	
+	private JavascriptToken selectorVisible = new JavascriptToken(JS_MITTELSPIEL) {
+
+		public String getTokenName() {
+			return "setSelectorVisible";
+		}
+		
+	};
+
+	private List<Token> javascriptContributors = new ArrayList<Token>();
+	private List<StyleToken> styleContributors = new ArrayList<StyleToken>();
+	private JavascriptToken rowCount = new JavascriptToken(JS_MITTELSPIEL) {
+		public String getTokenName() {
+			return "setRowCount";
+		}
+	};
 	/**
 	 * The container/ receiver of the javascript component.
 	 */
@@ -170,10 +251,6 @@ public class Grid extends Panel  implements IHeaderContributor {
 		Label javascript = new Label("javascript", new AbstractReadOnlyModel()
 		{
 			private static final long serialVersionUID = 1L;
-
-			/**
-			 * @see wicket.model.IModel#getObject(wicket.Component)
-			 */
 			@Override
 			public Object getObject()
 			{
@@ -211,8 +288,31 @@ public class Grid extends Panel  implements IHeaderContributor {
 
 		PackagedTextTemplate template = new PackagedTextTemplate(Grid.class, "init.js");
 		template.interpolate(variables);
+		
+		javascriptContributors.add(new ConstructorToken(JS_DEBUT, "AW.Grid.Extended") {});
+		javascriptContributors.add(new JavascriptToken(JS_DEBUT + 1, "\"" + activeWidgetsId + "\"") {
+			public String getTokenName() {
+				return "setId";
+			}
+			
+		});
+		javascriptContributors.add(new Token(JS_DEBUT + 2, template.getString()){
+			public String getToken() {
+				return value;
+			}
+			public String getTokenName() {
+				return null;
+			}
+		});
+		javascriptContributors.add(new DocumentWrite(JS_MATT, varId) {});
 
-		return template.getString();
+		StringBuffer buffer = new StringBuffer();
+		Collections.sort(this.javascriptContributors);
+		for (Token token: javascriptContributors) {
+			buffer.append(token.getToken());
+		}
+		buffer.append('\n');
+		return buffer.toString();
 	}
 
 	/**
@@ -222,11 +322,9 @@ public class Grid extends Panel  implements IHeaderContributor {
 	private String styleInit()
 	{
 		StringBuffer result = new StringBuffer();
-		if (width != null) {
-			result.append(width.getToken());
-		}
-		if (height != null) {
-			result.append(height.getToken());
+		Collections.sort(this.styleContributors);
+		for (StyleToken token: this.styleContributors) {
+			result.append(token.getToken());
 		}
 		return result.toString();
 	}
@@ -256,26 +354,31 @@ public class Grid extends Panel  implements IHeaderContributor {
 	}
 	
 	
-	public Grid width(int width) {
-		if (this.width == null) {
-			this.width = new Width(width);
-		} else {
-			this.width.setWidth(width);
-		}
-		
+	public Grid setWidth(int width) {
+		this.width.setPxValue(width);
+		this.styleContributors.add(this.width);
 		return this;
 	}
 
 
-	public Grid height(int height) {
-		if (this.height == null) {
-			this.height = new Height(height);
-		} else {
-			this.height.setHeight(height);
-		}
+	public Grid setHeight(int height) {
+		this.height.setPxValue(height);
+		this.styleContributors.add(this.height);
 		return this;
 	}
 
 
+	public Grid setSelectorVisible(boolean visible) {
+		this.selectorVisible.setValue(new Boolean(visible).toString());
+		this.javascriptContributors.add(selectorVisible);
+		return this;
+	}
+
+
+	public Grid setRowCount(int count) {
+		this.rowCount.setValue(new Integer(count).toString());
+		this.javascriptContributors.add(rowCount);
+		return this;
+	}
 
 }

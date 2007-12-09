@@ -9,8 +9,10 @@ public class GridPage extends WicketExamplePage {
 		super();
 		ActiveWidgetsConfiguration.setLicenseType(ActiveWidgetsConfiguration.AW_DEVELOPER_LICENSE);
 		add(new Grid("grid")
-				.width(800)
-				.height(400)
+				.setWidth(300)
+				.setHeight(150)
+				.setSelectorVisible(true)
+				.setRowCount(20)
 		);
 	}
 	
