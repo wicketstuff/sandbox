@@ -10,6 +10,7 @@ public class GridPage extends WicketExamplePage {
 		ActiveWidgetsConfiguration.setLicenseType(ActiveWidgetsConfiguration.AW_DEVELOPER_LICENSE);
 		add(new Grid("grid")
 				.width(800)
+				.height(400)
 		);
 	}
 	

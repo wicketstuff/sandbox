@@ -17,6 +17,76 @@ import wicket.contrib.activewidgets.AWHeaderContributor;
 
 public class Grid extends Panel  implements IHeaderContributor {
 
+	interface IToken {
+		String getToken();
+		String getTokenName();
+	}
+	
+	abstract class Token implements IToken {
+
+		/*** serialization 	 */
+		private static final long serialVersionUID = 1L;
+		protected String value;
+		
+	}
+	
+	abstract class JavascriptToken extends Token {
+
+		/*** serialization 	 */
+		private static final long serialVersionUID = 1L;
+		
+	}
+	
+	abstract class StyleTokenPx extends Token {
+
+		/*** serialization 	 */
+		private static final long serialVersionUID = 1L;
+
+		public String getToken() {
+			return 	"\n" + "#" + activeWidgetsId + " {" + getTokenName() + ":" + value + "px}";
+		}
+		void setPxValue(int pxValue) {
+			this.value = new Integer(pxValue).toString();
+		}
+		
+	}
+	
+	class Width extends StyleTokenPx{
+
+		public Width(int width) {
+			this.setPxValue(width);
+		}
+
+		public void setWidth(int width) {
+			this.setPxValue(width);
+		}
+
+		public String getTokenName() {
+			return "width";
+		}
+
+	}
+
+
+	public class Height extends StyleTokenPx {
+
+		public Height(int height) {
+			this.setPxValue(height);
+		}
+
+
+		public void setHeight(int height) {
+			this.setPxValue(height);
+		}
+
+
+		public String getTokenName() {
+			return "height";
+		}
+
+	}
+
+
 	/**
 	 * 
 	 */
@@ -43,6 +113,8 @@ public class Grid extends Panel  implements IHeaderContributor {
 	private GirdElement gridElement;
 	
 	private Width width;
+
+	private Height height;
 
 	/**
 	 * The container/ receiver of the javascript component.
@@ -153,6 +225,9 @@ public class Grid extends Panel  implements IHeaderContributor {
 		if (width != null) {
 			result.append(width.getToken());
 		}
+		if (height != null) {
+			result.append(height.getToken());
+		}
 		return result.toString();
 	}
 
@@ -181,49 +256,6 @@ public class Grid extends Panel  implements IHeaderContributor {
 	}
 	
 	
-	interface IToken {
-		String getToken();
-	}
-	
-	abstract class Token implements IToken {
-
-		/*** serialization 	 */
-		private static final long serialVersionUID = 1L;
-		private String name;
-		protected String value;
-		
-	}
-	
-	abstract class JavascriptToken extends Token {
-
-		/*** serialization 	 */
-		private static final long serialVersionUID = 1L;
-		
-	}
-	
-	abstract class StyleToken extends Token {
-
-		/*** serialization 	 */
-		private static final long serialVersionUID = 1L;
-		
-	}
-	
-	class Width extends StyleToken{
-
-		public Width(int width) {
-			this.setWidth(width);
-		}
-
-		public String getToken() {
-			return 	"\n" + "#" + activeWidgetsId + " {width:" + value + "px}";
-		}
-
-		public void setWidth(int width) {
-			this.value = new Integer(width).toString();
-		}
-	}
-
-
 	public Grid width(int width) {
 		if (this.width == null) {
 			this.width = new Width(width);
@@ -231,6 +263,16 @@ public class Grid extends Panel  implements IHeaderContributor {
 			this.width.setWidth(width);
 		}
 		
+		return this;
+	}
+
+
+	public Grid height(int height) {
+		if (this.height == null) {
+			this.height = new Height(height);
+		} else {
+			this.height.setHeight(height);
+		}
 		return this;
 	}
 
