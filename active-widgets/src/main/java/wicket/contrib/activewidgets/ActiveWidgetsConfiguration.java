@@ -1,9 +1,5 @@
 package wicket.contrib.activewidgets;
 
-import java.io.File;
-
-import org.apache.wicket.Application;
-import org.apache.wicket.protocol.http.WebApplication;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.IClusterable;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.behavior.AbstractHeaderContributor;
 import org.apache.wicket.markup.html.IHeaderContributor;
@@ -14,19 +15,19 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 
-abstract public class ActiveWidgetsComponent extends Panel  implements IHeaderContributor {
+abstract public class ActiveWidgetsComponent extends Panel {
 
 	public ActiveWidgetsComponent(String id, IModel model) {
 		super(id, model);
-		// TODO Auto-generated constructor stub
+		constructorInit();
 	}
 
 	public ActiveWidgetsComponent(String id) {
 		super(id);
-		// TODO Auto-generated constructor stub
+		constructorInit();
 	}
 	
-	protected void constructorInit(String id) {
+	private void constructorInit() {
 		
 		add (new AbstractHeaderContributor() {
 
@@ -35,6 +36,7 @@ abstract public class ActiveWidgetsComponent extends Panel  implements IHeaderCo
 				List<IHeaderContributor> contributors = new ArrayList<IHeaderContributor>();
 				IHeaderContributor mainJs = new IHeaderContributor () {
 
+					
 					ResourceReference mainJs = new ResourceReference(ActiveWidgetsComponent.class
 							, ActiveWidgetsConfiguration.AW_LIB_HOME_PATH + "/lib/aw.js");
 					public void renderHead(IHeaderResponse response) {
@@ -46,6 +48,7 @@ abstract public class ActiveWidgetsComponent extends Panel  implements IHeaderCo
 				contributors.add(mainJs);
 
 				IHeaderContributor mainCss = new IHeaderContributor () {
+					private static final long serialVersionUID = 1L;
 					ResourceReference mainCss = new ResourceReference(ActiveWidgetsComponent.class, 
 							ActiveWidgetsConfiguration.AW_LIB_HOME_PATH + "/styles/xp/aw.css");
 					public void renderHead(IHeaderResponse response) {
@@ -63,9 +66,8 @@ abstract public class ActiveWidgetsComponent extends Panel  implements IHeaderCo
 		);
 		add(gridElement = new GirdElement("gridContainer"));
 		
-		Label style = new Label("style", new AbstractReadOnlyModel()
+		final Label style = new Label("style", new AbstractReadOnlyModel()
 		{
-			private static final long serialVersionUID = 1L;
 
 			/**
 			 * @see wicket.model.IModel#getObject(wicket.Component)
@@ -102,11 +104,9 @@ abstract public class ActiveWidgetsComponent extends Panel  implements IHeaderCo
 	abstract protected String javascriptInit();
 	
 	/**
-	 * The container/ receiver of the javascript component.
+	 * The container/ receiver of the ActiveWidgets component.
 	 */
 	final class GirdElement extends FormComponent {
-
-		private static final long serialVersionUID = 1L;
 
 		public GirdElement(String id, IModel model) {
 			super(id, model);
@@ -116,8 +116,6 @@ abstract public class ActiveWidgetsComponent extends Panel  implements IHeaderCo
 			super(id);
 			add(new AttributeModifier("id", true, new AbstractReadOnlyModel()
 			{
-				private static final long serialVersionUID = 1L;
-
 				@Override
 				public Object getObject()
 				{
@@ -239,7 +237,9 @@ abstract public class ActiveWidgetsComponent extends Panel  implements IHeaderCo
 		
 	}
 	
-	protected abstract class Token implements IToken, Comparable<ActiveWidgetsComponent.Token> {
+	protected abstract class Token implements IToken
+		, Comparable<ActiveWidgetsComponent.Token>
+	{
 	
 		/*** serialization 	 */
 		private static final long serialVersionUID = 1L;
@@ -270,11 +270,12 @@ abstract public class ActiveWidgetsComponent extends Panel  implements IHeaderCo
 	}
 	
 	
-	@SuppressWarnings("serial")
+	
 	public IHeaderContributor[] getHeaderContributors() {
 		List<IHeaderContributor> contributors = new ArrayList<IHeaderContributor>();
 		IHeaderContributor mainJs = new IHeaderContributor() {
 
+			private static final long serialVersionUID = 1L;
 			ResourceReference mainJs = new ResourceReference(this.getClass()
 					, ActiveWidgetsConfiguration.AW_LIB_HOME_PATH + "/lib/aw.js");
 			public void renderHead(IHeaderResponse response) {
@@ -286,6 +287,7 @@ abstract public class ActiveWidgetsComponent extends Panel  implements IHeaderCo
 		contributors.add(mainJs);
 
 		IHeaderContributor mainCss = new IHeaderContributor () {
+			private static final long serialVersionUID = 1L;
 			ResourceReference mainCss = new ResourceReference(this.getClass(), 
 					ActiveWidgetsConfiguration.AW_LIB_HOME_PATH + "/styles/xp/aw.css");
 			public void renderHead(IHeaderResponse response) {
@@ -298,10 +300,13 @@ abstract public class ActiveWidgetsComponent extends Panel  implements IHeaderCo
         return contributors.toArray(new IHeaderContributor[]{});
 	}
 
-	public void renderHead(IHeaderResponse response) {
-		// TODO Auto-generated method stub
-		
+	protected String capitalize(String markupId) {
+		if (markupId != null) {
+			String first = markupId.substring(0, 1).toUpperCase();
+			return first + markupId.substring(1);
+		}
+		return null;
 	}
-	
+
 	
 }

@@ -14,56 +14,45 @@ import wicket.contrib.activewidgets.ActiveWidgetsComponent;
 
 public class Grid extends ActiveWidgetsComponent {
 
-	/**
-	 * 
-	 */
+	public Grid(String id, IModel model) {
+		super(id, model);
+	}
+
+	public Grid(String id) {
+		super(id);
+	}
+
 	private static final long serialVersionUID = 1L;
 
-	private StyleTokenPx width = new StyleTokenPx() {
-
+	transient private StyleTokenPx width = new StyleTokenPx() {
 		public String getTokenName() {
 			return "width";
 		}
-		
 	};
 
-	private StyleTokenPx height = new StyleTokenPx() {
-
+	transient private StyleTokenPx height = new StyleTokenPx() {
 		public String getTokenName() {
 			return "height";
 		}
-		
 	};
 
 
 	
-	private JavascriptToken selectorVisible = new JavascriptToken(JS_MITTELSPIEL) {
-
+	transient private JavascriptToken selectorVisible = new JavascriptToken(JS_MITTELSPIEL) {
 		public String getTokenName() {
 			return "setSelectorVisible";
 		}
-		
 	};
 
-	private List<Token> javascriptContributors = new ArrayList<Token>();
-	private List<StyleToken> styleContributors = new ArrayList<StyleToken>();
-	private JavascriptToken rowCount = new JavascriptToken(JS_MITTELSPIEL) {
+	transient private List<Token> javascriptContributors = new ArrayList<Token>();
+	transient private List<StyleToken> styleContributors = new ArrayList<StyleToken>();
+	transient private JavascriptToken rowCount = new JavascriptToken(JS_MITTELSPIEL) {
 		public String getTokenName() {
 			return "setRowCount";
 		}
 	};
 	
 	
-	public Grid(String id, IModel model) {
-		super(id, model);
-		constructorInit(id);
-	}
-
-	public Grid(String id) {
-		super(id);
-		constructorInit(id);
-	}
-
 	/**
 	 * 
 	 * @return the initilization javascript
@@ -104,10 +93,6 @@ public class Grid extends ActiveWidgetsComponent {
 		return buffer.toString();
 	}
 
-	/**
-	 * 
-	 * @return the initilization javascript
-	 */
 	protected String styleInit()
 	{
 		StringBuffer result = new StringBuffer();
@@ -118,9 +103,6 @@ public class Grid extends ActiveWidgetsComponent {
 		return result.toString();
 	}
 
-	/**
-	 * @see wicket.Component#onAttach()
-	 */
 	@Override
 	protected void onBeforeRender()
 	{
@@ -129,7 +111,7 @@ public class Grid extends ActiveWidgetsComponent {
 		// initialize lazily
 		if (domId == null) {
 			// assign the markup id
-			String id = getMarkupId();
+			String id = capitalize(getMarkupId());
 			domId = "dom" + id;
 			varId = "var" + id;
 			activeWidgetsId = "aw" + id;
@@ -137,12 +119,6 @@ public class Grid extends ActiveWidgetsComponent {
 	}
 
 
-	public void renderHead(IHeaderResponse response) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	
 	public Grid setWidth(int width) {
 		this.width.setPxValue(width);
 		this.styleContributors.add(this.width);
@@ -168,6 +144,13 @@ public class Grid extends ActiveWidgetsComponent {
 		this.rowCount.setValue(new Integer(count).toString());
 		this.javascriptContributors.add(rowCount);
 		return this;
+	}
+
+	@Override
+	protected void onDetach() {
+		super.onDetach();
+		this.javascriptContributors = new ArrayList<Token>();
+		this.styleContributors = new ArrayList<StyleToken>();
 	}
 
 }
