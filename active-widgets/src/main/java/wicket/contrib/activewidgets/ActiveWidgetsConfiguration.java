@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 
 public class ActiveWidgetsConfiguration {
 	
-	public static final Logger log = LoggerFactory.getLogger(AWHeaderContributor.class);
+	public static final Logger log = LoggerFactory.getLogger(ActiveWidgetsConfiguration.class);
     public static final String AW_VERSION;
     public static final String LATEST_AW_VERSION = "2.5";
 	public static final String KEY_AW_VERSION = "active.widgets.version";

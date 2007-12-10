@@ -1,9 +1,20 @@
 package wicket.contrib.activewidgets;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.ResourceReference;
+import org.apache.wicket.behavior.AbstractHeaderContributor;
+import org.apache.wicket.markup.html.IHeaderContributor;
+import org.apache.wicket.markup.html.IHeaderResponse;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 
-public abstract class ActiveWidgetsComponent extends Panel {
+abstract public class ActiveWidgetsComponent extends Panel  implements IHeaderContributor {
 
 	public ActiveWidgetsComponent(String id, IModel model) {
 		super(id, model);
@@ -14,7 +25,112 @@ public abstract class ActiveWidgetsComponent extends Panel {
 		super(id);
 		// TODO Auto-generated constructor stub
 	}
+	
+	protected void constructorInit(String id) {
+		
+		add (new AbstractHeaderContributor() {
 
+			@Override
+			public IHeaderContributor[] getHeaderContributors() {
+				List<IHeaderContributor> contributors = new ArrayList<IHeaderContributor>();
+				IHeaderContributor mainJs = new IHeaderContributor () {
+
+					ResourceReference mainJs = new ResourceReference(ActiveWidgetsComponent.class
+							, ActiveWidgetsConfiguration.AW_LIB_HOME_PATH + "/lib/aw.js");
+					public void renderHead(IHeaderResponse response) {
+						response.renderJavascriptReference(mainJs);
+					}
+					
+				};
+				
+				contributors.add(mainJs);
+
+				IHeaderContributor mainCss = new IHeaderContributor () {
+					ResourceReference mainCss = new ResourceReference(ActiveWidgetsComponent.class, 
+							ActiveWidgetsConfiguration.AW_LIB_HOME_PATH + "/styles/xp/aw.css");
+					public void renderHead(IHeaderResponse response) {
+						response.renderCSSReference(mainCss);
+					}
+					
+				};
+				contributors.add(mainCss);
+
+		        return contributors.toArray(new IHeaderContributor[]{});
+			}
+			
+			
+		}
+		);
+		add(gridElement = new GirdElement("gridContainer"));
+		
+		Label style = new Label("style", new AbstractReadOnlyModel()
+		{
+			private static final long serialVersionUID = 1L;
+
+			/**
+			 * @see wicket.model.IModel#getObject(wicket.Component)
+			 */
+			@Override
+			public Object getObject()
+			{
+				StringBuffer result = new StringBuffer();
+				result.append(styleInit());
+				return result.toString();
+			}
+		});
+		style.setEscapeModelStrings(false);
+		gridElement.add(style);
+
+		Label javascript = new Label("javascript", new AbstractReadOnlyModel()
+		{
+			private static final long serialVersionUID = 1L;
+			@Override
+			public Object getObject()
+			{
+				StringBuffer result = new StringBuffer();
+				result.append(javascriptInit());
+				return result.toString();
+			}
+		});
+		javascript.setEscapeModelStrings(false);
+		gridElement.add(javascript);
+		
+	}
+
+	
+	abstract protected String styleInit();
+	abstract protected String javascriptInit();
+	
+	/**
+	 * The container/ receiver of the javascript component.
+	 */
+	final class GirdElement extends FormComponent {
+
+		private static final long serialVersionUID = 1L;
+
+		public GirdElement(String id, IModel model) {
+			super(id, model);
+		}
+
+		public GirdElement(String id) {
+			super(id);
+			add(new AttributeModifier("id", true, new AbstractReadOnlyModel()
+			{
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				public Object getObject()
+				{
+					return domId;
+				}
+			}));
+		}
+
+	}
+
+	private GirdElement gridElement;
+	
+	
 	protected static final int DEFAULT_PROIRITY = 1000;
 	protected static final int JS_DEBUT = DEFAULT_PROIRITY / 2;
 	protected static final int JS_MITTELSPIEL = DEFAULT_PROIRITY;
@@ -152,5 +268,40 @@ public abstract class ActiveWidgetsComponent extends Panel {
 		}
 		
 	}
+	
+	
+	@SuppressWarnings("serial")
+	public IHeaderContributor[] getHeaderContributors() {
+		List<IHeaderContributor> contributors = new ArrayList<IHeaderContributor>();
+		IHeaderContributor mainJs = new IHeaderContributor() {
+
+			ResourceReference mainJs = new ResourceReference(this.getClass()
+					, ActiveWidgetsConfiguration.AW_LIB_HOME_PATH + "/lib/aw.js");
+			public void renderHead(IHeaderResponse response) {
+				response.renderJavascriptReference(mainJs);
+			}
+			
+		};
+		
+		contributors.add(mainJs);
+
+		IHeaderContributor mainCss = new IHeaderContributor () {
+			ResourceReference mainCss = new ResourceReference(this.getClass(), 
+					ActiveWidgetsConfiguration.AW_LIB_HOME_PATH + "/styles/xp/aw.css");
+			public void renderHead(IHeaderResponse response) {
+				response.renderCSSReference(mainCss);
+			}
+			
+		};
+		contributors.add(mainCss);
+
+        return contributors.toArray(new IHeaderContributor[]{});
+	}
+
+	public void renderHead(IHeaderResponse response) {
+		// TODO Auto-generated method stub
+		
+	}
+	
 	
 }
