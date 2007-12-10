@@ -6,7 +6,14 @@
 	<title>Quick Reference Grid </title>
 </head>
 <body>
+<p>
     <span wicket:id="mainNavigation"/>
+	<div style="float: right;"><form action="#" method="get" wicket:id="form">
+	<p><label for="width">Width of the table</label><input type="text" id="width" name="width" wicket:id="width"></input></p>
+	<p><label for="height">Height of the table</label><input type="text" id="height" name="height" wicket:id="height"></input></p>
+	<p><input type="submit" name="submit" value="Syncrionize"/></p>
+	</form></div>
 	<div wicket:id="grid"></div>
+</p>	
 </body>
 </html>
