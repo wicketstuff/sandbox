@@ -7,7 +7,7 @@ import wicket.contrib.activewidgets.markup.html.Grid;
 public class GridPage extends WicketExamplePage {
 	public GridPage() {
 		super();
-		ActiveWidgetsConfiguration.setLicenseType(ActiveWidgetsConfiguration.AW_DEVELOPER_LICENSE);
+		ActiveWidgetsConfiguration.setLicenseType(ActiveWidgetsConfiguration.AW_TRIAL_LICENSE);
 		add(new Grid("grid")
 				.setWidth(300)
 				.setHeight(150)
