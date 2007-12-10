@@ -6,54 +6,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.wicket.AttributeModifier;
-import org.apache.wicket.markup.html.IHeaderContributor;
 import org.apache.wicket.markup.html.IHeaderResponse;
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.FormComponent;
-import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.template.PackagedTextTemplate;
 
-import wicket.contrib.activewidgets.AWHeaderContributor;
 import wicket.contrib.activewidgets.ActiveWidgetsComponent;
 
-public class Grid extends ActiveWidgetsComponent implements IHeaderContributor {
+public class Grid extends ActiveWidgetsComponent {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * The container/ receiver of the javascript component.
-	 */
-	final class GirdElement extends FormComponent {
-
-		private static final long serialVersionUID = 1L;
-
-		public GirdElement(String id, IModel model) {
-			super(id, model);
-		}
-
-		public GirdElement(String id) {
-			super(id);
-			add(new AttributeModifier("id", true, new AbstractReadOnlyModel()
-			{
-				private static final long serialVersionUID = 1L;
-
-				@Override
-				public Object getObject()
-				{
-					return domId;
-				}
-			}));
-		}
-
-	}
-
-	private GirdElement gridElement;
-	
 	private StyleTokenPx width = new StyleTokenPx() {
 
 		public String getTokenName() {
@@ -87,45 +52,7 @@ public class Grid extends ActiveWidgetsComponent implements IHeaderContributor {
 			return "setRowCount";
 		}
 	};
-	private void constructorInit(String id) {
-		
-		add(new AWHeaderContributor());
-		add(gridElement = new GirdElement("gridContainer"));
-		
-		Label style = new Label("style", new AbstractReadOnlyModel()
-		{
-			private static final long serialVersionUID = 1L;
-
-			/**
-			 * @see wicket.model.IModel#getObject(wicket.Component)
-			 */
-			@Override
-			public Object getObject()
-			{
-				StringBuffer result = new StringBuffer();
-				result.append(styleInit());
-				return result.toString();
-			}
-		});
-		style.setEscapeModelStrings(false);
-		gridElement.add(style);
-
-		Label javascript = new Label("javascript", new AbstractReadOnlyModel()
-		{
-			private static final long serialVersionUID = 1L;
-			@Override
-			public Object getObject()
-			{
-				StringBuffer result = new StringBuffer();
-				result.append(javascriptInit());
-				return result.toString();
-			}
-		});
-		javascript.setEscapeModelStrings(false);
-		gridElement.add(javascript);
-		
-	}
-
+	
 	
 	public Grid(String id, IModel model) {
 		super(id, model);
@@ -141,7 +68,7 @@ public class Grid extends ActiveWidgetsComponent implements IHeaderContributor {
 	 * 
 	 * @return the initilization javascript
 	 */
-	private String javascriptInit()
+	protected String javascriptInit()
 	{
 		Map<String, Object> variables = new HashMap<String, Object>(4);
 		variables.put("javaScriptId", varId);
@@ -181,7 +108,7 @@ public class Grid extends ActiveWidgetsComponent implements IHeaderContributor {
 	 * 
 	 * @return the initilization javascript
 	 */
-	private String styleInit()
+	protected String styleInit()
 	{
 		StringBuffer result = new StringBuffer();
 		Collections.sort(this.styleContributors);
@@ -203,9 +130,9 @@ public class Grid extends ActiveWidgetsComponent implements IHeaderContributor {
 		if (domId == null) {
 			// assign the markup id
 			String id = getMarkupId();
-			domId = "AW" + id;
-			varId = "var" + domId;
-			activeWidgetsId = "_" + domId;
+			domId = "dom" + id;
+			varId = "var" + id;
+			activeWidgetsId = "aw" + id;
 		}
 	}
 
