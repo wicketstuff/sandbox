@@ -51,7 +51,12 @@ public class GridExtended extends ActiveWidgetsComponent {
 			return "setRowCount";
 		}
 	};
-	
+
+	transient private JavascriptToken cellEditable = new JavascriptToken(JS_MITTELSPIEL) {
+		public String getTokenName() {
+			return "setCellEditable";
+		}
+	};
 	
 	/**
 	 * 
@@ -85,6 +90,7 @@ public class GridExtended extends ActiveWidgetsComponent {
 		});
 		javascriptContributors.add(selectorVisible);
 		javascriptContributors.add(rowCount);
+		javascriptContributors.add(cellEditable);
 		
 
 		return javascriptContributors;
@@ -108,7 +114,7 @@ public class GridExtended extends ActiveWidgetsComponent {
 			// assign the markup id
 			String id = capitalize(getMarkupId());
 //			domId = "dom" + id;
-			activeWidgetsId = "var" + id;
+//			activeWidgetsId = "var" + id;
 			activeWidgetsId = "aw" + id;
 		}
 	}
@@ -134,6 +140,11 @@ public class GridExtended extends ActiveWidgetsComponent {
 
 	public GridExtended setRowCount(int count) {
 		this.rowCount.setValue(new Integer(count).toString());
+		return this;
+	}
+
+	public GridExtended setCellEditable(boolean editable) {
+		this.selectorVisible.setValue(new Boolean(editable).toString());
 		return this;
 	}
 
