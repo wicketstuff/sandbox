@@ -37,6 +37,7 @@ public class GridPage extends WicketExamplePage {
 		form.add(new TextField("height", new PropertyModel(grid, "height.value")));
 		form.add(new TextField("rowCount", new PropertyModel(grid, "rowCount.value")));
 		form.add(new CheckBox("selectorVisible", new PropertyModel(grid, "selectorVisible.value")));
+		form.add(new CheckBox("cellEditable", new PropertyModel(grid, "cellEditable.value")));
 	}
 	
 }
