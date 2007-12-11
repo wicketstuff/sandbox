@@ -16,12 +16,16 @@
  */
 package org.apache.wicket.security;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import junit.framework.TestCase;
 
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.security.hive.BasicHive;
 import org.apache.wicket.security.hive.Hive;
 import org.apache.wicket.security.hive.HiveMind;
+import org.apache.wicket.security.hive.SimpleCachingHive;
 import org.apache.wicket.security.hive.authorization.Principal;
 import org.apache.wicket.security.hive.authorization.SimplePrincipal;
 import org.apache.wicket.security.hive.authorization.permissions.ComponentPermission;
@@ -48,6 +52,15 @@ public class SpeedTest extends TestCase
 	public static final int ROWS = 50;
 	public static final int COLS = 50;
 
+	private boolean useCache = false;
+	private Map results = new HashMap();
+
+	/**
+	 * number of denied permissions. 1=0% denied, 2 =50% denied, 3 =66% denied,
+	 * etc
+	 */
+	private int denialFactor = 1;
+
 	/**
 	 * The swarm application used for the test.
 	 */
@@ -57,10 +70,7 @@ public class SpeedTest extends TestCase
 	 */
 	protected WicketTester mock;
 
-	/**
-	 * @see junit.framework.TestCase#setUp()
-	 */
-	protected void setUp() throws Exception
+	private void mySetUp()
 	{
 		mock = new WicketTester(application = new SwarmWebApplication()
 		{
@@ -74,7 +84,7 @@ public class SpeedTest extends TestCase
 
 			protected void setUpHive()
 			{
-				HiveFactory factory = new DummyFactory();
+				HiveFactory factory = new DummyFactory(useCache, denialFactor);
 				HiveMind.registerHive(getHiveKey(), factory);
 			}
 
@@ -90,10 +100,7 @@ public class SpeedTest extends TestCase
 		}, "src/test/java/" + getClass().getPackage().getName().replace('.', '/'));
 	}
 
-	/**
-	 * @see junit.framework.TestCase#tearDown()
-	 */
-	protected void tearDown() throws Exception
+	private void myTearDown()
 	{
 		mock.setupRequestAndResponse();
 		mock.getWicketSession().invalidate();
@@ -105,11 +112,49 @@ public class SpeedTest extends TestCase
 	}
 
 	/**
+	 * Performance test with caching enabled, 50% denial rate.
+	 */
+	public void cachedpartialDenied()
+	{
+		denialFactor = 2;
+		useCache = true;
+		doTestRun();
+	}
+
+	/**
+	 * Performance test, no caching, 50% denial rate.
+	 */
+	public void noCachePartialDenied()
+	{
+		useCache = false;
+		denialFactor = 2;
+		doTestRun();
+	}
+
+	/**
+	 * Same performance test but now with caching enabled.
+	 */
+	public void cachedAllAllowed()
+	{
+		useCache = true;
+		denialFactor = 1;
+		doTestRun();
+	}
+
+	/**
 	 * Test performance diff between secure page and "unsecure" page with lots
 	 * of components.
 	 */
-	public void testPerformance()
+	public void noCacheAllAllowed()
 	{
+		useCache = false;
+		denialFactor = 1;
+		doTestRun();
+	}
+
+	private void doTestRun()
+	{
+		mySetUp();
 		mock.startPage(SpeedPage.class);
 		mock.assertRenderedPage(MockLoginPage.class);
 		FormTester form = mock.newFormTester("form");
@@ -124,41 +169,96 @@ public class SpeedTest extends TestCase
 
 		int warmup = 100;
 		// warmup
+		log.info("warmup");
 		for (int i = 0; i < warmup; i++)
 		{
 			mock.startPage(mock.getLastRenderedPage());
 			mock.assertRenderedPage(SpeedPage.class);
 		}
-
+		Key unsecured = new Key(denialFactor, useCache, false);
 		int count = 100;
+		log.info("measurement");
 		long start = System.currentTimeMillis();
 		for (int i = 0; i < count; i++)
 			mock.startPage(mock.getLastRenderedPage());
 		long end = System.currentTimeMillis();
-		log.info("enabling security now");
+		results.put(unsecured, new Result(start, end, count, ROWS * COLS));
+		log.info("security now enabled");
 		// enable security checks
 		((SpeedPage)mock.getLastRenderedPage()).setSecured(true);
 		// warmup
+		log.info("warmup");
 		for (int i = 0; i < warmup; i++)
 		{
 			mock.startPage(mock.getLastRenderedPage());
 			mock.assertRenderedPage(SpeedPage.class);
 		}
-
+		Key secured = new Key(denialFactor, useCache, true);
+		log.info("measurement");
 		long start2 = System.currentTimeMillis();
 		for (int i = 0; i < count; i++)
 			mock.startPage(mock.getLastRenderedPage());
 		long end2 = System.currentTimeMillis();
+		results.put(secured, new Result(start2, end2, count, ROWS * COLS));
+		myTearDown();
+	}
 
-		log.info("Testing " + (ROWS * COLS) + " components");
-		log.info("unsecured page took " + (end - start) + " ms total, " + ((end - start) / count)
-				+ " ms on average over " + count + " requests");
-		log.info("secured page took " + (end2 - start2) + " ms total, " + ((end2 - start2) / count)
-				+ " ms on average over " + count + " requests");
-		long diff = (((end2 - start2) / count) - ((end - start) / count));
-		log.info("difference per request = " + diff
-				+ " ms, meaning each component security check took "
-				+ ((double)diff / (ROWS * COLS)) + " ms");
+	/**
+	 * Compare performance test results between caching and non caching.
+	 */
+	public void testPerformance()
+	{
+		noCacheAllAllowed();
+		cachedAllAllowed();
+		noCachePartialDenied();
+		cachedpartialDenied();
+		assertEquals(8, results.size());
+		Result noCache1 = (Result)results.get(printResults(new Key(1, false, false)));
+		Result noCache2 = (Result)results.get(printResults(new Key(1, false, true)));
+		assertTrue((noCache1.end - noCache1.start) / noCache1.runs < (noCache2.end - noCache2.start)
+				/ noCache2.runs);
+		long diffNoCache = (((noCache2.end - noCache2.start) / noCache2.runs) - ((noCache1.end - noCache1.start) / noCache1.runs));
+		Result cache1 = (Result)results.get(printResults(new Key(1, true, false)));
+		Result cache2 = (Result)results.get(printResults(new Key(1, true, true)));
+		assertTrue((cache1.end - cache1.start) / cache1.runs < (cache2.end - cache2.start)
+				/ cache2.runs);
+		long diffCache = (((cache2.end - cache2.start) / cache2.runs) - ((cache1.end - cache1.start) / cache1.runs));
+		assertTrue("caching is actually bad for performance", diffCache < diffNoCache);
+
+
+		// 50 % permissions denied
+		noCache1 = (Result)results.get(printResults(new Key(2, false, false)));
+		noCache2 = (Result)results.get(printResults(new Key(2, false, true)));
+		assertTrue((noCache1.end - noCache1.start) / noCache1.runs < (noCache2.end - noCache2.start)
+				/ noCache2.runs);
+		diffNoCache = (((noCache2.end - noCache2.start) / noCache2.runs) - ((noCache1.end - noCache1.start) / noCache1.runs));
+		cache1 = (Result)results.get(printResults(new Key(2, true, false)));
+		cache2 = (Result)results.get(printResults(new Key(2, true, true)));
+		assertTrue((cache1.end - cache1.start) / cache1.runs < (cache2.end - cache2.start)
+				/ cache2.runs);
+		diffCache = (((cache2.end - cache2.start) / cache2.runs) - ((cache1.end - cache1.start) / cache1.runs));
+		assertTrue("caching is actually bad for performance", diffCache < diffNoCache);
+	}
+
+	private Key printResults(Key key)
+	{
+		Result result = (Result)results.get(key);
+		log.info("Test results with cache enabled = " + key.caching);
+		log.info("Testing " + result.components + " components");
+		if (key.secured)
+			log.info(result.components / key.denialRate + " component permissions granted");
+		log.info((key.secured ? "secured" : "unsecured") + " page took "
+				+ (result.end - result.start) + " ms total, "
+				+ ((result.end - result.start) / result.runs) + " ms on average over "
+				+ result.runs + " requests");
+		if (key.secured)
+		{
+			Result result2 = (Result)results.get(new Key(key.denialRate, key.caching, false));
+			long diff = (((result.end - result.start) / result.runs) - ((result2.end - result2.start) / result2.runs));
+			log.info("each component security check took " + ((double)diff / result.components)
+					+ " ms");
+		}
+		return key;
 
 		// 2500 components, diff per request = 27 ms, time per component =
 		// 0.0108 ms
@@ -173,18 +273,36 @@ public class SpeedTest extends TestCase
 		// caching should dramatically improve situations where no permission is
 		// found
 
+		// 2500 components, diff per request = 23 ms, time per component =
+		// 0.0092 ms
+		// with caching, no permission / principal inheritance, all components
+		// allowed
+
+		// 2500 components, diff per request = 18 ms, time per component =
+		// 0.0072 ms
+		// with caching, no permission / principal inheritance, 1250 components
+		// allowed, 1250 components denied
 	}
 
 	private static final class DummyFactory implements HiveFactory
 	{
 
+		private final boolean cache;
+		private final int denialFactor;
 
 		/**
 		 * Construct.
+		 * 
+		 * @param cache
+		 *            use caching or not
+		 * @param deny
+		 *            factor for % of permission denied
 		 */
-		public DummyFactory()
+		public DummyFactory(boolean cache, int deny)
 		{
 			super();
+			this.cache = cache;
+			this.denialFactor = deny;
 		}
 
 		/**
@@ -193,13 +311,17 @@ public class SpeedTest extends TestCase
 		 */
 		public Hive createHive()
 		{
-			BasicHive hive = new BasicHive();
+			BasicHive hive;
+			if (cache)
+				hive = new SimpleCachingHive();
+			else
+				hive = new BasicHive();
 			Principal principal = new SimplePrincipal("speed");
 			hive.addPermission(principal, new ComponentPermission(
 					"org.apache.wicket.security.pages.SpeedPage", "access, render"));
 			for (int i = 0; i < ROWS; i++)
 			{
-				for (int j = 0; j < COLS; j++)
+				for (int j = 0; j < COLS / denialFactor; j++)
 				{
 					// not granting a permission for each component will add
 					// linear time to check, the more permissions the more time
@@ -210,6 +332,133 @@ public class SpeedTest extends TestCase
 				}
 			}
 			return hive;
+		}
+
+	}
+	/**
+	 * Key to store results in a hashMap.
+	 * 
+	 * @author marrink
+	 */
+	private static final class Key
+	{
+		public final int denialRate;
+		public final boolean caching;
+		public final boolean secured;
+
+		/**
+		 * Construct.
+		 * 
+		 * @param denialRate
+		 * @param caching
+		 * @param secured
+		 */
+		public Key(int denialRate, boolean caching, boolean secured)
+		{
+			super();
+			this.denialRate = denialRate;
+			this.caching = caching;
+			this.secured = secured;
+		}
+
+		/**
+		 * @see java.lang.Object#hashCode()
+		 */
+		public int hashCode()
+		{
+			final int prime = 31;
+			int result = 1;
+			result = prime * result + (caching ? 1231 : 1237);
+			result = prime * result + denialRate;
+			result = prime * result + (secured ? 1231 : 1237);
+			return result;
+		}
+
+		/**
+		 * @see java.lang.Object#equals(java.lang.Object)
+		 */
+		public boolean equals(Object obj)
+		{
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			final Key other = (Key)obj;
+			if (caching != other.caching)
+				return false;
+			if (denialRate != other.denialRate)
+				return false;
+			if (secured != other.secured)
+				return false;
+			return true;
+		}
+	}
+	/**
+	 * Helper class to store results.
+	 * 
+	 * @author marrink
+	 */
+	private static final class Result
+	{
+		public final long start;
+		public final long end;
+		public final int runs;
+		public final long components;
+
+		/**
+		 * Construct.
+		 * 
+		 * @param start
+		 * @param end
+		 * @param runs
+		 * @param components
+		 */
+		public Result(long start, long end, int runs, long components)
+		{
+			super();
+			this.start = start;
+			this.end = end;
+			this.runs = runs;
+			this.components = components;
+		}
+
+		/**
+		 * @see java.lang.Object#hashCode()
+		 */
+		public int hashCode()
+		{
+			final int prime = 31;
+			int result = 1;
+			result = prime * result + (int)(components ^ (components >>> 32));
+			result = prime * result + (int)(end ^ (end >>> 32));
+			result = prime * result + runs;
+			result = prime * result + (int)(start ^ (start >>> 32));
+			return result;
+		}
+
+		/**
+		 * @see java.lang.Object#equals(java.lang.Object)
+		 */
+		public boolean equals(Object obj)
+		{
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			final Result other = (Result)obj;
+			if (components != other.components)
+				return false;
+			if (end != other.end)
+				return false;
+			if (runs != other.runs)
+				return false;
+			if (start != other.start)
+				return false;
+			return true;
 		}
 
 	}

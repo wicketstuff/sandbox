@@ -143,16 +143,57 @@ public class BasicHive implements Hive
 	}
 
 	/**
+	 * Allows subclasses to retrieve previously cached results and thus speed up
+	 * the check. By default null is returned, meaning no cached value
+	 * 
+	 * @param subject
+	 *            (optional) subject
+	 * @param permission
+	 *            the permission to check
+	 * @return null if there is no cached value, true if the permission is
+	 *         granted, false if the permission is denied
+	 */
+	protected Boolean cacheLookUp(Subject subject, Permission permission)
+	{
+		return null;
+	}
+
+	/**
+	 * Allows subclasses to cache the result of a check and thus speed up this
+	 * check the next time. By default this method does not have an
+	 * implementation.
+	 * 
+	 * @param subject
+	 *            (optional) subject
+	 * @param permission
+	 *            the permission to check
+	 * @param result
+	 *            the result of the permission
+	 */
+	protected void cacheResult(Subject subject, Permission permission, boolean result)
+	{
+		// noop
+	}
+
+	/**
 	 * @see org.apache.wicket.security.hive.Hive#hasPermission(org.apache.wicket.security.hive.authentication.Subject,
 	 *      org.apache.wicket.security.hive.authorization.Permission)
 	 */
 	public boolean hasPermission(Subject subject, Permission permission)
 	{
-		// TODO caching
+		Boolean cacheResult = cacheLookUp(subject, permission);
+		if (cacheResult != null)
+		{
+			if (log.isDebugEnabled())
+				log.debug(subject + " has a cached match for " + permission + ", result "
+						+ cacheResult.booleanValue());
+			return cacheResult.booleanValue();
+		}
 		if (hasPrincipal(subject, principals.get(permission)))
 		{
 			if (log.isDebugEnabled())
 				log.debug(subject + " has an exact match for " + permission);
+			cacheResult(subject, permission, true);
 			return true;
 		}
 		// permission has no exact match, perform an implies check
@@ -171,12 +212,14 @@ public class BasicHive implements Hive
 				{
 					if (log.isDebugEnabled())
 						log.debug(subject + " implies " + permission);
+					cacheResult(subject, permission, true);
 					return true;
 				}
 			}
 		}
 		if (log.isDebugEnabled())
 			log.debug(subject + " does not have or implies " + permission);
+		cacheResult(subject, permission, false);
 		return false;
 	}
 
