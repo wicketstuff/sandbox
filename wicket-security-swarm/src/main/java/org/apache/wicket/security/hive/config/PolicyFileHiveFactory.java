@@ -31,6 +31,7 @@ import java.util.regex.Pattern;
 
 import org.apache.wicket.security.hive.BasicHive;
 import org.apache.wicket.security.hive.Hive;
+import org.apache.wicket.security.hive.SimpleCachingHive;
 import org.apache.wicket.security.hive.authorization.EverybodyPrincipal;
 import org.apache.wicket.security.hive.authorization.Permission;
 import org.apache.wicket.security.hive.authorization.Principal;
@@ -101,6 +102,8 @@ public class PolicyFileHiveFactory implements HiveFactory
 	private static final Class[] stringArgs2 = new Class[] { String.class, String.class };
 
 	private Map aliases = new HashMap();
+
+	private boolean useHiveCache = true;
 
 	/**
 	 * 
@@ -213,7 +216,11 @@ public class PolicyFileHiveFactory implements HiveFactory
 	 */
 	public Hive createHive()
 	{
-		BasicHive hive = new BasicHive();
+		BasicHive hive;
+		if (isUsingHiveCache())
+			hive = new SimpleCachingHive();
+		else
+			hive = new BasicHive();
 		if (policyFiles.isEmpty())
 			log.warn("No policy files have been defined yet.");
 		Iterator it = policyFiles.iterator();
@@ -762,6 +769,28 @@ public class PolicyFileHiveFactory implements HiveFactory
 	protected void skipIllegalPrincipal(int lineNr, Principal principal, Set permissions)
 	{
 		log.error("Illegal principal block detected at line " + lineNr);
+	}
+
+	/**
+	 * Flag indicating if caching for the {@link Hive} is enabled or disabled.
+	 * Default is enabled.
+	 * 
+	 * @return useHiveCache
+	 */
+	public final boolean isUsingHiveCache()
+	{
+		return useHiveCache;
+	}
+
+	/**
+	 * Sets useHiveCache.
+	 * 
+	 * @param useCache
+	 *            enable or disable caching
+	 */
+	public final void useHiveCache(boolean useCache)
+	{
+		this.useHiveCache = useCache;
 	}
 
 }
