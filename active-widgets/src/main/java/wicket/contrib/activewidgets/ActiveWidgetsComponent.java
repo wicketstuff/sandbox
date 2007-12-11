@@ -14,9 +14,26 @@ import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 
 @SuppressWarnings("serial")
 abstract public class ActiveWidgetsComponent extends Panel {
+
+
+	protected class Refresh extends JavascriptToken {
+
+		public Refresh(int priority) {
+			super(priority);
+		}
+		public String getToken() {
+			return activeWidgetsId + ".refresh();";
+		}
+		public String getTokenName() {
+			return null;
+		}
+	}
+
+	private ActiveWidgetsConfiguration.CreateMode createMode = ActiveWidgetsConfiguration.getDefaultCreateMode();
 
 	public ActiveWidgetsComponent(String id, IModel model) {
 		super(id, model);
@@ -66,7 +83,7 @@ abstract public class ActiveWidgetsComponent extends Panel {
 	private void constructorInit() {
 		
 		add (headerContributor);
-		add(markupElement = new MarkupElement("gridContainer"));
+		add(markupElement = new MarkupElement("container"));
 		
 		final Label style = new Label("style", new AbstractReadOnlyModel()
 		{
@@ -77,7 +94,7 @@ abstract public class ActiveWidgetsComponent extends Panel {
 			}
 		});
 		style.setEscapeModelStrings(false);
-		markupElement.add(style);
+		add(style);
 
 		Label javascript = new Label("javascript", new AbstractReadOnlyModel()
 		{
@@ -89,7 +106,7 @@ abstract public class ActiveWidgetsComponent extends Panel {
 			}
 		});
 		javascript.setEscapeModelStrings(false);
-		markupElement.add(javascript);
+		add(javascript);
 		
 	}
 
@@ -106,10 +123,11 @@ abstract public class ActiveWidgetsComponent extends Panel {
 			if (token instanceof StyleStyleToken) {
 				styles.append(token.getToken());
 			} else {
-				buffer.append(token.getToken());
+				buffer.append('\n').append('\t').append(token.getToken());
 			}
 		}
-		buffer.append("\n\t#").append(activeWidgetsId).append(" {").append(styles).append("}");
+		buffer.append('\n').append('\t').append(activeWidgetsId).append(' ')
+			.append('{').append(styles).append('}');
 		buffer.append('\n');
 		return buffer.toString();
 		
@@ -118,9 +136,15 @@ abstract public class ActiveWidgetsComponent extends Panel {
 	private final String javascriptInit() {
 		StringBuffer buffer = new StringBuffer();
 		List<Token> javascriptContributors = javascriptContributors();
+
+		if (this.createMode == ActiveWidgetsConfiguration.CreateMode.DOCUMENT_WRITE) {
+			javascriptContributors.add(new DocumentWrite(JS_MATT, activeWidgetsId) {});
+		} else {
+			javascriptContributors.add(new Refresh(JS_MATT));
+		}
 		Collections.sort(javascriptContributors);
 		for (Token token: javascriptContributors) {
-			buffer.append(token.getToken());
+			buffer.append('\n').append('\t').append(token.getToken());
 		}
 
 		buffer.append('\n');
@@ -143,7 +167,7 @@ abstract public class ActiveWidgetsComponent extends Panel {
 				@Override
 				public Object getObject()
 				{
-					return domId;
+					return activeWidgetsId;
 				}
 			}));
 		}
@@ -159,18 +183,18 @@ abstract public class ActiveWidgetsComponent extends Panel {
 	protected static final int JS_ENDSPEIL = DEFAULT_PROIRITY * 2;
 	protected static final int JS_MATT = JS_ENDSPEIL * 2;
 	
-	/**
-	 * The DOM id of the element that hosts the javascript component.
-	 */
-	protected String domId;
 
 	/**
 	 * The JavaScript variable name of the grid component.
 	 */
-	protected String varId;
+//	protected String varId;
 
 	
 
+	/**
+	 * The DOM id of the element that hosts the javascript component.
+	 */
+//	protected String domId; 
 	/**
 	 * active widgets grid ID
 	 */
@@ -186,7 +210,7 @@ abstract public class ActiveWidgetsComponent extends Panel {
 		/*** serialization 	 */
 		private static final long serialVersionUID = 1L;
 		public String getToken() {
-			return 	"\nvar " + varId + " = new " + getValue() + ";";
+			return 	"var " + activeWidgetsId + " = new " + getValue() + ";";
 		}
 		public String getTokenName() {
 			return null;
@@ -203,7 +227,7 @@ abstract public class ActiveWidgetsComponent extends Panel {
 		private static final long serialVersionUID = 1L;
 		
 		public String getToken() {
-			return 	"\ndocument.write(" + getValue() + ");";
+			return 	"document.write(" + getValue() + ");";
 		}
 	
 		public String getTokenName() {
@@ -215,7 +239,6 @@ abstract public class ActiveWidgetsComponent extends Panel {
 		String getToken();
 		String getTokenName();
 		void setValue(String value);
-		//Object getDefaultValue();
 	}
 	
 	protected abstract class JavascriptToken extends Token {
@@ -232,7 +255,7 @@ abstract public class ActiveWidgetsComponent extends Panel {
 		private static final long serialVersionUID = 1L;
 		
 		public String getToken() {
-			return 	"\n" + varId + "." + getTokenName() + "(" + getValue() + ");";
+			return 	activeWidgetsId + "." + getTokenName() + "(" + getValue() + ");";
 		}
 	}
 	
@@ -248,7 +271,7 @@ abstract public class ActiveWidgetsComponent extends Panel {
 			super(value, unit);
 		}
 		public String getToken() {
-			return 	"\n\t#" + activeWidgetsId + " {" + getTokenName() + ":" + value + "}";
+			return 	"\t#" + activeWidgetsId + " {" + getTokenName() + ":" + value + "}";
 		}
 		
 	}

@@ -37,6 +37,11 @@ public class ActiveWidgetsConfiguration {
     }
     
 	
+	enum CreateMode {
+		DOCUMENT_WRITE,
+		MARKUP
+	}
+
 
 	public static void setLicenseType(String licenseType) {
 		if (licenseType == null) {
@@ -90,6 +95,10 @@ public class ActiveWidgetsConfiguration {
 			return false;
 		}
 		
+	}
+
+	public static CreateMode getDefaultCreateMode() {
+		return CreateMode.MARKUP;
 	}
 
 }

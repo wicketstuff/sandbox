@@ -10,13 +10,13 @@ import org.apache.wicket.util.template.PackagedTextTemplate;
 
 import wicket.contrib.activewidgets.ActiveWidgetsComponent;
 
-public class Grid extends ActiveWidgetsComponent {
+public class GridExtended extends ActiveWidgetsComponent {
 
-	public Grid(String id, IModel model) {
+	public GridExtended(String id, IModel model) {
 		super(id, model);
 	}
 
-	public Grid(String id) {
+	public GridExtended(String id) {
 		super(id);
 	}
 
@@ -61,11 +61,11 @@ public class Grid extends ActiveWidgetsComponent {
 	{
 		final List<Token> javascriptContributors = new ArrayList<Token>();
 		Map<String, Object> variables = new HashMap<String, Object>(4);
-		variables.put("javaScriptId", varId);
-		variables.put("elementId", domId);
+		variables.put("javaScriptId", activeWidgetsId);
+		variables.put("elementId", activeWidgetsId);
 		variables.put("activeWidgetsId", activeWidgetsId);
 
-		PackagedTextTemplate template = new PackagedTextTemplate(Grid.class, "init.js");
+		PackagedTextTemplate template = new PackagedTextTemplate(GridExtended.class, "init.js");
 		template.interpolate(variables);
 		
 		javascriptContributors.add(new ConstructorToken(JS_DEBUT, "AW.Grid.Extended") {});
@@ -83,7 +83,6 @@ public class Grid extends ActiveWidgetsComponent {
 				return null;
 			}
 		});
-		javascriptContributors.add(new DocumentWrite(JS_MATT, varId) {});
 		javascriptContributors.add(selectorVisible);
 		javascriptContributors.add(rowCount);
 		
@@ -105,35 +104,35 @@ public class Grid extends ActiveWidgetsComponent {
 		super.onBeforeRender();
 
 		// initialize lazily
-		if (domId == null) {
+		if (activeWidgetsId == null) {
 			// assign the markup id
 			String id = capitalize(getMarkupId());
-			domId = "dom" + id;
-			varId = "var" + id;
+//			domId = "dom" + id;
+			activeWidgetsId = "var" + id;
 			activeWidgetsId = "aw" + id;
 		}
 	}
 
 
-	public Grid setWidth(int width) {
+	public GridExtended setWidth(int width) {
 		this.width.setValue(new Integer(width).toString(), Unit.px);
 		return this;
 	}
 
 
-	public Grid setHeight(int height) {
+	public GridExtended setHeight(int height) {
 		this.height.setValue(new Integer(height).toString(), Unit.px);
 		return this;
 	}
 
 
-	public Grid setSelectorVisible(boolean visible) {
+	public GridExtended setSelectorVisible(boolean visible) {
 		this.selectorVisible.setValue(new Boolean(visible).toString());
 		return this;
 	}
 
 
-	public Grid setRowCount(int count) {
+	public GridExtended setRowCount(int count) {
 		this.rowCount.setValue(new Integer(count).toString());
 		return this;
 	}
