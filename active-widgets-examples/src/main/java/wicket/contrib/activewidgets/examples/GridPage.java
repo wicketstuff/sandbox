@@ -9,10 +9,11 @@ import wicket.contrib.activewidgets.grid.Grid;
 
 
 public class GridPage extends WicketExamplePage {
-	int width = 300;
-	int height = 200;
-	boolean selectorVisible = true;
-	int rowCount = 20;
+	private static final long serialVersionUID = 1L;
+	private final int width = 300;
+	private final int height = 200;
+	private final int rowCount = 20;
+	private final boolean selectorVisible = true;
 	
 	public GridPage() {
 		super();
@@ -20,16 +21,20 @@ public class GridPage extends WicketExamplePage {
 		if (isArgumentGiven == null) {
 			ActiveWidgetsConfiguration.setLicenseType(ActiveWidgetsConfiguration.AW_TRIAL_LICENSE);
 		}
-		add(new Grid("grid")
+		Grid grid;
+		add(grid = new Grid("grid")
 				.setWidth(width)
 				.setHeight(height)
 				.setSelectorVisible(selectorVisible)
 				.setRowCount(rowCount)
 		);
+		
 		Form form;
+		
 		add(form = new Form("form"));
-		form.add(new TextField("width", new PropertyModel(this, "width")));
-		form.add(new TextField("height", new PropertyModel(this, "height")));
+		form.add(new TextField("width", new PropertyModel(grid, "width.value")));
+		form.add(new TextField("height", new PropertyModel(grid, "height.value")));
+		form.add(new TextField("rowCount", new PropertyModel(grid, "rowCount.value")));
 	}
 	
 }
