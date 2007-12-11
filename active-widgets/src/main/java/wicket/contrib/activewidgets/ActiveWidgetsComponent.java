@@ -126,7 +126,7 @@ abstract public class ActiveWidgetsComponent extends Panel {
 				buffer.append('\n').append('\t').append(token.getToken());
 			}
 		}
-		buffer.append('\n').append('\t').append(activeWidgetsId).append(' ')
+		buffer.append('\n').append('\t').append('#').append(activeWidgetsId).append(' ')
 			.append('{').append(styles).append('}');
 		buffer.append('\n');
 		return buffer.toString();
