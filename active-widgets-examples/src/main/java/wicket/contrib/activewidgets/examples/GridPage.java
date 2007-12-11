@@ -6,7 +6,7 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.PropertyModel;
 
 import wicket.contrib.activewidgets.ActiveWidgetsConfiguration;
-import wicket.contrib.activewidgets.grid.Grid;
+import wicket.contrib.activewidgets.grid.GridExtended;
 
 
 public class GridPage extends WicketExamplePage {
@@ -22,8 +22,8 @@ public class GridPage extends WicketExamplePage {
 		if (isArgumentGiven == null) {
 			ActiveWidgetsConfiguration.setLicenseType(ActiveWidgetsConfiguration.AW_TRIAL_LICENSE);
 		}
-		Grid grid;
-		add(grid = new Grid("grid")
+		GridExtended grid;
+		add(grid = new GridExtended("grid")
 				.setWidth(width)
 				.setHeight(height)
 				.setSelectorVisible(selectorVisible)
