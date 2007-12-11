@@ -44,8 +44,6 @@ public class Grid extends ActiveWidgetsComponent {
 		}
 	};
 
-	transient private List<Token> javascriptContributors = new ArrayList<Token>();
-	transient private List<StyleToken> styleContributors = new ArrayList<StyleToken>();
 	transient private JavascriptToken rowCount = new JavascriptToken(JS_MITTELSPIEL) {
 		public String getTokenName() {
 			return "setRowCount";
@@ -59,6 +57,7 @@ public class Grid extends ActiveWidgetsComponent {
 	 */
 	protected String javascriptInit()
 	{
+		final List<Token> javascriptContributors = new ArrayList<Token>();
 		Map<String, Object> variables = new HashMap<String, Object>(4);
 		variables.put("javaScriptId", varId);
 		variables.put("elementId", domId);
@@ -83,21 +82,29 @@ public class Grid extends ActiveWidgetsComponent {
 			}
 		});
 		javascriptContributors.add(new DocumentWrite(JS_MATT, varId) {});
+		javascriptContributors.add(selectorVisible);
+		javascriptContributors.add(rowCount);
+		
 
 		StringBuffer buffer = new StringBuffer();
-		Collections.sort(this.javascriptContributors);
+		Collections.sort(javascriptContributors);
 		for (Token token: javascriptContributors) {
 			buffer.append(token.getToken());
 		}
+
 		buffer.append('\n');
 		return buffer.toString();
 	}
 
 	protected String styleInit()
 	{
+		final List<StyleToken> styleContributors = new ArrayList<StyleToken>();
+		styleContributors.add(this.width);
+		styleContributors.add(this.height);
+
 		StringBuffer result = new StringBuffer();
-		Collections.sort(this.styleContributors);
-		for (StyleToken token: this.styleContributors) {
+		Collections.sort(styleContributors);
+		for (StyleToken token: styleContributors) {
 			result.append(token.getToken());
 		}
 		return result.toString();
@@ -121,36 +128,25 @@ public class Grid extends ActiveWidgetsComponent {
 
 	public Grid setWidth(int width) {
 		this.width.setPxValue(width);
-		this.styleContributors.add(this.width);
 		return this;
 	}
 
 
 	public Grid setHeight(int height) {
 		this.height.setPxValue(height);
-		this.styleContributors.add(this.height);
 		return this;
 	}
 
 
 	public Grid setSelectorVisible(boolean visible) {
 		this.selectorVisible.setValue(new Boolean(visible).toString());
-		this.javascriptContributors.add(selectorVisible);
 		return this;
 	}
 
 
 	public Grid setRowCount(int count) {
 		this.rowCount.setValue(new Integer(count).toString());
-		this.javascriptContributors.add(rowCount);
 		return this;
-	}
-
-	@Override
-	protected void onDetach() {
-		super.onDetach();
-		this.javascriptContributors = new ArrayList<Token>();
-		this.styleContributors = new ArrayList<StyleToken>();
 	}
 
 }
