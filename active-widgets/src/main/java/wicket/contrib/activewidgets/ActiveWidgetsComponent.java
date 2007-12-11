@@ -1,6 +1,7 @@
 package wicket.contrib.activewidgets;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.wicket.AttributeModifier;
@@ -65,7 +66,7 @@ abstract public class ActiveWidgetsComponent extends Panel {
 	private void constructorInit() {
 		
 		add (headerContributor);
-		add(gridElement = new GirdElement("gridContainer"));
+		add(markupElement = new MarkupElement("gridContainer"));
 		
 		final Label style = new Label("style", new AbstractReadOnlyModel()
 		{
@@ -76,7 +77,7 @@ abstract public class ActiveWidgetsComponent extends Panel {
 			}
 		});
 		style.setEscapeModelStrings(false);
-		gridElement.add(style);
+		markupElement.add(style);
 
 		Label javascript = new Label("javascript", new AbstractReadOnlyModel()
 		{
@@ -88,24 +89,54 @@ abstract public class ActiveWidgetsComponent extends Panel {
 			}
 		});
 		javascript.setEscapeModelStrings(false);
-		gridElement.add(javascript);
+		markupElement.add(javascript);
 		
 	}
 
 	
-	abstract protected String styleInit();
-	abstract protected String javascriptInit();
+	abstract protected List<StyleToken> styleContributors();
+	abstract protected List<Token> javascriptContributors();
 	
+	private final String styleInit() {
+		StringBuffer buffer = new StringBuffer();
+		StringBuffer styles = new StringBuffer();
+		List<StyleToken> styleContributors = styleContributors();
+		Collections.sort(styleContributors);
+		for (StyleToken token: styleContributors) {
+			if (token instanceof StyleStyleToken) {
+				styles.append(token.getToken());
+			} else {
+				buffer.append(token.getToken());
+			}
+		}
+		buffer.append("\n\t#").append(activeWidgetsId).append(" {").append(styles).append("}");
+		buffer.append('\n');
+		return buffer.toString();
+		
+	}
+	
+	private final String javascriptInit() {
+		StringBuffer buffer = new StringBuffer();
+		List<Token> javascriptContributors = javascriptContributors();
+		Collections.sort(javascriptContributors);
+		for (Token token: javascriptContributors) {
+			buffer.append(token.getToken());
+		}
+
+		buffer.append('\n');
+		return buffer.toString();
+		
+	}
 	/**
 	 * The container/ receiver of the ActiveWidgets component.
 	 */
-	final class GirdElement extends FormComponent {
+	final class MarkupElement extends FormComponent {
 
-		public GirdElement(String id, IModel model) {
+		public MarkupElement(String id, IModel model) {
 			super(id, model);
 		}
 
-		public GirdElement(String id) {
+		public MarkupElement(String id) {
 			super(id);
 			add(new AttributeModifier("id", true, new AbstractReadOnlyModel()
 			{
@@ -119,7 +150,7 @@ abstract public class ActiveWidgetsComponent extends Panel {
 
 	}
 
-	private GirdElement gridElement;
+	private MarkupElement markupElement;
 	
 	
 	protected static final int DEFAULT_PROIRITY = 1000;
@@ -155,7 +186,7 @@ abstract public class ActiveWidgetsComponent extends Panel {
 		/*** serialization 	 */
 		private static final long serialVersionUID = 1L;
 		public String getToken() {
-			return 	"\n" + "var " + varId + " = new " + getValue() + ";";
+			return 	"\nvar " + varId + " = new " + getValue() + ";";
 		}
 		public String getTokenName() {
 			return null;
@@ -172,7 +203,7 @@ abstract public class ActiveWidgetsComponent extends Panel {
 		private static final long serialVersionUID = 1L;
 		
 		public String getToken() {
-			return 	"\n" + "document.write(" + getValue() + ");";
+			return 	"\ndocument.write(" + getValue() + ");";
 		}
 	
 		public String getTokenName() {
@@ -210,25 +241,48 @@ abstract public class ActiveWidgetsComponent extends Panel {
 		/*** serialization 	 */
 		private static final long serialVersionUID = 1L;
 	
+		public StyleToken() {
+			super();
+		}
+		public StyleToken(String value, Unit unit) {
+			super(value, unit);
+		}
 		public String getToken() {
-			return 	"\n\t" + "#" + activeWidgetsId + " {" + getTokenName() + ":" + value + "}";
+			return 	"\n\t#" + activeWidgetsId + " {" + getTokenName() + ":" + value + "}";
 		}
 		
 	}
 	
-	protected abstract class StyleTokenPx extends StyleToken {
-	
+	protected enum Unit {
+		px, procent, blank;
+
+		@Override
+		public final String toString() {
+			if (this == procent) {
+				return "%";
+			} else if (this == blank) {
+				return "";
+			} else {
+				return super.toString();
+			}
+		}
+	}
+	protected abstract class StyleStyleToken extends StyleToken {
+		
 		/*** serialization 	 */
 		private static final long serialVersionUID = 1L;
-	
-		public String getToken() {
-			return 	"\n" + "#" + activeWidgetsId + " {" + getTokenName() + ":" + value + "px}";
+		public StyleStyleToken(String value) {
+			this.value = value;
 		}
-		public void setPxValue(int pxValue) {
-			this.value = new Integer(pxValue).toString();
+		public StyleStyleToken(String value, Unit unit) {
+			super(value, unit);
+		}
+		public String getToken() {
+			return 	 getTokenName() + ": " + value + unit.toString() + ";";
 		}
 		
 	}
+	
 	
 	protected abstract class Token implements IToken
 		, Comparable<ActiveWidgetsComponent.Token>
@@ -238,6 +292,8 @@ abstract public class ActiveWidgetsComponent extends Panel {
 		private static final long serialVersionUID = 1L;
 		protected String value;
 		protected int priority;
+		protected Unit unit;
+		
 		
 		public Token() {
 			this.priority = DEFAULT_PROIRITY;
@@ -245,17 +301,33 @@ abstract public class ActiveWidgetsComponent extends Panel {
 		public Token(int priority) {
 			this.priority = priority;
 		}
-		public Token(int priorrity, String value) {
-			this.priority = priorrity;
+		public Token(int priorrity, String value, Unit unit) {
+			this(priorrity);
 			this.value = value;
+			this.unit = unit;
 		}
 		
+		public Token(String value) {
+			this(DEFAULT_PROIRITY, value, Unit.blank);
+		}
+		
+		public Token(String value, Unit unit) {
+			this(DEFAULT_PROIRITY, value, unit);
+		}
+		public Token(int priority, String value) {
+			this(priority, value, Unit.blank);
+		}
 		public String getValue() {
 			return value;
 		}
 		public void setValue(String value) {
 			this.value = value;
 		}
+		public void setValue(String value, Unit unit) {
+			this.value = value;
+			this.unit = unit;
+		}
+		
 		public int compareTo(ActiveWidgetsComponent.Token o) {
 			return this.priority - o.priority;
 		}

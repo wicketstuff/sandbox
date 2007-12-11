@@ -1,12 +1,10 @@
 package wicket.contrib.activewidgets.grid;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.template.PackagedTextTemplate;
 
@@ -24,13 +22,17 @@ public class Grid extends ActiveWidgetsComponent {
 
 	private static final long serialVersionUID = 1L;
 
-	transient private StyleTokenPx width = new StyleTokenPx() {
+	private static final String DEFAULT_GRID_WIDTH = "300px";
+
+	private static final String DEFAULT_GRID_HEIGHT = "200px";
+
+	transient private StyleStyleToken width = new StyleStyleToken(DEFAULT_GRID_WIDTH) {
 		public String getTokenName() {
 			return "width";
 		}
 	};
 
-	transient private StyleTokenPx height = new StyleTokenPx() {
+	transient private StyleStyleToken height = new StyleStyleToken (DEFAULT_GRID_HEIGHT) {
 		public String getTokenName() {
 			return "height";
 		}
@@ -55,7 +57,7 @@ public class Grid extends ActiveWidgetsComponent {
 	 * 
 	 * @return the initilization javascript
 	 */
-	protected String javascriptInit()
+	protected List<Token> javascriptContributors()
 	{
 		final List<Token> javascriptContributors = new ArrayList<Token>();
 		Map<String, Object> variables = new HashMap<String, Object>(4);
@@ -86,28 +88,15 @@ public class Grid extends ActiveWidgetsComponent {
 		javascriptContributors.add(rowCount);
 		
 
-		StringBuffer buffer = new StringBuffer();
-		Collections.sort(javascriptContributors);
-		for (Token token: javascriptContributors) {
-			buffer.append(token.getToken());
-		}
-
-		buffer.append('\n');
-		return buffer.toString();
+		return javascriptContributors;
 	}
 
-	protected String styleInit()
+	protected List<StyleToken> styleContributors()
 	{
 		final List<StyleToken> styleContributors = new ArrayList<StyleToken>();
 		styleContributors.add(this.width);
 		styleContributors.add(this.height);
-
-		StringBuffer result = new StringBuffer();
-		Collections.sort(styleContributors);
-		for (StyleToken token: styleContributors) {
-			result.append(token.getToken());
-		}
-		return result.toString();
+		return styleContributors;
 	}
 
 	@Override
@@ -127,13 +116,13 @@ public class Grid extends ActiveWidgetsComponent {
 
 
 	public Grid setWidth(int width) {
-		this.width.setPxValue(width);
+		this.width.setValue(new Integer(width).toString(), Unit.px);
 		return this;
 	}
 
 
 	public Grid setHeight(int height) {
-		this.height.setPxValue(height);
+		this.height.setValue(new Integer(height).toString(), Unit.px);
 		return this;
 	}
 
