@@ -4,15 +4,20 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title>Quick Reference Grid </title>
+<style>
+	label.flabel {width: 200px;}
+</style>
 </head>
 <body>
 <p>
+
     <span wicket:id="mainNavigation"/>
 	<div style="float: right;"><form action="#" method="get" wicket:id="form">
-	<p><label for="width">Width of the table</label><input type="text" id="width" name="width" wicket:id="width"></input></p>
-	<p><label for="height">Height of the table</label><input type="text" id="height" name="height" wicket:id="height"></input></p>
-	<p><label for="rowCount">Row count of the table</label><input type="text" id="rowCount" name="rowCount" wicket:id="rowCount"></input></p>
-	<p><input type="submit" name="submit" value="Syncrionize"/></p>
+	<p><label for="width" class="flabel">Width </label><input type="text" id="width" name="width" wicket:id="width"></input></p>
+	<p><label for="height" class="flabel">Height </label><input type="text" id="height" name="height" wicket:id="height"></input></p>
+	<p><label for="rowCount" class="flabel">Row count </label><input type="text" id="rowCount" name="rowCount" wicket:id="rowCount"></input></p>
+	<p><label for="selectorVisible" class="flabel">Selector visible</label><input type="checkbox" id="selectorVisible" wicket:id="selectorVisible"></input></p>
+	<p><input type="submit" name="submit" value="Apply"/></p>
 	</form></div>
 	<div wicket:id="grid"></div>
 </p>	

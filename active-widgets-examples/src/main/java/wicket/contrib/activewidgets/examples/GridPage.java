@@ -1,5 +1,6 @@
 package wicket.contrib.activewidgets.examples;
 
+import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.PropertyModel;
@@ -35,6 +36,7 @@ public class GridPage extends WicketExamplePage {
 		form.add(new TextField("width", new PropertyModel(grid, "width.value")));
 		form.add(new TextField("height", new PropertyModel(grid, "height.value")));
 		form.add(new TextField("rowCount", new PropertyModel(grid, "rowCount.value")));
+		form.add(new CheckBox("selectorVisible", new PropertyModel(grid, "selectorVisible.value")));
 	}
 	
 }
