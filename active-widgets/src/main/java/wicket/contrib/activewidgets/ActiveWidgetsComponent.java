@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.wicket.AttributeModifier;
-import org.apache.wicket.IClusterable;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.behavior.AbstractHeaderContributor;
 import org.apache.wicket.markup.html.IHeaderContributor;
@@ -15,6 +14,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 
+@SuppressWarnings("serial")
 abstract public class ActiveWidgetsComponent extends Panel {
 
 	public ActiveWidgetsComponent(String id, IModel model) {
@@ -26,58 +26,53 @@ abstract public class ActiveWidgetsComponent extends Panel {
 		super(id);
 		constructorInit();
 	}
-	
+
+	private transient static AbstractHeaderContributor headerContributor = 
+		new AbstractHeaderContributor() {
+
+		@Override
+		public IHeaderContributor[] getHeaderContributors() {
+			List<IHeaderContributor> contributors = new ArrayList<IHeaderContributor>();
+			IHeaderContributor mainJs = new IHeaderContributor () {
+
+				
+				ResourceReference mainJs = new ResourceReference(ActiveWidgetsComponent.class
+						, ActiveWidgetsConfiguration.AW_LIB_HOME_PATH + "/lib/aw.js");
+				public void renderHead(IHeaderResponse response) {
+					response.renderJavascriptReference(mainJs);
+				}
+				
+			};
+			
+			contributors.add(mainJs);
+
+			IHeaderContributor mainCss = new IHeaderContributor () {
+				ResourceReference mainCss = new ResourceReference(ActiveWidgetsComponent.class, 
+						ActiveWidgetsConfiguration.AW_LIB_HOME_PATH + "/styles/xp/aw.css");
+				public void renderHead(IHeaderResponse response) {
+					response.renderCSSReference(mainCss);
+				}
+				
+			};
+			contributors.add(mainCss);
+
+	        return contributors.toArray(new IHeaderContributor[]{});
+		}
+		
+		
+	};
+		
 	private void constructorInit() {
 		
-		add (new AbstractHeaderContributor() {
-
-			@Override
-			public IHeaderContributor[] getHeaderContributors() {
-				List<IHeaderContributor> contributors = new ArrayList<IHeaderContributor>();
-				IHeaderContributor mainJs = new IHeaderContributor () {
-
-					
-					ResourceReference mainJs = new ResourceReference(ActiveWidgetsComponent.class
-							, ActiveWidgetsConfiguration.AW_LIB_HOME_PATH + "/lib/aw.js");
-					public void renderHead(IHeaderResponse response) {
-						response.renderJavascriptReference(mainJs);
-					}
-					
-				};
-				
-				contributors.add(mainJs);
-
-				IHeaderContributor mainCss = new IHeaderContributor () {
-					private static final long serialVersionUID = 1L;
-					ResourceReference mainCss = new ResourceReference(ActiveWidgetsComponent.class, 
-							ActiveWidgetsConfiguration.AW_LIB_HOME_PATH + "/styles/xp/aw.css");
-					public void renderHead(IHeaderResponse response) {
-						response.renderCSSReference(mainCss);
-					}
-					
-				};
-				contributors.add(mainCss);
-
-		        return contributors.toArray(new IHeaderContributor[]{});
-			}
-			
-			
-		}
-		);
+		add (headerContributor);
 		add(gridElement = new GirdElement("gridContainer"));
 		
 		final Label style = new Label("style", new AbstractReadOnlyModel()
 		{
-
-			/**
-			 * @see wicket.model.IModel#getObject(wicket.Component)
-			 */
 			@Override
 			public Object getObject()
 			{
-				StringBuffer result = new StringBuffer();
-				result.append(styleInit());
-				return result.toString();
+				return styleInit();
 			}
 		});
 		style.setEscapeModelStrings(false);
@@ -89,9 +84,7 @@ abstract public class ActiveWidgetsComponent extends Panel {
 			@Override
 			public Object getObject()
 			{
-				StringBuffer result = new StringBuffer();
-				result.append(javascriptInit());
-				return result.toString();
+				return javascriptInit();
 			}
 		});
 		javascript.setEscapeModelStrings(false);
@@ -269,41 +262,15 @@ abstract public class ActiveWidgetsComponent extends Panel {
 		
 	}
 	
-	
-	
-	public IHeaderContributor[] getHeaderContributors() {
-		List<IHeaderContributor> contributors = new ArrayList<IHeaderContributor>();
-		IHeaderContributor mainJs = new IHeaderContributor() {
-
-			private static final long serialVersionUID = 1L;
-			ResourceReference mainJs = new ResourceReference(this.getClass()
-					, ActiveWidgetsConfiguration.AW_LIB_HOME_PATH + "/lib/aw.js");
-			public void renderHead(IHeaderResponse response) {
-				response.renderJavascriptReference(mainJs);
-			}
-			
-		};
-		
-		contributors.add(mainJs);
-
-		IHeaderContributor mainCss = new IHeaderContributor () {
-			private static final long serialVersionUID = 1L;
-			ResourceReference mainCss = new ResourceReference(this.getClass(), 
-					ActiveWidgetsConfiguration.AW_LIB_HOME_PATH + "/styles/xp/aw.css");
-			public void renderHead(IHeaderResponse response) {
-				response.renderCSSReference(mainCss);
-			}
-			
-		};
-		contributors.add(mainCss);
-
-        return contributors.toArray(new IHeaderContributor[]{});
-	}
-
-	protected String capitalize(String markupId) {
-		if (markupId != null) {
-			String first = markupId.substring(0, 1).toUpperCase();
-			return first + markupId.substring(1);
+	/**
+	 * TODO move to util class
+	 * @param lowCase
+	 * @return
+	 */
+	protected String capitalize(String lowCase) {
+		if (lowCase != null) {
+			String first = lowCase.substring(0, 1).toUpperCase();
+			return first + lowCase.substring(1);
 		}
 		return null;
 	}
