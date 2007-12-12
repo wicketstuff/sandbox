@@ -13,9 +13,13 @@ public class ActiveWidgetsConfiguration {
     public static final String AW_BUILD_ROOT = "runtime";
     public static final String AW_DEVELOPER_LICENSE = "developer";
     public static final String AW_TRIAL_LICENSE = "trial";
+	private static final boolean DEFAULT_STRICT_XHTML = false;
     public static       String AW_LICENSE_TYPE;
 	public static       String AW_LIB_HOME_PATH;
+	private static boolean strictXtml = DEFAULT_STRICT_XHTML;
     
+
+	
 	/**
 	 * Active Widgets version and license type could be override by server startup.
 	 * Use -Dactive.widgets.version and -Dactive.widgets.license JVM's arguments. 
@@ -99,6 +103,14 @@ public class ActiveWidgetsConfiguration {
 
 	public static CreateMode getDefaultCreateMode() {
 		return CreateMode.MARKUP;
+	}
+
+	public static boolean isStrictXtml() {
+		return strictXtml;
+	}
+
+	public static void setStrictXtml(boolean strictXtml) {
+		ActiveWidgetsConfiguration.strictXtml = strictXtml;
 	}
 
 }

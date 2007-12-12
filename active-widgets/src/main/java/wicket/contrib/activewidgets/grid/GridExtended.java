@@ -96,9 +96,9 @@ public class GridExtended extends ActiveWidgetsComponent {
 		return javascriptContributors;
 	}
 
-	protected List<StyleToken> styleContributors()
+	protected List<Token> styleContributors()
 	{
-		final List<StyleToken> styleContributors = new ArrayList<StyleToken>();
+		final List<Token> styleContributors = new ArrayList<Token>();
 		styleContributors.add(this.width);
 		styleContributors.add(this.height);
 		return styleContributors;
