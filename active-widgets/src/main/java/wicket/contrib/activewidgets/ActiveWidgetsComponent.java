@@ -111,15 +111,30 @@ abstract public class ActiveWidgetsComponent extends Panel {
 	}
 
 	
-	abstract protected List<StyleToken> styleContributors();
+	abstract protected List<Token> styleContributors();
 	abstract protected List<Token> javascriptContributors();
 	
 	private final String styleInit() {
 		StringBuffer buffer = new StringBuffer();
 		StringBuffer styles = new StringBuffer();
-		List<StyleToken> styleContributors = styleContributors();
+		List<Token> styleContributors = styleContributors();
+		if (ActiveWidgetsConfiguration.isStrictXtml()) {
+			Token strictFixToken = new Token () {
+				public String getTokenName() {
+					return null;
+				}
+				public String getToken() {
+					StringBuffer buf = new StringBuffer();
+					buf.append('\n').append(".aw-strict #").append(activeWidgetsId).append(" .aw-grid-cell {padding-right: 3px;}");
+					buf.append('\n').append(".aw-strict #").append(activeWidgetsId).append(" .aw-grid-row {padding-bottom: 3px;}");
+					return buf.toString();
+				}
+			};
+			styleContributors.add(strictFixToken);
+		}
+		
 		Collections.sort(styleContributors);
-		for (StyleToken token: styleContributors) {
+		for (Token token: styleContributors) {
 			if (token instanceof StyleStyleToken) {
 				styles.append(token.getToken());
 			} else {
