@@ -66,7 +66,7 @@ public class TinyMCEPanelTest extends TestCase
 
 		assertCommonComponents();
 
-		application.assertContains("mode : \"textareas\"");
+//		application.assertContains("mode : \"textareas\"");
 		application.assertContains("theme : \"simple\"");
 	}
 
@@ -90,7 +90,7 @@ public class TinyMCEPanelTest extends TestCase
 
 		assertCommonComponents();
 
-		application.assertContains("mode : \"textareas\"");
+//		application.assertContains("mode : \"textareas\"");
 		application.assertContains("theme : \"advanced\"");
 		application.assertContains("plugins : \"noneditable\"");
 	}
