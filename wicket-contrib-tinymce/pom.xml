@@ -248,11 +248,11 @@
 	</repositories>
 	
 	<distributionManagement>
-      <repository>
-        <id>codeogre</id>
-        <name>CodeOgre</name>
-        <url>dav:http://repo.codeogre.com/archiva/repository/public/</url>
-        <uniqueVersion>false</uniqueVersion>
-      </repository>
+      <snapshotRepository>
+			    <id>repo</id>
+			    <name>Local Bamboo/Tomcat repository</name>
+			    <url>file:/home/wicket/tomcat/webapps/maven/repository/</url>
+			    <uniqueVersion>false</uniqueVersion>
+		</snapshotRepository>
 	</distributionManagement>
 </project>
