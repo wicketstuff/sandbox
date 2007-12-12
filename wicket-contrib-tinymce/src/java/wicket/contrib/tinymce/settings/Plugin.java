@@ -31,6 +31,8 @@ import java.util.Map;
  */
 public abstract class Plugin extends wicket.contrib.tinymce.settings.Enum
 {
+	private static final long serialVersionUID = 1L;
+
 	private String pluginPath;
 	private Map settings;
 
