@@ -2,7 +2,7 @@
 
 var MooTools = {
 	'version': '1.2dev',
-	'build': '1289'
+	'build': '1306'
 };
 
 var Native = function(options){
@@ -173,7 +173,8 @@ function $type(obj){
 			case 3: return (/\S/).test(obj.nodeValue) ? 'textnode' : 'whitespace';
 		}
 	} else if (typeof obj.length == 'number'){
-		return (obj.callee) ? 'arguments' : 'collection';
+		if (obj.callee) return 'arguments';
+		else if (obj.item) return 'collection';
 	}
 	return typeof obj;
 };
@@ -595,7 +596,7 @@ Number.alias('times', 'each');
 String.implement({
 
 	test: function(regex, params){
-		return (($type(regex) == 'string') ? new RegExp(regex, params) : regex).test(this);
+		return ((typeof regex == 'string') ? new RegExp(regex, params) : regex).test(this);
 	},
 
 	contains: function(string, separator){
@@ -949,7 +950,7 @@ Document.implement({
 	},
 
 	newTextNode: function(text){
-		return $.textnode(this.createTextNode(text));
+		return this.createTextNode(text);
 	},
 
 	getDocument: function(){
@@ -985,16 +986,6 @@ var Element = new Native({
 Element.Prototype = {$family: {name: 'element'}};
 
 Element.Constructors = new Hash;
-
-var TextNode = new Native({
-
-	name: 'TextNode',
-
-	initialize: function(text){
-		return document.newTextNode(text);
-	}
-
-});
 
 var IFrame = new Native({
 
@@ -1056,7 +1047,7 @@ Elements.implement({
 
 	filterBy: function(filter){
 		if (!filter) return this;
-		return new Elements(this.filter(($type(filter) == 'string') ? function(item){
+		return new Elements(this.filter((typeof filter == 'string') ? function(item){
 			return item.match(filter);
 		} : filter));
 	}
@@ -1121,11 +1112,7 @@ $.element = function(el, notrash){
 	return el;
 };
 
-$.textnode = function(el, notrash){
-	return (notrash || el.$family) ? el : $extend(el, TextNode.prototype);
-};
-
-$.window = $.document = $arguments(0);
+$.textnode = $.window = $.document = $arguments(0);
 
 Native.implement([Element, Document], {
 
@@ -1178,6 +1165,22 @@ Element.Inserters = new Hash({
 });
 
 Element.Inserters.inside = Element.Inserters.bottom;
+
+Element.Inserters.each(function(value, key){
+
+	var Key = key.capitalize();
+
+	Element.implement('inject' + Key, function(el){
+		Element.Inserters[key](this, $(el, true));
+		return this;
+	});
+
+	Element.implement('grab' + Key, function(el){
+		Element.Inserters[key]($(el, true), this);
+		return this;
+	});
+
+});
 
 Element.implement({
 
@@ -1422,14 +1425,6 @@ Element.implement({
 
 })();
 
-TextNode.implement({
-
-	inject: Element.prototype.inject,
-
-	dispose: Element.prototype.dispose
-
-});
-
 Element.alias('dispose', 'remove').alias('getLast', 'getLastChild');
 
 Element.Properties = new Hash;
@@ -1470,6 +1465,30 @@ Element.Properties.tag = {get: function(){
 Element.Properties.html = {set: function(){
 	return this.innerHTML = Array.flatten(arguments).join('');
 }};
+
+Element.implement({
+
+	getText: function(){
+		return this.get('text');
+	},
+
+	setText: function(text){
+		return this.set('text', text);
+	},
+
+	setHTML: function(){
+		return this.set('html', arguments);
+	},
+
+	getHTML: function(){
+		return this.get('html');
+	},
+
+	getTag: function(){
+		return this.get('tag');
+	}
+
+});
 
 Native.implement([Element, Window, Document], {
 
@@ -1572,26 +1591,6 @@ Element.implement({
 		return this.getElements('input, textarea, select');
 	},
 
-	getValue: function(){
-		return this.get('value');
-	},
-
-	getText: function(){
-		return this.get('text');
-	},
-
-	setText: function(text){
-		return this.set('text', text);
-	},
-
-	setHTML: function(){
-		return this.set('html', $A(arguments));
-	},
-
-	getTag: function(){
-		return this.get('tag');
-	},
-
 	replaceWith: function(el){
 		el = $(el);
 		this.parentNode.replaceChild(el, this);
@@ -1604,19 +1603,13 @@ Element.implement({
 	
 	remove: function(){
 		return this.dispose();
+	},
+	
+	getValue: function(){
+		return this.get('value');
 	}
 
 });
-
-(function(){
-	var methods = {};
-	Element.Inserters.each(function(value, key){
-		methods['inject' + key.capitalize()] = function(el){
-			return Element.inject(this, el, key);
-		};
-	});
-	Element.implement(methods);
-})();
 
 var Event = new Native({
 
@@ -1846,55 +1839,12 @@ Element.Events = new Hash({
 
 		base: (Browser.Engine.gecko) ? 'DOMMouseScroll' : 'mousewheel'
 
-	},
-
-	domready: {
-
-		onAdd: function(fn){
-			if ($type(this) == 'element') return;
-			if (Browser.loaded){
-				fn.call(this);
-				return;
-			}
-			var self = this;
-			var domReady = function(){
-				if (!arguments.callee.done){
-					arguments.callee.done = true;
-					fn.call(self);
-				};
-				return true;
-			};
-			var check = function(context){
-				if ((Browser.Engine.webkit ? ['loaded', 'complete'] : 'complete').contains(context.readyState)) return domReady();
-				return false;
-			};
-			if (this.document.readyState && Browser.Engine.webkit){
-				(function(){
-					if (!check(self.document)) arguments.callee.delay(50);
-				})();
-			} else if (this.document.readyState && Browser.Engine.trident){
-				var script = $('ie_domready');
-				if (!script){
-					var src = (this.location.protocol == 'https:') ? '//:' : 'javascript:void(0)';
-					this.document.write('<script id="ie_domready" defer src="' + src + '"><\/script>');
-					script = $('ie_domready');
-				}
-				if (!check(script)) script.addEvent('readystatechange', check.pass(script));
-			} else {
-				this.addEvent('load', domReady);
-				this.document.addEvent('DOMContentLoaded', domReady);
-			}
-		}
-
 	}
 
 });
 
 })();
 
-window.addEvent('domready', function(){
-	Browser.loaded = true;
-});
 Event.keys = Event.Keys;
 
 Element.Properties.styles = {set: function(styles){
@@ -1903,11 +1853,13 @@ Element.Properties.styles = {set: function(styles){
 
 Element.Properties.opacity = {
 
-	set: function(opacity){
-		if (opacity == 0){
-			if (this.style.visibility != 'hidden') this.style.visibility = 'hidden';
-		} else {
-			if (this.style.visibility != 'visible') this.style.visibility = 'visible';
+	set: function(opacity, novisibility){
+		if (!novisibility){
+			if (opacity == 0){
+				if (this.style.visibility != 'hidden') this.style.visibility = 'hidden';
+			} else {
+				if (this.style.visibility != 'visible') this.style.visibility = 'visible';
+			}
 		}
 		if (!this.currentStyle || !this.currentStyle.hasLayout) this.style.zoom = 1;
 		if (Browser.Engine.trident) this.style.filter = (opacity == 1) ? '' : 'alpha(opacity=' + opacity * 100 + ')';
@@ -2100,14 +2052,14 @@ Selectors.Pseudo = new Hash;
 Selectors.XPath = {
 
 	getParam: function(items, separator, context, params){
-		var temp = context.namespaceURI ? 'xhtml:' : '';
+		var temp = '';
 		switch (separator){
 			case ' ': temp += '//'; break;
 			case '>': temp += '/'; break;
 			case '+': temp += '/following-sibling::*[1]/self::'; break;
 			case '~': temp += '/following-sibling::'; break;
 		}
-		temp += params.tag;
+		temp += (context.namespaceURI) ? 'xhtml:' + params.tag : params.tag;
 		var i;
 		for (i = params.pseudos.length; i--; i){
 			var pseudo = params.pseudos[i];
@@ -2135,7 +2087,7 @@ Selectors.XPath = {
 
 	getItems: function(items, context){
 		var elements = [];
-		var doc = context.ownerDocument || context;
+		var doc = context.getDocument();
 		var xpath = doc.evaluate('.//' + items.join(''), context, Selectors.XPath.resolver, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
 		for (var i = 0, j = xpath.snapshotLength; i < j; i++) elements[i] = xpath.snapshotItem(i);
 		return elements;
@@ -2451,6 +2403,61 @@ Selectors.Pseudo.extend({
 		filter: Selectors.Pseudo.nth.filter
 	}
 
+});
+
+Element.Events.domready = {
+
+	onAdd: function(fn){
+
+		if (Browser.loaded) return fn.call(this);
+
+		var self = this, win = this.getWindow(), doc = this.getDocument();
+
+		var domready = function(){
+			if (!arguments.callee.done){
+				arguments.callee.done = true;
+				fn.call(self);
+			};
+			return true;
+		};
+
+		var states = (Browser.Engine.webkit) ? ['loaded', 'complete'] : 'complete';
+
+		var check = function(context){
+			if (states.contains(context.readyState)) return domready();
+			return false;
+		};
+
+		if (doc.readyState && Browser.Engine.webkit){
+
+			(function(){
+				if (!check(doc)) arguments.callee.delay(50);
+			})();
+
+		} else if (doc.readyState && Browser.Engine.trident){
+
+			var script = $('ie_domready');
+			if (!script){
+				var src = (win.location.protocol == 'https:') ? '//:' : 'javascript:void(0)';
+				doc.write('<script id="ie_domready" defer src="' + src + '"></script>');
+				script = $('ie_domready');
+			}
+			if (!check(script)) script.addEvent('readystatechange', check.pass(script));
+
+		} else {
+
+			win.addEvent('load', domready);
+			doc.addEvent('DOMContentLoaded', domready);
+
+		}
+
+		return null;
+	}
+
+};
+
+window.addEvent('domready', function(){
+	Browser.loaded = true;
 });
 
 var JSON = new Hash({
@@ -2775,7 +2782,7 @@ var Color = new Native({
 	initialize: function(color, type){
 		if (arguments.length >= 3){
 			type = "rgb"; color = Array.slice(arguments, 0, 3);
-		} else if ($type(color) == 'string'){
+		} else if (typeof color == 'string'){
 			if (color.match(/rgb/)) color = color.rgbToHex().hexToRgb(true);
 			else if (color.match(/hsb/)) color = color.hsbToRgb();
 			else color = color.hexToRgb(true);
@@ -2967,7 +2974,7 @@ Swiff.extend({
 					return new ActiveXObject("ShockwaveFlash.ShockwaveFlash").GetVariable("$version");
 				});
 			}
-			Swiff.pluginVersion = ($type(version) == 'string') ? parseInt(version.match(/\d+/)[0]) : 0;
+			Swiff.pluginVersion = (typeof version == 'string') ? parseInt(version.match(/\d+/)[0]) : 0;
 		}
 		return Swiff.pluginVersion;
 	},
@@ -3168,7 +3175,7 @@ Fx.CSS = new Class({
 
 	parse: function(value){
 		value = $lambda(value)();
-		value = ($type(value) == 'string') ? value.split(' ') : $splat(value);
+		value = (typeof value == 'string') ? value.split(' ') : $splat(value);
 		return value.map(function(val){
 			val = String(val);
 			var found = false;
@@ -3331,7 +3338,7 @@ Element.implement({
 			case 'toggle': fade.start((function(){
 				return (this.getStyle('visibility') == 'hidden') ? 1 : 0;
 			}).bind(this)); break;
-			default: fade.start(how);
+			default: fade.start.apply(fade, arguments);
 		}
 		return this;
 	},
@@ -3361,6 +3368,7 @@ Fx.Morph = new Class({
 	},
 
 	set: function(now){
+		if (typeof now == 'string') now = this.search(now);
 		for (var p in now) this.render(this.element, p, now[p]);
 		return this;
 	},
@@ -3373,7 +3381,7 @@ Fx.Morph = new Class({
 
 	start: function(properties){
 		if (!this.check(properties)) return this;
-		if ($type(properties) == 'string') properties = this.search(properties);
+		if (typeof properties == 'string') properties = this.search(properties);
 		var from = {}, to = {};
 		for (var p in properties){
 			var parsed = this.prepare(this.element, p, properties[p]);
@@ -3633,7 +3641,7 @@ Fx.Scroll.implement({
 	Fx.prototype.initialize = function(options){
 		old.call(this, options);
 		var trans = this.options.transition;
-		if ($type(trans) == 'string' && (trans = trans.split(':'))){
+		if (typeof trans == 'string' && (trans = trans.split(':'))){
 			var base = Fx.Transitions;
 			base = base[trans[0]] || base[trans[0].capitalize()];
 			if (trans[1]) base = base['ease' + trans[1].capitalize() + (trans[2] ? trans[2].capitalize() : '')];
@@ -4077,26 +4085,31 @@ var Drag = new Class({
 		this.element = $(params.element);
 		this.document = this.element.getDocument();
 		this.setOptions(params.options || {});
-		this.handle = $(this.options.handle) || this.element;
+		var htype = $type(this.options.handle);
+		this.handles = (htype == 'array' || htype == 'collection') ? $$(this.options.handle) : $(this.options.handle) || this.element;
 		this.mouse = {'now': {}, 'pos': {}};
 		this.value = {'start': {}, 'now': {}};
+
+		this.selection = (Browser.Engine.trident) ? 'selectstart' : 'mousedown';
+
 		this.bound = {
-			'start': this.start.bind(this),
-			'check': this.check.bind(this),
-			'drag': this.drag.bind(this),
-			'stop': this.stop.bind(this),
-			'cancel': this.cancel.bind(this)
+			start: this.start.bind(this),
+			check: this.check.bind(this),
+			drag: this.drag.bind(this),
+			stop: this.stop.bind(this),
+			cancel: this.cancel.bind(this),
+			eventStop: $lambda(false)
 		};
 		this.attach();
 	},
 
 	attach: function(){
-		this.handle.addEvent('mousedown', this.bound.start);
+		this.handles.addEvent('mousedown', this.bound.start);
 		return this;
 	},
 
 	detach: function(){
-		this.handle.removeEvent('mousedown', this.bound.start);
+		this.handles.removeEvent('mousedown', this.bound.start);
 		return this;
 	},
 
@@ -4116,21 +4129,20 @@ var Drag = new Class({
 			}
 		}
 		if ($type(this.options.grid) == 'number') this.options.grid = {'x': this.options.grid, 'y': this.options.grid};
-		this.document.addEvent('mousemove', this.bound.check);
-		this.document.addEvent('mouseup', this.bound.cancel);
-		event.stop();
+		this.document.addEvents({mousemove: this.bound.check, mouseup: this.bound.cancel});
+		this.document.addEvent(this.selection, this.bound.eventStop);
 	},
 
 	check: function(event){
 		var distance = Math.round(Math.sqrt(Math.pow(event.page.x - this.mouse.start.x, 2) + Math.pow(event.page.y - this.mouse.start.y, 2)));
 		if (distance > this.options.snap){
 			this.cancel();
-			this.document.addEvent('mousemove', this.bound.drag);
-			this.document.addEvent('mouseup', this.bound.stop);
-			this.fireEvent('onStart', this.element);
-			this.fireEvent('onSnap', this.element);
+			this.document.addEvents({
+				mousemove: this.bound.drag,
+				mouseup: this.bound.stop
+			});
+			this.fireEvent('onStart', this.element).fireEvent('onSnap', this.element);
 		}
-		event.stop();
 	},
 
 	drag: function(event){
@@ -4149,16 +4161,19 @@ var Drag = new Class({
 			this.element.setStyle(this.options.modifiers[z], this.value.now[z] + this.options.unit);
 		}
 		this.fireEvent('onDrag', this.element);
-		event.stop();
 	},
 
 	cancel: function(event){
 		this.document.removeEvent('mousemove', this.bound.check);
 		this.document.removeEvent('mouseup', this.bound.cancel);
-		if (event) this.fireEvent('onCancel', this.element);
+		if (event){
+			this.document.removeEvent(this.selection, this.bound.eventStop);
+			this.fireEvent('onCancel', this.element);
+		}
 	},
 
 	stop: function(event){
+		this.document.removeEvent(this.selection, this.bound.eventStop);
 		this.document.removeEvent('mousemove', this.bound.drag);
 		this.document.removeEvent('mouseup', this.bound.stop);
 		if (event) this.fireEvent('onComplete', this.element);

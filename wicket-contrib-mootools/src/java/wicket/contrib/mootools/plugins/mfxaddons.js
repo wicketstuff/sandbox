@@ -114,6 +114,9 @@ var BoxFactory = new Class({
     },
     initialize: function(picture,size, callback, logger) {
 	this.picture = picture;
+	var frame = this.picture.getParent();
+	frame.setStyle('width',this.picture.getStyle('width'));
+	frame.setStyle('height',this.picture.getStyle('height'));
 	this.callbackUrl = callback;
 	this.boxes = new Array(size);
 	this.count = 0;
@@ -145,7 +148,7 @@ BoxFactory.implement({
 	for(var i = 0 ; i <= fac.count; i = i + 1) {
 	    var el = fac.boxes[i];
 	    try {
-		el[0].setStyle('display','none');
+    		el[0].setStyle('display','none');
 	    } catch(err) { }
 	}
 	fac.logger.trace('called hideBoxes');
@@ -159,7 +162,7 @@ BoxFactory.implement({
     attachShowOut: function(el) {
 	var fac = this;
 	el.addEvent('mouseout', function() {
-	    fac.hideBoxes(fac);
+	   fac.hideBoxes(fac);
 	});
     },
     loadBox: function(x,y,txt) {
@@ -168,10 +171,12 @@ BoxFactory.implement({
 
 	var factory = new DOMFactory(this.logger);
 	var staticBox = factory.getDisplayBox(x,y,txt);
+	
 	var info = factory.getDisplayText(x, y+staticBox.getStyle('height').toInt()+10, txt);
 	info.setStyle('display','none');
-	info.inject(document.body);
+	info.inject(this.picture.getParent());
 	
+
 	staticBox.addEvent('mouseover', function() { 
 		info.setStyle('display','block');
 	});
@@ -184,6 +189,7 @@ BoxFactory.implement({
 	tagElement[0] = staticBox;
 	tagElement[0].setStyle('display','none');
 	this.boxes[this.count] = tagElement;
+	
     },
     saveAction: function(tagElement) {
 	    this.count = this.count + 1;
@@ -191,17 +197,18 @@ BoxFactory.implement({
 
 	    // potentially expensive?
 	    var factory = new DOMFactory(this.logger);
-	    var staticBox = factory.getDisplayBox(tagElement[0].getPosition().x,tagElement[0].getPosition().y);
+	    var staticBox = factory.getDisplayBox(tagElement[0].getRelativePosition().x,tagElement[0].getRelativePosition().y);
 
-	    this.logger.debug('setting ' + tagElement[0].getPosition().x + ' and ' + tagElement[0].getPosition().y);
+	    this.logger.debug('setting ' + tagElement[0].getRelativePosition().x + ' and ' + tagElement[0].getRelativePosition().y);
 
 	    var savedText= tagElement[1].getValue();
-	    var xCord = tagElement[0].getPosition().x;
-	    var yCord = tagElement[0].getPosition().y;
+	    var xCord = tagElement[0].getRelativePosition().x;
+	    var yCord = tagElement[0].getRelativePosition().y;
+	    
 
 	    var info = factory.getDisplayText(xCord,factory.getOffsetY(tagElement[0],10), savedText);
 	    info.setStyle('display','none');
-	    info.inject(document.body); 
+	    info.inject(this.picture.getParent()); 
 	    staticBox.addEvent('mouseover', function() { 
 		info.setStyle('display','block');
 	    });
@@ -247,44 +254,47 @@ BoxFactory.implement({
 	var boxes = this.boxes;
 	this.open = true;
 
-
-	var boxArea = factory.getDisplayBox(this.picture.getPosition().x+30,this.picture.getPosition().y+30);
+	var boxArea = factory.getDisplayBox(this.picture.getRelativePosition().x+30,this.picture.getRelativePosition().y+30);
 	tagElement[0]=boxArea;
 	this.attachShowIn(boxArea);
 	this.attachShowOut(boxArea);
+	
 	boxArea.inject(frame);
 
-	var textArea = factory.getTextArea(boxArea.getPosition().x, factory.getOffsetY(boxArea,10) ); 
+	var textArea = factory.getTextArea(boxArea.getRelativePosition().x, factory.getOffsetY(boxArea,10) ); 
 	tagElement[1] = textArea;
 	this.attachShowIn(textArea);
 	this.attachShowOut(textArea);
 	textArea.inject(frame);
 
 	var fac = this;
-	var saveBtn = factory.getButton(boxArea.getPosition().x, factory.getOffsetY(textArea,20) ,'Save', function() { fac.saveAction(tagElement) });
+	var saveBtn = factory.getButton(boxArea.getRelativePosition().x, factory.getOffsetY(textArea,20) ,'Save', function() { fac.saveAction(tagElement) });
 	tagElement[2]=saveBtn;
 	this.attachShowIn(saveBtn);
 	this.attachShowOut(saveBtn);
 	saveBtn.inject(frame);
 
-	var cancelBtn = factory.getButton(boxArea.getPosition().x+60, factory.getOffsetY(textArea,20) ,'Cancel', function() { fac.cancelAction(tagElement) });
+	var cancelBtn = factory.getButton(boxArea.getRelativePosition().x+70, factory.getOffsetY(textArea,20) ,'Cancel', function() { fac.cancelAction(tagElement) });
 	tagElement[3]=cancelBtn;
 	this.attachShowIn(cancelBtn);
 	this.attachShowOut(cancelBtn);
 	cancelBtn.inject(frame);
 
+
 	    new Drag.Move(boxArea, {container: frame, onDrag: function () {
-		textArea.setStyle('left',boxArea.getPosition().x);
-		textArea.setStyle('top', factory.getOffsetY(boxArea,10));
+	    
+	        textArea.setStyle('left',boxArea.getRelativePosition().x);
+    		textArea.setStyle('top', factory.getOffsetY(boxArea,10));
+    
+    		saveBtn.setStyle('left',boxArea.getRelativePosition().x);
+    		saveBtn.setStyle('top',factory.getOffsetY(textArea,20) );
+    
+    		cancelBtn.setStyle('left',boxArea.getRelativePosition().x+70);
+    		cancelBtn.setStyle('top', factory.getOffsetY(textArea,20) );
+	    
 
-		saveBtn.setStyle('left',boxArea.getPosition().x);
-		saveBtn.setStyle('top',factory.getOffsetY(textArea,20) );
-
-		cancelBtn.setStyle('left',boxArea.getPosition().x+60);
-		cancelBtn.setStyle('top', factory.getOffsetY(textArea,20) );
-
-	    }
-	}); 
+    	    }, onStart: function () { }, onComplete: function() {  }
+    	}); 
     }
 });
 
@@ -360,8 +370,8 @@ DOMFactory.implement({
 	textArea.setAttribute('id','thetext');
 	textArea.setStyle('background','#FFF6BF');
 	textArea.setStyle('padding','5px');
-	textArea.setStyle('width','180px !important');
-	textArea.setStyle('height','60px !important');
+	textArea.setStyle('width','180px');
+	textArea.setStyle('height','60px');
 	textArea.setStyle('font-size','12px');
 	textArea.setStyle('font-family','arial');
 	textArea.innerHTML="Add your note here.";
@@ -374,6 +384,7 @@ DOMFactory.implement({
 	var btn = new Element('input');
 	btn.setStyle('position','absolute');
 	btn.setStyle('border','1px #a3a3a3 solid');
+	btn.setStyle('width','60px');
 	btn.setAttribute('type','button');
 	btn.setAttribute('value',txt);
 	btn.setStyle('left',x);
@@ -383,11 +394,10 @@ DOMFactory.implement({
     },
     getOffsetY: function(el,y)  {
 	var offset = el.getStyle('height').toInt()+y;
-	return el.getPosition().y + offset;
+	return el.getRelativePosition().y + offset;
     },
     getOffsetX: function(el,x) {
 	var offset = el.getStyle('width').toInt()+x;
-	return el.getPosition().x + offset;
+	return el.getRelativePosition().x + offset;
     }
 });
-
