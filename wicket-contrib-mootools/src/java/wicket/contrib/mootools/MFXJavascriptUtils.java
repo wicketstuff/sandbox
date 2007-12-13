@@ -20,7 +20,7 @@ public class MFXJavascriptUtils {
 	public final static String DOM_READY_OPEN() {
 		String str;
 		str = JavascriptUtils.SCRIPT_OPEN_TAG;
-		str += "window.addEvent(\"load\", function() {";
+		str += "window.addEvent(\"domready\", function() {";
 		return str;
 	}
 

@@ -19,7 +19,7 @@ import wicket.contrib.mootools.IncludeMooTools;
 import wicket.contrib.mootools.MFXJavascriptUtils;
 import wicket.contrib.mootools.events.MFXWindowLoad;
 
-public abstract class MFXLabelPicture extends Panel {
+public abstract class MFXPictureLabel extends Panel {
 	private static final long serialVersionUID = 1L;
 	private List<MFXLabel> labels = new ArrayList<MFXLabel>();
 	private Component comp;
@@ -47,17 +47,17 @@ public abstract class MFXLabelPicture extends Panel {
 			int y = Integer.valueOf(requestCycle.getRequest().getParameter("y"));
 
 			MFXLabel lbl = new MFXLabel(callback, x, y);
-			if (MFXLabelPicture.this.getAjaxImageCallback() != null) {
-				MFXLabelPicture.this.getAjaxImageCallback().onSavePosition(lbl, arg0);
+			if (MFXPictureLabel.this.getAjaxImageCallback() != null) {
+				MFXPictureLabel.this.getAjaxImageCallback().onSavePosition(lbl, arg0);
 			}
 		}
 	}
 
 	public static class MFXAddButton extends WebMarkupContainer {
 		private static final long serialVersionUID = 1L;
-		private MFXLabelPicture picture;
+		private MFXPictureLabel picture;
 
-		public MFXAddButton(final String id, final MFXLabelPicture picture) {
+		public MFXAddButton(final String id, final MFXPictureLabel picture) {
 			super(id);
 			this.picture = picture;
 		}
@@ -118,7 +118,7 @@ public abstract class MFXLabelPicture extends Panel {
 		return comp.getMarkupId();
 	}
 
-	public MFXLabelPicture(final String id, final List<MFXLabel> labels) {
+	public MFXPictureLabel(final String id, final List<MFXLabel> labels) {
 		super(id);
 		this.labels = labels;
 		add(new IncludeMooTools());
