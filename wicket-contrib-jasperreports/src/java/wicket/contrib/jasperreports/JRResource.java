@@ -23,6 +23,7 @@ import java.io.InputStream;
 import java.io.Serializable;
 import java.net.URL;
 import java.sql.Connection;
+import java.util.HashMap;
 import java.util.Map;
 
 import net.sf.jasperreports.engine.JRAbstractExporter;
@@ -47,6 +48,7 @@ import org.apache.wicket.protocol.http.WebResponse;
  * 
  * @author Eelco Hillenius
  * @author Matej Knopp
+ * @author Luciano Montebove
  */
 public abstract class JRResource extends DynamicWebResource
 {
@@ -244,12 +246,14 @@ public abstract class JRResource extends DynamicWebResource
 
 	/**
 	 * Gets the report parameters.
+	 * Returns a new copy of the reportParameters Map as JasperReports
+	 * modifies it with not serializable objects
 	 * 
 	 * @return report parameters
 	 */
 	public Map getReportParameters()
 	{
-		return reportParameters;
+                return new HashMap(reportParameters);
 	}
 
 	/**
