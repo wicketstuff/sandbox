@@ -12,7 +12,7 @@ import org.mortbay.jetty.servlet.ServletHolder;
  */
 public class ChartsDriver {
 	public static void main(String[] args) throws Exception {
-		Server server = new Server(8080);
+		Server server = new Server();
 		Context context = new Context(server, "/", Context.SESSIONS);
 
 		ServletHolder servletHolder = new ServletHolder(new WicketServlet());
