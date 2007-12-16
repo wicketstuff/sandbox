@@ -75,7 +75,7 @@ public final class SecureComponentHelper
 	/**
 	 * We cannot assume everybody uses the here specified public methods to
 	 * store the {@link ISecurityCheck}, so we check if the component is a
-	 * {@link ISecureComponent} and ifso use the
+	 * {@link ISecureComponent} and if so use the
 	 * {@link ISecureComponent#getSecurityCheck()} on the secure component else
 	 * we fall back to the metadata.
 	 * 
@@ -103,7 +103,7 @@ public final class SecureComponentHelper
 	/**
 	 * Gets the {@link ActionFactory}.
 	 * 
-	 * @return the cationfactory
+	 * @return the actionfactory
 	 * @throws WicketRuntimeException
 	 *             if the ActionFactory is not found.
 	 */
