@@ -215,8 +215,9 @@ public class SpeedTest extends TestCase
 		assertEquals(8, results.size());
 		Result noCache1 = (Result)results.get(printResults(new Key(1, false, false)));
 		Result noCache2 = (Result)results.get(printResults(new Key(1, false, true)));
-		assertTrue((noCache1.end - noCache1.start) / noCache1.runs < (noCache2.end - noCache2.start)
-				/ noCache2.runs);
+		assertTrue("secure components are faster than normal components",
+				(noCache1.end - noCache1.start) / noCache1.runs < (noCache2.end - noCache2.start)
+						/ noCache2.runs);
 		long diffNoCache = (((noCache2.end - noCache2.start) / noCache2.runs) - ((noCache1.end - noCache1.start) / noCache1.runs));
 		Result cache1 = (Result)results.get(printResults(new Key(1, true, false)));
 		Result cache2 = (Result)results.get(printResults(new Key(1, true, true)));
