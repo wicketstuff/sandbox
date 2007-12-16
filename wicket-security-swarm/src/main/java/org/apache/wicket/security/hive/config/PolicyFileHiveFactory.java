@@ -18,9 +18,12 @@ package org.apache.wicket.security.hive.config;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Reader;
 import java.lang.reflect.Constructor;
 import java.net.URL;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -88,6 +91,8 @@ public class PolicyFileHiveFactory implements HiveFactory
 
 	// TODO use JAAS to check for enough rights
 	private Set policyFiles;
+	private Set inputStreams;
+	private Set inputReaders;
 
 	private static final Pattern principalPattern = Pattern
 			.compile("\\s*(?:grant(?:\\s+principal\\s+([^\"]+)\\s+\"([^\"]+)\")?){1}\\s*");
@@ -105,6 +110,10 @@ public class PolicyFileHiveFactory implements HiveFactory
 
 	private boolean useHiveCache = true;
 
+	private boolean closeInputStreams = true;
+
+	private int currentLineNr;
+
 	/**
 	 * 
 	 * Constructs a new factory that builds a Hive out of one (1) or more policy
@@ -114,6 +123,8 @@ public class PolicyFileHiveFactory implements HiveFactory
 	public PolicyFileHiveFactory()
 	{
 		policyFiles = new HashSet();
+		inputStreams = new HashSet();
+		inputReaders = new HashSet();
 		setAlias("ComponentPermission",
 				"org.apache.wicket.security.hive.authorization.permissions.ComponentPermission");
 		setAlias("DataPermission",
@@ -125,7 +136,8 @@ public class PolicyFileHiveFactory implements HiveFactory
 
 	/**
 	 * Adds a new Hive policy file to this factory. The file is not used until
-	 * {@link #createHive()} is executed.
+	 * {@link #createHive()} is executed. Url's are always retained for possible
+	 * re-use.
 	 * 
 	 * @param file
 	 * @return true, if the file was added, false otherwise
@@ -133,6 +145,68 @@ public class PolicyFileHiveFactory implements HiveFactory
 	public final boolean addPolicyFile(URL file)
 	{
 		return policyFiles.add(file);
+	}
+
+	/**
+	 * A readonly view of the policy files added to this factory.
+	 * 
+	 * @return a set containing {@link URL}'s
+	 */
+	protected final Set getPolicyFiles()
+	{
+		return Collections.unmodifiableSet(policyFiles);
+	}
+
+	/**
+	 * Adds a new Hive policy to this factory. The stream is not read until
+	 * {@link #createHive()} is executed. Depending on the state of the flag
+	 * {@link #isCloseInputStreams()} the stream is closed or left untouched
+	 * after it is read. In all cases the stream is removed from the factory
+	 * after being read. The format of the inputstream must be the same as that
+	 * of a regular policy file.
+	 * 
+	 * @param stream
+	 * @return true, if the stream was added, false otherwise
+	 */
+	public final boolean addStream(InputStream stream)
+	{
+		return inputStreams.add(stream);
+	}
+
+	/**
+	 * A readonly view of the streams added to this factory.
+	 * 
+	 * @return a set containing {@link InputStream}s
+	 */
+	protected final Set getStreams()
+	{
+		return Collections.unmodifiableSet(inputStreams);
+	}
+
+	/**
+	 * Adds a new Hive policy to this factory. The reader is not read until
+	 * {@link #createHive()} is executed. Depending on the state of the flag
+	 * {@link #isCloseInputStreams()} the reader is closed or left untouched
+	 * after it is read. In all cases the reader is removed from the factory
+	 * after being read. The format of the inputstream must be the same as that
+	 * of a regular policy file.
+	 * 
+	 * @param input
+	 * @return true, if the reader was added, false otherwise
+	 */
+	public final boolean addReader(Reader input)
+	{
+		return inputReaders.add(input);
+	}
+
+	/**
+	 * A readonly view of the readers added to this factory.
+	 * 
+	 * @return a set containing {@link Reader}s
+	 */
+	protected final Set getReaders()
+	{
+		return Collections.unmodifiableSet(inputReaders);
 	}
 
 	/**
@@ -160,6 +234,16 @@ public class PolicyFileHiveFactory implements HiveFactory
 	public final String setAlias(String key, String value)
 	{
 		return (String)aliases.put(key, value);
+	}
+
+	/**
+	 * The current line being read.
+	 * 
+	 * @return the line number
+	 */
+	protected final int getCurrentLineNr()
+	{
+		return currentLineNr;
 	}
 
 	/**
@@ -221,11 +305,11 @@ public class PolicyFileHiveFactory implements HiveFactory
 			hive = new SimpleCachingHive();
 		else
 			hive = new BasicHive();
-		if (policyFiles.isEmpty())
-			log.warn("No policy files have been defined yet.");
+		boolean readAnything = false;
 		Iterator it = policyFiles.iterator();
 		while (it.hasNext())
 		{
+			readAnything = true;
 			URL file = (URL)it.next();
 			try
 			{
@@ -236,6 +320,38 @@ public class PolicyFileHiveFactory implements HiveFactory
 				log.error("Could not read from " + file, e);
 			}
 		}
+		it = inputStreams.iterator();
+		while (it.hasNext())
+		{
+			readAnything = true;
+			InputStream stream = (InputStream)it.next();
+			try
+			{
+				readInputStream(stream, hive);
+			}
+			catch (IOException e)
+			{
+				log.error("Could not read from stream", e);
+			}
+		}
+		inputStreams.clear();
+		it = inputReaders.iterator();
+		while (it.hasNext())
+		{
+			readAnything = true;
+			Reader stream = (Reader)it.next();
+			try
+			{
+				readInputReader(stream, hive);
+			}
+			catch (IOException e)
+			{
+				log.error("Could not read from reader", e);
+			}
+		}
+		inputReaders.clear();
+		if (!readAnything)
+			log.warn("No policyFiles or inputstreams were added to the factory!");
 		return hive;
 	}
 
@@ -249,222 +365,382 @@ public class PolicyFileHiveFactory implements HiveFactory
 	 *            the hive where found items are appended to.
 	 * @throws IOException
 	 *             if a problem occurs while reading the file
+	 * @see #readStream(InputStream, BasicHive)
 	 */
-	private void readPolicyFile(URL file, BasicHive hive) throws IOException
+	protected final void readPolicyFile(URL file, BasicHive hive) throws IOException
 	{
 		notifyFileStart(file);
-		boolean inPrincipalBlock = false;
-		Principal principal = null;
-		BufferedReader reader = null;
-		Set permissions = null;
-		int lineNr = 0;
+		InputStream stream = null;
 		try
 		{
-			reader = new BufferedReader(new InputStreamReader(file.openStream()));
-			String line = reader.readLine();
-			while (line != null)
+			stream = file.openStream();
+			readStream(stream, hive);
+		}
+		finally
+		{
+			notifyFileClose(file, currentLineNr);
+			if (stream != null)
+				stream.close();
+		}
+	}
+
+	/**
+	 * Reads principals and permissions from a stream, found items are added to
+	 * the hive. The stream is closed depending on the
+	 * {@link #isCloseInputStreams()} flag.
+	 * 
+	 * @param stream
+	 *            the stream to read
+	 * @param hive
+	 *            the hive where found items are appended to.
+	 * @throws IOException
+	 *             if a problem occurs while reading the file
+	 * @see #isCloseInputStreams()
+	 * @see #setCloseInputStreams(boolean)
+	 * @see #readStream(InputStream, BasicHive)
+	 */
+	protected final void readInputStream(InputStream stream, BasicHive hive) throws IOException
+	{
+		notifyStreamStart(stream);
+		try
+		{
+			readStream(stream, hive);
+		}
+		finally
+		{
+			notifyStreamEnd(stream, currentLineNr);
+			if (closeInputStreams)
+				stream.close();
+
+		}
+	}
+
+	/**
+	 * Reads principals and permissions from a {@link Reader}, found items are
+	 * added to the hive. The reader is closed depending on the
+	 * {@link #isCloseInputStreams()} flag.
+	 * 
+	 * @param input
+	 *            the reader to read
+	 * @param hive
+	 *            the hive where found items are appended to.
+	 * @throws IOException
+	 *             if a problem occurs while reading the file
+	 * @see #isCloseInputStreams()
+	 * @see #setCloseInputStreams(boolean)
+	 * @see #readStream(InputStream, BasicHive)
+	 */
+	protected final void readInputReader(Reader input, BasicHive hive) throws IOException
+	{
+		notifyReaderStart(input);
+		try
+		{
+			readReader(input, hive);
+		}
+		finally
+		{
+			notifyReaderEnd(input, currentLineNr);
+			if (closeInputStreams)
+				input.close();
+
+		}
+	}
+
+	/**
+	 * Reads principals and permissions from a {@link Reader}, found items are
+	 * added to the hive. Subclasses should override this method or
+	 * {@link #readStream(InputStream, BasicHive)} if they want do do something
+	 * different from the default. No need to call the notifyMethods as that is
+	 * handled by {@link #readInputReader(Reader, BasicHive)} and
+	 * {@link #readInputStream(InputStream, BasicHive)} respectively. Default
+	 * implementation is to call {@link #read(Reader, BasicHive)}. This method
+	 * never closes the reader.
+	 * 
+	 * @param input
+	 * @param hive
+	 * @throws IOException
+	 */
+	protected void readReader(Reader input, BasicHive hive) throws IOException
+	{
+		read(input, hive);
+	}
+
+	/**
+	 * Notifies that the stream will be read no further. Typically this is
+	 * because the end of the stream is reached but it is also called when an
+	 * exception occurs while reading the stream.
+	 * 
+	 * @param stream
+	 * @param lineNr
+	 *            number of lines processed
+	 */
+	protected void notifyStreamEnd(InputStream stream, int lineNr)
+	{
+	}
+
+	/**
+	 * Notifies that a reader is about to be read.
+	 * 
+	 * @param input
+	 *            the reader
+	 */
+	protected void notifyReaderStart(Reader input)
+	{
+	}
+
+	/**
+	 * Notifies that the {@link Reader} will be read no further. Typically this
+	 * is because the end of the stream is reached but it is also called when an
+	 * exception occurs while reading the reader.
+	 * 
+	 * @param input
+	 * @param lineNr
+	 *            number of lines processed
+	 */
+	protected void notifyReaderEnd(Reader input, int lineNr)
+	{
+	}
+
+	/**
+	 * Notifies that a stream is about to be read.
+	 * 
+	 * @param stream
+	 *            the stream
+	 */
+	protected void notifyStreamStart(InputStream stream)
+	{
+	}
+
+	/**
+	 * Reads principals and permissions from a {@link InputStream} , found items
+	 * are added to the hive. This method never closes the input stream.
+	 * 
+	 * @param input
+	 * @param hive
+	 * @throws IOException
+	 */
+	protected void readStream(InputStream input, BasicHive hive) throws IOException
+	{
+		read(new InputStreamReader(input), hive);
+	}
+
+	/**
+	 * Reads principals and permissions from a {@link Reader} , found items are
+	 * added to the hive. This method never closes the reader.
+	 * 
+	 * @param input
+	 * @param hive
+	 * @throws IOException
+	 */
+	protected final void read(Reader input, BasicHive hive) throws IOException
+	{
+		BufferedReader reader;
+		if (input instanceof BufferedReader)
+			reader = (BufferedReader)input;
+		else
+			reader = new BufferedReader(input);
+
+		boolean inPrincipalBlock = false;
+		Principal principal = null;
+		Set permissions = null;
+		currentLineNr = 0;
+		String line = reader.readLine();
+		while (line != null)
+		{
+			currentLineNr++;
+			if (inPrincipalBlock)
 			{
-				lineNr++;
-				if (inPrincipalBlock)
+				String trim = line.trim();
+				boolean startsWith = trim.startsWith("{");
+				if (startsWith)
 				{
-					String trim = line.trim();
-					boolean startsWith = trim.startsWith("{");
-					if (startsWith)
-					{
-						if (permissions != null || principal == null)
-							skipIllegalPrincipal(lineNr, principal, permissions);
-						permissions = new HashSet();
-					}
-					boolean endsWith = trim.endsWith("};");
-					if (endsWith)
-					{
-						inPrincipalBlock = false;
-						if (permissions != null && permissions.size() > 0)
-							hive.addPrincipal(principal, permissions);
-						else
-							skipEmptyPrincipal(lineNr, principal);
-
-						permissions = null;
-						principal = null;
-					}
-					if (!(startsWith || endsWith))
-					{
-						Matcher m = permissionPattern.matcher(line);
-						if (m.matches())
-						{
-							String classname = m.group(1);
-							if (classname == null)
-							{
-								skipPermission(lineNr, null);
-								line = reader.readLine();
-								continue;
-							}
-							Class permissionClass = null;
-							try
-							{
-								permissionClass = Class.forName(resolveAliases(classname));
-								if (!Permission.class.isAssignableFrom(permissionClass))
-								{
-									skipPermission(lineNr, permissionClass);
-									line = reader.readLine();
-									continue;
-								}
-								String name = resolveAliases(m.group(2));
-								String actions = m.group(3);
-								Constructor constructor = null;
-								Class[] args = stringArgs2;
-								if (actions == null)
-									args = stringArgs1;
-								try
-								{
-									constructor = permissionClass.getConstructor(args);
-								}
-								catch (SecurityException e)
-								{
-									log.error("No valid constructor found for "
-											+ permissionClass.getName(), e);
-								}
-								catch (NoSuchMethodException e)
-								{
-									log.error("No valid constructor found for "
-											+ permissionClass.getName(), e);
-								}
-								if (constructor == null)
-								{
-									skipPermission(lineNr, permissionClass, args);
-									line = reader.readLine();
-									continue;
-								}
-								Object[] argValues = new Object[] { name, actions };
-								if (actions == null)
-									argValues = new Object[] { name };
-								Permission temp;
-								try
-								{
-									temp = (Permission)constructor.newInstance(argValues);
-								}
-								catch (Exception e)
-								{
-									skipPermission(lineNr, permissionClass, argValues, e);
-									line = reader.readLine();
-									continue;
-								}
-								if (permissions == null)
-								{
-									skipIllegalPermission(lineNr, principal, temp);
-									line = reader.readLine();
-									continue;
-								}
-								if (!permissions.add(temp))
-									skipPermission(lineNr, principal, temp);
-								else
-									notifyPermission(lineNr, principal, temp);
-
-							}
-							catch (ClassNotFoundException e)
-							{
-								skipPermission(lineNr, classname, e);
-								line = reader.readLine();
-								continue;
-							}
-						}
-						else
-						{
-							// skip this line
-							skipLine(lineNr, line);
-						}
-					}
+					if (permissions != null || principal == null)
+						skipIllegalPrincipal(currentLineNr, principal, permissions);
+					permissions = new HashSet();
 				}
-				else
+				boolean endsWith = trim.endsWith("};");
+				if (endsWith)
 				{
-					Matcher m = principalPattern.matcher(line);
+					inPrincipalBlock = false;
+					if (permissions != null && permissions.size() > 0)
+						hive.addPrincipal(principal, permissions);
+					else
+						skipEmptyPrincipal(currentLineNr, principal);
+
+					permissions = null;
+					principal = null;
+				}
+				if (!(startsWith || endsWith))
+				{
+					Matcher m = permissionPattern.matcher(line);
 					if (m.matches())
 					{
 						String classname = m.group(1);
 						if (classname == null)
-							principal = new EverybodyPrincipal();
-						else
 						{
-							Class principalClass = null;
-							try
+							skipPermission(currentLineNr, null);
+							line = reader.readLine();
+							continue;
+						}
+						Class permissionClass = null;
+						try
+						{
+							permissionClass = Class.forName(resolveAliases(classname));
+							if (!Permission.class.isAssignableFrom(permissionClass))
 							{
-								principalClass = Class.forName(resolveAliases(classname));
-								if (!Principal.class.isAssignableFrom(principalClass))
-								{
-									skipPrincipalClass(lineNr, principalClass);
-									line = reader.readLine();
-									continue;
-								}
-								Constructor constructor = null;
-								try
-								{
-									constructor = principalClass.getConstructor(stringArgs1);
-								}
-								catch (SecurityException e)
-								{
-									log.error("No valid constructor found for "
-											+ principalClass.getName(), e);
-								}
-								catch (NoSuchMethodException e)
-								{
-									log.error("No valid constructor found for "
-											+ principalClass.getName(), e);
-								}
-								if (constructor == null)
-								{
-									skipPrincipal(lineNr, principalClass);
-									line = reader.readLine();
-									continue;
-								}
-								try
-								{
-									principal = (Principal)constructor
-											.newInstance(new Object[] { resolveAliases(m.group(2)) });
-								}
-								catch (Exception e)
-								{
-									skipPrincipal(lineNr, principalClass, e);
-									line = reader.readLine();
-									continue;
-								}
-
-							}
-							catch (ClassNotFoundException e)
-							{
-								skipPrincipalClass(lineNr, classname, e);
+								skipPermission(currentLineNr, permissionClass);
 								line = reader.readLine();
 								continue;
 							}
+							String name = resolveAliases(m.group(2));
+							String actions = m.group(3);
+							Constructor constructor = null;
+							Class[] args = stringArgs2;
+							if (actions == null)
+								args = stringArgs1;
+							try
+							{
+								constructor = permissionClass.getConstructor(args);
+							}
+							catch (SecurityException e)
+							{
+								log.error("No valid constructor found for "
+										+ permissionClass.getName(), e);
+							}
+							catch (NoSuchMethodException e)
+							{
+								log.error("No valid constructor found for "
+										+ permissionClass.getName(), e);
+							}
+							if (constructor == null)
+							{
+								skipPermission(currentLineNr, permissionClass, args);
+								line = reader.readLine();
+								continue;
+							}
+							Object[] argValues = new Object[] { name, actions };
+							if (actions == null)
+								argValues = new Object[] { name };
+							Permission temp;
+							try
+							{
+								temp = (Permission)constructor.newInstance(argValues);
+							}
+							catch (Exception e)
+							{
+								skipPermission(currentLineNr, permissionClass, argValues, e);
+								line = reader.readLine();
+								continue;
+							}
+							if (permissions == null)
+							{
+								skipIllegalPermission(currentLineNr, principal, temp);
+								line = reader.readLine();
+								continue;
+							}
+							if (!permissions.add(temp))
+								skipPermission(currentLineNr, principal, temp);
+							else
+								notifyPermission(currentLineNr, principal, temp);
+
 						}
-						notifyOfPrincipal(lineNr, principal);
-						inPrincipalBlock = true;
+						catch (ClassNotFoundException e)
+						{
+							skipPermission(currentLineNr, classname, e);
+							line = reader.readLine();
+							continue;
+						}
 					}
 					else
 					{
-						skipLine(lineNr, line);
+						// skip this line
+						skipLine(currentLineNr, line);
 					}
 				}
-				line = reader.readLine();
 			}
-			// catch forgotten closeStatement
-			if (inPrincipalBlock)
+			else
 			{
-				warnUnclosedPrincipalBlock(principal, lineNr);
-				inPrincipalBlock = false;
-				if (permissions != null && permissions.size() > 0)
-					hive.addPrincipal(principal, permissions);
-				else
-					skipEmptyPrincipal(lineNr, principal);
+				Matcher m = principalPattern.matcher(line);
+				if (m.matches())
+				{
+					String classname = m.group(1);
+					if (classname == null)
+						principal = new EverybodyPrincipal();
+					else
+					{
+						Class principalClass = null;
+						try
+						{
+							principalClass = Class.forName(resolveAliases(classname));
+							if (!Principal.class.isAssignableFrom(principalClass))
+							{
+								skipPrincipalClass(currentLineNr, principalClass);
+								line = reader.readLine();
+								continue;
+							}
+							Constructor constructor = null;
+							try
+							{
+								constructor = principalClass.getConstructor(stringArgs1);
+							}
+							catch (SecurityException e)
+							{
+								log.error("No valid constructor found for "
+										+ principalClass.getName(), e);
+							}
+							catch (NoSuchMethodException e)
+							{
+								log.error("No valid constructor found for "
+										+ principalClass.getName(), e);
+							}
+							if (constructor == null)
+							{
+								skipPrincipal(currentLineNr, principalClass);
+								line = reader.readLine();
+								continue;
+							}
+							try
+							{
+								principal = (Principal)constructor
+										.newInstance(new Object[] { resolveAliases(m.group(2)) });
+							}
+							catch (Exception e)
+							{
+								skipPrincipal(currentLineNr, principalClass, e);
+								line = reader.readLine();
+								continue;
+							}
 
-				permissions = null;
-				principal = null;
+						}
+						catch (ClassNotFoundException e)
+						{
+							skipPrincipalClass(currentLineNr, classname, e);
+							line = reader.readLine();
+							continue;
+						}
+					}
+					notifyOfPrincipal(currentLineNr, principal);
+					inPrincipalBlock = true;
+				}
+				else
+				{
+					skipLine(currentLineNr, line);
+				}
 			}
+			line = reader.readLine();
 		}
-		finally
+		// catch forgotten closeStatement
+		if (inPrincipalBlock)
 		{
-			notifyFileClose(file, lineNr);
-			if (reader != null)
-				reader.close();
+			warnUnclosedPrincipalBlock(principal, currentLineNr);
+			inPrincipalBlock = false;
+			if (permissions != null && permissions.size() > 0)
+				hive.addPrincipal(principal, permissions);
+			else
+				skipEmptyPrincipal(currentLineNr, principal);
+
+			permissions = null;
+			principal = null;
 		}
 	}
 
@@ -791,6 +1067,27 @@ public class PolicyFileHiveFactory implements HiveFactory
 	public final void useHiveCache(boolean useCache)
 	{
 		this.useHiveCache = useCache;
+	}
+
+	/**
+	 * Gets closeInputStreams.
+	 * 
+	 * @return closeInputStreams
+	 */
+	public final boolean isCloseInputStreams()
+	{
+		return closeInputStreams;
+	}
+
+	/**
+	 * Sets closeInputStreams.
+	 * 
+	 * @param closeInputStreams
+	 *            closeInputStreams
+	 */
+	public final void setCloseInputStreams(boolean closeInputStreams)
+	{
+		this.closeInputStreams = closeInputStreams;
 	}
 
 }
