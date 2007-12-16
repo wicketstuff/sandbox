@@ -16,6 +16,9 @@
  */
 package org.apache.wicket.security.hive.config;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -68,11 +71,71 @@ public class PolicyFileHiveFactoryTest extends TestCase
 	/**
 	 * Test method for
 	 * {@link org.apache.wicket.security.hive.config.PolicyFileHiveFactory#createHive()}.
+	 * using url's
 	 */
 	public void testCreateHive()
 	{
 		PolicyFileHiveFactory factory = new PolicyFileHiveFactory();
 		factory.addPolicyFile(getClass().getResource("test-policy.hive"));
+		doCreateHive(factory);
+	}
+
+	/**
+	 * Test method for
+	 * {@link org.apache.wicket.security.hive.config.PolicyFileHiveFactory#createHive()}.
+	 * using streams
+	 */
+	public void testCreateHive2()
+	{
+		PolicyFileHiveFactory factory = new PolicyFileHiveFactory();
+		InputStream stream;
+		try
+		{
+			stream = getClass().getResource("test-policy.hive").openStream();
+			factory.addStream(stream);
+			doCreateHive(factory);
+		}
+		catch (IOException e)
+		{
+			fail(e.toString());
+		}
+
+		finally
+		{
+			// can not test if stream is actually closed other then trying to
+			// read from it
+		}
+	}
+
+	/**
+	 * Test method for
+	 * {@link org.apache.wicket.security.hive.config.PolicyFileHiveFactory#createHive()}.
+	 * using readers
+	 */
+	public void testCreateHive3()
+	{
+		PolicyFileHiveFactory factory = new PolicyFileHiveFactory();
+		InputStream stream;
+		try
+		{
+			stream = getClass().getResource("test-policy.hive").openStream();
+			factory.addReader(new InputStreamReader(stream));
+			doCreateHive(factory);
+		}
+		catch (IOException e)
+		{
+			fail(e.toString());
+		}
+
+		finally
+		{
+			// can not test if stream is actually closed other then trying to
+			// read from it
+		}
+	}
+
+	private void doCreateHive(PolicyFileHiveFactory factory)
+	{
 		// setup aliases
 		factory.setAlias("perm", "org.apache.wicket.security.hive.authorization.TestPermission");
 		factory.setAlias("nine", "9");
