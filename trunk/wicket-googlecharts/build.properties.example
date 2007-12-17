@@ -1,6 +1,0 @@
-wicket.path=C:/Users/Daniel Spiewak/Libraries/apache-wicket-1.3.0-beta4/lib/wicket-1.3.0-beta4.jar
-
-build.classpath=${wicket.path}
-build.debug=yes
-
-wicket-googlecharts.version=0.1

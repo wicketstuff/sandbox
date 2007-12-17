@@ -1,9 +1,0 @@
-Dojo.js is Dojo 0.22 release -  Ajax build, added monday 20 Janary 
-(http://download.dojotoolkit.org/release-0.2.2/dojo-0.2.2-ajax.zip)
-Deprecated will be remove in 2.0 version for compatibily purpose
-
-		
-Dojo Version is 0.4
-	Patches : 
-		widget/Dialog.js has been replaced by 2006-12-01 nigthly build
-		widget/FloatingPane.js has been replaced by 2006-12-01 nigthly build
