@@ -1,0 +1,103 @@
+@import url(thumbnail.css);
+@import url(backend.css);
+@import url(auth.css);
+body {
+	background : url('images/bg-body.jpg');
+	background-repeat:repeat-x;
+}
+
+body, input, textarea, select, table {
+	font-size: 10pt;
+	font-family:Arial,Helvetica,sans-serif;
+	color: #001667;
+}
+
+a, a table{
+	color : #001667;
+	text-decoration: none;
+}
+
+a:hover, a:hover table {
+	color : #FF3399;
+}
+
+img{
+	border:0px;
+}
+
+#header {
+	background-image : url('images/pickwickColor.png');
+	background-repeat: no-repeat;
+	background-position: right;
+	margin-right: 70px;
+	height:50px;
+}
+
+.fixed{
+	position:fixed;
+	width:200px;
+		opacity: .8;
+	filter: alpha(opacity=80);
+}
+
+/** USER PANEL **/
+
+.metaDisplay{
+	position: absolute;
+	top: 11px;
+	height: 50px;
+	width : 238px;
+	margin-left: 15px;
+	white-space: nowrap;	
+	position: fixed;
+	border: 1px dotted #001667;
+	background-color: white;
+	opacity: .8;
+	filter: alpha(opacity=80);
+}
+
+.metaDisplay .date{
+	color:#FF3399;
+	font-weight: bold;
+	text-align: center;
+}
+.metaDisplay .title{
+	font-weight: bold;
+	text-align: center;
+}
+
+/* padding and height computed automatically */
+.photo img {
+	border: 1px black solid;
+	background-color: white;
+}
+
+.sequence .date {
+	font-size: .9em;
+}
+
+.sequence .title {
+	font-size: 1.1em;
+	font-weight: bold;
+}
+
+.photoContainer{
+	position: relative;
+}
+
+.nav {
+	z-index:9999;
+	background-color: #dfecf3;
+	border: 1px solid black;
+	width:300px;
+	height: 30px;
+}
+
+.feedbackPanelERROR{
+	list-style-type: none;
+	margin : 0px;
+	padding : 0px;
+	color : red;
+}
+
+

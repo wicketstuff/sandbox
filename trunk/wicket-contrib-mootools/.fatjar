@@ -1,0 +1,14 @@
+#Fat Jar Configuration File
+#Sat Jul 21 13:49:26 PDT 2007
+onejar.license.required=true
+manifest.classpath=
+manifest.removesigners=true
+onejar.checkbox=false
+jarname=contrib-mootools.jar
+manifest.mergeall=true
+manifest.mainclass=
+manifest.file=<createnew>
+jarname.isextern=false
+onejar.expand=
+excludes=<jar|wicket-1.3.0-SNAPSHOT.jar>;<jar|wicket-extensions-1.3.0-SNAPSHOT.jar>
+includes=

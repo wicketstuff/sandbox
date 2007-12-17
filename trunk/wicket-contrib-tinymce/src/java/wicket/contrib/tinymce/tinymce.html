@@ -1,0 +1,27 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Simple example</title>
+
+    <!-- tinyMCE -->
+    <script language="javascript" type="text/javascript" src="tiny_mce/tiny_mce.js"></script>
+    <script language="javascript" type="text/javascript">
+        // Notice: The simple theme does not use all options some of them are limited to the advanced theme
+        tinyMCE.init({
+            mode : "textareas",
+            theme : "simple"
+        });
+    </script>
+    <!-- /tinyMCE -->
+
+</head>
+
+<body>
+
+<textarea id="elm1" name="elm1" rows="10" cols="40">
+    Some &lt;b&gt;element&lt;/b&gt;, this is to be editor 1.
+    &lt;p&gt;Some paragraph.
+</textarea>
+
+</body>
+</html>
