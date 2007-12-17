@@ -1,0 +1,89 @@
+/** FORMS **/
+
+.backendForm table {
+	color :#001667;
+}
+
+/*.backendForm iframe {
+	background-color : #EEEEEE;
+	color: black;
+	border: solid 1px #666666;
+}*/
+
+.backendForm input{
+	border:1px solid #001667;
+}
+
+.backendForm input:HOVER{
+	color:#FF3399;
+}
+
+.backendForm input:FOCUS{
+	background-color:#dfecf3;
+	color:#FF3399;
+}
+
+.info {
+	font-style: italic;
+	padding-top: 15px;
+	padding-bottom: 15px;
+}
+
+h2{
+	color: #FF3399;
+}
+
+/** ITEMS **/
+
+.backendItem{
+	width: 320px;
+	float: left;
+	position: relative;
+	overflow: hidden;
+	margin: 15px;
+}
+
+.backendItem a{
+	color : #001667;
+	text-decoration: none;
+}
+
+.backendItem a:HOVER{
+	color : #FF3399;
+}
+
+.backendItem img {
+	border : 0px;
+}
+
+.backendItem div {
+	position: absolute;
+	margin-left: 50px;
+}
+
+.backendItem .title {
+	top: 0px;
+	font-weight: bold;
+}
+
+.backendItem .description {
+	top: 18px;
+	font-style: italic;
+	font-size: 0.9em;
+}
+
+/** Backgrounds */
+
+.user{
+	background-image: url('images/UserBg.jpg');
+	background-position: bottom right;
+	background-repeat: no-repeat;	   
+	height: 100%;              
+}
+
+.sequence{
+	background-image: url('images/SequenceBg.jpg');
+	background-position: bottom right;
+	background-repeat: no-repeat;	  
+	height: 100%;               
+}

@@ -1,0 +1,44 @@
+.thumbnail{
+	text-decoration: none;
+	
+}
+
+.thumbnail table{
+	font-size: 0.8em;
+	border-spacing: 0px;
+	width : 90px;
+	height : 90px;
+	border: 1px black;
+	margin: 5px;
+}
+
+.thumbnail table .label{
+	color: #7E7E7E;
+	text-decoration: none;
+	height: 15px;
+	overflow:hidden;
+	width:100%;
+}
+
+.thumbnail:hover table .label {
+	background-color: #FF3399;
+	color: white;
+}
+	
+.thumbnail:hover table {
+	border: 1px solid #FF3399;
+}
+
+.thumbnail table {
+	border: 1px solid #7E7E7E;
+}
+
+.thumbnail img {
+	border: 0px;
+}
+
+
+.thumbnail table td {
+	text-align: center;
+}
+

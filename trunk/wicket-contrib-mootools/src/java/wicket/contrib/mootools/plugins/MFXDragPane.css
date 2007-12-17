@@ -1,0 +1,60 @@
+div.MFXDragPane { 
+	padding: 0; 
+	border: 0; 
+	position: relative; 
+	display: block; 
+	margin: 0 0 10px 0; 
+	z-index: 1; 
+	overflow: hidden;
+	border: 1px solid #4e8ee2;
+}
+div.MFXDragPaneBar { 
+	padding: 2px; 
+	background-image: url('bar.gif');
+	color: white;
+	height: 16px;
+	display: block; 
+	cursor: move; 
+}
+
+div.MFXDragPaneTitle {
+	float: left;
+	text-indent: 5px;
+	width: 90%;
+	font-size: 12px;
+}
+
+div.MFXDragPaneCloseButton {
+	background: url('close.gif') top right no-repeat;
+	cursor: pointer; 
+	height: 12px;
+	width: 12px;
+	float: right;
+}
+
+div.MFXDragPaneMinimizeButton {
+	background: url('minimize.gif') top right no-repeat;
+	cursor: pointer; 
+	height: 12px;
+	width: 12px;
+	margin-right: 3px;
+	float: right;
+}
+
+
+div.MFXDragPaneContent { 
+	padding: 5px; 
+	background: white; 
+}
+
+div.webBoxMarker { 
+	border: 1px dotted black; 
+	margin: 0 0 8px 0; 
+}
+
+table#webBoxContainer { 
+	width: 880px; 
+}
+table#webBoxContainer td { 
+	vertical-align: top 
+}

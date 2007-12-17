@@ -1,0 +1,25 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    
+<html 
+	xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:wicket="http://wicket.sourceforge.net/" 
+	xml:lang="en" 
+	lang="en">  
+<body>
+	<wicket:panel>
+		<applet code="wjhk.jupload2.JUploadApplet" wicket:id="jupload" width="640" height="400" alt=""
+            mayscript>
+            <param wicket:id="param" name="postURL"/>
+            <param name="maxChunkSize" value="500000" />
+            <param name="uploadPolicy" value="PictureUploadPolicy" />
+            <param name="nbFilesPerRequest" value="1" />
+            <!-- Optionnal, see code comments -->
+            <param name="debugLevel" value="0" />
+            <!-- Optionnal, see code comments --> Java 1.5 or higher
+            plugin required. 
+        </applet>
+	</wicket:panel>
+</body>
+
+</html>
