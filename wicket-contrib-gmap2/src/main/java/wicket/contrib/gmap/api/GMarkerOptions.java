@@ -31,6 +31,8 @@ public class GMarkerOptions implements GValue
 	private boolean bouncy = true;
 	
 	private boolean autoPan = false;
+	
+	private GIcon icon = null;
 
 	public String getJSconstructor()
 	{
@@ -55,6 +57,10 @@ public class GMarkerOptions implements GValue
 		if (autoPan)
 		{
 			literal.set("autoPan", "true");
+		}
+		if(icon != null)
+		{
+			literal.set("icon", icon.getId());
 		}
 
 		return literal.toString();
@@ -102,4 +108,13 @@ public class GMarkerOptions implements GValue
 		this.autoPan = autoPan;
 	}
 
+	public void setIcon(GIcon icon)
+	{
+		this.icon = icon;
+	}
+	
+	public GIcon getIcon()
+	{
+		return icon;
+	}
 }

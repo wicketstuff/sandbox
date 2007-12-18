@@ -47,6 +47,11 @@ public class GMarker extends GOverlay
 	{
 		return gLatLng;
 	}
+	
+	public GMarkerOptions getMarkerOptions()
+	{
+		return this.options;
+	}
 
 	@Override
 	protected String getJSconstructor()
