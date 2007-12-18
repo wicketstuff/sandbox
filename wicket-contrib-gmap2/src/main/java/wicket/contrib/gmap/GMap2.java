@@ -38,6 +38,8 @@ import wicket.contrib.gmap.api.GInfoWindow;
 import wicket.contrib.gmap.api.GLatLng;
 import wicket.contrib.gmap.api.GLatLngBounds;
 import wicket.contrib.gmap.api.GMapType;
+import wicket.contrib.gmap.api.GMarker;
+import wicket.contrib.gmap.api.GMarkerOptions;
 import wicket.contrib.gmap.api.GOverlay;
 import wicket.contrib.gmap.event.GEventListenerBehavior;
 
@@ -370,8 +372,23 @@ public class GMap2 extends Panel
 	{
 		StringBuffer js = new StringBuffer("new WicketGMap2('" + map.getMarkupId() + "');\n");
 
-		js.append(getJSsetCenter(center) + "\n");
-		js.append(getJSsetZoom(zoom) + "\n");
+		// Add the Icons.
+		for (GOverlay overlay : overlays)
+		{
+			if(overlay instanceof GMarker)
+			{
+				GMarker marker = (GMarker) overlay;
+				GMarkerOptions options = marker.getMarkerOptions();
+				if(options != null)
+				{
+					if(options.getIcon() != null)
+						js.append(options.getIcon().getJSadd(this) + "\n");
+				}
+			}
+		}
+
+		js.append(getJSsetCenter(getCenter()) + "\n");
+		js.append(getJSsetZoom(getZoom()) + "\n");
 		js.append(getJSsetDraggingEnabled(draggingEnabled) + "\n");
 		js.append(getJSsetDoubleClickZoomEnabled(doubleClickZoomEnabled) + "\n");
 		js.append(getJSsetScrollWheelZoomEnabled(scrollWheelZoomEnabled) + "\n");
@@ -431,12 +448,15 @@ public class GMap2 extends Panel
 
 	private String getJSsetZoom(int zoom)
 	{
-		return getJSinvoke("setZoom(" + zoom + ")");
+			return getJSinvoke("setZoom(" + zoom + ")");
 	}
 
 	private String getJSsetCenter(GLatLng center)
 	{
-		return getJSinvoke("setCenter(" + center.getJSconstructor() + ")");
+		if(center != null)
+			return getJSinvoke("setCenter(" + center.getJSconstructor() + ")");
+		else
+			return "";
 	}
 
 	private String getJSpanDirection(int dx, int dy)
