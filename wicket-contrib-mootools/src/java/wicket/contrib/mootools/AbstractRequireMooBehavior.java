@@ -19,77 +19,84 @@ package wicket.contrib.mootools;
 import java.util.HashSet;
 import java.util.Iterator;
 
-import org.apache.wicket.Response;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.IAjaxIndicatorAware;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.IHeaderResponse;
-
 
 /**
  * Handles all state components
  * <p>
  * This class Inherits from {@link AbstractDefaultAjaxBehavior}
  * </p>
+ * 
  * @author victori
- *
+ * 
  */
 public abstract class AbstractRequireMooBehavior extends AbstractDefaultAjaxBehavior implements IAjaxIndicatorAware {
 	private MooDomReady domReadyFuncations = new MooDomReady();
-	
-	
+
 	/**
 	 * @see org.apache.wicket.behavior.AbstractAjaxBehavior#onComponentTag(org.apache.wicket.markup.ComponentTag)
 	 */
-	protected void onComponentTag(ComponentTag tag) {
+	@Override
+	protected void onComponentTag(final ComponentTag tag) {
 		super.onComponentTag(tag);
-		tag.put("id",getComponent().getMarkupId());
+		tag.put("id", getComponent().getMarkupId());
 	}
-	
+
 	/**
-	 * Place any JS code here which will be appended to @{link MooDomReady} 
+	 * Place any JS code here which will be appended to
+	 * 
+	 * @{link MooDomReady}
 	 * @return
 	 */
 	public abstract String mooFunction();
-	
+
 	/**
 	 * @see org.apache.wicket.behavior.AbstractAjaxBehavior#onComponentRendered()
 	 */
+	@Override
 	protected void onComponentRendered() {
 		super.onComponentRendered();
 	}
-	
+
 	/**
 	 * @see org.apache.wicket.ajax.AbstractDefaultAjaxBehavior#renderHead(org.apache.wicket.markup.html.IHeaderResponse)
 	 */
-	public void renderHead(IHeaderResponse response)
-	{
+	@Override
+	public void renderHead(final IHeaderResponse response) {
 		response.renderJavascriptReference(MooBase.getInstance().getMootoolsReference());
-		
-		if(domReadyFuncations.size() > 0){
-			Response resp = response.getResponse();
-			resp.write(MFXJavascriptUtils.DOM_READY_OPEN());
+
+		if (domReadyFuncations.size() > 0) {
+			StringBuffer output = new StringBuffer();
+			output.append(MFXJavascriptUtils.DOM_READY_OPEN());
 			Iterator i = domReadyFuncations.iterator();
-			while(i.hasNext())
-				resp.write((String)i.next());
-			resp.write(MFXJavascriptUtils.DOM_READY_CLOSE());
-			
+			while (i.hasNext()) {
+				output.append((String) i.next());
+			}
+			output.append(MFXJavascriptUtils.DOM_READY_CLOSE());
+			response.renderString(output.toString());
+
 		}
 		super.renderHead(response);
 	}
-	
+
 	/**
 	 * Appending a MooTools JS function
+	 * 
 	 * @param func
 	 */
-	public void addMooDomFunction(String func) {
+	public void addMooDomFunction(final String func) {
 		domReadyFuncations.add(func);
 	}
-	
+
 	/**
-	 * Array that holds MooTools JS functions to will be placed into domReady function in head.
+	 * Array that holds MooTools JS functions to will be placed into domReady
+	 * function in head.
+	 * 
 	 * @author victori
-	 *
+	 * 
 	 */
 	public class MooDomReady extends HashSet<String> {
 		private static final long serialVersionUID = 1L;
