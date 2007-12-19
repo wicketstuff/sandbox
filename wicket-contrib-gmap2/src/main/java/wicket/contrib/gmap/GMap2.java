@@ -38,8 +38,6 @@ import wicket.contrib.gmap.api.GInfoWindow;
 import wicket.contrib.gmap.api.GLatLng;
 import wicket.contrib.gmap.api.GLatLngBounds;
 import wicket.contrib.gmap.api.GMapType;
-import wicket.contrib.gmap.api.GMarker;
-import wicket.contrib.gmap.api.GMarkerOptions;
 import wicket.contrib.gmap.api.GOverlay;
 import wicket.contrib.gmap.event.GEventListenerBehavior;
 
@@ -198,19 +196,7 @@ public class GMap2 extends Panel
 	{
 		overlays.add(overlay);
 
-		if (AjaxRequestTarget.get() != null && findPage() != null)
-		{
-			// Add the Icon
-			if(overlay instanceof GMarker)
-			{
-				GMarker marker = (GMarker) overlay;
-				GMarkerOptions options = marker.getMarkerOptions();
-				if(options != null)
-				{
-					if(options.getIcon() != null)
-						AjaxRequestTarget.get().appendJavascript(options.getIcon().getJSadd(this) + "\n");
-				}
-			}
+		if (AjaxRequestTarget.get() != null && findPage() != null) {
 			AjaxRequestTarget.get().appendJavascript(overlay.getJSadd(GMap2.this));
 		}
 
@@ -395,21 +381,6 @@ public class GMap2 extends Panel
 	private String getJSinit()
 	{
 		StringBuffer js = new StringBuffer("new WicketGMap2('" + map.getMarkupId() + "');\n");
-
-		// Add the Icons.
-		for (GOverlay overlay : overlays)
-		{
-			if(overlay instanceof GMarker)
-			{
-				GMarker marker = (GMarker) overlay;
-				GMarkerOptions options = marker.getMarkerOptions();
-				if(options != null)
-				{
-					if(options.getIcon() != null)
-						js.append(options.getIcon().getJSadd(this) + "\n");
-				}
-			}
-		}
 
 		js.append(getJSsetCenter(getCenter()) + "\n");
 		js.append(getJSsetZoom(getZoom()) + "\n");
