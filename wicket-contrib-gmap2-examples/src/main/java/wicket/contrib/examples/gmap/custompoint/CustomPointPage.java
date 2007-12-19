@@ -1,7 +1,6 @@
 package wicket.contrib.examples.gmap.custompoint;
 
 import org.apache.wicket.ResourceReference;
-import org.apache.wicket.model.Model;
 
 import wicket.contrib.examples.WicketExamplePage;
 import wicket.contrib.gmap.GMap2;
@@ -28,8 +27,7 @@ public class CustomPointPage extends WicketExamplePage {
 		GMarkerOptions options = new GMarkerOptions();
 		options.setTitle("My Title");
 		
-		GIcon icon = new GIcon();
-		icon.setModel(new Model("" + urlFor(new ResourceReference(CustomPointPage.class, "point.gif"))));
+		GIcon icon = new GIcon(urlFor(new ResourceReference(CustomPointPage.class, "point.gif")).toString());
 		icon.setIconSize(new GSize(40, 40));
 		icon.setIconAnchor(new GPoint(19, 40));
 		icon.setInfoWindowAnchor(new GPoint(9, 2));

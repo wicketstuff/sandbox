@@ -4,7 +4,6 @@ import java.util.Arrays;
 
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.util.time.Duration;
 
 import wicket.contrib.examples.WicketExamplePage;
@@ -60,8 +59,7 @@ public class RefreshPointPage extends WicketExamplePage {
 		GMarkerOptions options = new GMarkerOptions();
 		options.setTitle(title);
 		
-		GIcon icon = new GIcon();
-		icon.setModel(new Model("" + urlFor(new ResourceReference(RefreshPointPage.class, iconName))));
+		GIcon icon = new GIcon(urlFor(new ResourceReference(RefreshPointPage.class, iconName)).toString());
 		icon.setIconSize(new GSize(40, 40));
 		icon.setIconAnchor(new GPoint(19, 40));
 		icon.setInfoWindowAnchor(new GPoint(9, 2));
