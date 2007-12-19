@@ -188,6 +188,11 @@ function WicketGMap2(id) {
 			this.overlays[overlayId] = null;
 		}
 	}
+	
+	this.clearOverlays = function() {
+		this.overlays = {};
+		this.map.clearOverlays();
+	}
 
 	this.openInfoWindowTabs = function(latLng, tabs) {
 		this.map.openInfoWindowTabs(latLng, tabs);
