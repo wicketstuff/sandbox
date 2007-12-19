@@ -200,6 +200,17 @@ public class GMap2 extends Panel
 
 		if (AjaxRequestTarget.get() != null && findPage() != null)
 		{
+			// Add the Icon
+			if(overlay instanceof GMarker)
+			{
+				GMarker marker = (GMarker) overlay;
+				GMarkerOptions options = marker.getMarkerOptions();
+				if(options != null)
+				{
+					if(options.getIcon() != null)
+						AjaxRequestTarget.get().appendJavascript(options.getIcon().getJSadd(this) + "\n");
+				}
+			}
 			AjaxRequestTarget.get().appendJavascript(overlay.getJSadd(GMap2.this));
 		}
 
@@ -225,6 +236,19 @@ public class GMap2 extends Panel
 			AjaxRequestTarget.get().appendJavascript(overlay.getJSremove(GMap2.this));
 		}
 
+		return this;
+	}
+	
+	/**
+	 * Clear all overlays.
+	 * 
+	 * @return This
+	 */
+	public GMap2 clearOverlays() {
+		overlays.clear();
+		if (AjaxRequestTarget.get() != null && findPage() != null) {
+			AjaxRequestTarget.get().appendJavascript(getJSinvoke("clearOverlays()"));
+		}
 		return this;
 	}
 
@@ -490,6 +514,13 @@ public class GMap2 extends Panel
 		infoWindow.update(target);
 	}
 
+	public void updateOverlays(List<GOverlay> overlayList) {
+		clearOverlays();
+		for(GOverlay overlay : overlayList) {
+			addOverlay(overlay);
+		}
+	}
+	
 	private abstract class JSMethodBehavior extends AbstractBehavior
 	{
 

@@ -73,7 +73,7 @@ public class GIcon implements Serializable
 	
 	public String getJSadd(GMap2 map)
 	{
-		return "var " + getId() + "= "		
+		return "window." + getId() + "= "		
 				+ getJSconstructor() + ";";
 	}
 

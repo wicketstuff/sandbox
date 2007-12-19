@@ -68,6 +68,15 @@
 		  <param-value>wicket.contrib.examples.gmap.custompoint.CustompointGMapApplication</param-value>
 		</init-param>
 	</filter>
+	
+	<filter>
+		<filter-name>RefreshPointGMapApplication</filter-name>
+		<filter-class>org.apache.wicket.protocol.http.WicketFilter</filter-class>
+		<init-param>
+		  <param-name>applicationClassName</param-name>
+		  <param-value>wicket.contrib.examples.gmap.refreshpoint.RefreshPointGMapApplication</param-value>
+		</init-param>
+	</filter>
 
 	<filter>
 		<filter-name>ManyGMapApplication</filter-name>
@@ -128,6 +137,11 @@
 	<filter-mapping>
 		<filter-name>CustompointGMapApplication</filter-name>
 		<url-pattern>/custompoint/*</url-pattern>
+	</filter-mapping>
+	
+	<filter-mapping>
+		<filter-name>RefreshPointGMapApplication</filter-name>
+		<url-pattern>/refreshpoint/*</url-pattern>
 	</filter-mapping>
 
 	<filter-mapping>
