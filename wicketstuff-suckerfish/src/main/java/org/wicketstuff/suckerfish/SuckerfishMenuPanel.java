@@ -20,8 +20,9 @@ import org.apache.wicket.model.PropertyModel;
  * 
  * This Wicket component is released under the Apache 2 license.
  * 
- * The Javascript code and CSS is licensed as follows: See
- * http://www.alistapart.com/articles/dropdowns/. License is at
+ * Credit for the Suckerfish dropdown javascript code and CSS goes to Patrick
+ * Griffiths and Dan Webb. The Javascript code and CSS is licensed as follows:
+ * See http://www.alistapart.com/articles/dropdowns/. License is at
  * http://www.alistapart.com/copyright/, see "Free source"
  */
 public class SuckerfishMenuPanel extends Panel
@@ -120,7 +121,8 @@ public class SuckerfishMenuPanel extends Panel
 
 		public MenuItemFragment(MenuItem menuItem)
 		{
-			super("menuitemfragment", "MENUITEMFRAGMENT", SuckerfishMenuPanel.this);
+			super("menuitemfragment", "MENUITEMFRAGMENT",
+					SuckerfishMenuPanel.this);
 			// Add the menu's label (hyperlinked if a link is provided)
 			if (menuItem.getLink() != null)
 			{
