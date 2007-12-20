@@ -12,6 +12,13 @@
       behavior:url(#default#VML);
     }
 </style>
+<script type="text/javascript">
+	function gmapClearTimeout() {
+		window.clearTimeout(window.GmapAutoTimer);
+		var feedback = document.getElementById('feedback');
+		feedback.innerHTML = "The auto refresh is off";
+	}
+</script>
 <link rel="stylesheet" type="text/css" href="style.css" />
 </head>
 
@@ -23,7 +30,12 @@
 The overlays are updated every 5 seconds
 </p>
 
-<div wicket:id="map" style="margin-left: auto; margin-right: auto; width: 600px; height: 400px;">Map</div>
+<center>
+	<div wicket:id="map" style="width: 600px; height: 400px;">Map</div>
+	<br>
+	<button onclick="gmapClearTimeout();">stopTimer</button>
+	<p id="feedback"></p>
+</center>
 
 </body>
 </html>
