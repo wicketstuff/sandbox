@@ -34,7 +34,7 @@ public class RefreshPointPage extends WicketExamplePage {
 		
 		map.addOverlay(overlay);
 		
-		map.add(new GMapAutoUpdatingBehavior(Duration.ONE_SECOND) {
+		map.add(new GMapAutoUpdatingBehavior(Duration.seconds(5)) {
 			private static final long serialVersionUID = 1L;
 			private int i = 1;
 			
@@ -47,7 +47,7 @@ public class RefreshPointPage extends WicketExamplePage {
 				} else if(i % 3 == 1) {
 					overlay = createOverlay("Amsterdam", new GLatLng(52.37649, 4.888573), "point2.gif");
 				} else {
-					overlay = createOverlay("Anywhere", new GLatLng(43.3944, 1.42965), "point2.gif");
+					overlay = createOverlay("Toulouse", new GLatLng(43.604363, 1.442951), "point2.gif");
 				}
 				i++;
 				map.updateOverlays(Arrays.asList(new GOverlay[]{overlay}));
