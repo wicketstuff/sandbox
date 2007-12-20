@@ -84,7 +84,7 @@ public abstract class GMapAutoUpdatingBehavior extends AbstractDefaultAjaxBehavi
      * @return JS script
      */
     protected final String getJsTimeoutCall(final Duration updateInterval) {
-        return "setTimeout(\"" + getCallbackScript() + "\", " + updateInterval.getMilliseconds() + ");";
+        return "window.GmapAutoTimer = setTimeout(\"" + getCallbackScript() + "\", " + updateInterval.getMilliseconds() + ");";
     }
 
     /**
