@@ -17,23 +17,26 @@ package wicket.contrib.gmap.api;
 
 import org.apache.wicket.Component;
 
+import wicket.contrib.gmap.js.Constructor;
+
 /**
- * Represents an Google Maps API's
- * <a href="http://www.google.com/apis/maps/documentation/reference.html#GInfoWindowTab">GInfoWindowTab</a>.
+ * Represents an Google Maps API's <a
+ * href="http://www.google.com/apis/maps/documentation/reference.html#GInfoWindowTab">GInfoWindowTab</a>.
  */
-public class GInfoWindowTab implements GValue 
+public class GInfoWindowTab implements GValue
 {
 
 	/**
 	 * Default serialVersionUID.
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	private final String title;
 	private final Component content;
 
 	/**
 	 * Construct.
+	 * 
 	 * @param content
 	 */
 	public GInfoWindowTab(Component content)
@@ -43,6 +46,7 @@ public class GInfoWindowTab implements GValue
 
 	/**
 	 * Construct.
+	 * 
 	 * @param title
 	 * @param content
 	 */
@@ -50,7 +54,7 @@ public class GInfoWindowTab implements GValue
 	{
 		this.title = title;
 		this.content = content;
-		
+
 		content.setOutputMarkupId(true);
 	}
 
@@ -63,12 +67,13 @@ public class GInfoWindowTab implements GValue
 	{
 		return content;
 	}
-	
+
 	/**
 	 * @return A JavaScript constructor that represents this element.
 	 */
 	public String getJSconstructor()
 	{
-		return "new GInfoWindowTab('" + title + "', document.getElementById('" + content.getMarkupId() + "'))";
+		return new Constructor("GInfoWindowTab").addString(title).add(
+				"document.getElementById('" + content.getMarkupId() + "')").toString();
 	}
 }

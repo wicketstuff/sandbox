@@ -21,14 +21,18 @@ package wicket.contrib.gmap.js;
 public class ObjectLiteral
 {
 	private StringBuffer buffer = new StringBuffer("{");
+	private boolean first = true;
 	
-	public void set(String name, String value) {
-		if (buffer.length() > 1) {
+	public ObjectLiteral set(String name, String value) {
+		if (!first) {
 			buffer.append(", ");
 		}
 		buffer.append(name);
 		buffer.append(": ");
 		buffer.append(value);
+		
+		first = false;
+		return this;
 	}
 
 	@Override

@@ -20,35 +20,37 @@ package wicket.contrib.gmap.api;
 
 import java.io.Serializable;
 
+import wicket.contrib.gmap.js.Constructor;
+
 /**
  * Represents an Maps API's GPoint that contains x and y coordinates.
- *
+ * 
  * @author Iulian-Corneliu Costan
  */
 public class GPoint implements Serializable
 {
 
-    private float longitude;
-    private float latitude;
+	private float longitude;
+	private float latitude;
 
-    public GPoint(float longitude, float latitude)
-    {
-        this.longitude = longitude;
-        this.latitude = latitude;
-    }
+	public GPoint(float longitude, float latitude)
+	{
+		this.longitude = longitude;
+		this.latitude = latitude;
+	}
 
-    public float getLongitude()
-    {
-        return longitude;
-    }
+	public float getLongitude()
+	{
+		return longitude;
+	}
 
-    public float getLatitude()
-    {
-        return latitude;
-    }
+	public float getLatitude()
+	{
+		return latitude;
+	}
 
-    public String toString()
-    {
-        return "new GPoint(" + longitude + ", " + latitude + ")";
-    }
+	public String toString()
+	{
+		return new Constructor("GPoint").add(longitude).add(latitude).toString();
+	}
 }

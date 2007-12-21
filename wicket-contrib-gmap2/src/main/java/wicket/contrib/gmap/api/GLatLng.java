@@ -17,6 +17,8 @@ package wicket.contrib.gmap.api;
 
 import java.util.StringTokenizer;
 
+import wicket.contrib.gmap.js.Constructor;
+
 /**
  * Represents an Google Maps API's <a
  * href="http://www.google.com/apis/maps/documentation/reference.html#GLatLng">GLatLng</a>.
@@ -77,7 +79,8 @@ public class GLatLng implements GValue
 	 */
 	public String getJSconstructor()
 	{
-		return "new GLatLng(" + lat + ", " + lng + ", " + unbounded + ")";
+		return new Constructor("GLatLng").add(lat).add(lng).add(unbounded)
+				.toString();
 	}
 
 	@Override
@@ -106,7 +109,7 @@ public class GLatLng implements GValue
 		try
 		{
 			StringTokenizer tokenizer = new StringTokenizer(value, "(, )");
-			
+
 			float lat = Float.valueOf(tokenizer.nextToken());
 			float lng = Float.valueOf(tokenizer.nextToken());
 			return new GLatLng(lat, lng);

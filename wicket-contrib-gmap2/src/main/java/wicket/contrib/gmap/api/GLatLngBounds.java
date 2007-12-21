@@ -17,6 +17,8 @@ package wicket.contrib.gmap.api;
 
 import java.util.StringTokenizer;
 
+import wicket.contrib.gmap.js.Constructor;
+
 /**
  * Represents an Google Maps API's
  * <a href="http://www.google.com/apis/maps/documentation/reference.html#GLatLngBounds">GLatLngBounds</a>.
@@ -64,7 +66,7 @@ public class GLatLngBounds implements GValue
 	 */
 	public String getJSconstructor()
 	{
-		return "new GLatLngBounds(" + sw.getJSconstructor() + ", " + ne.getJSconstructor() + ")";
+		return new Constructor("GLatLngBounds").add(sw.getJSconstructor()).add(ne.getJSconstructor()).toString();
 	}
 
 	@Override

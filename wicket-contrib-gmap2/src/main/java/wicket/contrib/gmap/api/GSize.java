@@ -20,35 +20,37 @@ package wicket.contrib.gmap.api;
 
 import java.io.Serializable;
 
+import wicket.contrib.gmap.js.Constructor;
+
 /**
  * Represents an Maps API's GSize that contains width and height.
- *
+ * 
  * @author Robert Jacolin, Vincent Demay, Gregory Maes - Anyware Technologies
  */
 public class GSize implements Serializable
 {
 
-    private float width;
-    private float height;
+	private float width;
+	private float height;
 
-    public GSize(float width, float height)
-    {
-        this.width = width;
-        this.height = height;
-    }
+	public GSize(float width, float height)
+	{
+		this.width = width;
+		this.height = height;
+	}
 
-    public float getWidth()
-    {
-        return width;
-    }
+	public float getWidth()
+	{
+		return width;
+	}
 
-    public float getHeight()
-    {
-        return height;
-    }
+	public float getHeight()
+	{
+		return height;
+	}
 
-    public String toString()
-    {
-        return "new GSize(" + width + ", " + height + ")";
-    }
+	public String toString()
+	{
+		return new Constructor("GSize").add(width).add(height).toString();
+	}
 }

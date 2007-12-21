@@ -15,9 +15,11 @@
  */
 package wicket.contrib.gmap.api;
 
+import wicket.contrib.gmap.js.Constructor;
+
 /**
- * Represents an Google Maps API's
- * <a href="http://www.google.com/apis/maps/documentation/reference.html#GMarker">GMarker</a>.
+ * Represents an Google Maps API's <a
+ * href="http://www.google.com/apis/maps/documentation/reference.html#GMarker">GMarker</a>.
  */
 public class GMarker extends GOverlay
 {
@@ -47,7 +49,7 @@ public class GMarker extends GOverlay
 	{
 		return gLatLng;
 	}
-	
+
 	public GMarkerOptions getMarkerOptions()
 	{
 		return this.options;
@@ -56,16 +58,11 @@ public class GMarker extends GOverlay
 	@Override
 	protected String getJSconstructor()
 	{
-		StringBuffer buffer = new StringBuffer();
-		buffer.append("new GMarker(");
-		buffer.append(gLatLng.getJSconstructor());
+		Constructor constructor = new Constructor("GMarker").add(gLatLng.getJSconstructor());
 		if (options != null)
 		{
-			buffer.append(",");
-			buffer.append(options.getJSconstructor());
+			constructor.add(options.getJSconstructor());
 		}
-		buffer.append(")");
-		
-		return buffer.toString();
-	}	
+		return constructor.toString();
+	}
 }
