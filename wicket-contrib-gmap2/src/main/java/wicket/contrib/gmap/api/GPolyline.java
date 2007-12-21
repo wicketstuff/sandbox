@@ -15,6 +15,9 @@
  */
 package wicket.contrib.gmap.api;
 
+import wicket.contrib.gmap.js.Array;
+import wicket.contrib.gmap.js.Constructor;
+
 /**
  * Represents an Google Maps API's
  * <a href="http://www.google.com/apis/maps/documentation/reference.html#GPolyline">GPolyline</a>.
@@ -41,27 +44,18 @@ public class GPolyline extends GOverlay
 	@Override
 	protected String getJSconstructor()
 	{
-		StringBuffer buffer = new StringBuffer();
+		Constructor constructor = new Constructor("GPolyline");
 		
-		buffer.append("new GPolyline([");
-
-		boolean first = true;
+		Array array = new Array();
 		for (GLatLng gLatLng : gLatLngs) {
-			if (!first) {
-				buffer.append(",");
-			}
-			buffer.append(gLatLng.getJSconstructor());
-			first = false;
+			array.add(gLatLng.getJSconstructor());
 		}
+		constructor.add(array.toString());
 		
-		buffer.append("],\"");
-		buffer.append(color);
-		buffer.append("\",");
-		buffer.append(weight);
-		buffer.append(",");
-		buffer.append(opacity);
-		buffer.append(")");
+		constructor.addString(color);
+		constructor.addString(weight);
+		constructor.addString(opacity);
 		
-		return buffer.toString();
+		return constructor.toString();
 	}
 }

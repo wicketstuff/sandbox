@@ -15,6 +15,9 @@
  */
 package wicket.contrib.gmap.api;
 
+import wicket.contrib.gmap.js.Array;
+import wicket.contrib.gmap.js.Constructor;
+
 /**
  * Represents an Google Maps API's 
  * <a href="http://www.google.com/apis/maps/documentation/reference.html#GPolygon">GPolygon</a>.
@@ -46,31 +49,20 @@ public class GPolygon extends GOverlay
 	@Override
 	protected String getJSconstructor()
 	{
-		StringBuffer buffer = new StringBuffer();
-		
-		buffer.append("new GPolygon([");
+		Constructor constructor = new Constructor("GPolygon");
 
-		boolean first = true;
+		Array array = new Array();
 		for (GLatLng gLatLng : gLatLngs) {
-			if (!first) {
-				buffer.append(",");
-			}
-			buffer.append(gLatLng.getJSconstructor());
-			first = false;
+			array.add(gLatLng.getJSconstructor());
 		}
+		constructor.add(array.toString());
 		
-		buffer.append("],\"");
-		buffer.append(strokeColor);
-		buffer.append("\",");
-		buffer.append(strokeWeight);
-		buffer.append(",");
-		buffer.append(strokeOpacity);
-		buffer.append(",\"");
-		buffer.append(fillColor);
-		buffer.append("\",");
-		buffer.append(fillOpacity);
-		buffer.append(")");
-		
-		return buffer.toString();
+		constructor.addString(strokeColor);
+		constructor.addString(strokeWeight);
+		constructor.addString(strokeOpacity);
+		constructor.addString(fillColor);
+		constructor.addString(fillOpacity);
+
+		return constructor.toString();
 	}
 }
