@@ -27,9 +27,12 @@ public class CustomPointPage extends WicketExamplePage {
 		GMarkerOptions options = new GMarkerOptions();
 		options.setTitle("My Title");
 		
-		GIcon icon = new GIcon(urlFor(new ResourceReference(CustomPointPage.class, "point.gif")).toString());
-		icon.setIconSize(new GSize(40, 40));
+		GIcon icon = new GIcon();
+		icon.setImage(urlFor(new ResourceReference(CustomPointPage.class, "image.gif")).toString());
+		icon.setIconSize(new GSize(64, 64));
 		icon.setIconAnchor(new GPoint(19, 40));
+		icon.setShadow(urlFor(new ResourceReference(CustomPointPage.class, "shadow.png")).toString());
+		icon.setShadowSize(new GSize(64, 64));
 		icon.setInfoWindowAnchor(new GPoint(9, 2));
 		icon.setInfoShadowAnchor(new GPoint(18, 25));
 		options.setIcon(icon);
