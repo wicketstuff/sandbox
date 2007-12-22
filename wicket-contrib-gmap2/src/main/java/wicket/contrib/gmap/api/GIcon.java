@@ -34,7 +34,7 @@ public class GIcon implements Serializable
 	private static final long serialVersionUID = 1714038753187423501L;
 
 	private String image = "http://www.google.com/mapfiles/marker.png";
-	private String shadowURL = "http://www.google.com/mapfiles/shadow50.png";
+	private String shadow = "http://www.google.com/mapfiles/shadow50.png";
 	private GSize iconSize = null;
 	private GSize shadowSize = null;
 	private GPoint iconAnchor = null;
@@ -43,115 +43,121 @@ public class GIcon implements Serializable
 
 	public GIcon()
 	{
-		
 	}
-	
-	public GIcon(String url)
+
+	public GIcon(String image)
 	{
-		image = url;
+		this.image = image;
 	}
 
 	public String getId()
 	{
 		return "icon" + String.valueOf(System.identityHashCode(this));
 	}
-	
-	public void setImage(String url)
+
+	public void setImage(String image)
 	{
-		this.image = url;
+		this.image = image;
 	}
-	
+
 	public String getImage()
 	{
 		return image;
 	}
-	
-	public void setShadowURL(String url)
+
+	public void setShadow(String shadow)
 	{
-		this.shadowURL = url;
+		this.shadow = shadow;
 	}
-	
-	public String getShadowURL()
+
+	public String getShadow()
 	{
-		return shadowURL;
+		return shadow;
 	}
 
 	public void setIconSize(GSize size)
 	{
-		this.iconSize= size;
+		this.iconSize = size;
 	}
-	
+
 	public GSize getIconSize()
 	{
 		return iconSize;
 	}
-	
+
 	public void setShadowSize(GSize size)
 	{
 		this.shadowSize = size;
 	}
-	
+
 	public GSize getShadowSize()
 	{
 		return this.shadowSize;
 	}
-	
+
 	public void setIconAnchor(GPoint size)
 	{
 		this.iconAnchor = size;
 	}
-	
+
 	public GPoint getIconAnchor()
 	{
 		return this.iconAnchor;
 	}
-	
+
 	public void setInfoWindowAnchor(GPoint size)
 	{
 		this.infoWindowAnchor = size;
 	}
-	
+
 	public GPoint getInfoWindowAnchor()
 	{
 		return this.infoWindowAnchor;
 	}
-	
+
 	public void setInfoShadowAnchor(GPoint size)
 	{
 		this.infoShadowAnchor = size;
 	}
-	
+
 	public GPoint getInfoShadowAnchor()
 	{
 		return this.infoShadowAnchor;
 	}
-	
+
 	protected String getJSconstructor()
 	{
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("(function() {\n");
 		buffer.append("var icon = new GIcon();\n");
-		buffer.append("icon.image = \"").append(getImage()).append("\";\n");
-		buffer.append("icon.shadow = \"").append(getShadowURL()).append("\";\n");
+		buffer.append("icon.image = \"").append(image).append("\";\n");
+		buffer.append("icon.shadow = \"").append(shadow).append("\";\n");
 
 		if (iconSize != null)
-			buffer.append("icon.iconSize = ").append(getIconSize()).append(";\n");
+		{
+			buffer.append("icon.iconSize = ").append(iconSize.getJSconstructor()).append(";\n");
+		}
 
 		if (shadowSize != null)
-			buffer.append("icon.shadowSize = ").append(getShadowSize()).append(
-					";\n");
+		{
+			buffer.append("icon.shadowSize = ").append(shadowSize.getJSconstructor()).append(";\n");
+		}
 
 		if (iconAnchor != null)
-			buffer.append("icon.iconAnchor = ").append(getIconAnchor()).append(
-					";\n");
+		{
+			buffer.append("icon.iconAnchor = ").append(iconAnchor.getJSconstructor()).append(";\n");
+		}
 
 		if (infoWindowAnchor != null)
-			buffer.append("icon.infoWindowAnchor = ").append(
-			getInfoWindowAnchor()).append(";\n");
+		{
+			buffer.append("icon.infoWindowAnchor = ").append(infoWindowAnchor.getJSconstructor()).append(";\n");
+		}
 
 		if (infoShadowAnchor != null)
-			buffer.append("icon.infoShadowAnchor = ").append(
-					getInfoShadowAnchor()).append(";\n");
+		{
+			buffer.append("icon.infoShadowAnchor = ").append(infoShadowAnchor.getJSconstructor()).append(";\n");
+		}
+
 		buffer.append("return icon;\n");
 		buffer.append("})()\n");
 		return buffer.toString();

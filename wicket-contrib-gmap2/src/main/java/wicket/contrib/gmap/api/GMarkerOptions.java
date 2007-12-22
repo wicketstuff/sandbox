@@ -40,7 +40,7 @@ public class GMarkerOptions implements GValue
 
 		if (title != null)
 		{
-			literal.set("title", "\"" + title + "\"");
+			literal.setString("title", title);
 		}
 		if (!clickable)
 		{
