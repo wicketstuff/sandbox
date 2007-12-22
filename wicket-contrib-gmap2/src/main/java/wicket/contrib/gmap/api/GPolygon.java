@@ -55,7 +55,7 @@ public class GPolygon extends GOverlay
 		for (GLatLng gLatLng : gLatLngs) {
 			array.add(gLatLng.getJSconstructor());
 		}
-		constructor.add(array.toString());
+		constructor.add(array.toJS());
 		
 		constructor.addString(strokeColor);
 		constructor.addString(strokeWeight);
@@ -63,6 +63,6 @@ public class GPolygon extends GOverlay
 		constructor.addString(fillColor);
 		constructor.addString(fillOpacity);
 
-		return constructor.toString();
+		return constructor.toJS();
 	}
 }

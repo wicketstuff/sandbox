@@ -50,12 +50,12 @@ public class GPolyline extends GOverlay
 		for (GLatLng gLatLng : gLatLngs) {
 			array.add(gLatLng.getJSconstructor());
 		}
-		constructor.add(array.toString());
+		constructor.add(array.toJS());
 		
 		constructor.addString(color);
 		constructor.addString(weight);
 		constructor.addString(opacity);
 		
-		return constructor.toString();
+		return constructor.toJS();
 	}
 }

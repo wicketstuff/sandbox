@@ -51,6 +51,6 @@ public class GPoint implements Serializable
 
 	protected String getJSconstructor()
 	{
-		return new Constructor("GPoint").add(longitude).add(latitude).toString();
+		return new Constructor("GPoint").add(longitude).add(latitude).toJS();
 	}
 }

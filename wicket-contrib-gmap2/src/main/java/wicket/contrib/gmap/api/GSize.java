@@ -51,6 +51,6 @@ public class GSize implements Serializable
 
 	protected String getJSconstructor()
 	{
-		return new Constructor("GSize").add(width).add(height).toString();
+		return new Constructor("GSize").add(width).add(height).toJS();
 	}
 }

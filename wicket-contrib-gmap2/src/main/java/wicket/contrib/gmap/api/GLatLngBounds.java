@@ -66,7 +66,7 @@ public class GLatLngBounds implements GValue
 	 */
 	public String getJSconstructor()
 	{
-		return new Constructor("GLatLngBounds").add(sw.getJSconstructor()).add(ne.getJSconstructor()).toString();
+		return new Constructor("GLatLngBounds").add(sw.getJSconstructor()).add(ne.getJSconstructor()).toJS();
 	}
 
 	@Override
