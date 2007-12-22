@@ -1,6 +1,6 @@
 package wicket.contrib.examples.gmap.refreshpoint;
 
-import java.util.Arrays;
+import java.util.Collections;
 
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -30,7 +30,7 @@ public class RefreshPointPage extends WicketExamplePage {
 		map = new GMap2("map", LOCALHOST);
 		add(map);
 		
-		GOverlay overlay = createOverlay("Amsterdam", new GLatLng(52.37649, 4.888573), "point.gif");
+		GOverlay overlay = createOverlay("Amsterdam", new GLatLng(52.37649, 4.888573), "image.gif", "shadow.png");
 		
 		map.addOverlay(overlay);
 		
@@ -42,26 +42,29 @@ public class RefreshPointPage extends WicketExamplePage {
 			protected void onTimer(AjaxRequestTarget target, GMap2 map) {
 				GOverlay overlay;
 				if(i % 3 == 0) {
-					overlay = createOverlay("Amsterdam", new GLatLng(52.37649, 4.888573), "point.gif");
+					overlay = createOverlay("Amsterdam", new GLatLng(52.37649, 4.888573), "image.gif", "shadow.png");
 					i = 0;
 				} else if(i % 3 == 1) {
-					overlay = createOverlay("Amsterdam", new GLatLng(52.37649, 4.888573), "point2.gif");
+					overlay = createOverlay("Amsterdam", new GLatLng(52.37649, 4.888573), "image2.gif", "shadow2.png");
 				} else {
-					overlay = createOverlay("Toulouse", new GLatLng(43.604363, 1.442951), "point2.gif");
+					overlay = createOverlay("Toulouse", new GLatLng(43.604363, 1.442951), "image2.gif", "shadow2.png");
 				}
 				i++;
-				map.updateOverlays(Arrays.asList(new GOverlay[]{overlay}));
+				map.setOverlays(Collections.singletonList(overlay));
 			}
 		});
 	}
 	
-	private GOverlay createOverlay(String title, GLatLng latLng, String iconName) {
+	private GOverlay createOverlay(String title, GLatLng latLng, String image, String shadow) {
 		GMarkerOptions options = new GMarkerOptions();
 		options.setTitle(title);
 		
-		GIcon icon = new GIcon(urlFor(new ResourceReference(RefreshPointPage.class, iconName)).toString());
-		icon.setIconSize(new GSize(40, 40));
+		GIcon icon = new GIcon();
+		icon.setImage(urlFor(new ResourceReference(RefreshPointPage.class, image)).toString());
+		icon.setIconSize(new GSize(64, 64));
 		icon.setIconAnchor(new GPoint(19, 40));
+		icon.setShadow(urlFor(new ResourceReference(RefreshPointPage.class, shadow)).toString());
+		icon.setShadowSize(new GSize(64, 64));
 		icon.setInfoWindowAnchor(new GPoint(9, 2));
 		icon.setInfoShadowAnchor(new GPoint(18, 25));
 		options.setIcon(icon);
