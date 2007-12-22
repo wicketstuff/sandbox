@@ -49,7 +49,7 @@ public class GSize implements Serializable
 		return height;
 	}
 
-	public String toString()
+	protected String getJSconstructor()
 	{
 		return new Constructor("GSize").add(width).add(height).toString();
 	}

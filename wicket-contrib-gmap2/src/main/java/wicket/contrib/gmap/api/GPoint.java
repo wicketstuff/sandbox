@@ -49,7 +49,7 @@ public class GPoint implements Serializable
 		return latitude;
 	}
 
-	public String toString()
+	protected String getJSconstructor()
 	{
 		return new Constructor("GPoint").add(longitude).add(latitude).toString();
 	}

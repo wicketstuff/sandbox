@@ -71,7 +71,7 @@ public class GLatLng implements GValue
 	@Override
 	public String toString()
 	{
-		return "GLatLng[lat=" + lat + ", lng=" + lng + ", unbounded=" + unbounded + "]";
+		return getJSconstructor();
 	}
 
 	/**

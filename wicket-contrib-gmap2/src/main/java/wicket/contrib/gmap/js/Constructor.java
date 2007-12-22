@@ -21,45 +21,42 @@ package wicket.contrib.gmap.js;
 public class Constructor
 {
 	private StringBuffer buffer = new StringBuffer();
-	
+
 	private boolean first = true;
-	
-	public Constructor(String name) {
+
+	public Constructor(String name)
+	{
 		buffer.append("new ");
 		buffer.append(name);
 		buffer.append("(");
 	}
-	
-	public Constructor addString(Object value) {
-		if (!first) {
-			buffer.append(", ");
-		}
-		buffer.append("\"");
-		buffer.append(value);
-		buffer.append("\"");
-		
-		first = false;
-		return this;
+
+	public Constructor addString(Object value)
+	{
+		return add("\"" + value + "\"");
 	}
 
-	public Constructor add(Object value) {
-		if (!first) {
+	public Constructor add(Object value)
+	{
+		if (!first)
+		{
 			buffer.append(", ");
 		}
 		buffer.append(value);
-		
+
 		first = false;
 		return this;
 	}
 
 	@Override
-	public String toString() {
+	public String toString()
+	{
 		buffer.append(")");
-		
+
 		String string = buffer.toString();
-		
+
 		buffer.deleteCharAt(buffer.length() - 1);
-		
+
 		return string;
 	}
 }

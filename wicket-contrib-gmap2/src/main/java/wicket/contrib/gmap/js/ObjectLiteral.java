@@ -23,6 +23,10 @@ public class ObjectLiteral
 	private StringBuffer buffer = new StringBuffer("{");
 	private boolean first = true;
 	
+	public ObjectLiteral setString(String name, String value) {
+		return set(name, "\"" + value + "\"");
+	}
+
 	public ObjectLiteral set(String name, String value) {
 		if (!first) {
 			buffer.append(", ");
