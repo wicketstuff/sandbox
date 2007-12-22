@@ -48,8 +48,7 @@ public class Constructor
 		return this;
 	}
 
-	@Override
-	public String toString()
+	public String toJS()
 	{
 		buffer.append(")");
 

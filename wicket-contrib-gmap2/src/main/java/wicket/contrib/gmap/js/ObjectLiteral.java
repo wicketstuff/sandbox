@@ -39,8 +39,7 @@ public class ObjectLiteral
 		return this;
 	}
 
-	@Override
-	public String toString() {
+	public String toJS() {
 		buffer.append("}");
 		
 		String string = buffer.toString();

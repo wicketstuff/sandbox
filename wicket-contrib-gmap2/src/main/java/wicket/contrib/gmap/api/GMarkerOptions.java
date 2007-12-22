@@ -63,7 +63,7 @@ public class GMarkerOptions implements GValue
 			literal.set("icon", icon.getJSconstructor());
 		}
 
-		return literal.toString();
+		return literal.toJS();
 	}
 
 	public String getTitle()

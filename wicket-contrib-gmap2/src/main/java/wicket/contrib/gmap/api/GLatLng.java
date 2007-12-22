@@ -80,7 +80,7 @@ public class GLatLng implements GValue
 	public String getJSconstructor()
 	{
 		return new Constructor("GLatLng").add(lat).add(lng).add(unbounded)
-				.toString();
+				.toJS();
 	}
 
 	@Override

@@ -63,6 +63,6 @@ public class GMarker extends GOverlay
 		{
 			constructor.add(options.getJSconstructor());
 		}
-		return constructor.toString();
+		return constructor.toJS();
 	}
 }

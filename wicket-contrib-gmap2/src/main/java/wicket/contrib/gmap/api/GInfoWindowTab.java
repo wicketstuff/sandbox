@@ -74,6 +74,6 @@ public class GInfoWindowTab implements GValue
 	public String getJSconstructor()
 	{
 		return new Constructor("GInfoWindowTab").addString(title).add(
-				"document.getElementById('" + content.getMarkupId() + "')").toString();
+				"document.getElementById('" + content.getMarkupId() + "')").toJS();
 	}
 }
