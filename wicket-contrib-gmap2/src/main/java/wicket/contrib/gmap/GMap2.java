@@ -121,8 +121,7 @@ public class GMap2 extends Panel
 	 * @param googleHeaderContrib
 	 * @param overlays
 	 */
-	public GMap2(final String id, final GMapHeaderContributor headerContrib,
-			List<GOverlay> overlays)
+	public GMap2(final String id, final GMapHeaderContributor headerContrib, List<GOverlay> overlays)
 	{
 		super(id);
 
@@ -196,7 +195,8 @@ public class GMap2 extends Panel
 	{
 		overlays.add(overlay);
 
-		if (AjaxRequestTarget.get() != null && findPage() != null) {
+		if (AjaxRequestTarget.get() != null && findPage() != null)
+		{
 			AjaxRequestTarget.get().appendJavascript(overlay.getJSadd(GMap2.this));
 		}
 
@@ -224,15 +224,17 @@ public class GMap2 extends Panel
 
 		return this;
 	}
-	
+
 	/**
 	 * Clear all overlays.
 	 * 
 	 * @return This
 	 */
-	public GMap2 clearOverlays() {
+	public GMap2 clearOverlays()
+	{
 		overlays.clear();
-		if (AjaxRequestTarget.get() != null && findPage() != null) {
+		if (AjaxRequestTarget.get() != null && findPage() != null)
+		{
 			AjaxRequestTarget.get().appendJavascript(getJSinvoke("clearOverlays()"));
 		}
 		return this;
@@ -443,12 +445,12 @@ public class GMap2 extends Panel
 
 	private String getJSsetZoom(int zoom)
 	{
-			return getJSinvoke("setZoom(" + zoom + ")");
+		return getJSinvoke("setZoom(" + zoom + ")");
 	}
 
 	private String getJSsetCenter(GLatLng center)
 	{
-		if(center != null)
+		if (center != null)
 			return getJSinvoke("setCenter(" + center.getJSconstructor() + ")");
 		else
 			return "";
@@ -485,13 +487,15 @@ public class GMap2 extends Panel
 		infoWindow.update(target);
 	}
 
-	public void updateOverlays(List<GOverlay> overlayList) {
+	public void setOverlays(List<GOverlay> overlays)
+	{
 		clearOverlays();
-		for(GOverlay overlay : overlayList) {
+		for (GOverlay overlay : overlays)
+		{
 			addOverlay(overlay);
 		}
 	}
-	
+
 	private abstract class JSMethodBehavior extends AbstractBehavior
 	{
 
