@@ -1,10 +1,12 @@
 package wicket.contrib.mootools.components;
 
-import org.apache.wicket.Component;
+import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.Page;
+import org.apache.wicket.PageParameters;
 import org.apache.wicket.RequestCycle;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.util.string.JavascriptUtils;
 
 import wicket.contrib.mootools.IncludeMooToolsStateless;
 import wicket.contrib.mootools.MFXMooBindable;
@@ -17,28 +19,17 @@ public class MFXAjaxStatelessLink extends WebMarkupContainer implements MFXMooBi
 	private String url;
 	private MFXOptions options;
 
-	public MFXAjaxStatelessLink(final String id, final String component, final Page page) {
-		super(id);
-		this.url = getResourceUrl(page);
-		this.domId = component;
-		setupLink();
+	public MFXAjaxStatelessLink(final String id, final MarkupContainer component, final Class page) {
+		this(id, component, page, new PageParameters());
 	}
 
-	public MFXAjaxStatelessLink(final String id, final Component component, final Page page) {
+	public MFXAjaxStatelessLink(final String id, final MarkupContainer component, final Class page,
+			final PageParameters pp) {
 		super(id);
-		this.url = getResourceUrl(page);
+		component.setOutputMarkupId(true);
 		this.domId = component.getMarkupId();
-		setupLink();
-	}
+		this.url = RequestCycle.get().urlFor(page, pp).toString();
 
-	public MFXAjaxStatelessLink(final String id, final String component, final String url) {
-		super(id);
-		this.domId = component;
-		this.url = url;
-		setupLink();
-	}
-
-	private void setupLink() {
 		setOutputMarkupId(true);
 		add(new IncludeMooToolsStateless());
 		options = new MFXOptions();
@@ -53,14 +44,19 @@ public class MFXAjaxStatelessLink extends WebMarkupContainer implements MFXMooBi
 	}
 
 	@Override
+	protected boolean getStatelessHint() {
+		return true;
+	}
+
+	@Override
 	protected void onAfterRender() {
 		super.onAfterRender();
 		MFXEvent e = new MFXEvent(MFXEvent.EVENT.CLICK);
 		e.addAction(mooFunction());
 		e.setTarget(getMarkupId());
-		getResponse().write("<script>");
+		getResponse().write(JavascriptUtils.SCRIPT_OPEN_TAG);
 		getResponse().write(e.mooFunction());
-		getResponse().write("</script>");
+		getResponse().write(JavascriptUtils.SCRIPT_CLOSE_TAG);
 	}
 
 	private String getResourceUrl(final Page page) {
@@ -83,6 +79,6 @@ public class MFXAjaxStatelessLink extends WebMarkupContainer implements MFXMooBi
 	}
 
 	public String mooFunction() {
-		return "new Ajax('" + url + "'," + options.writeOptions() + ").request();";
+		return "e = new Event(e).stop(); new Ajax('" + url + "'," + options.writeOptions() + ").request();";
 	}
 }

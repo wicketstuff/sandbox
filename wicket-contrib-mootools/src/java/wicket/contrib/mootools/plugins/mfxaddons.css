@@ -1,0 +1,63 @@
+.mfxtoolbar li {
+	float: left;	
+	list-style-type: none;
+	margin-right: 10px;
+}
+
+.toggler {
+	color: #fff;
+	margin: 0;
+	padding: 2px 5px;
+	background-image: url('bar.gif');
+	border-bottom: 1px solid #ddd;
+	border-right: 1px solid #ddd;
+	border-top: 1px solid #f5f5f5;
+	border-left: 1px solid #f5f5f5;
+	font-size: 11px;
+	font-weight: normal;
+	cursor: pointer; 
+	font-family: 'Andale Mono', sans-serif;
+}
+ 
+.element {
+ 
+}
+ 
+.element p {
+	margin: 0;
+	padding: 4px;
+}
+
+.MFXDialog {
+	position: absolute;
+	z-index: 100;
+	background-color: #fff;
+	padding-bottom: 8px;
+	text-align: center;
+	border: 1px solid #4e8ee2;
+}
+
+.MFXDialogBar {
+	padding: 2px; 
+	background-image: url('bar.gif');
+	color: white;
+	height: 16px;
+	display: block; 
+}
+
+.MFXDialog p {
+	margin-top: 5px;	
+	font-family: Arial;
+	font-size: 14px;
+}
+
+.MFXDialogBar span {
+	color: #fff;
+	font-size: 14px;
+	font-family: Verdana;
+}
+
+.MFXDialog .confirmAbort {
+	text-align: right;
+	margin-right: 10px;
+}

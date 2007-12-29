@@ -40,6 +40,8 @@ public class MFXDialog extends MFXDialogBase {
 		this.setOutputMarkupId(true);
 
 		dialog = new WebMarkupContainer("dialog") {
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			protected void onComponentTag(final ComponentTag tag) {
 				super.onComponentTag(tag);

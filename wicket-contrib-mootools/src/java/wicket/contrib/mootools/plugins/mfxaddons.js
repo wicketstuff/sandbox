@@ -401,3 +401,166 @@ DOMFactory.implement({
 	return el.getRelativePosition().x + offset;
     }
 });
+
+// NAWTE textile buttons...
+
+function textile_bold() {
+	sel = this.getSelection(); this.replaceSelection('*' + sel + '*'); 
+}
+
+function textile_italic() {
+	sel = this.getSelection(); this.replaceSelection('_' + sel + '_'); 
+}
+
+function textile_image() {
+	var selection = this.getSelection();  
+	var response = prompt('Enter Image URL','');  
+	if(response == null)  {
+		return;  
+	}
+	
+	if(response != null) {
+		if(!response.match('^http\:\/\/')) {
+			response = 'http://'+response;
+		}
+	}
+	
+	this.replaceSelection('!'+ (response == '' ? 'http://link_url/' : response) + '('+(selection == '' ? 'image description' : selection)+')!');
+}
+
+function textile_link() {
+	var selection = this.getSelection();  
+	var response = prompt('Enter Link URL','');  
+	if(response == null)  {
+		return;  
+	}
+	
+	if(response != null) {
+		if(!response.match('^http\:\/\/')) {
+			response = 'http://'+response;
+		}
+		if(!response.match('\/$')) {
+			response = response + '/';
+		}
+	}
+	
+	this.replaceSelection('"'+selection+'":'+ (response == '' ? 'http://link_url/' : response) );
+}
+
+function textile_quote() {
+	sel = this.getSelection(); this.replaceSelection('bq. ' + sel); 
+}
+
+function textile_heading() {
+	sel = this.getSelection(); this.replaceSelection('h3. ' + sel); 
+}
+
+function textile_trademark() {
+	this.replaceSelection('(TM)');
+}
+
+function textile_copyright() {
+	this.replaceSelection('(C)');
+}
+
+function textile_registered() {
+	this.replaceSelection('(R)');
+}
+
+
+// NAWTE 0.1 by Jean-Nicolas Jolivet (http://www.silverscripting.com)
+// Not quite a WYSIWYM editor, for Mootools 1.1+
+// Credits to Ryan Johnson for the original idea at http://livepipe.net/projects/control_textarea/
+
+Element.extend({
+	
+	getSelectedText: function() {
+		if(window.ie) return document.selection.createRange().text;
+		return this.getValue().substring(this.selectionStart, this.selectionEnd);
+	},
+	
+	replaceSelectedText: function(newtext) {
+		var scroll_top = this.scrollTop;
+		
+		if(window.ie) {
+			this.focus();
+			var range = document.selection.createRange();
+			range.text = newtext;
+			range.select();
+			this.range.select();
+		}
+		else {
+			originalStart = this.selectionStart;
+			originalEnd = this.selectionEnd;
+			this.value = this.value.substring(0, originalStart) + newtext + this.value.substring(originalEnd);
+			this.setSelectionRange(originalStart + newtext.length, originalStart + newtext.length);
+		}
+		
+		this.focus();
+		this.scrollTop = scroll_top;
+	}
+});
+
+var nawte = new Class({
+	initialize: function(element, list) {
+		this.el = $(element);
+		if(! $defined(list) || list == "") {
+			list = new Element('li');
+			list.injectBefore(this.el);
+			this.list = list;
+		}
+		else {
+			this.list = $(list);
+		}
+	},
+	
+	getSelection: function() {
+		return this.el.getSelectedText();
+	},
+	
+	wrapSelection: function(wrapper) {
+		this.el.replaceSelectedText(wrapper + this.el.getSelectedText() + wrapper);
+	},
+	
+	insertBefore: function(insertText) {
+		this.el.replaceSelectedText(insertText + this.el.getSelectedText());
+	},
+	
+	insertAfter: function(insertText) {
+		this.el.replaceSelectedText(this.el.getSelectedText() + insertText);
+	},
+	
+	replaceSelection: function(newText) {
+		this.el.replaceSelectedText(newText);
+	},
+	
+	processEachLine: function(callback) {
+		var lines = this.el.getSelectedText().split("\n");
+		var newlines = [];
+		lines.each(function(line) {
+			if (line != "") 
+				newlines.push(callback.attempt(line, this));
+			else
+				newlines.push("");
+		}.bind(this));
+		
+		this.el.replaceSelectedText(newlines.join("\n"));
+	},
+		
+	addFunction: function(name, callback, args) {
+		var item = new Element('li');
+		var itemlink = new Element('a', {
+			'events': {
+				'click': function(e){
+					new Event(e).stop();
+					callback.attempt(null, this);
+				}.bind(this)
+			},
+			'href': '#'
+		});
+		itemlink.setHTML('<span>' + name + '</span>');
+		itemlink.setProperties(args || {});
+		itemlink.injectInside(item);
+		item.injectInside(this.list);
+	}
+});

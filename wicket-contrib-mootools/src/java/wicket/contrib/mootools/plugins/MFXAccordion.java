@@ -19,8 +19,7 @@ import wicket.contrib.mootools.events.MFXWindowLoad;
 public class MFXAccordion extends Panel implements Serializable {
 	private List tabs = new ArrayList();
 	private String PANEL_ID = "content";
-	private CompressedResourceReference AC_CSS = new CompressedResourceReference(
-			MFXAccordion.class, "MFXAccordion.css");
+	private CompressedResourceReference AC_CSS = new CompressedResourceReference(MFXAccordion.class, "mfxaddons.css");
 
 	public MFXAccordion(final String id, final List tabs) {
 		super(id);
@@ -51,8 +50,7 @@ public class MFXAccordion extends Panel implements Serializable {
 	protected String getJavaScript() {
 		StringBuffer str = new StringBuffer();
 
-		str
-				.append("var accordion = new Accordion('h3.atStart', 'div.atStart', {");
+		str.append("var accordion = new Accordion('h3.atStart', 'div.atStart', {");
 		str.append("opacity: false");
 		str.append("}, $('" + getMarkupId() + "'));");
 
