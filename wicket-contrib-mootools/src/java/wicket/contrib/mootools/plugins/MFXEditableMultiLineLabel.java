@@ -22,6 +22,10 @@ public class MFXEditableMultiLineLabel extends Panel {
 		return true;
 	}
 
+	protected boolean getEditable() {
+		return true;
+	}
+
 	protected void onEdit(final AjaxRequestTarget target) {
 	}
 
@@ -38,21 +42,27 @@ public class MFXEditableMultiLineLabel extends Panel {
 		label.setEscapeModelStrings(MFXEditableMultiLineLabel.this.getEscapeStrings());
 		label.setOutputMarkupId(true);
 
+		container.add(editPanel = new EditPanel("editPanel"));
+
 		label.add(new MFXFadeOutBehavior("ondblclick", Duration.milliseconds(500)) {
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			protected void onEvent(final AjaxRequestTarget arg0) {
-				onEdit(arg0);
-				editPanel.setVisible(true);
-				label.setVisible(false);
+				if (getEditable()) {
+					onEdit(arg0);
+					editPanel.setVisible(true);
+					label.setVisible(false);
+				}
 				arg0.addComponent(container);
 			}
 		});
 
-		container.add(editPanel = new EditPanel("editPanel"));
 		editPanel.setVisible(false);
 	}
 
 	public class EditPanel extends WebMarkupContainer {
+		private static final long serialVersionUID = 1L;
 		private TextArea txt;
 
 		public EditPanel(final String id) {
@@ -60,6 +70,7 @@ public class MFXEditableMultiLineLabel extends Panel {
 
 			setOutputMarkupId(true);
 			add(txt = new TextArea("editor", new IModel() {
+				private static final long serialVersionUID = 1L;
 
 				public Object getObject() {
 					return MFXEditableMultiLineLabel.this.getModelObject();
@@ -75,6 +86,9 @@ public class MFXEditableMultiLineLabel extends Panel {
 			txt.setOutputMarkupId(true);
 
 			add(new Button("cancel").add(new MFXFadeOutBehavior("onclick", Duration.milliseconds(500), EditPanel.this) {
+
+				private static final long serialVersionUID = 1L;
+
 				@Override
 				protected void onEvent(final AjaxRequestTarget arg0) {
 					EditPanel.this.setVisible(false);
@@ -84,12 +98,17 @@ public class MFXEditableMultiLineLabel extends Panel {
 			}));
 
 			add(new Button("save").add(new MFXFadeOutBehavior("onclick", Duration.milliseconds(500), EditPanel.this) {
+
+				private static final long serialVersionUID = 1L;
+
 				@Override
 				protected void onEvent(final AjaxRequestTarget arg0) {
-					txt.processInput();
-					MFXEditableMultiLineLabel.this.onSubmit(arg0);
-					EditPanel.this.setVisible(false);
-					label.setVisible(true);
+					if (getEditable()) {
+						txt.processInput();
+						MFXEditableMultiLineLabel.this.onSubmit(arg0);
+						EditPanel.this.setVisible(false);
+						label.setVisible(true);
+					}
 					arg0.addComponent(container);
 				}
 

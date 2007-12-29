@@ -2,7 +2,7 @@
 
 var MooTools = {
 	'version': '1.2dev',
-	'build': '1306'
+	'build': '1327'
 };
 
 var Native = function(options){
@@ -117,9 +117,20 @@ function $extend(original, extended){
 };
 
 function $unlink(object){
-	if ($type(object) != 'object') return object;
-	var unlinked = {};
-	for (var p in object) unlinked[p] = $unlink(object[p]);
+	var unlinked = null;
+
+	switch ($type(object)){
+		case 'object':
+			unlinked = {};
+			for (var p in object) unlinked[p] = $unlink(object[p]);
+		break;
+		case 'array':
+			unlinked = [];
+			for (var i = 0, l = object.length; i < l; i++) unlinked[i] = $unlink(object[i]);
+		break;
+		default: return object;
+	}
+
 	return unlinked;
 };
 
@@ -269,8 +280,8 @@ $A = function(iterable, start, length){
 
 var Browser = new Hash({
 	Engine: {'name': 'unknown', 'version': ''},
-	Platform: {'name': (navigator.platform.match(/mac|win|linux|nix/i) || ['other'])[0].toLowerCase()}, 
-	Features: {'xhr': !!(window.XMLHttpRequest), 'xpath': !!(document.evaluate)}
+	Platform: {'name': (navigator.platform.match(/mac|win|linux|nix/i) || ['other'])[0].toLowerCase()},
+	Features: {'xhr': !!(window.XMLHttpRequest), 'xpath': !!(document.evaluate), 'air': !!(window.runtime)}
 });
 
 if (window.opera) Browser.Engine.name = 'presto';
@@ -372,6 +383,10 @@ Array.implement({
 			if (fn.call(bind, this[i], i, this)) results.push(this[i]);
 		}
 		return results;
+	},
+
+	clean: function() {
+		return this.filter($arguments(0));
 	},
 
 	indexOf: function(item, from){
@@ -782,6 +797,97 @@ Hash.alias('keyOf', 'indexOf').alias('hasValue', 'contains').alias('remove', 'er
 Hash.alias('getKeys', 'keys').alias('getValues', 'values').alias('has', 'hasKey');
 var Abstract = Hash;
 
+var Event = new Native({
+
+	name: 'Event',
+
+	initialize: function(event, win){
+		win = win || window;
+		event = event || win.event;
+		if (event.$extended) return event;
+		this.$extended = true;
+		var type = event.type;
+		var target = event.target || event.srcElement;
+		while (target && target.nodeType == 3) target = target.parentNode;
+		if (type.match(/DOMMouseScroll|mousewheel/)){
+			this.wheel = (event.wheelDelta) ? event.wheelDelta / 120 : -(event.detail || 0) / 3;
+		} else if (type.test(/key/)){
+			this.code = event.which || event.keyCode;
+			var key = Event.Keys.keyOf(this.code);
+			if (type == 'keydown'){
+				var fKey = this.code - 111;
+				if (fKey > 0 && fKey < 13) key = 'f' + fKey;
+			}
+			this.key = key || String.fromCharCode(this.code).toLowerCase();
+		} else if (type.match(/(click|mouse|menu)/)){
+			this.page = {
+				x: event.pageX || event.clientX + win.document.documentElement.scrollLeft,
+				y: event.pageY || event.clientY + win.document.documentElement.scrollTop
+			};
+			this.client = {
+				x: event.pageX ? event.pageX - win.pageXOffset : event.clientX,
+				y: event.pageY ? event.pageY - win.pageYOffset : event.clientY
+			};
+			this.rightClick = (event.which == 3) || (event.button == 2);
+			var related = null;
+			if (type.match(/over|out/)){
+				switch (type){
+					case 'mouseover': related = event.relatedTarget || event.fromElement; break;
+					case 'mouseout': related = event.relatedTarget || event.toElement;
+				}
+				if ((function(){
+					while (related && related.nodeType == 3) related = related.parentNode;
+				}).create({attempt: Browser.Engine.gecko})() === false) related = false;
+			}
+		}
+
+		return $extend(this, {
+			event: event,
+			type: type,
+			relatedTarget: related,
+			target: target,
+			shift: event.shiftKey,
+			control: event.ctrlKey,
+			alt: event.altKey,
+			meta: event.metaKey
+		});
+	}
+
+});
+
+Event.Keys = new Hash({
+	'enter': 13,
+	'up': 38,
+	'down': 40,
+	'left': 37,
+	'right': 39,
+	'esc': 27,
+	'space': 32,
+	'backspace': 8,
+	'tab': 9,
+	'delete': 46
+});
+
+Event.implement({
+
+	stop: function(){
+		return this.stopPropagation().preventDefault();
+	},
+
+	stopPropagation: function(){
+		if (this.event.stopPropagation) this.event.stopPropagation();
+		else this.event.cancelBubble = true;
+		return this;
+	},
+
+	preventDefault: function(){
+		if (this.event.preventDefault) this.event.preventDefault();
+		else this.event.returnValue = false;
+		return this;
+	}
+
+});
+
 var Class = new Native({
 
 	name: 'Class',
@@ -793,6 +899,8 @@ var Class = new Native({
 		var klass = function(){
 			for (var property in this) this[property] = $unlink(this[property]);
 
+			this.parent = null;
+
 			['Implements', 'Extends'].each(function(Property){
 				if (!this[Property]) return;
 				Class[Property](this, this[Property]);
@@ -801,7 +909,7 @@ var Class = new Native({
 
 			this.constructor = klass;
 
-			var self = (arguments[0] !== $empty && this.initialize && $type(this.initialize) == 'function') ? this.initialize.apply(this, arguments) : this;
+			var self = (arguments[0] !== $empty && this.initialize) ? this.initialize.apply(this, arguments) : this;
 			if (this.options && this.options.initialize) this.options.initialize.call(this);
 			return self;
 		};
@@ -839,10 +947,13 @@ Class.Extends = function(self, klass){
 				var type = $type(current);
 				if (type != $type(previous)) return current;
 				switch (type){
-					case 'function': return function(){
-						current.parent = this.parent = previous.bind(this);
-						return current.apply(this, arguments);
-					};
+					case 'function':
+						return function(){
+							current.parent = self.parent = previous.bind(this);
+							var value = current.apply(this, arguments);
+							self.parent = current.parent;
+							return value;
+						};
 					case 'object': return $merge(previous, current);
 					default: return current;
 				}
@@ -1113,6 +1224,10 @@ $.element = function(el, notrash){
 };
 
 $.textnode = $.window = $.document = $arguments(0);
+
+$.number = function(uid){
+	return Garbage.Elements[uid] || null;
+};
 
 Native.implement([Element, Document], {
 
@@ -1546,7 +1661,7 @@ var Garbage = {
 
 	Elements: {},
 
-	ignored: {'object': 1, 'embed': 1, 'OBJECT': 1, 'EMBED': 1},
+	ignored: {object: 1, embed: 1, OBJECT: 1, EMBED: 1},
 
 	collect: function(el){
 		if (el.$attributes) return true;
@@ -1607,97 +1722,6 @@ Element.implement({
 	
 	getValue: function(){
 		return this.get('value');
-	}
-
-});
-
-var Event = new Native({
-
-	name: 'Event',
-
-	initialize: function(event, win){
-		win = win || window;
-		event = event || win.event;
-		if (event.$extended) return event;
-		this.$extended = true;
-		var type = event.type;
-		var target = event.target || event.srcElement;
-		while (target && target.nodeType == 3) target = target.parentNode;
-		if (type.test(/DOMMouseScroll|mousewheel/)){
-			this.wheel = (event.wheelDelta) ? event.wheelDelta / 120 : -(event.detail || 0) / 3;
-		} else if (type.test(/key/)){
-			this.code = event.which || event.keyCode;
-			var key = Event.Keys.keyOf(this.code);
-			if (type == 'keydown'){
-				var fKey = this.code - 111;
-				if (fKey > 0 && fKey < 13) key = 'f' + fKey;
-			}
-			this.key = key || String.fromCharCode(this.code).toLowerCase();
-		} else if (type.test(/(click|mouse|menu)/)){
-			this.page = {
-				x: event.pageX || event.clientX + win.document.documentElement.scrollLeft,
-				y: event.pageY || event.clientY + win.document.documentElement.scrollTop
-			};
-			this.client = {
-				x: event.pageX ? event.pageX - win.pageXOffset : event.clientX,
-				y: event.pageY ? event.pageY - win.pageYOffset : event.clientY
-			};
-			this.rightClick = (event.which == 3) || (event.button == 2);
-			var related = null;
-			if (type.test(/over|out/)){
-				switch (type){
-					case 'mouseover': related = event.relatedTarget || event.fromElement; break;
-					case 'mouseout': related = event.relatedTarget || event.toElement;
-				}
-				if ((function(){
-					while (related && related.nodeType == 3) related = related.parentNode;
-				}).create({attempt: Browser.Engine.gecko})() === false) related = false;
-			}
-		}
-
-		return $extend(this, {
-			event: event,
-			type: type,
-			relatedTarget: related,
-			target: target,
-			shift: event.shiftKey,
-			control: event.ctrlKey,
-			alt: event.altKey,
-			meta: event.metaKey
-		});
-	}
-
-});
-
-Event.Keys = new Hash({
-	'enter': 13,
-	'up': 38,
-	'down': 40,
-	'left': 37,
-	'right': 39,
-	'esc': 27,
-	'space': 32,
-	'backspace': 8,
-	'tab': 9,
-	'delete': 46
-});
-
-Event.implement({
-
-	stop: function(){
-		return this.stopPropagation().preventDefault();
-	},
-
-	stopPropagation: function(){
-		if (this.event.stopPropagation) this.event.stopPropagation();
-		else this.event.cancelBubble = true;
-		return this;
-	},
-
-	preventDefault: function(){
-		if (this.event.preventDefault) this.event.preventDefault();
-		else this.event.returnValue = false;
-		return this;
 	}
 
 });
@@ -1875,6 +1899,14 @@ Element.Properties.opacity = {
 
 Element.implement({
 
+	setOpacity: function(value){
+		return this.set('opacity', value, true);
+	},
+
+	getOpacity: function(){
+		return this.get('opacity');
+	},
+
 	setStyle: function(property, value){
 		switch (property){
 			case 'opacity': return this.set('opacity', parseFloat(value));
@@ -2018,14 +2050,14 @@ Window.implement({
 
 var Selectors = {
 
-	'regExp': (/:([^-:(]+)[^:(]*(?:\((["']?)(.*?)\2\))?|\[(\w+)(?:([!*^$~|]?=)(["']?)(.*?)\6)?\]|\.[\w-]+|#[\w-]+|\w+|\*/g),
+	regExp: (/:([^-:(]+)[^:(]*(?:\((["']?)(.*?)\2\))?|\[(\w+)(?:([!*^$~|]?=)(["']?)(.*?)\6)?\]|\.[\w-]+|#[\w-]+|\w+|\*/g),
 
-	'sRegExp': (/\s*([+>~\s])[a-zA-Z#.*\s]/g)
+	sRegExp: (/\s*([+>~\s])[a-zA-Z#.*\s]/g)
 
 };
 
 Selectors.parse = function(selector){
-	var params = {'tag': '*', 'id': null, 'classes': [], 'attributes': [], 'pseudos': []};
+	var params = {tag: '*', id: null, classes: [], attributes: [], pseudos: []};
 	selector = selector.replace(Selectors.regExp, function(bit){
 		switch (bit.charAt(0)){
 			case '.': params.classes.push(bit.slice(1)); break;
@@ -2545,226 +2577,144 @@ var Cookie = {
 
 (function(){
 
-var objects = function(self){
-	var doc, great = true;
-	switch ($type(self)){
-		case 'window': doc = self.document; break;
-		case 'document': doc = self; break;
-		case 'element': doc = self.ownerDocument; great = false;
-	}
-	return {doc: doc, win: doc.window, self: self, great: (great || self === doc.body || self === doc.html)};
+function $body(el){
+	return el.tagName.toLowerCase() == 'body';
 };
 
-var great = function(self){
-	return objects(self).great;
-};
+Element.implement({
 
-var Dimensions = {
-
-	positioned: function(self){
-		if (great(self)) return true;
-		var style = self.style.position || (self.style.position = Element.getComputedStyle(self, 'position'));
-		return (style != 'static');
+	positioned: function(){
+		if ($body(this)) return true;
+		return (Element.getComputedStyle(this, 'position') != 'static');
 	},
 
-	getOffsetParent: function(self){
-		if (!Browser.Engine.trident) return self.offsetParent;
-		var el = self;
+	getOffsetParent: function(){
+		if ($body(this)) return null;
+		if (!Browser.Engine.trident) return $(this.offsetParent);
+		var el = this;
 		while ((el = el.parentNode)){
-			if (Dimensions.positioned(el)) return el;
+			if (Element.positioned(el)) return $(el);
 		}
-		return false;
+		return null;
 	},
 
-	getOffsetSize: function(self){
-		var obj = {}, dims = {X: 'Width', Y: 'Height'}, objs = objects(self);
-		for (var Z in dims) obj[Z.toLowerCase()] = (function(){
-			if (objs.great){
-				if (Browser.Engine.webkit419) return objs.win['inner' + dims[Z]];
-				if (Browser.Engine.presto) return objs.doc.body['client' + dims[Z]];
-				return objs.doc.documentElement['client' + dims[Z]];
-			} else {
-				return self['offset' + dims[Z]];
-			}
-		})();
-		return obj;
+	getSize: function(){
+		if ($body(this)) return this.getWindow().getSize();
+		return {x: this.offsetWidth, y: this.offsetHeight};
 	},
 
-	getScrollSize: function(self){
-		var obj = {}, dims = {X: 'Width', Y: 'Height'}, objs = objects(self);
-		for (var Z in dims) obj[Z.toLowerCase()] = (function(){
-			if (objs.great){
-				var delement = objs.doc.documentElement;
-				if (Browser.Engine.trident) return Math.max(delement['offset' + dims[Z]], delement['scroll' + dims[Z]]);
-				if (Browser.Engine.webkit) return objs.doc.body['scroll' + dims[Z]];
-				return delement['scroll' + dims[Z]];
-			} else {
-				return self['scroll' + dims[Z]];
-			}
-		})();
-		return obj;
+	getScrollSize: function(){
+		if ($body(this)) return this.getWindow().getScrollSize();
+		return {x: this.scrollWidth, y: this.scrollHeight};
 	},
 
-	getScroll: function(self){
-		var obj = {}, dims = {X: 'Left', Y: 'Top'}, objs = objects(self);
-		for (var Z in dims) obj[Z.toLowerCase()] = (function(){
-			return (objs.great) ? objs.win['page' + Z + 'Offset'] || objs.doc.documentElement['scroll' + dims[Z]] : self['scroll' + dims[Z]];
-		})();
-		return obj;
+	getScroll: function(){
+		if ($body(this)) return this.getWindow().getScroll();
+		return {x: this.scrollLeft, y: this.scrollTop};
 	},
 
-	getPosition: function(self, relative){
-		if (great(self) || relative == self) return {x: 0, y: 0};
-		var el = self, left = 0, top = 0, position;
+	scrollTo: function(x, y){
+		if ($body(this)) return this.getWindow().scrollTo(x, y);
+		this.scrollLeft = x;
+		this.scrollTop = y;
+		return this;
+	},
 
+	getPosition: function(relative){
+		if ($body(this)) return {x: 0, y: 0};
+		var el = this, position = {x: 0, y: 0};
 		while (el){
-			var offsetParent = Dimensions.getOffsetParent(el);
-			if (!offsetParent) break;
-			position = Dimensions.getRelativePosition(el, !great(offsetParent));
-			left += position.x;
-			top += position.y;
-			el = offsetParent;
+			position.x += el.offsetLeft;
+			position.y += el.offsetTop;
+			el = el.offsetParent;
 		}
-
-		var rpos = (relative) ? Dimensions.getPosition($(relative, true)) : {x: 0, y: 0};
-		return {x: left - rpos.x, y: top - rpos.y};
+		var rpos = (relative) ? $(relative).getPosition() : {x: 0, y: 0};
+		return {x: position.x - rpos.x, y: position.y - rpos.y};
 	},
 
-	getRelativePosition: function(self, client){
-		if (great(self)) return {x: 0, y: 0};
-
-		var el = self, left = self.offsetLeft, top = self.offsetTop;
-
-		if (Browser.Engine.trident){
-			while ((el = el.offsetParent) && !Dimensions.positioned(el)){
-				left += el.offsetLeft;
-				top += el.offsetTop;
-			}
-			el = self;
-		}
-
-		var position = {x: left, y: top}, isPositioned = Dimensions.positioned(self);
-
-		while ((el = el.parentNode)){
-			var isOffsetParent = Dimensions.positioned(el);
-			if ((!isOffsetParent || client) && ((!isPositioned || isOffsetParent) || Browser.Engine.presto)){
-				var scroll = Dimensions.getScroll(el);
-				position.x -= scroll.x;
-				position.y -= scroll.y;
-			}
-			if (isOffsetParent) break;
-		}
-
-		return position;
-	},
-
-	getCoordinates: function(self, relative){
-		var position = Dimensions.getPosition(self, relative), size = Dimensions.getOffsetSize(self);
+	getCoordinates: function(element){
+		if ($body(this)) return this.getWindow().getCoordinates();
+		var position = this.getPosition(element), size = this.getSize();
 		var obj = {'top': position.y, 'left': position.x, 'width': size.x, 'height': size.y};
 		obj.right = obj.left + obj.width;
 		obj.bottom = obj.top + obj.height;
 		return obj;
-	}
-
-};
-
-var methods = {};
-
-Hash.each(Dimensions, function(value, key){
-	methods[key] = function(arg){
-		return value(this, arg);
-	};
-});
-
-Native.implement([Element, Document], methods);
-
-Document.implement({
-
-	scrollTo: function(x, y){
-		this.getWindow().scrollTo(x, y);
-	}
-
-});
-
-Element.implement({
-
-	scrollTo: function(x, y){
-		this.scrollLeft = x;
-		this.scrollTop = y;
 	},
 
-	computePosition: function(obj, client){
-		var scroll, el = this;
-		var position = {
+	getRelativePosition: function(){
+		return this.getPosition(this.getOffsetParent());
+	},
+
+	computePosition: function(obj){
+		return {
 			left: obj.x - (this.getComputedStyle('margin-left').toInt() || 0),
 			top: obj.y - (this.getComputedStyle('margin-top').toInt() || 0)
 		};
-		if (client){
-			scroll = Dimensions.getScroll(Dimensions.getOffsetParent(this));
-			position.left += scroll.x;
-			position.top += scroll.y;
-		}
-		if (Browser.Engine.presto){
-			while ((el = el.parentNode) && el != this.offsetParent){
-				scroll = Dimensions.getScroll(el);
-				position.left += scroll.x;
-				position.top += scroll.y;
-			}
-		}
-		return position;
 	},
 
-	position: function(obj, client){
-		return this.setStyles(this.computePosition(obj, client));
+	position: function(obj){
+		return this.setStyles(this.computePosition(obj));
 	}
 
 });
 
 })();
-Window.implement({
+
+Native.implement([Window, Document], {
 
 	getSize: function(){
-		return {
-			size: this.document.getOffsetSize(),
-			scroll: this.document.getScroll(),
-			scrollSize: this.document.getScrollSize()
-		};
+		var body = this.getDocument().body, html = this.getDocument().documentElement;
+		if (Browser.Engine.webkit419) return {x: this.innerWidth, y: this.innerHeight};
+		return {x: html.clientWidth, y: html.clientHeight};
 	},
 
-	getHeight: function(){
-		return this.document.getOffsetSize().y;
+	getScroll: function(){
+		var html = this.getDocument().documentElement;
+		return {x: $pick(this.pageXOffset, html.scrollLeft), y: $pick(this.pageYOffset, html.scrollTop)};
 	},
 
-	getWidth: function(){
-		return this.document.getOffsetSize().x;
+	getScrollSize: function(){
+		var html = this.getDocument().documentElement, body = this.getDocument().body;
+		if (Browser.Engine.trident) return {x: Math.max(html.clientWidth, html.scrollWidth), y: Math.max(html.clientHeight, html.scrollHeight)};
+		if (Browser.Engine.webkit) return {x: body.scrollWidth, y: body.scrollHeight};
+		return {x: html.scrollWidth, y: html.scrollHeight};
 	},
 
-	getScrollTop: function(){
-		return this.document.getScroll().y;
+	getPosition: function(){
+		return {x: 0, y: 0};
 	},
 
-	getScrollLeft: function(){
-		return this.document.getScroll().x;
-	},
-
-	getScrollHeight: function(){
-		return this.document.getScrollSize().y;
-	},
-
-	getScrollWidth: function(){
-		return this.document.getScrollSize().x;
+	getCoordinates: function(){
+		var size = this.getSize();
+		return {top: 0, left: 0, height: size.y, width: size.x, bottom: size.y, right: size.x};
 	}
 
 });
 
-Element.implement({
+Native.implement([Window, Document, Element], {
 
-	getSize: function(){
-		return {
-			size: this.getOffsetSize(),
-			scroll: this.getScroll(),
-			scrollSize: this.getScrollSize()
-		};
+	getHeight: function(){
+		return this.getSize().y;
+	},
+
+	getWidth: function(){
+		return this.getSize().x;
+	},
+
+	getScrollTop: function(){
+		return this.getScroll().y;
+	},
+
+	getScrollLeft: function(){
+		return this.getScroll().x;
+	},
+
+	getScrollHeight: function(){
+		return this.getScrollSize().y;
+	},
+
+	getScrollWidth: function(){
+		return this.getScrollSize().x;
 	},
 
 	getTop: function(){
@@ -3034,10 +2984,7 @@ var Fx = new Class({
 
 	Implements: [Chain, Events, Options],
 
-	options: {/*
-		onStart: $empty,
-		onCancel: $empty,
-		onComplete: $empty,*/
+	options: {
 		fps: 50,
 		unit: false,
 		duration: 500,
@@ -3561,10 +3508,7 @@ Fx.Scroll = new Class({
 		arguments.callee.parent(options);
 		var cancel = this.cancel.bind(this, false);
 
-		switch($type(this.element)){
-			case 'window': this.element = this.element.document; break;
-			case 'element': if (this.element.get('tag') == 'body') this.element = this.element.ownerDocument;
-		}
+		if ($type(this.element) != 'element') this.element = $(this.element.getDocument().body);
 
 		var stopper = this.element;
 
@@ -3593,7 +3537,7 @@ Fx.Scroll = new Class({
 
 	start: function(x, y){
 		if (!this.check(x, y)) return this;
-		var offsetSize = this.element.getOffsetSize(), scrollSize = this.element.getScrollSize(), scroll = this.element.getScroll(), values = {'x': x, 'y': y};
+		var offsetSize = this.element.getSize(), scrollSize = this.element.getScrollSize(), scroll = this.element.getScroll(), values = {'x': x, 'y': y};
 		for (var z in values){
 			var max = scrollSize[z] - offsetSize[z];
 			if ($chk(values[z])) values[z] = ($type(values[z]) == 'number') ? values[z].limit(0, max) : max;
@@ -3620,9 +3564,8 @@ Fx.Scroll = new Class({
 	},
 
 	toElement: function(el){
-		var position = Element.getPosition($(el, true), this.element);
-		var scroll = ($type(this.element) == 'element') ? this.element.getScroll() : {x: 0, y: 0};
-		return this.start(position.x + scroll.x, position.y + scroll.y);
+		var position = $(el).getPosition(this.element);
+		return this.start(position.x, position.y);
 	}
 
 });
@@ -4629,7 +4572,7 @@ var Tips = new Class({
 	},
 
 	locate: function(event){
-		var doc = this.document.getOffsetSize();
+		var doc = this.document.getSize();
 		var scroll = this.document.getScroll();
 		var tip = {'x': this.toolTip.offsetWidth, 'y': this.toolTip.offsetHeight};
 		var prop = {'x': 'left', 'y': 'top'};
@@ -4689,9 +4632,13 @@ var Slider = new Class({
 		onChange: $empty,
 		onComplete: $empty,*/
 		onTick: function(position){
+			if(this.options.snap) position = this.toPosition(this.step);
 			this.knob.setStyle(this.property, position);
 		},
+		snap: false,
 		offset: 0,
+		range: false,
+		wheel: false,
 		steps: 100,
 		mode: 'horizontal'
 	},
@@ -4702,6 +4649,7 @@ var Slider = new Class({
 		this.knob = $(knob);
 		this.previousChange = this.previousEnd = this.step = -1;
 		this.element.addEvent('mousedown', this.clickedElement.bind(this));
+		if (this.options.wheel) this.element.addEvent('mousewheel', this.scrolledElement.bindWithEvent(this));
 		var offset, limit = {}, modifiers = {'x': false, 'y': false};
 		switch (this.options.mode){
 			case 'vertical':
@@ -4715,10 +4663,17 @@ var Slider = new Class({
 				offset = 'offsetWidth';
 		}
 		this.half = this.knob[offset] / 2;
-		this.max = this.element[offset] - this.knob[offset] + (this.options.offset * 2);
+		this.full = this.element[offset] - this.knob[offset] + (this.options.offset * 2);
+		this.min = $chk(this.options.range[0]) ? this.options.range[0] : 0;
+		this.max = $chk(this.options.range[1]) ? this.options.range[1] : this.options.steps;
+		this.range = this.max - this.min;
+		this.steps = this.options.steps || this.full;
+		this.stepSize = Math.abs(this.range) / this.steps;
+		this.stepWidth = this.stepSize * this.full / Math.abs(this.range) ;
+
 		this.knob.setStyle('position', 'relative').setStyle(this.property, - this.options.offset);
 		modifiers[this.axis] = this.property;
-		limit[this.axis] = [- this.options.offset, this.max - this.options.offset];
+		limit[this.axis] = [- this.options.offset, this.full - this.options.offset];
 		this.drag = new Drag(this.knob, {
 			snap: 0,
 			limit: limit,
@@ -4730,10 +4685,17 @@ var Slider = new Class({
 				this.end();
 			}.bind(this)
 		});
+		if (this.options.snap) {
+			this.drag.options.grid = Math.ceil(this.stepWidth);
+			this.drag.options.limit[this.axis][1] = this.full;
+		}
 	},
 
 	set: function(step){
-		this.step = step.limit(0, this.options.steps);
+		if (!((this.range > 0) ^ (step < this.min))) step = this.min;
+		if (!((this.range > 0) ^ (step > this.max))) step = this.max;
+
+		this.step = Math.round(step);
 		this.checkStep();
 		this.end();
 		this.fireEvent('onTick', this.toPosition(this.step));
@@ -4741,16 +4703,27 @@ var Slider = new Class({
 	},
 
 	clickedElement: function(event){
+		var dir = this.range < 0 ? -1 : 1;
 		var position = event.page[this.axis] - this.element.getRelativePosition()[this.axis] - this.half;
-		position = position.limit(-this.options.offset, this.max -this.options.offset);
-		this.step = this.toStep(position);
+		position = position.limit(-this.options.offset, this.full -this.options.offset);
+
+		this.step = Math.round(this.min + dir * this.toStep(position));
 		this.checkStep();
 		this.end();
 		this.fireEvent('onTick', position);
 	},
 
+	scrolledElement: function(event){
+		var mode = (this.options.mode == 'horizontal') ? (event.wheel < 0) : (event.wheel > 0);
+		this.set(mode ? this.step - this.stepSize : this.step + this.stepSize);
+		event.stop();
+	},
+
 	draggedKnob: function(){
-		this.step = this.toStep(this.drag.value.now[this.axis]);
+		var dir = this.range < 0 ? -1 : 1;
+		var position = this.drag.value.now[this.axis];
+		position = position.limit(-this.options.offset, this.full -this.options.offset);
+		this.step = Math.round(this.min + dir * this.toStep(position));
 		this.checkStep();
 	},
 
@@ -4769,11 +4742,12 @@ var Slider = new Class({
 	},
 
 	toStep: function(position){
-		return Math.round((position + this.options.offset) / this.max * this.options.steps);
+		var step = (position + this.options.offset) * this.stepSize / this.full * this.steps;
+		return this.options.steps ? Math.round(step -= step % this.stepSize) : step;
 	},
 
 	toPosition: function(step){
-		return this.max * step / this.options.steps;
+		return (this.full * Math.abs(this.min - step)) / (this.steps * this.stepSize) - this.options.offset;
 	}
 
 });
@@ -4793,14 +4767,7 @@ var Scroller = new Class({
 	initialize: function(element, options){
 		this.setOptions(options);
 		this.element = $(element);
-		switch($type(this.element)){
-			case 'window':
-				this.element = this.element.document;
-				this.listener = $(this.element.body);
-			break;
-			case 'document': this.listener = $(this.element.body); break;
-			case 'element': this.listener = this.element;
-		}
+		this.listener = ($type(this.element) != 'element') ? $(this.element.getDocument().body) : this.element;
 		this.timer = null;
 	},
 
@@ -4815,12 +4782,12 @@ var Scroller = new Class({
 	},
 
 	getCoords: function(event){
-		this.page = ($type(this.element) == 'document') ? event.client : event.page;
+		this.page = (this.listener.get('tag') == 'body') ? event.client : event.page;
 		if (!this.timer) this.timer = this.scroll.periodical(50, this);
 	},
 
 	scroll: function(){
-		var size = this.element.getOffsetSize(), scroll = this.element.getScroll(), pos = this.element.getPosition(), change = {'x': 0, 'y': 0};
+		var size = this.element.getSize(), scroll = this.element.getScroll(), pos = this.element.getPosition(), change = {'x': 0, 'y': 0};
 		for (var z in this.page){
 			if (this.page[z] < (this.options.area + pos[z]) && scroll[z] != 0)
 				change[z] = (this.page[z] - this.options.area - pos[z]) * this.options.velocity;
@@ -4835,17 +4802,30 @@ var Scroller = new Class({
 var Asset = new Hash({
 
 	javascript: function(source, properties){
-		properties = $merge({
-			'onload': $empty
+		properties = $extend({
+			onload: $empty,
+			document: document,
+			check: $lambda(true)
 		}, properties);
-		var script = new Element('script', {'src': source, 'type': 'text/javascript'}).addEvents({
-			'load': properties.onload,
-			'readystatechange': function(){
-				if (this.readyState == 'complete') this.fireEvent('load');
+
+		var script = new Element('script', {'src': source, 'type': 'text/javascript'});
+
+		var load = properties.onload.bind(script), check = properties.check, doc = properties.document;
+		delete properties.onload; delete properties.check; delete properties.document;
+
+		script.addEvents({
+			load: load,
+			readystatechange: function(){
+				if (this.readyState == 'complete') load();
 			}
-		});
-		delete properties.onload;
-		return script.setProperties(properties).inject(document.head);
+		}).setProperties(properties);
+		if (Browser.Engine.webkit419) var checker = (function(){
+			if (!$try(check)) return;
+			$clear(checker);
+			load();
+		}).periodical(50);
+
+		return script.inject(doc.head);
 	},
 
 	css: function(source, properties){

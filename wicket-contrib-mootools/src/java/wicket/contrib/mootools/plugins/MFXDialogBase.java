@@ -8,6 +8,7 @@ import org.apache.wicket.markup.html.internal.HtmlHeaderContainer;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.html.resources.CompressedResourceReference;
 
+import wicket.contrib.mootools.IncludeMooToolsStateless;
 import wicket.contrib.mootools.MFXJavascriptUtils;
 
 public abstract class MFXDialogBase extends Panel {
@@ -19,7 +20,7 @@ public abstract class MFXDialogBase extends Panel {
 	private String body;
 	private String domId;
 
-	private ResourceReference PLAINCSS = new CompressedResourceReference(MFXDialog.class, "MFXDialog.css");
+	private ResourceReference PLAINCSS = new CompressedResourceReference(MFXDialog.class, "mfxaddons.css");
 
 	public MFXDialogBase(final String id) {
 		super(id);
@@ -28,6 +29,7 @@ public abstract class MFXDialogBase extends Panel {
 		this.offsetTop = 300;
 		this.title = "Modal Window";
 
+		add(new IncludeMooToolsStateless());
 		add(HeaderContributor.forJavaScript(MFXJavascriptUtils.getMooAddons()));
 		add(HeaderContributor.forCss(PLAINCSS));
 	}

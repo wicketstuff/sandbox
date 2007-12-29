@@ -40,6 +40,8 @@ public abstract class MFXFadeOutBehavior extends AjaxEventBehavior {
 	@Override
 	protected IAjaxCallDecorator getAjaxCallDecorator() {
 		return new IAjaxCallDecorator() {
+			private static final long serialVersionUID = 1L;
+
 			public CharSequence decorateOnFailureScript(final CharSequence arg0) {
 				return arg0;
 			}

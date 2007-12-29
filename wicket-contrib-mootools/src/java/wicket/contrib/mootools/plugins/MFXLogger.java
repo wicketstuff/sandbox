@@ -9,6 +9,11 @@ import wicket.contrib.mootools.MFXJavascriptUtils;
 
 public class MFXLogger extends AbstractBehavior {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public MFXLogger() {
 	}
 
