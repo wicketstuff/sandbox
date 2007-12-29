@@ -33,7 +33,7 @@ public class SuckerfishMenuPanel extends Panel
 	public static final String LINK_TEXT_ID = "linktext";
 	private final List<MenuItem> topMenuItems = new ArrayList<MenuItem>();
 
-	public SuckerfishMenuPanel(String id)
+	public SuckerfishMenuPanel(final String id)
 	{
 		super(id);
 		// Add the Suckerfish CSS
@@ -45,16 +45,16 @@ public class SuckerfishMenuPanel extends Panel
 	}
 
 	/** Add one menu item */
-	public void addMenu(MenuItem menu)
+	public void addMenu(final MenuItem menu)
 	{
 		topMenuItems.add(menu);
 	}
 
 	/** Add all menus at once */
-	public void setMenuItems(List<MenuItem> menuItems)
+	public void setMenuItems(final List<MenuItem> menuItems)
 	{
-		this.topMenuItems.clear();
-		this.topMenuItems.addAll(menuItems);
+		topMenuItems.clear();
+		topMenuItems.addAll(menuItems);
 	}
 
 	/** Lightweight menu object that stores a menu and its label */
@@ -66,7 +66,7 @@ public class SuckerfishMenuPanel extends Panel
 		private final String label;
 		private final List<MenuItem> subMenuItems = new ArrayList<MenuItem>();
 
-		public MenuItem(Link link, String label)
+		public MenuItem(final Link link, final String label)
 		{
 			if (link != null && !link.getId().equals(LINK_ID))
 			{
@@ -74,26 +74,27 @@ public class SuckerfishMenuPanel extends Panel
 						"The id must be SuckerfishMenuPanel.LINK_ID");
 			}
 			this.link = link;
+			this.link.add(new Label(LINK_TEXT_ID, label));
 			this.label = label;
 		}
 
-		public MenuItem(String label)
+		public MenuItem(final String label)
 		{
-			this.link = null;
+			link = null;
 			this.label = label;
 		}
 
 		/** Add one menu item */
-		public void addMenu(MenuItem menu)
+		public void addMenu(final MenuItem menu)
 		{
 			subMenuItems.add(menu);
 		}
 
 		/** Add all menus at once */
-		public void setMenuItems(List<MenuItem> menuItems)
+		public void setMenuItems(final List<MenuItem> menuItems)
 		{
-			this.subMenuItems.clear();
-			for (MenuItem child : menuItems)
+			subMenuItems.clear();
+			for (final MenuItem child : menuItems)
 			{
 				addMenu(child);
 			}
@@ -119,7 +120,7 @@ public class SuckerfishMenuPanel extends Panel
 	{
 		private static final long serialVersionUID = 0L;
 
-		public MenuItemFragment(MenuItem menuItem)
+		public MenuItemFragment(final MenuItem menuItem)
 		{
 			super("menuitemfragment", "MENUITEMFRAGMENT",
 					SuckerfishMenuPanel.this);
@@ -147,10 +148,9 @@ public class SuckerfishMenuPanel extends Panel
 	{
 		private static final long serialVersionUID = 0L;
 
-		public LinkFragment(Link link, String label)
+		public LinkFragment(final Link link, final String label)
 		{
 			super("linkfragment", "LINKFRAGMENT", SuckerfishMenuPanel.this);
-			link.add(new Label(LINK_TEXT_ID, label));
 			add(link);
 		}
 	}
@@ -159,7 +159,7 @@ public class SuckerfishMenuPanel extends Panel
 	{
 		private static final long serialVersionUID = 0L;
 
-		public TextFragment(String label)
+		public TextFragment(final String label)
 		{
 			super("linkfragment", "TEXTFRAGMENT", SuckerfishMenuPanel.this);
 			add(new Label(LINK_TEXT_ID, label));
@@ -170,18 +170,18 @@ public class SuckerfishMenuPanel extends Panel
 	{
 		private static final long serialVersionUID = -5875124377225299067L;
 
-		private SubMenuListView(String id, IModel model)
+		private SubMenuListView(final String id, final IModel model)
 		{
 			super(id, model);
 		}
 
-		private SubMenuListView(String id, List<MenuItem> list)
+		private SubMenuListView(final String id, final List<MenuItem> list)
 		{
 			super(id, list);
 		}
 
 		@Override
-		protected void populateItem(ListItem item)
+		protected void populateItem(final ListItem item)
 		{
 			final MenuItem menuItem = (MenuItem) item.getModelObject();
 			item.add(new MenuItemFragment(menuItem));
