@@ -16,7 +16,7 @@
  */
  
 /*
- * Wicket GMap2
+ * Wicket Map2
  *
  * @author Martin Funk
  */
@@ -31,10 +31,10 @@ if(!Wicket)
 	throw new Error("Wicket already exists and is not an object");
 }
 
-Wicket.geocoder = new WicketGClientGeocoder();
+Wicket.geocoder = new WicketClientGeocoder();
 
-function WicketGClientGeocoder() {
-	this.coder = new GClientGeocoder();
+function WicketClientGeocoder() {
+	this.coder = new google.maps.ClientGeocoder();
 	
 	this.getLatLng = function(callBackUrl, addressId) {
 		
@@ -66,10 +66,10 @@ function WicketGClientGeocoder() {
 
 Wicket.maps = { }
 
-function WicketGMap2(id) {
+function WicketMap2(id) {
 	Wicket.maps[id] = this;
 
-	this.map = new GMap2(document.getElementById(id));
+	this.map = new google.maps.Map2(document.getElementById(id));
 	this.controls = {};
 	this.overlays = {};
 

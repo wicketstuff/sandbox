@@ -382,7 +382,7 @@ public class GMap2 extends Panel
 	 */
 	private String getJSinit()
 	{
-		StringBuffer js = new StringBuffer("new WicketGMap2('" + map.getMarkupId() + "');\n");
+		StringBuffer js = new StringBuffer("new WicketMap2('" + map.getMarkupId() + "');\n");
 
 		js.append(getJSsetCenter(getCenter()) + "\n");
 		js.append(getJSsetZoom(getZoom()) + "\n");
