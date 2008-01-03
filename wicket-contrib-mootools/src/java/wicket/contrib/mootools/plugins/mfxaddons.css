@@ -32,7 +32,6 @@
 	position: absolute;
 	z-index: 100;
 	background-color: #fff;
-	padding-bottom: 8px;
 	text-align: center;
 	border: 1px solid #4e8ee2;
 }
@@ -43,6 +42,19 @@
 	color: white;
 	height: 16px;
 	display: block; 
+}
+
+.MFXDialogBar span {
+	font-size: 11px !important;
+}
+
+.MFXContent p {
+	font-size: 11px !important;
+}
+
+
+.MFXContent  {
+	padding:8px;
 }
 
 .MFXDialog p {

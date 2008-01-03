@@ -60,7 +60,7 @@ var MFXDialog = new Class({
 MFXDialog.implement({
 	makeScreenDark : function () {
 			var bg = new Element('div', {'style' : 
-				'z:index:98; display: block; position: absolute; top:0; left:0; background-color: #000; opacity: 0.4;',
+				'display: block; z-index:99; position: absolute; top:0; left:0; background-color: #000; opacity: 0.4;',
 				'id':'mfxbg'});
 			bg.setStyle('width',Window.getScrollWidth()); 
 			bg.setStyle('height', Window.getScrollHeight());
