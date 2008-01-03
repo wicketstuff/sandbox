@@ -4,8 +4,6 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.model.IModel;
 
 public abstract class MFXConfirmDialog extends MFXDialog {
-	private IModel targetModel;
-
 	public MFXConfirmDialog(final String id) {
 		this(id, MFXDialogTypes.CONFIRMATION);
 		setTitle("Notifcation");
@@ -18,13 +16,9 @@ public abstract class MFXConfirmDialog extends MFXDialog {
 
 	@Override
 	protected void onConfirmCallback(final AjaxRequestTarget targ) {
-		onConfirm(targ, targetModel);
+		onConfirm(targ, getModel());
 	}
 
 	protected abstract void onConfirm(AjaxRequestTarget targ, IModel targetModel);
-
-	public void setTarget(final IModel targetModel) {
-		this.targetModel = targetModel;
-	}
 
 }
