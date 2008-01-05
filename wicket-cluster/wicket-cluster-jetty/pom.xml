@@ -40,7 +40,7 @@
 
 		<dependency>
 			<groupId>wicket-stuff</groupId>
-			<artifactId>wicket-cluster</artifactId>
+			<artifactId>wicket-cluster-base</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
