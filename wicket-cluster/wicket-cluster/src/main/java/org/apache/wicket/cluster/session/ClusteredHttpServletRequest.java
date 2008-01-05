@@ -45,8 +45,7 @@ public class ClusteredHttpServletRequest extends HttpServletRequestWrapper {
 	public HttpSession getSession() {
 		if (cachedSession == null) {
 			HttpSession session = super.getSession();
-			if (session != null) {
-				
+			if (session != null) {				
 				cachedSession = new ClusteredHttpSession(contextPath, session, sender);
 			}
 		}

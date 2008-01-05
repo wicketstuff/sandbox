@@ -60,7 +60,7 @@ import org.slf4j.LoggerFactory;
  * {@link #getReplicationTimeout()}, it stops the replication by sending the
  * {@link StopProvidingReplicationDataMessage} to the existing member. After
  * that the new member picks another existing member (if there is any) and
- * intiates replication (going to step 2).
+ * initiates replication (going to step 2).
  * </ul>
  * 
  * @author Matej Knopp
@@ -137,8 +137,7 @@ public class NodeInitializer {
 	public void addSessionCount(int sessionCount, Member member) {
 		// only add the session count if this node hasn't already more sessions
 		// (this message is sent from new members to existing members as well,
-		// so
-		// we need to filter that out)
+		// so we need to filter that out)
 		if (getActiveSessionsCount() < sessionCount) {
 			boolean startThread = false;
 			synchronized (this) {
