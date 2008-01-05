@@ -50,7 +50,7 @@
 				<activeByDefault>false</activeByDefault>
 			</activation>
 			<modules>
-				<module>wicket-cluster</module>
+				<module>wicket-cluster-base</module>
 				<module>wicket-cluster-pagestore</module>
 				<module>wicket-cluster-jetty</module>
 			</modules>
@@ -104,7 +104,7 @@
 				<activeByDefault>true</activeByDefault>
 			</activation>
 			<modules>
-				<module>wicket-cluster</module>
+				<module>wicket-cluster-base</module>
 				<module>wicket-cluster-pagestore</module>
 				<module>wicket-cluster-jetty</module>
 			</modules>
@@ -183,7 +183,7 @@
 			</dependency>
 			<dependency>
 				<groupId>wicket-stuff</groupId>
-				<artifactId>wicket-cluster</artifactId>
+				<artifactId>wicket-cluster-base</artifactId>
 				<version>${project.version}</version>
 				<type>jar</type>
 			</dependency>
