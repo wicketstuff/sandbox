@@ -22,7 +22,7 @@
 	<groupId>org.apache.wicket.wicket-security</groupId>
 	<artifactId>swarm</artifactId>
 	<packaging>jar</packaging>
-	<version>0.1-SNAPSHOT</version>
+	<version>1.3.1-SNAPSHOT</version>
 	<name>SWARM</name>
 	<inceptionYear>2006</inceptionYear>
 	<description>
@@ -67,7 +67,7 @@
 				<enabled>true</enabled>
 			</snapshots>
 			<releases>
-				<enabled>false</enabled>
+				<enabled>true</enabled>
 			</releases>
 		</repository>
 	</repositories>
@@ -115,13 +115,13 @@
 		<dependency>
 			<groupId>org.apache.wicket</groupId>
 			<artifactId>wicket</artifactId>
-			<version>1.3.0-SNAPSHOT</version>
+			<version>1.3.0</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.wicket.wicket-security</groupId>
 			<artifactId>wasp</artifactId>
-			<version>0.1-SNAPSHOT</version>
+			<version>1.3.1-SNAPSHOT</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
