@@ -8,4 +8,8 @@ This application has support for both Wicket 1.2 and 1.3, however they can't run
 
 To switch between wicket 1.2 and 1.3 you need to remove the not used Wicket library from the classpath and you need to modify the web.xml file to exclude the offending servlet.
 
+This distribution contains a jmeter test script for fun and games, it is located in:
+
+src/jmeter
+
 Have fun!
