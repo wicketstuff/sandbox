@@ -1,6 +1,6 @@
-package wicket.benchmark;
+package wicket.benchmark.wicket13;
 
-import wicket.benchmark.wicket.CustomerList;
+
 import org.apache.wicket.protocol.http.HttpSessionStore;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.session.ISessionStore;

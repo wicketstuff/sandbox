@@ -1,4 +1,4 @@
-package wicket.benchmark.wicket;
+package wicket.benchmark.wicket13;
 
 import java.util.Arrays;
 import java.util.Date;

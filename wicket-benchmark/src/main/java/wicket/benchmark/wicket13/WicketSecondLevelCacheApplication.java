@@ -1,11 +1,10 @@
-package wicket.benchmark;
+package wicket.benchmark.wicket13;
 
-import org.apache.wicket.protocol.http.FilePageStore;
 import org.apache.wicket.protocol.http.SecondLevelCacheSessionStore;
 import org.apache.wicket.protocol.http.WebApplication;
+import org.apache.wicket.protocol.http.pagestore.DiskPageStore;
 import org.apache.wicket.session.ISessionStore;
 
-import wicket.benchmark.wicket.CustomerList;
 
 /**
  * Benchmark application for testing the second level cache.
@@ -27,6 +26,6 @@ public class WicketSecondLevelCacheApplication extends WebApplication {
 	 * used.
 	 */
 	protected ISessionStore newSessionStore() {
-		return new SecondLevelCacheSessionStore(this, new FilePageStore());
+		return new SecondLevelCacheSessionStore(this, new DiskPageStore());
 	}
 }

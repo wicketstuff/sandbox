@@ -1,6 +1,8 @@
-package wicket.benchmark.dao;
+package wicket.benchmark.wicket13;
 
 import org.apache.wicket.model.LoadableDetachableModel;
+
+import wicket.benchmark.dao.CustomerDao;
 
 public class DetachableCustomerList extends LoadableDetachableModel {
 	/** */
