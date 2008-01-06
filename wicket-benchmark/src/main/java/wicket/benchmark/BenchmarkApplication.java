@@ -1,6 +1,7 @@
 package wicket.benchmark;
 
-import wicket.benchmark.wicket.CustomerList;
+import wicket.benchmark.wicket13.CustomerList;
+
 import org.apache.wicket.protocol.http.WebApplication;
 
 public class BenchmarkApplication extends WebApplication {

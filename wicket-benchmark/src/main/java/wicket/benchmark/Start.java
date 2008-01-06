@@ -48,6 +48,8 @@ public class Start
 	 */
 	public static void main(String[] args)
 	{
+		System.out.println(System.getProperties());
+		System.out.printf("Available memory: %dM", Runtime.getRuntime().maxMemory()/(1024*1024));
 		Server server = new Server();
 		SelectChannelConnector connector = new SelectChannelConnector();
 		connector.setPort(8080);

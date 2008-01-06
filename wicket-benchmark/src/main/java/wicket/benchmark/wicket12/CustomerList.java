@@ -1,20 +1,19 @@
-package wicket.benchmark.wicket;
+package wicket.benchmark.wicket12;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+import wicket.Component;
 import wicket.benchmark.dao.Customer;
 import wicket.benchmark.dao.CustomerDao;
-import wicket.benchmark.dao.DetachableCustomer;
-import wicket.benchmark.dao.DetachableCustomerList;
-import org.apache.wicket.markup.html.WebPage;
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.link.Link;
-import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
+import wicket.markup.html.WebPage;
+import wicket.markup.html.basic.Label;
+import wicket.markup.html.link.Link;
+import wicket.markup.html.list.ListItem;
+import wicket.markup.html.list.ListView;
+import wicket.model.CompoundPropertyModel;
+import wicket.model.IModel;
+import wicket.model.Model;
 
 /**
  * List customers benchmark page for Wicket.
@@ -29,7 +28,8 @@ public class CustomerList extends WebPage {
 
 		@Override
 		protected IModel getListItemModel(IModel model, int index) {
-			Customer customer = ((List<Customer>) model.getObject()).get(index);
+			Customer customer = ((List<Customer>) model.getObject(null))
+					.get(index);
 			return new CompoundPropertyModel(new DetachableCustomer(customer));
 		}
 
@@ -40,8 +40,9 @@ public class CustomerList extends WebPage {
 			item.add(new Label("state"));
 			item.add(new Label("birthDate", new Model() {
 				@Override
-				public Object getObject() {
+				public Object getObject(Component c) {
 					Customer customer = (Customer) item.getModelObject();
+					SimpleDateFormat FORMAT = new SimpleDateFormat("MMMM d, yyyy");
 					return FORMAT.format(customer.getBirthDate());
 				}
 			}));

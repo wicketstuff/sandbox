@@ -15,10 +15,15 @@
     	<filter-name>Timer</filter-name>
     	<filter-class>wicket.benchmark.TimerFilter</filter-class>
    	</filter>
+
+   	<filter-mapping>
+   		<filter-name>Timer</filter-name>
+   		<servlet-name>wicket-session</servlet-name>
+   	</filter-mapping>
    	
    	<filter-mapping>
    		<filter-name>Timer</filter-name>
-   		<servlet-name>wicket</servlet-name>
+   		<servlet-name>wicket-secondlevelcache</servlet-name>
    	</filter-mapping>
    	
    	<filter-mapping>
@@ -26,35 +31,53 @@
    		<servlet-name>tapestry</servlet-name>
    	</filter-mapping>
 
+<!--
     <servlet>
-        <servlet-name>wicket-session</servlet-name>
+        <servlet-name>wicket12-sessionstore</servlet-name>
+        <servlet-class>wicket.protocol.http.WicketServlet</servlet-class>
+        <init-param>
+          <param-name>applicationClassName</param-name>
+          <param-value>wicket.benchmark.wicket12.WicketHttpSessionStoreApplication</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+-->
+    <servlet>
+        <servlet-name>wicket13-sessionstore</servlet-name>
         <servlet-class>org.apache.wicket.protocol.http.WicketServlet</servlet-class>
         <init-param>
           <param-name>applicationClassName</param-name>
-          <param-value>wicket.benchmark.WicketHttpSessionStoreApplication</param-value>
+          <param-value>wicket.benchmark.wicket13.WicketHttpSessionStoreApplication</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
 
     <servlet>
-        <servlet-name>wicket-secondlevelcache</servlet-name>
+        <servlet-name>wicket13-diskstore</servlet-name>
         <servlet-class>org.apache.wicket.protocol.http.WicketServlet</servlet-class>
         <init-param>
           <param-name>applicationClassName</param-name>
-          <param-value>wicket.benchmark.WicketSecondLevelCacheApplication</param-value>
+          <param-value>wicket.benchmark.wicket13.WicketSecondLevelCacheApplication</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
-
+<!--
     <servlet-mapping>
-        <servlet-name>wicket-session</servlet-name>
-        <url-pattern>/wicket-session/*</url-pattern>
+        <servlet-name>wicket12-sessionstore</servlet-name>
+        <url-pattern>/wicket12/sessionstore/*</url-pattern>
+    </servlet-mapping>
+-->
+    <servlet-mapping>
+        <servlet-name>wicket13-sessionstore</servlet-name>
+        <url-pattern>/wicket13/sessionstore/*</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>
-        <servlet-name>wicket-secondlevelcache</servlet-name>
-        <url-pattern>/wicket-secondlevelcache/*</url-pattern>
+        <servlet-name>wicket13-diskstore</servlet-name>
+        <url-pattern>/wicket13/diskstore/*</url-pattern>
     </servlet-mapping>
+<!--
+-->
 
     <servlet>
         <servlet-name>tapestry</servlet-name>
