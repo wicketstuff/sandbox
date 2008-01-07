@@ -35,7 +35,7 @@ public class AWApplication extends WicketExampleApplication
 	 */
 	public AWApplication()
 	{
-		System.setProperty(ActiveWidgetsConfiguration.KEY_AW_LICENSE, ActiveWidgetsConfiguration.AW_DEVELOPER_LICENSE);
+		//System.setProperty(ActiveWidgetsConfiguration.KEY_AW_LICENSE, ActiveWidgetsConfiguration.AW_DEVELOPER_LICENSE);
 	}
 
 	/**
