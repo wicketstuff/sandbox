@@ -1,10 +1,10 @@
 package wicket.contrib.mootools.plugins;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
@@ -17,6 +17,7 @@ public class MFXEditableMultiLineLabel extends Panel {
 	private WebMarkupContainer container;
 	private Label label;
 	private EditPanel editPanel;
+	private int height = 400;
 
 	protected boolean getEscapeStrings() {
 		return true;
@@ -61,6 +62,14 @@ public class MFXEditableMultiLineLabel extends Panel {
 		editPanel.setVisible(false);
 	}
 
+	public void setHeight(final int height) {
+		this.height = height;
+	}
+
+	public int getHeight() {
+		return height;
+	}
+
 	public class EditPanel extends WebMarkupContainer {
 		private static final long serialVersionUID = 1L;
 		private TextArea txt;
@@ -84,8 +93,11 @@ public class MFXEditableMultiLineLabel extends Panel {
 				}
 			}));
 			txt.setOutputMarkupId(true);
+			txt.add(new SimpleAttributeModifier("style", "height: " + getHeight()
+					+ "px !important; width: 90% !important;"));
 
-			add(new Button("cancel").add(new MFXFadeOutBehavior("onclick", Duration.milliseconds(500), EditPanel.this) {
+			add(new WebMarkupContainer("cancel").add(new MFXFadeOutBehavior("onclick", Duration.milliseconds(500),
+					EditPanel.this) {
 
 				private static final long serialVersionUID = 1L;
 
@@ -97,7 +109,8 @@ public class MFXEditableMultiLineLabel extends Panel {
 				}
 			}));
 
-			add(new Button("save").add(new MFXFadeOutBehavior("onclick", Duration.milliseconds(500), EditPanel.this) {
+			add(new WebMarkupContainer("save").add(new MFXFadeOutBehavior("onclick", Duration.milliseconds(500),
+					EditPanel.this) {
 
 				private static final long serialVersionUID = 1L;
 
