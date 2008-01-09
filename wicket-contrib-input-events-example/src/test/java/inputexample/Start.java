@@ -15,7 +15,7 @@ public class Start {
 
 		WebAppContext bb = new WebAppContext();
 		bb.setServer(server);
-		bb.setContextPath("/myproject2");
+		bb.setContextPath("/inputExamples");
 		bb.setWar("src/main/webapp");
 
 		
