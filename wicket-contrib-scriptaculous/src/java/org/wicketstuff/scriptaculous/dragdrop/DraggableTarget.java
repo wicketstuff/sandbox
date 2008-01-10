@@ -47,12 +47,17 @@ public abstract class DraggableTarget extends WebMarkupContainer
 	 * @param component
 	 */
 	public void accepts(Component component) {
+		addAcceptClass(getDraggableBehavior(component).getDraggableClassName());
+	}
+
+	private DraggableBehavior getDraggableBehavior(Component component) {
 		for (Iterator iter = component.getBehaviors().iterator(); iter.hasNext();) {
 			IBehavior behavior = (IBehavior) iter.next();
 			if (behavior instanceof DraggableBehavior) {
-				addAcceptClass(((DraggableBehavior)behavior).getDraggableClassName());
+				return (DraggableBehavior) behavior;
 			}
 		}
+		throw new IllegalArgumentException("Component must have DraggableBehavior attached: " + component);
 	}
 
 	/**
