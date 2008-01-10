@@ -57,4 +57,19 @@ public class DraggableTargetTest extends TestCase {
 
 		tester.assertContains("myClassName");
 	}
+	
+	public void testExceptionThrownWhenAcceptingComponentWithoutDraggableBehavior() {
+		WicketTester tester = new WicketTester();
+
+		DraggableTarget target = new DraggableTarget("target") {
+			@Override
+			protected void onDrop(String input, AjaxRequestTarget target) {
+				isFired = true;
+			}
+		};
+		try {
+			target.accepts(new Label("testing"));
+			fail("Expected error");
+		} catch (IllegalArgumentException expected) {}
+	}
 }
