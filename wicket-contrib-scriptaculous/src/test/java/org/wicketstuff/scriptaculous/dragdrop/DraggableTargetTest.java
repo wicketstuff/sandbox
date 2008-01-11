@@ -1,7 +1,10 @@
 package org.wicketstuff.scriptaculous.dragdrop;
 
+import java.util.HashMap;
+
 import junit.framework.TestCase;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.util.tester.WicketTester;
@@ -18,7 +21,7 @@ public class DraggableTargetTest extends TestCase {
 
 		DraggableTarget target = new DraggableTarget("target") {
 			@Override
-			protected void onDrop(String input, AjaxRequestTarget target) {
+			protected void onDrop(Component component, AjaxRequestTarget target) {
 				isFired = true;
 			}
 		};
@@ -36,26 +39,19 @@ public class DraggableTargetTest extends TestCase {
 		WicketTester tester = new WicketTester();
 
 		Label label = new Label("testing");
-		label.add(new DraggableBehavior() {
-			@Override
-			public String getDraggableClassName() {
-				return "myClassName";
-			}
-		});
+		label.add(new DraggableBehavior());
 		DraggableTarget target = new DraggableTarget("target") {
 			@Override
-			protected void onDrop(String input, AjaxRequestTarget target) {
-				isFired = true;
-			}
+			protected void onDrop(Component component, AjaxRequestTarget target) { }
 		};
-		target.accepts(label);
+		target.accepts(label, "myClassName");
 		TestPage page = new TestPage();
 		page.add(target);
 
 		tester.startPage(page);
 		tester.startComponent(target);
 
-		tester.assertContains("myClassName");
+		tester.assertContains("accept: 'myClassName'");
 	}
 	
 	public void testExceptionThrownWhenAcceptingComponentWithoutDraggableBehavior() {
@@ -63,12 +59,10 @@ public class DraggableTargetTest extends TestCase {
 
 		DraggableTarget target = new DraggableTarget("target") {
 			@Override
-			protected void onDrop(String input, AjaxRequestTarget target) {
-				isFired = true;
-			}
+			protected void onDrop(Component component, AjaxRequestTarget target) { }
 		};
 		try {
-			target.accepts(new Label("testing"));
+			target.accepts(new Label("testing"), "myClassName");
 			fail("Expected error");
 		} catch (IllegalArgumentException expected) {}
 	}

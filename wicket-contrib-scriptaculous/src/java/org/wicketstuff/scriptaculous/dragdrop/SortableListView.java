@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.behavior.AbstractAjaxBehavior;
 import org.apache.wicket.behavior.AttributeAppender;
@@ -13,7 +12,10 @@ import org.apache.wicket.markup.MarkupStream;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.wicketstuff.scriptaculous.JavascriptBuilder;
 import org.wicketstuff.scriptaculous.ScriptaculousAjaxBehavior;
 
@@ -25,11 +27,13 @@ import org.wicketstuff.scriptaculous.ScriptaculousAjaxBehavior;
  */
 public abstract class SortableListView extends WebMarkupContainer
 {
+	private static final Logger LOG = LoggerFactory.getLogger(SortableListView.class);
+
 	private AbstractAjaxBehavior onUpdateBehavior = new SortableContainerBehavior();
 	private Map options = new HashMap();
 	private final List items;
 
-	public SortableListView(String id, String itemId, final List items)
+	public SortableListView(String id, final String itemId, final List items)
 	{
 		super(id);
 		this.items = items;
@@ -42,11 +46,14 @@ public abstract class SortableListView extends WebMarkupContainer
 		{
 			private static final long serialVersionUID = 1L;
 
+			@Override
+			protected ListItem newItem(int index) {
+				return new SortableListItem(itemId, index, getListItemModel(getModel(), index));
+			}
+
 			protected void populateItem(ListItem item)
 			{
-				item.add(new AttributeModifier("id", true, new Model(getMarkupId() + "_"
-						+ item.getIndex())));
-
+				
 				if (null != getDraggableClassName()) {
 					item.add(new AttributeAppender("class", new Model(getDraggableClassName()), " "));
 				}
@@ -79,7 +86,7 @@ public abstract class SortableListView extends WebMarkupContainer
 	public String getDraggableClassName() {
 		return null;
 	}
-
+	
 	protected void onRender(MarkupStream markupStream)
 	{
 		super.onRender(markupStream);
@@ -111,11 +118,30 @@ public abstract class SortableListView extends WebMarkupContainer
 				for (int index = 0; index < items.size(); index++)
 				{
 					int newIndex = Integer.parseInt(parameters[index]);
+					if (!items.get(index).equals(items.get(newIndex))) {
+						LOG.info("Moving sortable object from location " + newIndex + " to " + index);
+					}
 					items.set(index, originalItems.get(newIndex));
 				}
 			}
 
 			target.addComponent(getComponent());
+		}
+	}
+	
+	private static class SortableListItem extends ListItem {
+		private final String itemId;
+
+		public SortableListItem(String itemId, int index, IModel listItemModel) {
+			super(index, listItemModel);
+			this.itemId = itemId;
+			
+			setOutputMarkupId(true);
+		}
+
+		@Override
+		public String getMarkupId() {
+			return itemId + "_" + getIndex();
 		}
 	}
 }
