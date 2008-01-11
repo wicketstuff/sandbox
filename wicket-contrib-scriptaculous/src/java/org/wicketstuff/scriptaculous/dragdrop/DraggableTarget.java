@@ -5,10 +5,13 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.apache.wicket.Component;
+import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.behavior.IBehavior;
 import org.apache.wicket.markup.MarkupStream;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.model.Model;
 import org.wicketstuff.scriptaculous.JavascriptBuilder;
 import org.wicketstuff.scriptaculous.ScriptaculousAjaxBehavior;
 import org.wicketstuff.scriptaculous.JavascriptBuilder.JavascriptFunction;
@@ -36,25 +39,30 @@ public abstract class DraggableTarget extends WebMarkupContainer
 	}
 
 	/**
-	 * extension point for defining functionality when a {@link DraggableImage} is dropped.
-	 * @param input the id attribute of the dropped component
+	 * extension point for defining functionality when a component is dropped.
+	 * @param component the component dropped on the target
+	 * @param target response to stream back to the user
 	 */
-	protected abstract void onDrop(String input, AjaxRequestTarget target);
+	protected abstract void onDrop(Component component, AjaxRequestTarget target);
 
 	/**
 	 * configure the draggable target to accept a component.
 	 * The component must have a {@link DraggableBehavior} attached to it.
 	 * @param component
+	 * @param className css class name to add to the component
+	 * 
 	 */
-	public void accepts(Component component) {
-		addAcceptClass(getDraggableBehavior(component).getDraggableClassName());
+	public void accepts(Component component, String className) {
+		assertHasDraggableBehavior(component);
+		component.add(new AttributeAppender("class", new Model(className), " "));
+		addAcceptClass(className);
 	}
 
-	private DraggableBehavior getDraggableBehavior(Component component) {
+	private void assertHasDraggableBehavior(Component component) {
 		for (Iterator iter = component.getBehaviors().iterator(); iter.hasNext();) {
 			IBehavior behavior = (IBehavior) iter.next();
 			if (behavior instanceof DraggableBehavior) {
-				return (DraggableBehavior) behavior;
+				return;
 			}
 		}
 		throw new IllegalArgumentException("Component must have DraggableBehavior attached: " + component);
@@ -109,12 +117,42 @@ public abstract class DraggableTarget extends WebMarkupContainer
 		private static final long serialVersionUID = 1L;
 
 		@Override
-		protected void respond(AjaxRequestTarget target) {
-			String input = getRequest().getParameter("id");
+		protected void respond(final AjaxRequestTarget target) {
+			final String input = getRequest().getParameter("id");
 			target.addComponent(DraggableTarget.this);
 			target.appendJavascript(new Effect.Highlight(DraggableTarget.this).toJavascript());
 
-			onDrop(input, target);
+			MarkupIdVisitor visitor = new MarkupIdVisitor(input);
+			getPage().visitChildren(visitor);
+			onDrop(visitor.getFoundComponent(), target);
+		}
+	}
+	
+	/**
+	 * find a child component by it's markup id
+	 * NOTE: the markup id may be different from the wicket id used in the markup.
+	 */
+	private static class MarkupIdVisitor implements IVisitor {
+		private final String id;
+		private Component found;
+
+		public MarkupIdVisitor(String id) {
+			this.id = id;
+		}
+
+		public Object component(Component component) {
+			if (component.getMarkupId().equals(id)) {
+				this.found = component;
+				return IVisitor.STOP_TRAVERSAL;
+			}
+			if (component instanceof MarkupContainer) {
+				return ((MarkupContainer)component).visitChildren(this);
+			}
+			return IVisitor.CONTINUE_TRAVERSAL;
+		}
+		
+		public Component getFoundComponent() {
+			return found;
 		}
 	}
 }

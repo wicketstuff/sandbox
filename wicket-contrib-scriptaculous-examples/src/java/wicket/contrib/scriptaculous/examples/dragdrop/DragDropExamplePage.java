@@ -1,46 +1,51 @@
 package wicket.contrib.scriptaculous.examples.dragdrop;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.list.ListItem;
 import org.wicketstuff.scriptaculous.Indicator;
 import org.wicketstuff.scriptaculous.dragdrop.DraggableBehavior;
 import org.wicketstuff.scriptaculous.dragdrop.DraggableTarget;
+import org.wicketstuff.scriptaculous.dragdrop.SortableListView;
 
 public class DragDropExamplePage extends WebPage
 {
 	public DragDropExamplePage()
 	{
-		Indicator indicator = new Indicator();
-		final DraggableTarget cart = new DraggableTarget("cart") {
-			protected void onDrop(String input, AjaxRequestTarget target)
-			{
-				System.out.println("Input: " + input + " was dropped on the DraggableTarget");
-			}
-		};
-
 		WebMarkupContainer product1 = new WebMarkupContainer("product1");
-		product1.add(new DraggableBehavior() {
-			public String getDraggableClassName()
-			{
-				return "draggable";
-			}
-		});
+		product1.add(new DraggableBehavior());
 
 		WebMarkupContainer product2 = new WebMarkupContainer("product2");
-		product2.add(new DraggableBehavior() {
-			public String getDraggableClassName()
-			{
-				return "draggable";
-			}
-		});
+		product2.add(new DraggableBehavior());
 
-		cart.accepts(product1);
-		cart.accepts(product2);
+		List objects = new ArrayList();
+		objects.add("item1");
+		objects.add("item3");
+		objects.add("item2");
+		add(new SortableListView("itemList", "item", objects) {
+			@Override
+			protected void populateItemInternal(ListItem item)
+			{
+				item.add(new Label("label", item.getModelObjectAsString()));
+			}});
+		
+		final DraggableTarget cart = new DraggableTarget("cart") {
+			@Override
+			protected void onDrop(Component component, AjaxRequestTarget target)
+			{
+				System.out.println("Input: " + component + " was dropped on the DraggableTarget");
+			}
+		};
 
 		add(cart);
 		add(product1);
 		add(product2);
-		add(indicator);
+		add(new Indicator());
 	}
 }
