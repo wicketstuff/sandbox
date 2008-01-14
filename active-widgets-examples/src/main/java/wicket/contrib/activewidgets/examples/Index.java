@@ -26,6 +26,11 @@ package wicket.contrib.activewidgets.examples;
 public class Index extends WicketExamplePage
 {
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**
 	 * Constructor
 	 */
 	public Index()

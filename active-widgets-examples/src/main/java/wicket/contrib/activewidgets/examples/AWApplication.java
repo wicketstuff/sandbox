@@ -17,9 +17,10 @@
  */
 package wicket.contrib.activewidgets.examples;
 
-import java.util.TreeSet;
-
-import wicket.contrib.activewidgets.ActiveWidgetsConfiguration;
+import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 
 
@@ -41,8 +42,21 @@ public class AWApplication extends WicketExampleApplication
 	/**
 	 * @see wicket.Application#getHomePage()
 	 */
-	public Class getHomePage()
+	public Class<? extends WebPage> getHomePage()
 	{
 		return Index.class;
 	}
+	
+	protected void init() {
+		super.init();
+		addComponentInstantiationListener(new SpringComponentInjector(this,
+				context()));
+	}
+	
+	public ApplicationContext context() {
+		return WebApplicationContextUtils
+				.getRequiredWebApplicationContext(getServletContext());
+	}
+	
+	
 }

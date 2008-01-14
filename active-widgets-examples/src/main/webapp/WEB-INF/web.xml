@@ -16,19 +16,55 @@
 	      or "deployment". If no configuration is found, "development" is the default.
 	-->
 
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath:applicationContext.xml</param-value>
+	</context-param>
+
+<!--
 	<filter>
-		<filter-name>wicket.active-widgets-examples</filter-name>
+		<filter-name>examples</filter-name>
  		<filter-class>org.apache.wicket.protocol.http.WicketFilter</filter-class>
 		<init-param>
 			<param-name>applicationClassName</param-name>
 			<param-value>wicket.contrib.activewidgets.examples.AWApplication</param-value>
  		</init-param>
  	</filter>
+	<filter-mapping>
+		<filter-name>examples</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+-->
 
- <filter-mapping>
-  <filter-name>wicket.active-widgets-examples</filter-name>
-	<url-pattern>/*</url-pattern>
- </filter-mapping>
+    <filter>
+        <filter-name>opensessioninview</filter-name>
+        <filter-class>org.springframework.orm.hibernate3.support.OpenSessionInViewFilter</filter-class>
+    </filter>
 
+    <filter-mapping>
+        <filter-name>opensessioninview</filter-name>
+        <servlet-name>/*</servlet-name>
+    </filter-mapping>
+
+
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+
+
+    <servlet>
+        <servlet-name>activewidgets</servlet-name>
+        <servlet-class>org.apache.wicket.protocol.http.WicketServlet</servlet-class>
+        <init-param>
+            <param-name>applicationFactoryClassName</param-name>
+            <param-value>org.apache.wicket.spring.SpringWebApplicationFactory</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>activewidgets</servlet-name>
+        <url-pattern>/aw/*</url-pattern>
+    </servlet-mapping>
 
 </web-app>

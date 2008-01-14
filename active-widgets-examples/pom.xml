@@ -33,7 +33,46 @@
 			<artifactId>wicket</artifactId>
 			<version>${wicket.version}</version>
 		</dependency>
-		<!-- OPTIONAL 
+
+		<dependency>
+			<groupId>org.apache.wicket</groupId>
+			<artifactId>wicket-spring-annot</artifactId>
+			<version>${wicket.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>javax.servlet</groupId>
+					<artifactId>servlet-api</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring</artifactId>
+            <version>${springframework.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-dbcp</groupId>
+            <artifactId>commons-dbcp</artifactId>
+            <version>${commons-dbcp.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+            <version>${hsqldb.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate</artifactId>
+            <version>${hibernate.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+	<!-- OPTIONAL 
 			<dependency>
 			<groupId>org.apache.wicket</groupId>
 			<artifactId>wicket-extensions</artifactId>
@@ -46,12 +85,12 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
-			<version>1.4.2</version>
+			<version>${slf4j.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
-			<version>1.2.14</version>
+			<version>${log4j.version}</version>
 		</dependency>
 
 		<!--  JUNIT DEPENDENCY FOR TESTING -->
@@ -124,12 +163,62 @@
 		            <contextPath>/aw-ex</contextPath>
 				</configuration>
 			</plugin>
+
+<!-- borrowed from wicket-phonebook pom.xml -->
+            <plugin>
+                <artifactId>maven-eclipse-plugin</artifactId>
+                <version>2.4</version>
+                <configuration>
+                    <additionalProjectnatures>
+                        <projectnature>org.springframework.ide.eclipse.core.springnature</projectnature>
+                        <projectnature>com.sysdeo.eclipse.tomcat.tomcatnature</projectnature>
+                        <projectnature>com.stateofflow.eclipse.metrics.MetricsNature</projectnature>
+                    </additionalProjectnatures>
+                    <additionalBuildcommands>
+                        <buildcommand>org.springframework.ide.eclipse.core.springbuilder</buildcommand>
+                        <buildcommand>com.stateofflow.eclipse.metrics.MetricsBuilder</buildcommand>
+                    </additionalBuildcommands>
+                    <downloadSources>true</downloadSources>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <descriptor>src/assembly/bin.xml</descriptor>
+                    <finalName>${artifactId}-${version}</finalName>
+                    <outputDirectory>target/distributions</outputDirectory>
+                    <workDirectory>target/assembly/work</workDirectory>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <warSourceDirectory>src/webapp</warSourceDirectory>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <configuration>
+                    <minmemory>128m</minmemory>
+                    <maxmemory>256m</maxmemory>
+                </configuration>
+            </plugin>
+		
 		</plugins>
 	</build>
 
 	<properties>
+		<commons-dbcp.version>1.2.1</commons-dbcp.version>
 		<wicket.version>1.3.0-SNAPSHOT</wicket.version>
-		<jetty.version>6.1.5</jetty.version>
+		<jetty.version>6.1.7</jetty.version>
+		<springframework.version>2.0.8</springframework.version>
+		<hibernate.version>3.2.5.ga</hibernate.version>
+		<log4j.version>1.2.14</log4j.version>
+		<slf4j.version>1.4.2</slf4j.version>
+		<hsqldb.version>1.8.0.7</hsqldb.version>
 	</properties>
 
 </project>
