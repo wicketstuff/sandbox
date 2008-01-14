@@ -14,46 +14,51 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package wicket.javaee.injection;
+package org.wicketstuff.javaee.injection;
 
 import org.apache.wicket.injection.ConfigurableInjector;
 import org.apache.wicket.injection.IFieldValueFactory;
 
-import wicket.javaee.naming.IJndiNamingStrategy;
-import wicket.javaee.naming.StandardJndiNamingStrategy;
+import org.wicketstuff.javaee.naming.IJndiNamingStrategy;
+import org.wicketstuff.javaee.naming.StandardJndiNamingStrategy;
 
 /**
  * Injector that injects ejb references based on {@link javax.ejb.EJB}
  * annotation
- * 
+ *
  * @author Filippo Diotalevi
  */
-public class AnnotJavaEEInjector extends ConfigurableInjector {
+public class AnnotJavaEEInjector extends ConfigurableInjector
+{
 
-	IFieldValueFactory factory;
+    IFieldValueFactory factory;
 
-	/**
-	 * Constructor
-	 */
-	public AnnotJavaEEInjector() {
-		initFactory(new StandardJndiNamingStrategy());
-	}
+    /**
+     * Constructor
+     */
+    public AnnotJavaEEInjector()
+    {
+        initFactory(new StandardJndiNamingStrategy());
+    }
 
-	/**
-	 * Constructor
-	 * 
-	 */
-	public AnnotJavaEEInjector(IJndiNamingStrategy namingStrategy) {
-		initFactory(namingStrategy);
-	}
+    /**
+     * Constructor
+     * @param namingStrategy - naming strategy
+     */
+    public AnnotJavaEEInjector(IJndiNamingStrategy namingStrategy)
+    {
+        initFactory(namingStrategy);
+    }
 
-	private void initFactory(IJndiNamingStrategy namingStrategy) {
-		factory = new JavaEEProxyFieldValueFactory(namingStrategy);
-	}
+    private void initFactory(IJndiNamingStrategy namingStrategy)
+    {
+        factory = new JavaEEProxyFieldValueFactory(namingStrategy);
+    }
 
-	@Override
-	protected IFieldValueFactory getFieldValueFactory() {
-		return factory;
-	}
+    @Override
+    protected IFieldValueFactory getFieldValueFactory()
+    {
+        return factory;
+    }
 
 }

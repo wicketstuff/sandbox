@@ -18,11 +18,11 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.wicketstuff</groupId>
+	<groupId>org.wicketstuff.javaee</groupId>
 	<artifactId>wicket-contrib-javaee</artifactId>
 	<packaging>jar</packaging>
-	<version>1.3-SNAPSHOT</version>
-	<name>Wicket Java EE Integration for Wicket 1.x</name>
+	<version>1.1-SNAPSHOT</version>
+	<name>Wicket Java EE Integration for Wicket 1.3</name>
 	<description>Integration project to use Java EE 5 injection in your Wicket applications.</description>
 	<url>http://wicket-stuff.sourceforge.net/wicket-contrib-javaee</url>
 	<inceptionYear>2006</inceptionYear>
@@ -35,13 +35,19 @@
 		</license>
 	</licenses>
 
-    <repositories>
+    <repositories>	
 		<repository>
 			<id>wicket-stuff.org</id>
 			<url>http://wicketstuff.org/maven/repository/</url>
 			<snapshots>
 				<enabled>true</enabled>
 			</snapshots>
+		</repository>	
+		<repository>  
+			<id>java.net</id>  
+			<name>java.net Maven Repository</name>  
+			<url>https://maven-repository.dev.java.net/nonav/repository/</url> 
+			<layout>legacy</layout> 
 		</repository>
     </repositories>
  
@@ -65,32 +71,13 @@
 			<groupId>org.apache.wicket</groupId>
 			<artifactId>wicket-ioc</artifactId>
 			<version>1.3.0-SNAPSHOT</version>
-		</dependency>		
-	    <dependency>
-	      <groupId>org.apache.geronimo.specs</groupId>
-	      <artifactId>geronimo-ejb_3.0_spec</artifactId>
-	      <version>1.0</version>
-	      <scope>provided</scope>
-	    </dependency>   
-	    <dependency>	    
-	      <groupId>org.apache.geronimo.specs</groupId>
-	      <artifactId>geronimo-jpa_3.0_spec</artifactId>
-	      <version>1.0</version>
-	      <scope>provided</scope>
-	    </dependency>  	    
-	    <dependency>		    
-	      <groupId>org.apache.geronimo.specs</groupId>
-	      <artifactId>geronimo-annotation_1.0_spec</artifactId>
-	      <version>1.0</version>
-	      <scope>provided</scope>
-	    </dependency>  	    
+		</dependency>		      
 		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
-			<version>2.3</version>
-			<type>jar</type>
+			<groupId>javaee</groupId>
+			<artifactId>javaee-api</artifactId>
+			<version>5</version>
 			<scope>provided</scope>
-		</dependency>	          
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -193,6 +180,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
-
 </project>

@@ -14,17 +14,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package wicket.javaee.naming;
+package org.wicketstuff.javaee.naming;
 
 import java.io.Serializable;
 
 /**
  * Specifies a pluggable implementation for a naming strategy of ejbs
- * 
+ *
  * @author Filippo Diotalevi
  */
-public interface IJndiNamingStrategy extends Serializable{
+public interface IJndiNamingStrategy extends Serializable
+{
 
-	String calculateName(String ejbName, Class ejbType);
+    String calculateName(String ejbName, Class ejbType);
 
 }

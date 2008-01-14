@@ -14,17 +14,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package wicket.javaee.naming;
+package org.wicketstuff.javaee.naming;
 
 /**
  * Standard naming strategy for ejbs
- * 
+ *
  * @author Filippo Diotalevi
  */
-public class StandardJndiNamingStrategy implements IJndiNamingStrategy {
+public class StandardJndiNamingStrategy implements IJndiNamingStrategy
+{
 
-	public String calculateName(String ejbName, Class ejbType) {
-		return "java:comp/env/" + (ejbName == null ? ejbType.getName() : ejbName);
-	}
+    public String calculateName(String ejbName, Class ejbType)
+    {
+        return "java:comp/env/" + (ejbName == null ? ejbType.getName() : ejbName);
+    }
 
 }
