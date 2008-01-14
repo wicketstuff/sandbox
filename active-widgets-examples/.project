@@ -6,8 +6,49 @@
     <buildCommand>
       <name>org.eclipse.jdt.core.javabuilder</name>
     </buildCommand>
+    <buildCommand>
+      <name>org.springframework.ide.eclipse.core.springbuilder</name>
+    </buildCommand>
+    <buildCommand>
+      <name>com.stateofflow.eclipse.metrics.MetricsBuilder</name>
+    </buildCommand>
   </buildSpec>
   <natures>
     <nature>org.eclipse.jdt.core.javanature</nature>
+    <nature>org.springframework.ide.eclipse.core.springnature</nature>
+    <nature>com.sysdeo.eclipse.tomcat.tomcatnature</nature>
+    <nature>com.stateofflow.eclipse.metrics.MetricsNature</nature>
   </natures>
+  <linkedResources>
+    <link>
+      <name>pom.xml</name>
+      <type>1</type>
+      <location>C:/dev/wicketstuff/active-widgets-examples/pom.xml</location>
+    </link>
+    <link>
+      <name>src-main-java</name>
+      <type>2</type>
+      <location>C:/dev/wicketstuff/active-widgets-examples/src/main/java</location>
+    </link>
+    <link>
+      <name>src-main-resources</name>
+      <type>2</type>
+      <location>C:/dev/wicketstuff/active-widgets-examples/src/main/resources</location>
+    </link>
+    <link>
+      <name>src-main-java</name>
+      <type>2</type>
+      <location>C:/dev/wicketstuff/active-widgets-examples/src/main/java</location>
+    </link>
+    <link>
+      <name>src-test-java</name>
+      <type>2</type>
+      <location>C:/dev/wicketstuff/active-widgets-examples/src/test/java</location>
+    </link>
+    <link>
+      <name>src-test-java</name>
+      <type>2</type>
+      <location>C:/dev/wicketstuff/active-widgets-examples/src/test/java</location>
+    </link>
+  </linkedResources>
 </projectDescription>
