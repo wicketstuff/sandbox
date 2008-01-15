@@ -24,7 +24,7 @@
 	</bean>
 
     <!-- setup wicket application -->
-    <bean id="wicketApplication" class="wicket.contrib.activewidgets.examples.AWApplication">
+    <bean id="wicketApplication" class="wicket.contrib.activewidgets.examples.web.AWApplication">
     </bean>
 
 </beans>

@@ -3,6 +3,8 @@ package wicket.contrib.activewidgets.examples;
 import junit.framework.TestCase;
 import org.apache.wicket.util.tester.WicketTester;
 
+import wicket.contrib.activewidgets.examples.web.page.WicketExamplePage;
+
 /**
  * Simple test using the WicketTester
  */
