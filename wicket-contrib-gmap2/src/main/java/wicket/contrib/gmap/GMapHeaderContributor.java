@@ -37,12 +37,13 @@ public class GMapHeaderContributor extends HeaderContributor
 			public void renderHead(IHeaderResponse response)
 			{
 				response.renderJavascriptReference(GMAP_API_URL + gMapKey);
-				response.renderJavascript(GOOGLE_LOAD_MAPS, GOOGLE_LOAD_MAPS);
+				response.renderJavascript(GOOGLE_LOAD_MAPS, GMapHeaderContributor.class.getName() + "_googleload");
 				response.renderJavascriptReference(WicketEventReference.INSTANCE);
 				response.renderJavascriptReference(WicketAjaxReference.INSTANCE);
 				response.renderJavascriptReference(WICKET_GMAP_JS);
 				// see:
 				// http://www.google.com/apis/maps/documentation/#Memory_Leaks
+				
 				response.renderOnEventJavacript("window", "onUnload", "google.maps.Unload();");
 			}
 		});
