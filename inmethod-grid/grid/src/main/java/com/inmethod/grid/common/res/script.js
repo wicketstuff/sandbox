@@ -301,6 +301,8 @@ InMethod.XTable.prototype = {
 			addClass(Wicket.$(id), "imxt-ie");
 		} else if (Wicket.Browser.isGecko()) {
 			addClass(Wicket.$(id), "imxt-ff");
+		} else if (Wicket.Browser.isSafari()) {
+			addClass(Wicket.$(id), "imxt-safari");
 		}
 		
 		this.updateSelectCheckBoxes();

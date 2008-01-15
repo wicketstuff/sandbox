@@ -1,8 +1,9 @@
 <wicket:panel>
 	
-	<!-- This is used to size the data table properly in Internet explorer -->
-	<div class="imxt-container1" id="main">
-
+	<div class="imxt-container1" id="main">	
+	
+	<table class="imxt-container-table"><tr class="imxt-container-table"><td class="imxt-container-table">		
+	
 		<div class="imxt-top-toolbar-container">		
 			<div wicket:id="topToolbarContainer">
 				<div wicket:id="item"></div>
@@ -29,13 +30,11 @@
 		
 		<form wicket:id="form" class="imxt-form"><fieldset class="imxt-fieldset">
 		<div wicket:id="bodyContainer" class="imxt-body-container1">
-      		<div class="imxt-body-container2">
-      		
+      		<div class="imxt-body-container2">      		
 	      		<table class="imxt-body">
 					<tr class="imxt-empty-row" wicket:id="firstRow"></tr>
 					<tr wicket:id="body">
-					</tr>
-					
+					</tr>					
 				</table>
 			</div>
 		</div>
@@ -48,6 +47,7 @@
 			</div>
 		</div>
 	
+	</td></tr></table>
+			
 	</div>	
-
 </wicket:panel>

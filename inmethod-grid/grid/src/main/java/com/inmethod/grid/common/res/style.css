@@ -1,6 +1,30 @@
 div.imxt-container1 {
 	overflow: hidden;
+	width: 100%;	
+}
+
+/* in case the grid is placed in another table make sure that it's all in table-layout:fixed */
+table.imxt-container-table {
+	table-layout:fixed; 
+	padding:0px;
+	margin:0px;
+	border-collapse: collapse;
 	width: 100%;
+}
+
+table.imxt-container-table tr.imxt-container-table {
+	margin: 0px;
+	padding: 0px;
+}
+
+table.imxt-container-table td.imxt-container-table {
+	margin: 0px;
+	padding: 0px;
+	width: 100%;
+}
+
+div.imxt-safari div.imxt-body-container2 {
+	width: 1px; // to get the horizontal scrollbar working right
 }
 
 div.imxt-head-container2 {
@@ -354,7 +378,10 @@ div.imxt-edit img {
 	padding: 0px;
 	margin: 0px;
 	display: block;
-	float: left;
+	float: left;	
+}
+
+div.imxt-edit a.imxt-edit-submit img {
 	margin-right: 4px;
 }
 
