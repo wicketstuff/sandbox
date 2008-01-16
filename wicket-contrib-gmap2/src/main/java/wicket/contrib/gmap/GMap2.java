@@ -40,6 +40,7 @@ import wicket.contrib.gmap.api.GLatLngBounds;
 import wicket.contrib.gmap.api.GMapType;
 import wicket.contrib.gmap.api.GOverlay;
 import wicket.contrib.gmap.event.GEventListenerBehavior;
+import wicket.contrib.gmap.event.GOverlayListenerBehavior;
 
 /**
  * Wicket component to embed <a href="http://maps.google.com">Google Maps</a>
@@ -194,6 +195,10 @@ public class GMap2 extends Panel
 	public GMap2 addOverlay(GOverlay overlay)
 	{
 		overlays.add(overlay);
+		for (GOverlayListenerBehavior behavior : overlay.getBehaviors())
+		{
+			add(behavior);
+		}
 
 		if (AjaxRequestTarget.get() != null && findPage() != null)
 		{
@@ -216,6 +221,10 @@ public class GMap2 extends Panel
 		{
 			overlays.remove(overlay);
 		}
+		for (GOverlayListenerBehavior behavior : overlay.getBehaviors())
+		{
+			remove(behavior);
+		}
 
 		if (AjaxRequestTarget.get() != null && findPage() != null)
 		{
@@ -232,6 +241,13 @@ public class GMap2 extends Panel
 	 */
 	public GMap2 clearOverlays()
 	{
+		for (GOverlay overlay : overlays)
+		{
+			for (GOverlayListenerBehavior behavior : overlay.getBehaviors())
+			{
+				remove(behavior);
+			}
+		}
 		overlays.clear();
 		if (AjaxRequestTarget.get() != null && findPage() != null)
 		{

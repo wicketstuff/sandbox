@@ -111,6 +111,19 @@ function WicketMap2(id) {
 			);
 		}
 	}
+	
+	this.addGOverlayListener = function(event, overlayID, callBack) {
+		var self = this;
+		
+		if (event == 'dragend') {
+			var overlay = this.overlays[overlayID];
+			GEvent.addListener(overlay,
+				event,
+				function () {
+					self.onEvent(callBack, {'marker':overlayID, 'latLng':overlay.getLatLng()});
+				})
+		}
+	}
 
 	this.setDraggingEnabled = function(enabled) {
 		if (enabled) {

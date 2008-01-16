@@ -16,8 +16,14 @@
 package wicket.contrib.gmap.api;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import org.apache.wicket.ajax.AjaxRequestTarget;
 
 import wicket.contrib.gmap.GMap2;
+import wicket.contrib.gmap.event.GOverlayListenerBehavior;
 
 /**
  * Represents an Google Maps API's <a
@@ -25,6 +31,39 @@ import wicket.contrib.gmap.GMap2;
  */
 public abstract class GOverlay implements Serializable
 {
+	List<GOverlayListenerBehavior> behaviors = new ArrayList<GOverlayListenerBehavior>();
+
+	public GOverlay addBehavior(GOverlayListenerBehavior behavior)
+	{
+		behavior.setGOverlay(this);
+		behaviors.add(behavior);
+
+		return this;
+	}
+
+	public GOverlay removeBehavior(GOverlayListenerBehavior behavior)
+	{
+		while (behaviors.contains(behavior))
+		{
+			behaviors.remove(behavior);
+		}
+
+		behavior.setGOverlay(null);
+		return this;
+	}
+
+	public GOverlay clearBehaviors()
+	{
+		behaviors.clear();
+
+		return this;
+	}
+
+	public List<GOverlayListenerBehavior> getBehaviors()
+	{
+		return Collections.unmodifiableList(behaviors);
+	}
+	
 	public String getJSadd(GMap2 map)
 	{
 		return map.getJSinvoke("addOverlay('" + getId() + "', "		
