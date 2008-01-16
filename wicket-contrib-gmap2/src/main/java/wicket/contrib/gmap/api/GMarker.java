@@ -15,6 +15,7 @@
  */
 package wicket.contrib.gmap.api;
 
+import sun.misc.GC.LatencyRequest;
 import wicket.contrib.gmap.js.Constructor;
 
 /**
@@ -25,7 +26,7 @@ public class GMarker extends GOverlay
 {
 	private static final long serialVersionUID = 1L;
 
-	private GLatLng gLatLng;
+	private GLatLng latLng;
 
 	private GMarkerOptions options;
 
@@ -41,13 +42,18 @@ public class GMarker extends GOverlay
 	public GMarker(GLatLng gLatLng, GMarkerOptions options)
 	{
 		super();
-		this.gLatLng = gLatLng;
+		this.latLng = gLatLng;
 		this.options = options;
 	}
 
 	public GLatLng getLagLng()
 	{
-		return gLatLng;
+		return latLng;
+	}
+
+	public void setLagLng(GLatLng gLatLng)
+	{
+		this.latLng = gLatLng;
 	}
 
 	public GMarkerOptions getMarkerOptions()
@@ -58,7 +64,7 @@ public class GMarker extends GOverlay
 	@Override
 	protected String getJSconstructor()
 	{
-		Constructor constructor = new Constructor("GMarker").add(gLatLng.getJSconstructor());
+		Constructor constructor = new Constructor("GMarker").add(latLng.getJSconstructor());
 		if (options != null)
 		{
 			constructor.add(options.getJSconstructor());
