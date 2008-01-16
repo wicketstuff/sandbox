@@ -5,12 +5,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.util.template.PackagedTextTemplate;
 
 import wicket.contrib.activewidgets.ActiveWidgetsComponent;
 
 public class GridExtended extends ActiveWidgetsComponent {
+
+	private GridColumns columns;
 
 	public GridExtended(String id, IModel model) {
 		super(id, model);
@@ -18,6 +22,12 @@ public class GridExtended extends ActiveWidgetsComponent {
 
 	public GridExtended(String id) {
 		super(id);
+	}
+
+	public GridExtended(String id, GridColumns columns,
+			IDataProvider dataProvider) {
+		super(id, new Model(dataProvider));
+		this.columns = columns;
 	}
 
 	private static final long serialVersionUID = 1L;
