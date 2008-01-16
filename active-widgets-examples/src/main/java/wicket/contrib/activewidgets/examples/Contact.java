@@ -26,6 +26,10 @@ import java.io.Serializable;
  * @author igor
  */
 public class Contact implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private long id;
 	private String firstname;
 	private String lastname;

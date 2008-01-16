@@ -20,10 +20,7 @@ package wicket.contrib.activewidgets.examples.web.page;
 
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.lang.Classes;
-
-import wicket.contrib.activewidgets.examples.ContactDao;
 
 
 /**
@@ -35,8 +32,6 @@ import wicket.contrib.activewidgets.examples.ContactDao;
  */
 public class WicketExamplePage extends WebPage {
 	
-	@SpringBean(name = "contactDao")
-	private ContactDao dao;
 
 	/** Serialization */
 	private static final long serialVersionUID = 1L;
