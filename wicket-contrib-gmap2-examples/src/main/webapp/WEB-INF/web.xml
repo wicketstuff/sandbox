@@ -52,6 +52,15 @@
 	</filter>
 
 	<filter>
+		<filter-name>ListenGMarkerApplication</filter-name>
+		<filter-class>org.apache.wicket.protocol.http.WicketFilter</filter-class>
+		<init-param>
+		  <param-name>applicationClassName</param-name>
+		  <param-value>wicket.contrib.examples.gmap.listen.overlay.ListenGMarkerApplication</param-value>
+		</init-param>
+	</filter>
+
+	<filter>
 		<filter-name>MarkerGMapApplication</filter-name>
 		<filter-class>org.apache.wicket.protocol.http.WicketFilter</filter-class>
 		<init-param>
@@ -122,6 +131,11 @@
 	<filter-mapping>
 		<filter-name>ListenGMapApplication</filter-name>
 		<url-pattern>/listen/*</url-pattern>
+	</filter-mapping>
+
+	<filter-mapping>
+		<filter-name>ListenGMarkerApplication</filter-name>
+		<url-pattern>/markerListener/*</url-pattern>
 	</filter-mapping>
 
 	<filter-mapping>
