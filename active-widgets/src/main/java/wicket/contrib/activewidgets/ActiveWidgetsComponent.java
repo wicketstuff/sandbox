@@ -14,7 +14,6 @@ import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
 
 @SuppressWarnings("serial")
 abstract public class ActiveWidgetsComponent extends Panel {
@@ -189,6 +188,7 @@ abstract public class ActiveWidgetsComponent extends Panel {
 
 	}
 
+	@SuppressWarnings("unused")
 	private MarkupElement markupElement;
 	
 	

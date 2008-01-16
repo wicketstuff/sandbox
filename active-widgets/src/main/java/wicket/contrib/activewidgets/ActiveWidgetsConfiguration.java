@@ -113,4 +113,8 @@ public class ActiveWidgetsConfiguration {
 		ActiveWidgetsConfiguration.strictXtml = strictXtml;
 	}
 
+	public static boolean isTrial() {
+		return AW_LICENSE_TYPE.equalsIgnoreCase(AW_TRIAL_LICENSE);
+	}
+
 }
