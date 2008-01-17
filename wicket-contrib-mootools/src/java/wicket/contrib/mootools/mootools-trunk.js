@@ -2,7 +2,7 @@
 
 var MooTools = {
 	'version': '1.2dev',
-	'build': '1327'
+	'build': '1346'
 };
 
 var Native = function(options){
@@ -279,14 +279,14 @@ $A = function(iterable, start, length){
 })();
 
 var Browser = new Hash({
-	Engine: {'name': 'unknown', 'version': ''},
-	Platform: {'name': (navigator.platform.match(/mac|win|linux|nix/i) || ['other'])[0].toLowerCase()},
-	Features: {'xhr': !!(window.XMLHttpRequest), 'xpath': !!(document.evaluate), 'air': !!(window.runtime)}
+	Engine: {name: 'unknown', version: ''},
+	Platform: {name: (navigator.platform.match(/mac|win|linux|nix/i) || ['other'])[0].toLowerCase()},
+	Features: {xhr: !!(window.XMLHttpRequest), xpath: !!(document.evaluate), air: !!(window.runtime)}
 });
 
 if (window.opera) Browser.Engine.name = 'presto';
-else if (window.ActiveXObject) Browser.Engine = {'name': 'trident', 'version': (Browser.Features.xhr) ? 5 : 4};
-else if (!navigator.taintEnabled) Browser.Engine = {'name': 'webkit', 'version': (Browser.Features.xpath) ? 420 : 419};
+else if (window.ActiveXObject) Browser.Engine = {name: 'trident', version: (Browser.Features.xhr) ? 5 : 4};
+else if (!navigator.taintEnabled) Browser.Engine = {name: 'webkit', version: (Browser.Features.xpath) ? 420 : 419};
 else if (document.getBoxObjectFor != null) Browser.Engine.name = 'gecko';
 Browser.Engine[Browser.Engine.name] = Browser.Engine[Browser.Engine.name + Browser.Engine.version] = true;
 Browser.Platform[Browser.Platform.name] = true;
@@ -485,7 +485,7 @@ Array.implement({
 			if (value.length == 1) value += value;
 			return value.toInt(16);
 		});
-		return array ? rgb : 'rgb(' + rgb + ')';
+		return (array) ? rgb : 'rgb(' + rgb + ')';
 	},
 
 	rgbToHex: function(array){
@@ -496,7 +496,7 @@ Array.implement({
 			var bit = (this[i] - 0).toString(16);
 			hex.push((bit.length == 1) ? '0' + bit : bit);
 		}
-		return array ? hex : '#' + hex.join('');
+		return (array) ? hex : '#' + hex.join('');
 	}
 
 });
@@ -623,7 +623,7 @@ String.implement({
 	},
 
 	clean: function(){
-		return this.replace(/\s{2,}/g, ' ').trim();
+		return this.replace(/\s+/g, ' ').trim();
 	},
 
 	camelCase: function(){
@@ -809,26 +809,27 @@ var Event = new Native({
 		var type = event.type;
 		var target = event.target || event.srcElement;
 		while (target && target.nodeType == 3) target = target.parentNode;
+
 		if (type.match(/DOMMouseScroll|mousewheel/)){
-			this.wheel = (event.wheelDelta) ? event.wheelDelta / 120 : -(event.detail || 0) / 3;
+			var wheel = (event.wheelDelta) ? event.wheelDelta / 120 : -(event.detail || 0) / 3;
 		} else if (type.test(/key/)){
-			this.code = event.which || event.keyCode;
-			var key = Event.Keys.keyOf(this.code);
+			var code = event.which || event.keyCode;
+			var key = Event.Keys.keyOf(code);
 			if (type == 'keydown'){
-				var fKey = this.code - 111;
+				var fKey = code - 111;
 				if (fKey > 0 && fKey < 13) key = 'f' + fKey;
 			}
-			this.key = key || String.fromCharCode(this.code).toLowerCase();
-		} else if (type.match(/(click|mouse|menu)/)){
-			this.page = {
+			key = key || String.fromCharCode(code).toLowerCase();
+		} else if (type.match(/(click|mouse|menu)/i)){
+			var page = {
 				x: event.pageX || event.clientX + win.document.documentElement.scrollLeft,
 				y: event.pageY || event.clientY + win.document.documentElement.scrollTop
 			};
-			this.client = {
+			var client = {
 				x: event.pageX ? event.pageX - win.pageXOffset : event.clientX,
 				y: event.pageY ? event.pageY - win.pageYOffset : event.clientY
 			};
-			this.rightClick = (event.which == 3) || (event.button == 2);
+			var rightClick = (event.which == 3) || (event.button == 2);
 			var related = null;
 			if (type.match(/over|out/)){
 				switch (type){
@@ -844,8 +845,19 @@ var Event = new Native({
 		return $extend(this, {
 			event: event,
 			type: type,
+
+			page: page,
+			client: client,
+			rightClick: rightClick,
+
+			wheel: wheel,
+
 			relatedTarget: related,
 			target: target,
+
+			code: code,
+			key: key,
+
 			shift: event.shiftKey,
 			control: event.ctrlKey,
 			alt: event.altKey,
@@ -1406,9 +1418,13 @@ Element.implement({
 	},
 
 	getComputedStyle: function(property){
-		var result = false;
-		if (this.currentStyle) result = this.currentStyle[property.camelCase()];
-		else result = this.getWindow().getComputedStyle(this, null).getPropertyValue([property.hyphenate()]);
+		var result = null;
+		if (this.currentStyle){
+			result = this.currentStyle[property.camelCase()];
+		} else {
+			var computed = this.getWindow().getComputedStyle(this, null);
+			if (computed) result = computed.getPropertyValue([property.hyphenate()]);
+		}
 		return result;
 	},
 
@@ -1977,13 +1993,13 @@ Element.implement({
 });
 
 Element.Styles = new Hash({
-	'width': '@px', 'height': '@px', 'left': '@px', 'top': '@px', 'bottom': '@px', 'right': '@px',
-	'backgroundColor': 'rgb(@, @, @)', 'backgroundPosition': '@px @px', 'color': 'rgb(@, @, @)',
-	'fontSize': '@px', 'letterSpacing': '@px', 'lineHeight': '@px', 'clip': 'rect(@px @px @px @px)',
-	'margin': '@px @px @px @px', 'padding': '@px @px @px @px', 'border': '@px @ rgb(@, @, @) @px @ rgb(@, @, @) @px @ rgb(@, @, @)',
-	'borderWidth': '@px @px @px @px', 'borderStyle': '@ @ @ @', 'borderColor': 'rgb(@, @, @) rgb(@, @, @) rgb(@, @, @) rgb(@, @, @)',
-	'zIndex': '@', 'zoom': '@', 'fontWeight': '@',
-	'textIndent': '@px', 'opacity': '@'
+	width: '@px', height: '@px', left: '@px', top: '@px', bottom: '@px', right: '@px', maxWidth: '@px', maxHeight: '@px',
+	backgroundColor: 'rgb(@, @, @)', backgroundPosition: '@px @px', color: 'rgb(@, @, @)',
+	fontSize: '@px', letterSpacing: '@px', lineHeight: '@px', clip: 'rect(@px @px @px @px)',
+	margin: '@px @px @px @px', padding: '@px @px @px @px', border: '@px @ rgb(@, @, @) @px @ rgb(@, @, @) @px @ rgb(@, @, @)',
+	borderWidth: '@px @px @px @px', borderStyle: '@ @ @ @', borderColor: 'rgb(@, @, @) rgb(@, @, @) rgb(@, @, @) rgb(@, @, @)',
+	zIndex: '@', 'zoom': '@', fontWeight: '@',
+	textIndent: '@px', opacity: '@'
 });
 
 Element.ShortStyles = {'margin': {}, 'padding': {}, 'border': {}, 'borderWidth': {}, 'borderStyle': {}, 'borderColor': {}};
@@ -2007,6 +2023,158 @@ Element.implement({
 
 	setOpacity: function(op){
 		return this.set('opacity', op);
+	}
+
+});
+
+(function(){
+
+function $body(el){
+	return el.tagName.toLowerCase() == 'body';
+};
+
+Element.implement({
+
+	positioned: function(){
+		if ($body(this)) return true;
+		return (Element.getComputedStyle(this, 'position') != 'static');
+	},
+
+	getOffsetParent: function(){
+		if ($body(this)) return null;
+		if (!Browser.Engine.trident) return $(this.offsetParent);
+		var el = this;
+		while ((el = el.parentNode)){
+			if (Element.positioned(el)) return $(el);
+		}
+		return null;
+	},
+
+	getSize: function(){
+		if ($body(this)) return this.getWindow().getSize();
+		return {x: this.offsetWidth, y: this.offsetHeight};
+	},
+
+	getScrollSize: function(){
+		if ($body(this)) return this.getWindow().getScrollSize();
+		return {x: this.scrollWidth, y: this.scrollHeight};
+	},
+
+	getScroll: function(){
+		if ($body(this)) return this.getWindow().getScroll();
+		return {x: this.scrollLeft, y: this.scrollTop};
+	},
+
+	scrollTo: function(x, y){
+		if ($body(this)) return this.getWindow().scrollTo(x, y);
+		this.scrollLeft = x;
+		this.scrollTop = y;
+		return this;
+	},
+
+	getPosition: function(relative){
+		if ($body(this)) return {x: 0, y: 0};
+		var el = this, position = {x: 0, y: 0};
+		while (el){
+			position.x += el.offsetLeft;
+			position.y += el.offsetTop;
+			el = el.offsetParent;
+		}
+		var rpos = (relative) ? $(relative).getPosition() : {x: 0, y: 0};
+		return {x: position.x - rpos.x, y: position.y - rpos.y};
+	},
+
+	getCoordinates: function(element){
+		if ($body(this)) return this.getWindow().getCoordinates();
+		var position = this.getPosition(element), size = this.getSize();
+		var obj = {'top': position.y, 'left': position.x, 'width': size.x, 'height': size.y};
+		obj.right = obj.left + obj.width;
+		obj.bottom = obj.top + obj.height;
+		return obj;
+	},
+
+	getRelativePosition: function(){
+		return this.getPosition(this.getOffsetParent());
+	},
+
+	computePosition: function(obj){
+		return {
+			left: obj.x - (this.getComputedStyle('margin-left').toInt() || 0),
+			top: obj.y - (this.getComputedStyle('margin-top').toInt() || 0)
+		};
+	},
+
+	position: function(obj){
+		return this.setStyles(this.computePosition(obj));
+	}
+
+});
+
+})();
+
+Native.implement([Window, Document], {
+
+	getSize: function(){
+		var body = this.getDocument().body, html = this.getDocument().documentElement;
+		if (Browser.Engine.webkit419) return {x: this.innerWidth, y: this.innerHeight};
+		return {x: html.clientWidth, y: html.clientHeight};
+	},
+
+	getScroll: function(){
+		var html = this.getDocument().documentElement;
+		return {x: $pick(this.pageXOffset, html.scrollLeft), y: $pick(this.pageYOffset, html.scrollTop)};
+	},
+
+	getScrollSize: function(){
+		var html = this.getDocument().documentElement, body = this.getDocument().body;
+		if (Browser.Engine.trident) return {x: Math.max(html.clientWidth, html.scrollWidth), y: Math.max(html.clientHeight, html.scrollHeight)};
+		if (Browser.Engine.webkit) return {x: body.scrollWidth, y: body.scrollHeight};
+		return {x: html.scrollWidth, y: html.scrollHeight};
+	},
+
+	getPosition: function(){
+		return {x: 0, y: 0};
+	},
+
+	getCoordinates: function(){
+		var size = this.getSize();
+		return {top: 0, left: 0, height: size.y, width: size.x, bottom: size.y, right: size.x};
+	}
+
+});
+
+Native.implement([Window, Document, Element], {
+
+	getHeight: function(){
+		return this.getSize().y;
+	},
+
+	getWidth: function(){
+		return this.getSize().x;
+	},
+
+	getScrollTop: function(){
+		return this.getScroll().y;
+	},
+
+	getScrollLeft: function(){
+		return this.getScroll().x;
+	},
+
+	getScrollHeight: function(){
+		return this.getScrollSize().y;
+	},
+
+	getScrollWidth: function(){
+		return this.getScrollSize().x;
+	},
+
+	getTop: function(){
+		return this.getPosition().y;
+	},
+
+	getLeft: function(){
+		return this.getPosition().x;
 	}
 
 });
@@ -2539,193 +2707,60 @@ var Json = JSON;
 JSON.toString = JSON.encode;
 JSON.evaluate = JSON.decode;
 
-var Cookie = {
+var Cookie = new Class({
+
+	Implements: Options,
 
 	options: {
 		path: false,
 		domain: false,
 		duration: false,
-		secure: false
+		secure: false,
+		document: document
 	},
 
-	set: function(key, value, options){
-		options = $merge(this.options, options);
+	initialize: function(key, options){
+		this.key = key;
+		this.setOptions(options);
+	},
+
+	write: function(value){
 		value = encodeURIComponent(value);
-		if (options.domain) value += '; domain=' + options.domain;
-		if (options.path) value += '; path=' + options.path;
-		if (options.duration){
+		if (this.options.domain) value += '; domain=' + this.options.domain;
+		if (this.options.path) value += '; path=' + this.options.path;
+		if (this.options.duration){
 			var date = new Date();
-			date.setTime(date.getTime() + options.duration * 24 * 60 * 60 * 1000);
+			date.setTime(date.getTime() + this.options.duration * 24 * 60 * 60 * 1000);
 			value += '; expires=' + date.toGMTString();
 		}
-		if (options.secure) value += '; secure';
-		document.cookie = key + '=' + value;
-		return $extend(options, {'key': key, 'value': value});
-	},
-
-	get: function(key){
-		var value = document.cookie.match('(?:^|;)\\s*' + key.escapeRegExp() + '=([^;]*)');
-		return value ? decodeURIComponent(value[1]) : false;
-	},
-
-	remove: function(cookie, options){
-		if ($type(cookie) == 'object') this.set(cookie.key, '', $merge(cookie, {duration: -1}));
-		else this.set(cookie, '', $merge(options, {duration: -1}));
-	}
-
-};
-
-(function(){
-
-function $body(el){
-	return el.tagName.toLowerCase() == 'body';
-};
-
-Element.implement({
-
-	positioned: function(){
-		if ($body(this)) return true;
-		return (Element.getComputedStyle(this, 'position') != 'static');
-	},
-
-	getOffsetParent: function(){
-		if ($body(this)) return null;
-		if (!Browser.Engine.trident) return $(this.offsetParent);
-		var el = this;
-		while ((el = el.parentNode)){
-			if (Element.positioned(el)) return $(el);
-		}
-		return null;
-	},
-
-	getSize: function(){
-		if ($body(this)) return this.getWindow().getSize();
-		return {x: this.offsetWidth, y: this.offsetHeight};
-	},
-
-	getScrollSize: function(){
-		if ($body(this)) return this.getWindow().getScrollSize();
-		return {x: this.scrollWidth, y: this.scrollHeight};
-	},
-
-	getScroll: function(){
-		if ($body(this)) return this.getWindow().getScroll();
-		return {x: this.scrollLeft, y: this.scrollTop};
-	},
-
-	scrollTo: function(x, y){
-		if ($body(this)) return this.getWindow().scrollTo(x, y);
-		this.scrollLeft = x;
-		this.scrollTop = y;
+		if (this.options.secure) value += '; secure';
+		this.options.document.cookie = this.key + '=' + value;
 		return this;
 	},
 
-	getPosition: function(relative){
-		if ($body(this)) return {x: 0, y: 0};
-		var el = this, position = {x: 0, y: 0};
-		while (el){
-			position.x += el.offsetLeft;
-			position.y += el.offsetTop;
-			el = el.offsetParent;
-		}
-		var rpos = (relative) ? $(relative).getPosition() : {x: 0, y: 0};
-		return {x: position.x - rpos.x, y: position.y - rpos.y};
+	read: function(){
+		var value = this.options.document.cookie.match('(?:^|;)\\s*' + this.key.escapeRegExp() + '=([^;]*)');
+		return value ? decodeURIComponent(value[1]) : null;
 	},
 
-	getCoordinates: function(element){
-		if ($body(this)) return this.getWindow().getCoordinates();
-		var position = this.getPosition(element), size = this.getSize();
-		var obj = {'top': position.y, 'left': position.x, 'width': size.x, 'height': size.y};
-		obj.right = obj.left + obj.width;
-		obj.bottom = obj.top + obj.height;
-		return obj;
-	},
-
-	getRelativePosition: function(){
-		return this.getPosition(this.getOffsetParent());
-	},
-
-	computePosition: function(obj){
-		return {
-			left: obj.x - (this.getComputedStyle('margin-left').toInt() || 0),
-			top: obj.y - (this.getComputedStyle('margin-top').toInt() || 0)
-		};
-	},
-
-	position: function(obj){
-		return this.setStyles(this.computePosition(obj));
+	erase: function(){
+		new Cookie(this.key, $merge(this.options, {duration: -1})).write('');
+		return this;
 	}
 
 });
 
-})();
+Cookie.set = function(key, value, options){
+	return new Cookie(key, options).write(value);
+};
 
-Native.implement([Window, Document], {
+Cookie.get = function(key){
+	return new Cookie(key).read();
+};
 
-	getSize: function(){
-		var body = this.getDocument().body, html = this.getDocument().documentElement;
-		if (Browser.Engine.webkit419) return {x: this.innerWidth, y: this.innerHeight};
-		return {x: html.clientWidth, y: html.clientHeight};
-	},
-
-	getScroll: function(){
-		var html = this.getDocument().documentElement;
-		return {x: $pick(this.pageXOffset, html.scrollLeft), y: $pick(this.pageYOffset, html.scrollTop)};
-	},
-
-	getScrollSize: function(){
-		var html = this.getDocument().documentElement, body = this.getDocument().body;
-		if (Browser.Engine.trident) return {x: Math.max(html.clientWidth, html.scrollWidth), y: Math.max(html.clientHeight, html.scrollHeight)};
-		if (Browser.Engine.webkit) return {x: body.scrollWidth, y: body.scrollHeight};
-		return {x: html.scrollWidth, y: html.scrollHeight};
-	},
-
-	getPosition: function(){
-		return {x: 0, y: 0};
-	},
-
-	getCoordinates: function(){
-		var size = this.getSize();
-		return {top: 0, left: 0, height: size.y, width: size.x, bottom: size.y, right: size.x};
-	}
-
-});
-
-Native.implement([Window, Document, Element], {
-
-	getHeight: function(){
-		return this.getSize().y;
-	},
-
-	getWidth: function(){
-		return this.getSize().x;
-	},
-
-	getScrollTop: function(){
-		return this.getScroll().y;
-	},
-
-	getScrollLeft: function(){
-		return this.getScroll().x;
-	},
-
-	getScrollHeight: function(){
-		return this.getScrollSize().y;
-	},
-
-	getScrollWidth: function(){
-		return this.getScrollSize().x;
-	},
-
-	getTop: function(){
-		return this.getPosition().y;
-	},
-
-	getLeft: function(){
-		return this.getPosition().x;
-	}
-
-});
+Cookie.remove = function(key, options){
+	return new Cookie(key, options).erase();
+};
 
 var Color = new Native({
   
@@ -3166,7 +3201,7 @@ Fx.CSS = new Class({
 				if (!rule.style || !rule.selectorText || !rule.selectorText.test('^' + selector + '$')) return;
 				Element.Styles.each(function(value, style){
 					if (!rule.style[style] || Element.ShortStyles[style]) return;
-					value = rule.style[style];
+					value = String(rule.style[style]);
 					to[style] = (value.test(/^rgb/)) ? value.rgbToHex() : value;
 				});
 			});
@@ -3290,11 +3325,12 @@ Element.implement({
 		return this;
 	},
 
-	highlight: function(color){
-		this.get('tween', 'background-color').start(color || '#ffff88', function(){
+	highlight: function(start, end){
+		if (!end){
 			var style = this.getStyle('background-color');
-			return (style == 'transparent') ? '#ffffff' : style;
-		}.bind(this));
+			end = (style == 'transparent') ? '#ffffff' : style;
+		}
+		this.get('tween', 'background-color').start(start || '#ffff88', end);
 		return this;
 	},
 
@@ -4273,43 +4309,44 @@ Selectors.Pseudo.children = {
 
 Hash.Cookie = new Class({
 
-	Implements: Options,
+	Extends: Cookie,
 
 	options: {
 		autoSave: true
 	},
 
 	initialize: function(name, options){
-		this.name = name;
-		this.setOptions(options);
+		this.parent(name, options);
 		this.load();
 	},
 
 	save: function(){
-		var str = JSON.encode(this.hash);
-		if (str.length > 4096) return false;
-		if (str.length == 2) Cookie.remove(this.name, this.options);
-		else Cookie.set(this.name, str, this.options);
+		var value = JSON.encode(this.hash);
+		if (value.length > 4096) return false;
+		if (value.length == 2) this.erase();
+		else this.write(value);
 		return true;
 	},
 
 	load: function(){
-		this.hash = new Hash(JSON.decode(Cookie.get(this.name), true));
+		this.hash = new Hash(JSON.decode(this.read(), true));
 		return this;
 	}
 
 });
 
 (function(){
-	var methods = {};
-	Hash.getKeys(Hash.prototype).each(function(method){
-		methods[method] = function(){
-			var value = Hash.prototype[method].apply(this.hash, arguments);
-			if (this.options.autoSave) this.save();
-			return value;
-		};
-	});
-	Hash.Cookie.implement(methods);
+
+var methods = {};
+Hash.each(Hash.prototype, function(method, name){
+	methods[name] = function(){
+		var value = method.apply(this.hash, arguments);
+		if (this.options.autoSave) this.save();
+		return value;
+	};
+});
+Hash.Cookie.implement(methods);
+
 })();
 
 var Sortables = new Class({
