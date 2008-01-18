@@ -22,6 +22,12 @@
 			<id>xhanin</id>
 			<name>Xavier Hanin</name>
 		</developer>
+		<developer>
+			<id>edvinsyse</id>
+			<name>Edvin Syse</name>
+			<email>edvinsyse at users.sf.net</email>
+			<timezone>+1</timezone>
+		</developer>
 	</developers>
 	<build>
         <plugins>

@@ -19,7 +19,6 @@ package org.wicketstuff.jquery;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
-import org.apache.wicket.util.string.Strings;
 
 @SuppressWarnings("serial")
 public class Options implements Serializable {
