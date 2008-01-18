@@ -16,23 +16,25 @@
  */
 package org.wicketstuff.jquery.datepicker;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
-import org.apache.wicket.Application;
+
 import org.apache.wicket.Component;
 import org.apache.wicket.Page;
 import org.apache.wicket.RequestCycle;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.behavior.IBehavior;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
-import org.apache.wicket.datetime.DateConverter;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.form.AbstractTextComponent.ITextFormatProvider;
 import org.apache.wicket.markup.html.resources.CompressedResourceReference;
 import org.apache.wicket.protocol.http.request.WebClientInfo;
 import org.apache.wicket.util.convert.IConverter;
+import org.apache.wicket.util.convert.converters.DateConverter;
 import org.wicketstuff.jquery.JQueryBehavior;
-import org.wicketstuff.misc.behaviors.SimpleAttributeAppender;
 import org.wicketstuff.misc.behaviors.CompositeBehavior;
+import org.wicketstuff.misc.behaviors.SimpleAttributeAppender;
 
 /**
  * Add support of the <a href="http://kelvinluck.com/assets/jquery/datePicker/v2/demo/">datePicker</a>.
@@ -44,7 +46,7 @@ import org.wicketstuff.misc.behaviors.CompositeBehavior;
 public class DatePickerBehavior extends JQueryBehavior {
 
     public static final ResourceReference DATE_JS = new CompressedResourceReference(DatePickerBehavior.class, "date.js");
-    public static final ResourceReference JQUERY_DATEPICKER_JS = new CompressedResourceReference(DatePickerBehavior.class, "jquery.datePicker-2.0.1-beta.js");
+    public static final ResourceReference JQUERY_DATEPICKER_JS = new CompressedResourceReference(DatePickerBehavior.class, "jquery.datePicker.js");
     public static final ResourceReference DATEPICKER_CSS = new CompressedResourceReference(DatePickerBehavior.class, "datePicker.css");
     private DatePickerOptions options_;
     private String format_;
@@ -58,15 +60,6 @@ public class DatePickerBehavior extends JQueryBehavior {
             options = new DatePickerOptions();
         }
         options_ = options;
-        IConverter cnv = Application.get().getConverterLocator().getConverter(Date.class);
-        if ((cnv != null) && (cnv instanceof DateConverter)) {
-            format_ = ((DateConverter) cnv).getDatePattern();
-            format_ = format_.toLowerCase();
-        } else {
-            throw new IllegalStateException("you must define a DateConverter for type java.util.Date (from where the pattern is getted)");
-        }
-        convertDateInOptions(cnv, "startDate");
-        convertDateInOptions(cnv, "endDate");
     }
 
     private void convertDateInOptions(IConverter cnv, String key) {
@@ -112,18 +105,22 @@ public class DatePickerBehavior extends JQueryBehavior {
         Component component = getComponent();
         if (component instanceof TextField) {
             component.setOutputMarkupId(true);
-            component.add(getDatePickerStyle());
-            /*
+            
             if (component instanceof ITextFormatProvider) {
-            format_ = ((ITextFormatProvider) component).getTextFormat();
+            	format_ = ((ITextFormatProvider) component).getTextFormat();
             } else {
-            TextField tf = (TextField) component;
-            IConverter cnv = tf.getConverter(tf.getType());
-            if ((cnv != null) && (cnv instanceof DateConverter)) {
-            format_ = ((DateConverter) cnv).getDatePattern();
+	            TextField tf = (TextField) component;
+	            IConverter cnv = tf.getConverter(tf.getType());
+	            if ((cnv != null) && (DateConverter.class.isAssignableFrom(cnv.getClass()))) {
+	            	SimpleDateFormat sdf = (SimpleDateFormat) ((DateConverter) cnv).getDateFormat(component.getLocale()); 
+	            	format_ = sdf.toLocalizedPattern().toLowerCase();
+	            }
+	            
+	            convertDateInOptions(cnv, "startDate");
+	            convertDateInOptions(cnv, "endDate");
             }
-            }
-             */
+            
+            component.add(getDatePickerStyle());
         }
     }
 

@@ -37,9 +37,9 @@ public class JQueryBehavior extends AbstractDefaultAjaxBehavior {
     // we use CompressedResourceReference so that the included file will have
     // its comments stripped and gzipped.
     /**
-     *  ResourceReference for <a href="http://jquery.com">jquery-1.2.1</a> (include by default when you add the current Behavior).
+     *  ResourceReference for <a href="http://jquery.com">jquery-1.2.2</a> (include by default when you add the current Behavior).
      */
-    public static final CompressedResourceReference JQUERY_1_2_JS = new CompressedResourceReference(JQueryBehavior.class, "jquery-1.2.1.js");
+    public static final CompressedResourceReference JQUERY_1_2_JS = new CompressedResourceReference(JQueryBehavior.class, "jquery-1.2.2.js");
 
     /**
      *  ResourceReference for <a href="http://jquery.com">jquery</a> (include by default when you add the current Behavior).

@@ -17,7 +17,6 @@
 
 package org.wicketstuff.jquery.accordion;
 
-import java.io.Serializable;
 import java.util.Iterator;
 
 import org.apache.wicket.behavior.HeaderContributor;
@@ -26,8 +25,6 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.RefreshingView;
-import org.apache.wicket.markup.repeater.util.ArrayIteratorAdapter;
-import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.wicketstuff.jquery.JQueryBehavior;
 
