@@ -33,18 +33,35 @@ public class DraggableBehavior extends ScriptaculousAjaxBehavior
 	protected void respond(AjaxRequestTarget target) {
 		//no callback...yet
 	}
+	
+	public void setRevert(boolean shouldRevert) {
+		options.put("revert", shouldRevert);
+	}
+
+	public void setSnap(int x, int y) {
+		options.put("snap", new JavascriptBuilder.JavascriptFunction("[" + x + "," + y + "]"));
+	}
+	
+	public void setZIndex(int index) {
+		options.put("zindex", index);
+	}
+	
+	public void setConstraintHorizontal() {
+		options.put("constraint", "horizontal");
+	}
+	public void setConstraintVertical() {
+		options.put("constraint", "vertical");
+	}
 
 	protected void onComponentRendered() {
 		super.onComponentRendered();
-
-		Response response = RequestCycle.get().getResponse();
-
-		options.put("revert", Boolean.TRUE);
 
 		JavascriptBuilder builder = new JavascriptBuilder();
 		builder.addLine("new Draggable('" + getComponent().getMarkupId() + "', ");
 		builder.addOptions(options);
 		builder.addLine(");");
+
+		Response response = RequestCycle.get().getResponse();
 		response.write(builder.buildScriptTagString());
 	}
 }
