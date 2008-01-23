@@ -22,8 +22,11 @@ Zoom in or out and the label will show the current zoom level.
 <center>
 <table>
 	<tr>
-		<td><span class="myButton" wicket:id="zoomLabel" title="current zoom level of the map">zoomLabel</span></td>
-		<td><div wicket:id="topPanel" style="width: 500px; height: 350px;">topPanel</div></td>
+		<td>
+			<div class="myButton" wicket:id="zoom" title="current zoom level of the map">zoom</div>
+			<div class="myButton" wicket:id="bounds" title="current bounds of the map">bounds</div>
+		</td>
+		<td><div wicket:id="map" style="width: 500px; height: 350px;">topPanel</div></td>
 	</tr>
 </table>
 </center>
