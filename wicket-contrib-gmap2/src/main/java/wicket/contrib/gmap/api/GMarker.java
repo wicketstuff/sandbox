@@ -15,7 +15,6 @@
  */
 package wicket.contrib.gmap.api;
 
-import sun.misc.GC.LatencyRequest;
 import wicket.contrib.gmap.js.Constructor;
 
 /**
