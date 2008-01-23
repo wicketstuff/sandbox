@@ -1,12 +1,18 @@
 package wicket.contrib.examples.gmap.listen;
 
+import java.util.Locale;
+
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.basic.MultiLineLabel;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.util.convert.IConverter;
 
 import wicket.contrib.examples.WicketExamplePage;
 import wicket.contrib.gmap.GMap2;
 import wicket.contrib.gmap.api.GControl;
+import wicket.contrib.gmap.api.GLatLngBounds;
+import wicket.contrib.gmap.event.InitListener;
 import wicket.contrib.gmap.event.MoveEndListener;
 
 /**
@@ -18,11 +24,13 @@ public class HomePage extends WicketExamplePage {
 	
 	private Label zoomLabel;
 
+	private MultiLineLabel boundsLabel;
+
 	public HomePage() {
-		final GMap2 topMap = new GMap2("topPanel", LOCALHOST);
-		topMap.addControl(GControl.GLargeMapControl);
-		add(topMap);
-		topMap.add(new MoveEndListener()
+		final GMap2 map = new GMap2("map", LOCALHOST);
+		map.addControl(GControl.GLargeMapControl);
+		add(map);
+		map.add(new MoveEndListener()
 		{
 			private static final long serialVersionUID = 1L;
 
@@ -30,11 +38,49 @@ public class HomePage extends WicketExamplePage {
 			protected void onMoveEnd(AjaxRequestTarget target)
 			{
 				target.addComponent(zoomLabel);
+				target.addComponent(boundsLabel);
 			}
 		});
-		zoomLabel = new Label("zoomLabel", new PropertyModel(topMap, "zoom"));
+		map.add(new InitListener() {
+			private static final long serialVersionUID = 1L;
+			
+			@Override
+			protected void onInit(AjaxRequestTarget target) {
+				target.addComponent(boundsLabel);
+			}
+		});
+		
+		zoomLabel = new Label("zoom", new PropertyModel(map, "zoom"));
 		zoomLabel.setOutputMarkupId(true);
 		add(zoomLabel);
+		
+		boundsLabel = new MultiLineLabel("bounds", new PropertyModel(map, "bounds")) {
+			@Override
+			public IConverter getConverter(Class type) {
+				return new IConverter() {
+					public Object convertToObject(String value, Locale locale) {
+						throw new UnsupportedOperationException();
+					}
+					public String convertToString(Object value, Locale locale) {
+						GLatLngBounds bounds = (GLatLngBounds)value;
+						
+						StringBuffer buffer = new StringBuffer();
+						buffer.append("NE (");
+						buffer.append(bounds.getNE().getLat());
+						buffer.append(",");
+						buffer.append(bounds.getNE().getLng());
+						buffer.append(")\nSW (");
+						buffer.append(bounds.getSW().getLat());
+						buffer.append(",");
+						buffer.append(bounds.getSW().getLng());
+						buffer.append(")");
+						return buffer.toString();
+					}
+				};
+			}
+		};
+		boundsLabel.setOutputMarkupId(true);
+		add(boundsLabel);
 	}
 
 	/**
