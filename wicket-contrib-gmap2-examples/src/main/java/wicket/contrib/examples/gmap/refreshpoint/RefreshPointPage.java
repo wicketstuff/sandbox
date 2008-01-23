@@ -15,7 +15,6 @@ import wicket.contrib.gmap.api.GMarkerOptions;
 import wicket.contrib.gmap.api.GOverlay;
 import wicket.contrib.gmap.api.GPoint;
 import wicket.contrib.gmap.api.GSize;
-import wicket.contrib.gmap.behavior.GMapAutoUpdatingBehavior;
 
 /**
  * SimplePage for the wicket-contrib-gmap2 project
