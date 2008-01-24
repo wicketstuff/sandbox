@@ -18,8 +18,6 @@
  */
 package wicket.contrib.gmap.api;
 
-import java.io.Serializable;
-
 import wicket.contrib.gmap.js.Constructor;
 
 /**
@@ -27,7 +25,7 @@ import wicket.contrib.gmap.js.Constructor;
  * 
  * @author Robert Jacolin, Vincent Demay, Gregory Maes - Anyware Technologies
  */
-public class GSize implements Serializable
+public class GSize implements GValue
 {
 
 	private float width;
@@ -49,8 +47,35 @@ public class GSize implements Serializable
 		return height;
 	}
 
-	protected String getJSconstructor()
+	public String getJSconstructor()
 	{
 		return new Constructor("GSize").add(width).add(height).toJS();
+	}
+	
+	@Override
+	public int hashCode()
+	{
+		final int PRIME = 31;
+		int result = 1;
+		result = PRIME * result + Float.floatToIntBits(height);
+		result = PRIME * result + Float.floatToIntBits(width);
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		final GSize other = (GSize)obj;
+		if (Float.floatToIntBits(height) != Float.floatToIntBits(other.height))
+			return false;
+		if (Float.floatToIntBits(width) != Float.floatToIntBits(other.width))
+			return false;
+		return true;
 	}
 }

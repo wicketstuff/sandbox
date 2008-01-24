@@ -20,8 +20,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.wicket.ajax.AjaxRequestTarget;
-
 import wicket.contrib.gmap.GMap2;
 import wicket.contrib.gmap.event.GOverlayListenerBehavior;
 
