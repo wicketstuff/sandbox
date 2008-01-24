@@ -23,21 +23,20 @@ public class CustomPointPage extends WicketExamplePage {
 		GMap2 map = new GMap2("map", LOCALHOST);
 		map.setCenter(new GLatLng(52.37649, 4.888573));
 		add(map);
-		
-		GMarkerOptions options = new GMarkerOptions();
-		options.setTitle("My Title");
-		
-		GIcon icon = new GIcon();
-		icon.setImage(urlFor(new ResourceReference(CustomPointPage.class, "image.gif")).toString());
-		icon.setIconSize(new GSize(64, 64));
-		icon.setIconAnchor(new GPoint(19, 40));
-		icon.setShadow(urlFor(new ResourceReference(CustomPointPage.class, "shadow.png")).toString());
-		icon.setShadowSize(new GSize(64, 64));
-		icon.setInfoWindowAnchor(new GPoint(9, 2));
-		icon.setInfoShadowAnchor(new GPoint(18, 25));
-		options.setIcon(icon);
 
-		GOverlay marker = new GMarker(new GLatLng(52.37649, 4.888573), options);
+		GIcon icon = new GIcon(urlFor(
+				new ResourceReference(CustomPointPage.class, "image.gif"))
+				.toString(), urlFor(
+				new ResourceReference(CustomPointPage.class, "shadow.png"))
+				.toString())
+			.iconSize(new GSize(64, 64))
+			.shadowSize(new GSize(64, 64))
+			.iconAnchor(new GPoint(19, 40))
+			.infoWindowAnchor(new GPoint(9, 2))
+			.infoShadowAnchor(new GPoint(18, 25));
+
+		GOverlay marker = new GMarker(new GLatLng(52.37649, 4.888573),
+				new GMarkerOptions("My Title", icon));
 
 		map.addOverlay(marker);
 	}

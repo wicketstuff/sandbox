@@ -19,8 +19,7 @@ import wicket.contrib.gmap.event.ClickListener;
 /**
  * Example HomePage for the wicket-contrib-gmap2 project
  */
-public class HomePage extends WicketExamplePage
-{
+public class HomePage extends WicketExamplePage {
 
 	private static final long serialVersionUID = 1L;
 
@@ -28,28 +27,24 @@ public class HomePage extends WicketExamplePage
 
 	private final Label markerLabel;
 
-	public HomePage()
-	{
+	public HomePage() {
 		feedback = new FeedbackPanel("feedback");
 		feedback.setOutputMarkupId(true);
 		add(feedback);
 
 		final GMap2 topMap = new GMap2("topPanel", LOCALHOST);
 		topMap.setDoubleClickZoomEnabled(true);
-		topMap.add(new ClickListener()
-		{
+		topMap.add(new ClickListener() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void onClick(AjaxRequestTarget target, GLatLng latLng, GOverlay overlay)
-			{
-				GMarker marker = (overlay instanceof GMarker) ? (GMarker) overlay : null; 
-				if (marker != null)
-				{
+			protected void onClick(AjaxRequestTarget target, GLatLng latLng,
+					GOverlay overlay) {
+				GMarker marker = (overlay instanceof GMarker) ? (GMarker) overlay
+						: null;
+				if (marker != null) {
 					topMap.getInfoWindow().open(marker, new HelloPanel());
-				}
-				else if (latLng != null)
-				{
+				} else if (latLng != null) {
 					marker = new GMarker(latLng);
 					topMap.addOverlay(marker);
 				}
@@ -57,29 +52,24 @@ public class HomePage extends WicketExamplePage
 			}
 		});
 		topMap.setZoom(10);
-		GMarkerOptions options = new GMarkerOptions();
-		options.setTitle("Home");
-		options.setDraggable(true);
-		options.setAutoPan(true);
+		GMarkerOptions options = new GMarkerOptions("Home").draggable(true)
+				.autoPan(true);
 		topMap.addOverlay(new GMarker(new GLatLng(37.4, -122.1), options));
 		topMap.addControl(GControl.GLargeMapControl);
 		topMap.addControl(GControl.GMapTypeControl);
 		add(topMap);
 
 		markerLabel = new Label("markerLabel", new Model(null));
-		markerLabel.add(new AjaxEventBehavior("onclick")
-		{
+		markerLabel.add(new AjaxEventBehavior("onclick") {
 			private static final long serialVersionUID = 1L;
 
 			/**
 			 * @see org.apache.wicket.ajax.AjaxEventBehavior#onEvent(org.apache.wicket.ajax.AjaxRequestTarget)
 			 */
 			@Override
-			protected void onEvent(AjaxRequestTarget target)
-			{
-				GMarker marker = (GMarker)markerLabel.getModelObject();
-				if (marker != null)
-				{
+			protected void onEvent(AjaxRequestTarget target) {
+				GMarker marker = (GMarker) markerLabel.getModelObject();
+				if (marker != null) {
 					GLatLng point = marker.getLagLng();
 
 					GMarker random = new GMarker(new GLatLng(point.getLat()
@@ -92,17 +82,14 @@ public class HomePage extends WicketExamplePage
 		});
 		add(markerLabel);
 
-		add(new Link("reload")
-		{
+		add(new Link("reload") {
 			@Override
-			public void onClick()
-			{
+			public void onClick() {
 			}
 		});
 	}
 
-	private void markerSelected(AjaxRequestTarget target, GMarker marker)
-	{
+	private void markerSelected(AjaxRequestTarget target, GMarker marker) {
 		markerLabel.getModel().setObject(marker);
 		target.addComponent(markerLabel);
 	}

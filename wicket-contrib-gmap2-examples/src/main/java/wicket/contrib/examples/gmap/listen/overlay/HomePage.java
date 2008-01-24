@@ -9,7 +9,6 @@ import wicket.contrib.gmap.GMap2;
 import wicket.contrib.gmap.api.GControl;
 import wicket.contrib.gmap.api.GMarker;
 import wicket.contrib.gmap.api.GMarkerOptions;
-import wicket.contrib.gmap.api.GOverlay;
 import wicket.contrib.gmap.event.GMarkerDragendListener;
 
 /**
@@ -23,8 +22,7 @@ public class HomePage extends WicketExamplePage {
 		final GMap2 topMap = new GMap2("topPanel", LOCALHOST);
 		topMap.addControl(GControl.GLargeMapControl);
 		add(topMap);
-		GMarkerOptions options = new GMarkerOptions();
-		options.setDraggable(true);
+		GMarkerOptions options = new GMarkerOptions().draggable(true);
 		final GMarker marker = new GMarker(topMap.getCenter(), options);
 		final Label label = new Label("label", new PropertyModel(marker, "latLng"));
 		label.setOutputMarkupId(true);
