@@ -165,6 +165,10 @@ function WicketMap2(id) {
 		this.map.setCenter(center);
 	}
 
+	this.panTo = function(center) {
+		this.map.panTo(center);
+	}
+
 	this.panDirection = function(dx, dy) {
 		this.map.panDirection(dx, dy);
 	}
