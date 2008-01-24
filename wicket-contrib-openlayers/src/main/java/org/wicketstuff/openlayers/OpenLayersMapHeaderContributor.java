@@ -8,20 +8,15 @@ import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WicketEventReference;
 import org.apache.wicket.markup.html.resources.JavascriptResourceReference;
 
-public class OpenLayersMapHeaderContributor extends HeaderContributor
-{
+public class OpenLayersMapHeaderContributor extends HeaderContributor {
 	private static final long serialVersionUID = 1L;
 
 	// We have some custom Javascript.
 	private static final ResourceReference WICKET_OMAP_JS = new JavascriptResourceReference(
 			OpenLayersMap.class, "wicket-openlayersmap.js");
 
-	protected static final String GOOGLE_LOAD_MAPS = "google.load(\"maps\", \"2.x\");";
-
-	public OpenLayersMapHeaderContributor()
-	{
-		super(new IHeaderContributor()
-		{
+	public OpenLayersMapHeaderContributor() {
+		super(new IHeaderContributor() {
 			private static final long serialVersionUID = 1L;
 
 			/**
@@ -31,17 +26,19 @@ public class OpenLayersMapHeaderContributor extends HeaderContributor
 			 * 
 			 * @see org.apache.wicket.markup.html.IHeaderContributor#renderHead(org.apache.wicket.markup.html.IHeaderResponse)
 			 */
-			public void renderHead(IHeaderResponse response)
-			{
-				response.renderJavascriptReference("http://openlayers.org/api/OpenLayers.js");
-				response.renderJavascript(GOOGLE_LOAD_MAPS, OpenLayersMapHeaderContributor.class.getName() + "_googleload");
-				response.renderJavascriptReference(WicketEventReference.INSTANCE);
-				response.renderJavascriptReference(WicketAjaxReference.INSTANCE);
+			public void renderHead(IHeaderResponse response) {
+				response
+						.renderJavascriptReference("http://openlayers.org/api/OpenLayers.js");
+				response
+						.renderJavascriptReference(WicketEventReference.INSTANCE);
+				response
+						.renderJavascriptReference(WicketAjaxReference.INSTANCE);
 				response.renderJavascriptReference(WICKET_OMAP_JS);
 				// see:
 				// http://www.google.com/apis/maps/documentation/#Memory_Leaks
-				
-				response.renderOnEventJavacript("window", "onUnload", "google.maps.Unload();");
+
+				response.renderOnEventJavacript("window", "onUnload",
+						"google.maps.Unload();");
 			}
 		});
 	}
