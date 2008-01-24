@@ -34,22 +34,31 @@ Wicket.omaps = {};
 function WicketOMap(id) {
 	Wicket.omaps[id] = this;
 	this.map = new OpenLayers.Map(id);
-
+//	this.map.addControl(new OpenLayers.Control.LayerSwitcher());
 //	this.controls = {};
 //	this.overlays = {};
-//	this.onEvent = function (callBack, params) {
-//		params["center"] = this.map.getCenter();
-//		params["bounds"] = this.map.getExtent();
-//		params["zoom"] = this.map.getZoomForExtent(this.map.getExtent(), false);
-// could not find
-//		params['hidden'] = this.map.getInfoWindow().isHidden();
-//		for (var key in params) {
-//			callBack = callBack + "&" + key + "=" + params[key];
-//		}
-//		wicketAjaxGet(callBack, function () {
-//		}, function () {
-//		});
-//	};
+	this.onEvent = function (callBack, params) {
+		params["center"] = this.map.getCenter();
+		params["bounds"] = this.map.getExtent();
+		params["zoom"] = this.map.getZoomForExtent(this.map.getExtent(), false);
+		// could not find
+		params["hidden"] = this.map.getInfoWindow().isHidden();
+		for (var key in params) {
+			callBack = callBack + "&" + key + "=" + params[key];
+		}
+		wicketAjaxGet(callBack, function () {
+		}, function () {
+		});
+	};
+	this.addLayer = function (layer) {
+		var self = this;
+		self.map.addLayer(layer);
+	};
+	this.zoomToMaxExtent = function () {
+		var self = this;
+		self.map.zoomToMaxExtent();
+	};
+	
 //	this.addListener = function (event, callBack) {
 //		var self = this;
 //		if (event == "click" || event == "dblclick") {
