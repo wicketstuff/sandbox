@@ -24,51 +24,55 @@ public class RefreshPointPage extends WicketExamplePage {
 	private static final long serialVersionUID = 1L;
 
 	private GMap2 map;
-	
+
 	public RefreshPointPage() {
 		map = new GMap2("map", LOCALHOST);
 		add(map);
-		
-		GOverlay overlay = createOverlay("Amsterdam", new GLatLng(52.37649, 4.888573), "image.gif", "shadow.png");
-		
+
+		GOverlay overlay = createOverlay("Amsterdam", new GLatLng(52.37649,
+				4.888573), "image.gif", "shadow.png");
+
 		map.addOverlay(overlay);
-		
+
 		map.add(new GMapAutoUpdatingBehavior(Duration.seconds(5)) {
 			private static final long serialVersionUID = 1L;
+
 			private int i = 1;
-			
+
 			@Override
 			protected void onTimer(AjaxRequestTarget target, GMap2 map) {
 				GOverlay overlay;
-				if(i % 3 == 0) {
-					overlay = createOverlay("Amsterdam", new GLatLng(52.37649, 4.888573), "image.gif", "shadow.png");
+				if (i % 3 == 0) {
+					overlay = createOverlay("Amsterdam", new GLatLng(52.37649,
+							4.888573), "image.gif", "shadow.png");
 					i = 0;
-				} else if(i % 3 == 1) {
-					overlay = createOverlay("Amsterdam", new GLatLng(52.37649, 4.888573), "image2.gif", "shadow2.png");
+				} else if (i % 3 == 1) {
+					overlay = createOverlay("Amsterdam", new GLatLng(52.37649,
+							4.888573), "image2.gif", "shadow2.png");
 				} else {
-					overlay = createOverlay("Toulouse", new GLatLng(43.604363, 1.442951), "image2.gif", "shadow2.png");
+					overlay = createOverlay("Toulouse", new GLatLng(43.604363,
+							1.442951), "image2.gif", "shadow2.png");
 				}
 				i++;
 				map.setOverlays(Collections.singletonList(overlay));
 			}
 		});
 	}
-	
-	private GOverlay createOverlay(String title, GLatLng latLng, String image, String shadow) {
-		GMarkerOptions options = new GMarkerOptions();
-		options.setTitle(title);
-		
-		GIcon icon = new GIcon();
-		icon.setImage(urlFor(new ResourceReference(RefreshPointPage.class, image)).toString());
-		icon.setIconSize(new GSize(64, 64));
-		icon.setIconAnchor(new GPoint(19, 40));
-		icon.setShadow(urlFor(new ResourceReference(RefreshPointPage.class, shadow)).toString());
-		icon.setShadowSize(new GSize(64, 64));
-		icon.setInfoWindowAnchor(new GPoint(9, 2));
-		icon.setInfoShadowAnchor(new GPoint(18, 25));
-		options.setIcon(icon);
+
+	private GOverlay createOverlay(String title, GLatLng latLng, String image,
+			String shadow) {
+		GIcon icon = new GIcon(urlFor(
+				new ResourceReference(RefreshPointPage.class, image))
+				.toString(), urlFor(
+				new ResourceReference(RefreshPointPage.class, shadow))
+				.toString())
+			.iconSize(new GSize(64, 64))
+			.shadowSize(new GSize(64, 64))
+			.iconAnchor(new GPoint(19, 40))
+			.infoWindowAnchor(new GPoint(9, 2))
+			.infoShadowAnchor(new GPoint(18, 25));
 		map.setCenter(latLng);
-		return new GMarker(latLng, options);
+		return new GMarker(latLng, new GMarkerOptions(title, icon));
 	}
 
 	/**
