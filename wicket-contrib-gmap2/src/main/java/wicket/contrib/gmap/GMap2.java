@@ -385,6 +385,27 @@ public class GMap2 extends Panel
 		}
 	}
 
+	/**
+	 * Changes the center point of the map to the given point. If the point is
+	 * already visible in the current map view, change the center in a smooth
+	 * animation.
+	 * 
+	 * @param center
+	 *            the new center of the map
+	 */
+	public void panTo(GLatLng center)
+	{
+		if (!this.center.equals(center))
+		{
+			this.center = center;
+
+			if (AjaxRequestTarget.get() != null && findPage() != null)
+			{
+				AjaxRequestTarget.get().appendJavascript(getJSpanTo(center));
+			}
+		}
+	}
+
 	public GInfoWindow getInfoWindow()
 	{
 		return infoWindow;
@@ -475,6 +496,11 @@ public class GMap2 extends Panel
 	private String getJSpanDirection(int dx, int dy)
 	{
 		return getJSinvoke("panDirection(" + dx + "," + dy + ")");
+	}
+
+	private String getJSpanTo(GLatLng center)
+	{
+		return getJSinvoke("panTo(" + center.getJSconstructor() + ")");
 	}
 
 	private String getJSzoomOut()
