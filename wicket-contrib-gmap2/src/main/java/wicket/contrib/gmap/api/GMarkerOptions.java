@@ -20,7 +20,7 @@ package wicket.contrib.gmap.api;
 
 import wicket.contrib.gmap.js.ObjectLiteral;
 
-public class GMarkerOptions implements GValue
+public class GMarkerOptions implements GValue, Cloneable
 {
 	private String title;
 	
@@ -33,6 +33,21 @@ public class GMarkerOptions implements GValue
 	private boolean autoPan = false;
 	
 	private GIcon icon = null;
+
+	public GMarkerOptions()
+	{
+	}
+
+	public GMarkerOptions(String title)
+	{
+		this.title = title;
+	}
+
+	public GMarkerOptions(String title, GIcon icon)
+	{
+		this.title = title;
+		this.icon = icon;
+	}
 
 	public String getJSconstructor()
 	{
@@ -71,50 +86,108 @@ public class GMarkerOptions implements GValue
 		return title;
 	}
 
-	public void setTitle(String title)
-	{
-		this.title = title;
-	}
-
 	public boolean isDraggable() {
 		return draggable;
-	}
-
-	public void setDraggable(boolean draggable) {
-		this.draggable = draggable;
 	}
 
 	public boolean isClickable() {
 		return clickable;
 	}
 
-	public void setClickable(boolean clickable) {
-		this.clickable = clickable;
-	}
-
 	public boolean isBouncy() {
 		return bouncy;
-	}
-
-	public void setBouncy(boolean bouncy) {
-		this.bouncy = bouncy;
 	}
 
 	public boolean isAutoPan() {
 		return autoPan;
 	}
 
-	public void setAutoPan(boolean autoPan) {
-		this.autoPan = autoPan;
-	}
-
-	public void setIcon(GIcon icon)
-	{
-		this.icon = icon;
-	}
-	
 	public GIcon getIcon()
 	{
 		return icon;
+	}
+	
+	public GMarkerOptions clone() {
+		try
+		{
+			return (GMarkerOptions)super.clone();
+		}
+		catch (CloneNotSupportedException e)
+		{
+			throw new Error(e);
+		}
+	}
+	
+	public GMarkerOptions clickable(boolean clickable) {
+		GMarkerOptions clone = clone();
+		clone.clickable = clickable;
+		return clone;
+	}
+	
+	public GMarkerOptions draggable(boolean draggable) {
+		GMarkerOptions clone = clone();
+		clone.draggable = draggable;
+		return clone;
+	}
+	
+	public GMarkerOptions autoPan(boolean autoPan) {
+		GMarkerOptions clone = clone();
+		clone.autoPan = autoPan;
+		return clone;
+	}
+	
+	public GMarkerOptions bouncy(boolean bouncy) {
+		GMarkerOptions clone = clone();
+		clone.bouncy = bouncy;
+		return clone;
+	}
+	
+	@Override
+	public int hashCode()
+	{
+		final int PRIME = 31;
+		int result = 1;
+		result = PRIME * result + (autoPan ? 1231 : 1237);
+		result = PRIME * result + (bouncy ? 1231 : 1237);
+		result = PRIME * result + (clickable ? 1231 : 1237);
+		result = PRIME * result + (draggable ? 1231 : 1237);
+		result = PRIME * result + ((icon == null) ? 0 : icon.hashCode());
+		result = PRIME * result + ((title == null) ? 0 : title.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		final GMarkerOptions other = (GMarkerOptions)obj;
+		if (autoPan != other.autoPan)
+			return false;
+		if (bouncy != other.bouncy)
+			return false;
+		if (clickable != other.clickable)
+			return false;
+		if (draggable != other.draggable)
+			return false;
+		if (icon == null)
+		{
+			if (other.icon != null)
+				return false;
+		}
+		else if (!icon.equals(other.icon))
+			return false;
+		if (title == null)
+		{
+			if (other.title != null)
+				return false;
+		}
+		else if (!title.equals(other.title))
+			return false;
+		return true;
 	}
 }

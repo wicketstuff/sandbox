@@ -18,7 +18,6 @@
  */
 package wicket.contrib.gmap.api;
 
-import java.io.Serializable;
 
 /**
  * Represents an Google Maps API's
@@ -26,7 +25,7 @@ import java.io.Serializable;
  * 
  * @author Robert Jacolin, Gregory Maes, Vincent Demay, Anyware Technologies
  */
-public class GIcon implements Serializable
+public class GIcon implements GValue, Cloneable
 {
 	/**
 	 * 
@@ -50,14 +49,26 @@ public class GIcon implements Serializable
 		this.image = image;
 	}
 
+	public GIcon(String image, String shadow)
+	{
+		this.image = image;
+		this.shadow = shadow;
+	}
+
+	public GIcon(String image, String shadow, GSize iconSize, GSize shadowSize, GPoint iconAnchor, GPoint infoWindowAnchor, GPoint infoShadowAnchor)
+	{
+		this.image = image;
+		this.shadow = shadow;
+		this.iconSize = iconSize;
+		this.shadowSize = shadowSize;
+		this.iconAnchor = iconAnchor;
+		this.infoWindowAnchor = infoWindowAnchor;
+		this.infoShadowAnchor = infoShadowAnchor;
+	}
+
 	public String getId()
 	{
 		return "icon" + String.valueOf(System.identityHashCode(this));
-	}
-
-	public void setImage(String image)
-	{
-		this.image = image;
 	}
 
 	public String getImage()
@@ -65,19 +76,9 @@ public class GIcon implements Serializable
 		return image;
 	}
 
-	public void setShadow(String shadow)
-	{
-		this.shadow = shadow;
-	}
-
 	public String getShadow()
 	{
 		return shadow;
-	}
-
-	public void setIconSize(GSize size)
-	{
-		this.iconSize = size;
 	}
 
 	public GSize getIconSize()
@@ -85,19 +86,9 @@ public class GIcon implements Serializable
 		return iconSize;
 	}
 
-	public void setShadowSize(GSize size)
-	{
-		this.shadowSize = size;
-	}
-
 	public GSize getShadowSize()
 	{
 		return this.shadowSize;
-	}
-
-	public void setIconAnchor(GPoint size)
-	{
-		this.iconAnchor = size;
 	}
 
 	public GPoint getIconAnchor()
@@ -105,19 +96,9 @@ public class GIcon implements Serializable
 		return this.iconAnchor;
 	}
 
-	public void setInfoWindowAnchor(GPoint size)
-	{
-		this.infoWindowAnchor = size;
-	}
-
 	public GPoint getInfoWindowAnchor()
 	{
 		return this.infoWindowAnchor;
-	}
-
-	public void setInfoShadowAnchor(GPoint size)
-	{
-		this.infoShadowAnchor = size;
 	}
 
 	public GPoint getInfoShadowAnchor()
@@ -125,7 +106,7 @@ public class GIcon implements Serializable
 		return this.infoShadowAnchor;
 	}
 
-	protected String getJSconstructor()
+	public String getJSconstructor()
 	{
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("(function() {\n");
@@ -162,4 +143,127 @@ public class GIcon implements Serializable
 		buffer.append("})()\n");
 		return buffer.toString();
 	}
+
+	@Override
+	public int hashCode()
+	{
+		final int PRIME = 31;
+		int result = 1;
+		result = PRIME * result + ((iconAnchor == null) ? 0 : iconAnchor.hashCode());
+		result = PRIME * result + ((iconSize == null) ? 0 : iconSize.hashCode());
+		result = PRIME * result + ((image == null) ? 0 : image.hashCode());
+		result = PRIME * result + ((infoShadowAnchor == null) ? 0 : infoShadowAnchor.hashCode());
+		result = PRIME * result + ((infoWindowAnchor == null) ? 0 : infoWindowAnchor.hashCode());
+		result = PRIME * result + ((shadow == null) ? 0 : shadow.hashCode());
+		result = PRIME * result + ((shadowSize == null) ? 0 : shadowSize.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		final GIcon other = (GIcon)obj;
+		if (iconAnchor == null)
+		{
+			if (other.iconAnchor != null)
+				return false;
+		}
+		else if (!iconAnchor.equals(other.iconAnchor))
+			return false;
+		if (iconSize == null)
+		{
+			if (other.iconSize != null)
+				return false;
+		}
+		else if (!iconSize.equals(other.iconSize))
+			return false;
+		if (image == null)
+		{
+			if (other.image != null)
+				return false;
+		}
+		else if (!image.equals(other.image))
+			return false;
+		if (infoShadowAnchor == null)
+		{
+			if (other.infoShadowAnchor != null)
+				return false;
+		}
+		else if (!infoShadowAnchor.equals(other.infoShadowAnchor))
+			return false;
+		if (infoWindowAnchor == null)
+		{
+			if (other.infoWindowAnchor != null)
+				return false;
+		}
+		else if (!infoWindowAnchor.equals(other.infoWindowAnchor))
+			return false;
+		if (shadow == null)
+		{
+			if (other.shadow != null)
+				return false;
+		}
+		else if (!shadow.equals(other.shadow))
+			return false;
+		if (shadowSize == null)
+		{
+			if (other.shadowSize != null)
+				return false;
+		}
+		else if (!shadowSize.equals(other.shadowSize))
+			return false;
+		return true;
+	}
+
+	public GIcon clone() {
+		try
+		{
+			return (GIcon)super.clone();
+		}
+		catch (CloneNotSupportedException e)
+		{
+			throw new Error(e);
+		}
+	}
+
+	public GIcon iconSize(GSize iconSize)
+	{
+		GIcon clone = clone();
+		clone.iconSize = iconSize;
+		return clone;
+	}
+
+	public GIcon shadowSize(GSize shadowSize)
+	{
+		GIcon clone = clone();
+		clone.shadowSize = shadowSize;
+		return clone;
+	}
+
+	public GIcon iconAnchor(GPoint iconAnchor)
+	{
+		GIcon clone = clone();
+		clone.iconAnchor = iconAnchor;
+		return clone;
+	}
+
+	public GIcon infoWindowAnchor(GPoint infoWindowAnchor)
+	{
+		GIcon clone = clone();
+		clone.infoWindowAnchor = infoWindowAnchor;
+		return clone;
+	}
+
+	public GIcon infoShadowAnchor(GPoint infoShadowAnchor)
+	{
+		GIcon clone = clone();
+		clone.infoShadowAnchor = infoShadowAnchor;
+		return clone;
+	}	
 }

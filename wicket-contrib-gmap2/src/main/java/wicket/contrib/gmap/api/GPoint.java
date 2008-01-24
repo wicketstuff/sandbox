@@ -18,8 +18,6 @@
  */
 package wicket.contrib.gmap.api;
 
-import java.io.Serializable;
-
 import wicket.contrib.gmap.js.Constructor;
 
 /**
@@ -27,7 +25,7 @@ import wicket.contrib.gmap.js.Constructor;
  * 
  * @author Iulian-Corneliu Costan
  */
-public class GPoint implements Serializable
+public class GPoint implements GValue
 {
 
 	private float longitude;
@@ -49,8 +47,35 @@ public class GPoint implements Serializable
 		return latitude;
 	}
 
-	protected String getJSconstructor()
+	public String getJSconstructor()
 	{
 		return new Constructor("GPoint").add(longitude).add(latitude).toJS();
+	}
+
+	@Override
+	public int hashCode()
+	{
+		final int PRIME = 31;
+		int result = 1;
+		result = PRIME * result + Float.floatToIntBits(latitude);
+		result = PRIME * result + Float.floatToIntBits(longitude);
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		final GPoint other = (GPoint)obj;
+		if (Float.floatToIntBits(latitude) != Float.floatToIntBits(other.latitude))
+			return false;
+		if (Float.floatToIntBits(longitude) != Float.floatToIntBits(other.longitude))
+			return false;
+		return true;
 	}
 }

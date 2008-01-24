@@ -18,7 +18,9 @@ package wicket.contrib.gmap.api;
 import java.io.Serializable;
 
 /**
- * Root class for any class that represents a GMap JavaScript class or object.
+ * Root class for all <em>Value Objects</em>.<br>
+ * All implementations shall override {@link #equals(Object)} and
+ * {@link #hashCode()}.
  */
 public interface GValue extends Serializable
 {

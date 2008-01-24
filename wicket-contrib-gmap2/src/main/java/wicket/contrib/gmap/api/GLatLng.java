@@ -86,19 +86,34 @@ public class GLatLng implements GValue
 	@Override
 	public int hashCode()
 	{
-		return new Double(lat).hashCode() ^ new Double(lng).hashCode()
-				^ new Boolean(unbounded).hashCode();
+		final int PRIME = 31;
+		int result = super.hashCode();
+		long temp;
+		temp = Double.doubleToLongBits(lat);
+		result = PRIME * result + (int)(temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(lng);
+		result = PRIME * result + (int)(temp ^ (temp >>> 32));
+		result = PRIME * result + (unbounded ? 1231 : 1237);
+		return result;
 	}
 
 	@Override
 	public boolean equals(Object obj)
 	{
-		if (obj instanceof GLatLng)
-		{
-			GLatLng t = (GLatLng)obj;
-			return t.lat == lat && t.lng == lng && t.unbounded == unbounded;
-		}
-		return false;
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		final GLatLng other = (GLatLng)obj;
+		if (Double.doubleToLongBits(lat) != Double.doubleToLongBits(other.lat))
+			return false;
+		if (Double.doubleToLongBits(lng) != Double.doubleToLongBits(other.lng))
+			return false;
+		if (unbounded != other.unbounded)
+			return false;
+		return true;
 	}
 
 	/**
