@@ -63,13 +63,13 @@ public abstract class Overlay implements Serializable
 	
 	public String getJSadd(OpenLayersMap map)
 	{
-		return map.getJSinvoke("addMarker('" + getId() + "', "		
+		return map.getJSinvoke("addOverlay('" + getId() + "', "		
 				+ getJSconstructor() + ")");
 	}
 
 	public String getJSremove(OpenLayersMap map)
 	{
-		return map.getJSinvoke("removeMarker('" + getId() + "')");
+		return map.getJSinvoke("removeOverlay('" + getId() + "')");
 	}
 	
 	public String getId() {
