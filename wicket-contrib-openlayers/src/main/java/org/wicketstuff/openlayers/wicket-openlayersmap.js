@@ -33,17 +33,17 @@ if (!Wicket) {
 Wicket.omaps = {};
 function WicketOMap(id, options) {
 	// Default seems to be 0
-	OpenLayers.IMAGE_RELOAD_ATTEMPTS=5;
+	OpenLayers.IMAGE_RELOAD_ATTEMPTS = 5;
 	Wicket.omaps[id] = this;
-	if(options!==null)
-	{
-	this.map = new OpenLayers.Map(id,options);
-	}
-	else{
+	if (options !== null) {
+		this.map = new OpenLayers.Map(id, options);
+	} else {
 		this.map = new OpenLayers.Map(id);
 	}
 	this.controls = {};
 	this.overlays = {};
+	this.openOverlays = new OpenLayers.Layer.Markers("markers" + id);
+	this.map.addLayer(this.openOverlays);
 	this.onEvent = function (callBack, params) {
 		params["center"] = this.map.getCenter();
 		params["bounds"] = this.map.getExtent();
@@ -140,21 +140,17 @@ function WicketOMap(id, options) {
 		}
 	};
 //	//marker?
-//	this.addOverlay = function (overlayId, overlay) {
-//		this.overlays[overlayId] = overlay;
-//		overlay.overlayId = overlayId;
-//		if (markers == null) {
-//			markers = new OpenLayers.Layer.Markers("markers" + this.div.getId());
-//			this.addLayer(markers);
-//		}
-//		markers.addMarker(overlay);
-//	};
-//	this.removeOverlay = function (overlayId) {
-//		if (this.overlays[overlayId] != null) {
-//			markers.removeMarker(this.overlays[overlayId]);
-//			this.overlays[overlayId] = null;
-//		}
-//	};
+	this.addOverlay = function (overlayId, overlay) {
+		this.overlays[overlayId] = overlay;
+		overlay.overlayId = overlayId;
+		this.openOverlays.addMarker(overlay);
+	};
+	this.removeOverlay = function (overlayId) {
+		if (this.overlays[overlayId] !== null) {
+			this.openOverlays.removeMarker(this.overlays[overlayId]);
+			this.overlays[overlayId] = null;
+		}
+	};
 //	this.clearOverlays = function () {
 //		this.overlays = {};
 //		markers.destroy();
