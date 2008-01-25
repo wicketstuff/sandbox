@@ -6,11 +6,11 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import wicket.contrib.activewidgets.ActiveWidgetsConfiguration;
 import wicket.contrib.activewidgets.examples.ContactDao;
 import wicket.contrib.activewidgets.examples.web.ContactsDataProvider;
 import wicket.contrib.activewidgets.grid.GridColumns;
 import wicket.contrib.activewidgets.grid.GridExtended;
+import wicket.contrib.activewidgets.system.ActiveWidgetsConfiguration;
 
 
 public class GridPage extends WicketExamplePage {
