@@ -44,6 +44,8 @@ function WicketOMap(id, options) {
 	this.overlays = {};
 	this.openOverlays = new OpenLayers.Layer.Markers("markers" + id);
 	this.map.addLayer(this.openOverlays);
+	this.popup = null;
+	
 	this.onEvent = function (callBack, params) {
 		params["center"] = this.map.getCenter();
 		params["bounds"] = this.map.getExtent();
@@ -65,28 +67,53 @@ function WicketOMap(id, options) {
 		var self = this;
 		self.map.zoomToMaxExtent();
 	};
-	
-//	this.addListener = function (event, callBack) {
-//		var self = this;
-//		if (event == "click" || event == "dblclick") {
-//			Events.register(this.map, event, function (marker, gLatLng) {
-//				self.onEvent(callBack, {"marker":(marker == null ? "" : marker.overlayId), "latLng":gLatLng});
-//			});
-//		} else {
-//			Events.register(this.map, event, function () {
-//				self.onEvent(callBack, {});
-//			});
-//		}
-//	};
-//	this.addGOverlayListener = function (event, overlayID, callBack) {
-//		var self = this;
-//		if (event == "dragend") {
-//			var overlay = this.overlays[overlayID];
-//			Events.register(overlay, event, function () {
-//				self.onEvent(callBack, {"marker":overlayID, "latLng":overlay.getLatLng()});
-//			});
-//		}
-//	};
+	this.addListener = function (event, callBack) {
+		var self = this;
+		if (event == "click" || event == "dblclick") {
+			Events.register(this.map, event, function (marker, gLatLng) {
+				self.onEvent(callBack, {"marker":(marker === null ? "" : marker.overlayId), "latLng":gLatLng});
+			});
+		} else {
+			Events.register(this.map, event, function () {
+				self.onEvent(callBack, {});
+			});
+		}
+	};
+	this.addMarkerListener = function (event, callBack, marker) {
+		marker.events.register(event, marker, function (evt) {
+			var self = this;
+			var call = callBack;
+			if (self.popup != null) {
+				if (!self.popup.visible()) {
+					self.map.removePopup(self.popup);
+					self.popup.destroy();
+					self.popup = null;
+				}
+			}
+			if (self.popup == null) {
+				var wcall=wicketAjaxGet(call,null,null,null);
+				self.popup = new OpenLayers.Popup("chicken", marker.lonlat, new OpenLayers.Size(200, 200), document.getElementById("infoWindow"), true);
+				self.popup.setContentHTML(call);
+				self.popup.setBackgroundColor("yellow");
+				self.popup.setOpacity(0.7);
+				self.map.addPopup(self.popup);
+			} else {
+				self.map.removePopup(self.popup);
+				self.popup.destroy();
+				self.popup = null;
+			}
+			OpenLayers.Event.stop(evt);
+		});
+	};
+	this.addGOverlayListener = function (event, overlayID, callBack) {
+		var self = this;
+		if (event == "dragend") {
+			var overlay = this.overlays[overlayID];
+			Events.register(overlay, event, function () {
+				self.onEvent(callBack, {"marker":overlayID, "latLng":overlay.getLatLng()});
+			});
+		}
+	};
 //	this.setDraggingEnabled = function (enabled) {
 //		if (enabled) {
 //			// to be fixed!
@@ -151,11 +178,11 @@ function WicketOMap(id, options) {
 			this.overlays[overlayId] = null;
 		}
 	};
-//	this.clearOverlays = function () {
-//		this.overlays = {};
-//		markers.destroy();
-//		markers = new OpenLayers.Layer.Markers("markers" + this.div.getId());
-//	};
+	this.clearOverlays = function () {
+		this.overlays = {};
+		markers.destroy();
+		markers = new OpenLayers.Layer.Markers("markers" + this.div.getId());
+	};
 //	this.openInfoWindowTabs = function (latLng, tabs) {
 //		this.map.openInfoWindowTabs(latLng, tabs);
 //	};

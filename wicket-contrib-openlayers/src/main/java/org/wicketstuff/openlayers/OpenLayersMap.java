@@ -41,6 +41,7 @@ import org.wicketstuff.openlayers.api.Overlay;
 import org.wicketstuff.openlayers.api.layer.Layer;
 import org.wicketstuff.openlayers.api.layer.WMS;
 import org.wicketstuff.openlayers.event.OverlayListenerBehavior;
+import org.wicketstuff.openlayers.event.PopupListener;
 
 /**
  * Wicket component to embed <a href="http://maps.google.com">Google Maps</a>
@@ -79,6 +80,8 @@ public class OpenLayersMap extends Panel {
 
 	private Bounds bounds;
 
+	private PopupListener callbackListener = null;
+
 	private HashMap<String, String> options = new HashMap<String, String>();
 
 	/**
@@ -109,7 +112,6 @@ public class OpenLayersMap extends Panel {
 		this.options = options;
 	}
 
-	
 	public OpenLayersMap(final String id, List<Layer> defaultLayers,
 			HashMap<String, String> options, List<Overlay> overlays) {
 		this(id, new OpenLayersMapHeaderContributor(), overlays);
@@ -117,7 +119,6 @@ public class OpenLayersMap extends Panel {
 		this.options = options;
 	}
 
-	
 	/**
 	 * Construct.
 	 * 
@@ -143,6 +144,27 @@ public class OpenLayersMap extends Panel {
 		super(id);
 
 		this.overlays = overlays;
+
+		for (Overlay overlay : overlays) {
+
+			if (overlay instanceof Marker) {
+				final Marker marker = (Marker) overlay;
+				if (marker.getPopup() != null) {
+					callbackListener = new PopupListener() {
+						@Override
+						protected void onClick(AjaxRequestTarget target,
+								Overlay overlay) {
+							
+							OpenLayersMap.this.map.add(marker.getPopup());
+							target.addComponent(marker.getPopup(),"infoWindow");
+
+						}
+					};
+					add(callbackListener);
+					break;
+				}
+			}
+		}
 
 		add(headerContrib);
 		add(new HeaderContributor(new IHeaderContributor() {
@@ -428,10 +450,19 @@ public class OpenLayersMap extends Panel {
 		// js.append(mapType.getJSsetMapType(this) + "\n");
 		//
 		//
-		 // Add the overlays.
-		 for (Overlay overlay : overlays) {
-		 js.append(overlay.getJSadd(this) + "\n");
-		 }
+		// Add the overlays.
+		for (Overlay overlay : overlays) {
+			js.append(overlay.getJSadd(this) + "\n");
+			if (overlay instanceof Marker) {
+				Marker marker = (Marker) overlay;
+				if (marker.getPopup() != null) {
+					js.append(getJSinvoke("addMarkerListener('mousedown','"
+							+ callbackListener.getCallbackUrl() + "&marker="
+							+ marker.getId() + "'," + marker.getOverlayJSVar()
+							+ ")"));
+				}
+			}
+		}
 
 		// js.append(infoWindow.getJSinit() + "\n");
 		//

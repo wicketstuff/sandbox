@@ -24,24 +24,20 @@ import org.wicketstuff.openlayers.OpenLayersMap;
 import org.wicketstuff.openlayers.event.OverlayListenerBehavior;
 
 /**
- * Represents an Openlayers API's // legacy to be removed 
+ * Represents an Openlayers API's // legacy to be removed
  */
-public abstract class Overlay implements Serializable
-{
+public abstract class Overlay implements Serializable {
 	List<OverlayListenerBehavior> behaviors = new ArrayList<OverlayListenerBehavior>();
 
-	public Overlay addBehavior(OverlayListenerBehavior behavior)
-	{
+	public Overlay addBehavior(OverlayListenerBehavior behavior) {
 		behavior.setGOverlay(this);
 		behaviors.add(behavior);
 
 		return this;
 	}
 
-	public Overlay removeBehavior(OverlayListenerBehavior behavior)
-	{
-		while (behaviors.contains(behavior))
-		{
+	public Overlay removeBehavior(OverlayListenerBehavior behavior) {
+		while (behaviors.contains(behavior)) {
 			behaviors.remove(behavior);
 		}
 
@@ -49,29 +45,33 @@ public abstract class Overlay implements Serializable
 		return this;
 	}
 
-	public Overlay clearBehaviors()
-	{
+	public Overlay clearBehaviors() {
 		behaviors.clear();
 
 		return this;
 	}
 
-	public List<OverlayListenerBehavior> getBehaviors()
-	{
+	public List<OverlayListenerBehavior> getBehaviors() {
 		return Collections.unmodifiableList(behaviors);
 	}
-	
-	public String getJSadd(OpenLayersMap map)
+
+	public String getOverlayJSVar()
 	{
-		return map.getJSinvoke("addOverlay('" + getId() + "', "		
-				+ getJSconstructor() + ")");
+		return "overlay" + getId();
+	}
+	
+	public String getJSadd(OpenLayersMap map) {
+		StringBuffer js = new StringBuffer();
+		js.append("var "+getOverlayJSVar()+" = " + getJSconstructor() + ";\n");
+		js.append(map.getJSinvoke("addOverlay('" + getId() + "', overlay"
+				+ getId() + ")"));
+		return js.toString();
 	}
 
-	public String getJSremove(OpenLayersMap map)
-	{
+	public String getJSremove(OpenLayersMap map) {
 		return map.getJSinvoke("removeOverlay('" + getId() + "')");
 	}
-	
+
 	public String getId() {
 		return String.valueOf(System.identityHashCode(this));
 	}
