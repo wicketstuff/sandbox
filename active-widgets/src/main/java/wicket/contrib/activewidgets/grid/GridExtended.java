@@ -11,6 +11,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.util.template.PackagedTextTemplate;
 
 import wicket.contrib.activewidgets.ActiveWidgetsComponent;
+import wicket.contrib.activewidgets.system.SizeUnit;
 
 public class GridExtended extends ActiveWidgetsComponent {
 
@@ -131,13 +132,13 @@ public class GridExtended extends ActiveWidgetsComponent {
 
 
 	public GridExtended setWidth(int width) {
-		this.width.setValue(new Integer(width).toString(), Unit.px);
+		this.width.setValue(new Integer(width).toString(), SizeUnit.px);
 		return this;
 	}
 
 
 	public GridExtended setHeight(int height) {
-		this.height.setValue(new Integer(height).toString(), Unit.px);
+		this.height.setValue(new Integer(height).toString(), SizeUnit.px);
 		return this;
 	}
 

@@ -1,5 +1,7 @@
 package wicket.contrib.activewidgets.grid;
 
-public class GridColumns {
+import java.util.ArrayList;
+
+public class GridColumns extends ArrayList<IGridColumn>{
 
 }

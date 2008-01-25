@@ -15,13 +15,16 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 
+import wicket.contrib.activewidgets.system.ActiveWidgetsConfiguration;
+import wicket.contrib.activewidgets.system.SizeUnit;
+
 @SuppressWarnings("serial")
 abstract public class ActiveWidgetsComponent extends Panel {
 
 
-	protected class Refresh extends JavascriptToken {
+	protected class RefreshToken extends JavascriptToken {
 
-		public Refresh(int priority) {
+		public RefreshToken(int priority) {
 			super(priority);
 		}
 		public String getToken() {
@@ -154,7 +157,7 @@ abstract public class ActiveWidgetsComponent extends Panel {
 		if (this.createMode == ActiveWidgetsConfiguration.CreateMode.DOCUMENT_WRITE) {
 			javascriptContributors.add(new DocumentWrite(JS_MATT, activeWidgetsId) {});
 		} else {
-			javascriptContributors.add(new Refresh(JS_MATT));
+			javascriptContributors.add(new RefreshToken(JS_MATT));
 		}
 		Collections.sort(javascriptContributors);
 		for (Token token: javascriptContributors) {
@@ -282,7 +285,7 @@ abstract public class ActiveWidgetsComponent extends Panel {
 		public StyleToken() {
 			super();
 		}
-		public StyleToken(String value, Unit unit) {
+		public StyleToken(String value, SizeUnit unit) {
 			super(value, unit);
 		}
 		public String getToken() {
@@ -291,20 +294,6 @@ abstract public class ActiveWidgetsComponent extends Panel {
 		
 	}
 	
-	protected enum Unit {
-		px, procent, blank;
-
-		@Override
-		public final String toString() {
-			if (this == procent) {
-				return "%";
-			} else if (this == blank) {
-				return "";
-			} else {
-				return super.toString();
-			}
-		}
-	}
 	protected abstract class StyleStyleToken extends StyleToken {
 		
 		/*** serialization 	 */
@@ -312,7 +301,7 @@ abstract public class ActiveWidgetsComponent extends Panel {
 		public StyleStyleToken(String value) {
 			this.value = value;
 		}
-		public StyleStyleToken(String value, Unit unit) {
+		public StyleStyleToken(String value, SizeUnit unit) {
 			super(value, unit);
 		}
 		public String getToken() {
@@ -330,7 +319,7 @@ abstract public class ActiveWidgetsComponent extends Panel {
 		private static final long serialVersionUID = 1L;
 		protected String value;
 		protected int priority;
-		protected Unit unit;
+		protected SizeUnit unit;
 		
 		
 		public Token() {
@@ -339,21 +328,21 @@ abstract public class ActiveWidgetsComponent extends Panel {
 		public Token(int priority) {
 			this.priority = priority;
 		}
-		public Token(int priorrity, String value, Unit unit) {
+		public Token(int priorrity, String value, SizeUnit unit) {
 			this(priorrity);
 			this.value = value;
 			this.unit = unit;
 		}
 		
 		public Token(String value) {
-			this(DEFAULT_PROIRITY, value, Unit.blank);
+			this(DEFAULT_PROIRITY, value, SizeUnit.blank);
 		}
 		
-		public Token(String value, Unit unit) {
+		public Token(String value, SizeUnit unit) {
 			this(DEFAULT_PROIRITY, value, unit);
 		}
 		public Token(int priority, String value) {
-			this(priority, value, Unit.blank);
+			this(priority, value, SizeUnit.blank);
 		}
 		public String getValue() {
 			return value;
@@ -361,7 +350,7 @@ abstract public class ActiveWidgetsComponent extends Panel {
 		public void setValue(String value) {
 			this.value = value;
 		}
-		public void setValue(String value, Unit unit) {
+		public void setValue(String value, SizeUnit unit) {
 			this.value = value;
 			this.unit = unit;
 		}
