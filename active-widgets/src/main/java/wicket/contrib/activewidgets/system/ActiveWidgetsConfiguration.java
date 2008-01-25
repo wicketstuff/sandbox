@@ -1,4 +1,4 @@
-package wicket.contrib.activewidgets;
+package wicket.contrib.activewidgets.system;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,7 +41,7 @@ public class ActiveWidgetsConfiguration {
     }
     
 	
-	enum CreateMode {
+	public enum CreateMode {
 		DOCUMENT_WRITE,
 		MARKUP
 	}
