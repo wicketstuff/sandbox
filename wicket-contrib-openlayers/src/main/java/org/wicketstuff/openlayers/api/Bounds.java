@@ -20,16 +20,15 @@ import java.util.StringTokenizer;
 import org.wicketstuff.openlayers.js.Constructor;
 
 /**
- * Represents an Google Maps API's
- * <a href="http://www.google.com/apis/maps/documentation/reference.html#GLatLngBounds">GLatLngBounds</a>.
+ * Represents an Google Maps API's <a
+ * href="http://www.google.com/apis/maps/documentation/reference.html#GLatLngBounds">GLatLngBounds</a>.
  */
-public class GLatLngBounds implements GValue
-{
+public class Bounds implements GValue {
 	/**
 	 * Default serialVersionUID.
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	private final LonLat sw;
 	private final LonLat ne;
 
@@ -39,74 +38,65 @@ public class GLatLngBounds implements GValue
 	 * @param sw
 	 * @param ne
 	 */
-	public GLatLngBounds(LonLat sw, LonLat ne)
-	{
+	public Bounds(LonLat sw, LonLat ne) {
 		this.sw = sw;
 		this.ne = ne;
 	}
 
-	public LonLat getSW()
-	{
+	public LonLat getSW() {
 		return sw;
 	}
 
-	public LonLat getNE()
-	{
+	public LonLat getNE() {
 		return ne;
 	}
-	
+
 	@Override
-	public String toString()
-	{
+	public String toString() {
 		return getJSconstructor();
 	}
 
 	/**
 	 * @see wicket.contrib.gmap.api.GValue#getJSconstructor()
 	 */
-	public String getJSconstructor()
-	{
-		return new Constructor("GLatLngBounds").add(sw.getJSconstructor()).add(ne.getJSconstructor()).toJS();
+	public String getJSconstructor() {
+		return new Constructor("OpenLayers.Bounds").add(sw.getLng()).add(
+				sw.getLat()).add(ne.getLng()).add(ne.getLat()).toJS();
 	}
 
 	@Override
-	public int hashCode()
-	{
+	public int hashCode() {
 		return sw.hashCode() ^ ne.hashCode();
 	}
 
 	@Override
-	public boolean equals(Object obj)
-	{
-		if (obj instanceof GLatLngBounds)
-		{
-			GLatLngBounds t = (GLatLngBounds)obj;
+	public boolean equals(Object obj) {
+		if (obj instanceof Bounds) {
+			Bounds t = (Bounds) obj;
 			return t.sw.equals(sw) && t.ne.equals(ne);
 		}
 		return false;
 	}
-	
+
 	/**
-	 * ((37.34068368469045, -122.48519897460936), (37.72184917678752, -121.79855346679686))
+	 * ((37.34068368469045, -122.48519897460936), (37.72184917678752,
+	 * -121.79855346679686))
 	 */
-	public static GLatLngBounds parse(String value)
-	{
+	public static Bounds parse(String value) {
 		StringTokenizer tokenizer;
-		try
-		{
+		try {
 			tokenizer = new StringTokenizer(value, "(, )");
-		}
-		catch (NullPointerException e)
-		{
+		} catch (NullPointerException e) {
 			return null;
 		}
-		if (tokenizer.countTokens() != 4)
-		{
+		if (tokenizer.countTokens() != 4) {
 			return null;
 		}
-		
-		LonLat sw = new LonLat(Float.valueOf(tokenizer.nextToken()), Float.valueOf(tokenizer.nextToken()));
-		LonLat ne = new LonLat(Float.valueOf(tokenizer.nextToken()), Float.valueOf(tokenizer.nextToken()));
-		return new GLatLngBounds(sw, ne);
+
+		LonLat sw = new LonLat(Float.valueOf(tokenizer.nextToken()), Float
+				.valueOf(tokenizer.nextToken()));
+		LonLat ne = new LonLat(Float.valueOf(tokenizer.nextToken()), Float
+				.valueOf(tokenizer.nextToken()));
+		return new Bounds(sw, ne);
 	}
 }

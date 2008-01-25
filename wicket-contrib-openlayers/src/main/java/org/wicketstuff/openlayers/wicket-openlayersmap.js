@@ -18,7 +18,7 @@
 /*
  * Wicket Map2
  *
- * @author Martin Funk
+ * @author Nino Martinz
  */
 
 // Wicket Namespace
@@ -31,12 +31,19 @@ if (!Wicket) {
 	}
 }
 Wicket.omaps = {};
-function WicketOMap(id) {
+function WicketOMap(id, options) {
+	// Default seems to be 0
+	OpenLayers.IMAGE_RELOAD_ATTEMPTS=5;
 	Wicket.omaps[id] = this;
-	this.map = new OpenLayers.Map(id);
-//	this.map.addControl(new OpenLayers.Control.LayerSwitcher());
-//	this.controls = {};
-//	this.overlays = {};
+	if(options!==null)
+	{
+	this.map = new OpenLayers.Map(id,options);
+	}
+	else{
+		this.map = new OpenLayers.Map(id);
+	}
+	this.controls = {};
+	this.overlays = {};
 	this.onEvent = function (callBack, params) {
 		params["center"] = this.map.getCenter();
 		params["bounds"] = this.map.getExtent();
@@ -122,16 +129,16 @@ function WicketOMap(id) {
 //	this.zoomIn = function () {
 //		this.map.zoomIn();
 //	};
-//	this.addControl = function (controlId, control) {
-//		this.controls[controlId] = control;
-//		this.map.addControl(control);
-//	};
-//	this.removeControl = function (controlId) {
-//		if (this.controls[controlId] != null) {
-//			this.map.removeControl(this.controls[controlId]);
-//			this.controls[controlId] = null;
-//		}
-//	};
+	this.addControl = function (controlId, control) {
+		this.controls[controlId] = control;
+		this.map.addControl(control);
+	};
+	this.removeControl = function (controlId) {
+		if (this.controls[controlId] !== null) {
+			this.map.removeControl(this.controls[controlId]);
+			this.controls[controlId] = null;
+		}
+	};
 //	//marker?
 //	this.addOverlay = function (overlayId, overlay) {
 //		this.overlays[overlayId] = overlay;

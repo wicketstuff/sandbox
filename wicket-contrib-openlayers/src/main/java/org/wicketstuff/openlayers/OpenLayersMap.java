@@ -17,9 +17,8 @@ package org.wicketstuff.openlayers;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.Request;
@@ -32,11 +31,12 @@ import org.apache.wicket.markup.html.IHeaderContributor;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.wicketstuff.openlayers.api.Bounds;
 import org.wicketstuff.openlayers.api.Control;
 import org.wicketstuff.openlayers.api.GInfoWindow;
-import org.wicketstuff.openlayers.api.GLatLngBounds;
 import org.wicketstuff.openlayers.api.GMapType;
 import org.wicketstuff.openlayers.api.LonLat;
+import org.wicketstuff.openlayers.api.Marker;
 import org.wicketstuff.openlayers.api.Overlay;
 import org.wicketstuff.openlayers.api.layer.Layer;
 import org.wicketstuff.openlayers.api.layer.WMS;
@@ -67,7 +67,7 @@ public class OpenLayersMap extends Panel {
 
 	private int zoom = 13;
 
-	private Set<Control> controls = new HashSet<Control>();
+	private List<Control> controls = new ArrayList<Control>();
 
 	private List<Overlay> overlays = new ArrayList<Overlay>();
 
@@ -77,15 +77,24 @@ public class OpenLayersMap extends Panel {
 
 	private GInfoWindow infoWindow;
 
-	private GLatLngBounds bounds;
+	private Bounds bounds;
 
+	private HashMap<String, String> options = new HashMap<String, String>();
+
+	/**
+	 * 
+	 * Constructs a map with a default layer : "OpenLayers WMS",
+	 * "http://labs.metacarta.com/wms/vmap0"
+	 * 
+	 * @param id
+	 */
 	public OpenLayersMap(final String id) {
 		this(id, new OpenLayersMapHeaderContributor(), new ArrayList<Overlay>());
 
-		layers
-				.add(new WMS("OpenLayers WMS",
-						"http://labs.metacarta.com/wms/vmap0",
-						new String[] { "basic" }));
+		HashMap<String, String> options = new HashMap<String, String>();
+		options.put("layers", "'basic'");
+		layers.add(new WMS("OpenLayers WMS",
+				"http://labs.metacarta.com/wms/vmap0", options));
 	}
 
 	/**
@@ -93,11 +102,22 @@ public class OpenLayersMap extends Panel {
 	 * 
 	 * @param id
 	 */
-	public OpenLayersMap(final String id, List<Layer> defaultLayers) {
+	public OpenLayersMap(final String id, List<Layer> defaultLayers,
+			HashMap<String, String> options) {
 		this(id, new OpenLayersMapHeaderContributor(), new ArrayList<Overlay>());
 		this.layers = defaultLayers;
+		this.options = options;
 	}
 
+	
+	public OpenLayersMap(final String id, List<Layer> defaultLayers,
+			HashMap<String, String> options, List<Overlay> overlays) {
+		this(id, new OpenLayersMapHeaderContributor(), overlays);
+		this.layers = defaultLayers;
+		this.options = options;
+	}
+
+	
 	/**
 	 * Construct.
 	 * 
@@ -244,15 +264,15 @@ public class OpenLayersMap extends Panel {
 		return Collections.unmodifiableList(overlays);
 	}
 
-	public Set<Control> getControls() {
-		return Collections.unmodifiableSet(controls);
+	public List<Control> getControls() {
+		return controls;
 	}
 
 	public LonLat getCenter() {
 		return center;
 	}
 
-	public GLatLngBounds getBounds() {
+	public Bounds getBounds() {
 		return bounds;
 	}
 
@@ -359,21 +379,42 @@ public class OpenLayersMap extends Panel {
 	 * @return The generated JavaScript
 	 */
 	private String getJSinit() {
-		StringBuffer js = new StringBuffer("new WicketOMap('"
-				+ map.getMarkupId() + "');\n");
+
+		StringBuffer js = new StringBuffer();
+
+		if (options.size() > 0) {
+			js.append("\nvar options = {");
+			boolean first = true;
+			for (String key : options.keySet()) {
+				if (first) {
+					first = false;
+				} else {
+					js.append(",\n");
+				}
+				js.append(key + ":" + options.get(key));
+			}
+			js.append("};\n");
+			js
+					.append("new WicketOMap('" + map.getMarkupId()
+							+ "', options);\n");
+		} else {
+			js.append("new WicketOMap('" + map.getMarkupId() + "', null);\n");
+		}
+
 		int layersid = 0;
 		for (Layer layer : layers) {
 			if (layer instanceof WMS) {
 				WMS wms = (WMS) layer;
 				js.append("var wms" + layersid + " =" + wms.getJSconstructor()
 						+ ";\n");
-				js.append(getJSinvoke("addLayer(wms" + layersid + ")") + "\n");
-
+				js.append(getJSinvoke("addLayer(wms" + layersid + ")"));
 			}
 			layersid++;
-
 		}
 		js.append(getJSinvoke("zoomToMaxExtent()"));
+		for (Control control : controls) {
+			js.append(control.getJSadd(this));
+		}
 		// js.append(getJSsetCenter(getCenter()) + "\n");
 		// js.append(getJSsetZoom(getZoom()) + "\n");
 		// js.append(getJSsetDraggingEnabled(draggingEnabled) + "\n");
@@ -386,15 +427,11 @@ public class OpenLayersMap extends Panel {
 		//
 		// js.append(mapType.getJSsetMapType(this) + "\n");
 		//
-		// // Add the controls.
-		// for (Control control : controls) {
-		// js.append(control.getJSadd(this) + "\n");
-		// }
 		//
-		// // Add the overlays.
-		// for (Overlay overlay : overlays) {
-		// js.append(overlay.getJSadd(this) + "\n");
-		// }
+		 // Add the overlays.
+		 for (Overlay overlay : overlays) {
+		 js.append(overlay.getJSadd(this) + "\n");
+		 }
 
 		// js.append(infoWindow.getJSinit() + "\n");
 		//
@@ -416,7 +453,8 @@ public class OpenLayersMap extends Panel {
 	 */
 	// TODO Could this become default or protected?
 	public String getJSinvoke(String invocation) {
-		return "Wicket.omaps['" + map.getMarkupId() + "']." + invocation + ";";
+		return "Wicket.omaps['" + map.getMarkupId() + "']." + invocation
+				+ ";\n";
 	}
 
 	private String getJSsetDraggingEnabled(boolean enabled) {
@@ -462,7 +500,7 @@ public class OpenLayersMap extends Panel {
 
 		// Attention: don't use setters as this will result in an endless
 		// AJAX request loop
-		bounds = GLatLngBounds.parse(request.getParameter("bounds"));
+		bounds = Bounds.parse(request.getParameter("bounds"));
 		center = LonLat.parse(request.getParameter("center"));
 		zoom = Integer.parseInt(request.getParameter("zoom"));
 
