@@ -154,9 +154,18 @@ public class OpenLayersMap extends Panel {
 						@Override
 						protected void onClick(AjaxRequestTarget target,
 								Overlay overlay) {
-							
-							OpenLayersMap.this.map.add(marker.getPopup());
-							target.addComponent(marker.getPopup(),"infoWindow");
+							// Currently only support clicking on markers!
+							Marker markerPassed=(Marker) overlay;
+							OpenLayersMap.this.infoWindow.getContent()
+									.replaceWith(markerPassed.getPopup());
+							OpenLayersMap.this.infoWindow.setContent(markerPassed
+									.getPopup());
+							target.addComponent(markerPassed.getPopup());
+//							String js = (OpenLayersMap.this
+//									.getJSinvoke("setPopupId('"
+//											+ marker.getPopup().getMarkupId()
+//											+ "')"));
+//							target.prependJavascript(js);
 
 						}
 					};
@@ -463,6 +472,8 @@ public class OpenLayersMap extends Panel {
 				}
 			}
 		}
+		js.append(getJSinvoke("setPopupId('"
+				+ infoWindow.getContent().getMarkupId() + "')"));
 
 		// js.append(infoWindow.getJSinit() + "\n");
 		//

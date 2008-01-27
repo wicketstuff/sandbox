@@ -15,7 +15,6 @@
  */
 package org.wicketstuff.openlayers.api;
 
-import org.apache.wicket.markup.html.panel.Panel;
 import org.wicketstuff.openlayers.js.Constructor;
 
 /**
@@ -27,7 +26,7 @@ public class Marker extends Overlay {
 
 	private LonLat latLng;
 
-	private Panel popup = null;
+	private PopupWindowPanel popup = null;
 
 	private MarkerOptions options;
 
@@ -36,7 +35,7 @@ public class Marker extends Overlay {
 	 *            the point on the map where this marker will be anchored
 	 */
 	public Marker(LonLat gLatLng) {
-		this(gLatLng, null,null);
+		this(gLatLng, null, null);
 	}
 
 	public Marker(LonLat gLatLng, MarkerOptions options) {
@@ -45,13 +44,13 @@ public class Marker extends Overlay {
 		this.options = options;
 	}
 
-	public Marker(LonLat gLatLng, MarkerOptions options, Panel popup) {
+	public Marker(LonLat gLatLng, MarkerOptions options, PopupWindowPanel popup) {
 		this(gLatLng, options);
 		this.popup = popup;
 	}
 
-	public Marker(LonLat gLatLng, Panel popup) {
-		this(gLatLng, null,popup);
+	public Marker(LonLat gLatLng, PopupWindowPanel popup) {
+		this(gLatLng, null, popup);
 	}
 
 	public LonLat getLagLng() {
@@ -76,7 +75,7 @@ public class Marker extends Overlay {
 		return constructor.toJS();
 	}
 
-	public Panel getPopup() {
+	public PopupWindowPanel getPopup() {
 		return popup;
 	}
 }

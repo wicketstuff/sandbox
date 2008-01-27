@@ -45,7 +45,7 @@ function WicketOMap(id, options) {
 	this.openOverlays = new OpenLayers.Layer.Markers("markers" + id);
 	this.map.addLayer(this.openOverlays);
 	this.popup = null;
-	
+	this.popupId = "content";
 	this.onEvent = function (callBack, params) {
 		params["center"] = this.map.getCenter();
 		params["bounds"] = this.map.getExtent();
@@ -80,8 +80,9 @@ function WicketOMap(id, options) {
 		}
 	};
 	this.addMarkerListener = function (event, callBack, marker) {
+		var map = this;
 		marker.events.register(event, marker, function (evt) {
-			var self = this;
+			var self = map;
 			var call = callBack;
 			if (self.popup != null) {
 				if (!self.popup.visible()) {
@@ -91,12 +92,16 @@ function WicketOMap(id, options) {
 				}
 			}
 			if (self.popup == null) {
-				var wcall=wicketAjaxGet(call,null,null,null);
-				self.popup = new OpenLayers.Popup("chicken", marker.lonlat, new OpenLayers.Size(200, 200), document.getElementById("infoWindow"), true);
-				self.popup.setContentHTML(call);
-				self.popup.setBackgroundColor("yellow");
-				self.popup.setOpacity(0.7);
-				self.map.addPopup(self.popup);
+				var wcall = wicketAjaxGet(call, function () {
+					// is it really nesiccary to do all this mapping?
+					var self2=self;
+					var marker2=marker;
+					self2.popup = new OpenLayers.Popup("chicken", marker2.lonlat, new OpenLayers.Size(200, 200), document.getElementById(self2.popupId), true);
+					self2.popup.setContentHTML(document.getElementById(self2.popupId).innerHTML);
+					self2.popup.setBackgroundColor("yellow");
+					self2.popup.setOpacity(0.7);
+					self2.map.addPopup(self2.popup);
+				},null, null);
 			} else {
 				self.map.removePopup(self.popup);
 				self.popup.destroy();
@@ -113,6 +118,10 @@ function WicketOMap(id, options) {
 				self.onEvent(callBack, {"marker":overlayID, "latLng":overlay.getLatLng()});
 			});
 		}
+	};
+	this.setPopupId = function (popid) {
+		var self = this;
+		self.popupId = popid;
 	};
 //	this.setDraggingEnabled = function (enabled) {
 //		if (enabled) {
