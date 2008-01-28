@@ -28,7 +28,14 @@ public class DatePickerOptions extends Options{
     
     /*public static enum ShowHeader {NONE, SHORT, LONG,};*/
     public static enum VPos {TOP, BOTTOM};
-    public static enum HPos {LEFT, RIGHT};
+    public static enum HPos {LEFT, RIGHT}
+
+    /* Set true to override the javascript loalized messages shown in the datepicker by
+     * dynamically getting the fieldnames from a SimpleDateFormat object set to the current locale
+     * of the component.
+     */
+	@SuppressWarnings("unused")
+	public boolean dynamicLocalizedMessages = false;
                         
     /** month (Number): The month to render when the date picker is opened (NOTE that months are zero based). Default is today's month.*/
     public DatePickerOptions month(int v) {
@@ -112,5 +119,10 @@ public class DatePickerOptions extends Options{
             return startDate(new Date(0));
         }
         return startDate(new Date());
+    }
+    
+    public DatePickerOptions dynamicLocalizedMessages(boolean v) {
+    	this.dynamicLocalizedMessages = v;
+    	return this;
     }
 }

@@ -18,6 +18,9 @@ package org.wicketstuff.jquery.datepicker;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.Page;
@@ -32,6 +35,7 @@ import org.apache.wicket.markup.html.resources.CompressedResourceReference;
 import org.apache.wicket.protocol.http.request.WebClientInfo;
 import org.apache.wicket.util.convert.IConverter;
 import org.apache.wicket.util.convert.converters.DateConverter;
+import org.apache.wicket.util.string.Strings;
 import org.wicketstuff.jquery.JQueryBehavior;
 import org.wicketstuff.misc.behaviors.CompositeBehavior;
 import org.wicketstuff.misc.behaviors.SimpleAttributeAppender;
@@ -62,10 +66,10 @@ public class DatePickerBehavior extends JQueryBehavior {
         options_ = options;
     }
 
-    private void convertDateInOptions(IConverter cnv, String key) {
+    private void convertDateInOptions(IConverter cnv, String key, Locale locale) {
         Date date = (Date)options_.get(key);
         if (date != null) {
-            options_.set(key, cnv.convertToString(date, null));
+            options_.set(key, cnv.convertToString(date, locale));
         }        
     }
     @Override
@@ -87,6 +91,43 @@ public class DatePickerBehavior extends JQueryBehavior {
         // response.renderJavascriptReference(JQUERY_BGIFRAME_JS);
         // }
         response.renderJavascriptReference(JQUERY_DATEPICKER_JS);
+        
+        /* Support localized messages in the datepicker clientside */
+        if(options_.dynamicLocalizedMessages) {
+        	Map<String, StringBuilder> lm = new HashMap<String, StringBuilder>();
+    		SimpleDateFormat sdf = new SimpleDateFormat("", getComponent().getLocale());
+    		lm.put("dayNames", new StringBuilder("Date.dayNames = ["));
+    		lm.put("abbrDayNames", new StringBuilder("Date.abbrDayNames = ["));
+    		lm.put("monthNames", new StringBuilder("Date.monthNames = ["));
+    		lm.put("abbrMonthNames", new StringBuilder("Date.abbrMonthNames = ["));
+    		
+        	for(int i = 1; i < 8; i++) {
+        		lm.get("dayNames").append(" '" + Strings.capitalize(sdf.getDateFormatSymbols().getWeekdays()[i]));
+        		lm.get("abbrDayNames").append(" '" + Strings.capitalize(sdf.getDateFormatSymbols().getShortWeekdays()[i]));
+        	
+        		if(i < 7) {
+        			lm.get("dayNames").append("',");
+        			lm.get("abbrDayNames").append("',");
+        		}
+        	}
+
+        	for(int i = 0; i < 12; i++) {
+	    		lm.get("monthNames").append(" '" + Strings.capitalize(sdf.getDateFormatSymbols().getMonths()[i]));
+	    		lm.get("abbrMonthNames").append(" '" + Strings.capitalize(sdf.getDateFormatSymbols().getShortMonths()[i]));
+	    		
+        		if(i < 11) {
+        			lm.get("monthNames").append("',");
+        			lm.get("abbrMonthNames").append("',");
+        		}
+        	}
+
+			String locMess = lm.get("dayNames").toString() + "' ];\n" +
+				lm.get("abbrDayNames") + "' ];\n" +
+				lm.get("monthNames") + "' ];\n" +
+				lm.get("abbrMonthNames") + "' ];\n";
+			
+        	response.renderJavascript(locMess, "localization_override" + getComponent().getMarkupId());
+        }
     }
 
     @Override
@@ -113,11 +154,11 @@ public class DatePickerBehavior extends JQueryBehavior {
 	            IConverter cnv = tf.getConverter(tf.getType());
 	            if ((cnv != null) && (DateConverter.class.isAssignableFrom(cnv.getClass()))) {
 	            	SimpleDateFormat sdf = (SimpleDateFormat) ((DateConverter) cnv).getDateFormat(component.getLocale()); 
-	            	format_ = sdf.toLocalizedPattern().toLowerCase();
+	            	format_ = sdf.toPattern().toLowerCase();
 	            }
 	            
-	            convertDateInOptions(cnv, "startDate");
-	            convertDateInOptions(cnv, "endDate");
+	            convertDateInOptions(cnv, "startDate", component.getLocale());
+	            convertDateInOptions(cnv, "endDate", component.getLocale());
             }
             
             component.add(getDatePickerStyle());
