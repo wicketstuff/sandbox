@@ -3,10 +3,12 @@
  */
 package com.codecommit.wicket;
 
+import java.io.Serializable;
+
 /**
  * @author Daniel Spiewak
  */
-public class Range {
+public class Range implements Serializable {
 	private double start, end;
 	
 	public Range(double start, double end) {

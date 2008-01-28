@@ -4,11 +4,12 @@
 package com.codecommit.wicket;
 
 import java.awt.Color;
+import java.io.Serializable;
 
 /**
  * @author Daniel Spiewak
  */
-public class SolidFill implements ISolidFill {
+public class SolidFill implements ISolidFill, Serializable {
 	private Color color;
 	
 	public SolidFill(Color color) {

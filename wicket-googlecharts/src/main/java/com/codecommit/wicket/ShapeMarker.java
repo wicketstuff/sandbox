@@ -4,11 +4,12 @@
 package com.codecommit.wicket;
 
 import java.awt.Color;
+import java.io.Serializable;
 
 /**
  * @author Daniel Spiewak
  */
-public class ShapeMarker implements IShapeMarker {
+public class ShapeMarker implements IShapeMarker, Serializable {
 	private Color color;
 	private int index = -1;
 	private double point = -1;

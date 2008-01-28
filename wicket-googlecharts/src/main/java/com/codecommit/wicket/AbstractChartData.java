@@ -3,10 +3,12 @@
  */
 package com.codecommit.wicket;
 
+import java.io.Serializable;
+
 /**
  * @author Daniel Spiewak
  */
-public abstract class AbstractChartData implements IChartData {
+public abstract class AbstractChartData implements IChartData, Serializable {
 	private ChartDataEncoding encoding;
 	private double max;
 	

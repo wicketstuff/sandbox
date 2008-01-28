@@ -4,11 +4,12 @@
 package com.codecommit.wicket;
 
 import java.awt.Color;
+import java.io.Serializable;
 
 /**
  * @author Daniel Spiewak
  */
-public class LinearStripesFill implements ILinearStripesFill {
+public class LinearStripesFill implements ILinearStripesFill, Serializable {
 	private int angle = -1;
 	private Color[] colors;
 	private double[] widths;

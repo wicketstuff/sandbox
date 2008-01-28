@@ -4,11 +4,12 @@
 package com.codecommit.wicket;
 
 import java.awt.Color;
+import java.io.Serializable;
 
 /**
  * @author Daniel Spiewak
  */
-public class FillArea implements IFillArea {
+public class FillArea implements IFillArea, Serializable {
 	private Color color;
 	private int endIndex = -1;
 	private int startIndex = -1;
