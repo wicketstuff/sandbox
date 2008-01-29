@@ -23,6 +23,7 @@ import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.wicketstuff.openlayers.OpenLayersMap;
 import org.wicketstuff.openlayers.api.LonLat;
+import org.wicketstuff.openlayers.api.Marker;
 import org.wicketstuff.openlayers.api.Overlay;
 
 /**
@@ -35,7 +36,7 @@ public abstract class PopupListener extends AbstractDefaultAjaxBehavior {
 	@Override
 	protected void onBind() {
 		if (!(getComponent() instanceof OpenLayersMap)) {
-			throw new IllegalArgumentException("must be bound to GMap2");
+			throw new IllegalArgumentException("must be bound to OpenlayersMap");
 		}
 	}
 
@@ -67,6 +68,11 @@ public abstract class PopupListener extends AbstractDefaultAjaxBehavior {
 
 		onClick(target, overlay);
 	}
+public String getCallBackForMarker(Marker marker)
+{
+	return getCallbackUrl() + "&marker="+ marker.getId();	
+
+}
 
 	/**
 	 * Override this method to provide handling of a click on the map. See the
