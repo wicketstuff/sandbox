@@ -9,6 +9,7 @@ import java.io.Serializable;
  * @author Daniel Spiewak
  */
 public class Range implements Serializable {
+	private static final long serialVersionUID = 5280524789527071838L;
 	private double start, end;
 	
 	public Range(double start, double end) {
