@@ -5,11 +5,12 @@ package com.codecommit.wicket;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.io.Serializable;
 
 /**
  * @author Daniel Spiewak
  */
-public interface IChartProvider {
+public interface IChartProvider extends Serializable {
 	
 	public Dimension getSize();
 	

@@ -4,11 +4,12 @@
 package com.codecommit.wicket;
 
 import java.awt.Color;
+import java.io.Serializable;
 
 /**
  * @author Daniel Spiewak
  */
-public interface IShapeMarker {
+public interface IShapeMarker extends Serializable {
 	
 	public MarkerType getType();
 	

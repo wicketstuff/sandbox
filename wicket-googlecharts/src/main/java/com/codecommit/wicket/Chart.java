@@ -5,6 +5,7 @@ package com.codecommit.wicket;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -15,7 +16,9 @@ import org.apache.wicket.markup.html.WebComponent;
 /**
  * @author Daniel Spiewak
  */
-public class Chart extends WebComponent {
+public class Chart extends WebComponent implements Serializable {
+	private static final long serialVersionUID = 6286305912682861488L;
+
 	private IChartProvider provider;
 	
 	private StringBuilder url;

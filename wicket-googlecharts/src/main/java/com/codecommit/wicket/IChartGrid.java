@@ -3,10 +3,12 @@
  */
 package com.codecommit.wicket;
 
+import java.io.Serializable;
+
 /**
  * @author Daniel Spiewak
  */
-public interface IChartGrid {
+public interface IChartGrid extends Serializable {
 	
 	public double getXStepSize();
 	

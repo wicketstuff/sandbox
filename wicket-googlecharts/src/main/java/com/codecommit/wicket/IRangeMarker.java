@@ -4,11 +4,12 @@
 package com.codecommit.wicket;
 
 import java.awt.Color;
+import java.io.Serializable;
 
 /**
  * @author Daniel Spiewak
  */
-public interface IRangeMarker {
+public interface IRangeMarker extends Serializable {
 
 	public RangeType getType();
 	

@@ -3,10 +3,12 @@
  */
 package com.codecommit.wicket;
 
+import java.io.Serializable;
+
 /**
  * @author Daniel Spiewak
  */
-public interface ILineStyle {
+public interface ILineStyle extends Serializable {
 	
 	public int getThickness();
 	

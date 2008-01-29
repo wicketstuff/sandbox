@@ -3,8 +3,10 @@
  */
 package com.codecommit.wicket;
 
+import java.io.Serializable;
+
 /**
  * @author Daniel Spiewak
  */
-public interface IChartFill {
+public interface IChartFill extends Serializable {
 }

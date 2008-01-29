@@ -3,10 +3,12 @@
  */
 package com.codecommit.wicket;
 
+import java.io.Serializable;
+
 /**
  * @author Daniel Spiewak
  */
-public interface IChartData {
+public interface IChartData extends Serializable {
 	
 	public ChartDataEncoding getEncoding();
 	
