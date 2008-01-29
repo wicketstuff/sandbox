@@ -4,12 +4,12 @@
 package com.codecommit.wicket;
 
 import java.awt.Color;
-import java.io.Serializable;
 
 /**
  * @author Daniel Spiewak
  */
-public class LinearGradientFill implements ILinearGradientFill, Serializable {
+public class LinearGradientFill implements ILinearGradientFill {
+	private static final long serialVersionUID = -859208642003059004L;
 	private int angle = -1;
 	private Color[] colors;
 	private double[] offsets;

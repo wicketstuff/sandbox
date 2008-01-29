@@ -5,14 +5,14 @@ package com.codecommit.wicket;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @author Daniel Spiewak
  */
-public class ChartProvider implements IChartProvider, Serializable {
+public class ChartProvider implements IChartProvider {
+	private static final long serialVersionUID = -2660199063331734673L;
 	private List<IChartAxis> axes = new ArrayList<IChartAxis>();
 	private IChartFill backgroundFill;
 	private int barGroupSpacing = -1;

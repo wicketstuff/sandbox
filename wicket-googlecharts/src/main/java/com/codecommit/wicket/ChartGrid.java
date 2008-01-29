@@ -3,12 +3,11 @@
  */
 package com.codecommit.wicket;
 
-import java.io.Serializable;
-
 /**
  * @author Daniel Spiewak
  */
-public class ChartGrid implements IChartGrid, Serializable {
+public class ChartGrid implements IChartGrid {
+	private static final long serialVersionUID = -3877045632327926844L;
 	private int blankLength = -1;
 	private int segmentLength = -1;
 	private int xStepSize = -1;

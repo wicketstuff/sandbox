@@ -4,12 +4,12 @@
 package com.codecommit.wicket;
 
 import java.awt.Color;
-import java.io.Serializable;
 
 /**
  * @author Daniel Spiewak
  */
-public class RangeMarker implements IRangeMarker, Serializable {
+public class RangeMarker implements IRangeMarker {
+	private static final long serialVersionUID = 885106818212539922L;
 	private Color color;
 	private double end = -1;
 	private double start = -1;

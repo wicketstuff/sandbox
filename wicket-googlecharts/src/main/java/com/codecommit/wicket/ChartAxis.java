@@ -4,12 +4,12 @@
 package com.codecommit.wicket;
 
 import java.awt.Color;
-import java.io.Serializable;
 
 /**
  * @author Daniel Spiewak
  */
-public class ChartAxis implements IChartAxis, Serializable {
+public class ChartAxis implements IChartAxis {
+	private static final long serialVersionUID = 7846972840224609873L;
 	private AxisAlignment alignment;
 	private Color color;
 	private int fontSize = -1;

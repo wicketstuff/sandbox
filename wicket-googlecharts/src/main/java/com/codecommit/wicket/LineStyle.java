@@ -3,12 +3,11 @@
  */
 package com.codecommit.wicket;
 
-import java.io.Serializable;
-
 /**
  * @author Daniel Spiewak
  */
-public class LineStyle implements ILineStyle, Serializable {
+public class LineStyle implements ILineStyle {
+	private static final long serialVersionUID = -1280622316647035330L;
 	private int blankLength = -1;
 	private int segmentLength = -1;
 	private int thickness = -1;
