@@ -583,7 +583,7 @@ InMethod.XTable.prototype = {
   		var bodyContainer1 = this.getElement("div", "imxt-body-container1");  				
 		  					  					  			
 
-  		if (Wicket.Browser.isIE()) {
+  		if (Wicket.Browser.isIE() || Wicket.Browser.isGecko()) {
   			bodyContainer1.style.width = topContainer.offsetWidth + "px";
   		}
 
