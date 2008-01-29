@@ -8,7 +8,7 @@ import java.io.Serializable;
 /**
  * @author Daniel Spiewak
  */
-public abstract class AbstractChartData implements IChartData, Serializable {
+public abstract class AbstractChartData implements IChartData {
 	private ChartDataEncoding encoding;
 	private double max;
 	
