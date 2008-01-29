@@ -30,14 +30,14 @@ public abstract class EventListenerBehavior extends AbstractDefaultAjaxBehavior
 	{
 		if (!(getComponent() instanceof OpenLayersMap))
 		{
-			throw new IllegalArgumentException("must be bound to GMap2");
+			throw new IllegalArgumentException("must be bound to Openlayers map");
 		}
 	}
 
 	public String getJSaddListener()
 	{
 		return getGMap2().getJSinvoke(
-				"register('" + getEvent() + "', '" + getCallbackUrl() + "')");
+				"addListener('" + getEvent() + "', '" + getCallbackUrl() + "')");
 	}
 
 	protected final OpenLayersMap getGMap2()

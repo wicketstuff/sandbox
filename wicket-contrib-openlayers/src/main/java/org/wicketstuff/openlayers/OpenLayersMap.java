@@ -155,17 +155,17 @@ public class OpenLayersMap extends Panel {
 						protected void onClick(AjaxRequestTarget target,
 								Overlay overlay) {
 							// Currently only support clicking on markers!
-							Marker markerPassed=(Marker) overlay;
+							Marker markerPassed = (Marker) overlay;
 							OpenLayersMap.this.infoWindow.getContent()
 									.replaceWith(markerPassed.getPopup());
-							OpenLayersMap.this.infoWindow.setContent(markerPassed
-									.getPopup());
+							OpenLayersMap.this.infoWindow
+									.setContent(markerPassed.getPopup());
 							target.addComponent(markerPassed.getPopup());
-//							String js = (OpenLayersMap.this
-//									.getJSinvoke("setPopupId('"
-//											+ marker.getPopup().getMarkupId()
-//											+ "')"));
-//							target.prependJavascript(js);
+							// String js = (OpenLayersMap.this
+							// .getJSinvoke("setPopupId('"
+							// + marker.getPopup().getMarkupId()
+							// + "')"));
+							// target.prependJavascript(js);
 
 						}
 					};
@@ -466,8 +466,7 @@ public class OpenLayersMap extends Panel {
 				Marker marker = (Marker) overlay;
 				if (marker.getPopup() != null) {
 					js.append(getJSinvoke("addMarkerListener('mousedown','"
-							+ callbackListener.getCallbackUrl() + "&marker="
-							+ marker.getId() + "'," + marker.getOverlayJSVar()
+							+ callbackListener.getCallBackForMarker(marker) + "'," + marker.getOverlayJSVar()
 							+ ")"));
 				}
 			}
@@ -497,6 +496,13 @@ public class OpenLayersMap extends Panel {
 	public String getJSinvoke(String invocation) {
 		return "Wicket.omaps['" + map.getMarkupId() + "']." + invocation
 				+ ";\n";
+	}
+	public String getJSInstance() {
+		return "Wicket.omaps['" + map.getMarkupId() + "']";
+	}
+
+	public String getJSinvokeNoLineEnd(String invocation) {
+		return "Wicket.omaps['" + map.getMarkupId() + "']." + invocation;
 	}
 
 	private String getJSsetDraggingEnabled(boolean enabled) {
@@ -659,5 +665,9 @@ public class OpenLayersMap extends Panel {
 		protected String getJSinvoke() {
 			return getJSsetCenter(gLatLng);
 		}
+	}
+
+	public PopupListener getCallbackListener() {
+		return callbackListener;
 	}
 }

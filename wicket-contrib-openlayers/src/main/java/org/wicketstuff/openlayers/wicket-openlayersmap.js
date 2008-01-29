@@ -79,36 +79,41 @@ function WicketOMap(id, options) {
 			});
 		}
 	};
-	this.addMarkerListener = function (event, callBack, marker) {
-		var map = this;
-		marker.events.register(event, marker, function (evt) {
-			var self = map;
-			var call = callBack;
-			if (self.popup != null) {
-				if (!self.popup.visible()) {
-					self.map.removePopup(self.popup);
-					self.popup.destroy();
-					self.popup = null;
+	this.popupInfo= function (callBack, marker, wicketOMap)
+	{
+			if (wicketOMap.popup != null) {
+				if (!wicketOMap.popup.visible()) {
+					wicketOMap.map.removePopup(wicketOMap.popup);
+					wicketOMap.popup.destroy();
+					wicketOMap.popup = null;
 				}
 			}
-			if (self.popup == null) {
-				var wcall = wicketAjaxGet(call, function () {
-					// is it really nesiccary to do all this mapping?
-					var self2=self;
-					var marker2=marker;
-					self2.popup = new OpenLayers.Popup("chicken", marker2.lonlat, new OpenLayers.Size(200, 200), document.getElementById(self2.popupId), true);
-					self2.popup.setContentHTML(document.getElementById(self2.popupId).innerHTML);
-					self2.popup.setBackgroundColor("yellow");
-					self2.popup.setOpacity(0.7);
-					self2.map.addPopup(self2.popup);
+			if (wicketOMap.popup == null) {
+				var wcall = wicketAjaxGet(callBack, function () {
+					wicketOMap.popup = new OpenLayers.Popup("chicken", marker.lonlat, new OpenLayers.Size(200, 200), document.getElementById(wicketOMap.popupId).innerHTML, true);
+					wicketOMap.popup.setBackgroundColor("yellow");
+					wicketOMap.popup.setOpacity(0.7);
+					wicketOMap.map.addPopup(wicketOMap.popup);
 				},null, null);
 			} else {
-				self.map.removePopup(self.popup);
-				self.popup.destroy();
-				self.popup = null;
+				wicketOMap.map.removePopup(wicketOMap.popup);
+				wicketOMap.popup.destroy();
+				wicketOMap.popup = null;
 			}
+		
+	}
+	this.getMarker= function (markerId)
+	{
+		var self = this;
+		return self.overlays[markerId];
+	}
+	
+	this.addMarkerListener = function (event, callBack, marker) {
+	    var self=this;
+	    marker.events.register(event, marker, function (evt) {
+			self.popupInfo(callBack,marker, self);
 			OpenLayers.Event.stop(evt);
-		});
+	    });
 	};
 	this.addGOverlayListener = function (event, overlayID, callBack) {
 		var self = this;
