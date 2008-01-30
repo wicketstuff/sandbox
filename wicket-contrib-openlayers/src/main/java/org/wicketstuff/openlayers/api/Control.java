@@ -24,11 +24,30 @@ import org.wicketstuff.openlayers.OpenLayersMap;
  * http://dev.openlayers.org/apidocs/files/OpenLayers/Control-js.html
  */
 public enum Control implements Serializable {
-	PanZoomBar, MouseToolbar, LayerSwitcher, Permalink, MousePosition,OverviewMap,KeyboardDefaults;
+	PanZoomBar(true), MouseToolbar(false), LayerSwitcher(true), Permalink(true), MousePosition(
+			true), OverviewMap(false), KeyboardDefaults(false);
+
+	private final boolean externalizable;
+
+	private Control(boolean externalizable) {
+		this.externalizable = externalizable;
+	}
 
 	public String getJSadd(OpenLayersMap map) {
-		return map.getJSinvoke("addControl('" + name() + "', new OpenLayers.Control." + name()
-				+ "())");
+
+		String jsControlCreate = "";
+
+		if (map.isExternalControls() && externalizable) {
+			jsControlCreate = map.getJSinvoke("addControl('" + name()
+					+ "', new OpenLayers.Control." + name()
+					+ "({div: document.getElementById('wicketOpenlayer"
+					+ name() + "')}))");
+		} else {
+			jsControlCreate = map.getJSinvoke("addControl('" + name()
+					+ "', new OpenLayers.Control." + name() + "())");
+		}
+
+		return jsControlCreate;
 	}
 
 	public String getJSremove(OpenLayersMap map) {

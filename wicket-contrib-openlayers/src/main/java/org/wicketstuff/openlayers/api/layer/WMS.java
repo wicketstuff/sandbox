@@ -67,7 +67,7 @@ public class WMS extends Layer implements Serializable {
 			} else {
 				optionlist += ",\n";
 			}
-			optionlist += key + ":'" + options.get(key)+"'" ;
+			optionlist += key + ": " + options.get(key) ;
 
 		}
 
