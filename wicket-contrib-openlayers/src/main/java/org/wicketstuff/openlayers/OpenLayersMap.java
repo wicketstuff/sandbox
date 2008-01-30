@@ -34,7 +34,6 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.wicketstuff.openlayers.api.Bounds;
 import org.wicketstuff.openlayers.api.Control;
 import org.wicketstuff.openlayers.api.GInfoWindow;
-import org.wicketstuff.openlayers.api.GMapType;
 import org.wicketstuff.openlayers.api.LonLat;
 import org.wicketstuff.openlayers.api.Marker;
 import org.wicketstuff.openlayers.api.Overlay;
@@ -58,14 +57,6 @@ public class OpenLayersMap extends Panel {
 
 	private LonLat center = new LonLat(37.4419, -122.1419);
 
-	private boolean draggingEnabled = true;
-
-	private boolean doubleClickZoomEnabled = false;
-
-	private boolean scrollWheelZoomEnabled = false;
-
-	private GMapType mapType = GMapType.G_NORMAL_MAP;
-
 	private int zoom = 13;
 
 	private List<Control> controls = new ArrayList<Control>();
@@ -79,6 +70,8 @@ public class OpenLayersMap extends Panel {
 	private GInfoWindow infoWindow;
 
 	private Bounds bounds;
+	
+	private boolean externalControls=false;
 
 	private PopupListener callbackListener = null;
 
@@ -307,65 +300,7 @@ public class OpenLayersMap extends Panel {
 		return bounds;
 	}
 
-	public void setDraggingEnabled(boolean enabled) {
-		if (this.draggingEnabled != enabled) {
-			draggingEnabled = enabled;
 
-			if (AjaxRequestTarget.get() != null && findPage() != null) {
-				AjaxRequestTarget.get().appendJavascript(
-						getJSsetDraggingEnabled(enabled));
-			}
-		}
-	}
-
-	public boolean isDraggingEnabled() {
-		return draggingEnabled;
-	}
-
-	public void setDoubleClickZoomEnabled(boolean enabled) {
-		if (this.doubleClickZoomEnabled != enabled) {
-			doubleClickZoomEnabled = enabled;
-
-			if (AjaxRequestTarget.get() != null && findPage() != null) {
-				AjaxRequestTarget.get().appendJavascript(
-						getJSsetDoubleClickZoomEnabled(enabled));
-			}
-		}
-	}
-
-	public boolean isDoubleClickZoomEnabled() {
-		return doubleClickZoomEnabled;
-	}
-
-	public void setScrollWheelZoomEnabled(boolean enabled) {
-		if (this.scrollWheelZoomEnabled != enabled) {
-			scrollWheelZoomEnabled = enabled;
-
-			if (AjaxRequestTarget.get() != null && findPage() != null) {
-				AjaxRequestTarget.get().appendJavascript(
-						getJSsetScrollWheelZoomEnabled(enabled));
-			}
-		}
-	}
-
-	public boolean isScrollWheelZoomEnabled() {
-		return scrollWheelZoomEnabled;
-	}
-
-	public GMapType getMapType() {
-		return mapType;
-	}
-
-	public void setMapType(GMapType mapType) {
-		if (this.mapType != mapType) {
-			this.mapType = mapType;
-
-			if (AjaxRequestTarget.get() != null && findPage() != null) {
-				AjaxRequestTarget.get().appendJavascript(
-						mapType.getJSsetMapType(OpenLayersMap.this));
-			}
-		}
-	}
 
 	public int getZoom() {
 		return zoom;
@@ -669,5 +604,13 @@ public class OpenLayersMap extends Panel {
 
 	public PopupListener getCallbackListener() {
 		return callbackListener;
+	}
+
+	public boolean isExternalControls() {
+		return externalControls;
+	}
+
+	public void setExternalControls(boolean externalControls) {
+		this.externalControls = externalControls;
 	}
 }
