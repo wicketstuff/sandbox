@@ -138,35 +138,27 @@ public class OpenLayersMap extends Panel {
 
 		this.overlays = overlays;
 
-		for (Overlay overlay : overlays) {
+		// always add callbacklistener dont know if its gonna be used later on!
+		callbackListener = new PopupListener() {
+			@Override
+			protected void onClick(AjaxRequestTarget target,
+					Overlay overlay) {
+				// Currently only support clicking on markers!
+				Marker markerPassed = (Marker) overlay;
+				OpenLayersMap.this.infoWindow.getContent()
+						.replaceWith(markerPassed.getPopup());
+				OpenLayersMap.this.infoWindow
+						.setContent(markerPassed.getPopup());
+				target.addComponent(markerPassed.getPopup());
+				// String js = (OpenLayersMap.this
+				// .getJSinvoke("setPopupId('"
+				// + marker.getPopup().getMarkupId()
+				// + "')"));
+				// target.prependJavascript(js);
 
-			if (overlay instanceof Marker) {
-				final Marker marker = (Marker) overlay;
-				if (marker.getPopup() != null) {
-					callbackListener = new PopupListener() {
-						@Override
-						protected void onClick(AjaxRequestTarget target,
-								Overlay overlay) {
-							// Currently only support clicking on markers!
-							Marker markerPassed = (Marker) overlay;
-							OpenLayersMap.this.infoWindow.getContent()
-									.replaceWith(markerPassed.getPopup());
-							OpenLayersMap.this.infoWindow
-									.setContent(markerPassed.getPopup());
-							target.addComponent(markerPassed.getPopup());
-							// String js = (OpenLayersMap.this
-							// .getJSinvoke("setPopupId('"
-							// + marker.getPopup().getMarkupId()
-							// + "')"));
-							// target.prependJavascript(js);
-
-						}
-					};
-					add(callbackListener);
-					break;
-				}
 			}
-		}
+		};
+		add(callbackListener);
 
 		add(headerContrib);
 		add(new HeaderContributor(new IHeaderContributor() {
