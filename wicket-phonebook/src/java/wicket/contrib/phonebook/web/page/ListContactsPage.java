@@ -18,8 +18,12 @@
  */
 package wicket.contrib.phonebook.web.page;
 
+import java.io.Serializable;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
@@ -30,17 +34,20 @@ import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.Filte
 import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilteredAbstractColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.GoAndClearFilter;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.TextFilteredPropertyColumn;
+import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import wicket.contrib.phonebook.Contact;
 import wicket.contrib.phonebook.ContactDao;
+import wicket.contrib.phonebook.web.CheckBoxColumn;
 import wicket.contrib.phonebook.web.ContactsDataProvider;
 
 /**
@@ -54,6 +61,8 @@ public class ListContactsPage extends BasePage {
 
 	private final DefaultDataTable users;
 
+	private final Set selectedContactIds = new HashSet();
+
 	/**
 	 * Provides a composite User Actions panel for the Actions column.
 	 *
@@ -64,6 +73,7 @@ public class ListContactsPage extends BasePage {
 			super(id);
 			addEditLink(contactModel);
 			addDeleteLink(contactModel);
+
 		}
 
 		private void addDeleteLink(IModel contactModel) {
@@ -106,21 +116,31 @@ public class ListContactsPage extends BasePage {
 		ContactsDataProvider dataProvider = new ContactsDataProvider(dao);
 
 		// create the form used to contain all filter components
-		final FilterForm form = new FilterForm("filter-form", dataProvider)
-		{
+		final FilterForm form = new FilterForm("filter-form", dataProvider) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void onSubmit()
-			{
+			protected void onSubmit() {
 				users.setCurrentPage(0);
 			}
 		};
 
+		form.add(new Button("delete-selected") {
+			@Override
+			public void onSubmit() {
+				Iterator it = selectedContactIds.iterator();
+				while (it.hasNext()) {
+					dao.delete((Long) it.next());
+				}
+				// clear out the set, we no longer need the selection
+				selectedContactIds.clear();
+			}
+		});
+
 		// create the data table
 		IColumn[] columns = createColumns();
-		users = new DefaultDataTable("users", Arrays
-				.asList(columns), dataProvider, 10);
+		users = new DefaultDataTable("users", Arrays.asList(columns),
+				dataProvider, 10);
 		users.addTopToolbar(new FilterToolbar(users, form, dataProvider));
 		form.add(users);
 
@@ -128,10 +148,19 @@ public class ListContactsPage extends BasePage {
 	}
 
 	private IColumn[] createColumns() {
-		IColumn[] columns = new IColumn[5];
-		columns[0] = createActionsColumn();
-		columns[1] = createColumn("first.name", "firstname", "firstname");
-		columns[2] = new ChoiceFilteredPropertyColumn(new ResourceModel(
+		IColumn[] columns = new IColumn[6];
+		columns[0] = new CheckBoxColumn(new PropertyModel(this,
+				"selectedContactIds")) {
+
+			@Override
+			protected Serializable getModelObjectToken(IModel model) {
+				return ((Contact) model.getObject()).getId();
+			}
+
+		};
+		columns[1] = createActionsColumn();
+		columns[2] = createColumn("first.name", "firstname", "firstname");
+		columns[3] = new ChoiceFilteredPropertyColumn(new ResourceModel(
 				"last.name"), "lastname", "lastname",
 				new LoadableDetachableModel() {
 					@Override
@@ -141,8 +170,8 @@ public class ListContactsPage extends BasePage {
 						return uniqueLastNames;
 					}
 				});
-		columns[3] = createColumn("phone", "phone", "phone");
-		columns[4] = createColumn("email", "email", "email");
+		columns[4] = createColumn("phone", "phone", "phone");
+		columns[5] = createColumn("email", "email", "email");
 		return columns;
 	}
 
