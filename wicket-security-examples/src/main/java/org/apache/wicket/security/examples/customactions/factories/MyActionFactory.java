@@ -35,10 +35,13 @@ public class MyActionFactory extends SwarmActionFactory
 	/**
 	 * Constructs a new ActionFactory with in addition to the default actions,
 	 * organisation and department actions.
+	 * 
+	 * @param key
+	 *            key to store this factory
 	 */
-	public MyActionFactory()
+	public MyActionFactory(Object key)
 	{
-		super();
+		super(key);
 		try
 		{
 			// note none of the actions registered this way will implement the

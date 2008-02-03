@@ -113,7 +113,7 @@ public class MyApplication extends MultiUsableApplication
 		if (HiveMind.getHive(getHiveKey()) == null)
 		{
 			// create factory
-			PolicyFileHiveFactory factory = new PolicyFileHiveFactory();
+			PolicyFileHiveFactory factory = new PolicyFileHiveFactory(getActionFactory());
 			try
 			{
 				// this example uses 1 policy file but you can add as many as
@@ -153,7 +153,7 @@ public class MyApplication extends MultiUsableApplication
 	 */
 	protected void setupActionFactory()
 	{
-		setActionFactory(new MyActionFactory());
+		setActionFactory(new MyActionFactory(getHiveKey()));
 	}
 
 	/**
