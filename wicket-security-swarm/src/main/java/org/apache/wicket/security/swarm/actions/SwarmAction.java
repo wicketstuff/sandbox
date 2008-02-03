@@ -216,6 +216,7 @@ public class SwarmAction extends AbstractWaspAction
 	 */
 	public final ActionFactory getActionFactory()
 	{
+		// TODO move to interface?
 		return Actions.getActionFactory(key);
 	}
 
