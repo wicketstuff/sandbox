@@ -100,6 +100,8 @@ public abstract class WaspWebApplication extends WebApplication implements WaspA
 		StrategyFactory factory = getStrategyFactory();
 		if (factory != null)
 			factory.destroy();
+		// because we destroy the actionfactory with the wicket app it is not
+		// recommended to share actionfactories.
 		ActionFactory factory2 = getActionFactory();
 		if (factory2 != null)
 			factory2.destroy();

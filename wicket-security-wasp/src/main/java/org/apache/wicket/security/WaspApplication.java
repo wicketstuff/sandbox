@@ -37,7 +37,7 @@ public interface WaspApplication
 {
 
 	/**
-	 * Returns the factory that will be used to create strategys for each
+	 * Returns the factory that will be used to create strategies for each
 	 * session. There is only one factory for each application. Can not be null.
 	 * 
 	 * @return a factory
@@ -45,8 +45,8 @@ public interface WaspApplication
 	public StrategyFactory getStrategyFactory();
 
 	/**
-	 * Returns factory for action creation / tanslation. There is only one
-	 * factory for each application. Can not be null.
+	 * Returns factory for action mapping. There is only one factory for each
+	 * application. Can not be null.
 	 * 
 	 * @return a factory.
 	 */

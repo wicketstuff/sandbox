@@ -16,18 +16,19 @@
  */
 package org.apache.wicket.security.actions;
 
-import org.apache.wicket.authorization.Action;
+import org.apache.wicket.util.string.Strings;
+
 
 /**
- * Immutable {@link Action} class, already extends Action. These actions are
- * instantiated by an ActionFactory.
+ * Immutable {@link WaspAction} class. These actions are instantiated by an
+ * ActionFactory.
  * 
  * @author marrink
- * @see Action
  */
-public abstract class AbstractWaspAction extends Action implements WaspAction
+public abstract class AbstractWaspAction implements WaspAction
 {
 	private static final long serialVersionUID = 1L;
+	private final String name;
 
 	/**
 	 * The default constructor for actions.
@@ -37,15 +38,32 @@ public abstract class AbstractWaspAction extends Action implements WaspAction
 	 */
 	protected AbstractWaspAction(String name)
 	{
-		super(name);
+		this.name = name;
+		if (isEmpty(name))
+			throw new IllegalArgumentException(
+					"Name argument may not be null, whitespace or the empty string");
 	}
 
 	/**
-	 * @see org.apache.wicket.authorization.Action#getName()
+	 * Small check to see if a string contains more then just whitespace. Copied
+	 * from {@link Strings#isEmpty(CharSequence)} to keep this as much separated
+	 * as possible from wicket code
+	 * 
+	 * @param string
+	 * @return
+	 */
+	private static boolean isEmpty(final CharSequence string)
+	{
+		return string == null || string.length() == 0 || string.toString().trim().length() == 0;
+	}
+
+	/**
+	 * 
+	 * @see org.apache.wicket.security.actions.WaspAction#getName()
 	 */
 	public final String getName()
 	{
-		return super.getName();
+		return name;
 	}
 
 }
