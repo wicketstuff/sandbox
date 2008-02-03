@@ -32,14 +32,17 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.wicket.security.actions.ActionFactory;
 import org.apache.wicket.security.hive.BasicHive;
 import org.apache.wicket.security.hive.Hive;
 import org.apache.wicket.security.hive.SimpleCachingHive;
 import org.apache.wicket.security.hive.authorization.EverybodyPrincipal;
 import org.apache.wicket.security.hive.authorization.Permission;
 import org.apache.wicket.security.hive.authorization.Principal;
+import org.apache.wicket.security.hive.authorization.permissions.AllPermissions;
 import org.apache.wicket.security.hive.authorization.permissions.ComponentPermission;
 import org.apache.wicket.security.hive.authorization.permissions.DataPermission;
+import org.apache.wicket.security.swarm.actions.SwarmAction;
 import org.apache.wicket.util.string.AppendingStringBuffer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -102,9 +105,10 @@ public class PolicyFileHiveFactory implements HiveFactory
 
 	private static final Pattern aliasPattern = Pattern.compile("(\\$\\{[^\"\\{\\}\\$]+?\\})+?");
 
-	private static final Class[] stringArgs1 = new Class[] { String.class };
-
-	private static final Class[] stringArgs2 = new Class[] { String.class, String.class };
+	private static final Class[][] constructorArgs = new Class[][] {
+			new Class[] { String.class, SwarmAction.class },
+			new Class[] { String.class, String.class },
+			new Class[] { String.class, ActionFactory.class }, new Class[] { String.class } };
 
 	private Map aliases = new HashMap();
 
@@ -114,14 +118,24 @@ public class PolicyFileHiveFactory implements HiveFactory
 
 	private int currentLineNr;
 
+	private final ActionFactory actionFactory;
+
 	/**
 	 * 
 	 * Constructs a new factory that builds a Hive out of one (1) or more policy
-	 * files. It registers an alias for {@link ComponentPermission} and
-	 * {@link DataPermission}.
+	 * files. It registers an alias for {@link ComponentPermission},
+	 * {@link DataPermission} and {@link AllPermissions}.
+	 * 
+	 * @param actionFactory
+	 *            factory required to create the actions for the permissions
+	 * @throws IllegalArgumentException
+	 *             if the factory is null
 	 */
-	public PolicyFileHiveFactory()
+	public PolicyFileHiveFactory(ActionFactory actionFactory)
 	{
+		this.actionFactory = actionFactory;
+		if (actionFactory == null)
+			throw new IllegalArgumentException("Must provide an ActionFactory");
 		policyFiles = new HashSet();
 		inputStreams = new HashSet();
 		inputReaders = new HashSet();
@@ -144,6 +158,11 @@ public class PolicyFileHiveFactory implements HiveFactory
 	 */
 	public final boolean addPolicyFile(URL file)
 	{
+		if (file == null)
+		{
+			log.warn("Can not add null as an url.");
+			return false;
+		}
 		return policyFiles.add(file);
 	}
 
@@ -170,6 +189,11 @@ public class PolicyFileHiveFactory implements HiveFactory
 	 */
 	public final boolean addStream(InputStream stream)
 	{
+		if (stream == null)
+		{
+			log.warn("Can not add null as a stream.");
+			return false;
+		}
 		return inputStreams.add(stream);
 	}
 
@@ -196,6 +220,11 @@ public class PolicyFileHiveFactory implements HiveFactory
 	 */
 	public final boolean addReader(Reader input)
 	{
+		if (input == null)
+		{
+			log.warn("Can not add null as a reader.");
+			return false;
+		}
 		return inputReaders.add(input);
 	}
 
@@ -594,41 +623,9 @@ public class PolicyFileHiveFactory implements HiveFactory
 							}
 							String name = resolveAliases(m.group(2));
 							String actions = m.group(3);
-							Constructor constructor = null;
-							Class[] args = stringArgs2;
-							if (actions == null)
-								args = stringArgs1;
-							try
+							Permission temp = createPermission(permissionClass, name, actions);
+							if (temp == null)
 							{
-								constructor = permissionClass.getConstructor(args);
-							}
-							catch (SecurityException e)
-							{
-								log.error("No valid constructor found for "
-										+ permissionClass.getName(), e);
-							}
-							catch (NoSuchMethodException e)
-							{
-								log.error("No valid constructor found for "
-										+ permissionClass.getName(), e);
-							}
-							if (constructor == null)
-							{
-								skipPermission(currentLineNr, permissionClass, args);
-								line = reader.readLine();
-								continue;
-							}
-							Object[] argValues = new Object[] { name, actions };
-							if (actions == null)
-								argValues = new Object[] { name };
-							Permission temp;
-							try
-							{
-								temp = (Permission)constructor.newInstance(argValues);
-							}
-							catch (Exception e)
-							{
-								skipPermission(currentLineNr, permissionClass, argValues, e);
 								line = reader.readLine();
 								continue;
 							}
@@ -681,7 +678,8 @@ public class PolicyFileHiveFactory implements HiveFactory
 							Constructor constructor = null;
 							try
 							{
-								constructor = principalClass.getConstructor(stringArgs1);
+								constructor = principalClass
+										.getConstructor(constructorArgs[constructorArgs.length - 1]);
 							}
 							catch (SecurityException e)
 							{
@@ -742,6 +740,133 @@ public class PolicyFileHiveFactory implements HiveFactory
 			permissions = null;
 			principal = null;
 		}
+	}
+
+	/**
+	 * Tries to create a permission. Only a few constructors are tried before
+	 * giving up.
+	 * 
+	 * @param permissionClass
+	 * @param name
+	 * @param actions
+	 * @return the permission or null if it could not be created.
+	 * @see #findConstructor(Class, String)
+	 */
+	private Permission createPermission(Class permissionClass, String name, String actions)
+	{
+		Constructor constructor = findConstructor(permissionClass, actions);
+		if (constructor == null)
+		{
+			skipPermission(currentLineNr, permissionClass);
+			return null;
+		}
+		Object[] argValues = null;
+		if (match(constructor.getParameterTypes(), constructorArgs[0]))
+			argValues = new Object[] { name, getActionFactory().getAction(actions) };
+		else if (match(constructor.getParameterTypes(), constructorArgs[1]))
+			argValues = new Object[] { name, actions };
+		else if (match(constructor.getParameterTypes(), constructorArgs[2]))
+			argValues = new Object[] { name, actionFactory };
+		else if (match(constructor.getParameterTypes(), constructorArgs[3]))
+			argValues = new Object[] { name };
+		else
+		{
+			// should not happen
+			String msg = "Unable to handle constructor " + constructor + ", at line nr "
+					+ currentLineNr;
+			log.error(msg);
+			throw new RuntimeException(msg);
+		}
+		try
+		{
+			return (Permission)constructor.newInstance(argValues);
+		}
+		catch (Exception e)
+		{
+			skipPermission(currentLineNr, permissionClass, argValues, e);
+
+		}
+		return null;
+	}
+
+	/**
+	 * Signals a match between to arrays of classes. A match is found when every
+	 * class in the second array is either the same or a subclass of the class
+	 * in the first array with the same index. Used to compare constructor
+	 * arguments.
+	 * 
+	 * @param args1
+	 *            reference array
+	 * @param args2
+	 *            this array should match the first array
+	 * @return true if both arrays are a match, false otherwise.
+	 */
+	private boolean match(Class[] args1, Class[] args2)
+	{
+		if (args1 == args2)
+			return true;
+		if (args1 == null || args2 == null)
+			return false;
+		if (args1.length != args2.length)
+			return false;
+		for (int i = 0; i < args1.length; i++)
+		{
+			if (!args1[i].isAssignableFrom(args2[i]))
+				return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Tries to find a constructor for a {@link Permission}.
+	 * 
+	 * @param permissionClass
+	 * @param actions
+	 *            a comma separated list of actions (optional)
+	 * @return a matching constructor. or null if none can be found.
+	 */
+	private Constructor findConstructor(Class permissionClass, String actions)
+	{
+		int index = 0;
+		if (actions == null)
+			index = 2;
+		return findConstructor(permissionClass, index);
+	}
+
+	/**
+	 * Tries to find a constructor matching the constructor arguments at the
+	 * specified index for {@link #constructorArgs}. If no such constructor is
+	 * found it recursivly tries to find another.
+	 * 
+	 * @param permissionClass
+	 * @param index
+	 * @return a suitable constructor or null if none was found.
+	 */
+	private Constructor findConstructor(Class permissionClass, int index)
+	{
+		if (index >= constructorArgs.length)
+			return null;
+		Class[] args = constructorArgs[index];
+		Constructor constructor = null;
+		try
+		{
+			constructor = permissionClass.getConstructor(args);
+		}
+		catch (SecurityException e)
+		{
+			log.debug("No valid constructor found for " + permissionClass.getName(), e);
+			notifyPermission(currentLineNr, permissionClass, args);
+			if (index < constructorArgs.length)
+				return findConstructor(permissionClass, index + 1);
+		}
+		catch (NoSuchMethodException e)
+		{
+			log.debug("No valid constructor found for " + permissionClass.getName(), e);
+			notifyPermission(currentLineNr, permissionClass, args);
+			if (index < constructorArgs.length)
+				return findConstructor(permissionClass, index + 1);
+		}
+		return constructor;
 	}
 
 	/**
@@ -990,15 +1115,15 @@ public class PolicyFileHiveFactory implements HiveFactory
 	 *            the number and type of constructor arguments
 	 * 
 	 */
-	protected void skipPermission(int lineNr, Class permissionClass, Class[] args)
+	protected void notifyPermission(int lineNr, Class permissionClass, Class[] args)
 	{
-		log.error("No constructor found matching argument(s) " + arrayToString(args)
+		log.debug("No constructor found matching argument(s) " + arrayToString(args)
 				+ " for class " + permissionClass.getName() + ", line nr " + lineNr);
 	}
 
 	/**
-	 * Notifies when a Class is skipped because it is not a Permission. Default
-	 * is to log an exception.
+	 * Notifies when a Class is skipped because it is not a Permission or no
+	 * valid constructors could be found. Default is to log an exception.
 	 * 
 	 * @param lineNr
 	 *            the faulty line
@@ -1010,13 +1135,16 @@ public class PolicyFileHiveFactory implements HiveFactory
 	{
 		if (permissionClass == null)
 			log.error("Missing permission class at line " + lineNr);
+		else if (Permission.class.isAssignableFrom(permissionClass))
+			log.error("No valid constructor found for class " + permissionClass.getName()
+					+ ", line nr " + lineNr);
 		else
 			log.error(permissionClass.getName() + " is not a subclass of "
 					+ Permission.class.getName());
 	}
 
 	/**
-	 * Notifies when a principal is kipped because there are no permissions
+	 * Notifies when a principal is skipped because there are no permissions
 	 * attached. Default is to log an exception.
 	 * 
 	 * @param lineNr
@@ -1088,6 +1216,16 @@ public class PolicyFileHiveFactory implements HiveFactory
 	public final void setCloseInputStreams(boolean closeInputStreams)
 	{
 		this.closeInputStreams = closeInputStreams;
+	}
+
+	/**
+	 * Gets actionFactory.
+	 * 
+	 * @return actionFactory
+	 */
+	protected final ActionFactory getActionFactory()
+	{
+		return actionFactory;
 	}
 
 }

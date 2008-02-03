@@ -19,10 +19,7 @@ package org.apache.wicket.security.hive.authentication;
 import java.io.Serializable;
 import java.util.Set;
 
-import org.apache.wicket.Component;
-import org.apache.wicket.model.IModel;
 import org.apache.wicket.security.hive.authorization.Principal;
-import org.apache.wicket.security.strategies.WaspAuthorizationStrategy;
 
 /**
  * Subject represents (part of) an authenticated entity, such as an individual,
@@ -30,12 +27,8 @@ import org.apache.wicket.security.strategies.WaspAuthorizationStrategy;
  * Most implementations will provide some means to add (and sometimes remove)
  * principals, however all must honor the readonly flag. {@link #setReadOnly()}
  * is automatically triggered after a login. Subjects are created by
- * {@link LoginContext}s as placeholders for the rights of a user for the
- * duration of the session. In addition Subjects play an important part in
- * multi-login scenario's as they define what they authenticate. For example one
- * subject might authenticate all subclasses of BasicSecurePage where another
- * might authenticate all subclasses of AdvancedSecurePage. Effectively
- * requiring a user to login twice if both type of pages are to be visited.
+ * {@link LoginContext}s as placeholder for the permissions of a user for the
+ * duration of the session.
  * 
  * @author marrink
  */
@@ -62,33 +55,5 @@ public interface Subject extends Serializable
 	 * handed over to the security layer.
 	 */
 	public void setReadOnly();
-
-	/**
-	 * Performs the authentication check on a class.
-	 * 
-	 * @param class1
-	 * @return true if the class is authenticated, false otherwise.
-	 * @see WaspAuthorizationStrategy#isClassAuthenticated(Class)
-	 */
-	public abstract boolean isClassAuthenticated(Class class1);
-
-	/**
-	 * Performs the authentication check on a component.
-	 * 
-	 * @param component
-	 * @return true if the component is authenticated, false otherwise
-	 * @see WaspAuthorizationStrategy#isComponentAuthenticated(Component)
-	 */
-	public abstract boolean isComponentAuthenticated(Component component);
-
-	/**
-	 * Performs the authentication check on a model.
-	 * 
-	 * @param model
-	 * @param component
-	 * @return true if the model is authenticated, false otherwise
-	 * @see WaspAuthorizationStrategy#isModelAuthenticated(IModel, Component)
-	 */
-	public abstract boolean isModelAuthenticated(IModel model, Component component);
 
 }

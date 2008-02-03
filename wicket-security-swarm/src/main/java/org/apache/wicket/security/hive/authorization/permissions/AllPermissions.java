@@ -17,7 +17,11 @@
 package org.apache.wicket.security.hive.authorization.permissions;
 
 import org.apache.wicket.security.actions.ActionFactory;
+import org.apache.wicket.security.actions.AllActions;
+import org.apache.wicket.security.actions.Enable;
+import org.apache.wicket.security.actions.Render;
 import org.apache.wicket.security.hive.authorization.Permission;
+import org.apache.wicket.security.swarm.actions.SwarmAction;
 
 /**
  * Permission that implies all other permissions, when created with the "all"
@@ -40,33 +44,43 @@ public class AllPermissions extends ActionPermission
 
 	/**
 	 * Preferred constructor. All other permissions are implied by this
-	 * permission. Equal to using <code>new AllPermissions(name,"all");</code>
+	 * permission. Equal to using
+	 * <code>new AllPermissions(name,factory.getAction(AllAction.class));</code>
 	 * or not specifying the action part in the policy file.
 	 * 
 	 * @param name
 	 *            the name of this permission.
+	 * @param factory
+	 *            a factory capable of creating SwarmActions
+	 * @throws ClassCastException
+	 *             if the factory does not create {@link SwarmAction}s
 	 */
-	public AllPermissions(String name)
+	public AllPermissions(String name, ActionFactory factory)
 	{
-		this(name, "all");
+		this(name, (SwarmAction)factory.getAction(AllActions.class));
 	}
 
 	/**
-	 * Construct.
+	 * Creates a new AllPermissions that does not imply all other permissions
+	 * but only those who's actions it can imply. Thus when supplied with a
+	 * {@link Render} action only render actions are implied not {@link Enable}
+	 * actions.
 	 * 
 	 * @param name
 	 * @param actions
+	 * @see #implies(Permission)
 	 */
-	public AllPermissions(String name, String actions)
+	public AllPermissions(String name, SwarmAction actions)
 	{
-		super(name, getAction(actions));
+		super(name, actions);
 	}
 
 	/**
 	 * Implies every other permission, but the other way around is not
 	 * necessarily true. One exception, if this action was not initiated with
-	 * the 'all' action it only implies other {@link ActionPermission}s who's
-	 * actions are implied by this permission's actions.
+	 * the {@link AllActions} action it only implies other
+	 * {@link ActionPermission}s who's actions are implied by this permission's
+	 * actions.
 	 * 
 	 * @see org.apache.wicket.security.hive.authorization.permissions.ActionPermission#implies(org.apache.wicket.security.hive.authorization.Permission)
 	 */

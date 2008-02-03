@@ -20,16 +20,11 @@ import junit.framework.TestCase;
 
 import org.apache.wicket.security.actions.Access;
 import org.apache.wicket.security.actions.ActionFactory;
+import org.apache.wicket.security.actions.Actions;
 import org.apache.wicket.security.actions.Enable;
 import org.apache.wicket.security.actions.Inherit;
 import org.apache.wicket.security.actions.Render;
 import org.apache.wicket.security.actions.WaspAction;
-import org.apache.wicket.security.hive.HiveMind;
-import org.apache.wicket.security.hive.config.PolicyFileHiveFactory;
-import org.apache.wicket.security.pages.MockHomePage;
-import org.apache.wicket.security.pages.MockLoginPage;
-import org.apache.wicket.security.swarm.SwarmWebApplication;
-import org.apache.wicket.util.tester.WicketTester;
 
 /**
  * Tests WaspAction class.
@@ -38,9 +33,7 @@ import org.apache.wicket.util.tester.WicketTester;
  */
 public class SwarmActionTest extends TestCase
 {
-	private SwarmWebApplication application;
-
-	private WicketTester mock;
+	private static final String KEY = "ACTION_TEST";
 
 	/**
 	 * Constructor for WaspActionTest.
@@ -52,18 +45,19 @@ public class SwarmActionTest extends TestCase
 		super(arg0);
 	}
 
+
 	/**
 	 * Test method for {@link SwarmAction#hashCode()}
 	 */
 	public void testHashCode()
 	{
-		WaspAction action = new SwarmAction(5, "test");
+		WaspAction action = new SwarmAction(5, "test", KEY);
 		// persistent
 		assertEquals(action.hashCode(), action.hashCode());
-		WaspAction action2 = new SwarmAction(5, "test");
+		WaspAction action2 = new SwarmAction(5, "test", KEY);
 		// equal
 		assertEquals(action.hashCode(), action2.hashCode());
-		WaspAction action3 = new TestAction(5, "does not matter");
+		WaspAction action3 = new TestAction(5, "does not matter", KEY);
 		assertEquals(action2, action3);
 		assertTrue(action3.hashCode() == action2.hashCode());
 
@@ -74,7 +68,7 @@ public class SwarmActionTest extends TestCase
 	 */
 	public void testImpliesInt()
 	{
-		SwarmAction action = new SwarmAction(5, "test");
+		SwarmAction action = new SwarmAction(5, "test", KEY);
 		assertTrue(action.implies(5));
 		assertTrue(action.implies(1));
 		assertFalse(action.implies(6));
@@ -86,7 +80,7 @@ public class SwarmActionTest extends TestCase
 	 */
 	public void testImpliesWaspAction()
 	{
-		ActionFactory factory = application.getActionFactory();
+		ActionFactory factory = Actions.getActionFactory(KEY);
 		WaspAction action = factory.getAction(Render.class);
 		WaspAction action2 = action.add(factory.getAction(Inherit.class));
 		assertTrue(action2.implies(action));
@@ -99,31 +93,7 @@ public class SwarmActionTest extends TestCase
 	 */
 	protected void setUp()
 	{
-		mock = new WicketTester(application = new SwarmWebApplication()
-		{
-
-			protected Object getHiveKey()
-			{
-				return "action test";
-			}
-
-			protected void setUpHive()
-			{
-				PolicyFileHiveFactory factory = new PolicyFileHiveFactory();
-				// don't need policy for this simple test
-				HiveMind.registerHive(getHiveKey(), factory);
-			}
-
-			public Class getHomePage()
-			{
-				return MockHomePage.class;
-			}
-
-			public Class getLoginPage()
-			{
-				return MockLoginPage.class;
-			}
-		}, "src/test/java/" + getClass().getPackage().getName().replace('.', '/'));
+		new SwarmActionFactory(KEY);
 	}
 
 	/**
@@ -131,10 +101,7 @@ public class SwarmActionTest extends TestCase
 	 */
 	protected void tearDown() throws Exception
 	{
-		mock.destroy();
-		mock = null;
-		application = null;
-		HiveMind.unregisterHive("action test");
+		Actions.unregisterActionFactory(KEY);
 	}
 
 	/**
@@ -142,20 +109,20 @@ public class SwarmActionTest extends TestCase
 	 */
 	public void testEqualsObject()
 	{
-		WaspAction action = new SwarmAction(5, "test");
+		WaspAction action = new SwarmAction(5, "test", KEY);
 		// null
 		assertFalse(action.equals(null));
 		// reflexive
 		assertEquals(action, action);
 		// symmetric
-		WaspAction action2 = new SwarmAction(5, "test");
+		WaspAction action2 = new SwarmAction(5, "test", KEY);
 		assertEquals(action, action2);
 		assertEquals(action2, action);
-		WaspAction action3 = new SwarmAction(6, "test2");
+		WaspAction action3 = new SwarmAction(6, "test2", KEY);
 		assertFalse(action.equals(action3));
 		assertFalse(action3.equals(action));
 		// transitive
-		WaspAction action4 = new TestAction(5, "test");
+		WaspAction action4 = new TestAction(5, "test", KEY);
 		assertEquals(action, action4);
 		assertEquals(action4, action2);
 		// action2 already equals action
@@ -168,7 +135,7 @@ public class SwarmActionTest extends TestCase
 	 */
 	public void testAddInt()
 	{
-		ActionFactory factory = application.getActionFactory();
+		ActionFactory factory = Actions.getActionFactory(KEY);
 		SwarmAction action = (SwarmAction)factory.getAction(Render.class);
 		assertEquals(2, action.actions());
 		SwarmAction action2 = (SwarmAction)action
@@ -188,7 +155,7 @@ public class SwarmActionTest extends TestCase
 	 */
 	public void testAddWaspAction()
 	{
-		ActionFactory factory = application.getActionFactory();
+		ActionFactory factory = Actions.getActionFactory(KEY);
 		SwarmAction action = (SwarmAction)factory.getAction(Render.class);
 		assertEquals(2, action.actions());
 		SwarmAction action2 = (SwarmAction)action.add(factory.getAction(Access.class));
@@ -208,7 +175,7 @@ public class SwarmActionTest extends TestCase
 	{
 		try
 		{
-			new SwarmAction(6, null);
+			new SwarmAction(6, null, KEY);
 			fail("description should be required");
 		}
 		catch (IllegalArgumentException e)
@@ -217,7 +184,7 @@ public class SwarmActionTest extends TestCase
 		}
 		try
 		{
-			new SwarmAction(-10, "foobar");
+			new SwarmAction(-10, "foobar", KEY);
 			fail("negative numbers should not be allowed");
 		}
 		catch (IllegalArgumentException e)
@@ -235,10 +202,11 @@ public class SwarmActionTest extends TestCase
 		 * 
 		 * @param action
 		 * @param name
+		 * @param key
 		 */
-		protected TestAction(int action, String name)
+		protected TestAction(int action, String name, Object key)
 		{
-			super(action, name);
+			super(action, name, key);
 		}
 
 	}

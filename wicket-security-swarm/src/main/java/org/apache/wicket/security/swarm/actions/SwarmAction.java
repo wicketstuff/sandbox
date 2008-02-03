@@ -19,21 +19,19 @@ package org.apache.wicket.security.swarm.actions;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 
-import org.apache.wicket.Application;
 import org.apache.wicket.authorization.Action;
-import org.apache.wicket.security.WaspApplication;
 import org.apache.wicket.security.actions.AbstractWaspAction;
 import org.apache.wicket.security.actions.Access;
 import org.apache.wicket.security.actions.ActionFactory;
-import org.apache.wicket.security.actions.Enable;
+import org.apache.wicket.security.actions.Actions;
 import org.apache.wicket.security.actions.Render;
 import org.apache.wicket.security.actions.WaspAction;
 
 
 /**
- * Inmutable {@link Action} class based on int values to speed up inheritance
+ * Immutable {@link Action} class based on int values to speed up inheritance
  * checking. Each action is assigned a power of 2 int value. Bitwise or checks
- * provide the implie logic. These actions are instantiated by an
+ * provide the imply logic. These actions are instantiated by an
  * {@link ActionFactory} which provides both the name and the int value for the
  * constructor.
  * 
@@ -47,6 +45,11 @@ public class SwarmAction extends AbstractWaspAction
 	private final int actions;
 
 	/**
+	 * Key to get the {@link ActionFactory}.
+	 */
+	private final Object key;
+
+	/**
 	 * The default constructor for actions. Use it if your action does not
 	 * inherit any other actions (other then {@link Access}), like
 	 * {@link Render}.
@@ -55,31 +58,17 @@ public class SwarmAction extends AbstractWaspAction
 	 *            a power of 2 which provides the base value for this action
 	 * @param name
 	 *            the name of the action
+	 * @param key
+	 *            the key used to register the owning {@link ActionFactory} with
+	 *            the {@link Actions} object
 	 */
-	protected SwarmAction(int action, String name)
+	protected SwarmAction(int action, String name, Object key)
 	{
 		super(name);
+		this.key = key;
 		if (action < 0)
 			throw new IllegalArgumentException(action + " must be >= 0");
 		this.actions = action;
-	}
-
-	/**
-	 * Alternate constructor for actions that inherit from another action. For
-	 * example the constructor for a {@link Enable} action which implies the
-	 * {@link Render} action might look like this.
-	 * <code>super(actions | ((SwarmAction)factory.getAction(Render.class)).actions(), name);</code>
-	 * 
-	 * @param action
-	 *            a power of 2 which provides the base value for this action
-	 * @param name
-	 *            the name of the action
-	 * @param factory
-	 *            the factory for lookup of implied actions
-	 */
-	protected SwarmAction(int action, String name, ActionFactory factory)
-	{
-		this(action, name);
 	}
 
 	/**
@@ -208,7 +197,7 @@ public class SwarmAction extends AbstractWaspAction
 	}
 
 	/**
-	 * shortcut to the actionfactory. This might actually return the same object
+	 * Creates a new action. This might actually return the same object
 	 * depending on the implementation if the new SwarmAction does not have more
 	 * actions then the current.
 	 * 
@@ -217,8 +206,17 @@ public class SwarmAction extends AbstractWaspAction
 	 */
 	private SwarmAction newInstance(int myActions)
 	{
-		return ((SwarmActionFactory)((WaspApplication)Application.get()).getActionFactory())
-				.getAction(myActions);
+		return ((SwarmActionFactory)getActionFactory()).getAction(myActions);
+	}
+
+	/**
+	 * The actionFactory that created this action.
+	 * 
+	 * @return factory
+	 */
+	public final ActionFactory getActionFactory()
+	{
+		return Actions.getActionFactory(key);
 	}
 
 	/**

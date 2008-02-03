@@ -77,7 +77,7 @@ public class GeneralTest extends TestCase
 
 			protected void setUpHive()
 			{
-				PolicyFileHiveFactory factory = new PolicyFileHiveFactory();
+				PolicyFileHiveFactory factory = new PolicyFileHiveFactory(getActionFactory());
 				try
 				{
 					factory.addPolicyFile(getServletContext().getResource("WEB-INF/policy.hive"));

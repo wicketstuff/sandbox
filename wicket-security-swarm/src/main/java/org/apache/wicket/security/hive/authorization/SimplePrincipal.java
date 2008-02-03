@@ -21,7 +21,8 @@ import org.apache.wicket.security.hive.authentication.Subject;
 /**
  * A very simple principal. It does not imply any subject on its own. This is
  * only provided as a convenience to get started. Developers are likely to build
- * there own principal and decorate it with jpa annotations.
+ * there own principal and decorate it with jpa annotations to store / retrieve
+ * it from a database where they are coupled to users.
  * 
  * @author marrink
  */

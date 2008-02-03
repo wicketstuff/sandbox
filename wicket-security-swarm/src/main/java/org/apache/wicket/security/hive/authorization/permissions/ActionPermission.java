@@ -25,9 +25,9 @@ import org.apache.wicket.security.swarm.actions.SwarmAction;
 /**
  * Base class for any Permission that uses actions. Each implementation of
  * ActionPermission should at least expose the ActionPermission(String name,
- * String actions) constructor to the outside world, for it will be used by a
- * {@link HiveFactory} when constructing permissions. Note if you do not wish to
- * use actions in your permissions you should build your own permissions.
+ * SwarmAction actions) constructor to the outside world, for it will be used by
+ * a {@link HiveFactory} when constructing permissions. Note if you do not wish
+ * to use actions in your permissions you should build your own permissions.
  * 
  * @author marrink
  */
@@ -103,7 +103,7 @@ public class ActionPermission extends Permission
 		if (permission instanceof ActionPermission)
 		{
 			ActionPermission other = (ActionPermission)permission;
-			if (actions.implies(getAction(Inherit.class)))
+			if (actions.implies(actions.getActionFactory().getAction(Inherit.class)))
 				return actions.implies(other.actions) && other.getName().startsWith(getName());
 			return actions.implies(other.actions) && getName().equals(other.getName());
 		}

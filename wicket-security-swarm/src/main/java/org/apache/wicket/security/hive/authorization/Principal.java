@@ -64,7 +64,7 @@ public interface Principal extends Serializable
 	public String getName();
 
 	/**
-	 * Eventhough a subject does not explicitly hold a principal, it may still
+	 * Even though a subject does not explicitly hold a principal, it may still
 	 * be implied by the subject. For example a 'read' and a 'write' principal,
 	 * if the subject only holds the 'write' principal it is only logical it
 	 * also implies the 'read' principal. Note principals don't have actions
@@ -74,6 +74,7 @@ public interface Principal extends Serializable
 	 * granting the enable action.
 	 * 
 	 * @param subject
+	 *            a subject or null if no user has logged in yet
 	 * @return true if the subject in any way implies this principal, false
 	 *         otherwise.
 	 */

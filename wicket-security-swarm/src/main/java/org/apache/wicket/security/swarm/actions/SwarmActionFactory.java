@@ -26,6 +26,7 @@ import java.util.Set;
 import org.apache.wicket.authorization.Action;
 import org.apache.wicket.security.actions.Access;
 import org.apache.wicket.security.actions.ActionFactory;
+import org.apache.wicket.security.actions.Actions;
 import org.apache.wicket.security.actions.AllActions;
 import org.apache.wicket.security.actions.Enable;
 import org.apache.wicket.security.actions.Inherit;
@@ -53,34 +54,41 @@ public class SwarmActionFactory implements ActionFactory
 	protected static final int maxAssingableAction = (int)Math.pow(2, 30);
 
 	/**
-	 * maps ints to Strings.
+	 * maps int's to Strings.
 	 */
 	private Map stringValues = new HashMap(10);
 
 	/**
-	 * cache that maps ints to actions and Strings to actions
+	 * cache that maps int's to actions and Strings to actions
 	 */
 	private Map cachedActions = new HashMap();
 	/**
-	 * Maps ints to actions. and classes to actions.
+	 * Maps int's to actions. and classes to actions.
 	 */
 	private Map registeredActions = new HashMap();
 
 	private int power = -1;
 	private int maxAction = 0;
+	private final Object factoryKey;
 
 	/**
 	 * Registers the default actions: access, inherit, render and enable.
+	 * 
+	 * @param key
+	 *            using this key the factory registers itself to the
+	 *            {@link Actions} object.
 	 */
-	public SwarmActionFactory()
+	public SwarmActionFactory(Object key)
 	{
 		super();
+		this.factoryKey = key;
+		Actions.registerActionFactory(key, this);
 		try
 		{
 			register(Access.class, "access");
 			register(Inherit.class, "inherit");
 			register(Render.class, "render");
-			register(Enable.class, new ImpliesOtherAction(nextPowerOf2(), "enable", this,
+			register(Enable.class, new ImpliesOtherAction(nextPowerOf2(), "enable", key, this,
 					Render.class));
 		}
 		catch (RegistrationException e)
@@ -95,8 +103,6 @@ public class SwarmActionFactory implements ActionFactory
 	 */
 	public WaspAction getAction(Action action)
 	{
-		if (action instanceof SwarmAction)
-			return (SwarmAction)action;
 		if (action != null)
 			try
 			{
@@ -124,14 +130,14 @@ public class SwarmActionFactory implements ActionFactory
 			int actionValues = parseActions(saveActions);
 			// rebuild action name
 			String nameValues = buildActionString(actionValues);
-			sa = new SwarmAction(actionValues, nameValues);
+			sa = new SwarmAction(actionValues, nameValues, getFactoryKey());
 			cacheAction(saveActions, sa);
 		}
 		return sa;
 	}
 
 	/**
-	 * Caches an action under its string vorm.
+	 * Caches an action under its string form.
 	 * 
 	 * @param name
 	 * @param action
@@ -170,7 +176,7 @@ public class SwarmActionFactory implements ActionFactory
 						+ ", you used " + actions);
 			if (actions < 0)
 				throw new IllegalArgumentException("Min value for actions = 0, you used " + actions);
-			ja = new SwarmAction(actions, buildActionString(actions));
+			ja = new SwarmAction(actions, buildActionString(actions), getFactoryKey());
 			cacheAction(new Integer(actions), ja);
 		}
 		return ja;
@@ -360,7 +366,7 @@ public class SwarmActionFactory implements ActionFactory
 				throw new RegistrationException("Can not register more then 32 different actions.");
 			// 32 since we start at 0 :)
 			int action = nextPowerOf2();
-			return register(waspActionClass, new SwarmAction(action, name));
+			return register(waspActionClass, new SwarmAction(action, name, getFactoryKey()));
 		}
 		throw new RegistrationException(waspActionClass + " is not a " + WaspAction.class.getName());
 	}
@@ -499,6 +505,7 @@ public class SwarmActionFactory implements ActionFactory
 		registeredActions = null;
 		cachedActions = null;
 		stringValues = null;
+		Actions.unregisterActionFactory(getFactoryKey());
 	}
 
 	/**
@@ -515,14 +522,17 @@ public class SwarmActionFactory implements ActionFactory
 		 *            the base action value
 		 * @param name
 		 *            name of the new action
+		 * @param key
+		 *            key to get the registered ActionFactory
 		 * @param factory
 		 *            factory where this class will be registered
 		 * @param otherAction
 		 *            a single action class to imply, not null
 		 */
-		public ImpliesOtherAction(int actions, String name, ActionFactory factory, Class otherAction)
+		public ImpliesOtherAction(int actions, String name, Object key, ActionFactory factory,
+				Class otherAction)
 		{
-			super(actions | ((SwarmAction)factory.getAction(otherAction)).actions(), name);
+			super(actions | ((SwarmAction)factory.getAction(otherAction)).actions(), name, key);
 		}
 
 		/**
@@ -530,15 +540,17 @@ public class SwarmActionFactory implements ActionFactory
 		 *            the base action value
 		 * @param name
 		 *            name of the new action
+		 * @param key
+		 *            key to get the registered ActionFactory
 		 * @param factory
 		 *            factory where this class will be registered
 		 * @param otherActions
 		 *            any number of action classes to imply
 		 */
-		public ImpliesOtherAction(int actions, String name, ActionFactory factory,
+		public ImpliesOtherAction(int actions, String name, Object key, ActionFactory factory,
 				Class[] otherActions)
 		{
-			super(actions | bitwiseOr(factory, otherActions), name);
+			super(actions | bitwiseOr(factory, otherActions), name, key);
 		}
 
 		/**
@@ -564,5 +576,15 @@ public class SwarmActionFactory implements ActionFactory
 			}
 			return result;
 		}
+	}
+
+	/**
+	 * Gets key.
+	 * 
+	 * @return key
+	 */
+	protected final Object getFactoryKey()
+	{
+		return factoryKey;
 	}
 }
