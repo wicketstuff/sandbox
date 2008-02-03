@@ -35,8 +35,8 @@ public class DataPermission extends ActionPermission
 	private static final long serialVersionUID = 5192668688933417376L;
 
 	/**
-	 * Creats a new DataPermission for a components model. The model will
-	 * specify the name for this permission. Currently we dont check if the
+	 * Creates a new DataPermission for a components model. The model will
+	 * specify the name for this permission. Currently we don't check if the
 	 * component really has the model you specified here.
 	 * 
 	 * @param component
@@ -60,17 +60,6 @@ public class DataPermission extends ActionPermission
 	public DataPermission(String name, SwarmAction actions)
 	{
 		super(name, actions);
-	}
-
-	/**
-	 * Creates a new DataPermission with the specified name and actions.
-	 * 
-	 * @param name
-	 * @param actions
-	 */
-	public DataPermission(String name, String actions)
-	{
-		super(name, getAction(actions));
 	}
 
 	/**

@@ -189,13 +189,13 @@ public class SwarmStrategy extends ClassAuthorizationStrategy
 		if (model instanceof SwarmModel)
 			permission = new DataPermission(component, (SwarmModel)model, (SwarmAction)action);
 		else
-			permission = new DataPermission(String.valueOf(model), action.getName());
+			permission = new DataPermission(String.valueOf(model), (SwarmAction)action);
 		return hasPermission(permission);
 
 	}
 
 	/**
-	 * Loggs a user in. Note that the context must be an instance of
+	 * Logs a user in. Note that the context must be an instance of
 	 * {@link LoginContext}.
 	 * 
 	 * @see org.apache.wicket.security.strategies.WaspAuthorizationStrategy#login(java.lang.Object)

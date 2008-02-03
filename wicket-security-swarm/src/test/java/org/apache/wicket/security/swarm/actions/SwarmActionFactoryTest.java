@@ -24,14 +24,13 @@ import org.apache.wicket.Component;
 import org.apache.wicket.authorization.Action;
 import org.apache.wicket.security.actions.Access;
 import org.apache.wicket.security.actions.ActionFactory;
+import org.apache.wicket.security.actions.Actions;
 import org.apache.wicket.security.actions.AllActions;
 import org.apache.wicket.security.actions.Enable;
 import org.apache.wicket.security.actions.Inherit;
 import org.apache.wicket.security.actions.RegistrationException;
 import org.apache.wicket.security.actions.Render;
 import org.apache.wicket.security.actions.WaspAction;
-import org.apache.wicket.security.swarm.SwarmWebApplication;
-import org.apache.wicket.util.tester.WicketTester;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,6 +43,7 @@ public class SwarmActionFactoryTest extends TestCase
 {
 	private static final Logger log = LoggerFactory.getLogger(SwarmActionFactoryTest.class);
 
+	private static final String KEY = "TEST_FACTORY";
 	private SwarmActionFactory factory;
 
 	/**
@@ -62,7 +62,7 @@ public class SwarmActionFactoryTest extends TestCase
 	 */
 	protected void setUp()
 	{
-		factory = new SwarmActionFactory();
+		factory = new SwarmActionFactory(KEY);
 	}
 
 	/**
@@ -71,6 +71,7 @@ public class SwarmActionFactoryTest extends TestCase
 	protected void tearDown() throws Exception
 	{
 		factory = null;
+		Actions.unregisterActionFactory(KEY);
 	}
 
 	/**
@@ -78,31 +79,6 @@ public class SwarmActionFactoryTest extends TestCase
 	 */
 	public void testAllActions()
 	{
-		SwarmWebApplication application;
-		WicketTester mock = new WicketTester(application = new SwarmWebApplication()
-		{
-
-			protected Object getHiveKey()
-			{
-				return "test";
-			}
-
-			protected void setUpHive()
-			{
-				// not relevant for this test
-			}
-
-			public Class getHomePage()
-			{
-				return null;
-			}
-
-			public Class getLoginPage()
-			{
-				return null;
-			}
-		}, "src/test/java/" + getClass().getPackage().getName().replace('.', '/'));
-		factory = (SwarmActionFactory)application.getActionFactory();
 		WaspAction action = factory.getAction(AllActions.class);
 		assertNotNull(action);
 		List actions = factory.getRegisteredActions();
@@ -125,7 +101,6 @@ public class SwarmActionFactoryTest extends TestCase
 		assertNotSame(action, action2);
 		// not same since AllActions.class will always deliver a new instance
 		assertSame(action2, factory.getAction("all")); // cache lookup
-		mock.destroy();
 	}
 
 	/**
@@ -136,7 +111,6 @@ public class SwarmActionFactoryTest extends TestCase
 		WaspAction action = factory.getAction(Component.RENDER);
 		assertNotNull(action);
 		assertEquals(factory.getAction(Render.class), action);
-		assertEquals(action, factory.getAction((SwarmAction)action));
 		assertEquals(factory.getAction("render"), action);
 
 		Action wicketAction = new Action("inherit, render");
@@ -456,7 +430,7 @@ public class SwarmActionFactoryTest extends TestCase
 		 */
 		protected Bugsy(int actions, String name, ActionFactory factory)
 		{
-			super(getIt(actions, factory), name);
+			super(getIt(actions, factory), name, KEY);
 		}
 
 		private static int getIt(int initial, ActionFactory factory)

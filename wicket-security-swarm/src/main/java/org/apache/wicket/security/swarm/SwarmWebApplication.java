@@ -40,7 +40,7 @@ public abstract class SwarmWebApplication extends WaspWebApplication
 	 */
 	protected void setupActionFactory()
 	{
-		setActionFactory(new SwarmActionFactory());
+		setActionFactory(new SwarmActionFactory(getHiveKey()));
 
 	}
 

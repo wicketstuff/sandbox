@@ -16,78 +16,28 @@
  */
 package org.apache.wicket.security.hive.authentication;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
-
 import org.apache.wicket.Component;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.security.hive.authorization.Principal;
 
 
 /**
- * Default implementation of a Subject. By default it authenticates all classes,
- * components and models. This makes it an ideal candidate for single login
- * applications.
+ * Default implementation of a Subject.Targeted for wicket applications. By
+ * default it authenticates all classes, components and models. This makes it an
+ * ideal candidate for single login applications.
  * 
  * @author marrink
- * @see Subject
+ * @see WicketSubject
  */
-public class DefaultSubject implements Subject
+public class DefaultSubject extends BaseSubject implements WicketSubject
 {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private boolean readOnly;
-
-	private Set principals = new HashSet(100);// guess
-	private Set readOnlyPrincipals = Collections.unmodifiableSet(principals);
-
-	/**
-	 * @see org.apache.wicket.security.hive.authentication.Subject#getPrincipals()
-	 */
-	public final Set getPrincipals()
-	{
-		return readOnlyPrincipals;
-	}
-
-	/**
-	 * @see org.apache.wicket.security.hive.authentication.Subject#isReadOnly()
-	 */
-	public final boolean isReadOnly()
-	{
-		return readOnly;
-	}
-
-	/**
-	 * @see org.apache.wicket.security.hive.authentication.Subject#setReadOnly()
-	 */
-	public final void setReadOnly()
-	{
-		this.readOnly = true;
-	}
-
-	/**
-	 * Adds a new principal to this subject.
-	 * 
-	 * @param principal
-	 * @return true if the principal was added, false if it wasn't for instance
-	 *         because the subject is readonly.
-	 */
-	public final boolean addPrincipal(Principal principal)
-	{
-		if (readOnly)
-			return false;
-		if (principal == null)
-			throw new IllegalArgumentException("principal can not be null.");
-		return principals.add(principal);
-	}
-
 	/**
 	 * 
-	 * @see org.apache.wicket.security.hive.authentication.Subject#isClassAuthenticated(java.lang.Class)
+	 * @see org.apache.wicket.security.hive.authentication.WicketSubject#isClassAuthenticated(java.lang.Class)
 	 */
 	public boolean isClassAuthenticated(Class class1)
 	{
@@ -96,7 +46,7 @@ public class DefaultSubject implements Subject
 
 	/**
 	 * 
-	 * @see org.apache.wicket.security.hive.authentication.Subject#isComponentAuthenticated(org.apache.wicket.Component)
+	 * @see org.apache.wicket.security.hive.authentication.WicketSubject#isComponentAuthenticated(org.apache.wicket.Component)
 	 */
 	public boolean isComponentAuthenticated(Component component)
 	{
@@ -105,7 +55,7 @@ public class DefaultSubject implements Subject
 
 	/**
 	 * 
-	 * @see org.apache.wicket.security.hive.authentication.Subject#isModelAuthenticated(org.apache.wicket.model.IModel,
+	 * @see org.apache.wicket.security.hive.authentication.WicketSubject#isModelAuthenticated(org.apache.wicket.model.IModel,
 	 *      org.apache.wicket.Component)
 	 */
 	public boolean isModelAuthenticated(IModel model, Component component)

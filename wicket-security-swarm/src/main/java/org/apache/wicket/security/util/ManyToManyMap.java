@@ -24,6 +24,12 @@ import java.util.Map;
 import java.util.Set;
 
 /**
+ * Maps keys to lists of values and values to lists of keys. The whole concept
+ * of key value is a bit vague here because each value is also a key. Consider
+ * the following example: A maps to B and C, B maps to D. get(A) would return B
+ * and C, get(B) would return A and D, get(C) would return A, get(D) would
+ * return B. Each mapping is bidirectional.
+ * 
  * @author marrink
  */
 public class ManyToManyMap
@@ -39,7 +45,7 @@ public class ManyToManyMap
 	private Map mappings;
 
 	/**
-	 * 
+	 * Creates map with default initial size and load factor.
 	 */
 	public ManyToManyMap()
 	{
@@ -47,6 +53,8 @@ public class ManyToManyMap
 	}
 
 	/**
+	 * Creates map with default load factor and specified initial size.
+	 * 
 	 * @param initialCapacity
 	 */
 	public ManyToManyMap(int initialCapacity)
@@ -55,6 +63,9 @@ public class ManyToManyMap
 	}
 
 	/**
+	 * Creates map with specified initial size and load factor. For more
+	 * information about these see {@link HashMap}
+	 * 
 	 * @param initialCapacity
 	 * @param loadFactor
 	 */
@@ -65,7 +76,9 @@ public class ManyToManyMap
 
 	/**
 	 * Adds a key value mapping in this map. Since this maps many to many
-	 * relations no previous mappings will be overridden.
+	 * relations no previous mappings will be overridden. The size of the map
+	 * may or may not change depending on whether both objects are already
+	 * present or not
 	 * 
 	 * @param left
 	 * @param right
@@ -89,7 +102,9 @@ public class ManyToManyMap
 	}
 
 	/**
-	 * Removes a many to many mapping between two objects.
+	 * Removes a many to many mapping between two objects. The size of the map
+	 * may or may not change depending on on whether or not both objects have
+	 * other mappings.
 	 * 
 	 * @param left
 	 *            left side of the mapping
@@ -117,7 +132,8 @@ public class ManyToManyMap
 	}
 
 	/**
-	 * Remove all mappings for an object.
+	 * Remove all mappings for an object. The size of the map will at least
+	 * decrease by one (if the object is present) but possibly more.
 	 * 
 	 * @param leftOrRight
 	 *            the left or right side of the many to many mapping
@@ -144,6 +160,7 @@ public class ManyToManyMap
 	}
 
 	/**
+	 * Gets the bidirectional mappings for this object.
 	 * 
 	 * @param left
 	 * @return the many to many mappings for this object
@@ -157,7 +174,9 @@ public class ManyToManyMap
 	}
 
 	/**
-	 * @return the number of mapping entries.
+	 * The number of distinct objects that are mapped.
+	 * 
+	 * @return the number of distinct objects
 	 */
 	public int size()
 	{
@@ -182,6 +201,7 @@ public class ManyToManyMap
 	 * Check if this map contains a key.
 	 * 
 	 * @param key
+	 *            a mapped object
 	 * @return true if this map contains the key, false otherwise
 	 */
 	public boolean contains(Object key)
@@ -190,9 +210,10 @@ public class ManyToManyMap
 	}
 
 	/**
-	 * Check if this map contains a key value mapping.
+	 * Check if this map contains any mappings. If this map does is empty size
+	 * will be 0.
 	 * 
-	 * @return true if no key value mappings are present, false otherwise
+	 * @return true if no mappings are present, false otherwise
 	 */
 	public boolean isEmpty()
 	{
@@ -200,7 +221,7 @@ public class ManyToManyMap
 	}
 
 	/**
-	 * Removes all key value mappings.
+	 * Removes all mappings.
 	 */
 	public void clear()
 	{

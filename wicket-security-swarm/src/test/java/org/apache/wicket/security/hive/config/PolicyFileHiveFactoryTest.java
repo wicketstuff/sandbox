@@ -29,17 +29,20 @@ import java.util.regex.Pattern;
 
 import junit.framework.TestCase;
 
+import org.apache.wicket.security.actions.Actions;
 import org.apache.wicket.security.hive.Hive;
 import org.apache.wicket.security.hive.authorization.EverybodyPrincipal;
 import org.apache.wicket.security.hive.authorization.FaultyPermission;
 import org.apache.wicket.security.hive.authorization.TestPermission;
 import org.apache.wicket.security.hive.authorization.TestPrincipal;
+import org.apache.wicket.security.swarm.actions.SwarmActionFactory;
 
 /**
  * @author marrink
  */
 public class PolicyFileHiveFactoryTest extends TestCase
 {
+	private static final String KEY = "POLICY_TEST";
 
 	/**
 	 * @param name
@@ -49,13 +52,23 @@ public class PolicyFileHiveFactoryTest extends TestCase
 		super(name);
 	}
 
+	protected void setUp() throws Exception
+	{
+		new SwarmActionFactory(KEY);
+	}
+
+	protected void tearDown() throws Exception
+	{
+		Actions.unregisterActionFactory(KEY);
+	}
+
 	/**
 	 * Test method for
 	 * {@link org.apache.wicket.security.hive.config.PolicyFileHiveFactory#addPolicyFile(java.net.URL)}.
 	 */
 	public void testAddPolicyFile()
 	{
-		PolicyFileHiveFactory factory = new PolicyFileHiveFactory();
+		PolicyFileHiveFactory factory = new PolicyFileHiveFactory(Actions.getActionFactory(KEY));
 		factory.addPolicyFile(getClass().getResource("test-policy.hive"));
 		try
 		{
@@ -75,7 +88,7 @@ public class PolicyFileHiveFactoryTest extends TestCase
 	 */
 	public void testCreateHive()
 	{
-		PolicyFileHiveFactory factory = new PolicyFileHiveFactory();
+		PolicyFileHiveFactory factory = new PolicyFileHiveFactory(Actions.getActionFactory(KEY));
 		factory.addPolicyFile(getClass().getResource("test-policy.hive"));
 		doCreateHive(factory);
 	}
@@ -87,7 +100,7 @@ public class PolicyFileHiveFactoryTest extends TestCase
 	 */
 	public void testCreateHive2()
 	{
-		PolicyFileHiveFactory factory = new PolicyFileHiveFactory();
+		PolicyFileHiveFactory factory = new PolicyFileHiveFactory(Actions.getActionFactory(KEY));
 		InputStream stream;
 		try
 		{
@@ -114,7 +127,7 @@ public class PolicyFileHiveFactoryTest extends TestCase
 	 */
 	public void testCreateHive3()
 	{
-		PolicyFileHiveFactory factory = new PolicyFileHiveFactory();
+		PolicyFileHiveFactory factory = new PolicyFileHiveFactory(Actions.getActionFactory(KEY));
 		InputStream stream;
 		try
 		{
@@ -148,28 +161,28 @@ public class PolicyFileHiveFactoryTest extends TestCase
 		assertTrue(hive.containsPrincipal(new TestPrincipal("test1")));
 		assertTrue(hive.containsPrincipal(new TestPrincipal("test2")));
 		assertTrue(hive.containsPrincipal(new TestPrincipal("test6")));
-		assertTrue(hive.containsPermission(new TestPermission("A", "inherit, read")));
-		assertTrue(hive.containsPermission(new TestPermission("A", "execute")));
-		assertTrue(hive.containsPermission(new TestPermission("1.A", "inherit, read")));
-		assertTrue(hive.containsPermission(new TestPermission("1.A", "execute")));
-		assertFalse(hive.containsPermission(new TestPermission("2.A", "inherit, read")));
-		assertFalse(hive.containsPermission(new TestPermission("2.A", "execute")));
-		assertTrue(hive.containsPermission(new TestPermission("2.B", "inherit, read, write")));
-		assertTrue(hive.containsPermission(new TestPermission("2.B", "execute")));
-		assertTrue(hive.containsPermission(new TestPermission("2.C", "read, execute")));
-		assertTrue(hive.containsPermission(new TestPermission("2.C.1", "write")));
-		assertTrue(hive.containsPermission(new TestPermission("7.A", "inherit, read")));
-		assertTrue(hive.containsPermission(new TestPermission("7.A", "execute")));
-		assertTrue(hive.containsPermission(new TestPermission("7.B", "inherit, read, write")));
-		assertTrue(hive.containsPermission(new TestPermission("7.B", "execute")));
-		assertTrue(hive.containsPermission(new TestPermission("7.C", "read, execute")));
-		assertTrue(hive.containsPermission(new TestPermission("7.C.1", "write")));
-		assertFalse(hive.containsPermission(new TestPermission("6.A", "inherit, read")));
-		assertFalse(hive.containsPermission(new TestPermission("6.A", "execute")));
-		assertFalse(hive.containsPermission(new TestPermission("6.B", "inherit, read, write")));
-		assertFalse(hive.containsPermission(new TestPermission("6.B", "execute")));
-		assertFalse(hive.containsPermission(new TestPermission("6.C", "read, execute")));
-		assertFalse(hive.containsPermission(new TestPermission("6.C.1", "write")));
+		assertTrue(hive.containsPermission(new TestPermission("A", "inherit, render")));
+		assertTrue(hive.containsPermission(new TestPermission("A", "enable")));
+		assertTrue(hive.containsPermission(new TestPermission("1.A", "inherit, render")));
+		assertTrue(hive.containsPermission(new TestPermission("1.A", "enable")));
+		assertFalse(hive.containsPermission(new TestPermission("2.A", "inherit, render")));
+		assertFalse(hive.containsPermission(new TestPermission("2.A", "enable")));
+		assertTrue(hive.containsPermission(new TestPermission("2.B", "inherit, render, enable")));
+		assertTrue(hive.containsPermission(new TestPermission("2.B", "enable")));
+		assertTrue(hive.containsPermission(new TestPermission("2.C", "render, enable")));
+		assertTrue(hive.containsPermission(new TestPermission("2.C.1", "enable")));
+		assertTrue(hive.containsPermission(new TestPermission("7.A", "inherit, render")));
+		assertTrue(hive.containsPermission(new TestPermission("7.A", "enable")));
+		assertTrue(hive.containsPermission(new TestPermission("7.B", "inherit, render, enable")));
+		assertTrue(hive.containsPermission(new TestPermission("7.B", "enable")));
+		assertTrue(hive.containsPermission(new TestPermission("7.C", "render, enable")));
+		assertTrue(hive.containsPermission(new TestPermission("7.C.1", "enable")));
+		assertFalse(hive.containsPermission(new TestPermission("6.A", "inherit, render")));
+		assertFalse(hive.containsPermission(new TestPermission("6.A", "enable")));
+		assertFalse(hive.containsPermission(new TestPermission("6.B", "inherit, render, enable")));
+		assertFalse(hive.containsPermission(new TestPermission("6.B", "enable")));
+		assertFalse(hive.containsPermission(new TestPermission("6.C", "render, enable")));
+		assertFalse(hive.containsPermission(new TestPermission("6.C.1", "enable")));
 		assertTrue(hive.containsPrincipal(new TestPrincipal("test8")));
 		assertTrue(hive.containsPermission(new TestPermission("8.A")));
 		assertTrue(hive.containsPermission(new TestPermission("8.B")));
@@ -379,7 +392,7 @@ public class PolicyFileHiveFactoryTest extends TestCase
 			Method method = PolicyFileHiveFactory.class.getDeclaredMethod("resolveAliases",
 					new Class[] { String.class });
 			method.setAccessible(true);
-			PolicyFileHiveFactory factory = new PolicyFileHiveFactory();
+			PolicyFileHiveFactory factory = new PolicyFileHiveFactory(Actions.getActionFactory(KEY));
 			factory.setAlias("foo", "foo");
 			factory.setAlias("foobar", "foobar");
 			String result = (String)method.invoke(factory, new Object[] { "${${foo}bar}" });
@@ -423,7 +436,7 @@ public class PolicyFileHiveFactoryTest extends TestCase
 			Method method = PolicyFileHiveFactory.class.getDeclaredMethod("resolveAliases",
 					new Class[] { String.class });
 			method.setAccessible(true);
-			PolicyFileHiveFactory factory = new PolicyFileHiveFactory();
+			PolicyFileHiveFactory factory = new PolicyFileHiveFactory(Actions.getActionFactory(KEY));
 			factory.setAlias("foo", "foo");
 			factory.setAlias("foobar", "foobar");
 			String result = (String)method.invoke(factory, new Object[] { "${${foo}" });
@@ -455,5 +468,17 @@ public class PolicyFileHiveFactoryTest extends TestCase
 			else
 				fail(e.getMessage());
 		}
+	}
+
+	/**
+	 * Test handling null urls, readers and streams.
+	 */
+	public void testAddNull()
+	{
+		PolicyFileHiveFactory factory = new PolicyFileHiveFactory(Actions.getActionFactory(KEY));
+		assertFalse(factory.addPolicyFile(null));
+		assertFalse(factory.addReader(null));
+		assertFalse(factory.addStream(null));
+
 	}
 }

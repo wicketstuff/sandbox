@@ -64,7 +64,8 @@ public interface Hive
 	 *            the (optional) subject
 	 * @param permission
 	 *            the permission to check.
-	 * @return true if the subject has the permission, false otherwise.
+	 * @return true if the subject has or implies the permission, false
+	 *         otherwise.
 	 */
 	public boolean hasPermission(Subject subject, Permission permission);
 }

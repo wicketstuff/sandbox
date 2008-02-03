@@ -78,7 +78,7 @@ public class ExtendsTest extends GeneralTest
 		 */
 		protected void setUpHive()
 		{
-			PolicyFileHiveFactory factory = new PolicyFileHiveFactory();
+			PolicyFileHiveFactory factory = new PolicyFileHiveFactory(getActionFactory());
 			try
 			{
 				factory.addPolicyFile(getServletContext().getResource("WEB-INF/policy.hive"));
@@ -143,7 +143,7 @@ public class ExtendsTest extends GeneralTest
 		protected void setupActionFactory()
 		{
 			if (actionFactory == null)
-				actionFactory = new SwarmActionFactory();
+				actionFactory = new SwarmActionFactory(getHiveKey());
 			else
 				throw new IllegalStateException("Can not initialize ActionFactory more then once");
 
@@ -162,7 +162,7 @@ public class ExtendsTest extends GeneralTest
 
 		/**
 		 * triggers the setup of the factories and the hive. Please remember to
-		 * call super.init when you override this method.
+		 * call super.init() when you override this method.
 		 * 
 		 * @see org.apache.wicket.security.WaspWebApplication#init()
 		 */

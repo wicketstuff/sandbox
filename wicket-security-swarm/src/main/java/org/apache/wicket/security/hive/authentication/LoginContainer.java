@@ -46,7 +46,7 @@ public final class LoginContainer implements Serializable
 
 	private Map subjects = new HashMap();
 
-	private Subject subject = null;
+	private WicketSubject subject = null;
 
 	private HashKey preventsLogin = null;
 
@@ -194,7 +194,7 @@ public final class LoginContainer implements Serializable
 	 * 
 	 * @author marrink
 	 */
-	private static final class MultiSubject implements Subject
+	private static final class MultiSubject implements WicketSubject
 	{
 		private static final long serialVersionUID = 1L;
 
@@ -279,10 +279,17 @@ public final class LoginContainer implements Serializable
 		public boolean isModelAuthenticated(IModel model, Component component)
 		{
 			HashKey ctx = null;
+			Subject subj;
 			for (int i = 0; i < keys.size(); i++)
 			{
 				ctx = (HashKey)keys.get(i);
-				if (((Subject)mySubjects.get(ctx)).isModelAuthenticated(model, component))
+				subj = (Subject)mySubjects.get(ctx);
+				if (subj instanceof WicketSubject)
+				{
+					if (((WicketSubject)subj).isModelAuthenticated(model, component))
+						return true;
+				}
+				else
 					return true;
 			}
 			return false;
@@ -301,10 +308,17 @@ public final class LoginContainer implements Serializable
 		public boolean isComponentAuthenticated(Component component)
 		{
 			HashKey ctx = null;
+			Subject subj;
 			for (int i = 0; i < keys.size(); i++)
 			{
 				ctx = (HashKey)keys.get(i);
-				if (((Subject)mySubjects.get(ctx)).isComponentAuthenticated(component))
+				subj = (Subject)mySubjects.get(ctx);
+				if (subj instanceof WicketSubject)
+				{
+					if (((WicketSubject)subj).isComponentAuthenticated(component))
+						return true;
+				}
+				else
 					return true;
 			}
 			return false;
@@ -323,10 +337,17 @@ public final class LoginContainer implements Serializable
 		public boolean isClassAuthenticated(Class clazz)
 		{
 			HashKey ctx = null;
+			Subject subj;
 			for (int i = 0; i < keys.size(); i++)
 			{
 				ctx = (HashKey)keys.get(i);
-				if (((Subject)mySubjects.get(ctx)).isClassAuthenticated(clazz))
+				subj = (Subject)mySubjects.get(ctx);
+				if (subj instanceof WicketSubject)
+				{
+					if (((WicketSubject)subj).isClassAuthenticated(clazz))
+						return true;
+				}
+				else
 					return true;
 			}
 			return false;

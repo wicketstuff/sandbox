@@ -18,12 +18,8 @@ package org.apache.wicket.security.hive.authorization;
 
 import java.io.Serializable;
 
-import org.apache.wicket.Application;
-import org.apache.wicket.security.WaspApplication;
-import org.apache.wicket.security.actions.ActionFactory;
 import org.apache.wicket.security.hive.authorization.permissions.ActionPermission;
 import org.apache.wicket.security.swarm.actions.SwarmAction;
-import org.apache.wicket.security.swarm.actions.SwarmActionFactory;
 
 
 /**
@@ -58,7 +54,8 @@ import org.apache.wicket.security.swarm.actions.SwarmActionFactory;
  * All permissions must at least have a public constructor accepting a String
  * parameter which will be used as name for the permission. Note that the
  * {@link ActionPermission} should also have a 2 argument constructor accepting
- * 2 strings where the first is the name and the second a (list of) action(s).
+ * a string where for the name and a second {@link SwarmAction} parameter to
+ * indicate which actions are allowed.
  * 
  * @author marrink
  * 
@@ -156,47 +153,4 @@ public abstract class Permission implements Serializable
 	{
 		return name;
 	}
-
-	/**
-	 * Utility method for getting an action.
-	 * 
-	 * @param action
-	 *            the action class
-	 * @return the action
-	 * @see ActionFactory#getAction(Class)
-	 */
-	protected static final SwarmAction getAction(Class action)
-	{
-		return (SwarmAction)((WaspApplication)Application.get()).getActionFactory().getAction(
-				action);
-	}
-
-	/**
-	 * Utility method for getting an action.
-	 * 
-	 * @param actions
-	 *            a bitwise or of the actions
-	 * @return the action
-	 * @see SwarmActionFactory#getAction(int)
-	 */
-	protected static final SwarmAction getAction(int actions)
-	{
-		return ((SwarmActionFactory)((WaspApplication)Application.get()).getActionFactory())
-				.getAction(actions);
-	}
-
-	/**
-	 * Utility method for getting an action.
-	 * 
-	 * @param actions
-	 *            the name of an action
-	 * @return the action
-	 * @see ActionFactory#getAction(String)
-	 */
-	protected static final SwarmAction getAction(String actions)
-	{
-		return (SwarmAction)((WaspApplication)Application.get()).getActionFactory().getAction(
-				actions);
-	}
-
 }

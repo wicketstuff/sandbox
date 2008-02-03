@@ -22,6 +22,7 @@ import java.util.Map;
 import junit.framework.TestCase;
 
 import org.apache.wicket.protocol.http.WebApplication;
+import org.apache.wicket.security.actions.ActionFactory;
 import org.apache.wicket.security.hive.BasicHive;
 import org.apache.wicket.security.hive.Hive;
 import org.apache.wicket.security.hive.HiveMind;
@@ -33,6 +34,7 @@ import org.apache.wicket.security.hive.config.HiveFactory;
 import org.apache.wicket.security.pages.MockLoginPage;
 import org.apache.wicket.security.pages.SpeedPage;
 import org.apache.wicket.security.swarm.SwarmWebApplication;
+import org.apache.wicket.security.swarm.actions.SwarmAction;
 import org.apache.wicket.util.tester.FormTester;
 import org.apache.wicket.util.tester.WicketTester;
 import org.slf4j.Logger;
@@ -84,7 +86,7 @@ public class SpeedTest extends TestCase
 
 			protected void setUpHive()
 			{
-				HiveFactory factory = new DummyFactory(useCache, denialFactor);
+				HiveFactory factory = new DummyFactory(useCache, denialFactor, getActionFactory());
 				HiveMind.registerHive(getHiveKey(), factory);
 			}
 
@@ -291,6 +293,8 @@ public class SpeedTest extends TestCase
 		private final boolean cache;
 		private final int denialFactor;
 
+		private ActionFactory actionFactory;
+
 		/**
 		 * Construct.
 		 * 
@@ -298,12 +302,15 @@ public class SpeedTest extends TestCase
 		 *            use caching or not
 		 * @param deny
 		 *            factor for % of permission denied
+		 * @param actionFactory
+		 *            factory to create the actions
 		 */
-		public DummyFactory(boolean cache, int deny)
+		public DummyFactory(boolean cache, int deny, ActionFactory actionFactory)
 		{
 			super();
 			this.cache = cache;
 			this.denialFactor = deny;
+			this.actionFactory = actionFactory;
 		}
 
 		/**
@@ -318,8 +325,9 @@ public class SpeedTest extends TestCase
 			else
 				hive = new BasicHive();
 			Principal principal = new SimplePrincipal("speed");
+			SwarmAction action = (SwarmAction)actionFactory.getAction("access, render");
 			hive.addPermission(principal, new ComponentPermission(
-					"org.apache.wicket.security.pages.SpeedPage", "access, render"));
+					"org.apache.wicket.security.pages.SpeedPage", action));
 			for (int i = 0; i < ROWS; i++)
 			{
 				for (int j = 0; j < COLS / denialFactor; j++)
@@ -329,7 +337,7 @@ public class SpeedTest extends TestCase
 					// will be added
 					hive.addPermission(principal, new ComponentPermission(
 							"org.apache.wicket.security.pages.SpeedPage:rows:" + i + ":cols:" + j
-									+ ":label", "access, render"));
+									+ ":label", action));
 				}
 			}
 			return hive;
