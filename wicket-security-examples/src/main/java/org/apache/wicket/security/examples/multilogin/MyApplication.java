@@ -85,7 +85,7 @@ public class MyApplication extends MultiUsableApplication
 	protected void setUpHive()
 	{
 		// create factory
-		PolicyFileHiveFactory factory = new PolicyFileHiveFactory();
+		PolicyFileHiveFactory factory = new PolicyFileHiveFactory(getActionFactory());
 		try
 		{
 			// this example uses 1 policy file but you can add as many as you
