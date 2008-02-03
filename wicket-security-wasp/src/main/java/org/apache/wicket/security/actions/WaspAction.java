@@ -20,7 +20,8 @@ import org.apache.wicket.authorization.Action;
 
 /**
  * Immutable {@link Action} with added logic for implies checks. These actions
- * are instantiated by an {@link ActionFactory}.
+ * are instantiated by an {@link ActionFactory}. Wicket {@link Action}s are
+ * mapped to wasp actions.
  * 
  * @author marrink
  * @see Action
