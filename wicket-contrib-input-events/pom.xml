@@ -237,6 +237,15 @@
 			</url>
 			<uniqueVersion>false</uniqueVersion>
 		</snapshotRepository>
+		<repository>
+			<id>repo</id>
+			<name>Local Bamboo/Tomcat repository</name>
+			<url>
+				file:/home/wicket/tomcat/webapps/maven/repository/
+			</url>
+			<uniqueVersion>false</uniqueVersion>
+		</repository>
+
 	</distributionManagement>
 
 </project>
