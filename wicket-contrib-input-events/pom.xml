@@ -214,4 +214,29 @@
 			</plugin>
 		</plugins>
 	</reporting>
+	<repositories>
+		<repository>
+			<id>wicketstuff.org</id>
+			<url>http://wicketstuff.org/maven/repository</url>
+		</repository>
+		<repository>
+			<id>codeogre.com</id>
+			<name>codeogre provided maven repository</name>
+			<url>
+				http://repo.codeogre.com/archiva/repository/public/
+			</url>
+		</repository>
+	</repositories>
+
+	<distributionManagement>
+		<snapshotRepository>
+			<id>repo</id>
+			<name>Local Bamboo/Tomcat repository</name>
+			<url>
+				file:/home/wicket/tomcat/webapps/maven/repository/
+			</url>
+			<uniqueVersion>false</uniqueVersion>
+		</snapshotRepository>
+	</distributionManagement>
+
 </project>
