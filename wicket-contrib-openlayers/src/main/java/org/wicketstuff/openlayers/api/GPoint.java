@@ -25,7 +25,6 @@ import org.wicketstuff.openlayers.js.Constructor;
 /**
  * Represents an Maps API's GPoint that contains x and y coordinates.
  * 
- * @author Iulian-Corneliu Costan
  */
 public class GPoint implements Serializable
 {

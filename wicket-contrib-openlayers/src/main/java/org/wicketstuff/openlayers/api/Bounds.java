@@ -20,8 +20,6 @@ import java.util.StringTokenizer;
 import org.wicketstuff.openlayers.js.Constructor;
 
 /**
- * Represents an Google Maps API's <a
- * href="http://www.google.com/apis/maps/documentation/reference.html#GLatLngBounds">GLatLngBounds</a>.
  */
 public class Bounds implements GValue {
 	/**

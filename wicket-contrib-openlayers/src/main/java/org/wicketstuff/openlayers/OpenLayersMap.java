@@ -33,7 +33,7 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.wicketstuff.openlayers.api.Bounds;
 import org.wicketstuff.openlayers.api.Control;
-import org.wicketstuff.openlayers.api.GInfoWindow;
+import org.wicketstuff.openlayers.api.InfoWindow;
 import org.wicketstuff.openlayers.api.LonLat;
 import org.wicketstuff.openlayers.api.Marker;
 import org.wicketstuff.openlayers.api.Overlay;
@@ -43,13 +43,8 @@ import org.wicketstuff.openlayers.event.OverlayListenerBehavior;
 import org.wicketstuff.openlayers.event.PopupListener;
 
 /**
- * Wicket component to embed <a href="http://maps.google.com">Google Maps</a>
+ * Wicket component to embed <a href="http://www.openlayers.org/">Openlayers Maps</a>
  * into your pages.
- * <p>
- * The Google Maps API requires an API key to use it. You will need to generate
- * one for each deployment context you have. See the <a
- * href="http://www.google.com/apis/maps/signup.html">Google Maps API sign up
- * page</a> for more information.
  */
 public class OpenLayersMap extends Panel {
 
@@ -67,7 +62,7 @@ public class OpenLayersMap extends Panel {
 
 	private final WebMarkupContainer map;
 
-	private GInfoWindow infoWindow;
+	private InfoWindow infoWindow;
 
 	private Bounds bounds;
 	
@@ -150,12 +145,6 @@ public class OpenLayersMap extends Panel {
 				OpenLayersMap.this.infoWindow
 						.setContent(markerPassed.getPopup());
 				target.addComponent(markerPassed.getPopup());
-				// String js = (OpenLayersMap.this
-				// .getJSinvoke("setPopupId('"
-				// + marker.getPopup().getMarkupId()
-				// + "')"));
-				// target.prependJavascript(js);
-
 			}
 		};
 		add(callbackListener);
@@ -169,7 +158,7 @@ public class OpenLayersMap extends Panel {
 			}
 		}));
 
-		infoWindow = new GInfoWindow();
+		infoWindow = new InfoWindow();
 		add(infoWindow);
 
 		map = new WebMarkupContainer("map");

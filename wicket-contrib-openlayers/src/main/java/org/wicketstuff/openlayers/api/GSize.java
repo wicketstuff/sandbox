@@ -25,7 +25,6 @@ import org.wicketstuff.openlayers.js.Constructor;
 /**
  * Represents an Maps API's GSize that contains width and height.
  * 
- * @author Robert Jacolin, Vincent Demay, Gregory Maes - Anyware Technologies
  */
 public class GSize implements Serializable
 {
