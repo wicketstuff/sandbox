@@ -2,6 +2,11 @@ package org.wicketstuff.openlayers.api;
 
 import org.apache.wicket.markup.html.panel.Panel;
 
+/**
+ * A popup for your marker, please extend this if you want poups..
+ * @author Nino Martinez Wael (nino.martinez@jayway.dk)
+ *
+ */
 public class PopupWindowPanel extends Panel {
 
 	private final static String markupId="content";

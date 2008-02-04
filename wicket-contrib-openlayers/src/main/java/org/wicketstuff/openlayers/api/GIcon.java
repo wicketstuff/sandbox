@@ -21,10 +21,7 @@ package org.wicketstuff.openlayers.api;
 import java.io.Serializable;
 
 /**
- * Represents an Google Maps API's
- * http://code.google.com/apis/maps/documentation/reference.html#GIcon
  * 
- * @author Robert Jacolin, Gregory Maes, Vincent Demay, Anyware Technologies
  */
 public class GIcon implements Serializable
 {

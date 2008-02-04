@@ -7,11 +7,7 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.wicketstuff.openlayers.OpenLayersMap;
 
-/**
- * Represents an Google Maps API's <a
- * href="http://www.google.com/apis/maps/documentation/reference.html#GInfoWindow">GInfoWindow</a>.
- */
-public class GInfoWindow extends WebMarkupContainer {
+public class InfoWindow extends WebMarkupContainer {
 
 	private LonLat latLng;
 
@@ -19,7 +15,7 @@ public class GInfoWindow extends WebMarkupContainer {
 
 	private PopupWindowPanel content = new PopupWindowPanel();
 
-	public GInfoWindow() {
+	public InfoWindow() {
 		super("infoWindow");
 
 		setOutputMarkupId(true);
@@ -59,7 +55,7 @@ public class GInfoWindow extends WebMarkupContainer {
 	 *            content to open in info window
 	 * @return This
 	 */
-	public GInfoWindow open(LonLat latLng, Component content) {
+	public InfoWindow open(LonLat latLng, Component content) {
 		return open(latLng, content);
 	}
 
@@ -70,11 +66,11 @@ public class GInfoWindow extends WebMarkupContainer {
 	 *            content to open in info window
 	 * @return This
 	 */
-	public GInfoWindow open(Marker marker, Component content) {
+	public InfoWindow open(Marker marker, Component content) {
 		return open(marker, content);
 	}
 
-	public GInfoWindow open(LonLat latLng) {
+	public InfoWindow open(LonLat latLng) {
 
 		this.latLng = latLng;
 		this.marker = null;
@@ -87,7 +83,7 @@ public class GInfoWindow extends WebMarkupContainer {
 		return this;
 	}
 
-	public GInfoWindow open(Marker marker) {
+	public InfoWindow open(Marker marker) {
 
 		this.latLng = null;
 		this.marker = marker;
