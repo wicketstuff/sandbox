@@ -218,7 +218,7 @@
 							</classpathContainer>
 						</classpathContainers>
 					</configuration>
-				<version>2.5-SNAPSHOT</version>
+				
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
