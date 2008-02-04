@@ -58,8 +58,8 @@
 		</repository>
 	</repositories>
 	<!-- the latest eclipse plugin solves an annoying JRE container issue http://jira.codehaus.org/browse/MECLIPSE-172 
-	unfortunatly it requires maven 2.0.6 or higher and bamboo is still running 2.0.4
-	
+	unfortunately i cannot get maven to build wasp on bamboo with that plugin version
+	-->
 	<pluginRepositories>
         <pluginRepository>
           <id>apache.org</id>
@@ -73,7 +73,7 @@
           </snapshots>
         </pluginRepository>
       </pluginRepositories>
-    -->
+  
 	<!-- Developers -->
 	<developers>
 		<developer>
