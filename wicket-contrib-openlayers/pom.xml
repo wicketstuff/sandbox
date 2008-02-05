@@ -33,7 +33,14 @@
 	<name>Wicket Contrib Openlayers</name>
 	<description>Openlayer component.</description>
 	<url>http://wicket-stuff.sourceforge.net</url>
-
+	<inceptionYear>2008</inceptionYear>
+		<developers>
+		<developer>
+			<name>Nino Martinez</name>
+			<id>nmwael</id>
+			<email>nino.martinez.wael at gmail.com</email>
+		</developer>
+	</developers>
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.wicket</groupId>
@@ -62,4 +69,23 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+	<distributionManagement>
+		<snapshotRepository>
+			<id>repo</id>
+			<name>Local Bamboo/Tomcat repository</name>
+			<url>
+				file:/home/wicket/tomcat/webapps/maven/repository/
+			</url>
+			<uniqueVersion>false</uniqueVersion>
+		</snapshotRepository>
+		<repository>
+			<id>repo</id>
+			<name>Local Bamboo/Tomcat repository</name>
+			<url>
+				file:/home/wicket/tomcat/webapps/maven/repository/
+			</url>
+			<uniqueVersion>false</uniqueVersion>
+		</repository>
+
+	</distributionManagement>
 </project>
