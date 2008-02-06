@@ -90,8 +90,8 @@ function WicketOMap(id, options) {
 			}
 			if (wicketOMap.popup == null) {
 				var wcall = wicketAjaxGet(callBack, function () {
-					wicketOMap.popup = new OpenLayers.Popup("chicken", marker.lonlat, new OpenLayers.Size(200, 200), document.getElementById(wicketOMap.popupId).innerHTML, true);
-					wicketOMap.popup.setBackgroundColor("yellow");
+					wicketOMap.popup = new OpenLayers.Popup("map", marker.lonlat, new OpenLayers.Size(200, 200), document.getElementById(wicketOMap.popupId).innerHTML, true);
+					wicketOMap.popup.setBackgroundColor("white");
 					wicketOMap.popup.setOpacity(0.7);
 					wicketOMap.map.addPopup(wicketOMap.popup);
 				},null, null);
