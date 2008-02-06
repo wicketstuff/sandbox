@@ -21,6 +21,9 @@ import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.resources.CompressedResourceReference;
+
+import java.util.regex.Pattern;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -66,15 +69,19 @@ public class JQueryBehavior extends AbstractDefaultAjaxBehavior {
      */
     public static final CompressedResourceReference JQUERY_BGIFRAME_JS = new CompressedResourceReference(JQueryBehavior.class, "jquery.dimensions-2.1.1.js");
 
+    public static final Pattern JQUERY_REGEXP = Pattern.compile(".*\\<.*script.*src=\".*jquery.*\\.js\"\\>.*", Pattern.DOTALL);
+    
     private transient Logger logger_;
 
     @Override
     public void renderHead(IHeaderResponse response) {
         try {
             super.renderHead(response);
-            response.renderJavascriptReference(JQUERY_JS);
-            if (Application.DEVELOPMENT.equals(Application.get().getConfigurationType())) {
-                response.renderJavascriptReference(JQUERY_DEBUG_JS);
+            if(getIncludeJQueryJS(response)) {
+	            response.renderJavascriptReference(JQUERY_JS);
+	            if (Application.DEVELOPMENT.equals(Application.get().getConfigurationType())) {
+	                response.renderJavascriptReference(JQUERY_DEBUG_JS);
+	            }
             }
             CharSequence script = getOnReadyScript();
             if ((script != null) && (script.length() > 0)) {
@@ -91,6 +98,21 @@ public class JQueryBehavior extends AbstractDefaultAjaxBehavior {
         }
     }
 
+    /**
+     * to be overridden by subclass if you don't want to autodetect wether a jquery.js
+     * has already been added, and thus skip adding JQUERY_JS as a JavascriptReference.
+     * 
+     * You can either simply return false, or implement your own check to see if a 
+     * jquery.js reference has been added either as a HeaderContributor or in a
+     * <wicket:head> tag of some page in the hierarchy.
+     * 
+     * @param response The IHeaderResponse, containing the rendered headers until now
+     * @return true if you want renderHead to include the JQUERY_JS in the head.
+     */
+    public boolean getIncludeJQueryJS(IHeaderResponse response) {
+        return !JQUERY_REGEXP.matcher(response.getResponse().toString()).matches();
+    }
+    
     /**
      * to be override by subclass if need to run script when dom is ready.
      * The returned script is wrapped by caller into &lt;script&gt; tag and the "$(document).ready(function(){...}"
