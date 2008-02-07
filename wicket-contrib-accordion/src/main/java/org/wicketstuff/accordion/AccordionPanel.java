@@ -22,6 +22,8 @@ public class AccordionPanel extends Panel implements IHeaderContributor {
 
 	private ResourceReference JAVASCRIPT = new CompressedResourceReference(
 			AccordionPanel.class, "accordion-menu-v2.js");
+	private ResourceReference STYLE = new CompressedResourceReference(
+			AccordionPanel.class, "accordion-menu-v2.css");
 
 	/**
 	 * Constructor that is invoked when page is invoked without a session.
@@ -43,13 +45,22 @@ public class AccordionPanel extends Panel implements IHeaderContributor {
 
 	}
 
-	protected void addMenu(AccordionPanelItem accordionPanelItem) {
+	public void addMenu(AccordionPanelItem accordionPanelItem) {
 		accordionMenu.add(accordionPanelItem);
 	}
 
 	public void renderHead(IHeaderResponse response) {
-		response.renderCSSReference(JAVASCRIPT);
 
+		response
+				.renderJavascriptReference("http://us.js2.yimg.com/us.js.yimg.com/lib/common/utils/2/yahoo_2.0.0-b2.js");
+		response
+				.renderJavascriptReference("http://us.js2.yimg.com/us.js.yimg.com/lib/common/utils/2/event_2.0.0-b2.js");
+		response
+				.renderJavascriptReference("http://us.js2.yimg.com/us.js.yimg.com/lib/common/utils/2/dom_2.0.2-b3.js");
+		response
+				.renderJavascriptReference("http://us.js2.yimg.com/us.js.yimg.com/lib/common/utils/2/animation_2.0.0-b3.js");
+		response.renderJavascriptReference(JAVASCRIPT);
+		response.renderCSSReference(STYLE);
 	};
 
 }
