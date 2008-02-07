@@ -14,7 +14,7 @@ import org.apache.wicket.markup.html.resources.CompressedResourceReference;
 /**
  * 
  * @author Nino Martinez Wael (nino.martinez.wael @ gmail.com)
- * 
+ * Component that wraps this : http://www.hedgerwow.com/360/mwd/accordion/demo.php 
  */
 public class AccordionPanel extends Panel implements IHeaderContributor {
 
@@ -25,12 +25,6 @@ public class AccordionPanel extends Panel implements IHeaderContributor {
 	private ResourceReference STYLE = new CompressedResourceReference(
 			AccordionPanel.class, "accordion-menu-v2.css");
 
-	/**
-	 * Constructor that is invoked when page is invoked without a session.
-	 * 
-	 * @param parameters
-	 *            Page parameters
-	 */
 	public AccordionPanel(String id) {
 		super(id);
 		add(new ListView("accordionMenu", accordionMenu) {
