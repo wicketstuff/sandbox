@@ -79,40 +79,36 @@ function WicketOMap(id, options) {
 			});
 		}
 	};
-	this.popupInfo= function (callBack, marker, wicketOMap)
-	{
-			if (wicketOMap.popup != null) {
-				if (!wicketOMap.popup.visible()) {
-					wicketOMap.map.removePopup(wicketOMap.popup);
-					wicketOMap.popup.destroy();
-					wicketOMap.popup = null;
-				}
-			}
-			if (wicketOMap.popup == null) {
-				var wcall = wicketAjaxGet(callBack, function () {
-					wicketOMap.popup = new OpenLayers.Popup("map", marker.lonlat, new OpenLayers.Size(200, 200), document.getElementById(wicketOMap.popupId).innerHTML, true);
-					wicketOMap.popup.setBackgroundColor("white");
-					wicketOMap.map.addPopup(wicketOMap.popup);
-				},null, null);
-			} else {
+	this.popupInfo = function (callBack, marker, wicketOMap) {
+		if (wicketOMap.popup != null) {
+			if (!wicketOMap.popup.visible()) {
 				wicketOMap.map.removePopup(wicketOMap.popup);
 				wicketOMap.popup.destroy();
 				wicketOMap.popup = null;
 			}
-		
-	}
-	this.getMarker= function (markerId)
-	{
+		}
+		if (wicketOMap.popup == null) {
+			var wcall = wicketAjaxGet(callBack, function () {
+				wicketOMap.popup = new OpenLayers.Popup("map", marker.lonlat, new OpenLayers.Size(200, 200), document.getElementById(wicketOMap.popupId).innerHTML, true);
+				wicketOMap.popup.setBackgroundColor("white");
+				wicketOMap.map.addPopup(wicketOMap.popup);
+			}, null, null);
+		} else {
+			wicketOMap.map.removePopup(wicketOMap.popup);
+			wicketOMap.popup.destroy();
+			wicketOMap.popup = null;
+		}
+	};
+	this.getMarker = function (markerId) {
 		var self = this;
 		return self.overlays[markerId];
-	}
-	
+	};
 	this.addMarkerListener = function (event, callBack, marker) {
-	    var self=this;
-	    marker.events.register(event, marker, function (evt) {
-			self.popupInfo(callBack,marker, self);
+		var self = this;
+		marker.events.register(event, marker, function (evt) {
+			self.popupInfo(callBack, marker, self);
 			OpenLayers.Event.stop(evt);
-	    });
+		});
 	};
 	this.addGOverlayListener = function (event, overlayID, callBack) {
 		var self = this;
@@ -160,15 +156,26 @@ function WicketOMap(id, options) {
 //	this.setCenter = function (center) {
 //		this.map.setCenter(center);
 //	};
-//	this.panDirection = function (dx, dy) {
-//		this.map.pan(dx, dy);
-//	};
-//	this.zoomOut = function () {
-//		this.map.zoomOut();
-//	};
-//	this.zoomIn = function () {
-//		this.map.zoomIn();
-//	};
+	this.panDirection = function (dx, dy) {
+		this.map.pan(dx, dy);
+	};
+	this.zoomOut = function () {
+	var self = this;
+	var zoomLevel=self.map.getZoom();
+	zoomLevel=zoomLevel+1;
+
+		if (self.map.isValidZoomLevel(zoomLevel)) {
+			self.map.zoomTo(zoomLevel);
+		}
+	};
+	this.zoomIn = function () {
+	var self = this;
+	var zoomLevel=self.map.getZoom();
+	zoomLevel=zoomLevel-1;
+		if (self.map.isValidZoomLevel(zoomLevel)) {
+			self.map.zoomTo(zoomLevel);
+		}
+	};
 	this.addControl = function (controlId, control) {
 		this.controls[controlId] = control;
 		this.map.addControl(control);
@@ -196,14 +203,5 @@ function WicketOMap(id, options) {
 		markers.destroy();
 		markers = new OpenLayers.Layer.Markers("markers" + this.div.getId());
 	};
-//	this.openInfoWindowTabs = function (latLng, tabs) {
-//		this.map.openInfoWindowTabs(latLng, tabs);
-//	};
-//	this.openMarkerInfoWindowTabs = function (markerId, tabs) {
-//		this.overlays[markerId].openInfoWindowTabs(tabs);
-//	};
-//	this.closeInfoWindow = function () {
-//		this.map.closeInfoWindow();
-//	};
 }
 

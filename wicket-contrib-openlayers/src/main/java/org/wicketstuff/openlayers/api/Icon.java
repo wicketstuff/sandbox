@@ -23,7 +23,7 @@ import java.io.Serializable;
 /**
  * 
  */
-public class GIcon implements Serializable
+public class Icon implements Serializable
 {
 	/**
 	 * 
@@ -38,11 +38,11 @@ public class GIcon implements Serializable
 	private GPoint infoWindowAnchor = null;
 	private GPoint infoShadowAnchor = null;
 
-	public GIcon()
+	public Icon()
 	{
 	}
 
-	public GIcon(String image)
+	public Icon(String image)
 	{
 		this.image = image;
 	}

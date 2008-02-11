@@ -31,7 +31,7 @@ public class MarkerOptions implements GValue
 	
 	private boolean autoPan = false;
 	
-	private GIcon icon = null;
+	private Icon icon = null;
 
 	public String getJSconstructor()
 	{
@@ -107,12 +107,12 @@ public class MarkerOptions implements GValue
 		this.autoPan = autoPan;
 	}
 
-	public void setIcon(GIcon icon)
+	public void setIcon(Icon icon)
 	{
 		this.icon = icon;
 	}
 	
-	public GIcon getIcon()
+	public Icon getIcon()
 	{
 		return icon;
 	}

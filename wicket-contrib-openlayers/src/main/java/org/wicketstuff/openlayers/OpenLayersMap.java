@@ -320,7 +320,7 @@ public class OpenLayersMap extends Panel {
 	// }
 
 	/**
-	 * Generates the JavaScript used to instantiate this GMap2 as an JavaScript
+	 * Generates the JavaScript used to instantiate this OpenlayersMap as an JavaScript
 	 * class on the client side.
 	 * 
 	 * @return The generated JavaScript
@@ -401,11 +401,11 @@ public class OpenLayersMap extends Panel {
 	}
 
 	/**
-	 * Convenience method for generating a JavaScript call on this GMap2 with
+	 * Convenience method for generating a JavaScript call on this Openlayermap with
 	 * the given invocation.
 	 * 
 	 * @param invocation
-	 *            The JavaScript call to invoke on this GMap2.
+	 *            The JavaScript call to invoke on this Openlayermap.
 	 * @return The generated JavaScript.
 	 */
 	// TODO Could this become default or protected?
