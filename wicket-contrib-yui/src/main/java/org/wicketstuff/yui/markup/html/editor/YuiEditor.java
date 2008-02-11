@@ -33,7 +33,7 @@ public class YuiEditor extends Panel {
      * 
      * due to yuiLoader probably not needed
      */
-    private static final ResourceReference CSS = new ResourceReference(YuiHeaderContributor.class, "inc/2.4.1/assets/skins/sam/skin.css");
+    //private static final ResourceReference CSS = new ResourceReference(YuiHeaderContributor.class, "inc/2.4.1/assets/skins/sam/skin.css");
     
     /** Creates a new instance of YuiEditor 
      *
