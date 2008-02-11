@@ -25,7 +25,7 @@ import org.wicketstuff.openlayers.OpenLayersMap;
  */
 public enum Control implements Serializable {
 	PanZoomBar(true), MouseToolbar(false), LayerSwitcher(true), Permalink(true), MousePosition(
-			true), OverviewMap(false), KeyboardDefaults(false);
+			true), OverviewMap(false), KeyboardDefaults(false), PanZoom(false), Navigation(false);
 
 	private final boolean externalizable;
 
