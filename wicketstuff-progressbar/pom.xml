@@ -12,11 +12,31 @@
 	<inceptionYear>2007</inceptionYear>
 
 	<description>Parent project for wicketstuff progressbar project</description>
+
 	<modules>
 		<module>progressbar</module>
 		<module>progressbar-spring</module>
 		<module>progressbar-example</module>
 	</modules>
+
+	<profiles>
+		<profile>
+			<id>bamboo</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<distributionManagement>
+				<snapshotRepository>
+					<id>repo</id>
+					<name>Local Bamboo/Tomcat repository</name>
+					<url>
+						file:/home/wicket/tomcat/webapps/maven/repository/
+					</url>
+					<uniqueVersion>false</uniqueVersion>
+				</snapshotRepository>
+			</distributionManagement>
+		</profile>
+	</profiles>
 
 	<licenses>
 		<!-- default license (to override if needed) -->
@@ -131,7 +151,6 @@
 				</includes>
 			</testResource>
 		</testResources>
-
 	</build>
 	<dependencies>
 		<dependency>
@@ -155,7 +174,7 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.0</version>
+			<version>4.3.1</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
