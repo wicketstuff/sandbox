@@ -122,7 +122,7 @@ public abstract class MFXPictureLabel extends Panel {
 		super(id);
 		this.labels = labels;
 		add(new IncludeMooTools());
-		add(HeaderContributor.forJavaScript(MFXJavascriptUtils.getMooAddons()));
+		add(HeaderContributor.forJavaScript(MFXJavascriptUtils.getMooAddonsJS()));
 		comp = getPicture("picture");
 		comp.setOutputMarkupId(true);
 		add(comp);

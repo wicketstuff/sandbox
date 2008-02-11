@@ -24,8 +24,12 @@ public class MFXJavascriptUtils {
 		return str;
 	}
 
-	public final static CompressedResourceReference getMooAddons() {
+	public final static CompressedResourceReference getMooAddonsJS() {
 		return new CompressedResourceReference(MFXLogger.class, "mfxaddons.js");
+	}
+
+	public final static CompressedResourceReference getMooAddonsCSS() {
+		return new CompressedResourceReference(MFXLogger.class, "mfxaddons.css");
 	}
 
 	/**

@@ -2,11 +2,9 @@ package wicket.contrib.mootools.plugins;
 
 import org.apache.wicket.IClusterable;
 import org.apache.wicket.Page;
-import org.apache.wicket.ResourceReference;
 import org.apache.wicket.behavior.HeaderContributor;
 import org.apache.wicket.markup.html.internal.HtmlHeaderContainer;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.markup.html.resources.CompressedResourceReference;
 
 import wicket.contrib.mootools.IncludeMooToolsStateless;
 import wicket.contrib.mootools.MFXJavascriptUtils;
@@ -20,8 +18,6 @@ public abstract class MFXDialogBase extends Panel {
 	private String body;
 	private String domId;
 
-	private ResourceReference PLAINCSS = new CompressedResourceReference(MFXDialog.class, "mfxaddons.css");
-
 	public MFXDialogBase(final String id) {
 		super(id);
 
@@ -30,8 +26,8 @@ public abstract class MFXDialogBase extends Panel {
 		this.title = "Modal Window";
 
 		add(new IncludeMooToolsStateless());
-		add(HeaderContributor.forJavaScript(MFXJavascriptUtils.getMooAddons()));
-		add(HeaderContributor.forCss(PLAINCSS));
+		add(HeaderContributor.forJavaScript(MFXJavascriptUtils.getMooAddonsJS()));
+		add(HeaderContributor.forCss(MFXJavascriptUtils.getMooAddonsCSS()));
 	}
 
 	public interface PageCreator extends IClusterable {

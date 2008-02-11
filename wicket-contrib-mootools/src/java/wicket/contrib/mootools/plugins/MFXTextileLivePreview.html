@@ -1,0 +1,16 @@
+<wicket:panel>
+	<a id="prev" class="mfxpreviewtitle">Toggle live preview</a>
+	<div class="mfxpreview" wicket:id="preview"></div>
+	<script type="text/javascript">
+		$('prev').addEvent('click', function() {
+				$$('.mfxpreview').each(function (el,i) {
+					if(el.getStyle('display') == null || el.getStyle('display') == 'block') {
+    					el.setStyle('display','none');
+    				} else {
+    					el.setStyle('display','block');
+    					el.innerHTML = new MFXTextile().textilize($('editor9').get('value'));
+    				}
+				});
+		});	
+	</script>
+</wicket:panel>
