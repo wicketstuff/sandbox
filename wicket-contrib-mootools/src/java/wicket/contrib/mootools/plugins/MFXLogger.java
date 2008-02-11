@@ -21,7 +21,7 @@ public class MFXLogger extends AbstractBehavior {
 	public void bind(final Component component) {
 		super.bind(component);
 		component.add(new IncludeMooToolsStateless());
-		component.add(HeaderContributor.forJavaScript(MFXJavascriptUtils.getMooAddons()));
+		component.add(HeaderContributor.forJavaScript(MFXJavascriptUtils.getMooAddonsJS()));
 	}
 
 }

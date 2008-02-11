@@ -25,8 +25,8 @@ public class MFXNawEditor extends TextArea {
 	protected void bootStrap() {
 		setOutputMarkupId(true);
 		add(new IncludeMooToolsStateless());
-		add(HeaderContributor.forCss(new ResourceReference(MFXNawEditor.class,"mfxaddons.css")));
-		add(HeaderContributor.forJavaScript(MFXJavascriptUtils.getMooAddons()));
+		add(HeaderContributor.forCss(new ResourceReference(MFXNawEditor.class, "mfxaddons.css")));
+		add(HeaderContributor.forJavaScript(MFXJavascriptUtils.getMooAddonsJS()));
 	}
 
 	@Override
@@ -54,9 +54,12 @@ public class MFXNawEditor extends TextArea {
 		str.append(String.format("%s.addFunction('Italic', textile_italic , {'id':'italic_button'});", getMFXNawId()));
 		str.append(String.format("%s.addFunction('Link', textile_link , {'id':'link_button'});", getMFXNawId()));
 		str.append(String.format("%s.addFunction('Image', textile_image , {'id':'image_button'});", getMFXNawId()));
-		str.append(String.format("%s.addFunction('Trademark', textile_trademark , {'id':'trademark_button'});", getMFXNawId()));
-		str.append(String.format("%s.addFunction('Registered', textile_registered , {'id':'registered_button'});", getMFXNawId()));
-		str.append(String.format("%s.addFunction('Copyright', textile_copyright , {'id':'copyright_button'});", getMFXNawId()));
+		str.append(String.format("%s.addFunction('Trademark', textile_trademark , {'id':'trademark_button'});",
+				getMFXNawId()));
+		str.append(String.format("%s.addFunction('Registered', textile_registered , {'id':'registered_button'});",
+				getMFXNawId()));
+		str.append(String.format("%s.addFunction('Copyright', textile_copyright , {'id':'copyright_button'});",
+				getMFXNawId()));
 
 		return str.toString();
 	}

@@ -1,6 +1,7 @@
 package wicket.contrib.mootools.plugins;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.behavior.HeaderContributor;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -10,6 +11,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.time.Duration;
 
+import wicket.contrib.mootools.MFXJavascriptUtils;
 import wicket.contrib.mootools.behaviors.MFXFadeOutBehavior;
 
 public class MFXEditableMultiLineLabel extends Panel {
@@ -20,6 +22,10 @@ public class MFXEditableMultiLineLabel extends Panel {
 	private int height = 400;
 
 	protected boolean getEscapeStrings() {
+		return true;
+	}
+
+	protected boolean getHighlight() {
 		return true;
 	}
 
@@ -36,7 +42,22 @@ public class MFXEditableMultiLineLabel extends Panel {
 	public MFXEditableMultiLineLabel(final String id, final IModel model) {
 		super(id, model);
 
-		add(container = new WebMarkupContainer("container"));
+		HeaderContributor.forCss(MFXJavascriptUtils.getMooAddonsCSS());
+		add(container = new WebMarkupContainer("container") {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void onComponentTag(final ComponentTag tag) {
+				super.onComponentTag(tag);
+				if (getEditable() && getHighlight()) {
+					String currentCSS = (String) tag.getString("class");
+					if (currentCSS == null) {
+						currentCSS = "";
+					}
+					tag.put("class", currentCSS + " mfxeditable");
+				}
+			}
+		});
 		container.setOutputMarkupId(true);
 
 		container.add(label = new Label("label", getModel()));
@@ -50,16 +71,26 @@ public class MFXEditableMultiLineLabel extends Panel {
 
 			@Override
 			protected void onEvent(final AjaxRequestTarget arg0) {
-				if (getEditable()) {
-					onEdit(arg0);
-					editPanel.setVisible(true);
-					label.setVisible(false);
-				}
-				arg0.addComponent(container);
+				goToEdit(arg0);
 			}
 		});
 
 		editPanel.setVisible(false);
+	}
+
+	public void goToEdit(final AjaxRequestTarget arg0) {
+		if (getEditable()) {
+			onEdit(arg0);
+			editPanel.setVisible(true);
+			label.setVisible(false);
+			arg0.addComponent(container);
+		}
+	}
+
+	public void goToView(final AjaxRequestTarget arg0) {
+		editPanel.setVisible(false);
+		label.setVisible(true);
+		arg0.addComponent(container);
 	}
 
 	public void setHeight(final int height) {
@@ -103,9 +134,7 @@ public class MFXEditableMultiLineLabel extends Panel {
 
 				@Override
 				protected void onEvent(final AjaxRequestTarget arg0) {
-					EditPanel.this.setVisible(false);
-					label.setVisible(true);
-					arg0.addComponent(container);
+					goToView(arg0);
 				}
 			}));
 
@@ -119,10 +148,8 @@ public class MFXEditableMultiLineLabel extends Panel {
 					if (getEditable()) {
 						txt.processInput();
 						MFXEditableMultiLineLabel.this.onSubmit(arg0);
-						EditPanel.this.setVisible(false);
-						label.setVisible(true);
 					}
-					arg0.addComponent(container);
+					goToView(arg0);
 				}
 
 				@Override

@@ -1,7 +1,22 @@
+.mfxtoolbar {
+	margin-left: 0;	
+}
 .mfxtoolbar li {
 	float: left;	
 	list-style-type: none;
 	margin-right: 10px;
+}
+.mfxpreview {
+	border:1px solid #858585;	
+	width: 400px;
+	padding:5px;
+	height: 200px;
+	overflow: auto;
+	background: url('preview.gif') top right no-repeat;
+}
+.mfxpreviewtitle {
+	cursor: pointer;
+	margin:0;padding:0;
 }
 
 .toggler {
@@ -17,6 +32,10 @@
 	font-weight: normal;
 	cursor: pointer; 
 	font-family: 'Andale Mono', sans-serif;
+}
+
+.mfxeditable:hover {
+	background-color: #fff7c8;	
 }
  
 .element {
