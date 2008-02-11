@@ -21,7 +21,7 @@ public class YuiEditorPage extends WicketExamplePage {
      * Creates a new instance of YuiEditorPage
      */
     public YuiEditorPage() {
-        Model model = new Model("This is some content - feel free to edit it!");
+        Model model = new Model("This is some <b>content</b> - feel free to edit it!");
         Form form = new Form("someForm");
         form.add(new YuiEditor("yuiEditor", model));
         add(form);
