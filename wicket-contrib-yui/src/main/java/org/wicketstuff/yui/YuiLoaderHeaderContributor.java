@@ -20,12 +20,14 @@ import org.apache.wicket.markup.html.IHeaderResponse;
  */
 public class YuiLoaderHeaderContributor {
     
-    static final String DEFAULT_YUI_BUILD = "2.3.0";
+    static final String DEFAULT_YUI_BUILD = "2.4.1";
     static final String YUI_BUILD_ROOT = "inc";
     
     
     /**
      * Creates a new instance of YuiLoaderHeaderContributor
+     * 
+     * is currently in Alpha-State!
      */
     public YuiLoaderHeaderContributor() {
     
@@ -48,14 +50,30 @@ public class YuiLoaderHeaderContributor {
                             response.renderJavascriptReference(yuiRef);
                             //response.renderJavascriptReference(yahooResource);
                             
-                            response.renderOnLoadJavascript("" +
-                                    " loader = new YAHOO.util.YUILoader(); \n" +
-                                    " loader.require(\"editor\");  \n" +
-                                    " loader.loadOptional = true;  \n" +
-                                    " loader.insert(function() { \n" +
-                                    executeJS + "  \n"+
-                                    " }); \n" +
-                                    " \n");
+//                            response.renderOnLoadJavascript("" +
+//                                    " loader = new YAHOO.util.YUILoader(); \n" +
+//                                    " loader.require(\"editor\");  \n" +
+//                                    " loader.loadOptional = true;  \n" +
+//                                    " loader.insert(function() { \n" +
+//                                    executeJS + "  \n"+
+//                                    " }); \n" +
+//                                    " \n"); 
+                            
+                            // new YUILoader since 2.4
+                            response.renderOnLoadJavascript(""+
+                                    "var loader = new YAHOO.util.YUILoader({" +
+                                    "require: ['editor']," +
+                                    "loadOptional: true," +
+                                    "onSuccess: function() {"+
+                                    ""+ executeJS +
+                                    "}"+ 
+                                    "}); " +
+                                    "" +
+                                    "loader.insert();");
+                                    
+                                    
+                            
+                            
 			}
 		});
 	} 
