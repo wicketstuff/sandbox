@@ -16,6 +16,7 @@
  */
 package org.wicketstuff.progressbar.examples;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.ajax.markup.html.IndicatingAjaxButton;
 import org.apache.wicket.markup.html.form.Form;
@@ -75,6 +76,11 @@ public class TaskServiceProgressExamplePage extends PageSupport {
 				setVisible(false);
 				// Add some JavaScript after finish
 				target.appendJavascript("alert('Task done and finished!')");
+
+				// re-enable button
+				Component button = form.get("submit");
+				button.setEnabled(true);
+				target.addComponent(button);
 			}
 		});
 		// Hide progress bar initially
@@ -91,6 +97,9 @@ public class TaskServiceProgressExamplePage extends PageSupport {
 				progressionModel.setTaskId(taskId);
 				// Start the progress bar, will set visibility to true
 				bar.start(target);
+
+				// disable button
+				setEnabled(false);
 			}
 		});
 		form.setOutputMarkupId(true);
