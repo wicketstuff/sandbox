@@ -214,10 +214,19 @@ public class OpenLayersMap extends Panel {
 		for (OverlayListenerBehavior behavior : overlay.getBehaviors()) {
 			add(behavior);
 		}
-
 		if (AjaxRequestTarget.get() != null && findPage() != null) {
-			AjaxRequestTarget.get().appendJavascript(
-					overlay.getJSadd(OpenLayersMap.this));
+			String jsToRun="";
+			jsToRun+=overlay.getJSadd(OpenLayersMap.this);
+			if (overlay instanceof Marker) {
+				Marker marker = (Marker) overlay;
+				if (marker.getPopup() != null) {
+					jsToRun+=getJSinvoke("addMarkerListener('mousedown','"
+							+ callbackListener.getCallBackForMarker(marker) + "'," + marker.getOverlayJSVar()
+							+ ")");
+				}
+			}
+			AjaxRequestTarget.get().appendJavascript(jsToRun);
+
 		}
 
 		return this;
@@ -314,11 +323,6 @@ public class OpenLayersMap extends Panel {
 		}
 	}
 
-	// public GInfoWindow getInfoWindow()
-	// {
-	// return infoWindow;
-	// }
-
 	/**
 	 * Generates the JavaScript used to instantiate this OpenlayersMap as an JavaScript
 	 * class on the client side.
@@ -362,19 +366,6 @@ public class OpenLayersMap extends Panel {
 		for (Control control : controls) {
 			js.append(control.getJSadd(this));
 		}
-		// js.append(getJSsetCenter(getCenter()) + "\n");
-		// js.append(getJSsetZoom(getZoom()) + "\n");
-		// js.append(getJSsetDraggingEnabled(draggingEnabled) + "\n");
-		// js
-		// .append(getJSsetDoubleClickZoomEnabled(doubleClickZoomEnabled)
-		// + "\n");
-		// js
-		// .append(getJSsetScrollWheelZoomEnabled(scrollWheelZoomEnabled)
-		// + "\n");
-		//
-		// js.append(mapType.getJSsetMapType(this) + "\n");
-		//
-		//
 		// Add the overlays.
 		for (Overlay overlay : overlays) {
 			js.append(overlay.getJSadd(this) + "\n");
@@ -390,12 +381,6 @@ public class OpenLayersMap extends Panel {
 		js.append(getJSinvoke("setPopupId('"
 				+ infoWindow.getContent().getMarkupId() + "')"));
 
-		// js.append(infoWindow.getJSinit() + "\n");
-		//
-		// for (Object behavior : getBehaviors(EventListenerBehavior.class)) {
-		// js.append(((EventListenerBehavior) behavior).getJSaddListener()
-		// + "\n");
-		// }
 
 		return js.toString();
 	}

@@ -25,12 +25,14 @@ import org.wicketstuff.openlayers.OpenLayersMap;
  */
 public enum Control implements Serializable {
 	PanZoomBar(true), MouseToolbar(false), LayerSwitcher(true), Permalink(true), MousePosition(
-			true), OverviewMap(false), KeyboardDefaults(false), PanZoom(false), Navigation(false);
+			true), OverviewMap(false), KeyboardDefaults(false), PanZoom(false), Navigation(
+			false);
 
 	private final boolean externalizable;
 
 	private Control(boolean externalizable) {
 		this.externalizable = externalizable;
+
 	}
 
 	public String getJSadd(OpenLayersMap map) {
@@ -40,13 +42,12 @@ public enum Control implements Serializable {
 		if (map.isExternalControls() && externalizable) {
 			jsControlCreate = map.getJSinvoke("addControl('" + name()
 					+ "', new OpenLayers.Control." + name()
-					+ "({div: document.getElementById('wicketOpenlayer"
+					+ "({div: OpenLayers.Util.getElement('wicketOpenlayer"
 					+ name() + "')}))");
 		} else {
 			jsControlCreate = map.getJSinvoke("addControl('" + name()
 					+ "', new OpenLayers.Control." + name() + "())");
 		}
-
 		return jsControlCreate;
 	}
 
