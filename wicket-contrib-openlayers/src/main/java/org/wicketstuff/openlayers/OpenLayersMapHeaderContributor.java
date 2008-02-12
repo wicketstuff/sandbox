@@ -20,9 +20,6 @@ public class OpenLayersMapHeaderContributor extends HeaderContributor {
 			private static final long serialVersionUID = 1L;
 
 			/**
-			 * see: <a
-			 * href="http://www.google.com/apis/maps/documentation/#Memory_Leaks">IE
-			 * memory leak issues</a>
 			 * 
 			 * @see org.apache.wicket.markup.html.IHeaderContributor#renderHead(org.apache.wicket.markup.html.IHeaderResponse)
 			 */
@@ -34,11 +31,6 @@ public class OpenLayersMapHeaderContributor extends HeaderContributor {
 				response
 						.renderJavascriptReference(WicketAjaxReference.INSTANCE);
 				response.renderJavascriptReference(WICKET_OMAP_JS);
-				// see:
-				// http://www.google.com/apis/maps/documentation/#Memory_Leaks
-
-				response.renderOnEventJavacript("window", "onUnload",
-						"google.maps.Unload();");
 			}
 		});
 	}

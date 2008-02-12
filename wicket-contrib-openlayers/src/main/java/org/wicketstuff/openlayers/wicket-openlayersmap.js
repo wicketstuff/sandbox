@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 /*
- * Wicket Map2
+ * Wicket Openlayers Map
  *
  * @author Nino Martinz
  */
@@ -42,6 +42,7 @@ function WicketOMap(id, options) {
 	}
 	this.controls = {};
 	this.overlays = {};
+	this.div=id;
 	this.openOverlays = new OpenLayers.Layer.Markers("markers" + id);
 	this.map.addLayer(this.openOverlays);
 	this.popup = null;
@@ -186,7 +187,7 @@ function WicketOMap(id, options) {
 			this.controls[controlId] = null;
 		}
 	};
-//	//marker?
+	//marker?
 	this.addOverlay = function (overlayId, overlay) {
 		this.overlays[overlayId] = overlay;
 		overlay.overlayId = overlayId;
@@ -200,8 +201,13 @@ function WicketOMap(id, options) {
 	};
 	this.clearOverlays = function () {
 		this.overlays = {};
-		markers.destroy();
-		markers = new OpenLayers.Layer.Markers("markers" + this.div.getId());
+		this.map.removeLayer(this.openOverlays);
+		this.openOverlays.destroy();
+		this.openOverlays = new OpenLayers.Layer.Markers("markers" + this.div);
+		this.map.addLayer(this.openOverlays);
 	};
+	this.toggleLayer = function(layerId){
+	}
+	
 }
 
