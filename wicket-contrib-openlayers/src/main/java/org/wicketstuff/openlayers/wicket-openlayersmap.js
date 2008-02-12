@@ -42,9 +42,11 @@ function WicketOMap(id, options) {
 	}
 	this.controls = {};
 	this.overlays = {};
+	this.layers = {};
 	this.div=id;
 	this.openOverlays = new OpenLayers.Layer.Markers("markers" + id);
 	this.map.addLayer(this.openOverlays);
+	this.layers[1]=this.openOverlays;
 	this.popup = null;
 	this.popupId = "content";
 	this.onEvent = function (callBack, params) {
@@ -60,9 +62,10 @@ function WicketOMap(id, options) {
 		}, function () {
 		});
 	};
-	this.addLayer = function (layer) {
+	this.addLayer = function (layer,id) {
 		var self = this;
 		self.map.addLayer(layer);
+		self.layers[id]=layer;
 	};
 	this.zoomToMaxExtent = function () {
 		var self = this;
@@ -200,13 +203,20 @@ function WicketOMap(id, options) {
 		}
 	};
 	this.clearOverlays = function () {
+		// preserve marker visibility..
+		var visible=this.layers[1].getVisibility();
 		this.overlays = {};
 		this.map.removeLayer(this.openOverlays);
 		this.openOverlays.destroy();
 		this.openOverlays = new OpenLayers.Layer.Markers("markers" + this.div);
 		this.map.addLayer(this.openOverlays);
+		this.layers[1]=this.openOverlays;
+		this.layers[1].setVisibility(visible);
 	};
 	this.toggleLayer = function(layerId){
+		var layer= this.layers[layerId];
+		var visible=layer.getVisibility();
+		layer.setVisibility(!visible);
 	}
 	
 }

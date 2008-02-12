@@ -43,8 +43,8 @@ import org.wicketstuff.openlayers.event.OverlayListenerBehavior;
 import org.wicketstuff.openlayers.event.PopupListener;
 
 /**
- * Wicket component to embed <a href="http://www.openlayers.org/">Openlayers Maps</a>
- * into your pages.
+ * Wicket component to embed <a href="http://www.openlayers.org/">Openlayers
+ * Maps</a> into your pages.
  */
 public class OpenLayersMap extends Panel {
 
@@ -65,8 +65,8 @@ public class OpenLayersMap extends Panel {
 	private InfoWindow infoWindow;
 
 	private Bounds bounds;
-	
-	private boolean externalControls=false;
+
+	private boolean externalControls = false;
 
 	private PopupListener callbackListener = null;
 
@@ -136,14 +136,13 @@ public class OpenLayersMap extends Panel {
 		// always add callbacklistener dont know if its gonna be used later on!
 		callbackListener = new PopupListener() {
 			@Override
-			protected void onClick(AjaxRequestTarget target,
-					Overlay overlay) {
+			protected void onClick(AjaxRequestTarget target, Overlay overlay) {
 				// Currently only support clicking on markers!
 				Marker markerPassed = (Marker) overlay;
-				OpenLayersMap.this.infoWindow.getContent()
-						.replaceWith(markerPassed.getPopup());
-				OpenLayersMap.this.infoWindow
-						.setContent(markerPassed.getPopup());
+				OpenLayersMap.this.infoWindow.getContent().replaceWith(
+						markerPassed.getPopup());
+				OpenLayersMap.this.infoWindow.setContent(markerPassed
+						.getPopup());
 				target.addComponent(markerPassed.getPopup());
 			}
 		};
@@ -215,14 +214,14 @@ public class OpenLayersMap extends Panel {
 			add(behavior);
 		}
 		if (AjaxRequestTarget.get() != null && findPage() != null) {
-			String jsToRun="";
-			jsToRun+=overlay.getJSadd(OpenLayersMap.this);
+			String jsToRun = "";
+			jsToRun += overlay.getJSadd(OpenLayersMap.this);
 			if (overlay instanceof Marker) {
 				Marker marker = (Marker) overlay;
 				if (marker.getPopup() != null) {
-					jsToRun+=getJSinvoke("addMarkerListener('mousedown','"
-							+ callbackListener.getCallBackForMarker(marker) + "'," + marker.getOverlayJSVar()
-							+ ")");
+					jsToRun += getJSinvoke("addMarkerListener('mousedown','"
+							+ callbackListener.getCallBackForMarker(marker)
+							+ "'," + marker.getOverlayJSVar() + ")");
 				}
 			}
 			AjaxRequestTarget.get().appendJavascript(jsToRun);
@@ -290,8 +289,6 @@ public class OpenLayersMap extends Panel {
 		return bounds;
 	}
 
-
-
 	public int getZoom() {
 		return zoom;
 	}
@@ -324,8 +321,8 @@ public class OpenLayersMap extends Panel {
 	}
 
 	/**
-	 * Generates the JavaScript used to instantiate this OpenlayersMap as an JavaScript
-	 * class on the client side.
+	 * Generates the JavaScript used to instantiate this OpenlayersMap as an
+	 * JavaScript class on the client side.
 	 * 
 	 * @return The generated JavaScript
 	 */
@@ -352,15 +349,14 @@ public class OpenLayersMap extends Panel {
 			js.append("new WicketOMap('" + map.getMarkupId() + "', null);\n");
 		}
 
-		int layersid = 0;
 		for (Layer layer : layers) {
 			if (layer instanceof WMS) {
 				WMS wms = (WMS) layer;
-				js.append("var wms" + layersid + " =" + wms.getJSconstructor()
-						+ ";\n");
-				js.append(getJSinvoke("addLayer(wms" + layersid + ")"));
+				js.append("var wms" + wms.getId() + " ="
+						+ wms.getJSconstructor() + ";\n");
+				js.append(getJSinvoke("addLayer(wms" + wms.getId() + ","
+						+ wms.getId() + ")"));
 			}
-			layersid++;
 		}
 		js.append(getJSinvoke("zoomToMaxExtent()"));
 		for (Control control : controls) {
@@ -373,21 +369,20 @@ public class OpenLayersMap extends Panel {
 				Marker marker = (Marker) overlay;
 				if (marker.getPopup() != null) {
 					js.append(getJSinvoke("addMarkerListener('mousedown','"
-							+ callbackListener.getCallBackForMarker(marker) + "'," + marker.getOverlayJSVar()
-							+ ")"));
+							+ callbackListener.getCallBackForMarker(marker)
+							+ "'," + marker.getOverlayJSVar() + ")"));
 				}
 			}
 		}
 		js.append(getJSinvoke("setPopupId('"
 				+ infoWindow.getContent().getMarkupId() + "')"));
 
-
 		return js.toString();
 	}
 
 	/**
-	 * Convenience method for generating a JavaScript call on this Openlayermap with
-	 * the given invocation.
+	 * Convenience method for generating a JavaScript call on this Openlayermap
+	 * with the given invocation.
 	 * 
 	 * @param invocation
 	 *            The JavaScript call to invoke on this Openlayermap.
@@ -398,6 +393,7 @@ public class OpenLayersMap extends Panel {
 		return "Wicket.omaps['" + map.getMarkupId() + "']." + invocation
 				+ ";\n";
 	}
+
 	public String getJSInstance() {
 		return "Wicket.omaps['" + map.getMarkupId() + "']";
 	}
@@ -578,5 +574,13 @@ public class OpenLayersMap extends Panel {
 
 	public void setExternalControls(boolean externalControls) {
 		this.externalControls = externalControls;
+	}
+
+	public List<Layer> getLayers() {
+		return layers;
+	}
+
+	public void setLayers(List<Layer> layers) {
+		this.layers = layers;
 	}
 }
