@@ -24,11 +24,13 @@ import org.wicketstuff.openlayers.js.Constructor;
 public class Marker extends Overlay {
 	private static final long serialVersionUID = 1L;
 
-	private LonLat latLng;
+	private LonLat lonLat;
 
 	private PopupWindowPanel popup = null;
 
 	private MarkerOptions options;
+	
+	private Icon icon=null;
 
 	/**
 	 * @param gLatLng
@@ -38,15 +40,25 @@ public class Marker extends Overlay {
 		this(gLatLng, null, null);
 	}
 
-	public Marker(LonLat gLatLng, MarkerOptions options) {
+	public Marker(LonLat lonLat, MarkerOptions options) {
 		super();
-		this.latLng = gLatLng;
+		this.lonLat = lonLat;
 		this.options = options;
 	}
 
-	public Marker(LonLat gLatLng, MarkerOptions options, PopupWindowPanel popup) {
-		this(gLatLng, options);
+	public Marker(LonLat lonLat, MarkerOptions options, PopupWindowPanel popup) {
+		this(lonLat, options);
 		this.popup = popup;
+	}
+	
+
+	public Marker(LonLat lonLat, PopupWindowPanel popup, MarkerOptions options,
+			Icon icon) {
+		super();
+		this.lonLat = lonLat;
+		this.popup = popup;
+		this.options = options;
+		this.icon = icon;
 	}
 
 	public Marker(LonLat gLatLng, PopupWindowPanel popup) {
@@ -54,11 +66,11 @@ public class Marker extends Overlay {
 	}
 
 	public LonLat getLagLng() {
-		return latLng;
+		return lonLat;
 	}
 
 	public void setLagLng(LonLat gLatLng) {
-		this.latLng = gLatLng;
+		this.lonLat = gLatLng;
 	}
 
 	public MarkerOptions getMarkerOptions() {
@@ -68,14 +80,26 @@ public class Marker extends Overlay {
 	@Override
 	protected String getJSconstructor() {
 		Constructor constructor = new Constructor("OpenLayers.Marker")
-				.add(latLng.getJSconstructor());
+				.add(lonLat.getJSconstructor());
 		if (options != null) {
 			constructor.add(options.getJSconstructor());
 		}
+		if (icon != null) {
+			constructor.add(icon.getId());
+		}
+
 		return constructor.toJS();
 	}
 
 	public PopupWindowPanel getPopup() {
 		return popup;
+	}
+
+	public Icon getIcon() {
+		return icon;
+	}
+
+	public void setIcon(Icon icon) {
+		this.icon = icon;
 	}
 }

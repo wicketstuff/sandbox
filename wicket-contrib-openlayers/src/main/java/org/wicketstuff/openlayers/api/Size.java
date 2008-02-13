@@ -20,36 +20,52 @@ package org.wicketstuff.openlayers.api;
 
 import java.io.Serializable;
 
+import org.wicketstuff.openlayers.OpenLayersMap;
 import org.wicketstuff.openlayers.js.Constructor;
 
 /**
- * Represents an Maps API's GSize that contains width and height.
+ * http://dev.openlayers.org/apidocs/files/OpenLayers/BaseTypes/Size-js.html
  * 
  */
-public class GSize implements Serializable
+public class Size implements Serializable
 {
 
-	private float width;
-	private float height;
-
-	public GSize(float width, float height)
+	private float w;
+	private float h;
+	
+	public Size(float width, float height)
 	{
-		this.width = width;
-		this.height = height;
+		this.w = width;
+		this.h = height;
 	}
 
 	public float getWidth()
 	{
-		return width;
+		return w;
 	}
 
 	public float getHeight()
 	{
-		return height;
+		return h;
 	}
 
-	protected String getJSconstructor()
-	{
-		return new Constructor("GSize").add(width).add(height).toJS();
+	protected String getJSconstructor() {
+		Constructor constructor = new Constructor("OpenLayers.Size")
+				.add(w).add(h);
+		return constructor.toJS();
 	}
+	public String getId() {
+		return "size"+ String.valueOf(System.identityHashCode(this));
+	}
+/**
+ * create size as a variable.. Possibly to add to icon
+ * @param map
+ * @return
+ */
+	public String getJSadd() {
+		StringBuffer js = new StringBuffer();
+		js.append("var "+getId()+" = " + getJSconstructor() + ";\n");
+		return js.toString();
+	}
+
 }
