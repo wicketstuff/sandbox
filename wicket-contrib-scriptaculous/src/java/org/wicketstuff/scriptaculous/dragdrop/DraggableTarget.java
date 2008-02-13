@@ -119,8 +119,10 @@ public abstract class DraggableTarget extends WebMarkupContainer
 		@Override
 		protected void respond(final AjaxRequestTarget target) {
 			final String input = getRequest().getParameter("id");
-			target.addComponent(DraggableTarget.this);
-			target.appendJavascript(new Effect.Highlight(DraggableTarget.this).toJavascript());
+			DraggableTarget draggableTarget = DraggableTarget.this;
+			target.prependJavascript("Droppables.remove($(" + draggableTarget.getMarkupId() + "));");
+			target.addComponent(draggableTarget);
+			target.appendJavascript(new Effect.Highlight(draggableTarget).toJavascript());
 
 			MarkupIdVisitor visitor = new MarkupIdVisitor(input);
 			getPage().visitChildren(visitor);
