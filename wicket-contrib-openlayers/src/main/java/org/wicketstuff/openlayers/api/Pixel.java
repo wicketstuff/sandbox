@@ -24,57 +24,76 @@ import org.wicketstuff.openlayers.OpenLayersMap;
 import org.wicketstuff.openlayers.js.Constructor;
 
 /**
- * http://dev.openlayers.org/apidocs/files/OpenLayers/Icon-js.html
+ * represents http://dev.openlayers.org/apidocs/files/OpenLayers/BaseTypes/Pixel-js.html
  */
-public class Icon implements Serializable {
+public class Pixel implements Serializable
+{
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1714038753187423501L;
 
-	private String url = "";
-	private final Pixel offset;
-	private Size size = null;
+	private int x;
+	private int y;
+	
+	private Size size=null;
+	
+	/**
+	 * calculates offset via size
+	 * @param size
+	 */
+	public Pixel(Size size) {
+		super();
+		this.size = size;
+	}
 
 	public Size getSize() {
 		return size;
 	}
-
 	public void setSize(Size size) {
 		this.size = size;
 	}
-
-	public Pixel getOffset() {
-		return offset;
+	public int getX() {
+		return x;
 	}
-
-	public Icon(String url, Pixel offset, Size shadowSize) {
+	public void setX(int x) {
+		this.x = x;
+	}
+	public int getY() {
+		return y;
+	}
+	public void setY(int y) {
+		this.y = y;
+	}
+	public Pixel(int x, int y) {
 		super();
-		this.url = url;
-		this.offset = offset;
-		this.size = shadowSize;
+		this.x = x;
+		this.y = y;
 	}
-
 	protected String getJSconstructor() {
-		Constructor constructor = new Constructor("OpenLayers.Icon").add("'"+url+"'")
-				.add(size.getId()).add(offset.getId());
+		if(size==null){
+		Constructor constructor = new Constructor("OpenLayers.Pixel")
+				.add(x).add(y);
 		return constructor.toJS();
+		}
+		else{
+			Constructor constructor = new Constructor("OpenLayers.Pixel")
+			.add("-"+size.getId()+".w/2").add("-"+size.getId()+".h");
+			return constructor.toJS();
+			
+		}
 	}
-
 	public String getId() {
-		return "icon" + String.valueOf(System.identityHashCode(this));
+		return "pixel"+ String.valueOf(System.identityHashCode(this));
 	}
-
-	/**
-	 * create size as a variable.. Possibly to add to icon
-	 * 
-	 * @param map
-	 * @return
-	 */
-	public String getJSadd( ) {
+/**
+ * create pixel as a variable.. Possibly to add to icon
+ * @return
+ */
+	public String getJSadd() {
 		StringBuffer js = new StringBuffer();
-		js.append("var " + getId() + " = " + getJSconstructor() + ";\n");
+		js.append("var "+getId()+" = " + getJSconstructor() + ";\n");
 		return js.toString();
 	}
+
 
 }

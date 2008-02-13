@@ -214,21 +214,31 @@ public class OpenLayersMap extends Panel {
 			add(behavior);
 		}
 		if (AjaxRequestTarget.get() != null && findPage() != null) {
-			String jsToRun = "";
-			jsToRun += overlay.getJSadd(OpenLayersMap.this);
-			if (overlay instanceof Marker) {
-				Marker marker = (Marker) overlay;
-				if (marker.getPopup() != null) {
-					jsToRun += getJSinvoke("addMarkerListener('mousedown','"
-							+ callbackListener.getCallBackForMarker(marker)
-							+ "'," + marker.getOverlayJSVar() + ")");
-				}
-			}
+			String jsToRun = getJsOverlay(overlay);
 			AjaxRequestTarget.get().appendJavascript(jsToRun);
 
 		}
 
 		return this;
+	}
+
+	private String getJsOverlay(Overlay overlay) {
+		String jsToRun = overlay.getJSadd(this) + "\n";
+		if (overlay instanceof Marker) {
+			Marker marker = (Marker) overlay;
+			if (marker.getPopup() != null) {
+				jsToRun += getJSinvoke("addMarkerListener('mousedown','"
+						+ callbackListener.getCallBackForMarker(marker) + "',"
+						+ marker.getOverlayJSVar() + ")");
+			}
+			if (marker.getIcon() != null) {
+				// prepend icon stuff
+				jsToRun = marker.getIcon().getSize().getJSadd()
+						+ marker.getIcon().getOffset().getJSadd() + marker.getIcon().getJSadd()+ jsToRun;
+			}
+		}
+		return jsToRun;
+
 	}
 
 	/**
@@ -364,15 +374,8 @@ public class OpenLayersMap extends Panel {
 		}
 		// Add the overlays.
 		for (Overlay overlay : overlays) {
-			js.append(overlay.getJSadd(this) + "\n");
-			if (overlay instanceof Marker) {
-				Marker marker = (Marker) overlay;
-				if (marker.getPopup() != null) {
-					js.append(getJSinvoke("addMarkerListener('mousedown','"
-							+ callbackListener.getCallBackForMarker(marker)
-							+ "'," + marker.getOverlayJSVar() + ")"));
-				}
-			}
+
+			js.append(getJsOverlay(overlay));
 		}
 		js.append(getJSinvoke("setPopupId('"
 				+ infoWindow.getContent().getMarkupId() + "')"));
