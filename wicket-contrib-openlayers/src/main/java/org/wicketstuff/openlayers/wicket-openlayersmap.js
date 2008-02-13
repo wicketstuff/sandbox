@@ -93,7 +93,7 @@ function WicketOMap(id, options) {
 		}
 		if (wicketOMap.popup == null) {
 			var wcall = wicketAjaxGet(callBack, function () {
-				wicketOMap.popup = new OpenLayers.Popup("map", marker.lonlat, new OpenLayers.Size(200, 200), document.getElementById(wicketOMap.popupId).innerHTML, true);
+				wicketOMap.popup = new OpenLayers.Popup("map", marker.lonlat, new OpenLayers.Size(195, 250), document.getElementById(wicketOMap.popupId).innerHTML, true);
 				wicketOMap.popup.setBackgroundColor("white");
 				wicketOMap.map.addPopup(wicketOMap.popup);
 			}, null, null);
