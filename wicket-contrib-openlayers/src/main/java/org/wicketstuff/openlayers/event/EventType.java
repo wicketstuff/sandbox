@@ -20,7 +20,7 @@ package org.wicketstuff.openlayers.event;
  *
  */
 public enum EventType {
-	dbclick,click,focus,blur, change,submit, nullEvent, mouseover,mousedown;
+	click, dblclick, mousedown,mouseup, mouseenter,mouseleave, mousemove, mouseover, mouseout,nullEvent;
 	
 	private String eventType;
 	

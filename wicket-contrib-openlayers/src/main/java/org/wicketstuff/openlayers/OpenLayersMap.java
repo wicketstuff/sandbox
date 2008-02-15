@@ -37,7 +37,6 @@ import org.wicketstuff.openlayers.api.InfoWindow;
 import org.wicketstuff.openlayers.api.LonLat;
 import org.wicketstuff.openlayers.api.Marker;
 import org.wicketstuff.openlayers.api.Overlay;
-import org.wicketstuff.openlayers.api.Size;
 import org.wicketstuff.openlayers.api.layer.Layer;
 import org.wicketstuff.openlayers.api.layer.WMS;
 import org.wicketstuff.openlayers.event.EventType;
@@ -50,29 +49,134 @@ import org.wicketstuff.openlayers.event.PopupListener;
  */
 public class OpenLayersMap extends Panel {
 
+	private abstract class JSMethodBehavior extends AbstractBehavior {
+
+		private static final long serialVersionUID = 1L;
+
+		private String attribute;
+
+		public JSMethodBehavior(final String attribute) {
+			this.attribute = attribute;
+		}
+
+		protected abstract String getJSinvoke();
+
+		/**
+		 * @see org.apache.wicket.behavior.AbstractBehavior#onComponentTag(org.apache.wicket.Component,
+		 *      org.apache.wicket.markup.ComponentTag)
+		 */
+		@Override
+		public void onComponentTag(Component component, ComponentTag tag) {
+			String invoke = getJSinvoke();
+
+			if (attribute.equalsIgnoreCase("href")) {
+				invoke = "javascript:" + invoke;
+			}
+
+			tag.put(attribute, invoke);
+		}
+	}
+
+	public class PanDirectionBehavior extends JSMethodBehavior {
+		private static final long serialVersionUID = 1L;
+
+		private int dx;
+
+		private int dy;
+
+		public PanDirectionBehavior(String event, final int dx, final int dy) {
+			super(event);
+			this.dx = dx;
+			this.dy = dy;
+		}
+
+		@Override
+		protected String getJSinvoke() {
+			return getJSpanDirection(dx, dy);
+		}
+	}
+
+	public class SetCenterBehavior extends JSMethodBehavior {
+		private static final long serialVersionUID = 1L;
+
+		private LonLat gLatLng;
+
+		public SetCenterBehavior(String event, LonLat gLatLng) {
+			super(event);
+			this.gLatLng = gLatLng;
+		}
+
+		@Override
+		protected String getJSinvoke() {
+			return getJSsetCenter(gLatLng);
+		}
+	}
+
+	public class SetZoomBehavior extends JSMethodBehavior {
+		private static final long serialVersionUID = 1L;
+
+		private int zoom;
+
+		public SetZoomBehavior(final String event, final int zoom) {
+			super(event);
+			this.zoom = zoom;
+		}
+
+		@Override
+		protected String getJSinvoke() {
+			return getJSsetZoom(zoom);
+		}
+	}
+
+	public class ZoomInBehavior extends JSMethodBehavior {
+		private static final long serialVersionUID = 1L;
+
+		public ZoomInBehavior(String event) {
+			super(event);
+		}
+
+		@Override
+		protected String getJSinvoke() {
+			return getJSzoomIn();
+		}
+	}
+
+	public class ZoomOutBehavior extends JSMethodBehavior {
+		private static final long serialVersionUID = 1L;
+
+		public ZoomOutBehavior(String event) {
+			super(event);
+		}
+
+		@Override
+		protected String getJSinvoke() {
+			return getJSzoomOut();
+		}
+	}
+
 	private static final long serialVersionUID = 1L;
+
+	private Bounds bounds;
+
+	private PopupListener callbackListener = null;
 
 	private LonLat center = new LonLat(37.4419, -122.1419);
 
-	private int zoom = 13;
-
 	private List<Control> controls = new ArrayList<Control>();
 
-	private List<Overlay> overlays = new ArrayList<Overlay>();
+	private boolean externalControls = false;
+
+	private InfoWindow infoWindow;
 
 	private List<Layer> layers = new ArrayList<Layer>();
 
 	private final WebMarkupContainer map;
 
-	private InfoWindow infoWindow;
-
-	private Bounds bounds;
-
-	private boolean externalControls = false;
-
-	private PopupListener callbackListener = null;
-
 	private HashMap<String, String> options = new HashMap<String, String>();
+
+	private List<Overlay> overlays = new ArrayList<Overlay>();
+
+	private int zoom = 13;
 
 	/**
 	 * 
@@ -82,9 +186,9 @@ public class OpenLayersMap extends Panel {
 	 * @param id
 	 */
 	public OpenLayersMap(final String id) {
-		this(id, new OpenLayersMapHeaderContributor(), new ArrayList<Overlay>());
-
-		HashMap<String, String> options = new HashMap<String, String>();
+		this(id, new OpenLayersMapHeaderContributor(),
+				new ArrayList<Overlay>(), new ArrayList<Layer>(),
+				new HashMap<String, String>());
 		options.put("layers", "'basic'");
 		layers.add(new WMS("OpenLayers WMS",
 				"http://labs.metacarta.com/wms/vmap0", options));
@@ -97,28 +201,46 @@ public class OpenLayersMap extends Panel {
 	 */
 	public OpenLayersMap(final String id, List<Layer> defaultLayers,
 			HashMap<String, String> options) {
-		this(id, new OpenLayersMapHeaderContributor(), new ArrayList<Overlay>());
-		this.layers = defaultLayers;
-		this.options = options;
+		this(id, new OpenLayersMapHeaderContributor(),
+				new ArrayList<Overlay>(), defaultLayers, options);
 	}
 
 	public OpenLayersMap(final String id, List<Layer> defaultLayers,
 			HashMap<String, String> options, List<Overlay> overlays) {
-		this(id, new OpenLayersMapHeaderContributor(), overlays);
-		this.layers = defaultLayers;
-		this.options = options;
+		this(id, new OpenLayersMapHeaderContributor(), overlays, defaultLayers,
+				options);
+	}
+
+	public OpenLayersMap(final String id, List<Layer> defaultLayers,
+			HashMap<String, String> options, List<Overlay> overlays,
+			PopupListener popupListener) {
+		this(id, new OpenLayersMapHeaderContributor(), overlays, popupListener,
+				defaultLayers, options);
 	}
 
 	/**
-	 * Construct.
+	 * 
+	 * Popups up the window as default!
 	 * 
 	 * @param id
+	 * @param headerContrib
 	 * @param overlays
+	 * 
 	 */
-	public OpenLayersMap(final String id, List<Layer> layers,
-			List<Overlay> overlays) {
-		this(id, new OpenLayersMapHeaderContributor(), overlays);
-		this.layers = layers;
+	private OpenLayersMap(final String id,
+			final OpenLayersMapHeaderContributor headerContrib,
+			List<Overlay> overlays, List<Layer> defaultLayers,
+			HashMap<String, String> options) {
+		this(id, headerContrib, overlays, new PopupListener(false) {
+			@Override
+			protected void onClick(AjaxRequestTarget target, Overlay overlay) {
+				// make sure that info window is closed
+				if (Marker.class.isInstance(overlay)) {
+					clickAndOpenPopup((Marker) overlay, target);
+				}
+			}
+		}, defaultLayers, options);
+
 	}
 
 	/**
@@ -130,11 +252,14 @@ public class OpenLayersMap extends Panel {
 	 */
 	private OpenLayersMap(final String id,
 			final OpenLayersMapHeaderContributor headerContrib,
-			List<Overlay> overlays, PopupListener popupListener) {
+			List<Overlay> overlays, PopupListener popupListener,
+			List<Layer> defaultLayers, HashMap<String, String> options) {
 		super(id);
 		popupListener.setOpenLayersMap(this);
 
 		this.overlays = overlays;
+		this.layers = defaultLayers;
+		this.options = options;
 
 		// always add callbacklistener dont know if its gonna be used later on!
 		callbackListener = popupListener;
@@ -149,63 +274,12 @@ public class OpenLayersMap extends Panel {
 			}
 		}));
 
-		infoWindow = new InfoWindow();
-		add(infoWindow);
+		setInfoWindow(new InfoWindow());
+		add(getInfoWindow());
 
 		map = new WebMarkupContainer("map");
 		map.setOutputMarkupId(true);
 		add(map);
-	}
-
-	/**
-	 * 
-	 * Popups up the window as default!
-	 * 
-	 * @param id
-	 * @param headerContrib
-	 * @param overlays
-	 * 
-	 */
-	private OpenLayersMap(final String id,
-			final OpenLayersMapHeaderContributor headerContrib,
-			List<Overlay> overlays) {
-		this(id, headerContrib, overlays, new PopupListener(false) {
-			@Override
-			protected void onClick(AjaxRequestTarget target, Overlay overlay) {
-				// make sure that info window is closed
-				if (Marker.class.isInstance(overlay)) {
-					Marker marker = (Marker) overlay;
-					String mapId = getOpenLayerMap().getJSInstance();
-					String jsToRun = "if (" + mapId + ".popup != null) {"
-							+ "		" + mapId + ".map.removePopup(" + mapId
-							+ ".popup);" + "		" + mapId + ".popup.destroy();"
-							+ "		" + mapId + ".popup = null;" + "}";
-
-					target.prependJavascript(jsToRun);
-
-					// Currently only support clicking on markers!
-					Marker markerPassed = (Marker) overlay;
-					getOpenLayerMap().infoWindow.getContent().replaceWith(
-							markerPassed.getPopup());
-					getOpenLayerMap().infoWindow.setContent(markerPassed
-							.getPopup());
-					target.addComponent(markerPassed.getPopup());
-					jsToRun = mapId
-							+ ".popup = new OpenLayers.Popup('map', "
-							+ new LonLat(marker.getLonLat().getLng(), marker
-									.getLonLat().getLat()) + ", "
-							+ new Size(195, 250).getJSconstructor()
-							+ ", document.getElementById(" + mapId
-							+ ".popupId).innerHTML, true);" + mapId
-							+ ".popup.setBackgroundColor('white');" + mapId
-							+ ".map.addPopup(" + mapId + ".popup);";
-
-					// open info window
-					target.appendJavascript(jsToRun);
-				}
-			}
-		});
-
 	}
 
 	/**
@@ -221,24 +295,6 @@ public class OpenLayersMap extends Panel {
 		if (AjaxRequestTarget.get() != null && findPage() != null) {
 			AjaxRequestTarget.get().appendJavascript(
 					control.getJSadd(OpenLayersMap.this));
-		}
-
-		return this;
-	}
-
-	/**
-	 * Remove a control.
-	 * 
-	 * @param control
-	 *            control to remove
-	 * @return This
-	 */
-	public OpenLayersMap removeControl(Control control) {
-		controls.remove(control);
-
-		if (AjaxRequestTarget.get() != null && findPage() != null) {
-			AjaxRequestTarget.get().appendJavascript(
-					control.getJSremove(OpenLayersMap.this));
 		}
 
 		return this;
@@ -265,64 +321,6 @@ public class OpenLayersMap extends Panel {
 		return this;
 	}
 
-	public OpenLayersMap(final String id, List<Layer> defaultLayers,
-			HashMap<String, String> options, List<Overlay> overlays,
-			PopupListener popupListener) {
-		this(id, new OpenLayersMapHeaderContributor(), overlays);
-		this.layers = defaultLayers;
-		this.options = options;
-		this.callbackListener = popupListener;
-	}
-
-	private String getJsOverlay(Overlay overlay) {
-		String jsToRun = overlay.getJSadd(this) + "\n";
-		if (overlay instanceof Marker) {
-			Marker marker = (Marker) overlay;
-			// if marker has popup and there are no events attached then attach default listener
-			if (marker.getPopup() != null && marker.getEvents().length == 0) {
-				// add mousedown listener!
-				marker.addEvent(EventType.mousedown);
-			}
-			// add listeners
-			for (EventType evt : marker.getEvents()) {
-				jsToRun += getJSinvoke("addMarkerListener('"+evt.name()+"','"
-						+ callbackListener.getCallBackForMarker(marker) + "',"
-						+ marker.getOverlayJSVar() + ")");
-			}
-			if (marker.getIcon() != null) {
-				// prepend icon stuff
-				jsToRun = marker.getIcon().getSize().getJSadd()
-						+ marker.getIcon().getOffset().getJSadd()
-						+ marker.getIcon().getJSadd() + jsToRun;
-			}
-		}
-		return jsToRun;
-
-	}
-
-	/**
-	 * Remove an overlay.
-	 * 
-	 * @param overlay
-	 *            overlay to remove
-	 * @return This
-	 */
-	public OpenLayersMap removeOverlay(Overlay overlay) {
-		while (overlays.contains(overlay)) {
-			overlays.remove(overlay);
-		}
-		for (OverlayListenerBehavior behavior : overlay.getBehaviors()) {
-			remove(behavior);
-		}
-
-		if (AjaxRequestTarget.get() != null && findPage() != null) {
-			AjaxRequestTarget.get().appendJavascript(
-					overlay.getJSremove(OpenLayersMap.this));
-		}
-
-		return this;
-	}
-
 	/**
 	 * Clear all overlays.
 	 * 
@@ -342,51 +340,20 @@ public class OpenLayersMap extends Panel {
 		return this;
 	}
 
-	public List<Overlay> getOverlays() {
-		return Collections.unmodifiableList(overlays);
+	public Bounds getBounds() {
+		return bounds;
 	}
 
-	public List<Control> getControls() {
-		return controls;
+	public PopupListener getCallbackListener() {
+		return callbackListener;
 	}
 
 	public LonLat getCenter() {
 		return center;
 	}
 
-	public Bounds getBounds() {
-		return bounds;
-	}
-
-	public int getZoom() {
-		return zoom;
-	}
-
-	public void setZoom(int level) {
-		if (this.zoom != level) {
-			this.zoom = level;
-
-			if (AjaxRequestTarget.get() != null && findPage() != null) {
-				AjaxRequestTarget.get().appendJavascript(getJSsetZoom(zoom));
-			}
-		}
-	}
-
-	/**
-	 * Set the center.
-	 * 
-	 * @param center
-	 *            center to set
-	 */
-	public void setCenter(LonLat center) {
-		if (!this.center.equals(center)) {
-			this.center = center;
-
-			if (AjaxRequestTarget.get() != null && findPage() != null) {
-				AjaxRequestTarget.get()
-						.appendJavascript(getJSsetCenter(center));
-			}
-		}
+	public List<Control> getControls() {
+		return controls;
 	}
 
 	/**
@@ -437,9 +404,13 @@ public class OpenLayersMap extends Panel {
 			js.append(getJsOverlay(overlay));
 		}
 		js.append(getJSinvoke("setPopupId('"
-				+ infoWindow.getContent().getMarkupId() + "')"));
+				+ getInfoWindow().getContent().getMarkupId() + "')"));
 
 		return js.toString();
+	}
+
+	public String getJSInstance() {
+		return "Wicket.omaps['" + map.getMarkupId() + "']";
 	}
 
 	/**
@@ -456,20 +427,54 @@ public class OpenLayersMap extends Panel {
 				+ ";\n";
 	}
 
-	public String getJSInstance() {
-		return "Wicket.omaps['" + map.getMarkupId() + "']";
-	}
-
 	public String getJSinvokeNoLineEnd(String invocation) {
 		return "Wicket.omaps['" + map.getMarkupId() + "']." + invocation;
 	}
 
-	private String getJSsetDraggingEnabled(boolean enabled) {
-		return getJSinvoke("setDraggingEnabled(" + enabled + ")");
+	private String getJsOverlay(Overlay overlay) {
+		String jsToRun = overlay.getJSadd(this) + "\n";
+		if (overlay instanceof Marker) {
+			Marker marker = (Marker) overlay;
+			// if marker has popup and there are no events attached then attach
+			// default listener
+			if (marker.getPopup() != null && marker.getEvents().length == 0) {
+				// add mousedown listener!
+				marker.addEvent(EventType.mousedown);
+			}
+			// add listeners
+			for (EventType evt : marker.getEvents()) {
+				jsToRun += getJSinvoke("addMarkerListener('" + evt.name()
+						+ "','" + callbackListener.getCallBackForMarker(marker)
+						+ "'," + marker.getOverlayJSVar() + ")");
+			}
+			if (marker.getIcon() != null) {
+				// prepend icon stuff
+				jsToRun = marker.getIcon().getSize().getJSadd()
+						+ marker.getIcon().getOffset().getJSadd()
+						+ marker.getIcon().getJSadd() + jsToRun;
+			}
+		}
+		return jsToRun;
+
+	}
+
+	private String getJSpanDirection(int dx, int dy) {
+		return getJSinvoke("panDirection(" + dx + "," + dy + ")");
+	}
+
+	private String getJSsetCenter(LonLat center) {
+		if (center != null)
+			return getJSinvoke("setCenter(" + center.getJSconstructor() + ")");
+		else
+			return "";
 	}
 
 	private String getJSsetDoubleClickZoomEnabled(boolean enabled) {
 		return getJSinvoke("setDoubleClickZoomEnabled(" + enabled + ")");
+	}
+
+	private String getJSsetDraggingEnabled(boolean enabled) {
+		return getJSinvoke("setDraggingEnabled(" + enabled + ")");
 	}
 
 	private String getJSsetScrollWheelZoomEnabled(boolean enabled) {
@@ -480,23 +485,111 @@ public class OpenLayersMap extends Panel {
 		return getJSinvoke("setZoom(" + zoom + ")");
 	}
 
-	private String getJSsetCenter(LonLat center) {
-		if (center != null)
-			return getJSinvoke("setCenter(" + center.getJSconstructor() + ")");
-		else
-			return "";
-	}
-
-	private String getJSpanDirection(int dx, int dy) {
-		return getJSinvoke("panDirection(" + dx + "," + dy + ")");
+	private String getJSzoomIn() {
+		return getJSinvoke("zoomIn()");
 	}
 
 	private String getJSzoomOut() {
 		return getJSinvoke("zoomOut()");
 	}
 
-	private String getJSzoomIn() {
-		return getJSinvoke("zoomIn()");
+	public List<Layer> getLayers() {
+		return layers;
+	}
+
+	public List<Overlay> getOverlays() {
+		return Collections.unmodifiableList(overlays);
+	}
+
+	public int getZoom() {
+		return zoom;
+	}
+
+	public boolean isExternalControls() {
+		return externalControls;
+	}
+
+	/**
+	 * Remove a control.
+	 * 
+	 * @param control
+	 *            control to remove
+	 * @return This
+	 */
+	public OpenLayersMap removeControl(Control control) {
+		controls.remove(control);
+
+		if (AjaxRequestTarget.get() != null && findPage() != null) {
+			AjaxRequestTarget.get().appendJavascript(
+					control.getJSremove(OpenLayersMap.this));
+		}
+
+		return this;
+	}
+
+	/**
+	 * Remove an overlay.
+	 * 
+	 * @param overlay
+	 *            overlay to remove
+	 * @return This
+	 */
+	public OpenLayersMap removeOverlay(Overlay overlay) {
+		while (overlays.contains(overlay)) {
+			overlays.remove(overlay);
+		}
+		for (OverlayListenerBehavior behavior : overlay.getBehaviors()) {
+			remove(behavior);
+		}
+
+		if (AjaxRequestTarget.get() != null && findPage() != null) {
+			AjaxRequestTarget.get().appendJavascript(
+					overlay.getJSremove(OpenLayersMap.this));
+		}
+
+		return this;
+	}
+
+	/**
+	 * Set the center.
+	 * 
+	 * @param center
+	 *            center to set
+	 */
+	public void setCenter(LonLat center) {
+		if (!this.center.equals(center)) {
+			this.center = center;
+
+			if (AjaxRequestTarget.get() != null && findPage() != null) {
+				AjaxRequestTarget.get()
+						.appendJavascript(getJSsetCenter(center));
+			}
+		}
+	}
+
+	public void setExternalControls(boolean externalControls) {
+		this.externalControls = externalControls;
+	}
+
+	public void setLayers(List<Layer> layers) {
+		this.layers = layers;
+	}
+
+	public void setOverlays(List<Overlay> overlays) {
+		clearOverlays();
+		for (Overlay overlay : overlays) {
+			addOverlay(overlay);
+		}
+	}
+
+	public void setZoom(int level) {
+		if (this.zoom != level) {
+			this.zoom = level;
+
+			if (AjaxRequestTarget.get() != null && findPage() != null) {
+				AjaxRequestTarget.get().appendJavascript(getJSsetZoom(zoom));
+			}
+		}
 	}
 
 	/**
@@ -511,138 +604,14 @@ public class OpenLayersMap extends Panel {
 		center = LonLat.parse(request.getParameter("center"));
 		zoom = Integer.parseInt(request.getParameter("zoom"));
 
-		infoWindow.update(target);
+		getInfoWindow().update(target);
 	}
 
-	public void setOverlays(List<Overlay> overlays) {
-		clearOverlays();
-		for (Overlay overlay : overlays) {
-			addOverlay(overlay);
-		}
+	public void setInfoWindow(InfoWindow infoWindow) {
+		this.infoWindow = infoWindow;
 	}
 
-	private abstract class JSMethodBehavior extends AbstractBehavior {
-
-		private static final long serialVersionUID = 1L;
-
-		private String attribute;
-
-		public JSMethodBehavior(final String attribute) {
-			this.attribute = attribute;
-		}
-
-		/**
-		 * @see org.apache.wicket.behavior.AbstractBehavior#onComponentTag(org.apache.wicket.Component,
-		 *      org.apache.wicket.markup.ComponentTag)
-		 */
-		@Override
-		public void onComponentTag(Component component, ComponentTag tag) {
-			String invoke = getJSinvoke();
-
-			if (attribute.equalsIgnoreCase("href")) {
-				invoke = "javascript:" + invoke;
-			}
-
-			tag.put(attribute, invoke);
-		}
-
-		protected abstract String getJSinvoke();
-	}
-
-	public class ZoomOutBehavior extends JSMethodBehavior {
-		private static final long serialVersionUID = 1L;
-
-		public ZoomOutBehavior(String event) {
-			super(event);
-		}
-
-		@Override
-		protected String getJSinvoke() {
-			return getJSzoomOut();
-		}
-	}
-
-	public class ZoomInBehavior extends JSMethodBehavior {
-		private static final long serialVersionUID = 1L;
-
-		public ZoomInBehavior(String event) {
-			super(event);
-		}
-
-		@Override
-		protected String getJSinvoke() {
-			return getJSzoomIn();
-		}
-	}
-
-	public class PanDirectionBehavior extends JSMethodBehavior {
-		private static final long serialVersionUID = 1L;
-
-		private int dx;
-
-		private int dy;
-
-		public PanDirectionBehavior(String event, final int dx, final int dy) {
-			super(event);
-			this.dx = dx;
-			this.dy = dy;
-		}
-
-		@Override
-		protected String getJSinvoke() {
-			return getJSpanDirection(dx, dy);
-		}
-	}
-
-	public class SetZoomBehavior extends JSMethodBehavior {
-		private static final long serialVersionUID = 1L;
-
-		private int zoom;
-
-		public SetZoomBehavior(final String event, final int zoom) {
-			super(event);
-			this.zoom = zoom;
-		}
-
-		@Override
-		protected String getJSinvoke() {
-			return getJSsetZoom(zoom);
-		}
-	}
-
-	public class SetCenterBehavior extends JSMethodBehavior {
-		private static final long serialVersionUID = 1L;
-
-		private LonLat gLatLng;
-
-		public SetCenterBehavior(String event, LonLat gLatLng) {
-			super(event);
-			this.gLatLng = gLatLng;
-		}
-
-		@Override
-		protected String getJSinvoke() {
-			return getJSsetCenter(gLatLng);
-		}
-	}
-
-	public PopupListener getCallbackListener() {
-		return callbackListener;
-	}
-
-	public boolean isExternalControls() {
-		return externalControls;
-	}
-
-	public void setExternalControls(boolean externalControls) {
-		this.externalControls = externalControls;
-	}
-
-	public List<Layer> getLayers() {
-		return layers;
-	}
-
-	public void setLayers(List<Layer> layers) {
-		this.layers = layers;
+	public InfoWindow getInfoWindow() {
+		return infoWindow;
 	}
 }

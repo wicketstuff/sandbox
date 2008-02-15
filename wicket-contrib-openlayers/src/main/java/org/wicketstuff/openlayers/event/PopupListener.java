@@ -25,6 +25,7 @@ import org.wicketstuff.openlayers.OpenLayersMap;
 import org.wicketstuff.openlayers.api.LonLat;
 import org.wicketstuff.openlayers.api.Marker;
 import org.wicketstuff.openlayers.api.Overlay;
+import org.wicketstuff.openlayers.api.Size;
 
 /**
  * event Listener
@@ -32,7 +33,7 @@ import org.wicketstuff.openlayers.api.Overlay;
 public abstract class PopupListener extends AbstractDefaultAjaxBehavior {
 
 	private boolean wantEvents;
-	
+
 	private OpenLayersMap openLayersMap;
 
 	public OpenLayersMap getOpenLayersMap() {
@@ -97,6 +98,38 @@ public abstract class PopupListener extends AbstractDefaultAjaxBehavior {
 	}
 
 	/**
+	 * helper method
+	 * 
+	 * @param marker
+	 */
+	public void clickAndOpenPopup(Marker marker, AjaxRequestTarget target) {
+		String mapId = getOpenLayerMap().getJSInstance();
+		String jsToRun = "if (" + mapId + ".popup != null) {" + "		" + mapId
+				+ ".map.removePopup(" + mapId + ".popup);" + "		" + mapId
+				+ ".popup.destroy();" + "		" + mapId + ".popup = null;" + "}";
+
+		target.prependJavascript(jsToRun);
+
+		// Currently only support clicking on markers!
+		getOpenLayerMap().getInfoWindow().getContent().replaceWith(
+				marker.getPopup());
+		getOpenLayerMap().getInfoWindow().setContent(marker.getPopup());
+		target.addComponent(marker.getPopup());
+		jsToRun = mapId
+				+ ".popup = new OpenLayers.Popup('map', "
+				+ new LonLat(marker.getLonLat().getLng(), marker.getLonLat()
+						.getLat()) + ", "
+				+ new Size(195, 250).getJSconstructor()
+				+ ", document.getElementById(" + mapId
+				+ ".popupId).innerHTML, true);" + mapId
+				+ ".popup.setBackgroundColor('white');" + mapId
+				+ ".map.addPopup(" + mapId + ".popup);";
+
+		// open info window
+		target.appendJavascript(jsToRun);
+	}
+
+	/**
 	 * Override this method to provide handling of a click on the marker. Only
 	 * passes onClick events
 	 * 
@@ -105,11 +138,11 @@ public abstract class PopupListener extends AbstractDefaultAjaxBehavior {
 	 * @param target
 	 *            The target that initiated the click.
 	 */
-	protected abstract void onClick(AjaxRequestTarget target, Overlay overlay);
+	protected void onClick(AjaxRequestTarget target, Overlay overlay){};
 
 	/**
 	 * Override this method to provide handling of a event on the marker.
-	 * 
+	 * <Strong>Remember:</Strong>nullevent are passed by popupMarkerInfoAttributeAppender
 	 * @param overlay
 	 *            The clicked overlay.
 	 * @param target
