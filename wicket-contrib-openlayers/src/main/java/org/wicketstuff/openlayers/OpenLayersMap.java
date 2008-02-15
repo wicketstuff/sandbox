@@ -37,8 +37,10 @@ import org.wicketstuff.openlayers.api.InfoWindow;
 import org.wicketstuff.openlayers.api.LonLat;
 import org.wicketstuff.openlayers.api.Marker;
 import org.wicketstuff.openlayers.api.Overlay;
+import org.wicketstuff.openlayers.api.Size;
 import org.wicketstuff.openlayers.api.layer.Layer;
 import org.wicketstuff.openlayers.api.layer.WMS;
+import org.wicketstuff.openlayers.event.EventType;
 import org.wicketstuff.openlayers.event.OverlayListenerBehavior;
 import org.wicketstuff.openlayers.event.PopupListener;
 
@@ -123,29 +125,19 @@ public class OpenLayersMap extends Panel {
 	 * Construct.
 	 * 
 	 * @param id
-	 * @param googleHeaderContrib
+	 * @param OpenLayerMapHeaderContributor
 	 * @param overlays
 	 */
 	private OpenLayersMap(final String id,
 			final OpenLayersMapHeaderContributor headerContrib,
-			List<Overlay> overlays) {
+			List<Overlay> overlays, PopupListener popupListener) {
 		super(id);
+		popupListener.setOpenLayersMap(this);
 
 		this.overlays = overlays;
 
 		// always add callbacklistener dont know if its gonna be used later on!
-		callbackListener = new PopupListener() {
-			@Override
-			protected void onClick(AjaxRequestTarget target, Overlay overlay) {
-				// Currently only support clicking on markers!
-				Marker markerPassed = (Marker) overlay;
-				OpenLayersMap.this.infoWindow.getContent().replaceWith(
-						markerPassed.getPopup());
-				OpenLayersMap.this.infoWindow.setContent(markerPassed
-						.getPopup());
-				target.addComponent(markerPassed.getPopup());
-			}
-		};
+		callbackListener = popupListener;
 		add(callbackListener);
 
 		add(headerContrib);
@@ -163,6 +155,57 @@ public class OpenLayersMap extends Panel {
 		map = new WebMarkupContainer("map");
 		map.setOutputMarkupId(true);
 		add(map);
+	}
+
+	/**
+	 * 
+	 * Popups up the window as default!
+	 * 
+	 * @param id
+	 * @param headerContrib
+	 * @param overlays
+	 * 
+	 */
+	private OpenLayersMap(final String id,
+			final OpenLayersMapHeaderContributor headerContrib,
+			List<Overlay> overlays) {
+		this(id, headerContrib, overlays, new PopupListener(false) {
+			@Override
+			protected void onClick(AjaxRequestTarget target, Overlay overlay) {
+				// make sure that info window is closed
+				if (Marker.class.isInstance(overlay)) {
+					Marker marker = (Marker) overlay;
+					String mapId = getOpenLayerMap().getJSInstance();
+					String jsToRun = "if (" + mapId + ".popup != null) {"
+							+ "		" + mapId + ".map.removePopup(" + mapId
+							+ ".popup);" + "		" + mapId + ".popup.destroy();"
+							+ "		" + mapId + ".popup = null;" + "}";
+
+					target.prependJavascript(jsToRun);
+
+					// Currently only support clicking on markers!
+					Marker markerPassed = (Marker) overlay;
+					getOpenLayerMap().infoWindow.getContent().replaceWith(
+							markerPassed.getPopup());
+					getOpenLayerMap().infoWindow.setContent(markerPassed
+							.getPopup());
+					target.addComponent(markerPassed.getPopup());
+					jsToRun = mapId
+							+ ".popup = new OpenLayers.Popup('map', "
+							+ new LonLat(marker.getLonLat().getLng(), marker
+									.getLonLat().getLat()) + ", "
+							+ new Size(195, 250).getJSconstructor()
+							+ ", document.getElementById(" + mapId
+							+ ".popupId).innerHTML, true);" + mapId
+							+ ".popup.setBackgroundColor('white');" + mapId
+							+ ".map.addPopup(" + mapId + ".popup);";
+
+					// open info window
+					target.appendJavascript(jsToRun);
+				}
+			}
+		});
+
 	}
 
 	/**
@@ -222,19 +265,35 @@ public class OpenLayersMap extends Panel {
 		return this;
 	}
 
+	public OpenLayersMap(final String id, List<Layer> defaultLayers,
+			HashMap<String, String> options, List<Overlay> overlays,
+			PopupListener popupListener) {
+		this(id, new OpenLayersMapHeaderContributor(), overlays);
+		this.layers = defaultLayers;
+		this.options = options;
+		this.callbackListener = popupListener;
+	}
+
 	private String getJsOverlay(Overlay overlay) {
 		String jsToRun = overlay.getJSadd(this) + "\n";
 		if (overlay instanceof Marker) {
 			Marker marker = (Marker) overlay;
-			if (marker.getPopup() != null) {
-				jsToRun += getJSinvoke("addMarkerListener('mousedown','"
+			// if marker has popup and there are no events attached then attach default listener
+			if (marker.getPopup() != null && marker.getEvents().length == 0) {
+				// add mousedown listener!
+				marker.addEvent(EventType.mousedown);
+			}
+			// add listeners
+			for (EventType evt : marker.getEvents()) {
+				jsToRun += getJSinvoke("addMarkerListener('"+evt.name()+"','"
 						+ callbackListener.getCallBackForMarker(marker) + "',"
 						+ marker.getOverlayJSVar() + ")");
 			}
 			if (marker.getIcon() != null) {
 				// prepend icon stuff
 				jsToRun = marker.getIcon().getSize().getJSadd()
-						+ marker.getIcon().getOffset().getJSadd() + marker.getIcon().getJSadd()+ jsToRun;
+						+ marker.getIcon().getOffset().getJSadd()
+						+ marker.getIcon().getJSadd() + jsToRun;
 			}
 		}
 		return jsToRun;

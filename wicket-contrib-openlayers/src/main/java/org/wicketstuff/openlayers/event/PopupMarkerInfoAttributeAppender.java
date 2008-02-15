@@ -24,7 +24,7 @@ public class PopupMarkerInfoAttributeAppender extends AttributeAppender {
 		String markerId=marker.getId();
 		String callBackUrl=map.getCallbackListener().getCallBackForMarker(marker);
 		
-		appendModel.setObject( map.getJSinvoke("popupInfo('"+callBackUrl+"',"+map.getJSinvokeNoLineEnd("getMarker("+markerId+")")+","+map.getJSInstance()+")"));
+		appendModel.setObject( map.getJSinvoke("popupInfo('"+callBackUrl+"',"+map.getJSinvokeNoLineEnd("getMarker("+markerId+")")+","+map.getJSInstance()+", null)"));
 		
 	}
 

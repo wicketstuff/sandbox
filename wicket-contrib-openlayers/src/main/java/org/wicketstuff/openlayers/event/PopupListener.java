@@ -27,11 +27,26 @@ import org.wicketstuff.openlayers.api.Marker;
 import org.wicketstuff.openlayers.api.Overlay;
 
 /**
- * See the event section of <a
- * href="http://www.google.com/apis/maps/documentation/reference.html#GMap2">GMap2</a>.
- * TODO should we put 'click' and 'dblclkick' together in this listener?
+ * event Listener
  */
 public abstract class PopupListener extends AbstractDefaultAjaxBehavior {
+
+	private boolean wantEvents;
+	
+	private OpenLayersMap openLayersMap;
+
+	public OpenLayersMap getOpenLayersMap() {
+		return openLayersMap;
+	}
+
+	public void setOpenLayersMap(OpenLayersMap openLayersMap) {
+		this.openLayersMap = openLayersMap;
+	}
+
+	public PopupListener(boolean wantEvents) {
+		this.wantEvents = wantEvents;
+
+	}
 
 	@Override
 	protected void onBind() {
@@ -65,26 +80,43 @@ public abstract class PopupListener extends AbstractDefaultAjaxBehavior {
 				}
 			}
 		}
+		String markerEvent = request.getParameter("event");
 
-		onClick(target, overlay);
+		if (wantEvents) {
+			// Translate from string to type!
+			EventType eventType = EventType.valueOf(markerEvent);
+			onEvent(target, overlay, eventType);
+		} else {
+			onClick(target, overlay);
+		}
 	}
-public String getCallBackForMarker(Marker marker)
-{
-	return getCallbackUrl() + "&marker="+ marker.getId();	
 
-}
+	public String getCallBackForMarker(Marker marker) {
+		return getCallbackUrl() + "&marker=" + marker.getId();
+
+	}
 
 	/**
-	 * Override this method to provide handling of a click on the map. See the
-	 * event section of <a
-	 * href="http://www.google.com/apis/maps/documentation/reference.html#GMap2">GMap2</a>.
+	 * Override this method to provide handling of a click on the marker. Only
+	 * passes onClick events
 	 * 
-	 * @param latLng
-	 *            The clicked GLatLng. Might be null if a Marker was clicked.
 	 * @param overlay
-	 *            The clicked overlay. Might be null.
+	 *            The clicked overlay.
 	 * @param target
 	 *            The target that initiated the click.
 	 */
 	protected abstract void onClick(AjaxRequestTarget target, Overlay overlay);
+
+	/**
+	 * Override this method to provide handling of a event on the marker.
+	 * 
+	 * @param overlay
+	 *            The clicked overlay.
+	 * @param target
+	 *            The target that initiated the click.
+	 */
+	protected void onEvent(AjaxRequestTarget target, Overlay overlay,
+			EventType event) {
+
+	};
 }

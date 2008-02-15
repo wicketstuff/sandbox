@@ -49,7 +49,7 @@ public class Size implements Serializable
 		return h;
 	}
 
-	protected String getJSconstructor() {
+	public String getJSconstructor() {
 		Constructor constructor = new Constructor("OpenLayers.Size")
 				.add(w).add(h);
 		return constructor.toJS();
