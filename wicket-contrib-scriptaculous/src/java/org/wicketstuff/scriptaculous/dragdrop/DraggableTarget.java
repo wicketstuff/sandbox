@@ -21,6 +21,13 @@ import org.wicketstuff.scriptaculous.effect.Effect;
 /**
  * Target for drag/drop operations.
  * user can drop a Draggable item onto this component to perform ajax operation.
+ * 
+ * <p>
+ * NOTE: only one DraggableTarget component is allowed for a Page.  This is a limitation
+ * of the scriptaculous framework.  Scriptaculous freaks out in IE6/7 when updating 
+ * the HTML DOM for a particular Droppable object.  We're able to refresh the current 
+ * Droppable, but all other Droppables on the page will be broken.
+ * </p>
  *
  * @see http://wiki.script.aculo.us/scriptaculous/show/Droppables.add
  */
