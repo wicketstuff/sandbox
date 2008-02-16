@@ -20,12 +20,7 @@ public enum SizeUnit {
 	/**
 	 * CSS EX unit
 	 */
-	EX ("ex"),
-	
-	/**
-	 * CSS percent unit
-	 */
-	PERCENT ("%");
+	EX ("ex");
 	
 	private final String value;
 	
