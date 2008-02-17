@@ -67,7 +67,7 @@ public abstract class GMarkerDragendListener extends GOverlayListenerBehavior
 		onDragend(target, marker);
 	}
 	/**
-	 * Override this method to provide handling of a click on the map. See the
+	 * Override this method to provide handling of a dragend of a marker. See the
 	 * event section of <a
 	 * href="http://www.google.com/apis/maps/documentation/reference.html#GMap2">GMap2</a>.
 	 * 

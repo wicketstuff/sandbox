@@ -14,216 +14,223 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
 /*
  * Wicket Map2
  *
  * @author Martin Funk
  */
-
 // Wicket Namespace
 var Wicket;
-if(!Wicket)
-{
-	Wicket = {}
-} else if (typeof Wicket != "object")
-{
-	throw new Error("Wicket already exists and is not an object");
+if (!Wicket) {
+    Wicket = {}
 }
+else 
+    if (typeof Wicket != "object") {
+        throw new Error("Wicket already exists and is not an object");
+    }
 
 Wicket.geocoder = new WicketClientGeocoder();
 
-function WicketClientGeocoder() {
-	this.coder = new google.maps.ClientGeocoder();
-	
-	this.getLatLng = function(callBackUrl, addressId) {
-		
-		var address = Wicket.$(addressId).value;
-		
-		this.coder.getLocations(address, function(response) {
-
-			var address;
-			var coordinates;
-			var status = response.Status.code;
-			if (status == 200) {
-				address = response.Placemark[0].address;
-				coordinates = response.Placemark[0].Point.coordinates;
-			}
-			
-			wicketAjaxGet(
-				callBackUrl
-					+ '&status=' + status
-					+ '&address=' + address
-					+ '&point=(' + coordinates[1] + ',' + coordinates[0] + ')',
-				function() {
-				},
-				function() {
-				}
-			);			
-		});
-	}
+function WicketClientGeocoder(){
+    this.coder = new google.maps.ClientGeocoder();
+    
+    this.getLatLng = function(callBackUrl, addressId){
+    
+        var address = Wicket.$(addressId).value;
+        
+        this.coder.getLocations(address, function(response){
+        
+            var address;
+            var coordinates;
+            var status = response.Status.code;
+            if (status == 200) {
+                address = response.Placemark[0].address;
+                coordinates = response.Placemark[0].Point.coordinates;
+            }
+            
+            wicketAjaxGet(callBackUrl +
+            '&status=' +
+            status +
+            '&address=' +
+            address +
+            '&point=(' +
+            coordinates[1] +
+            ',' +
+            coordinates[0] +
+            ')', function(){
+            }, function(){
+            });
+        });
+    }
 }
 
-Wicket.maps = { }
+Wicket.maps = {}
 
-function WicketMap2(id) {
-	Wicket.maps[id] = this;
-
-	this.map = new google.maps.Map2(document.getElementById(id));
-	this.controls = {};
-	this.overlays = {};
-
-	this.onEvent = function(callBack, params) {		
-		params['center'] = this.map.getCenter();
-		params['bounds'] = this.map.getBounds();
-		params['zoom'] = this.map.getZoom();
-		params['hidden'] = this.map.getInfoWindow().isHidden();
-		
-		for (var key in params) {
-			callBack = callBack + '&' + key + '=' + params[key];
-		}
-		
-		wicketAjaxGet(
-			callBack,
-			function() {
-			},
-			function() {
-			}
-		);
-	}
-
-	this.init = function(callBack) {
-		this.onEvent(callBack, {});
-	}
-
-	this.addListener = function(event, callBack) {
-		var self = this;
-		
-		if (event == 'click' || event == 'dblclick') {
-			GEvent.addListener(this.map,
-				event,
-				function (marker, gLatLng) {
-					self.onEvent(callBack, {'marker':(marker == null ? "" : marker.overlayId), 'latLng':gLatLng});
-				}
-			);
-		} else {
-			GEvent.addListener(this.map,
-				event,
-				function () {
-					self.onEvent(callBack, {});
-				}
-			);
-		}
-	}
-	
-	this.addGOverlayListener = function(event, overlayID, callBack) {
-		var self = this;
-		
-		if (event == 'dragend') {
-			var overlay = this.overlays[overlayID];
-			GEvent.addListener(overlay,
-				event,
-				function () {
-					self.onEvent(callBack, {'marker':overlayID, 'latLng':overlay.getLatLng()});
-				})
-		}
-	}
-
-	this.setDraggingEnabled = function(enabled) {
-		if (enabled) {
-			this.map.enableDragging(true);
-		} else {
-			this.map.disableDragging(false);
-		}
-	}
-
-	this.setDoubleClickZoomEnabled = function(enabled) {
-		if (enabled) {
-			this.map.enableDoubleClickZoom(true);
-		} else {
-			this.map.disableDoubleClickZoom(false);
-		}
-	}
-
-	this.setScrollWheelZoomEnabled = function(enabled) {
-		if (enabled) {
-			this.map.enableScrollWheelZoom(true);
-		} else {
-			this.map.disableScrollWheelZoom(false);
-		}
-	}
-
-	this.setMapType = function(mapType) {
-		this.map.setMapType(mapType);
-	}
-
-	this.setZoom = function(level) {
-		this.map.setZoom(level);
-	}
-
-	this.setCenter = function(center) {
-		this.map.setCenter(center);
-	}
-
-	this.panTo = function(center) {
-		this.map.panTo(center);
-	}
-
-	this.panDirection = function(dx, dy) {
-		this.map.panDirection(dx, dy);
-	}
-
-	this.zoomOut = function() {
-		this.map.zoomOut();
-	}
-
-	this.zoomIn = function() {
-		this.map.zoomIn();
-	}
-
-	this.addControl = function(controlId, control) {
-		this.controls[controlId] = control;
-		
-		this.map.addControl(control);
-	}
-
-	this.removeControl = function(controlId) {
-		if (this.controls[controlId] != null) {
-			this.map.removeControl(this.controls[controlId]);
-			
-			this.controls[controlId] = null;
-		}
-	}
-
-	this.addOverlay = function(overlayId, overlay) {
-		this.overlays[overlayId] = overlay;
-		overlay.overlayId = overlayId;
-		
-		this.map.addOverlay(overlay);
-	}
-
-	this.removeOverlay = function(overlayId) {
-		if (this.overlays[overlayId] != null) {
-			this.map.removeOverlay(this.overlays[overlayId]);
-			
-			this.overlays[overlayId] = null;
-		}
-	}
-	
-	this.clearOverlays = function() {
-		this.overlays = {};
-		this.map.clearOverlays();
-	}
-
-	this.openInfoWindowTabs = function(latLng, tabs) {
-		this.map.openInfoWindowTabs(latLng, tabs);
-	}
-
-	this.openMarkerInfoWindowTabs = function(markerId, tabs) {
-		this.overlays[markerId].openInfoWindowTabs(tabs);
-	}
-
-	this.closeInfoWindow = function() {
-		this.map.closeInfoWindow();
-	}
+function WicketMap2(id){
+    Wicket.maps[id] = this;
+    
+    this.map = new google.maps.Map2(document.getElementById(id));
+    this.controls = {};
+    this.overlays = {};
+    
+    this.onEvent = function(callBack, params){
+        params['center'] = this.map.getCenter();
+        params['bounds'] = this.map.getBounds();
+        params['zoom'] = this.map.getZoom();
+        params['hidden'] = this.map.getInfoWindow().isHidden();
+        
+        for (var key in params) {
+            callBack = callBack + '&' + key + '=' + params[key];
+        }
+        
+        wicketAjaxGet(callBack, function(){
+        }, function(){
+        });
+    }
+    
+    this.init = function(callBack){
+        this.onEvent(callBack, {});
+    }
+    
+    this.addListener = function(event, callBack){
+        var self = this;
+        
+        if (event == 'click' || event == 'dblclick') {
+            GEvent.addListener(this.map, event, function(marker, gLatLng){
+                self.onEvent(callBack, {
+                    'marker': (marker == null ? "" : marker.overlayId),
+                    'latLng': gLatLng
+                });
+            });
+        }
+        else 
+            if (event == 'zoomend') {
+                GEvent.addListener(this.map, event, function(oldLevel, newLevel){
+                    self.onEvent(callBack, {
+                        'oldLevel': oldLevel,
+                        'newLevel': newLevel
+                    });
+                });
+            }
+            else {
+                GEvent.addListener(this.map, event, function(){
+                    self.onEvent(callBack, {});
+                });
+            }
+    }
+    
+    this.addGOverlayListener = function(event, overlayID, callBack){
+        var self = this;
+        
+        if (event == 'dragend') {
+            var overlay = this.overlays[overlayID];
+            GEvent.addListener(overlay, event, function(){
+                self.onEvent(callBack, {
+                    'marker': overlayID,
+                    'latLng': overlay.getLatLng()
+                });
+            })
+        }
+    }
+    
+    this.setDraggingEnabled = function(enabled){
+        if (enabled) {
+            this.map.enableDragging(true);
+        }
+        else {
+            this.map.disableDragging(false);
+        }
+    }
+    
+    this.setDoubleClickZoomEnabled = function(enabled){
+        if (enabled) {
+            this.map.enableDoubleClickZoom(true);
+        }
+        else {
+            this.map.disableDoubleClickZoom(false);
+        }
+    }
+    
+    this.setScrollWheelZoomEnabled = function(enabled){
+        if (enabled) {
+            this.map.enableScrollWheelZoom(true);
+        }
+        else {
+            this.map.disableScrollWheelZoom(false);
+        }
+    }
+    
+    this.setMapType = function(mapType){
+        this.map.setMapType(mapType);
+    }
+    
+    this.setZoom = function(level){
+        this.map.setZoom(level);
+    }
+    
+    this.setCenter = function(center){
+        this.map.setCenter(center);
+    }
+    
+    this.panTo = function(center){
+        this.map.panTo(center);
+    }
+    
+    this.panDirection = function(dx, dy){
+        this.map.panDirection(dx, dy);
+    }
+    
+    this.zoomOut = function(){
+        this.map.zoomOut();
+    }
+    
+    this.zoomIn = function(){
+        this.map.zoomIn();
+    }
+    
+    this.addControl = function(controlId, control){
+        this.controls[controlId] = control;
+        
+        this.map.addControl(control);
+    }
+    
+    this.removeControl = function(controlId){
+        if (this.controls[controlId] != null) {
+            this.map.removeControl(this.controls[controlId]);
+            
+            this.controls[controlId] = null;
+        }
+    }
+    
+    this.addOverlay = function(overlayId, overlay){
+        this.overlays[overlayId] = overlay;
+        overlay.overlayId = overlayId;
+        
+        this.map.addOverlay(overlay);
+    }
+    
+    this.removeOverlay = function(overlayId){
+        if (this.overlays[overlayId] != null) {
+            this.map.removeOverlay(this.overlays[overlayId]);
+            
+            this.overlays[overlayId] = null;
+        }
+    }
+    
+    this.clearOverlays = function(){
+        this.overlays = {};
+        this.map.clearOverlays();
+    }
+    
+    this.openInfoWindowTabs = function(latLng, tabs){
+        this.map.openInfoWindowTabs(latLng, tabs);
+    }
+    
+    this.openMarkerInfoWindowTabs = function(markerId, tabs){
+        this.overlays[markerId].openInfoWindowTabs(tabs);
+    }
+    
+    this.closeInfoWindow = function(){
+        this.map.closeInfoWindow();
+    }
 }
