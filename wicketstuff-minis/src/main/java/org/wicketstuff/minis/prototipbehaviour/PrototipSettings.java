@@ -55,9 +55,13 @@ public class PrototipSettings implements Serializable
 	/**
 	 * Generates the correct Javascript code to add as the third parameter to a prototip tooltip
 	 * 
+	 * any title passed in here will override any title which is set in this object eg:
+	 * 
+	 * PrototipBehaviour title > PrototipSettings title
+	 * 
 	 * @return Javascript String
 	 */
-	public String getOptionsString()
+	public String getOptionsString(String title)
 	{
 		StringBuilder options = new StringBuilder();
 		if(className != null)
@@ -119,6 +123,11 @@ public class PrototipSettings implements Serializable
 			if(options.length() > 0) options.append(", ");
 			options.append("title").append(": ").append(title);
 		}
+		else if(this.title != null)
+		{
+			if(options.length() > 0) options.append(", ");
+			options.append("title").append(": ").append(this.title);
+		}
 		if(viewpoint != null)
 		{
 			if(options.length() > 0) options.append(", ");
@@ -148,6 +157,7 @@ public class PrototipSettings implements Serializable
 	 * you do not need to include the ' '
 	 * 
 	 * @param className the className to set
+	 * @return this
 	 */
 	public PrototipSettings setClassName(String className) {
 		this.className = "'" + className + "'";
@@ -163,6 +173,7 @@ public class PrototipSettings implements Serializable
 	 * either false or true
 	 * 
 	 * @param closeButton the closeButton to set
+	 * @return this
 	 */
 	public PrototipSettings setCloseButton(String closeButton) {
 		this.closeButton = closeButton;
@@ -179,6 +190,7 @@ public class PrototipSettings implements Serializable
 	 * eg 0.3
 	 * 
 	 * @param duration the duration to set
+	 * @return this
 	 */
 	public PrototipSettings setDuration(String duration) {
 		this.duration = duration;
@@ -195,6 +207,7 @@ public class PrototipSettings implements Serializable
 	 * eg false or true
 	 * 
 	 * @param fixed the fixed to set
+	 * @return this
 	 */
 	public PrototipSettings setFixed(String fixed) {
 		this.fixed = fixed;
@@ -212,6 +225,7 @@ public class PrototipSettings implements Serializable
 	 * eg 0.2
 	 * 
 	 * @param delay the delay to set
+	 * @return this
 	 */
 	public PrototipSettings setDelay(String delay) {
 		this.delay = delay;
@@ -229,6 +243,7 @@ public class PrototipSettings implements Serializable
 	 * false, appear or blind, or others if they get enabled
 	 * 
 	 * @param effect the effect to set
+	 * @return this
 	 */
 	public PrototipSettings setEffect(String effect)
 	{
@@ -249,6 +264,7 @@ public class PrototipSettings implements Serializable
 	 * false or a number eg 1.5
 	 * 
 	 * @param hideAfter the hideAfter to set
+	 * @return this
 	 */
 	public PrototipSettings setHideAfter(String hideAfter) {
 		this.hideAfter = hideAfter;
@@ -264,6 +280,7 @@ public class PrototipSettings implements Serializable
 	 * any event eg mouseout or false
 	 * 
 	 * @param hideOn the hideOn to set
+	 * @return this
 	 */
 	public PrototipSettings setHideOn(String hideOn) {
 		if(!hideOn.equals("false"))
@@ -280,7 +297,7 @@ public class PrototipSettings implements Serializable
 	 * 
 	 * @param element
 	 * @param event
-	 * @return
+	 * @return this
 	 */
 	public PrototipSettings setHideOn(String element, String event) {
 		this.hideOn = new StringBuilder("{ ").append("element: '").append(element).append("', event: '")
@@ -295,6 +312,7 @@ public class PrototipSettings implements Serializable
 	}
 	/**
 	 * @param hook the hook to set
+	 * @return this
 	 */
 	public PrototipSettings setHookFalse() {
 		this.hook = "false";
@@ -314,7 +332,7 @@ public class PrototipSettings implements Serializable
 	 * 
 	 * @param target
 	 * @param tip
-	 * @return
+	 * @return this
 	 */
 	public PrototipSettings setHook(String target, String tip) {
 		this.hook = new StringBuilder("{ ").append("target: '").append(target).append("', tip: '")
@@ -329,6 +347,7 @@ public class PrototipSettings implements Serializable
 	}
 	/**
 	 * @param offset_x the offset_x to set
+	 * @return this
 	 */
 	public PrototipSettings setOffset_x(String offset_x) {
 		this.offset_x = offset_x;
@@ -342,6 +361,7 @@ public class PrototipSettings implements Serializable
 	}
 	/**
 	 * @param offset_y the offset_y to set
+	 * @return this
 	 */
 	public PrototipSettings setOffset_y(String offset_y) {
 		this.offset_y = offset_y;
@@ -351,6 +371,7 @@ public class PrototipSettings implements Serializable
 	 * Set both x and y offsets
 	 * @param offset_x
 	 * @param offset_y
+	 * @return this
 	 */
 	public PrototipSettings setOffset(String offset_x, String offset_y)
 	{
@@ -366,6 +387,7 @@ public class PrototipSettings implements Serializable
 	}
 	/**
 	 * @param showOn the showOn to set
+	 * @return this
 	 */
 	public PrototipSettings setShowOn(String showOn) {
 		this.showOn = "'" + showOn + "'";
@@ -379,6 +401,7 @@ public class PrototipSettings implements Serializable
 	}
 	/**
 	 * @param target the target to set
+	 * @return this
 	 */
 	public PrototipSettings setTarget(String target) {
 		this.target = "'" + target + "'";
@@ -409,6 +432,7 @@ public class PrototipSettings implements Serializable
 	}
 	/**
 	 * @param viewpoint the viewpoint to set
+	 * @return this
 	 */
 	public PrototipSettings setViewpoint(String viewpoint) {
 		this.viewpoint = viewpoint;
@@ -426,6 +450,7 @@ public class PrototipSettings implements Serializable
 	 * Futureproofing - this allows you at add any string as an option (note you will need to take care of ' and { } yourself
 	 * 
 	 * @param extraOptions the extraOptions to set
+	 * @return this
 	 */
 	public PrototipSettings setExtraOptions(String extraOptions) {
 		this.extraOptions = extraOptions;
