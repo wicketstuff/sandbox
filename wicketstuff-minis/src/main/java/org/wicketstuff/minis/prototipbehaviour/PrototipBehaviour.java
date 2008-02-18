@@ -21,6 +21,7 @@ import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.behavior.AbstractBehavior;
 import org.apache.wicket.markup.html.IHeaderResponse;
+import org.apache.wicket.markup.html.resources.CompressedResourceReference;
 
 /**
  * Prototip behavior
@@ -42,6 +43,7 @@ public class PrototipBehaviour extends AbstractBehavior
 	protected Component tooltipComponent = null;
 	protected PrototipSettings settings = null;
 	protected boolean overrideHeaderContributor = false;
+	protected String title = null;
 	
 	/**
 	 * Made this static as it is very unlikely that you would want different versions of prototip.js across your site
@@ -89,18 +91,15 @@ public class PrototipBehaviour extends AbstractBehavior
 		response.renderOnDomReadyJavascript(toJavascript());
 		if(!overrideHeaderContributor)
 		{
-			response.renderCSSReference(new ResourceReference(PrototipBehaviour.class, "prototip.css"), "screen");
+			response.renderCSSReference(new CompressedResourceReference(PrototipBehaviour.class, "prototip.css"), "screen");
 			switch(selectedJsType)
 			{
 				case NORMAL:
-					response.renderJavascriptReference(new ResourceReference(PrototipBehaviour.class, "prototip.js"));
+					response.renderJavascriptReference(new CompressedResourceReference(PrototipBehaviour.class, "prototip.js"));
 					break;
 				case MIN:
-					response.renderJavascriptReference(new ResourceReference(PrototipBehaviour.class, "prototip-min.js"));
+					response.renderJavascriptReference(new CompressedResourceReference(PrototipBehaviour.class, "prototip-min.js"));
 					break;
-				case MIN_GZIP:
-					response.renderJavascriptReference(new ResourceReference(PrototipBehaviour.class, "prototip-min.js.gz"));
-					break;	
 			}
 		}
 	}
@@ -141,7 +140,7 @@ public class PrototipBehaviour extends AbstractBehavior
 		String optionString = null;
 		if(settings != null)
 		{
-			optionString = settings.getOptionsString();
+			optionString = settings.getOptionsString(title);
 		}
 		if(tooltip != null)
 		{
@@ -240,6 +239,24 @@ public class PrototipBehaviour extends AbstractBehavior
 	 */
 	public PrototipBehaviour setOverrideHeaderContributor(boolean overrideHeaderContributor) {
 		this.overrideHeaderContributor = overrideHeaderContributor;
+		return this;
+	}
+
+	/**
+	 * @return the title
+	 */
+	public String getTitle()
+	{
+		return title;
+	}
+
+	/**
+	 * @param title the title to set
+	 * @return this object
+	 */
+	public PrototipBehaviour setTitle(String title)
+	{
+		this.title = title;
 		return this;
 	}
 

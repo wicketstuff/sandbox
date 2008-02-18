@@ -22,5 +22,5 @@ package org.wicketstuff.minis.prototipbehaviour;
  * @author Richard Wilkinson
  */
 public enum JS_TYPE {
-	NORMAL, MIN, MIN_GZIP
+	NORMAL, MIN
 }
