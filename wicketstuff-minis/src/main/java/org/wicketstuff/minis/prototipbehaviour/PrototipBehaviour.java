@@ -43,7 +43,10 @@ public class PrototipBehaviour extends AbstractBehavior
 	protected PrototipSettings settings = null;
 	protected boolean overrideHeaderContributor = false;
 	
-	protected JS_TYPE selectedJsType = JS_TYPE.MIN;
+	/**
+	 * Made this static as it is very unlikely that you would want different versions of prototip.js across your site
+	 */
+	protected static JS_TYPE selectedJsType = JS_TYPE.MIN;
 	
 	/**
 	 * Default constructor
@@ -93,10 +96,10 @@ public class PrototipBehaviour extends AbstractBehavior
 					response.renderJavascriptReference(new ResourceReference(PrototipBehaviour.class, "prototip.js"));
 					break;
 				case MIN:
-					response.renderJavascriptReference(new ResourceReference(PrototipBehaviour.class, "prototip.js"));
+					response.renderJavascriptReference(new ResourceReference(PrototipBehaviour.class, "prototip-min.js"));
 					break;
 				case MIN_GZIP:
-					response.renderJavascriptReference(new ResourceReference(PrototipBehaviour.class, "prototip.js"));
+					response.renderJavascriptReference(new ResourceReference(PrototipBehaviour.class, "prototip-min.js.gz"));
 					break;	
 			}
 		}
@@ -243,7 +246,7 @@ public class PrototipBehaviour extends AbstractBehavior
 	/**
 	 * @return the selectedJsType
 	 */
-	public JS_TYPE getSelectedJsType() {
+	public static JS_TYPE getSelectedJsType() {
 		return selectedJsType;
 	}
 
@@ -255,11 +258,12 @@ public class PrototipBehaviour extends AbstractBehavior
 	 *
 	 *   To override the default (the minified one) set this parameter
 	 *   
+	 *   This is a static method and as such affects all PrototipBehaviour in the system,
+	 *    this is so that you do not have to set the type for every PrototipBehaviour that you use (which is tedious)
+	 *   
 	 * @param selectedJsType the selectedJsType to set
-	 * @return this object
 	 */
-	public PrototipBehaviour setSelectedJsType(JS_TYPE selectedJsType) {
-		this.selectedJsType = selectedJsType;
-		return this;
+	public static void setSelectedJsType(JS_TYPE selectedJsType) {
+		PrototipBehaviour.selectedJsType = selectedJsType;
 	}
 }
