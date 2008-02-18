@@ -62,7 +62,7 @@ public class PrototipSettings implements Serializable
 		StringBuilder options = new StringBuilder();
 		if(className != null)
 		{
-			options.append("className").append(": ;'").append(className);
+			options.append("className").append(": ").append(className);
 		}
 		if(closeButton != null)
 		{
