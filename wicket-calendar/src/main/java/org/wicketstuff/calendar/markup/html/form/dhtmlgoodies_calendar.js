@@ -1630,8 +1630,14 @@ function displayCalendar(inputField,format,buttonObj,displayTime,timeInput)
 				currentMinute = tmpMinute;
 			}else{
 				currentMinute = '00';
-			}	
-			currentAMPM = format.indexOf('a') > -1;
+			}
+// WICKET CHANGED
+			if(format.indexOf('a') > -1){
+				currentAMPM = "AM";	
+			}else{
+				currentAMPM = false;
+			}
+// DONE WICKET CHANGED
 		}
 	}else{
 		var d = new Date();
@@ -1640,7 +1646,13 @@ function displayCalendar(inputField,format,buttonObj,displayTime,timeInput)
 		currentHour = '08';
 		currentMinute = '00';
 		tmpDay = d.getDate();
-		currentAMPM = format.indexOf('a') > -1;
+// WICKET CHANGED
+		if(format.indexOf('a') > -1){
+			currentAMPM = "AM";	
+		}else{
+			currentAMPM = false;
+		}
+// DONE WICKET CHANGED
 	}
 	
 	inputYear = currentYear;
