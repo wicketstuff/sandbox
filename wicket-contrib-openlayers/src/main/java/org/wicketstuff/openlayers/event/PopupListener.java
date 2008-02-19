@@ -130,6 +130,20 @@ public abstract class PopupListener extends AbstractDefaultAjaxBehavior {
 	}
 
 	/**
+	 * close the popup
+	 * 
+	 * @param target
+	 */
+	public void closePopup(AjaxRequestTarget target) {
+		String mapId = getOpenLayerMap().getJSInstance();
+		String jsToRun = "if (" + mapId + ".popup != null) {" + "		" + mapId
+				+ ".map.removePopup(" + mapId + ".popup);" + "		" + mapId
+				+ ".popup.destroy();" + "		" + mapId + ".popup = null;" + "}";
+
+		target.appendJavascript(jsToRun);
+	}
+
+	/**
 	 * Override this method to provide handling of a click on the marker. Only
 	 * passes onClick events
 	 * 
@@ -138,11 +152,14 @@ public abstract class PopupListener extends AbstractDefaultAjaxBehavior {
 	 * @param target
 	 *            The target that initiated the click.
 	 */
-	protected void onClick(AjaxRequestTarget target, Overlay overlay){};
+	protected void onClick(AjaxRequestTarget target, Overlay overlay) {
+	};
 
 	/**
 	 * Override this method to provide handling of a event on the marker.
-	 * <Strong>Remember:</Strong>nullevent are passed by popupMarkerInfoAttributeAppender
+	 * <Strong>Remember:</Strong>nullevent are passed by
+	 * popupMarkerInfoAttributeAppender
+	 * 
 	 * @param overlay
 	 *            The clicked overlay.
 	 * @param target
