@@ -39,6 +39,12 @@ public class CodepressBehaviour extends JQueryBehavior {
     	if(options_.getFileType() != null)
     		classes.append(" " + options_.getFileType());
     	
+    	if(options_.isAutoComplete())
+    		classes.append(" autocomplete-on");
+
+    	if(!options_.isLineNumbers())
+   		classes.append(" linenumbers-off");
+    	
     	getComponent().add(new SimpleAttributeAppender("class", classes.toString(), " "));
     }
     
