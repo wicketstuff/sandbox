@@ -4,7 +4,9 @@ import org.wicketstuff.jquery.Options;
 
 public class CodepressOptions extends Options {
 	private String fileType;
-
+	private boolean autoComplete;
+	private boolean lineNumbers;
+	
 	public CodepressOptions() {
 		set("path", "/resources/org.wicketstuff.jquery.codepress.CodepressBehaviour/");
 	}
@@ -15,12 +17,12 @@ public class CodepressOptions extends Options {
 	}
 
 	public CodepressOptions lineNumbers(boolean lineNumbers) {
-		set("linenumbers", lineNumbers ? 1 : 0);
+		this.lineNumbers = lineNumbers;
 		return this;
 	}
 
 	public CodepressOptions autoComplete(boolean autoComplete) {
-		set("autocomplete", autoComplete ? 1 : 0);
+		this.autoComplete = autoComplete;
 		return this;
 	}
 
@@ -31,6 +33,14 @@ public class CodepressOptions extends Options {
 
 	public String getFileType() {
 		return fileType;
+	}
+
+	public boolean isAutoComplete() {
+		return autoComplete;
+	}
+
+	public boolean isLineNumbers() {
+		return lineNumbers;
 	}
 
 }
