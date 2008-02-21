@@ -62,7 +62,17 @@ public class JQueryBehavior extends AbstractDefaultAjaxBehavior {
     /**
      *  ResourceReference for <a href="http://jquery.com/plugins/project/dimensions">jquery.dimensions-1.1.2.js</a> (not include in reponse header)
      */
-    public static final CompressedResourceReference JQUERY_DIMENSIONS_JS = new CompressedResourceReference(JQueryBehavior.class, "jquery.dimensions-1.1.2.js");
+    public static final CompressedResourceReference JQUERY_DIMENSIONS_JS = new CompressedResourceReference(JQueryBehavior.class, "jquery.dimensions.js");
+
+    /**
+     *  ResourceReference for <a href="http://jquery.com/plugins/project/ui">jquery.ui.mouse.js</a> (not include in reponse header)
+     */
+    public static final CompressedResourceReference JQUERY_MOUSE_JS = new CompressedResourceReference(JQueryBehavior.class, "jquery.ui.mouse.js");
+
+    /**
+     *  ResourceReference for <a href="http://jquery.com/plugins/project/ui">jquery.ui.resizable.js</a> (not include in reponse header)
+     */
+    public static final CompressedResourceReference JQUERY_RESIZABLE_JS = new CompressedResourceReference(JQueryBehavior.class, "jquery.ui.resizable.js");
 
     /**
      *  ResourceReference for <a href="http://jquery.com/plugins/project/bgiframe">jquery.bgiframe-2.1.1.js</a> (not include in reponse header)
