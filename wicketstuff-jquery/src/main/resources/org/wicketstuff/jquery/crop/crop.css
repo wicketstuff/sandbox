@@ -1,0 +1,94 @@
+body
+{
+	background: #fff;
+	margin: 0;
+	padding: 0;
+	height: 100%;
+}
+#${image} {
+	position: absolute;
+	width: ${width}px;
+	height: ${height}px;
+	left: 240px;
+	top: 70px;
+	cursor: move;
+	background-image: url(${imageUrl});
+	background-position: -190px -20px ;
+	background-repeat: no-repeat;
+}
+#resizeSE,
+#resizeE,
+#resizeNE,
+#resizeN,
+#resizeNW,
+#resizeW,
+#resizeSW,
+#resizeS
+{
+	position: absolute;
+	width: 8px;
+	height: 8px;
+	background-color: #333;
+	border: 1px solid #fff;
+	overflow: hidden;
+}
+#resizeSE{
+	bottom: -10px;
+	right: -10px;
+	cursor: se-resize;
+}
+#resizeE
+{
+	top: 50%;
+	right: -10px;
+	margin-top: -5px;
+	cursor: e-resize;
+}
+#resizeNE
+{
+	top: -10px;
+	right: -10px;
+	cursor: ne-resize;
+}
+#resizeN
+{
+	top: -10px;
+	left: 50%;
+	margin-left: -5px;
+	cursor: n-resize;
+}
+#resizeNW{
+	top: -10px;
+	left: -10px;
+	cursor: nw-resize;
+}
+#resizeW
+{
+	top: 50%;
+	left: -10px;
+	margin-top: -5px;
+	cursor: w-resize;
+}
+#resizeSW
+{
+	left: -10px;
+	bottom: -10px;
+	cursor: sw-resize;
+}
+#resizeS
+{
+	bottom: -10px;
+	left: 50%;
+	margin-left: -5px;
+	cursor: s-resize;
+}
+#${container}
+{
+	position: absolute;
+	top: 50px;
+	left: 50px;
+	width: ${width}px;
+	height: ${width}px;
+	background-color: #ccc;
+	background-image: url(${imageUrl});
+}
