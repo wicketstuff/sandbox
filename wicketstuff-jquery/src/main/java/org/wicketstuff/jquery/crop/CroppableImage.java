@@ -5,7 +5,6 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.util.template.TextTemplateHeaderContributor;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,10 +12,9 @@ public class CroppableImage extends Panel {
 	private WebMarkupContainer container;
 	private WebMarkupContainer image;
 	
-	public CroppableImage(String id, CropBehaviour behaviour, final File imageFile, final String imageUrl, final int width, final int height) {
+	public CroppableImage(String id, CropBehaviour behaviour, final String imageUrl, final int width, final int height) {
 		super(id);
 
-	
 		container = new WebMarkupContainer("container");
 		container.setOutputMarkupId(true);
 		add(container);
@@ -33,6 +31,9 @@ public class CroppableImage extends Panel {
 				vars.put("imageUrl", imageUrl);
 				vars.put("width", width);
 				vars.put("height", height);
+				vars.put("rwidth", width/2);
+				vars.put("rheight", height/2);
+				vars.put("cropBg", urlFor(CropBehaviour.CROP_BG));
 				return vars;
 			}
 		};
