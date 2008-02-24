@@ -1,20 +1,11 @@
-body
-{
-	background: #fff;
-	margin: 0;
-	padding: 0;
-	height: 100%;
-}
 #${image} {
 	position: absolute;
-	width: ${width}px;
-	height: ${height}px;
-	left: 240px;
-	top: 70px;
+	width: ${rwidth}px;
+	height: ${rheight}px;
+	left: 0;
+	top: 0;
 	cursor: move;
-	background-image: url(${imageUrl});
-	background-position: -190px -20px ;
-	background-repeat: no-repeat;
+	background-image: url(${cropBg});
 }
 #resizeSE,
 #resizeE,
@@ -31,6 +22,7 @@ body
 	background-color: #333;
 	border: 1px solid #fff;
 	overflow: hidden;
+	
 }
 #resizeSE{
 	bottom: -10px;
@@ -82,13 +74,8 @@ body
 	margin-left: -5px;
 	cursor: s-resize;
 }
-#${container}
-{
-	position: absolute;
-	top: 50px;
-	left: 50px;
+#${container} {
 	width: ${width}px;
-	height: ${width}px;
-	background-color: #ccc;
+	height: ${height}px;
 	background-image: url(${imageUrl});
 }

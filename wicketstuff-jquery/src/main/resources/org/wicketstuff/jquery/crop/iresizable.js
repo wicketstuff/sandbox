@@ -243,7 +243,6 @@ jQuery.iResize = {
 			newSizes.height = nHeight;
 			newSizes.width = nWidth;
 		}
-
 		if (newPosition.top < jQuery.iResize.resizeElement.resizeOptions.minTop) {
 			nHeight = newSizes.height + newPosition.top - jQuery.iResize.resizeElement.resizeOptions.minTop;
 			newPosition.top = jQuery.iResize.resizeElement.resizeOptions.minTop;
@@ -333,8 +332,8 @@ jQuery.iResize = {
 				el.resizeOptions.minHeight = options.minHeight || 10;
 				el.resizeOptions.maxWidth = options.maxWidth || 3000;
 				el.resizeOptions.maxHeight = options.maxHeight || 3000;
-				el.resizeOptions.minTop = options.minTop || -1000;
-				el.resizeOptions.minLeft = options.minLeft || -1000;
+				el.resizeOptions.minTop = options.minTop || 0;
+				el.resizeOptions.minLeft = options.minLeft || 0;
 				el.resizeOptions.maxRight = options.maxRight || 3000;
 				el.resizeOptions.maxBottom = options.maxBottom || 3000;
 				elPosition = jQuery(el).css('position');

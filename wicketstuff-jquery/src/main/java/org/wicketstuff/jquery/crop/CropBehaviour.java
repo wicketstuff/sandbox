@@ -10,9 +10,9 @@ import org.wicketstuff.jquery.FunctionString;
 import org.wicketstuff.jquery.JQueryBehavior;
 
 public class CropBehaviour extends JQueryBehavior {
-	public static final CompressedResourceReference CROP_CSS = new CompressedResourceReference(CropBehaviour.class, "crop.css");
 	public static final CompressedResourceReference IRESIZABLE_JS = new CompressedResourceReference(CropBehaviour.class, "iresizable.js");
 	public static final CompressedResourceReference IUTIL_JS = new CompressedResourceReference(CropBehaviour.class, "iutil.js");
+	public static final CompressedResourceReference CROP_BG = new CompressedResourceReference(CropBehaviour.class, "crop_bg.png");
 
 	private CropOptions options;
 
@@ -31,8 +31,8 @@ public class CropBehaviour extends JQueryBehavior {
 		options.set("onStop", new FunctionString("cropCallback"));
 		options.set("onDragStop", new FunctionString("cropCallback"));
 
-		options.set("onResize", new FunctionString("function(size, position) {\n this.style.backgroundPosition = '-' + (position.left - 50) + 'px -' + (position.top - 50) + 'px'; \n}\n"));
-		options.set("onDrag", new FunctionString("function(x, y) {\n this.style.backgroundPosition = '-' + (x - 50) + 'px -' + (y - 50) + 'px'; \n}\n"));
+		options.set("onResize", new FunctionString("function(size, position) {\n this.style.backgroundPosition = '-' + (position.left) + 'px -' + (position.top) + 'px'; \n}\n"));
+		options.set("onDrag", new FunctionString("function(x, y) {\n this.style.backgroundPosition = '-' + (x) + 'px -' + (y) + 'px'; \n}\n"));
 
 		options.set("handlers", new FunctionString("{ se: '#resizeSE', e: '#resizeE', ne: '#resizeNE', n: '#resizeN', nw: '#resizeNW', w: '#resizeW', sw: '#resizeSW', s: '#resizeS' }\n"));
 		
@@ -55,7 +55,6 @@ public class CropBehaviour extends JQueryBehavior {
 
 	@Override public void renderHead(IHeaderResponse response) {
 		super.renderHead(response);
-		response.renderCSSReference(CROP_CSS);
 		response.renderJavascriptReference(JQUERY_JS);
 		response.renderJavascriptReference(INTERFACE_JS);
 		response.renderJavascriptReference(IRESIZABLE_JS);
