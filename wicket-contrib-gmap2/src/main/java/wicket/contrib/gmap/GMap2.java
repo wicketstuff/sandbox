@@ -51,7 +51,7 @@ import wicket.contrib.gmap.event.GOverlayListenerBehavior;
  * href="http://www.google.com/apis/maps/signup.html">Google Maps API sign up
  * page</a> for more information.
  */
-public class GMap2 extends Panel
+public class GMap2 extends Panel implements GOverlayContainer
 {
 
 	private static final long serialVersionUID = 1L;
@@ -195,6 +195,7 @@ public class GMap2 extends Panel
 	public GMap2 addOverlay(GOverlay overlay)
 	{
 		overlays.add(overlay);
+		overlay.setParent(this);
 		for (GOverlayListenerBehavior behavior : overlay.getBehaviors())
 		{
 			add(behavior);
@@ -202,7 +203,7 @@ public class GMap2 extends Panel
 
 		if (AjaxRequestTarget.get() != null && findPage() != null)
 		{
-			AjaxRequestTarget.get().appendJavascript(overlay.getJSadd(GMap2.this));
+			AjaxRequestTarget.get().appendJavascript(overlay.getJSadd());
 		}
 
 		return this;
@@ -228,8 +229,10 @@ public class GMap2 extends Panel
 
 		if (AjaxRequestTarget.get() != null && findPage() != null)
 		{
-			AjaxRequestTarget.get().appendJavascript(overlay.getJSremove(GMap2.this));
+			AjaxRequestTarget.get().appendJavascript(overlay.getJSremove());
 		}
+
+		overlay.setParent(null);
 
 		return this;
 	}
@@ -239,7 +242,7 @@ public class GMap2 extends Panel
 	 * 
 	 * @return This
 	 */
-	public GMap2 clearOverlays()
+	public GMap2 removeAllOverlays()
 	{
 		for (GOverlay overlay : overlays)
 		{
@@ -247,6 +250,7 @@ public class GMap2 extends Panel
 			{
 				remove(behavior);
 			}
+			overlay.setParent(null);
 		}
 		overlays.clear();
 		if (AjaxRequestTarget.get() != null && findPage() != null)
@@ -438,7 +442,7 @@ public class GMap2 extends Panel
 		// Add the overlays.
 		for (GOverlay overlay : overlays)
 		{
-			js.append(overlay.getJSadd(this) + "\n");
+			js.append(overlay.getJSadd() + "\n");
 		}
 
 		js.append(infoWindow.getJSinit() + "\n");
@@ -531,7 +535,7 @@ public class GMap2 extends Panel
 
 	public void setOverlays(List<GOverlay> overlays)
 	{
-		clearOverlays();
+		removeAllOverlays();
 		for (GOverlay overlay : overlays)
 		{
 			addOverlay(overlay);
