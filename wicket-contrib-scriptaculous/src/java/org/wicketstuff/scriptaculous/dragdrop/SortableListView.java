@@ -1,5 +1,6 @@
 package org.wicketstuff.scriptaculous.dragdrop;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,25 +26,23 @@ import org.wicketstuff.scriptaculous.ScriptaculousAjaxBehavior;
  * @see http://wiki.script.aculo.us/scriptaculous/show/Sortable.create
  * @author <a href="mailto:wireframe6464@users.sourceforge.net">Ryan Sonnek</a>
  */
-public abstract class SortableListView extends WebMarkupContainer
-{
+public abstract class SortableListView extends WebMarkupContainer {
 	private static final Logger LOG = LoggerFactory.getLogger(SortableListView.class);
 
 	private AbstractAjaxBehavior onUpdateBehavior = new SortableContainerBehavior();
-	private Map options = new HashMap();
-	private final List items;
+	private Map<String, Serializable> options = new HashMap<String, Serializable>();
 
-	public SortableListView(String id, final String itemId, final List items)
-	{
-		super(id);
-		this.items = items;
+	public SortableListView(String id, final String itemId, final List items) {
+		this(id, itemId, new Model((Serializable) items));
+	}
+
+	public SortableListView(String id, final String itemId, IModel model) {
+		super(id, model);
 
 		setOutputMarkupId(true);
 
 		add(onUpdateBehavior);
-
-		add(new ListView(itemId, items)
-		{
+		add(new ListView(itemId, model) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -51,9 +50,8 @@ public abstract class SortableListView extends WebMarkupContainer
 				return new SortableListItem(itemId, index, getListItemModel(getModel(), index));
 			}
 
-			protected void populateItem(ListItem item)
-			{
-				
+			@Override
+			protected void populateItem(ListItem item) {
 				if (null != getDraggableClassName()) {
 					item.add(new AttributeAppender("class", new Model(getDraggableClassName()), " "));
 				}
@@ -62,13 +60,11 @@ public abstract class SortableListView extends WebMarkupContainer
 		});
 	}
 
-	public void setConstraintVertical()
-	{
+	public void setConstraintVertical() {
 		options.put("constraint", "vertical");
 	}
 
-	public void setConstraintHorizontal()
-	{
+	public void setConstraintHorizontal() {
 		options.put("constraint", "horizontal");
 	}
 
@@ -87,8 +83,7 @@ public abstract class SortableListView extends WebMarkupContainer
 		return null;
 	}
 	
-	protected void onRender(MarkupStream markupStream)
-	{
+	protected void onRender(MarkupStream markupStream) {
 		super.onRender(markupStream);
 
 
@@ -103,20 +98,19 @@ public abstract class SortableListView extends WebMarkupContainer
 		getResponse().write(builder.buildScriptTagString());
 	}
 
-	private class SortableContainerBehavior extends ScriptaculousAjaxBehavior
-	{
+	private static class SortableContainerBehavior extends ScriptaculousAjaxBehavior {
 		private static final long serialVersionUID = 1L;
 
 		@Override
 		protected void respond(AjaxRequestTarget target) {
-			String[] parameters = getRequestCycle().getRequest().getParameters(
-					getMarkupId() + "[]");
+			SortableListView listView = (SortableListView) getComponent();
+			String[] parameters = listView.getRequest().getParameters(listView.getMarkupId() + "[]");
 
-			if (parameters != null)
-			{
+            List items = (List) listView.getModelObject();
+
+			if (parameters != null) {
 				List originalItems = new ArrayList(items);
-				for (int index = 0; index < items.size(); index++)
-				{
+				for (int index = 0; index < items.size(); index++) {
 					int newIndex = Integer.parseInt(parameters[index]);
 					if (!items.get(index).equals(items.get(newIndex))) {
 						LOG.info("Moving sortable object from location " + newIndex + " to " + index);
@@ -124,7 +118,7 @@ public abstract class SortableListView extends WebMarkupContainer
 					items.set(index, originalItems.get(newIndex));
 				}
 			}
-
+            listView.modelChanged();
 			target.addComponent(getComponent());
 		}
 	}
