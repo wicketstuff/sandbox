@@ -29,6 +29,9 @@ import wicket.contrib.gmap.event.GOverlayListenerBehavior;
  */
 public abstract class GOverlay implements Serializable
 {
+	
+	GMap2 parent = null;
+	
 	List<GOverlayListenerBehavior> behaviors = new ArrayList<GOverlayListenerBehavior>();
 
 	public GOverlay addBehavior(GOverlayListenerBehavior behavior)
@@ -62,15 +65,15 @@ public abstract class GOverlay implements Serializable
 		return Collections.unmodifiableList(behaviors);
 	}
 	
-	public String getJSadd(GMap2 map)
+	public String getJSadd()
 	{
-		return map.getJSinvoke("addOverlay('" + getId() + "', "		
+		return parent.getJSinvoke("addOverlay('" + getId() + "', "		
 				+ getJSconstructor() + ")");
 	}
 
-	public String getJSremove(GMap2 map)
+	public String getJSremove()
 	{
-		return map.getJSinvoke("removeOverlay('" + getId() + "')");
+		return parent.getJSinvoke("removeOverlay('" + getId() + "')");
 	}
 	
 	public String getId() {
@@ -78,4 +81,14 @@ public abstract class GOverlay implements Serializable
 	}
 
 	protected abstract String getJSconstructor();
+
+	public GMap2 getParent()
+	{
+		return parent;
+	}
+
+	public void setParent(GMap2 parent)
+	{
+		this.parent = parent;
+	}
 }
