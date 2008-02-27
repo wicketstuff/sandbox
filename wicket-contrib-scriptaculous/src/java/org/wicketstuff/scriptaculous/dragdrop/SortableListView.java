@@ -106,18 +106,20 @@ public abstract class SortableListView extends WebMarkupContainer {
 			SortableListView listView = (SortableListView) getComponent();
 			String[] parameters = listView.getRequest().getParameters(listView.getMarkupId() + "[]");
 
-            List items = (List) listView.getModelObject();
-
 			if (parameters != null) {
-				List originalItems = new ArrayList(items);
-				for (int index = 0; index < items.size(); index++) {
-					int newIndex = Integer.parseInt(parameters[index]);
-					if (!items.get(index).equals(items.get(newIndex))) {
-						LOG.info("Moving sortable object from location " + newIndex + " to " + index);
-					}
-					items.set(index, originalItems.get(newIndex));
-				}
+				LOG.warn("Invalid parameters passed in Ajax request.");
+				return;
 			}
+
+            List items = (List) listView.getModelObject();
+            List originalItems = new ArrayList(items);
+            for (int index = 0; index < items.size(); index++) {
+            	int newIndex = Integer.parseInt(parameters[index]);
+            	if (!items.get(index).equals(items.get(newIndex))) {
+            		LOG.info("Moving sortable object from location " + newIndex + " to " + index);
+            	}
+            	items.set(index, originalItems.get(newIndex));
+            }
             listView.modelChanged();
 			target.addComponent(getComponent());
 		}
