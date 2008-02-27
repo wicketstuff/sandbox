@@ -106,7 +106,7 @@ public abstract class SortableListView extends WebMarkupContainer {
 			SortableListView listView = (SortableListView) getComponent();
 			String[] parameters = listView.getRequest().getParameters(listView.getMarkupId() + "[]");
 
-			if (parameters != null) {
+			if (parameters == null) {
 				LOG.warn("Invalid parameters passed in Ajax request.");
 				return;
 			}
