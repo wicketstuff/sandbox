@@ -19,40 +19,43 @@ package org.wicketstuff.openlayers.event;
 
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.markup.html.IHeaderResponse;
 import org.wicketstuff.openlayers.OpenLayersMap;
 
-public abstract class EventListenerBehavior extends AbstractDefaultAjaxBehavior
-{
+public abstract class EventListenerBehavior extends AbstractDefaultAjaxBehavior {
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	protected void onBind()
-	{
-		if (!(getComponent() instanceof OpenLayersMap))
-		{
-			throw new IllegalArgumentException("must be bound to Openlayers map");
+	public void renderHead(IHeaderResponse response) {
+		// TODO Auto-generated method stub
+		super.renderHead(response);
+		response.renderOnDomReadyJavascript(getJSaddListener());
+	}
+
+	@Override
+	protected void onBind() {
+		if (!(getComponent() instanceof OpenLayersMap)) {
+			throw new IllegalArgumentException(
+					"must be bound to Openlayers map");
 		}
 	}
 
-	public String getJSaddListener()
-	{
-		return getGMap2().getJSinvoke(
-				"addListener('" + getEvent() + "', '" + getCallbackUrl() + "')");
+	public String getJSaddListener() {
+		return getOpenLayersMap()
+				.getJSinvoke(
+						"addListener('" + getEvent() + "', '"
+								+ getCallbackUrl() + "')");
 	}
 
-	protected final OpenLayersMap getGMap2()
-	{
-		return (OpenLayersMap)getComponent();
+	protected final OpenLayersMap getOpenLayersMap() {
+		return (OpenLayersMap) getComponent();
 	}
 
 	/**
 	 * @see org.apache.wicket.ajax.AbstractDefaultAjaxBehavior#respond(org.apache.wicket.ajax.AjaxRequestTarget)
 	 */
 	@Override
-	protected final void respond(AjaxRequestTarget target)
-	{
-		getGMap2().update(target);
-
+	protected final void respond(AjaxRequestTarget target) {
 		onEvent(target);
 	}
 
@@ -66,10 +69,7 @@ public abstract class EventListenerBehavior extends AbstractDefaultAjaxBehavior
 	protected abstract void onEvent(AjaxRequestTarget target);
 
 	/**
-	 * See: Event table after <a
-	 * href="http://www.google.com/apis/maps/documentation/reference.html#GMap2">GMap2</a>
 	 * 
-	 * @return The name of the GMap Event that this Listener ought to listen to.
 	 */
 	protected abstract String getEvent();
 }
