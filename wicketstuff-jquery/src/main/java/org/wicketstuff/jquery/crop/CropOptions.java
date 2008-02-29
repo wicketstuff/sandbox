@@ -2,6 +2,11 @@ package org.wicketstuff.jquery.crop;
 
 import org.wicketstuff.jquery.Options;
 
+/**
+ * 
+ * @author Edvin Syse <edvin@sysedata.no>
+ *
+ */
 public class CropOptions extends Options {
 
 	public CropOptions dragHandle(Boolean dragHandle) {

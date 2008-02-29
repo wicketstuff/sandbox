@@ -9,6 +9,11 @@ import org.apache.wicket.markup.html.resources.CompressedResourceReference;
 import org.wicketstuff.jquery.FunctionString;
 import org.wicketstuff.jquery.JQueryBehavior;
 
+/**
+ * 
+ * @author Edvin Syse <edvin@sysedata.no>
+ *
+ */
 public class CropBehaviour extends JQueryBehavior {
 	public static final CompressedResourceReference IRESIZABLE_JS = new CompressedResourceReference(CropBehaviour.class, "iresizable.js");
 	public static final CompressedResourceReference IUTIL_JS = new CompressedResourceReference(CropBehaviour.class, "iutil.js");

@@ -8,6 +8,11 @@ import org.apache.wicket.util.template.TextTemplateHeaderContributor;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 
+ * @author Edvin Syse <edvin@sysedata.no>
+ *
+ */
 public class CroppableImage extends Panel {
 	private WebMarkupContainer container;
 	private WebMarkupContainer image;

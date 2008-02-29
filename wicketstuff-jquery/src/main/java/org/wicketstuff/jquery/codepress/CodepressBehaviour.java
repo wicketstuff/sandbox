@@ -6,6 +6,11 @@ import org.apache.wicket.markup.html.resources.CompressedResourceReference;
 import org.wicketstuff.jquery.JQueryBehavior;
 import org.wicketstuff.misc.behaviors.SimpleAttributeAppender;
 
+/**
+ * 
+ * @author Edvin Syse <edvin@sysedata.no>
+ *
+ */
 public class CodepressBehaviour extends JQueryBehavior {
     public static final CompressedResourceReference CODEPRESS_JS = new CompressedResourceReference(CodepressBehaviour.class, "jquery.codepress.js");
     private CodepressOptions options_;

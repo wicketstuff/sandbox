@@ -2,6 +2,11 @@ package org.wicketstuff.jquery;
 
 import java.io.Serializable;
 
+/**
+ * 
+ * @author Edvin Syse <edvin@sysedata.no>
+ *
+ */
 public class FunctionString implements Serializable {
 	private String value;
 
