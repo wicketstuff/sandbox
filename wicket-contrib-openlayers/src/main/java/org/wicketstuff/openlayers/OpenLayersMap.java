@@ -437,7 +437,8 @@ public class OpenLayersMap extends Panel {
 			Marker marker = (Marker) overlay;
 			// if marker has popup and there are no events attached then attach
 			// default listener
-			if (marker.getPopup() != null && (marker.getEvents()==null || marker.getEvents().length == 0)) {
+			if (marker.getPopup() != null
+					&& (marker.getEvents() == null || marker.getEvents().length == 0)) {
 				// add mousedown listener!
 				marker.addEvent(EventType.mousedown);
 			}
@@ -614,4 +615,5 @@ public class OpenLayersMap extends Panel {
 	public InfoWindow getInfoWindow() {
 		return infoWindow;
 	}
+
 }

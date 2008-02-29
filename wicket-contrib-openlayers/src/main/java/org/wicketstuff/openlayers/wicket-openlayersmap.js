@@ -53,8 +53,6 @@ function WicketOMap(id, options) {
 		params["center"] = this.map.getCenter();
 		params["bounds"] = this.map.getExtent();
 		params["zoom"] = this.map.getZoomForExtent(this.map.getExtent(), false);
-		// could not find
-		params["hidden"] = this.map.getInfoWindow().isHidden();
 		for (var key in params) {
 			callBack = callBack + "&" + key + "=" + params[key];
 		}
@@ -83,15 +81,20 @@ function WicketOMap(id, options) {
 			});
 		}
 	};
+	this.addClickListener = function (callBack) {
+		var self = this;
+		self.map.events.register("click", self.map, function (e) {
+			var lonlat = self.map.getLonLatFromViewPortPx(e.xy);
+			self.onEvent(callBack, {"lon":lonlat.lon, "lat":lonlat.lat});
+		});
+	};
 	this.popupInfo = function (callBack, marker, wicketOMap, evt) {
 		 //pass allong event!
-		
-		var event='nullEvent';
-		if(evt!=null)
-		{
-			event= evt.type; 
-		 }
-		callBack = callBack + "&event=" +event;
+		var event = "nullEvent";
+		if (evt != null) {
+			event = evt.type;
+		}
+		callBack = callBack + "&event=" + event;
 		var wcall = wicketAjaxGet(callBack, function () {
 		}, null, null);
 	};

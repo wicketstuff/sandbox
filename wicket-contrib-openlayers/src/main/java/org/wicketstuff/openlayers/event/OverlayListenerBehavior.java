@@ -32,7 +32,7 @@ public abstract class OverlayListenerBehavior extends EventListenerBehavior {
 	}
 
 	public String getJSaddListener() {
-		return getGMap2().getJSinvoke(
+		return getOpenLayersMap().getJSinvoke(
 				"register('" + getEvent() + "', '"
 						+ gOverlay.getId() + "', '" + getCallbackUrl() + "')");
 	}
