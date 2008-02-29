@@ -7,7 +7,11 @@ import org.apache.wicket.markup.html.IHeaderResponse;
 
 import org.wicketstuff.jquery.FunctionString;
 import org.wicketstuff.jquery.JQueryBehavior;
-
+/**
+ * 
+ * @author Edvin Syse <edvin@sysedata.no>
+ *
+ */
 public class ResizeBehaviour extends JQueryBehavior {
     private ResizeOptions options;
     

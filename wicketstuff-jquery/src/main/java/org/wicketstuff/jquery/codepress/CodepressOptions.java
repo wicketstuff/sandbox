@@ -2,6 +2,11 @@ package org.wicketstuff.jquery.codepress;
 
 import org.wicketstuff.jquery.Options;
 
+/**
+ * 
+ * @author Edvin Syse <edvin@sysedata.no>
+ *
+ */
 public class CodepressOptions extends Options {
 	private String fileType;
 	private boolean autoComplete;
