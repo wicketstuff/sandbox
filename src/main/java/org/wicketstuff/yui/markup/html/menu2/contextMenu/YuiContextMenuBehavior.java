@@ -139,8 +139,8 @@ public class YuiContextMenuBehavior extends AbstractDefaultAjaxBehavior {
 
 		buf.append("\nvar ").append(menuName).append(
 				" = new YAHOO.widget.ContextMenu(\"").append(menuName).append(
-				"\",\n").append("{ trigger: ").append(
-				getComponent().getMarkupId()).append(", lazyload: true }")
+				"\",\n").append("{ trigger: document.getElementById(\"").append(
+				getComponent().getMarkupId()).append("\"), lazyload: true }")
 				.append(");\n");
 
 		buf.append(menuName).append(".menus = ").append("oContextMenuItems;\n");
