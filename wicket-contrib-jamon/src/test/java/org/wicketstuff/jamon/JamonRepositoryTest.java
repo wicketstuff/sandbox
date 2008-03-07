@@ -1,5 +1,8 @@
 package org.wicketstuff.jamon;
 
+import static org.wicketstuff.jamon.JamonTestUtil.startThisManyMonitors;
+
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,6 +19,10 @@ public class JamonRepositoryTest {
         jamonRepository.clear();
     }
     
+    @After
+    public void clear() {
+        MonitorFactory.getFactory().reset();
+    }
     @Test
     public void testThatRepositoryReturnsMonitors_OneMonitor() {
         startThisManyMonitors(1);
@@ -37,12 +44,6 @@ public class JamonRepositoryTest {
         
         Assert.assertEquals(0, jamonRepository.count());
         Assert.assertEquals(0, jamonRepository.getAll().size());
-    }
-    
-    private void startThisManyMonitors(int numberOfMonitorsToStart) {
-        for (int i = 0; i < numberOfMonitorsToStart; i++) {
-            MonitorFactory.getFactory().start("mon"+i).stop();
-        }
     }
     
     

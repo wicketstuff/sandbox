@@ -111,4 +111,11 @@
         </plugins>
 
     </build>
+    <repositories>
+        <repository>
+            <id>temp-repo</id>
+            <name>temp repo</name>
+            <url>file:///${basedir}/m2/</url>
+        </repository>
+    </repositories>
 </project>
