@@ -2,6 +2,7 @@ package org.wicketstuff.jamon;
 
 import org.apache.wicket.Page;
 import org.apache.wicket.util.tester.WicketTester;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.wicketstuff.jamon.StatisticsPage;
@@ -17,22 +18,21 @@ public class StatisticsPageTest {
     public void setup() {
         wicketTester = new WicketTester(StatisticsPage.class);
     }
+    @After
+    public void after() {
+        MonitorFactory.getFactory().reset();
+    }
     
     @Test
     public void shouldRenderStatisticsPageWithOneMonitor() {
-        Monitor monitor = MonitorFactory.getFactory().start("test1");
-
-        monitor.stop();
+        JamonTestUtil.startThisManyMonitors(1);
         Page actualPage = wicketTester.startPage(new StatisticsPage());
 //        wicketTester.dumpPage();
         //TODO Assertions.
     }
     @Test
     public void shouldRenderStatisticsPageWithTwoMonitors() {
-        Monitor monitor = MonitorFactory.getFactory().start("test1");
-        monitor.stop();
-        Monitor monitor2 = MonitorFactory.getFactory().start("test2");
-        monitor2.stop();
+        JamonTestUtil.startThisManyMonitors(2);
         Page actualPage = wicketTester.startPage(new StatisticsPage());
 //        wicketTester.dumpPage();
         //TODO Assertions
