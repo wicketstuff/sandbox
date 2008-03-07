@@ -39,7 +39,6 @@ import org.apache.wicket.model.Model;
 @SuppressWarnings("unchecked")
 public class EditorPanel extends Panel
 {
-
 	private static final long serialVersionUID = 1L;
 
 	private Component editor;

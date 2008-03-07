@@ -19,10 +19,12 @@ package org.wicketstuff.jmx.markup.html.tree.detail;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.RepeatingView;
+import org.apache.wicket.model.Model;
 import org.wicketstuff.jmx.util.JmxMBeanWrapper;
 
 /**
@@ -33,24 +35,32 @@ import org.wicketstuff.jmx.util.JmxMBeanWrapper;
  */
 public abstract class NameValueTable extends Panel
 {
-
 	private static final long serialVersionUID = 1L;
+
+	public static final String SECTION = "section__";
 
 	public NameValueTable(String id, JmxMBeanWrapper bean)
 	{
 		super(id);
 		RepeatingView view = new RepeatingView("info");
 		add(view);
-		Map props = new LinkedHashMap();
+		Map<String, Object> props = new LinkedHashMap<String, Object>();
 		populateInfoProperties(bean, props);
-		for (Object key : props.keySet())
+		for (String key : props.keySet())
 		{
 			WebMarkupContainer row = new WebMarkupContainer(view.newChildId());
-			row.add(new Label("name", key.toString()));
-			row.add(new Label("value", props.get(key).toString()));
+			String value = props.get(key).toString();
+			if (key.startsWith(SECTION))
+			{
+				key = value;
+				value = "";
+				row.add(new AttributeModifier("class", true, new Model("section")));
+			}
+			row.add(new Label("name", key.substring((key.lastIndexOf(']') + 1))));
+			row.add(new Label("value", value));
 			view.add(row);
 		}
 	}
 
-	protected abstract void populateInfoProperties(JmxMBeanWrapper bean, Map props);
+	protected abstract void populateInfoProperties(JmxMBeanWrapper bean, Map<String, Object> props);
 }

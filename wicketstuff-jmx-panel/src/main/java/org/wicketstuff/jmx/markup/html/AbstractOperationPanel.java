@@ -69,8 +69,10 @@ public abstract class AbstractOperationPanel extends Panel
 		form.add(view.setRenderBodyOnly(true));
 
 		Map map = new HashMap();
-		for (MBeanParameterInfo param : operation.getSignature())
+		MBeanParameterInfo[] params = operation.getSignature();
+		for (int i = 0; i < params.length; i++)
 		{
+			MBeanParameterInfo param = params[i];
 			WebMarkupContainer signature = new WebMarkupContainer(view.newChildId());
 			IModel model = new PropertyModel(map, param.getName());
 			IModel labelModel = new Model(param.getName());
@@ -83,6 +85,8 @@ public abstract class AbstractOperationPanel extends Panel
 					.getType()), false);
 			signature.add(panel);
 			signature.add(new SimpleAttributeModifier("class", "parameter"));
+			signature.add(new WebMarkupContainer("paramSeparator")
+					.setVisible(i != params.length - 1));
 			view.add(signature);
 		}
 

@@ -16,7 +16,10 @@
  */
 package org.wicketstuff.jmx.markup.html.tree.detail;
 
+import java.util.Map;
+
 import javax.management.MBeanOperationInfo;
+import javax.management.MBeanParameterInfo;
 
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.model.Model;
@@ -32,6 +35,52 @@ public class OperationDetailPanel extends DetailPanel
 		super(id);
 		add(new OperationPanel("operation", bean, operation).add(new AttributeModifier("class",
 				true, new Model("operation-last"))));
+		add(new NameValueTable("mbeanOperationInfo", bean)
+		{
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void populateInfoProperties(JmxMBeanWrapper bean, Map<String, Object> props)
+			{
+				props.put(SECTION, "Operation:");
+				props.put("Name", operation.getName());
+				props.put("Description", operation.getDescription());
+				props.put("Impact", impactToString(operation.getImpact()));
+				props.put("ReturnType", operation.getReturnType());
+
+				MBeanParameterInfo[] signature = operation.getSignature();
+				for (int i = 0; i < signature.length; i++)
+				{
+					MBeanParameterInfo info = signature[i];
+					props.put(SECTION + i, "Parameter-" + i);
+					props.put(prependParam(info, "Name"), info.getName());
+					props.put(prependParam(info, "Description"), info.getDescription());
+					props.put(prependParam(info, "Type"), info.getType());
+				}
+
+			}
+
+			private String prependParam(MBeanParameterInfo info, String name)
+			{
+				return String.format("[%s] %s", info.getName(), name);
+			}
+
+			private String impactToString(int impact)
+			{
+				switch (impact)
+				{
+					case MBeanOperationInfo.INFO :
+						return "INFO";
+					case MBeanOperationInfo.ACTION :
+						return "ACTION";
+					case MBeanOperationInfo.ACTION_INFO :
+						return "ACTION_INFO";
+					case MBeanOperationInfo.UNKNOWN :
+						return "UNKNOWN";
+				}
+				throw new IllegalArgumentException("invalid impact value");
+			}
+		});
 	}
 
 }

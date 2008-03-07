@@ -44,16 +44,15 @@ import org.wicketstuff.jmx.markup.html.JmxPanel;
  * @author Gerolf Seitz
  * 
  */
-public class JmxTreeTable extends TreeTable
-{
+public class JmxTreeTable extends TreeTable {
 	private static final long serialVersionUID = 1L;
 
-	public JmxTreeTable(String id, TreeModel model)
-	{
+	public JmxTreeTable(String id, TreeModel model) {
 		super(id, model, new IColumn[] {
-				new JmxTreeColumn(new ColumnLocation(Alignment.LEFT, 50, Unit.PERCENT), "Node"),
-				new JmxEditorTreeColumn(new ColumnLocation(Alignment.RIGHT, 50, Unit.PERCENT),
-						"Value") });
+				new JmxTreeColumn(new ColumnLocation(Alignment.LEFT, 50,
+						Unit.PERCENT), "Node"),
+				new JmxEditorTreeColumn(new ColumnLocation(Alignment.RIGHT, 50,
+						Unit.PERCENT), "Value") });
 		setRootLess(true);
 		getTreeState().collapseAll();
 	}
@@ -62,28 +61,18 @@ public class JmxTreeTable extends TreeTable
 	 * @see org.apache.wicket.extensions.markup.html.tree.DefaultAbstractTree#getNodeIcon(javax.swing.tree.TreeNode)
 	 */
 	@Override
-	protected ResourceReference getNodeIcon(TreeNode node)
-	{
-		Object obj = ((DefaultMutableTreeNode)node).getUserObject();
+	protected ResourceReference getNodeIcon(TreeNode node) {
+		Object obj = ((DefaultMutableTreeNode) node).getUserObject();
 
-		if (obj instanceof MBeanAttributeInfo)
-		{
+		if (obj instanceof MBeanAttributeInfo) {
 			return JmxPanel.ATTRIBUTE_ICON;
-		}
-		else if (obj instanceof MBeanOperationInfo)
-		{
+		} else if (obj instanceof MBeanOperationInfo) {
 			return JmxPanel.OPERATION_ICON;
-		}
-		else if ("attributes".equals(obj.toString()))
-		{
+		} else if ("attributes".equals(obj.toString())) {
 			return JmxPanel.ATTRIBUTES_ICON;
-		}
-		else if ("operations".equals(obj.toString()))
-		{
+		} else if ("operations".equals(obj.toString())) {
 			return JmxPanel.OPERATIONS_ICON;
-		}
-		else
-		{
+		} else {
 			return super.getNodeIcon(node);
 		}
 	}
@@ -94,9 +83,8 @@ public class JmxTreeTable extends TreeTable
 	 *      org.apache.wicket.extensions.markup.html.tree.table.TreeTable.IRenderNodeCallback)
 	 */
 	@Override
-	protected Component newTreePanel(MarkupContainer parent, String id, TreeNode node, int level,
-			IRenderNodeCallback renderNodeCallback)
-	{
+	protected Component newTreePanel(MarkupContainer parent, String id,
+			TreeNode node, int level, IRenderNodeCallback renderNodeCallback) {
 		return new TreeNodePanel(id, node, level, renderNodeCallback);
 	}
 
@@ -107,13 +95,11 @@ public class JmxTreeTable extends TreeTable
 	 * @author ivaynberg
 	 * 
 	 */
-	private class TreeNodePanel extends Panel
-	{
+	private class TreeNodePanel extends Panel {
 		private static final long serialVersionUID = 1L;
 
 		private TreeNodePanel(String id, final TreeNode node, int level,
-				final IRenderNodeCallback renderNodeCallback)
-		{
+				final IRenderNodeCallback renderNodeCallback) {
 			super(id);
 
 			add(newIndentation(this, "indent", node, level));
@@ -122,15 +108,13 @@ public class JmxTreeTable extends TreeTable
 
 			add(newNodeIcon(this, "icon", node));
 
-			add(new Label("label", new AbstractReadOnlyModel()
-			{
+			add(new Label("label", new AbstractReadOnlyModel() {
 				private static final long serialVersionUID = 1L;
 
 				/**
 				 * @see org.apache.wicket.model.AbstractReadOnlyModel#getObject()
 				 */
-				public Object getObject()
-				{
+				public Object getObject() {
 					return renderNodeCallback.renderNode(node);
 				}
 			}));

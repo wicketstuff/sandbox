@@ -1,56 +1,34 @@
-.writable {
-	color: #3311aa;
-}
+.writable {	color: #3311aa; }
 
-.readonly {
-	color: #888;
-}
+.readonly {	color: #888; }
 
-.wicket-tree-table .editorContainer * {	
-	display: inline;
-	font-size: 8pt;
-}
-
-.wicket-tree-table .editorContainer a {
-	cursor: pointer;
-	float: none;
-}
-
-.wicket-tree-table form {
-	margin: 0px;	
-}
+.margin-top-20 { margin-top: 20px; }
 
 .detailPanel , .detailPanel .nameValue td{
 	margin: 0px;
 	color: #345678;
 }
 
+.detailPanel .header {
+	font-weight: bold;
+}
+
 .detailPanel .editor {
 	display: inline;
 }
-
-
 
 .detailPanel .operation button {
 	color: #123456;
 }
 
 .detailPanel .operation .paramType {
-	font-size: 0.8em;
-	margin-left: 2em;
+	font-size: 0.8em;	
 	font-style: italic;
-}
-
-
-
-.jmxTreePanel .jmxTree {
-	float: left;
 }
 
 .jmxTreePanel .detailPanel {
 	margin-bottom: 15px;
 	border: 1px solid #999;
-	float: left;	
 }
 
 .jmxTreePanel .operation {
@@ -59,12 +37,18 @@
 	padding-bottom: 10px;	
 }
 
+.jmxTreePanel .section td {
+	background-color: #FFEAAD;
+	border-color: #FFEAAD;
+}
+
 .jmxTreePanel .operation-last .operation{
 	border-bottom-width: 0px;	
 }
 
 .jmxTreePanel .operation .parameter {
 	margin: 2px 0px;
+	display: inline;
 }
 
 .jmxTreePanel .operation .operationBody {
@@ -74,46 +58,4 @@
 
 .jmxTreePanel .operationBody form {
 	margin: 0px;	
-}
-
-
-
-
-.jmxTreeTable .operation {
-	border-width: 0px;
-	padding: 0px;
-	margin: 0px;
-}
-
-.jmxTreeTable .operationBody {
-	padding: 0px;
-	margin: 0px;
-}
-
-.jmxTreeTable form, .jmxTreeTable form div {
-	display: inline;
-}
-
-.jmxTreeTable .operation .paramType {
-	font-size: 0.8em;	
-	font-style: italic;
-}
-
-.jmxTreeTable .operation button {
-	padding: 0px;
-	margin: 0px;
-	border-width: 0px;
-	vertical-align: middle;
-	background-color: #fff;
-	color: #3311aa;	
-	font-weight: bold;
-}
-
-.jmxTreeTable .operation button:hover {
-	text-decoration: underline;	
-	cursor: pointer;
-}
-
-.jmxTreeTable .operation .parameter {
-	margin: 0px;
 }

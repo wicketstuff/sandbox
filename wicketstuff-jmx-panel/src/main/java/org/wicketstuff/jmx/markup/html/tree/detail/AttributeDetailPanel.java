@@ -18,6 +18,7 @@ package org.wicketstuff.jmx.markup.html.tree.detail;
 
 import java.util.Map;
 
+import javax.management.Descriptor;
 import javax.management.MBeanAttributeInfo;
 
 import org.wicketstuff.jmx.markup.html.tree.DetailPanel;
@@ -50,6 +51,30 @@ public class AttributeDetailPanel extends DetailPanel
 				props.put("Writable", attribute.isWritable());
 				props.put("Is", attribute.isIs());
 				props.put("Type", attribute.getType());
+			}
+		});
+
+		add(new NameValueTable("descriptor", bean)
+		{
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void populateInfoProperties(JmxMBeanWrapper bean, Map props)
+			{
+				Descriptor desc = attribute.getDescriptor();
+				String[] fieldNames = desc.getFieldNames();
+				Object[] fieldValues = desc.getFieldValues(fieldNames);
+				for (int i = 0; i < fieldNames.length; i++)
+				{
+					props.put(fieldNames[i], fieldValues[i]);
+				}
+			}
+
+			@Override
+			public boolean isVisible()
+			{
+				String[] fields = attribute.getDescriptor().getFieldNames();
+				return fields != null && fields.length > 0;
 			}
 		});
 	}
