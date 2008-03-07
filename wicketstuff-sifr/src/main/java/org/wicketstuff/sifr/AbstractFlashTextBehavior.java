@@ -38,9 +38,9 @@ public class AbstractFlashTextBehavior extends AbstractBehavior implements IHead
 	private static final long serialVersionUID = 1L;
 
 	private static final ResourceReference SIFR_JS = new JavascriptResourceReference(FlashTextBehavior.class, "sifr.js");
-	private static final ResourceReference SIFR_SCREEN_CSS = new ResourceReference(FlashTextBehavior.class, "sifr-screen.css");
+	private static final ResourceReference SIFR_SCREEN_CSS = new ResourceReference(FlashTextBehavior.class, "sIFR-screen.css");
 
-	private static final ResourceReference SIFR_PRINT_CSS = new ResourceReference(FlashTextBehavior.class, "sifr-print.css");
+	private static final ResourceReference SIFR_PRINT_CSS = new ResourceReference(FlashTextBehavior.class, "sIRF-print.css");
 
 	public void renderHead(IHeaderResponse response)
 	{
