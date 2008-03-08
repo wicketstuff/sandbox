@@ -635,6 +635,10 @@ public abstract class AbstractGrid extends Panel implements IHeaderContributor {
 	public void cleanLastClickedColumn() {
 		lastClickedColumn = null;
 	};
+	
+	protected boolean disableRowClickNotifications() {
+		return false;
+	}
 
 	/**
 	 * Called after a grid row has been populated. This method allows adding behaviors to grid rows.
@@ -643,6 +647,9 @@ public abstract class AbstractGrid extends Panel implements IHeaderContributor {
 	 */
 	protected void onRowPopulated(final WebMarkupContainer rowComponent) {
 
+		if (disableRowClickNotifications())
+			return;
+		
 		rowComponent.add(new AjaxFormSubmitBehavior(getForm(), "onclick") {
 
 			private static final long serialVersionUID = 1L;
@@ -680,17 +687,10 @@ public abstract class AbstractGrid extends Panel implements IHeaderContributor {
 				if (lastClickedColumn != null && lastClickedColumn.cellClicked(model) == true) {
 					return;
 				}
-
-				if (isClickRowToSelect()) {
-					boolean selected = isItemSelected(model);
-
-					if (selected == false || isClickRowToDeselect()) {
-						selectItem(model, !selected);
-						update();
-					}
-				}
+				
+				onRowClicked(target, model);
 			}
-
+			
 			@Override
 			public CharSequence getCallbackUrl() {
 				return super.getCallbackUrl() + "&column='+col+'";
@@ -714,6 +714,17 @@ public abstract class AbstractGrid extends Panel implements IHeaderContributor {
 
 	}
 
+	protected void onRowClicked(AjaxRequestTarget target, IModel rowModel) {
+		if (isClickRowToSelect()) {
+			boolean selected = isItemSelected(rowModel);
+
+			if (selected == false || isClickRowToDeselect()) {
+				selectItem(rowModel, !selected);
+				update();
+			}
+		}
+	}
+	
 	private boolean clickRowToSelect = false;
 
 	/**
