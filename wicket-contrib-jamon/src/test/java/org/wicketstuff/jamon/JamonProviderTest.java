@@ -4,13 +4,9 @@ import static org.apache.commons.collections.IteratorUtils.toList;
 import static org.junit.Assert.assertEquals;
 import static org.wicketstuff.jamon.JamonTestUtil.startThisManyMonitors;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
-import org.apache.commons.collections.IteratorUtils;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
