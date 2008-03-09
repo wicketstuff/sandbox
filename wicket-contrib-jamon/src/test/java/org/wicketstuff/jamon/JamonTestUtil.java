@@ -1,5 +1,6 @@
 package org.wicketstuff.jamon;
 
+import com.jamonapi.Monitor;
 import com.jamonapi.MonitorFactory;
 /**
  * Util class for Jamon dependant tests.
@@ -7,10 +8,19 @@ import com.jamonapi.MonitorFactory;
  * @author lars
  *
  */
-class JamonTestUtil {
+public class JamonTestUtil {
     public static void startThisManyMonitors(int numberOfMonitorsToStart) {
+        startThisManyMonitorsWithDelay(numberOfMonitorsToStart, 0l);
+    }
+    public static void startThisManyMonitorsWithDelay(int numberOfMonitorsToStart, long delay) {
         for (int i = 0; i < numberOfMonitorsToStart; i++) {
-            MonitorFactory.getFactory().start("mon"+i).stop();
+            Monitor monitor = MonitorFactory.getFactory().start("mon"+i);
+            try {
+                Thread.sleep(delay);
+            } catch (InterruptedException e) {
+                //test code so just ignore. :-/
+            }
+            monitor.stop();
         }
     }
 
