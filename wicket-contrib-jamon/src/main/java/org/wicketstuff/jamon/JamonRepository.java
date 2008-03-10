@@ -1,7 +1,7 @@
 package org.wicketstuff.jamon;
 
-import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.jamonapi.Monitor;
@@ -9,8 +9,8 @@ import com.jamonapi.MonitorFactory;
 
 
 /**
- * Repository around the JAMon API. This repositories responsibility is to create serializable
- * monitors, since the JAMon {@link Monitor}s are not {@link Serializable}.
+ * Repository around the JAMon API. This repository is a small wrapper around
+ * the {@link MonitorFactory}.
  * 
  * @author lars
  * 
@@ -18,31 +18,26 @@ import com.jamonapi.MonitorFactory;
 public class JamonRepository {
 
     /**
-     * Returns all the {@link SerializableMonitor}s in this repository.
+     * Returns all the {@link Monitor}s in this repository.
      * 
-     * @return List of all {@link SerializableMonitor}s or an empty list if there aren't any.
+     * @return List of all {@link Monitor}s or an empty list if there aren't any.
      */
-    public List<SerializableMonitor> getAll() {
+    public List<Monitor> getAll() {
         Monitor[] monitors = MonitorFactory.getRootMonitor().getMonitors();
 
         if (monitors != null) {
-            List<SerializableMonitor> serializableMonitors = new ArrayList<SerializableMonitor>(monitors.length);
-            for (Monitor monitor : monitors) {
-                serializableMonitors.add(new SerializableMonitor(monitor));
-            }
-            return serializableMonitors;
+            return Arrays.asList(monitors);
         } else {
-            return new ArrayList<SerializableMonitor>(0);
+            return new ArrayList<Monitor>(0);
         }
     }
 
     /**
-     * Returns the number of {@link SerializableMonitor}s in this repository.
-     * @return the number of {@link SerializableMonitor}s.
+     * Returns the number of {@link Monitor}s in this repository.
+     * @return the number of {@link Monitor}s.
      */
     public int count() {
-        Monitor[] monitors = MonitorFactory.getRootMonitor().getMonitors();
-        return monitors == null ? 0 : monitors.length;
+        return getAll().size();
     }
 
     /**

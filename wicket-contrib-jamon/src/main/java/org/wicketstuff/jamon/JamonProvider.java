@@ -2,15 +2,15 @@ package org.wicketstuff.jamon;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.commons.collections.IteratorUtils;
-import org.apache.commons.collections.iterators.EmptyIterator;
 import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+
+import com.jamonapi.Monitor;
 
 
 /**
@@ -24,20 +24,25 @@ public class JamonProvider extends SortableDataProvider {
 
     public JamonProvider() {
         jamonRepository = newJamonRepository();
+        setSort("label", true);
     }
 
     public Iterator iterator(int first, int count) {
-        List<SerializableMonitor> allMonitors = jamonRepository.getAll();
+        List<Monitor> allMonitors = jamonRepository.getAll();
         int toIndex = allMonitors.size() < (first + count) ? allMonitors.size() : (first + count);
         if (first > toIndex) {
             return EMPTY_ITERATOR;
         } else {
-            return allMonitors.subList(first, toIndex).iterator();
+            List<Monitor> monitors = allMonitors.subList(first, toIndex);
+            final String sortProperty = this.getSort().getProperty();
+            final boolean ascending = this.getSort().isAscending();
+            Collections.sort(monitors, new PropertyModelObjectComparator(ascending, sortProperty));
+            return monitors.iterator();
         }
     }
 
     public IModel model(Object object) {
-        return new Model((Serializable) object);
+        return new ThrowAwayModel(object);
     }
 
     public int size() {
