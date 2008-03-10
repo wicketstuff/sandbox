@@ -2,7 +2,7 @@ package org.wicketstuff.jamon.webapp;
 
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.link.Link;
-import org.wicketstuff.jamon.StatisticsPage;
+import org.wicketstuff.jamon.JamonAdminPage;
 
 /**
  * Dummy HomePage used by the {@link JamonWebApplication} in tests.
@@ -16,7 +16,7 @@ public class HomePage extends WebPage {
 
             @Override
             public void onClick() {
-                setResponsePage(new StatisticsPage(4));
+                setResponsePage(new JamonAdminPage(4));
             }
         });
     }

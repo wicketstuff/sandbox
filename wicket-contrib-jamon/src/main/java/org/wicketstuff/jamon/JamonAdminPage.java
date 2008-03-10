@@ -17,16 +17,16 @@ import org.apache.wicket.model.ResourceModel;
  *
  */
 @SuppressWarnings("serial")
-public class StatisticsPage extends WebPage {
+public class JamonAdminPage extends WebPage {
     
     public final static int DEFAULT_ROWS_PER_PAGE = 40;
-    public StatisticsPage(int rowsPerPage) {
+    public JamonAdminPage(int rowsPerPage) {
         
         IColumn[] columns = createColumns();
         DefaultDataTable table = new DefaultDataTable("jamonStatistics", columns, new JamonProvider(), rowsPerPage);
         add(table);
     }
-    public StatisticsPage() {
+    public JamonAdminPage() {
         this(DEFAULT_ROWS_PER_PAGE);
     }
 
@@ -55,10 +55,12 @@ public class StatisticsPage extends WebPage {
         
 //        cols.add(createColumn("units", "units"));
         
+        
+        
         return cols.toArray(new IColumn[cols.size()]);
     }
 
     private PropertyColumn createColumn(String resourceKey, String propertyName) {
-        return new PropertyColumn(new ResourceModel(String.format("wicket.jamon.%s", resourceKey)), propertyName);
+        return new PropertyColumn(new ResourceModel(String.format("wicket.jamon.%s", resourceKey)), propertyName, propertyName);
     }
 }

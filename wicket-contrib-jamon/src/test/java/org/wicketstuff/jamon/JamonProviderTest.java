@@ -10,6 +10,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.jamonapi.Monitor;
 import com.jamonapi.MonitorFactory;
 
 
@@ -42,5 +43,24 @@ public class JamonProviderTest {
         iterator = jamonProvider.iterator(20, 5);
         assertEquals(0, toList(iterator).size());
         
+    }
+    
+    @SuppressWarnings("unchecked")
+    @Test
+    public void shouldSupportSortingOfProperties() {
+        startThisManyMonitors(3);
+        jamonProvider.setSort("label", true);
+        
+        Iterator ascendingIterator = jamonProvider.iterator(0, 3);
+        assertEquals("mon0", ((Monitor)ascendingIterator.next()).getLabel());
+        assertEquals("mon1", ((Monitor)ascendingIterator.next()).getLabel());
+        assertEquals("mon2", ((Monitor)ascendingIterator.next()).getLabel());
+
+        jamonProvider.setSort("label", false);
+        
+        Iterator descendingIterator = jamonProvider.iterator(0, 3);
+        assertEquals("mon2", ((Monitor)descendingIterator.next()).getLabel());
+        assertEquals("mon1", ((Monitor)descendingIterator.next()).getLabel());
+        assertEquals("mon0", ((Monitor)descendingIterator.next()).getLabel());
     }
 }
