@@ -1,5 +1,6 @@
 package org.wicketstuff.suckerfish.examples;
 
+import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.protocol.http.WebApplication;
 
 /**
@@ -20,9 +21,17 @@ public class WicketApplication extends WebApplication
 	 * @see wicket.Application#getHomePage()
 	 */
 	@Override
-	public Class getHomePage()
+	public Class<? extends WebPage> getHomePage()
 	{
 		return HomePage.class;
 	}
 
+	@Override
+	protected void init()
+	{
+		super.init();
+		mountBookmarkablePage("/home", HomePage.class);
+		mountBookmarkablePage("/first", MyFirstPage.class);
+		mountBookmarkablePage("/second", MySecondPage.class);
+	}
 }
