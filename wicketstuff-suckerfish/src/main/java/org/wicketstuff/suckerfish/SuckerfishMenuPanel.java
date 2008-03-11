@@ -4,15 +4,17 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.behavior.HeaderContributor;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
 /**
@@ -27,10 +29,16 @@ import org.apache.wicket.model.PropertyModel;
  */
 public class SuckerfishMenuPanel extends Panel
 {
-	private static final long serialVersionUID = -21832859336423477L;
+	private static final long serialVersionUID = 0L;
 
 	public static final String LINK_ID = "linkid";
 	public static final String LINK_TEXT_ID = "linktext";
+	/**
+	 * This appender is used to add a down or right arrow icon if there are
+	 * children
+	 */
+	private static final AttributeAppender menuHasSubmenuAppender = new AttributeAppender(
+			"class", new Model("menu-has-submenu"), " ");
 	private final List<MenuItem> topMenuItems = new ArrayList<MenuItem>();
 
 	public SuckerfishMenuPanel(final String id)
@@ -60,13 +68,13 @@ public class SuckerfishMenuPanel extends Panel
 	/** Lightweight menu object that stores a menu and its label */
 	public static class MenuItem implements Serializable
 	{
-		private static final long serialVersionUID = 8198442375175693685L;
+		private static final long serialVersionUID = 0L;
 
-		private final Link link;
-		private final String label;
+		private final AbstractLink link;
+		private final Label label;
 		private final List<MenuItem> subMenuItems = new ArrayList<MenuItem>();
 
-		public MenuItem(final Link link, final String label)
+		public MenuItem(final AbstractLink link, final String strLabel)
 		{
 			if (link != null && !link.getId().equals(LINK_ID))
 			{
@@ -74,14 +82,14 @@ public class SuckerfishMenuPanel extends Panel
 						"The id must be SuckerfishMenuPanel.LINK_ID");
 			}
 			this.link = link;
-			this.link.add(new Label(LINK_TEXT_ID, label));
-			this.label = label;
+			this.label = new Label(LINK_TEXT_ID, strLabel);
+			this.link.add(this.label);
 		}
 
-		public MenuItem(final String label)
+		public MenuItem(final String strLabel)
 		{
 			link = null;
-			this.label = label;
+			this.label = new Label(LINK_TEXT_ID, strLabel);
 		}
 
 		/** Add one menu item */
@@ -100,7 +108,7 @@ public class SuckerfishMenuPanel extends Panel
 			}
 		}
 
-		public Link getLink()
+		public AbstractLink getLink()
 		{
 			return link;
 		}
@@ -110,7 +118,7 @@ public class SuckerfishMenuPanel extends Panel
 			return subMenuItems;
 		}
 
-		public String getLabel()
+		public Label getLabel()
 		{
 			return label;
 		}
@@ -127,7 +135,7 @@ public class SuckerfishMenuPanel extends Panel
 			// Add the menu's label (hyperlinked if a link is provided)
 			if (menuItem.getLink() != null)
 			{
-				add(new LinkFragment(menuItem.getLink(), menuItem.getLabel()));
+				add(new LinkFragment(menuItem.getLink()));
 			}
 			else
 			{
@@ -138,6 +146,11 @@ public class SuckerfishMenuPanel extends Panel
 			add(menuitemul);
 			// Hide the <ul> tag if there are no submenus
 			menuitemul.setVisible(menuItem.getChildren().size() > 0);
+			// Add a down or right arrow icon if there are children
+			if (menuItem.getChildren().size() > 0)
+			{
+				menuItem.getLabel().add(menuHasSubmenuAppender);
+			}
 			// Add the submenus
 			menuitemul.add(new SubMenuListView("menuitemlinks", menuItem
 					.getChildren()));
@@ -148,7 +161,7 @@ public class SuckerfishMenuPanel extends Panel
 	{
 		private static final long serialVersionUID = 0L;
 
-		public LinkFragment(final Link link, final String label)
+		public LinkFragment(final AbstractLink link)
 		{
 			super("linkfragment", "LINKFRAGMENT", SuckerfishMenuPanel.this);
 			add(link);
@@ -159,16 +172,16 @@ public class SuckerfishMenuPanel extends Panel
 	{
 		private static final long serialVersionUID = 0L;
 
-		public TextFragment(final String label)
+		public TextFragment(final Label label)
 		{
 			super("linkfragment", "TEXTFRAGMENT", SuckerfishMenuPanel.this);
-			add(new Label(LINK_TEXT_ID, label));
+			add(label);
 		}
 	}
 
 	private final class SubMenuListView extends ListView
 	{
-		private static final long serialVersionUID = -5875124377225299067L;
+		private static final long serialVersionUID = 0L;
 
 		private SubMenuListView(final String id, final IModel model)
 		{
