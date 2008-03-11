@@ -35,12 +35,16 @@ public class PagingToolbar extends AbstractToolbar {
 	public PagingToolbar(DataGrid grid) {
 		super(grid, null);
 
-		add(new PagingNavigator("navigator", getDataGrid()));
+		add(newPagingNavigator("navigator"));
 		add(newNavigationLabel("navigationLabel"));
 	}
 
 	protected Component newNavigationLabel(String id) {
 		return new NavigatorLabel(id, getDataGrid());
+	}
+	
+	protected Component newPagingNavigator(String id) {
+		return new PagingNavigator(id, getDataGrid());
 	}
 
 	/**
