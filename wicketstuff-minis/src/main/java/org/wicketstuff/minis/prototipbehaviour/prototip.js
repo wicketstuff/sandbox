@@ -1,6 +1,6 @@
-//  Prototip 1.2.0_pre1 - 17-12-2007
+//  Prototip 1.2.1 - 08-03-2008
 
-//  Copyright (c) 2007 Nick Stakenburg (http://www.nickstakenburg.com)
+//  Copyright (c) 2008 Nick Stakenburg (http://www.nickstakenburg.com)
 //
 //  Permission is hereby granted, free of charge, to any person obtaining
 //  a copy of this software and associated documentation files (the
@@ -25,10 +25,10 @@
 //  http://www.nickstakenburg.com/projects/prototip/
 
 var Prototip = {
-  Version: '1.2.0_pre1',
+  Version: '1.2.1',
 
-  REQUIRED_Prototype: '1.6.0',
-  REQUIRED_Scriptaculous: '1.8.0',
+  REQUIRED_Prototype: '1.6.0.2',
+  REQUIRED_Scriptaculous: '1.8.1',
 
   start: function() {
     this.require('Prototype');
@@ -36,28 +36,18 @@ var Prototip = {
     Element.observe(window, 'unload', this.unload);
   },
 
+  // Version check
   require: function(library) {
     if ((typeof window[library] == 'undefined') ||
-      (this.convertVersionString(window[library].Version) < this.convertVersionString(this['REQUIRED_' + library])))
-      throw('Prototip requires ' + library + ' >= ' + this['REQUIRED_' + library]);
+      (this.convertVersionString(window[library].Version) <
+       this.convertVersionString(this['REQUIRED_' + library])))
+      throw('Lightview requires ' + library + ' >= ' + this['REQUIRED_' + library]);
   },
 
   convertVersionString: function(versionString) {
-    var r = versionString.split('.');
-    return parseInt(r[0])*100000 + parseInt(r[1])*1000 + parseInt(r[2]);
-  },
-
-  viewport: {
-    getDimensions: function() {
-      var dimensions = { };
-      var B = Prototype.Browser;
-      $w('width height').each(function(d) {
-        var D = d.capitalize();
-        dimensions[d] = (B.WebKit && !document.evaluate) ? self['inner' + D] :
-          (B.Opera) ? document.body['client' + D] : document.documentElement['client' + D];
-        });
-      return dimensions;
-    }
+    var v = versionString.replace(/_.*|\./g, '');
+    v = parseInt(v + '0'.times(4-v.length));
+    return versionString.indexOf('_') > -1 ? v-1 : v;
   },
 
   capture: function(func) {
@@ -96,7 +86,7 @@ var Tips = {
 
   fixIE: (function(agent) {
     var version = new RegExp('MSIE ([\\d.]+)').exec(agent);
-    return version ? (parseFloat(version[1]) <= 6) : false;
+    return version ? (parseFloat(version[1]) < 7) : false;
   })(navigator.userAgent),
 
   add: function(tip) {
@@ -184,20 +174,26 @@ var Tip = Class.create({
   },
 
   setup: function() {
-    this.wrapper = new Element('div', { 'class' : 'prototip' }).setStyle({
+    this.wrapper = new Element('div', { className: 'prototip' }).setStyle({
       display: 'none', zIndex: Tips.zIndex });
     this.wrapper.identify();
 
     if (Tips.fixIE) {
-      this.iframeShim = new Element('iframe', { 'class' : 'iframeShim', src: 'javascript:false;' }).setStyle({
-        display: 'none', zIndex: Tips.zIndex - 1 });
+      this.iframeShim = new Element('iframe', {
+        className : 'iframeShim',
+		src: 'javascript:false;',
+		frameBorder: 0
+      }).setStyle({
+        display: 'none',
+		zIndex: Tips.zIndex - 1
+      });
     }
 
-    this.tip = new Element('div', { 'class' : 'content' }).insert(this.content);
+    this.tip = new Element('div', { className : 'content' }).insert(this.content);
     this.tip.insert(new Element('div').setStyle({ clear: 'both' }));
 
     if (this.options.closeButton || (this.options.hideOn.element && this.options.hideOn.element == 'closeButton'))
-      this.closeButton = new Element('a', { href: '#', 'class' : 'close' });
+      this.closeButton = new Element('a', { href: '#', className: 'close' });
   },
 
   build: function() {
@@ -206,15 +202,15 @@ var Tip = Class.create({
     // effects go smooth with extra wrapper
     var wrapper = 'wrapper';
     if (this.options.effect) {
-      this.effectWrapper = this.wrapper.appendChild(new Element('div', { 'class' : 'effectWrapper' }));
+      this.effectWrapper = this.wrapper.appendChild(new Element('div', { className: 'effectWrapper' }));
       wrapper = 'effectWrapper';
     }
 
-    this.tooltip = this[wrapper].appendChild(new Element('div', { 'class' : 'tooltip ' + this.options.className }));
+    this.tooltip = this[wrapper].appendChild(new Element('div', { className: 'tooltip ' + this.options.className }));
 
     if (this.options.title || this.options.closeButton) {
-      this.toolbar = this.tooltip.appendChild(new Element('div', { 'class' : 'toolbar' }));
-      this.title = this.toolbar.appendChild(new Element('div', { 'class' : 'title' }).update(this.options.title || ' '));
+      this.toolbar = this.tooltip.appendChild(new Element('div', { className: 'toolbar' }));
+      this.title = this.toolbar.appendChild(new Element('div', { className: 'title' }).update(this.options.title || ' '));
     }
 
     this.tooltip.insert(this.tip);
@@ -455,7 +451,7 @@ var Tip = Class.create({
 
     if (!this.options.fixed && this.options.viewport) {
       var scroll = document.viewport.getScrollOffsets();
-      var viewport = Prototip.viewport.getDimensions();
+      var viewport = document.viewport.getDimensions();
       var pair = {left: 'width', top: 'height'};
 
       for(var z in pair) {
