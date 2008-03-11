@@ -7,7 +7,7 @@
 	<artifactId>wicketstuff-suckerfish</artifactId>
 	<packaging>jar</packaging>
 	<version>1.0-SNAPSHOT</version>
-	<name>${artifactId}</name>
+	<name>${pom.artifactId}</name>
 
 	<developers>
 		<developer>
@@ -40,7 +40,7 @@
 			<version>${wicket.version}</version>
 		</dependency>
 
-		<!-- LOGGING DEPENDENCIES - LOG4J -->
+		<!-- LOGGING DEPENDENCIES -->
 
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -106,7 +106,7 @@
 	</build>
 
 	<properties>
-		<wicket.version>1.3.0-rc2</wicket.version>
+		<wicket.version>1.3.1</wicket.version>
 	</properties>
 
 </project>
