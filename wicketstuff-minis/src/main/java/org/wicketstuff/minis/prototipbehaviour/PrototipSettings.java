@@ -121,7 +121,7 @@ public class PrototipSettings implements Serializable
 		if(title != null)
 		{
 			if(options.length() > 0) options.append(", ");
-			options.append("title").append(": ").append(title);
+			options.append("title").append(": '").append(title).append("'");
 		}
 		else if(this.title != null)
 		{
