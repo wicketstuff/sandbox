@@ -133,6 +133,11 @@ public class PrototipSettings implements Serializable
 			if(options.length() > 0) options.append(", ");
 			options.append("viewpoint").append(":").append(viewpoint);
 		}
+		if(fixed != null)
+		{
+			if(options.length() > 0) options.append(", ");
+			options.append("fixed").append(":").append(fixed);
+		}
 		if(extraOptions != null)
 		{
 			if(options.length() > 0) options.append(", ");
