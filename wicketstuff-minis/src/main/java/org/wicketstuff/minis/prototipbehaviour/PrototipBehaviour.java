@@ -17,7 +17,6 @@
 package org.wicketstuff.minis.prototipbehaviour;
 
 import org.apache.wicket.Component;
-import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.behavior.AbstractBehavior;
 import org.apache.wicket.markup.html.IHeaderResponse;
@@ -88,7 +87,7 @@ public class PrototipBehaviour extends AbstractBehavior
 	@Override
 	public void renderHead(IHeaderResponse response)
 	{
-		response.renderOnDomReadyJavascript(toJavascript());
+		response.renderOnLoadJavascript(toJavascript());
 		if(!overrideHeaderContributor)
 		{
 			response.renderCSSReference(new CompressedResourceReference(PrototipBehaviour.class, "prototip.css"), "screen");
