@@ -5,17 +5,16 @@ import org.apache.wicket.util.tester.WicketTester;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.wicketstuff.jamon.JamonAdminPage;
 
-import com.jamonapi.Monitor;
 import com.jamonapi.MonitorFactory;
 
 
 public class JamonAdminPageTest {
+    
     private WicketTester wicketTester;
     
     @Before
-    public void setup() {
+    public void beforeEachTest() {
         wicketTester = new WicketTester(JamonAdminPage.class);
     }
     @After
