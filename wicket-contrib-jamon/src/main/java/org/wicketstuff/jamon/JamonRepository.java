@@ -1,5 +1,6 @@
 package org.wicketstuff.jamon;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -9,13 +10,14 @@ import com.jamonapi.MonitorFactory;
 
 
 /**
- * Repository around the JAMon API. This repository is a small wrapper around
+ * Repository around the Jamon API. This repository is a small wrapper around
  * the {@link MonitorFactory}.
  * 
  * @author lars
  * 
  */
-public class JamonRepository {
+@SuppressWarnings("serial")
+public class JamonRepository implements Serializable {
 
     /**
      * Returns all the {@link Monitor}s in this repository.

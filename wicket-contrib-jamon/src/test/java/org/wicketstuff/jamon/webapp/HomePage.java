@@ -19,5 +19,12 @@ public class HomePage extends WebPage {
                 setResponsePage(new JamonAdminPage(4));
             }
         });
+        add(new Link("toAjaxPage") {
+            
+            @Override
+            public void onClick() {
+                setResponsePage(new AjaxPage());
+            }
+        });
     }
 }

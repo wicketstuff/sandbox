@@ -6,6 +6,7 @@ package org.wicketstuff.jamon;
 import org.apache.wicket.model.LoadableDetachableModel;
 /**
  * Model that will discard the model as soon it is rendered.
+ * 
  * @author lars
  *
  */

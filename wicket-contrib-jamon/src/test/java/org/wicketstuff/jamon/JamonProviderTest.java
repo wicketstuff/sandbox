@@ -15,6 +15,7 @@ import com.jamonapi.MonitorFactory;
 
 
 public class JamonProviderTest {
+    
     private JamonProvider jamonProvider;
     @Before
     public void setup() {
@@ -24,6 +25,8 @@ public class JamonProviderTest {
     public void reset() {
         MonitorFactory.getFactory().reset();
     }
+    
+    @SuppressWarnings("unchecked")
     @Test
     public void shouldSupportPaging() {
         startThisManyMonitors(15);

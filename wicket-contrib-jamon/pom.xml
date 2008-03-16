@@ -47,6 +47,12 @@
             <version>1.4.2</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.14</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
     <distributionManagement>
         <snapshotRepository>
@@ -78,6 +84,22 @@
                 </excludes>
             </resource>
         </resources>
+        <testResources>
+            <testResource>
+                <filtering>false</filtering>
+                <directory>src/test/resources</directory>
+            </testResource>
+            <testResource>
+                <filtering>false</filtering>
+                <directory>src/test/java</directory>
+                <includes>
+                    <include>**</include>
+                </includes>
+                <excludes>
+                    <exclude>**/*.java</exclude>
+                </excludes>
+            </testResource>
+        </testResources>
 
         <plugins>
             <plugin>
@@ -96,6 +118,7 @@
             <plugin>
                 <groupId>org.mortbay.jetty</groupId>
                 <artifactId>maven-jetty-plugin</artifactId>
+                <version>6.1.8</version>
                 <configuration>
                     <webXml>src/test/resources/webapp/WEB-INF/web.xml</webXml>
                     <webAppSourceDirectory>src/test/resources/webapp/</webAppSourceDirectory>
@@ -109,8 +132,8 @@
                     </connectors>
                 </configuration>
                 <!-- The reason that these dependencies are copied also into this plugin
-                     is that the scope of the wicket dependencies of the wicket-contrib-jamon
-                     should be provided. If they are provide jetty will not put them on the classpath.
+                    is that the scope of the wicket dependencies of the wicket-contrib-jamon
+                    should be provided. If they are provide jetty will not put them on the classpath.
                 -->
                 <dependencies>
                     <dependency>
