@@ -53,6 +53,10 @@ public class DraggableBehavior extends ScriptaculousAjaxBehavior
 		options.put("constraint", "vertical");
 	}
 
+	public void setGhosting(boolean ghosting) {
+		options.put("ghosting", ghosting);
+	}
+
 	protected void onComponentRendered() {
 		super.onComponentRendered();
 
