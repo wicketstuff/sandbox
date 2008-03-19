@@ -159,7 +159,9 @@ function switchLanguage()
 	case "it":	/* Italian*/
 		monthArray = ['Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno','Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'];
 		monthArrayShort = ['Gen','Feb','Mar','Apr','Mag','Giu','Lugl','Ago','Set','Ott','Nov','Dic'];
-		dayArray = ['Lun',';Mar','Mer','Gio','Ven','Sab','Dom'];
+// CHANGED BY WICKET
+		dayArray = ['Lun','Mar','Mer','Gio','Ven','Sab','Dom'];
+// END CHANGED BY WICKET
 		weekString = 'Settimana';
 		todayString = 'Oggi &egrave; il';
 		break;		
@@ -329,10 +331,13 @@ function showHourDropDown()
 		//// fix for EI frame problem on time dropdowns 09/30/2006
 				EIS_Hide_Frame();
 	}else{
-		document.getElementById('hourDropDown').style.display='block';	
-		document.getElementById('monthDropDown').style.display='none';	
-		document.getElementById('yearDropDown').style.display='none';	
-		document.getElementById('minuteDropDown').style.display='none';	
+// CHANGED BY WICKET
+		positionTimeBarPopupUnderElement('hourDropDown','calendar_hour_txt');
+// END CHANGED BY WICKET
+		document.getElementById('hourDropDown').style.display='block';
+		document.getElementById('monthDropDown').style.display='none';
+		document.getElementById('yearDropDown').style.display='none';
+		document.getElementById('minuteDropDown').style.display='none';
 		if (currentAMPM)
 		{
 			document.getElementById('ampmDropDown').style.display='none';
@@ -346,13 +351,16 @@ function showHourDropDown()
 function showMinuteDropDown()
 {
 	if(document.getElementById('minuteDropDown').style.display=='block'){
-		document.getElementById('minuteDropDown').style.display='none';	
+		document.getElementById('minuteDropDown').style.display='none';
 		//// fix for EI frame problem on time dropdowns 09/30/2006
 				EIS_Hide_Frame();
 	}else{
-		document.getElementById('minuteDropDown').style.display='block';	
-		document.getElementById('monthDropDown').style.display='none';	
-		document.getElementById('yearDropDown').style.display='none';	
+// CHANGED BY WICKET
+		positionTimeBarPopupUnderElement('minuteDropDown','calendar_minute_txt');
+// END CHANGED BY WICKET
+		document.getElementById('minuteDropDown').style.display='block';
+		document.getElementById('monthDropDown').style.display='none';
+		document.getElementById('yearDropDown').style.display='none';
 		document.getElementById('hourDropDown').style.display='none';
 		if (currentAMPM )
 		{
@@ -368,15 +376,18 @@ function showMinuteDropDown()
 function showAMPMDropDown()
 {
 	if(document.getElementById('ampmDropDown').style.display=='block'){
-		document.getElementById('ampmDropDown').style.display='none';	
+		document.getElementById('ampmDropDown').style.display='none';
 		//// fix for EI frame problem on time dropdowns 09/30/2006
 				EIS_Hide_Frame();
 	}else{
-		document.getElementById('ampmDropDown').style.display='block';	
-		document.getElementById('monthDropDown').style.display='none';	
-		document.getElementById('yearDropDown').style.display='none';	
+// CHANGED BY WICKET
+		positionTimeBarPopupUnderElement('ampmDropDown','calendar_ampm_txt');
+// END CHANGED BY WICKET
+		document.getElementById('ampmDropDown').style.display='block';
+		document.getElementById('monthDropDown').style.display='none';
+		document.getElementById('yearDropDown').style.display='none';
 		document.getElementById('hourDropDown').style.display='none';
-		document.getElementById('minuteDropDown').style.display='none';	
+		document.getElementById('minuteDropDown').style.display='none';
 				if (MSIE)
 		{ EIS_FIX_EI1('ampmDropDown')}
 		//// fix for EI frame problem on time dropdowns 09/30/2006
@@ -542,7 +553,10 @@ function changeSelectBoxHour(e,inputObj)
 	var hourItems = inputObj.parentNode.getElementsByTagName('DIV');
 	if(inputObj.innerHTML.indexOf('-')>=0){
 		var startHour = hourItems[1].innerHTML/1 -1;
-		if(startHour<0)startHour=0;
+// CHANGED BY WICKET
+		var minStartHour = currentAMPM ? 1 : 0;
+		if (startHour<minStartHour)startHour=minStartHour;
+// END CHANGED BY WICKET
 		if(activeSelectBoxHour){
 			activeSelectBoxHour.style.color='';
 		}
@@ -610,14 +624,19 @@ function updateHourDiv()
 	}
 // DONE WICKET ADDED
 	var addHours = 0;
-	if((currentHour/1 -hoursAbove + 1)<0){
-		addHours = 	(currentHour/1 -6 + 1)*-1;
+// CHANGED BY WICKET
+	var minStartHour = currentAMPM ? 1 : 0;
+	if((currentHour/1 -hoursAbove + 1 - minStartHour)<0){
+		addHours = 	(currentHour/1 -hoursAbove + 1 - minStartHour)*-1;
+// END CHANGED BY WICKET
 	}
 	for(var no=1;no<hourItems.length-1;no++){
 		var prefix='';
 		if((currentHour/1 -hoursAbove + no + addHours) < 10)prefix='0';
 		hourItems[no].innerHTML = prefix +  (currentHour/1 -hoursAbove + no + addHours);	
-		if(currentHour==(currentHour/1 -hoursAbove + no)){
+// CHANGED BY WICKET
+		if(0==(no - hoursAbove + addHours)){
+// END CHANGED BY WICKET
 			hourItems[no].style.color = selectBoxHighlightColor;
 			activeSelectBoxHour = hourItems[no];				
 		}else{
@@ -746,7 +765,13 @@ function createHourDiv()
 	
 	if(!currentHour)currentHour=0;
 	var startHour = currentHour/1;	
-	if(currentAMPM && startHour > 3) startHour = 3; 
+// CHANGED BY WICKET
+	if(currentAMPM)
+	{
+		if (startHour > 3) startHour = 3;
+		else if (startHour == 0) startHour = 1;
+	} 
+// END CHANGED BY WICKET
 	else if(startHour>14)startHour = 14;
 
 	var subDiv = document.createElement('DIV');
@@ -1112,15 +1137,7 @@ function writeCalendarContent()
 	}
 	
 	
-	if(!document.all){
-		if(calendarContentDiv.offsetHeight)
-			document.getElementById('topBar').style.top = calendarContentDiv.offsetHeight + document.getElementById('timeBar').offsetHeight + document.getElementById('topBar').offsetHeight -1 + 'px';
-		else{
-			document.getElementById('topBar').style.top = '';
-			document.getElementById('topBar').style.bottom = '0px';
-		}
-			
-	}
+// REMOVED BY WICKET: why would you position the top bar anywhere else but top? anyway - had no effect as position: absolute was not supplied
 	
 	if(iframeObj){
 		if(!calendarContentDivExists)setTimeout('resizeIframe()',350);else setTimeout('resizeIframe()',10);
@@ -1275,14 +1292,7 @@ function writeTimeBar()
 	}	
 	
 	var hourPicker = createHourDiv();
-	if (currentAMPM)
-	{
-		hourPicker.style.left = '95px';
-	}
-	else
-	{
-		hourPicker.style.left = '130px';
-	}
+// REMOVED BY WICKET: popup positioning will be made before showing
 	
 	//hourPicker.style.top = monthDiv.offsetTop + monthDiv.offsetHeight + 1 + 'px';
 	hourPicker.style.width = '35px';
@@ -1317,14 +1327,8 @@ function writeTimeBar()
 	}	
 	
 	var minutePicker = createMinuteDiv();
-	if (currentAMPM)
-	{
-		minutePicker.style.left = '130px';
-	}
-	else
-	{
-		minutePicker.style.left = '167px';
-	}
+// REMOVED BY WICKET: popup positioning will be made before showing
+
 	//minutePicker.style.top = monthDiv.offsetTop + monthDiv.offsetHeight + 1 + 'px';
 	minutePicker.style.width = '35px';
 	minutePicker.id = 'minuteDropDown';
@@ -1357,7 +1361,8 @@ function writeTimeBar()
 		}	
 		
 		var ampmPicker = createAMPMDiv();
-		ampmPicker.style.left = '167px';
+// REMOVED BY WICKET: popup positioning will be made before showing
+
 		//minutePicker.style.top = monthDiv.offsetTop + monthDiv.offsetHeight + 1 + 'px';
 		ampmPicker.style.width = '35px';
 		ampmPicker.id = 'ampmDropDown';
@@ -1479,10 +1484,17 @@ function initCalendar()
 		currentYear = d.getFullYear();
 	}
 	writeCalendarContent();	
-
-
-		
 }
+
+// ADDED BY WICKET
+function positionTimeBarPopupUnderElement(popupId,elementId)
+{
+	var popup = document.getElementById(popupId);
+	var button = document.getElementById(elementId);
+	popup.style.top = (button.parentNode.offsetHeight + calendarContentDiv.offsetHeight + document.getElementById('topBar').offsetHeight + 1) + 'px';
+	popup.style.left = (button.parentNode.offsetLeft + button.parentNode.parentNode.offsetLeft) + 'px';
+}
+// END ADDED BY WICKET
 
 function setTimeProperties()
 {
@@ -1495,22 +1507,32 @@ function setTimeProperties()
 	}else{ 
 		document.getElementById('timeBar').style.display='block';
 		document.getElementById('timeBar').style.visibility='visible';
-		document.getElementById('hourDropDown').style.top = document.getElementById('calendar_minute_txt').parentNode.offsetHeight + calendarContentDiv.offsetHeight + document.getElementById('topBar').offsetHeight + 'px';
-		document.getElementById('minuteDropDown').style.top = document.getElementById('calendar_minute_txt').parentNode.offsetHeight + calendarContentDiv.offsetHeight + document.getElementById('topBar').offsetHeight + 'px';
+// REMOVED BY WICKET:	timebar popup(s) positioning is now done before show, as buttons can change position
+//document.getElementById('hourDropDown').style.top = document.getElementById('calendar_minute_txt').parentNode.offsetHeight + calendarContentDiv.offsetHeight + document.getElementById('topBar').offsetHeight + 'px';
+//document.getElementById('minuteDropDown').style.top = document.getElementById('calendar_minute_txt').parentNode.offsetHeight + calendarContentDiv.offsetHeight + document.getElementById('topBar').offsetHeight + 'px';
+// END REMOVED BY WICKET
 		if (currentAMPM)
 		{
-			document.getElementById('ampmDropDown').style.top = document.getElementById('calendar_minute_txt').parentNode.offsetHeight + calendarContentDiv.offsetHeight + document.getElementById('topBar').offsetHeight + 'px';
-			document.getElementById('ampmDropDown').style.right = '50px';
+// REMOVED BY WICKET:	timebar popup(s) positioning is now done before show, as buttons can change position
+//document.getElementById('ampmDropDown').style.top = document.getElementById('calendar_minute_txt').parentNode.offsetHeight + calendarContentDiv.offsetHeight + document.getElementById('topBar').offsetHeight + 'px';
+//document.getElementById('ampmDropDown').style.right = '50px';
+// END REMOVED BY WICKET
 			document.getElementById('timeBar').style.width='110px';
-			document.getElementById('todaysDateString').style.width = '115px';
+// CHANGED BY WICKET
+			document.getElementById('todaysDateString').style.width = (calendarDiv.offsetWidth - 130) + 'px';
+// END CHANGED BY WICKET
 		}
 		else
 		{
 			document.getElementById('timeBar').style.width='75px';
-			document.getElementById('todaysDateString').style.width = '165px';
+// CHANGED BY WICKET
+			document.getElementById('todaysDateString').style.width = (calendarDiv.offsetWidth - 95) + 'px';
+// END CHANGED BY WICKET
 		}	
-		document.getElementById('minuteDropDown').style.right = '50px';
-		document.getElementById('hourDropDown').style.right = '50px';
+// REMOVED BY WICKET: right anchor conflicts with width, left & parent size - and is ignored
+//document.getElementById('minuteDropDown').style.right = '50px';
+//document.getElementById('hourDropDown').style.right = '50px';
+// END REMOVED BY WICKET
 	}	
 }
 
@@ -1583,9 +1605,11 @@ function displayCalendar(inputField,format,buttonObj,displayTime,timeInput)
 				}	
 				if(positionArrayNumeric[no]==positionArray['h']){
 					currentHour = items[itemIndex];
-					if (parseInt(currentHour) < 10)
+// CHANGED BY WICKET
+					if (parseInt(currentHour, 10) < 10)
 					{
-						currentHour = "0" +parseInt(currentHour); 
+						currentHour = "0" +parseInt(currentHour, 10);
+// END CHANGED BY WICKET
 					}
 					continue;
 				}	

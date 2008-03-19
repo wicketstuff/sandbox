@@ -1,6 +1,6 @@
 #calendarDiv{
 	position:absolute;
-	width:205px;
+	width:250px;
 	border:1px solid #317082;
 	padding:1px;
 	background-color: #FFF;
@@ -27,13 +27,9 @@
 	padding-left:2px;
 }
 
-#calendarDiv td{
-	padding:2px;
-	margin:0px;
-	font-size:10px;
+#calendarDiv .calendar_week_column{
+	width: auto;
 }
-
-
 
 #calendarDiv .selectBox{
 	border:1px solid #E2EBED;		
@@ -61,8 +57,6 @@
 	height:16px;
 	padding:2px;
 	background-color: #317082;
-
-
 }
 #calendarDiv .activeDay{	/* Active day in the calendar */
 	color:#FF0000;
@@ -75,7 +69,7 @@
 	text-align:left;
 	position:absolute;
 	bottom:0px;
-	width:201px;
+	width:246px;
 }
 #calendarDiv .todaysDate div{
 	float:left;
@@ -126,6 +120,10 @@
 #calendarDiv td{
 	text-align:right;
 	cursor:pointer;
+	padding:2px;
+	margin:0px;
+	font-size:10px;
+	width: 22px;
 }
 
 #calendarDiv .topBar img{
