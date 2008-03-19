@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="wicketstuff-lightbox">
+
+  <bannerLeft>
+    <name>wicketstuff-lightbox</name>
+    <src> </src>
+    <href>http://wicketstuff.org/</href>
+  </bannerLeft>
+
+  <bannerRight>
+    <src> </src>
+  </bannerRight>
+
+  <body>
+      
+    <links>
+      <item name="Apache" href="http://www.apache.org/" />
+      <item name="Wicket" href="http://wicket.apache.org"/>
+      <item name="Wicket Stuff" href="http://wicketstuff.org"/>
+      <item name="Maven 2" href="http://maven.apache.org/"/>
+    </links>
+
+    <menu name="wicketstuff-lightbox">
+      <item name="Introduction" href="index.html"/>
+      <item name="Usage" href="usage.html" />
+    </menu>
+
+    <menu name="external links">
+        <item name="Wicket" href="http://wicket.apache.org"/>
+        <item name="Wicket Stuff" href="http://wicketstuff.org"/>
+        <item name="Lightbox2" href="http://www.huddletogether.com/projects/lightbox2/"/>
+    </menu>
+
+    <menu ref="reports"/>
+
+   </body>
+</project>

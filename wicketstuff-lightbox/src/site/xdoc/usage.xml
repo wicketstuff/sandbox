@@ -1,0 +1,67 @@
+<document>
+  <properties>
+    <title>Typical Usage Examples</title>
+  </properties>
+  <body>
+
+    <section name="Typical Usage">
+      <p>
+      Below are some examples of typical usage.  See the <a href="apidocs/index.html">apidocs</a> for more information.
+      </p>
+      <subsection name="Overview">
+          To use the wicketstuff-lightbox components, simply create the appropriate LightboxImageData instances, and
+          pass them to the component you would like to add to your page.
+          <ul>
+              <li>LightboxImage is simply an inline link that may or may not have a thumbnail.</li>
+              <li>LightboxImagePanel wraps a LightboxImage in a block level component (div) for additional styling flexibility.</li>
+              <li>LightboxImageRepeater provides a simple way to add multiple images at once, as either inline or block elements.</li>
+          </ul>
+      </subsection>
+
+      <subsection name="Creating LightboxImageData Instances">
+          You should use the LightboxImageData.Builder class to create the required data objects.
+          <source>
+// Only the enlarged image url is required, all other attributes can optionally be added.
+LightboxImageData d = new LightboxImageData.Builder("images/apic.jpg")
+                                            .thumbUrl("images/apic-thumb.jpg")
+                                            .group("main")
+                                            .caption("A beautiful picture.")
+                                            .build();
+          </source>
+      </subsection>
+
+      <subsection name="Simple LightboxImages">
+          <source>
+// Create the model...
+IModel model = new LightboxImageData.Builder("images/big.jpg").thumbUrl("images/thumb.jpg").model();
+
+// Add the component...
+add( new LightboxImage("mywicketid", model)); // Adds the image inline...
+add( new LightboxImagePanel("mypanelid", model)); // Adds the image wrapped in a div...
+          </source>
+      </subsection>
+
+      <subsection name="Popping Up from a Text Link">
+          <source>
+// Create the model...
+IModel model = new LightboxImageData.Builder("images/big.jpg").linkText("click me").model();
+
+// Add the component...
+add(new LightboxImage("mywicketid", model));
+          </source>
+      </subsection>
+
+      <subsection name="Using the LightboxImageRepeater...">
+          <source>
+ArrayList&gt;LightboxImageData&lt; imgs = new ArrayList&gt;LightboxImageData&lt;();
+
+imgs.add(new LightboxImageData.Builder("images/img1.jpg").group("main").build());
+imgs.add(new LightboxImageData.Builder("images/img2.jpg").group("main").build());
+
+add(new LightboxImageRepeater("repeaterid", imgs, true));
+          </source>
+      </subsection>
+
+    </section>
+  </body>
+</document>
