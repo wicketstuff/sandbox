@@ -163,7 +163,7 @@
 		<dependency>
 			<groupId>com.inmethod</groupId>
 			<artifactId>grid</artifactId>
-			<version>1.0-SNAPSHOT</version>
+			<version>${grid.version}</version>
 		</dependency>
 		
 	</dependencies>
