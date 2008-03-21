@@ -538,7 +538,7 @@ InMethod.XTable.prototype = {
 			if (Wicket.Browser.isGecko()) {
 				var c2 = this.getElement("div", "imxt-body-container2");
 				c2.style.width="auto"; // we want the stylesheet rule only applied on fresh replaced component
-				var x = document.styleSheets[1];
+				var x = document.styleSheets[0];
 				if (this.cssRulePos != null) {				
 					x.deleteRule(this.cssRulePos);
 				}	
