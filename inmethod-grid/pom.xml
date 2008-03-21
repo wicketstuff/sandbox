@@ -156,9 +156,17 @@
 	<mailingLists></mailingLists>
 
 	
+	<dependencyManagement>
+	
 	<dependencies>
 		
 		<!--  WICKET DEPENDENCIES -->
+		
+		<dependency>
+			<groupId>com.inmethod</groupId>
+			<artifactId>grid</artifactId>
+			<version>${grid-version}</version>
+		</dependency>
 		
 		<dependency>
 			<groupId>org.apache.wicket</groupId>
@@ -217,7 +225,7 @@
 
 	</dependencies>
 	
-	
+	</dependencyManagement>
 	
 	<build>
 		<extensions>
