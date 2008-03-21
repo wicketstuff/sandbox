@@ -168,6 +168,12 @@
 			<version>${grid-version}</version>
 		</dependency>
 		
+	</dependencies>
+	
+	</dependencyManagement>
+	
+	<dependencies>
+		
 		<dependency>
 			<groupId>org.apache.wicket</groupId>
 			<artifactId>wicket</artifactId>
@@ -225,7 +231,7 @@
 
 	</dependencies>
 	
-	</dependencyManagement>
+	
 	
 	<build>
 		<extensions>

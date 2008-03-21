@@ -17,18 +17,6 @@
 	
 	<name>InMethod Grid</name>
 	<description>Advanced grid components for Apache Wicket</description>		
-	
-	<dependencies>	
-		<dependency>
-			<groupId>org.apache.wicket</groupId>
-			<artifactId>wicket</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.apache.wicket</groupId>
-			<artifactId>wicket-extensions</artifactId>
-		</dependency>
-	</dependencies>			
-	
+		
 	
 </project>
