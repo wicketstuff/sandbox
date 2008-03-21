@@ -112,8 +112,12 @@ public class PropertyColumn extends AbstractLightWeightColumn {
 		return PropertyResolver.getValue(propertyExpression, object);		
 	}
 	
+	protected Object getModelObject(IModel rowModel) {
+		return rowModel.getObject();
+	}
+	
 	private CharSequence getValue(IModel rowModel) {
-		Object rowObject = rowModel.getObject();
+		Object rowObject = getModelObject(rowModel);
 		Object property = getProperty(rowObject, propertyExpression); 
 		CharSequence string = convertToString(property);
 		if (isEscapeMarkup()) {
