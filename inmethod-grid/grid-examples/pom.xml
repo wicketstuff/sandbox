@@ -22,7 +22,6 @@
 		<dependency>
 			<groupId>com.inmethod</groupId>
 			<artifactId>grid</artifactId>
-			<version>${grid.version}</version>
 		</dependency>
 	</dependencies>			
 	
