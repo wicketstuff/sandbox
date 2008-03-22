@@ -130,6 +130,13 @@ function WicketMap2(id){
                     'latLng': overlay.getLatLng()
                 });
             })
+        } else if (event == 'click') {
+            var overlay = this.overlays[overlayID];
+            GEvent.addListener(overlay, event, function(){
+                self.onEvent(callBack, {
+                    'marker': overlayID,
+                });
+            })
         }
     }
     
