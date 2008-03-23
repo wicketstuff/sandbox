@@ -81,6 +81,15 @@ public abstract class AbstractColumn implements IGridColumn {
 	public IModel getHeaderTooltipModel() {
 		return headerTooltipModel;
 	}
+	
+	/**
+	 * Returns the model for header (caption)
+	 * 
+	 * @return header model
+	 */
+	public IModel getHeaderModel() {
+		return headerModel;
+	}
 
 	/**
 	 * {@inheritDoc}
