@@ -7,6 +7,9 @@ import org.apache.wicket.extensions.markup.html.repeater.data.table.DefaultDataT
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
 import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.markup.repeater.Item;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 
 
@@ -25,6 +28,7 @@ public class JamonAdminPage extends WebPage {
         IColumn[] columns = createColumns();
         DefaultDataTable table = new DefaultDataTable("jamonStatistics", columns, new JamonProvider(), rowsPerPage);
         add(table);
+        add(new MonitorDetailsPanel("monitorDetails"));
     }
     public JamonAdminPage() {
         this(DEFAULT_ROWS_PER_PAGE);
@@ -32,7 +36,7 @@ public class JamonAdminPage extends WebPage {
 
     private IColumn[] createColumns() {
         List<IColumn> cols = new ArrayList<IColumn>();
-        cols.add(createColumn("label", "label"));
+        cols.add(createColumnWithLinkToDetail("label", "label"));
         cols.add(createColumn("hits", "hits"));
         cols.add(createColumn("average", "avg"));
         cols.add(createColumn("total", "total"));
@@ -61,6 +65,19 @@ public class JamonAdminPage extends WebPage {
     }
 
     private PropertyColumn createColumn(String resourceKey, String propertyName) {
-        return new PropertyColumn(new ResourceModel(String.format("wicket.jamon.%s", resourceKey)), propertyName, propertyName);
+        return new PropertyColumn(getResourceModelForKey(resourceKey), propertyName, propertyName);
+    }
+    
+    private PropertyColumn createColumnWithLinkToDetail(String resourceKey, String propertyName) {
+        return new PropertyColumn(getResourceModelForKey(resourceKey), propertyName, propertyName) {
+            @Override
+            public void populateItem(Item item, String componentId, IModel model) {
+                item.add(new LinkToDetailPanel(componentId, createLabelModel(model)));
+            }
+            
+        };
+    }
+    private ResourceModel getResourceModelForKey(String resourceKey) {
+        return new ResourceModel(String.format("wicket.jamon.%s", resourceKey));
     }
 }

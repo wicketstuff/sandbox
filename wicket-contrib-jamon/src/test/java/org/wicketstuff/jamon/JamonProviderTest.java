@@ -17,11 +17,14 @@ import com.jamonapi.MonitorFactory;
 public class JamonProviderTest {
     
     private JamonProvider jamonProvider;
+    
     @Before
     public void setup() {
         jamonProvider = new JamonProvider();
     }
+    
     @After
+    @Before
     public void reset() {
         MonitorFactory.getFactory().reset();
     }

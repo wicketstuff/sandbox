@@ -1,9 +1,11 @@
 package org.wicketstuff.jamon.support;
 
+import org.apache.wicket.Page;
 import org.apache.wicket.Response;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.protocol.http.WebRequest;
 import org.apache.wicket.protocol.http.WebRequestCycle;
+import org.wicketstuff.jamon.JamonAdminPage;
 
 import com.jamonapi.Monitor;
 import com.jamonapi.MonitorFactory;
@@ -50,6 +52,12 @@ public class JamonMonitoredWebRequestCycle extends WebRequestCycle {
     private String target;
 
     private final boolean includeSourceNameInMonitorLabel;
+
+    /**
+     * Should we ignore this request cycle as it involves the {@link JamonAdminPage}
+     * itself?
+     */
+    private boolean dontMonitorThisRequest;
 
     /**
      * Constructs a {@link JamonMonitoredWebRequestCycle} that will <b>not</b> use the {@link #source}
@@ -107,9 +115,20 @@ public class JamonMonitoredWebRequestCycle extends WebRequestCycle {
     public void setTarget(String target) {
         this.target = target;
     }
+    
+    public void comesFromPage(Class clazz) {
+        this.dontMonitorThisRequest = (JamonAdminPage.class.isAssignableFrom(clazz)); 
+    }
+    
+    public void resolvesToPage(Page destination) {
+        this.dontMonitorThisRequest = (destination instanceof JamonAdminPage); 
+    }
 
+    public boolean dontMonitorThisRequest() {
+        return this.dontMonitorThisRequest;
+    }
     private void calculateDurationAndAddToMonitor() {
-        if (this.startTimeRequest != 0) {
+        if (this.startTimeRequest != 0 && !dontMonitorThisRequest()) {
             long duration = System.currentTimeMillis() - startTimeRequest;
             if (includeSourceNameInMonitorLabel) {
                 MonitorFactory.add(createLabel(), UNIT, duration);

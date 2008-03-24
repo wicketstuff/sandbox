@@ -7,6 +7,7 @@ import org.apache.wicket.request.RequestParameters;
 import org.apache.wicket.request.target.component.IBookmarkablePageRequestTarget;
 import org.apache.wicket.request.target.component.IPageRequestTarget;
 import org.apache.wicket.request.target.component.listener.IListenerInterfaceRequestTarget;
+import org.apache.wicket.request.target.component.listener.RedirectPageRequestTarget;
 
 
 /**
@@ -49,11 +50,21 @@ public class JamonAwareWebRequestCycleProcessor extends WebRequestCycleProcessor
     private void resolveSourceLabel(IRequestTarget requestTarget, JamonMonitoredWebRequestCycle cycle) {
         if (requestTarget instanceof IBookmarkablePageRequestTarget) {
             IBookmarkablePageRequestTarget target = (IBookmarkablePageRequestTarget) requestTarget;
+            cycle.comesFromPage(target.getPageClass());
             cycle.setSource(target.getPageClass().getSimpleName());
         } else if (requestTarget instanceof IListenerInterfaceRequestTarget) {
             IListenerInterfaceRequestTarget target = (IListenerInterfaceRequestTarget) requestTarget;
-            cycle.setSource(target.getPage().getClass().getSimpleName() + "." + getRelativePath(target));
+            String source = target.getPage().getClass().getSimpleName();
+            source = addComponentNameToLabelIfNotRedirectPageRequestTarget(target, source);
+            cycle.setSource(source);
         }
+    }
+
+    private String addComponentNameToLabelIfNotRedirectPageRequestTarget(IListenerInterfaceRequestTarget target, String source) {
+        if(!(target instanceof RedirectPageRequestTarget)) {
+            source += "." + getRelativePath(target);
+        }
+        return source;
     }
 
     /*

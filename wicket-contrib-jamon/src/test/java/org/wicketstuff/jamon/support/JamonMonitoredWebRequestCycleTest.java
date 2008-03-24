@@ -1,28 +1,18 @@
 package org.wicketstuff.jamon.support;
 
+import static org.junit.Assert.assertEquals;
+
 import org.apache.wicket.Page;
-import org.apache.wicket.RequestListenerInterface;
-import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.behavior.IBehaviorListener;
-import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.protocol.http.WebRequestCycle;
-import org.apache.wicket.request.target.component.BookmarkablePageRequestTarget;
-import org.apache.wicket.request.target.component.listener.BehaviorRequestTarget;
 import org.apache.wicket.util.tester.WicketTester;
-import org.hamcrest.CoreMatchers;
-import org.hamcrest.Matcher;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.wicketstuff.jamon.webapp.AjaxPage;
 import org.wicketstuff.jamon.webapp.HomePage;
 import org.wicketstuff.jamon.webapp.JamonWebApplication;
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.assertEquals;
 
-import com.jamonapi.Monitor;
-import com.jamonapi.MonitorComposite;
 import com.jamonapi.MonitorFactory;
 
 
@@ -67,6 +57,12 @@ public class JamonMonitoredWebRequestCycleTest {
         wicketTester.openPage(HomePage.class);
         
         assertEquals(1, MonitorFactory.getMonitor("HomePage", "ms.").getHits(), 0);
+    }
+    @Test
+    public void shouldCreateTwoMonitorsForPagesThatAreNavigatedToTwice() {
+        wicketTester.openPage(HomePage.class);
+        wicketTester.openPage(HomePage.class);
+        assertEquals(2, MonitorFactory.getMonitor("HomePage", "ms.").getHits(), 0);
     }
     
     @Test

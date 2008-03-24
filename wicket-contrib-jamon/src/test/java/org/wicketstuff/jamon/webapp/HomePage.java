@@ -16,7 +16,7 @@ public class HomePage extends WebPage {
 
             @Override
             public void onClick() {
-                setResponsePage(new JamonAdminPage(4));
+                setResponsePage(new JamonAdminPage(100));
             }
         });
         add(new Link("toAjaxPage") {
