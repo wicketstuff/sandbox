@@ -50,4 +50,22 @@ public class JamonRepository implements Serializable {
         MonitorFactory.getFactory().reset();
     }
 
+    /**
+     * Returns {@link Monitor} that registered under the given <code>monitorLabel</code>
+     * @param monitorLabel The label of the monitor to be returned
+     * @return The found monitor or <code>null</code>.
+     */
+    public Monitor findMonitorByLabel(String monitorLabel) {
+        if(monitorLabel == null) {
+            throw new IllegalArgumentException("monitorLabel is null");
+        }
+        List<Monitor> monitors = getAll();
+        for (Monitor monitor : monitors) {
+            if(monitorLabel.equals(monitor.getLabel())) {
+                return monitor;
+            }
+        }
+        return null;
+    }
+
 }

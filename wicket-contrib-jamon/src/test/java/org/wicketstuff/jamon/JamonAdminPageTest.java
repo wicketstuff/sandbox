@@ -1,6 +1,5 @@
 package org.wicketstuff.jamon;
 
-import org.apache.wicket.Page;
 import org.apache.wicket.util.tester.WicketTester;
 import org.junit.After;
 import org.junit.Before;
@@ -25,15 +24,13 @@ public class JamonAdminPageTest {
     @Test
     public void shouldRenderStatisticsPageWithOneMonitor() {
         JamonTestUtil.startThisManyMonitors(1);
-        Page actualPage = wicketTester.startPage(new JamonAdminPage());
-//        wicketTester.dumpPage();
-        //TODO Assertions.
+        wicketTester.startPage(new JamonAdminPage());
+        wicketTester.assertRenderedPage(JamonAdminPage.class);
     }
     @Test
     public void shouldRenderStatisticsPageWithTwoMonitors() {
         JamonTestUtil.startThisManyMonitors(2);
-        Page actualPage = wicketTester.startPage(new JamonAdminPage());
-//        wicketTester.dumpPage();
-        //TODO Assertions
+        wicketTester.startPage(new JamonAdminPage());
+        wicketTester.assertRenderedPage(JamonAdminPage.class);
     }
 }
