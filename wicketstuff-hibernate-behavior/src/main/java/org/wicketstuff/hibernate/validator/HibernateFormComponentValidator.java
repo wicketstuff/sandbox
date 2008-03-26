@@ -19,6 +19,8 @@ import org.hibernate.validator.InvalidValue;
  */
 public class HibernateFormComponentValidator implements IValidator {
 
+	private static final long serialVersionUID = 1L;
+
 	private String property;
 
 	private Class clazz;
@@ -102,18 +104,17 @@ public class HibernateFormComponentValidator implements IValidator {
 
 			// set object property value
 			PropertyResolver.setValue(property, object, validatable.getValue(),
-					null);
+							null);
 		}
 
 		// creates the Class Validator
 		ClassValidator validator = new ClassValidator(clazz);
 		InvalidValue[] invalidValues = validator.getInvalidValues(object,
-				property);
+						property);
 
 		// append error messages
 		for (InvalidValue iv : invalidValues)
-			validatable
-					.error(new ValidationError().setMessage(iv.getMessage()));
+			validatable.error(new ValidationError().setMessage(iv.getMessage()));
 	}
 
 }
