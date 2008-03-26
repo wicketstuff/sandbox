@@ -15,6 +15,8 @@ import org.hibernate.validator.InvalidValue;
  */
 public class HibernateFormValidator implements IFormValidator {
 
+	private static final long serialVersionUID = 1L;
+	@SuppressWarnings("unchecked")
 	private Class clazz;
 
 	@SuppressWarnings("unchecked")

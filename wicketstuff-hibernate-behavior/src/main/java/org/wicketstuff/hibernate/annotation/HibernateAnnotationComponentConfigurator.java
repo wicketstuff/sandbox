@@ -26,65 +26,75 @@ import org.slf4j.LoggerFactory;
  * Configure a Wicket <code>Component</code> based on Hibernate annotations.
  * <p>
  * Inspects the <code>Model</code> of a <code>FormComponent</code> and
- * configures the <code>Component</code> according to the declared Hibernate Annotations
- * used on the model object.  <br />
- * <strong>NOTE:</strong> This means the
- * <code>Component</code>'s <code>Model</code> <em>must</em> be known
- * when {@link #configure(Component) configuring} a <code>Component</code>.
+ * configures the <code>Component</code> according to the declared Hibernate
+ * Annotations used on the model object. <br />
+ * <strong>NOTE:</strong> This means the <code>Component</code>'s
+ * <code>Model</code> <em>must</em> be known when
+ * {@link #configure(Component) configuring} a <code>Component</code>.
  * </p>
- *
+ * 
  * <p>
- * This object can be used as a <code>Behavior</code> to configure a single <code>Component</code>. <br />
- * <strong>NOTE:</strong> this object is <em>stateless</em>, and the same instance can be reused to
- * configure multiple <code>Component</code>s.
+ * This object can be used as a <code>Behavior</code> to configure a single
+ * <code>Component</code>. <br />
+ * <strong>NOTE:</strong> this object is <em>stateless</em>, and the same
+ * instance can be reused to configure multiple <code>Component</code>s.
  * </p>
+ * 
  * <pre>
  * public class MyWebPage extends WebPage {
- *   public MyWebPage() {
- *     TextField name = new TextField("id", new PropertyModel(user, "name");
+ * 	public MyWebPage() {
+ *     TextField name = new TextField(&quot;id&quot;, new PropertyModel(user, &quot;name&quot;);
  *     name.addBehavior(new HibernateAnnotationComponentConfigurator());
- *
  *     add(name);
  *   }
  * }
  * </pre>
- *
+ * 
  * <p>
- * This object can also be used as a component listener that will automatically configure <em>all</em>
- * <code>FormComponent</code>s based on Hibernate annotations. This ensures that an entire application
- * respects annotations without adding custom <code>Validator</code>s or <code>Behavior</code>s to each
- * <code>FormComponent</code>.
+ * This object can also be used as a component listener that will automatically
+ * configure <em>all</em>
+ * <code>FormComponent</code>s based on Hibernate
+ * annotations. This ensures that an entire application respects annotations
+ * without adding custom <code>Validator</code>s or <code>Behavior</code>s
+ * to each <code>FormComponent</code>.
  * </p>
+ * 
  * <pre>
  * public class MyApplication extends WebApplication {
- *   public void init() {
- *     addComponentOnBeforeRenderListener(new HibernateAnnotationComponentConfigurator());
- *   }
+ * 	public void init() {
+ * 		addComponentOnBeforeRenderListener(new HibernateAnnotationComponentConfigurator());
+ * 	}
  * }
  * </pre>
- *
+ * 
  * @see http://jroller.com/page/wireframe/?anchor=hibernateannotationcomponentconfigurator
  * @see http://jroller.com/page/wireframe/?anchor=hibernate_annotations_and_wicket
  */
 @SuppressWarnings("serial")
-public class HibernateAnnotationComponentConfigurator extends AbstractBehavior implements IComponentOnBeforeRenderListener {
+public class HibernateAnnotationComponentConfigurator extends AbstractBehavior
+				implements IComponentOnBeforeRenderListener {
 	private static final Logger LOGGER = LoggerFactory.getLogger(HibernateAnnotationComponentConfigurator.class);
 
 	@SuppressWarnings("unchecked")
-	private static Map configs = new HashMap() {{
-		put(NotNull.class, new HibernateAnnotationConfig() {
-			public void onAnnotatedComponent(Annotation annotation, FormComponent component) {
-				component.setRequired(true);
-			}
-		});
-		put(Length.class, new HibernateAnnotationConfig() {
-			public void onAnnotatedComponent(Annotation annotation, FormComponent component) {
-				int max = ((Length)annotation).max();
-				component.add(new AttributeModifier("maxlength", new Model(Integer.toString(max))));
-				component.add(StringValidator.maximumLength(max));
-			}
-		});
-	}};
+	private static Map configs = new HashMap() {
+		{
+			put(NotNull.class, new HibernateAnnotationConfig() {
+				public void onAnnotatedComponent(Annotation annotation,
+								FormComponent component) {
+					component.setRequired(true);
+				}
+			});
+			put(Length.class, new HibernateAnnotationConfig() {
+				public void onAnnotatedComponent(Annotation annotation,
+								FormComponent component) {
+					int max = ((Length) annotation).max();
+					component.add(new AttributeModifier("maxlength", new Model(
+									Integer.toString(max))));
+					component.add(StringValidator.maximumLength(max));
+				}
+			});
+		}
+	};
 
 	@Override
 	public final void bind(Component component) {
@@ -103,7 +113,7 @@ public class HibernateAnnotationComponentConfigurator extends AbstractBehavior i
 		if (!isApplicableFor(component)) {
 			return;
 		}
-		FormComponent formComponent = (FormComponent)component;
+		FormComponent formComponent = (FormComponent) component;
 		IPropertyReflectionAwareModel propertyModel = (IPropertyReflectionAwareModel) component.getModel();
 		for (Annotation annotation : getAnnotations(propertyModel)) {
 			Class<? extends Annotation> annotationType = annotation.annotationType();
@@ -114,11 +124,13 @@ public class HibernateAnnotationComponentConfigurator extends AbstractBehavior i
 		}
 	}
 
-	private Collection<Annotation> getAnnotations(IPropertyReflectionAwareModel propertyModel) {
+	private Collection<Annotation> getAnnotations(
+					IPropertyReflectionAwareModel propertyModel) {
 		Field field = propertyModel.getPropertyField();
 		if (field == null) {
-			LOGGER.warn("Unable to find annotations for model: " + propertyModel);
-			return Collections.EMPTY_LIST;
+			LOGGER.warn("Unable to find annotations for model: "
+							+ propertyModel);
+			return Collections.emptyList();
 		}
 		return Arrays.asList(field.getAnnotations());
 	}
@@ -128,8 +140,10 @@ public class HibernateAnnotationComponentConfigurator extends AbstractBehavior i
 			return false;
 		}
 		IModel model = component.getModel();
-		if (null == model || !IPropertyReflectionAwareModel.class.isAssignableFrom(model.getClass())) {
-			LOGGER.debug("No valid model is available for configuring Component: " + component);
+		if (null == model
+						|| !IPropertyReflectionAwareModel.class.isAssignableFrom(model.getClass())) {
+			LOGGER.debug("No valid model is available for configuring Component: "
+							+ component);
 			return false;
 		}
 
