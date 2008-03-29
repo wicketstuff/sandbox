@@ -156,6 +156,7 @@ table.imxt-body tr.imxt-empty-row * {
 
 a#imxt-arrow-up,
 a#imxt-arrow-down {
+	z-index: 99999;
 	display: block;
 	position: absolute;
 	overflow: hidden;
