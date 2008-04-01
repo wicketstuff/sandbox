@@ -1,7 +1,9 @@
 
 package org.wicketstuff.examples.rome.feeds;
 
-import javax.servlet.ServletContext;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.wicket.Resource;
@@ -10,10 +12,12 @@ import org.apache.wicket.SharedResources;
 import org.apache.wicket.behavior.HeaderContributor;
 import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.markup.html.link.ResourceLink;
-import org.apache.wicket.protocol.http.*;
+import org.apache.wicket.protocol.http.WebApplication;
+import org.apache.wicket.protocol.http.WebRequest;
+import org.apache.wicket.protocol.http.WebRequestCycle;
 import org.wicketstuff.rome.FeedResource;
+
 import com.sun.syndication.feed.synd.SyndFeed;
-import java.util.*;
 
 /**
  * 
@@ -137,5 +141,4 @@ public class FeedManager
 
 		mountMap.put(feedClass.getName(), feedPath);
 	}
-	
 }

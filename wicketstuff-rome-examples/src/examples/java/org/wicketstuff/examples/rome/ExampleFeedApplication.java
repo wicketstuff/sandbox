@@ -1,13 +1,10 @@
 
 package org.wicketstuff.examples.rome;
 
-import org.apache.wicket.ResourceReference;
-import org.apache.wicket.SharedResources;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.wicketstuff.examples.rome.feeds.BlogFeed;
 import org.wicketstuff.examples.rome.feeds.FeedManager;
 import org.wicketstuff.examples.rome.feeds.NewsFeed;
-import org.wicketstuff.rome.FeedResource;
 
 /**
  * 
@@ -23,7 +20,6 @@ public class ExampleFeedApplication extends WebApplication
 		super.init();
 		
 		mountFeeds();
-		
 	}
 
 	protected void mountFeeds()
@@ -33,7 +29,6 @@ public class ExampleFeedApplication extends WebApplication
 		FeedManager.mountFeed(this, NewsFeed.class, FEED_ROOT + "/news");
 		FeedManager.mountFeed(this, BlogFeed.class, FEED_ROOT + "/blog");
 	}
-	
 	
 	public Class getHomePage()
 	{
