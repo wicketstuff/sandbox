@@ -20,6 +20,8 @@ public class MFXEditableMultiLineLabel extends Panel {
 	private Label label;
 	private EditPanel editPanel;
 	private int height = 400;
+	private IModel viewModel;
+	private IModel editModel;
 
 	protected boolean getEscapeStrings() {
 		return true;
@@ -33,14 +35,14 @@ public class MFXEditableMultiLineLabel extends Panel {
 		return true;
 	}
 
-	protected void onEdit(final AjaxRequestTarget target) {
+	protected void onSubmit(final IModel model, final AjaxRequestTarget target) {
 	}
 
-	protected void onSubmit(final AjaxRequestTarget target) {
-	}
-
-	public MFXEditableMultiLineLabel(final String id, final IModel model) {
+	public MFXEditableMultiLineLabel(final String id, final IModel model, final IModel viewModel, final IModel editModel) {
 		super(id, model);
+
+		this.viewModel = viewModel;
+		this.editModel = editModel;
 
 		HeaderContributor.forCss(MFXJavascriptUtils.getMooAddonsCSS());
 		add(container = new WebMarkupContainer("container") {
@@ -60,7 +62,8 @@ public class MFXEditableMultiLineLabel extends Panel {
 		});
 		container.setOutputMarkupId(true);
 
-		container.add(label = new Label("label", getModel()));
+		// container.add(label = new Label("label", getModel()));
+		container.add(label = new Label("label", this.viewModel));
 		label.setEscapeModelStrings(MFXEditableMultiLineLabel.this.getEscapeStrings());
 		label.setOutputMarkupId(true);
 
@@ -80,7 +83,6 @@ public class MFXEditableMultiLineLabel extends Panel {
 
 	public void goToEdit(final AjaxRequestTarget arg0) {
 		if (getEditable()) {
-			onEdit(arg0);
 			editPanel.setVisible(true);
 			label.setVisible(false);
 			arg0.addComponent(container);
@@ -109,20 +111,7 @@ public class MFXEditableMultiLineLabel extends Panel {
 			super(id);
 
 			setOutputMarkupId(true);
-			add(txt = new TextArea("editor", new IModel() {
-				private static final long serialVersionUID = 1L;
-
-				public Object getObject() {
-					return MFXEditableMultiLineLabel.this.getModelObject();
-				}
-
-				public void setObject(final Object arg0) {
-					MFXEditableMultiLineLabel.this.setModelObject(arg0);
-				}
-
-				public void detach() {
-				}
-			}));
+			add(txt = new TextArea("editor", editModel));
 			txt.setOutputMarkupId(true);
 			txt.add(new SimpleAttributeModifier("style", "height: " + getHeight()
 					+ "px !important; width: 90% !important;"));
@@ -147,7 +136,7 @@ public class MFXEditableMultiLineLabel extends Panel {
 				protected void onEvent(final AjaxRequestTarget arg0) {
 					if (getEditable()) {
 						txt.processInput();
-						MFXEditableMultiLineLabel.this.onSubmit(arg0);
+						MFXEditableMultiLineLabel.this.onSubmit(MFXEditableMultiLineLabel.this.getModel(), arg0);
 					}
 					goToView(arg0);
 				}
