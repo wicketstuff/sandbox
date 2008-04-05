@@ -1,4 +1,4 @@
-package org.wicketstuff.jamon;
+package org.wicketstuff.jamon.web;
 
 import com.jamonapi.Monitor;
 import com.jamonapi.MonitorFactory;

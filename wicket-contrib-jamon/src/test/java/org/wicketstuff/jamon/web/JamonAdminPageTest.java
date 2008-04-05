@@ -1,9 +1,10 @@
-package org.wicketstuff.jamon;
+package org.wicketstuff.jamon.web;
 
 import org.apache.wicket.util.tester.WicketTester;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.wicketstuff.jamon.web.JamonAdminPage;
 
 import com.jamonapi.MonitorFactory;
 

@@ -2,7 +2,7 @@ package org.wicketstuff.jamon.webapp;
 
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.link.Link;
-import org.wicketstuff.jamon.JamonAdminPage;
+import org.wicketstuff.jamon.web.JamonAdminPage;
 
 /**
  * Dummy HomePage used by the {@link JamonWebApplication} in tests.

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.wicketstuff.jamon;
+package org.wicketstuff.jamon.web;
 
 /**
  * Class used in {@link PropertyModelObjectComparatorTest}. Just to wrap

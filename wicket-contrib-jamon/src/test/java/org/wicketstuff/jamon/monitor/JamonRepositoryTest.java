@@ -1,14 +1,15 @@
-package org.wicketstuff.jamon;
+package org.wicketstuff.jamon.monitor;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.wicketstuff.jamon.JamonTestUtil.MONITOR_PREFIX;
-import static org.wicketstuff.jamon.JamonTestUtil.startThisManyMonitors;
+import static org.wicketstuff.jamon.web.JamonTestUtil.MONITOR_PREFIX;
+import static org.wicketstuff.jamon.web.JamonTestUtil.startThisManyMonitors;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.wicketstuff.jamon.monitor.JamonRepository;
 
 import com.jamonapi.Monitor;
 import com.jamonapi.MonitorFactory;
@@ -19,8 +20,8 @@ public class JamonRepositoryTest {
     
     @Before
     public void setup() {
-        jamonRepository = new JamonRepository();
-        jamonRepository.clear();
+        jamonRepository = JamonRepository.getJamonRepository();
+        JamonRepository.clear();
     }
     
     @After

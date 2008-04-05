@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.wicketstuff.jamon;
+package org.wicketstuff.jamon.web;
 
 import java.util.Comparator;
 

@@ -6,9 +6,9 @@ import org.apache.wicket.Response;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.protocol.http.WebRequest;
 import org.apache.wicket.request.IRequestCycleProcessor;
-import org.wicketstuff.jamon.JamonTestUtil;
 import org.wicketstuff.jamon.support.JamonAwareWebRequestCycleProcessor;
 import org.wicketstuff.jamon.support.JamonMonitoredWebRequestCycle;
+import org.wicketstuff.jamon.web.JamonTestUtil;
 /**
  * WebApplication so Jamon Monitoring can be tested.
  * 

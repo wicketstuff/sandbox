@@ -1,14 +1,16 @@
-package org.wicketstuff.jamon;
+package org.wicketstuff.jamon.web;
 
 import static org.apache.commons.collections.IteratorUtils.toList;
 import static org.junit.Assert.assertEquals;
-import static org.wicketstuff.jamon.JamonTestUtil.startThisManyMonitors;
+import static org.wicketstuff.jamon.web.JamonTestUtil.startThisManyMonitors;
 
 import java.util.Iterator;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.wicketstuff.jamon.monitor.AlwaysSatisfiedMonitorSpecification;
+import org.wicketstuff.jamon.web.JamonProvider;
 
 import com.jamonapi.Monitor;
 import com.jamonapi.MonitorFactory;
@@ -20,7 +22,7 @@ public class JamonProviderTest {
     
     @Before
     public void setup() {
-        jamonProvider = new JamonProvider();
+        jamonProvider = new JamonProvider(new AlwaysSatisfiedMonitorSpecification());
     }
     
     @After
