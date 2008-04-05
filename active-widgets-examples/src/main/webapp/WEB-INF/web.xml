@@ -64,7 +64,7 @@
 
     <servlet-mapping>
         <servlet-name>activewidgets</servlet-name>
-        <url-pattern>/aw/*</url-pattern>
+        <url-pattern>/*</url-pattern>
     </servlet-mapping>
 
 </web-app>
