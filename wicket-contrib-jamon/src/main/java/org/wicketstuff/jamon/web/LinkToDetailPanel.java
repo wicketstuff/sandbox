@@ -1,5 +1,8 @@
-package org.wicketstuff.jamon;
+package org.wicketstuff.jamon.web;
 
+import static org.wicketstuff.jamon.web.JamonAdminPage.PATH_TO_MONITOR_DETAILS;
+
+import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxFallbackLink;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
@@ -30,9 +33,10 @@ public class LinkToDetailPanel extends Panel {
 
         @Override
         public void onClick(AjaxRequestTarget target) {
-            MonitorDetailsPanel panel = (MonitorDetailsPanel) target.getPage().get("monitorDetails");
-            panel.refresh(monitorLabel);
-            target.addComponent(panel, "monitorDetails");
+            Component componentToBeReplaced = target.getPage().get(PATH_TO_MONITOR_DETAILS);
+            JamonMonitorDetailsPanel replacement = new JamonMonitorDetailsPanel(PATH_TO_MONITOR_DETAILS, monitorLabel);
+            componentToBeReplaced.replaceWith(replacement);
+            target.addComponent(replacement);
         }
     }
 

@@ -1,8 +1,9 @@
-package org.wicketstuff.jamon;
+package org.wicketstuff.jamon.web;
 
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
+import org.wicketstuff.jamon.web.PropertyModelObjectComparator;
 
 
 public class PropertyModelObjectComparatorTest {

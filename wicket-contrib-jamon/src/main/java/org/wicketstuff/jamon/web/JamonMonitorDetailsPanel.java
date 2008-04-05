@@ -1,10 +1,10 @@
-package org.wicketstuff.jamon;
+package org.wicketstuff.jamon.web;
 
 import static java.lang.String.format;
 import static java.lang.String.valueOf;
+import static java.util.Arrays.asList;
+import static org.wicketstuff.jamon.monitor.JamonRepository.getJamonRepository;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.apache.wicket.markup.html.basic.Label;
@@ -15,13 +15,13 @@ import org.apache.wicket.markup.html.panel.Panel;
 import com.jamonapi.FrequencyDist;
 import com.jamonapi.Monitor;
 /**
- * Panel that shows the details of the monitor.
+ * Panel that shows the details of a Monitor.
  * 
  * @author lars
  *
  */
 @SuppressWarnings({"serial", "unchecked"})
-public class MonitorDetailsPanel extends Panel {
+public class JamonMonitorDetailsPanel extends Panel {
 
     /**
      * ID of the title of this panel.
@@ -43,7 +43,7 @@ public class MonitorDetailsPanel extends Panel {
         private transient FrequencyDist previous = null;
         
         private FrequencyListView(String id, List list) {
-            super(id, list);
+            super(id, new ThrowAwayModel(list));
         }
 
         @Override
@@ -52,11 +52,6 @@ public class MonitorDetailsPanel extends Panel {
             item.add(new TimeWindowLabel("timeWindow", frequencyDist, previous));
             item.add(new Label("numberOfHits", String.valueOf(frequencyDist.getHits())));
             previous = frequencyDist;
-        }
-        
-        public void refresh(List<FrequencyDist> items) {
-            previous = null;
-            setModel(new ThrowAwayModel(items));
         }
     }
 
@@ -75,23 +70,15 @@ public class MonitorDetailsPanel extends Panel {
     /**
      * Construct.
      * @param id The id.
+     * @param monitorLabel The label of the {@link Monitor} to show the details of.
      */
-    public MonitorDetailsPanel(String id) {
+    public JamonMonitorDetailsPanel(String id, String monitorLabel) {
         super(id);
         setOutputMarkupId(true);
         setMarkupId(id);
-        add(new FrequencyListView(ID_OF_LIST_VIEW, new ArrayList<FrequencyDist>()));
-        add(new Label(ID_OF_TITLE, "Click a Monitor to see its details..."));
-    }
-
-    /**
-     * Refreshes this {@link MonitorDetailsPanel}. Typically called from an Ajax update.
-     * @param monitorLabel The label of the {@link Monitor} to show the details of.
-     */
-    public void refresh(String monitorLabel) {
-        final Monitor monitor = new JamonRepository().findMonitorByLabel(monitorLabel);
+        final Monitor monitor = getJamonRepository().findMonitorByLabel(monitorLabel);
         FrequencyDist[] frequencyDists = monitor.getRange().getFrequencyDists();
-        ((FrequencyListView) get(ID_OF_LIST_VIEW)).refresh(Arrays.asList(frequencyDists));
-        ((Label) get(ID_OF_TITLE)).setModelObject(format("Detail of Monitor %s in %s", monitorLabel, monitor.getUnits()));
+        add(new FrequencyListView(ID_OF_LIST_VIEW, asList(frequencyDists)));
+        add(new Label(ID_OF_TITLE, format("Detail of Monitor %s in %s", monitorLabel, monitor.getUnits())));
     }
 }

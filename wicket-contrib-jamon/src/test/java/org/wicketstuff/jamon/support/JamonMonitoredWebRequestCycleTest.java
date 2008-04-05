@@ -1,14 +1,18 @@
 package org.wicketstuff.jamon.support;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import org.apache.wicket.Page;
 import org.apache.wicket.behavior.IBehaviorListener;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.protocol.http.WebRequestCycle;
+import org.apache.wicket.util.tester.FormTester;
 import org.apache.wicket.util.tester.WicketTester;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.wicketstuff.jamon.web.JamonAdminPage;
 import org.wicketstuff.jamon.webapp.AjaxPage;
 import org.wicketstuff.jamon.webapp.HomePage;
 import org.wicketstuff.jamon.webapp.JamonWebApplication;
@@ -63,6 +67,16 @@ public class JamonMonitoredWebRequestCycleTest {
         wicketTester.openPage(HomePage.class);
         wicketTester.openPage(HomePage.class);
         assertEquals(2, MonitorFactory.getMonitor("HomePage", "ms.").getHits(), 0);
+    }
+    
+    @Test
+    public void shouldNotMonitorJamonAdminPageItSelf() {
+        Page page = wicketTester.openPage(JamonAdminPage.class);
+        assertEquals(0, MonitorFactory.getMonitor("JamonAdminPage", "ms.").getHits(), 0);
+        FormTester formTester = wicketTester.newFormTester("adminPanel:adminForm");
+        formTester.setValue("monitorLabel", "J");
+        wicketTester.executeAjaxEvent("adminPanel:adminForm:monitorLabel", "onkeyup");
+        assertEquals(0, MonitorFactory.getMonitor("JamonAdminPage", "ms.").getHits(), 0);
     }
     
     @Test

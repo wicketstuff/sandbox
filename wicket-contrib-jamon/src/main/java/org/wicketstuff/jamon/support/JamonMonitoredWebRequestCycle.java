@@ -5,15 +5,20 @@ import org.apache.wicket.Response;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.protocol.http.WebRequest;
 import org.apache.wicket.protocol.http.WebRequestCycle;
-import org.wicketstuff.jamon.JamonAdminPage;
+import org.wicketstuff.jamon.web.JamonAdminPage;
 
 import com.jamonapi.Monitor;
 import com.jamonapi.MonitorFactory;
 
 
 /**
- * {@link WebRequestCycle} that will add a monitor for all actions that will cause pages 
- * or parts of pages to be rendered. 
+ * <p>
+ * To use this class simply override the method {@link WebApplication#newRequestCycle(org.apache.wicket.Request, Response)}
+ * in your {@link WebApplication}. You can only use this class in combination with the {@link JamonAwareWebRequestCycleProcessor}.
+ * </p>
+ * <p>
+ * This {@link WebRequestCycle} will add a monitor for all actions that will cause pages 
+ * or parts of pages to be rendered. <br>
  * The labels of the {@link Monitor}s come in these formats:
  * 
  * <ul>
@@ -30,6 +35,8 @@ import com.jamonapi.MonitorFactory;
  * </li>
  * </ul>
  * 
+ * The {@link JamonAdminPage} itself is excluded from the Monitors.
+ * </p>
  * @author lars
  * 
  */
@@ -37,6 +44,9 @@ public class JamonMonitoredWebRequestCycle extends WebRequestCycle {
 
     static final String UNIT = "ms.";
 
+    /**
+     * At what time did the request start.
+     */
     private long startTimeRequest;
 
     /**
@@ -51,6 +61,9 @@ public class JamonMonitoredWebRequestCycle extends WebRequestCycle {
      */
     private String target;
 
+    /**
+     * Should should the source name be included in the Monitors.
+     */
     private final boolean includeSourceNameInMonitorLabel;
 
     /**
@@ -110,25 +123,23 @@ public class JamonMonitoredWebRequestCycle extends WebRequestCycle {
     /**
      * Set the {@link #target}.
      * 
-     * @param target The name of the target that was rendered, typically the name of a Page.
+     * @param destination The name of the page that was rendered.
      */
-    public void setTarget(String target) {
-        this.target = target;
+    public void setTarget(Class<? extends Page> destination) {
+        this.target = destination.getSimpleName();
+        this.dontMonitorThisRequest = (JamonAdminPage.class.isAssignableFrom(destination));
     }
     
-    public void comesFromPage(Class clazz) {
+    /**
+     * From which Page did the request come from? This is needed for creating the Monitor label.
+     * @param clazz
+     */
+    public void comesFromPage(Class<? extends Page> clazz) {
         this.dontMonitorThisRequest = (JamonAdminPage.class.isAssignableFrom(clazz)); 
     }
-    
-    public void resolvesToPage(Page destination) {
-        this.dontMonitorThisRequest = (destination instanceof JamonAdminPage); 
-    }
 
-    public boolean dontMonitorThisRequest() {
-        return this.dontMonitorThisRequest;
-    }
     private void calculateDurationAndAddToMonitor() {
-        if (this.startTimeRequest != 0 && !dontMonitorThisRequest()) {
+        if (this.startTimeRequest != 0 && !dontMonitorThisRequest) {
             long duration = System.currentTimeMillis() - startTimeRequest;
             if (includeSourceNameInMonitorLabel) {
                 MonitorFactory.add(createLabel(), UNIT, duration);

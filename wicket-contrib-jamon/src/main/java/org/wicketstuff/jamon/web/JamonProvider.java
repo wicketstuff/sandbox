@@ -1,4 +1,4 @@
-package org.wicketstuff.jamon;
+package org.wicketstuff.jamon.web;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -7,6 +7,8 @@ import java.util.List;
 
 import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
 import org.apache.wicket.model.IModel;
+import org.wicketstuff.jamon.monitor.JamonRepository;
+import org.wicketstuff.jamon.monitor.MonitorSpecification;
 
 import com.jamonapi.Monitor;
 
@@ -20,13 +22,16 @@ public class JamonProvider extends SortableDataProvider {
 
     private JamonRepository jamonRepository;
 
-    public JamonProvider() {
-        jamonRepository = newJamonRepository();
+    private final MonitorSpecification specification;
+
+    public JamonProvider(MonitorSpecification specification) {
+        this.specification = specification;
+        jamonRepository = JamonRepository.getJamonRepository();
         setSort("label", true);
     }
 
     public Iterator iterator(int first, int count) {
-        List<Monitor> allMonitors = jamonRepository.getAll();
+        List<Monitor> allMonitors = jamonRepository.find(specification);
         int toIndex = allMonitors.size() < (first + count) ? allMonitors.size() : (first + count);
         if (first > toIndex) {
             return EMPTY_ITERATOR;
@@ -45,14 +50,5 @@ public class JamonProvider extends SortableDataProvider {
 
     public int size() {
         return jamonRepository.count();
-    }
-
-    /**
-     * Hook for subclasses to override the way the JamonRespository is created.
-     * 
-     * @return
-     */
-    protected JamonRepository newJamonRepository() {
-        return new JamonRepository();
     }
 }

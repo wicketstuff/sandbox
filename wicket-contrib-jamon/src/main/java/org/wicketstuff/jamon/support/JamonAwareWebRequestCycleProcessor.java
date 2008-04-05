@@ -1,7 +1,10 @@
 package org.wicketstuff.jamon.support;
 
 import org.apache.wicket.IRequestTarget;
+import org.apache.wicket.Page;
 import org.apache.wicket.RequestCycle;
+import org.apache.wicket.protocol.http.WebApplication;
+import org.apache.wicket.protocol.http.WebRequestCycle;
 import org.apache.wicket.protocol.http.WebRequestCycleProcessor;
 import org.apache.wicket.request.RequestParameters;
 import org.apache.wicket.request.target.component.IBookmarkablePageRequestTarget;
@@ -11,14 +14,30 @@ import org.apache.wicket.request.target.component.listener.RedirectPageRequestTa
 
 
 /**
- * {@link WebRequestCycleProcessor} implementation that will get the source from which a request
- * originated and the target it will resolve to. These are needed by the
+ * <p>
+ * To use this class in your {@link WebApplication} simply override the {@link WebApplication#newRequestCycleProcessor} 
+ * method in your own {@link WebApplication}.
+ * </p>
+ * <p>
+ * This {@link WebRequestCycleProcessor} implementation that will get the source from where a request
+ * originated from and the target to where it will resolve to. These are needed by the
  * {@link JamonMonitoredWebRequestCycle} to determine the monitor's label.
- * 
+ * <br>
  * This class can only be used in combination with {@link JamonMonitoredWebRequestCycle} otherwise
- * {@link IllegalStateException}s will be thrown.
+ * an {@link IllegalStateException} will be thrown.
+ * </p>
+ * <p>
+ * <b>Implementation limitations:</b>
+ * <br>
+ * Only if the {@link WebRequestCycle} comes from an {@link IBookmarkablePageRequestTarget} or an
+ * {@link IListenerInterfaceRequestTarget} <i>and</i> the eventual target of the {@link WebRequestCycle} is
+ * an {@link IPageRequestTarget} or an {@link IBookmarkablePageRequestTarget} the Monitors are created.
+ * If you want to support more types of targets you can extend this class and implement the methods
+ * {@link #doResolveSourceLabel(IRequestTarget, JamonMonitoredWebRequestCycle)} 
+ * and {@link #doResolveTargetLabel(IRequestTarget, JamonMonitoredWebRequestCycle)}.
+ * </p>
  * 
- * @author lvonk
+ * @author lars
  * 
  */
 public class JamonAwareWebRequestCycleProcessor extends WebRequestCycleProcessor {
@@ -41,10 +60,45 @@ public class JamonAwareWebRequestCycleProcessor extends WebRequestCycleProcessor
         resolveTargetLabel(target, jamonMonitoredWebRequestCycle);
         super.respond(requestCycle);
     }
-
+    /**
+     * Subclasses should implement this method if they want to monitor more types of {@link IRequestTarget}s
+     * than this {@link JamonAwareWebRequestCycleProcessor} supports. See {@link JamonAwareWebRequestCycleProcessor} javadoc for
+     * the currently supported types. Besides this method subclasses should also consider implementing 
+     * {@link #doResolveTargetLabel(IRequestTarget, JamonMonitoredWebRequestCycle)}.
+     * <br>
+     * Subclasses should at least call the following methods on the given {@link JamonMonitoredWebRequestCycle}:
+     * <br>
+     * <ul>
+     * <li>{@link JamonMonitoredWebRequestCycle#comesFromPage(Class)}</li>
+     * <li>{@link JamonMonitoredWebRequestCycle#setSource(String)}</li>
+     * </ul>
+     * <br>
+     * The default implementation of this method does nothing.
+     * 
+     * @param requestTarget The request target of where the request originated from. 
+     * @param cycle The {@link JamonMonitoredWebRequestCycle}.
+     */
+    protected void doResolveSourceLabel(IRequestTarget requestTarget, JamonMonitoredWebRequestCycle cycle) {
+    }
+    /**
+     * Subclasses should implement this method if they want to monitor more types of {@link IRequestTarget}s
+     * than this {@link JamonAwareWebRequestCycleProcessor} supports. See {@link JamonAwareWebRequestCycleProcessor} javadoc for
+     * the currently supported types. Besides this method subclasses should also consider implementing 
+     * {@link #doResolveSourceLabel(IRequestTarget, JamonMonitoredWebRequestCycle)}.
+     * <br>
+     * Subclasses should at least call the method {@link JamonMonitoredWebRequestCycle#setTarget(Class)} 
+     * on the given {@link JamonMonitoredWebRequestCycle}.
+     * <br>
+     * The default implementation of this method does nothing.
+     * 
+     * @param requestTarget The request target of where the request will resolve to. 
+     * @param cycle The {@link JamonMonitoredWebRequestCycle}.
+     */
+    protected void doResolveTargetLabel(IRequestTarget requestTarget, JamonMonitoredWebRequestCycle cycle) {
+    }
     /*
      * Resolves the source label. This is where the request originated from. This can be a link,
-     * direct page access checkbox etc. The source label is then setup upon the given cycle in the
+     * direct page access, checkbox etc. The source label is then setup upon the given cycle in the
      * for of: PageClassName.componentId.
      */
     private void resolveSourceLabel(IRequestTarget requestTarget, JamonMonitoredWebRequestCycle cycle) {
@@ -54,9 +108,12 @@ public class JamonAwareWebRequestCycleProcessor extends WebRequestCycleProcessor
             cycle.setSource(target.getPageClass().getSimpleName());
         } else if (requestTarget instanceof IListenerInterfaceRequestTarget) {
             IListenerInterfaceRequestTarget target = (IListenerInterfaceRequestTarget) requestTarget;
-            String source = target.getPage().getClass().getSimpleName();
-            source = addComponentNameToLabelIfNotRedirectPageRequestTarget(target, source);
+            Class<? extends Page> pageClass = target.getPage().getClass();
+            cycle.comesFromPage(pageClass);
+            String source = addComponentNameToLabelIfNotRedirectPageRequestTarget(target, pageClass.getSimpleName());
             cycle.setSource(source);
+        } else {
+            doResolveSourceLabel(requestTarget, cycle);
         }
     }
 
@@ -89,10 +146,14 @@ public class JamonAwareWebRequestCycleProcessor extends WebRequestCycleProcessor
     private void resolveTargetLabel(IRequestTarget requestTarget, JamonMonitoredWebRequestCycle cycle) {
         if (requestTarget instanceof IBookmarkablePageRequestTarget) {
             IBookmarkablePageRequestTarget target = (IBookmarkablePageRequestTarget) requestTarget;
-            cycle.setTarget(target.getPageClass().getSimpleName());
+            Class<? extends Page> pageClass = target.getPageClass();
+            cycle.setTarget(pageClass);
         } else if (requestTarget instanceof IPageRequestTarget) {
             IPageRequestTarget target = (IPageRequestTarget) requestTarget;
-            cycle.setTarget(target.getPage().getClass().getSimpleName());
+            Class<? extends Page> pageClass = target.getPage().getClass();
+            cycle.setTarget(pageClass);
+        } else {
+            doResolveTargetLabel(requestTarget, cycle);
         }
     }
 
