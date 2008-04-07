@@ -107,33 +107,6 @@ function WicketMap2(id){
         });
     } 
     
-    this.oldAddListener = function(event, callBack) {
-        var self = this;
-        
-        if (event == 'click' || event == 'dblclick') {
-            GEvent.addListener(this.map, event, function(marker, gLatLng){
-                self.onEvent(callBack, {
-                    'marker': (marker == null ? "" : marker.overlayId),
-                    'latLng': gLatLng
-                });
-            });
-        }
-        else 
-            if (event == 'zoomend') {
-                GEvent.addListener(this.map, event, function(oldLevel, newLevel){
-                    self.onEvent(callBack, {
-                        'oldLevel': oldLevel,
-                        'newLevel': newLevel
-                    });
-                });
-            }
-            else {
-                GEvent.addListener(this.map, event, function(){
-                    self.onEvent(callBack, {});
-                });
-            }
-    }
-    
     this.addGOverlayListener = function(event, overlayID, callBack){
         var self = this;
         
