@@ -36,8 +36,8 @@ public abstract class ZoomEndListener extends GEventListenerBehavior {
 		Request request = RequestCycle.get().getRequest();
 		int oldLevel = 0;
 		int newLevel = 0;
-		String oldZoomLevelParameter = request.getParameter("oldLevel");
-		String newZoomLevelParameter = request.getParameter("newLevel");
+		String oldZoomLevelParameter = request.getParameter("argument0");
+		String newZoomLevelParameter = request.getParameter("argument1");
 		if (oldZoomLevelParameter == null || newZoomLevelParameter == null) {
 			return;
 		}

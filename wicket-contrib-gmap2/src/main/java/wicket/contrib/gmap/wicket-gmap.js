@@ -91,8 +91,23 @@ function WicketMap2(id){
     this.init = function(callBack){
         this.onEvent(callBack, {});
     }
+
+    this.addListener = function(event, callBack) {
+        var self = this;
+       
+        GEvent.addListener(this.map, event, function() {
+            var params = {};
+            for (var p = 0; p < arguments.length; p++) {
+                if (arguments[p] != null) {
+                    params['argument' + p] = arguments[p];
+                }
+            }
+
+            self.onEvent(callBack, params);
+        });
+    } 
     
-    this.addListener = function(event, callBack){
+    this.oldAddListener = function(event, callBack) {
         var self = this;
         
         if (event == 'click' || event == 'dblclick') {
@@ -212,6 +227,9 @@ function WicketMap2(id){
     this.addOverlay = function(overlayId, overlay){
         this.overlays[overlayId] = overlay;
         overlay.overlayId = overlayId;
+        overlay.toString = function() {
+            return overlayId;
+        };
         
         this.map.addOverlay(overlay);
     }

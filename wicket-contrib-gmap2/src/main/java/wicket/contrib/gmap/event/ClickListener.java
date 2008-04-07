@@ -47,7 +47,7 @@ public abstract class ClickListener extends GEventListenerBehavior
 		GOverlay overlay = null;
 		GLatLng latLng = null;
 
-		String markerParameter = request.getParameter("marker");
+		String markerParameter = request.getParameter("argument0");
 		if (markerParameter != null)
 		{
 			for (GOverlay ovl : getGMap2().getOverlays())
@@ -60,7 +60,7 @@ public abstract class ClickListener extends GEventListenerBehavior
 			}
 		}
 
-		String latLngParameter = request.getParameter("latLng");
+		String latLngParameter = request.getParameter("argument1");
 		if (latLngParameter != null)
 		{
 			latLng = GLatLng.parse(latLngParameter);
