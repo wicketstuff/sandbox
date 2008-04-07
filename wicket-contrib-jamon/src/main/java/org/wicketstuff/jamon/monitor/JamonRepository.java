@@ -18,7 +18,7 @@ import com.jamonapi.MonitorFactory;
  * {@link MonitorFactory}.
  * </p>
  * <p>
- * Since wicket is an unmanged framework this repository is implemented as a
+ * Since Wicket is an unmanaged framework this repository is implemented as a
  * singleton. All monitors are kept in memory anyway so that shouldn't pose
  * a problem. One can use the {@link #clear()} method to remove all
  * {@link Monitor}s from this repository.
@@ -33,6 +33,9 @@ public class JamonRepository implements Serializable {
     private JamonRepository() {
     }
     
+    /**
+     * @return The sole instance of the {@link JamonRepository}.
+     */
     public static JamonRepository getJamonRepository() {
         return jamonRepository;
     }

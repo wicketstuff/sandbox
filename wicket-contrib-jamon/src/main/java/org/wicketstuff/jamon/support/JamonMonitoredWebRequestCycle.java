@@ -17,7 +17,7 @@ import com.jamonapi.MonitorFactory;
  * in your {@link WebApplication}. You can only use this class in combination with the {@link JamonAwareWebRequestCycleProcessor}.
  * </p>
  * <p>
- * This {@link WebRequestCycle} will add a monitor for all actions that will cause pages 
+ * The responsibility of the {@link JamonMonitoredWebRequestCycle} is to add a monitor for all actions that will cause pages 
  * or parts of pages to be rendered. <br>
  * The labels of the {@link Monitor}s come in these formats:
  * 
@@ -35,7 +35,7 @@ import com.jamonapi.MonitorFactory;
  * </li>
  * </ul>
  * 
- * The {@link JamonAdminPage} itself is excluded from the Monitors.
+ * Any navigations from or to the {@link JamonAdminPage} is excluded from the Monitors.
  * </p>
  * @author lars
  * 

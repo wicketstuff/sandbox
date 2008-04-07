@@ -12,6 +12,8 @@ import org.apache.wicket.request.target.component.IPageRequestTarget;
 import org.apache.wicket.request.target.component.listener.IListenerInterfaceRequestTarget;
 import org.apache.wicket.request.target.component.listener.RedirectPageRequestTarget;
 
+import com.jamonapi.Monitor;
+
 
 /**
  * <p>
@@ -19,11 +21,11 @@ import org.apache.wicket.request.target.component.listener.RedirectPageRequestTa
  * method in your own {@link WebApplication}.
  * </p>
  * <p>
- * This {@link WebRequestCycleProcessor} implementation that will get the source from where a request
- * originated from and the target to where it will resolve to. These are needed by the
- * {@link JamonMonitoredWebRequestCycle} to determine the monitor's label.
+ * The responsibility of the {@link JamonAwareWebRequestCycleProcessor} is to create the label of the {@link Monitor}
+ * currently in use by the {@link JamonMonitoredWebRequestCycle}. The label consists of the source from where a request
+ * originated from and the target to where it will resolve to.
  * <br>
- * This class can only be used in combination with {@link JamonMonitoredWebRequestCycle} otherwise
+ * This class can only be used in combination with {@link JamonMonitoredWebRequestCycle}. If used by itself 
  * an {@link IllegalStateException} will be thrown.
  * </p>
  * <p>
