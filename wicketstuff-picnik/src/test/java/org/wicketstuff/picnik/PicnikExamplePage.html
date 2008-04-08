@@ -1,0 +1,39 @@
+<html>
+    <head>
+        <title>Wicket Picnik example page</title>
+    </head>
+    <body>
+        <h1>Wicket Picnik example page</h1>
+        
+        <h2>Get Image from Picnik</h2>
+        
+        <img src="#" wicket:id="picnikImage1" />
+        
+        <div wicket:id="pullPanel"></div>
+        
+		<a href="#" wicket:id="importLink1">
+			<img wicket:id="logoImage" src="picnik_logo_small.jpg" alt="picnik" width="66" height="27" border="0" />
+		</a> 
+        
+        <h2>Import static image to Picnik</h2>
+        
+        <table><tr>
+        <td>
+	        <img src="http://www.indyphone.de/static/media/89e9e0a2-0d17-49db-97fb-e46a2e8c68ea.png" />
+    	    <br/>
+    	    original from indyphone
+    	    <br/>
+	        <a href="#" wicket:id="importLink2">Import image to Picnik</a>
+    	</td>
+    	<td>
+    		<img src="#" wicket:id="picnikImage2" />
+    		<br/>
+    		manipulation from picnik
+    	</td>
+    	</tr></table>
+        
+        <div wicket:id="pushtargetPanel" style="display:none"></div>
+        
+    </body>
+</html>
+
