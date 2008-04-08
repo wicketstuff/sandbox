@@ -84,6 +84,7 @@ public abstract class AbstractGrid extends Panel implements IHeaderContributor {
 			}
 		};
 		form.add(bodyContainer);
+		bodyContainer.setOutputMarkupId(true);
 
 		bodyContainer.add(new Label("firstRow", new EmptyRowModel()).setEscapeModelStrings(false));
 
