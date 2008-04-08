@@ -77,15 +77,13 @@ function WicketMap2(id){
         params['center'] = this.map.getCenter();
         params['bounds'] = this.map.getBounds();
         params['zoom'] = this.map.getZoom();
-        params['hidden'] = this.map.getInfoWindow().isHidden();
+        params['infoWindow.hidden'] = this.map.getInfoWindow().isHidden();
         
         for (var key in params) {
             callBack = callBack + '&' + key + '=' + params[key];
         }
         
-        wicketAjaxGet(callBack, function(){
-        }, function(){
-        });
+        wicketAjaxGet(callBack, function() {}, function() {});
     }
     
     this.init = function(callBack){
@@ -107,25 +105,22 @@ function WicketMap2(id){
         });
     } 
     
-    this.addGOverlayListener = function(event, overlayID, callBack){
+    this.addOverlayListener = function(event, overlayID, callBack){
         var self = this;
-        
-        if (event == 'dragend') {
-            var overlay = this.overlays[overlayID];
-            GEvent.addListener(overlay, event, function(){
-                self.onEvent(callBack, {
-                    'marker': overlayID,
-                    'latLng': overlay.getLatLng()
-                });
-            })
-        } else if (event == 'click') {
-            var overlay = this.overlays[overlayID];
-            GEvent.addListener(overlay, event, function(){
-                self.onEvent(callBack, {
-                    'marker': overlayID,
-                });
-            })
-        }
+        var overlay = this.overlays[overlayID];
+
+        GEvent.addListener(overlay, event, function() {
+            var params = {};
+            for (var p = 0; p < arguments.length; p++) {
+                if (arguments[p] != null) {
+                    params['argument' + p] = arguments[p];
+                }
+            }
+
+            params['overlay.latLng'] = overlay.getLatLng();
+
+            self.onEvent(callBack, params);
+        });
     }
     
     this.setDraggingEnabled = function(enabled){
