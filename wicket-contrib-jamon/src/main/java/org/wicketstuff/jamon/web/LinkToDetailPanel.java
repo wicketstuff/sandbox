@@ -2,6 +2,7 @@ package org.wicketstuff.jamon.web;
 
 import static org.wicketstuff.jamon.web.JamonAdminPage.PATH_TO_MONITOR_DETAILS;
 
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxFallbackLink;
@@ -9,6 +10,7 @@ import org.apache.wicket.extensions.markup.html.repeater.data.table.DefaultDataT
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 
 /**
  * Panel that serves as a wrapper for the link that is generated to show
@@ -29,6 +31,7 @@ public class LinkToDetailPanel extends Panel {
             super(id);
             add(new Label("linkText", modelForLink));
             monitorLabel = modelForLink.getObject().toString();
+            add(new AttributeModifier("class", true, new Model("jamonLinkToDetailPanel")));
         }
 
         @Override
