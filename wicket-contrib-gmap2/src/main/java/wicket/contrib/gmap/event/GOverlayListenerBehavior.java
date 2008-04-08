@@ -26,6 +26,10 @@ import wicket.contrib.gmap.api.GLatLng;
 import wicket.contrib.gmap.api.GMarker;
 import wicket.contrib.gmap.api.GOverlay;
 
+/**
+ * TODO we have to rethink this one - we don't want to duplicate all those event
+ * listeners ('drag', 'moveend', 'dragend', ...) for overlay, do we??
+ */
 public abstract class GOverlayListenerBehavior extends GEventListenerBehavior {
 
 	private GOverlay overlay;
@@ -43,15 +47,15 @@ public abstract class GOverlayListenerBehavior extends GEventListenerBehavior {
 				"addOverlayListener('" + getEvent() + "', '" + overlay.getId()
 						+ "', '" + getCallbackUrl() + "')");
 	}
-	
+
 	protected void update(AjaxRequestTarget target) {
 		Request request = RequestCycle.get().getRequest();
 
 		String latLngParameter = request.getParameter("overlay.latLng");
 		if (latLngParameter != null) {
-			GMarker marker = (GMarker)overlay;
+			GMarker marker = (GMarker) overlay;
 
 			marker.setLagLng(GLatLng.parse(latLngParameter));
-		}		
+		}
 	}
 }
