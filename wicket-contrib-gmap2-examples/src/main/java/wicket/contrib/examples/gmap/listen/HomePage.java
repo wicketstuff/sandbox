@@ -12,7 +12,7 @@ import wicket.contrib.examples.WicketExamplePage;
 import wicket.contrib.gmap.GMap2;
 import wicket.contrib.gmap.api.GControl;
 import wicket.contrib.gmap.api.GLatLngBounds;
-import wicket.contrib.gmap.event.InitListener;
+import wicket.contrib.gmap.event.LoadListener;
 import wicket.contrib.gmap.event.MoveEndListener;
 
 /**
@@ -41,11 +41,11 @@ public class HomePage extends WicketExamplePage {
 				target.addComponent(boundsLabel);
 			}
 		});
-		map.add(new InitListener() {
+		map.add(new LoadListener() {
 			private static final long serialVersionUID = 1L;
 			
 			@Override
-			protected void onInit(AjaxRequestTarget target) {
+			protected void onLoad(AjaxRequestTarget target) {
 				target.addComponent(boundsLabel);
 			}
 		});

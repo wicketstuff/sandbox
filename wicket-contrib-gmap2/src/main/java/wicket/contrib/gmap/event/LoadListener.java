@@ -20,26 +20,31 @@ package wicket.contrib.gmap.event;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 
-public abstract class InitListener extends GEventListenerBehavior
-{
+/**
+ * See "load" in the event section of <a
+ * href="http://www.google.com/apis/maps/documentation/reference.html#GMap2">GMap2</a>.
+ */
+public abstract class LoadListener extends GEventListenerBehavior {
 
 	@Override
 	protected String getEvent() {
-		throw new UnsupportedOperationException();
+		return "load";
 	}
 
 	@Override
-	public String getJSaddListener()
-	{
-		return getGMap2().getJSinvoke("init('" + getCallbackUrl() + "')");
-		
-	}
-	
-	@Override
-	protected void onEvent(AjaxRequestTarget target)
-	{
-		onInit(target);
+	public String getJSaddListener() {
+		// where notifying immediately (instead of adding a listener) because
+		// GMap2 will not fire the "load" event when we are finished adding our
+		// listeners :(
+		return getGMap2()
+				.getJSinvoke("onEvent('" + getCallbackUrl() + "', {})");
+
 	}
 
-	protected abstract void onInit(AjaxRequestTarget target);
+	@Override
+	protected void onEvent(AjaxRequestTarget target) {
+		onLoad(target);
+	}
+
+	protected abstract void onLoad(AjaxRequestTarget target);
 }
