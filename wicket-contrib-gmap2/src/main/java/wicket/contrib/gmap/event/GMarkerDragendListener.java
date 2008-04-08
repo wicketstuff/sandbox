@@ -18,57 +18,25 @@
  */
 package wicket.contrib.gmap.event;
 
-import org.apache.wicket.Request;
-import org.apache.wicket.RequestCycle;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 
-import wicket.contrib.gmap.api.GLatLng;
-import wicket.contrib.gmap.api.GMarker;
-import wicket.contrib.gmap.api.GOverlay;
-
-public abstract class GMarkerDragendListener extends GOverlayListenerBehavior
-{
+public abstract class GMarkerDragendListener extends GOverlayListenerBehavior {
 
 	@Override
-	protected String getEvent()
-	{
+	protected String getEvent() {
 		return "dragend";
 	}
 
 	@Override
-	protected void onEvent(AjaxRequestTarget target)
-	{
-		Request request = RequestCycle.get().getRequest();
+	protected void onEvent(AjaxRequestTarget target) {
+		update(target);
 
-		GMarker marker = null;
-		GLatLng  latLng  = null;
-		
-		String markerParameter = request.getParameter("marker");
-		if (markerParameter != null)
-		{
-			for (GOverlay ovl : getGMap2().getOverlays())
-			{
-				if (ovl.getId().equals(markerParameter)  && ovl instanceof GMarker)
-				{
-					marker = (GMarker)ovl;
-					break;
-				}
-			}
-		}
-
-		String latLngParameter = request.getParameter("latLng");
-		if (latLngParameter != null)
-		{
-			latLng = GLatLng.parse(latLngParameter);
-		}
-		
-		marker.setLagLng(latLng);
-		
-		onDragend(target, marker);
+		onDragend(target);
 	}
+
 	/**
-	 * Override this method to provide handling of a dragend of a marker. See the
-	 * event section of <a
+	 * Override this method to provide handling of a dragend of a marker. See
+	 * the event section of <a
 	 * href="http://www.google.com/apis/maps/documentation/reference.html#GMap2">GMap2</a>.
 	 * 
 	 * @param marker
@@ -76,5 +44,5 @@ public abstract class GMarkerDragendListener extends GOverlayListenerBehavior
 	 * @param target
 	 *            The target that initiated the click.
 	 */
-	protected abstract void onDragend(AjaxRequestTarget target, GMarker marker);
+	protected abstract void onDragend(AjaxRequestTarget target);
 }

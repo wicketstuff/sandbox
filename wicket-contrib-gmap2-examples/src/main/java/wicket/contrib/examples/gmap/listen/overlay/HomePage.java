@@ -22,20 +22,21 @@ public class HomePage extends WicketExamplePage {
 		final GMap2 topMap = new GMap2("topPanel", LOCALHOST);
 		topMap.addControl(GControl.GLargeMapControl);
 		add(topMap);
+
 		GMarkerOptions options = new GMarkerOptions().draggable(true);
 		final GMarker marker = new GMarker(topMap.getCenter(), options);
-		final Label label = new Label("label", new PropertyModel(marker, "latLng"));
+
+		final Label label = new Label("label", new PropertyModel(marker,
+				"latLng"));
 		label.setOutputMarkupId(true);
 		add(label);
-		marker.addBehavior(new GMarkerDragendListener()
-		{
-		
+
+		marker.addBehavior(new GMarkerDragendListener() {
 			@Override
-			protected void onDragend(AjaxRequestTarget target, GMarker marker)
-			{
+			protected void onDragend(AjaxRequestTarget target) {
 				target.addComponent(label);
 			}
-		
+
 		});
 		topMap.addOverlay(marker);
 	}

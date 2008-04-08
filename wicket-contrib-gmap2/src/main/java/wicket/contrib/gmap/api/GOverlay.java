@@ -36,7 +36,7 @@ public abstract class GOverlay implements Serializable
 
 	public GOverlay addBehavior(GOverlayListenerBehavior behavior)
 	{
-		behavior.setGOverlay(this);
+		behavior.setOverlay(this);
 		behaviors.add(behavior);
 
 		return this;
@@ -49,7 +49,7 @@ public abstract class GOverlay implements Serializable
 			behaviors.remove(behavior);
 		}
 
-		behavior.setGOverlay(null);
+		behavior.setOverlay(null);
 		return this;
 	}
 

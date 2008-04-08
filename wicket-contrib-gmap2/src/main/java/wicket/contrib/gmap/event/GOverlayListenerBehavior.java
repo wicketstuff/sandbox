@@ -18,26 +18,40 @@
  */
 package wicket.contrib.gmap.event;
 
+import org.apache.wicket.Request;
+import org.apache.wicket.RequestCycle;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+
+import wicket.contrib.gmap.api.GLatLng;
+import wicket.contrib.gmap.api.GMarker;
 import wicket.contrib.gmap.api.GOverlay;
 
-public abstract class GOverlayListenerBehavior extends GEventListenerBehavior
-{
+public abstract class GOverlayListenerBehavior extends GEventListenerBehavior {
 
-	private GOverlay gOverlay;
+	private GOverlay overlay;
 
-	protected GOverlay getGOverlay()
-	{
-		return this.gOverlay;
+	protected GOverlay getOverlay() {
+		return this.overlay;
 	}
 
-	public void setGOverlay(GOverlay gOverlay)
-	{
-		this.gOverlay = gOverlay;
+	public void setOverlay(GOverlay overlay) {
+		this.overlay = overlay;
+	}
+
+	public String getJSaddListener() {
+		return getGMap2().getJSinvoke(
+				"addOverlayListener('" + getEvent() + "', '" + overlay.getId()
+						+ "', '" + getCallbackUrl() + "')");
 	}
 	
-	public String getJSaddListener()
-	{
-		return getGMap2().getJSinvoke(
-				"addGOverlayListener('" + getEvent() + "', '" + gOverlay.getId() + "', '" + getCallbackUrl() + "')");
+	protected void update(AjaxRequestTarget target) {
+		Request request = RequestCycle.get().getRequest();
+
+		String latLngParameter = request.getParameter("overlay.latLng");
+		if (latLngParameter != null) {
+			GMarker marker = (GMarker)overlay;
+
+			marker.setLagLng(GLatLng.parse(latLngParameter));
+		}		
 	}
 }

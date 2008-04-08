@@ -38,7 +38,7 @@ public class GInfoWindow extends WebMarkupContainer
 	{
 		Request request = RequestCycle.get().getRequest();
 
-		if (Boolean.parseBoolean(request.getParameter("hidden")))
+		if (Boolean.parseBoolean(request.getParameter("infoWindow.hidden")))
 		{
 			// Attention: don't use close() as this might result in an
 			// endless AJAX request loop
