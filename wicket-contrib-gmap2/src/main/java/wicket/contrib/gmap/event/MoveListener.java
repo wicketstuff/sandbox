@@ -22,6 +22,10 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 
 import wicket.contrib.gmap.GMap2;
 
+/**
+ * See "move" in the event section of <a
+ * href="http://www.google.com/apis/maps/documentation/reference.html#GMap2">GMap2</a>.
+ */
 public abstract class MoveListener extends GEventListenerBehavior
 {
 

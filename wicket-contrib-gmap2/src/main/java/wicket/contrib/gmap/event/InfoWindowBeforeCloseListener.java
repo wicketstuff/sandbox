@@ -20,6 +20,10 @@ package wicket.contrib.gmap.event;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 
+/**
+ * See "infowindowbeforeclose" in the event section of <a
+ * href="http://www.google.com/apis/maps/documentation/reference.html#GMap2">GMap2</a>.
+ */
 public abstract class InfoWindowBeforeCloseListener extends GEventListenerBehavior
 {
 

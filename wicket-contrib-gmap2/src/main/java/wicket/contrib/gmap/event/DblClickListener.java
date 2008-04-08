@@ -25,10 +25,10 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import wicket.contrib.gmap.api.GLatLng;
 
 /**
- * TODO should we put 'click' and 'dblclkick' together in this listener?
+ * See "dblclick" in the event section of <a
+ * href="http://www.google.com/apis/maps/documentation/reference.html#GMap2">GMap2</a>.
  */
-public abstract class DblClickListener extends GEventListenerBehavior
-{
+public abstract class DblClickListener extends GEventListenerBehavior {
 
 	@Override
 	protected String getEvent() {
@@ -40,7 +40,7 @@ public abstract class DblClickListener extends GEventListenerBehavior
 		Request request = RequestCycle.get().getRequest();
 
 		GLatLng latLng = null;
-		
+
 		String latLngParameter = request.getParameter("argument0");
 		if (latLngParameter != null) {
 			latLng = GLatLng.parse(latLngParameter);

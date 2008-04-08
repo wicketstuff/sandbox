@@ -1,9 +1,3 @@
-package wicket.contrib.gmap.event;
-
-import org.apache.wicket.Request;
-import org.apache.wicket.RequestCycle;
-import org.apache.wicket.ajax.AjaxRequestTarget;
-
 /*
  * $Id: org.eclipse.jdt.ui.prefs 5004 2006-03-17 20:47:08 -0800 (Fri, 17 Mar 2006) eelco12 $
  * $Revision: 5004 $
@@ -22,8 +16,15 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
  * License for the specific language governing permissions and limitations under
  * the License.
  */
+package wicket.contrib.gmap.event;
+
+import org.apache.wicket.Request;
+import org.apache.wicket.RequestCycle;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+
 /**
- * This class handles zoomEnd events of the google map.
+ * See "zoomend" in the event section of <a
+ * href="http://www.google.com/apis/maps/documentation/reference.html#GMap2">GMap2</a>.
  */
 public abstract class ZoomEndListener extends GEventListenerBehavior {
 	@Override
