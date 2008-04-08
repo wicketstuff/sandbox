@@ -26,34 +26,27 @@ import wicket.contrib.gmap.api.GLatLng;
 import wicket.contrib.gmap.api.GOverlay;
 
 /**
- * See the event section of <a
+ * See "click" in the event section of <a
  * href="http://www.google.com/apis/maps/documentation/reference.html#GMap2">GMap2</a>.
- * TODO should we put 'click' and 'dblclkick' together in this listener?
  */
-public abstract class ClickListener extends GEventListenerBehavior
-{
+public abstract class ClickListener extends GEventListenerBehavior {
 
 	@Override
-	protected String getEvent()
-	{
+	protected String getEvent() {
 		return "click";
 	}
 
 	@Override
-	protected void onEvent(AjaxRequestTarget target)
-	{
+	protected void onEvent(AjaxRequestTarget target) {
 		Request request = RequestCycle.get().getRequest();
 
 		GOverlay overlay = null;
 		GLatLng latLng = null;
 
 		String markerParameter = request.getParameter("argument0");
-		if (markerParameter != null)
-		{
-			for (GOverlay ovl : getGMap2().getOverlays())
-			{
-				if (ovl.getId().equals(markerParameter))
-				{
+		if (markerParameter != null) {
+			for (GOverlay ovl : getGMap2().getOverlays()) {
+				if (ovl.getId().equals(markerParameter)) {
 					overlay = ovl;
 					break;
 				}
@@ -61,8 +54,7 @@ public abstract class ClickListener extends GEventListenerBehavior
 		}
 
 		String latLngParameter = request.getParameter("argument1");
-		if (latLngParameter != null)
-		{
+		if (latLngParameter != null) {
 			latLng = GLatLng.parse(latLngParameter);
 		}
 
@@ -81,5 +73,6 @@ public abstract class ClickListener extends GEventListenerBehavior
 	 * @param target
 	 *            The target that initiated the click.
 	 */
-	protected abstract void onClick(AjaxRequestTarget target, GLatLng latLng, GOverlay overlay);
+	protected abstract void onClick(AjaxRequestTarget target, GLatLng latLng,
+			GOverlay overlay);
 }
