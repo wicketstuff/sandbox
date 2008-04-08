@@ -86,10 +86,6 @@ function WicketMap2(id){
         wicketAjaxGet(callBack, function() {}, function() {});
     }
     
-    this.init = function(callBack){
-        this.onEvent(callBack, {});
-    }
-
     this.addListener = function(event, callBack) {
         var self = this;
        
