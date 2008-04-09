@@ -76,6 +76,8 @@ public class ProgressBar extends Panel {
 	public ProgressBar(String id, ProgressionModel model) {
 		super(id, model);
 
+		// add CSS to parent to render the CSS even if the progress bar is initially
+		// invisible
 		HeaderContributor cssContributor = HeaderContributor.forCss(CSS);
 		if(getParent() != null) {
 			getParent().add(cssContributor);
