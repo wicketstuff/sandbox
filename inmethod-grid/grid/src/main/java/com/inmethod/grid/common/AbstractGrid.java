@@ -1,5 +1,6 @@
 package com.inmethod.grid.common;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -336,7 +337,7 @@ public abstract class AbstractGrid extends Panel implements IHeaderContributor {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public Object getObject() {
+		public Serializable getObject() {
 			StringBuilder result = new StringBuilder();
 			for (int i = 0; i < getActiveColumns().size(); ++i) {
 				result.append("<td></td>");
