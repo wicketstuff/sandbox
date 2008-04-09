@@ -49,6 +49,7 @@ public class TextFieldPanel extends EditableCellPanel {
 			}
 		};
 		tf.setOutputMarkupId(true);
+		tf.setLabel(column.getHeaderModel());
 		add(tf);		
 	}
 		
