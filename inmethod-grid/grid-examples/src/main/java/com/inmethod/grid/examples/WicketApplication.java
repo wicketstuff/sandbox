@@ -1,5 +1,6 @@
 package com.inmethod.grid.examples;
 
+import org.apache.wicket.Page;
 import org.apache.wicket.Request;
 import org.apache.wicket.Response;
 import org.apache.wicket.protocol.http.WebApplication;
@@ -59,7 +60,7 @@ public class WicketApplication extends WebApplication
 	/**
 	 * {@inheritDoc}
 	 */
-	public Class<?> getHomePage()
+	public Class<? extends Page> getHomePage()
 	{
 		return SimpleDataGridPage.class;
 	}
