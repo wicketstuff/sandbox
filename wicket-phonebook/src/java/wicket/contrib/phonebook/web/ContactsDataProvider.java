@@ -20,13 +20,14 @@ package wicket.contrib.phonebook.web;
 
 import java.util.Iterator;
 
-import wicket.contrib.phonebook.Contact;
-import wicket.contrib.phonebook.ContactDao;
-import wicket.contrib.phonebook.QueryParam;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.IFilterStateLocator;
 import org.apache.wicket.extensions.markup.html.repeater.util.SortParam;
 import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
 import org.apache.wicket.model.IModel;
+
+import wicket.contrib.phonebook.Contact;
+import wicket.contrib.phonebook.ContactDao;
+import wicket.contrib.phonebook.QueryParam;
 
 /**
  * note: it is important that the dao passed to the data provider be a proxy
@@ -41,7 +42,7 @@ import org.apache.wicket.model.IModel;
  *
  * @author igor
  */
-public class ContactsDataProvider extends SortableDataProvider implements
+public class ContactsDataProvider extends SortableDataProvider<Contact> implements
 		IFilterStateLocator {
 
 	/** dao that will be used to retrieve the list of contacts */
@@ -111,7 +112,7 @@ public class ContactsDataProvider extends SortableDataProvider implements
 	 *            The object that needs to be wrapped
 	 * @return The model representation of the object
 	 */
-	public IModel model(Object object) {
+	public IModel<Contact> model(Object object) {
 		return new DetachableContactModel((Contact) object, dao);
 	}
 
