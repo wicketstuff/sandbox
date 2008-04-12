@@ -30,7 +30,7 @@ import wicket.contrib.phonebook.ContactDao;
  */
 public class DetachableContactModelTest extends TestCase {
 	public void testLoad() throws Exception {
-		ContactDao dao = EasyMock.createStrictMock(ContactDao.class);
+		ContactDao dao = EasyMock.createMock(ContactDao.class);
 		Contact expected = new Contact();
 		expected.setId(007);
 		expected.setFirstname("James");
