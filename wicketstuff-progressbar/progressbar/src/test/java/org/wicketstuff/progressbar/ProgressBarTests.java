@@ -16,15 +16,12 @@
  */
 package org.wicketstuff.progressbar;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.util.tester.TestPanelSource;
 import org.apache.wicket.util.tester.WicketTester;
 import org.junit.Test;
-import org.wicketstuff.progressbar.ProgressBar;
-import org.wicketstuff.progressbar.Progression;
-import org.wicketstuff.progressbar.ProgressionModel;
 
 public class ProgressBarTests {
 
@@ -76,6 +73,27 @@ public class ProgressBarTests {
 		testProgressive.proceed(50);
 		wt.assertLabel("panel:label", "50%");
 		assertTrue(progressBar.getOutputMarkupId());
+	}
+
+	@Test
+	public void testProgressBarMessage() {
+		WicketTester wt = new WicketTester();
+		final DummyTask testProgressive = new DummyTask();
+		wt.startPanel(new TestPanelSource() {
+			public Panel getTestPanel(String panelId) {
+				return new ProgressBar(panelId, new ProgressionModel() {
+					@Override
+					protected Progression getProgression() {
+						return new Progression(testProgressive.getProgress(),
+								"Going for " + testProgressive.getProgress());
+					}
+
+				});
+			}
+		});
+		wt.assertLabel("panel:message", "Going for 0");
+		testProgressive.proceed(75);
+		wt.assertLabel("panel:message", "Going for 75");
 	}
 
 }

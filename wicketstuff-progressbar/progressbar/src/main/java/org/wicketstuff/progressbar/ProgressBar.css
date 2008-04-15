@@ -19,6 +19,10 @@ div.wicketstuff-progressbar span.label {
 	font-family: sans-serif;
 }
 
+div.wicketstuff-progressbar span.label span.message {
+	font-weight: normal;
+}
+
 div.wicketstuff-progressbar span.bar {
 	display: block;
 	height: 100%;

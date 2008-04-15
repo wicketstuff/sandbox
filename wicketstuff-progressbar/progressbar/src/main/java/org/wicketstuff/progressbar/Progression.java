@@ -16,19 +16,22 @@
  */
 package org.wicketstuff.progressbar;
 
+
 /**
- * The progress of a task is encapsulated as
- * a Progression value object.
+ * <p>The progress of a task is encapsulated as a <code>Progression</code> value
+ * object. Currently the progress is only stored as an int percentage value (0 to 100) and
+ * optionally a message describing the current task.</p>
  *
- * Currently the progress is only stored
- * as a int percentage value (0 to 100).
+ * <p>This class has no dependency to Wicket and could be used in the service
+ * layer.</p>
  *
- *
- * @author Christopher Hlubek
+ * @author Christopher Hlubek (hlubek)
  *
  */
 public class Progression {
 	private final int progress;
+
+	private final String message;
 
 	/**
 	 * Create a new Progression value object
@@ -37,8 +40,23 @@ public class Progression {
 	 * @param progress
 	 *            The progress in percent from 0 to 100, where 100 means done
 	 */
-	public Progression(final int progress) {
+	public Progression(int progress) {
 		this.progress = progress;
+		this.message = null;
+	}
+
+	/**
+	 * Create a new Progression value object
+	 * from a percentage progress value and a message
+	 * describing the current task
+	 *
+	 * @param progress
+	 *            The progress in percent from 0 to 100, where 100 means done
+	 * @param
+	 */
+	public Progression(int progress, String message) {
+		this.progress = progress;
+		this.message = message;
 	}
 
 	/**
@@ -50,5 +68,9 @@ public class Progression {
 
 	public int getProgress() {
 		return progress;
+	}
+
+	public String getProgressMessage() {
+		return message;
 	}
 }
