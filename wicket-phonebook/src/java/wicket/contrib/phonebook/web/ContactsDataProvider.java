@@ -112,8 +112,8 @@ public class ContactsDataProvider extends SortableDataProvider<Contact> implemen
 	 *            The object that needs to be wrapped
 	 * @return The model representation of the object
 	 */
-	public IModel<Contact> model(Object object) {
-		return new DetachableContactModel((Contact) object, dao);
+	public IModel<Contact> model(Contact object) {
+		return new DetachableContactModel(object, dao);
 	}
 
 }
