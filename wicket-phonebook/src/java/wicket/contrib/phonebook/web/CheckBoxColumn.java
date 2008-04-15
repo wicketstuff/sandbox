@@ -87,12 +87,9 @@ public abstract class CheckBoxColumn<T> extends HeaderlessColumn<T> {
 		}
 
 		public IResourceStream getMarkupResourceStream(
-				MarkupContainer<?> container,
-				Class<? extends MarkupContainer<?>> containerClass) {
-
+				MarkupContainer<?> container, Class<?> containerClass) {
 			return new StringResourceStream(
 					"<wicket:panel><input wicket:id=\"checkbox\" type=\"checkbox\"/></wicket:panel>");
-
 		}
 	}
 
