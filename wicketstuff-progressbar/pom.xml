@@ -29,9 +29,7 @@
 				<snapshotRepository>
 					<id>repo</id>
 					<name>Local Bamboo/Tomcat repository</name>
-					<url>
-						file:/home/wicket/tomcat/webapps/maven/repository/
-					</url>
+					<url>file:/home/wicket/tomcat/webapps/maven/repository/</url>
 					<uniqueVersion>false</uniqueVersion>
 				</snapshotRepository>
 			</distributionManagement>

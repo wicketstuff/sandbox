@@ -24,44 +24,60 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.time.Duration;
 import org.wicketstuff.progressbar.support.DynamicAjaxSelfUpdatingTimerBehavior;
 
 
 /**
- * A ProgressBar component displays a progress bar that is updatable via AJAX
- * and displays progress active.
+ * <p>
+ * The <code>ProgressBar</code> component displays a horizontal progress bar
+ * that is updatable via AJAX and displays the progress of some task. The
+ * current progress is given with a <code>Progression</code> value object.
+ * </p>
  *
- * The current progress is given with a Progression value object.
+ * <p>
+ * This is a small example of a static <code>ProgressBar</code> without AJAX
+ * updates:
+ * </p>
  *
  * <pre>
- * final ProgressBar;
+ * <code>
+ * final ProgressBar bar;
  * add(bar = new ProgressBar(&quot;progress&quot;, new ProgressionModel() {
- *     protected Progression getProgression() {
- *         return new Progression(progress);
- *     }
+ * 	protected Progression getProgression() {
+ * 		// progress is an int instance variable defined somewhere else
+ * 		return new Progression(progress);
+ * 	}
  * }));
+ * </code>
  * </pre>
  *
- * The model can also be later injected.
+ * <p>
+ * If the model for getting the <code>Progression</code> is not known at the
+ * time of construction, it could be injected later.
+ * </p>
  *
- * The progress bar can be used both active or passive to show progress in a
- * wizard etc. The active progress bar must be started from within an ajax
- * request (e.g. AjaxButton):
+ * <p>
+ * The progress bar can be used both actively or passively (e.g. to show
+ * progress in a wizard). The active progress bar must be started from within an
+ * ajax request (e.g. AjaxButton), as shown below:
+ * </p>
  *
  * <pre>
+ * <code>
  * form.add(new AjaxButton(&quot;button&quot;) {
  *     protected void onSubmit(AjaxRequestTarget target, Form form) {
  *         bar.start(target);
  *         // start some task
  *     }
  * }
+ * </code>
  * </pre>
  *
- * <p>
- * The ProgressBar is automatically stopped (no more AJAX updates) when the
- * Progress object isDone() method returns true.
- * </p>
+ * <p>The <code>ProgressBar</code> is automatically stopped (including AJAX updates) when the
+ * <code>isDone()</code> method of the <code>Progress</code> object returns
+ * true. The bar can be stopped anytime using the <code>stop()</code> method.</p>
  *
  * @author Christopher Hlubek (hlubek)
  *
@@ -86,6 +102,7 @@ public class ProgressBar extends Panel {
 		}
 
 		add(new Label("label", getLabelModel(model)));
+		add(new Label("message", getMessageModel(model)));
 		add(new WebMarkupContainer("bar").add(new AttributeModifier("style",
 				true, new AbstractReadOnlyModel() {
 					@Override
@@ -119,6 +136,25 @@ public class ProgressBar extends Panel {
 				return progression.getProgress() + "%";
 			}
 		};
+	}
+
+	/**
+	 * Create the model for the message label on the bar.
+	 *
+	 * This could be overridden for
+	 * a custom message label
+	 *
+	 * @param model the ProgressionModel
+	 *
+	 * @return A model for the bar message label
+	 */
+	protected IModel getMessageModel(final ProgressionModel model) {
+	    return new AbstractReadOnlyModel() {
+			@Override
+			public Object getObject() {
+				return model.getProgression().getProgressMessage();
+			}
+	    };
 	}
 
 	/**

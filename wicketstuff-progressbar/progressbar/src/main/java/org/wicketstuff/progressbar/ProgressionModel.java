@@ -22,7 +22,7 @@ import org.apache.wicket.model.AbstractReadOnlyModel;
  * Typed model that returns the current progress for
  * the ProgressBar component.
  *
- * @author Christopher Hlubek
+ * @author Christopher Hlubek (hlubek)
  *
  */
 public abstract class ProgressionModel extends AbstractReadOnlyModel {

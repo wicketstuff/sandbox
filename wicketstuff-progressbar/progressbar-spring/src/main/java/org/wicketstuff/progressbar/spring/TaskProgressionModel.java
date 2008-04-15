@@ -21,7 +21,8 @@ import org.wicketstuff.progressbar.ProgressionModel;
 
 /**
  * Use this as a model for a ProgressBar, if
- * tasks are submitted to the taskService.
+ * tasks are submitted to the task service. The current progress is
+ * fetched from the task service.
  *
  * After scheduling a task, set the taskId.
  *
