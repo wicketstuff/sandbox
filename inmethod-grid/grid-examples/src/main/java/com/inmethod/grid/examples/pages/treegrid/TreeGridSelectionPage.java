@@ -1,5 +1,6 @@
 package com.inmethod.grid.examples.pages.treegrid;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -77,7 +78,7 @@ public class TreeGridSelectionPage extends BaseExamplePage {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public Object getObject() {
+			public Serializable getObject() {
 				return selectedItemsAsString(grid);
 			}
 		};
