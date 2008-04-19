@@ -22,7 +22,16 @@ import org.wicketstuff.scriptaculous.ScriptaculousAjaxBehavior;
 
 /**
  * Extension to {@link ListView} that allows for drag/drop reordering of items.
- *
+ * <p>
+ * The underlying List model will be updated whenever the user drag/drop reorders 
+ * the list.  The application can listen for the reordering using 
+ * a ??? model change listener ???
+ * </p>
+ * <p>
+ * it *might* be possible to add/remove list items by drag/dropping list items 
+ * from one sortable list to another or to a draggable target.  I haven't tested this yet...
+ * </p>
+ * 
  * @see http://wiki.script.aculo.us/scriptaculous/show/Sortable.create
  * @author <a href="mailto:wireframe6464@users.sourceforge.net">Ryan Sonnek</a>
  */
@@ -31,8 +40,9 @@ public abstract class SortableListView extends WebMarkupContainer {
 
 	private AbstractAjaxBehavior onUpdateBehavior = new SortableContainerBehavior();
 	private Map<String, Serializable> options = new HashMap<String, Serializable>();
-
-	public SortableListView(String id, final String itemId, final List items) {
+	private List<SortableListView> containmentSortables = new ArrayList<SortableListView>();
+	
+	public SortableListView(String id, final String itemId, final List<?> items) {
 		this(id, itemId, new Model((Serializable) items));
 	}
 
@@ -67,6 +77,34 @@ public abstract class SortableListView extends WebMarkupContainer {
 	public void setConstraintHorizontal() {
 		options.put("constraint", "horizontal");
 	}
+	
+	public void setGhosting(boolean value) {
+		options.put("ghosting", value);
+	}
+	
+	public void setScrollSensitivity(int value) {
+		options.put("scrollSensitivity", value);
+	}
+	
+	public void setScrollSpeed(int value) {
+		options.put("scrollSpeed", value);
+	}
+	
+	public void setDropOnEmpty(boolean value) {
+		options.put("dropOnEmpty", value);
+	}
+	
+	public void setHoverClass(String className) {
+		options.put("hoverclass", className);
+	}
+
+	/**
+	 * add other sortable containers that items can be drag/dropped to.
+	 * @param otherView
+	 */
+	public void addContainment(SortableListView otherView) {
+		containmentSortables.add(otherView);
+	}
 
 	/**
 	 * callback extension point for populating each list item.
@@ -86,7 +124,14 @@ public abstract class SortableListView extends WebMarkupContainer {
 	protected void onRender(MarkupStream markupStream) {
 		super.onRender(markupStream);
 
-
+		if (!containmentSortables.isEmpty()) {
+			String ids = "['" + getMarkupId() + "'";
+			for (SortableListView container : containmentSortables) {
+				ids += ", '" + container.getMarkupId() + "'";
+			}
+			ids += "]";
+			options.put("containment", ids);
+		}
 		options.put("onUpdate", new JavascriptBuilder.JavascriptFunction(
 				"function(element) { wicketAjaxGet('" + onUpdateBehavior.getCallbackUrl()
 						+ "&' + Sortable.serialize(element)); }"));
@@ -95,6 +140,7 @@ public abstract class SortableListView extends WebMarkupContainer {
 		builder.addLine("Sortable.create('" + getMarkupId() + "', ");
 		builder.addOptions(options);
 		builder.addLine(");");
+		//TODO: investigate renderOnDomReadyJavascript within renderHead??
 		getResponse().write(builder.buildScriptTagString());
 	}
 
@@ -111,8 +157,8 @@ public abstract class SortableListView extends WebMarkupContainer {
 				return;
 			}
 
-            List items = (List) listView.getModelObject();
-            List originalItems = new ArrayList(items);
+            List<Object> items = (List<Object>) listView.getModelObject();
+            List<Object> originalItems = new ArrayList<Object>(items);
             for (int index = 0; index < items.size(); index++) {
             	int newIndex = Integer.parseInt(parameters[index]);
             	if (!items.get(index).equals(items.get(newIndex))) {
@@ -126,6 +172,7 @@ public abstract class SortableListView extends WebMarkupContainer {
 	}
 	
 	private static class SortableListItem extends ListItem {
+		private static final long serialVersionUID = 1L;
 		private final String itemId;
 
 		public SortableListItem(String itemId, int index, IModel listItemModel) {
