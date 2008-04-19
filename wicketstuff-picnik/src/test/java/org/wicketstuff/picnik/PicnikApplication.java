@@ -14,13 +14,12 @@ import org.wicketstuff.pullupload.PulledFileUploadConverter;
  */
 public class PicnikApplication extends WebApplication
 {    
-    /**
-     * Constructor
-     */
-	public PicnikApplication()
-	{
+	@Override
+	protected void init() {
+		super.init();
+		mountBookmarkablePage("/picnikinabox", PicnikInABoxPage.class);
 	}
-	
+
 	/**
 	 * @see wicket.Application#getHomePage()
 	 */
