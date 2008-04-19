@@ -1,8 +1,12 @@
-<html>
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org">
     <head>
         <title>Wicket Picnik example page</title>
     </head>
     <body>
+    	<div wicket:id="navbar"></div>
+    
         <h1>Wicket Picnik example page</h1>
         
         <h2>Get Image from Picnik</h2>
@@ -14,6 +18,8 @@
 		<a href="#" wicket:id="importLink1">
 			<img wicket:id="logoImage" src="picnik_logo_small.jpg" alt="picnik" width="66" height="27" border="0" />
 		</a> 
+		
+        <span wicket:id="modalPicnikLink"></span>
         
         <h2>Import static image to Picnik</h2>
         

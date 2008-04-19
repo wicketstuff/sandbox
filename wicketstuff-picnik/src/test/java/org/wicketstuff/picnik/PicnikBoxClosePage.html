@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org">
+<head>
+<script language="javascript" type="text/javascript">
+	function close() {
+        // Check to see if we are still in a frame
+        if (parent.frames.length > 0) {
+			// Let the parent frame close the picnik in a box frame.
+			// Firefox doesn't like us closing the doc while we're in the onload callback 
+			// (it'll stay stuck in the loading state), so set a very short timeout
+			// to break out of this call stack.
+            setTimeout( "parent.onPicnikClose()", 10 );
+        } else {
+            // Sometimes Picnik in a box may leave the box (e.g. authenticating to Flickr)
+            // In this case, the user leaves your site and ends up back on Picnik.com.
+            // They are then no longer in a frame when they hit close.
+            // In this case, you should redirect to an appropriate page on your site
+
+			// YOU SHOULD CHANGE THIS URL TO POINT TO YOUR WEBSITE:
+            document.location.replace('http://www.picnik.com/');
+        }
+	}
+</script>
+</head>
+<body onload="close()">
+</body>
+</html>
