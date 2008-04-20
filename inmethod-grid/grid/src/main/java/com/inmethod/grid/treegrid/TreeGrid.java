@@ -81,26 +81,26 @@ public class TreeGrid extends AbstractGrid {
 		/**
 		 * {@inheritDoc}
 		 */
-		public void nodeCollapsed(TreeNode node) {
+		public void nodeCollapsed(Object node) {
 		}
 
 		/**
 		 * {@inheritDoc}
 		 */
-		public void nodeExpanded(TreeNode node) {
+		public void nodeExpanded(Object node) {
 		}
 
 		/**
 		 * {@inheritDoc}
 		 */
-		public void nodeSelected(TreeNode node) {
+		public void nodeSelected(Object node) {
 			onItemSelectionChanged(new Model((Serializable) node), true);
 		}
 
 		/**
 		 * {@inheritDoc}
 		 */
-		public void nodeUnselected(TreeNode node) {
+		public void nodeUnselected(Object node) {
 			onItemSelectionChanged(new Model((Serializable) node), false);
 		}
 	};
@@ -147,8 +147,8 @@ public class TreeGrid extends AbstractGrid {
 	};
 
 	/**
-	 * Callback function called after user clicked on an junction link. The node has already been
-	 * expanded/collapsed (depending on previous status).
+	 * Callback function called after user clicked on an junction link. The node
+	 * has already been expanded/collapsed (depending on previous status).
 	 * 
 	 * @param target
 	 *            Request target - may be null on non-ajax call
@@ -156,7 +156,7 @@ public class TreeGrid extends AbstractGrid {
 	 * @param node
 	 *            Node for which this callback is relevant
 	 */
-	protected void onJunctionLinkClicked(AjaxRequestTarget target, TreeNode node) {
+	protected void onJunctionLinkClicked(AjaxRequestTarget target, Object node) {
 	}
 
 	/**
@@ -165,9 +165,9 @@ public class TreeGrid extends AbstractGrid {
 	@SuppressWarnings("unchecked")
 	@Override
 	public Collection<IModel> getSelectedItems() {
-		Collection<TreeNode> nodes = getTreeState().getSelectedNodes();
+		Collection<Object> nodes = getTreeState().getSelectedNodes();
 		Collection<IModel> result = new ArrayList<IModel>(nodes.size());
-		for (TreeNode node : nodes) {
+		for (Object node : nodes) {
 			result.add(new Model((Serializable) node));
 		}
 		return result;
@@ -194,7 +194,7 @@ public class TreeGrid extends AbstractGrid {
 	 */
 	@Override
 	public boolean isItemSelected(IModel itemModel) {
-		return getTreeState().isNodeSelected((TreeNode) itemModel.getObject());
+		return getTreeState().isNodeSelected(itemModel.getObject());
 	}
 
 	/**
@@ -203,8 +203,8 @@ public class TreeGrid extends AbstractGrid {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void resetSelectedItems() {
-		Collection<TreeNode> nodes = getTreeState().getSelectedNodes();
-		for (TreeNode node : nodes) {
+		Collection<Object> nodes = getTreeState().getSelectedNodes();
+		for (Object node : nodes) {
 			getTreeState().selectNode(node, false);
 		}
 		getTree().invalidateAll();
@@ -224,7 +224,7 @@ public class TreeGrid extends AbstractGrid {
 		}
 		getTree().invalidateAll();
 	}
-	
+
 	@Override
 	protected WebMarkupContainer findRowComponent(IModel rowModel) {
 		if (rowModel == null) {
@@ -239,13 +239,13 @@ public class TreeGrid extends AbstractGrid {
 					return (WebMarkupContainer) component;
 				}
 			}
-		}		
+		}
 		return null;
 	}
-	
+
 	@Override
 	public void markItemDirty(IModel model) {
-		TreeNode node = (TreeNode) model.getObject();
+		Object node = model.getObject();
 		getTree().markNodeDirty(node);
 	}
 
@@ -254,7 +254,7 @@ public class TreeGrid extends AbstractGrid {
 	 */
 	@Override
 	public void selectItem(IModel itemModel, boolean selected) {
-		getTreeState().selectNode((TreeNode) itemModel.getObject(), selected);
+		getTreeState().selectNode(itemModel.getObject(), selected);
 	}
 
 	@Override
