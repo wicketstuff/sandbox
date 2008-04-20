@@ -285,7 +285,7 @@ InMethod.XTable.prototype = {
 		this.updateScrollTop = this.lastScrollTop;
 		this.updateScrollLeft = this.lastScrollLeft;	
 					
-		this.updateColumnWidths();
+		//this.updateColumnWidths();
 		this.update();
 		this.columnsStateCallback = columnsStateCallback;
 		
