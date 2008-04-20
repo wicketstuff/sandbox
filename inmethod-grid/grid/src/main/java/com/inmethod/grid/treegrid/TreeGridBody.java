@@ -77,7 +77,7 @@ public abstract class TreeGridBody extends AbstractTree {
 			// can't refresh this component directly because of setRenderBodyOnly(true) that's set
 			// in
 			// constructor
-			target.addComponent(findParent(TreeGrid.class));
+			target.addComponent((Component<?>) findParent(TreeGrid.class));
 		} else {
 			super.addComponent(target, component);
 		}
