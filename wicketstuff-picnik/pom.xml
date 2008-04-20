@@ -3,25 +3,17 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.wicketstuff.picnik</groupId>
+	<groupId>org.wicketstuff</groupId>
 	<artifactId>wicketstuff-picnik</artifactId>
 	<packaging>jar</packaging>
 	<version>1.3-SNAPSHOT</version>
-	<!-- TODO project name  -->
 	<name>wicketstuff-picnik</name>
-	<description></description>
+	<description>Integration classes for picnik.com</description>
 
 	<properties>
 		<wicket.version>1.3.3</wicket.version>
 		<jetty.version>6.1.5</jetty.version>
 	</properties>
-	
-	<!-- TODO
-		<organization>
-		<name>company name</name>
-		<url>company url</url>
-		</organization>
-	-->
 
 	<licenses>
 		<license>
@@ -144,6 +136,11 @@
 		</dependency>
 	</dependencies>
 
+	<profiles>
+		<profile>
+			<id>release</id>
+		</profile>
+	</profiles>
 	<build>
 		<resources>
 			<resource>
@@ -174,6 +171,27 @@
 			</testResource>
 		</testResources>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.5</source>
+					<target>1.5</target>
+				</configuration>
+			</plugin>		
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>			
 			<plugin>
 				<groupId>org.mortbay.jetty</groupId>
 				<artifactId>maven-jetty-plugin</artifactId>
