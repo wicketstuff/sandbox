@@ -260,7 +260,7 @@ public class TreeGrid extends AbstractGrid {
 	@Override
 	public WebMarkupContainer findParentRow(Component child) {
 		if (child instanceof AbstractTreeGridRow == false) {
-			child = child.findParent(AbstractTreeGridRow.class);
+			child = (Component) child.findParent(AbstractTreeGridRow.class);
 		}
 		return (WebMarkupContainer) (child != null ? child.getParent() : null);
 	}
