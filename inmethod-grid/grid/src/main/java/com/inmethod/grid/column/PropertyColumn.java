@@ -117,10 +117,15 @@ public class PropertyColumn extends AbstractLightWeightColumn {
 	}
 	
 	private CharSequence getValue(IModel rowModel) {
-		Object rowObject = getModelObject(rowModel);
-		Object property = getProperty(rowObject, propertyExpression); 
+		Object rowObject = getModelObject(rowModel);	
+		Object property;
+		try {
+			property = getProperty(rowObject, propertyExpression); 
+		} catch (NullPointerException e) {
+			property = null;
+		}		
 		CharSequence string = convertToString(property);
-		if (isEscapeMarkup()) {
+		if (isEscapeMarkup() && string != null) {
 			string = Strings.escapeMarkup(string.toString());
 		}
 		return string;
@@ -151,7 +156,9 @@ public class PropertyColumn extends AbstractLightWeightColumn {
 		return new IRenderable() {
 			public void render(IModel rowModel, Response response) {
 				CharSequence value = getValue(rowModel);
-				response.write(value);
+				if (value != null) {
+					response.write(value);
+				}
 			}
 		};
 	}
