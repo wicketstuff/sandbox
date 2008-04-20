@@ -8,6 +8,7 @@ import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.PackageResource;
+import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.html.resources.PackagedResourceReference;
 import org.apache.wicket.model.IModel;
@@ -47,6 +48,7 @@ public class ModalPicnikLink extends Panel {
             	modalWindow.show(target);
             }
         };
+        showModalLink.add(new Image("picnikLogo", new ResourceReference(ModalPicnikLink.class, "picnik_logo_small.jpg")));
         configureShowModalLink(showModalLink);
 		add(showModalLink);
     	
@@ -65,20 +67,16 @@ public class ModalPicnikLink extends Panel {
 		
 		HashMap<String, String> m = new HashMap<String, String>();
 		m.put("closeModalLinkId", closeModalLink.getMarkupId());
-		add(TextTemplateHeaderContributor.forJavaScript(getClass(), "closeModalIndirection.js", new Model(m)));
+		add(TextTemplateHeaderContributor.forJavaScript(ModalPicnikLink.class, "closeModalIndirection.js", new Model(m)));
 	}
 
 	/**
-	 * Appends a style attribute that will put the picnik logo into this link.
+	 * Subclasses can modify the link with additional behavior.
 	 * @param showModalLink
 	 */
 	protected void configureShowModalLink(final AjaxLink showModalLink) 
 	{
-		StringBuffer buf = new StringBuffer();
-		buf.append("background-image:url(");
-		buf.append(urlFor(new ResourceReference(ModalPicnikLink.class, "picnik_logo_small.jpg")));
-		buf.append(");width:66px;height:27px;display:block;");
-		showModalLink.add(new SimpleAttributeModifier("style", buf));
+		// override in subclass
 	}
 	
 	/**
@@ -88,6 +86,7 @@ public class ModalPicnikLink extends Panel {
 	protected void configureModalWindow(ModalWindow modalWindow)
 	{
 		modalWindow.setResizable(false);
+		modalWindow.setUseInitialHeight(true);
 		modalWindow.setWidthUnit("%");
 		modalWindow.setHeightUnit("%");
 		modalWindow.setInitialHeight(95);
@@ -95,7 +94,13 @@ public class ModalPicnikLink extends Panel {
 		modalWindow.setTitle("Picnik");
 	}
 
-	
+	/**
+	 * Listener method invoked after the ModalWindow has been closed
+	 * via the JavaScript in ClosModalPage.
+	 * This method is not called if the ModalWindow is closed with
+	 * the close button.
+	 * @param target
+	 */
 	protected void onPicnikFinished(AjaxRequestTarget target) 
 	{
 		// override in subclass

@@ -20,7 +20,6 @@ public class ExternalModalWindow extends ModalWindow {
 	public ExternalModalWindow(final String id, IModel/*<String>*/ model) {
 		super(id);
 		ExternalInlineFrame externalInlineFrame = new ExternalInlineFrame(getContentId(), model);
-//		externalInlineFrame.setMarkupId("picnikiframe");
 		setContent(externalInlineFrame);
 	}
 
