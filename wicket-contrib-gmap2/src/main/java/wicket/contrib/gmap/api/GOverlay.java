@@ -30,7 +30,7 @@ import wicket.contrib.gmap.event.GOverlayListenerBehavior;
 public abstract class GOverlay implements Serializable
 {
 	
-	GMap2 parent = null;
+	GMap2<?> parent = null;
 	
 	List<GOverlayListenerBehavior> behaviors = new ArrayList<GOverlayListenerBehavior>();
 
@@ -82,12 +82,12 @@ public abstract class GOverlay implements Serializable
 
 	protected abstract String getJSconstructor();
 
-	public GMap2 getParent()
+	public GMap2<?> getParent()
 	{
 		return parent;
 	}
 
-	public void setParent(GMap2 parent)
+	public void setParent(GMap2<?> parent)
 	{
 		this.parent = parent;
 	}

@@ -27,7 +27,11 @@ import wicket.contrib.gmap.js.Constructor;
  */
 public class GSize implements GValue
 {
-
+	/**
+	 * Default serialVersionUID.
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	private float width;
 	private float height;
 

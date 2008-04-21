@@ -32,14 +32,14 @@ public class GInfoWindowTab implements GValue
 	private static final long serialVersionUID = 1L;
 
 	private final String title;
-	private final Component content;
+	private final Component<?> content;
 
 	/**
 	 * Construct.
 	 * 
 	 * @param content
 	 */
-	public GInfoWindowTab(Component content)
+	public GInfoWindowTab(Component<?> content)
 	{
 		this(content.getId(), content);
 	}
@@ -50,7 +50,7 @@ public class GInfoWindowTab implements GValue
 	 * @param title
 	 * @param content
 	 */
-	public GInfoWindowTab(String title, Component content)
+	public GInfoWindowTab(String title, Component<?> content)
 	{
 		this.title = title;
 		this.content = content;
@@ -63,7 +63,7 @@ public class GInfoWindowTab implements GValue
 		return title;
 	}
 
-	public Component getContent()
+	public Component<?> getContent()
 	{
 		return content;
 	}

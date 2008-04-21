@@ -16,7 +16,7 @@ public abstract class GClientGeocoder extends AjaxEventBehavior {
 	private static final long serialVersionUID = 1L;
 
 	// the TextField providing the requested address.
-	private TextField addressField;
+	private TextField<?> addressField;
 
 	private GMapHeaderContributor headerContrib;
 
@@ -25,7 +25,7 @@ public abstract class GClientGeocoder extends AjaxEventBehavior {
 	 * 
 	 * @param event
 	 */
-	public GClientGeocoder(String event, TextField addressField, String key) {
+	public GClientGeocoder(String event, TextField<?> addressField, String key) {
 		super(event);
 
 		this.addressField = addressField;
