@@ -22,6 +22,11 @@ import wicket.contrib.gmap.js.ObjectLiteral;
 
 public class GMarkerOptions implements GValue, Cloneable
 {
+	/**
+	 * Default serialVersionUID.
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	private String title;
 	
 	private boolean clickable = true;

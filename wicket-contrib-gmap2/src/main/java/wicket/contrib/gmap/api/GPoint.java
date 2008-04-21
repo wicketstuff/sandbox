@@ -27,6 +27,10 @@ import wicket.contrib.gmap.js.Constructor;
  */
 public class GPoint implements GValue
 {
+	/**
+	 * Default serialVersionUID.
+	 */
+	private static final long serialVersionUID = 1L;
 
 	private float longitude;
 	private float latitude;

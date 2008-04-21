@@ -18,13 +18,9 @@
  */
 package wicket.contrib.gmap;
 
-import java.util.Collections;
 import java.util.List;
 
-import org.apache.wicket.ajax.AjaxRequestTarget;
-
 import wicket.contrib.gmap.api.GOverlay;
-import wicket.contrib.gmap.event.GOverlayListenerBehavior;
 
 public interface GOverlayContainer
 {
@@ -46,14 +42,14 @@ public interface GOverlayContainer
 	 *            overlay to remove
 	 * @return This
 	 */
-	public GMap2 removeOverlay(GOverlay overlay);
+	public GMap2<?> removeOverlay(GOverlay overlay);
 
 	/**
 	 * Clear all overlays.
 	 * 
 	 * @return This
 	 */
-	public GMap2 removeAllOverlays();
+	public GMap2<?> removeAllOverlays();
 
 	public List<GOverlay> getOverlays();
 }
