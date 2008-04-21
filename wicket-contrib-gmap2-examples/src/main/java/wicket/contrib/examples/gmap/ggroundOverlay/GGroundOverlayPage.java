@@ -27,10 +27,10 @@ import wicket.contrib.gmap.api.GLatLngBounds;
 public class GGroundOverlayPage extends WicketExamplePage {
 
 	private static final long serialVersionUID = 1L;
-    private GMap2 map;
+    private GMap2<Object> map;
 
 	public GGroundOverlayPage() {
-	    map = new GMap2("map", LOCALHOST);
+	    map = new GMap2<Object>("map", LOCALHOST);
 	    map.setCenter(new GLatLng(40.740, -74.18));
 	    map.setZoom(12);
 

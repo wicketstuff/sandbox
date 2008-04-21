@@ -23,10 +23,10 @@ public class RefreshPointPage extends WicketExamplePage {
 
 	private static final long serialVersionUID = 1L;
 
-	private GMap2 map;
+	private GMap2<Object> map;
 
 	public RefreshPointPage() {
-		map = new GMap2("map", LOCALHOST);
+		map = new GMap2<Object>("map", LOCALHOST);
 		add(map);
 
 		GOverlay overlay = createOverlay("Amsterdam", new GLatLng(52.37649,
@@ -40,7 +40,7 @@ public class RefreshPointPage extends WicketExamplePage {
 			private int i = 1;
 
 			@Override
-			protected void onTimer(AjaxRequestTarget target, GMap2 map) {
+			protected void onTimer(AjaxRequestTarget target, GMap2<?> map) {
 				GOverlay overlay;
 				if (i % 3 == 0) {
 					overlay = createOverlay("Amsterdam", new GLatLng(52.37649,

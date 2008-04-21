@@ -24,7 +24,8 @@ import wicket.contrib.gmap.util.GeocoderException;
 /**
  * Example HomePage for the wicket-contrib-gmap2 project
  */
-public class HomePage extends WicketExamplePage {
+public class HomePage extends WicketExamplePage
+{
 
 	private static final long serialVersionUID = 1L;
 
@@ -32,66 +33,73 @@ public class HomePage extends WicketExamplePage {
 
 	private ServerGeocoder geocoder = new ServerGeocoder(LOCALHOST);
 
-	public HomePage() {
+	public HomePage()
+	{
 		feedback = new FeedbackPanel("feedback");
 		feedback.setOutputMarkupId(true);
 		add(feedback);
 
-		final GMap2 bottomMap = new GMap2("bottomPanel",
-				new GMapHeaderContributor(LOCALHOST));
+		final GMap2<Object> bottomMap = new GMap2<Object>("bottomPanel", new GMapHeaderContributor(LOCALHOST));
 		bottomMap.setOutputMarkupId(true);
 		bottomMap.setMapType(GMapType.G_SATELLITE_MAP);
 		bottomMap.addControl(GControl.GSmallMapControl);
 		add(bottomMap);
 
-		Form geocodeForm = new Form("geocoder");
+		Form<Object> geocodeForm = new Form<Object>("geocoder");
 		add(geocodeForm);
 
-		final TextField addressTextField = new TextField("address", new Model(""));
+		final TextField<String> addressTextField = new TextField<String>("address",
+				new Model<String>(""));
 		geocodeForm.add(addressTextField);
 
-		Button button = new Button("client");
-		//Using GClientGeocoder the geocoding request
-		//is performed on the client using JavaScript 
-		button.add(new GClientGeocoder("onclick", addressTextField,
-				LOCALHOST) {
+		Button<Object> button = new Button<Object>("client");
+		// Using GClientGeocoder the geocoding request
+		// is performed on the client using JavaScript
+		button.add(new GClientGeocoder("onclick", addressTextField, LOCALHOST)
+		{
+			private static final long serialVersionUID = 1L;
+
 			@Override
-			public void onGeoCode(AjaxRequestTarget target, int status,
-					String address, GLatLng latLng) {
-				if (status == GeocoderException.G_GEO_SUCCESS) {
-					bottomMap.getInfoWindow().open(
-							latLng,
-							new GInfoWindowTab(address, new Label(address,
-									address)));
-				} else {
+			public void onGeoCode(AjaxRequestTarget target, int status, String address,
+					GLatLng latLng)
+			{
+				if (status == GeocoderException.G_GEO_SUCCESS)
+				{
+					bottomMap.getInfoWindow().open(latLng,
+							new GInfoWindowTab(address, new Label<String>(address, address)));
+				}
+				else
+				{
 					error("Unable to geocode (" + status + ")");
 					target.addComponent(feedback);
 				}
 			};
 		});
 		geocodeForm.add(button);
-		
-		//Using ServerGeocoder the geocoding request
-		//is performed on the server using Googles HTTP interface.
-		//http://www.google.com/apis/maps/documentation/services.html#Geocoding_Direct
-		geocodeForm.add(new AjaxButton("server", geocodeForm) {
+
+		// Using ServerGeocoder the geocoding request
+		// is performed on the server using Googles HTTP interface.
+		// http://www.google.com/apis/maps/documentation/services.html#Geocoding_Direct
+		geocodeForm.add(new AjaxButton<Object>("server", geocodeForm)
+		{
 
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void onSubmit(AjaxRequestTarget target, Form form) {
-				try {
+			protected void onSubmit(AjaxRequestTarget target, Form<?> form)
+			{
+				try
+				{
 					String address = addressTextField.getModelObjectAsString();
-					
+
 					GLatLng latLng = geocoder.findAddress(address);
 
-					bottomMap.getInfoWindow().open(
-							latLng,
-							new GInfoWindowTab(address, new Label(address,
-									address)));
-				} catch (IOException e) {
-					target
-							.appendJavascript("Unable to geocode (" + e.getMessage() + ")");
+					bottomMap.getInfoWindow().open(latLng,
+							new GInfoWindowTab(address, new Label<String>(address, address)));
+				}
+				catch (IOException e)
+				{
+					target.appendJavascript("Unable to geocode (" + e.getMessage() + ")");
 				}
 			}
 		});

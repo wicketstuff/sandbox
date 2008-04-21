@@ -16,12 +16,12 @@ public class HomePage extends WicketExamplePage {
 
 	private static final long serialVersionUID = 1L;
 	
-	private final GMap2 topMap;
+	private final GMap2<Object> topMap;
 	
-	private final Label zoomLabel;
+	private final Label<Integer> zoomLabel;
 
 	public HomePage() {
-		topMap = new GMap2("topPanel", LOCALHOST);
+		topMap = new GMap2<Object>("topPanel", LOCALHOST);
 		topMap.addControl(GControl.GLargeMapControl);
 		add(topMap);
 		topMap.add(new MoveEndListener()
@@ -34,7 +34,7 @@ public class HomePage extends WicketExamplePage {
 				target.addComponent(zoomLabel);
 			}
 		});
-		zoomLabel = new Label("zoomLabel", new PropertyModel(topMap, "zoom"));
+		zoomLabel = new Label<Integer>("zoomLabel", new PropertyModel<Integer>(topMap, "zoom"));
 		zoomLabel.add(topMap.new SetZoomBehavior("onclick", 10));
 		zoomLabel.setOutputMarkupId(true);
 		add(zoomLabel);

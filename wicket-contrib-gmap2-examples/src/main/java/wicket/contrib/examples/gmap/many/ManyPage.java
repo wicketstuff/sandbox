@@ -15,12 +15,14 @@ public class ManyPage extends WicketExamplePage {
 
 	private static final long serialVersionUID = 1L;
 
-	private final WebMarkupContainer container;
+	private final WebMarkupContainer<Object> container;
 
-	private final RepeatingView repeating;
+	private final RepeatingView<Object> repeating;
 
 	public ManyPage() {
-		AjaxFallbackLink create = new AjaxFallbackLink("create") {
+		AjaxFallbackLink<Object> create = new AjaxFallbackLink<Object>("create") {
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public void onClick(AjaxRequestTarget target) {
 				ManyPage.this.addPanel();
@@ -32,13 +34,13 @@ public class ManyPage extends WicketExamplePage {
 		};
 		add(create);
 
-		container = new WebMarkupContainer("container");
+		container = new WebMarkupContainer<Object>("container");
 		container.setOutputMarkupId(true);
 		// optional: do this if no GMap2 is added initially
 		container.add(new GMapHeaderContributor(LOCALHOST));
 		add(container);
 
-		repeating = new RepeatingView("repeating");
+		repeating = new RepeatingView<Object>("repeating");
 		container.add(repeating);	
 
 		//addPanel();
@@ -46,6 +48,8 @@ public class ManyPage extends WicketExamplePage {
 
 	protected void addPanel() {
 		ManyPanel newPanel = new ManyPanel(repeating.newChildId(), LOCALHOST) {
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			protected void closing(AjaxRequestTarget target) {
 				repeating.remove(this);

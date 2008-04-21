@@ -17,7 +17,7 @@ public class HomePage extends WicketExamplePage {
 	private static final long serialVersionUID = 1L;
 	
 	public HomePage() {
-		final GMap2 topMap = new GMap2("topPanel", LOCALHOST);
+		final GMap2<Object> topMap = new GMap2<Object>("topPanel", LOCALHOST);
 		add(topMap);
 		topMap.add(new ClickListener()
 		{

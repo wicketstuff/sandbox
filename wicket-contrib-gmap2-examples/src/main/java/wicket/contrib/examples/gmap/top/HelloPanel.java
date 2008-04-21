@@ -6,7 +6,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 /**
  * Panel used as an InfoWindow in the GMap.
  */
-public class HelloPanel extends Panel
+public class HelloPanel extends Panel<Object>
 {
 
 	/**
@@ -20,6 +20,6 @@ public class HelloPanel extends Panel
 	{
 		super("content" + i++);
 		
-		add(new Label("label", HelloPanel.this.getId()));
+		add(new Label<String>("label", HelloPanel.this.getId()));
 	}
 }

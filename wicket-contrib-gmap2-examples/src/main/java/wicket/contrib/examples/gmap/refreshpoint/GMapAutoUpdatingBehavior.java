@@ -57,8 +57,8 @@ public abstract class GMapAutoUpdatingBehavior extends AbstractDefaultAjaxBehavi
 		getGMap2().setOutputMarkupId(true);
 	}
 	
-	protected final GMap2 getGMap2() {
-		return (GMap2)getComponent();
+	protected final GMap2<?> getGMap2() {
+		return (GMap2<?>)getComponent();
 	}
 
     /**
@@ -104,6 +104,6 @@ public abstract class GMapAutoUpdatingBehavior extends AbstractDefaultAjaxBehavi
      * @param target
      *            The request target
      */
-    protected abstract void onTimer(final AjaxRequestTarget target, GMap2 map);
+    protected abstract void onTimer(final AjaxRequestTarget target, GMap2<?> map);
 
 }
