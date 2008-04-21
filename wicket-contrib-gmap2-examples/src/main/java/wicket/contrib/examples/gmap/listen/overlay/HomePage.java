@@ -7,6 +7,7 @@ import org.apache.wicket.model.PropertyModel;
 import wicket.contrib.examples.WicketExamplePage;
 import wicket.contrib.gmap.GMap2;
 import wicket.contrib.gmap.api.GControl;
+import wicket.contrib.gmap.api.GLatLng;
 import wicket.contrib.gmap.api.GMarker;
 import wicket.contrib.gmap.api.GMarkerOptions;
 import wicket.contrib.gmap.event.GMarkerDragendListener;
@@ -14,26 +15,32 @@ import wicket.contrib.gmap.event.GMarkerDragendListener;
 /**
  * Example HomePage for the wicket-contrib-gmap2 project
  */
-public class HomePage extends WicketExamplePage {
+public class HomePage extends WicketExamplePage
+{
 
 	private static final long serialVersionUID = 1L;
 
-	public HomePage() {
-		final GMap2 topMap = new GMap2("topPanel", LOCALHOST);
+	public HomePage()
+	{
+		final GMap2<Object> topMap = new GMap2<Object>("topPanel", LOCALHOST);
 		topMap.addControl(GControl.GLargeMapControl);
 		add(topMap);
 
 		GMarkerOptions options = new GMarkerOptions().draggable(true);
 		final GMarker marker = new GMarker(topMap.getCenter(), options);
 
-		final Label label = new Label("label", new PropertyModel(marker,
+		final Label<GLatLng> label = new Label<GLatLng>("label", new PropertyModel<GLatLng>(marker,
 				"latLng"));
 		label.setOutputMarkupId(true);
 		add(label);
 
-		marker.addBehavior(new GMarkerDragendListener() {
+		marker.addBehavior(new GMarkerDragendListener()
+		{
+			private static final long serialVersionUID = 1L;
+
 			@Override
-			protected void onDragend(AjaxRequestTarget target) {
+			protected void onDragend(AjaxRequestTarget target)
+			{
 				target.addComponent(label);
 			}
 

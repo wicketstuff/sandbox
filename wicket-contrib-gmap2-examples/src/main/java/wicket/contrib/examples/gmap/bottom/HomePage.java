@@ -30,7 +30,7 @@ public class HomePage extends WicketExamplePage {
 
 	private final FeedbackPanel feedback;
 
-	private final Label center;
+	private final Label<GLatLng> center;
 
 	private MoveEndListener moveEndBehavior;
 
@@ -39,7 +39,7 @@ public class HomePage extends WicketExamplePage {
 		feedback.setOutputMarkupId(true);
 		add(feedback);
 
-		final GMap2 bottomMap = new GMap2("bottomPanel",
+		final GMap2<Object> bottomMap = new GMap2<Object>("bottomPanel",
 				new GMapHeaderContributor(LOCALHOST));
 		bottomMap.setOutputMarkupId(true);
 		bottomMap.setMapType(GMapType.G_SATELLITE_MAP);
@@ -66,6 +66,8 @@ public class HomePage extends WicketExamplePage {
 
 		});
 		bottomMap.add(new InfoWindowCloseListener() {
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			protected void onInfoWindowClose(AjaxRequestTarget target) {
 				info("InfoWindow was closed");
@@ -73,6 +75,8 @@ public class HomePage extends WicketExamplePage {
 			}
 		});
 		bottomMap.add(new InfoWindowOpenListener() {
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			protected void onInfoWindowOpen(AjaxRequestTarget target) {
 				info("InfoWindow was opened");
@@ -85,14 +89,16 @@ public class HomePage extends WicketExamplePage {
 				new GInfoWindowTab("Two", new HelloPanel()));
 		add(bottomMap);
 
-		center = new Label("center", new PropertyModel(bottomMap, "center"));
+		center = new Label<GLatLng>("center", new PropertyModel<GLatLng>(bottomMap, "center"));
 		center.add(bottomMap.new SetCenterBehavior("onclick", new GLatLng(37.5, -122.1,
 				false)));
 		center.setOutputMarkupId(true);
 		add(center);
 
-		final Label infoWindow = new Label("infoWindow", "openInfoWindow");
+		final Label<String> infoWindow = new Label<String>("infoWindow", "openInfoWindow");
 		infoWindow.add(new AjaxEventBehavior("onclick") {
+			private static final long serialVersionUID = 1L;
+
 			/**
 			 * @see org.apache.wicket.ajax.AjaxEventBehavior#onEvent(org.apache.wicket.ajax.AjaxRequestTarget)
 			 */
@@ -103,21 +109,24 @@ public class HomePage extends WicketExamplePage {
 			}
 		});
 		add(infoWindow);
-		add(new Link("reload") {
+		add(new Link<Object>("reload") {
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public void onClick() {
 			}
 		});
-		final Label enabledMoveEnd = new Label("enabledMoveEnd",
-				"the move end behavior is enabled:");
-		add(enabledMoveEnd);
-		final Label enabledLabel = new Label("enabled", new Model() {
+		final Label<Boolean> enabledLabel = new Label<Boolean>("enabled", new Model<Boolean>() {
+			private static final long serialVersionUID = 1L;
+
 			@Override
-			public Object getObject() {
+			public Boolean getObject() {
 				return bottomMap.getBehaviors().contains(moveEndBehavior);
 			}
 		});
 		enabledLabel.add(new AjaxEventBehavior("onclick") {
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			protected void onEvent(AjaxRequestTarget target) {
 				if (bottomMap.getBehaviors().contains(moveEndBehavior)) {

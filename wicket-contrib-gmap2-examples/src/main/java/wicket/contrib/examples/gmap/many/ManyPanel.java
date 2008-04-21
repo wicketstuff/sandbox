@@ -2,60 +2,74 @@ package wicket.contrib.examples.gmap.many;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxFallbackLink;
-import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.panel.Panel;
 
 import wicket.contrib.gmap.GMap2;
 import wicket.contrib.gmap.api.GMapType;
 
-public abstract class ManyPanel extends Panel {
+public abstract class ManyPanel extends Panel<Object>
+{
 
-	final GMap2 gMap;
+	final GMap2<Object> gMap;
 
-	private Label n, ne, e, se, s, sw, w, nw;
+	private WebMarkupContainer<Object> n, ne, e, se, s, sw, w, nw;
 
-	public ManyPanel(String id, String gMapKey) {
+	public ManyPanel(String id, String gMapKey)
+	{
 		super(id);
-		gMap = new GMap2("gMap", gMapKey);
+		gMap = new GMap2<Object>("gMap", gMapKey);
 		gMap.setZoom(7);
 		gMap.setOutputMarkupId(true);
 		add(gMap);
-		final AjaxFallbackLink normal = new AjaxFallbackLink("normal") {
+		final AjaxFallbackLink<Object> normal = new AjaxFallbackLink<Object>("normal")
+		{
+			private static final long serialVersionUID = 1L;
+
 			@Override
-			public void onClick(AjaxRequestTarget target) {
+			public void onClick(AjaxRequestTarget target)
+			{
 				gMap.setMapType(GMapType.G_NORMAL_MAP);
 			}
 		};
 		add(normal);
-		final AjaxFallbackLink satellite = new AjaxFallbackLink("satellite") {
+		final AjaxFallbackLink<Object> satellite = new AjaxFallbackLink<Object>("satellite")
+		{
+			private static final long serialVersionUID = 1L;
+
 			@Override
-			public void onClick(AjaxRequestTarget target) {
+			public void onClick(AjaxRequestTarget target)
+			{
 				gMap.setMapType(GMapType.G_SATELLITE_MAP);
 			}
 		};
 		add(satellite);
-		final AjaxFallbackLink hybrid = new AjaxFallbackLink("hybrid") {
+		final AjaxFallbackLink<Object> hybrid = new AjaxFallbackLink<Object>("hybrid")
+		{
+			private static final long serialVersionUID = 1L;
+
 			@Override
-			public void onClick(AjaxRequestTarget target) {
+			public void onClick(AjaxRequestTarget target)
+			{
 				gMap.setMapType(GMapType.G_HYBRID_MAP);
 			}
 		};
 		add(hybrid);
-		n = new Label("n", "N");
+		n = new WebMarkupContainer<Object>("n");
 		add(n);
-		ne = new Label("ne", "NE");
+		ne = new WebMarkupContainer<Object>("ne");
 		add(ne);
-		e = new Label("e", "E");
+		e = new WebMarkupContainer<Object>("e");
 		add(e);
-		se = new Label("se", "SE");
+		se = new WebMarkupContainer<Object>("se");
 		add(se);
-		s = new Label("s", "S");
+		s = new WebMarkupContainer<Object>("s");
 		add(s);
-		sw = new Label("sw", "SW");
+		sw = new WebMarkupContainer<Object>("sw");
 		add(sw);
-		w = new Label("w", "W");
+		w = new WebMarkupContainer<Object>("w");
 		add(w);
-		nw = new Label("nw", "NW");
+		nw = new WebMarkupContainer<Object>("nw");
 		add(nw);
 
 		n.add(gMap.new PanDirectionBehavior("onclick", 0, 1));
@@ -66,15 +80,19 @@ public abstract class ManyPanel extends Panel {
 		sw.add(gMap.new PanDirectionBehavior("onclick", 1, -1));
 		w.add(gMap.new PanDirectionBehavior("onclick", 1, 0));
 		nw.add(gMap.new PanDirectionBehavior("onclick", 1, 1));
-		
-		AjaxFallbackLink close = new AjaxFallbackLink("close") {
+
+		AjaxFallbackLink<Object> close = new AjaxFallbackLink<Object>("close")
+		{
+			private static final long serialVersionUID = 1L;
+
 			@Override
-			public void onClick(AjaxRequestTarget target) {
+			public void onClick(AjaxRequestTarget target)
+			{
 				closing(target);
 			}
 		};
-		add(close);		
+		add(close);
 	}
-	
+
 	protected abstract void closing(AjaxRequestTarget target);
 }

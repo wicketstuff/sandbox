@@ -18,16 +18,18 @@ import wicket.contrib.gmap.event.MoveEndListener;
 /**
  * Example HomePage for the wicket-contrib-gmap2 project
  */
-public class HomePage extends WicketExamplePage {
+public class HomePage extends WicketExamplePage
+{
 
 	private static final long serialVersionUID = 1L;
-	
-	private Label zoomLabel;
 
-	private MultiLineLabel boundsLabel;
+	private Label<Integer> zoomLabel;
 
-	public HomePage() {
-		final GMap2 map = new GMap2("map", LOCALHOST);
+	private MultiLineLabel<GLatLngBounds> boundsLabel;
+
+	public HomePage()
+	{
+		final GMap2<Object> map = new GMap2<Object>("map", LOCALHOST);
 		map.addControl(GControl.GLargeMapControl);
 		add(map);
 		map.add(new MoveEndListener()
@@ -41,29 +43,42 @@ public class HomePage extends WicketExamplePage {
 				target.addComponent(boundsLabel);
 			}
 		});
-		map.add(new LoadListener() {
+		map.add(new LoadListener()
+		{
 			private static final long serialVersionUID = 1L;
-			
+
 			@Override
-			protected void onLoad(AjaxRequestTarget target) {
+			protected void onLoad(AjaxRequestTarget target)
+			{
 				target.addComponent(boundsLabel);
 			}
 		});
-		
-		zoomLabel = new Label("zoom", new PropertyModel(map, "zoom"));
+
+		zoomLabel = new Label<Integer>("zoom", new PropertyModel<Integer>(map, "zoom"));
 		zoomLabel.setOutputMarkupId(true);
 		add(zoomLabel);
-		
-		boundsLabel = new MultiLineLabel("bounds", new PropertyModel(map, "bounds")) {
+
+		boundsLabel = new MultiLineLabel<GLatLngBounds>("bounds", new PropertyModel<GLatLngBounds>(
+				map, "bounds"))
+		{
+			private static final long serialVersionUID = 1L;
+
 			@Override
-			public IConverter getConverter(Class type) {
-				return new IConverter() {
-					public Object convertToObject(String value, Locale locale) {
+			public <Z> IConverter<Z> getConverter(Class<Z> type)
+			{
+				return new IConverter<Z>()
+				{
+					private static final long serialVersionUID = 1L;
+
+					public Z convertToObject(String value, Locale locale)
+					{
 						throw new UnsupportedOperationException();
 					}
-					public String convertToString(Object value, Locale locale) {
+
+					public String convertToString(Z value, Locale locale)
+					{
 						GLatLngBounds bounds = (GLatLngBounds)value;
-						
+
 						StringBuffer buffer = new StringBuffer();
 						buffer.append("NE (");
 						buffer.append(bounds.getNE().getLat());

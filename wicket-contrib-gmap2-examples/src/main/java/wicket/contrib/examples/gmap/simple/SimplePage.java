@@ -12,7 +12,7 @@ public class SimplePage extends WicketExamplePage {
 	private static final long serialVersionUID = 1L;
 
 	public SimplePage() {
-		GMap2 map = new GMap2("map", LOCALHOST);
+		GMap2<Object> map = new GMap2<Object>("map", LOCALHOST);
 		map.setCenter(new GLatLng(52.37649, 4.888573));
 		add(map);
 	}
