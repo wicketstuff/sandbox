@@ -64,18 +64,18 @@ public class HomePage extends WicketExamplePage
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public <Z> IConverter<Z> getConverter(Class<Z> type)
+			public IConverter getConverter(Class<?> type)
 			{
-				return new IConverter<Z>()
+				return new IConverter()
 				{
 					private static final long serialVersionUID = 1L;
 
-					public Z convertToObject(String value, Locale locale)
+					public Object convertToObject(String value, Locale locale)
 					{
 						throw new UnsupportedOperationException();
 					}
 
-					public String convertToString(Z value, Locale locale)
+					public String convertToString(Object value, Locale locale)
 					{
 						GLatLngBounds bounds = (GLatLngBounds)value;
 
