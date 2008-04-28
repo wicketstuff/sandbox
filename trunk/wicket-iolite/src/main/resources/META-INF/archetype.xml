@@ -1,0 +1,39 @@
+<archetype>
+  <id>wicket</id>
+  <resources>
+<!--  web  -->
+    <resource>wicket-persistence-web/src/main/java/HomePage.java</resource>
+    <resource>wicket-persistence-web/src/main/java/HomePage.html</resource>
+    <resource>wicket-persistence-web/src/main/java/BasePage.java</resource>
+    <resource>wicket-persistence-web/src/main/java/BasePage.html</resource>
+
+    <resource>wicket-persistence-web/src/main/java/AddMessagePage.java</resource>
+    <resource>wicket-persistence-web/src/main/java/AddMessagePage.html</resource>
+
+    <resource>wicket-persistence-web/src/main/java/WicketApplication.java</resource>
+    <resource>wicket-persistence-web/src/main/java/model/BaseEntityDetachableModel.java</resource>
+
+    <resource>wicket-persistence-web/src/test/java/Start.java</resource>
+    <resource>wicket-persistence-web/src/test/java/TestHomePage.java</resource>
+    <resource>wicket-persistence-web/src/test/java/BaseTest.java</resource>
+
+    <resource>wicket-persistence-web/src/main/resources/log4j.properties</resource>
+    <resource>wicket-persistence-web/src/main/webapp/WEB-INF/web.xml</resource>
+    <resource>wicket-persistence-web/pom.xml</resource>
+<!--  core  -->
+
+    <resource>wicket-persistence-core/src/main/java/persistence/domain/BaseEntity.java</resource>
+    <resource>wicket-persistence-core/src/main/java/persistence/domain/Message.java</resource>
+    <resource>wicket-persistence-core/src/main/java/persistence/provider/GeneralDao.java</resource>
+    <resource>wicket-persistence-core/src/main/java/persistence/provider/GeneralDaoImpl.java</resource>
+
+    <resource>wicket-persistence-core/src/test/java/persistence/DaoTest.java</resource>
+    <resource>wicket-persistence-core/src/test/java/persistence/TestSupport.java</resource>
+
+
+    <resource>wicket-persistence-core/src/main/resources/applicationContext.xml</resource>
+    <resource>wicket-persistence-core/src/main/resources/log4j.properties</resource>
+    <resource>wicket-persistence-core/src/main/resources/META-INF/persistence.xml</resource>
+    <resource>wicket-persistence-core/pom.xml</resource>
+  </resources>
+</archetype>
