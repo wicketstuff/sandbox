@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.apache.wicket</groupId>
+	<artifactId>wicket-persistance-parent</artifactId>
+	<version>0.1-SNAPSHOT</version>
+	<name>Complete Application</name>
+	<packaging>pom</packaging>
+	<modules>
+		<module>wicket-persistence-core</module>
+		<module>wicket-persistence-web</module>
+	</modules>
+	<properties>
+		<wicket.version>1.3.3</wicket.version>
+		<jetty.version>6.1.4</jetty.version>
+		<spring.version>2.5.3</spring.version>
+	</properties>
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<build>
+		<plugins>
+			<!-- Java 1.5 compiler plugin -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.5</source>
+					<target>1.5</target>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-eclipse-plugin</artifactId>
+				<configuration>
+					<downloadSources>true</downloadSources>
+					<downloadJavadocs>true</downloadJavadocs>
+					<projectnatures>
+						<java.lang.String>
+							org.eclipse.jdt.core.javanature
+						</java.lang.String>
+					</projectnatures>
+					<buildcommands>
+						<buildcommand>
+							org.eclipse.jdt.core.javabuilder
+						</buildcommand>
+					</buildcommands>
+
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<systemProperties>
+						<property>
+							<name>
+								net.sourceforge.cobertura.datafile
+							</name>
+							<value>
+								target/cobertura/cobertura.ser
+							</value>
+						</property>
+					</systemProperties>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.apache.wicket</groupId>
+				<artifactId>wicket-persistence-core</artifactId>
+				<version>1.0-SNAPSHOT</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.wicket</groupId>
+				<artifactId>wicket</artifactId>
+				<version>${wicket.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.wicket</groupId>
+				<artifactId>wicket-extensions</artifactId>
+				<version>${wicket.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>4.3.1</version>
+			</dependency>
+			<!-- Log -->
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-log4j12</artifactId>
+				<version>1.4.0</version>
+			</dependency>
+			<dependency>
+				<groupId>log4j</groupId>
+				<artifactId>log4j</artifactId>
+				<version>1.2.14</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-logging</groupId>
+				<artifactId>commons-logging</artifactId>
+				<version>1.0.4</version>
+			</dependency>
+			<!-- DB -->
+			<dependency>
+				<groupId>hsqldb</groupId>
+				<artifactId>hsqldb</artifactId>
+				<version>1.8.0.7</version>
+				<scope>compile</scope>
+			</dependency>
+			<!-- Hibernate -->
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate</artifactId>
+				<version>3.2.6.ga</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-annotations</artifactId>
+				<version>3.3.0.ga</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-entitymanager</artifactId>
+				<version>3.3.1.ga</version>
+			</dependency>
+			<dependency>
+				<groupId>c3p0</groupId>
+				<artifactId>c3p0</artifactId>
+				<version>0.9.1.2</version>
+			</dependency>
+			<!-- JPA spec -->
+			<dependency>
+				<groupId>javax.persistence</groupId>
+				<artifactId>persistence-api</artifactId>
+				<version>1.0</version>
+			</dependency>
+
+			<!-- Spring stuff -->
+
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-orm</artifactId>
+				<version>${spring.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>commons-logging</groupId>
+						<artifactId>commons-logging</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-tx</artifactId>
+				<version>${spring.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>commons-logging</groupId>
+						<artifactId>commons-logging</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-context</artifactId>
+				<version>${spring.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>commons-logging</groupId>
+						<artifactId>commons-logging</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-beans</artifactId>
+				<version>${spring.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>commons-logging</groupId>
+						<artifactId>commons-logging</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-aop</artifactId>
+				<version>${spring.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>commons-logging</groupId>
+						<artifactId>commons-logging</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-jdbc</artifactId>
+				<version>${spring.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>commons-logging</groupId>
+						<artifactId>commons-logging</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<version>${spring.version}</version>
+
+				<artifactId>spring-test</artifactId>
+			</dependency>
+
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-context</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.wicket</groupId>
+				<artifactId>wicket-spring</artifactId>
+				<version>${wicket.version}</version>
+				<type>jar</type>
+				<scope>compile</scope>
+				<exclusions>
+					<exclusion>
+						<groupId>cglib</groupId>
+						<artifactId>cglib-nodep</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>org.springframework</groupId>
+						<artifactId>spring</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.wicket</groupId>
+				<artifactId>wicket-spring-annot</artifactId>
+				<version>${wicket.version}</version>
+				<type>jar</type>
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>concurrent</groupId>
+				<artifactId>concurrent</artifactId>
+				<version>1.3.4</version>
+			</dependency>
+
+			<!--  JUNIT DEPENDENCY FOR TESTING -->
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>3.8.2</version>
+				<scope>test</scope>
+			</dependency>
+
+			<!--  JETTY DEPENDENCIES FOR TESTING  -->
+
+			<dependency>
+				<groupId>org.mortbay.jetty</groupId>
+				<artifactId>jetty</artifactId>
+				<version>${jetty.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.mortbay.jetty</groupId>
+				<artifactId>jetty-util</artifactId>
+				<version>${jetty.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.mortbay.jetty</groupId>
+				<artifactId>jetty-management</artifactId>
+				<version>${jetty.version}</version>
+				<scope>provided</scope>
+			</dependency>
+
+		</dependencies>
+	</dependencyManagement>
+</project>
