@@ -20,6 +20,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.wicket.cluster.SessionProvider;
 import org.apache.wicket.cluster.session.SessionAttributeHolder;
+import org.apache.wicket.cluster.session.SessionComponent;
 
 public class SetAttributeMessage implements SessionMessage {
 	
@@ -47,6 +48,14 @@ public class SetAttributeMessage implements SessionMessage {
 	
 	public void execute(SessionProvider sessionProvider) {
 		HttpSession session = sessionProvider.getSession(sessionId, true);
+		
+		Object attributeValue = this.attributeValue;
+		
+		boolean keepSerialized = SessionComponent.getInstance().isKeepSessionAttributesSerialized();
+		
+		if (!keepSerialized && attributeValue instanceof SessionAttributeHolder) {
+			attributeValue = ((SessionAttributeHolder)attributeValue).toOriginalObject();
+		}
 		session.setAttribute(attributeName, attributeValue);
 	}
 }
