@@ -3,10 +3,10 @@
 
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.wicketstuff</groupId>
-  <artifactId>annotations</artifactId>
+  <artifactId>wicket-annotation</artifactId>
   <packaging>jar</packaging>
   <version>1.0</version>
-  <name>annotations</name>
+  <name>wicket-annotation</name>
 
   <build>
     <plugins>
