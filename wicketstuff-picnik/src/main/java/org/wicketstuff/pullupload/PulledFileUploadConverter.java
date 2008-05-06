@@ -37,7 +37,6 @@ public class PulledFileUploadConverter implements IConverter {
 	 * @see org.apache.wicket.util.convert.IConverter#convertToObject(java.lang.String,
 	 *      java.util.Locale)
 	 */
-	@Override
 	public Object convertToObject(String value, Locale locale) {
 
 		HttpClient client = new HttpClient();
@@ -80,7 +79,6 @@ public class PulledFileUploadConverter implements IConverter {
 	 * @see org.apache.wicket.util.convert.IConverter#convertToString(java.lang.Object,
 	 *      java.util.Locale)
 	 */
-	@Override
 	public String convertToString(Object value, Locale locale) {
 		return ((PulledFileUpload) value).getUrl().toString();
 	}
