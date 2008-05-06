@@ -198,6 +198,10 @@
 		<testResources>
 			<testResource>
 				<filtering>false</filtering>
+				<directory>${basedir}/src/test/resources</directory>
+			</testResource>
+			<testResource>
+				<filtering>false</filtering>
 				<directory>${basedir}/src/test/java</directory>
 				<includes>
 					<include>**</include>
