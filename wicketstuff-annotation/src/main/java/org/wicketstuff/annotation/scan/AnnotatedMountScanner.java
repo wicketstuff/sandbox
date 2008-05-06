@@ -32,7 +32,7 @@ import java.util.*;
  *
  * <p>You can also go more advanced, using any pattern supported by
  * {@link MatchingResources}.  For example, the first package example above is turned into
- * "classpath*:/org/mycompany/wicket/pages/**\/*.class".
+ * "classpath*:/org/mycompany/wicket/pages/**&#47;*.class".
  *
  * <p>For each class that is annotated, an appropriate {@link IRequestTargetUrlCodingStrategy}
  * implementing class is created using the information in the {@link MountPath} annotation
