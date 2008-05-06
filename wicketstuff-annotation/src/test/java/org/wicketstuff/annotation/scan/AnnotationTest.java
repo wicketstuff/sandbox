@@ -26,7 +26,7 @@ import java.lang.annotation.*;
 /**
  * @author Doug Donohoe
  */
-public class AnnotationTester extends TestCase
+public class AnnotationTest extends TestCase
 {
     /**
      * Correct mount definition
@@ -35,8 +35,8 @@ public class AnnotationTester extends TestCase
     @MountDefinition(strategyClass = TestCodingStrategy.class, argOrder = {"map", "params"})
     private @interface TestMountDefinition
     {
-        String map() default MountDefinition.NULL;
-        String[] params();
+        public abstract String map() default MountDefinition.NULL;
+        public abstract String[] params();
     }
 
     /**
@@ -141,7 +141,7 @@ public class AnnotationTester extends TestCase
     {
         String[] patterns = new String[] {"classpath*:org/wicketstuff/annotation/scan/*.class",
                                           "classpath*:org/wicketstuff/**/A*.class",
-                                          "classpath*:org/wicketstuff/**/AnnotationTester*.class"};
+                                          "classpath*:org/wicketstuff/**/AnnotationTest*.class"};
         for (String pattern : patterns)
         {
             doPattern(pattern);

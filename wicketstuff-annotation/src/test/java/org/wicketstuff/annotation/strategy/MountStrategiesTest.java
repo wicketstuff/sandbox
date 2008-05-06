@@ -25,7 +25,7 @@ import org.wicketstuff.annotation.scan.*;
 /**
  * @author Doug Donohoe
  */
-public class MountStrategiesTester extends TestCase
+public class MountStrategiesTest extends TestCase
 {
     @MountPath(path = "primary", alt = {"alt"})
     @MountBookmarkablePageRequestTarget(pageMapName = "map")
