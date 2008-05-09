@@ -5,7 +5,7 @@
   <artifactId>wicketstuff-lightbox</artifactId>
   <packaging>jar</packaging>
   <description>Provides wicket components for simple addition of 'lightbox' image behavior to a web page.</description>
-  <version>1.0.1</version>
+  <version>1.0.2</version>
   <name>wicketstuff-lightbox</name>
   <url>http://wicketstuff.org</url>
   <dependencies>
