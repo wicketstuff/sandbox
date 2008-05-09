@@ -24,7 +24,7 @@ import wicket.contrib.gmap.api.GLatLngBounds;
 /**
  * SimplePage for the wicket-contrib-gmap2 project
  */
-public class GGroundOverlayPage extends WicketExamplePage {
+public class GGroundOverlayPage extends WicketExamplePage<Void> {
 
 	private static final long serialVersionUID = 1L;
     private GMap2<Object> map;

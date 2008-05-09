@@ -36,7 +36,7 @@ public class PolygonesGMapApplication extends WicketExampleApplication {
 	}
 
 	@Override
-	public Class<? extends Page> getHomePage() {
+	public Class<? extends Page<?>> getHomePage() {
 		return PolygonesPage.class;
 	}
 

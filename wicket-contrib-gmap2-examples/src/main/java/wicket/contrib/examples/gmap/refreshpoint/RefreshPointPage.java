@@ -19,7 +19,7 @@ import wicket.contrib.gmap.api.GSize;
 /**
  * SimplePage for the wicket-contrib-gmap2 project
  */
-public class RefreshPointPage extends WicketExamplePage {
+public class RefreshPointPage extends WicketExamplePage<Void> {
 
 	private static final long serialVersionUID = 1L;
 

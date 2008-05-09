@@ -9,7 +9,7 @@ import wicket.contrib.gmap.api.GPolyline;
 /**
  * SimplePage for the wicket-contrib-gmap2 project
  */
-public class PolygonesPage extends WicketExamplePage {
+public class PolygonesPage extends WicketExamplePage<Void> {
 
 	private static final long serialVersionUID = 1L;
 

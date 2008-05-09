@@ -36,7 +36,7 @@ public class RefreshPointGMapApplication extends WicketExampleApplication {
 	}
 
 	@Override
-	public Class<? extends Page> getHomePage() {
+	public Class<? extends Page<?>> getHomePage() {
 		return RefreshPointPage.class;
 	}
 

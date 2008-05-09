@@ -7,11 +7,13 @@ import wicket.contrib.gmap.api.GLatLng;
 /**
  * SimplePage for the wicket-contrib-gmap2 project
  */
-public class SimplePage extends WicketExamplePage {
+public class SimplePage extends WicketExamplePage<Void>
+{
 
 	private static final long serialVersionUID = 1L;
 
-	public SimplePage() {
+	public SimplePage()
+	{
 		GMap2<Object> map = new GMap2<Object>("map", LOCALHOST);
 		map.setCenter(new GLatLng(52.37649, 4.888573));
 		add(map);
