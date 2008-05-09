@@ -26,7 +26,7 @@ public class GInfoWindow<T> extends WebMarkupContainer<T>
 
 	private GMarker marker;
 
-	private RepeatingView<?> content = new RepeatingView<Object>("content");
+	private RepeatingView<Void> content = new RepeatingView<Void>("content");
 
 	public GInfoWindow()
 	{
