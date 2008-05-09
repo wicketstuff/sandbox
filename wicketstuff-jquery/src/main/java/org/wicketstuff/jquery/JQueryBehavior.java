@@ -21,11 +21,10 @@ import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.resources.CompressedResourceReference;
-
-import java.util.regex.Pattern;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.regex.Pattern;
 
 /**
  *
@@ -40,9 +39,9 @@ public class JQueryBehavior extends AbstractDefaultAjaxBehavior {
     // we use CompressedResourceReference so that the included file will have
     // its comments stripped and gzipped.
     /**
-     *  ResourceReference for <a href="http://jquery.com">jquery-1.2.2</a> (include by default when you add the current Behavior).
+     *  ResourceReference for <a href="http://jquery.com">jquery-1.2.3</a> (include by default when you add the current Behavior).
      */
-    public static final CompressedResourceReference JQUERY_1_2_JS = new CompressedResourceReference(JQueryBehavior.class, "jquery-1.2.2.js");
+    public static final CompressedResourceReference JQUERY_1_2_JS = new CompressedResourceReference(JQueryBehavior.class, "jquery-1.2.3.js");
 
     /**
      *  ResourceReference for <a href="http://jquery.com">jquery</a> (include by default when you add the current Behavior).
@@ -63,6 +62,16 @@ public class JQueryBehavior extends AbstractDefaultAjaxBehavior {
      *  ResourceReference for <a href="http://jquery.com/plugins/project/dimensions">jquery.dimensions-1.1.2.js</a> (not include in reponse header)
      */
     public static final CompressedResourceReference JQUERY_DIMENSIONS_JS = new CompressedResourceReference(JQueryBehavior.class, "jquery.dimensions.js");
+
+	/**
+	 *  ResourceReference for JQuery UI Draggable, used by the DndBehaviour
+	 */
+	public static final CompressedResourceReference JQUERY_UI_DRAGGABLE = new CompressedResourceReference(JQueryBehavior.class, "ui.draggable.js");
+
+	/**
+	 *  ResourceReference for JQuery UI Droppable, used by the DndBehaviour
+	 */
+	public static final CompressedResourceReference JQUERY_UI_DROPPABLE = new CompressedResourceReference(JQueryBehavior.class, "ui.droppable.js");
 
     /**
      *  ResourceReference for <a href="http://jquery.com/plugins/project/ui">jquery.ui.mouse.js</a> (not include in reponse header)
