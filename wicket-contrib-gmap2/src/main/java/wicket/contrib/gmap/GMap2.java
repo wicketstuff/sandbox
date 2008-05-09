@@ -139,10 +139,10 @@ public class GMap2<T> extends Panel<T> implements GOverlayContainer
 			}
 		}));
 
-		infoWindow = new GInfoWindow<Object>();
+		infoWindow = new GInfoWindow<Void>();
 		add(infoWindow);
 
-		map = new WebMarkupContainer<Object>("map");
+		map = new WebMarkupContainer<Void>("map");
 		map.setOutputMarkupId(true);
 		add(map);
 	}
