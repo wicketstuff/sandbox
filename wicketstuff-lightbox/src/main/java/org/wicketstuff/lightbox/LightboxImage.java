@@ -24,6 +24,8 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.IResourceListener;
+import org.apache.wicket.Resource;
 
 /**
  * Component which wraps the functionality of Lightbox2.
@@ -31,7 +33,7 @@ import org.apache.wicket.model.IModel;
  * This file was created on February 27, 2008 by s.crissman.
  *
  */
-public class LightboxImage extends Panel {
+public class LightboxImage extends Panel implements IResourceListener {
 
     /**
      * Standard constructor.
@@ -58,16 +60,39 @@ public class LightboxImage extends Panel {
     private void addTagAttributes(LightboxImageData imageData)
     {
         String rel = getRel(imageData);
-        String href = getRequest().getRelativePathPrefixToContextRoot() + imageData.getImageUrl();
         String title = imageData.getCaption();
 
         add(new SimpleAttributeModifier("rel", rel));
-        add(new SimpleAttributeModifier("href", href));
         add(new SimpleAttributeModifier("title", title));
+
+        if (imageData.getImageResource() == null) {
+            String href = getRequest().getRelativePathPrefixToContextRoot() + imageData.getImageUrl();
+            add(new SimpleAttributeModifier("href", href));
+        }
 
         if (imageData.getHidden()){
             add(new SimpleAttributeModifier("style", "display:none;"));
         }
+    }
+
+    public void onResourceRequested() {
+        LightboxImageData m = (LightboxImageData) getModelObject();
+        if (m.getImageResource() != null) {
+            m.getImageResource().onResourceRequested();
+        }
+    }
+
+    /**
+     * Add the proper URL as href if we use a resource as input. This has to be done
+     * that late, because we need the parent page for getting to the URL
+     */
+    @Override
+    protected void onBeforeRender() {
+        LightboxImageData data = (LightboxImageData) getModelObject();
+        if (data.getImageResource() != null) {
+            add(new SimpleAttributeModifier("href", urlFor(IResourceListener.INTERFACE)));
+        }
+        super.onBeforeRender();
     }
 
     /**
@@ -75,10 +100,11 @@ public class LightboxImage extends Panel {
      *
      * @param componentTag the tag, which will be set to an anchor
      */
+    @Override
     protected void onComponentTag(ComponentTag componentTag)
     {
-        super.onComponentTag(componentTag);
         componentTag.setName("a");
+        super.onComponentTag(componentTag);
     }
 
     /**
@@ -112,13 +138,21 @@ public class LightboxImage extends Panel {
     private void addThumb(LightboxImageData imageData)
     {
         String thumbUrl = getRequest().getRelativePathPrefixToContextRoot() + imageData.getThumbUrl();
-        boolean hasThumb = imageData.getThumbUrl().length() > 0;
+        boolean hasThumb = imageData.getThumbUrl().length() > 0 || imageData.getThumbResource() != null;
         boolean hasWidth = imageData.getThumbWidth() > 0;
         boolean hasHeight = imageData.getThumbHeight() > 0;
 
-        WebMarkupContainer ic = new WebMarkupContainer("ic");
+        final Resource thumbResource = imageData.getThumbResource();
+        WebMarkupContainer ic;
+        if (thumbResource != null) {
+            ic = new ResourceWebMarkupContainer("ic", thumbResource);
+        } else {
+            ic = new WebMarkupContainer("ic");
+        }
         ic.setVisible(hasThumb);
-        ic.add( new SimpleAttributeModifier("src", thumbUrl));
+        if (thumbResource == null) {
+            ic.add( new SimpleAttributeModifier("src", thumbUrl));
+        }
         if(hasHeight){
             ic.add( new SimpleAttributeModifier("height", imageData.getThumbHeight().toString()));
         }
@@ -144,6 +178,32 @@ public class LightboxImage extends Panel {
             return "lightbox[" + imageData.getGroup() + "]";
         } else {
             return "lightbox";
+        }
+    }
+
+    // ================================================================
+    // Helper class for adding a dynamic resource
+
+    private class ResourceWebMarkupContainer extends WebMarkupContainer implements IResourceListener {
+        private final Resource resource;
+
+        ResourceWebMarkupContainer(String pId, Resource pResource) {
+            super(pId);
+            resource = pResource;
+        }
+
+        @Override
+        protected void onBeforeRender() {
+            if (resource != null) {
+                add(new SimpleAttributeModifier("src", urlFor(IResourceListener.INTERFACE)));
+            }
+            super.onBeforeRender();
+        }
+
+        public void onResourceRequested() {
+            if (resource != null) {
+                resource.onResourceRequested();
+            }
         }
     }
 }

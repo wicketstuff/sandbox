@@ -20,6 +20,7 @@ package org.wicketstuff.lightbox;
 
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.Resource;
 
 import java.io.Serializable;
 
@@ -33,7 +34,9 @@ public class LightboxImageData implements Serializable {
 
     String m_linkText;
     String m_imageUrl;
+    Resource m_imageResource;
     String m_thumbUrl;
+    Resource m_thumbResource;
     String m_group;
     String m_caption;
 
@@ -52,12 +55,26 @@ public class LightboxImageData implements Serializable {
     {
         m_linkText = builder.m_linkText;
         m_imageUrl = builder.m_imageUrl;
+        m_imageResource = builder.m_imageResource;
         m_thumbUrl = builder.m_thumbUrl;
+        m_thumbResource = builder.m_thumbResource;
         m_group = builder.m_group;
         m_caption = builder.m_caption;
         m_isHidden = builder.m_isHidden;
         m_thumbWidth = builder.m_thumbWidth;
         m_thumbHeight = builder.m_thumbHeight;
+
+        if (m_imageResource != null && m_imageUrl != null) {
+            throw new IllegalArgumentException(
+                    "Either an URL or a resource can be provided " +
+                            "as source for an image, but not both");
+        }
+        if (m_thumbResource != null && m_thumbUrl.length() > 0) {
+            throw new IllegalArgumentException(
+                    "Either an URL or a resource can be provided " +
+                            "as source for a thumbnail, but not both");
+        }
+
     }
 
     public String getLinkText() {
@@ -82,6 +99,14 @@ public class LightboxImageData implements Serializable {
 
     public void setThumbUrl(String thumbUrl) {
         m_thumbUrl = thumbUrl;
+    }
+
+    public Resource getThumbResource() {
+        return m_thumbResource;
+    }
+
+    public void setThumbResource(Resource thumbResource) {
+        m_thumbResource = thumbResource;
     }
 
     public String getGroup() {
@@ -129,6 +154,13 @@ public class LightboxImageData implements Serializable {
         m_isHidden = hidden;
     }
 
+    public Resource getImageResource() {
+        return m_imageResource;
+    }
+
+    public void setImageResource(Resource imageResource) {
+        m_imageResource = imageResource;
+    }
 
     /**
      * Factory class that will generate the appropriate LightboxImageData instance on request.
@@ -138,7 +170,9 @@ public class LightboxImageData implements Serializable {
 
         String m_linkText;
         String m_imageUrl;
+        Resource m_imageResource;
         String m_thumbUrl;
+        Resource m_thumbResource;
         String m_group;
         String m_caption;
 
@@ -146,6 +180,7 @@ public class LightboxImageData implements Serializable {
 
         Integer m_thumbWidth;
         Integer m_thumbHeight;
+
 
         /**
          * Standard constructor.
@@ -156,7 +191,20 @@ public class LightboxImageData implements Serializable {
         {
             // Required parameters...
             m_imageUrl = imageUrl;
+            init();
+        }
 
+        /**
+         * Constructor taking an image resource as argument
+         *
+         * @param imageResource resource for the image to show
+         */
+        public Builder(Resource imageResource) {
+            m_imageResource = imageResource;
+            init();
+        }
+
+        private void init() {
             // Optional parameters...
             m_linkText = "";
             m_thumbUrl = "";
@@ -175,6 +223,16 @@ public class LightboxImageData implements Serializable {
         public Builder thumbUrl(String thumbUrl)
         {
             m_thumbUrl = thumbUrl;
+            return this;
+        }
+
+        /**
+         * Use a dynamice resource for the thumbnail image
+         * @param thumbResource image resource to use
+         * @return this builder, so that chaining calls are possible.
+         */
+        public Builder thumbResource(Resource thumbResource) {
+            m_thumbResource = thumbResource;
             return this;
         }
 
