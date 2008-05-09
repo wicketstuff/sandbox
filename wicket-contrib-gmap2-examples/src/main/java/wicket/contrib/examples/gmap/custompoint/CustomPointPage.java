@@ -15,7 +15,7 @@ import wicket.contrib.gmap.api.GSize;
 /**
  * SimplePage for the wicket-contrib-gmap2 project
  */
-public class CustomPointPage extends WicketExamplePage {
+public class CustomPointPage extends WicketExamplePage<Void> {
 
 	private static final long serialVersionUID = 1L;
 

@@ -36,7 +36,7 @@ public class GGroundOverlayApplication extends WicketExampleApplication {
 	}
 
 	@Override
-	public Class<? extends Page> getHomePage() {
+	public Class<? extends Page<?>> getHomePage() {
 		return GGroundOverlayPage.class;
 	}
 

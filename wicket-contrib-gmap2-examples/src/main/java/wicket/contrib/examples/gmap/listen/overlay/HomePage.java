@@ -15,7 +15,7 @@ import wicket.contrib.gmap.event.GMarkerDragendListener;
 /**
  * Example HomePage for the wicket-contrib-gmap2 project
  */
-public class HomePage extends WicketExamplePage
+public class HomePage extends WicketExamplePage<Void>
 {
 
 	private static final long serialVersionUID = 1L;

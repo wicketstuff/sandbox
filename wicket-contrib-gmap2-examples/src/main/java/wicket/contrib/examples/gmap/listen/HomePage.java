@@ -18,7 +18,7 @@ import wicket.contrib.gmap.event.MoveEndListener;
 /**
  * Example HomePage for the wicket-contrib-gmap2 project
  */
-public class HomePage extends WicketExamplePage
+public class HomePage extends WicketExamplePage<Void>
 {
 
 	private static final long serialVersionUID = 1L;
@@ -64,18 +64,19 @@ public class HomePage extends WicketExamplePage
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public IConverter getConverter(Class<?> type)
+			public IConverter<GLatLngBounds> getConverter(Class<GLatLngBounds> type)
 			{
-				return new IConverter()
+				return new IConverter<GLatLngBounds>()
 				{
 					private static final long serialVersionUID = 1L;
 
-					public Object convertToObject(String value, Locale locale)
+
+					public GLatLngBounds convertToObject(String value, Locale locale)
 					{
 						throw new UnsupportedOperationException();
 					}
 
-					public String convertToString(Object value, Locale locale)
+					public String convertToString(GLatLngBounds value, Locale locale)
 					{
 						GLatLngBounds bounds = (GLatLngBounds)value;
 

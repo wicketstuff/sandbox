@@ -11,7 +11,7 @@ import wicket.contrib.gmap.GMapHeaderContributor;
 /**
  * SimplePage for the wicket-contrib-gmap2 project
  */
-public class ManyPage extends WicketExamplePage {
+public class ManyPage extends WicketExamplePage<Void> {
 
 	private static final long serialVersionUID = 1L;
 
