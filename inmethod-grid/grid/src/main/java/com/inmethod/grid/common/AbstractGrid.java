@@ -895,7 +895,7 @@ public abstract class AbstractGrid extends Panel implements IHeaderContributor {
 		return selectToEdit;
 	}
 
-	private final static MetaDataKey EDITING = new MetaDataKey(Boolean.class) {
+	private final static MetaDataKey<Boolean> EDITING = new MetaDataKey<Boolean>() {
 		private static final long serialVersionUID = 1L;
 	};
 
