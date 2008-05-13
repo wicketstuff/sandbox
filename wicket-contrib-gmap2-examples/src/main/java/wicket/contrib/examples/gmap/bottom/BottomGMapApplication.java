@@ -5,9 +5,9 @@ import org.apache.wicket.protocol.http.HttpSessionStore;
 import org.apache.wicket.session.ISessionStore;
 import org.apache.wicket.util.time.Duration;
 
-import wicket.contrib.examples.WicketExampleApplication;
+import wicket.contrib.examples.GMapExampleApplication;
 
-public class BottomGMapApplication extends WicketExampleApplication
+public class BottomGMapApplication extends GMapExampleApplication
 {
 
 

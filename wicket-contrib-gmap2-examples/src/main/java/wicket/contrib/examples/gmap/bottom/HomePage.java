@@ -8,6 +8,7 @@ import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
+import wicket.contrib.examples.GMapExampleApplication;
 import wicket.contrib.examples.WicketExamplePage;
 import wicket.contrib.gmap.GMap2;
 import wicket.contrib.gmap.GMapHeaderContributor;
@@ -24,7 +25,8 @@ import wicket.contrib.gmap.event.MoveEndListener;
 /**
  * Example HomePage for the wicket-contrib-gmap2 project
  */
-public class HomePage extends WicketExamplePage<Void> {
+public class HomePage extends WicketExamplePage<Void>
+{
 
 	private static final long serialVersionUID = 1L;
 
@@ -34,51 +36,60 @@ public class HomePage extends WicketExamplePage<Void> {
 
 	private MoveEndListener moveEndBehavior;
 
-	public HomePage() {
+	public HomePage()
+	{
 		feedback = new FeedbackPanel("feedback");
 		feedback.setOutputMarkupId(true);
 		add(feedback);
 
-		final GMap2<Object> bottomMap = new GMap2<Object>("bottomPanel",
-				new GMapHeaderContributor(LOCALHOST));
+		final GMap2<Object> bottomMap = new GMap2<Object>("bottomPanel", new GMapHeaderContributor(
+				GMapExampleApplication.get().getGoogleMapsAPIkey()));
 		bottomMap.setOutputMarkupId(true);
 		bottomMap.setMapType(GMapType.G_SATELLITE_MAP);
 		bottomMap.setScrollWheelZoomEnabled(true);
-		moveEndBehavior = new MoveEndListener() {
+		moveEndBehavior = new MoveEndListener()
+		{
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void onMoveEnd(AjaxRequestTarget target) {
+			protected void onMoveEnd(AjaxRequestTarget target)
+			{
 				target.addComponent(center);
 			}
 		};
 		bottomMap.add(moveEndBehavior);
-		bottomMap.add(new ClickListener() {
+		bottomMap.add(new ClickListener()
+		{
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void onClick(AjaxRequestTarget target, GLatLng gLatLng,
-					GOverlay overlay) {
-				if (gLatLng != null) {
+			protected void onClick(AjaxRequestTarget target, GLatLng gLatLng, GOverlay overlay)
+			{
+				if (gLatLng != null)
+				{
 					bottomMap.getInfoWindow().open(gLatLng, new HelloPanel());
 				}
 			}
 
 		});
-		bottomMap.add(new InfoWindowCloseListener() {
+		bottomMap.add(new InfoWindowCloseListener()
+		{
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void onInfoWindowClose(AjaxRequestTarget target) {
+			protected void onInfoWindowClose(AjaxRequestTarget target)
+			{
 				info("InfoWindow was closed");
 				target.addComponent(feedback);
 			}
 		});
-		bottomMap.add(new InfoWindowOpenListener() {
+		bottomMap.add(new InfoWindowOpenListener()
+		{
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void onInfoWindowOpen(AjaxRequestTarget target) {
+			protected void onInfoWindowOpen(AjaxRequestTarget target)
+			{
 				info("InfoWindow was opened");
 				target.addComponent(feedback);
 			}
@@ -90,56 +101,67 @@ public class HomePage extends WicketExamplePage<Void> {
 		add(bottomMap);
 
 		center = new Label<GLatLng>("center", new PropertyModel<GLatLng>(bottomMap, "center"));
-		center.add(bottomMap.new SetCenterBehavior("onclick", new GLatLng(37.5, -122.1,
-				false)));
+		center.add(bottomMap.new SetCenterBehavior("onclick", new GLatLng(37.5, -122.1, false)));
 		center.setOutputMarkupId(true);
 		add(center);
 
 		final Label<String> infoWindow = new Label<String>("infoWindow", "openInfoWindow");
-		infoWindow.add(new AjaxEventBehavior("onclick") {
+		infoWindow.add(new AjaxEventBehavior("onclick")
+		{
 			private static final long serialVersionUID = 1L;
 
 			/**
 			 * @see org.apache.wicket.ajax.AjaxEventBehavior#onEvent(org.apache.wicket.ajax.AjaxRequestTarget)
 			 */
 			@Override
-			protected void onEvent(AjaxRequestTarget target) {
-				bottomMap.getInfoWindow().open(new GLatLng(37.5, -122.1),
-						new HelloPanel());
+			protected void onEvent(AjaxRequestTarget target)
+			{
+				bottomMap.getInfoWindow().open(new GLatLng(37.5, -122.1), new HelloPanel());
 			}
 		});
 		add(infoWindow);
-		add(new Link<Object>("reload") {
+		add(new Link<Object>("reload")
+		{
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void onClick() {
+			public void onClick()
+			{
 			}
 		});
-		final Label<Boolean> enabledLabel = new Label<Boolean>("enabled", new Model<Boolean>() {
+		final Label<Boolean> enabledLabel = new Label<Boolean>("enabled", new Model<Boolean>()
+		{
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public Boolean getObject() {
+			public Boolean getObject()
+			{
 				return bottomMap.getBehaviors().contains(moveEndBehavior);
 			}
 		});
-		enabledLabel.add(new AjaxEventBehavior("onclick") {
+		enabledLabel.add(new AjaxEventBehavior("onclick")
+		{
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void onEvent(AjaxRequestTarget target) {
-				if (bottomMap.getBehaviors().contains(moveEndBehavior)) {
+			protected void onEvent(AjaxRequestTarget target)
+			{
+				if (bottomMap.getBehaviors().contains(moveEndBehavior))
+				{
 					bottomMap.remove(moveEndBehavior);
-				} else {
+				}
+				else
+				{
 					// TODO AbstractAjaxBehaviors are not reusable, so we have
 					// to recreate:
 					// https://issues.apache.org/jira/browse/WICKET-713
-					moveEndBehavior = new MoveEndListener() {
+					moveEndBehavior = new MoveEndListener()
+					{
 						private static final long serialVersionUID = 1L;
 
 						@Override
-						protected void onMoveEnd(AjaxRequestTarget target) {
+						protected void onMoveEnd(AjaxRequestTarget target)
+						{
 							target.addComponent(center);
 						}
 					};
@@ -151,18 +173,4 @@ public class HomePage extends WicketExamplePage<Void> {
 		});
 		add(enabledLabel);
 	}
-
-	/**
-	 * pay attention at webapp deploy context, we need a different key for each
-	 * deploy context check <a
-	 * href="http://www.google.com/apis/maps/signup.html">Google Maps API - Sign
-	 * Up</a> for more info. Also the GClientGeocoder is pickier on this than
-	 * the GMap2. Running on 'localhost' GMap2 will ignore the key and the maps
-	 * will show up, but GClientGeocoder wount. So if the key doesnt match the
-	 * url down to the directory GClientGeocoder will not work.
-	 * 
-	 * This key is good for all URLs in this directory:
-	 * http://localhost:8080/wicket-contrib-gmap2-examples/gmap2/
-	 */
-	private static final String LOCALHOST = "ABQIAAAAzaZpf6nHOd9w1PfLaM9u2xQRS2YPSd8S9D1NKPBvdB1fr18_CxR-svEYj6URCf5QDFq3i03mqrDlbA";
 }

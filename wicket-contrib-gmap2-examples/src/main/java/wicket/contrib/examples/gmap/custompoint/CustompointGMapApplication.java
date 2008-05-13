@@ -23,9 +23,9 @@ import org.apache.wicket.protocol.http.HttpSessionStore;
 import org.apache.wicket.session.ISessionStore;
 import org.apache.wicket.util.time.Duration;
 
-import wicket.contrib.examples.WicketExampleApplication;
+import wicket.contrib.examples.GMapExampleApplication;
 
-public class CustompointGMapApplication extends WicketExampleApplication {
+public class CustompointGMapApplication extends GMapExampleApplication {
 
 	/**
 	 * @see wicket.protocol.http.WebApplication#init()
