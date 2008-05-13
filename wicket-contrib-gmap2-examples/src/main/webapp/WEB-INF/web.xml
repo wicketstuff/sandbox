@@ -13,6 +13,10 @@
 		  <param-name>applicationClassName</param-name>
 		  <param-value>wicket.contrib.examples.gmap.controls.ControlsGMapApplication</param-value>
 		</init-param>
+		<init-param>
+		  <param-name>GoogleMapsAPIkey</param-name>
+		  <param-value>ABQIAAAAzaZpf6nHOd9w1PfLaM9u2xQRS2YPSd8S9D1NKPBvdB1fr18_CxR-svEYj6URCf5QDFq3i03mqrDlbA</param-value>
+		</init-param>
 	</filter>
 
 	<filter>
@@ -21,6 +25,10 @@
 		<init-param>
 		  <param-name>applicationClassName</param-name>
 		  <param-value>wicket.contrib.examples.gmap.both.BothGMapApplication</param-value>
+		</init-param>
+		<init-param>
+		  <param-name>GoogleMapsAPIkey</param-name>
+		  <param-value>ABQIAAAAzaZpf6nHOd9w1PfLaM9u2xQRS2YPSd8S9D1NKPBvdB1fr18_CxR-svEYj6URCf5QDFq3i03mqrDlbA</param-value>
 		</init-param>
 	</filter>
 
@@ -31,6 +39,10 @@
 		  <param-name>applicationClassName</param-name>
 		  <param-value>wicket.contrib.examples.gmap.top.TopGMapApplication</param-value>
 		</init-param>
+		<init-param>
+		  <param-name>GoogleMapsAPIkey</param-name>
+		  <param-value>ABQIAAAAzaZpf6nHOd9w1PfLaM9u2xQRS2YPSd8S9D1NKPBvdB1fr18_CxR-svEYj6URCf5QDFq3i03mqrDlbA</param-value>
+		</init-param>
 	</filter>
 
 	<filter>
@@ -39,6 +51,10 @@
 		<init-param>
 		  <param-name>applicationClassName</param-name>
 		  <param-value>wicket.contrib.examples.gmap.geocode.GeoCodeGMapApplication</param-value>
+		</init-param>
+		<init-param>
+		  <param-name>GoogleMapsAPIkey</param-name>
+		  <param-value>ABQIAAAAzaZpf6nHOd9w1PfLaM9u2xQRS2YPSd8S9D1NKPBvdB1fr18_CxR-svEYj6URCf5QDFq3i03mqrDlbA</param-value>
 		</init-param>
 	</filter>
 
@@ -49,6 +65,10 @@
 		  <param-name>applicationClassName</param-name>
 		  <param-value>wicket.contrib.examples.gmap.listen.ListenGMapApplication</param-value>
 		</init-param>
+		<init-param>
+		  <param-name>GoogleMapsAPIkey</param-name>
+		  <param-value>ABQIAAAAzaZpf6nHOd9w1PfLaM9u2xQRS2YPSd8S9D1NKPBvdB1fr18_CxR-svEYj6URCf5QDFq3i03mqrDlbA</param-value>
+		</init-param>
 	</filter>
 
 	<filter>
@@ -57,6 +77,10 @@
 		<init-param>
 		  <param-name>applicationClassName</param-name>
 		  <param-value>wicket.contrib.examples.gmap.listen.overlay.ListenGMarkerApplication</param-value>
+		</init-param>
+		<init-param>
+		  <param-name>GoogleMapsAPIkey</param-name>
+		  <param-value>ABQIAAAAzaZpf6nHOd9w1PfLaM9u2xQRS2YPSd8S9D1NKPBvdB1fr18_CxR-svEYj6URCf5QDFq3i03mqrDlbA</param-value>
 		</init-param>
 	</filter>
 
@@ -67,6 +91,10 @@
 		  <param-name>applicationClassName</param-name>
 		  <param-value>wicket.contrib.examples.gmap.marker.MarkerGMapApplication</param-value>
 		</init-param>
+		<init-param>
+		  <param-name>GoogleMapsAPIkey</param-name>
+		  <param-value>ABQIAAAAzaZpf6nHOd9w1PfLaM9u2xQRS2YPSd8S9D1NKPBvdB1fr18_CxR-svEYj6URCf5QDFq3i03mqrDlbA</param-value>
+		</init-param>
 	</filter>
 
 	<filter>
@@ -75,6 +103,10 @@
 		<init-param>
 		  <param-name>applicationClassName</param-name>
 		  <param-value>wicket.contrib.examples.gmap.custompoint.CustompointGMapApplication</param-value>
+		</init-param>
+		<init-param>
+		  <param-name>GoogleMapsAPIkey</param-name>
+		  <param-value>ABQIAAAAzaZpf6nHOd9w1PfLaM9u2xQRS2YPSd8S9D1NKPBvdB1fr18_CxR-svEYj6URCf5QDFq3i03mqrDlbA</param-value>
 		</init-param>
 	</filter>
 
@@ -85,6 +117,10 @@
 		  <param-name>applicationClassName</param-name>
 		  <param-value>wicket.contrib.examples.gmap.refreshpoint.RefreshPointGMapApplication</param-value>
 		</init-param>
+		<init-param>
+		  <param-name>GoogleMapsAPIkey</param-name>
+		  <param-value>ABQIAAAAzaZpf6nHOd9w1PfLaM9u2xQRS2YPSd8S9D1NKPBvdB1fr18_CxR-svEYj6URCf5QDFq3i03mqrDlbA</param-value>
+		</init-param>
 	</filter>
 
 	<filter>
@@ -93,6 +129,10 @@
 		<init-param>
 		  <param-name>applicationClassName</param-name>
 		  <param-value>wicket.contrib.examples.gmap.many.ManyGMapApplication</param-value>
+		</init-param>
+		<init-param>
+		  <param-name>GoogleMapsAPIkey</param-name>
+		  <param-value>ABQIAAAAzaZpf6nHOd9w1PfLaM9u2xQRS2YPSd8S9D1NKPBvdB1fr18_CxR-svEYj6URCf5QDFq3i03mqrDlbA</param-value>
 		</init-param>
 	</filter>
 
@@ -103,6 +143,10 @@
 		  <param-name>applicationClassName</param-name>
 		  <param-value>wicket.contrib.examples.gmap.bottom.BottomGMapApplication</param-value>
 		</init-param>
+		<init-param>
+		  <param-name>GoogleMapsAPIkey</param-name>
+		  <param-value>ABQIAAAAzaZpf6nHOd9w1PfLaM9u2xQRS2YPSd8S9D1NKPBvdB1fr18_CxR-svEYj6URCf5QDFq3i03mqrDlbA</param-value>
+		</init-param>
 	</filter>
 
 	<filter>
@@ -111,6 +155,10 @@
 		<init-param>
 		  <param-name>applicationClassName</param-name>
 		  <param-value>wicket.contrib.examples.gmap.simple.SimpleGMapApplication</param-value>
+		</init-param>
+		<init-param>
+		  <param-name>GoogleMapsAPIkey</param-name>
+		  <param-value>ABQIAAAAzaZpf6nHOd9w1PfLaM9u2xQRS2YPSd8S9D1NKPBvdB1fr18_CxR-svEYj6URCf5QDFq3i03mqrDlbA</param-value>
 		</init-param>
 	</filter>
 
@@ -121,6 +169,10 @@
 		  <param-name>applicationClassName</param-name>
 		  <param-value>wicket.contrib.examples.gmap.ggroundOverlay.GGroundOverlayApplication</param-value>
 		</init-param>
+		<init-param>
+		  <param-name>GoogleMapsAPIkey</param-name>
+		  <param-value>ABQIAAAAzaZpf6nHOd9w1PfLaM9u2xQRS2YPSd8S9D1NKPBvdB1fr18_CxR-svEYj6URCf5QDFq3i03mqrDlbA</param-value>
+		</init-param>
 	</filter>
 
 	<filter>
@@ -129,6 +181,10 @@
 		<init-param>
 		  <param-name>applicationClassName</param-name>
 		  <param-value>wicket.contrib.examples.gmap.polygones.PolygonesGMapApplication</param-value>
+		</init-param>
+		<init-param>
+		  <param-name>GoogleMapsAPIkey</param-name>
+		  <param-value>ABQIAAAAzaZpf6nHOd9w1PfLaM9u2xQRS2YPSd8S9D1NKPBvdB1fr18_CxR-svEYj6URCf5QDFq3i03mqrDlbA</param-value>
 		</init-param>
 	</filter>
 
