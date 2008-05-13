@@ -37,6 +37,10 @@
 			<activation>
 				<activeByDefault>false</activeByDefault>
 			</activation>
+			<modules>
+				<module>grid</module>
+				<module>grid-examples</module>
+			</modules>
 			<distributionManagement>
 				<snapshotRepository>
 					<id>repo</id>
