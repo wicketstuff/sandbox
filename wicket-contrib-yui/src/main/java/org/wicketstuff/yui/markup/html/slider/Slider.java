@@ -303,7 +303,11 @@ public class Slider extends Panel implements IHeaderContributor {
 	 * @see org.apache.wicket.markup.html.IHeaderContributor#renderHead(org.apache.wicket.markup.html.IHeaderResponse)
 	 */
 	public void renderHead(IHeaderResponse response) {
-        Integer value = (Integer) this.element.getConvertedInput();
+        Integer value = (Integer) this.element.getModelObject();
+        
+        if (value == null)
+        	value = (Integer) this.element.getConvertedInput();
+        
         if (value == null) 
             value = getSliderSettings().getStartValue();
         
