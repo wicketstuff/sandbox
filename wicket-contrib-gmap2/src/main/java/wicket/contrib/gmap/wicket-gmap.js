@@ -26,7 +26,7 @@ if (!Wicket) {
 }
 else 
     if (typeof Wicket != "object") {
-        throw new Error("Wicket already exists and is not an object");
+        throw new Error("Wicket already exists but is not an object");
     }
 
 Wicket.geocoder = new WicketClientGeocoder();
