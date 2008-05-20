@@ -2,8 +2,6 @@ package com.inmethod.grid.treegrid;
 
 import java.util.Collection;
 
-import javax.swing.tree.TreeNode;
-
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.behavior.AbstractBehavior;
@@ -60,7 +58,7 @@ public abstract class TreeGridBody extends AbstractTree {
 			@Override
 			public void onComponentTag(Component component, ComponentTag tag) {
 				CharSequence klass = "imxt-want-prelight";
-				if (getTreeState().isNodeSelected((TreeNode) item.getModelObject())) {
+				if (getTreeState().isNodeSelected(item.getModelObject())) {
 					klass = klass + " imxt-selected";
 				}
 				tag.put("class", klass);
@@ -83,10 +81,6 @@ public abstract class TreeGridBody extends AbstractTree {
 		}
 	}
 
-	boolean isNodeExpanded2(TreeNode node) {
-		return isNodeExpanded(node);
-	}
-
 	/**
 	 * @see org.apache.wicket.markup.html.tree.AbstractTree#isForceRebuildOnSelectionChange()
 	 */
@@ -94,6 +88,11 @@ public abstract class TreeGridBody extends AbstractTree {
 		return false;
 	}
 
+	boolean isNodeExpanded2(Object object)
+	{
+		return super.isNodeExpanded(object);
+	}
+	
 	protected abstract Collection<IGridColumn> getActiveColumns();
 
 	protected abstract void rowPopulated(WebMarkupContainer item);

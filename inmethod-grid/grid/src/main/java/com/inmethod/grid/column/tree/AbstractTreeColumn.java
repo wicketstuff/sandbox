@@ -1,6 +1,6 @@
 package com.inmethod.grid.column.tree;
 
-import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreeModel;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.extensions.markup.html.repeater.data.sort.ISortState;
@@ -51,9 +51,10 @@ public abstract class AbstractTreeColumn extends BaseTreeColumn {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected Icon getIcon(IModel model) {		
-		TreeNode node = (TreeNode) model.getObject();
-		if (node.isLeaf()) {
+	protected Icon getIcon(IModel model) {
+		TreeModel treeModel = (TreeModel) getTreeGrid().getTree().getModelObject();
+		Object node = model.getObject();
+		if (treeModel.isLeaf(node)) {
 			return Icons.ITEM;
 		} else if (getTreeGrid().getTreeState().isNodeExpanded(node)) {
 			return Icons.FOLDER_OPEN;			

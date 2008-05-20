@@ -1,5 +1,6 @@
 package com.inmethod.grid.treegrid;
 
+
 import javax.swing.tree.TreeNode;
 
 import org.apache.wicket.Component;
@@ -61,7 +62,7 @@ public abstract class BaseTreeColumn extends AbstractColumn {
 			}
 
 			@Override
-			protected void onJunctionLinkClicked(AjaxRequestTarget target, TreeNode node) {
+			protected void onJunctionLinkClicked(AjaxRequestTarget target, Object node) {
 				getTreeGrid().onJunctionLinkClicked(target, node);
 			}
 		};
