@@ -63,7 +63,7 @@ public class Veil extends VeilResources
 		{
 			throw new IllegalStateException(
 					"This behavior is already bound to component. An instance of this behavior cannot be reused between components. Bound component: "
-							+ component.toString());
+							+ this.component.toString());
 		}
 		this.component = component;
 	}
