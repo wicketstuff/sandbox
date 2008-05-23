@@ -31,6 +31,7 @@ import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.Component;
+import org.apache.wicket.validation.IValidator;
 
 import java.util.Iterator;
 import java.util.List;
@@ -42,9 +43,13 @@ import java.io.Serializable;
  * @since May 21, 2008
  */
 abstract public class ObjectAutoCompleteField<T,I extends Serializable> extends Panel<I> {
-    private TextField<String> searchTextField;
 
+    // Additional lists of components to update when an object has been selected
     private List<Component<?>> componentsToUpdate = new ArrayList<Component<?>>();
+
+    // Remember old id in case a search operation is aborted
+    private I backupObject;
+    private TextField<String> searchTextField;
 
     public ObjectAutoCompleteField(String id) {
         this(id,new Model<I>());
@@ -59,24 +64,38 @@ abstract public class ObjectAutoCompleteField<T,I extends Serializable> extends 
     private void init() {
         setOutputMarkupId(true);
 
-        Model<String> labelModel = new Model<String>();
-        final Label<String> selectedLabel = addSelectionPanel(labelModel);
+        // Search Text model contains the text selected
+        Model<String> searchTextModel = new Model<String>();
 
-        searchTextField = new TextField<String>("search",labelModel) {
+        addSearchTextField(searchTextModel);
+        addSelectionPanel(searchTextModel);
+    }
+
+    private void addSearchTextField(final Model<String> searchTextModel) {
+        searchTextField = new TextField<String>("search",searchTextModel) {
             @Override
             public boolean isVisible() {
-                return ObjectAutoCompleteField.this.getModelObject() == null;
+                return isSearchMode();
             }
         };
         searchTextField.setOutputMarkupId(true);
-
         // this disables Firefox autocomplete
         searchTextField.add(new SimpleAttributeModifier("autocomplete", "off"));
-        final HiddenField<I> objectField = new HiddenField<I>("hiddenId",getModel());
-        objectField.setOutputMarkupId(true);
-        add(objectField);
 
-        searchTextField.add(new AjaxFormSubmitBehavior("onchange")
+        searchTextField.add(
+                createObjectAutoCompleteBehaviour(),
+                createFormUpdateBehaviour(searchTextField));
+
+        add(searchTextField);
+    }
+
+    private boolean isSearchMode() {
+        return getModelObject() == null;
+    }
+
+
+    private AjaxFormSubmitBehavior createFormUpdateBehaviour(final TextField<String> searchTextField) {
+        return new AjaxFormSubmitBehavior("onchange")
         {
             @Override
             protected void onSubmit(AjaxRequestTarget target) {
@@ -91,42 +110,48 @@ abstract public class ObjectAutoCompleteField<T,I extends Serializable> extends 
             @Override
             protected void onError(AjaxRequestTarget target) {
             }
-        });
-        searchTextField.add(new ObjectAutoCompleteBehavior<T>(objectField) {
+        };
+    }
+
+    private IBehavior createObjectAutoCompleteBehaviour() {
+        final HiddenField<I> objectField = new HiddenField<I>("hiddenId",getModel());
+        objectField.setOutputMarkupId(true);
+        add(objectField);
+        IBehavior objectAutoSelectBehaviour = new ObjectAutoCompleteBehavior<T>(objectField) {
             @Override
             protected Iterator<T> getChoices(String input) {
                 return ObjectAutoCompleteField.this.getChoices(input);
             }
-        });
-
-        add(searchTextField);
+        };
+        return objectAutoSelectBehaviour;
     }
 
-    private Label<String> addSelectionPanel(final Model<String> descriptionModel) {
-        final WebMarkupContainer wac = new WebMarkupContainer("selectedPanel") {
+    private void addSelectionPanel(final Model<String> searchTextModel) {
+        final WebMarkupContainer wac = new WebMarkupContainer("readOnlyPanel") {
             @Override
             public boolean isVisible() {
-                return ObjectAutoCompleteField.this.getModelObject() != null;
+                return !isSearchMode();
             }
         };
         wac.setOutputMarkupId(true);
 
-        final Label<String> selectedLabel = new Label<String>("selectedValue",descriptionModel);
+        Label<String> selectedLabel = new Label<String>("selectedValue",searchTextModel);
         selectedLabel.setOutputMarkupId(true);
 
         AjaxFallbackLink deleteLink = new AjaxFallbackLink("deleteLink") {
             public void onClick(AjaxRequestTarget target) {
+                backupObject = ObjectAutoCompleteField.this.getModelObject();
                 ObjectAutoCompleteField.this.setModelObject(null);
-                descriptionModel.setObject("");
                 if (target != null) {
                     target.addComponent(ObjectAutoCompleteField.this);
+                    target.appendJavascript(searchTextField.getMarkupId()+".focus();");
+                    target.appendJavascript(searchTextField.getMarkupId()+".select();");
                 }
             }
         };
         wac.add(selectedLabel);
         wac.add(deleteLink);
         add(wac);
-        return selectedLabel;
     }
 
     @Override

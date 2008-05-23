@@ -26,11 +26,30 @@ Wicketstuff.ObjectAutoComplete=function(elementId, objectElementId, callbackUrl,
 
     // Remove the autocompletion menu if still present from
     // a previous call. This is required to properly register
-    // the mouse event handler again (using the new stateful 'mouseactive'
-    // variable which just gets created)
+    // the mouse event handler again (using the new 'mouseactive'
+    // variable which just has been created again)
     var choiceDiv=document.getElementById(this.getMenuId());
     if (choiceDiv != null) {
         choiceDiv.parentNode.parentNode.removeChild(choiceDiv.parentNode);
+    }
+
+    // Register key listener for proper ESC handling
+    // ... work in progress ...
+    var obj=wicketGet(elementId);
+    var objonkeydown=obj.onkeydown;
+    obj.onkeydown = function(event) {
+        var ret = objonkeydown(event);
+        if (wicketKeyCode(Wicket.fixEvent(event)) == 27 /* ESC */) {
+            var objElement = wicketGet(objectElementId);
+            var textElement = wicketGet(elementId);
+            if (objElement.value == null) {
+             //   alert("Bla!");
+            } else {
+             ///   alert("Value = >" + objElement.value + "<");
+            }
+            textElement.value = "";
+        }
+        return ret;
     }
 
     // Register key listener for ESC to revert to previous state
