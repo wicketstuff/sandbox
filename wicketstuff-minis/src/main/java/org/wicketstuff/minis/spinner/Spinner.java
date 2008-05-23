@@ -173,7 +173,7 @@ public class Spinner extends AbstractBehavior
 	 */
 	private String getMarkupId()
 	{
-		return component.getId() + "Spinner";
+		return component.getMarkupId() + "-Spinner";
 	}
 
 	/**
