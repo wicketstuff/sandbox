@@ -16,12 +16,12 @@
  */
 package org.wicketstuff.objectautocomplete.example;
 
-import org.apache.wicket.PageParameters;
-import org.apache.wicket.ajax.form.AjaxFormSubmitBehavior;
-import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.model.Model;
+import org.wicketstuff.objectautocomplete.AutoCompletionChoicesProvider;
+import org.wicketstuff.objectautocomplete.ObjectAutoCompleteBuilder;
 import org.wicketstuff.objectautocomplete.ObjectAutoCompleteField;
 
 import java.util.ArrayList;
@@ -41,21 +41,27 @@ public class HomePage extends WebPage<Void> {
         final Form form = new Form("form");
         add(form);
 
+        Model<Integer> idModel = new Model<Integer>();
 
-
-        ObjectAutoCompleteField<Car,Integer> field = new ObjectAutoCompleteField<Car,Integer>("carAutocomplete") {
-            @Override
-            public Iterator<Car> getChoices(String input) {
-                return searchForCar(input).iterator();
-            }
-        };
-        form.add(field);
-
-
-        final Label<Integer> label = new Label<Integer>("selectedId", field.getModel());
+        // Read-only view of the current id
+        final Label<Integer> label = new Label<Integer>("selectedId", idModel);
 		label.setOutputMarkupId(true);
 		form.add(label);
-        field.updateOnModelChange(label);
+
+        ObjectAutoCompleteField<Car,Integer> field =
+                new ObjectAutoCompleteBuilder<Car>(getChoicesProvider())
+                        .updateOnModelChange(label)
+                        .preselect(true)
+                        .build("carAutocomplete",idModel);
+        form.add(field);
+    }
+
+    private AutoCompletionChoicesProvider<Car> getChoicesProvider() {
+        return new AutoCompletionChoicesProvider<Car>() {
+            public Iterator<Car> getChoices(String pInput) {
+                return searchForCar(pInput).iterator();
+            }
+        };
     }
 
     private List<Car> searchForCar(String input) {

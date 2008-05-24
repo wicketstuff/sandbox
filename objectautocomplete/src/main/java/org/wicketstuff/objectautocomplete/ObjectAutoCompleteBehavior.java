@@ -28,22 +28,27 @@ import org.apache.wicket.markup.html.WicketEventReference;
 import org.apache.wicket.markup.html.resources.JavascriptResourceReference;
 import org.apache.wicket.markup.ComponentTag;
 
+import java.util.Iterator;
+
 /**
  * Behaviour for object auto completion using a slightly modified variant of
  * {@see org.apache.wicket.extensions.ajax.markup.html.autocomplete.AbstractAutoCompleteBehavior}
  *
  * An (hidden) element is required to store the object id which has been selected.
  *
+ * The type parameter is the type of the object to be rendered (not it's id)
+ *
  * @author roland
  * @since May 18, 2008
  */
-abstract public class ObjectAutoCompleteBehavior<T> extends AutoCompleteBehavior<T> {
+public class ObjectAutoCompleteBehavior<T> extends AutoCompleteBehavior<T> {
 
     private static final ResourceReference OBJECTAUTOCOMPLETE_JS = new JavascriptResourceReference(
             ObjectAutoCompleteBehavior.class, "wicketstuff-objectautocomplete.js");
     // Our version of 'wicket-autocomplete.js', with the patch from WICKET-1651
     private static final ResourceReference AUTOCOMPLETE_OBJECTIFIED_JS = new JavascriptResourceReference(
             ObjectAutoCompleteBehavior.class, "wicket-autocomplete-objectified.js");
+
     // Reference to upstream JS, use this if the required patch has been applied. For now, unused.
     private static final ResourceReference AUTOCOMPLETE_JS = new JavascriptResourceReference(
 		AutoCompleteBehavior.class, "wicket-autocomplete.js");
@@ -52,34 +57,18 @@ abstract public class ObjectAutoCompleteBehavior<T> extends AutoCompleteBehavior
     private Component objectElement;
 
     private ObjectAutoCompleteCancelListener cancelListener;
+    private AutoCompletionChoicesProvider<T> choicesProvider;
 
-    public ObjectAutoCompleteBehavior(Component pObjectElement) {
-        this(pObjectElement,null);
-    }
-
-    public ObjectAutoCompleteBehavior(Component pObjectElement,ObjectAutoCompleteCancelListener pCancelListener) {
-        this(pObjectElement,pCancelListener,new ObjectAutoCompleteRenderer<T>());
-    }
-
-    public ObjectAutoCompleteBehavior(Component pObjectElement,ObjectAutoCompleteCancelListener pCancelListener,
-                                      ObjectAutoCompleteRenderer<T> pAutoCompleteRenderer) {
-        this(pObjectElement,pCancelListener,pAutoCompleteRenderer,false);
-    }
-
-    public ObjectAutoCompleteBehavior(Component pObjectElement,ObjectAutoCompleteCancelListener pCancelListener,
-                                      ObjectAutoCompleteRenderer<T> pAutoCompleteRenderer,
-                                      boolean pPreselect) {
-        this(pObjectElement,pCancelListener,pAutoCompleteRenderer, new AutoCompleteSettings().setPreselect(pPreselect));
-    }
-
-    public ObjectAutoCompleteBehavior(Component pObjectElement,ObjectAutoCompleteCancelListener pCancelListener,
-                                      ObjectAutoCompleteRenderer<T> pAutoCompleteRenderer,
-                                      AutoCompleteSettings pSettings) {
-        super(pAutoCompleteRenderer, pSettings);
+    ObjectAutoCompleteBehavior(Component pObjectElement,ObjectAutoCompleteBuilder<T> pBuilder) {
+        super(pBuilder.objectAutoCompleteRenderer,
+                new AutoCompleteSettings()
+                        .setMaxHeightInPx(pBuilder.maxHeightInPx)
+                        .setPreselect(pBuilder.preselect)
+                        .setShowListOnEmptyInput(pBuilder.showListOnEmptyInput));
         objectElement = pObjectElement;
-        cancelListener = pCancelListener;
+        cancelListener = pBuilder.cancelListener;
+        choicesProvider = pBuilder.choicesProvider;
     }
-
 
     /**
      * Temporarily solution until patch from WICKET-1651 is applied. Note, that we avoid a call to super
@@ -136,7 +125,7 @@ abstract public class ObjectAutoCompleteBehavior<T> extends AutoCompleteBehavior
         if (cancelListener != null) {
             final String keypress = "if (event) { var kc=wicketKeyCode(event); if (kc==27) {" +
                     generateCallbackScript("wicketAjaxGet('" + getCallbackUrl() + "&cancel=true'") +
-                    "; return false;} else return true;}";
+                    "; return false;} else if (kc==13) return false; else return true;}";
             tag.put("onkeypress", keypress);
         }
     }
@@ -151,5 +140,10 @@ abstract public class ObjectAutoCompleteBehavior<T> extends AutoCompleteBehavior
         } else {
             super.respond(target);
         }
+    }
+
+    @Override
+    protected Iterator<T> getChoices(String input) {
+        return choicesProvider.getChoices(input);
     }
 }
