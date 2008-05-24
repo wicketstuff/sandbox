@@ -6,16 +6,21 @@ import org.apache.wicket.ResourceReference;
 import org.apache.wicket.markup.html.resources.JavascriptResourceReference;
 
 /**
- * A reference to the "prototype.js" script.
+ * A reference to the "prototype.js" script.<br>
+ * Uses a default resource if no other was specified via
+ * {@link #install(Application, Resource)}.
  */
 public final class PrototypeResourceReference extends
 		JavascriptResourceReference {
 
 	/**
-	 * Singleton instance of this reference
+	 * Singleton instance of this reference.
 	 */
 	public static final ResourceReference INSTANCE = new PrototypeResourceReference();
 
+	/**
+	 * The name of this resource reference.
+	 */
 	public static final String NAME = "prototype.js";
 
 	private PrototypeResourceReference() {
@@ -34,7 +39,9 @@ public final class PrototypeResourceReference extends
 	}
 
 	/**
-	 * Install the given resource to be used for the prototypes script.
+	 * Install the given resource to be used for the prototypes script. <br>
+	 * This method has to be called before any component was rendered, e.g. in
+	 * {@link Application#init()}.
 	 * 
 	 * @param application
 	 *            the application to install the resource on
