@@ -39,4 +39,26 @@
 			<artifactId>log4j</artifactId>
 		</dependency>
 	</dependencies>
+	
+	<repositories>
+		<repository>
+			<id>wicket-stuff-repository</id>
+			<name>Wicket-Stuff Repository</name>
+			<url>http://www.wicketstuff.org/maven/repository/</url>
+		</repository>
+	</repositories>
+	
+    <distributionManagement>
+        <snapshotRepository>
+            <id>repo</id>
+            <name>Local TeamCity/Tomcat repository</name>
+            <url>file:/home/wicket/tomcat/webapps/maven/repository/</url>
+            <uniqueVersion>false</uniqueVersion>
+        </snapshotRepository>
+        <repository>
+            <id>repo</id>
+            <name>Local TeamCity/Tomcat repository</name>
+		    <url>file:/home/wicket/tomcat/webapps/maven/repository/</url>
+        </repository>
+    </distributionManagement>
 </project>
