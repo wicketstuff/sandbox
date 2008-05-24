@@ -18,6 +18,7 @@ package org.wicketstuff.objectautocomplete;
 
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.form.AjaxFormSubmitBehavior;
 import org.apache.wicket.ajax.markup.html.AjaxFallbackLink;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
@@ -31,6 +32,7 @@ import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.Component;
+import org.apache.wicket.RequestCycle;
 import org.apache.wicket.validation.IValidator;
 
 import java.util.Iterator;
@@ -42,7 +44,8 @@ import java.io.Serializable;
  * @author roland
  * @since May 21, 2008
  */
-abstract public class ObjectAutoCompleteField<T,I extends Serializable> extends Panel<I> {
+abstract public class ObjectAutoCompleteField<T,I extends Serializable> extends Panel<I>
+        implements ObjectAutoCompleteCancelListener {
 
     // Additional lists of components to update when an object has been selected
     private List<Component<?>> componentsToUpdate = new ArrayList<Component<?>>();
@@ -82,11 +85,57 @@ abstract public class ObjectAutoCompleteField<T,I extends Serializable> extends 
         // this disables Firefox autocomplete
         searchTextField.add(new SimpleAttributeModifier("autocomplete", "off"));
 
+        final HiddenField<I> objectField = new HiddenField<I>("hiddenId",getModel());
+        objectField.setOutputMarkupId(true);
+        add(objectField);
+
         searchTextField.add(
-                createObjectAutoCompleteBehaviour(),
-                createFormUpdateBehaviour(searchTextField));
+                createObjectAutoCompleteBehaviour(objectField),
+                createFormUpdateBehaviour(searchTextField)
+        );
 
         add(searchTextField);
+    }
+
+
+    private IBehavior createCancelSearchBehaviour() {
+        return new AbstractDefaultAjaxBehavior() {
+
+            @Override
+            protected void onComponentTag(ComponentTag tag) {
+                super.onComponentTag(tag);
+                final String keypress = "if (event) { var kc=wicketKeyCode(event); if (kc==27) {" +
+                        generateCallbackScript("wicketAjaxGet('" + getCallbackUrl() + "&cancel=true'") +
+                        "; return false;} else return true;}";
+                tag.put("onkeypress", keypress);
+            }
+
+            @Override
+            protected void respond(AjaxRequestTarget target) {
+                RequestCycle requestCycle = RequestCycle.get();
+                boolean cancel = Boolean.valueOf(requestCycle.getRequest().getParameter("cancel"))
+                        .booleanValue();
+                // We might check whether cancel is set
+                if (backupObject != null) {
+                    setModelObject(backupObject);
+                }
+                target.addComponent(ObjectAutoCompleteField.this);
+            }
+
+            protected String getChannelName() {
+                return "cancelSearchChannel";
+            }
+        };
+    }
+
+    public void searchCanceled(AjaxRequestTarget target) {
+        if (backupObject != null) {
+            setModelObject(backupObject);
+            target.addComponent(ObjectAutoCompleteField.this);
+        } else {
+            searchTextField.clearInput();
+            target.addComponent(searchTextField);
+        }
     }
 
     private boolean isSearchMode() {
@@ -113,11 +162,8 @@ abstract public class ObjectAutoCompleteField<T,I extends Serializable> extends 
         };
     }
 
-    private IBehavior createObjectAutoCompleteBehaviour() {
-        final HiddenField<I> objectField = new HiddenField<I>("hiddenId",getModel());
-        objectField.setOutputMarkupId(true);
-        add(objectField);
-        IBehavior objectAutoSelectBehaviour = new ObjectAutoCompleteBehavior<T>(objectField) {
+    private IBehavior createObjectAutoCompleteBehaviour(Component objectField) {
+        IBehavior objectAutoSelectBehaviour = new ObjectAutoCompleteBehavior<T>(objectField,this) {
             @Override
             protected Iterator<T> getChoices(String input) {
                 return ObjectAutoCompleteField.this.getChoices(input);
@@ -144,8 +190,10 @@ abstract public class ObjectAutoCompleteField<T,I extends Serializable> extends 
                 ObjectAutoCompleteField.this.setModelObject(null);
                 if (target != null) {
                     target.addComponent(ObjectAutoCompleteField.this);
-                    target.appendJavascript(searchTextField.getMarkupId()+".focus();");
-                    target.appendJavascript(searchTextField.getMarkupId()+".select();");
+                    String id = searchTextField.getMarkupId();
+                    target.appendJavascript(
+                            "wicketGet('" +id +"').focus();" +
+                            "wicketGet('" + id + "').select();");
                 }
             }
         };
@@ -172,4 +220,6 @@ abstract public class ObjectAutoCompleteField<T,I extends Serializable> extends 
     public void updateOnModelChange(Component<?> componentToUpdate) {
         componentsToUpdate.add(componentToUpdate);
     }
+
+
 }

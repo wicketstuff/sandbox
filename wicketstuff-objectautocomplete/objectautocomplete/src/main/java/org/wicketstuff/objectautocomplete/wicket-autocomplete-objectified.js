@@ -161,7 +161,9 @@ Wicket.AutoComplete=function(elementId, callbackUrl, cfg){
 			        return killEvent(event);
                 }
             }
-			if(typeof objonkeypress=="function")objonkeypress();
+			if(typeof objonkeypress=="function") {
+                return (objonkeypress.bind(obj))(event);
+            }
         }
     }
 
