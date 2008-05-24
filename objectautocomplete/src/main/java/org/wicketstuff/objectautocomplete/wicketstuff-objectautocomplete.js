@@ -21,6 +21,11 @@ if (typeof(Wicketstuff) == "undefined") {
 
 Wicketstuff.ObjectAutoComplete=function(elementId, objectElementId, callbackUrl, cfg){
 
+    var obj=wicketGet(elementId);
+
+    // Saven onkeypress and onkeydown so that we can later use it for cascading
+    var acobjonkeypress = obj.onkeypress;
+
     // Initialize with parent constructor
     Wicket.AutoComplete.call(this,elementId,callbackUrl,cfg);
 
@@ -35,22 +40,17 @@ Wicketstuff.ObjectAutoComplete=function(elementId, objectElementId, callbackUrl,
 
     // Register key listener for proper ESC handling
     // ... work in progress ...
-    var obj=wicketGet(elementId);
-    var objonkeydown=obj.onkeydown;
-    obj.onkeydown = function(event) {
-        var ret = objonkeydown(event);
-        if (wicketKeyCode(Wicket.fixEvent(event)) == 27 /* ESC */) {
-            var objElement = wicketGet(objectElementId);
-            var textElement = wicketGet(elementId);
-            if (objElement.value == null) {
-             //   alert("Bla!");
-            } else {
-             ///   alert("Value = >" + objElement.value + "<");
-            }
-            textElement.value = "";
-        }
-        return ret;
-    }
+//    if(typeof acobjonkeypress=="function") {
+//        var objonkeypress=obj.onkeypress;
+//        obj.onkeydown = function(event) {
+//            if ((acobjonkeypress.bind(obj))(event)) {
+//                return objonkeypress(event);
+//            } else {
+//                return false;
+//            }
+//        }
+//    }
+
 
     // Register key listener for ESC to revert to previous state
     this.updateValue = function() {
