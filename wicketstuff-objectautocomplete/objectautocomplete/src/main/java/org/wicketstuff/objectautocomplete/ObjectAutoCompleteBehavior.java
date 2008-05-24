@@ -16,18 +16,17 @@
  */
 package org.wicketstuff.objectautocomplete;
 
-import org.apache.wicket.ResourceReference;
-import org.apache.wicket.Component;
-import org.apache.wicket.Application;
-import org.apache.wicket.RequestContext;
+import org.apache.wicket.*;
 import org.apache.wicket.ajax.WicketAjaxReference;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
+import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.settings.IDebugSettings;
 import org.apache.wicket.extensions.ajax.markup.html.autocomplete.AutoCompleteBehavior;
 import org.apache.wicket.extensions.ajax.markup.html.autocomplete.AutoCompleteSettings;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WicketEventReference;
 import org.apache.wicket.markup.html.resources.JavascriptResourceReference;
+import org.apache.wicket.markup.ComponentTag;
 
 /**
  * Behaviour for object auto completion using a slightly modified variant of
@@ -52,22 +51,33 @@ abstract public class ObjectAutoCompleteBehavior<T> extends AutoCompleteBehavior
     // Element holding the object id as value
     private Component objectElement;
 
+    private ObjectAutoCompleteCancelListener cancelListener;
+
     public ObjectAutoCompleteBehavior(Component pObjectElement) {
-        this(pObjectElement,new ObjectAutoCompleteRenderer<T>());
-    }
-    public ObjectAutoCompleteBehavior(Component pObjectElement,ObjectAutoCompleteRenderer<T> pAutoCompleteRenderer) {
-        this(pObjectElement,pAutoCompleteRenderer,false);
+        this(pObjectElement,null);
     }
 
-    public ObjectAutoCompleteBehavior(Component pObjectElement,ObjectAutoCompleteRenderer<T> pAutoCompleteRenderer,
+    public ObjectAutoCompleteBehavior(Component pObjectElement,ObjectAutoCompleteCancelListener pCancelListener) {
+        this(pObjectElement,pCancelListener,new ObjectAutoCompleteRenderer<T>());
+    }
+
+    public ObjectAutoCompleteBehavior(Component pObjectElement,ObjectAutoCompleteCancelListener pCancelListener,
+                                      ObjectAutoCompleteRenderer<T> pAutoCompleteRenderer) {
+        this(pObjectElement,pCancelListener,pAutoCompleteRenderer,false);
+    }
+
+    public ObjectAutoCompleteBehavior(Component pObjectElement,ObjectAutoCompleteCancelListener pCancelListener,
+                                      ObjectAutoCompleteRenderer<T> pAutoCompleteRenderer,
                                       boolean pPreselect) {
-        this(pObjectElement,pAutoCompleteRenderer, new AutoCompleteSettings().setPreselect(pPreselect));
+        this(pObjectElement,pCancelListener,pAutoCompleteRenderer, new AutoCompleteSettings().setPreselect(pPreselect));
     }
 
-    public ObjectAutoCompleteBehavior(Component pObjectElement,ObjectAutoCompleteRenderer<T> pAutoCompleteRenderer,
+    public ObjectAutoCompleteBehavior(Component pObjectElement,ObjectAutoCompleteCancelListener pCancelListener,
+                                      ObjectAutoCompleteRenderer<T> pAutoCompleteRenderer,
                                       AutoCompleteSettings pSettings) {
         super(pAutoCompleteRenderer, pSettings);
         objectElement = pObjectElement;
+        cancelListener = pCancelListener;
     }
 
 
@@ -120,4 +130,26 @@ abstract public class ObjectAutoCompleteBehavior<T> extends AutoCompleteBehavior
 		response.renderOnDomReadyJavascript(initJS);
 	}
 
+    @Override
+    protected void onComponentTag(ComponentTag tag) {
+        super.onComponentTag(tag);
+        if (cancelListener != null) {
+            final String keypress = "if (event) { var kc=wicketKeyCode(event); if (kc==27) {" +
+                    generateCallbackScript("wicketAjaxGet('" + getCallbackUrl() + "&cancel=true'") +
+                    "; return false;} else return true;}";
+            tag.put("onkeypress", keypress);
+        }
+    }
+
+    @Override
+    protected void respond(AjaxRequestTarget target) {
+        RequestCycle requestCycle = RequestCycle.get();
+        boolean cancel = Boolean.valueOf(requestCycle.getRequest().getParameter("cancel"))
+                .booleanValue();
+        if (cancelListener != null && cancel) {
+            cancelListener.searchCanceled(target);
+        } else {
+            super.respond(target);
+        }
+    }
 }
