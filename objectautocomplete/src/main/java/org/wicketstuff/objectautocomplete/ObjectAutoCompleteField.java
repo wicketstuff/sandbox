@@ -17,12 +17,14 @@
 package org.wicketstuff.objectautocomplete;
 
 import org.apache.wicket.Component;
+import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormSubmitBehavior;
 import org.apache.wicket.ajax.markup.html.AjaxFallbackLink;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.HiddenField;
 import org.apache.wicket.markup.html.form.TextField;
@@ -84,7 +86,7 @@ public class ObjectAutoCompleteField<T,I extends Serializable> extends Panel<I>
         // Search Text model contains the text selected
         Model<String> searchTextModel = new Model<String>();
         addSearchTextField(searchTextModel, pBuilder);
-        addReadOnlyPanel(searchTextModel);
+        addReadOnlyPanel(searchTextModel,pBuilder);
     }
 
     /**
@@ -124,7 +126,7 @@ public class ObjectAutoCompleteField<T,I extends Serializable> extends Panel<I>
     }
 
     // the 'read only part' if the object has been selected
-    private void addReadOnlyPanel(final Model<String> pSearchTextModel) {
+    private void addReadOnlyPanel(final Model<String> pSearchTextModel, ObjectAutoCompleteBuilder<T> pBuilder) {
         final WebMarkupContainer wac = new WebMarkupContainer("readOnlyPanel") {
             @Override
             public boolean isVisible() {
@@ -136,23 +138,50 @@ public class ObjectAutoCompleteField<T,I extends Serializable> extends Panel<I>
         Label<String> selectedLabel = new Label<String>("selectedValue",pSearchTextModel);
         selectedLabel.setOutputMarkupId(true);
 
-        AjaxFallbackLink deleteLink = new AjaxFallbackLink("deleteLink") {
+        AjaxFallbackLink deleteLink = new AjaxFallbackLink("searchLink") {
             @Override
             public void onClick(AjaxRequestTarget target) {
-                backupObject = ObjectAutoCompleteField.this.getModelObject();
-                ObjectAutoCompleteField.this.setModelObject(null);
-                if (target != null) {
-                    target.addComponent(ObjectAutoCompleteField.this);
-                    String id = searchTextField.getMarkupId();
-                    target.appendJavascript(
-                            "wicketGet('" +id +"').focus();" +
-                            "wicketGet('" + id + "').select();");
-                }
+                changeToSearchMode(target);
             }
         };
+
+        Component linkImage = new Image<Void>("searchLinkImage").setVisible(false);
+        if (pBuilder.imageResource != null || pBuilder.imageResourceReference != null) {
+            linkImage = pBuilder.imageResource != null ?
+                    new Image<Void>("searchLinkImage",pBuilder.imageResource) :
+                    new Image<Void>("searchLinkImage",pBuilder.imageResourceReference);
+            deleteLink.add(new Label(ObjectAutoCompleteBuilder.SEARCH_LINK_PANEL_ID).setVisible(false));
+        } else if (pBuilder.searchLinkContent != null) {
+            deleteLink.add(pBuilder.searchLinkContent);
+        } else {
+            deleteLink.add(new Label(ObjectAutoCompleteBuilder.SEARCH_LINK_PANEL_ID,pBuilder.searchLinkText));
+        }
+        deleteLink.add(linkImage);
+
+        if (pBuilder.searchOnClick) {
+            deleteLink.setVisible(false);
+            selectedLabel.add(new AjaxEventBehavior("onclick") {
+                @Override
+                protected void onEvent(AjaxRequestTarget target) {
+                    changeToSearchMode(target);
+                }
+            });
+        }
         wac.add(selectedLabel);
         wac.add(deleteLink);
         add(wac);
+    }
+
+    private void changeToSearchMode(AjaxRequestTarget target) {
+        backupObject = ObjectAutoCompleteField.this.getModelObject();
+        ObjectAutoCompleteField.this.setModelObject(null);
+        if (target != null) {
+            target.addComponent(ObjectAutoCompleteField.this);
+            String id = searchTextField.getMarkupId();
+            target.appendJavascript(
+                    "wicketGet('" +id +"').focus();" +
+                            "wicketGet('" + id + "').select();");
+        }
     }
 
     /**
