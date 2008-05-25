@@ -1,6 +1,7 @@
 package org.wicketstuff.objectautocomplete;
 
 import java.util.Iterator;
+import java.io.Serializable;
 
 /**
  * Interfaces to specify a producer for items in an autocompletion menu
@@ -9,7 +10,7 @@ import java.util.Iterator;
  * @author roland
  * @since May 24, 2008
  */
-public interface AutoCompletionChoicesProvider<T> {
+public interface AutoCompletionChoicesProvider<T> extends Serializable {
 
 	/**
 	 * Callback method that should return an iterator over all possible choice objects. These

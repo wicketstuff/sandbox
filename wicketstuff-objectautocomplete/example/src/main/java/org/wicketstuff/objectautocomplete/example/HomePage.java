@@ -17,9 +17,13 @@
 package org.wicketstuff.objectautocomplete.example;
 
 import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.markup.html.PackageResource;
+import org.apache.wicket.markup.html.resources.PackagedResourceReference;
+import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.ResourceReference;
 import org.wicketstuff.objectautocomplete.AutoCompletionChoicesProvider;
 import org.wicketstuff.objectautocomplete.ObjectAutoCompleteBuilder;
 import org.wicketstuff.objectautocomplete.ObjectAutoCompleteField;
@@ -28,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.io.Serializable;
 
 /**
  * Homepage
@@ -51,7 +56,8 @@ public class HomePage extends WebPage<Void> {
         ObjectAutoCompleteField<Car,Integer> field =
                 new ObjectAutoCompleteBuilder<Car>(getChoicesProvider())
                         .updateOnModelChange(label)
-                        .preselect(true)
+                        .preselect()
+                        .searchLinkImage(PackageResource.get(HomePage.class,"delete.png"))
                         .build("carAutocomplete",idModel);
         form.add(field);
     }
