@@ -16,13 +16,15 @@
  */
 package org.wicketstuff.objectautocomplete.example;
 
+import java.io.Serializable;
+
 /**
  * Sample domain object
  *
  * @author roland
  * @since May 23, 2008
  */
-public class Car {
+public class Car implements Serializable {
     int id;
     String name;
 
