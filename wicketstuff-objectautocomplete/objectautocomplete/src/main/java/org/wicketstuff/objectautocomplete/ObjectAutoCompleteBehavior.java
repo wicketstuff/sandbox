@@ -17,16 +17,16 @@
 package org.wicketstuff.objectautocomplete;
 
 import org.apache.wicket.*;
-import org.apache.wicket.ajax.WicketAjaxReference;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.settings.IDebugSettings;
+import org.apache.wicket.ajax.WicketAjaxReference;
 import org.apache.wicket.extensions.ajax.markup.html.autocomplete.AutoCompleteBehavior;
 import org.apache.wicket.extensions.ajax.markup.html.autocomplete.AutoCompleteSettings;
+import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WicketEventReference;
 import org.apache.wicket.markup.html.resources.JavascriptResourceReference;
-import org.apache.wicket.markup.ComponentTag;
+import org.apache.wicket.settings.IDebugSettings;
 
 import java.util.Iterator;
 

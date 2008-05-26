@@ -32,9 +32,9 @@ public class WicketApplication extends WebApplication
 	}
 
 	@Override
-    public Class<HomePage> getHomePage()
+    public Class<SimpleExamplePage> getHomePage()
 	{
-		return HomePage.class;
+		return SimpleExamplePage.class;
 	}
 
 }
