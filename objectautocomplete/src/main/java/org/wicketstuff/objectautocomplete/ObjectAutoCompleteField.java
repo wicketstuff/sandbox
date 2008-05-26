@@ -50,7 +50,7 @@ import java.util.List;
  * @author roland
  * @since May 21, 2008
  */
-public class ObjectAutoCompleteField<T,I extends Serializable> extends Panel<I>
+public class ObjectAutoCompleteField<T,I> extends Panel<I>
         implements ObjectAutoCompleteCancelListener {
 
     // Additional lists of components to update when an object has been selected

@@ -1,17 +1,14 @@
 package org.wicketstuff.objectautocomplete;
 
-import org.apache.wicket.extensions.ajax.markup.html.autocomplete.IAutoCompleteRenderer;
 import org.apache.wicket.Component;
 import org.apache.wicket.Resource;
 import org.apache.wicket.ResourceReference;
-import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.extensions.ajax.markup.html.autocomplete.IAutoCompleteRenderer;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
 
-import java.io.Serializable;
-import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Builder for initializing a {@link org.wicketstuff.objectautocomplete.ObjectAutoCompleteField} and
@@ -123,6 +120,13 @@ public class ObjectAutoCompleteBuilder<T> {
     }
 
     public ObjectAutoCompleteBuilder<T> updateOnModelChange(Component<?> ... pComponents) {
+        for (Component comp : pComponents) {
+            if (comp == null) {
+                throw new IllegalArgumentException(
+                        "A component to included for an ajax update " +
+                                "on model change cannot be null");
+            }
+        }
         updateOnModelChangeComponents.addAll(Arrays.asList(pComponents));
         return this;
     }
@@ -135,11 +139,11 @@ public class ObjectAutoCompleteBuilder<T> {
         return new ObjectAutoCompleteBehavior<T>(objectIdHolder,this);
     }
 
-    public <I extends Serializable> ObjectAutoCompleteField<T,I> build(String id) {
-        return build(id,new Model<I>());
+    public <I> ObjectAutoCompleteField<T,I> build(String id) {
+        return build(id,null);
     }
 
-    public <I extends Serializable> ObjectAutoCompleteField<T,I> build(String id, IModel<I> model) {
+    public <I> ObjectAutoCompleteField<T,I> build(String id, IModel<I> model) {
         return new ObjectAutoCompleteField<T,I>(id,model,this);
     }
 }
