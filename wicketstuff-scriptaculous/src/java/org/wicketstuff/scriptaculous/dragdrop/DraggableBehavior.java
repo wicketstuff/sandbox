@@ -23,7 +23,8 @@ public class DraggableBehavior extends ScriptaculousAjaxBehavior
 	private static final long serialVersionUID = 1L;
 	private Map options = new HashMap();
 
-	protected void onBind() {
+  @Override
+	protected final void onBind() {
 		super.onBind();
 
 		getComponent().setOutputMarkupId(true);
