@@ -25,6 +25,10 @@ public class AccordionPanel extends Panel implements IHeaderContributor {
 	private ResourceReference STYLE = new CompressedResourceReference(
 			AccordionPanel.class, "accordion-menu-v2.css");
 
+	/**
+	 * minimal constructor
+	 * @param id
+	 */
 	public AccordionPanel(String id) {
 		super(id);
 		add(new ListView("accordionMenu", accordionMenu) {
@@ -37,6 +41,16 @@ public class AccordionPanel extends Panel implements IHeaderContributor {
 			}
 		});
 
+	}
+	/**
+	 * using a different style
+	 * @param id
+	 * @param style
+	 */
+	public AccordionPanel(String id, ResourceReference style)
+	{
+		this(id);
+		this.STYLE=style;
 	}
 
 	public void addMenu(AccordionPanelItem accordionPanelItem) {
