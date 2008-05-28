@@ -24,6 +24,7 @@ import java.util.Set;
 import org.apache.wicket.Component;
 import org.apache.wicket.Request;
 import org.apache.wicket.RequestCycle;
+import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.behavior.AbstractBehavior;
 import org.apache.wicket.behavior.HeaderContributor;
@@ -34,13 +35,13 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.panel.Panel;
 
 import wicket.contrib.gmap.api.GControl;
+import wicket.contrib.gmap.api.GEvent;
 import wicket.contrib.gmap.api.GInfoWindow;
 import wicket.contrib.gmap.api.GLatLng;
 import wicket.contrib.gmap.api.GLatLngBounds;
 import wicket.contrib.gmap.api.GMapType;
 import wicket.contrib.gmap.api.GOverlay;
 import wicket.contrib.gmap.event.GEventListenerBehavior;
-import wicket.contrib.gmap.event.GOverlayListenerBehavior;
 
 /**
  * Wicket component to embed <a href="http://maps.google.com">Google Maps</a>
@@ -53,7 +54,6 @@ import wicket.contrib.gmap.event.GOverlayListenerBehavior;
  */
 public class GMap2<T> extends Panel<T> implements GOverlayContainer
 {
-
 	private static final long serialVersionUID = 1L;
 
 	private GLatLng center = new GLatLng(37.4419, -122.1419);
@@ -68,15 +68,17 @@ public class GMap2<T> extends Panel<T> implements GOverlayContainer
 
 	private int zoom = 13;
 
-	private Set<GControl> controls = new HashSet<GControl>();
+	private final Set<GControl> controls = new HashSet<GControl>();
 
-	List<GOverlay> overlays = new ArrayList<GOverlay>();
+	private List<GOverlay> overlays = new ArrayList<GOverlay>();
 
 	private final WebMarkupContainer<?> map;
 
 	private GInfoWindow<?> infoWindow;
 
 	private GLatLngBounds bounds;
+
+	private OverlayListener overlayListener;
 
 	/**
 	 * Construct.
@@ -145,6 +147,8 @@ public class GMap2<T> extends Panel<T> implements GOverlayContainer
 		map = new WebMarkupContainer<Void>("map");
 		map.setOutputMarkupId(true);
 		add(map);
+		overlayListener = new OverlayListener();
+		add(overlayListener);
 	}
 
 	/**
@@ -196,10 +200,6 @@ public class GMap2<T> extends Panel<T> implements GOverlayContainer
 	{
 		overlays.add(overlay);
 		overlay.setParent(this);
-		for (GOverlayListenerBehavior behavior : overlay.getBehaviors())
-		{
-			add(behavior);
-		}
 
 		if (AjaxRequestTarget.get() != null && findPage() != null)
 		{
@@ -222,10 +222,6 @@ public class GMap2<T> extends Panel<T> implements GOverlayContainer
 		{
 			overlays.remove(overlay);
 		}
-		for (GOverlayListenerBehavior behavior : overlay.getBehaviors())
-		{
-			remove(behavior);
-		}
 
 		if (AjaxRequestTarget.get() != null && findPage() != null)
 		{
@@ -246,10 +242,6 @@ public class GMap2<T> extends Panel<T> implements GOverlayContainer
 	{
 		for (GOverlay overlay : overlays)
 		{
-			for (GOverlayListenerBehavior behavior : overlay.getBehaviors())
-			{
-				remove(behavior);
-			}
 			overlay.setParent(null);
 		}
 		overlays.clear();
@@ -425,31 +417,32 @@ public class GMap2<T> extends Panel<T> implements GOverlayContainer
 	{
 		StringBuffer js = new StringBuffer("new WicketMap2('" + map.getMarkupId() + "');\n");
 
-		js.append(getJSsetCenter(getCenter()) + "\n");
-		js.append(getJSsetZoom(getZoom()) + "\n");
-		js.append(getJSsetDraggingEnabled(draggingEnabled) + "\n");
-		js.append(getJSsetDoubleClickZoomEnabled(doubleClickZoomEnabled) + "\n");
-		js.append(getJSsetScrollWheelZoomEnabled(scrollWheelZoomEnabled) + "\n");
+		js.append(overlayListener.getJSinit());
+		js.append(getJSsetCenter(getCenter()));
+		js.append(getJSsetZoom(getZoom()));
+		js.append(getJSsetDraggingEnabled(draggingEnabled));
+		js.append(getJSsetDoubleClickZoomEnabled(doubleClickZoomEnabled));
+		js.append(getJSsetScrollWheelZoomEnabled(scrollWheelZoomEnabled));
 
-		js.append(mapType.getJSsetMapType(this) + "\n");
+		js.append(mapType.getJSsetMapType(this));
 
 		// Add the controls.
 		for (GControl control : controls)
 		{
-			js.append(control.getJSadd(this) + "\n");
+			js.append(control.getJSadd(this));
 		}
 
 		// Add the overlays.
 		for (GOverlay overlay : overlays)
 		{
-			js.append(overlay.getJSadd() + "\n");
+			js.append(overlay.getJSadd());
 		}
 
-		js.append(infoWindow.getJSinit() + "\n");
+		js.append(infoWindow.getJSinit());
 
 		for (Object behavior : getBehaviors(GEventListenerBehavior.class))
 		{
-			js.append(((GEventListenerBehavior)behavior).getJSaddListener() + "\n");
+			js.append(((GEventListenerBehavior)behavior).getJSaddListener());
 		}
 
 		return js.toString();
@@ -466,7 +459,7 @@ public class GMap2<T> extends Panel<T> implements GOverlayContainer
 	// TODO Could this become default or protected?
 	public String getJSinvoke(String invocation)
 	{
-		return "Wicket.maps['" + map.getMarkupId() + "']." + invocation + ";";
+		return "Wicket.maps['" + map.getMarkupId() + "']." + invocation + ";\n";
 	}
 
 	private String getJSsetDraggingEnabled(boolean enabled)
@@ -547,7 +540,7 @@ public class GMap2<T> extends Panel<T> implements GOverlayContainer
 
 		private static final long serialVersionUID = 1L;
 
-		private String attribute;
+		private final String attribute;
 
 		public JSMethodBehavior(final String attribute)
 		{
@@ -610,9 +603,9 @@ public class GMap2<T> extends Panel<T> implements GOverlayContainer
 	{
 		private static final long serialVersionUID = 1L;
 
-		private int dx;
+		private final int dx;
 
-		private int dy;
+		private final int dy;
 
 		public PanDirectionBehavior(String event, final int dx, final int dy)
 		{
@@ -632,7 +625,7 @@ public class GMap2<T> extends Panel<T> implements GOverlayContainer
 	{
 		private static final long serialVersionUID = 1L;
 
-		private int zoom;
+		private final int zoom;
 
 		public SetZoomBehavior(final String event, final int zoom)
 		{
@@ -651,7 +644,7 @@ public class GMap2<T> extends Panel<T> implements GOverlayContainer
 	{
 		private static final long serialVersionUID = 1L;
 
-		private GLatLng gLatLng;
+		private final GLatLng gLatLng;
 
 		public SetCenterBehavior(String event, GLatLng gLatLng)
 		{
@@ -663,6 +656,38 @@ public class GMap2<T> extends Panel<T> implements GOverlayContainer
 		protected String getJSinvoke()
 		{
 			return getJSsetCenter(gLatLng);
+		}
+	}
+
+	public class OverlayListener extends AbstractDefaultAjaxBehavior
+	{
+		private static final long serialVersionUID = 1L;
+
+		@Override
+		protected void respond(AjaxRequestTarget target)
+		{
+			Request request = RequestCycle.get().getRequest();
+
+			String overlayId = request.getParameter("overlay.overlayId");
+			String event = request.getParameter("overlay.event");
+			System.out.println("Im alive: " + overlayId + " " + event);
+			// TODO this is ugly
+			// the id's of the Overlays are unique within the ArrayList
+			// maybe we should change that collection
+			for (GOverlay overlay : overlays)
+			{
+				if (overlay.getId().equals(overlayId))
+				{
+					overlay.onEvent(target, GEvent.valueOf(event));
+					break;
+				}
+			}
+		}
+
+		public Object getJSinit()
+		{
+			return GMap2.this.getJSinvoke("overlayListenerCallbackUrl = '" + this.getCallbackUrl()
+					+ "'");
 		}
 	}
 }

@@ -15,26 +15,28 @@
  */
 package wicket.contrib.gmap.api;
 
+import org.apache.wicket.ajax.AjaxRequestTarget;
+
 import wicket.contrib.gmap.js.Array;
 import wicket.contrib.gmap.js.Constructor;
 
 /**
- * Represents an Google Maps API's
- * <a href="http://www.google.com/apis/maps/documentation/reference.html#GPolyline">GPolyline</a>.
+ * Represents an Google Maps API's <a
+ * href="http://www.google.com/apis/maps/documentation/reference.html#GPolyline">GPolyline</a>.
  */
 public class GPolyline extends GOverlay
 {
 	private static final long serialVersionUID = 1L;
 
-	private GLatLng[] gLatLngs;
-	private String color;
-	private int weight;
-	private float opacity;
+	private final GLatLng[] gLatLngs;
+	private final String color;
+	private final int weight;
+	private final float opacity;
 
 	public GPolyline(String color, int weight, float opacity, GLatLng... gLatLngs)
 	{
 		super();
-		
+
 		this.gLatLngs = gLatLngs;
 		this.color = color;
 		this.weight = weight;
@@ -45,17 +47,24 @@ public class GPolyline extends GOverlay
 	protected String getJSconstructor()
 	{
 		Constructor constructor = new Constructor("GPolyline");
-		
+
 		Array array = new Array();
-		for (GLatLng gLatLng : gLatLngs) {
+		for (GLatLng gLatLng : gLatLngs)
+		{
 			array.add(gLatLng.getJSconstructor());
 		}
 		constructor.add(array.toJS());
-		
+
 		constructor.addString(color);
 		constructor.addString(weight);
 		constructor.addString(opacity);
-		
+
 		return constructor.toJS();
+	}
+
+	@Override
+	protected void updateOnAjaxCall(AjaxRequestTarget target, GEvent overlayEvent)
+	{
+		// TODO
 	}
 }

@@ -16,12 +16,13 @@
 package wicket.contrib.gmap.api;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.EnumMap;
+import java.util.Map;
+
+import org.apache.wicket.Session;
+import org.apache.wicket.ajax.AjaxRequestTarget;
 
 import wicket.contrib.gmap.GMap2;
-import wicket.contrib.gmap.event.GOverlayListenerBehavior;
 
 /**
  * Represents an Google Maps API's <a
@@ -29,55 +30,45 @@ import wicket.contrib.gmap.event.GOverlayListenerBehavior;
  */
 public abstract class GOverlay implements Serializable
 {
-	
+	final String id;
+
 	GMap2<?> parent = null;
-	
-	List<GOverlayListenerBehavior> behaviors = new ArrayList<GOverlayListenerBehavior>();
 
-	public GOverlay addBehavior(GOverlayListenerBehavior behavior)
+	private final Map<GEvent, GEventHandler> events = new EnumMap<GEvent, GEventHandler>(
+			GEvent.class);
+
+	public GOverlay()
 	{
-		behavior.setOverlay(this);
-		behaviors.add(behavior);
-
-		return this;
+		id = String.valueOf(Session.get().nextSequenceValue());
 	}
 
-	public GOverlay removeBehavior(GOverlayListenerBehavior behavior)
-	{
-		while (behaviors.contains(behavior))
-		{
-			behaviors.remove(behavior);
-		}
-
-		behavior.setOverlay(null);
-		return this;
-	}
-
-	public GOverlay clearBehaviors()
-	{
-		behaviors.clear();
-
-		return this;
-	}
-
-	public List<GOverlayListenerBehavior> getBehaviors()
-	{
-		return Collections.unmodifiableList(behaviors);
-	}
-	
 	public String getJSadd()
 	{
-		return parent.getJSinvoke("addOverlay('" + getId() + "', "		
-				+ getJSconstructor() + ")");
+		StringBuffer js = new StringBuffer(parent.getJSinvoke("addOverlay('" + getId() + "', "
+				+ getJSconstructor() + ")"));
+		// Add the Events
+		for (GEvent event : events.keySet())
+		{
+			js.append(event.getJSadd(this));
+		}
+		return js.toString();
 	}
 
 	public String getJSremove()
 	{
-		return parent.getJSinvoke("removeOverlay('" + getId() + "')");
+		StringBuffer js = new StringBuffer();
+		// clear the Events
+		for (GEvent event : events.keySet())
+		{
+			js.append(event.getJSclear(this));
+		}
+		js.append(parent.getJSinvoke("removeOverlay('" + getId() + "')"));
+		return js.toString();
 	}
-	
-	public String getId() {
-		return String.valueOf(System.identityHashCode(this));
+
+	public String getId()
+	{
+		return id;
 	}
 
 	protected abstract String getJSconstructor();
@@ -91,4 +82,55 @@ public abstract class GOverlay implements Serializable
 	{
 		this.parent = parent;
 	}
+
+	/**
+	 * Add a control.
+	 * 
+	 * @param control
+	 *            control to add
+	 * @return This
+	 */
+	public GOverlay addListener(GEvent event, GEventHandler handler)
+	{
+		events.put(event, handler);
+
+		if (AjaxRequestTarget.get() != null)
+		// TODO
+		// && getParent().findPage() != null)
+		{
+			AjaxRequestTarget.get().appendJavascript(event.getJSadd(this));
+		}
+
+		return this;
+	}
+
+	/**
+	 * Clear listeners.
+	 * 
+	 * @param event
+	 *            event to be cleared.
+	 * @return This
+	 */
+	public GOverlay clearListeners(GEvent event)
+	{
+		events.remove(event);
+
+		if (AjaxRequestTarget.get() != null)
+		// TODO
+		// && findPage() != null)
+		{
+			AjaxRequestTarget.get().appendJavascript(event.getJSclear(this));
+		}
+
+		return this;
+	}
+
+	public void onEvent(AjaxRequestTarget target, GEvent overlayEvent)
+	{
+		System.out.println(this.getClass().getName() + " " + overlayEvent);
+		updateOnAjaxCall(target, overlayEvent);
+		events.get(overlayEvent).onEvent(target);
+	}
+
+	protected abstract void updateOnAjaxCall(AjaxRequestTarget target, GEvent overlayEvent);
 }
