@@ -17,22 +17,25 @@
 package org.wicketstuff.objectautocomplete;
 
 import org.apache.wicket.Component;
+import org.apache.wicket.util.string.AppendingStringBuffer;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.form.AjaxFormSubmitBehavior;
+import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.AjaxFallbackLink;
+import org.apache.wicket.behavior.IBehavior;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.HiddenField;
 import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.IWrapModel;
 import org.apache.wicket.model.Model;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,6 +64,7 @@ public class ObjectAutoCompleteField<T,I> extends Panel<I>
 
     // Textfield used to search for the object
     private TextField<String> searchTextField;
+    private HiddenField<I> objectField;
 
     /**
      * Package scoper constructor to be used by the builder to create an auto completion fuild via
@@ -113,16 +117,30 @@ public class ObjectAutoCompleteField<T,I> extends Panel<I>
         // this disables Firefox autocomplete
         searchTextField.add(new SimpleAttributeModifier("autocomplete", "off"));
 
-        final HiddenField<I> objectField = new HiddenField<I>("hiddenId",getModel());
+        objectField = new HiddenField<I>("hiddenId",getModel());
         objectField.setOutputMarkupId(true);
         add(objectField);
 
         searchTextField.add(
                 pBuilder.buildBehavior(objectField),
-                newFormUpdateBehaviour(searchTextField)
+                new ObjectUpdateBehavior<I>()
+                //newFormUpdateBehaviour(searchTextField)
         );
 
         add(searchTextField);
+    }
+
+    @Override
+    protected IModel<I> initModel() {
+        IModel model = super.initModel();
+        if (model instanceof IWrapModel) {
+            IWrapModel iwModel = (IWrapModel) model;
+            if (iwModel.getWrappedModel() instanceof CompoundPropertyModel) {
+                CompoundPropertyModel<I> cpModel =  (CompoundPropertyModel<I>) iwModel.getWrappedModel();
+                objectField.setModel((IModel<I>) cpModel.bind(getId()));
+            }
+        }
+        return model;
     }
 
     // the 'read only part' if the object has been selected
@@ -208,7 +226,19 @@ public class ObjectAutoCompleteField<T,I> extends Panel<I>
 
     // update the model, when a selection was triggered in the autocomplete
     // menu
-    private AjaxFormSubmitBehavior newFormUpdateBehaviour(final TextField<String> pSearchTextField) {
+    private IBehavior newFormUpdateBehaviour(final TextField<String> pSearchTextField) {
+        return new AjaxFormComponentUpdatingBehavior("onchange") {
+
+
+
+            protected void onUpdate(AjaxRequestTarget target) {
+                pSearchTextField.updateModel();
+                pSearchTextField.clearInput();
+                target.addComponent(ObjectAutoCompleteField.this);
+                updateDependentComponents(target);
+            }
+        };
+        /*
         return new AjaxFormSubmitBehavior("onchange")
         {
             @Override
@@ -223,6 +253,7 @@ public class ObjectAutoCompleteField<T,I> extends Panel<I>
             protected void onError(AjaxRequestTarget pTarget) {
             }
         };
+        */
     }
 
     @Override
@@ -238,4 +269,30 @@ public class ObjectAutoCompleteField<T,I> extends Panel<I>
             pTarget.addComponent(comp);
         }
     }
+
+    // =========================================================================================
+
+    class ObjectUpdateBehavior<I> extends AjaxEventBehavior {
+
+        public ObjectUpdateBehavior() {
+            super("onchange");
+        }
+
+        protected void onEvent(AjaxRequestTarget target) {
+            objectField.processInput();
+            searchTextField.processInput();
+            target.addComponent(ObjectAutoCompleteField.this);
+            updateDependentComponents(target);
+        }
+
+        @Override
+        protected CharSequence getEventHandler()
+        {
+            return generateCallbackScript(new AppendingStringBuffer("wicketAjaxPost('").append(
+                    getCallbackUrl(false)).append(
+                    "', wicketSerialize(Wicket.$('" + searchTextField.getMarkupId() + "')) + " +
+                            "wicketSerialize(Wicket.$('" + objectField.getMarkupId() + "'))"));
+        }
+    }
+
 }
