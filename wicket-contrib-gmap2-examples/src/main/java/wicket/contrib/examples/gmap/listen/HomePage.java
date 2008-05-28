@@ -65,37 +65,45 @@ public class HomePage extends WicketExamplePage<Void>
 		{
 			private static final long serialVersionUID = 1L;
 
+			@SuppressWarnings("unchecked")
 			@Override
-			public IConverter<GLatLngBounds> getConverter(Class<GLatLngBounds> type)
+			public <X> IConverter<X> getConverter(Class<X> type)
 			{
-				return new IConverter<GLatLngBounds>()
+				if (GLatLngBounds.class.isAssignableFrom(type))
 				{
-					private static final long serialVersionUID = 1L;
-
-
-					public GLatLngBounds convertToObject(String value, Locale locale)
+					return (IConverter<X>)new IConverter<GLatLngBounds>()
 					{
-						throw new UnsupportedOperationException();
-					}
+						private static final long serialVersionUID = 1L;
 
-					public String convertToString(GLatLngBounds value, Locale locale)
-					{
-						GLatLngBounds bounds = value;
+						public GLatLngBounds convertToObject(String value, Locale locale)
+						{
+							throw new UnsupportedOperationException();
+						}
 
-						StringBuffer buffer = new StringBuffer();
-						buffer.append("NE (");
-						buffer.append(bounds.getNE().getLat());
-						buffer.append(",");
-						buffer.append(bounds.getNE().getLng());
-						buffer.append(")\nSW (");
-						buffer.append(bounds.getSW().getLat());
-						buffer.append(",");
-						buffer.append(bounds.getSW().getLng());
-						buffer.append(")");
-						return buffer.toString();
-					}
-				};
+						public String convertToString(GLatLngBounds value, Locale locale)
+						{
+							GLatLngBounds bounds = value;
+
+							StringBuffer buffer = new StringBuffer();
+							buffer.append("NE (");
+							buffer.append(bounds.getNE().getLat());
+							buffer.append(",");
+							buffer.append(bounds.getNE().getLng());
+							buffer.append(")\nSW (");
+							buffer.append(bounds.getSW().getLat());
+							buffer.append(",");
+							buffer.append(bounds.getSW().getLng());
+							buffer.append(")");
+							return buffer.toString();
+						}
+					};
+				}
+				else
+				{
+					return super.getConverter(type);
+				}
 			}
+
 		};
 		boundsLabel.setOutputMarkupId(true);
 		add(boundsLabel);
