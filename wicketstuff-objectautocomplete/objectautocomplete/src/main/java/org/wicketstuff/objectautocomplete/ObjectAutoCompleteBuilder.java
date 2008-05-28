@@ -25,7 +25,7 @@ public class ObjectAutoCompleteBuilder<T> {
 
     AutoCompletionChoicesProvider<T> choicesProvider;
     ObjectAutoCompleteCancelListener cancelListener;
-    IAutoCompleteRenderer<T> objectAutoCompleteRenderer;
+    ObjectAutoCompleteRenderer<T> objectAutoCompleteRenderer;
     boolean preselect;
     int maxHeightInPx;
     boolean showListOnEmptyInput;
@@ -61,7 +61,7 @@ public class ObjectAutoCompleteBuilder<T> {
         return this;
     }
 
-    public ObjectAutoCompleteBuilder<T> autoCompleteRenderer(IAutoCompleteRenderer<T> renderer) {
+    public ObjectAutoCompleteBuilder<T> autoCompleteRenderer(ObjectAutoCompleteRenderer<T> renderer) {
         this.objectAutoCompleteRenderer = renderer;
         return this;
     }

@@ -108,7 +108,7 @@ public class ObjectAutoCompleteRenderer<T> implements IAutoCompleteRenderer<T> {
 	 *            assist choice object
 	 * @return the text value that will be set on the textbox if this assist is selected
 	 */
-    protected String getTextValue(Object object) {
+    protected String getTextValue(T object) {
         return object.toString();
     }
 
