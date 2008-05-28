@@ -37,12 +37,12 @@ import java.util.List;
  * @author roland
  * @since May 26, 2008
  */
-abstract public class BaseExamplePage<T extends Serializable,I> extends WebPage<I> implements AutoCompletionChoicesProvider<T> {
+abstract public class BaseExamplePage<T extends Serializable,I extends Serializable> extends WebPage<I> implements AutoCompletionChoicesProvider<T> {
 
     private ObjectAutoCompleteField<T,I> acField;
 
     protected BaseExamplePage() {
-        initExample();
+        this(new Model<I>());
     }
 
     public BaseExamplePage(IModel<I> pModel) {
@@ -61,6 +61,7 @@ abstract public class BaseExamplePage<T extends Serializable,I> extends WebPage<
         form.add(acField);
         form.add(new Label("acLabel",getAutoCompleteFieldLabel()));
 
+        // Add code sample and list of sample data
         add(new Label("acCodeSample",getCodeSample()));
 
         add(new DataView<T>("acData",new ListDataProvider<T>(getAllChoices())) {
