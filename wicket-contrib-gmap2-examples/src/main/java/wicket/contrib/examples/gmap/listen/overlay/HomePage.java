@@ -8,10 +8,11 @@ import wicket.contrib.examples.GMapExampleApplication;
 import wicket.contrib.examples.WicketExamplePage;
 import wicket.contrib.gmap.GMap2;
 import wicket.contrib.gmap.api.GControl;
+import wicket.contrib.gmap.api.GEvent;
+import wicket.contrib.gmap.api.GEventHandler;
 import wicket.contrib.gmap.api.GLatLng;
 import wicket.contrib.gmap.api.GMarker;
 import wicket.contrib.gmap.api.GMarkerOptions;
-import wicket.contrib.gmap.event.GMarkerDragendListener;
 
 /**
  * Example HomePage for the wicket-contrib-gmap2 project
@@ -30,22 +31,19 @@ public class HomePage extends WicketExamplePage<Void>
 
 		GMarkerOptions options = new GMarkerOptions().draggable(true);
 		final GMarker marker = new GMarker(topMap.getCenter(), options);
-
 		final Label<GLatLng> label = new Label<GLatLng>("label", new PropertyModel<GLatLng>(marker,
 				"latLng"));
 		label.setOutputMarkupId(true);
 		add(label);
-
-		marker.addBehavior(new GMarkerDragendListener()
+		marker.addListener(GEvent.dragend, new GEventHandler()
 		{
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void onDragend(AjaxRequestTarget target)
+			public void onEvent(AjaxRequestTarget target)
 			{
 				target.addComponent(label);
 			}
-
 		});
 		topMap.addOverlay(marker);
 	}
