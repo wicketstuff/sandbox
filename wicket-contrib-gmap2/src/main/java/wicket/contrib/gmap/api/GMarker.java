@@ -15,6 +15,10 @@
  */
 package wicket.contrib.gmap.api;
 
+import org.apache.wicket.Request;
+import org.apache.wicket.RequestCycle;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+
 import wicket.contrib.gmap.js.Constructor;
 
 /**
@@ -27,7 +31,7 @@ public class GMarker extends GOverlay
 
 	private GLatLng latLng;
 
-	private GMarkerOptions options;
+	private final GMarkerOptions options;
 
 	/**
 	 * @param gLatLng
@@ -69,5 +73,12 @@ public class GMarker extends GOverlay
 			constructor.add(options.getJSconstructor());
 		}
 		return constructor.toJS();
+	}
+
+	@Override
+	protected void updateOnAjaxCall(AjaxRequestTarget target, GEvent overlayEvent)
+	{
+		Request request = RequestCycle.get().getRequest();
+		this.latLng = GLatLng.parse(request.getParameter("overlay.latLng"));
 	}
 }

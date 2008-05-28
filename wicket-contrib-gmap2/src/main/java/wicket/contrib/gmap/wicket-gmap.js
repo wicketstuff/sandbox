@@ -89,7 +89,7 @@ function WicketMap2(id){
     this.addListener = function(event, callBack) {
         var self = this;
        
-        GEvent.addListener(this.map, event, function() {
+        google.maps.Event.addListener(this.map, event, function() {
             var params = {};
             for (var p = 0; p < arguments.length; p++) {
                 if (arguments[p] != null) {
@@ -101,11 +101,11 @@ function WicketMap2(id){
         });
     } 
     
-    this.addOverlayListener = function(event, overlayID, callBack){
+    this.addOverlayListener = function(overlayID, event){
         var self = this;
         var overlay = this.overlays[overlayID];
 
-        GEvent.addListener(overlay, event, function() {
+        google.maps.Event.addListener(overlay, event, function() {
             var params = {};
             for (var p = 0; p < arguments.length; p++) {
                 if (arguments[p] != null) {
@@ -114,9 +114,18 @@ function WicketMap2(id){
             }
 
             params['overlay.latLng'] = overlay.getLatLng();
+			params['overlay.overlayId'] = overlay.overlayId;
+			params['overlay.event'] = event;
 
-            self.onEvent(callBack, params);
+            self.onEvent(self.overlayListenerCallbackUrl, params);
         });
+    }
+    
+    this.clearOverlayListeners = function(overlayID, event){
+        var self = this;
+        var overlay = this.overlays[overlayID];
+
+        google.maps.Event.clearListener(overlay, event);
     }
     
     this.setDraggingEnabled = function(enabled){

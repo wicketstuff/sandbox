@@ -15,30 +15,33 @@
  */
 package wicket.contrib.gmap.api;
 
+import org.apache.wicket.ajax.AjaxRequestTarget;
+
 import wicket.contrib.gmap.js.Array;
 import wicket.contrib.gmap.js.Constructor;
 
 /**
- * Represents an Google Maps API's 
- * <a href="http://www.google.com/apis/maps/documentation/reference.html#GPolygon">GPolygon</a>.
+ * Represents an Google Maps API's <a
+ * href="http://www.google.com/apis/maps/documentation/reference.html#GPolygon">GPolygon</a>.
  */
 public class GPolygon extends GOverlay
 {
 	private static final long serialVersionUID = 1L;
 
-	private GLatLng[] gLatLngs;
-	private String strokeColor;
-	private int strokeWeight;
-	private float strokeOpacity;
-	private String fillColor;
-	private float fillOpacity;
+	private final GLatLng[] gLatLngs;
+	private final String strokeColor;
+	private final int strokeWeight;
+	private final float strokeOpacity;
+	private final String fillColor;
+	private final float fillOpacity;
 
-	public GPolygon(String strokeColor, int strokeWeight, float strokeOpacity, String fillColor, float fillOpacity, GLatLng... gLatLngs)
+	public GPolygon(String strokeColor, int strokeWeight, float strokeOpacity, String fillColor,
+			float fillOpacity, GLatLng... gLatLngs)
 	{
 		super();
-		
+
 		this.gLatLngs = gLatLngs;
-		
+
 		this.strokeColor = strokeColor;
 		this.strokeWeight = strokeWeight;
 		this.strokeOpacity = strokeOpacity;
@@ -52,11 +55,12 @@ public class GPolygon extends GOverlay
 		Constructor constructor = new Constructor("GPolygon");
 
 		Array array = new Array();
-		for (GLatLng gLatLng : gLatLngs) {
+		for (GLatLng gLatLng : gLatLngs)
+		{
 			array.add(gLatLng.getJSconstructor());
 		}
 		constructor.add(array.toJS());
-		
+
 		constructor.addString(strokeColor);
 		constructor.addString(strokeWeight);
 		constructor.addString(strokeOpacity);
@@ -64,5 +68,11 @@ public class GPolygon extends GOverlay
 		constructor.addString(fillOpacity);
 
 		return constructor.toJS();
+	}
+
+	@Override
+	protected void updateOnAjaxCall(AjaxRequestTarget target, GEvent overlayEvent)
+	{
+		// TODO
 	}
 }
