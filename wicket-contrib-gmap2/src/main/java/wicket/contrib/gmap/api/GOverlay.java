@@ -127,7 +127,6 @@ public abstract class GOverlay implements Serializable
 
 	public void onEvent(AjaxRequestTarget target, GEvent overlayEvent)
 	{
-		System.out.println(this.getClass().getName() + " " + overlayEvent);
 		updateOnAjaxCall(target, overlayEvent);
 		events.get(overlayEvent).onEvent(target);
 	}

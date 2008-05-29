@@ -670,7 +670,6 @@ public class GMap2<T> extends Panel<T> implements GOverlayContainer
 
 			String overlayId = request.getParameter("overlay.overlayId");
 			String event = request.getParameter("overlay.event");
-			System.out.println("Im alive: " + overlayId + " " + event);
 			// TODO this is ugly
 			// the id's of the Overlays are unique within the ArrayList
 			// maybe we should change that collection
