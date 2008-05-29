@@ -1,4 +1,4 @@
-package wicket.contrib.examples.gmap.bottom;
+package wicket.contrib.examples.gmap.info;
 
 import org.apache.wicket.Page;
 import org.apache.wicket.protocol.http.HttpSessionStore;
@@ -7,7 +7,7 @@ import org.apache.wicket.util.time.Duration;
 
 import wicket.contrib.examples.GMapExampleApplication;
 
-public class BottomGMapApplication extends GMapExampleApplication
+public class InfoWindowGMapApplication extends GMapExampleApplication
 {
 
 

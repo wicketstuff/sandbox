@@ -137,11 +137,11 @@
 	</filter>
 
 	<filter>
-		<filter-name>BottomGMapApplication</filter-name>
+		<filter-name>InfoWindowGMapApplication</filter-name>
 		<filter-class>org.apache.wicket.protocol.http.WicketFilter</filter-class>
 		<init-param>
 		  <param-name>applicationClassName</param-name>
-		  <param-value>wicket.contrib.examples.gmap.bottom.BottomGMapApplication</param-value>
+		  <param-value>wicket.contrib.examples.gmap.info.InfoWindowGMapApplication</param-value>
 		</init-param>
 		<init-param>
 		  <param-name>GoogleMapsAPIkey</param-name>
@@ -239,8 +239,8 @@
 	</filter-mapping>
 
 	<filter-mapping>
-		<filter-name>BottomGMapApplication</filter-name>
-		<url-pattern>/gmap2/*</url-pattern>
+		<filter-name>InfoWindowGMapApplication</filter-name>
+		<url-pattern>/info/*</url-pattern>
 	</filter-mapping>
 
 	<filter-mapping>
