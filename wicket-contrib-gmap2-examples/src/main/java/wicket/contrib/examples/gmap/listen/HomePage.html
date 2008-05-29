@@ -17,12 +17,15 @@
 
 <body>
 <span wicket:id="mainNavigation" />
-Listen to the map!<br>
-Zoom in or out and the label will show the current zoom level and the bounds of the shown map.
+Listen to the map!<br/>
+Zoom in or out and the label will show the current zoom level and the bounds of the shown map.<br/>
+Click on the 'Update on MoveEnd' Button to toggle this behavior.<br/>
 <center>
 <table>
 	<tr>
 		<td>
+			<div>Update on MoveEnd Event of the map:
+			<span class="myButton" wicket:id="enabled">toBeEditet</span></div>
 			<div class="myButton" wicket:id="zoom" title="current zoom level of the map">zoom</div>
 			<div class="myButton" wicket:id="bounds" title="current bounds of the map">bounds</div>
 		</td>

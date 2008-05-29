@@ -5,7 +5,6 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
 import wicket.contrib.examples.GMapExampleApplication;
@@ -20,7 +19,6 @@ import wicket.contrib.gmap.api.GOverlay;
 import wicket.contrib.gmap.event.ClickListener;
 import wicket.contrib.gmap.event.InfoWindowCloseListener;
 import wicket.contrib.gmap.event.InfoWindowOpenListener;
-import wicket.contrib.gmap.event.MoveEndListener;
 
 /**
  * Example HomePage for the wicket-contrib-gmap2 project
@@ -34,8 +32,6 @@ public class HomePage extends WicketExamplePage<Void>
 
 	private final Label<GLatLng> center;
 
-	private MoveEndListener moveEndBehavior;
-
 	public HomePage()
 	{
 		feedback = new FeedbackPanel("feedback");
@@ -47,17 +43,6 @@ public class HomePage extends WicketExamplePage<Void>
 		bottomMap.setOutputMarkupId(true);
 		bottomMap.setMapType(GMapType.G_SATELLITE_MAP);
 		bottomMap.setScrollWheelZoomEnabled(true);
-		moveEndBehavior = new MoveEndListener()
-		{
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			protected void onMoveEnd(AjaxRequestTarget target)
-			{
-				target.addComponent(center);
-			}
-		};
-		bottomMap.add(moveEndBehavior);
 		bottomMap.add(new ClickListener()
 		{
 			private static final long serialVersionUID = 1L;
@@ -129,48 +114,5 @@ public class HomePage extends WicketExamplePage<Void>
 			{
 			}
 		});
-		final Label<Boolean> enabledLabel = new Label<Boolean>("enabled", new Model<Boolean>()
-		{
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public Boolean getObject()
-			{
-				return bottomMap.getBehaviors().contains(moveEndBehavior);
-			}
-		});
-		enabledLabel.add(new AjaxEventBehavior("onclick")
-		{
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			protected void onEvent(AjaxRequestTarget target)
-			{
-				if (bottomMap.getBehaviors().contains(moveEndBehavior))
-				{
-					bottomMap.remove(moveEndBehavior);
-				}
-				else
-				{
-					// TODO AbstractAjaxBehaviors are not reusable, so we have
-					// to recreate:
-					// https://issues.apache.org/jira/browse/WICKET-713
-					moveEndBehavior = new MoveEndListener()
-					{
-						private static final long serialVersionUID = 1L;
-
-						@Override
-						protected void onMoveEnd(AjaxRequestTarget target)
-						{
-							target.addComponent(center);
-						}
-					};
-					bottomMap.add(moveEndBehavior);
-				}
-				target.addComponent(bottomMap);
-				target.addComponent(enabledLabel);
-			}
-		});
-		add(enabledLabel);
 	}
 }

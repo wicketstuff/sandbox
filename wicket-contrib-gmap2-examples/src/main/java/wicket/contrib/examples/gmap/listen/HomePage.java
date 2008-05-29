@@ -2,9 +2,11 @@ package wicket.contrib.examples.gmap.listen;
 
 import java.util.Locale;
 
+import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.basic.MultiLineLabel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.util.convert.IConverter;
 
@@ -28,23 +30,16 @@ public class HomePage extends WicketExamplePage<Void>
 
 	private final MultiLineLabel<GLatLngBounds> boundsLabel;
 
+	private MoveEndListener moveEndBehavior;
+
 	public HomePage()
 	{
 		final GMap2<Object> map = new GMap2<Object>("map", GMapExampleApplication.get()
 				.getGoogleMapsAPIkey());
 		map.addControl(GControl.GLargeMapControl);
 		add(map);
-		map.add(new MoveEndListener()
-		{
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			protected void onMoveEnd(AjaxRequestTarget target)
-			{
-				target.addComponent(zoomLabel);
-				target.addComponent(boundsLabel);
-			}
-		});
+		moveEndBehavior = new MyMoveEndListener();
+		map.add(moveEndBehavior);
 		map.add(new LoadListener()
 		{
 			private static final long serialVersionUID = 1L;
@@ -107,5 +102,52 @@ public class HomePage extends WicketExamplePage<Void>
 		};
 		boundsLabel.setOutputMarkupId(true);
 		add(boundsLabel);
+		final Label<Boolean> enabledLabel = new Label<Boolean>("enabled", new Model<Boolean>()
+		{
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public Boolean getObject()
+			{
+				return map.getBehaviors().contains(moveEndBehavior);
+			}
+		});
+		enabledLabel.add(new AjaxEventBehavior("onclick")
+		{
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void onEvent(AjaxRequestTarget target)
+			{
+				if (map.getBehaviors().contains(moveEndBehavior))
+				{
+					map.remove(moveEndBehavior);
+				}
+				else
+				{
+					// TODO AbstractAjaxBehaviors are not reusable, so
+					// we have
+					// to recreate:
+					// https://issues.apache.org/jira/browse/WICKET-713
+					moveEndBehavior = new MyMoveEndListener();
+					map.add(moveEndBehavior);
+				}
+				target.addComponent(map);
+				target.addComponent(enabledLabel);
+			}
+		});
+		add(enabledLabel);
 	}
+
+	private class MyMoveEndListener extends MoveEndListener
+	{
+		private static final long serialVersionUID = 1L;
+
+		@Override
+		protected void onMoveEnd(AjaxRequestTarget target)
+		{
+			target.addComponent(zoomLabel);
+			target.addComponent(boundsLabel);
+		}
+	};
 }
