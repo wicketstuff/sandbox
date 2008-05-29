@@ -125,7 +125,7 @@ function WicketMap2(id){
         var self = this;
         var overlay = this.overlays[overlayID];
 
-        google.maps.Event.clearListener(overlay, event);
+        google.maps.Event.clearListeners(overlay, event);
     }
     
     this.setDraggingEnabled = function(enabled){
