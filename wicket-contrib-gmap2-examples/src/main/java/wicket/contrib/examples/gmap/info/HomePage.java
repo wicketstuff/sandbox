@@ -1,11 +1,10 @@
-package wicket.contrib.examples.gmap.bottom;
+package wicket.contrib.examples.gmap.info;
 
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
-import org.apache.wicket.model.PropertyModel;
 
 import wicket.contrib.examples.GMapExampleApplication;
 import wicket.contrib.examples.WicketExamplePage;
@@ -30,7 +29,9 @@ public class HomePage extends WicketExamplePage<Void>
 
 	private final FeedbackPanel feedback;
 
-	private final Label<GLatLng> center;
+	private final GMap2<Object> map;
+
+	private final Label<String> infoWindow;
 
 	public HomePage()
 	{
@@ -38,12 +39,12 @@ public class HomePage extends WicketExamplePage<Void>
 		feedback.setOutputMarkupId(true);
 		add(feedback);
 
-		final GMap2<Object> bottomMap = new GMap2<Object>("bottomPanel", new GMapHeaderContributor(
-				GMapExampleApplication.get().getGoogleMapsAPIkey()));
-		bottomMap.setOutputMarkupId(true);
-		bottomMap.setMapType(GMapType.G_SATELLITE_MAP);
-		bottomMap.setScrollWheelZoomEnabled(true);
-		bottomMap.add(new ClickListener()
+		map = new GMap2<Object>("bottomPanel", new GMapHeaderContributor(GMapExampleApplication
+				.get().getGoogleMapsAPIkey()));
+		map.setOutputMarkupId(true);
+		map.setMapType(GMapType.G_SATELLITE_MAP);
+		map.setScrollWheelZoomEnabled(true);
+		map.add(new ClickListener()
 		{
 			private static final long serialVersionUID = 1L;
 
@@ -52,12 +53,12 @@ public class HomePage extends WicketExamplePage<Void>
 			{
 				if (gLatLng != null)
 				{
-					bottomMap.getInfoWindow().open(gLatLng, new HelloPanel());
+					map.getInfoWindow().open(gLatLng, new HelloPanel());
 				}
 			}
 
 		});
-		bottomMap.add(new InfoWindowCloseListener()
+		map.add(new InfoWindowCloseListener()
 		{
 			private static final long serialVersionUID = 1L;
 
@@ -68,7 +69,7 @@ public class HomePage extends WicketExamplePage<Void>
 				target.addComponent(feedback);
 			}
 		});
-		bottomMap.add(new InfoWindowOpenListener()
+		map.add(new InfoWindowOpenListener()
 		{
 			private static final long serialVersionUID = 1L;
 
@@ -79,18 +80,13 @@ public class HomePage extends WicketExamplePage<Void>
 				target.addComponent(feedback);
 			}
 		});
-		bottomMap.addControl(GControl.GSmallMapControl);
-		bottomMap.getInfoWindow().open(new GLatLng(37.5, -122.1),
+		map.addControl(GControl.GSmallMapControl);
+		map.getInfoWindow().open(new GLatLng(37.5, -122.1),
 				new GInfoWindowTab("One", new HelloPanel()),
 				new GInfoWindowTab("Two", new HelloPanel()));
-		add(bottomMap);
+		add(map);
 
-		center = new Label<GLatLng>("center", new PropertyModel<GLatLng>(bottomMap, "center"));
-		center.add(bottomMap.new SetCenterBehavior("onclick", new GLatLng(37.5, -122.1, false)));
-		center.setOutputMarkupId(true);
-		add(center);
-
-		final Label<String> infoWindow = new Label<String>("infoWindow", "openInfoWindow");
+		infoWindow = new Label<String>("infoWindow", "openInfoWindow");
 		infoWindow.add(new AjaxEventBehavior("onclick")
 		{
 			private static final long serialVersionUID = 1L;
@@ -101,7 +97,7 @@ public class HomePage extends WicketExamplePage<Void>
 			@Override
 			protected void onEvent(AjaxRequestTarget target)
 			{
-				bottomMap.getInfoWindow().open(new GLatLng(37.5, -122.1), new HelloPanel());
+				map.getInfoWindow().open(new GLatLng(37.5, -122.1), new HelloPanel());
 			}
 		});
 		add(infoWindow);

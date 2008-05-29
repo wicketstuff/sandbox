@@ -1,4 +1,4 @@
-package wicket.contrib.examples.gmap.bottom;
+package wicket.contrib.examples.gmap.info;
 
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
