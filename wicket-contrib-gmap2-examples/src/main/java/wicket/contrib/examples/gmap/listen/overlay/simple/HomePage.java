@@ -1,4 +1,4 @@
-package wicket.contrib.examples.gmap.listen.overlay;
+package wicket.contrib.examples.gmap.listen.overlay.simple;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.basic.Label;
