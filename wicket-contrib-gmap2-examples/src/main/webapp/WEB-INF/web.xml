@@ -85,6 +85,19 @@
 	</filter>
 
 	<filter>
+		<filter-name>AdvancedListenGMarkerApplication</filter-name>
+		<filter-class>org.apache.wicket.protocol.http.WicketFilter</filter-class>
+		<init-param>
+		  <param-name>applicationClassName</param-name>
+		  <param-value>wicket.contrib.examples.gmap.listen.overlay.advanced.ListenGMarkerApplication</param-value>
+		</init-param>
+		<init-param>
+		  <param-name>GoogleMapsAPIkey</param-name>
+		  <param-value>ABQIAAAAzaZpf6nHOd9w1PfLaM9u2xQRS2YPSd8S9D1NKPBvdB1fr18_CxR-svEYj6URCf5QDFq3i03mqrDlbA</param-value>
+		</init-param>
+	</filter>
+
+	<filter>
 		<filter-name>MarkerGMapApplication</filter-name>
 		<filter-class>org.apache.wicket.protocol.http.WicketFilter</filter-class>
 		<init-param>
@@ -201,6 +214,11 @@
 	<filter-mapping>
 		<filter-name>ListenGMarkerApplication</filter-name>
 		<url-pattern>/markerListener/*</url-pattern>
+	</filter-mapping>
+
+	<filter-mapping>
+		<filter-name>AdvancedListenGMarkerApplication</filter-name>
+		<url-pattern>/markerListenerAdvanced/*</url-pattern>
 	</filter-mapping>
 
 	<filter-mapping>

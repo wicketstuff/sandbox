@@ -20,10 +20,10 @@ public class HomePage extends WicketExamplePage<Void>
 
 	public HomePage()
 	{
-		final GMap2<Object> topMap = new GMap2<Object>("topPanel", GMapExampleApplication.get()
+		final GMap2<Object> map = new GMap2<Object>("topPanel", GMapExampleApplication.get()
 				.getGoogleMapsAPIkey());
-		add(topMap);
-		topMap.add(new ClickListener()
+		add(map);
+		map.add(new ClickListener()
 		{
 			private static final long serialVersionUID = 1L;
 
@@ -32,11 +32,11 @@ public class HomePage extends WicketExamplePage<Void>
 			{
 				if (latLng != null)
 				{
-					if (topMap.getOverlays().size() >= 3)
+					if (map.getOverlays().size() >= 3)
 					{
-						topMap.removeOverlay(topMap.getOverlays().get(0));
+						map.removeOverlay(map.getOverlays().get(0));
 					}
-					topMap.addOverlay(new GMarker(latLng));
+					map.addOverlay(new GMarker(latLng));
 				}
 			}
 		});
