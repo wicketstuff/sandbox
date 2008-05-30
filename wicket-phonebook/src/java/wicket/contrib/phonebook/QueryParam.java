@@ -27,6 +27,7 @@ import java.io.Serializable;
  * @author igor
  */
 public class QueryParam implements Serializable {
+	private static final long serialVersionUID = 1L;
 	private int first;
 	private int count;
 	private String sort;

@@ -125,7 +125,7 @@ public class ListContactsPage extends BasePage {
 			}
 		};
 
-		form.add(new Button("delete-selected") {
+		form.add(new Button<Void>("delete-selected") {
 			@Override
 			public void onSubmit() {
 				Iterator it = selectedContactIds.iterator();
@@ -203,7 +203,7 @@ public class ListContactsPage extends BasePage {
 	}
 
 	private void addCreateLink() {
-		add(new Link("createLink") {
+		add(new Link<Void>("createLink") {
 			/**
 			 * Go to the Edit page when the link is clicked, passing an empty
 			 * Contact details

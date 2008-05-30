@@ -24,6 +24,8 @@ import hendrey.shades.DefaultHsqlORMapping;
  * @author Geoffrey Rummens Hendrey
  */
 public class ShadesContactORM extends DefaultHsqlORMapping {
+	private static final long serialVersionUID = 1L;
+
 	@Override
 	public String[] getColumnNames() {
 		return new String[] { "ID", "FIRSTNAME", "LASTNAME", "EMAIL", "PHONE" };

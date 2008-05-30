@@ -43,7 +43,7 @@ import wicket.contrib.phonebook.ContactDao;
  *
  */
 public class EditContactPage extends BasePage {
-	private final Page backPage;
+	private final Page<?> backPage;
 	@SpringBean(name = "contactDao")
 	private ContactDao contactDao;
 
@@ -57,29 +57,30 @@ public class EditContactPage extends BasePage {
 	 * @param contactModel
 	 *            Model that contains the contact we will edit
 	 */
-	public EditContactPage(Page backPage, IModel contactModel) {
+	public EditContactPage(Page<?> backPage, IModel<Contact> contactModel) {
 		this.backPage = backPage;
 
-		Contact contact = (Contact) contactModel.getObject();
-		Form form = new Form("contactForm", new CompoundPropertyModel(contact));
+		Contact contact = contactModel.getObject();
+		Form<Contact> form = new Form<Contact>("contactForm", new CompoundPropertyModel<Contact>(contact));
 		add(form);
 
 		form.add(newRequiredTextField("firstname", 32));
 		form.add(newRequiredTextField("lastname", 32));
 		form.add(newRequiredTextField("phone", 16));
-		form.add(new TextField("email").add(StringValidator.maximumLength(128))
+		form.add(new TextField<Void>("email").add(StringValidator.maximumLength(128))
 				.add(EmailAddressValidator.getInstance()));
 		form.add(new CancelButton());
 		form.add(new SaveButton());
 	}
 
-	private RequiredTextField newRequiredTextField(String id, int maxLenght) {
-		RequiredTextField textField = new RequiredTextField(id);
+	private RequiredTextField<String> newRequiredTextField(String id, int maxLenght) {
+		RequiredTextField<String> textField = new RequiredTextField<String>(id);
 		textField.add(StringValidator.maximumLength(maxLenght));
 		return textField;
 	}
 
-	private final class CancelButton extends Button {
+	private final class CancelButton extends Button<String> {
+		private static final long serialVersionUID = 1L;
 		private CancelButton() {
 			super("cancel", new ResourceModel("cancel"));
 			setDefaultFormProcessing(false);
@@ -93,7 +94,8 @@ public class EditContactPage extends BasePage {
 		}
 	}
 
-	private final class SaveButton extends Button {
+	private final class SaveButton extends Button<String> {
+		private static final long serialVersionUID = 1L;
 		private SaveButton() {
 			super("save", new ResourceModel("save"));
 		}
@@ -103,7 +105,7 @@ public class EditContactPage extends BasePage {
 			Contact contact = (Contact) getForm().getModelObject();
 			contactDao.save(contact);
 			String msg = MapVariableInterpolator.interpolate(getLocalizer()
-					.getString("status.save", this), new MicroMap("name",
+					.getString("status.save", this), new MicroMap<String, String>("name",
 					contact.getFullName()));
 			getSession().info(msg);
 			setResponsePage(EditContactPage.this.backPage);
