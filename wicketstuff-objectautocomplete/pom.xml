@@ -22,17 +22,6 @@
     <version>2</version>
   </parent>
 
-   <distributionManagement>
-    <repository>
-      <id>repository-ftp-consol</id>
-      <url>ftp://build.int.consol.de/proximity/inhouse/storage</url>
-    </repository>
-    <snapshotRepository>
-      <id>repository-ftp-consol</id>
-      <url>ftp://build.int.consol.de/proximity/inhouse.snapshot/storage</url>
-    </snapshotRepository>
-  </distributionManagement>
-
   <modules>
     <module>objectautocomplete</module>
     <module>example</module>
