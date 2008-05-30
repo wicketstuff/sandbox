@@ -49,12 +49,12 @@ public class GMarker extends GOverlay
 		this.options = options;
 	}
 
-	public GLatLng getLagLng()
+	public GLatLng getLatLng()
 	{
 		return latLng;
 	}
 
-	public void setLagLng(GLatLng gLatLng)
+	public void setLatLng(GLatLng gLatLng)
 	{
 		this.latLng = gLatLng;
 	}

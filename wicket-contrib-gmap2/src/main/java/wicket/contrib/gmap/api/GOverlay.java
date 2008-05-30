@@ -16,6 +16,7 @@
 package wicket.contrib.gmap.api;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.EnumMap;
 import java.util.Map;
 
@@ -102,6 +103,11 @@ public abstract class GOverlay implements Serializable
 		}
 
 		return this;
+	}
+
+	public Map<GEvent, GEventHandler> getListeners()
+	{
+		return Collections.unmodifiableMap(events);
 	}
 
 	/**
