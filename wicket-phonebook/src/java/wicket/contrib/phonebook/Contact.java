@@ -26,6 +26,7 @@ import java.io.Serializable;
  * @author igor
  */
 public class Contact implements Serializable {
+	private static final long serialVersionUID = 1L;
 	private long id;
 	private String firstname;
 	private String lastname;
@@ -83,8 +84,8 @@ public class Contact implements Serializable {
 
 	@Override
 	public String toString() {
-		return ("[Contact id=" + id + ", firstname=" + firstname
-				+ ", lastname=" + lastname + ", phone=" + phone + ", email=" + email);
+		return "[Contact id=" + id + ", firstname=" + firstname
+				+ ", lastname=" + lastname + ", phone=" + phone + ", email=" + email;
 	}
 
 }
