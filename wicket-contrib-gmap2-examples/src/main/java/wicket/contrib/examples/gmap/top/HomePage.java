@@ -79,7 +79,7 @@ public class HomePage extends WicketExamplePage<Void>
 				GMarker marker = markerLabel.getModelObject();
 				if (marker != null)
 				{
-					GLatLng point = marker.getLagLng();
+					GLatLng point = marker.getLatLng();
 
 					GMarker random = new GMarker(new GLatLng(point.getLat()
 							* (0.9995 + Math.random() / 1000), point.getLng()

@@ -3,8 +3,10 @@ package wicket.contrib.examples.gmap.listen.overlay.advanced;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.RepeatingView;
-import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
 
 import wicket.contrib.examples.GMapExampleApplication;
 import wicket.contrib.examples.WicketExamplePage;
@@ -67,8 +69,8 @@ public class HomePage extends WicketExamplePage<Void>
 					rv.removeAll();
 					for (GOverlay myMarker : map.getOverlays())
 					{
-						final Label<GLatLng> label = new Label<GLatLng>(myMarker.getId(),
-								new PropertyModel<GLatLng>(myMarker, "latLng"));
+						final GOverlayPanel<GOverlay> label = new GOverlayPanel<GOverlay>(myMarker
+								.getId(), new CompoundPropertyModel<GOverlay>(myMarker));
 						label.setOutputMarkupId(true);
 						rv.add(label);
 					}
@@ -77,5 +79,16 @@ public class HomePage extends WicketExamplePage<Void>
 				}
 			}
 		});
+	}
+
+	private static class GOverlayPanel<T> extends Panel<T>
+	{
+		private static final long serialVersionUID = 1L;
+
+		public GOverlayPanel(String id, IModel<T> model)
+		{
+			super(id, model);
+			add(new Label<GLatLng>("latLng"));
+		}
 	}
 }
