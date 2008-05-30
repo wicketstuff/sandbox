@@ -21,6 +21,8 @@ package wicket.contrib.phonebook.web.page;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 
+import wicket.contrib.phonebook.Contact;
+
 /**
  * Base page class used for phonebook web pages.
  * <p>
@@ -30,7 +32,7 @@ import org.apache.wicket.markup.html.panel.FeedbackPanel;
  *
  * @author igor
  */
-public class BasePage extends WebPage {
+public class BasePage extends WebPage<Contact> {
 	public BasePage() {
 		add(new FeedbackPanel("status"));
 	}

@@ -18,7 +18,7 @@
  */
 package wicket.contrib.phonebook.web;
 
-import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.Page;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.springframework.context.ApplicationContext;
@@ -30,7 +30,7 @@ import wicket.contrib.phonebook.web.page.ListContactsPage;
  */
 public abstract class BasePhonebookApplication extends WebApplication {
 	@Override
-	public Class<? extends WebPage> getHomePage() {
+	public Class<? extends Page<?>> getHomePage() {
 		return ListContactsPage.class;
 	}
 
