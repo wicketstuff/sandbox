@@ -43,12 +43,12 @@ public class EditContactPageTest extends TestCase {
 	private PhonebookFixture fixture;
 
 	private final static class MockListContactsPage implements ITestPageSource {
-		public Page getTestPage() {
+		public Page<Contact> getTestPage() {
 			Contact contact = new Contact();
 			contact.setId(99);
 			contact.setFirstname("James");
 			contact.setLastname("Bond");
-			return new EditContactPage(new ListContactsPage(), new Model(
+			return new EditContactPage<Contact>(new ListContactsPage(), new Model<Contact>(
 					contact));
 		}
 	}

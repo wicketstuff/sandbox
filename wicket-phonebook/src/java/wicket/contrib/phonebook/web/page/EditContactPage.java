@@ -42,8 +42,8 @@ import wicket.contrib.phonebook.ContactDao;
  * @author igor
  *
  */
-public class EditContactPage extends BasePage {
-	private final Page<?> backPage;
+public class EditContactPage<T extends Contact> extends BasePage<T> {
+	private final Page<T> backPage;
 	@SpringBean(name = "contactDao")
 	private ContactDao contactDao;
 
@@ -57,11 +57,11 @@ public class EditContactPage extends BasePage {
 	 * @param contactModel
 	 *            Model that contains the contact we will edit
 	 */
-	public EditContactPage(Page<?> backPage, IModel<Contact> contactModel) {
+	public EditContactPage(Page<T> backPage, IModel<T> contactModel) {
 		this.backPage = backPage;
 
 		Contact contact = contactModel.getObject();
-		Form<Contact> form = new Form<Contact>("contactForm", new CompoundPropertyModel<Contact>(contact));
+		Form<T> form = new Form<T>("contactForm", new CompoundPropertyModel<T>(contact));
 		add(form);
 
 		form.add(newRequiredTextField("firstname", 32));

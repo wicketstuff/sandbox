@@ -55,29 +55,29 @@ import wicket.contrib.phonebook.web.ContactsDataProvider;
  *
  * @author igor
  */
-public class ListContactsPage extends BasePage {
+public class ListContactsPage extends BasePage<Contact> {
 	@SpringBean(name = "contactDao")
 	private ContactDao dao;
 
 	private final DefaultDataTable users;
 
-	private final Set selectedContactIds = new HashSet();
+	private final Set<Long> selectedContactIds = new HashSet<Long>();
 
 	/**
 	 * Provides a composite User Actions panel for the Actions column.
 	 *
 	 * @author igor
 	 */
-	private static class UserActionsPanel extends Panel {
-		public UserActionsPanel(String id, IModel contactModel) {
+	private static class UserActionsPanel extends Panel<Contact> {
+		public UserActionsPanel(String id, IModel<Contact> contactModel) {
 			super(id);
 			addEditLink(contactModel);
 			addDeleteLink(contactModel);
 
 		}
 
-		private void addDeleteLink(IModel contactModel) {
-			add(new Link("deleteLink", contactModel) {
+		private void addDeleteLink(IModel<Contact> contactModel) {
+			add(new Link<Contact>("deleteLink", contactModel) {
 				/**
 				 * Go to the Delete page, passing this page and the id of the
 				 * Contact involved.
@@ -89,8 +89,8 @@ public class ListContactsPage extends BasePage {
 			});
 		}
 
-		private void addEditLink(IModel contactModel) {
-			add(new Link("editLink", contactModel) {
+		private void addEditLink(IModel<Contact> contactModel) {
+			add(new Link<Contact>("editLink", contactModel) {
 				/**
 				 * Go to the Edit page, passing this page and the id of the
 				 * Contact involved.
@@ -128,9 +128,9 @@ public class ListContactsPage extends BasePage {
 		form.add(new Button<Void>("delete-selected") {
 			@Override
 			public void onSubmit() {
-				Iterator it = selectedContactIds.iterator();
+				Iterator<Long> it = selectedContactIds.iterator();
 				while (it.hasNext()) {
-					dao.delete((Long) it.next());
+					dao.delete(it.next());
 				}
 				// clear out the set, we no longer need the selection
 				selectedContactIds.clear();
@@ -175,9 +175,9 @@ public class ListContactsPage extends BasePage {
 		return columns;
 	}
 
-	private TextFilteredPropertyColumn createColumn(String key,
+	private TextFilteredPropertyColumn<String> createColumn(String key,
 			String sortProperty, String propertyExpression) {
-		return new TextFilteredPropertyColumn(new ResourceModel(key),
+		return new TextFilteredPropertyColumn<String>(new ResourceModel(key),
 				sortProperty, propertyExpression);
 	}
 
