@@ -25,7 +25,8 @@ import org.apache.wicket.markup.html.panel.Panel;
  * 
  * @author Eelco Hillenius
  */
-public final class WicketExampleHeader extends Panel<Object> {
+public final class WicketExampleHeader extends Panel<Void>
+{
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -38,7 +39,8 @@ public final class WicketExampleHeader extends Panel<Object> {
 	 * @param page
 	 *            The example page
 	 */
-	public WicketExampleHeader(String id, String exampleTitle, WebPage page) {
+	public WicketExampleHeader(String id, String exampleTitle, WebPage<?> page)
+	{
 		super(id);
 		add(new Label<String>("exampleTitle", exampleTitle));
 	}
