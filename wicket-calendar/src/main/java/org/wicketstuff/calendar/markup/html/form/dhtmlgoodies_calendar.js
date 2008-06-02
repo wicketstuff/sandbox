@@ -1429,10 +1429,97 @@ function getleftPos(inputObj)
   return returnValue + calendar_offsetLeft;
 }
 
-function positionCalendar(inputObj)
+// ADDED BY WICKET
+function getWindowWidthAndHeigth() {
+  var myWidth = 0, myHeight = 0;
+  if( typeof( window.innerWidth ) == 'number' ) {
+    //Non-IE
+    myWidth = window.innerWidth;
+    myHeight = window.innerHeight;
+  } else if( document.documentElement && ( document.documentElement.clientWidth || document.documentElement.clientHeight ) ) {
+    //IE 6+ in 'standards compliant mode'
+    myWidth = document.documentElement.clientWidth;
+    myHeight = document.documentElement.clientHeight;
+  } else if( document.body && ( document.body.clientWidth || document.body.clientHeight ) ) {
+    //IE 4 compatible
+    myWidth = document.body.clientWidth;
+    myHeight = document.body.clientHeight;
+  }
+  return [ myWidth, myHeight ];
+}
+
+function getWindowScrollXY() {
+  var scrOfX = 0, scrOfY = 0;
+  if( typeof( window.pageYOffset ) == 'number' ) {
+    //Netscape compliant
+    scrOfY = window.pageYOffset;
+    scrOfX = window.pageXOffset;
+  } else if( document.body && ( document.body.scrollLeft || document.body.scrollTop ) ) {
+    //DOM compliant
+    scrOfY = document.body.scrollTop;
+    scrOfX = document.body.scrollLeft;
+  } else if( document.documentElement && ( document.documentElement.scrollLeft || document.documentElement.scrollTop ) ) {
+    //IE6 standards compliant mode
+    scrOfY = document.documentElement.scrollTop;
+    scrOfX = document.documentElement.scrollLeft;
+  }
+  return [ scrOfX, scrOfY ];
+}
+// END ADDED BY WICKET
+
+function positionCalendar(inputObj, smartPositioning)
 {
-	calendarDiv.style.left = getleftPos(inputObj) + 'px';
-	calendarDiv.style.top = getTopPos(inputObj) + 'px';
+// ADDED BY WICKET
+	var leftPos = 0, topPos = 0;
+	
+	if (smartPositioning) {
+		// there are 4 possible positions for the calendar div: top-left, top-right, buttom-left, bottom-right
+		// relative to the inputObj; we will try to use the position that does not get out of the visible page 
+		var windowScrollXY = getWindowScrollXY();
+		var windowWH = getWindowWidthAndHeigth();
+		var windowScrollX = windowScrollXY[0];
+		var windowScrollY = windowScrollXY[1];
+		var windowWidth = windowWH[0];
+		var windowHeight = windowWH[1];
+		
+		var inputObjLeft = getleftPos(inputObj);
+		var inputObjTop = getTopPos(inputObj) - inputObj.offsetHeight;
+		
+		if ((inputObjLeft + calendarDiv.offsetWidth < windowScrollX + windowWidth) &&
+				(inputObjTop + inputObj.offsetHeight + calendarDiv.offsetHeight < windowScrollY + windowHeight)) {
+			// choice 1 : bottom right
+			leftPos = inputObjLeft;
+			topPos = inputObjTop + inputObj.offsetHeight;
+		} else if ((inputObjLeft + calendarDiv.offsetWidth < windowScrollX + windowWidth) &&
+				(inputObjTop - calendarDiv.offsetHeight > windowScrollY)) {
+			// choice 2 : top right
+			leftPos = inputObjLeft;
+			topPos = inputObjTop - calendarDiv.offsetHeight;
+		} else if ((inputObjLeft + inputObj.offsetWidth - calendarDiv.offsetWidth > windowScrollX) &&
+				(inputObjTop + inputObj.offsetHeight + calendarDiv.offsetHeight < windowScrollY + windowHeight)) {
+			// choice 3 : bottom left
+			leftPos = inputObjLeft + inputObj.offsetWidth - calendarDiv.offsetWidth;
+			topPos = inputObjTop + inputObj.offsetHeight;
+		} else if ((inputObjLeft + inputObj.offsetWidth - calendarDiv.offsetWidth > windowScrollX) &&
+				(inputObjTop - calendarDiv.offsetHeight > windowScrollY)) {
+			// choice 4 : top left
+			leftPos = inputObjLeft + inputObj.offsetWidth - calendarDiv.offsetWidth;
+			topPos = inputObjTop - calendarDiv.offsetHeight;
+		} else {
+			// use bottom right anyway - cannot find valid place to show the div
+			leftPos = inputObjLeft;
+			topPos = inputObjTop + inputObj.offsetHeight;
+		}		
+	} else {
+		leftPos = getleftPos(inputObj);
+		topPos = getTopPos(inputObj);
+	}
+// END ADDED BY WICKET
+
+// MODIFIED BY WICKET 
+	calendarDiv.style.left = leftPos + 'px';
+	calendarDiv.style.top = topPos + 'px';
+// END MODIFIED BY WICKET 
 	if(iframeObj){
 		iframeObj.style.left = calendarDiv.style.left;
 		iframeObj.style.top =  calendarDiv.style.top;
@@ -1440,7 +1527,6 @@ function positionCalendar(inputObj)
 		iframeObj2.style.left = calendarDiv.style.left;
 		iframeObj2.style.top =  calendarDiv.style.top;
 	}
-		
 }
 	
 function initCalendar()
@@ -1541,8 +1627,9 @@ function calendarSortItems(a,b)
 	return a/1 - b/1;
 }
 
-
-function displayCalendar(inputField,format,buttonObj,displayTime,timeInput)
+// CHANGED BY WICKET
+function displayCalendar(inputField,format,buttonObj,displayTime,timeInput,smartPositioning)
+// END CHANGED BY WICKET
 {
 	if(displayTime)calendarDisplayTime=true; else calendarDisplayTime = false;
 	if(inputField.value.length>0){
@@ -1711,9 +1798,19 @@ function displayCalendar(inputField,format,buttonObj,displayTime,timeInput)
 			
 	returnFormat = format;
 	returnDateTo = inputField;
-	positionCalendar(buttonObj);
-	calendarDiv.style.visibility = 'visible';	
-	calendarDiv.style.display = 'block';	
+// CHANGED BY WICKET
+	if (smartPositioning)
+	{
+		// show the div in order to have div size available for positioning calculations
+		calendarDiv.style.visibility = 'visible';	
+		calendarDiv.style.display = 'block';
+		positionCalendar(buttonObj,smartPositioning);
+	} else {
+		positionCalendar(buttonObj,smartPositioning);
+		calendarDiv.style.visibility = 'visible';	
+		calendarDiv.style.display = 'block';
+	}
+// END CHANGED BY WICKET
 	if(iframeObj){
 		iframeObj.style.display = '';
 		iframeObj.style.height = '140px';
@@ -1726,7 +1823,9 @@ function displayCalendar(inputField,format,buttonObj,displayTime,timeInput)
 	setTimeout(updateAllProperties,0);
 }
 
-function displayCalendarSelectBox(yearInput,monthInput,dayInput,hourInput,minuteInput,buttonObj)
+// CHANGED BY WICKET
+function displayCalendarSelectBox(yearInput,monthInput,dayInput,hourInput,minuteInput,buttonObj,smartPositioning)
+// END CHANGED BY WICKET
 {
 	if(!hourInput)calendarDisplayTime=false; else calendarDisplayTime = true;
 	
@@ -1764,9 +1863,19 @@ function displayCalendarSelectBox(yearInput,monthInput,dayInput,hourInput,minute
 	
 	returnFormat = false;
 	returnDateTo = false;
-	positionCalendar(buttonObj);
-	calendarDiv.style.visibility = 'visible';	
-	calendarDiv.style.display = 'block';
+// CHANGED BY WICKET
+	if (smartPositioning)
+	{
+		// show the div in order to have div size available for positioning calculations
+		calendarDiv.style.visibility = 'visible';	
+		calendarDiv.style.display = 'block';
+		positionCalendar(buttonObj,smartPositioning);
+	} else {
+		positionCalendar(buttonObj,smartPositioning);
+		calendarDiv.style.visibility = 'visible';	
+		calendarDiv.style.display = 'block';
+	}
+// END CHANGED BY WICKET
 	if(iframeObj){
 		iframeObj.style.display = '';
 		iframeObj.style.height = calendarDiv.offsetHeight + 'px';
