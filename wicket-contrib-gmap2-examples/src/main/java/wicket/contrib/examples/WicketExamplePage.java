@@ -40,7 +40,7 @@ public class WicketExamplePage<T> extends WebPage<T>
 	 * 
 	 * @param model
 	 */
-	public WicketExamplePage(IModel model)
+	public WicketExamplePage(IModel<T> model)
 	{
 		super(model);
 		final String packageName = getClass().getPackage().getName();
