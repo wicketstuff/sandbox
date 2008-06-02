@@ -36,7 +36,7 @@ public class AjaxFormComponentValidatorBehaviour extends AjaxFormComponentUpdati
 
 	/* Default constructor, attaches to the onblur clientside event */
 	public AjaxFormComponentValidatorBehaviour() {
-		super("onblur");
+		this("onblur");
 	}
 
 	public AjaxFormComponentValidatorBehaviour(String event) {
