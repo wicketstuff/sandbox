@@ -143,7 +143,7 @@ public class JQueryBehavior extends AbstractDefaultAjaxBehavior {
     }
 
     @Override
-    protected void respond(AjaxRequestTarget arg0) {
+    protected void respond(AjaxRequestTarget target) {
         throw new UnsupportedOperationException("nothing to do");
     }
 
