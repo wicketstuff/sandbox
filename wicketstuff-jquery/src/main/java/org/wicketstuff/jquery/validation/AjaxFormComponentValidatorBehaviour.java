@@ -96,7 +96,7 @@ public class AjaxFormComponentValidatorBehaviour extends AjaxFormComponentUpdati
 			b.append(getRemovePreviousErrorsScript());
 
 		// Add the ERROR class to the sourrounding component
-		b.append("$('#" + getComponent().getMarkupId() + "').addClass('" + ERROR_COMPONENT_CLASS + "');");
+		b.append("$('#" + getComponent().getMarkupId() + "').parent().addClass('" + ERROR_COMPONENT_CLASS + "');");
 
 		// Create list of error messages, separated by the chosen separator markup
 		List<FeedbackMessage> messages = Session.get().getFeedbackMessages().messages(ErrorLevelFeedbackMessageFilter.ALL);
@@ -104,7 +104,9 @@ public class AjaxFormComponentValidatorBehaviour extends AjaxFormComponentUpdati
 
 		for(int i = 0; i < messages.size(); i++ ) {
 			String msg = messages.get(i).getMessage().toString().replace("'", "\\'");
-			mb.append(msg + getErrorSeparator());
+			mb.append(msg);
+			if(i+1 < messages.size())
+				mb.append(getErrorSeparator());
 		}
 
 		// Add the span with the error messages
