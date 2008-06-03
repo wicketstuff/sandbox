@@ -1043,15 +1043,9 @@ function writeTopBar()
 
 }
 
-function writeCalendarContent()
+// ADDED BY WICKET
+function getDaysNoOfFirstWeekThanBelongToPastMonth()
 {
-	var calendarContentDivExists = true;
-	if(!calendarContentDiv){
-		calendarContentDiv = document.createElement('DIV');
-		calendarDiv.appendChild(calendarContentDiv);
-		calendarContentDivExists = false;
-	}
-	currentMonth = currentMonth/1;
 	var d = new Date();	
 	
 	d.setFullYear(currentYear);		
@@ -1061,6 +1055,29 @@ function writeCalendarContent()
 	var dayStartOfMonth = d.getDay();
 	if(dayStartOfMonth==0)dayStartOfMonth=7;
 	dayStartOfMonth--;
+	return dayStartOfMonth;
+}
+
+function getFirstDateOfWeek(week)
+{
+	var firstWeek = getWeek(currentYear, currentMonth, 1);
+	if (week == firstWeek) return 1;
+	return (week - firstWeek) * 7 + 1 - getDaysNoOfFirstWeekThanBelongToPastMonth();
+}
+// END ADDED BY WICKET
+
+function writeCalendarContent()
+{
+	var calendarContentDivExists = true;
+	if(!calendarContentDiv){
+		calendarContentDiv = document.createElement('DIV');
+		calendarDiv.appendChild(calendarContentDiv);
+		calendarContentDivExists = false;
+	}
+	currentMonth = currentMonth/1;
+// CHANGED BY WICKET	
+	var dayStartOfMonth = getDaysNoOfFirstWeekThanBelongToPastMonth();
+// END CHANGED BY WICKET	
 	
 	document.getElementById('calendar_year_txt').innerHTML = currentYear;
 	document.getElementById('calendar_month_txt').innerHTML = monthArray[currentMonth];
@@ -1115,7 +1132,7 @@ function writeCalendarContent()
 	}
 	
 	for(var no=1;no<=daysInMonth;no++){
-		d.setDate(no-1);
+// 1 line REMOVED BY WICKET
 		if(colCounter>0 && colCounter%7==0){
 			var row = calTBody.insertRow(-1);
 			var cell = row.insertCell(-1);
@@ -1171,12 +1188,17 @@ function pickDate(e,inputDay)
 	if(month<10)month = '0' + month;
 	var day;
 	if(!inputDay && this)day = this.innerHTML; else day = inputDay;
-	if(day/1<10)day = '0' + day;
-// WICKET ADDED	
+// WICKET ADDED/CHANGED	
 	var week;
-	if (this.className == 'calendar_week_column')week = this.innerHTML; else week = getWeek(currentYear, currentMonth, day);
+	if (this.className == 'calendar_week_column') {
+		week = this.innerHTML;
+		day = getFirstDateOfWeek(week/1);
+	} else {
+		week = getWeek(currentYear, currentMonth, day);
+	}
+	if(day/1<10)day = '0' + day;
 	if(week/1<10)week = '0' + week;
-// DONE WICKET ADDED
+// DONE WICKET ADDED/CHANGED
 		
 	if(returnFormat){
 		returnFormat = returnFormat.replace('dd',day);
