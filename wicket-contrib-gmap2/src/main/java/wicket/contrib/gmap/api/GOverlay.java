@@ -31,18 +31,29 @@ import wicket.contrib.gmap.GMap2;
  */
 public abstract class GOverlay implements Serializable
 {
-	final String id;
+	/**
+	 * id of this object. it is session unique.
+	 */
+	private final String id;
 
-	GMap2<?> parent = null;
+	private GMap2<?> parent = null;
 
 	private final Map<GEvent, GEventHandler> events = new EnumMap<GEvent, GEventHandler>(
 			GEvent.class);
 
+	/**
+	 * Construct.
+	 */
 	public GOverlay()
 	{
+		// id is session unique
 		id = String.valueOf(Session.get().nextSequenceValue());
 	}
 
+	/**
+	 * @return String representing the JavaScript add command for the
+	 *         corresponding JavaScript object.
+	 */
 	public String getJSadd()
 	{
 		StringBuffer js = new StringBuffer(parent.getJSinvoke("addOverlay('" + getId() + "', "
@@ -55,6 +66,10 @@ public abstract class GOverlay implements Serializable
 		return js.toString();
 	}
 
+	/**
+	 * @return String representing the JavaScript remove command for the
+	 *         corresponding JavaScript object.
+	 */
 	public String getJSremove()
 	{
 		StringBuffer js = new StringBuffer();
@@ -67,11 +82,20 @@ public abstract class GOverlay implements Serializable
 		return js.toString();
 	}
 
+	/**
+	 * @return The session unique id of this object as a String.
+	 */
 	public String getId()
 	{
 		return id;
 	}
 
+	/**
+	 * Implement the needed JavaScript constructor for the corresponding
+	 * JavaScript object.
+	 * 
+	 * @return String representing the JavaScript constructor.
+	 */
 	protected abstract String getJSconstructor();
 
 	public GMap2<?> getParent()
@@ -105,6 +129,11 @@ public abstract class GOverlay implements Serializable
 		return this;
 	}
 
+	/**
+	 * Return all registered Listeners.
+	 * 
+	 * @return registered listeners
+	 */
 	public Map<GEvent, GEventHandler> getListeners()
 	{
 		return Collections.unmodifiableMap(events);
@@ -131,11 +160,23 @@ public abstract class GOverlay implements Serializable
 		return this;
 	}
 
+	/**
+	 * Called when an Ajax call occurs.
+	 * 
+	 * @param target
+	 * @param overlayEvent
+	 */
 	public void onEvent(AjaxRequestTarget target, GEvent overlayEvent)
 	{
 		updateOnAjaxCall(target, overlayEvent);
 		events.get(overlayEvent).onEvent(target);
 	}
 
+	/**
+	 * Implement to handle Ajax calls to your needs.
+	 * 
+	 * @param target
+	 * @param overlayEvent
+	 */
 	protected abstract void updateOnAjaxCall(AjaxRequestTarget target, GEvent overlayEvent);
 }
