@@ -3,7 +3,7 @@ package org.wicketstuff.jquery.validation;
 import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
-import org.apache.wicket.feedback.ErrorLevelFeedbackMessageFilter;
+import org.apache.wicket.feedback.ComponentFeedbackMessageFilter;
 import org.apache.wicket.feedback.FeedbackMessage;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.wicketstuff.jquery.JQueryBehavior;
@@ -99,7 +99,7 @@ public class AjaxFormComponentValidatorBehaviour extends AjaxFormComponentUpdati
 		b.append("$('#" + getComponent().getMarkupId() + "').parent().addClass('" + ERROR_COMPONENT_CLASS + "');");
 
 		// Create list of error messages, separated by the chosen separator markup
-		List<FeedbackMessage> messages = Session.get().getFeedbackMessages().messages(ErrorLevelFeedbackMessageFilter.ALL);
+		List<FeedbackMessage> messages = Session.get().getFeedbackMessages().messages(new ComponentFeedbackMessageFilter(getComponent()));
 		StringBuilder mb = new StringBuilder("");
 
 		for(int i = 0; i < messages.size(); i++ ) {
