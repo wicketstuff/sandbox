@@ -39,9 +39,9 @@ public class JQueryBehavior extends AbstractDefaultAjaxBehavior {
     // we use CompressedResourceReference so that the included file will have
     // its comments stripped and gzipped.
     /**
-     *  ResourceReference for <a href="http://jquery.com">jquery-1.2.3</a> (include by default when you add the current Behavior).
+     *  ResourceReference for <a href="http://jquery.com">jquery-1.2.6</a> (include by default when you add the current Behavior).
      */
-    public static final CompressedResourceReference JQUERY_1_2_JS = new CompressedResourceReference(JQueryBehavior.class, "jquery-1.2.3.js");
+    public static final CompressedResourceReference JQUERY_1_2_JS = new CompressedResourceReference(JQueryBehavior.class, "jquery.js");
 
     /**
      *  ResourceReference for <a href="http://jquery.com">jquery</a> (include by default when you add the current Behavior).
@@ -86,7 +86,7 @@ public class JQueryBehavior extends AbstractDefaultAjaxBehavior {
     /**
      *  ResourceReference for <a href="http://jquery.com/plugins/project/bgiframe">jquery.bgiframe-2.1.1.js</a> (not include in reponse header)
      */
-    public static final CompressedResourceReference JQUERY_BGIFRAME_JS = new CompressedResourceReference(JQueryBehavior.class, "jquery.dimensions-2.1.1.js");
+    public static final CompressedResourceReference JQUERY_BGIFRAME_JS = new CompressedResourceReference(JQueryBehavior.class, "jquery.bgiframe-2.1.1.js");
 
     public static final Pattern JQUERY_REGEXP = Pattern.compile(".*\\<.*script.*src=\".*jquery.*\\.js\"\\>.*", Pattern.DOTALL);
     
