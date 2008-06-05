@@ -590,14 +590,18 @@ InMethod.XTable.prototype = {
 		var padding = (bodyContainer1.offsetWidth - bodyContainer1.clientWidth);
 
 		// count new header width
-		var newWidth = (body.offsetWidth + padding) + "px";
+		var newWidth = (body.offsetWidth + padding);
 		
-		if (head.style.width != newWidth)
-			head.style.width = newWidth; 
+		// sometimes newWidth is negative in IE, we have to ignore it
+		
+		if (newWidth > 0 && head.style.width != newWidth)
+			head.style.width = newWidth + "px"; 
 
-		// compensate for scrollbar
-		var e = this.getElement("th", "imxt-padding-right", head);		
-		e.style.width = padding + "px";			 		
+		if (padding > 0) {
+			// compensate for scrollbar
+			var e = this.getElement("th", "imxt-padding-right", head);		
+			e.style.width = padding + "px";			
+		}
  			 		 			 		
  		this.updateHandles(force);
  		 		 		
