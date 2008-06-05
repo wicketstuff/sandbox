@@ -15,6 +15,7 @@
  */
 package wicket.contrib.gmap.util;
 
+import java.io.Serializable;
 import java.util.StringTokenizer;
 
 import wicket.contrib.gmap.api.GLatLng;
@@ -26,7 +27,7 @@ import wicket.contrib.gmap.api.GLatLng;
  * 
  * @author Thijs Vonk
  */
-public class Geocoder {
+public class Geocoder implements Serializable {
 
 	// Constants
 	public static final String OUTPUT_CSV = "csv";
