@@ -2,6 +2,7 @@ package org.wicketstuff.pickwick.auth;
 
 import java.util.ArrayList;
 
+import org.apache.wicket.Application;
 import org.apache.wicket.Request;
 import org.apache.wicket.Session;
 import org.apache.wicket.authentication.AuthenticatedWebApplication;
@@ -29,6 +30,17 @@ public class PickwickSession extends AuthenticatedWebSession {
 	
 	private User user;
 	
+	
+	
+	public PickwickSession(Request request) {
+		super(request);
+		Application application = AuthenticatedWebApplication.get();
+		// Injects dependencies into the fields and methods of this session object
+		// FIXME AuthenticatedWebApplication should probably allow to use GuiceComponentInjector
+		Injector inj = ((GuiceInjectorHolder)application.getMetaData(GuiceInjectorHolder.INJECTOR_KEY)).getInjector();
+		inj.injectMembers(this);
+	}
+
 	public PickwickSession(AuthenticatedWebApplication application, Request request) {
 		super(application, request);
 		// Injects dependencies into the fields and methods of this session object

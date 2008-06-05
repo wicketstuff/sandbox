@@ -151,7 +151,10 @@ public class ImagePage extends BasePage {
 
 		@Override
 		public boolean isEnabled() {
-			return parameters.getString("uri") != null;
+			
+			PageParameters p = ImagePage.this.getPageParameters();
+			
+			return (p!=null&&p.getString("uri") != null);
 		}
 	}
 }
