@@ -11,10 +11,13 @@ import org.wicketstuff.pickwick.backend.Settings;
 import org.wicketstuff.pickwick.bean.Folder;
 import org.wicketstuff.pickwick.bean.Sequence;
 
-import wicket.contrib.gmap.GLatLng;
-import wicket.contrib.gmap.GMap;
-import wicket.contrib.gmap.GMapPanel;
-import wicket.contrib.gmap.GMarker;
+//import wicket.contrib.gmap.GLatLng;
+//import wicket.contrib.gmap.GMap;
+import wicket.contrib.gmap.GMap2;
+import wicket.contrib.gmap.api.GLatLng;
+import wicket.contrib.gmap.api.GMarker;
+//import wicket.contrib.gmap.GMapPanel;
+//import wicket.contrib.gmap.GMarker;
 
 import com.google.inject.Inject;
 
@@ -40,9 +43,9 @@ public class GmapLocalizedPanel extends Panel{
 		super(id);
 		
 		//add gmap
-		GMap gmap = new GMap(new GLatLng(40, 10), 3);
-		gmap.setTypeControl(true);
-		gmap.setSmallMapControl(true);
+		GMap2 gmap = new GMap2("gmap", settings.getGoogleKey());
+//		gmap.ssetTypeControl(true);
+//		gmap.setSmallMapControl(true);
 		
 		folders = new ArrayList<Folder>();
 		Folder folder = imageUtils.getFolderFor(PickwickSession.get().getUser().getRoles());
@@ -52,22 +55,23 @@ public class GmapLocalizedPanel extends Panel{
 			
 			Sequence sequence = ImageUtils.readSequence(current.getFile());
 			if (sequence != null && sequence.getLatitude() != 0 && sequence.getLongitude() != 0){
-				GMarker wicketLibrary = new GMarker(new GLatLng(sequence.getLatitude(), sequence.getLongitude()),
+				GMarker wicketLibrary = new GMarker(new GLatLng(sequence.getLatitude(), sequence.getLongitude()));
+			
 						//new EmptyPanel("gmarkerInfo"));//("gmarkerInfo", sequence, current));
-						new DescriptionPanel("gmarkerInfo", current.getFile().getAbsolutePath().substring(settings.getImageDirectoryRoot().getAbsolutePath().length(), current.getFile().getAbsolutePath().length())));
+//						new DescriptionPanel("gmarkerInfo", current.getFile().getAbsolutePath().substring(settings.getImageDirectoryRoot().getAbsolutePath().length(), current.getFile().getAbsolutePath().length())));
 						gmap.addOverlay(wicketLibrary);
 			}
 			
 		}
 		
-		GMapPanel mapPanel = new GMapPanel("gmap", gmap, 800, 600,
-				settings.getGoogleKey());
+//		GMapPanel mapPanel = new GMapPanel("gmap", gmap, 800, 600,
+//				settings.getGoogleKey());
 		/*mapPanel.addClickListener(new GMapClickListener() {
 
 			public void onClick(AjaxRequestTarget target, GLatLng point) {
 			}
 		});*/
-		add(mapPanel);
+		add(gmap);
 	
 	}
 
