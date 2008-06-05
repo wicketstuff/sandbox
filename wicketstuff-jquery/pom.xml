@@ -86,16 +86,18 @@
 		<dependency>
 			<groupId>org.apache.wicket</groupId>
 			<artifactId>wicket</artifactId>
+			<version>${wicket.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.wicket</groupId>
 			<artifactId>wicket-extensions</artifactId>
+			<version>${wicket.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.wicket</groupId>
 			<artifactId>wicket-datetime</artifactId>
 			<optional>true</optional>
-			<version>1.3.3</version>
+			<version>${wicket.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.wicketstuff</groupId>
@@ -109,4 +111,7 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+	<properties>
+		<wicket.version>1.3.3</wicket.version>
+	</properties>
 </project>
