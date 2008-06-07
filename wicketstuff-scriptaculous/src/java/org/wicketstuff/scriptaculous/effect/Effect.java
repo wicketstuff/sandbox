@@ -55,6 +55,10 @@ public interface Effect
 		}
 
 		protected abstract String getEffectName();
+
+                private Component getComponent() {
+                    return this.component;
+                }
 	}
 
 	/**
@@ -327,4 +331,48 @@ public interface Effect
 			return "Puff";
 		}
 	}
+
+    /**
+     * execute multiple effects in sequence.
+     * @see http://github.com/madrobby/scriptaculous/wikis/effect-multiple
+     */
+    public class Multiple implements Effect {
+        private final AbstractEffect[] effects;
+        private final String effectName;
+        private final Map options = new HashMap();
+
+        public Multiple(AbstractEffect[] effects) {
+          //TODO: assert all effects of the same type
+          this.effects = effects;
+          this.effectName = effects[0].getEffectName();
+        }
+
+        public String toJavascript() {
+            JavascriptBuilder builder = new JavascriptBuilder();
+            builder.addLine("Effect.multiple([");
+            for (int x = 0; x < effects.length; x++) {
+                builder.addLine("'" + effects[x].getComponent().getMarkupId() + "'" + (x < effects.length - 1 ? ", " : ""));
+            }
+            builder.addLine("], Effect." + effectName);
+            builder.addOptions(options);
+            builder.addLine(");");
+            return builder.toJavascript();
+        }
+
+        /**
+         * set the delay offset for each subsequent effect
+         * defaults to 0.1
+         */
+        public void setSpeed(float speed) {
+          options.put("speed", speed);
+        }
+
+        /**
+         * set the effects start delay
+         * defaults to 0.0
+         */
+        public void setDelay(float delay) {
+          options.put("delay", delay);
+        }
+    }
 }
