@@ -1,15 +1,23 @@
 package wicket.contrib.scriptaculous.examples;
 
-import wicket.contrib.scriptaculous.examples.autocomplete.AutocompleteExamplePage;
-import wicket.contrib.scriptaculous.examples.dragdrop.DragDropExamplePage;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 
-public class ScriptaculousExamplesHomePage extends WebPage {
+import wicket.contrib.scriptaculous.examples.autocomplete.AutocompleteExamplePage;
+import wicket.contrib.scriptaculous.examples.dragdrop.DragDropExamplePage;
+import wicket.contrib.scriptaculous.examples.toaster.ToasterExamplePage;
 
-	public ScriptaculousExamplesHomePage() {
-		add(new BookmarkablePageLink("autocompleteExampleLink", AutocompleteExamplePage.class));
+public class ScriptaculousExamplesHomePage extends WebPage
+{
 
-		add(new BookmarkablePageLink("draggableImageExamplePage", DragDropExamplePage.class));
+	public ScriptaculousExamplesHomePage()
+	{
+		add(new BookmarkablePageLink("autocompleteExampleLink",
+				AutocompleteExamplePage.class));
+
+		add(new BookmarkablePageLink("draggableImageExamplePage",
+				DragDropExamplePage.class));
+
+		add(new BookmarkablePageLink("toasterExamplePage", ToasterExamplePage.class));
 	}
 }
