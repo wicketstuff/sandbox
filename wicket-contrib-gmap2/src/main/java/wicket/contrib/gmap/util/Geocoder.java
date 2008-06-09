@@ -21,13 +21,15 @@ import java.util.StringTokenizer;
 import wicket.contrib.gmap.api.GLatLng;
 
 /**
- * Geocoder.
- * See:
+ * Geocoder. See:
  * http://www.google.com/apis/maps/documentation/services.html#Geocoding_Direct
  * 
  * @author Thijs Vonk
  */
-public class Geocoder implements Serializable {
+public class Geocoder implements Serializable
+{
+
+	private static final long serialVersionUID = 1L;
 
 	// Constants
 	public static final String OUTPUT_CSV = "csv";
@@ -38,9 +40,9 @@ public class Geocoder implements Serializable {
 
 	public static final String OUTPUT_JSON = "json";
 
-	private String gMapKey;
+	private final String gMapKey;
 
-	private String output = OUTPUT_CSV;
+	private final String output = OUTPUT_CSV;
 
 	/**
 	 * @param gMapKey
@@ -48,20 +50,24 @@ public class Geocoder implements Serializable {
 	 * @throws IllegalArgumentException
 	 *             If the API key is <code>null</code>
 	 */
-	public Geocoder(String gMapKey) {
-		if (gMapKey == null) {
+	public Geocoder(String gMapKey)
+	{
+		if (gMapKey == null)
+		{
 			throw new IllegalArgumentException("API key cannot be null");
 		}
 
 		this.gMapKey = gMapKey;
 	}
 
-	public String encode(String address) {
-		return "http://maps.google.com/maps/geo?q=" + address.replace(' ', '+')
-				+ "&output=" + output + "&key=" + gMapKey;
+	public String encode(String address)
+	{
+		return "http://maps.google.com/maps/geo?q=" + address.replace(' ', '+') + "&output="
+				+ output + "&key=" + gMapKey;
 	}
 
-	public GLatLng decode(String response) throws GeocoderException {
+	public GLatLng decode(String response) throws GeocoderException
+	{
 
 		StringTokenizer gLatLng = new StringTokenizer(response, ",");
 
@@ -70,11 +76,11 @@ public class Geocoder implements Serializable {
 		String latitude = gLatLng.nextToken();
 		String longitude = gLatLng.nextToken();
 
-		if (Integer.parseInt(status) != GeocoderException.G_GEO_SUCCESS) {
+		if (Integer.parseInt(status) != GeocoderException.G_GEO_SUCCESS)
+		{
 			throw new GeocoderException(Integer.parseInt(status));
 		}
 
-		return new GLatLng(Double.parseDouble(latitude), Double
-				.parseDouble(longitude));
+		return new GLatLng(Double.parseDouble(latitude), Double.parseDouble(longitude));
 	}
 }
