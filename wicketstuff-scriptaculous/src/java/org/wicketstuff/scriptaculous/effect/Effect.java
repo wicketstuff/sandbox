@@ -1,6 +1,8 @@
 package org.wicketstuff.scriptaculous.effect;
 
+import java.io.Serializable;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.wicket.Component;
@@ -17,14 +19,15 @@ public interface Effect
 {
 
 	String toJavascript();
-
+	void setSync(int synch);
+	void setQueue(String queue);
 	/**
 	 * Helper Base Effect class for simple effest that require a component and options.
 	 */
-	public abstract class AbstractEffect implements Effect
+	public abstract class AbstractEffect implements Effect, Serializable
 	{
 		private final Component component;
-		private final Map options;
+		protected final Map options;
 
 		public AbstractEffect(Component component)
 		{
@@ -36,6 +39,16 @@ public interface Effect
 		{
 			return toJavascript();
 		}
+		
+		public void setSync(int synch)
+		{
+			addOption("sync", synch);
+		}
+		public void setQueue(String queue)
+		{
+			addOption("queue",queue);
+		}
+		
 
 		public String toJavascript()
 		{
@@ -55,11 +68,67 @@ public interface Effect
 		}
 
 		protected abstract String getEffectName();
-
-                private Component getComponent() {
-                    return this.component;
-                }
 	}
+	/**
+	 * Chaining of effects
+	 * @author Nino Martinez Wael (nino.martinez@jayway.dk)
+	 * @see http://github.com/madrobby/scriptaculous/wikis/effect-parallel
+	 */
+	public class Parallel extends AbstractEffect
+	{
+		private List<Effect> listOfEffects;
+		public Parallel(List<Effect> listOfEffects) {
+			super(null);
+			this.listOfEffects=listOfEffects;
+		}
+		@Override
+		protected String getEffectName() {
+			return "Parallel";
+		}
+		public void setDuration(int seconds)
+		{
+			addOption("duration", new Integer(seconds));
+		}
+		public void setDelay(int seconds)
+		{
+			addOption("delay", new Integer(seconds));
+		}
+		@Override
+		public String toJavascript() {
+			JavascriptBuilder builder = new JavascriptBuilder();
+			
+			String arrayOfEffects=new String();
+			
+			boolean first=true;
+			for(Effect effect:listOfEffects)
+			{
+				effect.setSync(1);
+				if(first)
+				{
+					arrayOfEffects+="[";
+					first=false;
+				}
+				else{
+					arrayOfEffects+=",";
+				}
+				arrayOfEffects+=effect.toJavascript();
+				
+			}
+			arrayOfEffects+="]";
+			// clean all semicolons 
+			arrayOfEffects= arrayOfEffects.replace(";", "");
+			arrayOfEffects= arrayOfEffects.replace("\n", "");
+			builder
+					.addLine("new Effect." + getEffectName() + "(" + arrayOfEffects
+							+ ", ");
+			builder.addOptions( options);
+			builder.addLine(");");
+
+			return builder.toJavascript();
+		}
+
+	}
+	
 
 	/**
 	 * Effect for highlighting a component using the famous "yellow fade".
@@ -331,48 +400,4 @@ public interface Effect
 			return "Puff";
 		}
 	}
-
-    /**
-     * execute multiple effects in sequence.
-     * @see http://github.com/madrobby/scriptaculous/wikis/effect-multiple
-     */
-    public class Multiple implements Effect {
-        private final AbstractEffect[] effects;
-        private final String effectName;
-        private final Map options = new HashMap();
-
-        public Multiple(AbstractEffect[] effects) {
-          //TODO: assert all effects of the same type
-          this.effects = effects;
-          this.effectName = effects[0].getEffectName();
-        }
-
-        public String toJavascript() {
-            JavascriptBuilder builder = new JavascriptBuilder();
-            builder.addLine("Effect.multiple([");
-            for (int x = 0; x < effects.length; x++) {
-                builder.addLine("'" + effects[x].getComponent().getMarkupId() + "'" + (x < effects.length - 1 ? ", " : ""));
-            }
-            builder.addLine("], Effect." + effectName);
-            builder.addOptions(options);
-            builder.addLine(");");
-            return builder.toJavascript();
-        }
-
-        /**
-         * set the delay offset for each subsequent effect
-         * defaults to 0.1
-         */
-        public void setSpeed(float speed) {
-          options.put("speed", speed);
-        }
-
-        /**
-         * set the effects start delay
-         * defaults to 0.0
-         */
-        public void setDelay(float delay) {
-          options.put("delay", delay);
-        }
-    }
 }
