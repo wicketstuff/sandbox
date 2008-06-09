@@ -1,7 +1,13 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src/java"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="con" path="org.maven.ide.eclipse.MAVEN2_CLASSPATH_CONTAINER"/>
-	<classpathentry kind="output" path="target/classes"/>
+  <classpathentry kind="src" path="src/java"/>
+  <classpathentry kind="output" path="target/classes"/>
+  <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+  <classpathentry kind="var" path="M2_REPO/org/wicketstuff/wicketstuff-scriptaculous/1.4-SNAPSHOT/wicketstuff-scriptaculous-1.4-SNAPSHOT.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/apache/wicket/wicket/1.4-SNAPSHOT/wicket-1.4-SNAPSHOT.jar" sourcepath="M2_REPO/org/apache/wicket/wicket/1.4-SNAPSHOT/wicket-1.4-SNAPSHOT-sources.jar">
+    <attributes>
+      <attribute value="jar:file://Users/nino/.m2/repository/org/apache/wicket/wicket/1.4-SNAPSHOT/wicket-1.4-SNAPSHOT-javadoc.jar!/" name="javadoc_location"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/org/slf4j/slf4j-jdk14/1.4.3/slf4j-jdk14-1.4.3.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/slf4j/slf4j-api/1.4.2/slf4j-api-1.4.2.jar" sourcepath="M2_REPO/org/slf4j/slf4j-api/1.4.2/slf4j-api-1.4.2-sources.jar"/>
 </classpath>
