@@ -19,8 +19,6 @@ public interface Effect
 {
 
 	String toJavascript();
-	void setSync(int synch);
-	void setQueue(String queue);
 	/**
 	 * Helper Base Effect class for simple effest that require a component and options.
 	 */
@@ -81,8 +79,8 @@ public interface Effect
 	 */
 	public class Parallel extends AbstractEffect
 	{
-		private List<Effect> listOfEffects;
-		public Parallel(List<Effect> listOfEffects) {
+		private List<AbstractEffect> listOfEffects;
+		public Parallel(List<AbstractEffect> listOfEffects) {
 			super(null);
 			this.listOfEffects=listOfEffects;
 		}
@@ -105,7 +103,7 @@ public interface Effect
 			String arrayOfEffects=new String();
 			
 			boolean first=true;
-			for(Effect effect:listOfEffects)
+			for(AbstractEffect effect:listOfEffects)
 			{
 				effect.setSync(1);
 				if(first)
