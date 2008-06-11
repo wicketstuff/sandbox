@@ -446,15 +446,5 @@ public interface Effect
         public void setDelay(float delay) {
           options.put("delay", delay);
         }
-        //NOOP
-		public void setQueue(String queue) {
-			// TODO Auto-generated method stub
-			
-		}
-		//NOOP
-		public void setSync(int synch) {
-			// TODO Auto-generated method stub
-			
-		}
     }
 }
