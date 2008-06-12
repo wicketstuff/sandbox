@@ -62,12 +62,15 @@ public class ObjectAutoCompleteField<T,I> extends Panel<I>
     // Remember old id in case a search operation is aborted
     private I backupObject;
 
+    // Remember selected input string
+    private String selectedObjectFromChoice;
+
     // Textfield used to search for the object
     private TextField<String> searchTextField;
     private HiddenField<I> objectField;
 
     /**
-     * Package scoper constructor to be used by the builder to create an auto completion fuild via
+     * Package scoped constructor to be used by the builder to create an auto completion fuild via
      * the builder pattern. I.e. use {@link org.wicketstuff.objectautocomplete.ObjectAutoCompleteBuilder#build(String)}
      * for creating an object auto completion component
      *
@@ -75,7 +78,7 @@ public class ObjectAutoCompleteField<T,I> extends Panel<I>
      * @param pModel the model
      * @param pBuilder builder object used to create this field.
      */
-    ObjectAutoCompleteField(String pId, IModel<I> pModel,ObjectAutoCompleteBuilder<T> pBuilder) {
+    ObjectAutoCompleteField(String pId, IModel<I> pModel,ObjectAutoCompleteBuilder<T,I> pBuilder) {
         super(pId, pModel);
 
         setOutputMarkupId(true);
@@ -106,7 +109,7 @@ public class ObjectAutoCompleteField<T,I> extends Panel<I>
     // ==========================================================================================================
 
     // the 'search part' if in lookup mode
-    private void addSearchTextField(final Model<String> pSearchTextModel, ObjectAutoCompleteBuilder<T> pBuilder) {
+    private void addSearchTextField(final Model<String> pSearchTextModel, ObjectAutoCompleteBuilder<T,I> pBuilder) {
         searchTextField = new TextField<String>("search",pSearchTextModel) {
             @Override
             public boolean isVisible() {
@@ -144,7 +147,7 @@ public class ObjectAutoCompleteField<T,I> extends Panel<I>
     }
 
     // the 'read only part' if the object has been selected
-    private void addReadOnlyPanel(final Model<String> pSearchTextModel, ObjectAutoCompleteBuilder<T> pBuilder) {
+    private void addReadOnlyPanel(final Model<String> pSearchTextModel, ObjectAutoCompleteBuilder<T,I> pBuilder) {
         final WebMarkupContainer wac = new WebMarkupContainer("readOnlyPanel") {
             @Override
             public boolean isVisible() {
@@ -153,8 +156,17 @@ public class ObjectAutoCompleteField<T,I> extends Panel<I>
         };
         wac.setOutputMarkupId(true);
 
-        Label<String> selectedLabel = new Label<String>("selectedValue",pSearchTextModel);
-        selectedLabel.setOutputMarkupId(true);
+        ReadOnlyObjectRenderer<I> roRenderer = pBuilder.readOnlyObjectRenderer;
+
+        Component<?> objectReadOnlyComponent;
+        if (roRenderer != null) {
+            objectReadOnlyComponent =
+                    roRenderer.getRenderedObject("selectedValue", ObjectAutoCompleteField.this.getModel(),pSearchTextModel);
+        } else {
+            objectReadOnlyComponent =
+                    new Label<String>("selectedValue",pSearchTextModel);
+        }
+        objectReadOnlyComponent.setOutputMarkupId(true);
 
         AjaxFallbackLink deleteLink = new AjaxFallbackLink("searchLink") {
             @Override
@@ -178,14 +190,14 @@ public class ObjectAutoCompleteField<T,I> extends Panel<I>
 
         if (pBuilder.searchOnClick) {
             deleteLink.setVisible(false);
-            selectedLabel.add(new AjaxEventBehavior("onclick") {
+            objectReadOnlyComponent.add(new AjaxEventBehavior("onclick") {
                 @Override
                 protected void onEvent(AjaxRequestTarget target) {
                     changeToSearchMode(target);
                 }
             });
         }
-        wac.add(selectedLabel);
+        wac.add(objectReadOnlyComponent);
         wac.add(deleteLink);
         add(wac);
     }

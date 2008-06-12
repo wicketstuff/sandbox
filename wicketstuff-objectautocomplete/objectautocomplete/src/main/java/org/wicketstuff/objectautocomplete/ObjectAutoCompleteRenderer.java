@@ -37,7 +37,6 @@ public class ObjectAutoCompleteRenderer<T> implements IAutoCompleteRenderer<T> {
 
     private String idProperty = "id";
 
-
     public final void render(T object, Response response, String criteria)
 	{
 		String textValue = getTextValue(object);

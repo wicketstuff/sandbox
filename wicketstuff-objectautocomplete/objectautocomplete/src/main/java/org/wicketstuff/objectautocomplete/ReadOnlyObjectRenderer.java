@@ -14,29 +14,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.wicketstuff.objectautocomplete.example;
+package org.wicketstuff.objectautocomplete;
 
-import org.apache.wicket.protocol.http.WebApplication;
-import org.apache.wicket.Page;
+import org.apache.wicket.Component;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 
 /**
- * Application object for your web application. If you want to run this application without deploying, run the Start class.
+ * A renderer for rendering the readonly view of an object.
  *
+ * @author roland
+ * @since May 29, 2008
  */
-public class WicketApplication extends WebApplication
-{
+public interface ReadOnlyObjectRenderer<I> {
+
     /**
-     * Constructor
+     * Get the component used for rendering the read only
+     * view when an object has been selected.
+     *
+     * @param id of the object
+     * @param pModel the model holding the selected objects id
+     * @param pSearchTextModel the string used during selection
+     * @return a component which is used as as readonly view.
      */
-	public WicketApplication()
-	{
-	}
-
-	@Override
-    public Class<? extends Page<?>> getHomePage()
-	{
-		//return SimpleExamplePage.class;
-        return ReadOnlyObjectRendererExamplePage.class;
-    }
-
+    Component<?> getRenderedObject(String id, IModel<I> pModel, Model<String> pSearchTextModel);
 }
