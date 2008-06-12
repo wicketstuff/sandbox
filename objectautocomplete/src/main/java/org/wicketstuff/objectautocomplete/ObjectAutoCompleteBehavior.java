@@ -59,7 +59,7 @@ public class ObjectAutoCompleteBehavior<T> extends AutoCompleteBehavior<T> {
     private ObjectAutoCompleteCancelListener cancelListener;
     private AutoCompletionChoicesProvider<T> choicesProvider;
 
-    ObjectAutoCompleteBehavior(Component pObjectElement,ObjectAutoCompleteBuilder<T> pBuilder) {
+    <I> ObjectAutoCompleteBehavior(Component pObjectElement,ObjectAutoCompleteBuilder<T,I> pBuilder) {
         super(pBuilder.objectAutoCompleteRenderer,
                 new AutoCompleteSettings()
                         .setMaxHeightInPx(pBuilder.maxHeightInPx)

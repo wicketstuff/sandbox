@@ -51,8 +51,8 @@ abstract public class BaseExamplePage<T extends Serializable,I extends Serializa
     }
 
     private void initExample() {
-        ObjectAutoCompleteBuilder<T> builder =
-                new ObjectAutoCompleteBuilder<T>(this);
+        ObjectAutoCompleteBuilder<T,I> builder =
+                new ObjectAutoCompleteBuilder<T,I>(this);
         initBuilder(builder);
         acField = builder.build("acField", getModel());
 
@@ -82,7 +82,7 @@ abstract public class BaseExamplePage<T extends Serializable,I extends Serializa
      *
      * @param pBuilder builder to initialize.
      */
-    protected void initBuilder(ObjectAutoCompleteBuilder pBuilder) {
+    protected void initBuilder(ObjectAutoCompleteBuilder<T,I> pBuilder) {
         // intentionally empty
     }
 
