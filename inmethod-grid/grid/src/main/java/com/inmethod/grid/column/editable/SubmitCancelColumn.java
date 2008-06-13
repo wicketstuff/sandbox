@@ -93,7 +93,7 @@ public class SubmitCancelColumn extends AbstractColumn {
 
 	@Override
 	public String getCellCssClass(IModel rowModel, int rowNum) {
-		return getGrid().isItemEdited(rowModel) ? null : "imxt-want-prelight";
+		return getGrid().isItemEdited(rowModel) ? "imxt-edit" : "imxt-want-prelight imxt-edit";
 	}
 	
 }
