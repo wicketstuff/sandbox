@@ -284,6 +284,11 @@ public class CheckBoxColumn extends AbstractColumn {
 	public String getCellCssClass(IModel rowModel, int rowNum) {
 		return "imxt-select";
 	}
+	
+	@Override
+	public String getHeaderCssClass() {
+		return "imxt-select";
+	}
 
 	/**
 	 * Overriding this method allows to specify a tooltip for checkbox in each row.
