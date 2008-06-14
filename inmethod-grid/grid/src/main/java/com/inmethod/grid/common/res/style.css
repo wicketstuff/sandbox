@@ -485,8 +485,16 @@ div.imxt-vista tr.imxt-prelight td.imxt-sorted {
 	background-color: #EFFAFF
 }
 
+div.imxt-vista tr.imxt-grid-row:hover td.imxt-cell,
+div.imxt-vista tr.imxt-grid-row:hover td.imxt-sorted {	
+	background-color: #EFFAFF
+}
+
+
 div.imxt-vista tr.imxt-selected td.imxt-cell,
-div.imxt-vista tr.imxt-selected td.imxt-sorted {
+div.imxt-vista tr.imxt-selected td.imxt-sorted,
+div.imxt-vista tr.imxt-selected:hover td.imxt-cell,
+div.imxt-vista tr.imxt-selected:hover td.imxt-sorted {
 	background-color: #DFF1FF;
 	border-bottom: 1px solid #f9f9f9;
 }
@@ -523,4 +531,9 @@ div.imxt-vista table.imxt-body td.imxt-edited-cell input {
 
 div.imxt-vista table.imxt-body td.imxt-edited-cell input.imxt-invalid {
 	background-color: #FFF2CC;
+}
+
+div.imxt-grid tr {
+	/* try to turn on has layout on IE, helps a lot with IE6, less with IE7 */ 
+	_height: 0.1% !important;	
 }
