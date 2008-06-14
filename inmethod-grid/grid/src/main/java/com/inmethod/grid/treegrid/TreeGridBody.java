@@ -57,7 +57,7 @@ public abstract class TreeGridBody extends AbstractTree {
 
 			@Override
 			public void onComponentTag(Component component, ComponentTag tag) {
-				CharSequence klass = "imxt-want-prelight";
+				CharSequence klass = "imxt-want-prelight imxt-grid-row";
 				if (getTreeState().isNodeSelected(item.getModelObject())) {
 					klass = klass + " imxt-selected";
 				}

@@ -177,7 +177,7 @@ public abstract class DataGridBody extends Panel implements IPageable {
 					klass = klass + "imxt-odd";
 				}
 
-				klass = klass + " imxt-want-prelight";
+				klass = klass + " imxt-want-prelight imxt-grid-row";
 
 				if (isItemSelected(getModel())) {
 					klass = klass + " imxt-selected";
