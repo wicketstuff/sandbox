@@ -517,7 +517,8 @@ div.imxt-vista tr.imxt-even {
 	
 }
 
-div.imxt-vista table.imxt-body td.imxt-prelight {
+div.imxt-vista table.imxt-body td.imxt-prelight,
+div.imxt-vista table.imxt-body tr:hover td.imxt-prelight {
 	background-color: #BFE4FF;
 }
 

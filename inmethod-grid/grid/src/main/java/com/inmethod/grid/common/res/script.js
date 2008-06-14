@@ -86,7 +86,7 @@ var ignorePrelight = function(element)
 {
 	// We need to ignore prelight on table rows for all browsers but IE<=6.
 	// For all other browsers we use :hover, it's much faster in IE7
-	return !(element.tagName == "TR" && Wicket.Browser.isIELessThan7());
+	return !(element.tagName == "TR" && Wicket.Browser.isIELessThan7()) && hasClass(element, "imxt-grid-row");
 }
 
 var attachPrelight = function(elements, instance) {
