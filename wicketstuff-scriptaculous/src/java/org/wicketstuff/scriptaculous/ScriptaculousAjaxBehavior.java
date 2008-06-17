@@ -22,6 +22,7 @@ import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.resources.JavascriptResourceReference;
+import org.wicketstuff.prototype.PrototypeResourceReference;
 
 /**
  * Handles event requests using 'script.aculo.us'.
@@ -51,7 +52,8 @@ public abstract class ScriptaculousAjaxBehavior extends AbstractDefaultAjaxBehav
 	public void renderHead(IHeaderResponse response) {
 		super.renderHead(response);
 
-		addJavascriptReference(response, "prototype.js");
+		response.renderJavascriptReference(PrototypeResourceReference.INSTANCE);
+		
 		addJavascriptReference(response, "builder.js");
 		addJavascriptReference(response, "effects.js");
 		addJavascriptReference(response, "dragdrop.js");
