@@ -1,10 +1,17 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-        <modelVersion>4.0.0</modelVersion>
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.apache.wicket</groupId>
+		<artifactId>wicket-parent</artifactId>
+		<version>1.4-SNAPSHOT</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+
 	<groupId>org.wicketstuff</groupId>
-	<artifactId>wicket-contrib-scriptaculous-examples</artifactId>
+	<artifactId>wicketstuff-scriptaculous-examples</artifactId>
 	<name>Wicket Contrib Scriptaculous Integration examples</name>
-	<version>1.3-SNAPSHOT</version>
+	<version>1.4-SNAPSHOT</version>
 	<organization>
 		<name>Wicket Stuff</name>
 		<url>http://wicket-stuff.sourceforge.net</url>
@@ -109,8 +116,16 @@
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-jdk14</artifactId>
-			<version>1.4.3</version>
+			<artifactId>slf4j-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<optional>true</optional>
 		</dependency>
 	</dependencies>
 
