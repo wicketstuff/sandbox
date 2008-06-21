@@ -80,9 +80,8 @@ public abstract class ColumnsHeaderRepeater extends WebMarkupContainer {
 					add(panel);
 				}
 			}
-
-			super.onBeforeRender();
 		}
+		super.onBeforeRender();
 	}
 
 	abstract protected void sortStateChanged(AjaxRequestTarget target);
