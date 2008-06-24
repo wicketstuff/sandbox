@@ -17,15 +17,17 @@ import com.inmethod.grid.datagrid.DataGrid;
 import com.inmethod.grid.treegrid.TreeGrid;
 
 /**
- * Column that allows a row in grid to be selected. The column cell contains a checkbox which
- * selects and deselects the row. When row selection state is changed, the entire row is updated
- * using Ajax.
+ * Column that allows a row in grid to be selected. The column cell contains a
+ * checkbox which selects and deselects the row. When row selection state is
+ * changed, the entire row is updated using Ajax.
  * <p>
- * If the grid is in single selection mode, the column header will remain empty. If the column is in
- * multi selection mode, the column header will contain a checkbox which selects all displayed rows
- * (i.e. the rows on current page for {@link DataGrid} and visible rows in {@link TreeGrid}). When
- * the header checkbox is deselected, it deselects all rows (on all pages). This is to ensure that
- * when user deselects one page, no invisible rows are left selected.
+ * If the grid is in single selection mode, the column header will remain empty.
+ * If the column is in multi selection mode, the column header will contain a
+ * checkbox which selects all displayed rows (i.e. the rows on current page for
+ * {@link DataGrid} and visible rows in {@link TreeGrid}). When the header
+ * checkbox is deselected, it deselects all rows (on all pages). This is to
+ * ensure that when user deselects one page, no invisible rows are left
+ * selected.
  * 
  * @author Matej Knopp
  */
@@ -49,7 +51,8 @@ public class CheckBoxColumn extends AbstractColumn {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Component newCell(WebMarkupContainer parent, String componentId, IModel rowModel) {
+	public Component newCell(WebMarkupContainer parent, String componentId,
+			IModel rowModel) {
 		return new BodyCheckBoxPanel(componentId, rowModel);
 	}
 
@@ -59,6 +62,20 @@ public class CheckBoxColumn extends AbstractColumn {
 	@Override
 	public Component newHeader(String componentId) {
 		return new HeadPanel(componentId);
+	}
+
+
+	private void processTag(ComponentTag tag, IModel model)
+	{
+		if (getGrid() instanceof TreeGrid && ((TreeGrid)getGrid()).isAutoSelectChildren())
+		{
+			TreeGrid grid = (TreeGrid) getGrid();
+			Object parent = grid.getTree().getParentNode(model.getObject());
+			if (parent != null && grid.getTreeState().isNodeSelected(parent))
+			{
+				tag.put("disabled", "disabled");
+			}
+		}
 	}
 
 	/**
@@ -91,39 +108,41 @@ public class CheckBoxColumn extends AbstractColumn {
 							tag.put("title", object.toString());
 						}
 					}
+					
+					processTag(tag, model);
 				}
 			};
 			checkbox.setOutputMarkupId(true);
 			add(checkbox);
 
-			checkbox.add(new AjaxFormSubmitBehavior(getGrid().getForm(), "onclick") {
+			checkbox.add(new AjaxFormSubmitBehavior(getGrid().getForm(),
+					"onclick") {
 				private static final long serialVersionUID = 1L;
 
 				@Override
 				protected void onSubmit(AjaxRequestTarget target) {
-					
+
 				}
-				
+
 				@Override
 				protected void onError(AjaxRequestTarget target) {
-					
+
 				}
-				
+
 				@Override
-				protected void onEvent(AjaxRequestTarget target) {					
+				protected void onEvent(AjaxRequestTarget target) {
 					// preserve the entered values in form components
-					Form form = getForm();					
-					form.visitFormComponentsPostOrder(new FormComponent.AbstractVisitor()
-					{
-						public void onFormComponent(final FormComponent formComponent) 
-						{
-							if (formComponent.isVisibleInHierarchy())
-							{
-								formComponent.inputChanged();
-							}
-						}
-					});
-					
+					Form form = getForm();
+					form
+							.visitFormComponentsPostOrder(new FormComponent.AbstractVisitor() {
+								public void onFormComponent(
+										final FormComponent formComponent) {
+									if (formComponent.isVisibleInHierarchy()) {
+										formComponent.inputChanged();
+									}
+								}
+							});
+
 					boolean selected = getGrid().isItemSelected(model);
 					getGrid().selectItem(model, !selected);
 					getGrid().update();
@@ -136,7 +155,7 @@ public class CheckBoxColumn extends AbstractColumn {
 				}
 
 				@Override
-				protected IAjaxCallDecorator getAjaxCallDecorator() {					
+				protected IAjaxCallDecorator getAjaxCallDecorator() {
 					return new CancelEventIfNoAjaxDecorator();
 				}
 			});
@@ -145,8 +164,8 @@ public class CheckBoxColumn extends AbstractColumn {
 	}
 
 	/**
-	 * Panel that optionally displays checkbox for selecting all visible items / clearing selection
-	 * of all item.
+	 * Panel that optionally displays checkbox for selecting all visible items /
+	 * clearing selection of all item.
 	 * 
 	 * @author Matej Knopp
 	 */
@@ -167,7 +186,8 @@ public class CheckBoxColumn extends AbstractColumn {
 				}
 			});
 
-			// this is here to output a span with &nbsp; (so that the column takes the proper
+			// this is here to output a span with &nbsp; (so that the column
+			// takes the proper
 			// height)
 			// and also for displaying the tooltip
 			add(new WebMarkupContainer("space") {
@@ -222,34 +242,35 @@ public class CheckBoxColumn extends AbstractColumn {
 			};
 			add(checkbox);
 
-			checkbox.add(new AjaxFormSubmitBehavior(getGrid().getForm(), "onclick") {
+			checkbox.add(new AjaxFormSubmitBehavior(getGrid().getForm(),
+					"onclick") {
 				private static final long serialVersionUID = 1L;
 
 				@Override
 				protected void onSubmit(AjaxRequestTarget target) {
 				}
-				
+
 				@Override
 				protected void onError(AjaxRequestTarget target) {
-					
+
 				}
-				
+
 				@Override
 				protected void onEvent(AjaxRequestTarget target) {
 					// preserve the entered values in form components
-					Form form = getForm();					
-					form.visitFormComponentsPostOrder(new FormComponent.AbstractVisitor()
-					{
-						public void onFormComponent(final FormComponent formComponent) 
-						{
-							if (formComponent.isVisibleInHierarchy())
-							{
-								formComponent.inputChanged();
-							}
-						}
-					});
-					
-					boolean checked = Strings.toBoolean(getRequest().getParameter("checked"));
+					Form form = getForm();
+					form
+							.visitFormComponentsPostOrder(new FormComponent.AbstractVisitor() {
+								public void onFormComponent(
+										final FormComponent formComponent) {
+									if (formComponent.isVisibleInHierarchy()) {
+										formComponent.inputChanged();
+									}
+								}
+							});
+
+					boolean checked = Strings.toBoolean(getRequest()
+							.getParameter("checked"));
 					if (checked)
 						getGrid().selectAllVisibleItems();
 					else
@@ -258,10 +279,10 @@ public class CheckBoxColumn extends AbstractColumn {
 				}
 
 				@Override
-				public CharSequence getCallbackUrl() {					
+				public CharSequence getCallbackUrl() {
 					return super.getCallbackUrl() + "&checked='+this.checked+'";
 				}
-				
+
 				@Override
 				protected CharSequence getPreconditionScript() {
 					return "window.setTimeout(function(){this.checked=!this.checked}.bind(this),0);"
@@ -284,14 +305,15 @@ public class CheckBoxColumn extends AbstractColumn {
 	public String getCellCssClass(IModel rowModel, int rowNum) {
 		return "imxt-select";
 	}
-	
+
 	@Override
 	public String getHeaderCssClass() {
 		return "imxt-select";
 	}
 
 	/**
-	 * Overriding this method allows to specify a tooltip for checkbox in each row.
+	 * Overriding this method allows to specify a tooltip for checkbox in each
+	 * row.
 	 * 
 	 * @param itemModel
 	 *            model for item in given row

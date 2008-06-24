@@ -63,6 +63,7 @@ public class EditableDataGridPage extends BaseExamplePage {
 		
 		grid.setAllowSelectMultiple(true);
 		
+		grid.setSelectToEdit(true);
 		grid.setClickRowToSelect(true);
 		grid.setClickRowToDeselect(false);
 	}

@@ -872,7 +872,7 @@ public abstract class AbstractGrid extends Panel implements IHeaderContributor {
 	 */
 	public abstract void markItemDirty(IModel model);
 
-	private boolean selectToEdit = true;
+	private boolean selectToEdit = false;
 
 	/**
 	 * Determines whether selected items should also be editable. This should be
