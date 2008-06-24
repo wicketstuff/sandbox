@@ -45,8 +45,7 @@ public class WicketApplication extends WebApplication
 		mount(new HybridUrlCodingStrategy("/tree-grid/vertical-scrolling", VerticalScrollingTreeGridPage.class));
 		mount(new HybridUrlCodingStrategy("/tree-grid/item-selection", TreeGridSelectionPage.class));
 		mount(new HybridUrlCodingStrategy("/tree-grid/column-properties", TreeGridColumnPropertiesPage.class));
-		mount(new HybridUrlCodingStrategy("/tree-grid/editable", EditableTreeGridPage.class));
-		
+		mount(new HybridUrlCodingStrategy("/tree-grid/editable", EditableTreeGridPage.class));		
 	}
 	
 	/**

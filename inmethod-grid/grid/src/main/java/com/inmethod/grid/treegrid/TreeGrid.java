@@ -7,12 +7,12 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.tree.TreeModel;
-import javax.swing.tree.TreeNode;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.tree.AbstractTree;
+import org.apache.wicket.markup.html.tree.DefaultTreeState;
 import org.apache.wicket.markup.html.tree.ITreeState;
 import org.apache.wicket.markup.html.tree.ITreeStateListener;
 import org.apache.wicket.model.IModel;
@@ -57,10 +57,75 @@ public class TreeGrid extends AbstractGrid {
 			protected void rowPopulated(WebMarkupContainer item) {
 				TreeGrid.this.onRowPopulated(item);
 			}
+
+			@Override
+			protected ITreeState newTreeState() {
+				return TreeGrid.this.newTreeState();
+			}
 		});
 
 		getTreeState().addTreeStateListener(new TreeStateListener());
 	}
+
+	private ITreeState newTreeState() {
+		return new DefaultTreeState() {
+
+			@Override
+			public boolean isNodeSelected(Object node) {
+
+				if (!isAutoSelectChildren()) {
+					return super.isNodeSelected(node);
+				} else {
+					// check if any parent of the node is selected
+					Object parent = node;
+					while (parent != null) {
+						if (super.isNodeSelected(parent)) {
+							return true;
+						}
+						parent = getTree().getParentNode(parent);
+					}
+				}
+				return false;
+			}
+
+			private void deselectChildNodes(Object node) {
+				List<Object> toDeselect = new ArrayList<Object>();
+				for (Object o : getSelectedNodes()) {
+					Object p = getTree().getParentNode(o);
+					while (p != null && !p.equals(node)) {
+						p = getTree().getParentNode(p);
+					}
+					if (p != null) {
+						toDeselect.add(o);
+					}
+				}
+				for (Object o : toDeselect) {
+					removeSelectedNodeSilent(o);
+				}
+			}
+
+			@Override
+			public void selectNode(Object node, boolean selected) {
+				if (!isAutoSelectChildren()) {
+					super.selectNode(node, selected);
+				} else {
+					Object parent = getTree().getParentNode(node);
+					while (parent != null) {
+						if (super.isNodeSelected(parent)) {
+							return;
+						}
+						parent = getTree().getParentNode(parent);
+					}
+					deselectChildNodes(node);
+
+					if (super.isNodeSelected(node) != selected) {
+						super.selectNode(node, selected);
+						getTree().markNodeChildrenDirty(node);
+					}
+				}
+			}
+		};
+	};
 
 	private class TreeStateListener implements ITreeStateListener, Serializable {
 
@@ -217,9 +282,13 @@ public class TreeGrid extends AbstractGrid {
 	public void selectAllVisibleItems() {
 		WebMarkupContainer body = (WebMarkupContainer) get("form:bodyContainer:body:i");
 		if (body != null) {
+			boolean first = true;
 			for (Iterator<?> i = body.iterator(); i.hasNext();) {
 				Component component = (Component) i.next();
-				selectItem(component.getModel(), true);
+				if (getTree().isRootLess() == false || first == false) {
+					selectItem(component.getModel(), true);
+				}
+				first = false;
 			}
 		}
 		getTree().invalidateAll();
@@ -264,4 +333,31 @@ public class TreeGrid extends AbstractGrid {
 		}
 		return (WebMarkupContainer) (child != null ? child.getParent() : null);
 	}
+
+	/**
+	 * Sets whether children of selected node should automatically be treated as
+	 * selected nodes (default <code>true</code>). Such children can not be
+	 * deselected individually. Also {@link ITreeState#isNodeSelected(Object)}
+	 * returns <code>true</code> if any of node parent is selected. On the
+	 * contrary, {@link ITreeState#getSelectedNodes()} only returns "top level"
+	 * selected nodes.
+	 * 
+	 * @param autoSelectChildren
+	 */
+	public void setAutoSelectChildren(boolean autoSelectChildren) {
+		this.autoSelectChildren = autoSelectChildren;
+	}
+
+	/**
+	 * Returns whether children of selected nodes should be automatically
+	 * treated as selected node.
+	 * 
+	 * @return
+	 */
+	public boolean isAutoSelectChildren() {
+		return isAllowSelectMultiple() && !isSelectToEdit()
+				&& autoSelectChildren;
+	}
+
+	private boolean autoSelectChildren = true;
 }

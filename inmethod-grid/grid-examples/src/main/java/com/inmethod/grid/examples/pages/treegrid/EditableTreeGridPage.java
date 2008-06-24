@@ -47,6 +47,7 @@ public class EditableTreeGridPage extends BaseExamplePage {
 		grid.setAllowSelectMultiple(true);
 		grid.setClickRowToSelect(true);
 		grid.setClickRowToDeselect(false);
+		grid.setSelectToEdit(true);
 		
 		// expand the root node
 		grid.getTreeState().expandNode((TreeNode) model.getRoot());
