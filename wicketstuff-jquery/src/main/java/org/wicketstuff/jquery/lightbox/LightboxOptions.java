@@ -10,7 +10,7 @@ public class LightboxOptions extends Options {
 		imageBtnClose("/resources/org.wicketstuff.jquery.lightbox.LightboxBehaviour/lightbox-btn-close.gif");
 		imageBtnPrev("/resources/org.wicketstuff.jquery.lightbox.LightboxBehaviour/lightbox-btn-prev.gif");
 		imageBtnNext("/resources/org.wicketstuff.jquery.lightbox.LightboxBehaviour/lightbox-btn-next.gif");
-		imageBtnNext("/resources/org.wicketstuff.jquery.lightbox.LightboxBehaviour/lightbox-blank.gif");
+		imageBlank("/resources/org.wicketstuff.jquery.lightbox.LightboxBehaviour/lightbox-blank.gif");
 	}
 
 	public LightboxOptions fixedNavigation(boolean fixedNavigation) {
