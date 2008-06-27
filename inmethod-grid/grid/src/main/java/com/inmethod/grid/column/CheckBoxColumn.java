@@ -64,18 +64,28 @@ public class CheckBoxColumn extends AbstractColumn {
 		return new HeadPanel(componentId);
 	}
 
+	private void processTag(ComponentTag tag, IModel model) {
+		if (!isCheckBoxEnabled(model)) {
 
-	private void processTag(ComponentTag tag, IModel model)
-	{
-		if (getGrid() instanceof TreeGrid && ((TreeGrid)getGrid()).isAutoSelectChildren())
-		{
+			tag.put("disabled", "disabled");
+
+		} else if (getGrid() instanceof TreeGrid				
+				&& ((TreeGrid) getGrid()).isAutoSelectChildren()) {
+			
 			TreeGrid grid = (TreeGrid) getGrid();
 			Object parent = grid.getTree().getParentNode(model.getObject());
-			if (parent != null && grid.getTreeState().isNodeSelected(parent))
-			{
+			if (parent != null && grid.getTreeState().isNodeSelected(parent)) {
 				tag.put("disabled", "disabled");
 			}
 		}
+	}
+
+	protected boolean isCheckBoxEnabled(IModel model) {
+		return true;
+	}
+
+	protected boolean isCheckBoxVisible(IModel model) {
+		return true;
 	}
 
 	/**
@@ -108,8 +118,13 @@ public class CheckBoxColumn extends AbstractColumn {
 							tag.put("title", object.toString());
 						}
 					}
-					
+
 					processTag(tag, model);
+				}
+
+				@Override
+				public boolean isVisible() {
+					return isCheckBoxVisible(model);
 				}
 			};
 			checkbox.setOutputMarkupId(true);
