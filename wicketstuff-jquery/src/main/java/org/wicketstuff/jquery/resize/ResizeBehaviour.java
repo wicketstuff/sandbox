@@ -47,7 +47,6 @@ public class ResizeBehaviour extends JQueryBehavior {
     @Override
     public void renderHead(IHeaderResponse response) {
         super.renderHead(response);
-        response.renderJavascriptReference(JQueryBehavior.JQUERY_DIMENSIONS_JS);
         response.renderJavascriptReference(JQueryBehavior.JQUERY_MOUSE_JS);
         response.renderJavascriptReference(JQueryBehavior.JQUERY_RESIZABLE_JS);
     }

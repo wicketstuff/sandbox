@@ -58,11 +58,6 @@ public class JQueryBehavior extends AbstractDefaultAjaxBehavior {
      */
     public static final CompressedResourceReference INTERFACE_JS = new CompressedResourceReference(JQueryBehavior.class, "interface-1.2.js");
 
-    /**
-     *  ResourceReference for <a href="http://jquery.com/plugins/project/dimensions">jquery.dimensions-1.1.2.js</a> (not include in reponse header)
-     */
-    public static final CompressedResourceReference JQUERY_DIMENSIONS_JS = new CompressedResourceReference(JQueryBehavior.class, "jquery.dimensions.js");
-
 	/**
 	 *  ResourceReference for JQuery UI Draggable, used by the DndBehaviour
 	 */
