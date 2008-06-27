@@ -53,7 +53,6 @@ public class DnDBehaviour extends JQueryBehavior implements IBehaviorListener {
 		droppableOptions.set("accept", dropSelector, false);
 		droppableOptions.set("drop", new FunctionString("function(ev, ui) {\n " + getCallbackScript() + "\n}\n"));
 
-		response.renderJavascriptReference(JQueryBehavior.JQUERY_DIMENSIONS_JS);
 		response.renderJavascriptReference(JQueryBehavior.JQUERY_MOUSE_JS);
 		response.renderJavascriptReference(JQueryBehavior.JQUERY_UI_DRAGGABLE);
 		response.renderJavascriptReference(JQueryBehavior.JQUERY_UI_DROPPABLE);

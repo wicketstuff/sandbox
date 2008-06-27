@@ -16,12 +16,6 @@
  */
 package org.wicketstuff.jquery.datepicker;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-
 import org.apache.wicket.Component;
 import org.apache.wicket.Page;
 import org.apache.wicket.RequestCycle;
@@ -29,8 +23,8 @@ import org.apache.wicket.ResourceReference;
 import org.apache.wicket.behavior.IBehavior;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.IHeaderResponse;
-import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.form.AbstractTextComponent.ITextFormatProvider;
+import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.resources.CompressedResourceReference;
 import org.apache.wicket.protocol.http.request.WebClientInfo;
 import org.apache.wicket.util.convert.IConverter;
@@ -39,6 +33,12 @@ import org.apache.wicket.util.string.Strings;
 import org.wicketstuff.jquery.JQueryBehavior;
 import org.wicketstuff.misc.behaviors.CompositeBehavior;
 import org.wicketstuff.misc.behaviors.SimpleAttributeAppender;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 
 /**
  * Add support of the <a href="http://kelvinluck.com/assets/jquery/datePicker/v2/demo/">datePicker</a>.
@@ -77,7 +77,6 @@ public class DatePickerBehavior extends JQueryBehavior {
         super.renderHead(response);
         response.renderCSSReference(DATEPICKER_CSS);
         response.renderJavascriptReference(DATE_JS);
-        response.renderJavascriptReference(JQUERY_DIMENSIONS_JS);
         try {
             WebClientInfo info = (WebClientInfo) RequestCycle.get().getClientInfo();
             if (info.getUserAgent().contains("MSIE")) {
