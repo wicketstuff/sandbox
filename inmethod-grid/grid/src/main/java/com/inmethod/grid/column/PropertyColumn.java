@@ -118,12 +118,15 @@ public class PropertyColumn extends AbstractLightWeightColumn {
 	
 	private CharSequence getValue(IModel rowModel) {
 		Object rowObject = getModelObject(rowModel);	
-		Object property;
-		try {
-			property = getProperty(rowObject, propertyExpression); 
-		} catch (NullPointerException e) {
-			property = null;
-		}		
+		Object property = null;
+		if (rowObject != null)
+		{
+			try {
+				property = getProperty(rowObject, propertyExpression); 
+			} catch (NullPointerException e) {
+				
+			}	
+		}
 		CharSequence string = convertToString(property);
 		if (isEscapeMarkup() && string != null) {
 			string = Strings.escapeMarkup(string.toString());
