@@ -52,7 +52,7 @@ public abstract class AbstractTreeColumn extends BaseTreeColumn {
 	 */
 	@Override
 	protected Icon getIcon(IModel model) {
-		TreeModel treeModel = (TreeModel) getTreeGrid().getTree().getModelObject();
+		TreeModel treeModel = (TreeModel) getTreeGrid().getTree().getDefaultModelObject();
 		Object node = model.getObject();
 		if (treeModel.isLeaf(node)) {
 			return Icons.ITEM;

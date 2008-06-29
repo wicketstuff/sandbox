@@ -50,7 +50,7 @@ public abstract class EditableCellPanel extends Panel {
 	
 	@Override
 	public boolean isVisible() {
-		return column.getGrid().isItemEdited(getModel());		
+		return column.getGrid().isItemEdited(getDefaultModel());		
 	}
 	
 	protected abstract FormComponent getEditComponent();

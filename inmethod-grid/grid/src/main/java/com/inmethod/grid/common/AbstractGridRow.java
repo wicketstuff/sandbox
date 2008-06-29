@@ -55,8 +55,8 @@ public abstract class AbstractGridRow extends WebMarkupContainer {
 		for (IGridColumn column : activeColumns) {
 			String componentId = componentId(column.getId());
 			Component component = null;
-			if (!column.isLightWeight(getModel()) && (component = get(componentId)) == null) {
-				component = column.newCell(this, componentId, getModel());
+			if (!column.isLightWeight(getDefaultModel()) && (component = get(componentId)) == null) {
+				component = column.newCell(this, componentId, getDefaultModel());
 				add(component);
 			}
 			if (component != null) {
@@ -108,7 +108,7 @@ public abstract class AbstractGridRow extends WebMarkupContainer {
 	 * @return
 	 */
 	private int renderOpenTag(IGridColumn column, int i, int columnsSize, Response response, int hide) {
-		int originalColspan = column.getColSpan(getModel());
+		int originalColspan = column.getColSpan(getDefaultModel());
 		int colspan = originalColspan;
 
 		// render the opening tag
@@ -133,7 +133,7 @@ public abstract class AbstractGridRow extends WebMarkupContainer {
 
 		css.append("imxt-cell");
 
-		String klass = column.getCellCssClass(getModel(), getRowNumber());
+		String klass = column.getCellCssClass(getDefaultModel(), getRowNumber());
 
 		if (klass != null) {
 			css.append(" ");
@@ -229,9 +229,9 @@ public abstract class AbstractGridRow extends WebMarkupContainer {
 		for (IGridColumn column : columns) {
 			hide = renderOpenTag(column, i, columns.size(), response, hide);
 			
-			if (column.isLightWeight(getModel())) {
+			if (column.isLightWeight(getDefaultModel())) {
 				// for lightweight columns get the renderable instance and render it
-				IRenderable renderable = column.newCell(getModel());
+				IRenderable renderable = column.newCell(getDefaultModel());
 				if (renderable == null) {
 					throw new IllegalStateException(
 							"Lightweight columns must return valid IRenderable instance in newCell(IModel model)");
@@ -239,7 +239,7 @@ public abstract class AbstractGridRow extends WebMarkupContainer {
 				response.write("<div class=\"");
 				response.write(getInnerDivClass(column));
 				response.write("\">");
-				renderable.render(getModel(), response);
+				renderable.render(getDefaultModel(), response);
 				response.write("</div>");
 			} else {
 				// for non-lightweight components get the actual component and render it
@@ -280,7 +280,7 @@ public abstract class AbstractGridRow extends WebMarkupContainer {
 	 */
 	private boolean isComponentNeeded(final String componentId, Collection<IGridColumn> activeColumns) {
 		for (IGridColumn column : activeColumns) {
-			if (componentId(column.getId()).equals(componentId) && !column.isLightWeight(getModel())) {
+			if (componentId(column.getId()).equals(componentId) && !column.isLightWeight(getDefaultModel())) {
 				return true;
 			}
 		}

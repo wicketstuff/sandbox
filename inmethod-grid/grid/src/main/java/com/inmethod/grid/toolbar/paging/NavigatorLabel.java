@@ -44,7 +44,7 @@ public class NavigatorLabel extends Label {
 	 */
 	public NavigatorLabel(final String id, final DataGrid table) {
 		super(id);
-		setModel(new StringResourceModel("NavigatorLabel", this, new Model(new LabelModelObject(table)),
+		setDefaultModel(new StringResourceModel("NavigatorLabel", this, new Model(new LabelModelObject(table)),
 				"Showing ${from} to ${to} of ${of}"));
 	}
 

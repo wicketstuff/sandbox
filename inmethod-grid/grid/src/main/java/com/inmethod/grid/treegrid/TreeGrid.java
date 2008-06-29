@@ -286,7 +286,7 @@ public class TreeGrid extends AbstractGrid {
 			for (Iterator<?> i = body.iterator(); i.hasNext();) {
 				Component component = (Component) i.next();
 				if (getTree().isRootLess() == false || first == false) {
-					selectItem(component.getModel(), true);
+					selectItem(component.getDefaultModel(), true);
 				}
 				first = false;
 			}
@@ -303,7 +303,7 @@ public class TreeGrid extends AbstractGrid {
 		if (body != null) {
 			for (Iterator<?> i = body.iterator(); i.hasNext();) {
 				Component component = (Component) i.next();
-				IModel model = component.getModel();
+				IModel model = component.getDefaultModel();
 				if (rowModel.equals(model)) {
 					return (WebMarkupContainer) component;
 				}

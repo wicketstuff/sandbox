@@ -134,7 +134,7 @@ public abstract class DataGridBody extends Panel implements IPageable {
 
 		@Override
 		protected void populateItem(final Item item) {
-			item.add(new AbstractGridRow("item", item.getModel()) {
+			item.add(new AbstractGridRow("item", item.getDefaultModel()) {
 				private static final long serialVersionUID = 1L;
 
 				@Override
@@ -179,7 +179,7 @@ public abstract class DataGridBody extends Panel implements IPageable {
 
 				klass = klass + " imxt-want-prelight imxt-grid-row";
 
-				if (isItemSelected(getModel())) {
+				if (isItemSelected(getDefaultModel())) {
 					klass = klass + " imxt-selected";
 				}
 

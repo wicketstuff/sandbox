@@ -37,7 +37,7 @@ public abstract class TreeGridBody extends AbstractTree {
 
 	@Override
 	protected void populateTreeItem(final WebMarkupContainer item, int level) {
-		AbstractGridRow row = new AbstractTreeGridRow("item", item.getModel(), level) {
+		AbstractGridRow row = new AbstractTreeGridRow("item", item.getDefaultModel(), level) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -58,7 +58,7 @@ public abstract class TreeGridBody extends AbstractTree {
 			@Override
 			public void onComponentTag(Component component, ComponentTag tag) {
 				CharSequence klass = "imxt-want-prelight imxt-grid-row";
-				if (getTreeState().isNodeSelected(item.getModelObject())) {
+				if (getTreeState().isNodeSelected(item.getDefaultModelObject())) {
 					klass = klass + " imxt-selected";
 				}
 				tag.put("class", klass);
@@ -75,7 +75,7 @@ public abstract class TreeGridBody extends AbstractTree {
 			// can't refresh this component directly because of setRenderBodyOnly(true) that's set
 			// in
 			// constructor
-			target.addComponent((Component<?>) findParent(TreeGrid.class));
+			target.addComponent(findParent(TreeGrid.class));
 		} else {
 			super.addComponent(target, component);
 		}
