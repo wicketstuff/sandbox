@@ -56,7 +56,7 @@ public class IconImage extends WebMarkupContainer {
 	 * @return icon instance
 	 */
 	public Icon getIcon() {
-		return (Icon) getModelObject();
+		return (Icon) getDefaultModelObject();
 	}
 
 	@Override

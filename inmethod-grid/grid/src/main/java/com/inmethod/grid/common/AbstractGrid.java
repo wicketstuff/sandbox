@@ -707,7 +707,7 @@ public abstract class AbstractGrid extends Panel implements IHeaderContributor {
 
 				lastClickedColumn = column;
 
-				IModel model = rowComponent.getModel();
+				IModel model = rowComponent.getDefaultModel();
 
 				IGridColumn lastClickedColumn = getLastClickedColumn();
 				if (lastClickedColumn != null && lastClickedColumn.cellClicked(model) == true) {

@@ -104,7 +104,7 @@ public class DataGrid extends AbstractGrid implements IPageable {
 	 * @return {@link IDataSource} instance
 	 */
 	public IDataSource getDataSource() {
-		return ((IDataSource) getModelObject());
+		return ((IDataSource) getDefaultModelObject());
 	}
 
 	private int rowsPerPage = 20;
@@ -267,7 +267,7 @@ public class DataGrid extends AbstractGrid implements IPageable {
 		if (body != null) {
 			for (Iterator<?> i = body.iterator(); i.hasNext();) {
 				Component component = (Component) i.next();
-				IModel model = component.getModel();
+				IModel model = component.getDefaultModel();
 				selectItem(model, true);
 			}
 		}
@@ -286,7 +286,7 @@ public class DataGrid extends AbstractGrid implements IPageable {
 		if (body != null) {
 			for (Iterator<?> i = body.iterator(); i.hasNext();) {
 				Component component = (Component) i.next();
-				IModel model = component.getModel();
+				IModel model = component.getDefaultModel();
 				if (rowModel.equals(model)) {
 					return (WebMarkupContainer) component;
 				}
@@ -349,7 +349,7 @@ public class DataGrid extends AbstractGrid implements IPageable {
 			if (body != null) {
 				for (Iterator<?> i = body.iterator(); i.hasNext();) {
 					Component component = (Component) i.next();
-					IModel model = component.getModel();
+					IModel model = component.getDefaultModel();
 					if (dirtyItems.contains(model)) {
 						target.addComponent(component);
 					}

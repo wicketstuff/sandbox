@@ -50,13 +50,13 @@ public abstract class TreePanel extends Panel {
 	private void init()
 	{
 		// add junction link
-		Object node = getModelObject();
+		Object node = getDefaultModelObject();
 		Component junctionLink = newJunctionLink(this, JUNCTION_LINK_ID, node);
 		junctionLink.setComponentBorder(new JunctionBorder(node, level));
 		add(junctionLink);
 
 		// add node component
-		Component nodeComponent = newNodeComponent(NODE_COMPONENT_ID, getModel());
+		Component nodeComponent = newNodeComponent(NODE_COMPONENT_ID, getDefaultModel());
 		add(nodeComponent);
 
 		IconImage icon = new IconImage("icon", new IconModel()) {
@@ -101,7 +101,7 @@ public abstract class TreePanel extends Panel {
 		 * {@inheritDoc}
 		 */
 		public Object getObject() {
-			return getIcon(getModel());
+			return getIcon(getDefaultModel());
 		}
 
 		/**
@@ -226,7 +226,7 @@ public abstract class TreePanel extends Panel {
 	protected Component newJunctionLink(MarkupContainer parent, final String id, final Object node) {
 		final MarkupContainer junctionLink;
 
-		TreeModel model  = (TreeModel) getTreeGridBody().getModelObject();
+		TreeModel model  = (TreeModel) getTreeGridBody().getDefaultModelObject();
 		if (model.isLeaf(node) == false) {
 			junctionLink = newLink(id, new ILinkCallback() {
 				private static final long serialVersionUID = 1L;
