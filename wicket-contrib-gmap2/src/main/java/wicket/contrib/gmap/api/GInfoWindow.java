@@ -13,7 +13,7 @@ import wicket.contrib.gmap.GMap2;
  * Represents an Google Maps API's <a
  * href="http://www.google.com/apis/maps/documentation/reference.html#GInfoWindow">GInfoWindow</a>.
  */
-public class GInfoWindow<T> extends WebMarkupContainer<T>
+public class GInfoWindow extends WebMarkupContainer
 {
 	/**
 	 * Default serialVersionUID.
@@ -26,7 +26,7 @@ public class GInfoWindow<T> extends WebMarkupContainer<T>
 
 	private GMarker marker;
 
-	private RepeatingView<Void> content = new RepeatingView<Void>("content");
+	private RepeatingView content = new RepeatingView("content");
 
 	public GInfoWindow()
 	{
@@ -86,7 +86,7 @@ public class GInfoWindow<T> extends WebMarkupContainer<T>
 	 *            content to open in info window
 	 * @return This
 	 */
-	public GInfoWindow<?> open(GLatLng latLng, Component<?> content)
+	public GInfoWindow open(GLatLng latLng, Component content)
 	{
 		return open(latLng, new GInfoWindowTab(content));
 	}
@@ -98,12 +98,12 @@ public class GInfoWindow<T> extends WebMarkupContainer<T>
 	 *            content to open in info window
 	 * @return This
 	 */
-	public GInfoWindow<?> open(GMarker marker, Component<?> content)
+	public GInfoWindow open(GMarker marker, Component content)
 	{
 		return open(marker, new GInfoWindowTab(content));
 	}
 
-	public GInfoWindow<?> open(GLatLng latLng, GInfoWindowTab... tabs)
+	public GInfoWindow open(GLatLng latLng, GInfoWindowTab... tabs)
 	{
 		setTabs(tabs);
 
@@ -119,7 +119,7 @@ public class GInfoWindow<T> extends WebMarkupContainer<T>
 		return this;
 	}
 
-	public GInfoWindow<?> open(GMarker marker, GInfoWindowTab... tabs)
+	public GInfoWindow open(GMarker marker, GInfoWindowTab... tabs)
 	{
 		setTabs(tabs);
 
@@ -207,9 +207,9 @@ public class GInfoWindow<T> extends WebMarkupContainer<T>
 		return getGMap2().getJSinvoke("closeInfoWindow()");
 	}
 
-	private GMap2<?> getGMap2()
+	private GMap2 getGMap2()
 	{
-		return (GMap2<?>)findParent(GMap2.class);
+		return findParent(GMap2.class);
 	}
 
 }

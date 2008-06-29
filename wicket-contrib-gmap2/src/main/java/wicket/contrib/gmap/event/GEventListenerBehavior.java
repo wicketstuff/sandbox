@@ -42,9 +42,9 @@ public abstract class GEventListenerBehavior extends AbstractDefaultAjaxBehavior
 				"addListener('" + getEvent() + "', '" + getCallbackUrl() + "')");
 	}
 
-	protected final GMap2<?> getGMap2()
+	protected final GMap2 getGMap2()
 	{
-		return (GMap2<?>)getComponent();
+		return (GMap2)getComponent();
 	}
 
 	/**

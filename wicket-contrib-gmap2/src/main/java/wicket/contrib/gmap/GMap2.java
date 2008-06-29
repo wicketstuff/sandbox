@@ -52,7 +52,7 @@ import wicket.contrib.gmap.event.GEventListenerBehavior;
  * href="http://www.google.com/apis/maps/signup.html">Google Maps API sign up
  * page</a> for more information.
  */
-public class GMap2<T> extends Panel<T> implements GOverlayContainer
+public class GMap2 extends Panel implements GOverlayContainer
 {
 	private static final long serialVersionUID = 1L;
 
@@ -72,9 +72,9 @@ public class GMap2<T> extends Panel<T> implements GOverlayContainer
 
 	private List<GOverlay> overlays = new ArrayList<GOverlay>();
 
-	private final WebMarkupContainer<?> map;
+	private final WebMarkupContainer map;
 
-	private GInfoWindow<?> infoWindow;
+	private GInfoWindow infoWindow;
 
 	private GLatLngBounds bounds;
 
@@ -141,10 +141,10 @@ public class GMap2<T> extends Panel<T> implements GOverlayContainer
 			}
 		}));
 
-		infoWindow = new GInfoWindow<Void>();
+		infoWindow = new GInfoWindow();
 		add(infoWindow);
 
-		map = new WebMarkupContainer<Void>("map");
+		map = new WebMarkupContainer("map");
 		map.setOutputMarkupId(true);
 		add(map);
 		overlayListener = new OverlayListener();
@@ -158,7 +158,7 @@ public class GMap2<T> extends Panel<T> implements GOverlayContainer
 	 *            control to add
 	 * @return This
 	 */
-	public GMap2<T> addControl(GControl control)
+	public GMap2 addControl(GControl control)
 	{
 		controls.add(control);
 
@@ -177,7 +177,7 @@ public class GMap2<T> extends Panel<T> implements GOverlayContainer
 	 *            control to remove
 	 * @return This
 	 */
-	public GMap2<T> removeControl(GControl control)
+	public GMap2 removeControl(GControl control)
 	{
 		controls.remove(control);
 
@@ -196,7 +196,7 @@ public class GMap2<T> extends Panel<T> implements GOverlayContainer
 	 *            overlay to add
 	 * @return This
 	 */
-	public GMap2<T> addOverlay(GOverlay overlay)
+	public GMap2 addOverlay(GOverlay overlay)
 	{
 		overlays.add(overlay);
 		overlay.setParent(this);
@@ -216,7 +216,7 @@ public class GMap2<T> extends Panel<T> implements GOverlayContainer
 	 *            overlay to remove
 	 * @return This
 	 */
-	public GMap2<T> removeOverlay(GOverlay overlay)
+	public GMap2 removeOverlay(GOverlay overlay)
 	{
 		while (overlays.contains(overlay))
 		{
@@ -238,7 +238,7 @@ public class GMap2<T> extends Panel<T> implements GOverlayContainer
 	 * 
 	 * @return This
 	 */
-	public GMap2<T> removeAllOverlays()
+	public GMap2 removeAllOverlays()
 	{
 		for (GOverlay overlay : overlays)
 		{
@@ -402,7 +402,7 @@ public class GMap2<T> extends Panel<T> implements GOverlayContainer
 		}
 	}
 
-	public GInfoWindow<?> getInfoWindow()
+	public GInfoWindow getInfoWindow()
 	{
 		return infoWindow;
 	}
@@ -552,7 +552,7 @@ public class GMap2<T> extends Panel<T> implements GOverlayContainer
 		 *      org.apache.wicket.markup.ComponentTag)
 		 */
 		@Override
-		public void onComponentTag(Component<?> component, ComponentTag tag)
+		public void onComponentTag(Component component, ComponentTag tag)
 		{
 			String invoke = getJSinvoke();
 
