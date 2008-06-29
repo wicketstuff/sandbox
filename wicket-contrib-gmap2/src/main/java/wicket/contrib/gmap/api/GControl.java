@@ -27,12 +27,12 @@ public enum GControl implements Serializable
 {
 	GSmallMapControl, GLargeMapControl, GSmallZoomControl, GScaleControl, GMapTypeControl;
 
-	public String getJSadd(GMap2<?> map)
+	public String getJSadd(GMap2 map)
 	{
 		return map.getJSinvoke("addControl('" + name() + "', new " + name() + "())");
 	}
 
-	public String getJSremove(GMap2<?> map)
+	public String getJSremove(GMap2 map)
 	{
 		return map.getJSinvoke("removeControl('" + name() + "')");
 	}

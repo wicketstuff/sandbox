@@ -42,14 +42,14 @@ public interface GOverlayContainer
 	 *            overlay to remove
 	 * @return This
 	 */
-	public GMap2<?> removeOverlay(GOverlay overlay);
+	public GOverlayContainer removeOverlay(GOverlay overlay);
 
 	/**
 	 * Clear all overlays.
 	 * 
 	 * @return This
 	 */
-	public GMap2<?> removeAllOverlays();
+	public GOverlayContainer removeAllOverlays();
 
 	public List<GOverlay> getOverlays();
 }

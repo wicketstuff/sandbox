@@ -36,7 +36,7 @@ public abstract class GOverlay implements Serializable
 	 */
 	private final String id;
 
-	private GMap2<?> parent = null;
+	private GMap2 parent = null;
 
 	private final Map<GEvent, GEventHandler> events = new EnumMap<GEvent, GEventHandler>(
 			GEvent.class);
@@ -98,12 +98,12 @@ public abstract class GOverlay implements Serializable
 	 */
 	protected abstract String getJSconstructor();
 
-	public GMap2<?> getParent()
+	public GMap2 getParent()
 	{
 		return parent;
 	}
 
-	public void setParent(GMap2<?> parent)
+	public void setParent(GMap2 parent)
 	{
 		this.parent = parent;
 	}
