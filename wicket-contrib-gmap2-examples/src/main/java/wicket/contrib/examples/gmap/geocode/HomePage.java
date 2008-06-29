@@ -25,7 +25,7 @@ import wicket.contrib.gmap.util.GeocoderException;
 /**
  * Example HomePage for the wicket-contrib-gmap2 project
  */
-public class HomePage extends WicketExamplePage<Void>
+public class HomePage extends WicketExamplePage
 {
 
 	private static final long serialVersionUID = 1L;
@@ -41,7 +41,7 @@ public class HomePage extends WicketExamplePage<Void>
 		feedback.setOutputMarkupId(true);
 		add(feedback);
 
-		final GMap2<Object> bottomMap = new GMap2<Object>("bottomPanel", new GMapHeaderContributor(
+		final GMap2 bottomMap = new GMap2("bottomPanel", new GMapHeaderContributor(
 				GMapExampleApplication.get().getGoogleMapsAPIkey()));
 		bottomMap.setOutputMarkupId(true);
 		bottomMap.setMapType(GMapType.G_SATELLITE_MAP);
@@ -55,7 +55,7 @@ public class HomePage extends WicketExamplePage<Void>
 				new Model<String>(""));
 		geocodeForm.add(addressTextField);
 
-		Button<Object> button = new Button<Object>("client");
+		Button button = new Button("client");
 		// Using GClientGeocoder the geocoding request
 		// is performed on the client using JavaScript
 		button.add(new GClientGeocoder("onclick", addressTextField, GMapExampleApplication.get()
@@ -70,7 +70,7 @@ public class HomePage extends WicketExamplePage<Void>
 				if (status == GeocoderException.G_GEO_SUCCESS)
 				{
 					bottomMap.getInfoWindow().open(latLng,
-							new GInfoWindowTab(address, new Label<String>(address, address)));
+							new GInfoWindowTab(address, new Label(address, address)));
 				}
 				else
 				{
@@ -84,7 +84,7 @@ public class HomePage extends WicketExamplePage<Void>
 		// Using ServerGeocoder the geocoding request
 		// is performed on the server using Googles HTTP interface.
 		// http://www.google.com/apis/maps/documentation/services.html#Geocoding_Direct
-		geocodeForm.add(new AjaxButton<Object>("server", geocodeForm)
+		geocodeForm.add(new AjaxButton("server", geocodeForm)
 		{
 
 			private static final long serialVersionUID = 1L;
@@ -94,12 +94,12 @@ public class HomePage extends WicketExamplePage<Void>
 			{
 				try
 				{
-					String address = addressTextField.getModelObjectAsString();
+					String address = addressTextField.getDefaultModelObjectAsString();
 
 					GLatLng latLng = geocoder.findAddress(address);
 
 					bottomMap.getInfoWindow().open(latLng,
-							new GInfoWindowTab(address, new Label<String>(address, address)));
+							new GInfoWindowTab(address, new Label(address, address)));
 				}
 				catch (IOException e)
 				{

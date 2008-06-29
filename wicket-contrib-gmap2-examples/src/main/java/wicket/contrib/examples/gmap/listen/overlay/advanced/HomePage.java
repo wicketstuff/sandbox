@@ -25,7 +25,7 @@ import wicket.contrib.gmap.event.ClickListener;
 /**
  * Example HomePage for the wicket-contrib-gmap2 project.
  */
-public class HomePage extends WicketExamplePage<Void>
+public class HomePage extends WicketExamplePage
 {
 
 	private static final long serialVersionUID = 1L;
@@ -35,15 +35,15 @@ public class HomePage extends WicketExamplePage<Void>
 	 */
 	public HomePage()
 	{
-		final GMap2<Object> map = new GMap2<Object>("map", GMapExampleApplication.get()
+		final GMap2 map = new GMap2("map", GMapExampleApplication.get()
 				.getGoogleMapsAPIkey());
 		map.addControl(GControl.GLargeMapControl);
 		add(map);
-		final WebMarkupContainer<Void> repeaterParent = new WebMarkupContainer<Void>(
+		final WebMarkupContainer repeaterParent = new WebMarkupContainer(
 				"repeaterParent");
 		repeaterParent.setOutputMarkupId(true);
 		add(repeaterParent);
-		final RepeatingView<Void> rv = new RepeatingView<Void>("label");
+		final RepeatingView rv = new RepeatingView("label");
 		rv.setOutputMarkupId(true);
 		repeaterParent.add(rv);
 		map.add(new ClickListener()
@@ -100,7 +100,7 @@ public class HomePage extends WicketExamplePage<Void>
 					rv.removeAll();
 					for (GOverlay myMarker : map.getOverlays())
 					{
-						final GOverlayPanel<GOverlay> label = new GOverlayPanel<GOverlay>(myMarker
+						final GOverlayPanel label = new GOverlayPanel(myMarker
 								.getId(), new CompoundPropertyModel<GOverlay>(myMarker));
 						label.setOutputMarkupId(true);
 						rv.add(label);
@@ -114,18 +114,16 @@ public class HomePage extends WicketExamplePage<Void>
 
 	/**
 	 * Panel for displaying and controlling the state of a GOverlay.
-	 * 
-	 * @param <T>
 	 */
-	private static class GOverlayPanel<T> extends Panel<T>
+	private static class GOverlayPanel extends Panel
 	{
 		private static final long serialVersionUID = 1L;
 
-		public GOverlayPanel(String id, IModel<T> model)
+		public GOverlayPanel(String id, final IModel<GOverlay> model)
 		{
 			super(id, model);
-			add(new Label<GLatLng>("latLng"));
-			final Label<Boolean> dragendLabel = new Label<Boolean>("dragend", new Model<Boolean>()
+			add(new Label("latLng"));
+			final Label dragendLabel = new Label("dragend", new Model<Boolean>()
 			{
 				private static final long serialVersionUID = 1L;
 
@@ -138,7 +136,7 @@ public class HomePage extends WicketExamplePage<Void>
 				public Boolean getObject()
 				{
 
-					return ((GOverlay)getModelObject()).getListeners().containsKey(GEvent.dragend);
+					return model.getObject().getListeners().containsKey(GEvent.dragend);
 				}
 			});
 			dragendLabel.add(new AjaxEventBehavior("onclick")
@@ -149,7 +147,7 @@ public class HomePage extends WicketExamplePage<Void>
 				@Override
 				protected void onEvent(AjaxRequestTarget target)
 				{
-					MyMarker overlay = ((MyMarker)GOverlayPanel.this.getModelObject());
+					MyMarker overlay = model.getObject();
 					if (dragendLabel.getModelObject())
 					{
 						overlay.clearListeners(GEvent.dragend);

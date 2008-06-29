@@ -17,7 +17,6 @@
 package wicket.contrib.examples;
 
 import org.apache.wicket.markup.html.WebPage;
-import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.string.Strings;
 
 /**
@@ -25,24 +24,13 @@ import org.apache.wicket.util.string.Strings;
  * 
  * @author Jonathan Locke
  */
-public class WicketExamplePage<T> extends WebPage<T>
+public class WicketExamplePage extends WebPage
 {
 	/**
 	 * Constructor
 	 */
 	public WicketExamplePage()
 	{
-		this(null);
-	}
-
-	/**
-	 * Construct.
-	 * 
-	 * @param model
-	 */
-	public WicketExamplePage(IModel<T> model)
-	{
-		super(model);
 		final String packageName = getClass().getPackage().getName();
 		add(new WicketExampleHeader("mainNavigation", Strings.afterLast(packageName, '.'), this));
 		explain();

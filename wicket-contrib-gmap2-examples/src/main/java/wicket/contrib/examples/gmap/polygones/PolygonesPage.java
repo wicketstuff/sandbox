@@ -10,14 +10,14 @@ import wicket.contrib.gmap.api.GPolyline;
 /**
  * SimplePage for the wicket-contrib-gmap2 project
  */
-public class PolygonesPage extends WicketExamplePage<Void>
+public class PolygonesPage extends WicketExamplePage
 {
 
 	private static final long serialVersionUID = 1L;
 
 	public PolygonesPage()
 	{
-		GMap2<Object> map = new GMap2<Object>("topPanel", GMapExampleApplication.get()
+		GMap2 map = new GMap2("topPanel", GMapExampleApplication.get()
 				.getGoogleMapsAPIkey());
 		map.addOverlay(new GPolygon("#000000", 4, 0.7f, "#E9601A", 0.7f, new GLatLng(37.3, -122.4),
 				new GLatLng(37.2, -122.2), new GLatLng(37.3, -122.0), new GLatLng(37.4, -122.2),

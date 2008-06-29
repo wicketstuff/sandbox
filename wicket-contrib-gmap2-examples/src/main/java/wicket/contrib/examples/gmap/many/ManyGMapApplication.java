@@ -36,7 +36,7 @@ public class ManyGMapApplication extends GMapExampleApplication {
 	}
 
 	@Override
-	public Class<? extends Page<?>> getHomePage() {
+	public Class<? extends Page> getHomePage() {
 		return ManyPage.class;
 	}
 

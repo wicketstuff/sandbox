@@ -20,7 +20,7 @@ public class ListenGMarkerApplication extends GMapExampleApplication
 	}
 
 	@Override
-	public Class<? extends Page<?>> getHomePage()
+	public Class<? extends Page> getHomePage()
 	{
 		return HomePage.class;
 	}

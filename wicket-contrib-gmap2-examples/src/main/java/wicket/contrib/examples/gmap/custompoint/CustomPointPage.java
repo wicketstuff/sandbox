@@ -16,14 +16,14 @@ import wicket.contrib.gmap.api.GSize;
 /**
  * SimplePage for the wicket-contrib-gmap2 project
  */
-public class CustomPointPage extends WicketExamplePage<Void>
+public class CustomPointPage extends WicketExamplePage
 {
 
 	private static final long serialVersionUID = 1L;
 
 	public CustomPointPage()
 	{
-		GMap2<Object> map = new GMap2<Object>("map", GMapExampleApplication.get()
+		GMap2 map = new GMap2("map", GMapExampleApplication.get()
 				.getGoogleMapsAPIkey());
 		map.setCenter(new GLatLng(52.37649, 4.888573));
 		add(map);

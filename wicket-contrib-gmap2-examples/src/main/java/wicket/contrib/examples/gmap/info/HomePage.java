@@ -22,16 +22,16 @@ import wicket.contrib.gmap.event.InfoWindowOpenListener;
 /**
  * Example HomePage for the wicket-contrib-gmap2 project
  */
-public class HomePage extends WicketExamplePage<Void>
+public class HomePage extends WicketExamplePage
 {
 
 	private static final long serialVersionUID = 1L;
 
 	private final FeedbackPanel feedback;
 
-	private final GMap2<Object> map;
+	private final GMap2 map;
 
-	private final Label<String> infoWindow;
+	private final Label infoWindow;
 
 	public HomePage()
 	{
@@ -39,7 +39,7 @@ public class HomePage extends WicketExamplePage<Void>
 		feedback.setOutputMarkupId(true);
 		add(feedback);
 
-		map = new GMap2<Object>("bottomPanel", new GMapHeaderContributor(GMapExampleApplication
+		map = new GMap2("bottomPanel", new GMapHeaderContributor(GMapExampleApplication
 				.get().getGoogleMapsAPIkey()));
 		map.setOutputMarkupId(true);
 		map.setMapType(GMapType.G_SATELLITE_MAP);
@@ -86,7 +86,7 @@ public class HomePage extends WicketExamplePage<Void>
 				new GInfoWindowTab("Two", new HelloPanel()));
 		add(map);
 
-		infoWindow = new Label<String>("infoWindow", "openInfoWindow");
+		infoWindow = new Label("infoWindow", "openInfoWindow");
 		infoWindow.add(new AjaxEventBehavior("onclick")
 		{
 			private static final long serialVersionUID = 1L;

@@ -18,7 +18,7 @@ public class MarkerGMapApplication extends GMapExampleApplication {
 	}
 
 	@Override
-	public Class<? extends Page<?>> getHomePage() {
+	public Class<? extends Page> getHomePage() {
 		return HomePage.class;
 	}
 

@@ -5,6 +5,7 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
 import wicket.contrib.examples.GMapExampleApplication;
@@ -20,14 +21,14 @@ import wicket.contrib.gmap.event.ClickListener;
 /**
  * Example HomePage for the wicket-contrib-gmap2 project
  */
-public class HomePage extends WicketExamplePage<Void>
+public class HomePage extends WicketExamplePage
 {
 
 	private static final long serialVersionUID = 1L;
 
 	private final FeedbackPanel feedback;
 
-	private final Label<GMarker> markerLabel;
+	private final Label markerLabel;
 
 	public HomePage()
 	{
@@ -35,7 +36,7 @@ public class HomePage extends WicketExamplePage<Void>
 		feedback.setOutputMarkupId(true);
 		add(feedback);
 
-		final GMap2<Object> topMap = new GMap2<Object>("topPanel", GMapExampleApplication.get()
+		final GMap2 topMap = new GMap2("topPanel", GMapExampleApplication.get()
 				.getGoogleMapsAPIkey());
 		topMap.setDoubleClickZoomEnabled(true);
 		topMap.add(new ClickListener()
@@ -65,7 +66,8 @@ public class HomePage extends WicketExamplePage<Void>
 		topMap.addControl(GControl.GMapTypeControl);
 		add(topMap);
 
-		markerLabel = new Label<GMarker>("markerLabel", new Model<GMarker>(null));
+		final IModel<GMarker> markerModel = new Model<GMarker>(null);
+		markerLabel = new Label("markerLabel", markerModel);
 		markerLabel.add(new AjaxEventBehavior("onclick")
 		{
 			private static final long serialVersionUID = 1L;
@@ -76,7 +78,7 @@ public class HomePage extends WicketExamplePage<Void>
 			@Override
 			protected void onEvent(AjaxRequestTarget target)
 			{
-				GMarker marker = markerLabel.getModelObject();
+				GMarker marker = markerModel.getObject();
 				if (marker != null)
 				{
 					GLatLng point = marker.getLatLng();
@@ -104,7 +106,7 @@ public class HomePage extends WicketExamplePage<Void>
 
 	private void markerSelected(AjaxRequestTarget target, GMarker marker)
 	{
-		markerLabel.getModel().setObject(marker);
+		markerLabel.setDefaultModelObject(marker);
 		target.addComponent(markerLabel);
 	}
 }

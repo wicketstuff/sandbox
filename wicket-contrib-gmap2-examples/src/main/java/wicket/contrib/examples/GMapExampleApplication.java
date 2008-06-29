@@ -45,6 +45,13 @@ public abstract class GMapExampleApplication extends WebApplication
 		return (GMapExampleApplication)webApplication;
 	}
 
+	@Override
+	protected void init() {
+		super.init();
+		
+//		getMarkupSettings().setStripWicketTags(true);
+	}
+	
 	/**
 	 * Gets the init parameter 'GoogleMapsAPIkey' of the filter, or throws a
 	 * WicketRuntimeException, if it is not set.
