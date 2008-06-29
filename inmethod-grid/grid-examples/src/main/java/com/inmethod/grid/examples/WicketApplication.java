@@ -59,9 +59,9 @@ public class WicketApplication extends WebApplication
 	/**
 	 * {@inheritDoc}
 	 */
-	public Class<? extends Page<?>> getHomePage()
+	public Class<? extends Page> getHomePage()
 	{
-		return (Class<? extends Page<?>>) SimpleDataGridPage.class;
+		return (Class<? extends Page>) SimpleDataGridPage.class;
 	}
   
 }
