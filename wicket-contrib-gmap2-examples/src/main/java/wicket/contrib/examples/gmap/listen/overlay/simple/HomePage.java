@@ -17,21 +17,21 @@ import wicket.contrib.gmap.api.GMarkerOptions;
 /**
  * Example HomePage for the wicket-contrib-gmap2 project
  */
-public class HomePage extends WicketExamplePage<Void>
+public class HomePage extends WicketExamplePage
 {
 
 	private static final long serialVersionUID = 1L;
 
 	public HomePage()
 	{
-		final GMap2<Object> topMap = new GMap2<Object>("topPanel", GMapExampleApplication.get()
+		final GMap2 topMap = new GMap2("topPanel", GMapExampleApplication.get()
 				.getGoogleMapsAPIkey());
 		topMap.addControl(GControl.GLargeMapControl);
 		add(topMap);
 
 		GMarkerOptions options = new GMarkerOptions().draggable(true);
 		final GMarker marker = new GMarker(topMap.getCenter(), options);
-		final Label<GLatLng> label = new Label<GLatLng>("label", new PropertyModel<GLatLng>(marker,
+		final Label label = new Label("label", new PropertyModel<GLatLng>(marker,
 				"latLng"));
 		label.setOutputMarkupId(true);
 		add(label);

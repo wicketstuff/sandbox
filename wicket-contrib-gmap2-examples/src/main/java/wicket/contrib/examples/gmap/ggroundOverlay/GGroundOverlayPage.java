@@ -25,15 +25,15 @@ import wicket.contrib.gmap.api.GLatLngBounds;
 /**
  * SimplePage for the wicket-contrib-gmap2 project
  */
-public class GGroundOverlayPage extends WicketExamplePage<Void>
+public class GGroundOverlayPage extends WicketExamplePage
 {
 
 	private static final long serialVersionUID = 1L;
-	private final GMap2<Object> map;
+	private final GMap2 map;
 
 	public GGroundOverlayPage()
 	{
-		map = new GMap2<Object>("map", GMapExampleApplication.get().getGoogleMapsAPIkey());
+		map = new GMap2 ("map", GMapExampleApplication.get().getGoogleMapsAPIkey());
 		map.setCenter(new GLatLng(40.740, -74.18));
 		map.setZoom(12);
 

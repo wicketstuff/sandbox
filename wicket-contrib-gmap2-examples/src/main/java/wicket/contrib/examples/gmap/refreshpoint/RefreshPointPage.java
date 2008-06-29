@@ -20,16 +20,16 @@ import wicket.contrib.gmap.api.GSize;
 /**
  * SimplePage for the wicket-contrib-gmap2 project
  */
-public class RefreshPointPage extends WicketExamplePage<Void>
+public class RefreshPointPage extends WicketExamplePage
 {
 
 	private static final long serialVersionUID = 1L;
 
-	private final GMap2<Object> map;
+	private final GMap2 map;
 
 	public RefreshPointPage()
 	{
-		map = new GMap2<Object>("map", GMapExampleApplication.get().getGoogleMapsAPIkey());
+		map = new GMap2("map", GMapExampleApplication.get().getGoogleMapsAPIkey());
 		add(map);
 
 		GOverlay overlay = createOverlay("Amsterdam", new GLatLng(52.37649, 4.888573), "image.gif",
@@ -44,7 +44,7 @@ public class RefreshPointPage extends WicketExamplePage<Void>
 			private int i = 1;
 
 			@Override
-			protected void onTimer(AjaxRequestTarget target, GMap2<?> map)
+			protected void onTimer(AjaxRequestTarget target, GMap2 map)
 			{
 				GOverlay overlay;
 				if (i % 3 == 0)

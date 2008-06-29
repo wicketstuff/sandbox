@@ -13,14 +13,14 @@ import wicket.contrib.gmap.event.ClickListener;
 /**
  * Example HomePage for the wicket-contrib-gmap2 project
  */
-public class HomePage extends WicketExamplePage<Void>
+public class HomePage extends WicketExamplePage
 {
 
 	private static final long serialVersionUID = 1L;
 
 	public HomePage()
 	{
-		final GMap2<Object> map = new GMap2<Object>("topPanel", GMapExampleApplication.get()
+		final GMap2 map = new GMap2("topPanel", GMapExampleApplication.get()
 				.getGoogleMapsAPIkey());
 		add(map);
 		map.add(new ClickListener()

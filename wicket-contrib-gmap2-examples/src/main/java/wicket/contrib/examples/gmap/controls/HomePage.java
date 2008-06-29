@@ -10,23 +10,23 @@ import wicket.contrib.gmap.api.GControl;
 /**
  * Example HomePage for the wicket-contrib-gmap2 project
  */
-public class HomePage extends WicketExamplePage<Void>
+public class HomePage extends WicketExamplePage
 {
 
 	private static final long serialVersionUID = 1L;
 
 	public HomePage()
 	{
-		final GMap2<Void> topMap = new GMap2<Void>("topPanel", GMapExampleApplication.get()
+		final GMap2 topMap = new GMap2("topPanel", GMapExampleApplication.get()
 				.getGoogleMapsAPIkey());
 		topMap.addControl(GControl.GMapTypeControl);
 		add(topMap);
 
-		final WebMarkupContainer<Void> zoomIn = new WebMarkupContainer<Void>("zoomIn");
+		final WebMarkupContainer zoomIn = new WebMarkupContainer("zoomIn");
 		zoomIn.add(topMap.new ZoomInBehavior("onclick"));
 		add(zoomIn);
 
-		final WebMarkupContainer<Void> zoomOut = new WebMarkupContainer<Void>("zoomOut");
+		final WebMarkupContainer zoomOut = new WebMarkupContainer("zoomOut");
 		zoomOut.add(topMap.new ZoomOutBehavior("onclick"));
 		add(zoomOut);
 	}

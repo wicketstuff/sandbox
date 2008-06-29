@@ -12,18 +12,18 @@ import wicket.contrib.gmap.GMapHeaderContributor;
 /**
  * SimplePage for the wicket-contrib-gmap2 project
  */
-public class ManyPage extends WicketExamplePage<Void>
+public class ManyPage extends WicketExamplePage
 {
 
 	private static final long serialVersionUID = 1L;
 
-	private final WebMarkupContainer<Object> container;
+	private final WebMarkupContainer container;
 
-	private final RepeatingView<Object> repeating;
+	private final RepeatingView repeating;
 
 	public ManyPage()
 	{
-		AjaxFallbackLink<Object> create = new AjaxFallbackLink<Object>("create")
+		AjaxFallbackLink<Void> create = new AjaxFallbackLink<Void>("create")
 		{
 			private static final long serialVersionUID = 1L;
 
@@ -40,14 +40,14 @@ public class ManyPage extends WicketExamplePage<Void>
 		};
 		add(create);
 
-		container = new WebMarkupContainer<Object>("container");
+		container = new WebMarkupContainer("container");
 		container.setOutputMarkupId(true);
 		// optional: do this if no GMap2 is added initially
 		container
 				.add(new GMapHeaderContributor(GMapExampleApplication.get().getGoogleMapsAPIkey()));
 		add(container);
 
-		repeating = new RepeatingView<Object>("repeating");
+		repeating = new RepeatingView("repeating");
 		container.add(repeating);
 
 		// addPanel();

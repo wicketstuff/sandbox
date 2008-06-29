@@ -13,18 +13,18 @@ import wicket.contrib.gmap.event.MoveEndListener;
 /**
  * Example HomePage for the wicket-contrib-gmap2 project
  */
-public class HomePage extends WicketExamplePage<Void>
+public class HomePage extends WicketExamplePage
 {
 
 	private static final long serialVersionUID = 1L;
 
-	private final GMap2<Object> topMap;
+	private final GMap2 topMap;
 
-	private final Label<Integer> zoomLabel;
+	private final Label zoomLabel;
 
 	public HomePage()
 	{
-		topMap = new GMap2<Object>("topPanel", GMapExampleApplication.get().getGoogleMapsAPIkey());
+		topMap = new GMap2("topPanel", GMapExampleApplication.get().getGoogleMapsAPIkey());
 		topMap.addControl(GControl.GLargeMapControl);
 		add(topMap);
 		topMap.add(new MoveEndListener()
@@ -37,7 +37,7 @@ public class HomePage extends WicketExamplePage<Void>
 				target.addComponent(zoomLabel);
 			}
 		});
-		zoomLabel = new Label<Integer>("zoomLabel", new PropertyModel<Integer>(topMap, "zoom"));
+		zoomLabel = new Label("zoomLabel", new PropertyModel<Integer>(topMap, "zoom"));
 		zoomLabel.add(topMap.new SetZoomBehavior("onclick", 10));
 		zoomLabel.setOutputMarkupId(true);
 		add(zoomLabel);

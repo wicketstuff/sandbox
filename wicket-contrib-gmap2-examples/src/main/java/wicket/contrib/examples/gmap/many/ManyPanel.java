@@ -8,21 +8,21 @@ import org.apache.wicket.markup.html.panel.Panel;
 import wicket.contrib.gmap.GMap2;
 import wicket.contrib.gmap.api.GMapType;
 
-public abstract class ManyPanel extends Panel<Object>
+public abstract class ManyPanel extends Panel
 {
 
-	final GMap2<Object> gMap;
+	final GMap2 gMap;
 
-	private WebMarkupContainer<Object> n, ne, e, se, s, sw, w, nw;
+	private WebMarkupContainer n, ne, e, se, s, sw, w, nw;
 
 	public ManyPanel(String id, String gMapKey)
 	{
 		super(id);
-		gMap = new GMap2<Object>("gMap", gMapKey);
+		gMap = new GMap2("gMap", gMapKey);
 		gMap.setZoom(7);
 		gMap.setOutputMarkupId(true);
 		add(gMap);
-		final AjaxFallbackLink<Object> normal = new AjaxFallbackLink<Object>("normal")
+		final AjaxFallbackLink<Void> normal = new AjaxFallbackLink<Void>("normal")
 		{
 			private static final long serialVersionUID = 1L;
 
@@ -33,7 +33,7 @@ public abstract class ManyPanel extends Panel<Object>
 			}
 		};
 		add(normal);
-		final AjaxFallbackLink<Object> satellite = new AjaxFallbackLink<Object>("satellite")
+		final AjaxFallbackLink<Void> satellite = new AjaxFallbackLink<Void>("satellite")
 		{
 			private static final long serialVersionUID = 1L;
 
@@ -44,7 +44,7 @@ public abstract class ManyPanel extends Panel<Object>
 			}
 		};
 		add(satellite);
-		final AjaxFallbackLink<Object> hybrid = new AjaxFallbackLink<Object>("hybrid")
+		final AjaxFallbackLink<Void> hybrid = new AjaxFallbackLink<Void>("hybrid")
 		{
 			private static final long serialVersionUID = 1L;
 
@@ -55,21 +55,21 @@ public abstract class ManyPanel extends Panel<Object>
 			}
 		};
 		add(hybrid);
-		n = new WebMarkupContainer<Object>("n");
+		n = new WebMarkupContainer("n");
 		add(n);
-		ne = new WebMarkupContainer<Object>("ne");
+		ne = new WebMarkupContainer("ne");
 		add(ne);
-		e = new WebMarkupContainer<Object>("e");
+		e = new WebMarkupContainer("e");
 		add(e);
-		se = new WebMarkupContainer<Object>("se");
+		se = new WebMarkupContainer("se");
 		add(se);
-		s = new WebMarkupContainer<Object>("s");
+		s = new WebMarkupContainer("s");
 		add(s);
-		sw = new WebMarkupContainer<Object>("sw");
+		sw = new WebMarkupContainer("sw");
 		add(sw);
-		w = new WebMarkupContainer<Object>("w");
+		w = new WebMarkupContainer("w");
 		add(w);
-		nw = new WebMarkupContainer<Object>("nw");
+		nw = new WebMarkupContainer("nw");
 		add(nw);
 
 		n.add(gMap.new PanDirectionBehavior("onclick", 0, 1));

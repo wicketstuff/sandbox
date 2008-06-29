@@ -21,20 +21,20 @@ import wicket.contrib.gmap.event.MoveEndListener;
 /**
  * Example HomePage for the wicket-contrib-gmap2 project
  */
-public class HomePage extends WicketExamplePage<Void>
+public class HomePage extends WicketExamplePage
 {
 
 	private static final long serialVersionUID = 1L;
 
-	private final Label<Integer> zoomLabel;
+	private final Label zoomLabel;
 
-	private final MultiLineLabel<GLatLngBounds> boundsLabel;
+	private final MultiLineLabel boundsLabel;
 
 	private MoveEndListener moveEndBehavior;
 
 	public HomePage()
 	{
-		final GMap2<Object> map = new GMap2<Object>("map", GMapExampleApplication.get()
+		final GMap2 map = new GMap2("map", GMapExampleApplication.get()
 				.getGoogleMapsAPIkey());
 		map.addControl(GControl.GLargeMapControl);
 		add(map);
@@ -51,11 +51,11 @@ public class HomePage extends WicketExamplePage<Void>
 			}
 		});
 
-		zoomLabel = new Label<Integer>("zoom", new PropertyModel<Integer>(map, "zoom"));
+		zoomLabel = new Label("zoom", new PropertyModel<Integer>(map, "zoom"));
 		zoomLabel.setOutputMarkupId(true);
 		add(zoomLabel);
 
-		boundsLabel = new MultiLineLabel<GLatLngBounds>("bounds", new PropertyModel<GLatLngBounds>(
+		boundsLabel = new MultiLineLabel("bounds", new PropertyModel<GLatLngBounds>(
 				map, "bounds"))
 		{
 			private static final long serialVersionUID = 1L;
@@ -102,7 +102,7 @@ public class HomePage extends WicketExamplePage<Void>
 		};
 		boundsLabel.setOutputMarkupId(true);
 		add(boundsLabel);
-		final Label<Boolean> enabledLabel = new Label<Boolean>("enabled", new Model<Boolean>()
+		final Label enabledLabel = new Label("enabled", new Model<Boolean>()
 		{
 			private static final long serialVersionUID = 1L;
 

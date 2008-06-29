@@ -34,11 +34,13 @@ public class SimpleGMapApplication extends GMapExampleApplication
 	@Override
 	protected void init()
 	{
+		super.init();
+
 		getResourceSettings().setResourcePollFrequency(Duration.seconds(10));
 	}
 
 	@Override
-	public Class<? extends Page<?>> getHomePage()
+	public Class<? extends Page> getHomePage()
 	{
 		return SimplePage.class;
 	}
