@@ -22,6 +22,17 @@
     <version>2</version>
   </parent>
 
+   <distributionManagement>
+    <repository>
+      <id>repository-ftp-consol</id>
+      <url>ftp://build.int.consol.de/proximity/inhouse/storage</url>
+    </repository>
+    <snapshotRepository>
+      <id>repository-ftp-consol</id>
+      <url>ftp://build.int.consol.de/proximity/inhouse.snapshot/storage</url>
+    </snapshotRepository>
+  </distributionManagement>
+
   <modules>
     <module>objectautocomplete</module>
     <module>example</module>
@@ -54,10 +65,11 @@
       </plugin>
     </plugins>
 
-     <extensions>
+    <extensions>
       <extension>
         <groupId>org.apache.maven.wagon</groupId>
         <artifactId>wagon-ftp</artifactId>
+        <version>1.0-beta-2</version>
       </extension>
     </extensions>
   </build>

@@ -9,9 +9,9 @@ import org.apache.wicket.util.string.AppendingStringBuffer;
  * @author roland
  * @since May 28, 2008
  */
-public class ObjectUpdateBehavior<T> extends AjaxEventBehavior {
+public class ObjectUpdateBehavior extends AjaxEventBehavior {
 
-    public ObjectUpdateBehavior(String event, Component<T> objectField) {
+    public ObjectUpdateBehavior(String event, Component objectField) {
         super(event);
     }
 

@@ -18,6 +18,7 @@ package org.wicketstuff.objectautocomplete.example;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.repeater.Item;
@@ -29,6 +30,7 @@ import org.apache.wicket.util.lang.PropertyResolver;
 import org.wicketstuff.objectautocomplete.AutoCompletionChoicesProvider;
 import org.wicketstuff.objectautocomplete.ObjectAutoCompleteBuilder;
 import org.wicketstuff.objectautocomplete.ObjectAutoCompleteField;
+import org.wicketstuff.objectautocomplete.ReadOnlyObjectRenderer;
 
 import java.io.Serializable;
 import java.util.List;
@@ -37,7 +39,7 @@ import java.util.List;
  * @author roland
  * @since May 26, 2008
  */
-abstract public class BaseExamplePage<T extends Serializable,I extends Serializable> extends WebPage<I> implements AutoCompletionChoicesProvider<T> {
+abstract public class BaseExamplePage<T extends Serializable,I extends Serializable> extends WebPage implements AutoCompletionChoicesProvider<T> {
 
     private ObjectAutoCompleteField<T,I> acField;
 
@@ -54,6 +56,7 @@ abstract public class BaseExamplePage<T extends Serializable,I extends Serializa
         ObjectAutoCompleteBuilder<T,I> builder =
                 new ObjectAutoCompleteBuilder<T,I>(this);
         initBuilder(builder);
+
         acField = builder.build("acField", getModel());
 
         final Form form = new Form("form");
@@ -63,6 +66,7 @@ abstract public class BaseExamplePage<T extends Serializable,I extends Serializa
 
         // Add code sample and list of sample data
         add(new Label("acCodeSample",getCodeSample()));
+        add(new Label("acHtmlSample",getHtmlSample()));
 
         add(new DataView<T>("acData",new ListDataProvider<T>(getAllChoices())) {
             @Override
@@ -92,12 +96,12 @@ abstract public class BaseExamplePage<T extends Serializable,I extends Serializa
      *
      * @param pComponent component to update
      */
-    protected void registerForUpdateOnModelChange(Component<I> pComponent) {
+    protected void registerForUpdateOnModelChange(Component pComponent) {
         acField.registerForUpdateOnModelChange(pComponent);
     }
 
     protected String getAutoCompleteFieldLabel() {
-       return "Search:";
+       return "Brand:";
     }
 
     // id-property used for presenting the list of alternatives
@@ -115,4 +119,11 @@ abstract public class BaseExamplePage<T extends Serializable,I extends Serializa
 
     // a sample of the usage for this code
     abstract String getCodeSample();
+
+    // a HTML sample using this code
+    abstract String getHtmlSample();
+
+    public IModel<I> getModel() {
+        return (IModel<I>) getDefaultModel();
+    }
 }
