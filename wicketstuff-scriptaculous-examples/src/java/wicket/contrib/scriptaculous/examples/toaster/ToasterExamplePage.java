@@ -14,7 +14,7 @@ public class ToasterExamplePage extends WebPage
 	public ToasterExamplePage()
 	{
 		super();
-		final Model messageModel=new Model();
+		final Model<String> messageModel=new Model<String>();
 
 		final Toaster toasterStandard = new Toaster("standardToaster",messageModel,false);
 		add(toasterStandard);
@@ -26,9 +26,7 @@ public class ToasterExamplePage extends WebPage
 			{
 				messageModel.setObject("heres how I look as standard");
 				toasterStandard.publishMessage(target);
-		
 			}
-		
 		}); 
 
 		

@@ -25,12 +25,12 @@ public interface Effect
 	public abstract class AbstractEffect implements Effect, Serializable
 	{
 		private final Component component;
-		protected final Map options;
+		protected final Map<String, Object> options;
 
 		public AbstractEffect(Component component)
 		{
 			this.component = component;
-			this.options = new HashMap();
+			this.options = new HashMap<String, Object>();
 		}
 
 		public String toString()
@@ -411,7 +411,7 @@ public interface Effect
     public class Multiple implements Effect {
         private final AbstractEffect[] effects;
         private final String effectName;
-        private final Map options = new HashMap();
+        private final Map<String, Object> options = new HashMap<String, Object>();
 
         public Multiple(AbstractEffect[] effects) {
           //TODO: assert all effects of the same type

@@ -35,7 +35,7 @@ public abstract class DraggableTarget extends WebMarkupContainer
 {
 	private static final long serialVersionUID = 1L;
 	final ScriptaculousAjaxBehavior onDropBehavior = new DraggableTargetBehavior();
-	private final Map dropOptions = new HashMap();
+	private final Map<String, Object> dropOptions = new HashMap<String, Object>();
 
 	public DraggableTarget(String id)
 	{
@@ -61,7 +61,7 @@ public abstract class DraggableTarget extends WebMarkupContainer
 	 */
 	public void accepts(Component component, String className) {
 		assertHasDraggableBehavior(component);
-		component.add(new AttributeAppender("class", new Model(className), " "));
+		component.add(new AttributeAppender("class", new Model<String>(className), " "));
 		addAcceptClass(className);
 	}
 
@@ -141,7 +141,7 @@ public abstract class DraggableTarget extends WebMarkupContainer
 	 * find a child component by it's markup id
 	 * NOTE: the markup id may be different from the wicket id used in the markup.
 	 */
-	private static class MarkupIdVisitor implements IVisitor {
+	private static class MarkupIdVisitor implements IVisitor<Component> {
 		private final String id;
 		private Component found;
 

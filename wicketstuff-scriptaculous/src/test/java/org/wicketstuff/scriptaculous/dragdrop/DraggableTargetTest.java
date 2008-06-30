@@ -1,7 +1,5 @@
 package org.wicketstuff.scriptaculous.dragdrop;
 
-import java.util.HashMap;
-
 import junit.framework.TestCase;
 
 import org.apache.wicket.Component;
@@ -55,8 +53,6 @@ public class DraggableTargetTest extends TestCase {
 	}
 	
 	public void testExceptionThrownWhenAcceptingComponentWithoutDraggableBehavior() {
-		WicketTester tester = new WicketTester();
-
 		DraggableTarget target = new DraggableTarget("target") {
 			@Override
 			protected void onDrop(Component component, AjaxRequestTarget target) { }

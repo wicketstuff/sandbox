@@ -6,7 +6,6 @@ import org.apache.wicket.ResourceReference;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.PropertyModel;
-import org.wicketstuff.scriptaculous.autocomplete.AbstractAutocompleteBehavior;
 import org.wicketstuff.scriptaculous.autocomplete.AjaxAutocompleteBehavior;
 import org.wicketstuff.scriptaculous.autocomplete.AutocompleteBehavior;
 
@@ -36,7 +35,7 @@ public class AutocompleteExamplePage extends WebPage {
 		color.add(new AutocompleteBehavior(results));
 		add(color);
 
-		TextField email = new TextField("email", new PropertyModel(new User(), "email"));
+		TextField email = new TextField<String>("email", new PropertyModel<String>(new User(), "email"));
 		email.add(new AjaxAutocompleteBehavior() {
 			protected String[] getResults(String input) {
 				return new String[] {
@@ -48,7 +47,7 @@ public class AutocompleteExamplePage extends WebPage {
 		});
 		add(email);
 
-		TextField name = new TextField("name", new PropertyModel(new User(), "email"));
+		TextField name = new TextField<String>("name", new PropertyModel<String>(new User(), "email"));
 		name.add(new AjaxAutocompleteBehavior() {
 			protected String[] getResults(String input) {
 				return new String[] {

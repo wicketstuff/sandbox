@@ -6,6 +6,6 @@ import org.apache.wicket.model.Model;
 public class TestPage extends WebPage {
 
 	public TestPage() {
-		add(new AjaxEditInPlaceLabel("label", new Model("me & you")));
+		add(new AjaxEditInPlaceLabel<String>("label", new Model<String>("me & you")));
 	}
 }

@@ -24,15 +24,15 @@ public class DragDropExamplePage extends WebPage
 		WebMarkupContainer product2 = new WebMarkupContainer("product2");
 		product2.add(new DraggableBehavior());
 
-		List objects = new ArrayList();
+		List<String> objects = new ArrayList<String>();
 		objects.add("item1");
 		objects.add("item3");
 		objects.add("item2");
-		add(new SortableListView("itemList", "item", objects) {
+		add(new SortableListView<String>("itemList", "item", objects) {
 			@Override
-			protected void populateItemInternal(ListItem item)
+			protected void populateItemInternal(ListItem<String> item)
 			{
-				item.add(new Label("label", item.getModelObjectAsString()));
+				item.add(new Label("label", item.getModel()));
 			}});
 		
 		final DraggableTarget cart = new DraggableTarget("cart") {

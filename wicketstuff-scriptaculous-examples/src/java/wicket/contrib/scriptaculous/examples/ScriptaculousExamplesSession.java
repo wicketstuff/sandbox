@@ -21,7 +21,6 @@ package wicket.contrib.scriptaculous.examples;
 import java.util.List;
 
 import org.apache.wicket.Request;
-import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.protocol.http.WebSession;
 
 /**
@@ -37,9 +36,9 @@ public class ScriptaculousExamplesSession extends WebSession
 	 * @param application
 	 * @param request
 	 */
-	public ScriptaculousExamplesSession(WebApplication application, Request request)
+	public ScriptaculousExamplesSession(Request request)
 	{
-		super(application, request);
+		super(request);
 	}
 
 	/**
