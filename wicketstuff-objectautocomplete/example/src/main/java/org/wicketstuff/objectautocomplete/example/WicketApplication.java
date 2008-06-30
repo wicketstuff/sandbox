@@ -25,18 +25,10 @@ import org.apache.wicket.Page;
  */
 public class WicketApplication extends WebApplication
 {
-    /**
-     * Constructor
-     */
-	public WicketApplication()
-	{
-	}
-
-	@Override
+    @Override
     public Class<? extends Page> getHomePage()
 	{
-		//return SimpleExamplePage.class;
-        return ReadOnlyObjectRendererExamplePage.class;
+		return HomePage.class;
     }
 
 }
