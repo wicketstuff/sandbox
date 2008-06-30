@@ -32,7 +32,7 @@ public class ObjectAutoCompleteBuilder<T,I> {
     boolean preselect;
     int maxHeightInPx;
     boolean showListOnEmptyInput;
-    List<Component<?>> updateOnModelChangeComponents;
+    List<Component> updateOnModelChangeComponents;
     boolean searchOnClick;
     Component searchLinkContent;
     String searchLinkText;
@@ -49,7 +49,7 @@ public class ObjectAutoCompleteBuilder<T,I> {
         searchOnClick = false;
         showListOnEmptyInput = false;
         maxHeightInPx = -1;
-        updateOnModelChangeComponents = new ArrayList<Component<?>>();
+        updateOnModelChangeComponents = new ArrayList<Component>();
         searchLinkContent = null;
         searchLinkText = "[S]";
         readOnlyObjectRenderer = null;
@@ -128,7 +128,7 @@ public class ObjectAutoCompleteBuilder<T,I> {
         return this;
     }
 
-    public ObjectAutoCompleteBuilder<T,I> updateOnModelChange(Component<?> ... pComponents) {
+    public ObjectAutoCompleteBuilder<T,I> updateOnModelChange(Component ... pComponents) {
         for (Component comp : pComponents) {
             if (comp == null) {
                 throw new IllegalArgumentException(

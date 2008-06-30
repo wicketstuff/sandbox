@@ -1,41 +1,61 @@
-<?xml>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-
+<?xml version='1.0' encoding='UTF-8'?>
+<html xmlns="http://www.w3.org/1999/xhtml" >
 <head>
-    <title>Object Auto-Complete text</title>
-        <style>
-            div.wicket-aa {
-                font-family: "Lucida Grande","Lucida Sans Unicode",Tahoma,Verdana;
-                font-size: 12px;
-                background-color: white;
-                border-width: 1px;
-                border-color: #cccccc;
-                border-style: solid;
-                padding: 2px;
-                margin: 1px 0 0 0;
-                text-align:left;
-            }
-            div.wicket-aa ul { list-style:none; padding: 2px; margin:0; }
-            div.wicket-aa ul li.selected { background-color: #FFFF00; padding: 2px; margin:0; }
-        </style>
+    <title>Wicketstuff ObjectAutoComplete Examples</title>
+    <link rel="stylesheet" type="text/css" href="style.css"/>
 </head>
-
 <body>
+<span>
+    <div>
+        <img src="logo.png"/><span>
+    </span></div>
+    <div id="titleblock" style="font-size:larger;height:1.5em;vertical-align:middle;">
+    </div>
+    <br/>
+</span>
+
+<div class="referenceData">
+    <p>
+        This example autocompletes on the following entities (with the given id and name):
+    </p>
+    <table class="referenceData">
+        <tr>
+            <th>Id</th>
+            <th>Value</th>
+        </tr>
+        <tr wicket:id="acData">
+            <td><span wicket:id="id">[id]</span></td>
+            <td><span wicket:id="name">[name]</span></td>
+        </tr>
+    </table>
+</div>
 
 <wicket:child/>
 
-<table>
-    <tr wicket:id="acData">
-        <td><span wicket:id="id">[id]</span></td>
-        <td><span wicket:id="name">[name]</span></td>
-    </tr>
-</table>
+<div class="searchForm">
 <form wicket:id="form">
-    <span wicket:id="acLabel"/><input type="text" wicket:id="acField" size="50"/>
+    <table>
+        <tr>
+            <td>
+                <span id="searchFormLabel" wicket:id="acLabel"/>
+            </td>
+            <td>
+                <input type="text" wicket:id="acField" size="50"/>
+            </td>
+        </tr>
+    </table>
 </form>
-<hr/>
-<div class="source">
+</div>
+
+<h3>Example HTML</h3>
+
+<div class="codeSample">
+    <pre><code wicket:id="acHtmlSample">[example html code]</code></pre>
+</div>
+
+<h3>Example Code</h3>
+
+<div class="codeSample">
     <pre><code wicket:id="acCodeSample">[example source code]</code></pre>
 </div>
 

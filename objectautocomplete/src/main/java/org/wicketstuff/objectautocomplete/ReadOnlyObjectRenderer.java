@@ -37,5 +37,5 @@ public interface ReadOnlyObjectRenderer<I> {
      * @param pSearchTextModel the string used during selection
      * @return a component which is used as as readonly view.
      */
-    Component<?> getRenderedObject(String id, IModel<I> pModel, Model<String> pSearchTextModel);
+    Component getRenderedObject(String id, IModel<I> pModel, Model<String> pSearchTextModel);
 }

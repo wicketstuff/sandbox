@@ -52,26 +52,41 @@ public class ReadOnlyObjectRendererExamplePage extends BaseExamplePage<Car,Integ
         pBuilder.readOnlyObjectRenderer(new ReadOnlyObjectRenderer<Integer>() {
             public Component getRenderedObject(String id, IModel<Integer> pIModel, Model<String> pSearchTextModel) {
                 Fragment frag =  new Fragment(id,"readOnlyView", ReadOnlyObjectRendererExamplePage.this);
-                frag.add(new Label<String>("search",pSearchTextModel));
-                frag.add(new Label<Integer>("id",pIModel));
+                frag.add(new Label("search",pSearchTextModel));
+                frag.add(new Label("id",pIModel));
                 return frag;
             }
-        });
+        })
+                .searchOnClick();
     }
 
     @Override
     String getCodeSample() {
-        return "ObjectAutoCompleteField<Car,Integer> field =\n" +
-                "   new ObjectAutoCompleteBuilder<Car>(\n" +
-                "      new AutoCompletionChoicesProvider() {\n" +
-                "           Iterator<Car> getChoices(String input) {\n" +
-                "                // Get all possible choices for the given \n" +
-                "                // input string\n" +
-                "                // ...\n" +
-                "                return iterator;\n" +
-                "           }\n" +
-                "      }\n" +
-                "   ).build(\"acField\",new Model<Integer>());";
+        return "ObjectAutoCompleteField<Car,Integer> acField =\n" +
+                "        new ObjectAutoCompleteBuilder<Car,Integer>(getAcChoicesProvider()) \n" +
+                "                .readOnlyObjectRenderer(new ReadOnlyObjectRenderer<Integer>() {\n" +
+                "                    public Component getRenderedObject(String id, IModel<Integer> pIModel,\n" +
+                "                                                       Model<String> pSearchTextModel) {\n" +
+                "                        Fragment frag =  new Fragment(id,\"readOnlyView\");\n" +
+                "                        frag.add(new Label(\"search\",pSearchTextModel));\n" +
+                "                        frag.add(new Label(\"id\",pIModel));\n" +
+                "                        return frag;\n" +
+                "                    }\n" +
+                "               })\n" +
+                "                .searchOnClick()\n" +
+                "                .build();\n" +
+                "form.add(acField);";
+    }
+
+    String getHtmlSample() {
+        return "<form wicket:id=\"form\">\n" +
+                "  Brand: <input type=\"text\" wicket:id=\"acField\" />\n" +
+                "</form>\n" +
+                "\n" +
+                "<wicket:fragment wicket:id=\"readOnlyView\">\n" +
+                "  Name: <span wicket:id=\"search\">[search]</span>\n" +
+                "  Id:   <span wicket:id=\"id\">[id]</span>\n" +
+                "</wicket:fragment>";
     }
 
     public Iterator getChoices(String input) {
