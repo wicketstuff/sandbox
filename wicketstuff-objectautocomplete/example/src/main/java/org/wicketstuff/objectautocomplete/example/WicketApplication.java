@@ -33,7 +33,7 @@ public class WicketApplication extends WebApplication
 	}
 
 	@Override
-    public Class<? extends Page<?>> getHomePage()
+    public Class<? extends Page> getHomePage()
 	{
 		//return SimpleExamplePage.class;
         return ReadOnlyObjectRendererExamplePage.class;

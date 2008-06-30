@@ -37,8 +37,7 @@ public class SimpleExamplePage extends BaseExamplePage<Car,Integer> {
         super(new Model<Integer>());
 
         // Read-only view of the current id
-        Label<Integer> label =
-                new Label<Integer>("selectedId", getModel());
+        Label label = new Label("selectedId", getModel());
 		label.setOutputMarkupId(true);
         registerForUpdateOnModelChange(label);
         add(label);
@@ -62,6 +61,10 @@ public class SimpleExamplePage extends BaseExamplePage<Car,Integer> {
                 "           }\n" +
                 "      }\n" +
                 "   ).build(\"acField\",new Model<Integer>());";
+    }
+
+    String getHtmlSample() {
+        return null;
     }
 
     public Iterator getChoices(String input) {

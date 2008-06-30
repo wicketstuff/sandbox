@@ -53,11 +53,11 @@ import java.util.List;
  * @author roland
  * @since May 21, 2008
  */
-public class ObjectAutoCompleteField<T,I> extends Panel<I>
+public class ObjectAutoCompleteField<T,I> extends Panel
         implements ObjectAutoCompleteCancelListener {
 
     // Additional lists of components to update when an object has been selected
-    private List<Component<?>> componentsToUpdate = new ArrayList<Component<?>>();
+    private List<Component> componentsToUpdate = new ArrayList<Component>();
 
     // Remember old id in case a search operation is aborted
     private I backupObject;
@@ -67,6 +67,8 @@ public class ObjectAutoCompleteField<T,I> extends Panel<I>
 
     // Textfield used to search for the object
     private TextField<String> searchTextField;
+
+    // Hiddenfield carrying the selected object id
     private HiddenField<I> objectField;
 
     /**
@@ -102,7 +104,7 @@ public class ObjectAutoCompleteField<T,I> extends Panel<I>
      *
      * @param pComponentToUpdate the component to update
      */
-    public void registerForUpdateOnModelChange(Component<?> pComponentToUpdate) {
+    public void registerForUpdateOnModelChange(Component pComponentToUpdate) {
         componentsToUpdate.add(pComponentToUpdate);
     }
 
@@ -158,13 +160,13 @@ public class ObjectAutoCompleteField<T,I> extends Panel<I>
 
         ReadOnlyObjectRenderer<I> roRenderer = pBuilder.readOnlyObjectRenderer;
 
-        Component<?> objectReadOnlyComponent;
+        Component objectReadOnlyComponent;
         if (roRenderer != null) {
             objectReadOnlyComponent =
                     roRenderer.getRenderedObject("selectedValue", ObjectAutoCompleteField.this.getModel(),pSearchTextModel);
         } else {
             objectReadOnlyComponent =
-                    new Label<String>("selectedValue",pSearchTextModel);
+                    new Label("selectedValue",pSearchTextModel);
         }
         objectReadOnlyComponent.setOutputMarkupId(true);
 
@@ -175,11 +177,11 @@ public class ObjectAutoCompleteField<T,I> extends Panel<I>
             }
         };
 
-        Component linkImage = new Image<Void>("searchLinkImage").setVisible(false);
+        Component linkImage = new Image("searchLinkImage").setVisible(false);
         if (pBuilder.imageResource != null || pBuilder.imageResourceReference != null) {
             linkImage = pBuilder.imageResource != null ?
-                    new Image<Void>("searchLinkImage",pBuilder.imageResource) :
-                    new Image<Void>("searchLinkImage",pBuilder.imageResourceReference);
+                    new Image("searchLinkImage",pBuilder.imageResource) :
+                    new Image("searchLinkImage",pBuilder.imageResourceReference);
             deleteLink.add(new Label(ObjectAutoCompleteBuilder.SEARCH_LINK_PANEL_ID).setVisible(false));
         } else if (pBuilder.searchLinkContent != null) {
             deleteLink.add(pBuilder.searchLinkContent);
@@ -280,6 +282,19 @@ public class ObjectAutoCompleteField<T,I> extends Panel<I>
         for (Component comp : componentsToUpdate) {
             pTarget.addComponent(comp);
         }
+    }
+
+    private void setModelObject(I pObject) {
+        setDefaultModelObject(pObject);
+    }
+
+
+    public IModel<I> getModel() {
+        return (IModel<I>) getDefaultModel();
+    }
+
+    public I getModelObject() {
+        return (I) getDefaultModelObject();
     }
 
     // =========================================================================================
