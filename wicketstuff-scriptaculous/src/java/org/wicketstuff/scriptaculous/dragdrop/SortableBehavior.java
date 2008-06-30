@@ -11,7 +11,6 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wicketstuff.scriptaculous.JavascriptBuilder;
-import org.wicketstuff.scriptaculous.ScriptaculousAjaxBehavior;
 
 /**
  * add sortable behavior to a given component.
@@ -24,7 +23,7 @@ public class SortableBehavior extends DraggableBehavior {
 	private static final Logger LOG = LoggerFactory.getLogger(SortableBehavior.class);
 	
 	private static final long serialVersionUID = 1L;
-	private Map options = new HashMap();
+	private Map<String, Object> options = new HashMap<String, Object>();
 
   @Override
 	protected final void onComponentRendered() {
@@ -52,16 +51,17 @@ public class SortableBehavior extends DraggableBehavior {
 			return;
 		}
 
-    List<Object> items = (List<Object>) getComponent().getModelObject();
-    List<Object> originalItems = new ArrayList<Object>(items);
-    for (int index = 0; index < items.size(); index++) {
-    	int newIndex = Integer.parseInt(parameters[index]);
-    	if (!items.get(index).equals(items.get(newIndex))) {
-    		LOG.info("Moving sortable object from location " + newIndex + " to " + index);
-    	}
-    	items.set(index, originalItems.get(newIndex));
-    }
-    getComponent().modelChanged();
+		@SuppressWarnings("unchecked")
+		List<Object> items = (List<Object>) getComponent().getDefaultModelObject();
+		List<Object> originalItems = new ArrayList<Object>(items);
+		for (int index = 0; index < items.size(); index++) {
+			int newIndex = Integer.parseInt(parameters[index]);
+			if (!items.get(index).equals(items.get(newIndex))) {
+				LOG.info("Moving sortable object from location " + newIndex + " to " + index);
+			}
+			items.set(index, originalItems.get(newIndex));
+		}
+		getComponent().modelChanged();
 		target.addComponent(getComponent());
 	}
 

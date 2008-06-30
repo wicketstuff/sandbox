@@ -1,5 +1,6 @@
 package wicket.contrib.scriptaculous.examples;
 
+import org.apache.wicket.Page;
 import org.apache.wicket.Request;
 import org.apache.wicket.Response;
 import org.apache.wicket.Session;
@@ -14,15 +15,14 @@ public class ScriptaculousExamplesApplication extends WebApplication
 	/**
 	 * @return class
 	 */
-	public Class getHomePage()
+	public Class<? extends Page> getHomePage()
 	{
 		return ScriptaculousExamplesHomePage.class;
 	}
 
 	public Session newSession(Request request, Response response)
 	{
-		return new ScriptaculousExamplesSession(
-				ScriptaculousExamplesApplication.this, request);
+		return new ScriptaculousExamplesSession(request);
 	}
 
 	protected void init()

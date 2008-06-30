@@ -28,13 +28,13 @@ import org.wicketstuff.scriptaculous.ScriptaculousAjaxBehavior;
 public abstract class AbstractAutocompleteBehavior extends ScriptaculousAjaxBehavior
 {
 	private static final long serialVersionUID = 1L;
-	private Map options = new HashMap();
+	private Map<String, Object> options = new HashMap<String, Object>();
 	
 	protected void onBind() {
 		super.onBind();
 
 		getComponent().setOutputMarkupId(true);
-		getComponent().add(new AttributeModifier("autocomplete", new Model("off")));
+		getComponent().add(new AttributeModifier("autocomplete", new Model<String>("off")));
 		getComponent().add(HeaderContributor.forCss(getCss(), "screen"));
 	}
 

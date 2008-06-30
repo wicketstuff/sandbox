@@ -35,41 +35,45 @@ import org.wicketstuff.scriptaculous.ScriptaculousAjaxBehavior;
  * @see http://wiki.script.aculo.us/scriptaculous/show/Sortable.create
  * @author <a href="mailto:wireframe6464@users.sourceforge.net">Ryan Sonnek</a>
  */
-public abstract class SortableListView extends WebMarkupContainer {
+public abstract class SortableListView<T> extends WebMarkupContainer {
 	private static final Logger LOG = LoggerFactory.getLogger(SortableListView.class);
 
 	private AbstractAjaxBehavior onUpdateBehavior = new SortableContainerBehavior();
 	private Map<String, Serializable> options = new HashMap<String, Serializable>();
 	private List<SortableListView> containmentSortables = new ArrayList<SortableListView>();
 	
-	public SortableListView(String id, final String itemId, final List<?> items) {
-		this(id, itemId, new Model((Serializable) items));
+	public SortableListView(String id, final String itemId, final List<T> items) {
+		this(id, itemId,  Model.of(items));
 	}
 
-	public SortableListView(String id, final String itemId, IModel model) {
+	public SortableListView(String id, final String itemId, IModel<List<T>> model) {
 		super(id, model);
 
 		setOutputMarkupId(true);
 
 		add(onUpdateBehavior);
-		add(new ListView(itemId, model) {
+		add(new ListView<T>(itemId, model) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected ListItem newItem(int index) {
-				return new SortableListItem(itemId, index, getListItemModel(getModel(), index));
+			protected ListItem<T> newItem(int index) {
+				return new SortableListItem<T>(itemId, index, getListItemModel(getModel(), index));
 			}
 
 			@Override
-			protected void populateItem(ListItem item) {
+			protected void populateItem(ListItem<T> item) {
 				if (null != getDraggableClassName()) {
-					item.add(new AttributeAppender("class", new Model(getDraggableClassName()), " "));
+					item.add(new AttributeAppender("class", new Model<String>(getDraggableClassName()), " "));
 				}
 				populateItemInternal(item);
 			}
 		});
 	}
 
+	@SuppressWarnings("unchecked")
+	public IModel<List<T>> getModel() {
+		return (IModel<List<T>>)getDefaultModel();
+	}
 	public void setConstraintVertical() {
 		options.put("constraint", "vertical");
 	}
@@ -110,7 +114,7 @@ public abstract class SortableListView extends WebMarkupContainer {
 	 * callback extension point for populating each list item.
 	 * @param item
 	 */
-	protected abstract void populateItemInternal(ListItem item);
+	protected abstract void populateItemInternal(ListItem<T> item);
 
 	/**
 	 * extension point for integrating with {@link DraggableTarget}
@@ -144,12 +148,14 @@ public abstract class SortableListView extends WebMarkupContainer {
 		getResponse().write(builder.buildScriptTagString());
 	}
 
-	private static class SortableContainerBehavior extends ScriptaculousAjaxBehavior {
+	private static class SortableContainerBehavior<T> extends ScriptaculousAjaxBehavior {
 		private static final long serialVersionUID = 1L;
 
 		@Override
 		protected void respond(AjaxRequestTarget target) {
-			SortableListView listView = (SortableListView) getComponent();
+			@SuppressWarnings("unchecked")
+			SortableListView<T> listView = (SortableListView<T>) getComponent();
+			
 			String[] parameters = listView.getRequest().getParameters(listView.getMarkupId() + "[]");
 
 			if (parameters == null) {
@@ -157,8 +163,8 @@ public abstract class SortableListView extends WebMarkupContainer {
 				return;
 			}
 
-            List<Object> items = (List<Object>) listView.getModelObject();
-            List<Object> originalItems = new ArrayList<Object>(items);
+            List<T> items = listView.getModel().getObject();
+            List<T> originalItems = new ArrayList<T>(items);
             for (int index = 0; index < items.size(); index++) {
             	int newIndex = Integer.parseInt(parameters[index]);
             	if (!items.get(index).equals(items.get(newIndex))) {
@@ -171,11 +177,11 @@ public abstract class SortableListView extends WebMarkupContainer {
 		}
 	}
 	
-	private static class SortableListItem extends ListItem {
+	private static class SortableListItem<T> extends ListItem<T> {
 		private static final long serialVersionUID = 1L;
 		private final String itemId;
 
-		public SortableListItem(String itemId, int index, IModel listItemModel) {
+		public SortableListItem(String itemId, int index, IModel<T> listItemModel) {
 			super(index, listItemModel);
 			this.itemId = itemId;
 			

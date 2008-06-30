@@ -1,10 +1,6 @@
 package org.wicketstuff.scriptaculous.fx;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.wicket.AttributeModifier;
-import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -13,7 +9,6 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.wicketstuff.scriptaculous.ScriptaculousAjaxBehavior;
-import org.wicketstuff.scriptaculous.effect.Effect;
 
 /**
  * simple scriptacoulus toaster / info window CSS inspired by dojo contrib
@@ -36,18 +31,16 @@ public class Toaster extends Panel {
 	public Toaster(String id, IModel model, boolean manualSetup) {
 		super(id, model);
 		add(container = new WebMarkupContainer("container"));
-		if (toasterSettings == null) {
-			toasterSettings = new ToasterSettings(container);
-		}
-		this.toasterSettings=toasterSettings;
+
+		toasterSettings = new ToasterSettings(container);
 		
 		add(ScriptaculousAjaxBehavior.newJavascriptBindingBehavior());
 		
-		container.add(new AttributeModifier("class", new Model(
+		container.add(new AttributeModifier("class", new Model<String>(
 				"toasterContainer" + this.getId())));
 		container.setOutputMarkupPlaceholderTag(true);
 		container.add(label=new Label("message", model));
-		label.add(new AttributeModifier("class", new Model("toasterContent" + this.getId())));
+		label.add(new AttributeModifier("class", new Model<String>("toasterContent" + this.getId())));
 		
 		if(!manualSetup){
 			setupCSSLocation();
@@ -61,9 +54,9 @@ public class Toaster extends Panel {
 		add(new ToasterCSSHeaderContributor(this.getId(), toasterSettings));
 	}
 	
-	public MarkupContainer setModel(IModel model)
+	public MarkupContainer setModel(IModel<?> model)
 	{
-		label.setModel(model);
+		label.setDefaultModel(model);
 		
 		return this;
 	}
@@ -72,11 +65,8 @@ public class Toaster extends Panel {
 	public void publishMessage(AjaxRequestTarget target) {
 		target.addComponent(container);
 
-		List<Effect> list=new ArrayList<Effect>();
-		
 		if (toasterSettings.getAppear() != null) {
 			target.appendJavascript(toasterSettings.getAppear().toJavascript());
-
 		}
 		if (toasterSettings.getMiddle() != null) {
 			target.appendJavascript(toasterSettings.getMiddle().toJavascript());

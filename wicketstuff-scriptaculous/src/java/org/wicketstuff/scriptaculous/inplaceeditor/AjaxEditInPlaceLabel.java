@@ -27,16 +27,16 @@ import org.wicketstuff.scriptaculous.effect.Effect;
  *
  * @author <a href="mailto:wireframe6464@users.sourceforge.net">Ryan Sonnek</a>
  */
-public class AjaxEditInPlaceLabel extends AbstractTextComponent
+public class AjaxEditInPlaceLabel<T> extends AbstractTextComponent<T>
 {
 	private static final long serialVersionUID = 1L;
 	private AbstractAjaxBehavior callbackBehavior = new AjaxEditInPlaceOnSaveBehavior();
 	private AbstractAjaxBehavior onCompleteBehavior = new AjaxEditInPlaceOnCompleteBehavior();
-	private Map options = new HashMap();
+	private Map<String, Object> options = new HashMap<String, Object>();
 	private boolean enterEditMode = false;
 	private AbstractAjaxBehavior loadBehavior;
 
-	public AjaxEditInPlaceLabel(String wicketId, IModel model)
+	public AjaxEditInPlaceLabel(String wicketId, IModel<T> model)
 	{
 		super(wicketId);
 		setModel(model);

@@ -21,7 +21,7 @@ import org.wicketstuff.scriptaculous.ScriptaculousAjaxBehavior;
 public class DraggableBehavior extends ScriptaculousAjaxBehavior
 {
 	private static final long serialVersionUID = 1L;
-	private Map options = new HashMap();
+	private Map<String, Object> options = new HashMap<String, Object>();
 
   @Override
 	protected final void onBind() {
