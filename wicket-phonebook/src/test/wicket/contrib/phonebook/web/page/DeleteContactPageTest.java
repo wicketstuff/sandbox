@@ -40,12 +40,12 @@ public class DeleteContactPageTest extends TestCase {
 	private PhonebookFixture fixture;
 
 	private static final class MockDeleteContactPage implements ITestPageSource {
-		public Page<Contact> getTestPage() {
+		public Page getTestPage() {
 			Contact contact = new Contact();
 			contact.setId(99);
 			contact.setFirstname("Kare");
 			contact.setLastname("Nuorteva");
-			return new DeleteContactPage<Contact>(new ListContactsPage(), new Model<Contact>(
+			return new DeleteContactPage(new ListContactsPage(), new Model<Contact>(
 					contact));
 		}
 	}

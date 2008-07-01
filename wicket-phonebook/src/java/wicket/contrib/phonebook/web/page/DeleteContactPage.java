@@ -35,8 +35,8 @@ import wicket.contrib.phonebook.ContactDao;
  *
  * @author igor
  */
-public class DeleteContactPage<T extends Contact> extends BasePage<T> {
-	private final Page<T> backPage;
+public class DeleteContactPage extends BasePage {
+	private final Page backPage;
 	@SpringBean(name = "contactDao")
 	private ContactDao contactDao;
 
@@ -50,10 +50,10 @@ public class DeleteContactPage<T extends Contact> extends BasePage<T> {
 	 * @param contact
 	 *            Model that contains the contact to be deleted
 	 */
-	public DeleteContactPage(Page<T> backPage, IModel<T> contact) {
+	public DeleteContactPage(Page backPage, IModel<?> contact) {
 		this.backPage = backPage;
-		setModel(contact);
-		add(new Label<String>("name", getContact().getFullName()));
+		setDefaultModel(contact);
+		add(new Label("name", getContact().getFullName()));
 		addConfimButton();
 		addCancelButton();
 	}
@@ -100,7 +100,7 @@ public class DeleteContactPage<T extends Contact> extends BasePage<T> {
 	 *
 	 * @return <code>Contact</code> instance stored in model
 	 */
-	private T getContact() {
-		return getModelObject();
+	private Contact getContact() {
+		return (Contact) getDefaultModelObject();
 	}
 }

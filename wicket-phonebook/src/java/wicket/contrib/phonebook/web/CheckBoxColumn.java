@@ -77,7 +77,7 @@ public abstract class CheckBoxColumn<T> extends HeaderlessColumn<T> {
 	 */
 	protected abstract Serializable getModelObjectToken(IModel<T> model);
 
-	private static class CheckBoxPanel extends Panel<Collection<Serializable>>
+	private static class CheckBoxPanel extends Panel
 			implements IMarkupResourceStreamProvider {
 
 		public CheckBoxPanel(String id, IModel<Collection<Serializable>> model,
@@ -87,7 +87,7 @@ public abstract class CheckBoxColumn<T> extends HeaderlessColumn<T> {
 		}
 
 		public IResourceStream getMarkupResourceStream(
-				MarkupContainer<?> container, Class<?> containerClass) {
+				MarkupContainer container, Class<?> containerClass) {
 			return new StringResourceStream(
 					"<wicket:panel><input wicket:id=\"checkbox\" type=\"checkbox\"/></wicket:panel>");
 		}

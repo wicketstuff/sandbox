@@ -30,7 +30,7 @@ import wicket.contrib.phonebook.web.page.ListContactsPage;
  */
 public abstract class BasePhonebookApplication extends WebApplication {
 	@Override
-	public Class<? extends Page<?>> getHomePage() {
+	public Class<? extends Page> getHomePage() {
 		return ListContactsPage.class;
 	}
 
