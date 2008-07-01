@@ -46,12 +46,15 @@ public abstract class GMapExampleApplication extends WebApplication
 	}
 
 	@Override
-	protected void init() {
+	protected void init()
+	{
 		super.init();
-		
-//		getMarkupSettings().setStripWicketTags(true);
+		// Due to Firefox 3.0 we strip the wicket tags,
+		// even in develop mode.
+		// http://www.nabble.com/Gmap2-problem-with-Firefox-3.0-to18137475.html
+		getMarkupSettings().setStripWicketTags(true);
 	}
-	
+
 	/**
 	 * Gets the init parameter 'GoogleMapsAPIkey' of the filter, or throws a
 	 * WicketRuntimeException, if it is not set.

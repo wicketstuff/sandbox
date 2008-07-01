@@ -17,6 +17,7 @@ public class InfoWindowGMapApplication extends GMapExampleApplication
 	@Override
 	protected void init()
 	{
+		super.init();
 		getResourceSettings().setResourcePollFrequency(Duration.seconds(10));
 	}
 
