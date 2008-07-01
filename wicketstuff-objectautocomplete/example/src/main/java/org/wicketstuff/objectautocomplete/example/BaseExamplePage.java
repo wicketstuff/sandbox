@@ -34,6 +34,8 @@ import org.wicketstuff.objectautocomplete.ReadOnlyObjectRenderer;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Iterator;
+import java.util.ArrayList;
 
 /**
  * @author roland
@@ -126,4 +128,15 @@ abstract public class BaseExamplePage<T extends Serializable,I extends Serializa
     public IModel<I> getModel() {
         return (IModel<I>) getDefaultModel();
     }
+
+    public Iterator getChoices(String input) {
+        List<T> cars = getAllChoices();
+        List<T> ret = new ArrayList<T>();
+        for (T car : cars) {
+            addIfMatch(ret,car,input);
+        }
+        return ret.iterator();
+    }
+
+    abstract protected void addIfMatch(List<T> pList, T pElement, String pInput);
 }
