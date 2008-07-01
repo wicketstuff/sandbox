@@ -35,12 +35,10 @@ public class HomePage extends WicketExamplePage
 	 */
 	public HomePage()
 	{
-		final GMap2 map = new GMap2("map", GMapExampleApplication.get()
-				.getGoogleMapsAPIkey());
+		final GMap2 map = new GMap2("map", GMapExampleApplication.get().getGoogleMapsAPIkey());
 		map.addControl(GControl.GLargeMapControl);
 		add(map);
-		final WebMarkupContainer repeaterParent = new WebMarkupContainer(
-				"repeaterParent");
+		final WebMarkupContainer repeaterParent = new WebMarkupContainer("repeaterParent");
 		repeaterParent.setOutputMarkupId(true);
 		add(repeaterParent);
 		final RepeatingView rv = new RepeatingView("label");
@@ -100,8 +98,8 @@ public class HomePage extends WicketExamplePage
 					rv.removeAll();
 					for (GOverlay myMarker : map.getOverlays())
 					{
-						final GOverlayPanel label = new GOverlayPanel(myMarker
-								.getId(), new CompoundPropertyModel<GOverlay>(myMarker));
+						final GOverlayPanel label = new GOverlayPanel(myMarker.getId(),
+								new CompoundPropertyModel<MyMarker>(myMarker));
 						label.setOutputMarkupId(true);
 						rv.add(label);
 					}
@@ -119,7 +117,7 @@ public class HomePage extends WicketExamplePage
 	{
 		private static final long serialVersionUID = 1L;
 
-		public GOverlayPanel(String id, final IModel<GOverlay> model)
+		public GOverlayPanel(String id, final IModel<MyMarker> model)
 		{
 			super(id, model);
 			add(new Label("latLng"));
@@ -148,7 +146,7 @@ public class HomePage extends WicketExamplePage
 				protected void onEvent(AjaxRequestTarget target)
 				{
 					MyMarker overlay = model.getObject();
-					if (dragendLabel.getModelObject())
+					if ((Boolean)dragendLabel.getDefaultModelObject())
 					{
 						overlay.clearListeners(GEvent.dragend);
 					}
@@ -161,19 +159,18 @@ public class HomePage extends WicketExamplePage
 
 			});
 			add(dragendLabel);
-			final Label<Boolean> dblclickLabel = new Label<Boolean>("dblclick",
-					new Model<Boolean>()
-					{
-						private static final long serialVersionUID = 1L;
+			final Label dblclickLabel = new Label("dblclick", new Model<Boolean>()
+			{
+				private static final long serialVersionUID = 1L;
 
-						@Override
-						public Boolean getObject()
-						{
+				@Override
+				public Boolean getObject()
+				{
 
-							return ((GOverlay)getModelObject()).getListeners().containsKey(
-									GEvent.dblclick);
-						}
-					});
+					return ((GOverlay)getDefaultModelObject()).getListeners().containsKey(
+							GEvent.dblclick);
+				}
+			});
 			dblclickLabel.add(new AjaxEventBehavior("onclick")
 			{
 
@@ -182,8 +179,8 @@ public class HomePage extends WicketExamplePage
 				@Override
 				protected void onEvent(AjaxRequestTarget target)
 				{
-					MyMarker overlay = ((MyMarker)GOverlayPanel.this.getModelObject());
-					if (dragendLabel.getModelObject())
+					MyMarker overlay = ((MyMarker)GOverlayPanel.this.getDefaultModelObject());
+					if ((Boolean)dragendLabel.getDefaultModelObject())
 					{
 						overlay.clearListeners(GEvent.dblclick);
 					}

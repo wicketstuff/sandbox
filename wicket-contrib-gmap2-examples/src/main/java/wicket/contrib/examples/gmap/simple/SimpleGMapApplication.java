@@ -35,7 +35,6 @@ public class SimpleGMapApplication extends GMapExampleApplication
 	protected void init()
 	{
 		super.init();
-
 		getResourceSettings().setResourcePollFrequency(Duration.seconds(10));
 	}
 
