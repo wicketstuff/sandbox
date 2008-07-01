@@ -3,7 +3,6 @@ package wicket.contrib.examples.gmap.controls;
 import org.apache.wicket.Page;
 import org.apache.wicket.protocol.http.HttpSessionStore;
 import org.apache.wicket.session.ISessionStore;
-import org.apache.wicket.util.time.Duration;
 
 import wicket.contrib.examples.GMapExampleApplication;
 
@@ -17,7 +16,6 @@ public class ControlsGMapApplication extends GMapExampleApplication
 	protected void init()
 	{
 		super.init();
-		getResourceSettings().setResourcePollFrequency(Duration.seconds(10));
 	}
 
 	@Override

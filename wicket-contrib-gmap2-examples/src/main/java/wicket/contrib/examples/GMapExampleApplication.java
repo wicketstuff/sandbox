@@ -18,6 +18,7 @@ package wicket.contrib.examples;
 
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.protocol.http.WebApplication;
+import org.apache.wicket.util.time.Duration;
 
 /**
  * Application class for GMap Examples
@@ -49,6 +50,7 @@ public abstract class GMapExampleApplication extends WebApplication
 	protected void init()
 	{
 		super.init();
+		getResourceSettings().setResourcePollFrequency(Duration.seconds(10));
 		// Due to Firefox 3.0 we strip the wicket tags,
 		// even in develop mode.
 		// http://www.nabble.com/Gmap2-problem-with-Firefox-3.0-to18137475.html
