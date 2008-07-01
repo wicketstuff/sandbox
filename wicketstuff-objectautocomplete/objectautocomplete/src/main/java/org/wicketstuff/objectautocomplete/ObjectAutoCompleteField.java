@@ -18,6 +18,7 @@ package org.wicketstuff.objectautocomplete;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.util.string.AppendingStringBuffer;
+import org.apache.wicket.util.string.Strings;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
@@ -61,6 +62,7 @@ public class ObjectAutoCompleteField<T,I> extends Panel
 
     // Remember old id in case a search operation is aborted
     private I backupObject;
+    private String backupText;
 
     // Remember selected input string
     private String selectedObjectFromChoice;
@@ -206,6 +208,7 @@ public class ObjectAutoCompleteField<T,I> extends Panel
 
     private void changeToSearchMode(AjaxRequestTarget target) {
         backupObject = ObjectAutoCompleteField.this.getModelObject();
+        backupText = searchTextField.getModelObject();
         ObjectAutoCompleteField.this.setModelObject(null);
         if (target != null) {
             target.addComponent(ObjectAutoCompleteField.this);
@@ -221,12 +224,22 @@ public class ObjectAutoCompleteField<T,I> extends Panel
      *
      * @param pTarget target to which the components to update are added
      */
-    public void searchCanceled(AjaxRequestTarget pTarget) {
+    public void searchCanceled(AjaxRequestTarget pTarget,boolean pForceRestore) {
         if (backupObject != null) {
+            if (Strings.isEmpty(searchTextField.getModelObject()) && !pForceRestore) {
+                searchTextField.setModelObject(null);
+                backupText = null;
+                backupObject = null;
+            } else if (backupText != null) {
+                searchTextField.setModelObject(backupText);
+            }
             setModelObject(backupObject);
             pTarget.addComponent(ObjectAutoCompleteField.this);
         } else {
+            searchTextField.setModelObject(null);
+            setModelObject(null);
             searchTextField.clearInput();
+            backupText = null;
             pTarget.addComponent(searchTextField);
         }
         updateDependentComponents(pTarget);
