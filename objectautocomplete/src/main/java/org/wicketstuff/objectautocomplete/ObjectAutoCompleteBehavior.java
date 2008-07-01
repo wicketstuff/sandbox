@@ -124,19 +124,23 @@ public class ObjectAutoCompleteBehavior<T> extends AutoCompleteBehavior<T> {
         super.onComponentTag(tag);
         if (cancelListener != null) {
             final String keypress = "if (event) { var kc=wicketKeyCode(event); if (kc==27) {" +
-                    generateCallbackScript("wicketAjaxGet('" + getCallbackUrl() + "&cancel=true'") +
+                    generateCallbackScript("wicketAjaxGet('" + getCallbackUrl() + "&cancel=true&force=true'") +
                     "; return false;} else if (kc==13) return false; else return true;}";
             tag.put("onkeypress", keypress);
+
+            final String onblur =
+                    generateCallbackScript("wicketAjaxGet('" + getCallbackUrl() + "&cancel=true'") + "; return false;";
+            tag.put("onblur",onblur);
         }
     }
 
     @Override
     protected void respond(AjaxRequestTarget target) {
         RequestCycle requestCycle = RequestCycle.get();
-        boolean cancel = Boolean.valueOf(requestCycle.getRequest().getParameter("cancel"))
-                .booleanValue();
+        boolean cancel = Boolean.valueOf(requestCycle.getRequest().getParameter("cancel")).booleanValue();
+        boolean force = Boolean.valueOf(requestCycle.getRequest().getParameter("force")).booleanValue();
         if (cancelListener != null && cancel) {
-            cancelListener.searchCanceled(target);
+            cancelListener.searchCanceled(target,force);
         } else {
             super.respond(target);
         }
