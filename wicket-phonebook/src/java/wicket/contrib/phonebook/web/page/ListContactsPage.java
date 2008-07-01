@@ -55,7 +55,7 @@ import wicket.contrib.phonebook.web.ContactsDataProvider;
  *
  * @author igor
  */
-public class ListContactsPage extends BasePage<Contact> {
+public class ListContactsPage extends BasePage {
 	@SpringBean(name = "contactDao")
 	private ContactDao dao;
 
@@ -68,16 +68,16 @@ public class ListContactsPage extends BasePage<Contact> {
 	 *
 	 * @author igor
 	 */
-	private static class UserActionsPanel extends Panel<Contact> {
-		public UserActionsPanel(String id, IModel<Contact> contactModel) {
+	private static class UserActionsPanel extends Panel {
+		public UserActionsPanel(String id, IModel<?> contactModel) {
 			super(id);
 			addEditLink(contactModel);
 			addDeleteLink(contactModel);
 
 		}
 
-		private void addDeleteLink(IModel<Contact> contactModel) {
-			add(new Link<Contact>("deleteLink", contactModel) {
+		private void addDeleteLink(IModel<?> contactModel) {
+			add(new Link("deleteLink", contactModel) {
 				/**
 				 * Go to the Delete page, passing this page and the id of the
 				 * Contact involved.
@@ -89,8 +89,8 @@ public class ListContactsPage extends BasePage<Contact> {
 			});
 		}
 
-		private void addEditLink(IModel<Contact> contactModel) {
-			add(new Link<Contact>("editLink", contactModel) {
+		private void addEditLink(IModel<?> contactModel) {
+			add(new Link("editLink", contactModel) {
 				/**
 				 * Go to the Edit page, passing this page and the id of the
 				 * Contact involved.
@@ -125,7 +125,7 @@ public class ListContactsPage extends BasePage<Contact> {
 			}
 		};
 
-		form.add(new Button<Void>("delete-selected") {
+		form.add(new Button("delete-selected") {
 			@Override
 			public void onSubmit() {
 				Iterator<Long> it = selectedContactIds.iterator();
@@ -186,8 +186,8 @@ public class ListContactsPage extends BasePage<Contact> {
 	 * adds a UserActionsPanel as its cell contents. It also provides the
 	 * go-and-clear filter control panel.
 	 */
-	private FilteredAbstractColumn createActionsColumn() {
-		return new FilteredAbstractColumn(new Model(getString("actions"))) {
+	private FilteredAbstractColumn<Object> createActionsColumn() {
+		return new FilteredAbstractColumn<Object>(new Model<String>(getString("actions"))) {
 			// return the go-and-clear filter for the filter toolbar
 			public Component getFilter(String componentId, FilterForm form) {
 				return new GoAndClearFilter(componentId, form,
@@ -210,7 +210,7 @@ public class ListContactsPage extends BasePage<Contact> {
 			 */
 			@Override
 			public void onClick() {
-				setResponsePage(new EditContactPage(getPage(), new Model(
+				setResponsePage(new EditContactPage(getPage(), new Model<Contact>(
 						new Contact())));
 			}
 		});
