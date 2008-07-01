@@ -78,6 +78,7 @@ public class ReadOnlyObjectRendererExamplePage extends BaseExamplePage<Car,Integ
                 "form.add(acField);";
     }
 
+    @Override
     String getHtmlSample() {
         return "<form wicket:id=\"form\">\n" +
                 "  Brand: <input type=\"text\" wicket:id=\"acField\" />\n" +
@@ -89,14 +90,11 @@ public class ReadOnlyObjectRendererExamplePage extends BaseExamplePage<Car,Integ
                 "</wicket:fragment>";
     }
 
-    public Iterator getChoices(String input) {
-        List<Car> cars = getAllChoices();
-        List<Car> ret = new ArrayList<Car>();
-        for (Car car : cars) {
-            if (car.getName().toLowerCase().startsWith(input.toLowerCase())) {
-                ret.add(car);
-            }
+    @Override
+    protected void addIfMatch(List<Car> pCars, Car pCar, String pInput) {
+        if (pCar.getName().toLowerCase().startsWith(pInput.toLowerCase())) {
+            pCars.add(pCar);
         }
-        return ret.iterator();
     }
+
 }
