@@ -30,8 +30,10 @@ import org.apache.wicket.markup.html.panel.FeedbackPanel;
  *
  * @author igor
  */
-public class BasePage extends WebPage {
-	public BasePage() {
+public class BasePage extends WebPage
+{
+	public BasePage()
+	{
 		add(new FeedbackPanel("status"));
 	}
 }

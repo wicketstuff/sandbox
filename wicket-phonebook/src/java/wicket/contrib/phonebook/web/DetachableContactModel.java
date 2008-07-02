@@ -31,7 +31,8 @@ import wicket.contrib.phonebook.ContactDao;
  *
  * @author ivaynberg
  */
-public class DetachableContactModel extends LoadableDetachableModel<Contact> {
+public class DetachableContactModel extends LoadableDetachableModel<Contact>
+{
 	/**
 	 * database identity of the contact
 	 */
@@ -51,7 +52,8 @@ public class DetachableContactModel extends LoadableDetachableModel<Contact> {
 	 * @param contact
 	 * @param dao
 	 */
-	public DetachableContactModel(Contact contact, ContactDao dao) {
+	public DetachableContactModel(Contact contact, ContactDao dao)
+	{
 		super(contact);
 		this.id = contact.getId();
 		this.dao = dao;
@@ -63,7 +65,8 @@ public class DetachableContactModel extends LoadableDetachableModel<Contact> {
 	 * @see wicket.model.LoadableDetachableModel#load()
 	 */
 	@Override
-	protected Contact load() {
+	protected Contact load()
+	{
 		return dao.load(id);
 	}
 }

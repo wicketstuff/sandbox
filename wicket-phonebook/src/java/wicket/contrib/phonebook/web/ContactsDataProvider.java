@@ -42,8 +42,10 @@ import wicket.contrib.phonebook.QueryParam;
  *
  * @author igor
  */
-public class ContactsDataProvider extends SortableDataProvider<Contact> implements
-		IFilterStateLocator {
+public class ContactsDataProvider extends SortableDataProvider<Contact>
+		implements
+			IFilterStateLocator
+{
 
 	/** dao that will be used to retrieve the list of contacts */
 	private final ContactDao dao;
@@ -53,19 +55,23 @@ public class ContactsDataProvider extends SortableDataProvider<Contact> implemen
 
 	private QueryParam queryParam;
 
-	public void setQueryParam(QueryParam queryParam) {
+	public void setQueryParam(QueryParam queryParam)
+	{
 		this.queryParam = queryParam;
 	}
 
-	public Object getFilterState() {
+	public Object getFilterState()
+	{
 		return filter;
 	}
 
-	public void setFilterState(Object state) {
-		filter = (Contact) state;
+	public void setFilterState(Object state)
+	{
+		filter = (Contact)state;
 	}
 
-	public ContactsDataProvider(ContactDao dao) {
+	public ContactsDataProvider(ContactDao dao)
+	{
 		this.dao = dao;
 
 		// set the default sort
@@ -81,12 +87,15 @@ public class ContactsDataProvider extends SortableDataProvider<Contact> implemen
 	 *            number of rows to retrieve
 	 * @return iterator capable of iterating over {first, first+count} contacts
 	 */
-	public Iterator<Contact> iterator(int first, int count) {
+	public Iterator<Contact> iterator(int first, int count)
+	{
 		SortParam sp = getSort();
-		if (queryParam == null) {
-			queryParam = new QueryParam(first, count, sp.getProperty(), sp
-					.isAscending());
-		} else {
+		if (queryParam == null)
+		{
+			queryParam = new QueryParam(first, count, sp.getProperty(), sp.isAscending());
+		}
+		else
+		{
 			queryParam.setFirst(first);
 			queryParam.setCount(count);
 			queryParam.setSort(sp.getProperty());
@@ -100,7 +109,8 @@ public class ContactsDataProvider extends SortableDataProvider<Contact> implemen
 	 *
 	 * @return total item count
 	 */
-	public int size() {
+	public int size()
+	{
 		return dao.count(filter);
 	}
 
@@ -112,7 +122,8 @@ public class ContactsDataProvider extends SortableDataProvider<Contact> implemen
 	 *            The object that needs to be wrapped
 	 * @return The model representation of the object
 	 */
-	public IModel<Contact> model(Contact object) {
+	public IModel<Contact> model(Contact object)
+	{
 		return new DetachableContactModel(object, dao);
 	}
 
