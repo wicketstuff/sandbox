@@ -1263,7 +1263,7 @@ InMethod.XTable.prototype = {
 			
 		}.bind(this);
 						
-		// heper function that reorders columns in the given rows
+		// helper function that reorders columns in the given rows
 		var updateRows = function(rows, fixSpans) {			
 			for (var j = 0; j < rows.length; ++j) {
 				var row = rows[j];
@@ -1271,13 +1271,17 @@ InMethod.XTable.prototype = {
 				
 				var current = tds[i];
 				
+				if (typeof(current) == "undefined") {
+					continue;
+				}
+				
 				var index = i + delta;
 				if (delta > 0) {
 					++index;
 				}
 				
 				other = tds[index];		
-				
+								
 				row.insertBefore(current, other);
 				
 				if (L.isFunction(fixSpans)) {
