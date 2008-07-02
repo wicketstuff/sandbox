@@ -710,8 +710,13 @@ public abstract class AbstractGrid extends Panel implements IHeaderContributor {
 				IModel model = rowComponent.getDefaultModel();
 
 				IGridColumn lastClickedColumn = getLastClickedColumn();
-				if (lastClickedColumn != null && lastClickedColumn.cellClicked(model) == true) {
-					return;
+				if (lastClickedColumn != null) {					
+					if (onCellClicked(target, model, lastClickedColumn) == true) {
+						return;
+					}
+					if (lastClickedColumn.cellClicked(model) == true) {
+						return;
+					}					
 				}
 
 				onRowClicked(target, model);
@@ -738,6 +743,10 @@ public abstract class AbstractGrid extends Panel implements IHeaderContributor {
 			}
 		});
 
+	}
+	
+	protected boolean onCellClicked(AjaxRequestTarget target, IModel rowModel, IGridColumn column) 	{
+		return false;
 	}
 
 	protected void onRowClicked(AjaxRequestTarget target, IModel rowModel) {

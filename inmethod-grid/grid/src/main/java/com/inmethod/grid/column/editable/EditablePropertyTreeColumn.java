@@ -143,21 +143,34 @@ public class EditablePropertyTreeColumn extends PropertyTreeColumn {
 	 */
 	@Override
 	public String getCellCssClass(IModel rowModel, int rowNum) {
-		if (getGrid().isItemEdited(rowModel)) {
-			return "imxt-want-prelight imxt-edited-cell";
+		if (isClickToEdit()) {
+			if (getGrid().isItemEdited(rowModel)) {
+				return "imxt-want-prelight imxt-edited-cell";
+			} else {
+				return "imxt-want-prelight";
+			}
 		} else {
-			return "imxt-want-prelight";
+			if (getGrid().isItemEdited(rowModel)) {
+				return "imxt-edited-cell";
+			}
+			else {
+				return "";
+			}
 		}
 	}
 	
 	@Override
-	public boolean cellClicked(IModel rowModel) {
-		if (getGrid().isClickRowToSelect() && getGrid().isSelectToEdit()) {
+	public boolean cellClicked(IModel rowModel) {		
+		if (!isClickToEdit() || (getGrid().isClickRowToSelect() && getGrid().isSelectToEdit())) {
 			return false;
 		} else {
 			getGrid().setItemEdit(rowModel, true);
 			getGrid().update();
 			return true;
 		}
+	}
+	
+	protected boolean isClickToEdit() {
+		return true;
 	}
 }
