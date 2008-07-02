@@ -58,25 +58,10 @@ public class JQueryBehavior extends AbstractDefaultAjaxBehavior {
      */
     public static final CompressedResourceReference INTERFACE_JS = new CompressedResourceReference(JQueryBehavior.class, "interface-1.2.js");
 
-	/**
-	 *  ResourceReference for JQuery UI Draggable, used by the DndBehaviour
-	 */
-	public static final CompressedResourceReference JQUERY_UI_DRAGGABLE = new CompressedResourceReference(JQueryBehavior.class, "ui.draggable.js");
-
-	/**
-	 *  ResourceReference for JQuery UI Droppable, used by the DndBehaviour
-	 */
-	public static final CompressedResourceReference JQUERY_UI_DROPPABLE = new CompressedResourceReference(JQueryBehavior.class, "ui.droppable.js");
-
     /**
-     *  ResourceReference for <a href="http://jquery.com/plugins/project/ui">jquery.ui.mouse.js</a> (not include in reponse header)
+     *  ResourceReference for jquery.ui containing core, resizable, draggable, droppable, selectable <a href="http://ui.jquery.com">jquery-ui-personalized.js</a>
      */
-    public static final CompressedResourceReference JQUERY_MOUSE_JS = new CompressedResourceReference(JQueryBehavior.class, "jquery.ui.mouse.js");
-
-    /**
-     *  ResourceReference for <a href="http://jquery.com/plugins/project/ui">jquery.ui.resizable.js</a> (not include in reponse header)
-     */
-    public static final CompressedResourceReference JQUERY_RESIZABLE_JS = new CompressedResourceReference(JQueryBehavior.class, "jquery.ui.resizable.js");
+    public static final CompressedResourceReference JQUERY_UI_JS = new CompressedResourceReference(JQueryBehavior.class, "jquery-ui-personalized.js");
 
     /**
      *  ResourceReference for <a href="http://jquery.com/plugins/project/bgiframe">jquery.bgiframe-2.1.1.js</a> (not include in reponse header)
