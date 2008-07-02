@@ -24,10 +24,11 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 /**
  * @author Kare Nuorteva
  */
-public class PhonebookApplication extends BasePhonebookApplication {
+public class PhonebookApplication extends BasePhonebookApplication
+{
 	@Override
-	public ApplicationContext context() {
-		return WebApplicationContextUtils
-				.getRequiredWebApplicationContext(getServletContext());
+	public ApplicationContext context()
+	{
+		return WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
 	}
 }

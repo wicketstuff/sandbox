@@ -35,7 +35,8 @@ import wicket.contrib.phonebook.ContactDao;
  *
  * @author igor
  */
-public class DeleteContactPage extends BasePage {
+public class DeleteContactPage extends BasePage
+{
 	private final Page backPage;
 	@SpringBean(name = "contactDao")
 	private ContactDao contactDao;
@@ -50,7 +51,8 @@ public class DeleteContactPage extends BasePage {
 	 * @param contact
 	 *            Model that contains the contact to be deleted
 	 */
-	public DeleteContactPage(Page backPage, IModel<?> contact) {
+	public DeleteContactPage(Page backPage, IModel<?> contact)
+	{
 		this.backPage = backPage;
 		setDefaultModel(contact);
 		add(new Label("name", getContact().getFullName()));
@@ -58,37 +60,45 @@ public class DeleteContactPage extends BasePage {
 		addCancelButton();
 	}
 
-	private void addConfimButton() {
+	private void addConfimButton()
+	{
 		/*
 		 * notice in mark-up this link is attached to <input type='button'/>
 		 * tag, the link is smart enough to know to generate an onclick instead
 		 * of href
 		 */
-		//TODO value attribute of 'input' tag is not set
-		add(new Link<String>("confirm", new ResourceModel("confirm")) {
+		// TODO value attribute of 'input' tag is not set
+		add(new Link<String>("confirm", new ResourceModel("confirm"))
+		{
 			private static final long serialVersionUID = 1L;
+
 			@Override
-			public void onClick() {
+			public void onClick()
+			{
 				final Contact deleted = getContact();
 				contactDao.delete(deleted.getId());
-				String msg = MapVariableInterpolator.interpolate(getLocalizer()
-						.getString("status.deleted", this), new MicroMap<String, String>(
-						"name", deleted.getFullName()));
+				String msg = MapVariableInterpolator.interpolate(getLocalizer().getString(
+						"status.deleted", this), new MicroMap<String, String>("name", deleted
+						.getFullName()));
 				getSession().info(msg);
 				setResponsePage(DeleteContactPage.this.backPage);
 			}
 		});
 	}
 
-	//TODO value attribute of 'input' tag is not set
-	private void addCancelButton() {
-		add(new Link<String>("cancel", new ResourceModel("cancel")) {
+	// TODO value attribute of 'input' tag is not set
+	private void addCancelButton()
+	{
+		add(new Link<String>("cancel", new ResourceModel("cancel"))
+		{
 			private static final long serialVersionUID = 1L;
+
 			@Override
-			public void onClick() {
-				String msg = MapVariableInterpolator.interpolate(getLocalizer()
-						.getString("status.cancelled", this), new MicroMap<String, String>(
-						"name", getContact().getFullName()));
+			public void onClick()
+			{
+				String msg = MapVariableInterpolator.interpolate(getLocalizer().getString(
+						"status.cancelled", this), new MicroMap<String, String>("name",
+						getContact().getFullName()));
 				getSession().info(msg);
 				setResponsePage(DeleteContactPage.this.backPage);
 			}
@@ -100,7 +110,8 @@ public class DeleteContactPage extends BasePage {
 	 *
 	 * @return <code>Contact</code> instance stored in model
 	 */
-	private Contact getContact() {
-		return (Contact) getDefaultModelObject();
+	private Contact getContact()
+	{
+		return (Contact)getDefaultModelObject();
 	}
 }

@@ -55,7 +55,8 @@ import wicket.contrib.phonebook.web.ContactsDataProvider;
  *
  * @author igor
  */
-public class ListContactsPage extends BasePage {
+public class ListContactsPage extends BasePage
+{
 	@SpringBean(name = "contactDao")
 	private ContactDao dao;
 
@@ -68,35 +69,43 @@ public class ListContactsPage extends BasePage {
 	 *
 	 * @author igor
 	 */
-	private static class UserActionsPanel extends Panel {
-		public UserActionsPanel(String id, IModel<?> contactModel) {
+	private static class UserActionsPanel extends Panel
+	{
+		public UserActionsPanel(String id, IModel<?> contactModel)
+		{
 			super(id);
 			addEditLink(contactModel);
 			addDeleteLink(contactModel);
 
 		}
 
-		private void addDeleteLink(IModel<?> contactModel) {
-			add(new Link("deleteLink", contactModel) {
+		private void addDeleteLink(IModel<?> contactModel)
+		{
+			add(new Link("deleteLink", contactModel)
+			{
 				/**
 				 * Go to the Delete page, passing this page and the id of the
 				 * Contact involved.
 				 */
 				@Override
-				public void onClick() {
+				public void onClick()
+				{
 					setResponsePage(new DeleteContactPage(getPage(), getModel()));
 				}
 			});
 		}
 
-		private void addEditLink(IModel<?> contactModel) {
-			add(new Link("editLink", contactModel) {
+		private void addEditLink(IModel<?> contactModel)
+		{
+			add(new Link("editLink", contactModel)
+			{
 				/**
 				 * Go to the Edit page, passing this page and the id of the
 				 * Contact involved.
 				 */
 				@Override
-				public void onClick() {
+				public void onClick()
+				{
 					setResponsePage(new EditContactPage(getPage(), getModel()));
 				}
 			});
@@ -108,7 +117,8 @@ public class ListContactsPage extends BasePage {
 	 * Constructor. Having this constructor public means that the page is
 	 * 'bookmarkable' and hence can be called/ created from anywhere.
 	 */
-	public ListContactsPage() {
+	public ListContactsPage()
+	{
 
 		addCreateLink();
 
@@ -116,20 +126,25 @@ public class ListContactsPage extends BasePage {
 		ContactsDataProvider dataProvider = new ContactsDataProvider(dao);
 
 		// create the form used to contain all filter components
-		final FilterForm form = new FilterForm("filter-form", dataProvider) {
+		final FilterForm form = new FilterForm("filter-form", dataProvider)
+		{
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void onSubmit() {
+			protected void onSubmit()
+			{
 				users.setCurrentPage(0);
 			}
 		};
 
-		form.add(new Button("delete-selected") {
+		form.add(new Button("delete-selected")
+		{
 			@Override
-			public void onSubmit() {
+			public void onSubmit()
+			{
 				Iterator<Long> it = selectedContactIds.iterator();
-				while (it.hasNext()) {
+				while (it.hasNext())
+				{
 					dao.delete(it.next());
 				}
 				// clear out the set, we no longer need the selection
@@ -139,32 +154,34 @@ public class ListContactsPage extends BasePage {
 
 		// create the data table
 		IColumn[] columns = createColumns();
-		users = new DefaultDataTable("users", Arrays.asList(columns),
-				dataProvider, 10);
+		users = new DefaultDataTable("users", Arrays.asList(columns), dataProvider, 10);
 		users.addTopToolbar(new FilterToolbar(users, form, dataProvider));
 		form.add(users);
 
 		add(form);
 	}
 
-	private IColumn[] createColumns() {
+	private IColumn[] createColumns()
+	{
 		IColumn[] columns = new IColumn[6];
-		columns[0] = new CheckBoxColumn(new PropertyModel(this,
-				"selectedContactIds")) {
+		columns[0] = new CheckBoxColumn(new PropertyModel(this, "selectedContactIds"))
+		{
 
 			@Override
-			protected Serializable getModelObjectToken(IModel model) {
-				return ((Contact) model.getObject()).getId();
+			protected Serializable getModelObjectToken(IModel model)
+			{
+				return ((Contact)model.getObject()).getId();
 			}
 
 		};
 		columns[1] = createActionsColumn();
 		columns[2] = createColumn("first.name", "firstname", "firstname");
-		columns[3] = new ChoiceFilteredPropertyColumn(new ResourceModel(
-				"last.name"), "lastname", "lastname",
-				new LoadableDetachableModel() {
+		columns[3] = new ChoiceFilteredPropertyColumn(new ResourceModel("last.name"), "lastname",
+				"lastname", new LoadableDetachableModel()
+				{
 					@Override
-					protected Object load() {
+					protected Object load()
+					{
 						List<String> uniqueLastNames = dao.getUniqueLastNames();
 						uniqueLastNames.add(0, "");
 						return uniqueLastNames;
@@ -175,10 +192,11 @@ public class ListContactsPage extends BasePage {
 		return columns;
 	}
 
-	private TextFilteredPropertyColumn<String> createColumn(String key,
-			String sortProperty, String propertyExpression) {
-		return new TextFilteredPropertyColumn<String>(new ResourceModel(key),
-				sortProperty, propertyExpression);
+	private TextFilteredPropertyColumn<String> createColumn(String key, String sortProperty,
+			String propertyExpression)
+	{
+		return new TextFilteredPropertyColumn<String>(new ResourceModel(key), sortProperty,
+				propertyExpression);
 	}
 
 	/**
@@ -186,32 +204,37 @@ public class ListContactsPage extends BasePage {
 	 * adds a UserActionsPanel as its cell contents. It also provides the
 	 * go-and-clear filter control panel.
 	 */
-	private FilteredAbstractColumn<Object> createActionsColumn() {
-		return new FilteredAbstractColumn<Object>(new Model<String>(getString("actions"))) {
+	private FilteredAbstractColumn<Object> createActionsColumn()
+	{
+		return new FilteredAbstractColumn<Object>(new Model<String>(getString("actions")))
+		{
 			// return the go-and-clear filter for the filter toolbar
-			public Component getFilter(String componentId, FilterForm form) {
-				return new GoAndClearFilter(componentId, form,
-						new ResourceModel("filter"), new ResourceModel("clear"));
+			public Component getFilter(String componentId, FilterForm form)
+			{
+				return new GoAndClearFilter(componentId, form, new ResourceModel("filter"),
+						new ResourceModel("clear"));
 			}
 
 			// add the UserActionsPanel to the cell item
-			public void populateItem(Item cellItem, String componentId,
-					IModel model) {
+			public void populateItem(Item cellItem, String componentId, IModel model)
+			{
 				cellItem.add(new UserActionsPanel(componentId, model));
 			}
 		};
 	}
 
-	private void addCreateLink() {
-		add(new Link<Void>("createLink") {
+	private void addCreateLink()
+	{
+		add(new Link<Void>("createLink")
+		{
 			/**
 			 * Go to the Edit page when the link is clicked, passing an empty
 			 * Contact details
 			 */
 			@Override
-			public void onClick() {
-				setResponsePage(new EditContactPage(getPage(), new Model<Contact>(
-						new Contact())));
+			public void onClick()
+			{
+				setResponsePage(new EditContactPage(getPage(), new Model<Contact>(new Contact())));
 			}
 		});
 	}
