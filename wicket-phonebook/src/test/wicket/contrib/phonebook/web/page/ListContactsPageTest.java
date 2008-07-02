@@ -21,6 +21,7 @@ package wicket.contrib.phonebook.web.page;
 import junit.framework.TestCase;
 
 import org.apache.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilterForm;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.util.tester.WicketTester;
 
@@ -48,22 +49,26 @@ public class ListContactsPageTest extends TestCase {
 		wicket.assertRenderedPage(EditContactPage.class);
 	}
 
+	public void testContainsFilterForm() throws Exception {
+		wicket.assertComponent("filter-form", FilterForm.class);
+	}
+
 	public void testContainsUserList() throws Exception {
-		wicket.assertComponent("users", DefaultDataTable.class);
+		wicket.assertComponent("filter-form:users", DefaultDataTable.class);
 	}
 
 	public void testDeleteLinkOpensConfirmPage() throws Exception {
-		wicket.assertComponent("users:rows:1:cells:1:cell:deleteLink",
+		wicket.assertComponent("filter-form:users:rows:1:cells:2:cell:deleteLink",
 				Link.class);
-		wicket.clickLink("users:rows:1:cells:1:cell:deleteLink");
+		wicket.clickLink("filter-form:users:rows:1:cells:2:cell:deleteLink");
 		wicket.assertRenderedPage(DeleteContactPage.class);
 	}
 
 	public void testEditLinkOpensContactEditor() throws Exception {
 		wicket
-				.assertComponent("users:rows:1:cells:1:cell:editLink",
+				.assertComponent("filter-form:users:rows:1:cells:2:cell:editLink",
 						Link.class);
-		wicket.clickLink("users:rows:1:cells:1:cell:editLink");
+		wicket.clickLink("filter-form:users:rows:1:cells:2:cell:editLink");
 		wicket.assertRenderedPage(EditContactPage.class);
 	}
 }
