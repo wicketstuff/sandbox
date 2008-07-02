@@ -59,7 +59,7 @@ public class ListContactsPage extends BasePage {
 	@SpringBean(name = "contactDao")
 	private ContactDao dao;
 
-	private final DefaultDataTable users;
+	private final DefaultDataTable<Contact> users;
 
 	private final Set<Long> selectedContactIds = new HashSet<Long>();
 
