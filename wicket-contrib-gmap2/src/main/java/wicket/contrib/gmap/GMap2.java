@@ -21,6 +21,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.wicket.Application;
 import org.apache.wicket.Component;
 import org.apache.wicket.Request;
 import org.apache.wicket.RequestCycle;
@@ -29,10 +30,13 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.behavior.AbstractBehavior;
 import org.apache.wicket.behavior.HeaderContributor;
 import org.apache.wicket.markup.ComponentTag;
+import org.apache.wicket.markup.MarkupStream;
 import org.apache.wicket.markup.html.IHeaderContributor;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import wicket.contrib.gmap.api.GControl;
 import wicket.contrib.gmap.api.GEvent;
@@ -54,6 +58,9 @@ import wicket.contrib.gmap.event.GEventListenerBehavior;
  */
 public class GMap2 extends Panel implements GOverlayContainer
 {
+	/** log. */
+	private static final Logger log = LoggerFactory.getLogger(GMap2.class);
+
 	private static final long serialVersionUID = 1L;
 
 	private GLatLng center = new GLatLng(37.4419, -122.1419);
@@ -74,11 +81,11 @@ public class GMap2 extends Panel implements GOverlayContainer
 
 	private final WebMarkupContainer map;
 
-	private GInfoWindow infoWindow;
+	private final GInfoWindow infoWindow;
 
 	private GLatLngBounds bounds;
 
-	private OverlayListener overlayListener;
+	private final OverlayListener overlayListener;
 
 	/**
 	 * Construct.
@@ -150,6 +157,24 @@ public class GMap2 extends Panel implements GOverlayContainer
 		overlayListener = new OverlayListener();
 		add(overlayListener);
 	}
+
+	/**
+	 * @see org.apache.wicket.MarkupContainer#onRender(org.apache.wicket.markup.MarkupStream)
+	 */
+	@Override
+	protected void onRender(MarkupStream markupStream)
+	{
+		super.onRender(markupStream);
+		if (Application.DEVELOPMENT.equalsIgnoreCase(Application.get().getConfigurationType())
+				|| !Application.get().getMarkupSettings().getStripWicketTags())
+		{
+			log.warn("Application is in DEVELOPMENT mode,"
+					+ " Firefox 3.0 will not render the GMap." + " Change to DEPLOYMENT mode."
+					+ " See:"
+					+ " http://www.nabble.com/Gmap2-problem-with-Firefox-3.0-to18137475.html.");
+		}
+	}
+
 
 	/**
 	 * Add a control.
