@@ -94,24 +94,38 @@ public abstract class AbstractPageableView extends RefreshingView implements IPa
 		return getCurrentPageFirstItem() / getRowsPerPage();
 	}
 
+	@Override
+	protected void onBeforeRender() {
+		cachedPageCount = -1;
+		
+		super.onBeforeRender();				
+	}
+	
+	// we cache page count because paging navigator needs it even when items are not loaded
+	private int cachedPageCount = -1;
+	
 	/**
 	 * Gets the total number of pages this pageable object has.
 	 * 
 	 * @return The total number of pages this pageable object has
 	 */
 	public int getPageCount() {
-		int count = getItemCount();
-		if (count == 0) {
-			return 0;
-		} else {
-			// if current item count is not dividable by the page size, subtract the mod
-			int rowsPerPage = getRowsPerPage();
-			int mod = count % rowsPerPage;
-			count -= mod;
+		if (cachedPageCount == -1)
+		{
+			int count = getItemCount();
+			if (count == 0) {
+				cachedPageCount = 0;
+			} else {
+				// if current item count is not dividable by the page size, subtract the mod
+				int rowsPerPage = getRowsPerPage();
+				int mod = count % rowsPerPage;
+				count -= mod;
 
-			// get the actual page count
-			return (count / rowsPerPage) + (mod > 0 ? 1 : 0);
+				// get the actual page count
+				cachedPageCount = (count / rowsPerPage) + (mod > 0 ? 1 : 0);
+			}	
 		}
+		return cachedPageCount;		
 	}
 
 	/**
