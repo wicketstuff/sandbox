@@ -71,7 +71,7 @@ public class ListContactsPage extends BasePage
 	 */
 	private static class UserActionsPanel extends Panel
 	{
-		public UserActionsPanel(String id, IModel<?> contactModel)
+		public UserActionsPanel(String id, IModel<Contact> contactModel)
 		{
 			super(id);
 			addEditLink(contactModel);
@@ -79,9 +79,9 @@ public class ListContactsPage extends BasePage
 
 		}
 
-		private void addDeleteLink(IModel<?> contactModel)
+		private void addDeleteLink(IModel<Contact> contactModel)
 		{
-			add(new Link("deleteLink", contactModel)
+			add(new Link<Contact>("deleteLink", contactModel)
 			{
 				/**
 				 * Go to the Delete page, passing this page and the id of the
@@ -95,9 +95,9 @@ public class ListContactsPage extends BasePage
 			});
 		}
 
-		private void addEditLink(IModel<?> contactModel)
+		private void addEditLink(IModel<Contact> contactModel)
 		{
-			add(new Link("editLink", contactModel)
+			add(new Link<Contact>("editLink", contactModel)
 			{
 				/**
 				 * Go to the Edit page, passing this page and the id of the

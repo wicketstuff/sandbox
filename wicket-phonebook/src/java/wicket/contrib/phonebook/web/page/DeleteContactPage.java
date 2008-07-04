@@ -18,6 +18,7 @@
  */
 package wicket.contrib.phonebook.web.page;
 
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Page;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
@@ -67,8 +68,7 @@ public class DeleteContactPage extends BasePage
 		 * tag, the link is smart enough to know to generate an onclick instead
 		 * of href
 		 */
-		// TODO value attribute of 'input' tag is not set
-		add(new Link<String>("confirm", new ResourceModel("confirm"))
+		Link<String> confirmLink = new Link<String>("confirm")
 		{
 			private static final long serialVersionUID = 1L;
 
@@ -83,13 +83,14 @@ public class DeleteContactPage extends BasePage
 				getSession().info(msg);
 				setResponsePage(DeleteContactPage.this.backPage);
 			}
-		});
+		};
+		confirmLink.add(new AttributeModifier("value", true, new ResourceModel("confirm")));
+		add(confirmLink);
 	}
 
-	// TODO value attribute of 'input' tag is not set
 	private void addCancelButton()
 	{
-		add(new Link<String>("cancel", new ResourceModel("cancel"))
+		Link<String> cancelLink = new Link<String>("cancel")
 		{
 			private static final long serialVersionUID = 1L;
 
@@ -102,7 +103,9 @@ public class DeleteContactPage extends BasePage
 				getSession().info(msg);
 				setResponsePage(DeleteContactPage.this.backPage);
 			}
-		});
+		};
+		cancelLink.add(new AttributeModifier("value", true, new ResourceModel("cancel")));
+		add(cancelLink);
 	}
 
 	/**
