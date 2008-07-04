@@ -1539,11 +1539,11 @@ function findParent(node, tagName)  {
 }
 
 onKeyEvent = function(element, event) {
+	
 	var e = Wicket.fixEvent(event)
 	var key = event.keyCode;
 	
-	if (key == 13 || key == 27) {
-		
+	if (key == 13 || key == 27) {					
 		
 		if (key == 13 && Wicket.Browser.isSafari()) {
 			// somewhat ugly fix but this is the only thing preventing safari from submitting the form on enter
@@ -1573,20 +1573,40 @@ onKeyEvent = function(element, event) {
 			if (elements != null && elements.length > 0) {
 				elements[0].onclick.bind(elements[0])();
 			}		
-		}
+		}		
 	}	
 };
 
 
-InMethod.editKeyUp = function(element, event) {	
+InMethod.editKeyUp = function(element, event) {
+		
 	if (!Wicket.Browser.isOpera() && !Wicket.Browser.isSafari()) {
 		onKeyEvent(element, event);
 	}
+	
+	var e = Wicket.fixEvent(event)
+	var key = event.keyCode;
+	
+	if (key == 13 || key == 27) {
+		return false;
+	} else {
+		return true;
+	}		
 };
 
 InMethod.editKeyPress = function(element, event) {
+	
 	if (Wicket.Browser.isOpera() || Wicket.Browser.isSafari()) {
-		onKeyEvent(element, event);
+		return onKeyEvent(element, event);
 	}
+	
+	var e = Wicket.fixEvent(event)
+	var key = event.keyCode;
+	
+	if (key == 13 || key == 27) {
+		return false;
+	} else {
+		return true;
+	}	
 };
 })();
