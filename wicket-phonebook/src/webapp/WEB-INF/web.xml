@@ -34,17 +34,20 @@
 	<!-- Enable the filters for Hibernate -->
     <filter-mapping>
         <filter-name>opensessioninview</filter-name>
-        <url-pattern>/app/*</url-pattern>
+        <url-pattern>/hibernate/*</url-pattern>
     </filter-mapping>
 	<!-- END hibernate filters -->
 
     <filter-mapping>
         <filter-name>phonebook</filter-name>
-        <url-pattern>/app/*</url-pattern>
+        <url-pattern>/hibernate/*</url-pattern>
     </filter-mapping>
 
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
 
+    <welcome-file-list>
+        <welcome-file>index.html</welcome-file>
+    </welcome-file-list>
 </web-app>
