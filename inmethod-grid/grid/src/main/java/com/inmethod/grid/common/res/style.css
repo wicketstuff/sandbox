@@ -20,11 +20,11 @@ table.imxt-container-table tr.imxt-container-table {
 table.imxt-container-table td.imxt-container-table {
 	margin: 0px;
 	padding: 0px;
-	width: 100%;
+	width: 100%;	
 }
 
-div.imxt-safari div.imxt-body-container2 {
-	width: 1px; /* to get the horizontal scrollbar working right */
+div.imxt-head-container2 {
+	overflow:scroll;
 }
 
 div.imxt-head-container2 {
@@ -395,7 +395,7 @@ form.imxt-form {
 fieldset.imxt-fieldset {
 	border-width: 0px;
 	margin: 0px;
-	padding: 0px;
+	padding: 0px;	
 }
 
 /*
