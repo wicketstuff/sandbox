@@ -201,7 +201,11 @@ public abstract class AbstractPageableView extends RefreshingView implements IPa
 			queryResult.process(dataSource);
 
 			// check for situation when we didn't get any items, but we know the real count
-			if (queryResult.itemCache.size() == 0 && realItemCount != UNKOWN_COUNT && realItemCount != oldItemCount) {
+			// this is not a case when there are no items at all, just the case when there are no items on current page
+			// but possible items on previous pages
+			if (queryResult.itemCache.size() == 0 && realItemCount != UNKOWN_COUNT && 
+				realItemCount != oldItemCount && realItemCount > 0) {
+				
 				// the data must have changed, the number of items has been reduced. try move to
 				// last page
 				int page = getPageCount() - 1;
@@ -219,6 +223,13 @@ public abstract class AbstractPageableView extends RefreshingView implements IPa
 
 				// process the QueryResult
 				queryResult.process(dataSource);
+			}
+			else if (realItemCount == 0)
+			{
+				// this is the case with no items at all
+				QueryResult tmp = this.queryResult;
+				setCurrentPage(0);
+				this.queryResult = tmp;
 			}
 		}
 	}
