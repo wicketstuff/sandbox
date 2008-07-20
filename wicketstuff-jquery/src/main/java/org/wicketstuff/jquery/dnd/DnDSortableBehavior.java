@@ -16,10 +16,6 @@
  */
 package org.wicketstuff.jquery.dnd;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.Request;
@@ -34,20 +30,29 @@ import org.apache.wicket.util.template.PackagedTextTemplate;
 import org.wicketstuff.jquery.JQueryBehavior;
 import org.wicketstuff.jquery.Options;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
+
 // TODO: disable callback to serverside if clientsideonly
 @SuppressWarnings("serial")
 class DnDSortableBehavior extends JQueryBehavior implements IBehaviorListener {
     private static final CompressedResourceReference DNDSORTABLEBEHAVIOR_JS = new CompressedResourceReference(DnDSortableBehavior.class, DnDSortableBehavior.class.getSimpleName() + ".js");
 
-    protected Options options_;
+	protected Options options_;
 
     protected ArrayList<MarkupContainer> containers_;
+	private Boolean startImmediately;
 
-    public DnDSortableBehavior() {
+	public DnDSortableBehavior() {
         this(null);
     }
 
-    /**
+	public DnDSortableBehavior(Options options) {
+		this(options, false);
+	}
+
+	/**
      * Create a DnDSortableBehavior with default options override.
      * <ul>
      * <li> options include every optionsof the js component (see <a href="http://interface.eyecon.ro/docs/sort">http://interface.eyecon.ro/docs/sort</a> for the
@@ -58,9 +63,10 @@ class DnDSortableBehavior extends JQueryBehavior implements IBehaviorListener {
      *
      * @param options the overriden options to use
      */
-    public DnDSortableBehavior(Options options) {
+    public DnDSortableBehavior(Options options, Boolean startImmediately) {
         super();
-        if (options == null) {
+		this.startImmediately = startImmediately;
+		if (options == null) {
             options = new Options();
         }
         options_ = options;
@@ -81,12 +87,20 @@ class DnDSortableBehavior extends JQueryBehavior implements IBehaviorListener {
         response.renderJavascriptReference(INTERFACE_JS);
         response.renderJavascriptReference(DNDSORTABLEBEHAVIOR_JS);
         response.renderString(getHead());
-    }
+	}
 
-    private CharSequence getHead() {
+	public CharSequence getRebindScript() {
+		return getHead();
+	}
+
+	private CharSequence getHead() {
         // load the css template we created form the res package
-        PackagedTextTemplate template = new PackagedTextTemplate(DnDSortableBehavior.class, DnDSortableBehavior.class.getSimpleName() + "-head.tmpl");
-        // create a variable subsitution map
+        PackagedTextTemplate template = new PackagedTextTemplate(
+				DnDSortableBehavior.class,
+				DnDSortableBehavior.class.getSimpleName() + (startImmediately ? "-imhead.tmpl" : "-head.tmpl")
+		);
+
+		// create a variable subsitution map
         CharSequence itemSelector = "." + options_.get("accept");
         CharSequence handleSelector = (CharSequence) options_.get("handle");
         if (handleSelector == null) {
