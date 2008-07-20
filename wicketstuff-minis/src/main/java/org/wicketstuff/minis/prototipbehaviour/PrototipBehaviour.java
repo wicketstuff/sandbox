@@ -36,19 +36,20 @@ import org.apache.wicket.markup.html.resources.CompressedResourceReference;
 public class PrototipBehaviour extends AbstractBehavior
 {
 	private static final long serialVersionUID = 1L;
-	
+
 	protected Component source;
 	protected String tooltip = null;
 	protected Component tooltipComponent = null;
 	protected PrototipSettings settings = null;
 	protected boolean overrideHeaderContributor = false;
 	protected String title = null;
-	
+	protected boolean onLoad = true;
+
 	/**
 	 * Made this static as it is very unlikely that you would want different versions of prototip.js across your site
 	 */
 	protected static JS_TYPE selectedJsType = JS_TYPE.MIN;
-	
+
 	/**
 	 * Default constructor
 	 * If you use this then you must set either a string, or a component manually
@@ -56,7 +57,7 @@ public class PrototipBehaviour extends AbstractBehavior
 	public PrototipBehaviour()
 	{
 	}
-	
+
 	/**
 	 * Provide a simple string as a tooltip
 	 * @param tooltip
@@ -87,22 +88,29 @@ public class PrototipBehaviour extends AbstractBehavior
 	@Override
 	public void renderHead(IHeaderResponse response)
 	{
-		response.renderOnLoadJavascript(toJavascript());
+		if(onLoad)
+		{
+			response.renderOnLoadJavascript(toJavascript());
+		}
+		else
+		{
+			response.renderOnDomReadyJavascript(toJavascript());
+		}
 		if(!overrideHeaderContributor)
 		{
 			response.renderCSSReference(new CompressedResourceReference(PrototipBehaviour.class, "prototip.css"), "screen");
 			switch(selectedJsType)
 			{
-				case NORMAL:
-					response.renderJavascriptReference(new CompressedResourceReference(PrototipBehaviour.class, "prototip.js"));
-					break;
-				case MIN:
-					response.renderJavascriptReference(new CompressedResourceReference(PrototipBehaviour.class, "prototip-min.js"));
-					break;
+			case NORMAL:
+				response.renderJavascriptReference(new CompressedResourceReference(PrototipBehaviour.class, "prototip.js"));
+				break;
+			case MIN:
+				response.renderJavascriptReference(new CompressedResourceReference(PrototipBehaviour.class, "prototip-min.js"));
+				break;
 			}
 		}
 	}
-	
+
 	/**
 	 * override bind so that the component you add this behavior to becomes the component the tooltip applies to
 	 * 
@@ -114,7 +122,7 @@ public class PrototipBehaviour extends AbstractBehavior
 		this.source = component;
 		source.setOutputMarkupId(true);
 	}
-	
+
 	/**
 	 * Given an ajax request target, remove this tip from the page
 	 * @param target
@@ -124,8 +132,22 @@ public class PrototipBehaviour extends AbstractBehavior
 		if(source != null)
 		{
 			StringBuilder removeJs = new StringBuilder();
-			removeJs.append("Tips.remove('").append(source.getMarkupId()).append("');");
+			removeJs.append("Tips.remove($('").append(source.getMarkupId()).append("'));");
 			target.appendJavascript(removeJs.toString());
+		}
+	}
+
+	/**
+	 * Given an ajax request target, hide this tip on the page
+	 * @param target
+	 */
+	public void hide(AjaxRequestTarget target )
+	{
+		if (source != null)
+		{
+			StringBuilder hideJs = new StringBuilder();
+			hideJs.append("Tips.hide($('").append(source.getMarkupId()).append("'));");
+			target.appendJavascript(hideJs.toString());
 		}
 	}
 
@@ -281,5 +303,21 @@ public class PrototipBehaviour extends AbstractBehavior
 	 */
 	public static void setSelectedJsType(JS_TYPE selectedJsType) {
 		PrototipBehaviour.selectedJsType = selectedJsType;
+	}
+
+	/**
+	 * Is the javascript set to load 'onload' if false then it will be 'ondomready'
+	 * @return
+	 */
+	public boolean isOnLoad() {
+		return onLoad;
+	}
+
+	/**
+	 * Is the javascript set to load 'onload' if false then it will be 'ondomready'
+	 * @param onLoad
+	 */
+	public void setOnLoad(boolean onLoad) {
+		this.onLoad = onLoad;
 	}
 }
