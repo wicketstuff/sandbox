@@ -48,6 +48,17 @@ public abstract class DnDSortableHandler extends WebComponent {
         add(dnd_);
     }
 
+    public DnDSortableHandler(String id, Options options, Boolean startImmediately) {
+        super(id);
+        dnd_ = new DnDSortableBehavior(options, startImmediately) {
+            @Override
+            public boolean onDnD(AjaxRequestTarget target, MarkupContainer srcContainer, int srcPos, MarkupContainer destContainer, int destPos) {
+                return ((DnDSortableHandler) getComponent()).onDnD(target, srcContainer, srcPos, destContainer, destPos);
+            }
+        };
+        add(dnd_);
+    }
+
     /**
      * Call when a component has been moved on client side.
      *
@@ -99,6 +110,10 @@ public abstract class DnDSortableHandler extends WebComponent {
     public CharSequence getJSFunctionName4Stop() {
         return dnd_.getJSFunctionName4Stop();
     }
+
+	public CharSequence getRebindScript() {
+		return dnd_.getRebindScript();
+	}
 
 
 }

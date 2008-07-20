@@ -13,28 +13,28 @@ ${handleSelector}{
 /*]]>*/
 </style>
 <script type="text/javascript">
-var ${dndHandlerStart} = function(){
-  $('${containerSelector}').Sortable({
-    ${options}
-    onStart : function(){
-      DnDSortableBehavior.start(this,'${containerSelector}', '.dndItem');
-      $.iAutoscroller.start(this, document.getElementsByTagName('body'));
-          },
-    onStop : function(){
-      $.iAutoscroller.stop();
-      DnDSortableBehavior.stop(this,'${containerSelector}', '${itemSelector}');
-      if (DnDSortableBehavior.isMoved()) {
-        var wcall = wicketAjaxGet('${callbackUrl}&' + DnDSortableBehavior.asQueryString(), function(){}, function(){});
-      }
-    },
-    onChange : function(changed) {
-    }
-  });
-};
-var ${dndHandlerStop} = function(){
-  $('${containerSelector}').SortableDestroy();
-};
-if (${startOnLoad}) {
-  $(document).ready(${dndHandlerStart});
-}
+	var ${dndHandlerStart} = function(){
+	  $('${containerSelector}').Sortable({
+		${options}
+		onStart : function(){
+		  DnDSortableBehavior.start(this,'${containerSelector}', '.dndItem');
+		  $.iAutoscroller.start(this, document.getElementsByTagName('body'));
+			  },
+		onStop : function(){
+		  $.iAutoscroller.stop();
+		  DnDSortableBehavior.stop(this,'${containerSelector}', '${itemSelector}');
+		  if (DnDSortableBehavior.isMoved()) {
+			var wcall = wicketAjaxGet('${callbackUrl}&' + DnDSortableBehavior.asQueryString(), function(){}, function(){});
+		  }
+		},
+		onChange : function(changed) {
+		}
+	  });
+	};
+	var ${dndHandlerStop} = function(){
+	  $('${containerSelector}').SortableDestroy();
+	};
+	if (${startOnLoad}) {
+	  ${dndHandlerStart};
+	}
 </script>
