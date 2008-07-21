@@ -86,7 +86,8 @@ class DnDSortableBehavior extends JQueryBehavior implements IBehaviorListener {
         super.renderHead(response);
         response.renderJavascriptReference(INTERFACE_JS);
         response.renderJavascriptReference(DNDSORTABLEBEHAVIOR_JS);
-        response.renderString(getHead());
+		if(!startImmediately)
+			response.renderString(getHead());
 	}
 
 	public CharSequence getRebindScript() {
@@ -97,7 +98,7 @@ class DnDSortableBehavior extends JQueryBehavior implements IBehaviorListener {
         // load the css template we created form the res package
         PackagedTextTemplate template = new PackagedTextTemplate(
 				DnDSortableBehavior.class,
-				DnDSortableBehavior.class.getSimpleName() + (startImmediately ? "-imhead.tmpl" : "-head.tmpl")
+				DnDSortableBehavior.class.getSimpleName() + (startImmediately ? "-rebind.tmpl" : "-head.tmpl")
 		);
 
 		// create a variable subsitution map
