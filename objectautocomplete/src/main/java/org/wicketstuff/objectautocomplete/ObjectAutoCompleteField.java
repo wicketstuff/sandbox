@@ -21,21 +21,16 @@ import org.apache.wicket.util.string.AppendingStringBuffer;
 import org.apache.wicket.util.string.Strings;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.AjaxFallbackLink;
-import org.apache.wicket.behavior.IBehavior;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.HiddenField;
 import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.form.FormComponentPanel;
 import org.apache.wicket.markup.html.image.Image;
-import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.IWrapModel;
-import org.apache.wicket.model.Model;
+import org.apache.wicket.model.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,13 +49,16 @@ import java.util.List;
  * @author roland
  * @since May 21, 2008
  */
-public class ObjectAutoCompleteField<T,I> extends Panel
+public class ObjectAutoCompleteField<O,I> extends FormComponentPanel<I>
         implements ObjectAutoCompleteCancelListener {
 
     // Additional lists of components to update when an object has been selected
     private List<Component> componentsToUpdate = new ArrayList<Component>();
 
     // Remember old id in case a search operation is aborted
+    private I selectedObject;
+
+    // Used for proper state handling
     private I backupObject;
     private String backupText;
 
@@ -82,8 +80,11 @@ public class ObjectAutoCompleteField<T,I> extends Panel
      * @param pModel the model
      * @param pBuilder builder object used to create this field.
      */
-    ObjectAutoCompleteField(String pId, IModel<I> pModel,ObjectAutoCompleteBuilder<T,I> pBuilder) {
+    ObjectAutoCompleteField(String pId, IModel<I> pModel,ObjectAutoCompleteBuilder<O,I> pBuilder) {
         super(pId, pModel);
+
+        // Remember original object. This is the one we are working on.
+        selectedObject = getModelObject();
 
         setOutputMarkupId(true);
 
@@ -102,7 +103,8 @@ public class ObjectAutoCompleteField<T,I> extends Panel
 
     /**
      * Register a component that needs to be updated when the model changes, i.e.
-     * the use selected an object from the suggestion list
+     * the use selected an object from the suggestion list. Note, that this component's model
+     * will be updated as well (whether this is in a form for validation or not)
      *
      * @param pComponentToUpdate the component to update
      */
@@ -113,7 +115,7 @@ public class ObjectAutoCompleteField<T,I> extends Panel
     // ==========================================================================================================
 
     // the 'search part' if in lookup mode
-    private void addSearchTextField(final Model<String> pSearchTextModel, ObjectAutoCompleteBuilder<T,I> pBuilder) {
+    private void addSearchTextField(final Model<String> pSearchTextModel, ObjectAutoCompleteBuilder<O,I> pBuilder) {
         searchTextField = new TextField<String>("search",pSearchTextModel) {
             @Override
             public boolean isVisible() {
@@ -124,13 +126,13 @@ public class ObjectAutoCompleteField<T,I> extends Panel
         // this disables Firefox autocomplete
         searchTextField.add(new SimpleAttributeModifier("autocomplete", "off"));
 
-        objectField = new HiddenField<I>("hiddenId",getModel());
+        objectField = new HiddenField<I>("hiddenId",new PropertyModel<I>(this,"selectedObject"));
         objectField.setOutputMarkupId(true);
         add(objectField);
 
         searchTextField.add(
                 pBuilder.buildBehavior(objectField),
-                new ObjectUpdateBehavior<I>()
+                new ObjectUpdateBehavior()
                 //newFormUpdateBehaviour(searchTextField)
         );
 
@@ -151,7 +153,7 @@ public class ObjectAutoCompleteField<T,I> extends Panel
     }
 
     // the 'read only part' if the object has been selected
-    private void addReadOnlyPanel(final Model<String> pSearchTextModel, ObjectAutoCompleteBuilder<T,I> pBuilder) {
+    private void addReadOnlyPanel(final Model<String> pSearchTextModel, ObjectAutoCompleteBuilder<O,I> pBuilder) {
         final WebMarkupContainer wac = new WebMarkupContainer("readOnlyPanel") {
             @Override
             public boolean isVisible() {
@@ -165,7 +167,8 @@ public class ObjectAutoCompleteField<T,I> extends Panel
         Component objectReadOnlyComponent;
         if (roRenderer != null) {
             objectReadOnlyComponent =
-                    roRenderer.getRenderedObject("selectedValue", ObjectAutoCompleteField.this.getModel(),pSearchTextModel);
+                    roRenderer.getObjectRenderer(
+                            "selectedValue", new PropertyModel<I>(this,"selectedObject"),pSearchTextModel);
         } else {
             objectReadOnlyComponent =
                     new Label("selectedValue",pSearchTextModel);
@@ -207,8 +210,9 @@ public class ObjectAutoCompleteField<T,I> extends Panel
     }
 
     private void changeToSearchMode(AjaxRequestTarget target) {
-        backupObject = ObjectAutoCompleteField.this.getModelObject();
+        backupObject = selectedObject;
         backupText = searchTextField.getModelObject();
+        selectedObject = null;
         ObjectAutoCompleteField.this.setModelObject(null);
         if (target != null) {
             target.addComponent(ObjectAutoCompleteField.this);
@@ -233,11 +237,11 @@ public class ObjectAutoCompleteField<T,I> extends Panel
             } else if (backupText != null) {
                 searchTextField.setModelObject(backupText);
             }
-            setModelObject(backupObject);
+            selectedObject = backupObject;
             pTarget.addComponent(ObjectAutoCompleteField.this);
         } else {
             searchTextField.setModelObject(null);
-            setModelObject(null);
+            selectedObject = null;
             searchTextField.clearInput();
             backupText = null;
             pTarget.addComponent(searchTextField);
@@ -247,40 +251,15 @@ public class ObjectAutoCompleteField<T,I> extends Panel
 
     // mode detection based on the existance of a seleced model
     private boolean isSearchMode() {
-        return getModelObject() == null;
+        return selectedObject == null;
     }
 
-
-    // update the model, when a selection was triggered in the autocomplete
-    // menu
-    private IBehavior newFormUpdateBehaviour(final TextField<String> pSearchTextField) {
-        return new AjaxFormComponentUpdatingBehavior("onchange") {
-
-
-
-            protected void onUpdate(AjaxRequestTarget target) {
-                pSearchTextField.updateModel();
-                pSearchTextField.clearInput();
-                target.addComponent(ObjectAutoCompleteField.this);
-                updateDependentComponents(target);
-            }
-        };
-        /*
-        return new AjaxFormSubmitBehavior("onchange")
-        {
-            @Override
-            protected void onSubmit(AjaxRequestTarget pTarget) {
-                pSearchTextField.updateModel();
-                pSearchTextField.clearInput();
-                pTarget.addComponent(ObjectAutoCompleteField.this);
-                updateDependentComponents(pTarget);
-            }
-
-            @Override
-            protected void onError(AjaxRequestTarget pTarget) {
-            }
-        };
-        */
+    /**
+     * Called when form is submitted. We are simply store the object remembered internally.
+     */
+    @Override
+    protected void convertInput() {
+        setConvertedInput(selectedObject);
     }
 
     @Override
@@ -293,31 +272,22 @@ public class ObjectAutoCompleteField<T,I> extends Panel
     // add all registered components to the target for update
     private void updateDependentComponents(AjaxRequestTarget pTarget) {
         for (Component comp : componentsToUpdate) {
+            comp.setDefaultModelObject(objectField.getModelObject());
             pTarget.addComponent(comp);
         }
     }
 
-    private void setModelObject(I pObject) {
-        setDefaultModelObject(pObject);
-    }
-
-
-    public IModel<I> getModel() {
-        return (IModel<I>) getDefaultModel();
-    }
-
-    public I getModelObject() {
-        return (I) getDefaultModelObject();
-    }
 
     // =========================================================================================
 
-    class ObjectUpdateBehavior<I> extends AjaxEventBehavior {
+    //  Behaviour, when user leaves the input field.
+    class ObjectUpdateBehavior extends AjaxEventBehavior {
 
-        public ObjectUpdateBehavior() {
+        ObjectUpdateBehavior() {
             super("onchange");
         }
 
+        @Override
         protected void onEvent(AjaxRequestTarget target) {
             objectField.processInput();
             searchTextField.processInput();

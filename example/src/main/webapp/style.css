@@ -81,6 +81,18 @@ div.searchForm input {
     font-size: 9pt;
 }
 
+div.submitButtonPanel {
+  width: 40px;
+  text-align: center;
+  margin: 10px auto;
+  padding: 2px;
+}
+
+div.submitButtonPanel input {
+  border: 2px solid #E9601A;
+  background: #e9c4af;
+}
+
 div.codeSample {
     margin-right: 280px;
     border: 1px dotted #E9601A;
