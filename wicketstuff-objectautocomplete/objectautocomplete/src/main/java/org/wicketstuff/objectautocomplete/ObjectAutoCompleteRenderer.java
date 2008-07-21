@@ -24,7 +24,7 @@ import org.apache.wicket.util.lang.PropertyResolver;
  * @author roland
  * @since May 20, 2008
  */
-public class ObjectAutoCompleteRenderer<T> implements IAutoCompleteRenderer<T> {
+public class ObjectAutoCompleteRenderer<O> implements IAutoCompleteRenderer<O> {
 
     private static final long serialVersionUID = 1L;
 
@@ -37,7 +37,7 @@ public class ObjectAutoCompleteRenderer<T> implements IAutoCompleteRenderer<T> {
 
     private String idProperty = "id";
 
-    public final void render(T object, Response response, String criteria)
+    public final void render(O object, Response response, String criteria)
 	{
 		String textValue = getTextValue(object);
         if (textValue == null)
@@ -66,7 +66,7 @@ public class ObjectAutoCompleteRenderer<T> implements IAutoCompleteRenderer<T> {
      * @return the id value
      * @throws IllegalArgumentException if no id could be extracted
      */
-    protected String getIdValue(T object) {
+    protected String getIdValue(O object) {
         Object returnValue = PropertyResolver.getValue(idProperty,object);
         if (returnValue == null) {
             throw new IllegalArgumentException("Id property " + idProperty +
@@ -94,7 +94,7 @@ public class ObjectAutoCompleteRenderer<T> implements IAutoCompleteRenderer<T> {
 	 * @param response
 	 * @param criteria
 	 */
-	protected void renderChoice(T object, Response response, String criteria)
+	protected void renderChoice(O object, Response response, String criteria)
 	{
 		response.write(getTextValue(object));
 	}
@@ -107,7 +107,7 @@ public class ObjectAutoCompleteRenderer<T> implements IAutoCompleteRenderer<T> {
 	 *            assist choice object
 	 * @return the text value that will be set on the textbox if this assist is selected
 	 */
-    protected String getTextValue(T object) {
+    protected String getTextValue(O object) {
         return object.toString();
     }
 

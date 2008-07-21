@@ -32,10 +32,10 @@ public interface ReadOnlyObjectRenderer<I> {
      * Get the component used for rendering the read only
      * view when an object has been selected.
      *
-     * @param id of the object
+     * @param id wicket id of object
      * @param pModel the model holding the selected objects id
      * @param pSearchTextModel the string used during selection
      * @return a component which is used as as readonly view.
      */
-    Component getRenderedObject(String id, IModel<I> pModel, Model<String> pSearchTextModel);
+    Component getObjectRenderer(String id, IModel<I> pModel, IModel<String> pSearchTextModel);
 }
