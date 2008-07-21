@@ -42,15 +42,10 @@ class DnDSortableBehavior extends JQueryBehavior implements IBehaviorListener {
 	protected Options options_;
 
     protected ArrayList<MarkupContainer> containers_;
-	private Boolean startImmediately;
 
 	public DnDSortableBehavior() {
         this(null);
     }
-
-	public DnDSortableBehavior(Options options) {
-		this(options, false);
-	}
 
 	/**
      * Create a DnDSortableBehavior with default options override.
@@ -63,9 +58,8 @@ class DnDSortableBehavior extends JQueryBehavior implements IBehaviorListener {
      *
      * @param options the overriden options to use
      */
-    public DnDSortableBehavior(Options options, Boolean startImmediately) {
+    public DnDSortableBehavior(Options options) {
         super();
-		this.startImmediately = startImmediately;
 		if (options == null) {
             options = new Options();
         }
@@ -86,19 +80,18 @@ class DnDSortableBehavior extends JQueryBehavior implements IBehaviorListener {
         super.renderHead(response);
         response.renderJavascriptReference(INTERFACE_JS);
         response.renderJavascriptReference(DNDSORTABLEBEHAVIOR_JS);
-		if(!startImmediately)
-			response.renderString(getHead());
+		response.renderString(getHead(false));
 	}
 
 	public CharSequence getRebindScript() {
-		return getHead();
+		return getHead(true);
 	}
 
-	private CharSequence getHead() {
+	private CharSequence getHead(boolean rebind) {
         // load the css template we created form the res package
         PackagedTextTemplate template = new PackagedTextTemplate(
 				DnDSortableBehavior.class,
-				DnDSortableBehavior.class.getSimpleName() + (startImmediately ? "-rebind.tmpl" : "-head.tmpl")
+				DnDSortableBehavior.class.getSimpleName() + (rebind ? "-rebind.tmpl" : "-head.tmpl")
 		);
 
 		// create a variable subsitution map
