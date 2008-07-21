@@ -23,7 +23,7 @@
 
 	<groupId>com.inmethod</groupId>
 	<artifactId>grid-parent</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.0-b3</version>
 	<packaging>pom</packaging>
 
 	<name>InMethod Grid Parent</name>
@@ -516,8 +516,8 @@
 	</reporting>
 
 	<properties>
-		<grid.version>1.0.0-SNAPSHOT</grid.version>
-		<wicket.version>1.4-SNAPSHOT</wicket.version>		
+		<grid.version>1.0.0-b3</grid.version>
+		<wicket.version>1.4-m3</wicket.version>		
 		<jetty.version>6.1.4</jetty.version>
 	</properties>
 </project>
