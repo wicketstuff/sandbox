@@ -32,7 +32,7 @@ public abstract class DnDSortableHandler extends WebComponent {
 
     /**
      * the Sortable's options (see <a href="http://interface.eyecon.ro/docs/sort">http://interface.eyecon.ro/docs/sort</a> for the
-     * list of options).
+     * list of options).PropertyPlaceholderConfigurer
      *
      * @param id      See Component
      * @param options the undefault options
