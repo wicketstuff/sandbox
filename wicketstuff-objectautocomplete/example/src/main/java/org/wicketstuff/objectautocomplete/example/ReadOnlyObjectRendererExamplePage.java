@@ -16,7 +16,6 @@
  */
 package org.wicketstuff.objectautocomplete.example;
 
-import org.apache.wicket.markup.html.PackageResource;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.Model;
@@ -25,10 +24,7 @@ import org.apache.wicket.Component;
 import org.wicketstuff.objectautocomplete.ObjectAutoCompleteBuilder;
 import org.wicketstuff.objectautocomplete.ReadOnlyObjectRenderer;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Arrays;
 
 /**
  * Homepage
@@ -50,7 +46,7 @@ public class ReadOnlyObjectRendererExamplePage extends BaseExamplePage<Car,Integ
     protected void initBuilder(ObjectAutoCompleteBuilder<Car,Integer> pBuilder) {
         super.initBuilder(pBuilder);
         pBuilder.readOnlyObjectRenderer(new ReadOnlyObjectRenderer<Integer>() {
-            public Component getRenderedObject(String id, IModel<Integer> pIModel, Model<String> pSearchTextModel) {
+            public Component getObjectRenderer(String id, IModel<Integer> pIModel, IModel<String> pSearchTextModel) {
                 Fragment frag =  new Fragment(id,"readOnlyView", ReadOnlyObjectRendererExamplePage.this);
                 frag.add(new Label("search",pSearchTextModel));
                 frag.add(new Label("id",pIModel));
@@ -65,7 +61,7 @@ public class ReadOnlyObjectRendererExamplePage extends BaseExamplePage<Car,Integ
         return "ObjectAutoCompleteField<Car,Integer> acField =\n" +
                 "        new ObjectAutoCompleteBuilder<Car,Integer>(getAcChoicesProvider()) \n" +
                 "                .readOnlyObjectRenderer(new ReadOnlyObjectRenderer<Integer>() {\n" +
-                "                    public Component getRenderedObject(String id, IModel<Integer> pIModel,\n" +
+                "                    public Component getObjectRenderer(String id, IModel<Integer> pIModel,\n" +
                 "                                                       Model<String> pSearchTextModel) {\n" +
                 "                        Fragment frag =  new Fragment(id,\"readOnlyView\");\n" +
                 "                        frag.add(new Label(\"search\",pSearchTextModel));\n" +

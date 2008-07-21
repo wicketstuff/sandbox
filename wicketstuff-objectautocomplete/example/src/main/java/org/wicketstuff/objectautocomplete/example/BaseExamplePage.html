@@ -32,20 +32,24 @@
 
 <wicket:child/>
 
-<div class="searchForm">
+<div class="feedbackPanel" wicket:id="feedbackPanel">[Feedback]</div>
 <form wicket:id="form">
+  <div class="searchForm">
     <table>
-        <tr>
-            <td>
-                <span id="searchFormLabel" wicket:id="acLabel"/>
-            </td>
-            <td>
-                <input type="text" wicket:id="acField" size="50"/>
-            </td>
-        </tr>
+      <tr>
+        <td>
+          <span id="searchFormLabel" wicket:id="acLabel"/>
+        </td>
+        <td>
+          <input type="text" wicket:id="acField" size="50"/>
+        </td>
+      </tr>
     </table>
+  </div>
+  <div wicket:id="submitButtonPanel" class="submitButtonPanel">
+    <input wicket:id="submitButton" type="submit" value="Go"/>
+  </div>
 </form>
-</div>
 
 <h3>Example HTML</h3>
 

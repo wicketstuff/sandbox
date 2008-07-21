@@ -3,7 +3,6 @@ package org.wicketstuff.objectautocomplete;
 import org.apache.wicket.Component;
 import org.apache.wicket.Resource;
 import org.apache.wicket.ResourceReference;
-import org.apache.wicket.extensions.ajax.markup.html.autocomplete.IAutoCompleteRenderer;
 import org.apache.wicket.model.IModel;
 
 import java.util.ArrayList;
@@ -14,19 +13,19 @@ import java.util.List;
  * Builder for initializing a {@link org.wicketstuff.objectautocomplete.ObjectAutoCompleteField} and
  * a {@link org.wicketstuff.objectautocomplete.ObjectAutoCompleteBehavior}
  *
- * The type parameter T specifies the object type of the objects to be selected.
+ * The type parameter O specifies the object type of the objects to be selected, I the type of the object's id
  *
  * @author roland
  * @since May 24, 2008
  */
-public class ObjectAutoCompleteBuilder<T,I> {
+public class ObjectAutoCompleteBuilder<O,I> {
 
     public static final String SEARCH_LINK_PANEL_ID = "searchLinkPanel";
 
-    AutoCompletionChoicesProvider<T> choicesProvider;
+    AutoCompletionChoicesProvider<O> choicesProvider;
     ObjectAutoCompleteCancelListener cancelListener;
 
-    ObjectAutoCompleteRenderer<T> objectAutoCompleteRenderer;
+    ObjectAutoCompleteRenderer<O> objectAutoCompleteRenderer;
     ReadOnlyObjectRenderer<I> readOnlyObjectRenderer;
 
     boolean preselect;
@@ -41,10 +40,10 @@ public class ObjectAutoCompleteBuilder<T,I> {
     ResourceReference imageResourceReference;
 
 
-    public ObjectAutoCompleteBuilder(AutoCompletionChoicesProvider<T> pChoicesProvider) {
+    public ObjectAutoCompleteBuilder(AutoCompletionChoicesProvider<O> pChoicesProvider) {
         this.choicesProvider = pChoicesProvider;
         cancelListener = null;
-        objectAutoCompleteRenderer = new ObjectAutoCompleteRenderer<T>();
+        objectAutoCompleteRenderer = new ObjectAutoCompleteRenderer<O>();
         preselect = false;
         searchOnClick = false;
         showListOnEmptyInput = false;
@@ -60,17 +59,17 @@ public class ObjectAutoCompleteBuilder<T,I> {
     // =====================
 
     // Intentionally package scope, to allow the autocompletion panel to register (but not outside the package)
-    ObjectAutoCompleteBuilder<T,I> cancelListener(ObjectAutoCompleteCancelListener pCancelListener) {
+    ObjectAutoCompleteBuilder<O,I> cancelListener(ObjectAutoCompleteCancelListener pCancelListener) {
         this.cancelListener = pCancelListener;
         return this;
     }
 
-    public ObjectAutoCompleteBuilder<T,I> autoCompleteRenderer(ObjectAutoCompleteRenderer<T> renderer) {
+    public ObjectAutoCompleteBuilder<O,I> autoCompleteRenderer(ObjectAutoCompleteRenderer<O> renderer) {
         this.objectAutoCompleteRenderer = renderer;
         return this;
     }
 
-    public ObjectAutoCompleteBuilder<T,I> idProperty(String idProperty) {
+    public ObjectAutoCompleteBuilder<O,I> idProperty(String idProperty) {
         if (! (objectAutoCompleteRenderer instanceof ObjectAutoCompleteRenderer)) {
             throw new IllegalArgumentException("Can not set idProperty " + idProperty + " on a renderer of type " +
             objectAutoCompleteRenderer.getClass() + ". Need to operate on a ObjectAutoCompleteRenderer");
@@ -79,22 +78,22 @@ public class ObjectAutoCompleteBuilder<T,I> {
         return this;
     }
 
-    public ObjectAutoCompleteBuilder<T,I> readOnlyObjectRenderer(ReadOnlyObjectRenderer<I> pReadOnlyObjectRenderer) {
+    public ObjectAutoCompleteBuilder<O,I> readOnlyObjectRenderer(ReadOnlyObjectRenderer<I> pReadOnlyObjectRenderer) {
         this.readOnlyObjectRenderer = pReadOnlyObjectRenderer;
         return this;
     }
 
-    public ObjectAutoCompleteBuilder<T,I> preselect() {
+    public ObjectAutoCompleteBuilder<O,I> preselect() {
         this.preselect = true;
         return this;
     }
 
-    public ObjectAutoCompleteBuilder<T,I> searchOnClick() {
+    public ObjectAutoCompleteBuilder<O,I> searchOnClick() {
         this.searchOnClick = true;
         return this;
     }
 
-    public ObjectAutoCompleteBuilder<T,I> searchLinkContent(Component pContent) {
+    public ObjectAutoCompleteBuilder<O,I> searchLinkContent(Component pContent) {
         if (!pContent.getId().equals(SEARCH_LINK_PANEL_ID)) {
             throw new IllegalArgumentException("Panel used for the search link content must have id '"
                     + SEARCH_LINK_PANEL_ID + "' (and not " + pContent.getId() + ")");
@@ -103,32 +102,32 @@ public class ObjectAutoCompleteBuilder<T,I> {
         return this;
     }
 
-    public ObjectAutoCompleteBuilder<T,I> searchLinkImage(Resource pImageResource) {
+    public ObjectAutoCompleteBuilder<O,I> searchLinkImage(Resource pImageResource) {
         this.imageResource = pImageResource;
         return this;
     }
 
-    public ObjectAutoCompleteBuilder<T,I> searchLinkImage(ResourceReference pResourceReference) {
+    public ObjectAutoCompleteBuilder<O,I> searchLinkImage(ResourceReference pResourceReference) {
         this.imageResourceReference = pResourceReference;
         return this;
     }
 
-    public ObjectAutoCompleteBuilder<T,I> searchLinkText(String pText) {
+    public ObjectAutoCompleteBuilder<O,I> searchLinkText(String pText) {
         this.searchLinkText = pText;
         return this;
     }
 
-    public ObjectAutoCompleteBuilder<T,I> maxHeightInPx(int pMaxHeightInPx) {
+    public ObjectAutoCompleteBuilder<O,I> maxHeightInPx(int pMaxHeightInPx) {
         this.maxHeightInPx = pMaxHeightInPx;
         return this;
     }
 
-    public ObjectAutoCompleteBuilder<T,I> showListOnEmptyInput(boolean pShowListOnEmptyInput) {
+    public ObjectAutoCompleteBuilder<O,I> showListOnEmptyInput(boolean pShowListOnEmptyInput) {
         this.showListOnEmptyInput = pShowListOnEmptyInput;
         return this;
     }
 
-    public ObjectAutoCompleteBuilder<T,I> updateOnModelChange(Component ... pComponents) {
+    public ObjectAutoCompleteBuilder<O,I> updateOnModelChange(Component ... pComponents) {
         for (Component comp : pComponents) {
             if (comp == null) {
                 throw new IllegalArgumentException(
@@ -144,15 +143,15 @@ public class ObjectAutoCompleteBuilder<T,I> {
     // Builder methods
     // ===============
 
-    public ObjectAutoCompleteBehavior<T> buildBehavior(Component objectIdHolder) {
-        return new ObjectAutoCompleteBehavior<T>(objectIdHolder,this);
+    public ObjectAutoCompleteBehavior<O> buildBehavior(Component objectIdHolder) {
+        return new ObjectAutoCompleteBehavior<O>(objectIdHolder,this);
     }
 
-    public ObjectAutoCompleteField<T,I> build(String id) {
+    public ObjectAutoCompleteField<O,I> build(String id) {
         return build(id,null);
     }
 
-    public ObjectAutoCompleteField<T,I> build(String id, IModel<I> model) {
-        return new ObjectAutoCompleteField<T,I>(id,model,this);
+    public ObjectAutoCompleteField<O,I> build(String id, IModel<I> model) {
+        return new ObjectAutoCompleteField<O,I>(id,model,this);
     }
 }

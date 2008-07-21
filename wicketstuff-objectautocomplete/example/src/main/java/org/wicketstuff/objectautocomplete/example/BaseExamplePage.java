@@ -18,9 +18,11 @@ package org.wicketstuff.objectautocomplete.example;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.WebPage;
-import org.apache.wicket.markup.html.panel.Fragment;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.markup.repeater.data.ListDataProvider;
@@ -30,7 +32,6 @@ import org.apache.wicket.util.lang.PropertyResolver;
 import org.wicketstuff.objectautocomplete.AutoCompletionChoicesProvider;
 import org.wicketstuff.objectautocomplete.ObjectAutoCompleteBuilder;
 import org.wicketstuff.objectautocomplete.ObjectAutoCompleteField;
-import org.wicketstuff.objectautocomplete.ReadOnlyObjectRenderer;
 
 import java.io.Serializable;
 import java.util.List;
@@ -41,9 +42,10 @@ import java.util.ArrayList;
  * @author roland
  * @since May 26, 2008
  */
-abstract public class BaseExamplePage<T extends Serializable,I extends Serializable> extends WebPage implements AutoCompletionChoicesProvider<T> {
+abstract public class BaseExamplePage<O extends Serializable,I extends Serializable>
+        extends WebPage implements AutoCompletionChoicesProvider<O> {
 
-    private ObjectAutoCompleteField<T,I> acField;
+    protected ObjectAutoCompleteField<O,I> acField;
 
     protected BaseExamplePage() {
         this(new Model<I>());
@@ -55,8 +57,8 @@ abstract public class BaseExamplePage<T extends Serializable,I extends Serializa
     }
 
     private void initExample() {
-        ObjectAutoCompleteBuilder<T,I> builder =
-                new ObjectAutoCompleteBuilder<T,I>(this);
+        ObjectAutoCompleteBuilder<O,I> builder =
+                new ObjectAutoCompleteBuilder<O,I>(this);
         initBuilder(builder);
 
         acField = builder.build("acField", getModel());
@@ -70,25 +72,43 @@ abstract public class BaseExamplePage<T extends Serializable,I extends Serializa
         add(new Label("acCodeSample",getCodeSample()));
         add(new Label("acHtmlSample",getHtmlSample()));
 
-        add(new DataView<T>("acData",new ListDataProvider<T>(getAllChoices())) {
+        add(new DataView<O>("acData",new ListDataProvider<O>(getAllChoices())) {
             @Override
-            protected void populateItem(Item<T> item) {
-                T object = item.getModelObject();
+            protected void populateItem(Item<O> item) {
+                O object = item.getModelObject();
                 item.add(new Label("id",
                         PropertyResolver.getValue(getIdProperty(),object).toString()));
                 item.add(new Label("name",
                         PropertyResolver.getValue(getNameProperty(),object).toString()));
             }
         });
+
+        WebMarkupContainer wac = new WebMarkupContainer("submitButtonPanel") {
+            public boolean isVisible() {
+                return needsFormButton();
+            }
+        };
+        Button submitButton = new Button("submitButton") {
+            public void onSubmit() {
+                System.out.println("Clicked");
+                super.onSubmit();
+            }
+        };
+        wac.add(submitButton);
+        form.add(wac);
+        add(new FeedbackPanel("feedbackPanel"));
     }
 
+    protected boolean needsFormButton() {
+        return false;
+    }
     /**
      * Override to initialize the builder. Does nothing
      * in this base class.
      *
      * @param pBuilder builder to initialize.
      */
-    protected void initBuilder(ObjectAutoCompleteBuilder<T,I> pBuilder) {
+    protected void initBuilder(ObjectAutoCompleteBuilder<O,I> pBuilder) {
         // intentionally empty
     }
 
@@ -117,7 +137,7 @@ abstract public class BaseExamplePage<T extends Serializable,I extends Serializa
     }
 
     // used to get the list of all possible choices
-    abstract List<T> getAllChoices();
+    abstract List<O> getAllChoices();
 
     // a sample of the usage for this code
     abstract String getCodeSample();
@@ -130,13 +150,13 @@ abstract public class BaseExamplePage<T extends Serializable,I extends Serializa
     }
 
     public Iterator getChoices(String input) {
-        List<T> cars = getAllChoices();
-        List<T> ret = new ArrayList<T>();
-        for (T car : cars) {
+        List<O> cars = getAllChoices();
+        List<O> ret = new ArrayList<O>();
+        for (O car : cars) {
             addIfMatch(ret,car,input);
         }
         return ret.iterator();
     }
 
-    abstract protected void addIfMatch(List<T> pList, T pElement, String pInput);
+    abstract protected void addIfMatch(List<O> pList, O pElement, String pInput);
 }
