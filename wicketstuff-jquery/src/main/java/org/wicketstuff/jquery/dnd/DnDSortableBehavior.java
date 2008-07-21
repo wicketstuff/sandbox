@@ -36,7 +36,7 @@ import java.util.HashMap;
 
 // TODO: disable callback to serverside if clientsideonly
 @SuppressWarnings("serial")
-class DnDSortableBehavior extends JQueryBehavior implements IBehaviorListener {
+public class DnDSortableBehavior extends JQueryBehavior implements IBehaviorListener {
     private static final CompressedResourceReference DNDSORTABLEBEHAVIOR_JS = new CompressedResourceReference(DnDSortableBehavior.class, DnDSortableBehavior.class.getSimpleName() + ".js");
 
 	protected Options options_;
