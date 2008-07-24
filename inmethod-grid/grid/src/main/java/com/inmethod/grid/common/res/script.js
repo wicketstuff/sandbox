@@ -11,7 +11,7 @@ InMethod.util = YAHOO.util;
 InMethod.lang = YAHOO.lang;
 
 (function() {	
-
+	
 var E = InMethod.util.Event;
 var D = InMethod.util.Dom;
 var L = InMethod.lang;
@@ -333,7 +333,7 @@ var arrayEq = function(a1, a2) {
 var getFirstChild = function(parent, tagName) {
 	for (var i = 0; i < parent.childNodes.length; ++i) {
 		var c = parent.childNodes[i];
-		if (c.tagName == tagName) {
+		if (c && c.tagName == tagName) {
 			return c;
 		}
 	}
@@ -345,9 +345,9 @@ InMethod.XTable = Wicket.Class.create();
 InMethod.XTable.prototype = {
 	
 	initialize: function(id, columnsData, columnsStateCallback) {			
-		this.id = id;
+		this.id = id;			
 		
-		this.initColumns(columnsData);
+		this.initColumns(columnsData);				
 		
 		this.attachEventHandlers();
 		this.prevColumnWidths = null;					
@@ -355,9 +355,9 @@ InMethod.XTable.prototype = {
 		this.updateScrollTop = this.lastScrollTop;
 		this.updateScrollLeft = this.lastScrollLeft;	
 					
-		//this.updateColumnWidths();
-		this.update();
-						
+		//this.updateColumnWidths();		
+		this.update();		
+		
 		this.columnsStateCallback = columnsStateCallback;
 		
 		// IE needs update called twice, otherwise the top right corner flashes or there is a horizontal 
@@ -376,7 +376,7 @@ InMethod.XTable.prototype = {
 			addClass(Wicket.$(id), "imxt-safari");
 		}				
 		
-		this.updateSelectCheckBoxes();
+		this.updateSelectCheckBoxes();				
 		
 		this.initCells(this.getBodyTable());
 		
@@ -460,9 +460,9 @@ InMethod.XTable.prototype = {
 				
 		if (e == null) {
 		
-			e = getElementFunc();					
-			
+			e = getElementFunc();
 			actualId = e.getAttribute("id");
+									
 			
 			if (!isEmpty(actualId)) {
 				this.idCache[id] = actualId;
@@ -652,28 +652,25 @@ InMethod.XTable.prototype = {
 		
   		var headContainer1 = this.getElement("div", "imxt-head-container1");
   		var headContainer2 = this.getElement("div", "imxt-head-container2");
-  		var bodyContainer1 = this.getElement("div", "imxt-body-container1");  				
-		  					  					  			
+  		var bodyContainer1 = this.getElement("div", "imxt-body-container1");  				  		
 
   		if (Wicket.Browser.isIE() || Wicket.Browser.isGecko()) {
   			bodyContainer1.style.width = topContainer.offsetWidth + "px";
-  		}
-
+  		}  		
+  		
 		var padding = (bodyContainer1.offsetWidth - bodyContainer1.clientWidth);
 
 		// count new header width
 		var newWidth = (body.offsetWidth + padding);
 		
-		// sometimes newWidth is negative in IE, we have to ignore it
-		
+		// sometimes newWidth is negative in IE, we have to ignore it		
 		if (Wicket.Browser.isIE() && newWidth > 0 && head.style.width != newWidth)
 			head.style.width = newWidth + "px"; 
-		else if (Wicket.Browser.isSafari()) {
-			
-			var form = this.getElement("form", "imxt-form");
+		else if (Wicket.Browser.isSafari()) {			
+			var form = this.getElement("*", "imxt-form");			
 			var fieldset = this.getElement("fieldset", "imxt-fieldset", form);
 			fieldset.style.width = form.offsetWidth + "px";
-		}
+		}		
 		
 		if (padding > 0) {
 			// compensate for scrollbar
