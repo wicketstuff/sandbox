@@ -54,8 +54,17 @@ public class DatePickerBehavior extends JQueryBehavior {
     public static final ResourceReference DATEPICKER_CSS = new CompressedResourceReference(DatePickerBehavior.class, "datePicker.css");
     private DatePickerOptions options_;
     private String format_;
+	private boolean includeJquery = true;
 
-    public DatePickerBehavior() {
+	public boolean isIncludeJquery() {
+		return includeJquery;
+	}
+
+	public void setIncludeJquery(boolean includeJquery) {
+		this.includeJquery = includeJquery;
+	}
+
+	public DatePickerBehavior() {
         this(null);
     }
 
@@ -74,10 +83,11 @@ public class DatePickerBehavior extends JQueryBehavior {
     }
     @Override
     public void renderHead(IHeaderResponse response) {
-        super.renderHead(response);
+		if(includeJquery)
+			super.renderHead(response);
         response.renderCSSReference(DATEPICKER_CSS);
         response.renderJavascriptReference(DATE_JS);
-        try {
+		try {
             WebClientInfo info = (WebClientInfo) RequestCycle.get().getClientInfo();
             if (info.getUserAgent().contains("MSIE")) {
                 response.renderJavascriptReference(JQUERY_BGIFRAME_JS);
