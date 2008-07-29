@@ -119,7 +119,7 @@ abstract public class BaseExamplePage<O extends Serializable,I extends Serializa
      * @param pComponent component to update
      */
     protected void registerForUpdateOnModelChange(Component pComponent) {
-        acField.registerForUpdateOnModelChange(pComponent);
+        acField.registerForUpdateOnSelectionChange(pComponent);
     }
 
     protected String getAutoCompleteFieldLabel() {

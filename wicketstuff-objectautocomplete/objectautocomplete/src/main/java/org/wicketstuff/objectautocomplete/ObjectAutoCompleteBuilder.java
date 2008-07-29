@@ -22,22 +22,48 @@ public class ObjectAutoCompleteBuilder<O,I> {
 
     public static final String SEARCH_LINK_PANEL_ID = "searchLinkPanel";
 
+    // Provider which gives the list of objects matching a
+    // particular input string
     AutoCompletionChoicesProvider<O> choicesProvider;
+
+    // A listener notified when a search has been cancelled
     ObjectAutoCompleteCancelListener cancelListener;
 
+    // Renderer for the auto completion list
     ObjectAutoCompleteRenderer<O> objectAutoCompleteRenderer;
-    ReadOnlyObjectRenderer<I> readOnlyObjectRenderer;
 
+    // Renderer to use for the read only view when an object
+    // has been already selected
+    ObjectReadOnlyRenderer<I> readOnlyObjectRenderer;
+
+    // whether the first match should be preselected
     boolean preselect;
+
+    // maximum height of autocompletion list
     int maxHeightInPx;
+
+    // show the list also on an empty input when users pushes down button
     boolean showListOnEmptyInput;
-    List<Component> updateOnModelChangeComponents;
+
+    // a list of listeners to update on selection change
+    List<Component> updateOnSelectionChangeComponents;
+
+    // whether to react on 'onClick' on the read only view itself
     boolean searchOnClick;
+
+    // An own component to use as 'search link' content
     Component searchLinkContent;
+
+    // Text to show for the 'search link' when no image is set
     String searchLinkText;
 
+    // image resource or reference to use for button which switchs back
+    // to editing the field
     Resource imageResource;
     ResourceReference imageResourceReference;
+
+    // whether the field cannot be changed after the first selection
+    boolean unchangeable;
 
 
     public ObjectAutoCompleteBuilder(AutoCompletionChoicesProvider<O> pChoicesProvider) {
@@ -48,10 +74,11 @@ public class ObjectAutoCompleteBuilder<O,I> {
         searchOnClick = false;
         showListOnEmptyInput = false;
         maxHeightInPx = -1;
-        updateOnModelChangeComponents = new ArrayList<Component>();
+        updateOnSelectionChangeComponents = new ArrayList<Component>();
         searchLinkContent = null;
         searchLinkText = "[S]";
         readOnlyObjectRenderer = null;
+        unchangeable = false;
     }
 
     // =======================================================================================================
@@ -78,7 +105,7 @@ public class ObjectAutoCompleteBuilder<O,I> {
         return this;
     }
 
-    public ObjectAutoCompleteBuilder<O,I> readOnlyObjectRenderer(ReadOnlyObjectRenderer<I> pReadOnlyObjectRenderer) {
+    public ObjectAutoCompleteBuilder<O,I> readOnlyRenderer(ObjectReadOnlyRenderer<I> pReadOnlyObjectRenderer) {
         this.readOnlyObjectRenderer = pReadOnlyObjectRenderer;
         return this;
     }
@@ -127,15 +154,20 @@ public class ObjectAutoCompleteBuilder<O,I> {
         return this;
     }
 
-    public ObjectAutoCompleteBuilder<O,I> updateOnModelChange(Component ... pComponents) {
+    public ObjectAutoCompleteBuilder<O,I> updateOnSelectionChange(Component ... pComponents) {
         for (Component comp : pComponents) {
             if (comp == null) {
                 throw new IllegalArgumentException(
                         "A component to included for an ajax update " +
-                                "on model change cannot be null");
+                                "on selection change cannot be null");
             }
         }
-        updateOnModelChangeComponents.addAll(Arrays.asList(pComponents));
+        updateOnSelectionChangeComponents.addAll(Arrays.asList(pComponents));
+        return this;
+    }
+
+    public ObjectAutoCompleteBuilder<O,I> unchangeable() {
+        this.unchangeable = true;
         return this;
     }
 

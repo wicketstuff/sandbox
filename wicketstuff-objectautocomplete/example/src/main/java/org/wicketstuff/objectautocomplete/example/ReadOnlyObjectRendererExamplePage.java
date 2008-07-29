@@ -22,7 +22,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.Component;
 import org.wicketstuff.objectautocomplete.ObjectAutoCompleteBuilder;
-import org.wicketstuff.objectautocomplete.ReadOnlyObjectRenderer;
+import org.wicketstuff.objectautocomplete.ObjectReadOnlyRenderer;
 
 import java.util.List;
 
@@ -45,7 +45,7 @@ public class ReadOnlyObjectRendererExamplePage extends BaseExamplePage<Car,Integ
     @Override
     protected void initBuilder(ObjectAutoCompleteBuilder<Car,Integer> pBuilder) {
         super.initBuilder(pBuilder);
-        pBuilder.readOnlyObjectRenderer(new ReadOnlyObjectRenderer<Integer>() {
+        pBuilder.readOnlyRenderer(new ObjectReadOnlyRenderer<Integer>() {
             public Component getObjectRenderer(String id, IModel<Integer> pIModel, IModel<String> pSearchTextModel) {
                 Fragment frag =  new Fragment(id,"readOnlyView", ReadOnlyObjectRendererExamplePage.this);
                 frag.add(new Label("search",pSearchTextModel));
@@ -60,7 +60,7 @@ public class ReadOnlyObjectRendererExamplePage extends BaseExamplePage<Car,Integ
     String getCodeSample() {
         return "ObjectAutoCompleteField<Car,Integer> acField =\n" +
                 "        new ObjectAutoCompleteBuilder<Car,Integer>(getAcChoicesProvider()) \n" +
-                "                .readOnlyObjectRenderer(new ReadOnlyObjectRenderer<Integer>() {\n" +
+                "                .readOnlyRenderer(new ReadOnlyObjectRenderer<Integer>() {\n" +
                 "                    public Component getObjectRenderer(String id, IModel<Integer> pIModel,\n" +
                 "                                                       Model<String> pSearchTextModel) {\n" +
                 "                        Fragment frag =  new Fragment(id,\"readOnlyView\");\n" +

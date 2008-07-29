@@ -10,7 +10,7 @@ import java.io.Serializable;
  * @author roland
  * @since May 24, 2008
  */
-public interface AutoCompletionChoicesProvider<T> extends Serializable {
+public interface AutoCompletionChoicesProvider<O> extends Serializable {
 
 	/**
 	 * Callback method that should return an iterator over all possible choice objects. These
@@ -19,5 +19,5 @@ public interface AutoCompletionChoicesProvider<T> extends Serializable {
 	 * @param input current input
 	 * @return iterator over all possible choice objects
 	 */
-    Iterator<T> getChoices(String input);
+    Iterator<O> getChoices(String input);
 }

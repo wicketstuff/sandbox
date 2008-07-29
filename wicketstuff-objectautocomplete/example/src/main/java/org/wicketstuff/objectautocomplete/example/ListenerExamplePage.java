@@ -67,7 +67,7 @@ public class ListenerExamplePage extends BaseExamplePage<Car,Integer> {
                 "                .build(\"acField\", new Model<Integer>());\n" +
                 "Label label = new Label(\"selectedId\", getModel());\n" +
                 "label.setOutputMarkupId(true);\n" +
-                "acField.registerForUpdateOnModelChange(label);\n" +
+                "acField.registerForUpdateOnSelectionChange(label);\n" +
                 "add(label);\n" +
                 "form.add(acField);";
     }
@@ -79,7 +79,7 @@ public class ListenerExamplePage extends BaseExamplePage<Car,Integer> {
                         .build("acField", new Model<Integer>());
         Label label = new Label("selectedId", getModel());
 		label.setOutputMarkupId(true);
-        acField.registerForUpdateOnModelChange(label);
+        acField.registerForUpdateOnSelectionChange(label);
         add(label);
         form.add(acField);
     }
