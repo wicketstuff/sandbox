@@ -44,26 +44,21 @@ import java.util.List;
  *
  * A subclass must provide the list of T-objects, which are presented in the autocompletion menu.
  *
- * (TODO: Detailed usage example)
- *
  * @author roland
  * @since May 21, 2008
  */
-public class ObjectAutoCompleteField<O,I> extends FormComponentPanel<I>
+public class ObjectAutoCompleteField<O /* object */,I /* its id */> extends FormComponentPanel<I>
         implements ObjectAutoCompleteCancelListener {
 
     // Additional lists of components to update when an object has been selected
     private List<Component> componentsToUpdate = new ArrayList<Component>();
 
     // Remember old id in case a search operation is aborted
-    private I selectedObject;
+    private I selectedObjectId;
 
-    // Used for proper state handling
-    private I backupObject;
+    // Used for state handling
+    private I backupObjectId;
     private String backupText;
-
-    // Remember selected input string
-    private String selectedObjectFromChoice;
 
     // Textfield used to search for the object
     private TextField<String> searchTextField;
@@ -84,7 +79,7 @@ public class ObjectAutoCompleteField<O,I> extends FormComponentPanel<I>
         super(pId, pModel);
 
         // Remember original object. This is the one we are working on.
-        selectedObject = getModelObject();
+        selectedObjectId = getModelObject();
 
         setOutputMarkupId(true);
 
@@ -92,8 +87,8 @@ public class ObjectAutoCompleteField<O,I> extends FormComponentPanel<I>
         pBuilder.cancelListener(this);
 
         // Register all update listener as added to the builder
-        for (Component comp : pBuilder.updateOnModelChangeComponents) {
-            registerForUpdateOnModelChange(comp);
+        for (Component comp : pBuilder.updateOnSelectionChangeComponents) {
+            registerForUpdateOnSelectionChange(comp);
         }
         // Search Text model contains the text selected
         Model<String> searchTextModel = new Model<String>();
@@ -102,13 +97,14 @@ public class ObjectAutoCompleteField<O,I> extends FormComponentPanel<I>
     }
 
     /**
-     * Register a component that needs to be updated when the model changes, i.e.
-     * the use selected an object from the suggestion list. Note, that this component's model
-     * will be updated as well (whether this is in a form for validation or not)
+     * Register a component that needs to be updated when the selection changes, i.e.
+     * the user selected an object from the suggestion list. Note, that registered component's
+     * model will be updated with the id of the selected object
+     * (whether this is in a form for validation or not)
      *
      * @param pComponentToUpdate the component to update
      */
-    public void registerForUpdateOnModelChange(Component pComponentToUpdate) {
+    public void registerForUpdateOnSelectionChange(Component pComponentToUpdate) {
         componentsToUpdate.add(pComponentToUpdate);
     }
 
@@ -126,7 +122,7 @@ public class ObjectAutoCompleteField<O,I> extends FormComponentPanel<I>
         // this disables Firefox autocomplete
         searchTextField.add(new SimpleAttributeModifier("autocomplete", "off"));
 
-        objectField = new HiddenField<I>("hiddenId",new PropertyModel<I>(this,"selectedObject"));
+        objectField = new HiddenField<I>("hiddenId",new PropertyModel<I>(this,"selectedObjectId"));
         objectField.setOutputMarkupId(true);
         add(objectField);
 
@@ -162,13 +158,13 @@ public class ObjectAutoCompleteField<O,I> extends FormComponentPanel<I>
         };
         wac.setOutputMarkupId(true);
 
-        ReadOnlyObjectRenderer<I> roRenderer = pBuilder.readOnlyObjectRenderer;
+        ObjectReadOnlyRenderer<I> roRenderer = pBuilder.readOnlyObjectRenderer;
 
         Component objectReadOnlyComponent;
         if (roRenderer != null) {
             objectReadOnlyComponent =
                     roRenderer.getObjectRenderer(
-                            "selectedValue", new PropertyModel<I>(this,"selectedObject"),pSearchTextModel);
+                            "selectedValue", new PropertyModel<I>(this,"selectedObjectId"),pSearchTextModel);
         } else {
             objectReadOnlyComponent =
                     new Label("selectedValue",pSearchTextModel);
@@ -190,7 +186,7 @@ public class ObjectAutoCompleteField<O,I> extends FormComponentPanel<I>
             deleteLink.add(new Label(ObjectAutoCompleteBuilder.SEARCH_LINK_PANEL_ID).setVisible(false));
         } else if (pBuilder.searchLinkContent != null) {
             deleteLink.add(pBuilder.searchLinkContent);
-        } else {
+        } else if (!pBuilder.unchangeable) {
             deleteLink.add(new Label(ObjectAutoCompleteBuilder.SEARCH_LINK_PANEL_ID,pBuilder.searchLinkText));
         }
         deleteLink.add(linkImage);
@@ -210,9 +206,9 @@ public class ObjectAutoCompleteField<O,I> extends FormComponentPanel<I>
     }
 
     private void changeToSearchMode(AjaxRequestTarget target) {
-        backupObject = selectedObject;
+        backupObjectId = selectedObjectId;
         backupText = searchTextField.getModelObject();
-        selectedObject = null;
+        selectedObjectId = null;
         ObjectAutoCompleteField.this.setModelObject(null);
         if (target != null) {
             target.addComponent(ObjectAutoCompleteField.this);
@@ -229,19 +225,19 @@ public class ObjectAutoCompleteField<O,I> extends FormComponentPanel<I>
      * @param pTarget target to which the components to update are added
      */
     public void searchCanceled(AjaxRequestTarget pTarget,boolean pForceRestore) {
-        if (backupObject != null) {
+        if (backupObjectId != null) {
             if (Strings.isEmpty(searchTextField.getModelObject()) && !pForceRestore) {
                 searchTextField.setModelObject(null);
                 backupText = null;
-                backupObject = null;
+                backupObjectId = null;
             } else if (backupText != null) {
                 searchTextField.setModelObject(backupText);
             }
-            selectedObject = backupObject;
+            selectedObjectId = backupObjectId;
             pTarget.addComponent(ObjectAutoCompleteField.this);
         } else {
             searchTextField.setModelObject(null);
-            selectedObject = null;
+            selectedObjectId = null;
             searchTextField.clearInput();
             backupText = null;
             pTarget.addComponent(searchTextField);
@@ -251,7 +247,7 @@ public class ObjectAutoCompleteField<O,I> extends FormComponentPanel<I>
 
     // mode detection based on the existance of a seleced model
     private boolean isSearchMode() {
-        return selectedObject == null;
+        return selectedObjectId == null;
     }
 
     /**
@@ -259,7 +255,7 @@ public class ObjectAutoCompleteField<O,I> extends FormComponentPanel<I>
      */
     @Override
     protected void convertInput() {
-        setConvertedInput(selectedObject);
+        setConvertedInput(selectedObjectId);
     }
 
     @Override
