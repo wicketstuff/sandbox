@@ -26,7 +26,7 @@ import org.apache.wicket.model.Model;
  * @author roland
  * @since May 29, 2008
  */
-public interface ReadOnlyObjectRenderer<I> {
+public interface ObjectReadOnlyRenderer<I> {
 
     /**
      * Get the component used for rendering the read only

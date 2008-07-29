@@ -101,7 +101,7 @@ public class ObjectAutoCompleteRenderer<O> implements IAutoCompleteRenderer<O> {
 
 	/**
 	 * Retrieves the text value that will be set on the textbox if this assist is selected
-	 * Can be overwritten, by default it returns the object's toString()\
+	 * Can be overwritten, by default it returns the object's toString()
      *
 	 * @param object
 	 *            assist choice object
