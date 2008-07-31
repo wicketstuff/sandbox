@@ -17,10 +17,11 @@
 package org.wicketstuff.push;
 
 import java.io.Serializable;
+import java.util.EventListener;
 import java.util.Map;
 
 /**
- * Implementations of this interface can be notified of events 
+ * Implementations of this interface can be notified of events
  * triggered by a {@link IChannelPublisher}
  * <p>
  * Implementation example:
@@ -31,19 +32,19 @@ import java.util.Map;
         	}
  *  	});
  * </pre>
- * 
+ *
  * @author Vincent Demay
  * @author Xavier Hanin
- * 
+ *
  * @see IChannelService
  */
-public interface IChannelListener extends Serializable {
+public interface IChannelListener extends Serializable, EventListener {
 	/**
 	 * Method called when an event is triggered on a channel.
-	 * 
+	 *
 	 * Implementations usually use the {@link IChannelTarget}
 	 * to update the web page according to the event triggered.
-	 * 
+	 *
 	 * @param channel channel which be used to listen to event
 	 * @param datas data sent by the event
 	 * @param target see {@link IChannelTarget}

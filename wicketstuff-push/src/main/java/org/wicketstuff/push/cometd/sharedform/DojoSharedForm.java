@@ -6,7 +6,6 @@ import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-import org.wicketstuff.dojo.DojoIdConstants;
 
 /**
  * <b>WARNING : This component is a prototype, Do NOT use it. It is still internal</b><br/>
@@ -29,39 +28,43 @@ import org.wicketstuff.dojo.DojoIdConstants;
  *	    &lt;/init-param>
  *	    &lt;load-on-startup>1</load-on-startup>
  *	  &lt;/servlet>
- * 
- * 
+ *
+ *
  * 	  &lt;servlet-mapping>
  *	    &lt;servlet-name>cometd&lt;/servlet-name>
  *	    &lt;url-pattern>/cometd/*&lt;/url-pattern>
  *	  &lt;/servlet-mapping>
  * </pre>
- * 
+ *
  * see http://cometd.org
- * 
+ *
  * @author Vincent demay
  *
  */
 public class DojoSharedForm extends Form {
+  private static final long serialVersionUID = 1L;
 
-	public DojoSharedForm(String id) {
+
+
+  public DojoSharedForm(final String id) {
 		this(id,null);
 		setOutputMarkupId(true);
 		add(new DojoSharedFormBehavior("/sharedForm"));
 	}
-	
-	public DojoSharedForm(String id, IModel model) {
+
+	public DojoSharedForm(final String id, final IModel model) {
 		super(id, model);
 	}
-	
+
 	public static String getSharedScriptSender(){
 		return "sendSharedForm()";
 	}
-	
-	protected void onComponentTag(ComponentTag tag)
+
+	@Override
+  protected void onComponentTag(final ComponentTag tag)
 	{
 		super.onComponentTag(tag);
-		tag.put(DojoIdConstants.DOJO_TYPE, DojoIdConstants.DOJO_FORM);
+		tag.put("dojoType", "Form");
 	}
 
 	// msparer: deprecated method made final in current wicket version
@@ -69,10 +72,11 @@ public class DojoSharedForm extends Form {
 //		super.onAttach();
 //		visitChildren(new OnChangeAppennerVisitor());
 //	}
-	
-		
+
+
 	// msparer: suggested by wicket to user this method instead of onAttach
-	protected void onBeforeRender() {		
+	@Override
+  protected void onBeforeRender() {
 		super.onBeforeRender();
 		visitChildren(new OnChangeAppennerVisitor());
 	}
@@ -81,11 +85,11 @@ public class DojoSharedForm extends Form {
 
 	protected class OnChangeAppennerVisitor implements IVisitor{
 
-		public Object component(Component component) {
+		public Object component(final Component component) {
 			component.add(new AttributeAppender("onchange",true,new Model(DojoSharedForm.getSharedScriptSender()), ";"));
 			return IVisitor.CONTINUE_TRAVERSAL;
 		}
-		
+
 	}
 
 }

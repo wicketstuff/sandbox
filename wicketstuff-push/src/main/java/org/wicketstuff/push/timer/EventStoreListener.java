@@ -21,11 +21,12 @@ import java.util.Map;
 /**
  * Listener to add in {@link EventStore}.
  * It is for internal use only (volontary package)
- * 
+ *
  * @author Vincent Demay
  */
 abstract class EventStoreListener{
 
-	public abstract void EventTriggered(String channel, Map data);
+	@SuppressWarnings("unchecked")
+  public abstract void EventTriggered(String channel, Map data);
 
 }
