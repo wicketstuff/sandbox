@@ -13,27 +13,29 @@ import org.wicketstuff.push.IPushTarget;
 
 /**
  * An implementation of IPushService based on a polling mechanism.
- * 
+ *
  * This class is thread safe, and can be safely reused.
- * 
+ *
  * @author Xavier Hanin
  */
 public class TimerPushService implements IPushService {
 	private static final class PushInstallerBehavior extends AbstractBehavior {
-		private final Duration duration;
+    private static final long serialVersionUID = 1L;
+
+    private final Duration duration;
 		private boolean installed = false;
-		
-		public PushInstallerBehavior(Duration duration) {
+
+		public PushInstallerBehavior(final Duration duration) {
 			this.duration = duration;
 		}
 
 		@Override
-		public void beforeRender(Component component) {
+		public void beforeRender(final Component component) {
 			if (!installed || !hasPush(component, duration)) {
-				IPushInstaller installer = getPushInstaller(component);
-				TimerChannelBehavior timerChannelBehavior = getTimerChannelBehavior(component);
+				final IPushInstaller installer = getPushInstaller(component);
+				final TimerChannelBehavior timerChannelBehavior = getTimerChannelBehavior(component);
 				if (timerChannelBehavior != null && installer != null) {
-					IPushTarget pushTarget = timerChannelBehavior.newPushTarget();
+					final IPushTarget pushTarget = timerChannelBehavior.newPushTarget();
 					installer.install(component, pushTarget);
 					installed = true;
 				}
@@ -42,36 +44,37 @@ public class TimerPushService implements IPushService {
 	}
 
 	private static final MetaDataKey PUSH_INSTALLER = new MetaDataKey(IPushInstaller.class) {
-		private static final long serialVersionUID = 1L; 
+		private static final long serialVersionUID = 1L;
 	};
 
-	private static boolean hasPush(Component component, Duration duration) {
-		TimerChannelBehavior timerChannelBehavior = getTimerChannelBehavior(component);
+	private static boolean hasPush(final Component component, final Duration duration) {
+		final TimerChannelBehavior timerChannelBehavior = getTimerChannelBehavior(component);
 		if (timerChannelBehavior != null) {
 			return TimerChannelBehavior.isConnected(
-					component.getApplication(), 
-					timerChannelBehavior.getId(), 
+					component.getApplication(),
+					timerChannelBehavior.getId(),
 					duration.add(TimerChannelBehavior.TIMEOUT_MARGIN));
 		} else {
 			return false;
 		}
 	}
 
-	private static IPushInstaller getPushInstaller(Component component) {
+	private static IPushInstaller getPushInstaller(final Component component) {
 		return (IPushInstaller) component.getMetaData(PUSH_INSTALLER);
 	}
 
-	private static void putPushInstaller(Component component, IPushInstaller pushInstaller) {
+	private static void putPushInstaller(final Component component, final IPushInstaller pushInstaller) {
 		component.setMetaData(PUSH_INSTALLER, pushInstaller);
 	}
 
-	private static void removePushInstaller(Component component) {
+	private static void removePushInstaller(final Component component) {
 		putPushInstaller(component, null);
 	}
 
-	private static TimerChannelBehavior getTimerChannelBehavior(Component component) {
-		for (Iterator it = component.getBehaviors().iterator(); it.hasNext();) {
-			IBehavior behavior = (IBehavior) it.next();
+	@SuppressWarnings("unchecked")
+  private static TimerChannelBehavior getTimerChannelBehavior(final Component component) {
+		for (final Iterator it = component.getBehaviors().iterator(); it.hasNext();) {
+			final IBehavior behavior = (IBehavior) it.next();
 			if (behavior instanceof TimerChannelBehavior) {
 				return (TimerChannelBehavior) behavior;
 			}
@@ -79,30 +82,30 @@ public class TimerPushService implements IPushService {
 		return null;
 	}
 
-	
+
 	private final Duration duration;
 
 	/**
 	 * Constructs a TimerPushService with the given polling interval.
-	 * 
+	 *
 	 * @param duration the polling interval, must not be null
 	 */
-	public TimerPushService(Duration duration) {
+	public TimerPushService(final Duration duration) {
 		if (duration == null) {
 			throw new IllegalArgumentException("duration must not be null");
 		}
 		this.duration = duration;
 	}
 
-	public void installPush(Component component, IPushInstaller installer) {
+	public void installPush(final Component component, final IPushInstaller installer) {
 		putPushInstaller(component, installer);
 		component.add(new PushInstallerBehavior(duration));
 		component.add(new TimerChannelBehavior(duration));
 	}
-	
-	public void uninstallPush(Component component) {
+
+	public void uninstallPush(final Component component) {
 		removePushInstaller(component);
-		for (Object behavior : component.getBehaviors()) {
+		for (final Object behavior : component.getBehaviors()) {
 			if (behavior instanceof PushInstallerBehavior) {
 				component.remove((IBehavior) behavior);
 			}

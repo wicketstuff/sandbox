@@ -13,31 +13,33 @@ import org.wicketstuff.push.IPushTarget;
 
 public class TimerChannelService implements IChannelService, Serializable {
 	private static final long serialVersionUID = 1L;
-	
-	private Duration duration;
-	private IChannelPublisher publisher = new TimerChannelPublisher();
 
-	public TimerChannelService(Duration duration) {
+	private final Duration duration;
+	private final IChannelPublisher publisher = new TimerChannelPublisher();
+
+	public TimerChannelService(final Duration duration) {
 		this.duration = duration;
 	}
 
-	public void addChannelListener(Component component, final String listenerChannel, final IChannelListener listener) {
+	public void addChannelListener(final Component component, final String listenerChannel, final IChannelListener listener) {
 		final TimerChannelBehavior timerChannelBehavior = new TimerChannelBehavior(duration);
 		final IPushTarget pushTarget = timerChannelBehavior.newPushTarget();
 		component.add(timerChannelBehavior);
 		EventStore.get().addEventStoreListener(new EventStoreListener(){
-			public void EventTriggered(String eventChannel, Map data)
+			@Override
+      @SuppressWarnings("unchecked")
+      public void EventTriggered(final String eventChannel, final Map data)
 			{
 				if (listenerChannel.equals(eventChannel)){
 					listener.onEvent(listenerChannel, data, pushTarget);
 					pushTarget.trigger();
 				}
 			}
-			
+
 		});
 	}
 
-	public void publish(ChannelEvent event) {
+	public void publish(final ChannelEvent event) {
 		publisher.publish(event);
 	}
 

@@ -4,35 +4,42 @@ import java.util.HashMap;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.IHeaderResponse;
-import org.wicketstuff.dojo.AbstractRequireDojoBehavior;
-import org.wicketstuff.dojo.templates.DojoPackagedTextTemplate;
+import org.wicketstuff.push.cometd.dojo.AbstractRequireDojoBehavior;
+import org.wicketstuff.push.cometd.dojo.DojoPackagedTextTemplate;
 
 public class DojoSharedFormBehavior extends AbstractRequireDojoBehavior {
+  private static final long serialVersionUID = 1L;
 
-	String channel;
-	
-	public DojoSharedFormBehavior(String channel) {
-		super();
-		this.channel = channel;
-	}
+  String channel;
 
-	public void setRequire(RequireDojoLibs libs) {
-		libs.add("dojo.widget.Form");
-		libs.add("dojo.json");
-		libs.add("dojo.io.cometd");
-	}
+  public DojoSharedFormBehavior(final String channel) {
+    super();
+    this.channel = channel;
+  }
 
-	protected void respond(AjaxRequestTarget target) {
-		//NOTHING TO DO
-	}
+  @Override
+  public void setRequire(final RequireDojoLibs libs) {
+    libs.add("dijit.form.Form");
+    libs.add("dojox.cometd");
+  }
 
-	public void renderHead(IHeaderResponse response) {
-		super.renderHead(response);
-		DojoPackagedTextTemplate template = new DojoPackagedTextTemplate(DojoSharedFormBehavior.class,"DojoSharedFromBehaviorTemplate.js" );
-		HashMap map = new HashMap();
-		map.put("form", getComponent().getMarkupId());
-		map.put("channel", this.channel);
-		response.renderJavascript(template.asString(map), template.getWidgetUniqueKey(getComponent()));
-	}
+  @Override
+  protected void respond(final AjaxRequestTarget target) {
+    // NOTHING TO DO
+  }
+
+  @Override
+  @SuppressWarnings("unchecked")
+  public void renderHead(final IHeaderResponse response) {
+    super.renderHead(response);
+    final DojoPackagedTextTemplate template =
+        new DojoPackagedTextTemplate(DojoSharedFormBehavior.class,
+            "DojoSharedFromBehaviorTemplate.js");
+    final HashMap map = new HashMap();
+    map.put("form", getComponent().getMarkupId());
+    map.put("channel", channel);
+    response.renderJavascript(template.asString(map), template
+        .getWidgetUniqueKey(getComponent()));
+  }
 
 }
