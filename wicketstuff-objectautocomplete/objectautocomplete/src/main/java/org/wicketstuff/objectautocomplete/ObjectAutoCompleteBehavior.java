@@ -41,7 +41,7 @@ import java.util.Iterator;
  * @author roland
  * @since May 18, 2008
  */
-public class ObjectAutoCompleteBehavior<T> extends AutoCompleteBehavior<T> {
+public class ObjectAutoCompleteBehavior<O> extends AutoCompleteBehavior<O> {
 
     private static final ResourceReference OBJECTAUTOCOMPLETE_JS = new JavascriptResourceReference(
             ObjectAutoCompleteBehavior.class, "wicketstuff-objectautocomplete.js");
@@ -57,9 +57,9 @@ public class ObjectAutoCompleteBehavior<T> extends AutoCompleteBehavior<T> {
     private Component objectElement;
 
     private ObjectAutoCompleteCancelListener cancelListener;
-    private AutoCompletionChoicesProvider<T> choicesProvider;
+    private AutoCompletionChoicesProvider<O> choicesProvider;
 
-    <I> ObjectAutoCompleteBehavior(Component pObjectElement,ObjectAutoCompleteBuilder<T,I> pBuilder) {
+    <I> ObjectAutoCompleteBehavior(Component pObjectElement,ObjectAutoCompleteBuilder<O,I> pBuilder) {
         super(pBuilder.objectAutoCompleteRenderer,
                 new AutoCompleteSettings()
                         .setMaxHeightInPx(pBuilder.maxHeightInPx)
@@ -147,7 +147,7 @@ public class ObjectAutoCompleteBehavior<T> extends AutoCompleteBehavior<T> {
     }
 
     @Override
-    protected Iterator<T> getChoices(String input) {
+    protected Iterator<O> getChoices(String input) {
         return choicesProvider.getChoices(input);
     }
 }
