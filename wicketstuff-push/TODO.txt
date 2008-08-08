@@ -1,0 +1,9 @@
+. Update Examples and make note, of the new way we have to late-bind the cometd 
+      service as we do not know when the servlet will load.
+      
+. Try and use another, less bloated implementation of comet in javascript, or 
+      cleanup the huge DOJO dependency trail.
+      
+. Figure out why the new cometd is behaving more slowly.
+
+. Figure out why the RemoveListener isn't working.
