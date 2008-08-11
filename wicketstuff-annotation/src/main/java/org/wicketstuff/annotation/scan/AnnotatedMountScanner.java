@@ -82,11 +82,11 @@ public class AnnotatedMountScanner
     //private static Logger logger = LoggerFactory.getLogger(AnnotatedMountScanner.class);
 
     /**
-     * Scan given package name or part of a package name
-     * @param packageName a package to scan (e.g., "org.mycompany.pages)
-     * @return An {@link AnnotatedMountList}
+     * Get the Spring search pattern given a package name or part of a package name
+     * @param packageName a package name
+     * @return a Spring search pattern for the given package
      */
-    public AnnotatedMountList scanPackage(String packageName)
+    public String getPatternForPackage(String packageName)
     {
         if (packageName == null) packageName = "";
         packageName = packageName.replace('.', '/');
@@ -95,18 +95,25 @@ public class AnnotatedMountScanner
             packageName += '/';
         }
 
-        return scanPattern("classpath*:" + packageName + "**/*.class");
+        return "classpath*:" + packageName + "**/*.class";
+    }
+
+
+    /**
+     * Scan given a package name or part of a package name and return list of classes with MountPath annotation.
+     * @return A List of classes annotated with &#64;MountPath
+     */
+    public List<Class<?>> getPackageMatches(String pattern)
+    {
+        return getPatternMatches(getPatternForPackage(pattern));
     }
 
     /**
-     * Scan given a Spring search pattern.
-     * @param pattern
-     * @return An {@link AnnotatedMountList}
+     * Scan given a Spring search pattern and return list of classes with MountPath annotation.
+     * @return A List of classes annotated with &#64;MountPath
      */
-    @SuppressWarnings({"unchecked"})
-    public AnnotatedMountList scanPattern(String pattern)
+    public List<Class<?>> getPatternMatches(String pattern)
     {
-        AnnotatedMountList list = new AnnotatedMountList();
         MatchingResources resources = new MatchingResources(pattern);
         List<Class<?>> mounts = resources.getAnnotatedMatches(MountPath.class);
         for (Class<?> mount : mounts)
@@ -115,6 +122,42 @@ public class AnnotatedMountScanner
             {
                 throw new RuntimeException("@MountPath annotated class should subclass Page: " + mount);
             }
+        }
+        return mounts;
+    }
+
+    /**
+     * Scan given package name or part of a package name
+     * @param packageName a package to scan (e.g., "org.mycompany.pages)
+     * @return An {@link AnnotatedMountList}
+     */
+    public AnnotatedMountList scanPackage(String packageName)
+    {
+        return scanList(getPackageMatches(packageName));
+    }
+
+    /**
+     * Scan given a Spring search pattern.
+     * @param pattern
+     * @return An {@link AnnotatedMountList}
+     */
+    public AnnotatedMountList scanPattern(String pattern)
+    {
+        return scanList(getPatternMatches(pattern));
+    }
+
+
+    /**
+     * Scan a list of classes which are annotated with MountPath
+     * @param mounts
+     * @return An {@link AnnotatedMountList}
+     */
+    @SuppressWarnings({"unchecked"})
+    protected AnnotatedMountList scanList(List<Class<?>> mounts)
+    {
+        AnnotatedMountList list = new AnnotatedMountList();
+        for (Class<?> mount : mounts)
+        {
             Class<? extends Page> page = (Class<? extends Page>) mount;
             scanClass(page, list);
         }

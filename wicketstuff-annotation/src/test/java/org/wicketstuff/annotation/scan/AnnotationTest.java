@@ -22,6 +22,7 @@ import org.apache.wicket.request.target.coding.*;
 import org.wicketstuff.annotation.mount.*;
 
 import java.lang.annotation.*;
+import java.util.*;
 
 /**
  * @author Doug Donohoe
@@ -156,6 +157,9 @@ public class AnnotationTest extends TestCase
         AnnotatedMountScanner scanner = new AnnotatedMountScanner();
         IRequestTargetUrlCodingStrategy def = scanner.getDefaultStrategy("default", Page.class);
 
+        List<Class<?>> matches = scanner.getPackageMatches(pack);
+        validateMatches(matches);
+
         AnnotatedMountList list = scanner.scanPackage(pack);
         validateList(list, pack, def.getClass());
     }
@@ -168,8 +172,22 @@ public class AnnotationTest extends TestCase
         AnnotatedMountScanner scanner = new AnnotatedMountScanner();
         IRequestTargetUrlCodingStrategy def = scanner.getDefaultStrategy("default", Page.class);
 
+        List<Class<?>> matches = scanner.getPatternMatches(pattern);
+        validateMatches(matches);
+
         AnnotatedMountList list = scanner.scanPattern(pattern);
         validateList(list, pattern, def.getClass());
+    }
+
+    /**
+     * Validate a list of classes matches what we'd expect in this test environment
+     * @param matches
+     */
+    private void validateMatches(List<Class<?>> matches)
+    {
+        assertTrue(matches.size() == 2);
+        assertTrue(matches.contains(CorrectPage.class));
+        assertTrue(matches.contains(MissingDetails.class));
     }
 
     /**
