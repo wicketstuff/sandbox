@@ -29,6 +29,15 @@
 		<url>http://wicketstuff.org/jira/browse/WCTINYMCE</url>
 	</issueManagement>
 
+	<developers>
+		<developer>
+			<id>faassen</id>
+			<name>Sander van Faassen</name>
+			<email>sander.van.faassen@topicus.nl</email>
+			<organization>Topicusz Zorg B.V.</organization>
+			<organizationUrl>http://www.topicuszorg.nl/</organizationUrl>
+		</developer>
+	</developers>
 
 	<scm>
 		<connection>scm:svn:https://svn.sourceforge.net/svnroot/wicket-stuff/trunk/wicket-contrib-tinymce</connection>
