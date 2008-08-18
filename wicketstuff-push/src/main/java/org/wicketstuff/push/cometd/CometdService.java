@@ -32,17 +32,17 @@ import dojox.cometd.RemoveListener;
  *
  * @see IChannelService
  */
-public class CometdService extends BayeuxService
-  implements IChannelService, Serializable {
+public class CometdService implements IChannelService, Serializable {
 
   public static final String BAYEUX_CLIENT_PREFIX = "wicket-push";
 
   private static final long serialVersionUID = 1L;
 
+  private final WebApplication _application;
+  private BayeuxService _bayeuxService;
+
   public CometdService(final WebApplication application) {
-    //Get the Bayeux object from the servlet context
-    super((Bayeux) application.getServletContext().getAttribute(
-        Bayeux.DOJOX_COMETD_BAYEUX), BAYEUX_CLIENT_PREFIX);
+	  _application = application;
   }
 
   public void addChannelListener(final Component component,
@@ -57,7 +57,7 @@ public class CometdService extends BayeuxService
    */
   public void addChannelRemoveListener(final String channel,
       final RemoveListener listener) {
-    getClient().addListener(listener);
+    getBayeuxService().getClient().addListener(listener);
   }
 
   /**
@@ -76,8 +76,18 @@ public class CometdService extends BayeuxService
      * call to get the actual page refresh
      */
     event.addData("proxy", "true");
-    final Channel channel = getBayeux().getChannel("/" + event.getChannel(), true);
-    channel.publish(getClient(), event.getData(), event.getId());
+    final Channel channel = getBayeuxService().getBayeux().getChannel("/" + event.getChannel(), true);
+    channel.publish(getBayeuxService().getClient(), event.getData(), event.getId());
+  }
+
+  private final BayeuxService getBayeuxService() {
+	  if (_bayeuxService == null) {
+	  _bayeuxService = new BayeuxService((Bayeux) _application.getServletContext().getAttribute(
+        Bayeux.DOJOX_COMETD_BAYEUX), BAYEUX_CLIENT_PREFIX) {
+
+        };
+	  }
+	  return _bayeuxService;
   }
 
 }
