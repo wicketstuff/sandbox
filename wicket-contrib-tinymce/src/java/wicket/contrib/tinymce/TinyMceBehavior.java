@@ -31,7 +31,6 @@ public class TinyMceBehavior extends AbstractDefaultAjaxBehavior
 	/**
 	 * Construct.
 	 * 
-	 * @param ajax
 	 */
 	public TinyMceBehavior()
 	{
@@ -53,7 +52,6 @@ public class TinyMceBehavior extends AbstractDefaultAjaxBehavior
 	 * Construct.
 	 * 
 	 * @param settings
-	 * @param ajax
 	 */
 	public TinyMceBehavior(TinyMCESettings settings)
 	{
@@ -130,7 +128,10 @@ public class TinyMceBehavior extends AbstractDefaultAjaxBehavior
 	protected void respond(AjaxRequestTarget target)
 	{
 		StringBuilder builder = new StringBuilder();
-		builder.append("\ntinyMCE.onLoad();");
+		//Removed line below, because otherwise tinyMCE won't load (version 3.1.0.1,
+		//  the old 2.x did load). AFAIK, onLoad is for dynamic loading of the tinymce
+		//  scripts, which apparently isn't used, so this should not break anything.
+		//builder.append("\ntinyMCE.onLoad();");
 		builder.append("\ntinyMCE.execCommand('mceAddControl', true, '"
 				+ getComponent().getMarkupId() + "');");
 
@@ -150,6 +151,7 @@ public class TinyMceBehavior extends AbstractDefaultAjaxBehavior
 	protected void onBind()
 	{
 		getComponent().setOutputMarkupId(true);
+		settings.enableTextArea(getComponent());
 	}
 
 }
