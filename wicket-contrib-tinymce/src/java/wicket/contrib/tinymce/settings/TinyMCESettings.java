@@ -242,13 +242,10 @@ public class TinyMCESettings implements Serializable {
         // mode
         if (ajax) {
             buffer.append("\n\t").append("strict_loading_mode : ").append("\"true\"");
-            buffer.append(",\n\t").append("mode : ").append("\"exact\"");
-            buffer.append(",\n\t").append("elements : ").append("\"dummy\"");
-        } else {
-            buffer.append("\n\t").append("mode : \"" + mode.getName() + "\"");
-            if (Mode.specific_textareas.equals(mode))
-                buffer.append(",\n\t").append("editor_selector : \"" + id + "\"");
         }
+        buffer.append("\n\t").append("mode : \"" + mode.getName() + "\"");
+        if (Mode.specific_textareas.equals(mode))
+            buffer.append(",\n\t").append("editor_selector : \"" + id + "\"");
 
         if (isExactMode())
             addElements(buffer);
