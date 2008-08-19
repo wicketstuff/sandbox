@@ -44,12 +44,10 @@ import org.apache.wicket.model.Model;
 public class DojoSharedForm extends Form {
   private static final long serialVersionUID = 1L;
 
-
-
   public DojoSharedForm(final String id) {
 		this(id,null);
 		setOutputMarkupId(true);
-		add(new DojoSharedFormBehavior("/sharedForm"));
+		add(new DojoSharedFormBehavior("sharedForm"));
 	}
 
 	public DojoSharedForm(final String id, final IModel model) {
@@ -57,13 +55,13 @@ public class DojoSharedForm extends Form {
 	}
 
 	public static String getSharedScriptSender(){
-		return "sendSharedForm()";
+		return "DojoSharedFormJS.send()";
 	}
 
   protected void onComponentTag(final ComponentTag tag)
 	{
 		super.onComponentTag(tag);
-		tag.put("dojoType", "Form");
+		tag.put("dojoType", "dijit.form.Form");
 	}
 
 	// msparer: deprecated method made final in current wicket version
@@ -84,7 +82,7 @@ public class DojoSharedForm extends Form {
 	protected class OnChangeAppennerVisitor implements IVisitor{
 
 		public Object component(final Component component) {
-			component.add(new AttributeAppender("onchange",true,new Model(DojoSharedForm.getSharedScriptSender()), ";"));
+			component.add(new AttributeAppender("onchange", true, new Model(DojoSharedForm.getSharedScriptSender()), ";"));
 			return IVisitor.CONTINUE_TRAVERSAL;
 		}
 

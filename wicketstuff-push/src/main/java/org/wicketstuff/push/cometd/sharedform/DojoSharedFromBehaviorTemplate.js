@@ -1,18 +1,10 @@
-cometd.init({}, "/cometd");
-
-var receiver = {
-	receive: function(message){
-		dojo.widget.byId('${form}').setValues(message.data);
+var DojoSharedFormJS = {
+	receive: function(message) {
+    dijit.byId('${form}').setValues(message.data);
 	},
 	
-	send: function(){
-		return dojo.widget.byId('${form}').getValues();
+	send: function() {
+	  dojox.cometd.publish("/${channel}",
+	      dijit.byId('${form}').getValues());
 	}
-
 };
-
-function sendSharedForm(){
-	cometd.publish("${channel}", receiver.send());
-}
-    	
-cometd.subscribe("${channel}", false, receiver, "receive");

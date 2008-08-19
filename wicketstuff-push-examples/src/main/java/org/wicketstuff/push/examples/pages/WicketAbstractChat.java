@@ -26,7 +26,7 @@ import org.wicketstuff.push.IChannelTarget;
  * <p>
  * The whole example doesn't depend on which implementation is used,
  * and show easy it is to switch between implementations.
- * 
+ *
  * @author Vincent Demay
  * @author Xavier Hanin
  */
@@ -34,41 +34,41 @@ public abstract class WicketAbstractChat extends ExamplePage {
 	private static final long serialVersionUID = 1L;
 
 
-	public WicketAbstractChat(PageParameters parameters)
+	public WicketAbstractChat(final PageParameters parameters)
 	{
-		Message model = new Message();
-		
+		final Message model = new Message();
+
 		final Form formChat = new Form("chatForm", new CompoundPropertyModel(model));
-		
-		TextField field = new TextField("user");
+
+		final TextField field = new TextField("user");
 		field.setOutputMarkupId(false);
 		formChat.add(field);
-		
+
 		final Label chat = new Label("chat");
 		chat.setOutputMarkupId(true);
 		getChannelService().addChannelListener(this, "chat/message", new IChannelListener() {
-			public void onEvent(String channel, Map<String, String> datas, IChannelTarget target) {
+			public void onEvent(final String channel, final Map datas, final IChannelTarget target) {
 				target.appendJavascript("document.getElementById('" + chat.getMarkupId() + "').innerHTML += '<br/>" + datas.get("message") + "'");
 			}
 		});
 		formChat.add(chat);
-		
+
 		final TextField mess = new TextField("message");
 		mess.setOutputMarkupId(true);
 		formChat.add(mess);
-		
+
 		formChat.add(new AjaxButton("send", formChat){
 			@Override
-			protected void onSubmit(AjaxRequestTarget target, Form form) {
+			protected void onSubmit(final AjaxRequestTarget target, final Form form) {
 				//Update message
-				String currentChat =  
+				final String currentChat =
 							((Message)form.getModelObject()).getUser() + " said " +
 							((Message)form.getModelObject()).getMessage();
 				//send an event to refesh the chat area
-				ChannelEvent event = new ChannelEvent("chat/message");
+				final ChannelEvent event = new ChannelEvent("chat/message");
 				event.addData("message", currentChat);
 				getChannelService().publish(event);
-				
+
 				//clear message area add focus it
 				target.appendJavascript("document.getElementById('" + mess.getMarkupId() + "').value =''");
 				target.focusComponent(mess);
@@ -79,8 +79,8 @@ public abstract class WicketAbstractChat extends ExamplePage {
 
 
 	protected abstract IChannelService getChannelService();
-	
-	
+
+
 	public class Message implements Serializable {
 		private String chat;
 		private String user;
@@ -88,19 +88,19 @@ public abstract class WicketAbstractChat extends ExamplePage {
 		public String getMessage() {
 			return message;
 		}
-		public void setMessage(String message) {
+		public void setMessage(final String message) {
 			this.message = message;
 		}
 		public String getUser() {
 			return user;
 		}
-		public void setUser(String user) {
+		public void setUser(final String user) {
 			this.user = user;
 		}
 		public String getChat() {
 			return chat;
 		}
-		public void setChat(String chat) {
+		public void setChat(final String chat) {
 			this.chat = chat;
 		}
 	}

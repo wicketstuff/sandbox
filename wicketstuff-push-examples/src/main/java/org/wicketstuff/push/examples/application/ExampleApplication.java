@@ -2,8 +2,6 @@ package org.wicketstuff.push.examples.application;
 
 import java.io.Serializable;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.util.time.Duration;
 import org.wicketstuff.push.IChannelService;
@@ -17,12 +15,11 @@ import org.wicketstuff.push.timer.TimerPushService;
  * Runs the ExampleApplication when invoked from command line.
  */
 public class ExampleApplication extends WebApplication implements Serializable {
-	/** Logging */
-	private static final Log log = LogFactory.getLog(ExampleApplication.class);
-	
-	private IChannelService cometdService;
-	private IChannelService timerChannelService;
-	private IPushService timerPushService;
+  private static final long serialVersionUID = 1L;
+
+  private final IChannelService cometdService;
+	private final IChannelService timerChannelService;
+	private final IPushService timerPushService;
 
 	/**
 	 * Constructor
@@ -36,7 +33,8 @@ public class ExampleApplication extends WebApplication implements Serializable {
 	/**
 	 * @see wicket.Application#getHomePage()
 	 */
-	public Class getHomePage() {
+	@Override
+  public Class getHomePage() {
 		return Index.class;
 	}
 
