@@ -24,41 +24,41 @@ import org.wicketstuff.push.ChannelEvent;
 /**
  * Here we are simulating a bus with this event store
  * It is an Internal class (volontary package)
- * 
- * 
+ *
+ *
  * @author Vincent Demay
  */
 class EventStore
 {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
-	
-	private transient ArrayList<EventStoreListener> listenerList = new ArrayList<EventStoreListener>();
-	
-	private final static EventStore eventStore = new EventStore();
-	
 
-	public void add(Object value)
+	private transient final ArrayList listenerList = new ArrayList();
+
+	private final static EventStore eventStore = new EventStore();
+
+
+	public void add(final Object value)
 	{
 		//triggered listener
-		Iterator<EventStoreListener> ite = listenerList.iterator(); 
+		final Iterator ite = listenerList.iterator();
 		while(ite.hasNext()){
-			EventStoreListener listener = (EventStoreListener) ite.next();
+			final EventStoreListener listener = (EventStoreListener) ite.next();
 			listener.EventTriggered(((ChannelEvent)value).getChannel(), ((ChannelEvent)value).getData());
 		}
 	}
-	
+
 	public static EventStore get(){
 		return eventStore;
 	}
-	
+
 	/**
 	 * Adds a listener to this list which will be notified whenever the list is modified
 	 * @param listener the listener to add
 	 */
-	public void addEventStoreListener(EventStoreListener listener)
+	public void addEventStoreListener(final EventStoreListener listener)
 	{
 		listenerList.add(listener);
 	}

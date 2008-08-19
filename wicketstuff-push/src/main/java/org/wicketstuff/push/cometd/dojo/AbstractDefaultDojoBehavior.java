@@ -83,7 +83,6 @@ public abstract class AbstractDefaultDojoBehavior extends
   /**
    * @see wicket.ajax.AbstractDefaultAjaxBehavior#renderHead(wicket.markup.html.IHeaderResponse)
    */
-  @Override
   public void renderHead(final IHeaderResponse response) {
     super.renderHead(response);
 

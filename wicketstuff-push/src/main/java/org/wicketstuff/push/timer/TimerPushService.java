@@ -29,7 +29,6 @@ public class TimerPushService implements IPushService {
 			this.duration = duration;
 		}
 
-		@Override
 		public void beforeRender(final Component component) {
 			if (!installed || !hasPush(component, duration)) {
 				final IPushInstaller installer = getPushInstaller(component);
@@ -71,7 +70,6 @@ public class TimerPushService implements IPushService {
 		putPushInstaller(component, null);
 	}
 
-	@SuppressWarnings("unchecked")
   private static TimerChannelBehavior getTimerChannelBehavior(final Component component) {
 		for (final Iterator it = component.getBehaviors().iterator(); it.hasNext();) {
 			final IBehavior behavior = (IBehavior) it.next();
@@ -105,12 +103,14 @@ public class TimerPushService implements IPushService {
 
 	public void uninstallPush(final Component component) {
 		removePushInstaller(component);
-		for (final Object behavior : component.getBehaviors()) {
+		final Iterator iBehavior = component.getBehaviors().iterator();
+		while (iBehavior.hasNext()) {
+		  final IBehavior behavior = (IBehavior) iBehavior.next();
 			if (behavior instanceof PushInstallerBehavior) {
-				component.remove((IBehavior) behavior);
+				component.remove(behavior);
 			}
 			if (behavior instanceof TimerChannelBehavior) {
-				component.remove((IBehavior) behavior);
+				component.remove(behavior);
 			}
 		}
 	}

@@ -20,10 +20,9 @@ import org.apache.wicket.util.template.PackagedTextTemplate;
  * Used to externalized js in templates
  * @author Vincent Demay
  */
-@SuppressWarnings("serial")
 public class DojoPackagedTextTemplate extends PackagedTextTemplate {
   private final String fileName;
-  private final Class<?> clazz;
+  private final Class clazz;
 
   /**
    * Constructor.
@@ -34,7 +33,7 @@ public class DojoPackagedTextTemplate extends PackagedTextTemplate {
    *          "text/html"
    * @param encoding The file's encoding, e.g. 'UTF-8'
    */
-  public DojoPackagedTextTemplate(final Class<?> clazz, final String fileName,
+  public DojoPackagedTextTemplate(final Class clazz, final String fileName,
       final String contentType, final String encoding) {
     super(clazz, fileName, contentType, encoding);
     this.clazz = clazz;
@@ -49,7 +48,7 @@ public class DojoPackagedTextTemplate extends PackagedTextTemplate {
    * @param contentType The mime type of this resource, such as "image/jpeg" or
    *          "text/html"
    */
-  public DojoPackagedTextTemplate(final Class<?> clazz, final String fileName,
+  public DojoPackagedTextTemplate(final Class clazz, final String fileName,
       final String contentType) {
     this(clazz, fileName, contentType, null);
   }
@@ -60,7 +59,7 @@ public class DojoPackagedTextTemplate extends PackagedTextTemplate {
    *          loading the packaged template.
    * @param fileName The name of the file, relative to the clazz position
    */
-  public DojoPackagedTextTemplate(final Class<?> clazz, final String fileName) {
+  public DojoPackagedTextTemplate(final Class clazz, final String fileName) {
     this(clazz, fileName, "text");
   }
 

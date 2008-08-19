@@ -26,8 +26,7 @@ public class TimerChannelService implements IChannelService, Serializable {
 		final IPushTarget pushTarget = timerChannelBehavior.newPushTarget();
 		component.add(timerChannelBehavior);
 		EventStore.get().addEventStoreListener(new EventStoreListener(){
-			@Override
-      @SuppressWarnings("unchecked")
+
       public void EventTriggered(final String eventChannel, final Map data)
 			{
 				if (listenerChannel.equals(eventChannel)){

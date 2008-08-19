@@ -20,26 +20,22 @@ public class CometdBehavior extends CometdAbstractBehavior {
 		this.listener = listener;
 	}
 
-	@Override
 	public final String getCometdInterceptorScript() {
-		final HashMap<String, String> map = new HashMap<String, String>();
+		final HashMap map = new HashMap();
 		map.put("markupId", getComponent().getMarkupId());
 		map.put("url", getCallbackUrl().toString());
 		return new DojoPackagedTextTemplate(CometdBehavior.class, "CometdDefaultBehaviorTemplate.js")
 						.asString(map);
 	}
 
-	@Override
 	public final CharSequence getPartialSubscriber() {
 		return "'onEventFor"+ getComponent().getMarkupId() + "'";
 	}
 
-	@SuppressWarnings("unchecked")
-  @Override
 	protected final void respond(final AjaxRequestTarget target) {
 		final Map map = ((WebRequestCycle)RequestCycle.get()).getRequest().getParameterMap();
 		final Iterator it = map.keySet().iterator();
-		final HashMap<String, String> eventAttribute = new HashMap<String, String>();
+		final HashMap eventAttribute = new HashMap();
 		while(it.hasNext()){
 			final String key = (String)it.next();
 			eventAttribute.put(key, ((String[])map.get(key))[0]);

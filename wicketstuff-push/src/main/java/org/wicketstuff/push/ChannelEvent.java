@@ -34,7 +34,7 @@ import java.util.Map;
 public class ChannelEvent
 {
 	private String channel;
-	private final HashMap<String, String> data;
+	private final HashMap data;
   private String id = "0";
 
 	/**
@@ -43,7 +43,7 @@ public class ChannelEvent
 	 */
 	public ChannelEvent(final String channel){
 		this.channel = channel;
-		data = new HashMap<String, String>();
+		data = new HashMap();
 	}
 
 	/**
@@ -78,7 +78,7 @@ public class ChannelEvent
 	 * Returns all data in the event
 	 * @return all data in the event
 	 */
-	public Map<String, String> getData(){
+	public Map getData(){
 		return data;
 	}
 
