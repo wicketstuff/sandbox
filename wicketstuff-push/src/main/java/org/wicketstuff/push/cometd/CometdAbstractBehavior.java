@@ -37,14 +37,12 @@ public abstract class CometdAbstractBehavior extends
     this.channelId = channelId;
   }
 
-  @Override
   public void setRequire(final RequireDojoLibs libs) {
     libs.add("dojox.cometd");
     libs.add("dojox.cometd.timestamp");
     libs.add("dojox.cometd.timesync");
   }
 
-  @Override
   public void renderHead(final IHeaderResponse response) {
     super.renderHead(response);
     if (channelId == null) {

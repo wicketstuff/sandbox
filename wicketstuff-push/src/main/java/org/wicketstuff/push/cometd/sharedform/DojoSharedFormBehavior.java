@@ -17,19 +17,15 @@ public class DojoSharedFormBehavior extends AbstractRequireDojoBehavior {
     this.channel = channel;
   }
 
-  @Override
   public void setRequire(final RequireDojoLibs libs) {
     libs.add("dijit.form.Form");
     libs.add("dojox.cometd");
   }
 
-  @Override
   protected void respond(final AjaxRequestTarget target) {
     // NOTHING TO DO
   }
 
-  @Override
-  @SuppressWarnings("unchecked")
   public void renderHead(final IHeaderResponse response) {
     super.renderHead(response);
     final DojoPackagedTextTemplate template =

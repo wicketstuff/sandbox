@@ -60,7 +60,6 @@ public class DojoSharedForm extends Form {
 		return "sendSharedForm()";
 	}
 
-	@Override
   protected void onComponentTag(final ComponentTag tag)
 	{
 		super.onComponentTag(tag);
@@ -75,7 +74,6 @@ public class DojoSharedForm extends Form {
 
 
 	// msparer: suggested by wicket to user this method instead of onAttach
-	@Override
   protected void onBeforeRender() {
 		super.onBeforeRender();
 		visitChildren(new OnChangeAppennerVisitor());

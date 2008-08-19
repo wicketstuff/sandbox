@@ -46,8 +46,7 @@ public abstract class AbstractRequireDojoBehavior extends
    * A class to deals with require
    * @author vdemay
    */
-  @SuppressWarnings("serial")
-  public class RequireDojoLibs extends HashSet<String> {
+  public class RequireDojoLibs extends HashSet {
 
   }
 
@@ -60,7 +59,6 @@ public abstract class AbstractRequireDojoBehavior extends
    * .html.IHeaderResponse) TODO : is there a way to put all dojo.require at the
    * same place on the rendered page??????
    */
-  @Override
   public void renderHead(final IHeaderResponse response) {
     super.renderHead(response);
 
@@ -77,7 +75,7 @@ public abstract class AbstractRequireDojoBehavior extends
     setRequire(libs); // will be implemented by childs
     final StringBuffer require = new StringBuffer();
 
-    final Iterator<String> ite = libs.iterator();
+    final Iterator ite = libs.iterator();
     while (ite.hasNext()) {
       require.append("dojo.require(\"");
       require.append(ite.next());
@@ -100,7 +98,6 @@ public abstract class AbstractRequireDojoBehavior extends
    * FIXME : in TargetRefresherMPanager differency AbstractRequire and
    * DojoWidgetBehavior
    */
-  @Override
   protected void onComponentRendered() {
 
     // if a Dojo Widget is rerender needs to run some javascript to refresh

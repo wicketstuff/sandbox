@@ -15,7 +15,6 @@ package org.wicketstuff.push.cometd.dojo;
 
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.wicket.Component;
@@ -32,10 +31,10 @@ import org.apache.wicket.behavior.IBehavior;
  */
 public class TargetRefresherManager implements IListener {
   private static TargetRefresherManager instance;
-  private HashMap<String, Component> dojoComponents;
+  private HashMap dojoComponents;
 
   private TargetRefresherManager() {
-    dojoComponents = new HashMap<String, Component>();
+    dojoComponents = new HashMap();
   }
 
   public static TargetRefresherManager getInstance() {
@@ -45,18 +44,18 @@ public class TargetRefresherManager implements IListener {
     return instance;
   }
 
-  @SuppressWarnings("unchecked")
   public void onAfterRespond(final Map map, final IJavascriptResponse response) {
     // we need to find all dojoWidget that should be reParsed
-    final Iterator<Map.Entry<String, Component>> it =
-        dojoComponents.entrySet().iterator();
-    final HashMap<String, Component> real = new HashMap<String, Component>();
+    final Iterator it = dojoComponents.entrySet().iterator();
+    final HashMap real = new HashMap();
     String requires = "";
 
     while (it.hasNext()) {
-      final Component c = it.next().getValue();
+      final Component c = (Component) ((Map.Entry) it.next()).getValue();
 
-      for (final IBehavior behavior : (List<IBehavior>) c.getBehaviors()) {
+      final Iterator iBehaviors = c.getBehaviors().iterator();
+      while (iBehaviors.hasNext()) {
+        final IBehavior behavior = (IBehavior) iBehaviors.next();
         if (behavior instanceof AbstractRequireDojoBehavior) {
           requires += ((AbstractRequireDojoBehavior) behavior).getRequire();
         }
@@ -71,7 +70,6 @@ public class TargetRefresherManager implements IListener {
 
   }
 
-  @SuppressWarnings("unchecked")
   public void onBeforeRespond(final Map map, final AjaxRequestTarget target) {
     // Null op
   }
@@ -85,10 +83,10 @@ public class TargetRefresherManager implements IListener {
 
   private String generateReParseJs() {
     if (!dojoComponents.isEmpty()) {
-      final Iterator<Component> it = dojoComponents.values().iterator();
+      final Iterator it = dojoComponents.values().iterator();
       String parseJs = "[";
       while (it.hasNext()) {
-        final Component c = it.next();
+        final Component c = (Component) it.next();
         parseJs += "'" + c.getMarkupId() + "',";
       }
       parseJs = parseJs.substring(0, parseJs.length() - 1);

@@ -26,7 +26,6 @@ import java.util.Map;
  */
 abstract class EventStoreListener{
 
-	@SuppressWarnings("unchecked")
   public abstract void EventTriggered(String channel, Map data);
 
 }
