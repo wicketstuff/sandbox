@@ -3,7 +3,6 @@ package wicket.contrib.examples.tinymce;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.model.Model;
 
-import wicket.contrib.tinymce.TinyMCEPanel;
 import wicket.contrib.tinymce.TinyMceBehavior;
 import wicket.contrib.tinymce.settings.ContextMenuPlugin;
 import wicket.contrib.tinymce.settings.DateTimePlugin;
@@ -24,11 +23,9 @@ import wicket.contrib.tinymce.settings.ZoomPlugin;
 /**
  * @author Iulian-Corneliu COSTAN
  */
-public class WordTinyMCEPage extends TinyMCEBasePage
-{
+public class WordTinyMCEPage extends TinyMCEBasePage {
 
-    public WordTinyMCEPage()
-    {
+    public WordTinyMCEPage() {
         TinyMCESettings settings = new TinyMCESettings(TinyMCESettings.Theme.advanced);
 
         ContextMenuPlugin contextMenuPlugin = new ContextMenuPlugin();
@@ -56,8 +53,10 @@ public class WordTinyMCEPage extends TinyMCEBasePage
         settings.add(pastePlugin.getPasteTextButton(), TinyMCESettings.Toolbar.second, TinyMCESettings.Position.before);
         settings.add(pastePlugin.getPasteWordButton(), TinyMCESettings.Toolbar.second, TinyMCESettings.Position.before);
         settings.add(TinyMCESettings.separator, TinyMCESettings.Toolbar.second, TinyMCESettings.Position.before);
-        settings.add(searchReplacePlugin.getSearchButton(), TinyMCESettings.Toolbar.second, TinyMCESettings.Position.before);
-        settings.add(searchReplacePlugin.getReplaceButton(), TinyMCESettings.Toolbar.second, TinyMCESettings.Position.before);
+        settings.add(searchReplacePlugin.getSearchButton(), TinyMCESettings.Toolbar.second,
+                TinyMCESettings.Position.before);
+        settings.add(searchReplacePlugin.getReplaceButton(), TinyMCESettings.Toolbar.second,
+                TinyMCESettings.Position.before);
         settings.add(TinyMCESettings.separator, TinyMCESettings.Toolbar.second, TinyMCESettings.Position.before);
         settings.add(TinyMCESettings.separator, TinyMCESettings.Toolbar.second, TinyMCESettings.Position.after);
         settings.add(dateTimePlugin.getDateButton(), TinyMCESettings.Toolbar.second, TinyMCESettings.Position.after);
@@ -84,10 +83,13 @@ public class WordTinyMCEPage extends TinyMCEBasePage
         settings.add(TinyMCESettings.separator, TinyMCESettings.Toolbar.third, TinyMCESettings.Position.after);
         settings.add(printPlugin.getPrintButton(), TinyMCESettings.Toolbar.third, TinyMCESettings.Position.after);
         settings.add(TinyMCESettings.separator, TinyMCESettings.Toolbar.third, TinyMCESettings.Position.after);
-        settings.add(directionalityPlugin.getLtrButton(), TinyMCESettings.Toolbar.third, TinyMCESettings.Position.after);
-        settings.add(directionalityPlugin.getRtlButton(), TinyMCESettings.Toolbar.third, TinyMCESettings.Position.after);
+        settings
+                .add(directionalityPlugin.getLtrButton(), TinyMCESettings.Toolbar.third, TinyMCESettings.Position.after);
+        settings
+                .add(directionalityPlugin.getRtlButton(), TinyMCESettings.Toolbar.third, TinyMCESettings.Position.after);
         settings.add(TinyMCESettings.separator, TinyMCESettings.Toolbar.third, TinyMCESettings.Position.after);
-        settings.add(fullScreenPlugin.getFullscreenButton(), TinyMCESettings.Toolbar.third, TinyMCESettings.Position.after);
+        settings.add(fullScreenPlugin.getFullscreenButton(), TinyMCESettings.Toolbar.third,
+                TinyMCESettings.Position.after);
 
         // other settings
         settings.setToolbarAlign(TinyMCESettings.Align.left);
@@ -97,13 +99,12 @@ public class WordTinyMCEPage extends TinyMCEBasePage
 
         TextArea textArea = new TextArea("ta", new Model(TEXT));
         textArea.add(new TinyMceBehavior(settings, false));
-		add(textArea);
+        add(textArea);
     }
 
-    private static final String TEXT = "<p>Some paragraph</p>" +
-            "<p>Some other paragraph</p>" +
-            "<p>Some <strong>element</strong>, this is to be editor 1. <br />" +
-            "This editor instance has a 100% width to it. </p>" +
-            "<p>Some paragraph. <a href=\"http://www.sourceforge.net/\">Some link</a></p>" +
-            "<img src=\"logo.jpg\" border=\"0\" /><p>&nbsp;</p>";
+    private static final String TEXT = "<p>Some paragraph</p>" + "<p>Some other paragraph</p>"
+            + "<p>Some <strong>element</strong>, this is to be editor 1. <br />"
+            + "This editor instance has a 100% width to it. </p>"
+            + "<p>Some paragraph. <a href=\"http://www.sourceforge.net/\">Some link</a></p>"
+            + "<img src=\"logo.jpg\" border=\"0\" /><p>&nbsp;</p>";
 }
