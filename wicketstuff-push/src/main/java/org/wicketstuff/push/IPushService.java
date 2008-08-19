@@ -16,6 +16,8 @@
  */
 package org.wicketstuff.push;
 
+import java.io.Serializable;
+
 import org.apache.wicket.Component;
 
 /**
@@ -41,30 +43,30 @@ import org.apache.wicket.Component;
  *			}
  *		}
  *     });
- *   }  
+ *   }
  * }
- * 
+ *
  * ...
- * 
+ *
  * pushService.installPush(myComponent, PUSH_INSTALLER);
  * </pre>
- * 
+ *
  * Using a unique instance of push installer is highly recommended, since it is then referenced
  * in the Wicket Application (using a different instance each time could thus lead to
  * a memory leak). If you need to pass different instances each time, you are responsible
  * for calling uninstallPush on the component to free the reference to the installer.
  * <p>
- * This service is usually used when you already have a facility for triggering and 
+ * This service is usually used when you already have a facility for triggering and
  * listening server side events that you want to propagate to the clients.
  * <p>
  * For a mechanism including an event publish/subscribe mechanism, see {@link IChannelService}
- * 
+ *
  * @author Xavier Hanin
- * 
+ *
  * @see IChannelService
  * @see IPushInstaller
  */
-public interface IPushService {
+public interface IPushService extends Serializable {
 	/**
 	 * Installs a push facility on the given component.
 	 * <p>
@@ -72,20 +74,19 @@ public interface IPushService {
 	 * as soon as it is visible, except that only one push service can be installed by component.
 	 * <p>
 	 * Usually the page is used as component.
-	 * 
+	 *
 	 * @param component the component on which the push facility must be installed
-	 * @param pushInstaller a Runnable which will be run any time the push is installed
 	 */
-	void installPush(Component component, IPushInstaller pushInstaller);
-	
+	IPushTarget installPush(Component component);
+
 	/**
 	 * Uninstalls a push installer which has previously been installed on
-	 * a component. 
+	 * a component.
 	 * <p>
 	 * Calling this method after calling {@link #installPush(Component, IPushInstaller)}
 	 * is mandatory if you use a different push installer instance for each component
 	 * instance.
-	 *  
+	 *
 	 * @param component the component on which push service must be uninstalled
 	 */
 	void uninstallPush(Component component);

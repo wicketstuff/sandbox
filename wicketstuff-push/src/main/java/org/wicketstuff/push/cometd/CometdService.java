@@ -39,7 +39,7 @@ public class CometdService implements IChannelService, Serializable {
   private static final long serialVersionUID = 1L;
 
   private final WebApplication _application;
-  private BayeuxService _bayeuxService;
+  private transient BayeuxService _bayeuxService;
 
   public CometdService(final WebApplication application) {
 	  _application = application;
