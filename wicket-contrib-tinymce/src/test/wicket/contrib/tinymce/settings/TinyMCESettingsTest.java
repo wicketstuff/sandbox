@@ -155,15 +155,43 @@ public class TinyMCESettingsTest extends TestCase
 		assertEquals("alert('Hello Mock World');", javascript);
 	}
 
-	public void testExactMode()
+    public void testExactMode0()
+    {
+        TinyMCESettings settings = new TinyMCESettings(Mode.exact);
+        String js = settings.toJavaScript(true);
+        assertTrue(js.indexOf("mode : \"exact\",") != -1);
+        assertTrue(js.indexOf("elements") == -1);
+    }
+    
+    public void testExactMode1()
 	{
-		TextArea textArea = new TextArea("ta");
-
+		TextArea textArea = createTextArea("ta1");
 		TinyMCESettings settings = new TinyMCESettings(Mode.exact);
 		settings.enableTextArea(textArea);
 		String js = settings.toJavaScript(true);
-
-		// TODO implemnet me
-		assertNotNull(js);
+        assertTrue(js.indexOf("mode : \"exact\",") != -1);
+		assertTrue(js.indexOf("\telements : \"ta1\",\n") != -1);
 	}
+
+    public void testExactMode2()
+    {
+        TinyMCESettings settings = new TinyMCESettings(Mode.exact);
+        settings.enableTextArea(createTextArea("ta1"));
+        settings.enableTextArea(createTextArea("ta2"));
+        String js = settings.toJavaScript(true);
+        assertTrue(js.indexOf("mode : \"exact\",") != -1);
+        assertTrue(js.indexOf("\telements : \"ta1, ta2\",\n") != -1);
+    }
+
+    private TextArea createTextArea(final String id) {
+        TextArea textArea = new TextArea(id) {
+            // overridden so we don't get an exception that getMarkupId is called while
+		    // the component is not yet coupled to a page.
+		    // (In a real world example enableTextArea is called during a bind to a page).
+		    public String getMarkupId() {
+                return id;
+            }
+		};
+        return textArea;
+    }
 }
