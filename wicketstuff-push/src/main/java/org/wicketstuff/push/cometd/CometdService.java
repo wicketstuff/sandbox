@@ -1,7 +1,5 @@
 package org.wicketstuff.push.cometd;
 
-import java.io.Serializable;
-
 import org.apache.wicket.Component;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.mortbay.cometd.BayeuxService;
@@ -32,14 +30,12 @@ import dojox.cometd.RemoveListener;
  *
  * @see IChannelService
  */
-public class CometdService implements IChannelService, Serializable {
+public class CometdService implements IChannelService {
 
   public static final String BAYEUX_CLIENT_PREFIX = "wicket-push";
 
-  private static final long serialVersionUID = 1L;
-
   private final WebApplication _application;
-  private transient BayeuxService _bayeuxService;
+  private BayeuxService _bayeuxService;
 
   public CometdService(final WebApplication application) {
 	  _application = application;
