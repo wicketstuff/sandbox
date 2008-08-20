@@ -6,7 +6,7 @@
 	<groupId>org.wicketstuff</groupId>
 	<artifactId>wicket-contrib-tinymce</artifactId>
 	<packaging>jar</packaging>
-	<version>1.3-SNAPSHOT</version>
+	<version>1.3-20080820.1</version>
 	<name>Wicket Contrib TinyMCE</name>
 	<description></description>
 	<url>http://wicket-stuff.sourceforge.net</url>
