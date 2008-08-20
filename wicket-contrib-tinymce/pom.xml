@@ -6,7 +6,7 @@
 	<groupId>org.wicketstuff</groupId>
 	<artifactId>wicket-contrib-tinymce</artifactId>
 	<packaging>jar</packaging>
-	<version>1.3-20080820.1</version>
+	<version>1.3-SNAPSHOT</version>
 	<name>Wicket Contrib TinyMCE</name>
 	<description></description>
 	<url>http://wicket-stuff.sourceforge.net</url>
@@ -269,7 +269,12 @@
 			    <id>repo</id>
 			    <name>Local Bamboo/Tomcat repository</name>
 			    <url>file:/home/wicket/tomcat/webapps/maven/repository/</url>
-			    <uniqueVersion>false</uniqueVersion>
+			    <uniqueVersion>true</uniqueVersion>
 		</snapshotRepository>
+		<repository>
+			    <id>repo</id>
+			    <name>Local Bamboo/Tomcat repository</name>
+			    <url>file:/home/wicket/tomcat/webapps/maven/repository/</url>
+		</repository>
 	</distributionManagement>
 </project>
