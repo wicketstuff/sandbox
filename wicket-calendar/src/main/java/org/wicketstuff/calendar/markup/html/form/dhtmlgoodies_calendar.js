@@ -88,43 +88,44 @@ function setLanguageCode(code)
 
 function switchLanguage()
 {
+// CHANGED BY WICKET - fixed typos in many translations
 // DONE ADDED BY WICKET
   switch(languageCode){
 // REMOVED BY WICKET: English as default
 	case "ge":	/* German */
-		monthArray = ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
-		monthArrayShort = ['Jan','Feb','Mar','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
+		monthArray = ['Januar','Februar','M&#228;rz','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
+		monthArrayShort = ['Jan','Feb','Mrz','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
 		dayArray = ['Mon','Die','Mit','Don','Fre','Sam','Son'];	
 		weekString = 'Woche';
 		todayString = 'Heute';		
 		break;
 // WICKET ADDED
 	case "de":	/* German (iso code) */
-		monthArray = ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
-		monthArrayShort = ['Jan','Feb','Mar','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
+		monthArray = ['Januar','Februar','M&#228;rz','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
+		monthArrayShort = ['Jan','Feb','Mrz','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
 		dayArray = ['Mon','Die','Mit','Don','Fre','Sam','Son'];	
 		weekString = 'Woche';
 		todayString = 'Heute';		
 		break;
 // DONE WICKET ADDED
 	case "no":	/* Norwegian */
-		monthArray = ['Januar','Februar','Mars','April','Mai','Juni','Juli','August','September','Oktober','November','Desember'];
-		monthArrayShort = ['Jan','Feb','Mar','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Des'];
-		dayArray = ['Man','Tir','Ons','Tor','Fre','L&oslash;r','S&oslash;n'];	
+		monthArray = ['januar','februar','mars','april','mai','juni','juli','august','september','oktober','november','desember'];
+		monthArrayShort = ['jan','feb','mar','apr','mai','jun','jul','aug','sep','okt','nov','des'];
+		dayArray = ['man','tir','ons','tor','fre','l&oslash;r','s&oslash;n'];	
 		weekString = 'Uke';
 		todayString = 'Dagen i dag er';
 		break;	
 	case "nl":	/* Dutch */
-		monthArray = ['Januari','Februari','Maart','April','Mei','Juni','Juli','Augustus','September','Oktober','November','December'];
-		monthArrayShort = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Aug','Sep','Okt','Nov','Dec'];
-		dayArray = ['Ma','Di','Wo','Do','Vr','Za','Zo'];
+		monthArray = ['januari','februari','maart','april','mei','juni','juli','augustus','september','oktober','november','december'];
+		monthArrayShort = ['jan','feb','mrt','apr','mei','jun','jul','aug','sep','okt','nov','dec'];
+		dayArray = ['ma','di','wo','do','vr','za','zo'];
 		weekString = 'Week';
 		todayString = 'Vandaag';
 		break;	
 	case "es": /* Spanish */
-		monthArray = ['Enero','Febrero','Marzo','April','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
-		monthArrayShort =['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
-		dayArray = ['Lun','Mar','Mie','Jue','Vie','Sab','Dom'];
+		monthArray = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+		monthArrayShort =['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+		dayArray = ['lun','mar','mi&#233;','jue','vie','s&#225;b','dom'];
 		weekString = 'Semana';
 		todayString = 'Hoy es';
 		break; 	
@@ -136,9 +137,9 @@ function switchLanguage()
 		todayString = 'Hoje &eacute;';
 		break;
 	case "fr":      /* French */
-		monthArray = ['Janvier','F�vrier','Mars','Avril','Mai','Juin','Juillet','Ao�t','Septembre','Octobre','Novembre','D�cembre'];		
-		monthArrayShort = ['Jan','Fev','Mar','Avr','Mai','Jun','Jul','Aou','Sep','Oct','Nov','Dec'];
-		dayArray = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
+		monthArray = ['janvier','f&#233;vrier','mars','avril','mai','juin','juillet','ao&#251;t','septembre','octobre','novembre','d&#233;cembre'];		
+		monthArrayShort = ['janv','f&#233;vr','mars','avr','mai','juin','juil','ao&#251;t','sept','oct','nov','d&#233;c'];
+		dayArray = ['lun','mar','mer','jeu','ven','sam','dim'];
 		weekString = 'Sem';
 		todayString = "Aujourd'hui";
 		break; 	
@@ -150,28 +151,27 @@ function switchLanguage()
 		todayString = 'I dag er den';
 		break;	
 	case "hu":	/* Hungarian  - Remember to use UTF-8 encoding, i.e. the <meta> tag */
-		monthArray = ['Január','Február','Március','�?prilis','Május','Június','Július','Augusztus','Szeptember','Október','November','December'];
-		monthArrayShort = ['Jan','Feb','Márc','�?pr','Máj','Jún','Júl','Aug','Szep','Okt','Nov','Dec'];
-		dayArray = ['Hé','Ke','Sze','Cs','Pé','Szo','Vas'];
-		weekString = 'Hét';
+		monthArray = ['janu&#225;r','febru&#225;r','m&#225;rcius','&#225;prilis','m&#225;jus','j&#250;nius','j&#250;lius','augusztus','szeptember','okt&#243;ber','november','december'];
+		monthArrayShort = ['jan','feb','m&#225;rc','�&#225;pr','m&#225;j','j&#250;n','j&#250;l','aug','szep','okt','nov','dec'];
+		dayArray = ['H&#233;','Ke','Sze','Cs','P&#233;','Szo','Vas'];
+		weekString = 'H&#233;t';
 		todayString = 'Mai nap';	
 		break;
 	case "it":	/* Italian*/
-		monthArray = ['Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno','Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'];
-		monthArrayShort = ['Gen','Feb','Mar','Apr','Mag','Giu','Lugl','Ago','Set','Ott','Nov','Dic'];
-// CHANGED BY WICKET
-		dayArray = ['Lun','Mar','Mer','Gio','Ven','Sab','Dom'];
-// END CHANGED BY WICKET
+		monthArray = ['gennaio','febbraio','marzo','aprile','maggio','giugno','luglio','agosto','settembre','ottobre','novembre','dicembre'];
+		monthArrayShort = ['gen','feb','mar','apr','mag','giu','lug','ago','set','ott','nov','dic'];
+		dayArray = ['lun','mar','mer','gio','ven','sab','dom'];
 		weekString = 'Settimana';
 		todayString = 'Oggi &egrave; il';
 		break;		
 	case "sv":	/* Swedish */
-		monthArray = ['Januari','Februari','Mars','April','Maj','Juni','Juli','Augusti','September','Oktober','November','December'];
-		monthArrayShort = ['Jan','Feb','Mar','Apr','Maj','Jun','Jul','Aug','Sep','Okt','Nov','Dec'];
-		dayArray = ['M&aring;n','Tis','Ons','Tor','Fre','L&ouml;r','S&ouml;n'];
+		monthArray = ['januari','februari','mars','april','maj','juni','juli','augusti','september','oktober','november','december'];
+		monthArrayShort = ['jan','feb','mar','apr','maj','jun','jul','aug','sep','okt','nov','dec'];
+		dayArray = ['m&aring;n','tis','ons','tor','fre','l&ouml;r','s&ouml;n'];
 		weekString = 'Vecka';
 		todayString = 'Idag &auml;r det den';
 		break;
+// DONE CHANGED BY WICKET - fixed typos in many translations
 // ADDED BY WICKET: English as default
 	default:	/* English */
 		monthArray = ['January','February','March','April','May','June','July','August','September','October','November','December'];
