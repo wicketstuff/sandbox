@@ -15,6 +15,7 @@ import wicket.contrib.activewidgets.system.SizeUnit;
 
 public class GridExtended extends ActiveWidgetsComponent {
 
+	@SuppressWarnings("unused")
 	private GridColumns columns;
 
 	public GridExtended(String id, IModel model) {
