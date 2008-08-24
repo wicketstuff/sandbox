@@ -179,9 +179,9 @@
       <version>1.2-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>wicket.contrib.activewidgets</groupId>
-      <artifactId>active-widgets</artifactId>
-      <version>1.0-SNAPSHOT</version>
+    	<groupId>wicket.contrib.activewidgets</groupId>
+    	<artifactId>active-widgets</artifactId>
+    	<version>1.0-SNAPSHOT</version>
     </dependency>
   </dependencies>
   <properties>
