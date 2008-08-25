@@ -15,6 +15,7 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.model.util.ListModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wicketstuff.scriptaculous.JavascriptBuilder;
@@ -43,7 +44,7 @@ public abstract class SortableListView<T> extends WebMarkupContainer {
 	private List<SortableListView> containmentSortables = new ArrayList<SortableListView>();
 	
 	public SortableListView(String id, final String itemId, final List<T> items) {
-		this(id, itemId,  Model.of(items));
+		this(id, itemId, new ListModel<T>(items));
 	}
 
 	public SortableListView(String id, final String itemId, IModel<List<T>> model) {
