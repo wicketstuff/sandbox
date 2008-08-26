@@ -47,7 +47,7 @@ import org.wicketstuff.openlayers.event.PopupListener;
  * Wicket component to embed <a href="http://www.openlayers.org/">Openlayers
  * Maps</a> into your pages.
  */
-public class OpenLayersMap extends Panel {
+public class OpenLayersMap<T> extends Panel<T> {
 
 	private abstract class JSMethodBehavior extends AbstractBehavior {
 
@@ -66,7 +66,7 @@ public class OpenLayersMap extends Panel {
 		 *      org.apache.wicket.markup.ComponentTag)
 		 */
 		@Override
-		public void onComponentTag(Component component, ComponentTag tag) {
+		public void onComponentTag(Component<?> component, ComponentTag tag) {
 			String invoke = getJSinvoke();
 
 			if (attribute.equalsIgnoreCase("href")) {
@@ -170,7 +170,7 @@ public class OpenLayersMap extends Panel {
 
 	private List<Layer> layers = new ArrayList<Layer>();
 
-	private final WebMarkupContainer map;
+	private final WebMarkupContainer<?> map;
 
 	private HashMap<String, String> options = new HashMap<String, String>();
 
@@ -277,7 +277,7 @@ public class OpenLayersMap extends Panel {
 		setInfoWindow(new InfoWindow());
 		add(getInfoWindow());
 
-		map = new WebMarkupContainer("map");
+		map = new WebMarkupContainer<Object>("map");
 		map.setOutputMarkupId(true);
 		add(map);
 	}
@@ -289,7 +289,7 @@ public class OpenLayersMap extends Panel {
 	 *            control to add
 	 * @return This
 	 */
-	public OpenLayersMap addControl(Control control) {
+	public OpenLayersMap<T> addControl(Control control) {
 		controls.add(control);
 
 		if (AjaxRequestTarget.get() != null && findPage() != null) {
@@ -307,7 +307,7 @@ public class OpenLayersMap extends Panel {
 	 *            overlay to add
 	 * @return This
 	 */
-	public OpenLayersMap addOverlay(Overlay overlay) {
+	public OpenLayersMap<T> addOverlay(Overlay overlay) {
 		overlays.add(overlay);
 		for (OverlayListenerBehavior behavior : overlay.getBehaviors()) {
 			add(behavior);
@@ -326,7 +326,7 @@ public class OpenLayersMap extends Panel {
 	 * 
 	 * @return This
 	 */
-	public OpenLayersMap clearOverlays() {
+	public OpenLayersMap<T> clearOverlays() {
 		for (Overlay overlay : overlays) {
 			for (OverlayListenerBehavior behavior : overlay.getBehaviors()) {
 				remove(behavior);
@@ -517,7 +517,7 @@ public class OpenLayersMap extends Panel {
 	 *            control to remove
 	 * @return This
 	 */
-	public OpenLayersMap removeControl(Control control) {
+	public OpenLayersMap<T> removeControl(Control control) {
 		controls.remove(control);
 
 		if (AjaxRequestTarget.get() != null && findPage() != null) {
@@ -535,7 +535,7 @@ public class OpenLayersMap extends Panel {
 	 *            overlay to remove
 	 * @return This
 	 */
-	public OpenLayersMap removeOverlay(Overlay overlay) {
+	public OpenLayersMap<T> removeOverlay(Overlay overlay) {
 		while (overlays.contains(overlay)) {
 			overlays.remove(overlay);
 		}

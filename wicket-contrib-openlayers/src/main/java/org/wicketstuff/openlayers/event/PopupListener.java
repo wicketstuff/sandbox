@@ -17,10 +17,12 @@
  */
 package org.wicketstuff.openlayers.event;
 
+
 import org.apache.wicket.Request;
 import org.apache.wicket.RequestCycle;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.markup.html.panel.Panel;
 import org.wicketstuff.openlayers.OpenLayersMap;
 import org.wicketstuff.openlayers.api.LonLat;
 import org.wicketstuff.openlayers.api.Marker;
@@ -74,7 +76,8 @@ public abstract class PopupListener extends AbstractDefaultAjaxBehavior {
 
 		String markerParameter = request.getParameter("marker");
 		if (markerParameter != null) {
-			for (Overlay ovl : getOpenLayerMap().getOverlays()) {
+			OpenLayersMap<Panel> map=getOpenLayerMap();
+			for (Overlay ovl : map.getOverlays()) {
 				if (ovl.getId().equals(markerParameter)) {
 					overlay = ovl;
 					break;
