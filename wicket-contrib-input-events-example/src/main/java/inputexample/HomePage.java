@@ -41,7 +41,7 @@ public class HomePage extends WebPage {
 
 		// TODO Add your page's components here
 
-		final IModel labelModel = new Model("nothing yet!");
+		final IModel<String> labelModel = new Model<String>("nothing yet!");
 		final Label label = new Label("id", labelModel);
 		label.setOutputMarkupId(true);
 		add(label);
@@ -72,6 +72,11 @@ public class HomePage extends WebPage {
 		form.add(button);
 		Button button2 = new Button("button2").setDefaultFormProcessing(false);
 		button2.add(new AjaxEventBehavior("onClick") {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			protected void onEvent(AjaxRequestTarget target) {
 				labelModel.setObject("ajax was fired");
@@ -80,15 +85,26 @@ public class HomePage extends WebPage {
 		});
 		button2.add(new InputBehavior(new KeyType[] { KeyType.c }));
 		form.add(button2);
-		Link link = new Link("link") {
+		Link<String> link = new Link<String>("link") {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public void onClick() {
 				labelModel.setObject("link clicked");
 
 			}
 		};
-		form.add(new TextField("text", new Model("")).add(new InputBehavior(
-				new KeyType[] { KeyType.Ctrl,KeyType.f }, EventType.focus){@Override
+		form.add(new TextField<String>("text", new Model<String>("")).add(new InputBehavior(
+				new KeyType[] { KeyType.Ctrl,KeyType.f }, EventType.focus){
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
 				protected Boolean getDisable_in_input() {
 					//remember this for all input behaviors, elsewise the shortcut will be triggered in the text field
 					// not a problem if combination of keys though
