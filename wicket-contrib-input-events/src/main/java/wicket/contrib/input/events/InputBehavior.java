@@ -34,6 +34,7 @@ import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.resources.CompressedResourceReference;
 import org.apache.wicket.util.template.PackagedTextTemplate;
 import org.apache.wicket.util.template.TextTemplate;
+import org.apache.wicket.util.value.IValueMap;
 
 import wicket.contrib.input.events.key.KeyHookOn;
 import wicket.contrib.input.events.key.KeyType;
@@ -127,7 +128,7 @@ public class InputBehavior extends AbstractBehavior implements
 	public void onComponentTag(Component component, ComponentTag tag) {
 		super.onComponentTag(component, tag);
 		if (autoHook) {
-			Map<String, String> attribs = tag.getAttributes();
+			IValueMap attribs = tag.getAttributes();
 			for (String attrib : attribs.keySet()) {
 
 				List<EventType> list = Arrays.asList(EventType.values());
@@ -167,7 +168,7 @@ public class InputBehavior extends AbstractBehavior implements
 
 	private String generateString(TextTemplate textTemplate) {
 		// variables for the initialization script
-		Map<String, String> variables = new HashMap<String, String>();
+		HashMap<String, Object> variables = new HashMap<String, Object>();
 		String widgetId = getEscapedComponentMarkupId();
 
 		String keyComboString = "";
