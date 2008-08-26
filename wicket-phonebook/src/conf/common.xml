@@ -3,7 +3,7 @@
 
 <beans>
 	<!--
-		allow the user of properties from application.properties
+		allow the use of properties from application.properties
 		 throughout this configuration file
 	-->
 	<bean id="placeholderConfig"
