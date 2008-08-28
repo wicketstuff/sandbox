@@ -27,9 +27,11 @@ public class CodepressOptions extends Options {
 	}
 
 	public CodepressOptions autoComplete(boolean autoComplete) {
-		this.autoComplete = autoComplete;
-		return this;
-	}
+        if(!autoComplete)
+            set("autocomplete", "off");
+        this.autoComplete = autoComplete;
+        return this;
+    }
 
 	public CodepressOptions fileType(String fileType) {
 		this.fileType = fileType;

@@ -123,7 +123,6 @@ $.extend($, {
 							var c0 = String(t.className), c2 = '';
 							c2 += ' codepress';
 							c2 += (' linenumbers-' + (!c0.match(/linenumbers/g)?'on':'off'));
-							c2 += (' autocomplete-' + (c0.match(/autocomplete/g)?'on':'off'));
 							c2 += (' readonly-' + (c0.match(/readonly/g)?'on':'off'));
 							c2 += ' '+(c0.match(/html|css|php|java|javascript|perl|ruby|sql|text/gi) || ['html'])[0];
 							t.className = c2.replace(/(^\s+)|(\s+$)/gi,'');
