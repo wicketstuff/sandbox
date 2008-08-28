@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?><archetype>
+  <id>wicket-persistance-parent</id>
+  <resources>
+    <resource>.project</resource>
+    <resource>wicket-persistence-core/.classpath</resource>
+    <resource>wicket-persistence-core/.project</resource>
+    <resource>wicket-persistence-core/.settings/org.eclipse.jdt.core.prefs</resource>
+    <resource>wicket-persistence-core/pom.xml</resource>
+    <resource>wicket-persistence-core/src/main/java/org/apache/wicket/persistence/domain/Message.java</resource>
+    <resource>wicket-persistence-core/src/main/java/org/apache/wicket/persistence/provider/JpaMessageRepository.java</resource>
+    <resource>wicket-persistence-core/src/main/java/org/apache/wicket/persistence/provider/MessageRepository.java</resource>
+    <resource>wicket-persistence-core/src/main/resources/AllInOneRepositoryContext.xml</resource>
+    <resource>wicket-persistence-core/src/main/resources/log4j.properties</resource>
+    <resource>wicket-persistence-core/src/main/resources/META-INF/persistence.xml</resource>
+    <resource>wicket-persistence-core/src/main/resources/org/apache/wicket/persistence/domain/Message.hbm.xml</resource>
+    <resource>wicket-persistence-core/src/test/java/org/apache/wicket/persistence/DaoTest.java</resource>
+    <resource>wicket-persistence-core/src/test/java/org/apache/wicket/persistence/TestSupport.java</resource>
+    <resource>wicket-persistence-web/.classpath</resource>
+    <resource>wicket-persistence-web/.project</resource>
+    <resource>wicket-persistence-web/.settings/org.eclipse.jdt.core.prefs</resource>
+    <resource>wicket-persistence-web/pom.xml</resource>
+    <resource>wicket-persistence-web/src/main/java/org/apache/wicket/AddMessagePage.html</resource>
+    <resource>wicket-persistence-web/src/main/java/org/apache/wicket/AddMessagePage.java</resource>
+    <resource>wicket-persistence-web/src/main/java/org/apache/wicket/BasePage.html</resource>
+    <resource>wicket-persistence-web/src/main/java/org/apache/wicket/BasePage.java</resource>
+    <resource>wicket-persistence-web/src/main/java/org/apache/wicket/HomePage.html</resource>
+    <resource>wicket-persistence-web/src/main/java/org/apache/wicket/HomePage.java</resource>
+    <resource>wicket-persistence-web/src/main/java/org/apache/wicket/model/BaseEntityDetachableModel.java</resource>
+    <resource>wicket-persistence-web/src/main/java/org/apache/wicket/WicketApplication.java</resource>
+    <resource>wicket-persistence-web/src/main/resources/log4j.properties</resource>
+    <resource>wicket-persistence-web/src/main/webapp/WEB-INF/web.xml</resource>
+    <resource>wicket-persistence-web/src/test/java/org/apache/wicket/BaseTest.java</resource>
+    <resource>wicket-persistence-web/src/test/java/org/apache/wicket/Start.java</resource>
+    <resource>wicket-persistence-web/src/test/java/org/apache/wicket/TestHomePage.java</resource>
+  </resources>
+</archetype>
