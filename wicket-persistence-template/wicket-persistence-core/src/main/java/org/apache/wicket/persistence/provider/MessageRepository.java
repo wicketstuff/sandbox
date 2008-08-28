@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.wicket.persistence.domain.Message;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 public interface MessageRepository {
 
     public Message add(Message entity);
