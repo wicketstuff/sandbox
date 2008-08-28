@@ -9,9 +9,9 @@ public class DaoTest extends TestSupport {
 
 	public void testIsSomethingWorking() {
 		Message message = new Message("Hello world");
-		generalDao.persist(message);
+		messageRepository.add(message);
 
-		assertEquals(1, generalDao.getMessages().size());
+		assertEquals(1, messageRepository.getAll().size());
 	}
 
 }
