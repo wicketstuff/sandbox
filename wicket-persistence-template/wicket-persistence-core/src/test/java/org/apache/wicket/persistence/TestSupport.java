@@ -2,6 +2,7 @@ package org.apache.wicket.persistence;
 
 import org.apache.wicket.persistence.provider.MessageRepository;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.jpa.AbstractJpaTests;
 
 /**
@@ -11,7 +12,7 @@ import org.springframework.test.jpa.AbstractJpaTests;
  * that is rolled back after each test. No need to clean up after yourself.
  * 
  */
-//@ContextConfiguration( locations = "AllInOneRepositoryContext.xml" )
+@ContextConfiguration( locations = "AllInOneRepositoryContext.xml" )
 public abstract class TestSupport extends AbstractJpaTests {
 
 	protected MessageRepository messageRepository;
@@ -26,15 +27,10 @@ public abstract class TestSupport extends AbstractJpaTests {
 		this.messageRepository = dbProvider;
 	}
 
-	protected TestSupport() {
-		super();
-		setDependencyCheck(false); // To make inherited properties (like
-									// DataSource) not required.
-	}
 
 	@Override
 	protected String[] getConfigLocations() {
-		return new String[] { "classpath:AllInOneRepositoryContext.xml", };
+		return new String[] { "classpath:AllInOneRepositoryContext.xml" };
 	}
 
 }

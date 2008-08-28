@@ -16,7 +16,7 @@
 	<properties>
 		<wicket.version>1.4-SNAPSHOT</wicket.version>
 		<jetty.version>6.1.4</jetty.version>
-		<spring.version>2.5.3</spring.version>
+		<spring.version>2.5.4</spring.version>
 		<hibernate.version>3.2.5.ga</hibernate.version>
 
 	</properties>
