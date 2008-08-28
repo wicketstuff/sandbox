@@ -1,5 +1,6 @@
 package org.apache.wicket.persistence.provider;
 
+import java.util.List;
 import java.util.Set;
 
 import org.apache.wicket.persistence.domain.Message;
@@ -11,6 +12,7 @@ public interface MessageRepository {
     public boolean contains(Message entity)
 ;
     public Set<Message> getAll();
+    public List<Message> getAllAsList();
 
     public Message getById(String id);
 

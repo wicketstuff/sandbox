@@ -1,13 +1,13 @@
 package org.apache.wicket;
 
-import java.io.Serializable;
+import java.util.List;
 
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.BaseEntityDetachableModel;
 import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.model.Model;
+import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.persistence.domain.Message;
 
 /**
@@ -30,9 +30,16 @@ public class HomePage extends BasePage {
 		// Add the simplest type of label
 		add(new Label("message",
 				"If you see this message wicket is properly configured and running"));
+		add(new ListView("messages",
+				new LoadableDetachableModel<List<Message>>() {
+					@Override
+					protected List<Message> load() {
+						// TODO Auto-generated method stub
+						return messageRepository.getAllAsList();
+					}
+				}
 
-		add(new ListView("messages", new Model((Serializable) generalDao
-				.getMessages())) {
+		) {
 
 			@Override
 			protected void populateItem(ListItem item) {
