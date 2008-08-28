@@ -1,16 +1,16 @@
 package org.apache.wicket.model;
 
 import org.apache.wicket.injection.web.InjectorHolder;
-import org.apache.wicket.persistence.domain.BaseEntity;
-import org.apache.wicket.persistence.provider.GeneralDao;
+import org.apache.wicket.persistence.domain.Message;
+import org.apache.wicket.persistence.provider.MessageRepository;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-public class BaseEntityDetachableModel  <E extends BaseEntity> extends LoadableDetachableModel {
+public class BaseEntityDetachableModel  <E extends Message> extends LoadableDetachableModel {
 	
-	@SpringBean(name = "GeneralDao")
-	protected GeneralDao generalDao;
+	@SpringBean(name = "messageRepository")
+	protected MessageRepository messageRepository;
 
-	private Long id;
+	private String id;
 	private Class<E> clazz;
 
 	public BaseEntityDetachableModel() {
@@ -24,9 +24,9 @@ public class BaseEntityDetachableModel  <E extends BaseEntity> extends LoadableD
 
 	}
 
-	public void setBaseEntityDetachableModel(BaseEntity baseEntity) {
-		this.id = baseEntity.getId();
-		this.clazz =(Class<E>) baseEntity.getClass();
+	public void setBaseEntityDetachableModel(Message message) {
+		this.id = message.getId();
+		this.clazz =(Class<E>) message.getClass();
 	}
 	
 
@@ -35,7 +35,7 @@ public class BaseEntityDetachableModel  <E extends BaseEntity> extends LoadableD
 	if(clazz!=null)
 	{
 		
-		return generalDao.findEntity(id, clazz);
+		return (E) messageRepository.getById(id);
 	}
 	else{
 		return null;

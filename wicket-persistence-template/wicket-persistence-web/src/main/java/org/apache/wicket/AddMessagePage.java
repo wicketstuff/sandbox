@@ -35,7 +35,7 @@ public class AddMessagePage extends BasePage {
 			protected void onSubmit() {
 				super.onSubmit();
 				// Save current msg to db
-				generalDao.persist((Message) messageModel.getObject());
+				messageRepository.add(messageModel.getObject());
 				// Clear the old
 				messageModel.setObject(new Message());
 			}
