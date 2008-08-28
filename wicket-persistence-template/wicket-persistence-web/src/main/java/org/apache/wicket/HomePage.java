@@ -55,12 +55,5 @@ public class HomePage extends BasePage {
 		// TODO Add your page's components here
 	}
 
-	@Override
-	protected void onBeforeRender() {
-		messageListModel.detach();
-		super.onBeforeRender();
-		//make model load
-
-	}
 
 }

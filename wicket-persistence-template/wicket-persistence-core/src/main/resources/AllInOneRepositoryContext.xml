@@ -61,6 +61,7 @@
 		class="org.apache.wicket.persistence.provider.JpaMessageRepository">
 		<property name="entityManagerFactory"
 			ref="entityManagerFactory" />
-	</bean>
+		
+		</bean>
 
 </beans>
