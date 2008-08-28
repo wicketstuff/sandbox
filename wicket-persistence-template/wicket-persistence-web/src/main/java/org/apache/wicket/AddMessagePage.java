@@ -20,12 +20,17 @@ public class AddMessagePage extends BasePage {
 	 * @param parameters
 	 *            Page parameters
 	 */
-	private CompoundPropertyModel messageModel = new CompoundPropertyModel(
+	private CompoundPropertyModel<Message> messageModel = new CompoundPropertyModel<Message>(
 			new Message());
 
 	public AddMessagePage() {
 		super();
-		Form form = new Form("form") {
+		Form<Message> form = new Form<Message>("form") {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			protected void onSubmit() {
 				super.onSubmit();
@@ -36,7 +41,7 @@ public class AddMessagePage extends BasePage {
 			}
 		};
 		form.setModel(messageModel);
-		form.add(new TextField("message"));
+		form.add(new TextField<String>("message"));
 		add(form);
 		// TODO Add your page's components here
 	}

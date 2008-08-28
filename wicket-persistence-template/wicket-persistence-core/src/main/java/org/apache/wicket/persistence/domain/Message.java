@@ -2,9 +2,15 @@ package org.apache.wicket.persistence.domain;
 
 import javax.persistence.Entity;
 
-@Entity
-public class Message extends BaseEntity {
+import org.domdrides.entity.UuidEntity;
 
+@Entity
+public class Message extends UuidEntity {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String message;
 
 	public Message(String message) {
@@ -15,5 +21,10 @@ public class Message extends BaseEntity {
 	public Message() {
 		this("");
 	}
+
+	public String getMessage() {
+		return message;
+	}
+	
 
 }
