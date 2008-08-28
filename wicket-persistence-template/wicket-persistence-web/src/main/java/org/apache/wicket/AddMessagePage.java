@@ -1,7 +1,9 @@
 	package org.apache.wicket;
 
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.persistence.domain.Message;
 
@@ -43,6 +45,11 @@ public class AddMessagePage extends BasePage {
 		form.setModel(messageModel);
 		form.add(new TextField<String>("message"));
 		add(form);
+		add(new Label("messageCount",new AbstractReadOnlyModel<String>(){@Override
+		public String getObject() {
+			
+			return " Total number of messages in database "+ messageRepository.getAllAsList().size();
+		}}));
 		// TODO Add your page's components here
 	}
 }
