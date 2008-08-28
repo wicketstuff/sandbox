@@ -4,9 +4,7 @@ import java.util.List;
 
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.model.BaseEntityDetachableModel;
-import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.markup.html.list.PropertyListView;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.persistence.domain.Message;
 
@@ -16,6 +14,14 @@ import org.apache.wicket.persistence.domain.Message;
 public class HomePage extends BasePage {
 
 	private static final long serialVersionUID = 1L;
+
+	private LoadableDetachableModel<List<Message>> messageListModel = new LoadableDetachableModel<List<Message>>() {
+		@Override
+		protected List<Message> load() {
+			// TODO Auto-generated method stub
+			return messageRepository.getAllAsList();
+		}
+	};
 
 	// TODO Add any page properties or variables here
 
@@ -30,22 +36,17 @@ public class HomePage extends BasePage {
 		// Add the simplest type of label
 		add(new Label("message",
 				"If you see this message wicket is properly configured and running"));
-		add(new ListView("messages",
-				new LoadableDetachableModel<List<Message>>() {
-					@Override
-					protected List<Message> load() {
-						// TODO Auto-generated method stub
-						return messageRepository.getAllAsList();
-					}
-				}
+		add(new PropertyListView<Message>("messages", messageListModel
 
 		) {
 
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
 			@Override
-			protected void populateItem(ListItem item) {
-				item.setModel(new CompoundPropertyModel(
-						new BaseEntityDetachableModel<Message>((Message) item
-								.getModelObject())));
+			protected void populateItem(ListItem<Message> item) {
 				item.add(new Label("message"));
 
 			}
@@ -53,4 +54,13 @@ public class HomePage extends BasePage {
 		});
 		// TODO Add your page's components here
 	}
+
+	@Override
+	protected void onBeforeRender() {
+		messageListModel.detach();
+		super.onBeforeRender();
+		//make model load
+
+	}
+
 }

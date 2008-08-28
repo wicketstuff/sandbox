@@ -4,7 +4,7 @@ import org.apache.wicket.injection.web.InjectorHolder;
 import org.apache.wicket.persistence.domain.Message;
 import org.apache.wicket.persistence.provider.MessageRepository;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-
+import org.apache.wicket.model.LoadableDetachableModel;
 public class BaseEntityDetachableModel  <E extends Message> extends LoadableDetachableModel {
 	
 	@SpringBean(name = "messageRepository")
