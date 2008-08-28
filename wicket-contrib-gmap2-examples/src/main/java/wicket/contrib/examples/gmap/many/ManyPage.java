@@ -42,7 +42,10 @@ public class ManyPage extends WicketExamplePage
 
 		container = new WebMarkupContainer("container");
 		container.setOutputMarkupId(true);
-		// optional: do this if no GMap2 is added initially
+		// Google doesn't seem to like the request to its javascript file from
+		// the depth of wicket-ajax.js.
+		// The GMapHeaderContributor needs to be present in a page if it
+		// potentially might initialize a GMap2 component.
 		container
 				.add(new GMapHeaderContributor(GMapExampleApplication.get().getGoogleMapsAPIkey()));
 		add(container);
