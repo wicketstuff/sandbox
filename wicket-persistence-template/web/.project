@@ -2,7 +2,7 @@
   <name>wicket-persistence-web</name>
   <comment></comment>
   <projects>
-    <project>wicket-persistence-core</project>
+    <project>core</project>
   </projects>
   <buildSpec>
     <buildCommand>

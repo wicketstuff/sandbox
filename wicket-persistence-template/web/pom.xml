@@ -18,8 +18,8 @@
 		</organization>
 	-->
 	<parent>
-		<groupId>org.apache.wicket</groupId>
-		<artifactId>wicket-persistance-parent</artifactId>
+		<groupId>org.wicketstuff.iolite</groupId>
+		<artifactId>parent</artifactId>
 		<version>0.1-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
@@ -35,8 +35,8 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>org.apache.wicket</groupId>
-			<artifactId>wicket-persistence-core</artifactId>
+			<groupId>org.wicketstuff.iolite</groupId>
+			<artifactId>core</artifactId>
 		</dependency>
 
 		<!--  WICKET DEPENDENCIES -->
