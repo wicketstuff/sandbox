@@ -1,0 +1,9 @@
+/* ComponentB.css $Revision: 42 $ */
+.componentB {
+	background: black; 
+	color: white; 
+}
+
+a.componentB:hover {
+	background: yellow;
+}
