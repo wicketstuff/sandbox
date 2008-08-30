@@ -1,12 +1,13 @@
 package org.apache.wicket;
 
-import org.apache.wicket.persistence.provider.MessageRepository;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.spring.injection.annot.test.AnnotApplicationContextMock;
 import org.apache.wicket.util.tester.WicketTester;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.test.jpa.AbstractJpaTests;
+import org.wicketstuff.iolite.pages.WicketApplication;
+import org.wicketstuff.iolite.persistence.provider.MessageRepository;
 
 public abstract class BaseTest extends AbstractJpaTests {
 

@@ -1,6 +1,7 @@
 package org.apache.wicket;
 
 import org.apache.wicket.util.tester.FormTester;
+import org.wicketstuff.iolite.pages.AddMessagePage;
 
 /**
  * Simple test using the WicketTester
