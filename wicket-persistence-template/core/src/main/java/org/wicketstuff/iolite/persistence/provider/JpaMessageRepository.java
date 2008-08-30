@@ -2,9 +2,9 @@ package org.wicketstuff.iolite.persistence.provider;
 
 import java.util.List;
 
-import org.apache.wicket.persistence.domain.Message;
 import org.domdrides.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import org.wicketstuff.iolite.persistence.domain.Message;
 
 @Repository
 public class JpaMessageRepository extends JpaRepository<Message, String>
