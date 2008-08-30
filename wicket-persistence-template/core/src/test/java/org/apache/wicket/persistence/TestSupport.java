@@ -1,9 +1,9 @@
 package org.apache.wicket.persistence;
 
-import org.apache.wicket.persistence.provider.MessageRepository;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.jpa.AbstractJpaTests;
+import org.wicketstuff.iolite.persistence.provider.MessageRepository;
 
 /**
  * Base class for simplifying tests.
