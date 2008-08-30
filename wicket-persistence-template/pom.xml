@@ -101,13 +101,13 @@
 			<dependency>
 				<groupId>org.domdrides</groupId>
 				<artifactId>domdrides-core</artifactId>
-				<version>1.0</version>
+				<version>1.1</version>
 			</dependency>
 
 			<dependency>
 				<groupId>org.domdrides</groupId>
 				<artifactId>domdrides-jpa</artifactId>
-				<version>1.0</version>
+				<version>1.1</version>
 			</dependency>
 
 			<dependency>
