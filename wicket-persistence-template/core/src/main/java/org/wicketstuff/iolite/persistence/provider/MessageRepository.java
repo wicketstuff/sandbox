@@ -3,8 +3,8 @@ package org.wicketstuff.iolite.persistence.provider;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.wicket.persistence.domain.Message;
 import org.springframework.transaction.annotation.Transactional;
+import org.wicketstuff.iolite.persistence.domain.Message;
 
 @Transactional
 public interface MessageRepository {

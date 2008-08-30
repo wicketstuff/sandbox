@@ -1,4 +1,4 @@
-package org.wicketstuf.iolite.persistence;
+package org.wicketstuff.iolite.persistence;
 
 import org.apache.log4j.Logger;
 import org.wicketstuff.iolite.persistence.domain.Message;
