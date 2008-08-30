@@ -3,12 +3,12 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.apache.wicket</groupId>
-	<artifactId>wicket-persistence-web</artifactId>
+	<groupId>org.wicketstuff.iolite</groupId>
+	<artifactId>web</artifactId>
 	<packaging>war</packaging>
 	<version>1.0-SNAPSHOT</version>
 	<!-- TODO project name  -->
-	<name>wicket persistence web</name>
+	<name>Iolite web</name>
 	<description></description>
 
 	<!-- TODO
@@ -108,11 +108,6 @@
 			<artifactId>spring-test</artifactId>
 		</dependency>
 
-		<dependency>
-			<groupId>commons-dbcp</groupId>
-			<artifactId>commons-dbcp</artifactId>
-		</dependency>
-
 
 	</dependencies>
 
@@ -151,6 +146,9 @@
 			<plugin>
 				<groupId>org.mortbay.jetty</groupId>
 				<artifactId>maven-jetty-plugin</artifactId>
+				<configuration>
+				<contextPath>/</contextPath>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
