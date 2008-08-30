@@ -1,7 +1,7 @@
 package org.apache.wicket.persistence;
 
 import org.apache.log4j.Logger;
-import org.apache.wicket.persistence.domain.Message;
+import org.wicketstuff.iolite.persistence.domain.Message;
 
 public class DaoTest extends TestSupport {
 
