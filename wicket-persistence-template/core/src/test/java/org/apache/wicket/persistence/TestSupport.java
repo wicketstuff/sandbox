@@ -1,4 +1,4 @@
-package org.apache.wicket.persistence;
+package org.wicketstuf.iolite.persistence;
 
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.test.context.ContextConfiguration;
