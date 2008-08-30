@@ -1,5 +1,7 @@
 package org.apache.wicket;
 
+import org.wicketstuff.iolite.pages.HomePage;
+
 /**
  * Simple test using the WicketTester
  */
