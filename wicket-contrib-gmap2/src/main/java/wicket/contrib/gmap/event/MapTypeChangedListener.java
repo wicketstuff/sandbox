@@ -16,15 +16,30 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package wicket.contrib.gmap.api;
-
-import java.io.Serializable;
+package wicket.contrib.gmap.event;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 
-public abstract class GEventHandler implements Serializable
+/**
+ * See "maptypechanged" in the event section of <a
+ * href="http://www.google.com/apis/maps/documentation/reference.html#GMap2"
+ * >GMap2</a>.
+ */
+public abstract class MapTypeChangedListener extends GEventListenerBehavior
 {
 	private static final long serialVersionUID = 1L;
 
-	public abstract void onEvent(AjaxRequestTarget target);
+	@Override
+	protected String getEvent()
+	{
+		return "maptypechanged";
+	}
+
+	@Override
+	protected void onEvent(AjaxRequestTarget target)
+	{
+		onMapTypeChanged(target);
+	}
+
+	protected abstract void onMapTypeChanged(AjaxRequestTarget target);
 }
