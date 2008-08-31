@@ -25,9 +25,7 @@ if (!Wicket) {
     Wicket = {}
 }
 else 
-    if (typeof Wicket != "object") {
-        throw new Error("Wicket already exists but is not an object");
-    }
+    if (typeof Wicket != "object") {    throw new Error("Wicket already exists but is not an object"); }
 
 Wicket.geocoder = new WicketClientGeocoder();
 
@@ -48,11 +46,7 @@ function WicketClientGeocoder(){
                 coordinates = response.Placemark[0].Point.coordinates;
             }
             
-            wicketAjaxGet(callBackUrl +
-            '&status=' +
-            status +
-            '&address=' +
-            address +
+            wicketAjaxGet(callBackUrl + '&status=' + status + '&address=' + address +
             '&point=(' +
             coordinates[1] +
             ',' +
@@ -77,46 +71,49 @@ function WicketMap2(id){
         params['center'] = this.map.getCenter();
         params['bounds'] = this.map.getBounds();
         params['zoom'] = this.map.getZoom();
+        params['currentMapType'] = this.getMapTypeString(this.map.getCurrentMapType());
         params['infoWindow.hidden'] = this.map.getInfoWindow().isHidden();
         
         for (var key in params) {
             callBack = callBack + '&' + key + '=' + params[key];
         }
         
-        wicketAjaxGet(callBack, function() {}, function() {});
+        wicketAjaxGet(callBack, function(){
+        }, function(){
+        });
     }
     
-    this.addListener = function(event, callBack) {
+    this.addListener = function(event, callBack){
         var self = this;
-       
-        google.maps.Event.addListener(this.map, event, function() {
+        
+        google.maps.Event.addListener(this.map, event, function(){
             var params = {};
             for (var p = 0; p < arguments.length; p++) {
                 if (arguments[p] != null) {
                     params['argument' + p] = arguments[p];
                 }
             }
-
+            
             self.onEvent(callBack, params);
         });
-    } 
+    }
     
     this.addOverlayListener = function(overlayID, event){
         var self = this;
         var overlay = this.overlays[overlayID];
-
-        google.maps.Event.addListener(overlay, event, function() {
+        
+        google.maps.Event.addListener(overlay, event, function(){
             var params = {};
             for (var p = 0; p < arguments.length; p++) {
                 if (arguments[p] != null) {
                     params['argument' + p] = arguments[p];
                 }
             }
-
+            
             params['overlay.latLng'] = overlay.getLatLng();
-			params['overlay.overlayId'] = overlay.overlayId;
-			params['overlay.event'] = event;
-
+            params['overlay.overlayId'] = overlay.overlayId;
+            params['overlay.event'] = event;
+            
             self.onEvent(self.overlayListenerCallbackUrl, params);
         });
     }
@@ -124,7 +121,7 @@ function WicketMap2(id){
     this.clearOverlayListeners = function(overlayID, event){
         var self = this;
         var overlay = this.overlays[overlayID];
-
+        
         google.maps.Event.clearListeners(overlay, event);
     }
     
@@ -153,6 +150,23 @@ function WicketMap2(id){
         else {
             this.map.disableScrollWheelZoom(false);
         }
+    }
+    
+    this.getMapTypeString = function(mapType){
+        switch (mapType) {
+            case G_NORMAL_MAP:
+                return 'G_NORMAL_MAP';
+                break;
+            case G_SATELLITE_MAP:
+                return 'G_SATELLITE_MAP';
+                break;
+            case G_HYBRID_MAP:
+                return 'G_HYBRID_MAP';
+                break;
+            default:
+                return 'unknown';
+                break;
+        };
     }
     
     this.setMapType = function(mapType){
@@ -200,7 +214,7 @@ function WicketMap2(id){
     this.addOverlay = function(overlayId, overlay){
         this.overlays[overlayId] = overlay;
         overlay.overlayId = overlayId;
-        overlay.toString = function() {
+        overlay.toString = function(){
             return overlayId;
         };
         

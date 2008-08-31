@@ -547,6 +547,7 @@ public class GMap2 extends Panel implements GOverlayContainer
 		bounds = GLatLngBounds.parse(request.getParameter("bounds"));
 		center = GLatLng.parse(request.getParameter("center"));
 		zoom = Integer.parseInt(request.getParameter("zoom"));
+		mapType = GMapType.valueOf(request.getParameter("currentMapType"));
 
 		infoWindow.update(target);
 	}
