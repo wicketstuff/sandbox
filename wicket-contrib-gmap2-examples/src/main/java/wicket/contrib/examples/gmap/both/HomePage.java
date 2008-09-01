@@ -7,8 +7,10 @@ import org.apache.wicket.model.PropertyModel;
 import wicket.contrib.examples.GMapExampleApplication;
 import wicket.contrib.examples.WicketExamplePage;
 import wicket.contrib.gmap.GMap2;
+import wicket.contrib.gmap.GMap2.SetMapTypeBehavior;
 import wicket.contrib.gmap.api.GControl;
-import wicket.contrib.gmap.event.MoveEndListener;
+import wicket.contrib.gmap.api.GMapType;
+import wicket.contrib.gmap.event.MapTypeChangedListener;
 
 /**
  * Example HomePage for the wicket-contrib-gmap2 project
@@ -18,28 +20,28 @@ public class HomePage extends WicketExamplePage
 
 	private static final long serialVersionUID = 1L;
 
-	private final GMap2 topMap;
+	private final GMap2 map;
 
-	private final Label zoomLabel;
+	private final Label mapTypeLabel;
 
 	public HomePage()
 	{
-		topMap = new GMap2("topPanel", GMapExampleApplication.get().getGoogleMapsAPIkey());
-		topMap.addControl(GControl.GLargeMapControl);
-		add(topMap);
-		topMap.add(new MoveEndListener()
+		map = new GMap2("panel", GMapExampleApplication.get().getGoogleMapsAPIkey());
+		map.addControl(GControl.GMapTypeControl);
+		add(map);
+		map.add(new MapTypeChangedListener()
 		{
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void onMoveEnd(AjaxRequestTarget target)
+			protected void onMapTypeChanged(AjaxRequestTarget target)
 			{
-				target.addComponent(zoomLabel);
+				target.addComponent(mapTypeLabel);
 			}
 		});
-		zoomLabel = new Label("zoomLabel", new PropertyModel<Integer>(topMap, "zoom"));
-		zoomLabel.add(topMap.new SetZoomBehavior("onclick", 10));
-		zoomLabel.setOutputMarkupId(true);
-		add(zoomLabel);
+		mapTypeLabel = new Label("switchLabel", new PropertyModel<GMapType>(map, "mapType"));
+		mapTypeLabel.add(map.new SetMapTypeBehavior("onclick", GMapType.G_HYBRID_MAP));
+		mapTypeLabel.setOutputMarkupId(true);
+		add(mapTypeLabel);
 	}
 }
