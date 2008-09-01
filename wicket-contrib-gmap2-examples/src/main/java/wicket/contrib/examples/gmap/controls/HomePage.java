@@ -17,17 +17,17 @@ public class HomePage extends WicketExamplePage
 
 	public HomePage()
 	{
-		final GMap2 topMap = new GMap2("topPanel", GMapExampleApplication.get()
+		final GMap2 map = new GMap2("topPanel", GMapExampleApplication.get()
 				.getGoogleMapsAPIkey());
-		topMap.addControl(GControl.GMapTypeControl);
-		add(topMap);
+		map.addControl(GControl.GMapTypeControl);
+		add(map);
 
 		final WebMarkupContainer zoomIn = new WebMarkupContainer("zoomIn");
-		zoomIn.add(topMap.new ZoomInBehavior("onclick"));
+		zoomIn.add(map.new ZoomInBehavior("onclick"));
 		add(zoomIn);
 
 		final WebMarkupContainer zoomOut = new WebMarkupContainer("zoomOut");
-		zoomOut.add(topMap.new ZoomOutBehavior("onclick"));
+		zoomOut.add(map.new ZoomOutBehavior("onclick"));
 		add(zoomOut);
 	}
 }
