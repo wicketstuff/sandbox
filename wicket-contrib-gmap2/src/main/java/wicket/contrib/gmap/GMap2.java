@@ -685,6 +685,25 @@ public class GMap2 extends Panel implements GOverlayContainer
 		}
 	}
 
+	public class SetMapTypeBehavior extends JSMethodBehavior
+	{
+		private static final long serialVersionUID = 1L;
+
+		private final GMapType mapType;
+
+		public SetMapTypeBehavior(String event, GMapType mapType)
+		{
+			super(event);
+			this.mapType = mapType;
+		}
+
+		@Override
+		protected String getJSinvoke()
+		{
+			return mapType.getJSsetMapType(GMap2.this);
+		}
+	}
+
 	public class OverlayListener extends AbstractDefaultAjaxBehavior
 	{
 		private static final long serialVersionUID = 1L;
