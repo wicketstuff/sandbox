@@ -6,14 +6,14 @@ import org.apache.wicket.util.tester.WicketTester;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.test.jpa.AbstractJpaTests;
-import org.wicketstuff.iolite.pages.WicketApplication;
-import org.wicketstuff.iolite.persistence.provider.MessageRepository;
+import org.wicketstuff.iolite.application.WicketApplication;
+import org.wicketstuff.iolite.persistence.provider.GeneralRepository;
 
 public abstract class BaseTest extends AbstractJpaTests {
 
 	protected WicketTester wicketTester;
 
-	protected MessageRepository messageRepository;
+	protected GeneralRepository generalRepository;
 
 	@Override
 	protected String[] getConfigLocations() {
@@ -45,10 +45,10 @@ public abstract class BaseTest extends AbstractJpaTests {
 	private void readyStuff() {
 		ApplicationContext appcxt = new ClassPathXmlApplicationContext(
 				"AllInOneRepositoryContext.xml");
-		messageRepository = (MessageRepository) appcxt.getBean("messageRepository");
+		generalRepository = (GeneralRepository) appcxt.getBean("generalRepository");
 		// 2. setup mock injection environment
 		AnnotApplicationContextMock appctx = new AnnotApplicationContextMock();
-		appctx.putBean("messageRepository", messageRepository);
+		appctx.putBean("messageRepository", generalRepository);
 
 		WicketApplication wicketPersistanceApplication = new WicketApplication();
 		wicketPersistanceApplication
@@ -58,12 +58,13 @@ public abstract class BaseTest extends AbstractJpaTests {
 
 	}
 
-	public MessageRepository getMessageRepository() {
-		return messageRepository;
+	public GeneralRepository getGeneralRepository() {
+		return generalRepository;
 	}
 
-	public void setMessageRepository(MessageRepository messageRepository) {
-		this.messageRepository = messageRepository;
+	public void setGeneralRepository(GeneralRepository generalRepository) {
+		this.generalRepository = generalRepository;
 	}
+
 
 }

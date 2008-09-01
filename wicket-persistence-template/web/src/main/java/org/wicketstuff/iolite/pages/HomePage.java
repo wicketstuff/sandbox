@@ -19,7 +19,7 @@ public class HomePage extends BasePage {
 		@Override
 		protected List<Message> load() {
 			// TODO Auto-generated method stub
-			return messageRepository.getAllAsList();
+			return generalRepository.getAllAsList(Message.class);
 		}
 	};
 

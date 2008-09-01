@@ -2,6 +2,7 @@ package org.apache.wicket;
 
 import org.apache.wicket.util.tester.FormTester;
 import org.wicketstuff.iolite.pages.AddMessagePage;
+import org.wicketstuff.iolite.persistence.domain.Message;
 
 /**
  * Simple test using the WicketTester
@@ -19,7 +20,7 @@ public class TestAddMessagePage extends BaseTest {
 		formTester.setValue("message", "hello world");
 		formTester.submit();
 
-		assertEquals(1, messageRepository.getAllAsList().size());
+		assertEquals(1, generalRepository.getAllAsList(Message.class).size());
 
 	}
 }
