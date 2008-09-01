@@ -15,12 +15,12 @@ public interface GeneralRepository {
 	public abstract Entity<? extends Serializable> add(Entity<? extends Serializable> entity);
 
 	public abstract boolean contains(
-			Entity<? extends Entity<? extends Serializable>> entity);
+			Entity entity);
 
 	public abstract Set<EntityType> getAll(
 			Class<? extends Entity<String>> entityClass);
 
-	public abstract <T> Entity getById(Object id, Class<? extends Entity> clazz);
+	public abstract <T> Entity<? extends Serializable> getById(Object id, Class<? extends Entity<? extends Serializable>> clazz);
 
 	public abstract void remove(EntityType entity);
 

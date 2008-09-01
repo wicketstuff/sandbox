@@ -42,9 +42,9 @@ public class JpaGeneralRepository extends JpaDaoSupport implements GeneralReposi
 	 * @see org.wicketstuff.iolite.persistence.provider.GeneralRepository#contains(org.domdrides.entity.Entity)
 	 */
 	public boolean contains(
-			Entity<? extends Entity<? extends Serializable>> entity) {
+			Entity entity) {
 
-		entity = getById(entity.getId(), entity.getClass());
+		entity = getById(entity.getId(), (Class<? extends Entity<? extends Serializable>>) entity.getClass());
 		return entity != null;
 	}
 
@@ -64,7 +64,7 @@ public class JpaGeneralRepository extends JpaDaoSupport implements GeneralReposi
 	/* (non-Javadoc)
 	 * @see org.wicketstuff.iolite.persistence.provider.GeneralRepository#getById(java.lang.Object, java.lang.Class)
 	 */
-	public <T> Entity getById(Object id, Class<? extends Entity> clazz) {
+	public <T> Entity getById(Object id, Class<? extends Entity<? extends Serializable>> clazz) {
 		return getJpaTemplate().find(clazz, id);
 	}
 
