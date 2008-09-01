@@ -4,8 +4,10 @@ import java.util.List;
 
 import org.domdrides.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import org.wicketstuff.iolite.persistence.domain.Message;
 
+@Transactional
 @Repository
 public class JpaMessageRepository extends JpaRepository<Message, String>
 		implements MessageRepository {
