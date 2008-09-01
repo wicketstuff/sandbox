@@ -1,12 +1,8 @@
 package org.wicketstuff.iolite.persistence;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.jpa.AbstractJpaTests;
 import org.wicketstuff.iolite.persistence.provider.GeneralRepository;
-import org.wicketstuff.iolite.persistence.provider.MessageRepository;
 
 /**
  * Base class for simplifying tests.
@@ -20,7 +16,6 @@ public abstract class TestSupport extends AbstractJpaTests {
 
 	
 	
-	protected MessageRepository messageRepository;
 
 	protected GeneralRepository generalRepository;
 
@@ -35,10 +30,6 @@ public abstract class TestSupport extends AbstractJpaTests {
 	@Override
 	protected String[] getConfigLocations() {
 		return new String[] { "classpath:AllInOneRepositoryContext.xml" };
-	}
-
-	public void setMessageRepository(MessageRepository messageRepository) {
-		this.messageRepository = messageRepository;
 	}
 
 	public void setGeneralRepository(GeneralRepository generalRepository) {
