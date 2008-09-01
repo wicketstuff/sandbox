@@ -11,15 +11,15 @@ public class DaoTest extends TestSupport {
 
 	public void testIsSomethingWorking() {
 		Message message = new Message("Hello world");
-		messageRepository.add(message);
+		generalRepository.add(message);
 		
-		assertEquals(1, messageRepository.getAll().size());
+		assertEquals(1, generalRepository.getAll(Message.class).size());
 	}
 	public void testIsSomethingWorkingGetAllAsList() {
 		Message message = new Message("Hello world");
-		messageRepository.add(message);
+		generalRepository.add(message);
 
-		assertEquals(1, messageRepository.getAllAsList().size());
+		assertEquals(1, generalRepository.getAllAsList(Message.class).size());
 	}
 	public void testGenericMethodGetList(){
 		Message message=new Message();
