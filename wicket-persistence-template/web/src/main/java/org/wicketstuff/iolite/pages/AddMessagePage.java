@@ -37,7 +37,7 @@ public class AddMessagePage extends BasePage {
 			protected void onSubmit() {
 				super.onSubmit();
 				// Save current msg to db
-				messageRepository.add(messageModel.getObject());
+				generalRepository.add(messageModel.getObject());
 				// Clear the old
 				messageModel.setObject(new Message());
 			}
@@ -48,7 +48,7 @@ public class AddMessagePage extends BasePage {
 		add(new Label("messageCount",new AbstractReadOnlyModel<String>(){@Override
 		public String getObject() {
 			
-			return " Total number of messages in database "+ messageRepository.getAllAsList().size();
+			return " Total number of messages in database "+ generalRepository.getAllAsList(Message.class).size();
 		}}));
 		// TODO Add your page's components here
 	}
