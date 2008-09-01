@@ -19,7 +19,7 @@
 	-->
 	<parent>
 		<groupId>org.wicketstuff.iolite</groupId>
-		<artifactId>parent</artifactId>
+		<artifactId>wicketstuff-iolite</artifactId>
 		<version>0.1-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
