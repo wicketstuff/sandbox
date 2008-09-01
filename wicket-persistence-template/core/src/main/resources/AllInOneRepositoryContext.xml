@@ -54,16 +54,17 @@
 		<property name="entityManagerFactory"
 			ref="entityManagerFactory" />
 	</bean>
-
 	<bean
 		class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />
-	<bean id="messageRepository"
-		class="org.wicketstuff.iolite.persistence.provider.JpaMessageRepository">
+	<bean id="messageRepository" class="org.wicketstuff.iolite.persistence.provider.JpaMessageRepository">
 		<property name="entityManagerFactory"
 			ref="entityManagerFactory" />
-		
-		</bean>
-		
+	</bean>
+	
+	<bean id="generalRepository" class="org.wicketstuff.iolite.persistence.provider.JpaGeneralRepository">
+		<property name="entityManagerFactory"
+			ref="entityManagerFactory" />
+	</bean>
 		
 		
 		
