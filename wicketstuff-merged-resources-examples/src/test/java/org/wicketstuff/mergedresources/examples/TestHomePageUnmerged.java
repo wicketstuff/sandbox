@@ -32,8 +32,14 @@ public class TestHomePageUnmerged extends TestCase
 	public void setUp()
 	{
 		tester = new WicketTester(new WicketApplication() {
+			@Override
 			protected boolean merge() {
 				return false;
+			}
+			
+			@Override
+			protected boolean strip() {
+				return true;
 			}
 		});
 	}

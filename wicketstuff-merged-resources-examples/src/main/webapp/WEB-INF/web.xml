@@ -21,7 +21,7 @@
  		<filter-class>org.apache.wicket.protocol.http.WicketFilter</filter-class>
 		<init-param>
 			<param-name>applicationClassName</param-name>
-			<param-value>at.molindo.wicket.resources.WicketApplication</param-value>
+			<param-value>org.wicketstuff.mergedresources.examples.WicketApplication</param-value>
  		</init-param>
  	</filter>
 
