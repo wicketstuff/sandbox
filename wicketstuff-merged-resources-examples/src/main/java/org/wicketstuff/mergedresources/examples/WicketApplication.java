@@ -28,9 +28,11 @@ public class WicketApplication extends WebApplication
 	@Override
 	protected void init() {
 		getResourceSettings().setStripJavascriptCommentsAndWhitespace(strip());
-		getResourceSettings().setAddLastModifiedTimeToResourceReferenceUrl(true);
+		//getResourceSettings().setAddLastModifiedTimeToResourceReferenceUrl(true);
 		
 		if (merge()) {
+			ResourceMountHelper.mountWicketResources("script", this);
+			
 			IResourceVersionProvider p = new RevisionVersionProvider();
 			ResourceMountHelper h = new ResourceMountHelper(this, p);
 			
@@ -49,7 +51,7 @@ public class WicketApplication extends WebApplication
 	}
 
 	protected boolean merge() {
-		return false;
+		return true;
 	}
 
 	/**

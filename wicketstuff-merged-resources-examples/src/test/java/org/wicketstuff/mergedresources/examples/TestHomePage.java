@@ -31,7 +31,17 @@ public class TestHomePage extends TestCase
 
 	public void setUp()
 	{
-		tester = new WicketTester(new WicketApplication());
+		tester = new WicketTester(new WicketApplication() {
+			@Override
+			protected boolean merge() {
+				return true;
+			}
+
+			@Override
+			protected boolean strip() {
+				return true;
+			}
+		});
 	}
 
 	public void testRenderMyPage()
