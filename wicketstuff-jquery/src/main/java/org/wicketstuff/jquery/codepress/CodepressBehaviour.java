@@ -13,6 +13,7 @@ import org.wicketstuff.misc.behaviors.SimpleAttributeAppender;
  */
 public class CodepressBehaviour extends JQueryBehavior {
     public static final CompressedResourceReference CODEPRESS_JS = new CompressedResourceReference(CodepressBehaviour.class, "jquery.codepress.js");
+
     private CodepressOptions options_;
     
     public CodepressBehaviour() {
