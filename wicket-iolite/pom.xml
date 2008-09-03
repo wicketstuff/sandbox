@@ -8,11 +8,12 @@
   <version>0.2-SNAPSHOT</version>
   <parent>
 		<groupId>org.apache.wicket</groupId>
-		<artifactId>wicket-jdk15</artifactId>
+		<artifactId>wicket-parent</artifactId>
 		<version>1.4-SNAPSHOT</version>
-		<relativePath>../pom.xml</relativePath>
-	</parent>
+		<relativePath>../../pom.xml</relativePath>
+  </parent>
   <build>
+<!-- 
     <extensions>
       <extension>
         <groupId>org.apache.maven.archetype</groupId>
@@ -27,6 +28,7 @@
         <extensions>true</extensions>
       </plugin>
     </plugins>
+ -->
   </build>
   
       <distributionManagement>
