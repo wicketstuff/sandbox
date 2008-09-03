@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.wicketstuff.iolite</groupId>
   <artifactId>wicketstuff-iolite</artifactId>
-  <packaging>maven-plugin</packaging>
+   <packaging>maven-archetype</packaging>
   <name>wicketstuff-iolite</name>
   <version>0.3-SNAPSHOT</version>
   <parent>
@@ -13,7 +13,6 @@
 		<relativePath>../../pom.xml</relativePath>
   </parent>
   <build>
-<!-- 
     <extensions>
       <extension>
         <groupId>org.apache.maven.archetype</groupId>
@@ -28,7 +27,6 @@
         <extensions>true</extensions>
       </plugin>
     </plugins>
- -->
   </build>
   
       <distributionManagement>
