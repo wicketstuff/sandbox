@@ -6,6 +6,12 @@
   <packaging>maven-archetype</packaging>
   <name>wicketstuff-iolite</name>
   <version>0.2-SNAPSHOT</version>
+  <parent>
+		<groupId>org.apache.wicket</groupId>
+		<artifactId>wicket-jdk15</artifactId>
+		<version>1.4-SNAPSHOT</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
   <build>
     <extensions>
       <extension>
@@ -23,23 +29,5 @@
     </plugins>
   </build>
   
-	<distributionManagement>
-		<snapshotRepository>
-			<id>repo</id>
-			<name>Local Bamboo/Tomcat repository</name>
-			<url>
-				file:/home/wicket/tomcat/webapps/maven/repository/
-			</url>
-			<uniqueVersion>false</uniqueVersion>
-		</snapshotRepository>
-		<repository>
-			<id>repo</id>
-			<name>Local Bamboo/Tomcat repository</name>
-			<url>
-				file:/home/wicket/tomcat/webapps/maven/repository/
-			</url>
-			<uniqueVersion>false</uniqueVersion>
-		</repository>
 
-	</distributionManagement>
 </project>
