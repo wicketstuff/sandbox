@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><archetype>
   <id>wicketstuff-iolite</id>
   <resources>
-    <resource>.project</resource>
     <resource>core/pom.xml</resource>
     <resource>core/src/main/java/org/wicketstuff/iolite/persistence/domain/Message.java</resource>
     <resource>core/src/main/java/org/wicketstuff/iolite/persistence/provider/GeneralRepository.java</resource>
