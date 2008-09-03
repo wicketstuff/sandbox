@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?><archetype>
+  <id>wicketstuff-iolite</id>
+  <resources>
+    <resource>.project</resource>
+    <resource>core/pom.xml</resource>
+    <resource>core/src/main/java/org/wicketstuff/iolite/persistence/domain/Message.java</resource>
+    <resource>core/src/main/java/org/wicketstuff/iolite/persistence/provider/GeneralRepository.java</resource>
+    <resource>core/src/main/java/org/wicketstuff/iolite/persistence/provider/JpaGeneralRepository.java</resource>
+    <resource>core/src/main/resources/AllInOneRepositoryContext.xml</resource>
+    <resource>core/src/main/resources/log4j.properties</resource>
+    <resource>core/src/main/resources/META-INF/persistence.xml</resource>
+    <resource>core/src/test/java/org/wicketstuff/iolite/persistence/DaoTest.java</resource>
+    <resource>core/src/test/java/org/wicketstuff/iolite/persistence/TestSupport.java</resource>
+    <resource>web/pom.xml</resource>
+    <resource>web/src/main/java/org/wicketstuff/iolite/application/WicketApplication.java</resource>
+    <resource>web/src/main/java/org/wicketstuff/iolite/pages/AddMessagePage.html</resource>
+    <resource>web/src/main/java/org/wicketstuff/iolite/pages/AddMessagePage.java</resource>
+    <resource>web/src/main/java/org/wicketstuff/iolite/pages/BasePage.html</resource>
+    <resource>web/src/main/java/org/wicketstuff/iolite/pages/BasePage.java</resource>
+    <resource>web/src/main/java/org/wicketstuff/iolite/pages/HomePage.html</resource>
+    <resource>web/src/main/java/org/wicketstuff/iolite/pages/HomePage.java</resource>
+    <resource>web/src/main/resources/log4j.properties</resource>
+    <resource>web/src/main/webapp/WEB-INF/web.xml</resource>
+    <resource>web/src/test/java/org/wicketstuff/iolite/BaseTest.java</resource>
+    <resource>web/src/test/java/org/wicketstuff/iolite/Start.java</resource>
+    <resource>web/src/test/java/org/wicketstuff/iolite/TestAddMessagePage.java</resource>
+    <resource>web/src/test/java/org/wicketstuff/iolite/TestHomePage.java</resource>
+  </resources>
+</archetype>
