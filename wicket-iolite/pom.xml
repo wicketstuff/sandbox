@@ -5,7 +5,7 @@
   <artifactId>wicketstuff-iolite</artifactId>
   <packaging>maven-plugin</packaging>
   <name>wicketstuff-iolite</name>
-  <version>0.2-SNAPSHOT</version>
+  <version>0.3-SNAPSHOT</version>
   <parent>
 		<groupId>org.apache.wicket</groupId>
 		<artifactId>wicket-parent</artifactId>
