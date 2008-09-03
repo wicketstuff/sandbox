@@ -37,10 +37,15 @@
             <uniqueVersion>false</uniqueVersion>
         </snapshotRepository>
         <repository>
-            <id>repo</id>
+            <id>repo</id> 
             <name>Local TeamCity/Tomcat repository</name>
 		    <url>file:/home/wicket/tomcat/webapps/maven/repository/</url>
         </repository>
+        <archetypeRepository>
+            <id>repo</id> 
+            <name>Local TeamCity/Tomcat repository</name>
+		    <url>file:/home/wicket/tomcat/webapps/maven/repository/</url>
+        </archetypeRepository>
     </distributionManagement>
 
 </project>
