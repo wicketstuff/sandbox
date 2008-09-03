@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.wicketstuff.iolite</groupId>
   <artifactId>wicketstuff-iolite</artifactId>
-  <packaging>maven-archetype</packaging>
+  <packaging>maven-plugin</packaging>
   <name>wicketstuff-iolite</name>
   <version>0.2-SNAPSHOT</version>
   <parent>
@@ -43,11 +43,6 @@
             <name>Local TeamCity/Tomcat repository</name>
 		    <url>file:/home/wicket/tomcat/webapps/maven/repository/</url>
         </repository>
-        <archetypeRepository>
-            <id>repo</id> 
-            <name>Local TeamCity/Tomcat repository</name>
-		    <url>file:/home/wicket/tomcat/webapps/maven/repository/</url>
-        </archetypeRepository>
     </distributionManagement>
 
 </project>
