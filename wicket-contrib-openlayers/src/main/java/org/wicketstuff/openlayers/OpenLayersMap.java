@@ -47,7 +47,7 @@ import org.wicketstuff.openlayers.event.PopupListener;
  * Wicket component to embed <a href="http://www.openlayers.org/">Openlayers
  * Maps</a> into your pages.
  */
-public class OpenLayersMap<T> extends Panel<T> {
+public class OpenLayersMap<T> extends Panel {
 
 	private abstract class JSMethodBehavior extends AbstractBehavior {
 
@@ -66,7 +66,7 @@ public class OpenLayersMap<T> extends Panel<T> {
 		 *      org.apache.wicket.markup.ComponentTag)
 		 */
 		@Override
-		public void onComponentTag(Component<?> component, ComponentTag tag) {
+		public void onComponentTag(Component component, ComponentTag tag) {
 			String invoke = getJSinvoke();
 
 			if (attribute.equalsIgnoreCase("href")) {
@@ -170,7 +170,7 @@ public class OpenLayersMap<T> extends Panel<T> {
 
 	private List<Layer> layers = new ArrayList<Layer>();
 
-	private final WebMarkupContainer<?> map;
+	private final WebMarkupContainer map;
 
 	private HashMap<String, String> options = new HashMap<String, String>();
 
@@ -277,7 +277,7 @@ public class OpenLayersMap<T> extends Panel<T> {
 		setInfoWindow(new InfoWindow());
 		add(getInfoWindow());
 
-		map = new WebMarkupContainer<Object>("map");
+		map = new WebMarkupContainer("map");
 		map.setOutputMarkupId(true);
 		add(map);
 	}
