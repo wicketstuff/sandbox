@@ -19,6 +19,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.wicketstuff.openlayers.api.Icon;
+import org.wicketstuff.openlayers.api.LonLat;
+import org.wicketstuff.openlayers.api.Overlay;
+import org.wicketstuff.openlayers.api.PopupWindowPanel;
 import org.wicketstuff.openlayers.event.EventType;
 import org.wicketstuff.openlayers.js.Constructor;
 
