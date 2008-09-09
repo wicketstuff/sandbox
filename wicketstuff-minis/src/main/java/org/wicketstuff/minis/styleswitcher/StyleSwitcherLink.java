@@ -78,7 +78,7 @@ public class StyleSwitcherLink extends WebMarkupContainer
 	protected void onComponentTag(ComponentTag tag)
 	{
 		super.onComponentTag(tag);
-		final String title = getModelObjectAsString();
+		final String title = getDefaultModelObjectAsString();
 		tag.put("href", "#");
 		tag.put("onclick", StyleSwitcher.Javascript.forActivatingStylesheet(title));
 	}
