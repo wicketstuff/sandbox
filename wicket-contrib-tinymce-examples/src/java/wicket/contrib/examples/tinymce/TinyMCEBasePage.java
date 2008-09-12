@@ -54,14 +54,6 @@ public class TinyMCEBasePage extends WicketExamplePage
 				setResponsePage(ExactModeTinyMCEPage.class);
 			}
 		});
-		add(new Link("ajax")
-		{
-			
-			public void onClick()
-			{
-				setResponsePage(AjaxTinyMCEPage.class);
-			}
-		});
 		add(new Link("inline")
 		{
 			
