@@ -11,15 +11,15 @@
 			t.editor = ed;
 
 			// Register commands
-			ed.addCommand('mceSave', t._save, t);
-			ed.addCommand('mceCancel', t._cancel, t);
+			ed.addCommand('mceWicketSave', t._save, t);
+			ed.addCommand('mceWicketCancel', t._cancel, t);
 
 			// Register buttons
-			ed.addButton('save', {title : 'save.save_desc', cmd : 'mceSave'});
-			ed.addButton('cancel', {title : 'save.cancel_desc', cmd : 'mceCancel'});
+			ed.addButton('save', {title : 'save.save_desc', cmd : 'mceWicketSave'});
+			ed.addButton('cancel', {title : 'save.cancel_desc', cmd : 'mceWicketCancel'});
 
 			ed.onNodeChange.add(t._nodeChange, t);
-			ed.addShortcut('ctrl+s', ed.getLang('save.save_desc'), 'mceSave');
+			ed.addShortcut('ctrl+s', ed.getLang('save.save_desc'), 'mceWicketSave');
 		},
 
 		getInfo : function() {
@@ -63,6 +63,7 @@
 			ed.undoManager.clear();
 			ed.nodeChanged();
 			tinyMCE.execCommand('mceRemoveControl', true, ed.id);
+			ed.execCallback('save_onwicketcancelcallback', ed);
 		}
 	});
 
