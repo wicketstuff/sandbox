@@ -26,12 +26,14 @@ public class WicketSavePlugin extends Plugin {
     private PluginButton saveButton;
     private PluginButton cancelButton;
     private String saveCallbackname;
+    private String cancelCallbackname;
 
-    public WicketSavePlugin(InPlaceSaveBehavior behaviour) {
+    public WicketSavePlugin(InPlaceSaveBehavior behavior) {
         super("wicketsave");
         saveButton = new PluginButton("save", this);
         cancelButton = new PluginButton("cancel", this);
-        saveCallbackname = behaviour.getSaveCallbackName();
+        saveCallbackname = behavior.getSaveCallbackName();
+        cancelCallbackname = behavior.getCancelCallbackName();
     }
 
     public PluginButton getSaveButton() {
@@ -45,5 +47,6 @@ public class WicketSavePlugin extends Plugin {
     protected void definePluginSettings(StringBuffer buffer) {
         super.definePluginSettings(buffer);
         buffer.append(",\n\tsave_onwicketsavecallback: '" + saveCallbackname + "'");
+        buffer.append(",\n\tsave_onwicketcancelcallback: '" + cancelCallbackname + "'");
     }
 }

@@ -1,5 +1,6 @@
 package wicket.contrib.tinymce;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.MarkupStream;
 import org.apache.wicket.markup.html.form.AbstractTextComponent;
@@ -13,12 +14,24 @@ import wicket.contrib.tinymce.settings.TinyMCESettings.Position;
 import wicket.contrib.tinymce.settings.TinyMCESettings.Toolbar;
 
 public class InPlaceEditComponent extends AbstractTextComponent {
+    private InPlaceSaveBehavior inPlaceSaveBehavior;
+    private InPlaceEditBehavior inPlaceEditBehavior;
+
     public InPlaceEditComponent(String id, String text) {
         super(id, new Model(text));
+        init(this);
+    }
+
+    public InPlaceEditComponent(String id, String text, Component triggerComponent) {
+        super(id, new Model(text));
+        init(triggerComponent);
+    }
+
+    private void init(Component triggerComponent) {
         setEscapeModelStrings(false);
-        InPlaceSaveBehavior saveBehavior = new InPlaceSaveBehavior();
-        add(saveBehavior);
-        WicketSavePlugin savePlugin = new WicketSavePlugin(saveBehavior);
+        inPlaceSaveBehavior = new InPlaceSaveBehavior();
+        add(inPlaceSaveBehavior);
+        WicketSavePlugin savePlugin = new WicketSavePlugin(inPlaceSaveBehavior);
         TinyMCESettings settings = new TinyMCESettings(TinyMCESettings.Mode.none, TinyMCESettings.Theme.advanced);
         // TODO: get language from locale....
         // TODO: set settings externally...
@@ -37,7 +50,16 @@ public class InPlaceEditComponent extends AbstractTextComponent {
         settings.disableButton(TinyMCESettings.help);
         settings.add(savePlugin.getSaveButton(), Toolbar.first, Position.before);
         settings.add(savePlugin.getCancelButton(), Toolbar.first, Position.before);
-        add(new InPlaceEditBehavior(settings));
+        inPlaceEditBehavior = new InPlaceEditBehavior(settings, triggerComponent);
+        add(inPlaceEditBehavior);
+    }
+    
+    protected void onComponentTag(ComponentTag tag) {
+        super.onComponentTag(tag);
+        //the name tag is added by AbstractTextComponent, because it expects this
+        // element to be an <input> tag. We don't need it, and it will render invalid
+        // html if this is not an input tag:
+        tag.remove("name");
     }
 
     public String getInputName() {
@@ -46,5 +68,20 @@ public class InPlaceEditComponent extends AbstractTextComponent {
 
     protected final void onComponentTagBody(final MarkupStream markupStream, final ComponentTag openTag) {
         replaceComponentTagBody(markupStream, openTag, getValue());
+    }
+
+    /**
+     * @return The name of the (no-argument) JavaScript that will replace this component with a TinyMce editor.
+     */
+    public final String getStartEditorScriptName() {
+        return inPlaceEditBehavior.getStartEditorScriptName();
+    }
+
+    public InPlaceSaveBehavior getInPlaceSaveBehavior() {
+        return inPlaceSaveBehavior;
+    }
+
+    public InPlaceEditBehavior getInPlaceEditBehavior() {
+        return inPlaceEditBehavior;
     }
 }
