@@ -1,37 +1,45 @@
 /*
- * Copyright (C) 2005 Iulian-Corneliu Costan
- * 
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
- * 
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU Lesser General Public License
- * along with this library; if not, write to the Free Software Foundation, Inc.,
- * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+    This file is part of Wicket-Contrib-TinyMce. See
+    <http://http://wicketstuff.org/confluence/display/STUFFWIKI/wicket-contrib-tinymce>
+
+    Wicket-Contrib-TinyMce is free software: you can redistribute it and/
+    or modify it under the terms of the GNU Lesser General Public License
+    as published by the Free Software Foundation, either version 3 of the
+    License, or (at your option) any later version.
+
+    Wicket-Contrib-TinyMce is distributed in the hope that it will be
+    useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Lesser General Public License for more details.
+
+    You should have received a copy of the GNU Lesser General Public
+    License along with Wicket-Contrib-TinyMce.  If not, see
+    <http://www.gnu.org/licenses/>.
  */
 package wicket.contrib.tinymce.settings;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
 import org.apache.commons.collections.set.ListOrderedSet;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.wicket.Application;
 import org.apache.wicket.Component;
+import org.apache.wicket.ResourceReference;
+import org.apache.wicket.Session;
+import org.apache.wicket.markup.html.resources.CompressedResourceReference;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import wicket.contrib.tinymce.InPlaceEditBehavior;
 
 /**
  * Settings class for TinyMCE editor. User can add/remove buttons, enable/disable resizing, change positions,
@@ -43,16 +51,19 @@ import org.apache.wicket.Component;
  * @see Button
  */
 public class TinyMCESettings implements Serializable {
-    private static final long serialVersionUID = 1L;
-    private static final Log log = LogFactory.getLog(TinyMCESettings.class);
+    private static final long serialVersionUID = 2L;
+    private static final Logger LOG = LoggerFactory.getLogger(TinyMCESettings.class);
+    public static final ResourceReference REFERENCE = new CompressedResourceReference(InPlaceEditBehavior.class,
+            "tiny_mce/tiny_mce_src.js");
+    public static final ResourceReference REFERENCE_MIN = new CompressedResourceReference(InPlaceEditBehavior.class,
+            "tiny_mce/tiny_mce.js");
+    public static final Set<Language> languages = new HashSet<Language>(Arrays.asList(Language.values()));
 
-    private final String id = UUID.randomUUID().toString();
-    private Mode mode;
     private Theme theme;
     private Location toolbarLocation;
     private Location statusbarLocation;
     private Align toolbarAlign;
-    private Language language = Language.EN;
+    private Language language;
     private boolean verticalResizing;
     private boolean horizontalResizing;
 
@@ -60,103 +71,50 @@ public class TinyMCESettings implements Serializable {
     private List controls;
 
     private Set disabledButtons;
-    private Set<Component> textAreas;
 
-    /**
-     * Construct.
-     */
     public TinyMCESettings() {
-        this(Mode.specific_textareas, Theme.simple);
+        this(Theme.simple);
     }
 
-    /**
-     * Construct.
-     * 
-     * @param mode
-     *            the tinymce mode, it can be textareas, exact or specific_textares
-     */
-    public TinyMCESettings(Mode mode) {
-        this(mode, Theme.simple);
-    }
-
-    /**
-     * Construct.
-     * 
-     * @param theme
-     *            the theme
-     */
     public TinyMCESettings(Theme theme) {
-        this(Mode.specific_textareas, theme);
+        this(theme, selectLang());
     }
 
-    /**
-     * Construct.
-     * 
-     * @param mode
-     *            the mode
-     * @param theme
-     *            the theme
-     */
-    public TinyMCESettings(Mode mode, Theme theme) {
-        this.mode = mode;
+    public TinyMCESettings(Theme theme, Language lang) {
         this.theme = theme;
         this.controls = new LinkedList();
         this.plugins = new ListOrderedSet();
         this.disabledButtons = new ListOrderedSet();
-        this.textAreas = new ListOrderedSet();
+        this.language = lang;
     }
 
-    /**
-     * Specifies the location of the toolbar.
-     * 
-     * @param toolbarLocation
-     */
+    private static Language selectLang() {
+        try {
+            return Language.valueOf(Session.get().getLocale().getLanguage());
+        } catch (IllegalArgumentException e) {}
+        return null;
+    }
+
     public void setToolbarLocation(Location toolbarLocation) {
         this.toolbarLocation = toolbarLocation;
     }
 
-    /**
-     * Specifies the location of the status bar.
-     * 
-     * @param statusbarLocation
-     */
     public void setStatusbarLocation(Location statusbarLocation) {
         this.statusbarLocation = statusbarLocation;
     }
 
-    /**
-     * Specifies the alignment of toolbar.
-     * 
-     * @param toolbarAlign
-     */
     public void setToolbarAlign(Align toolbarAlign) {
         this.toolbarAlign = toolbarAlign;
     }
 
-    /**
-     * Enable/Disable vertical resizing.
-     * 
-     * @param resizing
-     */
     public void setVerticalResizing(boolean resizing) {
         this.verticalResizing = resizing;
     }
 
-    /**
-     * Enable/Disable horizontal resizing.
-     * 
-     * @param horizontalResizing
-     */
     public void setHorizontalResizing(boolean horizontalResizing) {
         this.horizontalResizing = horizontalResizing;
     }
 
-    /**
-     * Change the tinymce default language.
-     * 
-     * @param language
-     *            the language
-     */
     public void setLanguage(Language language) {
         this.language = language;
     }
@@ -213,62 +171,41 @@ public class TinyMCESettings implements Serializable {
         plugins.add(plugin);
     }
 
-    /**
-     * Enable tinymce area only for added components. This works in tinymce exact mode.
-     * 
-     * @param textArea
-     *            the component to enable tinymce for
-     */
-    public void enableTextArea(Component textArea) {
-        textArea.setOutputMarkupId(true);
-        textAreas.add(textArea);
-    }
-
     // used in testing
     Set getPlugins() {
         return plugins;
     }
 
     /**
-     * TODO DO NOT CALL IT, NOT FOR PUBLIC API
-     * 
-     * @param ajax
-     * 
-     * @return
+     * Generates the initialisation script. Internal API, do not call.
      */
-    public String toJavaScript(boolean ajax) {
+    public String toJavaScript(Mode mode, Collection<Component> components) {
         StringBuffer buffer = new StringBuffer();
 
         // mode
-        if (ajax) {
-            buffer.append("\n\t").append("strict_loading_mode : ").append("\"true\"");
-        }
         buffer.append("\n\t").append("mode : \"" + mode.getName() + "\"");
-        if (Mode.specific_textareas.equals(mode))
-            buffer.append(",\n\t").append("editor_selector : \"" + id + "\"");
-
-        if (isExactMode())
-            addElements(buffer);
+        if (Mode.exact.equals(mode))
+            addElements(components, buffer);
 
         // theme
         buffer.append(",\n\t").append("theme : ").append("\"").append(theme.getName()).append("\"");
 
         // language
-        buffer.append(",\n\t").append("language : ").append("\"").append(language.getName()).append("\"");
+        if (language != null)
+            buffer.append(",\n\t").append("language : ").append("\"").append(language.toString()).append("\"");
 
-        if (Theme.advanced.equals(theme)) {
+        if (Theme.advanced.equals(theme))
             appendAdvancedSettings(buffer);
-        }
 
         appendPluginSettings(buffer);
 
         return buffer.toString();
     }
 
-    private void addElements(StringBuffer buffer) {
-        if (textAreas.size() > 0) {
+    private void addElements(Collection<Component> components, StringBuffer buffer) {
+        if (components.size() > 0) {
             buffer.append(",\n\telements : \"");
-            Iterator iterator = textAreas.iterator();
+            Iterator iterator = components.iterator();
             while (iterator.hasNext()) {
                 Component component = (Component)iterator.next();
                 buffer.append(component.getMarkupId());
@@ -277,13 +214,8 @@ public class TinyMCESettings implements Serializable {
                 }
             }
             buffer.append("\"");
-        } else {
-            log.warn("tinymce is set to \"exact\" mode but there are no components attached");
-        }
-    }
-
-    private boolean isExactMode() {
-        return Mode.exact.equals(mode);
+        } else
+            LOG.warn("tinymce is set to \"exact\" mode but there are no components attached");
     }
 
     private void appendPluginSettings(StringBuffer buffer) {
@@ -501,11 +433,12 @@ public class TinyMCESettings implements Serializable {
         }
     }
 
-    /**
-     * @return
-     */
-    public String getId() {
-        return id;
+    public static ResourceReference javaScriptReference() {
+        Application app = Application.get();
+        if (Application.DEVELOPMENT.equals(app.getConfigurationType()))
+            return REFERENCE;
+        else
+            return REFERENCE_MIN;
     }
 
     private class ControlPredicate implements Predicate {
@@ -537,13 +470,8 @@ public class TinyMCESettings implements Serializable {
     public static class Mode extends Enum {
         private static final long serialVersionUID = 1L;
 
-        public static final Mode specific_textareas = new Mode("specific_textareas");
-        public static final Mode textareas = new Mode("textareas");
-        /**
-         * @see TinyMCESettings#enableTextArea(Component)
-         */
-        public static final Mode exact = new Mode("exact");
         public static final Mode none = new Mode("none");
+        public static final Mode exact = new Mode("exact");
 
         private Mode(String name) {
             super(name);
@@ -553,51 +481,8 @@ public class TinyMCESettings implements Serializable {
     /**
      * Language enum
      */
-    public static class Language extends Enum {
-        private static final long serialVersionUID = 1L;
-
-        public static final Language AR = new Language("ar");
-        public static final Language CA = new Language("ca");
-        public static final Language CS = new Language("cs");
-        public static final Language DA = new Language("da");
-        public static final Language DE = new Language("de");
-        public static final Language EL = new Language("el");
-        public static final Language EN = new Language("en");
-        public static final Language ES = new Language("es");
-        public static final Language FA = new Language("fa");
-        public static final Language FR = new Language("fr");
-        public static final Language HE = new Language("he");
-        public static final Language HU = new Language("hu");
-        public static final Language IT = new Language("it");
-        public static final Language JA = new Language("ja");
-        public static final Language KO = new Language("ko");
-        public static final Language NL = new Language("nl");
-        public static final Language NO = new Language("no");
-        public static final Language PL = new Language("pl");
-        public static final Language PT = new Language("pt");
-        public static final Language RO = new Language("ro");
-        public static final Language RU = new Language("ru");
-        public static final Language SI = new Language("si");
-        public static final Language SK = new Language("sk");
-        public static final Language SQ = new Language("sq");
-        public static final Language SR = new Language("sr");
-        public static final Language SV = new Language("sv");
-        public static final Language TH = new Language("th");
-        public static final Language TR = new Language("tr");
-        public static final Language TW = new Language("tw");
-        public static final Language VI = new Language("vi");
-        public static final Language ZH = new Language("zh");
-
-        /**
-         * Construct.
-         * 
-         * @param name
-         *            the language
-         */
-        public Language(String name) {
-            super(name);
-        }
-
+    public static enum Language {
+        ar, bg, bs, ca, ch, cs, da, de, el, en, es, et, fa, fi, fr, gl, he, hr, hu, ia, ii, is, it, ja, ko, lt, lv, mk, ms, nb, nl, nn, pl, pt, ro, ru, sc, se, si, sk, sl, sr, sv, tr, tt, tw, uk, vi, zh
     }
 
     /**
