@@ -1,157 +1,105 @@
+/*
+    This file is part of Wicket-Contrib-TinyMce. See
+    <http://http://wicketstuff.org/confluence/display/STUFFWIKI/wicket-contrib-tinymce>
+
+    Wicket-Contrib-TinyMce is free software: you can redistribute it and/
+    or modify it under the terms of the GNU Lesser General Public License
+    as published by the Free Software Foundation, either version 3 of the
+    License, or (at your option) any later version.
+
+    Wicket-Contrib-TinyMce is distributed in the hope that it will be
+    useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Lesser General Public License for more details.
+
+    You should have received a copy of the GNU Lesser General Public
+    License along with Wicket-Contrib-TinyMce.  If not, see
+    <http://www.gnu.org/licenses/>.
+ */
 package wicket.contrib.tinymce;
 
-import org.apache.wicket.RequestCycle;
-import org.apache.wicket.ResourceReference;
-import org.apache.wicket.Response;
-import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.markup.ComponentTag;
+import java.util.Collection;
+import java.util.Collections;
+
+import org.apache.wicket.Component;
+import org.apache.wicket.behavior.AbstractBehavior;
 import org.apache.wicket.markup.html.IHeaderResponse;
-import org.apache.wicket.util.string.JavascriptUtils;
+import org.apache.wicket.protocol.http.WebResponse;
 
 import wicket.contrib.tinymce.settings.TinyMCESettings;
+import wicket.contrib.tinymce.settings.TinyMCESettings.Mode;
 
 /**
- * @author Iulian Costan (iulian.costan@gmail.com)
+ * Renders a component (textarea) as WYSIWYG editor, using TinyMce.
  */
-public class TinyMceBehavior extends AbstractDefaultAjaxBehavior
-{
-	private static final long serialVersionUID = 1L;
+public class TinyMceBehavior extends AbstractBehavior {
+    private static final long serialVersionUID = 3L;
 
-	/** tinymce editor' settings */
-	private TinyMCESettings settings;
+    private Component component;
+    private TinyMCESettings settings;
 
-	/** reference to the tinymce javascript file. */
-	private ResourceReference reference = new ResourceReference(TinyMCEPanel.class,
-			"tiny_mce/tiny_mce_src.js");
+    public TinyMceBehavior() {
+        this(new TinyMCESettings());
+    }
 
-	/** EXPERIMENTAL, it allows you to load tinymce using ajax */
-	private boolean ajax;
+    public TinyMceBehavior(TinyMCESettings settings) {
+        this.settings = settings;
+    }
 
-	/**
-	 * Construct.
-	 * 
-	 */
-	public TinyMceBehavior()
-	{
-		this(new TinyMCESettings(), false);
-	}
+    public void renderHead(IHeaderResponse response) {
+        super.renderHead(response);
+        if (component == null)
+            throw new IllegalStateException("TinyMceBehavior is not bound to a component");
 
-	/**
-	 * Construct.
-	 * 
-	 * @param ajax
-	 *            if ajax enable or not
-	 */
-	public TinyMceBehavior(boolean ajax)
-	{
-		this(new TinyMCESettings(), ajax);
-	}
+        // TinyMce javascript:
+        response.renderJavascriptReference(TinyMCESettings.javaScriptReference());
 
-	/**
-	 * Construct.
-	 * 
-	 * @param settings
-	 */
-	public TinyMceBehavior(TinyMCESettings settings)
-	{
-		this.settings = settings;
-	}
+        String renderOnDomReady = getRenderOnDomReadyJavascript(response);
+        if (renderOnDomReady != null)
+            response.renderOnDomReadyJavascript(renderOnDomReady);
 
-	/**
-	 * Construct.
-	 * 
-	 * @param settings
-	 * @param ajax
-	 *            if ajax is enable or not
-	 */
-	public TinyMceBehavior(TinyMCESettings settings, boolean ajax)
-	{
-		this.settings = settings;
-		this.ajax = ajax;
-	}
+        String renderJavaScript = getRenderJavascript(response);
+        if (renderJavaScript != null)
+            response.renderJavascript(renderJavaScript, null);
+    }
 
-	/**
-	 * @see org.apache.wicket.behavior.AbstractAjaxBehavior#renderHead(org.apache.wicket.markup.html.IHeaderResponse)
-	 */
-	public void renderHead(IHeaderResponse response)
-	{
-		// add wicket-ajax support
-		super.renderHead(response);
+    protected String getRenderOnDomReadyJavascript(IHeaderResponse response) {
+        if (component == null)
+            throw new IllegalStateException("TinyMceBehavior is not bound to a component");
+        if (response instanceof WebResponse && ((WebResponse)response).isAjax())
+            return getAddTinyMceSettingsScript(Mode.exact, Collections.singletonList(component));
+        return null;
+    }
 
+    protected String getRenderJavascript(IHeaderResponse response) {
+        if (component == null)
+            throw new IllegalStateException("TinyMceBehavior is not bound to a component");
+        if (!(response instanceof WebResponse) || !((WebResponse)response).isAjax())
+            return getAddTinyMceSettingsScript(Mode.exact, Collections.singletonList(component));
+        return null;
+    }
 
-		// import script
-		if (ajax)
-		{
-			// since wicket modifies the src attribute of a pre-loaded script tag
-			// then we
-			// need this workaround to safely import tinymce script using ajax
-			StringBuilder importBuilder = new StringBuilder();
-			importBuilder.append("var script = document.createElement('script');\n");
-			importBuilder.append("script.id='tinyMCEScript';\n");
-			importBuilder.append("script.src='" + RequestCycle.get().urlFor(reference) + "';\n");
-			importBuilder.append("script.type='text/javascript';\n");
-			importBuilder.append("document.getElementsByTagName('head')[0].appendChild(script);\n");
-			response.renderJavascript(importBuilder.toString(), "import");
-		}
-		else
-		{
-			response.renderJavascriptReference(reference);
-		}
+    protected String getAddTinyMceSettingsScript(Mode mode, Collection<Component> components) {
+        return "" //
+                + " tinyMCE.init({" + settings.toJavaScript(mode, components) + " });\n" //
+                + settings.getLoadPluginJavaScript() //
+                + settings.getAdditionalPluginJavaScript(); //
+    }
 
-		// init script
-		StringBuilder initBuilder = new StringBuilder();
-		initBuilder.append("tinyMCE.init({" + settings.toJavaScript(ajax) + "\n});\n");
-		initBuilder.append(settings.getLoadPluginJavaScript());
-		initBuilder.append(settings.getAdditionalPluginJavaScript());
-		response.renderJavascript(initBuilder.toString(), "init");
-	}
+    public void bind(Component component) {
+        if (this.component != null)
+            throw new IllegalStateException("TinyMceBehavior can not bind to more than one component");
+        super.bind(component);
+        if (isMarkupIdRequired())
+            component.setOutputMarkupId(true);
+        this.component = component;
+    }
 
-	protected void onComponentRendered()
-	{
-		if (ajax)
-		{
-			// load editor script
-			Response response = getComponent().getResponse();
-			JavascriptUtils.writeJavascript(response, getLoadEditorScript(), "load");
-		}
-	}
+    protected boolean isMarkupIdRequired() {
+        return true;
+    }
 
-	/**
-	 * @return the javascript to load tinymce editor
-	 */
-	public CharSequence getLoadEditorScript()
-	{
-		return getCallbackScript();
-	}
-
-	protected void respond(AjaxRequestTarget target)
-	{
-		StringBuilder builder = new StringBuilder();
-		//Removed line below, because otherwise tinyMCE won't load (version 3.1.0.1,
-		//  the old 2.x did load). AFAIK, onLoad is for dynamic loading of the tinymce
-		//  scripts, which apparently isn't used, so this should not break anything.
-		//builder.append("\ntinyMCE.onLoad();");
-		builder.append("\ntinyMCE.execCommand('mceAddControl', true, '"
-				+ getComponent().getMarkupId() + "');");
-
-		target.appendJavascript(JavascriptUtils.SCRIPT_OPEN_TAG);
-		target.appendJavascript(builder.toString());
-		target.appendJavascript(JavascriptUtils.SCRIPT_CLOSE_TAG);
-	}
-
-	protected void onComponentTag(ComponentTag tag)
-	{
-		if (!ajax)
-		{
-			tag.put("class", settings.getId());
-		}
-	}
-
-	protected void onBind()
-	{
-		getComponent().setOutputMarkupId(true);
-		settings.enableTextArea(getComponent());
-	}
-
+    protected Component getComponent() {
+        return component;
+    }
 }
