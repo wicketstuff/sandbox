@@ -104,7 +104,7 @@ public class FullFeaturedTinyMCEPage extends TinyMCEBasePage {
         settings.setVerticalResizing(true);
 
         TextArea textArea = new TextArea("ta", new Model(TEXT));
-        textArea.add(new TinyMceBehavior(settings, false));
+        textArea.add(new TinyMceBehavior(settings));
         add(textArea);
     }
 

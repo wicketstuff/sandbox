@@ -22,14 +22,6 @@ public class TinyMCEBasePage extends WicketExamplePage
 				setResponsePage(SimpleTinyMCEPage.class);
 			}
 		});
-		add(new Link("advanced")
-		{
-
-			public void onClick()
-			{
-				setResponsePage(AdvancedTinyMCEPage.class);
-			}
-		});
 		add(new Link("full")
 		{
 
@@ -44,14 +36,6 @@ public class TinyMCEBasePage extends WicketExamplePage
 			public void onClick()
 			{
 				setResponsePage(WordTinyMCEPage.class);
-			}
-		});
-		add(new Link("exact")
-		{
-			
-			public void onClick()
-			{
-				setResponsePage(ExactModeTinyMCEPage.class);
 			}
 		});
 		add(new Link("inline")

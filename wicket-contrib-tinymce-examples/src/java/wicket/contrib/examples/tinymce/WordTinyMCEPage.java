@@ -14,7 +14,6 @@ import wicket.contrib.tinymce.settings.IESpellPlugin;
 import wicket.contrib.tinymce.settings.PastePlugin;
 import wicket.contrib.tinymce.settings.PreviewPlugin;
 import wicket.contrib.tinymce.settings.PrintPlugin;
-import wicket.contrib.tinymce.settings.SavePlugin;
 import wicket.contrib.tinymce.settings.SearchReplacePlugin;
 import wicket.contrib.tinymce.settings.TablePlugin;
 import wicket.contrib.tinymce.settings.TinyMCESettings;
@@ -32,8 +31,6 @@ public class WordTinyMCEPage extends TinyMCEBasePage {
         settings.register(contextMenuPlugin);
 
         // first toolbar
-        SavePlugin savePlugin = new SavePlugin();
-        settings.add(savePlugin.getSaveButton(), TinyMCESettings.Toolbar.first, TinyMCESettings.Position.before);
         settings.add(TinyMCESettings.newdocument, TinyMCESettings.Toolbar.first, TinyMCESettings.Position.before);
         settings.add(TinyMCESettings.separator, TinyMCESettings.Toolbar.first, TinyMCESettings.Position.before);
         settings.add(TinyMCESettings.fontselect, TinyMCESettings.Toolbar.first, TinyMCESettings.Position.after);
@@ -98,7 +95,7 @@ public class WordTinyMCEPage extends TinyMCEBasePage {
         settings.setVerticalResizing(true);
 
         TextArea textArea = new TextArea("ta", new Model(TEXT));
-        textArea.add(new TinyMceBehavior(settings, false));
+        textArea.add(new TinyMceBehavior(settings));
         add(textArea);
     }
 
