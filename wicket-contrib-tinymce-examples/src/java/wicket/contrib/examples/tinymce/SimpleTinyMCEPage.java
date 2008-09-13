@@ -13,7 +13,7 @@ public class SimpleTinyMCEPage extends TinyMCEBasePage {
 
 	public SimpleTinyMCEPage() {
 		TextArea textArea = new TextArea("ta", new Model(TEXT));
-		textArea.add(new TinyMceBehavior(false));
+		textArea.add(new TinyMceBehavior());
 		add(textArea);
 	}
 
