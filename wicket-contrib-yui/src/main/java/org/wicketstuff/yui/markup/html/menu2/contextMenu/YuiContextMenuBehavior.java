@@ -85,7 +85,7 @@ public class YuiContextMenuBehavior extends AbstractDefaultAjaxBehavior {
 
 	public void renderHead(IHeaderResponse response) {
 		super.renderHead(response);
-		YuiHeaderContributor.forModule("menu", null, false, "2.4.1")
+		YuiHeaderContributor.forModule("menu", null, false, "2.5.2")
 				.renderHead(response);
 
 		response.renderJavascriptReference(new ResourceReference(
