@@ -28,7 +28,7 @@ public class YuiMenuBar extends Panel {
 		super(wicketId);
 		setRenderBodyOnly(true);
 		
-		add(YuiHeaderContributor.forModule("menu", null, false, "2.4.1"));
+		add(YuiHeaderContributor.forModule("menu", null, false, "2.5.2"));
 		add( new StringHeaderContributor("<style> #" + elementId + " {visibility:visible;} </style>" ) );
 
 
