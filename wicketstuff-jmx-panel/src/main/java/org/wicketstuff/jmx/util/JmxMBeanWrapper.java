@@ -16,6 +16,7 @@
  */
 package org.wicketstuff.jmx.util;
 
+import java.io.IOException;
 import java.io.Serializable;
 
 import javax.management.Attribute;
@@ -95,6 +96,11 @@ public class JmxMBeanWrapper implements Serializable
 			// logger.error("could not retrieve MBeanInfo of " +
 			// objectName.getCanonicalName(), e);
 		}
+		catch (IOException e)
+		{
+			// logger.error("could not retrieve MBeanInfo of " +
+			// objectName.getCanonicalName(), e);
+		}
 		return info;
 	}
 
@@ -157,6 +163,11 @@ public class JmxMBeanWrapper implements Serializable
 			logger.error("could not retrieve the value of the attribute \"" + attribute.getName()
 					+ "\"  of " + objectName.getCanonicalName(), e);
 		}
+		catch (IOException e)
+		{
+			logger.error("could not retrieve the value of the attribute \"" + attribute.getName()
+					+ "\"  of " + objectName.getCanonicalName(), e);
+		}
 		return null;
 	}
 
@@ -196,6 +207,12 @@ public class JmxMBeanWrapper implements Serializable
 					+ "\" for the attribute \"" + value.getName() + "\"  of "
 					+ objectName.getCanonicalName(), e);
 		}
+		catch (IOException e)
+		{
+			logger.error("could not set the value \"" + value.getValue().toString()
+					+ "\" for the attribute \"" + value.getName() + "\"  of "
+					+ objectName.getCanonicalName(), e);
+		}
 	}
 
 	public Object invoke(MBeanOperationInfo operation, Object[] values, String[] signature)
@@ -209,17 +226,22 @@ public class JmxMBeanWrapper implements Serializable
 		catch (InstanceNotFoundException e)
 		{
 			logger.error("could not invoke operation \"" + operation.getName() + "\" of "
-					+ objectName.getCanonicalName());
+					+ objectName.getCanonicalName(), e);
 		}
 		catch (MBeanException e)
 		{
 			logger.error("could not invoke operation \"" + operation.getName() + "\" of "
-					+ objectName.getCanonicalName());
+					+ objectName.getCanonicalName(), e);
 		}
 		catch (ReflectionException e)
 		{
 			logger.error("could not invoke operation \"" + operation.getName() + "\" of "
-					+ objectName.getCanonicalName());
+					+ objectName.getCanonicalName(), e);
+		}
+		catch (IOException e)
+		{
+			logger.error("could not invoke operation \"" + operation.getName() + "\" of "
+					+ objectName.getCanonicalName(), e);
 		}
 		return null;
 	}

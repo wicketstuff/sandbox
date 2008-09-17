@@ -16,6 +16,7 @@
  */
 package org.wicketstuff.jmx.markup.html;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -91,10 +92,9 @@ public class JmxPanel extends Panel
 	 */
 	public JmxPanel(String id)
 	{
-		this(id, JmxPanelRenderer.Tree);
-
+		this(id, JmxPanelRenderer.Tree, null);
 	}
-
+	
 	/**
 	 * Constructs the JmxPanel and uses the param <code>renderer</code> to
 	 * decide which implementation should be used.
@@ -106,23 +106,39 @@ public class JmxPanel extends Panel
 	 */
 	public JmxPanel(String id, JmxPanelRenderer renderer)
 	{
+		this(id, renderer, null);
+	}
+
+	public JmxPanel(String id, JmxPanelRenderer renderer, JmxMBeanServerWrapper serverModel)
+	{
 		super(id);
 
-		if (JmxPanelRenderer.Tree.equals(renderer))
-		{
-			add(new JmxTreePanel("jmxBeanTable", createTreeModel()).add(new AttributeModifier(
-					"class", true, new Model("jmxTreePanel"))));
+		if (serverModel != null) {
+			this.serverModel = serverModel;
 		}
-		else
+		
+		try
 		{
-			add(new JmxTreeTable("jmxBeanTable", createTreeModel()).add(new AttributeModifier(
-					"class", true, new Model("jmxTreeTable"))));
+			if (JmxPanelRenderer.Tree.equals(renderer))
+			{
+				add(new JmxTreePanel("jmxBeanTable", createTreeModel()).add(new AttributeModifier(
+						"class", true, new Model("jmxTreePanel"))));
+			}
+			else
+			{
+				add(new JmxTreeTable("jmxBeanTable", createTreeModel()).add(new AttributeModifier(
+						"class", true, new Model("jmxTreeTable"))));
+			}
+		}
+		catch (IOException e)
+		{
+			throw new RuntimeException(e);
 		}
 		add(HeaderContributor.forCss(CSS));
 	}
 
 	@SuppressWarnings("unchecked")
-	private TreeModel createTreeModel()
+	private TreeModel createTreeModel() throws IOException
 	{
 		TreeModel model = null;
 		DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode(new Model("ROOT"));
