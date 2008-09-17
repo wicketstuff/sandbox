@@ -19,6 +19,7 @@ package org.wicketstuff.jmx.util;
 import java.util.List;
 
 import javax.management.MBeanServer;
+import javax.management.MBeanServerConnection;
 import javax.management.MBeanServerFactory;
 
 import org.apache.wicket.model.LoadableDetachableModel;
@@ -49,9 +50,9 @@ public class JmxMBeanServerWrapper extends LoadableDetachableModel
 	/**
 	 * @return the {@link MBeanServer}
 	 */
-	public MBeanServer getServer()
+	public MBeanServerConnection getServer()
 	{
-		return (MBeanServer)getObject();
+		return (MBeanServerConnection)getObject();
 	}
 
 }
