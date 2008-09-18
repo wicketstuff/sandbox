@@ -47,15 +47,16 @@ public class InPlaceEditComponent extends AbstractTextComponent {
 
     private void init(Component triggerComponent) {
         setEscapeModelStrings(false);
+        setOutputMarkupId(true);
         settings = new TinyMCESettings(Theme.advanced);
         // advanced theme required to add save/cancel buttons to toolbar
         inPlaceSaveBehavior = createSaveBehavior();
         if (inPlaceSaveBehavior != null) {
+            add(inPlaceSaveBehavior);
             WicketSavePlugin savePlugin = new WicketSavePlugin(inPlaceSaveBehavior);
             settings.add(savePlugin.getSaveButton(), Toolbar.first, Position.before);
             settings.add(savePlugin.getCancelButton(), Toolbar.first, Position.before);
             settings.add(TinyMCESettings.separator, Toolbar.first, Position.before);
-            add(inPlaceSaveBehavior);
         }
         inPlaceEditBehavior = createEditBehavior(triggerComponent);
         if (inPlaceEditBehavior != null)

@@ -26,6 +26,8 @@ import org.apache.wicket.RequestCycle;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.IHeaderResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import wicket.contrib.tinymce.settings.WicketSavePlugin;
 
@@ -34,6 +36,9 @@ import wicket.contrib.tinymce.settings.WicketSavePlugin;
  * use {@link InPlaceEditComponent} instead of this class directly.
  */
 public class InPlaceSaveBehavior extends AbstractDefaultAjaxBehavior {
+    private static final Logger LOG = LoggerFactory.getLogger(InPlaceSaveBehavior.class);
+
+    private static final String PARAM_HTMLCONT = "htmlcont";
     private String saveEditorScriptName;
     private String cancelEditorScriptName;
     private String additionalJavaScript;
@@ -51,8 +56,9 @@ public class InPlaceSaveBehavior extends AbstractDefaultAjaxBehavior {
 
     protected final void respond(AjaxRequestTarget target) {
         Request request = RequestCycle.get().getRequest();
-        String newContent = request.getParameter(createParam(getComponent()));
+        String newContent = request.getParameter(PARAM_HTMLCONT);
         newContent = onSave(newContent);
+        newContent = onSave(target, newContent);
         Component component = getComponent();
         component.getModel().setObject(newContent);
         target.addComponent(component);
@@ -80,6 +86,20 @@ public class InPlaceSaveBehavior extends AbstractDefaultAjaxBehavior {
         return cancelEditorScriptName;
     }
 
+    public Component getTheComponent() {
+        Component result = getComponent();
+        if (result == null)
+            throw new IllegalArgumentException("save behavior not yet bound to a component");
+        return result;
+    }
+
+    /**
+     * @deprecated Override onSave(AjaxRequestTarget,String) instead
+     */
+    protected String onSave(String newContent) {
+        return newContent;
+    }
+
     /**
      * This method gets called before the new content as received from the TinyMce editor is pushed to the website.
      * Override it to add additional processing to the content.
@@ -88,12 +108,8 @@ public class InPlaceSaveBehavior extends AbstractDefaultAjaxBehavior {
      *            The content as received from the editor.
      * @return The content that will be pushed back to your website.
      */
-    protected String onSave(String newContent) {
+    protected String onSave(AjaxRequestTarget target, String newContent) {
         return newContent;
-    }
-
-    private final String createParam(Component component) {
-        return "new_" + component.getMarkupId();
     }
 
     public void renderHead(IHeaderResponse response) {
@@ -108,8 +124,9 @@ public class InPlaceSaveBehavior extends AbstractDefaultAjaxBehavior {
         String callback = getWicketPostScript();
         String markupId = getComponent().getMarkupId();
         return "function " + getSaveCallbackName() + "(inst) {\n" //
-                + " var content = inst.getBody().innerHTML;\n" //
-                + " tinyMCE.execCommand('mceRemoveControl', true, '" + markupId + "');\n" //
+                + " var content = inst.getContent();\n" //
+                + " inst.setContent(inst.settings.wicket_updating_mess);\n" //
+                + " tinyMCE.execCommand('mceRemoveControl',false,'" + markupId + "');\n" //
                 + " " + callback + "\n" //
                 + (additionalJavaScript == null ? "" : (additionalJavaScript + "\n"))//
                 + "}";
@@ -124,7 +141,7 @@ public class InPlaceSaveBehavior extends AbstractDefaultAjaxBehavior {
 
     private final String getWicketPostScript() {
         return generateCallbackScript(
-                "wicketAjaxPost('" + getCallbackUrl(false) + "', Wicket.Form.encode('" + createParam(getComponent())
+                "wicketAjaxPost('" + getCallbackUrl(false) + "', Wicket.Form.encode('" + PARAM_HTMLCONT
                         + "') + '=' + Wicket.Form.encode(content) + '&'").toString();
     }
 }
