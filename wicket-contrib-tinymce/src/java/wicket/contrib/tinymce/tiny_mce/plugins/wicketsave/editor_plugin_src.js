@@ -46,15 +46,11 @@
 
 		_save : function() {
 			var ed = this.editor;
-
-			tinyMCE.triggerSave();
-
-			if (ed.execCallback('save_onwicketsavecallback', ed)) {
-				ed.startContent = tinymce.trim(ed.getContent({format : 'raw'}));
-				ed.nodeChanged();
-			}
-
-			return;
+			//ed.save() -> don't, it will trigger dom changes which may trigger
+			//  image resources being loaded, which may make wicket ignore ajax requests
+			//  (ajax requests are ignored when normal requests for the same page are being
+			//  made; so a request for a non-shared image may make an ajax request get ignored)
+			ed.execCallback('save_onwicketsavecallback', ed);
 		},
 
 		_cancel : function() {
