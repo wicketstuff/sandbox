@@ -58,8 +58,6 @@
 		class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />
 	
 	<bean id="generalRepository" class="${package}.persistence.provider.JpaGeneralRepository">
-		<property name="entityManagerFactory"
-			ref="entityManagerFactory" />
 	</bean>
 		
 		
