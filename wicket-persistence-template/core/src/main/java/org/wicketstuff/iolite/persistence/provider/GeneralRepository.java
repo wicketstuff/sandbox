@@ -24,8 +24,9 @@ public interface GeneralRepository {
 
 	public abstract void remove(EntityType entity);
 
-	public abstract EntityType update(EntityType entity);
-
+	public abstract <T> Entity<? extends Serializable> update(
+			Entity<? extends Serializable> entityClass);
+	public abstract <T> Entity<? extends Serializable> getByName(String name, Class<? extends Entity<? extends Serializable>> clazz);
 	public abstract int size(Class<? extends Entity<String>> entityClass);
 
 }
