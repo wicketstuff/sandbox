@@ -5,13 +5,17 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceContextType;
 import javax.persistence.Query;
 
 import org.domdrides.entity.Entity;
+import org.hibernate.Session;
 import org.hibernate.type.EntityType;
-import org.springframework.orm.jpa.support.JpaDaoSupport;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
 
 @Transactional
 @Repository
@@ -53,7 +57,7 @@ public class JpaGeneralRepository implements GeneralRepository {
 	 * com.jayway.persistence.provider.GeneralRepository#add(org.domdrides.entity
 	 * .Entity)
 	 */
-	public Entity addOrMerge(Entity entity) {
+	public Entity add(Entity entity) {
 		entityManager.merge(entity);
 		return entity;
 	}
