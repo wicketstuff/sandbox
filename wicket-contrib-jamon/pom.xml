@@ -10,6 +10,7 @@
     <description>Performance Monitoring Wicket with JAMon</description>
     <url>http://wicket-stuff.sourceforge.net</url>
 
+
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
