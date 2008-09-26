@@ -70,7 +70,7 @@ public class AbstractObjectAutoCompleteRenderer<O> {
      *            assist choice object
      * @return the text value that will be set on the textbox if this assist is selected
      */
-    private String getTextValue(O pObject) {
+    protected String getTextValue(O pObject) {
         return pObject.toString();
     }
 
