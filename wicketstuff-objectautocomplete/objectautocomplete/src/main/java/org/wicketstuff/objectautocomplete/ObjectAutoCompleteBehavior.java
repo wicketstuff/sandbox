@@ -20,12 +20,15 @@ import org.apache.wicket.*;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.WicketAjaxReference;
+import org.apache.wicket.extensions.ajax.markup.html.autocomplete.AbstractAutoCompleteBehavior;
 import org.apache.wicket.extensions.ajax.markup.html.autocomplete.AutoCompleteBehavior;
 import org.apache.wicket.extensions.ajax.markup.html.autocomplete.AutoCompleteSettings;
+import org.apache.wicket.extensions.ajax.markup.html.autocomplete.IAutoCompleteRenderer;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WicketEventReference;
 import org.apache.wicket.markup.html.resources.JavascriptResourceReference;
+import org.apache.wicket.protocol.http.WebResponse;
 import org.apache.wicket.settings.IDebugSettings;
 
 import java.util.Iterator;
@@ -41,7 +44,7 @@ import java.util.Iterator;
  * @author roland
  * @since May 18, 2008
  */
-public class ObjectAutoCompleteBehavior<O> extends AutoCompleteBehavior<O> {
+public class ObjectAutoCompleteBehavior<O> extends AbstractAutoCompleteBehavior {
 
     private static final ResourceReference OBJECTAUTOCOMPLETE_JS = new JavascriptResourceReference(
             ObjectAutoCompleteBehavior.class, "wicketstuff-objectautocomplete.js");
@@ -59,13 +62,18 @@ public class ObjectAutoCompleteBehavior<O> extends AutoCompleteBehavior<O> {
     private ObjectAutoCompleteCancelListener cancelListener;
     private AutoCompletionChoicesProvider<O> choicesProvider;
 
+    // one of this renderer must be set with the response renderer taking precedence
+    private IAutoCompleteRenderer<O> renderer;
+    private ObjectAutoCompleteResponseRenderer<O> responseRenderer;
+
     <I> ObjectAutoCompleteBehavior(Component pObjectElement,ObjectAutoCompleteBuilder<O,I> pBuilder) {
-        super(pBuilder.objectAutoCompleteRenderer,
-                new AutoCompleteSettings()
+        renderer = pBuilder.autoCompleteRenderer;
+        settings = new AutoCompleteSettings()
                         .setMaxHeightInPx(pBuilder.maxHeightInPx)
                         .setPreselect(pBuilder.preselect)
-                        .setShowListOnEmptyInput(pBuilder.showListOnEmptyInput));
+                        .setShowListOnEmptyInput(pBuilder.showListOnEmptyInput);
         objectElement = pObjectElement;
+        responseRenderer = pBuilder.autoCompleteResponseRenderer;
         cancelListener = pBuilder.cancelListener;
         choicesProvider = pBuilder.choicesProvider;
     }
@@ -80,6 +88,50 @@ public class ObjectAutoCompleteBehavior<O> extends AutoCompleteBehavior<O> {
     public void renderHead(IHeaderResponse response) {
         abstractDefaultAjaxBehaviour_renderHead(response);
         initHead(response);
+    }
+
+    @Override
+    protected void onRequest(final String input, RequestCycle requestCycle) {
+        IRequestTarget target = new IRequestTarget()
+		{
+
+			public void respond(RequestCycle requestCycle)
+			{
+
+				WebResponse r = (WebResponse)requestCycle.getResponse();
+
+				// Determine encoding
+				final String encoding = Application.get()
+					.getRequestCycleSettings()
+					.getResponseRequestEncoding();
+				r.setCharacterEncoding(encoding);
+				r.setContentType("text/xml; charset=" + encoding);
+
+				// Make sure it is not cached by a
+				r.setHeader("Expires", "Mon, 26 Jul 1997 05:00:00 GMT");
+				r.setHeader("Cache-Control", "no-cache, must-revalidate");
+				r.setHeader("Pragma", "no-cache");
+
+				Iterator<O> comps = getChoices(input);
+                if (responseRenderer != null) {
+                    responseRenderer.onRequest(comps,r,input);
+                } else {
+                    renderer.renderHeader(r);
+                    while (comps.hasNext())
+                    {
+                        final O comp = comps.next();
+                        renderer.render(comp, r, input);
+                    }
+                    renderer.renderFooter(r);
+                }
+            }
+
+			public void detach(RequestCycle requestCycle)
+			{
+			}
+
+		};
+		requestCycle.setRequestTarget(target);
     }
 
     // Copied over from AbstractDefaultAjaxBehaviour.renderHead() until patch
@@ -146,8 +198,8 @@ public class ObjectAutoCompleteBehavior<O> extends AutoCompleteBehavior<O> {
         }
     }
 
-    @Override
     protected Iterator<O> getChoices(String input) {
         return choicesProvider.getChoices(input);
     }
+
 }

@@ -41,12 +41,12 @@ Wicket.AutoComplete=function(elementId, callbackUrl, cfg){
     var KEY_ALT=18;
 
     var selected=-1; 	// index of the currently selected item
-    var elementCount=0; // number of items on the auto complete list
     var mouseactive = 0;
     var visible=0;		// is the list visible
     var	hidingAutocomplete=0;		// are we hiding the autocomplete list
+    var selectables = [];
 
-	// pointers of the browser events
+  // pointers of the browser events
    	var objonkeydown;
 	var objonblur;
 	var objonkeyup;
@@ -96,7 +96,7 @@ Wicket.AutoComplete=function(elementId, callbackUrl, cfg){
             	    if(Wicket.Browser.isSafari())return killEvent(event);
                 	break;
                 case KEY_DOWN:
-               		if(selected<elementCount-1){
+               		if(selected<selectables.length-1){
                 	    selected++;
 	                }
     	            if(visible==0){
@@ -290,34 +290,30 @@ Wicket.AutoComplete=function(elementId, callbackUrl, cfg){
 
         var element = getAutocompleteMenu();
         element.innerHTML=resp;
-        if(element.firstChild && element.firstChild.childNodes) {
-            elementCount=element.firstChild.childNodes.length;
 
-            for(var i=0;i<elementCount;i++){
-	            var node=element.firstChild.childNodes[i];
+        selectables = extractSelectables(element.firstChild);
+        if(selectables.length > 0) {
+          for(var i=0;i<selectables.length;i++){
+            var node=selectables[i];
 
-				node.onclick = function(event){
-					mouseactive=0;
-					acObject.updateValue();
-					if(typeof objonchange=="function")objonchange();
-					hideAutoComplete();
-       			}
+            node.onclick = function(event){
+              mouseactive=0;
+              acObject.updateValue();
+              if(typeof objonchange=="function")objonchange();
+              hideAutoComplete();
+            }
 
-				node.onmouseover = function(event){
-					selected = getElementIndex(this);
-					render();
-				 	showAutoComplete();
-				}
-       		}
+            node.onmouseover = function(event){
+              selected = getElementIndex(this);
+              render();
+              showAutoComplete();
+            }
+          }
+          showAutoComplete();
         } else {
-            elementCount=0;
+          hideAutoComplete();
         }
 
-        if(elementCount>0){
-            showAutoComplete();
-        } else {
-            hideAutoComplete();
-        }
         render();
 
         scheduleEmptyCheck();
@@ -326,14 +322,33 @@ Wicket.AutoComplete=function(elementId, callbackUrl, cfg){
         Wicket.Ajax.invokePostCallHandlers();
     }
 
-    function scheduleEmptyCheck() {
-    	window.setTimeout(function() {
-    		var input=wicketGet(elementId);
-    		if (!cfg.showListOnEmptyInput && (input.value==null || input.value=="")) {
-    			hideAutoComplete();
-    		}
-    	}, 100);
-    }
+  function extractSelectables(element) {
+    // All children which are <li> elements are considered
+    // as selectables
+    var listElements = [];
+    (function(el) {
+      if (el.nodeType == 1 && el.nodeName.toUpperCase() == 'LI') {
+        // Add only list items
+        listElements.push(el);
+      }
+      if (el.hasChildNodes()) {
+        for (var i=0;i<el.childNodes.length;i++) {
+          arguments.callee(el.childNodes[i]);
+        }
+      }
+    })(element);
+    return listElements;
+  }
+
+
+  function scheduleEmptyCheck() {
+    window.setTimeout(function() {
+      var input=wicketGet(elementId);
+      if (!cfg.showListOnEmptyInput && (input.value==null || input.value=="")) {
+        hideAutoComplete();
+      }
+    }, 100);
+  }
 
     this.updateValue = function() {
         var obj = wicketGet(elementId);
@@ -353,16 +368,14 @@ Wicket.AutoComplete=function(elementId, callbackUrl, cfg){
     }
 
     this.getSelectedElement = function() {
-        var element=getAutocompleteMenu();
-        return element.firstChild.childNodes[selected];
+        return selectables[selected];
     }
 
     function getElementIndex(element) {
-		for(var i=0;i<element.parentNode.childNodes.length;i++){
-	        var node=element.parentNode.childNodes[i];
-			if(node==element)return i;
-		}
-		return -1;
+      for(var i=0;i<selectables.length;i++){
+        if(selectables[i]==element)return i;
+      }
+      return -1;
     }
 
     function stripHTML(str) {
@@ -382,8 +395,8 @@ Wicket.AutoComplete=function(elementId, callbackUrl, cfg){
     function render(){
         var menu=getAutocompleteMenu();
         var height=0;
-        for(var i=0;i<elementCount;i++){
-            var node=menu.firstChild.childNodes[i];
+        for(var i=0;i<selectables.length;i++){
+            var node=selectables[i];
 
             var classNames=node.className.split(" ");
             for (var j=0; j<classNames.length; j++) {
