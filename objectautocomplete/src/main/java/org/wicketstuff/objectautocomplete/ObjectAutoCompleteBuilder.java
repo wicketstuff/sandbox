@@ -3,6 +3,7 @@ package org.wicketstuff.objectautocomplete;
 import org.apache.wicket.Component;
 import org.apache.wicket.Resource;
 import org.apache.wicket.ResourceReference;
+import org.apache.wicket.extensions.ajax.markup.html.autocomplete.IAutoCompleteRenderer;
 import org.apache.wicket.model.IModel;
 
 import java.util.ArrayList;
@@ -30,7 +31,7 @@ public class ObjectAutoCompleteBuilder<O,I> {
     ObjectAutoCompleteCancelListener cancelListener;
 
     // Renderer for the auto completion list
-    ObjectAutoCompleteRenderer<O> objectAutoCompleteRenderer;
+    IAutoCompleteRenderer<O> autoCompleteRenderer;
 
     // Renderer to use for the read only view when an object
     // has been already selected
@@ -65,11 +66,19 @@ public class ObjectAutoCompleteBuilder<O,I> {
     // whether the field cannot be changed after the first selection
     boolean unchangeable;
 
+    // an optional renderer (which takes precedense of the 'default' renderer) for rendering
+    // a more structured result
+    public ObjectAutoCompleteResponseRenderer<O> autoCompleteResponseRenderer;
+
+    // property to use as an id for looking up via reflection
+    private String idProperty;
+
 
     public ObjectAutoCompleteBuilder(AutoCompletionChoicesProvider<O> pChoicesProvider) {
         this.choicesProvider = pChoicesProvider;
         cancelListener = null;
-        objectAutoCompleteRenderer = new ObjectAutoCompleteRenderer<O>();
+        autoCompleteRenderer = null;
+        autoCompleteResponseRenderer = null;
         preselect = false;
         searchOnClick = false;
         showListOnEmptyInput = false;
@@ -79,6 +88,7 @@ public class ObjectAutoCompleteBuilder<O,I> {
         searchLinkText = "[S]";
         readOnlyObjectRenderer = null;
         unchangeable = false;
+        idProperty = "id";
     }
 
     // =======================================================================================================
@@ -91,17 +101,18 @@ public class ObjectAutoCompleteBuilder<O,I> {
         return this;
     }
 
-    public ObjectAutoCompleteBuilder<O,I> autoCompleteRenderer(ObjectAutoCompleteRenderer<O> renderer) {
-        this.objectAutoCompleteRenderer = renderer;
+    public ObjectAutoCompleteBuilder<O,I> autoCompleteRenderer(IAutoCompleteRenderer<O> renderer) {
+        this.autoCompleteRenderer = renderer;
         return this;
     }
 
-    public ObjectAutoCompleteBuilder<O,I> idProperty(String idProperty) {
-        if (! (objectAutoCompleteRenderer instanceof ObjectAutoCompleteRenderer)) {
-            throw new IllegalArgumentException("Can not set idProperty " + idProperty + " on a renderer of type " +
-            objectAutoCompleteRenderer.getClass() + ". Need to operate on a ObjectAutoCompleteRenderer");
-        }
-        ((ObjectAutoCompleteRenderer) objectAutoCompleteRenderer).setIdProperty(idProperty);
+    public ObjectAutoCompleteBuilder<O,I> autoCompleteResponseRenderer(ObjectAutoCompleteResponseRenderer<O> renderer) {
+        this.autoCompleteResponseRenderer = renderer;
+        return this;
+    }
+
+    public ObjectAutoCompleteBuilder<O,I> idProperty(String pIdProperty) {
+        idProperty = pIdProperty;
         return this;
     }
 
@@ -176,14 +187,36 @@ public class ObjectAutoCompleteBuilder<O,I> {
     // ===============
 
     public ObjectAutoCompleteBehavior<O> buildBehavior(Component objectIdHolder) {
+        setupRenderer();
         return new ObjectAutoCompleteBehavior<O>(objectIdHolder,this);
     }
 
+    private void setupRenderer() {
+        if (autoCompleteRenderer == null && autoCompleteResponseRenderer == null) {
+            ObjectAutoCompleteRenderer<O> r = new ObjectAutoCompleteRenderer<O>();
+            r.setIdProperty(idProperty);
+            autoCompleteRenderer = r;
+        } else if (autoCompleteRenderer != null && autoCompleteResponseRenderer != null) {
+            throw new IllegalStateException("Only one type of renderer can be set, either an IAutoCompleteRenderer() " +
+                    "or an ObjectAutoCompleteResponseRenderer, but not both");
+        } else if (autoCompleteResponseRenderer != null) {
+            autoCompleteResponseRenderer.setIdProperty(idProperty);
+        } else {
+            if (! (autoCompleteRenderer instanceof ObjectAutoCompleteRenderer)) {
+                throw new IllegalArgumentException("Can not set idProperty " + idProperty + " on a renderer of type " +
+                        autoCompleteRenderer.getClass() + ". Need to operate on a ObjectAutoCompleteRenderer");
+            }
+            ((ObjectAutoCompleteRenderer) autoCompleteRenderer).setIdProperty(idProperty);
+        }
+    }
+
     public ObjectAutoCompleteField<O,I> build(String id) {
+        setupRenderer();
         return build(id,null);
     }
 
     public ObjectAutoCompleteField<O,I> build(String id, IModel<I> model) {
+        setupRenderer();
         return new ObjectAutoCompleteField<O,I>(id,model,this);
     }
 }

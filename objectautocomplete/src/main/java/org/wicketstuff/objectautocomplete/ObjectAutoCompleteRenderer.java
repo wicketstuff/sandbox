@@ -16,15 +16,14 @@
  */
 package org.wicketstuff.objectautocomplete;
 
-import org.apache.wicket.extensions.ajax.markup.html.autocomplete.IAutoCompleteRenderer;
 import org.apache.wicket.Response;
-import org.apache.wicket.util.lang.PropertyResolver;
+import org.apache.wicket.extensions.ajax.markup.html.autocomplete.IAutoCompleteRenderer;
 
 /**
  * @author roland
  * @since May 20, 2008
  */
-public class ObjectAutoCompleteRenderer<O> implements IAutoCompleteRenderer<O> {
+public class ObjectAutoCompleteRenderer<O> extends AbstractObjectAutoCompleteRenderer<O> implements IAutoCompleteRenderer<O> {
 
     private static final long serialVersionUID = 1L;
 
@@ -35,88 +34,20 @@ public class ObjectAutoCompleteRenderer<O> implements IAutoCompleteRenderer<O> {
         return INSTANCE;
     }
 
-    private String idProperty = "id";
-
-    public final void render(O object, Response response, String criteria)
+    /** {@inheritDoc} */
+    public void render(O object, Response response, String criteria)
 	{
-		String textValue = getTextValue(object);
-        if (textValue == null)
-		{
-			throw new IllegalStateException(
-				"A call to textValue(Object) returned an illegal value: null for object: " +
-					object.toString());
-		}
-		textValue = textValue.replaceAll("\\\"", "&quot;");
-
-        String idValue = getIdValue(object);
-        if (idValue == null) {
-			throw new IllegalStateException(
-				"A call to idValue(Object) returned an illegal value: null for object: " +
-					object.toString());
-        }
-        response.write("<li idvalue=\"" + idValue + "\" textvalue=\"" + textValue + "\">");
-		renderChoice(object, response, criteria);
-		response.write("</li>");
+        renderObject(object,response,criteria);
 	}
 
-    /**
-     * Get id of the object to render. By default this is extracted by reflection using the
-     * {@link #idProperty}, but can be overwritten by a subclass
-     * @param object object from which to extract the id
-     * @return the id value
-     * @throws IllegalArgumentException if no id could be extracted
-     */
-    protected String getIdValue(O object) {
-        Object returnValue = PropertyResolver.getValue(idProperty,object);
-        if (returnValue == null) {
-            throw new IllegalArgumentException("Id property " + idProperty +
-                    " could not be extracted from obect " + object);
-        }
-        return returnValue.toString();
-    }
-
-    public final void renderHeader(Response response)
+    public void renderHeader(Response response)
 	{
 		response.write("<ul>");
 	}
 
-	public final void renderFooter(Response response)
+	public void renderFooter(Response response)
 	{
 		response.write("</ul>");
 	}
 
-	/**
-	 * Render the visual portion of the assist. Usually the html representing the assist choice
-	 * object is written out to the response use {@link Response#write(CharSequence)}
-	 *
-	 * @param object
-	 *            current assist choice
-	 * @param response
-	 * @param criteria
-	 */
-	protected void renderChoice(O object, Response response, String criteria)
-	{
-		response.write(getTextValue(object));
-	}
-
-	/**
-	 * Retrieves the text value that will be set on the textbox if this assist is selected
-	 * Can be overwritten, by default it returns the object's toString()
-     *
-	 * @param object
-	 *            assist choice object
-	 * @return the text value that will be set on the textbox if this assist is selected
-	 */
-    protected String getTextValue(O object) {
-        return object.toString();
-    }
-
-    /**
-     * Set the property for extracting the id of an object
-     *
-     * @param pIdProperty property name of the object id
-     */
-    public void setIdProperty(String pIdProperty) {
-        this.idProperty = pIdProperty;
-    }
 }

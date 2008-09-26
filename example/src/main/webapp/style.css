@@ -55,6 +55,15 @@ span.selectedId {
     font-size: 48pt;
     font-weight: bold;
 }
+
+div.choiceHeader {
+  font-weight: bold;
+  font-style: italic;
+}
+
+.choiceHeader ul {
+  margin-left: 20px;
+}
 /* ================================================= */
 /* Search Form */
 div.searchForm {
@@ -639,3 +648,4 @@ table.grid td.filter-td select { width: 100%; font-size: 0.6em; }
 tr.section td {
 	padding-top: 0.75em;
 }
+
