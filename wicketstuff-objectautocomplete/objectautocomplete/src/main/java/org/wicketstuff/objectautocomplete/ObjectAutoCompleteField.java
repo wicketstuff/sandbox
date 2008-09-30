@@ -34,7 +34,6 @@ import org.apache.wicket.model.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.lang.ref.WeakReference;
 import java.io.Serializable;
 
 /**
@@ -70,6 +69,8 @@ public class ObjectAutoCompleteField<O /* object */,I /* its id */ extends Seria
     // Hiddenfield carrying the selected object id
     private HiddenField<I> objectField;
 
+    // whether the input field should be cleared on selection
+    private boolean clearInputOnSelection;
 
     /**
      * Package scoped constructor to be used by the builder to create an auto completion fuild via
@@ -92,7 +93,7 @@ public class ObjectAutoCompleteField<O /* object */,I /* its id */ extends Seria
         pBuilder.cancelListener(this);
 
         // Register all change selection listeners
-        for (ObjectAutoCompleteSelectionChangeListener listener : pBuilder.selectionChangeListener) {
+        for (ObjectAutoCompleteSelectionChangeListener<I> listener : pBuilder.selectionChangeListener) {
             registerForUpdateOnSelectionChange(listener);
         }
 
@@ -100,7 +101,10 @@ public class ObjectAutoCompleteField<O /* object */,I /* its id */ extends Seria
         Model<String> searchTextModel = new Model<String>();
         addSearchTextField(searchTextModel, pBuilder);
         addReadOnlyPanel(searchTextModel,pBuilder);
+
+        clearInputOnSelection = pBuilder.clearInputOnSelection;
     }
+
 
     /**
      * Register a listener that needs to be updated when the selection changes, i.e.
@@ -130,6 +134,9 @@ public class ObjectAutoCompleteField<O /* object */,I /* its id */ extends Seria
 
         objectField = new HiddenField<I>("hiddenId",new PropertyModel<I>(this,"selectedObjectId"));
         objectField.setOutputMarkupId(true);
+        if (pBuilder.idType != null) {
+            objectField.setType(pBuilder.idType);
+        }
         add(objectField);
 
         searchTextField.add(
@@ -242,13 +249,17 @@ public class ObjectAutoCompleteField<O /* object */,I /* its id */ extends Seria
             selectedObjectId = backupObjectId;
             pTarget.addComponent(ObjectAutoCompleteField.this);
         } else {
-            searchTextField.setModelObject(null);
-            selectedObjectId = null;
-            searchTextField.clearInput();
-            backupText = null;
+            clearSearchInput();
             pTarget.addComponent(searchTextField);
         }
         notifyListeners(pTarget);
+    }
+
+    private void clearSearchInput() {
+        searchTextField.setModelObject(null);
+        selectedObjectId = null;
+        searchTextField.clearInput();
+        backupText = null;
     }
 
     // mode detection based on the existance of a seleced model
@@ -294,6 +305,9 @@ public class ObjectAutoCompleteField<O /* object */,I /* its id */ extends Seria
             searchTextField.processInput();
             target.addComponent(ObjectAutoCompleteField.this);
             notifyListeners(target);
+            if (clearInputOnSelection) {
+                clearSearchInput();
+            }
         }
 
         @Override
