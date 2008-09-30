@@ -20,13 +20,15 @@ import org.apache.wicket.Component;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
+import java.io.Serializable;
+
 /**
  * A renderer for rendering the readonly view of an object.
  *
  * @author roland
  * @since May 29, 2008
  */
-public interface ObjectReadOnlyRenderer<I> {
+public interface ObjectReadOnlyRenderer<I> extends Serializable {
 
     /**
      * Get the component used for rendering the read only
