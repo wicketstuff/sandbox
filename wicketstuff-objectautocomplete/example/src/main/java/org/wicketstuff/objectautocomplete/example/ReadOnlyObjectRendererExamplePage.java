@@ -81,6 +81,19 @@ public class ReadOnlyObjectRendererExamplePage extends BaseExamplePage<Car,Integ
                 "                        Fragment frag =  new Fragment(id,\"readOnlyView\");\n" +
                 "                        frag.add(new Label(\"search\",pSearchTextModel));\n" +
                 "                        frag.add(new Label(\"id\",pIModel));\n" +
+                "                        frag.add(new Label(\"object\",new AbstractReadOnlyModel() {\n" +
+                "                              public Object getObject() {\n" +
+                "                                  if (pIModel != null && pIModel.getObject() != null) {\n" +
+                "                                       for (Car car : CarRepository.allCars()) {\n" +
+                "                                           if (car.getId() == pIModel.getObject()) {\n" +
+                "                                              return \"[id = \" + car.getId()\n" +
+                "                                                   + \",name = \" + car.getName() + \"]\";\n" +
+                "                                           }\n" +
+                "                                       }\n" +
+                "                                  }\n" +
+                "                                  return null;\n" +
+                "                              }\n" +
+                "                        }));" +
                 "                        return frag;\n" +
                 "                    }\n" +
                 "               })\n" +
