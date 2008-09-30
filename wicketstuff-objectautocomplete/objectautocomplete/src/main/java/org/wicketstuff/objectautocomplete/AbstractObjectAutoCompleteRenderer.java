@@ -40,7 +40,7 @@ public class AbstractObjectAutoCompleteRenderer<O> implements Serializable {
         Object returnValue = PropertyResolver.getValue(idProperty,object);
         if (returnValue == null) {
             throw new IllegalArgumentException("Id property " + idProperty +
-                    " could not be extracted from obect " + object);
+                    " could not be extracted from object " + object);
         }
         return returnValue.toString();
     }
