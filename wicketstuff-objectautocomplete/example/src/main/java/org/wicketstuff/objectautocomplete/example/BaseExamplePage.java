@@ -112,16 +112,6 @@ abstract public class BaseExamplePage<O extends Serializable,I extends Serializa
         // intentionally empty
     }
 
-    /**
-     * Add a component to the list of components to update during
-     * an ajax update of the autocomplete field
-     *
-     * @param pComponent component to update
-     */
-    protected void registerForUpdateOnModelChange(Component pComponent) {
-        acField.registerForUpdateOnSelectionChange(pComponent);
-    }
-
     protected String getAutoCompleteFieldLabel() {
        return "Brand:";
     }

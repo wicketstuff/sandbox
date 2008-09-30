@@ -19,9 +19,12 @@ package org.wicketstuff.objectautocomplete.example;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.wicketstuff.objectautocomplete.ObjectAutoCompleteBuilder;
 import org.wicketstuff.objectautocomplete.AutoCompletionChoicesProvider;
 import org.wicketstuff.objectautocomplete.ObjectAutoCompleteField;
+import org.wicketstuff.objectautocomplete.ObjectAutoCompleteSelectionChangeListener;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -37,11 +40,6 @@ public class ListenerExamplePage extends BaseExamplePage<Car,Integer> {
     public ListenerExamplePage() {
         super(new Model<Integer>());
 
-        // Read-only view of the current id
-        Label label = new Label("selectedId", getModel());
-		label.setOutputMarkupId(true);
-        registerForUpdateOnModelChange(label);
-        add(label);
     }
 
     @Override
@@ -61,14 +59,21 @@ public class ListenerExamplePage extends BaseExamplePage<Car,Integer> {
 
     @Override
     String getCodeSample() {
-        return "Form form = new Form(\"form\");\n" +
+        return "Label label = new Label(\"selectedId\", getModel());\n" +
+                "label.setOutputMarkupId(true);\n" +
+                "Form form = new Form(\"form\");\n" +
                 "ObjectAutoCompleteField acField =\n" +
                 "        new ObjectAutoCompleteBuilder<Car,Integer>(getCarChoiceProvider())\n" +
+                "                .updateOnSelectionChange(new ObjectAutoCompleteSelectioChangeListener<Integer>() {\n" +
+                "                     public void selectionChanged(AjaxRequestTarget pTarget, IModel<Integer> pIntegerIModel) {\n" +
+                "                          label.setDefaultModel(pIntegerIModel);\n" +
+                "                          pTarget.addComponent(label);\n" +
+                "                     }\n " +
+                "                })\n" +
                 "                .build(\"acField\", new Model<Integer>());\n" +
-                "Label label = new Label(\"selectedId\", getModel());\n" +
-                "label.setOutputMarkupId(true);\n" +
                 "acField.registerForUpdateOnSelectionChange(label);\n" +
-                "add(label);\n" +
+                "\n" +
+                "form.add(label);\n" +
                 "form.add(acField);";
     }
 
@@ -77,9 +82,9 @@ public class ListenerExamplePage extends BaseExamplePage<Car,Integer> {
         ObjectAutoCompleteField acField =
                 new ObjectAutoCompleteBuilder<Car,Integer>(getCarChoiceProvider())
                         .build("acField", new Model<Integer>());
-        Label label = new Label("selectedId", getModel());
-		label.setOutputMarkupId(true);
-        acField.registerForUpdateOnSelectionChange(label);
+        Label label1 = new Label("selectedId", getModel());
+        label1.setOutputMarkupId(true);
+        Label label = label1;
         add(label);
         form.add(acField);
     }
@@ -99,6 +104,22 @@ public class ListenerExamplePage extends BaseExamplePage<Car,Integer> {
         };
     }
 
+    @Override
+    protected void initBuilder(ObjectAutoCompleteBuilder<Car, Integer> pCarIntegerObjectAutoCompleteBuilder) {
+
+        // Read-only view of the current id
+        final Label label = new Label("selectedId", getModel());
+        label.setOutputMarkupId(true);
+        add(label);
+
+        pCarIntegerObjectAutoCompleteBuilder.updateOnSelectionChange(new ObjectAutoCompleteSelectionChangeListener<Integer>() {
+            public void selectionChanged(AjaxRequestTarget pTarget, IModel<Integer> pIntegerIModel) {
+                label.setDefaultModel(pIntegerIModel);
+                pTarget.addComponent(label);
+            }
+        });
+
+    }
 
     @Override
     protected void addIfMatch(List<Car> pCars, Car pCar, String pInput) {

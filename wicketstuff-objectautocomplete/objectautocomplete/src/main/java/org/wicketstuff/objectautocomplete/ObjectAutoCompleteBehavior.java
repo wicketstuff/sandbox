@@ -32,6 +32,7 @@ import org.apache.wicket.protocol.http.WebResponse;
 import org.apache.wicket.settings.IDebugSettings;
 
 import java.util.Iterator;
+import java.io.Serializable;
 
 /**
  * Behaviour for object auto completion using a slightly modified variant of
@@ -66,7 +67,7 @@ public class ObjectAutoCompleteBehavior<O> extends AbstractAutoCompleteBehavior 
     private IAutoCompleteRenderer<O> renderer;
     private ObjectAutoCompleteResponseRenderer<O> responseRenderer;
 
-    <I> ObjectAutoCompleteBehavior(Component pObjectElement,ObjectAutoCompleteBuilder<O,I> pBuilder) {
+    <I extends Serializable> ObjectAutoCompleteBehavior(Component pObjectElement,ObjectAutoCompleteBuilder<O,I> pBuilder) {
         renderer = pBuilder.autoCompleteRenderer;
         settings = new AutoCompleteSettings()
                         .setMaxHeightInPx(pBuilder.maxHeightInPx)
