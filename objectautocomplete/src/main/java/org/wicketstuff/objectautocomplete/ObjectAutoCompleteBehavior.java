@@ -67,6 +67,12 @@ public class ObjectAutoCompleteBehavior<O> extends AbstractAutoCompleteBehavior 
     private IAutoCompleteRenderer<O> renderer;
     private ObjectAutoCompleteResponseRenderer<O> responseRenderer;
 
+    // The idType is needed to setup a proper converter for filling the model
+    // It can only be calculated via the id property when we have an obkect of
+    // type O at hand (thanx to generic's type erasure). This type will be cached here.
+    private Class<?> idType;
+    private String idProperty;
+
     <I extends Serializable> ObjectAutoCompleteBehavior(Component pObjectElement,ObjectAutoCompleteBuilder<O,I> pBuilder) {
         renderer = pBuilder.autoCompleteRenderer;
         settings = new AutoCompleteSettings()
@@ -77,6 +83,7 @@ public class ObjectAutoCompleteBehavior<O> extends AbstractAutoCompleteBehavior 
         responseRenderer = pBuilder.autoCompleteResponseRenderer;
         cancelListener = pBuilder.cancelListener;
         choicesProvider = pBuilder.choicesProvider;
+        idProperty = pBuilder.idProperty;
     }
 
     /**

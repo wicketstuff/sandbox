@@ -70,10 +70,19 @@ public class ObjectAutoCompleteBuilder<O,I extends Serializable> {
 
     // an optional renderer (which takes precedense of the 'default' renderer) for rendering
     // a more structured result
-    public ObjectAutoCompleteResponseRenderer<O> autoCompleteResponseRenderer;
+    ObjectAutoCompleteResponseRenderer<O> autoCompleteResponseRenderer;
 
     // property to use as an id for looking up via reflection
-    private String idProperty;
+    String idProperty;
+
+    // type of the id property. This is needed thanks to generic's type erasure. This type
+    // is needed during runtime to help wicket to chose the proper converter.
+    Class<I> idType;
+
+    // clear input after selection is performed. Makes only sense in conjunction with
+    // at least one selectionChangeListener
+    boolean clearInputOnSelection;
+
 
 
     public ObjectAutoCompleteBuilder(AutoCompletionChoicesProvider<O> pChoicesProvider) {
@@ -90,7 +99,9 @@ public class ObjectAutoCompleteBuilder<O,I extends Serializable> {
         searchLinkText = "[S]";
         readOnlyObjectRenderer = null;
         unchangeable = false;
+        clearInputOnSelection = false;
         idProperty = "id";
+        idType = null;
     }
 
     // =======================================================================================================
@@ -115,6 +126,11 @@ public class ObjectAutoCompleteBuilder<O,I extends Serializable> {
 
     public ObjectAutoCompleteBuilder<O,I> idProperty(String pIdProperty) {
         idProperty = pIdProperty;
+        return this;
+    }
+
+    public ObjectAutoCompleteBuilder<O,I> idType(Class<I> type) {
+        this.idType = type;
         return this;
     }
 
@@ -183,6 +199,14 @@ public class ObjectAutoCompleteBuilder<O,I extends Serializable> {
         this.unchangeable = true;
         return this;
     }
+
+    public ObjectAutoCompleteBuilder<O,I> clearInputOnSelection() {
+        this.clearInputOnSelection = true;
+        return this;
+    }
+
+
+
 
     // ==========================================================================================================
     // Builder methods
