@@ -117,7 +117,7 @@ public class ListenerExamplePage extends BaseExamplePage<Car,Integer> {
                 label.setDefaultModel(pIntegerIModel);
                 pTarget.addComponent(label);
             }
-        });
+        }).idType(Integer.class);
 
     }
 

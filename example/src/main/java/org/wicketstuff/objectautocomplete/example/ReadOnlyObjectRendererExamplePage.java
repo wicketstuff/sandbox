@@ -20,6 +20,7 @@ import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.Component;
 import org.wicketstuff.objectautocomplete.ObjectAutoCompleteBuilder;
 import org.wicketstuff.objectautocomplete.ObjectReadOnlyRenderer;
@@ -46,14 +47,28 @@ public class ReadOnlyObjectRendererExamplePage extends BaseExamplePage<Car,Integ
     protected void initBuilder(ObjectAutoCompleteBuilder<Car,Integer> pBuilder) {
         super.initBuilder(pBuilder);
         pBuilder.readOnlyRenderer(new ObjectReadOnlyRenderer<Integer>() {
-            public Component getObjectRenderer(String id, IModel<Integer> pIModel, IModel<String> pSearchTextModel) {
+            public Component getObjectRenderer(String id, final IModel<Integer> pIModel, IModel<String> pSearchTextModel) {
                 Fragment frag =  new Fragment(id,"readOnlyView", ReadOnlyObjectRendererExamplePage.this);
                 frag.add(new Label("search",pSearchTextModel));
                 frag.add(new Label("id",pIModel));
+                frag.add(new Label("object",new AbstractReadOnlyModel() {
+                    public Object getObject() {
+                        if (pIModel != null && pIModel.getObject() != null) {
+                            for (Car car : CarRepository.allCars()) {
+                                if (car.getId() == pIModel.getObject()) {
+                                    return "[id = " + car.getId()
+                                            + ",name = " + car.getName() + "]";
+                                }
+                            }
+                        }
+                        return null;
+                    }
+                }));
                 return frag;
             }
         })
-                .searchOnClick();
+                .searchOnClick()
+                .idType(Integer.class);
     }
 
     @Override
