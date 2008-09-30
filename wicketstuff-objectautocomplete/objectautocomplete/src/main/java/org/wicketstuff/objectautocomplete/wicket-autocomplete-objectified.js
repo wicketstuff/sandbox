@@ -326,17 +326,19 @@ Wicket.AutoComplete=function(elementId, callbackUrl, cfg){
     // All children which are <li> elements are considered
     // as selectables
     var listElements = [];
-    (function(el) {
-      if (el.nodeType == 1 && el.nodeName.toUpperCase() == 'LI') {
-        // Add only list items
-        listElements.push(el);
-      }
-      if (el.hasChildNodes()) {
-        for (var i=0;i<el.childNodes.length;i++) {
-          arguments.callee(el.childNodes[i]);
+    if (element) {
+      (function(el) {
+        if (el.nodeType == 1 && el.nodeName.toUpperCase() == 'LI') {
+          // Add only list items
+          listElements.push(el);
         }
-      }
-    })(element);
+        if (el.hasChildNodes()) {
+          for (var i=0;i<el.childNodes.length;i++) {
+          arguments.callee(el.childNodes[i]);
+          }
+        }
+      })(element);
+    }
     return listElements;
   }
 
