@@ -34,6 +34,8 @@ import org.apache.wicket.model.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.lang.ref.WeakReference;
+import java.io.Serializable;
 
 /**
  * Wicket component for selecting a single object of type T with an identifier of type I via
@@ -47,11 +49,13 @@ import java.util.List;
  * @author roland
  * @since May 21, 2008
  */
-public class ObjectAutoCompleteField<O /* object */,I /* its id */> extends FormComponentPanel<I>
+public class ObjectAutoCompleteField<O /* object */,I /* its id */ extends Serializable> extends FormComponentPanel<I>
         implements ObjectAutoCompleteCancelListener {
 
-    // Additional lists of components to update when an object has been selected
-    private List<Component> componentsToUpdate = new ArrayList<Component>();
+
+    // Listener to be notified on a selection change. These need not to be components
+    private List<ObjectAutoCompleteSelectionChangeListener<I>> selectionChangeListeners =
+            new ArrayList<ObjectAutoCompleteSelectionChangeListener<I>>();
 
     // Remember old id in case a search operation is aborted
     private I selectedObjectId;
@@ -65,6 +69,7 @@ public class ObjectAutoCompleteField<O /* object */,I /* its id */> extends Form
 
     // Hiddenfield carrying the selected object id
     private HiddenField<I> objectField;
+
 
     /**
      * Package scoped constructor to be used by the builder to create an auto completion fuild via
@@ -86,10 +91,11 @@ public class ObjectAutoCompleteField<O /* object */,I /* its id */> extends Form
         // Register ourself as a cancel listener to restore asn old id
         pBuilder.cancelListener(this);
 
-        // Register all update listener as added to the builder
-        for (Component comp : pBuilder.updateOnSelectionChangeComponents) {
-            registerForUpdateOnSelectionChange(comp);
+        // Register all change selection listeners
+        for (ObjectAutoCompleteSelectionChangeListener listener : pBuilder.selectionChangeListener) {
+            registerForUpdateOnSelectionChange(listener);
         }
+
         // Search Text model contains the text selected
         Model<String> searchTextModel = new Model<String>();
         addSearchTextField(searchTextModel, pBuilder);
@@ -97,15 +103,15 @@ public class ObjectAutoCompleteField<O /* object */,I /* its id */> extends Form
     }
 
     /**
-     * Register a component that needs to be updated when the selection changes, i.e.
-     * the user selected an object from the suggestion list. Note, that registered component's
-     * model will be updated with the id of the selected object
-     * (whether this is in a form for validation or not)
+     * Register a listener that needs to be updated when the selection changes, i.e.
+     * the user selected an object from the suggestion list. The listener is called
+     * with the id-model and the ajax request target which can be used for updating one
+     * self
      *
-     * @param pComponentToUpdate the component to update
+     * @param pListener the listener to notify
      */
-    public void registerForUpdateOnSelectionChange(Component pComponentToUpdate) {
-        componentsToUpdate.add(pComponentToUpdate);
+    public void registerForUpdateOnSelectionChange(ObjectAutoCompleteSelectionChangeListener<I> pListener) {
+        selectionChangeListeners.add(pListener);
     }
 
     // ==========================================================================================================
@@ -142,7 +148,7 @@ public class ObjectAutoCompleteField<O /* object */,I /* its id */> extends Form
             IWrapModel iwModel = (IWrapModel) model;
             if (iwModel.getWrappedModel() instanceof CompoundPropertyModel) {
                 CompoundPropertyModel<I> cpModel =  (CompoundPropertyModel<I>) iwModel.getWrappedModel();
-                objectField.setModel((IModel<I>) cpModel.bind(getId()));
+                objectField.setModel(new PropertyModel<I>(cpModel,getId()));
             }
         }
         return model;
@@ -242,7 +248,7 @@ public class ObjectAutoCompleteField<O /* object */,I /* its id */> extends Form
             backupText = null;
             pTarget.addComponent(searchTextField);
         }
-        updateDependentComponents(pTarget);
+        notifyListeners(pTarget);
     }
 
     // mode detection based on the existance of a seleced model
@@ -265,12 +271,11 @@ public class ObjectAutoCompleteField<O /* object */,I /* its id */> extends Form
         pTag.setName("span");
     }
 
-    // add all registered components to the target for update
-    private void updateDependentComponents(AjaxRequestTarget pTarget) {
-        for (Component comp : componentsToUpdate) {
-            comp.setDefaultModelObject(objectField.getModelObject());
-            pTarget.addComponent(comp);
+    private void notifyListeners(AjaxRequestTarget pTarget) {
+        for (ObjectAutoCompleteSelectionChangeListener<I> listener : selectionChangeListeners) {
+            listener.selectionChanged(pTarget,objectField.getModel());
         }
+
     }
 
 
@@ -288,7 +293,7 @@ public class ObjectAutoCompleteField<O /* object */,I /* its id */> extends Form
             objectField.processInput();
             searchTextField.processInput();
             target.addComponent(ObjectAutoCompleteField.this);
-            updateDependentComponents(target);
+            notifyListeners(target);
         }
 
         @Override

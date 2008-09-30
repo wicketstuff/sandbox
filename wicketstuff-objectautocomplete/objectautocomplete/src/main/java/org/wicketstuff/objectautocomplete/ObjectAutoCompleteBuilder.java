@@ -5,10 +5,12 @@ import org.apache.wicket.Resource;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.extensions.ajax.markup.html.autocomplete.IAutoCompleteRenderer;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.io.Serializable;
 
 /**
  * Builder for initializing a {@link org.wicketstuff.objectautocomplete.ObjectAutoCompleteField} and
@@ -19,7 +21,7 @@ import java.util.List;
  * @author roland
  * @since May 24, 2008
  */
-public class ObjectAutoCompleteBuilder<O,I> {
+public class ObjectAutoCompleteBuilder<O,I extends Serializable> {
 
     public static final String SEARCH_LINK_PANEL_ID = "searchLinkPanel";
 
@@ -46,8 +48,8 @@ public class ObjectAutoCompleteBuilder<O,I> {
     // show the list also on an empty input when users pushes down button
     boolean showListOnEmptyInput;
 
-    // a list of listeners to update on selection change
-    List<Component> updateOnSelectionChangeComponents;
+    // list of listeners to be notified on selection changes
+    List<ObjectAutoCompleteSelectionChangeListener<I>> selectionChangeListener;
 
     // whether to react on 'onClick' on the read only view itself
     boolean searchOnClick;
@@ -83,7 +85,7 @@ public class ObjectAutoCompleteBuilder<O,I> {
         searchOnClick = false;
         showListOnEmptyInput = false;
         maxHeightInPx = -1;
-        updateOnSelectionChangeComponents = new ArrayList<Component>();
+        selectionChangeListener = new ArrayList<ObjectAutoCompleteSelectionChangeListener<I>>();
         searchLinkContent = null;
         searchLinkText = "[S]";
         readOnlyObjectRenderer = null;
@@ -165,15 +167,15 @@ public class ObjectAutoCompleteBuilder<O,I> {
         return this;
     }
 
-    public ObjectAutoCompleteBuilder<O,I> updateOnSelectionChange(Component ... pComponents) {
-        for (Component comp : pComponents) {
-            if (comp == null) {
+    public ObjectAutoCompleteBuilder<O,I> updateOnSelectionChange(ObjectAutoCompleteSelectionChangeListener<I> ... listeners) {
+        for (ObjectAutoCompleteSelectionChangeListener<I> listener : listeners) {
+            if (listener == null) {
                 throw new IllegalArgumentException(
-                        "A component to included for an ajax update " +
+                        "A listener to be notified for an ajax update " +
                                 "on selection change cannot be null");
             }
         }
-        updateOnSelectionChangeComponents.addAll(Arrays.asList(pComponents));
+        selectionChangeListener.addAll(Arrays.asList(listeners));
         return this;
     }
 
@@ -212,7 +214,7 @@ public class ObjectAutoCompleteBuilder<O,I> {
 
     public ObjectAutoCompleteField<O,I> build(String id) {
         setupRenderer();
-        return build(id,null);
+        return build(id,new Model<I>());
     }
 
     public ObjectAutoCompleteField<O,I> build(String id, IModel<I> model) {
