@@ -3,11 +3,13 @@ package org.wicketstuff.objectautocomplete;
 import org.apache.wicket.util.lang.PropertyResolver;
 import org.apache.wicket.Response;
 
+import java.io.Serializable;
+
 /**
  * @author roland
  * @since Sep 26, 2008
  */
-public class AbstractObjectAutoCompleteRenderer<O> {
+public class AbstractObjectAutoCompleteRenderer<O> implements Serializable {
     private String idProperty = "id";
 
     /**
