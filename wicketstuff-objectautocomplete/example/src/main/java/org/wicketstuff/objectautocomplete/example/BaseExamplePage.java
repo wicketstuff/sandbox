@@ -32,6 +32,7 @@ import org.apache.wicket.util.lang.PropertyResolver;
 import org.wicketstuff.objectautocomplete.AutoCompletionChoicesProvider;
 import org.wicketstuff.objectautocomplete.ObjectAutoCompleteBuilder;
 import org.wicketstuff.objectautocomplete.ObjectAutoCompleteField;
+import org.wicketstuff.objectautocomplete.ObjectAutoCompleteRenderer;
 
 import java.io.Serializable;
 import java.util.List;
