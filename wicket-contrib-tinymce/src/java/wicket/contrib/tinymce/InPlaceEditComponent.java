@@ -22,6 +22,7 @@ import org.apache.wicket.Component;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.MarkupStream;
 import org.apache.wicket.markup.html.form.AbstractTextComponent;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
 import wicket.contrib.tinymce.settings.TinyMCESettings;
@@ -35,6 +36,16 @@ public class InPlaceEditComponent extends AbstractTextComponent {
     private InPlaceEditBehavior inPlaceEditBehavior;
     private TinyMCESettings settings;
 
+    public InPlaceEditComponent(String id, IModel model) {
+        super(id, model);
+        init(this);
+    }
+    
+    public InPlaceEditComponent(String id, IModel model, Component triggerComponent) {
+        super(id, model);
+        init(triggerComponent);
+    }
+    
     public InPlaceEditComponent(String id, String text) {
         super(id, new Model(text));
         init(this);
@@ -75,6 +86,8 @@ public class InPlaceEditComponent extends AbstractTextComponent {
         return settings;
     }
 
+    
+    
     protected void onComponentTag(ComponentTag tag) {
         super.onComponentTag(tag);
         // the name tag is added by AbstractTextComponent, because it expects this

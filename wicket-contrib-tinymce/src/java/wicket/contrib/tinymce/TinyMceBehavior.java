@@ -81,8 +81,8 @@ public class TinyMceBehavior extends AbstractBehavior {
 
     protected String getAddTinyMceSettingsScript(Mode mode, Collection<Component> components) {
         return "" //
-                + " tinyMCE.init({" + settings.toJavaScript(mode, components) + " });\n" //
                 + settings.getLoadPluginJavaScript() //
+                + " tinyMCE.init({" + settings.toJavaScript(mode, components) + " });\n" //
                 + settings.getAdditionalPluginJavaScript(); //
     }
 

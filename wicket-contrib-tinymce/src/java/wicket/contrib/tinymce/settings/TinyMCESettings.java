@@ -71,7 +71,10 @@ public class TinyMCESettings implements Serializable {
     private List controls;
 
     private Set disabledButtons;
-
+    private Boolean convertUrls = null;
+    private Boolean removeScriptHost = null;
+    private Boolean relativeUrls = null;
+    
     public TinyMCESettings() {
         this(Theme.simple);
     }
@@ -115,6 +118,19 @@ public class TinyMCESettings implements Serializable {
         this.horizontalResizing = horizontalResizing;
     }
 
+    /**
+     * This option enables you to control if TinyMCE is to be clever and restore urls to their 
+     * original values. URLs are auto converted/messed up by default since the built in browser 
+     * logic works this way, there is no way to get the real URL unless you store it away. If you 
+     * set this option to false it will try to keep these URLs intact. This option is set to true
+     * by default that means URLs will be forced absolute or relative depending on the state of 
+     * relative_urls. 
+     * @param convertUrls
+     */
+    public void setConvertUrls(boolean convertUrls) {
+        this.convertUrls  = convertUrls;
+    }
+    
     public void setLanguage(Language language) {
         this.language = language;
     }
@@ -194,6 +210,15 @@ public class TinyMCESettings implements Serializable {
         if (language != null)
             buffer.append(",\n\t").append("language : ").append("\"").append(language.toString()).append("\"");
 
+        if(convertUrls != null)
+            buffer.append(",\n\t").append("convert_urls : ").append(convertUrls);
+        
+        if(relativeUrls != null)
+            buffer.append(",\n\t").append("relative_urls : ").append(relativeUrls);
+        
+        if(removeScriptHost != null)
+            buffer.append(",\n\t").append("remove_script_host : ").append(removeScriptHost);
+        
         if (Theme.advanced.equals(theme))
             appendAdvancedSettings(buffer);
 
@@ -238,7 +263,7 @@ public class TinyMCESettings implements Serializable {
                 String pluginPath = plugin.getPluginPath();
 
                 if (pluginPath != null && pluginPath.equals("") == false) {
-                    loadPluginJavaScript.append("tinyMCE.loadPlugin('");
+                    loadPluginJavaScript.append("tinymce.PluginManager.load('");
                     loadPluginJavaScript.append(plugin.getName());
                     loadPluginJavaScript.append("','");
                     loadPluginJavaScript.append(pluginPath);
@@ -297,8 +322,26 @@ public class TinyMCESettings implements Serializable {
 
     void addPlugins(StringBuffer buffer) {
         if (plugins.size() > 0) {
-            String value = enumAsString(plugins);
-            buffer.append(",\n\t").append("plugins : ").append("\"").append(value).append("\"");
+            buffer.append(",\n\t").append("plugins : ").append("\"");
+            
+            Iterator<Plugin> iterator = plugins.iterator();
+            int count=0;
+            while (iterator.hasNext()) {
+                Plugin plugin = iterator.next();
+                
+                if(count>0) buffer.append(", ");
+                
+                //if the plugin has a plugin path set, assume it's external
+                //and will be loaded by tinymce.PluginManager.load
+                String pluginPath = plugin.getPluginPath();
+                if(pluginPath!=null && !pluginPath.equals("")) {
+                    buffer.append("-"); //do not load twice!
+                }
+                buffer.append(plugin.getName());
+                count++;
+            }
+            
+            buffer.append("\"");
         }
     }
 
@@ -605,5 +648,32 @@ public class TinyMCESettings implements Serializable {
     public static final Button fontsizeselect = new Button("fontsizeselect");
     public static final Button forecolor = new Button("forecolor");
     public static final Button backcolor = new Button("backcolor");
+
+    /**
+     * If this option is enabled the protocol and host part of the URLs returned from the 
+     * MCFileManager will be removed. This option is only used if the relative_urls option 
+     * is set to false. This option is set to true by default.
+     * 
+     * URL:s will be returned in this format: "/somedir/somefile.htm" instead of the default mode: 
+     * "http://www.somesite.com/somedir/somefile.htm".
+     *  
+     * @param removeScriptHost
+     */
+    public void setRemoveScriptHost(Boolean removeScriptHost) {
+        this.removeScriptHost = removeScriptHost;
+    }
+
+    /**
+     * If this option is set to true, all URLs returned from the MCFileManager will be 
+     * relative from the specified document_base_url. If it's set to false all URLs will 
+     * be converted to absolute URLs. This option is set to true by default. 
+     * 
+     * @param relativeUrls
+     */
+    public void setRelativeUrls(Boolean relativeUrls) {
+        this.relativeUrls = relativeUrls;
+    }
+
+    
 
 }
