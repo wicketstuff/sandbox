@@ -98,4 +98,8 @@ public abstract class Plugin extends wicket.contrib.tinymce.settings.Enum
 		}
 	}
 
+    public void setPluginPath(String pluginPath) {
+        this.pluginPath = pluginPath;
+    }
+
 }
