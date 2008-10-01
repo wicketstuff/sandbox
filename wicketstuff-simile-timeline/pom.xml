@@ -42,14 +42,14 @@
                     <target>1.5</target>
                 </configuration>
             </plugin>
-			<plugin>
+			<!--plugin>
 				<groupId>net.sf.alchim</groupId>
 				<artifactId>yuicompressor-maven-plugin</artifactId>
 				<executions>
 					<execution>
 						<phase>process-resources</phase>
 						<goals>
-							<!--goal>jslint</goal-->
+							<goal>jslint</goal>
 							<goal>compress</goal>
 						</goals>
 					</execution>
@@ -65,7 +65,7 @@
 						<exclude>**/*.html</exclude>
 					</excludes>
 				</configuration>
-			</plugin>
+			</plugin-->
         </plugins>
     </build>
 	<dependencies>
