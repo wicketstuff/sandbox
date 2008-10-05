@@ -22,9 +22,9 @@ public class URIImage extends ContextImage
 	 * 
 	 * @param id
 	 */
-	public URIImage(String id)
+	public URIImage(String id, String contextRelativePath)
 	{
-		super(id);
+		super(id,contextRelativePath);
 	}
 
 	/**
@@ -46,14 +46,14 @@ public class URIImage extends ContextImage
 	 {
      	checkComponentTag(tag, "img");
      	super.onComponentTag(tag);
-     	String url = getModelObjectAsString();
+     	String url = getDefaultModelObjectAsString();
      	if (url.startsWith("http")) 
      	{
      		tag.put("src", url);
      	} 
      	else 
      	{
-     		tag.put("src", getRequest().getRelativePathPrefixToContextRoot() + getModelObjectAsString());
+     		tag.put("src", getRequest().getRelativePathPrefixToContextRoot() + getDefaultModelObjectAsString());
      	}
 	 }
 }
