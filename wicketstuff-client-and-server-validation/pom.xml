@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>org.wicketstuff</groupId>
+	<artifactId>wicketstuff-client-and-server-validation</artifactId>
+	<packaging>jar</packaging>
+	<version>1.4-SNAPSHOT</version>
+
+	<name>WicketStuff Client and Server Validation</name>
+	<description>
+		WicketStuff Client and Server Validation aims to provide a client side validation
+		framework that is as simple to use as Wicket's server side validation and will
+		automatically handle both types of validation seamlessly.
+	</description>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.apache.wicket</groupId>
+			<artifactId>wicket</artifactId>
+			<version>1.4-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<resources>
+			<resource>
+				<filtering>false</filtering>
+				<directory>src/main/java</directory>
+				<includes>
+					<include>**</include>
+				</includes>
+				<excludes>
+					<exclude>**/*.java</exclude>
+				</excludes>
+			</resource>
+			<resource>
+				<filtering>false</filtering>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>**</include>
+				</includes>
+			</resource>
+		</resources>
+		<testResources>
+			<testResource>
+				<directory>${basedir}/src/test/java</directory>
+				<excludes>
+					<exclude>**/*.java</exclude>
+				</excludes>
+				<includes>
+					<include>**/*</include>
+				</includes>
+			</testResource>
+		</testResources>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.5</source>
+					<target>1.5</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<!-- USAGE: mvn license:check OR mvn license:format -->
+				<groupId>com.mathieucarbou.mojo</groupId>
+				<artifactId>maven-license-plugin</artifactId>
+				<configuration>
+					<header>src/main/etc/header.txt</header>
+					<excludes>
+						<exclude>**/*.gif</exclude>
+						<exclude>**/*.jpg</exclude>
+						<exclude>**/*.jpeg</exclude>
+						<exclude>**/*.ico</exclude>
+						<exclude>**/*.swf</exclude>
+					</excludes>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>test</phase>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>mc-release</id>
+			<name>Maven repository of com.mathieucarbou.mojo (maven-license-plugin) releases</name>
+			<url>http://mc-repo.googlecode.com/svn/maven2/releases</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+		</pluginRepository>
+	</pluginRepositories>
+</project>
