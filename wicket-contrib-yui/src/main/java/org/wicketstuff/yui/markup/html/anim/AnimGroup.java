@@ -202,7 +202,7 @@ public class AnimGroup extends WebMarkupContainer {
 	protected String getJavaScriptComponentInitializationScript() {
 		PackagedTextTemplate template = new PackagedTextTemplate(
 				AnimGroup.class, "init.js");
-		Map<Object, Object> variables = new HashMap<Object, Object>(7);
+		Map<String, Object> variables = new HashMap<String, Object>(7);
 		variables.put("javaScriptId", javaScriptId);
 		variables.put("easing", "'" + easing + "'");
 		variables.put("duration", new Double(duration));

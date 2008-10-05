@@ -176,7 +176,7 @@ public class AnimBox extends Panel {
 	protected String getAnimSelectInitializationScript(int index) {
 		PackagedTextTemplate template = new PackagedTextTemplate(AnimBox.class,
 				"anim.js");
-		Map<Object, Object> variables = new HashMap<Object, Object>(7);
+		Map<String, Object> variables = new HashMap<String, Object>(7);
 		variables.put("javaScriptId", javaScriptId);
 		variables.put("boxId", new Integer(index));
 		variables.put("easing", "YAHOO.util.Easing." + easing);

@@ -5,7 +5,7 @@
 	<groupId>org.wicketstuff</groupId>
 	<artifactId>wicketstuff-yui</artifactId>
 	<packaging>jar</packaging>
-	<version>1.3.0-SNAPSHOT</version>
+	<version>1.4-SNAPSHOT</version>
 	<name>WicketStuff YUI</name>
 	<description>
 		Wicket Components for the Yahoo User Interface (YUI) library.
@@ -102,12 +102,12 @@
 		<dependency>
 			<groupId>org.apache.wicket</groupId>
 			<artifactId>wicket</artifactId>
-			<version>1.3.1</version>
+			<version>1.4-m3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.wicket</groupId>
 			<artifactId>wicket-velocity</artifactId>
-			<version>1.3.1</version>
+			<version>1.4-m3</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
