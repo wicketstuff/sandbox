@@ -83,7 +83,8 @@ public class ObjectAutoCompleteBuilder<O,I extends Serializable> {
     // at least one selectionChangeListener
     boolean clearInputOnSelection;
 
-
+    // Tag name which indicates the possible choices, typically "LI"
+    String choiceTagName;
 
     public ObjectAutoCompleteBuilder(AutoCompletionChoicesProvider<O> pChoicesProvider) {
         this.choicesProvider = pChoicesProvider;
@@ -102,6 +103,7 @@ public class ObjectAutoCompleteBuilder<O,I extends Serializable> {
         clearInputOnSelection = false;
         idProperty = "id";
         idType = null;
+        choiceTagName = "LI";
     }
 
     // =======================================================================================================
@@ -183,15 +185,15 @@ public class ObjectAutoCompleteBuilder<O,I extends Serializable> {
         return this;
     }
 
-    public ObjectAutoCompleteBuilder<O,I> updateOnSelectionChange(ObjectAutoCompleteSelectionChangeListener<I> ... listeners) {
-        for (ObjectAutoCompleteSelectionChangeListener<I> listener : listeners) {
+    public ObjectAutoCompleteBuilder<O,I> updateOnSelectionChange(ObjectAutoCompleteSelectionChangeListener<I> ... pListeners) {
+        for (ObjectAutoCompleteSelectionChangeListener<I> listener : pListeners) {
             if (listener == null) {
                 throw new IllegalArgumentException(
                         "A listener to be notified for an ajax update " +
                                 "on selection change cannot be null");
             }
         }
-        selectionChangeListener.addAll(Arrays.asList(listeners));
+        selectionChangeListener.addAll(Arrays.asList(pListeners));
         return this;
     }
 
@@ -205,7 +207,10 @@ public class ObjectAutoCompleteBuilder<O,I extends Serializable> {
         return this;
     }
 
-
+    public ObjectAutoCompleteBuilder<O,I> choiceTagName(String pTagName) {
+        this.choiceTagName = pTagName;
+        return this;
+    }
 
 
     // ==========================================================================================================

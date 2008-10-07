@@ -31,8 +31,8 @@ import org.apache.wicket.markup.html.resources.JavascriptResourceReference;
 import org.apache.wicket.protocol.http.WebResponse;
 import org.apache.wicket.settings.IDebugSettings;
 
-import java.util.Iterator;
 import java.io.Serializable;
+import java.util.Iterator;
 
 /**
  * Behaviour for object auto completion using a slightly modified variant of
@@ -67,11 +67,9 @@ public class ObjectAutoCompleteBehavior<O> extends AbstractAutoCompleteBehavior 
     private IAutoCompleteRenderer<O> renderer;
     private ObjectAutoCompleteResponseRenderer<O> responseRenderer;
 
-    // The idType is needed to setup a proper converter for filling the model
-    // It can only be calculated via the id property when we have an obkect of
-    // type O at hand (thanx to generic's type erasure). This type will be cached here.
-    private Class<?> idType;
-    private String idProperty;
+    // tag name which indicates the possible choices (typically thhis is a "li")
+    private String choiceTagName;
+
 
     <I extends Serializable> ObjectAutoCompleteBehavior(Component pObjectElement,ObjectAutoCompleteBuilder<O,I> pBuilder) {
         renderer = pBuilder.autoCompleteRenderer;
@@ -79,11 +77,11 @@ public class ObjectAutoCompleteBehavior<O> extends AbstractAutoCompleteBehavior 
                         .setMaxHeightInPx(pBuilder.maxHeightInPx)
                         .setPreselect(pBuilder.preselect)
                         .setShowListOnEmptyInput(pBuilder.showListOnEmptyInput);
+        choiceTagName = pBuilder.choiceTagName;
         objectElement = pObjectElement;
         responseRenderer = pBuilder.autoCompleteResponseRenderer;
         cancelListener = pBuilder.cancelListener;
         choicesProvider = pBuilder.choicesProvider;
-        idProperty = pBuilder.idProperty;
     }
 
     /**
@@ -122,6 +120,7 @@ public class ObjectAutoCompleteBehavior<O> extends AbstractAutoCompleteBehavior 
 
 				Iterator<O> comps = getChoices(input);
                 if (responseRenderer != null) {
+                    // there is a dedicated renderer configured
                     responseRenderer.onRequest(comps,r,input);
                 } else {
                     renderer.renderHeader(r);
@@ -175,7 +174,7 @@ public class ObjectAutoCompleteBehavior<O> extends AbstractAutoCompleteBehavior 
 		response.renderJavascriptReference(OBJECTAUTOCOMPLETE_JS);
 		final String id = getComponent().getMarkupId();
         String initJS = String.format("new Wicketstuff.ObjectAutoComplete('%s','%s','%s',%s);", id,objectElement.getMarkupId(),
-            getCallbackUrl(), constructSettingsJS());
+            getCallbackUrl(), getSettings());
 		response.renderOnDomReadyJavascript(initJS);
 	}
 
@@ -210,4 +209,15 @@ public class ObjectAutoCompleteBehavior<O> extends AbstractAutoCompleteBehavior 
         return choicesProvider.getChoices(input);
     }
 
+    // Create settings
+    private CharSequence getSettings() {
+        StringBuilder builder = new StringBuilder(constructSettingsJS());
+        if (choiceTagName != null) {
+            // remove trailing "}"
+            builder.setLength(builder.length()-1);
+            builder.append(",choiceTagName: '").append(choiceTagName.toUpperCase()).append("'");
+            builder.append("}");
+        }
+        return builder;
+    }
 }
