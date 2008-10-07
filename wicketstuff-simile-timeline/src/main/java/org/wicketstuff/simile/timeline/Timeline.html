@@ -1,61 +1,21 @@
 <wicket:head>
+	<script language="javascript" wicket:id="loadScript">
+	</script>
 	<script language="javascript">
-
 	var tl;
-	function timeLineOnLoad(timelineMarkupId, timelineDataId) {
-	var eventSource = new Timeline.DefaultEventSource(0);
 
-    var theme = Timeline.ClassicTheme.create();
-    theme.event.bubble.width = 320;
-    theme.event.bubble.height = 220;
-    theme.ether.backgroundColors[1] = theme.ether.backgroundColors[0];
-    var d = Timeline.DateTime.parseGregorianDateTime("2009")
-    var bandInfos = [
-        Timeline.createBandInfo({
-            width:          "10%", 
-            intervalUnit:   Timeline.DateTime.MONTH, 
-            intervalPixels: 70,
-            date:           d,
-            showEventText:  false,
-            theme:          theme
-        }),
-        Timeline.createBandInfo({
-            width:          "90%", 
-            intervalUnit:   Timeline.DateTime.MONTH, 
-            intervalPixels: 70,
-            eventSource:    eventSource,
-            date:           d,
-            theme:          theme
-        })
-    ];
-    bandInfos[0].etherPainter = new Timeline.YearCountEtherPainter({
-        startDate:  "Jan 1 2008 00:00:00 GMT",
-        multiple:   5,
-        theme:      theme
-    });
-    bandInfos[0].syncWith = 1;
-    bandInfos[0].highlight = false;
-    //bandInfos[0].decorators = [
-    //   new Timeline.SpanHighlightDecorator({
-    //        startDate:  "Nov 14 2000 00:00:00 GMT",
-    //        endDate:    "Dec 05 2020 00:00:00 GMT",
-    //        startLabel: "birth",
-    //        endLabel:   "death",
-    //        color:      "#FFC080",
-    //        opacity:    50,
-    //        theme:      theme
-    //    })
-    //];
-    
-    tl = Timeline.create(document.getElementById(timelineMarkupId), bandInfos, Timeline.HORIZONTAL);
-
-    var parser=new DOMParser();
-    var doc=parser.parseFromString(document.getElementById(timelineDataId).innerHTML,"text/xml");
-    
-    eventSource.loadXML(doc, 'embedded');
-    //tl.loadXML(\"monet.xml\", function(xml, url) {");
-    //eventSource.loadXML(xml, url);
-    //});
+	function timeLineOnLoad(timelineMarkupId, timelineDataId, theme, eventSource, bandInfos) {
+	    for (var bandno = 1 ; bandno < bandInfos.length ; bandno++)
+	    {
+	    	bandInfos[bandno].syncWith = bandno - 1;
+		}
+	    
+	    tl = Timeline.create(document.getElementById(timelineMarkupId), bandInfos, Timeline.HORIZONTAL);
+	
+	    var parser=new DOMParser();
+	    var doc=parser.parseFromString(document.getElementById(timelineDataId).innerHTML,"text/xml");
+	    
+	    eventSource.loadXML(doc, 'embedded');
     }
 	
 	</script>
