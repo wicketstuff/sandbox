@@ -26,7 +26,6 @@ import org.wicketstuff.jquery.demo.dnd.Page4MultiGroup;
 import org.wicketstuff.jquery.demo.dnd.Page4OneGroup;
 import org.wicketstuff.jquery.demo.dnd.Page4SimpleList;
 
-@SuppressWarnings("serial")
 public class PageSupport extends WebPage {
     private transient Logger logger_;
 
@@ -38,6 +37,7 @@ public class PageSupport extends WebPage {
         add(new BookmarkablePageLink("accordion", Page4Accordion.class));
         add(new BookmarkablePageLink("tabs", Page4Tabs.class));
         add(new BookmarkablePageLink("datePicker", Page4DatePicker.class));
+        add(new BookmarkablePageLink("jgrowl", Page4JGrowl.class));
 
         add(new FeedbackPanel("feedback").setOutputMarkupId(true));
     }
