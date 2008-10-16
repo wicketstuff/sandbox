@@ -56,7 +56,8 @@ html.accordion-menu-js dd.a-m-d-before-expand {
 	z-index:-1;
 	opacity:0;
 	height:auto !important;
-	visibility:hidden;
+/* patch from jchapelle*/
+/*	visibility:hidden; */
 	overflow:visible;
 }
 
