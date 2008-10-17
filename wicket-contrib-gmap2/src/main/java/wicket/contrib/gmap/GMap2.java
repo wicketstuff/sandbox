@@ -18,6 +18,7 @@ package wicket.contrib.gmap;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -77,7 +78,7 @@ public class GMap2 extends Panel implements GOverlayContainer
 
 	private final Set<GControl> controls = new HashSet<GControl>();
 
-	private List<GOverlay> overlays = new ArrayList<GOverlay>();
+	private final List<GOverlay> overlays = new ArrayList<GOverlay>();
 
 	private final WebMarkupContainer map;
 
@@ -86,18 +87,6 @@ public class GMap2 extends Panel implements GOverlayContainer
 	private GLatLngBounds bounds;
 
 	private final OverlayListener overlayListener;
-
-	/**
-	 * Construct.
-	 * 
-	 * @param id
-	 * @param gMapKey
-	 *            Google gmap API KEY
-	 */
-	public GMap2(final String id, final GMapHeaderContributor headerContrib)
-	{
-		this(id, headerContrib, new ArrayList<GOverlay>());
-	}
 
 	/**
 	 * Construct.
@@ -118,7 +107,10 @@ public class GMap2 extends Panel implements GOverlayContainer
 	 * @param gMapKey
 	 *            Google gmap API KEY
 	 * @param overlays
+	 * @deprecated The usage is discouraged. Use this(String, String) instead
+	 *             and add the overlays later on.
 	 */
+	@Deprecated
 	public GMap2(final String id, final String gMapKey, List<GOverlay> overlays)
 	{
 		this(id, new GMapHeaderContributor(gMapKey), overlays);
@@ -128,14 +120,11 @@ public class GMap2 extends Panel implements GOverlayContainer
 	 * Construct.
 	 * 
 	 * @param id
-	 * @param googleHeaderContrib
-	 * @param overlays
+	 * @param headerContrib
 	 */
-	public GMap2(final String id, final GMapHeaderContributor headerContrib, List<GOverlay> overlays)
+	public GMap2(final String id, final GMapHeaderContributor headerContrib)
 	{
 		super(id);
-
-		this.overlays = overlays;
 
 		add(headerContrib);
 		add(new HeaderContributor(new IHeaderContributor()
@@ -156,6 +145,26 @@ public class GMap2 extends Panel implements GOverlayContainer
 		add(map);
 		overlayListener = new OverlayListener();
 		add(overlayListener);
+	}
+
+	/**
+	 * Construct.
+	 * 
+	 * @param id
+	 * @param headerContrib
+	 * @param overlays
+	 * @deprecated The usage is discouraged. Use this(String, String) instead
+	 *             and add the overlays later on.
+	 */
+	@Deprecated
+	public GMap2(final String id, final GMapHeaderContributor headerContrib, List<GOverlay> overlays)
+	{
+		this(id, headerContrib);
+
+		for (Iterator<GOverlay> iterator = overlays.iterator(); iterator.hasNext();)
+		{
+			addOverlay(iterator.next());
+		}
 	}
 
 	/**
