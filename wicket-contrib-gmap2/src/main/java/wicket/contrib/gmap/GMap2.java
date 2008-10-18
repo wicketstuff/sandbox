@@ -161,9 +161,9 @@ public class GMap2 extends Panel implements GOverlayContainer
 	{
 		this(id, headerContrib);
 
-		for (Iterator<GOverlay> iterator = overlays.iterator(); iterator.hasNext();)
+		for (GOverlay overlay : overlays)
 		{
-			addOverlay(iterator.next());
+			addOverlay(overlay);
 		}
 	}
 
