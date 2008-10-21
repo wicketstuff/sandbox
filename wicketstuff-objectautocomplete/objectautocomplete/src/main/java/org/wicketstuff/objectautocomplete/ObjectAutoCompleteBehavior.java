@@ -51,7 +51,7 @@ public class ObjectAutoCompleteBehavior<O> extends AbstractAutoCompleteBehavior 
             ObjectAutoCompleteBehavior.class, "wicketstuff-objectautocomplete.js");
     // Our version of 'wicket-autocomplete.js', with the patch from WICKET-1651
     private static final ResourceReference AUTOCOMPLETE_OBJECTIFIED_JS = new JavascriptResourceReference(
-            ObjectAutoCompleteBehavior.class, "wicket-autocomplete-objectified.js");
+            ObjectAutoCompleteBehavior.class, "wicketstuff-dropdown.js");
 
     // Reference to upstream JS, use this if the required patch has been applied. For now, unused.
     private static final ResourceReference AUTOCOMPLETE_JS = new JavascriptResourceReference(
