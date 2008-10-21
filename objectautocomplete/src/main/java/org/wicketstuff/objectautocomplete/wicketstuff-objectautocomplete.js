@@ -1,82 +1,54 @@
-/*
- * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
- * this work for additional information regarding copyright ownership.
- * The ASF licenses this file to You under the Apache License, Version 2.0
- * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 if (typeof(Wicketstuff) == "undefined") {
 	var Wicketstuff = { };
 }
 
-Wicketstuff.ObjectAutoComplete=function(elementId, objectElementId, callbackUrl, cfg){
+Wicketstuff.ObjectAutoComplete=function(elementId, objectElementId, callbackUrl, cfg) {
 
-    var obj=wicketGet(elementId);
+  return new WicketstuffDropDown(elementId,updateChoices,updateValue,cfg);
 
-    // Saven onkeypress and onkeydown so that we can later use it for cascading
-    var acobjonkeypress = obj.onkeypress;
+  // ===============================================================================
 
-    // Initialize with parent constructor
-    Wicket.AutoComplete.call(this,elementId,callbackUrl,cfg);
+  function updateChoices(dropDown,elementId) {
+    var value = wicketGet(elementId).value;
+    var request = new Wicket.Ajax.Request(
+            callbackUrl + "&q=" + (encodeURIComponent ? encodeURIComponent(value) : escape(value)),
+            doUpdateChoices, false, true, false, "wicket-autocomplete|d");
+    request.get();
 
-    // Remove the autocompletion menu if still present from
-    // a previous call. This is required to properly register
-    // the mouse event handler again (using the new 'mouseactive'
-    // variable which just has been created again)
-    var choiceDiv=document.getElementById(this.getMenuId());
-    if (choiceDiv != null) {
-        choiceDiv.parentNode.parentNode.removeChild(choiceDiv.parentNode);
-    }
+    // Callback method
+    function doUpdateChoices(resp) {
+      // check if the input hasn't been cleared in the meanwhile
+      var input = wicketGet(elementId);
+      if (!cfg.showListOnEmptyInput && (input.value == null || input.value == "")) {
+        dropDown.hideDropDown();
+        return;
+      }
 
-    // Register key listener for proper ESC handling
-    // ... work in progress ...
-//    if(typeof acobjonkeypress=="function") {
-//        var objonkeypress=obj.onkeypress;
-//        obj.onkeydown = function(event) {
-//            if ((acobjonkeypress.bind(obj))(event)) {
-//                return objonkeypress(event);
-//            } else {
-//                return false;
-//            }
-//        }
-//    }
+      dropDown.setSelectablesFromHtml(resp);
 
-
-    // Register key listener for ESC to revert to previous state
-    this.updateValue = function() {
-        var objElement = wicketGet(objectElementId);
-        var textElement = wicketGet(elementId);
-        var selected = this.getSelectedValue();
-        objElement.value = selected['idvalue'];
-        textElement.value = selected['textvalue'];
-    }
-
-    this.getSelectedValue = function() {
-        var element= this.getSelectedElement();
-        var attr = element.attributes['textvalue'];
-        var idAttr = element.attributes['idvalue'];
-        var value;
-        if (attr == undefined) {
-            value = element.innerHTML;
-        } else {
-            value = attr.value;
+      window.setTimeout(function() {
+        var input = wicketGet(elementId);
+        if (!cfg.showListOnEmptyInput && (input.value == null || input.value == "")) {
+          dropDown.hideDropDown();
         }
-        return { 'textvalue': value.replace(/<[^>]+>/g,""), 'idvalue' : idAttr.value };
+      }, 100);
+      Wicket.Ajax.invokePostCallHandlers();
     }
-}
+  }
 
-// Inherit without calling constructor of Wicket.AutoComplete
-//
-var tmpClass = function() {};
-tmpClass.prototype = Wicket.AutoComplete.prototype;
-Wicketstuff.ObjectAutoComplete.prototype = new tmpClass();
+  function updateValue(dropDown,elementId,selectedElement) {
+    var objElement = wicketGet(objectElementId);
+    var textElement = wicketGet(elementId);
+    var selected = dropDown.getSelectedElement();
+    var attr = selected.attributes['textvalue'];
+    var idAttr = selected.attributes['idvalue'];
+    var value;
+    if (attr == undefined) {
+      value = selected.innerHTML;
+    } else {
+      value = attr.value;
+    }
+    objElement.value = idAttr.value;
+    textElement.value = value.replace(/<[^>]+>/g,"");
+  }
+}
