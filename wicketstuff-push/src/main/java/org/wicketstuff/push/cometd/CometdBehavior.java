@@ -8,7 +8,7 @@ import org.apache.wicket.RequestCycle;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.protocol.http.WebRequestCycle;
 import org.wicketstuff.push.IChannelListener;
-import org.wicketstuff.push.cometd.dojo.DojoPackagedTextTemplate;
+import org.wicketstuff.push.dojo.DojoPackagedTextTemplate;
 
 public class CometdBehavior extends CometdAbstractBehavior {
 	private static final long serialVersionUID = 1L;

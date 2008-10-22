@@ -12,7 +12,7 @@ import org.apache.wicket.markup.parser.XmlPullParser;
 import org.apache.wicket.markup.parser.XmlTag;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.mortbay.cometd.continuation.ContinuationCometdServlet;
-import org.wicketstuff.push.cometd.dojo.AbstractRequireDojoBehavior;
+import org.wicketstuff.push.dojo.AbstractRequireDojoBehavior;
 
 /**
  * This behavior will be asked by client side when it will receive a cometd
@@ -117,8 +117,7 @@ public abstract class CometdAbstractBehavior extends
    * @return javascript to unsuscribe to the channel
    */
   public final CharSequence getUnsuscribeScript() {
-    return "dojox.cometd.unsubscribe('/" + getChannelId()
-           + "');\n";
+    return "dojox.cometd.unsubscribe('/" + getChannelId() + "');\n";
   }
 
   /**

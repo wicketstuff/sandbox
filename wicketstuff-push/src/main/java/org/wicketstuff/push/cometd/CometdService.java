@@ -1,14 +1,24 @@
 package org.wicketstuff.push.cometd;
 
+import java.util.Collections;
+import java.util.EventListener;
+import java.util.Map;
+import java.util.WeakHashMap;
+
+import org.apache.wicket.Application;
 import org.apache.wicket.Component;
 import org.apache.wicket.protocol.http.WebApplication;
-import org.mortbay.cometd.BayeuxService;
+import org.mortbay.cometd.AbstractBayeux;
+import org.mortbay.cometd.continuation.ContinuationBayeux;
 import org.wicketstuff.push.ChannelEvent;
 import org.wicketstuff.push.IChannelListener;
 import org.wicketstuff.push.IChannelService;
 
 import dojox.cometd.Bayeux;
 import dojox.cometd.Channel;
+import dojox.cometd.Client;
+import dojox.cometd.Message;
+import dojox.cometd.MessageListener;
 import dojox.cometd.RemoveListener;
 
 /**
@@ -26,19 +36,37 @@ import dojox.cometd.RemoveListener;
  * to get the actual page update required by the {@link IChannelListener}.
  *
  * @author Xavier Hanin
- * @author Rodolfo Hasen
+ * @author Rodolfo Hansen
  *
  * @see IChannelService
  */
 public class CometdService implements IChannelService {
 
+  private final class RemovalForwardingListener implements
+      MessageListener {
+
+    public void deliver(final Client fromClient, final Client toClient,
+        final Message msg) {
+      final String channel = (String) msg.get("subscription");
+      if (removalListeners.containsKey(channel)) {
+        fromClient.addListener((EventListener) removalListeners.get(channel));
+      }
+    }
+  }
+
   public static final String BAYEUX_CLIENT_PREFIX = "wicket-push";
 
+  private final Map removalListeners;
+
   private final WebApplication _application;
-  private BayeuxService _bayeuxService;
+  private Bayeux _bayeux;
+  private Client serviceClient;
+  private boolean listeningToConnect;
 
   public CometdService(final WebApplication application) {
 	  _application = application;
+	  removalListeners = Collections.synchronizedMap(new WeakHashMap());
+	  listeningToConnect = false;
   }
 
   public void addChannelListener(final Component component,
@@ -51,9 +79,14 @@ public class CometdService implements IChannelService {
    * @param channel
    * @param listener
    */
-  public void addChannelRemoveListener(final String channel,
+  public void addChannelRemoveListener(final String chnl,
       final RemoveListener listener) {
-    getBayeuxService().getClient().addListener(listener);
+    if (!listeningToConnect) {
+      getBayeux().getChannel(Bayeux.META_SUBSCRIBE, true).subscribe(serviceClient);
+      serviceClient.addListener(new RemovalForwardingListener());
+      listeningToConnect = true;
+    }
+    removalListeners.put("/" + chnl, listener);
   }
 
   /**
@@ -72,18 +105,36 @@ public class CometdService implements IChannelService {
      * call to get the actual page refresh
      */
     event.addData("proxy", "true");
-    final Channel channel = getBayeuxService().getBayeux().getChannel("/" + event.getChannel(), true);
-    channel.publish(getBayeuxService().getClient(), event.getData(), event.getId());
+    final String channelId = "/" + event.getChannel();
+    final Channel channel = getBayeux().getChannel(channelId, true);
+    channel.publish(serviceClient, event.getData(), event.getId());
   }
 
-  private final BayeuxService getBayeuxService() {
-	  if (_bayeuxService == null) {
-	  _bayeuxService = new BayeuxService((Bayeux) _application.getServletContext().getAttribute(
-        Bayeux.DOJOX_COMETD_BAYEUX), BAYEUX_CLIENT_PREFIX) {
+  private final Bayeux getBayeux() {
+	  if (_bayeux == null) {
+	    initBayeux();
+    }
 
-        };
-	  }
-	  return _bayeuxService;
+	  return _bayeux;
+  }
+
+  /** Initializes the Jetty CometD Bayeux Service to be used.
+   */
+  private void initBayeux() {
+    final String cfgType = _application.getConfigurationType();
+    _bayeux = (Bayeux) _application.getServletContext()
+                                .getAttribute(Bayeux.DOJOX_COMETD_BAYEUX);
+
+    if (_bayeux instanceof AbstractBayeux
+        && Application.DEVELOPMENT.equalsIgnoreCase(cfgType)) {
+      ((AbstractBayeux) _bayeux).setLogLevel(2);
+    }
+
+    if (_bayeux instanceof ContinuationBayeux) {
+      ((ContinuationBayeux) _bayeux).setJSONCommented(true);
+    }
+
+    serviceClient = _bayeux.newClient(BAYEUX_CLIENT_PREFIX);
   }
 
 }
