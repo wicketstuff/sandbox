@@ -46,7 +46,7 @@ public abstract class WicketAbstractChat extends ExamplePage {
 
 		final Label chat = new Label("chat");
 		chat.setOutputMarkupId(true);
-		getChannelService().addChannelListener(this, "chat/message", new IChannelListener() {
+		getChannelService().addChannelListener(this, "chat", new IChannelListener() {
 			public void onEvent(final String channel, final Map datas, final IChannelTarget target) {
 				target.appendJavascript("document.getElementById('" + chat.getMarkupId() + "').innerHTML += '<br/>" + datas.get("message") + "'");
 			}
@@ -65,7 +65,7 @@ public abstract class WicketAbstractChat extends ExamplePage {
 							((Message)form.getModelObject()).getUser() + " said " +
 							((Message)form.getModelObject()).getMessage();
 				//send an event to refesh the chat area
-				final ChannelEvent event = new ChannelEvent("chat/message");
+				final ChannelEvent event = new ChannelEvent("chat");
 				event.addData("message", currentChat);
 				getChannelService().publish(event);
 
