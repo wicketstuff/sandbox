@@ -67,6 +67,8 @@ public class TinyMCESettings implements Serializable {
     private Language language;
     private boolean verticalResizing;
     private boolean horizontalResizing;
+    private boolean resizingUseCookie = true;
+    private boolean autoResize;
 
     private Set plugins;
     private List controls;
@@ -75,8 +77,11 @@ public class TinyMCESettings implements Serializable {
     private Boolean convertUrls = null;
     private Boolean removeScriptHost = null;
     private Boolean relativeUrls = null;
+    private String blockFormats = null;
 
     private ResourceReference contentCss = null;
+
+    private String documentBaseUrl;
 
     public TinyMCESettings() {
         this(Theme.simple);
@@ -101,12 +106,36 @@ public class TinyMCESettings implements Serializable {
         return null;
     }
 
+    public String getDocumentBaseUrl() {
+        return documentBaseUrl;
+    }
+
+    public void setDocumentBaseUrl(String documentBaseUrl) {
+        this.documentBaseUrl = documentBaseUrl;
+    }
+
     public ResourceReference getContentCss() {
         return contentCss;
     }
 
     public void setContentCss(ResourceReference contentCss) {
         this.contentCss = contentCss;
+    }
+
+    public boolean isAutoResize() {
+        return autoResize;
+    }
+
+    public void setAutoResize(boolean auto_resize) {
+        this.autoResize = auto_resize;
+    }
+
+    public String getBlockFormats() {
+        return blockFormats;
+    }
+
+    public void setBlockFormats(String blockFormats) {
+        this.blockFormats = blockFormats;
     }
 
     public void setToolbarLocation(Location toolbarLocation) {
@@ -127,6 +156,14 @@ public class TinyMCESettings implements Serializable {
 
     public void setHorizontalResizing(boolean horizontalResizing) {
         this.horizontalResizing = horizontalResizing;
+    }
+
+    public boolean isResizingUseCookie() {
+        return resizingUseCookie;
+    }
+
+    public void setResizingUseCookie(boolean resizingUseCookie) {
+        this.resizingUseCookie = resizingUseCookie;
     }
 
     /**
@@ -230,9 +267,15 @@ public class TinyMCESettings implements Serializable {
         if (removeScriptHost != null)
             buffer.append(",\n\t").append("remove_script_host : ").append(removeScriptHost);
 
+        if (autoResize)
+            buffer.append(",\n\tauto_resize : true");
+
         if (contentCss != null)
             buffer.append(",\n\t").append("content_css : \"").append(RequestCycle.get().urlFor(contentCss))
                     .append("\"");
+
+        if (documentBaseUrl != null)
+            buffer.append(",\n\t").append("document_base_url : \"").append(documentBaseUrl).append("\"");
 
         if (Theme.advanced.equals(theme))
             appendAdvancedSettings(buffer);
@@ -333,6 +376,10 @@ public class TinyMCESettings implements Serializable {
         // resizing
         addVerticalResizing(buffer);
         addHorizontalResizing(buffer);
+        addResizingUseCookie(buffer);
+
+        // other
+        addBlockFormats(buffer);
     }
 
     void addPlugins(StringBuffer buffer) {
@@ -469,6 +516,16 @@ public class TinyMCESettings implements Serializable {
     void addVerticalResizing(StringBuffer buffer) {
         String value = verticalResizing ? Boolean.TRUE.toString() : Boolean.FALSE.toString();
         buffer.append(",\n\t").append("theme_advanced_resizing : ").append(value);
+    }
+
+    void addResizingUseCookie(StringBuffer buffer) {
+        if (!resizingUseCookie && (horizontalResizing || verticalResizing))
+            buffer.append(",\n\ttheme_advanced_resizing_use_cookie : false");
+    }
+
+    void addBlockFormats(StringBuffer buffer) {
+        if (blockFormats != null)
+            buffer.append(",\n\ttheme_advanced_blockformats : \"").append(blockFormats).append("\"");
     }
 
     void addToolbarAlign(StringBuffer buffer) {
