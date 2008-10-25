@@ -36,25 +36,11 @@
                 <legend>Test date picker form</legend>
                 <ol>
                     <li>
-                        <label for="date1">Date 1 (use page behavior):</label>
-                        <input type="text" wicket:id="date01"/>
-                    </li>
-                    <li>
-                        
-                        <label for="date2">Date 2 (use component behavior):</label>
-                        <input type="text" wicket:id="date02"/>
-                    </li>
-                    <li>
-                        <label for="test-select">Test select:</label>
-                        <select name="test-select" id="test-select" style="width: 170px">
-                            <option value="1">Test SELECT </option>
-                            
-                            <option value="2">Doesn't shine through</option>
-                            <option value="3">Even in IE</option>
-                            <option value="4">Yay!</option>
-                        </select>
+                        <label for="date1">Date 2 (a behavior with options: 'clickInput':'true', 'allowDateInPast':'true'):</label>
+                        <input type="text" id="date1" wicket:id="date01"/>
                     </li>
                 </ol>
+				<br /><br />
             </fieldset>
             <input type="submit"/>
             

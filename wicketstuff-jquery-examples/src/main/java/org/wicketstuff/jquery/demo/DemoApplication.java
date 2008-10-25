@@ -17,10 +17,12 @@
 package org.wicketstuff.jquery.demo;
 
 import java.util.Date;
+
+import org.apache.wicket.Application;
 import org.apache.wicket.IConverterLocator;
-import org.apache.wicket.datetime.PatternDateConverter;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.util.convert.ConverterLocator;
+import org.apache.wicket.util.convert.converters.DateConverter;
 import org.apache.wicket.util.lang.PackageName;
 import org.wicketstuff.jquery.demo.dnd.Page4ClientSideOnly;
 
@@ -42,8 +44,13 @@ public class DemoApplication extends WebApplication {
     @Override
     protected IConverterLocator newConverterLocator() {
         ConverterLocator back = new ConverterLocator();
-        back.set(Date.class, new PatternDateConverter("yyyy-MM-dd", true));
+        back.set(Date.class, new DateConverter());
         return back;
+    }
+    
+    @Override
+    public String getConfigurationType() {
+    	return Application.DEPLOYMENT;
     }
 
 }
