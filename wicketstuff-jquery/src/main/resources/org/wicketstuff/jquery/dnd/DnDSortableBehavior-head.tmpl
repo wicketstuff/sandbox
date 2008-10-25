@@ -17,7 +17,7 @@ ${handleSelector}{
 	  $('${containerSelector}').Sortable({
 		${options}
 		onStart : function(){
-		  DnDSortableBehavior.start(this,'${containerSelector}', '.dndItem');
+		  DnDSortableBehavior.start(this,'${containerSelector}', '${itemSelector}');
 		  $.iAutoscroller.start(this, document.getElementsByTagName('body'));
 			  },
 		onStop : function(){
@@ -35,6 +35,6 @@ ${handleSelector}{
 	  $('${containerSelector}').SortableDestroy();
 	};
 	if (${startOnLoad}) {
-	  ${dndHandlerStart};
+	  ${dndHandlerStart}();
 	}
 </script>
