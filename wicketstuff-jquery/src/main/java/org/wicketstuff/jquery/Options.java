@@ -83,25 +83,33 @@ public class Options implements Serializable {
         }
         for (Map.Entry<String, Object> entry : options_.entrySet()) {
             str.append("\t'")
-                    .append(entry.getKey())
-                    .append("':")
-                    ;
-            if (entry.getValue() instanceof String) {
-                str.append('\'')
-                        .append(entry.getValue())
-                        .append('\'')
-                        ;
-                /*} else if (entry.getValue() instanceof Boolean) {
-                str.append(((Boolean)entry.getValue())?1:0);*/
-            } else {
-                str.append(entry.getValue());
-            }
-            str.append(",\n");
+                    .append(escape(entry.getKey()))
+                    .append("':'")
+                    .append(escape(entry.getValue().toString()))
+                    .append("',\n");
         }
         if (!asFragment) {
             str.setLength(str.length() - 2);
             str.append("\n}\n");
         }
         return str;
+    }
+    
+    /**
+     * Escapes any occurrence of '
+     * @param input
+     * @return escaped input
+     */
+    private String escape(final String input) {
+    	final StringBuilder output = new StringBuilder();
+    	
+    	for (final char ch : input.toCharArray()) {
+    		if (ch == '\'') {
+    			output.append('\\');
+    		}
+    		output.append(ch);
+    	}
+    	
+    	return output.toString();
     }
 }
