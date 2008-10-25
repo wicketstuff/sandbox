@@ -16,7 +16,10 @@
  */
 package org.wicketstuff.jquery.datepicker;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+
 import org.wicketstuff.jquery.Options;
 
 /**
@@ -26,15 +29,16 @@ import org.wicketstuff.jquery.Options;
  */
 public class DatePickerOptions extends Options{
     
-    /*public static enum ShowHeader {NONE, SHORT, LONG,};*/
+	private static final long serialVersionUID = 1L;
+
+	/*public static enum ShowHeader {NONE, SHORT, LONG,};*/
     public static enum VPos {TOP, BOTTOM};
     public static enum HPos {LEFT, RIGHT}
 
-    /* Set true to override the javascript loalized messages shown in the datepicker by
+    /* Set true to override the javascript localized messages shown in the datepicker by
      * dynamically getting the fieldnames from a SimpleDateFormat object set to the current locale
      * of the component.
      */
-	@SuppressWarnings("unused")
 	public boolean dynamicLocalizedMessages = false;
                         
     /** month (Number): The month to render when the date picker is opened (NOTE that months are zero based). Default is today's month.*/
@@ -48,12 +52,12 @@ public class DatePickerOptions extends Options{
         return this;
     }
     /** startDate (String): The first date date can be selected. */
-    public DatePickerOptions startDate(Date v) {
+    public DatePickerOptions startDate(String v) {
         set("startDate", v);
         return this;
     }
     /** endDate (String): The last date that can be selected. */
-    public DatePickerOptions endDate(Date v) {
+    public DatePickerOptions endDate(String v) {
         set("endDate", v);
         return this;
     }
@@ -114,11 +118,18 @@ public class DatePickerOptions extends Options{
     }
     
     /** allowing (or not) selection of Date in paste (default : false) */
-    public DatePickerOptions allowDateInPast(boolean v) {
-        if (v) {
-            return startDate(new Date(0));
+    public DatePickerOptions allowDateInPast(final boolean allowInPast, final String datePattern) {
+        
+    	final Date startDate;
+    	if (allowInPast) {
+    		startDate = new Date(0);
+        } else {
+        	startDate = new Date();
         }
-        return startDate(new Date());
+    	
+    	final DateFormat dateFormat = new SimpleDateFormat(datePattern);
+    	
+        return startDate(dateFormat.format(startDate));
     }
     
     public DatePickerOptions dynamicLocalizedMessages(boolean v) {
