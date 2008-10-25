@@ -98,12 +98,6 @@
 			<version>${wicket.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.apache.wicket</groupId>
-			<artifactId>wicket-datetime</artifactId>
-			<optional>true</optional>
-			<version>${wicket.version}</version>
-		</dependency>
-		<dependency>
 			<groupId>org.wicketstuff</groupId>
 			<artifactId>wicketstuff-misc</artifactId>
 			<version>0.1</version>
