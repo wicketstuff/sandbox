@@ -171,6 +171,8 @@ public class DatePickerBehavior extends JQueryBehavior {
             }
             
             component.add(getDatePickerStyle());
+        } else {
+        	throw new RuntimeException("DatePicketBehavior is intended to be attached to a TextField component!");
         }
     }
 
