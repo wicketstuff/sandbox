@@ -8,7 +8,7 @@ import org.wicketstuff.jquery.JQueryBehavior;
 /**
  * @author martin-g
  */
-class HistoryIFramePage extends WebPage implements IHeaderContributor {
+public class HistoryIFramePage extends WebPage implements IHeaderContributor {
 
 	public HistoryIFramePage() {
 	}
