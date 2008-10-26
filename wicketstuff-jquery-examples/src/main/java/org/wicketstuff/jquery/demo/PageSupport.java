@@ -21,6 +21,7 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.wicketstuff.jquery.ajaxbackbutton.Page4AjaxBackButton;
 import org.wicketstuff.jquery.demo.dnd.Page4ClientSideOnly;
 import org.wicketstuff.jquery.demo.dnd.Page4MultiGroup;
 import org.wicketstuff.jquery.demo.dnd.Page4OneGroup;
@@ -38,6 +39,7 @@ public class PageSupport extends WebPage {
         add(new BookmarkablePageLink("tabs", Page4Tabs.class));
         add(new BookmarkablePageLink("datePicker", Page4DatePicker.class));
         add(new BookmarkablePageLink("jgrowl", Page4JGrowl.class));
+        add(new BookmarkablePageLink("ajaxbackbutton", Page4AjaxBackButton.class));
 
         add(new FeedbackPanel("feedback").setOutputMarkupId(true));
     }
