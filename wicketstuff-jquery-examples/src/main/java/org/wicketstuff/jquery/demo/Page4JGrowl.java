@@ -25,7 +25,7 @@ public class Page4JGrowl extends PageSupport {
 		infoOptions.set("glue", "after");
 		feedback.setInfoMessageOptions(infoOptions);
 
-		final AjaxLink link = new AjaxLink("showButton") {
+		final AjaxLink<Void> link = new AjaxLink<Void>("showButton") {
 
 			@Override
 			public void onClick(final AjaxRequestTarget target) {
