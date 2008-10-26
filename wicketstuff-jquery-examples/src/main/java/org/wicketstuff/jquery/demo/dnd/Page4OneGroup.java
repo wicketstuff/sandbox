@@ -47,8 +47,8 @@ public class Page4OneGroup extends PageSupport {
             @Override
             public boolean onDnD(AjaxRequestTarget target, MarkupContainer srcContainer, int srcPos, MarkupContainer destContainer, int destPos) {
                 // apply modification on model
-                MyGroup srcGroup = (MyGroup) srcContainer.getModelObject();
-                MyGroup destGroup = (MyGroup) destContainer.getModelObject();
+                MyGroup srcGroup = (MyGroup) srcContainer.getDefaultModelObject();
+                MyGroup destGroup = (MyGroup) destContainer.getDefaultModelObject();
                 MyItem myItem = srcGroup.items.remove(srcPos);
                 destGroup.items.add(destPos, myItem);
 
@@ -71,11 +71,11 @@ public class Page4OneGroup extends PageSupport {
 
             private void updateContainerHeader(AjaxRequestTarget target, MarkupContainer container, MyGroup group) {
                 Label itemCnt = (Label) container.getParent().get("itemCnt");
-                itemCnt.setModelObject(group.items.size());
+                itemCnt.setDefaultModelObject(group.items.size());
                 target.addComponent(itemCnt);
 
                 Label actionCnt = (Label) container.getParent().get("actionCnt");
-                actionCnt.setModelObject(actionCnt_);
+                actionCnt.setDefaultModelObject(actionCnt_);
                 target.addComponent(actionCnt);
             }
         };

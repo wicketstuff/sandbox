@@ -25,6 +25,7 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.RefreshingView;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.wicketstuff.jquery.JQueryBehavior;
 
@@ -107,11 +108,11 @@ public abstract class JQAccordion extends Panel {
 		 * because the script needs to be called each time the component is refreshed using wicket
 		 * ajax support.
 		 */
-		add(new Label("script", new Model(){
+		add(new Label("script", new Model<String>(){
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public Object getObject() {
+			public String getObject() {
 				String options = getOptions().trim();
 				if (options.length() > 0) {
 					options = "header: 'h3', "+options;
@@ -129,17 +130,17 @@ public abstract class JQAccordion extends Panel {
 		return options ;
 	}
 
-	protected RefreshingView newRepeatingView(String id) {
-		return new RefreshingView(id) {
+	protected RefreshingView<String> newRepeatingView(String id) {
+		return new RefreshingView<String>(id) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected Iterator getItemModels() {
+			protected Iterator<IModel<String>> getItemModels() {
 				return JQAccordion.this.getItemModels();
 			}
 			
 			@Override
-			protected void populateItem(Item item) {
+			protected void populateItem(Item<String> item) {
 				JQAccordion.this.populateItem(item);
 			}
 		};
@@ -158,8 +159,8 @@ public abstract class JQAccordion extends Panel {
 	 * 
 	 * @param item the item to populate
 	 */
-	protected abstract void populateItem(Item item);
+	protected abstract void populateItem(Item<String> item);
 
-	protected abstract Iterator getItemModels();
+	protected abstract Iterator<IModel<String>> getItemModels();
 
 }
