@@ -34,8 +34,7 @@ public class HomePage extends WicketExamplePage
 
 	public HomePage()
 	{
-		final GMap2 map = new GMap2("map", GMapExampleApplication.get()
-				.getGoogleMapsAPIkey());
+		final GMap2 map = new GMap2("map", GMapExampleApplication.get().getGoogleMapsAPIkey());
 		map.addControl(GControl.GLargeMapControl);
 		add(map);
 		moveEndBehavior = new MyMoveEndListener();
@@ -55,18 +54,17 @@ public class HomePage extends WicketExamplePage
 		zoomLabel.setOutputMarkupId(true);
 		add(zoomLabel);
 
-		boundsLabel = new MultiLineLabel("bounds", new PropertyModel<GLatLngBounds>(
-				map, "bounds"))
+		boundsLabel = new MultiLineLabel("bounds", new PropertyModel<GLatLngBounds>(map, "bounds"))
 		{
 			private static final long serialVersionUID = 1L;
 
 			@SuppressWarnings("unchecked")
 			@Override
-			public <X> IConverter<X> getConverter(Class<X> type)
+			public IConverter getConverter(Class type)
 			{
 				if (GLatLngBounds.class.isAssignableFrom(type))
 				{
-					return (IConverter<X>)new IConverter<GLatLngBounds>()
+					return new IConverter()
 					{
 						private static final long serialVersionUID = 1L;
 
@@ -75,9 +73,9 @@ public class HomePage extends WicketExamplePage
 							throw new UnsupportedOperationException();
 						}
 
-						public String convertToString(GLatLngBounds value, Locale locale)
+						public String convertToString(Object value, Locale locale)
 						{
-							GLatLngBounds bounds = value;
+							GLatLngBounds bounds = (GLatLngBounds)value;
 
 							StringBuffer buffer = new StringBuffer();
 							buffer.append("NE (");
