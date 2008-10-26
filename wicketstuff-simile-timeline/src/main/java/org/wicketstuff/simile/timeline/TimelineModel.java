@@ -1,9 +1,16 @@
 package org.wicketstuff.simile.timeline;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TimelineModel {
+public class TimelineModel implements Serializable {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	private List<TimelineEventModel> events = new ArrayList<TimelineEventModel>();
 
 	/* (non-Javadoc)
