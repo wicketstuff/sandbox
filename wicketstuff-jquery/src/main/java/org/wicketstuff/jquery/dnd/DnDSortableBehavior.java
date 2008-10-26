@@ -16,6 +16,9 @@
  */
 package org.wicketstuff.jquery.dnd;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.Request;
@@ -29,10 +32,6 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.util.template.PackagedTextTemplate;
 import org.wicketstuff.jquery.JQueryBehavior;
 import org.wicketstuff.jquery.Options;
-
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 // TODO: disable callback to serverside if clientsideonly
 @SuppressWarnings("serial")
@@ -101,7 +100,7 @@ public class DnDSortableBehavior extends JQueryBehavior implements IBehaviorList
             //only for CSS
             handleSelector = itemSelector;
         }
-        HashMap<String, CharSequence> params = new HashMap<String, CharSequence>();
+        HashMap<String, Object> params = new HashMap<String, Object>();
         params.put("containerSelector", "." + getContainerCSSClass());
         params.put("helperclass", options_.get("helperclass", "").toString());
         params.put("handleSelector", handleSelector);
@@ -236,7 +235,7 @@ public class DnDSortableBehavior extends JQueryBehavior implements IBehaviorList
      * @return this
      */
     protected DnDSortableBehavior registerContainer(MarkupContainer v) {
-        v.add(new AttributeAppender("class", new Model((Serializable) getContainerCSSClass()), " "));
+        v.add(new AttributeAppender("class", new Model<String>(String.valueOf(getContainerCSSClass())), " "));
         v.setOutputMarkupId(true);
         containers_.add(v);
         return this;
@@ -250,7 +249,7 @@ public class DnDSortableBehavior extends JQueryBehavior implements IBehaviorList
      * @return this
      */
     protected DnDSortableBehavior registerItem(Component v) {
-        v.add(new AttributeAppender("class", new Model(String.valueOf(options_.get("accept"))), " "));
+        v.add(new AttributeAppender("class", new Model<String>(String.valueOf(options_.get("accept"))), " "));
         v.setOutputMarkupId(true);
         return this;
     }

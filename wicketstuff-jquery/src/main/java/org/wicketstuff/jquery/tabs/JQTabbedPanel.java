@@ -21,6 +21,7 @@ import java.util.List;
 
 import org.apache.wicket.behavior.HeaderContributor;
 import org.apache.wicket.extensions.markup.html.tabs.ITab;
+import org.apache.wicket.extensions.markup.html.tabs.TabbedPanel;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -105,11 +106,11 @@ public class JQTabbedPanel extends Panel {
 		 * because the script needs to be called each time the component is refreshed using wicket
 		 * ajax support.
 		 */
-		add(new Label("script", new Model(){
+		add(new Label("script", new Model<String>(){
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public Object getObject() {
+			public String getObject() {
 				return "$('#"+parent.getMarkupId()+"').tabs("+getTabsOptions()+");";
 			}
 		}).setEscapeModelStrings(false));

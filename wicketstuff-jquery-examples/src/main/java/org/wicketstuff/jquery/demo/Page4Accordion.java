@@ -16,7 +16,6 @@
  */
 package org.wicketstuff.jquery.demo;
 
-import java.io.Serializable;
 import java.util.Iterator;
 
 import org.apache.wicket.markup.html.basic.Label;
@@ -26,28 +25,32 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.wicketstuff.jquery.accordion.JQAccordion;
 
-@SuppressWarnings("serial")
 public class Page4Accordion extends PageSupport {
-    public Page4Accordion() throws Exception {
-        super();
+
+	public Page4Accordion() throws Exception {
+    
+		super();
+		
 		add(new JQAccordion("accordion1") {
+		
 			private static final long serialVersionUID = 1L;
+			
 			@Override
-			protected Iterator getItemModels() {
-				return new ArrayIteratorAdapter(new Object[] {
+			protected Iterator<IModel<String>> getItemModels() {
+				return new ArrayIteratorAdapter<String>(new String[] {
 						"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Phasellus nec leo. Duis ultricies. In id ipsum vitae ante fringilla", 
 						"volutpat. In pharetra. Ut ante. Vivamus tempus, leo a ullamcorper tincidunt, pede ipsum consectetuer nunc, at pellentesque", 
 						"libero felis in metus. Pellentesque sollicitudin neque. Nulla facilisi. Sed hendrerit tempus orci. Aenean a nulla quis risus molestie vehicula."}) {
 					@Override
-					protected IModel model(Object obj) {
-						return new Model((Serializable) obj);
+					protected IModel<String> model(String obj) {
+						return new Model<String>(obj);
 					}
 				};
 			}
 			@Override
-			protected void populateItem(Item item) {
-				item.add(new Label("title", item.getModelObjectAsString().substring(0, 15)+" ..."));
-				item.add(new Label("content", item.getModelObjectAsString()));
+			protected void populateItem(Item<String> item) {
+				item.add(new Label("title", item.getDefaultModelObjectAsString().substring(0, 15)+" ..."));
+				item.add(new Label("content", item.getDefaultModelObjectAsString()));
 			}
 		});
     }

@@ -20,6 +20,7 @@ import java.util.Date;
 
 import org.apache.wicket.Application;
 import org.apache.wicket.IConverterLocator;
+import org.apache.wicket.Page;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.util.convert.ConverterLocator;
 import org.apache.wicket.util.convert.converters.DateConverter;
@@ -37,7 +38,7 @@ public class DemoApplication extends WebApplication {
     }
 
     @Override
-    public Class<?> getHomePage() {
+    public Class<? extends Page> getHomePage() {
         return Page4ClientSideOnly.class;
     }
 

@@ -35,7 +35,7 @@ public class Page4SimpleListTest {
         WebMarkupContainer webList = (WebMarkupContainer) page.get("myItemList");
         WebMarkupContainer list = (WebMarkupContainer) webList.get("myItem");
         ArrayList<ListItem> items = new ArrayList<ListItem>();
-        for (Iterator<ListItem> it = list.iterator(); it.hasNext();) {
+        for (Iterator<ListItem> it = (Iterator<ListItem>) list.iterator(); it.hasNext();) {
             items.add(it.next());
         }
 
