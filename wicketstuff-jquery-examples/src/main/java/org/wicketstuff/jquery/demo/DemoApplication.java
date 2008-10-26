@@ -25,6 +25,7 @@ import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.util.convert.ConverterLocator;
 import org.apache.wicket.util.convert.converters.DateConverter;
 import org.apache.wicket.util.lang.PackageName;
+import org.wicketstuff.jquery.ajaxbackbutton.Page4AjaxBackButton;
 import org.wicketstuff.jquery.demo.dnd.Page4ClientSideOnly;
 
 public class DemoApplication extends WebApplication {
@@ -33,6 +34,7 @@ public class DemoApplication extends WebApplication {
     protected void init() {
         getMarkupSettings().setStripWicketTags(true);
         mount("/samples", PackageName.forClass(DemoApplication.class));
+        mount("/backbutton", PackageName.forClass(Page4AjaxBackButton.class));
         mount("/samples/dnd", PackageName.forClass(Page4ClientSideOnly.class));
         super.init();
     }
