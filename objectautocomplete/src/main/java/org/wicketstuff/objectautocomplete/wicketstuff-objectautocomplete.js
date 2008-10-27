@@ -4,7 +4,7 @@ if (typeof(Wicketstuff) == "undefined") {
 
 Wicketstuff.ObjectAutoComplete=function(elementId, objectElementId, callbackUrl, cfg) {
 
-  return new WicketstuffDropDown(elementId,updateChoices,updateValue,cfg);
+  return new Wicketstuff.DropDownList(elementId,updateChoices,updateValue,cfg);
 
   // ===============================================================================
 

@@ -44,6 +44,7 @@ public class ComplexChoicesExamplePage extends BaseExamplePage<Car,Integer> {
         return CarRepository.allCars();
     }
 
+    @Override
     protected void initBuilder(ObjectAutoCompleteBuilder<Car, Integer> pBuilder) {
         super.initBuilder(pBuilder);
         pBuilder.autoCompleteResponseRenderer(getAutoCompleteResponseRenderer());
