@@ -51,7 +51,7 @@ public class ObjectAutoCompleteBehavior<O> extends AbstractAutoCompleteBehavior 
             ObjectAutoCompleteBehavior.class, "wicketstuff-objectautocomplete.js");
     // Our version of 'wicket-autocomplete.js', with the patch from WICKET-1651
     private static final ResourceReference AUTOCOMPLETE_OBJECTIFIED_JS = new JavascriptResourceReference(
-            ObjectAutoCompleteBehavior.class, "wicketstuff-dropdown.js");
+            ObjectAutoCompleteBehavior.class, "wicketstuff-dropdown-list.js");
 
     // Reference to upstream JS, use this if the required patch has been applied. For now, unused.
     private static final ResourceReference AUTOCOMPLETE_JS = new JavascriptResourceReference(
@@ -67,8 +67,17 @@ public class ObjectAutoCompleteBehavior<O> extends AbstractAutoCompleteBehavior 
     private IAutoCompleteRenderer<O> renderer;
     private ObjectAutoCompleteResponseRenderer<O> responseRenderer;
 
+    // =====================================================================================================
+    // Specific configuration options:
+
     // tag name which indicates the possible choices (typically thhis is a "li")
     private String choiceTagName;
+
+    // alignment of menu
+    private ObjectAutoCompleteBuilder.Alignment alignment;
+
+    // width of drop down
+    private long width = 0;
 
 
     <I extends Serializable> ObjectAutoCompleteBehavior(Component pObjectElement,ObjectAutoCompleteBuilder<O,I> pBuilder) {
@@ -78,6 +87,9 @@ public class ObjectAutoCompleteBehavior<O> extends AbstractAutoCompleteBehavior 
                         .setPreselect(pBuilder.preselect)
                         .setShowListOnEmptyInput(pBuilder.showListOnEmptyInput);
         choiceTagName = pBuilder.choiceTagName;
+        width = pBuilder.width;
+        alignment = pBuilder.alignement;
+
         objectElement = pObjectElement;
         responseRenderer = pBuilder.autoCompleteResponseRenderer;
         cancelListener = pBuilder.cancelListener;
@@ -212,10 +224,18 @@ public class ObjectAutoCompleteBehavior<O> extends AbstractAutoCompleteBehavior 
     // Create settings
     private CharSequence getSettings() {
         StringBuilder builder = new StringBuilder(constructSettingsJS());
-        if (choiceTagName != null) {
+        if (choiceTagName != null || alignment != null || width != 0) {
             // remove trailing "}"
             builder.setLength(builder.length()-1);
-            builder.append(",choiceTagName: '").append(choiceTagName.toUpperCase()).append("'");
+            if (choiceTagName != null) {
+                builder.append(",choiceTagName: '").append(choiceTagName.toUpperCase()).append("'");
+            }
+            if (alignment != null) {
+                builder.append(",align: '").append(alignment == ObjectAutoCompleteBuilder.Alignment.LEFT ? "left" : "right").append("'");
+            }
+            if (width != 0) {
+                builder.append(",width: ").append(width);
+            }
             builder.append("}");
         }
         return builder;

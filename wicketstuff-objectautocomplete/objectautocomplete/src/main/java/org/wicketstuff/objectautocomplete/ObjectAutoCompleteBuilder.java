@@ -86,6 +86,13 @@ public class ObjectAutoCompleteBuilder<O,I extends Serializable> {
     // Tag name which indicates the possible choices, typically "LI"
     String choiceTagName;
 
+    // Width (in px) for the drop down element
+    int width;
+
+    // Alignment for the drop down panel
+    enum Alignment { LEFT, RIGHT };
+    Alignment alignement;
+
     public ObjectAutoCompleteBuilder(AutoCompletionChoicesProvider<O> pChoicesProvider) {
         this.choicesProvider = pChoicesProvider;
         cancelListener = null;
@@ -104,6 +111,8 @@ public class ObjectAutoCompleteBuilder<O,I extends Serializable> {
         idProperty = "id";
         idType = null;
         choiceTagName = "LI";
+        alignement = Alignment.LEFT;
+        width = 0;
     }
 
     // =======================================================================================================
@@ -211,6 +220,23 @@ public class ObjectAutoCompleteBuilder<O,I extends Serializable> {
         this.choiceTagName = pTagName;
         return this;
     }
+
+    public ObjectAutoCompleteBuilder<O,I> alignLeft() {
+        this.alignement = Alignment.LEFT;
+        return this;
+    }
+
+    public ObjectAutoCompleteBuilder<O,I> alignRight() {
+        this.alignement = Alignment.RIGHT;
+        return this;
+    }
+
+    public ObjectAutoCompleteBuilder<O,I> width(int pWidth) {
+        this.width = pWidth;
+        return this;
+    }
+
+
 
 
     // ==========================================================================================================
