@@ -23,7 +23,7 @@
 	</issueManagement>  
 	<ciManagement>
 		<system>bamboo</system>
-		<url>http://wicketstuff.org/bamboo</url>
+		<url>http://wicketstuff.org/teamcity</url>
 	</ciManagement>
 	<organization>
 		<name>Wicket Stuff</name>
@@ -392,13 +392,13 @@
 	<distributionManagement>
 		<snapshotRepository>
 			<id>repo</id>
-			<name>Local Bamboo/Tomcat repository</name>
+			<name>Local TeamCity/Tomcat repository</name>
 			<url>file:/home/wicket/tomcat/webapps/maven/repository/</url>
 			<uniqueVersion>false</uniqueVersion>
 		</snapshotRepository>
 		<repository>
 			<id>repo</id>
-			<name>Local Bamboo/Tomcat repository</name>
+			<name>Local TeamCity/Tomcat repository</name>
 			<url>file:/home/wicket/tomcat/webapps/maven/repository/</url>
 		</repository>
 	</distributionManagement>
