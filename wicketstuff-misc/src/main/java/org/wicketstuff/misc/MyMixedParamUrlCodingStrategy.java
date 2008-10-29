@@ -41,7 +41,7 @@ public class MyMixedParamUrlCodingStrategy extends MixedParamUrlCodingStrategy {
     @Override
     public ValueMap decodeParameters(String urlFragment, Map urlParameters) {
         ValueMap back = super.decodeParameters(urlFragment, urlParameters);
-        for (Object key : back.keySet()) {
+        for (String key : back.keySet()) {
             back.put(key, urlDecode(back.getString((String)key)));
         }
         return back;
