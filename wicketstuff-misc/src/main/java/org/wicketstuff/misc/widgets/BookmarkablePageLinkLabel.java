@@ -19,18 +19,19 @@ package org.wicketstuff.misc.widgets;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.MarkupStream;
+import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 
 @SuppressWarnings("serial")
 public class BookmarkablePageLinkLabel extends BookmarkablePageLink {
     private String label_;
 
-    public BookmarkablePageLinkLabel(String id, Class<?> pageClass, String label) {
+    public BookmarkablePageLinkLabel(String id, Class<? extends WebPage> pageClass, String label) {
         super(id, pageClass);
         label_ = label;
     }
 
-    public BookmarkablePageLinkLabel(String id, Class<?> pageClass, PageParameters pp, String label) {
+    public BookmarkablePageLinkLabel(String id, Class<? extends WebPage> pageClass, PageParameters pp, String label) {
         super(id, pageClass, pp);
         label_ = label;
     }
