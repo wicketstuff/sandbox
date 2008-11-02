@@ -27,6 +27,7 @@ import org.apache.wicket.util.convert.converters.DateConverter;
 import org.apache.wicket.util.lang.PackageName;
 import org.wicketstuff.jquery.ajaxbackbutton.Page4AjaxBackButton;
 import org.wicketstuff.jquery.demo.dnd.Page4ClientSideOnly;
+import org.wicketstuff.jquery.demo.ui.Page4Slider;
 
 public class DemoApplication extends WebApplication {
 
@@ -36,7 +37,12 @@ public class DemoApplication extends WebApplication {
         mount("/samples", PackageName.forClass(DemoApplication.class));
         mount("/backbutton", PackageName.forClass(Page4AjaxBackButton.class));
         mount("/samples/dnd", PackageName.forClass(Page4ClientSideOnly.class));
+        mount("/ui", PackageName.forClass(Page4Slider.class));
         super.init();
+        
+//        if (Application.DEVELOPMENT.equals(getConfigurationType())) {
+//        	getDebugSettings().setOutputMarkupContainerClassName(true);
+//        }
     }
 
     @Override
@@ -54,6 +60,7 @@ public class DemoApplication extends WebApplication {
     @Override
     public String getConfigurationType() {
     	return Application.DEPLOYMENT;
+//    	return Application.DEVELOPMENT;
     }
 
 }
