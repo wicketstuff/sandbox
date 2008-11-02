@@ -26,6 +26,7 @@ import org.wicketstuff.jquery.demo.dnd.Page4ClientSideOnly;
 import org.wicketstuff.jquery.demo.dnd.Page4MultiGroup;
 import org.wicketstuff.jquery.demo.dnd.Page4OneGroup;
 import org.wicketstuff.jquery.demo.dnd.Page4SimpleList;
+import org.wicketstuff.jquery.demo.ui.Page4Slider;
 
 public class PageSupport extends WebPage {
     private transient Logger logger_;
@@ -40,6 +41,7 @@ public class PageSupport extends WebPage {
         add(new BookmarkablePageLink("datePicker", Page4DatePicker.class));
         add(new BookmarkablePageLink("jgrowl", Page4JGrowl.class));
         add(new BookmarkablePageLink("ajaxbackbutton", Page4AjaxBackButton.class));
+        add(new BookmarkablePageLink("uislider", Page4Slider.class));
 
         add(new FeedbackPanel("feedback").setOutputMarkupId(true));
     }

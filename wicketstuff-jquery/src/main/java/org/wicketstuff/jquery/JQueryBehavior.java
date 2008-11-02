@@ -84,8 +84,8 @@ public class JQueryBehavior extends AbstractDefaultAjaxBehavior {
             }
             CharSequence script = getOnReadyScript();
             if ((script != null) && (script.length() > 0)) {
-                StringBuilder builder = new StringBuilder(script.length() + 61);
-                builder.append("<script type=\"text/javascript\">\n$(function(){\n");
+                StringBuilder builder = new StringBuilder();
+                builder.append("<script type=\"text/javascript\">\n$(document).ready(function(){\n");
                 builder.append(script);
                 builder.append("\n});</script>");
                 response.renderString(builder.toString());
