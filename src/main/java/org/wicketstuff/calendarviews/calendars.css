@@ -17,7 +17,9 @@
 
 .LargeViewCalendar TD {
 	vertical-align: top;
-}.LargeViewCalendar TD H5 {
+}
+
+.LargeViewCalendar TD H5 {
 	margin: 0em;
 }
 .LargeViewCalendar TD OL {
