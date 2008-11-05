@@ -301,7 +301,7 @@
 			<url>
 				file:/home/wicket/tomcat/webapps/maven/repository/
 			</url>
-			<uniqueVersion>false</uniqueVersion>
+			<uniqueVersion>true</uniqueVersion>
 		</snapshotRepository>
 		<repository>
 			<id>repo</id>
