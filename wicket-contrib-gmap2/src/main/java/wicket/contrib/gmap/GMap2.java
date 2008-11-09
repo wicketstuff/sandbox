@@ -18,7 +18,6 @@ package wicket.contrib.gmap;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -175,11 +174,11 @@ public class GMap2 extends Panel implements GOverlayContainer
 	{
 		super.onRender(markupStream);
 		if (Application.DEVELOPMENT.equalsIgnoreCase(Application.get().getConfigurationType())
-				|| !Application.get().getMarkupSettings().getStripWicketTags())
+				&& !Application.get().getMarkupSettings().getStripWicketTags())
 		{
-			log.warn("Application is in DEVELOPMENT mode,"
-					+ " Firefox 3.0 will not render the GMap." + " Change to DEPLOYMENT mode."
-					+ " See:"
+			log.warn("Application is in DEVELOPMENT mode && Wicket tags are not stripped,"
+					+ " Firefox 3.0 will not render the GMap."
+					+ " Change to DEPLOYMENT mode  || turn on Wicket tags stripping." + " See:"
 					+ " http://www.nabble.com/Gmap2-problem-with-Firefox-3.0-to18137475.html.");
 		}
 	}
