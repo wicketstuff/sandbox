@@ -16,6 +16,18 @@
 		framework that is as simple to use as Wicket's server side validation and will
 		automatically handle both types of validation seamlessly.
 	</description>
+	
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<scm>
+		<connection>https://wicket-stuff.svn.sourceforge.net/svnroot/wicket-stuff/trunk/wicketstuff-client-and-server-validation</connection>
+	</scm>
 
 	<dependencies>
 		<dependency>
