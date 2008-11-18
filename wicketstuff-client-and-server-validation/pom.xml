@@ -8,7 +8,7 @@
 	<groupId>org.wicketstuff</groupId>
 	<artifactId>wicketstuff-client-and-server-validation</artifactId>
 	<packaging>jar</packaging>
-	<version>1.4-SNAPSHOT</version>
+	<version>0.5-SNAPSHOT</version>
 
 	<name>WicketStuff Client and Server Validation</name>
 	<description>
@@ -26,7 +26,7 @@
 	</licenses>
 
 	<scm>
-		<connection>https://wicket-stuff.svn.sourceforge.net/svnroot/wicket-stuff/trunk/wicketstuff-client-and-server-validation</connection>
+		<connection>scm:svn:https://wicket-stuff.svn.sourceforge.net/svnroot/wicket-stuff/trunk/wicketstuff-client-and-server-validation</connection>
 	</scm>
 
 	<dependencies>
