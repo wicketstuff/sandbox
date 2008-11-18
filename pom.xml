@@ -12,7 +12,7 @@
 	</parent>
 
 	<groupId>org.wicketstuff</groupId>
-	<artifactId>calendarviews</artifactId>
+	<artifactId>wicketstuff-calendarviews</artifactId>
 	<packaging>jar</packaging>
 	<version>0.1-SNAPSHOT</version>
 	<name>WicketStuff CalendarViews</name>
