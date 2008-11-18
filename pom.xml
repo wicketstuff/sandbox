@@ -4,15 +4,8 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
-
-	<parent>
-		<groupId>org.wicketstuff</groupId>
-		<artifactId>wicketstuff-parent</artifactId>
-		<version>1.4-SNAPSHOT</version> 
-	</parent>
-
 	<groupId>org.wicketstuff</groupId>
-	<artifactId>wicketstuff-calendarviews</artifactId>
+	<artifactId>calendarviews</artifactId>
 	<packaging>jar</packaging>
 	<version>0.1-SNAPSHOT</version>
 	<name>WicketStuff CalendarViews</name>
@@ -30,6 +23,10 @@
 		</license>
 	</licenses>
 
+	<scm>
+		<connection>scm:svn:https://wicket-stuff.svn.sourceforge.net/svnroot/wicket-stuff/trunk/wicketstuff-calendarviews</connection>
+	</scm>
+	
 	<dependencies>
 		<!--  WICKET DEPENDENCIES -->
 		<dependency>
