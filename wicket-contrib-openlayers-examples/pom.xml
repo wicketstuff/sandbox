@@ -7,8 +7,7 @@
 	<artifactId>openlayers-examples</artifactId>
 	<packaging>war</packaging>
 	<version>1.0-SNAPSHOT</version>
-	<!-- TODO project name  -->
-	<name>quickstart</name>
+	<name>Wicket Contrib Openlayers - Examples</name>
 	<description></description>
 
 	<!-- TODO
