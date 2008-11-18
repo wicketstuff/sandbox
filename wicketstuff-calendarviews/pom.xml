@@ -7,7 +7,7 @@
 	<artifactId>calendarviews</artifactId>
 	<packaging>jar</packaging>
 	<version>0.1-SNAPSHOT</version>
-	<name>calendarviews</name>
+	<name>WicketStuff CalendarViews</name>
 	<description>
 		WicketStuff CalendarViews aims to provide several Wicket components that make it easy
 		to incorporate a calendar into your application.  These calendars can be used to display
@@ -23,7 +23,7 @@
 	</licenses>
 
 	<scm>
-		<connection>https://wicket-stuff.svn.sourceforge.net/svnroot/wicket-stuff/trunk/wicketstuff-calendarviews</connection>
+		<connection>scm:svn:https://wicket-stuff.svn.sourceforge.net/svnroot/wicket-stuff/trunk/wicketstuff-calendarviews</connection>
 	</scm>
 	
 	<dependencies>
