@@ -41,19 +41,16 @@ public class DateMidnightIterator implements Iterator<DateMidnight> {
 		this(start, end, 0, new Period(start, end, PeriodType.days()).getDays() + 1);
 	}
 
-	@Override
 	public boolean hasNext() {
 		return mCurrent.isBefore(mEndDateTime);
 	}
 
-	@Override
 	public DateMidnight next() {
 		DateMidnight dm = new DateMidnight(mCurrent);
 		mCurrent = mCurrent.plusDays(1);
 		return dm;
 	}
 
-	@Override
 	public void remove() {
 		throw new UnsupportedOperationException("this should not be called");
 	}

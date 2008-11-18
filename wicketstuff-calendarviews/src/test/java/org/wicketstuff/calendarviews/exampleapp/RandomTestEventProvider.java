@@ -44,12 +44,10 @@ public class RandomTestEventProvider extends LoadableDetachableModel<Collection<
 	private final Random mRandom = new Random();
 	private final Set<IEvent> mEvents = new HashSet<IEvent>();
 	
-	@Override
 	protected Collection<? extends IEvent> load() {
 		return mEvents;
 	}
 
-	@Override
 	public void initializeWithDateRange(Date start, Date end) {
 		int counter = 1;
 		for (Date current = start; current.before(end); current = new Date(current.getTime() + MILLIS_DAY)) {
