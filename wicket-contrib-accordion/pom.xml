@@ -41,6 +41,9 @@
 			<email>nino.martinez.wael at gmail.com</email>
 		</developer>
 	</developers>
+	<scm>
+		<connection>scm:svn:https://wicket-stuff.svn.sourceforge.net/svnroot/wicket-stuff/trunk/wicket-contrib-accordian</connection>
+	</scm>
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.wicket</groupId>
