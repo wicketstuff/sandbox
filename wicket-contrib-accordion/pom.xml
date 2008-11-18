@@ -42,7 +42,7 @@
 		</developer>
 	</developers>
 	<scm>
-		<connection>scm:svn:https://wicket-stuff.svn.sourceforge.net/svnroot/wicket-stuff/trunk/wicket-contrib-accordian</connection>
+		<connection>scm:svn:https://wicket-stuff.svn.sourceforge.net/svnroot/wicket-stuff/trunk/wicket-contrib-accordion/</connection>
 	</scm>
 	<dependencies>
 		<dependency>
