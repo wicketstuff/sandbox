@@ -179,7 +179,7 @@
 	</pluginRepositories>
 
 	<properties>
-		<wicket.version>1.4-m3</wicket.version>
+		<wicket.version>1.4-rc1</wicket.version>
 		<jetty.version>6.1.4</jetty.version>
 	</properties>
 
