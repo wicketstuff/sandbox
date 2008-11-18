@@ -32,7 +32,6 @@ public abstract class Comparators {
 	
 	public static final Comparator<IEvent> EVENT_START_DATE_ASC_COMPARATOR = new Comparator<IEvent>() {
 
-		@Override
 		public int compare(IEvent o1, IEvent o2) {
 			if (o1 == o2) {
 				return 0;
