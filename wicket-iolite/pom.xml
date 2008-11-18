@@ -6,6 +6,9 @@
    <packaging>maven-archetype</packaging>
   <name>wicketstuff-iolite</name>
   <version>0.3-SNAPSHOT</version>
+  <scm>
+    <connection>scm:svn:https://wicket-stuff.svn.sourceforge.net/svnroot/wicket-stuff/trunk/wicket-iolite</connection>
+  </scm>
   <build>
     <extensions>
       <extension>

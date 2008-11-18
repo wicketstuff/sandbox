@@ -26,6 +26,10 @@
 		</license>
 	</licenses>
 
+	<scm>
+		<connection>scm:svn:https://wicket-stuff.svn.sourceforge.net/svnroot/wicket-stuff/trunk/wicket-contrib-input-events-example</connection>
+	</scm>
+
 	<dependencies>
 		<!--  WICKET DEPENDENCIES -->
 

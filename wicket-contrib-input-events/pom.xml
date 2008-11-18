@@ -43,6 +43,9 @@
 			<organizationUrl>http://jayway.dk</organizationUrl>
 		</developer>
 	</developers>
+	<scm>
+		<connection>scm:svn:https://wicket-stuff.svn.sourceforge.net/svnroot/wicket-stuff/trunk/wicket-contrib-input-events</connection>
+	</scm>
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.wicket</groupId>
