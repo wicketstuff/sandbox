@@ -2,9 +2,9 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.wicketstuff</groupId>
-	<artifactId>wicketstuff-dojo-1.1-${dojo.profile}</artifactId>
+	<artifactId>wicketstuff-dojo-1.1</artifactId>
 	<packaging>jar</packaging>
-	<version>${wicket.version}-SNAPSHOT</version>
+	<version>${wicket.version}-${dojo.profile}-SNAPSHOT</version>
 	<name>WicketStuff Dojo 1.1</name>
 	<licenses>
 		<license>
