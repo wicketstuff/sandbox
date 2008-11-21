@@ -1,0 +1,99 @@
+package org.wicketstuff.dojo11.push.cometd;
+
+import org.apache.wicket.Component;
+import org.apache.wicket.protocol.http.WebApplication;
+import org.mortbay.cometd.BayeuxService;
+import org.wicketstuff.dojo11.push.ChannelEvent;
+import org.wicketstuff.dojo11.push.IChannelListener;
+import org.wicketstuff.dojo11.push.IChannelService;
+
+import dojox.cometd.Bayeux;
+import dojox.cometd.Channel;
+import dojox.cometd.RemoveListener;
+
+/**
+ * Cometd based implementation of {@link IChannelService}.
+ * <p>
+ * This service is based on cometd client implemented by the dojo toolkit, which must
+ * be embedded in your application.
+ * <p>
+ * This implementation relies on cometd for updating the page, but actually uses regular cometd
+ * events, which, if a channel listener is properly installed on a component of the page using
+ * {@link #addChannelListener(Component, String, IChannelListener)}, will trigger a
+ * wicket ajax call to get the page actually refreshed using regular wicket ajax mechanisms.
+ * <p>
+ * This mean that each time an event is published, a new connection is made to the server
+ * to get the actual page update required by the {@link IChannelListener}.
+ *
+ * @author Xavier Hanin
+ * @author Rodolfo Hasen
+ *
+ * @see IChannelService
+ */
+public class CometdService implements IChannelService {
+
+	/**
+	 * 
+	 */
+	public static final String BAYEUX_CLIENT_PREFIX = "wicket-push";
+
+	private final WebApplication _application;
+	private BayeuxService _bayeuxService;
+
+	/**
+	 * Construct.
+	 * @param application
+	 */
+	public CometdService(final WebApplication application) {
+		_application = application;
+	}
+
+	/**
+	 * @see org.wicketstuff.dojo11.push.IChannelService#addChannelListener(org.apache.wicket.Component, java.lang.String, org.wicketstuff.dojo11.push.IChannelListener)
+	 */
+	public void addChannelListener(final Component component,
+			final String channel, final IChannelListener listener) {
+		component.add(new CometdBehavior(channel, listener));
+	}
+
+
+	/** Cometd Specific method to Listen for client removals
+	 * @param channel
+	 * @param listener
+	 */
+	public void addChannelRemoveListener(final String channel,
+			final RemoveListener listener) {
+		getBayeuxService().getClient().addListener(listener);
+	}
+
+	/**
+	 * Implementation of {@link IChannelService#publish(ChannelEvent)}, which actually sends
+	 * a cometd event to the client with a "proxy" attribute set to "true", which in turn
+	 * triggers a wicket ajax call to get the listener notified and update the page.
+	 *
+	 * @event the event to publish, which will be modify with "proxy" set to "true"
+	 */
+	public void publish(final ChannelEvent event) {
+		/* to avoid using implementation specific events,
+		 * we set the proxy data here.
+		 *
+		 * this property is used by CometdDefaultBehaviorTemplate.js
+		 * to know that the event should actually be converted in a wicket ajax
+		 * call to get the actual page refresh
+		 */
+		event.addData("proxy", "true");
+		final Channel channel = getBayeuxService().getBayeux().getChannel("/" + event.getChannel(), true);
+		channel.publish(getBayeuxService().getClient(), event.getData(), event.getId());
+	}
+
+	private final BayeuxService getBayeuxService() {
+		if (_bayeuxService == null) {
+			_bayeuxService = new BayeuxService((Bayeux) _application.getServletContext().getAttribute(
+					Bayeux.DOJOX_COMETD_BAYEUX), BAYEUX_CLIENT_PREFIX) {
+
+			};
+		}
+		return _bayeuxService;
+	}
+
+}
