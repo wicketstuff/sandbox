@@ -2,7 +2,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.wicketstuff</groupId>
-	<artifactId>wicketstuff-dojo-1.1</artifactId>
+	<artifactId>wicketstuff-dojo-1.1-${dojo.profile}</artifactId>
 	<packaging>jar</packaging>
 	<version>${wicket.version}-SNAPSHOT</version>
 	<name>WicketStuff Dojo 1.1</name>
@@ -13,6 +13,46 @@
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
+	<properties>
+		<dojo.version>1.1.1</dojo.version>
+		<dojo.profile>standard</dojo.profile>
+		<wicket.version>1.3.5</wicket.version>
+		<jetty.version>6.1.11</jetty.version>
+	</properties>
+	
+	<!--
+		Deployed with Teamcity:
+		http://wicketstuff.org/confluence/display/STUFFWIKI/Developer+Information
+	-->
+	<distributionManagement>
+		<snapshotRepository>
+			<id>repo</id>
+			<name>Local TeamCity/Tomcat repository</name>
+			<url> file:/home/wicket/tomcat/webapps/maven/repository/ </url>
+			<uniqueVersion>false</uniqueVersion>
+		</snapshotRepository>
+		<repository>
+			<id>repo</id>
+			<name>Local TeamCity/Tomcat repository</name>
+			<url> file:/home/wicket/tomcat/webapps/maven/repository/ </url>
+		</repository>
+	</distributionManagement>
+	<ciManagement>
+		<system>TeamCity</system>
+		<url>http://wicketstuff.org/teamcity</url>
+	</ciManagement>
+	<repositories>
+		<repository>
+			<id>wicket-snaps</id>
+			<url>http://wicketstuff.org/maven/repository</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+		</repository>
+	</repositories>
 	<dependencies>
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -66,7 +106,7 @@
 				</excludes>
 			</resource>
 			<resource>
-				<filtering>false</filtering>
+				<filtering>true</filtering>
 				<directory>src/main/resources</directory>
 				<includes>
 					<include>**/*</include>
@@ -106,8 +146,16 @@
 						<phase>generate-resources</phase>
 						<configuration>
 							<tasks>
+								<property name="dojo.version" value="${dojo.version}" />
+								<property name="dojo.profile" value="${dojo.profile}" />
+								<!-- must be outside project's svn tree -->
+								<property name="dojo.checkoutdir" value="${java.io.tmpdir}" />
+								<!-- working directory -->
+								<property name="dojo.pomdir" value="${user.dir}" />
+								<echo
+									message="building dojo ${dojo.version} with ${dojo.profile} profile" />
                 				<!-- use ant to run buildDojo/build.xml -->
-								<ant antfile="build.xml" dir="buildDojo" inheritAll="false" />
+								<ant antfile="build.xml" dir="buildDojo" inheritAll="true" />
 							</tasks>
 						</configuration>
 						<goals>
@@ -118,8 +166,4 @@
 			</plugin>
 		</plugins>
 	</build>
-	<properties>
-		<wicket.version>1.3.5</wicket.version>
-		<jetty.version>6.1.11</jetty.version>
-	</properties>
 </project>
