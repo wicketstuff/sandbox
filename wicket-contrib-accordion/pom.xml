@@ -30,7 +30,7 @@
   <artifactId>wicket-contrib-accordion</artifactId>
   <packaging>jar</packaging>
 
-	<name>Wicket Contrib Openlayers</name>
+	<name>Wicket Contrib Accordion</name>
 	<description>Openlayer component.</description>
 	<url>http://wicket-stuff.sourceforge.net</url>
 	<inceptionYear>2008</inceptionYear>
