@@ -115,6 +115,11 @@
 			</exclusions>
 		</dependency>
 		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring</artifactId>
+			<version>2.5.6</version>
+		</dependency>
+		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate</artifactId>
 			<version>3.2.6.ga</version>
@@ -192,9 +197,6 @@
 	</dependencies>
 
 	<build>
-		<sourceDirectory>src/java</sourceDirectory>
-		<testSourceDirectory>src/test</testSourceDirectory>
-
 		<resources>
 			<resource>
 				<filtering>false</filtering>
@@ -202,19 +204,6 @@
 				<includes>
 					<include>**</include>
 				</includes>
-			</resource>
-			<resource>
-				<filtering>false</filtering>
-				<directory>src/java</directory>
-				<includes>
-					<include>**</include>
-				</includes>
-				<!--
-					Just for a demo project, don't exclude sources...
-					<excludes>
-					<exclude>**/*.java</exclude>
-					</excludes>
-				-->
 			</resource>
 		</resources>
 		<plugins>
