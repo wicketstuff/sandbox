@@ -1,1 +1,0 @@
-Required prototype and scriptaculous javascript libs to be included on your page
