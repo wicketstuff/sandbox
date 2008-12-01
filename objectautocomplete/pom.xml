@@ -3,29 +3,24 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
-  <groupId>org.wicketstuff</groupId>
-  <artifactId>wicketstuff-objectautocomplete</artifactId>
-  <packaging>jar</packaging>
-  <version>1.0.0-SNAPSHOT</version>
-  <name>wicketstuff-objectautocomplete</name>
-  <description>
-     Wicket component for selecting entities via autocomplete
-  </description>
-  <url>http://wicket-stuff.sourceforge.net/wicketstuff-obbjectautocomplete</url>
-  <inceptionYear>2008</inceptionYear>
 
   <parent>
     <groupId>org.wicketstuff</groupId>
-    <artifactId>wicketstuff-objectautocomplete-parent</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
-    <relativePath>../pom.xml</relativePath>
+    <artifactId>objectautocomplete-parent</artifactId>
+    <version>1.4-SNAPSHOT</version>
   </parent>
 
+  <artifactId>objectautocomplete</artifactId>
+  <packaging>jar</packaging>
+
+  <name>ObjectAutoComplete</name>
+  <description>
+     Wicket component for selecting entities via autocomplete
+  </description>
+
+  <inceptionYear>2008</inceptionYear>
+
   <dependencies>
-    <dependency>
-      <groupId>org.apache.wicket</groupId>
-      <artifactId>wicket</artifactId>
-    </dependency>
     <dependency>
       <groupId>org.apache.wicket</groupId>
       <artifactId>wicket-extensions</artifactId>
@@ -39,6 +34,7 @@
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
+      <version>${slf4j.version}</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
