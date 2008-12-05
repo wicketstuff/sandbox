@@ -75,6 +75,13 @@ public interface IDojoSettings extends IClusterable
 	DojoLayer getLayer(String name);
 	
 	/**
+	 * 
+	 * @param dependentLayer 
+	 * @param layerDependencies 
+	 */
+	public void addDojoLayer(String dependentLayer, String ... layerDependencies);
+	
+	/**
 	 * @return wicket application
 	 */
 	Application getApplication();

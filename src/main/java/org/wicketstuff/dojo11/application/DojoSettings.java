@@ -201,6 +201,23 @@ public class DojoSettings implements IDojoSettings
 			_dojoLayerResourceReferences.put(layer, dojoLayer);
 		}
 		return dojoLayer;
+	}	
+	
+	/**
+	 * @see org.wicketstuff.dojo11.application.IDojoSettings#addDojoLayer(java.lang.String, java.lang.String...)
+	 */
+	public void addDojoLayer(String dependentLayer, String ... layerDependencies)
+	{
+		if (log.isInfoEnabled()) {
+			if (layerDependencies.length == 0) {
+				log.info("creating base dojo layer: "+dependentLayer);
+			} else {
+				log.info("creating dojo layer: "+dependentLayer + " depending on "+layerDependencies);
+			}
+		}
+		ResourceReference ref = newDojoResourceReference(dependentLayer);
+		DojoLayer dojoLayer = new DojoLayer(dependentLayer, ref, layerDependencies);
+		_dojoLayerResourceReferences.put(dependentLayer, dojoLayer);
 	}
 
 	/**
