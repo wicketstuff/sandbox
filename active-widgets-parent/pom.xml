@@ -26,6 +26,11 @@
 		</license>
 	</licenses>
 
+	<modules>
+		<module>active-widgets</module>
+		<module>active-widgets-examples</module>
+	</modules>
+
 	<dependencies>
 
 		<!--  WICKET DEPENDENCIES -->
