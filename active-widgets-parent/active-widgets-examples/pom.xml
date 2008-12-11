@@ -12,158 +12,18 @@
   <artifactId>active-widgets-examples</artifactId>
   <packaging>war</packaging>
   <name>Wicket Active Widgets examples</name>
-  <version>1.0-SNAPSHOT</version>
+  
+  
   <description>Examples for wicket Active Widgets library.</description>
-  <build>
-    <resources>
-      <resource>
-        <directory>src/main/resources</directory>
-      </resource>
-      <resource>
-        <directory>src/test/java</directory>
-      </resource>
-      <resource>
-        <directory>src/conf</directory>
-      </resource>
-      <resource>
-        <directory>src/main/java</directory>
-        <includes>
-          <include>**</include>
-        </includes>
-        <excludes>
-          <exclude>**/*.java</exclude>
-        </excludes>
-      </resource>
-    </resources>
-    <testResources>
-      <testResource>
-        <directory>src/test/java</directory>
-        <includes>
-          <include>**</include>
-        </includes>
-        <excludes>
-          <exclude>**/*.java</exclude>
-        </excludes>
-      </testResource>
-    </testResources>
-    <plugins>
-      <plugin>
-        <groupId>org.mortbay.jetty</groupId>
-        <artifactId>maven-jetty-plugin</artifactId>
-        <version>${jetty.version}</version>
-        <configuration>
-          <scanIntervalSeconds>30</scanIntervalSeconds>
-          <webAppSourceDirectory>src/main/webapp</webAppSourceDirectory>
-          <contextPath>/</contextPath>
-        </configuration>
-      </plugin>
-      <plugin>
-        <artifactId>maven-eclipse-plugin</artifactId>
-        <version>2.4</version>
-        <configuration>
-          <additionalProjectnatures>
-            <projectnature>org.springframework.ide.eclipse.core.springnature</projectnature>
-            <projectnature>com.sysdeo.eclipse.tomcat.tomcatnature</projectnature>
-            <projectnature>com.stateofflow.eclipse.metrics.MetricsNature</projectnature>
-          </additionalProjectnatures>
-          <additionalBuildcommands>
-            <buildcommand>org.springframework.ide.eclipse.core.springbuilder</buildcommand>
-            <buildcommand>com.stateofflow.eclipse.metrics.MetricsBuilder</buildcommand>
-          </additionalBuildcommands>
-          <downloadSources>true</downloadSources>
-        </configuration>
-      </plugin>
-      <plugin>
-        <artifactId>maven-assembly-plugin</artifactId>
-        <configuration>
-          <descriptor>src/assembly/bin.xml</descriptor>
-          <finalName>${artifactId}-${version}</finalName>
-          <outputDirectory>target/distributions</outputDirectory>
-          <workDirectory>target/assembly/work</workDirectory>
-        </configuration>
-      </plugin>
-      <plugin>
-        <artifactId>maven-war-plugin</artifactId>
-        <configuration>
-          <warSourceDirectory>src/webapp</warSourceDirectory>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
+  
   <dependencies>
-    <dependency>
-      <groupId>org.apache.wicket</groupId>
-      <artifactId>wicket-spring</artifactId>
-      <version>${wicket.version}</version>
-      <exclusions>
-        <exclusion>
-          <artifactId>servlet-api</artifactId>
-          <groupId>javax.servlet</groupId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring</artifactId>
-      <version>${springframework.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>commons-dbcp</groupId>
-      <artifactId>commons-dbcp</artifactId>
-      <version>${commons-dbcp.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>hsqldb</groupId>
-      <artifactId>hsqldb</artifactId>
-      <version>${hsqldb.version}</version>
-      <scope>runtime</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.hibernate</groupId>
-      <artifactId>hibernate</artifactId>
-      <version>${hibernate.version}</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.wicket</groupId>
-      <artifactId>wicket-extensions</artifactId>
-      <version>${wicket.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-log4j12</artifactId>
-      <version>${slf4j.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>log4j</groupId>
-      <artifactId>log4j</artifactId>
-      <version>${log4j.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.2</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.mortbay.jetty</groupId>
-      <artifactId>jetty</artifactId>
-      <version>${jetty.version}</version>
-    </dependency>
     <dependency>
     	<groupId>wicket.contrib.activewidgets</groupId>
     	<artifactId>active-widgets</artifactId>
-    	<version>1.0-SNAPSHOT</version>
+    	<version>${project.version}</version>
     </dependency>
+
   </dependencies>
-  <properties>
-    <springframework.version>2.0.8</springframework.version>
-    <hibernate.version>3.2.6.ga</hibernate.version>
-    <jetty.version>6.1.7</jetty.version>
-    <slf4j.version>1.4.2</slf4j.version>
-    <log4j.version>1.2.14</log4j.version>
-    <hsqldb.version>1.8.0.7</hsqldb.version>
-    <commons-dbcp.version>1.2.1</commons-dbcp.version>
-  </properties>
+  
 </project>
 
