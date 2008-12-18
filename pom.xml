@@ -4,7 +4,7 @@
 	<groupId>org.wicketstuff</groupId>
 	<artifactId>wicketstuff-dojo-1.1</artifactId>
 	<packaging>pom</packaging>
-	<version>${wicket.version}-SNAPSHOT</version>
+	<version>1.0-SNAPSHOT</version>
 	<name>WicketStuff Dojo 1.1</name>
 	<licenses>
 		<license>
