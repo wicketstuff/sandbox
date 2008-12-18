@@ -3,8 +3,8 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.wicketstuff</groupId>
 	<artifactId>wicketstuff-dojo-1.1</artifactId>
-	<packaging>jar</packaging>
-	<version>${wicket.version}-${dojo.profile}-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<version>1.3-SNAPSHOT</version>
 	<name>WicketStuff Dojo 1.1</name>
 	<licenses>
 		<license>
@@ -13,13 +13,6 @@
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
-	<properties>
-		<dojo.version>1.1.1</dojo.version>
-		<dojo.profile>standard</dojo.profile>
-		<wicket.version>1.3.5</wicket.version>
-		<jetty.version>6.1.11</jetty.version>
-	</properties>
-	
 	<!--
 		Deployed with Teamcity:
 		http://wicketstuff.org/confluence/display/STUFFWIKI/Developer+Information
@@ -53,117 +46,25 @@
 			</releases>
 		</repository>
 	</repositories>
-	<dependencies>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-			<version>1.3.1</version>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<version>1.3.1</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.wicket</groupId>
-			<artifactId>wicket</artifactId>
-			<version>${wicket.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.wicket</groupId>
-			<artifactId>wicket-extensions</artifactId>
-			<version>${wicket.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.4</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
-			<version>2.5</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.mortbay.jetty</groupId>
-			<artifactId>cometd-bayeux</artifactId>
-			<version>${jetty.version}</version>
-			<optional>true</optional>
-		</dependency>
-	</dependencies>
-	<build>
-		<resources>
-			<resource>
-				<filtering>false</filtering>
-				<directory>src/main/java</directory>
-				<includes>
-					<include>**/*</include>
-				</includes>
-				<excludes>
-					<exclude>**/*.java</exclude>
-				</excludes>
-			</resource>
-			<resource>
-				<filtering>true</filtering>
-				<directory>src/main/resources</directory>
-				<includes>
-					<include>**/*</include>
-				</includes>
-				<excludes>
-					<exclude>**/*.java</exclude>
-				</excludes>
-			</resource>
-		</resources>
-		<testResources>
-			<testResource>
-				<filtering>false</filtering>
-				<directory>src/test/java</directory>
-				<includes>
-					<include>**/*</include>
-				</includes>
-				<excludes>
-					<exclude>**/*.java</exclude>
-				</excludes>
-			</testResource>
-		</testResources>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>1.5</source>
-					<target>1.5</target>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-antrun-plugin</artifactId>
-				<version>1.1</version>
-				<executions>
-					<execution>
-						<phase>generate-resources</phase>
-						<configuration>
-							<tasks>
-								<property name="dojo.version" value="${dojo.version}" />
-								<property name="dojo.profile" value="${dojo.profile}" />
-								<!-- must be outside project's svn tree -->
-								<property name="dojo.checkoutdir" value="${java.io.tmpdir}" />
-								<!-- working directory -->
-								<property name="dojo.pomdir" value="${user.dir}" />
-								<echo
-									message="building dojo ${dojo.version} with ${dojo.profile} profile" />
-                				<!-- use ant to run buildDojo/build.xml -->
-								<ant antfile="build.xml" dir="buildDojo" inheritAll="true" />
-							</tasks>
-						</configuration>
-						<goals>
-							<goal>run</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
+	
+	<modules>
+		<module>wicketstuff-dojo-1.1-api</module>
+		<module>wicketstuff-dojo-1.1-resources</module>
+	</modules>
+	
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.wicketstuff</groupId>
+				<artifactId>wicketstuff-dojo-1.1-api</artifactId>
+				<version>${pom.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.wicketstuff</groupId>
+				<artifactId>wicketstuff-dojo-1.1-resources</artifactId>
+				<version>${pom.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+	
 </project>
