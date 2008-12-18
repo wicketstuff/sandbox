@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.wicketstuff</groupId>
 		<artifactId>wicketstuff-dojo-1.1</artifactId>
-		<version>${wicket.version}-SNAPSHOT</version>
+		<version>1.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>wicketstuff-dojo-1.1-api</artifactId>
 	<packaging>jar</packaging>
