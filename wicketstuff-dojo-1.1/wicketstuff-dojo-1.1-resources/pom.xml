@@ -5,11 +5,11 @@
 	<parent>
 		<groupId>org.wicketstuff</groupId>
 		<artifactId>wicketstuff-dojo-1.1</artifactId>
-		<version>1.3-SNAPSHOT</version>
+		<version>${wicket.version}-SNAPSHOT</version>
 	</parent>
-	<artifactId>wicketstuff-dojo-1.1-resources</artifactId>
+	<artifactId>wicketstuff-dojo-1.1-resources-${dojo.profile}</artifactId>
 	<packaging>jar</packaging>
-	<version>1.3-${dojo.profile}-SNAPSHOT</version>
+	<version>${wicket.version}-SNAPSHOT</version>
 	<name>WicketStuff Dojo 1.1 resources</name>
 	<licenses>
 		<license>
@@ -18,10 +18,7 @@
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
-	<properties>
-		<dojo.version>1.1.1</dojo.version>
-		<dojo.profile>standard</dojo.profile>
-	</properties>
+
 	<!--
 		Deployed with Teamcity:
 		http://wicketstuff.org/confluence/display/STUFFWIKI/Developer+Information
@@ -84,7 +81,7 @@
 								<!-- must be outside project's svn tree -->
 								<property name="dojo.checkoutdir" value="${java.io.tmpdir}" />
 								<!-- working directory -->
-								<property name="dojo.pomdir" value="${user.dir}" />
+								<property name="dojo.pomdir" value="${user.dir}/wicketstuff-dojo-1.1-resources" />
 								<echo
 									message="building dojo ${dojo.version} with ${dojo.profile} profile" />
                 				<!-- use ant to run buildDojo/build.xml -->
