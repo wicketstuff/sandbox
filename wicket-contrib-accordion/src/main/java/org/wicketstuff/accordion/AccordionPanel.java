@@ -60,13 +60,13 @@ public class AccordionPanel extends Panel implements IHeaderContributor {
 	public void renderHead(IHeaderResponse response) {
 
 		response
-				.renderJavascriptReference("http://us.js2.yimg.com/us.js.yimg.com/lib/common/utils/2/yahoo_2.0.0-b2.js");
+				.renderJavascriptReference("http://yui.yahooapis.com/2.4.1/build/yahoo/yahoo.js");
 		response
-				.renderJavascriptReference("http://us.js2.yimg.com/us.js.yimg.com/lib/common/utils/2/event_2.0.0-b2.js");
+				.renderJavascriptReference("http://yui.yahooapis.com/2.4.1/build/event/event.js");
 		response
-				.renderJavascriptReference("http://us.js2.yimg.com/us.js.yimg.com/lib/common/utils/2/dom_2.0.2-b3.js");
+				.renderJavascriptReference("http://yui.yahooapis.com/2.4.1/build/dom/dom.js");
 		response
-				.renderJavascriptReference("http://us.js2.yimg.com/us.js.yimg.com/lib/common/utils/2/animation_2.0.0-b3.js");
+				.renderJavascriptReference("http://yui.yahooapis.com/2.4.1/build/animation/animation.js");
 		response.renderJavascriptReference(JAVASCRIPT);
 		response.renderCSSReference(STYLE);
 	};
