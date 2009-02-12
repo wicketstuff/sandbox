@@ -2,14 +2,14 @@ package org.wicketstuff.dojo11.push.cometd;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.protocol.http.WebApplication;
+import org.cometd.Bayeux;
+import org.cometd.Channel;
+import org.cometd.RemoveListener;
 import org.mortbay.cometd.BayeuxService;
 import org.wicketstuff.dojo11.push.ChannelEvent;
 import org.wicketstuff.dojo11.push.IChannelListener;
 import org.wicketstuff.dojo11.push.IChannelService;
 
-import dojox.cometd.Bayeux;
-import dojox.cometd.Channel;
-import dojox.cometd.RemoveListener;
 
 /**
  * Cometd based implementation of {@link IChannelService}.
