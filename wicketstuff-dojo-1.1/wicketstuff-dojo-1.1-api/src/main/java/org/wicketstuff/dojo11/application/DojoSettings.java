@@ -17,6 +17,7 @@
 package org.wicketstuff.dojo11.application;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -246,6 +247,8 @@ public class DojoSettings implements IDojoSettings
 		for (DojoLayer layer : resolved) {
 			refs.add(layer.getResourceReference());
 		}
+		// FIXME resolve dependencies in correct order
+		Collections.reverse(refs);
 		return refs;
 	}
 
