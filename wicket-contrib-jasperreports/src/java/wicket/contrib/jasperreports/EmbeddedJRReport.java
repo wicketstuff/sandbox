@@ -55,7 +55,8 @@ public final class EmbeddedJRReport extends WebComponent implements IResourceLis
 		resource.onResourceRequested();
 	}
 
-	/**
+	/** Make sure we work only with object tags
+	 * @param tag tag applied to component.
 	 * @see wicket.Component#onComponentTag(wicket.markup.ComponentTag)
 	 */
 	protected void onComponentTag(ComponentTag tag)
