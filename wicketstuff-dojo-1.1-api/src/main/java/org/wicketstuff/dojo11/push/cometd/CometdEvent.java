@@ -32,7 +32,7 @@ public class CometdEvent extends ChannelEvent{
 	 * 
 	 * @see org.wicketstuff.dojo11.push.ChannelEvent#getData()
 	 */
-	public final Map<String, String> getData() {
+	public final Map<String, Object> getData() {
 		addData("proxy", "true");
 		return super.getData();
 	}
