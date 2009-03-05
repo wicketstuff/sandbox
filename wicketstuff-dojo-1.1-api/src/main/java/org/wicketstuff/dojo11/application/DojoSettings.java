@@ -22,18 +22,19 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Properties;
 
 import org.apache.wicket.Application;
 import org.apache.wicket.Page;
 import org.apache.wicket.RequestCycle;
 import org.apache.wicket.ResourceReference;
+import org.apache.wicket.Session;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.resources.CompressedResourceReference;
 import org.apache.wicket.util.string.Strings;
 import org.wicketstuff.dojo11.AbstractDefaultDojoBehavior;
-import org.wicketstuff.dojo11.DojoLocaleManager;
 import org.wicketstuff.dojo11.AbstractDefaultDojoBehavior.DojoModule;
 import org.wicketstuff.dojo11.skin.manager.DojoSkinManager;
 
@@ -49,8 +50,6 @@ public class DojoSettings implements IDojoSettings
 	private Application _application;
 	
 	private String _dojoRelease;
-	
-	private DojoLocaleManager _dojoLocalManager;
 	
 	private DojoSkinManager _dojoSkinManager;
 	
@@ -94,7 +93,6 @@ public class DojoSettings implements IDojoSettings
 			if (Strings.isEmpty(_dojoRelease)) {
 				throw new IllegalArgumentException("not a valid dojo release: "+_dojoRelease);
 			}
-			_dojoLocalManager = newDojoLocaleManager();
 			_dojoSkinManager = newDojoSkinManager();
 			_dojoBaseUrl = "/resources/dojo/"+getDojoPath()+"/dojo/";
 			return this;
@@ -134,10 +132,6 @@ public class DojoSettings implements IDojoSettings
 		return new CompressedResourceReference(AbstractDefaultDojoBehavior.class, path.toString());
 	}
 
-	protected DojoLocaleManager newDojoLocaleManager() {
-		return new DojoLocaleManager();
-	}
-	
 	protected DojoSkinManager newDojoSkinManager() {
 		return new DojoSkinManager();
 	}
@@ -176,10 +170,11 @@ public class DojoSettings implements IDojoSettings
 	}
 
 	/**
-	 * @param module
+	 * @param namespace 
+	 * @param scope 
 	 */
-	public void addDojoModule(DojoModule module) {
-		_dojoModules.add(module);
+	public void addDojoModule(String namespace, Class<?> scope) {
+		_dojoModules.add(new AbstractDefaultDojoBehavior.DojoModuleImpl(namespace, scope));
 	}
 	
 	/**
@@ -253,14 +248,6 @@ public class DojoSettings implements IDojoSettings
 	}
 
 	/**
-	 * @see org.wicketstuff.dojo11.application.IDojoSettings#getDojoLocaleManager()
-	 */
-	public DojoLocaleManager getDojoLocaleManager()
-	{
-		return _dojoLocalManager;
-	}
-
-	/**
 	 * @see org.wicketstuff.dojo11.application.IDojoSettings#getDojoSkinManager()
 	 */
 	public DojoSkinManager getDojoSkinManager()
@@ -309,6 +296,14 @@ public class DojoSettings implements IDojoSettings
 	public String getDojoBaseUrl()
 	{
 		return _dojoBaseUrl;
+	}
+
+	/**
+	 * @see org.wicketstuff.dojo11.application.IDojoSettings#getDefaultLocale()
+	 */
+	public Locale getDefaultLocale()
+	{
+		return Session.get().getLocale();
 	}
 	
 	

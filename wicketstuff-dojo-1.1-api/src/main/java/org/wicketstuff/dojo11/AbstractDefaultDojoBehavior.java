@@ -77,11 +77,8 @@ public abstract class AbstractDefaultDojoBehavior extends AbstractDefaultAjaxBeh
 		
 		IDojoSettings dojoSettings = ((IDojoApplication)Application.get()).getDojoSettings();
 		List<ResourceReference> dojoResourceReferences = dojoSettings.getDojoResourceReferences();
-		DojoLocaleManager dojoLocaleManager = dojoSettings.getDojoLocaleManager();
 		
 		renderConfig(response);
-		
-		dojoLocaleManager.renderLocale(response);
 		
 		for (ResourceReference r : dojoResourceReferences)
 		{
@@ -92,11 +89,12 @@ public abstract class AbstractDefaultDojoBehavior extends AbstractDefaultAjaxBeh
 	}
 
 	protected void renderConfig(IHeaderResponse response)
-	{
+	{	
 		DojoPackagedTextTemplate template = new DojoPackagedTextTemplate(AbstractDefaultDojoBehavior.class, AbstractDefaultDojoBehavior.class.getSimpleName()+".js");
-		MiniMap map = new MiniMap(2);
+		MiniMap map = new MiniMap(3);
 		map.put("debug", Application.DEVELOPMENT.equals(Application.get().getConfigurationType()));
 		map.put("baseUrl", DojoSettings.get().getDojoBaseUrl());
+		map.put("locale", ((IDojoApplication)Application.get()).getDojoSettings().getDefaultLocale().toString().replace('_', '-'));
 		response.renderJavascript(template.asString(map), template.getStaticKey());
 	}
 	
@@ -154,11 +152,11 @@ public abstract class AbstractDefaultDojoBehavior extends AbstractDefaultAjaxBeh
 		String moduleUrl = RequestCycle.get().urlFor(moduleReference).toString();
 		url = url + moduleUrl;
 		//remove / at the end if exists
-		if (url.charAt(url.length()-1) != '/'){
-			url += '/';
+		if (url.charAt(url.length()-1) == '/'){
+			url = url.substring(0, url.length() - 1);
 		}
 				
-		javascript.append("dojo.registerModulePath(\"" + module.getNamespace() + "\", \"" + url + module.getNamespace() + "\");\n");
+		javascript.append("dojo.registerModulePath(\"" + module.getNamespace() + "\", \"" + url + "\");\n");
 	}
 	
 	/**

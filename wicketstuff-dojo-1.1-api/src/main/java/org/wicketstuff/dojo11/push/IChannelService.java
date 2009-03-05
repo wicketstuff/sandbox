@@ -74,4 +74,21 @@ public interface IChannelService {
 	 * @param event the event to publish to the listeners
 	 */
 	void publish(ChannelEvent event);
+	
+	/**
+	 * remove channel listener from component, unsubscribing if we have an ajax request
+	 * 
+	 * @param component
+	 * @param channel
+	 */
+	void removeChannelListener(Component component, String channel);
+	
+	/**
+	 * @param component
+	 * @param channel 
+	 * @param javascriptMethod name of method to take message as argument. if null, evalscript property of message will be evaled
+	 */
+	void addJavascriptChannelListener(Component component, String channel, String javascriptMethod);
+
+	
 }

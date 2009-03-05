@@ -17,11 +17,11 @@
 package org.wicketstuff.dojo11.application;
 
 import java.util.List;
+import java.util.Locale;
 
 import org.apache.wicket.Application;
 import org.apache.wicket.IClusterable;
 import org.apache.wicket.ResourceReference;
-import org.wicketstuff.dojo11.DojoLocaleManager;
 import org.wicketstuff.dojo11.AbstractDefaultDojoBehavior.DojoModule;
 import org.wicketstuff.dojo11.skin.manager.DojoSkinManager;
 
@@ -43,9 +43,10 @@ public interface IDojoSettings extends IClusterable
 	/**
 	 * register a new dojo module which will always be available
 	 * 
-	 * @param module
+	 * @param namespace 
+	 * @param scope 
 	 */
-	void addDojoModule(DojoModule module);
+	public void addDojoModule(String namespace, Class<?> scope);
 	
 	/**
 	 * @param dojoBaseUrl
@@ -57,11 +58,6 @@ public interface IDojoSettings extends IClusterable
 	 * @return dojoBaseUrl
 	 */
 	String getDojoBaseUrl();
-	
-	/**
-	 * @return dojo locale manager
-	 */
-	DojoLocaleManager getDojoLocaleManager();
 
 	/**
 	 * @return the dojo skin manager
@@ -95,4 +91,9 @@ public interface IDojoSettings extends IClusterable
 	 * @return path from AbstractDefaultDojoBehavior to dojo root without trailing or leading slash
 	 */
 	String getDojoPath();
+
+	/**
+	 * @return the default locale to use
+	 */
+	Locale getDefaultLocale();
 }
