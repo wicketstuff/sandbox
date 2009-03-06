@@ -65,6 +65,18 @@ public class ChannelEvent
 	}
 
 	/**
+	 * Same as {@link #addData(String, Object)} but here to keep binary compatibility
+	 * 
+	 * @param key
+	 * @param data
+	 * @return this
+	 */
+	public ChannelEvent addData(String key, String data) {
+		_data.put(key, data);
+		return this;
+	}
+	
+	/**
 	 * Add a data in the event. This event will be transfered to
 	 * all the listener of the channel
 	 * @param key data key
@@ -75,7 +87,7 @@ public class ChannelEvent
 		_data.put(key, data);
 		return this;
 	}
-
+	
 	/**
 	 * Returns all data in the event
 	 * @return all data in the event
