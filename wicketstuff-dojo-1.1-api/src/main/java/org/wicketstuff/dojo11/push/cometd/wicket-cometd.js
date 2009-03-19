@@ -1,13 +1,14 @@
 
 function wicketDojoCometdEval(message) {
+	console.debug("eval", message)
 	evilscript = message.data['evalscript']
 	if (evilscript)	eval(evilscript);
 }
 
 function wicketDojoCometdCallback(message, url) {
-	if (message.data.proxy = "true"){
+	console.debug("callback", message, url)
+	if (message.data.proxy == "true"){
 		var addToUrl = "" 
-		var doRoundTrip = "true";
 		for (prop in message.data){
 			addToUrl = addToUrl + "&" + prop + "=" + message.data[prop];
 		}
