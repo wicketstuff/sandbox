@@ -155,9 +155,16 @@ public class CometdService implements IChannelService
 	/**
 	 * @see org.wicketstuff.dojo11.push.IChannelService#addJavascriptChannelListener(org.apache.wicket.Component, java.lang.String, java.lang.String)
 	 */
-	public void addJavascriptChannelListener(Component component, String channel, String javascriptMethod)
+	public void addJavascriptChannelListener(Component component, String channel, String javascriptMethod) {
+		addJavascriptChannelListener(component, channel, javascriptMethod, null);
+	}
+	
+	/**
+	 * @see org.wicketstuff.dojo11.push.IChannelService#addJavascriptChannelListener(org.apache.wicket.Component, java.lang.String, java.lang.String, org.wicketstuff.dojo11.push.IChannelListener)
+	 */
+	public void addJavascriptChannelListener(Component component, String channel, String javascriptMethod, IChannelListener listener)
 	{
-		CometdJavascriptBehavior behave = new CometdJavascriptBehavior(channel, javascriptMethod);
+		CometdJavascriptBehavior behave = new CometdJavascriptBehavior(channel, javascriptMethod, listener);
 		component.add(behave);
 		final AjaxRequestTarget target = AjaxRequestTarget.get();
 		if (target != null)

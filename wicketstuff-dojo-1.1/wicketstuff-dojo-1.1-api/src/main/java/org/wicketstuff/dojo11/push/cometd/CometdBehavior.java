@@ -29,11 +29,16 @@ public class CometdBehavior extends CometdAbstractBehavior {
 		this.listener = listener;
 	}
 
+	protected final IChannelListener getListener()
+	{
+		return listener;
+	}
+
 	/**
 	 * @see org.wicketstuff.dojo11.push.cometd.CometdAbstractBehavior#getCometdInterceptorScript()
 	 */
 	@SuppressWarnings("unchecked")
-	public final String getCometdInterceptorScript() {
+	public String getCometdInterceptorScript() {
 		final HashMap map = new HashMap();
 		map.put("markupId", getComponent().getMarkupId());
 		map.put("url", getCallbackUrl().toString());
@@ -44,7 +49,7 @@ public class CometdBehavior extends CometdAbstractBehavior {
 	/**
 	 * @see org.wicketstuff.dojo11.push.cometd.CometdAbstractBehavior#getPartialSubscriber()
 	 */
-	public final CharSequence getPartialSubscriber() {
+	public CharSequence getPartialSubscriber() {
 		return "'onEventFor"+ getComponent().getMarkupId() + "'";
 	}
 
