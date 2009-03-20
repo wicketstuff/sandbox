@@ -16,21 +16,41 @@
  */
 package org.wicketstuff.dojo11.push.cometd;
 
-import org.apache.wicket.ajax.AjaxRequestTarget;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import org.apache.wicket.WicketRuntimeException;
+import org.apache.wicket.util.collections.MiniMap;
+import org.wicketstuff.dojo11.push.IChannelListener;
+import org.wicketstuff.dojo11.push.IChannelTarget;
+import org.wicketstuff.dojo11.templates.DojoPackagedTextTemplate;
 
 /**
  * @author stf
  */
-public class CometdJavascriptBehavior extends CometdAbstractBehavior
+public class CometdJavascriptBehavior extends CometdBehavior
 {
 
 	/**
 	 * name of the default callback, that evals the evalscript property of a message
 	 */
 	public static final String DEFAULT_CALLBACK = "wicketDojoCometdEval";
+
+	private static final IChannelListener DUMMY_LISTENER = new IChannelListener() {
+
+		public void onEvent(String channel, Map<String, String> data, IChannelTarget target)
+		{
+			throw new WicketRuntimeException("unexpected dummy listener event");
+		}
+		
+	};
+	
+	private static final AtomicInteger NEXT_ID = new AtomicInteger(0);
 	
 	private final String _callbackMethod;
 
+	private final String _behaviorId = "js" + NEXT_ID.getAndIncrement();
+	
 	/**
 	 * Construct.
 	 * @param channelId
@@ -47,40 +67,56 @@ public class CometdJavascriptBehavior extends CometdAbstractBehavior
 	 */
 	public CometdJavascriptBehavior(String channelId, String callbackMethod)
 	{
-		super(channelId);
-		_callbackMethod = (callbackMethod == null || "".equals(callbackMethod)) ? DEFAULT_CALLBACK : callbackMethod;
+		this(channelId, callbackMethod, null);
 	}
 
+	/**
+	 * Construct.
+	 * @param channelId
+	 * @param callbackMethod 
+	 * @param listener 
+	 */
+	public CometdJavascriptBehavior(String channelId, String callbackMethod, IChannelListener listener)
+	{
+		super(channelId, listener == null ? DUMMY_LISTENER : listener);
+		if (callbackMethod == null || "".equals(callbackMethod)) {
+			if (getListener() != DUMMY_LISTENER) {
+				throw new WicketRuntimeException("can't use default callback with listener");
+			}
+			_callbackMethod = DEFAULT_CALLBACK;
+		} else {
+			_callbackMethod = callbackMethod;
+		}
+	}
+	
 	/**
 	 * @see org.wicketstuff.dojo11.push.cometd.CometdAbstractBehavior#getCometdInterceptorScript()
 	 */
 	@Override
 	public String getCometdInterceptorScript()
 	{
-		return null;
+		final MiniMap map = new MiniMap(3);
+		map.put("markupId", isComponentIndependent() ? _behaviorId : getComponent().getMarkupId());
+		map.put("url", isComponentIndependent() ? "" : getCallbackUrl().toString());
+		map.put("callback", _callbackMethod);
+		return new DojoPackagedTextTemplate(CometdBehavior.class, "CometdJavascriptBehaviorTemplate.js")
+						.asString(map);
 	}
 
 	/**
 	 * @see org.wicketstuff.dojo11.push.cometd.CometdAbstractBehavior#getPartialSubscriber()
 	 */
-	@Override
-	public CharSequence getPartialSubscriber()
-	{
-		return _callbackMethod;
+	public CharSequence getPartialSubscriber() {
+		return isComponentIndependent() ?  "'onEventFor"+ _behaviorId + "'" : super.getPartialSubscriber();
 	}
-
-	/**
-	 * @see org.apache.wicket.ajax.AbstractDefaultAjaxBehavior#respond(org.apache.wicket.ajax.AjaxRequestTarget)
-	 */
-	@Override
-	protected final void respond(AjaxRequestTarget target)
-	{
-		// never called
-	}
-
+	
 	protected String getJavascriptId()
 	{
 		// don't add component
-		return getChannelId();
+		return isComponentIndependent() ? _behaviorId + "@" + getChannelId() : super.getJavascriptId();
+	}
+	
+	private boolean isComponentIndependent() {
+		return (getListener() == DUMMY_LISTENER);
 	}
 }

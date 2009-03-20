@@ -3,6 +3,7 @@ function wicketDojoCometdEval(message) {
 	console.debug("eval", message)
 	evilscript = message.data['evalscript']
 	if (evilscript)	eval(evilscript);
+	return false;
 }
 
 function wicketDojoCometdCallback(message, url) {

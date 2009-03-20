@@ -90,5 +90,11 @@ public interface IChannelService {
 	 */
 	void addJavascriptChannelListener(Component component, String channel, String javascriptMethod);
 
-	
+	/**
+	 * @param component
+	 * @param channel
+	 * @param javascriptMethod name of method to take message as argument. if null, evalscript property of message will be evaled
+	 * @param listener the {@link IChannelListener} which should be notified of {@link ChannelEvent}s if javascriptMethod returns true
+	 */
+	void addJavascriptChannelListener(Component component, String channel, String javascriptMethod, IChannelListener listener);
 }
