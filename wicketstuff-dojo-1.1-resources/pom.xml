@@ -18,7 +18,6 @@
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
-
 	<!--
 		Deployed with Teamcity:
 		http://wicketstuff.org/confluence/display/STUFFWIKI/Developer+Information
@@ -52,7 +51,30 @@
 			</releases>
 		</repository>
 	</repositories>
-
+	<profiles>
+		<profile>
+			<id>linux</id>
+			<activation>
+				<os>
+					<family>Unix</family>
+				</os>
+			</activation>
+			<properties>
+				<dojo.buildscript>./build.sh</dojo.buildscript>
+			</properties>
+		</profile>
+		<profile>
+			<id>windows</id>
+			<activation>
+				<os>
+					<family>Windows</family>
+				</os>
+			</activation>
+			<properties>
+				<dojo.buildscript>./build.bat</dojo.buildscript>
+			</properties>
+		</profile>
+	</profiles>
 	<build>
 		<resources>
 			<resource>
@@ -78,10 +100,12 @@
 							<tasks>
 								<property name="dojo.version" value="${dojo.version}" />
 								<property name="dojo.profile" value="${dojo.profile}" />
+								<property name="dojo.buildscript" value="${dojo.buildscript}" />
 								<!-- must be outside project's svn tree -->
 								<property name="dojo.checkoutdir" value="${java.io.tmpdir}" />
 								<!-- working directory -->
-								<property name="dojo.pomdir" value="${user.dir}/wicketstuff-dojo-1.1-resources" />
+								<property name="dojo.pomdir"
+									value="${user.dir}/wicketstuff-dojo-1.1-resources" />
 								<echo
 									message="building dojo ${dojo.version} with ${dojo.profile} profile" />
                 				<!-- use ant to run buildDojo/build.xml -->
