@@ -59,4 +59,13 @@ public class CometdTarget implements IChannelTarget{
 		target.prependJavascript(javascript);
 	}
 
+	/**
+	 * @return the wrapped {@link AjaxRequestTarget}
+	 */
+	public AjaxRequestTarget getTarget()
+	{
+		return target;
+	}
+
+	
 }
