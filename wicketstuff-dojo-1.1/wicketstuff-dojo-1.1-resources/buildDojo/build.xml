@@ -61,11 +61,13 @@
 		
 		<echo message="Compiling your custom dojo distribution..." />
 		<echo level="info" message="using profile ${profilePath}" />
-		
-		<exec executable="./build.sh" dir="${dojo.checkoutdir}/${dojo.release}/util/buildscripts">
+		<echo level="info" message="using checkout at ${dojo.checkoutdir}/${dojo.release}" />
+		<echo level="info" message="using buildscript ${dojo.buildscript}" />
+			
+		<exec executable="${dojo.buildscript}" dir="${dojo.checkoutdir}/${dojo.release}/util/buildscripts">
 			<arg value="profileFile=${profilePath}" />
 			<arg value="action=clean,release" />
-			<arg value="localeList=de-de" />
+			<!-- <arg value="localeList=de-de" /> -->
 			<arg value="releaseName=${dojo.profile}" />
 			<!-- <arg value="optimize=shrinksafe" /> -->
 			<arg value="optimize=shrinksafe" />
