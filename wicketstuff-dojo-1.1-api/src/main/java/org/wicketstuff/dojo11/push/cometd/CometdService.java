@@ -1,5 +1,7 @@
 package org.wicketstuff.dojo11.push.cometd;
 
+import javax.servlet.ServletContext;
+
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.protocol.http.WebApplication;
@@ -42,17 +44,53 @@ public class CometdService implements IChannelService
 	 */
 	public static final String BAYEUX_CLIENT_PREFIX = "wicket-push";
 
-	private final WebApplication _application;
 	private BayeuxService _bayeuxService;
 
+	private ServletContext _servletContext;
+
+	/**
+	 * Default constructor, make sure to call {@link #setServletContext(ServletContext)}
+	 */
+	public CometdService()
+	{
+		
+	}
+	
 	/**
 	 * Construct.
 	 * 
 	 * @param application
+	 * @deprecated use {@link #CometdService(ServletContext)} instead
 	 */
 	public CometdService(final WebApplication application)
 	{
-		_application = application;
+		this(application.getServletContext());
+	}
+
+	/**
+	 * Construct.
+	 * @param servletContext
+	 */
+	public CometdService(ServletContext servletContext)
+	{
+		_servletContext = servletContext;
+	}
+
+	
+	/**
+	 * @return the servlet context
+	 */
+	public ServletContext getServletContext()
+	{
+		return _servletContext;
+	}
+	
+	/**
+	 * @param context the servlet context
+	 */
+	public void setServletContext(ServletContext context)
+	{
+		_servletContext = context;
 	}
 
 	/**
@@ -143,7 +181,7 @@ public class CometdService implements IChannelService
 	{
 		if (_bayeuxService == null)
 		{
-			_bayeuxService = new BayeuxService((Bayeux)_application.getServletContext()
+			_bayeuxService = new BayeuxService((Bayeux)_servletContext
 					.getAttribute(Bayeux.DOJOX_COMETD_BAYEUX), BAYEUX_CLIENT_PREFIX)
 			{
 
