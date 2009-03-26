@@ -4,7 +4,6 @@ import javax.servlet.ServletContext;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.protocol.http.WebApplication;
 import org.cometd.Bayeux;
 import org.cometd.Channel;
 import org.cometd.RemoveListener;
@@ -56,17 +55,6 @@ public class CometdService implements IChannelService
 		
 	}
 	
-	/**
-	 * Construct.
-	 * 
-	 * @param application
-	 * @deprecated use {@link #CometdService(ServletContext)} instead
-	 */
-	public CometdService(final WebApplication application)
-	{
-		this(application.getServletContext());
-	}
-
 	/**
 	 * Construct.
 	 * @param servletContext
