@@ -63,13 +63,13 @@ public abstract class CometdAbstractBehavior extends AbstractRequireDojoBehavior
 			throw new IllegalArgumentException("ChannelId in a CometdBehavior can not be null");
 		}
 		response.renderJavascriptReference(JS);
-		response.renderJavascript(getInitCometdScript(), "initCometd");
+		response.renderOnLoadJavascript(getInitCometdScript());
 		final String cometdInterceptorScript = getCometdInterceptorScript();
 		if (cometdInterceptorScript != null)
 		{
 			response.renderJavascript(cometdInterceptorScript, "Interceptor" + getJavascriptId());
 		}
-		response.renderJavascript(getSubscriberScript(), "Subscribe" + getJavascriptId());
+		response.renderJavascript("WicketDojo.Cometd.addOnInit(function() {" + getSubscriberScript() + "});", "Subscribe" + getJavascriptId());
 	}
 
 	protected String getJavascriptId()
@@ -112,9 +112,9 @@ public abstract class CometdAbstractBehavior extends AbstractRequireDojoBehavior
 	 * 
 	 * @return javascript to initialize cometd on client Side
 	 */
-	protected final CharSequence getInitCometdScript()
+	protected final String getInitCometdScript()
 	{
-		return "dojox.cometd.init('" + cometdServletPath + "')\n";
+		return "WicketDojo.Cometd.init('" + cometdServletPath + "')\n";
 	}
 
 	/**
@@ -129,7 +129,7 @@ public abstract class CometdAbstractBehavior extends AbstractRequireDojoBehavior
 	 * @return Javascript allowing cometd to subscribe to a channel and
 	 *         intercept event
 	 */
-	public final CharSequence getSubscriberScript()
+	public final String getSubscriberScript()
 	{
 		return "dojox.cometd.subscribe('/" + getChannelId() + "', " + getPartialSubscriber() +
 				");\n";
