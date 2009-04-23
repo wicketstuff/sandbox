@@ -1,1 +1,1 @@
-function onEventFor${markupId}(message){wicketDojoCometdCallback(message, '${url}')}
+function onEventFor${markupId}(message){WicketDojo.Cometd._callback(message, '${url}')}

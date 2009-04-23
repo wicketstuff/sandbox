@@ -34,7 +34,7 @@ public class CometdJavascriptBehavior extends CometdBehavior
 	/**
 	 * name of the default callback, that evals the evalscript property of a message
 	 */
-	public static final String DEFAULT_CALLBACK = "wicketDojoCometdEval";
+	public static final String DEFAULT_CALLBACK = "WicketDojo.Cometd._eval";
 
 	private static final IChannelListener DUMMY_LISTENER = new IChannelListener() {
 
