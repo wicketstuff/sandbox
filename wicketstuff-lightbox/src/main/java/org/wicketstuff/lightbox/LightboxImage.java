@@ -18,192 +18,189 @@
 
 package org.wicketstuff.lightbox;
 
-import org.apache.wicket.behavior.SimpleAttributeModifier;
+import org.apache.wicket.IResourceListener;
+import org.apache.wicket.Resource;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.IResourceListener;
-import org.apache.wicket.Resource;
+import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.util.value.IValueMap;
 
 /**
  * Component which wraps the functionality of Lightbox2.
  * <p/>
  * This file was created on February 27, 2008 by s.crissman.
- *
+ * 
  */
 public class LightboxImage extends Panel implements IResourceListener {
 
-    /**
-     * Standard constructor.
-     *
-     * @param componentId the component id
-     * @param model the component's id
-     */
-    public LightboxImage(String componentId, IModel model)
-    {
-        super(componentId, model);
+	/**
+	 * Standard constructor.
+	 * 
+	 * @param componentId
+	 *            the component id
+	 * @param model
+	 *            the component's id
+	 */
+	public LightboxImage(String componentId, IModel<LightboxImageData> model) {
+		super(componentId, model);
+		add(new LightboxBehavior());
+		addContent();
+	}
 
-        LightboxImageData m = (LightboxImageData)model.getObject();
+	protected LightboxImageData getImageData() {
+		return getImageDataModel().getObject();
+	}
 
-        add(new LightboxBehavior());
-        addTagAttributes(m);
-        addContent(m);
-    }
+	private IModel<LightboxImageData> getImageDataModel() {
+		return (IModel<LightboxImageData>) getDefaultModel();
+	}
 
-    /**
-     * Adds all attributes needed for the component to function to the tag.
-     *
-     * @param imageData data about the image that will be displayed in the lightbox
-     */
-    private void addTagAttributes(LightboxImageData imageData)
-    {
-        String rel = getRel(imageData);
-        String title = imageData.getCaption();
+	public void onResourceRequested() {
+		LightboxImageData m = getImageData();
+		if (m.getImageResource() != null) {
+			m.getImageResource().onResourceRequested();
+		}
+	}
 
-        add(new SimpleAttributeModifier("rel", rel));
-        add(new SimpleAttributeModifier("title", title));
+	/**
+	 * Ensures that the component tag used is an anchor.
+	 * 
+	 * @param componentTag
+	 *            the tag, which will be set to an anchor
+	 */
+	@Override
+	protected void onComponentTag(ComponentTag componentTag) {
+		componentTag.setName("a");
 
-        if (imageData.getImageResource() == null) {
-            String href = getRequest().getRelativePathPrefixToContextRoot() + imageData.getImageUrl();
-            add(new SimpleAttributeModifier("href", href));
-        }
+		IValueMap atts = componentTag.getAttributes();// .put("class", "test");
 
-        if (imageData.getHidden()){
-            add(new SimpleAttributeModifier("style", "display:none;"));
-        }
-    }
+		// set appropriate tag values
+		LightboxImageData data = getImageData();
 
-    public void onResourceRequested() {
-        LightboxImageData m = (LightboxImageData) getModelObject();
-        if (m.getImageResource() != null) {
-            m.getImageResource().onResourceRequested();
-        }
-    }
+		// set the URL
+		if (data.getImageResource() != null) {
+			atts.put("href", urlFor(IResourceListener.INTERFACE));
+		} else {
+			String href = getRequest().getRelativePathPrefixToContextRoot()
+					+ getImageData().getImageUrl();
+			atts.put("href", href);
+		}
 
-    /**
-     * Add the proper URL as href if we use a resource as input. This has to be done
-     * that late, because we need the parent page for getting to the URL
-     */
-    @Override
-    protected void onBeforeRender() {
-        LightboxImageData data = (LightboxImageData) getModelObject();
-        if (data.getImageResource() != null) {
-            add(new SimpleAttributeModifier("href", urlFor(IResourceListener.INTERFACE)));
-        }
-        super.onBeforeRender();
-    }
+		// rel
+		atts.put("rel", getRel(data));
 
-    /**
-     * Ensures that the component tag used is an anchor.
-     *
-     * @param componentTag the tag, which will be set to an anchor
-     */
-    @Override
-    protected void onComponentTag(ComponentTag componentTag)
-    {
-        componentTag.setName("a");
-        super.onComponentTag(componentTag);
-    }
+		// title
+		atts.put("title", data.getCaption());
 
-    /**
-     * Adds the nested components to this component.
-     *
-     * @param imageData about the image to be displayed by this lightbox
-     */
-    private void addContent(LightboxImageData imageData)
-    {
-        addThumb(imageData);
-        addText(imageData);
-    }
+		// style
+		if (data.getHidden())
+			atts.put("style", "display:none;");
 
-    /**
-     * Adds textual content to the component, if specified.
-     *
-     * @param imageData about the image to be displayed by this lightbox
-     */
-    private void addText(LightboxImageData imageData)
-    {
-        Label tc = new Label("tc", imageData.getLinkText());
-        tc.setVisible(imageData.getLinkText().length() > 0);
-        add(tc);
-    }
+		super.onComponentTag(componentTag);
+	}
 
-    /**
-     * Adds thumbnail image to the component, if specified.
-     *
-     * @param imageData about the image to be displayed by this lightbox
-     */
-    private void addThumb(LightboxImageData imageData)
-    {
-        String thumbUrl = getRequest().getRelativePathPrefixToContextRoot() + imageData.getThumbUrl();
-        boolean hasThumb = imageData.getThumbUrl().length() > 0 || imageData.getThumbResource() != null;
-        boolean hasWidth = imageData.getThumbWidth() > 0;
-        boolean hasHeight = imageData.getThumbHeight() > 0;
+	/**
+	 * Adds the nested components to this component.
+	 * 
+	 * @param imageData
+	 *            about the image to be displayed by this lightbox
+	 */
+	private void addContent() {
+		addThumb();
+		addText();
+	}
 
-        final Resource thumbResource = imageData.getThumbResource();
-        WebMarkupContainer ic;
-        if (thumbResource != null) {
-            ic = new ResourceWebMarkupContainer("ic", thumbResource);
-        } else {
-            ic = new WebMarkupContainer("ic");
-        }
-        ic.setVisible(hasThumb);
-        if (thumbResource == null) {
-            ic.add( new SimpleAttributeModifier("src", thumbUrl));
-        }
-        if(hasHeight){
-            ic.add( new SimpleAttributeModifier("height", imageData.getThumbHeight().toString()));
-        }
-        if(hasWidth){
-            ic.add( new SimpleAttributeModifier("width", imageData.getThumbWidth().toString()));
-        }
-        add(ic);
-    }
+	/**
+	 * Adds textual content to the component, if specified.
+	 * 
+	 * @param imageData
+	 *            about the image to be displayed by this lightbox
+	 */
+	private void addText() {
+		Label tc = new Label("tc", new PropertyModel<String>(
+				getImageDataModel(), "linkText")) {
+			@Override
+			public boolean isVisible() {
+				return this.getDefaultModelObjectAsString().length() > 0;
+			}
+		};
+		add(tc);
+	}
 
-    /**
-     * Provides the value of a lightbox specific attribute.
-     *
-     * @param imageData about the image to be displayed in the lightbox
-     * @return the value to which the 'rel' attribute should be set.
-     */
-    private String getRel( LightboxImageData imageData)
-    {
-        // rel should be:
-        //   "lightbox" if the image is not associated with the group
-        //   "lightbox[GROUP]" if the image is associated with a group
+	/**
+	 * Adds thumbnail image to the component, if specified.
+	 * 
+	 * @param imageData
+	 *            about the image to be displayed by this lightbox
+	 */
+	private void addThumb() {
+		add(new ThumbImage("ic", getImageDataModel()));
+	}
 
-        if (imageData.getGroup().length() > 0 ) {
-            return "lightbox[" + imageData.getGroup() + "]";
-        } else {
-            return "lightbox";
-        }
-    }
+	/**
+	 * Provides the value of a lightbox specific attribute.
+	 * 
+	 * @param imageData
+	 *            about the image to be displayed in the lightbox
+	 * @return the value to which the 'rel' attribute should be set.
+	 */
+	private String getRel(LightboxImageData imageData) {
+		// rel should be:
+		// "lightbox" if the image is not associated with the group
+		// "lightbox[GROUP]" if the image is associated with a group
 
-    // ================================================================
-    // Helper class for adding a dynamic resource
+		if (imageData.getGroup().length() > 0) {
+			return "lightbox[" + imageData.getGroup() + "]";
+		} else {
+			return "lightbox";
+		}
+	}
 
-    private class ResourceWebMarkupContainer extends WebMarkupContainer implements IResourceListener {
-        private final Resource resource;
+	// ================================================================
+	// Helper class for adding a thumbnail image
 
-        ResourceWebMarkupContainer(String pId, Resource pResource) {
-            super(pId);
-            resource = pResource;
-        }
+	private static final class ThumbImage extends WebMarkupContainer {
+		private ThumbImage(String id, IModel<?> model) {
+			super(id, model);
+		}
 
-        @Override
-        protected void onBeforeRender() {
-            if (resource != null) {
-                add(new SimpleAttributeModifier("src", urlFor(IResourceListener.INTERFACE)));
-            }
-            super.onBeforeRender();
-        }
+		@Override
+		public boolean isVisible() {
+			LightboxImageData imageData = (LightboxImageData) getDefaultModelObject();
+			boolean hasThumb = imageData.getThumbUrl().length() > 0
+					|| imageData.getThumbResource() != null;
+			return hasThumb;
+		}
 
-        public void onResourceRequested() {
-            if (resource != null) {
-                resource.onResourceRequested();
-            }
-        }
-    }
+		@Override
+		protected void onComponentTag(ComponentTag tag) {
+			IValueMap atts = tag.getAttributes();
+
+			LightboxImageData imageData = (LightboxImageData) getDefaultModelObject();
+			boolean hasWidth = imageData.getThumbWidth() > 0;
+			boolean hasHeight = imageData.getThumbHeight() > 0;
+			String thumbUrl = getRequest()
+					.getRelativePathPrefixToContextRoot()
+					+ imageData.getThumbUrl();
+			Resource thumbResource = imageData.getThumbResource();
+
+			if (thumbResource == null) {
+				atts.put("src", thumbUrl);
+			} else {
+				atts.put("src", urlFor(IResourceListener.INTERFACE));
+			}
+
+			if (hasHeight) {
+				atts.put("height", imageData.getThumbHeight().toString());
+			}
+			if (hasWidth) {
+				atts.put("width", imageData.getThumbWidth().toString());
+			}
+			
+			super.onComponentTag(tag);
+		}
+	}
 }

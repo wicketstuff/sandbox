@@ -61,7 +61,7 @@ public class LightboxCSSResource extends WebResource implements IStreamStringPro
     private String getCSS() {
 
         // create a variable subsitution map...
-        Map<String, CharSequence> params = new HashMap<String, CharSequence>();
+        Map<String, Object> params = new HashMap<String, Object>();
         params.put("blank", RequestCycle.get().urlFor(BLANK_GIF));
         params.put("prev-label", RequestCycle.get().urlFor(PREVLABEL_GIF));
         params.put("next-label", RequestCycle.get().urlFor(NEXTLABEL_GIF));

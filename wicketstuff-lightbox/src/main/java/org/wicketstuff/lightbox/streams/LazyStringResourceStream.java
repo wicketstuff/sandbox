@@ -59,8 +59,10 @@ public class LazyStringResourceStream extends AbstractStringResourceStream {
         return m_string;
     }
     
-    @Override
-    public long length() {
-        return getString().length();
-    }
+//    
+//    
+//    @Override
+//    public long length() {
+//        return getString().length();
+//    }
 }
