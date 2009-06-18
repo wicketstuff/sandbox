@@ -1437,14 +1437,22 @@ function writeBottomBar()
 function getTopPos(inputObj)
 {
   var returnValue = (inputObj.offsetTop || 0) + (inputObj.offsetHeight || 0);
-  while((inputObj = inputObj.offsetParent) != null) returnValue = returnValue + (inputObj.offsetTop || 0) - (inputObj.scrollTop || 0);
+  inputObj = inputObj.offsetParent;
+  while(inputObj && inputObj != document.documentElement && inputObj != document.body) {
+    returnValue = returnValue + (inputObj.offsetTop || 0) - (inputObj.scrollTop || 0);
+    inputObj = inputObj.offsetParent;
+  }
   return returnValue + calendar_offsetTop;
 }
 
 function getleftPos(inputObj)
 {
   var returnValue = (inputObj.offsetLeft || 0);
-  while((inputObj = inputObj.offsetParent) != null) returnValue = returnValue + (inputObj.offsetLeft || 0) - (inputObj.scrollLeft || 0);
+  inputObj = inputObj.offsetParent;
+  while(inputObj && inputObj != document.documentElement && inputObj != document.body) {
+    returnValue = returnValue + (inputObj.offsetLeft || 0) - (inputObj.scrollLeft || 0);
+    inputObj = inputObj.offsetParent;
+  }
   return returnValue + calendar_offsetLeft;
 }
 
