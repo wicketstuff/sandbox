@@ -1,11 +1,10 @@
 package org.wicketstuff.mergedresources.examples;
 
 import org.apache.wicket.protocol.http.WebApplication;
-import org.wicketstuff.mergedresources.ResourceMountHelper;
+import org.wicketstuff.mergedresources.ResourceMount;
 import org.wicketstuff.mergedresources.examples.components.ComponentB;
 import org.wicketstuff.mergedresources.examples.components.MyForm;
 import org.wicketstuff.mergedresources.examples.components.PanelOne;
-import org.wicketstuff.mergedresources.versioning.IResourceVersionProvider;
 import org.wicketstuff.mergedresources.versioning.RevisionVersionProvider;
 
 
@@ -30,19 +29,21 @@ public class WicketApplication extends WebApplication
 		getResourceSettings().setStripJavascriptCommentsAndWhitespace(strip());
 		//getResourceSettings().setAddLastModifiedTimeToResourceReferenceUrl(true);
 		
-		if (merge()) {
-			ResourceMountHelper.mountWicketResources("script", this);
+		if (merge()) {		
+			ResourceMount.mountWicketResources("script", this);
 			
-			IResourceVersionProvider p = new RevisionVersionProvider();
-			ResourceMountHelper h = new ResourceMountHelper(this, p);
+			ResourceMount mount = new ResourceMount()
+				.setResourceVersionProvider(new RevisionVersionProvider());
 			
-			h.mountMergedSharedResource("style", "all.css", true,
-				    new Class<?>[] {PanelOne.class, ComponentB.class, MyForm.class},
-				    new String[] {"PanelOne.css", "ComponentB.css", "MyForm.css" });
+			mount.clone()
+				.setPath("/style/all.css")
+				.addResourceSpecsMatchingSuffix(PanelOne.class, ComponentB.class, MyForm.class)
+				.mount(this);
 			
-			h.mountMergedSharedResource("script", "all.js", true,
-				    new Class<?>[] {PanelOne.class, ComponentB.class, MyForm.class},
-				    new String[] {"PanelOne.js", "ComponentB.js", "MyForm.js" });
+			mount.clone()
+				.setPath("/style/all.js")
+				.addResourceSpecsMatchingSuffix(PanelOne.class, ComponentB.class, MyForm.class)
+				.mount(this);
 		}
 	}
 
