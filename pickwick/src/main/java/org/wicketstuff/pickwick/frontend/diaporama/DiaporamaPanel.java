@@ -16,7 +16,7 @@ import org.wicketstuff.pickwick.PickwickApplication;
 import org.wicketstuff.pickwick.backend.ImageUtils;
 import org.wicketstuff.pickwick.backend.Settings;
 import org.wicketstuff.pickwick.bean.Image;
-import org.wicketstuff.yui.YuiHeaderContributor;
+import org.wicketstuff.yui.markup.html.contributor.YuiHeaderContributor;
 
 import com.google.inject.Inject;
 
@@ -37,7 +37,7 @@ public class DiaporamaPanel extends Panel {
 	
 		add(new DiaporamaBehavior());
 
-		add(YuiHeaderContributor.forModule("container"));
+		add( YuiHeaderContributor.forModule("container"));
 		add(YuiHeaderContributor.forModule("utilities"));
 		add(YuiHeaderContributor.forModule("dragdrop"));
 		
