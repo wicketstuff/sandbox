@@ -33,7 +33,7 @@ public class DiaporamaPanel extends Panel {
 	public DiaporamaPanel(String id, IModel model) {
 		super(id, model);
 		
-		imageList = imageUtils.getImageList(new File(settings.getImageDirectoryRoot(), getModelObjectAsString()));
+		imageList = imageUtils.getImageList(new File(settings.getImageDirectoryRoot(), getDefaultModelObjectAsString()));
 	
 		add(new DiaporamaBehavior());
 

@@ -38,7 +38,7 @@ public abstract class RolesEditPanel extends Panel {
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form form) {
 				Role role = new Role();
-				role.setLabel(form.get("role").getModelObjectAsString());
+				role.setLabel(form.get("role").getDefaultModelObjectAsString());
 				settings.getUserManagement().addRole(role);
 				target.addComponent(form);
 				onSave(target);

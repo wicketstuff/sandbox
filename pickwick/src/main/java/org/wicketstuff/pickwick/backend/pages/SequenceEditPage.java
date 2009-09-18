@@ -103,7 +103,7 @@ public class SequenceEditPage extends BaseAdminPage {
 		if (uri != null) {
 			File imageDir = imageUtils.toFile(uri);
 			Sequence sequence = ImageUtils.readSequence(imageDir);
-			setModel(new CompoundPropertyModel(new DisplaySequence(sequence, imageDir)));
+			setDefaultModel(new CompoundPropertyModel(new DisplaySequence(sequence, imageDir)));
 		}
 	}
 }

@@ -51,7 +51,7 @@ public class ImagePage extends BasePage {
 		super.onBeforeRender();
 		File imageDir = imageUtils.toFile(uri).getParentFile();
 		Sequence sequence = imageUtils.readSequence(imageDir);
-		setModel(new CompoundPropertyModel(new DisplaySequence(sequence, imageDir)));
+		setDefaultModel(new CompoundPropertyModel(new DisplaySequence(sequence, imageDir)));
 	}
 
 	public ImagePage(PageParameters params) {

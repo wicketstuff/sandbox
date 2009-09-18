@@ -16,7 +16,7 @@ public class DateModel extends AbstractReadOnlyModel {
 	@Override
 	public Object getObject() {
 		DateFormat f = DateFormat.getDateInstance(DateFormat.FULL, Session.get().getLocale());
-		DisplaySequence o = ((DisplaySequence) c.getModelObject());
+		DisplaySequence o = ((DisplaySequence) c.getDefaultModelObject());
 		if (o == null)
 			return null;
 		Date date = o.getDate();

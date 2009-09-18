@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.WicketRuntimeException;
+import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.extensions.markup.html.form.palette.Palette;
@@ -78,11 +79,11 @@ public abstract class UserPanel extends Panel {
 	public abstract void onSave(AjaxRequestTarget target);
 	
 	@Override
-	public Component setModel(IModel model) {
+	public MarkupContainer setDefaultModel(IModel model) {
 		if (!(model instanceof CompoundPropertyModel)){
 			throw new WicketRuntimeException("model should be an instnceof CompoundPropertyModel");
 		}
-		super.setModel(new Model());
+		super.setDefaultModel(new Model());
 		form.setModel(model);
 		return this;
 	}

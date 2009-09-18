@@ -45,9 +45,9 @@ public class SequenceGridPanel extends Panel{
 	public SequenceGridPanel(String id, IModel model) {
 		super(id, model);
 		List imageList = imageUtils.getFolderList(
-				new File(settings.getImageDirectoryRoot(), getModelObjectAsString()), 
+				new File(settings.getImageDirectoryRoot(), getDefaultModelObjectAsString()),
 				PickwickSession.get().getUser().getRoles());
-		imageList.addAll(imageUtils.getImageList(new File(settings.getImageDirectoryRoot(), getModelObjectAsString())));
+		imageList.addAll(imageUtils.getImageList(new File(settings.getImageDirectoryRoot(), getDefaultModelObjectAsString())));
 		add(newGridView("item",  new ListDataProvider(imageList)));
 	}
 

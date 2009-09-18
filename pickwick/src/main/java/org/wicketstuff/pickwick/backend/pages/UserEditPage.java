@@ -33,7 +33,7 @@ public class UserEditPage extends BaseAdminPage {
 
 			@Override
 			public void onUserSelected(AjaxRequestTarget target, User user) {
-				userPanel.setModel(new CompoundPropertyModel(user));
+				userPanel.setDefaultModel(new CompoundPropertyModel(user));
 				target.addComponent(userPanel);
 				//userPanel.disableName(target);
 			}
