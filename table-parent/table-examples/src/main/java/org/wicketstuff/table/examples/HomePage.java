@@ -43,9 +43,9 @@ public class HomePage extends WebPage {
     public HomePage(final PageParameters parameters) {
 	final Component selectionOut = new Label("selectionOut", new Model())
 		.setOutputMarkupId(true);
-	final Component editionnOut = new Label("editionnOut", new Model()).setOutputMarkupId(true);
+	final Component editionOut = new Label("editionnOut", new Model()).setOutputMarkupId(true);
 	add(selectionOut);
-	add(editionnOut);
+	add(editionOut);
 	TableModel tableModel = new DefaultTableModel(values.length, values[0].length) {
 	    @Override
 	    public boolean isCellEditable(int row, int column) {
@@ -60,16 +60,16 @@ public class HomePage extends WebPage {
 	    @Override
 	    public void setValueAt(Object aValue, int row, int column) {
 		values[row][column] = aValue == null ? null : aValue.toString();
-		editionnOut.setDefaultModelObject(" value at " + row + " x " + column
+		editionOut.setDefaultModelObject(" value at " + row + " x " + column
 			+ " changed to " + aValue);
-		AjaxRequestTarget.get().addComponent(editionnOut);
+		AjaxRequestTarget.get().addComponent(editionOut);
 	    }
 	};
 	Table table = null;
 	add(table = new Table("message", tableModel) {
 	    @Override
 	    protected void onSelection(int newSelectionIndex, AjaxRequestTarget target) {
-		selectionOut.setDefaultModelObject(" new selection: " + newSelectionIndex);
+		selectionOut.setDefaultModelObject(" " + newSelectionIndex);
 		target.addComponent(selectionOut);
 	    }
 	});

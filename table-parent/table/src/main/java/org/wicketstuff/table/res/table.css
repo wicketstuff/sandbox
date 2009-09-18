@@ -22,3 +22,7 @@ img.arrow {
 label.headerLabel {
 	float: left;
 }
+
+input.editCell {
+	width: 100%;
+}
