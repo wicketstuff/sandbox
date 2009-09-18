@@ -1,6 +1,7 @@
 tr.odd {
-	background-color: rgb(245, 252, 248);
+	background-color: rgb(240, 240, 240);
 }
+
 tr.even {
 	background-color: #FFFFFF;
 }
@@ -10,11 +11,14 @@ tr.onMouseOver {
 }
 
 tr.selected {
-	background-color: #018787;
+	background-color: rgb(10, 36, 106);
+	color: white;
 }
-img.arrow{
+
+img.arrow {
 	float: right;
 }
-label.headerLabel{
+
+label.headerLabel {
 	float: left;
 }

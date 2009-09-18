@@ -36,6 +36,8 @@ public class HomePage extends WebPage {
 	    { "Label", "MultiLineLabel", "Panel", "Border", "Include" },
 	    { "TabbedPanel", "Fragment", "Link", "ExternalLink", "PageLink" },
 	    { "BookmarkablePageLink", "Form", "Button", "SubmitLink", "TextField" },
+	    { "Palette", "Select", "ListMultipleChoice", "Radio", "RadioChoice" },
+	    { "form", "markup", "link", "panel", "basic" },
 	    { "TextArea", "CheckBox", "CheckBoxMultipleChoice", "Palette", "DropDownChoice" } };
 
     public HomePage(final PageParameters parameters) {
@@ -47,7 +49,7 @@ public class HomePage extends WebPage {
 	TableModel tableModel = new DefaultTableModel(values.length, values[0].length) {
 	    @Override
 	    public boolean isCellEditable(int row, int column) {
-		return column == 1 ? false : super.isCellEditable(row, column);
+		return column == 2;
 	    }
 
 	    @Override
@@ -72,6 +74,6 @@ public class HomePage extends WebPage {
 	    }
 	});
 	table.setAutoCreateRowSorter(true);
-	add(table.getRowsAjaxPagingNavigator("rowsPaging", 3));
+	add(table.getRowsAjaxPagingNavigator("rowsPaging", 4));
     }
 }
