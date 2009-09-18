@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 
 import org.wicketstuff.pickwick.backend.DefaultSettings;
 import org.wicketstuff.pickwick.backend.Settings;
+import org.junit.*;
 
 import junit.framework.TestCase;
 
@@ -22,4 +23,8 @@ public class FeedGeneratorTest {
 		new FeedGenerator().generate(new File("/tmp/a"), "atom_1.0", new FileOutputStream("/tmp/top10.atom"));
 		new FeedGenerator().generate(new File("/tmp/a"), "rss_0.9", new FileOutputStream("/tmp/top10.rss"));
 	}
+
+  @Test
+  public void dummyTest() {
+  }
 }
