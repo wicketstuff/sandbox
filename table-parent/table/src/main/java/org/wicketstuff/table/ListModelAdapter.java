@@ -14,15 +14,19 @@ import org.apache.wicket.model.Model;
  * @author Pedro Henrique Oliveira dos Santos
  * 
  */
-public class ListModelAdapter extends Model {
-    private TableModel tableModel;
+public class ListModelAdapter extends Model
+{
+	private TableModel tableModel;
 
-    public ListModelAdapter(TableModel tableModel) {
-	this.tableModel = tableModel;
-    }
+	public ListModelAdapter(TableModel tableModel)
+	{
+		this.tableModel = tableModel;
+	}
 
-    @Override
-    public Serializable getObject() {
-	return (Serializable) Arrays.asList(new Object[tableModel.getRowCount()]);
-    }
+	@Override
+	public Serializable getObject()
+	{
+		return (Serializable)Arrays.asList(new Object[tableModel.getRowCount()]);
+	}
+
 }

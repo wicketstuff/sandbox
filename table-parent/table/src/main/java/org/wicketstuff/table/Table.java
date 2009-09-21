@@ -37,7 +37,6 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.markup.html.list.PageableListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
@@ -51,268 +50,347 @@ import org.wicketstuff.table.sorter.SerializableTableRowSorter;
  * @author Pedro Henrique Oliveira dos Santos
  * 
  */
-public class Table extends Panel implements IHeaderContributor {
+public class Table extends Panel implements IHeaderContributor
+{
 
-    private static final Logger log = LoggerFactory.getLogger(Table.class);
-    private static final long serialVersionUID = 1L;
-    public static final ResourceReference TABLE_CSS = new ResourceReference(Table.class,
-	    "res/table.css");
-    public static final ResourceReference ARROW_UP = new ResourceReference(Table.class,
-	    "res/arrow_up.png");
-    public static final ResourceReference ARROW_OFF = new ResourceReference(Table.class,
-	    "res/arrow_off.png");
-    public static final ResourceReference ARROW_DOWN = new ResourceReference(Table.class,
-	    "res/arrow_down.png");
-    private TableListView rowsListView;
-    private RowSorter sorter;
-    private boolean autoCreateRowSorter;
+	private static final Logger log = LoggerFactory.getLogger(Table.class);
+	private static final long serialVersionUID = 1L;
+	public static final ResourceReference TABLE_CSS = new ResourceReference(Table.class,
+			"res/table.css");
+	public static final ResourceReference ARROW_UP = new ResourceReference(Table.class,
+			"res/arrow_up.png");
+	public static final ResourceReference ARROW_OFF = new ResourceReference(Table.class,
+			"res/arrow_off.png");
+	public static final ResourceReference ARROW_DOWN = new ResourceReference(Table.class,
+			"res/arrow_down.png");
+	private TableListView rowsListView;
+	private RowSorter sorter;
+	private boolean autoCreateRowSorter;
+	private ColumnsModelAdapter columnsModelAdapter;
 
-    /**
-     * @param id
-     * @param swingTableModel
-     *            the tableModel need to be serializable, to exist along the
-     *            session.
-     */
-    public Table(String id, TableModel swingTableModel) {
-	super(id);
-	setDefaultModel(new TableModelAdapter(swingTableModel));
-	setOutputMarkupId(true);
-	add(new ListView("headers") {
-	    @Override
-	    protected void populateItem(final ListItem item) {
-		String header = getTableModel().getColumnName(item.getIndex());
-		item.add(new Label("header", new ResourceModel(header, header)));
-		item.add(new Image("arrow") {
-		    @Override
-		    protected ResourceReference getImageResourceReference() {
-			if (sorter != null) {
-			    if (sorter.getSortKeys() == null || sorter.getSortKeys().size() == 0) {
-				return ARROW_OFF;
-			    } else {
-				for (Iterator i = sorter.getSortKeys().iterator(); i.hasNext();) {
-				    SortKey sortKey = (SortKey) i.next();
-				    if (sortKey.getColumn() == item.getIndex()) {
-					if (sortKey.getSortOrder() == SortOrder.ASCENDING) {
-					    return ARROW_UP;
-					} else if (sortKey.getSortOrder() == SortOrder.DESCENDING) {
-					    return ARROW_DOWN;
+	/**
+	 * @param id
+	 * @param swingTableModel
+	 *            the tableModel need to be serializable, to exist along the
+	 *            session.
+	 */
+	public Table(String id, TableModel swingTableModel)
+	{
+		super(id);
+		setDefaultModel(new TableModelAdapter(swingTableModel));
+		columnsModelAdapter = new ColumnsModelAdapter(getTableModel());
+		setOutputMarkupId(true);
+		add(new ListView("headers", columnsModelAdapter)
+		{
+			@Override
+			protected void populateItem(final ListItem item)
+			{
+				final int columnIndex = columnsModelAdapter.convertIndexToModel(item.getIndex());
+				String header = getTableModel().getColumnName(columnIndex);
+				item.add(new Label("header", new ResourceModel(header, header)));
+				item.add(new Image("arrow")
+				{
+					@Override
+					protected ResourceReference getImageResourceReference()
+					{
+						if (sorter != null)
+						{
+							if (sorter.getSortKeys() == null || sorter.getSortKeys().size() == 0)
+							{
+								return ARROW_OFF;
+							}
+							else
+							{
+								for (Iterator i = sorter.getSortKeys().iterator(); i.hasNext();)
+								{
+									SortKey sortKey = (SortKey)i.next();
+									if (sortKey.getColumn() == columnIndex)
+									{
+										if (sortKey.getSortOrder() == SortOrder.ASCENDING)
+										{
+											return ARROW_UP;
+										}
+										else if (sortKey.getSortOrder() == SortOrder.DESCENDING)
+										{
+											return ARROW_DOWN;
+										}
+									}
+								}// for
+								return ARROW_OFF;
+							}
+						}
+						else
+						{
+							return null;
+						}
 					}
-				    }
-				}// for
-				return ARROW_OFF;
-			    }
-			} else {
-			    return null;
-			}
-		    }
 
-		    @Override
-		    public boolean isVisible() {
-			return getImageResourceReference() != null;
-		    }
-		});
-		item.add(new AjaxEventBehavior("onclick") {
-		    @Override
-		    protected void onEvent(AjaxRequestTarget target) {
-			if (sorter != null) {
-			    int columnIndex = item.getIndex();
-			    sorter.toggleSortOrder(columnIndex);
-			    target.addComponent(Table.this);
+					@Override
+					public boolean isVisible()
+					{
+						return getImageResourceReference() != null;
+					}
+				});
+				item.add(new AjaxEventBehavior("onclick")
+				{
+					@Override
+					protected void onEvent(AjaxRequestTarget target)
+					{
+						if (sorter != null)
+						{
+							sorter.toggleSortOrder(columnIndex);
+							target.addComponent(Table.this);
+						}
+					}
+				});
+				item.add(new AjaxEventBehavior("ondblclick")
+				{
+					@Override
+					protected void onEvent(AjaxRequestTarget target)
+					{
+						if (sorter != null)
+						{
+							for (Iterator i = sorter.getSortKeys().iterator(); i.hasNext();)
+							{
+								SortKey sortKey = (SortKey)i.next();
+								if (sortKey.getColumn() == columnIndex)
+								{
+									i.remove();
+								}
+							}
+							target.addComponent(Table.this);
+						}
+					}
+				});
 			}
-		    }
 		});
-		item.add(new AjaxEventBehavior("ondblclick") {
-		    @Override
-		    protected void onEvent(AjaxRequestTarget target) {
-			if (sorter != null) {
-			    int columnIndex = item.getIndex();
-			    for (Iterator i = sorter.getSortKeys().iterator(); i.hasNext();) {
-				SortKey sortKey = (SortKey) i.next();
-				if (sortKey.getColumn() == columnIndex) {
-				    i.remove();
+		add(rowsListView = new TableListView("rows"));
+	}
+
+	/**
+	 * Repeating component that extends the AjaxSelectableListView. The extended
+	 * behavior are the table model rendering complexity partially implemented.
+	 * 
+	 */
+	class TableListView extends AjaxSelectableListView
+	{
+
+		public TableListView(String id)
+		{
+			super(id, new ListModelAdapter(getTableModel()), Integer.MAX_VALUE);
+		}
+
+		@Override
+		protected ListItem newItem(final int index)
+		{
+			final SelectableListItem listItem = new SelectableListItem(index, getListItemModel(
+					getModel(), index), listSelectionModel)
+			{
+				@Override
+				protected void onSelection(AjaxRequestTarget target)
+				{
+					TableListView.this.setSelection(this, target);
 				}
-			    }
-			    target.addComponent(Table.this);
+
+				@Override
+				protected int getIndexOnModel()
+				{
+					if (sorter != null)
+					{
+						return sorter.convertRowIndexToModel(getIndex());
+					}
+					else
+					{
+						return super.getIndexOnModel();
+					}
+				}
+			};
+			return listItem;
+		}
+
+		@Override
+		protected void onSelection(SelectableListItem listItem, AjaxRequestTarget target)
+		{
+			int rowIndex = listItem.getIndex();
+			if (sorter != null)
+			{
+				rowIndex = sorter.convertRowIndexToModel(rowIndex);
 			}
-		    }
-		});
-	    }
-
-	    @Override
-	    public int getViewSize() {
-		return getTableModel().getColumnCount();
-	    }
-	});
-	add(rowsListView = new TableListView("rows"));
-    }
-
-    /**
-     * Repeating component that extends the AjaxSelectableListView. The extended
-     * behavior are the table model rendering complexity partially implemented.
-     * 
-     */
-    class TableListView extends AjaxSelectableListView {
-
-	public TableListView(String id) {
-	    super(id, new ListModelAdapter(getTableModel()), Integer.MAX_VALUE);
-	}
-
-	@Override
-	protected ListItem newItem(final int index) {
-	    final SelectableListItem listItem = new SelectableListItem(index, getListItemModel(
-		    getModel(), index), listSelectionModel) {
-		@Override
-		protected void onSelection(AjaxRequestTarget target) {
-		    TableListView.this.setSelection(this, target);
+			log.debug("rendering: " + listItem.getIndex() + " converted to: " + rowIndex
+					+ " using: " + sorter);
+			Table.this.onSelection(rowIndex, target);
 		}
 
 		@Override
-		protected int getIndexOnModel() {
-		    if (sorter != null) {
-			return sorter.convertRowIndexToModel(getIndex());
-		    } else {
-			return super.getIndexOnModel();
-		    }
+		protected void populateItem(final ListItem rowItem)
+		{
+			rowItem.add(new ListView("collums", columnsModelAdapter)
+			{
+				@Override
+				protected void populateItem(ListItem dataItem)
+				{
+					int rowIndex = rowItem.getIndex();
+					int columnIndex = columnsModelAdapter.convertIndexToModel(dataItem.getIndex());
+					if (sorter != null)
+					{
+						rowIndex = sorter.convertRowIndexToModel(rowIndex);
+					}
+					log.debug("rendering: " + rowItem.getIndex() + " converted to: " + rowIndex
+							+ " using: " + sorter);
+					Object data = getTableModel().getValueAt(rowIndex, columnIndex);
+					/*
+					 * TODO from the table model we can get much more
+					 * informations. Is possible to add checkboxes for booleans,
+					 * image components for images, date components for dates,
+					 * etc.
+					 */
+					if (getTableModel().isCellEditable(rowIndex, columnIndex))
+					{
+						dataItem.add(new SelfSubmitTextFieldPanel("data", new TableCellModel(
+								getTableModel(), rowIndex, columnIndex)));
+					}
+					else
+					{
+						dataItem.add(new Label("data", data == null ? null : data.toString()));
+					}
+				}
+			});
 		}
-	    };
-	    return listItem;
+
+		public AjaxPagingNavigator getColumnsAjaxPagingNavigator(String id, int columnsPerPage)
+		{
+			columnsModelAdapter.setColumnsPerPage(columnsPerPage);
+			return new AjaxPagingNavigator(id, columnsModelAdapter)
+			{
+				@Override
+				protected void onAjaxEvent(AjaxRequestTarget target)
+				{
+					target.addComponent(Table.this);
+					target.addComponent(this);
+				}
+			};
+		}
 	}
 
-	@Override
-	protected void onSelection(SelectableListItem listItem, AjaxRequestTarget target) {
-	    int rowIndex = listItem.getIndex();
-	    if (sorter != null) {
-		rowIndex = sorter.convertRowIndexToModel(rowIndex);
-	    }
-	    log.debug("rendering: " + listItem.getIndex() + " converted to: " + rowIndex
-		    + " using: " + sorter);
-	    Table.this.onSelection(rowIndex, target);
+	public AjaxPagingNavigator getRowsAjaxPagingNavigator(String id, int rowsPerPage)
+	{
+		rowsListView.setRowsPerPage(rowsPerPage);
+		return new AjaxPagingNavigator(id, rowsListView);
 	}
 
-	@Override
-	protected void populateItem(final ListItem rowItem) {
-	    rowItem.add(new PageableListView("collums", new ColumnsModelAdapter(getTableModel()),
-		    Integer.MAX_VALUE) {
+
+	public AjaxPagingNavigator getColumnsAjaxPagingNavigator(String id, int columnsPerPage)
+	{
+		return rowsListView.getColumnsAjaxPagingNavigator(id, columnsPerPage);
+	}
+
+
+	/**
+	 * Number of rows to be presented per page on table.
+	 * 
+	 * @param rowsPerPage
+	 */
+	public void setRowsPerPage(int rowsPerPage)
+	{
+		rowsListView.setRowsPerPage(rowsPerPage);
+	}
+
+	/**
+	 * See constraints in @see javax.swing.ListSelectionModel
+	 * 
+	 * @param selectionMode
+	 */
+	public void setSelectionMode(int selectionMode)
+	{
+		rowsListView.getListSelectionModel().setSelectionMode(selectionMode);
+	}
+
+	public ListSelectionModel getListSelectionModel()
+	{
+		return rowsListView.getListSelectionModel();
+	}
+
+	/**
+	 * Add a listener to the list that's notified each time a change to the
+	 * selection occurs.
+	 */
+	public void addListSelectionListener(ListSelectionListener x)
+	{
+		rowsListView.getListSelectionModel().addListSelectionListener(x);
+	}
+
+	public void setSelectionIndex(Integer newSelectionIndex)
+	{
+		rowsListView.getListSelectionModel().setSelectionInterval(newSelectionIndex,
+				newSelectionIndex);
+	}
+
+	public TableModel getTableModel()
+	{
+		return (TableModel)getDefaultModelObject();
+	}
+
+	private class TableModelAdapter extends Model
+	{
+		public TableModelAdapter(TableModel tableModel)
+		{
+			super((Serializable)tableModel);
+			if (autoCreateRowSorter)
+			{
+				setRowSorter(new SerializableTableRowSorter(tableModel));
+			}
+		}
+
 		@Override
-		protected void populateItem(ListItem dataItem) {
-		    int rowIndex = rowItem.getIndex();
-		    if (sorter != null) {
-			rowIndex = sorter.convertRowIndexToModel(rowIndex);
-		    }
-		    log.debug("rendering: " + rowItem.getIndex() + " converted to: " + rowIndex
-			    + " using: " + sorter);
-		    Object data = getTableModel().getValueAt(rowIndex, dataItem.getIndex());
-		    /*
-		     * TODO from the table model we can get much more
-		     * informations. Is possible to add checkboxes for booleans,
-		     * image components for images, date components for dates,
-		     * etc.
-		     */
-		    if (getTableModel().isCellEditable(rowIndex, dataItem.getIndex())) {
-			dataItem.add(new SelfSubmitTextFieldPanel("data", new TableCellModel(
-				getTableModel(), rowIndex, dataItem.getIndex())));
-		    } else {
-			dataItem.add(new Label("data", data == null ? null : data.toString()));
-		    }
+		public void setObject(Serializable object)
+		{
+			super.setObject(object);
+			if (autoCreateRowSorter)
+			{
+				setRowSorter(new SerializableTableRowSorter((TableModel)object));
+			}
 		}
-	    });
 	}
 
-    }
+	public void setAutoCreateRowSorter(boolean autoCreateRowSorter)
+	{
+		this.autoCreateRowSorter = autoCreateRowSorter;
+		if (autoCreateRowSorter)
+		{
+			setRowSorter(new SerializableTableRowSorter(getTableModel()));
+		}
+	}
 
-    public AjaxPagingNavigator getRowsAjaxPagingNavigator(String id, int rowsPerPage) {
-	rowsListView.setRowsPerPage(rowsPerPage);
-	return new AjaxPagingNavigator(id, rowsListView);
-    }
+	public void setRowSorter(RowSorter sorter)
+	{
+		this.sorter = sorter;
+	}
 
-    /**
-     * Number of rows to be presented per page on table.
-     * 
-     * @param rowsPerPage
-     */
-    public void setRowsPerPage(int rowsPerPage) {
-	rowsListView.setRowsPerPage(rowsPerPage);
-    }
-
-    /**
-     * See constraints in @see javax.swing.ListSelectionModel
-     * 
-     * @param selectionMode
-     */
-    public void setSelectionMode(int selectionMode) {
-	rowsListView.getListSelectionModel().setSelectionMode(selectionMode);
-    }
-
-    public ListSelectionModel getListSelectionModel() {
-	return rowsListView.getListSelectionModel();
-    }
-
-    /**
-     * Add a listener to the list that's notified each time a change to the
-     * selection occurs.
-     */
-    public void addListSelectionListener(ListSelectionListener x) {
-	rowsListView.getListSelectionModel().addListSelectionListener(x);
-    }
-
-    public void setSelectionIndex(Integer newSelectionIndex) {
-	rowsListView.getListSelectionModel().setSelectionInterval(newSelectionIndex,
-		newSelectionIndex);
-    }
-
-    public TableModel getTableModel() {
-	return (TableModel) getDefaultModelObject();
-    }
-
-    private class TableModelAdapter extends Model {
-	public TableModelAdapter(TableModel tableModel) {
-	    super((Serializable) tableModel);
-	    if (autoCreateRowSorter) {
-		setRowSorter(new SerializableTableRowSorter(tableModel));
-	    }
+	public void renderHead(IHeaderResponse response)
+	{
+		response.renderCSSReference(getCss());
 	}
 
 	@Override
-	public void setObject(Serializable object) {
-	    super.setObject(object);
-	    if (autoCreateRowSorter) {
-		setRowSorter(new SerializableTableRowSorter((TableModel) object));
-	    }
+	protected void onComponentTag(ComponentTag tag)
+	{
+		super.onComponentTag(tag);
+		tag.setName("table");
 	}
-    }
 
-    public void setAutoCreateRowSorter(boolean autoCreateRowSorter) {
-	this.autoCreateRowSorter = autoCreateRowSorter;
-	if (autoCreateRowSorter) {
-	    setRowSorter(new SerializableTableRowSorter(getTableModel()));
+	protected ResourceReference getCss()
+	{
+		return TABLE_CSS;
 	}
-    }
 
-    public void setRowSorter(RowSorter sorter) {
-	this.sorter = sorter;
-    }
-
-    public void renderHead(IHeaderResponse response) {
-	response.renderCSSReference(getCss());
-    }
-
-    @Override
-    protected void onComponentTag(ComponentTag tag) {
-	super.onComponentTag(tag);
-	tag.setName("table");
-    }
-
-    protected ResourceReference getCss() {
-	return TABLE_CSS;
-    }
-
-    /**
-     * TODO: Consider to work with observer pattern.
-     * 
-     * @param newSelectionIndex
-     * @param target
-     */
-    protected void onSelection(int newSelectionIndex, AjaxRequestTarget target) {
-    }
+	/**
+	 * TODO: Consider to work with observer pattern.
+	 * 
+	 * @param newSelectionIndex
+	 * @param target
+	 */
+	protected void onSelection(int newSelectionIndex, AjaxRequestTarget target)
+	{
+	}
 
 }

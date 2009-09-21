@@ -30,50 +30,66 @@ import org.wicketstuff.table.Table;
 /**
  * Homepage
  */
-public class HomePage extends WebPage {
+public class HomePage extends WebPage
+{
 
-    private static String[][] values = {
-	    { "Label", "MultiLineLabel", "Panel", "Border", "Include" },
-	    { "TabbedPanel", "Fragment", "Link", "ExternalLink", "PageLink" },
-	    { "BookmarkablePageLink", "Form", "Button", "SubmitLink", "TextField" },
-	    { "Palette", "Select", "ListMultipleChoice", "Radio", "RadioChoice" },
-	    { "form", "markup", "link", "panel", "basic" },
-	    { "TextArea", "CheckBox", "CheckBoxMultipleChoice", "Palette", "DropDownChoice" } };
+	private static String[][] values = {
+			{ "registered", "Window", "Label", "MultiLineLabel", "Panel", "Border", "Include" },
+			{ "listener", "Browser", "wicketstuff", "table", "swing", "javax", "RowSorter" },
+			{ "interface", "jar", "TabbedPanel", "Fragment", "Link", "ExternalLink", "PageLink" },
+			{ "RequestListenerInterface", "version", "BookmarkablePageLink", "Form", "Button",
+					"SubmitLink", "TextField" },
+			{ "ILinkListener", "file", "Palette", "Select", "ListMultipleChoice", "Radio",
+					"RadioChoice" },
+			{ "log", "Users", "PageParameters", "HomePage", "WebPage", "Model", "TableModel" },
+			{ "IResourceListener", "markup", "form", "markup", "link", "panel", "basic" },
+			{ "IActivePageBehaviorListener", "abstract", "TextArea", "CheckBox",
+					"CheckBoxMultipleChoice", "Palette", "DropDownChoice" } };
 
-    public HomePage(final PageParameters parameters) {
-	final Component selectionOut = new Label("selectionOut", new Model())
-		.setOutputMarkupId(true);
-	final Component editionOut = new Label("editionnOut", new Model()).setOutputMarkupId(true);
-	add(selectionOut);
-	add(editionOut);
-	TableModel tableModel = new DefaultTableModel(values.length, values[0].length) {
-	    @Override
-	    public boolean isCellEditable(int row, int column) {
-		return column == 2;
-	    }
+	public HomePage(final PageParameters parameters)
+	{
+		final Component selectionLabel = new Label("selectionOut", new Model())
+				.setOutputMarkupId(true);
+		final Component editionLabel = new Label("editionnOut", new Model())
+				.setOutputMarkupId(true);
+		add(selectionLabel);
+		add(editionLabel);
+		TableModel tableModel = new DefaultTableModel(values.length, values[0].length)
+		{
+			@Override
+			public boolean isCellEditable(int row, int column)
+			{
+				return column == 2;
+			}
 
-	    @Override
-	    public Object getValueAt(int row, int column) {
-		return values[row][column];
-	    }
+			@Override
+			public Object getValueAt(int row, int column)
+			{
+				return values[row][column];
+			}
 
-	    @Override
-	    public void setValueAt(Object aValue, int row, int column) {
-		values[row][column] = aValue == null ? null : aValue.toString();
-		editionOut.setDefaultModelObject(" value at " + row + " x " + column
-			+ " changed to " + aValue);
-		AjaxRequestTarget.get().addComponent(editionOut);
-	    }
-	};
-	Table table = null;
-	add(table = new Table("message", tableModel) {
-	    @Override
-	    protected void onSelection(int newSelectionIndex, AjaxRequestTarget target) {
-		selectionOut.setDefaultModelObject(" " + newSelectionIndex);
-		target.addComponent(selectionOut);
-	    }
-	});
-	table.setAutoCreateRowSorter(true);
-	add(table.getRowsAjaxPagingNavigator("rowsPaging", 4));
-    }
+			@Override
+			public void setValueAt(Object aValue, int row, int column)
+			{
+				values[row][column] = aValue == null ? null : aValue.toString();
+				editionLabel.setDefaultModelObject(" value at " + row + " x " + column
+						+ " changed to " + aValue);
+				AjaxRequestTarget.get().addComponent(editionLabel);
+			}
+		};
+		Table table = null;
+		add(table = new Table("table", tableModel)
+		{
+			@Override
+			protected void onSelection(int newSelectionIndex, AjaxRequestTarget target)
+			{
+				selectionLabel.setDefaultModelObject(" " + newSelectionIndex);
+				target.addComponent(selectionLabel);
+			}
+		});
+		table.setAutoCreateRowSorter(true);
+		add(table.getRowsAjaxPagingNavigator("rowsPaging", 4));
+		// add(new EmptyPanel("columnsPaging"));
+		add(table.getColumnsAjaxPagingNavigator("columnsPaging", 4));
+	}
 }
