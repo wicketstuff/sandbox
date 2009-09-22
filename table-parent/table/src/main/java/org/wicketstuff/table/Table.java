@@ -38,10 +38,9 @@ import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.wicketstuff.table.sorter.SerializableTableRowSorter;
 
 /**
@@ -53,7 +52,7 @@ import org.wicketstuff.table.sorter.SerializableTableRowSorter;
 public class Table extends Panel implements IHeaderContributor
 {
 
-	private static final Logger log = LoggerFactory.getLogger(Table.class);
+	// private static final Logger log = LoggerFactory.getLogger(Table.class);
 	private static final long serialVersionUID = 1L;
 	public static final ResourceReference TABLE_CSS = new ResourceReference(Table.class,
 			"res/table.css");
@@ -64,7 +63,6 @@ public class Table extends Panel implements IHeaderContributor
 	public static final ResourceReference ARROW_DOWN = new ResourceReference(Table.class,
 			"res/arrow_down.png");
 	private TableListView rowsListView;
-	private RowSorter sorter;
 	private boolean autoCreateRowSorter;
 	private ColumnsModelAdapter columnsModelAdapter;
 
@@ -93,15 +91,17 @@ public class Table extends Panel implements IHeaderContributor
 					@Override
 					protected ResourceReference getImageResourceReference()
 					{
-						if (sorter != null)
+						if (getRowSorter() != null)
 						{
-							if (sorter.getSortKeys() == null || sorter.getSortKeys().size() == 0)
+							if (getRowSorter().getSortKeys() == null
+									|| getRowSorter().getSortKeys().size() == 0)
 							{
 								return ARROW_OFF;
 							}
 							else
 							{
-								for (Iterator i = sorter.getSortKeys().iterator(); i.hasNext();)
+								for (Iterator i = getRowSorter().getSortKeys().iterator(); i
+										.hasNext();)
 								{
 									SortKey sortKey = (SortKey)i.next();
 									if (sortKey.getColumn() == columnIndex)
@@ -136,9 +136,9 @@ public class Table extends Panel implements IHeaderContributor
 					@Override
 					protected void onEvent(AjaxRequestTarget target)
 					{
-						if (sorter != null)
+						if (getRowSorter() != null)
 						{
-							sorter.toggleSortOrder(columnIndex);
+							getRowSorter().toggleSortOrder(columnIndex);
 							target.addComponent(Table.this);
 						}
 					}
@@ -148,9 +148,9 @@ public class Table extends Panel implements IHeaderContributor
 					@Override
 					protected void onEvent(AjaxRequestTarget target)
 					{
-						if (sorter != null)
+						if (getRowSorter() != null)
 						{
-							for (Iterator i = sorter.getSortKeys().iterator(); i.hasNext();)
+							for (Iterator i = getRowSorter().getSortKeys().iterator(); i.hasNext();)
 							{
 								SortKey sortKey = (SortKey)i.next();
 								if (sortKey.getColumn() == columnIndex)
@@ -164,7 +164,7 @@ public class Table extends Panel implements IHeaderContributor
 				});
 			}
 		});
-		add(rowsListView = new TableListView("rows"));
+		add(rowsListView = new TableListView("rows", new ListModelAdapter(getTableModel())));
 	}
 
 	/**
@@ -175,68 +175,28 @@ public class Table extends Panel implements IHeaderContributor
 	class TableListView extends AjaxSelectableListView
 	{
 
-		public TableListView(String id)
+
+		public TableListView(String id, IModel model)
 		{
-			super(id, new ListModelAdapter(getTableModel()), Integer.MAX_VALUE);
+			super(id, model);
 		}
 
 		@Override
-		protected ListItem newItem(final int index)
+		protected void onSelection(SelectableListItem selectableListItem, AjaxRequestTarget target)
 		{
-			final SelectableListItem listItem = new SelectableListItem(index, getListItemModel(
-					getModel(), index), listSelectionModel)
-			{
-				@Override
-				protected void onSelection(AjaxRequestTarget target)
-				{
-					TableListView.this.setSelection(this, target);
-				}
-
-				@Override
-				protected int getIndexOnModel()
-				{
-					if (sorter != null)
-					{
-						return sorter.convertRowIndexToModel(getIndex());
-					}
-					else
-					{
-						return super.getIndexOnModel();
-					}
-				}
-			};
-			return listItem;
+			Table.this.onSelection(selectableListItem.getIndexOnSelectionModel(), target);
 		}
 
 		@Override
-		protected void onSelection(SelectableListItem listItem, AjaxRequestTarget target)
-		{
-			int rowIndex = listItem.getIndex();
-			if (sorter != null)
-			{
-				rowIndex = sorter.convertRowIndexToModel(rowIndex);
-			}
-			log.debug("rendering: " + listItem.getIndex() + " converted to: " + rowIndex
-					+ " using: " + sorter);
-			Table.this.onSelection(rowIndex, target);
-		}
-
-		@Override
-		protected void populateItem(final ListItem rowItem)
+		protected void populateRow(final ListItem rowItem, final int rowIndex)
 		{
 			rowItem.add(new ListView("collums", columnsModelAdapter)
 			{
 				@Override
 				protected void populateItem(ListItem dataItem)
 				{
-					int rowIndex = rowItem.getIndex();
+
 					int columnIndex = columnsModelAdapter.convertIndexToModel(dataItem.getIndex());
-					if (sorter != null)
-					{
-						rowIndex = sorter.convertRowIndexToModel(rowIndex);
-					}
-					log.debug("rendering: " + rowItem.getIndex() + " converted to: " + rowIndex
-							+ " using: " + sorter);
 					Object data = getTableModel().getValueAt(rowIndex, columnIndex);
 					/*
 					 * TODO from the table model we can get much more
@@ -257,19 +217,7 @@ public class Table extends Panel implements IHeaderContributor
 			});
 		}
 
-		public AjaxPagingNavigator getColumnsAjaxPagingNavigator(String id, int columnsPerPage)
-		{
-			columnsModelAdapter.setColumnsPerPage(columnsPerPage);
-			return new AjaxPagingNavigator(id, columnsModelAdapter)
-			{
-				@Override
-				protected void onAjaxEvent(AjaxRequestTarget target)
-				{
-					target.addComponent(Table.this);
-					target.addComponent(this);
-				}
-			};
-		}
+
 	}
 
 	public AjaxPagingNavigator getRowsAjaxPagingNavigator(String id, int rowsPerPage)
@@ -278,12 +226,19 @@ public class Table extends Panel implements IHeaderContributor
 		return new AjaxPagingNavigator(id, rowsListView);
 	}
 
-
 	public AjaxPagingNavigator getColumnsAjaxPagingNavigator(String id, int columnsPerPage)
 	{
-		return rowsListView.getColumnsAjaxPagingNavigator(id, columnsPerPage);
+		columnsModelAdapter.setColumnsPerPage(columnsPerPage);
+		return new AjaxPagingNavigator(id, columnsModelAdapter)
+		{
+			@Override
+			protected void onAjaxEvent(AjaxRequestTarget target)
+			{
+				target.addComponent(Table.this);
+				target.addComponent(this);
+			}
+		};
 	}
-
 
 	/**
 	 * Number of rows to be presented per page on table.
@@ -296,15 +251,16 @@ public class Table extends Panel implements IHeaderContributor
 	}
 
 	/**
-	 * See constraints in @see javax.swing.ListSelectionModel
-	 * 
-	 * @param selectionMode
+	 * @see {@link javax.swing.JTable#setSelectionMode(int)}
 	 */
 	public void setSelectionMode(int selectionMode)
 	{
 		rowsListView.getListSelectionModel().setSelectionMode(selectionMode);
 	}
 
+	/**
+	 * @see {@link javax.swing.JTable#getSelectionModel()}
+	 */
 	public ListSelectionModel getListSelectionModel()
 	{
 		return rowsListView.getListSelectionModel();
@@ -325,11 +281,20 @@ public class Table extends Panel implements IHeaderContributor
 				newSelectionIndex);
 	}
 
+	/**
+	 * @see {@link javax.swing.JTable#getModel()}
+	 */
 	public TableModel getTableModel()
 	{
 		return (TableModel)getDefaultModelObject();
 	}
 
+	/**
+	 * Adapter model to decorate operations that require row sorter update.
+	 * 
+	 * @author Pedro Henrique Oliveira dos Santos
+	 * 
+	 */
 	private class TableModelAdapter extends Model
 	{
 		public TableModelAdapter(TableModel tableModel)
@@ -352,6 +317,9 @@ public class Table extends Panel implements IHeaderContributor
 		}
 	}
 
+	/**
+	 * @see {@link javax.swing.JTable#setAutoCreateRowSorter(boolean)}
+	 */
 	public void setAutoCreateRowSorter(boolean autoCreateRowSorter)
 	{
 		this.autoCreateRowSorter = autoCreateRowSorter;
@@ -361,11 +329,20 @@ public class Table extends Panel implements IHeaderContributor
 		}
 	}
 
+	/**
+	 * @see {@link javax.swing.JTable#setRowSorter(RowSorter)}
+	 */
 	public void setRowSorter(RowSorter sorter)
 	{
-		this.sorter = sorter;
+		this.rowsListView.setRowSorter(sorter);
 	}
 
+	public RowSorter getRowSorter()
+	{
+		return this.rowsListView.getRowSorter();
+	}
+
+	@Override
 	public void renderHead(IHeaderResponse response)
 	{
 		response.renderCSSReference(getCss());

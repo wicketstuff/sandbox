@@ -27,6 +27,7 @@ import org.apache.wicket.markup.MarkupStream;
 import org.apache.wicket.markup.html.JavascriptPackageResource;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.string.JavascriptUtils;
+import org.apache.wicket.util.string.Strings;
 
 /**
  * List item that resolve the view complexity for a item that can or not to be
@@ -35,67 +36,95 @@ import org.apache.wicket.util.string.JavascriptUtils;
  * @author Pedro Henrique Oliveira dos Santos
  * 
  */
-public abstract class SelectableListItem extends ColoredListItem {
-    private static final long serialVersionUID = 1L;
-    public static final String CLASS_SELECTED = "selected";
-    public static final String CLASS_MOUSE_OVER = "onMouseOver";
-    private ListSelectionModel listSelectionModel;
-    private static final HeaderContributor TABLE_JS = JavascriptPackageResource
-	    .getHeaderContribution(new ResourceReference(SelectableListItem.class, "res/table.js"));
+public abstract class SelectableListItem extends ColoredListItem
+{
+	private static final long serialVersionUID = 1L;
+	public static final String CLASS_SELECTED = "selected";
+	public static final String CLASS_MOUSE_OVER = "onMouseOver";
+	private ListSelectionModel listSelectionModel;
+	private static final HeaderContributor TABLE_JS = JavascriptPackageResource
+			.getHeaderContribution(new ResourceReference(SelectableListItem.class, "res/table.js"));
 
-    /**
-     * @param index
-     * @param model
-     *            list item model, users parameter.
-     * @param listSelectionModel
-     *            Based on its state, the row selection is resolved. Ex: row css
-     *            class will reflect the actual state.
-     */
-    public SelectableListItem(int index, IModel model, ListSelectionModel listSelectionModel) {
-	super(index, model);
-	setOutputMarkupId(true);
-	add(TABLE_JS);
-	this.listSelectionModel = listSelectionModel;
-	updateBackgroundColor();
-	this.add(new AjaxEventBehavior("onclick") {
-	    private static final long serialVersionUID = 1L;
+	/**
+	 * @param index
+	 * @param model
+	 *            list item model, users parameter.
+	 * @param listSelectionModel
+	 *            Based on its state, the row selection is resolved. Ex: row css
+	 *            class will reflect the actual state.
+	 */
+	public SelectableListItem(int index, IModel model, ListSelectionModel listSelectionModel)
+	{
+		super(index, model);
+		setOutputMarkupId(true);
+		add(TABLE_JS);
+		this.listSelectionModel = listSelectionModel;
+		updateBackgroundColor();
+		this.add(new AjaxEventBehavior("onclick")
+		{
+			private static final long serialVersionUID = 1L;
+			private static final String SHIFT_P = "shiftKey";
 
-	    @Override
-	    protected void onEvent(AjaxRequestTarget target) {
-		onSelection(target);
-	    }
-	});
-    }
+			@Override
+			protected void onEvent(AjaxRequestTarget target)
+			{
+				onItemSelection(target, Strings.isTrue(getRequest().getParameter(SHIFT_P)));
+			}
 
-    protected abstract void onSelection(AjaxRequestTarget target);
-
-    public void updateOnAjaxRequest(AjaxRequestTarget target) {
-	updateBackgroundColor();
-	target.appendJavascript("document.getElementById('" + getMarkupId() + "').className = '"
-		+ classAttribute + "';");
-	target.appendJavascript("document.getElementById('" + getMarkupId()
-		+ "').setAttribute('originalClass', '" + classAttribute + "'); ");
-    }
-
-    @Override
-    protected void onComponentTagBody(MarkupStream markupStream, ComponentTag openTag) {
-	super.onComponentTagBody(markupStream, openTag);
-	updateBackgroundColor();
-	JavascriptUtils js = new JavascriptUtils(getResponse());
-	js.write("changeStyleOnOnMouseOver( '" + getMarkupId() + "', '" + CLASS_MOUSE_OVER + "');");
-	js.close();
-    }
-
-    @Override
-    protected void updateBackgroundColor() {
-	if (listSelectionModel != null && listSelectionModel.isSelectedIndex(getIndexOnModel())) {
-	    classAttribute = CLASS_SELECTED;
-	} else {
-	    super.updateBackgroundColor();
+			@Override
+			public CharSequence getCallbackUrl(boolean onlyTargetActivePage)
+			{
+				return super.getCallbackUrl(onlyTargetActivePage) + "&" + SHIFT_P
+						+ "='+event.shiftKey+'";
+			}
+		});
 	}
-    }
 
-    protected int getIndexOnModel() {
-	return this.getIndex();
-    }
+	protected abstract void onItemSelection(AjaxRequestTarget target, boolean shiftPressed);
+
+	public void updateOnAjaxRequest(AjaxRequestTarget target)
+	{
+		updateBackgroundColor();
+		target.appendJavascript("document.getElementById('" + getMarkupId() + "').className = '"
+				+ classAttribute + "';");
+		target.appendJavascript("document.getElementById('" + getMarkupId()
+				+ "').setAttribute('originalClass', '" + classAttribute + "'); ");
+	}
+
+	@Override
+	protected void onComponentTagBody(MarkupStream markupStream, ComponentTag openTag)
+	{
+		super.onComponentTagBody(markupStream, openTag);
+		updateBackgroundColor();
+		JavascriptUtils js = new JavascriptUtils(getResponse());
+		js.write("changeStyleOnOnMouseOver( '" + getMarkupId() + "', '" + CLASS_MOUSE_OVER + "');");
+		js.close();
+	}
+
+	@Override
+	protected void updateBackgroundColor()
+	{
+		if (listSelectionModel != null
+				&& listSelectionModel.isSelectedIndex(getIndexOnSelectionModel()))
+		{
+			classAttribute = CLASS_SELECTED;
+		}
+		else
+		{
+			super.updateBackgroundColor();
+		}
+	}
+
+	/**
+	 * Default implementation for getIndexOnModel return the view item index. If
+	 * the repeater are using an sorter to organize his items, this method need
+	 * to be overridden, to return the index that can to be correctly tested
+	 * against selection model.
+	 * 
+	 * @return
+	 */
+	protected int getIndexOnSelectionModel()
+	{
+		return this.getIndex();
+	}
 }

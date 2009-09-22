@@ -16,6 +16,10 @@
  */
 package org.wicketstuff.table.examples;
 
+import java.io.Serializable;
+import java.util.Arrays;
+
+import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
@@ -24,6 +28,8 @@ import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.DropDownChoice;
+import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.model.Model;
 import org.wicketstuff.table.Table;
 
@@ -45,6 +51,8 @@ public class HomePage extends WebPage
 			{ "IResourceListener", "markup", "form", "markup", "link", "panel", "basic" },
 			{ "IActivePageBehaviorListener", "abstract", "TextArea", "CheckBox",
 					"CheckBoxMultipleChoice", "Palette", "DropDownChoice" } };
+	private static Integer[] listSelectionModels = { ListSelectionModel.SINGLE_SELECTION,
+			ListSelectionModel.SINGLE_INTERVAL_SELECTION };
 
 	public HomePage(final PageParameters parameters)
 	{
@@ -77,8 +85,7 @@ public class HomePage extends WebPage
 				AjaxRequestTarget.get().addComponent(editionLabel);
 			}
 		};
-		Table table = null;
-		add(table = new Table("table", tableModel)
+		final Table table = new Table("table", tableModel)
 		{
 			@Override
 			protected void onSelection(int newSelectionIndex, AjaxRequestTarget target)
@@ -86,10 +93,46 @@ public class HomePage extends WebPage
 				selectionLabel.setDefaultModelObject(" " + newSelectionIndex);
 				target.addComponent(selectionLabel);
 			}
-		});
+		};
 		table.setAutoCreateRowSorter(true);
+		add(table);
 		add(table.getRowsAjaxPagingNavigator("rowsPaging", 4));
-		// add(new EmptyPanel("columnsPaging"));
 		add(table.getColumnsAjaxPagingNavigator("columnsPaging", 4));
+		add(new DropDownChoice("modes", new Model(), new Model((Serializable)Arrays
+				.asList(listSelectionModels)), new IChoiceRenderer()
+		{
+			@Override
+			public Object getDisplayValue(Object object)
+			{
+				switch ((Integer)object)
+				{
+					case ListSelectionModel.SINGLE_SELECTION :
+						return "SINGLE_SELECTION";
+					case ListSelectionModel.SINGLE_INTERVAL_SELECTION :
+						return "SINGLE_INTERVAL_SELECTION";
+				}
+				return null;
+			}
+
+			@Override
+			public String getIdValue(Object object, int index)
+			{
+				return object.toString();
+			}
+		})
+		{
+			@Override
+			public void updateModel()
+			{
+				super.updateModel();
+				table.setSelectionMode((Integer)getConvertedInput());
+			}
+
+			@Override
+			protected boolean wantOnSelectionChangedNotifications()
+			{
+				return true;
+			}
+		});
 	}
 }
