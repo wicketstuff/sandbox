@@ -76,7 +76,7 @@ public class Table extends Panel implements IHeaderContributor
 	{
 		super(id);
 		setDefaultModel(new TableModelAdapter(swingTableModel));
-		columnsModelAdapter = new ColumnsModelAdapter(getTableModel());
+		columnsModelAdapter = new ColumnsModelAdapter((IModel<TableModel>)getDefaultModel());
 		setOutputMarkupId(true);
 		add(new ListView("headers", columnsModelAdapter)
 		{
@@ -184,11 +184,11 @@ public class Table extends Panel implements IHeaderContributor
 		@Override
 		protected void onSelection(SelectableListItem selectableListItem, AjaxRequestTarget target)
 		{
-			Table.this.onSelection(selectableListItem.getIndexOnSelectionModel(), target);
+			Table.this.onSelection(target);
 		}
 
 		@Override
-		protected void populateRow(final ListItem rowItem, final int rowIndex)
+		protected void populateSelectableItem(final SelectableListItem rowItem)
 		{
 			rowItem.add(new ListView("collums", columnsModelAdapter)
 			{
@@ -197,17 +197,19 @@ public class Table extends Panel implements IHeaderContributor
 				{
 
 					int columnIndex = columnsModelAdapter.convertIndexToModel(dataItem.getIndex());
-					Object data = getTableModel().getValueAt(rowIndex, columnIndex);
+					Object data = getTableModel().getValueAt(rowItem.getIndexOnSelectionModel(),
+							columnIndex);
 					/*
 					 * TODO from the table model we can get much more
 					 * informations. Is possible to add checkboxes for booleans,
 					 * image components for images, date components for dates,
 					 * etc.
 					 */
-					if (getTableModel().isCellEditable(rowIndex, columnIndex))
+					if (getTableModel().isCellEditable(rowItem.getIndexOnSelectionModel(),
+							columnIndex))
 					{
 						dataItem.add(new SelfSubmitTextFieldPanel("data", new TableCellModel(
-								getTableModel(), rowIndex, columnIndex)));
+								getTableModel(), rowItem.getIndexOnSelectionModel(), columnIndex)));
 					}
 					else
 					{
@@ -216,19 +218,15 @@ public class Table extends Panel implements IHeaderContributor
 				}
 			});
 		}
-
-
 	}
 
-	public AjaxPagingNavigator getRowsAjaxPagingNavigator(String id, int rowsPerPage)
+	public AjaxPagingNavigator getRowsAjaxPagingNavigator(String id)
 	{
-		rowsListView.setRowsPerPage(rowsPerPage);
 		return new AjaxPagingNavigator(id, rowsListView);
 	}
 
-	public AjaxPagingNavigator getColumnsAjaxPagingNavigator(String id, int columnsPerPage)
+	public AjaxPagingNavigator getColumnsAjaxPagingNavigator(String id)
 	{
-		columnsModelAdapter.setColumnsPerPage(columnsPerPage);
 		return new AjaxPagingNavigator(id, columnsModelAdapter)
 		{
 			@Override
@@ -248,6 +246,16 @@ public class Table extends Panel implements IHeaderContributor
 	public void setRowsPerPage(int rowsPerPage)
 	{
 		rowsListView.setRowsPerPage(rowsPerPage);
+	}
+
+	/**
+	 * Number of columns to be presented per page on table.
+	 * 
+	 * @param rowsPerPage
+	 */
+	public void setColumnsPerPage(int columnsPerPage)
+	{
+		columnsModelAdapter.setColumnsPerPage(columnsPerPage);
 	}
 
 	/**
@@ -361,12 +369,10 @@ public class Table extends Panel implements IHeaderContributor
 	}
 
 	/**
-	 * TODO: Consider to work with observer pattern.
-	 * 
-	 * @param newSelectionIndex
-	 * @param target
+	 * Method called on item selection to asynchronous update needed by clients
+	 * applications.
 	 */
-	protected void onSelection(int newSelectionIndex, AjaxRequestTarget target)
+	protected void onSelection(AjaxRequestTarget target)
 	{
 	}
 

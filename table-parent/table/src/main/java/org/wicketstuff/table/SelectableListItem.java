@@ -88,7 +88,7 @@ public abstract class SelectableListItem extends ColoredListItem
 		target.appendJavascript("document.getElementById('" + getMarkupId() + "').className = '"
 				+ classAttribute + "';");
 		target.appendJavascript("document.getElementById('" + getMarkupId()
-				+ "').setAttribute('originalClass', '" + classAttribute + "'); ");
+				+ "').originalClass = '" + classAttribute + "'; ");
 	}
 
 	@Override
@@ -123,7 +123,7 @@ public abstract class SelectableListItem extends ColoredListItem
 	 * 
 	 * @return
 	 */
-	protected int getIndexOnSelectionModel()
+	public int getIndexOnSelectionModel()
 	{
 		return this.getIndex();
 	}

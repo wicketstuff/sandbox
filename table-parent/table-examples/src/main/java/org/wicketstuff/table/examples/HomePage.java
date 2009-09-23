@@ -40,16 +40,23 @@ public class HomePage extends WebPage
 {
 
 	private static String[][] values = {
-			{ "registered", "Window", "Label", "MultiLineLabel", "Panel", "Border", "Include" },
-			{ "listener", "Browser", "wicketstuff", "table", "swing", "javax", "RowSorter" },
-			{ "interface", "jar", "TabbedPanel", "Fragment", "Link", "ExternalLink", "PageLink" },
-			{ "RequestListenerInterface", "version", "BookmarkablePageLink", "Form", "Button",
-					"SubmitLink", "TextField" },
-			{ "ILinkListener", "file", "Palette", "Select", "ListMultipleChoice", "Radio",
-					"RadioChoice" },
-			{ "log", "Users", "PageParameters", "HomePage", "WebPage", "Model", "TableModel" },
-			{ "IResourceListener", "markup", "form", "markup", "link", "panel", "basic" },
-			{ "IActivePageBehaviorListener", "abstract", "TextArea", "CheckBox",
+			{ "Words ", "Names ", "coupled", "working", "probability", "effects", "effects",
+					"breakage" },
+			{ "Sequential", "Registered", "Window", "Label", "MultiLineLabel", "Panel", "Border",
+					"Include" },
+			{ "Different  ", "Listener", "Browser", "Wicketstuff", "table", "swing", "javax",
+					"RowSorter" },
+			{ "Operators ", "Interface", "Jar", "TabbedPanel", "Fragment", "Link", "ExternalLink",
+					"PageLink" },
+			{ "Entry  ", "RequestListenerInterface", "Version", "BookmarkablePageLink", "Form",
+					"Button", "SubmitLink", "TextField" },
+			{ "Usually  ", "ILinkListener", "File", "Palette", "Select", "ListMultipleChoice",
+					"Radio", "RadioChoice" },
+			{ "Programming ", "Log", "Users", "PageParameters", "HomePage", "WebPage", "Model",
+					"TableModel" },
+			{ "Largely  ", "IResourceListener", "markup", "form", "markup", "link", "panel",
+					"basic" },
+			{ "Place  ", "IActivePageBehaviorListener", "abstract", "TextArea", "CheckBox",
 					"CheckBoxMultipleChoice", "Palette", "DropDownChoice" } };
 	private static Integer[] listSelectionModels = { ListSelectionModel.SINGLE_SELECTION,
 			ListSelectionModel.SINGLE_INTERVAL_SELECTION };
@@ -88,38 +95,42 @@ public class HomePage extends WebPage
 		final Table table = new Table("table", tableModel)
 		{
 			@Override
-			protected void onSelection(int newSelectionIndex, AjaxRequestTarget target)
+			protected void onSelection(AjaxRequestTarget target)
 			{
-				selectionLabel.setDefaultModelObject(" " + newSelectionIndex);
+				selectionLabel.setDefaultModelObject(" "
+						+ getListSelectionModel().getMinSelectionIndex());
 				target.addComponent(selectionLabel);
 			}
 		};
 		table.setAutoCreateRowSorter(true);
 		add(table);
-		add(table.getRowsAjaxPagingNavigator("rowsPaging", 4));
-		add(table.getColumnsAjaxPagingNavigator("columnsPaging", 4));
-		add(new DropDownChoice("modes", new Model(), new Model((Serializable)Arrays
-				.asList(listSelectionModels)), new IChoiceRenderer()
-		{
-			@Override
-			public Object getDisplayValue(Object object)
-			{
-				switch ((Integer)object)
+		table.setRowsPerPage(4);
+		add(table.getRowsAjaxPagingNavigator("rowsPaging"));
+		table.setColumnsPerPage(4);
+		add(table.getColumnsAjaxPagingNavigator("columnsPaging"));
+		add(new DropDownChoice("modes",
+				new Model(table.getListSelectionModel().getSelectionMode()), new Model(
+						(Serializable)Arrays.asList(listSelectionModels)), new IChoiceRenderer()
 				{
-					case ListSelectionModel.SINGLE_SELECTION :
-						return "SINGLE_SELECTION";
-					case ListSelectionModel.SINGLE_INTERVAL_SELECTION :
-						return "SINGLE_INTERVAL_SELECTION";
-				}
-				return null;
-			}
+					@Override
+					public Object getDisplayValue(Object object)
+					{
+						switch ((Integer)object)
+						{
+							case ListSelectionModel.SINGLE_SELECTION :
+								return "SINGLE_SELECTION";
+							case ListSelectionModel.SINGLE_INTERVAL_SELECTION :
+								return "SINGLE_INTERVAL_SELECTION";
+						}
+						return null;
+					}
 
-			@Override
-			public String getIdValue(Object object, int index)
-			{
-				return object.toString();
-			}
-		})
+					@Override
+					public String getIdValue(Object object, int index)
+					{
+						return object.toString();
+					}
+				})
 		{
 			@Override
 			public void updateModel()

@@ -75,7 +75,7 @@ public abstract class AjaxSelectableListView extends PageableListView
 	}
 
 	@Override
-	protected ListItem newItem(final int index)
+	protected SelectableListItem newItem(final int index)
 	{
 		final SelectableListItem listItem = new SelectableListItem(index, getListItemModel(
 				getModel(), index), listSelectionModel)
@@ -87,7 +87,7 @@ public abstract class AjaxSelectableListView extends PageableListView
 			}
 
 			@Override
-			protected int getIndexOnSelectionModel()
+			public int getIndexOnSelectionModel()
 			{
 				if (sorter != null)
 				{
@@ -112,10 +112,10 @@ public abstract class AjaxSelectableListView extends PageableListView
 		}
 		log.debug("rendering: " + rowItem.getIndex() + " converted to: " + rowIndex + " using: "
 				+ sorter);
-		populateRow(rowItem, rowIndex);
+		populateSelectableItem((SelectableListItem)rowItem);
 	}
 
-	abstract protected void populateRow(ListItem rowItem, int rowIndex);
+	abstract protected void populateSelectableItem(SelectableListItem rowItem);
 
 	private int lastNonShiftSelection = 0;
 
@@ -154,22 +154,21 @@ public abstract class AjaxSelectableListView extends PageableListView
 		onSelection(selectedItem, target);
 	}
 
-	public IModel getMinSelection()
+	public SelectableListItem getMinSelection()
 	{
-		return (IModel)visitChildren(SelectableListItem.class, new IVisitor()
+		return (SelectableListItem)visitChildren(SelectableListItem.class, new IVisitor()
 		{
 			public Object component(Component component)
 			{
-				int rowIndex = ((SelectableListItem)component).getIndex();
-				if (sorter != null)
-				{
-					rowIndex = sorter.convertRowIndexToModel(rowIndex);
-				}
+				int rowIndex = ((SelectableListItem)component).getIndexOnSelectionModel();
 				if (rowIndex == listSelectionModel.getMinSelectionIndex())
 				{
-					return component.getDefaultModel();
+					return component;
 				}
-				return null;
+				else
+				{
+					return IVisitor.CONTINUE_TRAVERSAL;
+				}
 			}
 		});
 	}
