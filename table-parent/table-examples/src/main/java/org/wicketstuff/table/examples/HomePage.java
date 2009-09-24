@@ -26,12 +26,15 @@ import javax.swing.table.TableModel;
 import org.apache.wicket.Component;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.markup.html.CSSPackageResource;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
+import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.Model;
 import org.wicketstuff.table.Table;
+import org.wicketstuff.table.TableUtil;
 
 /**
  * Homepage
@@ -40,34 +43,54 @@ public class HomePage extends WebPage
 {
 
 	private static String[][] values = {
-			{ "Words ", "Names ", "coupled", "working", "probability", "effects", "effects",
+			{ "0", "Words ", "Names ", "coupled", "working", "probability", "effects", "effects",
 					"breakage" },
-			{ "Sequential", "Registered", "Window", "Label", "MultiLineLabel", "Panel", "Border",
-					"Include" },
-			{ "Different  ", "Listener", "Browser", "Wicketstuff", "table", "swing", "javax",
+			{ "1", "Sequential", "Registered", "Window", "Label", "MultiLineLabel", "Panel",
+					"Border", "Include" },
+			{ "2", "Different  ", "Listener", "Browser", "Wicketstuff", "table", "swing", "javax",
 					"RowSorter" },
-			{ "Operators ", "Interface", "Jar", "TabbedPanel", "Fragment", "Link", "ExternalLink",
-					"PageLink" },
-			{ "Entry  ", "RequestListenerInterface", "Version", "BookmarkablePageLink", "Form",
-					"Button", "SubmitLink", "TextField" },
-			{ "Usually  ", "ILinkListener", "File", "Palette", "Select", "ListMultipleChoice",
+			{ "3", "Operators ", "Interface", "Jar", "TabbedPanel", "Fragment", "Link",
+					"ExternalLink", "PageLink" },
+			{ "4", "Entry  ", "RequestListenerInterface", "Version", "BookmarkablePageLink",
+					"Form", "Button", "SubmitLink", "TextField" },
+			{ "5", "Usually  ", "ILinkListener", "File", "Palette", "Select", "ListMultipleChoice",
 					"Radio", "RadioChoice" },
-			{ "Programming ", "Log", "Users", "PageParameters", "HomePage", "WebPage", "Model",
-					"TableModel" },
-			{ "Largely  ", "IResourceListener", "markup", "form", "markup", "link", "panel",
+			{ "6", "Programming ", "Log", "Users", "PageParameters", "HomePage", "WebPage",
+					"Model", "TableModel" },
+			{ "7", "Largely  ", "IResourceListener", "markup", "form", "markup", "link", "panel",
 					"basic" },
-			{ "Place  ", "IActivePageBehaviorListener", "abstract", "TextArea", "CheckBox",
+			{ "8", "Place  ", "IActivePageBehaviorListener", "abstract", "TextArea", "CheckBox",
 					"CheckBoxMultipleChoice", "Palette", "DropDownChoice" } };
 	private static Integer[] listSelectionModels = { ListSelectionModel.SINGLE_SELECTION,
-			ListSelectionModel.SINGLE_INTERVAL_SELECTION };
+			ListSelectionModel.SINGLE_INTERVAL_SELECTION,
+			ListSelectionModel.MULTIPLE_INTERVAL_SELECTION };
+	private Table table;
+	private Component viewSelection;
+	private Component modelSelection;
+	private Component editionLabel;
 
 	public HomePage(final PageParameters parameters)
 	{
-		final Component selectionLabel = new Label("selectionOut", new Model())
-				.setOutputMarkupId(true);
-		final Component editionLabel = new Label("editionnOut", new Model())
-				.setOutputMarkupId(true);
-		add(selectionLabel);
+		add(CSSPackageResource.getHeaderContribution(HomePage.class, "style.css"));
+		viewSelection = new Label("viewSelection", new AbstractReadOnlyModel()
+		{
+			@Override
+			public Object getObject()
+			{
+				return Arrays.toString(TableUtil.getSelectedRows(table.getListSelectionModel()));
+			}
+		}).setOutputMarkupId(true);
+		add(viewSelection);
+		modelSelection = new Label("modelSelection", new AbstractReadOnlyModel()
+		{
+			@Override
+			public Object getObject()
+			{
+				return Arrays.toString(table.getSelectedRows());
+			}
+		}).setOutputMarkupId(true);
+		add(modelSelection);
+		editionLabel = new Label("editionnOut", new Model()).setOutputMarkupId(true);
 		add(editionLabel);
 		TableModel tableModel = new DefaultTableModel(values.length, values[0].length)
 		{
@@ -92,14 +115,13 @@ public class HomePage extends WebPage
 				AjaxRequestTarget.get().addComponent(editionLabel);
 			}
 		};
-		final Table table = new Table("table", tableModel)
+		table = new Table("table", tableModel)
 		{
 			@Override
 			protected void onSelection(AjaxRequestTarget target)
 			{
-				selectionLabel.setDefaultModelObject(" "
-						+ getListSelectionModel().getMinSelectionIndex());
-				target.addComponent(selectionLabel);
+				target.addComponent(viewSelection);
+				target.addComponent(modelSelection);
 			}
 		};
 		table.setAutoCreateRowSorter(true);
@@ -121,6 +143,8 @@ public class HomePage extends WebPage
 								return "SINGLE_SELECTION";
 							case ListSelectionModel.SINGLE_INTERVAL_SELECTION :
 								return "SINGLE_INTERVAL_SELECTION";
+							case ListSelectionModel.MULTIPLE_INTERVAL_SELECTION :
+								return "MULTIPLE_INTERVAL_SELECTION";
 						}
 						return null;
 					}

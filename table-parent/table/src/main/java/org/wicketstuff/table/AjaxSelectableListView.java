@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.Set;
 
 import javax.swing.ListSelectionModel;
-import javax.swing.RowSorter;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -29,23 +28,20 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.PageableListView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Repeater component that add behavior to every row to handle clicks events and
- * manage the selection state. Actually the component only dial with
- * ListSelectionModel on mode: ListSelectionModel.SINGLE_SELECTION
+ * manage the selection state.
  * 
  * @author Pedro Henrique Oliveira dos Santos
  * 
  */
 public abstract class AjaxSelectableListView extends PageableListView
 {
-	private static final Logger log = LoggerFactory.getLogger(AjaxSelectableListView.class);
+	// private static final Logger log =
+	// LoggerFactory.getLogger(AjaxSelectableListView.class);
 	private static final long serialVersionUID = 1L;
 	protected ListSelectionModel listSelectionModel;
-	protected RowSorter sorter;
 
 	public AjaxSelectableListView(String id, IModel model)
 	{
@@ -81,23 +77,12 @@ public abstract class AjaxSelectableListView extends PageableListView
 				getModel(), index), listSelectionModel)
 		{
 			@Override
-			protected void onItemSelection(AjaxRequestTarget target, boolean shiftPressed)
+			protected void onItemSelection(AjaxRequestTarget target, boolean shiftPressed,
+					boolean ctrlPressed)
 			{
-				AjaxSelectableListView.this.rowClicked(this, target, shiftPressed);
+				AjaxSelectableListView.this.rowClicked(this, target, shiftPressed, ctrlPressed);
 			}
 
-			@Override
-			public int getIndexOnSelectionModel()
-			{
-				if (sorter != null)
-				{
-					return sorter.convertRowIndexToModel(getIndex());
-				}
-				else
-				{
-					return super.getIndexOnSelectionModel();
-				}
-			}
 		};
 		return listItem;
 	}
@@ -105,53 +90,65 @@ public abstract class AjaxSelectableListView extends PageableListView
 	@Override
 	protected void populateItem(ListItem rowItem)
 	{
-		int rowIndex = rowItem.getIndex();
-		if (sorter != null)
-		{
-			rowIndex = sorter.convertRowIndexToModel(rowIndex);
-		}
-		log.debug("rendering: " + rowItem.getIndex() + " converted to: " + rowIndex + " using: "
-				+ sorter);
 		populateSelectableItem((SelectableListItem)rowItem);
 	}
 
 	abstract protected void populateSelectableItem(SelectableListItem rowItem);
 
-	private int lastNonShiftSelection = 0;
+	private Integer lastNonShiftSelection;
 
 	/**
-	 * Method responsible to resolve items selection. The actual implementation
-	 * only do that for an listSelectionModel in a
-	 * ListSelectionModel.SINGLE_SELECTION mode
-	 * 
-	 * @param selectedItem
-	 * @param target
+	 * Method responsible to resolve items selection.
 	 */
-	protected void rowClicked(final SelectableListItem selectedItem,
-			final AjaxRequestTarget target, boolean shiftPressed)
+	protected void rowClicked(final SelectableListItem clickedItem,
+			final AjaxRequestTarget target, boolean shiftPressed, boolean ctrlPressed)
 	{
-		int[] oldSelection = getSelectedRows();
-		listSelectionModel.setSelectionInterval(shiftPressed ? lastNonShiftSelection : selectedItem
-				.getIndexOnSelectionModel(), selectedItem.getIndexOnSelectionModel());
-		int[] newSelection = getSelectedRows();
+		int[] oldSelections = getSelectedRows();
+
+		int newSelection = clickedItem.getIndex();
+
+		if (shiftPressed
+				&& getListSelectionModel().getSelectionMode() != ListSelectionModel.SINGLE_SELECTION)
+		{
+			int referenceSelection = lastNonShiftSelection == null ? 0 : lastNonShiftSelection;
+			listSelectionModel.setSelectionInterval(Math.min(referenceSelection, newSelection),
+					Math.max(referenceSelection, newSelection));
+		}
+		else if (ctrlPressed)
+		{
+			if (listSelectionModel.isSelectedIndex(newSelection))
+			{
+				listSelectionModel.removeSelectionInterval(newSelection, newSelection);
+			}
+			else
+			{
+				listSelectionModel.addSelectionInterval(newSelection, newSelection);
+			}
+		}
+		else
+		{
+			listSelectionModel.setSelectionInterval(clickedItem.getIndex(), clickedItem
+					.getIndex());
+		}
+		int[] newSelections = getSelectedRows();
 		if (!shiftPressed)
 		{
-			lastNonShiftSelection = selectedItem.getIndexOnSelectionModel();
+			lastNonShiftSelection = clickedItem.getIndex();
 		}
-		final Set toUpdate = TableUtil.getRowsToUpdate(oldSelection, newSelection);
+		final Set toUpdate = TableUtil.getRowsToUpdate(oldSelections, newSelections);
 		visitChildren(SelectableListItem.class, new IVisitor()
 		{
 			public Object component(Component component)
 			{
 				SelectableListItem listItem = (SelectableListItem)component;
-				if (toUpdate.contains(listItem.getIndexOnSelectionModel()))
+				if (toUpdate.contains(listItem.getIndex()))
 				{
 					listItem.updateOnAjaxRequest(target);
 				}
-				return null;
+				return IVisitor.CONTINUE_TRAVERSAL;
 			}
 		});
-		onSelection(selectedItem, target);
+		onSelection(clickedItem, target);
 	}
 
 	public SelectableListItem getMinSelection()
@@ -160,7 +157,7 @@ public abstract class AjaxSelectableListView extends PageableListView
 		{
 			public Object component(Component component)
 			{
-				int rowIndex = ((SelectableListItem)component).getIndexOnSelectionModel();
+				int rowIndex = ((SelectableListItem)component).getIndex();
 				if (rowIndex == listSelectionModel.getMinSelectionIndex())
 				{
 					return component;
@@ -182,26 +179,7 @@ public abstract class AjaxSelectableListView extends PageableListView
 	 */
 	public int[] getSelectedRows()
 	{
-		int iMin = listSelectionModel.getMinSelectionIndex();
-		int iMax = listSelectionModel.getMaxSelectionIndex();
-
-		if ((iMin == -1) || (iMax == -1))
-		{
-			return new int[0];
-		}
-
-		int[] rvTmp = new int[1 + (iMax - iMin)];
-		int n = 0;
-		for (int i = iMin; i <= iMax; i++)
-		{
-			if (listSelectionModel.isSelectedIndex(i))
-			{
-				rvTmp[n++] = i;
-			}
-		}
-		int[] rv = new int[n];
-		System.arraycopy(rvTmp, 0, rv, 0, n);
-		return rv;
+		return TableUtil.getSelectedRows(listSelectionModel);
 	}
 
 	/**
@@ -230,15 +208,6 @@ public abstract class AjaxSelectableListView extends PageableListView
 		return listSelectionModel;
 	};
 
-	public void setRowSorter(RowSorter sorter)
-	{
-		this.sorter = sorter;
-	}
-
-	public RowSorter getRowSorter()
-	{
-		return sorter;
-	}
 
 	public void clearSelection()
 	{

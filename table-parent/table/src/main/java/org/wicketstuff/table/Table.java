@@ -17,6 +17,7 @@
 package org.wicketstuff.table;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Iterator;
 
 import javax.swing.ListSelectionModel;
@@ -24,6 +25,8 @@ import javax.swing.RowSorter;
 import javax.swing.SortOrder;
 import javax.swing.RowSorter.SortKey;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.event.RowSorterEvent;
+import javax.swing.event.RowSorterListener;
 import javax.swing.table.TableModel;
 
 import org.apache.wicket.ResourceReference;
@@ -52,7 +55,6 @@ import org.wicketstuff.table.sorter.SerializableTableRowSorter;
 public class Table extends Panel implements IHeaderContributor
 {
 
-	// private static final Logger log = LoggerFactory.getLogger(Table.class);
 	private static final long serialVersionUID = 1L;
 	public static final ResourceReference TABLE_CSS = new ResourceReference(Table.class,
 			"res/table.css");
@@ -91,31 +93,22 @@ public class Table extends Panel implements IHeaderContributor
 					@Override
 					protected ResourceReference getImageResourceReference()
 					{
-						if (getRowSorter() != null)
+						if (getRowSorter() != null
+								&& getRowSorter().getSortKeys() != null
+								&& getRowSorter().getSortKeys().size() > 0
+								&& ((SortKey)getRowSorter().getSortKeys().get(0)).getColumn() == columnIndex)
 						{
-							if (getRowSorter().getSortKeys() == null
-									|| getRowSorter().getSortKeys().size() == 0)
+							SortKey sortKey = (SortKey)getRowSorter().getSortKeys().get(0);
+							if (sortKey.getSortOrder() == SortOrder.ASCENDING)
 							{
-								return ARROW_OFF;
+								return ARROW_UP;
+							}
+							else if (sortKey.getSortOrder() == SortOrder.DESCENDING)
+							{
+								return ARROW_DOWN;
 							}
 							else
 							{
-								for (Iterator i = getRowSorter().getSortKeys().iterator(); i
-										.hasNext();)
-								{
-									SortKey sortKey = (SortKey)i.next();
-									if (sortKey.getColumn() == columnIndex)
-									{
-										if (sortKey.getSortOrder() == SortOrder.ASCENDING)
-										{
-											return ARROW_UP;
-										}
-										else if (sortKey.getSortOrder() == SortOrder.DESCENDING)
-										{
-											return ARROW_DOWN;
-										}
-									}
-								}// for
 								return ARROW_OFF;
 							}
 						}
@@ -123,6 +116,7 @@ public class Table extends Panel implements IHeaderContributor
 						{
 							return null;
 						}
+
 					}
 
 					@Override
@@ -167,6 +161,7 @@ public class Table extends Panel implements IHeaderContributor
 		add(rowsListView = new TableListView("rows", new ListModelAdapter(getTableModel())));
 	}
 
+
 	/**
 	 * Repeating component that extends the AjaxSelectableListView. The extended
 	 * behavior are the table model rendering complexity partially implemented.
@@ -174,7 +169,7 @@ public class Table extends Panel implements IHeaderContributor
 	 */
 	class TableListView extends AjaxSelectableListView
 	{
-
+		private RowSorter sorter;
 
 		public TableListView(String id, IModel model)
 		{
@@ -197,19 +192,19 @@ public class Table extends Panel implements IHeaderContributor
 				{
 
 					int columnIndex = columnsModelAdapter.convertIndexToModel(dataItem.getIndex());
-					Object data = getTableModel().getValueAt(rowItem.getIndexOnSelectionModel(),
-							columnIndex);
+					int modelRowIndex = sorter != null ? sorter.convertRowIndexToModel(rowItem
+							.getIndex()) : rowItem.getIndex();
+					Object data = getTableModel().getValueAt(modelRowIndex, columnIndex);
 					/*
 					 * TODO from the table model we can get much more
 					 * informations. Is possible to add checkboxes for booleans,
 					 * image components for images, date components for dates,
 					 * etc.
 					 */
-					if (getTableModel().isCellEditable(rowItem.getIndexOnSelectionModel(),
-							columnIndex))
+					if (getTableModel().isCellEditable(modelRowIndex, columnIndex))
 					{
 						dataItem.add(new SelfSubmitTextFieldPanel("data", new TableCellModel(
-								getTableModel(), rowItem.getIndexOnSelectionModel(), columnIndex)));
+								getTableModel(), modelRowIndex, columnIndex)));
 					}
 					else
 					{
@@ -218,6 +213,46 @@ public class Table extends Panel implements IHeaderContributor
 				}
 			});
 		}
+
+		public void setRowSorter(RowSorter newSorter)
+		{
+			this.sorter = newSorter;
+			sorter.addRowSorterListener(new RowSorterListener()
+			{
+				@Override
+				public void sorterChanged(RowSorterEvent e)
+				{
+					if (e.getType() == RowSorterEvent.Type.SORTED)
+					{
+						int[] selection = getSelectedRows();
+						int[] newSelection = Arrays.copyOf(selection, selection.length);
+						for (int i = 0; i < newSelection.length; i++)
+						{
+							int oldModelIndex = e.convertPreviousRowIndexToModel(selection[i]);
+							if (oldModelIndex == -1)
+							{
+								// means that the table wasn't sorted and the:
+								oldModelIndex = selection[i];
+							}
+							newSelection[i] = sorter.convertRowIndexToView(oldModelIndex);
+						}
+						Arrays.sort(newSelection);
+						listSelectionModel.clearSelection();
+						for (int i = 0; i < newSelection.length; i++)
+						{
+							listSelectionModel.addSelectionInterval(newSelection[i],
+									newSelection[i]);
+						}
+					}
+				}
+			});
+		}
+
+		public RowSorter getRowSorter()
+		{
+			return sorter;
+		}
+
 	}
 
 	public AjaxPagingNavigator getRowsAjaxPagingNavigator(String id)
@@ -348,6 +383,30 @@ public class Table extends Panel implements IHeaderContributor
 	public RowSorter getRowSorter()
 	{
 		return this.rowsListView.getRowSorter();
+	}
+
+	public int getSelectedRowCount()
+	{
+		return rowsListView.getSelectedRowCount();
+	}
+
+	public int[] getSelectedRows()
+	{
+		int[] viewSelection = rowsListView.getSelectedRows();
+		if (getRowSorter() != null)
+		{
+
+			int[] onModelSelection = Arrays.copyOf(viewSelection, viewSelection.length);
+			for (int i = 0; i < onModelSelection.length; i++)
+			{
+				onModelSelection[i] = getRowSorter().convertRowIndexToModel(viewSelection[i]);
+			}
+			return onModelSelection;
+		}
+		else
+		{
+			return viewSelection;
+		}
 	}
 
 	@Override

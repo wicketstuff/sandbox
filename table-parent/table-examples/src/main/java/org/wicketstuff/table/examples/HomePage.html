@@ -19,11 +19,12 @@
         <title>Table Example</title>
     </head>
     <body>
-    	Selection:<span wicket:id="selectionOut"></span><br />
+    	View Selection:<span wicket:id="viewSelection"></span><br />
+    	Model Selection:<span wicket:id="modelSelection"></span><br />
     	Cell edition:<span wicket:id="editionnOut"></span><br />
-    	Rows paging: <span wicket:id="rowsPaging"></span><br />
-    	Columns paging: <span wicket:id="columnsPaging"></span><br />
-    	Selection mode: <select wicket:id="modes"></select><br />
+    	Rows paging: <div class="navigator" wicket:id="rowsPaging"></div>
+    	Columns paging: <div class="navigator" wicket:id="columnsPaging"></div>
+    	Selection mode: <select wicket:id="modes"></select><br /><br />
         <table wicket:id="table"></table>
     </body>
 </html>

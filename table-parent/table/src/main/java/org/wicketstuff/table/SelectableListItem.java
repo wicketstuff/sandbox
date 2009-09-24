@@ -41,6 +41,8 @@ public abstract class SelectableListItem extends ColoredListItem
 	private static final long serialVersionUID = 1L;
 	public static final String CLASS_SELECTED = "selected";
 	public static final String CLASS_MOUSE_OVER = "onMouseOver";
+	private static final String SHIFT_P = "shiftKey";
+	private static final String CTRL_P = "ctrlKey";
 	private ListSelectionModel listSelectionModel;
 	private static final HeaderContributor TABLE_JS = JavascriptPackageResource
 			.getHeaderContribution(new ResourceReference(SelectableListItem.class, "res/table.js"));
@@ -63,24 +65,25 @@ public abstract class SelectableListItem extends ColoredListItem
 		this.add(new AjaxEventBehavior("onclick")
 		{
 			private static final long serialVersionUID = 1L;
-			private static final String SHIFT_P = "shiftKey";
 
 			@Override
 			protected void onEvent(AjaxRequestTarget target)
 			{
-				onItemSelection(target, Strings.isTrue(getRequest().getParameter(SHIFT_P)));
+				onItemSelection(target, Strings.isTrue(getRequest().getParameter(SHIFT_P)), Strings
+						.isTrue(getRequest().getParameter(CTRL_P)));
 			}
 
 			@Override
 			public CharSequence getCallbackUrl(boolean onlyTargetActivePage)
 			{
 				return super.getCallbackUrl(onlyTargetActivePage) + "&" + SHIFT_P
-						+ "='+event.shiftKey+'";
+						+ "='+event.shiftKey+'&" + CTRL_P + "='+event.ctrlKey+'";
 			}
 		});
 	}
 
-	protected abstract void onItemSelection(AjaxRequestTarget target, boolean shiftPressed);
+	protected abstract void onItemSelection(AjaxRequestTarget target, boolean shiftPressed,
+			boolean ctrlPressed);
 
 	public void updateOnAjaxRequest(AjaxRequestTarget target)
 	{
@@ -104,8 +107,7 @@ public abstract class SelectableListItem extends ColoredListItem
 	@Override
 	protected void updateBackgroundColor()
 	{
-		if (listSelectionModel != null
-				&& listSelectionModel.isSelectedIndex(getIndexOnSelectionModel()))
+		if (listSelectionModel != null && listSelectionModel.isSelectedIndex(getIndex()))
 		{
 			classAttribute = CLASS_SELECTED;
 		}
@@ -115,16 +117,4 @@ public abstract class SelectableListItem extends ColoredListItem
 		}
 	}
 
-	/**
-	 * Default implementation for getIndexOnModel return the view item index. If
-	 * the repeater are using an sorter to organize his items, this method need
-	 * to be overridden, to return the index that can to be correctly tested
-	 * against selection model.
-	 * 
-	 * @return
-	 */
-	public int getIndexOnSelectionModel()
-	{
-		return this.getIndex();
-	}
 }
