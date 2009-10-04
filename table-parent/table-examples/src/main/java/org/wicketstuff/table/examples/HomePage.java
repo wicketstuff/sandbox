@@ -18,6 +18,7 @@ package org.wicketstuff.table.examples;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Calendar;
 
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
@@ -26,6 +27,7 @@ import javax.swing.table.TableModel;
 import org.apache.wicket.Component;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.AjaxSelfUpdatingTimerBehavior;
 import org.apache.wicket.markup.html.CSSPackageResource;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
@@ -33,6 +35,7 @@ import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.util.time.Duration;
 import org.wicketstuff.table.Table;
 import org.wicketstuff.table.TableUtil;
 
@@ -103,7 +106,14 @@ public class HomePage extends WebPage
 			@Override
 			public Object getValueAt(int row, int column)
 			{
-				return values[row][column];
+				if (column == 3)
+				{
+					return Calendar.getInstance().getTime();
+				}
+				else
+				{
+					return values[row][column];
+				}
 			}
 
 			@Override
@@ -122,6 +132,26 @@ public class HomePage extends WebPage
 			{
 				target.addComponent(viewSelection);
 				target.addComponent(modelSelection);
+			}
+
+			@Override
+			protected void onBeforeRender()
+			{
+				super.onBeforeRender();
+				table.visitChildren(new IVisitor<Component>()
+				{
+					@Override
+					public Object component(Component component)
+					{
+						if (component.getId().equals("3")
+								&& component.getParent().getId().equals("collums"))
+						{
+							component.setOutputMarkupId(true);
+							component.add(new AjaxSelfUpdatingTimerBehavior(Duration.seconds(5)));
+						}
+						return null;
+					}
+				});
 			}
 		};
 		table.setAutoCreateRowSorter(true);
