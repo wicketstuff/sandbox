@@ -106,9 +106,9 @@ public class HomePage extends WebPage
 			@Override
 			public Object getValueAt(int row, int column)
 			{
-				if (column == 3)
+				if (column == 2)
 				{
-					return Calendar.getInstance().getTime();
+					return Calendar.getInstance().getTime().toString();
 				}
 				else
 				{
@@ -143,7 +143,7 @@ public class HomePage extends WebPage
 					@Override
 					public Object component(Component component)
 					{
-						if (component.getId().equals("3")
+						if (component.getId().equals("2")
 								&& component.getParent().getId().equals("collums"))
 						{
 							component.setOutputMarkupId(true);
