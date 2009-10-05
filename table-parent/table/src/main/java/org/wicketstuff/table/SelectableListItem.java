@@ -107,7 +107,7 @@ public abstract class SelectableListItem extends ColoredListItem
 	@Override
 	protected void updateBackgroundColor()
 	{
-		if (listSelectionModel != null && listSelectionModel.isSelectedIndex(getIndex()))
+		if (isSelected())
 		{
 			classAttribute = CLASS_SELECTED;
 		}
@@ -115,6 +115,11 @@ public abstract class SelectableListItem extends ColoredListItem
 		{
 			super.updateBackgroundColor();
 		}
+	}
+
+	public boolean isSelected()
+	{
+		return listSelectionModel != null && listSelectionModel.isSelectedIndex(getIndex());
 	}
 
 }

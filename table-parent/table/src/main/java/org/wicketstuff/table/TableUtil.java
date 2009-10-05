@@ -1,10 +1,14 @@
 package org.wicketstuff.table;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import javax.swing.DefaultListSelectionModel;
 import javax.swing.ListSelectionModel;
+
+import org.apache.wicket.Component;
+import org.apache.wicket.behavior.IBehavior;
 
 public class TableUtil
 {
@@ -58,6 +62,33 @@ public class TableUtil
 		int[] rv = new int[n];
 		System.arraycopy(rvTmp, 0, rv, 0, n);
 		return rv;
+	}
+
+	public static boolean doComponentHasBehavior(Component component,
+			Class<? extends IBehavior> behavior)
+	{
+		for (Iterator i = component.getBehaviors().iterator(); i.hasNext();)
+		{
+			IBehavior b = (IBehavior)i.next();
+			if (behavior.isAssignableFrom(b.getClass()))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public static <T extends IBehavior> T getBehavior(Component component, Class<T> behavior)
+	{
+		for (Iterator i = component.getBehaviors().iterator(); i.hasNext();)
+		{
+			IBehavior b = (IBehavior)i.next();
+			if (behavior.isAssignableFrom(b.getClass()))
+			{
+				return (T)b;
+			}
+		}
+		return null;
 	}
 
 }

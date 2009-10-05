@@ -18,12 +18,11 @@ package org.wicketstuff.table;
 
 import java.io.Serializable;
 import java.util.Arrays;
-import java.util.Iterator;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.ListSelectionModel;
 import javax.swing.RowSorter;
-import javax.swing.SortOrder;
-import javax.swing.RowSorter.SortKey;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.RowSorterEvent;
 import javax.swing.event.RowSorterListener;
@@ -34,16 +33,19 @@ import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.navigation.paging.AjaxPagingNavigator;
 import org.apache.wicket.markup.ComponentTag;
-import org.apache.wicket.markup.html.IHeaderContributor;
-import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
+import org.wicketstuff.table.cell.CellEditor;
+import org.wicketstuff.table.cell.CellRender;
+import org.wicketstuff.table.cell.ObjectRender;
+import org.wicketstuff.table.cell.TableCellModel;
+import org.wicketstuff.table.column.TableColumn;
+import org.wicketstuff.table.column.ColumnsModel;
 import org.wicketstuff.table.sorter.SerializableTableRowSorter;
 
 /**
@@ -52,21 +54,16 @@ import org.wicketstuff.table.sorter.SerializableTableRowSorter;
  * @author Pedro Henrique Oliveira dos Santos
  * 
  */
-public class Table extends Panel implements IHeaderContributor
+public class Table extends Panel
 {
 
 	private static final long serialVersionUID = 1L;
+	public static final String CELL_ID = "cell";
 	public static final ResourceReference TABLE_CSS = new ResourceReference(Table.class,
 			"res/table.css");
-	public static final ResourceReference ARROW_UP = new ResourceReference(Table.class,
-			"res/arrow_up.png");
-	public static final ResourceReference ARROW_OFF = new ResourceReference(Table.class,
-			"res/arrow_off.png");
-	public static final ResourceReference ARROW_DOWN = new ResourceReference(Table.class,
-			"res/arrow_down.png");
 	private TableListView rowsListView;
 	private boolean autoCreateRowSorter;
-	private ColumnsModelAdapter columnsModelAdapter;
+	private ColumnsModel columnsModelAdapter;
 
 	/**
 	 * @param id
@@ -78,7 +75,7 @@ public class Table extends Panel implements IHeaderContributor
 	{
 		super(id);
 		setDefaultModel(new TableModelAdapter(swingTableModel));
-		columnsModelAdapter = new ColumnsModelAdapter((IModel<TableModel>)getDefaultModel());
+		columnsModelAdapter = new ColumnsModel((IModel<TableModel>)getDefaultModel());
 		setOutputMarkupId(true);
 		add(new ListView("headers", columnsModelAdapter)
 		{
@@ -88,43 +85,7 @@ public class Table extends Panel implements IHeaderContributor
 				final int columnIndex = columnsModelAdapter.convertIndexToModel(item.getIndex());
 				String header = getTableModel().getColumnName(columnIndex);
 				item.add(new Label("header", new ResourceModel(header, header)));
-				item.add(new Image("arrow")
-				{
-					@Override
-					protected ResourceReference getImageResourceReference()
-					{
-						if (getRowSorter() != null
-								&& getRowSorter().getSortKeys() != null
-								&& getRowSorter().getSortKeys().size() > 0
-								&& ((SortKey)getRowSorter().getSortKeys().get(0)).getColumn() == columnIndex)
-						{
-							SortKey sortKey = (SortKey)getRowSorter().getSortKeys().get(0);
-							if (sortKey.getSortOrder() == SortOrder.ASCENDING)
-							{
-								return ARROW_UP;
-							}
-							else if (sortKey.getSortOrder() == SortOrder.DESCENDING)
-							{
-								return ARROW_DOWN;
-							}
-							else
-							{
-								return ARROW_OFF;
-							}
-						}
-						else
-						{
-							return null;
-						}
-
-					}
-
-					@Override
-					public boolean isVisible()
-					{
-						return getImageResourceReference() != null;
-					}
-				});
+				item.add(new OrderingImage("arrow", columnIndex, Table.this));
 				item.add(new AjaxEventBehavior("onclick")
 				{
 					@Override
@@ -137,122 +98,9 @@ public class Table extends Panel implements IHeaderContributor
 						}
 					}
 				});
-				item.add(new AjaxEventBehavior("ondblclick")
-				{
-					@Override
-					protected void onEvent(AjaxRequestTarget target)
-					{
-						if (getRowSorter() != null)
-						{
-							for (Iterator i = getRowSorter().getSortKeys().iterator(); i.hasNext();)
-							{
-								SortKey sortKey = (SortKey)i.next();
-								if (sortKey.getColumn() == columnIndex)
-								{
-									i.remove();
-								}
-							}
-							target.addComponent(Table.this);
-						}
-					}
-				});
 			}
 		});
 		add(rowsListView = new TableListView("rows", new ListModelAdapter(getTableModel())));
-	}
-
-
-	/**
-	 * Repeating component that extends the AjaxSelectableListView. The extended
-	 * behavior are the table model rendering complexity partially implemented.
-	 * 
-	 */
-	class TableListView extends AjaxSelectableListView
-	{
-		private RowSorter sorter;
-
-		public TableListView(String id, IModel model)
-		{
-			super(id, model);
-		}
-
-		@Override
-		protected void onSelection(SelectableListItem selectableListItem, AjaxRequestTarget target)
-		{
-			Table.this.onSelection(target);
-		}
-
-		@Override
-		protected void populateSelectableItem(final SelectableListItem rowItem)
-		{
-			rowItem.add(new ListView("collums", columnsModelAdapter)
-			{
-				@Override
-				protected void populateItem(ListItem dataItem)
-				{
-
-					int columnIndex = columnsModelAdapter.convertIndexToModel(dataItem.getIndex());
-					int modelRowIndex = sorter != null ? sorter.convertRowIndexToModel(rowItem
-							.getIndex()) : rowItem.getIndex();
-					Object data = getTableModel().getValueAt(modelRowIndex, columnIndex);
-					/*
-					 * TODO from the table model we can get much more
-					 * informations. Is possible to add checkboxes for booleans,
-					 * image components for images, date components for dates,
-					 * etc.
-					 */
-					if (getTableModel().isCellEditable(modelRowIndex, columnIndex))
-					{
-						dataItem.add(new SelfSubmitTextFieldPanel("data", new TableCellModel(
-								getTableModel(), modelRowIndex, columnIndex)));
-					}
-					else
-					{
-						dataItem.add(new Label("data", data == null ? null : data.toString()));
-					}
-				}
-			});
-		}
-
-		public void setRowSorter(RowSorter newSorter)
-		{
-			this.sorter = newSorter;
-			sorter.addRowSorterListener(new RowSorterListener()
-			{
-				@Override
-				public void sorterChanged(RowSorterEvent e)
-				{
-					if (e.getType() == RowSorterEvent.Type.SORTED)
-					{
-						int[] selection = getSelectedRows();
-						int[] newSelection = Arrays.copyOf(selection, selection.length);
-						for (int i = 0; i < newSelection.length; i++)
-						{
-							int oldModelIndex = e.convertPreviousRowIndexToModel(selection[i]);
-							if (oldModelIndex == -1)
-							{
-								// means that the table wasn't sorted and the:
-								oldModelIndex = selection[i];
-							}
-							newSelection[i] = sorter.convertRowIndexToView(oldModelIndex);
-						}
-						Arrays.sort(newSelection);
-						listSelectionModel.clearSelection();
-						for (int i = 0; i < newSelection.length; i++)
-						{
-							listSelectionModel.addSelectionInterval(newSelection[i],
-									newSelection[i]);
-						}
-					}
-				}
-			});
-		}
-
-		public RowSorter getRowSorter()
-		{
-			return sorter;
-		}
-
 	}
 
 	public AjaxPagingNavigator getRowsAjaxPagingNavigator(String id)
@@ -271,6 +119,11 @@ public class Table extends Panel implements IHeaderContributor
 				target.addComponent(this);
 			}
 		};
+	}
+
+	public ColumnsModel getColumnModel()
+	{
+		return columnsModelAdapter;
 	}
 
 	/**
@@ -390,6 +243,9 @@ public class Table extends Panel implements IHeaderContributor
 		return rowsListView.getSelectedRowCount();
 	}
 
+	/**
+	 * @see {@link javax.swing.JTable#getSelectedRows()}
+	 */
 	public int[] getSelectedRows()
 	{
 		int[] viewSelection = rowsListView.getSelectedRows();
@@ -409,10 +265,90 @@ public class Table extends Panel implements IHeaderContributor
 		}
 	}
 
-	@Override
-	public void renderHead(IHeaderResponse response)
+	public CellRender getCellRenderer(int row, int column)
 	{
-		response.renderCSSReference(getCss());
+		TableColumn tableColumn = columnsModelAdapter.getColumn(column);
+		CellRender renderer = tableColumn == null ? null : tableColumn.getCellRender();
+		if (renderer == null)
+		{
+			renderer = getDefaultRenderer(getTableModel().getColumnClass(column));
+		}
+		return renderer;
+	}
+
+	public CellEditor getCellEditor(int row, int column)
+	{
+		TableColumn tableColumn = columnsModelAdapter.getColumn(column);
+		CellEditor editor = tableColumn == null ? null : tableColumn.getCellEditor();
+		if (editor == null)
+		{
+			editor = getDefaultEditor(getTableModel().getColumnClass(column));
+		}
+		return editor;
+	}
+
+
+	private Map<Class, CellRender> defaultRenderersByColumnClass = new HashMap<Class, CellRender>();
+	private Map<Class, CellEditor> defaultEditorsByColumnClass = new HashMap<Class, CellEditor>();
+	{
+		/*
+		 * TODO from the table model we can get much more informations. Is
+		 * possible to add checkboxes for booleans, image components for images,
+		 * date components for dates, etc.
+		 */
+		ObjectRender defaultRender = new ObjectRender();
+		defaultRenderersByColumnClass.put(Object.class, defaultRender);
+		defaultEditorsByColumnClass.put(Object.class, defaultRender);
+	}
+
+	public void setDefaultRenderer(Class<?> columnClass, CellRender renderer)
+	{
+		if (renderer != null)
+		{
+			defaultRenderersByColumnClass.put(columnClass, renderer);
+		}
+		else
+		{
+			defaultRenderersByColumnClass.remove(columnClass);
+		}
+	}
+
+	protected CellRender getDefaultRenderer(Class<?> columnClass)
+	{
+		CellRender render = defaultRenderersByColumnClass.get(columnClass);
+		if (render != null)
+		{
+			return render;
+		}
+		else
+		{
+			return getDefaultRenderer(columnClass.getSuperclass());
+		}
+	}
+
+	public void setDefaultEditor(Class<?> columnClass, CellEditor editor)
+	{
+		if (editor != null)
+		{
+			defaultEditorsByColumnClass.put(columnClass, editor);
+		}
+		else
+		{
+			defaultEditorsByColumnClass.remove(columnClass);
+		}
+	}
+
+	protected CellEditor getDefaultEditor(Class<?> columnClass)
+	{
+		CellEditor render = defaultEditorsByColumnClass.get(columnClass);
+		if (render != null)
+		{
+			return render;
+		}
+		else
+		{
+			return getDefaultEditor(columnClass.getSuperclass());
+		}
 	}
 
 	@Override
@@ -433,6 +369,103 @@ public class Table extends Panel implements IHeaderContributor
 	 */
 	protected void onSelection(AjaxRequestTarget target)
 	{
+	}
+
+	/**
+	 * Repeating component that extends the AjaxSelectableListView. The extended
+	 * behavior are the table model rendering complexity partially implemented.
+	 * 
+	 */
+	class TableListView extends AjaxSelectableListView
+	{
+		private RowSorter sorter;
+
+		public TableListView(String id, IModel model)
+		{
+			super(id, model);
+		}
+
+		@Override
+		protected void onSelection(SelectableListItem selectableListItem, AjaxRequestTarget target)
+		{
+			Table.this.onSelection(target);
+		}
+
+		@Override
+		protected void populateSelectableItem(final SelectableListItem rowItem)
+		{
+			rowItem.add(new ListView("columns", columnsModelAdapter)
+			{
+				@Override
+				protected void populateItem(ListItem dataItem)
+				{
+
+					int columnIndex = columnsModelAdapter.convertIndexToModel(dataItem.getIndex());
+					int modelRowIndex = sorter != null ? sorter.convertRowIndexToModel(rowItem
+							.getIndex()) : rowItem.getIndex();
+					TableCellModel cellModel = new TableCellModel(getTableModel(), modelRowIndex,
+							columnIndex);
+					if (getTableModel().isCellEditable(modelRowIndex, columnIndex))
+					{
+
+						dataItem.add(getCellEditor(modelRowIndex, columnIndex).getEditorComponent(
+								CELL_ID, cellModel, rowItem, modelRowIndex, columnIndex));
+					}
+					else
+					{
+						dataItem.add(getCellRenderer(modelRowIndex, columnIndex)
+								.getRenderComponent(CELL_ID, cellModel, rowItem, modelRowIndex,
+										columnIndex));
+					}
+				}
+			});
+		}
+
+		public void setRowSorter(RowSorter newSorter)
+		{
+			this.sorter = newSorter;
+			sorter.addRowSorterListener(new RowSorterListener()
+			{
+				@Override
+				public void sorterChanged(RowSorterEvent e)
+				{
+					if (e.getType() == RowSorterEvent.Type.SORTED)
+					{
+						int[] selection = getSelectedRows();
+						int[] newSelection = Arrays.copyOf(selection, selection.length);
+						for (int i = 0; i < newSelection.length; i++)
+						{
+							int oldModelIndex = e.convertPreviousRowIndexToModel(selection[i]);
+							if (oldModelIndex == -1)
+							{
+								// means that the table wasn't sorted and the:
+								oldModelIndex = selection[i];
+							}
+							newSelection[i] = sorter.convertRowIndexToView(oldModelIndex);
+						}
+						Arrays.sort(newSelection);
+						listSelectionModel.clearSelection();
+						for (int i = 0; i < newSelection.length; i++)
+						{
+							listSelectionModel.addSelectionInterval(newSelection[i],
+									newSelection[i]);
+						}
+					}
+				}
+			});
+		}
+
+		@Override
+		protected ResourceReference getCss()
+		{
+			return Table.this.getCss();
+		}
+
+		public RowSorter getRowSorter()
+		{
+			return sorter;
+		}
+
 	}
 
 }

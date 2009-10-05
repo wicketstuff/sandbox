@@ -27,7 +27,6 @@ import javax.swing.table.TableModel;
 import org.apache.wicket.Component;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.AjaxSelfUpdatingTimerBehavior;
 import org.apache.wicket.markup.html.CSSPackageResource;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
@@ -38,6 +37,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.util.time.Duration;
 import org.wicketstuff.table.Table;
 import org.wicketstuff.table.TableUtil;
+import org.wicketstuff.table.column.SelfUpdateColumn;
 
 /**
  * Homepage
@@ -106,7 +106,7 @@ public class HomePage extends WebPage
 			@Override
 			public Object getValueAt(int row, int column)
 			{
-				if (column == 2)
+				if (column == 1)
 				{
 					return Calendar.getInstance().getTime().toString();
 				}
@@ -133,71 +133,58 @@ public class HomePage extends WebPage
 				target.addComponent(viewSelection);
 				target.addComponent(modelSelection);
 			}
-
-			@Override
-			protected void onBeforeRender()
-			{
-				super.onBeforeRender();
-				table.visitChildren(new IVisitor<Component>()
-				{
-					@Override
-					public Object component(Component component)
-					{
-						if (component.getId().equals("2")
-								&& component.getParent().getId().equals("collums"))
-						{
-							component.setOutputMarkupId(true);
-							component.add(new AjaxSelfUpdatingTimerBehavior(Duration.seconds(5)));
-						}
-						return null;
-					}
-				});
-			}
 		};
+		table.getColumnModel().addColumn(new SelfUpdateColumn(1, Duration.seconds(5)));
 		table.setAutoCreateRowSorter(true);
 		add(table);
 		table.setRowsPerPage(4);
 		add(table.getRowsAjaxPagingNavigator("rowsPaging"));
 		table.setColumnsPerPage(4);
 		add(table.getColumnsAjaxPagingNavigator("columnsPaging"));
-		add(new DropDownChoice("modes",
-				new Model(table.getListSelectionModel().getSelectionMode()), new Model(
-						(Serializable)Arrays.asList(listSelectionModels)), new IChoiceRenderer()
-				{
-					@Override
-					public Object getDisplayValue(Object object)
-					{
-						switch ((Integer)object)
-						{
-							case ListSelectionModel.SINGLE_SELECTION :
-								return "SINGLE_SELECTION";
-							case ListSelectionModel.SINGLE_INTERVAL_SELECTION :
-								return "SINGLE_INTERVAL_SELECTION";
-							case ListSelectionModel.MULTIPLE_INTERVAL_SELECTION :
-								return "MULTIPLE_INTERVAL_SELECTION";
-						}
-						return null;
-					}
+		add(new SelectionModeCombo("modes"));
+	}
 
-					@Override
-					public String getIdValue(Object object, int index)
-					{
-						return object.toString();
-					}
-				})
+	private class SelectionModeCombo extends DropDownChoice
+	{
+		public SelectionModeCombo(String id)
 		{
-			@Override
-			public void updateModel()
+			super(id, new Model(table.getListSelectionModel().getSelectionMode()), new Model(
+					(Serializable)Arrays.asList(listSelectionModels)), new IChoiceRenderer()
 			{
-				super.updateModel();
-				table.setSelectionMode((Integer)getConvertedInput());
-			}
+				@Override
+				public Object getDisplayValue(Object object)
+				{
+					switch ((Integer)object)
+					{
+						case ListSelectionModel.SINGLE_SELECTION :
+							return "SINGLE_SELECTION";
+						case ListSelectionModel.SINGLE_INTERVAL_SELECTION :
+							return "SINGLE_INTERVAL_SELECTION";
+						case ListSelectionModel.MULTIPLE_INTERVAL_SELECTION :
+							return "MULTIPLE_INTERVAL_SELECTION";
+					}
+					return null;
+				}
 
-			@Override
-			protected boolean wantOnSelectionChangedNotifications()
-			{
-				return true;
-			}
-		});
+				@Override
+				public String getIdValue(Object object, int index)
+				{
+					return object.toString();
+				}
+			});
+		}
+
+		@Override
+		public void updateModel()
+		{
+			super.updateModel();
+			table.setSelectionMode((Integer)getConvertedInput());
+		}
+
+		@Override
+		protected boolean wantOnSelectionChangedNotifications()
+		{
+			return true;
+		}
 	}
 }

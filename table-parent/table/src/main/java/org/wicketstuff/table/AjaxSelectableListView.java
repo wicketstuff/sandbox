@@ -17,13 +17,17 @@
 package org.wicketstuff.table;
 
 import java.io.Serializable;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
 import javax.swing.ListSelectionModel;
 
 import org.apache.wicket.Component;
+import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.markup.html.IHeaderContributor;
+import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.PageableListView;
 import org.apache.wicket.model.IModel;
@@ -36,11 +40,11 @@ import org.apache.wicket.model.Model;
  * @author Pedro Henrique Oliveira dos Santos
  * 
  */
-public abstract class AjaxSelectableListView extends PageableListView
+public abstract class AjaxSelectableListView extends PageableListView implements IHeaderContributor
 {
-	// private static final Logger log =
-	// LoggerFactory.getLogger(AjaxSelectableListView.class);
 	private static final long serialVersionUID = 1L;
+	public static final ResourceReference CSS = new ResourceReference(Table.class,
+			"res/selectableListView.css");
 	protected ListSelectionModel listSelectionModel;
 
 	public AjaxSelectableListView(String id, IModel model)
@@ -100,8 +104,8 @@ public abstract class AjaxSelectableListView extends PageableListView
 	/**
 	 * Method responsible to resolve items selection.
 	 */
-	protected void rowClicked(final SelectableListItem clickedItem,
-			final AjaxRequestTarget target, boolean shiftPressed, boolean ctrlPressed)
+	protected void rowClicked(final SelectableListItem clickedItem, final AjaxRequestTarget target,
+			boolean shiftPressed, boolean ctrlPressed)
 	{
 		int[] oldSelections = getSelectedRows();
 
@@ -127,8 +131,7 @@ public abstract class AjaxSelectableListView extends PageableListView
 		}
 		else
 		{
-			listSelectionModel.setSelectionInterval(clickedItem.getIndex(), clickedItem
-					.getIndex());
+			listSelectionModel.setSelectionInterval(clickedItem.getIndex(), clickedItem.getIndex());
 		}
 		int[] newSelections = getSelectedRows();
 		if (!shiftPressed)
@@ -149,6 +152,11 @@ public abstract class AjaxSelectableListView extends PageableListView
 			}
 		});
 		onSelection(clickedItem, target);
+	}
+
+	public SelectableListItem getSelection()
+	{
+		return getMinSelection();
 	}
 
 	public SelectableListItem getMinSelection()
@@ -219,4 +227,28 @@ public abstract class AjaxSelectableListView extends PageableListView
 
 	}
 
+	@Override
+	public void renderHead(IHeaderResponse response)
+	{
+		response.renderCSSReference(getCss());
+	}
+
+	protected ResourceReference getCss()
+	{
+		return CSS;
+	}
+
+	public void selectItemWithObjectOnModel(final Object obj)
+	{
+		for (Iterator i = getList().iterator(); i.hasNext();)
+		{
+			Object selectableItem = (Object)i.next();
+			if (selectableItem.equals(obj))
+			{
+				int selection = getList().indexOf(selectableItem);
+				listSelectionModel.addSelectionInterval(selection, selection);
+			}
+
+		}
+	}
 }

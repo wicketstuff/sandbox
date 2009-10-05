@@ -14,27 +14,44 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.wicketstuff.table;
+package org.wicketstuff.table.cell;
 
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
-import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.panel.Panel;
+import javax.swing.table.TableModel;
+
 import org.apache.wicket.model.IModel;
 
 /**
+ * Model responsible to receive and update an value from a table model position.
+ * 
  * @author Pedro Henrique Oliveira dos Santos
  * 
  */
-public class SelfSubmitTextFieldPanel extends Panel {
-    public SelfSubmitTextFieldPanel(String id, IModel inputModel) {
-	super(id);
-	setRenderBodyOnly(true);
-	TextField field = new TextField("textfield", inputModel);
-	add(field);
-	field.add(new AjaxFormComponentUpdatingBehavior("onchange") {
-	    protected void onUpdate(AjaxRequestTarget target) {
-	    }
-	});
-    }
+public class TableCellModel implements IModel
+{
+	private TableModel tableModel;
+	private int rowIndex;
+	private int columnIndex;
+
+	public TableCellModel(TableModel tableModel, int rowIndex, int columnIndex)
+	{
+		this.tableModel = tableModel;
+		this.rowIndex = rowIndex;
+		this.columnIndex = columnIndex;
+	}
+
+	public Object getObject()
+	{
+		return tableModel.getValueAt(rowIndex, columnIndex);
+	}
+
+	public void setObject(Object object)
+	{
+		tableModel.setValueAt(object, rowIndex, columnIndex);
+	}
+
+	public void detach()
+	{
+
+	}
+
 }

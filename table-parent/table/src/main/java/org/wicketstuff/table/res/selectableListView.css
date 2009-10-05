@@ -1,0 +1,16 @@
+.odd {
+	background-color: rgb(240, 240, 240);
+}
+
+.even {
+	background-color: #FFFFFF;
+}
+
+.onMouseOver {
+	background-color: #E9601A;
+}
+
+.selected {
+	background-color: rgb(10, 36, 106);
+	color: white;
+}

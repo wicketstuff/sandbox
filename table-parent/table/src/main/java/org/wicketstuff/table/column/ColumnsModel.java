@@ -1,7 +1,9 @@
-package org.wicketstuff.table;
+package org.wicketstuff.table.column;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.table.TableModel;
 
@@ -10,19 +12,21 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
 /**
- * Just a adapter class to return a list, with the size equals to the columns
- * count on table model. And publish pageable operations.
+ * Adapter class to return a list with columns count on table model size,
+ * publish pageable operations, and provide TableColumns instances containing
+ * cells rendering and editing custom implementations.
  * 
  * @author Pedro Henrique Oliveira dos Santos
  * 
  */
-public class ColumnsModelAdapter extends Model implements IPageable
+public class ColumnsModel extends Model implements IPageable
 {
 	private IModel<TableModel> tableModel;
 	private int columnsPerPage = Integer.MAX_VALUE;
 	private int currentPage;
+	private Map<Integer, TableColumn> columnMap = new HashMap<Integer, TableColumn>();
 
-	public ColumnsModelAdapter(IModel<TableModel> tableModel)
+	public ColumnsModel(IModel<TableModel> tableModel)
 	{
 		this.tableModel = tableModel;
 	}
@@ -80,4 +84,28 @@ public class ColumnsModelAdapter extends Model implements IPageable
 	{
 		return columnsPerPage * (getCurrentPage() + 1) >= getTotalColumns();
 	}
+
+	/**
+	 * @see javax.swing.table.TableColumnModel#getColumn(int)
+	 */
+	public TableColumn getColumn(Integer columnIndex)
+	{
+		return columnMap.get(columnIndex);
+	};
+
+	/**
+	 * @see javax.swing.table.TableColumnModel#addColumn(javax.swing.table.TableColumn)
+	 */
+	public void addColumn(TableColumn column)
+	{
+		columnMap.put(column.getModelIndex(), column);
+	};
+
+	/**
+	 * @see javax.swing.table.TableColumnModel#removeColumn(javax.swing.table.TableColumn)
+	 */
+	public void removeColumn(TableColumn column)
+	{
+		columnMap.remove(column.getModelIndex());
+	};
 }
