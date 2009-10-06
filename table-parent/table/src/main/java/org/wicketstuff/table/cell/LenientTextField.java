@@ -51,8 +51,6 @@ public class LenientTextField extends TextField
 	{
 		tag.setName("input");
 		tag.put("type", "text");
-		tag.put("value", getValue());
-		// Default handling for component tag
 		super.onComponentTag(tag);
 	}
 }

@@ -19,6 +19,7 @@ package org.wicketstuff.table.cell;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
+import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.IModel;
@@ -44,7 +45,16 @@ public class ObjectRender implements CellRender, CellEditor
 	public Component getEditorComponent(String id, IModel model, SelectableListItem parent,
 			int row, int column)
 	{
-		TextField field = new LenientTextField(id, model);
+		TextField field = new LenientTextField(id, model)
+		{
+			@Override
+			protected void onComponentTag(ComponentTag tag)
+			{
+				super.onComponentTag(tag);
+				tag.put("class", "editCell");
+			}
+		};
+
 		field.add(new AjaxFormComponentUpdatingBehavior("onchange")
 		{
 			protected void onUpdate(AjaxRequestTarget target)
