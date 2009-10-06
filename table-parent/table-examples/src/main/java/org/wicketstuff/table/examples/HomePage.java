@@ -106,7 +106,7 @@ public class HomePage extends WebPage
 			@Override
 			public Object getValueAt(int row, int column)
 			{
-				if (column == 1 || column == 2)
+				if (column == 1)
 				{
 					return Calendar.getInstance().getTime().toString();
 				}
@@ -135,7 +135,6 @@ public class HomePage extends WebPage
 			}
 		};
 		table.getColumnModel().addColumn(new SelfUpdateColumn(1, Duration.seconds(5)));
-		table.getColumnModel().addColumn(new SelfUpdateColumn(2, Duration.seconds(2)));
 		table.setAutoCreateRowSorter(true);
 		add(table);
 		table.setRowsPerPage(4);
