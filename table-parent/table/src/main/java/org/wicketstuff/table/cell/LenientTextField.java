@@ -16,29 +16,43 @@
  */
 package org.wicketstuff.table.cell;
 
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
+import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 
-/**
- * @author Pedro Henrique Oliveira dos Santos
- * 
- */
-public class SelfSubmitTextFieldPanel extends Panel
+public class LenientTextField extends TextField
 {
-	public SelfSubmitTextFieldPanel(String id, IModel inputModel)
+	public LenientTextField(String id)
 	{
 		super(id);
-		setRenderBodyOnly(true);
-		TextField field = new TextField("textfield", inputModel);
-		add(field);
-		field.add(new AjaxFormComponentUpdatingBehavior("onchange")
-		{
-			protected void onUpdate(AjaxRequestTarget target)
-			{
-			}
-		});
+	}
+
+
+	public LenientTextField(String id, Class type)
+	{
+		super(id, type);
+	}
+
+
+	public LenientTextField(String id, IModel model, Class type)
+	{
+		super(id, model, type);
+	}
+
+
+	public LenientTextField(String id, IModel model)
+	{
+		super(id, model);
+	}
+
+
+	@Override
+	protected void onComponentTag(final ComponentTag tag)
+	{
+		tag.setName("input");
+		tag.put("type", "text");
+		tag.put("value", getValue());
+		// Default handling for component tag
+		super.onComponentTag(tag);
 	}
 }
