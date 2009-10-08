@@ -40,12 +40,13 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
+import org.wicketstuff.table.cell.BooleanRender;
 import org.wicketstuff.table.cell.CellEditor;
 import org.wicketstuff.table.cell.CellRender;
 import org.wicketstuff.table.cell.ObjectRender;
 import org.wicketstuff.table.cell.TableCellModel;
 import org.wicketstuff.table.column.TableColumn;
-import org.wicketstuff.table.column.ColumnsModel;
+import org.wicketstuff.table.column.ColumnModel;
 import org.wicketstuff.table.sorter.SerializableTableRowSorter;
 
 /**
@@ -63,7 +64,7 @@ public class Table extends Panel
 			"res/table.css");
 	private TableListView rowsListView;
 	private boolean autoCreateRowSorter;
-	private ColumnsModel columnsModelAdapter;
+	private ColumnModel columnsModelAdapter;
 
 	/**
 	 * @param id
@@ -75,7 +76,7 @@ public class Table extends Panel
 	{
 		super(id);
 		setDefaultModel(new TableModelAdapter(swingTableModel));
-		columnsModelAdapter = new ColumnsModel((IModel<TableModel>)getDefaultModel());
+		columnsModelAdapter = new ColumnModel((IModel<TableModel>)getDefaultModel());
 		setOutputMarkupId(true);
 		add(new ListView("headers", columnsModelAdapter)
 		{
@@ -121,7 +122,7 @@ public class Table extends Panel
 		};
 	}
 
-	public ColumnsModel getColumnModel()
+	public ColumnModel getColumnModel()
 	{
 		return columnsModelAdapter;
 	}
@@ -290,15 +291,18 @@ public class Table extends Panel
 
 	private Map<Class, CellRender> defaultRenderersByColumnClass = new HashMap<Class, CellRender>();
 	private Map<Class, CellEditor> defaultEditorsByColumnClass = new HashMap<Class, CellEditor>();
+	private static ObjectRender defaultRender = new ObjectRender();
+	private static BooleanRender booleanRender = new BooleanRender();
 	{
 		/*
 		 * TODO from the table model we can get much more informations. Is
 		 * possible to add checkboxes for booleans, image components for images,
 		 * date components for dates, etc.
 		 */
-		ObjectRender defaultRender = new ObjectRender();
 		defaultRenderersByColumnClass.put(Object.class, defaultRender);
 		defaultEditorsByColumnClass.put(Object.class, defaultRender);
+		defaultRenderersByColumnClass.put(Boolean.class, booleanRender);
+		defaultEditorsByColumnClass.put(Boolean.class, booleanRender);
 	}
 
 	public void setDefaultRenderer(Class<?> columnClass, CellRender renderer)

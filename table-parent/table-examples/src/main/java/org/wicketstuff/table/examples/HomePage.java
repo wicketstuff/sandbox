@@ -45,25 +45,25 @@ import org.wicketstuff.table.column.SelfUpdateColumn;
 public class HomePage extends WebPage
 {
 
-	private static String[][] values = {
-			{ "0", "Words ", "Names ", "coupled", "working", "probability", "effects", "effects",
-					"breakage" },
-			{ "1", "Sequential", "Registered", "Window", "Label", "MultiLineLabel", "Panel",
+	private static Object[][] values = {
+			{ true, "0", "Words ", "Names ", "coupled", "working", "probability", "effects",
+					"effects", "breakage" },
+			{ false, "1", "Sequential", "Registered", "Window", "Label", "MultiLineLabel", "Panel",
 					"Border", "Include" },
-			{ "2", "Different  ", "Listener", "Browser", "Wicketstuff", "table", "swing", "javax",
-					"RowSorter" },
-			{ "3", "Operators ", "Interface", "Jar", "TabbedPanel", "Fragment", "Link",
+			{ true, "2", "Different  ", "Listener", "Browser", "Wicketstuff", "table", "swing",
+					"javax", "RowSorter" },
+			{ false, "3", "Operators ", "Interface", "Jar", "TabbedPanel", "Fragment", "Link",
 					"ExternalLink", "PageLink" },
-			{ "4", "Entry  ", "RequestListenerInterface", "Version", "BookmarkablePageLink",
+			{ false, "4", "Entry  ", "RequestListenerInterface", "Version", "BookmarkablePageLink",
 					"Form", "Button", "SubmitLink", "TextField" },
-			{ "5", "Usually  ", "ILinkListener", "File", "Palette", "Select", "ListMultipleChoice",
-					"Radio", "RadioChoice" },
-			{ "6", "Programming ", "Log", "Users", "PageParameters", "HomePage", "WebPage",
+			{ true, "5", "Usually  ", "ILinkListener", "File", "Palette", "Select",
+					"ListMultipleChoice", "Radio", "RadioChoice" },
+			{ false, "6", "Programming ", "Log", "Users", "PageParameters", "HomePage", "WebPage",
 					"Model", "TableModel" },
-			{ "7", "Largely  ", "IResourceListener", "markup", "form", "markup", "link", "panel",
-					"basic" },
-			{ "8", "Place  ", "IActivePageBehaviorListener", "abstract", "TextArea", "CheckBox",
-					"CheckBoxMultipleChoice", "Palette", "DropDownChoice" } };
+			{ false, "7", "Largely  ", "IResourceListener", "markup", "form", "markup", "link",
+					"panel", "basic" },
+			{ false, "8", "Place  ", "IActivePageBehaviorListener", "abstract", "TextArea",
+					"CheckBox", "CheckBoxMultipleChoice", "Palette", "DropDownChoice" } };
 	private static Integer[] listSelectionModels = { ListSelectionModel.SINGLE_SELECTION,
 			ListSelectionModel.SINGLE_INTERVAL_SELECTION,
 			ListSelectionModel.MULTIPLE_INTERVAL_SELECTION };
@@ -100,13 +100,26 @@ public class HomePage extends WebPage
 			@Override
 			public boolean isCellEditable(int row, int column)
 			{
-				return column == 2;
+				return column == 0 || column == 3;
+			}
+
+			@Override
+			public Class<?> getColumnClass(int columnIndex)
+			{
+				if (columnIndex == 0)
+				{
+					return Boolean.class;
+				}
+				else
+				{
+					return super.getColumnClass(columnIndex);
+				}
 			}
 
 			@Override
 			public Object getValueAt(int row, int column)
 			{
-				if (column == 1)
+				if (column == 2)
 				{
 					return Calendar.getInstance().getTime().toString();
 				}
@@ -119,7 +132,7 @@ public class HomePage extends WebPage
 			@Override
 			public void setValueAt(Object aValue, int row, int column)
 			{
-				values[row][column] = aValue == null ? null : aValue.toString();
+				values[row][column] = aValue;
 				editionLabel.setDefaultModelObject(" value at " + row + " x " + column
 						+ " changed to " + aValue);
 				AjaxRequestTarget.get().addComponent(editionLabel);
@@ -134,7 +147,7 @@ public class HomePage extends WebPage
 				target.addComponent(modelSelection);
 			}
 		};
-		table.getColumnModel().addColumn(new SelfUpdateColumn(1, Duration.seconds(5)));
+		table.getColumnModel().addColumn(new SelfUpdateColumn(2, Duration.seconds(5)));
 		table.setAutoCreateRowSorter(true);
 		add(table);
 		table.setRowsPerPage(4);

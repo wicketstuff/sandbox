@@ -35,14 +35,14 @@ import org.apache.wicket.model.Model;
  * @author Pedro Henrique Oliveira dos Santos
  * 
  */
-public class ColumnsModel extends Model implements IPageable
+public class ColumnModel extends Model implements IPageable
 {
 	private IModel<TableModel> tableModel;
 	private int columnsPerPage = Integer.MAX_VALUE;
 	private int currentPage;
 	private Map<Integer, TableColumn> columnMap = new HashMap<Integer, TableColumn>();
 
-	public ColumnsModel(IModel<TableModel> tableModel)
+	public ColumnModel(IModel<TableModel> tableModel)
 	{
 		this.tableModel = tableModel;
 	}
