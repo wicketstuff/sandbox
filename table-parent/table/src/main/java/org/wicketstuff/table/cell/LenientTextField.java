@@ -20,6 +20,13 @@ import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.IModel;
 
+/**
+ * Simple TextField extension that don't require an input tag and the type
+ * attribute on the template markup.
+ * 
+ * @author Pedro Henrique Oliveira dos Santos
+ * 
+ */
 public class LenientTextField extends TextField
 {
 	public LenientTextField(String id)

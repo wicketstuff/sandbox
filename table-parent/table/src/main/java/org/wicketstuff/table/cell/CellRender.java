@@ -22,6 +22,10 @@ import org.apache.wicket.Component;
 import org.apache.wicket.model.IModel;
 import org.wicketstuff.table.SelectableListItem;
 
+/**
+ * @author Pedro Henrique Oliveira dos Santos
+ *
+ */
 public interface CellRender extends Serializable
 {
 	/**
