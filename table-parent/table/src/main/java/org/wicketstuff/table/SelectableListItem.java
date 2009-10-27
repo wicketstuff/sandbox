@@ -61,7 +61,6 @@ public abstract class SelectableListItem extends ColoredListItem
 		setOutputMarkupId(true);
 		add(TABLE_JS);
 		this.listSelectionModel = listSelectionModel;
-		updateBackgroundColor();
 		this.add(new AjaxEventBehavior("onclick")
 		{
 			private static final long serialVersionUID = 1L;
@@ -76,45 +75,35 @@ public abstract class SelectableListItem extends ColoredListItem
 			@Override
 			public CharSequence getCallbackUrl(boolean onlyTargetActivePage)
 			{
-				return super.getCallbackUrl(onlyTargetActivePage) + "&" + SHIFT_P
-						+ "='+event.shiftKey+'&" + CTRL_P + "='+event.ctrlKey+'";
+				return super.getCallbackUrl(onlyTargetActivePage)
+						+ String.format("&%s='+event.shiftKey+'&%s='+event.ctrlKey+'", SHIFT_P,
+								CTRL_P);
 			}
 		});
 	}
 
-	protected abstract void onItemSelection(AjaxRequestTarget target, boolean shiftPressed,
-			boolean ctrlPressed);
-
 	public void updateOnAjaxRequest(AjaxRequestTarget target)
 	{
-		updateBackgroundColor();
-		target.appendJavascript("document.getElementById('" + getMarkupId() + "').className = '"
-				+ classAttribute + "';");
-		target.appendJavascript("document.getElementById('" + getMarkupId()
-				+ "').originalClass = '" + classAttribute + "'; ");
+		target.appendJavascript(String.format("Wicket.$('%s').className = '%s';", getMarkupId(),
+				getBackgroundColor()));
+		target.appendJavascript(String.format("Wicket.$('%s').originalClass = '%s'; ",
+				getMarkupId(), getBackgroundColor()));
 	}
 
 	@Override
 	protected void onComponentTagBody(MarkupStream markupStream, ComponentTag openTag)
 	{
 		super.onComponentTagBody(markupStream, openTag);
-		updateBackgroundColor();
 		JavascriptUtils js = new JavascriptUtils(getResponse());
-		js.write("changeStyleOnOnMouseOver( '" + getMarkupId() + "', '" + CLASS_MOUSE_OVER + "');");
+		js.write(String.format("changeStyleOnOnMouseOver( '%s', '%s');", getMarkupId(),
+				CLASS_MOUSE_OVER));
 		js.close();
 	}
 
 	@Override
-	protected void updateBackgroundColor()
+	protected String getBackgroundColor()
 	{
-		if (isSelected())
-		{
-			classAttribute = CLASS_SELECTED;
-		}
-		else
-		{
-			super.updateBackgroundColor();
-		}
+		return isSelected() ? CLASS_SELECTED : super.getBackgroundColor();
 	}
 
 	public boolean isSelected()
@@ -122,4 +111,6 @@ public abstract class SelectableListItem extends ColoredListItem
 		return listSelectionModel != null && listSelectionModel.isSelectedIndex(getIndex());
 	}
 
+	protected abstract void onItemSelection(AjaxRequestTarget target, boolean shiftPressed,
+			boolean ctrlPressed);
 }

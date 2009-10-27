@@ -14,37 +14,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.wicketstuff.table;
+package org.wicketstuff.table.cell;
 
-import org.apache.wicket.markup.ComponentTag;
-import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.Component;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.model.IModel;
+import org.wicketstuff.table.SelectableListItem;
 
 /**
+ * Default ajax implementation for CellEditor
+ * 
  * @author Pedro Henrique Oliveira dos Santos
  * 
  */
-public class ColoredListItem extends ListItem
+public class AjaxObjectRender extends ObjectRender
 {
-	private static final long serialVersionUID = 1L;
-	public static final String CLASS_EVEN = "even";
-	public static final String CLASS_ODD = "odd";
-
-	public ColoredListItem(int index, IModel model)
-	{
-		super(index, model);
-	}
 
 	@Override
-	protected void onComponentTag(ComponentTag tag)
+	public Component getEditorComponent(String id, IModel model, SelectableListItem parent,
+			int row, int column)
 	{
-		super.onComponentTag(tag);
-		tag.put("class", getBackgroundColor());
-	}
-
-	protected String getBackgroundColor()
-	{
-		return (this.getIndex() % 2 == 0) ? CLASS_EVEN : CLASS_ODD;
+		return super.getEditorComponent(id, model, parent, row, column).add(
+				new AjaxFormComponentUpdatingBehavior("onchange")
+				{
+					protected void onUpdate(AjaxRequestTarget target)
+					{
+					}
+				});
 	}
 
 }

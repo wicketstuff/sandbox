@@ -109,6 +109,15 @@ public class Table extends Panel
 		return new AjaxPagingNavigator(id, rowsListView);
 	}
 
+	/**
+	 * Just an helper factory method. You can create your custom navigator by
+	 * using the IPageable columnsModelAdapter getting it from
+	 * {@link Table#getColumnModel()} method.
+	 * 
+	 * @param id
+	 *            wicket id
+	 * @return AjaxPagingNavigator
+	 */
 	public AjaxPagingNavigator getColumnsAjaxPagingNavigator(String id)
 	{
 		return new AjaxPagingNavigator(id, columnsModelAdapter)
@@ -184,34 +193,6 @@ public class Table extends Panel
 	public TableModel getTableModel()
 	{
 		return (TableModel)getDefaultModelObject();
-	}
-
-	/**
-	 * Adapter model to decorate operations that require row sorter update.
-	 * 
-	 * @author Pedro Henrique Oliveira dos Santos
-	 * 
-	 */
-	private class TableModelAdapter extends Model
-	{
-		public TableModelAdapter(TableModel tableModel)
-		{
-			super((Serializable)tableModel);
-			if (autoCreateRowSorter)
-			{
-				setRowSorter(new SerializableTableRowSorter(tableModel));
-			}
-		}
-
-		@Override
-		public void setObject(Serializable object)
-		{
-			super.setObject(object);
-			if (autoCreateRowSorter)
-			{
-				setRowSorter(new SerializableTableRowSorter((TableModel)object));
-			}
-		}
 	}
 
 	/**
@@ -376,6 +357,34 @@ public class Table extends Panel
 	}
 
 	/**
+	 * Adapter model to decorate operations that require row sorter update.
+	 * 
+	 * @author Pedro Henrique Oliveira dos Santos
+	 * 
+	 */
+	private class TableModelAdapter extends Model
+	{
+		public TableModelAdapter(TableModel tableModel)
+		{
+			super((Serializable)tableModel);
+			if (autoCreateRowSorter)
+			{
+				setRowSorter(new SerializableTableRowSorter(tableModel));
+			}
+		}
+
+		@Override
+		public void setObject(Serializable object)
+		{
+			super.setObject(object);
+			if (autoCreateRowSorter)
+			{
+				setRowSorter(new SerializableTableRowSorter((TableModel)object));
+			}
+		}
+	}
+
+	/**
 	 * Repeating component that extends the AjaxSelectableListView. The extended
 	 * behavior are the table model rendering complexity partially implemented.
 	 * 
@@ -428,35 +437,7 @@ public class Table extends Panel
 		public void setRowSorter(RowSorter newSorter)
 		{
 			this.sorter = newSorter;
-			sorter.addRowSorterListener(new RowSorterListener()
-			{
-				@Override
-				public void sorterChanged(RowSorterEvent e)
-				{
-					if (e.getType() == RowSorterEvent.Type.SORTED)
-					{
-						int[] selection = getSelectedRows();
-						int[] newSelection = Arrays.copyOf(selection, selection.length);
-						for (int i = 0; i < newSelection.length; i++)
-						{
-							int oldModelIndex = e.convertPreviousRowIndexToModel(selection[i]);
-							if (oldModelIndex == -1)
-							{
-								// means that the table wasn't sorted and the:
-								oldModelIndex = selection[i];
-							}
-							newSelection[i] = sorter.convertRowIndexToView(oldModelIndex);
-						}
-						Arrays.sort(newSelection);
-						listSelectionModel.clearSelection();
-						for (int i = 0; i < newSelection.length; i++)
-						{
-							listSelectionModel.addSelectionInterval(newSelection[i],
-									newSelection[i]);
-						}
-					}
-				}
-			});
+			sorter.addRowSorterListener(new RebuildSelectionOnSortedEvent());
 		}
 
 		@Override
@@ -470,6 +451,33 @@ public class Table extends Panel
 			return sorter;
 		}
 
-	}
-
+		public class RebuildSelectionOnSortedEvent implements RowSorterListener
+		{
+			@Override
+			public void sorterChanged(RowSorterEvent e)
+			{
+				if (e.getType() == RowSorterEvent.Type.SORTED)
+				{
+					int[] selection = getSelectedRows();
+					int[] newSelection = Arrays.copyOf(selection, selection.length);
+					for (int i = 0; i < newSelection.length; i++)
+					{
+						int oldModelIndex = e.convertPreviousRowIndexToModel(selection[i]);
+						if (oldModelIndex == -1)
+						{
+							// means that the table wasn't sorted and the:
+							oldModelIndex = selection[i];
+						}
+						newSelection[i] = sorter.convertRowIndexToView(oldModelIndex);
+					}
+					Arrays.sort(newSelection);
+					listSelectionModel.clearSelection();
+					for (int i = 0; i < newSelection.length; i++)
+					{
+						listSelectionModel.addSelectionInterval(newSelection[i], newSelection[i]);
+					}
+				}
+			}
+		}// inner class
+	}// inner class
 }
