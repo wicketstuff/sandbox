@@ -22,9 +22,14 @@ import java.util.Set;
 
 import javax.swing.DefaultListSelectionModel;
 import javax.swing.ListSelectionModel;
+import javax.swing.table.TableModel;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.behavior.IBehavior;
+import org.apache.wicket.behavior.SimpleAttributeModifier;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.wicketstuff.table.cell.StylizedCell;
+import org.wicketstuff.table.column.StylizedColumn;
 
 public class TableUtil
 {
@@ -105,6 +110,33 @@ public class TableUtil
 			}
 		}
 		return null;
+	}
+
+	public static void fillCellCss(final ListItem columnItem, TableModel tableModel,
+			int modelColumnIndex, int modelRowIndex)
+	{
+		if (tableModel instanceof StylizedCell)
+		{
+			String cssClass = ((StylizedCell)tableModel)
+					.getCellCss(modelRowIndex, modelColumnIndex);
+			if (cssClass != null)
+			{
+				columnItem.add(new SimpleAttributeModifier("class", cssClass));
+			}
+		}
+	}
+
+	public static void fillColumnCss(final ListItem columnItem, TableModel tableModel,
+			int modelColumnIndex)
+	{
+		if (tableModel instanceof StylizedColumn)
+		{
+			String cssClass = ((StylizedColumn)tableModel).getColumnCssClass(modelColumnIndex);
+			if (cssClass != null)
+			{
+				columnItem.add(new SimpleAttributeModifier("class", cssClass));
+			}
+		}
 	}
 
 }

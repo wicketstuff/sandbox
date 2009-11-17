@@ -24,45 +24,45 @@ import java.util.Map;
 import javax.swing.ListSelectionModel;
 import javax.swing.RowSorter;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.event.RowSorterEvent;
-import javax.swing.event.RowSorterListener;
 import javax.swing.table.TableModel;
 
 import org.apache.wicket.ResourceReference;
-import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.navigation.paging.AjaxPagingNavigator;
 import org.apache.wicket.markup.ComponentTag;
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.html.IHeaderContributor;
+import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.model.ResourceModel;
-import org.wicketstuff.table.cell.BooleanRender;
 import org.wicketstuff.table.cell.CellEditor;
 import org.wicketstuff.table.cell.CellRender;
-import org.wicketstuff.table.cell.ObjectRender;
-import org.wicketstuff.table.cell.TableCellModel;
-import org.wicketstuff.table.column.TableColumn;
+import org.wicketstuff.table.cell.renders.BooleanRender;
+import org.wicketstuff.table.cell.renders.NumberRender;
+import org.wicketstuff.table.cell.renders.ObjectRender;
+import org.wicketstuff.table.column.ColGroup;
 import org.wicketstuff.table.column.ColumnModel;
+import org.wicketstuff.table.column.TableColumn;
+import org.wicketstuff.table.repeaters.TableBody;
+import org.wicketstuff.table.repeaters.TableFooter;
+import org.wicketstuff.table.repeaters.TableHeader;
 import org.wicketstuff.table.sorter.SerializableTableRowSorter;
 
 /**
- * Table component to present an swing TableModel.
+ * Table component to present an swing TableModel. Responsible to hold model
+ * data and provide an functional API. Mostly delegate the calls to correct
+ * place.
  * 
  * @author Pedro Henrique Oliveira dos Santos
  * 
  */
-public class Table extends Panel
+public class Table extends Panel implements IHeaderContributor
 {
 
 	private static final long serialVersionUID = 1L;
-	public static final String CELL_ID = "cell";
 	public static final ResourceReference TABLE_CSS = new ResourceReference(Table.class,
 			"res/table.css");
-	private TableListView rowsListView;
+	private TableBody tableBody;
 	private boolean autoCreateRowSorter;
 	private ColumnModel columnsModelAdapter;
 
@@ -75,38 +75,31 @@ public class Table extends Panel
 	public Table(String id, TableModel swingTableModel)
 	{
 		super(id);
+		setOutputMarkupId(true);
 		setDefaultModel(new TableModelAdapter(swingTableModel));
 		columnsModelAdapter = new ColumnModel((IModel<TableModel>)getDefaultModel());
-		setOutputMarkupId(true);
-		add(new ListView("headers", columnsModelAdapter)
+		add(new ColGroup("colGroup", this));
+		add(new TableHeader("headers", this));
+		add(tableBody = new TableBody("rows", this)
 		{
 			@Override
-			protected void populateItem(final ListItem item)
+			protected void onSelection(SelectableListItem selectableListItem,
+					AjaxRequestTarget target)
 			{
-				final int columnIndex = columnsModelAdapter.convertIndexToModel(item.getIndex());
-				String header = getTableModel().getColumnName(columnIndex);
-				item.add(new Label("header", new ResourceModel(header, header)));
-				item.add(new OrderingImage("arrow", columnIndex, Table.this));
-				item.add(new AjaxEventBehavior("onclick")
-				{
-					@Override
-					protected void onEvent(AjaxRequestTarget target)
-					{
-						if (getRowSorter() != null)
-						{
-							getRowSorter().toggleSortOrder(columnIndex);
-							target.addComponent(Table.this);
-						}
-					}
-				});
+				Table.this.onSelection(target);
 			}
 		});
-		add(rowsListView = new TableListView("rows", new ListModelAdapter(getTableModel())));
+		add(new TableFooter("footers", this));
 	}
 
 	public AjaxPagingNavigator getRowsAjaxPagingNavigator(String id)
 	{
-		return new AjaxPagingNavigator(id, rowsListView);
+		return new AjaxPagingNavigator(id, tableBody);
+	}
+
+	public TableBody getBodyRepeater()
+	{
+		return tableBody;
 	}
 
 	/**
@@ -143,7 +136,7 @@ public class Table extends Panel
 	 */
 	public void setRowsPerPage(int rowsPerPage)
 	{
-		rowsListView.setRowsPerPage(rowsPerPage);
+		tableBody.setRowsPerPage(rowsPerPage);
 	}
 
 	/**
@@ -161,7 +154,7 @@ public class Table extends Panel
 	 */
 	public void setSelectionMode(int selectionMode)
 	{
-		rowsListView.getListSelectionModel().setSelectionMode(selectionMode);
+		tableBody.getListSelectionModel().setSelectionMode(selectionMode);
 	}
 
 	/**
@@ -169,7 +162,7 @@ public class Table extends Panel
 	 */
 	public ListSelectionModel getListSelectionModel()
 	{
-		return rowsListView.getListSelectionModel();
+		return tableBody.getListSelectionModel();
 	}
 
 	/**
@@ -178,13 +171,13 @@ public class Table extends Panel
 	 */
 	public void addListSelectionListener(ListSelectionListener x)
 	{
-		rowsListView.getListSelectionModel().addListSelectionListener(x);
+		tableBody.getListSelectionModel().addListSelectionListener(x);
 	}
 
 	public void setSelectionIndex(Integer newSelectionIndex)
 	{
-		rowsListView.getListSelectionModel().setSelectionInterval(newSelectionIndex,
-				newSelectionIndex);
+		tableBody.getListSelectionModel()
+				.setSelectionInterval(newSelectionIndex, newSelectionIndex);
 	}
 
 	/**
@@ -212,17 +205,30 @@ public class Table extends Panel
 	 */
 	public void setRowSorter(RowSorter sorter)
 	{
-		this.rowsListView.setRowSorter(sorter);
+		this.tableBody.setRowSorter(sorter);
 	}
 
 	public RowSorter getRowSorter()
 	{
-		return this.rowsListView.getRowSorter();
+		return this.tableBody.getRowSorter();
+	}
+
+	/**
+	 * @param widths
+	 * @see org.wicketstuff.table.column.ColGroup#setWidths(java.lang.String[])
+	 */
+	public void setWidths(String... widths)
+	{
+		for (int i = 0; i < widths.length; i++)
+		{
+			columnsModelAdapter.getColumn(i, true).setCssStyle(
+					String.format("width:%s;", widths[i]));
+		}
 	}
 
 	public int getSelectedRowCount()
 	{
-		return rowsListView.getSelectedRowCount();
+		return tableBody.getSelectedRowCount();
 	}
 
 	/**
@@ -230,7 +236,7 @@ public class Table extends Panel
 	 */
 	public int[] getSelectedRows()
 	{
-		int[] viewSelection = rowsListView.getSelectedRows();
+		int[] viewSelection = tableBody.getSelectedRows();
 		if (getRowSorter() != null)
 		{
 
@@ -272,18 +278,21 @@ public class Table extends Panel
 
 	private Map<Class, CellRender> defaultRenderersByColumnClass = new HashMap<Class, CellRender>();
 	private Map<Class, CellEditor> defaultEditorsByColumnClass = new HashMap<Class, CellEditor>();
-	private static ObjectRender defaultRender = new ObjectRender();
-	private static BooleanRender booleanRender = new BooleanRender();
 	{
 		/*
 		 * TODO from the table model we can get much more informations. Is
 		 * possible to add checkboxes for booleans, image components for images,
 		 * date components for dates, etc.
 		 */
+		ObjectRender defaultRender = new ObjectRender();
 		defaultRenderersByColumnClass.put(Object.class, defaultRender);
 		defaultEditorsByColumnClass.put(Object.class, defaultRender);
+		BooleanRender booleanRender = new BooleanRender();
 		defaultRenderersByColumnClass.put(Boolean.class, booleanRender);
 		defaultEditorsByColumnClass.put(Boolean.class, booleanRender);
+		NumberRender numberRender = new NumberRender();
+		defaultRenderersByColumnClass.put(Number.class, numberRender);
+		defaultEditorsByColumnClass.put(Number.class, numberRender);
 	}
 
 	public void setDefaultRenderer(Class<?> columnClass, CellRender renderer)
@@ -343,11 +352,6 @@ public class Table extends Panel
 		tag.setName("table");
 	}
 
-	protected ResourceReference getCss()
-	{
-		return TABLE_CSS;
-	}
-
 	/**
 	 * Method called on item selection to asynchronous update needed by clients
 	 * applications.
@@ -384,100 +388,18 @@ public class Table extends Panel
 		}
 	}
 
-	/**
-	 * Repeating component that extends the AjaxSelectableListView. The extended
-	 * behavior are the table model rendering complexity partially implemented.
-	 * 
-	 */
-	class TableListView extends AjaxSelectableListView
+	@Override
+	public void renderHead(IHeaderResponse response)
 	{
-		private RowSorter sorter;
-
-		public TableListView(String id, IModel model)
+		ResourceReference css = getCss();
+		if (css != null)
 		{
-			super(id, model);
+			response.renderCSSReference(css);
 		}
+	}
 
-		@Override
-		protected void onSelection(SelectableListItem selectableListItem, AjaxRequestTarget target)
-		{
-			Table.this.onSelection(target);
-		}
-
-		@Override
-		protected void populateSelectableItem(final SelectableListItem rowItem)
-		{
-			rowItem.add(new ListView("columns", columnsModelAdapter)
-			{
-				@Override
-				protected void populateItem(ListItem dataItem)
-				{
-
-					int columnIndex = columnsModelAdapter.convertIndexToModel(dataItem.getIndex());
-					int modelRowIndex = sorter != null ? sorter.convertRowIndexToModel(rowItem
-							.getIndex()) : rowItem.getIndex();
-					TableCellModel cellModel = new TableCellModel(getTableModel(), modelRowIndex,
-							columnIndex);
-					if (getTableModel().isCellEditable(modelRowIndex, columnIndex))
-					{
-
-						dataItem.add(getCellEditor(modelRowIndex, columnIndex).getEditorComponent(
-								CELL_ID, cellModel, rowItem, modelRowIndex, columnIndex));
-					}
-					else
-					{
-						dataItem.add(getCellRenderer(modelRowIndex, columnIndex)
-								.getRenderComponent(CELL_ID, cellModel, rowItem, modelRowIndex,
-										columnIndex));
-					}
-				}
-			});
-		}
-
-		public void setRowSorter(RowSorter newSorter)
-		{
-			this.sorter = newSorter;
-			sorter.addRowSorterListener(new RebuildSelectionOnSortedEvent());
-		}
-
-		@Override
-		protected ResourceReference getCss()
-		{
-			return Table.this.getCss();
-		}
-
-		public RowSorter getRowSorter()
-		{
-			return sorter;
-		}
-
-		public class RebuildSelectionOnSortedEvent implements RowSorterListener
-		{
-			@Override
-			public void sorterChanged(RowSorterEvent e)
-			{
-				if (e.getType() == RowSorterEvent.Type.SORTED)
-				{
-					int[] selection = getSelectedRows();
-					int[] newSelection = Arrays.copyOf(selection, selection.length);
-					for (int i = 0; i < newSelection.length; i++)
-					{
-						int oldModelIndex = e.convertPreviousRowIndexToModel(selection[i]);
-						if (oldModelIndex == -1)
-						{
-							// means that the table wasn't sorted and the:
-							oldModelIndex = selection[i];
-						}
-						newSelection[i] = sorter.convertRowIndexToView(oldModelIndex);
-					}
-					Arrays.sort(newSelection);
-					listSelectionModel.clearSelection();
-					for (int i = 0; i < newSelection.length; i++)
-					{
-						listSelectionModel.addSelectionInterval(newSelection[i], newSelection[i]);
-					}
-				}
-			}
-		}// inner class
-	}// inner class
+	protected ResourceReference getCss()
+	{
+		return TABLE_CSS;
+	}
 }

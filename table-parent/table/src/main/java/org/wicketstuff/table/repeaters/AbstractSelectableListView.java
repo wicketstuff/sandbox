@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.wicketstuff.table;
+package org.wicketstuff.table.repeaters;
 
 import java.io.Serializable;
 import java.util.Iterator;
@@ -32,6 +32,9 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.PageableListView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.wicketstuff.table.SelectableListItem;
+import org.wicketstuff.table.Table;
+import org.wicketstuff.table.TableUtil;
 
 /**
  * Repeater component that add behavior to every row to handle clicks events and
@@ -40,42 +43,48 @@ import org.apache.wicket.model.Model;
  * @author Pedro Henrique Oliveira dos Santos
  * 
  */
-public abstract class AjaxSelectableListView extends PageableListView implements IHeaderContributor
+public abstract class AbstractSelectableListView extends PageableListView
+		implements
+			IHeaderContributor
 {
 	private static final long serialVersionUID = 1L;
 	public static final ResourceReference CSS = new ResourceReference(Table.class,
 			"res/selectableListView.css");
+
 	protected ListSelectionModel listSelectionModel;
 
-	public AjaxSelectableListView(String id, IModel model)
+	public AbstractSelectableListView(String id, IModel model)
 	{
 		this(id, model, Integer.MAX_VALUE);
 	}
 
-	public AjaxSelectableListView(String id, List list)
+	public AbstractSelectableListView(String id, List list)
 	{
 		this(id, list, Integer.MAX_VALUE);
 	}
 
-	public AjaxSelectableListView(String id, List list, int rowsPerPage)
+	public AbstractSelectableListView(String id, List list, int rowsPerPage)
 	{
 		this(id, new Model((Serializable)list), rowsPerPage);
 	}
 
-	public AjaxSelectableListView(String id, IModel model, int rowsPerPage)
+	public AbstractSelectableListView(String id, IModel model, int rowsPerPage)
 	{
 		this(id, model, rowsPerPage, TableUtil.createSingleSelectionModel());
 	}
 
-	public AjaxSelectableListView(String id, IModel model, int rowsPerPage,
+	public AbstractSelectableListView(String id, IModel model, int rowsPerPage,
 			ListSelectionModel selectionModel)
 	{
 		super(id, model, rowsPerPage);
 		this.listSelectionModel = selectionModel;
 	}
 
+	protected abstract void onSelection(SelectableListItem selectableListItem,
+			AjaxRequestTarget target);
+
 	@Override
-	protected SelectableListItem newItem(final int index)
+	protected ListItem newItem(final int index)
 	{
 		final SelectableListItem listItem = new SelectableListItem(index, getListItemModel(
 				getModel(), index), listSelectionModel)
@@ -84,20 +93,12 @@ public abstract class AjaxSelectableListView extends PageableListView implements
 			protected void onItemSelection(AjaxRequestTarget target, boolean shiftPressed,
 					boolean ctrlPressed)
 			{
-				AjaxSelectableListView.this.rowClicked(this, target, shiftPressed, ctrlPressed);
+				AbstractSelectableListView.this.rowClicked(this, target, shiftPressed, ctrlPressed);
 			}
 
 		};
 		return listItem;
 	}
-
-	@Override
-	protected void populateItem(ListItem rowItem)
-	{
-		populateSelectableItem((SelectableListItem)rowItem);
-	}
-
-	abstract protected void populateSelectableItem(SelectableListItem rowItem);
 
 	private Integer lastNonShiftSelection;
 
@@ -108,9 +109,7 @@ public abstract class AjaxSelectableListView extends PageableListView implements
 			boolean shiftPressed, boolean ctrlPressed)
 	{
 		int[] oldSelections = getSelectedRows();
-
 		int newSelection = clickedItem.getIndex();
-
 		if (shiftPressed
 				&& getListSelectionModel().getSelectionMode() != ListSelectionModel.SINGLE_SELECTION)
 		{
@@ -222,17 +221,21 @@ public abstract class AjaxSelectableListView extends PageableListView implements
 		listSelectionModel.clearSelection();
 	}
 
-	protected void onSelection(SelectableListItem selectableListItem, AjaxRequestTarget target)
-	{
-
-	}
-
 	@Override
 	public void renderHead(IHeaderResponse response)
 	{
-		response.renderCSSReference(getCss());
+		ResourceReference css = getCss();
+		if (css != null)
+		{
+			response.renderCSSReference(css);
+		}
 	}
 
+	/**
+	 * Override this method to return an custom css.
+	 * 
+	 * @return custom css reference
+	 */
 	protected ResourceReference getCss()
 	{
 		return CSS;

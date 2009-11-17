@@ -21,6 +21,7 @@ import java.util.Arrays;
 
 import javax.swing.table.TableModel;
 
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
 /**
@@ -32,9 +33,9 @@ import org.apache.wicket.model.Model;
  */
 public class ListModelAdapter extends Model
 {
-	private TableModel tableModel;
+	private IModel<TableModel> tableModel;
 
-	public ListModelAdapter(TableModel tableModel)
+	public ListModelAdapter(IModel<TableModel> tableModel)
 	{
 		this.tableModel = tableModel;
 	}
@@ -42,7 +43,7 @@ public class ListModelAdapter extends Model
 	@Override
 	public Serializable getObject()
 	{
-		return (Serializable)Arrays.asList(new Object[tableModel.getRowCount()]);
+		return (Serializable)Arrays.asList(new Object[tableModel.getObject().getRowCount()]);
 	}
 
 }

@@ -14,6 +14,67 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+table.blue {
+	font-size: small;
+	border-width: 0px;
+	border-collapse: collapse;
+}
+
+table.blue input {
+	border-top-color: rgb(171, 173, 179);
+	border-left-color: rgb(226, 227, 234);
+	border-right-color: rgb(219, 223, 230);
+	border-bottom-color: rgb(227, 233, 239);
+	border-style: solid;
+	border-width: 1px;
+	width: 100%;
+	min-width: 50px;
+	padding: 0;
+	margin: 0;
+	max-height: 16px;
+}
+
+table.blue th {
+	background-image: url("header.png");
+	height: 23px;
+	color: black;
+	border-right-color: rgb(213, 213, 213);
+	border-right-width: 1px;
+	border-right-style: solid;
+	padding-right: 5px;
+}
+
+table.blue th:hover {
+	background-image: url("headerRighlight.png");
+}
+
+table.blue tr {
+	height: 18px;
+	padding: 0;
+	margin: 0;
+}
+
+table.blue td {
+	height: 18px;
+	padding: 0;
+	padding-left: 5px;
+	padding-right: 5px;
+	margin: 0;
+	border-right-color: rgb(213, 213, 213);
+	border-right-width: 1px;
+	border-right-style: solid;
+}
+
+table.blue tr.onMouseOver {
+	background-image: url("rowOnMouseOver.png");
+}
+
+table.blue tr.selected {
+	background-image: url("selected.png");
+	background-repeat: repeat-x;
+	color: black;
+}
+
 tr.odd {
 	background-color: rgb(240, 240, 240);
 }
@@ -41,4 +102,8 @@ label.headerLabel {
 
 input.editCell {
 	width: 100%;
+}
+
+col.totalColumn {
+	text-align: right;
 }

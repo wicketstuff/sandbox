@@ -14,26 +14,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.wicketstuff.table.column;
+package org.wicketstuff.table.cell.renders;
 
-import org.apache.wicket.util.time.Duration;
-import org.wicketstuff.table.cell.renders.ObjectRender;
+import org.apache.wicket.markup.ComponentTag;
+import org.apache.wicket.markup.html.form.CheckBox;
+import org.apache.wicket.model.IModel;
 
 /**
- * Provides slots for a renderer and an editor that uses
- * AbstractAjaxTimerBehavior to keep data on column updated on client.
+ * Simple CheckBox extension that don't require an input tag and the type
+ * attribute on the template markup.
  * 
  * @author Pedro Henrique Oliveira dos Santos
  * 
  */
-public class SelfUpdateColumn extends TableColumn
+public class LenientCheckBox extends CheckBox
 {
-	public SelfUpdateColumn(int modelIndex, Duration duration)
+
+	public LenientCheckBox(String id, IModel<Boolean> model)
 	{
-		super(modelIndex);
-		ObjectRender render = new TimedRender(duration);
-		setCellEditor(render);
-		setCellRender(render);
+		super(id, model);
+	}
+
+	@Override
+	protected void onComponentTag(ComponentTag tag)
+	{
+		tag.setName("input");
+		tag.put("type", "checkbox");
+		super.onComponentTag(tag);
 	}
 
 }

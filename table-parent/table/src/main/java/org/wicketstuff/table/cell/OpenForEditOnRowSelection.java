@@ -17,47 +17,35 @@
 package org.wicketstuff.table.cell;
 
 import org.apache.wicket.Component;
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
-import org.apache.wicket.model.IModel;
-import org.wicketstuff.table.SelectableListItem;
+import org.apache.wicket.behavior.AbstractBehavior;
+import org.apache.wicket.markup.html.IHeaderResponse;
 
 /**
- * Default render for boolean values. Uses AjaxFormComponentUpdatingBehavior to
- * maintain model state on onchange events.
- * 
+ * Only an component javascript decorator. 
  * @author Pedro Henrique Oliveira dos Santos
  * 
  */
-public class BooleanRender implements CellEditor, CellRender
+public class OpenForEditOnRowSelection extends AbstractBehavior
 {
+	private Component component;
 
 	@Override
-	public Component getEditorComponent(String id, IModel model, SelectableListItem parent,
-			int row, int column)
+	public void beforeRender(Component component)
 	{
-		LenientCheckBox checkBox = new LenientCheckBox(id, model);
-		checkBox.add(new AjaxFormComponentUpdatingBehavior("onchange")
-		{
-			protected void onUpdate(AjaxRequestTarget target)
-			{
-			}
-		});
-		return checkBox;
+		this.component.setOutputMarkupId(true);
 	}
 
 	@Override
-	public Component getRenderComponent(String id, IModel model, SelectableListItem parent,
-			int row, int column)
+	public void bind(Component component)
 	{
-		return new LenientCheckBox(id, model)
-		{
-			@Override
-			public boolean isEnabled()
-			{
-				return false;
-			}
-		};
+		this.component = component;
+	}
+
+	@Override
+	public void renderHead(IHeaderResponse response)
+	{
+		response.renderOnDomReadyJavascript(String.format("handleRowSelection('%s')", component
+				.getMarkupId()));
 	}
 
 }

@@ -22,11 +22,10 @@ import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.behavior.HeaderContributor;
-import org.apache.wicket.markup.ComponentTag;
-import org.apache.wicket.markup.MarkupStream;
+import org.apache.wicket.markup.html.IHeaderContributor;
+import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.JavascriptPackageResource;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.util.string.JavascriptUtils;
 import org.apache.wicket.util.string.Strings;
 
 /**
@@ -36,11 +35,9 @@ import org.apache.wicket.util.string.Strings;
  * @author Pedro Henrique Oliveira dos Santos
  * 
  */
-public abstract class SelectableListItem extends ColoredListItem
+public abstract class SelectableListItem extends ColoredListItem implements IHeaderContributor
 {
 	private static final long serialVersionUID = 1L;
-	public static final String CLASS_SELECTED = "selected";
-	public static final String CLASS_MOUSE_OVER = "onMouseOver";
 	private static final String SHIFT_P = "shiftKey";
 	private static final String CTRL_P = "ctrlKey";
 	private ListSelectionModel listSelectionModel;
@@ -84,26 +81,18 @@ public abstract class SelectableListItem extends ColoredListItem
 
 	public void updateOnAjaxRequest(AjaxRequestTarget target)
 	{
-		target.appendJavascript(String.format("Wicket.$('%s').className = '%s';", getMarkupId(),
-				getBackgroundColor()));
-		target.appendJavascript(String.format("Wicket.$('%s').originalClass = '%s'; ",
-				getMarkupId(), getBackgroundColor()));
+		target.appendJavascript(getUpdateScript());
 	}
 
 	@Override
-	protected void onComponentTagBody(MarkupStream markupStream, ComponentTag openTag)
+	public void renderHead(IHeaderResponse response)
 	{
-		super.onComponentTagBody(markupStream, openTag);
-		JavascriptUtils js = new JavascriptUtils(getResponse());
-		js.write(String.format("changeStyleOnOnMouseOver( '%s', '%s');", getMarkupId(),
-				CLASS_MOUSE_OVER));
-		js.close();
+		response.renderOnDomReadyJavascript(getUpdateScript());
 	}
 
-	@Override
-	protected String getBackgroundColor()
+	private String getUpdateScript()
 	{
-		return isSelected() ? CLASS_SELECTED : super.getBackgroundColor();
+		return String.format("updateRow('%s', %b)", getMarkupId(), isSelected());
 	}
 
 	public boolean isSelected()

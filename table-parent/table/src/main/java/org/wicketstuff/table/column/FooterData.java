@@ -14,33 +14,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.wicketstuff.table.cell;
+package org.wicketstuff.table.column;
 
-import org.apache.wicket.markup.ComponentTag;
-import org.apache.wicket.markup.html.form.CheckBox;
-import org.apache.wicket.model.IModel;
+import java.util.List;
+
+import org.apache.wicket.Component;
 
 /**
- * Simple CheckBox extension that don't require an input tag and the type
- * attribute on the template markup.
- * 
  * @author Pedro Henrique Oliveira dos Santos
- * 
+ *
  */
-public class LenientCheckBox extends CheckBox
+public interface FooterData
 {
-
-	public LenientCheckBox(String id, IModel<Boolean> model)
-	{
-		super(id, model);
-	}
-
-	@Override
-	protected void onComponentTag(ComponentTag tag)
-	{
-		tag.setName("input");
-		tag.put("type", "checkbox");
-		super.onComponentTag(tag);
-	}
-
+	Component getFooterComponent(String wicketId, List<Component> columnComponents);
 }

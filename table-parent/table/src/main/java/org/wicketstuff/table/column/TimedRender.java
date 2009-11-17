@@ -23,7 +23,7 @@ import org.apache.wicket.behavior.IBehavior;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.time.Duration;
 import org.wicketstuff.table.SelectableListItem;
-import org.wicketstuff.table.cell.ObjectRender;
+import org.wicketstuff.table.cell.renders.ObjectRender;
 
 /**
  * Render and editor that ensure that the cells on column participate on the

@@ -30,6 +30,8 @@ public class TableColumn implements Serializable
 	private CellRender cellRender;
 	private CellEditor cellEditor;
 	private int modelIndex;
+	private String cssClass;
+	private String cssStyle;
 
 	public TableColumn(int modelIndex)
 	{
@@ -70,5 +72,25 @@ public class TableColumn implements Serializable
 	public int getModelIndex()
 	{
 		return modelIndex;
+	}
+
+	public String getCssClass()
+	{
+		return cssClass;
+	}
+
+	public void setCssClass(String cssClass)
+	{
+		this.cssClass = cssClass;
+	}
+
+	public String getCssStyle()
+	{
+		return cssStyle;
+	}
+
+	public void setCssStyle(String cssStyle)
+	{
+		this.cssStyle = cssStyle;
 	}
 }

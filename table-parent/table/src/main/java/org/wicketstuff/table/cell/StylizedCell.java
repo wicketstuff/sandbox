@@ -14,26 +14,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.wicketstuff.table.column;
-
-import org.apache.wicket.util.time.Duration;
-import org.wicketstuff.table.cell.renders.ObjectRender;
+package org.wicketstuff.table.cell;
 
 /**
- * Provides slots for a renderer and an editor that uses
- * AbstractAjaxTimerBehavior to keep data on column updated on client.
- * 
  * @author Pedro Henrique Oliveira dos Santos
- * 
+ *
  */
-public class SelfUpdateColumn extends TableColumn
+public interface StylizedCell
 {
-	public SelfUpdateColumn(int modelIndex, Duration duration)
-	{
-		super(modelIndex);
-		ObjectRender render = new TimedRender(duration);
-		setCellEditor(render);
-		setCellRender(render);
-	}
-
+	String getCellCss(int row, int column);
 }

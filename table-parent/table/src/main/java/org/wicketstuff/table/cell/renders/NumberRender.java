@@ -14,54 +14,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.wicketstuff.table.cell;
+package org.wicketstuff.table.cell.renders;
+
+import java.math.BigDecimal;
 
 import org.apache.wicket.Component;
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
-import org.apache.wicket.markup.ComponentTag;
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.IModel;
 import org.wicketstuff.table.SelectableListItem;
 
 /**
- * Default implementation for CellRender and CellEditor
- * 
  * @author Pedro Henrique Oliveira dos Santos
- * 
+ *
  */
-public class ObjectRender implements CellRender, CellEditor
+public class NumberRender extends ObjectRender
 {
 
-	@Override
-	public Component getRenderComponent(String id, IModel model, SelectableListItem parent,
-			int row, int column)
-	{
-		return new Label(id, model);
-	}
 
-	@Override
 	public Component getEditorComponent(String id, IModel model, SelectableListItem parent,
 			int row, int column)
 	{
-		TextField field = new LenientTextField(id, model)
-		{
-			@Override
-			protected void onComponentTag(ComponentTag tag)
-			{
-				super.onComponentTag(tag);
-				tag.put("class", "editCell");
-			}
-		};
-
-		field.add(new AjaxFormComponentUpdatingBehavior("onchange")
-		{
-			protected void onUpdate(AjaxRequestTarget target)
-			{
-			}
-		});
-		return field;
+		return new LenientTextField(id, model).setType(BigDecimal.class);
 	}
-
 }

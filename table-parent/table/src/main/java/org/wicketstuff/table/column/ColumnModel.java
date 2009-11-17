@@ -109,6 +109,15 @@ public class ColumnModel extends Model implements IPageable
 		return columnMap.get(columnIndex);
 	};
 
+	public TableColumn getColumn(int i, boolean create)
+	{
+		if (getColumn(i) == null)
+		{
+			addColumn(new TableColumn(i));
+		}
+		return getColumn(i);
+	};
+
 	/**
 	 * @see javax.swing.table.TableColumnModel#addColumn(javax.swing.table.TableColumn)
 	 */
@@ -123,5 +132,30 @@ public class ColumnModel extends Model implements IPageable
 	public void removeColumn(TableColumn column)
 	{
 		columnMap.remove(column.getModelIndex());
-	};
+	}
+
+	public boolean hasFooter()
+	{
+		for (TableColumn tableColumn : columnMap.values())
+		{
+			if (tableColumn instanceof FooterData)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean hasCssSpecification()
+	{
+		for (TableColumn tableColumn : columnMap.values())
+		{
+			if ((tableColumn.getCssClass() != null && !"".equals(tableColumn.getCssClass()))
+					|| (tableColumn.getCssStyle() != null && !"".equals(tableColumn.getCssStyle())))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
 }

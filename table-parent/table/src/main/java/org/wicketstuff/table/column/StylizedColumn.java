@@ -14,34 +14,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.wicketstuff.table.cell;
-
-import org.apache.wicket.Component;
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
-import org.apache.wicket.model.IModel;
-import org.wicketstuff.table.SelectableListItem;
+package org.wicketstuff.table.column;
 
 /**
- * Default ajax implementation for CellEditor
- * 
  * @author Pedro Henrique Oliveira dos Santos
  * 
  */
-public class AjaxObjectRender extends ObjectRender
+public interface StylizedColumn
 {
-
-	@Override
-	public Component getEditorComponent(String id, IModel model, SelectableListItem parent,
-			int row, int column)
-	{
-		return super.getEditorComponent(id, model, parent, row, column).add(
-				new AjaxFormComponentUpdatingBehavior("onchange")
-				{
-					protected void onUpdate(AjaxRequestTarget target)
-					{
-					}
-				});
-	}
-
+	String getColumnCssClass(int column);
 }
