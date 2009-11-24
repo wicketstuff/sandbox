@@ -16,6 +16,7 @@
  */
 package org.wicketstuff.jmx.util;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -181,9 +182,9 @@ public class JmxUtil
 	 * {@link MBeanAttributeInfo} based on properties like
 	 * {@link MBeanAttributeInfo#isReadable()},
 	 * {@link MBeanAttributeInfo#isWritable()} and
-	 * {@link MBeanAttributeInfo#getType()}. <br/> The returned
-	 * {@link Component} is created according to the accessibility of the
-	 * attribute:
+	 * {@link MBeanAttributeInfo#getType()}. <br/>
+	 * The returned {@link Component} is created according to the accessibility
+	 * of the attribute:
 	 * <ul>
 	 * <li>!read && !write: empty {@link Label}</li>
 	 * <li>read && !write: {@link Label} that renders the value of attribute</li>
@@ -253,15 +254,18 @@ public class JmxUtil
 		{
 			private static final long serialVersionUID = 1L;
 
+
 			public void setObject(final Object object)
 			{
 				mbean.setAttribute(new Attribute(attribute.getName(), object));
 			}
 
-			public Object getObject()
+			@Override
+			public Serializable getObject()
 			{
-				return mbean.getAttribute(new Attribute(attribute.getName(), null));
+				return (Serializable)mbean.getAttribute(new Attribute(attribute.getName(), null));
 			}
+
 		};
 	}
 

@@ -22,6 +22,7 @@ import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.extensions.ajax.markup.html.AjaxEditableChoiceLabel;
 import org.apache.wicket.extensions.ajax.markup.html.AjaxEditableLabel;
+import org.apache.wicket.markup.html.WebComponent;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.DropDownChoice;
@@ -117,7 +118,7 @@ public class EditorPanel extends Panel
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected Component newLabel(MarkupContainer parent, String componentId, IModel model)
+			protected WebComponent newLabel(MarkupContainer parent, String componentId, IModel model)
 			{
 				Label label = new Label(componentId, model);
 				label.setOutputMarkupId(true);

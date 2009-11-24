@@ -76,8 +76,7 @@ public class OperationPanel extends AbstractOperationPanel
 						new Object[] { result });
 			}
 		}
-
-		resultLabel.setModel(messageModel).setVisible(true);
+		resultLabel.setDefaultModel(messageModel).setVisible(true);
 		target.addComponent(OperationPanel.this);
 
 	}

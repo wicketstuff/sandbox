@@ -4,7 +4,7 @@
 	<groupId>org.wicketstuff</groupId>
 	<artifactId>wicketstuff-jmx-panel</artifactId>
 	<packaging>jar</packaging>
-	<version>1.3-SNAPSHOT</version>
+	<version>1.4-SNAPSHOT</version>
 	<name>wicketstuff-jmx-panel</name>
 	<description></description>
 	<licenses>
@@ -18,6 +18,10 @@
 		<contributor>
 			<name>Gerolf Seitz</name>
 			<email>gerolf.seitz@gmail.com</email>
+		</contributor>
+		<contributor>
+			<name>Nino Martinez</name>
+			<email>nino.martinez.wael@gmail.com</email>
 		</contributor>
 	</contributors>
 	<ciManagement>
@@ -165,7 +169,7 @@
 		</repository>
 	</distributionManagement>
 	<properties>
-		<wicket.version>1.3.1</wicket.version>
+		<wicket.version>1.4.3</wicket.version>
 		<jetty.version>6.1.4</jetty.version>
 	</properties>
 </project>

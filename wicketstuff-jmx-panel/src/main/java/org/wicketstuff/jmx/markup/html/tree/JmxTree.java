@@ -8,7 +8,6 @@ import javax.management.MBeanOperationInfo;
 import javax.management.ObjectName;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeModel;
-import javax.swing.tree.TreeNode;
 
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
@@ -58,7 +57,7 @@ public class JmxTree extends BaseTree
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected ResourceReference getResourceItemLeaf(TreeNode node)
+			protected ResourceReference getResourceItemLeaf(Object node)
 			{
 				Object obj = ((DefaultMutableTreeNode)node).getUserObject();
 				if (obj instanceof MBeanAttributeInfo)
@@ -73,7 +72,7 @@ public class JmxTree extends BaseTree
 			}
 
 			@Override
-			protected ResourceReference getResourceFolderOpen(TreeNode node)
+			protected ResourceReference getResourceFolderOpen(Object node)
 			{
 				Object obj = ((DefaultMutableTreeNode)node).getUserObject();
 				if ("operations".equals(obj.toString()))
@@ -88,7 +87,7 @@ public class JmxTree extends BaseTree
 			}
 
 			@Override
-			protected ResourceReference getResourceFolderClosed(TreeNode node)
+			protected ResourceReference getResourceFolderClosed(Object node)
 			{
 				Object obj = ((DefaultMutableTreeNode)node).getUserObject();
 				if ("operations".equals(obj.toString()))
@@ -125,7 +124,7 @@ public class JmxTree extends BaseTree
 			}
 
 			@Override
-			protected void onNodeLinkClicked(TreeNode node, BaseTree tree, AjaxRequestTarget target)
+			protected void onNodeLinkClicked(Object node, BaseTree tree, AjaxRequestTarget target)
 			{
 				ITreeState state = tree.getTreeState();
 				if (state.isNodeExpanded(node) && state.isNodeSelected(node))
