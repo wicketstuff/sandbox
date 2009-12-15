@@ -388,18 +388,20 @@ public class Table extends Panel implements IHeaderContributor
 		}
 	}
 
+	protected ResourceReference getCss()
+	{
+		return TABLE_CSS;
+	}
+
 	@Override
 	public void renderHead(IHeaderResponse response)
 	{
 		ResourceReference css = getCss();
-		if (css != null)
+		if (css != null && !response.wasRendered(css))
 		{
+			css.setStyle(getSession().getStyle());
 			response.renderCSSReference(css);
+			response.markRendered(css);
 		}
-	}
-
-	protected ResourceReference getCss()
-	{
-		return TABLE_CSS;
 	}
 }
