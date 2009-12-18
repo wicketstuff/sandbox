@@ -215,6 +215,10 @@ public abstract class AbstractSelectableListView extends PageableListView
 		return listSelectionModel;
 	};
 
+	public void setListSelectionModle(ListSelectionModel listSelectionModel)
+	{
+		this.listSelectionModel = listSelectionModel;
+	}
 
 	public void clearSelection()
 	{

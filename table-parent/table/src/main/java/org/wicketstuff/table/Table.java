@@ -168,6 +168,14 @@ public class Table extends Panel implements IHeaderContributor
 	}
 
 	/**
+	 * @see {@link javax.swing.JTable#setSelectionModel(ListSelectionModel)}
+	 */
+	public void setSelectionModel(ListSelectionModel listSelectionModel)
+	{
+		tableBody.setListSelectionModle(listSelectionModel);
+	}
+
+	/**
 	 * Add a listener to the list that's notified each time a change to the
 	 * selection occurs.
 	 */

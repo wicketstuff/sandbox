@@ -70,7 +70,7 @@ public abstract class TableTestPanel extends Panel
 
 		add(new SelectionModeCombo("modes"));
 		DropDownChoice styles = null;
-		add(styles = new DropDownChoice("styles", new Model("blue"), Arrays.asList(cssStyles))
+		add(styles = new DropDownChoice("styles", new Model(null), Arrays.asList(cssStyles))
 		{
 			@Override
 			protected boolean wantOnSelectionChangedNotifications()
@@ -92,7 +92,7 @@ public abstract class TableTestPanel extends Panel
 
 	protected int getRows()
 	{
-		return 4;
+		return 8;
 	}
 
 	protected void modifyTable(Table table)

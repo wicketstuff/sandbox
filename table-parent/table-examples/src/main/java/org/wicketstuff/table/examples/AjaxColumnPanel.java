@@ -1,5 +1,6 @@
 package org.wicketstuff.table.examples;
 
+import javax.swing.DefaultListSelectionModel;
 import javax.swing.table.TableModel;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -30,6 +31,23 @@ public class AjaxColumnPanel extends TableTestPanel
 		});
 		table.getColumnModel().addColumn(new SelfUpdateColumn(2, Duration.seconds(5)));
 		table.setAutoCreateRowSorter(true);
+		DefaultListSelectionModel sm = new DefaultListSelectionModel()
+		{
+			@Override
+			public void addSelectionInterval(int index0, int index1)
+			{
+				super.addSelectionInterval(index0, index1);
+				super.removeSelectionInterval(2, 3);
+			}
+
+			@Override
+			public void setSelectionInterval(int index0, int index1)
+			{
+				super.setSelectionInterval(index0, index1);
+				super.removeSelectionInterval(2, 3);
+			}
+		};
+		table.setSelectionModel(sm);
 	}
 
 	@Override
