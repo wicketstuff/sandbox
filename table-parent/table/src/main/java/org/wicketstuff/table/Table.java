@@ -21,6 +21,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.Action;
 import javax.swing.ListSelectionModel;
 import javax.swing.RowSorter;
 import javax.swing.event.ListSelectionListener;
@@ -40,6 +41,7 @@ import org.wicketstuff.table.cell.CellRender;
 import org.wicketstuff.table.cell.renders.BooleanRender;
 import org.wicketstuff.table.cell.renders.NumberRender;
 import org.wicketstuff.table.cell.renders.ObjectRender;
+import org.wicketstuff.table.column.ActionRender;
 import org.wicketstuff.table.column.ColGroup;
 import org.wicketstuff.table.column.ColumnModel;
 import org.wicketstuff.table.column.TableColumn;
@@ -293,6 +295,9 @@ public class Table extends Panel implements IHeaderContributor
 		NumberRender numberRender = new NumberRender();
 		defaultRenderersByColumnClass.put(Number.class, numberRender);
 		defaultEditorsByColumnClass.put(Number.class, numberRender);
+		ActionRender actionRender = new ActionRender();
+		defaultRenderersByColumnClass.put(Action.class, actionRender);
+		defaultEditorsByColumnClass.put(Action.class, actionRender);
 	}
 
 	public void setDefaultRenderer(Class<?> columnClass, CellRender renderer)

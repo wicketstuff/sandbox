@@ -31,7 +31,8 @@ function updateRow(markupId, selected) {
 			return window.event.srcElement.tagName.toLowerCase() == "input";
 		} // ie
 		row.onmousedown = function(e) {
-			return e != null && e.target.tagName.toLowerCase() == "input";
+			var tag = e.target.tagName.toLowerCase();
+			return e != null && (tag == "input" || tag == "button");
 		} // mozilla
 		row.originalClass = row.className;
 		row.onmouseover = function(e) {

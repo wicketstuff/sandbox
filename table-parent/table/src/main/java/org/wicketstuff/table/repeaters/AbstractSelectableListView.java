@@ -225,9 +225,11 @@ public abstract class AbstractSelectableListView extends PageableListView
 	public void renderHead(IHeaderResponse response)
 	{
 		ResourceReference css = getCss();
-		if (css != null)
+		if (css != null && !response.wasRendered(css))
 		{
+			css.setStyle(getSession().getStyle());
 			response.renderCSSReference(css);
+			response.markRendered(css);
 		}
 	}
 
