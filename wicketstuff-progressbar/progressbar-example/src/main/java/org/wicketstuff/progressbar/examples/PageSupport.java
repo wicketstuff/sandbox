@@ -22,9 +22,9 @@ import org.apache.wicket.markup.html.panel.FeedbackPanel;
 
 public class PageSupport extends WebPage {
 	public PageSupport() {
-		add(new BookmarkablePageLink("simpleProgress",
+		add(new BookmarkablePageLink<Void>("simpleProgress",
 				SimpleProgressExamplePage.class));
-		add(new BookmarkablePageLink("taskServiceProgress",
+		add(new BookmarkablePageLink<Void>("taskServiceProgress",
 				TaskServiceProgressExamplePage.class));
 		add(new FeedbackPanel("feedback"));
 	}

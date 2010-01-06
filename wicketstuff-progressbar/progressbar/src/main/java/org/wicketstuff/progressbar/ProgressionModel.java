@@ -25,7 +25,7 @@ import org.apache.wicket.model.AbstractReadOnlyModel;
  * @author Christopher Hlubek (hlubek)
  *
  */
-public abstract class ProgressionModel extends AbstractReadOnlyModel {
+public abstract class ProgressionModel extends AbstractReadOnlyModel<Progression> {
 
 	@Override
 	public final Progression getObject() {

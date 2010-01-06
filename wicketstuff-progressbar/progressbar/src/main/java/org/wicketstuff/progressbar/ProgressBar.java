@@ -107,7 +107,7 @@ public class ProgressBar extends Panel {
 				true, new AbstractReadOnlyModel() {
 					@Override
 					public Object getObject() {
-						ProgressionModel model = (ProgressionModel) getModel();
+						ProgressionModel model = (ProgressionModel) getDefaultModel();
 						Progression progression = model.getProgression();
 
 						// set the width of the bar in % of the progress
@@ -170,7 +170,7 @@ public class ProgressBar extends Panel {
 				Duration.ONE_SECOND) {
 			@Override
 			protected void onPostProcessTarget(AjaxRequestTarget target) {
-				ProgressionModel model = (ProgressionModel) getModel();
+				ProgressionModel model = (ProgressionModel) getDefaultModel();
 				Progression progression = model.getProgression();
 				if (progression.isDone()) {
 					// stop the self update

@@ -52,7 +52,8 @@ public class Progression {
 	 *
 	 * @param progress
 	 *            The progress in percent from 0 to 100, where 100 means done
-	 * @param
+	 * @param message
+     *            The message we'd like to show to end users
 	 */
 	public Progression(int progress, String message) {
 		this.progress = progress;
