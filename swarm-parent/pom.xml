@@ -30,7 +30,7 @@
 	<name>swarm-parent</name>
 	<description>Parent project for SWARM</description>
 	<modules>
-	<module>swarm</module>
-	<module>hive</module>
+		<module>swarm</module>
+		<module>hive</module>
 	</modules>
 </project>

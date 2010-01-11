@@ -252,7 +252,6 @@
 					<inherited>true</inherited>
 				</plugin>
 				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-source-plugin</artifactId>
 					<executions>
 						<execution>
@@ -266,6 +265,8 @@
 				</plugin>
 				<plugin>
 					<artifactId>maven-eclipse-plugin</artifactId>
+					<version>2.7</version>
+					<inherited>true</inherited>
 					<configuration>
 						<downloadSources>true</downloadSources>
 						<classpathContainers>
@@ -274,12 +275,10 @@
 							</classpathContainer>
 						</classpathContainers>
 					</configuration>
-				<version>2.5</version>
-				<inherited>true</inherited>
 				</plugin>
 				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-javadoc-plugin</artifactId>
+					<version>2.2</version>
 					<executions>
 						<execution>
 							<id>attach-api-docs</id>
@@ -288,15 +287,13 @@
 							</goals>
 						</execution>
 					</executions>
-					<version>2.2</version>
 					<inherited>true</inherited>
 				</plugin>
 				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>
 						maven-remote-resources-plugin
 					</artifactId>
-					<version>1.0-alpha-5</version>
+					<version>1.1</version>
 					<executions>
 						<execution>
 							<goals>
@@ -305,7 +302,7 @@
 							<configuration>
 								<resourceBundles>
 									<resourceBundle>
-										org.apache:apache-jar-resource-bundle:1.2
+										org.apache:apache-jar-resource-bundle:1.4
 									</resourceBundle>
 								</resourceBundles>
 							</configuration>
@@ -313,42 +310,28 @@
 					</executions>
 					<inherited>true</inherited>
 				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-surefire-plugin</artifactId>
-				<!-- 	<version>2.1.3</version>	-->
-				</plugin>
-				<!-- 			<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-clover-plugin</artifactId>
-					<configuration>
-					<targetPercentage>50%</targetPercentage>
-					<jdk>1.4</jdk>
-					<contextFilters>catch</contextFilters>
-					<excludes>
-					<exclude>**/*Exception.java</exclude>
-					</excludes>
-					</configuration>
-					<executions>
-					<execution>
-					<id>verify</id>
-					<phase>verify</phase>
-					<goals>
-					<goal>instrument</goal>
-					<goal>check</goal>
-					</goals>
-					</execution>
-					<execution>
-					<id>site</id>
-					<phase>pre-site</phase>
-					<goals>
-					<goal>instrument</goal>
-					</goals>
-					</execution>
-					</executions>
-					</plugin>	-->
 			</plugins>
 		</pluginManagement>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<artifactId>maven-eclipse-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<artifactId>maven-javadoc-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<artifactId>maven-remote-resources-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<artifactId>maven-source-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+			</plugin>
+		</plugins>
 	</build>
 
 	<!-- Report tools configuration -->
@@ -378,6 +361,7 @@
 				<artifactId>maven-release-plugin</artifactId>
 				<configuration>
 					<tagBase>https://wicket-stuff.svn.sf.net/svnroot/wicket-stuff/tags</tagBase>
+					<autoVersionSubmodules>true</autoVersionSubmodules>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -407,18 +391,6 @@
 					</reportSet>
 				</reportSets>
 			</plugin>
-			<!-- 	<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-clover-plugin</artifactId>
-				<configuration>
-				<targetPercentage>50%</targetPercentage>
-				<jdk>1.4</jdk>
-				<contextFilters>catch</contextFilters>
-				<excludes>
-				<exclude>**/*Exception.java</exclude>
-				</excludes>
-				</configuration>
-				</plugin>	-->
 		</plugins>
 	</reporting>
 </project>
