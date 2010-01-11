@@ -15,12 +15,14 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.apache.wicket.wicket-security</groupId>
 	<artifactId>wicket-security</artifactId>
 	<packaging>pom</packaging>
-	<version>1.3.2-SNAPSHOT</version>
+	<version>1.3-SNAPSHOT</version>
 	<name>wicket-security</name>
 	<inceptionYear>2006</inceptionYear>
 	<description>Parent project for wicket security projects</description>
@@ -43,28 +45,6 @@
 			</releases>
 		</repository>
 	</repositories>
-	<profiles>
-		<profile>
-			<id>release</id>
-			<distributionManagement>
-				<snapshotRepository>
-					<id>wicketstuff</id>
-					<name>Wicket Stuff repository</name>
-					<url>
-						scp://wicketstuff.org/home/wicket/tomcat/webapps/maven/repository/
-					</url>
-					<uniqueVersion>false</uniqueVersion>
-				</snapshotRepository>
-				<repository>
-					<id>wicketstuff</id>
-					<name>Wicket Stuff repository</name>
-					<url>
-						scp://wicketstuff.org/home/wicket/tomcat/webapps/maven/repository/
-					</url>
-				</repository>
-			</distributionManagement>
-		</profile>
-	</profiles>
 	<scm>
 		<connection>scm:svn:http://wicket-stuff.svn.sourceforge.net/svnroot/wicket-stuff/branches/wicket-1.3.x/wicket-security</connection>
 		<developerConnection>scm:svn:https://wicket-stuff.svn.sourceforge.net/svnroot/wicket-stuff/branches/wicket-1.3.x/wicket-security</developerConnection>
@@ -114,82 +94,82 @@
 
 	<!-- Dependency list -->
 	<dependencyManagement>
-		<dependencies>
-			<!-- logging dependency -->
-			<dependency>
-				<groupId>org.slf4j</groupId>
-				<artifactId>slf4j-api</artifactId>
-				<version>1.4.2</version>
-				<scope>compile</scope>
-			</dependency>
-			<!-- test dependencies -->
-			<dependency>
-				<groupId>junit</groupId>
-				<artifactId>junit</artifactId>
-				<version>3.8.1</version>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.slf4j</groupId>
-				<artifactId>slf4j-log4j12</artifactId>
-				<version>1.4.2</version>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>log4j</groupId>
-				<artifactId>log4j</artifactId>
-				<version>1.2.13</version>
-				<optional>true</optional>
-				<scope>test</scope>
-			</dependency>
-			<!-- wicket dependencies -->
-			<dependency>
-				<groupId>org.apache.wicket</groupId>
-				<artifactId>wicket</artifactId>
-				<version>${wicket.version}</version>
-				<scope>compile</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.wicket</groupId>
-				<artifactId>wicket-extensions</artifactId>
-				<version>${wicket.version}</version>
-				<scope>compile</scope>
-				<optional>true</optional>
-			</dependency>
-			<!-- servlet api -->
-			<dependency>
-				<groupId>javax.servlet</groupId>
-				<artifactId>servlet-api</artifactId>
-				<version>2.3</version>
-				<type>jar</type>
-				<scope>provided</scope>
-			</dependency>
-			<!-- wicket-security dependencies -->
-			<dependency>
-				<groupId>org.apache.wicket.wicket-security</groupId>
-				<artifactId>wicomsec</artifactId>
-				<version>${project.version}</version>
-				<scope>compile</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.wicket.wicket-security</groupId>
-				<artifactId>wasp</artifactId>
-				<version>${project.version}</version>
-				<scope>compile</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.wicket.wicket-security</groupId>
-				<artifactId>hive</artifactId>
-				<version>${project.version}</version>
-				<scope>compile</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.wicket.wicket-security</groupId>
-				<artifactId>swarm</artifactId>
-				<version>${project.version}</version>
-				<scope>compile</scope>
-			</dependency>
-		</dependencies>
+	<dependencies>
+		<!-- logging dependency -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.4.2</version>
+			<scope>compile</scope>
+		</dependency>
+		<!-- test dependencies -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>3.8.1</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.4.2</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.13</version>
+			<optional>true</optional>
+			<scope>test</scope>
+		</dependency>
+		<!-- wicket dependencies -->
+		<dependency>
+			<groupId>org.apache.wicket</groupId>
+			<artifactId>wicket</artifactId>
+			<version>${wicket.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.wicket</groupId>
+			<artifactId>wicket-extensions</artifactId>
+			<version>${wicket.version}</version>
+			<scope>compile</scope>
+			<optional>true</optional>
+		</dependency>
+		<!-- servlet api -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.3</version>
+			<type>jar</type>
+			<scope>provided</scope>
+		</dependency>
+		<!-- wicket-security dependencies -->
+		<dependency>
+			<groupId>org.apache.wicket.wicket-security</groupId>
+			<artifactId>wicomsec</artifactId>
+			<version>${project.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.wicket.wicket-security</groupId>
+			<artifactId>wasp</artifactId>
+			<version>${project.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.wicket.wicket-security</groupId>
+			<artifactId>hive</artifactId>
+			<version>${project.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.wicket.wicket-security</groupId>
+			<artifactId>swarm</artifactId>
+			<version>${project.version}</version>
+			<scope>compile</scope>
+		</dependency>
+	</dependencies>
 	</dependencyManagement>
 	<dependencies>
 		<!-- logging dependency -->
@@ -212,10 +192,10 @@
 		</dependency>
 	</dependencies>
 	<modules>
-		<module>wasp-parent</module>
-		<module>swarm-parent</module>
-		<module>examples</module>
-		<module>archetypes/swarm-quickstart</module>
+	<module>wasp-parent</module>
+	<module>swarm-parent</module>
+	<module>examples</module>
+	<module>archetypes/swarm-quickstart</module>
 	</modules>
 	<!-- Build environment -->
 	<distributionManagement>
