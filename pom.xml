@@ -375,6 +375,12 @@
 			<!-- 	<version>2.1.3</version>	-->
 			</plugin>
 			<plugin>
+				<artifactId>maven-release-plugin</artifactId>
+				<configuration>
+					<tagBase>https://wicket-stuff.svn.sf.net/svnroot/wicket-stuff/tags</tagBase>
+				</configuration>
+			</plugin>
+			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>taglist-maven-plugin</artifactId>
 			</plugin>
