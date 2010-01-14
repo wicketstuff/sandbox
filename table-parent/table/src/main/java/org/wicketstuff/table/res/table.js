@@ -28,11 +28,14 @@ function updateRow(markupId, selected) {
 			this.listeners[this.listeners.length] = listener;
 		}
 		row.onselectstart = function() {
-			return window.event.srcElement.tagName.toLowerCase() == "input";
+			var tag = window.event.srcElement.tagName.toLowerCase();
+			return tag == "input" || tag == "button";
 		} // ie
 		row.onmousedown = function(e) {
-			var tag = e.target.tagName.toLowerCase();
-			return e != null && (tag == "input" || tag == "button");
+			if (e != null){
+				var tag = e.target.tagName.toLowerCase();
+				return tag == "input" || tag == "button";
+			}
 		} // mozilla
 		row.originalClass = row.className;
 		row.onmouseover = function(e) {
