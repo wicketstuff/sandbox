@@ -152,7 +152,7 @@ function switchLanguage()
 		break;	
 	case "hu":	/* Hungarian  - Remember to use UTF-8 encoding, i.e. the <meta> tag */
 		monthArray = ['janu&#225;r','febru&#225;r','m&#225;rcius','&#225;prilis','m&#225;jus','j&#250;nius','j&#250;lius','augusztus','szeptember','okt&#243;ber','november','december'];
-		monthArrayShort = ['jan','feb','m&#225;rc','�&#225;pr','m&#225;j','j&#250;n','j&#250;l','aug','szep','okt','nov','dec'];
+		monthArrayShort = ['jan','feb','m&#225;rc','&#225;pr','m&#225;j','j&#250;n','j&#250;l','aug','szep','okt','nov','dec'];
 		dayArray = ['H&#233;','Ke','Sze','Cs','P&#233;','Szo','Vas'];
 		weekString = 'H&#233;t';
 		todayString = 'Mai nap';	
@@ -1575,8 +1575,10 @@ function initCalendar()
 		document.body.appendChild(iframeObj2);
 		//// fix for EI frame problem on time dropdowns 09/30/2006
 		// Added fixed for HTTPS
-		iframeObj2.src = 'blank.html'; 
-		iframeObj.src = 'blank.html'; 
+// MODIFIED BY WICKET 
+		iframeObj2.src = 'about:blank'; 
+		iframeObj.src = 'about:blank'; 
+// END MODIFIED BY WICKET 
 		document.body.appendChild(iframeObj);
 	}
 		
@@ -1842,7 +1844,7 @@ function displayCalendar(inputField,format,buttonObj,displayTime,timeInput,smart
 		iframeObj.style.display = '';
 		iframeObj.style.height = '140px';
 		iframeObj.style.width = '195px';
-				iframeObj2.style.display = '';
+		iframeObj2.style.display = 'none';
 		iframeObj2.style.height = '140px';
 		iframeObj2.style.width = '195px';
 	}
