@@ -35,14 +35,17 @@ import org.apache.wicket.util.string.Strings;
  * @author Pedro Henrique Oliveira dos Santos
  * 
  */
-public abstract class SelectableListItem extends ColoredListItem implements IHeaderContributor
+public abstract class SelectableListItem<T> extends ColoredListItem<T>
+		implements
+			IHeaderContributor
 {
 	private static final long serialVersionUID = 1L;
+	private static final HeaderContributor TABLE_JS = JavascriptPackageResource
+			.getHeaderContribution(new ResourceReference(SelectableListItem.class, "res/table.js"));
 	private static final String SHIFT_P = "shiftKey";
 	private static final String CTRL_P = "ctrlKey";
 	private ListSelectionModel listSelectionModel;
-	private static final HeaderContributor TABLE_JS = JavascriptPackageResource
-			.getHeaderContribution(new ResourceReference(SelectableListItem.class, "res/table.js"));
+	private boolean preventSelectTwice;
 
 	/**
 	 * @param index
@@ -52,7 +55,7 @@ public abstract class SelectableListItem extends ColoredListItem implements IHea
 	 *            Based on its state, the row selection is resolved. Ex: row css
 	 *            class will reflect the actual state.
 	 */
-	public SelectableListItem(int index, IModel model, ListSelectionModel listSelectionModel)
+	public SelectableListItem(int index, IModel<T> model, ListSelectionModel listSelectionModel)
 	{
 		super(index, model);
 		setOutputMarkupId(true);
@@ -76,9 +79,32 @@ public abstract class SelectableListItem extends ColoredListItem implements IHea
 						+ String.format("&%s='+event.shiftKey+'&%s='+event.ctrlKey+'", SHIFT_P,
 								CTRL_P);
 			}
+
+			@Override
+			protected CharSequence getPreconditionScript()
+			{
+				if (preventSelectTwice)
+				{
+					return String.format("return Wicket.$('%s').isSelected == false",
+							getComponent().getMarkupId());
+				}
+				else
+				{
+					return super.getPreconditionScript();
+				}
+			}
 		});
 	}
 
+	/**
+	 * Add only the update script to response, reducing the data used to
+	 * maintain the row selection state updated.
+	 * 
+	 * Called from rowClicked on AbstractSelectableListView when this row has an
+	 * selection that will to be lost due list mode.
+	 * 
+	 * @param target
+	 */
 	public void updateOnAjaxRequest(AjaxRequestTarget target)
 	{
 		target.appendJavascript(getUpdateScript());
@@ -102,4 +128,9 @@ public abstract class SelectableListItem extends ColoredListItem implements IHea
 
 	protected abstract void onItemSelection(AjaxRequestTarget target, boolean shiftPressed,
 			boolean ctrlPressed);
+
+	public void setPreventSelectTwice(boolean preventSelectTwice)
+	{
+		this.preventSelectTwice = preventSelectTwice;
+	}
 }

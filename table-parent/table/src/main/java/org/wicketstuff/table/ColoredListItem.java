@@ -24,7 +24,7 @@ import org.apache.wicket.model.IModel;
  * @author Pedro Henrique Oliveira dos Santos
  * 
  */
-public class ColoredListItem extends ListItem
+public class ColoredListItem<T> extends ListItem<T>
 {
 	private static final long serialVersionUID = 1L;
 	public static final String CLASS_EVEN = "even";

@@ -43,13 +43,14 @@ import org.wicketstuff.table.TableUtil;
  * @author Pedro Henrique Oliveira dos Santos
  * 
  */
-public abstract class AbstractSelectableListView extends PageableListView
+public abstract class AbstractSelectableListView<T> extends PageableListView<T>
 		implements
 			IHeaderContributor
 {
 	private static final long serialVersionUID = 1L;
 	public static final ResourceReference CSS = new ResourceReference(Table.class,
 			"res/selectableListView.css");
+	private boolean preventSelectTwice = true;
 
 	protected ListSelectionModel listSelectionModel;
 
@@ -80,11 +81,11 @@ public abstract class AbstractSelectableListView extends PageableListView
 		this.listSelectionModel = selectionModel;
 	}
 
-	protected abstract void onSelection(SelectableListItem selectableListItem,
+	protected abstract void onSelection(SelectableListItem<T> selectableListItem,
 			AjaxRequestTarget target);
 
 	@Override
-	protected ListItem newItem(final int index)
+	protected ListItem<T> newItem(final int index)
 	{
 		final SelectableListItem listItem = new SelectableListItem(index, getListItemModel(
 				getModel(), index), listSelectionModel)
@@ -97,6 +98,7 @@ public abstract class AbstractSelectableListView extends PageableListView
 			}
 
 		};
+		listItem.setPreventSelectTwice(this.preventSelectTwice);
 		return listItem;
 	}
 
@@ -105,8 +107,8 @@ public abstract class AbstractSelectableListView extends PageableListView
 	/**
 	 * Method responsible to resolve items selection.
 	 */
-	protected void rowClicked(final SelectableListItem clickedItem, final AjaxRequestTarget target,
-			boolean shiftPressed, boolean ctrlPressed)
+	protected void rowClicked(final SelectableListItem<T> clickedItem,
+			final AjaxRequestTarget target, boolean shiftPressed, boolean ctrlPressed)
 	{
 		int[] oldSelections = getSelectedRows();
 		int newSelection = clickedItem.getIndex();
@@ -153,12 +155,12 @@ public abstract class AbstractSelectableListView extends PageableListView
 		onSelection(clickedItem, target);
 	}
 
-	public SelectableListItem getSelection()
+	public SelectableListItem<T> getSelection()
 	{
 		return getMinSelection();
 	}
 
-	public SelectableListItem getMinSelection()
+	public SelectableListItem<T> getMinSelection()
 	{
 		return (SelectableListItem)visitChildren(SelectableListItem.class, new IVisitor()
 		{
@@ -247,7 +249,7 @@ public abstract class AbstractSelectableListView extends PageableListView
 		return CSS;
 	}
 
-	public void selectItemWithObjectOnModel(final Object obj)
+	public void selectItemWithObjectOnModel(final T obj)
 	{
 		for (Iterator i = getList().iterator(); i.hasNext();)
 		{
@@ -259,5 +261,14 @@ public abstract class AbstractSelectableListView extends PageableListView
 			}
 
 		}
+	}
+
+	/**
+	 * @param preventSelectTwice
+	 *            the preventSelectTwice to set
+	 */
+	public void setPreventSelectTwice(boolean preventSelectTwice)
+	{
+		this.preventSelectTwice = preventSelectTwice;
 	}
 }
