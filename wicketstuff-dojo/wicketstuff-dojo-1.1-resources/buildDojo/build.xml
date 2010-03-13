@@ -37,7 +37,7 @@
 	<target name="checkout" unless="isReleaseAvail">
 		<echo message="Checking out dojo from ${dojo.svn.url} with user anonymous"/>
 		<svn>
-			<checkout url="${dojo.svn.url}" destPath="${dojo.checkoutdir}/${dojo.release}" />
+			<export srcUrl="${dojo.svn.url}" destPath="${dojo.checkoutdir}/${dojo.release}" />
 		</svn>
 		<!-- delete .svn folder to avoid problem (we don't expect updates from release tags anyway) -->
 		<delete includeemptydirs="true">

@@ -76,7 +76,7 @@ public class FxToggler extends AbstractAnimationBehavior
 
 	static {
 		DojoPackagedTextTemplate template = new DojoPackagedTextTemplate(FxToggler.class, FxToggler.class.getSimpleName()+".js");
-		HashMap<String, String> map = new HashMap<String, String>();
+		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("wiperHiddenClass", FX_WIPER_HIDDEN_CLASS);
 		map.put("wiperShownClass", FX_WIPER_SHOWN_CLASS);
 		map.put("connectFXTogglerFunction", FUNCTION_CONNECT_FX_TOGGLER);

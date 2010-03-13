@@ -4,13 +4,13 @@
 	<groupId>org.wicketstuff</groupId>
 	<parent>
 		<groupId>org.wicketstuff</groupId>
-		<artifactId>wicketstuff-dojo-1.1</artifactId>
-		<version>1.1-SNAPSHOT</version>
+		<artifactId>wicketstuff-dojo</artifactId>
+		<version>1.4-SNAPSHOT</version>
 	</parent>
-	<artifactId>wicketstuff-dojo-1.1-api</artifactId>
+	<artifactId>wicketstuff-dojo-api</artifactId>
 	<packaging>jar</packaging>
-	<version>1.1-SNAPSHOT</version>
-	<name>WicketStuff Dojo 1.1 API</name>
+	<version>1.4-SNAPSHOT</version>
+	<name>WicketStuff Dojo API</name>
 	<licenses>
 		<license>
 			<name>The Apache Software License, Version 2.0</name>
@@ -20,6 +20,7 @@
 	</licenses>
 	<properties>
 		<jetty.version>6.1.14</jetty.version>
+		<slf4j.version>1.5.11</slf4j.version>
 	</properties>
 	<!--
 		Deployed with Teamcity:
@@ -59,12 +60,12 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>1.5.0</version>
+			<version>${slf4j.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
-			<version>1.5.0</version>
+			<version>${slf4j.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -80,7 +81,7 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.4</version>
+			<version>4.8.1</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>

@@ -241,7 +241,7 @@ public class DojoToaster extends WebMarkupContainer implements IDojoWidget{
 	public String getPublishMessageJavaScript(ToasterMessageType type)
 	{	
 		StringBuilder buf = new StringBuilder();
-	    buf.append("dijit.byId('").append(getMarkupId()).append("').setContent('").append(getModelObject()).append("'");
+	    buf.append("dijit.byId('").append(getMarkupId()).append("').setContent('").append(getDefaultModelObject()).append("'");
 	    if (type != null) {
 	    	buf.append(",'").append(type.toString().toLowerCase()).append("'");
 	    }

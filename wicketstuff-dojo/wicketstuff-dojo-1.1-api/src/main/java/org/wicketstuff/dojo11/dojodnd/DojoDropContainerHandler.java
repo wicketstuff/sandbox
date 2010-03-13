@@ -43,7 +43,7 @@ public class DojoDropContainerHandler extends AbstractDojoWidgetBehavior
 	
 	static {
 		DojoPackagedTextTemplate template = new DojoPackagedTextTemplate(DojoDropContainer.class, DojoDropContainer.class.getSimpleName()+".js");
-		HashMap<String, String> map = new HashMap<String, String>();
+		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("connectDojoDropContainerFunction", FUNCTION_CONNECT_DROP_CONTAINER);
 		JAVASCRIPT = template.asString(map);
 		JAVASCRIPT_ID = template.getStaticKey();

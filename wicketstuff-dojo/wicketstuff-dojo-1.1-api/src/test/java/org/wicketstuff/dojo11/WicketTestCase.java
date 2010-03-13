@@ -18,6 +18,7 @@ package org.wicketstuff.dojo11;
 
 import junit.framework.TestCase;
 import org.apache.wicket.Component;
+import org.apache.wicket.Page;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.behavior.AbstractAjaxBehavior;
 import org.apache.wicket.protocol.http.MockHttpServletResponse;
@@ -71,7 +72,7 @@ public abstract class WicketTestCase extends TestCase
 	 * @param filename
 	 * @throws Exception
 	 */
-	protected void executeTest(final Class<?> pageClass, final String filename) throws Exception
+	protected void executeTest(final Class<? extends Page> pageClass, final String filename) throws Exception
 	{
 		System.out.println("=== " + pageClass.getName() + " ===");
 
