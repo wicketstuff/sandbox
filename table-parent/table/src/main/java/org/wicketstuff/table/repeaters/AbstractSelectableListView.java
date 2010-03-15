@@ -17,6 +17,7 @@
 package org.wicketstuff.table.repeaters;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -50,6 +51,11 @@ public abstract class AbstractSelectableListView<T> extends PageableListView<T>
 	private static final long serialVersionUID = 1L;
 	public static final ResourceReference CSS = new ResourceReference(Table.class,
 			"res/selectableListView.css");
+	/*
+	 * Used to store the index used as bound for selection ranget when user
+	 * select an row with shift pressed.
+	 */
+	private Integer lastNonShiftSelection;
 	private boolean preventSelectTwice = true;
 
 	protected ListSelectionModel listSelectionModel;
@@ -81,34 +87,20 @@ public abstract class AbstractSelectableListView<T> extends PageableListView<T>
 		this.listSelectionModel = selectionModel;
 	}
 
-	protected abstract void onSelection(SelectableListItem<T> selectableListItem,
+	public abstract void onSelection(SelectableListItem<T> selectableListItem,
 			AjaxRequestTarget target);
 
 	@Override
 	protected ListItem<T> newItem(final int index)
 	{
-		final SelectableListItem listItem = new SelectableListItem(index, getListItemModel(
-				getModel(), index), listSelectionModel)
-		{
-			@Override
-			protected void onItemSelection(AjaxRequestTarget target, boolean shiftPressed,
-					boolean ctrlPressed)
-			{
-				AbstractSelectableListView.this.rowClicked(this, target, shiftPressed, ctrlPressed);
-			}
-
-		};
-		listItem.setPreventSelectTwice(this.preventSelectTwice);
-		return listItem;
+		return new DefaultSelectableListItem(this, index, getListItemModel(getModel(), index));
 	}
-
-	private Integer lastNonShiftSelection;
 
 	/**
 	 * Method responsible to resolve items selection.
 	 */
-	protected void rowClicked(final SelectableListItem<T> clickedItem,
-			final AjaxRequestTarget target, boolean shiftPressed, boolean ctrlPressed)
+	void rowClicked(final SelectableListItem<T> clickedItem, final AjaxRequestTarget target,
+			boolean shiftPressed, boolean ctrlPressed)
 	{
 		int[] oldSelections = getSelectedRows();
 		int newSelection = clickedItem.getIndex();
@@ -228,7 +220,7 @@ public abstract class AbstractSelectableListView<T> extends PageableListView<T>
 	}
 
 	@Override
-	public void renderHead(IHeaderResponse response)
+	public void renderHead(final IHeaderResponse response)
 	{
 		ResourceReference css = getCss();
 		if (css != null && !response.wasRendered(css))
@@ -236,6 +228,32 @@ public abstract class AbstractSelectableListView<T> extends PageableListView<T>
 			css.setStyle(getSession().getStyle());
 			response.renderCSSReference(css);
 			response.markRendered(css);
+		}
+		final List<String> itensIds = new ArrayList<String>();
+		final List<Boolean> itensSelection = new ArrayList<Boolean>();
+		visitChildren(SelectableListItem.class, new IVisitor<SelectableListItem>()
+		{
+			@Override
+			public Object component(SelectableListItem component)
+			{
+				itensIds.add(component.getMarkupId());
+				itensSelection.add(component.isSelected());
+				return IVisitor.CONTINUE_TRAVERSAL;
+			}
+		});
+		if (itensIds.size() > 0)
+		{
+			String selection = "[";
+			for (Iterator i = itensSelection.iterator(); i.hasNext();)
+			{
+				selection += i.next() + (i.hasNext() ? "," : "]");
+			}
+			String ids = "['";
+			for (Iterator i = itensIds.iterator(); i.hasNext();)
+			{
+				ids += i.next() + (i.hasNext() ? "','" : "']");
+			}
+			response.renderOnDomReadyJavascript("initRows(" + ids + ", " + selection + ")");
 		}
 	}
 
@@ -254,7 +272,7 @@ public abstract class AbstractSelectableListView<T> extends PageableListView<T>
 		for (Iterator i = getList().iterator(); i.hasNext();)
 		{
 			Object selectableItem = (Object)i.next();
-			if (selectableItem.equals(obj))
+			if (obj.equals(selectableItem))
 			{
 				int selection = getList().indexOf(selectableItem);
 				listSelectionModel.addSelectionInterval(selection, selection);
@@ -270,5 +288,10 @@ public abstract class AbstractSelectableListView<T> extends PageableListView<T>
 	public void setPreventSelectTwice(boolean preventSelectTwice)
 	{
 		this.preventSelectTwice = preventSelectTwice;
+	}
+
+	public boolean isPreventSelectTwice()
+	{
+		return this.preventSelectTwice;
 	}
 }

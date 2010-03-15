@@ -22,8 +22,6 @@ import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.behavior.HeaderContributor;
-import org.apache.wicket.markup.html.IHeaderContributor;
-import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.JavascriptPackageResource;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.string.Strings;
@@ -36,8 +34,6 @@ import org.apache.wicket.util.string.Strings;
  * 
  */
 public abstract class SelectableListItem<T> extends ColoredListItem<T>
-		implements
-			IHeaderContributor
 {
 	private static final long serialVersionUID = 1L;
 	private static final HeaderContributor TABLE_JS = JavascriptPackageResource
@@ -110,13 +106,8 @@ public abstract class SelectableListItem<T> extends ColoredListItem<T>
 		target.appendJavascript(getUpdateScript());
 	}
 
-	@Override
-	public void renderHead(IHeaderResponse response)
-	{
-		response.renderOnDomReadyJavascript(getUpdateScript());
-	}
 
-	private String getUpdateScript()
+	public String getUpdateScript()
 	{
 		return String.format("updateRow('%s', %b)", getMarkupId(), isSelected());
 	}

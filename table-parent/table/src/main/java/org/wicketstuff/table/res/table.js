@@ -19,6 +19,11 @@ Event = function(oldValue, isSelection, row) {
 	this.isSelection = isSelection;
 	this.row = row;
 }
+function initRows(markupId, selected) {
+	for (var j = 0; j < markupId.length; j++) {
+		updateRow(markupId[j], selected[j]);
+	}
+}
 function updateRow(markupId, selected) {
 	var row = Wicket.$(markupId);
 	if (!row.started) {
@@ -32,7 +37,7 @@ function updateRow(markupId, selected) {
 			return tag == "input" || tag == "button";
 		} // ie
 		row.onmousedown = function(e) {
-			if (e != null){
+			if (e != null) {
 				var tag = e.target.tagName.toLowerCase();
 				return tag == "input" || tag == "button";
 			}

@@ -85,7 +85,7 @@ public class Table extends Panel implements IHeaderContributor
 		add(tableBody = new TableBody("rows", this)
 		{
 			@Override
-			protected void onSelection(SelectableListItem selectableListItem,
+			public void onSelection(SelectableListItem selectableListItem,
 					AjaxRequestTarget target)
 			{
 				Table.this.onSelection(target);
