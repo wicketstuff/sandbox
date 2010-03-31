@@ -1,0 +1,4 @@
+Running 'mvn clean test' will execute the test against http://localhost:8080/wicket-examples (this is the default location if wicket-examples is started with mvn jetty:run).
+
+To execute the test against different URL:
+$ MAVEN_OPTS="-Dchecker.host=wicketstuff.org -Dchecker.port=80 -Dchecker.context=wicket14" mvn clean test
