@@ -111,8 +111,6 @@ public class LinkCheckerTest
 					"Linkomatic BookmarkablePageLink with parameters"));
 			pageDescriptions.add(new PageDescription("linkomatic/wicket/bookmarkable/org.apache.wicket.examples.linkomatic.Popup", 
 					"Linkomatic open in popup"));
-			pageDescriptions.add(new PageDescription("linkomatic/wicket/resource/org.apache.wicket.Application/cancelButton", 
-					"Linkomatic Cancel button"));
 			
 			pageDescriptions.add(new PageDescription("navomatic", ""));
 			pageDescriptions.add(new PageDescription("pub", "Pub"));
@@ -244,8 +242,6 @@ public class LinkCheckerTest
 			pageDescriptions.add(new PageDescription("velocity", "Velocity integration"));
 			pageDescriptions.add(new PageDescription("velocity/wicket/bookmarkable/org.apache.wicket.examples.velocity.TemplatePage", "Velocity page"));
 			pageDescriptions.add(new PageDescription("velocity/wicket/bookmarkable/org.apache.wicket.examples.velocity.DynamicPage", "Velocity dynamic page"));
-			pageDescriptions.add(new PageDescription("ng", "Request Cycle 1.5"));
-			
 			
 			return pageDescriptions;
 	}
