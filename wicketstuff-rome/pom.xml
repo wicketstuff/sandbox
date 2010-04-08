@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.wicketstuff</groupId>
+  <artifactId>wicketstuff-rome</artifactId>
+  <version>1.4-SNAPSHOT</version>
+  <description>wicket integration with the ROME feed library for generating RSS and Atom content</description>
+  <name>Wicketstuff Rome 1.4</name>
+  
+  <dependencies>
+	<dependency>
+		<groupId>org.apache.wicket</groupId>
+		<artifactId>wicket</artifactId>
+		<version>1.4.7</version>		
+	</dependency>
+    <!-- ROME RSS library dependencies -->
+    <dependency>
+      <groupId>rome</groupId>
+      <artifactId>rome</artifactId>
+      <version>1.0</version>
+    </dependency>
+    <dependency>
+      <groupId>jdom</groupId>
+      <artifactId>jdom</artifactId>
+      <version>1.0</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <resources>
+      <resource>
+        <directory>src/main/java</directory>
+        <includes>
+          <include>**</include>
+        </includes>
+        <excludes>
+          <exclude>**/*.java</exclude>
+        </excludes>
+      </resource>
+    </resources>
+
+    <plugins>
+	  <plugin>
+		<groupId>org.apache.maven.plugins</groupId>
+		<artifactId>maven-compiler-plugin</artifactId>
+		<configuration>
+			<source>1.5</source>
+			<target>1.5</target>
+		</configuration>
+	  </plugin>
+	  <plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<configuration>
+					<minmemory>128m</minmemory>
+					<maxmemory>256m</maxmemory>
+				</configuration>
+	  </plugin>
+    </plugins>
+  </build>
+
+  <reports>
+		<report>maven-license-plugin</report>
+		<report>maven-javadoc-plugin</report>
+  </reports>
+
+  <repositories>
+  <repository>
+  		<id>java.net</id>
+  		<url>http://download.java.net/maven/1</url>
+  		<layout>legacy</layout>
+   </repository>
+    <repository>
+      <id>wicket-stuff-repository</id>
+      <name>Wicket-Stuff Repository</name>
+      <url>http://www.wicketstuff.org/maven/repository/</url>
+    </repository>
+    <repository>
+      <id>codecrate-repository</id>
+      <name>Codecrate Maven Repository</name>
+      <url>http://maven.codecrate.com/</url>
+    </repository>  
+  </repositories>
+
+  <distributionManagement>
+    <snapshotRepository>
+        <id>repo</id>
+        <name>Local TeamCity/Tomcat repository</name>
+        <url>file:/home/wicket/tomcat/webapps/maven/repository/</url>
+        <uniqueVersion>false</uniqueVersion>
+    </snapshotRepository>
+
+    <repository>
+        <id>repo</id>
+        <name>Local TeamCity/Tomcat repository</name>
+        <url>file:/home/wicket/tomcat/webapps/maven/repository/</url>
+    </repository>    
+  </distributionManagement>
+  
+  <ciManagement>
+    <system>TeamCity</system>
+    <url>http://wicketstuff.org/teamcity</url>
+  </ciManagement>
+</project>
