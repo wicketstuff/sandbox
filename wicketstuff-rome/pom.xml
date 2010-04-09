@@ -72,6 +72,10 @@
   		<url>http://download.java.net/maven/1</url>
   		<layout>legacy</layout>
    </repository>
+   <repository>
+        <id>java.net</id>
+        <url>http://download.java.net/maven/2</url>
+   </repository>
     <repository>
       <id>wicket-stuff-repository</id>
       <name>Wicket-Stuff Repository</name>
