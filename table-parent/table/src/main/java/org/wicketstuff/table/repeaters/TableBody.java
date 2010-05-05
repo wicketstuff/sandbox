@@ -58,6 +58,7 @@ public abstract class TableBody extends AbstractSelectableListView
 	{
 		rowItem.add(new ListView("columns", table.getColumnModel())
 		{
+
 			@Override
 			protected void populateItem(final ListItem columnItem)
 			{
@@ -66,7 +67,8 @@ public abstract class TableBody extends AbstractSelectableListView
 				TableUtil.fillColumnCss(columnItem, table.getTableModel(), modelColumnIndex);
 				int modelRowIndex = sorter != null ? sorter.convertRowIndexToModel(rowItem
 						.getIndex()) : rowItem.getIndex();
-				TableUtil.fillCellCss(columnItem, table.getTableModel(), modelColumnIndex, modelRowIndex);
+				TableUtil.fillCellCss(columnItem, table.getTableModel(), modelColumnIndex,
+						modelRowIndex);
 				populateColumn((SelectableListItem)rowItem, columnItem, modelRowIndex,
 						modelColumnIndex);
 			}
@@ -112,6 +114,7 @@ public abstract class TableBody extends AbstractSelectableListView
 			{
 				int[] selection = getSelectedRows();
 				int[] newSelection = Arrays.copyOf(selection, selection.length);
+				int rowCount = table.getTableModel().getRowCount();
 				for (int i = 0; i < newSelection.length; i++)
 				{
 					int oldModelIndex = e.convertPreviousRowIndexToModel(selection[i]);
@@ -120,13 +123,25 @@ public abstract class TableBody extends AbstractSelectableListView
 						// means that the table wasn't sorted and the:
 						oldModelIndex = selection[i];
 					}
-					newSelection[i] = sorter.convertRowIndexToView(oldModelIndex);
+					// if the table has removed rows
+					if (oldModelIndex < rowCount)
+					{
+						newSelection[i] = sorter.convertRowIndexToView(oldModelIndex);
+					}
+					else
+					{
+						// empty selection get flagged
+						newSelection[i] = Integer.MIN_VALUE;
+					}
 				}
 				Arrays.sort(newSelection);
 				listSelectionModel.clearSelection();
 				for (int i = 0; i < newSelection.length; i++)
 				{
-					listSelectionModel.addSelectionInterval(newSelection[i], newSelection[i]);
+					if (newSelection[i] != Integer.MIN_VALUE)
+					{
+						listSelectionModel.addSelectionInterval(newSelection[i], newSelection[i]);
+					}
 				}
 			}
 		}

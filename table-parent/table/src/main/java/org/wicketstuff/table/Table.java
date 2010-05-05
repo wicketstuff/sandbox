@@ -17,7 +17,6 @@
 package org.wicketstuff.table;
 
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,6 +24,9 @@ import javax.swing.Action;
 import javax.swing.ListSelectionModel;
 import javax.swing.RowSorter;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.event.RowSorterEvent;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
 import org.apache.wicket.ResourceReference;
@@ -85,8 +87,7 @@ public class Table extends Panel implements IHeaderContributor
 		add(tableBody = new TableBody("rows", this)
 		{
 			@Override
-			public void onSelection(SelectableListItem selectableListItem,
-					AjaxRequestTarget target)
+			public void onSelection(SelectableListItem selectableListItem, AjaxRequestTarget target)
 			{
 				Table.this.onSelection(target);
 			}
@@ -246,21 +247,41 @@ public class Table extends Panel implements IHeaderContributor
 	 */
 	public int[] getSelectedRows()
 	{
-		int[] viewSelection = tableBody.getSelectedRows();
-		if (getRowSorter() != null)
-		{
+		return tableBody.getSelectedRows();
+	}
 
-			int[] onModelSelection = Arrays.copyOf(viewSelection, viewSelection.length);
-			for (int i = 0; i < onModelSelection.length; i++)
-			{
-				onModelSelection[i] = getRowSorter().convertRowIndexToModel(viewSelection[i]);
-			}
-			return onModelSelection;
-		}
-		else
+	/**
+	 * @see {@link javax.swing.JTable#getSelectedRow()}
+	 */
+	public int getSelectedRow()
+	{
+		return getListSelectionModel().getMinSelectionIndex();
+	}
+
+	/**
+	 * @see {@link javax.swing.JTable#convertRowIndexToView(int)}
+	 */
+	public int convertRowIndexToView(int modelRowIndex)
+	{
+		RowSorter sorter = getRowSorter();
+		if (sorter != null)
 		{
-			return viewSelection;
+			return sorter.convertRowIndexToView(modelRowIndex);
 		}
+		return modelRowIndex;
+	}
+
+	/**
+	 * @see {@link javax.swing.JTable#convertRowIndexToModel(int)}
+	 */
+	public int convertRowIndexToModel(int viewRowIndex)
+	{
+		RowSorter sorter = getRowSorter();
+		if (sorter != null)
+		{
+			return sorter.convertRowIndexToModel(viewRowIndex);
+		}
+		return viewRowIndex;
 	}
 
 	public CellRender getCellRenderer(int row, int column)
@@ -384,20 +405,27 @@ public class Table extends Panel implements IHeaderContributor
 		public TableModelAdapter(TableModel tableModel)
 		{
 			super((Serializable)tableModel);
-			if (autoCreateRowSorter)
-			{
-				setRowSorter(new SerializableTableRowSorter(tableModel));
-			}
+			// setObject((Serializable)tableModel);
 		}
 
 		@Override
 		public void setObject(Serializable object)
 		{
 			super.setObject(object);
+			TableModel tableModel = (TableModel)object;
 			if (autoCreateRowSorter)
 			{
-				setRowSorter(new SerializableTableRowSorter((TableModel)object));
+				setRowSorter(new SerializableTableRowSorter(tableModel));
 			}
+			tableModel.addTableModelListener(new TableModelListener()
+			{
+
+				@Override
+				public void tableChanged(TableModelEvent e)
+				{
+					Table.this.tableChanged(e);
+				}
+			});
 		}
 	}
 
@@ -415,6 +443,94 @@ public class Table extends Panel implements IHeaderContributor
 			css.setStyle(getSession().getStyle());
 			response.renderCSSReference(css);
 			response.markRendered(css);
+		}
+	}
+
+	/**
+	 * @see {@link javax.swing.JTable#sorterChanged(RowSorterEvent)}
+	 */
+	public void sorterChanged(RowSorterEvent e)
+	{
+		if (e.getType() == RowSorterEvent.Type.SORTED)
+		{
+			sortedTableChanged(e, null);
+		}
+	}
+
+	/**
+	 * @see {@link javax.swing.JTable#tableChanged(TableModelEvent)}
+	 */
+	public void tableChanged(TableModelEvent e)
+	{
+		if (getRowSorter() != null)
+		{
+			sortedTableChanged(null, e);
+			return;
+		}
+	}
+
+	private void sortedTableChanged(RowSorterEvent sortedEvent, TableModelEvent e)
+	{
+		ModelChange change = (e != null) ? new ModelChange(e) : null;
+		if (e != null)
+		{
+			notifySorter(change);
+		}
+	}
+
+	/**
+	 * @see {@link javax.swing.JTable#notifySorter(ModelChange)}
+	 */
+	private void notifySorter(ModelChange change)
+	{
+		switch (change.type)
+		{
+			case TableModelEvent.UPDATE :
+				if (change.event.getLastRow() == Integer.MAX_VALUE)
+				{
+					getRowSorter().allRowsChanged();
+				}
+				else if (change.event.getColumn() == TableModelEvent.ALL_COLUMNS)
+				{
+					getRowSorter().rowsUpdated(change.startModelIndex, change.endModelIndex);
+				}
+				else
+				{
+					getRowSorter().rowsUpdated(change.startModelIndex, change.endModelIndex,
+							change.event.getColumn());
+				}
+				break;
+			case TableModelEvent.INSERT :
+				getRowSorter().rowsInserted(change.startModelIndex, change.endModelIndex);
+				break;
+			case TableModelEvent.DELETE :
+				getRowSorter().rowsDeleted(change.startModelIndex, change.endModelIndex);
+				break;
+		}
+	}
+
+	/**
+	 * @see {@link javax.swing.JTable#ModelChange}
+	 */
+	private final class ModelChange
+	{
+		int startModelIndex;
+		int endModelIndex;
+		int type;
+		int modelRowCount;
+		TableModelEvent event;
+
+		ModelChange(TableModelEvent e)
+		{
+			startModelIndex = Math.max(0, e.getFirstRow());
+			endModelIndex = e.getLastRow();
+			modelRowCount = getTableModel().getRowCount();
+			if (endModelIndex < 0)
+			{
+				endModelIndex = Math.max(0, modelRowCount - 1);
+			}
+			type = e.getType();
+			event = e;
 		}
 	}
 }

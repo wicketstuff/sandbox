@@ -20,10 +20,17 @@ Event = function(oldValue, isSelection, row) {
 	this.row = row;
 }
 function initRows(markupId, selected) {
-	for (var j = 0; j < markupId.length; j++) {
+	for ( var j = 0; j < markupId.length; j++) {
 		updateRow(markupId[j], selected[j]);
 	}
 }
+if (typeof (Table) == "undefined") {
+	Table = {
+		onMouseOverCssClass : 'onMouseOver',
+		selectedCssClass : 'selected'
+	};
+}
+
 function updateRow(markupId, selected) {
 	var row = Wicket.$(markupId);
 	if (!row.started) {
@@ -44,16 +51,17 @@ function updateRow(markupId, selected) {
 		} // mozilla
 		row.originalClass = row.className;
 		row.onmouseover = function(e) {
-			row.className = 'onMouseOver';
+			row.className = Table.onMouseOverCssClass;
 		};
 		row.onmouseout = function(e) {
-			row.className = row.isSelected ? 'selected' : row.originalClass;
+			row.className = row.isSelected ? Table.selectedCssClass
+					: row.originalClass;
 		};
 		row.started = true;
 	}
 	var selectionEvent = new Event(row.isSelected, selected, row);
 	row.isSelected = selected;
-	row.className = selected ? 'selected' : row.originalClass;
+	row.className = selected ? Table.selectedCssClass : row.originalClass;
 	for (i = 0; i < row.listeners.length; i++) {
 		row.listeners[i].call(this, selectionEvent);
 	}
