@@ -3,6 +3,7 @@ package org.wicketstuff.rome.web;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import org.apache.wicket.Response;
 import org.apache.wicket.markup.MarkupStream;
 import org.apache.wicket.markup.html.WebPage;
 
@@ -15,6 +16,8 @@ import com.sun.syndication.io.SyndFeedOutput;
  */
 public abstract class FeedPage extends WebPage
 {
+	
+	
 	@Override
 	public String getMarkupType()
 	{
@@ -24,7 +27,11 @@ public abstract class FeedPage extends WebPage
 	@Override
 	protected final void onRender(MarkupStream markupStream)
 	{
-		PrintWriter writer = new PrintWriter(getResponse().getOutputStream());
+		Response response = getResponse();
+		
+		response.setContentType("application/rss+xml; charset=UTF-8");
+		
+		PrintWriter writer = new PrintWriter(response.getOutputStream());
 		SyndFeedOutput output = new SyndFeedOutput();
 		try
 		{
