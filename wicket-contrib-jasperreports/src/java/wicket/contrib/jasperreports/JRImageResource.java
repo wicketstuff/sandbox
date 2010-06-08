@@ -34,11 +34,10 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.export.JRGraphics2DExporter;
 import net.sf.jasperreports.engine.export.JRGraphics2DExporterParameter;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.markup.html.DynamicWebResource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Resource class for jasper reports PDF resources.
@@ -50,7 +49,7 @@ public final class JRImageResource extends JRResource
 	/**
 	 * log.
 	 */
-	private static Log log = LogFactory.getLog(JRImageResource.class);
+	private static Logger log = LoggerFactory.getLogger(JRImageResource.class);
 
 	/**
 	 * Type of image (one of BufferedImage.TYPE_*).

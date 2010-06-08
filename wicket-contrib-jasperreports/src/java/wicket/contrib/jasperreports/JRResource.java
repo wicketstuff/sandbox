@@ -26,22 +26,15 @@ import java.sql.Connection;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.sf.jasperreports.engine.JRAbstractExporter;
-import net.sf.jasperreports.engine.JRDataSource;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JRExporterParameter;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.util.JRLoader;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.markup.html.DynamicWebResource;
 import org.apache.wicket.markup.html.WebResource;
 import org.apache.wicket.protocol.http.WebResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Base class for jasper reports resources.
@@ -55,7 +48,7 @@ public abstract class JRResource extends DynamicWebResource
 	/**
 	 * logger.
 	 */
-	private static Log log = LogFactory.getLog(JRResource.class);
+	private static Logger log = LoggerFactory.getLogger(JRResource.class);
 
 	/**
 	 * Provides JDBC connection.
@@ -357,7 +350,7 @@ public abstract class JRResource extends DynamicWebResource
 	 * 
 	 * @return an exporter instance
 	 */
-	protected abstract JRAbstractExporter newExporter();
+	public abstract JRAbstractExporter newExporter();
 
 	/**
 	 * Gets the binary data by getting a new instance of JasperPrint and an
