@@ -48,7 +48,7 @@ public final class EmbeddedJRReport extends WebComponent implements IResourceLis
 	}
 
 	/**
-	 * @see wicket.IResourceListener#onResourceRequested()
+	 * @see org.apache.wicket.IResourceListener#onResourceRequested()
 	 */
 	public void onResourceRequested()
 	{
@@ -57,7 +57,7 @@ public final class EmbeddedJRReport extends WebComponent implements IResourceLis
 
 	/** Make sure we work only with object tags
 	 * @param tag tag applied to component.
-	 * @see wicket.Component#onComponentTag(wicket.markup.ComponentTag)
+	 * @see org.apache.wicket.Component#onComponentTag(org.apache.wicket.markup.ComponentTag)
 	 */
 	protected void onComponentTag(ComponentTag tag)
 	{
