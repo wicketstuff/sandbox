@@ -16,6 +16,7 @@
  */
 package org.wicketstuff.table;
 
+import java.io.File;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -43,6 +44,7 @@ import org.wicketstuff.table.cell.CellRender;
 import org.wicketstuff.table.cell.renders.BooleanRender;
 import org.wicketstuff.table.cell.renders.NumberRender;
 import org.wicketstuff.table.cell.renders.ObjectRender;
+import org.wicketstuff.table.cell.renders.file.FileRender;
 import org.wicketstuff.table.column.ActionRender;
 import org.wicketstuff.table.column.ColGroup;
 import org.wicketstuff.table.column.ColumnModel;
@@ -327,6 +329,8 @@ public class Table extends Panel implements IHeaderContributor
 		ActionRender actionRender = new ActionRender();
 		defaultRenderersByColumnClass.put(Action.class, actionRender);
 		defaultEditorsByColumnClass.put(Action.class, actionRender);
+		
+		defaultRenderersByColumnClass.put(File.class, new FileRender());
 	}
 
 	public void setDefaultRenderer(Class<?> columnClass, CellRender renderer)
