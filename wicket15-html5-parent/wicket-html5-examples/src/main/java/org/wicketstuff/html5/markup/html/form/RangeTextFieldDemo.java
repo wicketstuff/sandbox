@@ -48,6 +48,7 @@ public class RangeTextFieldDemo extends BasePage {
 				target.addComponent(rangeLabel);
 			}
 			
+			@Override
 			public void renderHead(IHeaderResponse response) {
 				super.renderHead(response);
 				// override Wicket.Form.serializeInput so that input[type=range] is serialized too

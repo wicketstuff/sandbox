@@ -30,7 +30,7 @@ public class RangeTextField extends TextField<Double> {
 	public RangeTextField(final String id, IModel<Double> model)
 	{
 		super(id, model);
-		setRequired(true);
+
 		setType(Double.class);
 	}
 

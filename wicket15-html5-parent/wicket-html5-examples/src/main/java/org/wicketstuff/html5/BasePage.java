@@ -7,6 +7,7 @@
 package org.wicketstuff.html5;
 
 import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 /**
  *
@@ -15,5 +16,9 @@ import org.apache.wicket.markup.html.WebPage;
 public class BasePage extends WebPage {
 
     public BasePage() {}
+    
+    public BasePage(final PageParameters parameters) {
+    	super(parameters);
+    }
     
 }
