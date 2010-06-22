@@ -6,12 +6,12 @@
  */
 package org.wicketstuff.html5;
 
+import org.apache.wicket.Application;
 import org.apache.wicket.Page;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.request.mapper.MountedMapper;
 import org.wicketstuff.html5.geolocation.GeolocationDemo;
-import org.wicketstuff.html5.markup.html.form.RangeTextFieldDemo;
-import org.wicketstuff.html5.markup.html.form.UrlTextFieldDemo;
+import org.wicketstuff.html5.markup.html.form.Html5InputsDemo;
 import org.wicketstuff.html5.media.audio.AudioDemo;
 import org.wicketstuff.html5.media.video.VideoDemo;
 
@@ -21,12 +21,7 @@ import org.wicketstuff.html5.media.video.VideoDemo;
  */
 public class WicketApplication extends WebApplication {
 
-    /**
-     * Constructor
-     */
-    public WicketApplication() {
-
-    }
+    public WicketApplication() {}
 
     public Class<? extends Page> getHomePage() {
         return HomePage.class;
@@ -39,7 +34,15 @@ public class WicketApplication extends WebApplication {
         	.add(new MountedMapper("/audio", AudioDemo.class))
         	.add(new MountedMapper("/video", VideoDemo.class))
         	.add(new MountedMapper("/geolocation", GeolocationDemo.class))
-        	.add(new MountedMapper("/form/range", RangeTextFieldDemo.class))
-        	.add(new MountedMapper("/form/url", UrlTextFieldDemo.class));
+        	.add(new MountedMapper("/form/inputs", Html5InputsDemo.class));
     }
+
+	/* (non-Javadoc)
+	 * @see org.apache.wicket.protocol.http.WebApplication#getConfigurationType()
+	 */
+	@Override
+	public String getConfigurationType() {
+		return Application.DEVELOPMENT;
+	}
+    
 }

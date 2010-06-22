@@ -1,22 +1,14 @@
 <html xmlns:wicket="http://wicket.apache.org">
-<wicket:extend>
+<wicket:panel>
 
-<section id="wrapper">
     <header>
       <h1>Url input</h1>
     </header>
     <article>
-		
-		<form wicket:id="form">
-			<datalist wicket:id="datalist"></datalist>
-			<input wicket:id="url" type="url" onchange="console.log(this.value)" />
-		</form>
-		
+		<datalist wicket:id="datalist"></datalist>
+		<input wicket:id="url" type="url" />
 		<summary>Url is set to: <span wicket:id="urlLabel"></span></summary>
-		
     </article>
-</section>
 
-
-</wicket:extend>
+</wicket:panel>
 </html>

@@ -1,21 +1,13 @@
 <html xmlns:wicket="http://wicket.apache.org">
-<wicket:extend>
+<wicket:panel>
 
-<section id="wrapper">
     <header>
       <h1>Range input</h1>
     </header>
     <article>
-		
-		<form wicket:id="form">
-			<input wicket:id="range" type="range" onchange="console.log(this.value)" />
-		</form>
-		
+		<input wicket:id="range" type="range" />
 		<summary>Range is set to: <span wicket:id="rangeLabel"></span></summary>
-		
     </article>
-</section>
 
-
-</wicket:extend>
+</wicket:panel>
 </html>
