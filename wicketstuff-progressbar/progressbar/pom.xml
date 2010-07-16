@@ -16,7 +16,7 @@
 		<dependency>
 			<groupId>org.apache.wicket</groupId>
 			<artifactId>wicket</artifactId>
-			<version>1.4.5</version>
+			<version>1.4.9</version>
 		</dependency>
 	</dependencies>
 </project>
