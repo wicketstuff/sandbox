@@ -57,7 +57,7 @@ public class SpringTaskTests {
 
 		tester = new WicketTester();
 		tester.getApplication().addComponentInstantiationListener(
-				new SpringComponentInjector(tester.getApplication(), ctx));
+				new SpringComponentInjector(tester.getApplication(), ctx, true));
 
 		// add string resource loader
 		tester.getApplication().getResourceSettings().addStringResourceLoader(
