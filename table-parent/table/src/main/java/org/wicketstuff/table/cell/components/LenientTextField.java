@@ -14,25 +14,50 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.wicketstuff.table.cell.renders;
+package org.wicketstuff.table.cell.components;
 
-import java.math.BigDecimal;
-
-import org.apache.wicket.Component;
+import org.apache.wicket.markup.ComponentTag;
+import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.IModel;
-import org.wicketstuff.table.SelectableListItem;
 
 /**
+ * Simple TextField extension that don't require an input tag and the type
+ * attribute on the template markup.
+ * 
  * @author Pedro Henrique Oliveira dos Santos
- *
+ * 
  */
-public class NumberRender extends ObjectRender
+public class LenientTextField extends TextField
 {
-
-
-	public Component getEditorComponent(String id, IModel model, SelectableListItem parent,
-			int row, int column)
+	public LenientTextField(String id)
 	{
-		return new LenientTextField(id, model).setType(BigDecimal.class);
+		super(id);
+	}
+
+
+	public LenientTextField(String id, Class type)
+	{
+		super(id, type);
+	}
+
+
+	public LenientTextField(String id, IModel model, Class type)
+	{
+		super(id, model, type);
+	}
+
+
+	public LenientTextField(String id, IModel model)
+	{
+		super(id, model);
+	}
+
+
+	@Override
+	protected void onComponentTag(final ComponentTag tag)
+	{
+		tag.setName("input");
+		tag.put("type", "text");
+		super.onComponentTag(tag);
 	}
 }

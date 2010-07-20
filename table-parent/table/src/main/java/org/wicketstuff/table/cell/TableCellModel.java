@@ -18,7 +18,7 @@ package org.wicketstuff.table.cell;
 
 import javax.swing.table.TableModel;
 
-import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.IObjectClassAwareModel;
 
 /**
  * Model responsible to receive and update an value from a table model position.
@@ -26,7 +26,7 @@ import org.apache.wicket.model.IModel;
  * @author Pedro Henrique Oliveira dos Santos
  * 
  */
-public class TableCellModel implements IModel
+public class TableCellModel implements IObjectClassAwareModel
 {
 	private TableModel tableModel;
 	private int rowIndex;
@@ -49,9 +49,14 @@ public class TableCellModel implements IModel
 		tableModel.setValueAt(object, rowIndex, columnIndex);
 	}
 
+	@Override
+	public Class getObjectClass()
+	{
+		return tableModel.getColumnClass(columnIndex);
+	}
+
 	public void detach()
 	{
 
 	}
-
 }

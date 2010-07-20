@@ -23,6 +23,7 @@ import org.apache.wicket.model.IModel;
 import org.wicketstuff.table.SelectableListItem;
 import org.wicketstuff.table.cell.CellEditor;
 import org.wicketstuff.table.cell.CellRender;
+import org.wicketstuff.table.cell.components.LenientCheckBox;
 
 /**
  * Default render for boolean values. Uses AjaxFormComponentUpdatingBehavior to

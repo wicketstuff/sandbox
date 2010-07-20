@@ -24,6 +24,7 @@ import org.apache.wicket.model.IModel;
 import org.wicketstuff.table.SelectableListItem;
 import org.wicketstuff.table.cell.CellEditor;
 import org.wicketstuff.table.cell.CellRender;
+import org.wicketstuff.table.cell.components.LenientTextField;
 
 /**
  * Default implementation for CellRender and CellEditor
@@ -33,7 +34,6 @@ import org.wicketstuff.table.cell.CellRender;
  */
 public class ObjectRender implements CellRender, CellEditor
 {
-
 	@Override
 	public Component getRenderComponent(String id, IModel model, SelectableListItem parent,
 			int row, int column)
@@ -56,5 +56,4 @@ public class ObjectRender implements CellRender, CellEditor
 		};
 		return field;
 	}
-
 }

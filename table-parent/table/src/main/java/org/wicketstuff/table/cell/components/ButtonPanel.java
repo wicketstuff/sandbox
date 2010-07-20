@@ -14,15 +14,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.wicketstuff.table.cell.renders;
+package org.wicketstuff.table.cell.components;
 
 import java.awt.event.ActionEvent;
 
 import javax.swing.Action;
 
 import org.apache.wicket.ResourceReference;
-import org.apache.wicket.ajax.AjaxEventBehavior;
-import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.image.Image;
@@ -31,24 +29,31 @@ import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 
 /**
+ * Use an button object to render the cell. Since an row can to be inserted,
+ * removed, or some cell get new data at time, is important to render the table
+ * again.
+ * 
+ * By default all page will to be re-rendered since no AJAX is used by this
+ * component.
+ * 
+ * To customize the component, Action.SMALL_ICON or Action.NAME parameters can
+ * to be set on the action. The Action.SMALL_ICON parameter is expected as an
+ * ResourceReference object.
  * 
  * @author Pedro Henrique Oliveira dos Santos
- * 
  */
-public class AjaxButtonPanel extends Panel
+public class ButtonPanel extends Panel
 {
 	private Button button;
 
-	public AjaxButtonPanel(String id, final IModel<Action> actionModel)
+	public ButtonPanel(String id, final IModel<Action> actionModel)
 	{
 		super(id, actionModel);
 		setRenderBodyOnly(true);
-		add(button = new Button("button"));
-		button.add(new AjaxEventBehavior("onclick")
+		add(button = new Button("button")
 		{
-
 			@Override
-			protected void onEvent(AjaxRequestTarget target)
+			public void onSubmit()
 			{
 				ActionEvent e = new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null);
 				actionModel.getObject().actionPerformed(e);
@@ -79,7 +84,7 @@ public class AjaxButtonPanel extends Panel
 			public Object getObject()
 			{
 				String name = (String)actionModel.getObject().getValue(Action.NAME);
-				return getString(name, null, name);
+				return name == null ? "" : getString(name, null, name);
 			}
 		}));
 	}
