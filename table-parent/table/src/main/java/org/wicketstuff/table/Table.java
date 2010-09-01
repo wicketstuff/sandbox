@@ -41,11 +41,10 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.wicketstuff.table.cell.CellEditor;
 import org.wicketstuff.table.cell.CellRender;
+import org.wicketstuff.table.cell.renders.ActionRender;
 import org.wicketstuff.table.cell.renders.BooleanRender;
-import org.wicketstuff.table.cell.renders.NumberRender;
 import org.wicketstuff.table.cell.renders.ObjectRender;
 import org.wicketstuff.table.cell.renders.file.FileRender;
-import org.wicketstuff.table.column.ActionRender;
 import org.wicketstuff.table.column.ColGroup;
 import org.wicketstuff.table.column.ColumnModel;
 import org.wicketstuff.table.column.TableColumn;
@@ -97,7 +96,7 @@ public class Table extends Panel implements IHeaderContributor
 		add(new TableFooter("footers", this));
 	}
 
-	public AjaxPagingNavigator getRowsAjaxPagingNavigator(String id)
+	public AjaxPagingNavigator newRowsAjaxPagingNavigator(String id)
 	{
 		return new AjaxPagingNavigator(id, tableBody);
 	}
@@ -116,7 +115,7 @@ public class Table extends Panel implements IHeaderContributor
 	 *            wicket id
 	 * @return AjaxPagingNavigator
 	 */
-	public AjaxPagingNavigator getColumnsAjaxPagingNavigator(String id)
+	public AjaxPagingNavigator newColumnsAjaxPagingNavigator(String id)
 	{
 		return new AjaxPagingNavigator(id, columnsModelAdapter)
 		{
@@ -323,13 +322,10 @@ public class Table extends Panel implements IHeaderContributor
 		BooleanRender booleanRender = new BooleanRender();
 		defaultRenderersByColumnClass.put(Boolean.class, booleanRender);
 		defaultEditorsByColumnClass.put(Boolean.class, booleanRender);
-		NumberRender numberRender = new NumberRender();
-		defaultRenderersByColumnClass.put(Number.class, numberRender);
-		defaultEditorsByColumnClass.put(Number.class, numberRender);
 		ActionRender actionRender = new ActionRender();
 		defaultRenderersByColumnClass.put(Action.class, actionRender);
 		defaultEditorsByColumnClass.put(Action.class, actionRender);
-		
+
 		defaultRenderersByColumnClass.put(File.class, new FileRender());
 	}
 
@@ -466,10 +462,33 @@ public class Table extends Panel implements IHeaderContributor
 	 */
 	public void tableChanged(TableModelEvent e)
 	{
+		if (e.getType() == TableModelEvent.DELETE)
+		{
+			getListSelectionModel().clearSelection();
+		}
+		fitSelectionToModel();
 		if (getRowSorter() != null)
 		{
 			sortedTableChanged(null, e);
 			return;
+		}
+	}
+
+	public void fitSelectionToModel()
+	{
+		int selection = getListSelectionModel().getMaxSelectionIndex();
+		int rowCount = getTableModel().getRowCount();
+		int lastAlowedIndex = rowCount - 1;
+		if (selection > lastAlowedIndex)
+		{
+			if (rowCount == 0)
+			{
+				getListSelectionModel().clearSelection();
+			}
+			else
+			{
+				getListSelectionModel().setSelectionInterval(lastAlowedIndex, lastAlowedIndex);
+			}
 		}
 	}
 
@@ -480,6 +499,7 @@ public class Table extends Panel implements IHeaderContributor
 		{
 			notifySorter(change);
 		}
+
 	}
 
 	/**

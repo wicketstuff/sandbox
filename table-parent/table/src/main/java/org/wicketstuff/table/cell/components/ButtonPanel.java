@@ -20,7 +20,9 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.Action;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.ResourceReference;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.image.Image;
@@ -44,23 +46,17 @@ import org.apache.wicket.model.IModel;
  */
 public class ButtonPanel extends Panel
 {
-	private Button button;
+	private WebMarkupContainer button;
 
 	public ButtonPanel(String id, final IModel<Action> actionModel)
 	{
 		super(id, actionModel);
 		setRenderBodyOnly(true);
-		add(button = new Button("button")
-		{
-			@Override
-			public void onSubmit()
-			{
-				ActionEvent e = new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null);
-				actionModel.getObject().actionPerformed(e);
-			}
-		});
+		add(button = newButton("button", actionModel));
 		button.add(new Image("icon")
 		{
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			protected ResourceReference getImageResourceReference()
 			{
@@ -80,6 +76,8 @@ public class ButtonPanel extends Panel
 		});
 		button.add(new Label("label", new AbstractReadOnlyModel()
 		{
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public Object getObject()
 			{
@@ -87,6 +85,21 @@ public class ButtonPanel extends Panel
 				return name == null ? "" : getString(name, null, name);
 			}
 		}));
+	}
+
+	protected WebMarkupContainer newButton(String id, final IModel<Action> actionModel)
+	{
+		return new Button(id)
+		{
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onSubmit()
+			{
+				ActionEvent e = new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null);
+				actionModel.getObject().actionPerformed(e);
+			}
+		};
 	}
 
 }

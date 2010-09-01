@@ -17,74 +17,33 @@
 package org.wicketstuff.table.cell.renders;
 
 import org.apache.wicket.Component;
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.model.IModel;
 import org.wicketstuff.table.SelectableListItem;
 import org.wicketstuff.table.cell.CellEditor;
 import org.wicketstuff.table.cell.CellRender;
+import org.wicketstuff.table.cell.components.ButtonPanel;
 
 /**
- * Wrapper class for add ajax behavior to forms components that generate tags
- * that can handle javascript onchange events.
+ * Default render for action values.
  * 
  * @author Pedro Henrique Oliveira dos Santos
  * 
  */
-public class AjaxRender implements CellRender, CellEditor
+public class ActionRender implements CellRender, CellEditor
 {
-	private CellRender cellRender;
-	private CellEditor cellEditor;
-
-	public AjaxRender(CellRender cellRender, CellEditor cellEditor)
-	{
-		this.cellRender = cellRender;
-		this.cellEditor = cellEditor;
-	}
-
-	public AjaxRender(CellRender cellRender)
-	{
-		this.cellRender = cellRender;
-		if (cellRender instanceof CellEditor)
-		{
-			this.cellEditor = (CellEditor)cellRender;
-		}
-	}
-
 
 	@Override
 	public Component getRenderComponent(String id, IModel model, SelectableListItem parent,
 			int row, int column)
 	{
-		return cellRender.getRenderComponent(id, model, parent, row, column);
+		return new ButtonPanel(id, model);
 	}
 
 	@Override
 	public Component getEditorComponent(String id, IModel model, SelectableListItem parent,
 			int row, int column)
 	{
-		return cellEditor.getEditorComponent(id, model, parent, row, column).add(
-				new AjaxFormComponentUpdatingBehavior("onchange")
-				{
-					protected void onUpdate(AjaxRequestTarget target)
-					{
-						AjaxRender.this.onUpdate(target);
-					}
-
-					@Override
-					protected void onError(AjaxRequestTarget target, RuntimeException e)
-					{
-						AjaxRender.this.onError(target, e);
-					}
-				});
-	}
-
-	protected void onError(AjaxRequestTarget target, RuntimeException e)
-	{
-	}
-
-	protected void onUpdate(AjaxRequestTarget target)
-	{
+		return new ButtonPanel(id, model);
 	}
 
 }

@@ -14,14 +14,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.wicketstuff.table.column;
+package org.wicketstuff.table.cell.renders;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.model.IModel;
 import org.wicketstuff.table.SelectableListItem;
 import org.wicketstuff.table.cell.CellEditor;
 import org.wicketstuff.table.cell.CellRender;
-import org.wicketstuff.table.cell.renders.AjaxButtonPanel;
+import org.wicketstuff.table.cell.components.AjaxButtonPanel;
+import org.wicketstuff.table.cell.components.ButtonPanel;
 
 /**
  * Default render for action values.
@@ -29,7 +30,7 @@ import org.wicketstuff.table.cell.renders.AjaxButtonPanel;
  * @author Pedro Henrique Oliveira dos Santos
  * 
  */
-public class ActionRender implements CellRender, CellEditor
+public class AjaxActionRender implements CellRender, CellEditor
 {
 
 	@Override
@@ -43,7 +44,7 @@ public class ActionRender implements CellRender, CellEditor
 	public Component getEditorComponent(String id, IModel model, SelectableListItem parent,
 			int row, int column)
 	{
-		return new AjaxButtonPanel(id, model);
+		return new ButtonPanel(id, model);
 	}
 
 }
