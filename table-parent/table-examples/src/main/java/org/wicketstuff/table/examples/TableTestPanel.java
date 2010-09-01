@@ -28,6 +28,9 @@ public abstract class TableTestPanel extends Panel
 	protected Component viewSelection;
 	protected Component modelSelection;
 	protected Component editionLabel;
+	private int columns = 6;
+	private int rows = 8;
+
 
 	private Table table;
 
@@ -35,7 +38,7 @@ public abstract class TableTestPanel extends Panel
 	{
 		super(id);
 
-		table = new Table("table", getTableModelUnderTest())
+		table = new Table("table", createTableModelUnderTest())
 		{
 			@Override
 			protected void onSelection(AjaxRequestTarget target)
@@ -79,27 +82,17 @@ public abstract class TableTestPanel extends Panel
 			}
 		});
 		table.add(new AttributeModifier("class", true, styles.getDefaultModel()));
-		table.setRowsPerPage(getRows());
-		add(table.getRowsAjaxPagingNavigator("rowsPaging"));
-		table.setColumnsPerPage(getColumns());
-		add(table.getColumnsAjaxPagingNavigator("columnsPaging"));
-	}
-
-	protected int getColumns()
-	{
-		return 6;
-	}
-
-	protected int getRows()
-	{
-		return 8;
+		table.setRowsPerPage(rows);
+		add(table.newRowsAjaxPagingNavigator("rowsPaging"));
+		table.setColumnsPerPage(columns);
+		add(table.newColumnsAjaxPagingNavigator("columnsPaging"));
 	}
 
 	protected void modifyTable(Table table)
 	{
 	}
 
-	protected abstract TableModel getTableModelUnderTest();
+	protected abstract TableModel createTableModelUnderTest();
 
 	private class SelectionModeCombo extends DropDownChoice
 	{
@@ -167,6 +160,16 @@ public abstract class TableTestPanel extends Panel
 				{ false, "8", "0", "0", "0", "Place  ", "IActivePageBehaviorListener", "abstract",
 						"TextArea", "CheckBox", "CheckBoxMultipleChoice", "Palette",
 						"DropDownChoice" } };
+	}
+
+	public void setColumns(int columns)
+	{
+		this.columns = columns;
+	}
+
+	public void setRows(int rows)
+	{
+		this.rows = rows;
 	}
 
 }

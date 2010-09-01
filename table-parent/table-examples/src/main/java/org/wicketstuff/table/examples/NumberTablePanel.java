@@ -8,7 +8,9 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 import org.apache.wicket.ResourceReference;
+import org.wicketstuff.table.Table;
 import org.wicketstuff.table.cell.StylizedCell;
+import org.wicketstuff.table.cell.renders.AjaxActionRender;
 
 public class NumberTablePanel extends TableTestPanel
 {
@@ -16,24 +18,22 @@ public class NumberTablePanel extends TableTestPanel
 	public NumberTablePanel(String id)
 	{
 		super(id);
+		setRows(10);
+		setColumns(10);
 	}
 
 	@Override
-	protected TableModel getTableModelUnderTest()
+	protected void modifyTable(Table table)
+	{
+		super.modifyTable(table);
+		table.setWidths("80px", "30px", "30px", "30px", "30px", "30px");
+		table.setDefaultRenderer(Action.class, new AjaxActionRender());
+	}
+
+	@Override
+	protected TableModel createTableModelUnderTest()
 	{
 		return new NumberTableModel();
-	}
-
-	@Override
-	protected int getRows()
-	{
-		return 10;
-	}
-
-	@Override
-	protected int getColumns()
-	{
-		return 10;
 	}
 
 	public static class NumberTableModel extends DefaultTableModel implements StylizedCell
@@ -66,12 +66,12 @@ public class NumberTablePanel extends TableTestPanel
 					@Override
 					public void actionPerformed(ActionEvent e)
 					{
-						System.out.println("Action Executada");
+						System.out.println("Executed");
 					}
 				};
 				a.putValue(Action.NAME, "teste");
 				a.putValue(Action.SMALL_ICON, new ResourceReference(NumberTablePanel.class,
-						"southWestHeader.gif"));
+						"agt_softwareD.png"));
 				return a;
 			}
 			return row * column;

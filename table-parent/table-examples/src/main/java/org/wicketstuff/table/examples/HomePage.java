@@ -16,20 +16,59 @@
  */
 package org.wicketstuff.table.examples;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.CSSPackageResource;
 import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.markup.html.link.Link;
 
 /**
  * Homepage
  */
 public class HomePage extends WebPage
 {
+	private Component testPanel;
+	private static final String TEST_PANEL_ID = "testPanel";
 
 	public HomePage()
 	{
 		add(CSSPackageResource.getHeaderContribution(HomePage.class, "style.css"));
-		add(new AjaxColumnPanel("tableWithAjaxColumn"));
-		add(new NumberTablePanel("numberTablePanel"));
+		add(new TestLink("tableWithAjaxColumn", AjaxColumnPanel.class));
+		add(new TestLink("numberTablePanel", NumberTablePanel.class));
+		add(testPanel = new AjaxColumnPanel(TEST_PANEL_ID));
 	}
 
+	private class TestLink extends Link
+	{
+		private static final long serialVersionUID = 1L;
+		private Class panelClass;
+
+		public TestLink(String id, Class panelClass)
+		{
+			super(id);
+			this.panelClass = panelClass;
+		}
+
+
+		@Override
+		public void onClick()
+		{
+			try
+			{
+				Component newPanel = (Component)panelClass.getConstructor(String.class)
+						.newInstance(TEST_PANEL_ID);
+				testPanel.replaceWith(newPanel);
+				testPanel = newPanel;
+			}
+			catch (Exception e)
+			{
+				throw new RuntimeException(e);
+			}
+		}
+
+		@Override
+		public boolean isEnabled()
+		{
+			return !testPanel.getClass().equals(panelClass);
+		}
+	}
 }

@@ -35,15 +35,12 @@ h1,h2 {
 	font-family: 'Trebuchet MS';
 }
 td.average{
-	width: 30px;
 	background-color: blue;
 }
 td.high{
-	width: 30px;
 	background-color: green;
 }
 td.low{
-	width: 30px;
 	background-color: red;
 }
 #extitle {

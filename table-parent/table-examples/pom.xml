@@ -68,7 +68,9 @@
 		</dependency>
 	</dependencies>
 	<build>
+		<sourceDirectory>src/main/java</sourceDirectory>
 		<resources>
+		
 			<resource>
 				<filtering>false</filtering>
 				<directory>src/main/resources</directory>
@@ -129,7 +131,7 @@
 		</repository>
 	</repositories>
 	<properties>
-		<wicket.version>1.4.3</wicket.version>
+		<wicket.version>1.4.10</wicket.version>
 		<jetty.version>6.1.4</jetty.version>
 	</properties>
 </project>

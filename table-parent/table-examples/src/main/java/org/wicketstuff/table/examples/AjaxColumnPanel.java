@@ -6,8 +6,8 @@ import javax.swing.table.TableModel;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.util.time.Duration;
 import org.wicketstuff.table.Table;
-import org.wicketstuff.table.cell.renders.AjaxRender;
 import org.wicketstuff.table.cell.renders.ObjectRender;
+import org.wicketstuff.table.cell.renders.UpdateOnChangeRender;
 import org.wicketstuff.table.column.SelfUpdateColumn;
 
 public class AjaxColumnPanel extends TableTestPanel
@@ -21,7 +21,7 @@ public class AjaxColumnPanel extends TableTestPanel
 	@Override
 	protected void modifyTable(Table table)
 	{
-		table.setDefaultEditor(Object.class, new AjaxRender(new ObjectRender())
+		table.setDefaultEditor(Object.class, new UpdateOnChangeRender(new ObjectRender())
 		{
 			@Override
 			protected void onUpdate(AjaxRequestTarget target)
@@ -31,27 +31,12 @@ public class AjaxColumnPanel extends TableTestPanel
 		});
 		table.getColumnModel().addColumn(new SelfUpdateColumn(2, Duration.seconds(5)));
 		table.setAutoCreateRowSorter(true);
-		DefaultListSelectionModel sm = new DefaultListSelectionModel()
-		{
-			@Override
-			public void addSelectionInterval(int index0, int index1)
-			{
-				super.addSelectionInterval(index0, index1);
-				super.removeSelectionInterval(2, 3);
-			}
-
-			@Override
-			public void setSelectionInterval(int index0, int index1)
-			{
-				super.setSelectionInterval(index0, index1);
-				super.removeSelectionInterval(2, 3);
-			}
-		};
+		DefaultListSelectionModel sm = new DefaultListSelectionModel();
 		table.setSelectionModel(sm);
 	}
 
 	@Override
-	protected TableModel getTableModelUnderTest()
+	protected TableModel createTableModelUnderTest()
 	{
 		SampleTableModel sampleTableModel = new SampleTableModel()
 		{
