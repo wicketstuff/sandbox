@@ -133,6 +133,6 @@
 		</plugins>
 	</build>
 	<properties>
-		<wicket.version>1.4.10</wicket.version>
+		<wicket.version>1.4.12</wicket.version>
 	</properties>
 </project>
