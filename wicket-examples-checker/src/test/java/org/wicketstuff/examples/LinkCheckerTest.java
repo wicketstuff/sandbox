@@ -73,6 +73,7 @@ public class LinkCheckerTest
 		final StringBuilder url = new StringBuilder();
 		
 		url.append("http://").append(HOSTNAME).append(':').append(PORT).append('/').append(CONTEXT_PATH).append('/').append(relativePageUrl);
+	System.err.println("URL: " + url);
 		
 		final Page page = webClient.getPage(url.toString());
 		
@@ -121,13 +122,13 @@ public class LinkCheckerTest
 			pageDescriptions.add(new PageDescription("niceurl/a/nice/path/to/the/first/page", "Bookmarkable Page 1"));
 			pageDescriptions.add(new PageDescription("niceurl/path/to/page2?param1=-1321348277+-1040203643&param2=-1040203643+-1321348277", 
 					"Bookmarkable Page 2 with parameters"));
-			pageDescriptions.add(new PageDescription("niceurl/wicket/bookmarkable/org.apache.wicket.examples.niceurl.Page2QP?param1=2013913791+1967182738&param2=1967182738+2013913791", 
+			pageDescriptions.add(new PageDescription("niceurl/path/to/page2qpencoded?param1=2013913791+1967182738&param2=1967182738+2013913791", 
 					"Bookmarkable Page 2 with parameters in normal fashion"));
-			pageDescriptions.add(new PageDescription("niceurl/wicket/bookmarkable/org.apache.wicket.examples.niceurl.mounted.Page3", 
+			pageDescriptions.add(new PageDescription("niceurl/my/mounted/package/Page3", 
 					"Page 3 mounted from package"));
-			pageDescriptions.add(new PageDescription("niceurl/wicket/bookmarkable/org.apache.wicket.examples.niceurl.mounted.Page4", 
+			pageDescriptions.add(new PageDescription("niceurl/my/mounted/package/Page4", 
 					"Page 4 mounted from package"));
-			pageDescriptions.add(new PageDescription("niceurl/wicket/bookmarkable/org.apache.wicket.examples.niceurl.mounted.Page5?param1=1077839790&param2=92307760", 
+			pageDescriptions.add(new PageDescription("niceurl/my/mounted/package/Page5?param1=1077839790&param2=92307760", 
 					"Page 4 mounted from package with parameters"));
 			
 			
@@ -209,13 +210,13 @@ public class LinkCheckerTest
 					"Templating using Border"));
 			
 			pageDescriptions.add(new PageDescription("stateless", "Stateless"));
-			pageDescriptions.add(new PageDescription("stateless/wicket/bookmarkable/org.apache.wicket.examples.stateless.StatelessPage", "Stateless page"));
+			pageDescriptions.add(new PageDescription("stateless/foo", "Stateless page"));
 			pageDescriptions.add(new PageDescription("stateless/query", "Stateless query"));
 			pageDescriptions.add(new PageDescription("stateless/mixed", "Stateless mixed"));
 			pageDescriptions.add(new PageDescription("stateless/state-in-url", "Stateless in URL"));
 			pageDescriptions.add(new PageDescription("stateless/statefull", "Stateless go to statefull"));
 			
-			pageDescriptions.add(new PageDescription("hellobrowser", "Hello browser"));
+//			pageDescriptions.add(new PageDescription("hellobrowser/howdy", "Hello browser"));
 			pageDescriptions.add(new PageDescription("frames", "Frames"));
 			pageDescriptions.add(new PageDescription("prototype", "Prototype.js integration"));
 			
@@ -232,7 +233,7 @@ public class LinkCheckerTest
 			pageDescriptions.add(new PageDescription("captcha", "Captcha"));
 			pageDescriptions.add(new PageDescription("kitten-captcha", "Kitten captcha"));
 			pageDescriptions.add(new PageDescription("dates", "Wicket datetime"));
-			pageDescriptions.add(new PageDescription("stock", "Stock quotes"));
+//			pageDescriptions.add(new PageDescription("stock", "Stock quotes"));
 			pageDescriptions.add(new PageDescription("guestbook", "Guest book"));
 			pageDescriptions.add(new PageDescription("hangman", "Hangman"));
 			pageDescriptions.add(new PageDescription("hangman/wicket/bookmarkable/org.apache.wicket.examples.hangman.Guess", "Hangman guess"));
