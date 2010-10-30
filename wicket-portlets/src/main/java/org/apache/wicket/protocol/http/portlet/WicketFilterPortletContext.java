@@ -72,6 +72,22 @@ public class WicketFilterPortletContext
 			'q', 'p', 'o', 'm', 'n', 'l', 'k', 'j', 'i', 'h', 'g', 'f', 'e', 'd', 'c', 'b', 'a' };
 
 	/**
+	 * If the pathInfo starts with the portlet window id namespace prefix, remove it.
+	 * 
+	 * @param pathInfo
+	 * @return the pathInfo without the portlet window id namespace prefix
+	 */
+	private String _stripWindowIdFromPathInfo(String pathInfo)
+	{
+		if (pathInfo != null && pathInfo.startsWith(getServletResourceUrlPortletWindowIdPrefix()))
+		{
+			final int nextPath = pathInfo.indexOf('/', 1);
+			pathInfo = nextPath > -1 ? pathInfo.substring(nextPath) : null;
+		}
+		return pathInfo;
+	}
+
+	/**
 	 * Factory method which will delegate to
 	 * {@link #newPortletRequestContext(ServletWebRequest, WebResponse)} to create the
 	 * {@link PortletRequestContext} if the request is in a portlet context.
@@ -92,20 +108,18 @@ public class WicketFilterPortletContext
 	}
 
 	/**
-	 * FIXME javadoc
-	 * 
-	 * Try to extract the portlet's window id from the request url.
+	 * Try to extract the portlet's window id from the request URL.
 	 * 
 	 * @param pathInfo
-	 *            the url relative to the servlet context and filter path
+	 *            the URL relative to the servlet context and filter path
 	 * @return the window id, or null if it couldn't be decoded, with no leading forward slash
 	 */
 	public String decodePortletWindowId(final String pathInfo)
 	{
-		String portletWindowId = null;
 		// the path info should start with the window id prefix
 		if (pathInfo != null && pathInfo.startsWith(getServletResourceUrlPortletWindowIdPrefix()))
 		{
+			String portletWindowId = null;
 			final int nextPath = pathInfo.indexOf('/', 1);
 			if (nextPath > -1)
 				portletWindowId = pathInfo.substring(
@@ -123,13 +137,10 @@ public class WicketFilterPortletContext
 				if (slashEncoder != ':')
 					portletWindowId = portletWindowId.replace(slashEncoder, '/');
 			}
+			return portletWindowId;
 		}
-		else
-		// pathInfo was empty or didn't start with the window id prefix
-		{
-			// ignore - returns null
-		}
-		return portletWindowId;
+
+		return null;
 	}
 
 	/**
@@ -175,6 +186,7 @@ public class WicketFilterPortletContext
 		return SERVLET_RESOURCE_URL_PORTLET_WINDOW_ID_PREFIX;
 	}
 
+
 	/**
 	 * Overrides render strategy and adds the {@link PortletInvalidMarkupFilter} filter.
 	 * 
@@ -192,7 +204,6 @@ public class WicketFilterPortletContext
 		webApplication.getRequestCycleSettings()
 			.addResponseFilter(new PortletInvalidMarkupFilter());
 	}
-
 
 	/**
 	 * Factory method to create the {@link PortletRequestContext}.
@@ -258,30 +269,11 @@ public class WicketFilterPortletContext
 			{
 				final HttpSession proxiedSession = ServletPortletSessionProxy.createProxy(request,
 					portletWindowId);
-				pathInfo = stripWindowIdFromPathInfo(pathInfo);
+				pathInfo = _stripWindowIdFromPathInfo(pathInfo);
 				filterRequestContext.setRequest(new PortletServletRequestWrapper(context, request,
 					proxiedSession, filterPath, pathInfo));
 			}
 		}
 		return inPortletContext;
-	}
-
-	/**
-	 * FIXME javadoc
-	 * 
-	 * <p>
-	 * If the pathInfo contains the portlet window id namespace prefix, remove it.
-	 * 
-	 * @param pathInfo
-	 * @return
-	 */
-	public String stripWindowIdFromPathInfo(String pathInfo)
-	{
-		if (pathInfo != null && pathInfo.startsWith(getServletResourceUrlPortletWindowIdPrefix()))
-		{
-			final int nextPath = pathInfo.indexOf('/', 1);
-			pathInfo = nextPath > -1 ? pathInfo.substring(nextPath) : null;
-		}
-		return pathInfo;
 	}
 }
