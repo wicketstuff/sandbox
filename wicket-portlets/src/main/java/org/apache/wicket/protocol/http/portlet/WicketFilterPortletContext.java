@@ -56,7 +56,9 @@ import org.apache.wicket.settings.IRequestCycleSettings.RenderStrategy;
  * <p/>
  * 
  * @see WicketFilter
+ * 
  * @author Ate Douma
+ * @author <a href="http://sebthom.de/">Sebastian Thomschke</a>
  */
 public class WicketFilterPortletContext
 {
@@ -70,12 +72,116 @@ public class WicketFilterPortletContext
 			'q', 'p', 'o', 'm', 'n', 'l', 'k', 'j', 'i', 'h', 'g', 'f', 'e', 'd', 'c', 'b', 'a' };
 
 	/**
+	 * Factory method which will delegate to
+	 * {@link #newPortletRequestContext(ServletWebRequest, WebResponse)} to create the
+	 * {@link PortletRequestContext} if the request is in a portlet context.
+	 * 
+	 * @param request
+	 * @param response
+	 * @return true if running in a portlet context.
+	 */
+	public boolean createPortletRequestContext(final ServletWebRequest request,
+		final WebResponse response)
+	{
+		if (request.getHttpServletRequest().getAttribute("javax.portlet.config") != null)
+		{
+			newPortletRequestContext(request, response);
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * FIXME javadoc
+	 * 
+	 * Try to extract the portlet's window id from the request url.
+	 * 
+	 * @param pathInfo
+	 *            the url relative to the servlet context and filter path
+	 * @return the window id, or null if it couldn't be decoded, with no leading forward slash
+	 */
+	public String decodePortletWindowId(final String pathInfo)
+	{
+		String portletWindowId = null;
+		// the path info should start with the window id prefix
+		if (pathInfo != null && pathInfo.startsWith(getServletResourceUrlPortletWindowIdPrefix()))
+		{
+			final int nextPath = pathInfo.indexOf('/', 1);
+			if (nextPath > -1)
+				portletWindowId = pathInfo.substring(
+					getServletResourceUrlPortletWindowIdPrefix().length(), nextPath);
+			else
+				portletWindowId = pathInfo.substring(getServletResourceUrlPortletWindowIdPrefix().length());
+
+			if (portletWindowId.length() > 2 && portletWindowId.charAt(0) == ':')
+			{
+				// Support for JBoss Portal which provides portletWindowIds containing a '/'
+				// character which cannot be used within a path parameter.
+				// slash encoder is provided as prefix of the real portletWindowId
+				final char slashEncoder = portletWindowId.charAt(2);
+				portletWindowId = portletWindowId.substring(2);
+				if (slashEncoder != ':')
+					portletWindowId = portletWindowId.replace(slashEncoder, '/');
+			}
+		}
+		else
+		// pathInfo was empty or didn't start with the window id prefix
+		{
+			// ignore - returns null
+		}
+		return portletWindowId;
+	}
+
+	/**
+	 * Encodes the given path portlet window id.
+	 * 
+	 * @param windowId
+	 * @param path
+	 * @return
+	 */
+	public String encodeWindowIdInPath(String windowId, final CharSequence path)
+	{
+		if (windowId != null && windowId.length() > 0)
+			if (windowId.indexOf('/') > -1)
+			{
+				// Support for JBoss Portal which provides portletWindowIds containing a '/'
+				// character which cannot be used within a path parameter.
+				// Trying to find a replacer and encoding it as a prefix before the thereby
+				// "encoded" windowId
+				boolean replaced = false;
+				for (final char replacer : slashReplacers)
+					if (windowId.indexOf(replacer) == -1)
+					{
+						windowId = ":" + replacer + windowId.replace('/', replacer);
+						replaced = true;
+						break;
+					}
+				if (!replaced)
+					throw new RuntimeException(
+						"PortletRequest.getWindowId() contains a '/' character for which no valid and unique replacer could be determined: " +
+							windowId);
+			}
+			else if (windowId.charAt(0) == ':')
+				windowId = "::" + windowId;
+		return getServletResourceUrlPortletWindowIdPrefix().substring(1) + windowId + "/" + path;
+	}
+
+	/**
+	 * @see WicketFilterPortletContext#SERVLET_RESOURCE_URL_PORTLET_WINDOW_ID_PREFIX
+	 * @return the unique, reserved string used to prefix the portlet's "window id" in the URL.
+	 */
+	public String getServletResourceUrlPortletWindowIdPrefix()
+	{
+		return SERVLET_RESOURCE_URL_PORTLET_WINDOW_ID_PREFIX;
+	}
+
+	/**
 	 * Overrides render strategy and adds the {@link PortletInvalidMarkupFilter} filter.
 	 * 
 	 * @see PortletInvalidMarkupFilter
 	 * @param webApplication
 	 */
-	public void initFilter(FilterConfig filterConfig, WebApplication webApplication)
+	public void initFilter(final FilterConfig filterConfig, final WebApplication webApplication)
 		throws ServletException
 	{
 		// override render strategy to REDIRECT_TO_REDNER
@@ -85,6 +191,21 @@ public class WicketFilterPortletContext
 		// for portlet environments
 		webApplication.getRequestCycleSettings()
 			.addResponseFilter(new PortletInvalidMarkupFilter());
+	}
+
+
+	/**
+	 * Factory method to create the {@link PortletRequestContext}.
+	 * 
+	 * @see #createPortletRequestContext(WebRequest, WebResponse)
+	 * @see PortletRequestContext
+	 * @param request
+	 * @param response
+	 */
+	protected void newPortletRequestContext(final ServletWebRequest request,
+		final WebResponse response)
+	{
+		new PortletRequestContext(this, request, response);
 	}
 
 	/**
@@ -105,18 +226,19 @@ public class WicketFilterPortletContext
 	 * @throws IOException
 	 * @throws ServletException
 	 */
-	public boolean setupFilter(FilterConfig config, FilterRequestContext filterRequestContext,
-		String filterPath) throws IOException, ServletException
+	public boolean setupFilter(final FilterConfig config,
+		final FilterRequestContext filterRequestContext, final String filterPath)
+		throws IOException, ServletException
 	{
 		boolean inPortletContext = false;
-		PortletConfig portletConfig = (PortletConfig)filterRequestContext.getRequest()
+		final PortletConfig portletConfig = (PortletConfig)filterRequestContext.getRequest()
 			.getAttribute("javax.portlet.config");
 		if (portletConfig != null)
 		{
 			inPortletContext = true;
-			PortletRequest portletRequest = (PortletRequest)filterRequestContext.getRequest()
+			final PortletRequest portletRequest = (PortletRequest)filterRequestContext.getRequest()
 				.getAttribute("javax.portlet.request");
-			WicketResponseState responseState = (WicketResponseState)filterRequestContext.getRequest()
+			final WicketResponseState responseState = (WicketResponseState)filterRequestContext.getRequest()
 				.getAttribute(WicketPortlet.RESPONSE_STATE_ATTR);
 			filterRequestContext.setRequest(new PortletServletRequestWrapper(
 				config.getServletContext(), filterRequestContext.getRequest(),
@@ -127,14 +249,14 @@ public class WicketFilterPortletContext
 		}
 		else
 		{
-			ServletContext context = config.getServletContext();
-			HttpServletRequest request = filterRequestContext.getRequest();
+			final ServletContext context = config.getServletContext();
+			final HttpServletRequest request = filterRequestContext.getRequest();
 			String pathInfo = request.getRequestURI().substring(
 				request.getContextPath().length() + filterPath.length());
-			String portletWindowId = decodePortletWindowId(pathInfo);
+			final String portletWindowId = decodePortletWindowId(pathInfo);
 			if (portletWindowId != null)
 			{
-				HttpSession proxiedSession = ServletPortletSessionProxy.createProxy(request,
+				final HttpSession proxiedSession = ServletPortletSessionProxy.createProxy(request,
 					portletWindowId);
 				pathInfo = stripWindowIdFromPathInfo(pathInfo);
 				filterRequestContext.setRequest(new PortletServletRequestWrapper(context, request,
@@ -143,82 +265,6 @@ public class WicketFilterPortletContext
 		}
 		return inPortletContext;
 	}
-
-	/**
-	 * Factory method which will delegate to
-	 * {@link #newPortletRequestContext(ServletWebRequest, WebResponse)} to create the
-	 * {@link PortletRequestContext} if the request is in a portlet context.
-	 * 
-	 * @param request
-	 * @param response
-	 * @return true if running in a portlet context.
-	 */
-	public boolean createPortletRequestContext(ServletWebRequest request, WebResponse response)
-	{
-		if (request.getHttpServletRequest().getAttribute("javax.portlet.config") != null)
-		{
-			newPortletRequestContext(request, response);
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * @see WicketFilterPortletContext#SERVLET_RESOURCE_URL_PORTLET_WINDOW_ID_PREFIX
-	 * @return the unique, reserved string used to prefix the portlet's "window id" in the URL.
-	 */
-	public String getServletResourceUrlPortletWindowIdPrefix()
-	{
-		return SERVLET_RESOURCE_URL_PORTLET_WINDOW_ID_PREFIX;
-	}
-
-	/**
-	 * FIXME javadoc
-	 * 
-	 * Try to extract the portlet's window id from the request url.
-	 * 
-	 * @param pathInfo
-	 *            the url relative to the servlet context and filter path
-	 * @return the window id, or null if it couldn't be decoded, with no leading forward slash
-	 */
-	public String decodePortletWindowId(String pathInfo)
-	{
-		String portletWindowId = null;
-		// the path info should start with the window id prefix
-		if (pathInfo != null && pathInfo.startsWith(getServletResourceUrlPortletWindowIdPrefix()))
-		{
-			int nextPath = pathInfo.indexOf('/', 1);
-			if (nextPath > -1)
-			{
-				portletWindowId = pathInfo.substring(
-					getServletResourceUrlPortletWindowIdPrefix().length(), nextPath);
-			}
-			else
-			{
-				portletWindowId = pathInfo.substring(getServletResourceUrlPortletWindowIdPrefix().length());
-			}
-
-			if (portletWindowId.length() > 2 && portletWindowId.charAt(0) == ':')
-			{
-				// Support for JBoss Portal which provides portletWindowIds containing a '/'
-				// character which cannot be used within a path parameter.
-				// slash encoder is provided as prefix of the real portletWindowId
-				char slashEncoder = portletWindowId.charAt(2);
-				portletWindowId = portletWindowId.substring(2);
-				if (slashEncoder != ':')
-				{
-					portletWindowId = portletWindowId.replace(slashEncoder, '/');
-				}
-			}
-		}
-		else
-		// pathInfo was empty or didn't start with the window id prefix
-		{
-			// ignore - returns null
-		}
-		return portletWindowId;
-	}
-
 
 	/**
 	 * FIXME javadoc
@@ -233,64 +279,9 @@ public class WicketFilterPortletContext
 	{
 		if (pathInfo != null && pathInfo.startsWith(getServletResourceUrlPortletWindowIdPrefix()))
 		{
-			int nextPath = pathInfo.indexOf('/', 1);
+			final int nextPath = pathInfo.indexOf('/', 1);
 			pathInfo = nextPath > -1 ? pathInfo.substring(nextPath) : null;
 		}
 		return pathInfo;
-	}
-
-	/**
-	 * Encodes the given path portlet window id.
-	 * 
-	 * @param windowId
-	 * @param path
-	 * @return
-	 */
-	public String encodeWindowIdInPath(String windowId, CharSequence path)
-	{
-		if (windowId != null && windowId.length() > 0)
-		{
-			if (windowId.indexOf('/') > -1)
-			{
-				// Support for JBoss Portal which provides portletWindowIds containing a '/'
-				// character which cannot be used within a path parameter.
-				// Trying to find a replacer and encoding it as a prefix before the thereby
-				// "encoded" windowId
-				boolean replaced = false;
-				for (char replacer : slashReplacers)
-				{
-					if (windowId.indexOf(replacer) == -1)
-					{
-						windowId = ":" + replacer + windowId.replace('/', replacer);
-						replaced = true;
-						break;
-					}
-				}
-				if (!replaced)
-				{
-					throw new RuntimeException(
-						"PortletRequest.getWindowId() contains a '/' character for which no valid and unique replacer could be determined: " +
-							windowId);
-				}
-			}
-			else if (windowId.charAt(0) == ':')
-			{
-				windowId = "::" + windowId;
-			}
-		}
-		return (getServletResourceUrlPortletWindowIdPrefix().substring(1) + windowId + "/" + path);
-	}
-
-	/**
-	 * Factory method to create the {@link PortletRequestContext}.
-	 * 
-	 * @see #createPortletRequestContext(WebRequest, WebResponse)
-	 * @see PortletRequestContext
-	 * @param request
-	 * @param response
-	 */
-	protected void newPortletRequestContext(ServletWebRequest request, WebResponse response)
-	{
-		new PortletRequestContext(this, request, response);
 	}
 }

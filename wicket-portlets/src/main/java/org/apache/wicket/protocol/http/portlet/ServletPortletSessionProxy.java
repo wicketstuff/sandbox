@@ -22,7 +22,9 @@ import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashSet;
+import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -40,108 +42,20 @@ import javax.servlet.http.HttpSession;
  * Note: copied and adapted from the Apache Portal Bridges Common project
  * 
  * @author <a href="mailto:ate@douma.nu">Ate Douma</a>
- * @version $Id: ServletPortletSessionProxy.java 739543 2009-01-31 10:57:31Z ate $
- * 
+ * @author <a href="http://sebthom.de/">Sebastian Thomschke</a>
  */
 public class ServletPortletSessionProxy implements InvocationHandler
 {
-	HttpSession servletSession;
-	String portletWindowPrefix;
-
-	@SuppressWarnings("unchecked")
-	public static HttpSession createProxy(HttpServletRequest request, String portletWindowId)
+	private static class NamespacedNamesEnumeration implements Enumeration<String>
 	{
-		String portletWindowNamespace = "javax.portlet.p." + portletWindowId;
-		HttpSession servletSession = request.getSession();
-		HashSet interfaces = new HashSet();
-		interfaces.add(HttpSession.class);
-		Class current = servletSession.getClass();
-		while (current != null)
-		{
-			try
-			{
-				Class[] currentInterfaces = current.getInterfaces();
-				for (int i = 0; i < currentInterfaces.length; i++)
-				{
-					interfaces.add(currentInterfaces[i]);
-				}
-				current = current.getSuperclass();
-			}
-			catch (Exception e)
-			{
-				current = null;
-			}
-		}
-		Object proxy = Proxy.newProxyInstance(servletSession.getClass().getClassLoader(),
-			(Class[])interfaces.toArray(new Class[interfaces.size()]),
-			new ServletPortletSessionProxy(request.getSession(), portletWindowNamespace));
-		return (HttpSession)proxy;
-	}
-
-	private ServletPortletSessionProxy(HttpSession servletSession, String portletWindowPrefix)
-	{
-		this.servletSession = servletSession;
-		this.portletWindowPrefix = portletWindowPrefix;
-	}
-
-	/**
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.reflect.InvocationHandler#invoke(java.lang.Object, java.lang.reflect.Method,
-	 *      java.lang.Object[])
-	 */
-	@SuppressWarnings("unchecked")
-	public Object invoke(Object proxy, Method m, Object[] args) throws Throwable
-	{
-		Object retval = null;
-		if (("getAttribute".equals(m.getName()) || "getValue".equals(m.getName())) &&
-			args.length == 1 && args[0] instanceof String)
-		{
-			retval = servletSession.getAttribute(portletWindowPrefix + (String)args[0]);
-		}
-		else if (("setAttribute".equals(m.getName()) || "putValue".equals(m.getName())) &&
-			args.length == 2 && args[0] instanceof String)
-		{
-			servletSession.setAttribute(portletWindowPrefix + (String)args[0], args[1]);
-		}
-		else if (("removeAttribute".equals(m.getName()) || "removeValue".equals(m.getName())) &&
-			args.length == 1 && args[0] instanceof String)
-		{
-			servletSession.removeAttribute(portletWindowPrefix + (String)args[0]);
-		}
-		else if ("getAttributeNames".equals(m.getName()) && args == null)
-		{
-			retval = new NamespacedNamesEnumeration(servletSession.getAttributeNames(),
-				portletWindowPrefix);
-		}
-		else if ("getValueNames".equals(m.getName()) && args == null)
-		{
-			ArrayList list = new ArrayList();
-			Enumeration e = new NamespacedNamesEnumeration(servletSession.getAttributeNames(),
-				portletWindowPrefix);
-			while (e.hasMoreElements())
-			{
-				list.add(e.nextElement());
-			}
-			retval = list.toArray(new String[list.size()]);
-		}
-		else
-		{
-			retval = m.invoke(servletSession, args);
-		}
-		return retval;
-	}
-
-	@SuppressWarnings("unchecked")
-	private static class NamespacedNamesEnumeration implements Enumeration
-	{
-		private final Enumeration namesEnumeration;
+		private final Enumeration<String> namesEnumeration;
 		private final String namespace;
 
 		private String nextName;
-		private boolean done;
+		private boolean isDone;
 
-		public NamespacedNamesEnumeration(Enumeration namesEnumeration, String namespace)
+		public NamespacedNamesEnumeration(final Enumeration<String> namesEnumeration,
+			final String namespace)
 		{
 			this.namesEnumeration = namesEnumeration;
 			this.namespace = namespace;
@@ -150,34 +64,107 @@ public class ServletPortletSessionProxy implements InvocationHandler
 
 		public boolean hasMoreElements()
 		{
-			if (!done)
+			if (isDone)
+				return false;
+
+			if (nextName == null)
 			{
-				if (nextName == null)
+				while (namesEnumeration.hasMoreElements())
 				{
-					while (namesEnumeration.hasMoreElements())
+					final String name = namesEnumeration.nextElement();
+					if (name.startsWith(namespace))
 					{
-						String name = (String)namesEnumeration.nextElement();
-						if (name.startsWith(namespace))
-						{
-							nextName = name.substring(namespace.length());
-							break;
-						}
+						nextName = name.substring(namespace.length());
+						break;
 					}
-					done = nextName == null;
 				}
+				isDone = nextName == null;
 			}
-			return !done;
+			return !isDone;
 		}
 
-		public Object nextElement()
+		public String nextElement()
 		{
-			if (done)
-			{
+			if (isDone)
 				throw new NoSuchElementException();
-			}
-			String name = nextName;
+			final String name = nextName;
 			nextName = null;
 			return name;
 		}
+	}
+
+	public static HttpSession createProxy(final HttpServletRequest request,
+		final String portletWindowId)
+	{
+		final String portletWindowNamespace = "javax.portlet.p." + portletWindowId;
+		final HttpSession servletSession = request.getSession();
+		final Set<Class<?>> interfaces = new HashSet<Class<?>>();
+		interfaces.add(HttpSession.class);
+		Class<?> current = servletSession.getClass();
+		while (current != null)
+			try
+			{
+				final Class<?>[] currentInterfaces = current.getInterfaces();
+				for (final Class<?> currentInterface : currentInterfaces)
+					interfaces.add(currentInterface);
+				current = current.getSuperclass();
+			}
+			catch (final Exception ex)
+			{
+				current = null;
+			}
+		final Object proxy = Proxy.newProxyInstance(servletSession.getClass().getClassLoader(),
+			interfaces.toArray(new Class[interfaces.size()]), new ServletPortletSessionProxy(
+				request.getSession(), portletWindowNamespace));
+		return (HttpSession)proxy;
+	}
+
+	private final HttpSession servletSession;
+	private final String portletWindowPrefix;
+
+	private ServletPortletSessionProxy(final HttpSession servletSession,
+		final String portletWindowPrefix)
+	{
+		this.servletSession = servletSession;
+		this.portletWindowPrefix = portletWindowPrefix;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@SuppressWarnings("unchecked")
+	public Object invoke(final Object proxy, final Method m, final Object[] args) throws Throwable
+	{
+		if (("getAttribute".equals(m.getName()) || "getValue".equals(m.getName())) &&
+			args.length == 1 && args[0] instanceof String)
+			return servletSession.getAttribute(portletWindowPrefix + (String)args[0]);
+
+		if (("setAttribute".equals(m.getName()) || "putValue".equals(m.getName())) &&
+			args.length == 2 && args[0] instanceof String)
+		{
+			servletSession.setAttribute(portletWindowPrefix + (String)args[0], args[1]);
+			return null;
+		}
+
+		if (("removeAttribute".equals(m.getName()) || "removeValue".equals(m.getName())) &&
+			args.length == 1 && args[0] instanceof String)
+		{
+			servletSession.removeAttribute(portletWindowPrefix + (String)args[0]);
+			return null;
+		}
+
+		if ("getAttributeNames".equals(m.getName()) && args == null)
+			return new NamespacedNamesEnumeration(servletSession.getAttributeNames(),
+				portletWindowPrefix);
+
+		if ("getValueNames".equals(m.getName()) && args == null)
+		{
+			final List<String> list = new ArrayList<String>();
+			for (final Enumeration<String> en = new NamespacedNamesEnumeration(
+				servletSession.getAttributeNames(), portletWindowPrefix); en.hasMoreElements();)
+				list.add(en.nextElement());
+			return list.toArray(new String[list.size()]);
+		}
+		return m.invoke(servletSession, args);
 	}
 }

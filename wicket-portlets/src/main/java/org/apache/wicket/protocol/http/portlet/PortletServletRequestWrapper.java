@@ -31,21 +31,37 @@ import javax.servlet.http.HttpSession;
  * FIXME javadoc
  * 
  * @author Ate Douma
+ * @author <a href="http://sebthom.de/">Sebastian Thomschke</a>
  */
 public class PortletServletRequestWrapper extends HttpServletRequestWrapper
 {
 	/**
+	 * Converts from a filterPath (path with a trailing slash), to a servletPath (path with a
+	 * leading slash).
+	 * 
+	 * @param filterPath
+	 * @return the filterPath prefixed with a leading slash and with the trailing slash removed
+	 */
+	private static String makeServletPath(final String filterPath)
+	{
+		return "/" + filterPath.substring(0, filterPath.length() - 1);
+	}
+
+	/**
 	 * Context path.
 	 */
 	private String contextPath;
+
 	/**
 	 * Servlet path.
 	 */
 	private final String servletPath;
+
 	/**
 	 * Path info - the url relative to the context and filter path.
 	 */
 	private String pathInfo;
+
 	/**
 	 * Request URI.
 	 */
@@ -54,21 +70,61 @@ public class PortletServletRequestWrapper extends HttpServletRequestWrapper
 	 * Query string.
 	 */
 	private String queryString;
+
 	/**
 	 * HTTP session.
 	 */
 	private HttpSession session;
 
 	/**
-	 * Converts from a filterPath (path with a trailing slash), to a servletPath (path with a
-	 * leading slash).
+	 * FIXME javadoc
 	 * 
+	 * <p>
+	 * Public constructor which internally builds the path info from request URI, instead of
+	 * deriving it.
+	 * 
+	 * @param context
+	 * @param request
+	 * @param proxiedSession
 	 * @param filterPath
-	 * @return the filterPath prefixed with a leading slash and with the trailing slash removed
 	 */
-	private static String makeServletPath(String filterPath)
+	public PortletServletRequestWrapper(final ServletContext context,
+		final HttpServletRequest request, final HttpSession proxiedSession, final String filterPath)
 	{
-		return "/" + filterPath.substring(0, filterPath.length() - 1);
+		this(context, proxiedSession, request, filterPath);
+
+		// Liferay sometimes gives an incorrect requestURI
+		final int pathInfoBegin = contextPath.length() + filterPath.length();
+		final String pathInfo = pathInfoBegin >= requestURI.length() ? null
+			: requestURI.substring(pathInfoBegin);
+		this.pathInfo = pathInfo == null || pathInfo.length() < 2 ? null : pathInfo;
+	}
+
+	/**
+	 * FIXME javadoc
+	 * 
+	 * <p>
+	 * Public constructor called when not running in a portlet environment, which is passed in the
+	 * path info instead of deriving it. It overrides the generated request URI from the internal
+	 * constructor.
+	 * 
+	 * @param context
+	 * @param request
+	 * @param proxiedSession
+	 * @param filterPath
+	 *            ???
+	 * @param pathInfo
+	 *            ???
+	 */
+	public PortletServletRequestWrapper(final ServletContext context,
+		final HttpServletRequest request, final HttpSession proxiedSession,
+		final String filterPath, final String pathInfo)
+	{
+		this(context, proxiedSession, request, filterPath);
+
+		this.pathInfo = pathInfo;
+		// override requestURI which is setup in the protected constructor
+		requestURI = contextPath + servletPath + (pathInfo != null ? pathInfo : "");
 	}
 
 	/**
@@ -81,15 +137,13 @@ public class PortletServletRequestWrapper extends HttpServletRequestWrapper
 	 * @param request
 	 * @param filterPath
 	 */
-	protected PortletServletRequestWrapper(ServletContext context, HttpSession proxiedSession,
-		HttpServletRequest request, String filterPath)
+	protected PortletServletRequestWrapper(final ServletContext context,
+		final HttpSession proxiedSession, final HttpServletRequest request, final String filterPath)
 	{
 		super(request);
 		session = proxiedSession;
 		if (proxiedSession == null)
-		{
 			session = request.getSession(false);
-		}
 
 		servletPath = makeServletPath(filterPath);
 		// retrieve the correct contextPath, requestURI and queryString
@@ -115,105 +169,68 @@ public class PortletServletRequestWrapper extends HttpServletRequestWrapper
 	}
 
 	/**
-	 * FIXME javadoc
-	 * 
-	 * <p>
-	 * Public constructor which internally builds the path info from request URI, instead of
-	 * deriving it.
-	 * 
-	 * @param context
-	 * @param request
-	 * @param proxiedSession
-	 * @param filterPath
-	 */
-	public PortletServletRequestWrapper(ServletContext context, HttpServletRequest request,
-		HttpSession proxiedSession, String filterPath)
-	{
-		this(context, proxiedSession, request, filterPath);
-
-		// Liferay sometimes gives an incorrect requestURI
-		int pathInfoBegin = contextPath.length() + filterPath.length();
-		String pathInfo = pathInfoBegin >= requestURI.length() ? null
-			: requestURI.substring(pathInfoBegin);
-		this.pathInfo = pathInfo == null || pathInfo.length() < 2 ? null : pathInfo;
-	}
-
-	/**
-	 * FIXME javadoc
-	 * 
-	 * <p>
-	 * Public constructor called when not running in a portlet environment, which is passed in the
-	 * path info instead of deriving it. It overrides the generated request URI from the internal
-	 * constructor.
-	 * 
-	 * @param context
-	 * @param request
-	 * @param proxiedSession
-	 * @param filterPath
-	 *            ???
-	 * @param pathInfo
-	 *            ???
-	 */
-	public PortletServletRequestWrapper(ServletContext context, HttpServletRequest request,
-		HttpSession proxiedSession, String filterPath, String pathInfo)
-	{
-		this(context, proxiedSession, request, filterPath);
-
-		this.pathInfo = pathInfo;
-		// override requestURI which is setup in the protected constructor
-		requestURI = contextPath + servletPath + (pathInfo != null ? pathInfo : "");
-	}
-
-	/**
-	 * @see javax.servlet.ServletRequestWrapper#setCharacterEncoding(java.lang.String)
+	 * {@inheritDoc}
 	 */
 	@Override
-	public void setCharacterEncoding(String enc) throws UnsupportedEncodingException
+	public Object getAttribute(final String name)
 	{
-		try
-		{
-			super.setCharacterEncoding(enc);
-		}
-		catch (UnsupportedEncodingException uex)
-		{
-			// TODO
-			// SUN OpenPortal Portlet Container 2.0_01 BUG which only allows setting an encoding as
-			// provided by underlying request (then: what's the use?)
-			// and throws UnsupportedEncodingException even when that one == null :(
-			// ... so, ignoring for now
-		}
+		// TODO: check if these can possibly be set/handled
+		// nullifying these for now to prevent Wicket
+		// ServletWebRequest.getRelativePathPrefixToWicketHandler() going the wrong route
+		if ("javax.servlet.error.request_uri".equals(name) ||
+			"javax.servlet.forward.servlet_path".equals(name))
+			return null;
+		return super.getAttribute(name);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String getContextPath()
 	{
 		return contextPath;
 	}
 
-	@Override
-	public String getServletPath()
-	{
-		return servletPath;
-	}
-
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String getPathInfo()
 	{
 		return pathInfo;
 	}
 
-	@Override
-	public String getRequestURI()
-	{
-		return requestURI;
-	}
-
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String getQueryString()
 	{
 		return queryString;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String getRequestURI()
+	{
+		return requestURI;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String getServletPath()
+	{
+		return servletPath;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public HttpSession getSession()
 	{
@@ -221,22 +238,28 @@ public class PortletServletRequestWrapper extends HttpServletRequestWrapper
 	}
 
 	@Override
-	public HttpSession getSession(boolean create)
+	public HttpSession getSession(final boolean create)
 	{
 		return session != null ? session : super.getSession(create);
 	}
 
+	/**
+	 * @see javax.servlet.ServletRequestWrapper#setCharacterEncoding(java.lang.String)
+	 */
 	@Override
-	public Object getAttribute(String name)
+	public void setCharacterEncoding(final String enc) throws UnsupportedEncodingException
 	{
-		// TODO: check if these can possibly be set/handled
-		// nullifying these for now to prevent Wicket
-		// ServletWebRequest.getRelativePathPrefixToWicketHandler() going the wrong route
-		if ("javax.servlet.error.request_uri".equals(name) ||
-			"javax.servlet.forward.servlet_path".equals(name))
+		try
 		{
-			return null;
+			super.setCharacterEncoding(enc);
 		}
-		return super.getAttribute(name);
+		catch (final UnsupportedEncodingException uex)
+		{
+			// TODO
+			// SUN OpenPortal Portlet Container 2.0_01 BUG which only allows setting an encoding as
+			// provided by underlying request (then: what's the use?)
+			// and throws UnsupportedEncodingException even when that one == null :(
+			// ... so, ignoring for now
+		}
 	}
 }

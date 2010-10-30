@@ -26,13 +26,14 @@ import org.apache.wicket.protocol.http.WicketFilter;
  * {@link WicketFilterPortletContext} and {@link WicketFilter}'s processing.
  * 
  * @author Ate Douma
+ * @author <a href="http://sebthom.de/">Sebastian Thomschke</a>
  */
 public final class FilterRequestContext
 {
 	private HttpServletRequest request;
 	private HttpServletResponse response;
 
-	public FilterRequestContext(HttpServletRequest request, HttpServletResponse response)
+	public FilterRequestContext(final HttpServletRequest request, final HttpServletResponse response)
 	{
 		this.request = request;
 		this.response = response;
@@ -43,17 +44,17 @@ public final class FilterRequestContext
 		return request;
 	}
 
-	public void setRequest(HttpServletRequest request)
-	{
-		this.request = request;
-	}
-
 	public HttpServletResponse getResponse()
 	{
 		return response;
 	}
 
-	public void setResponse(HttpServletResponse response)
+	public void setRequest(final HttpServletRequest request)
+	{
+		this.request = request;
+	}
+
+	public void setResponse(final HttpServletResponse response)
 	{
 		this.response = response;
 	}

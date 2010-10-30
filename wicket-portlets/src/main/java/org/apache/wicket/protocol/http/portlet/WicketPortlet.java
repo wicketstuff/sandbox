@@ -62,12 +62,13 @@ import org.slf4j.LoggerFactory;
  * 
  * @see WicketPortlet#WICKET_URL_PORTLET_PARAMETER
  * @see WicketFilter
+ * 
  * @author Ate Douma
+ * @author <a href="http://sebthom.de/">Sebastian Thomschke</a>
  */
 public class WicketPortlet extends GenericPortlet
 {
-
-	private static final Logger log = LoggerFactory.getLogger(WicketPortlet.class);
+	private static final Logger LOG = LoggerFactory.getLogger(WicketPortlet.class);
 
 	/**
 	 * FIXME javadoc
@@ -159,73 +160,75 @@ public class WicketPortlet extends GenericPortlet
 	 */
 	private final HashMap<String, String> defaultPages = new HashMap<String, String>();
 
-	@Override
-	public void init(PortletConfig config) throws PortletException
-	{
-		super.init(config);
-
-		wicketFilterPath = buildWicketFilterPath(config.getInitParameter(WICKET_FILTER_PATH_PARAM));
-		wicketFilterQuery = buildWicketFilterQuery(wicketFilterPath);
-
-		defaultPages.put(PARAM_VIEW_PAGE, config.getInitParameter(PARAM_VIEW_PAGE));
-		defaultPages.put(PARAM_ACTION_PAGE, config.getInitParameter(PARAM_ACTION_PAGE));
-		defaultPages.put(PARAM_CUSTOM_PAGE, config.getInitParameter(PARAM_CUSTOM_PAGE));
-		defaultPages.put(PARAM_HELP_PAGE, config.getInitParameter(PARAM_HELP_PAGE));
-		defaultPages.put(PARAM_EDIT_PAGE, config.getInitParameter(PARAM_EDIT_PAGE));
-
-		validateDefaultPages(defaultPages, wicketFilterPath, wicketFilterQuery);
-	}
-
-	@Override
-	public void destroy()
-	{
-		super.destroy();
-	}
-
-	/**
-	 * @param pageType
-	 *            the mode of the portlet page, e.g. VIEW, EDIT etc...
-	 * @return the default page name for the given pate type.
-	 */
-	protected String getDefaultPage(String pageType)
-	{
-		return defaultPages.get(pageType);
-	}
-
 	protected String buildWicketFilterPath(String filterPath)
 	{
 		if (filterPath == null || filterPath.length() == 0)
-		{
 			filterPath = "/";
-		}
 		else
 		{
 			if (!filterPath.startsWith("/"))
-			{
 				filterPath = "/" + filterPath;
-			}
 			if (filterPath.endsWith("*"))
-			{
 				filterPath = filterPath.substring(0, filterPath.length() - 1);
-			}
 			if (!filterPath.endsWith("/"))
-			{
 				filterPath += "/";
-			}
 		}
 		return filterPath;
 	}
 
-	protected String buildWicketFilterQuery(String wicketFilterPath)
+	protected String buildWicketFilterQuery(final String wicketFilterPath)
 	{
 		if (wicketFilterPath.equals("/"))
-		{
 			return "?";
-		}
 		else
-		{
 			return wicketFilterPath.substring(0, wicketFilterPath.length() - 1) + "?";
-		}
+	}
+
+	/**
+	 * Delegates to {@link #processRequest(PortletRequest, PortletResponse, String, String)}.
+	 * 
+	 * @see #processRequest(PortletRequest, PortletResponse, String, String)
+	 */
+	protected void doCustom(final RenderRequest request, final RenderResponse response)
+		throws PortletException, IOException
+	{
+		processRequest(request, response, PARAM_CUSTOM_PAGE);
+	}
+
+	/**
+	 * Delegates to {@link #processRequest(PortletRequest, PortletResponse, String, String)}.
+	 * 
+	 * @see #processRequest(PortletRequest, PortletResponse, String, String)
+	 */
+	@Override
+	protected void doEdit(final RenderRequest request, final RenderResponse response)
+		throws PortletException, IOException
+	{
+		processRequest(request, response, PARAM_EDIT_PAGE);
+	}
+
+	/**
+	 * Delegates to {@link #processRequest(PortletRequest, PortletResponse, String, String)}.
+	 * 
+	 * @see #processRequest(PortletRequest, PortletResponse, String, String)
+	 */
+	@Override
+	protected void doHelp(final RenderRequest request, final RenderResponse response)
+		throws PortletException, IOException
+	{
+		processRequest(request, response, PARAM_HELP_PAGE);
+	}
+
+	/**
+	 * Delegates to {@link #processRequest(PortletRequest, PortletResponse, String, String)}.
+	 * 
+	 * @see #processRequest(PortletRequest, PortletResponse, String, String)
+	 */
+	@Override
+	protected void doView(final RenderRequest request, final RenderResponse response)
+		throws PortletException, IOException
+	{
+		processRequest(request, response, PARAM_VIEW_PAGE);
 	}
 
 	/**
@@ -241,101 +244,49 @@ public class WicketPortlet extends GenericPortlet
 	 * @param wicketFilterQuery
 	 * @return the corrected URL
 	 */
-	protected String fixWicketUrl(String url, String wicketFilterPath, String wicketFilterQuery)
+	protected String fixWicketUrl(String url, final String wicketFilterPath,
+		final String wicketFilterQuery)
 	{
 		if (url == null)
-		{
 			return wicketFilterPath;
-		}
 		else if (!url.startsWith(wicketFilterPath))
-		{
 			if ((url + "/").equals(wicketFilterPath))
-			{
 				// hack around "old" style wicket home url's without trailing '/' which would lead
 				// to a redirect to the real home path anyway
 				url = wicketFilterPath;
-			}
 			else if (url.startsWith(wicketFilterQuery))
-			{
 				// correct url: path?query -> path/?query
 				url = wicketFilterPath + "?" + url.substring(wicketFilterQuery.length());
-			}
-		}
 		return url;
 	}
 
 	/**
-	 * FIXME javadoc
-	 * 
-	 * <p>
-	 * Registers the default pages and their URLs for the different {@link PortletMode}s. Also
-	 * corrects and slightly incorrect URLs (see {@link #fixWicketUrl(String, String, String)}).
-	 * 
-	 * <p>
-	 * If no specific page was specified for a given portlet mode (VIEW, EDIT etc) then the page for
-	 * that mode is set to be the same page as that of the VIEW mode.
-	 * 
-	 * @see PortletMode
-	 * @see #fixWicketUrl(String, String, String)
-	 * @param defaultPages
-	 * @param wicketFilterPath
-	 * @param wicketFilterQuery
+	 * @param pageType
+	 *            the mode of the portlet page, e.g. VIEW, EDIT etc...
+	 * @return the default page name for the given pate type.
 	 */
-	protected void validateDefaultPages(Map defaultPages, String wicketFilterPath,
-		String wicketFilterQuery)
+	protected String getDefaultPage(final String pageType)
 	{
-		String viewPage = fixWicketUrl((String)defaultPages.get(PARAM_VIEW_PAGE), wicketFilterPath,
-			wicketFilterQuery);
-		defaultPages.put(PARAM_VIEW_PAGE, viewPage.startsWith(wicketFilterPath) ? viewPage
-			: wicketFilterPath);
+		return defaultPages.get(pageType);
+	}
 
-		String defaultPage = (String)defaultPages.get(PARAM_ACTION_PAGE);
-		if (defaultPage == null)
-		{
-			defaultPages.put(PARAM_ACTION_PAGE, viewPage);
-		}
-		else
-		{
-			defaultPage = fixWicketUrl(defaultPage, wicketFilterPath, wicketFilterQuery);
-			defaultPages.put(PARAM_ACTION_PAGE, defaultPage.startsWith(wicketFilterPath)
-				? defaultPage : viewPage);
-		}
+	/**
+	 * FIXME javadoc - definitely needs explanation - why is no lookup attempted?
+	 * 
+	 * @param request
+	 * @param paramName
+	 * @param defaultValue
+	 * @return
+	 */
+	protected String getWicketConfigParameter(final PortletRequest request, final String paramName,
+		final String defaultValue)
+	{
+		return defaultValue;
+	}
 
-		defaultPage = (String)defaultPages.get(PARAM_CUSTOM_PAGE);
-		if (defaultPage == null)
-		{
-			defaultPages.put(PARAM_CUSTOM_PAGE, viewPage);
-		}
-		else
-		{
-			defaultPage = fixWicketUrl(defaultPage, wicketFilterPath, wicketFilterQuery);
-			defaultPages.put(PARAM_CUSTOM_PAGE, defaultPage.startsWith(wicketFilterPath)
-				? defaultPage : viewPage);
-		}
-
-		defaultPage = (String)defaultPages.get(PARAM_HELP_PAGE);
-		if (defaultPage == null)
-		{
-			defaultPages.put(PARAM_HELP_PAGE, viewPage);
-		}
-		else
-		{
-			defaultPage = fixWicketUrl(defaultPage, wicketFilterPath, wicketFilterQuery);
-			defaultPages.put(PARAM_HELP_PAGE, defaultPage.startsWith(wicketFilterPath)
-				? defaultPage : viewPage);
-		}
-
-		defaultPage = (String)defaultPages.get(PARAM_EDIT_PAGE);
-		if (defaultPage == null)
-		{
-			defaultPages.put(PARAM_EDIT_PAGE, viewPage);
-		}
-		else
-		{
-			defaultPage = fixWicketUrl(defaultPage, wicketFilterPath, wicketFilterQuery);
-			defaultPages.put(PARAM_EDIT_PAGE, defaultPage.startsWith(wicketFilterPath)
-				? defaultPage : viewPage);
-		}
+	protected String getWicketFilterPath()
+	{
+		return wicketFilterPath;
 	}
 
 	/**
@@ -353,53 +304,21 @@ public class WicketPortlet extends GenericPortlet
 	protected Properties getWicketPortletProperties(Properties properties) throws PortletException
 	{
 		if (properties == null)
-		{
 			properties = new Properties();
-		}
-		InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream(
-			WICKET_PORTLET_PROPERTIES);
+		final InputStream is = Thread.currentThread()
+			.getContextClassLoader()
+			.getResourceAsStream(WICKET_PORTLET_PROPERTIES);
 		if (is != null)
-		{
 			try
 			{
 				properties.load(is);
 			}
-			catch (IOException e)
+			catch (final IOException e)
 			{
 				throw new PortletException(
 					"Failed to load WicketPortlet.properties from classpath", e);
 			}
-		}
 		return properties;
-	}
-
-	/**
-	 * FIXME javadoc - definitely needs explanation - why is no lookup attempted?
-	 * 
-	 * @param request
-	 * @param paramName
-	 * @param defaultValue
-	 * @return
-	 */
-	protected String getWicketConfigParameter(PortletRequest request, String paramName,
-		String defaultValue)
-	{
-		return defaultValue;
-	}
-
-	/**
-	 * @see WicketPortlet#WICKET_URL_PORTLET_PARAMETER
-	 * @param request
-	 * @return The prefix for the parameter name for storing Wicket URLs.
-	 */
-	protected String getWicketUrlPortletParameter(PortletRequest request)
-	{
-		return WICKET_URL_PORTLET_PARAMETER;
-	}
-
-	protected String getWicketFilterPath()
-	{
-		return wicketFilterPath;
 	}
 
 	/**
@@ -426,82 +345,61 @@ public class WicketPortlet extends GenericPortlet
 	 *            url of the default page
 	 * @return the Wicket URL from within the specified request
 	 */
-	protected String getWicketURL(PortletRequest request, String pageType, String defaultPage)
+	protected String getWicketURL(final PortletRequest request, final String pageType,
+		final String defaultPage)
 	{
 		String wicketURL = null;
 		// get the name of the wicket url paramater, as looked up from a request attribute called
 		// WicketPortlet#WICKET_URL_PORTLET_PARAMETER_ATTR
-		String wicketUrlParameterName = (String)request.getAttribute(WicketPortlet.WICKET_URL_PORTLET_PARAMETER_ATTR);
+		final String wicketUrlParameterName = (String)request.getAttribute(WicketPortlet.WICKET_URL_PORTLET_PARAMETER_ATTR);
 		if (request instanceof ActionRequest)
-		{
 			// try to lookup the passed in wicket url parameter
 			wicketURL = request.getParameter(wicketUrlParameterName);
-		}
 		else if (request instanceof ResourceRequest)
-		{
 			wicketURL = ((ResourceRequest)request).getResourceID();
-		}
 		else
 		{
 			// try to lookup the passed in wicket url parameter, suffixed with the portlet mode
-			String parameterName = wicketUrlParameterName + request.getPortletMode().toString();
+			final String parameterName = wicketUrlParameterName +
+				request.getPortletMode().toString();
 			wicketURL = request.getParameter(parameterName);
 		}
 
 		// if the wicketURL could not be retrieved, return the url for the default page
 		if (wicketURL == null)
-		{
 			wicketURL = getWicketConfigParameter(request, CONFIG_PARAM_PREFIX + pageType,
 				defaultPage);
-		}
 		return wicketURL;
 	}
 
 	/**
-	 * Delegates to {@link #processRequest(PortletRequest, PortletResponse, String, String)}.
-	 * 
-	 * @see #processRequest(PortletRequest, PortletResponse, String, String)
+	 * @see WicketPortlet#WICKET_URL_PORTLET_PARAMETER
+	 * @param request
+	 * @return The prefix for the parameter name for storing Wicket URLs.
 	 */
-	@Override
-	protected void doView(RenderRequest request, RenderResponse response) throws PortletException,
-		IOException
+	protected String getWicketUrlPortletParameter(final PortletRequest request)
 	{
-		processRequest(request, response, PARAM_VIEW_PAGE);
+		return WICKET_URL_PORTLET_PARAMETER;
 	}
 
 	/**
-	 * Delegates to {@link #processRequest(PortletRequest, PortletResponse, String, String)}.
-	 * 
-	 * @see #processRequest(PortletRequest, PortletResponse, String, String)
+	 * {@inheritDoc}
 	 */
 	@Override
-	protected void doEdit(RenderRequest request, RenderResponse response) throws PortletException,
-		IOException
+	public void init(final PortletConfig config) throws PortletException
 	{
-		processRequest(request, response, PARAM_EDIT_PAGE);
-	}
+		super.init(config);
 
-	/**
-	 * Delegates to {@link #processRequest(PortletRequest, PortletResponse, String, String)}.
-	 * 
-	 * @see #processRequest(PortletRequest, PortletResponse, String, String)
-	 */
-	@Override
-	protected void doHelp(RenderRequest request, RenderResponse response) throws PortletException,
-		IOException
-	{
-		processRequest(request, response, PARAM_HELP_PAGE);
-	}
+		wicketFilterPath = buildWicketFilterPath(config.getInitParameter(WICKET_FILTER_PATH_PARAM));
+		wicketFilterQuery = buildWicketFilterQuery(wicketFilterPath);
 
-	/**
-	 * Delegates to {@link #processRequest(PortletRequest, PortletResponse, String, String)}.
-	 * 
-	 * @see #processRequest(PortletRequest, PortletResponse, String, String)
-	 */
-	protected void doCustom(RenderRequest request, RenderResponse response)
-		throws PortletException, IOException
-	{
-		processRequest(request, response, PARAM_CUSTOM_PAGE);
+		defaultPages.put(PARAM_VIEW_PAGE, config.getInitParameter(PARAM_VIEW_PAGE));
+		defaultPages.put(PARAM_ACTION_PAGE, config.getInitParameter(PARAM_ACTION_PAGE));
+		defaultPages.put(PARAM_CUSTOM_PAGE, config.getInitParameter(PARAM_CUSTOM_PAGE));
+		defaultPages.put(PARAM_HELP_PAGE, config.getInitParameter(PARAM_HELP_PAGE));
+		defaultPages.put(PARAM_EDIT_PAGE, config.getInitParameter(PARAM_EDIT_PAGE));
+
+		validateDefaultPages(defaultPages, wicketFilterPath, wicketFilterQuery);
 	}
 
 	/**
@@ -515,108 +413,52 @@ public class WicketPortlet extends GenericPortlet
 	 * @see #processRequest(PortletRequest, PortletResponse, String, String)
 	 */
 	@Override
-	public void processAction(ActionRequest request, ActionResponse response)
+	public void processAction(final ActionRequest request, final ActionResponse response)
 		throws PortletException, IOException
 	{
 		processRequest(request, response, PARAM_ACTION_PAGE);
 	}
 
 	/**
-	 * Delegates to {@link #processRequest(PortletRequest, PortletResponse, String, String)}.
+	 * Handles redirects set from processing the action. Checks the response state after the action
+	 * has been processed by Wicket for the presence of a redirect URL, and if present,
+	 * 'portletifies' the URL. If the URL is a redirect to within the scope of this portlet, leaves
+	 * it to be handled in a subsequent render call, or if not, sends the redirect to the client.
+	 * The recorded url is then used in by wicket in the subsequnt 'VIEW' requests by the portal, to
+	 * render the correct Page.
 	 * 
-	 * @see #processRequest(PortletRequest, PortletResponse, String, String)
-	 */
-	@Override
-	public void serveResource(ResourceRequest request, ResourceResponse response)
-		throws PortletException, IOException
-	{
-		if (request.getResourceID() != null)
-		{
-			// only handle serveResource by ResourceID parameter
-			processRequest(request, response, PARAM_VIEW_PAGE);
-		}
-	}
-
-	/**
-	 * Consumes and processes all portlet requests. All the doX methods delegate to this method,
-	 * including processAction and serveResource.
-	 * 
+	 * @see IRequestCycleSettings#REDIRECT_TO_RENDER
+	 * @param wicketURL
+	 * @param wicketFilterPath
+	 * @param wicketFilterQuery
 	 * @param request
 	 * @param response
-	 * @param requestType
-	 * @param pageType
+	 * @param responseState
 	 * @throws PortletException
 	 * @throws IOException
 	 */
-	protected void processRequest(PortletRequest request, PortletResponse response, String pageType)
+	protected void processActionResponseState(String wicketURL, final String wicketFilterPath,
+		final String wicketFilterQuery, final PortletRequest request,
+		final ActionResponse response, final WicketResponseState responseState)
 		throws PortletException, IOException
 	{
-
-		String wicketURL = null;
-		String wicketFilterPath = null;
-		String wicketFilterQuery = null;
-
-		// FIXME portal comment: sets the name of the parameter to store the wicket url as a request
-		// attribute, so that we can ?...?
-		request.setAttribute(WICKET_URL_PORTLET_PARAMETER_ATTR,
-			getWicketUrlPortletParameter(request));
-
-		// get the actual wicketURL for this request, to be passed onto Wicket core for processing
-		wicketURL = getWicketURL(request, pageType, getDefaultPage(pageType));
-		if (log.isDebugEnabled())
+		// write out Cookies to ActionResponse
+		responseState.flush();
+		final String redirectLocationUrl = responseState.getRedirectLocation();
+		if (LOG.isDebugEnabled())
+			LOG.debug("redirectURL after include:" + redirectLocationUrl);
+		if (redirectLocationUrl != null)
 		{
-			log.debug("Portlet \"" + request.getAttribute(PortletRequest.LIFECYCLE_PHASE) +
-				"\" for wicket url:" + wicketURL);
-		}
-		wicketFilterPath = getWicketConfigParameter(request, WICKET_FILTER_PATH,
-			this.wicketFilterPath);
-		wicketFilterQuery = getWicketConfigParameter(request, WICKET_FILTER_QUERY,
-			this.wicketFilterQuery);
-
-		// store the response state and request type in the request object, so they can be looked up
-		// from a different context
-		WicketResponseState responseState = new WicketResponseState(request, response);
-		request.setAttribute(RESPONSE_STATE_ATTR, responseState);
-
-		// need to record the effective wicket url of the rendered result, so that the subsequent
-		// portlet 'view' requests can delegate to wicket to render the correct location/wicket url.
-		if (responseState.isActionResponse())
-		{
-			// create the request dispatcher, to delegate the request to the wicket filter
-			PortletRequestDispatcher rd = getPortletContext().getRequestDispatcher(wicketURL);
-
-			if (rd != null)
+			wicketURL = fixWicketUrl(redirectLocationUrl, wicketFilterPath, wicketFilterQuery);
+			if (wicketURL.startsWith(wicketFilterPath))
 			{
-				// delegate to wicket filter - this is where the magic happens
-				rd.include(request, response);
-				// String newWicketURL = getWicketURL(request, pageType, getDefaultPage(pageType));
-				if (log.isDebugEnabled())
-				{
-					log.debug("wicket filter inclusion complete");
-				}
-				processActionResponseState(wicketURL, wicketFilterPath, wicketFilterQuery, request,
-					(ActionResponse)response, responseState);
+				final String portletMode = request.getPortletMode().toString();
+				final String wicketUrlPrefix = (String)request.getAttribute(WicketPortlet.WICKET_URL_PORTLET_PARAMETER_ATTR);
+				final String redirectUrlKey = wicketUrlPrefix + portletMode;
+				response.setRenderParameter(redirectUrlKey, wicketURL);
 			}
 			else
-			{
-				// FIXME - throw exception?
-				// no-op for now
-			}
-		}
-		else if (responseState.isMimeResponse())
-		{
-			processMimeResponseRequest(request, (MimeResponse)response, wicketURL,
-				wicketFilterPath, wicketFilterQuery, responseState);
-		}
-		else
-		{
-			log.warn("Unsupported Portlet lifecycle: " +
-				request.getAttribute(PortletRequest.LIFECYCLE_PHASE));
-		}
-		if (log.isDebugEnabled())
-		{
-			wicketURL = getWicketURL(request, pageType, getDefaultPage(pageType));
-			log.debug("end of request, wicket url:" + wicketURL);
+				response.sendRedirect(redirectLocationUrl);
 		}
 	}
 
@@ -634,9 +476,10 @@ public class WicketPortlet extends GenericPortlet
 	 * @throws PortletException
 	 * @throws IOException
 	 */
-	private void processMimeResponseRequest(PortletRequest request, MimeResponse response,
-		String wicketURL, String wicketFilterPath, String wicketFilterQuery,
-		WicketResponseState responseState) throws PortletException, IOException
+	private void processMimeResponseRequest(final PortletRequest request,
+		final MimeResponse response, String wicketURL, final String wicketFilterPath,
+		final String wicketFilterQuery, final WicketResponseState responseState)
+		throws PortletException, IOException
 	{
 		PortletRequestDispatcher rd = null;
 		String previousURL = null;
@@ -658,15 +501,13 @@ public class WicketPortlet extends GenericPortlet
 				// processing the request
 
 				String redirectLocation = responseState.getRedirectLocation();
-				if (log.isDebugEnabled())
-				{
-					log.debug("redirect url after inclusion:" + redirectLocation);
-				}
+				if (LOG.isDebugEnabled())
+					LOG.debug("redirect url after inclusion:" + redirectLocation);
 				if (redirectLocation != null)
 				{
 					redirectLocation = fixWicketUrl(redirectLocation, wicketFilterPath,
 						wicketFilterQuery);
-					boolean validWicketUrl = redirectLocation.startsWith(wicketFilterPath);
+					final boolean validWicketUrl = redirectLocation.startsWith(wicketFilterPath);
 					if (validWicketUrl)
 					{
 						if (previousURL == null || previousURL != redirectLocation)
@@ -721,67 +562,172 @@ public class WicketPortlet extends GenericPortlet
 							response.setProperty("Location", redirectLocation);
 						}
 						else
-						{
 							// TODO: unhandled/unsupport RenderResponse redirect
-							log.error("Wicket redirecting outside of its own application during Render which is unsupported. Target url: " +
+							LOG.error("Wicket redirecting outside of its own application during Render which is unsupported. Target url: " +
 								redirectLocation);
-						}
 						break;
 					}
 				}
 				else
-				{
 					// write response state out to the PortletResponse
 					responseState.flush();
-				}
 			}
 			break;
 		}
 	}
 
 	/**
-	 * Handles redirects set from processing the action. Checks the response state after the action
-	 * has been processed by Wicket for the presence of a redirect URL, and if present,
-	 * 'portletifies' the URL. If the URL is a redirect to within the scope of this portlet, leaves
-	 * it to be handled in a subsequent render call, or if not, sends the redirect to the client.
-	 * The recorded url is then used in by wicket in the subsequnt 'VIEW' requests by the portal, to
-	 * render the correct Page.
+	 * Consumes and processes all portlet requests. All the doX methods delegate to this method,
+	 * including processAction and serveResource.
 	 * 
-	 * @see IRequestCycleSettings#REDIRECT_TO_RENDER
-	 * @param wicketURL
-	 * @param wicketFilterPath
-	 * @param wicketFilterQuery
 	 * @param request
 	 * @param response
-	 * @param responseState
+	 * @param requestType
+	 * @param pageType
 	 * @throws PortletException
 	 * @throws IOException
 	 */
-	protected void processActionResponseState(String wicketURL, String wicketFilterPath,
-		String wicketFilterQuery, PortletRequest request, ActionResponse response,
-		WicketResponseState responseState) throws PortletException, IOException
+	protected void processRequest(final PortletRequest request, final PortletResponse response,
+		final String pageType) throws PortletException, IOException
 	{
-		// write out Cookies to ActionResponse
-		responseState.flush();
-		String redirectLocationUrl = responseState.getRedirectLocation();
-		if (log.isDebugEnabled())
+
+		String wicketURL = null;
+		String wicketFilterPath = null;
+		String wicketFilterQuery = null;
+
+		// FIXME portal comment: sets the name of the parameter to store the wicket url as a request
+		// attribute, so that we can ?...?
+		request.setAttribute(WICKET_URL_PORTLET_PARAMETER_ATTR,
+			getWicketUrlPortletParameter(request));
+
+		// get the actual wicketURL for this request, to be passed onto Wicket core for processing
+		wicketURL = getWicketURL(request, pageType, getDefaultPage(pageType));
+		if (LOG.isDebugEnabled())
+			LOG.debug("Portlet \"" + request.getAttribute(PortletRequest.LIFECYCLE_PHASE) +
+				"\" for wicket url:" + wicketURL);
+		wicketFilterPath = getWicketConfigParameter(request, WICKET_FILTER_PATH,
+			this.wicketFilterPath);
+		wicketFilterQuery = getWicketConfigParameter(request, WICKET_FILTER_QUERY,
+			this.wicketFilterQuery);
+
+		// store the response state and request type in the request object, so they can be looked up
+		// from a different context
+		final WicketResponseState responseState = new WicketResponseState(request, response);
+		request.setAttribute(RESPONSE_STATE_ATTR, responseState);
+
+		// need to record the effective wicket url of the rendered result, so that the subsequent
+		// portlet 'view' requests can delegate to wicket to render the correct location/wicket url.
+		if (responseState.isActionResponse())
 		{
-			log.debug("redirectURL after include:" + redirectLocationUrl);
-		}
-		if (redirectLocationUrl != null)
-		{
-			wicketURL = fixWicketUrl(redirectLocationUrl, wicketFilterPath, wicketFilterQuery);
-			if (wicketURL.startsWith(wicketFilterPath))
+			// create the request dispatcher, to delegate the request to the wicket filter
+			final PortletRequestDispatcher rd = getPortletContext().getRequestDispatcher(wicketURL);
+
+			if (rd != null)
 			{
-				String portletMode = request.getPortletMode().toString();
-				String wicketUrlPrefix = (String)request.getAttribute(WicketPortlet.WICKET_URL_PORTLET_PARAMETER_ATTR);
-				String redirectUrlKey = wicketUrlPrefix + portletMode;
-				response.setRenderParameter(redirectUrlKey, wicketURL);
+				// delegate to wicket filter - this is where the magic happens
+				rd.include(request, response);
+				// String newWicketURL = getWicketURL(request, pageType, getDefaultPage(pageType));
+				if (LOG.isDebugEnabled())
+					LOG.debug("wicket filter inclusion complete");
+				processActionResponseState(wicketURL, wicketFilterPath, wicketFilterQuery, request,
+					(ActionResponse)response, responseState);
 			}
 			else
 			{
-				response.sendRedirect(redirectLocationUrl);
+				// FIXME - throw exception?
+				// no-op for now
 			}
+		}
+		else if (responseState.isMimeResponse())
+			processMimeResponseRequest(request, (MimeResponse)response, wicketURL,
+				wicketFilterPath, wicketFilterQuery, responseState);
+		else
+			LOG.warn("Unsupported Portlet lifecycle: " +
+				request.getAttribute(PortletRequest.LIFECYCLE_PHASE));
+		if (LOG.isDebugEnabled())
+		{
+			wicketURL = getWicketURL(request, pageType, getDefaultPage(pageType));
+			LOG.debug("end of request, wicket url:" + wicketURL);
+		}
+	}
+
+	/**
+	 * Delegates to {@link #processRequest(PortletRequest, PortletResponse, String, String)}.
+	 * 
+	 * @see #processRequest(PortletRequest, PortletResponse, String, String)
+	 */
+	@Override
+	public void serveResource(final ResourceRequest request, final ResourceResponse response)
+		throws PortletException, IOException
+	{
+		if (request.getResourceID() != null)
+			// only handle serveResource by ResourceID parameter
+			processRequest(request, response, PARAM_VIEW_PAGE);
+	}
+
+	/**
+	 * FIXME javadoc
+	 * 
+	 * <p>
+	 * Registers the default pages and their URLs for the different {@link PortletMode}s. Also
+	 * corrects and slightly incorrect URLs (see {@link #fixWicketUrl(String, String, String)}).
+	 * 
+	 * <p>
+	 * If no specific page was specified for a given portlet mode (VIEW, EDIT etc) then the page for
+	 * that mode is set to be the same page as that of the VIEW mode.
+	 * 
+	 * @see PortletMode
+	 * @see #fixWicketUrl(String, String, String)
+	 * @param defaultPages
+	 * @param wicketFilterPath
+	 * @param wicketFilterQuery
+	 */
+	protected void validateDefaultPages(final Map<String, String> defaultPages,
+		final String wicketFilterPath, final String wicketFilterQuery)
+	{
+		final String viewPage = fixWicketUrl(defaultPages.get(PARAM_VIEW_PAGE), wicketFilterPath,
+			wicketFilterQuery);
+		defaultPages.put(PARAM_VIEW_PAGE, viewPage.startsWith(wicketFilterPath) ? viewPage
+			: wicketFilterPath);
+
+		String defaultPage = defaultPages.get(PARAM_ACTION_PAGE);
+		if (defaultPage == null)
+			defaultPages.put(PARAM_ACTION_PAGE, viewPage);
+		else
+		{
+			defaultPage = fixWicketUrl(defaultPage, wicketFilterPath, wicketFilterQuery);
+			defaultPages.put(PARAM_ACTION_PAGE, defaultPage.startsWith(wicketFilterPath)
+				? defaultPage : viewPage);
+		}
+
+		defaultPage = defaultPages.get(PARAM_CUSTOM_PAGE);
+		if (defaultPage == null)
+			defaultPages.put(PARAM_CUSTOM_PAGE, viewPage);
+		else
+		{
+			defaultPage = fixWicketUrl(defaultPage, wicketFilterPath, wicketFilterQuery);
+			defaultPages.put(PARAM_CUSTOM_PAGE, defaultPage.startsWith(wicketFilterPath)
+				? defaultPage : viewPage);
+		}
+
+		defaultPage = defaultPages.get(PARAM_HELP_PAGE);
+		if (defaultPage == null)
+			defaultPages.put(PARAM_HELP_PAGE, viewPage);
+		else
+		{
+			defaultPage = fixWicketUrl(defaultPage, wicketFilterPath, wicketFilterQuery);
+			defaultPages.put(PARAM_HELP_PAGE, defaultPage.startsWith(wicketFilterPath)
+				? defaultPage : viewPage);
+		}
+
+		defaultPage = defaultPages.get(PARAM_EDIT_PAGE);
+		if (defaultPage == null)
+			defaultPages.put(PARAM_EDIT_PAGE, viewPage);
+		else
+		{
+			defaultPage = fixWicketUrl(defaultPage, wicketFilterPath, wicketFilterQuery);
+			defaultPages.put(PARAM_EDIT_PAGE, defaultPage.startsWith(wicketFilterPath)
+				? defaultPage : viewPage);
 		}
 	}
 }
