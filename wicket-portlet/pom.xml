@@ -10,17 +10,17 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>org.wicketstuff.portlets</groupId>
-	<artifactId>wicket-portlets</artifactId>
+	<artifactId>wicket-portlet</artifactId>
 	<packaging>jar</packaging>
 	<version>1.5-SNAPSHOT</version>
 
-	<name>Wicketstuff Portlets</name>
+	<name>Wicketstuff Portlet</name>
 
 	<url>http://wicketstuff.org</url>
 
 	<scm>
-		<url>https://wicket-stuff.svn.sourceforge.net/svnroot/wicket-stuff/trunk/wicket-portlets</url>
-		<connection>scm:svn:https://wicket-stuff.svn.sourceforge.net/svnroot/wicket-stuff/trunk/wicket-portlets</connection>
+		<url>https://wicket-stuff.svn.sourceforge.net/svnroot/wicket-stuff/trunk/wicket-portlet</url>
+		<connection>scm:svn:https://wicket-stuff.svn.sourceforge.net/svnroot/wicket-stuff/trunk/wicket-portlet</connection>
 	</scm>
 
 	<developers>
