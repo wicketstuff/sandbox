@@ -909,6 +909,15 @@ function highlightClose()
 
 }
 
+// ADDED BY WICKET
+function closeCalendarForInput(inputId){
+	if(calendarDiv && calendarDiv.style.display=='block' && (inputId==calendarInputId || typeof(inputId)=='undefined'))
+	{
+		closeCalendar();
+	}
+}
+// END ADDED BY WICKET
+
 function closeCalendar(){
 
 	document.getElementById('yearDropDown').style.display='none';
@@ -1657,9 +1666,10 @@ function calendarSortItems(a,b)
 }
 
 // CHANGED BY WICKET
-function displayCalendar(inputField,format,buttonObj,displayTime,timeInput,smartPositioning)
-// END CHANGED BY WICKET
+function displayCalendar(inputField,format,buttonObj,displayTime,calendarFieldId,smartPositioning)
 {
+	calendarInputId = calendarFieldId;
+// END CHANGED BY WICKET
 	if(displayTime)calendarDisplayTime=true; else calendarDisplayTime = false;
 	if(inputField.value.length>0){
 		

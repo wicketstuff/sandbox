@@ -124,7 +124,7 @@ public class DatePicker extends AbstractBehavior implements IHeaderContributor
 		// Set the icons image path 
 		response.renderOnLoadJavascript("setImagePath(\"" + RequestCycle.get().urlFor(new ResourceReference(DatePicker.class, "images/")) + "\")");
 		// Set the language code of the current session
-		response.renderOnLoadJavascript("setLanguageCode(\"" + component.getSession().getLocale().getLanguage() + "\")");
+		response.renderOnLoadJavascript("setLanguageCode(\"" + component.getLocale().getLanguage() + "\")");
 	}
 
 	/**
