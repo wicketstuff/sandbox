@@ -50,8 +50,8 @@ var calendar_display_time = true;
 // [UCFdayString] = day of week (examle: Mon, Tue, Wed...) ( First letter in uppercase)
 // [day] = Day of month, 1..31
 // [monthString] = Name of current month
-// [year] = Current year							
-var todayStringFormat = '[UCFdayString]. [day]. [monthString] [year]';						
+// [year] = Current year
+var todayStringFormat = '[UCFdayString]. [day]. [monthString] [year]';
 var pathToImages = 'images/';	// Relative to your HTML file
 
 var speedOfSelectBoxSliding = 200;	// Milliseconds between changing year and hour when holding mouse over "-" and "+" - lower value = faster
@@ -1793,16 +1793,24 @@ function displayCalendar(inputField,format,buttonObj,displayTime,calendarFieldId
 		var d = new Date();
 		currentMonth = d.getMonth();
 		currentYear = d.getFullYear();
-		currentHour = '08';
-		currentMinute = '00';
-		tmpDay = d.getDate();
 // WICKET CHANGED
-		if(format.indexOf('a') > -1){
-			currentAMPM = "AM";	
+		if(format.indexOf('a')>-1){
+			if (d.getHours()<12){
+				currentAMPM = "AM";
+			}else{
+				currentAMPM = "PM";
+				d.setHours(d.getHours()-12);
+			}
+			if (d.getHours()==0){
+				d.setHours(12);
+			}
 		}else{
 			currentAMPM = false;
 		}
+		currentHour = ("0"+d.getHours()).slice(-2);
+		currentMinute = ("0"+d.getMinutes()).slice(-2);
 // DONE WICKET CHANGED
+		tmpDay = d.getDate();
 	}
 	
 	inputYear = currentYear;
