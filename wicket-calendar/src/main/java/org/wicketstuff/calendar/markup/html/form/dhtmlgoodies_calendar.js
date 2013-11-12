@@ -891,11 +891,11 @@ function highlightSelect()
 function highlightArrow()
 {
 	if(this.src.indexOf('over')>=0){
-		if(this.src.indexOf('left')>=0)this.src = pathToImages + 'left.gif';	
-		if(this.src.indexOf('right')>=0)this.src = pathToImages + 'right.gif';				
+		if(this.src.indexOf('left')>=0){this.src = pathToImages + 'left.gif';this.className='leftMonthArrow'};	
+		if(this.src.indexOf('right')>=0){this.src = pathToImages + 'right.gif';this.className='rightMonthArrow'};				
 	}else{
-		if(this.src.indexOf('left')>=0)this.src = pathToImages + 'left_over.gif';	
-		if(this.src.indexOf('right')>=0)this.src = pathToImages + 'right_over.gif';	
+		if(this.src.indexOf('left')>=0){this.src = pathToImages + 'left_over.gif';this.className='leftMonthArrowOver'};	
+		if(this.src.indexOf('right')>=0){this.src = pathToImages + 'right_over.gif';this.className='rightMonthArrowOver'};	
 	}
 }
 
@@ -903,8 +903,10 @@ function highlightClose()
 {
 	if(this.src.indexOf('over')>=0){
 		this.src = pathToImages + 'close.gif';
+		this.className='closeButton'
 	}else{
-		this.src = pathToImages + 'close_over.gif';	
+		this.src = pathToImages + 'close_over.gif';
+		this.className='closeButtonOver'	
 	}	
 
 }
@@ -953,6 +955,7 @@ function writeTopBar()
 	leftDiv.style.marginRight = '1px';
 	var img = document.createElement('IMG');
 	img.src = pathToImages + 'left.gif';
+	img.className = 'leftMonthArrow';
 	img.onmouseover = highlightArrow;
 	img.onclick = switchMonth;
 	img.onmouseout = highlightArrow;
@@ -965,6 +968,7 @@ function writeTopBar()
 	rightDiv.style.marginRight = '1px';
 	var img = document.createElement('IMG');
 	img.src = pathToImages + 'right.gif';
+	img.className = 'rightMonthArrow';
 	img.onclick = switchMonth;
 	img.onmouseover = highlightArrow;
 	img.onmouseout = highlightArrow;
@@ -1038,6 +1042,7 @@ function writeTopBar()
 		
 	var img = document.createElement('IMG');
 	img.src = pathToImages + 'close.gif';
+	img.className = 'closeButton';
 	img.style.styleFloat = 'right';
 	img.onmouseover = highlightClose;
 	img.onmouseout = highlightClose;
@@ -1445,24 +1450,14 @@ function writeBottomBar()
 
 function getTopPos(inputObj)
 {
-  var returnValue = (inputObj.offsetTop || 0) + (inputObj.offsetHeight || 0);
-  inputObj = inputObj.offsetParent;
-  while(inputObj && inputObj != document.documentElement && inputObj != document.body) {
-    returnValue = returnValue + (inputObj.offsetTop || 0) - (inputObj.scrollTop || 0);
-    inputObj = inputObj.offsetParent;
-  }
-  return returnValue + calendar_offsetTop;
+  var rect = inputObj.getBoundingClientRect();
+  return rect.top + inputObj.offsetHeight + calendar_offsetTop;
 }
 
 function getleftPos(inputObj)
 {
-  var returnValue = (inputObj.offsetLeft || 0);
-  inputObj = inputObj.offsetParent;
-  while(inputObj && inputObj != document.documentElement && inputObj != document.body) {
-    returnValue = returnValue + (inputObj.offsetLeft || 0) - (inputObj.scrollLeft || 0);
-    inputObj = inputObj.offsetParent;
-  }
-  return returnValue + calendar_offsetLeft;
+  var rect = inputObj.getBoundingClientRect();
+  return rect.left + calendar_offsetLeft;
 }
 
 // ADDED BY WICKET
