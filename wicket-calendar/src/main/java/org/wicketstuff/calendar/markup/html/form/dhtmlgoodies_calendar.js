@@ -218,8 +218,9 @@ function EIS_FIX_EI2(where2fixit)
 {
 		iframeObj2.style.height =document.getElementById(where2fixit).offsetHeight+1;
 		iframeObj2.style.width=document.getElementById(where2fixit).offsetWidth;
-		iframeObj2.style.left=getleftPos(document.getElementById(where2fixit))+1-calendar_offsetLeft;
-		iframeObj2.style.top=getTopPos(document.getElementById(where2fixit))-document.getElementById(where2fixit).offsetHeight-calendar_offsetTop;
+		var r = getAbsBoundingClientRect(document.getElementById(where2fixit));
+		iframeObj2.style.left=r.left+1-calendar_offsetLeft;
+		iframeObj2.style.top=r.top-calendar_offsetTop;
 }
 
 function EIS_Hide_Frame()
@@ -1448,16 +1449,18 @@ function writeBottomBar()
 	calendarDiv.appendChild(bottomBar);	
 }
 
-function getTopPos(inputObj)
+function getAbsBoundingClientRect(inputObj)
 {
-  var rect = inputObj.getBoundingClientRect();
-  return rect.top + inputObj.offsetHeight + calendar_offsetTop;
-}
-
-function getleftPos(inputObj)
-{
-  var rect = inputObj.getBoundingClientRect();
-  return rect.left + calendar_offsetLeft;
+  var r = inputObj.getBoundingClientRect();
+  var scrollXY = getWindowScrollXY();
+  
+  var rect = {};
+  rect.top = r.top + scrollXY[1] + calendar_offsetTop;
+  rect.bottom = r.bottom + scrollXY[1] + calendar_offsetTop;
+  rect.left = r.left + scrollXY[0] + calendar_offsetLeft;
+  rect.right = r.right + scrollXY[0] + calendar_offsetLeft;
+  
+  return rect;
 }
 
 // ADDED BY WICKET
@@ -1503,8 +1506,9 @@ function positionCalendar(inputObj, smartPositioning)
 // ADDED BY WICKET
 	var leftPos = 0, topPos = 0;
 	
+	var inputObjBounds = getAbsBoundingClientRect(inputObj);
 	if (smartPositioning) {
-		// there are 4 possible positions for the calendar div: top-left, top-right, buttom-left, bottom-right
+		// there are 4 possible positions for the calendar div: top-left, top-right, bottom-left, bottom-right
 		// relative to the inputObj; we will try to use the position that does not get out of the visible page 
 		var windowScrollXY = getWindowScrollXY();
 		var windowWH = getWindowWidthAndHeigth();
@@ -1512,38 +1516,35 @@ function positionCalendar(inputObj, smartPositioning)
 		var windowScrollY = windowScrollXY[1];
 		var windowWidth = windowWH[0];
 		var windowHeight = windowWH[1];
-		
-		var inputObjLeft = getleftPos(inputObj);
-		var inputObjTop = getTopPos(inputObj) - inputObj.offsetHeight;
-		
-		if ((inputObjLeft + calendarDiv.offsetWidth < windowScrollX + windowWidth) &&
-				(inputObjTop + inputObj.offsetHeight + calendarDiv.offsetHeight < windowScrollY + windowHeight)) {
+				
+		if ((inputObjBounds.left + calendarDiv.offsetWidth < windowScrollX + windowWidth) &&
+				(inputObjBounds.bottom + calendarDiv.offsetHeight < windowScrollY + windowHeight)) {
 			// choice 1 : bottom right
-			leftPos = inputObjLeft;
-			topPos = inputObjTop + inputObj.offsetHeight;
-		} else if ((inputObjLeft + calendarDiv.offsetWidth < windowScrollX + windowWidth) &&
-				(inputObjTop - calendarDiv.offsetHeight > windowScrollY)) {
+			leftPos = inputObjBounds.left;
+			topPos = inputObjBounds.bottom;
+		} else if ((inputObjBounds.left + calendarDiv.offsetWidth < windowScrollX + windowWidth) &&
+				(inputObjBounds.top - calendarDiv.offsetHeight > windowScrollY)) {
 			// choice 2 : top right
-			leftPos = inputObjLeft;
-			topPos = inputObjTop - calendarDiv.offsetHeight;
-		} else if ((inputObjLeft + inputObj.offsetWidth - calendarDiv.offsetWidth > windowScrollX) &&
-				(inputObjTop + inputObj.offsetHeight + calendarDiv.offsetHeight < windowScrollY + windowHeight)) {
+			leftPos = inputObjBounds.left;
+			topPos = inputObjBounds.top - calendarDiv.offsetHeight;
+		} else if ((inputObjBounds.right - calendarDiv.offsetWidth > windowScrollX) &&
+				(inputObjBounds.bottom + calendarDiv.offsetHeight < windowScrollY + windowHeight)) {
 			// choice 3 : bottom left
-			leftPos = inputObjLeft + inputObj.offsetWidth - calendarDiv.offsetWidth;
-			topPos = inputObjTop + inputObj.offsetHeight;
-		} else if ((inputObjLeft + inputObj.offsetWidth - calendarDiv.offsetWidth > windowScrollX) &&
-				(inputObjTop - calendarDiv.offsetHeight > windowScrollY)) {
+			leftPos = inputObjBounds.right - calendarDiv.offsetWidth;
+			topPos = inputObjBounds.bottom;
+		} else if ((inputObjBounds.right - calendarDiv.offsetWidth > windowScrollX) &&
+				(inputObjBounds.top - calendarDiv.offsetHeight > windowScrollY)) {
 			// choice 4 : top left
-			leftPos = inputObjLeft + inputObj.offsetWidth - calendarDiv.offsetWidth;
-			topPos = inputObjTop - calendarDiv.offsetHeight;
+			leftPos = inputObjBounds.right - calendarDiv.offsetWidth;
+			topPos = inputObjBounds.top - calendarDiv.offsetHeight;
 		} else {
 			// use bottom right anyway - cannot find valid place to show the div
-			leftPos = inputObjLeft;
-			topPos = inputObjTop + inputObj.offsetHeight;
+			leftPos = inputObjBounds.left;
+			topPos = inputObjBounds.bottom;
 		}		
 	} else {
-		leftPos = getleftPos(inputObj);
-		topPos = getTopPos(inputObj);
+		leftPos = inputObjBounds.left;
+		topPos = inputObjBounds.bottom;
 	}
 // END ADDED BY WICKET
 
